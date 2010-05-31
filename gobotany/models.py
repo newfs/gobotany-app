@@ -39,7 +39,7 @@ class Pile(models.Model):
 
 
 class Taxon(models.Model):
-    scientific_name = models.CharField(max_length=30)
+    scientific_name = models.CharField(max_length=100)
     character_values = models.ManyToManyField(CharacterValue)
     pile = models.ForeignKey(Pile)
 
