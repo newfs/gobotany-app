@@ -65,10 +65,11 @@ class Importer(object):
                     print 'No such character value exists: %s; %s' % (cname, v)
                     continue
 
-                t.character_values.add(cvs[0])
+                tcv = models.TaxonToCharacterValue(taxon=t,
+                                                   character_value=cvs[0])
+                tcv.save()
 
             t.save()
-
 
     def _import_characters(self, f):
         print 'Setting up characters'

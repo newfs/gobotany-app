@@ -40,9 +40,19 @@ class Pile(models.Model):
 
 class Taxon(models.Model):
     scientific_name = models.CharField(max_length=100)
-    character_values = models.ManyToManyField(CharacterValue)
+    character_values = models.ManyToManyField(CharacterValue,
+                                              through='TaxonToCharacterValue')
     pile = models.ForeignKey(Pile)
 
     def __unicode__(self):
         return u'Taxon: %s pile=%s id=%s' % (self.scientific_name, self.pile,
                                              self.id)
+
+
+class TaxonToCharacterValue(models.Model):
+    taxon = models.ForeignKey(Taxon)
+    character_value = models.ForeignKey(CharacterValue)
+
+    def __unicode__(self):
+        return u'TaxonToCharacterValue: taxon=%s character_value=%s id=%s' % \
+               (self.taxon, self.character_value, self.id)
