@@ -31,10 +31,44 @@ class Importer(object):
         print 'Setting up taxons (work in progress)'
         iterator = iter(CSVReader(f).read())
         colnames = [x.lower() for x in iterator.next()]
+        default_pile = models.Pile.objects.all()[0]
         for cols in iterator:
             row = {}
             for pos, c in enumerate(cols):
                 row[colnames[pos]] = c
+
+            res = models.Taxon.objects.filter(
+                scientific_name=row['scientific_name'])
+            if len(res) > 0:
+                continue
+
+            t = models.Taxon(scientific_name=row['scientific_name'],
+                             pile=default_pile)
+            t.save()
+
+            del row['id']
+            del row['taxon_id']
+            del row['scientific_name']
+
+            for k, v in row.items():
+                if not v.strip():
+                    continue
+                cname = '_'.join(k.split('_')[:-1])
+                chars = models.Character.objects.filter(short_name=cname)
+                if len(chars) == 0:
+                    print 'No such character exists: %s' % cname
+                    continue
+
+                cvs = models.CharacterValue.objects.filter(value=v,
+                                                           character=chars[0])
+                if len(cvs) == 0:
+                    print 'No such character value exists: %s; %s' % (cname, v)
+                    continue
+
+                t.character_values.add(cvs[0])
+
+            t.save()
+
 
     def _import_characters(self, f):
         print 'Setting up characters'
