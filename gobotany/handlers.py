@@ -16,7 +16,7 @@ class TaxonQueryHandler(BaseHandler):
     def read(self, request):
         kwargs = {}
         for k, v in request.GET.items():
-            kwargs[k] = v
+            kwargs[str(k)] = v
         species = botany.query_species(**kwargs)
         listing = []
         for s in species:
@@ -40,7 +40,7 @@ class TaxonCountHandler(BaseHandler):
     def read(self, request):
         kwargs = {}
         for k, v in request.GET.items():
-            kwargs[k] = v
+            kwargs[str(k)] = v
         species = botany.query_species(**kwargs)
         matched = species.count()
         return {'matched': matched,
