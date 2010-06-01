@@ -6,8 +6,7 @@ class SpeciesReader(object):
     def query_species(self,
                       scientific_name=None,
                       **kwargs):
-
-        if scientific_name:
+        if scientific_name is not None:
             return models.Taxon.objects.filter(scientific_name=scientific_name)
         else:
             base_query = models.Taxon.objects

@@ -1,10 +1,14 @@
 from gobotany import botany
 from piston.handler import BaseHandler
 
-
-def serialize(obj):
-    return obj.__dict__
-
+def _taxon_with_chars(taxon):
+    res = {}
+    res['scientific_name'] = taxon.scientific_name
+    res['id'] = taxon.id
+    res['pile'] = taxon.pile.name
+    for cv in taxon.character_values.all():
+        res[cv.character.short_name] = cv.value
+    return res
 
 class TaxonQueryHandler(BaseHandler):
     methods_allowed = ('GET',)
@@ -16,28 +20,16 @@ class TaxonQueryHandler(BaseHandler):
         species = botany.query_species(**kwargs)
         listing = []
         for s in species:
-            res = {}
-            res['scientific_name'] = s.scientific_name
-            res['id'] = s.id
-            res['pile'] = s.pile.name
-            for cv in s.character_values.all():
-                res[cv.character.short_name] = cv.value
-            listing.append(res)
+            listing.append(_taxon_with_chars(s))
         return listing
 
 
 class TaxonHandler(BaseHandler):
     methods_allowed = ('GET',)
 
-    def read(self, request, scientific_name=None):
+    def read(self, request):
+        scientific_name = request.GET.get('scientific_name')
         species = botany.query_species(scientific_name=scientific_name)
-        if len(species) > 0:
-            res = {}
-            s = species[0]
-            res['scientific_name'] = s.scientific_name
-            res['id'] = s.id
-            res['pile'] = s.pile.name
-            for cv in s.character_values.all():
-                res[cv.character.short_name] = cv.value
-            return res
+        if species.exists():
+            return _taxon_with_chars(species[0])
         return {}
