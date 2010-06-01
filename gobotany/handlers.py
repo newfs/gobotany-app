@@ -1,4 +1,4 @@
-from gobotany import botany
+from gobotany import botany, models
 from piston.handler import BaseHandler
 
 def _taxon_with_chars(taxon):
@@ -33,3 +33,15 @@ class TaxonHandler(BaseHandler):
         if species.exists():
             return _taxon_with_chars(species[0])
         return {}
+
+class TaxonCountHandler(BaseHandler):
+    methods_allowed = ('GET',)
+
+    def read(self, request):
+        kwargs = {}
+        for k, v in request.GET.items():
+            kwargs[k] = v
+        species = botany.query_species(**kwargs)
+        matched = species.count()
+        return {'matched': matched,
+                'excluded': models.Taxon.objects.count() - matched}
