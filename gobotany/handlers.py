@@ -17,7 +17,6 @@ class TaxonQueryHandler(BaseHandler):
         listing = []
         for s in species:
             res = {}
-            s = species[0]
             res['scientific_name'] = s.scientific_name
             res['id'] = s.id
             res['pile'] = s.pile.name
