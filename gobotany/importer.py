@@ -1,4 +1,5 @@
 from django.core import management
+from django.core.exceptions import ObjectDoesNotExist
 from gobotany import settings
 management.setup_environ(settings)
 
@@ -54,21 +55,19 @@ class Importer(object):
                 if not v.strip():
                     continue
                 cname = '_'.join(k.split('_')[:-1])
-                chars = models.Character.objects.filter(short_name=cname)
-                if len(chars) == 0:
+                try:
+                    char = models.Character.objects.filter(short_name=cname)
+                except ObjectDoesNotExist:
                     print 'No such character exists: %s' % cname
                     continue
-
-                cvs = models.CharacterValue.objects.filter(value=v,
-                                                           character=chars[0])
-                if len(cvs) == 0:
+                try:
+                    cvs = models.CharacterValue.objects.get(value=v,
+                                                            character=char)
+                except ObjectDoesNotExist:
                     print 'No such character value exists: %s; %s' % (cname, v)
                     continue
 
-                tcv = models.TaxonToCharacterValue(taxon=t,
-                                                   character_value=cvs[0])
-                tcv.save()
-
+                t.character_values.add(cvs)
             t.save()
 
     def _import_characters(self, f):

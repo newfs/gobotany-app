@@ -140,6 +140,10 @@ class GlossaryTermForPileCharacter(models.Model):
     pile = models.ForeignKey(Pile)
     glossary_term = models.ForeignKey(GlossaryTerm)
 
+    class Meta:
+        # Only one glossary term allowed per character/pile combination
+        unique_together = ('character', 'pile')
+
     def __unicode__(self):
         return u'"%s" character=%s pile=%s' % (self.glossary_term.term,
                                              self.character.short_name,
@@ -148,20 +152,10 @@ class GlossaryTermForPileCharacter(models.Model):
 
 class Taxon(models.Model):
     scientific_name = models.CharField(max_length=100, unique=True)
-    character_values = models.ManyToManyField(CharacterValue,
-                                              through='TaxonToCharacterValue')
+    character_values = models.ManyToManyField(CharacterValue)
     taxonomic_authority = models.CharField(max_length=100)
     pile = models.ForeignKey(Pile)
 
     def __unicode__(self):
         return u'%s pile=%s id=%s' % (self.scientific_name, self.pile,
                                       self.id)
-
-
-class TaxonToCharacterValue(models.Model):
-    taxon = models.ForeignKey(Taxon)
-    character_value = models.ForeignKey(CharacterValue)
-
-    def __unicode__(self):
-        return u'taxon=%s character_value=%s id=%s' % \
-               (self.taxon, self.character_value, self.id)
