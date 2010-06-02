@@ -1,6 +1,9 @@
+import os
+
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django import forms
+from django.views import static 
 
 from gobotany import botany, models
 
@@ -57,3 +60,13 @@ def taxon_search(request):
 
     return render_to_response('taxon_search.html', kwargs,
                                context_instance=RequestContext(request))
+
+
+def static_serve(request, path, package=None,
+                 relative_path='', show_indexes=False):
+    document_root = package.__path__[0]
+    if relative_path:
+        document_root = os.path.join(document_root, relative_path)
+
+    return static.serve(request, path, document_root=document_root,
+                        show_indexes=show_indexes)

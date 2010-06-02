@@ -1,4 +1,5 @@
 from gobotany import views, handlers
+import gobotany
 from piston.resource import Resource
 from django.conf.urls.defaults import *
 from django.contrib import admin
@@ -17,6 +18,9 @@ urlpatterns = patterns(
 
     (r'^pile-search/(\w+)$', views.pile_search),
     (r'^taxon-search/$', views.taxon_search),
+
+    (r'^static/(?P<path>.*)$', 'gobotany.views.static_serve',
+     {'package': gobotany, 'relative_path': 'static', 'show_indexes': True}),
 
     (r'^admin/', include(admin.site.urls)),
 )
