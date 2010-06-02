@@ -5,7 +5,7 @@ class CharacterGroup(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
     def __unicode__(self):
-        return u'CharacterGroup: %s id=%s' % (self.name, self.id)
+        return u'%s id=%s' % (self.name, self.id)
 
 
 class GlossaryTerm(models.Model):
@@ -16,8 +16,54 @@ class GlossaryTerm(models.Model):
     visible = models.BooleanField(default=True)
     # XXX: images
 
+    def __unicode__(self):
+        return u'"%s" id=%s' % (self.term, self.id)
+
 
 class Character(models.Model):
+    """An object representing a botanic character.  A character is
+    associated with a group of characters for UI purposes.  It may be
+    associated with a glossary term that provides clarifying
+    information.  The associated glossary term will depend on the
+    Pile in which we are searching.  Let's demonstrate creating a
+    Character and assigning it to a character group:
+
+        >>> group,ignore = CharacterGroup.objects.get_or_create(name=u'characters of the spores')
+        >>> char = Character.objects.create(short_name='spore_form',
+        ...                                 name=u'Spore Form',
+        ...                                 character_group=group)
+        >>> char
+        <Character: spore_form name="Spore Form" id=...>
+        >>> char.character_group.name
+        u'characters of the spores'
+        >>> char.glossary_terms.all()
+        []
+
+    The list of associated glossary terms is empty.  Let's associate
+    a definition for the 'Spore Form' character within the
+    'Lycophytes' Pile:
+
+        >>> pile,ignore = Pile.objects.get_or_create(name='Lycophytes')
+        >>> term = GlossaryTerm.objects.create(term='Spore Form',
+        ...                                    lay_definition='What form do the spores have?')
+        >>> GlossaryTermForPileCharacter.objects.create(character=char,
+        ...                                             pile=pile,
+        ...                                             glossary_term=term)
+        <GlossaryTermForPileCharacter: "Spore Form" character=spore_form pile=Lycophytes>
+        >>> char.glossary_terms.all()
+        [<GlossaryTerm: "Spore Form" id=...>]
+
+    Now our character has associated glossary terms.  Generally, we'll
+    want to retrieve only the glossary term specific to the pile in
+    which we are interested.  We can do by searching either with the
+    pile object or the name of the pile:
+
+        >>> char.glossary_terms.get(glossarytermforpilecharacter__pile=pile)
+        <GlossaryTerm: "Spore Form" id=...>
+        >>> char.glossary_terms.get(glossarytermforpilecharacter__pile__name='Lycophytes') 
+        <GlossaryTerm: "Spore Form" id=...>
+    """
+
     short_name = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100)
     character_group = models.ForeignKey(CharacterGroup)
@@ -27,17 +73,54 @@ class Character(models.Model):
                                          null=True)
 
     def __unicode__(self):
-        return u'Character: %s name=%s id=%s' % (self.short_name, self.name,
-                                                 self.id)
+        return u'%s name="%s" id=%s' % (self.short_name, self.name,
+                                      self.id)
 
 
 class CharacterValue(models.Model):
+    """An object representing an allowed value for a botanic character
+    within a pile. It is associated with both a character and pile.
+    It also may be associated with a glossary term that provides
+    clarifying information.  Let's demonstrate creating a
+    CharacterValue and assigning it to a character:
+
+        >>> group,ignore = CharacterGroup.objects.get_or_create(name=u'characters of the tropophylls')
+        >>> char = Character.objects.create(short_name='tropophyll_form',
+        ...                                 name=u'Tropophyll Form',
+        ...                                 character_group=group)
+        >>> char_val = CharacterValue.objects.create(value='short and scale-like',
+        ...                                          character=char)
+        >>> char_val
+        <CharacterValue: character=tropophyll_form value="short and scale-like" id=...>
+
+    Now we can associate that character value with a Pile, which
+    effectively associates the character with the Pile as well:
+
+        >>> pile,ignore = Pile.objects.get_or_create(name='Lycophytes')
+        >>> Character.objects.filter(charactervalue__pile=pile)
+        []
+        >>> pile.character_values.add(char_val)
+        >>> Character.objects.filter(charactervalue__pile=pile)
+        [<Character: tropophyll_form name="Tropophyll Form" id=...>]
+        >>> CharacterValue.objects.filter(pile=pile)
+        [<CharacterValue: character=tropophyll_form value="short and scale-like" id=...>]
+
+    We don't yet have an associated glossary term for this value.
+    Let's make one:
+
+        >>> term = GlossaryTerm.objects.create(term='Short and Scale-like (Tropophylls)',
+        ...                                    lay_definition='The Tropophylls look like small fish scales.')
+       >>> char_val.glossary_term = term
+       >>> char_val.glossary_term
+       <GlossaryTerm: "Short and Scale-like (Tropophylls)" id=2>
+    """
+
     value = models.CharField(max_length=100)
     character = models.ForeignKey(Character)
     glossary_term = models.ForeignKey(GlossaryTerm, blank=True, null=True)
 
     def __unicode__(self):
-        return u'CharacterValue: character=%s value=%s id=%s' % (
+        return u'character=%s value="%s" id=%s' % (
             self.character.short_name,
             self.value,
             self.id)
@@ -49,13 +132,18 @@ class Pile(models.Model):
     character_values = models.ManyToManyField(CharacterValue)
 
     def __unicode__(self):
-        return u'Pile: %s id=%s' % (self.name, self.id)
+        return u'%s id=%s' % (self.name, self.id)
 
 
 class GlossaryTermForPileCharacter(models.Model):
     character = models.ForeignKey(Character)
     pile = models.ForeignKey(Pile)
     glossary_term = models.ForeignKey(GlossaryTerm)
+
+    def __unicode__(self):
+        return u'"%s" character=%s pile=%s' % (self.glossary_term.term,
+                                             self.character.short_name,
+                                             self.pile.name)
 
 
 class Taxon(models.Model):
@@ -66,8 +154,8 @@ class Taxon(models.Model):
     pile = models.ForeignKey(Pile)
 
     def __unicode__(self):
-        return u'Taxon: %s pile=%s id=%s' % (self.scientific_name, self.pile,
-                                             self.id)
+        return u'%s pile=%s id=%s' % (self.scientific_name, self.pile,
+                                      self.id)
 
 
 class TaxonToCharacterValue(models.Model):
@@ -75,5 +163,5 @@ class TaxonToCharacterValue(models.Model):
     character_value = models.ForeignKey(CharacterValue)
 
     def __unicode__(self):
-        return u'TaxonToCharacterValue: taxon=%s character_value=%s id=%s' % \
+        return u'taxon=%s character_value=%s id=%s' % \
                (self.taxon, self.character_value, self.id)
