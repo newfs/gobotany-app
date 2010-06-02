@@ -14,7 +14,9 @@ urlpatterns = patterns(
      Resource(handler=handlers.TaxonQueryHandler)),
     (r'^taxon-count/$',
      Resource(handler=handlers.TaxonCountHandler)),
+
     (r'^pile-search/(\w+)$', views.pile_search),
+    (r'^taxon-search/$', views.taxon_search),
 
     (r'^admin/', include(admin.site.urls)),
 )

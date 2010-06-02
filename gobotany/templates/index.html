@@ -1,27 +1,8 @@
 <html>
   <body>
-    <fieldset>
-      <legend>Search for Species</legend>
-      <form method="POST">
-        Enter query: <input type="text" name="s" value="{{ s }}"/>
-        <input type="submit" />
-        {% csrf_token %}
-      </form>
-    </fieldset>
-
-    {% if queried %}
-      <h3>Results: {{ query_results|length }}</h3>
-      <p>Queried: {{ s }}</p>
-      <ul>
-      {% for r in query_results %}
-        <li>{{ r }}
-        <ul>
-        {% for cv in r.character_values.all %}
-        <li>{{ cv }}</li>
-        {% endfor %}
-        </ul></li>
-      {% endfor %}
-      </ul>
-    {% endif %}
+    <ul>
+      <li><a href="taxon-search/">Taxon Search</a></li>
+      <li><a href="pile-search/Lycophytes">Pile Search</a></li>
+    </ul>
   </body>
 </html>

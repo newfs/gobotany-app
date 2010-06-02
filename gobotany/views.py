@@ -1,4 +1,3 @@
-from django.template.loader import get_template
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django import forms
@@ -7,14 +6,7 @@ from gobotany import botany, models
 
 
 def default_view(request):
-    kwargs = {}
-    if request.method == 'POST':
-        kwargs['queried'] = True
-        s = kwargs['s'] = request.POST['s'].strip()
-        kwargs['query_results'] = botany.query_species(
-            scientific_name=s)
-
-    return render_to_response('index.html', kwargs,
+    return render_to_response('index.html', {},
                                context_instance=RequestContext(request))
 
 
@@ -37,6 +29,7 @@ class PileSearchForm(forms.Form):
                 choices=[('', '----------')]+[(c.value, c.value) for c in
                          character_values.filter(character=character)])
 
+
 def pile_search(request, pile_name):
     data = []
     if request.method == 'POST':
@@ -52,3 +45,15 @@ def pile_search(request, pile_name):
                                'data': data,
                                'submitted': request.method == 'POST'},
                               context_instance=RequestContext(request))
+
+
+def taxon_search(request):
+    kwargs = {}
+    if request.method == 'POST':
+        kwargs['queried'] = True
+        s = kwargs['s'] = request.POST['s'].strip()
+        kwargs['query_results'] = botany.query_species(
+            scientific_name=s)
+
+    return render_to_response('taxon_search.html', kwargs,
+                               context_instance=RequestContext(request))
