@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>{{ pile|title }} Search</title>
+  </head>
+  <body>
+    {% if data %}
+    <h1>Found {{ data|length }} matching species</h1>
+    <ul>
+      {% for r in data %}
+      <li>{{ r }}
+      <ul>
+        {% for cv in r.character_values.all %}
+        <li>{{ cv }}</li>
+        {% endfor %}
+      </ul></li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <h1>Select botanic characters for your {{ pile|title }}</h1>
+    {% if submitted %}
+    <h2>No matching species were found please select fewer characters</h2>
+    {% endif %}
+    <form action="{{ pile }}" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Submit" />
+    </form>
+    {% endif %}
+  </body>
+</html>

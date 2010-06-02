@@ -1,8 +1,9 @@
 from django.template.loader import get_template
 from django.template import RequestContext
-from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from django import forms
 
-from gobotany import botany
+from gobotany import botany, models
 
 
 def default_view(request):
@@ -13,6 +14,41 @@ def default_view(request):
         kwargs['query_results'] = botany.query_species(
             scientific_name=s)
 
-    t = get_template('index.html')
-    html = t.render(RequestContext(request, kwargs))
-    return HttpResponse(html)
+    return render_to_response('index.html', kwargs,
+                               context_instance=RequestContext(request))
+
+
+class PileSearchForm(forms.Form):
+    """A form listing all botanic characters for a pile along with
+    possible values"""
+
+    def __init__(self, pile_name, *args, **kwargs):
+        """Iterate over pile characters and create widgets with the values"""
+        super(PileSearchForm, self).__init__(*args, **kwargs)
+        characters = models.Character.objects.filter(
+                    charactervalue__pile__name__iexact=pile_name).order_by(
+            'character_group',
+            'short_name')
+        character_values = models.CharacterValue.objects
+        for character in characters:
+            self.fields[character.short_name] = forms.ChoiceField(
+                label=character.short_name,
+                required=False,
+                choices=[('', '----------')]+[(c.value, c.value) for c in
+                         character_values.filter(character=character)])
+
+def pile_search(request, pile_name):
+    data = []
+    if request.method == 'POST':
+        form = PileSearchForm(pile_name, request.POST)
+        if form.is_valid():
+            params = dict((k,v) for k,v in form.cleaned_data.iteritems() if v)
+            data = botany.query_species(**params)
+    else:
+        form = PileSearchForm(pile_name)
+    return render_to_response('pile_search.html',
+                              {'pile': pile_name,
+                               'form': form,
+                               'data': data,
+                               'submitted': request.method == 'POST'},
+                              context_instance=RequestContext(request))
