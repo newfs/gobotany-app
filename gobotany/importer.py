@@ -1,10 +1,12 @@
 from django.core import management
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files import File
 from gobotany import settings
 management.setup_environ(settings)
 
 import csv
 import sys
+import tarfile
 from gobotany import models
 
 
@@ -24,9 +26,10 @@ pile_mapping = {'ly': u'Lycophytes'}
 
 class Importer(object):
 
-    def import_data(self, charf, taxonf):
+    def import_data(self, charf, taxonf, glossaryf, glossary_images):
         self._import_characters(charf)
         self._import_taxons(taxonf)
+        self._import_glossary(glossaryf, glossary_images)
 
     def _import_taxons(self, f):
         print 'Setting up taxons (work in progress)'
@@ -124,5 +127,64 @@ class Importer(object):
             pile.character_values.add(cv)
             pile.save()
 
+    def _import_glossary(self, f, imagef):
+        print 'Setting up glossary'
+
+        # XXX: Assume the default pile for now
+        default_pile = models.Pile.objects.all()[0]
+
+        iterator = iter(CSVReader(f).read())
+        colnames = [x.lower() for x in iterator.next()]
+        images = tarfile.open(imagef)
+
+        for cols in iterator:
+            row = {}
+            for pos, c in enumerate(cols):
+                row[colnames[pos]] = c
+
+            # For now we assume term titles are unique
+            (term,created) = models.GlossaryTerm.objects.get_or_create(
+                term=row['term'])
+            # for new entries add the definition
+            if created:
+                term.lay_definition = row['definition']
+                print u'  New glossary term: ' + term.term
+                try:
+                    image = images.getmember(row['illustration'])
+                    image_file = File(images.extractfile(image.name))
+                    term.image.save(image.name, image_file)
+                except KeyError:
+                    print '    No image found for term'
+
+                term.save()
+
+            # search for matching character values
+            cvs = models.CharacterValue.objects.filter(
+                value__iexact=term.term)
+            for cv in cvs:
+                if not cv.glossary_term:
+                    cv.glossary_term = term
+                    cv.save()
+                    print u'   Term %s mapped to character value: %s'%(
+                        term.term,
+                        repr(cv))
+
+            # For those that didn't match, we search for matching
+            # botanic characters by short_name
+            if not cvs:
+                chars = models.Character.objects.filter(
+                    short_name__iexact=term.term.replace(' ', '_'))
+                for char in chars:
+                    if not char.glossary_terms:
+                        gpc = models.GlossaryTermForPileCharacter.objects.create(
+                            character=char,
+                            pile=default_pile,
+                            glossary_term=term)
+                        gpc.save()
+                        print u'   Term %s mapped to character: %s'%(
+                            term.term,
+                            repr(char))
+
+
 if __name__ == '__main__':
-    Importer().import_data(sys.argv[1], sys.argv[2])
+    Importer().import_data(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])

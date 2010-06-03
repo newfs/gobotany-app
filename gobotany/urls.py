@@ -18,9 +18,16 @@ urlpatterns = patterns(
 
     (r'^pile-search/(\w+)$', views.pile_search),
     (r'^taxon-search/$', views.taxon_search),
+    (r'^glossary/$', views.glossary_index),
 
     (r'^static/(?P<path>.*)$', 'gobotany.views.static_serve',
      {'package': gobotany, 'relative_path': 'static', 'show_indexes': True}),
 
     (r'^admin/', include(admin.site.urls)),
 )
+
+if gobotany.settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve',
+         {'document_root': gobotany.settings.MEDIA_ROOT, 'show_indexes': True}),
+    )

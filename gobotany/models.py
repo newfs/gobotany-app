@@ -14,7 +14,11 @@ class GlossaryTerm(models.Model):
     formal_definition = models.TextField(blank=True)
     hint = models.TextField(blank=True)
     visible = models.BooleanField(default=True)
-    # XXX: images
+    # XXX: We will eventually factor this out into a distinct object
+    # when we have real metadata
+    image = models.ImageField(upload_to='glossary',
+                              blank=True,
+                              null=True)
 
     def __unicode__(self):
         return u'"%s" id=%s' % (self.term, self.id)
