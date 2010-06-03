@@ -6,6 +6,7 @@ def _taxon_with_chars(taxon):
     res['scientific_name'] = taxon.scientific_name
     res['id'] = taxon.id
     res['pile'] = taxon.pile.name
+    res['taxonomic_authority'] = taxon.taxonomic_authority
     for cv in taxon.character_values.all():
         res[cv.character.short_name] = cv.value
     return res

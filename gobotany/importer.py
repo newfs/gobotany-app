@@ -44,6 +44,7 @@ class Importer(object):
                 continue
 
             t = models.Taxon(scientific_name=row['scientific_name'],
+                             taxonomic_authority=row['taxonomic_authority'],
                              pile=default_pile)
             t.save()
 
