@@ -29,16 +29,16 @@ class PileSearchForm(forms.Form):
             self.fields[character.short_name] = forms.ChoiceField(
                 label=character.short_name,
                 required=False,
-                choices=[('', '----------')]+[(c.value, c.value) for c in
-                         character_values.filter(character=character)])
-
+                choices=[('', '----------')]+[(c.value, c.glossary_term and "%s: %s"%(c.glossary_term.term, c.glossary_term.lay_definition) or c.value) for c in
+                         character_values.filter(character=character)]) 
+                         
 
 def pile_search(request, pile_name):
     data = []
     if request.method == 'POST':
         form = PileSearchForm(pile_name, request.POST)
         if form.is_valid():
-            params = dict((k,v) for k,v in form.cleaned_data.iteritems() if v)
+            params = dict((str(k),v) for k,v in form.cleaned_data.iteritems() if v)
             data = botany.query_species(**params)
     else:
         form = PileSearchForm(pile_name)
