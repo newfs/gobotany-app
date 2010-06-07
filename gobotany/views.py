@@ -73,7 +73,7 @@ def static_serve(request, path, package=None,
 
 def glossary_index(request):
     # Case-insensitive sort
-    glossary = models.GlossaryTerm.objects.all().extra(
+    glossary = models.GlossaryTerm.objects.filter(visible=True).extra(
         select={'lower_term': 'lower(term)'}).order_by('lower_term')
     return render_to_response('glossary.html', {'glossary': glossary},
                               context_instance=RequestContext(request))
