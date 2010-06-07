@@ -10,7 +10,7 @@ urlpatterns = patterns(
     ('^$', views.default_view),
 
     (r'^taxon/(?P<scientific_name>[^/]+)/$',
-     Resource(handler=handlers.TaxonHandler)),
+     Resource(handler=handlers.TaxonQueryHandler)),
     (r'^taxon/$',
      Resource(handler=handlers.TaxonQueryHandler)),
     (r'^taxon-count/$',

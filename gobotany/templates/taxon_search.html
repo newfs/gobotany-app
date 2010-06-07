@@ -1,7 +1,32 @@
 {% extends "base.html" %}
+{% block js %}
+<script>
+dojo.require('dojo.parser');
+dojo.require('dijit.form.Select');
+dojo.require('dijit.Dialog');
+dojo.require('dojo.data.ItemFileReadStore');
+dojo.require('dojox.data.JsonRestStore');
+
+dojo.addOnLoad(function() {
+    dojo.parser.parse();
+});
+
+</script>
+{% endblock %}
 {% block content %}
 
+<div jsId="taxon_store" dojoType="dojox.data.JsonRestStore"
+     target="/taxon/">
+</div>
+
+<select name="select" dojoType="dijit.form.Select" store="taxon_store">
+  <option value="TN">
+    Tennessee
+  </option>
+</select>
+
     <fieldset>
+      
       <legend>Search for Species</legend>
       <form method="POST">
         Enter query: <input type="text" name="s" value="{{ s }}"/>
