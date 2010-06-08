@@ -3,7 +3,7 @@
     {% if data %}
     <h1>Found {{ data|length }} matching species</h1>
     <ul>
-      {% for r in data %}
+      {% for r in data.all %}
       <li>{{ r }}
       <ul>
         {% for cv in r.character_values.all %}
