@@ -1,4 +1,12 @@
 {% extends "base.html" %}
+{% block js %}
+<script type="text/javascript">
+dojo.require('gobotany.piles');
+dojo.addOnLoad(function() {
+    gobotany.piles.init();
+});
+</script>
+{% endblock %}
 {% block content %}
     {% if data %}
     <h1>Found {{ data|length }} matching species</h1>
@@ -17,10 +25,11 @@
     {% if submitted %}
     <h2>No matching species were found please select fewer characters</h2>
     {% endif %}
-    <form action="{{ pile }}" method="post">
+    <form action="{{ pile }}" method="post" id="characters_form">
       {% csrf_token %}
       {{ form.as_p }}
       <input type="submit" value="Submit" />
+      
     </form>
     {% endif %}
 {% endblock %}
