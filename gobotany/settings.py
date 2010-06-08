@@ -18,3 +18,6 @@ MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media')
 MEDIA_URL = '/media/'
 ADMIN_MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'admin-media')
 ADMIN_MEDIA_PREFIX = '/admin-media/'
+
+DEBUG_DOJO_ROOT = os.path.join(os.path.dirname(__file__),
+                               '..', '..', '..', 'dojo')

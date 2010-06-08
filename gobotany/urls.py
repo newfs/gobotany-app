@@ -27,7 +27,11 @@ urlpatterns = patterns(
 )
 
 if gobotany.settings.DEBUG:
-    urlpatterns += patterns('',
+    urlpatterns += patterns(
+        '',
         (r'^media/(?P<path>.*)$', 'django.views.static.serve',
          {'document_root': gobotany.settings.MEDIA_ROOT, 'show_indexes': True}),
+
+        (r'^dojo/(?P<path>.*)$', 'django.views.static.serve',
+         {'document_root': gobotany.settings.DEBUG_DOJO_ROOT, 'show_indexes': True}),
     )

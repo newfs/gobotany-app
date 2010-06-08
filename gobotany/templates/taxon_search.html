@@ -1,54 +1,23 @@
 {% extends "base.html" %}
 {% block js %}
-<script>
-dojo.require('dojo.parser');
-dojo.require('dijit.form.Select');
-dojo.require('dijit.Dialog');
-dojo.require('dojo.data.ItemFileReadStore');
-dojo.require('dojox.data.JsonRestStore');
-
+<script type="text/javascript">
+dojo.require('gobotany.taxon');
 dojo.addOnLoad(function() {
-    dojo.parser.parse();
+    gobotany.taxon.init();
 });
-
 </script>
 {% endblock %}
 {% block content %}
 
-<div jsId="taxon_store" dojoType="dojox.data.JsonRestStore"
-     target="/taxon/">
-</div>
 
-<select name="select" dojoType="dijit.form.Select" store="taxon_store">
-  <option value="TN">
-    Tennessee
-  </option>
+<fieldset>
+
+<select name="select" id="taxon_select">
 </select>
 
-    <fieldset>
-      
-      <legend>Search for Species</legend>
-      <form method="POST">
-        Enter query: <input type="text" name="s" value="{{ s }}"/>
-        <input type="submit" />
-        {% csrf_token %}
-      </form>
-    </fieldset>
+  <legend>Search for Species</legend>
+</fieldset>
 
-    {% if queried %}
-      <h3>Results: {{ query_results|length }}</h3>
-      <p>Queried: {{ s }}</p>
-      <ul>
-      {% for r in query_results %}
-        <li>{{ r }}
-        <ul>
-        {% for cv in r.character_values.all %}
-        <li>{{ cv }}</li>
-        {% endfor %}
-        </ul></li>
-      {% endfor %}
-      </ul>
-    {% endif %}
-  </body>
-</html>
+<div id="taxon_results">
+</div>
 {% endblock %}
