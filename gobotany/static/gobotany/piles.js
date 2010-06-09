@@ -9,9 +9,20 @@ gobotany.piles.init = function() {
     var d = dojo.place('<span></span>', f);
     dojo.connect(b, 'onclick', function() {
         var obj = dojo.formToObject(f);
+        delete obj['csrfmiddlewaretoken'];
+        var todel = [];
+        for (var x in obj) {
+            if (obj[x] == '')
+                delete obj[x];
+        }
+
         dojo.empty(d);
         gobotany.piles._taxon_count_store.fetch({query: obj, onComplete: function(res) {
-            d.innerHTML = dojo.objectToQuery(res);
+            var dl = dojo.place('<dl></dl>', d);
+            dojo.place('<dt>Matched</dt>', dl);
+            dojo.place('<dd>'+res.matched+'</dd>', dl);
+            dojo.place('<dt>Excluded</dt>', dl);
+            dojo.place('<dd>'+res.excluded+'</dd>', dl);
         }});
     });
 };

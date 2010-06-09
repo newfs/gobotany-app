@@ -11,9 +11,9 @@ class SpeciesReader(object):
         else:
             base_query = models.Taxon.objects
             for k, v in kwargs.items():
-                 base_query = base_query.filter(
-                     character_values__character__short_name=k,
-                     character_values__value=v)
+                base_query = base_query.filter(
+                    character_values__character__short_name=k,
+                    character_values__value=v)
             return base_query
 
 _reader = SpeciesReader()
