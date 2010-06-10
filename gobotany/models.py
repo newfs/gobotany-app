@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 
 class CharacterGroup(models.Model):
@@ -163,3 +164,11 @@ class Taxon(models.Model):
     def __unicode__(self):
         return u'%s pile=%s id=%s' % (self.scientific_name, self.pile,
                                       self.id)
+
+    def get_default_image(self):
+        images = getattr(self, 'taxonimage_set', None)
+        if images is not None:
+            try:
+                return images.get(canonical=True, image_type='overall')
+            except ObjectDoesNotExist:
+                return None

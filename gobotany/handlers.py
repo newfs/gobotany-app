@@ -2,12 +2,23 @@ from gobotany import botany, models
 from piston.handler import BaseHandler
 
 
+def _taxon_image(image):
+    if image:
+        return {'url': image.image.url,
+                'type': image.image_type,
+                'canonical': image.canonical,
+                'title': image.alt or image.taxon.scientific_name,
+                'description': image.description}
+    return ''
+
 def _taxon_with_chars(taxon):
     res = {}
     res['scientific_name'] = taxon.scientific_name
     res['id'] = taxon.id
     res['pile'] = taxon.pile.name
     res['taxonomic_authority'] = taxon.taxonomic_authority
+    res['default_image'] = _taxon_image(taxon.get_default_image())
+
     for cv in taxon.character_values.all():
         res[cv.character.short_name] = cv.value
     return res
@@ -43,3 +54,14 @@ class TaxonCountHandler(BaseHandler):
         matched = species.count()
         return {'matched': matched,
                 'excluded': models.Taxon.objects.count() - matched}
+
+
+class TaxonImageHandler(BaseHandler):
+    methods_allowed = ('GET',)
+
+    def read(self, request):
+        kwargs = {}
+        for k, v in request.GET.items():
+            kwargs[str(k)] = v
+        images = botany.species_images(**kwargs)
+        return [_taxon_image(image) for image in images]

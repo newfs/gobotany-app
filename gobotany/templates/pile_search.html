@@ -13,6 +13,11 @@ dojo.addOnLoad(function() {
     <ul>
       {% for r in data.all %}
       <li>{{ r }}
+      {% with r.get_default_image as image %}
+      {% if image %}
+      <img class="TaxonImage" alt="{{ image.alt }}" src="{{image.image.url}}" />
+      {% endif %}
+      {% endwith %}
       <ul>
         {% for cv in r.character_values.all %}
         <li>{{ cv }}</li>

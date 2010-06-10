@@ -15,6 +15,8 @@ urlpatterns = patterns(
      Resource(handler=handlers.TaxonQueryHandler)),
     (r'^taxon-count/$',
      Resource(handler=handlers.TaxonCountHandler)),
+    (r'^taxon-image/$',
+     Resource(handler=handlers.TaxonImageHandler)),
 
     (r'^pile-search/(\w+)$', views.pile_search),
     (r'^taxon-search/$', views.taxon_search),
