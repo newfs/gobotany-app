@@ -24,6 +24,8 @@ urlpatterns = patterns(
      {'package': gobotany, 'relative_path': 'static', 'show_indexes': True}),
 
     (r'^admin/', include(admin.site.urls)),
+
+    url(r'^cms/', include('cms.urls')),
 )
 
 if gobotany.settings.DEBUG:
