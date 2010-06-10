@@ -26,6 +26,7 @@ else:
 
 INSTALLED_APPS = [
     'gobotany',
+    'piston',
     'django.contrib.admin',
     'django.contrib.sessions',
     'django.contrib.contenttypes',
@@ -34,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sites',
     'cms',
+    'menus',
     'cms.plugins.text',
     'cms.plugins.picture',
     'cms.plugins.link',
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     'cms.plugins.googlemap',
     'mptt',
     'publisher',
+    'appmedia',
     ]
 MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
@@ -59,10 +62,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
         "cms.context_processors.media",
 )
 CMS_TEMPLATES = (
-        ('base.html', gettext('default')),
-        ('2col.html', gettext('2 Column')),
-        ('3col.html', gettext('3 Column')),
-        ('extra.html', gettext('Some extra fancy template')),
+        ('base_cms.html', gettext('default')),
+)
+CMS_TEMPLATE_INHERITANCE = True
+CMS_LANGUAGES = (
+    ('en', gettext('English')),
 )
 ROOT_URLCONF = 'gobotany.urls'
 DEBUG = True
