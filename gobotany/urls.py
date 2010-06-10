@@ -18,7 +18,7 @@ urlpatterns = patterns(
 
     (r'^pile-search/(\w+)$', views.pile_search),
     (r'^taxon-search/$', views.taxon_search),
-    (r'^glossary/$', views.glossary_index),
+    (r'^glossary/?$', views.glossary_index),
 
     (r'^static/(?P<path>.*)$', 'gobotany.views.static_serve',
      {'package': gobotany, 'relative_path': 'static', 'show_indexes': True}),
