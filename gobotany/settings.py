@@ -1,12 +1,29 @@
 import os
+import sys
 
 gettext = lambda s: s
 
-DATABASE_ENGINE = 'postgresql_psycopg2'
-DATABASE_NAME = 'gobotany'
-DATABASE_HOST = '/tmp'
-DATABASE_USER = ''
-DATABASE_PASSWORD = ''
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+            'HOST': '',
+            'USER': '',
+            'PASSWORD': '',
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'gobotany',
+            'HOST': '/tmp',
+            'USER': '',
+            'PASSWORD': '',
+        }
+    }
+
 INSTALLED_APPS = [
     'gobotany',
     'django.contrib.admin',
