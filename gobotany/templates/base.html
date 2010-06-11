@@ -9,7 +9,7 @@
            isDebug: true,
            debugAtAllCosts:true,
            useXDomain: false,
-           baseUrl: 'http://localhost:8000',
+           baseUrl: 'http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/',
            modulePaths: {
                gobotany: '/static/gobotany'
            },
