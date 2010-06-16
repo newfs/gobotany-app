@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django import forms
 from gobotany import models
 
+
 class ContentImageInline(generic.GenericStackedInline):
     model = models.ContentImage
     extra = 1
@@ -32,10 +33,19 @@ class TaxonAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Taxon, TaxonAdmin)
 
+
+class GlossaryMappingInline(admin.TabularInline):
+    model = models.GlossaryTermForPileCharacter
+    extra = 1
+
+class CharacterAdmin(admin.ModelAdmin):
+    inlines=[GlossaryMappingInline]
+
+admin.site.register(models.Character, CharacterAdmin)
+
 admin.site.register(models.ContentImage)
 admin.site.register(models.ImageType)
 admin.site.register(models.Pile)
 admin.site.register(models.GlossaryTerm)
 admin.site.register(models.CharacterGroup)
-admin.site.register(models.Character)
 admin.site.register(models.CharacterValue)

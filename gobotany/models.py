@@ -150,6 +150,8 @@ class GlossaryTermForPileCharacter(models.Model):
     class Meta:
         # Only one glossary term allowed per character/pile combination
         unique_together = ('character', 'pile')
+        verbose_name = 'glossary term'
+        verbose_name_plural = 'glossary terms for piles'
 
     def __unicode__(self):
         return u'"%s" character=%s pile=%s' % (self.glossary_term.term,
