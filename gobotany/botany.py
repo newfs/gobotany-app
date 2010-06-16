@@ -17,7 +17,9 @@ class SpeciesReader(object):
 
     def species_images(self, species, canonical_only=False,
                        image_types=None):
-        query = {'canonical': canonical_only}
+        query = {}
+        if canonical_only:
+            query['canonical'] = True
         if image_types:
             if isinstance(image_types, basestring):
                 image_types = [s.strip() for s in image_types.split(',')]

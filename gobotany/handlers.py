@@ -5,7 +5,7 @@ from piston.handler import BaseHandler
 def _taxon_image(image):
     if image:
         return {'url': image.image.url,
-                'type': image.image_type,
+                'type': image.image_type.name,
                 'canonical': image.canonical,
                 'title': image.alt,
                 'description': image.description}
