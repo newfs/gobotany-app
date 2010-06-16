@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 
@@ -155,20 +157,55 @@ class GlossaryTermForPileCharacter(models.Model):
                                              self.pile.name)
 
 
+class ImageType(models.Model):
+    name = models.CharField(max_length=30,
+                            verbose_name=u'image type', unique=True)
+
+    def __unicode__(self):
+        return self.name
+
+
+class ContentImage(models.Model):
+    image = models.ImageField('content image',
+                              upload_to='content_images')
+    alt = models.CharField(max_length=100,
+                           verbose_name=u'title (alt text)')
+    canonical = models.BooleanField(default=False)
+    image_type = models.ForeignKey(ImageType,
+                                   verbose_name='image type')
+    description = models.TextField(verbose_name=u'description',
+                                   blank=True)
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+
+    def __unicode__(self):
+        name = '%s image for '%self.image_type
+        if self.content_type.name == 'taxon':
+            name += self.content_object.scientific_name
+        else:
+            name += '%s: %s'%(self.content_type.name, self.object_id)
+        if self.canonical:
+            name = 'Canonical ' + name
+        name += ': %s'%(self.image.name)
+        return name
+
+
+
 class Taxon(models.Model):
     scientific_name = models.CharField(max_length=100, unique=True)
     character_values = models.ManyToManyField(CharacterValue)
     taxonomic_authority = models.CharField(max_length=100)
     pile = models.ForeignKey(Pile)
+    images = generic.GenericRelation(ContentImage)
 
     def __unicode__(self):
         return u'%s pile=%s id=%s' % (self.scientific_name, self.pile,
                                       self.id)
 
     def get_default_image(self):
-        images = getattr(self, 'taxonimage_set', None)
-        if images is not None:
             try:
-                return images.get(canonical=True, image_type='overall')
+                return self.images.get(canonical=True,
+                                       image_type__name='overall')
             except ObjectDoesNotExist:
                 return None

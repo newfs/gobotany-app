@@ -33,42 +33,20 @@ INSTALLED_APPS = [
 
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sites',
-    'cms',
-    'menus',
-    'cms.plugins.text',
-    'cms.plugins.picture',
-    'cms.plugins.link',
-    'cms.plugins.file',
-    'cms.plugins.snippet',
-    'cms.plugins.googlemap',
-    'gobotany.botany_plugins',
-    'mptt',
-    'publisher',
     'appmedia',
     ]
 MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'cms.middleware.page.CurrentPageMiddleware',
-    'cms.middleware.user.CurrentUserMiddleware',
-    'cms.middleware.media.PlaceholderMediaMiddleware',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
         "django.core.context_processors.auth",
         "django.core.context_processors.i18n",
         "django.core.context_processors.request",
         "django.core.context_processors.media",
-        "cms.context_processors.media",
 )
-CMS_TEMPLATES = (
-        ('base_cms.html', gettext('default')),
-)
-CMS_TEMPLATE_INHERITANCE = True
-CMS_LANGUAGES = (
-    ('en', gettext('English')),
-)
+
 ROOT_URLCONF = 'gobotany.urls'
 DEBUG = True
 

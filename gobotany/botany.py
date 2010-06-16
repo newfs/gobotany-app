@@ -1,6 +1,4 @@
 from gobotany import models
-from gobotany.botany_plugins.models import TaxonImage
-
 
 class SpeciesReader(object):
 
@@ -27,10 +25,8 @@ class SpeciesReader(object):
         # If we have a string assume it's the scientific name, otherwise
         # we have a taxon object or id
         if isinstance(species, basestring):
-            query['taxon__scientific_name__iexact'] = species
-        else:
-            query['taxon'] = species
-        return TaxonImage.objects.filter(**query)
+            species = models.Taxon.objects.get(scientific_name__iexact=species)
+        return species.images.filter(**query)
 
 _reader = SpeciesReader()
 query_species = _reader.query_species

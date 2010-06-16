@@ -1,7 +1,0 @@
-
-<h2>{{ taxon.scientific_name }}</h2>
-<ul>
-  {% for cv in taxon.character_values.all %}
-  <li>{{ cv.character.short_name }}: {{ cv.value }}</li>
-  {% endfor %}
-</ul>

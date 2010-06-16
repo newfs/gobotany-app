@@ -27,7 +27,6 @@ urlpatterns = patterns(
 
     (r'^admin/', include(admin.site.urls)),
 
-    url(r'^cms/', include('cms.urls')),
 )
 
 if gobotany.settings.DEBUG:

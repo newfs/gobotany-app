@@ -7,7 +7,7 @@ def _taxon_image(image):
         return {'url': image.image.url,
                 'type': image.image_type,
                 'canonical': image.canonical,
-                'title': image.alt or image.taxon.scientific_name,
+                'title': image.alt,
                 'description': image.description}
     return ''
 
