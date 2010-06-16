@@ -21,21 +21,26 @@ class CSVReader(object):
             for row in r:
                 yield [c.decode('Windows-1252') for c in row]
 
-pile_mapping = {'ly': u'Lycophytes'}
+pile_mapping = {'ly': u'Lycophytes', 'ca': u'Carex'}
 
 
 class Importer(object):
 
-    def import_data(self, charf, taxonf, glossaryf, glossary_images):
+    def import_data(self, charf, glossaryf, glossary_images, *taxonfiles):
         self._import_characters(charf)
-        self._import_taxons(taxonf)
         self._import_glossary(glossaryf, glossary_images)
+        for taxonf in taxonfiles:
+            self._import_taxons(taxonf)
 
     def _import_taxons(self, f):
         print 'Setting up taxons (work in progress)'
         iterator = iter(CSVReader(f).read())
         colnames = [x.lower() for x in iterator.next()]
-        default_pile = models.Pile.objects.all()[0]
+
+        pile_suffix = colnames[4][-2:]
+        if pile_suffix in pile_mapping:
+            default_pile = models.Pile.objects.get(name__iexact=pile_mapping[pile_suffix])
+
         for cols in iterator:
             row = {}
             for pos, c in enumerate(cols):
@@ -46,8 +51,10 @@ class Importer(object):
             if len(res) > 0:
                 continue
 
+            # for now, assume everthing is part of the simple_key
             t = models.Taxon(scientific_name=row['scientific_name'],
                              taxonomic_authority=row['taxonomic_authority'],
+                             simple_key=True,
                              pile=default_pile)
             t.save()
 
@@ -88,7 +95,7 @@ class Importer(object):
             pile_suffix = sp[-1]
             short_name = '_'.join(sp[:-1])
 
-            # only handling the one _ly pile for now
+            # only handling the two _ly and _ca piles for now
             if not pile_suffix in pile_mapping:
                 continue
 
@@ -187,4 +194,4 @@ class Importer(object):
 
 
 if __name__ == '__main__':
-    Importer().import_data(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+    Importer().import_data(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
