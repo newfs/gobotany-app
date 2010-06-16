@@ -225,6 +225,9 @@ class Taxon(models.Model):
     pile = models.ForeignKey(Pile)
     images = generic.GenericRelation(ContentImage)
 
+    class Meta:
+        verbose_name_plural = 'taxa'
+
     def __unicode__(self):
         return u'%s pile=%s id=%s' % (self.scientific_name, self.pile,
                                       self.id)
