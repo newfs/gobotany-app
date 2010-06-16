@@ -198,6 +198,7 @@ class Taxon(models.Model):
     scientific_name = models.CharField(max_length=100, unique=True)
     character_values = models.ManyToManyField(CharacterValue)
     taxonomic_authority = models.CharField(max_length=100)
+    simple_key = models.BooleanField(default=True)
     pile = models.ForeignKey(Pile)
     images = generic.GenericRelation(ContentImage)
 
