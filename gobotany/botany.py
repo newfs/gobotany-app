@@ -4,16 +4,18 @@ class SpeciesReader(object):
 
     def query_species(self,
                       scientific_name=None,
+                      is_simple_key=True,
                       **kwargs):
         if scientific_name is not None:
-            return models.Taxon.objects.filter(scientific_name__iexact=scientific_name)
+            return models.Taxon.objects.filter(scientific_name__iexact=scientific_name,
+                                               simple_key=is_simple_key)
         else:
             base_query = models.Taxon.objects
             for k, v in kwargs.items():
                 base_query = base_query.filter(
                     character_values__character__short_name=k,
                     character_values__value=v)
-            return base_query
+            return base_query.filter(simple_key=is_simple_key)
 
     def species_images(self, species, canonical_only=False,
                        image_types=None):
