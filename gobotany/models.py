@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-
+from django.core.exceptions import ObjectDoesNotExist
+from django.forms import ValidationError
 
 class CharacterGroup(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -160,7 +160,7 @@ class GlossaryTermForPileCharacter(models.Model):
 
 
 class ImageType(models.Model):
-    name = models.CharField(max_length=30,
+    name = models.CharField(max_length=100,
                             verbose_name=u'image type', unique=True)
 
     def __unicode__(self):
@@ -172,7 +172,10 @@ class ContentImage(models.Model):
                               upload_to='content_images')
     alt = models.CharField(max_length=100,
                            verbose_name=u'title (alt text)')
-    canonical = models.BooleanField(default=False)
+    rank = models.PositiveSmallIntegerField(
+        choices=zip(range(1,11),range(1,11)))
+    creator = models.CharField(max_length=100,
+                               verbose_name=u'photographer')
     image_type = models.ForeignKey(ImageType,
                                    verbose_name='image type')
     description = models.TextField(verbose_name=u'description',
@@ -181,15 +184,35 @@ class ContentImage(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
 
+    def clean(self):
+        """Some extra validation checks"""
+        # Ensure there is only one canonical (rank 1) image per
+        # image_type per content object
+        if self.rank == 1:
+            existing = ContentImage.objects.filter(rank=1,
+                                              image_type=self.image_type,
+                                              content_type=self.content_type_id,
+                                              object_id=self.object_id
+                                              ).exclude(id=self.id)
+            if existing:
+                raise ValidationError('There is already a canonical (rank 1) '
+                            '%s image for this item.'%self.image_type)
+
+    def save(self, *args, **kw):
+        # Run the clean method on save since it is apparently skipped
+        # if the object is being created in an inline form.  This will
+        # throw an ugly error, but it appears to be the only way to
+        # ensure that the validation is enforced.
+        self.clean()
+        super(ContentImage, self).save(*args, **kw)
+
     def __unicode__(self):
-        name = '%s image for '%self.image_type
+        name = '"%s" - %s image for '%(self.alt, self.image_type)
         if self.content_type.name == 'taxon':
             name += self.content_object.scientific_name
         else:
             name += '%s: %s'%(self.content_type.name, self.object_id)
-        if self.canonical:
-            name = 'Canonical ' + name
-        name += ': %s'%(self.image.name)
+        name += ' %s: %s'%(self.rank, self.image.name)
         return name
 
 
@@ -208,7 +231,7 @@ class Taxon(models.Model):
 
     def get_default_image(self):
             try:
-                return self.images.get(canonical=True,
-                                       image_type__name='overall')
+                return self.images.get(rank=1,
+                                       image_type__name='habit')
             except ObjectDoesNotExist:
                 return None

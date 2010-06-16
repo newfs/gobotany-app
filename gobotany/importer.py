@@ -8,6 +8,16 @@ import csv
 import sys
 import tarfile
 from gobotany import models
+from django.contrib.contenttypes.models import ContentType
+
+TAXON_IMAGE_TYPES = {
+    'ha': 'habit',
+    'tr': 'vegetative leaves (trophophyll)',
+    'sh': 'shoots',
+    'br': 'branches',
+    'sc': 'spore cones',
+    'sp': 'spores',
+    }
 
 
 class CSVReader(object):
@@ -192,6 +202,62 @@ class Importer(object):
                             term.term,
                             repr(char))
 
+    def import_taxon_images(self, *files):
+        for f in files:
+            images = tarfile.open(f)
+            for image in images:
+                # Skip hidden files and metadata
+                if image.name.startswith('.'):
+                    continue
+                image_name, image_ext = image.name.split('.')
+                if image_ext.lower() not in ('jpg', 'gif', 'png', 'tif'):
+                    # not an image
+                    continue
+                parts = image_name.split('-')
+                rank = int(parts[-1])
+                photographer = parts[-2]
+                image_type = TAXON_IMAGE_TYPES[parts[-3]]
+                scientific_name = ' '.join(parts[:-3])
+                # get or create the image type
+                image_type, created = models.ImageType.objects.get_or_create(name=image_type)
+                try:
+                    taxon = models.Taxon.objects.get(
+                        scientific_name__istartswith=scientific_name)
+                except ObjectDoesNotExist:
+                    print 'Could not find Taxon object for %s'%scientific_name
+                    continue
+                # if we have already imported this image, update the
+                # image just in case
+                content_image, created = models.ContentImage.objects.get_or_create(
+                    rank=rank,
+                    image_type=image_type,
+                    creator=photographer,
+                    # If we were simply creating the object we could
+                    # set content_object directly, but since we're
+                    # using an optional get, we need to use
+                    # content_type and object_id
+                    object_id=taxon.pk,
+                    content_type=ContentType.objects.get_for_model(taxon))
+                content_image.alt='%s: %s %s'%(taxon.scientific_name,
+                                               image_type.name,
+                                               rank)
+                image_file = File(images.extractfile(image.name))
+                content_image.image.save(image.name, image_file)
+                content_image.save()
+                msg = 'taxon image %s'%image.name
+                if created:
+                    print 'Added %s'%msg
+                else:
+                    print 'Updated %s'%msg
+
+
+def main():
+    # Incredibly lame option parsing, since we can't rely on real option parsing
+    if sys.argv[1] == 'images':
+        Importer().import_taxon_images(*sys.argv[2:])
+    else:
+        Importer().import_data(*sys.argv[1:])
+
 
 if __name__ == '__main__':
-    Importer().import_data(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
+    main()

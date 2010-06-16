@@ -17,15 +17,13 @@ class SpeciesReader(object):
                     character_values__value=v)
             return base_query.filter(simple_key=is_simple_key)
 
-    def species_images(self, species, canonical_only=False,
+    def species_images(self, species, max_rank=10,
                        image_types=None):
-        query = {}
-        if canonical_only:
-            query['canonical'] = True
+        query = {'rank__lte': max_rank}
         if image_types:
             if isinstance(image_types, basestring):
                 image_types = [s.strip() for s in image_types.split(',')]
-            query['image_type__in'] = image_types
+            query['image_type__name__in'] = image_types
         # If we have a string assume it's the scientific name, otherwise
         # we have a taxon object or id
         if isinstance(species, basestring):

@@ -9,6 +9,7 @@ class ContentImageInline(generic.GenericStackedInline):
     model = models.ContentImage
     extra = 1
 
+
 class TaxonAdminForm(forms.ModelForm):
     class Meta:
         model = models.Taxon
