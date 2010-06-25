@@ -4,6 +4,7 @@ from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
 
+
 class CharacterGroup(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
@@ -35,7 +36,8 @@ class Character(models.Model):
     Pile in which we are searching.  Let's demonstrate creating a
     Character and assigning it to a character group:
 
-        >>> group,ignore = CharacterGroup.objects.get_or_create(name=u'characters of the spores')
+        >>> group,ignore = CharacterGroup.objects.get_or_create(
+        ...     name=u'characters of the spores')
         >>> char = Character.objects.create(short_name='spore_form',
         ...                                 name=u'Spore Form',
         ...                                 character_group=group)
@@ -51,12 +53,13 @@ class Character(models.Model):
     'Lycophytes' Pile:
 
         >>> pile,ignore = Pile.objects.get_or_create(name='Lycophytes')
-        >>> term = GlossaryTerm.objects.create(term='Spore Form',
-        ...                                    lay_definition='What form do the spores have?')
+        >>> term = GlossaryTerm.objects.create(
+        ...     term='Spore Form',
+        ...     lay_definition='What form do the spores have?')
         >>> GlossaryTermForPileCharacter.objects.create(character=char,
         ...                                             pile=pile,
         ...                                             glossary_term=term)
-        <GlossaryTermForPileCharacter: "Spore Form" character=spore_form pile=Lycophytes>
+        <...: "Spore Form" character=spore_form pile=Lycophytes>
         >>> char.glossary_terms.all()
         [<GlossaryTerm: "Spore Form" id=...>]
 
@@ -67,17 +70,19 @@ class Character(models.Model):
 
         >>> char.glossary_terms.get(glossarytermforpilecharacter__pile=pile)
         <GlossaryTerm: "Spore Form" id=...>
-        >>> char.glossary_terms.get(glossarytermforpilecharacter__pile__name='Lycophytes') 
+        >>> char.glossary_terms.get(
+        ...     glossarytermforpilecharacter__pile__name='Lycophytes')
         <GlossaryTerm: "Spore Form" id=...>
     """
 
     short_name = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100)
     character_group = models.ForeignKey(CharacterGroup)
-    glossary_terms = models.ManyToManyField(GlossaryTerm,
-                                         through='GlossaryTermForPileCharacter',
-                                         blank=True,
-                                         null=True)
+    glossary_terms = models.ManyToManyField(
+        GlossaryTerm,
+        through='GlossaryTermForPileCharacter',
+        blank=True,
+        null=True)
 
     def __unicode__(self):
         return u'%s name="%s" id=%s' % (self.short_name, self.name,
@@ -91,14 +96,16 @@ class CharacterValue(models.Model):
     clarifying information.  Let's demonstrate creating a
     CharacterValue and assigning it to a character:
 
-        >>> group,ignore = CharacterGroup.objects.get_or_create(name=u'characters of the tropophylls')
+        >>> group,ignore = CharacterGroup.objects.get_or_create(
+        ...     name=u'characters of the tropophylls')
         >>> char = Character.objects.create(short_name='tropophyll_form',
         ...                                 name=u'Tropophyll Form',
         ...                                 character_group=group)
-        >>> char_val = CharacterValue.objects.create(value='short and scale-like',
-        ...                                          character=char)
+        >>> char_val = CharacterValue.objects.create(
+        ...    value='short and scale-like',
+        ...    character=char)
         >>> char_val
-        <CharacterValue: character=tropophyll_form value="short and scale-like" id=...>
+        <...: character=tropophyll_form value="short and scale-like" id=...>
 
     Now we can associate that character value with a Pile, which
     effectively associates the character with the Pile as well:
@@ -110,13 +117,14 @@ class CharacterValue(models.Model):
         >>> Character.objects.filter(charactervalue__pile=pile)
         [<Character: tropophyll_form name="Tropophyll Form" id=...>]
         >>> CharacterValue.objects.filter(pile=pile)
-        [<CharacterValue: character=tropophyll_form value="short and scale-like" id=...>]
+        [<...: character=tropophyll_form value="short and scale-like" id=...>]
 
     We don't yet have an associated glossary term for this value.
     Let's make one:
 
-        >>> term = GlossaryTerm.objects.create(term='Short and Scale-like (Tropophylls)',
-        ...                                    lay_definition='The Tropophylls look like small fish scales.')
+        >>> term = GlossaryTerm.objects.create(
+        ...     term='Short and Scale-like (Tropophylls)',
+        ...     lay_definition='The Tropophylls look like small fish scales.')
        >>> char_val.glossary_term = term
        >>> char_val.glossary_term
        <GlossaryTerm: "Short and Scale-like (Tropophylls)" id=2>
@@ -173,7 +181,7 @@ class ContentImage(models.Model):
     alt = models.CharField(max_length=100,
                            verbose_name=u'title (alt text)')
     rank = models.PositiveSmallIntegerField(
-        choices=zip(range(1,11),range(1,11)))
+        choices=zip(range(1, 11), range(1, 11)))
     creator = models.CharField(max_length=100,
                                verbose_name=u'photographer')
     image_type = models.ForeignKey(ImageType,
@@ -189,14 +197,14 @@ class ContentImage(models.Model):
         # Ensure there is only one canonical (rank 1) image per
         # image_type per content object
         if self.rank == 1:
-            existing = ContentImage.objects.filter(rank=1,
-                                              image_type=self.image_type,
-                                              content_type=self.content_type_id,
-                                              object_id=self.object_id
-                                              ).exclude(id=self.id)
+            existing = ContentImage.objects.filter(
+                rank=1,
+                image_type=self.image_type,
+                content_type=self.content_type_id,
+                object_id=self.object_id).exclude(id=self.id)
             if existing:
                 raise ValidationError('There is already a canonical (rank 1) '
-                            '%s image for this item.'%self.image_type)
+                            '%s image for this item.' % self.image_type)
 
     def save(self, *args, **kw):
         # Run the clean method on save since it is apparently skipped
@@ -207,14 +215,13 @@ class ContentImage(models.Model):
         super(ContentImage, self).save(*args, **kw)
 
     def __unicode__(self):
-        name = '"%s" - %s image for '%(self.alt, self.image_type)
+        name = '"%s" - %s image for ' % (self.alt, self.image_type)
         if self.content_type.name == 'taxon':
             name += self.content_object.scientific_name
         else:
-            name += '%s: %s'%(self.content_type.name, self.object_id)
-        name += ' %s: %s'%(self.rank, self.image.name)
+            name += '%s: %s' % (self.content_type.name, self.object_id)
+        name += ' %s: %s' % (self.rank, self.image.name)
         return name
-
 
 
 class Taxon(models.Model):
