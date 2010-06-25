@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'appmedia',
+
+    'haystack',
     ]
 MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
@@ -59,3 +61,7 @@ ADMIN_MEDIA_PREFIX = '/admin-media/'
 
 DEBUG_DOJO_ROOT = os.path.join(os.path.dirname(__file__),
                                '..', '..', '..', 'dojo')
+
+HAYSTACK_SITECONF = 'gobotany.search_sites'
+HAYSTACK_SEARCH_ENGINE = 'solr'
+HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'

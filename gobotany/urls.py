@@ -27,6 +27,8 @@ urlpatterns = patterns(
 
     (r'^admin/', include(admin.site.urls)),
 
+    # django-haystack
+    (r'^search/', include('haystack.urls')),
 )
 
 if gobotany.settings.DEBUG:
