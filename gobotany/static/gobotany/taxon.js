@@ -8,10 +8,12 @@ gobotany.taxon.populate_taxon_select = function() {
     var s = dojo.byId('taxon_select');
     var store = gobotany.taxon._taxon_store;
     store.fetch({onComplete: function(res) {
+        dojo.empty(s);
         for (var x = 0; x < res.items.length; x++) {
             var n = res.items[x].scientific_name;
             dojo.place('<option value="'+n+'">'+n+'</option>', s);
         }
+        s.disabled = false;
     }});
 };
 
@@ -31,7 +33,6 @@ gobotany.taxon.populate_results = function() {
         }
     }});
 };
-
 
 gobotany.taxon.init = function() {
     gobotany.taxon.populate_taxon_select();
