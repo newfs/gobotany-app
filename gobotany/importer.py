@@ -82,7 +82,7 @@ class Importer(object):
                     print 'No such character exists: %s' % cname
                     continue
                 try:
-                    cvs = models.CharacterValue.objects.get(value=v,
+                    cvs = models.CharacterValue.objects.get(value_str=v,
                                                             character=char)
                 except ObjectDoesNotExist:
                     print 'No such character value exists: %s; %s' % (cname, v)
@@ -134,9 +134,9 @@ class Importer(object):
             else:
                 character = res[0]
 
-            res = models.CharacterValue.objects.filter(value=row['desc'])
+            res = models.CharacterValue.objects.filter(value_str=row['desc'])
             if len(res) == 0:
-                cv = models.CharacterValue(value=row['desc'],
+                cv = models.CharacterValue(value_str=row['desc'],
                                            character=character)
                 cv.save()
             else:
@@ -177,7 +177,7 @@ class Importer(object):
 
             # search for matching character values
             cvs = models.CharacterValue.objects.filter(
-                value__iexact=term.term)
+                value_str__iexact=term.term)
             for cv in cvs:
                 if not cv.glossary_term:
                     cv.glossary_term = term
