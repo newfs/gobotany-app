@@ -77,3 +77,12 @@ def glossary_index(request):
         select={'lower_term': 'lower(term)'}).order_by('lower_term')
     return render_to_response('glossary.html', {'glossary': glossary},
                               context_instance=RequestContext(request))
+
+def canonical_images(request):
+    results = []
+    if request.method == 'POST':
+        s = request.POST['s'].strip()
+        results = botany.species_images(s, max_rank=1)
+    return render_to_response('canonical_images.html', 
+                                {'results': results},
+                                context_instance=RequestContext(request))

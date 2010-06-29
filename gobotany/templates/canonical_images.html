@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if results %}
+    <ul>
+        {% for r in results %}
+        <li> <img src='{{ r.image.url }}' alt='{{ r.alt }}' />
+        <div>title={{ r.alt }}
+            image type={{ r.image_type.name }} 
+            photographer = {{ r.creator }} </div></li>
+
+        {% endfor %}
+    </ul>
+    {% else %}
+    <form method='POST' action='canonical-images'>
+        <input type='text' name='s' value='lycopodiella inundata' />
+        <input type='submit' name='submit' value='submit' />
+    </form>
+    {% endif %}
+{% endblock %}
