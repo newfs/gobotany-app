@@ -84,6 +84,14 @@ class Character(models.Model):
         blank=True,
         null=True)
 
+    VALUE_CHOICES = {
+        u'TEXT': u'Textual', # string
+        u'LENGTH': u'Length', # integer
+        u'RATIO': u'Ratio', # float
+        }
+    value_type = models.CharField(max_length=10,
+                                  choices=VALUE_CHOICES.items())
+
     def __unicode__(self):
         return u'%s name="%s" id=%s' % (self.short_name, self.name,
                                       self.id)
@@ -102,10 +110,10 @@ class CharacterValue(models.Model):
         ...                                 name=u'Tropophyll Form',
         ...                                 character_group=group)
         >>> char_val = CharacterValue.objects.create(
-        ...    value='short and scale-like',
+        ...    value_str='short and scale-like',
         ...    character=char)
         >>> char_val
-        <...: character=tropophyll_form value="short and scale-like" id=...>
+        <...: character=tropophyll_form value='short and scale-like' id=...>
 
     Now we can associate that character value with a Pile, which
     effectively associates the character with the Pile as well:
@@ -117,7 +125,7 @@ class CharacterValue(models.Model):
         >>> Character.objects.filter(charactervalue__pile=pile)
         [<Character: tropophyll_form name="Tropophyll Form" id=...>]
         >>> CharacterValue.objects.filter(pile=pile)
-        [<...: character=tropophyll_form value="short and scale-like" id=...>]
+        [<...: character=tropophyll_form value=u'short and scale-like' id=...>]
 
     We don't yet have an associated glossary term for this value.
     Let's make one:
@@ -130,14 +138,22 @@ class CharacterValue(models.Model):
        <GlossaryTerm: "Short and Scale-like (Tropophylls)" id=2>
     """
 
-    value = models.CharField(max_length=100)
+    value_str = models.CharField(max_length=100, null=True)
+    value_int = models.IntegerField(null=True)
+    value_flt = models.FloatField(null=True)
+    
     character = models.ForeignKey(Character)
     glossary_term = models.ForeignKey(GlossaryTerm, blank=True, null=True)
 
     def __unicode__(self):
-        return u'character=%s value="%s" id=%s' % (
+        v = self.value_str
+        if v is None:
+            v = self.value_int
+        if v is None:
+            v = self.value_flt
+        return u'character=%s value=%s id=%s' % (
             self.character.short_name,
-            self.value,
+            repr(v),
             self.id)
 
 

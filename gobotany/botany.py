@@ -1,5 +1,12 @@
 from gobotany import models
 
+CHAR_MAP = {
+    u'TEXT': 'character_values__value_str',
+    u'LENGTH': 'character_values__value_int',
+    u'RATIO': 'character_values__value_flt',
+    }
+
+
 class SpeciesReader(object):
 
     def query_species(self,
@@ -7,14 +14,24 @@ class SpeciesReader(object):
                       is_simple_key=True,
                       **kwargs):
         if scientific_name is not None:
-            return models.Taxon.objects.filter(scientific_name__iexact=scientific_name,
-                                               simple_key=is_simple_key)
+            return models.Taxon.objects.filter(
+                scientific_name__iexact=scientific_name,
+                simple_key=is_simple_key)
         else:
             base_query = models.Taxon.objects
             for k, v in kwargs.items():
-                base_query = base_query.filter(
-                    character_values__character__short_name=k,
-                    character_values__value=v)
+                if isinstance(v, int):
+                    base_query = base_query.filter(
+                        character_values__character__short_name=k,
+                        character_values__value_int=v)
+                elif isinstance(v, float):
+                    base_query = base_query.filter(
+                        character_values__character__short_name=k,
+                        character_values__value_flt=v)
+                else:
+                    base_query = base_query.filter(
+                        character_values__character__short_name=k,
+                        character_values__value_str=v)
             return base_query.filter(simple_key=is_simple_key)
 
     def species_images(self, species, max_rank=10,

@@ -32,10 +32,10 @@ class APITests(TestCase):
         c2 = models.Character(short_name='c2', character_group=cg1)
         c2.save()
 
-        cv1 = models.CharacterValue(value='cv1',
+        cv1 = models.CharacterValue(value_str='cv1',
                                     character=c1)
         cv1.save()
-        cv2 = models.CharacterValue(value='cv2',
+        cv2 = models.CharacterValue(value_str='cv2',
                                     character=c1)
         cv2.save()
 
