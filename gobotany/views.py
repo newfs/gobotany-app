@@ -29,7 +29,7 @@ class PileSearchForm(forms.Form):
             self.fields[character.short_name] = forms.ChoiceField(
                 label=character.short_name,
                 required=False,
-                choices=[('', '----------')]+[(c.value, c.glossary_term and "%s: %s"%(c.glossary_term.term, c.glossary_term.lay_definition) or c.value) for c in
+                choices=[('', '----------')]+[(c.value_str, c.glossary_term and "%s: %s"%(c.glossary_term.term, c.glossary_term.lay_definition) or c.value_str) for c in
                          character_values.filter(character=character)]) 
                          
 
