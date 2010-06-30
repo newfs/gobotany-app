@@ -242,7 +242,9 @@ class ContentImage(models.Model):
 
 class Taxon(models.Model):
     scientific_name = models.CharField(max_length=100, unique=True)
-    character_values = models.ManyToManyField(CharacterValue)
+    character_values = models.ManyToManyField(
+        CharacterValue,
+        through='TaxonCharacterValue')
     taxonomic_authority = models.CharField(max_length=100)
     simple_key = models.BooleanField(default=True)
     pile = models.ForeignKey(Pile)
@@ -261,3 +263,8 @@ class Taxon(models.Model):
                                        image_type__name='habit')
             except ObjectDoesNotExist:
                 return None
+
+
+class TaxonCharacterValue(models.Model):
+    taxon = models.ForeignKey(Taxon)
+    character_value = models.ForeignKey(CharacterValue)

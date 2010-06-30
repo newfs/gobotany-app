@@ -48,8 +48,11 @@ class Importer(object):
         colnames = [x.lower() for x in iterator.next()]
 
         pile_suffix = colnames[4][-2:]
-        if pile_suffix in pile_mapping:
-            default_pile = models.Pile.objects.get(name__iexact=pile_mapping[pile_suffix])
+        if pile_suffix not in pile_mapping:
+            print "Pile isn't mapped"
+            return
+        default_pile = models.Pile.objects.get(
+            name__iexact=pile_mapping[pile_suffix])
 
         for cols in iterator:
             row = {}

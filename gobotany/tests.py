@@ -1,6 +1,8 @@
+import os
 from django.test import TestCase
 from gobotany import botany
 from gobotany import models
+from gobotany import importer
 
 
 class SimpleTests(TestCase):
@@ -43,11 +45,8 @@ class APITests(TestCase):
         pile.character_values.add(cv2)
         pile.save()
 
-        foo.character_values.add(cv1)
-        foo.save()
-
-        bar.character_values.add(cv2)
-        bar.save()
+        models.TaxonCharacterValue(taxon=foo, character_value=cv1).save()
+        models.TaxonCharacterValue(taxon=bar, character_value=cv2).save()
 
     def test_query_species(self):
         queried = botany.query_species(scientific_name='foo').all()
@@ -58,3 +57,18 @@ class APITests(TestCase):
 
         self.assertEqual(list(botany.query_species(c1='cv1')), [foo])
         self.assertEqual(list(botany.query_species(c1='cv2')), [bar])
+
+
+class ImportTests(TestCase):
+
+    def test_import_characters(self):
+        im = importer.Importer()
+        im._import_characters(os.path.join(os.path.dirname(__file__),
+                                           'test_characters.csv'))
+
+    def test_import_taxons(self):
+        im = importer.Importer()
+        im._import_characters(os.path.join(os.path.dirname(__file__),
+                                           'test_characters.csv'))
+        im._import_taxons(os.path.join(os.path.dirname(__file__),
+                                       'test_taxons.csv'))
