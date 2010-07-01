@@ -1,34 +1,9 @@
 id,Type,Character,Desc
-590,characters of leaves,abaxial_leaf_blade_indument_wa,glabrous
-591,characters of leaves,abaxial_leaf_blade_indument_wa,pubescent
-841,characters of fruits,accesory_tissue_as_part_of_the_disperal_unit_wa,absent
-843,characters of fruits,accesory_tissue_as_part_of_the_disperal_unit_wa,"present, hypanthium"
-842,characters of fruits,accesory_tissue_as_part_of_the_disperal_unit_wa,"present, receptacle"
+590,characters of leaves,abaxial_leaf_blade_indument_ca,glabrous
+591,characters of leaves,abaxial_leaf_blade_indument_ca,pubescent
+841,characters of fruits,accesory_tissue_as_part_of_the_disperal_unit_ca,absent
+843,characters of fruits,accesory_tissue_as_part_of_the_disperal_unit_ca,"present, hypanthium"
+842,characters of fruits,accesory_tissue_as_part_of_the_disperal_unit_ca,"present, receptacle"
 993,characters of perigynia and achenes,achene_indentations_ca,with a fold or indentation
 992,characters of perigynia and achenes,achene_indentations_ca,without folds or indentations
-2786,characters of fruits and seeds,achene_orientation_relative_to_perianth_rn,horizontal
-2842,characters of fruits and seeds,achene_orientation_relative_to_perianth_rn,other
-2815,characters of fruits and seeds,achene_orientation_relative_to_perianth_rn,vertical
-2785,characters of fruits and seeds,achene_shape_in_outline_rn,orbicular
-2841,characters of fruits and seeds,achene_shape_in_outline_rn,other
-2814,characters of fruits and seeds,achene_shape_in_outline_rn,oval
-2857,characters of fruits and seeds,achene_surface_Polygonum_rn,irregularly roughened
-2813,characters of fruits and seeds,achene_surface_Polygonum_rn,papillose
-2871,characters of fruits and seeds,achene_surface_Polygonum_rn,smooth
-2784,characters of fruits and seeds,achene_surface_Polygonum_rn,striate-papillose
-2840,characters of fruits and seeds,achene_surface_Polygonum_rn,uniformly and minutely granular-roughened
-160,characters of flowers and fruits,achene_surface_rg,longitudinally striate
-158,characters of flowers and fruits,achene_surface_rg,obscurely pitted
-159,characters of flowers and fruits,achene_surface_rg,prominently pitted
-157,characters of flowers and fruits,achene_surface_rg,smooth
-161,characters of flowers and fruits,achene_surface_rg,transversely rugulose
-155,characters of flowers and fruits,achene_tubercle_width_relative_to_achene_rg,1/2 to 2/3 as broad as achene
-156,characters of flowers and fruits,achene_tubercle_width_relative_to_achene_rg,2/3 to nearly or fully as wide as achene
-154,characters of flowers and fruits,achene_tubercle_width_relative_to_achene_rg,up to 1/2 as broad as achene
-2783,characters of fruits and seeds,achene_type_rn,achene
-2812,characters of fruits and seeds,achene_type_rn,samara
-2839,characters of fruits and seeds,achene_type_rn,utricle
-588,characters of leaves,adaxial_leaf_blade_indument_wa,glabrous
-589,characters of leaves,adaxial_leaf_blade_indument_wa,pubescent
-519,characters of habit,aerial_roots_wa,absent
-520,characters of habit,aerial_roots_wa,present
+999,characters of perigynia and achenes,sporophyll_position_ca,in annual zones on shoot

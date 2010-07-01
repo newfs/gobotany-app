@@ -49,7 +49,7 @@ class Importer(object):
 
         pile_suffix = colnames[4][-2:]
         if pile_suffix not in pile_mapping:
-            print "Pile isn't mapped"
+            print "Pile '%s' isn't mapped" % pile_suffix
             return
         default_pile = models.Pile.objects.get(
             name__iexact=pile_mapping[pile_suffix])
@@ -91,7 +91,7 @@ class Importer(object):
                     print 'No such character value exists: %s; %s' % (cname, v)
                     continue
 
-                t.character_values.add(cvs)
+                models.TaxonCharacterValue(taxon=t, character_value=cvs).save()
             t.save()
 
     def _import_characters(self, f):

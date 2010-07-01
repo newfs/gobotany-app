@@ -268,3 +268,11 @@ class Taxon(models.Model):
 class TaxonCharacterValue(models.Model):
     taxon = models.ForeignKey(Taxon)
     character_value = models.ForeignKey(CharacterValue)
+
+    class Meta:
+        unique_together = ('taxon', 'character_value')
+        verbose_name = 'taxon character value'
+        verbose_name_plural = 'character values for taxa'
+
+    def __unicode__(self):
+        return u'%s %s' % (self.taxon, self.character_value)
