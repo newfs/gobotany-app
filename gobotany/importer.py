@@ -36,6 +36,9 @@ pile_mapping = {'ly': u'Lycophytes', 'ca': u'Carex'}
 
 class Importer(object):
 
+    def __init__(self, logfile=sys.stdout):
+        self.logfile = logfile
+
     def import_data(self, charf, glossaryf, glossary_images, *taxonfiles):
         self._import_characters(charf)
         self._import_glossary(glossaryf, glossary_images)
@@ -43,13 +46,13 @@ class Importer(object):
             self._import_taxons(taxonf)
 
     def _import_taxons(self, f):
-        print 'Setting up taxons (work in progress)'
+        print >> self.logfile, 'Setting up taxons (work in progress)'
         iterator = iter(CSVReader(f).read())
         colnames = [x.lower() for x in iterator.next()]
 
         pile_suffix = colnames[4][-2:]
         if pile_suffix not in pile_mapping:
-            print "Pile '%s' isn't mapped" % pile_suffix
+            print >> self.logfile, "Pile '%s' isn't mapped" % pile_suffix
             return
         default_pile = models.Pile.objects.get(
             name__iexact=pile_mapping[pile_suffix])
@@ -82,20 +85,20 @@ class Importer(object):
                 try:
                     char = models.Character.objects.filter(short_name=cname)
                 except ObjectDoesNotExist:
-                    print 'No such character exists: %s' % cname
+                    print >> self.logfile, 'No such character exists: %s' % cname
                     continue
                 try:
                     cvs = models.CharacterValue.objects.get(value_str=v,
                                                             character=char)
                 except ObjectDoesNotExist:
-                    print 'No such character value exists: %s; %s' % (cname, v)
+                    print >> self.logfile, 'No such character value exists: %s; %s' % (cname, v)
                     continue
 
                 models.TaxonCharacterValue(taxon=t, character_value=cvs).save()
             t.save()
 
     def _import_characters(self, f):
-        print 'Setting up characters'
+        print >> self.logfile, 'Setting up characters'
         iterator = iter(CSVReader(f).read())
         colnames = [x.lower() for x in iterator.next()]
 
@@ -114,7 +117,7 @@ class Importer(object):
 
             res = models.Pile.objects.filter(name=pile_mapping[pile_suffix])
             if len(res) == 0:
-                print u'  New Pile: ' + pile_mapping[pile_suffix]
+                print >> self.logfile, u'  New Pile: ' + pile_mapping[pile_suffix]
                 pile = models.Pile(name=pile_mapping[pile_suffix])
                 pile.save()
             else:
@@ -122,7 +125,7 @@ class Importer(object):
 
             res = models.CharacterGroup.objects.filter(name=row['type'])
             if len(res) == 0:
-                print u'    New Character Group: ' + row['type']
+                print >> self.logfile, u'    New Character Group: ' + row['type']
                 chargroup = models.CharacterGroup(name=row['type'])
                 chargroup.save()
             else:
@@ -130,7 +133,7 @@ class Importer(object):
 
             res = models.Character.objects.filter(short_name=short_name)
             if len(res) == 0:
-                print u'      New Character: ' + short_name
+                print >> self.logfile, u'      New Character: ' + short_name
                 character = models.Character(short_name=short_name,
                                              character_group=chargroup)
                 character.save()
@@ -148,7 +151,7 @@ class Importer(object):
             pile.save()
 
     def _import_glossary(self, f, imagef):
-        print 'Setting up glossary'
+        print >> self.logfile, 'Setting up glossary'
 
         # XXX: Assume the default pile for now
         default_pile = models.Pile.objects.all()[0]
@@ -168,13 +171,13 @@ class Importer(object):
             # for new entries add the definition
             if created:
                 term.lay_definition = row['definition']
-                print u'  New glossary term: ' + term.term
+                print >> self.logfile, u'  New glossary term: ' + term.term
                 try:
                     image = images.getmember(row['illustration'])
                     image_file = File(images.extractfile(image.name))
                     term.image.save(image.name, image_file)
                 except KeyError:
-                    print '    No image found for term'
+                    print >> self.logfile, '    No image found for term'
 
                 term.save()
 
@@ -185,7 +188,7 @@ class Importer(object):
                 if not cv.glossary_term:
                     cv.glossary_term = term
                     cv.save()
-                    print u'   Term %s mapped to character value: %s'%(
+                    print >> self.logfile, u'   Term %s mapped to character value: %s'%(
                         term.term,
                         repr(cv))
 
@@ -201,7 +204,7 @@ class Importer(object):
                             pile=default_pile,
                             glossary_term=term)
                         gpc.save()
-                        print u'   Term %s mapped to character: %s'%(
+                        print >> self.logfile, u'   Term %s mapped to character: %s'%(
                             term.term,
                             repr(char))
 
@@ -227,7 +230,7 @@ class Importer(object):
                     taxon = models.Taxon.objects.get(
                         scientific_name__istartswith=scientific_name)
                 except ObjectDoesNotExist:
-                    print 'Could not find Taxon object for %s'%scientific_name
+                    print >> self.logfile, 'Could not find Taxon object for %s'%scientific_name
                     continue
                 # if we have already imported this image, update the
                 # image just in case
@@ -249,9 +252,9 @@ class Importer(object):
                 content_image.save()
                 msg = 'taxon image %s'%image.name
                 if created:
-                    print 'Added %s'%msg
+                    print >> self.logfile, 'Added %s'%msg
                 else:
-                    print 'Updated %s'%msg
+                    print >> self.logfile, 'Updated %s'%msg
 
 
 def main():

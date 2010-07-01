@@ -1,4 +1,5 @@
 import os
+from StringIO import StringIO
 from django.test import TestCase
 from gobotany import botany
 from gobotany import models
@@ -62,13 +63,16 @@ class APITests(TestCase):
 class ImportTests(TestCase):
 
     def test_import_characters(self):
-        im = importer.Importer()
+        im = importer.Importer(StringIO())
         im._import_characters(os.path.join(os.path.dirname(__file__),
                                            'test_characters.csv'))
+        self.assertEquals(len(models.Character.objects.all()), 4)
+        self.assertEquals(len(models.CharacterValue.objects.all()), 8)
 
     def test_import_taxons(self):
-        im = importer.Importer()
+        im = importer.Importer(StringIO())
         im._import_characters(os.path.join(os.path.dirname(__file__),
                                            'test_characters.csv'))
         im._import_taxons(os.path.join(os.path.dirname(__file__),
                                        'test_taxons.csv'))
+        self.assertEquals(len(models.Taxon.objects.all()), 2)
