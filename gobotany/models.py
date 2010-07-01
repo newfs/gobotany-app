@@ -280,6 +280,8 @@ class Taxon(models.Model):
 class TaxonCharacterValue(models.Model):
     taxon = models.ForeignKey(Taxon)
     character_value = models.ForeignKey(CharacterValue)
+    lit_source = models.CharField(max_length=100,
+                                  null=True, blank=True)
 
     class Meta:
         unique_together = ('taxon', 'character_value')

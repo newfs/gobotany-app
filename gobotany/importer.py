@@ -85,13 +85,15 @@ class Importer(object):
                 try:
                     char = models.Character.objects.filter(short_name=cname)
                 except ObjectDoesNotExist:
-                    print >> self.logfile, 'No such character exists: %s' % cname
+                    print >> self.logfile, 'No such character exists: %s' \
+                          % cname
                     continue
                 try:
                     cvs = models.CharacterValue.objects.get(value_str=v,
                                                             character=char)
                 except ObjectDoesNotExist:
-                    print >> self.logfile, 'No such character value exists: %s; %s' % (cname, v)
+                    print >> self.logfile, 'No such character value ' \
+                          'exists: %s; %s' % (cname, v)
                     continue
 
                 models.TaxonCharacterValue(taxon=t, character_value=cvs).save()
@@ -117,7 +119,8 @@ class Importer(object):
 
             res = models.Pile.objects.filter(name=pile_mapping[pile_suffix])
             if len(res) == 0:
-                print >> self.logfile, u'  New Pile: ' + pile_mapping[pile_suffix]
+                print >> self.logfile, u'  New Pile: ' \
+                      + pile_mapping[pile_suffix]
                 pile = models.Pile(name=pile_mapping[pile_suffix])
                 pile.save()
             else:
@@ -125,7 +128,8 @@ class Importer(object):
 
             res = models.CharacterGroup.objects.filter(name=row['type'])
             if len(res) == 0:
-                print >> self.logfile, u'    New Character Group: ' + row['type']
+                print >> self.logfile, u'    New Character Group: ' \
+                      + row['type']
                 chargroup = models.CharacterGroup(name=row['type'])
                 chargroup.save()
             else:
@@ -166,7 +170,7 @@ class Importer(object):
                 row[colnames[pos]] = c
 
             # For now we assume term titles are unique
-            (term,created) = models.GlossaryTerm.objects.get_or_create(
+            (term, created) = models.GlossaryTerm.objects.get_or_create(
                 term=row['term'])
             # for new entries add the definition
             if created:
@@ -188,9 +192,8 @@ class Importer(object):
                 if not cv.glossary_term:
                     cv.glossary_term = term
                     cv.save()
-                    print >> self.logfile, u'   Term %s mapped to character value: %s'%(
-                        term.term,
-                        repr(cv))
+                    print >> self.logfile, u'   Term %s mapped to character ' \
+                          'value: %s' % (term.term, repr(cv))
 
             # For those that didn't match, we search for matching
             # botanic characters by short_name
@@ -204,9 +207,8 @@ class Importer(object):
                             pile=default_pile,
                             glossary_term=term)
                         gpc.save()
-                        print >> self.logfile, u'   Term %s mapped to character: %s'%(
-                            term.term,
-                            repr(char))
+                        print >> self.logfile, u'   Term %s mapped to ' \
+                              'character: %s' % (term.term, repr(char))
 
     def import_taxon_images(self, *files):
         for f in files:
