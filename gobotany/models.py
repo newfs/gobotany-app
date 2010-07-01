@@ -136,21 +136,33 @@ class CharacterValue(models.Model):
        >>> char_val.glossary_term = term
        >>> char_val.glossary_term
        <GlossaryTerm: "Short and Scale-like (Tropophylls)" id=2>
+
+    The display for the character values change depending on the type
+    being used.
+
+       >>> CharacterValue.objects.create(character=char, value_str='foo')
+       <CharacterValue: character=tropophyll_form value='foo' id=2>
+       >>> CharacterValue.objects.create(character=char, value_min=1)
+       <CharacterValue: character=tropophyll_form value=u'1 - None' id=3>
+       >>> CharacterValue.objects.create(character=char, value_flt=3.2)
+       <CharacterValue: character=tropophyll_form value=3.2... id=4>
     """
 
     value_str = models.CharField(max_length=100, null=True)
-    value_int = models.IntegerField(null=True)
+    value_min = models.IntegerField(null=True)
+    value_max = models.IntegerField(null=True)
     value_flt = models.FloatField(null=True)
-    
+
     character = models.ForeignKey(Character)
     glossary_term = models.ForeignKey(GlossaryTerm, blank=True, null=True)
 
     def __unicode__(self):
-        v = self.value_str
-        if v is None:
-            v = self.value_int
-        if v is None:
+        if self.value_min is not None:
+            v = '%i - %s' % (self.value_min, unicode(self.value_max))
+        elif self.value_flt is not None:
             v = self.value_flt
+        else:
+            v = self.value_str
         return u'character=%s value=%s id=%s' % (
             self.character.short_name,
             repr(v),
