@@ -4,11 +4,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django import forms
 from gobotany import models
 
+class TaxonCharacterValueInline(admin.StackedInline):
+    model = models.TaxonCharacterValue
+    extra = 1
 
 class ContentImageInline(generic.GenericStackedInline):
     model = models.ContentImage
     extra = 1
-
 
 class TaxonAdminForm(forms.ModelForm):
     class Meta:
@@ -27,12 +29,9 @@ class TaxonAdminForm(forms.ModelForm):
         return self.cleaned_data['character_values']
 
 class TaxonAdmin(admin.ModelAdmin):
-    inlines = [ContentImageInline]
+    inlines = [TaxonCharacterValueInline, ContentImageInline]
     form = TaxonAdminForm
-    filter_vertical = ('character_values',)
     list_filter = ('pile',)
-
-admin.site.register(models.Taxon, TaxonAdmin)
 
 
 class GlossaryMappingInline(admin.TabularInline):
@@ -42,11 +41,16 @@ class GlossaryMappingInline(admin.TabularInline):
 class CharacterAdmin(admin.ModelAdmin):
     inlines=[GlossaryMappingInline]
 
-admin.site.register(models.Character, CharacterAdmin)
+class GlossaryTermAdmin(admin.ModelAdmin):
+    list_display = ('term', 'lay_definition')
+    search_fields = ('term', 'lay_definition', 'question_text')
+    ordering = ('term',)
 
+admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.ContentImage)
 admin.site.register(models.ImageType)
 admin.site.register(models.Pile)
-admin.site.register(models.GlossaryTerm)
+admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.CharacterValue)
+admin.site.register(models.Taxon, TaxonAdmin)

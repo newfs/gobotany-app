@@ -42,7 +42,7 @@ class Importer(object):
     def import_data(self, charf, char_glossaryf, glossaryf, glossary_images, *taxonfiles):
         self._import_characters(charf)
         self._import_character_glossary(char_glossaryf)
-#        self._import_glossary(glossaryf, glossary_images)
+        self._import_glossary(glossaryf, glossary_images)
         for taxonf in taxonfiles:
             self._import_taxons(taxonf)
 
@@ -153,8 +153,11 @@ class Importer(object):
             else:
                 cv = res[0]
 
+            if not 'friendly_text' in row:
+                continue
+
             friendly_text = row['friendly_text']
-            if friendly_text:
+            if friendly_text and friendly_text != row['desc']:
                 print >> self.logfile, u'      New Definition: ' + friendly_text
                 term = models.GlossaryTerm.objects.create(term=row['desc'],
                                                          lay_definition=friendly_text)
@@ -177,6 +180,8 @@ class Importer(object):
             ch_short_name = '_'.join(ch[:-1])
             ch_name = ' '.join(ch[:-1])
 
+            if not row['friendly_text']:
+                continue
             # only handling the two _ly and _ca piles for now
             if not pile_suffix in pile_mapping:
                 continue
@@ -185,13 +190,14 @@ class Importer(object):
             # We don't have character_group in current data file.
             char = models.Character.objects.filter(short_name=ch_short_name)
             pile,ignore = models.Pile.objects.get_or_create(name=pile_mapping[pile_suffix])
-            term = models.GlossaryTerm.objects.create(term=ch_name,
-                                                      question_text=row['friendly_text'],
-                                                      hint=row['hint'])
+            term, created = models.GlossaryTerm.objects.get_or_create(term=ch_name,
+                                                                      question_text=row['friendly_text'],
+                                                                      hint=row['hint'],
+                                                                      visible=False)
 
-            models.GlossaryTermForPileCharacter.objects.create(character=char[0],
-                                                               pile=pile,
-                                                               glossary_term=term)
+            models.GlossaryTermForPileCharacter.objects.get_or_create(character=char[0],
+                                                                      pile=pile,
+                                                                      glossary_term=term)
 
         
     def _import_glossary(self, f, imagef):
@@ -209,22 +215,25 @@ class Importer(object):
             for pos, c in enumerate(cols):
                 row[colnames[pos]] = c
 
+            if not row['definition'] or row['definition'] == row['term']:
+                continue
             # For now we assume term titles are unique
             # SK: this is now a problem, we don't have unique terms anymore
-            (term, created) = models.GlossaryTerm.objects.get_or_create(
-                term=row['term'])
+            term, created = models.GlossaryTerm.objects.get_or_create(
+                term=row['term'], lay_definition=row['definition'])
             # for new entries add the definition
             if created:
-                term.lay_definition = row['definition']
                 print >> self.logfile, u'  New glossary term: ' + term.term
-                try:
-                    image = images.getmember(row['illustration'])
-                    image_file = File(images.extractfile(image.name))
-                    term.image.save(image.name, image_file)
-                except KeyError:
-                    print >> self.logfile, '    No image found for term'
+            else:
+                print >> self.logfile, u'  Updated glossary term: ' + term.term
+            try:
+                image = images.getmember(row['illustration'])
+                image_file = File(images.extractfile(image.name))
+                term.image.save(image.name, image_file)
+            except KeyError:
+                print >> self.logfile, '    No image found for term'
 
-                term.save()
+            term.save()
 
             # search for matching character values
             cvs = models.CharacterValue.objects.filter(
@@ -242,14 +251,12 @@ class Importer(object):
                 chars = models.Character.objects.filter(
                     short_name__iexact=term.term.replace(' ', '_'))
                 for char in chars:
-                    if not char.glossary_terms:
-                        gpc = models.GlossaryTermForPileCharacter.objects.create(
+                    gpc, created = models.GlossaryTermForPileCharacter.objects.get_or_create(
                             character=char,
                             pile=default_pile,
                             glossary_term=term)
-                        gpc.save()
-                        print >> self.logfile, u'   Term %s mapped to ' \
-                              'character: %s' % (term.term, repr(char))
+                    print >> self.logfile, u'   Term %s mapped to ' \
+                          'character: %s' % (term.term, repr(char))
 
     def import_taxon_images(self, *files):
         for f in files:

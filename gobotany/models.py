@@ -25,7 +25,7 @@ class GlossaryTerm(models.Model):
                               null=True)
 
     def __unicode__(self):
-        return u'"%s" id=%s' % (self.term, self.id)
+        return u'%s: %s' % (self.term, (self.lay_definition or self.question_text)[:30] + '...')
 
 
 class Character(models.Model):
@@ -158,15 +158,13 @@ class CharacterValue(models.Model):
 
     def __unicode__(self):
         if self.value_min is not None:
-            v = '%i - %s' % (self.value_min, unicode(self.value_max))
+            v = u'%i - %i' % (self.value_min, self.value_max)
         elif self.value_flt is not None:
-            v = self.value_flt
+            v = unicode(self.value_flt)
         else:
             v = self.value_str
-        return u'character=%s value=%s id=%s' % (
-            self.character.short_name,
-            repr(v),
-            self.id)
+        return u'%s: %s' % (
+            self.character.short_name, v)
 
 
 class Pile(models.Model):
@@ -286,7 +284,7 @@ class TaxonCharacterValue(models.Model):
     class Meta:
         unique_together = ('taxon', 'character_value')
         verbose_name = 'taxon character value'
-        verbose_name_plural = 'character values for taxa'
+        verbose_name_plural = 'character values for taxon'
 
     def __unicode__(self):
-        return u'%s %s' % (self.taxon, self.character_value)
+        return u'%s: %s' % (self.character_value.character.short_name, self.character_value.value_str)
