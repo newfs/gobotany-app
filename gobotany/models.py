@@ -14,8 +14,8 @@ class CharacterGroup(models.Model):
 
 class GlossaryTerm(models.Model):
     term = models.CharField(max_length=100)
-    lay_definition = models.TextField()
-    formal_definition = models.TextField(blank=True)
+    lay_definition = models.TextField(blank=True)
+    question_text = models.TextField(blank=True)
     hint = models.TextField(blank=True)
     visible = models.BooleanField(default=True)
     # XXX: We will eventually factor this out into a distinct object

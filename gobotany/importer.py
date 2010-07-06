@@ -39,9 +39,10 @@ class Importer(object):
     def __init__(self, logfile=sys.stdout):
         self.logfile = logfile
 
-    def import_data(self, charf, glossaryf, glossary_images, *taxonfiles):
+    def import_data(self, charf, char_glossaryf, glossaryf, glossary_images, *taxonfiles):
         self._import_characters(charf)
-        self._import_glossary(glossaryf, glossary_images)
+        self._import_character_glossary(char_glossaryf)
+#        self._import_glossary(glossaryf, glossary_images)
         for taxonf in taxonfiles:
             self._import_taxons(taxonf)
 
@@ -151,9 +152,48 @@ class Importer(object):
                 cv.save()
             else:
                 cv = res[0]
+
+            friendly_text = row['friendly_text']
+            if friendly_text:
+                print >> self.logfile, u'      New Definition: ' + friendly_text
+                term = models.GlossaryTerm.objects.create(term=row['desc'],
+                                                         lay_definition=friendly_text)
+                cv.glossary_term = term
             pile.character_values.add(cv)
             pile.save()
 
+    def _import_character_glossary(self, f):
+        print >> self.logfile, 'Setting up character glossary'
+        iterator = iter(CSVReader(f).read())
+        colnames = [x.lower() for x in iterator.next()]
+
+        for cols in iterator:
+            row = {}
+            for pos, c in enumerate(cols):
+                row[colnames[pos]] = c
+
+            ch = row['character'].split('_')
+            pile_suffix = ch[-1]
+            ch_short_name = '_'.join(ch[:-1])
+            ch_name = ' '.join(ch[:-1])
+
+            # only handling the two _ly and _ca piles for now
+            if not pile_suffix in pile_mapping:
+                continue
+            
+            # XXX for now assume char was already created by _import_char. 
+            # We don't have character_group in current data file.
+            char = models.Character.objects.filter(short_name=ch_short_name)
+            pile,ignore = models.Pile.objects.get_or_create(name=pile_mapping[pile_suffix])
+            term = models.GlossaryTerm.objects.create(term=ch_name,
+                                                      question_text=row['friendly_text'],
+                                                      hint=row['hint'])
+
+            models.GlossaryTermForPileCharacter.objects.create(character=char[0],
+                                                               pile=pile,
+                                                               glossary_term=term)
+
+        
     def _import_glossary(self, f, imagef):
         print >> self.logfile, 'Setting up glossary'
 
@@ -170,6 +210,7 @@ class Importer(object):
                 row[colnames[pos]] = c
 
             # For now we assume term titles are unique
+            # SK: this is now a problem, we don't have unique terms anymore
             (term, created) = models.GlossaryTerm.objects.get_or_create(
                 term=row['term'])
             # for new entries add the definition
