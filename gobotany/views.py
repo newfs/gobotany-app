@@ -27,15 +27,17 @@ class PileSearchForm(forms.Form):
         character_values = models.CharacterValue.objects
         for character in characters:
             try:
-                label= character.short_name + ': ' + character.glossary_terms.get(glossarytermforpilecharacter__pile__name__iexact=pile_name).question_text
+                term = character.glossary_terms.get(
+                    glossarytermforpilecharacter__pile__name__iexact=pile_name)
+                label = '%s: %s'%(term.term, term.question_text)
             except models.GlossaryTerm.DoesNotExist:
                 label=character.short_name
             self.fields[character.short_name] = forms.ChoiceField(
                 label=label,
                 required=False,
                 choices=[('', '----------')]+[(c.value_str, (c.glossary_term and c.glossary_term.lay_definition) and "%s - %s"%(c.glossary_term.term, c.glossary_term.lay_definition) or c.value_str) for c in
-                         character_values.filter(character=character)]) 
-                         
+                         character_values.filter(character=character)])
+
 
 def pile_search(request, pile_name):
     data = []

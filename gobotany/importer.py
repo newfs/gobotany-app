@@ -158,9 +158,11 @@ class Importer(object):
 
             friendly_text = row['friendly_text']
             if friendly_text and friendly_text != row['desc']:
-                print >> self.logfile, u'      New Definition: ' + friendly_text
-                term = models.GlossaryTerm.objects.create(term=row['desc'],
-                                                         lay_definition=friendly_text)
+                term, created = models.GlossaryTerm.objects.get_or_create(
+                    term=row['desc'],
+                    lay_definition=friendly_text)
+                if created:
+                    print >> self.logfile, u'      New Definition: ' + friendly_text
                 cv.glossary_term = term
             pile.character_values.add(cv)
             pile.save()
@@ -185,21 +187,21 @@ class Importer(object):
             # only handling the two _ly and _ca piles for now
             if not pile_suffix in pile_mapping:
                 continue
-            
-            # XXX for now assume char was already created by _import_char. 
+
+            # XXX for now assume char was already created by _import_char.
             # We don't have character_group in current data file.
-            char = models.Character.objects.filter(short_name=ch_short_name)
+            char = models.Character.objects.get(short_name=ch_short_name)
             pile,ignore = models.Pile.objects.get_or_create(name=pile_mapping[pile_suffix])
             term, created = models.GlossaryTerm.objects.get_or_create(term=ch_name,
                                                                       question_text=row['friendly_text'],
                                                                       hint=row['hint'],
                                                                       visible=False)
 
-            models.GlossaryTermForPileCharacter.objects.get_or_create(character=char[0],
+            models.GlossaryTermForPileCharacter.objects.get_or_create(character=char,
                                                                       pile=pile,
                                                                       glossary_term=term)
 
-        
+
     def _import_glossary(self, f, imagef):
         print >> self.logfile, 'Setting up glossary'
 

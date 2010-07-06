@@ -32,6 +32,7 @@ class TaxonAdmin(admin.ModelAdmin):
     inlines = [TaxonCharacterValueInline, ContentImageInline]
     form = TaxonAdminForm
     list_filter = ('pile',)
+    search_fields = ('scientific_name',)
 
 
 class GlossaryMappingInline(admin.TabularInline):
@@ -40,11 +41,21 @@ class GlossaryMappingInline(admin.TabularInline):
 
 class CharacterAdmin(admin.ModelAdmin):
     inlines=[GlossaryMappingInline]
+    list_display = ('short_name', 'character_group',)
+    search_fields = ('short_name', 'name',)
+    list_filter = ('character_group',)
+
 
 class GlossaryTermAdmin(admin.ModelAdmin):
-    list_display = ('term', 'lay_definition')
+    list_display = ('term', 'lay_definition', 'visible')
     search_fields = ('term', 'lay_definition', 'question_text')
     ordering = ('term',)
+    list_filter = ('visible',)
+
+
+class CharacterValueAdmin(admin.ModelAdmin):
+    search_fields = ('character__short_name', 'value_str')
+    ordering = ('character__short_name',)
 
 admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.ContentImage)
@@ -52,5 +63,5 @@ admin.site.register(models.ImageType)
 admin.site.register(models.Pile)
 admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.CharacterGroup)
-admin.site.register(models.CharacterValue)
+admin.site.register(models.CharacterValue, CharacterValueAdmin)
 admin.site.register(models.Taxon, TaxonAdmin)

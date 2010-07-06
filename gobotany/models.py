@@ -8,6 +8,9 @@ from django.forms import ValidationError
 class CharacterGroup(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
+    class Meta:
+        ordering = ['name']
+
     def __unicode__(self):
         return u'%s id=%s' % (self.name, self.id)
 
@@ -23,6 +26,10 @@ class GlossaryTerm(models.Model):
     image = models.ImageField(upload_to='glossary',
                               blank=True,
                               null=True)
+    class Meta:
+        ordering = ['term', 'lay_definition']
+        # Don't allow duplicate definitions
+        unique_together = ('term', 'lay_definition', 'question_text')
 
     def __unicode__(self):
         return u'%s: %s' % (self.term, (self.lay_definition or self.question_text)[:30] + '...')
@@ -84,6 +91,7 @@ class Character(models.Model):
         blank=True,
         null=True)
 
+
     VALUE_CHOICES = {
         u'TEXT': u'Textual', # string
         u'LENGTH': u'Length', # integer
@@ -91,6 +99,9 @@ class Character(models.Model):
         }
     value_type = models.CharField(max_length=10,
                                   choices=VALUE_CHOICES.items())
+
+    class Meta:
+        ordering = ['short_name']
 
     def __unicode__(self):
         return u'%s name="%s" id=%s' % (self.short_name, self.name,
@@ -148,16 +159,45 @@ class CharacterValue(models.Model):
        <CharacterValue: character=tropophyll_form value=3.2... id=4>
     """
 
-    value_str = models.CharField(max_length=100, null=True)
-    value_min = models.IntegerField(null=True)
-    value_max = models.IntegerField(null=True)
-    value_flt = models.FloatField(null=True)
+    value_str = models.CharField(max_length=100, null=True, blank=True)
+    value_min = models.IntegerField(null=True, blank=True)
+    value_max = models.IntegerField(null=True, blank=True)
+    value_flt = models.FloatField(null=True, blank=True)
 
     character = models.ForeignKey(Character)
-    glossary_term = models.ForeignKey(GlossaryTerm, blank=True, null=True)
+    glossary_term = models.OneToOneField(GlossaryTerm, blank=True, null=True)
+
+    class Meta:
+        ordering = ['character__short_name', 'value_str', 'value_flt',
+                    'value_min', 'value_max']
+
+    def clean(self):
+        """Make sure one and only one value type is set"""
+        # no empty strings allowed
+        if not self.value_str.strip(): self.value_str = None
+        # Check that we only have one of the value types,
+        # XXX: We should validate this against the character value type
+        if self.value_str is not None:
+            if (self.value_min is not None or
+                self.value_max is not None or
+                self.value_flt is not None):
+                raise ValidationError('You may only set one of the value types')
+        if self.value_flt is not None:
+            if (self.value_min is not None or
+                self.value_max is not None or
+                self.value_str is not None):
+                raise ValidationError('You may only set one of the value types')
+        if self.value_min is not None or self.value_max is not None:
+            if (self.value_flt is not None or
+                self.value_str is not None):
+                raise ValidationError('You may only set one of the value types')
+            if self.value_min is None or self.value_max is None:
+                raise ValidationError('You must set both the maximum and minimum values')
+            if self.value_min > self.value_max:
+                raise ValidationError('The minimum value may not be greater than the maximum value')
 
     def __unicode__(self):
-        if self.value_min is not None:
+        if self.value_min is not None and self.value_max is not None:
             v = u'%i - %i' % (self.value_min, self.value_max)
         elif self.value_flt is not None:
             v = unicode(self.value_flt)
@@ -172,6 +212,9 @@ class Pile(models.Model):
     description = models.CharField(max_length=250)
     character_values = models.ManyToManyField(CharacterValue)
 
+    class Meta:
+        ordering = ['name']
+
     def __unicode__(self):
         return u'%s id=%s' % (self.name, self.id)
 
@@ -184,8 +227,8 @@ class GlossaryTermForPileCharacter(models.Model):
     class Meta:
         # Only one glossary term allowed per character/pile combination
         unique_together = ('character', 'pile')
-        verbose_name = 'glossary term'
-        verbose_name_plural = 'glossary terms for piles'
+        verbose_name = 'character glossary term'
+        verbose_name_plural = 'glossary terms for characters'
 
     def __unicode__(self):
         return u'"%s" character=%s pile=%s' % (self.glossary_term.term,
@@ -262,6 +305,7 @@ class Taxon(models.Model):
 
     class Meta:
         verbose_name_plural = 'taxa'
+        ordering = ['scientific_name']
 
     def __unicode__(self):
         return u'%s pile=%s id=%s' % (self.scientific_name, self.pile,
@@ -287,4 +331,4 @@ class TaxonCharacterValue(models.Model):
         verbose_name_plural = 'character values for taxon'
 
     def __unicode__(self):
-        return u'%s: %s' % (self.character_value.character.short_name, self.character_value.value_str)
+        return u'%s'%self.character_value
