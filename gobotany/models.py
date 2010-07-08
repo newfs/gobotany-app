@@ -332,3 +332,32 @@ class TaxonCharacterValue(models.Model):
 
     def __unicode__(self):
         return u'%s'%self.character_value
+
+
+class TaxonGroup(models.Model):
+    name = models.CharField(max_length=100)
+    taxa = models.ManyToManyField(Taxon,
+                                  through='TaxonGroupEntry')
+
+    class Meta:
+        ordering = ['name']
+
+    def __unicode__(self):
+        return self.name
+
+
+class TaxonGroupEntry(models.Model):
+    taxon = models.ForeignKey(Taxon)
+    group = models.ForeignKey(TaxonGroup)
+    # Does this species appear in the simple key for the TaxaGroup
+    simple_key = models.BooleanField(default=True)
+
+    class Meta:
+        # A group can reference a taxon only once
+        unique_together = ('taxon', 'group')
+        ordering = ['group__name', 'taxon__scientific_name']
+        verbose_name_plural = 'taxon group entries'
+
+
+    def __unicode__(self):
+        return '%s: %s'%(self.group.name, self.taxon.scientific_name)

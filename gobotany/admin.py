@@ -57,6 +57,17 @@ class CharacterValueAdmin(admin.ModelAdmin):
     search_fields = ('character__short_name', 'value_str')
     ordering = ('character__short_name',)
 
+
+class TaxonGroupEntryInline(admin.TabularInline):
+    model = models.TaxonGroupEntry
+    extra = 5
+
+class TaxonGroupAdmin(admin.ModelAdmin):
+    search_fields = ('name', 'taxa__scientific_name')
+    ordering = ('name',)
+    inlines = (TaxonGroupEntryInline,)
+
+
 admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.ContentImage)
 admin.site.register(models.ImageType)
@@ -65,3 +76,4 @@ admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.CharacterValue, CharacterValueAdmin)
 admin.site.register(models.Taxon, TaxonAdmin)
+admin.site.register(models.TaxonGroup, TaxonGroupAdmin)
