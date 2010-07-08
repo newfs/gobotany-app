@@ -68,7 +68,7 @@ class Character(models.Model):
         ...                                             glossary_term=term)
         <...: "Spore Form" character=spore_form pile=Lycophytes>
         >>> char.glossary_terms.all()
-        [<GlossaryTerm: "Spore Form" id=...>]
+        [<GlossaryTerm: Spore Form:...>]
 
     Now our character has associated glossary terms.  Generally, we'll
     want to retrieve only the glossary term specific to the pile in
@@ -76,10 +76,10 @@ class Character(models.Model):
     pile object or the name of the pile:
 
         >>> char.glossary_terms.get(glossarytermforpilecharacter__pile=pile)
-        <GlossaryTerm: "Spore Form" id=...>
+        <GlossaryTerm: Spore Form:...>
         >>> char.glossary_terms.get(
         ...     glossarytermforpilecharacter__pile__name='Lycophytes')
-        <GlossaryTerm: "Spore Form" id=...>
+        <GlossaryTerm: Spore Form:...>
     """
 
     short_name = models.CharField(max_length=100, unique=True)
@@ -124,7 +124,7 @@ class CharacterValue(models.Model):
         ...    value_str='short and scale-like',
         ...    character=char)
         >>> char_val
-        <...: character=tropophyll_form value='short and scale-like' id=...>
+        <CharacterValue: tropophyll_form: short and scale-like>
 
     Now we can associate that character value with a Pile, which
     effectively associates the character with the Pile as well:
@@ -136,7 +136,7 @@ class CharacterValue(models.Model):
         >>> Character.objects.filter(charactervalue__pile=pile)
         [<Character: tropophyll_form name="Tropophyll Form" id=...>]
         >>> CharacterValue.objects.filter(pile=pile)
-        [<...: character=tropophyll_form value=u'short and scale-like' id=...>]
+        [<CharacterValue: tropophyll_form: short and scale-like>]
 
     We don't yet have an associated glossary term for this value.
     Let's make one:
@@ -146,17 +146,17 @@ class CharacterValue(models.Model):
         ...     lay_definition='The Tropophylls look like small fish scales.')
        >>> char_val.glossary_term = term
        >>> char_val.glossary_term
-       <GlossaryTerm: "Short and Scale-like (Tropophylls)" id=2>
+       <GlossaryTerm: Short and Scale-like (Tropophylls): ...>
 
     The display for the character values change depending on the type
     being used.
 
        >>> CharacterValue.objects.create(character=char, value_str='foo')
-       <CharacterValue: character=tropophyll_form value='foo' id=2>
+       <CharacterValue: tropophyll_form: foo>
        >>> CharacterValue.objects.create(character=char, value_min=1)
-       <CharacterValue: character=tropophyll_form value=u'1 - None' id=3>
+       <CharacterValue: tropophyll_form: None>
        >>> CharacterValue.objects.create(character=char, value_flt=3.2)
-       <CharacterValue: character=tropophyll_form value=3.2... id=4>
+       <CharacterValue: tropophyll_form: 3.2>
     """
 
     value_str = models.CharField(max_length=100, null=True, blank=True)
