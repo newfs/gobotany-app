@@ -171,6 +171,14 @@ class CharacterValue(models.Model):
         ordering = ['character__short_name', 'value_str', 'value_flt',
                     'value_min', 'value_max']
 
+    @property
+    def value(self):
+        if self.value_flt is not None:
+            return self.value_flt
+        elif self.value_min is not None:
+            return (self.value_min, self.value_max)
+        return self.value_str
+
     def clean(self):
         """Make sure one and only one value type is set"""
         # no empty strings allowed
