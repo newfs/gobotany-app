@@ -215,16 +215,30 @@ class CharacterValue(models.Model):
             self.character.short_name, v)
 
 
-class Pile(models.Model):
+class PileInfo(models.Model):
+    """Common fields shared by Pile-like objects."""
     name = models.CharField(max_length=100, unique=True)
-    description = models.CharField(max_length=250)
+    friendly_name = models.CharField(max_length=100, unique=True, null=True)
+    description = models.CharField(max_length=2500)
+
+    class Meta:
+        abstract = True
+
+    def __unicode__(self):
+        return u'%s %s id=%s' % (self.__class__.__name__, self.name, self.id)
+
+
+class Pile(PileInfo):
+    """An informal grouping of species distinguished by common characters."""
     character_values = models.ManyToManyField(CharacterValue)
 
     class Meta:
         ordering = ['name']
 
-    def __unicode__(self):
-        return u'%s id=%s' % (self.name, self.id)
+
+class PileGroup(PileInfo):
+    """A group of Pile objects; the top level of basic-key navigation."""
+    piles = models.ManyToManyField(Pile)
 
 
 class GlossaryTermForPileCharacter(models.Model):
