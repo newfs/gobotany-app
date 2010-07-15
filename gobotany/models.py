@@ -231,6 +231,7 @@ class PileInfo(models.Model):
 class Pile(PileInfo):
     """An informal grouping of species distinguished by common characters."""
     character_values = models.ManyToManyField(CharacterValue)
+    species = models.ManyToManyField('Taxon', related_name='piles')
 
     class Meta:
         ordering = ['name']

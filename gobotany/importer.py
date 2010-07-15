@@ -39,12 +39,59 @@ class Importer(object):
     def __init__(self, logfile=sys.stdout):
         self.logfile = logfile
 
-    def import_data(self, charf, char_glossaryf, glossaryf, glossary_images, *taxonfiles):
+    def import_data(self, charf, char_glossaryf, glossaryf, glossary_images, pilef, *taxonfiles):
         self._import_characters(charf)
         self._import_character_glossary(char_glossaryf)
         self._import_glossary(glossaryf, glossary_images)
         for taxonf in taxonfiles:
             self._import_taxons(taxonf)
+        self._import_piles(pilef) # last, so species already exist
+
+    def _import_piles(self, f):
+        print >> self.logfile, 'Setting up pile groups and piles'
+        iterator = iter(CSVReader(f).read())
+        colnames = [x.lower() for x in iterator.next()]
+        colnums = range(len(colnames))
+
+        for cols in iterator:
+            row = dict( (colnames[i], cols[i]) for i in colnums )
+
+            pilegroup, created = models.PileGroup.objects.get_or_create(
+                name=row['uber-pile'])
+            if created:
+                print >> self.logfile, u'  New PileGroup:', pilegroup
+
+            pile, created = models.Pile.objects.get_or_create(
+                name=row['pile'], defaults={
+                    'friendly_name': row['pile-happy'],
+                    })
+            if created:
+                print >> self.logfile, u'    New Pile:', pile
+
+            pilegroup.piles.add(pile)
+
+            if row['second pile']:
+                pile2, created = models.Pile.objects.get_or_create(
+                    name=row['second pile'])
+                if created:
+                    print >> self.logfile, u'    New (second) Pile:', pile
+            else:
+                pile2 = None
+
+            if not row['species']:
+                continue  # yes, believe it or not, some rows have no species
+
+            genus_name, species_name = row['species'].split()[:2]
+            scientific_name = genus_name + ' ' + species_name
+            taxa = models.Taxon.objects.filter(scientific_name=scientific_name)
+            if taxa:
+                taxon = taxa[0]
+                pile.species.add(taxon)
+                if pile2 is not None:
+                    pile2.species.add(taxon)
+            else:
+                print >> self.logfile, u'      CANNOT FIND SPECIES:', \
+                    scientific_name
 
     def _import_taxons(self, f):
         print >> self.logfile, 'Setting up taxons (work in progress)'
