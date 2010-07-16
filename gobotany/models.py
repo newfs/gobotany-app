@@ -323,7 +323,6 @@ class Taxon(models.Model):
         through='TaxonCharacterValue')
     taxonomic_authority = models.CharField(max_length=100)
     simple_key = models.BooleanField(default=True)
-    pile = models.ForeignKey(Pile)
     images = generic.GenericRelation(ContentImage)
 
     class Meta:

@@ -18,14 +18,16 @@ class APITests(TestCase):
         pile = models.Pile(name='pile1')
         pile.save()
 
-        foo = models.Taxon(scientific_name='foo',
-                           pile=pile)
+        foo = models.Taxon(scientific_name='foo')
         foo.save()
-        bar = models.Taxon(scientific_name='bar',
-                           pile=pile)
+        bar = models.Taxon(scientific_name='bar')
         bar.save()
-        models.Taxon(scientific_name='abc',
-                     pile=pile).save()
+        abc = models.Taxon(scientific_name='abc')
+        abc.save()
+
+        pile.species.add(foo)
+        pile.species.add(bar)
+        pile.species.add(abc)
 
         cg1 = models.CharacterGroup(name='cg1')
         cg1.save()

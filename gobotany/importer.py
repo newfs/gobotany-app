@@ -118,8 +118,7 @@ class Importer(object):
             # for now, assume everthing is part of the simple_key
             t = models.Taxon(scientific_name=row['scientific_name'],
                              taxonomic_authority=row['taxonomic_authority'],
-                             simple_key=True,
-                             pile=default_pile)
+                             simple_key=True)
             t.save()
 
             del row['id']
