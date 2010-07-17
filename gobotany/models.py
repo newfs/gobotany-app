@@ -220,21 +220,20 @@ class PileInfo(models.Model):
     name = models.CharField(max_length=100, unique=True)
     friendly_name = models.CharField(max_length=100, unique=True, null=True)
     description = models.CharField(max_length=2500)
+    images = generic.GenericRelation('ContentImage')
 
     class Meta:
         abstract = True
+        ordering = ['name']
 
     def __unicode__(self):
-        return u'%s %s id=%s' % (self.__class__.__name__, self.name, self.id)
+        return u'%s id=%s' % (self.name, self.id)
 
 
 class Pile(PileInfo):
     """An informal grouping of species distinguished by common characters."""
     character_values = models.ManyToManyField(CharacterValue)
     species = models.ManyToManyField('Taxon', related_name='piles')
-
-    class Meta:
-        ordering = ['name']
 
 
 class PileGroup(PileInfo):
@@ -330,8 +329,7 @@ class Taxon(models.Model):
         ordering = ['scientific_name']
 
     def __unicode__(self):
-        return u'%s pile=%s id=%s' % (self.scientific_name, self.pile,
-                                      self.id)
+        return u'%s id=%s' % (self.scientific_name, self.id)
 
     def get_default_image(self):
             try:

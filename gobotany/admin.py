@@ -31,9 +31,14 @@ class TaxonAdminForm(forms.ModelForm):
 class TaxonAdmin(admin.ModelAdmin):
     inlines = [TaxonCharacterValueInline, ContentImageInline]
     form = TaxonAdminForm
-    list_filter = ('pile',)
-    search_fields = ('scientific_name',)
+    # XXX: Cannot filter on a reverse relation in Django 1.2
+    # list_filter = ('piles',)
+    search_fields = ('scientific_name', 'piles__name', 'piles__friendly_name')
 
+
+class PileAdmin(admin.ModelAdmin):
+    inlines = [ContentImageInline]
+    search_fields = ('name',)
 
 class GlossaryMappingInline(admin.TabularInline):
     model = models.GlossaryTermForPileCharacter
@@ -71,7 +76,8 @@ class TaxonGroupAdmin(admin.ModelAdmin):
 admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.ContentImage)
 admin.site.register(models.ImageType)
-admin.site.register(models.Pile)
+admin.site.register(models.PileGroup, PileAdmin)
+admin.site.register(models.Pile, PileAdmin)
 admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.CharacterValue, CharacterValueAdmin)
