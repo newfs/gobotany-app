@@ -11,11 +11,11 @@ def _taxon_image(image):
                 'description': image.description}
     return ''
 
+
 def _taxon_with_chars(taxon):
     res = {}
     res['scientific_name'] = taxon.scientific_name
     res['id'] = taxon.id
-    res['pile'] = taxon.pile.name
     res['taxonomic_authority'] = taxon.taxonomic_authority
     res['default_image'] = _taxon_image(taxon.get_default_image())
 
