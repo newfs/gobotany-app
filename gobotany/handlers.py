@@ -1,5 +1,6 @@
 from gobotany import botany, models
 from piston.handler import BaseHandler
+from piston.utils import rc
 
 
 def _taxon_image(image):
@@ -65,3 +66,48 @@ class TaxonImageHandler(BaseHandler):
             kwargs[str(k)] = v
         images = botany.species_images(**kwargs)
         return [_taxon_image(image) for image in images]
+
+
+class BasePileHandler(BaseHandler):
+    methods_allowed = ('GET', 'PUT', 'DELETE')
+    fields = ('name', 'friendly_name', 'description')
+
+    def read(self, request, name):
+        return self.model.objects.get(name=name)
+
+    def update(self, request, name):
+        obj = self.model.objects.get(name=name)
+        for k, v in request.PUT.items():
+            if k in self.fields:
+                setattr(obj, k, v)
+        obj.save()
+        return obj
+
+    def delete(self, request, name):
+        obj = self.model.objects.get(name=name)
+        obj.delete()
+        return rc.DELETED
+
+
+class PileHandler(BasePileHandler):
+    model = models.Pile
+
+
+class PileGroupHandler(BasePileHandler):
+    model = models.PileGroup
+
+
+class BasePileListingHandler(BaseHandler):
+    methods_allowed = ('GET',)
+
+    def read(self, request):
+        lst = [{'name': x.name} for x in self.model.objects.all()]
+        return {'items': lst}
+
+
+class PileListingHandler(BasePileListingHandler):
+    model = models.Pile
+
+
+class PileGroupListingHandler(BasePileListingHandler):
+    model = models.PileGroup

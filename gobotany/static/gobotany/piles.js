@@ -26,3 +26,33 @@ gobotany.piles.init = function() {
         }});
     });
 };
+
+
+gobotany.piles._populate_base_pile_listing = function(basename) {
+    var select = dojo.byId(basename+'-select');
+    var store = new dojox.data.JsonRestStore({target: '/'+basename+'s/'});
+    store.fetch({onComplete: function(res) {
+        dojo.empty(select);
+        for (var x = 0; x < res.items.length; x++) {
+            var item = res.items[x];
+            dojo.place('<option value="'+item.name+'">'+item.name+'</option>', select);
+        }
+        select.disabled = false;
+    }});
+};
+
+gobotany.piles.populate_piles = function() {
+    gobotany.piles._populate_base_pile_listing('pile');
+};
+
+gobotany.piles.populate_pile_groups = function() {
+    gobotany.piles._populate_base_pile_listing('pilegroup');
+};
+
+gobotany.piles.show_pile = function(name) {
+    alert(name);
+};
+
+gobotany.piles.show_pilegroup = function(name) {
+    alert(name);
+};

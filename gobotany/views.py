@@ -39,6 +39,11 @@ class PileSearchForm(forms.Form):
                          character_values.filter(character=character)])
 
 
+def piles_pile_groups(request):
+    return render_to_response('piles_pile_groups.html',
+                              context_instance=RequestContext(request))
+
+
 def pile_search(request, pile_name):
     data = []
     if request.method == 'POST':

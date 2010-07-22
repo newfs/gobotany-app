@@ -18,6 +18,15 @@ urlpatterns = patterns(
     (r'^taxon-image/$',
      Resource(handler=handlers.TaxonImageHandler)),
 
+    (r'^piles/$',
+     Resource(handler=handlers.PileListingHandler)),
+    (r'^piles/(?P<name>)/$',
+     Resource(handler=handlers.PileHandler)),
+    (r'^pilegroups/$',
+     Resource(handler=handlers.PileGroupListingHandler)),
+    (r'^pilegroups/(?P<name>)/$',
+     Resource(handler=handlers.PileGroupHandler)),
+
     (r'^pile-search/(\w+)$', views.pile_search),
     (r'^taxon-search/$', views.taxon_search),
     (r'^glossary/?$', views.glossary_index),
@@ -27,6 +36,8 @@ urlpatterns = patterns(
      {'package': gobotany, 'relative_path': 'static', 'show_indexes': True}),
 
     (r'^admin/', include(admin.site.urls)),
+
+    (r'^piles-pile-groups$', views.piles_pile_groups),
 
     # django-haystack
     (r'^search/', include('haystack.urls')),

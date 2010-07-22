@@ -47,6 +47,6 @@ class SpeciesReader(object):
             species = models.Taxon.objects.get(scientific_name__iexact=species)
         return species.images.filter(**query)
 
-_reader = SpeciesReader()
-query_species = _reader.query_species
-species_images = _reader.species_images
+_species_reader = SpeciesReader()
+query_species = _species_reader.query_species
+species_images = _species_reader.species_images
