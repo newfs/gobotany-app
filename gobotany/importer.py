@@ -82,7 +82,7 @@ class Importer(object):
         print >> self.logfile, 'Setting up pile groups and piles'
         iterator = iter(CSVReader(pilef).read())
         colnames = [x.lower() for x in iterator.next()]
-        #colnums = range(len(colnames))
+
         pile_images = tarfile.open(pile_images)
         # Generate a mapping of pile-name to filenames from the image
         # tarball
@@ -100,7 +100,6 @@ class Importer(object):
             names.append(image.name)
 
         for cols in iterator:
-            #row = dict( (colnames[i], cols[i]) for i in colnums )
             row = dict(zip(colnames, cols))
 
             # If a Pile Group is specified, create it if doesn't exist yet.
@@ -130,10 +129,8 @@ class Importer(object):
         print >> self.logfile, 'Setting up taxa'
         iterator = iter(CSVReader(taxaf).read())
         colnames = [x.lower() for x in iterator.next()]
-        #colnums = range(len(colnames))
 
         for cols in iterator:
-            #row = dict( (colnames[i], cols[i]) for i in colnums )
             row = dict(zip(colnames, cols))
 
             # Create a Taxon if it doesn't exist yet.
