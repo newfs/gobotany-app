@@ -49,10 +49,24 @@ gobotany.piles.populate_pile_groups = function() {
     gobotany.piles._populate_base_pile_listing('pilegroup');
 };
 
+gobotany.piles._show_base_pile_info = function(basename, name) {
+    var store = new dojox.data.JsonRestStore({target: '/'+basename+'s/'});
+    store.fetchItemByIdentity({identity: name, onItem: function(item) {
+        var dl = dojo.byId(basename+'-info');
+        dojo.empty(dl);
+        for (var x in item) {
+            if (x[0] != '_') {
+                dojo.place('<dt>'+x+'</dt>', dl);
+                dojo.place('<dd>'+item[x]+'</dd>', dl);
+            }
+        }
+    }});
+};
+
 gobotany.piles.show_pile = function(name) {
-    alert(name);
+    gobotany.piles._show_base_pile_info('pile', name);
 };
 
 gobotany.piles.show_pilegroup = function(name) {
-    alert(name);
+    gobotany.piles._show_base_pile_info('pilegroup', name);
 };
