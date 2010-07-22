@@ -39,13 +39,15 @@ class Importer(object):
     def __init__(self, logfile=sys.stdout):
         self.logfile = logfile
 
-    def import_data(self, charf, char_glossaryf, glossaryf, glossary_images, pilef, pile_images, *taxonfiles):
+    def import_data(self, charf, char_glossaryf, glossaryf, glossary_images,
+                    pilef, taxaf, pile_images, *taxonfiles):
         self._import_characters(charf)
         self._import_character_glossary(char_glossaryf)
         self._import_glossary(glossaryf, glossary_images)
+        self._import_piles(pilef, pile_images)
+        self._import_taxa(taxaf)
         for taxonf in taxonfiles:
             self._import_taxons(taxonf)
-        self._import_piles(pilef, pile_images) # last, so species already exist
 
     def _add_pile_images(self, pile, images, prefix_mapping):
         """Adds images for a pile or pile group"""
@@ -76,12 +78,12 @@ class Importer(object):
                 content_image.save()
                 print >> self.logfile, u'    Added Pile Image:', filename
 
-    def _import_piles(self, f, img):
+    def _import_piles(self, pilef, pile_images):
         print >> self.logfile, 'Setting up pile groups and piles'
-        iterator = iter(CSVReader(f).read())
+        iterator = iter(CSVReader(pilef).read())
         colnames = [x.lower() for x in iterator.next()]
-        colnums = range(len(colnames))
-        pile_images = tarfile.open(img)
+        #colnums = range(len(colnames))
+        pile_images = tarfile.open(pile_images)
         # Generate a mapping of pile-name to filenames from the image
         # tarball
         pile_prefixes = {}
@@ -98,47 +100,63 @@ class Importer(object):
             names.append(image.name)
 
         for cols in iterator:
-            row = dict( (colnames[i], cols[i]) for i in colnums )
+            #row = dict( (colnames[i], cols[i]) for i in colnums )
+            row = dict(zip(colnames, cols))
 
-            pilegroup, created = models.PileGroup.objects.get_or_create(
-                name=row['uber-pile'])
-            if created:
-                print >> self.logfile, u'  New PileGroup:', pilegroup
-            self._add_pile_images(pilegroup, pile_images, pile_prefixes)
+            # If a Pile Group is specified, create it if doesn't exist yet.
+            if row['pile_group']:
+                pilegroup, created = models.PileGroup.objects.get_or_create(
+                    name=row['pile_group'])
+                # TODO: Are friendly_name and description important to set for
+                # a Pile Group? (The schema allows for them.) If so, will need
+                # to decide how to obtain those values.
+                if created:
+                    print >> self.logfile, u'  New PileGroup:', pilegroup
+                self._add_pile_images(pilegroup, pile_images, pile_prefixes)
 
+            # Create the Pile.
             pile, created = models.Pile.objects.get_or_create(
-                name=row['pile'])
-            # Update the friendly text
-            pile.friendly_name = row['pile-happy']
+                name=row['desc'])
+            # Update the friendly name and description.
+            if row['friendly_name']:
+                pile.friendly_name = row['friendly_name']
+            pile.description = row['description']
             pile.save()
             if created:
                 print >> self.logfile, u'    New Pile:', pile
 
-            pilegroup.piles.add(pile)
-            self._add_pile_images(pile, pile_images, pile_prefixes)
 
-            if row['second pile']:
-                pile2, created = models.Pile.objects.get_or_create(
-                    name=row['second pile'])
-                if created:
-                    print >> self.logfile, u'    New (second) Pile:', pile
-            else:
-                pile2 = None
+    def _import_taxa(self, taxaf):
+        print >> self.logfile, 'Setting up taxa'
+        iterator = iter(CSVReader(taxaf).read())
+        colnames = [x.lower() for x in iterator.next()]
+        #colnums = range(len(colnames))
 
-            if not row['species']:
-                continue  # yes, believe it or not, some rows have no species
+        for cols in iterator:
+            #row = dict( (colnames[i], cols[i]) for i in colnums )
+            row = dict(zip(colnames, cols))
 
-            genus_name, species_name = row['species'].split()[:2]
-            scientific_name = genus_name + ' ' + species_name
-            taxa = models.Taxon.objects.filter(scientific_name=scientific_name)
-            if taxa:
-                taxon = taxa[0]
-                pile.species.add(taxon)
-                if pile2 is not None:
-                    pile2.species.add(taxon)
-            else:
-                print >> self.logfile, u'      CANNOT FIND SPECIES:', \
-                    scientific_name
+            # Create a Taxon if it doesn't exist yet.
+            taxon, created = models.Taxon.objects.get_or_create(
+                scientific_name=row['scientific_name'])
+            # Update taxonomic authority and simple key.
+            taxon.taxonomic_authority = row['taxonomic_authority']
+            taxon.simple_key = (row['simple_key'] == 'TRUE')
+            taxon.save()
+            if created:
+                print >> self.logfile, u'    New Taxon:', taxon
+
+            # Assign this Taxon to the Pile(s) specified for it.
+            if row['pile']:
+                for pile_name in row['pile'].split(';'):
+                    # Look for a Pile with this name.
+                    piles = models.Pile.objects.filter(name=pile_name)
+                    if piles:
+                        pile = piles[0]
+                        pile.species.add(taxon)
+                    else:
+                        print >> self.logfile, u'      CANNOT FIND PILE:', \
+                            pile_name
 
     def _import_taxons(self, f):
         print >> self.logfile, 'Setting up taxons (work in progress)'
