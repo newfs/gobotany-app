@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block js %}
+<script type="text/javascript">
+dojo.require('gobotany.piles');
+dojo.addOnLoad(function() {
+    gobotany.piles.populate_piles();
+    gobotany.piles.populate_pile_groups();
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class="pile-selection">
+<form>
+  <fieldset>
+    <legend>Piles</legend>
+    <select id="pile-select" disabled="true" onchange="gobotany.piles.show_pile(this.options[this.selectedIndex].value)">
+      <option>loading...</option>
+    </select>
+    <dl id="pile-info">
+    </dl>
+  </fieldset>
+
+  <fieldset>
+    <legend>Pile Groups (Uber-piles)</legend>
+    <select id="pilegroup-select" disabled="true" onchange="gobotany.piles.show_pilegroup(this.options[this.selectedIndex].value)">
+      <option>loading...</option>
+    </select>
+    <dl id="pilegroup-info">
+    </dl>
+  </fieldset>
+</form>
+</div>
+{% endblock %}
