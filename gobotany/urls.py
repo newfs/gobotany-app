@@ -20,11 +20,11 @@ urlpatterns = patterns(
 
     (r'^piles/$',
      Resource(handler=handlers.PileListingHandler)),
-    (r'^piles/(?P<name>.*)$',
+    (r'^piles/(?P<name>[^/]+)$',
      Resource(handler=handlers.PileHandler)),
     (r'^pilegroups/$',
      Resource(handler=handlers.PileGroupListingHandler)),
-    (r'^pilegroups/(?P<name>.*)$',
+    (r'^pilegroups/(?P<name>[^/]+)$',
      Resource(handler=handlers.PileGroupHandler)),
 
     (r'^pile-search/(\w+)$', views.pile_search),
