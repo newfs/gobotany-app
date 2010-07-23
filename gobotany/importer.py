@@ -49,7 +49,7 @@ class Importer(object):
         self._import_piles(pilef, pile_images)
         self._import_taxa(taxaf)
         for taxonf in taxonfiles:
-            self._import_taxons(taxonf)
+            self._import_taxon_character_values(taxonf)
 
     def _add_pile_images(self, pile, images, prefix_mapping):
         """Adds images for a pile or pile group"""
@@ -157,8 +157,8 @@ class Importer(object):
                         print >> self.logfile, u'      CANNOT FIND PILE:', \
                             pile_name
 
-    def _import_taxons(self, f):
-        print >> self.logfile, 'Setting up taxons (work in progress)'
+    def _import_taxon_character_values(self, f):
+        print >> self.logfile, 'Setting up taxon character values'
         iterator = iter(CSVReader(f).read())
         colnames = [x.lower() for x in iterator.next()]
 
@@ -174,20 +174,12 @@ class Importer(object):
             for pos, c in enumerate(cols):
                 row[colnames[pos]] = c
 
-            res = models.Taxon.objects.filter(
+            # Look up the taxon and if it exists, import character values.
+            taxa = models.Taxon.objects.filter(
                 scientific_name=row['scientific_name'])
-            if len(res) > 0:
+            if not taxa:
                 continue
-
-            # for now, assume everthing is part of the simple_key
-            t = models.Taxon(scientific_name=row['scientific_name'],
-                             taxonomic_authority=row['taxonomic_authority'],
-                             simple_key=True)
-            t.save()
-
-            del row['id']
-            del row['taxon_id']
-            del row['scientific_name']
+            t = taxa[0]
 
             for k, v in row.items():
                 if not v.strip():
@@ -207,7 +199,8 @@ class Importer(object):
                           'exists: %s; %s' % (cname, v)
                     continue
 
-                models.TaxonCharacterValue(taxon=t, character_value=cvs).save()
+                models.TaxonCharacterValue(taxon=t, 
+                                           character_value=cvs).save()
             t.save()
 
     def _import_characters(self, f):
