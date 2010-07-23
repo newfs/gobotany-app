@@ -26,7 +26,9 @@ class CSVReader(object):
         self.filename = filename
 
     def read(self):
-        with open(self.filename) as f:
+        # Open in universal newline mode in order to deal with newlines in
+        # CSV files saved on Mac OS.
+        with open(self.filename, 'rU') as f:
             r = csv.reader(f, dialect=csv.excel, delimiter=',')
             for row in r:
                 yield [c.decode('Windows-1252') for c in row]
