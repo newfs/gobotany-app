@@ -338,6 +338,12 @@ class Taxon(models.Model):
             except ObjectDoesNotExist:
                 return None
 
+    def get_piles(self):
+            try:
+                return [pile.name for pile in self.piles.all()]
+            except ObjectDoesNotExist:
+                return None
+
 
 class TaxonCharacterValue(models.Model):
     taxon = models.ForeignKey(Taxon)

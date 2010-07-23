@@ -19,6 +19,7 @@ def _taxon_with_chars(taxon):
     res['id'] = taxon.id
     res['taxonomic_authority'] = taxon.taxonomic_authority
     res['default_image'] = _taxon_image(taxon.get_default_image())
+    res['piles'] = taxon.get_piles()
 
     for cv in taxon.character_values.all():
         res[cv.character.short_name] = cv.value
@@ -40,7 +41,8 @@ class TaxonQueryHandler(BaseHandler):
             return {'items': listing, 'label': 'scientific_name',
                     'identifier': 'scientific_name'}
         elif species.exists():
-            return _taxon_with_chars(species.all()[0])
+            taxon = species.filter(scientific_name=scientific_name)[0]
+            return _taxon_with_chars(taxon)
         return {}
 
 
