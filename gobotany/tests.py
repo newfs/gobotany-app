@@ -80,9 +80,13 @@ class ImportTests(TestCase):
         im = importer.Importer(StringIO())
         im._import_characters(os.path.join(os.path.dirname(__file__),
                                            'test_characters.csv'))
-        im._import_taxons(os.path.join(os.path.dirname(__file__),
-                                       'test_taxons.csv'))
-        self.assertEquals(len(models.Taxon.objects.all()), 2)
+        im._import_taxon_character_values(
+            os.path.join(os.path.dirname(__file__),
+                         'test_taxons.csv'))
+        # The number of taxa created should be zero, since the method
+        # _import_taxon_character_values() no longer lazily creates taxa
+        # that have not already been created.
+        self.assertEquals(len(models.Taxon.objects.all()), 0)
 
 
 class RESTFulTests(TestCase):
