@@ -1,4 +1,5 @@
 import os
+from urllib import urlencode
 
 from django.template import RequestContext
 from django.shortcuts import render_to_response
@@ -97,3 +98,30 @@ def canonical_images(request):
     return render_to_response('canonical_images.html', 
                                 {'results': results},
                                 context_instance=RequestContext(request))
+
+def species_lists(request):
+    biglist = []
+
+    for pilegroup in models.PileGroup.objects.all():
+        biglist.append({
+                'name': 'Pile-Group ' + pilegroup.name,
+                'url': '/taxon/?' + urlencode({'pilegroup': pilegroup.name}),
+                })
+
+    for pile in models.Pile.objects.all():
+        biglist.append({
+                'name': 'Pile ' + pile.name,
+                'url': '/taxon/?' + urlencode({'pile': pile.name}),
+                })
+
+    species_names = [ t.scientific_name for t in models.Taxon.objects.all() ]
+    genus_names = sorted(set( name.split()[0] for name in species_names ))
+    for genus_name in genus_names:
+        biglist.append({
+                'name': 'Genus ' + genus_name,
+                'url': '/taxon/?' + urlencode({'genus': genus_name}),
+                })
+
+    return render_to_response('species_lists.html', {
+            'biglist': biglist,
+            })
