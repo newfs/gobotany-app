@@ -234,11 +234,12 @@ class Pile(PileInfo):
     """An informal grouping of species distinguished by common characters."""
     character_values = models.ManyToManyField(CharacterValue)
     species = models.ManyToManyField('Taxon', related_name='piles')
+    pilegroup = models.ForeignKey('PileGroup', related_name='piles', null=True)
 
 
 class PileGroup(PileInfo):
     """A group of Pile objects; the top level of basic-key navigation."""
-    piles = models.ManyToManyField(Pile)
+    #piles = models.ManyToManyField(Pile)
 
 
 class GlossaryTermForPileCharacter(models.Model):

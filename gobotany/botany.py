@@ -20,7 +20,19 @@ class SpeciesReader(object):
         else:
             base_query = models.Taxon.objects
             for k, v in kwargs.items():
-                if isinstance(v, int):
+                if k == 'pilegroup':
+                    base_query = base_query.filter(
+                        piles__pilegroup__name=v,
+                        )
+                elif k == 'pile':
+                    base_query = base_query.filter(
+                        piles__name=v,
+                        )
+                elif k == 'genus':
+                    base_query = base_query.filter(
+                        scientific_name__startswith=v + ' ',
+                        )
+                elif isinstance(v, int):
                     base_query = base_query.filter(
                         character_values__character__short_name=k,
                         character_values__value_int=v)

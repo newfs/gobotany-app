@@ -8,19 +8,28 @@ from gobotany import handlers
 
 
 def setup_sample_data():
-    pile = models.Pile(name='pile1')
-    pile.save()
+    pilegroup1 = models.PileGroup(name='pilegroup1')
+    pilegroup1.save()
+    pilegroup2 = models.PileGroup(name='pilegroup2')
+    pilegroup2.save()
 
-    foo = models.Taxon(scientific_name='foo')
+    pile1 = models.Pile(name='pile1')
+    pile1.pilegroup = pilegroup1
+    pile1.save()
+    pile2 = models.Pile(name='pile2')
+    pile2.pilegroup = pilegroup2
+    pile2.save()
+
+    foo = models.Taxon(scientific_name='Foo foo')
     foo.save()
-    bar = models.Taxon(scientific_name='bar')
+    bar = models.Taxon(scientific_name='Foo bar')
     bar.save()
-    abc = models.Taxon(scientific_name='abc')
+    abc = models.Taxon(scientific_name='Baz abc')
     abc.save()
 
-    pile.species.add(foo)
-    pile.species.add(bar)
-    pile.species.add(abc)
+    pile1.species.add(foo)
+    pile1.species.add(bar)
+    pile1.species.add(abc)
 
     cg1 = models.CharacterGroup(name='cg1')
     cg1.save()
@@ -37,9 +46,9 @@ def setup_sample_data():
                                 character=c1)
     cv2.save()
 
-    pile.character_values.add(cv1)
-    pile.character_values.add(cv2)
-    pile.save()
+    pile1.character_values.add(cv1)
+    pile1.character_values.add(cv2)
+    pile1.save()
 
     models.TaxonCharacterValue(taxon=foo, character_value=cv1).save()
     models.TaxonCharacterValue(taxon=bar, character_value=cv2).save()
@@ -56,16 +65,38 @@ class APITests(TestCase):
     def setUp(self):
         setup_sample_data()
 
+    def try_query(self, result, *args, **kw):
+        result_set = set(result)
+        real_result_set = set(botany.query_species(*args, **kw))
+        self.assertEqual(result_set, real_result_set)
+
     def test_query_species(self):
-        queried = botany.query_species(scientific_name='foo').all()
+        queried = botany.query_species(scientific_name='Foo foo').all()
         self.assert_(len(queried) == 1)
 
-        foo = models.Taxon.objects.filter(scientific_name='foo')[0]
-        bar = models.Taxon.objects.filter(scientific_name='bar')[0]
+        foo = models.Taxon.objects.filter(scientific_name='Foo foo')[0]
+        bar = models.Taxon.objects.filter(scientific_name='Foo bar')[0]
+        abc = models.Taxon.objects.filter(scientific_name='Baz abc')[0]
 
-        self.assertEqual(list(botany.query_species(c1='cv1')), [foo])
-        self.assertEqual(list(botany.query_species(c1='cv2')), [bar])
+        self.try_query([foo], c1='cv1')
+        self.try_query([bar], c1='cv2')
 
+        self.try_query([foo, bar, abc], pile='pile1')
+        self.try_query([], pile='pile2')
+        self.try_query([foo], pile='pile1', c1='cv1')
+        self.try_query([], pile='pile2', c1='cv1')
+
+        self.try_query([foo, bar, abc], pilegroup='pilegroup1')
+        self.try_query([], pilegroup='pilegroup2')
+        self.try_query([foo], pilegroup='pilegroup1', c1='cv1')
+        self.try_query([], pilegroup='pilegroup2', c1='cv1')
+
+        self.try_query([foo, bar, abc], pile='pile1', pilegroup='pilegroup1')
+        self.try_query([], pile='pile2', pilegroup='pilegroup1')
+
+        self.try_query([foo, bar], genus='Foo')
+        self.try_query([abc], genus='Baz')
+        self.try_query([], genus='Kooky')
 
 class ImportTests(TestCase):
 
@@ -93,5 +124,5 @@ class RESTFulTests(TestCase):
 
     def test_taxon_with_chars(self):
         setup_sample_data()
-        foo = models.Taxon.objects.get(scientific_name='foo')
+        foo = models.Taxon.objects.get(scientific_name='Foo foo')
         handlers._taxon_with_chars(foo)
