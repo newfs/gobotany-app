@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+
+<ul>
+  {% for item in biglist %}
+  <li><a href="{{ item.url }}">{{ item.name }}</a></li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
