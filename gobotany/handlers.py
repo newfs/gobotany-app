@@ -72,7 +72,7 @@ class TaxonImageHandler(BaseHandler):
 
 class BasePileHandler(BaseHandler):
     methods_allowed = ('GET', 'PUT', 'DELETE')
-    fields = ('name', 'friendly_name', 'description')
+    fields = ('name', 'friendly_name', 'description', 'resource_uri')
 
     def read(self, request, name):
         return self.model.objects.get(name=name)
@@ -94,22 +94,30 @@ class BasePileHandler(BaseHandler):
 class PileHandler(BasePileHandler):
     model = models.Pile
 
+    @staticmethod
+    def resource_uri(pile=None):
+        return 'api-pile', ['name' if pile is None else pile.id]
+
 
 class PileGroupHandler(BasePileHandler):
     model = models.PileGroup
 
+    @staticmethod
+    def resource_uri(pilegroup=None):
+        return 'api-pilegroup', ['name' if pilegroup is None else pilegroup.id]
 
-class BasePileListingHandler(BaseHandler):
+
+class PileListingHandler(BaseHandler):
     methods_allowed = ('GET',)
 
     def read(self, request):
-        lst = [{'name': x.name} for x in self.model.objects.all()]
+        lst = [x for x in models.Pile.objects.all()]
         return {'items': lst}
 
 
-class PileListingHandler(BasePileListingHandler):
-    model = models.Pile
+class PileGroupListingHandler(BaseHandler):
+    methods_allowed = ('GET',)
 
-
-class PileGroupListingHandler(BasePileListingHandler):
-    model = models.PileGroup
+    def read(self, request):
+        lst = [x for x in models.PileGroup.objects.all()]
+        return {'items': lst}
