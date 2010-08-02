@@ -7,7 +7,7 @@ management.setup_environ(settings)
 import csv
 import sys
 import tarfile
-from gobotany import models
+from gobotany.core import models
 from django.contrib.contenttypes.models import ContentType
 
 TAXON_IMAGE_TYPES = {

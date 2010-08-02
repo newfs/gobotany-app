@@ -1,10 +1,10 @@
 import os
 from StringIO import StringIO
 from django.test import TestCase
-from gobotany import botany
-from gobotany import models
-from gobotany import importer
-from gobotany import handlers
+from gobotany.core import botany
+from gobotany.core import models
+from gobotany.core import importer
+from gobotany.api import handlers  # TODO: move some tests to "api" package?
 
 
 def setup_sample_data():

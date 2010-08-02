@@ -1,6 +1,6 @@
 from haystack import indexes
 from haystack import site
-from gobotany.models import Taxon
+from gobotany.core.models import Taxon
 
 
 class TaxonIndex(indexes.SearchIndex):

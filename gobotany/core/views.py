@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response
 from django import forms
 from django.views import static 
 
-from gobotany import botany, models
+from gobotany.core import botany, models
 
 
 def default_view(request):

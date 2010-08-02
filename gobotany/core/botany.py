@@ -1,4 +1,4 @@
-from gobotany import models
+from gobotany.core import models
 
 CHAR_MAP = {
     u'TEXT': 'character_values__value_str',

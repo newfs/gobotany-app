@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
 from django import forms
-from gobotany import models
+from gobotany.core import models
 
 class TaxonCharacterValueInline(admin.StackedInline):
     model = models.TaxonCharacterValue

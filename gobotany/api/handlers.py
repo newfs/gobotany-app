@@ -1,4 +1,4 @@
-from gobotany import botany, models
+from gobotany.core import botany, models
 from piston.handler import BaseHandler
 from piston.utils import rc
 
