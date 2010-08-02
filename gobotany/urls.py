@@ -1,9 +1,13 @@
-from django.conf.urls.defaults import patterns
+from django.conf.urls.defaults import include, patterns
 
 import gobotany.api.urls
 import gobotany.core.urls
+import gobotany.simplekey.urls
 
-urlpatterns = patterns('')
+urlpatterns = patterns(
+    '',
+    (r'^simple/', include('gobotany.simplekey.urls')),
+    )
 
 urlpatterns += gobotany.core.urls.urlpatterns
 urlpatterns += gobotany.api.urls.urlpatterns

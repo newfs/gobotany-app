@@ -27,6 +27,7 @@ else:
 INSTALLED_APPS = [
     'gobotany.api',
     'gobotany.core',
+    'gobotany.simplekey',
     'piston',
     'django.contrib.admin',
     'django.contrib.sessions',
