@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.urlresolvers import reverse
 from gobotany.core.models import Pile
 
 
@@ -50,11 +49,5 @@ class Collection(models.Model):
                 objs = Collection.objects.filter(slug=pattern)
             if not objs:
                 continue
-            obj = objs[0]
-            if kind == 'pile':
-                url = reverse('gobotany.simplekey.views.pile_view',
-                              kwargs={'name': pattern})
-            else:
-                url = obj.get_absolute_url()
-            childlist.append({ 'kind': kind, 'target': obj, 'url': url })
+            childlist.append(objs[0])
         return childlist

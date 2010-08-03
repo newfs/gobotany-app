@@ -4,32 +4,14 @@
     <p>
       Which of the following best describes your plant?
     </p>
-    {% for child in collection.get_children %}
-      {% if child.kind == 'collection' %}
-        <div class="collection">
-          <h2><a href="{{ child.url }}">{{ child.target.name }}</a></h2>
-        </div>
-      {% endif %}
-      {% if child.kind == 'pile' %}
-        <div>
-          <h2>
-            {% if child.target.friendly_name %}
-              <a href="{{ child.url }}"
-                 >{{ child.target.friendly_name }}</a>
-              ({{ child.target.name }})
-            {% else %}
-              <a href="{{ child.url }}">{{ child.target.name }}</a>
-            {% endif %}
-          </h2>
-        </div>
-      {% endif %}
-      {% if child.kind == 'else' %}
-        <div>
-          None of these look right.
-          <a href="{{ child.url }}">Give me more choices »</a>
-        </div>
-      {% endif %}
+    {% for child in children %}
+      <div class="{{ child.class }}">
+        <h2><a href="{{ child.url }}">{{ child.friendly_name }}</a></h2>
+      </div>
     {% endfor %}
+
+    <h2>Subway map</h2>
+    {% include "simplekey/subway.html" %}
 
   </body>
 </html>
