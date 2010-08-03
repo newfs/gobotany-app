@@ -32,3 +32,6 @@ def pile_view(request, name):
     return render_to_response(
         'simplekey/pile.html', {'pile': pile},
         context_instance=RequestContext(request))
+
+def results_view(request):
+    return render_to_response('simplekey/results.html')

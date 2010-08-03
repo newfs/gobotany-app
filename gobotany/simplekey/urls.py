@@ -6,4 +6,5 @@ urlpatterns = patterns(
     url('^$', views.index_view),
     url('^collections/(?P<slug>[^/]*)/$', views.collection_view),
     url('^piles/(?P<name>[^/]*)/$', views.pile_view),
+    url('^results/', views.results_view),
     )

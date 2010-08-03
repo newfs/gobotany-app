@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+  <head>
+    <title>{% block title %}{% endblock %} - Plant Identifier - Go-Botany</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/gobotany.css" />
+  </head>
+  <body>
+    <div id="content">
+      {% block content %}{% endblock %}
+    </div>
+    <script>
+	djConfig = { 
+        isDebug: true,
+        debugAtAllCosts:true,
+        useXDomain: false,
+        baseUrl: 'http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/',
+        modulePaths: {
+            gobotany: '/static/gobotany'
+        },
+    };
+    </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/dojo.xd.js"></script>
+    {% block js %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,21 @@
+@import url(reset.css);
+
+/* Go-Botany site styles */
+
+body {
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+    padding: 24px;
+}
+
+h1 {
+    font-size: 32px;
+    font-weight: normal;
+    margin: 8px 0;
+    padding: 8px 0;
+}
+
+p {
+    font-size: 14px;
+    margin: 5px 0;
+    padding: 5px 0;
+}
