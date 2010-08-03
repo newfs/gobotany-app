@@ -1,8 +1,17 @@
 {% extends "simplekey/base.html" %}
-{% block title %}Results{% endblock %}
+{% block title %}
+{% if pile_group %}
+  {{ pile_group.name }}:
+{% endif %}
+{{ pile.name }}
+{% endblock %}
 {% block content %}
     <p>Plant Identifier</p>
-    <h1>(Collection: Sub-collection)</h1>
+    <h1>
+        {% if pile_group %}
+          {{ pile_group.name }}:
+        {% endif %}
+        {{ pile.name }}</h1>
     <div id='global-filter'>
         <form>
             <p>Family<br>

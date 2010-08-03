@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
-from gobotany.core.models import Pile
+from gobotany.core.models import Pile, PileGroup
 from gobotany.simplekey.models import Collection, get_blurb
 
 def index_view(request):
@@ -34,5 +34,13 @@ def pile_view(request, name):
         'simplekey/pile.html', {'pile': pile},
         context_instance=RequestContext(request))
 
-def results_view(request):
-    return render_to_response('simplekey/results.html')
+def results_view(request, pile_group_name=None, pile_name=None):
+    data = {}
+    if pile_group_name:
+        pile_group = get_object_or_404(PileGroup, name=pile_group_name)
+        data['pile_group'] = pile_group
+    if pile_name:
+        pile = get_object_or_404(Pile, name=pile_name)
+        data['pile'] = pile
+    return render_to_response('simplekey/results.html', data,
+        context_instance=RequestContext(request))
