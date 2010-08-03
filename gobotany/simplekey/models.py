@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.urlresolvers import reverse
+from gobotany.core.models import Pile
 
 
 class Blurb(models.Model):
@@ -33,3 +35,26 @@ class Collection(models.Model):
     def get_absolute_url(self):
         return ('gobotany.simplekey.views.collection_view',
                 (), {'slug': self.slug})
+
+    def get_children(self):
+        """Return the child objects encoded in our ``contents`` field."""
+        childlist = []
+        for line in self.contents.splitlines():
+            fields = line.split(None, 1)
+            if len(fields) < 2:
+                continue
+            kind, pattern = fields
+            if kind == 'pile':
+                objs = Pile.objects.filter(name=pattern)
+            else:
+                objs = Collection.objects.filter(slug=pattern)
+            if not objs:
+                continue
+            obj = objs[0]
+            if kind == 'pile':
+                url = reverse('gobotany.simplekey.views.pile_view',
+                              kwargs={'name': pattern})
+            else:
+                url = obj.get_absolute_url()
+            childlist.append({ 'kind': kind, 'target': obj, 'url': url })
+        return childlist
