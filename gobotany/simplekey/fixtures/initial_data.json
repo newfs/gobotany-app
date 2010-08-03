@@ -1,0 +1,12 @@
+[
+  {
+    "pk": 1, 
+    "model": "simplekey.collection", 
+    "fields": {
+      "contents": "collection ferns\r\ncollection woody\r\ncollection aquatics\r\nelse continue1", 
+      "slug": "start", 
+      "blurb": "Here, you face your first three collections. Which will you choose?", 
+      "title": "Welcome to the Simple Key!"
+    }
+  }
+]
