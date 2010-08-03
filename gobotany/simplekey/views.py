@@ -26,7 +26,7 @@ def create_subway(item=None):
         if children:
             yield 'indent'
             for child in children:
-                for thing in create_subway(child):
+                for thing in create_subway(child['object']):
                     yield thing
             yield 'dedent'
 
@@ -38,21 +38,21 @@ def index_view(request):
         context_instance=RequestContext(request))
 
 
-def viewify(thing):
-    """Return a dictionary of info that a view will want about `thing`."""
-    d = { 'class': thing.__class__.__name__.lower(),
-          'thing': thing,
-          'url': get_simple_url(thing) }
+def viewify(cdict):
+    """Supplement a {'kind': k, 'object': o} dictionary with more info."""
+    thing = cdict['object']
+    cdict['class'] = thing.__class__.__name__.lower()
+    cdict['url'] = get_simple_url(thing)
     if isinstance(thing, Collection):
-        d['friendly_name'] = thing.name
+        cdict['friendly_name'] = thing.name
     elif isinstance(thing, Pile):
-        d['friendly_name'] = thing.friendly_name or thing.name
-    return d
+        cdict['friendly_name'] = thing.friendly_name or thing.name
+    return cdict
 
 
 def collection_view(request, slug):
     collection = get_object_or_404(Collection, slug=slug)
-    children = [ viewify(child) for child in collection.get_children() ]
+    children = [ viewify(cdict) for cdict in collection.get_children() ]
     return render_to_response(
         'simplekey/collection.html', {
             'collection': collection,

@@ -49,5 +49,5 @@ class Collection(models.Model):
                 objs = Collection.objects.filter(slug=pattern)
             if not objs:
                 continue
-            childlist.append(objs[0])
+            childlist.append({ 'kind': kind, 'object': objs[0] })
         return childlist
