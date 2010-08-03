@@ -3,9 +3,14 @@ from django.template import RequestContext
 from gobotany.core.models import Pile, PileGroup
 from gobotany.simplekey.models import Collection, get_blurb
 
-def get_map():
+
+def get_map(item=None):
     """Return the hierarchy of collections and piles."""
-    
+    if item is None:
+        item = Collection.objects.get(slug='start')
+    children = item.get_children() if isinstance(item, Collection) else []
+    childmaps = [ get_map(child['target']) for child in children ]
+    return {'item': item, 'children': childmaps}
 
 
 def index_view(request):
@@ -17,7 +22,6 @@ def index_view(request):
 
 def collection_view(request, slug):
     collection = get_object_or_404(Collection, slug=slug)
-    print collection.get_children()
     return render_to_response(
         'simplekey/collection.html',
         {'collection': collection, 'map': get_map()},
