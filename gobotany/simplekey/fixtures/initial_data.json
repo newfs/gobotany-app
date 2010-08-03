@@ -4,6 +4,7 @@
     "model": "simplekey.collection", 
     "fields": {
       "contents": "collection ferns\r\ncollection woody\r\ncollection aquatics\r\nelse continue1", 
+      "name": "", 
       "slug": "start", 
       "title": "Welcome to the Simple Key!"
     }
@@ -13,6 +14,7 @@
     "model": "simplekey.collection", 
     "fields": {
       "contents": "pile Equisetaceae\r\npile Lycophytes\r\npile Monilophytes", 
+      "name": "Ferns", 
       "slug": "ferns", 
       "title": "There are several kinds of fern"
     }
@@ -21,7 +23,8 @@
     "pk": 3, 
     "model": "simplekey.collection", 
     "fields": {
-      "contents": "pile Angiosperms\r\npile Gymnosperms", 
+      "contents": "pile woody angiosperms\r\npile woody gymnosperms", 
+      "name": "Woody plants", 
       "slug": "woody", 
       "title": "Woody plants can be of two types"
     }
@@ -30,7 +33,8 @@
     "pk": 4, 
     "model": "simplekey.collection", 
     "fields": {
-      "contents": "pile Thalloid Aquatics\r\npile Non-Thalloid Aquatics", 
+      "contents": "pile Thalloid aquatic\r\npile Non-thalloid aquatic", 
+      "name": "Aquatic plants", 
       "slug": "aquatics", 
       "title": "Aquatic plants fall into two categories"
     }
@@ -40,6 +44,7 @@
     "model": "simplekey.collection", 
     "fields": {
       "contents": "collection grasslike\r\nelse continue2", 
+      "name": "", 
       "slug": "continue1", 
       "title": "Maybe your plant is a kind of grass?"
     }
@@ -48,7 +53,8 @@
     "pk": 6, 
     "model": "simplekey.collection", 
     "fields": {
-      "contents": "pile Carex\r\npile Poaceae\r\npile Remaining Graminoids", 
+      "contents": "pile Carex\r\npile Poaceae\r\npile Remaining graminoids", 
+      "name": "Grass-like plants", 
       "slug": "grasslike", 
       "title": "What kind of grass might your plant be?"
     }
@@ -58,6 +64,7 @@
     "model": "simplekey.collection", 
     "fields": {
       "contents": "collection monocots\r\nelse non-monocots", 
+      "name": "", 
       "slug": "continue2", 
       "title": "Next we will figure out if your plant is a Monocot"
     }
@@ -66,7 +73,8 @@
     "pk": 8, 
     "model": "simplekey.collection", 
     "fields": {
-      "contents": "pile Orchids\r\npile Non-Orchid Monocots", 
+      "contents": "pile Orchid\r\npile Non-orchid monocots", 
+      "name": "Monocots", 
       "slug": "monocots", 
       "title": "Decide if your plant is an orchid or not!"
     }
@@ -75,7 +83,8 @@
     "pk": 9, 
     "model": "simplekey.collection", 
     "fields": {
-      "contents": "pile Composites\r\npile Remaining Non-Monocots", 
+      "contents": "pile Composites\r\npile Remaining non-monocots", 
+      "name": "Non-monocots", 
       "slug": "non-monocots", 
       "title": "Which of these groups fits your plant best?"
     }

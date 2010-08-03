@@ -1,0 +1,34 @@
+<html>
+  <body>
+    <h1>{{ collection.title }}</h1>
+    <p>
+      Which of the following best describes your plant?
+    </p>
+    {% for choice in choices %}
+      {% if choice.type == 'collection' %}
+        <div class="collection">
+          <h2><a href="{{ choice.url }}">{{ choice.target.name }}</a></h2>
+        </div>
+      {% endif %}
+      {% if choice.type == 'pile' %}
+        <div>
+          <h2>
+            {% if choice.target.friendly_name %}
+              <a href="{{ choice.url }}"
+                 >{{ choice.target.friendly_name }}</a>
+              ({{ choice.target.name }})
+            {% else %}
+              <a href="{{ choice.url }}">{{ choice.target.name }}</a>
+            {% endif %}
+          </h2>
+        </div>
+      {% endif %}
+      {% if choice.type == 'else' %}
+        <div>
+          None of these look right.
+          <a href="{{ choice.url }}">Give me more choices »</a>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </body>
+</html>
