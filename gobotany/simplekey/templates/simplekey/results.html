@@ -6,25 +6,29 @@
 {{ pile.name }}
 {% endblock %}
 {% block content %}
-    <p>Plant Identifier</p>
-    <h1>
-        {% if pile_group %}
-          {{ pile_group.name }}:
-        {% endif %}
-        {{ pile.name }}</h1>
-    <div id='global-filter'>
-        <form>
-            <p>Family<br>
-            <input type="text">
-            <input type="submit" value="Go">
-            </p>
-        </form>
-        <form>
-            <p>Genus<br>
-            <input type="text">
-            <input type="submit" value="Go">
-            </p>
-        </form>
+  <h1>
+    {% if pile_group %}
+      {{ pile_group.name }}:
+    {% endif %}
+    {{ pile.name }}
+  </h1>
+  <div id="main">
+    <div id="global-filter">
+      <form>
+        <p>Family<br>
+        <input type="text">
+        <input type="submit" value="Go">
+        </p>
+      </form>
+      <form>
+        <p>Genus<br>
+        <input type="text">
+        <input type="submit" value="Go">
+        </p>
+      </form>
     </div>
-    <p id='main'>Filters and results here</p>
+    {% include "simplekey/filter_working.html" %}
+    {% include "simplekey/plants.html" %}
+  </div>
+  {% include "simplekey/filters.html" %}
 {% endblock %}

@@ -20,12 +20,47 @@ p {
     padding: 5px 0;
 }
 
-#global-filter form {
-    float: left;
-    margin-right: 4em;
+#content {
+    width: 960px;
 }
 
 #main {
+    border: 1px dashed #ddd;
+    float: right;
+    height: 450px;
+    margin: 0 0 1em;
+    width: 750px;
+}
+
+#filters {
+    float: left;
+    height: 350px;
+    width: 200px;
+}
+
+#head, #foot, #filters, #filter-working, #plants {
+    border: 1px dashed #ddd;
+    color: #ddd;
+    font-size: 10px;
+    margin: 0 0 1em;
+    padding: 1em 0;
+    text-align: center;
+}
+
+#filter-working, #plants {
     clear: left;
-    padding-top: 1em;
+}
+
+#plants {
+    height: 300px;
+}
+
+#foot {
+    clear: both;
+    margin: 1em 0 0;
+}
+
+#global-filter form {
+    float: left;
+    margin-right: 4em;
 }

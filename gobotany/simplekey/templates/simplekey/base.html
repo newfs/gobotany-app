@@ -6,10 +6,13 @@
   </head>
   <body>
     <div id="content">
+      {% include "simplekey/header.html" %}
+      <p>Plant Identifier</p>
       {% block content %}{% endblock %}
+      {% include "simplekey/footer.html" %}
     </div>
     <script>
-	djConfig = { 
+    djConfig = { 
         isDebug: true,
         debugAtAllCosts:true,
         useXDomain: false,
