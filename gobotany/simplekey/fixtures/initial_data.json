@@ -5,8 +5,79 @@
     "fields": {
       "contents": "collection ferns\r\ncollection woody\r\ncollection aquatics\r\nelse continue1", 
       "slug": "start", 
-      "blurb": "Here, you face your first three collections. Which will you choose?", 
       "title": "Welcome to the Simple Key!"
+    }
+  },
+  {
+    "pk": 2, 
+    "model": "simplekey.collection", 
+    "fields": {
+      "contents": "pile Equisetaceae\r\npile Lycophytes\r\npile Monilophytes", 
+      "slug": "ferns", 
+      "title": "There are several kinds of fern"
+    }
+  },
+  {
+    "pk": 3, 
+    "model": "simplekey.collection", 
+    "fields": {
+      "contents": "pile Angiosperms\r\npile Gymnosperms", 
+      "slug": "woody", 
+      "title": "Woody plants can be of two types"
+    }
+  },
+  {
+    "pk": 4, 
+    "model": "simplekey.collection", 
+    "fields": {
+      "contents": "pile Thalloid Aquatics\r\npile Non-Thalloid Aquatics", 
+      "slug": "aquatics", 
+      "title": "Aquatic plants fall into two categories"
+    }
+  },
+  {
+    "pk": 5, 
+    "model": "simplekey.collection", 
+    "fields": {
+      "contents": "collection grasslike\r\nelse continue2", 
+      "slug": "continue1", 
+      "title": "Maybe your plant is a kind of grass?"
+    }
+  },
+  {
+    "pk": 6, 
+    "model": "simplekey.collection", 
+    "fields": {
+      "contents": "pile Carex\r\npile Poaceae\r\npile Remaining Graminoids", 
+      "slug": "grasslike", 
+      "title": "What kind of grass might your plant be?"
+    }
+  },
+  {
+    "pk": 7, 
+    "model": "simplekey.collection", 
+    "fields": {
+      "contents": "collection monocots\r\nelse non-monocots", 
+      "slug": "continue2", 
+      "title": "Next we will figure out if your plant is a Monocot"
+    }
+  },
+  {
+    "pk": 8, 
+    "model": "simplekey.collection", 
+    "fields": {
+      "contents": "pile Orchids\r\npile Non-Orchid Monocots", 
+      "slug": "monocots", 
+      "title": "Decide if your plant is an orchid or not!"
+    }
+  },
+  {
+    "pk": 9, 
+    "model": "simplekey.collection", 
+    "fields": {
+      "contents": "pile Composites\r\npile Remaining Non-Monocots", 
+      "slug": "non-monocots", 
+      "title": "Which of these groups fits your plant best?"
     }
   }
 ]
