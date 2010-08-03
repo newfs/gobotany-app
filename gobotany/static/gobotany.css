@@ -19,3 +19,13 @@ p {
     margin: 5px 0;
     padding: 5px 0;
 }
+
+#global-filter form {
+    float: left;
+    margin-right: 4em;
+}
+
+#main {
+    clear: left;
+    padding-top: 1em;
+}

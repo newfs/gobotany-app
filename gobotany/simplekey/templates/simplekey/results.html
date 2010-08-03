@@ -3,5 +3,19 @@
 {% block content %}
     <p>Plant Identifier</p>
     <h1>(Collection: Sub-collection)</h1>
-    <p>Filters and results here</p>
+    <div id='global-filter'>
+        <form>
+            <p>Family<br>
+            <input type="text">
+            <input type="submit" value="Go">
+            </p>
+        </form>
+        <form>
+            <p>Genus<br>
+            <input type="text">
+            <input type="submit" value="Go">
+            </p>
+        </form>
+    </div>
+    <p id='main'>Filters and results here</p>
 {% endblock %}
