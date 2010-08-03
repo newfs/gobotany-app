@@ -2,11 +2,12 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from gobotany.core.models import Pile
-from gobotany.simplekey.models import Collection
+from gobotany.simplekey.models import Collection, get_blurb
 
 def index_view(request):
+    blurb = get_blurb('index_instructions')
     return render_to_response(
-        'simplekey/index.html', {},
+        'simplekey/index.html', {'blurb': blurb},
         context_instance=RequestContext(request))
 
 def collection_view(request, slug):
