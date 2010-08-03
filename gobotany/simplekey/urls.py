@@ -6,6 +6,6 @@ urlpatterns = patterns(
     url('^$', views.index_view),
     url('^collections/(?P<slug>[^/]*)/$', views.collection_view),
     url('^piles/(?P<name>[^/]*)/$', views.pile_view),
-    url('^results/(?P<pile_name>[^/]*)/$', views.results_view),
-    url('^results/(?P<pile_group_name>[^/]*)/(?P<pile_name>[^/]*)/$', views.results_view),
+    url('^(?P<pile_name>[^/]*)/results/$', views.results_view),
+    url('^(?P<pile_group_name>[^/]*)/(?P<pile_name>[^/]*)/results/$', views.results_view),
 )
