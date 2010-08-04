@@ -76,19 +76,19 @@ class BasePileHandler(BaseHandler):
               'youtube_id', 'key_characteristics', 'notable_exceptions',
               'default_image')
 
-    def read(self, request, name):
-        return self.model.objects.get(name=name)
+    def read(self, request, slug):
+        return self.model.objects.get(slug=slug)
 
-    def update(self, request, name):
-        obj = self.model.objects.get(name=name)
+    def update(self, request, slug):
+        obj = self.model.objects.get(slug=slug)
         for k, v in request.PUT.items():
             if k in self.fields:
                 setattr(obj, k, v)
         obj.save()
         return obj
 
-    def delete(self, request, name):
-        obj = self.model.objects.get(name=name)
+    def delete(self, request, slug):
+        obj = self.model.objects.get(slug=slug)
         obj.delete()
         return rc.DELETED
 
@@ -100,10 +100,11 @@ class BasePileHandler(BaseHandler):
 
 class PileHandler(BasePileHandler):
     model = models.Pile
+    fields = BasePileHandler.fields + ('default_filters',)
 
     @staticmethod
     def resource_uri(pile=None):
-        return 'api-pile', ['name' if pile is None else pile.id]
+        return 'api-pile', ['slug' if pile is None else pile.id]
 
     @staticmethod
     def default_filters(pile=None):
@@ -126,7 +127,7 @@ class PileGroupHandler(BasePileHandler):
 
     @staticmethod
     def resource_uri(pilegroup=None):
-        return 'api-pilegroup', ['name' if pilegroup is None else pilegroup.id]
+        return 'api-pilegroup', ['slug' if pilegroup is None else pilegroup.id]
 
 
 class PileListingHandler(BaseHandler):

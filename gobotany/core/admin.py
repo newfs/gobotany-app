@@ -38,6 +38,7 @@ class TaxonAdmin(admin.ModelAdmin):
 class PileAdminBase(admin.ModelAdmin):
     inlines = [ContentImageInline]
     search_fields = ('name',)
+    prepopulated_fields = {"slug": ("slug",)}
 
 class PileAdmin(PileAdminBase):
     filter_horizontal = ('character_values', 'species',)

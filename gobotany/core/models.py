@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
-
+from django.template.defaultfilters import slugify
 
 class CharacterGroup(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -219,7 +219,8 @@ class CharacterValue(models.Model):
 class PileInfo(models.Model):
     """Common fields shared by Pile-like objects."""
     name = models.CharField(max_length=100, unique=True)
-    friendly_name = models.CharField(max_length=100, unique=True, null=True)
+    slug = models.SlugField(max_length=100, unique=True)
+    friendly_name = models.CharField(max_length=100, null=True)
     description = models.CharField(max_length=2500)
     images = generic.GenericRelation('ContentImage')
     youtube_id = models.CharField(max_length=20, blank=True)
@@ -239,6 +240,12 @@ class PileInfo(models.Model):
                                        image_type__name='pile image')
             except ObjectDoesNotExist:
                 return None
+
+    def save(self, *args, **kw):
+        """Set the slug if it isn't already set"""
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super(PileInfo, self).save(*args, **kw)
 
 
 class Pile(PileInfo):

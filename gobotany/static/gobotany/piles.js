@@ -35,7 +35,7 @@ gobotany.piles._populate_base_pile_listing = function(basename) {
         dojo.empty(select);
         for (var x = 0; x < res.items.length; x++) {
             var item = res.items[x];
-            dojo.place('<option value="'+item.name+'">'+item.name+'</option>', select);
+            dojo.place('<option value="'+item.resource_uri+'">'+item.name+'</option>', select);
         }
         select.disabled = false;
     }});
@@ -49,9 +49,9 @@ gobotany.piles.populate_pile_groups = function() {
     gobotany.piles._populate_base_pile_listing('pilegroup');
 };
 
-gobotany.piles._show_base_pile_info = function(basename, name) {
+gobotany.piles._show_base_pile_info = function(basename, uri) {
     var store = new dojox.data.JsonRestStore({target: '/'+basename+'s/'});
-    store.fetchItemByIdentity({identity: name, onItem: function(item) {
+    store.fetchItemByIdentity({identity: uri, onItem: function(item) {
         var dl = dojo.byId(basename+'-info');
         dojo.empty(dl);
         for (var x in item) {
@@ -63,10 +63,10 @@ gobotany.piles._show_base_pile_info = function(basename, name) {
     }});
 };
 
-gobotany.piles.show_pile = function(name) {
-    gobotany.piles._show_base_pile_info('pile', name);
+gobotany.piles.show_pile = function(uri) {
+    gobotany.piles._show_base_pile_info('pile', uri);
 };
 
-gobotany.piles.show_pilegroup = function(name) {
-    gobotany.piles._show_base_pile_info('pilegroup', name);
+gobotany.piles.show_pilegroup = function(uri) {
+    gobotany.piles._show_base_pile_info('pilegroup', uri);
 };

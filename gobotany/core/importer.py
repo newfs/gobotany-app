@@ -126,17 +126,17 @@ class Importer(object):
 
             # Create the Pile.
             pile, created = models.Pile.objects.get_or_create(
-                name=row['desc'].title())
-            if pilegroup is not None:
-                pile.pilegroup = pilegroup
+                name=row['name'].title())
+            pile.pilegroup = pilegroup
             # Update the friendly name and description.
-            if row['friendly_name']:
-                pile.friendly_name = row['friendly_name']
+            pile.friendly_name = row['friendly_name']
             pile.description = row['description']
             pile.save()
             self._add_pile_images(pile, pile_images, pile_prefixes)
             if created:
                 print >> self.logfile, u'    New Pile:', pile
+            else:
+                print >> self.logfile, u'    Updated Pile:', pile
 
 
     def _import_taxa(self, taxaf):
@@ -235,23 +235,17 @@ class Importer(object):
             if not pile_suffix in pile_mapping:
                 continue
 
-            res = models.Pile.objects.filter(name__iexact=pile_mapping[pile_suffix])
-            if len(res) == 0:
+            pile, created = models.Pile.objects.get_or_create(
+                name=pile_mapping[pile_suffix])
+            if created:
                 print >> self.logfile, u'  New Pile: ' \
                       + pile_mapping[pile_suffix]
-                pile = models.Pile(name=pile_mapping[pile_suffix])
-                pile.save()
-            else:
-                pile = res[0]
 
-            res = models.CharacterGroup.objects.filter(name=row['type'])
-            if len(res) == 0:
+            chargroup, created = models.CharacterGroup.objects.get_or_create(
+                name=row['type'])
+            if created:
                 print >> self.logfile, u'    New Character Group: ' \
                       + row['type']
-                chargroup = models.CharacterGroup(name=row['type'])
-                chargroup.save()
-            else:
-                chargroup = res[0]
 
             res = models.Character.objects.filter(short_name=short_name)
             if len(res) == 0:
@@ -259,6 +253,7 @@ class Importer(object):
                 # Create a friendly name automatically for now.
                 temp_friendly_name = short_name.replace('_', ' ').capitalize()
                 character = models.Character(short_name=short_name,
+                                             name=temp_friendly_name,
                                              friendly_name=temp_friendly_name,
                                              character_group=chargroup)
                 character.save()
