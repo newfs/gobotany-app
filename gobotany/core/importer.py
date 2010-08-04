@@ -111,6 +111,9 @@ class Importer(object):
 
         for cols in iterator:
             row = dict(zip(colnames, cols))
+            # Skip the 'All' pile
+            if row['name'].lower() == 'all':
+                continue
 
             pilegroup = None
             # If a Pile Group is specified, create it if doesn't exist yet.
@@ -429,19 +432,25 @@ class Importer(object):
 
         character = \
             models.Character.objects.get(short_name='leaf_habit')
-        filter = models.DefaultFilter(pile=pile, character=character, order=1)
+        filter, created = models.DefaultFilter.objects.get_or_create(pile=pile,
+                                                                     character=character,
+                                                                     order=1)
         filter.save()
 
         character = \
             models.Character.objects.get(short_name='achene_indentations')
-        filter = models.DefaultFilter(pile=pile, character=character, order=2)
+        filter, created = models.DefaultFilter.objects.get_or_create(pile=pile,
+                                                                     character=character,
+                                                                     order=2)
         filter.save()
 
-        character = models.Character.objects.get( \
+        character = models.Character.objects.get(
             short_name='basal_leaf_sheath_texture')
-        filter = models.DefaultFilter(pile=pile, character=character, order=3)
+        filter, created = models.DefaultFilter.objects.get_or_create(pile=pile,
+                                                                     character=character,
+                                                                     order=3)
         filter.save()
-        
+
 
 def main():
     # Incredibly lame option parsing, since we can't rely on real option parsing

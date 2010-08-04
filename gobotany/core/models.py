@@ -411,10 +411,11 @@ class TaxonGroupEntry(models.Model):
 class DefaultFilter(models.Model):
     pile = models.ForeignKey(Pile)
     character = models.ForeignKey(Character)
-    order = models.IntegerField(null=True, blank=True)
+    order = models.IntegerField(unique=True)
 
     class Meta:
         ordering = ['order']
+        unique_together = ('pile', 'character')
 
     def __unicode__(self):
         return '%d: %s (%s)' % (self.order, self.character.friendly_name,
