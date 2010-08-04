@@ -74,6 +74,8 @@ class TaxonGroupAdmin(admin.ModelAdmin):
     ordering = ('name',)
     inlines = (TaxonGroupEntryInline,)
 
+class DefaultFilterAdmin(admin.ModelAdmin):
+    model = models.DefaultFilter
 
 admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.ContentImage)
@@ -85,3 +87,4 @@ admin.site.register(models.CharacterGroup)
 admin.site.register(models.CharacterValue, CharacterValueAdmin)
 admin.site.register(models.Taxon, TaxonAdmin)
 admin.site.register(models.TaxonGroup, TaxonGroupAdmin)
+admin.site.register(models.DefaultFilter, DefaultFilterAdmin)

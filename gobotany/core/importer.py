@@ -47,6 +47,7 @@ class Importer(object):
         self._import_character_glossary(char_glossaryf)
         self._import_glossary(glossaryf, glossary_images)
         self._import_piles(pilef, pile_images)
+        self._import_default_filters()
         self._import_taxa(taxaf)
         for taxonf in taxonfiles:
             self._import_taxon_character_values(taxonf)
@@ -242,7 +243,10 @@ class Importer(object):
             res = models.Character.objects.filter(short_name=short_name)
             if len(res) == 0:
                 print >> self.logfile, u'      New Character: ' + short_name
+                # Create a friendly name automatically for now.
+                temp_friendly_name = short_name.replace('_', ' ').capitalize()
                 character = models.Character(short_name=short_name,
+                                             friendly_name=temp_friendly_name,
                                              character_group=chargroup)
                 character.save()
             else:
@@ -411,6 +415,25 @@ class Importer(object):
                 else:
                     print >> self.logfile, 'Updated %s'%msg
 
+    def _import_default_filters(self):
+        print >> self.logfile, 'Setting up some default filters'
+        pile = models.Pile.objects.get(name='Carex')
+
+        character = \
+            models.Character.objects.get(short_name='leaf_habit')
+        filter = models.DefaultFilter(pile=pile, character=character, order=1)
+        filter.save()
+
+        character = \
+            models.Character.objects.get(short_name='achene_indentations')
+        filter = models.DefaultFilter(pile=pile, character=character, order=2)
+        filter.save()
+
+        character = models.Character.objects.get( \
+            short_name='basal_leaf_sheath_texture')
+        filter = models.DefaultFilter(pile=pile, character=character, order=3)
+        filter.save()
+        
 
 def main():
     # Incredibly lame option parsing, since we can't rely on real option parsing

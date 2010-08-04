@@ -84,6 +84,7 @@ class Character(models.Model):
 
     short_name = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100)
+    friendly_name = models.CharField(max_length=100)
     character_group = models.ForeignKey(CharacterGroup)
     glossary_terms = models.ManyToManyField(
         GlossaryTerm,
@@ -388,3 +389,16 @@ class TaxonGroupEntry(models.Model):
 
     def __unicode__(self):
         return '%s: %s'%(self.group.name, self.taxon.scientific_name)
+
+
+class DefaultFilter(models.Model):
+    pile = models.ForeignKey(Pile)
+    character = models.ForeignKey(Character)
+    order = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['order']
+
+    def __unicode__(self):
+        return '%d: %s (%s)' % (self.order, self.character.friendly_name,
+                                self.pile.name)
