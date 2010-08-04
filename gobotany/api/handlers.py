@@ -105,6 +105,21 @@ class PileHandler(BasePileHandler):
     def resource_uri(pile=None):
         return 'api-pile', ['name' if pile is None else pile.id]
 
+    @staticmethod
+    def default_filters(pile=None):
+        filters = []
+        default_filters = \
+            models.DefaultFilter.objects.filter(pile=pile)
+        for default_filter in default_filters:
+            filter = {}
+            filter['character_short_name'] = \
+                default_filter.character.short_name
+            filter['character_friendly_name'] = \
+                default_filter.character.friendly_name
+            filter['order'] = default_filter.order
+            filters.append(filter)
+        return filters
+
 
 class PileGroupHandler(BasePileHandler):
     model = models.PileGroup
