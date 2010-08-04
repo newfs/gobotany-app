@@ -126,11 +126,11 @@ class Importer(object):
 
             # Create the Pile.
             pile, created = models.Pile.objects.get_or_create(
-                name=row['name'].title())
+                name=row['desc'].title())
             pile.pilegroup = pilegroup
             # Update the friendly name and description.
             pile.friendly_name = row['friendly_name']
-            pile.description = row['description']
+            #pile.description = row['description']
             pile.save()
             self._add_pile_images(pile, pile_images, pile_prefixes)
             if created:
