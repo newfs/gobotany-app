@@ -74,7 +74,7 @@ class BasePileHandler(BaseHandler):
     methods_allowed = ('GET', 'PUT', 'DELETE')
     fields = ('name', 'friendly_name', 'description', 'resource_uri',
               'youtube_id', 'key_characteristics', 'notable_exceptions',
-              'default_image', 'default_filters')
+              'default_image')
 
     def read(self, request, slug):
         return self.model.objects.get(slug=slug)
