@@ -72,7 +72,9 @@ class TaxonImageHandler(BaseHandler):
 
 class BasePileHandler(BaseHandler):
     methods_allowed = ('GET', 'PUT', 'DELETE')
-    fields = ('name', 'friendly_name', 'description', 'resource_uri')
+    fields = ('name', 'friendly_name', 'description', 'resource_uri',
+              'youtube_id', 'key_characteristics', 'notable_exceptions',
+              'default_image')
 
     def read(self, request, name):
         return self.model.objects.get(name=name)
@@ -89,6 +91,11 @@ class BasePileHandler(BaseHandler):
         obj = self.model.objects.get(name=name)
         obj.delete()
         return rc.DELETED
+
+    @staticmethod
+    def default_image(pile=None):
+        if pile is not None:
+            return _taxon_image(pile.get_default_image())
 
 
 class PileHandler(BasePileHandler):

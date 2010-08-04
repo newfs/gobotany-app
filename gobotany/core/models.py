@@ -222,6 +222,9 @@ class PileInfo(models.Model):
     friendly_name = models.CharField(max_length=100, unique=True, null=True)
     description = models.CharField(max_length=2500)
     images = generic.GenericRelation('ContentImage')
+    youtube_id = models.CharField(max_length=20, blank=True)
+    key_characteristics = models.TextField(blank=True)
+    notable_exceptions = models.TextField(blank=True)
 
     class Meta:
         abstract = True
@@ -229,6 +232,13 @@ class PileInfo(models.Model):
 
     def __unicode__(self):
         return u'%s id=%s' % (self.name, self.id)
+
+    def get_default_image(self):
+            try:
+                return self.images.get(rank=1,
+                                       image_type__name='pile image')
+            except ObjectDoesNotExist:
+                return None
 
 
 class Pile(PileInfo):
