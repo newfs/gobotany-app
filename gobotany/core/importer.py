@@ -7,6 +7,7 @@ management.setup_environ(settings)
 import csv
 import sys
 import tarfile
+import re
 from gobotany.core import models
 from django.contrib.contenttypes.models import ContentType
 
@@ -33,7 +34,7 @@ class CSVReader(object):
             for row in r:
                 yield [c.decode('Windows-1252') for c in row]
 
-pile_mapping = {'ly': u'Lycophytes', 'ca': u'Carex (sedges)'}
+pile_mapping = {'ly': u'Lycophytes', 'ca': u'Carex'}
 
 
 class Importer(object):
@@ -60,16 +61,22 @@ class Importer(object):
         pile_image, created = models.ImageType.objects.get_or_create(
             name='pile image')
 
+        found_rank_one = False
         for filename in prefix_mapping.get(
             pile.name.lower().replace('-',' ').replace('(','').replace(')',''),
             ()):
             parts = filename.split('-')
             image_type = (parts[-2] == 'filter' and filter_image or
                           pile_image)
+            # XXX: arbitrarily set a default image
+            if image_type == pile_image and not found_rank_one:
+                rank = 1
+                found_rank_one = True
+            else:
+                # Everything else has the same rank
+                rank = 2
             content_image, created = models.ContentImage.objects.get_or_create(
-                rank=2, # can't use file name to determine rank,
-                        # because there are sometimes multiple rank 1
-                        # files
+                rank=rank,
                 alt = '%s %s: %s'%(pile.name, image_type.name,
                                    filename),
                 image_type=image_type,
@@ -105,10 +112,11 @@ class Importer(object):
         for cols in iterator:
             row = dict(zip(colnames, cols))
 
+            pilegroup = None
             # If a Pile Group is specified, create it if doesn't exist yet.
             if row['pile_group']:
                 pilegroup, created = models.PileGroup.objects.get_or_create(
-                    name=row['pile_group'])
+                    name=row['pile_group'].title())
                 # TODO: Are friendly_name and description important to set for
                 # a Pile Group? (The schema allows for them.) If so, will need
                 # to decide how to obtain those values.
@@ -118,12 +126,15 @@ class Importer(object):
 
             # Create the Pile.
             pile, created = models.Pile.objects.get_or_create(
-                name=row['desc'])
+                name=row['desc'].title())
+            if pilegroup is not None:
+                pile.pilegroup = pilegroup
             # Update the friendly name and description.
             if row['friendly_name']:
                 pile.friendly_name = row['friendly_name']
             pile.description = row['description']
             pile.save()
+            self._add_pile_images(pile, pile_images, pile_prefixes)
             if created:
                 print >> self.logfile, u'    New Pile:', pile
 
@@ -148,9 +159,10 @@ class Importer(object):
 
             # Assign this Taxon to the Pile(s) specified for it.
             if row['pile']:
-                for pile_name in row['pile'].split(';'):
+                for pile_name in re.split(r'[,;]', row['pile']):
                     # Look for a Pile with this name.
-                    piles = models.Pile.objects.filter(name=pile_name)
+                    piles = models.Pile.objects.filter(
+                        name__iexact=pile_name.strip())
                     if piles:
                         pile = piles[0]
                         pile.species.add(taxon)
@@ -177,7 +189,7 @@ class Importer(object):
 
             # Look up the taxon and if it exists, import character values.
             taxa = models.Taxon.objects.filter(
-                scientific_name=row['scientific_name'])
+                scientific_name__iexact=row['scientific_name'])
             if not taxa:
                 continue
             t = taxa[0]
@@ -199,9 +211,10 @@ class Importer(object):
                     print >> self.logfile, 'No such character value ' \
                           'exists: %s; %s' % (cname, v)
                     continue
-
-                models.TaxonCharacterValue(taxon=t, 
-                                           character_value=cvs).save()
+                # Associate the value with the species if it is not
+                # yet associated
+                models.TaxonCharacterValue.objects.get_or_create(taxon=t,
+                                                            character_value=cvs)
             t.save()
 
     def _import_characters(self, f):
@@ -222,7 +235,7 @@ class Importer(object):
             if not pile_suffix in pile_mapping:
                 continue
 
-            res = models.Pile.objects.filter(name=pile_mapping[pile_suffix])
+            res = models.Pile.objects.filter(name__iexact=pile_mapping[pile_suffix])
             if len(res) == 0:
                 print >> self.logfile, u'  New Pile: ' \
                       + pile_mapping[pile_suffix]
