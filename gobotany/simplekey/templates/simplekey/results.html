@@ -32,3 +32,11 @@
   </div>
   {% include "simplekey/filters.html" %}
 {% endblock %}
+{% block js %}
+  <script>
+    dojo.require('gobotany.results');
+    dojo.addOnLoad(function() {
+      gobotany.results.init('{{ pile.name }}');
+    });
+  </script>
+{% endblock %}

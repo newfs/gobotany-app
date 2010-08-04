@@ -8,14 +8,14 @@ body {
 }
 
 h1 {
-    font-size: 32px;
+    font-size: 2em;
     font-weight: normal;
     margin: 8px 0;
     padding: 8px 0;
 }
 
 p {
-    font-size: 14px;
+    font-size: 0.9em;
     margin: 5px 0;
     padding: 5px 0;
 }
@@ -33,15 +33,32 @@ p {
 }
 
 #filters {
+    border: 1px solid #ccc;
     float: left;
     height: 350px;
     width: 200px;
 }
 
-#head, #foot, #filters, #filter-working, #plants {
+#filters p {
+    border-bottom: 1px solid #ccc;
+    font-size: 0.65em;
+    line-height: 1.4em;
+    margin: 0;
+    padding: 1em;
+}
+
+#filters ul {
+    font-size: 0.75em;
+}
+
+#filters li {
+    margin: 1.5em 0 1.5em 1em;
+}
+
+#head, #foot, #filter-working, #plants {
     border: 1px dashed #ddd;
     color: #ddd;
-    font-size: 10px;
+    font-size: 0.65em;
     margin: 0 0 1em;
     padding: 1em 0;
     text-align: center;
