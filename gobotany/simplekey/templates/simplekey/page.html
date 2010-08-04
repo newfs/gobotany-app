@@ -1,0 +1,25 @@
+<html>
+  <body>
+    <h1>{{ page.title }}</h1>
+    <p>
+      Which of the following best describes your plant?
+    </p>
+
+    {% for pilegroup, url in pilegroups_and_urls %}
+      <div>
+        <h2><a href="{{ url }}">{{ pilegroup.name }}</a></h2>
+      </div>
+    {% endfor %}
+
+    {% if page.next_page %}
+      <div>
+        <h2><a href="{{ page.next_page.get_absolute_url }}"
+               >Give me more choices »</a></h2>
+      </div>
+    {% endif %}
+
+    <h2>Subway map</h2>
+    {% include "simplekey/subway.html" %}
+
+  </body>
+</html>

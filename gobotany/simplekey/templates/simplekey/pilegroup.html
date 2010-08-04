@@ -1,0 +1,18 @@
+<html>
+  <body>
+    <h1>The pilegroup: {{ pilegroup.name }}</h1>
+    <p>
+      Which of the following best describes your plant?
+    </p>
+
+    {% for pile, url in piles_and_urls %}
+      <div>
+        <h2><a href="{{ url }}">{{ pile.name }}</a></h2>
+      </div>
+    {% endfor %}
+
+    <h2>Subway map</h2>
+    {% include "simplekey/subway.html" %}
+
+  </body>
+</html>
