@@ -49,6 +49,7 @@ class Importer(object):
         self._import_glossary(glossaryf, glossary_images)
         self._import_piles(pilef, pile_images)
         self._import_default_filters()
+        self._import_extra_demo_data()
         self._import_taxa(taxaf)
         for taxonf in taxonfiles:
             self._import_taxon_character_values(taxonf)
@@ -450,6 +451,30 @@ class Importer(object):
                                                                      character=character,
                                                                      order=3)
         filter.save()
+
+    def _import_extra_demo_data(self):
+        print >> self.logfile, 'Setting up demo Pile attributes'
+        pile = models.Pile.objects.get(name='Woody Angiosperms')
+        if not pile.youtube_id:
+            pile.youtube_id = 'LQ-jv8g1YVI'
+        if not pile.key_characteristics:
+            pile.key_characteristics = '<ul><li>A key characteristic</li><li>Another one</li></ul>'
+        if not pile.notable_exceptions:
+            pile.notable_exceptions = '<ul><li>An Exception</li><li>Another one</li></ul>'
+        if not pile.description:
+            pile.description = 'A description of the Woody Angiosperms pile'
+        pile.save()
+
+        pile = models.PileGroup.objects.get(name='Woody Plants')
+        if not pile.youtube_id:
+            pile.youtube_id = 'VWDc9oyBj5Q'
+        if not pile.key_characteristics:
+            pile.key_characteristics = '<ul><li>A key characteristic</li><li>Another one</li></ul>'
+        if not pile.notable_exceptions:
+            pile.notable_exceptions = '<ul><li>An Exception</li><li>Another one</li></ul>'
+        if not pile.description:
+            pile.description = 'A description of the Woody Plants pile group'
+        pile.save()
 
 
 def main():

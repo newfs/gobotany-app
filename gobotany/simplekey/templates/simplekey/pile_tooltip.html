@@ -18,9 +18,9 @@
         {% endif %}
         <div class="KeyCharacteristics">
           <h4>Key Characteristics</h4>
-          {{ pile.key_characteristics }}
+          {{ pile.key_characteristics|safe }}
         </div>
         <div class="NotableExceptions">
           <h4>Notable Exceptions</h4>
-          {{ pile.notable_exceptions }}
+          {{ pile.notable_exceptions|safe }}
         </div>
