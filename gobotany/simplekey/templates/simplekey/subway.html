@@ -1,10 +1,12 @@
 <ul>
   {% for station in subway %}
     {% if station == 'indent' %}
-      <ul>
+      <li>
+        <ul>
     {% endif %}
     {% if station == 'dedent' %}
-      </ul>
+        </ul>
+      </li>
     {% endif %}
     {% if station.item %}
       <li>
