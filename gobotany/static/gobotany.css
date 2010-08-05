@@ -71,7 +71,7 @@ p {
 #filter-working {
     border: 1px solid #ccc;
     display: none;
-    height: 130px;
+    height: 160px;
     padding: 1em;
 }
 
@@ -89,7 +89,7 @@ p {
     float: left;
     font-size: 0.85em;
     padding: 1em 0 0;
-    width: 100px;
+    width: 150px;
 }
 
 #filter-working .values label {
@@ -104,7 +104,7 @@ p {
     float: right;
     font-size: 0.85em;
     padding: 1em;
-    width: 550px;
+    width: 500px;
 }
 
 #filter-working .info p {
