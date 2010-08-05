@@ -11,8 +11,8 @@ dojo.declare("Filter", null, {
     friendly_name: "",
     order: 0,
     constructor: function(args) {
-        console.log('Filter constructor called');
-        console.log('args.friendly_name: ' + args.friendly_name);
+        //console.log('Filter constructor called');
+        //console.log('args.friendly_name: ' + args.friendly_name);
         this.friendly_name = args.friendly_name;
         dojo.safeMixin(this, args);
     }
@@ -23,7 +23,7 @@ dojo.declare("Filter", null, {
 dojo.declare("MultipleChoiceFilter", [Filter], {
     character_short_name: "", // Only one character field needed (unlike numeric?)
     constructor: function(args) {
-        console.log('MultipleChoiceFilter constructor called');
+        //console.log('MultipleChoiceFilter constructor called');
         this.character_short_name = args.character_short_name;
     }
 });
@@ -42,13 +42,13 @@ dojo.declare("FilterManager", null, {
     pile_slug: "",
     default_filters: null,
     constructor: function(args) {
-        console.log('FilterManager constructor called');
+        //console.log('FilterManager constructor called');
         this.pile_slug = args.pile_slug;
-        this.default_filters = [ 'a', 'b', 'c' ]; // temp
+        this.default_filters = [ ];
     },
     load_default_filters: function() {
-        console.log('inside load_default_filters: pile_slug=' + 
-                    this.pile_slug);
+        //console.log('inside load_default_filters: pile_slug=' + 
+        //            this.pile_slug);
         var url = '/piles/';
         var store = new dojox.data.JsonRestStore({target: url});
         store.fetchItemByIdentity({
@@ -61,15 +61,18 @@ dojo.declare("FilterManager", null, {
                         friendly_name: filter_json.character_friendly_name,
                         character_short_name: filter_json.character_short_name,
                         order: filter_json.order });
-                    console.log(filter.friendly_name + ' ' + 
-                                filter.character_short_name + ' ' + 
-                                filter.order);
-                    // TODO: add the filter to the manager's collection of
-                    // default filters.
-                    //this.default_filters.push('foo'); //filter); // undefined - scope ?
-                    console.log('can we see the pile slug? ' + this.pile_slug);
+                    //console.log(filter.friendly_name + ' ' + 
+                    //            filter.character_short_name + ' ' + 
+                    //            filter.order);
+                    
+                    // Add the filter to the manager's collection of default
+                    // filters.
+                    this.default_filters.push(filter);
+                    //console.log('can we see the pile slug? ' + this.pile_slug);
                 }
             }
         });
+        //alert('done with fetchItemByIdentity');
+        //console.log('this.default_filters: ' + this.default_filters);
     }
 });

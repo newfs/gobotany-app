@@ -48,9 +48,9 @@ gobotany.sk.results.init = function(pile_slug) {
 
     // Create a FilterManager object, which will pull a list of default
     // filters for the pile.
-    console.log('pile_slug: ' + pile_slug);
+    //console.log('pile_slug: ' + pile_slug);
     var filter_manager = new FilterManager({ pile_slug: pile_slug });
-    console.log(filter_manager.pile_slug);
+    //console.log(filter_manager.pile_slug);
     filter_manager.load_default_filters();
     console.log('filter_manager.default_filters: ' + filter_manager.default_filters);
 

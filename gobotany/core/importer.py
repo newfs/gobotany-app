@@ -429,24 +429,22 @@ class Importer(object):
 
     def _import_default_filters(self):
         print >> self.logfile, 'Setting up some default filters'
-        pile = models.Pile.objects.get(name='Carex')
+        pile = models.Pile.objects.get(name='Lycophytes')
 
-        character = \
-            models.Character.objects.get(short_name='leaf_habit')
+        character = models.Character.objects.get(
+            short_name='horizontal_shoot_position')
         filter, created = models.DefaultFilter.objects.get_or_create(pile=pile,
                                                                      character=character,
                                                                      order=1)
         filter.save()
 
-        character = \
-            models.Character.objects.get(short_name='achene_indentations')
+        character = models.Character.objects.get(short_name='spore_form')
         filter, created = models.DefaultFilter.objects.get_or_create(pile=pile,
                                                                      character=character,
                                                                      order=2)
         filter.save()
 
-        character = models.Character.objects.get(
-            short_name='basal_leaf_sheath_texture')
+        character = models.Character.objects.get(short_name='strobilus_base')
         filter, created = models.DefaultFilter.objects.get_or_create(pile=pile,
                                                                      character=character,
                                                                      order=3)
