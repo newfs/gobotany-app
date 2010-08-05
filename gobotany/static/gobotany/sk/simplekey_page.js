@@ -1,4 +1,4 @@
-dojo.provide('gobotany.simplekey_page');
+dojo.provide('gobotany.sk.simplekey_page');
 dojo.require("dijit.Dialog");
 dojo.require("dijit.form.Button");
 dojo.require('dojox.embed.Flash');

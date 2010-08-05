@@ -52,6 +52,7 @@ dojo.declare("FilterManager", null, {
         var url = '/piles/';
         var store = new dojox.data.JsonRestStore({target: url});
         store.fetchItemByIdentity({
+            scope: this,
             identity: this.pile_slug,
             onItem: function(item) {
                for (var y = 0; y < item.default_filters.length; y++) {
