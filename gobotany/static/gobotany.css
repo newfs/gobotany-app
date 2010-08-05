@@ -55,7 +55,7 @@ p {
     margin: 1.5em 0 1.5em 1em;
 }
 
-#head, #foot, #filter-working, #plants {
+#head, #foot, #plants {
     border: 1px dashed #ddd;
     color: #ddd;
     font-size: 0.65em;
@@ -66,6 +66,49 @@ p {
 
 #filter-working, #plants {
     clear: left;
+}
+
+#filter-working {
+    border: 1px solid #ccc;
+    display: none;
+    height: 130px;
+    padding: 1em;
+}
+
+#filter-working .close {
+    color: #00e;
+    float: right;
+}
+
+#filter-working h3 {
+    font-size: 1em;
+    font-weight: normal;
+}
+
+#filter-working .values {
+    float: left;
+    font-size: 0.85em;
+    padding: 1em 0 0;
+    width: 100px;
+}
+
+#filter-working .values label {
+    display: block;
+}
+
+#filter-working .values input {
+    margin: 1em 0;
+}
+
+#filter-working .info {
+    float: right;
+    font-size: 0.85em;
+    padding: 1em;
+    width: 550px;
+}
+
+#filter-working .info p {
+    padding: 2em 0;
 }
 
 #plants {
@@ -79,5 +122,5 @@ p {
 
 #global-filter form {
     float: left;
-    margin-right: 4em;
+    margin: 0 4em 0 1em;
 }

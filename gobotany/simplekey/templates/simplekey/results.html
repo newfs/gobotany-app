@@ -6,12 +6,8 @@
 {{ pile.name }}
 {% endblock %}
 {% block content %}
-  <h1>
-    {% if pile_group %}
-      {{ pile_group.name }}:
-    {% endif %}
-    {{ pile.name }}
-  </h1>
+  <h1>{% if pile_group %}{{ pile_group.name }}:{% endif %}
+      {{ pile.name }}</h1>
   <div id="main">
     <div id="global-filter">
       <form>

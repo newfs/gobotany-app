@@ -15,6 +15,9 @@ urlpatterns = patterns(
         Resource(handler=handlers.TaxonQueryHandler)),
     url(r'^taxon-count/$',
         Resource(handler=handlers.TaxonCountHandler)),
+    # Suggested eventual replacement URL (plural) for taxon-count above
+    url(r'^taxa-count/$',
+        Resource(handler=handlers.TaxonCountHandler)),
     url(r'^taxon-image/$',
         Resource(handler=handlers.TaxonImageHandler)),
 
