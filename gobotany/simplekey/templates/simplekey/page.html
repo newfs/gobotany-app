@@ -1,13 +1,21 @@
-<html>
-  <body>
+{% extends "simplekey/base.html" %}
+{% block content %}
+  <div class="PilePage" id="pilegroup-finder">
     <h1>{{ page.title }}</h1>
     <p>
       Which of the following best describes your plant?
     </p>
 
     {% for pilegroup, url in pilegroups_and_urls %}
-      <div>
+      <div class="PileGroup" id="{{ pilegroup.slug }}-info">
         <h2><a href="{{ url }}">{{ pilegroup.name }}</a></h2>
+        <button dojoType="dijit.form.Button" onclick="dijit.byId('{{ pilegroup.slug }}-tooltip').show()">more info</button>
+        <div dojoType="dijit.Dialog" class="PileInfo" id="{{ pilegroup.slug }}-tooltip"
+             title="{{ pilegroup.name }}">
+          {% with pilegroup as pile %}
+          {% include "simplekey/pile_tooltip.html" %}
+          {% endwith %}
+        </div>
       </div>
     {% endfor %}
 
@@ -20,6 +28,10 @@
 
     <h2>Subway map</h2>
     {% include "simplekey/subway.html" %}
+{% endblock %}
+{% block js_footer %}
 
-  </body>
-</html>
+<script>
+dojo.require('gobotany.simplekey_page');
+</script>
+{% endblock %}
