@@ -34,7 +34,7 @@ p {
 #main {
     border: 1px dashed #ddd;
     float: right;
-    height: 450px;
+    /*height: 450px;*/
     margin: 0 0 1em;
     width: 750px;
 }
@@ -71,14 +71,14 @@ p {
     text-align: center;
 }
 
-#filter-working, #plants {
+#filter-working, #plants, #subway {
     clear: left;
 }
 
 #filter-working {
     border: 1px solid #ccc;
     display: none;
-    height: 160px;
+    height: 170px;
     padding: 1em;
 }
 
@@ -120,6 +120,10 @@ p {
 
 #plants {
     height: 300px;
+}
+
+#subway ul li {
+    margin: 0 0 0 1em;
 }
 
 #foot {

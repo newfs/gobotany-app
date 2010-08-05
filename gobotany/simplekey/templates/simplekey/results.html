@@ -1,13 +1,9 @@
 {% extends "simplekey/base.html" %}
 {% block title %}
-{% if pile_group %}
-  {{ pile_group.name }}:
-{% endif %}
-{{ pile.name }}
+{{ pilegroup.name }}: {{ pile.name }}
 {% endblock %}
 {% block content %}
-  <h1>{% if pile_group %}{{ pile_group.name }}:{% endif %}
-      {{ pile.name }}</h1>
+  <h1>{{ pilegroup.name }}: {{ pile.name }}</h1>
   <div id="main">
     <div id="global-filter">
       <form>
@@ -25,6 +21,10 @@
     </div>
     {% include "simplekey/filter_working.html" %}
     {% include "simplekey/plants.html" %}
+    <div id="subway">
+      <h2>Subway map</h2>
+      {% include "simplekey/subway.html" %}
+    </div>
   </div>
   {% include "simplekey/filters.html" %}
 {% endblock %}

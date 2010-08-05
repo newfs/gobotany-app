@@ -14,7 +14,7 @@ def get_simple_url(item):
         return reverse('gobotany.simplekey.views.pilegroup_view',
                        kwargs={'pilegroup_slug': item.slug})
     elif isinstance(item, Pile):
-        return reverse('gobotany.simplekey.views.pile_view',
+        return reverse('gobotany.simplekey.views.results_view',
                        kwargs={'pilegroup_slug': item.pilegroup.slug,
                                'pile_slug': item.slug})
     else:
@@ -93,13 +93,13 @@ def pile_view(request, pilegroup_slug, pile_slug):
             }, context_instance=RequestContext(request))
 
 
-def results_view(request, pile_group_name=None, pile_name=None):
-    data = {}
-    if pile_group_name:
-        pile_group = get_object_or_404(PileGroup, name=pile_group_name)
-        data['pile_group'] = pile_group
-    if pile_name:
-        pile = get_object_or_404(Pile, name=pile_name)
-        data['pile'] = pile
-    return render_to_response('simplekey/results.html', data,
-        context_instance=RequestContext(request))
+def results_view(request, pilegroup_slug, pile_slug):
+    pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
+    pile = get_object_or_404(Pile, slug=pile_slug)
+    if pile not in pilegroup.piles.all():
+        raise Http404
+    return render_to_response('simplekey/results.html', {
+           'pilegroup': pilegroup,
+           'pile': pile,
+           'subway': create_subway(),
+           }, context_instance=RequestContext(request))
