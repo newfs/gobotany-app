@@ -81,18 +81,6 @@ def pilegroup_view(request, pilegroup_slug):
             }, context_instance=RequestContext(request))
 
 
-def pile_view(request, pilegroup_slug, pile_slug):
-    pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
-    pile = get_object_or_404(Pile, slug=pile_slug)
-    if pile not in pilegroup.piles.all():
-        raise Http404
-    return render_to_response('simplekey/pile.html', {
-            'pilegroup': pilegroup,
-            'pile': pile,
-            'subway': create_subway(),
-            }, context_instance=RequestContext(request))
-
-
 def results_view(request, pilegroup_slug, pile_slug):
     pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
     pile = get_object_or_404(Pile, slug=pile_slug)
