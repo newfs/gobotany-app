@@ -116,6 +116,7 @@ class PileHandler(BasePileHandler):
             filter['character_friendly_name'] = \
                 default_filter.character.friendly_name
             filter['order'] = default_filter.order
+            filter['value_type'] = default_filter.character.value_type
             filters.append(filter)
         return filters
 

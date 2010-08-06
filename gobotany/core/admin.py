@@ -35,6 +35,10 @@ class TaxonAdmin(admin.ModelAdmin):
     # list_filter = ('piles',)
     search_fields = ('scientific_name', 'piles__name', 'piles__friendly_name')
 
+class PileDefaultFiltersInline(admin.StackedInline):
+    model = models.Pile.default_filters.through
+    extra = 1
+
 class PileAdminBase(admin.ModelAdmin):
     inlines = [ContentImageInline]
     search_fields = ('name',)
@@ -42,6 +46,7 @@ class PileAdminBase(admin.ModelAdmin):
 
 class PileAdmin(PileAdminBase):
     filter_horizontal = ('character_values', 'species',)
+    inlines = [PileDefaultFiltersInline, ContentImageInline]
 
 class GlossaryMappingInline(admin.TabularInline):
     model = models.GlossaryTermForPileCharacter
@@ -75,9 +80,6 @@ class TaxonGroupAdmin(admin.ModelAdmin):
     ordering = ('name',)
     inlines = (TaxonGroupEntryInline,)
 
-class DefaultFilterAdmin(admin.ModelAdmin):
-    model = models.DefaultFilter
-
 admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.ContentImage)
 admin.site.register(models.ImageType)
@@ -88,4 +90,3 @@ admin.site.register(models.CharacterGroup)
 admin.site.register(models.CharacterValue, CharacterValueAdmin)
 admin.site.register(models.Taxon, TaxonAdmin)
 admin.site.register(models.TaxonGroup, TaxonGroupAdmin)
-admin.site.register(models.DefaultFilter, DefaultFilterAdmin)

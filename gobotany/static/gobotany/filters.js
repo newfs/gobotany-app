@@ -37,19 +37,27 @@ dojo.declare("MultipleChoiceFilter", [Filter], {
         store.fetch({
             scope: this,
             onComplete: function(response) {
-                for (var i = 0; i < response.length; i++) {
-                    var character_value = response[i];
-                    // Add the string value to the filter's values collection.
-                    this.values.push(character_value.value_str);
-                }
+                dojo.forEach(response, this.process_value, this);
             }
         });
-    }
+    },
+    process_value: function(character_value, index) {
+        this.values.push(character_value.value_str);
+    }   
 });
 
 
-// TODO: NumericFilter?
-
+// NumericRangeFilter
+//
+dojo.declare('NumericRangeFilter', [MultipleChoiceFilter], {
+    process_value: function(character_value, index) {
+        // We store the range of values in a two element array this.values = [min, max]
+        // update the minimum value
+        this.values[0] = (this.values.length) > 0 ? min(character_value.value_min, this.values[0]) : character_value.value_min;
+        // update the maximum value
+        this.values[1] = (this.values.length) > 1 ? min(character_value.value_max, this.values[0]) : character_value.value_max;
+    }
+});
 
 // TODO: TextFilter?
 
@@ -77,19 +85,28 @@ dojo.declare("FilterManager", null, {
             identity: this.pile_slug,
             onItem: function(item) {
                for (var y = 0; y < item.default_filters.length; y++) {
-                    var filter_json = item.default_filters[y];
-                    var filter = new MultipleChoiceFilter({
-                        friendly_name: filter_json.character_friendly_name,
-                        character_short_name: filter_json.character_short_name,
-                        order: filter_json.order,
-                        pile_slug: this.pile_slug});
-                    filter.load_values();
-
-                    // Add the filter to the manager's collection of default
-                    // filters.
-                    this.default_filters.push(filter);
-                }
+                   var filter_json = item.default_filters[y];
+                   this.add_filter(filter_json);
+               }
             }
         });
+    },
+    add_filter: function(filter_json) {
+        var filter_type;
+        if (filter_json.value_type == 'LENGTH') filter_type = NumericRangeFilter;
+        else filter_type = MultipleChoiceFilter;
+        var filter = new filter_type(
+            {
+                friendly_name: filter_json.character_friendly_name,
+                character_short_name: filter_json.character_short_name,
+                order: filter_json.order,
+                pile_slug: this.pile_slug
+            }
+        );
+        filter.load_values();
+
+        // Add the filter to the manager's collection of default
+        // filters.
+        this.default_filters.push(filter);
     }
 });

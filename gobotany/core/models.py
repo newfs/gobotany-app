@@ -166,7 +166,7 @@ class CharacterValue(models.Model):
     value_flt = models.FloatField(null=True, blank=True)
 
     character = models.ForeignKey(Character)
-    glossary_term = models.OneToOneField(GlossaryTerm, blank=True, null=True)
+    glossary_term = models.ForeignKey(GlossaryTerm, blank=True, null=True)
 
     class Meta:
         ordering = ['character__short_name', 'value_str', 'value_flt',
@@ -253,6 +253,7 @@ class Pile(PileInfo):
     character_values = models.ManyToManyField(CharacterValue)
     species = models.ManyToManyField('Taxon', related_name='piles')
     pilegroup = models.ForeignKey('PileGroup', related_name='piles', null=True)
+    default_filters = models.ManyToManyField(Character, through='DefaultFilter')
 
 
 class PileGroup(PileInfo):
