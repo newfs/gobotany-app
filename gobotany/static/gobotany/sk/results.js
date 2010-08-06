@@ -35,15 +35,6 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
     
     for (var i = 0; i < filter_manager.default_filters.length; i++) {
         var filter = filter_manager.default_filters[i];
-        filter_values = '[';
-        for (var j = 0; j < filter.values.length; j++) {
-            if (j !== 0) {
-                filter_values += ', ';
-            }
-            filter_values += '\'' + filter.values[j] + '\'';
-        }
-        filter_values += ']';
-        
         var filterLink = dojo.create('a', {innerHTML: '<li><a href="#">' + 
                          filter.friendly_name + '</a></li>'});
         // Pass the filter to the function as its context (this).
