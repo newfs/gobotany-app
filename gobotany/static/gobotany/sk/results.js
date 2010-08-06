@@ -4,6 +4,8 @@ dojo.provide('gobotany.sk.results');
 dojo.require('dojox.data.JsonRestStore');
 dojo.require('gobotany.filters');
 
+simplekey_character_short_name = null;
+
 gobotany.sk.results.show_filter_working = function() {
     // Here the 'this.' is a filter object passed in as a context.
 
@@ -29,6 +31,30 @@ gobotany.sk.results.show_filter_working = function() {
 
 gobotany.sk.results.hide_filter_working = function() {
     dojo.query('#filter-working').style({display: 'none'});
+    simplekey_character_short_name = null;
+};
+
+gobotany.sk.results.clear_filter = function() {
+    if (this.character_short_name == simplekey_character_short_name) {
+        gobotany.sk.results.hide_filter_working();
+    }
+    if (this.character_short_name in simplekey_filter_choices) {
+        delete simplekey_filter_choices[this.character_short_name];
+        gobotany.sk.results.run_filtered_query();
+    }
+    dojo.query('#' + this.character_short_name + ' .choice'
+              )[0].innerHTML = 'don\'t know';
+};
+
+gobotany.sk.results.remove_filter = function() {
+    if (this.character_short_name == simplekey_character_short_name) {
+        gobotany.sk.results.hide_filter_working();
+    }
+    if (this.character_short_name in simplekey_filter_choices) {
+        delete simplekey_filter_choices[this.character_short_name];
+        gobotany.sk.results.run_filtered_query();
+    }
+    dojo.query('#' + this.character_short_name).orphan();
 };
 
 gobotany.sk.results.populate_default_filters = function(filter_manager) {
@@ -47,8 +73,12 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
             href: '#', innerHTML: '× clear'});
 
         // Pass the filter to the function as its context (this).
-        dojo.connect(filterLink, 'onclick', filter, 
+        dojo.connect(filterLink, 'onclick', filter,
                      gobotany.sk.results.show_filter_working);
+        dojo.connect(removeLink, 'onclick', filter,
+                     gobotany.sk.results.remove_filter);
+        dojo.connect(clearLink, 'onclick', filter,
+                     gobotany.sk.results.clear_filter);
 
         filterItem = dojo.create('li', {id: filter.character_short_name});
         dojo.place(filterLink, filterItem)

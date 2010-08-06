@@ -63,6 +63,7 @@ p {
 }
 
 #filters li a {
+    margin-right: 0.5em;
     color: #00e;
 }
 
