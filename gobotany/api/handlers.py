@@ -35,9 +35,7 @@ class TaxonQueryHandler(BaseHandler):
             kwargs[str(k)] = v
         species = botany.query_species(**kwargs)
         if not scientific_name:
-            listing = []
-            for s in species.all():
-                listing.append(_taxon_with_chars(s))
+            listing = [ _taxon_with_chars(s) for s in species.all() ]
             return {'items': listing, 'label': 'scientific_name',
                     'identifier': 'scientific_name'}
         elif species.exists():
