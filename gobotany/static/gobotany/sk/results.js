@@ -10,6 +10,8 @@ gobotany.sk.results.show_filter_working = function() {
     dojo.query('#filter-working').style({display: 'block'});
     dojo.query('#filter-working .name')[0].innerHTML = this.friendly_name;
 
+    simplekey_character_short_name = this.character_short_name;
+
     var valuesList = dojo.query('#filter-working form .values')[0];
     dojo.empty(valuesList);
     dojo.place('<label><input type="radio" name="char_name" value="" ' +
@@ -35,7 +37,8 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
     
     for (var i = 0; i < filter_manager.default_filters.length; i++) {
         var filter = filter_manager.default_filters[i];
-        var filterLink = dojo.create('a', {innerHTML: '<li><a href="#">' + 
+        var filterLink = dojo.create('a', {innerHTML: '<li><a id="' +
+                         filter.character_short_name + '" href="#">' +
                          filter.friendly_name + '</a></li>'});
         // Pass the filter to the function as its context (this).
         dojo.connect(filterLink, 'onclick', filter, 
@@ -45,6 +48,16 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
 };
 
 gobotany.sk.results.apply_filter = function() {
+    checked_item = dojo.query('#character_values_form input:checked')[0];
+    if (checked_item.value) {
+        simplekey_filter_choices[simplekey_character_short_name] =
+            checked_item.value;
+    } else {
+        if (simplekey_character_short_name in simplekey_filter_choices) {
+            delete simplekey_filter_choices[simplekey_character_short_name];
+        }
+    }
+    console.log(checked_item.value);
     gobotany.sk.results.run_filtered_query();
 };
 
@@ -52,9 +65,15 @@ gobotany.sk.results.run_filtered_query = function() {
     dojo.query('#plants .species_count .loading').style({display: 'block'});
     dojo.query('#plants .species_count .count').style({display: 'none'});
 
+    var content = { pile: simplekey_pile_slug };
+
+    for (var key in simplekey_filter_choices) {
+        content[key] = simplekey_filter_choices[key];
+    }
+
     var xhrArgs = {
         url: "/taxon/",
-        content: { pile: simplekey_pile_slug },
+        content: content,
         handleAs: "json",
         load: function(data) {
             dojo.query('#plants .species_count .count')[0].innerHTML =
