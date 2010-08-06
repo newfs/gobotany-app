@@ -126,6 +126,18 @@ p {
     height: 300px;
 }
 
+#plants .species_count {
+    font-size: 2em;
+    font-weight: bold;
+}
+#plants .species_count .loading {
+    color: #ddd;
+}
+#plants .species_count .count {
+    display: none;
+    color: black;
+}
+
 #subway ul li {
     margin: 0 0 0 1em;
 }

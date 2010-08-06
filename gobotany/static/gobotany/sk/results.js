@@ -44,7 +44,35 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
     }
 };
 
+gobotany.sk.results.run_filtered_query = function() {
+    dojo.query('#plants .species_count .loading').style({display: 'block'});
+    dojo.query('#plants .species_count .count').style({display: 'none'});
+
+    var xhrArgs = {
+        url: "/taxon/",
+        content: { pile: simplekey_pile_slug },
+        handleAs: "json",
+        load: function(data) {
+            dojo.query('#plants .species_count .count')[0].innerHTML =
+                data.items.length.toString() + ' species';
+
+            dojo.query('#plants .species_count .loading'
+                      ).style({display: 'none'});
+            dojo.query('#plants .species_count .count'
+                      ).style({display: 'block'});
+        },
+        error: function(error) {
+            ; // TODO: how do we display errors in the Simple Key?
+        }
+    }
+
+    var deferred = dojo.xhrGet(xhrArgs);
+};
+
 gobotany.sk.results.init = function(pile_slug) {
+    // Leave data around for further calls to the API.
+    simplekey_pile_slug = pile_slug;
+
     // Wire up the filter working area's close button.
     var el = dojo.query('#filter-working .close')[0];
     dojo.connect(el, 'onclick', null, 
@@ -57,4 +85,8 @@ gobotany.sk.results.init = function(pile_slug) {
 
     // Populate the initial list of default filters.
     gobotany.sk.results.populate_default_filters(filter_manager);
+
+    // We start with no filter values selected.
+    simplekey_filter_choices = [];
+    gobotany.sk.results.run_filtered_query();
 };

@@ -22,11 +22,11 @@ class SpeciesReader(object):
             for k, v in kwargs.items():
                 if k == 'pilegroup':
                     base_query = base_query.filter(
-                        piles__pilegroup__name=v,
+                        piles__pilegroup__slug=v,
                         )
                 elif k == 'pile':
                     base_query = base_query.filter(
-                        piles__name=v,
+                        piles__slug=v,
                         )
                 elif k == 'genus':
                     base_query = base_query.filter(
