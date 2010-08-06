@@ -10,30 +10,53 @@ dojo.require('dojox.data.JsonRestStore');
 dojo.declare("Filter", null, {
     friendly_name: "",
     order: 0,
+    pile_slug: "",
     constructor: function(args) {
-        //console.log('Filter constructor called');
-        //console.log('args.friendly_name: ' + args.friendly_name);
         this.friendly_name = args.friendly_name;
+        this.order = args.order;
+        this.pile_slug = args.pile_slug;
         dojo.safeMixin(this, args);
     }
 });
+
 
 // MultipleChoiceFilter
 //
 dojo.declare("MultipleChoiceFilter", [Filter], {
     character_short_name: "", // Only one character field needed (unlike numeric?)
+    values: null,
     constructor: function(args) {
-        //console.log('MultipleChoiceFilter constructor called');
         this.character_short_name = args.character_short_name;
+        this.values = [];
+    },
+    load_values: function() {
+        var url = '/piles/' + this.pile_slug + '/' + 
+                  this.character_short_name + '/'
+        var store = new dojox.data.JsonRestStore({target: url,
+                                                  syncMode: true});
+        store.fetch({
+            scope: this,
+            onComplete: function(response) {
+                for (var i = 0; i < response.length; i++) {
+                    var character_value = response[i];
+                    // Add the string value to the filter's values collection.
+                    this.values.push(character_value.value_str);
+                }
+            }
+        });
     }
 });
+
 
 // TODO: NumericFilter?
 
 
+// TODO: TextFilter?
+
+
 // FilterManager
 //
-// A FilterManager object is responsible for pulling a pile's filters from 
+// A FilterManager object is responsible for pulling a pile's filters from
 // the REST API and maintaining a collection.
 // It pulls a set of default filters, then later would pull more filters
 // as needed.
@@ -42,16 +65,14 @@ dojo.declare("FilterManager", null, {
     pile_slug: "",
     default_filters: null,
     constructor: function(args) {
-        //console.log('FilterManager constructor called');
         this.pile_slug = args.pile_slug;
-        this.default_filters = [ ];
+        this.default_filters = [];
     },
     load_default_filters: function() {
-        //console.log('inside load_default_filters: pile_slug=' + 
-        //            this.pile_slug);
         var url = '/piles/';
-        var store = new dojox.data.JsonRestStore({target: url});
-        store.fetchItemByIdentity({
+        var store = new dojox.data.JsonRestStore({target: url, 
+                                                  syncMode: true});
+        var foo = store.fetchItemByIdentity({
             scope: this,
             identity: this.pile_slug,
             onItem: function(item) {
@@ -60,19 +81,15 @@ dojo.declare("FilterManager", null, {
                     var filter = new MultipleChoiceFilter({
                         friendly_name: filter_json.character_friendly_name,
                         character_short_name: filter_json.character_short_name,
-                        order: filter_json.order });
-                    //console.log(filter.friendly_name + ' ' + 
-                    //            filter.character_short_name + ' ' + 
-                    //            filter.order);
-                    
+                        order: filter_json.order,
+                        pile_slug: this.pile_slug});
+                    filter.load_values();
+
                     // Add the filter to the manager's collection of default
                     // filters.
                     this.default_filters.push(filter);
-                    //console.log('can we see the pile slug? ' + this.pile_slug);
                 }
             }
         });
-        //alert('done with fetchItemByIdentity');
-        //console.log('this.default_filters: ' + this.default_filters);
     }
 });
