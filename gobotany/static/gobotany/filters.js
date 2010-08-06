@@ -31,7 +31,7 @@ dojo.declare("MultipleChoiceFilter", [Filter], {
     },
     load_values: function() {
         var url = '/piles/' + this.pile_slug + '/' + 
-                  this.character_short_name + '/'
+                  this.character_short_name + '/';
         var store = new dojox.data.JsonRestStore({target: url,
                                                   syncMode: true});
         store.fetch({
