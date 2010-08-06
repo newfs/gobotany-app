@@ -144,3 +144,14 @@ class PileGroupListingHandler(BaseHandler):
     def read(self, request):
         lst = [x for x in models.PileGroup.objects.all()]
         return {'items': lst}
+
+
+class CharacterValuesHandler(BaseHandler):
+    methods_allowed = ('GET',)
+
+    def read(self, request, pile_slug, character_short_name):
+        pile = models.Pile.objects.get(slug=pile_slug)
+        character = models.Character.objects.get(
+            short_name=character_short_name)
+        return models.CharacterValue.objects.filter(pile=pile, 
+                                                    character=character)
