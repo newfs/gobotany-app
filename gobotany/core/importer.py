@@ -202,6 +202,16 @@ class Importer(object):
                 if not v.strip():
                     continue
                 cname = '_'.join(k.split('_')[:-1])
+
+                is_min = False
+                is_max = False
+                if '_min' in cname:
+                    is_min = True
+                    cname = cname[:-4]
+                if '_max' in cname:
+                    is_max = True
+                    cname = cname[:-4]
+
                 try:
                     char = models.Character.objects.filter(short_name=cname)
                 except ObjectDoesNotExist:
@@ -209,8 +219,45 @@ class Importer(object):
                           % cname
                     continue
                 try:
-                    cvs = models.CharacterValue.objects.get(value_str=v,
-                                                            character=char)
+                    if is_min:
+                        try:
+                            cvs = taxa.character_values.filter(character=char)
+                            if len(cvs) == 0:
+                                cvs = models.CharacterValue(character=char, value_min=int(v))
+                                cvs.save()
+                                models.TaxonCharacterValue(taxon=t, character_value=cvs).save()
+                            else:
+                                cvs = cvs[0]
+                                cvs.value_min = int(v)
+                                cvs.save()
+                        except ValueError:
+                            print >> self.logfile, 'Not an int: %s; %s' % (cname, v)                            
+
+                    elif is_max:
+                        try:
+                            cvs = taxa.character_values.filter(character=char)
+                            if len(cvs)  == 0:
+                                cvs = models.CharacterValue(character=char, value_max=int(v))
+                                cvs.save()
+                                models.TaxonCharacterValue(taxon=t, character_value=cvs).save()
+                            else:
+                                cvs = cvs[0]
+                                cvs.value_max = int(v)
+                                cvs.save()
+                        except ValueError:
+                            print >> self.logfile, 'Not an int: %s; %s' % (cname, v)                                                        
+                    else:
+                        for val in v.split(','):
+                            val = val.strip()
+                            cvs, created = models.CharacterValue.objects.get_or_create(value_str=val,
+                                                                                       character=char)
+                            cvs.save()
+                            try:
+                                models.TaxonCharacterValue(taxon=t, character_value=cvs).save()
+                            except:
+                                print >> self.logfile, 'TaxonCharacterValue duplicate key: %s; %s' % (cname, v)
+                                continue
+
                 except ObjectDoesNotExist:
                     print >> self.logfile, 'No such character value ' \
                           'exists: %s; %s' % (cname, v)
