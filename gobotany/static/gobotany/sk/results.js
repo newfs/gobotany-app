@@ -10,7 +10,7 @@ gobotany.sk.results.show_filter_working = function() {
     dojo.query('#filter-working').style({display: 'block'});
     dojo.query('#filter-working .name')[0].innerHTML = this.friendly_name;
 
-    var valuesList = dojo.query('#filter-working .values form')[0];
+    var valuesList = dojo.query('#filter-working form .values')[0];
     dojo.empty(valuesList);
     dojo.place('<label><input type="radio" name="char_name" value="" ' +
                'checked> don&apos;t know</label>', valuesList);
@@ -44,6 +44,10 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
     }
 };
 
+gobotany.sk.results.apply_filter = function() {
+    gobotany.sk.results.run_filtered_query();
+};
+
 gobotany.sk.results.run_filtered_query = function() {
     dojo.query('#plants .species_count .loading').style({display: 'block'});
     dojo.query('#plants .species_count .count').style({display: 'none'});
@@ -72,11 +76,17 @@ gobotany.sk.results.run_filtered_query = function() {
 gobotany.sk.results.init = function(pile_slug) {
     // Leave data around for further calls to the API.
     simplekey_pile_slug = pile_slug;
+    simplekey_filter_choices = [];
 
     // Wire up the filter working area's close button.
     var el = dojo.query('#filter-working .close')[0];
     dojo.connect(el, 'onclick', null, 
                  gobotany.sk.results.hide_filter_working);
+
+    // Wire up the "Apply" button.
+    var apply_button = dojo.query('#character_values_form button')[0];
+    dojo.connect(apply_button, 'onclick', null,
+                 gobotany.sk.results.apply_filter);
 
     // Create a FilterManager object, which will pull a list of default
     // filters for the pile.
@@ -87,6 +97,5 @@ gobotany.sk.results.init = function(pile_slug) {
     gobotany.sk.results.populate_default_filters(filter_manager);
 
     // We start with no filter values selected.
-    simplekey_filter_choices = [];
     gobotany.sk.results.run_filtered_query();
 };

@@ -1,8 +1,8 @@
 <div id="filter-working" aria-live="polite" aria-relevant="additions removals">
   <a class="close" href="#">[x]</a>
   <h3 class="name"></h3>
-  <div class="values">
-    <form>
+  <form id="character_values_form">
+    <div class="values">
       <label><input type="radio" name="char_name" value="" 
                     checked> Don't Know</label>
       <label><input type="radio" name="char_name" value="value_1"> 
@@ -11,9 +11,10 @@
       Value 2 (0)</label>
       <label><input type="radio" name="char_name" value="value_3"> 
       Value 3 (0)</label>
-    </form>
-  </div>
-  <div class="info">
-    <p>Choose a value at left to help narrow down to your plant.</p>
-  </div>
+    </div>
+    <div class="info">
+      <p>Choose a value at left to help narrow down to your plant.</p>
+      <button name="apply" type="button">Apply</button>
+    </div>
+  </form>
 </div>
