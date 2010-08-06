@@ -37,9 +37,10 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
     
     for (var i = 0; i < filter_manager.default_filters.length; i++) {
         var filter = filter_manager.default_filters[i];
-        var filterLink = dojo.create('a', {innerHTML: '<li><a id="' +
-                         filter.character_short_name + '" href="#">' +
-                         filter.friendly_name + '</a></li>'});
+        var filterLink = dojo.create('a', {innerHTML: '<li id="' +
+                         filter.character_short_name + '"><a href="#">' +
+                         filter.friendly_name + '</a>' +
+                         '<div class="choice">don\'t know</div></li>'});
         // Pass the filter to the function as its context (this).
         dojo.connect(filterLink, 'onclick', filter, 
                      gobotany.sk.results.show_filter_working);
@@ -48,11 +49,15 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
 };
 
 gobotany.sk.results.apply_filter = function() {
+    choice_div = dojo.query('#' + simplekey_character_short_name +
+                            ' .choice')[0];
     checked_item = dojo.query('#character_values_form input:checked')[0];
     if (checked_item.value) {
+        choice_div.innerHTML = checked_item.value;
         simplekey_filter_choices[simplekey_character_short_name] =
             checked_item.value;
     } else {
+        choice_div.innerHTML = 'don\'t know';
         if (simplekey_character_short_name in simplekey_filter_choices) {
             delete simplekey_filter_choices[simplekey_character_short_name];
         }
