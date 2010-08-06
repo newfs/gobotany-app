@@ -4,26 +4,26 @@ dojo.provide('gobotany.sk.results');
 dojo.require('dojox.data.JsonRestStore');
 dojo.require('gobotany.filters');
 
-gobotany.sk.results.show_filter_working = function(character_friendly_name,
-                                                   character_short_name,
-                                                   values) {
+gobotany.sk.results.show_filter_working = function() {
+    // Here the 'this.' is a filter object passed in as a context.
+
     dojo.query('#filter-working').style({display: 'block'});
-    dojo.query('#filter-working .name')[0].innerHTML = character_friendly_name;
+    dojo.query('#filter-working .name')[0].innerHTML = this.friendly_name;
 
     var valuesList = dojo.query('#filter-working .values form')[0];
     dojo.empty(valuesList);
     dojo.place('<label><input type="radio" name="char_name" value="" ' +
                'checked> don&apos;t know</label>', valuesList);
-    for (var i = 0; i < values.length; i++) {
+    for (var i = 0; i < this.values.length; i++) {
         dojo.place('<label><input type="radio" name="char_name" ' +
-                   'value="' + values[i] + '"> ' + values[i] + 
+                   'value="' + this.values[i] + '"> ' + this.values[i] +
                    ' (0)</label>', valuesList);
     }
 
     // TODO: Check the user's chosen item if this filter is "active."
     // (For now, just check Don't Know.)
     dojo.query('#filter-working .values input')[0].checked = true;
-};
+}
 
 gobotany.sk.results.hide_filter_working = function() {
     dojo.query('#filter-working').style({display: 'none'});
@@ -43,13 +43,13 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
             filter_values += '\'' + filter.values[j] + '\'';
         }
         filter_values += ']';
-        dojo.place('<li><a href="javascript:gobotany.sk.results.' +
-                   'show_filter_working(\'' +
-                   filter.friendly_name + '\', \'' + 
-                   filter.character_short_name + '\', ' +
-                   filter_values + ')">' +
-                   filter.friendly_name +
-                   '</a></li>', filtersList);
+        
+        var filterLink = dojo.create('a', {innerHTML: '<li><a href="#">' + 
+                         filter.friendly_name + '</a></li>'});
+        // Pass the filter to the function as its context (this).
+        dojo.connect(filterLink, 'onclick', filter, 
+                     gobotany.sk.results.show_filter_working);
+        dojo.place(filterLink, filtersList);
     }
 };
 

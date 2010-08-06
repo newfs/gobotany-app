@@ -62,6 +62,10 @@ p {
     margin: 1.5em 0 1.5em 1em;
 }
 
+#filters li a {
+    color: #00e;
+}
+
 #head, #foot, #plants {
     border: 1px dashed #ddd;
     color: #ddd;
