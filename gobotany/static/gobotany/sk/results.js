@@ -62,7 +62,6 @@ gobotany.sk.results.apply_filter = function() {
             delete simplekey_filter_choices[simplekey_character_short_name];
         }
     }
-    console.log(checked_item.value);
     gobotany.sk.results.run_filtered_query();
 };
 
@@ -76,11 +75,10 @@ gobotany.sk.results.run_filtered_query = function() {
         content[key] = simplekey_filter_choices[key];
     }
 
-    var xhrArgs = {
-        url: "/taxon/",
-        content: content,
-        handleAs: "json",
-        load: function(data) {
+    var store = new dojox.data.JsonRestStore({target: '/taxon/'});
+    store.fetch({
+        query: content,
+        onComplete: function(data) {
             dojo.query('#plants .species_count .count')[0].innerHTML =
                 data.items.length.toString() + ' species';
 
@@ -89,12 +87,10 @@ gobotany.sk.results.run_filtered_query = function() {
             dojo.query('#plants .species_count .count'
                       ).style({display: 'block'});
         },
-        error: function(error) {
-            ; // TODO: how do we display errors in the Simple Key?
+        onError: function(error) {
+            console.log('Taxon search encountered an error!');
         }
-    }
-
-    var deferred = dojo.xhrGet(xhrArgs);
+    });
 };
 
 gobotany.sk.results.init = function(pile_slug) {
