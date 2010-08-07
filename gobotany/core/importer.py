@@ -181,84 +181,77 @@ class Importer(object):
         iterator = iter(CSVReader(f).read())
         colnames = [x.lower() for x in iterator.next()]
 
-        pile_suffix = colnames[4][-2:]
+        _pile_suffix = colnames[4][-3:]  # '_ca'
+        pile_suffix = _pile_suffix[1:]   # 'ca'
         if pile_suffix not in pile_mapping:
             print >> self.logfile, "Pile '%s' isn't mapped" % pile_suffix
             return
-        default_pile = models.Pile.objects.get(
-            name__iexact=pile_mapping[pile_suffix])
 
         for cols in iterator:
-            row = {}
-            for pos, c in enumerate(cols):
-                row[colnames[pos]] = c
+            row = dict(zip(colnames, cols))
 
             # Look up the taxon and if it exists, import character values.
             taxa = models.Taxon.objects.filter(
                 scientific_name__iexact=row['scientific_name'])
             if not taxa:
                 continue
-            t = taxa[0]
+            taxon = taxa[0]
 
             for k, v in row.items():
                 if not v.strip():
                     continue
-                cname = '_'.join(k.split('_')[:-1])
+                if not k.endswith(_pile_suffix):  # '_ca' or whatever
+                    continue
 
-                is_min = False
-                is_max = False
-                if cname.endswith('_min'):
-                    is_min = True
-                    cname = cname[:-4]
-                if cname.endswith('_max'):
-                    is_max = True
+                cname = k[:-3]
+                is_min = cname.endswith('_min')
+                is_max = cname.endswith('_max')
+                if is_min or is_max:
                     cname = cname[:-4]
 
                 try:
-                    char = models.Character.objects.get(short_name=cname)
-                    # Set the value type here
+                    character = models.Character.objects.get(short_name=cname)
                 except ObjectDoesNotExist:
                     print >> self.logfile, 'No such character exists: %s'%cname
                     continue
-                if is_min:
-                    try:
-                        cvs = taxa.character_values.filter(character=char)
-                        if len(cvs) == 0:
-                            cvs = models.CharacterValue(character=char,
-                                                        value_min=int(v))
-                            cvs.save()
-                            models.TaxonCharacterValue(taxon=t,
-                                                     character_value=cvs).save()
-                        else:
-                            cvs = cvs[0]
-                            cvs.value_min = int(v)
-                            cvs.save()
-                    except ValueError:
-                        print >> self.logfile, 'Not an int: %s; %s' % (cname, v)
 
-                elif is_max:
-                    cvs = taxa.character_values.filter(character=char)
-                    if len(cvs)  == 0:
-                        cvs = models.CharacterValue(character=char,
-                                                    value_max=int(v))
-                        cvs.save()
-                        models.TaxonCharacterValue(taxon=t,
-                                                   character_value=cvs).save()
+                if is_min or is_max:
+
+                    try:
+                        intv = int(v)
+                    except ValueError:
+                        print >> self.logfile, 'Not an int: %s=%s' % (cname, v)
+                        continue
+
+                    # Min and max get stored in the same char-value row.
+                    tcvs = models.TaxonCharacterValue.objects.filter(
+                        taxon=taxon,
+                        character_value__character=character,
+                        ).all()
+                    if tcvs:
+                        cv = tcvs[0].character_value
                     else:
-                        cvs = cvs[0]
-                        cvs.value_max = int(v)
-                        cvs.save()
+                        cv = models.CharacterValue(character=character)
+                        cv.save()
+                        models.TaxonCharacterValue(
+                            taxon=taxon, character_value=cv).save()
+
+                    if is_min:
+                        cv.value_min = intv
+                    else:
+                        cv.value_max = intv
+                    cv.save()
+
                 else:
+                    # A regular comma-separated list of string values.
                     for val in v.split(','):
                         val = val.strip()
-                        cvs, created = models.CharacterValue.objects.get_or_create(
-                            value_str=val,
-                            character=char)
-                        cvs.save()
+                        cv, created = models.CharacterValue \
+                            .objects.get_or_create(value_str=val,
+                                                   character=character)
+                        cv.save()
                         models.TaxonCharacterValue.objects.get_or_create(
-                            taxon=t,
-                            character_value=cvs)
-            t.save()
+                            taxon=taxon, character_value=cv)
 
     def _import_characters(self, f):
         print >> self.logfile, 'Setting up characters'
