@@ -42,9 +42,11 @@ class Importer(object):
     def __init__(self, logfile=sys.stdout):
         self.logfile = logfile
 
-    def import_data(self, charf, char_glossaryf, glossaryf, glossary_images,
+    def import_data(self, charf, charvf,
+                    char_glossaryf, glossaryf, glossary_images,
                     pilef, taxaf, pile_images, *taxonfiles):
         self._import_characters(charf)
+        self._import_character_values(charvf)
         self._import_character_glossary(char_glossaryf)
         self._import_glossary(glossaryf, glossary_images)
         self._import_piles(pilef, pile_images)
@@ -261,27 +263,15 @@ class Importer(object):
     def _import_characters(self, f):
         print >> self.logfile, 'Setting up characters'
         iterator = iter(CSVReader(f).read())
-        colnames = [x.lower() for x in iterator.next()]
-
-        # Column names differ between sample/sample-characters.csv and
-        # the new data/character_values.csv so we auto-detect which we
-        # are using.  This bit of indirection can be removed later when
-        # the discrepancy is cleaned up.
-        if 'type' in colnames:
-            COL_GROUP = 'type'
-            COL_VALUE = 'desc'
-        else:
-            COL_GROUP = 'character_group'
-            COL_VALUE = 'character_value'
+        colnames = [ x.lower() for x in iterator.next() ]
 
         for cols in iterator:
-            row = {}
-            for pos, c in enumerate(cols):
-                row[colnames[pos]] = c
+            row = dict(zip(colnames, cols))
 
-            sp = row['character'].split('_')
-            pile_suffix = sp[-1]
-            short_name = '_'.join(sp[:-1])
+            if '_' not in row['character']:
+                continue # ignore "family" rows for right now
+            short_name, pile_suffix = row['character'].rsplit('_', 1)
+
             # Detect lengths and set the short_name and value_type properly
             if short_name.endswith('_min') or short_name.endswith('_max'):
                 short_name = short_name[:-4]
@@ -293,17 +283,11 @@ class Importer(object):
             if not pile_suffix in pile_mapping:
                 continue
 
-            pile, created = models.Pile.objects.get_or_create(
-                name=pile_mapping[pile_suffix])
-            if created:
-                print >> self.logfile, u'  New Pile: ' \
-                      + pile_mapping[pile_suffix]
-
             chargroup, created = models.CharacterGroup.objects.get_or_create(
-                name=row[COL_GROUP])
+                name=row['character_group'])
             if created:
-                print >> self.logfile, u'    New Character Group: ' \
-                      + row[COL_GROUP]
+                print >> self.logfile, u'    New Character Group:', \
+                    chargroup.name
 
             res = models.Character.objects.filter(short_name=short_name)
             if len(res) == 0:
@@ -316,8 +300,48 @@ class Importer(object):
                                              character_group=chargroup,
                                              value_type=value_type)
                 character.save()
-            else:
-                character = res[0]
+
+    def _import_character_values(self, f):
+        print >> self.logfile, 'Setting up character values'
+        iterator = iter(CSVReader(f).read())
+        colnames = [x.lower() for x in iterator.next()]
+
+        # Column names differ between sample/sample-characters.csv and
+        # the new data/character_values.csv so we auto-detect which we
+        # are using.  This bit of indirection can be removed later when
+        # the discrepancy is cleaned up.
+        if 'type' in colnames:
+            # COL_GROUP = 'type'
+            COL_VALUE = 'desc'
+        else:
+            # COL_GROUP = 'character_group'
+            COL_VALUE = 'character_value'
+
+        for cols in iterator:
+            row = dict(zip(colnames, cols))
+
+            if '_' not in row['character']:
+                continue # ignore "family" rows for right now
+            short_name, pile_suffix = row['character'].rsplit('_', 1)
+
+            # Detect lengths and set the short_name properly
+            if short_name.endswith('_min') or short_name.endswith('_max'):
+                short_name = short_name[:-4]
+
+            # only handling the two _ly and _ca piles for now
+            if not pile_suffix in pile_mapping:
+                continue
+
+            pile, created = models.Pile.objects.get_or_create(
+                name=pile_mapping[pile_suffix])
+            if created:
+                print >> self.logfile, u'  New Pile:', pile.name
+
+            res = models.Character.objects.filter(short_name=short_name)
+            if len(res) == 0:
+                print >> self.logfile, u'      MISSING CHARACTER:', short_name
+                continue
+            character = res[0]
 
             res = models.CharacterValue.objects.filter(
                 value_str=row[COL_VALUE])
@@ -339,6 +363,7 @@ class Importer(object):
                 if created:
                     print >> self.logfile, u'      New Definition: ' + friendly_text
                 cv.glossary_term = term
+
             pile.character_values.add(cv)
             pile.save()
 

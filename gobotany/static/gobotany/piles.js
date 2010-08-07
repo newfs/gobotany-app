@@ -27,7 +27,6 @@ gobotany.piles.init = function() {
     });
 };
 
-
 gobotany.piles._populate_base_pile_listing = function(basename) {
     var select = dojo.byId(basename+'-select');
     var store = new dojox.data.JsonRestStore({target: '/'+basename+'s/'});
