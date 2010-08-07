@@ -69,7 +69,7 @@ dojo.declare('NumericRangeFilter', [MultipleChoiceFilter], {
 // It pulls a set of default filters, then later would pull more filters
 // as needed.
 //
-dojo.declare("FilterManager", null, {
+dojo.declare("gobotany.filters.FilterManager", null, {
     pile_slug: "",
     default_filters: null,
     constructor: function(args) {

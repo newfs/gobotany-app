@@ -49,6 +49,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
         "django.core.context_processors.i18n",
         "django.core.context_processors.request",
         "django.core.context_processors.media",
+        "gobotany.core.context_processors.dojo",
 )
 
 ROOT_URLCONF = 'gobotany.urls'
@@ -61,8 +62,7 @@ MEDIA_URL = '/media/'
 ADMIN_MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'admin-media')
 ADMIN_MEDIA_PREFIX = '/admin-media/'
 
-DEBUG_DOJO_ROOT = os.path.join(os.path.dirname(__file__),
-                               '..', '..', '..', 'dojo')
+DEBUG_DOJO = bool(int(os.environ.get('DEBUG_DOJO', False)))
 
 HAYSTACK_SITECONF = 'gobotany.core.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'solr'

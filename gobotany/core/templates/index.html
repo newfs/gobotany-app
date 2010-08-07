@@ -10,5 +10,13 @@
       <li><a href="species-lists/">List species
           in a pile group, pile, or genus (through a REST call)</a></li>
       <li><a href="simple/">Simple Key app</a></li>
+      <li id="tests-action">Run Tests (please run in dojo debug mode)</li>
     </ul>
+
+    <script type="text/javascript">
+      if (djConfig && djConfig.isDebug) {
+          var node = document.getElementById('tests-action');
+          node.innerHTML = '<a href="/static/tests.html">Run Tests</a>';
+      }
+    </script>
 {% endblock %}

@@ -16,8 +16,18 @@ if gobotany.settings.DEBUG:
     urlpatterns += patterns(
         '',
         (r'^media/(?P<path>.*)$', 'django.views.static.serve',
-         {'document_root': gobotany.settings.MEDIA_ROOT, 'show_indexes': True}),
+         {'document_root': gobotany.settings.MEDIA_ROOT,
+          'show_indexes': True}),
+        )
 
+if gobotany.settings.DEBUG_DOJO:
+    import os
+    import gobotany
+    dojo_path = os.path.abspath(os.path.join(gobotany.__path__[0],
+                                             '..', '..', '..', 'dojo'))
+    urlpatterns += patterns(
+        '',
         (r'^dojo/(?P<path>.*)$', 'django.views.static.serve',
-         {'document_root': gobotany.settings.DEBUG_DOJO_ROOT, 'show_indexes': True}),
+         {'document_root': dojo_path,
+          'show_indexes': True}),
         )

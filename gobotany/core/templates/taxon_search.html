@@ -3,7 +3,8 @@
 <script type="text/javascript">
 dojo.require('gobotany.taxon');
 dojo.addOnLoad(function() {
-    gobotany.taxon.init();
+    var helper = gobotany.taxon.TaxonHelper();
+    helper.init();
 });
 </script>
 {% endblock %}

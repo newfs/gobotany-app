@@ -1,8 +1,6 @@
 dojo.provide('gobotany.piles');
 dojo.require('dojox.data.JsonRestStore');
 
-gobotany.piles._taxon_count_store = new dojox.data.JsonRestStore({target: '/taxon-count'});
-
 gobotany.piles.init = function() {
     var f = dojo.byId('characters_form');
     var b = dojo.place('<input type="button" value="Check Counts">', f);
@@ -17,7 +15,9 @@ gobotany.piles.init = function() {
         }
 
         dojo.empty(d);
-        gobotany.piles._taxon_count_store.fetch({query: obj, onComplete: function(res) {
+        var taxon_count_store = new dojox.data.JsonRestStore({target: '/taxon-count'});
+
+        taxon_count_store.fetch({query: obj, onComplete: function(res) {
             var dl = dojo.place('<dl></dl>', d);
             dojo.place('<dt>Matched</dt>', dl);
             dojo.place('<dd>'+res.matched+'</dd>', dl);

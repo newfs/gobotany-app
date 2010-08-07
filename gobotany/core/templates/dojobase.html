@@ -1,0 +1,36 @@
+<!-- dojobase.html -->
+
+{% if debug_dojo %}
+    <script type="text/javascript">
+	djConfig = { 
+           isDebug: true,
+           debugAtAllCosts:true,
+           useXDomain: false,
+           modulePaths: {
+               gobotany: '/static/gobotany'
+           },
+       };
+    </script>
+    <script src="/dojo/dojo/dojo.js" type="text/javascript"></script>
+
+    <link rel="stylesheet"
+          href="/dojo/dijit/themes/claro/claro.css"
+          type="text/css" media="screen" title="Dijit Claro Style" charset="utf-8" /> 
+{% else %}
+    <script type="text/javascript">
+	djConfig = { 
+           isDebug: false,
+           debugAtAllCosts:false,
+           useXDomain: false,
+           baseUrl: 'http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/',
+           modulePaths: {
+               gobotany: '/static/gobotany'
+           },
+       };
+    </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/dojo.xd.js" type="text/javascript"></script>
+
+    <link rel="stylesheet"
+          href="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/claro.css"
+          type="text/css" media="screen" title="Dijit Claro Style" charset="utf-8" /> 
+{% endif %}
