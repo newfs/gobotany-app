@@ -263,6 +263,17 @@ class Importer(object):
         iterator = iter(CSVReader(f).read())
         colnames = [x.lower() for x in iterator.next()]
 
+        # Column names differ between sample/sample-characters.csv and
+        # the new data/character_values.csv so we auto-detect which we
+        # are using.  This bit of indirection can be removed later when
+        # the discrepancy is cleaned up.
+        if 'type' in colnames:
+            COL_GROUP = 'type'
+            COL_VALUE = 'desc'
+        else:
+            COL_GROUP = 'character_group'
+            COL_VALUE = 'character_value'
+
         for cols in iterator:
             row = {}
             for pos, c in enumerate(cols):
@@ -289,10 +300,10 @@ class Importer(object):
                       + pile_mapping[pile_suffix]
 
             chargroup, created = models.CharacterGroup.objects.get_or_create(
-                name=row['type'])
+                name=row[COL_GROUP])
             if created:
                 print >> self.logfile, u'    New Character Group: ' \
-                      + row['type']
+                      + row[COL_GROUP]
 
             res = models.Character.objects.filter(short_name=short_name)
             if len(res) == 0:
@@ -308,9 +319,10 @@ class Importer(object):
             else:
                 character = res[0]
 
-            res = models.CharacterValue.objects.filter(value_str=row['desc'])
+            res = models.CharacterValue.objects.filter(
+                value_str=row[COL_VALUE])
             if len(res) == 0:
-                cv = models.CharacterValue(value_str=row['desc'],
+                cv = models.CharacterValue(value_str=row[COL_VALUE],
                                            character=character)
                 cv.save()
             else:
@@ -320,9 +332,9 @@ class Importer(object):
                 continue
 
             friendly_text = row['friendly_text']
-            if friendly_text and friendly_text != row['desc']:
+            if friendly_text and friendly_text != row[COL_VALUE]:
                 term, created = models.GlossaryTerm.objects.get_or_create(
-                    term=row['desc'],
+                    term=row[COL_VALUE],
                     lay_definition=friendly_text)
                 if created:
                     print >> self.logfile, u'      New Definition: ' + friendly_text
