@@ -1,9 +1,6 @@
-@import url(reset.css);
-
 /* Go-Botany site styles */
 
 body {
-    font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
     padding: 24px;
 }
 
@@ -22,7 +19,6 @@ h2 {
 }
 
 p {
-    font-size: 0.9em;
     margin: 5px 0;
     padding: 5px 0;
 }
@@ -34,7 +30,6 @@ p {
 #main {
     border: 1px dashed #ddd;
     float: right;
-    /*height: 450px;*/
     margin: 0 0 1em;
     width: 750px;
 }
@@ -89,6 +84,7 @@ p {
 
 #filter-working .close {
     color: #00e;
+    display: inline;
     float: right;
 }
 
@@ -168,4 +164,14 @@ p {
 
 .PilePage ul {
     margin-left: 10px;
+}
+
+/* Dijit Claro overrides */
+.claro {
+    color: #000;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
+    font-size: 100%;
+}
+h3, h4, h5, h6 {
+    margin-top: 0;
 }
