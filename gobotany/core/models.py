@@ -131,10 +131,10 @@ class CharacterValue(models.Model):
     effectively associates the character with the Pile as well:
 
         >>> pile,ignore = Pile.objects.get_or_create(name='Lycophytes')
-        >>> Character.objects.filter(charactervalue__pile=pile)
+        >>> Character.objects.filter(character_values__pile=pile)
         []
         >>> pile.character_values.add(char_val)
-        >>> Character.objects.filter(charactervalue__pile=pile)
+        >>> Character.objects.filter(character_values__pile=pile)
         [<Character: tropophyll_form name="Tropophyll Form" id=...>]
         >>> CharacterValue.objects.filter(pile=pile)
         [<CharacterValue: tropophyll_form: short and scale-like>]

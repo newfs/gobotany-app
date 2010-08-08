@@ -20,11 +20,17 @@ def setup_sample_data():
     pile2.pilegroup = pilegroup2
     pile2.save()
 
-    foo = models.Taxon(scientific_name='Foo foo')
+    famfoo, c = models.Family.objects.get_or_create(name='Fooaceae')
+    fambaz, c = models.Family.objects.get_or_create(name='Bazaceae')
+
+    genfoo, c = models.Genus.objects.get_or_create(name='Fooium')
+    genbaz, c = models.Genus.objects.get_or_create(name='Bazia')
+
+    foo = models.Taxon(family=famfoo, genus=genfoo, scientific_name='Foo foo')
     foo.save()
-    bar = models.Taxon(scientific_name='Foo bar')
+    bar = models.Taxon(family=famfoo, genus=genfoo, scientific_name='Foo bar')
     bar.save()
-    abc = models.Taxon(scientific_name='Baz abc')
+    abc = models.Taxon(family=fambaz, genus=genbaz, scientific_name='Baz abc')
     abc.save()
 
     pile1.species.add(foo)
@@ -94,8 +100,8 @@ class APITests(TestCase):
         self.try_query([foo, bar, abc], pile='pile1', pilegroup='pilegroup1')
         self.try_query([], pile='pile2', pilegroup='pilegroup1')
 
-        self.try_query([foo, bar], genus='Foo')
-        self.try_query([abc], genus='Baz')
+        self.try_query([foo, bar], genus='Fooium')
+        self.try_query([abc], family='Bazaceae')
         self.try_query([], genus='Kooky')
 
 class ImportTests(TestCase):

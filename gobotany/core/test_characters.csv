@@ -1,9 +1,9 @@
-id,Type,Character,Desc
-590,characters of leaves,abaxial_leaf_blade_indument_ca,glabrous
-591,characters of leaves,abaxial_leaf_blade_indument_ca,pubescent
-841,characters of fruits,accesory_tissue_as_part_of_the_disperal_unit_ca,absent
-843,characters of fruits,accesory_tissue_as_part_of_the_disperal_unit_ca,"present, hypanthium"
-842,characters of fruits,accesory_tissue_as_part_of_the_disperal_unit_ca,"present, receptacle"
-993,characters of perigynia and achenes,achene_indentations_ca,with a fold or indentation
-992,characters of perigynia and achenes,achene_indentations_ca,without folds or indentations
-999,characters of perigynia and achenes,sporophyll_position_ca,in annual zones on shoot
+id,Type,Character_group,Character,Desc
+590,characters of leaves,group1,abaxial_leaf_blade_indument_ca,glabrous
+591,characters of leaves,group1,abaxial_leaf_blade_indument_ca,pubescent
+841,characters of fruits,group1,accesory_tissue_as_part_of_the_disperal_unit_ca,absent
+843,characters of fruits,group1,accesory_tissue_as_part_of_the_disperal_unit_ca,"present, hypanthium"
+842,characters of fruits,group1,accesory_tissue_as_part_of_the_disperal_unit_ca,"present, receptacle"
+993,characters of perigynia and achenes,group2,achene_indentations_ca,with a fold or indentation
+992,characters of perigynia and achenes,group2,achene_indentations_ca,without folds or indentations
+999,characters of perigynia and achenes,group2,sporophyll_position_ca,in annual zones on shoot
