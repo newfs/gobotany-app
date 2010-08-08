@@ -45,14 +45,14 @@ class Importer(object):
     def import_data(self, charf, charvf,
                     char_glossaryf, glossaryf, glossary_images,
                     pilef, taxaf, pile_images, *taxonfiles):
+        self._import_piles(pilef, pile_images)
+        self._import_taxa(taxaf)
         self._import_characters(charf)
         self._import_character_values(charvf)
         self._import_character_glossary(char_glossaryf)
         self._import_glossary(glossaryf, glossary_images)
-        self._import_piles(pilef, pile_images)
         self._import_default_filters()
         self._import_extra_demo_data()
-        self._import_taxa(taxaf)
         for taxonf in taxonfiles:
             self._import_taxon_character_values(taxonf)
 
@@ -153,15 +153,22 @@ class Importer(object):
         for cols in iterator:
             row = dict(zip(colnames, cols))
 
-            # Create a Taxon if it doesn't exist yet.
-            taxon, created = models.Taxon.objects.get_or_create(
-                scientific_name=row['scientific_name'])
-            # Update taxonomic authority and simple key.
-            taxon.taxonomic_authority = row['taxonomic_authority']
-            taxon.simple_key = (row['simple_key'] == 'TRUE')
+            # Find the family and genus.
+            family, created = models.Family.objects.get_or_create(
+                name=row['family'])
+            genus, created = models.Genus.objects.get_or_create(
+                name=row['scientific_name'].split()[0])
+
+            # Create a Taxon.
+            taxon = models.Taxon(
+                scientific_name=row['scientific_name'],
+                family=family,
+                genus=genus,
+                taxonomic_authority = row['taxonomic_authority'],
+                simple_key = (row['simple_key'] == 'TRUE'),
+                )
             taxon.save()
-            if created:
-                print >> self.logfile, u'    New Taxon:', taxon
+            print >> self.logfile, u'    New Taxon:', taxon
 
             # Assign this Taxon to the Pile(s) specified for it.
             if row['pile']:

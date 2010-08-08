@@ -335,8 +335,26 @@ class ContentImage(models.Model):
         return name
 
 
+class Family(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        verbose_name_plural = 'families'
+        ordering = ['name']
+
+
+class Genus(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        verbose_name_plural = 'genera'
+        ordering = ['name']
+
+
 class Taxon(models.Model):
     scientific_name = models.CharField(max_length=100, unique=True)
+    family = models.ForeignKey(Family)
+    genus = models.ForeignKey(Genus)
     character_values = models.ManyToManyField(
         CharacterValue,
         through='TaxonCharacterValue')
