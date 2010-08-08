@@ -14,6 +14,7 @@ dojo.declare("Filter", null, {
     constructor: function(args) {
         this.friendly_name = args.friendly_name;
         this.order = args.order;
+        this.value_type = args.value_type;
         this.pile_slug = args.pile_slug;
         dojo.safeMixin(this, args);
     }
@@ -27,6 +28,7 @@ dojo.declare("MultipleChoiceFilter", [Filter], {
     values: null,
     constructor: function(args) {
         this.character_short_name = args.character_short_name;
+        this.value_type = args.value_type;
         this.values = [];
     },
     load_values: function() {
@@ -93,13 +95,16 @@ dojo.declare("gobotany.filters.FilterManager", null, {
     },
     add_filter: function(filter_json) {
         var filter_type;
-        if (filter_json.value_type == 'LENGTH') filter_type = NumericRangeFilter;
-        else filter_type = MultipleChoiceFilter;
+        if (filter_json.value_type == 'LENGTH')
+            filter_type = NumericRangeFilter;
+        else
+            filter_type = MultipleChoiceFilter;
         var filter = new filter_type(
             {
                 friendly_name: filter_json.character_friendly_name,
                 character_short_name: filter_json.character_short_name,
                 order: filter_json.order,
+                value_type: filter_json.value_type,
                 pile_slug: this.pile_slug
             }
         );

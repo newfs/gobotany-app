@@ -16,12 +16,16 @@ gobotany.sk.results.show_filter_working = function() {
 
     var valuesList = dojo.query('#filter-working form .values')[0];
     dojo.empty(valuesList);
-    dojo.place('<label><input type="radio" name="char_name" value="" ' +
-               'checked> don&apos;t know</label>', valuesList);
-    for (var i = 0; i < this.values.length; i++) {
-        dojo.place('<label><input type="radio" name="char_name" ' +
-                   'value="' + this.values[i] + '"> ' + this.values[i] +
-                   ' (0)</label>', valuesList);
+    if (this.value_type == 'LENGTH') {
+        ;
+    } else {
+        dojo.place('<label><input type="radio" name="char_name" value="" ' +
+                   'checked> don&apos;t know</label>', valuesList);
+        for (var i = 0; i < this.values.length; i++) {
+            dojo.place('<label><input type="radio" name="char_name" ' +
+                       'value="' + this.values[i] + '"> ' + this.values[i] +
+                       ' (0)</label>', valuesList);
+        }
     }
 
     // TODO: Check the user's chosen item if this filter is "active."

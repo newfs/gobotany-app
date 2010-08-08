@@ -123,7 +123,6 @@ class PileHandler(BasePileHandler):
             value_type=u'LENGTH',
             character_values__pile=pile,
             )
-        print len(characters)
         order = max(
             default_filter.order for default_filter in default_filters
             ) + 1
