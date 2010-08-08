@@ -6,7 +6,9 @@ dojo.require('gobotany.filters');
 
 simplekey_character_short_name = null;
 
-gobotany.sk.results.show_filter_working = function() {
+gobotany.sk.results.show_filter_working = function(event) {
+    event.preventDefault();
+
     // Here the 'this.' is a filter object passed in as a context.
 
     dojo.query('#filter-working').style({display: 'block'});
@@ -17,7 +19,12 @@ gobotany.sk.results.show_filter_working = function() {
     var valuesList = dojo.query('#filter-working form .values')[0];
     dojo.empty(valuesList);
     if (this.value_type == 'LENGTH') {
-        ;
+        var range = this.values[0];
+        dojo.place('<label>Type an integer value:<br>' +
+                   '(hint: between ' + range.min + ' and ' +
+                   range.max + ')<br>' +
+                   '<input type="text" name="char_value" value=""></label>',
+                   valuesList);
     } else {
         dojo.place('<label><input type="radio" name="char_name" value="" ' +
                    'checked> don&apos;t know</label>', valuesList);

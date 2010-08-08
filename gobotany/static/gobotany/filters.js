@@ -53,11 +53,19 @@ dojo.declare("MultipleChoiceFilter", [Filter], {
 //
 dojo.declare('NumericRangeFilter', [MultipleChoiceFilter], {
     process_value: function(character_value, index) {
-        // We store the range of values in a two element array this.values = [min, max]
-        // update the minimum value
-        this.values[0] = (this.values.length) > 0 ? min(character_value.value_min, this.values[0]) : character_value.value_min;
-        // update the maximum value
-        this.values[1] = (this.values.length) > 1 ? min(character_value.value_max, this.values[0]) : character_value.value_max;
+        // We make this.values a one-element list: [{min: a, max: b}]
+        if (this.values.Length) {
+            var v = values[0];
+            if (v.min > character_value.value_min)
+                v.min = character_value.value_min;
+            if (v.max < character_value.value_max)
+                v.max = character_value.value_max;
+        } else {
+            this.values = [{
+                min: character_value.value_min,
+                max: character_value.value_max
+            }];
+        }
     }
 });
 
