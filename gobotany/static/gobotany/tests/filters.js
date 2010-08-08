@@ -12,8 +12,8 @@ dojo.require('gobotany.filters');
 
 doh.register('gobotany.tests.core.TestFilter', [
     function test_has_base_values() {
-        var f = new Filter({friendly_name: 'f. name', order: 3,
-                            pile_slug: 'p. slug', value_type: 'text'});
+        var f = new gobotany.filters.Filter({friendly_name: 'f. name', order: 3,
+                                             pile_slug: 'p. slug', value_type: 'text'});
         doh.assertEqual('f. name', f.friendly_name);
         doh.assertEqual('p. slug', f.pile_slug);
         doh.assertEqual(3, f.order);
@@ -23,9 +23,9 @@ doh.register('gobotany.tests.core.TestFilter', [
 
 doh.register('gobotany.tests.core.TestMultipleChoiceFilter', [
     function test_has_character_short_name() {
-        var f = new MultipleChoiceFilter(
-                    {friendly_name: 'f. name', order: 3, pile_slug: 'p. slug',
-                     value_type: 'text', character_short_name: 'c. name'});
+        var f = new gobotany.filters.MultipleChoiceFilter(
+            {friendly_name: 'f. name', order: 3, pile_slug: 'p. slug',
+             value_type: 'text', character_short_name: 'c. name'});
         doh.assertEqual('f. name', f.friendly_name);
         doh.assertEqual('p. slug', f.pile_slug);
         doh.assertEqual(3, f.order);
@@ -33,15 +33,15 @@ doh.register('gobotany.tests.core.TestMultipleChoiceFilter', [
         doh.assertEqual('c. name', f.character_short_name);
     },
     function test_starts_with_no_values() {
-        var f = new MultipleChoiceFilter(
-                    {friendly_name: 'f. name', order: 3, pile_slug: 'p. slug',
-                     value_type: 'text', character_short_name: 'c. name'});
+        var f = new gobotany.filters.MultipleChoiceFilter(
+            {friendly_name: 'f. name', order: 3, pile_slug: 'p. slug',
+             value_type: 'text', character_short_name: 'c. name'});
         doh.assertEqual([], f.values);
     },
     function test_adds_values_to_collection() {
-        var f = new MultipleChoiceFilter(
-                    {friendly_name: 'f. name', order: 3, pile_slug: 'p. slug',
-                     value_type: 'text', character_short_name: 'c. name'});
+        var f = new gobotany.filters.MultipleChoiceFilter(
+            {friendly_name: 'f. name', order: 3, pile_slug: 'p. slug',
+             value_type: 'text', character_short_name: 'c. name'});
         var value1 = {'value_str': 'value_str_1'};
         var value2 = {'value_str': 'value_str_2'};
         var value3 = {'value_str': 'value_str_3'};

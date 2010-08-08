@@ -7,7 +7,7 @@ dojo.require('dojox.data.JsonRestStore');
 //
 // Base for the different types of filters.
 //
-dojo.declare("Filter", null, {
+dojo.declare("gobotany.filters.Filter", null, {
     friendly_name: "",
     order: 0,
     pile_slug: "",
@@ -24,20 +24,20 @@ dojo.declare("Filter", null, {
 
 // MultipleChoiceFilter
 //
-dojo.declare("MultipleChoiceFilter", [Filter], {
+dojo.declare("gobotany.filters.MultipleChoiceFilter", [gobotany.filters.Filter], {
     character_short_name: "", // Only one character field needed (unlike numeric?)
     values: null,
     constructor: function(args) {
         this.character_short_name = args.character_short_name;
         this.value_type = args.value_type;
         this.values = [];
-    },
-    load_values: function() {
         var url = '/piles/' + this.pile_slug + '/' + 
                   this.character_short_name + '/';
-        var store = new dojox.data.JsonRestStore({target: url,
-                                                  syncMode: true});
-        store.fetch({
+        this.store = new dojox.data.JsonRestStore({target: url,
+                                                   syncMode: true});
+    },
+    load_values: function() {
+        this.store.fetch({
             scope: this,
             onComplete: function(response) {
                 dojo.forEach(response, this.process_value, this);
@@ -52,7 +52,7 @@ dojo.declare("MultipleChoiceFilter", [Filter], {
 
 // NumericRangeFilter
 //
-dojo.declare('NumericRangeFilter', [MultipleChoiceFilter], {
+dojo.declare('gobotany.filters.NumericRangeFilter', [gobotany.filters.MultipleChoiceFilter], {
     process_value: function(character_value, index) {
         // We make this.values a one-element list: [{min: a, max: b}]
         if (this.values.Length) {
@@ -95,24 +95,26 @@ dojo.declare("gobotany.filters.FilterManager", null, {
             scope: this,
             identity: this.pile_slug,
             onItem: function(item) {
-               for (var y = 0; y < item.default_filters.length; y++) {
-                   var filter_json = item.default_filters[y];
-                   this.add_filter(filter_json);
-               }
+                for (var y = 0; y < item.default_filters.length; y++) {
+                    var filter_json = item.default_filters[y];
+                    this.add_filter(filter_json);
+                }
             }
         });
     },
     add_filter: function(filter_json) {
         var filter_type;
         if (filter_json.value_type == 'LENGTH')
-            filter_type = NumericRangeFilter;
+            filter_type = gobotany.filters.NumericRangeFilter;
         else
-            filter_type = MultipleChoiceFilter;
+            filter_type = gobotany.filters.MultipleChoiceFilter;
         var filter = new filter_type(
             {
                 friendly_name: filter_json.character_friendly_name,
                 character_short_name: filter_json.character_short_name,
                 order: filter_json.order,
+                notable_exceptions: filter_json.notable_exceptions,
+                key_characteristics: filter_json.key_characteristics,
                 value_type: filter_json.value_type,
                 pile_slug: this.pile_slug
             }

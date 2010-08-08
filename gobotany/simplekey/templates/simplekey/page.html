@@ -2,6 +2,8 @@
 {% block content %}
   <div class="PilePage" id="pilegroup-finder">
     <h1>{{ page.title }}</h1>
+<div>
+<div id="simplekey-left-column">
     <p>
       Which of the following best describes your plant?
     </p>
@@ -9,13 +11,7 @@
     {% for pilegroup, url in pilegroups_and_urls %}
       <div class="PileGroup" id="{{ pilegroup.slug }}-info">
         <h2><a href="{{ url }}">{{ pilegroup.name }}</a></h2>
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('{{ pilegroup.slug }}-tooltip').show()">more info</button>
-        <div dojoType="dijit.Dialog" class="PileInfo" id="{{ pilegroup.slug }}-tooltip"
-             title="{{ pilegroup.name }}">
-          {% with pilegroup as pile %}
-          {% include "simplekey/pile_tooltip.html" %}
-          {% endwith %}
-        </div>
+        <button dojoType="dijit.form.Button" onclick="toggle_tooltip('{{ pilegroup.slug }}')">more info</button>
       </div>
     {% endfor %}
 
@@ -25,13 +21,31 @@
                >Give me more choices »</a></h2>
       </div>
     {% endif %}
+</div>
 
-    <h2>Subway map</h2>
+<div id="simplekey-right-column">
+    {% for pilegroup, url in pilegroups_and_urls %}
+        <div class="PileInfo tooltip" id="{{ pilegroup.slug }}-tooltip">
+          {% with pilegroup as pile %}
+          {% include "simplekey/pile_tooltip.html" %}
+          {% endwith %}
+        </div>
+    {% endfor %}
+</div>
+<div style="clear: both">&nbsp;</div>
+</div>
+
     {% include "simplekey/subway.html" %}
-{% endblock %}
-{% block js_bottom %}
+    {% endblock %}
+    {% block js_bottom %}
 
-<script>
-dojo.require('gobotany.sk.simplekey_page');
-</script>
+    <script>
+      dojo.require('gobotany.sk.simplekey_page');
+      function toggle_tooltip(slug) {
+          dojo.query('.PileInfo.tooltip').removeClass('active');
+          var tooltip = dojo.byId(slug+'-tooltip');
+          dojo.addClass(tooltip, 'active');
+      }
+    </script>
+  </div>
 {% endblock %}

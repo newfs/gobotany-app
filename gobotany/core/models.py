@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
 from django.template.defaultfilters import slugify
 
+
 class CharacterGroup(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
@@ -26,13 +27,15 @@ class GlossaryTerm(models.Model):
     image = models.ImageField(upload_to='glossary',
                               blank=True,
                               null=True)
+
     class Meta:
         ordering = ['term', 'lay_definition']
         # Don't allow duplicate definitions
         unique_together = ('term', 'lay_definition', 'question_text')
 
     def __unicode__(self):
-        return u'%s: %s' % (self.term, (self.lay_definition or self.question_text)[:30] + '...')
+        return u'%s: %s' % (self.term, (self.lay_definition or
+                                        self.question_text)[:30] + '...')
 
 
 class Character(models.Model):
@@ -183,27 +186,33 @@ class CharacterValue(models.Model):
     def clean(self):
         """Make sure one and only one value type is set"""
         # no empty strings allowed
-        if not self.value_str.strip(): self.value_str = None
+        if not self.value_str.strip():
+            self.value_str = None
         # Check that we only have one of the value types,
         # XXX: We should validate this against the character value type
         if self.value_str is not None:
             if (self.value_min is not None or
                 self.value_max is not None or
                 self.value_flt is not None):
-                raise ValidationError('You may only set one of the value types')
+                raise ValidationError('You may only set '
+                                      'one of the value types')
         if self.value_flt is not None:
             if (self.value_min is not None or
                 self.value_max is not None or
                 self.value_str is not None):
-                raise ValidationError('You may only set one of the value types')
+                raise ValidationError('You may only set one '
+                                      'of the value types')
         if self.value_min is not None or self.value_max is not None:
             if (self.value_flt is not None or
                 self.value_str is not None):
-                raise ValidationError('You may only set one of the value types')
+                raise ValidationError('You may only set one of '
+                                      'the value types')
             if self.value_min is None or self.value_max is None:
-                raise ValidationError('You must set both the maximum and minimum values')
+                raise ValidationError('You must set both the maximum '
+                                      'and minimum values')
             if self.value_min > self.value_max:
-                raise ValidationError('The minimum value may not be greater than the maximum value')
+                raise ValidationError('The minimum value may not be greater '
+                                      'than the maximum value')
 
     def __unicode__(self):
         if self.value_min is not None and self.value_max is not None:
@@ -253,7 +262,8 @@ class Pile(PileInfo):
     character_values = models.ManyToManyField(CharacterValue)
     species = models.ManyToManyField('Taxon', related_name='piles')
     pilegroup = models.ForeignKey('PileGroup', related_name='piles', null=True)
-    default_filters = models.ManyToManyField(Character, through='DefaultFilter')
+    default_filters = models.ManyToManyField(Character,
+                                             through='DefaultFilter')
 
 
 class PileGroup(PileInfo):
@@ -395,7 +405,7 @@ class TaxonCharacterValue(models.Model):
         verbose_name_plural = 'character values for taxon'
 
     def __unicode__(self):
-        return u'%s'%self.character_value
+        return u'%s' % self.character_value
 
 
 class TaxonGroup(models.Model):
@@ -422,15 +432,16 @@ class TaxonGroupEntry(models.Model):
         ordering = ['group__name', 'taxon__scientific_name']
         verbose_name_plural = 'taxon group entries'
 
-
     def __unicode__(self):
-        return '%s: %s'%(self.group.name, self.taxon.scientific_name)
+        return '%s: %s' % (self.group.name, self.taxon.scientific_name)
 
 
 class DefaultFilter(models.Model):
     pile = models.ForeignKey(Pile)
     character = models.ForeignKey(Character)
     order = models.IntegerField(unique=True)
+    key_characteristics = models.TextField(blank=True)
+    notable_exceptions = models.TextField(blank=True)
 
     class Meta:
         ordering = ['order']

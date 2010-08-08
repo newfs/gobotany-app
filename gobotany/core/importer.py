@@ -518,21 +518,32 @@ class Importer(object):
 
         character = models.Character.objects.get(
             short_name='horizontal_shoot_position')
-        filter, created = models.DefaultFilter.objects.get_or_create(pile=pile,
-                                                                     character=character,
-                                                                     order=1)
+        filter, created = models.DefaultFilter.objects.get_or_create(
+            pile=pile,
+            character=character,
+            order=1,
+            key_characteristics=u'1 ugh erg guah',
+            notable_exceptions=u'1 foo bar')
         filter.save()
 
         character = models.Character.objects.get(short_name='spore_form')
-        filter, created = models.DefaultFilter.objects.get_or_create(pile=pile,
-                                                                     character=character,
-                                                                     order=2)
+        filter, created = models.DefaultFilter.objects.get_or_create(
+            pile=pile,
+            character=character,
+            order=2,
+            key_characteristics=u'2 ugh erg guah',
+            notable_exceptions=u'2 foo bar')
+
         filter.save()
 
         character = models.Character.objects.get(short_name='strobilus_base')
-        filter, created = models.DefaultFilter.objects.get_or_create(pile=pile,
-                                                                     character=character,
-                                                                     order=3)
+        filter, created = models.DefaultFilter.objects.get_or_create(
+            pile=pile,
+            character=character,
+            order=3,
+            key_characteristics=u'3 ugh erg guah',
+            notable_exceptions=u'3 foo bar')
+
         filter.save()
 
     def _import_extra_demo_data(self):

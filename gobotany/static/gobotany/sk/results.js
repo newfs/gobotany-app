@@ -36,6 +36,12 @@ gobotany.sk.results.show_filter_working = function(event) {
         }
     }
 
+    var kc = dojo.query('#filter-working .info .key-characteristics')[0];
+    kc.innerHTML = this.key_characteristics;
+
+    var ne = dojo.query('#filter-working .info .notable-exceptions')[0];
+    ne.innerHTML = this.notable_exceptions;
+
     // TODO: Check the user's chosen item if this filter is "active."
     // (For now, just check Don't Know.)
     dojo.query('#filter-working .values input')[0].checked = true;
@@ -235,7 +241,6 @@ gobotany.sk.results.init = function(pile_slug) {
 
     // Create a FilterManager object, which will pull a list of default
     // filters for the pile.
-    console.log(gobotany.filters);
     var filter_manager = new gobotany.filters.FilterManager({pile_slug: pile_slug});
     filter_manager.load_default_filters();
 

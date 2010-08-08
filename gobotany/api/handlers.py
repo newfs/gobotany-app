@@ -144,6 +144,8 @@ class PileHandler(BasePileHandler):
                 default_filter.character.friendly_name
             filter['order'] = default_filter.order
             filter['value_type'] = default_filter.character.value_type
+            filter['notable_exceptions'] = default_filter.notable_exceptions
+            filter['key_characteristics'] = default_filter.key_characteristics
             filters.append(filter)
         return filters
 

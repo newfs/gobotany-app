@@ -76,7 +76,7 @@ p {
 }
 
 #filter-working {
-    border: 1px solid #ccc;
+    border: 1px dashed #ddd;
     display: none;
     height: 180px;
     padding: 1em;
@@ -105,11 +105,11 @@ p {
 }
 
 #filter-working .values input {
-    margin: 1.2em 0 0 0;
+    margin: 0.6em 0;
 }
 
 #filter-working .info {
-    float: right;
+    float: left;
     font-size: 0.85em;
     padding: 1em;
     width: 470px;
@@ -166,6 +166,10 @@ p {
     margin-left: 10px;
 }
 
+.PileInfo.tooltip.active {
+    display: block;
+}
+
 /* Dijit Claro overrides */
 .claro {
     color: #000;
@@ -174,4 +178,45 @@ p {
 }
 h3, h4, h5, h6 {
     margin-top: 0;
+}
+
+.subway h2 {
+    font-weight: bold;
+}
+
+.subway {
+    font-size: 0.8em;
+}
+
+#simplekey-left-column {
+    width: 25%;
+    border: 1px dashed #ddd;
+    float: left;
+}
+
+#simplekey-right-column {
+    width: 70%;
+    border: 1px dashed #ddd;
+    float: left;
+}
+
+#filter-working .name {
+    text-align: center;
+    font-weight: bold;
+}
+
+#filter-working .info .info-sub {
+    float: left;
+    border: 1px dashed #ddd;
+    padding: 0.5em;
+    margin-right: 1em;
+}
+
+#filter-working .info .info-sub h3 {
+    font-weight: bold;
+}
+
+.clear {
+    clear: both;
+    height: 0;
 }
