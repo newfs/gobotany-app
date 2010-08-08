@@ -179,6 +179,36 @@ gobotany.sk.results.run_filtered_query = function() {
     });
 };
 
+gobotany.sk.results.apply_family_filter = function(event) {
+    event.preventDefault();
+
+    var family = dojo.query('#family_form input')[0].value;
+    if (family.length) {
+        simplekey_filter_choices['family'] = family;
+    } else {
+        if ('family' in simplekey_filter_choices) {
+            delete simplekey_filter_choices['family'];
+        }
+    }
+
+    gobotany.sk.results.run_filtered_query();
+}
+
+gobotany.sk.results.apply_genus_filter = function(event) {
+    event.preventDefault();
+
+    var genus = dojo.query('#genus_form input')[0].value;
+    if (genus.length) {
+        simplekey_filter_choices['genus'] = genus;
+    } else {
+        if ('genus' in simplekey_filter_choices) {
+            delete simplekey_filter_choices['genus'];
+        }
+    }
+
+    gobotany.sk.results.run_filtered_query();
+}
+
 gobotany.sk.results.init = function(pile_slug) {
     // Leave data around for further calls to the API.
     simplekey_pile_slug = pile_slug;
@@ -188,6 +218,15 @@ gobotany.sk.results.init = function(pile_slug) {
     var el = dojo.query('#filter-working .close')[0];
     dojo.connect(el, 'onclick', null, 
                  gobotany.sk.results.hide_filter_working);
+
+    // Wire up the Family and Genus submit buttons.
+    var family_button = dojo.query('#family_form button')[0];
+    dojo.connect(genus_button, 'onclick', null,
+                 gobotany.sk.results.apply_family_filter);
+
+    var genus_button = dojo.query('#genus_form button')[0];
+    dojo.connect(genus_button, 'onclick', null,
+                 gobotany.sk.results.apply_genus_filter);
 
     // Wire up the "Apply" button.
     var apply_button = dojo.query('#character_values_form button')[0];

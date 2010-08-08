@@ -21,17 +21,13 @@ class SpeciesReader(object):
             base_query = models.Taxon.objects
             for k, v in kwargs.items():
                 if k == 'pilegroup':
-                    base_query = base_query.filter(
-                        piles__pilegroup__slug=v,
-                        )
+                    base_query = base_query.filter(piles__pilegroup__slug=v)
                 elif k == 'pile':
-                    base_query = base_query.filter(
-                        piles__slug=v,
-                        )
+                    base_query = base_query.filter(piles__slug=v)
+                elif k == 'family':
+                    base_query = base_query.filter(family__name=v)
                 elif k == 'genus':
-                    base_query = base_query.filter(
-                        scientific_name__startswith=v + ' ',
-                        )
+                    base_query = base_query.filter(genus__name=v)
                 else:
                     character = models.Character.objects.get(short_name=k)
 
