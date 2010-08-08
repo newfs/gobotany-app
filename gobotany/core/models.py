@@ -165,7 +165,7 @@ class CharacterValue(models.Model):
     value_max = models.IntegerField(null=True, blank=True)
     value_flt = models.FloatField(null=True, blank=True)
 
-    character = models.ForeignKey(Character)
+    character = models.ForeignKey(Character, related_name='character_values')
     glossary_term = models.ForeignKey(GlossaryTerm, blank=True, null=True)
 
     class Meta:

@@ -96,6 +96,10 @@ class BasePileHandler(BaseHandler):
             return _taxon_image(pile.get_default_image())
 
 
+class FakeDefaultFilter(object):
+    pass
+
+
 class PileHandler(BasePileHandler):
     model = models.Pile
     fields = BasePileHandler.fields + ('default_filters',)
@@ -107,8 +111,32 @@ class PileHandler(BasePileHandler):
     @staticmethod
     def default_filters(pile=None):
         filters = []
-        default_filters = \
+        default_filters = list(
             models.DefaultFilter.objects.filter(pile=pile)
+            )
+
+        # -- START --
+        # Remove this when filters can be interactively selected; for
+        # now, this adds in LENGTH filters to exercise the UI.  (And
+        # remove the FakeDefaultFilter defined above, too!)
+        characters = models.Character.objects.filter(
+            value_type=u'LENGTH',
+            character_values__pile=pile,
+            )
+        print len(characters)
+        order = max(
+            default_filter.order for default_filter in default_filters
+            ) + 1
+        for character in characters:
+            fake_default_filter = FakeDefaultFilter()
+            fake_default_filter.character = character
+            order += 1
+            fake_default_filter.order = order
+            default_filters.append(fake_default_filter)
+            if order > 6:
+                break  # don't get carried away
+        # -- END --
+
         for default_filter in default_filters:
             filter = {}
             filter['character_short_name'] = \

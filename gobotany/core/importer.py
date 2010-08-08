@@ -187,6 +187,8 @@ class Importer(object):
             print >> self.logfile, "Pile '%s' isn't mapped" % pile_suffix
             return
 
+        pile = models.Pile.objects.get(name__iexact=pile_mapping[pile_suffix])
+
         for cols in iterator:
             row = dict(zip(colnames, cols))
 
@@ -233,6 +235,7 @@ class Importer(object):
                     else:
                         cv = models.CharacterValue(character=character)
                         cv.save()
+                        pile.character_values.add(cv)
                         models.TaxonCharacterValue(
                             taxon=taxon, character_value=cv).save()
 
@@ -250,6 +253,7 @@ class Importer(object):
                             .objects.get_or_create(value_str=val,
                                                    character=character)
                         cv.save()
+                        pile.character_values.add(cv)
                         models.TaxonCharacterValue.objects.get_or_create(
                             taxon=taxon, character_value=cv)
 
