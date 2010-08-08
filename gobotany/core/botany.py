@@ -32,18 +32,20 @@ class SpeciesReader(object):
                     base_query = base_query.filter(
                         scientific_name__startswith=v + ' ',
                         )
-                elif isinstance(v, int):
-                    base_query = base_query.filter(
-                        character_values__character__short_name=k,
-                        character_values__value_int=v)
-                elif isinstance(v, float):
-                    base_query = base_query.filter(
-                        character_values__character__short_name=k,
-                        character_values__value_flt=v)
                 else:
-                    base_query = base_query.filter(
-                        character_values__character__short_name=k,
-                        character_values__value_str=v)
+                    character = models.Character.objects.get(short_name=k)
+
+                    if character.value_type == u'TEXT':
+                        base_query = base_query.filter(
+                            character_values__character=character,
+                            character_values__value_str=v)
+
+                    elif character.value_type == u'LENGTH':
+                        base_query = base_query.filter(
+                            character_values__character=character,
+                            character_values__value_min__lte=v,
+                            character_values__value_max__gte=v)
+
             return base_query.filter(simple_key=is_simple_key)
 
     def species_images(self, species, max_rank=10,

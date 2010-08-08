@@ -23,7 +23,8 @@ gobotany.sk.results.show_filter_working = function(event) {
         dojo.place('<label>Type an integer value:<br>' +
                    '(hint: between ' + range.min + ' and ' +
                    range.max + ')<br>' +
-                   '<input type="text" name="char_value" value=""></label>',
+                   '<input type="text" id="int_value" name="int_value"' +
+                   ' value=""></label>',
                    valuesList);
     } else {
         dojo.place('<label><input type="radio" name="char_name" value="" ' +
@@ -45,7 +46,9 @@ gobotany.sk.results.hide_filter_working = function() {
     simplekey_character_short_name = null;
 };
 
-gobotany.sk.results.clear_filter = function() {
+gobotany.sk.results.clear_filter = function(event) {
+    event.preventDefault();
+
     if (this.character_short_name == simplekey_character_short_name) {
         gobotany.sk.results.hide_filter_working();
     }
@@ -57,7 +60,9 @@ gobotany.sk.results.clear_filter = function() {
               )[0].innerHTML = 'don\'t know';
 };
 
-gobotany.sk.results.remove_filter = function() {
+gobotany.sk.results.remove_filter = function(event) {
+    event.preventDefault();
+
     if (this.character_short_name == simplekey_character_short_name) {
         gobotany.sk.results.hide_filter_working();
     }
@@ -101,21 +106,49 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
     }
 };
 
-gobotany.sk.results.apply_filter = function() {
+gobotany.sk.results.apply_filter = function(event) {
+    event.preventDefault();
+
     choice_div = dojo.query('#' + simplekey_character_short_name +
                             ' .choice')[0];
-    checked_item = dojo.query('#character_values_form input:checked')[0];
-    if (checked_item.value) {
-        choice_div.innerHTML = checked_item.value;
-        simplekey_filter_choices[simplekey_character_short_name] =
-            checked_item.value;
-    } else {
-        choice_div.innerHTML = 'don\'t know';
-        if (simplekey_character_short_name in simplekey_filter_choices) {
-            delete simplekey_filter_choices[simplekey_character_short_name];
+
+    // First, see if this is a numeric field.
+
+    char_value_q = dojo.query('#character_values_form #int_value');
+
+    if (char_value_q.length) {
+        var value = parseInt(char_value_q[0].value);
+        if (!isNaN(value)) {
+            simplekey_filter_choices[simplekey_character_short_name] = value;
+            choice_div.innerHTML = value;
+            gobotany.sk.results.run_filtered_query();
         }
+        return;
     }
-    gobotany.sk.results.run_filtered_query();
+
+    // Next, look for a traditional checked multiple-choice field.
+
+    checked_item_q = dojo.query('#character_values_form input:checked');
+
+    if (checked_item_q.length) {
+        checked_item = checked_item_q[0];
+        if (checked_item.value) {
+            choice_div.innerHTML = checked_item.value;
+            simplekey_filter_choices[simplekey_character_short_name] =
+                checked_item.value;
+        } else {
+            choice_div.innerHTML = 'don\'t know';
+            if (simplekey_character_short_name in simplekey_filter_choices) {
+                delete simplekey_filter_choices[simplekey_character_short_name];
+            }
+        }
+        gobotany.sk.results.run_filtered_query();
+        return;
+    }
+
+    // Well, drat.
+
+    console.log('"Apply" button pressed, but no widget found');
 };
 
 gobotany.sk.results.run_filtered_query = function() {
