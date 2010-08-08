@@ -11,11 +11,12 @@ dojo.declare("Filter", null, {
     friendly_name: "",
     order: 0,
     pile_slug: "",
+    value_type: "",
     constructor: function(args) {
         this.friendly_name = args.friendly_name;
         this.order = args.order;
-        this.value_type = args.value_type;
         this.pile_slug = args.pile_slug;
+        this.value_type = args.value_type;
         dojo.safeMixin(this, args);
     }
 });
@@ -45,7 +46,7 @@ dojo.declare("MultipleChoiceFilter", [Filter], {
     },
     process_value: function(character_value, index) {
         this.values.push(character_value.value_str);
-    }   
+    }
 });
 
 
