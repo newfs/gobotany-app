@@ -104,6 +104,7 @@ class APITests(TestCase):
         self.try_query([abc], family='Bazaceae')
         self.try_query([], genus='Kooky')
 
+
 class ImportTests(TestCase):
 
     def test_import_characters(self):
@@ -111,7 +112,6 @@ class ImportTests(TestCase):
         im._import_characters(os.path.join(os.path.dirname(__file__),
                                            'test_characters.csv'))
         self.assertEquals(len(models.Character.objects.all()), 4)
-        self.assertEquals(len(models.CharacterValue.objects.all()), 8)
 
     def test_import_taxons(self):
         # setup the Carex pile for the test char data
