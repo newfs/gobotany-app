@@ -30,9 +30,10 @@ gobotany.sk.results.show_filter_working = function(event) {
         dojo.place('<label><input type="radio" name="char_name" value="" ' +
                    'checked> don&apos;t know</label>', valuesList);
         for (var i = 0; i < this.values.length; i++) {
+            var v = this.values[i];
             dojo.place('<label><input type="radio" name="char_name" ' +
-                       'value="' + this.values[i] + '"> ' + this.values[i] +
-                       ' (0)</label>', valuesList);
+                       'value="' + v.value + '"> ' + v.value +
+                       ' (' + v.count + ')</label>', valuesList);
         }
     }
 

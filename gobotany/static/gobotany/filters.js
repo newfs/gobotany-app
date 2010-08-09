@@ -45,7 +45,7 @@ dojo.declare("gobotany.filters.MultipleChoiceFilter", [gobotany.filters.Filter],
         });
     },
     process_value: function(character_value, index) {
-        this.values.push(character_value.value_str);
+        this.values.push(character_value);
     }
 });
 
