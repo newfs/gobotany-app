@@ -42,9 +42,9 @@ doh.register('gobotany.tests.core.TestMultipleChoiceFilter', [
         var f = new gobotany.filters.MultipleChoiceFilter(
             {friendly_name: 'f. name', order: 3, pile_slug: 'p. slug',
              value_type: 'text', character_short_name: 'c. name'});
-        var value1 = {'value_str': 'value_str_1'};
-        var value2 = {'value_str': 'value_str_2'};
-        var value3 = {'value_str': 'value_str_3'};
+        var value1 = {'value': 'value1', 'count': 2};
+        var value2 = {'value': 'value2', 'count': 4};
+        var value3 = {'value': 'value3', 'count': 1};
         f.process_value(value1);
         f.process_value(value2);
         f.process_value(value3);
