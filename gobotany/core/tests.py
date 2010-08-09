@@ -114,6 +114,15 @@ class ImportTests(TestCase):
         self.assertEquals(len(models.CharacterValue.objects.all()), 8)
 
     def test_import_taxons(self):
+        # setup the Carex pile for the test char data
+
+        pilegroup1 = models.PileGroup(name='pilegroup1')
+        pilegroup1.save()
+
+        pile1 = models.Pile(name='Carex')
+        pile1.pilegroup = pilegroup1
+        pile1.save()
+
         im = importer.Importer(StringIO())
         im._import_characters(os.path.join(os.path.dirname(__file__),
                                            'test_characters.csv'))
