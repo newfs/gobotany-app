@@ -228,7 +228,7 @@ gobotany.sk.results.init = function(pile_slug) {
 
     // Wire up the Family and Genus submit buttons.
     var family_button = dojo.query('#family_form button')[0];
-    dojo.connect(genus_button, 'onclick', null,
+    dojo.connect(family_button, 'onclick', null,
                  gobotany.sk.results.apply_family_filter);
 
     var genus_button = dojo.query('#genus_form button')[0];
