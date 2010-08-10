@@ -22,7 +22,7 @@ class PileSearchForm(forms.Form):
         """Iterate over pile characters and create widgets with the values"""
         super(PileSearchForm, self).__init__(*args, **kwargs)
         characters = models.Character.objects.filter(
-                    charactervalue__pile__name__iexact=pile_name).order_by(
+                    character_values__pile__name__iexact=pile_name).order_by(
                                                             'character_group',
                                                             'short_name')
         character_values = models.CharacterValue.objects
