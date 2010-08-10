@@ -89,7 +89,7 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
         var filterLink = dojo.create('a', {
             href: '#', innerHTML: filter.friendly_name});
         var choiceDiv = dojo.create('div', {
-            class: 'choice', innerHTML: 'don\'t know'})
+            'class': 'choice', innerHTML: 'don\'t know'});
         var removeLink = dojo.create('a', {
             href: '#', innerHTML: '× remove'});
         var clearLink = dojo.create('a', {
@@ -104,10 +104,10 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
                      gobotany.sk.results.clear_filter);
 
         filterItem = dojo.create('li', {id: filter.character_short_name});
-        dojo.place(filterLink, filterItem)
-        dojo.place(choiceDiv, filterItem)
-        dojo.place(removeLink, filterItem)
-        dojo.place(clearLink, filterItem)
+        dojo.place(filterLink, filterItem);
+        dojo.place(choiceDiv, filterItem);
+        dojo.place(removeLink, filterItem);
+        dojo.place(clearLink, filterItem);
 
         dojo.place(filterItem, filtersList);
     }
