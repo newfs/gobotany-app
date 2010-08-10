@@ -37,7 +37,7 @@ p {
 #filters {
     border: 1px solid #ccc;
     float: left;
-    height: 350px;
+    min-height: 150px;
     width: 200px;
 }
 
