@@ -1,11 +1,22 @@
 from django.conf.urls.defaults import include, patterns, url
+from haystack.forms import SearchForm
+from haystack.query import SearchQuerySet
+from haystack.views import SearchView
 from gobotany.simplekey import views
 
 urlpatterns = patterns(
     '',
 
-    # Haystack-powered search
-    url(r'^search/', include('haystack.urls')),
+    # Haystack default search URLs, for development and debugging.
+    url(r'^haystack/', include('haystack.urls')),
+
+    # Custom index page.
+    url(r'^search/$', SearchView(
+            template='simplekey/search.html',
+            searchqueryset=SearchQuerySet(),
+            form_class=SearchForm,
+            ),
+        name='simplekey_search'),
 
     # Simple key navigation
     url('^$', views.index_view),

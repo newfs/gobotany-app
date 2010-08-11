@@ -170,6 +170,21 @@ p {
     display: block;
 }
 
+/* Search page formatting */
+
+#search_results_list h4 {
+    font-style: italic;
+    font-weight: bold;
+}
+
+#search_results_list p {
+    margin-left: 2em;
+}
+
+#search_results_list .highlighted {
+    font-weight: bold;
+}
+
 /* Dijit Claro overrides */
 .claro {
     color: #000;
