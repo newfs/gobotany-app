@@ -61,16 +61,18 @@ doh.register('gobotany.tests.core.TestFilterManager', [
         var fm = new gobotany.filters.FilterManager({pile_slug: 'foo'});
         doh.assertEqual([], fm.default_filters);
     },
-    function test_loads_default_filters_if_they_exist() {
-        // Sort of an integration test - do we want here?
-        var fm = new gobotany.filters.FilterManager({pile_slug: 'lycophytes'});
-        fm.load_default_filters();
-        doh.assertTrue(fm.default_filters.length > 0);
-    },
-    function test_loads_no_default_filters_if_none_exist() {
-        // Sort of an integration test - do we want here?
+    function test_loading_default_filters() {
         var fm = new gobotany.filters.FilterManager({pile_slug: 'foo'});
+
+        // mock the store so we don't have to make network connections
+        fm.store = {
+            fetchItemByIdentity: function(args) { 
+                console.warn(args);
+                dojo.hitch(args.scope, args.onItem)({default_filters: [{}]});
+            }
+        };
         fm.load_default_filters();
-        doh.assertFalse(fm.default_filters.length > 0);
-    },
+
+        doh.assertEqual(fm.filters_loading, 1);
+    }
 ]);

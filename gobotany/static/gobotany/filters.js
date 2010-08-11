@@ -21,6 +21,10 @@ dojo.declare("gobotany.filters.Filter", null, {
         this.pile_slug = args.pile_slug;
         this.value_type = args.value_type;
         dojo.safeMixin(this, args);
+    },
+    load_values: function(args) {
+        if (args && args.onLoaded)
+            args.onLoaded();
     }
 });
 
@@ -40,11 +44,13 @@ dojo.declare("gobotany.filters.MultipleChoiceFilter",
         this.store = new dojox.data.JsonRestStore({target: url,
                                                    syncMode: true});
     },
-    load_values: function() {
+    load_values: function(args) {
         this.store.fetch({
             scope: this,
             onComplete: function(response) {
                 dojo.forEach(response, this.process_value, this);
+                if (args && args.onLoaded)
+                    args.onLoaded();
             }
         });
     },
@@ -93,23 +99,37 @@ dojo.declare("gobotany.filters.FilterManager", null, {
     constructor: function(args) {
         this.pile_slug = args.pile_slug;
         this.default_filters = [];
-    },
-    load_default_filters: function() {
+        this.filters_loading = 0;
+
         var url = '/piles/';
-        var store = new dojox.data.JsonRestStore({target: url, 
-                                                  syncMode: true});
+        this.store = new dojox.data.JsonRestStore({target: url});
+    },
+    load_default_filters: function(args) {
+        var store = this.store;
         store.fetchItemByIdentity({
-            scope: this,
+            scope: {args: args, filter_manager: this},
             identity: this.pile_slug,
             onItem: function(item) {
+                this.filter_manager.filters_loading = item.default_filters.length;
                 for (var y = 0; y < item.default_filters.length; y++) {
                     var filter_json = item.default_filters[y];
-                    this.add_filter(filter_json);
+                    this.filter_manager.add_filter({
+                        filter_json: filter_json,
+                        onAdded: dojo.hitch(this, this.filter_manager._watch_filters_loading)
+                    });
                 }
             }
         });
     },
-    add_filter: function(filter_json) {
+    _watch_filters_loading: function(data) {
+        // scope should be an object with filter_manager and onLoaded attrs
+
+        this.filter_manager.filters_loading--;
+        if (this.args && this.args.onLoaded && this.filter_manager.filters_loading == 0)
+            this.args.onLoaded();
+    },
+    add_filter: function(args) {
+        var filter_json = args.filter_json;
         var filter_type;
         if (filter_json.value_type == 'LENGTH') {
             filter_type = gobotany.filters.NumericRangeFilter;
@@ -128,10 +148,15 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                 pile_slug: this.pile_slug
             }
         );
-        filter.load_values();
 
         // Add the filter to the manager's collection of default
         // filters.
         this.default_filters.push(filter);
+
+        if (args && args.onAdded) {
+            filter.load_values({onLoaded: dojo.hitch(this, function() {
+                args.onAdded(filter);
+            })});
+        }
     }
 });

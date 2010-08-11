@@ -250,11 +250,13 @@ gobotany.sk.results.init = function(pile_slug) {
     // filters for the pile.
     var filter_manager = new gobotany.filters.FilterManager(
 	                         { pile_slug: pile_slug });
-    filter_manager.load_default_filters();
+    filter_manager.load_default_filters({onLoaded: function() {
+        // Populate the initial list of default filters.
+        gobotany.sk.results.populate_default_filters(filter_manager);
 
-    // Populate the initial list of default filters.
-    gobotany.sk.results.populate_default_filters(filter_manager);
+        // We start with no filter values selected.
+        gobotany.sk.results.run_filtered_query();
 
-    // We start with no filter values selected.
-    gobotany.sk.results.run_filtered_query();
+        console.log('default filters loaded and configured');
+    }});
 };
