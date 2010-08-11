@@ -131,7 +131,6 @@ p {
     color: #ddd;
 }
 #plants .species_count .count {
-    display: none;
     color: black;
 }
 
@@ -234,4 +233,8 @@ h3, h4, h5, h6 {
 .clear {
     clear: both;
     height: 0;
+}
+
+.hidden {
+    display: none;
 }

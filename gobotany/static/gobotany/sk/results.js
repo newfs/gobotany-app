@@ -164,8 +164,8 @@ gobotany.sk.results.apply_filter = function(event) {
 };
 
 gobotany.sk.results.run_filtered_query = function() {
-    dojo.query('#plants .species_count .loading').style({display: 'block'});
-    dojo.query('#plants .species_count .count').style({display: 'none'});
+    dojo.query('#plants .species_count .loading').removeClass('hidden');
+    dojo.query('#plants .species_count .count').addClass('hidden');
 
     var content = { pile: simplekey_pile_slug };
 
@@ -179,16 +179,15 @@ gobotany.sk.results.run_filtered_query = function() {
     store.fetch({
         query: content,
         onComplete: function(data) {
-            dojo.query('#plants .species_count .count')[0].innerHTML =
-                data.items.length.toString() + ' species';
+            dojo.query('#plants .species_count .count .number')[0].innerHTML =
+                data.items.length.toString();
 
-            dojo.query('#plants .species_count .loading'
-                      ).style({display: 'none'});
-            dojo.query('#plants .species_count .count'
-                      ).style({display: 'block'});
+            dojo.query('#plants .species_count .loading').addClass('hidden');
+            dojo.query('#plants .species_count .count').removeClass('hidden');
         },
         onError: function(error) {
             console.log('Taxon search encountered an error!');
+            console.log(error);
         }
     });
 };
