@@ -1,5 +1,8 @@
 // Non-UI filter code, for use in multiple applications.
 
+// Global declaration for JSLint (http://www.jslint.com/)
+/*global dojo, dojox, gobotany */
+
 dojo.provide('gobotany.filters');
 dojo.require('dojox.data.JsonRestStore');
 
@@ -24,8 +27,9 @@ dojo.declare("gobotany.filters.Filter", null, {
 
 // MultipleChoiceFilter
 //
-dojo.declare("gobotany.filters.MultipleChoiceFilter", [gobotany.filters.Filter], {
-    character_short_name: "", // Only one character field needed (unlike numeric?)
+dojo.declare("gobotany.filters.MultipleChoiceFilter", 
+             [gobotany.filters.Filter], {
+    character_short_name: "",
     values: null,
     constructor: function(args) {
         this.character_short_name = args.character_short_name;
@@ -52,15 +56,18 @@ dojo.declare("gobotany.filters.MultipleChoiceFilter", [gobotany.filters.Filter],
 
 // NumericRangeFilter
 //
-dojo.declare('gobotany.filters.NumericRangeFilter', [gobotany.filters.MultipleChoiceFilter], {
+dojo.declare('gobotany.filters.NumericRangeFilter', 
+             [gobotany.filters.MultipleChoiceFilter], {
     process_value: function(character_value, index) {
         // We make this.values a one-element list: [{min: a, max: b}]
         if (this.values.Length) {
-            var v = values[0];
-            if (v.min > character_value.value_min)
+            var v = this.values[0];
+            if (v.min > character_value.value_min) {
                 v.min = character_value.value_min;
-            if (v.max < character_value.value_max)
+            }
+            if (v.max < character_value.value_max) {
                 v.max = character_value.value_max;
+            }
         } else {
             this.values = [{
                 min: character_value.value_min,
@@ -91,7 +98,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         var url = '/piles/';
         var store = new dojox.data.JsonRestStore({target: url, 
                                                   syncMode: true});
-        var foo = store.fetchItemByIdentity({
+        store.fetchItemByIdentity({
             scope: this,
             identity: this.pile_slug,
             onItem: function(item) {
@@ -104,10 +111,12 @@ dojo.declare("gobotany.filters.FilterManager", null, {
     },
     add_filter: function(filter_json) {
         var filter_type;
-        if (filter_json.value_type == 'LENGTH')
+        if (filter_json.value_type == 'LENGTH') {
             filter_type = gobotany.filters.NumericRangeFilter;
-        else
+        }
+        else {
             filter_type = gobotany.filters.MultipleChoiceFilter;
+        }
         var filter = new filter_type(
             {
                 friendly_name: filter_json.character_friendly_name,

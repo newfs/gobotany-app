@@ -1,17 +1,22 @@
 // UI code for the Simple Key results/filter page.
 
+// Global declaration for JSLint (http://www.jslint.com/)
+/*global console, dojo, dojox, gobotany */
+
 dojo.provide('gobotany.sk.results');
 dojo.require('dojox.data.JsonRestStore');
 dojo.require('gobotany.filters');
 
-simplekey_character_short_name = null;
+var simplekey_character_short_name = null;
+var simplekey_filter_choices = null;
+var simplekey_pile_slug = null;
 
 gobotany.sk.results.show_filter_working = function(event) {
     event.preventDefault();
 
     // Here the 'this.' is a filter object passed in as a context.
 
-    dojo.query('#filter-working').style({display: 'block'});
+    dojo.query('#filter-working').style({ display: 'block' });
     dojo.query('#filter-working .name')[0].innerHTML = this.friendly_name;
 
     simplekey_character_short_name = this.character_short_name;
@@ -46,10 +51,10 @@ gobotany.sk.results.show_filter_working = function(event) {
     // TODO: Check the user's chosen item if this filter is "active."
     // (For now, just check Don't Know.)
     dojo.query('#filter-working .values input')[0].checked = true;
-}
+};
 
 gobotany.sk.results.hide_filter_working = function() {
-    dojo.query('#filter-working').style({display: 'none'});
+    dojo.query('#filter-working').style({ display: 'none' });
     simplekey_character_short_name = null;
 };
 
@@ -103,7 +108,7 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
         dojo.connect(clearLink, 'onclick', filter,
                      gobotany.sk.results.clear_filter);
 
-        filterItem = dojo.create('li', {id: filter.character_short_name});
+        var filterItem = dojo.create('li', {id: filter.character_short_name});
         dojo.place(filterLink, filterItem);
         dojo.place(choiceDiv, filterItem);
         dojo.place(removeLink, filterItem);
@@ -116,15 +121,15 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
 gobotany.sk.results.apply_filter = function(event) {
     event.preventDefault();
 
-    choice_div = dojo.query('#' + simplekey_character_short_name +
-                            ' .choice')[0];
+    var choice_div = dojo.query('#' + simplekey_character_short_name +
+                                ' .choice')[0];
 
     // First, see if this is a numeric field.
 
-    char_value_q = dojo.query('#character_values_form #int_value');
+    var char_value_q = dojo.query('#character_values_form #int_value');
 
     if (char_value_q.length) {
-        var value = parseInt(char_value_q[0].value);
+        var value = parseInt(char_value_q[0].value, 10);
         if (!isNaN(value)) {
             simplekey_filter_choices[simplekey_character_short_name] = value;
             choice_div.innerHTML = value;
@@ -135,10 +140,10 @@ gobotany.sk.results.apply_filter = function(event) {
 
     // Next, look for a traditional checked multiple-choice field.
 
-    checked_item_q = dojo.query('#character_values_form input:checked');
+    var checked_item_q = dojo.query('#character_values_form input:checked');
 
     if (checked_item_q.length) {
-        checked_item = checked_item_q[0];
+        var checked_item = checked_item_q[0];
         if (checked_item.value) {
             choice_div.innerHTML = checked_item.value;
             simplekey_filter_choices[simplekey_character_short_name] =
@@ -165,10 +170,12 @@ gobotany.sk.results.run_filtered_query = function() {
     var content = { pile: simplekey_pile_slug };
 
     for (var key in simplekey_filter_choices) {
-        content[key] = simplekey_filter_choices[key];
+        if (simplekey_filter_choices.hasOwnProperty(key)) {
+            content[key] = simplekey_filter_choices[key];
+        }
     }
 
-    var store = new dojox.data.JsonRestStore({target: '/taxon/'});
+    var store = new dojox.data.JsonRestStore({ target: '/taxon/' });
     store.fetch({
         query: content,
         onComplete: function(data) {
@@ -190,31 +197,31 @@ gobotany.sk.results.apply_family_filter = function(event) {
     event.preventDefault();
 
     var family = dojo.query('#family_form input')[0].value;
-    if (family.length) {
-        simplekey_filter_choices['family'] = family;
+    if (family.length > 0) {
+        simplekey_filter_choices.family = family;
     } else {
-        if ('family' in simplekey_filter_choices) {
-            delete simplekey_filter_choices['family'];
+        if (simplekey_filter_choices.family) {
+            delete simplekey_filter_choices.family;
         }
     }
 
     gobotany.sk.results.run_filtered_query();
-}
+};
 
 gobotany.sk.results.apply_genus_filter = function(event) {
     event.preventDefault();
 
     var genus = dojo.query('#genus_form input')[0].value;
-    if (genus.length) {
-        simplekey_filter_choices['genus'] = genus;
+    if (genus.length > 0) {
+        simplekey_filter_choices.genus = genus;
     } else {
-        if ('genus' in simplekey_filter_choices) {
-            delete simplekey_filter_choices['genus'];
+        if (simplekey_filter_choices.genus) {
+            delete simplekey_filter_choices.genus;
         }
     }
 
     gobotany.sk.results.run_filtered_query();
-}
+};
 
 gobotany.sk.results.init = function(pile_slug) {
     // Leave data around for further calls to the API.
@@ -242,7 +249,8 @@ gobotany.sk.results.init = function(pile_slug) {
 
     // Create a FilterManager object, which will pull a list of default
     // filters for the pile.
-    var filter_manager = new gobotany.filters.FilterManager({pile_slug: pile_slug});
+    var filter_manager = new gobotany.filters.FilterManager(
+	                         { pile_slug: pile_slug });
     filter_manager.load_default_filters();
 
     // Populate the initial list of default filters.
