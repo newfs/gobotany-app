@@ -11,34 +11,20 @@ dojo.require('dojox.data.JsonRestStore');
 // Base for the different types of filters.
 //
 dojo.declare("gobotany.filters.Filter", null, {
+    character_short_name: "",
     friendly_name: "",
     order: 0,
     pile_slug: "",
     value_type: "",
+    values: null,
     constructor: function(args) {
+        this.character_short_name = args.character_short_name;
         this.friendly_name = args.friendly_name;
         this.order = args.order;
         this.pile_slug = args.pile_slug;
         this.value_type = args.value_type;
-        dojo.safeMixin(this, args);
-    },
-    load_values: function(args) {
-        if (args && args.onLoaded)
-            args.onLoaded();
-    }
-});
-
-
-// MultipleChoiceFilter
-//
-dojo.declare("gobotany.filters.MultipleChoiceFilter", 
-             [gobotany.filters.Filter], {
-    character_short_name: "",
-    values: null,
-    constructor: function(args) {
-        this.character_short_name = args.character_short_name;
-        this.value_type = args.value_type;
         this.values = [];
+        dojo.safeMixin(this, args);
         var url = '/piles/' + this.pile_slug + '/' + 
                   this.character_short_name + '/';
         this.store = new dojox.data.JsonRestStore({target: url,
@@ -49,11 +35,19 @@ dojo.declare("gobotany.filters.MultipleChoiceFilter",
             scope: this,
             onComplete: function(response) {
                 dojo.forEach(response, this.process_value, this);
-                if (args && args.onLoaded)
+                if (args && args.onLoaded) {
                     args.onLoaded();
+                }
             }
         });
-    },
+    }
+});
+
+
+// MultipleChoiceFilter
+//
+dojo.declare("gobotany.filters.MultipleChoiceFilter", 
+             [gobotany.filters.Filter], {
     process_value: function(character_value, index) {
         this.values.push(character_value);
     }
@@ -63,10 +57,10 @@ dojo.declare("gobotany.filters.MultipleChoiceFilter",
 // NumericRangeFilter
 //
 dojo.declare('gobotany.filters.NumericRangeFilter', 
-             [gobotany.filters.MultipleChoiceFilter], {
+             [gobotany.filters.Filter], {
     process_value: function(character_value, index) {
         // We make this.values a one-element list: [{min: a, max: b}]
-        if (this.values.Length) {
+        if (this.values.length) {
             var v = this.values[0];
             if (v.min > character_value.value_min) {
                 v.min = character_value.value_min;
@@ -110,12 +104,14 @@ dojo.declare("gobotany.filters.FilterManager", null, {
             scope: {args: args, filter_manager: this},
             identity: this.pile_slug,
             onItem: function(item) {
-                this.filter_manager.filters_loading = item.default_filters.length;
+                this.filter_manager.filters_loading = 
+                    item.default_filters.length;
                 for (var y = 0; y < item.default_filters.length; y++) {
                     var filter_json = item.default_filters[y];
                     this.filter_manager.add_filter({
                         filter_json: filter_json,
-                        onAdded: dojo.hitch(this, this.filter_manager._watch_filters_loading)
+                        onAdded: dojo.hitch(this, 
+	                        this.filter_manager._watch_filters_loading)
                     });
                 }
             }
@@ -125,8 +121,11 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         // scope should be an object with filter_manager and onLoaded attrs
 
         this.filter_manager.filters_loading--;
-        if (this.args && this.args.onLoaded && this.filter_manager.filters_loading == 0)
+        if (this.args && this.args.onLoaded && 
+            this.filter_manager.filters_loading === 0) {
+
             this.args.onLoaded();
+        }
     },
     add_filter: function(args) {
         var filter_json = args.filter_json;
