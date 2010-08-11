@@ -64,6 +64,6 @@ ADMIN_MEDIA_PREFIX = '/admin-media/'
 
 DEBUG_DOJO = bool(int(os.environ.get('DEBUG_DOJO', False)))
 
-HAYSTACK_SITECONF = 'gobotany.core.search_sites'
+HAYSTACK_SITECONF = 'gobotany.simplekey.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'solr'
 HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'

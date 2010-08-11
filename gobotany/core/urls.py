@@ -22,7 +22,4 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^piles-pile-groups$', views.piles_pile_groups),
-
-    # django-haystack
-    url(r'^search/', include('haystack.urls')),
     )
