@@ -6,21 +6,21 @@
 {% endblock %}
 
 {% block content %}
-  <h2>Search</h2>
-
   <form method="get" action=".">
     <table>
       {{ form.as_table }}
       <tr>
         <td>&nbsp;</td>
         <td>
-          <input type="submit" value="Search">
+          <input type="submit" value="Try again">
         </td>
       </tr>
     </table>
 
     {% if query %}
       <h3>Results</h3>
+
+      <p>You searched for “{{ query }}”</p>
 
       <p class="search_navigation">
         {% with page.paginator as paginator %}

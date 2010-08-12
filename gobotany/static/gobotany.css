@@ -169,6 +169,12 @@ p {
     display: block;
 }
 
+/* Search form at the top of each page. */
+
+#headsearch {
+    display: inline;
+}
+
 /* Search page formatting */
 
 .search_navigation {
