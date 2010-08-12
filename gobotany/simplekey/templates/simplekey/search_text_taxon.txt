@@ -1,0 +1,8 @@
+{{ object.scientific_name }}.
+{{ object.family.name }}.
+{% for character_value in object.character_values.all %}
+  {% if character_value.value_str %}
+    {{ character_value.character.friendly_name }}:
+    {{ character_value.value_str }}.
+  {% endif %}
+{% endfor %}

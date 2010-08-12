@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import include, patterns, url
+from django.conf.urls.defaults import patterns, url
 from haystack.forms import SearchForm
 from haystack.query import SearchQuerySet
 from haystack.views import SearchView
@@ -6,9 +6,6 @@ from gobotany.simplekey import views
 
 urlpatterns = patterns(
     '',
-
-    # Haystack default search URLs, for development and debugging.
-    url(r'^haystack/', include('haystack.urls')),
 
     # Custom index page.
     url(r'^search/$', SearchView(
