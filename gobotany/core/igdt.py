@@ -138,7 +138,8 @@ class DecisionTree(object):
         lst = lst[:]
         unique_lst = []
 
-        # Cycle through the list and add each value to the unique list only once.
+        # Cycle through the list and add each value to the unique list only
+        # once.
         for item in lst:
             if unique_lst.count(item) <= 0:
                 unique_lst.append(item)
@@ -148,8 +149,9 @@ class DecisionTree(object):
 
     def get_values(self, data, attr):
         """
-        Creates a list of values in the chosen attribut for each record in data,
-        prunes out all of the redundant values, and return the list.  
+        Creates a list of values in the chosen attribut for each record
+        in data, prunes out all of the redundant values, and return
+        the list.
         """
         data = data[:]
         return self.unique([record[attr] for record in data])
@@ -241,9 +243,9 @@ class DecisionTree(object):
             # Choose the next best attribute to best classify our data
             best = self.choose_attribute(data, attributes, target_attr)
 
-            # Create a new decision tree/node with the best attribute and an empty
-            # dictionary object--we'll fill that up next.
-            tree = {best:{}}
+            # Create a new decision tree/node with the best attribute
+            # and an empty dictionary object--we'll fill that up next.
+            tree = {best: {}}
 
             # Create a new decision tree/sub-node for each of the values in the
             # best attribute field
