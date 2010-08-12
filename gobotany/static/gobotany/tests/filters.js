@@ -12,8 +12,9 @@ dojo.require('gobotany.filters');
 
 doh.register('gobotany.tests.core.TestFilter', [
     function test_has_base_values() {
-        var f = new gobotany.filters.Filter({friendly_name: 'f. name', order: 3,
-                                             pile_slug: 'p. slug', value_type: 'text'});
+        var f = new gobotany.filters.Filter(
+            {friendly_name: 'f. name', order: 3,
+             pile_slug: 'p. slug', value_type: 'text'});
         doh.assertEqual('f. name', f.friendly_name);
         doh.assertEqual('p. slug', f.pile_slug);
         doh.assertEqual(3, f.order);
@@ -57,22 +58,46 @@ doh.register('gobotany.tests.core.TestFilterManager', [
         var fm = new gobotany.filters.FilterManager({pile_slug: 'foo'});
         doh.assertEqual('foo', fm.pile_slug);
     },
-    function test_starts_with_no_default_filters() {
+    function test_starts_with_no_filters() {
         var fm = new gobotany.filters.FilterManager({pile_slug: 'foo'});
-        doh.assertEqual([], fm.default_filters);
+        doh.assertEqual([], fm.filters);
     },
-    function test_loading_default_filters() {
-        var fm = new gobotany.filters.FilterManager({pile_slug: 'foo'});
+    function test_can_load_default_filters() {
+        var fm = new gobotany.filters.FilterManager(
+                 {pile_slug: 'foo'});
 
         // mock the store so we don't have to make network connections
         fm.store = {
             fetchItemByIdentity: function(args) { 
                 console.warn(args);
-                dojo.hitch(args.scope, args.onItem)({default_filters: [{}]});
+                // Pass a multiple-choice filter (value_type: TEXT) so
+                // the filters_loading will be set as expected. However,
+                // at a deeper level the code still tries to call out to
+                // the network in order to grab filter values (see console).
+                // (Verified that it did this before my 12 Aug changes. -JG)
+                dojo.hitch(args.scope, args.onItem)({
+                    default_filters: [{'value_type': 'TEXT'}]});
             }
         };
         fm.load_default_filters();
 
-        doh.assertEqual(fm.filters_loading, 1);
-    }
+        doh.assertEqual(1, fm.filters_loading);
+    },
+    function test_can_add_text_filters() {
+        var fm = new gobotany.filters.FilterManager({pile_slug: 'foo'});
+        fm.add_text_filters(['foo', 'bar']);
+        doh.assertEqual(2, fm.filters.length);
+    },
+    function test_can_set_selected_value_for_a_filter() {
+        var fm = new gobotany.filters.FilterManager({pile_slug: 'foo'});
+        fm.add_filter({filter_json: {'character_short_name': 'bar'}});
+        fm.set_selected_value('bar', 'val');
+        doh.assertEqual('val', fm.filters[0].selected_value);
+    },
+    function test_can_get_selected_value_for_a_filter() {
+        var fm = new gobotany.filters.FilterManager({pile_slug: 'foo'});
+        fm.add_filter({filter_json: {'character_short_name': 'bar'}});
+        fm.set_selected_value('bar', 'val');
+        doh.assertEqual('val', fm.get_selected_value('bar'));
+    },
 ]);
