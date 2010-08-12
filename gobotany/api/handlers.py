@@ -12,11 +12,11 @@ def _taxon_image(image):
                 'title': image.alt,
                 'description': image.description,
                 'thumb_url': img.thumbnail.absolute_url,
-                'thumb_width': img.thumbnail.width,
-                'thumb_height': img.thumbnail.height,
+                'thumb_width': img.thumbnail.width(),
+                'thumb_height': img.thumbnail.height(),
                 'scaled_url': img.extra_thumbnails['large'].absolute_url,
-                'scaled_width': img.extra_thumbnails['large'].width,
-                'scaled_height': img.extra_thumbnails['large'].height,
+                'scaled_width': img.extra_thumbnails['large'].width(),
+                'scaled_height': img.extra_thumbnails['large'].height(),
                 }
     return ''
 
