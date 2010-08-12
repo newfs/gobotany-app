@@ -96,6 +96,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
     pile_slug: "",
     filters: null,
     species_count: 0,
+    entries: [],
     constructor: function(args) {
         this.pile_slug = args.pile_slug;
         this.filters = [];
@@ -246,7 +247,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                 this.species_count = data.items.length;
 
                 // Call the passed-in callback function.
-                onComplete();
+                onComplete(data);
             },
             onError: function(error) {
                 console.log('Taxon search encountered an error!');

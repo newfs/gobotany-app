@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'appmedia',
 
     'haystack',
+    'sorl.thumbnail',
     ]
 MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
@@ -51,6 +52,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
         "django.core.context_processors.media",
         "gobotany.core.context_processors.dojo",
 )
+THUMBNAIL_PROCESSORS = (
+    # Default processors
+    'sorl.thumbnail.processors.colorspace',
+    #'sorl.thumbnail.processors.autocrop',
+    'sorl.thumbnail.processors.scale_and_crop',
+    'sorl.thumbnail.processors.filters',
+)
 
 ROOT_URLCONF = 'gobotany.urls'
 DEBUG = True
@@ -61,6 +69,7 @@ MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media')
 MEDIA_URL = '/media/'
 ADMIN_MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'admin-media')
 ADMIN_MEDIA_PREFIX = '/admin-media/'
+THUMBNAIL_BASEDIR = 'content-thumbs'
 
 DEBUG_DOJO = bool(int(os.environ.get('DEBUG_DOJO', False)))
 

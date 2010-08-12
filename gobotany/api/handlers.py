@@ -5,22 +5,32 @@ from piston.utils import rc
 
 def _taxon_image(image):
     if image:
-        return {'url': image.image.url,
+        img = image.image
+        return {'url': img.url,
                 'type': image.image_type.name,
                 'rank': image.rank,
                 'title': image.alt,
-                'description': image.description}
+                'description': image.description,
+                'thumb_url': img.thumbnail.absolute_url,
+                'thumb_width': img.thumbnail.width,
+                'thumb_height': img.thumbnail.height,
+                'scaled_url': img.extra_thumbnails['large'].absolute_url,
+                'scaled_width': img.extra_thumbnails['large'].width,
+                'scaled_height': img.extra_thumbnails['large'].height,
+                }
     return ''
 
-
-def _taxon_with_chars(taxon):
+def _simple_taxon(taxon):
     res = {}
     res['scientific_name'] = taxon.scientific_name
     res['id'] = taxon.id
     res['taxonomic_authority'] = taxon.taxonomic_authority
     res['default_image'] = _taxon_image(taxon.get_default_image())
-    res['piles'] = taxon.get_piles()
+    return res
 
+def _taxon_with_chars(taxon):
+    res = _simple_taxon(taxon)
+    res['piles'] = taxon.get_piles()
     for cv in taxon.character_values.all():
         res[cv.character.short_name] = cv.value
     return res
@@ -35,11 +45,14 @@ class TaxonQueryHandler(BaseHandler):
             kwargs[str(k)] = v
         species = botany.query_species(**kwargs)
         if not scientific_name:
-            listing = [ _taxon_with_chars(s) for s in species.all() ]
+            # Only return character values for single item lookup, keep the
+            # result list simple
+            listing = [ _simple_taxon(s) for s in species.all() ]
             return {'items': listing, 'label': 'scientific_name',
                     'identifier': 'scientific_name'}
         elif species.exists():
             taxon = species.filter(scientific_name=scientific_name)[0]
+            # Return full taxon with characters for single item query
             return _taxon_with_chars(taxon)
         return {}
 
@@ -123,9 +136,9 @@ class PileHandler(BasePileHandler):
             value_type=u'LENGTH',
             character_values__pile=pile,
             )
-        order = max(
+        order = (default_filters and max(
             default_filter.order for default_filter in default_filters
-            ) + 1
+            ) or 0) + 1
         for character in characters:
             fake_default_filter = FakeDefaultFilter()
             fake_default_filter.character = character

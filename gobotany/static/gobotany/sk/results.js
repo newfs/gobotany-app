@@ -6,6 +6,7 @@
 dojo.provide('gobotany.sk.results');
 dojo.require('dojox.data.JsonRestStore');
 dojo.require('gobotany.filters');
+dojo.require('dojo.html');
 
 var filter_manager = null;
 
@@ -172,6 +173,7 @@ gobotany.sk.results.apply_filter = function(event) {
 };
 
 gobotany.sk.results.run_filtered_query = function() {
+    dojo.empty('plant-listing');
     dojo.query('#plants .species_count .loading').removeClass('hidden');
     dojo.query('#plants .species_count .count').addClass('hidden');
 
@@ -180,12 +182,34 @@ gobotany.sk.results.run_filtered_query = function() {
         gobotany.sk.results.on_complete_run_filtered_query);
 };
 
-gobotany.sk.results.on_complete_run_filtered_query = function() {
+gobotany.sk.results.on_complete_run_filtered_query = function(data) {
     // Update the species count on the screen.
     dojo.query('#plants .species_count .count .number')[0].innerHTML =
         filter_manager.species_count.toString();
     dojo.query('#plants .species_count .loading').addClass('hidden');
     dojo.query('#plants .species_count .count').removeClass('hidden');
+    var plant_listing = dojo.byId('plant-listing');
+    dojo.forEach(data.items, 
+                 function (item, i) {
+                     // Fill in the search list with anchors, images and titles
+                     var node = dojo.create('li', 
+                                            {'id': 'plant-'+item.scientific_name.toLowerCase().replace(/\W/,'-')},
+                                            plant_listing
+                                           );
+                     var anchor = dojo.create('a', {href: '#'}, node);
+                     var image = item.default_image;
+                     if (image) {
+                         dojo.create('img', {src: image.thumb_url, 
+                                             height: image.thumb_height, 
+                                             width: image.thumb_width, 
+                                             alt: image.title},
+                                     anchor);
+                     } else {
+                         dojo.create('span', {'class': 'MissingImage'},anchor);
+                     }
+                     var title = dojo.create('span', {'class': 'PlantTitle'}, anchor);
+                     dojo.html.set(title, item.scientific_name);
+                 });
 };
 
 gobotany.sk.results.apply_family_filter = function(event) {
@@ -237,8 +261,8 @@ gobotany.sk.results.init = function(pile_slug) {
 
         // Add Family and Genus filters.
         filter_manager.add_text_filters(['family', 'genus']);
-
-        // We start with no filter values selected.
-        gobotany.sk.results.run_filtered_query();
     }});
+    // We start with no filter values selected so we can run the query before they load
+    gobotany.sk.results.run_filtered_query();
+
 };

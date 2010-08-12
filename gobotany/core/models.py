@@ -4,6 +4,7 @@ from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
 from django.template.defaultfilters import slugify
+from sorl.thumbnail.fields import ImageWithThumbnailsField
 
 
 class CharacterGroup(models.Model):
@@ -297,8 +298,17 @@ class ImageType(models.Model):
 
 
 class ContentImage(models.Model):
-    image = models.ImageField('content image',
-                              upload_to='content_images')
+    image = ImageWithThumbnailsField('content image',
+                                     upload_to='content_images',
+                                     thumbnail={'size': (110, 110)},
+                                     extra_thumbnails={'large': {
+                                                              'size': (600,400),
+                                                              },
+                                                       },
+                                     # XXX: Should we create
+                                     # thumbnails on import or lazily?
+                                     generate_on_save=True,
+                                     )
     alt = models.CharField(max_length=100,
                            verbose_name=u'title (alt text)')
     rank = models.PositiveSmallIntegerField(
