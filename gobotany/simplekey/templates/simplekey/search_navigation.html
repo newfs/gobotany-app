@@ -1,0 +1,23 @@
+{% if page.has_previous or page.has_next %}
+  <div class="search_navigation">
+    {% if page.has_previous %}
+      {% if page.previous_page_number == 1 %}
+        <a href="?q={{ query }}">
+      {% else %}
+        <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">
+      {% endif %}
+    {% endif %}
+      &laquo; Previous
+    {% if page.has_previous %}
+      </a>
+    {% endif %}
+    |
+    {% if page.has_next %}
+      <a href="?q={{ query }}&amp;page={{ page.next_page_number }}">
+    {% endif %}
+    Next &raquo;
+    {% if page.has_next %}
+      </a>
+    {% endif %}
+  </div>
+{% endif %}

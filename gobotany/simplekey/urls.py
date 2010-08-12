@@ -1,6 +1,5 @@
 from django.conf.urls.defaults import patterns, url
-from haystack.forms import SearchForm
-from haystack.query import SearchQuerySet
+from haystack.forms import HighlightedSearchForm
 from haystack.views import SearchView
 from gobotany.simplekey import views
 
@@ -10,8 +9,7 @@ urlpatterns = patterns(
     # Custom index page.
     url(r'^search/$', SearchView(
             template='simplekey/search.html',
-            searchqueryset=SearchQuerySet(),
-            form_class=SearchForm,
+            form_class=HighlightedSearchForm,
             ),
         name='simplekey_search'),
 

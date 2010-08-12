@@ -1,5 +1,8 @@
 {{ object.scientific_name }}.
 {{ object.family.name }}.
+{% for pile in object.piles.all %}
+  {{ pile.pilegroup.name }} {{ pile.name }}
+{% endfor %}
 {% for character_value in object.character_values.all %}
   {% if character_value.value_str %}
     {{ character_value.character.friendly_name }}:

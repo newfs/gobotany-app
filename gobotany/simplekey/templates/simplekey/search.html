@@ -22,12 +22,28 @@
     {% if query %}
       <h3>Results</h3>
 
+      <p class="search_navigation">
+        {% with page.paginator as paginator %}
+          {{ paginator.count }} species found —
+          page {{ page.number }} / {{ paginator.num_pages }}
+        {% endwith %}
+        <br/>
+      </p>
+
+      {% include "simplekey/search_navigation.html" %}
+
       <ul id="search_results_list">
       {% for result in page.object_list %}
         <li>
           <h4>{{ result.object.scientific_name }}</h4>
           <p>
-            {% highlight result.text with query %}
+            {% for pile in result.object.piles.all %}
+              {{ pile.pilegroup.name }} →  {{ pile.name }}
+            {% endfor %}
+            → Family {{ result.object.family.name }}
+          </p>
+          <p class="excerpt">
+            {% for t in result.highlighted.text %}{{ t|safe }}{% endfor %}
           </p>
         </li>
       {% empty %}
@@ -35,25 +51,7 @@
       {% endfor %}
       </ul>
 
-      {% if page.has_previous or page.has_next %}
-        <div>
-          {% if page.has_previous %}
-            <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">
-          {% endif %}
-            &laquo; Previous
-          {% if page.has_previous %}
-            </a>
-          {% endif %}
-          |
-          {% if page.has_next %}
-            <a href="?q={{ query }}&amp;page={{ page.next_page_number }}">
-          {% endif %}
-          Next &raquo;
-          {% if page.has_next %}
-            </a>
-          {% endif %}
-        </div>
-      {% endif %}
+      {% include "simplekey/search_navigation.html" %}
     {% else %}
       {# Show some example queries to run? #}
     {% endif %}
