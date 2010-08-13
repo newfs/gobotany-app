@@ -135,10 +135,20 @@ p {
     color: black;
 }
 
-#plant-listing li {
+ul#plant-listing {
+    overflow: hidden;
+    margin: 0;
+}
+
+#plant-listing .PlantScrollPage li {
     float: left;
     margin: 0 10px 10px 0;
     min-height: 150px;
+}
+
+#plant-listing li.PlantScollPage {
+    margin: 0;
+    text-align: center;
 }
 
 #plant-listing li a {

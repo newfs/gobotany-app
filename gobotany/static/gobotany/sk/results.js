@@ -9,6 +9,8 @@ dojo.require('gobotany.filters');
 dojo.require('dojo.html');
 
 var filter_manager = null;
+gobotany.sk.results.PAGE_COUNT = 12;
+var scroll_event_handle = null;
 
 // Name of the currently shown filter.
 // TODO: perhaps move this into a function call that pulls this based on CSS
@@ -173,6 +175,10 @@ gobotany.sk.results.apply_filter = function(event) {
 };
 
 gobotany.sk.results.run_filtered_query = function() {
+    // Unbind the prior scroll event handler
+    if (scroll_event_handle) {
+        dojo.disconnect(scroll_event_handle);
+    }
     dojo.empty('plant-listing');
     dojo.query('#plants .species_count .loading').removeClass('hidden');
     dojo.query('#plants .species_count .count').addClass('hidden');
@@ -182,34 +188,92 @@ gobotany.sk.results.run_filtered_query = function() {
         gobotany.sk.results.on_complete_run_filtered_query);
 };
 
+gobotany.sk.results.paginate_results = function(items, start) {
+    var page
+    var page_num;
+    var list;
+    dojo.forEach(items, 
+                 function (item, i) {
+                     var remainder = i%gobotany.sk.results.PAGE_COUNT;
+                     if (remainder == 0) {
+                         page_num = ((i-remainder)/gobotany.sk.results.PAGE_COUNT) + 1;
+                         page = dojo.create('li', {'class': 'PlantScrollPage',
+                                                   id: 'plant-page-'+page_num.toString()},
+                                            start);
+                         dojo.html.set(page, 'Page ' + page_num.toString());
+                         list = dojo.create('ul', {}, page);
+                         // All items on the first page have been loaded
+                         dojo.attr(page, 'x-loaded', page_num == 1 ? 'true': 'false');
+                         
+                     }
+                     gobotany.sk.results.render_item(item, list, 
+                                                          partial=(page_num!=1));
+                 });
+    return start;
+}
+
+gobotany.sk.results.render_item = function(item, start_node, partial) {
+    // Fill in the search list with anchors, images and titles
+    var li_node = dojo.create('li', 
+                           {'id': 'plant-'+item.scientific_name.toLowerCase().replace(/\W/,'-')},
+                           start_node
+                          );
+    var anchor = dojo.create('a', {href: '#'}, li_node);
+    var image = item.default_image;
+    if (image) {
+        var img = dojo.create('img', {height: image.thumb_height, 
+                            width: image.thumb_width, 
+                            alt: image.title},
+                    anchor);
+        // If a partial rendering was requested set a secret attribute instead of src
+        // We can use that to fill src when scrolling
+        var img_attr = partial ? 'x-tmp-src' : 'src';
+        dojo.attr(img, img_attr, image.thumb_url);
+        dojo.style(img, 'height', image.thumb_height);
+    } else {
+        dojo.create('span', {'class': 'MissingImage'},anchor);
+    }
+    var title = dojo.create('span', {'class': 'PlantTitle'}, anchor);
+    dojo.html.set(title, item.scientific_name);
+}
+
+gobotany.sk.results.load_page = function(page) {
+    var images = dojo.query('img[src=]', page);
+    images.forEach(function (image, i) {
+                       dojo.attr(image, 'src', dojo.attr(image, 'x-tmp-src'));
+                   });
+    dojo.attr(page, 'x-loaded', 'true');
+}
+
+gobotany.sk.results.load_page_if_visible = function(page) {
+    // Don't load a page if it's already loaded
+    if (dojo.attr(page, 'x-loaded') == 'true') { return; };
+    // Check to see if the page is inside the parent viewport
+    var container_pos = dojo.position(dojo.byId('plants'), false);
+    var page_pos = dojo.position(page, false).y;
+    if (container_pos.h >= (page_pos - container_pos.y)) {
+            gobotany.sk.results.load_page(page);
+    }
+}
+
+
 gobotany.sk.results.on_complete_run_filtered_query = function(data) {
     // Update the species count on the screen.
     dojo.query('#plants .species_count .count .number')[0].innerHTML =
         filter_manager.species_count.toString();
     dojo.query('#plants .species_count .loading').addClass('hidden');
     dojo.query('#plants .species_count .count').removeClass('hidden');
+    // Clear display
     var plant_listing = dojo.byId('plant-listing');
-    dojo.forEach(data.items, 
-                 function (item, i) {
-                     // Fill in the search list with anchors, images and titles
-                     var node = dojo.create('li', 
-                                            {'id': 'plant-'+item.scientific_name.toLowerCase().replace(/\W/,'-')},
-                                            plant_listing
-                                           );
-                     var anchor = dojo.create('a', {href: '#'}, node);
-                     var image = item.default_image;
-                     if (image) {
-                         dojo.create('img', {src: image.thumb_url, 
-                                             height: image.thumb_height, 
-                                             width: image.thumb_width, 
-                                             alt: image.title},
-                                     anchor);
-                     } else {
-                         dojo.create('span', {'class': 'MissingImage'},anchor);
-                     }
-                     var title = dojo.create('span', {'class': 'PlantTitle'}, anchor);
-                     dojo.html.set(title, item.scientific_name);
-                 });
+    gobotany.sk.results.paginate_results(data.items, plant_listing);
+    // Define the pages here to make the event handler a bit more efficient
+    // Bind a handler to load images on scroll
+    var plant_scrollable = dojo.byId('plants');
+    var plant_pages = dojo.query('li.PlantScrollPage[x-loaded=false]', plant_listing);
+    scroll_event_handle = dojo.connect(plant_scrollable, 'onscroll',
+                                       function () {
+                                           plant_pages.forEach(gobotany.sk.results.load_page_if_visible);
+                                       });
 };
 
 gobotany.sk.results.apply_family_filter = function(event) {
