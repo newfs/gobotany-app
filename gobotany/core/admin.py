@@ -54,7 +54,7 @@ class GlossaryMappingInline(admin.TabularInline):
 
 class CharacterAdmin(admin.ModelAdmin):
     inlines=[GlossaryMappingInline]
-    list_display = ('short_name', 'character_group',)
+    list_display = ('short_name', 'character_group', 'ease_of_observability',)
     search_fields = ('short_name', 'name',)
     list_filter = ('character_group',)
 

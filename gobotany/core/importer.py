@@ -293,6 +293,8 @@ class Importer(object):
                 print >> self.logfile, u'    New Character Group:', \
                     chargroup.name
 
+            eoo = row['ease_of_observability']
+            eoo = int(eoo)
             res = models.Character.objects.filter(short_name=short_name)
             if len(res) == 0:
                 print >> self.logfile, u'      New Character: ' + short_name
@@ -302,7 +304,8 @@ class Importer(object):
                                              name=temp_friendly_name,
                                              friendly_name=temp_friendly_name,
                                              character_group=chargroup,
-                                             value_type=value_type)
+                                             value_type=value_type,
+                                             ease_of_observability=eoo)
                 character.save()
 
     def _import_character_values(self, f):
