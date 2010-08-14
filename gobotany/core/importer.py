@@ -34,17 +34,31 @@ class CSVReader(object):
             for row in r:
                 yield [c.decode('Windows-1252') for c in row]
 
-pile_mapping = {'ly': u'Lycophytes', 'ca': u'Carex'}
-
+pile_mapping = {
+    'ca': u'Carex',
+    'co': u'Composites',
+    'eq': u'Equisetaceae',
+    'ly': u'Lycophytes',
+    'mo': u'Monilophytes',
+    'nm': u'Non-orchid monocots',
+    'ap': u'Non-thalloid aquatic',
+    'om': u'Orchid monocots',
+    'po': u'Poaceae',
+    'rg': u'Remaining graminoids',
+    'rn': u'Remaining non-monocots',
+    'ta': u'Thalloid aquatic',
+    #'': u'Woody Angiosperms',
+    #'': u'Woody Gymnosperms',
+    }
 
 class Importer(object):
 
     def __init__(self, logfile=sys.stdout):
         self.logfile = logfile
 
-    def import_data(self, charf, charvf,
+    def import_data(self, pilef, pile_images, taxaf, charf, charvf,
                     char_glossaryf, glossaryf, glossary_images,
-                    pilef, taxaf, pile_images, *taxonfiles):
+                    *taxonfiles):
         self._import_piles(pilef, pile_images)
         self._import_taxa(taxaf)
         self._import_characters(charf)
@@ -144,7 +158,6 @@ class Importer(object):
             else:
                 print >> self.logfile, u'    Updated Pile:', pile
 
-
     def _import_taxa(self, taxaf):
         print >> self.logfile, 'Setting up taxa'
         iterator = iter(CSVReader(taxaf).read())
@@ -188,8 +201,8 @@ class Importer(object):
         iterator = iter(CSVReader(f).read())
         colnames = [x.lower() for x in iterator.next()]
 
-        _pile_suffix = colnames[4][-3:]  # '_ca'
-        pile_suffix = _pile_suffix[1:]   # 'ca'
+        _pile_suffix = colnames[-2][-3:]  # like '_ca'
+        pile_suffix = _pile_suffix[1:]   # like 'ca'
         if pile_suffix not in pile_mapping:
             print >> self.logfile, "Pile '%s' isn't mapped" % pile_suffix
             return
@@ -313,17 +326,6 @@ class Importer(object):
         iterator = iter(CSVReader(f).read())
         colnames = [x.lower() for x in iterator.next()]
 
-        # Column names differ between sample/sample-characters.csv and
-        # the new data/character_values.csv so we auto-detect which we
-        # are using.  This bit of indirection can be removed later when
-        # the discrepancy is cleaned up.
-        if 'type' in colnames:
-            # COL_GROUP = 'type'
-            COL_VALUE = 'desc'
-        else:
-            # COL_GROUP = 'character_group'
-            COL_VALUE = 'character_value'
-
         for cols in iterator:
             row = dict(zip(colnames, cols))
 
@@ -340,7 +342,7 @@ class Importer(object):
                 continue
 
             pile, created = models.Pile.objects.get_or_create(
-                name=pile_mapping[pile_suffix])
+                name=pile_mapping[pile_suffix].title())
             if created:
                 print >> self.logfile, u'  New Pile:', pile.name
 
@@ -351,9 +353,9 @@ class Importer(object):
             character = res[0]
 
             res = models.CharacterValue.objects.filter(
-                value_str=row[COL_VALUE])
+                value_str=row['character_value'])
             if len(res) == 0:
-                cv = models.CharacterValue(value_str=row[COL_VALUE],
+                cv = models.CharacterValue(value_str=row['character_value'],
                                            character=character)
                 cv.save()
             else:
@@ -363,12 +365,13 @@ class Importer(object):
                 continue
 
             friendly_text = row['friendly_text']
-            if friendly_text and friendly_text != row[COL_VALUE]:
+            if friendly_text and friendly_text != row['character_value']:
                 term, created = models.GlossaryTerm.objects.get_or_create(
-                    term=row[COL_VALUE],
+                    term=row['character_value'],
                     lay_definition=friendly_text)
                 if created:
-                    print >> self.logfile, u'      New Definition: ' + friendly_text
+                    print >> self.logfile, \
+                        u'      New Definition: ' + friendly_text
                 cv.glossary_term = term
 
             pile.character_values.add(cv)

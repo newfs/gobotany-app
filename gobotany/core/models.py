@@ -167,7 +167,7 @@ class CharacterValue(models.Model):
        <CharacterValue: tropophyll_form: 3.2>
     """
 
-    value_str = models.CharField(max_length=100, null=True, blank=True)
+    value_str = models.CharField(max_length=260, null=True, blank=True)
     value_min = models.IntegerField(null=True, blank=True)
     value_max = models.IntegerField(null=True, blank=True)
     value_flt = models.FloatField(null=True, blank=True)
