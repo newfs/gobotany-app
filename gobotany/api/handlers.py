@@ -189,6 +189,43 @@ class PileGroupListingHandler(BaseHandler):
         return {'items': lst}
 
 
+class CharacterListingHandler(BaseHandler):
+    methods_allowed = ('GET',)
+    
+    def read(self, request, pile_slug):
+        # temporary: dummy characters and groups
+        characters = \
+            [ {'char_group1': [ {'character_friendly_name': 'fname1',
+                                 'character_short_name': 'sname1',
+                                 'value_type': 'TEXT'},
+                                {'character_friendly_name': 'fname2',
+                                 'character_short_name': 'sname2',
+                                 'value_type': 'TEXT'},
+                                {'character_friendly_name': 'fname3',
+                                 'character_short_name': 'sname3',
+                                 'value_type': 'TEXT'} ] },
+              {'char_group2': [ {'character_friendly_name': 'fname4',
+                                 'character_short_name': 'sname4',
+                                 'value_type': 'TEXT'},
+                                {'character_friendly_name': 'fname5',
+                                 'character_short_name': 'sname5',
+                                 'value_type': 'TEXT'},
+                                {'character_friendly_name': 'fname6',
+                                 'character_short_name': 'sname6',
+                                 'value_type': 'TEXT'} ] },
+              {'char_group3': [ {'character_friendly_name': 'fname7',
+                                 'character_short_name': 'sname7',
+                                 'value_type': 'TEXT'},
+                                {'character_friendly_name': 'fname8',
+                                 'character_short_name': 'sname8',
+                                 'value_type': 'TEXT'},
+                                {'character_friendly_name': 'fname9',
+                                 'character_short_name': 'sname9',
+                                 'value_type': 'TEXT'} ]
+              } ]
+        return characters
+
+
 class CharacterValuesHandler(BaseHandler):
     methods_allowed = ('GET',)
 
