@@ -302,6 +302,7 @@ class ImageType(models.Model):
 
 class ContentImage(models.Model):
     image = ImageWithThumbnailsField('content image',
+                                     max_length=300,  # long filenames
                                      upload_to='content_images',
                                      thumbnail={'size': (110, 110)},
                                      extra_thumbnails={'large': {
@@ -312,7 +313,7 @@ class ContentImage(models.Model):
                                      # thumbnails on import or lazily?
                                      generate_on_save=True,
                                      )
-    alt = models.CharField(max_length=100,
+    alt = models.CharField(max_length=300,
                            verbose_name=u'title (alt text)')
     rank = models.PositiveSmallIntegerField(
         choices=zip(range(1, 11), range(1, 11)))

@@ -5,9 +5,11 @@ from gobotany import settings
 management.setup_environ(settings)
 
 import csv
+import os
+import re
+import string
 import sys
 import tarfile
-import re
 from gobotany.core import models
 from django.contrib.contenttypes.models import ContentType
 
@@ -73,9 +75,9 @@ class Importer(object):
     def _add_pile_images(self, pile, images, prefix_mapping):
         """Adds images for a pile or pile group"""
         # Create the two image types relevant for piles
-        filter_image, created = models.ImageType.objects.get_or_create(
+        filter_type, created = models.ImageType.objects.get_or_create(
             name='filter drawing')
-        pile_image, created = models.ImageType.objects.get_or_create(
+        pile_type, created = models.ImageType.objects.get_or_create(
             name='pile image')
 
         found_rank_one = False
@@ -83,10 +85,9 @@ class Importer(object):
             pile.name.lower().replace('-',' ').replace('(','').replace(')',''),
             ()):
             parts = filename.split('-')
-            image_type = (parts[-2] == 'filter' and filter_image or
-                          pile_image)
+            image_type = filter_type if (parts[-2] == 'filter') else pile_type
             # XXX: arbitrarily set a default image
-            if image_type == pile_image and not found_rank_one:
+            if image_type == pile_type and not found_rank_one:
                 rank = 1
                 found_rank_one = True
             else:
@@ -411,7 +412,6 @@ class Importer(object):
                                                                       pile=pile,
                                                                       glossary_term=term)
 
-
     def _import_glossary(self, f, imagef):
         print >> self.logfile, 'Setting up glossary'
 
@@ -470,53 +470,121 @@ class Importer(object):
                     print >> self.logfile, u'   Term %s mapped to ' \
                           'character: %s' % (term.term, repr(char))
 
-    def import_taxon_images(self, *files):
-        for f in files:
-            images = tarfile.open(f)
-            for image in images:
-                # Skip hidden files and metadata
-                if image.name.startswith('.'):
+    def import_species_images(self, dirpath):
+        """Given a directory's ``dirpath``, find species images inside."""
+
+        ContentImage_objects = models.ContentImage.objects
+        print >> self.logfile, 'Searching for images in:', dirpath
+
+        for (subdir, dirnames, filenames) in os.walk(dirpath):
+
+            # Ignore hidden directories
+
+            for i, dirname in reversed(list(enumerate(dirnames))):
+                if dirname.startswith('.'):
+                    del dirnames[i]
+
+            # Process the filenames.
+
+            for filename in filenames:
+
+                if filename.startswith('.'):  # skip hidden files
                     continue
-                image_name, image_ext = image.name.split('.')
-                if image_ext.lower() not in ('jpg', 'gif', 'png', 'tif'):
-                    # not an image
+
+                if '.' not in filename:  # skip files without an extension
                     continue
-                parts = image_name.split('-')
-                rank = int(parts[-1])
-                photographer = parts[-2]
-                image_type = TAXON_IMAGE_TYPES[parts[-3]]
-                scientific_name = ' '.join(parts[:-3])
-                # get or create the image type
-                image_type, created = models.ImageType.objects.get_or_create(name=image_type)
+
+                name, ext = filename.split('.')
+                if ext.lower() not in ('jpg', 'gif', 'png', 'tif'):
+                    continue  # not an image
+
+                # Some images either lack a rank in their name, or
+                # supply a letter - which apparently only functions to
+                # make unique a sequence of images taken by the same
+                # photographer of a particular species.  For all such
+                # photos, we assign the first one rank=1, and all
+                # subsequent ones rank=2, and issue a warning.
+
+                pieces = name.split('-')
+                if len(pieces[2]) != 2:  # type fields always have length 2
+                    del pieces[2]  # ignore subspecies name, like 'commutatum'
+                genus, species, _type, photographer = pieces[:4]
+                if len(pieces) > 4 and pieces[4].isdigit():
+                    rank = int(pieces[4])
+                else:
+                    rank = None
+
+                scientific_name = ' '.join((genus, species)).capitalize()
+                try:
+                    image_type = TAXON_IMAGE_TYPES[_type]
+                except KeyError:
+                    print >> self.logfile, '  !UNKNOWN IMAGE TYPE %r:' % (
+                        _type), filename
+                    continue
+
+                # Get an actual ImageType object.
+                image_type, created = models.ImageType.objects \
+                    .get_or_create(name=image_type)
+
+                # Find the Taxon corresponding to this species.
                 try:
                     taxon = models.Taxon.objects.get(
-                        scientific_name__istartswith=scientific_name)
+                        scientific_name=scientific_name)
                 except ObjectDoesNotExist:
-                    print >> self.logfile, 'Could not find Taxon object for %s'%scientific_name
+                    print >> self.logfile, ('  !IMAGE %r NAMES UNKNOWN TAXON'
+                                            % filename)
                     continue
+
+                content_type = ContentType.objects.get_for_model(taxon)
+
+                # If no rank was supplied, arbitrarily promote the first
+                # such image to Rank 1 for its species and type.
+
+                if rank is None:
+                    already_1 = ContentImage_objects.filter(
+                        rank=1,
+                        image_type=image_type,
+                        content_type=content_type,
+                        object_id=taxon.pk,
+                        )
+                    if already_1:
+                        rank = 2
+                    else:
+                        print >> self.logfile, '  !WARNING -', \
+                            'promoting image to rank=1:', filename
+                        rank = 1
+
                 # if we have already imported this image, update the
                 # image just in case
-                content_image, created = models.ContentImage.objects.get_or_create(
-                    rank=rank,
-                    image_type=image_type,
-                    creator=photographer,
-                    # If we were simply creating the object we could
-                    # set content_object directly, but since we're
-                    # using an optional get, we need to use
-                    # content_type and object_id
+                image_path = os.path.join(subdir, filename)
+                content_image, created = ContentImage_objects.get_or_create(
+                    # If we were simply creating the object we could set
+                    # content_object, but in case Django does a "get" we
+                    # need to use content_type and object_id instead.
                     object_id=taxon.pk,
-                    content_type=ContentType.objects.get_for_model(taxon))
-                content_image.alt='%s: %s %s'%(taxon.scientific_name,
-                                               image_type.name,
-                                               rank)
-                image_file = File(images.extractfile(image.name))
-                content_image.image.save(image.name, image_file)
-                content_image.save()
-                msg = 'taxon image %s'%image.name
+                    content_type=content_type,
+                    # Use filename to know if this is the "same" image.
+                    image=os.path.relpath(image_path, settings.MEDIA_ROOT),
+                    defaults=dict(
+                        # Integrity errors are triggered without these:
+                        rank=rank,
+                        image_type=image_type,
+                        )
+                    )
+                content_image.creator = photographer
+                content_image.alt = '%s: %s %s' % (
+                    taxon.scientific_name, image_type.name, rank)
+
+                msg = 'taxon image %s' % content_image.image
                 if created:
-                    print >> self.logfile, 'Added %s'%msg
+                    content_image.save()
+                    print >> self.logfile, '  Added', msg
                 else:
-                    print >> self.logfile, 'Updated %s'%msg
+                    # Update values otherwise set in defaults={} on create.
+                    content_image.rank = rank
+                    content_image.image_type = image_type
+                    content_image.save()
+                    print >> self.logfile, '  Updated', msg
 
     def _import_default_filters(self):
         print >> self.logfile, 'Setting up some default filters'
@@ -579,8 +647,9 @@ class Importer(object):
 
 def main():
     # Incredibly lame option parsing, since we can't rely on real option parsing
-    if sys.argv[1] == 'images':
-        Importer().import_taxon_images(*sys.argv[2:])
+    if sys.argv[1] == 'species-images':
+        species_image_dir = os.path.join(settings.MEDIA_ROOT, 'species')
+        Importer().import_species_images(species_image_dir)
     else:
         Importer().import_data(*sys.argv[1:])
 
