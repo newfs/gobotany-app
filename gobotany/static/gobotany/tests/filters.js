@@ -11,7 +11,7 @@ dojo.require('gobotany.filters');
 */
 
 doh.register('gobotany.tests.core.TestFilter', [
-    function test_has_base_values() {
+    function test_has_common_properties() {
         var f = new gobotany.filters.Filter(
             {friendly_name: 'f. name', order: 3,
              pile_slug: 'p. slug', value_type: 'text'});
