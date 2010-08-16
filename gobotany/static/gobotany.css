@@ -49,25 +49,6 @@ p {
     padding: 1em;
 }
 
-#filters p.add {
-    border-bottom: 0;
-    border-top: 1px solid #ccc;
-    padding-bottom: 0;
-}
-#filters p.add, #filters p.pick {
-    line-height: 1.3em;
-}
-#filters p.add a, #filters p.pick a {
-    color: #00e;
-    font-size: 1.1em;
-}
-
-/* delete this when Get More Filters (p.add a) link is enabled */
-#filters p.add u {
-    color: #000;
-    font-size: 1.1em;
-}
-
 #filters ul {
     font-size: 0.75em;
 }

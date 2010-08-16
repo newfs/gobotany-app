@@ -22,8 +22,6 @@ gobotany.sk.results.show_filter_working = function(event) {
 
     // Here the 'this.' is a filter object passed in as a context.
 
-    gobotany.sk.results.hide_pick_filters();
-
     dojo.query('#filter-working').style({display: 'block'});
     dojo.query('#filter-working .name')[0].innerHTML = this.friendly_name;
 
@@ -296,45 +294,6 @@ gobotany.sk.results.apply_genus_filter = function(event) {
     gobotany.sk.results.run_filtered_query();
 };
 
-gobotany.sk.results.list_all_filters = function(response) {
-    var allFilters = dojo.query('#pick-filters select')[0];
-    dojo.empty(allFilters);
-    
-    for (var i = 0; i < response.length; i++) {
-        var group_name = response[i].group_name;
-        var optgroup = dojo.create('optgroup', {'label': group_name});
-        dojo.place(optgroup, allFilters);
-        var characters = response[i].characters;
-        for (var j = 0; j < characters.length; j++) {
-            var option = dojo.create('option',
-                {innerHTML: characters[j].character_friendly_name});
-            dojo.place(option, allFilters);
-        }
-    }
-};
-
-gobotany.sk.results.show_pick_filters = function(event) {
-    event.preventDefault();
-    gobotany.sk.results.hide_filter_working();
-    dojo.query('#pick-filters').style({display: 'block'});
-    
-    url = '/piles/' + filter_manager.pile_slug + '/characters/';
-    var store = new dojox.data.JsonRestStore({target: url});
-        store.fetch({
-            onComplete: function(response) {
-                gobotany.sk.results.list_all_filters(response);
-            },
-            onError: function(error) {
-                console.log('The call to get characters returned an error.');
-                console.log(error);
-            }
-        });
-};
-
-gobotany.sk.results.hide_pick_filters = function() {
-    dojo.query('#pick-filters').style({display: 'none'});
-};
-
 gobotany.sk.results.init = function(pile_slug) {
     // Wire up the filter working area's close button.
     var el = dojo.query('#filter-working .close')[0];
@@ -349,14 +308,6 @@ gobotany.sk.results.init = function(pile_slug) {
     var genus_button = dojo.query('#genus_form button')[0];
     dojo.connect(genus_button, 'onclick', null,
                  gobotany.sk.results.apply_genus_filter);
-
-    // Wire up the links for adding and picking filters.
-    var pick = dojo.query('#filters p.pick a')[0];
-    dojo.connect(pick, 'onclick', null, 
-                 gobotany.sk.results.show_pick_filters);
-    var pick_close = dojo.query('#pick-filters a')[0];
-    dojo.connect(pick_close, 'onclick', null,
-                 gobotany.sk.results.hide_pick_filters);
 
     // Wire up the Apply button in the filter working area.
     var apply_button = dojo.query('#character_values_form button')[0];
