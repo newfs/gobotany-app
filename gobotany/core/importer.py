@@ -7,21 +7,10 @@ management.setup_environ(settings)
 import csv
 import os
 import re
-import string
 import sys
 import tarfile
 from gobotany.core import models
 from django.contrib.contenttypes.models import ContentType
-
-TAXON_IMAGE_TYPES = {
-    'ha': 'habit',
-    'tr': 'vegetative leaves (trophophyll)',
-    'sh': 'shoots',
-    'br': 'branches',
-    'sc': 'spore cones',
-    'sp': 'spores',
-    }
-
 
 class CSVReader(object):
 
@@ -470,8 +459,22 @@ class Importer(object):
                     print >> self.logfile, u'   Term %s mapped to ' \
                           'character: %s' % (term.term, repr(char))
 
-    def import_species_images(self, dirpath):
+    def import_species_images(self, dirpath, image_categories_csv):
         """Given a directory's ``dirpath``, find species images inside."""
+
+        # Right now, the image categories CSV is simply used to confirm
+        # that we recognize the type of every image we import.
+
+        iterator = iter(CSVReader(image_categories_csv).read())
+        colnames = [x.lower() for x in iterator.next()]
+
+        taxon_image_types = {}
+        for cols in iterator:
+            row = dict(zip(colnames, cols))
+            taxon_image_types[row['code']] = (row['category'], row['pile'])
+
+        # We scan the image directory recursively, allowing images to be
+        # stored in as deep a directory as they wish.
 
         ContentImage_objects = models.ContentImage.objects
         print >> self.logfile, 'Searching for images in:', dirpath
@@ -506,17 +509,26 @@ class Importer(object):
                 # subsequent ones rank=2, and issue a warning.
 
                 pieces = name.split('-')
-                if len(pieces[2]) != 2:  # type fields always have length 2
-                    del pieces[2]  # ignore subspecies name, like 'commutatum'
-                genus, species, _type, photographer = pieces[:4]
-                if len(pieces) > 4 and pieces[4].isdigit():
+                genus = pieces[0]
+                species = pieces[1]
+
+                # Skip subspecies and variety, if provided, and skip
+                # ahead to the type field, that always has length 2.
+                type_field = 2
+                while len(pieces[type_field]) != 2:
+                    type_field += 1
+
+                _type = pieces[type_field]
+                photographer = pieces[type_field + 1]
+                if len(pieces) > (type_field + 2) \
+                        and pieces[type_field + 2].isdigit():
                     rank = int(pieces[4])
                 else:
                     rank = None
 
                 scientific_name = ' '.join((genus, species)).capitalize()
                 try:
-                    image_type = TAXON_IMAGE_TYPES[_type]
+                    image_type = taxon_image_types[_type]
                 except KeyError:
                     print >> self.logfile, '  !UNKNOWN IMAGE TYPE %r:' % (
                         _type), filename
@@ -531,9 +543,18 @@ class Importer(object):
                     taxon = models.Taxon.objects.get(
                         scientific_name=scientific_name)
                 except ObjectDoesNotExist:
-                    print >> self.logfile, ('  !IMAGE %r NAMES UNKNOWN TAXON'
-                                            % filename)
-                    continue
+                    # Test whether the "subspecies" field that we
+                    # skipped was, in fact, the second half of a
+                    # hyphenated species name, like the species named
+                    # "Carex merritt-fernaldii".
+                    scientific_name = scientific_name + '-' + pieces[2]
+                    try:
+                        taxon = models.Taxon.objects.get(
+                            scientific_name=scientific_name)
+                    except:
+                        print >> self.logfile, (
+                            '  !IMAGE %r NAMES UNKNOWN TAXON' % filename)
+                        continue
 
                 content_type = ContentType.objects.get_for_model(taxon)
 
@@ -649,7 +670,7 @@ def main():
     # Incredibly lame option parsing, since we can't rely on real option parsing
     if sys.argv[1] == 'species-images':
         species_image_dir = os.path.join(settings.MEDIA_ROOT, 'species')
-        Importer().import_species_images(species_image_dir)
+        Importer().import_species_images(species_image_dir, *sys.argv[2:])
     else:
         Importer().import_data(*sys.argv[1:])
 
