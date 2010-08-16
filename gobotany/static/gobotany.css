@@ -5,10 +5,10 @@ body {
 }
 
 h1 {
-    font-size: 2em;
+    font-size: 1.8em;
     font-weight: normal;
-    margin: 8px 0;
-    padding: 8px 0;
+    margin: 6px 0;
+    padding: 6px 0;
 }
 
 
@@ -49,6 +49,25 @@ p {
     padding: 1em;
 }
 
+#filters p.add {
+    border-bottom: 0;
+    border-top: 1px solid #ccc;
+    padding-bottom: 0;
+}
+#filters p.add, #filters p.pick {
+    line-height: 1.3em;
+}
+#filters p.add a, #filters p.pick a {
+    color: #00e;
+    font-size: 1.1em;
+}
+
+/* delete this when Get More Filters (p.add a) link is enabled */
+#filters p.add u {
+    color: #000;
+    font-size: 1.1em;
+}
+
 #filters ul {
     font-size: 0.75em;
 }
@@ -71,26 +90,48 @@ p {
     text-align: center;
 }
 
-#filter-working, #plants, #subway {
+#navlinks p {
+    color: #ccc;
+    font-size: 0.9em;
+    margin: 0;
+    padding: 0;
+}
+#navlinks p a.current {
+    color: #000;
+}
+
+#filter-working, #pick-filters, #plants, #subway {
     clear: left;
 }
 
-#filter-working {
+#filter-working, #pick-filters {
     border: 1px dashed #ddd;
     display: none;
     height: 180px;
     padding: 1em;
 }
 
-#filter-working .close {
+#filter-working .close, #pick-filters .close {
     color: #00e;
     display: inline;
     float: right;
 }
 
-#filter-working h3 {
+#filter-working h3.name, #pick-filters h3.name {
     font-size: 1em;
-    font-weight: normal;
+    font-weight: bold;
+    text-align: center;
+}
+
+#filter-working .info .info-sub {
+    float: left;
+    border: 1px dashed #ddd;
+    padding: 0.5em;
+    margin-right: 1em;
+}
+
+#filter-working .info .info-sub h3 {
+    font-weight: bold;
 }
 
 #filter-working .values {
@@ -191,6 +232,7 @@ ul#plant-listing {
 
 #global-filter form {
     float: left;
+    font-size: 0.7em;
     margin: 0 4em 0 1em;
 }
 
@@ -278,22 +320,6 @@ h3, h4, h5, h6 {
     width: 70%;
     border: 1px dashed #ddd;
     float: left;
-}
-
-#filter-working .name {
-    text-align: center;
-    font-weight: bold;
-}
-
-#filter-working .info .info-sub {
-    float: left;
-    border: 1px dashed #ddd;
-    padding: 0.5em;
-    margin-right: 1em;
-}
-
-#filter-working .info .info-sub h3 {
-    font-weight: bold;
 }
 
 .clear {

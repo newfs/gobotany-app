@@ -22,6 +22,8 @@ gobotany.sk.results.show_filter_working = function(event) {
 
     // Here the 'this.' is a filter object passed in as a context.
 
+    gobotany.sk.results.hide_pick_filters();
+
     dojo.query('#filter-working').style({display: 'block'});
     dojo.query('#filter-working .name')[0].innerHTML = this.friendly_name;
 
@@ -294,6 +296,16 @@ gobotany.sk.results.apply_genus_filter = function(event) {
     gobotany.sk.results.run_filtered_query();
 };
 
+gobotany.sk.results.show_pick_filters = function(event) {
+    event.preventDefault();
+    gobotany.sk.results.hide_filter_working();
+    dojo.query('#pick-filters').style({display: 'block'});
+}
+
+gobotany.sk.results.hide_pick_filters = function() {
+    dojo.query('#pick-filters').style({display: 'none'});
+};
+
 gobotany.sk.results.init = function(pile_slug) {
     // Wire up the filter working area's close button.
     var el = dojo.query('#filter-working .close')[0];
@@ -309,7 +321,15 @@ gobotany.sk.results.init = function(pile_slug) {
     dojo.connect(genus_button, 'onclick', null,
                  gobotany.sk.results.apply_genus_filter);
 
-    // Wire up the "Apply" button.
+    // Wire up the links for adding and picking filters.
+    var pick = dojo.query('#filters p.pick a')[0];
+    dojo.connect(pick, 'onclick', null, 
+                 gobotany.sk.results.show_pick_filters);
+    var pick_close = dojo.query('#pick-filters a')[0];
+    dojo.connect(pick_close, 'onclick', null,
+                 gobotany.sk.results.hide_pick_filters);
+
+    // Wire up the Apply button in the filter working area.
     var apply_button = dojo.query('#character_values_form button')[0];
     dojo.connect(apply_button, 'onclick', null,
                  gobotany.sk.results.apply_filter);

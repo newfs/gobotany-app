@@ -14,7 +14,10 @@
   <body class="claro">
     <div id="content">
       {% include "simplekey/header.html" %}
-      <p>Plant Identifier</p>
+      <div id="navlinks">
+        <p>Home | Plant of the Day | <a class="current">Plant Identifier</a> | 
+           Learning Opportunities</p>
+      </div>
       {% block content %}{% endblock %}
       {% include "simplekey/footer.html" %}
     </div>
