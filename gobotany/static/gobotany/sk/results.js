@@ -296,11 +296,40 @@ gobotany.sk.results.apply_genus_filter = function(event) {
     gobotany.sk.results.run_filtered_query();
 };
 
+gobotany.sk.results.list_all_filters = function(response) {
+    var allFilters = dojo.query('#pick-filters select')[0];
+    dojo.empty(allFilters);
+    
+    for (var i = 0; i < response.length; i++) {
+        var group_name = response[i].group_name;
+        var optgroup = dojo.create('optgroup', {'label': group_name});
+        dojo.place(optgroup, allFilters);
+        var characters = response[i].characters;
+        for (var j = 0; j < characters.length; j++) {
+            var option = dojo.create('option',
+                {innerHTML: characters[j].character_friendly_name});
+            dojo.place(option, allFilters);
+        }
+    }
+};
+
 gobotany.sk.results.show_pick_filters = function(event) {
     event.preventDefault();
     gobotany.sk.results.hide_filter_working();
     dojo.query('#pick-filters').style({display: 'block'});
-}
+    
+    url = '/piles/' + filter_manager.pile_slug + '/characters/';
+    var store = new dojox.data.JsonRestStore({target: url});
+        store.fetch({
+            onComplete: function(response) {
+                gobotany.sk.results.list_all_filters(response);
+            },
+            onError: function(error) {
+                console.log('The call to get characters returned an error.');
+                console.log(error);
+            }
+        });
+};
 
 gobotany.sk.results.hide_pick_filters = function() {
     dojo.query('#pick-filters').style({display: 'none'});
