@@ -318,6 +318,15 @@ gobotany.sk.results.init = function(pile_slug) {
     // filters for the pile.
     filter_manager = new gobotany.filters.FilterManager(
                          {pile_slug: pile_slug});
+    gobotany.sk.results.refresh_default_filters();
+
+    // We start with no filter values selected so we can run the query before they load
+    gobotany.sk.results.run_filtered_query();
+
+};
+
+gobotany.sk.results.refresh_default_filters = function() {
+    dojo.query('#filters .loading').removeClass('hidden');
     filter_manager.load_default_filters({onLoaded: function() {
         // Populate the initial list of default filters.
         gobotany.sk.results.populate_default_filters(filter_manager);
@@ -325,8 +334,6 @@ gobotany.sk.results.init = function(pile_slug) {
 
         // Add Family and Genus filters.
         filter_manager.add_text_filters(['family', 'genus']);
+        dojo.query('#filters .loading').addClass('hidden');
     }});
-    // We start with no filter values selected so we can run the query before they load
-    gobotany.sk.results.run_filtered_query();
-
 };
