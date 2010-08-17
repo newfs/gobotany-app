@@ -62,6 +62,10 @@ p {
     color: #00e;
 }
 
+#filters .loading {
+    margin: 1em;
+}
+
 #head, #foot, #plants {
     border: 1px dashed #ddd;
     color: #ddd;
@@ -150,11 +154,11 @@ p {
     font-size: 2em;
     font-weight: bold;
 }
-#plants .species_count .loading {
-    color: #ddd;
-}
 #plants .species_count .count {
     color: black;
+}
+#plants .loading {
+    background: transparent;
 }
 
 ul#plant-listing {
@@ -308,6 +312,14 @@ h3, h4, h5, h6 {
     height: 0;
 }
 
+.loading.hidden,
 .hidden {
     display: none;
+}
+
+.loading {
+    color: #aaa;
+    display: block;
+    padding-left: 18px;
+    background: transparent url(ajax-loader.gif) no-repeat;
 }
