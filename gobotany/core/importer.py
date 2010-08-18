@@ -557,16 +557,17 @@ class Importer(object):
                 # species belongs in (PROBLEM: it could be in several;
                 # will email Sid about this).
 
-                try:
-                    key = (taxon.piles.all()[0].name, _type)
-                    image_type = taxon_image_types[key]
-                except KeyError:
+                for pile in taxon.piles.all():
+                    key = (pile.name, _type)
+                    if key in taxon_image_types:
+                        break
+                else:
                     print >> self.logfile, '  !UNKNOWN IMAGE TYPE %r:' % (
                         _type), filename
                     continue
 
                 image_type, created = models.ImageType.objects \
-                    .get_or_create(name=image_type)
+                    .get_or_create(name=taxon_image_types[key])
 
                 # If no rank was supplied, arbitrarily promote the first
                 # such image to Rank 1 for its species and type.
