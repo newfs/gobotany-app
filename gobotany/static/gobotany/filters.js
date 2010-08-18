@@ -94,11 +94,13 @@ dojo.declare('gobotany.filters.NumericRangeFilter',
 //
 dojo.declare("gobotany.filters.FilterManager", null, {
     pile_slug: "",
+    character_groups: null,
     filters: null,
     species_count: 0,
     entries: [],
     constructor: function(args) {
         this.pile_slug = args.pile_slug;
+        this.character_groups = [];
         this.filters = [];
         this.filters_loading = 0;
 
@@ -111,6 +113,13 @@ dojo.declare("gobotany.filters.FilterManager", null, {
             scope: {args: args, filter_manager: this},
             identity: this.pile_slug,
             onItem: function(item) {
+
+                // Save the character groups for this pile.
+
+                this.filter_manager.character_groups = item.character_groups;
+
+                // Start off with the default filters for this pile.
+
                 console.log('item.default_filters.length: ' +
                             item.default_filters.length);
                 this.filter_manager.filters_loading =

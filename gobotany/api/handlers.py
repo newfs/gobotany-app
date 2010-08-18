@@ -115,11 +115,18 @@ class FakeDefaultFilter(object):
 
 class PileHandler(BasePileHandler):
     model = models.Pile
-    fields = BasePileHandler.fields + ('default_filters',)
+    fields = BasePileHandler.fields + ('character_groups', 'default_filters')
 
     @staticmethod
     def resource_uri(pile=None):
         return 'api-pile', ['slug' if pile is None else pile.id]
+
+    @staticmethod
+    def character_groups(pile=None):
+        groups = models.CharacterGroup.objects.filter(
+            character__character_values__pile=pile
+            ).distinct()
+        return [ dict(name=group.name) for group in groups ]
 
     @staticmethod
     def default_filters(pile=None):

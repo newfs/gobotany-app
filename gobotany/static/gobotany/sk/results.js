@@ -333,11 +333,31 @@ gobotany.sk.results.init = function(pile_slug) {
 
 };
 
+gobotany.sk.results.add_character_groups = function(filter_manager) {
+    var my_form = dojo.query('#more_filters form div')[0];
+    for (i=0; i < filter_manager.character_groups.length; i++) {
+        var character_group = filter_manager.character_groups[i];
+        var my_label = dojo.create('label', {
+            for: character_group.name,
+        }, my_form, 'last');
+        dojo.create('input', {
+            type: 'checkbox',
+            name: character_group.name,
+            value: character_group.name,
+        }, my_label);
+        my_label.innerHTML += character_group.name;
+    }
+}
+
 gobotany.sk.results.refresh_default_filters = function() {
     dojo.query('#filters .loading').removeClass('hidden');
     filter_manager.load_default_filters({onLoaded: function() {
+        // Set up the character group checkboxes.
+        gobotany.sk.results.add_character_groups(filter_manager);
+        console.log('character group checkboxes created');
+
         // Populate the initial list of default filters.
-        gobotany.sk.results.populate_default_filters(filter_manager);
+        gobotany.sk.results.populate_default_filters(filter_manager)
         console.log('default filters loaded and configured');
 
         // Add Family and Genus filters.
