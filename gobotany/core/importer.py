@@ -469,10 +469,13 @@ class Importer(object):
         iterator = iter(CSVReader(image_categories_csv).read())
         colnames = [x.lower() for x in iterator.next()]
 
+        # This dictionary will map (pile_name, type) to description
         taxon_image_types = {}
         for cols in iterator:
             row = dict(zip(colnames, cols))
-            taxon_image_types[row['code']] = (row['category'], row['pile'])
+            key = (row['pile'], row['code'])
+            # The category looks like "bark, ba" so we split on the comma
+            taxon_image_types[key] = row['category'].rsplit(',', 1)[0]
 
         # We scan the image directory recursively, allowing images to be
         # stored in as deep a directory as they wish.
@@ -515,6 +518,7 @@ class Importer(object):
 
                 # Skip subspecies and variety, if provided, and skip
                 # ahead to the type field, that always has length 2.
+
                 type_field = 2
                 while len(pieces[type_field]) != 2:
                     type_field += 1
@@ -528,16 +532,6 @@ class Importer(object):
                     rank = None
 
                 scientific_name = ' '.join((genus, species)).capitalize()
-                try:
-                    image_type = taxon_image_types[_type]
-                except KeyError:
-                    print >> self.logfile, '  !UNKNOWN IMAGE TYPE %r:' % (
-                        _type), filename
-                    continue
-
-                # Get an actual ImageType object.
-                image_type, created = models.ImageType.objects \
-                    .get_or_create(name=image_type)
 
                 # Find the Taxon corresponding to this species.
                 try:
@@ -558,6 +552,21 @@ class Importer(object):
                         continue
 
                 content_type = ContentType.objects.get_for_model(taxon)
+
+                # Get the image type, now that we know what pile the
+                # species belongs in (PROBLEM: it could be in several;
+                # will email Sid about this).
+
+                try:
+                    key = (taxon.piles.all()[0].name, _type)
+                    image_type = taxon_image_types[key]
+                except KeyError:
+                    print >> self.logfile, '  !UNKNOWN IMAGE TYPE %r:' % (
+                        _type), filename
+                    continue
+
+                image_type, created = models.ImageType.objects \
+                    .get_or_create(name=image_type)
 
                 # If no rank was supplied, arbitrarily promote the first
                 # such image to Rank 1 for its species and type.
@@ -588,7 +597,8 @@ class Importer(object):
                     # Use filename to know if this is the "same" image.
                     image=os.path.relpath(image_path, settings.MEDIA_ROOT),
                     defaults=dict(
-                        # Integrity errors are triggered without these:
+                        # Integrity errors are triggered without setting
+                        # these immediately during a create:
                         rank=rank,
                         image_type=image_type,
                         )
