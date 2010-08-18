@@ -41,12 +41,16 @@ p {
     width: 200px;
 }
 
-#filters p {
+#more_filters {
     border-bottom: 1px solid #ccc;
     font-size: 0.65em;
     line-height: 1.4em;
     margin: 0;
     padding: 1em;
+}
+
+#more_filters label {
+    display: block;
 }
 
 #filters ul {
