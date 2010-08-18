@@ -327,3 +327,8 @@ h3, h4, h5, h6 {
     padding-left: 18px;
     background: transparent url(ajax-loader.gif) no-repeat;
 }
+
+#plant-preview #preview-intro {
+    position: absolute;
+    left: -2000px;
+}
