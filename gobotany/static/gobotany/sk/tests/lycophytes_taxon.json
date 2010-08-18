@@ -1,0 +1,587 @@
+{
+    "items": [
+        {
+            "scientific_name": "Dendrolycopodium dendroideum", 
+            "taxonomic_authority": "(Michx.) A. Haines", 
+            "images": [
+                {
+                    "thumb_height": 110, 
+                    "description": "", 
+                    "thumb_width": 82, 
+                    "title": "Dendrolycopodium dendroideum: habit 1", 
+                    "url": "/media/species/dendrolycopodium-dendroideum-ha-dkausen-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/dendrolycopodium-dendroideum-ha-dkausen-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/dendrolycopodium-dendroideum-ha-dkausen-1_jpg_110x110_q85.jpg", 
+                    "type": "habit", 
+                    "scaled_width": 300
+                }, 
+                {
+                    "thumb_height": 110, 
+                    "description": "", 
+                    "thumb_width": 82, 
+                    "title": "Dendrolycopodium dendroideum: spore cones 1", 
+                    "url": "/media/species/dendrolycopodium-dendroideum-sc-mlovit-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/dendrolycopodium-dendroideum-sc-mlovit-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/dendrolycopodium-dendroideum-sc-mlovit-1_jpg_110x110_q85.jpg", 
+                    "type": "spore cones", 
+                    "scaled_width": 300
+                }, 
+                {
+                    "thumb_height": 110, 
+                    "description": "", 
+                    "thumb_width": 82, 
+                    "title": "Dendrolycopodium dendroideum: shoots 1", 
+                    "url": "/media/species/dendrolycopodium-dendroideum-sh-mlovit-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/dendrolycopodium-dendroideum-sh-mlovit-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/dendrolycopodium-dendroideum-sh-mlovit-1_jpg_110x110_q85.jpg", 
+                    "type": "shoots", 
+                    "scaled_width": 300
+                }
+            ], 
+            "default_image": {
+                "thumb_height": 110, 
+                "description": "", 
+                "thumb_width": 82, 
+                "title": "Dendrolycopodium dendroideum: habit 1", 
+                "url": "/media/species/dendrolycopodium-dendroideum-ha-dkausen-1.jpg", 
+                "rank": 1, 
+                "scaled_height": 400, 
+                "scaled_url": "/media/content-thumbs/species/dendrolycopodium-dendroideum-ha-dkausen-1_jpg_600x400_q85.jpg", 
+                "thumb_url": "/media/content-thumbs/species/dendrolycopodium-dendroideum-ha-dkausen-1_jpg_110x110_q85.jpg", 
+                "type": "habit", 
+                "scaled_width": 300
+            }, 
+            "id": 6
+        }, 
+        {
+            "scientific_name": "Dendrolycopodium hickeyi", 
+            "taxonomic_authority": "(W.H. Wagner, Beitel, & Moran) A. Haines", 
+            "images": [], 
+            "default_image": "", 
+            "id": 7
+        }, 
+        {
+            "scientific_name": "Dendrolycopodium obscurum", 
+            "taxonomic_authority": "(L.) A. Haines", 
+            "images": [
+                {
+                    "thumb_height": 110, 
+                    "description": "", 
+                    "thumb_width": 82, 
+                    "title": "Dendrolycopodium obscurum: habit 1", 
+                    "url": "/media/species/dendrolycopodium-obscurum-ha-gmittelhauser-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/dendrolycopodium-obscurum-ha-gmittelhauser-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/dendrolycopodium-obscurum-ha-gmittelhauser-1_jpg_110x110_q85.jpg", 
+                    "type": "habit", 
+                    "scaled_width": 300
+                }, 
+                {
+                    "thumb_height": 110, 
+                    "description": "", 
+                    "thumb_width": 82, 
+                    "title": "Dendrolycopodium obscurum: spore cones 1", 
+                    "url": "/media/species/dendrolycopodium-obscurum-sc-gmittelhauser-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/dendrolycopodium-obscurum-sc-gmittelhauser-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/dendrolycopodium-obscurum-sc-gmittelhauser-1_jpg_110x110_q85.jpg", 
+                    "type": "spore cones", 
+                    "scaled_width": 300
+                }
+            ], 
+            "default_image": {
+                "thumb_height": 110, 
+                "description": "", 
+                "thumb_width": 82, 
+                "title": "Dendrolycopodium obscurum: habit 1", 
+                "url": "/media/species/dendrolycopodium-obscurum-ha-gmittelhauser-1.jpg", 
+                "rank": 1, 
+                "scaled_height": 400, 
+                "scaled_url": "/media/content-thumbs/species/dendrolycopodium-obscurum-ha-gmittelhauser-1_jpg_600x400_q85.jpg", 
+                "thumb_url": "/media/content-thumbs/species/dendrolycopodium-obscurum-ha-gmittelhauser-1_jpg_110x110_q85.jpg", 
+                "type": "habit", 
+                "scaled_width": 300
+            }, 
+            "id": 8
+        }, 
+        {
+            "scientific_name": "Diphasiastrum digitatum", 
+            "taxonomic_authority": "(Dill. ex A. Braun) Holub", 
+            "images": [
+                {
+                    "thumb_height": 82, 
+                    "description": "", 
+                    "thumb_width": 110, 
+                    "title": "Diphasiastrum digitatum: habit 1", 
+                    "url": "/media/species/diphasiastrum-digitatum-ha-dkausen-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/diphasiastrum-digitatum-ha-dkausen-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/diphasiastrum-digitatum-ha-dkausen-1_jpg_110x110_q85.jpg", 
+                    "type": "habit", 
+                    "scaled_width": 533
+                }
+            ], 
+            "default_image": {
+                "thumb_height": 82, 
+                "description": "", 
+                "thumb_width": 110, 
+                "title": "Diphasiastrum digitatum: habit 1", 
+                "url": "/media/species/diphasiastrum-digitatum-ha-dkausen-1.jpg", 
+                "rank": 1, 
+                "scaled_height": 400, 
+                "scaled_url": "/media/content-thumbs/species/diphasiastrum-digitatum-ha-dkausen-1_jpg_600x400_q85.jpg", 
+                "thumb_url": "/media/content-thumbs/species/diphasiastrum-digitatum-ha-dkausen-1_jpg_110x110_q85.jpg", 
+                "type": "habit", 
+                "scaled_width": 533
+            }, 
+            "id": 9
+        }, 
+        {
+            "scientific_name": "Diphasiastrum tristachyum", 
+            "taxonomic_authority": "(Pursh) Holub", 
+            "images": [], 
+            "default_image": "", 
+            "id": 10
+        }, 
+        {
+            "scientific_name": "Huperzia appressa", 
+            "taxonomic_authority": "(Desv.) A. & D. Löve", 
+            "images": [
+                {
+                    "thumb_height": 110, 
+                    "description": "", 
+                    "thumb_width": 82, 
+                    "title": "Huperzia appressa: habit 1", 
+                    "url": "/media/species/huperzia-appressa-ha-dkausen-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/huperzia-appressa-ha-dkausen-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/huperzia-appressa-ha-dkausen-1_jpg_110x110_q85.jpg", 
+                    "type": "habit", 
+                    "scaled_width": 300
+                }
+            ], 
+            "default_image": {
+                "thumb_height": 110, 
+                "description": "", 
+                "thumb_width": 82, 
+                "title": "Huperzia appressa: habit 1", 
+                "url": "/media/species/huperzia-appressa-ha-dkausen-1.jpg", 
+                "rank": 1, 
+                "scaled_height": 400, 
+                "scaled_url": "/media/content-thumbs/species/huperzia-appressa-ha-dkausen-1_jpg_600x400_q85.jpg", 
+                "thumb_url": "/media/content-thumbs/species/huperzia-appressa-ha-dkausen-1_jpg_110x110_q85.jpg", 
+                "type": "habit", 
+                "scaled_width": 300
+            }, 
+            "id": 1
+        }, 
+        {
+            "scientific_name": "Huperzia lucidula", 
+            "taxonomic_authority": "(Michx.) Trevisan", 
+            "images": [
+                {
+                    "thumb_height": 78, 
+                    "description": "", 
+                    "thumb_width": 110, 
+                    "title": "Huperzia lucidula: branches 1", 
+                    "url": "/media/species/huperzia-lucidula-br-mlovit-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/huperzia-lucidula-br-mlovit-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/huperzia-lucidula-br-mlovit-1_jpg_110x110_q85.jpg", 
+                    "type": "branches", 
+                    "scaled_width": 562
+                }, 
+                {
+                    "thumb_height": 110, 
+                    "description": "", 
+                    "thumb_width": 82, 
+                    "title": "Huperzia lucidula: habit 1", 
+                    "url": "/media/species/huperzia-lucidula-ha-gmittelhauser-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/huperzia-lucidula-ha-gmittelhauser-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/huperzia-lucidula-ha-gmittelhauser-1_jpg_110x110_q85.jpg", 
+                    "type": "habit", 
+                    "scaled_width": 300
+                }, 
+                {
+                    "thumb_height": 110, 
+                    "description": "", 
+                    "thumb_width": 82, 
+                    "title": "Huperzia lucidula: vegetative leaves 1", 
+                    "url": "/media/species/huperzia-lucidula-tr-gmittelhauser-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/huperzia-lucidula-tr-gmittelhauser-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/huperzia-lucidula-tr-gmittelhauser-1_jpg_110x110_q85.jpg", 
+                    "type": "vegetative leaves", 
+                    "scaled_width": 300
+                }
+            ], 
+            "default_image": {
+                "thumb_height": 110, 
+                "description": "", 
+                "thumb_width": 82, 
+                "title": "Huperzia lucidula: habit 1", 
+                "url": "/media/species/huperzia-lucidula-ha-gmittelhauser-1.jpg", 
+                "rank": 1, 
+                "scaled_height": 400, 
+                "scaled_url": "/media/content-thumbs/species/huperzia-lucidula-ha-gmittelhauser-1_jpg_600x400_q85.jpg", 
+                "thumb_url": "/media/content-thumbs/species/huperzia-lucidula-ha-gmittelhauser-1_jpg_110x110_q85.jpg", 
+                "type": "habit", 
+                "scaled_width": 300
+            }, 
+            "id": 2
+        }, 
+        {
+            "scientific_name": "Isoetes echinospora", 
+            "taxonomic_authority": "Durieu", 
+            "images": [
+                {
+                    "thumb_height": 82, 
+                    "description": "", 
+                    "thumb_width": 110, 
+                    "title": "Isoetes echinospora: habit 1", 
+                    "url": "/media/species/isoetes-echinospora-ha-mlovit-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/isoetes-echinospora-ha-mlovit-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/isoetes-echinospora-ha-mlovit-1_jpg_110x110_q85.jpg", 
+                    "type": "habit", 
+                    "scaled_width": 533
+                }
+            ], 
+            "default_image": {
+                "thumb_height": 82, 
+                "description": "", 
+                "thumb_width": 110, 
+                "title": "Isoetes echinospora: habit 1", 
+                "url": "/media/species/isoetes-echinospora-ha-mlovit-1.jpg", 
+                "rank": 1, 
+                "scaled_height": 400, 
+                "scaled_url": "/media/content-thumbs/species/isoetes-echinospora-ha-mlovit-1_jpg_600x400_q85.jpg", 
+                "thumb_url": "/media/content-thumbs/species/isoetes-echinospora-ha-mlovit-1_jpg_110x110_q85.jpg", 
+                "type": "habit", 
+                "scaled_width": 533
+            }, 
+            "id": 3
+        }, 
+        {
+            "scientific_name": "Isoetes lacustris", 
+            "taxonomic_authority": "L.", 
+            "images": [], 
+            "default_image": "", 
+            "id": 4
+        }, 
+        {
+            "scientific_name": "Isoetes tuckermanii", 
+            "taxonomic_authority": "A. Braun ex Engelm.", 
+            "images": [], 
+            "default_image": "", 
+            "id": 5
+        }, 
+        {
+            "scientific_name": "Lycopodiella appressa", 
+            "taxonomic_authority": "(Chapman) Cranfill", 
+            "images": [], 
+            "default_image": "", 
+            "id": 11
+        }, 
+        {
+            "scientific_name": "Lycopodiella inundata", 
+            "taxonomic_authority": "(L.) Holub", 
+            "images": [
+                {
+                    "thumb_height": 75, 
+                    "description": "", 
+                    "thumb_width": 110, 
+                    "title": "Lycopodiella inundata: branches 1", 
+                    "url": "/media/species/lycopodiella-inundata-br-dkausen-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/lycopodiella-inundata-br-dkausen-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/lycopodiella-inundata-br-dkausen-1_jpg_110x110_q85.jpg", 
+                    "type": "branches", 
+                    "scaled_width": 581
+                }, 
+                {
+                    "thumb_height": 82, 
+                    "description": "", 
+                    "thumb_width": 110, 
+                    "title": "Lycopodiella inundata: habit 1", 
+                    "url": "/media/species/lycopodiella-inundata-ha-dkausen-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/lycopodiella-inundata-ha-dkausen-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/lycopodiella-inundata-ha-dkausen-1_jpg_110x110_q85.jpg", 
+                    "type": "habit", 
+                    "scaled_width": 533
+                }, 
+                {
+                    "thumb_height": 110, 
+                    "description": "", 
+                    "thumb_width": 61, 
+                    "title": "Lycopodiella inundata: spore cones 1", 
+                    "url": "/media/species/lycopodiella-inundata-sc-mlovit-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/lycopodiella-inundata-sc-mlovit-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/lycopodiella-inundata-sc-mlovit-1_jpg_110x110_q85.jpg", 
+                    "type": "spore cones", 
+                    "scaled_width": 222
+                }, 
+                {
+                    "thumb_height": 110, 
+                    "description": "", 
+                    "thumb_width": 82, 
+                    "title": "Lycopodiella inundata: shoots 1", 
+                    "url": "/media/species/lycopodiella-inundata-sh-gmittelhauser-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/lycopodiella-inundata-sh-gmittelhauser-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/lycopodiella-inundata-sh-gmittelhauser-1_jpg_110x110_q85.jpg", 
+                    "type": "shoots", 
+                    "scaled_width": 300
+                }
+            ], 
+            "default_image": {
+                "thumb_height": 82, 
+                "description": "", 
+                "thumb_width": 110, 
+                "title": "Lycopodiella inundata: habit 1", 
+                "url": "/media/species/lycopodiella-inundata-ha-dkausen-1.jpg", 
+                "rank": 1, 
+                "scaled_height": 400, 
+                "scaled_url": "/media/content-thumbs/species/lycopodiella-inundata-ha-dkausen-1_jpg_600x400_q85.jpg", 
+                "thumb_url": "/media/content-thumbs/species/lycopodiella-inundata-ha-dkausen-1_jpg_110x110_q85.jpg", 
+                "type": "habit", 
+                "scaled_width": 533
+            }, 
+            "id": 12
+        }, 
+        {
+            "scientific_name": "Lycopodium clavatum", 
+            "taxonomic_authority": "L.", 
+            "images": [
+                {
+                    "thumb_height": 110, 
+                    "description": "", 
+                    "thumb_width": 82, 
+                    "title": "Lycopodium clavatum: branches 1", 
+                    "url": "/media/species/lycopodium-clavatum-br-mlovit-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/lycopodium-clavatum-br-mlovit-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/lycopodium-clavatum-br-mlovit-1_jpg_110x110_q85.jpg", 
+                    "type": "branches", 
+                    "scaled_width": 300
+                }, 
+                {
+                    "thumb_height": 82, 
+                    "description": "", 
+                    "thumb_width": 110, 
+                    "title": "Lycopodium clavatum: habit 1", 
+                    "url": "/media/species/lycopodium-clavatum-ha-dkausen-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/lycopodium-clavatum-ha-dkausen-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/lycopodium-clavatum-ha-dkausen-1_jpg_110x110_q85.jpg", 
+                    "type": "habit", 
+                    "scaled_width": 533
+                }, 
+                {
+                    "thumb_height": 110, 
+                    "description": "", 
+                    "thumb_width": 82, 
+                    "title": "Lycopodium clavatum: spore cones 1", 
+                    "url": "/media/species/lycopodium-clavatum-sc-dkausen-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/lycopodium-clavatum-sc-dkausen-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/lycopodium-clavatum-sc-dkausen-1_jpg_110x110_q85.jpg", 
+                    "type": "spore cones", 
+                    "scaled_width": 300
+                }
+            ], 
+            "default_image": {
+                "thumb_height": 82, 
+                "description": "", 
+                "thumb_width": 110, 
+                "title": "Lycopodium clavatum: habit 1", 
+                "url": "/media/species/lycopodium-clavatum-ha-dkausen-1.jpg", 
+                "rank": 1, 
+                "scaled_height": 400, 
+                "scaled_url": "/media/content-thumbs/species/lycopodium-clavatum-ha-dkausen-1_jpg_600x400_q85.jpg", 
+                "thumb_url": "/media/content-thumbs/species/lycopodium-clavatum-ha-dkausen-1_jpg_110x110_q85.jpg", 
+                "type": "habit", 
+                "scaled_width": 533
+            }, 
+            "id": 13
+        }, 
+        {
+            "scientific_name": "Lycopodium lagopus", 
+            "taxonomic_authority": "(Laestad. ex Hartm.) Zinserl. ex Kuzen.", 
+            "images": [], 
+            "default_image": "", 
+            "id": 14
+        }, 
+        {
+            "scientific_name": "Selaginella apoda", 
+            "taxonomic_authority": "(L.) Spring in Mart. et al.", 
+            "images": [
+                {
+                    "thumb_height": 82, 
+                    "description": "", 
+                    "thumb_width": 110, 
+                    "title": "Selaginella apoda: habit 1", 
+                    "url": "/media/species/selaginella-apoda-ha-clowe-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/selaginella-apoda-ha-clowe-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/selaginella-apoda-ha-clowe-1_jpg_110x110_q85.jpg", 
+                    "type": "habit", 
+                    "scaled_width": 533
+                }
+            ], 
+            "default_image": {
+                "thumb_height": 82, 
+                "description": "", 
+                "thumb_width": 110, 
+                "title": "Selaginella apoda: habit 1", 
+                "url": "/media/species/selaginella-apoda-ha-clowe-1.jpg", 
+                "rank": 1, 
+                "scaled_height": 400, 
+                "scaled_url": "/media/content-thumbs/species/selaginella-apoda-ha-clowe-1_jpg_600x400_q85.jpg", 
+                "thumb_url": "/media/content-thumbs/species/selaginella-apoda-ha-clowe-1_jpg_110x110_q85.jpg", 
+                "type": "habit", 
+                "scaled_width": 533
+            }, 
+            "id": 17
+        }, 
+        {
+            "scientific_name": "Selaginella rupestris", 
+            "taxonomic_authority": "(L.) Spring", 
+            "images": [
+                {
+                    "thumb_height": 106, 
+                    "description": "", 
+                    "thumb_width": 110, 
+                    "title": "Selaginella rupestris: habit 1", 
+                    "url": "/media/species/selaginella-rupestris-ha-mlovit-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/selaginella-rupestris-ha-mlovit-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/selaginella-rupestris-ha-mlovit-1_jpg_110x110_q85.jpg", 
+                    "type": "habit", 
+                    "scaled_width": 413
+                }, 
+                {
+                    "thumb_height": 82, 
+                    "description": "", 
+                    "thumb_width": 110, 
+                    "title": "Selaginella rupestris: shoots 1", 
+                    "url": "/media/species/selaginella-rupestris-sh-mlovit-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/selaginella-rupestris-sh-mlovit-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/selaginella-rupestris-sh-mlovit-1_jpg_110x110_q85.jpg", 
+                    "type": "shoots", 
+                    "scaled_width": 533
+                }
+            ], 
+            "default_image": {
+                "thumb_height": 106, 
+                "description": "", 
+                "thumb_width": 110, 
+                "title": "Selaginella rupestris: habit 1", 
+                "url": "/media/species/selaginella-rupestris-ha-mlovit-1.jpg", 
+                "rank": 1, 
+                "scaled_height": 400, 
+                "scaled_url": "/media/content-thumbs/species/selaginella-rupestris-ha-mlovit-1_jpg_600x400_q85.jpg", 
+                "thumb_url": "/media/content-thumbs/species/selaginella-rupestris-ha-mlovit-1_jpg_110x110_q85.jpg", 
+                "type": "habit", 
+                "scaled_width": 413
+            }, 
+            "id": 18
+        }, 
+        {
+            "scientific_name": "Spinulum annotinum", 
+            "taxonomic_authority": "(L.) A. Haines", 
+            "images": [
+                {
+                    "thumb_height": 110, 
+                    "description": "", 
+                    "thumb_width": 60, 
+                    "title": "Spinulum annotinum: branches 1", 
+                    "url": "/media/species/spinulum-annotinum-br-dkausen-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/spinulum-annotinum-br-dkausen-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/spinulum-annotinum-br-dkausen-1_jpg_110x110_q85.jpg", 
+                    "type": "branches", 
+                    "scaled_width": 218
+                }, 
+                {
+                    "thumb_height": 82, 
+                    "description": "", 
+                    "thumb_width": 110, 
+                    "title": "Spinulum annotinum: habit 1", 
+                    "url": "/media/species/spinulum-annotinum-ha-mlovit-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/spinulum-annotinum-ha-mlovit-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/spinulum-annotinum-ha-mlovit-1_jpg_110x110_q85.jpg", 
+                    "type": "habit", 
+                    "scaled_width": 533
+                }, 
+                {
+                    "thumb_height": 110, 
+                    "description": "", 
+                    "thumb_width": 82, 
+                    "title": "Spinulum annotinum: spore cones 1", 
+                    "url": "/media/species/spinulum-annotinum-sc-mlovit-1.jpg", 
+                    "rank": 1, 
+                    "scaled_height": 400, 
+                    "scaled_url": "/media/content-thumbs/species/spinulum-annotinum-sc-mlovit-1_jpg_600x400_q85.jpg", 
+                    "thumb_url": "/media/content-thumbs/species/spinulum-annotinum-sc-mlovit-1_jpg_110x110_q85.jpg", 
+                    "type": "spore cones", 
+                    "scaled_width": 300
+                }
+            ], 
+            "default_image": {
+                "thumb_height": 82, 
+                "description": "", 
+                "thumb_width": 110, 
+                "title": "Spinulum annotinum: habit 1", 
+                "url": "/media/species/spinulum-annotinum-ha-mlovit-1.jpg", 
+                "rank": 1, 
+                "scaled_height": 400, 
+                "scaled_url": "/media/content-thumbs/species/spinulum-annotinum-ha-mlovit-1_jpg_600x400_q85.jpg", 
+                "thumb_url": "/media/content-thumbs/species/spinulum-annotinum-ha-mlovit-1_jpg_110x110_q85.jpg", 
+                "type": "habit", 
+                "scaled_width": 533
+            }, 
+            "id": 15
+        }, 
+        {
+            "scientific_name": "Spinulum canadense", 
+            "taxonomic_authority": "(Ness.) A. Haines", 
+            "images": [], 
+            "default_image": "", 
+            "id": 16
+        }
+    ], 
+    "identifier": "scientific_name", 
+    "label": "scientific_name"
+}

@@ -104,8 +104,11 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         this.filters = [];
         this.filters_loading = 0;
 
-        var url = '/piles/';
-        this.store = new dojox.data.JsonRestStore({target: url});
+        if (!args.pile_url) args.pile_url = '/piles/';
+        if (!args.taxon_url) args.taxon_url = '/taxon/';
+        this.store = new dojox.data.JsonRestStore({target: args.pile_url});
+        this.result_store = new dojox.data.JsonRestStore({target: args.taxon_url, 
+                                                          idAttribute: 'scientific_name'});
     },
     load_default_filters: function(args) {
         var store = this.store;
@@ -248,8 +251,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         //}
         //console.log('content_str: ' + content_str);
 
-        var store = new dojox.data.JsonRestStore({target: '/taxon/'});
-        store.fetch({
+        this.result_store.fetch({
             scope: this,
             query: content,
             onComplete: function(data) {

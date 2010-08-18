@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <script> 
+      djConfig = { 
+        isDebug: true,
+        debugAtAllCosts:true,
+        useXDomain: false,
+        baseUrl: 'http://localhost:8000/',
+        modulePaths: {
+            gobotany: '/static/gobotany',
+            doh: '/dojo/util/doh',
+            },
+        parseOnLoad: true,
+        };
+    </script> 
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/dojo.xd.js"></script>
+    <script type="text/javascript" src="/dojo/util/doh/runner.js"></script> 
+    <script>
+      dojo.require('gobotany.sk.tests.run');
+    </script>
+  </head>
+  <body>
+    <form id="results-display">
+      <label for="image-type-selector">Show:</label>
+      <select id="image-type-selector" name="image-type-selector">
+      </select>
+    </form>
+    <div id="plants">
+      <p class="species_count">
+        <span class="loading">Calculating species</span>
+        <span class="count hidden"><span class="number">391</span> species matched</span>
+      </p>
+      <ul id="plant-listing">
+      </ul>
+    </div>
+</body>
+</html>

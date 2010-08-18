@@ -244,8 +244,9 @@ gobotany.sk.results.render_item = function(item, start_node, partial) {
     var image = item.default_image;
     if (image) {
         var img = dojo.create('img', {height: image.thumb_height, 
-                            width: image.thumb_width, 
-                            alt: image.title},
+                                      width: image.thumb_width, 
+                                      alt: image.title,
+                                      'x-plant-id': item.scientific_name},
                     anchor);
         // If a partial rendering was requested set a secret attribute instead of src
         // We can use that to fill src when scrolling
@@ -296,6 +297,8 @@ gobotany.sk.results.on_complete_run_filtered_query = function(data) {
                                        function () {
                                            plant_pages.forEach(gobotany.sk.results.load_page_if_visible);
                                        });
+    dojo.publish("results_loaded", [{filter_manager: filter_manager,
+                                    data: data}]);
 };
 
 gobotany.sk.results.apply_family_filter = function(event) {
@@ -354,6 +357,13 @@ gobotany.sk.results.init = function(pile_slug) {
 
     // We start with no filter values selected so we can run the query before they load
     gobotany.sk.results.run_filtered_query();
+    
+    dojo.subscribe("results_loaded", gobotany.sk.results.populate_image_types);
+
+    // Update images on selction change
+    var select_box = dojo.byId('image-type-selector');
+    dojo.connect(select_box, 'change', 
+                 gobotany.sk.results.load_selected_image_type);
 
 };
 
@@ -382,7 +392,7 @@ gobotany.sk.results.refresh_default_filters = function() {
         console.log('character group checkboxes created');
 
         // Populate the initial list of default filters.
-        gobotany.sk.results.populate_default_filters(filter_manager)
+        gobotany.sk.results.populate_default_filters(filter_manager);
         console.log('default filters loaded and configured');
 
         // Add Family and Genus filters.
@@ -391,3 +401,79 @@ gobotany.sk.results.refresh_default_filters = function() {
 
     }});
 };
+
+// A subscriber for results_loaded
+gobotany.sk.results.populate_image_types = function(message) {
+    var results = message.data.items;
+    var select_box = dojo.byId('image-type-selector');
+    // clear the select
+    select_box.options.length = 0;
+    // image types depend on the pile, we get the allowed values from
+    // the result set for now
+    var image_types = new Array();
+    for (var i=0; i < results.length; i++) {
+        var images = results[i].images;
+        for (var j=0; j < images.length; j++) {
+            var image_type = images[j].type;
+            if (image_types.indexOf(image_type) == -1) {
+                image_types.push(image_type);
+            }
+        }
+    }
+    // sort lexicographically
+    image_types.sort();
+    for (i=0; i < image_types.length; i++) {
+        var image_type = image_types[i];
+        select_box.options[i] = new Option(image_type, 
+                                           image_type);
+        // Habit is selected by default
+        if (image_type == 'habit') {
+            select_box.options[i].selected = true;
+        }
+    }
+}
+
+gobotany.sk.results.load_selected_image_type = function (event) {
+    var image_type = dojo.byId('image-type-selector').value;
+    var images = dojo.query('#plant-listing li img');
+    // Replace the image for each plant on the page
+    for (var i=0; i < images.length; i++) {
+        var image = images[i];
+        // Fetch the species for the current image
+        filter_manager.result_store.fetchItemByIdentity({
+               scope: {image: image,
+                       image_type: image_type},
+               identity: dojo.attr(image, 'x-plant-id'),
+               onItem: function(item) {
+                   var new_image;
+                   // Search for an image of the correct type
+                   for (var j=0; j < item.images.length; j++) {
+                       if (item.images[j].type == image_type) {
+                           new_image = item.images[j];
+                           break;
+                       }
+                   }
+                   if (new_image) {
+                       // Replace either src or x-tmp-src depending on
+                       // whether the current image has already been
+                       // loaded.  This may result in a significant
+                       // performance impact on large result sets
+                       // which have already been scrolled before
+                       // changing image types.  The alternative would
+                       // be to unload previously loaded image pages.
+                       var src_var = dojo.attr(image, 'x-tmp-src') ? 'x-tmp-src' : 'src';
+                       dojo.attr(image, src_var, new_image.thumb_url);
+                       // Hide the empty box if it exists and make
+                       // sure the image is visible.
+                       dojo.query('+ span.MissingImage', image).orphan();
+                       dojo.style(image, 'display', 'inline');
+                   } else if (dojo.style(image, 'display') != 'none') {
+                       // If there's no matching image display the
+                       // empty box and hide the image
+                       dojo.style(image, 'display', 'none');
+                       dojo.create('span', {'class': 'MissingImage'}, image, 'after');
+                   }
+               }
+        });
+    }
+}
