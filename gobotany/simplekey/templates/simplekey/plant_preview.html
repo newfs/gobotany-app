@@ -1,8 +1,21 @@
-    <!-- TODO: determine whether any ARIA attributes are needed. Because this
-         is a Dijit widget, it may already get what's needed. -->
     <div id="plant-preview" dojoType="dijit.Dialog" title="Plant Preview"
          aria-describedby="preview-intro">
-      <div id="preview-intro">(this is intro text for screen readers)</div>
-      <h3 class="name">plant name here</h3>
-      <p>info here</p>
+      <p id="preview-intro">(this is intro text for screen readers)</p>
+      <h3></h3>
+      <div class="photos">
+          <img src="" alt="" height="150" width="150">
+          <p><a href="#">&lt; prev</a> <span>1 of 4</span>
+             <a href="#">next &gt;</a></p>
+      </div>
+      <dl>
+          <dt>character 1</dt>
+          <dd>value 1</dd>
+          <dt>character 2</dt>
+          <dd>value 2</dd>
+          <dt>character 3</dt>
+          <dd>value 3</dd>
+      </dl>
+      <div class="nav">
+          <button dojoType="dijit.form.Button">That's my plant</button>
+      </div>
     </div>

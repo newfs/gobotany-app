@@ -8,6 +8,7 @@ dojo.require('dojox.data.JsonRestStore');
 dojo.require('gobotany.filters');
 dojo.require('dojo.html');
 dojo.require('dijit.Dialog');
+dojo.require('dijit.form.Button');
 
 var filter_manager = null;
 gobotany.sk.results.PAGE_COUNT = 12;
@@ -204,7 +205,8 @@ gobotany.sk.results.show_plant_preview = function(event) {
     
     dijit.byId('plant-preview').show();
     
-    dojo.query('#plant-preview h3')[0].innerHTML = plant.scientific_name;
+    dojo.query('#plant-preview h3')[0].innerHTML = '<i>' + 
+        plant.scientific_name + '</i>';
 };
 
 gobotany.sk.results.paginate_results = function(items, start) {
