@@ -115,7 +115,8 @@ class FakeDefaultFilter(object):
 
 class PileHandler(BasePileHandler):
     model = models.Pile
-    fields = BasePileHandler.fields + ('character_groups', 'default_filters')
+    fields = BasePileHandler.fields + ('character_groups', 'default_filters',
+                                       'plant_preview_characters')
 
     @staticmethod
     def resource_uri(pile=None):
