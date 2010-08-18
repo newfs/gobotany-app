@@ -362,7 +362,7 @@ gobotany.sk.results.add_character_groups = function(filter_manager) {
     for (i=0; i < filter_manager.character_groups.length; i++) {
         var character_group = filter_manager.character_groups[i];
         var my_label = dojo.create('label', {
-            for: character_group.name,
+            'for': character_group.name,
         }, my_form, 'last');
         dojo.create('input', {
             type: 'checkbox',
