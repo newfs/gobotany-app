@@ -302,6 +302,11 @@ gobotany.sk.results.apply_genus_filter = function(event) {
     gobotany.sk.results.run_filtered_query();
 };
 
+gobotany.sk.results.get_more_filters = function(event) {
+    event.preventDefault();
+    alert('Not yet implemented.');
+};
+
 gobotany.sk.results.init = function(pile_slug) {
     // Wire up the filter working area's close button.
     var el = dojo.query('#filter-working .close')[0];
@@ -316,6 +321,11 @@ gobotany.sk.results.init = function(pile_slug) {
     var genus_button = dojo.query('#genus_form button')[0];
     dojo.connect(genus_button, 'onclick', null,
                  gobotany.sk.results.apply_genus_filter);
+
+    // Wire up the "More filters" button.
+    var more_filters_button = dojo.query('#more_filters button')[0];
+    dojo.connect(more_filters_button, 'onclick', null,
+                 gobotany.sk.results.get_more_filters);
 
     // Wire up the Apply button in the filter working area.
     var apply_button = dojo.query('#character_values_form button')[0];
@@ -352,6 +362,7 @@ gobotany.sk.results.add_character_groups = function(filter_manager) {
 gobotany.sk.results.refresh_default_filters = function() {
     dojo.query('#filters .loading').removeClass('hidden');
     filter_manager.load_default_filters({onLoaded: function() {
+
         // Set up the character group checkboxes.
         gobotany.sk.results.add_character_groups(filter_manager);
         console.log('character group checkboxes created');
@@ -363,5 +374,6 @@ gobotany.sk.results.refresh_default_filters = function() {
         // Add Family and Genus filters.
         filter_manager.add_text_filters(['family', 'genus']);
         dojo.query('#filters .loading').addClass('hidden');
+
     }});
 };
