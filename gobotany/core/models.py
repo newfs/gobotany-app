@@ -268,6 +268,8 @@ class Pile(PileInfo):
     pilegroup = models.ForeignKey('PileGroup', related_name='piles', null=True)
     default_filters = models.ManyToManyField(Character,
                                              through='DefaultFilter')
+    plant_preview_characters = models.ManyToManyField(Character,
+        through='PlantPreviewCharacter', related_name='preview_characters')
 
 
 class PileGroup(PileInfo):
@@ -453,7 +455,7 @@ class TaxonGroupEntry(models.Model):
 class DefaultFilter(models.Model):
     pile = models.ForeignKey(Pile)
     character = models.ForeignKey(Character)
-    order = models.IntegerField(unique=True)
+    order = models.IntegerField()
     key_characteristics = models.TextField(blank=True)
     notable_exceptions = models.TextField(blank=True)
 
@@ -462,5 +464,19 @@ class DefaultFilter(models.Model):
         unique_together = ('pile', 'character')
 
     def __unicode__(self):
+        return '%d: %s (%s)' % (self.order, self.character.friendly_name,
+                                self.pile.name)
+
+
+class PlantPreviewCharacter(models.Model):
+    pile = models.ForeignKey(Pile)
+    character = models.ForeignKey(Character)
+    order = models.IntegerField()
+    
+    class Meta:
+        ordering = ['order']
+        unique_together = ('pile', 'character')
+        
+    def __unicode__():
         return '%d: %s (%s)' % (self.order, self.character.friendly_name,
                                 self.pile.name)

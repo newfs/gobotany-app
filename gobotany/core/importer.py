@@ -57,6 +57,7 @@ class Importer(object):
         self._import_character_glossary(char_glossaryf)
         self._import_glossary(glossaryf, glossary_images)
         self._import_default_filters()
+        self._import_plant_preview_characters()
         self._import_extra_demo_data()
         for taxonf in taxonfiles:
             self._import_taxon_character_values(taxonf)
@@ -640,6 +641,39 @@ class Importer(object):
             notable_exceptions=u'3 foo bar')
 
         filter.save()
+
+    def _import_plant_preview_characters(self):
+        print >> self.logfile, ('Setting up sample plant preview characters')
+
+        pile = models.Pile.objects.get(name='Lycophytes')
+
+        character = models.Character.objects.get(
+            short_name='horizontal_shoot_position')
+        preview_character, created = \
+            models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
+                character=character, order=1)
+        preview_character.save()
+
+        character = models.Character.objects.get(short_name='spore_form')
+        preview_character, created = \
+            models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
+                character=character, order=2)
+        preview_character.save()
+
+        pile = models.Pile.objects.get(name='Non-Orchid Monocots')
+
+        character = models.Character.objects.get(short_name='anther_length')
+        preview_character, created = \
+            models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
+                character=character, order=1)
+        preview_character.save()
+
+        character = models.Character.objects.get(
+            short_name='leaf_arrangement')
+        preview_character, created = \
+            models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
+                character=character, order=2)
+        preview_character.save()
 
     def _import_extra_demo_data(self):
         print >> self.logfile, 'Setting up demo Pile attributes'

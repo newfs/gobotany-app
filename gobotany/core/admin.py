@@ -39,6 +39,10 @@ class PileDefaultFiltersInline(admin.StackedInline):
     model = models.Pile.default_filters.through
     extra = 1
 
+class PilePlantPreviewCharactersInline(admin.StackedInline):
+    model = models.Pile.plant_preview_characters.through
+    extra = 1
+
 class PileAdminBase(admin.ModelAdmin):
     inlines = [ContentImageInline]
     search_fields = ('name',)
@@ -46,7 +50,8 @@ class PileAdminBase(admin.ModelAdmin):
 
 class PileAdmin(PileAdminBase):
     filter_horizontal = ('character_values', 'species',)
-    inlines = [PileDefaultFiltersInline, ContentImageInline]
+    inlines = [PileDefaultFiltersInline, ContentImageInline,
+               PilePlantPreviewCharactersInline]
 
 class GlossaryMappingInline(admin.TabularInline):
     model = models.GlossaryTermForPileCharacter

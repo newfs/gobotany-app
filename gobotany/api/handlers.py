@@ -171,6 +171,22 @@ class PileHandler(BasePileHandler):
             filters.append(filter)
         return filters
 
+    @staticmethod
+    def plant_preview_characters(pile=None):
+        characters_list = []
+        plant_preview_characters = list(
+            models.PlantPreviewCharacter.objects.filter(pile=pile))
+
+        for preview_character in plant_preview_characters:
+            character = {}
+            character['character_short_name'] = \
+                preview_character.character.short_name
+            character['character_friendly_name'] = \
+                preview_character.character.friendly_name
+            character['order'] = preview_character.order
+            characters_list.append(character)
+        return characters_list
+
 
 class PileGroupHandler(BasePileHandler):
     model = models.PileGroup
