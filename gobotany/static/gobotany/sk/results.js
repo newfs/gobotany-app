@@ -58,13 +58,13 @@ gobotany.sk.results.show_filter_working = function(event) {
     // pre-check that radio button, instead of pre-checking the first
     // (the "Don't know") radio button like we normally do.
 
-    var filter = '#filter-working .values input';
+    var selector = '#filter-working .values input';
     var already_selected_value = filter_manager.get_selected_value(
         this.character_short_name);
     if (already_selected_value) {
-        filter = filter + '[value="' + already_selected_value + '"]';
+        selector = selector + '[value="' + already_selected_value + '"]';
     }
-    dojo.query(filter)[0].checked = true;
+    dojo.query(selector)[0].checked = true;
 };
 
 gobotany.sk.results.hide_filter_working = function() {
