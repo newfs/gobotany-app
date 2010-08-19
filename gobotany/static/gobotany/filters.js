@@ -101,6 +101,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
     constructor: function(args) {
         this.pile_slug = args.pile_slug;
         this.character_groups = [];
+        this.plant_preview_characters = [];
         this.filters = [];
         this.filters_loading = 0;
 
@@ -120,6 +121,10 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                 // Save the character groups for this pile.
 
                 this.filter_manager.character_groups = item.character_groups;
+                
+                // Save the plant preview characters for this pile.
+                this.filter_manager.plant_preview_characters =
+                    item.plant_preview_characters;
 
                 // Start off with the default filters for this pile.
 

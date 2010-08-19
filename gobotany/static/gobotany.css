@@ -367,20 +367,18 @@ h3, h4, h5, h6 {
 }
 
 #plant-preview dt {
+    /*border: 1px solid red;*/
     clear: left;
     float: left;
     font-weight: bold;
     text-align: right;
-    width: 100px;
-}
-
-#plant-preview dt:after {
-    /*content: ":";*/
+    width: 200px;
 }
 
 #plant-preview dd {
-    margin: 0 0 0 110px;
-    padding: 0 0 0.5em 0;
+    /*border: 1px solid green;*/
+    margin: 0 0 0 210px;
+    padding: 0 0 1em 0;
 }
 
 #plant-preview div.nav {

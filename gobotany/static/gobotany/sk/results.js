@@ -207,6 +207,15 @@ gobotany.sk.results.show_plant_preview = function(event) {
     
     dojo.query('#plant-preview h3')[0].innerHTML = '<i>' + 
         plant.scientific_name + '</i>';
+    
+    var list = dojo.query('#plant-preview dl')[0];
+    for (var i = 0; i < filter_manager.plant_preview_characters.length; i++) {
+        var ppc = filter_manager.plant_preview_characters[i];
+        dojo.create('dt', {innerHTML: ppc.character_friendly_name}, list);
+        dojo.create('dd', {innerHTML: 'val'}, list); // TODO: get char value from taxon JSON
+    }
+    dojo.create('dt', {innerHTML: 'Collection'}, list);
+    dojo.create('dd', {innerHTML: 'foo'}, list); // TODO: get piles from taxon JSON
 };
 
 gobotany.sk.results.paginate_results = function(items, start) {
