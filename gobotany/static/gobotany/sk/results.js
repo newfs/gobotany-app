@@ -209,6 +209,7 @@ gobotany.sk.results.show_plant_preview = function(event) {
         plant.scientific_name + '</i>';
     
     var list = dojo.query('#plant-preview dl')[0];
+    dojo.empty(list);
     for (var i = 0; i < filter_manager.plant_preview_characters.length; i++) {
         var ppc = filter_manager.plant_preview_characters[i];
         dojo.create('dt', {innerHTML: ppc.character_friendly_name}, list);
