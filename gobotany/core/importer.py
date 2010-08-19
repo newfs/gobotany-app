@@ -190,7 +190,7 @@ class Importer(object):
     def _import_taxon_character_values(self, f):
         print >> self.logfile, 'Setting up taxon character values'
         iterator = iter(CSVReader(f).read())
-        colnames = [x.lower() for x in iterator.next()]
+        colnames = list(iterator.next())  # do NOT lower(); case is important
 
         _pile_suffix = colnames[-2][-3:]  # like '_ca'
         pile_suffix = _pile_suffix[1:]   # like 'ca'
@@ -205,7 +205,7 @@ class Importer(object):
 
             # Look up the taxon and if it exists, import character values.
             taxa = models.Taxon.objects.filter(
-                scientific_name__iexact=row['scientific_name'])
+                scientific_name__iexact=row['Scientific_Name'])
             if not taxa:
                 continue
             taxon = taxa[0]
@@ -286,10 +286,6 @@ class Importer(object):
                 value_type = 'LENGTH'
             else:
                 value_type = 'TEXT'
-
-            # only handling the two _ly and _ca piles for now
-            if not pile_suffix in pile_mapping:
-                continue
 
             chargroup, created = models.CharacterGroup.objects.get_or_create(
                 name=row['character_group'])
@@ -473,7 +469,9 @@ class Importer(object):
         taxon_image_types = {}
         for cols in iterator:
             row = dict(zip(colnames, cols))
-            key = (row['pile'], row['code'])
+            # lower() is important because case is often mismatched
+            # between the official name of a pile and its name here
+            key = (row['pile'].lower(), row['code'])
             # The category looks like "bark, ba" so we split on the comma
             taxon_image_types[key] = row['category'].rsplit(',', 1)[0]
 
@@ -555,10 +553,11 @@ class Importer(object):
 
                 # Get the image type, now that we know what pile the
                 # species belongs in (PROBLEM: it could be in several;
-                # will email Sid about this).
+                # will email Sid about this).  For why we use lower(),
+                # see the comment above.
 
                 for pile in taxon.piles.all():
-                    key = (pile.name, _type)
+                    key = (pile.name.lower(), _type)
                     if key in taxon_image_types:
                         break
                 else:
