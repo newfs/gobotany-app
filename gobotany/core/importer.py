@@ -217,8 +217,8 @@ class Importer(object):
                     continue
 
                 cname = k[:-3]
-                is_min = cname.endswith('_min')
-                is_max = cname.endswith('_max')
+                is_min = cname.lower().endswith('_min')
+                is_max = cname.lower().endswith('_max')
                 if is_min or is_max:
                     cname = cname[:-4]
 
