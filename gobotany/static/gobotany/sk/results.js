@@ -202,23 +202,37 @@ gobotany.sk.results.run_filtered_query = function() {
 
 gobotany.sk.results.show_plant_preview = function(event) {
     event.preventDefault();
-    
     var plant = this;   // Plant item passed as the context
-    
     dijit.byId('plant-preview').show();
-    
     dojo.query('#plant-preview h3')[0].innerHTML = '<i>' + 
         plant.scientific_name + '</i>';
-    
     var list = dojo.query('#plant-preview dl')[0];
     dojo.empty(list);
-    for (var i = 0; i < filter_manager.plant_preview_characters.length; i++) {
-        var ppc = filter_manager.plant_preview_characters[i];
-        dojo.create('dt', {innerHTML: ppc.character_friendly_name}, list);
-        dojo.create('dd', {innerHTML: 'val'}, list); // TODO: get char value from taxon JSON
-    }
-    dojo.create('dt', {innerHTML: 'Collection'}, list);
-    dojo.create('dd', {innerHTML: 'foo'}, list); // TODO: get piles from taxon JSON
+
+    var taxon_store = new dojox.data.JsonRestStore(
+        {target: '/taxon/' + plant.scientific_name});
+    taxon_store.fetch({
+        onComplete: function(taxon) {
+            for (var i = 0; 
+                 i < filter_manager.plant_preview_characters.length; i++) {
+                var ppc = filter_manager.plant_preview_characters[i];
+                dojo.create('dt', {innerHTML: ppc.character_friendly_name},
+                            list);
+                dojo.create('dd', 
+                            {innerHTML: taxon[ppc.character_short_name]},
+                            list);
+            }
+            dojo.create('dt', {innerHTML: 'Collection'}, list);
+            var piles = '';
+            for (var j = 0; j < taxon.piles.length; j++) {
+                if (j > 0) {
+                    piles += ', ';
+                }
+                piles += taxon.piles[j];
+            }
+            dojo.create('dd', {innerHTML: piles}, list);           
+         }
+    });
 };
 
 gobotany.sk.results.paginate_results = function(items, start) {
