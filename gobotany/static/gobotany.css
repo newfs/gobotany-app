@@ -335,6 +335,7 @@ h3, h4, h5, h6 {
 }
 
 #plant-preview h3 {
+    font-weight: bold;
     margin-bottom: 0.5em;
     text-align: center;
 }
@@ -347,14 +348,26 @@ h3, h4, h5, h6 {
 #plant-preview div.photos {
     float: left;
     font-size: 0.9em;
-    margin-bottom: 2em;
-    margin-right: 0.5em;
+    height: 220px;
+    margin: 0 0.5em;
+    position: relative;
     text-align: center;
+    width: 202px;
+}
+
+#plant-preview div.photos img {
+    max-height: 200px;
+    max-width: 200px;
+    min-height: 100px;
+    min-width: 100px;
 }
 
 #plant-preview div.photos p {
     margin: 0;
     padding: 0;
+    position: absolute;
+    top: 205px;
+    width: 200px;
 }
 
 #plant-preview div.photos a {
