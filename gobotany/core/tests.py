@@ -1,8 +1,11 @@
+import doctest
 import os
+import unittest
 from StringIO import StringIO
 from django.test import TestCase
 from gobotany.core import botany
 from gobotany.core import models
+from gobotany.core import igdt
 from gobotany.core import importer
 from gobotany.api import handlers  # TODO: move some tests to "api" package?
 
@@ -141,3 +144,19 @@ class RESTFulTests(TestCase):
         setup_sample_data()
         foo = models.Taxon.objects.get(scientific_name='Foo foo')
         handlers._taxon_with_chars(foo)
+
+
+def test_class_iter():
+    m = __import__(__name__, {}, {}, __name__)
+    for x in dir(m):
+        i = getattr(m, x)
+        if type(i) == type and issubclass(i, TestCase):
+            yield i
+
+
+def suite():
+    suite = unittest.TestSuite()
+    suite.addTest(doctest.DocTestSuite(igdt))
+    for x in test_class_iter():
+        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(x))
+    return suite

@@ -84,7 +84,7 @@ class DecisionTree(object):
     ... 36 - 55, high school, high, married, won't buy
     ... """
 
-    >>> lines = [x.strip() for x in lines.split('\n') if x.strip()]
+    >>> lines = [x.strip() for x in lines.split('\\n') if x.strip()]
     >>> lines.reverse()
     >>> attributes = [attr.strip() for attr in lines.pop().split(",")]
     >>> target_attr = attributes[-1]
@@ -96,8 +96,9 @@ class DecisionTree(object):
     ...     [datum.strip() for datum in line.split(",")])))
 
     >>> examples = data[:]
-    >>> tree = create_decision_tree(data, attributes, target_attr, gain)
-    >>> classification = classify(tree, examples)
+    >>> dt = DecisionTree()
+    >>> tree = dt.create_decision_tree(data, attributes, target_attr)
+    >>> classification = dt.classify(tree, examples)
 
     >>> for item in classification:
     ...    print item
