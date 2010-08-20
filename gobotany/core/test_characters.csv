@@ -1,9 +1,0 @@
-id,Type,Character_group,Character,Desc,ease_of_observability
-590,characters of leaves,group1,abaxial_leaf_blade_indument_ca,glabrous,1
-591,characters of leaves,group1,abaxial_leaf_blade_indument_ca,pubescent,2
-841,characters of fruits,group1,accesory_tissue_as_part_of_the_disperal_unit_ca,absent,3
-843,characters of fruits,group1,accesory_tissue_as_part_of_the_disperal_unit_ca,"present, hypanthium",4
-842,characters of fruits,group1,accesory_tissue_as_part_of_the_disperal_unit_ca,"present, receptacle",5
-993,characters of perigynia and achenes,group2,achene_indentations_ca,with a fold or indentation,1
-992,characters of perigynia and achenes,group2,achene_indentations_ca,without folds or indentations,2
-999,characters of perigynia and achenes,group2,sporophyll_position_ca,in annual zones on shoot,3

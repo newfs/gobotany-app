@@ -1,0 +1,16 @@
+name,friendly_name,description,pile_group
+Lycophytes,Clubmosses and relatives,,Ferns
+Monilophytes,True ferns and moonworts,,Ferns
+Equisetaceae,,,Ferns
+Woody Gymnosperms,Woody broad-leaved plants,,Woody Plants
+Woody Angiosperms,Woody broad-leaved plants,,Woody Plants
+Carex,Sedges,,Graminoids
+Poaceae,,,Graminoids
+Remaining graminoids,,,Graminoids
+Thalloid aquatic,"Small, floating aquatics",,Aquatic Plants
+Orchid monocots,,,Monocots
+Non-orchid monocots,,,Monocots
+Composites,Plants with daisy-like flowers,,Non-Monocots
+Non-thalloid aquatic,"Aquatic plants with branches, leaves",,Aquatic Plants
+Remaining non-monocots,,,Non-Monocots
+all,,,

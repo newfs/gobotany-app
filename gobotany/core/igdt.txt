@@ -1,0 +1,40 @@
+.. -*-doctest-*-
+
+Information Gain / Decision Tree
+================================
+
+The ``igdt`` module is responsible for defining an optimal decision.
+
+  >>> from gobotany.core import igdt
+
+First we need to retrieve data from which to base our tree on.
+
+  >>> from gobotany.core import models
+  >>> lypile = models.Pile.objects.get(name='Lycophytes')
+
+  >>> attribs = ['Character Value', 'Count', 'Easy of Observability']
+  >>> data = []
+  >>> for plant in lypile.species.all():
+  ...     for charval in plant.character_values.all():
+  ...         count = models.Taxon.objects.filter(character_values=charval).count()
+  ...         data.append({attribs[0]: charval,
+  ...                      attribs[1]: count,
+  ...                      attribs[2]: charval.character.ease_of_observability})
+
+Next we apply the information theoretic.
+
+  >>> it = igdt.InformationTheoretic()
+
+
+``DecisionTree`` class of the ``igdt`` module is the primary worker
+here.
+
+  >>> dt = igdt.DecisionTree(data, attribs, attribs[1])
+  >>> def print_tree(tree, depth = 0):
+  ...     if not isinstance(tree, dict):
+  ...         print "  " * depth, tree
+  ...     else:
+  ...         for key, val in tree.items():
+  ...             print "  " * depth, key
+  ...             print_tree(val, depth+1)
+  >>> print_tree(dt._treedata)

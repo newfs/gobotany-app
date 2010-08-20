@@ -10,6 +10,10 @@ from gobotany.core import importer
 from gobotany.api import handlers  # TODO: move some tests to "api" package?
 
 
+def testdata(s):
+    return os.path.join(os.path.dirname(__file__), 'testdata', s)
+
+
 def setup_sample_data():
     pilegroup1 = models.PileGroup(name='pilegroup1')
     pilegroup1.save()
@@ -108,34 +112,17 @@ class APITests(TestCase):
         self.try_query([], genus='Kooky')
 
 
-class ImportTests(TestCase):
+class ImportTestCase(TestCase):
 
     def test_import_characters(self):
         im = importer.Importer(StringIO())
-        im._import_characters(os.path.join(os.path.dirname(__file__),
-                                           'test_characters.csv'))
-        self.assertEquals(len(models.Character.objects.all()), 4)
+        im._import_characters(testdata('characters.csv'))
+        self.assertEquals(len(models.Character.objects.all()), 40)
 
     def test_import_taxons(self):
-        # setup the Carex pile for the test char data
-
-        pilegroup1 = models.PileGroup(name='pilegroup1')
-        pilegroup1.save()
-
-        pile1 = models.Pile(name='Carex')
-        pile1.pilegroup = pilegroup1
-        pile1.save()
-
         im = importer.Importer(StringIO())
-        im._import_characters(os.path.join(os.path.dirname(__file__),
-                                           'test_characters.csv'))
-        im._import_taxon_character_values(
-            os.path.join(os.path.dirname(__file__),
-                         'test_taxons.csv'))
-        # The number of taxa created should be zero, since the method
-        # _import_taxon_character_values() no longer lazily creates taxa
-        # that have not already been created.
-        self.assertEquals(len(models.Taxon.objects.all()), 0)
+        im._import_taxa(testdata('taxa.csv'))
+        self.assertEquals(len(models.Taxon.objects.all()), 71)
 
 
 class RESTFulTests(TestCase):
@@ -144,6 +131,29 @@ class RESTFulTests(TestCase):
         setup_sample_data()
         foo = models.Taxon.objects.get(scientific_name='Foo foo')
         handlers._taxon_with_chars(foo)
+
+
+def setup_integration(test):
+    pilegroup1 = models.PileGroup(name='pilegroup1')
+    pilegroup1.save()
+
+    pile1 = models.Pile(name='Carex')
+    pile1.pilegroup = pilegroup1
+    pile1.save()
+
+    im = importer.Importer(StringIO())
+
+    im._import_piles(testdata('pile_info.csv'), None)
+    im._import_taxa(testdata('taxa.csv'))
+    im._import_characters(testdata('characters.csv'))
+    im._import_character_values(testdata('character_values.csv'))
+    im._import_taxon_character_values(testdata('pile_lycophytes.csv'))
+    im._import_taxon_character_values(
+        testdata('pile_non_orchid_monocots_1.csv'))
+    im._import_taxon_character_values(
+        testdata('pile_non_orchid_monocots_2.csv'))
+    im._import_taxon_character_values(
+        testdata('pile_non_orchid_monocots_3.csv'))
 
 
 def test_class_iter():
@@ -159,4 +169,10 @@ def suite():
     suite.addTest(doctest.DocTestSuite(igdt))
     for x in test_class_iter():
         suite.addTest(unittest.TestLoader().loadTestsFromTestCase(x))
+
+    # integration stuff
+    suite.addTest(doctest.DocFileSuite('igdt.txt',
+                                       module_relative=True,
+                                       setUp=setup_integration))
+
     return suite

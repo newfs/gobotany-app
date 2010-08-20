@@ -101,21 +101,22 @@ class Importer(object):
         iterator = iter(CSVReader(pilef).read())
         colnames = [x.lower() for x in iterator.next()]
 
-        pile_images = tarfile.open(pile_images)
-        # Generate a mapping of pile-name to filenames from the image
-        # tarball
-        pile_prefixes = {}
-        for image in pile_images:
-            if image.name.startswith('.'):
-                continue
-            image_name, image_ext = image.name.split('.')
-            if image_ext.lower() not in ('jpg', 'gif', 'png', 'tif'):
-                # not an image
-                continue
-            parts = image_name.split('-')
-            prefix = ' '.join(parts[:-2])
-            names = pile_prefixes.setdefault(prefix, [])
-            names.append(image.name)
+        if pile_images:
+            pile_images = tarfile.open(pile_images)
+            # Generate a mapping of pile-name to filenames from the image
+            # tarball
+            pile_prefixes = {}
+            for image in pile_images:
+                if image.name.startswith('.'):
+                    continue
+                image_name, image_ext = image.name.split('.')
+                if image_ext.lower() not in ('jpg', 'gif', 'png', 'tif'):
+                    # not an image
+                    continue
+                parts = image_name.split('-')
+                prefix = ' '.join(parts[:-2])
+                names = pile_prefixes.setdefault(prefix, [])
+                names.append(image.name)
 
         for cols in iterator:
             row = dict(zip(colnames, cols))
@@ -133,7 +134,8 @@ class Importer(object):
                 # to decide how to obtain those values.
                 if created:
                     print >> self.logfile, u'  New PileGroup:', pilegroup
-                self._add_pile_images(pilegroup, pile_images, pile_prefixes)
+                if pile_images:
+                    self._add_pile_images(pilegroup, pile_images, pile_prefixes)
 
             # Create the Pile.
             pile, created = models.Pile.objects.get_or_create(
@@ -143,7 +145,8 @@ class Importer(object):
             pile.friendly_name = row['friendly_name']
             pile.description = row['description']
             pile.save()
-            self._add_pile_images(pile, pile_images, pile_prefixes)
+            if pile_images:
+                self._add_pile_images(pile, pile_images, pile_prefixes)
             if created:
                 print >> self.logfile, u'    New Pile:', pile
             else:

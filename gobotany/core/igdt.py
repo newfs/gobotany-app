@@ -96,27 +96,54 @@ class DecisionTree(object):
     ...     [datum.strip() for datum in line.split(",")])))
 
     >>> examples = data[:]
-    >>> dt = DecisionTree()
-    >>> tree = dt.create_decision_tree(data, attributes, target_attr)
-    >>> classification = dt.classify(tree, examples)
-
-    >>> for item in classification:
+    >>> dt = DecisionTree(data, attributes, target_attr)
+    >>> for item in dt.classify(examples):
     ...    print item
+    will buy
+    won't buy
+    will buy
+    won't buy
+    will buy
+    won't buy
+    won't buy
+    will buy
+    won't buy
+    will buy
+    will buy
+    will buy
+    won't buy
+    will buy
+    will buy
+    will buy
+    won't buy
+    will buy
+    will buy
+    won't buy
+
     '''
 
-    def __init__(self):
+    def __init__(self, data, attribs, target_attr):
         self._ig = InformationTheoretic()
+        self._treedata = self._create_decision_tree(data, attribs, target_attr)
 
-    def majority_value(self, data, target_attr):
+    def classify(self, data):
+        """
+        Returns a list of classifications for each of the records in the data
+        list as determined by the given decision tree.
+        """
+        return (self._get_classification(record)
+                for record in data)
+
+    def _majority_value(self, data, target_attr):
         """
         Creates a list of all values in the target attribute for each record
         in the data list object, and returns the value that appears in this
         list the most frequently.
         """
         data = data[:]
-        return self.most_frequent([record[target_attr] for record in data])
+        return self._most_frequent([record[target_attr] for record in data])
 
-    def most_frequent(self, lst):
+    def _most_frequent(self, lst):
         """
         Returns the item that appears most frequently in the given list.
         """
@@ -124,14 +151,14 @@ class DecisionTree(object):
         highest_freq = 0
         most_freq = None
 
-        for val in self.unique(lst):
+        for val in self._unique(lst):
             if lst.count(val) > highest_freq:
                 most_freq = val
                 highest_freq = lst.count(val)
 
         return most_freq
 
-    def unique(self, lst):
+    def _unique(self, lst):
         """
         Returns a list made up of the unique values found in lst.  i.e., it
         removes the redundant values in lst.
@@ -148,16 +175,16 @@ class DecisionTree(object):
         # Return the list with all redundant values removed.
         return unique_lst
 
-    def get_values(self, data, attr):
+    def _get_values(self, data, attr):
         """
         Creates a list of values in the chosen attribut for each record
         in data, prunes out all of the redundant values, and return
         the list.
         """
         data = data[:]
-        return self.unique([record[attr] for record in data])
+        return self._unique([record[attr] for record in data])
 
-    def choose_attribute(self, data, attributes, target_attr):
+    def _choose_attribute(self, data, attributes, target_attr):
         """
         Cycles through all the attributes and returns the attribute with the
         highest information gain (or lowest entropy).
@@ -174,7 +201,7 @@ class DecisionTree(object):
 
         return best_attr
 
-    def get_examples(self, data, attr, value):
+    def _get_examples(self, data, attr, value):
         """
         Returns a list of all the records in <data> with the value of <attr>
         matching the given value.
@@ -188,48 +215,34 @@ class DecisionTree(object):
             record = data.pop()
             if record[attr] == value:
                 rtn_lst.append(record)
-                rtn_lst.extend(self.get_examples(data, attr, value))
+                rtn_lst.extend(self._get_examples(data, attr, value))
                 return rtn_lst
             else:
-                rtn_lst.extend(self.get_examples(data, attr, value))
+                rtn_lst.extend(self._get_examples(data, attr, value))
                 return rtn_lst
 
-    def get_classification(self, record, tree):
+    def _get_classification(self, record, node=None):
         """
         This function recursively traverses the decision tree and returns a
         classification for the given record.
         """
-        # If the current node is a string, then we've reached a leaf node and
-        # we can return it as our answer
-        if type(tree) == type("string"):
-            return tree
 
-        # Traverse the tree further until a leaf node is found.
-        else:
-            attr = tree.keys()[0]
-            t = tree[attr][record[attr]]
-            return self.get_classification(record, t)
+        if node is None:
+            node = self._treedata
+        elif not isinstance(node, (dict, list)):
+            return node
 
-    def classify(self, tree, data):
-        """
-        Returns a list of classifications for each of the records in the data
-        list as determined by the given decision tree.
-        """
-        data = data[:]
-        classification = []
+        attr = node.keys()[0]
+        t = node[attr][record[attr]]
+        return self._get_classification(record, t)
 
-        for record in data:
-            classification.append(self.get_classification(record, tree))
-
-        return classification
-
-    def create_decision_tree(self, data, attributes, target_attr):
+    def _create_decision_tree(self, data, attributes, target_attr):
         """
         Returns a new decision tree based on the examples given.
         """
         data = data[:]
         vals = [record[target_attr] for record in data]
-        default = self.majority_value(data, target_attr)
+        default = self._majority_value(data, target_attr)
 
         # If the dataset is empty or the attributes list is empty, return the
         # default value. When checking the attributes list for emptiness, we
@@ -242,7 +255,7 @@ class DecisionTree(object):
             return vals[0]
         else:
             # Choose the next best attribute to best classify our data
-            best = self.choose_attribute(data, attributes, target_attr)
+            best = self._choose_attribute(data, attributes, target_attr)
 
             # Create a new decision tree/node with the best attribute
             # and an empty dictionary object--we'll fill that up next.
@@ -250,10 +263,10 @@ class DecisionTree(object):
 
             # Create a new decision tree/sub-node for each of the values in the
             # best attribute field
-            for val in self.get_values(data, best):
+            for val in self._get_values(data, best):
                 # Create a subtree for the current value under the "best" field
-                subtree = self.create_decision_tree(
-                    self.get_examples(data, best, val),
+                subtree = self._create_decision_tree(
+                    self._get_examples(data, best, val),
                     [attr for attr in attributes if attr != best],
                     target_attr)
 
