@@ -108,9 +108,37 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         if (!args.pile_url) args.pile_url = '/piles/';
         if (!args.taxon_url) args.taxon_url = '/taxon/';
         this.store = new dojox.data.JsonRestStore({target: args.pile_url});
+        this.chars_store = new dojox.data.JsonRestStore({target: args.pile_url + args.pile_slug + '/characters/'});
         this.result_store = new dojox.data.JsonRestStore({target: args.taxon_url, 
                                                           idAttribute: 'scientific_name'});
     },
+    query_best_filters: function(args) {
+        var choose_best = 3;
+        if (args.choose_best)
+            choose_best = args.choose_best;
+        this.chars_store.fetch({query: {choose_best: choose_best,
+                                       include_filter: 1},
+                                scope: {filter_manager: this, args: args},
+                                onComplete: function(items) {
+                                    var lst = [];
+                                    for (var x = 0; x < items.length; x++) {
+                                        var item = items[x];
+                                        lst.push(this.filter_manager.build_filter({
+                                            filter_json: {
+                                                character_friendly_name: item.friendly_name,
+                                                character_short_name: item.short_name,
+                                                order: 0,
+                                                notable_exceptions: item.filter.notable_exceptions,
+                                                key_characteristics: item.filter.key_characteristics,
+                                                value_type: item.value_type,
+                                                pile_slug: this.filter_manager.pile_slug
+                                            },
+                                        }));
+                                    }
+                                    this.args.onLoaded(lst);
+                                }});
+    },
+
     load_default_filters: function(args) {
         var store = this.store;
         store.fetchItemByIdentity({
@@ -155,7 +183,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
             this.args.onLoaded();
         }
     },
-    add_filter: function(args) {
+    build_filter: function(args) {
         var filter_json = args.filter_json;
         var filter_type;
 
@@ -181,14 +209,17 @@ dojo.declare("gobotany.filters.FilterManager", null, {
             }
         );
 
-        // Add the filter to the manager's collection of filters.
-        this.filters.push(filter);
-
         if (args && args.onAdded) {
             filter.load_values({onLoaded: dojo.hitch(this, function() {
                 args.onAdded(filter);
             })});
         }
+        
+        return filter;
+    },
+    add_filter: function(args) {
+        // Add the filter to the manager's collection of filters.
+        this.filters.push(this.build_filter(args));
     },
     add_text_filters: function(filter_names) {
         for (var i = 0; i < filter_names.length; i++) {

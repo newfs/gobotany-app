@@ -58,7 +58,7 @@ p {
 }
 
 #filters li {
-    margin: 1.5em 0 1.5em 1em;
+    padding: 0.75em 0 0 1em;
 }
 
 #filters li a {

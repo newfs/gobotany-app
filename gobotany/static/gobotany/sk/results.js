@@ -11,6 +11,7 @@ dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
 dojo.require("dijit.form.FilteringSelect");
+dojo.require('dijit.form.Form');
 
 var filter_manager = null;
 gobotany.sk.results.PAGE_COUNT = 12;
@@ -110,12 +111,24 @@ gobotany.sk.results.remove_filter = function(event) {
     dojo.query('#' + this.character_short_name).orphan();
 };
 
-gobotany.sk.results.populate_default_filters = function(filter_manager) {
+gobotany.sk.results.setup_filters = function(args) {
     var filtersList = dojo.query('#filters ul')[0];
-    dojo.empty(filtersList);
+
+    var first = null;
+    if (!args.add)
+        dojo.empty(filtersList);
+    else {
+        var lis = dojo.query('li', filtersList);
+        if (lis.length > 0)
+            first = lis[0];
+    }
+        
     
-    for (var i = 0; i < filter_manager.filters.length; i++) {
-        var filter = filter_manager.filters[i];
+    
+    var filters = args.filters;
+    var added = [];
+    for (var i = 0; i < filters.length; i++) {
+        var filter = filters[i];
         if (filter.value_type != null) {
             var filterLink = dojo.create('a', {
                 href: '#', innerHTML: filter.friendly_name});
@@ -141,7 +154,20 @@ gobotany.sk.results.populate_default_filters = function(filter_manager) {
             dojo.place(removeLink, filterItem);
             dojo.place(clearLink, filterItem);
 
-            dojo.place(filterItem, filtersList);
+            if (first) {
+                dojo.place(filterItem, first, 'before');
+                dojo.style(filterItem, {backgroundColor: '#FFF8DC'});
+                added.push(filterItem);
+            } else
+                dojo.place(filterItem, filtersList);
+
+        }
+
+        if (added.length > 0) {
+            setTimeout(function() {
+                for (var x = 0; x < added.length; x++)
+                    dojo.anim(added[x], {backgroundColor: 'white'});
+            }, 2000);
         }
     }
 };
@@ -544,7 +570,9 @@ gobotany.sk.results.apply_genus_filter = function(event) {
 
 gobotany.sk.results.get_more_filters = function(event) {
     event.preventDefault();
-    alert('Not yet implemented.');
+    filter_manager.query_best_filters({onLoaded: function(items) {
+        gobotany.sk.results.setup_filters({filters: items, add: true});
+    }});
 };
 
 gobotany.sk.results.init = function(pile_slug) {
@@ -625,7 +653,7 @@ gobotany.sk.results.refresh_default_filters = function() {
         console.log('character group checkboxes created');
 
         // Populate the initial list of default filters.
-        gobotany.sk.results.populate_default_filters(filter_manager);
+        gobotany.sk.results.setup_filters({filters: filter_manager.filters});
         console.log('default filters loaded and configured');
 
         // Add Family and Genus filters.

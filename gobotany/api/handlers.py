@@ -220,42 +220,56 @@ class PileGroupListingHandler(BaseHandler):
 
 class CharacterListingHandler(BaseHandler):
     methods_allowed = ('GET',)
-    
+
+    def _read(self, request, pile_slug):
+        include_filter = bool(int(request.GET.get('include_filter', 0)))
+        choose_best = int(request.GET.get('choose_best', 0))
+
+        pile = models.Pile.objects.get(slug=pile_slug)
+        d = {}
+        for cv in pile.character_values.all():
+            char = cv.character
+            count = 0
+            if choose_best:
+                count = models.Taxon.objects.filter(
+                    character_values=cv).count()
+
+            if char.name in d:
+                d[char.name]['species_count'] += count
+                continue
+            c = {'friendly_name': char.friendly_name,
+                 'short_name': char.short_name,
+                 'value_type': char.value_type,
+                 'character_group': char.character_group.name,
+                 'species_count': count}
+            d[char.name] = c
+
+            if include_filter:
+                try:
+                    default_filter = models.DefaultFilter.objects.get(
+                        character=char)
+                    c['filter'] = {
+                        'notable_exceptions': getattr(default_filter,
+                                                      'notable_exceptions', u''),
+                        'key_characteristics': getattr(default_filter,
+                                                       'key_characteristics', u'')}
+                except models.DefaultFilter.DoesNotExist:
+                    c['filter'] = {
+                        'notable_exceptions': u'',
+                        'key_characteristics': u'',
+                        }
+        return d.values()
+
     def read(self, request, pile_slug):
-        # temporary: dummy characters and groups
-        characters = \
-            [ {'group_name': 'char_group1',
-               'characters': [ {'character_friendly_name': 'fname1',
-                                'character_short_name': 'sname1',
-                                'value_type': 'TEXT'},
-                               {'character_friendly_name': 'fname2',
-                                'character_short_name': 'sname2',
-                                'value_type': 'TEXT'},
-                               {'character_friendly_name': 'fname3',
-                                'character_short_name': 'sname3',
-                                'value_type': 'TEXT'} ] },
-              {'group_name': 'char_group2',
-               'characters': [ {'character_friendly_name': 'fname4',
-                                'character_short_name': 'sname4',
-                                'value_type': 'TEXT'},
-                               {'character_friendly_name': 'fname5',
-                                'character_short_name': 'sname5',
-                                'value_type': 'TEXT'},
-                               {'character_friendly_name': 'fname6',
-                                'character_short_name': 'sname6',
-                                'value_type': 'TEXT'} ] },
-              {'group_name': 'char_group3',
-               'characters': [ {'character_friendly_name': 'fname7',
-                                'character_short_name': 'sname7',
-                                'value_type': 'TEXT'},
-                               {'character_friendly_name': 'fname8',
-                                'character_short_name': 'sname8',
-                                'value_type': 'TEXT'},
-                               {'character_friendly_name': 'fname9',
-                                'character_short_name': 'sname9',
-                                'value_type': 'TEXT'} ]
-              } ]
-        return characters
+        choose_best = int(request.GET.get('choose_best', 0))
+        lst = self._read(request, pile_slug)
+        if choose_best:
+            newlst = [x for x in sorted(
+                lst, lambda x, y: cmp(x['species_count'],
+                                      y['species_count']))
+                      if x['species_count'] > 0]
+            lst = newlst[0:choose_best]
+        return lst
 
 
 class CharacterValuesHandler(BaseHandler):
