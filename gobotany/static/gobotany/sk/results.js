@@ -368,7 +368,7 @@ gobotany.sk.results.narrow_by_family = function(items) {
 gobotany.sk.results.narrow_by_genus = function(items) {
     var genus = dijit.byId('genus_select').value;
     if (genus)
-        for (var i = items.length - 1; i > 0; i--)
+        for (var i = items.length - 1; i >= 0; i--)
             if (items[i].genus != genus)
                 items.splice(i, 1);
 }
@@ -414,12 +414,12 @@ gobotany.sk.results.on_complete_run_filtered_query = function(data) {
 };
 
 gobotany.sk.results.apply_family_filter = function(event) {
-    event.preventDefault();
+    //event.preventDefault();  Does not work for dijit FilteringSelect?
     gobotany.sk.results.run_filtered_query();
 };
 
 gobotany.sk.results.apply_genus_filter = function(event) {
-    event.preventDefault();
+    //event.preventDefault();  Does not work for dijit FilteringSelect?
     // TODO: selecting a genus should auto-select its family
     gobotany.sk.results.run_filtered_query();
 };
@@ -445,13 +445,13 @@ gobotany.sk.results.init = function(pile_slug) {
     var family_select = dijit.byId('family_select');
     family_select.set('required', false);
     family_select.set('store', family_store);
-    dojo.connect(family_select, 'onchange', null,
+    dojo.connect(family_select, 'onChange', null,
                  gobotany.sk.results.apply_family_filter);
 
     var genus_select = dijit.byId('genus_select');
     genus_select.set('required', false);
     genus_select.set('store', genus_store);
-    dojo.connect(genus_select, 'onchange', null,
+    dojo.connect(genus_select, 'onChange', null,
                  gobotany.sk.results.apply_genus_filter);
 
     // Wire up the "More filters" button.
