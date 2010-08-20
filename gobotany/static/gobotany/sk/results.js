@@ -291,16 +291,12 @@ gobotany.sk.results.load_page_if_visible = function(page) {
     }
 }
 
-gobotany.sk.results.rebuild_family_genus = function(items) {
+gobotany.sk.results.rebuild_family_select = function(items) {
 
-    // Make family and genus lists from the species returned by the
-    // current query (the following twenty-odd lines of code are the
-    // painful JavaScript equivalent of sort -u).
+    // Does sort | uniq really have to be this painful in JavaScript?
 
     var families_seen = {};
-    var genera_seen = {};
     var family_list = [];
-    var genus_list = [];
 
     for (var i=0; i < items.length; i++) {
         var item = items[i];
@@ -308,18 +304,11 @@ gobotany.sk.results.rebuild_family_genus = function(items) {
             family_list.push(item.family);
             families_seen[item.family] = true;
         }
-        if (! genera_seen[item.genus]) {
-            genus_list.push(item.genus);
-            genera_seen[item.genus] = true;
-        }
     }
 
     family_list.sort();
-    genus_list.sort();
 
-    // Update the Family and Genus boxes.  We leave in place any values
-    // that are already present, since deleting and re-adding all values
-    // will reset the user's selection.
+    // Update the Family data store.
 
     var family_store = dijit.byId('family_select').store;
 
@@ -333,6 +322,26 @@ gobotany.sk.results.rebuild_family_genus = function(items) {
         }
         family_store.save();
     }});
+}
+
+gobotany.sk.results.rebuild_genus_select = function(items) {
+
+    // Does sort | uniq really have to be this painful in JavaScript?
+
+    var genera_seen = {};
+    var genus_list = [];
+
+    for (var i=0; i < items.length; i++) {
+        var item = items[i];
+        if (! genera_seen[item.genus]) {
+            genus_list.push(item.genus);
+            genera_seen[item.genus] = true;
+        }
+    }
+
+    genus_list.sort();
+
+    // Update the Genus data store.
 
     var genus_store = dijit.byId('genus_select').store;
 
@@ -348,25 +357,43 @@ gobotany.sk.results.rebuild_family_genus = function(items) {
     }});
 }
 
-gobotany.sk.results.narrow_by_family_genus = function(items) {
-    // TODO: add filtering here
+gobotany.sk.results.narrow_by_family = function(items) {
+    var family = dijit.byId('family_select').value;
+    if (family)
+        for (var i = items.length - 1; i > 0; i--)
+            if (items[i].family != family)
+                items.splice(i, 1);
+}
+
+gobotany.sk.results.narrow_by_genus = function(items) {
+    var genus = dijit.byId('genus_select').value;
+    if (genus)
+        for (var i = items.length - 1; i > 0; i--)
+            if (items[i].genus != genus)
+                items.splice(i, 1);
 }
 
 gobotany.sk.results.on_complete_run_filtered_query = function(data) {
 
-    // First, populate the "Family" and "Genus" select boxes based on
-    // the full result of the filtered query, before applying the family
-    // and genus filters; otherwise the select boxes would contain no
-    // other values than the one value currently selected by the user!
-    gobotany.sk.results.rebuild_family_genus(data.items);
+    // Getting the "Family" and "Genus" boxes properly populated is a
+    // bit tricky, because simply using them as normal parameters in our
+    // big query would, for example, empty out the "Family" drop-downs
+    // of every family except the one you had just selected!
+    //
+    // So, we do our "big query" *without* any restriction on family and
+    // genus, so that we can populate the family field with all of its
+    // options for the current filters, then we narrow the list of items
+    // "by hand" so that the rest of the display logic can only see the
+    // results for the currently-selected family.
 
-    // Next, narrow down our results list by any family or genus that
-    // the user has selected.
-    //gobotany.sk.results.narrow_by_family_genus(data.items);
+    gobotany.sk.results.rebuild_family_select(data.items);
+    gobotany.sk.results.narrow_by_family(data.items);
+    gobotany.sk.results.rebuild_genus_select(data.items);
+    gobotany.sk.results.narrow_by_genus(data.items);
 
     // Update the species count on the screen.
     dojo.query('#plants .species_count .count .number')[0].innerHTML =
-        filter_manager.species_count.toString();
+        data.items.length;
     dojo.query('#plants .species_count .loading').addClass('hidden');
     dojo.query('#plants .species_count .count').removeClass('hidden');
 
@@ -388,13 +415,12 @@ gobotany.sk.results.on_complete_run_filtered_query = function(data) {
 
 gobotany.sk.results.apply_family_filter = function(event) {
     event.preventDefault();
-    // TODO: add filtering here?
     gobotany.sk.results.run_filtered_query();
 };
 
 gobotany.sk.results.apply_genus_filter = function(event) {
     event.preventDefault();
-    // TODO: add filtering here?
+    // TODO: selecting a genus should auto-select its family
     gobotany.sk.results.run_filtered_query();
 };
 
