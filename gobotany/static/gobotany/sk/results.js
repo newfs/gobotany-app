@@ -326,6 +326,8 @@ gobotany.sk.results.rebuild_family_select = function(items) {
 
 gobotany.sk.results.rebuild_genus_select = function(items) {
 
+    genus_to_family = {};  // global, for use in another function below
+
     // Does sort | uniq really have to be this painful in JavaScript?
 
     var genera_seen = {};
@@ -336,6 +338,7 @@ gobotany.sk.results.rebuild_genus_select = function(items) {
         if (! genera_seen[item.genus]) {
             genus_list.push(item.genus);
             genera_seen[item.genus] = true;
+            genus_to_family[item.genus] = item.family;
         }
     }
 
@@ -350,8 +353,8 @@ gobotany.sk.results.rebuild_genus_select = function(items) {
             genus_store.deleteItem(items[i]);
         genus_store.save();
         for (var i=0; i < genus_list.length; i++) {
-            var f = genus_list[i];
-            genus_store.newItem({ name: f, genus: f });
+            var g = genus_list[i];
+            genus_store.newItem({ name: g, genus: g });
         }
         genus_store.save();
     }});
@@ -413,15 +416,30 @@ gobotany.sk.results.on_complete_run_filtered_query = function(data) {
                                     data: data}]);
 };
 
+did_they_just_choose_a_genus = false;
+
 gobotany.sk.results.apply_family_filter = function(event) {
-    //event.preventDefault();  Does not work for dijit FilteringSelect?
+    if (! did_they_just_choose_a_genus)
+        dijit.byId('genus_select').set('value', '');
     gobotany.sk.results.run_filtered_query();
+    did_they_just_choose_a_genus = false;
 };
 
 gobotany.sk.results.apply_genus_filter = function(event) {
-    //event.preventDefault();  Does not work for dijit FilteringSelect?
-    // TODO: selecting a genus should auto-select its family
-    gobotany.sk.results.run_filtered_query();
+    var genus = dijit.byId('genus_select').value;
+    var family_select = dijit.byId('family_select');
+    if (genus) {
+        var family = family_select.value;
+        var new_family = genus_to_family[genus];
+        if (family != new_family) {
+            did_they_just_choose_a_genus = true;
+            family_select.set('value', new_family);
+        } else {
+            gobotany.sk.results.run_filtered_query();
+        }
+    } else {
+        gobotany.sk.results.run_filtered_query();
+    }
 };
 
 gobotany.sk.results.get_more_filters = function(event) {
