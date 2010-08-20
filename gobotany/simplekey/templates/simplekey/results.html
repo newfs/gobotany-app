@@ -8,14 +8,18 @@
     <div id="global-filter">
       <form id="family_form">
         <p>Family<br>
-        <input type="text">
-        <button>Go</button>
+          <select id="family_select" name="family_select"
+                  dojoType="dijit.form.FilteringSelect"
+                  autocomplete="true" value="sel">
+          </select>
         </p>
       </form>
       <form id="genus_form">
         <p>Genus<br>
-        <input type="text">
-        <button>Go</button>
+          <select id="genus_select" name="genus_select"
+                  dojoType="dijit.form.FilteringSelect"
+                  autocomplete="true" value="sel">
+          </select>
         </p>
       </form>
       <div class="clear">&nbsp;</div>

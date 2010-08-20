@@ -23,6 +23,8 @@ def _taxon_image(image):
 def _simple_taxon(taxon):
     res = {}
     res['scientific_name'] = taxon.scientific_name
+    res['genus'] = taxon.scientific_name.split()[0] # faster than .genus.name
+    res['family'] = taxon.family.name
     res['id'] = taxon.id
     res['taxonomic_authority'] = taxon.taxonomic_authority
     res['default_image'] = _taxon_image(taxon.get_default_image())
