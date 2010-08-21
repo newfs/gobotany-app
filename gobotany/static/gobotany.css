@@ -237,7 +237,9 @@ ul#plant-listing {
     visibility: hidden;
     top: 100px;
     left: -200px;
-    width: 500px;
+    width: 420px;
+    padding: 8px 0px;
+    background: #edf9d7;
 }
 
 /* Footer */
