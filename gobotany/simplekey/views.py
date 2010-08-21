@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
-from gobotany.core.models import Pile, PileGroup
+from gobotany.core.models import GlossaryTerm, Pile, PileGroup
 from gobotany.simplekey.models import Page, get_blurb
 
 
@@ -31,6 +31,15 @@ def index_view(request):
 def map_view(request):
     return render_to_response('simplekey/map.html', {
             'pages': Page.objects.order_by('number').all(),
+            }, context_instance=RequestContext(request))
+
+
+def glossary_view(request):
+    # Case-insensitive sort
+    glossary = GlossaryTerm.objects.filter(visible=True).extra(
+        select={'lower_term': 'lower(term)'}).order_by('lower_term')
+    return render_to_response('simplekey/glossary.html', {
+            'glossary': glossary,
             }, context_instance=RequestContext(request))
 
 

@@ -1,0 +1,16 @@
+{% extends "simplekey/base.html" %}
+{% block content %}
+
+<ul id="glossary">
+  {% for term in glossary %}
+    <li>
+      <b>{{ term.term|title }}.</b>
+      {{ term.lay_definition }}
+      {% if term.image %}
+        <img src="{{ term.image.url }}" alt="{{ term.term }}">
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

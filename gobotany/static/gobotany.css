@@ -210,6 +210,23 @@ ul#plant-listing {
     font-style: italic;
 }
 
+/* Glossary page */
+
+ul#glossary {
+    margin: 30px 20px;
+    font-size: .8em;
+}
+
+ul#glossary li {
+    padding: 2px 4px;
+}
+ul#glossary li:nth-child(odd) {
+    background: #c3d69b;
+}
+ul#glossary li:nth-child(even) {
+    background: #edf9d7;
+}
+
 /* Subway map */
 
 #subway {
