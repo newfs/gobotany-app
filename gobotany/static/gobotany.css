@@ -89,7 +89,7 @@ p {
     color: #000;
 }
 
-#filter-working, #pick-filters, #plants, #subway {
+#filter-working, #pick-filters, #plants {
     clear: left;
 }
 
@@ -210,9 +210,37 @@ ul#plant-listing {
     font-style: italic;
 }
 
-#subway ul li {
-    margin: 0 0 0 1em;
+/* Subway map */
+
+#subway {
+    text-align: center;
 }
+
+#subway h2 {
+    margin: 40px;
+}
+
+#subway > ul {
+    margin-bottom: 140px;
+}
+
+#subway li {
+    position: relative;
+    display: inline-block;
+    margin: 8px;
+    padding: 16px 6px;
+    background: #c3d69b;
+}
+
+#subway li ul {
+    position: absolute;
+    visibility: hidden;
+    top: 100px;
+    left: -200px;
+    width: 500px;
+}
+
+/* Footer */
 
 #foot {
     clear: both;
@@ -289,14 +317,6 @@ ul#plant-listing {
 }
 h3, h4, h5, h6 {
     margin-top: 0;
-}
-
-.subway h2 {
-    font-weight: bold;
-}
-
-.subway {
-    font-size: 0.8em;
 }
 
 #simplekey-left-column {
