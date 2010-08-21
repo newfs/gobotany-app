@@ -212,6 +212,17 @@ ul#plant-listing {
 
 /* Glossary page */
 
+ul#glossary_pages {
+    text-align: center;
+    margin-top: 18px;
+}
+ul#glossary_pages li {
+    display: inline;
+}
+ul#glossary_pages .chosen {
+    color: #c3d69b;
+}
+
 ul#glossary {
     margin: 30px 20px;
     font-size: .8em;

@@ -1,3 +1,4 @@
+import string
 from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render_to_response
@@ -34,11 +35,18 @@ def map_view(request):
             }, context_instance=RequestContext(request))
 
 
-def glossary_view(request):
-    # Case-insensitive sort
+def glossary_view(request, letter):
     glossary = GlossaryTerm.objects.filter(visible=True).extra(
         select={'lower_term': 'lower(term)'}).order_by('lower_term')
+    if letter == '1':
+        # All terms whose names start with a number.
+        glossary = glossary.filter(term__gte='1', term__lte='9z')
+    else:
+        glossary = glossary.filter(term__startswith=letter)
+    # Case-insensitive sort
     return render_to_response('simplekey/glossary.html', {
+            'this_letter': letter,
+            'letters': '1' + string.ascii_lowercase,
             'glossary': glossary,
             }, context_instance=RequestContext(request))
 

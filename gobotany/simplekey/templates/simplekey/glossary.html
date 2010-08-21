@@ -1,6 +1,18 @@
 {% extends "simplekey/base.html" %}
 {% block content %}
 
+<ul id="glossary_pages">
+  {% for letter in letters %}
+    <li>
+      {% if letter = this_letter %}
+        <span class="chosen">{{ letter|upper }}</span>
+      {% else %}
+        <a href="{% url simplekey-glossary letter %}">{{ letter|upper }}</a>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+
 <ul id="glossary">
   {% for term in glossary %}
     <li>
