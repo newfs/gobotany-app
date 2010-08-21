@@ -568,6 +568,16 @@ gobotany.sk.results.apply_genus_filter = function(event) {
     }
 };
 
+gobotany.sk.results.clear_family = function(event) {
+    event.preventDefault();
+    dijit.byId('family_select').set('value', '');
+}
+
+gobotany.sk.results.clear_genus = function(event) {
+    event.preventDefault();
+    dijit.byId('genus_select').set('value', '');
+}
+
 gobotany.sk.results.get_more_filters = function(event) {
     event.preventDefault();
     filter_manager.query_best_filters({onLoaded: function(items) {
@@ -599,6 +609,12 @@ gobotany.sk.results.init = function(pile_slug) {
     genus_select.set('store', genus_store);
     dojo.connect(genus_select, 'onChange', null,
                  gobotany.sk.results.apply_genus_filter);
+
+    // Wire up the "Clear" buttons for the family and genus.
+    dojo.connect(dojo.byId('clear_family'), 'onclick', null,
+                 gobotany.sk.results.clear_family);
+    dojo.connect(dojo.byId('clear_genus'), 'onclick', null,
+                 gobotany.sk.results.clear_genus);
 
     // Wire up the "More filters" button.
     var more_filters_button = dojo.query('#more_filters button')[0];
