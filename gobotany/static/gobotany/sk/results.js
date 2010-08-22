@@ -617,8 +617,8 @@ gobotany.sk.results.init = function(pile_slug) {
                  gobotany.sk.results.clear_genus);
 
     // Wire up the "More filters" button.
-    var more_filters_button = dojo.query('#more_filters button')[0];
-    dojo.connect(more_filters_button, 'onclick', null,
+    var form = dijit.byId('more_filters_form');
+    dojo.connect(form, 'onSubmit', null,
                  gobotany.sk.results.get_more_filters);
 
     // Wire up the Apply button in the filter working area.
