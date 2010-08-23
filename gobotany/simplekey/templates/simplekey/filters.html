@@ -4,7 +4,12 @@
     <form dojoType="dijit.form.Form" id="more_filters_form">
       <div>
       </div>
-      <button id="more_filters_button" type="submit" dojoType="dijit.form.Button">Get more filters…</button>
+      <button dojoType="dijit.form.DropDownButton">
+        <span>Character Groups</span>
+        <div dojoType="dijit.Menu" id="character_groups_menu">
+        </div>
+      </button>
+      <button id="get_more_filters_button" type="submit" dojoType="dijit.form.Button">Get more filters…</button>
     </form>
   </div>
   <div class="loading">Loading filters…</div>

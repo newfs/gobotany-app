@@ -62,6 +62,7 @@ gobotany.sk.results.init = function(pile_slug) {
     var form = dijit.byId('more_filters_form');
     dojo.connect(form, 'onSubmit', null,
                  gobotany.sk.results.get_more_filters);
+    
 
     // Wire up the Apply button in the filter working area.
     var apply_button = dojo.query('#character_values_form button')[0];
@@ -657,15 +658,22 @@ gobotany.sk.results.clear_genus = function(event) {
 gobotany.sk.results.get_more_filters = function(event) {
     event.preventDefault();
     var form = dijit.byId('more_filters_form');
-    var formval = form.get('value');
-    var button = dijit.byId('more_filters_button');
+    var button = dijit.byId('get_more_filters_button');
     button.set('disabled', true);
+
+    var menu = dijit.byId('character_groups_menu');
+    var character_groups = [];
+    for (var x = 0; x < menu.getChildren().length; x++) {
+        var item = menu.getChildren()[x];
+        if (item.checked)
+            character_groups.push(item.value);
+    }
 
     var existing = [];
     for (var x = 0; x < filter_manager.filters.length; x++)
         existing.push(filter_manager.filters[x].character_short_name);
     filter_manager.query_best_filters({
-        character_groups: formval.character_groups,
+        character_groups: character_groups,
         existing_characters: existing,
         onLoaded: function(items) {
             if (items.length > 0)
@@ -679,27 +687,13 @@ gobotany.sk.results.get_more_filters = function(event) {
 
 gobotany.sk.results.add_character_groups = function(filter_manager) {
     var my_form = dojo.query('#more_filters form div')[0];
+    var menu = dijit.byId('character_groups_menu');
 
     for (var i = 0; i < filter_manager.character_groups.length; i++) {
         var character_group = filter_manager.character_groups[i];
-        var cbid = 'character_group_'+character_group.id;
-
-        var my_label = dojo.create('label', {
-            'for': cbid,
-        }, my_form);
-        var input = dojo.create('input', {
-            id: cbid,
-            type: 'checkbox',
-            name: 'character_groups',
-            value: character_group.id,
-        }, my_label);
-        my_label.innerHTML += character_group.name;
-
-        var widget = new dijit.form.CheckBox({
-            id: input.id,
-            name: input.name,
-            value: input.value,
-        }, cbid);
+        var item = new dijit.CheckedMenuItem({label: character_group.name,
+                                              value: character_group.id});
+        menu.addChild(item);
     }
 }
 
