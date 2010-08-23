@@ -12,6 +12,7 @@ dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
 dojo.require("dijit.form.FilteringSelect");
 dojo.require('dijit.form.Form');
+dojo.require('dijit.form.Select');
 
 var filter_manager = null;
 gobotany.sk.results.PAGE_COUNT = 12;
@@ -685,7 +686,7 @@ gobotany.sk.results.refresh_default_filters = function() {
 // A subscriber for results_loaded
 gobotany.sk.results.populate_image_types = function(message) {
     var results = message.data.items;
-    var select_box = dojo.byId('image-type-selector');
+    var select_box = dijit.byId('image-type-selector');
     // clear the select
     select_box.options.length = 0;
     // image types depend on the pile, we get the allowed values from

@@ -12,7 +12,7 @@
                   dojoType="dijit.form.FilteringSelect"
                   autocomplete="true" value="sel">
           </select>
-          <button id="clear_family">Clear</button>
+          <button dojoType="dijit.form.Button" id="clear_family">Clear</button>
         </p>
       </form>
       <form id="genus_form">
@@ -21,7 +21,7 @@
                   dojoType="dijit.form.FilteringSelect"
                   autocomplete="true" value="sel">
           </select>
-          <button id="clear_genus">Clear</button>
+          <button dojoType="dijit.form.Button" id="clear_genus">Clear</button>
         </p>
       </form>
       <div class="clear">&nbsp;</div>
@@ -29,7 +29,8 @@
     {% include "simplekey/filter_working.html" %}
     <form id="results-display">
       <label for="image-type-selector">Show:</label>
-      <select id="image-type-selector" name="image-type-selector">
+      <select dojoType="dijit.form.Select"
+              id="image-type-selector" name="image-type-selector">
       </select>
     </form>
     {% include "simplekey/plants.html" %}
