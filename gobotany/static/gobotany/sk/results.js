@@ -580,8 +580,11 @@ gobotany.sk.results.clear_genus = function(event) {
 
 gobotany.sk.results.get_more_filters = function(event) {
     event.preventDefault();
+    var button = dijit.byId('more_filters_button');
+    button.set('disabled', true);
     filter_manager.query_best_filters({onLoaded: function(items) {
         gobotany.sk.results.setup_filters({filters: items, add: true});
+        button.set('disabled', false);
     }});
 };
 
