@@ -1,6 +1,8 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <script> 
+    <script type="text/javascript"> 
       djConfig = { 
         isDebug: true,
         debugAtAllCosts:true,
@@ -15,23 +17,25 @@
     </script> 
     <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/dojo.xd.js"></script>
     <script type="text/javascript" src="/dojo/util/doh/runner.js"></script> 
-    <script>
+    <script type="text/javascript">
       dojo.require('gobotany.sk.tests.run');
     </script>
+    <title>Results Tests</title>
   </head>
   <body>
-    <form id="results-display">
-      <label for="image-type-selector">Show:</label>
-      <select id="image-type-selector" name="image-type-selector">
-      </select>
+    <form id="results-display" action="">
+      <fieldset>
+        <legend>Results Display</legend>
+        <label for="image-type-selector">Show:</label>
+        <select id="image-type-selector" name="image-type-selector"></select>
+      </fieldset>
     </form>
     <div id="plants">
       <p class="species_count">
         <span class="loading">Calculating species</span>
         <span class="count hidden"><span class="number">391</span> species matched</span>
       </p>
-      <ul id="plant-listing">
-      </ul>
+      <ul id="plant-listing"></ul>
     </div>
 </body>
 </html>
