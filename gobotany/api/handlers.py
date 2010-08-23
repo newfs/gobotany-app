@@ -130,9 +130,9 @@ class PileHandler(BasePileHandler):
     @staticmethod
     def character_groups(pile=None):
         groups = models.CharacterGroup.objects.filter(
-            character__character_values__pile=pile
-            ).distinct()
-        return [ dict(name=group.name) for group in groups ]
+            character__character_values__pile=pile).distinct()
+        return [dict(name=group.name,
+                     id=group.id) for group in groups]
 
     @staticmethod
     def default_filters(pile=None):
@@ -224,11 +224,21 @@ class CharacterListingHandler(BaseHandler):
     def _read(self, request, pile_slug):
         include_filter = bool(int(request.GET.get('include_filter', 0)))
         choose_best = int(request.GET.get('choose_best', 0))
+        character_groups = [int(x)
+                            for x in request.GET.getlist('character_groups')]
+        exclude_chars = request.GET.getlist('exclude')
 
         pile = models.Pile.objects.get(slug=pile_slug)
         d = {}
         for cv in pile.character_values.all():
             char = cv.character
+            if exclude_chars and char.short_name in exclude_chars:
+                continue
+
+            if character_groups and \
+                   char.character_group.id not in character_groups:
+                continue
+
             count = 0
             if choose_best:
                 count = models.Taxon.objects.filter(

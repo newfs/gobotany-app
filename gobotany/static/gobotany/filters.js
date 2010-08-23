@@ -117,13 +117,15 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         if (args.choose_best)
             choose_best = args.choose_best;
         this.chars_store.fetch({query: {choose_best: choose_best,
-                                       include_filter: 1},
+                                        character_groups: args.character_groups || [],
+                                        exclude: args.existing_characters || [],
+                                        include_filter: 1},
                                 scope: {filter_manager: this, args: args},
                                 onComplete: function(items) {
                                     var lst = [];
                                     for (var x = 0; x < items.length; x++) {
                                         var item = items[x];
-                                        lst.push(this.filter_manager.build_filter({
+                                        lst.push(this.filter_manager.add_filter({
                                             filter_json: {
                                                 character_friendly_name: item.friendly_name,
                                                 character_short_name: item.short_name,
@@ -139,7 +141,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                                 }});
     },
 
-    load_default_filters: function(args) {
+    load_pile_info: function(args) {
         var store = this.store;
         store.fetchItemByIdentity({
             scope: {args: args, filter_manager: this},
@@ -177,12 +179,14 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         // scope should be an object with filter_manager and onLoaded attrs
 
         this.filter_manager.filters_loading--;
-        if (this.args && this.args.onLoaded && 
-            this.filter_manager.filters_loading === 0) {
-
-            this.args.onLoaded();
+        if (this.filter_manager.filters_loading === 0) {
+            if (this.args && this.args.onLoaded)
+                this.args.onLoaded();
+            this.filter_manager.on_pile_info_loaded();
         }
     },
+    on_pile_info_loaded: function() {},
+
     build_filter: function(args) {
         var filter_json = args.filter_json;
         var filter_type;
@@ -213,13 +217,17 @@ dojo.declare("gobotany.filters.FilterManager", null, {
             filter.load_values({onLoaded: dojo.hitch(this, function() {
                 args.onAdded(filter);
             })});
+        } else {
+            filter.load_values({});
         }
         
         return filter;
     },
     add_filter: function(args) {
         // Add the filter to the manager's collection of filters.
-        this.filters.push(this.build_filter(args));
+        var f = this.build_filter(args);
+        this.filters.push(f);
+        return f;
     },
     add_text_filters: function(filter_names) {
         for (var i = 0; i < filter_names.length; i++) {
@@ -267,6 +275,9 @@ dojo.declare("gobotany.filters.FilterManager", null, {
             i++;
         }
         return selected_value;
+    },
+    empty_filters: function() {
+        this.filters = [];
     },
     run_filtered_query: function(onComplete) {
         var content = {pile: this.pile_slug};

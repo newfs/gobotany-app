@@ -10,6 +10,7 @@ dojo.require('dojo.html');
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
+dojo.require('dijit.form.CheckBox');
 dojo.require("dijit.form.FilteringSelect");
 dojo.require('dijit.form.Form');
 dojo.require('dijit.form.Select');
@@ -25,6 +26,83 @@ var simplekey_character_short_name = null;
 
 // Image info storage for images that appear on the plant preview dialog box.
 gobotany.sk.results.plant_preview_images = [];
+
+gobotany.sk.results.init = function(pile_slug) {
+    // Wire up the filter working area's close button.
+    var el = dojo.query('#filter-working .close')[0];
+    dojo.connect(el, 'onclick', null, 
+                 gobotany.sk.results.hide_filter_working);
+
+    // Wire up the Family and Genus submit buttons.
+    var family_store = new dojo.data.ItemFileWriteStore(
+        {data: { label: 'name', identifier: 'family', items: [] }});
+
+    var genus_store = new dojo.data.ItemFileWriteStore(
+        {data: { label: 'name', identifier: 'genus', items: [] }});
+
+    var family_select = dijit.byId('family_select');
+    family_select.set('required', false);
+    family_select.set('store', family_store);
+    dojo.connect(family_select, 'onChange', null,
+                 gobotany.sk.results.apply_family_filter);
+
+    var genus_select = dijit.byId('genus_select');
+    genus_select.set('required', false);
+    genus_select.set('store', genus_store);
+    dojo.connect(genus_select, 'onChange', null,
+                 gobotany.sk.results.apply_genus_filter);
+
+    // Wire up the "Clear" buttons for the family and genus.
+    dojo.connect(dojo.byId('clear_family'), 'onclick', null,
+                 gobotany.sk.results.clear_family);
+    dojo.connect(dojo.byId('clear_genus'), 'onclick', null,
+                 gobotany.sk.results.clear_genus);
+
+    // Wire up the "More filters" button.
+    var form = dijit.byId('more_filters_form');
+    dojo.connect(form, 'onSubmit', null,
+                 gobotany.sk.results.get_more_filters);
+
+    // Wire up the Apply button in the filter working area.
+    var apply_button = dojo.query('#character_values_form button')[0];
+    dojo.connect(apply_button, 'onclick', null,
+                 gobotany.sk.results.apply_filter);
+
+    // Create a FilterManager object, which will pull a list of default
+    // filters for the pile.
+    filter_manager = new gobotany.filters.FilterManager(
+                         {pile_slug: pile_slug});
+    gobotany.sk.results.refresh_default_filters();
+
+    // We start with no filter values selected so we can run the query before they load
+    gobotany.sk.results.run_filtered_query();
+    
+    dojo.subscribe("results_loaded", gobotany.sk.results.populate_image_types);
+
+    // Update images on selction change
+    var select_box = dojo.byId('image-type-selector');
+    dojo.connect(select_box, 'change', 
+                 gobotany.sk.results.load_selected_image_type);
+
+    // everytime pile info is loaded by filtermanager, update everything
+    dojo.connect(filter_manager, 'on_pile_info_loaded',
+                 gobotany.sk.results.setup_pile_info)
+};
+
+gobotany.sk.results.setup_pile_info = function() {
+    // Set up the character group checkboxes.
+    gobotany.sk.results.add_character_groups(filter_manager);
+    console.log('character group checkboxes created');
+
+    // Populate the initial list of default filters.
+    gobotany.sk.results.setup_filters({filters: filter_manager.filters});
+    console.log('default filters loaded and configured');
+
+    // Add Family and Genus filters.
+    filter_manager.add_text_filters(['family', 'genus']);
+    dojo.query('#filters .loading').addClass('hidden');
+    console.log('family and genus filters added');
+};
 
 gobotany.sk.results.show_filter_working = function(event) {
     event.preventDefault();
@@ -578,106 +656,57 @@ gobotany.sk.results.clear_genus = function(event) {
 
 gobotany.sk.results.get_more_filters = function(event) {
     event.preventDefault();
+    var form = dijit.byId('more_filters_form');
+    var formval = form.get('value');
     var button = dijit.byId('more_filters_button');
     button.set('disabled', true);
-    filter_manager.query_best_filters({onLoaded: function(items) {
-        gobotany.sk.results.setup_filters({filters: items, add: true});
-        button.set('disabled', false);
-    }});
-};
 
-gobotany.sk.results.init = function(pile_slug) {
-    // Wire up the filter working area's close button.
-    var el = dojo.query('#filter-working .close')[0];
-    dojo.connect(el, 'onclick', null, 
-                 gobotany.sk.results.hide_filter_working);
-
-    // Wire up the Family and Genus submit buttons.
-    var family_store = new dojo.data.ItemFileWriteStore(
-        {data: { label: 'name', identifier: 'family', items: [] }});
-
-    var genus_store = new dojo.data.ItemFileWriteStore(
-        {data: { label: 'name', identifier: 'genus', items: [] }});
-
-    var family_select = dijit.byId('family_select');
-    family_select.set('required', false);
-    family_select.set('store', family_store);
-    dojo.connect(family_select, 'onChange', null,
-                 gobotany.sk.results.apply_family_filter);
-
-    var genus_select = dijit.byId('genus_select');
-    genus_select.set('required', false);
-    genus_select.set('store', genus_store);
-    dojo.connect(genus_select, 'onChange', null,
-                 gobotany.sk.results.apply_genus_filter);
-
-    // Wire up the "Clear" buttons for the family and genus.
-    dojo.connect(dojo.byId('clear_family'), 'onclick', null,
-                 gobotany.sk.results.clear_family);
-    dojo.connect(dojo.byId('clear_genus'), 'onclick', null,
-                 gobotany.sk.results.clear_genus);
-
-    // Wire up the "More filters" button.
-    var form = dijit.byId('more_filters_form');
-    dojo.connect(form, 'onSubmit', null,
-                 gobotany.sk.results.get_more_filters);
-
-    // Wire up the Apply button in the filter working area.
-    var apply_button = dojo.query('#character_values_form button')[0];
-    dojo.connect(apply_button, 'onclick', null,
-                 gobotany.sk.results.apply_filter);
-
-    // Create a FilterManager object, which will pull a list of default
-    // filters for the pile.
-    filter_manager = new gobotany.filters.FilterManager(
-                         {pile_slug: pile_slug});
-    gobotany.sk.results.refresh_default_filters();
-
-    // We start with no filter values selected so we can run the query before they load
-    gobotany.sk.results.run_filtered_query();
-    
-    dojo.subscribe("results_loaded", gobotany.sk.results.populate_image_types);
-
-    // Update images on selction change
-    var select_box = dojo.byId('image-type-selector');
-    dojo.connect(select_box, 'change', 
-                 gobotany.sk.results.load_selected_image_type);
-
+    var existing = [];
+    for (var x = 0; x < filter_manager.filters.length; x++)
+        existing.push(filter_manager.filters[x].character_short_name);
+    filter_manager.query_best_filters({
+        character_groups: formval.character_groups,
+        existing_characters: existing,
+        onLoaded: function(items) {
+            if (items.length > 0)
+                gobotany.sk.results.setup_filters({filters: items, add: true});
+            else
+                gobotany.sk.results.notify('No filters left for the selected character groups');
+            button.set('disabled', false);
+        }
+    });
 };
 
 gobotany.sk.results.add_character_groups = function(filter_manager) {
     var my_form = dojo.query('#more_filters form div')[0];
-    for (i=0; i < filter_manager.character_groups.length; i++) {
+
+    for (var i = 0; i < filter_manager.character_groups.length; i++) {
         var character_group = filter_manager.character_groups[i];
+        var cbid = 'character_group_'+character_group.id;
+
         var my_label = dojo.create('label', {
-            'for': character_group.name,
-        }, my_form, 'last');
-        dojo.create('input', {
+            'for': cbid,
+        }, my_form);
+        var input = dojo.create('input', {
+            id: cbid,
             type: 'checkbox',
-            name: character_group.name,
-            value: character_group.name,
+            name: 'character_groups',
+            value: character_group.id,
         }, my_label);
         my_label.innerHTML += character_group.name;
+
+        var widget = new dijit.form.CheckBox({
+            id: input.id,
+            name: input.name,
+            value: input.value,
+        }, cbid);
     }
 }
 
 gobotany.sk.results.refresh_default_filters = function() {
     dojo.query('#filters .loading').removeClass('hidden');
-    filter_manager.load_default_filters({onLoaded: function() {
-
-        // Set up the character group checkboxes.
-        gobotany.sk.results.add_character_groups(filter_manager);
-        console.log('character group checkboxes created');
-
-        // Populate the initial list of default filters.
-        gobotany.sk.results.setup_filters({filters: filter_manager.filters});
-        console.log('default filters loaded and configured');
-
-        // Add Family and Genus filters.
-        filter_manager.add_text_filters(['family', 'genus']);
-        dojo.query('#filters .loading').addClass('hidden');
-
-    }});
+    filter_manager.empty_filters();
+    filter_manager.load_pile_info();
 };
 
 // A subscriber for results_loaded
@@ -773,9 +802,10 @@ gobotany.sk.results.notify = function(txt) {
     var holderbox = dojo.position(holder);
 
     var left = (wbox.w / 2) - (holderbox.w / 2);
+    var top = wbox.t;
     dojo.style(holder,
                {position: 'absolute',
-                top: '0px',
+                top: top + 'px',
                 left: left + 'px'});
 
     dojo.removeClass(holder, 'hidden');
