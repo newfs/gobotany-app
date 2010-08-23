@@ -448,3 +448,14 @@ h3, h4, h5, h6 {
     clear: both;
     text-align: center;
 }
+
+/* ordinarily this msg will have it's centering done
+by javascript, see gobotany.sk.results.notify() */
+#notification-msg {
+    background-color: #C8B560;
+    -moz-border-bottom-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    -moz-border-bottom-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    padding: 0.25em 0.75em;
+}
