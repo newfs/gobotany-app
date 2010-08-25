@@ -1,4 +1,5 @@
 import json
+import os
 
 from django.test import TestCase
 from django.test.client import Client
@@ -6,9 +7,15 @@ from django.test.client import Client
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
+from django.core.files import File
+
 from gobotany.core import models
 
-def setup_sample_data():
+def _testdata_dir():
+    """Return the path to a test data directory relative to this directory."""
+    return os.path.join(os.path.dirname(__file__), 'testdata')
+
+def _setup_sample_data(load_images=False):
     pilegroup1 = models.PileGroup(name='pilegroup1')
     pilegroup1.save()
     pilegroup2 = models.PileGroup(name='pilegroup2')
@@ -27,36 +34,46 @@ def setup_sample_data():
     genfoo, c = models.Genus.objects.get_or_create(name='Fooium')
     genbaz, c = models.Genus.objects.get_or_create(name='Bazia')
 
-    # TODO: Finish creating some dummy image data and save with the Taxa.
-    # At this point it looks a content_object needs to be loaded somehow.
-
-    image_type, c = models.ImageType.objects.get_or_create(name='taxon')
-    content_type, c = ContentType.objects.get_or_create(
-        model='', app_label='core', defaults={'name': 'core'})
-
-    im1 = models.ContentImage(alt='im1 alt', rank=1, creator='photographer A',
-                              image_type=image_type, description='im1 desc',
-                              content_type=content_type, object_id=1)
-    #im1.content_object = # ? reference to image object in the db?
-    im1.save()
-    
-    im2 = models.ContentImage(alt='im2 alt', rank=1, creator='photographer B',
-                              image_type=image_type, description='im2 desc',
-                              content_type=content_type, object_id=2)
-    #im2.content_object = # ? reference to image object in the db?
-    im2.save()
-
     foo = models.Taxon(family=famfoo, genus=genfoo, 
         scientific_name='Fooium fooia')
     foo.save()
     bar = models.Taxon(family=famfoo, genus=genfoo, 
         scientific_name='Fooium barula')
-    #bar.images = [im1]
     bar.save()
     abc = models.Taxon(family=fambaz, genus=genbaz, 
         scientific_name='Bazia americana')
-    #abc.images = [im2]
     abc.save()
+
+    # Since loading the images slows things down, only load them if asked to.
+    if load_images:
+        image_type, c = models.ImageType.objects.get_or_create(name='taxon')
+        content_type, c = ContentType.objects.get_or_create(
+            model='', app_label='core', defaults={'name': 'core'})
+        # Create one image.
+        im1 = models.ContentImage(alt='im1 alt', rank=1,
+            creator='photographer A', image_type=image_type,
+            description='im1 desc', content_type=content_type,
+            object_id=bar.id)
+        filename = 'huperzia-appressa-ha-dkausen-1.jpg'
+        f = open('%s/%s' % (_testdata_dir(), filename), 'r')
+        image_file = File(f)
+        im1.image.save(filename, image_file)
+        im1.save()
+        f.close()
+        # Create another image.
+        im2 = models.ContentImage(alt='im2 alt', rank=2,
+            creator='photographer B', image_type=image_type,
+            description='im2 desc', content_type=content_type,
+            object_id=bar.id)
+        filename = 'huperzia-appressa-ha-dkausen-1.jpg'
+        f = open('%s/%s' % (_testdata_dir(), filename), 'r')
+        image_file = File(f)
+        im2.image.save(filename, image_file)
+        im2.save()
+        f.close()
+        # Add the images to the taxon.
+        bar.images = [im1, im2]
+        bar.save()
 
     pile1.species.add(foo)
     pile1.species.add(bar)
@@ -84,13 +101,26 @@ def setup_sample_data():
     models.TaxonCharacterValue(taxon=foo, character_value=cv1).save()
     models.TaxonCharacterValue(taxon=bar, character_value=cv2).save()
 
+    df1 = models.DefaultFilter(pile=pile1, character=c1, order=1,
+                               key_characteristics='key characteristics 1',
+                               notable_exceptions='notable exceptions 1')
+    df1.save()
+
+    df2 = models.DefaultFilter(pile=pile1, character=c2, order=2,
+                               key_characteristics='key characteristics 2',
+                               notable_exceptions='notable exceptions 2')
+    df2.save()
+
+    pile1.members = [df1, df2]
+    pile1.save()
+
 
 # This is currently the "demo" page.  Its URL and view is actually specified
 # in the core/ app.  TODO: consider moving the page elsewhere, and having a
 # service "start" URI here.
 class StartTestCase(TestCase):
     def setUp(self):
-        setup_sample_data()
+        _setup_sample_data()
         self.client = Client()
 
     def test_get_returns_ok(self):
@@ -104,7 +134,7 @@ class StartTestCase(TestCase):
 
 class TaxonListTestCase(TestCase):
     def setUp(self):
-        setup_sample_data()
+        _setup_sample_data()
         self.client = Client()
 
     def test_get_returns_ok(self):
@@ -137,7 +167,7 @@ class TaxonListTestCase(TestCase):
 
 class TaxonTestCase(TestCase):
     def setUp(self):
-        setup_sample_data()
+        _setup_sample_data()
         self.client = Client()
 
     def test_get_returns_ok(self):
@@ -179,7 +209,7 @@ class TaxonTestCase(TestCase):
 
 class TaxonCountTestCase(TestCase):
     def setUp(self):
-        setup_sample_data()
+        _setup_sample_data()
         self.client = Client()
 
     def test_get_returns_ok(self):
@@ -200,7 +230,7 @@ class TaxonCountTestCase(TestCase):
 
 class TaxonImageTestCase(TestCase):
     def setUp(self):
-        setup_sample_data()
+        _setup_sample_data(load_images=True)
         self.client = Client()
 
     def test_get_returns_ok(self):
@@ -216,11 +246,23 @@ class TaxonImageTestCase(TestCase):
         response = self.client.get('/taxon-image/')
         self.assertEqual(400, response.status_code)
 
-    # TODO: finish setting up some image data above in order to make this work
-    #def test_get_returns_data_when_images_exist(self):
-    #    response = self.client.get('/taxon-image/?species=Fooium%20barula')
-    #    print response.content
-    #    self.assertEqual('(expected JSON here)', response.content)
+    def test_get_returns_data_when_images_exist(self):
+        response = self.client.get('/taxon-image/?species=Fooium%20barula')
+        json_object = json.loads(response.content)
+        self.assertEqual(2, len(json_object))   # Expect 2 images.
+        for image in json_object:
+            self.assertEqual(int, type(image['thumb_height']))
+            self.assertEqual(unicode, type(image['description']))
+            self.assertEqual(int, type(image['thumb_width']))
+            self.assertEqual(unicode, type(image['title']))
+            self.assertEqual(unicode, type(image['url']))
+            self.assertEqual(int, type(image['rank']))
+            self.assertEqual(int, type(image['scaled_height']))
+            self.assertEqual(unicode, type(image['url']))
+            self.assertEqual(unicode, type(image['scaled_url']))
+            self.assertEqual(unicode, type(image['thumb_url']))
+            self.assertEqual(unicode, type(image['type']))
+            self.assertEqual(int, type(image['scaled_width']))
 
     def test_get_returns_empty_list_when_images_do_not_exist(self):
         response = self.client.get('/taxon-image/?species=Fooium%20fooia')
@@ -229,7 +271,7 @@ class TaxonImageTestCase(TestCase):
 
 class PileGroupListTestCase(TestCase):
     def setUp(self):
-        setup_sample_data()
+        _setup_sample_data()
         self.client = Client()
         
     def test_get_returns_ok(self):
@@ -239,7 +281,7 @@ class PileGroupListTestCase(TestCase):
 
 class PileGroupTestCase(TestCase):
     def setUp(self):
-        setup_sample_data()
+        _setup_sample_data()
         self.client = Client()
         
     def test_get_returns_ok(self):
@@ -255,7 +297,7 @@ class PileGroupTestCase(TestCase):
 
 class PileListTestCase(TestCase):
     def setUp(self):
-        setup_sample_data()
+        _setup_sample_data()
         self.client = Client()
 
     def test_get_returns_ok(self):
@@ -265,7 +307,7 @@ class PileListTestCase(TestCase):
 
 class PileTestCase(TestCase):
     def setUp(self):
-        setup_sample_data()
+        _setup_sample_data()
         self.client = Client()
         
     def test_get_returns_ok(self):
@@ -279,7 +321,7 @@ class PileTestCase(TestCase):
 
 class CharacterListTestCase(TestCase):
     def setUp(self):
-        setup_sample_data()
+        _setup_sample_data()
         self.client = Client()
 
     def test_get_returns_ok(self):
@@ -293,7 +335,7 @@ class CharacterListTestCase(TestCase):
 
 class CharacterValuesTestCase(TestCase):
     def setUp(self):
-        setup_sample_data()
+        _setup_sample_data()
         self.client = Client()
 
     def test_get_returns_ok(self):
@@ -313,7 +355,7 @@ class CharacterValuesTestCase(TestCase):
     #
     # handlers.py: 39% (everything else is 100%)
     #
-    # After adding tests so far, coverage for handlers.py is 80%.
+    # After adding tests so far, coverage for handlers.py is 85%.
     
     # Organization/approach:
     #
