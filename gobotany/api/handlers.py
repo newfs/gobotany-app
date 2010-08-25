@@ -48,7 +48,11 @@ class TaxonQueryHandler(BaseHandler):
         kwargs = {}
         for k, v in request.GET.items():
             kwargs[str(k)] = v
-        species = botany.query_species(**kwargs)
+        try:
+            species = botany.query_species(**kwargs)
+        except models.Character.DoesNotExist:
+            return rc.NOT_FOUND
+
         if not scientific_name:
             # Only return character values for single item lookup, keep the
             # result list simple
@@ -74,7 +78,11 @@ class TaxonCountHandler(BaseHandler):
         kwargs = {}
         for k, v in request.GET.items():
             kwargs[str(k)] = v
-        species = botany.query_species(**kwargs)
+        try:
+            species = botany.query_species(**kwargs)
+        except models.Character.DoesNotExist:
+            return rc.NOT_FOUND
+            
         matched = species.count()
         return {'matched': matched,
                 'excluded': models.Taxon.objects.count() - matched}

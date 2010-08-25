@@ -1,3 +1,5 @@
+import json
+
 from django.test import TestCase
 from django.test.client import Client
 
@@ -112,6 +114,25 @@ class TaxonListTestCase(TestCase):
     # TODO: change URI from /taxon/ to /taxa/.
 
     # TODO: support non-trailing slash variant, using middleware redirect.
+    
+    def test_get_with_char_param_returns_ok(self):
+        response = self.client.get('/taxon/?c1=cv1')
+        self.assertEqual(200, response.status_code)
+
+    def test_get_with_char_param_returns_not_found_if_no_char(self):
+        response = self.client.get('/taxon/?none=cv1')
+        self.assertEqual(404, response.status_code)
+
+    def test_get_with_char_param_returns_ok_if_bad_char_value(self):
+        response = self.client.get('/taxon/?c1=badvalue')
+        self.assertEqual(200, response.status_code)
+        
+    def test_get_with_char_param_returns_no_items_if_bad_char_value(self):
+        response = self.client.get('/taxon/?c1=badvalue')
+        expected = { 'items': [],
+                     'identifier': 'scientific_name',
+                     'label': 'scientific_name'}
+        self.assertEqual(expected, json.loads(response.content))
 
 
 class TaxonTestCase(TestCase):
@@ -131,6 +152,30 @@ class TaxonTestCase(TestCase):
         response = self.client.get('/taxon/Not%20here/')
         self.assertEqual(404, response.status_code)
 
+    # TODO: For the following tests:
+    # Verify we intend to allow supplying a character-value query when the 
+    # species is known.  The code allows it but it might not be needed.
+
+    def test_get_with_char_param_returns_ok(self):
+        response = self.client.get('/taxon/Fooium%20fooia/?c1=cv1')
+        self.assertEqual(200, response.status_code)
+
+    def test_get_with_char_param_returns_not_found_if_no_species(self):
+        response = self.client.get('/taxon/Not%20here/?c1=cv1')
+        self.assertEqual(404, response.status_code)
+        
+    def test_get_with_char_param_returns_not_found_if_no_char(self):
+        response = self.client.get('/taxon/Fooium%20fooia/?none=cv1')
+        self.assertEqual(404, response.status_code)
+
+    def test_get_with_char_param_returns_ok_if_bad_char_value(self):
+        response = self.client.get('/taxon/Fooium%20fooia/?c1=badvalue')
+        self.assertEqual(200, response.status_code)
+
+    def test_get_with_char_param_returns_no_item_if_bad_char_value(self):
+        response = self.client.get('/taxon/Fooium%20fooia/?c1=badvalue')
+        self.assertEqual('{}', response.content)
+
 
 class TaxonCountTestCase(TestCase):
     def setUp(self):
@@ -143,6 +188,14 @@ class TaxonCountTestCase(TestCase):
 
     # TODO: change URI from /taxon-count/ to /taxa-count/.
     # (This is started in the code.)
+
+    def test_get_with_character_value_param_returns_ok(self):
+        response = self.client.get('/taxon-count/?c1=cv1')
+        self.assertEqual(200, response.status_code)
+        
+    def test_get_with_char_value_param_returns_not_found_if_no_char(self):
+        response = self.client.get('/taxon-count/?none=cv1')
+        self.assertEqual(404, response.status_code)
 
 
 class TaxonImageTestCase(TestCase):
@@ -260,7 +313,7 @@ class CharacterValuesTestCase(TestCase):
     #
     # handlers.py: 39% (everything else is 100%)
     #
-    # After adding tests so far, coverage for handlers.py is 78%.
+    # After adding tests so far, coverage for handlers.py is 80%.
     
     # Organization/approach:
     #
