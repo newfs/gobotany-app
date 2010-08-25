@@ -1,4 +1,7 @@
+"""A Python API for complex operations designed for exposure through REST."""
+
 from gobotany.core import models
+
 
 CHAR_MAP = {
     u'TEXT': 'character_values__value_str',
@@ -9,17 +12,45 @@ CHAR_MAP = {
 
 class SpeciesReader(object):
 
-    def query_species(self,
-                      scientific_name=None,
-                      is_simple_key=True,
-                      **kwargs):
+    def query_species(self, scientific_name=None, is_simple_key=True, **kw):
+        """Support rich queries for species stored as `Taxon` objects.
+
+        This function supports both a primitive query for a single
+        species, and also complex multi-field queries that can return
+        zero or several matching species.  In either case, a Django
+        query object is returned which the caller can further qualify
+        with additional ``filter()`` calls, or invoke immediately with
+        the ``all()`` method.
+
+        To ask for a single species, provide its scientific name::
+
+          objects = query_species(scientific_name='Isoetes echinospora')
+
+        Running this query will yield a list of zero or one taxa.  You
+        can also optionally provide a ``simple_key=True`` parameter if
+        you only want species returned that qualify for display in the
+        Go Botany simple key.
+
+        Queries for possibly many taxa can be built up by providing
+        several keyword arguments; here are all of the different kinds
+        of keywords that are supported::
+
+          objects = query_species(
+              pilegroup='ferns',
+              pile='lycophytes',
+              family='Isoetaceae',
+              genus='Isoetes',
+              <character_short_name>=<character_value>, ...
+              )
+
+        """
         if scientific_name is not None:
             return models.Taxon.objects.filter(
                 scientific_name__iexact=scientific_name,
                 simple_key=is_simple_key)
         else:
             base_query = models.Taxon.objects
-            for k, v in kwargs.items():
+            for k, v in kw.items():
                 if k == 'pilegroup':
                     base_query = base_query.filter(piles__pilegroup__slug=v)
                 elif k == 'pile':
@@ -45,8 +76,17 @@ class SpeciesReader(object):
 
             return base_query.filter(simple_key=is_simple_key)
 
-    def species_images(self, species, max_rank=10,
-                       image_types=None):
+    def species_images(self, species, max_rank=10, image_types=None):
+        """Return a Django query for images of the given `species`.
+
+        `species` - either a Taxon object, or a scientific name string.
+        `max_rank` - return images with lower or equal rank than this.
+        `image_types` - instead of returning images of all types, return
+            only images whose type is in this list, which can be given
+            as either a list of ImageType objects, or as a string of
+            comma-separated image type names.
+
+        """
         query = {'rank__lte': max_rank}
         if image_types:
             if isinstance(image_types, basestring):
