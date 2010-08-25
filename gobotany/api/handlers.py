@@ -58,11 +58,12 @@ class TaxonQueryHandler(BaseHandler):
         elif species.exists():
             try:
                 taxon = species.filter(scientific_name=scientific_name)[0]
-                # Return full taxon with characters for single item query
-                return _taxon_with_chars(taxon)
             except IndexError:
                 # A taxon wasn't returned from the database.
                 return rc.NOT_FOUND
+
+            # Return full taxon with characters for single item query
+            return _taxon_with_chars(taxon)
         return {}
 
 
@@ -88,9 +89,10 @@ class TaxonImageHandler(BaseHandler):
             kwargs[str(k)] = v
         try:
             images = botany.species_images(**kwargs)
-            return [_taxon_image(image) for image in images]
         except models.Taxon.DoesNotExist:
             return rc.NOT_FOUND
+        
+        return [_taxon_image(image) for image in images]
 
 
 class BasePileHandler(BaseHandler):
@@ -282,7 +284,11 @@ class CharacterListingHandler(BaseHandler):
 
     def read(self, request, pile_slug):
         choose_best = int(request.GET.get('choose_best', 0))
-        lst = self._read(request, pile_slug)
+        try:
+            lst = self._read(request, pile_slug)
+        except models.Pile.DoesNotExist:
+            return rc.NOT_FOUND
+
         if choose_best:
             newlst = [x for x in sorted(
                 lst, lambda x, y: cmp(x['species_count'],
@@ -313,5 +319,5 @@ class CharacterValuesHandler(BaseHandler):
         try:
             return [x for x in self._read(request, pile_slug,
                                           character_short_name)]
-        except models.Character.DoesNotExist:
+        except (models.Pile.DoesNotExist, models.Character.DoesNotExist):
             return rc.NOT_FOUND

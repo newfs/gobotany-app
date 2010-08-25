@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.test.client import Client
 
+from django.contrib.contenttypes.models import ContentType
+
 from gobotany.core import models
 
 def setup_sample_data():
@@ -22,11 +24,30 @@ def setup_sample_data():
     genfoo, c = models.Genus.objects.get_or_create(name='Fooium')
     genbaz, c = models.Genus.objects.get_or_create(name='Bazia')
 
-    foo = models.Taxon(family=famfoo, genus=genfoo, scientific_name='Foo foo')
+    # JG - Working on creating some image data for TaxonImage tests
+    #
+    #image_type, c = models.ImageType.objects.get_or_create(name='taxon')
+    #content_type, c = ContentType.objects.get_for_model(
+    #    model='', app_label='core', defaults={'name': 'core'})
+    #
+    #im1 = models.ContentImage(alt='im1 alt', rank=1, creator='photographer A',
+    #                          image_type=image_type, description='im1 desc',
+    #                          content_type=content_type)
+    #im1.save()
+    #
+    #im2 = models.ContentImage(alt='im2 alt', rank=1, creator='photographer B',
+    #                          image_type=image_type, description='im2 desc',
+    #                          content_type=content_type)
+    #im2.save()
+
+    foo = models.Taxon(family=famfoo, genus=genfoo, 
+        scientific_name='Fooium fooia')
     foo.save()
-    bar = models.Taxon(family=famfoo, genus=genfoo, scientific_name='Foo bar')
+    bar = models.Taxon(family=famfoo, genus=genfoo, 
+        scientific_name='Fooium barula') #, images=im1)
     bar.save()
-    abc = models.Taxon(family=fambaz, genus=genbaz, scientific_name='Baz abc')
+    abc = models.Taxon(family=fambaz, genus=genbaz, 
+        scientific_name='Bazia americana') #, images=im2)
     abc.save()
 
     pile1.species.add(foo)
@@ -56,9 +77,9 @@ def setup_sample_data():
     models.TaxonCharacterValue(taxon=bar, character_value=cv2).save()
 
 
-# This is currently the "demo" page.  Its URL and view is actually specified in
-# the core/ app.  TODO: consider moving the page elsewhere, and having a service
-# "start" URI here.
+# This is currently the "demo" page.  Its URL and view is actually specified
+# in the core/ app.  TODO: consider moving the page elsewhere, and having a
+# service "start" URI here.
 class StartTestCase(TestCase):
     def setUp(self):
         setup_sample_data()
@@ -93,7 +114,7 @@ class TaxonTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/taxon/Foo%20bar/')
+        response = self.client.get('/taxon/Fooium%20barula/')
         self.assertEqual(200, response.status_code)
 
     # TODO: change URI from /taxon/ to /taxa/.
@@ -124,7 +145,7 @@ class TaxonImageTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/taxon-image/?species=Foo%20bar')
+        response = self.client.get('/taxon-image/?species=Fooium%20barula')
         self.assertEqual(200, response.status_code)
         # TODO: test other params that can be passed; taxon id?
 
@@ -135,6 +156,16 @@ class TaxonImageTestCase(TestCase):
     def test_get_returns_bad_request_when_no_params(self):
         response = self.client.get('/taxon-image/')
         self.assertEqual(400, response.status_code)
+
+    # TODO: finish creating some image data
+    #def test_get_returns_data_when_images_exist(self):
+    #    response = self.client.get('/taxon-image/?species=Fooium%20barula')
+    #    print response.content
+    #    self.assertEqual('fixme', response.content)
+
+    def test_get_returns_empty_list_when_images_exist(self):
+        response = self.client.get('/taxon-image/?species=Fooium%20fooia')
+        self.assertEqual('[]', response.content)
 
 
 class PileGroupListTestCase(TestCase):
@@ -183,7 +214,7 @@ class PileTestCase(TestCase):
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_not_found_when_nonexistent_pile(self):
-        response = self.client.get('/pilegroups/nopile/')
+        response = self.client.get('/piles/nopile/')
         self.assertEqual(404, response.status_code)
 
 
@@ -192,11 +223,13 @@ class CharacterListTestCase(TestCase):
         setup_sample_data()
         self.client = Client()
 
-    # TODO: add test for nonexistent pile
-
     def test_get_returns_ok(self):
         response = self.client.get('/piles/pile1/characters/')
         self.assertEqual(200, response.status_code)
+        
+    def test_get_returns_not_found_when_nonexistent_pile(self):
+        response = self.client.get('/piles/nopile/characters/')
+        self.assertEqual(404, response.status_code)
 
 
 class CharacterValuesTestCase(TestCase):
@@ -208,7 +241,9 @@ class CharacterValuesTestCase(TestCase):
         response = self.client.get('/piles/pile1/c1/')
         self.assertEqual(200, response.status_code)
 
-    # TODO: add test for nonexistent pile
+    def test_get_returns_not_found_when_nonexistent_pile(self):
+        response = self.client.get('/piles/nopile/c1/')
+        self.assertEqual(404, response.status_code)
 
     def test_get_returns_not_found_when_nonexistent_character(self):
         response = self.client.get('/piles/pile1/nochar/')
@@ -219,7 +254,7 @@ class CharacterValuesTestCase(TestCase):
     #
     # handlers.py: 39% (everything else is 100%)
     #
-    # After first round of basic tests, coverage for handlers.py is 77%.
+    # After adding tests so far, coverage for handlers.py is 78%.
     
     # Organization/approach:
     #
