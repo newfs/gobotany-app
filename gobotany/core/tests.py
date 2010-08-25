@@ -47,17 +47,24 @@ def setup_sample_data():
     cg1 = models.CharacterGroup(name='cg1')
     cg1.save()
 
-    c1 = models.Character(short_name='c1', character_group=cg1)
+    c1 = models.Character(short_name='c1', character_group=cg1,
+                          value_type=u'TEXT')
     c1.save()
-    c2 = models.Character(short_name='c2', character_group=cg1)
+    c2 = models.Character(short_name='c2', character_group=cg1,
+                          value_type=u'TEXT')
     c2.save()
+    c3 = models.Character(short_name='c3', character_group=cg1,
+                          value_type=u'LENGTH')
+    c3.save()
 
-    cv1 = models.CharacterValue(value_str='cv1',
-                                character=c1)
+    cv1 = models.CharacterValue(value_str='cv1', character=c1)
     cv1.save()
-    cv2 = models.CharacterValue(value_str='cv2',
-                                character=c1)
+    cv2 = models.CharacterValue(value_str='cv2', character=c1)
     cv2.save()
+    cv3 = models.CharacterValue(value_min=3, value_max=5, character=c3)
+    cv3.save()
+    cv4 = models.CharacterValue(value_min=5, value_max=5, character=c3)
+    cv4.save()
 
     pile1.character_values.add(cv1)
     pile1.character_values.add(cv2)
@@ -65,6 +72,8 @@ def setup_sample_data():
 
     models.TaxonCharacterValue(taxon=foo, character_value=cv1).save()
     models.TaxonCharacterValue(taxon=bar, character_value=cv2).save()
+    models.TaxonCharacterValue(taxon=bar, character_value=cv3).save()
+    models.TaxonCharacterValue(taxon=abc, character_value=cv4).save()
 
 
 class SimpleTests(TestCase):
@@ -74,6 +83,8 @@ class SimpleTests(TestCase):
 
 
 class APITests(TestCase):
+    # Tests of the Python API, that make manual Python function calls
+    # without an intervening layer of Django URLs and views.
 
     def setUp(self):
         setup_sample_data()
@@ -111,6 +122,14 @@ class APITests(TestCase):
         self.try_query([abc], family='Bazaceae')
         self.try_query([], genus='Kooky')
 
+    def test_query_length(self):
+        bar = models.Taxon.objects.filter(scientific_name='Foo bar')[0]
+        abc = models.Taxon.objects.filter(scientific_name='Baz abc')[0]
+        self.try_query([], c3=2)
+        self.try_query([bar], c3=3)
+        self.try_query([bar], c3=4)
+        self.try_query([bar, abc], c3=5)
+        self.try_query([], c3=6)
 
 class ImportTestCase(TestCase):
 
