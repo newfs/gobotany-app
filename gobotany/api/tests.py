@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.test.client import Client
 
+from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
 from gobotany.core import models
@@ -24,30 +25,35 @@ def setup_sample_data():
     genfoo, c = models.Genus.objects.get_or_create(name='Fooium')
     genbaz, c = models.Genus.objects.get_or_create(name='Bazia')
 
-    # JG - Working on creating some image data for TaxonImage tests
-    #
-    #image_type, c = models.ImageType.objects.get_or_create(name='taxon')
-    #content_type, c = ContentType.objects.get_for_model(
-    #    model='', app_label='core', defaults={'name': 'core'})
-    #
-    #im1 = models.ContentImage(alt='im1 alt', rank=1, creator='photographer A',
-    #                          image_type=image_type, description='im1 desc',
-    #                          content_type=content_type)
-    #im1.save()
-    #
-    #im2 = models.ContentImage(alt='im2 alt', rank=1, creator='photographer B',
-    #                          image_type=image_type, description='im2 desc',
-    #                          content_type=content_type)
-    #im2.save()
+    # TODO: Finish creating some dummy image data and save with the Taxa.
+    # At this point it looks a content_object needs to be loaded somehow.
+
+    image_type, c = models.ImageType.objects.get_or_create(name='taxon')
+    content_type, c = ContentType.objects.get_or_create(
+        model='', app_label='core', defaults={'name': 'core'})
+
+    im1 = models.ContentImage(alt='im1 alt', rank=1, creator='photographer A',
+                              image_type=image_type, description='im1 desc',
+                              content_type=content_type, object_id=1)
+    #im1.content_object = # ? reference to image object in the db?
+    im1.save()
+    
+    im2 = models.ContentImage(alt='im2 alt', rank=1, creator='photographer B',
+                              image_type=image_type, description='im2 desc',
+                              content_type=content_type, object_id=2)
+    #im2.content_object = # ? reference to image object in the db?
+    im2.save()
 
     foo = models.Taxon(family=famfoo, genus=genfoo, 
         scientific_name='Fooium fooia')
     foo.save()
     bar = models.Taxon(family=famfoo, genus=genfoo, 
-        scientific_name='Fooium barula') #, images=im1)
+        scientific_name='Fooium barula')
+    #bar.images = [im1]
     bar.save()
     abc = models.Taxon(family=fambaz, genus=genbaz, 
-        scientific_name='Bazia americana') #, images=im2)
+        scientific_name='Bazia americana')
+    #abc.images = [im2]
     abc.save()
 
     pile1.species.add(foo)
@@ -157,13 +163,13 @@ class TaxonImageTestCase(TestCase):
         response = self.client.get('/taxon-image/')
         self.assertEqual(400, response.status_code)
 
-    # TODO: finish creating some image data
+    # TODO: finish setting up some image data above in order to make this work
     #def test_get_returns_data_when_images_exist(self):
     #    response = self.client.get('/taxon-image/?species=Fooium%20barula')
     #    print response.content
-    #    self.assertEqual('fixme', response.content)
+    #    self.assertEqual('(expected JSON here)', response.content)
 
-    def test_get_returns_empty_list_when_images_exist(self):
+    def test_get_returns_empty_list_when_images_do_not_exist(self):
         response = self.client.get('/taxon-image/?species=Fooium%20fooia')
         self.assertEqual('[]', response.content)
 
