@@ -8,6 +8,15 @@ from sorl.thumbnail.fields import ImageWithThumbnailsField
 
 
 class CharacterGroup(models.Model):
+    """A group of characters that should be associated in the UI.
+
+    Each Character uses a foreign key to designate the CharacterGroup to
+    which it belongs.  Typically, a botany user interface will offer
+    users the ability to narrow down the list of filters they can be
+    shown by character groups, which might have names like "Leaf",
+    "Stem", "Flower", and so forth.
+
+    """
     name = models.CharField(max_length=100, unique=True)
 
     class Meta:
@@ -18,6 +27,14 @@ class CharacterGroup(models.Model):
 
 
 class GlossaryTerm(models.Model):
+    """A term with definition and possibly images, for helping the user.
+
+    Often, a glossary term defines a word that is found in character
+    descriptions or even down in the text of character values, so that
+    users of a botany UI can be provided with context-sensitive
+    assistance to understanding the terminology.
+
+    """
     term = models.CharField(max_length=100)
     lay_definition = models.TextField(blank=True)
     question_text = models.TextField(blank=True)
@@ -268,10 +285,21 @@ class Pile(PileInfo):
 
 class PileGroup(PileInfo):
     """A group of Pile objects; the top level of basic-key navigation."""
-    #piles = models.ManyToManyField(Pile)
 
 
 class GlossaryTermForPileCharacter(models.Model):
+    """A binary relation associating glossary terms with characters.
+
+    Note that this relationship is slightly complex: a particular
+    character does not *simply* have a list of glossary terms associated
+    with it!  Instead, the appropriate glossary terms depend on the pile
+    being considered: the character "leaf shape" might be linked to
+    glossary terms "diamond-shaped" and "square-shaped" for the pile
+    Lycophytes (since lycophyte leaves are very primitive in shape),
+    whereas the glossary terms might be "pinnate", "lobed", and so forth
+    when the pile "Woody Angiosperms" is under consideration.
+
+    """
     character = models.ForeignKey(Character)
     pile = models.ForeignKey(Pile)
     glossary_term = models.ForeignKey(GlossaryTerm)
@@ -289,6 +317,16 @@ class GlossaryTermForPileCharacter(models.Model):
 
 
 class ImageType(models.Model):
+    """The textual tags that identiy image types in our image database.
+
+    These type values are typically used to determine what part of a
+    plant is featured in a particular image, and have values like
+    "stems" and "flowers and fruits".  But some type values are not
+    associated with taxon-specific images at all; a type like "pile
+    image" might indicate a picture to be displayed when an entire pile
+    is being shown in the UI, for example.
+
+    """
     name = models.CharField(max_length=100,
                             verbose_name=u'image type', unique=True)
 
@@ -297,6 +335,17 @@ class ImageType(models.Model):
 
 
 class ContentImage(models.Model):
+    """An image of a taxon, pile, or other element of botany content.
+
+    Besides keeping up with permanent metadata, like whom should get
+    credit for an image, objects of this class also hold an integer
+    ``rank`` attribute which can be tweaked to select which images are
+    considered the best and most representative, and should be displayed
+    when screen space is limited.  Lower rank indicates a better image.
+    In particular, only one "primary" image of ``rank=1`` is allowed for
+    any given (piece of content, image type) combination.
+
+    """
     image = ImageWithThumbnailsField('content image',
                                      max_length=300,  # long filenames
                                      upload_to='content_images',
@@ -356,6 +405,7 @@ class ContentImage(models.Model):
 
 
 class Family(models.Model):
+    """A biological family."""
     name = models.CharField(max_length=100, unique=True)
 
     class Meta:
@@ -364,6 +414,7 @@ class Family(models.Model):
 
 
 class Genus(models.Model):
+    """A biological genus."""
     name = models.CharField(max_length=100, unique=True)
 
     class Meta:
@@ -372,6 +423,7 @@ class Genus(models.Model):
 
 
 class Taxon(models.Model):
+    """Despite its general name, this currently represents a single species."""
     scientific_name = models.CharField(max_length=100, unique=True)
     family = models.ForeignKey(Family)
     genus = models.ForeignKey(Genus)
@@ -400,6 +452,13 @@ class Taxon(models.Model):
 
 
 class TaxonCharacterValue(models.Model):
+    """Binary relation specifying the character values of a particular Taxon.
+
+    The extra field `lit_source` is used to remember what literature was
+    consulted to learn that a character value is indeed characteristic
+    of a particular species.
+
+    """
     taxon = models.ForeignKey(Taxon)
     character_value = models.ForeignKey(CharacterValue)
     lit_source = models.CharField(max_length=100,
@@ -415,9 +474,9 @@ class TaxonCharacterValue(models.Model):
 
 
 class TaxonGroup(models.Model):
+    """A way to group taxa together (why, again?)."""
     name = models.CharField(max_length=100)
-    taxa = models.ManyToManyField(Taxon,
-                                  through='TaxonGroupEntry')
+    taxa = models.ManyToManyField(Taxon, through='TaxonGroupEntry')
 
     class Meta:
         ordering = ['name']
@@ -427,6 +486,7 @@ class TaxonGroup(models.Model):
 
 
 class TaxonGroupEntry(models.Model):
+    """A binary relation putting taxa in `TaxonGroup` collections."""
     taxon = models.ForeignKey(Taxon)
     group = models.ForeignKey(TaxonGroup)
     # Does this species appear in the simple key for the TaxaGroup
@@ -443,6 +503,18 @@ class TaxonGroupEntry(models.Model):
 
 
 class DefaultFilter(models.Model):
+    """A designation that a particular filter be shown by default for a taxon.
+
+    Each instance of this class dubs a particular `character` as one
+    deserving a default filter, already displayed on the screen, when a
+    user visits the given `pile`; the `order` lets administrators
+    control which filters are placed towards the top of the page.
+
+    Also, these instances let a few pieces of additional rich-text
+    information be associated with a character when its value is being
+    selected in the UI under a particular pile.
+
+    """
     pile = models.ForeignKey(Pile)
     character = models.ForeignKey(Character)
     order = models.IntegerField()
@@ -459,6 +531,7 @@ class DefaultFilter(models.Model):
 
 
 class PlantPreviewCharacter(models.Model):
+    """Meta-data about a character to be displayed in the plant preview (?)."""
     pile = models.ForeignKey(Pile)
     character = models.ForeignKey(Character)
     order = models.IntegerField()
