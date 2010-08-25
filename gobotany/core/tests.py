@@ -281,9 +281,6 @@ class ModelTests(SampleData):
         self.assertEqual(self.cat.get_default_image(), ci4)
 
 
-
-
-
 class APITests(SampleData):
     # Tests of the Python API, that make manual Python function calls
     # without an intervening layer of Django URLs and views.
@@ -334,6 +331,52 @@ class APITests(SampleData):
         self.try_query([self.cat, self.rabbit], length=4)
         self.try_query([self.fox], length=5)
         self.try_query([], length=6)
+
+    def test_species_images(self):
+        taxon = models.ContentType.objects.get(name='taxon')
+        CI = models.ContentImage
+        species_images = botany.species_images
+
+        # Create several images.
+
+        for i in ('fox_habit_1', 'fox_habit_2', 'fox_habit_3', 'fox_habit_11',
+                  'fox_stem_2', 'fox_stem_4',
+                  'cat_habit_1', 'cat_stem_2',
+                  ):
+            species_spec, image_type_spec, rank = i.split('_')
+            species = getattr(self, species_spec)
+            image_type = getattr(self, image_type_spec)
+            ci = CI(rank=rank, image_type=image_type,
+                    content_type=taxon, object_id=species.id)
+            ci.save()
+            exec '%s = ci' % i
+
+        # Try fetching some images.
+
+        self.assertEqual(
+            set(species_images(self.fox)),
+            set([fox_habit_1, fox_habit_2, fox_habit_3,
+                 fox_stem_2, fox_stem_4]))
+
+        self.assertEqual(
+            set(species_images(self.fox, image_types=[self.habit])),
+            set([fox_habit_1, fox_habit_2, fox_habit_3]))
+
+        self.assertEqual(
+            set(species_images(self.fox, max_rank=2)),
+            set([fox_habit_1, fox_habit_2, fox_stem_2]))
+
+        self.assertEqual(
+            set(species_images(self.fox, image_types='stem', max_rank=3)),
+            set([fox_stem_2]))
+
+        self.assertEqual(
+            set(species_images(self.fox, image_types='stem', max_rank=3)),
+            set([fox_stem_2]))
+
+        self.assertEqual(
+            set(species_images('Vulpes fox', image_types='stem', max_rank=3)),
+            set([fox_stem_2]))
 
 class ImportTestCase(TestCase):
 
