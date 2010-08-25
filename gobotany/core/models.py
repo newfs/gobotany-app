@@ -190,7 +190,7 @@ class CharacterValue(models.Model):
     def clean(self):
         """Make sure one and only one value type is set"""
         # no empty strings allowed
-        if not self.value_str.strip():
+        if (self.value_str is not None) and (not self.value_str.strip()):
             self.value_str = None
         # Check that we only have one of the value types,
         # XXX: We should validate this against the character value type
@@ -202,15 +202,10 @@ class CharacterValue(models.Model):
                                       'one of the value types')
         if self.value_flt is not None:
             if (self.value_min is not None or
-                self.value_max is not None or
-                self.value_str is not None):
+                self.value_max is not None):
                 raise ValidationError('You may only set one '
                                       'of the value types')
         if self.value_min is not None or self.value_max is not None:
-            if (self.value_flt is not None or
-                self.value_str is not None):
-                raise ValidationError('You may only set one of '
-                                      'the value types')
             if self.value_min is None or self.value_max is None:
                 raise ValidationError('You must set both the maximum '
                                       'and minimum values')
@@ -248,11 +243,10 @@ class PileInfo(models.Model):
         return u'%s id=%s' % (self.name, self.id)
 
     def get_default_image(self):
-            try:
-                return self.images.get(rank=1,
-                                       image_type__name='pile image')
-            except ObjectDoesNotExist:
-                return None
+        try:
+            return self.images.get(rank=1, image_type__name='pile image')
+        except ObjectDoesNotExist:
+            return None
 
     def save(self, *args, **kw):
         """Set the slug if it isn't already set"""
@@ -396,17 +390,13 @@ class Taxon(models.Model):
         return u'%s id=%s' % (self.scientific_name, self.id)
 
     def get_default_image(self):
-            try:
-                return self.images.get(rank=1,
-                                       image_type__name='habit')
-            except ObjectDoesNotExist:
-                return None
+        try:
+            return self.images.get(rank=1, image_type__name='habit')
+        except ObjectDoesNotExist:
+            return None
 
     def get_piles(self):
-            try:
-                return [pile.name for pile in self.piles.all()]
-            except ObjectDoesNotExist:
-                return None
+        return [pile.name for pile in self.piles.all()]
 
 
 class TaxonCharacterValue(models.Model):

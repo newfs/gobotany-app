@@ -3,6 +3,7 @@ import os
 import re
 import unittest
 from StringIO import StringIO
+from django.forms import ValidationError 
 from django.test import TestCase
 from gobotany.core import botany
 from gobotany.core import models
@@ -30,7 +31,7 @@ class SampleData(TestCase):
             kw['name'] = name
         obj = type_(**kw)
         obj.save()
-        setattr(self, name.lower(), obj)
+        setattr(self, name.lower().replace(' ', '_'), obj)
 
     def setup_sample_data(self):
         self.create(models.PileGroup, 'pilegroup1')
@@ -81,6 +82,10 @@ class SampleData(TestCase):
         self.create(models.CharacterValue, 'size3',character=self.length,
                     value_min=5, value_max=5)
 
+        self.create(models.ImageType, 'habit')
+        self.create(models.ImageType, 'stem')
+        self.create(models.ImageType, 'pile image')
+
         for taxon, cv in ((self.fox, self.red),
                           (self.fox, self.size3),
                           (self.cat, self.orange),
@@ -94,6 +99,7 @@ class SampleData(TestCase):
             tcv = models.TaxonCharacterValue(taxon=taxon, character_value=cv)
             tcv.save()
         self.tcv = tcv  # saves the last one, for use by a test below
+
 
 class SimpleTests(TestCase):
 
@@ -124,6 +130,27 @@ class ModelTests(SampleData):
 
     def test_numeric_CharacterValue_unicode(self):
         self.do_unicode(self.size1, u'length: 2 - 4')
+
+    def test_ImageType_unicode(self):
+        self.do_unicode(models.ImageType(name='my imagetype'), u'my imagetype')
+
+    def test_ContentImage_unicode(self):
+        leaf = models.ImageType(name='leaf')
+        leaf.save()
+
+        taxon = models.ContentType.objects.get(name='taxon')
+        pile = models.ContentType.objects.get(name='pile')
+
+        ci = models.ContentImage(alt='alttext', rank=3, image_type=leaf,
+                                 content_type=taxon, object_id=self.cat.id)
+        ci.save()
+        self.do_unicode(ci, u'"alttext" - leaf image for Felis cat 3: ')
+
+        ci = models.ContentImage(alt='alttext', rank=3, image_type=leaf,
+                                 content_type=pile, object_id=self.pets.id)
+        ci.save()
+        self.do_unicode(ci, u'"alttext" - leaf image for pile: %d 3: '
+                        % self.pets.id)
 
     def test_TaxonCharacterValue_unicode(self):
         self.do_unicode(self.tcv, u'length: 2 - 4')
@@ -172,6 +199,87 @@ class ModelTests(SampleData):
         cv = models.CharacterValue()
         cv.value_str = 'test value'
         self.assertEqual(cv.value, 'test value')
+
+    # Exercise cleanup routines that come with some models.
+
+    def test_CharacterValue_clean(self):
+        CV = models.CharacterValue
+        raises = self.assertRaises
+
+        cv = CV(value_str = '')
+        cv.clean()
+        assert cv.value_str is None
+
+        raises(ValidationError, CV(value_str='a', value_max=3).clean)
+        raises(ValidationError, CV(value_str='a', value_flt='a').clean)
+        raises(ValidationError, CV(value_flt=3.2, value_min=2).clean)
+
+        raises(ValidationError, CV(value_min=2).clean)
+        raises(ValidationError, CV(value_max=3).clean)
+        raises(ValidationError, CV(value_min=200, value_max=3).clean)
+
+    def test_ContentImage_clean(self):
+        taxon = models.ContentType.objects.get(name='taxon')
+
+        CI = models.ContentImage
+        kw = dict(image_type=self.stem, content_type=taxon, object_id='1')
+        ci1 = CI(rank=1, **kw)
+        ci1.save()  # no complaint
+        ci2 = CI(rank=2, **kw)
+        ci2.save()  # no complaint
+        ci3 = CI(rank=2, **kw)
+        ci3.save()  # no complaint
+        ci4 = CI(rank=1, **kw)
+        self.assertRaises(ValidationError, ci4.save)  # already a rank=1
+
+    # Test some other miscellaneous methods.
+
+    def test_Taxon_get_piles(self):
+        self.assertEqual(self.cat.get_piles(), [u'Carnivores', u'Pets'])
+
+    def test_Pile_get_default_image(self):
+        pile = models.ContentType.objects.get(name='pile')
+
+        CI = models.ContentImage
+        kw = dict(content_type=pile, object_id=self.pets.id)
+
+        self.assertEqual(self.pets.get_default_image(), None)
+
+        ci1 = CI(rank=2, image_type=self.stem, **kw)
+        ci1.save()
+        self.assertEqual(self.pets.get_default_image(), None)
+        ci2 = CI(rank=1, image_type=self.stem, **kw)
+        ci2.save()
+        self.assertEqual(self.pets.get_default_image(), None)
+
+        ci3 = CI(rank=2, image_type=self.pile_image, **kw)
+        ci3.save()
+        self.assertEqual(self.pets.get_default_image(), None)
+        ci4 = CI(rank=1, image_type=self.pile_image, **kw)
+        ci4.save()
+        self.assertEqual(self.pets.get_default_image(), ci4)
+
+    def test_Taxon_get_default_image(self):
+        taxon = models.ContentType.objects.get(name='taxon')
+
+        CI = models.ContentImage
+        kw = dict(content_type=taxon, object_id=self.cat.id)
+
+        self.assertEqual(self.cat.get_default_image(), None)
+
+        ci1 = CI(rank=2, image_type=self.stem, **kw)
+        ci1.save()
+        self.assertEqual(self.cat.get_default_image(), None)
+        ci2 = CI(rank=1, image_type=self.stem, **kw)
+        ci2.save()
+        self.assertEqual(self.cat.get_default_image(), None)
+
+        ci3 = CI(rank=2, image_type=self.habit, **kw)
+        ci3.save()
+        self.assertEqual(self.cat.get_default_image(), None)
+        ci4 = CI(rank=1, image_type=self.habit, **kw)
+        ci4.save()
+        self.assertEqual(self.cat.get_default_image(), ci4)
 
 
 class APITests(SampleData):
