@@ -86,16 +86,20 @@ def _setup_sample_data(load_images=False):
     c1.save()
     c2 = models.Character(short_name='c2', character_group=cg1)
     c2.save()
+    c3 = models.Character(short_name='c3', character_group=cg1,
+                          value_type='LENGTH')
+    c3.save()
 
-    cv1 = models.CharacterValue(value_str='cv1',
-                                character=c1)
+    cv1 = models.CharacterValue(value_str='cv1', character=c1)
     cv1.save()
-    cv2 = models.CharacterValue(value_str='cv2',
-                                character=c1)
+    cv2 = models.CharacterValue(value_str='cv2', character=c1)
     cv2.save()
+    cv3 = models.CharacterValue(value_min=5, value_max=11, character=c3)
+    cv3.save()
 
     pile1.character_values.add(cv1)
     pile1.character_values.add(cv2)
+    pile1.character_values.add(cv3)
     pile1.save()
 
     models.TaxonCharacterValue(taxon=foo, character_value=cv1).save()
@@ -110,8 +114,15 @@ def _setup_sample_data(load_images=False):
                                key_characteristics='key characteristics 2',
                                notable_exceptions='notable exceptions 2')
     df2.save()
+    
+    ppc1 = models.PlantPreviewCharacter(pile=pile1, character=c1, order=1)
+    ppc1.save()
+    
+    ppc2 = models.PlantPreviewCharacter(pile=pile1, character=c2, order=2)
+    ppc2.save()
 
-    pile1.members = [df1, df2]
+    pile1.default_filters.members = [df1, df2]
+    pile1.plant_preview_characters.members = [ppc1, ppc2]
     pile1.save()
 
 
@@ -294,6 +305,15 @@ class PileGroupTestCase(TestCase):
         response = self.client.get('/pilegroups/nogroup')
         self.assertEqual(404, response.status_code)
 
+    def test_delete_returns_no_content(self):
+        response = self.client.delete('/pilegroups/pilegroup1')
+        self.assertEqual(204, response.status_code)
+
+    def test_put_returns_ok(self):
+        response = self.client.put('/pilegroups/pilegroup1',
+                                   data={'friendly_name': 'Pile Group 1'})
+        self.assertEqual(200, response.status_code)
+
 
 class PileListTestCase(TestCase):
     def setUp(self):
@@ -309,7 +329,7 @@ class PileTestCase(TestCase):
     def setUp(self):
         _setup_sample_data()
         self.client = Client()
-        
+
     def test_get_returns_ok(self):
         response = self.client.get('/piles/pile1/')
         self.assertEqual(200, response.status_code)
@@ -317,6 +337,15 @@ class PileTestCase(TestCase):
     def test_get_returns_not_found_when_nonexistent_pile(self):
         response = self.client.get('/piles/nopile/')
         self.assertEqual(404, response.status_code)
+
+    def test_delete_returns_no_content(self):
+        response = self.client.delete('/piles/pile1/')
+        self.assertEqual(204, response.status_code)
+
+    def test_put_returns_ok(self):
+        response = self.client.put('/piles/pile1/',
+                                   data={'friendly_name': 'Pile 1'})
+        self.assertEqual(200, response.status_code)
 
 
 class CharacterListTestCase(TestCase):
@@ -327,10 +356,19 @@ class CharacterListTestCase(TestCase):
     def test_get_returns_ok(self):
         response = self.client.get('/piles/pile1/characters/')
         self.assertEqual(200, response.status_code)
-        
+
     def test_get_returns_not_found_when_nonexistent_pile(self):
         response = self.client.get('/piles/nopile/characters/')
         self.assertEqual(404, response.status_code)
+
+    def test_get_with_choose_best_param_returns_ok(self):
+        response = self.client.get('/piles/pile1/characters/?choose_best=3')
+        self.assertEqual(200, response.status_code)
+
+    def test_get_with_include_filter_param_returns_ok(self):
+        response = self.client.get(
+            '/piles/pile1/characters/?include_filter=1')
+        self.assertEqual(200, response.status_code)
 
 
 class CharacterValuesTestCase(TestCase):
@@ -355,7 +393,7 @@ class CharacterValuesTestCase(TestCase):
     #
     # handlers.py: 39% (everything else is 100%)
     #
-    # After adding tests so far, coverage for handlers.py is 85%.
+    # After adding tests so far, coverage for handlers.py is 98%.
     
     # Organization/approach:
     #
