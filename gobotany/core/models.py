@@ -477,6 +477,6 @@ class PlantPreviewCharacter(models.Model):
         ordering = ['order']
         unique_together = ('pile', 'character')
         
-    def __unicode__():
+    def __unicode__(self):
         return '%d: %s (%s)' % (self.order, self.character.friendly_name,
                                 self.pile.name)

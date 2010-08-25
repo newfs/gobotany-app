@@ -1,5 +1,6 @@
 import doctest
 import os
+import re
 import unittest
 from StringIO import StringIO
 from django.test import TestCase
@@ -15,7 +16,7 @@ def testdata(s):
     return os.path.join(os.path.dirname(__file__), 'testdata', s)
 
 
-class SampleDataTestCase(TestCase):
+class SampleData(TestCase):
 
     def create(self, type_, name, **kw):
         """Create an object and save it as ``self.<name>``."""
@@ -59,7 +60,7 @@ class SampleDataTestCase(TestCase):
         self.create(models.CharacterGroup, 'appearance')
         self.create(models.CharacterGroup, 'dimensions')
 
-        self.create(models.Character, 'color',
+        self.create(models.Character, 'color', friendly_name='What color?',
                     character_group=self.appearance, value_type=u'TEXT')
         self.create(models.Character, 'cuteness',
                     character_group=self.appearance, value_type=u'TEXT')
@@ -90,8 +91,9 @@ class SampleDataTestCase(TestCase):
                           (self.rabbit, self.cute),
                           (self.rabbit, self.size1),
                           ):
-            models.TaxonCharacterValue(taxon=taxon, character_value=cv).save()
-
+            tcv = models.TaxonCharacterValue(taxon=taxon, character_value=cv)
+            tcv.save()
+        self.tcv = tcv  # saves the last one, for use by a test below
 
 class SimpleTests(TestCase):
 
@@ -99,7 +101,64 @@ class SimpleTests(TestCase):
         self.assert_(True)
 
 
-class APITests(SampleDataTestCase):
+class ModelTests(SampleData):
+    # Various tests to make sure models work well.
+
+    def setUp(self):
+        self.setup_sample_data()
+
+    def do_unicode(self, obj, expected):
+        actual = re.sub(r'id=\d+', 'id=x', unicode(obj))
+        self.assertEqual(expected, actual)
+
+    # Make sure each model has a reasonable Unicode representation.
+
+    def test_PileGroup_unicode(self):
+        self.do_unicode(self.pilegroup1, u'pilegroup1 id=x')
+
+    def test_Pile_unicode(self):
+        self.do_unicode(self.pets, u'Pets id=x')
+
+    def test_CharacterGroup_unicode(self):
+        self.do_unicode(self.appearance, u'appearance id=x')
+
+    def test_numeric_CharacterValue_unicode(self):
+        self.do_unicode(self.size1, u'length: 2 - 4')
+
+    def test_TaxonCharacterValue_unicode(self):
+        self.do_unicode(self.tcv, u'length: 2 - 4')
+
+    def test_TaxonGroup_unicode(self):
+        self.create(models.TaxonGroup, 'taxongroup1')
+
+        taxongroupentry1 = models.TaxonGroupEntry()
+        taxongroupentry1.taxon = self.cat
+        taxongroupentry1.group = self.taxongroup1
+        taxongroupentry1.save()
+
+        self.do_unicode(self.taxongroup1, u'taxongroup1')
+        self.do_unicode(taxongroupentry1, u'taxongroup1: Felis cat')
+
+    def test_DefaultFilter_unicode(self):
+        defaultfilter1 = models.DefaultFilter()
+        defaultfilter1.pile = self.carnivores
+        defaultfilter1.character = self.color
+        defaultfilter1.order = 7
+        defaultfilter1.save()
+
+        self.do_unicode(defaultfilter1, u'7: What color? (Carnivores)')
+
+    def test_PlantPreviewCharacter_unicode(self):
+        plantpreview = models.PlantPreviewCharacter()
+        plantpreview.pile = self.carnivores
+        plantpreview.character = self.color
+        plantpreview.order = 7
+        plantpreview.save()
+
+        self.do_unicode(plantpreview, u'7: What color? (Carnivores)')
+
+
+class APITests(SampleData):
     # Tests of the Python API, that make manual Python function calls
     # without an intervening layer of Django URLs and views.
 
@@ -167,7 +226,7 @@ class ImportTestCase(TestCase):
         self.assertEquals(len(models.Taxon.objects.all()), 71)
 
 
-# class RESTFulTests(SampleDataTestCase):
+# class RESTFulTests(SampleData):
 
 #     def test_taxon_with_chars(self):
 #         self.setup_sample_data()
