@@ -34,7 +34,8 @@ class SampleData(TestCase):
 
     def setup_sample_data(self):
         self.create(models.PileGroup, 'pilegroup1')
-        self.create(models.PileGroup, 'pilegroup2')
+        self.assertEqual(self.pilegroup1.slug, 'pilegroup1')
+        self.create(models.PileGroup, 'pilegroup2', slug='pilegroup2')
 
         self.create(models.Pile, 'Carnivores', pilegroup=self.pilegroup1)
         self.create(models.Pile, 'Pets', pilegroup=self.pilegroup1)
@@ -208,6 +209,10 @@ class ModelTests(SampleData):
         cv = CV(value_str = '')
         cv.clean()
         assert cv.value_str is None
+
+        CV(value_str='a').clean()
+        CV(value_flt=1.1).clean()
+        CV(value_min=5, value_max=7).clean()
 
         raises(ValidationError, CV(value_str='a', value_max=3).clean)
         raises(ValidationError, CV(value_str='a', value_flt='a').clean)
