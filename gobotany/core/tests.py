@@ -11,69 +11,86 @@ from gobotany.api import handlers  # TODO: move some tests to "api" package?
 
 
 def testdata(s):
+    """Return the path to a test data file relative to this directory."""
     return os.path.join(os.path.dirname(__file__), 'testdata', s)
 
 
-def setup_sample_data():
-    pilegroup1 = models.PileGroup(name='pilegroup1')
-    pilegroup1.save()
-    pilegroup2 = models.PileGroup(name='pilegroup2')
-    pilegroup2.save()
+class SampleDataTestCase(TestCase):
 
-    pile1 = models.Pile(name='pile1')
-    pile1.pilegroup = pilegroup1
-    pile1.save()
-    pile2 = models.Pile(name='pile2')
-    pile2.pilegroup = pilegroup2
-    pile2.save()
+    def create(self, type_, name, **kw):
+        """Create an object and save it as ``self.<name>``."""
+        if issubclass(type_, models.Taxon):
+            kw['scientific_name'] = kw['genus'].name + ' ' + name
+        elif issubclass(type_, models.Character):
+            kw['short_name'] = name
+        elif issubclass(type_, models.CharacterValue):
+            kw['value_str'] = name
+        else:
+            kw['name'] = name
+        obj = type_(**kw)
+        obj.save()
+        setattr(self, name.lower(), obj)
 
-    famfoo, c = models.Family.objects.get_or_create(name='Fooaceae')
-    fambaz, c = models.Family.objects.get_or_create(name='Bazaceae')
+    def setup_sample_data(self):
+        self.create(models.PileGroup, 'pilegroup1')
+        self.create(models.PileGroup, 'pilegroup2')
 
-    genfoo, c = models.Genus.objects.get_or_create(name='Fooium')
-    genbaz, c = models.Genus.objects.get_or_create(name='Bazia')
+        self.create(models.Pile, 'Carnivores', pilegroup=self.pilegroup1)
+        self.create(models.Pile, 'Pets', pilegroup=self.pilegroup1)
 
-    foo = models.Taxon(family=famfoo, genus=genfoo, scientific_name='Foo foo')
-    foo.save()
-    bar = models.Taxon(family=famfoo, genus=genfoo, scientific_name='Foo bar')
-    bar.save()
-    abc = models.Taxon(family=fambaz, genus=genbaz, scientific_name='Baz abc')
-    abc.save()
+        self.create(models.Family, 'Canidae')
+        self.create(models.Family, 'Felidae')
+        self.create(models.Family, 'Leporidae')
 
-    pile1.species.add(foo)
-    pile1.species.add(bar)
-    pile1.species.add(abc)
+        self.create(models.Genus, 'Vulpes')
+        self.create(models.Genus, 'Felis')
+        self.create(models.Genus, 'Oryctolagus')
 
-    cg1 = models.CharacterGroup(name='cg1')
-    cg1.save()
+        self.create(models.Taxon, 'fox', family=self.canidae, genus=self.vulpes)
+        self.create(models.Taxon, 'cat', family=self.felidae, genus=self.felis)
+        self.create(models.Taxon, 'rabbit',
+                    family=self.leporidae, genus=self.oryctolagus)
 
-    c1 = models.Character(short_name='c1', character_group=cg1,
-                          value_type=u'TEXT')
-    c1.save()
-    c2 = models.Character(short_name='c2', character_group=cg1,
-                          value_type=u'TEXT')
-    c2.save()
-    c3 = models.Character(short_name='c3', character_group=cg1,
-                          value_type=u'LENGTH')
-    c3.save()
+        self.carnivores.species.add(self.fox)
+        self.carnivores.species.add(self.cat)
+        self.pets.species.add(self.cat)
+        self.pets.species.add(self.rabbit)
 
-    cv1 = models.CharacterValue(value_str='cv1', character=c1)
-    cv1.save()
-    cv2 = models.CharacterValue(value_str='cv2', character=c1)
-    cv2.save()
-    cv3 = models.CharacterValue(value_min=3, value_max=5, character=c3)
-    cv3.save()
-    cv4 = models.CharacterValue(value_min=5, value_max=5, character=c3)
-    cv4.save()
+        self.create(models.CharacterGroup, 'appearance')
+        self.create(models.CharacterGroup, 'dimensions')
 
-    pile1.character_values.add(cv1)
-    pile1.character_values.add(cv2)
-    pile1.save()
+        self.create(models.Character, 'color',
+                    character_group=self.appearance, value_type=u'TEXT')
+        self.create(models.Character, 'cuteness',
+                    character_group=self.appearance, value_type=u'TEXT')
+        self.create(models.Character, 'length',
+                    character_group=self.dimensions, value_type=u'LENGTH')
 
-    models.TaxonCharacterValue(taxon=foo, character_value=cv1).save()
-    models.TaxonCharacterValue(taxon=bar, character_value=cv2).save()
-    models.TaxonCharacterValue(taxon=bar, character_value=cv3).save()
-    models.TaxonCharacterValue(taxon=abc, character_value=cv4).save()
+        self.create(models.CharacterValue, 'red', character=self.color)
+        self.create(models.CharacterValue, 'orange', character=self.color)
+        self.create(models.CharacterValue, 'gray', character=self.color)
+        self.create(models.CharacterValue, 'chartreuse', character=self.color)
+
+        self.create(models.CharacterValue, 'cute', character=self.cuteness)
+
+        self.create(models.CharacterValue, 'size1',character=self.length,
+                    value_min=2, value_max=4)
+        self.create(models.CharacterValue, 'size2', character=self.length,
+                    value_min=3, value_max=4)
+        self.create(models.CharacterValue, 'size3',character=self.length,
+                    value_min=5, value_max=5)
+
+        for taxon, cv in ((self.fox, self.red),
+                          (self.fox, self.size3),
+                          (self.cat, self.orange),
+                          (self.cat, self.gray),
+                          (self.cat, self.cute),
+                          (self.cat, self.size2),
+                          (self.rabbit, self.gray),
+                          (self.rabbit, self.cute),
+                          (self.rabbit, self.size1),
+                          ):
+            models.TaxonCharacterValue(taxon=taxon, character_value=cv).save()
 
 
 class SimpleTests(TestCase):
@@ -82,54 +99,56 @@ class SimpleTests(TestCase):
         self.assert_(True)
 
 
-class APITests(TestCase):
+class APITests(SampleDataTestCase):
     # Tests of the Python API, that make manual Python function calls
     # without an intervening layer of Django URLs and views.
 
     def setUp(self):
-        setup_sample_data()
+        self.setup_sample_data()
 
     def try_query(self, result, *args, **kw):
         result_set = set(result)
         real_result_set = set(botany.query_species(*args, **kw))
         self.assertEqual(result_set, real_result_set)
 
+    def test_query_unknown_character(self):
+        self.assertRaises(models.Character.DoesNotExist,
+                          self.try_query, [], bad_character='red')
+
     def test_query_species(self):
-        queried = botany.query_species(scientific_name='Foo foo').all()
+        queried = botany.query_species(scientific_name='Felis cat').all()
         self.assert_(len(queried) == 1)
 
-        foo = models.Taxon.objects.filter(scientific_name='Foo foo')[0]
-        bar = models.Taxon.objects.filter(scientific_name='Foo bar')[0]
-        abc = models.Taxon.objects.filter(scientific_name='Baz abc')[0]
+        self.try_query([self.fox], color='red')
+        self.try_query([self.cat, self.rabbit], color='gray')
+        self.try_query([], color='chartreuse')
 
-        self.try_query([foo], c1='cv1')
-        self.try_query([bar], c1='cv2')
+        self.try_query([self.fox, self.cat], pile='carnivores')
+        self.try_query([self.cat, self.rabbit], pile='pets')
+        self.try_query([self.fox], pile='carnivores', color='red')
+        self.try_query([], pile='carnivores', color='chartreuse')
 
-        self.try_query([foo, bar, abc], pile='pile1')
-        self.try_query([], pile='pile2')
-        self.try_query([foo], pile='pile1', c1='cv1')
-        self.try_query([], pile='pile2', c1='cv1')
-
-        self.try_query([foo, bar, abc], pilegroup='pilegroup1')
+        self.try_query([self.fox, self.cat, self.rabbit],
+                       pilegroup='pilegroup1')
         self.try_query([], pilegroup='pilegroup2')
-        self.try_query([foo], pilegroup='pilegroup1', c1='cv1')
-        self.try_query([], pilegroup='pilegroup2', c1='cv1')
+        self.try_query([self.cat], pilegroup='pilegroup1', color='orange')
+        self.try_query([], pilegroup='pilegroup2', color='orange')
 
-        self.try_query([foo, bar, abc], pile='pile1', pilegroup='pilegroup1')
-        self.try_query([], pile='pile2', pilegroup='pilegroup1')
+        self.try_query([self.fox, self.cat],
+                       pile='carnivores', pilegroup='pilegroup1')
+        self.try_query([], pile='carnivores', pilegroup='pilegroup2')
 
-        self.try_query([foo, bar], genus='Fooium')
-        self.try_query([abc], family='Bazaceae')
+        self.try_query([self.cat], genus='Felis')
+        self.try_query([self.fox], family='Canidae')
         self.try_query([], genus='Kooky')
 
     def test_query_length(self):
-        bar = models.Taxon.objects.filter(scientific_name='Foo bar')[0]
-        abc = models.Taxon.objects.filter(scientific_name='Baz abc')[0]
-        self.try_query([], c3=2)
-        self.try_query([bar], c3=3)
-        self.try_query([bar], c3=4)
-        self.try_query([bar, abc], c3=5)
-        self.try_query([], c3=6)
+        self.try_query([], length=1)
+        self.try_query([self.rabbit], length=2)
+        self.try_query([self.cat, self.rabbit], length=3)
+        self.try_query([self.cat, self.rabbit], length=4)
+        self.try_query([self.fox], length=5)
+        self.try_query([], length=6)
 
 class ImportTestCase(TestCase):
 
@@ -148,12 +167,12 @@ class ImportTestCase(TestCase):
         self.assertEquals(len(models.Taxon.objects.all()), 71)
 
 
-class RESTFulTests(TestCase):
+# class RESTFulTests(SampleDataTestCase):
 
-    def test_taxon_with_chars(self):
-        setup_sample_data()
-        foo = models.Taxon.objects.get(scientific_name='Foo foo')
-        handlers._taxon_with_chars(foo)
+#     def test_taxon_with_chars(self):
+#         self.setup_sample_data()
+#         foo = models.Taxon.objects.get(scientific_name='Foo foo')
+#         handlers._taxon_with_chars(foo)
 
 
 def setup_integration(test):
