@@ -9,7 +9,6 @@ from gobotany.core import botany
 from gobotany.core import models
 from gobotany.core import igdt
 from gobotany.core import importer
-from gobotany.api import handlers  # TODO: move some tests to "api" package?
 
 
 def testdata(s):
@@ -282,6 +281,9 @@ class ModelTests(SampleData):
         self.assertEqual(self.cat.get_default_image(), ci4)
 
 
+
+
+
 class APITests(SampleData):
     # Tests of the Python API, that make manual Python function calls
     # without an intervening layer of Django URLs and views.
@@ -348,14 +350,6 @@ class ImportTestCase(TestCase):
         im = importer.Importer(StringIO())
         im._import_taxa(testdata('taxa.csv'))
         self.assertEquals(len(models.Taxon.objects.all()), 71)
-
-
-# class RESTFulTests(SampleData):
-
-#     def test_taxon_with_chars(self):
-#         self.setup_sample_data()
-#         foo = models.Taxon.objects.get(scientific_name='Foo foo')
-#         handlers._taxon_with_chars(foo)
 
 
 def setup_integration(test):
