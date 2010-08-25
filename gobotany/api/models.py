@@ -1,3 +1,3 @@
-from django.db import models
+"""Empty models file, as a hint to Django that this package is an app."""
 
-# Create your models here.
+from django.db import models
