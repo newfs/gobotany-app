@@ -157,6 +157,22 @@ class ModelTests(SampleData):
 
         self.do_unicode(plantpreview, u'7: What color? (Carnivores)')
 
+    def test_CharacterValue_value_with_float(self):
+        cv = models.CharacterValue()
+        cv.value_flt = 1.9
+        self.assertEqual(cv.value, 1.9)
+
+    def test_CharacterValue_value_with_range(self):
+        cv = models.CharacterValue()
+        cv.value_min = 1
+        cv.value_max = 9
+        self.assertEqual(cv.value, (1, 9))
+
+    def test_CharacterValue_value_with_string(self):
+        cv = models.CharacterValue()
+        cv.value_str = 'test value'
+        self.assertEqual(cv.value, 'test value')
+
 
 class APITests(SampleData):
     # Tests of the Python API, that make manual Python function calls
