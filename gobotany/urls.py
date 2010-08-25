@@ -4,6 +4,9 @@ import gobotany.api.urls
 import gobotany.core.urls
 import gobotany.simplekey.urls
 
+handler404 = 'django.views.defaults.page_not_found'
+handler500 = 'django.views.defaults.server_error'
+
 urlpatterns = patterns(
     '',
     (r'^simple/', include('gobotany.simplekey.urls')),

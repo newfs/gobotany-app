@@ -6,6 +6,8 @@ from piston.resource import Resource
 
 admin.autodiscover()
 
+handler500 = 'django.views.defaults.server_error'
+
 urlpatterns = patterns(
     '',
 

@@ -56,9 +56,13 @@ class TaxonQueryHandler(BaseHandler):
             return {'items': listing, 'label': 'scientific_name',
                     'identifier': 'scientific_name'}
         elif species.exists():
-            taxon = species.filter(scientific_name=scientific_name)[0]
-            # Return full taxon with characters for single item query
-            return _taxon_with_chars(taxon)
+            try:
+                taxon = species.filter(scientific_name=scientific_name)[0]
+                # Return full taxon with characters for single item query
+                return _taxon_with_chars(taxon)
+            except IndexError:
+                # A taxon wasn't returned from the database.
+                return rc.NOT_FOUND
         return {}
 
 
@@ -82,8 +86,11 @@ class TaxonImageHandler(BaseHandler):
         kwargs = {}
         for k, v in request.GET.items():
             kwargs[str(k)] = v
-        images = botany.species_images(**kwargs)
-        return [_taxon_image(image) for image in images]
+        try:
+            images = botany.species_images(**kwargs)
+            return [_taxon_image(image) for image in images]
+        except models.Taxon.DoesNotExist:
+            return rc.NOT_FOUND
 
 
 class BasePileHandler(BaseHandler):
@@ -93,7 +100,10 @@ class BasePileHandler(BaseHandler):
               'default_image')
 
     def read(self, request, slug):
-        return self.model.objects.get(slug=slug)
+        try:
+            return self.model.objects.get(slug=slug)
+        except (models.PileGroup.DoesNotExist, models.Pile.DoesNotExist):
+            return rc.NOT_FOUND
 
     def update(self, request, slug):
         obj = self.model.objects.get(slug=slug)
@@ -300,5 +310,8 @@ class CharacterValuesHandler(BaseHandler):
 
     # Piston doesn't seem to like being returned a generator
     def read(self, request, pile_slug, character_short_name):
-        return [x for x in self._read(request, pile_slug,
-                                      character_short_name)]
+        try:
+            return [x for x in self._read(request, pile_slug,
+                                          character_short_name)]
+        except models.Character.DoesNotExist:
+            return rc.NOT_FOUND
