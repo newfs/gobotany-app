@@ -21,7 +21,7 @@ class CSVReader(object):
         # Open in universal newline mode in order to deal with newlines in
         # CSV files saved on Mac OS.
         with open(self.filename, 'rU') as f:
-            r = csv.reader(f, dialect=csv.excel, delimiter=',')
+            r = csv.reader(f, dialect=csv.excel_tab)
             for row in r:
                 yield [c.decode('Windows-1252') for c in row]
 
@@ -153,7 +153,7 @@ class Importer(object):
                 print >> self.logfile, u'    Updated Pile:', pile
 
     def _import_taxa(self, taxaf):
-        print >> self.logfile, 'Setting up taxa'
+        print >> self.logfile, 'Setting up taxa in file: %s' % taxaf
         iterator = iter(CSVReader(taxaf).read())
         colnames = [x.lower() for x in iterator.next()]
 
@@ -191,17 +191,18 @@ class Importer(object):
                             pile_name
 
     def _import_taxon_character_values(self, f):
-        print >> self.logfile, 'Setting up taxon character values'
+        print >> self.logfile, 'Setting up taxon character values in file: %s' % f
         iterator = iter(CSVReader(f).read())
         colnames = list(iterator.next())  # do NOT lower(); case is important
 
         _pile_suffix = colnames[-2][-3:]  # like '_ca'
         pile_suffix = _pile_suffix[1:]   # like 'ca'
         if pile_suffix not in pile_mapping:
-            print >> self.logfile, "Pile '%s' isn't mapped" % pile_suffix
+            print >> self.logfile, "  Pile '%s' isn't mapped" % pile_suffix
             return
 
         pile = models.Pile.objects.get(name__iexact=pile_mapping[pile_suffix])
+        print >> self.logfile, '  Setting up taxon character values in pile %s' % pile_mapping[pile_suffix]
 
         for cols in iterator:
             row = dict(zip(colnames, cols))
@@ -228,7 +229,7 @@ class Importer(object):
                 try:
                     character = models.Character.objects.get(short_name=cname)
                 except ObjectDoesNotExist:
-                    print >> self.logfile, 'No such character exists: %s'%cname
+                    print >> self.logfile, '    No such character exists: %s, [%s]' % (cname, k)
                     continue
 
                 if is_min or is_max:
@@ -236,7 +237,7 @@ class Importer(object):
                     try:
                         intv = int(v)
                     except ValueError:
-                        print >> self.logfile, 'Not an int: %s=%s' % (cname, v)
+                        print >> self.logfile, '    Not an int: %s=%s [%s]' % (cname, v, k)
                         continue
 
                     # Min and max get stored in the same char-value row.
@@ -263,16 +264,33 @@ class Importer(object):
                     # A regular comma-separated list of string values.
                     for val in v.split(','):
                         val = val.strip()
-                        cv, created = models.CharacterValue \
-                            .objects.get_or_create(value_str=val,
-                                                   character=character)
-                        cv.save()
-                        pile.character_values.add(cv)
+                        # Don't use get_or_created here, otherwise an illegal
+                        # CharacterValue could get associated with the taxon.
+                        # The universe of possible CharacterValues have already
+                        # been constructed in an earlier method.
+                        cv = models.CharacterValue.objects.filter(
+                            value_str=val,
+                            character=character)
+                        # Some character values contain commas and shouldn't be 
+                        # treated as a comma-seperated list. So let's try
+                        # looking it up as single field.
+                        if len(cv) == 0:
+                            cv = models.CharacterValue.objects.filter(
+                                value_str=v,
+                                character=character)
+                        # Shockingly, if we still get nothing it means the
+                        # csv probably contain dirty data, and it's a good
+                        # idea to log it.
+                        if len(cv) == 0:
+                            print >> self.logfile,\
+                                '    No such value: %s for character: %s [%s] exists' % (val, cname, k)
+                            continue
+
                         models.TaxonCharacterValue.objects.get_or_create(
-                            taxon=taxon, character_value=cv)
+                            taxon=taxon, character_value=cv[0])
 
     def _import_characters(self, f):
-        print >> self.logfile, 'Setting up characters'
+        print >> self.logfile, 'Setting up characters in file: %s' % f
         iterator = iter(CSVReader(f).read())
         colnames = [ x.lower() for x in iterator.next() ]
 
@@ -312,7 +330,7 @@ class Importer(object):
                 character.save()
 
     def _import_character_values(self, f):
-        print >> self.logfile, 'Setting up character values'
+        print >> self.logfile, 'Setting up character values in file: %s' % f
         iterator = iter(CSVReader(f).read())
         colnames = [x.lower() for x in iterator.next()]
 
@@ -342,8 +360,10 @@ class Importer(object):
                 continue
             character = res[0]
 
+            # note that CharacterValues can be used by multiple Characters
             res = models.CharacterValue.objects.filter(
-                value_str=row['character_value'])
+                value_str=row['character_value'],
+                character=character)
             if len(res) == 0:
                 cv = models.CharacterValue(value_str=row['character_value'],
                                            character=character)
