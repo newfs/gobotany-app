@@ -79,32 +79,43 @@ def _setup_sample_data(load_images=False):
     pile1.species.add(bar)
     pile1.species.add(abc)
 
-    cg1 = models.CharacterGroup(name='cg1')
+    cg1 = models.CharacterGroup(name='cg1', id='1')
     cg1.save()
 
-    c1 = models.Character(short_name='c1', character_group=cg1)
+    c1 = models.Character(short_name='c1', name='Character 1',
+                          character_group=cg1)
     c1.save()
-    c2 = models.Character(short_name='c2', character_group=cg1)
+    c2 = models.Character(short_name='c2', name='Character 2',
+                          character_group=cg1)
     c2.save()
-    c3 = models.Character(short_name='c3', character_group=cg1,
-                          value_type='LENGTH')
+    c3 = models.Character(short_name='c3', name='Character 3',
+                          character_group=cg1, value_type='LENGTH')
     c3.save()
+    c4 = models.Character(short_name='c4', name='Character 4',
+                          character_group=cg1)
+    c4.save()
 
-    cv1 = models.CharacterValue(value_str='cv1', character=c1)
-    cv1.save()
-    cv2 = models.CharacterValue(value_str='cv2', character=c1)
+    cv1_1 = models.CharacterValue(value_str='cv1_1', character=c1)
+    cv1_1.save()
+    cv1_2 = models.CharacterValue(value_str='cv1_2', character=c1)
+    cv1_2.save()
+    cv2 = models.CharacterValue(value_str='cv2', character=c2)
     cv2.save()
     cv3 = models.CharacterValue(value_min=5, value_max=11, character=c3)
     cv3.save()
 
-    pile1.character_values.add(cv1)
+    pile1.character_values.add(cv1_1)
+    pile1.character_values.add(cv1_2)
     pile1.character_values.add(cv2)
     pile1.character_values.add(cv3)
     pile1.save()
 
-    models.TaxonCharacterValue(taxon=foo, character_value=cv1).save()
+    models.TaxonCharacterValue(taxon=foo, character_value=cv1_1).save()
     models.TaxonCharacterValue(taxon=bar, character_value=cv2).save()
-
+    
+    # Create a couple of default filters here, making sure not to create
+    # one for *every* character, so as to exercise some code in the
+    # handlers that deals with a default filter not existing for a character.
     df1 = models.DefaultFilter(pile=pile1, character=c1, order=1,
                                key_characteristics='key characteristics 1',
                                notable_exceptions='notable exceptions 1')
@@ -157,11 +168,11 @@ class TaxonListTestCase(TestCase):
     # TODO: support non-trailing slash variant, using middleware redirect.
     
     def test_get_with_char_param_returns_ok(self):
-        response = self.client.get('/taxon/?c1=cv1')
+        response = self.client.get('/taxon/?c1=cv1_1')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_char_param_returns_not_found_if_no_char(self):
-        response = self.client.get('/taxon/?none=cv1')
+        response = self.client.get('/taxon/?none=cv1_1')
         self.assertEqual(404, response.status_code)
 
     def test_get_with_char_param_returns_ok_if_bad_char_value(self):
@@ -198,15 +209,15 @@ class TaxonTestCase(TestCase):
     # species is known.  The code allows it but it might not be needed.
 
     def test_get_with_char_param_returns_ok(self):
-        response = self.client.get('/taxon/Fooium%20fooia/?c1=cv1')
+        response = self.client.get('/taxon/Fooium%20fooia/?c1=cv1_1')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_char_param_returns_not_found_if_no_species(self):
-        response = self.client.get('/taxon/Not%20here/?c1=cv1')
+        response = self.client.get('/taxon/Not%20here/?c1=cv1_1')
         self.assertEqual(404, response.status_code)
         
     def test_get_with_char_param_returns_not_found_if_no_char(self):
-        response = self.client.get('/taxon/Fooium%20fooia/?none=cv1')
+        response = self.client.get('/taxon/Fooium%20fooia/?none=cv1_1')
         self.assertEqual(404, response.status_code)
 
     def test_get_with_char_param_returns_ok_if_bad_char_value(self):
@@ -231,11 +242,11 @@ class TaxonCountTestCase(TestCase):
     # (This is started in the code.)
 
     def test_get_with_character_value_param_returns_ok(self):
-        response = self.client.get('/taxon-count/?c1=cv1')
+        response = self.client.get('/taxon-count/?c1=cv1_1')
         self.assertEqual(200, response.status_code)
         
     def test_get_with_char_value_param_returns_not_found_if_no_char(self):
-        response = self.client.get('/taxon-count/?none=cv1')
+        response = self.client.get('/taxon-count/?none=cv1_1')
         self.assertEqual(404, response.status_code)
 
 
@@ -370,6 +381,21 @@ class CharacterListTestCase(TestCase):
             '/piles/pile1/characters/?include_filter=1')
         self.assertEqual(200, response.status_code)
 
+    def test_get_with_exclude_chars_param_returns_ok(self):
+        response = self.client.get(
+            '/piles/pile1/characters/?exclude=c1')
+        self.assertEqual(200, response.status_code)
+
+    def test_get_with_character_groups_param_returns_ok(self):
+        response = self.client.get(
+            '/piles/pile1/characters/?character_groups=1')  # id of char group
+        self.assertEqual(200, response.status_code)
+
+    def test_get_with_nonexistent_char_group_returns_ok(self):
+        response = self.client.get(
+            '/piles/pile1/characters/?character_groups=0')  # id of char group
+        self.assertEqual(200, response.status_code)
+
 
 class CharacterValuesTestCase(TestCase):
     def setUp(self):
@@ -389,12 +415,7 @@ class CharacterValuesTestCase(TestCase):
         self.assertEqual(404, response.status_code)
 
 
-    # Beginning (baseline) code coverage:
-    #
-    # handlers.py: 39% (everything else is 100%)
-    #
-    # After adding tests so far, coverage for handlers.py is 98%.
-    
+
     # Organization/approach:
     #
     # Separate TestCase for each URI.

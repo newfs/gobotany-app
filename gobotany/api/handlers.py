@@ -172,14 +172,12 @@ class PileHandler(BasePileHandler):
         order = (default_filters and max(
             default_filter.order for default_filter in default_filters
             ) or 0) + 1
-        for character in characters:
+        for character in characters[:3]:
             fake_default_filter = FakeDefaultFilter()
             fake_default_filter.character = character
             order += 1
             fake_default_filter.order = order
             default_filters.append(fake_default_filter)
-            if order > 6:
-                break  # don't get carried away
         # -- END --
 
         for default_filter in default_filters:
