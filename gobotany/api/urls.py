@@ -30,18 +30,18 @@ urlpatterns = patterns(
     url(r'^piles/(?P<slug>[^/]+)/?$',
         Resource(handler=handlers.PileHandler), name='api-pile'),
 
-    url(r'^piles/(?P<pile_slug>[^/]+)/characters/?$',
+    url(r'^piles/(?P<pile_slug>[^/]+)/characters/$',
         Resource(handler=handlers.CharacterListingHandler), 
         name='api-character-list'),
 
-    url(r'^piles/(?P<pile_slug>[^/]+)/(?P<character_short_name>[^/]+)/?$',
+    url(r'^piles/(?P<pile_slug>[^/]+)/(?P<character_short_name>[^/]+)/$',
         Resource(handler=handlers.CharacterValuesHandler), 
         name='api-character-values'),
 
     url(r'^pilegroups/$',
         Resource(handler=handlers.PileGroupListingHandler), 
         name='api-pilegroup-list'),
-    url(r'^pilegroups/(?P<slug>[^/]+)$',
+    url(r'^pilegroups/(?P<slug>[^/]+)/$',
         Resource(handler=handlers.PileGroupHandler), name='api-pilegroup'),
 
     )

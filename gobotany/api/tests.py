@@ -34,9 +34,6 @@ from gobotany.core import models
 # - Canonical URIs vs. representation-specific URIs (and Content-Location
 #   header), if applicable; e.g., /items/item1 (canonical) vs.
 #   /items/item1.html.en, /items/item1.html.es (representation-specific)
-# - Trailing-slash: with/without - if applicable.
-# TODO: activate middleware for redirecting on missing trailing slashes:
-# django.middleware.common.CommonMiddleware
 
 def _testdata_dir():
     """Return the path to a test data directory relative to this directory."""
@@ -197,8 +194,6 @@ class TaxonListTestCase(TestCase):
 
     # TODO: change URI from /taxon/ to /taxa/.
 
-    # TODO: support non-trailing slash variant, using middleware redirect.
-    
     def test_get_with_char_param_returns_ok(self):
         response = self.client.get('/taxon/?c1=cv1_1')
         self.assertEqual(200, response.status_code)
@@ -235,15 +230,14 @@ class TaxonTestCase(TestCase):
 
     # TODO: change URI from /taxon/ to /taxa/.
 
-    # TODO: support non-trailing slash variant, using middleware redirect.
-    
     def test_get_returns_not_found_when_nonexistent_species(self):
         response = self.client.get('/taxon/Not%20here/')
         self.assertEqual(404, response.status_code)
 
     # TODO: For the following tests:
-    # Verify we intend to allow supplying a character-value query when the 
-    # species is known.  The code allows it but it might not be needed.
+    # Verify we intend to allow supplying a character-value query when the
+    # species is known.  The code allows it (because it handles more than
+    # one context) but it might not have been intended here.
 
     def test_get_with_char_param_returns_ok(self):
         response = self.client.get('/taxon/Fooium%20fooia/?c1=cv1_1')
@@ -359,37 +353,35 @@ class PileGroupTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        # TODO: add trailing slash to canonical URL and support omitting the
-        # trailing slash via middleware redirect.
-        response = self.client.get('/pilegroups/pilegroup1')
+        response = self.client.get('/pilegroups/pilegroup1/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/pilegroups/pilegroup1')
+        response = self.client.get('/pilegroups/pilegroup1/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_get_returns_not_found_when_nonexistent_pile_group(self):
-        response = self.client.get('/pilegroups/nogroup')
+        response = self.client.get('/pilegroups/nogroup/')
         self.assertEqual(404, response.status_code)
 
     def test_delete_returns_no_content(self):
-        response = self.client.delete('/pilegroups/pilegroup1')
+        response = self.client.delete('/pilegroups/pilegroup1/')
         self.assertEqual(204, response.status_code)
 
     def test_put_returns_ok(self):
-        response = self.client.put('/pilegroups/pilegroup1',
+        response = self.client.put('/pilegroups/pilegroup1/',
                                    data={'friendly_name': 'Pile Group 1'})
         self.assertEqual(200, response.status_code)
 
     def test_put_returns_json(self):
-        response = self.client.put('/pilegroups/pilegroup1',
+        response = self.client.put('/pilegroups/pilegroup1/',
                                    data={'friendly_name': 'Pile Group 1'})
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_put_ignores_unknown_key(self):
-        response = self.client.put('/pilegroups/pilegroup1',
+        response = self.client.put('/pilegroups/pilegroup1/',
                                    data={'friendly_name': 'Pile Group 1',
                                          'foo': 'bar'})
         self.assertEqual(200, response.status_code)
