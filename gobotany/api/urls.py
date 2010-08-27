@@ -12,18 +12,18 @@ urlpatterns = patterns(
     '',
 
     url(r'^taxon/(?P<scientific_name>[^/]+)/$',
-        Resource(handler=handlers.TaxonQueryHandler)),
+        Resource(handler=handlers.TaxonQueryHandler), name='api-taxon'),
     url(r'^taxon/$',
-        Resource(handler=handlers.TaxonQueryHandler)),
+        Resource(handler=handlers.TaxonQueryHandler), name='api-taxon-list'),
 
     url(r'^taxon-count/$',
-        Resource(handler=handlers.TaxonCountHandler)),
+        Resource(handler=handlers.TaxonCountHandler), name='api-taxon-count'),
     # Suggested eventual replacement URL (plural) for taxon-count above
     url(r'^taxa-count/$',
-        Resource(handler=handlers.TaxonCountHandler)),
+        Resource(handler=handlers.TaxonCountHandler), name='api-taxa-count'),
 
     url(r'^taxon-image/$',
-        Resource(handler=handlers.TaxonImageHandler)),
+        Resource(handler=handlers.TaxonImageHandler), name='api-taxon-image'),
 
     url(r'^piles/$',
         Resource(handler=handlers.PileListingHandler), name='api-pile-list'),

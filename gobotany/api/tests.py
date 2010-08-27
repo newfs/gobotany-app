@@ -11,6 +11,33 @@ from django.core.files import File
 
 from gobotany.core import models
 
+# Suggested approach for testing RESTful API:
+#
+# Create a separate TestCase for each URI; the TestCase contains several
+# test methods for testing that URI.
+#
+# For each URI, what to test?
+#
+# - Normal and non-normal status code(s) for requests made with each of the
+#   supported HTTP methods.
+# - Unsupported HTTP methods return 405 Method Not Supported.
+# - Representations accepted from the client for each of the supported
+#   methods, including query string parameters for GET or HEAD methods.
+# - Representations served to the client for each of the supported
+#   methods.
+# - Content type (MIME type) of the response for each of the supported
+#   methods.
+# - Error conditions ("what might go wrong?").
+# - Header values accepted from the client for each of the supported
+#   methods.
+# - Header values served to the client for each of the supported methods.
+# - Canonical URIs vs. representation-specific URIs (and Content-Location
+#   header), if applicable; e.g., /items/item1 (canonical) vs.
+#   /items/item1.html.en, /items/item1.html.es (representation-specific)
+# - Trailing-slash: with/without - if applicable.
+# TODO: activate middleware for redirecting on missing trailing slashes:
+# django.middleware.common.CommonMiddleware
+
 def _testdata_dir():
     """Return the path to a test data directory relative to this directory."""
     return os.path.join(os.path.dirname(__file__), 'testdata')
@@ -163,6 +190,11 @@ class TaxonListTestCase(TestCase):
         response = self.client.get('/taxon/')
         self.assertEqual(200, response.status_code)
 
+    def test_get_returns_json(self):
+        response = self.client.get('/taxon/')
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
+
     # TODO: change URI from /taxon/ to /taxa/.
 
     # TODO: support non-trailing slash variant, using middleware redirect.
@@ -181,9 +213,9 @@ class TaxonListTestCase(TestCase):
         
     def test_get_with_char_param_returns_no_items_if_bad_char_value(self):
         response = self.client.get('/taxon/?c1=badvalue')
-        expected = { 'items': [],
-                     'identifier': 'scientific_name',
-                     'label': 'scientific_name'}
+        expected = {'items': [],
+                    'identifier': 'scientific_name',
+                    'label': 'scientific_name'}
         self.assertEqual(expected, json.loads(response.content))
 
 
@@ -195,6 +227,11 @@ class TaxonTestCase(TestCase):
     def test_get_returns_ok(self):
         response = self.client.get('/taxon/Fooium%20barula/')
         self.assertEqual(200, response.status_code)
+
+    def test_get_returns_json(self):
+        response = self.client.get('/taxon/Fooium%20barula/')
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
 
     # TODO: change URI from /taxon/ to /taxa/.
 
@@ -238,13 +275,18 @@ class TaxonCountTestCase(TestCase):
         response = self.client.get('/taxon-count/')
         self.assertEqual(200, response.status_code)
 
+    def test_get_returns_json(self):
+        response = self.client.get('/taxon-count/')
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
+
     # TODO: change URI from /taxon-count/ to /taxa-count/.
     # (This is started in the code.)
 
     def test_get_with_character_value_param_returns_ok(self):
         response = self.client.get('/taxon-count/?c1=cv1_1')
         self.assertEqual(200, response.status_code)
-        
+
     def test_get_with_char_value_param_returns_not_found_if_no_char(self):
         response = self.client.get('/taxon-count/?none=cv1_1')
         self.assertEqual(404, response.status_code)
@@ -259,6 +301,11 @@ class TaxonImageTestCase(TestCase):
         response = self.client.get('/taxon-image/?species=Fooium%20barula')
         self.assertEqual(200, response.status_code)
         # TODO: test other params that can be passed; taxon id?
+
+    def test_get_returns_json(self):
+        response = self.client.get('/taxon-image/?species=Fooium%20barula')
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
 
     def test_get_returns_not_found_when_nonexistent_species(self):
         response = self.client.get('/taxon-image/?species=Not%20here')
@@ -295,22 +342,32 @@ class PileGroupListTestCase(TestCase):
     def setUp(self):
         _setup_sample_data()
         self.client = Client()
-        
+
     def test_get_returns_ok(self):
         response = self.client.get('/pilegroups/')
         self.assertEqual(200, response.status_code)
+
+    def test_get_returns_json(self):
+        response = self.client.get('/pilegroups/')
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
 
 
 class PileGroupTestCase(TestCase):
     def setUp(self):
         _setup_sample_data()
         self.client = Client()
-        
+
     def test_get_returns_ok(self):
         # TODO: add trailing slash to canonical URL and support omitting the
         # trailing slash via middleware redirect.
         response = self.client.get('/pilegroups/pilegroup1')
         self.assertEqual(200, response.status_code)
+
+    def test_get_returns_json(self):
+        response = self.client.get('/pilegroups/pilegroup1')
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
 
     def test_get_returns_not_found_when_nonexistent_pile_group(self):
         response = self.client.get('/pilegroups/nogroup')
@@ -325,6 +382,18 @@ class PileGroupTestCase(TestCase):
                                    data={'friendly_name': 'Pile Group 1'})
         self.assertEqual(200, response.status_code)
 
+    def test_put_returns_json(self):
+        response = self.client.put('/pilegroups/pilegroup1',
+                                   data={'friendly_name': 'Pile Group 1'})
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
+
+    def test_put_ignores_unknown_key(self):
+        response = self.client.put('/pilegroups/pilegroup1',
+                                   data={'friendly_name': 'Pile Group 1',
+                                         'foo': 'bar'})
+        self.assertEqual(200, response.status_code)
+
 
 class PileListTestCase(TestCase):
     def setUp(self):
@@ -335,6 +404,11 @@ class PileListTestCase(TestCase):
         response = self.client.get('/piles/')
         self.assertEqual(200, response.status_code)
 
+    def test_get_returns_json(self):
+        response = self.client.get('/piles/')
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
+
 
 class PileTestCase(TestCase):
     def setUp(self):
@@ -344,6 +418,11 @@ class PileTestCase(TestCase):
     def test_get_returns_ok(self):
         response = self.client.get('/piles/pile1/')
         self.assertEqual(200, response.status_code)
+
+    def test_get_returns_json(self):
+        response = self.client.get('/piles/pile1/')
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
 
     def test_get_returns_not_found_when_nonexistent_pile(self):
         response = self.client.get('/piles/nopile/')
@@ -358,6 +437,18 @@ class PileTestCase(TestCase):
                                    data={'friendly_name': 'Pile 1'})
         self.assertEqual(200, response.status_code)
 
+    def test_put_returns_json(self):
+        response = self.client.put('/piles/pile1/',
+                                   data={'friendly_name': 'Pile 1'})
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
+
+    def test_put_ignores_unknown_key(self):
+        response = self.client.put('/piles/pile1/',
+                                   data={'friendly_name': 'Pile 1',
+                                         'foo': 'bar'})
+        self.assertEqual(200, response.status_code)
+
 
 class CharacterListTestCase(TestCase):
     def setUp(self):
@@ -367,6 +458,11 @@ class CharacterListTestCase(TestCase):
     def test_get_returns_ok(self):
         response = self.client.get('/piles/pile1/characters/')
         self.assertEqual(200, response.status_code)
+
+    def test_get_returns_json(self):
+        response = self.client.get('/piles/pile1/characters/')
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
 
     def test_get_returns_not_found_when_nonexistent_pile(self):
         response = self.client.get('/piles/nopile/characters/')
@@ -406,6 +502,11 @@ class CharacterValuesTestCase(TestCase):
         response = self.client.get('/piles/pile1/c1/')
         self.assertEqual(200, response.status_code)
 
+    def test_get_returns_json(self):
+        response = self.client.get('/piles/pile1/c1/')
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
+
     def test_get_returns_not_found_when_nonexistent_pile(self):
         response = self.client.get('/piles/nopile/c1/')
         self.assertEqual(404, response.status_code)
@@ -413,36 +514,3 @@ class CharacterValuesTestCase(TestCase):
     def test_get_returns_not_found_when_nonexistent_character(self):
         response = self.client.get('/piles/pile1/nochar/')
         self.assertEqual(404, response.status_code)
-
-
-
-    # Organization/approach:
-    #
-    # Separate TestCase for each URI.
-    #
-    # For each URI, what to test?
-    #
-    # - Normal and non-normal status code(s) for each of the supported HTTP 
-    #   methods.
-    # - Supported/unsupported HTTP methods.
-    # - Representations accepted from the client for each of the supported
-    #   methods.
-    # - Representations served to the client for each of the supported
-    #   methods.
-    # - Content type (MIME type) of the response(s) for each of the supported
-    #   methods.
-    # - Error conditions ("what might go wrong?").
-    # - Header values accepted from the client for each of the supported
-    #   methods.
-    # - Header values served to the client for each of the supported methods.
-    # - Canonical URIs vs. representation-specific URIs (and Content-Location
-    #   header), if applicable.
-    #
-    # - Trailing-slash (or not, or both) - if applicable.
-    # TODO: activate middleware for redirecting on missing trailing slashes:
-    # django.middleware.common.CommonMiddleware
-    #
-    # Also TODO: name all URLs in urls.py, relating the URL name and TestCase
-    # name, in order to make these names help the reader find and relate
-    # things more easily.
-
