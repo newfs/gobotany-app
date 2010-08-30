@@ -21,7 +21,7 @@ class CSVReader(object):
         # Open in universal newline mode in order to deal with newlines in
         # CSV files saved on Mac OS.
         with open(self.filename, 'rU') as f:
-            r = csv.reader(f, dialect=csv.excel_tab)
+            r = csv.reader(f, dialect=csv.excel, delimiter=',')
             for row in r:
                 yield [c.decode('Windows-1252') for c in row]
 
@@ -179,7 +179,7 @@ class Importer(object):
 
             # Assign this Taxon to the Pile(s) specified for it.
             if row['pile']:
-                for pile_name in re.split(r'[,;]', row['pile']):
+                for pile_name in re.split(r'[,;|]', row['pile']):
                     # Look for a Pile with this name.
                     piles = models.Pile.objects.filter(
                         name__iexact=pile_name.strip())
@@ -187,7 +187,7 @@ class Importer(object):
                         pile = piles[0]
                         pile.species.add(taxon)
                     else:
-                        print >> self.logfile, u'      CANNOT FIND PILE:', \
+                        print >> self.logfile, u'      ERR: cannot find pile:', \
                             pile_name
 
     def _import_taxon_character_values(self, f):
@@ -198,7 +198,7 @@ class Importer(object):
         _pile_suffix = colnames[-2][-3:]  # like '_ca'
         pile_suffix = _pile_suffix[1:]   # like 'ca'
         if pile_suffix not in pile_mapping:
-            print >> self.logfile, "  Pile '%s' isn't mapped" % pile_suffix
+            print >> self.logfile, "  ERR: Pile '%s' isn't mapped" % pile_suffix
             return
 
         pile = models.Pile.objects.get(name__iexact=pile_mapping[pile_suffix])
@@ -229,15 +229,15 @@ class Importer(object):
                 try:
                     character = models.Character.objects.get(short_name=cname)
                 except ObjectDoesNotExist:
-                    print >> self.logfile, '    No such character exists: %s, [%s]' % (cname, k)
+                    print >> self.logfile, '    ERR: No such character exists: %s, [%s]' % (cname, k)
                     continue
 
                 if is_min or is_max:
 
                     try:
-                        intv = int(v)
+                        numv = float(v)
                     except ValueError:
-                        print >> self.logfile, '    Not an int: %s=%s [%s]' % (cname, v, k)
+                        print >> self.logfile, '    ERR: Can\'t convert to a number: %s=%s [%s]' % (cname, v, k)
                         continue
 
                     # Min and max get stored in the same char-value row.
@@ -255,14 +255,14 @@ class Importer(object):
                             taxon=taxon, character_value=cv).save()
 
                     if is_min:
-                        cv.value_min = intv
+                        cv.value_min = numv
                     else:
-                        cv.value_max = intv
+                        cv.value_max = numv
                     cv.save()
 
                 else:
                     # A regular comma-separated list of string values.
-                    for val in v.split(','):
+                    for val in v.split('|'):
                         val = val.strip()
                         # Don't use get_or_created here, otherwise an illegal
                         # CharacterValue could get associated with the taxon.
@@ -283,7 +283,7 @@ class Importer(object):
                         # idea to log it.
                         if len(cv) == 0:
                             print >> self.logfile,\
-                                '    No such value: %s for character: %s [%s] exists' % (val, cname, k)
+                                '    ERR: No such value: %s for character: %s [%s] exists' % (val, cname, k)
                             continue
 
                         models.TaxonCharacterValue.objects.get_or_create(
@@ -356,7 +356,7 @@ class Importer(object):
 
             res = models.Character.objects.filter(short_name=short_name)
             if len(res) == 0:
-                print >> self.logfile, u'      MISSING CHARACTER:', short_name
+                print >> self.logfile, u'      ERR: missing character:', short_name
                 continue
             character = res[0]
 
@@ -368,6 +368,7 @@ class Importer(object):
                 cv = models.CharacterValue(value_str=row['character_value'],
                                            character=character)
                 cv.save()
+                print >> self.logfile, u'  New Character Value: %s for Character: %s [%s]' % (cv.value_str, character.name, row['character'])
             else:
                 cv = res[0]
 
@@ -452,7 +453,7 @@ class Importer(object):
                 image_file = File(images.extractfile(image.name))
                 term.image.save(image.name, image_file)
             except KeyError:
-                print >> self.logfile, '    No image found for term'
+                print >> self.logfile, '    ERR: No image found for term'
 
             term.save()
 
@@ -569,7 +570,7 @@ class Importer(object):
                             scientific_name=scientific_name)
                     except:
                         print >> self.logfile, (
-                            '  !IMAGE %r NAMES UNKNOWN TAXON' % filename)
+                            '  ERR: image %r names unknown taxon' % filename)
                         continue
 
                 content_type = ContentType.objects.get_for_model(taxon)
@@ -584,7 +585,7 @@ class Importer(object):
                     if key in taxon_image_types:
                         break
                 else:
-                    print >> self.logfile, '  !UNKNOWN IMAGE TYPE %r:' % (
+                    print >> self.logfile, '  ERR: unknown image type %r:' % (
                         _type), filename
                     continue
 
