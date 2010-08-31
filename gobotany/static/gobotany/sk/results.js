@@ -13,6 +13,8 @@ dojo.require('dijit.form.Button');
 dojo.require('dijit.form.CheckBox');
 dojo.require("dijit.form.FilteringSelect");
 dojo.require('dijit.form.Form');
+dojo.require('dijit.form.HorizontalSlider');
+dojo.require("dijit.form.HorizontalRuleLabels");
 dojo.require('dijit.form.Select');
 
 var filter_manager = null;
@@ -118,14 +120,50 @@ gobotany.sk.results.show_filter_working = function(event) {
     var valuesList = dojo.query('#filter-working form .values')[0];
     dojo.empty(valuesList);
     if (this.value_type == 'LENGTH') {
+
+        // Create a slider with horizontal rules and labels.
+
         var range = this.values[0];
-        dojo.place('<label>Type an integer value:<br>' +
+        var label = dojo.place('<label>Type an integer value:<br>' +
                    '(hint: between ' + range.min + ' and ' +
                    range.max + ')<br>' +
                    '<input type="text" id="int_value" name="int_value"' +
+                   ' dojoType="dijit.form.TextBox"' +
                    ' value=""></label>',
                    valuesList);
+        var sliderNode = document.createElement('div');
+        valuesList.appendChild(sliderNode);
+        var rulesNode1 = document.createElement('div');
+        valuesList.appendChild(rulesNode1);
+        var rulesNode2 = document.createElement('div');
+        valuesList.appendChild(rulesNode2);
+        var ruleticks = new dijit.form.HorizontalRule({
+            container: "topDecoration",
+            count: 10,
+            style: "height:10px;"
+        }, rulesNode1);
+        var rulelabels = new dijit.form.HorizontalRuleLabels({
+            container: "topDecoration",
+            count: 6,
+            style: "height:1.5em;font-size:75%;color:gray;"
+        }, rulesNode2);
+        var slider = new dijit.form.HorizontalSlider({
+            name: "character_slider",
+            value: 5,
+            minimum: 0,
+            maximum: 10,
+            discreteValues: 101,
+            intermediateChanges: true,
+            style: "width:200px;",
+            onChange: function(value) {
+                dojo.byId("int_value").value = value;
+            }
+        }, sliderNode);
+
     } else {
+
+        // Create the radio-button widget.
+
         dojo.place('<label><input type="radio" name="char_name" value="" ' +
                    'checked> don&apos;t know</label>', valuesList);
         for (var i = 0; i < this.values.length; i++) {
@@ -134,6 +172,18 @@ gobotany.sk.results.show_filter_working = function(event) {
                        'value="' + v.value + '"> ' + v.value +
                        ' (' + v.count + ')</label>', valuesList);
         }
+
+        // If the user has already selected a value for this filter, we
+        // pre-check that radio button, instead of pre-checking the
+        // first (the "Don't know") radio button like we normally do.
+
+        var selector = '#filter-working .values input';
+        var already_selected_value = filter_manager.get_selected_value(
+            this.character_short_name);
+        if (already_selected_value) {
+            selector = selector + '[value="' + already_selected_value + '"]';
+        }
+        dojo.query(selector)[0].checked = true;
     }
 
     var kc = dojo.query('#filter-working .info .key-characteristics')[0];
@@ -141,18 +191,6 @@ gobotany.sk.results.show_filter_working = function(event) {
 
     var ne = dojo.query('#filter-working .info .notable-exceptions')[0];
     ne.innerHTML = this.notable_exceptions;
-
-    // If the user has already selected a value for this filter, we
-    // pre-check that radio button, instead of pre-checking the first
-    // (the "Don't know") radio button like we normally do.
-
-    var selector = '#filter-working .values input';
-    var already_selected_value = filter_manager.get_selected_value(
-        this.character_short_name);
-    if (already_selected_value) {
-        selector = selector + '[value="' + already_selected_value + '"]';
-    }
-    dojo.query(selector)[0].checked = true;
 };
 
 gobotany.sk.results.hide_filter_working = function() {
