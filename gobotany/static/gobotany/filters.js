@@ -246,17 +246,18 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         }
     },
     set_selected_value: function(character_short_name, selected_value) {
-        var found_filter = false;
-        var i = 0;
-        while (!found_filter && i < this.filters.length) {
+        for (var i = 0; i < this.filters.length; i++) {
             if (this.filters[i].character_short_name === 
-                character_short_name) {
-
-                this.filters[i].selected_value = selected_value;
-                found_filter = true;
+                  character_short_name) {
+                // Character values must be stringified, since their
+                // .length is checked before allowing them to become
+                // part of our query URL.
+                this.filters[i].selected_value = String(selected_value);
+                return;
             }
-            i++;
         }
+        console.log('FilterManager cannot set a value for unknown filter',
+                    character_short_name)
     },
     get_selected_value: function(character_short_name) {
         var selected_value = null;
