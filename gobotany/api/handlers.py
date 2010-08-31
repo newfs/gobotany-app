@@ -162,13 +162,16 @@ class PileHandler(BasePileHandler):
             )
 
         # -- START --
-        # Remove this when filters can be interactively selected; for
-        # now, this adds in LENGTH filters to exercise the UI.  (And
-        # remove the FakeDefaultFilter defined above, too!)
+
+        # Remove this when filters can be interactively selected (and
+        # remove the FakeDefaultFilter defined above, too!)  For now,
+        # this adds in LENGTH filters to exercise the UI, and sorts them
+        # by "unit" so that any characters that happen to specify a unit
+        # come back first.
         characters = models.Character.objects.filter(
             value_type=u'LENGTH',
             character_values__pile=pile,
-            )
+            ).order_by('unit').distinct()
         order = (default_filters and max(
             default_filter.order for default_filter in default_filters
             ) or 0) + 1

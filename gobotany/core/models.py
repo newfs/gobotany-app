@@ -122,8 +122,15 @@ class Character(models.Model):
         u'LENGTH': u'Length', # integer
         u'RATIO': u'Ratio', # float
         }
-    value_type = models.CharField(max_length=10,
-                                  choices=VALUE_CHOICES.items())
+    UNIT_CHOICES = {
+        u'mm': u'Millimeters',
+        u'cm': u'Centimeters',
+        u'm': u'Meters',
+        }
+    value_type = models.CharField(
+        max_length=10, choices=VALUE_CHOICES.items())
+    unit = models.CharField(
+        max_length=2, null=True, blank=True, choices=UNIT_CHOICES.items())
 
     class Meta:
         ordering = ['short_name']
