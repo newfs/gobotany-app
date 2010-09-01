@@ -65,8 +65,9 @@ class SpeciesReader(object):
                     if character.value_type == u'LENGTH':
                         base_query = base_query.filter(
                             character_values__character=character,
-                            character_values__value_min__lte=v,
-                            character_values__value_max__gte=v)
+                            character_values__value_min__lte=float(v),
+                            character_values__value_max__gte=float(v),
+                            )
 
                     else: # assume type 'TEXT'
                         base_query = base_query.filter(

@@ -191,6 +191,7 @@ class PileHandler(BasePileHandler):
                 default_filter.character.friendly_name
             filter['order'] = default_filter.order
             filter['value_type'] = default_filter.character.value_type
+            filter['unit'] = default_filter.character.unit
             filter['notable_exceptions'] = getattr(default_filter,
                                                    'notable_exceptions', u'')
             filter['key_characteristics'] = getattr(default_filter,
@@ -271,6 +272,7 @@ class CharacterListingHandler(BaseHandler):
             c = {'friendly_name': char.friendly_name,
                  'short_name': char.short_name,
                  'value_type': char.value_type,
+                 'unit': char.unit,
                  'character_group': char.character_group.name,
                  'species_count': count}
             d[char.name] = c

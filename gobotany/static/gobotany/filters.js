@@ -16,6 +16,7 @@ dojo.declare("gobotany.filters.Filter", null, {
     order: 0,
     pile_slug: "",
     value_type: "",
+    unit: "",
     selected_value: null,
     constructor: function(args) {
         this.character_short_name = args.character_short_name;
@@ -23,6 +24,7 @@ dojo.declare("gobotany.filters.Filter", null, {
         this.order = args.order;
         this.pile_slug = args.pile_slug;
         this.value_type = args.value_type;
+        this.unit = args.unit;
         dojo.safeMixin(this, args);
         var url = '/piles/' + this.pile_slug + '/' + 
                   this.character_short_name + '/';
@@ -66,21 +68,14 @@ dojo.declare("gobotany.filters.MultipleChoiceFilter",
 dojo.declare('gobotany.filters.NumericRangeFilter',
              [gobotany.filters.MultipleChoiceFilter], {
     process_value: function(character_value, index) {
-        // We make this.values a one-element list: [{min: a, max: b}]
-        if (this.values.length) {
-            var v = this.values[0];
-            if (v.min > character_value.value_min) {
-                v.min = character_value.value_min;
-            }
-            if (v.max < character_value.value_max) {
-                v.max = character_value.value_max;
-            }
-        } else {
-            this.values = [{
-                min: character_value.value_min,
-                max: character_value.value_max
-            }];
-        }
+        // We make this.values an object: {min: a, max: b}
+        if (this.values.length == 0) this.values = {};
+        if (character_value.value == null) return;
+        var v = this.values;
+        var vmin = character_value.value[0];
+        var vmax = character_value.value[1];
+        if (vmin != null && (v.min == null || v.min > vmin)) v.min = vmin;
+        if (vmax != null && (v.max == null || v.max < vmax)) v.max = vmax;
     }
 });
 
@@ -209,6 +204,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                 notable_exceptions: filter_json.notable_exceptions,
                 key_characteristics: filter_json.key_characteristics,
                 value_type: filter_json.value_type,
+                unit: filter_json.unit,
                 pile_slug: this.pile_slug
             }
         );
@@ -239,6 +235,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                     notable_exceptions: null,
                     key_characteristics: null,
                     value_type: null,
+                    unit: null,
                     pile_slug: this.pile_slug
                 }
             );

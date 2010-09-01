@@ -123,13 +123,19 @@ gobotany.sk.results.show_filter_working = function(event) {
 
         // Create a slider with horizontal rules and labels.
 
-        var range = this.values[0];
-        var label = dojo.place('<label>Type an integer value:<br>' +
-                   '(hint: between ' + range.min + ' and ' +
-                   range.max + ')<br>' +
+        console.log(this);
+        var themin = this.values.min;
+        var themax = this.values.max;
+        var themiddle = (themax + themin) / 2.0;
+
+        var label = dojo.place('<label>Select a length between<br>' +
+                               this.values.min + '&thinsp;' +
+                               this.unit + ' and ' +
+                               this.values.max + '&thinsp;' +
+                               this.unit + '<br>' +
                    '<input type="text" id="int_value" name="int_value"' +
                    ' dojoType="dijit.form.TextBox"' +
-                   ' value=""></label>',
+                   ' value="' + String(themiddle) + '"></label>',
                    valuesList);
         var sliderNode = document.createElement('div');
         valuesList.appendChild(sliderNode);
@@ -147,12 +153,13 @@ gobotany.sk.results.show_filter_working = function(event) {
             count: 6,
             style: "height:1.5em;font-size:75%;color:gray;"
         }, rulesNode2);
+
         var slider = new dijit.form.HorizontalSlider({
             name: "character_slider",
-            value: 5,
-            minimum: 0,
-            maximum: 10,
-            discreteValues: 101,
+            value: themiddle,
+            minimum: themin,
+            maximum: themax,
+            discreteValues: themax - themin + 1,
             intermediateChanges: true,
             style: "width:200px;",
             onChange: function(value) {
