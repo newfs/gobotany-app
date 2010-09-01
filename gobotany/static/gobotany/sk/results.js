@@ -64,7 +64,6 @@ gobotany.sk.results.init = function(pile_slug) {
     var form = dijit.byId('more_filters_form');
     dojo.connect(form, 'onSubmit', null,
                  gobotany.sk.results.get_more_filters);
-    
 
     // Wire up the Apply button in the filter working area.
     var apply_button = dojo.query('#character_values_form button')[0];
@@ -75,11 +74,24 @@ gobotany.sk.results.init = function(pile_slug) {
     // filters for the pile.
     filter_manager = new gobotany.filters.FilterManager(
                          {pile_slug: pile_slug});
-    gobotany.sk.results.refresh_default_filters();
-
-    // We start with no filter values selected so we can run the query before they load
-    gobotany.sk.results.run_filtered_query();
     
+    // Check the URL for filter state information and if found, restore.
+    var hash_string = '';
+    var hash_index = window.location.href.indexOf('#');
+    if (hash_index > -1) {
+        hash_string = window.location.href.substring(hash_index + 1);
+    }
+    if (hash_string.length) {
+        gobotany.sk.results.restore_filters(hash_string);
+    }
+    else {
+        gobotany.sk.results.refresh_default_filters();
+        
+        // We start with no filter values selected so we can run the query before they load
+        gobotany.sk.results.run_filtered_query();
+        // ^ TODO: maybe later move this back outside this if statement so it gets run no matter what
+    }
+
     dojo.subscribe("results_loaded", gobotany.sk.results.populate_image_types);
 
     // Update images on selction change
@@ -90,6 +102,10 @@ gobotany.sk.results.init = function(pile_slug) {
     // everytime pile info is loaded by filtermanager, update everything
     dojo.connect(filter_manager, 'on_pile_info_loaded',
                  gobotany.sk.results.setup_pile_info)
+};
+
+gobotany.sk.results.restore_filters = function(hash_string) {
+    alert('hash string: ' + hash_string);
 };
 
 gobotany.sk.results.setup_pile_info = function() {
