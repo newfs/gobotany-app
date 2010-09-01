@@ -47,9 +47,10 @@ class Importer(object):
     def __init__(self, logfile=sys.stdout):
         self.logfile = logfile
 
-    def import_data(self, pilef, pile_images, taxaf, charf, charvf,
-                    char_glossaryf, glossaryf, glossary_images,
+    def import_data(self, pilegroupf, pilef, pile_images, taxaf, charf,
+                    charvf, char_glossaryf, glossaryf, glossary_images,
                     *taxonfiles):
+        self._import_pile_groups(pilegroupf)
         self._import_piles(pilef, pile_images)
         self._import_taxa(taxaf)
         self._import_characters(charf)
@@ -96,8 +97,24 @@ class Importer(object):
                 content_image.save()
                 print >> self.logfile, u'    Added Pile Image:', filename
 
+    def _import_pile_groups(self, pilegroupf):
+        print >> self.logfile, 'Setting up pile groups'
+        iterator = iter(CSVReader(pilegroupf).read())
+        colnames = [x.lower() for x in iterator.next()]
+
+        for cols in iterator:
+            row = dict(zip(colnames, cols))
+
+            pilegroup, created = models.PileGroup.objects.get_or_create(
+                name=row['name'],
+                friendly_name=row['friendly_name'],
+                key_characteristics=row['key_characteristics'],
+                notable_exceptions=row['notable_exceptions'])
+            if created:
+                print >> self.logfile, u'  New PileGroup:', pilegroup
+
     def _import_piles(self, pilef, pile_images):
-        print >> self.logfile, 'Setting up pile groups and piles'
+        print >> self.logfile, 'Setting up piles'
         iterator = iter(CSVReader(pilef).read())
         colnames = [x.lower() for x in iterator.next()]
 
@@ -129,9 +146,6 @@ class Importer(object):
             if row['pile_group']:
                 pilegroup, created = models.PileGroup.objects.get_or_create(
                     name=row['pile_group'].title())
-                # TODO: Are friendly_name and description important to set for
-                # a Pile Group? (The schema allows for them.) If so, will need
-                # to decide how to obtain those values.
                 if created:
                     print >> self.logfile, u'  New PileGroup:', pilegroup
                 if pile_images:
@@ -141,9 +155,11 @@ class Importer(object):
             pile, created = models.Pile.objects.get_or_create(
                 name=row['name'].title())
             pile.pilegroup = pilegroup
-            # Update the friendly name and description.
+            # Update various fields.
             pile.friendly_name = row['friendly_name']
             pile.description = row['description']
+            pile.key_characteristics = row['key_characteristics']
+            pile.notable_exceptions = row['notable_exceptions']
             pile.save()
             if pile_images:
                 self._add_pile_images(pile, pile_images, pile_prefixes)
@@ -316,6 +332,10 @@ class Importer(object):
 
             eoo = row['ease_of_observability']
             eoo = int(eoo)
+            
+            key_chars = row['key_characteristics']
+            notable_ex = row['notable_exceptions']
+            
             res = models.Character.objects.filter(short_name=short_name)
             if len(res) == 0:
                 print >> self.logfile, u'      New Character: ' + short_name
@@ -326,7 +346,9 @@ class Importer(object):
                                              friendly_name=temp_friendly_name,
                                              character_group=chargroup,
                                              value_type=value_type,
-                                             ease_of_observability=eoo)
+                                             ease_of_observability=eoo,
+                                             key_characteristics=key_chars,
+                                             notable_exceptions=notable_ex)
                 character.save()
 
     def _import_character_values(self, f):
@@ -359,6 +381,9 @@ class Importer(object):
                 print >> self.logfile, u'      ERR: missing character:', short_name
                 continue
             character = res[0]
+            
+            key_chars = row['key_characteristics']
+            notable_ex = row['notable_exceptions']
 
             # note that CharacterValues can be used by multiple Characters
             res = models.CharacterValue.objects.filter(
@@ -366,7 +391,9 @@ class Importer(object):
                 character=character)
             if len(res) == 0:
                 cv = models.CharacterValue(value_str=row['character_value'],
-                                           character=character)
+                                           character=character,
+                                           key_characteristics=key_chars,
+                                           notable_exceptions=notable_ex)
                 cv.save()
                 print >> self.logfile, u'  New Character Value: %s for Character: %s [%s]' % (cv.value_str, character.name, row['character'])
             else:
