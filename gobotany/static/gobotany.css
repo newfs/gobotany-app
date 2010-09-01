@@ -149,6 +149,10 @@ p {
     padding: 2em 0;
 }
 
+#filter-working .dijitSliderButtonContainerH {
+    padding: 0;
+}
+
 #plants {
     height: 350px;
     overflow: auto;

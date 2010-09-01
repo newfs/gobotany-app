@@ -123,10 +123,9 @@ gobotany.sk.results.show_filter_working = function(event) {
 
         // Create a slider with horizontal rules and labels.
 
-        console.log(this);
         var themin = this.values.min;
         var themax = this.values.max;
-        var themiddle = (themax + themin) / 2.0;
+        var startvalue = (themax + themin) / 2.0;
 
         var label = dojo.place('<label>Select a length between<br>' +
                                this.values.min + '&thinsp;' +
@@ -135,7 +134,7 @@ gobotany.sk.results.show_filter_working = function(event) {
                                this.unit + '<br>' +
                    '<input type="text" id="int_value" name="int_value"' +
                    ' dojoType="dijit.form.TextBox"' +
-                   ' value="' + String(themiddle) + '"></label>',
+                   ' value="' + String(startvalue) + '"></label>',
                    valuesList);
         var sliderNode = document.createElement('div');
         valuesList.appendChild(sliderNode);
@@ -145,18 +144,24 @@ gobotany.sk.results.show_filter_working = function(event) {
         valuesList.appendChild(rulesNode2);
         var ruleticks = new dijit.form.HorizontalRule({
             container: "topDecoration",
-            count: 10,
+            count: themax - themin + 1,
             style: "height:10px;"
         }, rulesNode1);
+        var mylabels = [];
+        for (i=themin; i <= themax; i++) {
+            mylabels.push(String(i));
+        }
         var rulelabels = new dijit.form.HorizontalRuleLabels({
             container: "topDecoration",
-            count: 6,
+            count: themax - themin + 1,
+            labels: mylabels,
             style: "height:1.5em;font-size:75%;color:gray;"
         }, rulesNode2);
-
+        console.log(mylabels);
         var slider = new dijit.form.HorizontalSlider({
             name: "character_slider",
-            value: themiddle,
+            showButtons: false,
+            value: startvalue,
             minimum: themin,
             maximum: themax,
             discreteValues: themax - themin + 1,
