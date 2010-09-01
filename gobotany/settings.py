@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 
     'haystack',
     'sorl.thumbnail',
+    'tinymce',
     ]
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -77,3 +78,6 @@ DEBUG_DOJO = bool(int(os.environ.get('DEBUG_DOJO', False)))
 HAYSTACK_SITECONF = 'gobotany.simplekey.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'solr'
 HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
+
+TINYMCE_JS_URL = MEDIA_URL + "tinymce/tiny_mce/tiny_mce.js"
+TINYMCE_JS_ROOT = os.path.join(MEDIA_ROOT, "tinymce/tiny_mce")

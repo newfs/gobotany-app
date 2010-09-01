@@ -3,6 +3,7 @@ from django.conf.urls.defaults import include, patterns
 import gobotany.api.urls
 import gobotany.core.urls
 import gobotany.simplekey.urls
+import tinymce.urls
 
 handler404 = 'django.views.defaults.page_not_found'
 handler500 = 'django.views.defaults.server_error'
@@ -10,6 +11,7 @@ handler500 = 'django.views.defaults.server_error'
 urlpatterns = patterns(
     '',
     (r'^simple/', include('gobotany.simplekey.urls')),
+    (r'^tinymce/', include('tinymce.urls')),
     )
 
 urlpatterns += gobotany.core.urls.urlpatterns

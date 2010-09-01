@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
 from django.template.defaultfilters import slugify
 from sorl.thumbnail.fields import ImageWithThumbnailsField
+from tinymce import models as tinymce_models
 
 
 class CharacterGroup(models.Model):
@@ -260,7 +261,7 @@ class PileInfo(models.Model):
     description = models.CharField(max_length=2500, blank=True)
     images = generic.GenericRelation('ContentImage')
     youtube_id = models.CharField(max_length=20, blank=True)
-    key_characteristics = models.TextField(blank=True)
+    key_characteristics = tinymce_models.HTMLField(blank=True)
     notable_exceptions = models.TextField(blank=True)
 
     class Meta:
