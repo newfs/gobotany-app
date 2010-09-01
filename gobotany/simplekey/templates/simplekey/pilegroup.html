@@ -2,6 +2,15 @@
 {% block content %}
   <div class="PilePage" id="pile-finder">
     <h1>The pilegroup: {{ pilegroup.name }}</h1>
+    
+    <h2>Key Characteristics</h2>
+    {{ pilegroup.key_characteristics|safe }}
+    
+    <h2>Notable Exceptions</h2>
+    {{ pilegroup.notable_exceptions|safe }}
+    
+    <hr>
+    
     <p>
       Which of the following best describes your plant?
     </p>

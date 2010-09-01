@@ -308,6 +308,23 @@ ul#glossary li:nth-child(even) {
     display: block;
 }
 
+.PilePage h2 {
+    font-size: 1.3em;
+}
+
+.PilePage h2 + ul, .KeyCharacteristics ul {
+    list-style: disc;
+    margin-left: 24px;
+}
+.PilePage h2 + ol, .NotableExceptions ol {
+    list-style-type: decimal;
+    margin-left: 32px;
+}
+
+.PilePage hr {
+    color: #eee;
+}
+
 /* Search form at the top of each page. */
 
 #headsearch {
