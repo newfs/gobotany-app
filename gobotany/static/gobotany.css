@@ -312,11 +312,11 @@ ul#glossary li:nth-child(even) {
     font-size: 1.3em;
 }
 
-.PilePage h2 + ul, .KeyCharacteristics ul {
+.PilePage h2 + ul, .KeyCharacteristics ul, .NotableExceptions ul, .key-characteristics ul, .notable-exceptions ul {
     list-style: disc;
     margin-left: 24px;
 }
-.PilePage h2 + ol, .NotableExceptions ol {
+.PilePage h2 + ol, .KeyCharacteristics ol, .NotableExceptions ol, .key-characteristics ol, .notable-exceptions ol {
     list-style-type: decimal;
     margin-left: 32px;
 }
@@ -358,6 +358,10 @@ ul#glossary li:nth-child(even) {
 
 #search_results_list .excerpt {
     color: #070;
+}
+
+#results-display {
+    clear: left;
 }
 
 /* Dijit Claro overrides */

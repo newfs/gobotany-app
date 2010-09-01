@@ -679,8 +679,8 @@ class Importer(object):
             pile=pile,
             character=character,
             order=1,
-            key_characteristics=u'1 ugh erg guah',
-            notable_exceptions=u'1 foo bar')
+            key_characteristics=character.key_characteristics,
+            notable_exceptions=character.notable_exceptions)
         filter.save()
 
         character = models.Character.objects.get(short_name='spore_form')
@@ -688,8 +688,8 @@ class Importer(object):
             pile=pile,
             character=character,
             order=2,
-            key_characteristics=u'2 ugh erg guah',
-            notable_exceptions=u'2 foo bar')
+            key_characteristics=character.key_characteristics,
+            notable_exceptions=character.notable_exceptions)
 
         filter.save()
 
@@ -698,8 +698,8 @@ class Importer(object):
             pile=pile,
             character=character,
             order=3,
-            key_characteristics=u'3 ugh erg guah',
-            notable_exceptions=u'3 foo bar')
+            key_characteristics=character.key_characteristics,
+            notable_exceptions=character.notable_exceptions)
 
         filter.save()
 
