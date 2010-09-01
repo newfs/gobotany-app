@@ -322,8 +322,13 @@ class CharacterValuesHandler(BaseHandler):
 
             species = models.Taxon.objects.filter(character_values=cv)
             count = species.count()
+            key_characteristics = cv.key_characteristics
+            notable_exceptions = cv.notable_exceptions
             if count > 0:
-                yield {'value': cv.value, 'count': count}
+                yield {'value': cv.value,
+                       'count': count,
+                       'key_characteristics': key_characteristics,
+                       'notable_exceptions': notable_exceptions}
 
     # Piston doesn't seem to like being returned a generator
     def read(self, request, pile_slug, character_short_name):

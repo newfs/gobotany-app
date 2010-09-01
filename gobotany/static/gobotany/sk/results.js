@@ -107,6 +107,19 @@ gobotany.sk.results.setup_pile_info = function() {
     console.log('family and genus filters added');
 };
 
+// Update the filter working area "help text," which consists of the Key
+// Characteristics and Notable Exceptions areas.
+gobotany.sk.results.update_filter_working_help_text = function(event) {
+    // Here the 'this.' is either a filter object or character value object
+    // passed in as a context.
+    
+    var kc = dojo.query('#filter-working .info .key-characteristics')[0];
+    kc.innerHTML = this.key_characteristics;
+
+    var ne = dojo.query('#filter-working .info .notable-exceptions')[0];
+    ne.innerHTML = this.notable_exceptions;
+}
+
 gobotany.sk.results.show_filter_working = function(event) {
     event.preventDefault();
 
@@ -182,13 +195,32 @@ gobotany.sk.results.show_filter_working = function(event) {
 
         // Create the radio-button widget.
 
-        dojo.place('<label><input type="radio" name="char_name" value="" ' +
-                   'checked> don&apos;t know</label>', valuesList);
+        // Create a Don't Know radio button item.
+        var item_html = '<input type="radio" name="char_name" value="" ' +
+                   'checked> don&apos;t know';
+        var dont_know_item = dojo.create('label',
+                                         {'innerHTML': item_html});
+        // Connect this radio button item to a function that will set the
+        // Key Characteristics and Notable Exceptions for this filter.
+        // Here the *filter* is passed as the context.
+        dojo.connect(dont_know_item, 'onclick', this,
+                     gobotany.sk.results.update_filter_working_help_text);
+        dojo.place(dont_know_item, valuesList);
+
+        // Create radio button items for each character value.
         for (var i = 0; i < this.values.length; i++) {
             var v = this.values[i];
-            dojo.place('<label><input type="radio" name="char_name" ' +
-                       'value="' + v.value + '"> ' + v.value +
-                       ' (' + v.count + ')</label>', valuesList);
+            var item_html = '<input type="radio" name="char_name" value="' +
+                v.value + '"> ' + v.value + ' (' + v.count + ')';
+            var character_value_item = dojo.create('label',
+                                                   {'innerHTML': item_html});
+            // Connect this character value radio button item to a function
+            // that will set the Key Characteristics and Notable Exceptions for
+            // this particular character value. Here the *character value*
+            // is passed as the context.
+            dojo.connect(character_value_item, 'onclick', v,
+                         gobotany.sk.results.update_filter_working_help_text);
+            dojo.place(character_value_item, valuesList);
         }
 
         // If the user has already selected a value for this filter, we
@@ -203,6 +235,9 @@ gobotany.sk.results.show_filter_working = function(event) {
         }
         dojo.query(selector)[0].checked = true;
     }
+
+    // Set the key characteristics and notable exceptions for the filter
+    // (character). (Elsewhere these will be set for character values.)
 
     var kc = dojo.query('#filter-working .info .key-characteristics')[0];
     kc.innerHTML = this.key_characteristics;

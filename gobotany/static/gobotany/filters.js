@@ -17,6 +17,8 @@ dojo.declare("gobotany.filters.Filter", null, {
     pile_slug: "",
     value_type: "",
     unit: "",
+    key_characteristics: null,
+    notable_exceptions: null,
     selected_value: null,
     constructor: function(args) {
         this.character_short_name = args.character_short_name;
@@ -43,8 +45,12 @@ dojo.declare("gobotany.filters.Filter", null, {
 dojo.declare("gobotany.filters.MultipleChoiceFilter", 
              [gobotany.filters.Filter], {
     values: null,
+    key_characteristics_for_values: null,
+    notable_exceptions_for_values: null,
     constructor: function(args) {
         this.values = [];
+        key_characteristics_for_values = [];
+        notable_exceptions_for_values = [];
     },
     load_values: function(args) {
         this.store.fetch({
