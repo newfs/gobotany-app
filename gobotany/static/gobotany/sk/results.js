@@ -127,6 +127,11 @@ gobotany.sk.results.show_filter_working = function(event) {
         var themax = this.values.max;
         var startvalue = (themax + themin) / 2.0;
 
+        var selectedvalue = filter_manager.get_selected_value(
+            this.character_short_name);
+        if (selectedvalue != null)
+            startvalue = selectedvalue;
+
         var label = dojo.place('<label>Select a length between<br>' +
                                this.values.min + '&thinsp;' +
                                this.unit + ' and ' +
@@ -147,6 +152,7 @@ gobotany.sk.results.show_filter_working = function(event) {
             count: themax - themin + 1,
             style: "height:10px;"
         }, rulesNode1);
+
         var mylabels = [];
         for (i=themin; i <= themax; i++) {
             mylabels.push(String(i));
@@ -157,7 +163,7 @@ gobotany.sk.results.show_filter_working = function(event) {
             labels: mylabels,
             style: "height:1.5em;font-size:75%;color:gray;"
         }, rulesNode2);
-        console.log(mylabels);
+
         var slider = new dijit.form.HorizontalSlider({
             name: "character_slider",
             showButtons: false,

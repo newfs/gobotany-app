@@ -249,7 +249,9 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                 // Character values must be stringified, since their
                 // .length is checked before allowing them to become
                 // part of our query URL.
-                this.filters[i].selected_value = String(selected_value);
+                if (selected_value != null)
+                    selected_value = String(selected_value);
+                this.filters[i].selected_value = selected_value;
                 return;
             }
         }
