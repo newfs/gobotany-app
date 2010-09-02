@@ -154,6 +154,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                                                 notable_exceptions: item.filter.notable_exceptions,
                                                 key_characteristics: item.filter.key_characteristics,
                                                 value_type: item.value_type,
+                                                unit: item.unit,
                                                 pile_slug: this.filter_manager.pile_slug
                                             },
                                         }));
