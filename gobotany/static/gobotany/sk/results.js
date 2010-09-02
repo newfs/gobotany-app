@@ -233,34 +233,17 @@ gobotany.sk.results.show_filter_working = function(event) {
                                this.values.min + '&thinsp;' +
                                this.unit + ' and ' +
                                this.values.max + '&thinsp;' +
-                               this.unit + '<br>' +
-                   '<input type="text" id="int_value" name="int_value"' +
-                   ' dojoType="dijit.form.TextBox"' +
-                   ' value="' + String(startvalue) + '"></label>',
-                   valuesList);
-        var sliderNode = document.createElement('div');
-        valuesList.appendChild(sliderNode);
-        var rulesNode1 = document.createElement('div');
-        valuesList.appendChild(rulesNode1);
-        var rulesNode2 = document.createElement('div');
-        valuesList.appendChild(rulesNode2);
-        var ruleticks = new dijit.form.HorizontalRule({
-            container: "topDecoration",
-            count: themax - themin + 1,
-            style: "height:10px;"
-        }, rulesNode1);
+                               this.unit + '<br></label>',
+                               valuesList);
 
-        var mylabels = [];
-        for (i=themin; i <= themax; i++) {
-            mylabels.push(String(i));
-        }
-        var rulelabels = new dijit.form.HorizontalRuleLabels({
-            container: "topDecoration",
-            count: themax - themin + 1,
-            labels: mylabels,
-            style: "height:1.5em;font-size:75%;color:gray;"
-        }, rulesNode2);
+        var input = dojo.create('input', {
+            type: 'text',
+            name: 'int_value',
+            value: String(startvalue),
+            disabled: true
+        }, label);
 
+        var slider_node = dojo.create('div', null, valuesList);
         var slider = new dijit.form.HorizontalSlider({
             name: "character_slider",
             showButtons: false,
@@ -271,9 +254,28 @@ gobotany.sk.results.show_filter_working = function(event) {
             intermediateChanges: true,
             style: "width:200px;",
             onChange: function(value) {
-                dojo.byId("int_value").value = value;
+                dojo.attr(input, 'value', value);
             }
-        }, sliderNode);
+        }, slider_node);
+        
+        var rule_node = dojo.create('div', null, slider.containerNode);
+        var ruleticks = new dijit.form.HorizontalRule({
+            container: "topDecoration",
+            count: themax - themin + 1,
+            style: "height:10px;"
+        }, rule_node);
+        
+        var labels_node = dojo.create('div', null, slider.containerNode);
+        var mylabels = [];
+        for (i=themin; i <= themax; i++) {
+            mylabels.push(String(i));
+        }
+        var rule_labels = new dijit.form.HorizontalRuleLabels({
+            container: "bottomDecoration",
+            count: themax - themin + 1,
+            labels: mylabels,
+            style: "height:1.5em;font-size:75%;color:gray;width:200px"
+        }, labels_node);        
 
     } else {
 
