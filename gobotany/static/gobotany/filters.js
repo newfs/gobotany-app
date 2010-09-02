@@ -137,6 +137,30 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                                     this.args.onLoaded(lst);
                                 }});
     },
+    
+    query_filters: function(args) {
+        this.chars_store.fetch({query: {include: args.short_names || [],
+                                        include_filter: 1},
+                                scope: {filter_manager: this, args: args},
+                                onComplete: function(items) {
+                                    var lst = [];
+                                    for (var x = 0; x < items.length; x++) {
+                                        var item = items[x];
+                                        lst.push(this.filter_manager.add_filter({
+                                            filter_json: {
+                                                character_friendly_name: item.friendly_name,
+                                                character_short_name: item.short_name,
+                                                order: 0,
+                                                notable_exceptions: item.filter.notable_exceptions,
+                                                key_characteristics: item.filter.key_characteristics,
+                                                value_type: item.value_type,
+                                                pile_slug: this.filter_manager.pile_slug
+                                            },
+                                        }));
+                                    }
+                                    this.args.onLoaded(lst);
+                                }});
+    },
 
     load_pile_info: function(args) {
         var store = this.store;

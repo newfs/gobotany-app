@@ -249,6 +249,9 @@ class CharacterListingHandler(BaseHandler):
         character_groups = [int(x)
                             for x in request.GET.getlist('character_groups')]
         exclude_chars = request.GET.getlist('exclude')
+        include_chars = request.GET.getlist('include')
+        print 'include_chars:'
+        print include_chars
 
         pile = models.Pile.objects.get(slug=pile_slug)
         d = {}
@@ -259,6 +262,9 @@ class CharacterListingHandler(BaseHandler):
 
             if character_groups and \
                    char.character_group.id not in character_groups:
+                continue
+
+            if include_chars and char.short_name not in include_chars:
                 continue
 
             count = 0
