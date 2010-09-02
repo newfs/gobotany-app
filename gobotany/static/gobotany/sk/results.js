@@ -205,7 +205,7 @@ gobotany.sk.results.update_filter_working_help_text = function(event) {
 }
 
 gobotany.sk.results.show_filter_working = function(event) {
-    event.preventDefault();
+    dojo.stopEvent(event);
 
     // Here the 'this.' is a filter object passed in as a context.
 
