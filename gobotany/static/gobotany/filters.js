@@ -45,12 +45,8 @@ dojo.declare("gobotany.filters.Filter", null, {
 dojo.declare("gobotany.filters.MultipleChoiceFilter", 
              [gobotany.filters.Filter], {
     values: null,
-    key_characteristics_for_values: null,
-    notable_exceptions_for_values: null,
     constructor: function(args) {
         this.values = [];
-        key_characteristics_for_values = [];
-        notable_exceptions_for_values = [];
     },
     load_values: function(args) {
         this.store.fetch({

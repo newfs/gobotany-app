@@ -6,6 +6,8 @@
 dojo.provide('gobotany.sk.results');
 dojo.require('dojox.data.JsonRestStore');
 dojo.require('gobotany.filters');
+dojo.require('dojo.cookie');
+dojo.require('dojo.hash');
 dojo.require('dojo.html');
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.Dialog');
@@ -89,8 +91,12 @@ gobotany.sk.results.init = function(pile_slug) {
         
         // We start with no filter values selected so we can run the query before they load
         gobotany.sk.results.run_filtered_query();
-        // ^ TODO: maybe later move this back outside this if statement so it gets run no matter what
+        // ^ TODO: probably later move this back outside this if statement so it
+        // gets run no matter what.
     }
+
+    dojo.subscribe("/dojo/hashchange", filter_manager,
+                   gobotany.sk.results.persist_hash);
 
     dojo.subscribe("results_loaded", gobotany.sk.results.populate_image_types);
 
@@ -103,6 +109,10 @@ gobotany.sk.results.init = function(pile_slug) {
     dojo.connect(filter_manager, 'on_pile_info_loaded',
                  gobotany.sk.results.setup_pile_info)
 };
+
+gobotany.sk.results.persist_hash = function() {
+    dojo.cookie('last_plant_id_url', window.location.href, {path: '/'});
+}
 
 gobotany.sk.results.restore_filters = function(hash_string) {
     alert('hash string: ' + hash_string);
