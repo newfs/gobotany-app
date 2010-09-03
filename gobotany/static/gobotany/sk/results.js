@@ -896,18 +896,18 @@ gobotany.sk.results.get_more_filters = function(event) {
     button.set('disabled', true);
 
     var menu = dijit.byId('character_groups_menu');
-    var character_groups = [];
+    var character_group_ids = [];
     for (var x = 0; x < menu.getChildren().length; x++) {
         var item = menu.getChildren()[x];
         if (item.checked)
-            character_groups.push(item.value);
+            character_group_ids.push(item.value);
     }
 
     var existing = [];
     for (var x = 0; x < filter_manager.filters.length; x++)
         existing.push(filter_manager.filters[x].character_short_name);
     filter_manager.query_best_filters({
-        character_groups: character_groups,
+        character_group_ids: character_group_ids,
         existing_characters: existing,
         onLoaded: function(items) {
             if (items.length > 0)

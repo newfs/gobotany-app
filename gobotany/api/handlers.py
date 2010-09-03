@@ -249,7 +249,7 @@ class CharacterListingHandler(BaseHandler):
         by_short_name = dict( (c.short_name, c) for c in cl )
         return [ by_short_name[short_name] for short_name in short_names ]
 
-    def _choose_best(self, count, species_ids, character_groups,
+    def _choose_best(self, count, species_ids, character_group_ids,
                      exclude_short_names):
         """Return a list of characters, best first, for these species.
 
@@ -260,7 +260,6 @@ class CharacterListingHandler(BaseHandler):
 
         """
         eclist = igdt.get_best_characters(species_ids)
-        print "character groups:", character_groups
         characters = []
 
         for entropy, character_id in eclist:
@@ -271,6 +270,9 @@ class CharacterListingHandler(BaseHandler):
             if character.value_type != 'TEXT':
                 continue
             if character.short_name in exclude_short_names:
+                continue
+            if character_group_ids and (character.character_group_id
+                                        not in character_group_ids):
                 continue
 
             # Otherwise, keep this character!
@@ -321,13 +323,15 @@ class CharacterListingHandler(BaseHandler):
         species_ids = request.GET.getlist('species_id')
 
         if choose_best and species_ids:
-            character_groups = set(request.GET.getlist('character_group'))
+            character_group_ids = set(
+                int(n) for n in request.GET.getlist('character_group_id')
+                )
             exclude_short_names = set(request.GET.getlist('exclude'))
             exclude_short_names.update(include_short_names)
             characters.extend(self._choose_best(
                     count=choose_best,
                     species_ids=species_ids,
-                    character_groups=character_groups,
+                    character_group_ids=character_group_ids,
                     exclude_short_names=exclude_short_names,
                     ))
 

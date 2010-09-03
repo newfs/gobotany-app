@@ -117,8 +117,8 @@ dojo.declare("gobotany.filters.FilterManager", null, {
             choose_best = args.choose_best;
         this.chars_store.fetch({
             query: {choose_best: choose_best,
-                    species_id: this.species_ids,
-                    character_group: args.character_groups || [],
+                    species_id: this.species_ids || [],
+                    character_group_id: args.character_group_ids || [],
                     exclude: args.existing_characters || [],
                     include_filter: 1},
             scope: {filter_manager: this, args: args},
