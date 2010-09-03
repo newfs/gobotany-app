@@ -1,7 +1,7 @@
+from django.shortcuts import get_object_or_404
 from gobotany.core import botany, igdt, models
 from piston.handler import BaseHandler
 from piston.utils import rc
-
 
 def _taxon_image(image):
     if image:
@@ -311,7 +311,10 @@ class CharacterListingHandler(BaseHandler):
     def read(self, request, pile_slug):
         """Returns a list of characters."""
 
-        pile = models.Pile.objects.get(slug=pile_slug)
+        piles = models.Pile.objects.filter(slug=pile_slug).all()
+        if not piles:
+            return rc.NOT_FOUND
+        pile = piles
 
         # First, build a list of raw character values.
 

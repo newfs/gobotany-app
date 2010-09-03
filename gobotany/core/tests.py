@@ -31,6 +31,7 @@ class SampleData(TestCase):
         obj = type_(**kw)
         obj.save()
         setattr(self, name.lower().replace(' ', '_'), obj)
+        return obj
 
     def setup_sample_data(self):
         self.create(models.PileGroup, 'pilegroup1')
@@ -68,20 +69,21 @@ class SampleData(TestCase):
         self.create(models.Character, 'length',
                     character_group=self.dimensions, value_type=u'LENGTH')
 
-        self.create(models.CharacterValue, 'red', character=self.color)
-        self.create(models.CharacterValue, 'orange', character=self.color)
-        self.create(models.CharacterValue, 'gray', character=self.color)
-        self.create(models.CharacterValue, 'chartreuse', character=self.color)
+        def make_cv(name, **kw):
+            cv = self.create(models.CharacterValue, name, **kw)
+            self.pets.character_values.add(cv)
 
-        self.create(models.CharacterValue, 'cute', character=self.cuteness)
+        make_cv('red', character=self.color)
+        make_cv('orange', character=self.color)
+        make_cv('gray', character=self.color)
+        make_cv('chartreuse', character=self.color)
 
-        self.create(models.CharacterValue, 'size1',character=self.length,
-                    value_min=2, value_max=4)
-        self.create(models.CharacterValue, 'size2', character=self.length,
-                    value_min=3, value_max=4)
-        self.create(models.CharacterValue, 'size3',character=self.length,
-                    value_min=5, value_max=5)
+        make_cv('cute', character=self.cuteness)
 
+        make_cv('size1',character=self.length, value_min=2, value_max=4)
+        make_cv('size2', character=self.length, value_min=3, value_max=4)
+        make_cv('size3',character=self.length, value_min=5, value_max=5)
+        
         self.create(models.ImageType, 'habit')
         self.create(models.ImageType, 'stem')
         self.create(models.ImageType, 'pile image')
@@ -384,7 +386,12 @@ class APITests(SampleData):
             set([fox_stem_2]))
 
     def test_best_filters(self):
-        celist = igdt.get_best_filters(list(models.Taxon.objects.all()))
+        celist = igdt.get_best_characters(
+            self.carnivores, list(models.Taxon.objects.all()))
+        assert celist == []
+
+        celist = igdt.get_best_characters(
+            self.pets, list(models.Taxon.objects.all()))
         assert celist[0] == (0, 3)  # length is best filter, makes entropy 0
 
 

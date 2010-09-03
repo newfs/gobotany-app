@@ -34,17 +34,14 @@ def get_best_characters(pile, species_list):
     for tcv in taxon_character_values:
         cv_species_counts[tcv.character_value_id] += 1
 
-    # Create a plain list of the character-value IDs.  Remove character
-    # values from our list that do not belong to the pile under
-    # consideration.
+    # Remove character values from the dictionary that do not belong to
+    # the pile under consideration.
 
     pile_cv_ids = set( cv.id for cv in pile.character_values.all() )
 
-    for cv_id in cv_species_counts:
+    for cv_id in list(cv_species_counts):
         if cv_id not in pile_cv_ids:
             del cv_species_counts[cv_id]
-
-    cv_ids = cv_species_counts.keys()
 
     # Loop over the actual character-value objects whose IDs we just
     # listed, and update a `cvalues` dictionary whose keys are character
@@ -55,7 +52,7 @@ def get_best_characters(pile, species_list):
     cvalues = defaultdict(set)
     id_to_character_value = {}
 
-    for cv in CharacterValue.objects.filter(id__in=cv_ids):
+    for cv in CharacterValue.objects.filter(id__in=list(cv_species_counts)):
         cvalues[cv.character_id].add(cv)
         id_to_character_value[cv.id] = cv
 
@@ -68,8 +65,9 @@ def get_best_characters(pile, species_list):
     cspecies = defaultdict(set)
 
     for tcv in taxon_character_values:
-        cv = id_to_character_value[tcv.character_value_id]
-        cspecies[cv.character_id].add(tcv.taxon_id)
+        cv = id_to_character_value.get(tcv.character_value_id, None)
+        if cv is not None:  # since this might be an out-of-Pile char. value
+            cspecies[cv.character_id].add(tcv.taxon_id)
 
     # For each character (which, for efficiency, we know only by its ID
     # at this point), compute the entropy that will remain if we split
