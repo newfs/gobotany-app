@@ -125,3 +125,16 @@ def species_lists(request):
     return render_to_response('species_lists.html', {
             'biglist': biglist,
             })
+
+def pile_characters_select(request):
+    return render_to_response('pile_characters_select.html', {
+            'piles': [ (pile.slug, pile.name) for pile
+                       in models.Pile.objects.order_by('name') ],
+            })
+
+
+def pile_characters(request, pile_slug):
+    pile = models.Pile.objects.get(slug=pile_slug)
+    return render_to_response('pile_characters.html', {
+            'pile': pile,
+            })

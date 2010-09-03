@@ -15,6 +15,8 @@ urlpatterns = patterns(
     url(r'^glossary/?$', views.glossary_index),
     url(r'^canonical-images?$', views.canonical_images),
     url(r'^species-lists/$', views.species_lists),
+    url(r'^characters/$', views.pile_characters_select),
+    url(r'^characters/(?P<pile_slug>.*)/$', views.pile_characters),
 
     url(r'^static/(?P<path>.*)$', 'gobotany.core.views.static_serve',
         {'package': gobotany, 'relative_path': 'static', 'show_indexes': True}),

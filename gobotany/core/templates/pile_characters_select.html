@@ -1,0 +1,13 @@
+<html>
+<body>
+
+  <ul>
+    {% for pile_slug, pile_name in piles %}
+    <li>
+      <a href="{{ pile_slug }}">{{ pile_name }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+
+</body>
+</html>

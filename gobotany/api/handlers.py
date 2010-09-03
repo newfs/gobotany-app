@@ -249,8 +249,8 @@ class CharacterListingHandler(BaseHandler):
         by_short_name = dict( (c.short_name, c) for c in cl )
         return [ by_short_name[short_name] for short_name in short_names ]
 
-    def _choose_best(self, count, species_ids, character_group_ids,
-                     exclude_short_names):
+    def _choose_best(self, pile, count, species_ids,
+                     character_group_ids, exclude_short_names):
         """Return a list of characters, best first, for these species.
 
         `count` - how many characters to return.
@@ -259,7 +259,7 @@ class CharacterListingHandler(BaseHandler):
         `exclude_short_names` - characters to exclude from the list.
 
         """
-        eclist = igdt.get_best_characters(species_ids)
+        eclist = igdt.get_best_characters(pile, species_ids)
         characters = []
 
         for entropy, character_id in eclist:
@@ -311,6 +311,8 @@ class CharacterListingHandler(BaseHandler):
     def read(self, request, pile_slug):
         """Returns a list of characters."""
 
+        pile = models.Pile.objects.get(slug=pile_slug)
+
         # First, build a list of raw character values.
 
         characters = []
@@ -329,6 +331,7 @@ class CharacterListingHandler(BaseHandler):
             exclude_short_names = set(request.GET.getlist('exclude'))
             exclude_short_names.update(include_short_names)
             characters.extend(self._choose_best(
+                    pile=pile,
                     count=choose_best,
                     species_ids=species_ids,
                     character_group_ids=character_group_ids,

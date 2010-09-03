@@ -9,7 +9,7 @@ from collections import defaultdict
 
 from gobotany.core.models import CharacterValue, TaxonCharacterValue
 
-def get_best_characters(species_list):
+def get_best_characters(pile, species_list):
     """Find the most effective characters for narrowing down these species.
 
     The return value will be an already-sorted list of tuples, each of
@@ -34,13 +34,24 @@ def get_best_characters(species_list):
     for tcv in taxon_character_values:
         cv_species_counts[tcv.character_value_id] += 1
 
+    # Create a plain list of the character-value IDs.  Remove character
+    # values from our list that do not belong to the pile under
+    # consideration.
+
+    pile_cv_ids = set( cv.id for cv in pile.character_values.all() )
+
+    for cv_id in cv_species_counts:
+        if cv_id not in pile_cv_ids:
+            del cv_species_counts[cv_id]
+
+    cv_ids = cv_species_counts.keys()
+
     # Loop over the actual character-value objects whose IDs we just
     # listed, and update a `cvalues` dictionary whose keys are character
     # IDs and whose values are sets of character values - the character
     # values belonging to that character.  Also create a mapping from
     # character-value ID to character ID, to help us with our next loop.
 
-    cv_ids = cv_species_counts.keys()
     cvalues = defaultdict(set)
     id_to_character_value = {}
 

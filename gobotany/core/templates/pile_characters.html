@@ -1,0 +1,15 @@
+<html>
+<body>
+
+  <h1>Characters for pile {{ pile.name }}</h1>
+
+  <p>In order of “goodness” as measured by our entropy engine</p>
+
+  <p>
+    {% for character in characters %}
+    {{ character }}<br>
+    {% endfor %}
+  </p>
+
+</body>
+</html>
