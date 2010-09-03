@@ -19,36 +19,64 @@ def get_best_filters(species_list):
 
     """
     n = float(len(species_list))
-    tcvs = TaxonCharacterValue.objects.filter(taxon__in=species_list)
+
+    # Select all of the character values for these species.  We go ahead
+    # and turn this into a list because we will iterate across it twice.
+
+    taxon_character_values = list(
+        TaxonCharacterValue.objects.filter(taxon__in=species_list)
+        )
 
     # Count how many times each character value occurs amongst this
     # particular set of species.
 
-    cvcounts = defaultdict(int)
-    for tcv in tcvs:
-        cvcounts[tcv.character_value_id] += 1
+    cv_species_counts = defaultdict(int)
+    for tcv in taxon_character_values:
+        cv_species_counts[tcv.character_value_id] += 1
 
-    # Group these character values by the characters to which they
-    # belong.  This produces a dictionary whose keys are character IDs
-    # and whose values are sets containing character values.
+    # Loop over the actual character-value objects whose IDs we just
+    # listed, and update a `cvalues` dictionary whose keys are character
+    # IDs and whose values are sets of character values - the character
+    # values belonging to that character.  Also create a mapping from
+    # character-value ID to character ID, to help us with our next loop.
 
+    cv_ids = cv_species_counts.keys()
     cvalues = defaultdict(set)
-    for cv in CharacterValue.objects.filter(id__in=cvcounts.iterkeys()):
+    id_to_character_value = {}
+
+    for cv in CharacterValue.objects.filter(id__in=cv_ids):
         cvalues[cv.character_id].add(cv)
+        id_to_character_value[cv.id] = cv
+
+    # Create a dictionary `cspecies` of character IDs keys whose values
+    # are the set of species that have some character value that belongs
+    # to the given character.  This lets us detect which characters
+    # apply to only a small fraction of species, and which provide
+    # nearly every species with at least one character value.
+
+    cspecies = defaultdict(set)
+
+    for tcv in taxon_character_values:
+        cv = id_to_character_value[tcv.character_value_id]
+        cspecies[cv.character_id].add(tcv.taxon_id)
 
     # For each character (which, for efficiency, we know only by its ID
     # at this point), compute the entropy that will remain if we split
     # this group of species by that character's values.  We save this as
-    # a list of (entropy, character_id) tuples.
+    # a list of (entropy, character_id) tuples.  Note that we penalize
+    # characters which only apply to a small fraction of the species we
+    # are looking at.
 
     def f_entropy(m, n):
         return m / n * math.log(m, 2.)
 
     entropies = []
     for character_id, character_values in cvalues.iteritems():
-        entropy = sum( f_entropy(cvcounts[character_value.id], n)
+        entropy = sum( f_entropy(cv_species_counts[character_value.id], n)
                        for character_value in character_values )
-        entropies.append((entropy, character_id))
+        coverage = len(cspecies[character_id]) / n
+        penalty = 1. / coverage  # since small entropy is better
+        entropies.append((entropy * penalty, character_id))
 
     # Sort the resulting list and return it.
 
