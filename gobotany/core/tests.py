@@ -383,6 +383,11 @@ class APITests(SampleData):
             set(species_images('Vulpes fox', image_types='stem', max_rank=3)),
             set([fox_stem_2]))
 
+    def test_best_filters(self):
+        celist = igdt.get_best_filters(list(models.Taxon.objects.all()))
+        assert celist[0] == (0, 3)  # length is best filter, makes entropy 0
+
+
 class ImportTestCase(TestCase):
 
     def test_import_characters(self):

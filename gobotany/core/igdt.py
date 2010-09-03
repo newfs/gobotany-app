@@ -4,9 +4,59 @@ code located at:
   http://onlamp.com/python/2006/02/09/examples/dtree.tar.gz
   http://onlamp.com/pub/a/python/2006/02/09/ai_decision_trees.html?page=1
 '''
-
 import math
+from collections import defaultdict
 
+from gobotany.core.models import CharacterValue, TaxonCharacterValue
+
+def get_best_filters(species_list):
+    """Find the most effective characters for narrowing down these species.
+
+    The return value will be an already-sorted list of tuples, each of
+    which looks like::
+
+        (entropy, character_id)
+
+    """
+    n = float(len(species_list))
+    tcvs = TaxonCharacterValue.objects.filter(taxon__in=species_list)
+
+    # Count how many times each character value occurs amongst this
+    # particular set of species.
+
+    cvcounts = defaultdict(int)
+    for tcv in tcvs:
+        cvcounts[tcv.character_value_id] += 1
+
+    # Group these character values by the characters to which they
+    # belong.  This produces a dictionary whose keys are character IDs
+    # and whose values are sets containing character values.
+
+    cvalues = defaultdict(set)
+    for cv in CharacterValue.objects.filter(id__in=cvcounts.iterkeys()):
+        cvalues[cv.character_id].add(cv)
+
+    # For each character (which, for efficiency, we know only by its ID
+    # at this point), compute the entropy that will remain if we split
+    # this group of species by that character's values.  We save this as
+    # a list of (entropy, character_id) tuples.
+
+    def f_entropy(m, n):
+        return m / n * math.log(m, 2.)
+
+    entropies = []
+    for character_id, character_values in cvalues.iteritems():
+        entropy = sum( f_entropy(cvcounts[character_value.id], n)
+                       for character_value in character_values )
+        entropies.append((entropy, character_id))
+
+    # Sort the resulting list and return it.
+
+    entropies.sort()
+    return entropies
+
+
+# From here down is old code to refactor and incorporate when appropriate.
 
 class InformationTheoretic(object):
 
