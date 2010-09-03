@@ -94,6 +94,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
     character_groups: null,
     filters: null,
     species_count: 0,
+    species_ids: [],
     entries: [],
     constructor: function(args) {
         this.pile_slug = args.pile_slug;
@@ -116,7 +117,8 @@ dojo.declare("gobotany.filters.FilterManager", null, {
             choose_best = args.choose_best;
         this.chars_store.fetch({
             query: {choose_best: choose_best,
-                    character_groups: args.character_groups || [],
+                    species_id: this.species_ids,
+                    character_group: args.character_groups || [],
                     exclude: args.existing_characters || [],
                     include_filter: 1},
             scope: {filter_manager: this, args: args},
@@ -317,6 +319,9 @@ dojo.declare("gobotany.filters.FilterManager", null, {
             query: content,
             onComplete: function(data) {
                 this.species_count = data.items.length;
+                this.species_ids = [];
+                for (i=0; i < data.items.length; i++)
+                    this.species_ids[i] = data.items[i].id;
 
                 // Call the passed-in callback function.
                 onComplete(data);

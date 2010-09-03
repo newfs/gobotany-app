@@ -1,4 +1,4 @@
-from gobotany.core import botany, models
+from gobotany.core import botany, igdt, models
 from piston.handler import BaseHandler
 from piston.utils import rc
 
@@ -243,76 +243,100 @@ class PileGroupListingHandler(BaseHandler):
 class CharacterListingHandler(BaseHandler):
     methods_allowed = ('GET',)
 
-    def _read(self, request, pile_slug):
-        include_filter = bool(int(request.GET.get('include_filter', 0)))
-        choose_best = int(request.GET.get('choose_best', 0))
-        character_groups = [int(x)
-                            for x in request.GET.getlist('character_groups')]
-        exclude_chars = request.GET.getlist('exclude')
-        include_chars = request.GET.getlist('include')
-        print 'include_chars:'
-        print include_chars
+    def _get_characters(self, short_names):
+        """Return a list of characters with `short_names`, in that order."""
+        cl = models.Character.objects.filter(short_name__in=short_names)
+        by_short_name = dict( (c.short_name, c) for c in cl )
+        return [ by_short_name[short_name] for short_name in short_names ]
 
-        pile = models.Pile.objects.get(slug=pile_slug)
-        d = {}
-        for cv in pile.character_values.all():
-            char = cv.character
-            if exclude_chars and char.short_name in exclude_chars:
+    def _choose_best(self, count, species_ids, character_groups,
+                     exclude_short_names):
+        """Return a list of characters, best first, for these species.
+
+        `count` - how many characters to return.
+        `species_ids` - the species you want to distinguish.
+        `character_groups` - if non-empty, only characters from these groups.
+        `exclude_short_names` - characters to exclude from the list.
+
+        """
+        eclist = igdt.get_best_characters(species_ids)
+        print "character groups:", character_groups
+        characters = []
+
+        for entropy, character_id in eclist:
+            character = models.Character.objects.get(id=character_id)
+
+            # There are several reasons we might disqualify a character.
+
+            if character.value_type != 'TEXT':
+                continue
+            if character.short_name in exclude_short_names:
                 continue
 
-            if character_groups and \
-                   char.character_group.id not in character_groups:
-                continue
+            # Otherwise, keep this character!
 
-            if include_chars and char.short_name not in include_chars:
-                continue
+            characters.append(character)
+            if len(characters) == count:
+                break
 
-            count = 0
-            if choose_best:
-                count = models.Taxon.objects.filter(
-                    character_values=cv).count()
+        return characters
 
-            if char.name in d:
-                d[char.name]['species_count'] += count
-                continue
-            c = {'friendly_name': char.friendly_name,
-                 'short_name': char.short_name,
-                 'value_type': char.value_type,
-                 'unit': char.unit,
-                 'character_group': char.character_group.name,
-                 'species_count': count}
-            d[char.name] = c
-
-            if include_filter:
-                try:
-                    default_filter = models.DefaultFilter.objects.get(
-                        character=char)
-                    c['filter'] = {
-                        'notable_exceptions': getattr(default_filter,
-                                                      'notable_exceptions', u''),
-                        'key_characteristics': getattr(default_filter,
-                                                       'key_characteristics', u'')}
-                except models.DefaultFilter.DoesNotExist:
-                    c['filter'] = {
-                        'notable_exceptions': u'',
-                        'key_characteristics': u'',
-                        }
-        return d.values()
+    def _jsonify_character(self, character, include_filter):
+        c = {
+            'friendly_name': character.friendly_name,
+            'short_name': character.short_name,
+            'value_type': character.value_type,
+            'unit': character.unit,
+            'characteracter_group': character.character_group.name,
+            }
+        if include_filter:
+            try:
+                default_filter = models.DefaultFilter.objects.get(
+                    character=character)
+                c['filter'] = {
+                    'notable_exceptions':
+                        getattr(default_filter, 'notable_exceptions', u''),
+                    'key_characteristics':
+                        getattr(default_filter, 'key_characteristics', u''),
+                    }
+            except models.DefaultFilter.DoesNotExist:
+                c['filter'] = {
+                    'notable_exceptions': u'',
+                    'key_characteristics': u'',
+                    }
+        return c
 
     def read(self, request, pile_slug):
-        choose_best = int(request.GET.get('choose_best', 0))
-        try:
-            lst = self._read(request, pile_slug)
-        except models.Pile.DoesNotExist:
-            return rc.NOT_FOUND
+        """Returns a list of characters."""
 
-        if choose_best:
-            newlst = [x for x in sorted(
-                lst, lambda x, y: cmp(x['species_count'],
-                                      y['species_count']))
-                      if x['species_count'] > 0]
-            lst = newlst[0:choose_best]
-        return list(reversed(lst))
+        # First, build a list of raw character values.
+
+        characters = []
+
+        include_short_names = request.GET.getlist('include')
+        if include_short_names:
+            characters.extend(self._get_characters(include_short_names))
+
+        choose_best = int(request.GET.get('choose_best', 0))
+        species_ids = request.GET.getlist('species_id')
+
+        if choose_best and species_ids:
+            character_groups = set(request.GET.getlist('character_group'))
+            exclude_short_names = set(request.GET.getlist('exclude'))
+            exclude_short_names.update(include_short_names)
+            characters.extend(self._choose_best(
+                    count=choose_best,
+                    species_ids=species_ids,
+                    character_groups=character_groups,
+                    exclude_short_names=exclude_short_names,
+                    ))
+
+        # Turn the characters into a data structure for JSON.
+
+        include_filter = bool(int(request.GET.get('include_filter', 0)))
+        return [
+            self._jsonify_character(c, include_filter) for c in characters
+            ]
 
 
 class CharacterValuesHandler(BaseHandler):
