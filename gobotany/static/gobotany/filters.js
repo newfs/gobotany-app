@@ -109,58 +109,45 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         this.result_store = new dojox.data.JsonRestStore({target: args.taxon_url, 
                                                           idAttribute: 'scientific_name'});
     },
+
     query_best_filters: function(args) {
         var choose_best = 3;
         if (args.choose_best)
             choose_best = args.choose_best;
-        this.chars_store.fetch({query: {choose_best: choose_best,
-                                        character_groups: args.character_groups || [],
-                                        exclude: args.existing_characters || [],
-                                        include_filter: 1},
-                                scope: {filter_manager: this, args: args},
-                                onComplete: function(items) {
-                                    var lst = [];
-                                    for (var x = 0; x < items.length; x++) {
-                                        var item = items[x];
-                                        lst.push(this.filter_manager.add_filter({
-                                            filter_json: {
-                                                character_friendly_name: item.friendly_name,
-                                                character_short_name: item.short_name,
-                                                order: 0,
-                                                notable_exceptions: item.filter.notable_exceptions,
-                                                key_characteristics: item.filter.key_characteristics,
-                                                value_type: item.value_type,
-                                                pile_slug: this.filter_manager.pile_slug
-                                            },
-                                        }));
-                                    }
-                                    this.args.onLoaded(lst);
-                                }});
+        this.chars_store.fetch({
+            query: {choose_best: choose_best,
+                    character_groups: args.character_groups || [],
+                    exclude: args.existing_characters || [],
+                    include_filter: 1},
+            scope: {filter_manager: this, args: args},
+            onComplete: this._load_incoming_filters,
+        });
     },
-    
     query_filters: function(args) {
-        this.chars_store.fetch({query: {include: args.short_names || [],
-                                        include_filter: 1},
-                                scope: {filter_manager: this, args: args},
-                                onComplete: function(items) {
-                                    var lst = [];
-                                    for (var x = 0; x < items.length; x++) {
-                                        var item = items[x];
-                                        lst.push(this.filter_manager.add_filter({
-                                            filter_json: {
-                                                character_friendly_name: item.friendly_name,
-                                                character_short_name: item.short_name,
-                                                order: 0,
-                                                notable_exceptions: item.filter.notable_exceptions,
-                                                key_characteristics: item.filter.key_characteristics,
-                                                value_type: item.value_type,
-                                                unit: item.unit,
-                                                pile_slug: this.filter_manager.pile_slug
-                                            },
-                                        }));
-                                    }
-                                    this.args.onLoaded(lst);
-                                }});
+        this.chars_store.fetch({
+            query: {include: args.short_names || [], include_filter: 1},
+            scope: {filter_manager: this, args: args},
+            onComplete: this._load_incoming_filters,
+        });
+    },
+    _load_incoming_filters: function(items) {
+        var lst = [];
+        for (var x = 0; x < items.length; x++) {
+            var item = items[x];
+            lst.push(this.filter_manager.add_filter({
+                filter_json: {
+                    character_friendly_name: item.friendly_name,
+                    character_short_name: item.short_name,
+                    order: 0,
+                    notable_exceptions: item.filter.notable_exceptions,
+                    key_characteristics: item.filter.key_characteristics,
+                    value_type: item.value_type,
+                    unit: item.unit,
+                    pile_slug: this.filter_manager.pile_slug
+                },
+            }));
+        }
+        this.args.onLoaded(lst);
     },
 
     load_pile_info: function(args) {

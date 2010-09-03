@@ -312,7 +312,7 @@ class CharacterListingHandler(BaseHandler):
                                       y['species_count']))
                       if x['species_count'] > 0]
             lst = newlst[0:choose_best]
-        return lst
+        return list(reversed(lst))
 
 
 class CharacterValuesHandler(BaseHandler):
