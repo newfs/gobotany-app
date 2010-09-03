@@ -314,7 +314,7 @@ class CharacterListingHandler(BaseHandler):
         piles = models.Pile.objects.filter(slug=pile_slug).all()
         if not piles:
             return rc.NOT_FOUND
-        pile = piles
+        pile = piles[0]
 
         # First, build a list of raw character values.
 

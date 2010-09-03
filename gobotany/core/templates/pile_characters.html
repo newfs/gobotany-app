@@ -1,15 +1,62 @@
 <html>
+<head>
+  <style type="text/css">
+
+    /* Eric Meyer */
+
+    html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5,
+    h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike,
+    strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend, table, caption, tbody, tfoot, thead,
+    tr, th, td { margin: 0; padding: 0; border: 0; outline: 0;
+    font-size: 100%; vertical-align: baseline; background: transparent;
+    } body { line-height: 1; } ol, ul { list-style: none; } blockquote,
+    q { quotes: none; } blockquote:before, blockquote:after, q:before,
+    q:after { content: ''; content: none; } :focus { outline: 0; } ins {
+    text-decoration: none; } del { text-decoration: line-through; }
+    table { border-collapse: collapse; border-spacing: 0; }
+
+    /* NEWFS */
+
+    body p, .fullbar {
+      margin: 9px 6px;
+    }
+    .fullbar {
+      font-size: 0.7em;
+    }
+    .valuebar {
+      display: inline-block;
+      border: 1px solid black;
+      background-color: #ba5a5b;
+    }
+
+  </style>
+</head>
 <body>
 
   <h1>Characters for pile {{ pile.name }}</h1>
 
-  <p>In order of “goodness” as measured by our entropy engine</p>
-
   <p>
-    {% for character in characters %}
-    {{ character }}<br>
-    {% endfor %}
+    In order of “goodness” as measured by
+    entropy (how well it narrows down the list of remaining species),
+    coverage (do most species in the pile have a value for this character),
+    and observability (an integer that botanists enter into our database).
   </p>
+
+  {% for character in characters %}
+  <p>
+    {{ character.name }} — {{ character.type }}<br>
+    {{ character.num_values }} character values
+    <div class="fullbar">
+      {% for value in character.values %}
+      <div class="valuebar"
+           style="width: {{ value.width }}px; max-width: {{ value.width }}px; margin-left: {{ value.leading }}px;"
+           >&nbsp;</div>&nbsp;{{ value.value }}<br>
+      {% endfor %}
+    </div>
+  </p>
+  {% endfor %}
 
 </body>
 </html>

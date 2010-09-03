@@ -1,4 +1,5 @@
 import os
+from collections import defaultdict
 from urllib import urlencode
 
 from django.template import RequestContext
@@ -6,7 +7,7 @@ from django.shortcuts import render_to_response
 from django import forms
 from django.views import static 
 
-from gobotany.core import botany, models
+from gobotany.core import botany, igdt, models
 
 
 def default_view(request):
@@ -126,6 +127,7 @@ def species_lists(request):
             'biglist': biglist,
             })
 
+
 def pile_characters_select(request):
     return render_to_response('pile_characters_select.html', {
             'piles': [ (pile.slug, pile.name) for pile
@@ -134,7 +136,73 @@ def pile_characters_select(request):
 
 
 def pile_characters(request, pile_slug):
+    WIDTH = 500
+
     pile = models.Pile.objects.get(slug=pile_slug)
+    species = pile.species.all()
+    species_ids = [ s.id for s in species ]
+    eclist = igdt.get_best_characters(pile, species_ids)
+
+    cvs = pile.character_values.all()
+    cvs_by_cid = defaultdict(list)
+    for cv in cvs:
+        cvs_by_cid[cv.character_id].append(cv)
+
+    clist = []
+
+    def _marshal_values(values):
+        """Prepare for a stair-step bar graph showing species coverage."""
+        vlist = []
+        leading = 0
+        total_species = 0
+
+        for cv in values:
+            d = {}
+            vlist.append(d)
+
+            if isinstance(cv.value, tuple):
+                d['value'] = '%s-%s' % cv.value,
+            else:
+                d['value'] = cv.value
+            vspecies = len(models.TaxonCharacterValue.objects.filter(
+                taxon__in=species, character_value=cv))
+            total_species += vspecies
+            width = vspecies * WIDTH / len(species)
+            d['leading'] = leading
+            d['width'] = max(width - 2, 0)  # to account for 1px border
+            leading += width
+
+        leftover = len(species) - total_species
+        if leftover > 0:
+            vlist.append({
+                    'leading': leading,
+                    'width': leftover * WIDTH / len(species),
+                    'value': '%d SPECIES HAVE NO VALUE' % leftover,
+                    })
+        elif leftover < 0:
+            w = - leftover * WIDTH / len(species)
+            vlist.append({
+                    'leading': 0,
+                    'width': w,
+                    'value': '%d MORE VALUES THAN SPECIES' % -leftover,
+                    })
+
+        return vlist
+
+    for entropy, character_id in eclist:
+        character = models.Character.objects.get(id=character_id)
+        if character.value_type != 'TEXT':
+            continue  # do not even bother with lengths yet!
+        clist.append({
+                'entropy': entropy,
+                'name': character.name,
+                'type': character.value_type,
+                'num_values': len(cvs_by_cid[character.id]),
+                'values': _marshal_values(cvs_by_cid[character.id]),
+                })
+
     return render_to_response('pile_characters.html', {
             'pile': pile,
+            'width': WIDTH,
+            'characters': clist,
             })
