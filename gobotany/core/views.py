@@ -1,6 +1,6 @@
 import os
 from collections import defaultdict
-from operator import attrgetter
+from operator import attrgetter, itemgetter
 from urllib import urlencode
 
 from django.template import RequestContext
@@ -142,7 +142,7 @@ def pile_characters(request, pile_slug):
     pile = models.Pile.objects.get(slug=pile_slug)
     species_list = pile.species.all()
     species_ids = sorted( s.id for s in species_list )
-    entropy_character_id_list = igdt.get_best_characters(pile, species_ids)
+    best_character_list = igdt.get_best_characters(pile, species_ids)
 
     cvs = pile.character_values.all()
     cvs_by_cid = defaultdict(list)
@@ -227,20 +227,28 @@ def pile_characters(request, pile_slug):
 
         return metarows, species_row
 
-    for entropy, character_id in entropy_character_id_list:
+    #
+
+    for entropy, coverage, character_id in best_character_list:
         character = models.Character.objects.get(id=character_id)
         if character.value_type != 'TEXT':
             continue  # do not even bother with lengths yet!
+        ease = character.ease_of_observability
         metarows, species_row = _tablefy_data(character)
+        score = igdt.compute_score(entropy, coverage, ease)
         clist.append({
                 'entropy': entropy,
-                'ease_of_observability': character.ease_of_observability,
+                'coverage': coverage,
+                'ease_of_observability': ease,
+                'score': score,
                 'name': character.name,
                 'type': character.value_type,
                 'num_values': len(cvs_by_cid[character.id]),
                 'metarows': metarows,
                 'species_row': species_row,
                 })
+
+    clist.sort(key=itemgetter('score'))
 
     return render_to_response('pile_characters.html', {
             'pile': pile,

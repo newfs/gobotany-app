@@ -85,13 +85,18 @@ def get_best_characters(pile, species_list):
         entropy = sum( f_entropy(cv_species_counts[character_value.id], n)
                        for character_value in character_values )
         coverage = len(cspecies[character_id]) / n
-        penalty = 10. * (1. - coverage)  # since small entropy is better
-        entropies.append((entropy + penalty, character_id))
+        entropies.append((entropy, coverage, character_id))
 
     # Sort the resulting list and return it.
 
     entropies.sort()
     return entropies
+
+
+def compute_score(entropy, coverage, ease):
+    """Our secret formula for deciding which characters are best!"""
+    penalty = 10. * (1. - coverage)
+    return entropy + penalty + ease
 
 
 # From here down is old code to refactor and incorporate when appropriate.
