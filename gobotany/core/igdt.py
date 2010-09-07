@@ -37,7 +37,8 @@ def get_best_characters(pile, species_list):
     # Remove character values from the dictionary that do not belong to
     # the pile under consideration.
 
-    pile_cv_ids = set( cv.id for cv in pile.character_values.all() )
+    pile_cv_ids = set( cv.id for cv in pile.character_values.all()
+                       if cv.value_str != 'NA' )
 
     for cv_id in list(cv_species_counts):
         if cv_id not in pile_cv_ids:
@@ -59,8 +60,8 @@ def get_best_characters(pile, species_list):
     # Create a dictionary `cspecies` of character IDs keys whose values
     # are the set of species that have some character value that belongs
     # to the given character.  This lets us detect which characters
-    # apply to only a small fraction of species, and which provide
-    # nearly every species with at least one character value.
+    # apply to only a small fraction of species, and which characters
+    # provide nearly every species with at least one character value.
 
     cspecies = defaultdict(set)
 
@@ -84,8 +85,8 @@ def get_best_characters(pile, species_list):
         entropy = sum( f_entropy(cv_species_counts[character_value.id], n)
                        for character_value in character_values )
         coverage = len(cspecies[character_id]) / n
-        penalty = 1. / coverage  # since small entropy is better
-        entropies.append((entropy * penalty, character_id))
+        penalty = 10. * (1. - coverage)  # since small entropy is better
+        entropies.append((entropy + penalty, character_id))
 
     # Sort the resulting list and return it.
 
