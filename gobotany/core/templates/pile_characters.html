@@ -21,6 +21,7 @@
 
     body p, .fullbar {
       margin: 9px 6px;
+      font-family: Helvetica, “Helvetica Neue”, Arial, sans-serif;
     }
     .fullbar {
       font-size: 0.7em;
@@ -52,7 +53,7 @@
       {% for value in character.values %}
       <div class="valuebar"
            style="width: {{ value.width }}px; max-width: {{ value.width }}px; margin-left: {{ value.leading }}px;"
-           >&nbsp;</div>&nbsp;{{ value.value }}<br>
+           >&nbsp;</div>&nbsp;{{ value.value|safe }}<br>
       {% endfor %}
     </div>
   </p>

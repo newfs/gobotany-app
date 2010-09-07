@@ -160,16 +160,19 @@ def pile_characters(request, pile_slug):
             d = {}
             vlist.append(d)
 
-            if isinstance(cv.value, tuple):
-                d['value'] = '%s-%s' % cv.value,
-            else:
-                d['value'] = cv.value
             vspecies = len(models.TaxonCharacterValue.objects.filter(
                 taxon__in=species, character_value=cv))
             total_species += vspecies
             width = vspecies * WIDTH / len(species)
             d['leading'] = leading
             d['width'] = max(width - 2, 0)  # to account for 1px border
+
+            if isinstance(cv.value, tuple):
+                d['value'] = '%s-%s' % cv.value,
+            else:
+                d['value'] = u'<b>"%s"</b> &mdash; %d species' % (
+                    cv.value, vspecies)
+
             leading += width
 
         leftover = len(species) - total_species
@@ -177,7 +180,7 @@ def pile_characters(request, pile_slug):
             vlist.append({
                     'leading': leading,
                     'width': leftover * WIDTH / len(species),
-                    'value': '%d SPECIES HAVE NO VALUE' % leftover,
+                    'value': '<b>No value</b> &mdash; %d species' % leftover,
                     })
         elif leftover < 0:
             w = - leftover * WIDTH / len(species)
