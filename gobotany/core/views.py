@@ -142,7 +142,7 @@ def pile_characters(request, pile_slug):
     pile = models.Pile.objects.get(slug=pile_slug)
     species_list = pile.species.all()
     species_ids = sorted( s.id for s in species_list )
-    eclist = igdt.get_best_characters(pile, species_ids)
+    entropy_character_id_list = igdt.get_best_characters(pile, species_ids)
 
     cvs = pile.character_values.all()
     cvs_by_cid = defaultdict(list)
@@ -227,13 +227,14 @@ def pile_characters(request, pile_slug):
 
         return metarows, species_row
 
-    for entropy, character_id in eclist:
+    for entropy, character_id in entropy_character_id_list:
         character = models.Character.objects.get(id=character_id)
         if character.value_type != 'TEXT':
             continue  # do not even bother with lengths yet!
         metarows, species_row = _tablefy_data(character)
         clist.append({
                 'entropy': entropy,
+                'ease_of_observability': character.ease_of_observability,
                 'name': character.name,
                 'type': character.value_type,
                 'num_values': len(cvs_by_cid[character.id]),

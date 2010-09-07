@@ -74,7 +74,10 @@
 
   {% for character in characters %}
   <p>
-    {{ character.name }} ({{ character.type }})
+    {{ character.name }}
+    ({{ character.type }})
+    (entropy={{ character.entropy|floatformat }})
+    (ease-of-observability={{ character.ease_of_observability|floatformat }})
     <table class="hbars">
 
       {% for value_str, species_count, row in character.metarows %}
