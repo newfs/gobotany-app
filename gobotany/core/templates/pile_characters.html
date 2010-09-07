@@ -19,23 +19,44 @@
 
     /* NEWFS */
 
-    body p, .fullbar {
-      margin: 9px 6px;
+    body {
       font-family: Helvetica, “Helvetica Neue”, Arial, sans-serif;
     }
-    .fullbar {
-      font-size: 0.7em;
+    body p, .fullbar {
+      margin: 9px 6px;
     }
-    .valuebar {
-      display: inline-block;
-      border: 1px solid black;
-      background-color: #5a5bba;
+    .hbars {
+      margin: 0.5em 0.5em 1em 3em;
+      font-size: 0.84em;
     }
-    .valuebar.na {
-      background-color: #baba5a;
+    .hbars .yes, .hbars .no, .hbars .warning, .hbars .species {
+      border: 1px solid white;
+      height: 1em;
+      max-height: 1em;
+      width: 0.9em;
+      max-width: 0.9em;
+      text-align: center;
     }
-    .valuebar.novalue {
-      background-color: #ba5a5b;
+    .hbars .no { background-color: #eee; }
+    .hbars .yes { background-color: #8f8; color: #080; }
+    .hbars .na .yes { background-color: #dd7; color: #880; }
+    .hbars .novalue .yes { background-color: #f88; color: #800; }
+    .hbars .species span {
+       position: relative;
+    }
+    .hbars .species a {
+       visibility: hidden;
+       position: absolute;
+       top: 1.0em;
+       left: -0.1em;
+       background-color: #ffa;
+       padding: 6px;
+    }
+    .hbars .species:hover {
+       background-color: #ff0;
+    }
+    .hbars .species:hover a {
+       visibility: visible;
     }
 
   </style>
@@ -53,15 +74,46 @@
 
   {% for character in characters %}
   <p>
-    {{ character.name }} — {{ character.type }}<br>
-    {{ character.num_values }} character values
-    <div class="fullbar">
-      {% for value in character.values %}
-      <div class="valuebar {{ value.classes}}"
-           style="width: {{ value.width }}px; max-width: {{ value.width }}px; margin-left: {{ value.leading }}px;"
-           >&nbsp;</div>&nbsp;{{ value.value|safe }}<br>
+    {{ character.name }} ({{ character.type }})
+    <table class="hbars">
+
+      {% for value_str, species_count, row in character.metarows %}
+      <tr {% if value_str == 'NA' %}class="na"{% endif %}
+          {% if not value_str %}class="novalue"{% endif %}
+          >
+        {% for item in row %}
+          {% if item == 'Y' %}
+            <td class="yes">✓</td>
+          {% endif %}
+          {% if item == 'n' %}
+            <td class="no"></td>
+          {% endif %}
+        {% endfor %}
+        <td>
+          {% if not value_str %}
+            No value
+          {% else %}
+            <b>“{{ value_str }}”</b>
+          {% endif %}
+          — {{ species_count }} species
+        </td>
+      </tr>
       {% endfor %}
-    </div>
+
+      <tr>
+        {% for species in character.species_row %}
+          <td class="species">
+            <span>
+              ?
+              <a href="/admin/core/taxon/{{ species.id }}/">
+                {{ species.scientific_name }}
+              </a>
+            </span>
+          </td>
+        {% endfor %}
+      </tr>
+    </table>
+
   </p>
   {% endfor %}
 

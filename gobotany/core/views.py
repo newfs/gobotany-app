@@ -1,5 +1,6 @@
 import os
 from collections import defaultdict
+from operator import attrgetter
 from urllib import urlencode
 
 from django.template import RequestContext
@@ -139,8 +140,8 @@ def pile_characters(request, pile_slug):
     WIDTH = 500
 
     pile = models.Pile.objects.get(slug=pile_slug)
-    species = pile.species.all()
-    species_ids = [ s.id for s in species ]
+    species_list = pile.species.all()
+    species_ids = sorted( s.id for s in species_list )
     eclist = igdt.get_best_characters(pile, species_ids)
 
     cvs = pile.character_values.all()
@@ -150,62 +151,94 @@ def pile_characters(request, pile_slug):
 
     clist = []
 
-    def _marshal_values(values):
-        """Prepare for a stair-step bar graph showing species coverage."""
-        vlist = []
-        leading = 0
-        total_species = 0
+    def _tablefy_data(character):
+        """Create a matrix showing which species have which char values."""
 
-        for cv in values:
-            d = {}
-            vlist.append(d)
+        # At this point we already have species IDs for this pile, and
+        # character value IDs for this character; so without having to
+        # do an expensive join, we can directly query the table
+        # TaxonCharacterValue to see which species have which character
+        # values.  For each species we create a list ['Y','n','Y',...]
+        # where each 'Y' or 'n' corresponds to the nth value in our
+        # `values` list.  (The Y is capitalized so that it sorts first.)
 
-            vspecies = len(models.TaxonCharacterValue.objects.filter(
-                taxon__in=species, character_value=cv))
-            total_species += vspecies
-            width = vspecies * WIDTH / len(species)
-            d['leading'] = leading
-            d['width'] = max(width - 2, 0)  # to account for 1px border
+        # Sort character values by value_str, lexicographically.
 
-            if isinstance(cv.value, tuple):
-                d['value'] = '%s-%s' % cv.value,
-            else:
-                d['value'] = u'<b>"%s"</b> &mdash; %d species' % (
-                    cv.value, vspecies)
+        character_values = list(cvs_by_cid[character.id]) # 'cause we mutate it
+        character_values.sort(key=attrgetter('value_str'))
 
-            if cv.value.lower() == 'na':
-                d['classes'] = u'na'
+        for i, cv in enumerate(character_values):
+            if cv.value_str == 'NA':
+                character_values.append(character_values[i])
+                del character_values[i]  # move NA to the end
+                break
 
-            leading += width
+        # Create a "blank" grid of 'n' strings.
 
-        leftover = len(species) - total_species
-        if leftover > 0:
-            vlist.append({
-                    'leading': leading,
-                    'width': leftover * WIDTH / len(species),
-                    'value': u'<b>No value</b> &mdash; %d species' % leftover,
-                    'classes': u'novalue',
-                    })
-        elif leftover < 0:
-            w = - leftover * WIDTH / len(species)
-            vlist.append({
-                    'leading': 0,
-                    'width': w,
-                    'value': u'%d MORE VALUES THAN SPECIES' % -leftover,
-                    })
+        species_grid_dict = {}
+        for species_id in species_ids:
+            species_grid_dict[species_id] = ['n'] * len(character_values)
 
-        return vlist
+        # Fill in a 'Y' for each species/character-value pair.
+
+        relevant_tcvs = models.TaxonCharacterValue.objects.filter(
+            taxon__in=species_list,
+            character_value__in=character_values,
+            )
+        for tcv in relevant_tcvs:
+            yn_sequence = species_grid_dict[tcv.taxon_id]
+            index = character_values.index(tcv.character_value)
+            yn_sequence[index] = 'Y'
+
+        # Add a last value for each species, that is checked if a
+        # species had no values at all for this character.
+
+        for yn_sequence in species_grid_dict.values():
+            yn_sequence.append( 'n' if 'Y' in yn_sequence else 'Y' )
+
+        warning_value = models.CharacterValue()
+        warning_value.value_str = None
+        character_values.append(warning_value)
+
+        # Sort and re-orient the table for display.  We temporarily
+        # throw the species on to the end of each row, so that during
+        # the re-order we can keep up with which row went with which
+        # species.
+
+        columns = species_grid_dict.values()
+        for column, species in zip(columns, species_list):
+            column.append(species)
+        columns.sort()
+        rows = [ list(row) for row in zip(*columns) ]
+
+        # Pop off the bottom row of species, which we will pass as a
+        # separate variable to the template.
+
+        species_row = rows.pop()
+
+        # Make a list of meta-information about each row that includes
+        # the row itself.
+
+        metarows = []
+        for row, character_value in zip(rows, character_values):
+            metarows.append((
+                character_value.value_str, row.count('Y'), row
+                ))
+
+        return metarows, species_row
 
     for entropy, character_id in eclist:
         character = models.Character.objects.get(id=character_id)
         if character.value_type != 'TEXT':
             continue  # do not even bother with lengths yet!
+        metarows, species_row = _tablefy_data(character)
         clist.append({
                 'entropy': entropy,
                 'name': character.name,
                 'type': character.value_type,
                 'num_values': len(cvs_by_cid[character.id]),
-                'values': _marshal_values(cvs_by_cid[character.id]),
+                'metarows': metarows,
+                'species_row': species_row,
                 })
 
     return render_to_response('pile_characters.html', {
