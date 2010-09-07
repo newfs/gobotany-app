@@ -29,6 +29,12 @@
     .valuebar {
       display: inline-block;
       border: 1px solid black;
+      background-color: #5a5bba;
+    }
+    .valuebar.na {
+      background-color: #baba5a;
+    }
+    .valuebar.novalue {
       background-color: #ba5a5b;
     }
 
@@ -51,7 +57,7 @@
     {{ character.num_values }} character values
     <div class="fullbar">
       {% for value in character.values %}
-      <div class="valuebar"
+      <div class="valuebar {{ value.classes}}"
            style="width: {{ value.width }}px; max-width: {{ value.width }}px; margin-left: {{ value.leading }}px;"
            >&nbsp;</div>&nbsp;{{ value.value|safe }}<br>
       {% endfor %}

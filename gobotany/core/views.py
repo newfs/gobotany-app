@@ -173,6 +173,9 @@ def pile_characters(request, pile_slug):
                 d['value'] = u'<b>"%s"</b> &mdash; %d species' % (
                     cv.value, vspecies)
 
+            if cv.value.lower() == 'na':
+                d['classes'] = u'na'
+
             leading += width
 
         leftover = len(species) - total_species
@@ -180,14 +183,15 @@ def pile_characters(request, pile_slug):
             vlist.append({
                     'leading': leading,
                     'width': leftover * WIDTH / len(species),
-                    'value': '<b>No value</b> &mdash; %d species' % leftover,
+                    'value': u'<b>No value</b> &mdash; %d species' % leftover,
+                    'classes': u'novalue',
                     })
         elif leftover < 0:
             w = - leftover * WIDTH / len(species)
             vlist.append({
                     'leading': 0,
                     'width': w,
-                    'value': '%d MORE VALUES THAN SPECIES' % -leftover,
+                    'value': u'%d MORE VALUES THAN SPECIES' % -leftover,
                     })
 
         return vlist
