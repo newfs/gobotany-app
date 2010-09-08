@@ -142,7 +142,7 @@ def pile_characters(request, pile_slug):
     pile = models.Pile.objects.get(slug=pile_slug)
     species_list = pile.species.all()
     species_ids = sorted( s.id for s in species_list )
-    best_character_list = igdt.get_best_characters(pile, species_ids)
+    character_entropy_list = igdt.compute_character_entropies(pile, species_ids)
 
     cvs = pile.character_values.all()
     cvs_by_cid = defaultdict(list)
@@ -229,7 +229,7 @@ def pile_characters(request, pile_slug):
 
     #
 
-    for entropy, coverage, character_id in best_character_list:
+    for entropy, coverage, character_id in character_entropy_list:
         character = models.Character.objects.get(id=character_id)
         if character.value_type != 'TEXT':
             continue  # do not even bother with lengths yet!

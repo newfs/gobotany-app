@@ -259,7 +259,7 @@ class CharacterListingHandler(BaseHandler):
         `exclude_short_names` - characters to exclude from the list.
 
         """
-        eclist = igdt.get_best_characters(pile, species_ids)
+        eclist = igdt.compute_character_entropies(pile, species_ids)
         characters = []
 
         for entropy, character_id in eclist:

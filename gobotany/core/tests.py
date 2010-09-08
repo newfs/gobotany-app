@@ -386,11 +386,11 @@ class APITests(SampleData):
             set([fox_stem_2]))
 
     def test_best_filters(self):
-        celist = igdt.get_best_characters(
+        celist = igdt.compute_character_entropies(
             self.carnivores, list(models.Taxon.objects.all()))
         assert celist == []
 
-        celist = igdt.get_best_characters(
+        celist = igdt.compute_character_entropies(
             self.pets, list(models.Taxon.objects.all()))
         assert celist[0] == (0, 3)  # length is best filter, makes entropy 0
 

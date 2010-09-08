@@ -9,7 +9,7 @@ from collections import defaultdict
 
 from gobotany.core.models import CharacterValue, TaxonCharacterValue
 
-def get_best_characters(pile, species_list):
+def compute_character_entropies(pile, species_list):
     """Find the most effective characters for narrowing down these species.
 
     The return value will be an already-sorted list of tuples, each of
