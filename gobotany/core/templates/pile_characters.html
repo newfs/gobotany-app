@@ -20,7 +20,12 @@
     /* NEWFS */
 
     body {
+      padding: 4px;
       font-family: Helvetica, “Helvetica Neue”, Arial, sans-serif;
+    }
+    body > ul {
+      margin-left: 3em;
+      list-style: disc;
     }
     body p, .fullbar {
       margin: 9px 6px;
@@ -64,16 +69,23 @@
 </head>
 <body>
 
-  <h1>Characters for pile {{ pile.name }}</h1>
+  <h1>Characters for pile {{ pile.name }}, from best to worse</h1>
 
   <p>
-    In order of “goodness” as measured by
-    entropy (how well it narrows down the list of remaining species),
-    coverage (do most species in the pile have a value for this character),
-    and observability (an integer that botanists enter into our database).
+    The best characters have the lowest “score”,
+    which is built through a secret formula that combines:
   </p>
+  <ul>
+    <li><i>entropy</i> —
+      how well it narrows down the list of remaining species</li>
+    <li><i>coverage</i> —
+      do most species in the pile even have a value for this character?</li>
+    <li><i>observability</i> —
+      an integer that botanists enter into our database</li>
+  </ul>
 
   {% for character in characters %}
+  <hr>
   <p>
     {{ character.name }}
     ({{ character.type }})
@@ -117,6 +129,7 @@
             </span>
           </td>
         {% endfor %}
+        <td>&larr; <i>Species names (hover with your mouse)</i></td>
       </tr>
     </table>
 
