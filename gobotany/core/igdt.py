@@ -18,8 +18,6 @@ def compute_character_entropies(pile, species_list):
         (entropy, character_id)
 
     """
-    n = float(len(species_list))
-
     # Select all of the character values for these species.  We go ahead
     # and turn this into a list because we will iterate across it twice.
 
@@ -35,7 +33,8 @@ def compute_character_entropies(pile, species_list):
         cv_species_counts[tcv.character_value_id] += 1
 
     # Remove character values from the dictionary that do not belong to
-    # the pile under consideration.
+    # the pile under consideration. REMIND THAT SPECIES LIVE IN MULTIPLE
+    # PILES
 
     pile_cv_ids = set( cv.id for cv in pile.character_values.all()
                        if cv.value_str != 'NA' )
@@ -53,7 +52,7 @@ def compute_character_entropies(pile, species_list):
     cvalues = defaultdict(set)
     id_to_character_value = {}
 
-    for cv in CharacterValue.objects.filter(id__in=list(cv_species_counts)):
+    for cv in CharacterValue.objects.filter(id__in=cv_species_counts.keys()):
         cvalues[cv.character_id].add(cv)
         id_to_character_value[cv.id] = cv
 
@@ -78,7 +77,10 @@ def compute_character_entropies(pile, species_list):
     # are looking at.
 
     def f_entropy(m, n):
+        """Return the entropy of an `m`-item bucket in a pool of `n` items."""
         return m / n * math.log(m, 2.)
+
+    n = float(len(species_list))
 
     entropies = []
     for character_id, character_values in cvalues.iteritems():

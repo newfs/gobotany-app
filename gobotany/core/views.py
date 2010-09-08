@@ -1,4 +1,5 @@
 import os
+import time
 from collections import defaultdict
 from operator import attrgetter, itemgetter
 from urllib import urlencode
@@ -142,7 +143,9 @@ def pile_characters(request, pile_slug):
     pile = models.Pile.objects.get(slug=pile_slug)
     species_list = pile.species.all()
     species_ids = sorted( s.id for s in species_list )
+    t0 = time.time()
     character_entropy_list = igdt.compute_character_entropies(pile, species_ids)
+    elapsed_time = time.time() - t0
 
     cvs = pile.character_values.all()
     cvs_by_cid = defaultdict(list)
@@ -252,6 +255,7 @@ def pile_characters(request, pile_slug):
 
     return render_to_response('pile_characters.html', {
             'pile': pile,
+            'elapsed_time': elapsed_time,
             'width': WIDTH,
             'characters': clist,
             })
