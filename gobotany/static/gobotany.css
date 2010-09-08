@@ -287,6 +287,23 @@ ul#glossary li:nth-child(even) {
     margin: 0 4em 0 1em;
 }
 
+#footcrumbs li {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 3em;
+    border: 1px solid black;
+    background-color: #ccc;
+    padding: 5px;
+    color: black;
+}
+#footcrumbs #you_are_here {
+    position: absolute;
+    top: 3em;
+    left: -1em;
+}
+
+/* Video */
+
 .PileVideo {
     height: 200px;
 }

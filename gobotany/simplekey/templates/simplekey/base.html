@@ -20,7 +20,11 @@
            Learning Opportunities</p>
       </div>
       {% block content %}{% endblock %}
-      {% include "simplekey/footer.html" %}
+      <div id="foot">
+        {% block footer %}
+          (footer/navigation)
+        {% endblock %}
+      </div>
     </div>
     <script type="text/javascript">
     djConfig = { 

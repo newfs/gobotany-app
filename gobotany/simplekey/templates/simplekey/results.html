@@ -38,6 +38,9 @@
   {% include "simplekey/filters.html" %}
   {% include "simplekey/plant_preview.html" %}
 {% endblock %}
+{% block footer %}
+  {% include "simplekey/footcrumbs.html" %}
+{% endblock %}
 {% block js_bottom %}
   <script>
     dojo.require('gobotany.sk.results');
