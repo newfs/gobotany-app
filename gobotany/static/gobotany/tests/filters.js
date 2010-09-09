@@ -62,7 +62,7 @@ doh.register('gobotany.tests.core.TestFilterManager', [
         var fm = new gobotany.filters.FilterManager({pile_slug: 'foo'});
         doh.assertEqual([], fm.filters);
     },
-    function test_can_load_default_filters() {
+    function test_can_load_pile_info() {
         var fm = new gobotany.filters.FilterManager(
                  {pile_slug: 'foo'});
 
@@ -79,7 +79,7 @@ doh.register('gobotany.tests.core.TestFilterManager', [
                     default_filters: [{'value_type': 'TEXT'}]});
             }
         };
-        fm.load_default_filters();
+        fm.load_pile_info();
 
         doh.assertEqual(1, fm.filters_loading);
     },
