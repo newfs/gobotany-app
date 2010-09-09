@@ -204,6 +204,43 @@ gobotany.sk.results.update_filter_working_help_text = function(event) {
     ne.innerHTML = this.notable_exceptions;
 }
 
+dojo.declare("gobotany.sk.results.UnitFieldsUpdater", null, {
+    constructor: function(input1, input2, unit) {
+        this.input1 = input1;
+        this.input2 = input2;
+        this.unit = unit;
+        this.realvalue = null;
+    },
+
+    update_fields: function(value) {
+        this.realvalue = value;
+        var unit = this.unit;
+
+        dojo.attr(this.input1, 'value', String(value.toFixed(2)) + unit);
+        var valuemm = value;
+        if (unit == 'cm')
+            valuemm = 10 * valuemm;
+        else if (unit == 'm')
+            valuemm = 1000 * valuemm;
+
+        var inches = 0.0393700787 * valuemm;
+        var remaining = null;
+        if (inches > 12) {
+            var feet = inches / 12;
+            feet = feet.toFixed(2);
+            inches = inches % 12;
+            inches = inches.toFixed(2);
+            remaining = String(feet) + "'" + String(inches) + '"';
+        } else {
+            inches = inches.toFixed(2);
+            remaining = String(inches) + '"'
+        }
+
+        dojo.attr(this.input2, 'value', remaining);
+    }
+});
+
+
 gobotany.sk.results.show_filter_working = function(event) {
     dojo.stopEvent(event);
 
@@ -239,11 +276,23 @@ gobotany.sk.results.show_filter_working = function(event) {
         var input = dojo.create('input', {
             type: 'text',
             name: 'int_value',
-            value: String(startvalue),
             disabled: true
         }, label);
+        dojo.addClass(input, 'filter_int');
+
+        var input2 = dojo.create('input', {
+            type: 'text',
+            name: 'int2_value',
+            disabled: true
+        }, label);
+        dojo.addClass(input2, 'filter_int2');
+
+        var updater = new gobotany.sk.results.UnitFieldsUpdater(input, input2, this.unit);
+        updater.update_fields(startvalue);
+
 
         var slider_node = dojo.create('div', null, valuesList);
+        var unit = this.unit;
         var slider = new dijit.form.HorizontalSlider({
             name: "character_slider",
             showButtons: false,
@@ -253,9 +302,7 @@ gobotany.sk.results.show_filter_working = function(event) {
             discreteValues: themax - themin + 1,
             intermediateChanges: true,
             style: "width:200px;",
-            onChange: function(value) {
-                dojo.attr(input, 'value', value);
-            }
+            onChange: dojo.hitch(updater, updater.update_fields),
         }, slider_node);
         
         var rule_node = dojo.create('div', null, slider.containerNode);

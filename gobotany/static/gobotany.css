@@ -518,3 +518,11 @@ by javascript, see gobotany.sk.results.notify() */
     border-bottom-right-radius: 15px;
     padding: 0.25em 0.75em;
 }
+
+input.filter_int {
+    width: 5em;
+}
+
+input.filter_int2 {
+    width: 5em;
+}
