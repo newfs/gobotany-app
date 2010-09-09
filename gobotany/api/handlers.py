@@ -259,19 +259,9 @@ class CharacterListingHandler(BaseHandler):
         `exclude_short_names` - characters to exclude from the list.
 
         """
-        eclist = igdt.compute_character_entropies(pile, species_ids)
-        character_sorter = []
-
-        for character_id, entropy, coverage in eclist:
-            character = models.Character.objects.get(id=character_id)
-            ease = character.ease_of_observability
-            score = igdt.compute_score(entropy, coverage, ease)
-            character_sorter.append((score, character))
-
-        character_sorter.sort()
-
+        result = igdt.rank_characters(pile, species_ids)
         characters = []
-        for score, character in character_sorter:
+        for score, entropy, coverage, character in result:
             # There are several reasons we might disqualify a character.
 
             if character.value_type != 'TEXT':

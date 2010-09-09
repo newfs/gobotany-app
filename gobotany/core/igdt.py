@@ -7,7 +7,7 @@ code located at:
 import math
 from collections import defaultdict
 
-from gobotany.core.models import CharacterValue, TaxonCharacterValue
+from gobotany.core.models import Character, TaxonCharacterValue
 
 def compute_character_entropies(pile, species_list):
     """Find the most effective characters for narrowing down these species.
@@ -85,10 +85,24 @@ def compute_character_entropies(pile, species_list):
 def compute_score(entropy, coverage, ease):
     """Our secret formula for deciding which characters are best!"""
     penalty = 10. * (1. - coverage)
-    return entropy + penalty + ease
+    return entropy + penalty + 0.1 * ease
 
 
-# From here down is old code to refactor and incorporate when appropriate.
+def rank_characters(pile, species_list):
+    """Returns a list of (score, entropy, coverage, character), best first."""
+    celist = compute_character_entropies(pile, species_list)
+    result = []
+
+    for character_id, entropy, coverage in celist:
+        character = Character.objects.get(id=character_id)
+        ease = character.ease_of_observability
+        score = compute_score(entropy, coverage, ease)
+        result.append((score, entropy, coverage, character))
+
+    result.sort()
+    return result
+
+# From here down is old, poorly written code to remove later.
 
 class InformationTheoretic(object):
 
