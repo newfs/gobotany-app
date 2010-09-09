@@ -388,11 +388,11 @@ class APITests(SampleData):
     def test_best_filters(self):
         celist = igdt.compute_character_entropies(
             self.carnivores, list(models.Taxon.objects.all()))
-        assert celist == []
+        self.assertEqual(celist, [])
 
         celist = igdt.compute_character_entropies(
             self.pets, list(models.Taxon.objects.all()))
-        assert celist[0] == (0, 3)  # length is best filter, makes entropy 0
+        self.assertEqual(celist[0], (1, 0.66666666666666663, 1.0))
 
 
 class ImportTestCase(TestCase):

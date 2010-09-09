@@ -232,7 +232,7 @@ def pile_characters(request, pile_slug):
 
     #
 
-    for entropy, coverage, character_id in character_entropy_list:
+    for character_id, entropy, coverage in character_entropy_list:
         character = models.Character.objects.get(id=character_id)
         if character.value_type != 'TEXT':
             continue  # do not even bother with lengths yet!

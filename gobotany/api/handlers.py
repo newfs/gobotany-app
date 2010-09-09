@@ -260,11 +260,18 @@ class CharacterListingHandler(BaseHandler):
 
         """
         eclist = igdt.compute_character_entropies(pile, species_ids)
-        characters = []
+        character_sorter = []
 
-        for entropy, character_id in eclist:
+        for character_id, entropy, coverage in eclist:
             character = models.Character.objects.get(id=character_id)
+            ease = character.ease_of_observability
+            score = igdt.compute_score(entropy, coverage, ease)
+            character_sorter.append((score, character))
 
+        character_sorter.sort()
+
+        characters = []
+        for score, character in character_sorter:
             # There are several reasons we might disqualify a character.
 
             if character.value_type != 'TEXT':

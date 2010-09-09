@@ -18,81 +18,68 @@ def compute_character_entropies(pile, species_list):
         (entropy, character_id)
 
     """
-    # Select all of the character values for these species.  We go ahead
-    # and turn this into a list because we will iterate across it twice.
+    # We start by fetching the character values for this pile (ignoring
+    # "NA" values, since they really state that a character doesn't
+    # apply to a species), and then selecting the TaxonCharacterValue
+    # rows that match one of these character values with one of the
+    # species given in `species_list`.
 
-    taxon_character_values = list(
-        TaxonCharacterValue.objects.filter(taxon__in=species_list)
-        )
+    character_values = pile.character_values.exclude(value_str='NA')
+    taxon_character_values = TaxonCharacterValue.objects.filter(
+            taxon__in=species_list, character_value__in=character_values)
 
-    # Count how many times each character value occurs amongst this
-    # particular set of species.
+    # Since Django's ORM will stupidly re-query the database if we ask
+    # for the ".character_value" of one of these TaxonCharacterValue
+    # objects, we put these character values in a dictionary by ID so
+    # that we can get them more quickly ourselves.
 
-    cv_species_counts = defaultdict(int)
-    for tcv in taxon_character_values:
-        cv_species_counts[tcv.character_value_id] += 1
+    character_values_by_id = dict( (cv.id, cv) for cv in character_values )
 
-    # Remove character values from the dictionary that do not belong to
-    # the pile under consideration. REMIND THAT SPECIES LIVE IN MULTIPLE
-    # PILES
+    # To compute a character's entropy, we need to know two things:
+    #
+    # 1. How many species total are touched by that character's values.
+    #    If a particular species is linked to two of the character's
+    #    values ("this plant has blue flowers AND red flowers"), then
+    #    the species still only gets counted once.
+    #
+    #    So we create a "character_species" dictionary that maps
+    #    character IDs to species-ID sets, and count the length of each
+    #    set of species IDs when we are done.
+    #
+    # 2. How many times each character value is used.  So we create a
+    #    character_value_counts dictionary.
+    #
+    # Both of these data structures are populated very simply, by
+    # iterating once across our taxon_character_values query.
 
-    pile_cv_ids = set( cv.id for cv in pile.character_values.all()
-                       if cv.value_str != 'NA' )
-
-    for cv_id in list(cv_species_counts):
-        if cv_id not in pile_cv_ids:
-            del cv_species_counts[cv_id]
-
-    # Loop over the actual character-value objects whose IDs we just
-    # listed, and update a `cvalues` dictionary whose keys are character
-    # IDs and whose values are sets of character values - the character
-    # values belonging to that character.  Also create a mapping from
-    # character-value ID to character ID, to help us with our next loop.
-
-    cvalues = defaultdict(set)
-    id_to_character_value = {}
-
-    for cv in CharacterValue.objects.filter(id__in=cv_species_counts.keys()):
-        cvalues[cv.character_id].add(cv)
-        id_to_character_value[cv.id] = cv
-
-    # Create a dictionary `cspecies` of character IDs keys whose values
-    # are the set of species that have some character value that belongs
-    # to the given character.  This lets us detect which characters
-    # apply to only a small fraction of species, and which characters
-    # provide nearly every species with at least one character value.
-
-    cspecies = defaultdict(set)
+    character_species = defaultdict(set)
+    character_value_counts = defaultdict(int)
 
     for tcv in taxon_character_values:
-        cv = id_to_character_value.get(tcv.character_value_id, None)
-        if cv is not None:  # since this might be an out-of-Pile char. value
-            cspecies[cv.character_id].add(tcv.taxon_id)
+        cv = character_values_by_id[tcv.character_value_id]
+        character_species[cv.character_id].add(tcv.taxon_id)
+        character_value_counts[cv] += 1
 
-    # For each character (which, for efficiency, we know only by its ID
-    # at this point), compute the entropy that will remain if we split
-    # this group of species by that character's values.  We save this as
-    # a list of (entropy, character_id) tuples.  Note that we penalize
-    # characters which only apply to a small fraction of the species we
-    # are looking at.
+    # Finally, we are ready to compute the entropies!  We tally up the
+    # value "n * log n" for each character value in a character, then
+    # divide the result by the total number of species touched by that
+    # character.  We also throw in to our result, just for good measure,
+    # a "coverage" fraction indicating how many of the species we are
+    # looking at are touched by each character.
 
-    def f_entropy(m, n):
-        """Return the entropy of an `m`-item bucket in a pool of `n` items."""
-        return m / n * math.log(m, 2.)
+    tallies = defaultdict(float)
+    for character_value, count in character_value_counts.items():
+        tallies[character_value.character_id] += count * math.log(count, 2.)
 
     n = float(len(species_list))
 
-    entropies = []
-    for character_id, character_values in cvalues.iteritems():
-        entropy = sum( f_entropy(cv_species_counts[character_value.id], n)
-                       for character_value in character_values )
-        coverage = len(cspecies[character_id]) / n
-        entropies.append((entropy, coverage, character_id))
+    result = []
+    for character_id, species_set in character_species.items():
+        entropy = tallies[character_id] / n
+        coverage = len(species_set) / n
+        result.append((character_id, entropy, coverage))
 
-    # Sort the resulting list and return it.
-
-    entropies.sort()
-    return entropies
+    return result
 
 
 def compute_score(entropy, coverage, ease):
