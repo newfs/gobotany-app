@@ -619,32 +619,39 @@ gobotany.sk.results.paginate_results = function(items, start) {
     var page
     var page_num;
     var list;
-    dojo.forEach(items, 
-                 function (item, i) {
-                     var remainder = i%gobotany.sk.results.PAGE_COUNT;
-                     if (remainder == 0) {
-                         page_num = ((i-remainder)/gobotany.sk.results.PAGE_COUNT) + 1;
-                         page = dojo.create('li', {'class': 'PlantScrollPage',
-                                                   id: 'plant-page-'+page_num.toString()},
-                                            start);
-                         dojo.html.set(page, 'Page ' + page_num.toString());
-                         list = dojo.create('ul', {}, page);
-                         // All items on the first page have been loaded
-                         dojo.attr(page, 'x-loaded', page_num == 1 ? 'true': 'false');
-                         
-                     }
-                     gobotany.sk.results.render_item(item, list, 
-                                                          partial=(page_num!=1));
-                 });
+    var previous_genus = 'this string matches no actual genus';
+    var genus_number = -1;  // incremented each time we reach a new genus
+    for (i=0; i < items.length; i++) {
+        item = items[i];
+        if (item.genus != previous_genus) {
+            genus_number ++;
+            previous_genus = item.genus;
+        }
+        var remainder = i%gobotany.sk.results.PAGE_COUNT;
+        if (remainder == 0) {
+            page_num = ((i-remainder)/gobotany.sk.results.PAGE_COUNT) + 1;
+            page = dojo.create('li', {'class': 'PlantScrollPage',
+                                      id: 'plant-page-'+page_num.toString()},
+                               start);
+            dojo.html.set(page, 'Page ' + page_num.toString());
+            list = dojo.create('ul', {}, page);
+            // All items on the first page have been loaded
+            dojo.attr(page, 'x-loaded', page_num == 1 ? 'true': 'false');
+        }
+        gobotany.sk.results.render_item(item, list, genus_number,
+                                        partial=(page_num!=1));
+    }
     return start;
 }
 
-gobotany.sk.results.render_item = function(item, start_node, partial) {
+gobotany.sk.results.render_item = function(item, start_node, genus_number,
+                                           partial) {
     // Fill in the search list with anchors, images and titles
-    var li_node = dojo.create('li', 
-                           {'id': 'plant-'+item.scientific_name.toLowerCase().replace(/\W/,'-')},
-                           start_node
-                          );
+    var genus_colors = 4;  // alternate between two colors for genera
+    var li_node = dojo.create('li', {
+        'id': 'plant-'+item.scientific_name.toLowerCase().replace(/\W/,'-'),
+        'class': 'genus' + (genus_number % genus_colors).toString(),
+    }, start_node);
     dojo.connect(li_node, 'onclick', item, gobotany.sk.results.show_plant_preview);
     var anchor = dojo.create('a', {href: '#'}, li_node);
     var image = item.default_image;

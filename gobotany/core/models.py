@@ -436,6 +436,8 @@ class Genus(models.Model):
 
 class Taxon(models.Model):
     """Despite its general name, this currently represents a single species."""
+    # TODO: taxa should probably have a "slug" as well, to prevent us
+    # from having to create them on the fly in Javascript
     scientific_name = models.CharField(max_length=100, unique=True)
     family = models.ForeignKey(Family)
     genus = models.ForeignKey(Genus)
