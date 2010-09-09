@@ -16,8 +16,7 @@ def main():
 
         old_filters = pile.default_filters.all()
         print "  Removing %d old default filters" % len(old_filters)
-        for f in old_filters:
-            pile.default_filters.remove(f)
+        old_filters.delete()
 
         print "  Computing new 'best' filters"
         t = time.time()
@@ -26,10 +25,13 @@ def main():
 
         print "  Inserting new 'best' filters"
         result = result[:DEFAULT_FILTERS_PER_PILE]
-        for score, entropy, coverage, character in result:
+        for n, (score, entropy, coverage, character) in enumerate(result):
             print "   ", character.name
-            print dir(pile.default_filters)
-            pile.default_filters.add(character)
+            defaultfilter = models.DefaultFilter()
+            defaultfilter.pile = pile
+            defaultfilter.character = character
+            defaultfilter.order = n
+            defaultfilter.save()
 
 if __name__ == '__main__':
     main()

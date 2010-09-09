@@ -95,6 +95,8 @@ def rank_characters(pile, species_list):
 
     for character_id, entropy, coverage in celist:
         character = Character.objects.get(id=character_id)
+        if character.value_type != u'TEXT':
+            continue  # skip non-textual filters
         ease = character.ease_of_observability
         score = compute_score(entropy, coverage, ease)
         result.append((score, entropy, coverage, character))
