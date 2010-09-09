@@ -678,18 +678,14 @@ class Importer(object):
         filter, created = models.DefaultFilter.objects.get_or_create(
             pile=pile,
             character=character,
-            order=1,
-            key_characteristics=character.key_characteristics,
-            notable_exceptions=character.notable_exceptions)
+            order=1)
         filter.save()
 
         character = models.Character.objects.get(short_name='spore_form')
         filter, created = models.DefaultFilter.objects.get_or_create(
             pile=pile,
             character=character,
-            order=2,
-            key_characteristics=character.key_characteristics,
-            notable_exceptions=character.notable_exceptions)
+            order=2)
 
         filter.save()
 
@@ -697,9 +693,7 @@ class Importer(object):
         filter, created = models.DefaultFilter.objects.get_or_create(
             pile=pile,
             character=character,
-            order=3,
-            key_characteristics=character.key_characteristics,
-            notable_exceptions=character.notable_exceptions)
+            order=3)
 
         filter.save()
 

@@ -532,16 +532,14 @@ class DefaultFilter(models.Model):
     pile = models.ForeignKey(Pile)
     character = models.ForeignKey(Character)
     order = models.IntegerField()
-    key_characteristics = models.TextField(blank=True)
-    notable_exceptions = models.TextField(blank=True)
 
     class Meta:
         ordering = ['order']
         unique_together = ('pile', 'character')
 
     def __unicode__(self):
-        return '%d: %s (%s)' % (self.order, self.character.friendly_name,
-                                self.pile.name)
+        return '%s default #%d: %s' % (self.pile.name, self.order,
+                                       self.character.friendly_name)
 
 
 class PlantPreviewCharacter(models.Model):

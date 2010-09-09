@@ -140,14 +140,10 @@ def _setup_sample_data(load_images=False):
     # Create a couple of default filters here, making sure not to create
     # one for *every* character, so as to exercise some code in the
     # handlers that deals with a default filter not existing for a character.
-    df1 = models.DefaultFilter(pile=pile1, character=c1, order=1,
-                               key_characteristics='key characteristics 1',
-                               notable_exceptions='notable exceptions 1')
+    df1 = models.DefaultFilter(pile=pile1, character=c1, order=1)
     df1.save()
 
-    df2 = models.DefaultFilter(pile=pile1, character=c2, order=2,
-                               key_characteristics='key characteristics 2',
-                               notable_exceptions='notable exceptions 2')
+    df2 = models.DefaultFilter(pile=pile1, character=c2, order=2)
     df2.save()
     
     ppc1 = models.PlantPreviewCharacter(pile=pile1, character=c1, order=1)

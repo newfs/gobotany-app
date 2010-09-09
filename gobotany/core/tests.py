@@ -175,7 +175,7 @@ class ModelTests(SampleData):
         defaultfilter1.order = 7
         defaultfilter1.save()
 
-        self.do_unicode(defaultfilter1, u'7: What color? (Carnivores)')
+        self.do_unicode(defaultfilter1, u'Carnivores default #7: What color?')
 
     def test_PlantPreviewCharacter_unicode(self):
         plantpreview = models.PlantPreviewCharacter()
