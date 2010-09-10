@@ -76,9 +76,18 @@ gobotany.sk.results.init = function(pile_slug) {
 
     // Create a FilterManager object, which will pull a list of default
     // filters for the pile.
-    filter_manager = new gobotany.filters.FilterManager(
-                         {pile_slug: pile_slug});
+    filter_manager = new gobotany.filters.FilterManager({
+        pile_slug: pile_slug
+    });
+
+    // everytime pile info is loaded by filtermanager, update everything
+    dojo.connect(filter_manager, 'on_pile_info_loaded',
+                 gobotany.sk.results.setup_pile_info)
     
+    // whenever the char groups change...
+    dojo.connect(filter_manager, 'on_character_groups_changed',
+                 gobotany.sk.results.setup_character_groups);
+
     // Check the URL "hash" for filter state information and if found, restore.
     var hash_string = dojo.hash();
     if (hash_string.length) {
@@ -86,10 +95,12 @@ gobotany.sk.results.init = function(pile_slug) {
         // filter values.
         gobotany.sk.results.initial_url_hash_string = hash_string;
         
+        // load pile info so char groups can be setup and other misc stuff
+        filter_manager.load_pile_info();
+
         // Restore the filters and any filter values selected, and run the query.
         gobotany.sk.results.restore_filters(hash_string);
-    }
-    else {
+    } else {
         gobotany.sk.results.refresh_default_filters();
         
         // We start with no filter values selected so we can run the query
@@ -106,10 +117,6 @@ gobotany.sk.results.init = function(pile_slug) {
     var select_box = dojo.byId('image-type-selector');
     dojo.connect(select_box, 'change', 
                  gobotany.sk.results.load_selected_image_type);
-
-    // everytime pile info is loaded by filtermanager, update everything
-    dojo.connect(filter_manager, 'on_pile_info_loaded',
-                 gobotany.sk.results.setup_pile_info)
 };
 
 gobotany.sk.results.persist_url = function() {
@@ -126,11 +133,13 @@ gobotany.sk.results.restore_filters = function(hash_string) {
             }
         }
     }
-    
+
+    filter_manager.empty_filters();
+
     // Get all the filters from the server, passing a callback function
     // that will restore the filter values when done.
-    gobotany.sk.results.get_url_filters(filter_names,
-        gobotany.sk.results.restore_filter_values);
+    gobotany.sk.results.get_url_filters(
+        filter_names, gobotany.sk.results.restore_filter_values);
     
     dojo.query('#filters .loading').addClass('hidden');
 };
@@ -174,10 +183,6 @@ gobotany.sk.results.restore_filter_values = function() {
 };
 
 gobotany.sk.results.setup_pile_info = function() {
-    // Set up the character group checkboxes.
-    gobotany.sk.results.add_character_groups(filter_manager);
-    console.log('character group checkboxes created');
-
     // Populate the initial list of default filters.
     gobotany.sk.results.setup_filters({filters: filter_manager.filters});
     console.log('default filters loaded and configured');
@@ -928,7 +933,6 @@ gobotany.sk.results.get_url_filters = function(short_names, callback) {
     // Get and add filters that were present on the URL when the page was
     // loaded. (This is done instead of adding default filters.)
     
-    //alert('get_url_filters: ' + short_names);
     filter_manager.query_filters({
         short_names: short_names,
         onLoaded: function(items) {
@@ -973,7 +977,8 @@ gobotany.sk.results.get_more_filters = function(event) {
     });
 };
 
-gobotany.sk.results.add_character_groups = function(filter_manager) {
+gobotany.sk.results.setup_character_groups = function() {
+    console.log('setup_character_groups(): enter');
     var my_form = dojo.query('#more_filters form div')[0];
     var menu = dijit.byId('character_groups_menu');
 
@@ -988,7 +993,7 @@ gobotany.sk.results.add_character_groups = function(filter_manager) {
 gobotany.sk.results.refresh_default_filters = function() {
     dojo.query('#filters .loading').removeClass('hidden');
     filter_manager.empty_filters();
-    filter_manager.load_pile_info();
+    filter_manager.load_pile_info({load_default_filters: true});
 };
 
 // A subscriber for results_loaded

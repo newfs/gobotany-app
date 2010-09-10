@@ -79,7 +79,7 @@ doh.register('gobotany.tests.core.TestFilterManager', [
                     default_filters: [{'value_type': 'TEXT'}]});
             }
         };
-        fm.load_pile_info();
+        fm.load_pile_info({load_default_filters: true});
 
         doh.assertEqual(1, fm.filters_loading);
     },
