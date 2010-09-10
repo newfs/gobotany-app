@@ -1,3 +1,9 @@
+        <div class="species_image_ribbon">
+          {% for image in pile.sample_species_images.all %}
+            <img src="{{ image.image.thumbnail.absolute_url }}">
+          {% endfor %}
+        </div>
+
         {% if pile.friendly_name %}
         <h3 class="PileFriendlyName">{{ pile.friendly_name }}</h3>
         {% endif %}

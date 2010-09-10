@@ -23,6 +23,13 @@ p {
     padding: 5px 0;
 }
 
+.species_image_ribbon {
+    margin: 8px auto;
+    background-color: #c3d69b;
+    padding: 8px;
+    text-align: center;
+}
+
 #content {
     width: 960px;
 }
