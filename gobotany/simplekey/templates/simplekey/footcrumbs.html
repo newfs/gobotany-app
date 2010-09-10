@@ -1,6 +1,12 @@
 <ul id="footcrumbs">
   <li>
-    <a href="/simple/1/">Start</a>
+    <a href="/simple/?skip=no">Getting Started</a>
+  </li>
+  <li>
+{% if not pilegroup %}
+    Collections
+{% else %}
+    <a href="/simple/1/">Collections</a>
   </li>
   <li>
 {% if not pile %}
@@ -10,6 +16,7 @@
   </li>
   <li>
     <b>{{ pile.name }}</b>
+{% endif %}
 {% endif %}
     <div id="you_are_here">&uarr;<br>You are here</div>
   </li>

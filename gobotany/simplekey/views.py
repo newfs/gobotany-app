@@ -1,7 +1,7 @@
 import string
 from django.core.urlresolvers import reverse
 from django.http import Http404
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from gobotany.core.models import GlossaryTerm, Pile, PileGroup
 from gobotany.simplekey.models import Page, get_blurb
@@ -24,9 +24,14 @@ def get_simple_url(item):
 
 def index_view(request):
     blurb = get_blurb('index_instructions')
-    return render_to_response(
-        'simplekey/index.html', {'blurb': blurb},
-        context_instance=RequestContext(request))
+    c = request.COOKIES.get('skip_getting_started', '')
+    skip_getting_started = (c == 'skip')
+    if skip_getting_started and request.GET.get('skip') != 'no':
+        return redirect('1/')
+    return render_to_response('simplekey/index.html', {
+            'blurb': blurb,
+            'skip_getting_started': skip_getting_started,
+            }, context_instance=RequestContext(request))
 
 
 def map_view(request):

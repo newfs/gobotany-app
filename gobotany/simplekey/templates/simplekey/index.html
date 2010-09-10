@@ -10,6 +10,11 @@
     <p>
       <a href="1/">Start identifying!</a>
     </p>
+    <form>
+      <input id="skip_getting_started" type="checkbox"
+             {% if skip_getting_started %} checked {% endif %}>
+      Don't show <i>Getting Started</i> message again — I get it
+    </form>
     <p>
       <a href="glossary/a/">View the glossary</a>
     </p>
