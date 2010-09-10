@@ -293,10 +293,14 @@ class Pile(PileInfo):
                                              through='DefaultFilter')
     plant_preview_characters = models.ManyToManyField(Character,
         through='PlantPreviewCharacter', related_name='preview_characters')
+    sample_species_images = models.ManyToManyField(
+        'ContentImage', related_name='sample_for_piles')
 
 
 class PileGroup(PileInfo):
     """A group of Pile objects; the top level of basic-key navigation."""
+    sample_species_images = models.ManyToManyField(
+        'ContentImage', related_name='sample_for_pilegroups')
 
 
 class GlossaryTermForPileCharacter(models.Model):
