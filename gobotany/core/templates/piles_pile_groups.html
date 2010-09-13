@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block js %}
 <script type="text/javascript">
-dojo.require('gobotany.piles');
+dojo.require('gobotany.demo.piles');
 dojo.addOnLoad(function() {
-    gobotany.piles.populate_piles();
-    gobotany.piles.populate_pile_groups();
+    gobotany.demo.piles.populate_piles();
+    gobotany.demo.piles.populate_pile_groups();
 });
 </script>
 {% endblock %}
@@ -13,7 +13,7 @@ dojo.addOnLoad(function() {
 <form>
   <fieldset>
     <legend>Piles</legend>
-    <select id="pile-select" disabled="true" onchange="gobotany.piles.show_pile(this.options[this.selectedIndex].value)">
+    <select id="pile-select" disabled="true" onchange="gobotany.demo.piles.show_pile(this.options[this.selectedIndex].value)">
       <option>loading...</option>
     </select>
     <dl id="pile-info">
@@ -22,7 +22,7 @@ dojo.addOnLoad(function() {
 
   <fieldset>
     <legend>Pile Groups (Uber-piles)</legend>
-    <select id="pilegroup-select" disabled="true" onchange="gobotany.piles.show_pilegroup(this.options[this.selectedIndex].value)">
+    <select id="pilegroup-select" disabled="true" onchange="gobotany.demo.piles.show_pilegroup(this.options[this.selectedIndex].value)">
       <option>loading...</option>
     </select>
     <dl id="pilegroup-info">

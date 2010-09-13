@@ -1,7 +1,7 @@
-dojo.provide('gobotany.piles');
+dojo.provide('gobotany.demo.piles');
 dojo.require('dojox.data.JsonRestStore');
 
-gobotany.piles.init = function() {
+gobotany.demo.piles.init = function() {
     var f = dojo.byId('characters_form');
     var b = dojo.place('<input type="button" value="Check Counts">', f);
     var d = dojo.place('<span></span>', f);
@@ -27,7 +27,7 @@ gobotany.piles.init = function() {
     });
 };
 
-gobotany.piles._populate_base_pile_listing = function(basename) {
+gobotany.demo.piles._populate_base_pile_listing = function(basename) {
     var select = dojo.byId(basename+'-select');
     var store = new dojox.data.JsonRestStore({target: '/'+basename+'s/'});
     store.fetch({onComplete: function(res) {
@@ -40,15 +40,15 @@ gobotany.piles._populate_base_pile_listing = function(basename) {
     }});
 };
 
-gobotany.piles.populate_piles = function() {
-    gobotany.piles._populate_base_pile_listing('pile');
+gobotany.demo.piles.populate_piles = function() {
+    gobotany.demo.piles._populate_base_pile_listing('pile');
 };
 
-gobotany.piles.populate_pile_groups = function() {
-    gobotany.piles._populate_base_pile_listing('pilegroup');
+gobotany.demo.piles.populate_pile_groups = function() {
+    gobotany.demo.piles._populate_base_pile_listing('pilegroup');
 };
 
-gobotany.piles._show_base_pile_info = function(basename, uri) {
+gobotany.demo.piles._show_base_pile_info = function(basename, uri) {
     var store = new dojox.data.JsonRestStore({target: '/'+basename+'s/'});
     store.fetchItemByIdentity({identity: uri, onItem: function(item) {
         var dl = dojo.byId(basename+'-info');
@@ -62,10 +62,10 @@ gobotany.piles._show_base_pile_info = function(basename, uri) {
     }});
 };
 
-gobotany.piles.show_pile = function(uri) {
-    gobotany.piles._show_base_pile_info('pile', uri);
+gobotany.demo.piles.show_pile = function(uri) {
+    gobotany.demo.piles._show_base_pile_info('pile', uri);
 };
 
-gobotany.piles.show_pilegroup = function(uri) {
-    gobotany.piles._show_base_pile_info('pilegroup', uri);
+gobotany.demo.piles.show_pilegroup = function(uri) {
+    gobotany.demo.piles._show_base_pile_info('pilegroup', uri);
 };
