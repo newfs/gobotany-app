@@ -4,8 +4,10 @@
 /*global console, dojo, dojox, gobotany */
 
 dojo.provide('gobotany.sk.results');
-dojo.require('dojox.data.JsonRestStore');
 dojo.require('gobotany.filters');
+dojo.require('gobotany.utils');
+
+dojo.require('dojox.data.JsonRestStore');
 dojo.require('dojo.cookie');
 dojo.require('dojo.hash');
 dojo.require('dojo.html');
@@ -479,8 +481,8 @@ gobotany.sk.results.setup_filters = function(args) {
     dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));
     
     if (added.length > 0) {
-        gobotany.sk.results.notify('New filters added'); 
-        gobotany.sk.results.animate_changed(added);
+        gobotany.utils.notify('New filters added'); 
+        gobotany.utils.animate_changed(added);
     }
 };
 
@@ -971,7 +973,7 @@ gobotany.sk.results.get_more_filters = function(event) {
             if (items.length > 0)
                 gobotany.sk.results.setup_filters({filters: items, add: true});
             else
-                gobotany.sk.results.notify('No filters left for the selected character groups');
+                gobotany.utils.notify('No filters left for the selected character groups');
             button.set('disabled', false);
         }
     });
@@ -1070,46 +1072,4 @@ gobotany.sk.results.load_selected_image_type = function (event) {
                }
         });
     }
-};
-
-
-// notify()
-// display a notification message at the top of the script
-// that will eventually fade away
-gobotany.sk.results.notify = function(txt) {
-    var holder = dojo.byId('notification-msg');
-    if (holder === null) {
-        holder = dojo.place('<div class="hidden" id="notification-msg"></div>',
-                            dojo.body());
-    }
-
-    holder.innerHTML = txt;
-
-    var wbox = dojo.window.getBox();
-    var holderbox = dojo.position(holder);
-
-    var left = (wbox.w / 2) - (holderbox.w / 2);
-    var top = wbox.t;
-    dojo.style(holder,
-               {position: 'absolute',
-                top: top + 'px',
-                left: left + 'px'});
-
-    dojo.removeClass(holder, 'hidden');
-    dojo.fadeIn({node: holder, duration: 1}).play();
-
-    setTimeout(function() {
-        dojo.fadeOut({node: holder}).play();
-    }, 5000);
-};
-
-gobotany.sk.results.animate_changed = function(node) {
-    var nodes = node;
-    if (nodes.length === undefined)
-        nodes = [nodes];
-
-    setTimeout(function() {
-        for (var x = 0; x < nodes.length; x++)
-            dojo.anim(nodes[x], {backgroundColor: 'white'});
-    }, 2000);
 };
