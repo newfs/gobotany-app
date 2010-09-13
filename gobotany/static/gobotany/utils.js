@@ -4,7 +4,7 @@ dojo.provide('gobotany.utils');
 // notify()
 // display a notification message at the top of the script
 // that will eventually fade away
-gobotany.sk.results.notify = function(txt) {
+gobotany.utils.notify = function(txt) {
     var holder = dojo.byId('notification-msg');
     if (holder === null) {
         holder = dojo.place('<div class="hidden" id="notification-msg"></div>',
@@ -31,7 +31,7 @@ gobotany.sk.results.notify = function(txt) {
     }, 5000);
 };
 
-gobotany.sk.results.animate_changed = function(node) {
+gobotany.utils.animate_changed = function(node) {
     var nodes = node;
     if (nodes.length === undefined)
         nodes = [nodes];
