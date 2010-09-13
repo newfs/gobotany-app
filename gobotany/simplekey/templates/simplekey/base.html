@@ -24,19 +24,6 @@
         {% endblock %}
       </div>
     </div>
-    <script type="text/javascript">
-    djConfig = { 
-        isDebug: true,
-        debugAtAllCosts:true,
-        useXDomain: false,
-        baseUrl: 'http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/',
-        modulePaths: {
-            gobotany: '/static/gobotany'
-        },
-        parseOnLoad: true,
-    };
-    </script>
-    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/dojo.xd.js"></script>
     {% block js_bottom %}{% endblock %}
   </body>
 </html>
