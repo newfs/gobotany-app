@@ -4,12 +4,10 @@
     <title>{% block title %}{% endblock %} - Plant Identifier - Go-Botany</title>
     <meta charset="utf-8" />
     {% block js_top %}{% endblock %}
+
+    {% include "dojobase.html" %}
+
     <link rel="stylesheet" type="text/css" href="/static/reset.css" />
-    <link rel="stylesheet" type="text/css"
-          href="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/resources/dojo.css" />
-    <link rel="stylesheet" 
-          href="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/claro.css" 
-          type="text/css" media="screen" title="Dijit Claro Style" />
     <link rel="stylesheet" href="/static/gobotany.css" />
   </head>
   <body class="claro">
