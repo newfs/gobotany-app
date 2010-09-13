@@ -45,7 +45,8 @@
   <script>
     dojo.require('gobotany.sk.results');
     dojo.addOnLoad(function() {
-      gobotany.sk.results.init('{{ pile.slug }}');
+      var helper = gobotany.sk.results.ResultsHelper('{{ pile.slug }}');
+      helper.setup_page()
     });
   </script>
 {% endblock %}

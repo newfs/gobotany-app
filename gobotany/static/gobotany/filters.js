@@ -175,7 +175,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                         this.filter_manager.add_filter({
                             filter_json: filter_json,
                             onAdded: dojo.hitch(this, 
-                                this.filter_manager._watch_filters_loading)
+                                this.filter_manager._watch_default_filters_loading)
                         });
                     }
                 } else {
@@ -184,7 +184,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
             }
         });
     },
-    _watch_filters_loading: function(data) {
+    _watch_default_filters_loading: function(data) {
         // scope should be an object with filter_manager and onLoaded attrs
 
         this.filter_manager.filters_loading--;
@@ -192,10 +192,12 @@ dojo.declare("gobotany.filters.FilterManager", null, {
             if (this.args && this.args.onLoaded)
                 this.args.onLoaded();
             this.filter_manager.on_pile_info_loaded();
+            this.filter_manager.on_default_filters_loaded();
         }
     },
     on_pile_info_loaded: function() {},
     on_character_groups_changed: function() {},
+    on_default_filters_loaded: function() {},
 
     build_filter: function(args) {
         var filter_json = args.filter_json;
