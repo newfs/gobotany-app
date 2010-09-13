@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block js %}
 <script type="text/javascript">
-dojo.require('gobotany.taxon');
+dojo.require('gobotany.demo.taxon');
 dojo.addOnLoad(function() {
-    var helper = gobotany.taxon.TaxonHelper();
+    var helper = gobotany.demo.taxon.TaxonHelper();
     helper.init();
 });
 </script>

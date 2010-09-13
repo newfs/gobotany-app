@@ -1,14 +1,15 @@
-dojo.provide('gobotany.taxon');
+dojo.provide('gobotany.demo.taxon');
 dojo.require('dojox.data.JsonRestStore');
 
-gobotany.taxon._base_url = '/taxon';
+gobotany.demo.taxon._base_url = '/taxon';
 
-dojo.declare('gobotany.taxon.TaxonHelper', null, {
+dojo.declare('gobotany.demo.taxon.TaxonHelper', null, {
     constructor: function(args) {
-        this.taxon_store = new dojox.data.JsonRestStore({target: gobotany.taxon._base_url});
+        this.taxon_store = new dojox.data.JsonRestStore({target: gobotany.demo.taxon._base_url});
     },
 
     init: function() {
+        console.log('Setting up TaxonHelper');
         this.populate_taxon_select();
         var s = dojo.byId('taxon_select');
         dojo.connect(s, 'onchange', null,
