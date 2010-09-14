@@ -20,6 +20,7 @@ dojo.declare("gobotany.filters.Filter", null, {
     key_characteristics: null,
     notable_exceptions: null,
     selected_value: null,
+    filter_callback: null,
     constructor: function(args) {
         this.character_short_name = args.character_short_name;
         this.friendly_name = args.friendly_name;
@@ -27,6 +28,7 @@ dojo.declare("gobotany.filters.Filter", null, {
         this.pile_slug = args.pile_slug;
         this.value_type = args.value_type;
         this.unit = args.unit;
+        this.filter_callback = args.filter_callback;
         dojo.safeMixin(this, args);
         var url = '/piles/' + this.pile_slug + '/' + 
                   this.character_short_name + '/';
@@ -236,6 +238,12 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         
         return filter;
     },
+    has_filter: function(short_name) {
+        for (var x = 0; x < this.filters.length; x++)
+            if (this.filters[x].character_short_name == short_name)
+                return true;
+        return false;
+    },
     add_filter: function(args) {
         // Add the filter to the manager's collection of filters.
         var f = this.build_filter(args);
@@ -244,23 +252,21 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         this.on_character_changed(f.character_short_name);
         return f;
     },
-    add_text_filters: function(filter_names) {
-        for (var i = 0; i < filter_names.length; i++) {
-            var filter = new gobotany.filters.Filter(
-                {
-                    friendly_name: '', // not needed yet
-                    character_short_name: filter_names[i],
-                    order: 0,
-                    notable_exceptions: null,
-                    key_characteristics: null,
-                    value_type: null,
-                    unit: null,
-                    pile_slug: this.pile_slug
-                }
-            );
-            this.filters.push(filter);
-            this.on_character_changed(filter.character_short_name);
-        }
+    add_special_filter: function(args) {
+        var filter = new gobotany.filters.Filter({
+            friendly_name: '', // not needed yet
+            character_short_name: args.character_short_name,
+            order: 0,
+            notable_exceptions: null,
+            key_characteristics: null,
+            value_type: null,
+            unit: null,
+            pile_slug: this.pile_slug,
+            filter_callback: args.filter_callback
+        });
+        this.filters.push(filter);
+        console.log('add_special_filter: '+filter.character_short_name);
+        this.on_character_changed(filter.character_short_name);
     },
     set_selected_value: function(character_short_name, selected_value) {
         for (var i = 0; i < this.filters.length; i++) {
@@ -316,11 +322,14 @@ dojo.declare("gobotany.filters.FilterManager", null, {
     },
     run_filtered_query: function(onComplete) {
         var content = {pile: this.pile_slug};
-
+        var special = [];
+        console.log('FilterManager: running filtered query');
         for (var i = 0; i < this.filters.length; i++) {
             var filter = this.filters[i];
-            if (filter.selected_value !== null && 
-                filter.selected_value.length) {
+            if (filter.filter_callback != null) {
+                special.push(filter);
+            } else if (filter.selected_value !== null && 
+                     filter.selected_value.length) {
 
                 content[filter.character_short_name] = filter.selected_value;
             }
@@ -334,6 +343,27 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                 this.species_ids = [];
                 for (i=0; i < data.items.length; i++)
                     this.species_ids[i] = data.items[i].id;
+
+                if (special.length > 0) {
+                    // run special filters
+                    var newdata = [];
+                    for (var x = 0; x < data.items.length; x++) { 
+                        var item = data.items[x];
+                        var removed = false;
+                        for (var y = 0; y < special.length; y++) {
+                            var callback = special[y].filter_callback;
+                            if (!callback(special[y], item)) {
+                                removed = true;
+                                break;
+                            }
+                        }
+
+                        if (!removed)
+                            newdata.push(item);
+                    }
+                    data.items = newdata;
+                    console.log('FilterManager.run_filtered_query: data was specially filtered');
+                }
 
                 // Call the passed-in callback function.
                 onComplete(data);

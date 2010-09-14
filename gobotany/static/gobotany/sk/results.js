@@ -65,19 +65,22 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     _restore_filters: function(hash) {
         var filter_names = [];
         var hash_object = dojo.queryToObject(hash);
+        console.log('family='+hash_object.family);
         if (hash_object['_filters'] === undefined)
             return;
+
+        this.filter_manager.empty_filters();
+        gobotany.sk.results.add_special_filters();
 
         var comma = hash_object['_filters'].split(',');
         var filter_values = [];
         for (var x = 0; x < comma.length; x++) {
-            if (comma[x] && comma[x] !== 'family' && comma[x] !== 'genus') {
-                filter_names.push(comma[x]);
-                filter_values[comma[x]] = hash_object[comma[x]];
-            }
-        }
+            filter_values[comma[x]] = hash_object[comma[x]];
+            if (this.filter_manager.has_filter(comma[x]))
+                continue
 
-        filter_manager.empty_filters();
+            filter_names.push(comma[x]);
+        }
 
         // Get all the filters from the server, passing a callback function
         // that will restore the filter values when done.
@@ -93,25 +96,17 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     _restore_filter_values: function(hash_object) {
         for (var filter in hash_object) {
             if (hash_object.hasOwnProperty(filter)) {
-                if (filter !== 'family' && filter !== 'genus') {
-                    if (hash_object[filter] !== undefined && hash_object[filter].length) {
-                        filter_manager.set_selected_value(filter,
-                                                          hash_object[filter]);
+                if (hash_object[filter] !== undefined && hash_object[filter].length) {
+                    filter_manager.set_selected_value(filter,
+                                                      hash_object[filter]);
+                    if (filter == 'family')
+                        dijit.byId('family_select').set('value', hash_object.family);
+                    else if (filter == 'genus')
+                        dijit.byId('genus_select').set('value', hash_object.genus);
+                    else {
                         var choice_div = dojo.query('#' + filter + ' .choice')[0];
                         choice_div.innerHTML = hash_object[filter];
                     }
-                } else if (filter === 'family') {
-                    // TODO: Restore family filter value.
-                    
-                    // Doesn't work; are values even loaded yet at this point?
-                    // If not, maybe trigger loading the values and then set the value?
-                    dijit.byId('family_select').set('value', hash_object[filter]);
-                } else if (filter === 'genus') {
-                    // TODO: Restore genus filter value.
-                    
-                    // Doesn't work; are values even loaded yet at this point?
-                    // If not, maybe trigger loading the values and then set the value?
-                    dijit.byId('genus_select').set('value', hash_object[filter]);
                 }
             }
         }
@@ -270,6 +265,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
 
 gobotany.sk.results.init = function(pile_slug) {
+    console.log('Init: initialization running');
     // Create a FilterManager object, which will pull a list of default
     // filters for the pile.
     filter_manager = new gobotany.filters.FilterManager({
@@ -337,10 +333,7 @@ gobotany.sk.results.init = function(pile_slug) {
 };
 
 gobotany.sk.results.setup_pile_info = function() {
-    // Add Family and Genus filters.
-    filter_manager.add_text_filters(['family', 'genus']);
     dojo.query('#filters .loading').addClass('hidden');
-    console.log('family and genus filters added');
 };
 
 // Update the filter working area "help text," which consists of the Key
@@ -838,7 +831,8 @@ gobotany.sk.results.rebuild_family_select = function(items) {
 
     // Update the Family data store.
 
-    var family_store = dijit.byId('family_select').store;
+    var family_select = dijit.byId('family_select');
+    var family_store = family_select.store;
 
     family_store.fetch({onComplete: function (items) {
         for (var i=0; i < items.length; i++)
@@ -849,6 +843,10 @@ gobotany.sk.results.rebuild_family_select = function(items) {
             family_store.newItem({ name: f, family: f });
         }
         family_store.save();
+
+        var v = filter_manager.get_selected_value('family');
+        if (v)
+            family_select.set('value', v);
     }});
 }
 
@@ -874,7 +872,8 @@ gobotany.sk.results.rebuild_genus_select = function(items) {
 
     // Update the Genus data store.
 
-    var genus_store = dijit.byId('genus_select').store;
+    var genus_select = dijit.byId('genus_select');
+    var genus_store = genus_select.store;
 
     genus_store.fetch({onComplete: function (items) {
         for (var i=0; i < items.length; i++)
@@ -885,42 +884,17 @@ gobotany.sk.results.rebuild_genus_select = function(items) {
             genus_store.newItem({ name: g, genus: g });
         }
         genus_store.save();
+
+        var v = filter_manager.get_selected_value('genus');
+        if (v)
+            genus_select.set('value', v);
     }});
-}
-
-gobotany.sk.results.narrow_by_family = function(items) {
-    var family = dijit.byId('family_select').value;
-    if (family)
-        for (var i = items.length - 1; i > 0; i--)
-            if (items[i].family != family)
-                items.splice(i, 1);
-}
-
-gobotany.sk.results.narrow_by_genus = function(items) {
-    var genus = dijit.byId('genus_select').value;
-    if (genus)
-        for (var i = items.length - 1; i >= 0; i--)
-            if (items[i].genus != genus)
-                items.splice(i, 1);
 }
 
 gobotany.sk.results.on_complete_run_filtered_query = function(data) {
 
-    // Getting the "Family" and "Genus" boxes properly populated is a
-    // bit tricky, because simply using them as normal parameters in our
-    // big query would, for example, empty out the "Family" drop-downs
-    // of every family except the one you had just selected!
-    //
-    // So, we do our "big query" *without* any restriction on family and
-    // genus, so that we can populate the family field with all of its
-    // options for the current filters, then we narrow the list of items
-    // "by hand" so that the rest of the display logic can only see the
-    // results for the currently-selected family.
-
     gobotany.sk.results.rebuild_family_select(data.items);
-    gobotany.sk.results.narrow_by_family(data.items);
     gobotany.sk.results.rebuild_genus_select(data.items);
-    gobotany.sk.results.narrow_by_genus(data.items);
 
     // Update the species count on the screen.
     dojo.query('#plants .species_count .count .number')[0].innerHTML =
@@ -953,6 +927,7 @@ gobotany.sk.results.apply_family_filter = function(event) {
     
     var family_select = dijit.byId('family_select');
     var family = family_select.value;
+    filter_manager.set_selected_value('family', family);
     
     gobotany.sk.results.run_filtered_query();
     did_they_just_choose_a_genus = false;
@@ -960,6 +935,7 @@ gobotany.sk.results.apply_family_filter = function(event) {
 
 gobotany.sk.results.apply_genus_filter = function(event) {
     var genus = dijit.byId('genus_select').value;
+    filter_manager.set_selected_value('genus', genus);
     
     var family_select = dijit.byId('family_select');
     if (genus) {
@@ -985,11 +961,31 @@ gobotany.sk.results.clear_family = function(event) {
 gobotany.sk.results.clear_genus = function(event) {
     event.preventDefault();
     dijit.byId('genus_select').set('value', '');
-}
+};
+
+gobotany.sk.results.add_special_filters = function() {
+    filter_manager.add_special_filter({
+        character_short_name: 'family',
+        filter_callback: function(filter, item) {
+            if (!filter.selected_value)
+                return true;
+            return filter.selected_value == item.family;
+        }
+    });
+    filter_manager.add_special_filter({
+        character_short_name: 'genus',
+        filter_callback: function(filter, item) {
+            if (!filter.selected_value)
+                return true;
+            return filter.selected_value == item.genus;
+        }
+    });
+};
 
 gobotany.sk.results.refresh_default_filters = function() {
     dojo.query('#filters .loading').removeClass('hidden');
     filter_manager.empty_filters();
+    gobotany.sk.results.add_special_filters();
     filter_manager.load_pile_info({load_default_filters: true});
 };
 
