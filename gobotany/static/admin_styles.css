@@ -1,0 +1,10 @@
+.form-row.character_value, .form-row.character, .form-row.taxon {
+    overflow: visible; min-height: 25px; height: auto !important; height: 25px;
+}
+.change-form.yui-skin-sam .yui-ac-input {
+    width: 400px;
+}
+.change-form.yui-skin-sam .yui-ac-content {
+    max-height: 15em;
+    overflow: auto;
+}

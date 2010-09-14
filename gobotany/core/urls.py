@@ -1,10 +1,28 @@
 from django.conf.urls.defaults import include, patterns, url
 from django.contrib import admin
+from autocomplete.views import autocomplete
 
 import gobotany
 from gobotany.core import views
+from gobotany.core import models
 
 admin.autodiscover()
+
+autocomplete.register(
+    id='character_value',
+    queryset=models.CharacterValue.objects.all(),
+    fields=('character__short_name__istartswith', 'value_str__istartswith'),
+    limit=100)
+autocomplete.register(
+    id='character',
+    queryset=models.Character.objects.all(),
+    fields=('short_name__istartswith',),
+    limit=20)
+autocomplete.register(
+    id='taxon',
+    queryset=models.Taxon.objects.all(),
+    fields=('scientific_name__icontains',),
+    limit=20)
 
 urlpatterns = patterns(
     '',
@@ -24,4 +42,5 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^piles-pile-groups$', views.piles_pile_groups),
+    url('^autocomplete/(\w+)/$', autocomplete, name='autocomplete'),
     )

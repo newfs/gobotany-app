@@ -428,6 +428,9 @@ class Family(models.Model):
         verbose_name_plural = 'families'
         ordering = ['name']
 
+    def __unicode__(self):
+        return self.name
+
 
 class Genus(models.Model):
     """A biological genus."""
@@ -436,6 +439,9 @@ class Genus(models.Model):
     class Meta:
         verbose_name_plural = 'genera'
         ordering = ['name']
+
+    def __unicode__(self):
+        return self.name
 
 
 class Taxon(models.Model):
@@ -486,9 +492,10 @@ class TaxonCharacterValue(models.Model):
         unique_together = ('taxon', 'character_value')
         verbose_name = 'taxon character value'
         verbose_name_plural = 'character values for taxon'
+        ordering = ['taxon__scientific_name']
 
     def __unicode__(self):
-        return u'%s' % self.character_value
+        return u'%s: %s' % (self.taxon.scientific_name, self.character_value)
 
 
 class TaxonGroup(models.Model):
