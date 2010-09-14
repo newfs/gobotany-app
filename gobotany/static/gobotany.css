@@ -65,7 +65,12 @@ p {
 }
 
 #filters li {
-    padding: 0.75em 0 0 1em;
+    padding: 0.5em;
+    border-bottom: 1px dashed #ccc;
+}
+
+#filters li:nth-last-child(1) {
+    border-bottom: 0px;
 }
 
 #filters li a {
