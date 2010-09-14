@@ -240,6 +240,8 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         // Add the filter to the manager's collection of filters.
         var f = this.build_filter(args);
         this.filters.push(f);
+        console.log('add_filter: '+f.character_short_name);
+        this.on_character_changed(f.character_short_name);
         return f;
     },
     add_text_filters: function(filter_names) {
@@ -257,6 +259,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                 }
             );
             this.filters.push(filter);
+            this.on_character_changed(filter.character_short_name);
         }
     },
     set_selected_value: function(character_short_name, selected_value) {
@@ -269,6 +272,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                 if (selected_value != null)
                     selected_value = String(selected_value);
                 this.filters[i].selected_value = selected_value;
+                this.on_character_changed(character_short_name, selected_value);
                 return;
             }
         }
@@ -293,6 +297,20 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         }
         return selected_value;
     },
+    on_character_changed: function(character_short_name, newvalue) {},
+
+    as_query_string: function() {
+        var filter_names = [];
+        var obj = {};
+        for (var x = 0; x < this.filters.length; x++) {
+            var f = this.filters[x];
+            filter_names.push(f.character_short_name);
+            obj[f.character_short_name] = f.selected_value;
+        }
+
+        return '_filters='+filter_names.join(',')+'&'+dojo.objectToQuery(obj);
+    },
+
     empty_filters: function() {
         this.filters = [];
     },
@@ -307,13 +325,6 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                 content[filter.character_short_name] = filter.selected_value;
             }
         }
-        //var content_str = '';
-        //for (var key in content) {
-        //    if (content.hasOwnProperty(key)) {
-        //        content_str += key + ': ' + content[key] + ' ';
-        //    }
-        //}
-        //console.log('content_str: ' + content_str);
 
         this.result_store.fetch({
             scope: this,

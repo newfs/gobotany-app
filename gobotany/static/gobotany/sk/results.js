@@ -24,8 +24,6 @@ dojo.require('dijit.form.Select');
 var filter_manager = null;
 gobotany.sk.results.PAGE_COUNT = 12;
 var scroll_event_handle = null;
-gobotany.sk.results.url_hash = {};
-gobotany.sk.results.initial_url_hash_string = '';
 
 // Name of the currently shown filter.
 // TODO: perhaps move this into a function call that pulls this based on CSS
@@ -45,9 +43,101 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         gobotany.sk.results.init(this.pile_slug);
 
         // for now the init() function below sets up the much needed filter_manager obj
-        this.filter_section = new gobotany.sk.results.FilterSectionHelper(filter_manager);
+        this.filter_manager = filter_manager;
+
+        // whenever a filter value has changed, keep track of it in the url/cookie
+        dojo.connect(this.filter_manager, 'on_character_changed',
+                    dojo.hitch(this, this._track_filter_setting));
+
+        this.filter_section = new gobotany.sk.results.FilterSectionHelper(this.filter_manager);
         this.filter_section.setup_section();
+
+        var hash = dojo.hash();
+        if (hash)
+            this._restore_filters(hash)
+    },
+
+    _track_filter_setting: function(charname, newvalue) {
+        dojo.hash(this.filter_manager.as_query_string());
+        dojo.cookie('last_plant_id_url', window.location.href, {path: '/'});
+    },
+
+    _restore_filters: function(hash) {
+        var filter_names = [];
+        var hash_object = dojo.queryToObject(hash);
+        if (hash_object['_filters'] === undefined)
+            return;
+
+        var comma = hash_object['_filters'].split(',');
+        var filter_values = [];
+        for (var x = 0; x < comma.length; x++) {
+            if (comma[x] && comma[x] !== 'family' && comma[x] !== 'genus') {
+                filter_names.push(comma[x]);
+                filter_values[comma[x]] = hash_object[comma[x]];
+            }
+        }
+
+        filter_manager.empty_filters();
+
+        // Get all the filters from the server, passing a callback function
+        // that will restore the filter values when done.
+        this._get_url_filters(
+            filter_names,
+            dojo.hitch(this, function() {
+                this._restore_filter_values(filter_values);
+            }));
+
+        dojo.query('#filters .loading').addClass('hidden');
+    },
+
+    _restore_filter_values: function(hash_object) {
+        for (var filter in hash_object) {
+            if (hash_object.hasOwnProperty(filter)) {
+                if (filter !== 'family' && filter !== 'genus') {
+                    if (hash_object[filter] !== undefined && hash_object[filter].length) {
+                        filter_manager.set_selected_value(filter,
+                                                          hash_object[filter]);
+                        var choice_div = dojo.query('#' + filter + ' .choice')[0];
+                        choice_div.innerHTML = hash_object[filter];
+                    }
+                } else if (filter === 'family') {
+                    // TODO: Restore family filter value.
+                    
+                    // Doesn't work; are values even loaded yet at this point?
+                    // If not, maybe trigger loading the values and then set the value?
+                    dijit.byId('family_select').set('value', hash_object[filter]);
+                } else if (filter === 'genus') {
+                    // TODO: Restore genus filter value.
+                    
+                    // Doesn't work; are values even loaded yet at this point?
+                    // If not, maybe trigger loading the values and then set the value?
+                    dijit.byId('genus_select').set('value', hash_object[filter]);
+                }
+            }
+        }
+        
+        // Now that the values are restored, run the query to update.
+        gobotany.sk.results.run_filtered_query();
+    },
+
+    _get_url_filters: function(short_names, callback) {
+        // Get and add filters that were present on the URL when the page was
+        // loaded. (This is done instead of adding default filters.)
+
+        this.filter_manager.query_filters({
+            short_names: short_names,
+            onLoaded: dojo.hitch(this, function(items) {
+                if (items.length > 0) {
+                    this.filter_section._setup_filters({filters: items,
+                                                        add: true});
+                    // Call the callback function passed in, in order to
+                    // continue when completed.
+                    callback();
+                }
+            })
+        });
     }
+
 });
 
 dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
@@ -71,7 +161,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     _setup_character_groups: function() {
-        console.log('Updating char groups');
+        console.log('FilterSectionHelper: Updating char groups');
         var my_form = dojo.query('#more_filters form div')[0];
         var menu = dijit.byId('character_groups_menu');
 
@@ -85,7 +175,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
     _get_more_filters: function(event) {
         dojo.stopEvent(event);
-        console.log('Getting more filters...');
+
+        console.log('FilterSectionHelper: getting more filters...');
 
         var form = dijit.byId('more_filters_form');
         var button = dijit.byId('get_more_filters_button');
@@ -105,13 +196,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.filter_manager.query_best_filters({
             character_group_ids: character_group_ids,
             existing_characters: existing,
-            onLoaded: function(items) {
+            onLoaded: dojo.hitch(this, function(items) {
                 if (items.length > 0)
                     this._setup_filters({filters: items, add: true});
                 else
                     gobotany.utils.notify('No filters left for the selected character groups');
                 button.set('disabled', false);
-            }
+            })
         });
     },
 
@@ -166,11 +257,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     added.push(filterItem);
                 } else
                     dojo.place(filterItem, filtersList);
-
-                gobotany.sk.results.url_hash[filter.character_short_name] = '';
             }
         }
-        dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));
 
         if (added.length > 0) {
             gobotany.utils.notify('New filters added'); 
@@ -230,15 +318,8 @@ gobotany.sk.results.init = function(pile_slug) {
     // Check the URL "hash" for filter state information and if found, restore.
     var hash_string = dojo.hash();
     if (hash_string.length) {
-        // Store this hash string so it can be referred to later when restoring
-        // filter values.
-        gobotany.sk.results.initial_url_hash_string = hash_string;
-        
         // load pile info so char groups can be setup and other misc stuff
         filter_manager.load_pile_info();
-
-        // Restore the filters and any filter values selected, and run the query.
-        gobotany.sk.results.restore_filters(hash_string);
     } else {
         gobotany.sk.results.refresh_default_filters();
         
@@ -246,9 +327,6 @@ gobotany.sk.results.init = function(pile_slug) {
         // before they load
         gobotany.sk.results.run_filtered_query();
     }
-
-    dojo.subscribe("/dojo/hashchange", filter_manager,
-        gobotany.sk.results.persist_url);
 
     dojo.subscribe("results_loaded", gobotany.sk.results.populate_image_types);
 
@@ -258,75 +336,9 @@ gobotany.sk.results.init = function(pile_slug) {
                  gobotany.sk.results.load_selected_image_type);
 };
 
-gobotany.sk.results.persist_url = function() {
-    dojo.cookie('last_plant_id_url', window.location.href, {path: '/'});
-}
-
-gobotany.sk.results.restore_filters = function(hash_string) {
-    var filter_names = [];
-    var hash_object = dojo.queryToObject(hash_string);
-    for (var filter in hash_object) {
-        if (hash_object.hasOwnProperty(filter)) {
-            if (filter !== 'family' && filter !== 'genus') {
-                filter_names.push(filter);
-            }
-        }
-    }
-
-    filter_manager.empty_filters();
-
-    // Get all the filters from the server, passing a callback function
-    // that will restore the filter values when done.
-    gobotany.sk.results.get_url_filters(
-        filter_names, gobotany.sk.results.restore_filter_values);
-    
-    dojo.query('#filters .loading').addClass('hidden');
-};
-
-gobotany.sk.results.restore_filter_values = function() {
-    var hash_object = dojo.queryToObject(
-        gobotany.sk.results.initial_url_hash_string);
-    for (var filter in hash_object) {
-        if (hash_object.hasOwnProperty(filter)) {
-            if (filter !== 'family' && filter !== 'genus') {
-                if (hash_object[filter].length) {
-                    filter_manager.set_selected_value(filter,
-                        hash_object[filter]);
-                        
-                    gobotany.sk.results.url_hash[filter] = hash_object[filter];
-                    dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));
-                    
-                    var choice_div = dojo.query('#' + filter + ' .choice')[0];
-                    choice_div.innerHTML = hash_object[filter];
-                }
-            }
-            else if (filter === 'family') {
-                // TODO: Restore family filter value.
-                
-                // Doesn't work; are values even loaded yet at this point?
-                // If not, maybe trigger loading the values and then set the value?
-                dijit.byId('family_select').set('value', hash_object[filter]);
-            }
-            else if (filter === 'genus') {
-                // TODO: Restore genus filter value.
-                
-                // Doesn't work; are values even loaded yet at this point?
-                // If not, maybe trigger loading the values and then set the value?
-                dijit.byId('genus_select').set('value', hash_object[filter]);
-            }
-        }
-    }
-    
-    // Now that the values are restored, run the query to update.
-    gobotany.sk.results.run_filtered_query();
-};
-
 gobotany.sk.results.setup_pile_info = function() {
     // Add Family and Genus filters.
     filter_manager.add_text_filters(['family', 'genus']);
-    gobotany.sk.results.url_hash['family'] = '';
-    gobotany.sk.results.url_hash['genus'] = '';
-    dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));
     dojo.query('#filters .loading').addClass('hidden');
     console.log('family and genus filters added');
 };
@@ -525,7 +537,7 @@ gobotany.sk.results.hide_filter_working = function() {
 };
 
 gobotany.sk.results.clear_filter = function(event) {
-    event.preventDefault();
+    dojo.stopEvent(event);
 
     if (this.character_short_name == simplekey_character_short_name) {
         gobotany.sk.results.hide_filter_working();
@@ -533,8 +545,6 @@ gobotany.sk.results.clear_filter = function(event) {
 
     if (filter_manager.get_selected_value(this.character_short_name)) {
         filter_manager.set_selected_value(this.character_short_name, null);
-        gobotany.sk.results.url_hash[this.character_short_name] = '';
-        dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));
         gobotany.sk.results.run_filtered_query();
     }
 
@@ -543,14 +553,11 @@ gobotany.sk.results.clear_filter = function(event) {
 };
 
 gobotany.sk.results.remove_filter = function(event) {
-    event.preventDefault();
+    dojo.stopEvent(event);
 
     if (this.character_short_name == simplekey_character_short_name) {
         gobotany.sk.results.hide_filter_working();
     }
-
-    delete gobotany.sk.results.url_hash[this.character_short_name];
-    dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));
 
     if (filter_manager.get_selected_value(this.character_short_name)) {
         filter_manager.set_selected_value(this.character_short_name, null);
@@ -561,7 +568,7 @@ gobotany.sk.results.remove_filter = function(event) {
 };
 
 gobotany.sk.results.apply_filter = function(event) {
-    event.preventDefault();
+    dojo.stopEvent(event);
 
     var choice_div = dojo.query('#' + simplekey_character_short_name +
                                 ' .choice')[0];
@@ -576,9 +583,6 @@ gobotany.sk.results.apply_filter = function(event) {
             filter_manager.set_selected_value(simplekey_character_short_name,
                                               value);
             choice_div.innerHTML = value;
-            gobotany.sk.results.url_hash[
-                simplekey_character_short_name] = value;
-            dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));
             gobotany.sk.results.run_filtered_query();
         }
         return;
@@ -594,14 +598,9 @@ gobotany.sk.results.apply_filter = function(event) {
                                           checked_item.value);
         if (checked_item.value) {
             choice_div.innerHTML = checked_item.value;
-            gobotany.sk.results.url_hash[
-                simplekey_character_short_name] = checked_item.value;
         } else {
             choice_div.innerHTML = 'don\'t know';
-            gobotany.sk.results.url_hash[
-                simplekey_character_short_name] = '';
         }
-        dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));
         gobotany.sk.results.run_filtered_query();
         return;
     }
@@ -950,14 +949,10 @@ did_they_just_choose_a_genus = false;
 gobotany.sk.results.apply_family_filter = function(event) {
     if (! did_they_just_choose_a_genus) {
         dijit.byId('genus_select').set('value', '');
-        gobotany.sk.results.url_hash['genus'] = '';
-        dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));
     }
     
     var family_select = dijit.byId('family_select');
     var family = family_select.value;
-    gobotany.sk.results.url_hash['family'] = family;
-    dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));
     
     gobotany.sk.results.run_filtered_query();
     did_they_just_choose_a_genus = false;
@@ -966,23 +961,14 @@ gobotany.sk.results.apply_family_filter = function(event) {
 gobotany.sk.results.apply_genus_filter = function(event) {
     var genus = dijit.byId('genus_select').value;
     
-    gobotany.sk.results.url_hash['genus'] = genus;
-    dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));
-    
     var family_select = dijit.byId('family_select');
     if (genus) {
         var family = family_select.value;
-        
-        gobotany.sk.results.url_hash['family'] = family;
-        dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));
         
         var new_family = genus_to_family[genus];
         if (family != new_family) {
             did_they_just_choose_a_genus = true;
             family_select.set('value', new_family);
-            
-            gobotany.sk.results.url_hash['family'] = new_family;
-            dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));
         } else {
             gobotany.sk.results.run_filtered_query();
         }
@@ -994,33 +980,11 @@ gobotany.sk.results.apply_genus_filter = function(event) {
 gobotany.sk.results.clear_family = function(event) {
     event.preventDefault();
     dijit.byId('family_select').set('value', '');
-    gobotany.sk.results.url_hash['family'] = '';
-    dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));    
 }
 
 gobotany.sk.results.clear_genus = function(event) {
     event.preventDefault();
     dijit.byId('genus_select').set('value', '');
-    gobotany.sk.results.url_hash['genus'] = '';
-    dojo.hash(dojo.objectToQuery(gobotany.sk.results.url_hash));
-}
-
-gobotany.sk.results.get_url_filters = function(short_names, callback) {
-    // Get and add filters that were present on the URL when the page was
-    // loaded. (This is done instead of adding default filters.)
-    
-    filter_manager.query_filters({
-        short_names: short_names,
-        onLoaded: function(items) {
-            if (items.length > 0) {
-                gobotany.sk.results.setup_filters({filters: items,
-                                                   add: true});
-                // Call the callback function passed in, in order to
-                // continue when completed.
-                callback();
-            }
-        }
-    });
 }
 
 gobotany.sk.results.refresh_default_filters = function() {
