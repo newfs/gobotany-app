@@ -244,12 +244,22 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                 return true;
         return false;
     },
+    remove_filter: function(short_name) {
+        for (var x = 0; x < this.filters.length; x++) {
+            if (this.filters[x].character_short_name == short_name) {
+                var filter = this.filters[x];
+                this.filters.splice(x, 1);
+                this.on_filter_removed(filter);
+                return;
+            }
+        }
+    },
     add_filter: function(args) {
         // Add the filter to the manager's collection of filters.
         var f = this.build_filter(args);
         this.filters.push(f);
         console.log('add_filter: '+f.character_short_name);
-        this.on_character_changed(f.character_short_name);
+        this.on_filter_added(f);
         return f;
     },
     add_special_filter: function(args) {
@@ -266,7 +276,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         });
         this.filters.push(filter);
         console.log('add_special_filter: '+filter.character_short_name);
-        this.on_character_changed(filter.character_short_name);
+        this.on_filter_added(filter);
     },
     set_selected_value: function(character_short_name, selected_value) {
         for (var i = 0; i < this.filters.length; i++) {
@@ -278,7 +288,7 @@ dojo.declare("gobotany.filters.FilterManager", null, {
                 if (selected_value != null)
                     selected_value = String(selected_value);
                 this.filters[i].selected_value = selected_value;
-                this.on_character_changed(character_short_name, selected_value);
+                this.on_filter_changed(this.filters[i], selected_value);
                 return;
             }
         }
@@ -303,7 +313,9 @@ dojo.declare("gobotany.filters.FilterManager", null, {
         }
         return selected_value;
     },
-    on_character_changed: function(character_short_name, newvalue) {},
+    on_filter_added: function(filter) {},
+    on_filter_removed: function(filter) {},
+    on_filter_changed: function(filter) {},
 
     as_query_string: function() {
         var filter_names = [];
