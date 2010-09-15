@@ -38,8 +38,8 @@ pile_mapping = {
     'rg': u'Remaining graminoids',
     'rn': u'Remaining non-monocots',
     'ta': u'Thalloid aquatic',
-    #'': u'Woody Angiosperms',
-    #'': u'Woody Gymnosperms',
+    'wa': u'Woody Angiosperms',
+    'wg': u'Woody Gymnosperms',
     }
 
 class Importer(object):
