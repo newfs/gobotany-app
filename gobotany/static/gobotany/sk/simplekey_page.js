@@ -1,5 +1,6 @@
 dojo.provide('gobotany.sk.simplekey_page');
 dojo.require("dijit.Dialog");
+dojo.require("dijit.Tooltip");
 dojo.require("dijit.form.Button");
 dojo.require('dojox.embed.Flash');
 dojo.addOnLoad(function() {
