@@ -338,7 +338,8 @@ class Importer(object):
             
             res = models.Character.objects.filter(short_name=short_name)
             if len(res) == 0:
-                print >> self.logfile, u'      New Character: ' + short_name
+                print >> self.logfile, u'      New Character: %s (%s)' % \
+                    (short_name, value_type)
                 # Create a friendly name automatically for now.
                 temp_friendly_name = short_name.replace('_', ' ').capitalize()
                 character = models.Character(short_name=short_name,
