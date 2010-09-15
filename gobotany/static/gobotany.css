@@ -449,6 +449,27 @@ h3, h4, h5, h6 {
     background: transparent url(ajax-loader.gif) no-repeat;
 }
 
+/* Turn off the annoying decoration on the DropDownButton that we have
+   to use on the pile-info species image ribbon if we want a tooltip to
+   pop up when we click. */
+
+.PilePage .species_image_ribbon .dijitButtonNode {
+    background-image: none;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    -moz-border-radius: 0px 0px 0px 0px;
+    -moz-box-shadow: none;
+}
+.PilePage .species_image_ribbon .dijitButtonText {
+    padding: 0;
+}
+.PilePage .species_image_ribbon .dijitArrowButtonInner {
+    display: none;
+}
+
+/* Plant preview dialogs, wherever they appear */
+
 #plant-preview {
     background-color: #fff;
     color: #000;

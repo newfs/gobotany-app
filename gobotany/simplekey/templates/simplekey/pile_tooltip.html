@@ -1,11 +1,14 @@
         <div class="species_image_ribbon">
           {% for image in pile.sample_species_images.all %}
-            <img id="ribbon-{{ pile.slug }}-{{ forloop.counter }}"
-                 src="{{ image.image.thumbnail.absolute_url }}">
-            <div dojoType="dijit.Tooltip"
-                 connectId="ribbon-{{ pile.slug }}-{{ forloop.counter }}"
-                 position="below">
-              {% include "simplekey/plant_preview.html" %}
+            <div dojoType="dijit.form.DropDownButton">
+              <a>
+                <img id="ribbon-{{ pile.slug }}-{{ forloop.counter }}"
+                     src="{{ image.image.thumbnail.absolute_url }}">
+              </a>
+              <div dojoType="dijit.TooltipDialog"
+                   style="display:none">
+                {% include "simplekey/plant_preview.html" %}
+              </div>
             </div>
           {% endfor %}
         </div>
