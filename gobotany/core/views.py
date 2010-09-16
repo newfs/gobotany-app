@@ -234,7 +234,7 @@ def pile_characters(request, pile_slug):
 
     for character_id, entropy, coverage in character_entropy_list:
         character = models.Character.objects.get(id=character_id)
-        if character.value_type != 'TEXT':
+        if character.value_type not in (u'TEXT', u'LENGTH'):
             continue  # do not even bother with lengths yet!
         ease = character.ease_of_observability
         metarows, species_row = _tablefy_data(character)

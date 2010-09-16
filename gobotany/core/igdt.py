@@ -52,11 +52,13 @@ def compute_character_entropies(pile, species_list):
     # Both of these data structures are populated very simply, by
     # iterating once across our taxon_character_values query.
 
+    character_values = defaultdict(set)
     character_species = defaultdict(set)
     character_value_counts = defaultdict(int)
 
     for tcv in taxon_character_values:
         cv = character_values_by_id[tcv.character_value_id]
+        character_values[cv.character_id].add(cv)
         character_species[cv.character_id].add(tcv.taxon_id)
         character_value_counts[cv] += 1
 
@@ -67,19 +69,27 @@ def compute_character_entropies(pile, species_list):
     # a "coverage" fraction indicating how many of the species we are
     # looking at are touched by each character.
 
-    tallies = defaultdict(float)
-    for character_value, count in character_value_counts.items():
-        tallies[character_value.character_id] += count * math.log(count, 2.)
-
     n = float(len(species_list))
 
     result = []
-    for character_id, species_set in character_species.items():
-        entropy = tallies[character_id] / n
+    for character_id in character_values:
+        value_set = character_values[character_id]
+        species_set = character_species[character_id]
+        ne = _text_entropy(value_set, species_set, character_value_counts)
+        entropy = ne / n
         coverage = len(species_set) / n
         result.append((character_id, entropy, coverage))
 
     return result
+
+
+def _text_entropy(value_set, species_set, character_value_counts):
+    """Compute the info-gain from choosing a value of a text character."""
+    tally = 0.0
+    for character_value in value_set:
+        count = character_value_counts[character_value]
+        tally += count * math.log(count, 2.)
+    return tally
 
 
 def compute_score(entropy, coverage, ease):
@@ -95,7 +105,7 @@ def rank_characters(pile, species_list):
 
     for character_id, entropy, coverage in celist:
         character = Character.objects.get(id=character_id)
-        if character.value_type != u'TEXT':
+        if character.value_type not in (u'TEXT', u'LENGTH'):
             continue  # skip non-textual filters
         ease = character.ease_of_observability
         score = compute_score(entropy, coverage, ease)

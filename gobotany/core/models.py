@@ -120,7 +120,7 @@ class Character(models.Model):
 
     VALUE_CHOICES = {
         u'TEXT': u'Textual', # string
-        u'LENGTH': u'Length', # integer
+        u'LENGTH': u'Length', # length
         u'RATIO': u'Ratio', # float
         }
     UNIT_CHOICES = {
