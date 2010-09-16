@@ -155,7 +155,7 @@ class ModelTests(SampleData):
                         % self.pets.id)
 
     def test_TaxonCharacterValue_unicode(self):
-        self.do_unicode(self.tcv, u'length: 2 - 4')
+        self.do_unicode(self.tcv, u'Oryctolagus rabbit: length: 2 - 4')
 
     def test_TaxonGroup_unicode(self):
         self.create(models.TaxonGroup, 'taxongroup1')

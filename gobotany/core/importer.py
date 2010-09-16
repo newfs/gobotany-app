@@ -218,7 +218,8 @@ class Importer(object):
             return
 
         pile = models.Pile.objects.get(name__iexact=pile_mapping[pile_suffix])
-        print >> self.logfile, '  Setting up taxon character values in pile %s' % pile_mapping[pile_suffix]
+        print >> self.logfile, '  Setting up taxon character values in ' \
+            'pile %s' % pile_mapping[pile_suffix]
 
         for cols in iterator:
             row = dict(zip(colnames, cols))
@@ -245,7 +246,8 @@ class Importer(object):
                 try:
                     character = models.Character.objects.get(short_name=cname)
                 except ObjectDoesNotExist:
-                    print >> self.logfile, '    ERR: No such character exists: %s, [%s]' % (cname, k)
+                    print >> self.logfile, '    ERR: No such character ' \
+                        'exists: %s, [%s]' % (cname, k)
                     continue
 
                 if is_min or is_max:
@@ -253,7 +255,8 @@ class Importer(object):
                     try:
                         numv = float(v)
                     except ValueError:
-                        print >> self.logfile, '    ERR: Can\'t convert to a number: %s=%s [%s]' % (cname, v, k)
+                        print >> self.logfile, '    ERR: Can\'t convert to ' \
+                            'a number: %s=%s [%s]' % (cname, v, k)
                         continue
 
                     # Min and max get stored in the same char-value row.
@@ -298,8 +301,9 @@ class Importer(object):
                         # csv probably contain dirty data, and it's a good
                         # idea to log it.
                         if len(cv) == 0:
-                            print >> self.logfile,\
-                                '    ERR: No such value: %s for character: %s [%s] exists' % (val, cname, k)
+                            print >> self.logfile, \
+                                '    ERR: No such value: %s for character: ' \
+                                '%s [%s] exists' % (val, cname, k)
                             continue
 
                         models.TaxonCharacterValue.objects.get_or_create(
@@ -379,7 +383,8 @@ class Importer(object):
 
             res = models.Character.objects.filter(short_name=short_name)
             if len(res) == 0:
-                print >> self.logfile, u'      ERR: missing character:', short_name
+                print >> self.logfile, u'      ERR: missing character: %s' % \
+                    short_name
                 continue
             character = res[0]
             
@@ -396,7 +401,9 @@ class Importer(object):
                                            key_characteristics=key_chars,
                                            notable_exceptions=notable_ex)
                 cv.save()
-                print >> self.logfile, u'  New Character Value: %s for Character: %s [%s]' % (cv.value_str, character.name, row['character'])
+                print >> self.logfile, u'  New Character Value: %s ' \
+                    'for Character: %s [%s]' % (cv.value_str, character.name,
+                                                row['character'])
             else:
                 cv = res[0]
 
