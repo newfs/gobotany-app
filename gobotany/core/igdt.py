@@ -79,7 +79,19 @@ def compute_character_entropies(pile, species_list):
     result = []
     for character_id, cv_set in cv_by_character_id.items():
         species_set = character_species[character_id]
-        ne = _text_entropy(cv_set, species_set, cv_counts)
+
+        # To avoid the expense of fetching characters from the database,
+        # we use a random character value to guess whether this is a
+        # textual or numeric character.
+
+        cv = iter(cv_set).next()  # random element without removing it
+        if cv.value_str is not None:
+            ne = _text_entropy(cv_set, species_set, cv_counts)
+        elif cv.value_min is not None or cv.value_max is not None:
+            ne = _length_entropy(cv_set, species_set, cv_counts)
+        else:
+            ne = 1e10  # hopefully someone reviewing best-characters notices
+
         entropy = ne / n
         coverage = len(species_set) / n
         result.append((character_id, entropy, coverage))
@@ -95,6 +107,17 @@ def _text_entropy(cv_set, species_set, cv_counts):
         if count:
             tally += count * math.log(count, 2.)
     return tally
+
+
+def _length_entropy(cv_set, species_set, cv_counts):
+    """Compute the info-gain from choosing a value of a length character."""
+    #print 'len:', cv_set
+    tally = 0.0
+    for cv in cv_set:
+        count = cv_counts[cv]
+        if count:
+            tally += count * math.log(count, 2.)
+    return tally + 1000
 
 
 def compute_score(entropy, coverage, ease):
