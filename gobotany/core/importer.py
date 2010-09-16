@@ -230,7 +230,13 @@ class Importer(object):
             if not taxa:
                 continue
             taxon = taxa[0]
+            
+            # Create structure for tracking whether both min & max values have
+            # seen for this character, in order to avoid creating unneccessary
+            # CharacterValues.
+            length_values_seen = {}
 
+            # Go through the key/value pairs for this row.
             for k, v in row.items():
                 if not v.strip():
                     continue
@@ -267,17 +273,41 @@ class Importer(object):
                     if tcvs:
                         cv = tcvs[0].character_value
                     else:
-                        cv = models.CharacterValue(character=character)
-                        cv.save()
-                        pile.character_values.add(cv)
-                        models.TaxonCharacterValue(
-                            taxon=taxon, character_value=cv).save()
+                        # If this character hasn't been seen before, make a
+                        # place for it.
+                        if length_values_seen.has_key(cname) == False:
+                            length_values_seen[cname] = {}
 
-                    if is_min:
-                        cv.value_min = numv
-                    else:
-                        cv.value_max = numv
-                    cv.save()
+                        # Set the min or max value in the temporary data
+                        # structure.
+                        if is_min:
+                            length_values_seen[cname]['min'] = numv
+                        else:
+                            length_values_seen[cname]['max'] = numv
+
+                        # If we've seen both min and max values for this
+                        # character:
+                        if length_values_seen[cname].has_key('min') and \
+                           length_values_seen[cname].has_key('max'):
+                            # Look for an existing character value for this
+                            # character and min/max values.
+                            cvs = models.CharacterValue.objects.filter(
+                                character=character,
+                                value_min=length_values_seen[cname]['min'],
+                                value_max=length_values_seen[cname]['max'])
+                            if cvs:
+                                cv = cvs[0]
+                            else:
+                                # The character value doesn't exist; create.
+                                cv = models.CharacterValue(
+                                    character=character)
+                                cv.value_min = length_values_seen[cname]['min']
+                                cv.value_max = length_values_seen[cname]['max']
+                                cv.save()
+                            # Finally, add the character value.
+                            pile.character_values.add(cv)
+                            models.TaxonCharacterValue(taxon=taxon,
+                                character_value=cv).save()
 
                 else:
                     # A regular comma-separated list of string values.
