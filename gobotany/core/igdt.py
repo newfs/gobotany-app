@@ -24,16 +24,23 @@ def compute_character_entropies(pile, species_list):
     # rows that match one of these character values with one of the
     # species given in `species_list`.
 
-    character_values = pile.character_values.exclude(value_str='NA')
+    cv_list = list(pile.character_values
+                   .exclude(value_str='NA')
+                   .exclude(value_min=0.0, value_max=0.0))
     taxon_character_values = TaxonCharacterValue.objects.filter(
-            taxon__in=species_list, character_value__in=character_values)
+        taxon__in=species_list, character_value__in=cv_list)
 
     # Since Django's ORM will stupidly re-query the database if we ask
     # for the ".character_value" of one of these TaxonCharacterValue
     # objects, we put these character values in a dictionary by ID so
-    # that we can get them more quickly ourselves.
+    # that we can get them more quickly ourselves.  We also go ahead and
+    # group them by character_id.
 
-    character_values_by_id = dict( (cv.id, cv) for cv in character_values )
+    cv_by_id = {}
+    cv_by_character_id = defaultdict(set)
+    for cv in cv_list:
+        cv_by_id[cv.id] = cv
+        cv_by_character_id[cv.character_id].add(cv)
 
     # To compute a character's entropy, we need to know two things:
     #
@@ -52,15 +59,13 @@ def compute_character_entropies(pile, species_list):
     # Both of these data structures are populated very simply, by
     # iterating once across our taxon_character_values query.
 
-    character_values = defaultdict(set)
     character_species = defaultdict(set)
-    character_value_counts = defaultdict(int)
+    cv_counts = defaultdict(int)
 
     for tcv in taxon_character_values:
-        cv = character_values_by_id[tcv.character_value_id]
-        character_values[cv.character_id].add(cv)
+        cv = cv_by_id[tcv.character_value_id]
         character_species[cv.character_id].add(tcv.taxon_id)
-        character_value_counts[cv] += 1
+        cv_counts[cv] += 1
 
     # Finally, we are ready to compute the entropies!  We tally up the
     # value "n * log n" for each character value in a character, then
@@ -72,10 +77,9 @@ def compute_character_entropies(pile, species_list):
     n = float(len(species_list))
 
     result = []
-    for character_id in character_values:
-        value_set = character_values[character_id]
+    for character_id, cv_set in cv_by_character_id.items():
         species_set = character_species[character_id]
-        ne = _text_entropy(value_set, species_set, character_value_counts)
+        ne = _text_entropy(cv_set, species_set, cv_counts)
         entropy = ne / n
         coverage = len(species_set) / n
         result.append((character_id, entropy, coverage))
@@ -83,12 +87,13 @@ def compute_character_entropies(pile, species_list):
     return result
 
 
-def _text_entropy(value_set, species_set, character_value_counts):
+def _text_entropy(cv_set, species_set, cv_counts):
     """Compute the info-gain from choosing a value of a text character."""
     tally = 0.0
-    for character_value in value_set:
-        count = character_value_counts[character_value]
-        tally += count * math.log(count, 2.)
+    for cv in cv_set:
+        count = cv_counts[cv]
+        if count:
+            tally += count * math.log(count, 2.)
     return tally
 
 
