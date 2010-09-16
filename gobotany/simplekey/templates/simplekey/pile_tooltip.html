@@ -1,11 +1,15 @@
-        <div class="species_image_ribbon">
+<div class="species_image_ribbon">
           {% for image in pile.sample_species_images.all %}
-            <div dojoType="dijit.form.DropDownButton">
-              <a>
-                <img id="ribbon-{{ pile.slug }}-{{ forloop.counter }}"
-                     src="{{ image.image.thumbnail.absolute_url }}">
-              </a>
+            <div class="species_dropdown" dojoType="dijit.form.DropDownButton">
+              <span>
+                <img
+                   id="ribbon-{{ pile.slug }}-{{ forloop.counter }}"
+                   src="{{ image.image.thumbnail.absolute_url }}"
+                   scientific_name="{{ image.content_object.scientific_name}}"
+                   >
+              </span>
               <div dojoType="dijit.TooltipDialog"
+                   class="potential-plant-preview"
                    style="display:none">
                 {% include "simplekey/plant_preview.html" %}
               </div>

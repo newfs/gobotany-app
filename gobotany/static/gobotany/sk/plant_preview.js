@@ -51,10 +51,7 @@ gobotany.sk.plant_preview.change_plant_preview_image = function(event) {
         gobotany.sk.plant_preview.plant_preview_images.length;
 };
 
-gobotany.sk.plant_preview.show_plant_preview = function(event) {
-    event.preventDefault();
-    var plant = this;   // Plant item passed as the context
-    dijit.byId('plant-preview').show();
+gobotany.sk.plant_preview.show_plant_preview = function(plant) {
     dojo.query('#plant-preview h3')[0].innerHTML = '<i>' +
         plant.scientific_name + '</i>';
     var list = dojo.query('#plant-preview dl')[0];

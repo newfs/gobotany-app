@@ -453,7 +453,8 @@ h3, h4, h5, h6 {
    to use on the pile-info species image ribbon if we want a tooltip to
    pop up when we click. */
 
-.PilePage .species_image_ribbon .dijitButtonNode {
+.PilePage .species_image_ribbon .dijitButtonNode,
+.PileInfo .species_image_ribbon .dijitButtonNode {
     background-image: none;
     background-color: transparent;
     border: none;
@@ -461,10 +462,12 @@ h3, h4, h5, h6 {
     -moz-border-radius: 0px 0px 0px 0px;
     -moz-box-shadow: none;
 }
-.PilePage .species_image_ribbon .dijitButtonText {
+.PilePage .species_image_ribbon .dijitButtonText,
+.PileInfo .species_image_ribbon .dijitButtonText {
     padding: 0;
 }
-.PilePage .species_image_ribbon .dijitArrowButtonInner {
+.PilePage .species_image_ribbon .dijitArrowButtonInner,
+.PileInfo .species_image_ribbon .dijitArrowButtonInner {
     display: none;
 }
 

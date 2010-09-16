@@ -647,8 +647,12 @@ gobotany.sk.results.render_item = function(item, start_node, genus_number,
         'id': 'plant-'+item.scientific_name.toLowerCase().replace(/\W/,'-'),
         'class': 'genus' + (genus_number % genus_colors).toString(),
     }, start_node);
-    dojo.connect(li_node, 'onclick', item,
-                 gobotany.sk.plant_preview.show_plant_preview);
+    dojo.connect(li_node, 'onclick', item, function(event) {
+        event.preventDefault();
+        dijit.byId('plant-preview').show();
+        var plant = this;
+        gobotany.sk.plant_preview.show_plant_preview(plant);
+    });
     var anchor = dojo.create('a', {href: '#'}, li_node);
     var image = item.default_image;
     if (image) {
