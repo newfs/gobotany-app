@@ -41,3 +41,15 @@ gobotany.utils.animate_changed = function(node) {
             dojo.anim(nodes[x], {backgroundColor: 'white'});
     }, 2000);
 };
+
+gobotany.utils.clone = function(obj) {
+    var new_obj = (obj instanceof Array) ? [] : {};
+    for (i in obj) {
+        if (i == 'clone') continue;
+        if (obj[i] && typeof obj[i] == 'object')
+            new_obj[i] = obj[i].clone();
+        else
+            new_obj[i] = obj[i]
+    }
+    return new_obj;
+};
