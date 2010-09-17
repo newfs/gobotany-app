@@ -17,7 +17,7 @@
   {% for term in glossary %}
     <li>
       <b>{{ term.term|title }}.</b>
-      {{ term.lay_definition }}
+      <span class="definition">{{ term.lay_definition }}</span>
       {% if term.image %}
         <img src="{{ term.image.url }}" alt="{{ term.term }}">
       {% endif %}
@@ -25,4 +25,10 @@
   {% endfor %}
 </ul>
 
+{% endblock %}
+
+{% block js_bottom %}
+<script>
+dojo.require('gobotany.sk.glossary');
+</script>
 {% endblock %}

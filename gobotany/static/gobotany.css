@@ -562,3 +562,12 @@ input.filter_int {
 input.filter_int2 {
     width: 5em;
 }
+
+/* Highlighted glossary words in text. */
+
+.gloss {
+    text-decoration: underline;
+}
+.glosstip {
+    font-size: 0.72em;
+}

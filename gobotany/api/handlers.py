@@ -82,7 +82,7 @@ class TaxonCountHandler(BaseHandler):
             species = botany.query_species(**kwargs)
         except models.Character.DoesNotExist:
             return rc.NOT_FOUND
-            
+
         matched = species.count()
         return {'matched': matched,
                 'excluded': models.Taxon.objects.count() - matched}
@@ -99,7 +99,7 @@ class TaxonImageHandler(BaseHandler):
             images = botany.species_images(**kwargs)
         except models.Taxon.DoesNotExist:
             return rc.NOT_FOUND
-        
+
         return [_taxon_image(image) for image in images]
 
 
@@ -348,3 +348,40 @@ class CharacterValuesHandler(BaseHandler):
                                           character_short_name)]
         except (models.Pile.DoesNotExist, models.Character.DoesNotExist):
             return rc.NOT_FOUND
+
+class GlossaryBlobHandler(BaseHandler):
+    methods_allowed = ('GET',)
+    def read(self, request):
+        """Return a dictionary of glossary terms and definitions.
+
+        For now we omit glossary terms for which there are duplicates -
+        like "Absent", which as of the writing of this comment has six
+        definitions:
+
+        Absent. no, spores are present throughout
+        Absent. no horizontal stem
+        Absent. no constrictions
+        Absent. no branches
+        Absent. no, all leaves on the horizontal stem are about the same size
+        Absent. no stomates
+
+        Since we cannot guess which of these six meanings is intended in
+        an arbitrary context (like the glossary itself), we had better
+        restrict ourselves for the moment to highlighting terms which
+        *are* unique across our current glossary.
+
+        """
+        terms = {}
+        discards = set()
+        for g in models.GlossaryTerm.objects.all():
+            term = g.term
+            if len(term) < 3:
+                pass
+            elif term in discards:
+                pass
+            elif term in terms:
+                del terms[term]
+                discards.add(term)
+            else:
+                terms[term] = g.lay_definition
+        return terms

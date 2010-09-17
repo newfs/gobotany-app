@@ -44,4 +44,5 @@ urlpatterns = patterns(
     url(r'^pilegroups/(?P<slug>[^/]+)/$',
         Resource(handler=handlers.PileGroupHandler), name='api-pilegroup'),
 
+    url(r'^glossaryblob/$', Resource(handler=handlers.GlossaryBlobHandler)),
     )
