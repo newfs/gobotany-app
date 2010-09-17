@@ -25,12 +25,10 @@ dojo.require('dijit.form.Select');
 
 var filter_manager = null;
 gobotany.sk.results.PAGE_COUNT = 12;
-var scroll_event_handle = null;
 
 // Name of the currently shown filter.
 // TODO: perhaps move this into a function call that pulls this based on CSS
 // property that indicates it's being shown
-var simplekey_character_short_name = null;
 
 dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     constructor: function(pile_slug) {
@@ -56,12 +54,12 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         dojo.connect(el, 'onclick', null, 
                      dojo.hitch(this, this.hide_filter_working));
 
-        dojo.subscribe("results_loaded", gobotany.sk.results.populate_image_types);
+        dojo.subscribe("results_loaded", dojo.hitch(this, this.populate_image_types));
 
         // Update images on selction change
         var select_box = dojo.byId('image-type-selector');
         dojo.connect(select_box, 'change', 
-                     gobotany.sk.results.load_selected_image_type);
+                     dojo.hitch(this, this.load_selected_image_type));
 
         dojo.connect(this.pile_manager, 'on_pile_info_changed', dojo.hitch(this, function(pile_info) {
             this.filter_section._setup_character_groups(pile_info.character_groups);
@@ -155,14 +153,89 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         console.log('saving filter info in url and cookie');
         dojo.hash(this.filter_manager.as_query_string());
         dojo.cookie('last_plant_id_url', window.location.href, {path: '/'});
+    },
+
+    load_selected_image_type: function (event) {
+        var image_type = dojo.byId('image-type-selector').value;
+        var images = dojo.query('#plant-listing li img');
+        // Replace the image for each plant on the page
+        for (var i=0; i < images.length; i++) {
+            var image = images[i];
+            // Fetch the species for the current image
+            this.filter_manager.result_store.fetchItemByIdentity({
+                scope: {image: image,
+                        image_type: image_type},
+                identity: dojo.attr(image, 'x-plant-id'),
+                onItem: function(item) {
+                    var new_image;
+                    // Search for an image of the correct type
+                    for (var j=0; j < item.images.length; j++) {
+                        if (item.images[j].type == image_type) {
+                            new_image = item.images[j];
+                            break;
+                        }
+                    }
+                    if (new_image) {
+                        // Replace either src or x-tmp-src depending on
+                        // whether the current image has already been
+                        // loaded.  This may result in a significant
+                        // performance impact on large result sets
+                        // which have already been scrolled before
+                        // changing image types.  The alternative would
+                        // be to unload previously loaded image pages.
+                        var src_var = dojo.attr(image, 'x-tmp-src') ? 'x-tmp-src' : 'src';
+                           dojo.attr(image, src_var, new_image.thumb_url);
+                        // Hide the empty box if it exists and make
+                        // sure the image is visible.
+                        dojo.query('+ span.MissingImage', image).orphan();
+                        dojo.style(image, 'display', 'inline');
+                    } else if (dojo.style(image, 'display') != 'none') {
+                        // If there's no matching image display the
+                        // empty box and hide the image
+                        dojo.style(image, 'display', 'none');
+                        dojo.create('span', {'class': 'MissingImage'}, image, 'after');
+                    }
+                }
+            });
+        }
+    },
+
+    // A subscriber for results_loaded
+    populate_image_types: function(message) {
+        var results = message.data.items;
+        var select_box = dijit.byId('image-type-selector');
+        // clear the select
+        select_box.options.length = 0;
+        // image types depend on the pile, we get the allowed values from
+        // the result set for now
+        var image_types = new Array();
+        for (var i=0; i < results.length; i++) {
+            var images = results[i].images;
+            for (var j=0; j < images.length; j++) {
+                var image_type = images[j].type;
+                if (image_types.indexOf(image_type) == -1) {
+                    image_types.push(image_type);
+                }
+            }
+        }
+        // sort lexicographically
+        image_types.sort();
+        for (i=0; i < image_types.length; i++) {
+            var image_type = image_types[i];
+            select_box.options[i] = new Option(image_type, 
+                                               image_type);
+            // Habit is selected by default
+            if (image_type == 'habit') {
+                select_box.options[i].selected = true;
+            }
+        }
     }
-
-
 });
 
 dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
     constructor: function(results_helper) {
         this.results_helper = results_helper;
+        this.scroll_event_handle = null;
     },
 
     setup_section: function() {
@@ -170,8 +243,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
 
     perform_query: function() {
         // Unbind the prior scroll event handler
-        if (scroll_event_handle) {
-            dojo.disconnect(scroll_event_handle);
+        if (this.scroll_event_handle) {
+            dojo.disconnect(this.scroll_event_handle);
         }
         dojo.empty('plant-listing');
         dojo.query('#plants .species_count .loading').removeClass('hidden');
@@ -204,10 +277,10 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         // Bind a handler to load images on scroll
         var plant_scrollable = dojo.byId('plants');
         var plant_pages = dojo.query('li.PlantScrollPage[x-loaded=false]', plant_listing);
-        scroll_event_handle = dojo.connect(plant_scrollable, 'onscroll',
-                                           function () {
-                                               plant_pages.forEach(gobotany.sk.results.load_page_if_visible);
-                                           });
+        this.scroll_event_handle = dojo.connect(plant_scrollable, 'onscroll',
+                                                function () {
+                                                    plant_pages.forEach(gobotany.sk.results.load_page_if_visible);
+                                                });
         dojo.publish("results_loaded", [{filter_manager: this.results_helper.filter_manager,
                                          data: data}]);
     }
@@ -218,6 +291,7 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
 dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     constructor: function(results_helper) {
         this.results_helper = results_helper;
+        this.simplekey_character_short_name = null;
     },
 
     setup_section: function() {
@@ -310,7 +384,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     _apply_filter: function(event) {
         dojo.stopEvent(event);
 
-        var choice_div = dojo.query('#' + simplekey_character_short_name +
+        var choice_div = dojo.query('#' + this.simplekey_character_short_name +
                                     ' .choice')[0];
 
         // First, see if this is a numeric field.
@@ -320,7 +394,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         if (char_value_q.length) {
             var value = parseInt(char_value_q[0].value, 10);
             if (!isNaN(value)) {
-                this.results_helper.filter_manager.set_selected_value(simplekey_character_short_name,
+                this.results_helper.filter_manager.set_selected_value(this.simplekey_character_short_name,
                                                   value);
                 choice_div.innerHTML = value;
                 this.save_filter_state();
@@ -335,7 +409,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         if (checked_item_q.length) {
             var checked_item = checked_item_q[0];
-            this.results_helper.filter_manager.set_selected_value(simplekey_character_short_name, 
+            this.results_helper.filter_manager.set_selected_value(this.simplekey_character_short_name, 
                                                    checked_item.value);
             if (checked_item.value) {
                 choice_div.innerHTML = checked_item.value;
@@ -373,8 +447,11 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 href: '#', innerHTML: '× clear'});
 
             // Pass the filter to the function as its context (this).
-            dojo.connect(filterLink, 'onclick', filter,
-                         dojo.hitch(this, this.show_filter_working));
+            dojo.connect(filterLink, 'onclick', this,
+                         function(event) {
+                             dojo.stopEvent(event);
+                             this.show_filter_working(filter);
+                         });
             dojo.connect(removeLink, 'onclick', filter,
                          dojo.hitch(this, this.remove_filter));
             dojo.connect(clearLink, 'onclick', filter,
@@ -511,7 +588,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     clear_filter: function(event) {
         dojo.stopEvent(event);
 
-        if (this.character_short_name == simplekey_character_short_name) {
+        if (this.character_short_name == this.simplekey_character_short_name) {
             this.hide_filter_working();
         }
 
@@ -527,7 +604,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     remove_filter: function(event) {
         dojo.stopEvent(event);
 
-        if (this.character_short_name == simplekey_character_short_name) {
+        if (this.character_short_name == this.simplekey_character_short_name) {
             this.hide_filter_working();
         }
 
@@ -541,7 +618,143 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
     hide_filter_working: function() {
         dojo.query('#filter-working').style({display: 'none'});
-        simplekey_character_short_name = null;
+        this.simplekey_character_short_name = null;
+    },
+
+    show_filter_working: function(filter) {
+        // Here the 'this.' is a filter object passed in as a context.
+
+        dojo.query('#filter-working').style({display: 'block'});
+        dojo.query('#filter-working .name')[0].innerHTML = filter.friendly_name;
+
+        this.simplekey_character_short_name = filter.character_short_name;
+
+        var valuesList = dojo.query('#filter-working form .values')[0];
+        dojo.empty(valuesList);
+        if (filter.value_type == 'LENGTH') {
+
+            // Create a slider with horizontal rules and labels.
+
+            var themin = filter.values.min;
+            var themax = filter.values.max;
+            var startvalue = (themax + themin) / 2.0;
+
+            var selectedvalue = filter_manager.get_selected_value(
+                filter.character_short_name);
+            if (selectedvalue != null)
+                startvalue = selectedvalue;
+
+            var label = dojo.place('<label>Select a length between<br>' +
+                                   filter.values.min + '&thinsp;' +
+                                   filter.unit + ' and ' +
+                                   filter.values.max + '&thinsp;' +
+                                   filter.unit + '<br></label>',
+                                   valuesList);
+
+            var input = dojo.create('input', {
+                type: 'text',
+                name: 'int_value',
+                disabled: true
+            }, label);
+            dojo.addClass(input, 'filter_int');
+
+            var input2 = dojo.create('input', {
+                type: 'text',
+                name: 'int2_value',
+                disabled: true
+            }, label);
+            dojo.addClass(input2, 'filter_int2');
+
+            var updater = new gobotany.sk.results.UnitFieldsUpdater(input, input2, filter.unit);
+            updater.update_fields(startvalue);
+
+
+            var slider_node = dojo.create('div', null, valuesList);
+            var unit = filter.unit;
+            var slider = new dijit.form.HorizontalSlider({
+                name: "character_slider",
+                showButtons: false,
+                value: startvalue,
+                minimum: themin,
+                maximum: themax,
+                discreteValues: themax - themin + 1,
+                intermediateChanges: true,
+                style: "width:200px;",
+                onChange: dojo.hitch(updater, updater.update_fields),
+            }, slider_node);
+
+            var rule_node = dojo.create('div', null, slider.containerNode);
+            var ruleticks = new dijit.form.HorizontalRule({
+                container: "topDecoration",
+                count: themax - themin + 1,
+                style: "height:10px;"
+            }, rule_node);
+
+            var labels_node = dojo.create('div', null, slider.containerNode);
+            var mylabels = [];
+            for (i=themin; i <= themax; i++) {
+                mylabels.push(String(i));
+            }
+            var rule_labels = new dijit.form.HorizontalRuleLabels({
+                container: "bottomDecoration",
+                count: themax - themin + 1,
+                labels: mylabels,
+                style: "height:1.5em;font-size:75%;color:gray;width:200px"
+            }, labels_node);        
+
+        } else {
+
+            // Create the radio-button widget.
+
+            // Create a Don't Know radio button item.
+            var item_html = '<input type="radio" name="char_name" value="" ' +
+                       'checked> don&apos;t know';
+            var dont_know_item = dojo.create('label',
+                                             {'innerHTML': item_html});
+            // Connect filter radio button item to a function that will set the
+            // Key Characteristics and Notable Exceptions for filter filter.
+            // Here the *filter* is passed as the context.
+            dojo.connect(dont_know_item, 'onclick', filter,
+                         gobotany.sk.results.update_filter_working_help_text);
+            dojo.place(dont_know_item, valuesList);
+
+            // Create radio button items for each character value.
+            for (var i = 0; i < filter.values.length; i++) {
+                var v = filter.values[i];
+                var item_html = '<input type="radio" name="char_name" value="' +
+                    v.value + '"> ' + v.value + ' (' + v.count + ')';
+                var character_value_item = dojo.create('label',
+                                                       {'innerHTML': item_html});
+                // Connect filter character value radio button item to a function
+                // that will set the Key Characteristics and Notable Exceptions for
+                // filter particular character value. Here the *character value*
+                // is passed as the context.
+                dojo.connect(character_value_item, 'onclick', v,
+                             gobotany.sk.results.update_filter_working_help_text);
+                dojo.place(character_value_item, valuesList);
+            }
+
+            // If the user has already selected a value for filter filter, we
+            // pre-check that radio button, instead of pre-checking the
+            // first (the "Don't know") radio button like we normally do.
+
+            var selector = '#filter-working .values input';
+            var already_selected_value = filter_manager.get_selected_value(
+                filter.character_short_name);
+            if (already_selected_value) {
+                selector = selector + '[value="' + already_selected_value + '"]';
+            }
+            dojo.query(selector)[0].checked = true;
+        }
+
+        // Set the key characteristics and notable exceptions for the filter
+        // (character). (Elsewhere these will be set for character values.)
+
+        var kc = dojo.query('#filter-working .info .key-characteristics')[0];
+        kc.innerHTML = filter.key_characteristics;
+
+        var ne = dojo.query('#filter-working .info .notable-exceptions')[0];
+        ne.innerHTML = filter.notable_exceptions;
     }
 
 });
@@ -606,144 +819,6 @@ dojo.declare("gobotany.sk.results.UnitFieldsUpdater", null, {
 
 });
 
-
-gobotany.sk.results.show_filter_working = function(event) {
-    dojo.stopEvent(event);
-
-    // Here the 'this.' is a filter object passed in as a context.
-
-    dojo.query('#filter-working').style({display: 'block'});
-    dojo.query('#filter-working .name')[0].innerHTML = this.friendly_name;
-
-    simplekey_character_short_name = this.character_short_name;
-
-    var valuesList = dojo.query('#filter-working form .values')[0];
-    dojo.empty(valuesList);
-    if (this.value_type == 'LENGTH') {
-
-        // Create a slider with horizontal rules and labels.
-
-        var themin = this.values.min;
-        var themax = this.values.max;
-        var startvalue = (themax + themin) / 2.0;
-
-        var selectedvalue = filter_manager.get_selected_value(
-            this.character_short_name);
-        if (selectedvalue != null)
-            startvalue = selectedvalue;
-
-        var label = dojo.place('<label>Select a length between<br>' +
-                               this.values.min + '&thinsp;' +
-                               this.unit + ' and ' +
-                               this.values.max + '&thinsp;' +
-                               this.unit + '<br></label>',
-                               valuesList);
-
-        var input = dojo.create('input', {
-            type: 'text',
-            name: 'int_value',
-            disabled: true
-        }, label);
-        dojo.addClass(input, 'filter_int');
-
-        var input2 = dojo.create('input', {
-            type: 'text',
-            name: 'int2_value',
-            disabled: true
-        }, label);
-        dojo.addClass(input2, 'filter_int2');
-
-        var updater = new gobotany.sk.results.UnitFieldsUpdater(input, input2, this.unit);
-        updater.update_fields(startvalue);
-
-
-        var slider_node = dojo.create('div', null, valuesList);
-        var unit = this.unit;
-        var slider = new dijit.form.HorizontalSlider({
-            name: "character_slider",
-            showButtons: false,
-            value: startvalue,
-            minimum: themin,
-            maximum: themax,
-            discreteValues: themax - themin + 1,
-            intermediateChanges: true,
-            style: "width:200px;",
-            onChange: dojo.hitch(updater, updater.update_fields),
-        }, slider_node);
-        
-        var rule_node = dojo.create('div', null, slider.containerNode);
-        var ruleticks = new dijit.form.HorizontalRule({
-            container: "topDecoration",
-            count: themax - themin + 1,
-            style: "height:10px;"
-        }, rule_node);
-        
-        var labels_node = dojo.create('div', null, slider.containerNode);
-        var mylabels = [];
-        for (i=themin; i <= themax; i++) {
-            mylabels.push(String(i));
-        }
-        var rule_labels = new dijit.form.HorizontalRuleLabels({
-            container: "bottomDecoration",
-            count: themax - themin + 1,
-            labels: mylabels,
-            style: "height:1.5em;font-size:75%;color:gray;width:200px"
-        }, labels_node);        
-
-    } else {
-
-        // Create the radio-button widget.
-
-        // Create a Don't Know radio button item.
-        var item_html = '<input type="radio" name="char_name" value="" ' +
-                   'checked> don&apos;t know';
-        var dont_know_item = dojo.create('label',
-                                         {'innerHTML': item_html});
-        // Connect this radio button item to a function that will set the
-        // Key Characteristics and Notable Exceptions for this filter.
-        // Here the *filter* is passed as the context.
-        dojo.connect(dont_know_item, 'onclick', this,
-                     gobotany.sk.results.update_filter_working_help_text);
-        dojo.place(dont_know_item, valuesList);
-
-        // Create radio button items for each character value.
-        for (var i = 0; i < this.values.length; i++) {
-            var v = this.values[i];
-            var item_html = '<input type="radio" name="char_name" value="' +
-                v.value + '"> ' + v.value + ' (' + v.count + ')';
-            var character_value_item = dojo.create('label',
-                                                   {'innerHTML': item_html});
-            // Connect this character value radio button item to a function
-            // that will set the Key Characteristics and Notable Exceptions for
-            // this particular character value. Here the *character value*
-            // is passed as the context.
-            dojo.connect(character_value_item, 'onclick', v,
-                         gobotany.sk.results.update_filter_working_help_text);
-            dojo.place(character_value_item, valuesList);
-        }
-
-        // If the user has already selected a value for this filter, we
-        // pre-check that radio button, instead of pre-checking the
-        // first (the "Don't know") radio button like we normally do.
-
-        var selector = '#filter-working .values input';
-        var already_selected_value = filter_manager.get_selected_value(
-            this.character_short_name);
-        if (already_selected_value) {
-            selector = selector + '[value="' + already_selected_value + '"]';
-        }
-        dojo.query(selector)[0].checked = true;
-    }
-
-    // Set the key characteristics and notable exceptions for the filter
-    // (character). (Elsewhere these will be set for character values.)
-
-    var kc = dojo.query('#filter-working .info .key-characteristics')[0];
-    kc.innerHTML = this.key_characteristics;
-
-    var ne = dojo.query('#filter-working .info .notable-exceptions')[0];
-    ne.innerHTML = this.notable_exceptions;
-};
 
 gobotany.sk.results.paginate_results = function(items, start) {
     var page
@@ -905,80 +980,3 @@ gobotany.sk.results.rebuild_genus_select = function(items) {
             genus_select.set('value', v);
     }});
 }
-
-// A subscriber for results_loaded
-gobotany.sk.results.populate_image_types = function(message) {
-    var results = message.data.items;
-    var select_box = dijit.byId('image-type-selector');
-    // clear the select
-    select_box.options.length = 0;
-    // image types depend on the pile, we get the allowed values from
-    // the result set for now
-    var image_types = new Array();
-    for (var i=0; i < results.length; i++) {
-        var images = results[i].images;
-        for (var j=0; j < images.length; j++) {
-            var image_type = images[j].type;
-            if (image_types.indexOf(image_type) == -1) {
-                image_types.push(image_type);
-            }
-        }
-    }
-    // sort lexicographically
-    image_types.sort();
-    for (i=0; i < image_types.length; i++) {
-        var image_type = image_types[i];
-        select_box.options[i] = new Option(image_type, 
-                                           image_type);
-        // Habit is selected by default
-        if (image_type == 'habit') {
-            select_box.options[i].selected = true;
-        }
-    }
-}
-
-gobotany.sk.results.load_selected_image_type = function (event) {
-    var image_type = dojo.byId('image-type-selector').value;
-    var images = dojo.query('#plant-listing li img');
-    // Replace the image for each plant on the page
-    for (var i=0; i < images.length; i++) {
-        var image = images[i];
-        // Fetch the species for the current image
-        filter_manager.result_store.fetchItemByIdentity({
-               scope: {image: image,
-                       image_type: image_type},
-               identity: dojo.attr(image, 'x-plant-id'),
-               onItem: function(item) {
-                   var new_image;
-                   // Search for an image of the correct type
-                   for (var j=0; j < item.images.length; j++) {
-                       if (item.images[j].type == image_type) {
-                           new_image = item.images[j];
-                           break;
-                       }
-                   }
-                   if (new_image) {
-                       // Replace either src or x-tmp-src depending on
-                       // whether the current image has already been
-                       // loaded.  This may result in a significant
-                       // performance impact on large result sets
-                       // which have already been scrolled before
-                       // changing image types.  The alternative would
-                       // be to unload previously loaded image pages.
-                       var src_var = dojo.attr(image, 'x-tmp-src') ? 'x-tmp-src' : 'src';
-                       dojo.attr(image, src_var, new_image.thumb_url);
-                       // Hide the empty box if it exists and make
-                       // sure the image is visible.
-                       dojo.query('+ span.MissingImage', image).orphan();
-                       dojo.style(image, 'display', 'inline');
-                   } else if (dojo.style(image, 'display') != 'none') {
-                       // If there's no matching image display the
-                       // empty box and hide the image
-                       dojo.style(image, 'display', 'none');
-                       dojo.create('span', {'class': 'MissingImage'}, image, 'after');
-                   }
-               }
-        });
-    }
-};
-
