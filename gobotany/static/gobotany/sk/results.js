@@ -258,10 +258,89 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         this.results_helper.save_filter_state();
     },
 
-    on_complete_perform_query: function(data) {
 
-        gobotany.sk.results.rebuild_family_select(data.items);
-        gobotany.sk.results.rebuild_genus_select(data.items);
+    rebuild_family_select: function(items) {
+
+        // Does sort | uniq really have to be this painful in JavaScript?
+
+        var families_seen = {};
+        var family_list = [];
+
+        for (var i=0; i < items.length; i++) {
+            var item = items[i];
+            if (! families_seen[item.family]) {
+                family_list.push(item.family);
+                families_seen[item.family] = true;
+            }
+        }
+
+        family_list.sort();
+
+        // Update the Family data store.
+
+        var family_select = dijit.byId('family_select');
+        var family_store = family_select.store;
+
+        family_store.fetch({onComplete: function (items) {
+            for (var i=0; i < items.length; i++)
+                family_store.deleteItem(items[i]);
+            family_store.save();
+            for (var i=0; i < family_list.length; i++) {
+                var f = family_list[i];
+                family_store.newItem({ name: f, family: f });
+            }
+            family_store.save();
+
+            var v = filter_manager.get_selected_value('family');
+            if (v)
+                family_select.set('value', v);
+        }});
+    },
+
+    rebuild_genus_select: function(items) {
+
+        genus_to_family = {};  // global, for use in another function below
+
+        // Does sort | uniq really have to be this painful in JavaScript?
+
+        var genera_seen = {};
+        var genus_list = [];
+
+        for (var i=0; i < items.length; i++) {
+            var item = items[i];
+            if (! genera_seen[item.genus]) {
+                genus_list.push(item.genus);
+                genera_seen[item.genus] = true;
+                genus_to_family[item.genus] = item.family;
+            }
+        }
+
+        genus_list.sort();
+
+        // Update the Genus data store.
+
+        var genus_select = dijit.byId('genus_select');
+        var genus_store = genus_select.store;
+
+        genus_store.fetch({onComplete: function (items) {
+            for (var i=0; i < items.length; i++)
+                genus_store.deleteItem(items[i]);
+            genus_store.save();
+            for (var i=0; i < genus_list.length; i++) {
+                var g = genus_list[i];
+                genus_store.newItem({ name: g, genus: g });
+            }
+            genus_store.save();
+
+            var v = filter_manager.get_selected_value('genus');
+            if (v)
+                genus_select.set('value', v);
+        }});
+    },
+
+    on_complete_perform_query: function(data) {
+        this.rebuild_family_select(data.items);
+        this.rebuild_genus_select(data.items);
 
         // Update the species count on the screen.
         dojo.query('#plants .species_count .count .number')[0].innerHTML =
@@ -714,8 +793,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             // Connect filter radio button item to a function that will set the
             // Key Characteristics and Notable Exceptions for filter filter.
             // Here the *filter* is passed as the context.
-            dojo.connect(dont_know_item, 'onclick', filter,
-                         gobotany.sk.results.update_filter_working_help_text);
+            dojo.connect(dont_know_item, 'onclick', this,
+                         function(event) {
+                             this.update_filter_working_help_text(filter);
+                         });
             dojo.place(dont_know_item, valuesList);
 
             // Create radio button items for each character value.
@@ -729,8 +810,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 // that will set the Key Characteristics and Notable Exceptions for
                 // filter particular character value. Here the *character value*
                 // is passed as the context.
-                dojo.connect(character_value_item, 'onclick', v,
-                             gobotany.sk.results.update_filter_working_help_text);
+                dojo.connect(character_value_item, 'onclick', this,
+                             function(event) {
+                                 this.update_filter_working_help_text(v);
+                             });
                 dojo.place(character_value_item, valuesList);
             }
 
@@ -755,6 +838,16 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         var ne = dojo.query('#filter-working .info .notable-exceptions')[0];
         ne.innerHTML = filter.notable_exceptions;
+    },
+
+    // Update the filter working area "help text," which consists of the Key
+    // Characteristics and Notable Exceptions areas.
+    update_filter_working_help_text: function(filter) {
+        var kc = dojo.query('#filter-working .info .key-characteristics')[0];
+        kc.innerHTML = filter.key_characteristics;
+
+        var ne = dojo.query('#filter-working .info .notable-exceptions')[0];
+        ne.innerHTML = filter.notable_exceptions;
     }
 
 });
@@ -767,19 +860,6 @@ gobotany.sk.results.init = function(pile_slug) {
         pile_slug: pile_slug
     });
 };
-
-// Update the filter working area "help text," which consists of the Key
-// Characteristics and Notable Exceptions areas.
-gobotany.sk.results.update_filter_working_help_text = function(event) {
-    // Here the 'this.' is either a filter object or character value object
-    // passed in as a context.
-    
-    var kc = dojo.query('#filter-working .info .key-characteristics')[0];
-    kc.innerHTML = this.key_characteristics;
-
-    var ne = dojo.query('#filter-working .info .notable-exceptions')[0];
-    ne.innerHTML = this.notable_exceptions;
-}
 
 dojo.declare("gobotany.sk.results.UnitFieldsUpdater", null, {
     constructor: function(input1, input2, unit) {
@@ -883,6 +963,7 @@ gobotany.sk.results.render_item = function(item, start_node, genus_number,
     dojo.html.set(title, item.scientific_name);
 }
 
+
 gobotany.sk.results.load_page = function(page) {
     var images = dojo.query('img[src=]', page);
     images.forEach(function (image, i) {
@@ -900,83 +981,4 @@ gobotany.sk.results.load_page_if_visible = function(page) {
     if (container_pos.h >= (page_pos - container_pos.y)) {
             gobotany.sk.results.load_page(page);
     }
-}
-
-gobotany.sk.results.rebuild_family_select = function(items) {
-
-    // Does sort | uniq really have to be this painful in JavaScript?
-
-    var families_seen = {};
-    var family_list = [];
-
-    for (var i=0; i < items.length; i++) {
-        var item = items[i];
-        if (! families_seen[item.family]) {
-            family_list.push(item.family);
-            families_seen[item.family] = true;
-        }
-    }
-
-    family_list.sort();
-
-    // Update the Family data store.
-
-    var family_select = dijit.byId('family_select');
-    var family_store = family_select.store;
-
-    family_store.fetch({onComplete: function (items) {
-        for (var i=0; i < items.length; i++)
-            family_store.deleteItem(items[i]);
-        family_store.save();
-        for (var i=0; i < family_list.length; i++) {
-            var f = family_list[i];
-            family_store.newItem({ name: f, family: f });
-        }
-        family_store.save();
-
-        var v = filter_manager.get_selected_value('family');
-        if (v)
-            family_select.set('value', v);
-    }});
-}
-
-gobotany.sk.results.rebuild_genus_select = function(items) {
-
-    genus_to_family = {};  // global, for use in another function below
-
-    // Does sort | uniq really have to be this painful in JavaScript?
-
-    var genera_seen = {};
-    var genus_list = [];
-
-    for (var i=0; i < items.length; i++) {
-        var item = items[i];
-        if (! genera_seen[item.genus]) {
-            genus_list.push(item.genus);
-            genera_seen[item.genus] = true;
-            genus_to_family[item.genus] = item.family;
-        }
-    }
-
-    genus_list.sort();
-
-    // Update the Genus data store.
-
-    var genus_select = dijit.byId('genus_select');
-    var genus_store = genus_select.store;
-
-    genus_store.fetch({onComplete: function (items) {
-        for (var i=0; i < items.length; i++)
-            genus_store.deleteItem(items[i]);
-        genus_store.save();
-        for (var i=0; i < genus_list.length; i++) {
-            var g = genus_list[i];
-            genus_store.newItem({ name: g, genus: g });
-        }
-        genus_store.save();
-
-        var v = filter_manager.get_selected_value('genus');
-        if (v)
-            genus_select.set('value', v);
-    }});
 }
