@@ -224,20 +224,63 @@ def pile_characters(request, pile_slug):
 
         metarows = []
         for row, character_value in zip(rows, character_values):
+            if character.value_type == u'TEXT':
+                name = character_value.value_str
+            elif character.value_type == u'LENGTH':
+                if (character_value.value_min == 0.0 and
+                    character_value.value_max == 0.0):
+                    name = 'NA'
+                elif (character_value.value_min is None or
+                      character_value.value_max is None):
+                    name = 'NULL'
+                else:
+                    name = '%s - %s' % (character_value.value_min,
+                                        character_value.value_max)
+            elif character_value.value_type == u'RATIO':
+                name = 'float %s' % (character_value.value_flt,)
+            else:
+                name = 'UNKNOWN VALUE TYPE'
             metarows.append((
-                character_value.value_str, row.count('Y'), row
+                name, row.count('Y'), row
                 ))
 
         return metarows, species_row
 
     #
 
+    def _graphify_data(character):
+        """Compile data for a bar graph of min-max character values."""
+        character_values = list(cvs_by_cid[character.id])
+
+        vmin = min( cv.value_min for cv in character_values
+                    if cv.value_min is not None )
+        vmax = max( cv.value_max for cv in character_values
+                    if cv.value_max is not None )
+
+        scale = WIDTH / (vmax - vmin)
+        metarows = []
+        for cv in character_values:
+            if cv.value_min is None or cv.value_max is None:
+                continue
+            x0 = int(scale * (cv.value_min - vmin))
+            x1 = int(scale * (cv.value_max - vmin))
+            width = x1 - x0
+            species = [ tcv.taxon for tcv in cv.taxon_character_values.all() ]
+            metarows.append([ x0, width, cv.value_min, cv.value_max, species ])
+
+        return metarows, None
+
+    #
+
     for character_id, entropy, coverage in character_entropy_list:
         character = models.Character.objects.get(id=character_id)
-        if character.value_type not in (u'TEXT', u'LENGTH'):
-            continue  # do not even bother with lengths yet!
+        if character.value_type == u'TEXT':
+            metarows, species_row = _tablefy_data(character)
+        elif character.value_type == u'LENGTH':
+            metarows, species_row = _graphify_data(character)
+        else:
+            continue  # do not bother with ratio values yet
         ease = character.ease_of_observability
-        metarows, species_row = _tablefy_data(character)
         score = igdt.compute_score(entropy, coverage, ease)
         clist.append({
                 'entropy': entropy,

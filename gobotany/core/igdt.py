@@ -111,13 +111,52 @@ def _text_entropy(cv_set, species_set, cv_counts):
 
 def _length_entropy(cv_set, species_set, cv_counts):
     """Compute the info-gain from choosing a value of a length character."""
-    #print 'len:', cv_set
-    tally = 0.0
+    #
+    # This routine runs along a range of length values, and pretends
+    # that each possible length (4mm, 5mm, 6mm, ...) in the range is its
+    # own character value, and then applies the normal entropy
+    # calculation to this set of pretend character values.
+    #
+    # Imagine that we have two ranges like this:
+    #
+    # 2   3   4   5   6   7   8   9
+    # |-------------------|
+    #             |---------------|
+    #
+    # The technique of the algorithm below is first to reduce this to a
+    # list of endpoints, at which the number of active ranges either
+    # increases or decreases:
+    #
+    # [ (2,+1), (5,+1), (7,-1), (9,-1) ]
+    #
+    # Then we can run along this range, keeping a tally that is adjusted
+    # up and down by the +1s and -1s, and know how to weight each range
+    # by both its length (which we get by subtracting the coordinate of
+    # adjacent endpoints ) and the number of species inside (which is
+    # the value of the running +- count).
+    #
+    endpoints = []
     for cv in cv_set:
-        count = cv_counts[cv]
-        if count:
-            tally += count * math.log(count, 2.)
-    return tally + 1000
+        endpoints.append((cv.value_min, +1))
+        endpoints.append((cv.value_max, -1))
+    endpoints.sort()
+
+    i = iter(endpoints)
+    left, weight = i.next()  # the first endpoint
+    tally = 0.0
+
+    for endpoint in i:  # the rest of the endpoints
+        right, increment = endpoint
+
+        size = right - left
+        if size and weight:
+            tally += size * weight * math.log(weight, 2.)
+
+        left = right
+        weight += increment
+
+    tally /= endpoints[-1][0] - endpoints[0][0]
+    return tally
 
 
 def compute_score(entropy, coverage, ease):

@@ -30,14 +30,18 @@
     body p, .fullbar {
       margin: 9px 6px;
     }
-    .hbars {
+    hr {
+      margin-top: 24px;
+      margin-bottom: 24px;
+    }
+    .hgrid {
       margin: 0.5em 0.5em 1em 3em;
       font-size: 0.84em;
     }
-    .hbars td {
+    .hgrid td {
       white-space: nowrap;
     }
-    .hbars .yes, .hbars .no, .hbars .warning, .hbars .species {
+    .hgrid .yes, .hgrid .no, .hgrid .warning, .hgrid .species {
       border: 1px solid white;
       height: 1em;
       max-height: 1em;
@@ -45,14 +49,14 @@
       max-width: 0.9em;
       text-align: center;
     }
-    .hbars .no { background-color: #eee; }
-    .hbars .yes { background-color: #8f8; color: #080; }
-    .hbars .na .yes { background-color: #dd7; color: #880; }
-    .hbars .novalue .yes { background-color: #f88; color: #800; }
-    .hbars .species span {
+    .hgrid .no { background-color: #eee; }
+    .hgrid .yes { background-color: #8f8; color: #080; }
+    .hgrid .na .yes { background-color: #dd7; color: #880; }
+    .hgrid .novalue .yes { background-color: #f88; color: #800; }
+    .hgrid .species span {
       position: relative;
     }
-    .hbars .species a {
+    .hgrid .species a {
       visibility: hidden;
       position: absolute;
       top: 1.0em;
@@ -61,13 +65,28 @@
       padding: 6px;
       font-style: italic;
     }
-    .hbars .species:hover {
+    .hgrid .species:hover {
       background-color: #ff0;
     }
-    .hbars .species:hover a {
+    .hgrid .species:hover a {
       visibility: visible;
     }
-
+    .bgraph .brule {
+      border: 1px solid black;
+      width: 498px;
+      height: 1px;
+      background-color: #ccc;
+    }
+    .bgraph .bar {
+      display: inline-block;
+      margin: 1px;
+      background-color: #88f;
+    }
+    .bgraph .species {
+      margin-left: 1em;
+      font-size: 0.88em;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
@@ -99,7 +118,10 @@
     coverage={{ character.coverage|floatformat:2 }},
     ease-of-observability={{ character.ease_of_observability }},
     score={{ character.score|floatformat:2 }}
-    <table class="hbars">
+
+    {% if character.type == 'TEXT' %}
+
+    <table class="hgrid">
 
       {% for value_str, species_count, row in character.metarows %}
       <tr {% if value_str == 'NA' %}class="na"{% endif %}
@@ -138,6 +160,33 @@
         <td>&larr; <i>Species names (hover with your mouse)</i></td>
       </tr>
     </table>
+
+    {% endif %}
+    {% if character.type == 'LENGTH' %}
+
+    <div class="bgraph">
+      <div class="brule">&nbsp;</div>
+      {% for x0, width, value_min, value_max, species_list in character.metarows %}
+        <div class="bar"
+             style="margin-left: {{x0}}; width: {{width}};"
+             >&nbsp;</div>
+        {% if value_min == 0 and value_max == 0 %}
+          NA
+        {% endif %}
+        {% if value_min != 0 or value_max != 0 %}
+          {{ value_min }} – {{ value_max }}
+        {% endif %}
+        {% for species in species_list %}
+          <a class="species" href="/admin/core/taxon/{{ species.id }}/">
+            {{ species.scientific_name }}
+          </a>
+        {% endfor %}
+        <br>
+        <div class="brule">&nbsp;</div>
+      {% endfor %}
+    </div>
+
+    {% endif %}
 
   </p>
   {% endfor %}
