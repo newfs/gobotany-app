@@ -90,14 +90,12 @@ dojo.declare('gobotany.filters.NumericRangeFilter',
 //
 dojo.declare('gobotany.filters.FilterManager', null, {
     pile_slug: '',
-    character_groups: null,
     filters: null,
     species_count: 0,
     species_ids: [],
     entries: [],
     constructor: function(args) {
         this.pile_slug = args.pile_slug;
-        this.character_groups = [];
         this.plant_preview_characters = [];
         this.filters = [];
         this.filters_loading = 0;
@@ -132,7 +130,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         });
     },
     on_pile_info_loaded: function() {},
-    on_character_groups_changed: function() {},
     on_default_filters_loaded: function() {},
 
     has_filter: function(short_name) {
@@ -205,21 +202,11 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     },
     get_selected_value: function(character_short_name) {
         var selected_value = null;
-        var found_filter = false;
-        var i = 0;
-        while (!found_filter && i < this.filters.length) {
-            if (this.filters[i].character_short_name === 
-                character_short_name) {
-
-                var value = this.filters[i].selected_value;
-                if (value !== null && value.length) {
-                    selected_value = value;
-                }
-                found_filter = true;
-            }
-            i++;
+        for (var i = 0; i < this.filters.length; i++) {
+            if (this.filters[i].character_short_name === character_short_name)
+                return this.filters[i].selected_value;
         }
-        return selected_value;
+        return undefined;
     },
     on_filter_added: function(filter) {},
     on_filter_removed: function(filter) {},
