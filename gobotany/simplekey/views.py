@@ -90,3 +90,16 @@ def results_view(request, pilegroup_slug, pile_slug):
            'pilegroup': pile.pilegroup,
            'pile': pile,
            }, context_instance=RequestContext(request))
+
+def species_view(request, pilegroup_slug, pile_slug, genus_slug,
+                 specific_epithet_slug):
+    pile = get_object_or_404(Pile, slug=pile_slug)
+    if pile.pilegroup.slug != pilegroup_slug:
+        raise Http404
+    # TODO: run a query to get the species data
+    return render_to_response('simplekey/species.html', {
+           'pilegroup': pile.pilegroup,
+           'pile': pile,
+           'genus': genus_slug.capitalize(),
+           'specific_epithet': specific_epithet_slug,
+           }, context_instance=RequestContext(request))

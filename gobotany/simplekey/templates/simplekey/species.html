@@ -1,0 +1,8 @@
+{% extends "simplekey/base.html" %}
+{% block title %}
+{{ genus }} {{ specific_epithet }}
+{% endblock %}
+{% block content %}
+  <p>{{ pilegroup.name }}: {{ pile.name }}</p>
+  <h1><i>{{ genus }} {{ specific_epithet }}</i></h1>
+{% endblock %}
