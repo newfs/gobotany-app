@@ -6,12 +6,10 @@ gobotany.sk.subway.click_more = function(event) {
     event.preventDefault();
     dojo.query('#subway ul ul').style('visibility', 'hidden');
     var this_ul = dojo.query(event.target.parentNode).query('ul');
-    console.log(this_ul);
     dojo.query(this_ul).style('visibility', 'visible');
 }
 
 gobotany.sk.subway.init = function() {
-    console.log('here');
     dojo.query('#subway li a.more').connect(
         'onclick', gobotany.sk.subway.click_more);
 }
