@@ -134,10 +134,6 @@ class BasePileHandler(BaseHandler):
             return _taxon_image(pile.get_default_image())
 
 
-class FakeDefaultFilter(object):
-    pass
-
-
 class PileHandler(BasePileHandler):
     model = models.Pile
     fields = BasePileHandler.fields + ('character_groups', 'default_filters',
@@ -160,28 +156,6 @@ class PileHandler(BasePileHandler):
         default_filters = list(
             models.DefaultFilter.objects.filter(pile=pile)
             )
-
-        # -- START --
-
-        # Remove this when filters can be interactively selected (and
-        # remove the FakeDefaultFilter defined above, too!)  For now,
-        # this adds in LENGTH filters to exercise the UI, and sorts them
-        # by "unit" so that any characters that happen to specify a unit
-        # come back first.
-        characters = models.Character.objects.filter(
-            value_type=u'LENGTH',
-            character_values__pile=pile,
-            ).order_by('unit').distinct()
-        order = (default_filters and max(
-            default_filter.order for default_filter in default_filters
-            ) or 0) + 1
-        for character in characters[:3]:
-            fake_default_filter = FakeDefaultFilter()
-            fake_default_filter.character = character
-            order += 1
-            fake_default_filter.order = order
-            default_filters.append(fake_default_filter)
-        # -- END --
 
         for default_filter in default_filters:
             filter = {}
@@ -264,7 +238,7 @@ class CharacterListingHandler(BaseHandler):
         for score, entropy, coverage, character in result:
             # There are several reasons we might disqualify a character.
 
-            if character.value_type != 'TEXT':
+            if character.value_type not in (u'TEXT', u'LENGTH'):
                 continue
             if character.short_name in exclude_short_names:
                 continue
