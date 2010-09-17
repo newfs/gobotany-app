@@ -42,14 +42,17 @@ gobotany.utils.animate_changed = function(node) {
     }, 2000);
 };
 
-gobotany.utils.clone = function(obj) {
+gobotany.utils.clone = function(obj, updated_args) {
     var new_obj = (obj instanceof Array) ? [] : {};
     for (i in obj) {
-        if (i == 'clone') continue;
-        if (obj[i] && typeof obj[i] == 'object')
-            new_obj[i] = obj[i].clone();
-        else
-            new_obj[i] = obj[i]
+        new_obj[i] = obj[i]
     }
+
+    if (updated_args !== undefined) {
+        for (var x in updated_args)
+            if (updated_args.hasOwnProperty(x))
+                new_obj[x] = updated_args[x];
+    }
+
     return new_obj;
 };

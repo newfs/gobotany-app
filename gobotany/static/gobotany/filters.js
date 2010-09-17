@@ -6,10 +6,6 @@
 dojo.provide('gobotany.filters');
 dojo.require('dojox.data.JsonRestStore');
 
-// Filter
-//
-// Base for the different types of filters.
-//
 dojo.declare('gobotany.filters.Filter', null, {
     character_short_name: '',
     friendly_name: '',
@@ -21,6 +17,7 @@ dojo.declare('gobotany.filters.Filter', null, {
     notable_exceptions: null,
     selected_value: null,
     filter_callback: null,
+
     constructor: function(args) {
         this.character_short_name = args.character_short_name;
         this.friendly_name = args.friendly_name;
@@ -124,14 +121,14 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                     exclude: args.existing_characters || [],
                     include_filter: 1},
             scope: {filter_manager: this, args: args},
-            onComplete: this._load_incoming_filters,
+            onComplete: args.onLoaded,
         });
     },
     query_filters: function(args) {
         this.chars_store.fetch({
             query: {include: args.short_names || [], include_filter: 1},
             scope: {filter_manager: this, args: args},
-            onComplete: this._load_incoming_filters,
+            onComplete: args.onLoaded,
         });
     },
     on_pile_info_loaded: function() {},
@@ -160,13 +157,13 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         // description:
         //     Add the given object as a filter to this manager.  This
         //     function does no value loading or other side effects.
-        // args:
+        // obj:
         //     Either a gobotany.filters.Filter instance or a kwArgs object.
         //     The kwArgs object should be something that can be passed
         //     into gobotany.filters.filter_factory().
 
         var f = obj;
-        if (!args.isInstanceOf || !args.isInstanceOf(gobotany.filters.Filter)
+        if (!obj.isInstanceOf || !obj.isInstanceOf(gobotany.filters.Filter))
             f = gobotany.filters.filter_factory(obj);
         this.filters.push(f);
         return f;
@@ -342,12 +339,19 @@ gobotany.filters.filter_factory = function(args) {
         filter_type = gobotany.filters.Filter;
     }
 
+    var notable_exceptions = args.notable_exceptions;
+    var key_characteristics = args.key_characteristics;
+    if (args.filter) {
+        notable_exceptions = args.filter.notable_exceptions;
+        key_characteristics = args.filter.key_characteristics;
+    }
+
     var filter = new filter_type({
-        friendly_name: args.character_friendly_name,
-        character_short_name: args.character_short_name,
+        friendly_name: args.character_friendly_name || args.friendly_name,
+        character_short_name: args.character_short_name || args.short_name,
         order: args.order,
-        notable_exceptions: args.notable_exceptions,
-        key_characteristics: args.key_characteristics,
+        notable_exceptions: notable_exceptions,
+        key_characteristics: key_characteristics,
         value_type: args.value_type,
         unit: args.unit,
         pile_slug: args.pile_slug
