@@ -5,6 +5,7 @@
 
 dojo.provide('gobotany.sk.results');
 
+dojo.require('gobotany.sk.glossarize');
 dojo.require('gobotany.sk.plant_preview');
 dojo.require('gobotany.filters');
 dojo.require('gobotany.piles');
@@ -445,6 +446,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     constructor: function(results_helper) {
         this.results_helper = results_helper;
         this.simplekey_character_short_name = null;
+        this.glossarizer = gobotany.sk.results.Glossarizer();
     },
 
     setup_section: function() {
@@ -879,18 +881,21 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             // Create radio button items for each character value.
             for (var i = 0; i < filter.values.length; i++) {
                 var v = filter.values[i];
-                var item_html = '<input type="radio" name="char_name" value="' +
-                    v.value + '"> ' + v.value + ' (' + v.count + ')';
-                var character_value_item = dojo.create('label',
-                                                       {'innerHTML': item_html});
+                var item_html = ('<input type="radio" name="char_name" value="'
+                                 + v.value + '"><span> ' + v.value
+                                 + '</span><span>(' + v.count + ')</span>');
+                var character_value_item
+                    = dojo.create('label', {'innerHTML': item_html});
+                this.glossarizer.markup(character_value_item.childNodes[1]);
                 // Connect filter character value radio button item to a function
                 // that will set the Key Characteristics and Notable Exceptions for
                 // filter particular character value. Here the *character value*
                 // is passed as the context.
-                dojo.connect(character_value_item, 'onclick', this,
-                             function(event) {
-                                 this.update_filter_working_help_text(v);
-                             });
+                dojo.connect(
+                    character_value_item, 'onclick', {helper: this, value: v},
+                    function(event) {
+                        this.helper.update_filter_working_help_text(this.value);
+                    });
                 dojo.place(character_value_item, valuesList);
             }
 
@@ -925,6 +930,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         var ne = dojo.query('#filter-working .info .notable-exceptions')[0];
         ne.innerHTML = filter.notable_exceptions;
+
+        this.glossarizer.markup(kc);
+        this.glossarizer.markup(ne);
     }
 
 });

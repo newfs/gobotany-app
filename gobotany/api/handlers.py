@@ -375,7 +375,7 @@ class GlossaryBlobHandler(BaseHandler):
         discards = set()
         for g in models.GlossaryTerm.objects.all():
             term = g.term
-            if len(term) < 3:
+            if len(term) < 3 or not g.lay_definition:
                 pass
             elif term in discards:
                 pass
