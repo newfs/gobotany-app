@@ -236,7 +236,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             if (filter.filter_callback != null) {
                 special.push(filter);
             } else if (filter.selected_value !== null && 
-                     filter.selected_value.length) {
+                       filter.selected_value !== undefined &&
+                       filter.selected_value.length) {
 
                 content[filter.character_short_name] = filter.selected_value;
             }
