@@ -883,7 +883,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 var v = filter.values[i];
                 var item_html = ('<input type="radio" name="char_name" value="'
                                  + v.value + '"><span> ' + v.value
-                                 + '</span><span>(' + v.count + ')</span>');
+                                 + '</span> <span>(' + v.count + ')</span>');
                 var character_value_item
                     = dojo.create('label', {'innerHTML': item_html});
                 this.glossarizer.markup(character_value_item.childNodes[1]);
