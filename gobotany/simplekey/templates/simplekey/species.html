@@ -4,5 +4,53 @@
 {% endblock %}
 {% block content %}
   <p>{{ pilegroup.name }}: {{ pile.name }}</p>
-  <h1><i>{{ genus }} {{ specific_epithet }}</i></h1>
+  <h1><i>{{ genus }} {{ specific_epithet }}</i>
+      <span class="auth">{{ taxon.taxonomic_authority }}</span></h1>
+  <div id="species">
+      <h2>Common name here</h2>
+      <div id="images">
+          <h3>Images</h3>
+          <p>
+              {% if species_images %}
+                  {% for i in species_images %}
+                      {% if forloop.first %}
+                          <img src="{{ i.image.url }}">
+                      {% endif %}
+                  {% endfor %}
+              {% else %}
+                  No images
+              {% endif %}
+          </p>
+      </div>
+      <div id="info">
+          <h3>Characteristics</h3>
+          <p>TODO</p>
+
+          <h3>Habitat</h3>
+          <p>TODO</p>
+
+          <h3>Habitat</h3>
+          <p>TODO</p>
+
+          <h3>Endangered/Invasive Status</h3>
+          <p>TODO</p>
+
+          <h3>Wetland Plant</h3>
+          <p>TODO</p>
+
+          <h3>North American Native Plant</h3>
+          <p>TODO</p>
+      </div>
+      <div id="more-info">
+          <h3>Common Uses</h3>
+          <p>TODO</p>
+
+          <h3>Folklore &amp; History</h3>
+          <p>TODO</p>
+
+          <h3>Classification</h3>
+          <p>Family: {{ taxon.family }}</p>
+
+      </div>
+  </div>
 {% endblock %}

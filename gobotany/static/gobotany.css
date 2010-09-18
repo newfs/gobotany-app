@@ -571,3 +571,38 @@ input.filter_int2 {
 .glosstip {
     font-size: 0.72em;
 }
+
+/* Taxon (species) page */
+.auth {
+    font-size: 0.5em;
+    font-weight: normal;
+}
+
+#species h2 {
+    font-size: 1.2em;
+}
+
+#species h3 {
+    font-weight: bold;
+}
+
+#species div {
+    border: 1px dashed #ccc;
+    float: left;
+    font-size: 0.8em;
+    margin-right: 14px;
+}
+
+#species #images {
+    width: 300px;
+}
+
+#species #images img {
+    max-width: 300px;
+}
+#species #info {
+    width: 350px;
+}
+#species #more-info {
+    width: 250px;
+}
