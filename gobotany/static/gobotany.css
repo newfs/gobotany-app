@@ -583,25 +583,43 @@ input.filter_int2 {
 }
 
 #species h3 {
+    clear: left;
     font-weight: bold;
+    margin-top: 1em;
+}
+#species h3:first-child {
+    margin-top: 0;
 }
 
-#species div {
-    border: 1px dashed #ccc;
+#info p, #info ul, #more-info p, #more-info ul {
+    margin-left: 1em;
+}
+#info ul {
+    list-style-type: disc;
+    margin-left: 2em;
+}
+
+#species > div {
     float: left;
     font-size: 0.8em;
-    margin-right: 14px;
+    margin-right: 16px;
+}
+
+#species > div div {
+    float: left;
+    margin-bottom: 0.5em;
+    margin-right: 1em;
 }
 
 #species #images {
-    width: 300px;
+    width: 350px;
 }
 
 #species #images img {
-    max-width: 300px;
+    max-width: 350px;
 }
 #species #info {
-    width: 350px;
+    width: 300px;
 }
 #species #more-info {
     width: 250px;

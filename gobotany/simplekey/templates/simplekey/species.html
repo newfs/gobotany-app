@@ -1,10 +1,10 @@
 {% extends "simplekey/base.html" %}
 {% block title %}
-{{ genus }} {{ specific_epithet }}
+{{ scientific_name }}
 {% endblock %}
 {% block content %}
   <p>{{ pilegroup.name }}: {{ pile.name }}</p>
-  <h1><i>{{ genus }} {{ specific_epithet }}</i>
+  <h1><i>{{ scientific_name }}</i>
       <span class="auth">{{ taxon.taxonomic_authority }}</span></h1>
   <div id="species">
       <h2>Common name here</h2>
@@ -18,38 +18,85 @@
                       {% endif %}
                   {% endfor %}
               {% else %}
-                  No images
+                  <p>(missing)</p>
               {% endif %}
           </p>
       </div>
       <div id="info">
           <h3>Characteristics</h3>
-          <p>TODO</p>
+          {% if characteristics %}
+              {% for characteristic in characteristics %}
+                  <p><strong>{{ characteristic.name }}:</strong>
+                     {{ characteristic.value }}</p>
+              {% endfor %}
+          {% else %}
+              <p>N/A</p>
+          {% endif %}
 
           <h3>Habitat</h3>
-          <p>TODO</p>
+              {% if habitats|length > 0 %}
+              <ul>
+                  {% for habitat in habitats %}
+                      <li>{{ habitat }}</li>
+                  {% endfor %}
+              </ul>
+              {% else %}
+                  <p>(missing)</p>
+              {% endif %}
+          </ul>
 
-          <h3>Habitat</h3>
-          <p>TODO</p>
+          <h3>Distribution &amp; Endangered/Invasive Status</h3>
 
-          <h3>Endangered/Invasive Status</h3>
-          <p>TODO</p>
-
-          <h3>Wetland Plant</h3>
-          <p>TODO</p>
+          <div>
+          <p><strong>ME:</strong> {{ states_status.ME }}</p>
+          <p><strong>NH:</strong> {{ states_status.NH }}</p>
+          <p><strong>VT:</strong> {{ states_status.VT }}</p>
+          </div>
+          <div>
+          <p><strong>MA:</strong> {{ states_status.MA }}</p>
+          <p><strong>CT:</strong> {{ states_status.CT }}</p>
+          <p><strong>RI:</strong> {{ states_status.RI }}</p>
+          </div>
+          
+          <h3>Wetland Status</h3>
+          <p>
+              {% if taxon.wetland_status|length > 0 %}
+                  {{ taxon.wetland_status }}
+              {% else %}
+                  N/A
+              {% endif %}
+          </p>
 
           <h3>North American Native Plant</h3>
-          <p>TODO</p>
+          <p>
+              {% if taxon.north_american_native %}
+                  Yes
+              {% else %}
+                  No
+              {% endif %}
+          </p>
       </div>
       <div id="more-info">
           <h3>Common Uses</h3>
-          <p>TODO</p>
+          <p>
+              {% if taxon.uses|length > 0 %}
+                  {{ taxon.uses }}
+              {% else %}
+                  N/A
+              {% endif %}
+          </p>
 
           <h3>Folklore &amp; History</h3>
-          <p>TODO</p>
+          <p>
+              {% if taxon.factoid|length > 0 %}
+                  {{ taxon.factoid }}
+              {% else %}
+                  N/A
+              {% endif %}
+          </p>
 
           <h3>Classification</h3>
-          <p>Family: {{ taxon.family }}</p>
+          <p><strong>Family:</strong> {{ taxon.family }}</p>
 
       </div>
   </div>

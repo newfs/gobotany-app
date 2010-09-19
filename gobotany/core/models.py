@@ -457,6 +457,20 @@ class Taxon(models.Model):
     taxonomic_authority = models.CharField(max_length=100)
     simple_key = models.BooleanField(default=True)
     images = generic.GenericRelation(ContentImage)
+    habitat = models.CharField(max_length=300)
+    factoid = models.CharField(max_length=300)
+    uses = models.CharField(max_length=300)
+    wetland_status = models.CharField(max_length=100)
+    north_american_native = models.BooleanField(default=False)
+    conservation_status_ct = models.CharField(max_length=10)
+    conservation_status_me = models.CharField(max_length=10)
+    conservation_status_ma = models.CharField(max_length=10)
+    conservation_status_nh = models.CharField(max_length=10)
+    conservation_status_ri = models.CharField(max_length=10)
+    conservation_status_vt = models.CharField(max_length=10)
+    distribution = models.CharField(max_length=50)
+    invasive_in_states = models.CharField(max_length=50)
+    sale_prohibited_in_states = models.CharField(max_length=50)
 
     class Meta:
         verbose_name_plural = 'taxa'

@@ -4,7 +4,8 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from gobotany.core import botany
-from gobotany.core.models import GlossaryTerm, Pile, PileGroup, Taxon
+from gobotany.core.models import GlossaryTerm, Pile, PileGroup
+from gobotany.core.models import Taxon, TaxonCharacterValue
 from gobotany.simplekey.models import Page, get_blurb
 
 
@@ -93,23 +94,94 @@ def results_view(request, pilegroup_slug, pile_slug):
            }, context_instance=RequestContext(request))
 
 
+def _get_states_status(taxon):
+    DEFAULT_STATUS = 'absent'
+    STATES = ['CT', 'MA', 'ME', 'NH', 'RI', 'VT']
+    status = dict().fromkeys(STATES, DEFAULT_STATUS)
+    # If the taxon is present in a state, set its status as such.
+    distribution = []
+    if taxon.distribution:
+        distribution = taxon.distribution.replace(' ', '').split('|')
+    for state in distribution:
+        if status.has_key(state):
+            status[state] = 'present'
+    # Add any conservation status information for each state.
+    for state in STATES:
+        # Check the appropriate taxon field.
+        status_field_name = 'conservation_status_%s' % state.lower()
+        conservation_status = getattr(taxon, status_field_name)
+        if conservation_status:
+            if conservation_status == 'E':
+                conservation_status = 'endangered'
+            elif conservation_status == 'T':
+                conservation_status = 'threatened'
+            # TODO: handle remaining status codes (what do they mean?)
+            status[state] = conservation_status
+    # Add any invasive status information.
+    invasive_states = []
+    if taxon.invasive_in_states:
+        invasive_states = taxon.invasive_in_states.replace(' ', '').split('|')
+    for state in invasive_states:
+        if status.has_key(state):
+            status[state] = 'invasive'
+    # Add any sale-prohibited status information, which trumps invasive
+    # status that may have just been set.
+    sale_prohibited_states = []
+    if taxon.sale_prohibited_in_states:
+        sale_prohibited_states = \
+            taxon.sale_prohibited_in_states.replace(' ', '').split('|')
+    for state in sale_prohibited_states:
+        if status.has_key(state):
+            status[state] = 'sale prohibited'
+    return status
+
+
+def _get_species_characteristics(pile, taxon):
+    characteristics = []
+    # Get all the character values for this taxon.
+    cvs = TaxonCharacterValue.objects.filter(taxon=taxon)
+    if cvs:
+        for filter in pile.default_filters.all():
+            i = 0
+            found = False
+            value = ''
+            while found == False and i < len(cvs):
+                if cvs[i].character_value.character.short_name == \
+                   filter.short_name:
+                    found = True
+                    value = cvs[i].character_value.value_str
+                    # TODO: Add support for numeric values too.
+                i = i + 1
+            characteristic = {}
+            characteristic['name'] = filter.name
+            characteristic['value'] = value
+            characteristics.append(characteristic)
+    return characteristics
+
+
 def species_view(request, pilegroup_slug, pile_slug, genus_slug,
                  specific_epithet_slug):
     pile = get_object_or_404(Pile, slug=pile_slug)
     if pile.pilegroup.slug != pilegroup_slug:
         raise Http404
-    genus = genus_slug.capitalize()
-    scientific_name = '%s %s' % (genus, specific_epithet_slug)
+    scientific_name = '%s %s' % (genus_slug.capitalize(), 
+                                 specific_epithet_slug)
     taxa = Taxon.objects.filter(scientific_name=scientific_name)
     if not taxa:
         raise Http404
     taxon = taxa[0]
     species_images = botany.species_images(taxon)
+    states_status = _get_states_status(taxon)
+    habitats = []
+    if taxon.habitat:
+        habitats = taxon.habitat.split('|')
     return render_to_response('simplekey/species.html', {
            'pilegroup': pile.pilegroup,
            'pile': pile,
-           'genus': genus,
-           'specific_epithet': specific_epithet_slug,
+           'scientific_name': scientific_name,
            'taxon': taxon,
            'species_images': species_images,
+           'states_status': states_status,
+           'habitats': habitats,
+           'characteristics': _get_species_characteristics(pile, taxon),
            }, context_instance=RequestContext(request))
