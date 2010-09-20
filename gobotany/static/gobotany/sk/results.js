@@ -25,7 +25,16 @@ dojo.require("dijit.form.HorizontalRuleLabels");
 dojo.require('dijit.form.Select');
 
 dojo.declare('gobotany.sk.results.ResultsHelper', null, {
-    constructor: function(pile_slug) {
+    constructor: function(/*String*/ pile_slug) {
+        // summary:
+        //   Helper class for managing the sections on the results page.
+        // description:
+        //   Coordinates all of the dynamic logic on the results page.
+        //   The procedure for using this class is to instantiate it
+        //   and then call it's setup() method.
+        // | var helper = new gobotany.sk.results.ResultsHelper('some_pile');
+        // | helper.setup();
+
         this.pile_slug = pile_slug 
         this.pile_manager = new gobotany.piles.PileManager(this.pile_slug);
         this.filter_manager = new gobotany.filters.FilterManager({
@@ -34,6 +43,13 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
    },
 
     setup: function() {
+        // summary:
+        //   Sets up the results page with appropriate callbacks
+        // description:
+        //   Connects callback functionality and generally sets up
+        //   the logic of the page ready for use, this should only
+        //   be called once.
+
         console.log('ResultsHelper: setting up page - '+this.pile_slug);
 
         this.species_section = new gobotany.sk.results.SpeciesSectionHelper(this);
@@ -80,14 +96,18 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             if (dojo.hash()) {
                 this.setup_filters_from_hash({on_complete: complete});
             } else {
-                this.setup_filters_from_page_info({on_complete: complete});
+                this.setup_filters_from_pile_info({on_complete: complete});
             }
 
         }));
         this.pile_manager.load();
     },
 
-    setup_filters_from_page_info: function(args) {
+    setup_filters_from_pile_info: function(args) {
+        // summary:
+        //   Sets up the internal filter data structure based on default
+        //   filters in the pile info.
+
         var pile_info = this.pile_manager.pile_info;
         var filters = [];
         for (var x = 0; x < pile_info.default_filters.length; x++) {
@@ -102,6 +122,10 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     },
 
     setup_filters_from_hash: function(args) {
+        // summary:
+        //   Sets up the internal filter data structure based on values in
+        //   in the url hash (dojo.hash())
+
         console.log('setting up from hash - '+dojo.hash());
 
         var hash_object = dojo.queryToObject(dojo.hash());
@@ -143,6 +167,9 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     },
 
     save_filter_state: function() {
+        // summary:
+        //   Saves the state of the filters in a cookie and in the url hash.
+
         console.log('saving filter info in url and cookie');
         dojo.hash(this.filter_manager.as_query_string());
         dojo.cookie('last_plant_id_url', window.location.href, {path: '/'});
@@ -229,6 +256,11 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
     PAGE_COUNT: 12,
 
     constructor: function(results_helper) {
+        // summary:
+        //   Manages the species section of the results page
+        // results_helper:
+        //   An instance of gobotany.sk.results.ResultsHelper
+
         this.results_helper = results_helper;
         this.scroll_event_handle = null;
     },
@@ -444,6 +476,12 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
 
 dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     constructor: function(results_helper) {
+        // summary:
+        //   Manages the filters section of the results page (including
+        //   the genus/family filters).
+        // results_helper:
+        //   An instance of gobotany.sk.results.ResultsHelper
+
         this.results_helper = results_helper;
         this.simplekey_character_short_name = null;
         this.glossarizer = gobotany.sk.results.Glossarizer();
@@ -453,8 +491,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         console.log('FilterSectionHelper: setting up section');
         // Wire up the "More filters" button.
         var form = dijit.byId('more_filters_form');
-        dojo.connect(form, 'onSubmit', null,
-                     dojo.hitch(this, this._get_more_filters));
+        dojo.connect(form, 'onSubmit', this, this._get_more_filters);
 
         // Wire up the Apply button in the filter working area.
         var apply_button = dojo.query('#character_values_form button')[0];
