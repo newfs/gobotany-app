@@ -832,6 +832,12 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         var valuesList = dojo.query('#filter-working form .values')[0];
         dojo.empty(valuesList);
         if (filter.value_type == 'LENGTH') {
+            var unit = filter.unit;
+
+            if (unit === null || unit === undefined) {
+                unit = 'mm';
+                console.warn('UnitFieldsUpdater: ['+filter.character_short_name+'] Measurement has no unit, defaulting to mm');
+            }
 
             // Create a slider with horizontal rules and labels.
 
@@ -846,9 +852,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
             var label = dojo.place('<label>Select a length between<br>' +
                                    filter.values.min + '&thinsp;' +
-                                   filter.unit + ' and ' +
+                                   unit + ' and ' +
                                    filter.values.max + '&thinsp;' +
-                                   filter.unit + '<br></label>',
+                                   unit + '<br></label>',
                                    valuesList);
 
             var input = dojo.create('input', {
@@ -865,12 +871,11 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             }, label);
             dojo.addClass(input2, 'filter_int2');
 
-            var updater = new gobotany.sk.results.UnitFieldsUpdater(input, input2, filter.unit);
+            var updater = new gobotany.sk.results.UnitFieldsUpdater(input, input2, unit);
             updater.update_fields(startvalue);
 
 
             var slider_node = dojo.create('div', null, valuesList);
-            var unit = filter.unit;
             var slider = new dijit.form.HorizontalSlider({
                 name: "character_slider",
                 showButtons: false,
