@@ -836,7 +836,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
             if (unit === null || unit === undefined) {
                 unit = 'mm';
-                console.warn('UnitFieldsUpdater: ['+filter.character_short_name+'] Measurement has no unit, defaulting to mm');
+                console.warn('['+filter.character_short_name+'] Measurement has no unit, defaulting to mm');
             }
 
             // Create a slider with horizontal rules and labels.
@@ -850,11 +850,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             if (selectedvalue != null)
                 startvalue = selectedvalue;
 
+            var pretty1 = gobotany.utils.pretty_length(unit, filter.values.min);
+            var pretty2 = gobotany.utils.pretty_length(unit, filter.values.max);
             var label = dojo.place('<label>Select a length between<br>' +
-                                   filter.values.min + '&thinsp;' +
-                                   unit + ' and ' +
-                                   filter.values.max + '&thinsp;' +
-                                   unit + '<br></label>',
+                                   pretty1.metric + ' ('+pretty1.imperial+')' +
+                                   ' and ' +
+                                   pretty2.metric + ' ('+pretty2.imperial+')' +
+                                   '<br></label>',
                                    valuesList);
 
             var input = dojo.create('input', {
@@ -871,9 +873,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             }, label);
             dojo.addClass(input2, 'filter_int2');
 
-            var updater = new gobotany.sk.results.UnitFieldsUpdater(input, input2, unit);
+            var updater = new gobotany.utils.UnitFieldsUpdater(input, input2, unit);
             updater.update_fields(startvalue);
-
 
             var slider_node = dojo.create('div', null, valuesList);
             var slider = new dijit.form.HorizontalSlider({
@@ -980,44 +981,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         this.glossarizer.markup(kc);
         this.glossarizer.markup(ne);
-    }
-
-});
-
-dojo.declare("gobotany.sk.results.UnitFieldsUpdater", null, {
-    constructor: function(input1, input2, unit) {
-        this.input1 = input1;
-        this.input2 = input2;
-        this.unit = unit;
-        this.realvalue = null;
-        this.did_they_just_choose_a_genus = false;
-    },
-
-    update_fields: function(value) {
-        this.realvalue = value;
-        var unit = this.unit;
-
-        dojo.attr(this.input1, 'value', String(value.toFixed(2)) + unit);
-        var valuemm = value;
-        if (unit == 'cm')
-            valuemm = 10 * valuemm;
-        else if (unit == 'm')
-            valuemm = 1000 * valuemm;
-
-        var inches = 0.0393700787 * valuemm;
-        var remaining = null;
-        if (inches > 12) {
-            var feet = inches / 12;
-            feet = feet.toFixed(2);
-            inches = inches % 12;
-            inches = inches.toFixed(2);
-            remaining = String(feet) + "'" + String(inches) + '"';
-        } else {
-            inches = inches.toFixed(2);
-            remaining = String(inches) + '"'
-        }
-
-        dojo.attr(this.input2, 'value', remaining);
     }
 
 });

@@ -56,3 +56,53 @@ gobotany.utils.clone = function(obj, updated_args) {
 
     return new_obj;
 };
+
+gobotany.utils.pretty_length = function(unit, value) {
+    var ret = {
+        metric: String(value.toFixed(2)) + unit
+    };
+
+    var valuemm = value;
+    if (unit == 'cm')
+        valuemm = 10 * valuemm;
+    else if (unit == 'm')
+        valuemm = 1000 * valuemm;
+
+    var inches = 0.0393700787 * valuemm;
+    var remaining = null;
+    if (inches > 12) {
+        var feet = inches / 12;
+        feet = feet.toFixed(2);
+        inches = inches % 12;
+        inches = inches.toFixed(2);
+        remaining = String(feet) + "'" + String(inches) + '"';
+    } else {
+        inches = inches.toFixed(2);
+        remaining = String(inches) + '"'
+    }
+    
+    ret.imperial = remaining;
+
+    return ret;
+};
+
+
+dojo.declare("gobotany.utils.UnitFieldsUpdater", null, {
+    constructor: function(input1, input2, unit) {
+        this.input1 = input1;
+        this.input2 = input2;
+        this.unit = unit;
+        this.realvalue = null;
+        this.did_they_just_choose_a_genus = false;
+    },
+
+    update_fields: function(value) {
+        this.realvalue = value;
+        pretty = gobotany.utils.pretty_length(this.unit, value);
+
+        var unit = this.unit;
+
+        dojo.attr(this.input1, 'value', pretty.metric);
+        dojo.attr(this.input2, 'value', pretty.imperial);
+    }
+});
