@@ -28,7 +28,11 @@
 {% endblock %}
 
 {% block js_bottom %}
-<script>
+<script type="text/javascript">
 dojo.require('gobotany.sk.glossary');
+dojo.addOnLoad(function() {
+    glossary_helper = gobotany.sk.glossary.GlossaryHelper();
+    glossary_helper.setup();
+});
 </script>
 {% endblock %}
