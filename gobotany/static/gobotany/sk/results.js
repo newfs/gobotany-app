@@ -933,7 +933,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                                  + v.value + '"><span> ' + v.value
                                  + '</span> <span>(' + v.count + ')</span>');
                 var character_value_item
-                    = dojo.create('label', {'innerHTML': item_html});
+                    = dojo.create('label', {'innerHTML': item_html}, valuesList);
                 this.glossarizer.markup(character_value_item.childNodes[1]);
                 // Connect filter character value radio button item to a function
                 // that will set the Key Characteristics and Notable Exceptions for
@@ -944,7 +944,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     function(event) {
                         this.helper.update_filter_working_help_text(this.value);
                     });
-                dojo.place(character_value_item, valuesList);
             }
 
             // If the user has already selected a value for filter filter, we
