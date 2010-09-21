@@ -57,6 +57,13 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant) {
     var list = dojo.query('#plant-preview dl')[0];
     dojo.empty(list);
 
+    taxon_button = dojo.query('#plant-preview .nav button')[0];
+    dojo.connect(dijit.byId('taxon_button'), 'onClick', function() {
+        url = window.location.href.split('#')[0]+ 
+              plant.scientific_name.toLowerCase().replace(' ', '/') + '/';
+        window.location.href = url;
+    });
+
     var taxon_store = new dojox.data.JsonRestStore(
         {target: '/taxon/' + plant.scientific_name});
     taxon_store.fetch({
