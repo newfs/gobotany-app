@@ -73,6 +73,9 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         dojo.connect(this.pile_manager, 'on_pile_info_changed', dojo.hitch(this, function(pile_info) {
             this.filter_section._setup_character_groups(pile_info.character_groups);
 
+            this.filter_manager.plant_preview_characters =
+                pile_info.plant_preview_characters;
+
             // a hash means filter state has been set, don't load up the default filters for a pile if
             // filter state has already been set
 

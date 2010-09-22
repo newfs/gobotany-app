@@ -64,19 +64,29 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant) {
         window.location.href = url;
     });
 
-    var taxon_store = new dojox.data.JsonRestStore(
-        {target: '/taxon/' + plant.scientific_name});
+    taxon_url = '/taxon/' + plant.scientific_name + '/';
+    var taxon_store = new dojox.data.JsonRestStore({target: taxon_url});
     taxon_store.fetch({
         onComplete: function(taxon) {
-            for (var i = 0;
-                 i < filter_manager.plant_preview_characters.length; i++) {
-                var ppc = filter_manager.plant_preview_characters[i];
-                dojo.create('dt', {innerHTML: ppc.character_friendly_name},
-                            list);
-                dojo.create('dd',
-                            {innerHTML: taxon[ppc.character_short_name]},
-                            list);
+            // List any designated characters and their values.
+            //
+            // FIX NEEDED: Need to find a way to either access the
+            // ResultsHelper instance from here, or else pass in the
+            // filter_manager's plant_preview_characters.
+            if (typeof helper !== 'undefined') {
+                for (var i = 0;
+                     i < helper.filter_manager.plant_preview_characters.length; i++) {
+                    var ppc = helper.filter_manager.plant_preview_characters[i];
+                    alert('ppc.character_friendly_name: ' + ppc.character_friendly_name);
+                    dojo.create('dt', {innerHTML: ppc.character_friendly_name},
+                                list);
+                    dojo.create('dd',
+                                {innerHTML: taxon[ppc.character_short_name]},
+                                list);
+                }
             }
+
+            // List the collections (piles) to which this plant belongs.
             dojo.create('dt', {innerHTML: 'Collection'}, list);
             var piles = '';
             for (var i = 0; i < taxon.piles.length; i++) {
@@ -123,6 +133,6 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant) {
                     dojo.addClass(links[i], 'hidden');
                 }
             }
-         }
+        }
     });
 };
