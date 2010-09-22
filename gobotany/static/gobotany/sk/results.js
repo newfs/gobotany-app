@@ -520,9 +520,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                      this.apply_genus_filter);
 
         // Wire up the "Clear" buttons for the family and genus.
-        dojo.connect(dojo.byId('clear_family'), 'onclick', this,
+        dojo.connect(dijit.byId('clear_family'), 'onClick', this,
                      this.clear_family);
-        dojo.connect(dojo.byId('clear_genus'), 'onclick', this,
+        dojo.connect(dijit.byId('clear_genus'), 'onClick', this,
                      this.clear_genus);
     },
 
