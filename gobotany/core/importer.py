@@ -723,33 +723,49 @@ class Importer(object):
                     content_image.save()
                     print >> self.logfile, '  Updated', msg
 
+    def _create_default_filters(self, pile_name, character_short_names):
+        print >> self.logfile, '    Set up default filters for %s' % pile_name
+        pile = models.Pile.objects.get(name=pile_name)
+        for index, short_name in enumerate(character_short_names):
+            character = models.Character.objects.get(short_name=short_name)
+            filter, created = models.DefaultFilter.objects.get_or_create(
+                pile=pile, character=character, order=index + 1)
+            filter.save()
+
     def _import_default_filters(self):
         print >> self.logfile, 'Setting up some default filters'
-        pile = models.Pile.objects.get(name='Lycophytes')
-
-        character = models.Character.objects.get(
-            short_name='horizontal_shoot_position')
-        filter, created = models.DefaultFilter.objects.get_or_create(
-            pile=pile,
-            character=character,
-            order=1)
-        filter.save()
-
-        character = models.Character.objects.get(short_name='spore_form')
-        filter, created = models.DefaultFilter.objects.get_or_create(
-            pile=pile,
-            character=character,
-            order=2)
-
-        filter.save()
-
-        character = models.Character.objects.get(short_name='strobilus_base')
-        filter, created = models.DefaultFilter.objects.get_or_create(
-            pile=pile,
-            character=character,
-            order=3)
-
-        filter.save()
+        
+        # Set up default filters here until there's a way to do so in Access
+        # or the Django Admin.
+        self._create_default_filters('Lycophytes',
+            ['horizontal_shoot_position', 'spore_form', 'strobilus_base'])
+        self._create_default_filters('Monilophytes',
+            ['life_stage_present', 'habit', 'leaf_disposition'])
+        self._create_default_filters('Equisetaceae',
+            ['aerial_stem_dimorphism', 'aerial_stem_color',
+             'aerial_stem_height'])
+        self._create_default_filters('Woody Gymnosperms',
+            ['habit', 'plant_height', 'leaf_form'])
+        self._create_default_filters('Woody Angiosperms',
+            ['plant_habit', 'plant_height', 'armature'])
+        self._create_default_filters('Carex',
+            ['rhizomes', 'stem_habit', 'plant_height'])
+        self._create_default_filters('Poaceae',
+            ['duration', 'plant_height', 'number_of_nodes_on_stem'])
+        self._create_default_filters('Remaining Graminoids',
+            ['stem_cross-section', 'plant_habit', 'underground_organs'])
+        self._create_default_filters('Thalloid Aquatic',
+            ['root_presence', 'root_number', 'root_sheath_winged'])
+        self._create_default_filters('Orchid Monocots',
+            ['habit', 'roots', 'underground_organs'])
+        self._create_default_filters('Non-Orchid Monocots',
+            ['habit', 'roots', 'laticifers'])
+        self._create_default_filters('Composites',
+            ['habit', 'duration', 'underground_organs'])
+        self._create_default_filters('Non-Thalloid Aquatic',
+            ['habit', 'roots', 'laticifers'])
+        self._create_default_filters('Remaining Non-Monocots',
+            ['plant_habit', 'duration', 'plant_life_form'])
 
     def _import_plant_preview_characters(self):
         print >> self.logfile, ('Setting up sample plant preview characters')
