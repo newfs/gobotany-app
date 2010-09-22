@@ -787,8 +787,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             } else if (char_name == 'genus')
                 dijit.byId('genus_select').set('value', value);
             else {
-                var choice_div = dojo.query('#' + char_name + ' .choice')[0];
-                choice_div.innerHTML = value;
+                if (value !== null) {
+                    var choice_div = dojo.query('#' + char_name + ' .choice')[0];
+                    choice_div.innerHTML = value;    
+                }
             }
         }
     },
