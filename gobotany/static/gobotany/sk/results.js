@@ -66,8 +66,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         dojo.subscribe("results_loaded", dojo.hitch(this, this.populate_image_types));
 
         // Update images on selction change
-        var select_box = dojo.byId('image-type-selector');
-        dojo.connect(select_box, 'change', 
+        var select_box = dijit.byId('image-type-selector');
+        dojo.connect(select_box, 'onChange',
                      dojo.hitch(this, this.load_selected_image_type));
 
         dojo.connect(this.pile_manager, 'on_pile_info_changed', dojo.hitch(this, function(pile_info) {
@@ -179,7 +179,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     },
 
     load_selected_image_type: function (event) {
-        var image_type = dojo.byId('image-type-selector').value;
+        var image_type = dijit.byId('image-type-selector').value;
         var images = dojo.query('#plant-listing li img');
         // Replace the image for each plant on the page
         for (var i=0; i < images.length; i++) {
@@ -245,11 +245,11 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         image_types.sort();
         for (i=0; i < image_types.length; i++) {
             var image_type = image_types[i];
-            select_box.options[i] = new Option(image_type, 
-                                               image_type);
+            select_box.addOption({value: image_type,
+                label: image_type});
             // Habit is selected by default
             if (image_type == 'habit') {
-                select_box.options[i].selected = true;
+                select_box.attr('value', 'habit');
             }
         }
     }

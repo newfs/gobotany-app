@@ -165,6 +165,14 @@ p {
     padding: 0;
 }
 
+form#results-display {
+    font-size: 0.7em;
+}
+
+form#results-display label {
+    margin-left: 1em;
+}
+
 #plants {
     height: 350px;
     overflow: auto;
