@@ -923,7 +923,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             var dont_know_item = dojo.create('label',
                                              {'innerHTML': item_html});
             // Connect filter radio button item to a function that will set the
-            // Key Characteristics and Notable Exceptions for filter filter.
+            // Key Characteristics and Notable Exceptions for the filter.
             // Here the *filter* is passed as the context.
             dojo.connect(dont_know_item, 'onclick', this,
                          function(event) {
@@ -951,7 +951,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     });
             }
 
-            // If the user has already selected a value for filter filter, we
+            // If the user has already selected a value for the filter, we
             // pre-check that radio button, instead of pre-checking the
             // first (the "Don't know") radio button like we normally do.
 
@@ -965,7 +965,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }
 
         // Set the key characteristics and notable exceptions for the filter
-        // (character). (Elsewhere these will be set for character values.)
+        // (character). (The ones for character values are set elsewhere.)
 
         var kc = dojo.query('#filter-working .info .key-characteristics')[0];
         kc.innerHTML = filter.key_characteristics;
