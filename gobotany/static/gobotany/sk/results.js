@@ -279,10 +279,18 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         dojo.empty('plant-listing');
         dojo.query('#plants .species_count .loading').removeClass('hidden');
         dojo.query('#plants .species_count .count').addClass('hidden');
-        
+
+        // Build a list of short names for the filters visible at left.
+        filter_short_names = []
+        dojo.query('#filters ul li').forEach(function(node) {
+            filter_short_names.push(dojo.attr(node, 'id'));
+        });
+
         // Run the query, passing a callback function to be run when finished.
+        // Also pass the list of filter short names for which to get counts.
         this.results_helper.filter_manager.perform_query({
-            on_complete: dojo.hitch(this, this.on_complete_perform_query)
+            on_complete: dojo.hitch(this, this.on_complete_perform_query),
+            filter_short_names: filter_short_names
         });
 
         this.results_helper.save_filter_state();
@@ -378,6 +386,19 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         dojo.query('#plants .species_count .loading').addClass('hidden');
         dojo.query('#plants .species_count .count').removeClass('hidden');
 
+        // If the filter working area is showing, refresh its display in order
+        // to update any value counts.
+        if (dojo.style('filter-working', 'display') === 'block') {
+            var short_name =
+                this.results_helper.filter_section.simplekey_character_short_name;
+            var filter = this.results_helper.filter_manager.get_filter(
+                short_name);
+            if (filter !== null) {
+                this.results_helper.filter_section.show_filter_working(
+                    filter);
+            }
+        }
+        
         // Clear display
         var plant_listing = dojo.byId('plant-listing');
         this.paginate_results(data.items, plant_listing);

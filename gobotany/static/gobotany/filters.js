@@ -132,6 +132,14 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     on_pile_info_loaded: function() {},
     on_default_filters_loaded: function() {},
 
+    get_filter: function(short_name) {
+        for (var x = 0; x < this.filters.length; x++) {
+            if (this.filters[x].character_short_name == short_name) {
+                return this.filters[x];
+            }
+        }
+        return false;
+    },
     has_filter: function(short_name) {
         for (var x = 0; x < this.filters.length; x++)
             if (this.filters[x].character_short_name == short_name)
@@ -219,9 +227,10 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                         return;
                     }
                 }
-                console.log('Filter manager cannot set a count for unknown ' +
-                            'value: ',
-                            value_name + ' (' + character_short_name + ')');
+                //console.log('Filter manager cannot set a count for unknown ' +
+                //            'value: ',
+                //            value_name + ' (' + character_short_name + ')');
+                return;
             }
         }
         console.log('FilterManager cannot set a count for unknown filter: ',
@@ -260,6 +269,19 @@ dojo.declare('gobotany.filters.FilterManager', null, {
 
                 content[filter.character_short_name] = filter.selected_value;
             }
+        }
+
+        // Add the filter names for which to return character value counts.
+        var filter_short_names = args['filter_short_names'];
+        if (filter_short_names.length) {
+            short_names = '';
+            for (var i = 0; i < filter_short_names.length; i++) {
+                if (i > 0) {
+                    short_names += ',';
+                }
+                short_names += filter_short_names[i];
+            }
+            content['_counts_for'] = short_names;
         }
 
         this.result_store.fetch({
