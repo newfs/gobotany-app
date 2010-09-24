@@ -50,7 +50,8 @@ dojo.addOnLoad(function() {
             var plant = {
                 scientific_name: img.getAttribute('scientific_name'),
             };
-            gobotany.sk.plant_preview.show_plant_preview(plant);
+            gobotany.sk.plant_preview.show_plant_preview(plant,
+                filter_manager.plant_preview_characters);
         });
     });
     dojo.query('.PileVideo').forEach(function (node, index, attr) {
