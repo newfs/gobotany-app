@@ -50,8 +50,12 @@ class TaxonQueryHandler(BaseHandler):
             for character_name in character_names:
                 counts = {}
                 pile = models.Pile.objects.get(slug=kwargs['pile'])
-                character = models.Character.objects.get(
-                    short_name=character_name)
+                try:
+                    character = models.Character.objects.get(
+                        short_name=character_name)
+                except models.Character.DoesNotExist:
+                    # Ignore any characters that don't exist in the database.
+                    continue
                 if character.value_type == 'TEXT':
                     for cv in models.CharacterValue.objects.filter(
                               pile=pile, character=character):
