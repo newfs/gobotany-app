@@ -61,7 +61,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         // Wire up the filter working area's close button.
         var el = dojo.query('#filter-working .close')[0];
         dojo.connect(el, 'onclick', null, 
-                     dojo.hitch(this, this.hide_filter_working));
+                     dojo.hitch(this, this.filter_section.hide_filter_working));
 
         dojo.subscribe("results_loaded", dojo.hitch(this, this.populate_image_types));
 
@@ -671,7 +671,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             var removeLink = dojo.create('a', {
                 href: '#', innerHTML: '× remove'});
             var clearLink = dojo.create('a', {
-                'class': 'clear', href: '#', innerHTML: '× clear'});
+                'class': 'clear hidden', href: '#', innerHTML: '× clear'});
 
             // Pass the filter to the function as its context (this).
             dojo.connect(filterLink, 'onclick', this,
@@ -837,7 +837,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
     clear_filter: function(filter) {
         if (filter.character_short_name == filter.simplekey_character_short_name) {
-            filter.hide_filter_working();
+            this.hide_filter_working();
         }
 
         if (this.results_helper.filter_manager.get_selected_value(filter.character_short_name)) {
@@ -853,7 +853,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     remove_filter: function(filter) {
         
         if (filter.character_short_name == filter.simplekey_character_short_name) {
-            filter.hide_filter_working();
+            this.hide_filter_working();
         }
 
         if (this.results_helper.filter_manager.has_filter(filter.character_short_name)) {
@@ -875,14 +875,15 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         this.simplekey_character_short_name = filter.character_short_name;
 
+        var valuesList = dojo.query('#filter-working form .values')[0];
+        dojo.empty(valuesList);
+        
         if (filter.values === undefined) {
             console.log('No filter values exist: ' + filter.friendly_name +
                         ' (short name: ' + filter.character_short_name + ')');
             return;
         }
 
-        var valuesList = dojo.query('#filter-working form .values')[0];
-        dojo.empty(valuesList);
         if (filter.value_type == 'LENGTH') {
             var unit = filter.unit;
 
