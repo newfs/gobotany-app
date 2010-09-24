@@ -440,12 +440,13 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                 dojo.attr(page, 'x-loaded', page_num == 1 ? 'true': 'false');
             }
             this.render_item(item, list, genus_number,
-                             partial=(page_num!=1));
+                             partial=(page_num!=1), this);
         }
         return start;
     },
 
-    render_item: function(item, start_node, genus_number, partial) {
+    render_item: function(item, start_node, genus_number, partial,
+                          species_section) {
         // Fill in the search list with anchors, images and titles
         var genus_colors = 4;  // alternate between two colors for genera
         var li_node = dojo.create('li', {
@@ -456,7 +457,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
             event.preventDefault();
             dijit.byId('plant-preview').show();
             var plant = this;
-            gobotany.sk.plant_preview.show_plant_preview(plant);
+            gobotany.sk.plant_preview.show_plant_preview(plant,
+                species_section.results_helper.filter_manager.plant_preview_characters);
         });
         var anchor = dojo.create('a', {href: '#'}, li_node);
         var image = item.default_image;
