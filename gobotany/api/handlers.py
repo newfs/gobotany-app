@@ -86,9 +86,12 @@ class TaxonQueryHandler(BaseHandler):
             listing = [ _simple_taxon(s) for s in species.all() ]
 
             # Add value counts for each character requested.
-            character_names = request.GET.get('_counts_for').split(',')
-            value_counts = self._get_character_value_counts(character_names,
-                                                            **kwargs)
+            value_counts = [];
+            counts_for = request.GET.get('_counts_for')
+            if counts_for:
+                character_names = counts_for.split(',')
+                value_counts = self._get_character_value_counts(
+                    character_names, **kwargs)
 
             return {'items': listing,
                     'value_counts': value_counts,

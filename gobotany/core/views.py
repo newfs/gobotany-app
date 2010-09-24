@@ -108,13 +108,13 @@ def species_lists(request):
     for pilegroup in models.PileGroup.objects.all():
         biglist.append({
                 'name': 'Pile-Group ' + pilegroup.name,
-                'url': '/taxon/?' + urlencode({'pilegroup': pilegroup.name}),
+                'url': '/taxon/?' + urlencode({'pilegroup': pilegroup.slug}),
                 })
 
     for pile in models.Pile.objects.all():
         biglist.append({
                 'name': 'Pile ' + pile.name,
-                'url': '/taxon/?' + urlencode({'pile': pile.name}),
+                'url': '/taxon/?' + urlencode({'pile': pile.slug}),
                 })
 
     species_names = [ t.scientific_name for t in models.Taxon.objects.all() ]
