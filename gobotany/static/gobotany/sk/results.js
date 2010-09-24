@@ -387,7 +387,7 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         dojo.query('#plants .species_count .count').removeClass('hidden');
 
         // If the filter working area is showing, refresh its display in order
-        // to update any value counts.
+        // to update any dvalue counts.
         if (dojo.style('filter-working', 'display') === 'block') {
             var short_name =
                 this.results_helper.filter_section.simplekey_character_short_name;
@@ -622,6 +622,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 choice_div.innerHTML = value;
                 this.save_filter_state();
                 this.results_helper.species_section.perform_query();
+                this.show_or_hide_filter_clear(
+                    this.simplekey_character_short_name);
             }
             return;
         }
@@ -640,6 +642,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 choice_div.innerHTML = 'don\'t know';
             }
             this.results_helper.species_section.perform_query();
+            this.show_or_hide_filter_clear(
+                this.simplekey_character_short_name);
             return;
         }
 
@@ -667,7 +671,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             var removeLink = dojo.create('a', {
                 href: '#', innerHTML: '× remove'});
             var clearLink = dojo.create('a', {
-                href: '#', innerHTML: '× clear'});
+                'class': 'clear', href: '#', innerHTML: '× clear'});
 
             // Pass the filter to the function as its context (this).
             dojo.connect(filterLink, 'onclick', this,
@@ -704,6 +708,20 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }
 
         return filterItem;
+    },
+    
+    show_or_hide_filter_clear: function(filter_character_short_name) {
+        // Show or hide the Clear link for a filter at left.
+        var filter_id = '#' + filter_character_short_name;
+        var should_hide_clear = dojo.query(filter_id +
+            ' .choice')[0].innerHTML === 'don\'t know';
+        var clear = dojo.query(filter_id + ' .clear');
+        if (should_hide_clear) {
+            clear.addClass('hidden');
+        }
+        else {
+            clear.removeClass('hidden');
+        }
     },
 
     clear_filters: function() {
@@ -812,6 +830,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     var choice_div = dojo.query('#' + char_name + ' .choice')[0];
                     choice_div.innerHTML = value;    
                 }
+                this.show_or_hide_filter_clear(char_name);
             }
         }
     },
@@ -828,6 +847,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         dojo.query('#' + filter.character_short_name + ' .choice'
                   )[0].innerHTML = 'don\'t know';
+        this.show_or_hide_filter_clear(filter.character_short_name);
     },
 
     remove_filter: function(filter) {
