@@ -875,6 +875,12 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         this.simplekey_character_short_name = filter.character_short_name;
 
+        if (filter.values === undefined) {
+            console.log('No filter values exist: ' + filter.friendly_name +
+                        ' (short name: ' + filter.character_short_name + ')');
+            return;
+        }
+
         var valuesList = dojo.query('#filter-working form .values')[0];
         dojo.empty(valuesList);
         if (filter.value_type == 'LENGTH') {
