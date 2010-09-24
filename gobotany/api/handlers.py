@@ -43,6 +43,29 @@ def _taxon_with_chars(taxon):
 
 class TaxonQueryHandler(BaseHandler):
     methods_allowed = ('GET',)
+    
+    def _get_character_value_counts(self, character_names, **kwargs):
+        value_counts = []
+        if character_names:
+            for character_name in character_names:
+                counts = {}
+                pile = models.Pile.objects.get(slug=kwargs['pile'])
+                character = models.Character.objects.get(
+                    short_name=character_name)
+                if character.value_type == 'TEXT':
+                    for cv in models.CharacterValue.objects.filter(
+                              pile=pile, character=character):
+                        # Get the species with the current query, setting this
+                        # character value as a 'hypothetical' one in order to
+                        # elicit the desired count.
+                        temp_kwargs = dict(kwargs)
+                        temp_kwargs[character_name.encode()] = cv.value
+                        species = botany.query_species(**temp_kwargs)
+                        counts[cv.value] = species.count()
+                value_counts.append({'name': character_name, 
+                                     'counts': counts})
+        return value_counts
+
 
     def read(self, request, scientific_name=None):
         kwargs = {}
@@ -57,7 +80,14 @@ class TaxonQueryHandler(BaseHandler):
             # Only return character values for single item lookup, keep the
             # result list simple
             listing = [ _simple_taxon(s) for s in species.all() ]
-            return {'items': listing, 'label': 'scientific_name',
+
+            # Add value counts for each character requested.
+            character_names = request.GET.getlist('_counts_for')
+            value_counts = self._get_character_value_counts(character_names, **kwargs)
+
+            return {'items': listing,
+                    'value_counts': value_counts,
+                    'label': 'scientific_name',
                     'identifier': 'scientific_name'}
         elif species.exists():
             try:
