@@ -19,15 +19,16 @@ def default_view(request):
 
 class PileSearchForm(forms.Form):
     """A form listing all botanic characters for a pile along with
-    possible values"""
+    possible values. For now only characters with text values are shown.
+    """
 
     def __init__(self, pile_name, *args, **kwargs):
         """Iterate over pile characters and create widgets with the values"""
         super(PileSearchForm, self).__init__(*args, **kwargs)
         characters = models.Character.objects.filter(
-                    character_values__pile__name__iexact=pile_name).order_by(
-                                                            'character_group',
-                                                            'short_name')
+                    character_values__pile__name__iexact=pile_name,
+                    value_type='TEXT').order_by('character_group',
+                                                'short_name')
         character_values = models.CharacterValue.objects
         for character in characters:
             try:
