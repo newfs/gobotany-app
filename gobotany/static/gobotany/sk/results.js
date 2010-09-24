@@ -408,9 +408,10 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         var plant_scrollable = dojo.byId('plants');
         var plant_pages = dojo.query('li.PlantScrollPage[x-loaded=false]', plant_listing);
         this.scroll_event_handle = dojo.connect(plant_scrollable, 'onscroll',
-                                                dojo.hitch(this, function () {
-                                                    plant_pages.forEach(dojo.hitch(this, load_page_if_visible));
-                                                }));
+            dojo.hitch(this, function () {
+                plant_pages.forEach(dojo.hitch(this,
+                    this.results_helper.species_section.load_page_if_visible));
+            }));
         dojo.publish("results_loaded", [{filter_manager: this.results_helper.filter_manager,
                                          data: data}]);
     },
@@ -492,7 +493,7 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         var container_pos = dojo.position(dojo.byId('plants'), false);
         var page_pos = dojo.position(page, false).y;
         if (container_pos.h >= (page_pos - container_pos.y)) {
-            gobotany.sk.results.load_page(page);
+            this.load_page(page);
         }
     }
 });
