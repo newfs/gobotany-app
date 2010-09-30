@@ -550,10 +550,6 @@ class DefaultFilter(models.Model):
     user visits the given `pile`; the `order` lets administrators
     control which filters are placed towards the top of the page.
 
-    Also, these instances let a few pieces of additional rich-text
-    information be associated with a character when its value is being
-    selected in the UI under a particular pile.
-
     """
     pile = models.ForeignKey(Pile)
     character = models.ForeignKey(Character)

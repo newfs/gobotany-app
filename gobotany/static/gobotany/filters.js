@@ -116,15 +116,14 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             query: {choose_best: choose_best,
                     species_id: this.species_ids || [],
                     character_group_id: args.character_group_ids || [],
-                    exclude: args.existing_characters || [],
-                    include_filter: 1},
+                    exclude: args.existing_characters || []},
             scope: {filter_manager: this, args: args},
             onComplete: args.onLoaded,
         });
     },
     query_filters: function(args) {
         this.chars_store.fetch({
-            query: {include: args.short_names || [], include_filter: 1},
+            query: {include: args.short_names || []},
             scope: {filter_manager: this, args: args},
             onComplete: args.onLoaded,
         });

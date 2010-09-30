@@ -4,7 +4,6 @@ import os
 from django.test import TestCase
 from django.test.client import Client
 
-from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
 from django.core.files import File
@@ -458,11 +457,6 @@ class CharacterListTestCase(TestCase):
 
     def test_get_with_choose_best_param_returns_ok(self):
         response = self.client.get('/piles/pile1/characters/?choose_best=3')
-        self.assertEqual(200, response.status_code)
-
-    def test_get_with_include_filter_param_returns_ok(self):
-        response = self.client.get(
-            '/piles/pile1/characters/?include_filter=1')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_exclude_chars_param_returns_ok(self):

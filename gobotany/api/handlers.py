@@ -292,30 +292,16 @@ class CharacterListingHandler(BaseHandler):
 
         return characters
 
-    def _jsonify_character(self, character, include_filter):
-        c = {
+    def _jsonify_character(self, character):
+        return {
             'friendly_name': character.friendly_name,
             'short_name': character.short_name,
             'value_type': character.value_type,
             'unit': character.unit,
             'characteracter_group': character.character_group.name,
+            'key_characteristics': character.key_characteristics,
+            'notable_exceptions': character.notable_exceptions,
             }
-        if include_filter:
-            try:
-                default_filter = models.DefaultFilter.objects.get(
-                    character=character)
-                c['filter'] = {
-                    'notable_exceptions':
-                        getattr(default_filter, 'notable_exceptions', u''),
-                    'key_characteristics':
-                        getattr(default_filter, 'key_characteristics', u''),
-                    }
-            except models.DefaultFilter.DoesNotExist:
-                c['filter'] = {
-                    'notable_exceptions': u'',
-                    'key_characteristics': u'',
-                    }
-        return c
 
     def read(self, request, pile_slug):
         """Returns a list of characters."""
@@ -352,9 +338,8 @@ class CharacterListingHandler(BaseHandler):
 
         # Turn the characters into a data structure for JSON.
 
-        include_filter = bool(int(request.GET.get('include_filter', 0)))
         return [
-            self._jsonify_character(c, include_filter) for c in characters
+            self._jsonify_character(c) for c in characters
             ]
 
 
