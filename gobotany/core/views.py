@@ -134,9 +134,19 @@ def pile_characters_select(request):
 def pile_characters(request, pile_slug):
     WIDTH = 500
 
+    try:
+        coverage_weight = float(request.GET.get('coverage_weight', 1.0))
+    except ValueError:
+        coverage_weight = 1.0
+    try:
+        ease_weight = float(request.GET.get('ease_weight', 1.0))
+    except ValueError:
+        ease_weight = 1.0
+
     pile = models.Pile.objects.get(slug=pile_slug)
     species_list = pile.species.all()
     species_ids = sorted( s.id for s in species_list )
+    species_by_id = dict( (s.id, s) for s in species_list )
     t0 = time.time()
     character_entropy_list = igdt.compute_character_entropies(pile, species_ids)
     elapsed_time = time.time() - t0
@@ -147,6 +157,21 @@ def pile_characters(request, pile_slug):
         cvs_by_cid[cv.character_id].append(cv)
 
     clist = []
+
+    # Pre-fetch character and taxon objets, since doing so - even though
+    # we are grabbing everything in the database when we are just
+    # interested in one pile! - is much faster than having the Django
+    # ORM go fetch them over and over hundreds of times.
+
+    character_values_by_id = dict(
+        (cv.id, cv) for cv in models.CharacterValue.objects.all()
+        )
+
+    tcvs_by_cv_id = defaultdict(list)
+    for tcv in models.TaxonCharacterValue.objects.all():
+        tcvs_by_cv_id[tcv.character_value_id].append(tcv)
+
+    #
 
     def _tablefy_data(character):
         """Create a matrix showing which species have which char values."""
@@ -178,14 +203,13 @@ def pile_characters(request, pile_slug):
 
         # Fill in a 'Y' for each species/character-value pair.
 
-        relevant_tcvs = models.TaxonCharacterValue.objects.filter(
-            taxon__in=species_list,
-            character_value__in=character_values,
-            )
-        for tcv in relevant_tcvs:
-            yn_sequence = species_grid_dict[tcv.taxon_id]
-            index = character_values.index(tcv.character_value)
-            yn_sequence[index] = 'Y'
+        for cv in character_values:
+            for tcv in tcvs_by_cv_id[cv.id]:
+                if tcv.taxon_id in species_by_id:
+                    yn_sequence = species_grid_dict[tcv.taxon_id]
+                    cv = character_values_by_id[tcv.character_value_id]
+                    index = character_values.index(cv)
+                    yn_sequence[index] = 'Y'
 
         # Add a last value for each species, that is checked if a
         # species had no values at all for this character.
@@ -259,15 +283,22 @@ def pile_characters(request, pile_slug):
             x0 = int(scale * (cv.value_min - vmin))
             x1 = int(scale * (cv.value_max - vmin))
             width = x1 - x0
-            species = [ tcv.taxon for tcv in cv.taxon_character_values.all() ]
+            species = [ species_by_id[tcv.taxon_id] for tcv
+                        in tcvs_by_cv_id[cv.id] ]
             metarows.append([ x0, width, cv.value_min, cv.value_max, species ])
 
         return metarows, None
 
     #
 
+    character_ids = [ item[0] for item in character_entropy_list ]
+    characters_by_id = dict(
+        (character.id, character) for character
+        in models.Character.objects.filter(id__in=character_ids)
+        )
+
     for character_id, entropy, coverage in character_entropy_list:
-        character = models.Character.objects.get(id=character_id)
+        character = characters_by_id[character_id]
         if character.value_type == u'TEXT':
             metarows, species_row = _tablefy_data(character)
         elif character.value_type == u'LENGTH':
@@ -275,7 +306,9 @@ def pile_characters(request, pile_slug):
         else:
             continue  # do not bother with ratio values yet
         ease = character.ease_of_observability
-        score = igdt.compute_score(entropy, coverage, ease)
+        score = igdt.compute_score(entropy, coverage, ease,
+                                   coverage_weight=coverage_weight,
+                                   ease_weight=ease_weight)
         clist.append({
                 'entropy': entropy,
                 'coverage': coverage,
@@ -295,4 +328,6 @@ def pile_characters(request, pile_slug):
             'elapsed_time': elapsed_time,
             'width': WIDTH,
             'characters': clist,
+            'coverage_weight': coverage_weight,
+            'ease_weight': ease_weight,
             })

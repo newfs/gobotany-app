@@ -111,6 +111,16 @@
       an integer that botanists enter into our database</li>
   </ul>
 
+  <hr>
+  <form action=".">
+    Coverage weight:
+    <input name="coverage_weight" size="5" value="{{ coverage_weight }}">
+    <br>
+    Ease-of-observability weight:
+    <input name="ease_weight" size="5" value="{{ ease_weight }}">
+    <input type="submit" value="Recompute">
+  </form>
+
   {% for character in characters %}
   <hr>
   <p>

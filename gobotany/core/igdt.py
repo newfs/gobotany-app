@@ -159,10 +159,12 @@ def _length_entropy(cv_set, species_set, cv_counts):
     return tally
 
 
-def compute_score(entropy, coverage, ease):
+def compute_score(entropy, coverage, ease,
+                  coverage_weight=1.0, ease_weight=1.0):
     """Our secret formula for deciding which characters are best!"""
-    penalty = 10. * (1. - coverage)
-    return entropy + penalty + 0.1 * ease
+    return (entropy
+            + 10. * (1. - coverage) * coverage_weight
+            + 0.1 * ease_weight * ease)
 
 
 def rank_characters(pile, species_list):
