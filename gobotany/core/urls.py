@@ -30,7 +30,6 @@ urlpatterns = patterns(
 
     url(r'^pile-search/(\w+)$', views.pile_search),
     url(r'^taxon-search/$', views.taxon_search),
-    url(r'^glossary/?$', views.glossary_index),
     url(r'^canonical-images?$', views.canonical_images),
     url(r'^species-lists/$', views.species_lists),
     url(r'^best-characters/$', views.pile_characters_select),
