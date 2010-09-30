@@ -1,0 +1,22 @@
+{% extends "simplekey/base.html" %}
+{% block title %}
+{% block pagetitle %}{% endblock %} - Help
+{% endblock %}
+{% block content %}
+<div id="help">
+    <p>Help</p>
+    <h1>{% block pageheading %}{% endblock %}</h1>
+    <div id="main">
+        {% block maincontent %}
+        {% endblock %}
+    </div>
+    <div id="nav">
+        <ul>
+            <li><a href="#">About Go-Botany</a></li>
+            <li><a href="#">How To Use Plant Identifier</a></li>
+            <li><a href="#">Glossary</a></li>
+            <li><a href="#">Video Help Topics</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

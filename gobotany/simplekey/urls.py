@@ -17,6 +17,7 @@ urlpatterns = patterns(
     url('^$', views.index_view),
     url('^glossary/(?P<letter>[1a-z])/$',
         views.glossary_view, name='simplekey-glossary'),
+    url('^help/$', views.help_about, name='simplekey-help-about'),
     url('^map/$', views.map_view),
     url('^(?P<number>[0-9]+)/$', views.page_view),
     url('^(?P<pilegroup_slug>[^/]*)/$',

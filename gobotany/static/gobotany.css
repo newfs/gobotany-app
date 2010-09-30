@@ -41,11 +41,48 @@ p {
     width: 750px;
 }
 
-#filters {
-    border: 1px solid #ccc;
+#filters, #help #nav {
+    border: 1px dashed #ccc;
     float: left;
     min-height: 150px;
     width: 200px;
+}
+
+#filters {
+    border: 1px solid #ccc;
+}
+
+#help #main {
+    padding-left: 1em;
+    width: 730px;
+}
+
+#help #main h2 {
+    font-weight: bold;
+    margin-top: 0.7em;
+}
+
+#help #main div {
+    font-size: 0.8em;
+}
+
+#help #main img {
+    border: 1px dashed #ddd;
+    float: right;
+    margin: 2em;
+}
+
+#help #main hr {
+    clear: both;
+    color: #eee;
+}
+
+#help #nav {
+    font-size: 0.8em;
+}
+
+#help #nav li {
+    margin: 1em 0 1.5em 1em;
 }
 
 #more_filters {

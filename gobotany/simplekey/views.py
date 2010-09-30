@@ -185,3 +185,7 @@ def species_view(request, pilegroup_slug, pile_slug, genus_slug,
            'habitats': habitats,
            'characteristics': _get_species_characteristics(pile, taxon),
            }, context_instance=RequestContext(request))
+
+
+def help_about(request):
+    return render_to_response('simplekey/about.html')
