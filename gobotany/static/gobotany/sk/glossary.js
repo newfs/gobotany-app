@@ -1,7 +1,7 @@
 dojo.provide('gobotany.sk.glossary');
 dojo.require('gobotany.sk.glossarize');
 
-dojo.declare('gobotany.gloassary.GlossaryHelper', null, {
+dojo.declare('gobotany.sk.glossary.GlossaryHelper', null, {
     constructor: function() {
         this.glossarizer = new gobotany.sk.results.Glossarizer();
     },
@@ -10,6 +10,5 @@ dojo.declare('gobotany.gloassary.GlossaryHelper', null, {
         dojo.query('#glossary .definition').forEach(function(node) {
             glossarizer.markup(node);
         });
-    });
-    }
+    },
 });
