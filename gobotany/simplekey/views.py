@@ -188,4 +188,27 @@ def species_view(request, pilegroup_slug, pile_slug, genus_slug,
 
 
 def help_about(request):
-    return render_to_response('simplekey/about.html')
+    return render_to_response('simplekey/help_about.html', {
+           'section_1_heading_blurb': get_blurb('section_1_heading_blurb'),
+           'section_1_content_blurb': get_blurb('section_1_content_blurb'),
+           'section_2_heading_blurb': get_blurb('section_2_heading_blurb'),
+           'section_2_content_blurb': get_blurb('section_2_content_blurb'),
+           'section_3_heading_blurb': get_blurb('section_3_heading_blurb'),
+           'section_3_content_blurb': get_blurb('section_3_content_blurb'),
+           }, context_instance=RequestContext(request))
+
+def help_start(request):
+    return render_to_response('simplekey/help_start.html', {},
+                              context_instance=RequestContext(request))
+
+def help_collections(request):
+    return render_to_response('simplekey/help_collections.html', {},
+                              context_instance=RequestContext(request))
+
+def help_glossary(request):
+    return render_to_response('simplekey/help_glossary.html', {},
+                              context_instance=RequestContext(request))
+
+def help_video(request):
+    return render_to_response('simplekey/help_video.html', {},
+                              context_instance=RequestContext(request))

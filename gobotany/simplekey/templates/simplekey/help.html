@@ -12,10 +12,15 @@
     </div>
     <div id="nav">
         <ul>
-            <li><a href="#">About Go-Botany</a></li>
-            <li><a href="#">How To Use Plant Identifier</a></li>
-            <li><a href="#">Glossary</a></li>
-            <li><a href="#">Video Help Topics</a></li>
+            <li><a {% ifequal request.path "/simple/help/" %}class="current"{% else %}href="/simple/help/"{% endifequal %}>About Go-Botany</a></li>
+            <li><p>How To Use Plant Identifier:</p>
+                <ul>
+                    <li><a {% ifequal request.path "/simple/help/start/" %}class="current"{% else %}href="/simple/help/start/"{% endifequal %}>Getting Started</a></li>
+                    <li><a {% ifequal request.path "/simple/help/collections/" %}class="current"{% else %}href="/simple/help/collections/"{% endifequal %}>Understanding Plant Collections</a></li>
+                </ul>
+            </li>
+            <li><a {% ifequal request.path "/simple/help/glossary/" %}class="current"{% else %}href="/simple/help/glossary/"{% endifequal %}>Glossary</a></li>
+            <li><a {% ifequal request.path "/simple/help/video/" %}class="current"{% else %}href="/simple/help/video/"{% endifequal %}>Video Help Topics</a></li>
         </ul>
     </div>
 </div>

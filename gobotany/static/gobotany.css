@@ -78,11 +78,15 @@ p {
 }
 
 #help #nav {
-    font-size: 0.8em;
+    font-size: 0.75em;
 }
 
 #help #nav li {
     margin: 1em 0 1.5em 1em;
+}
+
+#help #nav li p {
+    color: #666;
 }
 
 #more_filters {

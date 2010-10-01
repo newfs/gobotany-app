@@ -6,21 +6,21 @@ About Go-Botany
 About Go-Botany
 {% endblock %}
 {% block maincontent %}
-<h2>section 1 heading blurb</h2>
+<h2>{{ section_1_heading_blurb }}</h2>
 <div>
-    section 1 content blurb
+    {{ section_1_content_blurb|safe }}
 </div>
 <img src="" alt="section 1 image TBD">
 <hr>
-<h2>section 2 heading blurb</h2>
+<h2>{{ section_2_heading_blurb }}</h2>
 <div>
-    section 2 content blurb
+    {{ section_2_content_blurb|safe }}
 </div>
 <img src="" alt="section 2 image TBD">
 <hr>
-<h2>section 3 heading blurb</h2>
+<h2>{{ section_3_heading_blurb }}</h2>
 <div>
-    section 3 content blurb
+    {{ section_3_content_blurb|safe }}
 </div>
 <img src="" alt="section 3 image TBD">
 {% endblock %}
