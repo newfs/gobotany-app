@@ -283,8 +283,9 @@ def pile_characters(request, pile_slug):
             x0 = int(scale * (cv.value_min - vmin))
             x1 = int(scale * (cv.value_max - vmin))
             width = x1 - x0
-            species = [ species_by_id[tcv.taxon_id] for tcv
-                        in tcvs_by_cv_id[cv.id] ]
+            species = [ species_by_id[tcv.taxon_id]
+                        for tcv in tcvs_by_cv_id[cv.id]
+                        if tcv.taxon_id in species_by_id ]
             metarows.append([ x0, width, cv.value_min, cv.value_max, species ])
 
         return metarows, None
