@@ -66,7 +66,7 @@ p {
     font-size: 0.8em;
 }
 
-#help #main img {
+#help #main img.about {
     border: 1px dashed #ddd;
     float: right;
     margin: 2em;
@@ -87,6 +87,14 @@ p {
 
 #help #nav li p {
     color: #666;
+}
+
+#help #start {
+    float: left;
+}
+
+#help #start-video {
+    float: right;
 }
 
 #more_filters {
@@ -295,8 +303,8 @@ ul#plant-listing {
 /* Glossary page */
 
 ul#glossary_pages {
+    font-size: 1.5em;
     text-align: center;
-    margin-top: 18px;
 }
 ul#glossary_pages li {
     display: inline;
@@ -305,13 +313,8 @@ ul#glossary_pages .chosen {
     color: #c3d69b;
 }
 
-ul#glossary {
-    margin: 30px 20px;
-    font-size: .8em;
-}
-
 ul#glossary li {
-    padding: 2px 4px;
+    padding: 4px 6px;
 }
 ul#glossary li:nth-child(odd) {
     background: #c3d69b;

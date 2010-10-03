@@ -25,7 +25,7 @@ def get_simple_url(item):
 
 
 def index_view(request):
-    blurb = get_blurb('index_instructions')
+    blurb = get_blurb('index_getting_started')
     c = request.COOKIES.get('skip_getting_started', '')
     skip_getting_started = (c == 'skip')
     if skip_getting_started and request.GET.get('skip') != 'no':
@@ -189,25 +189,37 @@ def species_view(request, pilegroup_slug, pile_slug, genus_slug,
 
 def help_about(request):
     return render_to_response('simplekey/help_about.html', {
-           'section_1_heading_blurb': get_blurb('section_1_heading_blurb'),
-           'section_1_content_blurb': get_blurb('section_1_content_blurb'),
-           'section_2_heading_blurb': get_blurb('section_2_heading_blurb'),
-           'section_2_content_blurb': get_blurb('section_2_content_blurb'),
-           'section_3_heading_blurb': get_blurb('section_3_heading_blurb'),
-           'section_3_content_blurb': get_blurb('section_3_content_blurb'),
+           'section_1_heading_blurb': get_blurb('section_1_heading'),
+           'section_1_content_blurb': get_blurb('section_1_content'),
+           'section_2_heading_blurb': get_blurb('section_2_heading'),
+           'section_2_content_blurb': get_blurb('section_2_content'),
+           'section_3_heading_blurb': get_blurb('section_3_heading'),
+           'section_3_content_blurb': get_blurb('section_3_content'),
            }, context_instance=RequestContext(request))
 
 def help_start(request):
-    return render_to_response('simplekey/help_start.html', {},
-                              context_instance=RequestContext(request))
+    return render_to_response('simplekey/help_start.html', {
+           'blurb': get_blurb('index_getting_started'),
+           }, context_instance=RequestContext(request))
 
 def help_collections(request):
     return render_to_response('simplekey/help_collections.html', {},
                               context_instance=RequestContext(request))
 
-def help_glossary(request):
-    return render_to_response('simplekey/help_glossary.html', {},
-                              context_instance=RequestContext(request))
+def help_glossary(request, letter):
+    glossary = GlossaryTerm.objects.filter(visible=True).extra(
+        select={'lower_term': 'lower(term)'}).order_by('lower_term')
+    if letter == '1':
+        # All terms whose names start with a number.
+        glossary = glossary.filter(term__gte='1', term__lte='9z')
+    else:
+        glossary = glossary.filter(term__startswith=letter)
+    # Case-insensitive sort
+    return render_to_response('simplekey/help_glossary.html', {
+            'this_letter': letter,
+            'letters': '1' + string.ascii_lowercase,
+            'glossary': glossary,
+            }, context_instance=RequestContext(request))
 
 def help_video(request):
     return render_to_response('simplekey/help_video.html', {},

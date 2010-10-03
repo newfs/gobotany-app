@@ -6,5 +6,41 @@ Glossary
 Glossary
 {% endblock %}
 {% block maincontent %}
-<div>glossary goes here</div>
+<div>
+
+<ul id="glossary_pages">
+  {% for letter in letters %}
+    <li>
+      {% if letter = this_letter %}
+        <span class="chosen">{{ letter|upper }}</span>
+      {% else %}
+        <a href="{% url simplekey-help-glossary letter %}">{{ letter|upper }}</a>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+
+<ul id="glossary">
+  {% for term in glossary %}
+    <li>
+      <b>{{ term.term|title }}.</b>
+      <span class="definition">{{ term.lay_definition }}</span>
+      {% if term.image %}
+        <img src="{{ term.image.url }}" alt="{{ term.term }}">
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+
+</div>
+{% endblock %}
+
+{% block js_bottom %}
+<script type="text/javascript">
+dojo.require('gobotany.sk.glossary');
+dojo.addOnLoad(function() {
+    glossary_helper = gobotany.sk.glossary.GlossaryHelper();
+    glossary_helper.setup();
+});
+</script>
 {% endblock %}

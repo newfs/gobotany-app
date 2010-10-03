@@ -21,7 +21,7 @@ urlpatterns = patterns(
     url('^help/start/$', views.help_start, name='simplekey-help-start'),
     url('^help/collections/$', views.help_collections,
         name='simplekey-help-collections'),
-    url('^help/glossary/$', views.help_glossary,
+    url('^help/glossary/(?P<letter>[1a-z])/$', views.help_glossary,
         name='simplekey-help-glossary'),
     url('^help/video/$', views.help_video, name='simplekey-help-video'),
     url('^map/$', views.map_view),
