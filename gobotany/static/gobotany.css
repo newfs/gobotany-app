@@ -66,14 +66,21 @@ p {
     margin-top: 0.7em;
 }
 
-#help #main div {
+#help #main div div {
     font-size: 0.8em;
+}
+
+#help #main > div {
+    float: left;
+    width: 450px;
 }
 
 #help #main img.about {
     border: 1px dashed #ddd;
     float: right;
-    margin: 2em;
+    height: 100px;
+    margin: 1em;
+    width: 200px;
 }
 
 #help #main hr {
