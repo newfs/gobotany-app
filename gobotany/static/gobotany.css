@@ -95,12 +95,16 @@ p {
 
 #help #start {
     float: left;
-    padding: 1em 0;
+    width: 450px;
 }
 
 #help #start-video {
     float: right;
-    padding: 1em 0;
+    padding: 1em 1em 0 0;
+}
+
+#help #next {
+    clear: both;
 }
 
 #help #subway p {

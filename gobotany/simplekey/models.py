@@ -14,8 +14,8 @@ def get_blurb(name):
     blurbs = Blurb.objects.filter(name=name)
     if blurbs:
         return blurbs[0].text
-    return ('[Provide text for this paragraph by creating'
-            ' a blurb in the Admin interface named %r]' % (name,))
+    return ('[Provide text for this by creating a blurb in the Admin'
+            ' interface named %r]' % (name,))
 
 
 class Page(models.Model):

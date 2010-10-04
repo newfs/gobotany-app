@@ -6,6 +6,31 @@ Getting Started
 Getting Started
 {% endblock %}
 {% block maincontent %}
-<div id="start">{{ blurb|safe }}</div>
-<div id="start-video">video thumbnail goes here</div>
+<div id="start">{{ getting_started_blurb|safe }}</div>
+<div id="start-video">
+    {% if getting_started_youtube_id %}
+        <div id="clip">
+            <a href="http://www.youtube.com/v/{{ getting_started_youtube_id }}?enablejsapi=1&version=3">YouTube Video: Getting Started</a>
+        </div>
+        <p>How to use our plant identification scheme</p>
+    {% else %}
+        Admin: set the blurb 'getting_started_youtube_id'.
+    {% endif %}
+</div>
+<p id="next">
+    <a href="/simple/1/">Onward: to Plant Identification</a>
+</p>
+{% endblock %}
+
+{% block js_bottom %}
+    <script>
+        dojo.require('dojox.embed.Flash');
+        dojo.addOnLoad(function() {
+            var node = dojo.query('#clip')[0];
+            var path = dojo.attr(dojo.query('> a', node)[0], 'href');
+            var player = new dojox.embed.Flash({path: path,
+                                                width: 250,
+                                                height: 250}, node);
+        });
+    </script>
 {% endblock %}

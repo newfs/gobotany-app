@@ -25,7 +25,7 @@ def get_simple_url(item):
 
 
 def index_view(request):
-    blurb = get_blurb('index_getting_started')
+    blurb = get_blurb('getting_started')
     c = request.COOKIES.get('skip_getting_started', '')
     skip_getting_started = (c == 'skip')
     if skip_getting_started and request.GET.get('skip') != 'no':
@@ -198,8 +198,14 @@ def help_about(request):
            }, context_instance=RequestContext(request))
 
 def help_start(request):
+    youtube_id = ''
+    youtube_id_blurb = get_blurb('getting_started_youtube_id')
+    if not youtube_id_blurb.startswith('[Provide text'):
+        # We have an actual YouTube id defined in the database.
+        youtube_id = youtube_id_blurb
     return render_to_response('simplekey/help_start.html', {
-           'blurb': get_blurb('index_getting_started'),
+           'getting_started_blurb': get_blurb('getting_started'),
+           'getting_started_youtube_id': youtube_id,
            }, context_instance=RequestContext(request))
 
 def help_collections(request):
