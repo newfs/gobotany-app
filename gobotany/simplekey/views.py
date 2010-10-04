@@ -203,8 +203,9 @@ def help_start(request):
            }, context_instance=RequestContext(request))
 
 def help_collections(request):
-    return render_to_response('simplekey/help_collections.html', {},
-                              context_instance=RequestContext(request))
+    return render_to_response('simplekey/help_collections.html', {
+            'pages': Page.objects.order_by('number').all(),
+            }, context_instance=RequestContext(request))
 
 def help_glossary(request, letter):
     glossary = GlossaryTerm.objects.filter(visible=True).extra(
@@ -224,3 +225,25 @@ def help_glossary(request, letter):
 def help_video(request):
     return render_to_response('simplekey/help_video.html', {},
                               context_instance=RequestContext(request))
+
+def video_pilegroup_view(request, pilegroup_slug):
+    pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
+    # TODO: show simple page with video
+    return render_to_response('simplekey/video.html', {
+            'pilegroup': pilegroup,
+            'piles_and_urls': [
+                (pile, get_simple_url(pile))
+                for pile in pilegroup.piles.order_by('slug').all()
+                ]
+            }, context_instance=RequestContext(request))
+
+
+def video_pile_view(request, pilegroup_slug, pile_slug):
+    pile = get_object_or_404(Pile, slug=pile_slug)
+    if pile.pilegroup.slug != pilegroup_slug:
+        raise Http404
+    # TODO: show simple page with video
+    return render_to_response('simplekey/video.html', {
+           'pilegroup': pile.pilegroup,
+           'pile': pile,
+           }, context_instance=RequestContext(request))

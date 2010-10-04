@@ -60,7 +60,7 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant,
 
     taxon_button = dojo.query('#plant-preview .nav button')[0];
     dojo.connect(dijit.byId('taxon_button'), 'onClick', function() {
-        url = window.location.href.split('#')[0]+ 
+        url = window.location.href.split('#')[0] +
               plant.scientific_name.toLowerCase().replace(' ', '/') + '/';
         window.location.href = url;
     });

@@ -52,6 +52,10 @@ p {
     border: 1px solid #ccc;
 }
 
+#help h1 {
+    margin-left: 8.8em;
+}
+
 #help #main {
     padding-left: 1em;
     width: 730px;
@@ -91,10 +95,16 @@ p {
 
 #help #start {
     float: left;
+    padding: 1em 0;
 }
 
 #help #start-video {
     float: right;
+    padding: 1em 0;
+}
+
+#help #subway p {
+    text-align: left;
 }
 
 #more_filters {
@@ -349,8 +359,8 @@ ul#glossary li:nth-child(even) {
     position: absolute;
     visibility: hidden;
     top: 100px;
-    left: -200px;
-    width: 420px;
+    left: -10em;
+    width: 27em;
     padding: 8px 0px;
     background: #edf9d7;
 }
