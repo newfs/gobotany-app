@@ -134,12 +134,16 @@ def pile_characters_select(request):
 def pile_characters(request, pile_slug):
     WIDTH = 500
 
+    coverage_weight, ease_weight = igdt.get_weights()
+
     try:
-        coverage_weight = float(request.GET.get('coverage_weight', 1.0))
+        coverage_weight = float(request.GET.get('coverage_weight',
+                                                coverage_weight))
     except ValueError:
         coverage_weight = 1.0
     try:
-        ease_weight = float(request.GET.get('ease_weight', 1.0))
+        ease_weight = float(request.GET.get('ease_weight',
+                                            ease_weight))
     except ValueError:
         ease_weight = 1.0
 
@@ -302,8 +306,6 @@ def pile_characters(request, pile_slug):
         (character.id, character) for character
         in models.Character.objects.filter(id__in=character_ids)
         )
-
-    coverage_weight, ease_weight = igdt.get_weights()
 
     for character_id, entropy, coverage in character_entropy_list:
         character = characters_by_id[character_id]
