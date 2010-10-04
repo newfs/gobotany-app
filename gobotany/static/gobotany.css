@@ -160,6 +160,11 @@ p {
     color: #000;
 }
 
+#help-nav {
+    float: left;
+    margin-top: 1.4em;
+}
+
 #filter-working, #pick-filters, #plants {
     clear: left;
 }
