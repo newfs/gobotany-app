@@ -371,6 +371,7 @@ class Importer(object):
             if short_name.endswith('_min') or short_name.endswith('_max'):
                 short_name = short_name[:-4]
                 value_type = 'LENGTH'
+                unit = row['units']
             else:
                 value_type = 'TEXT'
 
@@ -397,6 +398,7 @@ class Importer(object):
                                              friendly_name=temp_friendly_name,
                                              character_group=chargroup,
                                              value_type=value_type,
+                                             unit=unit,
                                              ease_of_observability=eoo,
                                              key_characteristics=key_chars,
                                              notable_exceptions=notable_ex)
