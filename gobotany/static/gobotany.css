@@ -66,11 +66,11 @@ p {
     margin-top: 0.7em;
 }
 
-#help #main div div {
-    font-size: 0.8em;
+#help #main div {
+    font-size: 13px;
 }
 
-#help #main > div {
+#help #main div.about {
     float: left;
     width: 450px;
 }
