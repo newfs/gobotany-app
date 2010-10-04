@@ -137,6 +137,8 @@ def _length_entropy(cv_set, species_set, cv_counts):
     #
     endpoints = []
     for cv in cv_set:
+        if cv.value_min is None or cv.value_max is None:
+            continue
         endpoints.append((cv.value_min, +1))
         endpoints.append((cv.value_max, -1))
     endpoints.sort()
