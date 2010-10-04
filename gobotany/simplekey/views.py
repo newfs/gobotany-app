@@ -228,16 +228,57 @@ def help_glossary(request, letter):
             'glossary': glossary,
             }, context_instance=RequestContext(request))
 
+def _get_pilegroup_youtube_id(pilegroup_name):
+    pilegroup = PileGroup.objects.get(name=pilegroup_name)
+    return pilegroup.youtube_id
+
+def _get_pile_youtube_id(pile_name):
+    pile = Pile.objects.get(name=pile_name)
+    return pile.youtube_id
+    
+def _get_pilegroup_dict(pilegroup_name):
+    return {'title': pilegroup_name, 
+            'youtube_id': _get_pilegroup_youtube_id(pilegroup_name)}
+
+def _get_pile_dict(pile_name):
+    return {'title': pile_name, 'youtube_id': _get_pile_youtube_id(pile_name)}
+
 def help_video(request):
-    return render_to_response('simplekey/help_video.html', {},
-                              context_instance=RequestContext(request))
+    # The Getting Started video is first, followed by the pile
+    # groups and piles in what is meant to be a reasonable
+    # "collections order", i.e., each pile group in order it is
+    # presented in the UI followed by the piles that belong to that group).
+    videos = [{'title': 'Getting Started',
+               'youtube_id': get_blurb('getting_started_youtube_id')}]
+    videos.append(_get_pilegroup_dict('Ferns'))
+    videos.append(_get_pile_dict('Equisetaceae'))
+    videos.append(_get_pile_dict('Lycophytes'))
+    videos.append(_get_pile_dict('Monilophytes'))
+    videos.append(_get_pilegroup_dict('Woody Plants'))
+    videos.append(_get_pile_dict('Woody Angiosperms'))
+    videos.append(_get_pile_dict('Woody Gymnosperms'))
+    videos.append(_get_pilegroup_dict('Aquatic Plants'))
+    videos.append(_get_pile_dict('Non-Thalloid Aquatic'))
+    videos.append(_get_pile_dict('Thalloid Aquatic'))
+    videos.append(_get_pilegroup_dict('Graminoids'))
+    videos.append(_get_pile_dict('Carex'))
+    videos.append(_get_pile_dict('Poaceae'))
+    videos.append(_get_pile_dict('Remaining Graminoids'))
+    videos.append(_get_pilegroup_dict('Monocots'))
+    videos.append(_get_pile_dict('Non-Orchid Monocots'))
+    videos.append(_get_pile_dict('Orchid Monocots'))
+    videos.append(_get_pilegroup_dict('Non-Monocots'))
+    videos.append(_get_pile_dict('Composites'))
+    videos.append(_get_pile_dict('Remaining Non-Monocots'))
+    return render_to_response('simplekey/help_video.html', {
+           'videos': videos,
+           }, context_instance=RequestContext(request))
 
 def video_pilegroup_view(request, pilegroup_slug):
     pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
     return render_to_response('simplekey/video.html', {
             'pilegroup': pilegroup,
             }, context_instance=RequestContext(request))
-
 
 def video_pile_view(request, pilegroup_slug, pile_slug):
     pile = get_object_or_404(Pile, slug=pile_slug)

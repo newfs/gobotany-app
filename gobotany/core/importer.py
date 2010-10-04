@@ -842,8 +842,7 @@ class Importer(object):
         self._set_pilegroup_youtube_id('Graminoids', 'VWDc9oyBj5Q')
         self._set_pilegroup_youtube_id('Monocots', 'LQ-jv8g1YVI')
         self._set_pilegroup_youtube_id('Non-Monocots', 'VWDc9oyBj5Q')
-        self._set_pilegroup_youtube_id('Ferns', 'LQ-jv8g1YVI')
-
+        
         self._set_pile_youtube_id('Equisetaceae', 'VWDc9oyBj5Q')
         self._set_pile_youtube_id('Lycophytes', 'LQ-jv8g1YVI')
         self._set_pile_youtube_id('Monilophytes', 'VWDc9oyBj5Q')

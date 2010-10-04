@@ -118,6 +118,14 @@ p {
     text-align: left;
 }
 
+#help #video-topics {
+    padding: 0 0 1em 0;
+}
+
+#help .clip {
+    margin-bottom: 2em;
+}
+
 #more_filters {
     border-bottom: 1px solid #ccc;
     font-size: 0.65em;
