@@ -124,6 +124,7 @@ class TaxonGroupAdmin(GobotanyAdminBase):
     ordering = ('name',)
     inlines = (TaxonGroupEntryInline,)
 
+admin.site.register(models.Parameter)
 admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.ContentImage)
 admin.site.register(models.ImageType)

@@ -7,7 +7,7 @@ code located at:
 import math
 from collections import defaultdict
 
-from gobotany.core.models import Character, TaxonCharacterValue
+from gobotany.core.models import Character, Parameter, TaxonCharacterValue
 
 def compute_character_entropies(pile, species_list):
     """Find the most effective characters for narrowing down these species.
@@ -160,24 +160,38 @@ def _length_entropy(cv_set, species_set, cv_counts):
 
 
 def compute_score(entropy, coverage, ease,
-                  coverage_weight=1.0, ease_weight=1.0):
+                  coverage_weight, ease_weight):
     """Our secret formula for deciding which characters are best!"""
     return (entropy
             + 10. * (1. - coverage) * coverage_weight
             + 0.1 * ease_weight * ease)
 
 
+def get_weights():
+    """Return the two weight parameters related to scoring."""
+    coverage_weight = ease_weight = 1.0
+    names = ('coverage_weight', 'ease_of_observability_weight')
+    for parameter in Parameter.objects.filter(name__in=names):
+        if parameter.name == 'coverage_weight':
+            coverage_weight = parameter.value
+        elif parameter.name == 'ease_of_observability_weight':
+            ease_weight = parameter.value
+    return coverage_weight, ease_weight
+
 def rank_characters(pile, species_list):
     """Returns a list of (score, entropy, coverage, character), best first."""
     celist = compute_character_entropies(pile, species_list)
     result = []
+
+    coverage_weight, ease_weight = get_weights()
 
     for character_id, entropy, coverage in celist:
         character = Character.objects.get(id=character_id)
         if character.value_type not in (u'TEXT', u'LENGTH'):
             continue  # skip non-textual filters
         ease = character.ease_of_observability
-        score = compute_score(entropy, coverage, ease)
+        score = compute_score(entropy, coverage, ease,
+                              coverage_weight, ease_weight)
         result.append((score, entropy, coverage, character))
 
     result.sort()

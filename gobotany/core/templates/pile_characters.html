@@ -112,13 +112,25 @@
   </ul>
 
   <hr>
+  <p>
+    Coverage weight in the database:
+    <b>{{ coverage_parameter.value }}</b>&nbsp;&nbsp;&nbsp;
+    <a href="http://localhost:8000/admin/core/parameter/{{ coverage_parameter.id }}/"
+       >Change in admin site</a>
+  <br>
+    Ease-of-observability weight in the database:
+    <b>{{ ease_parameter.value }}</b>&nbsp;&nbsp;&nbsp;
+    <a href="http://localhost:8000/admin/core/parameter/{{ ease_parameter.id }}/"
+       >Change in admin site</a>
+  </p>
+
+  <hr>
   <form action=".">
     Coverage weight:
     <input name="coverage_weight" size="5" value="{{ coverage_weight }}">
-    <br>
     Ease-of-observability weight:
     <input name="ease_weight" size="5" value="{{ ease_weight }}">
-    <input type="submit" value="Recompute">
+    <input type="submit" value="Try out these values">
   </form>
 
   {% for character in characters %}

@@ -8,6 +8,22 @@ from sorl.thumbnail.fields import ImageWithThumbnailsField
 from tinymce import models as tinymce_models
 
 
+class Parameter(models.Model):
+    """An admin-configurable value."""
+    #
+    # Parameters that are defined so far:
+    # "coverage_weight" - see igdt.py
+    # "ease_of_observability_weight" - see igdt.py
+    #
+    name = models.CharField(max_length=100, unique=True)
+    value = models.FloatField(null=False)
+
+    class Meta:
+        ordering = ['name']
+
+    def __unicode__(self):
+        return u'Parameter %s value=%s' % (self.name, self.value)
+
 class CharacterGroup(models.Model):
     """A group of characters that should be associated in the UI.
 

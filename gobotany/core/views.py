@@ -143,6 +143,11 @@ def pile_characters(request, pile_slug):
     except ValueError:
         ease_weight = 1.0
 
+    coverage_parameter, created = models.Parameter.objects.get_or_create(
+        name='coverage_weight', defaults={'value': 1.0})
+    ease_parameter, created = models.Parameter.objects.get_or_create(
+        name='ease_of_observability_weight', defaults={'value': 1.0})
+
     pile = models.Pile.objects.get(slug=pile_slug)
     species_list = pile.species.all()
     species_ids = sorted( s.id for s in species_list )
@@ -298,6 +303,8 @@ def pile_characters(request, pile_slug):
         in models.Character.objects.filter(id__in=character_ids)
         )
 
+    coverage_weight, ease_weight = igdt.get_weights()
+
     for character_id, entropy, coverage in character_entropy_list:
         character = characters_by_id[character_id]
         if character.value_type == u'TEXT':
@@ -308,8 +315,7 @@ def pile_characters(request, pile_slug):
             continue  # do not bother with ratio values yet
         ease = character.ease_of_observability
         score = igdt.compute_score(entropy, coverage, ease,
-                                   coverage_weight=coverage_weight,
-                                   ease_weight=ease_weight)
+                                   coverage_weight, ease_weight)
         clist.append({
                 'entropy': entropy,
                 'coverage': coverage,
@@ -329,6 +335,25 @@ def pile_characters(request, pile_slug):
             'elapsed_time': elapsed_time,
             'width': WIDTH,
             'characters': clist,
+            'coverage_parameter': coverage_parameter,
+            'ease_parameter': ease_parameter,
             'coverage_weight': coverage_weight,
             'ease_weight': ease_weight,
             })
+
+
+#
+# Since the pile_characters function above refuses to return an
+# exception message in less than ten minutes (Django's exception page
+# simply refuses to render in a reasonable amount of time,) here is a
+# wrapper that prints a normal traceback:
+#
+
+_func = pile_characters
+def pile_characters(*args, **kw):
+    try:
+        return _func(*args, **kw)
+    except Exception:
+        from django.http import HttpResponse
+        import traceback
+        return HttpResponse(traceback.format_exc(), mimetype='text/plain')
