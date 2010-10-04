@@ -134,23 +134,29 @@ def pile_characters_select(request):
 def pile_characters(request, pile_slug):
     WIDTH = 500
 
-    coverage_weight, ease_weight = igdt.get_weights()
+    coverage_weight, ease_weight, length_weight = igdt.get_weights()
 
     try:
-        coverage_weight = float(request.GET.get('coverage_weight',
-                                                coverage_weight))
-    except ValueError:
-        coverage_weight = 1.0
+        coverage_weight = float(request.GET['coverage_weight'])
+    except (KeyError, ValueError):
+        pass
+
     try:
-        ease_weight = float(request.GET.get('ease_weight',
-                                            ease_weight))
-    except ValueError:
-        ease_weight = 1.0
+        ease_weight = float(request.GET['ease_weight'])
+    except (KeyError, ValueError):
+        pass
+
+    try:
+        length_weight = float(request.GET['length_weight'])
+    except (KeyError, ValueError):
+        pass
 
     coverage_parameter, created = models.Parameter.objects.get_or_create(
         name='coverage_weight', defaults={'value': 1.0})
     ease_parameter, created = models.Parameter.objects.get_or_create(
         name='ease_of_observability_weight', defaults={'value': 1.0})
+    length_parameter, created = models.Parameter.objects.get_or_create(
+        name='length_weight', defaults={'value': 1.0})
 
     pile = models.Pile.objects.get(slug=pile_slug)
     species_list = pile.species.all()
@@ -316,8 +322,9 @@ def pile_characters(request, pile_slug):
         else:
             continue  # do not bother with ratio values yet
         ease = character.ease_of_observability
-        score = igdt.compute_score(entropy, coverage, ease,
-                                   coverage_weight, ease_weight)
+        score = igdt.compute_score(
+            entropy, coverage, ease, character.value_type,
+            coverage_weight, ease_weight, length_weight)
         clist.append({
                 'entropy': entropy,
                 'coverage': coverage,
@@ -341,6 +348,7 @@ def pile_characters(request, pile_slug):
             'ease_parameter': ease_parameter,
             'coverage_weight': coverage_weight,
             'ease_weight': ease_weight,
+            'length_weight': length_weight,
             })
 
 
