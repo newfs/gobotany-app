@@ -800,11 +800,21 @@ class Importer(object):
                 character=character, order=2)
         preview_character.save()
 
+    def _set_pilegroup_youtube_id(self, pilegroup_name, youtube_id):
+        pilegroup = models.PileGroup.objects.get(name=pilegroup_name)
+        if not pilegroup.youtube_id:
+            pilegroup.youtube_id = youtube_id
+        pilegroup.save()
+
+    def _set_pile_youtube_id(self, pile_name, youtube_id):
+        pile = models.Pile.objects.get(name=pile_name)
+        if not pile.youtube_id:
+            pile.youtube_id = youtube_id
+        pile.save()
+
     def _import_extra_demo_data(self):
         print >> self.logfile, 'Setting up demo Pile attributes'
         pile = models.Pile.objects.get(name='Woody Angiosperms')
-        if not pile.youtube_id:
-            pile.youtube_id = 'LQ-jv8g1YVI'
         if not pile.key_characteristics:
             pile.key_characteristics = '<ul><li>A key characteristic</li><li>Another one</li></ul>'
         if not pile.notable_exceptions:
@@ -814,8 +824,6 @@ class Importer(object):
         pile.save()
 
         pile = models.PileGroup.objects.get(name='Woody Plants')
-        if not pile.youtube_id:
-            pile.youtube_id = 'VWDc9oyBj5Q'
         if not pile.key_characteristics:
             pile.key_characteristics = '<ul><li>A key characteristic</li><li>Another one</li></ul>'
         if not pile.notable_exceptions:
@@ -823,6 +831,31 @@ class Importer(object):
         if not pile.description:
             pile.description = 'A description of the Woody Plants pile group'
         pile.save()
+
+        # Set up YouTube videos for all pile groups and piles.
+
+        self._set_pilegroup_youtube_id('Ferns', 'LQ-jv8g1YVI')
+        self._set_pilegroup_youtube_id('Woody Plants', 'VWDc9oyBj5Q')
+        self._set_pilegroup_youtube_id('Aquatic Plants', 'LQ-jv8g1YVI')
+        self._set_pilegroup_youtube_id('Graminoids', 'VWDc9oyBj5Q')
+        self._set_pilegroup_youtube_id('Monocots', 'LQ-jv8g1YVI')
+        self._set_pilegroup_youtube_id('Non-Monocots', 'VWDc9oyBj5Q')
+        self._set_pilegroup_youtube_id('Ferns', 'LQ-jv8g1YVI')
+
+        self._set_pile_youtube_id('Equisetaceae', 'VWDc9oyBj5Q')
+        self._set_pile_youtube_id('Lycophytes', 'LQ-jv8g1YVI')
+        self._set_pile_youtube_id('Monilophytes', 'VWDc9oyBj5Q')
+        self._set_pile_youtube_id('Woody Angiosperms', 'LQ-jv8g1YVI')
+        self._set_pile_youtube_id('Woody Gymnosperms', 'VWDc9oyBj5Q')
+        self._set_pile_youtube_id('Non-Thalloid Aquatic', 'LQ-jv8g1YVI')
+        self._set_pile_youtube_id('Thalloid Aquatic', 'VWDc9oyBj5Q')
+        self._set_pile_youtube_id('Carex', 'LQ-jv8g1YVI')
+        self._set_pile_youtube_id('Poaceae', 'VWDc9oyBj5Q')
+        self._set_pile_youtube_id('Remaining Graminoids', 'LQ-jv8g1YVI')
+        self._set_pile_youtube_id('Non-Orchid Monocots', 'VWDc9oyBj5Q')
+        self._set_pile_youtube_id('Orchid Monocots', 'LQ-jv8g1YVI')
+        self._set_pile_youtube_id('Composites', 'VWDc9oyBj5Q')
+        self._set_pile_youtube_id('Remaining Non-Monocots', 'LQ-jv8g1YVI')
 
 
 def main():

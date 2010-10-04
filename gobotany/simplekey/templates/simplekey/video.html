@@ -1,6 +1,31 @@
 {% extends "simplekey/base.html" %}
+{% block title %}
+Video Help
+{% endblock %}
+
 {% block content %}
 
-<div>video clip goes here</div>
+<p>Video Help</p>
 
+<h1>{{ pilegroup.name }}{% if pile %}: {{ pile.name }}{% endif %}</h1>
+
+<div id="clip">
+</div>
+
+{% endblock %}
+
+{% block js_bottom %}
+<script>
+    dojo.require('gobotany.sk.subway');
+
+    dojo.addOnLoad(function() {
+        var api_path = {% if pile %}
+            '/piles/{{ pile.slug }}/';
+        {% else %}
+            '/pilegroups/{{ pilegroup.slug }}/';
+        {% endif %}
+
+        gobotany.sk.subway.embed_video(api_path);
+    });
+</script>
 {% endblock %}
