@@ -174,7 +174,9 @@ def compute_score(entropy, coverage, ease, value_type,
 
 def get_weights():
     """Return the two weight parameters related to scoring."""
-    length_weight = coverage_weight = ease_weight = 1.0
+    coverage_weight = 0.7
+    ease_weight = 2.0
+    length_weight = 0.1
     names = (
         'coverage_weight', 'ease_of_observability_weight', 'length_weight',
         )

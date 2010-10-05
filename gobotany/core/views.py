@@ -136,6 +136,13 @@ def pile_characters(request, pile_slug):
 
     coverage_weight, ease_weight, length_weight = igdt.get_weights()
 
+    coverage_parameter, created = models.Parameter.objects.get_or_create(
+        name='coverage_weight', defaults={'value': coverage_weight})
+    ease_parameter, created = models.Parameter.objects.get_or_create(
+        name='ease_of_observability_weight', defaults={'value': ease_weight})
+    length_parameter, created = models.Parameter.objects.get_or_create(
+        name='length_weight', defaults={'value': length_weight})
+
     try:
         coverage_weight = float(request.GET['coverage_weight'])
     except (KeyError, ValueError):
@@ -150,13 +157,6 @@ def pile_characters(request, pile_slug):
         length_weight = float(request.GET['length_weight'])
     except (KeyError, ValueError):
         pass
-
-    coverage_parameter, created = models.Parameter.objects.get_or_create(
-        name='coverage_weight', defaults={'value': 1.0})
-    ease_parameter, created = models.Parameter.objects.get_or_create(
-        name='ease_of_observability_weight', defaults={'value': 1.0})
-    length_parameter, created = models.Parameter.objects.get_or_create(
-        name='length_weight', defaults={'value': 1.0})
 
     pile = models.Pile.objects.get(slug=pile_slug)
     species_list = pile.species.all()
@@ -346,6 +346,7 @@ def pile_characters(request, pile_slug):
             'characters': clist,
             'coverage_parameter': coverage_parameter,
             'ease_parameter': ease_parameter,
+            'length_parameter': length_parameter,
             'coverage_weight': coverage_weight,
             'ease_weight': ease_weight,
             'length_weight': length_weight,
