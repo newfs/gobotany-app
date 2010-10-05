@@ -6,48 +6,27 @@
 {% endblock %}
 
 {% block content %}
-  <form method="get" action=".">
-    <table>
-      {{ form.as_table }}
-      <tr>
-        <td>&nbsp;</td>
-        <td>
-          <input type="submit" value="Try again">
-        </td>
-      </tr>
-    </table>
-
+<div id="search-results">
     {% if query %}
-      <h3>Results</h3>
+    <h2>{{ paginator.count }} item(s) found</h2>
 
-      <p>You searched for “{{ query }}”</p>
+    <div class="search-type">
+      <span class="title">Search:</span>
+      <span class="option disabled">Entire site <input type="radio" name="stype" value="all" disabled /></span>
+      <span class="option">Plant pages only <input type="radio" name="stype" value="plants" checked /></span>
+    </div>
 
-      <p class="search_navigation">
-        {% with page.paginator as paginator %}
-          {{ paginator.count }} species found —
-          page {{ page.number }} / {{ paginator.num_pages }}
-        {% endwith %}
-        <br/>
-      </p>
-
-      {% include "simplekey/search_navigation.html" %}
-
-      <ul id="search_results_list">
+      <ul id="search-results-list">
       {% for result in page.object_list %}
-        <li>
-          <h4>{{ result.scientific_name }}</h4>
-          <p>
-            {% for pile in result.object.piles.all %}
-              {{ pile.pilegroup.name }} →  {{ pile.name }}
-            {% endfor %}
-            → Family {{ result.object.family.name }}
-          </p>
+        <li class="plant">
+          <div class="icon">&nbsp;</div>
+          <h4><a href="{{ result.url }}">{{ result.scientific_name }} - Plant Page</a></h4>
           <p class="excerpt">
             {{ result.description }}
           </p>
         </li>
       {% empty %}
-        <li class="no_results">No results found.</li>
+        <li class="no-results">No results found.</li>
       {% endfor %}
       </ul>
 
@@ -55,5 +34,6 @@
     {% else %}
       {# Show some example queries to run? #}
     {% endif %}
-  </form>
+</div>
+
 {% endblock %}
