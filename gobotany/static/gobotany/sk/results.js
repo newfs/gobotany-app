@@ -970,7 +970,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
             // Create a Don't Know radio button item.
             var item_html = '<input type="radio" name="char_name" value="" ' +
-                       'checked> don&apos;t know';
+                       'checked> don\'t know';
             var dont_know_item = dojo.create('label',
                                              {'innerHTML': item_html});
             // Connect filter radio button item to a function that will set the
