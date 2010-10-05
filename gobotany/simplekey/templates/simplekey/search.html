@@ -35,7 +35,7 @@
       <ul id="search_results_list">
       {% for result in page.object_list %}
         <li>
-          <h4>{{ result.object.scientific_name }}</h4>
+          <h4>{{ result.scientific_name }}</h4>
           <p>
             {% for pile in result.object.piles.all %}
               {{ pile.pilegroup.name }} →  {{ pile.name }}
@@ -43,7 +43,7 @@
             → Family {{ result.object.family.name }}
           </p>
           <p class="excerpt">
-            {% for t in result.highlighted.text %}{{ t|safe }}{% endfor %}
+            {{ result.description }}
           </p>
         </li>
       {% empty %}
