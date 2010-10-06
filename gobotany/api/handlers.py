@@ -312,7 +312,7 @@ class CharacterListingHandler(BaseHandler):
 
         return characters
 
-    def _jsonify_character(self, character):
+    def _jsonify_character(self, character, pile_slug):
         return {
             'friendly_name': character.friendly_name,
             'short_name': character.short_name,
@@ -321,6 +321,7 @@ class CharacterListingHandler(BaseHandler):
             'characteracter_group': character.character_group.name,
             'key_characteristics': character.key_characteristics,
             'notable_exceptions': character.notable_exceptions,
+            'pile_slug': pile_slug,
             }
 
     def read(self, request, pile_slug):
@@ -359,7 +360,7 @@ class CharacterListingHandler(BaseHandler):
         # Turn the characters into a data structure for JSON.
 
         return [
-            self._jsonify_character(c) for c in characters
+            self._jsonify_character(c, pile_slug) for c in characters
             ]
 
 
