@@ -1,6 +1,5 @@
 from operator import itemgetter
 
-from django.shortcuts import get_object_or_404
 from gobotany.core import botany, igdt, models
 from piston.handler import BaseHandler
 from piston.utils import rc
