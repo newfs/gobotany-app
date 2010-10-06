@@ -29,6 +29,7 @@ urlpatterns = patterns(
     url('^help/video/(?P<pilegroup_slug>[^/]*)/(?P<pile_slug>[^/]*)/$',
         views.video_pile_view, name='simplekey-help-video-pile'),
     url('^map/$', views.map_view),
+    url('^guided-search/$', views.guided_search_view),
     url('^(?P<number>[0-9]+)/$', views.page_view),
     url('^(?P<pilegroup_slug>[^/]*)/$',
         views.pilegroup_view, name='simplekey-pilegroup'),

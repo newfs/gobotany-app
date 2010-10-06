@@ -58,6 +58,10 @@ def glossary_view(request, letter):
             }, context_instance=RequestContext(request))
 
 
+def guided_search_view(request):
+    return render_to_response('simplekey/guided_search.html', {
+            }, context_instance=RequestContext(request))
+
 def page_view(request, number):
     try:
         number = int(number)

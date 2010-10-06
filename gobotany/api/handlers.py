@@ -141,6 +141,16 @@ class TaxonImageHandler(BaseHandler):
         return [_taxon_image(image) for image in images]
 
 
+class CharacterHandler(BaseHandler):
+    """List characters and character values across all piles."""
+    methods_allowed = ('GET')
+    def read(self, request, slug=None):
+        return [ {
+                'short_name': character.short_name,
+                'name': character.name,
+                } for character in models.Character.objects.all() ]
+
+
 class BasePileHandler(BaseHandler):
     methods_allowed = ('GET', 'PUT', 'DELETE')
     fields = ('name', 'friendly_name', 'description', 'resource_uri',

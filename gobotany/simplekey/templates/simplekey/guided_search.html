@@ -1,0 +1,26 @@
+{% extends "simplekey/base.html" %}
+{% block content %}
+
+<h1>Guided Search</h1>
+
+<p>
+  Guided search allows you to choose the types of features or characters that you<br>
+  know about for a given plant. For example, if you know about the flower shape and<br>
+  leaf shape of your plant, you can pick those. Guided search will then find all the plants<br>
+  that match.
+</p>
+
+<ul id="character_list">
+</ul>
+
+{% endblock %}
+{% block js_bottom %}
+
+<script>
+  dojo.require('gobotany.sk.guided_search');
+  dojo.addOnLoad(function() {
+    manager = gobotany.sk.guided_search.GuidedSearchManager();
+  });
+</script>
+
+{% endblock %}
