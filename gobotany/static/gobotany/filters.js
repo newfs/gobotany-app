@@ -188,7 +188,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         filter_args.pile_slug = this.pile_slug;
         var filter = new gobotany.filters.Filter(filter_args);
         this.filters.push(filter);
-        console.log('add_callback_filter: '+filter.character_short_name);
+        console.log('add_callback_filter: ' + filter.character_short_name);
     },
     set_selected_value: function(character_short_name, selected_value) {
         for (var i = 0; i < this.filters.length; i++) {
@@ -226,9 +226,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                         return;
                     }
                 }
-                //console.log('Filter manager cannot set a count for unknown ' +
-                //            'value: ',
-                //            value_name + ' (' + character_short_name + ')');
                 return;
             }
         }
@@ -248,7 +245,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             obj[f.character_short_name] = f.selected_value;
         }
 
-        return '_filters='+filter_names.join(',')+'&'+dojo.objectToQuery(obj);
+        return '_filters=' + filter_names.join(',') + '&' + dojo.objectToQuery(obj);
     },
 
     empty_filters: function() {
@@ -388,6 +385,13 @@ gobotany.filters.filter_factory = function(args) {
         key_characteristics = args.filter.key_characteristics;
     }
 
+    // TEMP: show args in console.
+    //var msg = 'initializing filter values - args: '
+    //for (var i in args) {
+    //    msg += ' [key: ' + i + '; value: ' + args[i] + ']';
+    //}
+    //console.log(msg);
+
     var filter = new filter_type({
         friendly_name: args.character_friendly_name || args.friendly_name,
         character_short_name: args.character_short_name || args.short_name,
@@ -398,6 +402,13 @@ gobotany.filters.filter_factory = function(args) {
         unit: args.unit,
         pile_slug: args.pile_slug
     });
+
+    // TEMP: show initialized filter in console.
+    //msg = 'filter: friendly_name=' + filter.friendly_name +
+    //      ' character_short_name=' + filter.character_short_name +
+    //      ' unit=' + filter.unit +
+    //      ' pile_slug=' + filter.pile_slug;
+    //console.log(msg);
 
     return filter;
 };

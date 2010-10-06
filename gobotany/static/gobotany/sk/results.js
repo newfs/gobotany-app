@@ -387,7 +387,7 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         dojo.query('#plants .species_count .count').removeClass('hidden');
 
         // If the filter working area is showing, refresh its display in order
-        // to update any dvalue counts.
+        // to update any value counts.
         if (dojo.style('filter-working', 'display') === 'block') {
             var short_name =
                 this.results_helper.filter_section.simplekey_character_short_name;
@@ -595,9 +595,24 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     added.style({backgroundColor: '#C8B560'});
                     gobotany.utils.notify('More filters added'); 
                     gobotany.utils.animate_changed(added);
-                    dojo.forEach(items, function(filter) {
-                        filter_manager.add_filter(filter);
+
+                    new_filter_names = [];
+                    dojo.forEach(items, function(filter_json) {
+                        filter_manager.add_filter(filter_json);
+                        new_filter_names.push(filter_json.short_name);
                     });
+
+                    // Get all the newly added filters, so values can be loaded for them.
+                    new_filters = [];
+                    for (var i = 0; i < new_filter_names.length; i++) {
+                        new_filters.push(filter_manager.get_filter(
+                            new_filter_names[i]));
+                    }
+
+                    // Load the values for the newly added filters.
+                    var watcher = new gobotany.filters.FilterLoadingWatcher(new_filters);
+                    watcher.load_values({on_values_loaded: dojo.hitch(this, function() {} ) });
+
                     this.results_helper.save_filter_state();
                 } else {
                     gobotany.utils.notify('No filters left for the selected character groups');
@@ -662,7 +677,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             var nodes = dojo.query('li', filter_ul);
             first = nodes[idx];
             if (first === undefined)
-                first = nodes[nodes.length-1];
+                first = nodes[nodes.length - 1];
         }
 
         var filterItem = null;
@@ -883,7 +898,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         
         if (filter.values === undefined) {
             console.log('No filter values exist: ' + filter.friendly_name +
-                        ' (short name: ' + filter.character_short_name + ')');
+                        ' (character_short_name: ' + filter.character_short_name +
+                        '  pile_slug: ' + filter.pile_slug + ')');
             return;
         }
 
