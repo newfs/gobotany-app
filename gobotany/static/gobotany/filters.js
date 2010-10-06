@@ -133,7 +133,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
 
     get_filter: function(short_name) {
         for (var x = 0; x < this.filters.length; x++) {
-            if (this.filters[x].character_short_name == short_name) {
+            if (this.filters[x].character_short_name === short_name) {
                 return this.filters[x];
             }
         }
@@ -141,13 +141,13 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     },
     has_filter: function(short_name) {
         for (var x = 0; x < this.filters.length; x++)
-            if (this.filters[x].character_short_name == short_name)
+            if (this.filters[x].character_short_name === short_name)
                 return true;
         return false;
     },
     remove_filter: function(short_name) {
         for (var x = 0; x < this.filters.length; x++) {
-            if (this.filters[x].character_short_name == short_name) {
+            if (this.filters[x].character_short_name === short_name) {
                 var filter = this.filters[x];
                 this.filters.splice(x, 1);
                 this.on_filter_removed(filter);
@@ -192,7 +192,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     },
     set_selected_value: function(character_short_name, selected_value) {
         for (var i = 0; i < this.filters.length; i++) {
-            if (this.filters[i].character_short_name === 
+            if (this.filters[i].character_short_name ===
                   character_short_name) {
                 // Character values must be stringified, since their
                 // .length is checked before allowing them to become
@@ -385,13 +385,6 @@ gobotany.filters.filter_factory = function(args) {
         key_characteristics = args.filter.key_characteristics;
     }
 
-    // TEMP: show args in console.
-    //var msg = 'initializing filter values - args: '
-    //for (var i in args) {
-    //    msg += ' [key: ' + i + '; value: ' + args[i] + ']';
-    //}
-    //console.log(msg);
-
     var filter = new filter_type({
         friendly_name: args.character_friendly_name || args.friendly_name,
         character_short_name: args.character_short_name || args.short_name,
@@ -402,13 +395,6 @@ gobotany.filters.filter_factory = function(args) {
         unit: args.unit,
         pile_slug: args.pile_slug
     });
-
-    // TEMP: show initialized filter in console.
-    //msg = 'filter: friendly_name=' + filter.friendly_name +
-    //      ' character_short_name=' + filter.character_short_name +
-    //      ' unit=' + filter.unit +
-    //      ' pile_slug=' + filter.pile_slug;
-    //console.log(msg);
 
     return filter;
 };

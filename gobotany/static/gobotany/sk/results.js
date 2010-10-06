@@ -50,7 +50,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         //   the logic of the page ready for use, this should only
         //   be called once.
 
-        console.log('ResultsHelper: setting up page - '+this.pile_slug);
+        console.log('ResultsHelper: setting up page - ' + this.pile_slug);
 
         this.species_section = new gobotany.sk.results.SpeciesSectionHelper(this);
         this.species_section.setup_section();
@@ -591,31 +591,37 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             existing_characters: existing,
             onLoaded: dojo.hitch(this, function(items) {
                 if (items.length > 0) {
-                    var added = this.display_filters(items, 0);
-                    added.style({backgroundColor: '#C8B560'});
-                    gobotany.utils.notify('More filters added'); 
-                    gobotany.utils.animate_changed(added);
-
+                    // Add the new filters to the Filter Manager.
                     new_filter_names = [];
                     dojo.forEach(items, function(filter_json) {
                         filter_manager.add_filter(filter_json);
                         new_filter_names.push(filter_json.short_name);
                     });
-
-                    // Get all the newly added filters, so values can be loaded for them.
+                    
+                    // Get all the newly added filters, so they can be
+                    // listed on the page and so their values can be loaded.
                     new_filters = [];
                     for (var i = 0; i < new_filter_names.length; i++) {
                         new_filters.push(filter_manager.get_filter(
                             new_filter_names[i]));
                     }
 
+                    // Add the new filters to the filters list.
+                    var added = this.display_filters(new_filters, 0);
+                    added.style({backgroundColor: '#C8B560'});
+                    gobotany.utils.notify('More filters added'); 
+                    gobotany.utils.animate_changed(added);
+
                     // Load the values for the newly added filters.
-                    var watcher = new gobotany.filters.FilterLoadingWatcher(new_filters);
-                    watcher.load_values({on_values_loaded: dojo.hitch(this, function() {} ) });
+                    var watcher = new gobotany.filters.FilterLoadingWatcher(
+                        new_filters);
+                    watcher.load_values({on_values_loaded: dojo.hitch(
+                        this, function() {} ) });
 
                     this.results_helper.save_filter_state();
                 } else {
-                    gobotany.utils.notify('No filters left for the selected character groups');
+                    gobotany.utils.notify(
+                        'No filters left for the selected character groups');
                 }
                 button.set('disabled', false);
             })
@@ -899,6 +905,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         if (filter.values === undefined) {
             console.log('No filter values exist: ' + filter.friendly_name +
                         ' (character_short_name: ' + filter.character_short_name +
+                        '  value_type: ' + filter.value_type +
+                        '  unit: ' + filter.unit +
                         '  pile_slug: ' + filter.pile_slug + ')');
             return;
         }
@@ -908,7 +916,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
             if (unit === null || unit === undefined) {
                 unit = 'mm';
-                console.warn('['+filter.character_short_name+'] Measurement has no unit, defaulting to mm');
+                console.warn('[' + filter.character_short_name +
+                    '] Measurement has no unit, defaulting to mm');
             }
 
             // Create a slider with horizontal rules and labels.
