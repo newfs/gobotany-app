@@ -20,7 +20,7 @@
       {% for result in page.object_list %}
         <li class="plant">
           <div class="icon">&nbsp;</div>
-          <h4><a href="{{ result.url }}">{{ result.scientific_name }} - Plant Page</a></h4>
+          <h4><a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/plant/slug-missing/{{ result.scientific_name }}">{{ result.scientific_name }} - Plant Page</a></h4>
           <p class="excerpt">
             {{ result.description }}
           </p>
