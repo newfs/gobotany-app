@@ -707,6 +707,12 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                          function(event) {
                              dojo.stopEvent(event);
                              this.remove_filter(filter);
+                             var current_filter_name = dojo.query(
+                                 '#filter-working .name')[0].innerHTML;
+                             if (filter.friendly_name ===
+                                 current_filter_name) {
+                                this.hide_filter_working();
+                             }
                          });
             dojo.connect(clearLink, 'onclick', this,
                          function(event) {
