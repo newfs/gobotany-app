@@ -12,20 +12,24 @@ dojo.declare('gobotany.sk.guided_search.GuidedSearchManager', null, {
         this.filter_manager = new gobotany.filters.FilterManager({});
         this.store.fetch({
             scope: this,
-            onComplete: this.save_character_list,
+            onComplete: this.save_character_groups,
         });
     },
 
-    save_character_list: function(data) {
-        this.character_list = data;
+    save_character_groups: function(data) {
+        this.character_groups = data;
         this.add_filter();
     },
 
     add_filter: function() {
         var node = dojo.query('#character_list')[0];
-        for (var i=0; i < this.character_list.length; i++) {
-            li = dojo.create('li', {}, node);
-            li.innerHTML = this.character_list[i].name;
+        var select = dojo.create('select', {}, node);
+        for (var i=0; i < this.character_groups.length; i++) {
+            var group = this.character_groups[i];
+            li = dojo.create('option', {
+                value: group.short_name,
+            }, select);
+            li.innerHTML = group.name;
         }
     },
 

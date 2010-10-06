@@ -1,3 +1,5 @@
+from operator import itemgetter
+
 from django.shortcuts import get_object_or_404
 from gobotany.core import botany, igdt, models
 from piston.handler import BaseHandler
@@ -144,11 +146,19 @@ class TaxonImageHandler(BaseHandler):
 class CharacterHandler(BaseHandler):
     """List characters and character values across all piles."""
     methods_allowed = ('GET')
-    def read(self, request, slug=None):
-        return [ {
-                'short_name': character.short_name,
-                'name': character.name,
-                } for character in models.Character.objects.all() ]
+    def read(self, request):
+        group_map = {}
+        for character_group in models.CharacterGroup.objects.all():
+            group_map[character_group.id] = {
+                'name': character_group.name,
+                'characters': [],
+                }
+        for character in models.Character.objects.all():
+            group_map[character.character_group_id]['characters'].append({
+                    'short_name': character.short_name,
+                    'name': character.name,
+                    })
+        return sorted(group_map.values(), key=itemgetter('name'))
 
 
 class BasePileHandler(BaseHandler):
