@@ -324,6 +324,11 @@ class Importer(object):
                             pile.character_values.add(cv)
                             models.TaxonCharacterValue(taxon=taxon,
                                 character_value=cv).save()
+                            print >> self.logfile, \
+                                '  New TaxonCharacterValue: %s, %s for ' \
+                                'Character: %s [%s] (Species: %s)' % \
+                                (str(cv.value_min), str(cv.value_max),
+                                 character.name, cname, taxon.scientific_name)
 
                 else:
                     # A regular comma-separated list of string values.
@@ -354,6 +359,11 @@ class Importer(object):
 
                         models.TaxonCharacterValue.objects.get_or_create(
                             taxon=taxon, character_value=cv[0])
+                        print >> self.logfile, \
+                            '  New TaxonCharacterValue: %s for Character:' \
+                            ' %s [%s] (Species: %s)' % (val, character.name,
+                                                        cname,
+                                                        taxon.scientific_name)
 
     def _import_characters(self, f):
         print >> self.logfile, 'Setting up characters in file: %s' % f

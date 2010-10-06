@@ -222,7 +222,7 @@ p {
     float: left;
     font-size: 0.85em;
     padding: 1em 0 0;
-    width: 180px;
+    width: 250px;
 }
 
 #filter-working .values label {
@@ -237,7 +237,7 @@ p {
     float: left;
     font-size: 0.85em;
     padding: 1em;
-    width: 470px;
+    width: 410px;
 }
 
 #filter-working .info p {
