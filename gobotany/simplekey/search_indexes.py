@@ -26,6 +26,10 @@ class CharacterCharField(indexes.CharField):
         return self.convert(self.lookup_character_value(obj) or self.default)
 
     def lookup_character_value(self, obj):
+        cvs = obj.character_values.filter(
+            character__short_name=self.character_name)
+        if len(cvs) > 0:
+            return cvs[0].value
         return None
 
 
