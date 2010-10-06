@@ -26,6 +26,8 @@ urlpatterns = patterns(
         Resource(handler=handlers.TaxonImageHandler), name='api-taxon-image'),
 
     url(r'^characters/$',
+        Resource(handler=handlers.CharactersHandler)),
+    url(r'^characters/(?P<character_short_name>[^/]+)/$',
         Resource(handler=handlers.CharacterHandler)),
 
     url(r'^piles/$',

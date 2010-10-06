@@ -143,7 +143,7 @@ class TaxonImageHandler(BaseHandler):
         return [_taxon_image(image) for image in images]
 
 
-class CharacterHandler(BaseHandler):
+class CharactersHandler(BaseHandler):
     """List characters and character values across all piles."""
     methods_allowed = ('GET')
     def read(self, request):
@@ -159,6 +159,21 @@ class CharacterHandler(BaseHandler):
                     'name': character.name,
                     })
         return sorted(group_map.values(), key=itemgetter('name'))
+
+
+class CharacterHandler(BaseHandler):
+    """Retrieve all character values for a character regardless of pile."""
+    methods_allowed = ('GET')
+    def read(self, request, character_short_name):
+        clist = []
+        for cv in models.CharacterValue.objects.filter(
+            character__short_name=character_short_name):
+            if not cv.value_str:
+                continue
+            clist.append({
+                    'value_str': cv.value_str,
+                    })
+        return clist
 
 
 class BasePileHandler(BaseHandler):
