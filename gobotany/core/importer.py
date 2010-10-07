@@ -179,6 +179,10 @@ class Importer(object):
             # Find the family and genus.
             family, created = models.Family.objects.get_or_create(
                 name=row['family'])
+            # Uncomment the following statement to diagnose integrity errors.
+            #print >> self.logfile, u'TEMP: about to get or create genus: ' \
+            #    'row[\'scientific_name\']=%s row[\'family\']=%s' % \
+            #    (row['scientific_name'], row['family'])
             genus, created = models.Genus.objects.get_or_create(
                 name=row['scientific_name'].split()[0],
                 family=family)
