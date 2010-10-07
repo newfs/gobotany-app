@@ -257,11 +257,14 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         console.log('FilterManager: running filtered query');
         for (var i = 0; i < this.filters.length; i++) {
             var filter = this.filters[i];
+
             if (filter.filter_callback != null) {
                 special.push(filter);
-            } else if (filter.selected_value !== null && 
-                       filter.selected_value !== undefined &&
-                       filter.selected_value.length) {
+            }
+
+            if (filter.selected_value !== null && 
+                filter.selected_value !== undefined &&
+                filter.selected_value.length) {
 
                 content[filter.character_short_name] = filter.selected_value;
             }
