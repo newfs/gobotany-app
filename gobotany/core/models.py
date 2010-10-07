@@ -439,6 +439,12 @@ class ContentImage(models.Model):
 class Family(models.Model):
     """A biological family."""
     name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True)
+    common_name = models.CharField(max_length=100)
+    description = models.TextField(verbose_name=u'description',
+                                   blank=True)
+    # We use 'example image' and 'example drawing' for the image types here
+    images = generic.GenericRelation(ContentImage)
 
     class Meta:
         verbose_name_plural = 'families'
@@ -447,10 +453,24 @@ class Family(models.Model):
     def __unicode__(self):
         return self.name
 
+    def save(self, *args, **kw):
+        """Set the slug if it isn't already set"""
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super(Family, self).save(*args, **kw)
+
 
 class Genus(models.Model):
     """A biological genus."""
     name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True)
+    common_name = models.CharField(max_length=100)
+    description = models.TextField(verbose_name=u'description',
+                                   blank=True)
+    #XXX: We don't have this data yet
+    family = models.ForeignKey(Family, related_name='genera')
+    # We use 'example image' and 'example drawing' for the image types here
+    images = generic.GenericRelation(ContentImage)
 
     class Meta:
         verbose_name_plural = 'genera'
@@ -459,14 +479,20 @@ class Genus(models.Model):
     def __unicode__(self):
         return self.name
 
+    def save(self, *args, **kw):
+        """Set the slug if it isn't already set"""
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super(Genus, self).save(*args, **kw)
+
 
 class Taxon(models.Model):
     """Despite its general name, this currently represents a single species."""
     # TODO: taxa should probably have a "slug" as well, to prevent us
     # from having to create them on the fly in Javascript
     scientific_name = models.CharField(max_length=100, unique=True)
-    family = models.ForeignKey(Family)
-    genus = models.ForeignKey(Genus)
+    family = models.ForeignKey(Family, related_name='taxa')
+    genus = models.ForeignKey(Genus, related_name='taxa')
     character_values = models.ManyToManyField(
         CharacterValue,
         through='TaxonCharacterValue')

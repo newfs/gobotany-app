@@ -124,10 +124,20 @@ class TaxonGroupAdmin(GobotanyAdminBase):
     ordering = ('name',)
     inlines = (TaxonGroupEntryInline,)
 
+class FamilyAdmin(GobotanyAdminBase):
+    inlines = [ContentImageInline]
+    search_fields = ('name', 'common_name')
+
+class GenusAdmin(FamilyAdmin):
+    list_filter = ('family',)
+
+
 admin.site.register(models.Parameter)
 admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.ContentImage)
 admin.site.register(models.ImageType)
+admin.site.register(models.Family, FamilyAdmin)
+admin.site.register(models.Genus, GenusAdmin)
 admin.site.register(models.PileGroup, PileAdminBase)
 admin.site.register(models.Pile, PileAdmin)
 admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)

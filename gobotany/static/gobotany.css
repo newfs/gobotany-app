@@ -759,3 +759,75 @@ input.filter_int2 {
 #species #more-info {
     width: 250px;
 }
+
+/* genus/family pages */
+#taxon-photos {
+    float: left;
+    width: 320px;
+    min-height: 600px;
+    overflow: hidden;
+}
+
+#taxon-photos ul {
+    width: 1000000px;
+    height: 540px;
+}
+
+#taxon-photos li {
+    float: left;
+    width: 320px;
+    overflow: hidden;
+}
+
+#taxon-photos .Navigation {
+    text-align: center;
+}
+
+#taxon-info {
+    float: left;
+    width: 400px;
+    margin: 0 20px;
+    min-height: 600px;
+    background-color: #D8E8C8;
+}
+
+#taxon-info dl {
+    margin: 20px 5px;
+}
+
+#taxon-info dd {
+    margin-bottom: 2em;
+}
+
+#taxon-info li {
+    list-style-type: square;
+    margin-left: 2em;
+}
+
+#taxon-info ul.Genera {
+    margin-bottom: 2em;
+}
+
+#taxon-drawings {
+    float: left;
+    width: 200px;
+    min-height: 600px;
+    background-color: #D8E8C8;
+}
+
+#taxon-drawings ul {
+    margin: 20px auto;
+    text-align: center;
+}
+
+#taxon-drawings li .ItemDrawing {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    border: 1px solid black;
+    text-align: center;
+}
+
+#taxon-drawings li img {
+    margin: 20px 0;
+}

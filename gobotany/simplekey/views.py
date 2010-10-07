@@ -4,7 +4,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from gobotany.core import botany
-from gobotany.core.models import GlossaryTerm, Pile, PileGroup
+from gobotany.core.models import GlossaryTerm, Pile, PileGroup, Genus, Family
 from gobotany.core.models import Taxon, TaxonCharacterValue
 from gobotany.simplekey.models import Page, get_blurb
 
@@ -188,6 +188,28 @@ def species_view(request, pilegroup_slug, pile_slug, genus_slug,
            'states_status': states_status,
            'habitats': habitats,
            'characteristics': _get_species_characteristics(pile, taxon),
+           }, context_instance=RequestContext(request))
+
+
+def genus_view(request, genus_slug):
+    genus = get_object_or_404(Genus, slug=genus_slug)
+    genus_images = genus.images.filter(image_type__name='example image')
+    genus_drawings = genus.images.filter(image_type__name='example drawing')
+    return render_to_response('simplekey/genus.html', {
+           'item': genus,
+           'item_images': genus_images,
+           'item_drawings': genus_drawings,
+           }, context_instance=RequestContext(request))
+
+
+def family_view(request, family_slug):
+    family = get_object_or_404(Family, slug=family_slug)
+    family_images = family.images.filter(image_type__name='example image')
+    family_drawings = family.images.filter(image_type__name='example drawing')
+    return render_to_response('simplekey/family.html', {
+           'item': family,
+           'item_images': family_images,
+           'item_drawings': family_drawings,
            }, context_instance=RequestContext(request))
 
 

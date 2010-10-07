@@ -1,0 +1,57 @@
+{% extends "simplekey/base.html" %}
+{% load thumbnail %}
+{% block title %}
+{{ item.name }}
+{% endblock %}
+{% block content %}
+  <h1>genus: <em>{{ item.name }}</em></h1>
+  <div id="genus">
+    <div id="taxon-photos">
+      <h3>Images</h3>
+      <ul>
+        {% for i in item_images %}
+        <li class="ItemImage">
+         <img src="{% thumbnail i.image 320x540  %}" alt="{{ i.alt }}" />
+         <h4>{{ i.alt }}</h4>
+        </li>
+        {% endfor %} 
+      </ul>
+      <div class="Navigation">
+        <a class="prev" href="#">Prev</a> | <a class="next" href="#">Next</a>
+      </div>
+    </div>
+    <div id="taxon-info">
+      <dl>
+        <dt>Genus:</dt>
+        <dd>{{ item.name }}</dd>
+        
+        <dt>Common Name:</dt>
+        <dd>{{ item.common_name }}</dd>
+        
+        <dt>Family:</dt>
+        <dd><a href="../../family/{{ item.family.slug }}">{{ item.family.name }}</a></dd>
+        
+        <dt>Description:</dt>
+        <dd>{{ item.description }}</dd>
+      </dl>
+      <h3>Species:</h3>
+      <ul class="species">
+        {% for species in item.taxa.all %}
+        <li>{{ species.scientific_name }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div id="taxon-drawings">
+      <ul>
+        {% for i in item_drawings %}
+        <li>
+          <div class="ItemDrawing">
+            {{ i.image.thumbnail_tag }}
+          </div>
+         <h4>{{ i.alt }}</h4>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}
