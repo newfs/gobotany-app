@@ -2,6 +2,13 @@
 {% block title %}
 {{ scientific_name }}
 {% endblock %}
+
+{% block js_top %}
+    <!-- SVGWeb script - must be first, must have data-path.
+         Also, SVG must be served from same domain as the page. -->
+    <script src="/static/svgweb/svg.js" data-path="/static/svgweb/"></script>
+{% endblock %}
+
 {% block content %}
   <p>{{ pilegroup.name }}: {{ pile.name }}</p>
   <h1><i>{{ scientific_name }}</i>
@@ -21,6 +28,8 @@
                   <p>(missing)</p>
               {% endif %}
           </p>
+          <p class="nav"><a href="#">&lt; prev</a> <span>? of ?</span>
+             <a href="#">next &gt;</a></p>
       </div>
       <div id="info">
           <h3>Characteristics</h3>
@@ -77,6 +86,20 @@
           </p>
       </div>
       <div id="more-info">
+          <h3>Distribution by County</h3>
+          <!-- TODO: replace src with generated shaded SVG URL -->
+          <!--[if IE]>
+          <object src="/static/graphics/new-england-counties.svg"
+                  classid="image/svg+xml" id="dist-county-map"
+                  alt="distribution map for {{ scientific_name }}">
+          <![endif]-->
+          <!--[if !IE]>-->
+          <object data="/static/graphics/new-england-counties.svg"
+                  type="image/svg+xml" id="dist-county-map"
+                  alt="distribution map for {{ scientific_name }}">
+          <!--<![endif]-->
+          </object>
+
           <h3>Common Uses</h3>
           <p>
               {% if taxon.uses|length > 0 %}

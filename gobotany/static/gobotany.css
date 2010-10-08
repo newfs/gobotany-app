@@ -753,6 +753,15 @@ input.filter_int2 {
 #species #images img {
     max-width: 350px;
 }
+
+#species #images .nav {
+    text-align: center;
+}
+
+#species #images .nav a {
+    padding: 0 1em;
+}
+
 #species #info {
     width: 300px;
 }
@@ -830,4 +839,8 @@ input.filter_int2 {
 
 #taxon-drawings li img {
     margin: 20px 0;
+}
+
+#dist-county-map {
+    height: 345px; /* Safari needs this, evidently */
 }
