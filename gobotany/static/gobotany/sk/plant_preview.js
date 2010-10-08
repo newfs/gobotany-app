@@ -62,11 +62,18 @@ gobotany.sk.plant_preview.set_image = function(image_node, message_node,
 
 gobotany.sk.plant_preview.show_plant_preview = function(plant,
                                                plant_preview_characters,
-                                               clicked_image_alt_text) {
+                                               clicked_image) {
     dojo.query('#plant-preview h3')[0].innerHTML = '<i>' +
         plant.scientific_name + '</i>';
     var list = dojo.query('#plant-preview dl')[0];
     dojo.empty(list);
+
+    // Clear the images area.
+    var img = dojo.query('#plant-preview .photos img')[0];
+    dojo.attr(img, 'src', '');
+    dojo.attr(img, 'alt', 'image not available');
+    var msg = dojo.query('#plant-preview .photos span')[0];
+    msg.innerHTML = '';
 
     taxon_button = dojo.query('#plant-preview .nav button')[0];
     dojo.connect(dijit.byId('taxon_button'), 'onClick', function() {
@@ -100,13 +107,6 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant,
             }
             dojo.create('dd', {innerHTML: piles}, list);
 
-            // Clear the images area.
-            var img = dojo.query('#plant-preview .photos img')[0];
-            dojo.attr(img, 'src', '');
-            dojo.attr(img, 'alt', 'image not available');
-            var msg = dojo.query('#plant-preview .photos span')[0];
-            msg.innerHTML = '';
-
             gobotany.sk.plant_preview.plant_preview_images = [];
             if (taxon.images.length) {
                 // Store the info for the images to allow for browsing them.
@@ -115,13 +115,10 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant,
                         taxon.images[i]);
                 }
                 // If the alt text of the thumbnail the user clicked on in the
-                // initial view of the page is different from the alt text of
-                // the first image showing on the popup, look for matching alt
-                // text and show that image first on the popup. These will
-                // only match the initial image type (e.g., habit) so far,
-                // because the other views' alt text doesn't come through.
-                // TODO: verify that we are changing the alt text when we are
-                // changing the images to a new type.
+                // page is different from the alt text of the first image
+                // showing on the popup, look for matching alt text and show
+                // that image first on the popup. These will
+                var clicked_image_alt_text = dojo.attr(clicked_image, 'alt');
                 var first_image_index = 0;
                 for (var i = 0;
                     i < gobotany.sk.plant_preview.plant_preview_images.length;

@@ -207,7 +207,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                         // changing image types.  The alternative would
                         // be to unload previously loaded image pages.
                         var src_var = dojo.attr(image, 'x-tmp-src') ? 'x-tmp-src' : 'src';
-                           dojo.attr(image, src_var, new_image.thumb_url);
+                        dojo.attr(image, src_var, new_image.thumb_url);
+                        dojo.attr(image, 'alt', new_image.title);
                         // Hide the empty box if it exists and make
                         // sure the image is visible.
                         dojo.query('+ span.MissingImage', image).orphan();
@@ -453,14 +454,6 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
             'id': 'plant-'+item.scientific_name.toLowerCase().replace(/\W/,'-'),
             'class': 'genus' + (genus_number % genus_colors).toString(),
         }, start_node);
-        dojo.connect(li_node, 'onclick', item, function(event) {
-            event.preventDefault();
-            dijit.byId('plant-preview').show();
-            var plant = this;
-            gobotany.sk.plant_preview.show_plant_preview(plant,
-                species_section.results_helper.filter_manager.plant_preview_characters,
-                image.title);
-        });
         var anchor = dojo.create('a', {href: '#'}, li_node);
         var image = item.default_image;
         if (image) {
@@ -468,7 +461,7 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                                           width: image.thumb_width, 
                                           alt: image.title,
                                           'x-plant-id': item.scientific_name},
-                        anchor);
+                                  anchor);
             // If a partial rendering was requested set a secret attribute instead of src
             // We can use that to fill src when scrolling
             var img_attr = partial ? 'x-tmp-src' : 'src';
@@ -479,6 +472,16 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         }
         var title = dojo.create('span', {'class': 'PlantTitle'}, anchor);
         dojo.html.set(title, item.scientific_name);
+        
+        // Connect the click event last so it's possible to pass the image node.
+        dojo.connect(li_node, 'onclick', item, function(event) {
+            event.preventDefault();
+            dijit.byId('plant-preview').show();
+            var plant = this;
+            gobotany.sk.plant_preview.show_plant_preview(plant,
+                species_section.results_helper.filter_manager.plant_preview_characters,
+                img);
+        });
     },
 
     load_page: function(page) {
