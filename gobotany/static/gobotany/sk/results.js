@@ -458,7 +458,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
             dijit.byId('plant-preview').show();
             var plant = this;
             gobotany.sk.plant_preview.show_plant_preview(plant,
-                species_section.results_helper.filter_manager.plant_preview_characters);
+                species_section.results_helper.filter_manager.plant_preview_characters,
+                image.title);
         });
         var anchor = dojo.create('a', {href: '#'}, li_node);
         var image = item.default_image;

@@ -51,8 +51,18 @@ gobotany.sk.plant_preview.change_plant_preview_image = function(event) {
         gobotany.sk.plant_preview.plant_preview_images.length;
 };
 
+gobotany.sk.plant_preview.set_image = function(image_node, message_node,
+                                      plant_image, index, num_images) {
+    dojo.attr(image_node, 'src', plant_image.scaled_url);
+    // TODO: is this title field intended/sufficient for alt text?
+    dojo.attr(image_node, 'alt', plant_image.title);
+    // Set the count message.
+    message_node.innerHTML = (index + 1) + ' of ' + num_images;
+};
+
 gobotany.sk.plant_preview.show_plant_preview = function(plant,
-                                               plant_preview_characters) {
+                                               plant_preview_characters,
+                                               clicked_image_alt_text) {
     dojo.query('#plant-preview h3')[0].innerHTML = '<i>' +
         plant.scientific_name + '</i>';
     var list = dojo.query('#plant-preview dl')[0];
@@ -104,15 +114,31 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant,
                     gobotany.sk.plant_preview.plant_preview_images.push(
                         taxon.images[i]);
                 }
-                // Set the first image.
-                dojo.attr(img, 'src',
-                    gobotany.sk.plant_preview.plant_preview_images[0].scaled_url);
-                // TODO: is this title field intended/sufficient for alt text?
-                dojo.attr(img, 'alt',
-                    gobotany.sk.plant_preview.plant_preview_images[0].title);
-                // Set the count message.
-                msg.innerHTML = '1 of ' + taxon.images.length;
+                // If the alt text of the thumbnail the user clicked on in the
+                // initial view of the page is different from the alt text of
+                // the first image showing on the popup, look for matching alt
+                // text and show that image first on the popup. These will
+                // only match the initial image type (e.g., habit) so far,
+                // because the other views' alt text doesn't come through.
+                // TODO: verify that we are changing the alt text when we are
+                // changing the images to a new type.
+                var first_image_index = 0;
+                for (var i = 0;
+                    i < gobotany.sk.plant_preview.plant_preview_images.length;
+                    i++) {
+
+                    if (clicked_image_alt_text ===
+                        gobotany.sk.plant_preview.plant_preview_images[i].title) {
+
+                        first_image_index = i;
+                        break;
+                    }
+                }
+                gobotany.sk.plant_preview.set_image(img, msg,
+                    gobotany.sk.plant_preview.plant_preview_images[first_image_index],
+                    first_image_index, taxon.images.length);
             }
+
             // Wire up the previous and next links, or hide them if
             // they're not needed.
             var links = dojo.query('#plant-preview .photos a');
