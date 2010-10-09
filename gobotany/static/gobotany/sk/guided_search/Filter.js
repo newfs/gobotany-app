@@ -1,41 +1,4 @@
-dojo.provide('gobotany.sk.guided_search');
-
-dojo.require('dojox.data.JsonRestStore');
-dojo.require('gobotany.filters');
-
-dojo.declare('gobotany.sk.guided_search.Manager', null, {
-
-    constructor: function() {
-        this.filters = [];
-        this.character_group_list = [];
-        this.character_group_map = {};
-        this.store = new dojox.data.JsonRestStore({
-            target: '/characters/'
-        });
-        this.filter_manager = new gobotany.filters.FilterManager({});
-        this.store.fetch({
-            scope: this,
-            onComplete: this.save_character_groups
-        });
-    },
-
-    save_character_groups: function(data) {
-        this.character_group_list = data;
-        for (i = 0; i < this.character_group_list.length; i++) {
-            var character_group = this.character_group_list[i];
-            this.character_group_map[character_group.name] = character_group;
-        }
-        this.add_filter();
-    },
-
-    add_filter: function() {
-        var node = dojo.query('#filter_list')[0];
-        var div = dojo.create('div', {}, node);
-        var filter = gobotany.sk.guided_search.Filter(this, div);
-        this.filters.push(filter);
-    }
-
-});
+dojo.provide('gobotany.sk.guided_search.Filter');
 
 dojo.declare('gobotany.sk.guided_search.Filter', null, {
 
@@ -134,6 +97,8 @@ dojo.declare('gobotany.sk.guided_search.Filter', null, {
 
                 for (var i = 0; i < character_value_list.length; i++) {
                     var character_value = character_value_list[i];
+                    if (character_value.value_str == 'NA')
+                        continue;
                     var option = dojo.create('option', {
                         value: character_value.value_str,
                         innerHTML: character_value.value_str
@@ -167,20 +132,28 @@ dojo.declare('gobotany.sk.guided_search.Filter', null, {
 
         if (this.filter_short_name != short_name) {
             if (this.filter_short_name != '')
-                fm.set_selected_value(this.filter_short_name, null);
-            fm.add_filter({
-                character_short_name: short_name
-            });
+                fm.remove_filter(this.filter_short_name);
+            if (short_name != '')
+                fm.add_filter({ character_short_name: short_name });
         }
 
         this.filter_short_name = short_name;
         this.filter_value_str = value_str;
-        fm.set_selected_value(short_name, value_str);
+        if (short_name != '')
+            fm.set_selected_value(short_name, value_str);
 
-        fm.perform_query({ filter_short_names: [], on_complete: function(data) {
+        if (fm.filters.length > 0) {
+            fm.perform_query({
+                filter_short_names: [],
+                on_complete: function(data) {
+                    var t = dojo.query('#guided_search_total')[0];
+                    t.innerHTML = '' + data.items.length + ' species';
+                }
+            });
+        } else {
             var t = dojo.query('#guided_search_total')[0];
-            t.innerHTML = '' + data.items.length + ' species';
-        }});
+            t.innerHTML = '';
+        }
     },
 
     on_character_group_select: function(event) {
