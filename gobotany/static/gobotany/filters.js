@@ -205,7 +205,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             }
         }
         console.log('FilterManager cannot set a value for unknown filter',
-                    character_short_name)
+                    character_short_name);
     },
     get_selected_value: function(character_short_name) {
         var selected_value = null;

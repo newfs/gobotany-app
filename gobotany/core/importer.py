@@ -740,6 +740,11 @@ class Importer(object):
                     content_image.save()
                     print >> self.logfile, '  Updated', msg
 
+                # Force generation of the thumbnails that will be used
+                # by (at least) the Sipmle Key application.
+                content_image.image.thumbnail.width()
+                content_image.image.extra_thumbnails['large'].width()
+
     def _create_default_filters(self, pile_name, character_short_names):
         print >> self.logfile, '    Set up default filters for %s' % pile_name
         pile = models.Pile.objects.get(name=pile_name)
