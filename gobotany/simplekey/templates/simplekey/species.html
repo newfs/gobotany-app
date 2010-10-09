@@ -124,3 +124,12 @@
       </div>
   </div>
 {% endblock %}
+
+{% block js_bottom %}
+  <script>
+      dojo.require('gobotany.sk.species');
+      dojo.addOnLoad(function() {
+          gobotany.sk.species.init('{{ scientific_name }}');
+      });
+  </script>
+{% endblock %}
