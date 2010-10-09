@@ -1,5 +1,8 @@
 dojo.provide('gobotany.sk.results.SpeciesSectionHelper');
 
+dojo.require('dojo.html');
+dojo.require('dijit.Dialog');
+dojo.require('dijit.form.Button');
 dojo.require('gobotany.sk.plant_preview');
 
 dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
@@ -159,8 +162,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                                      plant_listing);
         this.scroll_event_handle = dojo.connect(plant_scrollable, 'onscroll',
             dojo.hitch(this, function() {
-                plant_pages.forEach(dojo.hitch(this,
-                    this.results_helper.species_section.load_page_if_visible));
+                plant_pages.forEach(dojo.hitch(
+                    this, this.load_page_if_visible));
             }));
         dojo.publish('results_loaded',
                      [{filter_manager: this.results_helper.filter_manager,

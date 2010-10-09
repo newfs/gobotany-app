@@ -741,7 +741,7 @@ class Importer(object):
                     print >> self.logfile, '  Updated', msg
 
                 # Force generation of the thumbnails that will be used
-                # by (at least) the Sipmle Key application.
+                # by (at least) the Simple Key application.
                 content_image.image.thumbnail.width()
                 content_image.image.extra_thumbnails['large'].width()
 

@@ -289,13 +289,13 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             onComplete: function(data) {
                 this.species_count = data.items.length;
                 this.species_ids = [];
-                for (i=0; i < data.items.length; i++)
+                for (i = 0; i < data.items.length; i++)
                     this.species_ids[i] = data.items[i].id;
 
                 if (special.length > 0) {
                     // run special filters
                     var newdata = [];
-                    for (var x = 0; x < data.items.length; x++) { 
+                    for (var x = 0; x < data.items.length; x++) {
                         var item = data.items[x];
                         var removed = false;
                         for (var y = 0; y < special.length; y++) {
@@ -310,9 +310,10 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                             newdata.push(item);
                     }
                     data.items = newdata;
-                    console.log('FilterManager.run_filtered_query: data was specially filtered');
+                    console.log('FilterManager.run_filtered_query:' +
+                                ' data was specially filtered');
                 }
-                
+
                 // Process counts for filter character values.
                 for (i = 0; i < data.value_counts.length; i++) {
                     var filter = data.value_counts[i];

@@ -128,7 +128,9 @@ dojo.declare('gobotany.sk.guided_search.Filter', null, {
             this.filter_value_str == value_str)
             return;
 
-        var fm = self.manager.filter_manager;
+        /* Update the filters in the filter manager with this change. */
+
+        var fm = this.manager.filter_manager;
 
         if (this.filter_short_name != short_name) {
             if (this.filter_short_name != '')
@@ -142,18 +144,9 @@ dojo.declare('gobotany.sk.guided_search.Filter', null, {
         if (short_name != '')
             fm.set_selected_value(short_name, value_str);
 
-        if (fm.filters.length > 0) {
-            fm.perform_query({
-                filter_short_names: [],
-                on_complete: function(data) {
-                    var t = dojo.query('#guided_search_total')[0];
-                    t.innerHTML = '' + data.items.length + ' species';
-                }
-            });
-        } else {
-            var t = dojo.query('#guided_search_total')[0];
-            t.innerHTML = '';
-        }
+        /* Finally, tell the page manager to requery and redraw. */
+
+        this.manager.perform_query();
     },
 
     on_character_group_select: function(event) {
