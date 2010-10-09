@@ -513,6 +513,7 @@ class Taxon(models.Model):
     distribution = models.CharField(max_length=50)
     invasive_in_states = models.CharField(max_length=50)
     sale_prohibited_in_states = models.CharField(max_length=50)
+    description = models.CharField(max_length=500) # TODO: import descriptions
 
     class Meta:
         verbose_name_plural = 'taxa'
