@@ -6,7 +6,6 @@
 dojo.provide('gobotany.sk.results');
 
 dojo.require('gobotany.sk.glossarize');
-dojo.require('gobotany.sk.plant_preview');
 dojo.require('gobotany.sk.results.SpeciesSectionHelper');
 dojo.require('gobotany.filters');
 dojo.require('gobotany.piles');

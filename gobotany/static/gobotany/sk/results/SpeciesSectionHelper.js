@@ -1,4 +1,7 @@
 dojo.provide('gobotany.sk.results.SpeciesSectionHelper');
+
+dojo.require('gobotany.sk.plant_preview');
+
 dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
     PAGE_COUNT: 12,
 
