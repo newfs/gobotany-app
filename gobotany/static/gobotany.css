@@ -844,3 +844,7 @@ input.filter_int2 {
 #dist-county-map {
     height: 345px; /* Safari needs this, evidently */
 }
+
+#guided_search_filter_list {
+    white-space: nowrap;
+}

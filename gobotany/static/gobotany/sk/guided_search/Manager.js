@@ -25,6 +25,9 @@ dojo.declare('gobotany.sk.guided_search.Manager', null, {
 
         dojo.query('#plants .species_count .loading').addClass('hidden');
         dojo.query('#plants .species_count .count').addClass('hidden');
+
+        dojo.connect(dojo.byId('add_guided_search_filter'), 'onclick',
+                     dojo.hitch(this, this.add_filter_click));
     },
 
     save_character_groups: function(data) {
@@ -34,10 +37,16 @@ dojo.declare('gobotany.sk.guided_search.Manager', null, {
             this.character_group_map[character_group.name] = character_group;
         }
         this.add_filter();
+        dojo.byId('add_guided_search_filter').style.visibility = 'visible';
+    },
+
+    add_filter_click: function(event) {
+        event.preventDefault();
+        this.add_filter();
     },
 
     add_filter: function() {
-        var node = dojo.query('#filter_list')[0];
+        var node = dojo.byId('guided_search_filter_list');
         var div = dojo.create('div', {}, node);
         var filter = gobotany.sk.guided_search.Filter(this, div);
         this.filters.push(filter);

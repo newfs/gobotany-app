@@ -4,7 +4,6 @@ dojo.declare('gobotany.sk.guided_search.Filter', null, {
 
     constructor: function(manager, parentnode) {
         this.manager = manager;
-        this.parentnode = parentnode;
         this.filter_short_name = '';
         this.filter_value_str = '';
 
