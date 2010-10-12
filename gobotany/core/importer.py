@@ -807,6 +807,12 @@ class Importer(object):
                 character=character, order=2)
         preview_character.save()
 
+        character = models.Character.objects.get(short_name='trophophyll_length')
+        preview_character, created = \
+            models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
+                character=character, order=3)
+        preview_character.save()
+
         pile = models.Pile.objects.get(name='Non-Orchid Monocots')
 
         character = models.Character.objects.get(short_name='anther_length')

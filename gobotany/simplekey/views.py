@@ -145,19 +145,26 @@ def _get_species_characteristics(pile, taxon):
     # Get all the character values for this taxon.
     cvs = TaxonCharacterValue.objects.filter(taxon=taxon)
     if cvs:
-        for filter in pile.default_filters.all():
+        #for filter in pile.default_filters.all():
+        for character in pile.plant_preview_characters.all():
             i = 0
             found = False
             value = ''
             while found == False and i < len(cvs):
                 if cvs[i].character_value.character.short_name == \
-                   filter.short_name:
+                   character.short_name:
                     found = True
-                    value = cvs[i].character_value.value_str
-                    # TODO: Add support for numeric values too.
+                    if (character.value_type == 'TEXT'):
+                        value = cvs[i].character_value.value_str
+                    else:
+                        # TODO: Properly handle numeric values and units.
+                        #value = cvs[i].character_value.value_str
+                        value = '%s (mm?) - %s (mm?)' % \
+                            (str(cvs[i].character_value.value_min),
+                            str(cvs[i].character_value.value_max))
                 i = i + 1
             characteristic = {}
-            characteristic['name'] = filter.name
+            characteristic['name'] = character.name
             characteristic['value'] = value
             characteristics.append(characteristic)
     return characteristics
