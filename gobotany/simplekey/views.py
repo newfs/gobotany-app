@@ -119,6 +119,8 @@ def _get_states_status(taxon):
                 conservation_status = 'endangered'
             elif conservation_status == 'T':
                 conservation_status = 'threatened'
+            elif conservation_status == 'SC':
+                conservation_status = 'special concern'
             # TODO: handle remaining status codes (what do they mean?)
             status[state] = conservation_status
     # Add any invasive status information.
@@ -130,13 +132,13 @@ def _get_states_status(taxon):
             status[state] = 'invasive'
     # Add any sale-prohibited status information, which trumps invasive
     # status that may have just been set.
-    sale_prohibited_states = []
+    prohibited_states = []
     if taxon.sale_prohibited_in_states:
-        sale_prohibited_states = \
+        prohibited_states = \
             taxon.sale_prohibited_in_states.replace(' ', '').split('|')
-    for state in sale_prohibited_states:
+    for state in prohibited_states:
         if status.has_key(state):
-            status[state] = 'sale prohibited'
+            status[state] = 'prohibited'
     return status
 
 
@@ -170,6 +172,33 @@ def _get_species_characteristics(pile, taxon):
     return characteristics
 
 
+def _get_wetland_status(status_code):
+    '''
+    Return plain language text for a wetland status code.
+    '''
+    status = 'N/A'
+    if status_code == 'FAC':
+        status = 'Equally likely to occur in wetlands or non-wetlands.'
+    elif status_code == 'FACU':
+        status = 'Usually occurs in uplands, but occasionally occurs in ' \
+                 'wetlands.'
+    elif status_code == 'FACU+':
+        status = 'Occurs most often in uplands; rarely in wetlands.'
+    elif status_code == 'FACU-':
+        status = 'Usually occurs in uplands, but occurs in wetlands more ' \
+                 'than occasionally.'
+    elif status_code == 'FACW':
+        status = 'Usually occurs in wetlands, but occasionally occurs in ' \
+                 'non-wetlands.'
+    elif status_code == 'FACW+':
+        status = 'Occurs most often in wetlands; rarely in non-wetlands.'
+    elif status_code == 'FACW-':
+        status = 'Occurs in wetlands but also occurs in uplands more than ' \
+                 'occasionally.'
+    # TODO: decode the rest of the codes: FAC+, FAC-, OBL, UPL
+    return status
+
+
 def species_view(request, pilegroup_slug, pile_slug, genus_slug,
                  specific_epithet_slug):
     pile = get_object_or_404(Pile, slug=pile_slug)
@@ -195,6 +224,7 @@ def species_view(request, pilegroup_slug, pile_slug, genus_slug,
            'states_status': states_status,
            'habitats': habitats,
            'characteristics': _get_species_characteristics(pile, taxon),
+           'wetland_status': _get_wetland_status(taxon.wetland_status),
            }, context_instance=RequestContext(request))
 
 

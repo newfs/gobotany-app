@@ -72,11 +72,7 @@
           
           <h3>Wetland Status</h3>
           <p>
-              {% if taxon.wetland_status|length > 0 %}
-                  {{ taxon.wetland_status }}
-              {% else %}
-                  N/A
-              {% endif %}
+              {{ wetland_status }}
           </p>
 
           <h3>North American Native Plant</h3>
