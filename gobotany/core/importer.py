@@ -828,17 +828,16 @@ class Importer(object):
                 character=character, order=2)
         preview_character.save()
 
-    def _set_pilegroup_youtube_id(self, pilegroup_name, youtube_id):
-        pilegroup = models.PileGroup.objects.get(name=pilegroup_name)
-        if not pilegroup.youtube_id:
-            pilegroup.youtube_id = youtube_id
-        pilegroup.save()
 
-    def _set_pile_youtube_id(self, pile_name, youtube_id):
-        pile = models.Pile.objects.get(name=pile_name)
-        if not pile.youtube_id:
-            pile.youtube_id = youtube_id
-        pile.save()
+    def _set_youtube_id(self, name, youtube_id, pilegroup=False):
+        if pilegroup:
+            p = models.PileGroup.objects.get(name=name)
+        else:
+            p = models.Pile.objects.get(name=name)
+        if not p.youtube_id:
+            p.youtube_id = youtube_id
+        p.save()
+
 
     def _import_extra_demo_data(self):
         print >> self.logfile, 'Setting up demo Pile attributes'
@@ -861,28 +860,28 @@ class Importer(object):
         pile.save()
 
         # Set up YouTube videos for all pile groups and piles.
-
-        self._set_pilegroup_youtube_id('Ferns', 'LQ-jv8g1YVI')
-        self._set_pilegroup_youtube_id('Woody Plants', 'VWDc9oyBj5Q')
-        self._set_pilegroup_youtube_id('Aquatic Plants', 'LQ-jv8g1YVI')
-        self._set_pilegroup_youtube_id('Graminoids', 'VWDc9oyBj5Q')
-        self._set_pilegroup_youtube_id('Monocots', 'LQ-jv8g1YVI')
-        self._set_pilegroup_youtube_id('Non-Monocots', 'VWDc9oyBj5Q')
-        
-        self._set_pile_youtube_id('Equisetaceae', 'VWDc9oyBj5Q')
-        self._set_pile_youtube_id('Lycophytes', 'LQ-jv8g1YVI')
-        self._set_pile_youtube_id('Monilophytes', 'VWDc9oyBj5Q')
-        self._set_pile_youtube_id('Woody Angiosperms', 'LQ-jv8g1YVI')
-        self._set_pile_youtube_id('Woody Gymnosperms', 'VWDc9oyBj5Q')
-        self._set_pile_youtube_id('Non-Thalloid Aquatic', 'LQ-jv8g1YVI')
-        self._set_pile_youtube_id('Thalloid Aquatic', 'VWDc9oyBj5Q')
-        self._set_pile_youtube_id('Carex', 'LQ-jv8g1YVI')
-        self._set_pile_youtube_id('Poaceae', 'VWDc9oyBj5Q')
-        self._set_pile_youtube_id('Remaining Graminoids', 'LQ-jv8g1YVI')
-        self._set_pile_youtube_id('Non-Orchid Monocots', 'VWDc9oyBj5Q')
-        self._set_pile_youtube_id('Orchid Monocots', 'LQ-jv8g1YVI')
-        self._set_pile_youtube_id('Composites', 'VWDc9oyBj5Q')
-        self._set_pile_youtube_id('Remaining Non-Monocots', 'LQ-jv8g1YVI')
+        TEMP_VIDEO_ID1 = 'LQ-jv8g1YVI'
+        TEMP_VIDEO_ID2 = 'VWDc9oyBj5Q'
+        self._set_youtube_id('Ferns', TEMP_VIDEO_ID1, pilegroup=True)
+        self._set_youtube_id('Woody Plants', TEMP_VIDEO_ID2, pilegroup=True)
+        self._set_youtube_id('Aquatic Plants', TEMP_VIDEO_ID1, pilegroup=True)
+        self._set_youtube_id('Graminoids', TEMP_VIDEO_ID2, pilegroup=True)
+        self._set_youtube_id('Monocots', TEMP_VIDEO_ID1, pilegroup=True)
+        self._set_youtube_id('Non-Monocots', TEMP_VIDEO_ID2, pilegroup=True)
+        self._set_youtube_id('Equisetaceae', TEMP_VIDEO_ID2)
+        self._set_youtube_id('Lycophytes', TEMP_VIDEO_ID1)
+        self._set_youtube_id('Monilophytes', TEMP_VIDEO_ID2)
+        self._set_youtube_id('Woody Angiosperms', TEMP_VIDEO_ID1)
+        self._set_youtube_id('Woody Gymnosperms', TEMP_VIDEO_ID2)
+        self._set_youtube_id('Non-Thalloid Aquatic', TEMP_VIDEO_ID1)
+        self._set_youtube_id('Thalloid Aquatic', TEMP_VIDEO_ID2)
+        self._set_youtube_id('Carex', TEMP_VIDEO_ID1)
+        self._set_youtube_id('Poaceae', TEMP_VIDEO_ID2)
+        self._set_youtube_id('Remaining Graminoids', TEMP_VIDEO_ID1)
+        self._set_youtube_id('Non-Orchid Monocots', TEMP_VIDEO_ID2)
+        self._set_youtube_id('Orchid Monocots', TEMP_VIDEO_ID1)
+        self._set_youtube_id('Composites', TEMP_VIDEO_ID2)
+        self._set_youtube_id('Remaining Non-Monocots', TEMP_VIDEO_ID1)
 
 
 def main():
