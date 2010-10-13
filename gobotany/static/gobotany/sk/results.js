@@ -655,6 +655,29 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.simplekey_character_short_name = null;
     },
 
+    sort_filter_values: function(a, b) {
+        // Custom sort for ordering filter values for display.
+        var value_a = a.value.toLowerCase();
+        var value_b = b.value.toLowerCase();
+        
+        // If both values are a number or begin with one, sort numerically.
+        var int_value_a = parseInt(value_a);
+        var int_value_b = parseInt(value_b);
+        if (!isNaN(int_value_a) && !isNaN(int_value_b))
+            return int_value_a - int_value_b;
+        
+        // Otherwise, sort alphabetically.
+        // Exception: always make 'NA' last.
+        if (value_a == 'na')
+            return 1;
+         if (value_a < value_b)
+            return -1;
+        if (value_a > value_b)
+            return 1;
+
+        return 0; // default value (no sort)
+    },
+
     show_filter_working: function(filter) {
         dojo.query('#filter-working').style({display: 'block'});
         dojo.query('#filter-working .name')[0].innerHTML = filter.friendly_name;
@@ -769,9 +792,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                          });
             dojo.place(dont_know_item, valuesList);
 
+            // Apply a custom sort to the filter values.
+            var values = gobotany.utils.clone(filter.values);
+            values.sort(this.sort_filter_values);
+
             // Create radio button items for each character value.
-            for (var i = 0; i < filter.values.length; i++) {
-                var v = filter.values[i];
+            for (var i = 0; i < values.length; i++) {
+                var v = values[i];
                 var item_html = ('<input type="radio" name="char_name" value="'
                                  + v.value + '"><span> ' + v.value
                                  + '</span> <span>(' + v.count + ')</span>');
