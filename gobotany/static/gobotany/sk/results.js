@@ -392,15 +392,15 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         // First, see if this is a numeric field.
 
-        var char_value_q = dojo.query('#character_values_form #int_value');
+        var char_value_q = dojo.query('#character_values_form input.filter_int');
 
         if (char_value_q.length) {
             var value = parseInt(char_value_q[0].value, 10);
             if (!isNaN(value)) {
-                this.results_helper.filter_manager.set_selected_value(this.simplekey_character_short_name,
-                                                  value);
+                this.results_helper.filter_manager.set_selected_value(
+                    this.simplekey_character_short_name, value);
                 choice_div.innerHTML = value;
-                this.save_filter_state();
+                this.results_helper.save_filter_state();
                 this.results_helper.species_section.perform_query();
                 this.show_or_hide_filter_clear(
                     this.simplekey_character_short_name);
@@ -414,8 +414,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         if (checked_item_q.length) {
             var checked_item = checked_item_q[0];
-            this.results_helper.filter_manager.set_selected_value(this.simplekey_character_short_name, 
-                                                   checked_item.value);
+            this.results_helper.filter_manager.set_selected_value(
+                this.simplekey_character_short_name, checked_item.value);
             if (checked_item.value) {
                 choice_div.innerHTML = checked_item.value;
             } else {

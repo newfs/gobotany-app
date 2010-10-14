@@ -33,19 +33,21 @@ gobotany.utils.notify = function(txt) {
 
 gobotany.utils.animate_changed = function(node) {
     var nodes = node;
-    if (nodes.length === undefined)
+    if (nodes.length === undefined) {
         nodes = [nodes];
+    }
 
     setTimeout(function() {
-        for (var x = 0; x < nodes.length; x++)
+        for (var x = 0; x < nodes.length; x++) {
             dojo.anim(nodes[x], {backgroundColor: 'white'});
+        }
     }, 2000);
 };
 
 gobotany.utils.clone = function(obj, updated_args) {
     var new_obj = (obj instanceof Array) ? [] : {};
     for (i in obj) {
-        new_obj[i] = obj[i]
+        new_obj[i] = obj[i];
     }
 
     if (updated_args !== undefined) {
@@ -58,15 +60,24 @@ gobotany.utils.clone = function(obj, updated_args) {
 };
 
 gobotany.utils.pretty_length = function(unit, value) {
+    // First convert to a number in order to handle a string being passed in.
+    value = parseFloat(value);
+    if (isNaN(value)) {
+        console.log('gobotany.utils.pretty_length: value ' + value +
+                    ' is not a number');
+    }
+
     var ret = {
         metric: String(value.toFixed(2)) + unit
     };
 
     var valuemm = value;
-    if (unit == 'cm')
+    if (unit == 'cm') {
         valuemm = 10 * valuemm;
-    else if (unit == 'm')
+    }
+    else if (unit == 'm') {
         valuemm = 1000 * valuemm;
+    }
 
     var inches = 0.0393700787 * valuemm;
     var remaining = null;
@@ -80,7 +91,7 @@ gobotany.utils.pretty_length = function(unit, value) {
         inches = inches.toFixed(2);
         remaining = String(inches) + '"'
     }
-    
+
     ret.imperial = remaining;
 
     return ret;
