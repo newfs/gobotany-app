@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from gobotany.core import botany
 from gobotany.core.models import GlossaryTerm, Pile, PileGroup, Genus, Family
-from gobotany.core.models import Taxon, TaxonCharacterValue
+from gobotany.core.models import Taxon, TaxonCharacterValue, Lookalike
 from gobotany.simplekey.models import Page, get_blurb
 
 
@@ -215,6 +215,7 @@ def species_view(request, pilegroup_slug, pile_slug, genus_slug,
     habitats = []
     if taxon.habitat:
         habitats = taxon.habitat.split('|')
+    lookalikes = Lookalike.objects.filter(scientific_name=scientific_name)
     return render_to_response('simplekey/species.html', {
            'pilegroup': pile.pilegroup,
            'pile': pile,
@@ -225,6 +226,7 @@ def species_view(request, pilegroup_slug, pile_slug, genus_slug,
            'habitats': habitats,
            'characteristics': _get_species_characteristics(pile, taxon),
            'wetland_status': _get_wetland_status(taxon.wetland_status),
+           'lookalikes': lookalikes,
            }, context_instance=RequestContext(request))
 
 

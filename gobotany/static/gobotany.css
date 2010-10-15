@@ -769,6 +769,16 @@ input.filter_int2 {
     width: 250px;
 }
 
+#species dl {
+    margin-bottom: 1.5em;
+}
+#species dt {
+    margin: 1em 0 0.5em 1em;
+}
+#species dd {
+    margin: 0.5em 0 0.5em 2em;
+}
+
 /* genus/family pages */
 #taxon-photos {
     float: left;

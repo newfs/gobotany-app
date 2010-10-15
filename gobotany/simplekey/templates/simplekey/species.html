@@ -57,6 +57,16 @@
               {% endif %}
           </ul>
 
+          {% if lookalikes|length > 0 %}
+          <h3>Sometimes Confused With</h3>
+          <dl>
+              {% for lookalike in lookalikes %}
+              <dt>{{ lookalike.lookalike_characteristic }}:</dt>
+              <dd><em>{{ lookalike.lookalike_scientific_name }}</em></dd>
+              {% endfor %}
+          </dl>
+          {% endif %}
+
           <h3>Distribution &amp; Endangered/Invasive Status</h3>
 
           <div>
