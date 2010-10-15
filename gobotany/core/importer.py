@@ -49,7 +49,7 @@ class Importer(object):
 
     def import_data(self, pilegroupf, pilef, pile_images, taxaf, charf,
                     charvf, char_glossaryf, glossaryf, glossary_images,
-                    *taxonfiles):
+                    lookalikesf, *taxonfiles):
         self._import_pile_groups(pilegroupf)
         self._import_piles(pilef, pile_images)
         self._import_taxa(taxaf)
@@ -59,6 +59,7 @@ class Importer(object):
         self._import_glossary(glossaryf, glossary_images)
         self._import_default_filters()
         self._import_plant_preview_characters()
+        self._import_lookalikes(lookalikesf)
         self._import_extra_demo_data()
         for taxonf in taxonfiles:
             self._import_taxon_character_values(taxonf)
@@ -827,6 +828,22 @@ class Importer(object):
             models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
                 character=character, order=2)
         preview_character.save()
+
+
+    def _import_lookalikes(self, lookalikesf):
+        print >> self.logfile, 'Importing look-alike plants.'
+        iterator = iter(CSVReader(lookalikesf).read())
+        colnames = [x.lower() for x in iterator.next()]
+
+        for cols in iterator:
+            row = dict(zip(colnames, cols))
+
+            lookalike, created = models.Lookalike.objects.get_or_create(
+                scientific_name=row['taxon'],
+                lookalike_scientific_name=row['lookalike_taxon'],
+                lookalike_characteristic=row['how_to_tell'])
+            if created:
+                print >> self.logfile, u'  New Lookalike:', lookalike
 
 
     def _set_youtube_id(self, name, youtube_id, pilegroup=False):

@@ -620,3 +620,15 @@ class PlantPreviewCharacter(models.Model):
     def __unicode__(self):
         return '%d: %s (%s)' % (self.order, self.character.friendly_name,
                                 self.pile.name)
+
+
+class Lookalike(models.Model):
+    """Species that can be mistaken for others."""
+    scientific_name = models.CharField(max_length=100)
+    lookalike_scientific_name = models.CharField(max_length=100)
+    lookalike_characteristic = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return '%s: %s (%s)' % (self.scientific_name,
+                                self.lookalike_scientific_name,
+                                self.lookalike_characteristic)
