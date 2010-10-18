@@ -524,6 +524,10 @@ ul#glossary li:nth-child(even) {
 #search-results-list .excerpt {
 }
 
+#search-results-list .highlighted {
+    font-weight: bold;
+}
+
 #results-display {
     clear: left;
 }
