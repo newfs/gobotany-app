@@ -8,7 +8,7 @@
 {% block content %}
 <div id="search-results">
     {% if query %}
-    <h2>{{ paginator.count }} item(s) found</h2>
+    <h2>{{ paginator.count }} result{% if paginator.count != 1 %}s{% endif %}</h2>
 
     <div class="search-type">
       <span class="title">Search:</span>
@@ -24,6 +24,9 @@
           <p class="excerpt">
             {{ result.description }}
           </p>
+          <p>
+              {{ result.text }}
+          <p>
         </li>
       {% empty %}
         <li class="no-results">No results found.</li>
