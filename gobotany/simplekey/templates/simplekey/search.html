@@ -19,7 +19,7 @@
         <li class="plant">
             <h2>
                 <!-- TODO: need custom highlighter here to prevent excepting -->
-                <i><a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/plant/slug-missing/{{ result.scientific_name }}">{% highlight result.scientific_name with query %}</a></i>
+                <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/plant/slug-missing/{{ result.scientific_name }}"><em>{% highlight result.scientific_name with query %}</em> (Common name here)</a>
             </h2>
             <p>
             {% highlight result.text with query %}

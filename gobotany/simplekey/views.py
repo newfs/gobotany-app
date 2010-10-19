@@ -242,7 +242,7 @@ def genus_view(request, genus_slug):
 
 
 def family_view(request, family_slug):
-    family = get_object_or_404(Family, slug=family_slug)
+    family = get_object_or_404(Family, slug=family_slug.lower())
     family_images = family.images.filter(image_type__name='example image')
     family_drawings = family.images.filter(image_type__name='example drawing')
     return render_to_response('simplekey/family.html', {

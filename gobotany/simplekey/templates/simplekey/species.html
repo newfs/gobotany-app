@@ -11,7 +11,7 @@
 
 {% block content %}
   <p>{{ pilegroup.name }}: {{ pile.name }}</p>
-  <h1><i>{{ scientific_name }}</i>
+  <h1><em>{{ scientific_name }}</em>
       <span class="auth">{{ taxon.taxonomic_authority }}</span></h1>
   <div id="species">
       <h2>Common name here</h2>
@@ -128,7 +128,8 @@
           </p>
 
           <h3>Classification</h3>
-          <p><strong>Family:</strong> {{ taxon.family }}</p>
+          <p><strong>Family:</strong> 
+             <a href="/simple/families/{{ taxon.family|lower }}/">{{ taxon.family }}</a></p>
 
       </div>
   </div>

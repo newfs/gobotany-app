@@ -445,11 +445,13 @@ ul#glossary li:nth-child(even) {
     font-size: 1.3em;
 }
 
-.PilePage h2 + ul, .KeyCharacteristics ul, .NotableExceptions ul, .key-characteristics ul, .notable-exceptions ul {
+.PilePage h2 + ul, .KeyCharacteristics ul, .NotableExceptions ul,
+.key-characteristics ul, .notable-exceptions ul {
     list-style: disc;
     margin-left: 24px;
 }
-.PilePage h2 + ol, .KeyCharacteristics ol, .NotableExceptions ol, .key-characteristics ol, .notable-exceptions ol {
+.PilePage h2 + ol, .KeyCharacteristics ol, .NotableExceptions ol,
+.key-characteristics ol, .notable-exceptions ol {
     list-style-type: decimal;
     margin-left: 32px;
 }
@@ -479,20 +481,20 @@ ul#glossary li:nth-child(even) {
 
 #search-results .time {
     font-size: 0.7em;
-    margin: 0.1em 0 2em 0;
+    margin: 0.1em 0 1em 0;
 }
 
 #search-results-list li {
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
 }
 
 #search-results-list h2 {
-    font-size: 1.2em;
+    font-size: 0.9em;
     margin: 0;
 }
 
 #search-results-list p {
-    font-size: 0.9em;
+    font-size: 0.8em;
     margin: 0;
     padding: 0;
 }
