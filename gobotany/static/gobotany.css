@@ -458,70 +458,48 @@ ul#glossary li:nth-child(even) {
     color: #eee;
 }
 
-/* Search form at the top of each page. */
-
-#headsearch {
-    display: inline;
-}
-
 /* Search page formatting */
 
 .search-navigation {
-    padding: 8px;
-    text-align: right;
-    font-size: 0.88em;
-}
-
-.search-navigation a {
-    color: black;
+    text-align: center;
 }
 
 .search-navigation h3 {
     display: inline;
 }
- 
-#search-results h2 {
-    font-size: 1.2em;
-    font-weight: bold;
+
+#search-results {
+    margin-left: 100px;
+    width: 700px;
+}
+
+#search-results h1 {
+    margin: 0.5em 0 0;
+}
+
+#search-results .time {
+    font-size: 0.7em;
+    margin: 0.1em 0 2em 0;
 }
 
 #search-results-list li {
-    margin-left: 40px;
     margin-bottom: 1em;
 }
 
-#search-results-list li .icon {
-    width: 16px;
-    height: 16px;
-    border: 1px #ccc solid;
-    float: left;
-    margin-right: 0.4em;
-}
-
-
-#search-results-list h4 {
-    font-family: Helvetica;
-    font-size: 0.92em;
-    font-style: italic;
-    font-weight: bold;
+#search-results-list h2 {
+    font-size: 1.2em;
     margin: 0;
 }
 
-#search-results-list h4 a {
-    color: black;
-}
-
 #search-results-list p {
-    font-size: 0.88em;
-    margin-left: 2em;
+    font-size: 0.9em;
+    margin: 0;
+    padding: 0;
 }
 
 #search-results-list em {
     font-style: normal;
     font-weight: bold;
-}
-
-#search-results-list .excerpt {
 }
 
 #search-results-list .highlighted {

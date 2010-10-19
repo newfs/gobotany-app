@@ -1,6 +1,4 @@
 <div class="search-navigation">
-<h3>Pages</h3>
-
 {% if page.number != 1 and paginator.num_pages > 1 %}
   <a class="first" href="?q={{ query }}&amp;page=1">First</a> -
 {% endif %}
@@ -13,7 +11,4 @@
   {% endif %}
 {% endfor %}
 
-{% if page.number < paginator.num_pages and paginator.num_pages > 1 %}
-  - <a class="last" href="?q={{ query }}&amp;page={{ paginator.num_pages }}">Last</a>
-{% endif %}
 </div>

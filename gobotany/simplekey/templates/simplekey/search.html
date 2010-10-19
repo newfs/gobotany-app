@@ -8,25 +8,19 @@
 {% block content %}
 <div id="search-results">
     {% if query %}
-    <h2>{{ paginator.count }} result{% if paginator.count != 1 %}s{% endif %}</h2>
-
-    <div class="search-type">
-      <span class="title">Search:</span>
-      <span class="option disabled">Entire site <input type="radio" name="stype"
-            value="all" disabled /></span>
-      <span class="option">Plant pages only <input type="radio" name="stype"
-            value="plants" checked /></span>
-    </div>
+    <h1>Results <strong>x-xx</strong> of
+        <strong>{{ paginator.count }}</strong> for
+        <strong>{{ query }}</strong>
+    </h1>
+    <p class="time">(xx seconds)</p>
 
     <ul id="search-results-list">
     {% for result in page.object_list %}
         <li class="plant">
-            <div class="icon">&nbsp;</div>
-            <h4><a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/plant/slug-missing/{{ result.scientific_name }}">{{ result.scientific_name }} -
-            Plant Page</a></h4>
-            <p class="excerpt">
-            {{ result.description }}
-            </p>
+            <h2>
+                <!-- TODO: need custom highlighter here to prevent excepting -->
+                <i><a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/plant/slug-missing/{{ result.scientific_name }}">{% highlight result.scientific_name with query %}</a></i>
+            </h2>
             <p>
             {% highlight result.text with query %}
             <p>
