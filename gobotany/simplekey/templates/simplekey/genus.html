@@ -4,7 +4,7 @@
 {{ item.name }}
 {% endblock %}
 {% block content %}
-  <h1>genus: <em>{{ item.name }}</em></h1>
+  <h1>Genus <em>{{ item.name }}</em></h1>
   <div id="genus">
     <div id="taxon-photos">
       <h3>Images</h3>
@@ -29,7 +29,7 @@
         <dd>{{ item.common_name }}</dd>
         
         <dt>Family:</dt>
-        <dd><a href="../../family/{{ item.family.slug }}">{{ item.family.name }}</a></dd>
+        <dd><a href="../../families/{{ item.family.slug }}">{{ item.family.name }}</a></dd>
         
         <dt>Description:</dt>
         <dd>{{ item.description }}</dd>
@@ -37,7 +37,7 @@
       <h3>Species:</h3>
       <ul class="species">
         {% for species in item.taxa.all %}
-        <li>{{ species.scientific_name }}</li>
+        <li><em>{{ species.scientific_name }}</em></li>
         {% endfor %}
       </ul>
     </div>
