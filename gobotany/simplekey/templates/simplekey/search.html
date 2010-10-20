@@ -16,10 +16,22 @@
 
     <ul id="search-results-list">
     {% for result in page.object_list %}
-        <li class="plant">
+        <li>
             <h2>
-                <!-- TODO: need custom highlighter here to prevent excepting -->
-                <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/plant/slug-missing/{{ result.scientific_name }}"><em>{% highlight result.scientific_name with query %}</em> (Common name here)</a>
+                <!-- TODO: need custom highlighter that does not excerpt the document title -->
+                {% if result.scientific_name %}
+                    <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/plant/slug-missing/{{ result.scientific_name }}/"><em>{% highlight result.scientific_name with query %}</em> (Common name here)</a>
+                {% else %}
+                    {% if result.model_name == 'family' %}
+                        <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/simple/families/{{ result.name|lower }}/">Family {% highlight result.name with query %} (Common name here)</a>
+                    {% else %}
+                        {% if result.model_name == 'genus' %}
+                            <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/simple/genera/{{ result.name|lower }}/">Genus <em>{% highlight result.name with query %}</em> (Common name here)</a>
+                        {% else %}
+                            (unknown model name)
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
             </h2>
             <p>
             {% highlight result.text with query %}

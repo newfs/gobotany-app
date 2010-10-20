@@ -499,11 +499,6 @@ ul#glossary li:nth-child(even) {
     padding: 0;
 }
 
-#search-results-list em {
-    font-style: normal;
-    font-weight: bold;
-}
-
 #search-results-list .highlighted {
     font-weight: bold;
 }

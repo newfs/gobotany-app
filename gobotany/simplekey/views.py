@@ -231,7 +231,7 @@ def species_view(request, pilegroup_slug, pile_slug, genus_slug,
 
 
 def genus_view(request, genus_slug):
-    genus = get_object_or_404(Genus, slug=genus_slug)
+    genus = get_object_or_404(Genus, slug=genus_slug.lower())
     genus_images = genus.images.filter(image_type__name='example image')
     genus_drawings = genus.images.filter(image_type__name='example drawing')
     return render_to_response('simplekey/genus.html', {

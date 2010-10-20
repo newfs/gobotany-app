@@ -1,0 +1,11 @@
+{{ object.name }}.
+Common name:
+    {{ object.common_name }}
+Family:
+    {{ object.family.name }}
+Description:
+    {{ object.description }}
+Species:
+{% for species in object.taxa.all %}
+    {{ species.scientific_name }}
+{% endfor %}
