@@ -1,4 +1,5 @@
-{{ object.name }}.
+Genus:
+    {{ object.name }}.
 Common name:
     {{ object.common_name }}
 Family:
