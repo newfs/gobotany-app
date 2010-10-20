@@ -1,9 +1,9 @@
 Genus:
     {{ object.name }}.
 Common name:
-    {{ object.common_name }}
+    {{ object.common_name }}.
 Family:
-    {{ object.family.name }}
+    {{ object.family.name }}.
 Description:
     {{ object.description }}
 Species:

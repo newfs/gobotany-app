@@ -35,6 +35,8 @@ class CharacterCharField(indexes.CharField):
 
 class TaxonIndex(indexes.SearchIndex):
     scientific_name = indexes.CharField(model_attr='scientific_name')
+    title = indexes.CharField(use_template=True,
+        template_name='simplekey/search_title_species.txt')
     text = indexes.CharField(
         document=True, use_template=True,
         template_name='simplekey/search_text_species.txt')
@@ -50,6 +52,8 @@ class TaxonIndex(indexes.SearchIndex):
 
 class FamilyIndex(indexes.SearchIndex):
     name = indexes.CharField(model_attr='name')
+    title = indexes.CharField(use_template=True,
+        template_name='simplekey/search_title_family.txt')
     text = indexes.CharField(
         document=True, use_template=True,
         template_name='simplekey/search_text_family.txt')
@@ -57,6 +61,8 @@ class FamilyIndex(indexes.SearchIndex):
 
 class GenusIndex(indexes.SearchIndex):
     name = indexes.CharField(model_attr='name')
+    title = indexes.CharField(use_template=True,
+        template_name='simplekey/search_title_genus.txt')
     text = indexes.CharField(
         document=True, use_template=True,
         template_name='simplekey/search_text_genus.txt')

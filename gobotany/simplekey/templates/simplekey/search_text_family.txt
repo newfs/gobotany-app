@@ -3,12 +3,8 @@ Family:
 Common name:
     {{ object.common_name }}.
 Description:
-    {{ item.description }}
+    {{ object.description }}
 Genera:
 {% for genus in object.genera.all %}
     {{ genus.name }}
-{% endfor %}
-Species:
-{% for species in object.taxa.all %}
-    {{ species.scientific_name }}
 {% endfor %}
