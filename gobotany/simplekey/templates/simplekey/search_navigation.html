@@ -1,14 +1,19 @@
 <div class="search-navigation">
-{% if page.number != 1 and paginator.num_pages > 1 %}
-  <a class="first" href="?q={{ query }}&amp;page=1">First</a> -
+
+{% if page.has_previous %}
+    <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">Previous</a>
 {% endif %}
 
-{% for page_num in paginator.page_range %}
-  {% if page_num == page.number %}
-    <span class="non-link">{{ page_num }}</span>
-  {% else %}
-    <a href="?q={{ query }}&amp;page={{ page_num }}">{{ page_num }}</a>
-  {% endif %}
+{% for page_num in paginator.page_range|slice:':10' %}
+    {% if page_num == page.number %}
+        <span class="non-link">{{ page_num }}</span>
+    {% else %}
+        <a href="?q={{ query }}&amp;page={{ page_num }}">{{ page_num }}</a>
+    {% endif %}
 {% endfor %}
+
+{% if page.has_next %}
+    <a href="?q={{ query }}&amp;page={{ page.next_page_number }}">Next</a>
+{% endif %}
 
 </div>

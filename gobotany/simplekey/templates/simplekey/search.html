@@ -8,7 +8,7 @@
 {% block content %}
 <div id="search-results">
     {% if query %}
-    <h1>Results <strong>x-xx</strong> of
+    <h1>Results <strong>{{ page.number|add:'-1' }}-xx</strong> of
         <strong>{{ paginator.count }}</strong> for
         <strong>{{ query }}</strong>
     </h1>
