@@ -119,9 +119,14 @@ def _get_states_status(taxon):
                 conservation_status = 'endangered'
             elif conservation_status == 'T':
                 conservation_status = 'threatened'
-            elif conservation_status == 'SC':
+            elif conservation_status == 'SC' or conservation_status == 'SC*':
                 conservation_status = 'special concern'
-            # TODO: handle remaining status codes (what do they mean?)
+            elif conservation_status == 'H':
+                conservation_status = 'historic'
+            elif conservation_status == 'X':
+                conservation_status = 'extinct'
+            elif conservation_status == 'C':
+                conservation_status = 'rare'
             status[state] = conservation_status
     # Add any invasive status information.
     invasive_states = []
@@ -176,9 +181,9 @@ def _get_wetland_status(status_code):
     '''
     Return plain language text for a wetland status code.
     '''
-    status = 'N/A'
-    if status_code == 'FAC':
-        status = 'Equally likely to occur in wetlands or non-wetlands.'
+    status = 'not classified'
+    if status_code == 'FAC' or status_code == 'FAC+' or status_code == 'FAC-':
+        status = 'Occurs in wetlands or uplands.'
     elif status_code == 'FACU':
         status = 'Usually occurs in uplands, but occasionally occurs in ' \
                  'wetlands.'
@@ -195,7 +200,10 @@ def _get_wetland_status(status_code):
     elif status_code == 'FACW-':
         status = 'Occurs in wetlands but also occurs in uplands more than ' \
                  'occasionally.'
-    # TODO: decode the rest of the codes: FAC+, FAC-, OBL, UPL
+    elif status_code == 'OBL':
+        status = 'Occurs always in wetlands.'
+    elif status_code == 'UPL':
+        status = 'Never occurs in wetlands.'
     return status
 
 
