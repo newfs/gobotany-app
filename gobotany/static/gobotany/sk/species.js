@@ -1,6 +1,8 @@
 dojo.provide('gobotany.sk.species');
 
 dojo.require('dojox.data.JsonRestStore');
+
+dojo.require('gobotany.sk.glossarize');
 dojo.require('gobotany.sk.image_browse');
 
 // Image info storage for images that appear on the species page.
@@ -74,5 +76,11 @@ gobotany.sk.species.init = function(scientific_name) {
             gobotany.sk.image_browse.set_up_navigation_links(taxon.images,
                 '#species #images', gobotany.sk.species.change_image);
         }
+    });
+    
+    // Make glossary highlights appear where appropriate throughout the page.
+    var glossarizer = gobotany.sk.results.Glossarizer();
+    dojo.query('#info p').forEach(function(node) {
+        glossarizer.markup(node);
     });
 };
