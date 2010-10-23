@@ -486,6 +486,19 @@ ul#glossary li:nth-child(even) {
 
 #search-results-list li {
     margin-bottom: 0.5em;
+    min-height: 50px;
+}
+
+#search-results-list img {
+    border: 1px solid #ccc;
+    clear: left;
+    float: left;
+    height: 26px;
+    margin-bottom: 10px;
+    margin-top: 4px;
+    position: relative;
+    left: -36px;
+    width: 26px;
 }
 
 #search-results-list h2 {
@@ -497,6 +510,11 @@ ul#glossary li:nth-child(even) {
     font-size: 0.8em;
     margin: 0;
     padding: 0;
+}
+
+#search-results-list h2, #search-results-list p {
+    position: relative;
+    left: -26px;
 }
 
 #search-results-list .highlighted {
