@@ -201,7 +201,7 @@ def _get_wetland_status(status_code):
         status = 'Occurs in wetlands but also occurs in uplands more than ' \
                  'occasionally.'
     elif status_code == 'OBL':
-        status = 'Occurs always in wetlands.'
+        status = 'Occurs only in wetlands.'
     elif status_code == 'UPL':
         status = 'Never occurs in wetlands.'
     return status
@@ -221,7 +221,7 @@ def species_view(request,  genus_slug, specific_epithet_slug,
         if pile.pilegroup.slug != pilegroup_slug:
             raise Http404
     else:
-        # Get the first pile rom the species
+        # Get the first pile from the species
         pile = taxon.piles.all()[0]
     pilegroup = pile.pilegroup
     
