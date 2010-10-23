@@ -10,9 +10,9 @@
 {% endblock %}
 
 {% block content %}
-  <p><a href="/simple/{{ pilegroup.name|lower }}/">{{ pilegroup.name }}</a>: 
+  <p><a href="/simple/{{ pilegroup.slug }}/">{{ pilegroup.name }}</a>: 
      <a id="results-link"
-        href="/simple/{{ pilegroup.name|lower }}/{{ pile.name|lower }}/">{{ pile.name }}</a>
+        href="/simple/{{ pilegroup.slug }}/{{ pile.slug }}/">{{ pile.name }}</a>
   </p>
   <h1><em>{{ scientific_name }}</em>
       <span class="auth">{{ taxon.taxonomic_authority }}</span></h1>
