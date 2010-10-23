@@ -216,7 +216,7 @@ def species_view(request,  genus_slug, specific_epithet_slug,
         raise Http404
     taxon = taxa[0]
     
-    if pile_slug and pile_group_slug:
+    if pile_slug and pilegroup_slug:
         pile = get_object_or_404(Pile, slug=pile_slug)
         if pile.pilegroup.slug != pilegroup_slug:
             raise Http404
@@ -255,6 +255,9 @@ def genus_view(request, genus_slug):
            'item_drawings': genus_drawings,
            }, context_instance=RequestContext(request))
 
+
+def genus_redirect_view(request, genus_slug):
+    return redirect('simplekey-genus', genus_slug=genus_slug)
 
 def family_view(request, family_slug):
     family = get_object_or_404(Family, slug=family_slug.lower())

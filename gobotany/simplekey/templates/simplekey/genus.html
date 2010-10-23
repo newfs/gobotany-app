@@ -1,5 +1,6 @@
 {% extends "simplekey/base.html" %}
 {% load thumbnail %}
+{% load simplekey_extras %}
 {% block title %}
 {{ item.name }}
 {% endblock %}
@@ -37,7 +38,7 @@
       <h3>Species:</h3>
       <ul class="species">
         {% for species in item.taxa.all %}
-        <li><em>{{ species.scientific_name }}</em></li>
+        <li><a href="/simple/species/{{ species.scientific_name|split:' '|at_index:'0'|lower }}/{{ species.scientific_name|split:' '|at_index:'1'|lower }}/"><em>{{ species.scientific_name }}</em></a></li>
         {% endfor %}
       </ul>
     </div>

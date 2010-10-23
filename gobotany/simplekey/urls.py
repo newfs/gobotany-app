@@ -36,6 +36,8 @@ urlpatterns = patterns(
         views.genus_view, name='simplekey-genus'),
     url('^species/(?P<genus_slug>[^/]*)/(?P<specific_epithet_slug>[^/]*)/$',
         views.species_view, name='simplekey-species'),
+    url('^species/(?P<genus_slug>[^/]*)/$',
+        views.genus_redirect_view, name='simplekey-genus-redirect'),
     url('^(?P<number>[0-9]+)/$', views.page_view),
     url('^(?P<pilegroup_slug>[^/]*)/$',
         views.pilegroup_view, name='simplekey-pilegroup'),

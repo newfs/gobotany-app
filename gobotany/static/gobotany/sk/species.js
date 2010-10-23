@@ -1,5 +1,6 @@
 dojo.provide('gobotany.sk.species');
 
+dojo.require('dojo.cookie');
 dojo.require('dojox.data.JsonRestStore');
 
 dojo.require('gobotany.sk.glossarize');
@@ -77,10 +78,22 @@ gobotany.sk.species.init = function(scientific_name) {
                 '#species #images', gobotany.sk.species.change_image);
         }
     });
-    
+
     // Make glossary highlights appear where appropriate throughout the page.
     var glossarizer = gobotany.sk.results.Glossarizer();
     dojo.query('#info p').forEach(function(node) {
         glossarizer.markup(node);
     });
+
+    // Check for whether the stored filter-state cookie pertains to the
+    // pile/results page for this plant. If so, replace the hyperlink href
+    // for the pile/results page with the URL from the cookie in order to
+    // persist filter state when the user clicks the link to go back.
+    var last_plant_id_url = dojo.cookie('last_plant_id_url');
+    var url_parts = window.location.toString().split('/');
+    var pile_results_url = url_parts.slice(0, 6).join('/');
+    if (last_plant_id_url.indexOf(pile_results_url) !== -1) {
+        var link = dojo.byId('results-link');
+        dojo.attr(link, 'href', last_plant_id_url);
+    }
 };
