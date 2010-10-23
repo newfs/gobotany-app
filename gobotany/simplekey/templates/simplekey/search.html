@@ -1,5 +1,6 @@
 {% extends "simplekey/base.html" %}
 {% load highlight %}
+{% load simplekey_extras %}
 
 {% block title %}
   Plant search
@@ -21,7 +22,7 @@
             <h2>
                 <!-- TODO: need custom highlighter that does not excerpt the document title -->
                 {% if result.scientific_name %}
-                    <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/plant/slug-missing/{{ result.scientific_name }}/"><em>{% highlight result.scientific_name with query %}</em></a>
+                    <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/simple/species/{{ result.scientific_name|split:' '|index:'0'|lower }}/{{ result.scientific_name|split:' '|index:'1'|lower }}/"><em>{% highlight result.scientific_name with query %}</em></a>
                 {% else %}
                     {% if result.model_name == 'family' %}
                         <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/simple/families/{{ result.name|lower }}/">Family {% highlight result.name with query %}</a>

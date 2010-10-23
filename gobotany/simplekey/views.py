@@ -207,17 +207,24 @@ def _get_wetland_status(status_code):
     return status
 
 
-def species_view(request, pilegroup_slug, pile_slug, genus_slug,
-                 specific_epithet_slug):
-    pile = get_object_or_404(Pile, slug=pile_slug)
-    if pile.pilegroup.slug != pilegroup_slug:
-        raise Http404
+def species_view(request,  genus_slug, specific_epithet_slug,
+                 pilegroup_slug=None, pile_slug=None):
     scientific_name = '%s %s' % (genus_slug.capitalize(), 
                                  specific_epithet_slug)
     taxa = Taxon.objects.filter(scientific_name=scientific_name)
     if not taxa:
         raise Http404
     taxon = taxa[0]
+    
+    if pile_slug and pile_group_slug:
+        pile = get_object_or_404(Pile, slug=pile_slug)
+        if pile.pilegroup.slug != pilegroup_slug:
+            raise Http404
+    else:
+        # Get the first pile rom the species
+        pile = taxon.piles.all()[0]
+    pilegroup = pile.pilegroup
+    
     species_images = botany.species_images(taxon)
     states_status = _get_states_status(taxon)
     habitats = []
@@ -225,7 +232,7 @@ def species_view(request, pilegroup_slug, pile_slug, genus_slug,
         habitats = taxon.habitat.split('|')
     lookalikes = Lookalike.objects.filter(scientific_name=scientific_name)
     return render_to_response('simplekey/species.html', {
-           'pilegroup': pile.pilegroup,
+           'pilegroup': pilegroup,
            'pile': pile,
            'scientific_name': scientific_name,
            'taxon': taxon,
