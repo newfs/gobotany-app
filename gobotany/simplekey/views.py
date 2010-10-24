@@ -1,6 +1,6 @@
 import string
 from django.core.urlresolvers import reverse
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from gobotany.core import botany
@@ -23,7 +23,6 @@ def get_simple_url(item):
     else:
         raise ValueError('the Simple Key has no URL for %r' % (item,))
 
-
 def index_view(request):
     blurb = get_blurb('getting_started')
     c = request.COOKIES.get('skip_getting_started', '')
@@ -35,28 +34,13 @@ def index_view(request):
             'skip_getting_started': skip_getting_started,
             }, context_instance=RequestContext(request))
 
-
 def map_view(request):
     return render_to_response('simplekey/map.html', {
             'pages': Page.objects.order_by('number').all(),
             }, context_instance=RequestContext(request))
 
-
-def glossary_view(request, letter):
-    glossary = GlossaryTerm.objects.filter(visible=True).extra(
-        select={'lower_term': 'lower(term)'}).order_by('lower_term')
-    if letter == '1':
-        # All terms whose names start with a number.
-        glossary = glossary.filter(term__gte='1', term__lte='9z')
-    else:
-        glossary = glossary.filter(term__startswith=letter)
-    # Case-insensitive sort
-    return render_to_response('simplekey/glossary.html', {
-            'this_letter': letter,
-            'letters': '1' + string.ascii_lowercase,
-            'glossary': glossary,
-            }, context_instance=RequestContext(request))
-
+def glossary_redirect_view(request):
+    return HttpResponseRedirect('/simple/help/glossary/a/')
 
 def guided_search_view(request):
     return render_to_response('simplekey/guided_search.html', {
@@ -76,7 +60,6 @@ def page_view(request, number):
                 ]
             }, context_instance=RequestContext(request))
 
-
 def pilegroup_view(request, pilegroup_slug):
     pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
     return render_to_response('simplekey/pilegroup.html', {
@@ -87,7 +70,6 @@ def pilegroup_view(request, pilegroup_slug):
                 ]
             }, context_instance=RequestContext(request))
 
-
 def results_view(request, pilegroup_slug, pile_slug):
     pile = get_object_or_404(Pile, slug=pile_slug)
     if pile.pilegroup.slug != pilegroup_slug:
@@ -96,7 +78,6 @@ def results_view(request, pilegroup_slug, pile_slug):
            'pilegroup': pile.pilegroup,
            'pile': pile,
            }, context_instance=RequestContext(request))
-
 
 def _get_states_status(taxon):
     DEFAULT_STATUS = 'absent'
@@ -146,7 +127,6 @@ def _get_states_status(taxon):
             status[state] = 'prohibited'
     return status
 
-
 def _get_species_characteristics(pile, taxon):
     characteristics = []
     # Get all the character values for this taxon.
@@ -176,7 +156,6 @@ def _get_species_characteristics(pile, taxon):
             characteristics.append(characteristic)
     return characteristics
 
-
 def _get_wetland_status(status_code):
     '''
     Return plain language text for a wetland status code.
@@ -205,7 +184,6 @@ def _get_wetland_status(status_code):
     elif status_code == 'UPL':
         status = 'Never occurs in wetlands.'
     return status
-
 
 def species_view(request,  genus_slug, specific_epithet_slug,
                  pilegroup_slug=None, pile_slug=None):
@@ -244,7 +222,6 @@ def species_view(request,  genus_slug, specific_epithet_slug,
            'lookalikes': lookalikes,
            }, context_instance=RequestContext(request))
 
-
 def genus_view(request, genus_slug):
     genus = get_object_or_404(Genus, slug=genus_slug.lower())
     genus_images = genus.images.filter(image_type__name='example image')
@@ -254,7 +231,6 @@ def genus_view(request, genus_slug):
            'item_images': genus_images,
            'item_drawings': genus_drawings,
            }, context_instance=RequestContext(request))
-
 
 def genus_redirect_view(request, genus_slug):
     return redirect('simplekey-genus', genus_slug=genus_slug)
@@ -270,7 +246,7 @@ def family_view(request, family_slug):
            }, context_instance=RequestContext(request))
 
 
-def help_about(request):
+def help_about_view(request):
     return render_to_response('simplekey/help_about.html', {
            'section_1_heading_blurb': get_blurb('section_1_heading'),
            'section_1_content_blurb': get_blurb('section_1_content'),
@@ -280,7 +256,7 @@ def help_about(request):
            'section_3_content_blurb': get_blurb('section_3_content'),
            }, context_instance=RequestContext(request))
 
-def help_start(request):
+def help_start_view(request):
     youtube_id = ''
     youtube_id_blurb = get_blurb('getting_started_youtube_id')
     if not youtube_id_blurb.startswith('[Provide text'):
@@ -291,12 +267,12 @@ def help_start(request):
            'getting_started_youtube_id': youtube_id,
            }, context_instance=RequestContext(request))
 
-def help_collections(request):
+def help_collections_view(request):
     return render_to_response('simplekey/help_collections.html', {
             'pages': Page.objects.order_by('number').all(),
             }, context_instance=RequestContext(request))
 
-def help_glossary(request, letter):
+def help_glossary_view(request, letter):
     glossary = GlossaryTerm.objects.filter(visible=True).extra(
         select={'lower_term': 'lower(term)'}).order_by('lower_term')
     if letter == '1':
@@ -310,6 +286,9 @@ def help_glossary(request, letter):
             'letters': '1' + string.ascii_lowercase,
             'glossary': glossary,
             }, context_instance=RequestContext(request))
+
+def help_glossary_redirect_view(request):
+    return redirect('simplekey-help-glossary', letter='a')
 
 def _get_pilegroup_youtube_id(pilegroup_name):
     pilegroup = PileGroup.objects.get(name=pilegroup_name)
@@ -326,7 +305,7 @@ def _get_pilegroup_dict(pilegroup_name):
 def _get_pile_dict(pile_name):
     return {'title': pile_name, 'youtube_id': _get_pile_youtube_id(pile_name)}
 
-def help_video(request):
+def help_video_view(request):
     # The Getting Started video is first, followed by the pile
     # groups and piles in what is meant to be a reasonable
     # "collections order", i.e., each pile group in order it is
