@@ -1,0 +1,6 @@
+{{ object.title }}
+
+{% for blurb_list_item in object.blurbs.all %}
+    {{ blurb_list_item.blurb.name }}:
+    {{ blurb_list_item.blurb.text }}
+{% endfor %}

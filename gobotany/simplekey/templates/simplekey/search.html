@@ -31,7 +31,12 @@
                         <img src="/static/graphics/genus-icon.jpg" alt="">
                         <h2><a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/simple/genera/{{ result.name|lower }}/">Genus <em>{% highlight result.name with query %}</em></a></h2>
                     {% else %}
-                        (unknown model name)
+                        {% if result.model_name == 'helppage' %}
+                            <img src="/static/graphics/help-icon.jpg" alt="">
+                            <h2><a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% highlight result.title with query %}</a></h2>
+                        {% else %}
+                            (unknown model name)
+                        {% endif %}
                     {% endif %}
                 {% endif %}
             {% endif %}

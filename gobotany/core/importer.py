@@ -9,7 +9,12 @@ import os
 import re
 import sys
 import tarfile
+
 from gobotany.core import models
+from gobotany.simplekey.models import Blurb, BlurbListItem
+from gobotany.simplekey.models import Video, VideoListItem
+from gobotany.simplekey.models import HelpPage, GlossaryHelpPage
+
 from django.contrib.contenttypes.models import ContentType
 
 class CSVReader(object):
@@ -61,6 +66,7 @@ class Importer(object):
         self._import_plant_preview_characters()
         self._import_lookalikes(lookalikesf)
         self._import_extra_demo_data()
+        self._import_help()
         for taxonf in taxonfiles:
             self._import_taxon_character_values(taxonf)
 
@@ -899,6 +905,61 @@ class Importer(object):
         self._set_youtube_id('Orchid Monocots', TEMP_VIDEO_ID1)
         self._set_youtube_id('Composites', TEMP_VIDEO_ID2)
         self._set_youtube_id('Remaining Non-Monocots', TEMP_VIDEO_ID1)
+
+
+    def _import_help(self):
+        print >> self.logfile, 'Setting up help pages and content'
+
+        # About Go-Botany page
+
+        help_page, created = HelpPage.objects.get_or_create(
+            title='About Go-Botany', url_path='/simple/help/')
+        if created:
+            print >> self.logfile, u'  New Help page: ', help_page
+
+        NUM_SECTIONS = 3
+        for i in range(1, NUM_SECTIONS + 1):
+            section = 'section %d' % i
+            blurb, created = Blurb.objects.get_or_create(
+                name=section + ' heading',
+                text='this is the ' + section + ' heading text')
+            list_item, created = BlurbListItem.objects.get_or_create(
+                blurb=blurb, order=i)
+            help_page.blurbs.add(list_item)
+
+        help_page.save()
+
+        # Getting Started page
+
+        help_page, created = HelpPage.objects.get_or_create(
+            title='Getting Started', url_path='/simple/help/start/')
+        if created:
+            print >> self.logfile, u'  New Help page: ', help_page
+        help_page.save()
+
+        # Understanding Plant Collections page
+
+        help_page, created = HelpPage.objects.get_or_create(
+            title='Understanding Plant Collections',
+            url_path='/simple/help/collections/')
+        if created:
+            print >> self.logfile, u'  New Help page: ', help_page
+        help_page.save()
+        # TODO: need to have all the piles & pile groups here somehow?
+
+        # Video Help Topics page
+
+        help_page, created = HelpPage.objects.get_or_create(
+            title='Video Help Topics', url_path='/simple/help/video/')
+        if created:
+            print >> self.logfile, u'  New Help page: ', help_page
+        help_page.save()
+
+        # TODO: loop through glossary letters and create a help page
+        # for each
+        #for loop:
+        #   help_page, created = GlossaryHelpPage.objects.get_or_create(
+        #       title='...')
 
 
 def main():
