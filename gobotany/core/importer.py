@@ -957,9 +957,24 @@ class Importer(object):
 
         # TODO: loop through glossary letters and create a help page
         # for each
-        #for loop:
-        #   help_page, created = GlossaryHelpPage.objects.get_or_create(
-        #       title='...')
+        LETTERS = ('a b c d e f g h i j k l m n o p q r s t u v w x '
+                   'y z').split(' ')
+        for letter in LETTERS:
+            glossary = models.GlossaryTerm.objects.filter(visible=True).extra(
+                select={'lower_term': 'lower(term)'}).order_by('lower_term')
+            # Skip any glossary terms that start with a number, and filter to
+            # the desired letter.
+            glossary = glossary.filter(term__gte='a', term__startswith=letter)
+            # If terms exist for the letter, create a help page record.
+            if len(glossary) > 0:
+                help_page, created = GlossaryHelpPage.objects.get_or_create(
+                    title='Glossary: ' + letter.upper(),
+                    url_path='/simple/help/glossary/' + letter + '/',
+                    letter=letter)
+                if created:
+                    print >> self.logfile, u'  New Glossary Help page: ', \
+                        help_page
+                help_page.save()
 
 
 def main():

@@ -85,8 +85,14 @@ class HelpPage(models.Model):
         return u'%s' % self.title
 
 
-class GlossaryHelpPage(HelpPage):
-    """A Help page that lists glossary terms for a letter (or number)."""
+class GlossaryHelpPage(models.Model):
+    """A Help page that lists glossary terms for a letter (or number).
+       
+       (Do not inherit from HelpPage here, in order to keep records separate
+       for search engine indexing.)
+    """
+    title = models.CharField(max_length=100)
+    url_path = models.CharField(max_length=100)
     letter = models.CharField(max_length=1)
 
     class Meta:

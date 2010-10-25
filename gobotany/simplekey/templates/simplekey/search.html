@@ -35,7 +35,12 @@
                             <img src="/static/graphics/help-icon.jpg" alt="">
                             <h2><a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% highlight result.title with query %}</a></h2>
                         {% else %}
-                            (unknown model name)
+                            {% if result.model_name == 'glossaryhelppage' %}
+                                <img src="/static/graphics/glossary-icon.jpg" alt="">
+                                <h2><a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% highlight result.title with query %}</a></h2>
+                            {% else %}
+                                (unknown model name)
+                            {% endif %}
                         {% endif %}
                     {% endif %}
                 {% endif %}
