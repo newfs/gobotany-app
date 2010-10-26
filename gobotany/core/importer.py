@@ -974,6 +974,9 @@ class Importer(object):
                 if created:
                     print >> self.logfile, u'  New Glossary Help page: ', \
                         help_page
+                # Assign all the terms to the help page.
+                for term in glossary:
+                    help_page.terms.add(term)
                 help_page.save()
 
 

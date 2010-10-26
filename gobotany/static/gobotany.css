@@ -349,13 +349,23 @@ ul#glossary_pages .chosen {
 }
 
 ul#glossary li {
-    padding: 4px 6px;
+    padding: 2px 8px 8px;
 }
 ul#glossary li:nth-child(odd) {
     background: #c3d69b;
 }
 ul#glossary li:nth-child(even) {
     background: #edf9d7;
+}
+ul#glossary li h2 {
+    clear: both;
+    font-size: 1.2em;
+    margin-bottom: 0.5em;
+    padding: 0;
+}
+ul#glossary li img {
+    display: block;
+    margin-top: 8px;
 }
 
 /* Subway map */

@@ -23,8 +23,8 @@ Glossary: {{ this_letter|upper }}
 <ul id="glossary">
   {% for term in glossary %}
     <li>
-      <b>{{ term.term|title }}.</b>
-      <span class="definition">{{ term.lay_definition }}</span>
+      <h2>{{ term.term }}</h2>
+      <span class="definition">{{ term.lay_definition|capfirst }}.</span>
       {% if term.image %}
         <img src="{{ term.image.url }}" alt="{{ term.term }}">
       {% endif %}

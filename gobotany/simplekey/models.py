@@ -1,5 +1,5 @@
 from django.db import models
-from gobotany.core.models import PileGroup
+from gobotany.core.models import GlossaryTerm, PileGroup
 
 
 class Blurb(models.Model):
@@ -94,6 +94,7 @@ class GlossaryHelpPage(models.Model):
     title = models.CharField(max_length=100)
     url_path = models.CharField(max_length=100)
     letter = models.CharField(max_length=1)
+    terms = models.ManyToManyField(GlossaryTerm)
 
     class Meta:
         verbose_name_plural = 'glossary help pages'
