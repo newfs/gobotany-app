@@ -907,11 +907,7 @@ class Importer(object):
         self._set_youtube_id('Remaining Non-Monocots', TEMP_VIDEO_ID1)
 
 
-    def _import_help(self):
-        print >> self.logfile, 'Setting up help pages and content'
-
-        # About Go-Botany page
-
+    def _create_about_gobotany_page(self):
         help_page, created = HelpPage.objects.get_or_create(
             title='About Go-Botany', url_path='/simple/help/')
         if created:
@@ -929,16 +925,32 @@ class Importer(object):
 
         help_page.save()
 
-        # Getting Started page
 
+    def _create_getting_started_page(self):
         help_page, created = HelpPage.objects.get_or_create(
             title='Getting Started', url_path='/simple/help/start/')
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
+
+        blurb, created = Blurb.objects.get_or_create(
+            name='getting_started',
+            text='this is the blurb called getting_started')
+        list_item, created = BlurbListItem.objects.get_or_create(
+            blurb=blurb, order=1)
+        help_page.blurbs.add(list_item)
+
+        TEMP_VIDEO_ID = 'LQ-jv8g1YVI'
+        blurb, created = Blurb.objects.get_or_create(
+            name='getting_started_youtube_id',
+            text=TEMP_VIDEO_ID)
+        list_item, created = BlurbListItem.objects.get_or_create(
+            blurb=blurb, order=1)
+        help_page.blurbs.add(list_item)
+
         help_page.save()
 
-        # Understanding Plant Collections page
 
+    def _create_understanding_plant_collections_page(self):
         help_page, created = HelpPage.objects.get_or_create(
             title='Understanding Plant Collections',
             url_path='/simple/help/collections/')
@@ -947,16 +959,16 @@ class Importer(object):
         help_page.save()
         # TODO: need to have all the piles & pile groups here somehow?
 
-        # Video Help Topics page
 
+    def _create_video_help_topics_page(self):
         help_page, created = HelpPage.objects.get_or_create(
             title='Video Help Topics', url_path='/simple/help/video/')
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
         help_page.save()
 
-        # TODO: loop through glossary letters and create a help page
-        # for each
+
+    def _create_glossary_pages(self):
         LETTERS = ('a b c d e f g h i j k l m n o p q r s t u v w x '
                    'y z').split(' ')
         for letter in LETTERS:
@@ -978,6 +990,18 @@ class Importer(object):
                 for term in glossary:
                     help_page.terms.add(term)
                 help_page.save()
+
+
+    def _import_help(self):
+        print >> self.logfile, 'Setting up help pages and content'
+
+        # Create Help page model records to be used for search engine indexing
+        # and ideally also by the page templates.
+        self._create_about_gobotany_page()
+        self._create_getting_started_page()
+        self._create_understanding_plant_collections_page()
+        self._create_video_help_topics_page()
+        self._create_glossary_pages()
 
 
 def main():
