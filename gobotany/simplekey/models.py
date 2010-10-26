@@ -64,7 +64,7 @@ class BlurbListItem(models.Model):
 
 class VideoListItem(models.Model):
     """For ordered lists of videos."""
-    blurb = models.ForeignKey(Video)
+    video = models.ForeignKey(Video)
     order = models.IntegerField()
 
     class Meta:
@@ -98,3 +98,6 @@ class GlossaryHelpPage(models.Model):
 
     class Meta:
         verbose_name_plural = 'glossary help pages'
+
+    def __unicode__(self):
+        return u'%s' % self.title

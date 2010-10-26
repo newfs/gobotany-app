@@ -956,8 +956,39 @@ class Importer(object):
             url_path='/simple/help/collections/')
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
+
+        # Add videos associated with each pile group and pile.
+        i = 0
+        pile_groups = models.PileGroup.objects.all()
+        for pile_group in pile_groups:
+            if len(pile_group.youtube_id) > 0:
+                print >> self.logfile, \
+                    u'    Pile group: %s - YouTube video id: %s' % \
+                    (pile_group.name, pile_group.youtube_id)
+                video, created = Video.objects.get_or_create(
+                    title=pile_group.name,
+                    youtube_id=pile_group.youtube_id)
+                if created:
+                    list_item, created = VideoListItem.objects.get_or_create(
+                        video=video, order=i)
+                    help_page.videos.add(list_item)
+                    i = i + 1
+            for pile in pile_group.piles.all():
+                if len(pile.youtube_id) > 0:
+                    print >> self.logfile, \
+                        u'      Pile: %s - YouTube video id: %s' % \
+                        (pile.name, pile.youtube_id)
+                    video, created = Video.objects.get_or_create(
+                        title=pile.name,
+                        youtube_id=pile.youtube_id)
+                    if created:
+                        list_item, created = \
+                            VideoListItem.objects.get_or_create(
+                                video=video, order=i)
+                        help_page.videos.add(list_item)
+                        i = i + 1
+
         help_page.save()
-        # TODO: need to have all the piles & pile groups here somehow?
 
 
     def _create_video_help_topics_page(self):

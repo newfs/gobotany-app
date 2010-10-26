@@ -4,3 +4,7 @@
     {{ blurb_list_item.blurb.name }}:
     {{ blurb_list_item.blurb.text }}
 {% endfor %}
+
+{% for video_list_item in object.videos.all %}
+    Video: {{ video_list_item.video.title }}
+{% endfor %}
