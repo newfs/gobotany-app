@@ -945,9 +945,43 @@ class Importer(object):
             text=TEMP_VIDEO_ID)
         list_item, created = BlurbListItem.objects.get_or_create(
             blurb=blurb, order=1)
-        help_page.blurbs.add(list_item)
 
         help_page.save()
+
+
+    def _get_pile_and_group_video_list_items(self, starting_order):
+        list_items = []
+        order = starting_order
+        
+        pile_groups = models.PileGroup.objects.all()
+        for pile_group in pile_groups:
+            if len(pile_group.youtube_id) > 0:
+                print >> self.logfile, \
+                    u'    Pile group: %s - YouTube video id: %s' % \
+                    (pile_group.name, pile_group.youtube_id)
+                video, created = Video.objects.get_or_create(
+                    title=pile_group.name,
+                    youtube_id=pile_group.youtube_id)
+                if video:
+                    list_item, created = VideoListItem.objects.get_or_create(
+                        video=video, order=order)
+                    list_items.append(list_item)
+                    order = order + 1
+            for pile in pile_group.piles.all():
+                if len(pile.youtube_id) > 0:
+                    print >> self.logfile, \
+                        u'      Pile: %s - YouTube video id: %s' % \
+                        (pile.name, pile.youtube_id)
+                    video, created = Video.objects.get_or_create(
+                        title=pile.name,
+                        youtube_id=pile.youtube_id)
+                    if video:
+                        list_item, created = \
+                            VideoListItem.objects.get_or_create(
+                                video=video, order=order)
+                        list_items.append(list_item)
+                        order = order + 1
+        return list_items
 
 
     def _create_understanding_plant_collections_page(self):
@@ -958,35 +992,10 @@ class Importer(object):
             print >> self.logfile, u'  New Help page: ', help_page
 
         # Add videos associated with each pile group and pile.
-        i = 0
-        pile_groups = models.PileGroup.objects.all()
-        for pile_group in pile_groups:
-            if len(pile_group.youtube_id) > 0:
-                print >> self.logfile, \
-                    u'    Pile group: %s - YouTube video id: %s' % \
-                    (pile_group.name, pile_group.youtube_id)
-                video, created = Video.objects.get_or_create(
-                    title=pile_group.name,
-                    youtube_id=pile_group.youtube_id)
-                if created:
-                    list_item, created = VideoListItem.objects.get_or_create(
-                        video=video, order=i)
-                    help_page.videos.add(list_item)
-                    i = i + 1
-            for pile in pile_group.piles.all():
-                if len(pile.youtube_id) > 0:
-                    print >> self.logfile, \
-                        u'      Pile: %s - YouTube video id: %s' % \
-                        (pile.name, pile.youtube_id)
-                    video, created = Video.objects.get_or_create(
-                        title=pile.name,
-                        youtube_id=pile.youtube_id)
-                    if created:
-                        list_item, created = \
-                            VideoListItem.objects.get_or_create(
-                                video=video, order=i)
-                        help_page.videos.add(list_item)
-                        i = i + 1
+        starting_order = 1
+        list_items = self._get_pile_and_group_video_list_items(starting_order)
+        for list_item in list_items:
+            help_page.videos.add(list_item)
 
         help_page.save()
 
@@ -996,6 +1005,23 @@ class Importer(object):
             title='Video Help Topics', url_path='/simple/help/video/')
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
+
+        # Add Getting Started video.
+        TEMP_VIDEO_ID = 'LQ-jv8g1YVI'
+        order = 1
+        video, created = Video.objects.get_or_create(
+            title='Getting Started', youtube_id=TEMP_VIDEO_ID)
+        if video:
+            list_item, created = VideoListItem.objects.get_or_create(
+                video=video, order=order)
+            help_page.videos.add(list_item)
+
+        # Add pile group and pile videos.
+        starting_order = order + 1
+        list_items = self._get_pile_and_group_video_list_items(starting_order)
+        for list_item in list_items:
+            help_page.videos.add(list_item)
+
         help_page.save()
 
 

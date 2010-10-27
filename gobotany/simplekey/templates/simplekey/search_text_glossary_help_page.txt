@@ -2,5 +2,4 @@
 
 {% for term in object.terms.all %}
     {{ term.term|capfirst }}: {{ term.lay_definition|capfirst }}.
-
 {% endfor %}
