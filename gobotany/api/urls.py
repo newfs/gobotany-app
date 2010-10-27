@@ -50,4 +50,7 @@ urlpatterns = patterns(
         Resource(handler=handlers.PileGroupHandler), name='api-pilegroup'),
 
     url(r'^glossaryblob/$', Resource(handler=handlers.GlossaryBlobHandler)),
+
+    url(r'^maps/(?P<genus>[^/]+)-(?P<specific_epithet>[^/]+)-distribution-map/$',
+        Resource(handler=handlers.DistributionMapHandler), name='distribution-map'),
     )

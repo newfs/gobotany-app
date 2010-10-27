@@ -443,3 +443,38 @@ class GlossaryBlobHandler(BaseHandler):
             else:
                 terms[term] = g.lay_definition
         return terms
+
+class DistributionMapHandler(BaseHandler):
+    methods_allowed = ('GET',)
+
+    def read(self, request, genus, specific_epithet):
+        """Return an SVG map of New England with counties that contain the
+        species shaded in."""
+
+        MAP_NEW = '/Users/sidkoul/gobotany-root/gobotany/src/gobotany/static/graphics/new.svg'
+        MAP_FILE = '/Users/sidkoul/gobotany-root/gobotany/src/gobotany/static/graphics/new-england-counties.svg'
+        from django.http import HttpResponse
+        from xml.etree.ElementTree import ElementTree as et
+        from xml.etree.ElementTree import parse
+
+        name = ' '.join([genus.title(), specific_epithet.lower()])
+        taxon = models.Taxon.objects.filter(scientific_name=name)
+        distribution = []
+        if len(taxon) > 0:
+            states = taxon[0].distribution.split('|')
+            distribution = [state.strip() for state in states]
+
+        tree = parse(MAP_FILE)
+        nodes = tree.findall('{http://www.w3.org/2000/svg}path')
+        for node in nodes:
+            if '{http://www.inkscape.org/namespaces/inkscape}label' in node.keys():
+                current_label = node.attrib['{http://www.inkscape.org/namespaces/inkscape}label']    # e.g. Haartford, CT
+                current_state = current_label[-2:]                                                     # e.g. CT
+                if current_state in distribution:
+                    style = "font-size:12px;fill:#ff0000;fill-rule:nonzero;stroke:#000000;stroke-width:0.35030233999999999;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+                    node.set('style', style)
+
+        tree.write(MAP_NEW)
+
+        if taxon:
+            return HttpResponse(open(MAP_NEW), mimetype="image/svg+xml")

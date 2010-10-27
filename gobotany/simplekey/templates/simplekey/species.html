@@ -82,7 +82,7 @@
           <p><strong>CT:</strong> {{ states_status.CT }}</p>
           <p><strong>RI:</strong> {{ states_status.RI }}</p>
           </div>
-          
+
           <h3>Wetland Status</h3>
           <p>
               {{ wetland_status }}
@@ -106,7 +106,7 @@
                   title="distribution map for {{ scientific_name }}">
           <![endif]-->
           <!--[if !IE]>-->
-          <object data="/static/graphics/new-england-counties.svg"
+          <object data="/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map/"
                   type="image/svg+xml" id="dist-county-map"
                   title="distribution map for {{ scientific_name }}">
           <!--<![endif]-->

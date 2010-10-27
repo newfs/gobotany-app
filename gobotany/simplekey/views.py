@@ -220,6 +220,7 @@ def species_view(request,  genus_slug, specific_epithet_slug,
            'characteristics': _get_species_characteristics(pile, taxon),
            'wetland_status': _get_wetland_status(taxon.wetland_status),
            'lookalikes': lookalikes,
+           'specific_epithet': specific_epithet_slug,
            }, context_instance=RequestContext(request))
 
 def genus_view(request, genus_slug):
