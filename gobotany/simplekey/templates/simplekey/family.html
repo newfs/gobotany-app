@@ -7,7 +7,13 @@
 {% block content %}
   <h1>Family {{ item.name }}</h1>
   <div id="family">
-    <div id="taxon-photos">
+    <h2>{% if item.common_name %}
+            {{ item.common_name }}
+        {% else %}
+            Common name here
+        {% endif %}</h2>
+
+    <div id="images">
       <h3>Images</h3>
       <ul>
         {% for i in item_images %}
@@ -21,24 +27,24 @@
         <a class="prev" href="#">Prev</a> | <a class="next" href="#">Next</a>
       </div>
     </div>
-    <div id="taxon-info">
-      <dl>
-        <dt>Family:</dt>
-        <dd>{{ item.name }}</dd>
-        
-        <dt>Common Name:</dt>
-        <dd>{{ item.common_name }}</dd>
-        
-        <dt>Description:</dt>
-        <dd>{{ item.description }}</dd>
-      </dl>
-      <h3>Genera:</h3>
+
+    <div id="info">
+      <h3>Description</h3>
+      <p>{% if item.description %}
+             {{ item.description }}
+         {% else %}
+             This is a placeholder description. (Test glossary highlighting with
+             the term monomorphic here.)
+         {% endif %}</p>
+
+      <h3>Genera</h3>
       <ul class="Genera">
         {% for genus in item.genera.all %}
         <li><em><a href="../../genera/{{ genus.slug }}/">{{ genus.name }}</a></em></li>
         {% endfor %}
       </ul>
-      <h3>Species:</h3>
+
+      <h3>Species</h3>
       <ul class="Species">
         {% for species in item.taxa.all %}
         <li><a href="/simple/species/{{ species.scientific_name|split:' '|at_index:'0'|lower }}/{{ species.scientific_name|split:' '|at_index:'1'|lower }}/"><em>{{ species.scientific_name }}</em></a></li>
@@ -46,7 +52,8 @@
         {% endfor %}
       </ul>
     </div>
-    <div id="taxon-drawings">
+
+    <div id="drawings">
       <ul>
         {% for i in item_drawings %}
         <li>
@@ -59,4 +66,13 @@
       </ul>
     </div>
   </div>
+{% endblock %}
+
+{% block js_bottom %}
+  <script>
+      dojo.require('gobotany.sk.family');
+      dojo.addOnLoad(function() {
+          gobotany.sk.family.init();
+      });
+  </script>
 {% endblock %}

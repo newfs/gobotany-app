@@ -7,6 +7,11 @@
 {% block content %}
   <h1>Genus <em>{{ item.name }}</em></h1>
   <div id="genus">
+    <h2>{% if item.common_name %}
+            {{ item.common_name }}
+        {% else %}
+            Common name here
+        {% endif %}</h2>
     <div id="taxon-photos">
       <h3>Images</h3>
       <ul>
@@ -23,12 +28,6 @@
     </div>
     <div id="taxon-info">
       <dl>
-        <dt>Genus:</dt>
-        <dd>{{ item.name }}</dd>
-        
-        <dt>Common Name:</dt>
-        <dd>{{ item.common_name }}</dd>
-        
         <dt>Family:</dt>
         <dd><a href="../../families/{{ item.family.slug }}">{{ item.family.name }}</a></dd>
         

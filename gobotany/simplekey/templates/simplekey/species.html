@@ -17,7 +17,11 @@
   <h1><em>{{ scientific_name }}</em>
       <span class="auth">{{ taxon.taxonomic_authority }}</span></h1>
   <div id="species">
-      <h2>Common name here</h2>
+    <h2>{% if taxon.common_name %}
+            {{ taxon.common_name }}
+        {% else %}
+            Common name here
+        {% endif %}</h2>
       <div id="images">
           <h3>Images</h3>
           <p>
@@ -34,9 +38,15 @@
           <p class="nav"><a href="#">&lt; prev</a> <span>? of ?</span>
              <a href="#">next &gt;</a></p>
       </div>
+
       <div id="info">
           <h3>Description</h3>
-          <p>{{ taxon.description }}</p>
+          <p>{% if taxon.description %}
+                 {{ taxon.description }}
+             {% else %}
+                 This is a placeholder description. (Test glossary highlighting with
+                 the term monomorphic here.)
+             {% endif %}</p>
 
           <h3>Characteristics</h3>
           {% if characteristics %}

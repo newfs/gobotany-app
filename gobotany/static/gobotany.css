@@ -720,16 +720,16 @@ input.filter_int2 {
     font-weight: normal;
 }
 
-#species h2 {
+#species h2, #family h2, #genus h2 {
     font-size: 1.2em;
 }
 
-#species h3 {
+#species h3, #family h3, #genus h3 {
     clear: left;
     font-weight: bold;
     margin-top: 1em;
 }
-#species h3:first-child {
+#species h3:first-child, #family h3:first-child {
     margin-top: 0;
 }
 
@@ -741,23 +741,23 @@ input.filter_int2 {
     margin-left: 2em;
 }
 
-#species > div {
+#species > div, #family > div {
     float: left;
     font-size: 0.8em;
     margin-right: 16px;
 }
 
-#species > div div {
+#species > div div, #family > div div {
     float: left;
     margin-bottom: 0.5em;
     margin-right: 1em;
 }
 
-#species #images {
+#species #images, #family #images {
     width: 350px;
 }
 
-#species #images img {
+#species #images img, #family #images img {
     max-width: 350px;
 }
 
@@ -769,10 +769,10 @@ input.filter_int2 {
     padding: 0 1em;
 }
 
-#species #info {
+#species #info, #family #info {
     width: 300px;
 }
-#species #more-info {
+#species #more-info, #family #drawings {
     width: 250px;
 }
 
@@ -786,67 +786,16 @@ input.filter_int2 {
     margin: 0.5em 0 0.5em 2em;
 }
 
-/* genus/family pages */
-#taxon-photos {
-    float: left;
-    width: 320px;
-    min-height: 600px;
-    overflow: hidden;
+#drawings {
+    min-height: 400px;
 }
 
-#taxon-photos ul {
-    width: 1000000px;
-    height: 540px;
-}
-
-#taxon-photos li {
-    float: left;
-    width: 320px;
-    overflow: hidden;
-}
-
-#taxon-photos .Navigation {
-    text-align: center;
-}
-
-#taxon-info {
-    float: left;
-    width: 400px;
-    margin: 0 20px;
-    min-height: 600px;
-    background-color: #D8E8C8;
-}
-
-#taxon-info dl {
-    margin: 20px 5px;
-}
-
-#taxon-info dd {
-    margin-bottom: 2em;
-}
-
-#taxon-info li {
-    list-style-type: square;
-    margin-left: 2em;
-}
-
-#taxon-info ul.Genera {
-    margin-bottom: 2em;
-}
-
-#taxon-drawings {
-    float: left;
-    width: 200px;
-    min-height: 600px;
-    background-color: #D8E8C8;
-}
-
-#taxon-drawings ul {
+#drawings ul {
     margin: 20px auto;
     text-align: center;
 }
 
-#taxon-drawings li .ItemDrawing {
+#drawings li .ItemDrawing {
     width: 150px;
     height: 150px;
     margin: 0 auto;
@@ -854,7 +803,7 @@ input.filter_int2 {
     text-align: center;
 }
 
-#taxon-drawings li img {
+#drawings li img {
     margin: 20px 0;
 }
 
