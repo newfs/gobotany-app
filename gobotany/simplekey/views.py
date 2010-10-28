@@ -4,9 +4,9 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from gobotany.core import botany
-from gobotany.core.models import GlossaryTerm, Pile, PileGroup, Genus, Family
-from gobotany.core.models import Taxon, TaxonCharacterValue, Lookalike
-from gobotany.simplekey.models import Page, get_blurb
+from gobotany.core.models import GlossaryTerm, Pile, PileGroup, Genus, \
+    Family, Taxon, TaxonCharacterValue, Lookalike
+from gobotany.simplekey.models import Page, get_blurb, HelpPage
 
 
 def get_simple_url(item):
@@ -246,7 +246,6 @@ def family_view(request, family_slug):
            'item_drawings': family_drawings,
            }, context_instance=RequestContext(request))
 
-
 def help_about_view(request):
     return render_to_response('simplekey/help_about.html', {
            'section_1_heading_blurb': get_blurb('section_1_heading'),
@@ -305,32 +304,19 @@ def _get_pile_dict(pile_name):
     return {'title': pile_name, 'youtube_id': _get_pile_youtube_id(pile_name)}
 
 def help_video_view(request):
-    # The Getting Started video is first, followed by the pile
-    # groups and piles in what is meant to be a reasonable
-    # "collections order", i.e., each pile group in order it is
-    # presented in the UI followed by the piles that belong to that group).
+    # The Getting Started video is first, followed by videos for the pile
+    # groups and piles in the order that they are presented in the stepwise
+    # pages at the beginning of plant identification.
     videos = [{'title': 'Getting Started',
                'youtube_id': get_blurb('getting_started_youtube_id')}]
-    videos.append(_get_pilegroup_dict('Ferns'))
-    videos.append(_get_pile_dict('Equisetaceae'))
-    videos.append(_get_pile_dict('Lycophytes'))
-    videos.append(_get_pile_dict('Monilophytes'))
-    videos.append(_get_pilegroup_dict('Woody Plants'))
-    videos.append(_get_pile_dict('Woody Angiosperms'))
-    videos.append(_get_pile_dict('Woody Gymnosperms'))
-    videos.append(_get_pilegroup_dict('Aquatic Plants'))
-    videos.append(_get_pile_dict('Non-Thalloid Aquatic'))
-    videos.append(_get_pile_dict('Thalloid Aquatic'))
-    videos.append(_get_pilegroup_dict('Graminoids'))
-    videos.append(_get_pile_dict('Carex'))
-    videos.append(_get_pile_dict('Poaceae'))
-    videos.append(_get_pile_dict('Remaining Graminoids'))
-    videos.append(_get_pilegroup_dict('Monocots'))
-    videos.append(_get_pile_dict('Non-Orchid Monocots'))
-    videos.append(_get_pile_dict('Orchid Monocots'))
-    videos.append(_get_pilegroup_dict('Non-Monocots'))
-    videos.append(_get_pile_dict('Composites'))
-    videos.append(_get_pile_dict('Remaining Non-Monocots'))
+
+    pages = Page.objects.order_by('number').all()
+    for page in pages:
+        for pilegroup in page.pilegroups.all():
+            videos.append(_get_pilegroup_dict(pilegroup.name))
+            for pile in pilegroup.piles.all():
+                videos.append(_get_pile_dict(pile.name))
+
     return render_to_response('simplekey/help_video.html', {
            'videos': videos,
            }, context_instance=RequestContext(request))

@@ -952,9 +952,12 @@ class Importer(object):
     def _get_pile_and_group_videos(self, starting_order):
         videos = []
         order = starting_order
-        
-        # TODO: consider how to create these in the preferred UI order
-        # (as given to the user on the initial pages) instead of alpha order.
+
+        # Note: Would rather have created pile and pile group videos in the
+        # order in which they are presented to the user on the initial pages
+        # of the Simple Key (as done in the help_collections view and
+        # template). But, the data for the initial pages is currently loaded
+        # via fixture after the importer finishes, so it's not available here.
         pile_groups = models.PileGroup.objects.all()
         for pile_group in pile_groups:
             if len(pile_group.youtube_id) > 0:
