@@ -1,9 +1,9 @@
 {{ object.title }}
 
-{% for blurb_list_item in object.blurbs.all %}
-    {{ blurb_list_item.blurb.text }}
+{% for blurb in object.blurbs.all %}
+    {{ blurb.text }}
 {% endfor %}
 
-{% for video_list_item in object.videos.all %}
-    Video: {{ video_list_item.video.title }}.
+{% for video in object.videos.all %}
+    Video: {{ video.title }}.
 {% endfor %}

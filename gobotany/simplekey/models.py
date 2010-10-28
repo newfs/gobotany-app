@@ -53,30 +53,12 @@ class Video(models.Model):
         return u'%s: %s' % (self.title, self.youtube_id)
 
 
-class BlurbListItem(models.Model):
-    """For ordered lists of blurbs."""
-    blurb = models.ForeignKey(Blurb)
-    order = models.IntegerField()
-
-    class Meta:
-        ordering = ['order']
-
-
-class VideoListItem(models.Model):
-    """For ordered lists of videos."""
-    video = models.ForeignKey(Video)
-    order = models.IntegerField()
-
-    class Meta:
-        ordering = ['order']
-
-
 class HelpPage(models.Model):
     """Outline of the contents of a Help page."""
     title = models.CharField(max_length=100)
     url_path = models.CharField(max_length=100)
-    blurbs = models.ManyToManyField(BlurbListItem)
-    videos = models.ManyToManyField(VideoListItem)
+    blurbs = models.ManyToManyField(Blurb)
+    videos = models.ManyToManyField(Video)
     
     class Meta:
         verbose_name_plural = 'help pages'
