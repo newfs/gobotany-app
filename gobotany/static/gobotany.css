@@ -761,11 +761,11 @@ input.filter_int2 {
     max-width: 350px;
 }
 
-#species #images .nav {
+#species #images .nav, #family #images .nav {
     text-align: center;
 }
 
-#species #images .nav a {
+#species #images .nav a, #family #images .nav a {
     padding: 0 1em;
 }
 

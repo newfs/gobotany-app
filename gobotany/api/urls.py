@@ -53,4 +53,7 @@ urlpatterns = patterns(
 
     url(r'^maps/(?P<genus>[^/]+)-(?P<specific_epithet>[^/]+)-distribution-map/$',
         Resource(handler=handlers.DistributionMapHandler), name='distribution-map'),
+
+    url(r'^families/(?P<family_slug>[^/]+)/$',
+        Resource(handler=handlers.FamilyHandler), name='api-family'),
     )

@@ -478,3 +478,17 @@ class DistributionMapHandler(BaseHandler):
 
         if taxon:
             return HttpResponse(open(MAP_NEW), mimetype="image/svg+xml")
+
+
+class FamilyHandler(BaseHandler):
+    methods_allowed = ('GET',)
+    
+    def read(self, request, family_slug):
+        family = models.Family.objects.filter(slug=family_slug)[0]
+        images = family.images.all() # TODO: filter image_type 'example image'
+        drawings = family.images.all() # TODO: filter image_type 'example drawing'
+        return {'name': family.name,
+                'slug': family.slug,
+                'images': images,
+                'drawings': drawings}
+        
