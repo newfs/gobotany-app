@@ -10,7 +10,7 @@ gobotany.sk.family.init = function(family_slug) {
     var msg = dojo.query('#family #images span')[0];
 
     // Load the family URL and set up the images.
-    family_url = '/families/' + family_slug + '/';
+    var family_url = '/families/' + family_slug + '/';
     var family_store = new dojox.data.JsonRestStore({target: family_url});
     // TODO: call family URL as is done with taxon URL for species pages
 

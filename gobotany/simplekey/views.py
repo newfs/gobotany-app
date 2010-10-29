@@ -225,7 +225,14 @@ def species_view(request,  genus_slug, specific_epithet_slug,
 
 def genus_view(request, genus_slug):
     genus = get_object_or_404(Genus, slug=genus_slug.lower())
+
     genus_images = genus.images.filter(image_type__name='example image')
+    # If no genus images are set, use the images from a species for now.
+    if not genus_images:
+        species = genus.taxa.all()
+        for s in species:
+            genus_images = botany.species_images(s)
+
     genus_drawings = genus.images.filter(image_type__name='example drawing')
     return render_to_response('simplekey/genus.html', {
            'item': genus,

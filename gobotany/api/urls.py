@@ -56,4 +56,7 @@ urlpatterns = patterns(
 
     url(r'^families/(?P<family_slug>[^/]+)/$',
         Resource(handler=handlers.FamilyHandler), name='api-family'),
+        
+    url(r'^genera/(?P<genus_slug>[^/]+)/$',
+        Resource(handler=handlers.GenusHandler), name='api-genus'),
     )

@@ -729,7 +729,7 @@ input.filter_int2 {
     font-weight: bold;
     margin-top: 1em;
 }
-#species h3:first-child, #family h3:first-child {
+#species h3:first-child, #family h3:first-child, #genus h3:first-child {
     margin-top: 0;
 }
 
@@ -741,38 +741,38 @@ input.filter_int2 {
     margin-left: 2em;
 }
 
-#species > div, #family > div {
+#species > div, #family > div, #genus > div {
     float: left;
     font-size: 0.8em;
     margin-right: 16px;
 }
 
-#species > div div, #family > div div {
+#species > div div, #family > div div, #genus > div div {
     float: left;
     margin-bottom: 0.5em;
     margin-right: 1em;
 }
 
-#species #images, #family #images {
+#species #images, #family #images, #genus #images {
     width: 350px;
 }
 
-#species #images img, #family #images img {
+#species #images img, #family #images img, #genus #images img {
     max-width: 350px;
 }
 
-#species #images .nav, #family #images .nav {
+#species #images .nav, #family #images .nav, #genus #images .nav {
     text-align: center;
 }
 
-#species #images .nav a, #family #images .nav a {
+#species #images .nav a, #family #images .nav a, #genus #images .nav a {
     padding: 0 1em;
 }
 
-#species #info, #family #info {
+#species #info, #family #info, #genus #info {
     width: 300px;
 }
-#species #more-info, #family #drawings {
+#species #more-info, #family #drawings, #genus #drawings {
     width: 250px;
 }
 

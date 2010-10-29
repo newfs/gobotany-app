@@ -12,36 +12,45 @@
         {% else %}
             Common name here
         {% endif %}</h2>
-    <div id="taxon-photos">
+
+    <div id="images">
       <h3>Images</h3>
-      <ul>
-        {% for i in item_images %}
-        <li class="ItemImage">
-         <img src="{% thumbnail i.image 320x540  %}" alt="{{ i.alt }}" />
-         <h4>{{ i.alt }}</h4>
-        </li>
-        {% endfor %} 
-      </ul>
-      <div class="Navigation">
-        <a class="prev" href="#">Prev</a> | <a class="next" href="#">Next</a>
-      </div>
+      <p>
+          {% if item_images %}
+              {% for i in item_images %}
+                  {% if forloop.first %}
+                      <img src="{{ i.image.url }}">
+                  {% endif %}
+              {% endfor %}
+          {% else %}
+              <p>(missing)</p>
+          {% endif %}
+      </p>
+      <p class="nav"><a href="#">&lt; prev</a> <span>? of ?</span>
+          <a href="#">next &gt;</a></p>
     </div>
-    <div id="taxon-info">
-      <dl>
-        <dt>Family:</dt>
-        <dd><a href="../../families/{{ item.family.slug }}">{{ item.family.name }}</a></dd>
-        
-        <dt>Description:</dt>
-        <dd>{{ item.description }}</dd>
-      </dl>
-      <h3>Species:</h3>
-      <ul class="species">
-        {% for species in item.taxa.all %}
-        <li><a href="/simple/species/{{ species.scientific_name|split:' '|at_index:'0'|lower }}/{{ species.scientific_name|split:' '|at_index:'1'|lower }}/"><em>{{ species.scientific_name }}</em></a></li>
-        {% endfor %}
-      </ul>
+
+    <div id="info">
+        <h3>Family</h3>
+        <p><a href="../../families/{{ item.family.slug }}">{{ item.family.name }}</a></p>
+
+        <h3>Description</h3>
+        <p>{% if item.description %}
+               {{ item.description }}
+           {% else %}
+               This is a placeholder description. (Test glossary highlighting with
+               the term monomorphic here.)
+           {% endif %}</p>
+
+        <h3>Species:</h3>
+        <ul class="species">
+            {% for species in item.taxa.all %}
+            <li><a href="/simple/species/{{ species.scientific_name|split:' '|at_index:'0'|lower }}/{{ species.scientific_name|split:' '|at_index:'1'|lower }}/"><em>{{ species.scientific_name }}</em></a></li>
+            {% endfor %}
+        </ul>
     </div>
-    <div id="taxon-drawings">
+
+    <div id="drawings">
       <ul>
         {% for i in item_drawings %}
         <li>
@@ -54,4 +63,13 @@
       </ul>
     </div>
   </div>
+{% endblock %}
+
+{% block js_bottom %}
+  <script>
+      dojo.require('gobotany.sk.genus');
+      dojo.addOnLoad(function() {
+          gobotany.sk.genus.init('{{ item.slug }}');
+      });
+  </script>
 {% endblock %}

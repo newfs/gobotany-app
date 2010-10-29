@@ -491,4 +491,16 @@ class FamilyHandler(BaseHandler):
                 'slug': family.slug,
                 'images': images,
                 'drawings': drawings}
-        
+
+
+class GenusHandler(BaseHandler):
+    methods_allowed = ('GET',)
+    
+    def read(self, request, genus_slug):
+        genus = models.Genus.objects.filter(slug=genus_slug)[0]
+        images = genus.images.all() # TODO: filter image_type 'example image'
+        drawings = genus.images.all() # TODO: filter image_type 'example drawing'
+        return {'name': genus.name,
+                'slug': genus.slug,
+                'images': images,
+                'drawings': drawings}
