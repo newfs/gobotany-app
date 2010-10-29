@@ -51,6 +51,7 @@
     </div>
 
     <div id="drawings">
+      {% if item_drawings %}
       <ul>
         {% for i in item_drawings %}
         <li>
@@ -61,7 +62,23 @@
         </li>
         {% endfor %}
       </ul>
+      {% else %}
+          {# temporary dummy presentation until we have data #}
+          <div>
+              <img src="" alt="placeholder image 1">
+              <p>placeholder caption 1</p>
+          </div>
+          <div>
+              <img src="" alt="placeholder image 2">
+              <p>placeholder caption 2</p>
+          </div>
+          <div>
+              <img src="" alt="placeholder image 3">
+              <p>placeholder caption 3</p>
+          </div>
+      {% endif %}
     </div>
+
   </div>
 {% endblock %}
 
