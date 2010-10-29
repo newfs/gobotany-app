@@ -227,6 +227,7 @@ p {
 
 #filter-working .values label {
     display: block;
+    line-height: 1.2em;
 }
 
 #filter-working .values input {

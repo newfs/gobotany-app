@@ -719,10 +719,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             var pretty1 = gobotany.utils.pretty_length(unit, filter.values.min);
             var pretty2 = gobotany.utils.pretty_length(unit, filter.values.max);
             var label = dojo.place('<label>Select a length between<br>' +
-                                   pretty1.metric + ' ('+pretty1.imperial+')' +
-                                   ' and ' +
-                                   pretty2.metric + ' ('+pretty2.imperial+')' +
-                                   '<br></label>',
+                                   pretty1.metric + ' ('+ pretty1.imperial +
+                                   ')' + ' and ' +
+                                   pretty2.metric + ' ('+ pretty2.imperial +
+                                   ')' + '<br></label>',
                                    valuesList);
 
             var input = dojo.create('input', {

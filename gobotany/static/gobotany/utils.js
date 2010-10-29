@@ -68,7 +68,7 @@ gobotany.utils.pretty_length = function(unit, value) {
     }
 
     var ret = {
-        metric: String(value.toFixed(2)) + unit
+        metric: String(value.toFixed(1)) + ' ' + unit
     };
 
     var valuemm = value;
@@ -83,12 +83,12 @@ gobotany.utils.pretty_length = function(unit, value) {
     var remaining = null;
     if (inches > 12) {
         var feet = inches / 12;
-        feet = feet.toFixed(2);
+        feet = feet.toFixed(1);
         inches = inches % 12;
-        inches = inches.toFixed(2);
+        inches = inches.toFixed(1);
         remaining = String(feet) + "'" + String(inches) + '"';
     } else {
-        inches = inches.toFixed(2);
+        inches = inches.toFixed(1);
         remaining = String(inches) + '"'
     }
 
