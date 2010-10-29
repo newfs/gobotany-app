@@ -697,12 +697,8 @@ by javascript, see gobotany.sk.results.notify() */
     padding: 0.25em 0.75em;
 }
 
-input.filter_int {
-    width: 5em;
-}
-
-input.filter_int2 {
-    width: 5em;
+input.filter_int, input.filter_int2 {
+    width: 5.5em;
 }
 
 /* Highlighted glossary words in text. */
