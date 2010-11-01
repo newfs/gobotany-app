@@ -499,3 +499,41 @@ class CharacterValuesTestCase(TestCase):
     def test_get_returns_not_found_when_nonexistent_character(self):
         response = self.client.get('/piles/pile1/nochar/')
         self.assertEqual(404, response.status_code)
+
+
+class FamilyTestCase(TestCase):
+    def setUp(self):
+        _setup_sample_data()
+        self.client = Client()
+
+    def test_get_returns_ok(self):
+        response = self.client.get('/families/fooaceae/')
+        self.assertEqual(200, response.status_code)
+
+    def test_get_returns_json(self):
+        response = self.client.get('/families/fooaceae/')
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
+
+    def test_get_returns_not_found_when_nonexistent_family(self):
+        response = self.client.get('/families/no-family/')
+        self.assertEqual(404, response.status_code)
+
+
+class GenusTestCase(TestCase):
+    def setUp(self):
+        _setup_sample_data()
+        self.client = Client()
+
+    def test_get_returns_ok(self):
+        response = self.client.get('/genera/fooium/')
+        self.assertEqual(200, response.status_code)
+
+    def test_get_returns_json(self):
+        response = self.client.get('/genera/fooium/')
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
+
+    def test_get_returns_not_found_when_nonexistent_genus(self):
+        response = self.client.get('/genera/no-genus/')
+        self.assertEqual(404, response.status_code)

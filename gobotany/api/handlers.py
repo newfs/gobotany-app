@@ -484,7 +484,10 @@ class FamilyHandler(BaseHandler):
     methods_allowed = ('GET',)
     
     def read(self, request, family_slug):
-        family = models.Family.objects.filter(slug=family_slug)[0]
+        try:
+            family = models.Family.objects.get(slug=family_slug)
+        except (models.Family.DoesNotExist):
+            return rc.NOT_FOUND
         images = family.images.all() # TODO: filter image_type 'example image'
         drawings = family.images.all() # TODO: filter image_type 'example drawing'
         return {'name': family.name,
@@ -497,7 +500,10 @@ class GenusHandler(BaseHandler):
     methods_allowed = ('GET',)
     
     def read(self, request, genus_slug):
-        genus = models.Genus.objects.filter(slug=genus_slug)[0]
+        try:
+            genus = models.Genus.objects.get(slug=genus_slug)
+        except (models.Genus.DoesNotExist):
+            return rc.NOT_FOUND
         images = genus.images.all() # TODO: filter image_type 'example image'
         drawings = genus.images.all() # TODO: filter image_type 'example drawing'
         return {'name': genus.name,
