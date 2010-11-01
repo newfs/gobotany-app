@@ -45,9 +45,9 @@ class SampleData(TestCase):
         self.create(models.Family, 'Felidae')
         self.create(models.Family, 'Leporidae')
 
-        self.create(models.Genus, 'Vulpes')
-        self.create(models.Genus, 'Felis')
-        self.create(models.Genus, 'Oryctolagus')
+        self.create(models.Genus, 'Vulpes', family=self.canidae)
+        self.create(models.Genus, 'Felis', family=self.felidae)
+        self.create(models.Genus, 'Oryctolagus', family=self.leporidae)
 
         self.create(models.Taxon, 'fox', family=self.canidae, genus=self.vulpes)
         self.create(models.Taxon, 'cat', family=self.felidae, genus=self.felis)

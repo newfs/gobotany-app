@@ -51,11 +51,13 @@ def _setup_sample_data(load_images=False):
     pile2.pilegroup = pilegroup2
     pile2.save()
 
-    famfoo, c = models.Family.objects.get_or_create(name='Fooaceae')
-    fambaz, c = models.Family.objects.get_or_create(name='Bazaceae')
-
-    genfoo, c = models.Genus.objects.get_or_create(name='Fooium')
-    genbaz, c = models.Genus.objects.get_or_create(name='Bazia')
+    famfoo, created = models.Family.objects.get_or_create(name='Fooaceae')
+    fambaz, created = models.Family.objects.get_or_create(name='Bazaceae')
+    
+    genfoo, created = models.Genus.objects.get_or_create(name='Fooium',
+                      family=famfoo)
+    genbaz, created = models.Genus.objects.get_or_create(name='Bazia',
+                      family=fambaz)
 
     foo = models.Taxon(family=famfoo, genus=genfoo, 
         scientific_name='Fooium fooia')
@@ -203,9 +205,10 @@ class TaxonListTestCase(TestCase):
         
     def test_get_with_char_param_returns_no_items_if_bad_char_value(self):
         response = self.client.get('/taxon/?c1=badvalue')
-        expected = {'items': [],
-                    'identifier': 'scientific_name',
-                    'label': 'scientific_name'}
+        expected = {u'items': [],
+                    u'identifier': u'scientific_name',
+                    u'value_counts': [],
+                    u'label': u'scientific_name'}
         self.assertEqual(expected, json.loads(response.content))
 
 
