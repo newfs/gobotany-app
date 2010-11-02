@@ -3,11 +3,11 @@ dojo.provide('gobotany.sk.genus');
 dojo.require('dojox.data.JsonRestStore');
 
 dojo.require('gobotany.sk.glossarize');
-dojo.require('gobotany.sk.image_browse');
+dojo.require('gobotany.sk.images.ImageBrowser');
 
 gobotany.sk.genus.init = function(genus_slug) {
-    var img = dojo.query('#genus #images img')[0];
-    var msg = dojo.query('#genus #images span')[0];
+    var image_browser = gobotany.sk.images.ImageBrowser();
+    image_browser.css_selector = '#genus #images';
 
     // Load the genus URL and set up the images.
     var genus_url = '/genera/' + genus_slug + '/';
