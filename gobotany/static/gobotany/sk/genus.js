@@ -12,8 +12,18 @@ gobotany.sk.genus.init = function(genus_slug) {
     // Load the genus URL and set up the images.
     var genus_url = '/genera/' + genus_slug + '/';
     var genus_store = new dojox.data.JsonRestStore({target: genus_url});
-    // TODO: call genus URL as is done with taxon URL for species pages
+    genus_store.fetch({
+        onComplete: function(genus) {
+            if (genus.images.length) {
+                // Store the info for the images to allow for browsing them.
+                for (var i = 0; i < genus.images.length; i++) {
+                    image_browser.images.push(genus.images[i]);
+                }
+            }
 
+            image_browser.setup();
+        }
+    });
 
     // Make glossary highlights appear where appropriate throughout the page.
     var glossarizer = gobotany.sk.results.Glossarizer();

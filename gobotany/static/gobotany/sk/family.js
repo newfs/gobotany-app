@@ -12,8 +12,18 @@ gobotany.sk.family.init = function(family_slug) {
     // Load the family URL and set up the images.
     var family_url = '/families/' + family_slug + '/';
     var family_store = new dojox.data.JsonRestStore({target: family_url});
-    // TODO: call family URL as is done with taxon URL for species pages
+    family_store.fetch({
+        onComplete: function(family) {
+            if (family.images.length) {
+                // Store the info for the images to allow for browsing them.
+                for (var i = 0; i < family.images.length; i++) {
+                    image_browser.images.push(family.images[i]);
+                }
+            }
 
+            image_browser.setup();
+        }
+    });
 
     // Make glossary highlights appear where appropriate throughout the page.
     var glossarizer = gobotany.sk.results.Glossarizer();

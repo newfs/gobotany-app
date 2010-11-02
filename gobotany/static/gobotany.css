@@ -759,6 +759,7 @@ input.filter_int, input.filter_int2 {
 }
 
 #species #images .nav, #family #images .nav, #genus #images .nav {
+    display: none;
     text-align: center;
 }
 

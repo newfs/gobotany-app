@@ -488,8 +488,16 @@ class FamilyHandler(BaseHandler):
             family = models.Family.objects.get(slug=family_slug)
         except (models.Family.DoesNotExist):
             return rc.NOT_FOUND
-        images = family.images.all() # TODO: filter image_type 'example image'
+
+        #images = family.images.all() # TODO: filter image_type 'example image'
+        # For now, just use all the images from this family's species.
+        images = []
+        taxa = models.Taxon.objects.filter(family=family)
+        for taxon in taxa:
+            images = images + [_taxon_image(i) for i in taxon.images.all()]
+
         drawings = family.images.all() # TODO: filter image_type 'example drawing'
+
         return {'name': family.name,
                 'slug': family.slug,
                 'images': images,
@@ -504,8 +512,16 @@ class GenusHandler(BaseHandler):
             genus = models.Genus.objects.get(slug=genus_slug)
         except (models.Genus.DoesNotExist):
             return rc.NOT_FOUND
-        images = genus.images.all() # TODO: filter image_type 'example image'
+        
+        #images = genus.images.all() # TODO: filter image_type 'example image'
+        # For now, just use all the images from this genus's species.
+        images = []
+        taxa = models.Taxon.objects.filter(genus=genus)
+        for taxon in taxa:
+            images = images + [_taxon_image(i) for i in taxon.images.all()]
+
         drawings = genus.images.all() # TODO: filter image_type 'example drawing'
+        
         return {'name': genus.name,
                 'slug': genus.slug,
                 'images': images,

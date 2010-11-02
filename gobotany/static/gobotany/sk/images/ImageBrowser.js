@@ -22,11 +22,13 @@ dojo.declare('gobotany.sk.images.ImageBrowser', null, {
 
         // Clear the image and message.
         dojo.attr(this.image_node, 'src', '');
-        dojo.attr(this.image_node, 'alt', 'image_not_available');
-        this.message_node.innerHTML = '';
+        dojo.attr(this.image_node, 'alt', 'not available');
+        this.message_node.innerHTML = ''
 
         // Set whichever image is to be the first one shown.
-        this.set_image(this.first_image_index);
+        if (this.images.length > 0) {
+            this.set_image(this.first_image_index);
+        }
 
         this.set_navigation_links();
     },
@@ -56,6 +58,11 @@ dojo.declare('gobotany.sk.images.ImageBrowser', null, {
                 dojo.addClass(links[i], 'hidden');
             }
         }
+        
+        // Display the navigation links and message.
+        dojo.query(this.css_selector + ' .nav').style({
+            'display': 'block',
+        });
     },
 
     change_image: function(link_text) {
