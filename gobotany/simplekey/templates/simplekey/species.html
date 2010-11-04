@@ -57,6 +57,7 @@
           {% else %}
               <p>N/A</p>
           {% endif %}
+          <p><a href="#all-characteristics">All characteristics</a></p>
 
           <h3>Habitat</h3>
               {% if habitats|length > 0 %}
@@ -82,12 +83,12 @@
 
           <h3>Distribution &amp; Endangered/Invasive Status</h3>
 
-          <div>
+          <div class="dist-status-col">
           <p><strong>ME:</strong> {{ states_status.ME }}</p>
           <p><strong>NH:</strong> {{ states_status.NH }}</p>
           <p><strong>VT:</strong> {{ states_status.VT }}</p>
           </div>
-          <div>
+          <div class="dist-status-col">
           <p><strong>MA:</strong> {{ states_status.MA }}</p>
           <p><strong>CT:</strong> {{ states_status.CT }}</p>
           <p><strong>RI:</strong> {{ states_status.RI }}</p>
@@ -106,7 +107,28 @@
                   No
               {% endif %}
           </p>
+
+          <h3 id="all-characteristics">All Characteristics</h3>
+
+          <div id="title-pane-1" dojoType="dijit.TitlePane"
+               title="This is the heading">
+              <h4>This is the heading (really)</h4>
+              <p>Click arrow to close me.</p>
+          </div>
+
+          <div id="title-pane-2" dojoType="dijit.TitlePane"
+               title="This is the heading 2">
+              <h4>This is the heading 2 (really)</h4>
+              <p>Click arrow to close me.</p>
+          </div>
+
+          <div id="title-pane-3" dojoType="dijit.TitlePane"
+               title="This is the heading 3">
+              <h4>This is the heading 3 (really)</h4>
+              <p>Click arrow to close me.</p>
+          </div>
       </div>
+
       <div id="more-info">
           <h3>Distribution by County</h3>
           <!-- TODO: replace src with generated shaded SVG URL -->

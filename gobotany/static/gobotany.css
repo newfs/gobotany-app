@@ -744,7 +744,7 @@ input.filter_int, input.filter_int2 {
     margin-right: 16px;
 }
 
-#species > div div, #family > div div, #genus > div div {
+#species > div div.dist-status-col, #family > div div, #genus > div div {
     float: left;
     margin-bottom: 0.5em;
     margin-right: 1em;
@@ -782,6 +782,32 @@ input.filter_int, input.filter_int2 {
 }
 #species dd {
     margin: 0.5em 0 0.5em 2em;
+}
+
+#species #info h4 {
+    position: absolute;
+    top: -1000px;
+}
+
+#species .dijitTitlePane {
+    margin-top: 1em;
+}
+#species .dijitTitlePane:last-child {
+    margin-bottom: 1em;
+}
+
+#species .dijitTitlePaneTextNode {
+    vertical-align: middle;
+}
+#species .dijitTitlePaneTitleFocus img {
+    margin-top: 2px;
+}
+
+#species .dijitTitlePaneTitle {
+    width: 277px;
+}
+#species .dijitTitlePaneContentOuter {
+    width: 290px;
 }
 
 #drawings {

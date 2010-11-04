@@ -1,5 +1,6 @@
 dojo.provide('gobotany.sk.species');
 
+dojo.require('dijit.TitlePane');
 dojo.require('dojo.cookie');
 dojo.require('dojox.data.JsonRestStore');
 
