@@ -10,17 +10,30 @@ dojo.require('gobotany.sk.images.ImageBrowser');
 // Image info storage for images that appear on the species page.
 gobotany.sk.species.images = [];
 
+gobotany.sk.species.close_character_sections = function() {
+    // Close all the expandable sections for the character groups.
+    dojo.query('#species div.dijitTitlePane').forEach(function(div) {
+        var div_id = dojo.attr(div, 'id');
+        var widget = dijit.byId(div_id);
+        if (widget.open) {
+            widget.toggle();
+        }
+    });
+}
+
 gobotany.sk.species.init = function(scientific_name) {
+    gobotany.sk.species.close_character_sections();
+
+    // Set up the image browser and load the image information.
+
     var image_browser = gobotany.sk.images.ImageBrowser();
     image_browser.css_selector = '#species #images';
 
-    // Load the taxon URL and set up the images.
     taxon_url = '/taxon/' + scientific_name + '/';
     var taxon_store = new dojox.data.JsonRestStore({target: taxon_url});
     taxon_store.fetch({
         onComplete: function(taxon) {
             if (taxon.images.length) {
-                // Store the info for the images to allow for browsing them.
                 for (var i = 0; i < taxon.images.length; i++) {
                     image_browser.images.push(taxon.images[i]);
                 }

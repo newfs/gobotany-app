@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from gobotany.core import botany
 from gobotany.core.models import GlossaryTerm, Pile, PileGroup, Genus, \
-    Family, Taxon, TaxonCharacterValue, Lookalike
+    Family, Taxon, TaxonCharacterValue, Lookalike, CharacterGroup
 from gobotany.simplekey.models import Page, get_blurb
 
 
@@ -185,6 +185,27 @@ def _get_wetland_status(status_code):
         status = 'Never occurs in wetlands.'
     return status
 
+def _add_character_group_short_names(character_groups):
+    # Streamline the names of the character groups in order to deliver more
+    # scannable and relevant labels on the page.
+    # TODO: Consider storing these short names in the database instead of
+    # transforming them here.
+
+    STRINGS_TO_REMOVE = ['characters of the ', 'characters of', ' characters',
+        'carex ', 'composite ', 'equisetaceae ', 'lycophyte ', 'monilophyte ',
+        'non-orchid monocot ', 'non-thalloid aquatic ', 'orchid monocot ',
+        'poaceae ', 'remaining graminoid ', 'remaining non-monocot ',
+        'thalloid_aquatic ']
+
+    for character_group in character_groups:
+        for string_to_remove in STRINGS_TO_REMOVE:
+            if character_group.name.find(string_to_remove) > -1:
+                # Add a new property for the short name.
+                character_group.short_name = character_group.name.replace(
+                    string_to_remove, '')
+                break;   # Stop searching a name after a replacement is made.
+    return character_groups
+
 def species_view(request,  genus_slug, specific_epithet_slug,
                  pilegroup_slug=None, pile_slug=None):
     scientific_name = '%s %s' % (genus_slug.capitalize(), 
@@ -209,6 +230,9 @@ def species_view(request,  genus_slug, specific_epithet_slug,
     if taxon.habitat:
         habitats = taxon.habitat.split('|')
     lookalikes = Lookalike.objects.filter(scientific_name=scientific_name)
+    character_groups = CharacterGroup.objects.all()
+    character_groups = _add_character_group_short_names(character_groups)
+
     return render_to_response('simplekey/species.html', {
            'pilegroup': pilegroup,
            'pile': pile,
@@ -221,6 +245,7 @@ def species_view(request,  genus_slug, specific_epithet_slug,
            'wetland_status': _get_wetland_status(taxon.wetland_status),
            'lookalikes': lookalikes,
            'specific_epithet': specific_epithet_slug,
+           'character_groups': character_groups,
            }, context_instance=RequestContext(request))
 
 def genus_view(request, genus_slug):

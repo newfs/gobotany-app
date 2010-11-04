@@ -110,23 +110,15 @@
 
           <h3 id="all-characteristics">All Characteristics</h3>
 
-          <div id="title-pane-1" dojoType="dijit.TitlePane"
-               title="This is the heading">
-              <h4>This is the heading (really)</h4>
+          {% for character_group in character_groups %}
+          <div id="title-pane-{{ character_group.name }}"
+               dojoType="dijit.TitlePane"
+               title="{{ character_group.short_name }}">
+              <h4>{{ character_group.short_name }}</h4>
               <p>Click arrow to close me.</p>
           </div>
+          {% endfor %}
 
-          <div id="title-pane-2" dojoType="dijit.TitlePane"
-               title="This is the heading 2">
-              <h4>This is the heading 2 (really)</h4>
-              <p>Click arrow to close me.</p>
-          </div>
-
-          <div id="title-pane-3" dojoType="dijit.TitlePane"
-               title="This is the heading 3">
-              <h4>This is the heading 3 (really)</h4>
-              <p>Click arrow to close me.</p>
-          </div>
       </div>
 
       <div id="more-info">
