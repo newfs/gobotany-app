@@ -36,9 +36,10 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
                     break;
                 }
             }
-            base = base * 10;
+            if (!done)
+                base = base * 10;
         }
-        if (base == 1)
+        if (base < 1)
             fixdigits = 1;
         else
             fixdigits = 0;
@@ -54,10 +55,8 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
 
         /* And draw the labels. */
 
-        var tickcount = 10.0 * (themax - themin) / base + 1;
+        var tickcount = (themax - themin) / Math.max(0.1, base) + 1;
         var labelcount = (themax - themin) / interval + 1;
-        if (base > 0.1 && tickcount == labelcount)
-            tickcount = (tickcount - 1) * 10 + 1;
 
         var node = dojo.create('div', null, slider.containerNode);
         var ruleticks = new dijit.form.HorizontalRule({

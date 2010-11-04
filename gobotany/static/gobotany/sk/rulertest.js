@@ -9,16 +9,22 @@ dojo.declare('gobotany.sk.rulertest', null, {
 
         this.working = dojo.byId('filter-working');
 
-        new gobotany.sk.RulerSlider(this.n(), 0.0, 1, 1.0, updater);
-        new gobotany.sk.RulerSlider(this.n(), 0.0, 2.15, 1.0, updater);
-        new gobotany.sk.RulerSlider(this.n(), 0.0, 4.64, 1.0, updater);
-        new gobotany.sk.RulerSlider(this.n(), 0.0, 10.0, 1.0, updater);
-        new gobotany.sk.RulerSlider(this.n(), 0.0, 21.5, 1.0, updater);
-        new gobotany.sk.RulerSlider(this.n(), 0.0, 46.4, 1.0, updater);
-        new gobotany.sk.RulerSlider(this.n(), 0.0, 100.0, 1.0, updater);
-        new gobotany.sk.RulerSlider(this.n(), 0.0, 215., 1.0, updater);
-        new gobotany.sk.RulerSlider(this.n(), 0.0, 464., 1.0, updater);
-        new gobotany.sk.RulerSlider(this.n(), 0.0, 1000.0, 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 6.31, 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 10, 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 15.8, 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 25.1, 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 39.8, 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 63.1, 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 100, 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 158., 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 251., 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 398., 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 631., 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 1000, 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 1580., 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 2510., 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 3980., 1.0, updater);
+        new gobotany.sk.RulerSlider(this.n(), 0.0, 6310., 1.0, updater);
     },
 
     n: function() {
