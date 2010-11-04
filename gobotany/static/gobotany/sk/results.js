@@ -659,13 +659,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         // Custom sort for ordering filter values for display.
         var value_a = a.value.toLowerCase();
         var value_b = b.value.toLowerCase();
-        
+
         // If both values are a number or begin with one, sort numerically.
         var int_value_a = parseInt(value_a);
         var int_value_b = parseInt(value_b);
         if (!isNaN(int_value_a) && !isNaN(int_value_b))
             return int_value_a - int_value_b;
-        
+
         // Otherwise, sort alphabetically.
         // Exception: always make 'NA' last.
         if (value_a == 'na')
@@ -689,19 +689,19 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }
         return number;
     },
-    
+
     get_labels: function(min, max, number_of_ticks) {
         // Return a list of labels for the given range and number of ticks.
         var labels = [];
         var number_of_segments = number_of_ticks - 1;
-        
-        labels.push(String(min.toFixed(1)));
+
+        labels.push('');
         for (i = 1; i < number_of_segments; i++) {
             var label_value = ((max - min) / number_of_segments) * i;
             labels.push(String(label_value.toFixed(1)));
         }
         labels.push(String(max.toFixed(1)));
-        
+
         return labels;
     },
 
@@ -713,13 +713,14 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         var valuesList = dojo.query('#filter-working form .values')[0];
         dojo.empty(valuesList);
-        
+
         if (filter.values === undefined) {
-            console.log('No filter values exist: ' + filter.friendly_name +
-                        ' (character_short_name: ' + filter.character_short_name +
-                        '  value_type: ' + filter.value_type +
-                        '  unit: ' + filter.unit +
-                        '  pile_slug: ' + filter.pile_slug + ')');
+            console.log(
+                'No filter values exist: ' + filter.friendly_name +
+                    ' (character_short_name: ' + filter.character_short_name +
+                    '  value_type: ' + filter.value_type +
+                    '  unit: ' + filter.unit +
+                    '  pile_slug: ' + filter.pile_slug + ')');
             return;
         }
 
@@ -738,17 +739,18 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             var themax = filter.values.max;
             var startvalue = (themax + themin) / 2.0;
 
-            var selectedvalue = this.results_helper.filter_manager.get_selected_value(
-                filter.character_short_name);
+            var selectedvalue =
+                this.results_helper.filter_manager.get_selected_value(
+                    filter.character_short_name);
             if (selectedvalue != null)
                 startvalue = selectedvalue;
 
             var pretty1 = gobotany.utils.pretty_length(unit, filter.values.min);
             var pretty2 = gobotany.utils.pretty_length(unit, filter.values.max);
             var label = dojo.place('<label>Select a length between<br>' +
-                                   pretty1.metric + ' ('+ pretty1.imperial +
+                                   pretty1.metric + ' (' + pretty1.imperial +
                                    ')' + ' and ' +
-                                   pretty2.metric + ' ('+ pretty2.imperial +
+                                   pretty2.metric + ' (' + pretty2.imperial +
                                    ')' + '<br></label>',
                                    valuesList);
 
@@ -766,38 +768,39 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             }, label);
             dojo.addClass(input2, 'filter_int2');
 
-            var updater = new gobotany.utils.UnitFieldsUpdater(input, input2, unit);
+            var updater = new gobotany.utils.UnitFieldsUpdater(
+                input, input2, unit);
             updater.update_fields(startvalue);
 
             var slider_node = dojo.create('div', null, valuesList);
             var slider = new dijit.form.HorizontalSlider({
-                name: "character_slider",
+                name: 'character_slider',
                 showButtons: false,
                 value: startvalue,
                 minimum: themin,
                 maximum: themax,
                 intermediateChanges: true,
-                style: "width:200px;",
-                onChange: dojo.hitch(updater, updater.update_fields),
+                style: 'width:200px;',
+                onChange: dojo.hitch(updater, updater.update_fields)
             }, slider_node);
 
             var ticks_count = this.get_ticks_labels_count(themin, themax);
-            
+
             var rule_node = dojo.create('div', null, slider.containerNode);
             var ruleticks = new dijit.form.HorizontalRule({
-                container: "topDecoration",
+                container: 'topDecoration',
                 count: ticks_count,
-                style: "height:10px;"
+                style: 'height:10px;'
             }, rule_node);
 
             var labels_node = dojo.create('div', null, slider.containerNode);
             var mylabels = this.get_labels(themin, themax, ticks_count);
 
             var rule_labels = new dijit.form.HorizontalRuleLabels({
-                container: "bottomDecoration",
+                container: 'bottomDecoration',
                 count: ticks_count,
                 labels: mylabels,
-                style: "height:1.5em; font-size:75%; color:#000; width:200px;"
+                style: 'height:1.5em; font-size:75%; color:#000; width:200px;'
             }, labels_node);
 
         } else {

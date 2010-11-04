@@ -245,9 +245,25 @@ p {
     padding: 2em 0;
 }
 
+/* Make the Dijit horizontal slider look like a ruler */
+
 #filter-working .dijitSliderButtonContainerH {
     padding: 0;
 }
+
+#filter-working .dijitSliderBumperH {
+    width: 0px;  /* hmm, not quite right - still 1px off on left - hmm */
+}
+
+#filter-working .dijitSliderDecoration {
+    background-color: #fe8;
+}
+
+#filter-working .dijitRuleLabelH {
+    left: -100%;  /* print lengths left of ticks */
+}
+
+/* --- */
 
 form#results-display {
     font-size: 0.7em;
