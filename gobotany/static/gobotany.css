@@ -261,6 +261,7 @@ p {
 
 #filter-working .dijitRuleLabelH {
     left: -100%;  /* print lengths left of ticks */
+    text-align: right;
 }
 
 /* --- */

@@ -22,20 +22,64 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
 
         var ticks_count = this.get_ticks_labels_count(themin, themax);
 
-        var rule_node = dojo.create('div', null, slider.containerNode);
+        /* Figure out how many tick marks to use. */
+
+        var base = 0.1; /* minimum permissible distance between labels (mm) */
+        var done = false;
+        while (!done) {
+            var intervals = [base, base * 5];
+            for (var key in intervals) {
+                var interval = intervals[key];
+                var labelcount = Math.floor((themax - themin) / interval);
+                if (labelcount < 19) {
+                    done = true;
+                    break;
+                }
+            }
+            base = base * 10;
+        }
+        if (base == 1)
+            fixdigits = 1;
+        else
+            fixdigits = 0;
+        var mylabels = [''];
+        for (var i = 1; i < labelcount; i++) {
+            mylabels.push('' + (interval * i).toFixed(fixdigits));
+        }
+        mylabels.push('' + (interval * labelcount).toFixed(fixdigits) +
+                      '<br>mm');
+        var labelswidth = 600 * (labelcount * interval) / (themax - themin);
+
+        console.log(base, interval);
+
+        /* And draw the labels. */
+
+        var tickcount = 10.0 * (themax - themin) / base + 1;
+        var labelcount = (themax - themin) / interval + 1;
+        if (base > 0.1 && tickcount == labelcount)
+            tickcount = (tickcount - 1) * 10 + 1;
+
+        var node = dojo.create('div', null, slider.containerNode);
         var ruleticks = new dijit.form.HorizontalRule({
             container: 'topDecoration',
-            count: ticks_count,
-            style: 'height: 10px;'
-        }, rule_node);
+            count: tickcount,
+            style: 'height: 7px;'
+        }, node);
+
+        var node = dojo.create('div', null, slider.containerNode);
+        var ruleticks = new dijit.form.HorizontalRule({
+            container: 'topDecoration',
+            count: labelcount,
+            style: 'height: 5px;'
+        }, node);
 
         var labels_node = dojo.create('div', null, slider.containerNode);
-        var mylabels = this.get_labels(themin, themax, ticks_count);
+        /*var mylabels = this.get_labels(themin, themax, ticks_count);*/
         var rule_labels = new dijit.form.HorizontalRuleLabels({
             container: 'topDecoration',
-            count: ticks_count,
             labels: mylabels,
-            style: 'height:1.5em; font-size:75%; color:#000; width: 600px;'
+            style: 'height:2.5em; font-size:75%; color:#000; width: ' +
+                labelswidth + 'px;'
         }, labels_node);
 
         var rule_node2 = dojo.create('div', null, slider.containerNode);
