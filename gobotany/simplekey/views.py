@@ -6,7 +6,7 @@ from django.template import RequestContext
 from gobotany.core import botany
 from gobotany.core.models import GlossaryTerm, Pile, PileGroup, Genus, \
     Family, Taxon, TaxonCharacterValue, Lookalike
-from gobotany.simplekey.models import Page, get_blurb, HelpPage
+from gobotany.simplekey.models import Page, get_blurb
 
 
 def get_simple_url(item):

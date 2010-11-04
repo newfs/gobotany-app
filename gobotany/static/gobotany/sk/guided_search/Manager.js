@@ -52,6 +52,13 @@ dojo.declare('gobotany.sk.guided_search.Manager', null, {
         this.filters.push(filter);
     },
 
+    /* Called by the filter itself when the user has clicked "delete" */
+    remove_filter: function(the_filter) {
+        for (i = this.filters.length - 1; i >= 0; i--)
+            if (this.filters[i] === the_filter)
+                this.filters.splice(i, 1);
+    },
+
     perform_query: function() {
         var fm = this.filter_manager;
 

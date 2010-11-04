@@ -2,15 +2,20 @@ dojo.provide('gobotany.sk.guided_search.Filter');
 
 dojo.declare('gobotany.sk.guided_search.Filter', null, {
 
-    constructor: function(manager, parentnode) {
+    constructor: function(manager, container) {
+        this.container = container;
         this.manager = manager;
         this.filter_short_name = '';
         this.filter_value_str = '';
 
-        this.character_group_select = dojo.create('select', {}, parentnode);
-        this.character_select = dojo.create('select', {}, parentnode);
-        this.character_value_select = dojo.create('select', {}, parentnode);
+        this.delete_button = dojo.create(
+            'button', {innerHTML: '×'}, container);
+        this.character_group_select = dojo.create('select', {}, container);
+        this.character_select = dojo.create('select', {}, container);
+        this.character_value_select = dojo.create('select', {}, container);
 
+        dojo.connect(this.delete_button, 'onclick', this,
+                     this.on_delete_click);
         dojo.connect(this.character_group_select, 'onchange', this,
                      this.on_character_group_select);
         dojo.connect(this.character_select, 'onchange', this,
@@ -161,6 +166,14 @@ dojo.declare('gobotany.sk.guided_search.Filter', null, {
 
     on_character_value_select: function(event) {
         this.setup_filter();
-    }
+    },
 
+    on_delete_click: function(event) {
+        event.preventDefault();
+        this.character_select.selectedIndex = 0;
+        this.character_value_select.selectedIndex = 0;
+        this.setup_filter();
+        this.manager.remove_filter(this);
+        this.container.parentNode.removeChild(this.container);
+    }
 });

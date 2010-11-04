@@ -847,3 +847,8 @@ input.filter_int, input.filter_int2 {
 #guided_search_filter_list {
     white-space: nowrap;
 }
+
+#guided_search_filter_list button {
+    background-color: #daa;
+    font-weight: bold;
+}
