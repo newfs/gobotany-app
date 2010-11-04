@@ -51,7 +51,7 @@
           <h3>Characteristics</h3>
           {% if characteristics %}
               {% for characteristic in characteristics %}
-                  <p><strong>{{ characteristic.name }}:</strong>
+                  <p><strong>{{ characteristic.name|lower }}:</strong>
                      {{ characteristic.value }}</p>
               {% endfor %}
           {% else %}
@@ -115,7 +115,20 @@
                dojoType="dijit.TitlePane"
                title="{{ character_group.short_name }}">
               <h4>{{ character_group.short_name }}</h4>
-              <p>Click arrow to close me.</p>
+              {% for character_value in taxon.character_values.all %}
+                  {% if character_value.character.character_group.name == character_group.name %}
+                      <p><strong>{{ character_value.character.name|lower }}:</strong>
+                         {% if character_value.character.value_type == 'TEXT' %}
+                             {{ character_value.value_str }}
+                         {% else %}
+                            {{ character_value.value_min }}
+                            {{ character_value.character.unit }} to
+                            {{ character_value.value_max }}
+                            {{ character_value.character.unit }}
+                         {% endif %}
+                      </p>
+                  {% endif %}
+              {% endfor %}
           </div>
           {% endfor %}
 

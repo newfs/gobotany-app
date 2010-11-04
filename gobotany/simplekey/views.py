@@ -214,7 +214,7 @@ def species_view(request,  genus_slug, specific_epithet_slug,
     if not taxa:
         raise Http404
     taxon = taxa[0]
-    
+
     if pile_slug and pilegroup_slug:
         pile = get_object_or_404(Pile, slug=pile_slug)
         if pile.pilegroup.slug != pilegroup_slug:
@@ -223,14 +223,19 @@ def species_view(request,  genus_slug, specific_epithet_slug,
         # Get the first pile from the species
         pile = taxon.piles.all()[0]
     pilegroup = pile.pilegroup
-    
+
     species_images = botany.species_images(taxon)
     states_status = _get_states_status(taxon)
     habitats = []
     if taxon.habitat:
         habitats = taxon.habitat.split('|')
     lookalikes = Lookalike.objects.filter(scientific_name=scientific_name)
-    character_groups = CharacterGroup.objects.all()
+
+    character_tuples = taxon.character_values.all().values_list(
+                       'character').distinct()
+    character_ids = [tuple[0] for tuple in character_tuples]
+    character_groups = CharacterGroup.objects.filter(
+                       character__in=character_ids).distinct()
     character_groups = _add_character_group_short_names(character_groups)
 
     return render_to_response('simplekey/species.html', {
