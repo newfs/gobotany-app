@@ -379,3 +379,7 @@ def video_pile_view(request, pilegroup_slug, pile_slug):
            'pilegroup': pile.pilegroup,
            'pile': pile,
            }, context_instance=RequestContext(request))
+
+def rulertest(request):
+    return render_to_response('simplekey/rulertest.html', {
+            }, context_instance=RequestContext(request))

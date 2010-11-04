@@ -2,6 +2,7 @@
 
 dojo.provide('gobotany.sk.RulerSlider');
 dojo.require('dijit.form.HorizontalSlider');
+dojo.require('dijit.form.HorizontalRule');
 dojo.require('dijit.form.HorizontalRuleLabels');
 
 dojo.declare('gobotany.sk.RulerSlider', null, {
@@ -72,4 +73,4 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
         return labels;
     }
 
-})
+});

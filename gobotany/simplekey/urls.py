@@ -13,6 +13,9 @@ urlpatterns = patterns(
             ),
         name='simplekey_search'),
 
+    # Hidden test pages.
+    url('^_rulertest/$', views.rulertest),
+
     # Simple key navigation
     url('^$', views.index_view),
     url('^help/$', views.help_about_view, name='simplekey-help-about'),
