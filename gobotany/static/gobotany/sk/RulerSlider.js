@@ -20,6 +20,7 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             onChange: dojo.hitch(updater, updater.update_fields)
         }, node);
 
+        var distance = themax - themin;
         var ticks_count = this.get_ticks_labels_count(themin, themax);
 
         /* Figure out how many tick marks to use. */
@@ -30,7 +31,7 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             var intervals = [base, base * 5];
             for (var key in intervals) {
                 var interval = intervals[key];
-                var labelcount = Math.floor((themax - themin) / interval);
+                var labelcount = Math.floor(distance / interval);
                 if (labelcount < 19) {
                     done = true;
                     break;
@@ -39,24 +40,33 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             if (!done)
                 base = base * 10;
         }
-        if (base < 1)
-            fixdigits = 1;
-        else
-            fixdigits = 0;
-        var mylabels = [''];
-        for (var i = 1; i < labelcount; i++) {
-            mylabels.push('' + (interval * i).toFixed(fixdigits));
+
+        if (distance > 3100.0) {
+            var factor = 1000.0;
+            var unit = 'm';
+        } else if (distance > 31.0) {
+            var factor = 10.0;
+            var unit = 'cm';
+        } else {
+            var factor = 1.0;
+            var unit = 'mm';
         }
-        mylabels.push('' + (interval * labelcount).toFixed(fixdigits) +
-                      '<br>mm');
-        var labelswidth = 600 * (labelcount * interval) / (themax - themin);
+        fixdigits = (base / factor < 1) ? 1 : 0; /* show '25.0' or just '25' */
+
+        var mylabels = [''];
+        for (var i = 1; i <= labelcount; i++) {
+            mylabels.push('' + (interval * i / factor).toFixed(fixdigits));
+        }
+        mylabels[mylabels.length - 1] += '<br>' + unit;
+
+        var labelswidth = 600 * (labelcount * interval) / distance;
 
         console.log(base, interval);
 
         /* And draw the labels. */
 
-        var tickcount = (themax - themin) / Math.max(0.1, base) + 1;
-        var labelcount = (themax - themin) / interval + 1;
+        var tickcount = distance / Math.max(0.1, base) + 1;
+        var labelcount = distance / interval + 1;
 
         var node = dojo.create('div', null, slider.containerNode);
         var ruleticks = new dijit.form.HorizontalRule({
