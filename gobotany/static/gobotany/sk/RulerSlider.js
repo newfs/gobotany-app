@@ -25,89 +25,30 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             onChange: dojo.hitch(updater, updater.update_fields)
         }, node);
 
-        var ticks_count = this.get_ticks_labels_count(themin, themax);
-
-        /* Figure out how many tick marks to use. */
-
-        var base = 0.1; /* minimum permissible distance between labels (mm) */
-        var done = false;
-        while (!done) {
-            var intervals = [base, base * 5];
-            for (var key in intervals) {
-                var interval = intervals[key];
-                var labelcount = Math.floor(distance / interval);
-                if (labelcount < 19) {
-                    done = true;
-                    break;
-                }
-            }
-            if (!done)
-                base = base * 10;
-        }
-
-        if (distance > 3100.0) {
-            var factor = 1000.0;
-            var unit = 'm';
-        } else if (distance > 31.0) {
-            var factor = 10.0;
-            var unit = 'cm';
-        } else {
-            var factor = 1.0;
-            var unit = 'mm';
-        }
-        fixdigits = (base / factor < 1) ? 1 : 0; /* show '25.0' or just '25' */
-
-        var mylabels1 = [''];  /* for the measurements */
-        var mylabels2 = [''];  /* for the units, in the last label */
-        for (var i = 1; i <= labelcount; i++) {
-            mylabels1.push('' + (interval * i / factor).toFixed(fixdigits));
-            mylabels2.push(i == labelcount ? unit : '');
-        }
-
-        var labelswidth = pxwidth * (labelcount * interval) / distance;
-
-        /* The top of the ruler contains little tick marks, then big
-        tick marks, then finally the metric labels. */
-
-        var tickcount = distance / Math.max(0.1, base) + 1;
-        var labelcount = distance / interval + 1;
-
-        var ruleticks = new dijit.form.HorizontalRule({
-            container: 'topDecoration',
-            count: tickcount,
-            style: 'height: 7px;'
-        }, this.new_div());
-
-        var ruleticks = new dijit.form.HorizontalRule({
-            container: 'topDecoration',
-            count: labelcount,
-            style: 'height: 5px;'
-        }, this.new_div());
-
-        var rule_labels = new dijit.form.HorizontalRuleLabels({
-            container: 'topDecoration',
-            labels: mylabels1,
-            style: 'height:0.8em; font-size:75%; color:#000; width: ' +
-                labelswidth + 'px;'
-        }, this.new_div());
-
-        var rule_labels = new dijit.form.HorizontalRuleLabels({
-            container: 'topDecoration',
-            labels: mylabels2,
-            style: 'height:1.5em; font-size:75%; color:#000; width: ' +
-                labelswidth + 'px;'
-        }, this.new_div());
-
-        /* The bottom of the ruler goes in the opposite order: English
-        labels, then their big tick marks, then little tick marks. */
+        /* Put metric on top. */
 
         var labels_and_ticks = this.compute_ruler([
-            [0.396875, null], // sixty-fourths
-            [1.5875, null], // sixteenths
-            [6.35, null],   // quarters
-            [25.4, 'in'],   // inches
-            [152.4, null],  // half-feet
-            [304.8, 'ft']   // feet
+            [0.1, null, 0.1],
+            [0.5, 'mm', 0.5],
+            [1.0, 'mm', 1.0],
+            [5.0, 'mm', 5.0],
+            [10.0, 'cm', 1.0],
+            [50.0, 'cm', 5.0],
+            [100.0, 'cm', 10.0],
+            [500.0, 'm', 0.5],
+            [1000.0, 'm', 1.0]
+        ]);
+        this.draw_labels_and_ticks(labels_and_ticks);
+
+        /* And the English measures go on bottom. */
+
+        var labels_and_ticks = this.compute_ruler([
+            [0.396875, null, 1.0], // sixty-fourths
+            [1.5875, null, 1.0], // sixteenths
+            [6.35, null, 1.0],   // quarters
+            [25.4, 'in', 1.0],   // inches
+            [152.4, null, 1.0],  // half-feet
+            [304.8, 'ft', 1.0]   // feet
         ]);
         labels_and_ticks.reverse();
         this.draw_labels_and_ticks(labels_and_ticks);
@@ -164,6 +105,7 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
         for (var i in unitlist) {
             var length = unitlist[i][0];
             var label = unitlist[i][1];
+            var per = unitlist[i][2];
             if (label === null)
                 continue;  /* cannot label these */
             var count = Math.floor(this.mmwidth / length);
@@ -173,32 +115,17 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             var nlabels = [''];  /* leftmost/zero label is always blank */
             var ulabels = [];
             for (var j = 1; j <= count; j++) {
-                nlabels.push('' + j);
+                nlabels.push('' + (j * per).toFixed(per < 1 ? 1 : 0));
                 ulabels.push('');
             }
             ulabels.push(label);
 
-            results.push([
-                this.pxwidth * count * length / this.mmwidth, nlabels
-            ]);
-            results.push([
-                this.pxwidth * count * length / this.mmwidth, ulabels
-            ]);
+            var totalwidth = this.pxwidth * count * length / this.mmwidth;
+            results.push([totalwidth, nlabels]);
+            results.push([totalwidth, ulabels]);
             break;
         }
 
         return results;
-    },
-
-    get_ticks_labels_count: function(min, max) {
-        // Get the number of ticks and labels for the slider.
-        // If the number is too high for the allotted screen space,
-        // cut it down to a reasonable number.
-        var MAX_NUMBER = 10;
-        var number = max - min + 1;
-        while (number > MAX_NUMBER) {
-            number = Math.round(number / 2);
-        }
-        return number;
     }
 });
