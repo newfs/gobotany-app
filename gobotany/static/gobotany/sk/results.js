@@ -391,10 +391,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         // First, see if this is a numeric field.
 
-        var char_value_q = dojo.query('#character_values_form input.filter_int');
-
-        if (char_value_q.length) {
-            var value = parseInt(char_value_q[0].value, 10);
+        if (dojo.byId('character_slider') !== null) {
+            var char_value_q = dijit.byId('character_slider');
+            var value = char_value_q.value;
             if (!isNaN(value)) {
                 this.results_helper.filter_manager.set_selected_value(
                     this.simplekey_character_short_name, value);

@@ -16,6 +16,7 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
         var distance = this.mmwidth = themax - themin;
 
         this.slider = new dijit.form.HorizontalSlider({
+            id: 'character_slider',
             name: 'character_slider',
             showButtons: false,
             value: startvalue,
