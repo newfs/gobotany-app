@@ -257,11 +257,11 @@ p {
 
 #filter-working .dijitSliderDecoration {
     background-color: #fe8;
+    border-bottom: 1px solid black;
 }
 #filter-working .dijitSliderImageHandleH > div {
     /* A second handle at the bottom of the ruler, against the inches */
     position: relative;
-    top: 93px;
     height: 16px;
     width: 18px;
     background-image: url("http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/form/images/sliderThumbs.png");

@@ -14,7 +14,7 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
         this.pxwidth = pxwidth;
         var distance = this.mmwidth = themax - themin;
 
-        var slider = this.slider = new dijit.form.HorizontalSlider({
+        this.slider = new dijit.form.HorizontalSlider({
             name: 'character_slider',
             showButtons: false,
             value: startvalue,
@@ -24,8 +24,6 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             style: 'width: ' + pxwidth + 'px;',
             onChange: dojo.hitch(updater, updater.update_fields)
         }, node);
-        var handle = dojo.query('.dijitSliderImageHandleH')[0];
-        var secondhandle = dojo.create('div', {class: 'secondhandle'}, handle);
 
         /* Put metric on top. */
 
@@ -54,6 +52,16 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
         ], true);
         labels_and_ticks.reverse();
         this.draw_labels_and_ticks(labels_and_ticks);
+
+        /* Add a second handle below the English tick marks. */
+
+        var handles = dojo.query('.dijitSliderImageHandleH');
+        var handle = handles[handles.length - 1];
+        var secondhandle = dojo.create('div', {
+            class: 'secondhandle',
+            style: 'top: ' + dojo.position(this.slider.containerNode).h + 'px'
+        }, handle);
+
     },
 
     draw_labels_and_ticks: function(labels_and_ticks) {
