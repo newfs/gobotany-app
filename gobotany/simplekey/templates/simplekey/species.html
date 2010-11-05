@@ -110,7 +110,7 @@
 
           <h3 id="all-characteristics">All Characteristics</h3>
 
-          {% for character_group in character_groups %}
+          {% for character_group in character_groups|dictsort:'short_name' %}
           <div id="title-pane-{{ character_group.name }}"
                dojoType="dijit.TitlePane"
                title="{{ character_group.short_name }}">

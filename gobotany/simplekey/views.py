@@ -202,7 +202,7 @@ def _add_character_group_short_names(character_groups):
             if character_group.name.find(string_to_remove) > -1:
                 # Add a new property for the short name.
                 character_group.short_name = character_group.name.replace(
-                    string_to_remove, '')
+                    string_to_remove, '').strip()
                 break;   # Stop searching a name after a replacement is made.
     return character_groups
 
