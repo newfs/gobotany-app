@@ -7,7 +7,8 @@ dojo.require('dijit.form.HorizontalRuleLabels');
 
 dojo.declare('gobotany.sk.RulerSlider', null, {
 
-    constructor: function(node, themin, themax, startvalue, updater) {
+    constructor: function(node, pxwidth, themin, themax, startvalue, updater) {
+        this.pxwidth = pxwidth;
 
         var slider = this.slider = new dijit.form.HorizontalSlider({
             name: 'character_slider',
@@ -16,7 +17,7 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             minimum: themin,
             maximum: themax,
             intermediateChanges: true,
-            style: 'width: 600px;',
+            style: 'width: ' + pxwidth + 'px;',
             onChange: dojo.hitch(updater, updater.update_fields)
         }, node);
 
@@ -60,7 +61,7 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             mylabels2.push(i == labelcount ? unit : '');
         }
 
-        var labelswidth = 600 * (labelcount * interval) / distance;
+        var labelswidth = pxwidth * (labelcount * interval) / distance;
 
         console.log(base, interval);
 
@@ -82,7 +83,6 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             style: 'height: 5px;'
         }, this.new_div());
 
-        /*var mylabels = this.get_labels(themin, themax, ticks_count);*/
         var rule_labels = new dijit.form.HorizontalRuleLabels({
             container: 'topDecoration',
             labels: mylabels1,
@@ -94,7 +94,6 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
         labels, then their big tick marks, then little tick marks. */
 
         var labels_node = dojo.create('div', null, slider.containerNode);
-        /*var mylabels = this.get_labels(themin, themax, ticks_count);*/
         var rule_labels = new dijit.form.HorizontalRuleLabels({
             container: 'topDecoration',
             labels: mylabels2,
@@ -103,7 +102,6 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
         }, this.new_div());
 
         var labels_node = dojo.create('div', null, slider.containerNode);
-        /*var mylabels = this.get_labels(themin, themax, ticks_count);*/
         var rule_labels = new dijit.form.HorizontalRuleLabels({
             container: 'topDecoration',
             labels: mylabels1,
@@ -140,21 +138,5 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             number = Math.round(number / 2);
         }
         return number;
-    },
-
-    get_labels: function(min, max, number_of_ticks) {
-        // Return a list of labels for the given range and number of ticks.
-        var labels = [];
-        var number_of_segments = number_of_ticks - 1;
-
-        labels.push('');
-        for (i = 1; i < number_of_segments; i++) {
-            var label_value = ((max - min) / number_of_segments) * i;
-            labels.push(String(label_value.toFixed(1)));
-        }
-        labels.push(String(max.toFixed(1)) + '<br>mm');
-
-        return labels;
     }
-
 });

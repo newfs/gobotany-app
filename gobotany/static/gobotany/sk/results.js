@@ -745,7 +745,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             updater.update_fields(startvalue);
 
             var slider_node = dojo.create('div', null, valuesList);
-            new gobotany.sk.RulerSlider(slider_node, themin, themax,
+            new gobotany.sk.RulerSlider(slider_node, 600, themin, themax,
                                         startvalue, updater);
 
         } else {
