@@ -7,8 +7,12 @@ dojo.require('dijit.form.HorizontalRuleLabels');
 
 dojo.declare('gobotany.sk.RulerSlider', null, {
 
+    min_pixels_per_tick: 4.0,
+    min_pixels_per_label: 25.0,
+
     constructor: function(node, pxwidth, themin, themax, startvalue, updater) {
         this.pxwidth = pxwidth;
+        var distance = this.mmwidth = themax - themin;
 
         var slider = this.slider = new dijit.form.HorizontalSlider({
             name: 'character_slider',
@@ -21,7 +25,6 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             onChange: dojo.hitch(updater, updater.update_fields)
         }, node);
 
-        var distance = themax - themin;
         var ticks_count = this.get_ticks_labels_count(themin, themax);
 
         /* Figure out how many tick marks to use. */
@@ -63,8 +66,6 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
 
         var labelswidth = pxwidth * (labelcount * interval) / distance;
 
-        console.log(base, interval);
-
         /* The top of the ruler contains little tick marks, then big
         tick marks, then finally the metric labels. */
 
@@ -90,10 +91,6 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
                 labelswidth + 'px;'
         }, this.new_div());
 
-        /* The bottom of the ruler goes in the opposite order: English
-        labels, then their big tick marks, then little tick marks. */
-
-        var labels_node = dojo.create('div', null, slider.containerNode);
         var rule_labels = new dijit.form.HorizontalRuleLabels({
             container: 'topDecoration',
             labels: mylabels2,
@@ -101,31 +98,96 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
                 labelswidth + 'px;'
         }, this.new_div());
 
-        var labels_node = dojo.create('div', null, slider.containerNode);
-        var rule_labels = new dijit.form.HorizontalRuleLabels({
-            container: 'topDecoration',
-            labels: mylabels1,
-            style: 'height:1em; font-size:75%; color:#000; width: ' +
-                labelswidth + 'px;'
-        }, this.new_div());
+        /* The bottom of the ruler goes in the opposite order: English
+        labels, then their big tick marks, then little tick marks. */
 
-        var node = dojo.create('div', null, slider.containerNode);
-        var ruleticks = new dijit.form.HorizontalRule({
-            container: 'topDecoration',
-            count: labelcount,
-            style: 'height: 5px;'
-        }, this.new_div());
+        var labels_and_ticks = this.compute_ruler([
+            [0.396875, null], // sixty-fourths
+            [1.5875, null], // sixteenths
+            [6.35, null],   // quarters
+            [25.4, 'in'],   // inches
+            [152.4, null],  // half-feet
+            [304.8, 'ft']   // feet
+        ]);
+        labels_and_ticks.reverse();
+        this.draw_labels_and_ticks(labels_and_ticks);
+    },
 
-        var node = dojo.create('div', null, slider.containerNode);
-        var ruleticks = new dijit.form.HorizontalRule({
-            container: 'topDecoration',
-            count: tickcount,
-            style: 'height: 7px;'
-        }, this.new_div());
+    draw_labels_and_ticks: function(labels_and_ticks) {
+
+        for (i in labels_and_ticks) {
+            thing = labels_and_ticks[i];
+
+            if (typeof thing === 'number') {  /* number means do tick marks */
+                var tickheight = (i == 0 || i == labels_and_ticks.length - 1) ?
+                    6 : 4;  /* lowest set of ticks should be longer */
+                new dijit.form.HorizontalRule({
+                    container: 'topDecoration',
+                    count: thing + 1,
+                    style: 'height: ' + tickheight + 'px;'
+                }, this.new_div());
+
+            } else { /* otherwise this will be [pxwidth, [label, ...]] */
+                var labels_width = thing[0];
+                var labels_array = thing[1];
+                var rule_labels = new dijit.form.HorizontalRuleLabels({
+                    container: 'topDecoration',
+                    labels: labels_array,
+                    style: 'height:1em; font-size:75%; color:#000; width: ' +
+                        labels_width + 'px;'
+                }, this.new_div());
+            }
+        }
+
     },
 
     new_div: function() {
         return dojo.create('div', null, this.slider.containerNode);
+    },
+
+    compute_ruler: function(unitlist) {
+        var results = [];  /* list of label sequences and tick counts */
+        var max_ticks = this.pxwidth / this.min_pixels_per_tick;
+        var max_labels = this.pxwidth / this.min_pixels_per_label;
+
+        for (var i in unitlist) {
+            var length = unitlist[i][0];
+            var label = unitlist[i][1];
+            var count = this.mmwidth / length;
+            if (count > max_ticks)
+                continue;
+            if (count < 1.0) /* include no tick rows on which no tick fits */
+                break;
+            results.push(count);
+        }
+
+        for (var i in unitlist) {
+            var length = unitlist[i][0];
+            var label = unitlist[i][1];
+            if (label === null)
+                continue;  /* cannot label these */
+            var count = Math.floor(this.mmwidth / length);
+            if (count > max_labels)
+                continue;  /* cannot label this small a unit */
+
+            var nlabels = [''];  /* leftmost/zero label is always blank */
+            var ulabels = [];
+            for (var j = 1; j <= count; j++) {
+                nlabels.push('' + j);
+                ulabels.push('');
+            }
+            ulabels.push(label);
+
+            results.push([
+                this.pxwidth * count * length / this.mmwidth, nlabels
+            ]);
+            results.push([
+                this.pxwidth * count * length / this.mmwidth, ulabels
+            ]);
+            break;
+        }
+
+        return results;
     },
 
     get_ticks_labels_count: function(min, max) {
