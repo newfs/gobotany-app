@@ -11,9 +11,8 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
     min_pixels_per_tick: 4.0,
     min_pixels_per_label: 25.0,
 
-    constructor: function(node, pxwidth, themin, themax, startvalue, updater) {
+    constructor: function(node, pxwidth, themin, themax, startvalue) {
         this.pxwidth = pxwidth;
-        this.updater = updater;
         var distance = this.mmwidth = themax - themin;
 
         this.slider = new dijit.form.HorizontalSlider({
@@ -155,8 +154,6 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
 
     do_update: function(event) {
         this.draw_value();
-        /* Also call the update function provided by the caller. */
-        dojo.hitch(this.updater, this.updater.update_fields)(event);
     },
 
     draw_value: function() {

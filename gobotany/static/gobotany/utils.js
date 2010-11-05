@@ -95,25 +95,3 @@ gobotany.utils.pretty_length = function(unit, mmvalue) {
     value += '&#8239;in';
     return value;
 };
-
-
-dojo.declare("gobotany.utils.UnitFieldsUpdater", null, {
-    constructor: function(input1, input2, unit) {
-        this.input1 = input1;
-        this.input2 = input2;
-        this.unit = unit;
-        this.realvalue = null;
-        this.did_they_just_choose_a_genus = false;
-    },
-
-    update_fields: function(value) {
-        return;
-        this.realvalue = value;
-        pretty = gobotany.utils.pretty_length(this.unit, value);
-
-        var unit = this.unit;
-
-        dojo.attr(this.input1, 'value', pretty.metric);
-        dojo.attr(this.input2, 'value', pretty.imperial);
-    }
-});

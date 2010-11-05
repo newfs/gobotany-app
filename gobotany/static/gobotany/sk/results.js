@@ -717,37 +717,21 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             if (selectedvalue != null)
                 startvalue = selectedvalue;
 
-//            var pretty1 = gobotany.utils.pretty_length(unit, filter.values.min);
-//            var pretty2 = gobotany.utils.pretty_length(unit, filter.values.max);
-            var label = dojo.place('<label>Select a length between<br>'
-                                   /*+
-                                   pretty1.metric + ' (' + pretty1.imperial +
-                                   ')' + ' and ' +
-                                   pretty2.metric + ' (' + pretty2.imperial +
-                                   ')' + '<br></label>'*/,
+            var p = gobotany.utils.pretty_length;
+            var pretty1 = p('mm', filter.values.min);
+            var pretty2 = p('mm', filter.values.max);
+            var label = dojo.place('<label>Select a length between<br>' +
+                                   p('mm', filter.values.min) +
+                                   ' (' + p('in', filter.values.min) + ')' +
+                                   ' and<br>' +
+                                   p('mm', filter.values.max) +
+                                   ' (' + p('in', filter.values.max) + ')' +
+                                   '<br></label>',
                                    valuesList);
-
-            var input = dojo.create('input', {
-                type: 'text',
-                name: 'int_value',
-                disabled: true
-            }, label);
-            dojo.addClass(input, 'filter_int');
-
-            var input2 = dojo.create('input', {
-                type: 'text',
-                name: 'int2_value',
-                disabled: true
-            }, label);
-            dojo.addClass(input2, 'filter_int2');
-
-            var updater = new gobotany.utils.UnitFieldsUpdater(
-                input, input2, unit);
-            updater.update_fields(startvalue);
 
             var slider_node = dojo.create('div', null, valuesList);
             new gobotany.sk.RulerSlider(slider_node, 600, themin, themax,
-                                        startvalue, updater);
+                                        startvalue);
 
         } else {
 
