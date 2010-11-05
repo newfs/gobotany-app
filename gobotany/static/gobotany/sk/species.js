@@ -10,19 +10,7 @@ dojo.require('gobotany.sk.images.ImageBrowser');
 // Image info storage for images that appear on the species page.
 gobotany.sk.species.images = [];
 
-gobotany.sk.species.close_character_sections = function() {
-    // Close all the expandable sections for the character groups.
-    dojo.query('#species div.dijitTitlePane').forEach(function(div) {
-        var div_id = dojo.attr(div, 'id');
-        var widget = dijit.byId(div_id);
-        if (widget.open) {
-            widget.toggle();
-        }
-    });
-}
-
 gobotany.sk.species.init = function(scientific_name) {
-    gobotany.sk.species.close_character_sections();
 
     // Set up the image browser and load the image information.
 

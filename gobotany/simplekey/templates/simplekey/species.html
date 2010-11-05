@@ -112,7 +112,7 @@
 
           {% for character_group in character_groups|dictsort:'short_name' %}
           <div id="title-pane-{{ character_group.name }}"
-               dojoType="dijit.TitlePane"
+               dojoType="dijit.TitlePane" open="false"
                title="{{ character_group.short_name }}">
               <h4>{{ character_group.short_name }}</h4>
               {% for character_value in taxon.character_values.all %}
