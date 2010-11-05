@@ -10,7 +10,26 @@ dojo.require('gobotany.sk.images.ImageBrowser');
 // Image info storage for images that appear on the species page.
 gobotany.sk.species.images = [];
 
+gobotany.sk.species.reopen_character_groups = function() {
+    // Re-open any character groups that were open the last time the
+    // user viewed this species page during this session.
+
+    var open_character_groups = dojo.cookie('open_character_groups');
+    if (open_character_groups !== undefined) {
+        open_character_groups = open_character_groups.split(',');
+    }
+    for (var i = 0; i < open_character_groups.length; i++) {
+        var widget = dijit.byId(open_character_groups[i]);
+        if (widget !== undefined) {
+            if (!widget.open) {
+                widget.toggle();
+            }
+        }
+    }
+};
+
 gobotany.sk.species.init = function(scientific_name) {
+    gobotany.sk.species.reopen_character_groups();
 
     // Set up the image browser and load the image information.
 
@@ -69,4 +88,24 @@ gobotany.sk.species.init = function(scientific_name) {
         var link = dojo.byId('results-link');
         dojo.attr(link, 'href', last_plant_id_url);
     }
+};
+
+gobotany.sk.species.persist_visibility = function(scientific_name) {
+    // Save the state of character group boxes so they can be put back
+    // the way the user left them after navigating away from the page
+    // and then back.
+
+    var group_ids = [];
+    dojo.query('#species div.dijitTitlePane').forEach(function(div) {
+        var group_id = dojo.attr(div, 'id');
+        var widget = dijit.byId(group_id);
+        if (widget.open) {
+            group_ids.push(group_id);
+        }
+    });
+
+    // The cookie is set with a default path to the species page, so the
+    // persistence here will be per-page, i.e., not global across pages.
+    // Also, this uses the default cookie expiration: end of session.
+    dojo.cookie('open_character_groups', group_ids);
 };

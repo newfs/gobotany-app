@@ -111,7 +111,7 @@
           <h3 id="all-characteristics">All Characteristics</h3>
 
           {% for character_group in character_groups|dictsort:'short_name' %}
-          <div id="title-pane-{{ character_group.name }}"
+          <div id="title-pane-{{ character_group.name|slugify }}"
                dojoType="dijit.TitlePane" open="false"
                title="{{ character_group.short_name }}">
               <h4>{{ character_group.short_name }}</h4>
@@ -182,6 +182,9 @@
       dojo.require('gobotany.sk.species');
       dojo.addOnLoad(function() {
           gobotany.sk.species.init('{{ scientific_name }}');
+      });
+      dojo.addOnUnload(function() {
+          gobotany.sk.species.persist_visibility();
       });
   </script>
 {% endblock %}
