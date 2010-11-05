@@ -69,6 +69,8 @@ DEBUG = True
 # instead of the package
 MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media')
 MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
+STATIC_URL = '/static/'
 ADMIN_MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'admin-media')
 ADMIN_MEDIA_PREFIX = '/admin-media/'
 THUMBNAIL_BASEDIR = 'content-thumbs'

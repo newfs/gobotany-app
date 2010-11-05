@@ -447,15 +447,37 @@ class GlossaryBlobHandler(BaseHandler):
 class DistributionMapHandler(BaseHandler):
     methods_allowed = ('GET',)
 
+    def _shade_map(self, svgmap, distribution, hexcolor='#ff0000', opacity='1'):
+        """Color in New England states that match the passed distribution
+        list. Note: this method needs to be modified to color in counties
+        instead of states when we get the county level data."""
+
+        base_style = "fill:none;stroke-opacity:1;font-size:12px;fill-rule: \
+        nonzero;stroke:#000000;stroke-width:0.35030233999999999; \
+        stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;\
+        stroke-dasharray:none;marker-start:none"
+        shaded_style = base_style + ";fill:" + str(hexcolor) + \
+                       ";stroke-opacity:" + str(opacity)
+
+        nodes = svgmap.findall('{http://www.w3.org/2000/svg}path')
+        for node in nodes:
+            if '{http://www.inkscape.org/namespaces/inkscape}label' in node.keys():
+                current_label = node.attrib['{http://www.inkscape.org/namespaces/inkscape}label']    # e.g. Haartford, CT
+                current_state = current_label[-2:]                                                   # e.g. CT
+                if current_state in distribution:
+                    node.set('style', shaded_style)
+
     def read(self, request, genus, specific_epithet):
         """Return an SVG map of New England with counties that contain the
         species shaded in."""
 
-        MAP_NEW = '/Users/sidkoul/gobotany-root/gobotany/src/gobotany/static/graphics/new.svg'
-        MAP_FILE = '/Users/sidkoul/gobotany-root/gobotany/src/gobotany/static/graphics/new-england-counties.svg'
         from django.http import HttpResponse
         from xml.etree.ElementTree import ElementTree as et
         from xml.etree.ElementTree import parse
+        from gobotany.settings import STATIC_ROOT
+
+        BLANK_MAP  = ''.join([STATIC_ROOT, '/graphics/new-england-counties.svg'])
+        SHADED_MAP = ''.join([STATIC_ROOT, '/graphics/new.svg'])
 
         name = ' '.join([genus.title(), specific_epithet.lower()])
         taxon = models.Taxon.objects.filter(scientific_name=name)
@@ -464,20 +486,12 @@ class DistributionMapHandler(BaseHandler):
             states = taxon[0].distribution.split('|')
             distribution = [state.strip() for state in states]
 
-        tree = parse(MAP_FILE)
-        nodes = tree.findall('{http://www.w3.org/2000/svg}path')
-        for node in nodes:
-            if '{http://www.inkscape.org/namespaces/inkscape}label' in node.keys():
-                current_label = node.attrib['{http://www.inkscape.org/namespaces/inkscape}label']    # e.g. Haartford, CT
-                current_state = current_label[-2:]                                                     # e.g. CT
-                if current_state in distribution:
-                    style = "font-size:12px;fill:#ff0000;fill-rule:nonzero;stroke:#000000;stroke-width:0.35030233999999999;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
-                    node.set('style', style)
-
-        tree.write(MAP_NEW)
+        svg = parse(BLANK_MAP)
+        self._shade_map(svg, distribution, hexcolor='#D5ECC5', opacity=0)
+        svg.write(SHADED_MAP)
 
         if taxon:
-            return HttpResponse(open(MAP_NEW), mimetype="image/svg+xml")
+            return HttpResponse(open(SHADED_MAP), mimetype="image/svg+xml")
 
 
 class FamilyHandler(BaseHandler):
