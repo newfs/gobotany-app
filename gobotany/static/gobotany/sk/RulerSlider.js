@@ -24,6 +24,8 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             style: 'width: ' + pxwidth + 'px;',
             onChange: dojo.hitch(updater, updater.update_fields)
         }, node);
+        var handle = dojo.query('.dijitSliderImageHandleH')[0];
+        var secondhandle = dojo.create('div', {class: 'secondhandle'}, handle);
 
         /* Put metric on top. */
 

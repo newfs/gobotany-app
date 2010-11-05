@@ -258,7 +258,15 @@ p {
 #filter-working .dijitSliderDecoration {
     background-color: #fe8;
 }
-
+#filter-working .dijitSliderImageHandleH > div {
+    /* A second handle at the bottom of the ruler, against the inches */
+    position: relative;
+    top: 93px;
+    height: 16px;
+    width: 18px;
+    background-image: url("http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/form/images/sliderThumbs.png");
+    background-position: -108px 0;
+}
 #filter-working .dijitRuleLabelH {
     left: -100%;  /* print lengths left of ticks */
     text-align: right;
