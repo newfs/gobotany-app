@@ -59,42 +59,41 @@ gobotany.utils.clone = function(obj, updated_args) {
     return new_obj;
 };
 
-gobotany.utils.pretty_length = function(unit, value) {
-    // First convert to a number in order to handle a string being passed in.
-    value = parseFloat(value);
-    if (isNaN(value)) {
-        console.log('gobotany.utils.pretty_length: value ' + value +
+
+gobotany.utils.pretty_length = function(unit, mmvalue) {
+    var mm = parseFloat(mmvalue); /* make sure it is a float */
+    if (isNaN(mm)) {
+        console.log('gobotany.utils.pretty_length: ' + mmvalue +
                     ' is not a number');
     }
-
-    var ret = {
-        metric: String(value.toFixed(1)) + ' ' + unit
-    };
-
-    var valuemm = value;
-    if (unit == 'cm') {
-        valuemm = 10 * valuemm;
+    if (unit == 'mm') {
+        return mm.toFixed(1) + '&#8239;mm'; /* narrow space + unit */
+    } else if (unit == 'cm') {
+        return (mm / 10.0).toFixed(1) + '&#8239;cm';
+    } else if (unit == 'm') {
+        return (mm / 1000.0).toFixed(2) + '&#8239;m';
     }
-    else if (unit == 'm') {
-        valuemm = 1000 * valuemm;
+    inches = mm / 25.4;
+    feet = Math.floor(inches / 12.0);
+    inches = inches % 12.0;
+    var value = '';
+    if (feet > 0) {
+        value += feet + '&#8239;ft&nbsp;';
     }
-
-    var inches = 0.0393700787 * valuemm;
-    var remaining = null;
-    if (inches > 12) {
-        var feet = inches / 12;
-        feet = feet.toFixed(1);
-        inches = inches % 12;
-        inches = inches.toFixed(1);
-        remaining = String(feet) + "'" + String(inches) + '"';
-    } else {
-        inches = inches.toFixed(1);
-        remaining = String(inches) + '"'
+    var wholein = Math.floor(inches);
+    if (wholein > 0) {
+        value += wholein;
     }
-
-    ret.imperial = remaining;
-
-    return ret;
+    var fracin = inches % 1.0;
+    var eighths = Math.floor(fracin * 8.0);
+    if (eighths > 0) {
+        value += ' ⅛¼⅜½⅝¾⅞'[eighths];
+    }
+    if (wholein == 0 && eighths == 0) {
+        value += '0';
+    }
+    value += '&#8239;in';
+    return value;
 };
 
 
@@ -108,6 +107,7 @@ dojo.declare("gobotany.utils.UnitFieldsUpdater", null, {
     },
 
     update_fields: function(value) {
+        return;
         this.realvalue = value;
         pretty = gobotany.utils.pretty_length(this.unit, value);
 

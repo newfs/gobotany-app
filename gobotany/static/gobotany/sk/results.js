@@ -530,7 +530,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         if (! this.did_they_just_choose_a_genus) {
             dijit.byId('genus_select').set('value', '');
         }
-    
+
         var family_select = dijit.byId('family_select');
         var family = family_select.value;
         this.set_value('family', family);
@@ -542,11 +542,11 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     apply_genus_filter: function(event) {
         var genus = dijit.byId('genus_select').value;
         this.set_value('genus', genus);
-    
+
         var family_select = dijit.byId('family_select');
         if (genus) {
             var family = family_select.value;
-        
+
             var new_family = genus_to_family[genus];
             if (family != new_family) {
                 this.did_they_just_choose_a_genus = true;
@@ -717,13 +717,14 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             if (selectedvalue != null)
                 startvalue = selectedvalue;
 
-            var pretty1 = gobotany.utils.pretty_length(unit, filter.values.min);
-            var pretty2 = gobotany.utils.pretty_length(unit, filter.values.max);
-            var label = dojo.place('<label>Select a length between<br>' +
+//            var pretty1 = gobotany.utils.pretty_length(unit, filter.values.min);
+//            var pretty2 = gobotany.utils.pretty_length(unit, filter.values.max);
+            var label = dojo.place('<label>Select a length between<br>'
+                                   /*+
                                    pretty1.metric + ' (' + pretty1.imperial +
                                    ')' + ' and ' +
                                    pretty2.metric + ' (' + pretty2.imperial +
-                                   ')' + '<br></label>',
+                                   ')' + '<br></label>'*/,
                                    valuesList);
 
             var input = dojo.create('input', {

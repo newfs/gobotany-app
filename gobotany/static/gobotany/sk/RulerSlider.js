@@ -1,6 +1,7 @@
 /* Length slider that looks something like a ruler. */
 
 dojo.provide('gobotany.sk.RulerSlider');
+dojo.require('gobotany.utils');
 dojo.require('dijit.form.HorizontalSlider');
 dojo.require('dijit.form.HorizontalRule');
 dojo.require('dijit.form.HorizontalRuleLabels');
@@ -12,6 +13,7 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
 
     constructor: function(node, pxwidth, themin, themax, startvalue, updater) {
         this.pxwidth = pxwidth;
+        this.updater = updater;
         var distance = this.mmwidth = themax - themin;
 
         this.slider = new dijit.form.HorizontalSlider({
@@ -22,7 +24,7 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             maximum: themax,
             intermediateChanges: true,
             style: 'width: ' + pxwidth + 'px;',
-            onChange: dojo.hitch(updater, updater.update_fields)
+            onChange: dojo.hitch(this, this.do_update)
         }, node);
 
         /* Put metric on top. */
@@ -56,12 +58,16 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
         /* Add a second handle below the English tick marks. */
 
         var handles = dojo.query('.dijitSliderImageHandleH');
-        var handle = handles[handles.length - 1];
-        var secondhandle = dojo.create('div', {
-            class: 'secondhandle',
+        var handle = handles[handles.length - 1]; /* from last ruler on page */
+        var second_handle = dojo.create('div', {
+            class: 'second_handle',
             style: 'top: ' + dojo.position(this.slider.containerNode).h + 'px'
         }, handle);
-
+        this.metric_display = dojo.create(
+            'div', {class: 'metric_display'}, handle);
+        this.english_display = dojo.create(
+            'div', {class: 'english_display'}, second_handle);
+        this.draw_value();
     },
 
     draw_labels_and_ticks: function(labels_and_ticks) {
@@ -145,5 +151,19 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
         }
 
         return results;
+    },
+
+    do_update: function(event) {
+        this.draw_value();
+        /* Also call the update function provided by the caller. */
+        dojo.hitch(this.updater, this.updater.update_fields)(event);
+    },
+
+    draw_value: function() {
+        var p = gobotany.utils.pretty_length;
+        var mm = this.slider.value;
+        this.metric_display.innerHTML =
+            p('m', mm) + '<br>' + p('cm', mm) + '<br>' + p('mm', mm);
+        this.english_display.innerHTML = p('in', mm);
     }
 });

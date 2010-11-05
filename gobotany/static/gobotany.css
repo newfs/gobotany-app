@@ -247,6 +247,10 @@ p {
 
 /* Make the Dijit horizontal slider look like a ruler */
 
+#filter-working .dijitSliderH {
+    margin-top: 48px;
+    margin-bottom: 18px;
+}
 #filter-working .dijitSliderButtonContainerH {
     padding: 0;
 }
@@ -260,12 +264,27 @@ p {
     border-bottom: 1px solid black;
 }
 #filter-working .dijitSliderImageHandleH > div {
+    font-size: 0.88em;
+}
+#filter-working .dijitSliderImageHandleH div.second_handle {
     /* A second handle at the bottom of the ruler, against the inches */
-    position: relative;
+    position: absolute;
     height: 16px;
     width: 18px;
     background-image: url("http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/form/images/sliderThumbs.png");
     background-position: -108px 0;
+}
+#filter-working .dijitSliderImageHandleH div.metric_display {
+    position: absolute;
+    bottom: 18px;
+    right: -18px;
+    text-align: center;
+}
+#filter-working .dijitSliderImageHandleH div.english_display {
+    position: absolute;
+    top: 20px;
+    right: -18px;
+    text-align: right;
 }
 #filter-working .dijitRuleLabelH {
     left: -100%;  /* print lengths left of ticks */
