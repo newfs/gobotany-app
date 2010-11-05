@@ -37,19 +37,19 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             [100.0, 'cm', 10.0],
             [500.0, 'm', 0.5],
             [1000.0, 'm', 1.0]
-        ]);
+        ], false);
         this.draw_labels_and_ticks(labels_and_ticks);
 
         /* And the English measures go on bottom. */
 
         var labels_and_ticks = this.compute_ruler([
-            [0.396875, null, 1.0], // sixty-fourths
-            [1.5875, null, 1.0], // sixteenths
-            [6.35, null, 1.0],   // quarters
+            [0.396875, null, 0.0625], // sixty-fourths
+            [3.175, 'in', 0.125], // eighths
+            [6.35, 'in', 0.25],   // quarters
             [25.4, 'in', 1.0],   // inches
-            [152.4, null, 1.0],  // half-feet
+            [152.4, 'ft', 0.5],  // half-feet
             [304.8, 'ft', 1.0]   // feet
-        ]);
+        ], true);
         labels_and_ticks.reverse();
         this.draw_labels_and_ticks(labels_and_ticks);
     },
@@ -86,7 +86,7 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
         return dojo.create('div', null, this.slider.containerNode);
     },
 
-    compute_ruler: function(unitlist) {
+    compute_ruler: function(unitlist, vulgar) {
         var results = [];  /* list of label sequences and tick counts */
         var max_ticks = this.pxwidth / this.min_pixels_per_tick;
         var max_labels = this.pxwidth / this.min_pixels_per_label;
@@ -115,7 +115,15 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             var nlabels = [''];  /* leftmost/zero label is always blank */
             var ulabels = [];
             for (var j = 1; j <= count; j++) {
-                nlabels.push('' + (j * per).toFixed(per < 1 ? 1 : 0));
+                if (vulgar) {
+                    /* English lengths use vulgar fractions */
+                    var whole = '' + Math.floor(j * per);
+                    var eighths = Math.round(8 * j * per) % 8;
+                    nlabels.push(eighths ? ' ⅛¼⅜½⅝¾⅞'[eighths] : whole);
+                } else {
+                    /* Metric lengths get to use a simple decimal point */
+                    nlabels.push('' + (j * per).toFixed(per < 1 ? 1 : 0));
+                }
                 ulabels.push('');
             }
             ulabels.push(label);
