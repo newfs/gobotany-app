@@ -24,6 +24,9 @@ dojo.require('dijit.form.Form');
 dojo.require('dijit.form.Select');
 
 dojo.declare('gobotany.sk.results.ResultsHelper', null, {
+    slider_node: null,
+    ruler: null,
+
     constructor: function(/*String*/ pile_slug) {
         // summary:
         //   Helper class for managing the sections on the results page.
@@ -394,15 +397,16 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         if (dojo.byId('character_slider') !== null) {
             var char_value_q = dijit.byId('character_slider');
             var value = char_value_q.value;
-            if (!isNaN(value)) {
-                this.results_helper.filter_manager.set_selected_value(
-                    this.simplekey_character_short_name, value);
-                choice_div.innerHTML = value;
-                this.results_helper.save_filter_state();
-                this.results_helper.species_section.perform_query();
-                this.show_or_hide_filter_clear(
-                    this.simplekey_character_short_name);
-            }
+            if (isNaN(value))
+                return;
+
+            this.results_helper.filter_manager.set_selected_value(
+                this.simplekey_character_short_name, value);
+            choice_div.innerHTML = value;
+            this.results_helper.save_filter_state();
+            this.results_helper.species_section.perform_query();
+            this.show_or_hide_filter_clear(
+                this.simplekey_character_short_name);
             return;
         }
 
@@ -493,7 +497,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         return filterItem;
     },
-    
+
     show_or_hide_filter_clear: function(filter_character_short_name) {
         // Show or hide the Clear link for a filter at left.
         var filter_id = '#' + filter_character_short_name;
@@ -695,6 +699,16 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             return;
         }
 
+        /* Clean up an old ruler before rebuilding the working area. */
+
+        if (this.ruler) {
+            this.ruler.destroy();
+            dojo.query(this.slider_node).orphan();
+            this.ruler = this.slider_node = null;
+        }
+
+        /* Build the new DOM elements. */
+
         if (filter.value_type == 'LENGTH') {
             var unit = filter.unit;
 
@@ -728,9 +742,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                                    '<br></label>',
                                    valuesList);
 
-            var slider_node = dojo.create('div', null, valuesList);
-            new gobotany.sk.RulerSlider(slider_node, 600, themin, themax,
-                                        startvalue);
+            this.slider_node = dojo.create('div', null, valuesList);
+            this.ruler = gobotany.sk.RulerSlider(
+                this.slider_node, 600, themin, themax, startvalue);
 
         } else {
 

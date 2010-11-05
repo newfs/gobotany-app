@@ -163,5 +163,9 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
         this.metric_display.innerHTML =
             p('m', mm) + '<br>' + p('cm', mm) + '<br>' + p('mm', mm);
         this.english_display.innerHTML = p('in', mm);
+    },
+
+    destroy: function() {
+        this.slider.destroyRecursive(); /* officially destroy dijit widget */
     }
 });
