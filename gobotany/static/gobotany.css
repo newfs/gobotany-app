@@ -393,7 +393,7 @@ ul#glossary_pages {
 ul#glossary_pages li {
     display: inline;
 }
-ul#glossary_pages .chosen {
+ul#glossary_pages .inactive {
     color: #c3d69b;
 }
 

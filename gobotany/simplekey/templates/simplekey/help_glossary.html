@@ -12,9 +12,13 @@ Glossary: {{ this_letter|upper }}
   {% for letter in letters %}
     <li>
       {% if letter = this_letter %}
-        <span class="chosen">{{ letter|upper }}</span>
+        {{ letter|upper }}
       {% else %}
-        <a href="{% url simplekey-help-glossary letter %}">{{ letter|upper }}</a>
+        {% if letter in letters_in_glossary %}
+          <a href="{% url simplekey-help-glossary letter %}">{{ letter|upper }}</a>
+        {% else %}
+          <span class="inactive">{{ letter|upper }}</span>
+        {% endif %}
       {% endif %}
     </li>
   {% endfor %}

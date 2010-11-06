@@ -319,13 +319,18 @@ def help_collections_view(request):
 def help_glossary_view(request, letter):
     glossary = GlossaryTerm.objects.filter(visible=True).extra(
         select={'lower_term': 'lower(term)'}).order_by('lower_term')
+
+    terms = glossary.values_list('lower_term', flat=True)
+    letters_in_glossary = [term[0] for term in terms]
+
     # Skip any glossary terms that start with a number, and filter to the
     # desired letter.
     glossary = glossary.filter(term__gte='a', term__startswith=letter)
-    # Case-insensitive sort
+
     return render_to_response('simplekey/help_glossary.html', {
             'this_letter': letter,
             'letters': string.ascii_lowercase,
+            'letters_in_glossary': letters_in_glossary,
             'glossary': glossary,
             }, context_instance=RequestContext(request))
 
