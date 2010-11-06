@@ -771,21 +771,34 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             // Create radio button items for each character value.
             for (var i = 0; i < values.length; i++) {
                 var v = values[i];
-                var item_html = ('<input type="radio" name="char_name" value="'
-                                 + v.value + '"><span> ' + v.value
-                                 + '</span> <span>(' + v.count + ')</span>');
-                var character_value_item
-                    = dojo.create('label', {'innerHTML': item_html}, valuesList);
-                this.glossarizer.markup(character_value_item.childNodes[1]);
-                // Connect filter character value radio button item to a function
-                // that will set the Key Characteristics and Notable Exceptions for
-                // filter particular character value. Here the *character value*
-                // is passed as the context.
-                dojo.connect(
-                    character_value_item, 'onclick', {helper: this, value: v},
-                    function(event) {
-                        this.helper.update_filter_working_help_text(this.value);
-                    });
+                
+                if ( !((v.count === 0) && (v.value === 'NA')) ) {
+                
+                    var item_html = '<input type="radio" name="char_name" ' +
+                        'value="' + v.value + '"';
+                    if (v.count === 0) {
+                        item_html = item_html + ' class="zero" disabled';
+                    }
+                    var display_value = v.value;
+                    if (v.value === 'NA') {
+                        display_value = 'doesn\'t apply';
+                    }
+                    item_html = item_html + '><span> ' + display_value + 
+                        '</span> <span>(' + v.count + ')</span>';
+                    var character_value_item = dojo.create('label', 
+                        {'innerHTML': item_html}, valuesList);
+                    this.glossarizer.markup(character_value_item.childNodes[1]);
+                    // Connect filter character value radio button item to a function
+                    // that will set the Key Characteristics and Notable Exceptions for
+                    // filter particular character value. Here the *character value*
+                    // is passed as the context.
+                    dojo.connect(
+                        character_value_item, 'onclick', {helper: this, value: v},
+                        function(event) {
+                            this.helper.update_filter_working_help_text(this.value);
+                        }
+                    );
+                }
             }
 
             // If the user has already selected a value for the filter, we

@@ -234,6 +234,10 @@ p {
     margin: 0.6em 0;
 }
 
+#filter-working .values input.zero ~ span {
+    color: #ccc;
+}
+
 #filter-working .info {
     float: left;
     font-size: 0.85em;
