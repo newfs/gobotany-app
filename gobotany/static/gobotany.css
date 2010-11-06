@@ -815,6 +815,18 @@ input.filter_int, input.filter_int2 {
     padding: 0 1em;
 }
 
+.nav a {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    color: #00f;
+    cursor: pointer;
+    text-decoration: underline;
+    user-select: none;
+}
+.nav a::selection {
+    background-color: transparent;
+}
+
 #species #info, #family #info, #genus #info {
     width: 300px;
 }
