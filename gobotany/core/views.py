@@ -14,7 +14,7 @@ from gobotany.core import botany, igdt, models
 
 def default_view(request):
     return render_to_response('index.html', {},
-                               context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 class PileSearchForm(forms.Form):
@@ -37,11 +37,13 @@ class PileSearchForm(forms.Form):
                 label = '%s: %s'%(term.term, term.question_text)
             except models.GlossaryTerm.DoesNotExist:
                 label=character.short_name
-            self.fields[character.short_name] = forms.ChoiceField(
-                label=label,
-                required=False,
-                choices=[('', '----------')]+[(c.value_str, (c.glossary_term and c.glossary_term.lay_definition) and "%s - %s"%(c.glossary_term.term, c.glossary_term.lay_definition) or c.value_str) for c in
-                         character_values.filter(character=character)])
+            choices = [('', '----------')] + [(c.value_str, \
+                (c.glossary_term and c.glossary_term.lay_definition) and \
+                "%s - %s" % (c.glossary_term.term, \
+                c.glossary_term.lay_definition) or c.value_str) for c in \
+                character_values.filter(character=character)]
+            self.fields[character.short_name] = forms.ChoiceField(label=label,
+                required=False, choices=choices)
 
 
 def piles_pile_groups(request):
@@ -54,7 +56,8 @@ def pile_search(request, pile_name):
     if request.method == 'POST':
         form = PileSearchForm(pile_name, request.POST)
         if form.is_valid():
-            params = dict((str(k),v) for k,v in form.cleaned_data.iteritems() if v)
+            params = dict((str(k), v) for k, v in \
+                     form.cleaned_data.iteritems() if v)
             data = botany.query_species(**params)
     else:
         form = PileSearchForm(pile_name)
@@ -163,7 +166,8 @@ def pile_characters(request, pile_slug):
     species_ids = sorted( s.id for s in species_list )
     species_by_id = dict( (s.id, s) for s in species_list )
     t0 = time.time()
-    character_entropy_list = igdt.compute_character_entropies(pile, species_ids)
+    character_entropy_list = igdt.compute_character_entropies(pile,
+                                                              species_ids)
     elapsed_time = time.time() - t0
 
     cvs = pile.character_values.all()
@@ -201,7 +205,7 @@ def pile_characters(request, pile_slug):
 
         # Sort character values by value_str, lexicographically.
 
-        character_values = list(cvs_by_cid[character.id]) # 'cause we mutate it
+        character_values = list(cvs_by_cid[character.id]) # cause we mutate it
         character_values.sort(key=attrgetter('value_str'))
 
         for i, cv in enumerate(character_values):
