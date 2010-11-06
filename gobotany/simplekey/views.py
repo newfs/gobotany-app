@@ -231,9 +231,8 @@ def species_view(request,  genus_slug, specific_epithet_slug,
         habitats = taxon.habitat.split('|')
     lookalikes = Lookalike.objects.filter(scientific_name=scientific_name)
 
-    character_tuples = taxon.character_values.all().values_list(
-                       'character').distinct()
-    character_ids = [tuple[0] for tuple in character_tuples]
+    character_ids = taxon.character_values.all().values_list(
+                    'character', flat=True).distinct()
     character_groups = CharacterGroup.objects.filter(
                        character__in=character_ids).distinct()
     character_groups = _add_character_group_short_names(character_groups)
