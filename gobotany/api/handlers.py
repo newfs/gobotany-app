@@ -447,29 +447,39 @@ class GlossaryBlobHandler(BaseHandler):
 class DistributionMapHandler(BaseHandler):
     methods_allowed = ('GET',)
 
-    def _shade_map(self, svgmap, distribution, hexcolor='#ff0000', opacity='1'):
+    def _shade_map(self, svgmap, distribution, hexcolor='#ff0000', opacity=1):
         """Color in New England states that match the passed distribution
         list. Note: this method needs to be modified to color in counties
         instead of states when we get the county level data."""
 
-        base_style = "fill:none;stroke-opacity:1;font-size:12px;fill-rule: \
-        nonzero;stroke:#000000;stroke-width:0.35030233999999999; \
-        stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;\
-        stroke-dasharray:none;marker-start:none"
+        base_style = 'fill:none;stroke-opacity:1;font-size:12px;fill-rule:' \
+            'nonzero;stroke:#000000;stroke-width:0.35030233999999999;' \
+            'stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;' \
+            'stroke-dasharray:none;marker-start:none'
 
-        shaded_style = base_style + ";fill:" + str(hexcolor) + \
-                       ";stroke-opacity:" + str(opacity)
+        shaded_style = base_style + ';fill:' + str(hexcolor) + \
+                       ';stroke-opacity:' + str(opacity)
 
         label_node = '{http://www.inkscape.org/namespaces/inkscape}label'
         county_node = '{http://www.inkscape.org/namespaces/inkscape}label'
-        
+
         nodes = svgmap.findall('{http://www.w3.org/2000/svg}path')
         for node in nodes:
             if label_node in node.keys():
-                current_label = node.attrib[county_node]  # e.g. Haartford, CT
+                current_label = node.attrib[county_node]  # e.g. Hartford, CT
                 current_state = current_label[-2:]        # e.g. CT
                 if current_state in distribution:
                     node.set('style', shaded_style)
+
+        # Shade in the color of the 'present' legend box.
+        rect_nodes = svgmap.findall('{http://www.w3.org/2000/svg}rect')
+        for rect_node in rect_nodes:
+            if rect_node.get('id') == 'present-box':
+                style = rect_node.get('style')
+                shaded_style = style.replace('fill:#000000;fill-opacity:0;',
+                                             'fill:%s;fill-opacity:%s;' % \
+                                             (hexcolor, str(opacity)))
+                rect_node.set('style', shaded_style)
 
     def read(self, request, genus, specific_epithet):
         """Return an SVG map of New England with counties that contain the
@@ -492,7 +502,7 @@ class DistributionMapHandler(BaseHandler):
             distribution = [state.strip() for state in states]
 
         svg = parse(blank_map)
-        self._shade_map(svg, distribution, hexcolor='#D5ECC5', opacity=0)
+        self._shade_map(svg, distribution, hexcolor='#D5ECC5', opacity=1)
 
         if taxon:
             return HttpResponse(xml.etree.ElementTree.tostring(svg.getroot()),
