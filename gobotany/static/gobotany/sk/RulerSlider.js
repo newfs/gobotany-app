@@ -44,7 +44,7 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
 
         /* And the English measures go on bottom. */
 
-        var labels_and_ticks = this.compute_ruler([
+        labels_and_ticks = this.compute_ruler([
             [0.396875, null, 0.0625], // sixty-fourths
             [3.175, 'in', 0.125], // eighths
             [6.35, 'in', 0.25],   // quarters
@@ -60,23 +60,23 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
         var handles = dojo.query('.dijitSliderImageHandleH');
         var handle = handles[handles.length - 1]; /* from last ruler on page */
         var second_handle = dojo.create('div', {
-            class: 'second_handle',
-            style: 'top: ' + dojo.position(this.slider.containerNode).h + 'px'
+            'class': 'second_handle',
+            'style': 'top: ' + dojo.position(this.slider.containerNode).h + 'px'
         }, handle);
         this.metric_display = dojo.create(
-            'div', {class: 'metric_display'}, handle);
+            'div', {'class': 'metric_display'}, handle);
         this.english_display = dojo.create(
-            'div', {class: 'english_display'}, second_handle);
+            'div', {'class': 'english_display'}, second_handle);
         this.draw_value();
     },
 
     draw_labels_and_ticks: function(labels_and_ticks) {
 
-        for (i in labels_and_ticks) {
+        for (var i = 0; i < labels_and_ticks.length; i++) {
             thing = labels_and_ticks[i];
 
             if (typeof thing === 'number') {  /* number means do tick marks */
-                var tickheight = (i == 0 || i == labels_and_ticks.length - 1) ?
+                var tickheight = (i === 0 || i === labels_and_ticks.length - 1) ?
                     6 : 4;  /* lowest set of ticks should be longer */
                 new dijit.form.HorizontalRule({
                     container: 'topDecoration',
