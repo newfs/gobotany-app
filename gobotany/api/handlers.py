@@ -452,23 +452,19 @@ class DistributionMapHandler(BaseHandler):
         list. Note: this method needs to be modified to color in counties
         instead of states when we get the county level data."""
 
-        base_style = 'fill:none;stroke-opacity:1;font-size:12px;fill-rule:' \
-            'nonzero;stroke:#000000;stroke-width:0.35030233999999999;' \
-            'stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;' \
-            'stroke-dasharray:none;marker-start:none'
-
-        shaded_style = base_style + ';fill:' + str(hexcolor) + \
-                       ';stroke-opacity:' + str(opacity)
-
-        label_node = '{http://www.inkscape.org/namespaces/inkscape}label'
-        county_node = '{http://www.inkscape.org/namespaces/inkscape}label'
-
+        # Shade in the color of the states.
+        inkscape_label = '{http://www.inkscape.org/namespaces/inkscape}label'
         nodes = svgmap.findall('{http://www.w3.org/2000/svg}path')
         for node in nodes:
-            if label_node in node.keys():
-                current_label = node.attrib[county_node]  # e.g. Hartford, CT
-                current_state = current_label[-2:]        # e.g. CT
-                if current_state in distribution:
+            if inkscape_label in node.keys():
+                label = node.attrib[inkscape_label]   # e.g. Hartford, CT
+                state = label[-2:]                    # e.g. CT
+                if state in distribution:
+                    style = node.get('style')
+                    shaded_style = style.replace('fill:none;', 'fill:%s;' % \
+                                                str(hexcolor))
+                    shaded_style = shaded_style.replace('stroke-opacity:1;', \
+                                                'stroke-opacity:%s;' % str(opacity))
                     node.set('style', shaded_style)
 
         # Shade in the color of the 'present' legend box.
