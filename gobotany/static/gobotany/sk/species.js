@@ -17,12 +17,12 @@ gobotany.sk.species.reopen_character_groups = function() {
     var open_character_groups = dojo.cookie('open_character_groups');
     if (open_character_groups !== undefined) {
         open_character_groups = open_character_groups.split(',');
-    }
-    for (var i = 0; i < open_character_groups.length; i++) {
-        var widget = dijit.byId(open_character_groups[i]);
-        if (widget !== undefined) {
-            if (!widget.open) {
-                widget.toggle();
+        for (var i = 0; i < open_character_groups.length; i++) {
+            var widget = dijit.byId(open_character_groups[i]);
+            if (widget !== undefined) {
+                if (!widget.open) {
+                    widget.toggle();
+                }
             }
         }
     }
