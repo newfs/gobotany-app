@@ -106,6 +106,36 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         }));
         this.pile_manager.load();
+
+        this.setup_onhashchange();
+    },
+    
+    setup_onhashchange: function() {
+        // Set up the onhashchange event handler, which will be used to detect
+        // Back button undo events for modern browsers.
+        dojo.connect(document.body, 'onhashchange', this, this.handle_undo,
+                     true);
+    },
+
+    handle_undo: function() {
+        // Detect and handle URL hash changes for which Undo is supported.
+        var current_url = window.location.href;
+
+        var last_plant_id_url = dojo.cookie('last_plant_id_url');
+        if (last_plant_id_url === undefined) {
+            last_plant_id_url = '';
+        }
+
+        // When going forward and applying values, etc., the current URL and
+        // last plant ID URL are always the same. After pressing Back, they
+        // are different.
+        if (current_url !== last_plant_id_url) {
+            // Now reload the current URL, which reloads everything on the
+            // page and sets it up all again. This means a little more going
+            // on that usually seen with an Undo command, but is pretty
+            // quick and allows for robust yet uncomplicated Undo support.
+            window.location.reload();
+        }
     },
 
     setup_filters_from_pile_info: function(args) {
@@ -131,7 +161,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         //   Sets up the internal filter data structure based on values in
         //   in the url hash (dojo.hash())
 
-        console.log('setting up from hash - '+dojo.hash());
+        console.log('setting up from hash - ' + dojo.hash());
 
         var hash_object = dojo.queryToObject(dojo.hash());
         if (hash_object['_filters'] === undefined)
@@ -174,10 +204,20 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     save_filter_state: function() {
         // summary:
         //   Saves the state of the filters in a cookie and in the url hash.
+        var LAST_URL_COOKIE_NAME = 'last_plant_id_url';
 
         console.log('saving filter info in url and cookie');
+        
+        // Retain the previous state, for supporting Undo.
+        //var previous_url = dojo.cookie(LAST_URL_COOKIE_NAME);
+        //if (previous_url === undefined) {
+        //    previous_url = '';
+        //}
+        //dojo.cookie('previous_plant_id_url', previous_url, {path: '/'});
+        
+        // Save the current state.
         dojo.hash(this.filter_manager.as_query_string());
-        dojo.cookie('last_plant_id_url', window.location.href, {path: '/'});
+        dojo.cookie(LAST_URL_COOKIE_NAME, window.location.href, {path: '/'});
     },
 
     load_selected_image_type: function (event) {
