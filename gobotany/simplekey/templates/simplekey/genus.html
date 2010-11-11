@@ -7,11 +7,10 @@
 {% block content %}
   <h1>Genus <em>{{ item.name }}</em></h1>
   <div id="genus">
-    <h2>{% if item.common_name %}
-            {{ item.common_name }}
-        {% else %}
-            Common name here
-        {% endif %}</h2>
+    {# Common name is not currently planned for genera, but include it if it exists. #}
+    {% if item.common_name %}
+        <h2>{{ item.common_name }}</h2>
+    {% endif %}
 
     <div id="images">
       <h3>Images</h3>

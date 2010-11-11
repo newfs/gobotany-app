@@ -1,7 +1,10 @@
 Genus:
     {{ object.name }}.
-Common name:
-    {{ object.common_name }}.
+{# Common name is not currently planned for genera, but include it if it exists. #}
+{% if object.common_name %}
+    Common name:
+        {{ object.common_name }}.
+{% endif %}
 Family:
     {{ object.family.name }}.
 Description:
