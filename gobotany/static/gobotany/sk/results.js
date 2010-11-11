@@ -715,17 +715,21 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         // If both values are a number or begin with one, sort numerically.
         var int_value_a = parseInt(value_a);
         var int_value_b = parseInt(value_b);
-        if (!isNaN(int_value_a) && !isNaN(int_value_b))
+        if (!isNaN(int_value_a) && !isNaN(int_value_b)) {
             return int_value_a - int_value_b;
+        }
 
         // Otherwise, sort alphabetically.
-        // Exception: always make 'NA' last.
-        if (value_a == 'na')
+        // Exception: always make Doesn't Apply (NA) last.
+        if (value_a === 'na') {
             return 1;
-         if (value_a < value_b)
+        }
+        if (value_a < value_b) {
             return -1;
-        if (value_a > value_b)
+        }
+        if (value_a > value_b) {
             return 1;
+        }
 
         return 0; // default value (no sort)
     },
@@ -829,10 +833,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     if (v.count === 0) {
                         item_html = item_html + ' class="zero" disabled';
                     }
-                    var display_value = v.value;
-                    if (v.value === 'NA') {
-                        display_value = 'doesn\'t apply';
-                    }
+                    var display_value =
+                        this._get_filter_display_value(v.value);
                     item_html = item_html + '><span> ' + display_value + 
                         '</span> <span>(' + v.count + ')</span>';
                     var character_value_item = dojo.create('label', 
