@@ -427,10 +427,16 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     _get_filter_display_value: function(value) {
-        var display_value = value;
+        var display_value = 'don\'t know';
+
+        if (value !== undefined && value !== '') {
+            display_value = value;
+        }
+
         if (value === 'NA') {
             display_value = 'doesn\'t apply';
         }
+
         return display_value;
     },
 
@@ -466,12 +472,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             var checked_item = checked_item_q[0];
             this.results_helper.filter_manager.set_selected_value(
                 this.simplekey_character_short_name, checked_item.value);
-            if (checked_item.value) {
-                choice_div.innerHTML =
-                    this._get_filter_display_value(checked_item.value);
-            } else {
-                choice_div.innerHTML = 'don\'t know';
-            }
+            choice_div.innerHTML =
+                this._get_filter_display_value(checked_item.value);
             this.results_helper.species_section.perform_query();
             this.show_or_hide_filter_clear(
                 this.simplekey_character_short_name);
@@ -498,7 +500,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             var filterLink = dojo.create('a', {
                 href: '#', innerHTML: filter.friendly_name});
             var choiceDiv = dojo.create('div', {
-                'class': 'choice', innerHTML: 'don\'t know'});
+                'class': 'choice',
+                innerHTML: this._get_filter_display_value('')});
             var removeLink = dojo.create('a', {
                 href: '#', innerHTML: '× remove'});
             var clearLink = dojo.create('a', {
@@ -684,7 +687,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }
 
         dojo.query('#' + filter.character_short_name + ' .choice'
-                  )[0].innerHTML = 'don\'t know';
+                  )[0].innerHTML = this._get_filter_display_value('');
         this.show_or_hide_filter_clear(filter.character_short_name);
     },
 
@@ -806,7 +809,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
             // Create a Don't Know radio button item.
             var item_html = '<input type="radio" name="char_name" value="" ' +
-                       'checked> don\'t know';
+                       'checked> ' + this._get_filter_display_value('');
             var dont_know_item = dojo.create('label',
                                              {'innerHTML': item_html});
             // Connect filter radio button item to a function that will set the
