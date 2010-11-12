@@ -93,9 +93,9 @@ dojo.declare('gobotany.sk.images.ImageBrowser', null, {
         // Figure out which image is currently showing. The URL key is for
         // supporting URLs for different image sizes, i.e., full images or
         // thumbnails.
-        var current_image_index = null;
+        var current_image_index = -1;
         var i = 0;
-        while (current_image_index === null && i < this.images.length) {
+        while (current_image_index === -1 && i < this.images.length) {
             if (current_image_url === this.images[i][this.url_key]) {
                 current_image_index = i;
             }
@@ -124,6 +124,20 @@ dojo.declare('gobotany.sk.images.ImageBrowser', null, {
         }
 
         return new_image_index;
+    },
+
+    get_first_image_index_of_type: function(image_type) {
+        // Get the first image index of the specified type.
+        var first_image_index = -1;
+        var i = 0;
+        while (first_image_index === -1 && i < this.images.length) {
+            if (image_type === this.images[i].type) {
+                first_image_index = i;
+            }
+            i++;
+        }
+
+        return first_image_index;
     },
 
 });

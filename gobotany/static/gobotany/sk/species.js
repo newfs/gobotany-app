@@ -66,6 +66,12 @@ gobotany.sk.species.init = function(scientific_name) {
                 //}
             }
 
+            var first_habit_image_index =
+                image_browser.get_first_image_index_of_type('habit');
+            if (first_habit_image_index >= 0) {
+                image_browser.first_image_index = first_habit_image_index;
+            }
+
             image_browser.setup();
         }
     });
