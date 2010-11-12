@@ -11,7 +11,7 @@ dojo.require('dojox.embed.Flash');
 
 var filter_manager = null;
 
-dojo.addOnLoad(function() {
+gobotany.sk.simplekey_page.init = function() {
 
     /* A filter manager is needed by plant_preview.js. */
     filter_manager = new gobotany.filters.FilterManager({
@@ -61,4 +61,5 @@ dojo.addOnLoad(function() {
                                             height: 200},
                                             node);
     });
-});
+
+};

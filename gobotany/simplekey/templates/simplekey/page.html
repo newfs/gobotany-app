@@ -41,19 +41,23 @@
 <div style="clear: both">&nbsp;</div>
 </div>
 
-    {% endblock %}
-    {% block js_bottom %}
-
-    <script>
-      dojo.require('gobotany.sk.simplekey_page');
-      function toggle_tooltip(slug) {
-          dojo.query('.PileInfo.tooltip').removeClass('active');
-          var tooltip = dojo.byId(slug+'-tooltip');
-          dojo.addClass(tooltip, 'active');
-      }
-    </script>
-  </div>
 {% endblock %}
+
+{% block js_bottom %}
+<script>
+    dojo.require('gobotany.sk.simplekey_page');
+    dojo.addOnLoad(function() {
+        gobotany.sk.simplekey_page.init();
+    });
+
+    function toggle_tooltip(slug) {
+        dojo.query('.PileInfo.tooltip').removeClass('active');
+        var tooltip = dojo.byId(slug+'-tooltip');
+        dojo.addClass(tooltip, 'active');
+    }
+</script>
+{% endblock %}
+
 {% block footer %}
   {% include "simplekey/footcrumbs.html" %}
 {% endblock %}

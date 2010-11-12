@@ -1,7 +1,7 @@
 {% extends "simplekey/base.html" %}
 {% block content %}
   <div class="PilePage" id="pile-finder">
-    <h1>The pilegroup: {{ pilegroup.name }}</h1>
+    <h1>{{ pilegroup.name }}</h1>
 
     <h2>Key Characteristics</h2>
     {{ pilegroup.key_characteristics|safe }}
@@ -34,6 +34,9 @@
 {% block js_bottom %}
 
 <script>
-dojo.require('gobotany.sk.simplekey_page');
+    dojo.require('gobotany.sk.simplekey_page');
+    dojo.addOnLoad(function() {
+        gobotany.sk.simplekey_page.init();
+    });
 </script>
 {% endblock %}
