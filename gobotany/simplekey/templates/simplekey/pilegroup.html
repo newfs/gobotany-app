@@ -1,4 +1,7 @@
 {% extends "simplekey/base.html" %}
+{% block title %}
+    {{ pilegroup.name }}
+{% endblock %}
 {% block content %}
   <div class="PilePage" id="pile-finder">
     <h1>{{ pilegroup.name }}</h1>
@@ -11,20 +14,33 @@
 
     <hr>
 
-    <p>
-      Which of the following best describes your plant?
-    </p>
+    <div id="simplekey-left-column">
+        <p>Which of the following best describes your plant?</p>
 
-    {% for pile, url in piles_and_urls %}
-      <div class="Pile" id="{{ pile.slug }}-info">
-        <h2><a href="{{ url }}">{{ pile.name }}</a></h2>
-        <button dojoType="dijit.form.Button" onclick="dijit.byId('{{ pile.slug }}-tooltip').show()">more info</button>
-        <div dojoType="dijit.Dialog" class="PileInfo" id="{{ pile.slug }}-tooltip"
-             title="{{ pile.name }}">
-          {% include "simplekey/pile_tooltip.html" %}
+        {% for pile, url in piles_and_urls %}
+        <div class="Pile" id="{{ pile.slug }}-info">
+            <h2><a href="{{ url }}">{{ pile.name }}</a></h2>
+            <button dojoType="dijit.form.Button"
+                    onclick="gobotany.sk.simplekey_page.toggle_tooltip('{{ pile.slug }}')"
+                    >more info</button>
         </div>
-      </div>
+        {% endfor %}
+    </div>
+
+    <div id="simplekey-right-column">
+    {% for pile, url in piles_and_urls %}
+        <div class="PileInfo tooltip" id="{{ pile.slug }}-tooltip">
+            {% include "simplekey/pile_tooltip.html" %}
+        </div>
     {% endfor %}
+    </div>
+    <div style="clear: both">&nbsp;</div>
+    </div>
+
+    <div id="plant-preview" dojoType="dijit.Dialog" title="Plant Preview"
+     aria-describedby="preview-intro">
+    {% include "simplekey/plant_preview.html" %}
+    </div>
 
   </div>
 {% endblock %}

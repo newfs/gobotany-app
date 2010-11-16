@@ -29,6 +29,13 @@ p {
     padding: 8px;
     text-align: center;
 }
+.species_image_ribbon div {
+    display: inline;
+}
+.species_image_ribbon img {
+    cursor: pointer;
+    vertical-align: middle;
+}
 
 #content {
     width: 960px;
@@ -609,6 +616,7 @@ ul#glossary li img {
 h3, h4, h5, h6 {
     margin-top: 0;
 }
+/* end Dijit Claro overrides */
 
 #simplekey-left-column {
     width: 25%;
@@ -627,8 +635,7 @@ h3, h4, h5, h6 {
     height: 0;
 }
 
-.loading.hidden,
-.hidden {
+.loading.hidden, .hidden {
     display: none;
 }
 
@@ -637,28 +644,6 @@ h3, h4, h5, h6 {
     display: block;
     padding-left: 18px;
     background: transparent url(ajax-loader.gif) no-repeat;
-}
-
-/* Turn off the annoying decoration on the DropDownButton that we have
-   to use on the pile-info species image ribbon if we want a tooltip to
-   pop up when we click. */
-
-.PilePage .species_image_ribbon .dijitButtonNode,
-.PileInfo .species_image_ribbon .dijitButtonNode {
-    background-image: none;
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    -moz-border-radius: 0px 0px 0px 0px;
-    -moz-box-shadow: none;
-}
-.PilePage .species_image_ribbon .dijitButtonText,
-.PileInfo .species_image_ribbon .dijitButtonText {
-    padding: 0;
-}
-.PilePage .species_image_ribbon .dijitArrowButtonInner,
-.PileInfo .species_image_ribbon .dijitArrowButtonInner {
-    display: none;
 }
 
 /* Plant preview dialogs, wherever they appear */
@@ -715,7 +700,6 @@ h3, h4, h5, h6 {
 }
 
 #plant-preview dt {
-    /*border: 1px solid red;*/
     clear: left;
     float: left;
     font-weight: bold;
@@ -724,7 +708,6 @@ h3, h4, h5, h6 {
 }
 
 #plant-preview dd {
-    /*border: 1px solid green;*/
     margin: 0 0 0 210px;
     padding: 0 0 1em 0;
 }

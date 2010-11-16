@@ -42,14 +42,14 @@
   </div>
 {% endblock %}
 {% block footer %}
-  {% include "simplekey/footcrumbs.html" %}
+    {% include "simplekey/footcrumbs.html" %}
 {% endblock %}
 {% block js_bottom %}
-  <script>
+<script>
     dojo.require('gobotany.sk.results');
     dojo.addOnLoad(function() {
-      var helper = gobotany.sk.results.ResultsHelper('{{ pile.slug }}');
-      helper.setup()
+        var helper = gobotany.sk.results.ResultsHelper('{{ pile.slug }}');
+        helper.setup();
     });
-  </script>
+</script>
 {% endblock %}

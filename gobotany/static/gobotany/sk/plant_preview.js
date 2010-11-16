@@ -15,14 +15,22 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant,
     image_browser.css_selector = '#plant-preview .photos';
     image_browser.url_key = 'scaled_url';
 
-    taxon_button = dojo.query('#plant-preview .nav button')[0];
+    var taxon_button = dojo.query('#plant-preview .nav button')[0];
     dojo.connect(dijit.byId('taxon_button'), 'onClick', function() {
-        var url = window.location.href.split('#')[0] +
-              plant.scientific_name.toLowerCase().replace(' ', '/') + '/';
+        var path = window.location.pathname.split('#')[0];
+        var re = /^\/simple\/.[^\/]*\/$/;
+        if (path.match(re)) {
+            // If on a 'numbered' collection page or other pile group page,
+            // use the generic path to a species page rather than the usual
+            // full pile path.
+            path = '/simple/species/';
+        }
+        var url = path + plant.scientific_name.toLowerCase().replace(
+            ' ', '/') + '/';
         window.location.href = url;
     });
 
-    taxon_url = '/taxon/' + plant.scientific_name + '/';
+    var taxon_url = '/taxon/' + plant.scientific_name + '/';
     var taxon_store = new dojox.data.JsonRestStore({target: taxon_url});
     taxon_store.fetch({
         onComplete: function(taxon) {
@@ -57,13 +65,16 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant,
                 // page is different from the alt text of the first image
                 // showing on the popup, look for matching alt text and show
                 // that image first on the popup.
-                var clicked_image_alt_text = dojo.attr(clicked_image, 'alt');
-                for (var i = 0; i < image_browser.images.length; i++) {
-                    if (clicked_image_alt_text ===
-                        image_browser.images[i].title) {
+                if ((clicked_image !== undefined) && (clicked_image.length)) {
+                    var clicked_image_alt_text = dojo.attr(clicked_image,
+                        'alt');
+                    for (var i = 0; i < image_browser.images.length; i++) {
+                        if (clicked_image_alt_text ===
+                            image_browser.images[i].title) {
 
-                        image_browser.first_image_index = i;
-                        break;
+                            image_browser.first_image_index = i;
+                            break;
+                        }
                     }
                 }
             }

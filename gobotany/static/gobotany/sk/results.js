@@ -37,10 +37,10 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         // | var helper = new gobotany.sk.results.ResultsHelper('some_pile');
         // | helper.setup();
 
-        this.pile_slug = pile_slug 
+        this.pile_slug = pile_slug;
         this.pile_manager = new gobotany.piles.PileManager(this.pile_slug);
         this.filter_manager = new gobotany.filters.FilterManager({
-            pile_slug: this.pile_slug
+            pile_slug: this.pile_slug,
         });
    },
 

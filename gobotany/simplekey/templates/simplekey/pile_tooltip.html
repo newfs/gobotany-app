@@ -1,45 +1,38 @@
-<div class="species_image_ribbon">
-          {% for image in pile.sample_species_images.all %}
-            <div class="species_dropdown" dojoType="dijit.form.DropDownButton">
-              <span>
-                <img
-                   id="ribbon-{{ pile.slug }}-{{ forloop.counter }}"
-                   src="{{ image.image.thumbnail.absolute_url }}"
-                   scientific_name="{{ image.content_object.scientific_name}}"
-                   >
-              </span>
-              <div dojoType="dijit.TooltipDialog"
-                   class="potential-plant-preview"
-                   style="display:none">
-                {% include "simplekey/plant_preview.html" %}
-              </div>
+    <div class="species_image_ribbon">
+        {% for image in pile.sample_species_images.all %}
+            <div>
+                 <img id="ribbon-{{ pile.slug }}-{{ forloop.counter }}"
+                      src="{{ image.image.thumbnail.absolute_url }}"
+                      alt="{{ image.alt }}"
+                      scientific_name="{{ image.content_object.scientific_name }}"
+                      >
             </div>
-          {% endfor %}
-        </div>
+        {% endfor %}
+    </div>
 
-        {% if pile.friendly_name %}
+    {% if pile.friendly_name %}
         <h3 class="PileFriendlyName">{{ pile.friendly_name }}</h3>
-        {% endif %}
-        <div class="PileDescription">
-          {{ pile.description }}
-        </div>
-        {% with pile.get_default_image as pile_image %}
-        {% if pile_image %}
+    {% endif %}
+    <div class="PileDescription">
+        {{ pile.description }}
+    </div>
+    {% with pile.get_default_image as pile_image %}
+    {% if pile_image %}
         <img width="200"
              class="PileImage" src="{{ pile_image.image.url }}"
              alt="{{ pile_image.alt }}" />
-        {% endif %}
-        {% endwith %}
-        {% if pile.youtube_id %}
+    {% endif %}
+    {% endwith %}
+    {% if pile.youtube_id %}
         <div class="PileVideo" id="{{ pile.slug }}-video">
-          <a href="http://www.youtube.com/v/{{ pile.youtube_id }}?enablejsapi=1&version=3&playerid={{ pile.slug }}">video</a>
+            <a href="http://www.youtube.com/v/{{ pile.youtube_id }}?enablejsapi=1&version=3&playerid={{ pile.slug }}">video</a>
         </div>
-        {% endif %}
-        <div class="KeyCharacteristics">
-          <h4>Key Characteristics</h4>
-          {{ pile.key_characteristics|safe }}
-        </div>
-        <div class="NotableExceptions">
-          <h4>Notable Exceptions</h4>
-          {{ pile.notable_exceptions|safe }}
-        </div>
+    {% endif %}
+    <div class="KeyCharacteristics">
+        <h4>Key Characteristics</h4>
+        {{ pile.key_characteristics|safe }}
+    </div>
+    <div class="NotableExceptions">
+        <h4>Notable Exceptions</h4>
+        {{ pile.notable_exceptions|safe }}
+    </div>

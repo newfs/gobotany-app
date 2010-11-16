@@ -20,7 +20,7 @@
       ], 
       "next_page": 4, 
       "number": 3, 
-      "title": "Next we will figure out if your plant is a Monocot"
+      "title": "More Choices: Monocot?"
     }
   }, 
   {
@@ -32,7 +32,7 @@
       ], 
       "next_page": 3, 
       "number": 2, 
-      "title": "Maybe your plant is a kind of grass?"
+      "title": "More Choices: Grass-like?"
     }
   }, 
   {
@@ -46,7 +46,7 @@
       ], 
       "next_page": 2, 
       "number": 1, 
-      "title": "Welcome to the Simple Key!"
+      "title": "Start: Choose Collection"
     }
   }
 ]

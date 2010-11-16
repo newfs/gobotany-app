@@ -1,4 +1,7 @@
 {% extends "simplekey/base.html" %}
+{% block title %}
+    {{ page.title }}
+{% endblock %}
 {% block content %}
   <div class="PilePage" id="pilegroup-finder">
     <h1>{{ page.title }}</h1>
@@ -11,34 +14,41 @@
     {% for pilegroup, url in pilegroups_and_urls %}
       <div class="PileGroup" id="{{ pilegroup.slug }}-info">
         <h2><a href="{{ url }}">{{ pilegroup.name }}</a></h2>
-        <button dojoType="dijit.form.Button" onclick="toggle_tooltip('{{ pilegroup.slug }}')">more info</button>
+        <button dojoType="dijit.form.Button"
+                onclick="gobotany.sk.simplekey_page.toggle_tooltip('{{ pilegroup.slug }}')"
+                >more info</button>
       </div>
     {% endfor %}
 
     {% if page.next_page %}
       <div>
         <h2><a href="{{ page.next_page.get_absolute_url }}"
-               >Give me more choices »</a></h2>
+               >More choices »</a></h2>
       </div>
     {% endif %}
 
     <hr/>
     <div>
       <a href="/simple/map/"
-         >Advanced users — see clickable plant map</a>
+         >Advanced users — see plant map</a>
     </div>
 </div>
 
 <div id="simplekey-right-column">
     {% for pilegroup, url in pilegroups_and_urls %}
         <div class="PileInfo tooltip" id="{{ pilegroup.slug }}-tooltip">
-          {% with pilegroup as pile %}
-          {% include "simplekey/pile_tooltip.html" %}
-          {% endwith %}
+            {% with pilegroup as pile %}
+            {% include "simplekey/pile_tooltip.html" %}
+            {% endwith %}
         </div>
     {% endfor %}
 </div>
 <div style="clear: both">&nbsp;</div>
+</div>
+
+<div id="plant-preview" dojoType="dijit.Dialog" title="Plant Preview"
+     aria-describedby="preview-intro">
+    {% include "simplekey/plant_preview.html" %}
 </div>
 
 {% endblock %}
@@ -49,12 +59,6 @@
     dojo.addOnLoad(function() {
         gobotany.sk.simplekey_page.init();
     });
-
-    function toggle_tooltip(slug) {
-        dojo.query('.PileInfo.tooltip').removeClass('active');
-        var tooltip = dojo.byId(slug+'-tooltip');
-        dojo.addClass(tooltip, 'active');
-    }
 </script>
 {% endblock %}
 
