@@ -56,7 +56,8 @@ def rebuild_sample_pile_images():
         image_list = []
         for pile in piles:
             for species in pile.species.all():
-                image_list.extend(list(species.images.all()))
+                image_list.extend(list(species.images.filter(
+                    image_type__name='habit')))
 
         if len(image_list) > SAMPLE_IMAGES_PER_PILE:
             image_list = random.sample(image_list, SAMPLE_IMAGES_PER_PILE)
