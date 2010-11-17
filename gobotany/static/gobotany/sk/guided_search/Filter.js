@@ -37,9 +37,10 @@ dojo.declare('gobotany.sk.guided_search.Filter', null, {
         }, s);
         for (i = 0; i < list.length; i++) {
             var character_group = list[i];
+            var name = character_group.name;
             var option = dojo.create('option', {
-                value: character_group.name,
-                innerHTML: character_group.name
+                value: name,
+                innerHTML: name.charAt(0).toUpperCase() + name.slice(1)
             }, s);
         }
     },
