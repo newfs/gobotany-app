@@ -403,8 +403,13 @@ class Importer(object):
                     chargroup.name
 
             eoo = row['ease_of_observability']
-            eoo = int(eoo)
-            
+            try:
+                eoo = int(eoo)
+            except ValueError:
+                print >> self.logfile, \
+                    '    ERR: Bad ease of observability value', repr(eoo)
+                eoo = 10
+
             key_chars = row['key_characteristics']
             notable_ex = row['notable_exceptions']
             
