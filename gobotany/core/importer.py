@@ -51,11 +51,11 @@ class Importer(object):
     def __init__(self, logfile=sys.stdout):
         self.logfile = logfile
 
-    def import_data(self, pilegroupf, pilef, pile_images, taxaf, charf,
-                    charvf, char_glossaryf, glossaryf, glossary_images,
+    def import_data(self, pilegroupf, pilef, taxaf, charf, charvf,
+                    char_glossaryf, glossaryf, glossary_images,
                     lookalikesf, *taxonfiles):
         self._import_pile_groups(pilegroupf)
-        self._import_piles(pilef, pile_images)
+        self._import_piles(pilef)
         self._import_taxa(taxaf)
         self._import_characters(charf)
         self._import_character_values(charvf)
@@ -68,39 +68,6 @@ class Importer(object):
         self._import_help()
         for taxonf in taxonfiles:
             self._import_taxon_character_values(taxonf)
-
-    def _add_pile_images(self, pile, images, prefix_mapping):
-        """Adds images for a pile or pile group"""
-        # Create the two image types relevant for piles
-        filter_type, created = models.ImageType.objects.get_or_create(
-            name='filter drawing')
-        pile_type, created = models.ImageType.objects.get_or_create(
-            name='pile image')
-
-        found_rank_one = False
-        for filename in prefix_mapping.get(
-            pile.name.lower().replace('-',' ').replace('(','').replace(')',''),
-            ()):
-            parts = filename.split('-')
-            image_type = filter_type if (parts[-2] == 'filter') else pile_type
-            # XXX: arbitrarily set a default image
-            if image_type == pile_type and not found_rank_one:
-                rank = 1
-                found_rank_one = True
-            else:
-                # Everything else has the same rank
-                rank = 2
-            content_image, created = models.ContentImage.objects.get_or_create(
-                rank=rank,
-                alt='%s %s: %s' % (pile.name, image_type.name, filename),
-                image_type=image_type,
-                object_id=pile.pk,
-                content_type=ContentType.objects.get_for_model(pile))
-            if created:
-                image_file = File(images.extractfile(filename))
-                content_image.image.save(filename, image_file)
-                content_image.save()
-                print >> self.logfile, u'    Added Pile Image:', filename
 
     def _import_pile_groups(self, pilegroupf):
         print >> self.logfile, 'Setting up pile groups'
@@ -118,27 +85,10 @@ class Importer(object):
             if created:
                 print >> self.logfile, u'  New PileGroup:', pilegroup
 
-    def _import_piles(self, pilef, pile_images):
+    def _import_piles(self, pilef):
         print >> self.logfile, 'Setting up piles'
         iterator = iter(CSVReader(pilef).read())
         colnames = [x.lower() for x in iterator.next()]
-
-        if pile_images:
-            pile_images = tarfile.open(pile_images)
-            # Generate a mapping of pile-name to filenames from the image
-            # tarball
-            pile_prefixes = {}
-            for image in pile_images:
-                if image.name.startswith('.'):
-                    continue
-                image_name, image_ext = image.name.split('.')
-                if image_ext.lower() not in ('jpg', 'gif', 'png', 'tif'):
-                    # not an image
-                    continue
-                parts = image_name.split('-')
-                prefix = ' '.join(parts[:-2])
-                names = pile_prefixes.setdefault(prefix, [])
-                names.append(image.name)
 
         for cols in iterator:
             row = dict(zip(colnames, cols))
@@ -153,8 +103,6 @@ class Importer(object):
                     name=row['pile_group'].title())
                 if created:
                     print >> self.logfile, u'  New PileGroup:', pilegroup
-                if pile_images:
-                    self._add_pile_images(pilegroup, pile_images, pile_prefixes)
 
             # Create the Pile.
             pile, created = models.Pile.objects.get_or_create(
@@ -166,8 +114,6 @@ class Importer(object):
             pile.key_characteristics = row['key_characteristics']
             pile.notable_exceptions = row['notable_exceptions']
             pile.save()
-            if pile_images:
-                self._add_pile_images(pile, pile_images, pile_prefixes)
             if created:
                 print >> self.logfile, u'    New Pile:', pile
             else:
