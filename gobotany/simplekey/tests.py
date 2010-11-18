@@ -8,4 +8,4 @@ class SimpleTests(TestCase):
         c = Client()
         r = c.get('/simple/1/')
 
-        assert 'Give me more choices' in r.content
+        assert 'More choices' in r.content
