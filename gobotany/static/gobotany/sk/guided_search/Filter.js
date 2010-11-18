@@ -98,18 +98,21 @@ dojo.declare('gobotany.sk.guided_search.Filter', null, {
         this.manager.store.fetch({
             scope: this,
             query: short_name + '/',
-            onComplete: function(character_value_list) {
-
-                for (var i = 0; i < character_value_list.length; i++) {
-                    var character_value = character_value_list[i];
-                    if (character_value.value_str == 'NA')
-                        continue;
-                    var option = dojo.create('option', {
-                        value: character_value.value_str,
-                        innerHTML: character_value.value_str
-                    }, s);
+            onComplete: function(character_value_info) {
+                console.log(character_value_info);
+                var ctype = character_value_info.type;
+                var cvlist = character_value_info.list;
+                if (ctype = 'str') {
+                    for (var i = 0; i < cvlist.length; i++) {
+                        var character_value = cvlist[i];
+                        if (character_value == 'NA')
+                            continue;
+                        var option = dojo.create('option', {
+                            value: character_value,
+                            innerHTML: character_value
+                        }, s);
+                    }
                 }
-
                 s.removeAttribute('disabled');
             }
         });

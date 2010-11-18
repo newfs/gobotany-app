@@ -164,15 +164,16 @@ class CharacterHandler(BaseHandler):
     """Retrieve all character values for a character regardless of pile."""
     methods_allowed = ('GET')
     def read(self, request, character_short_name):
-        clist = []
+        r = {'type': '', 'list': []}
         for cv in models.CharacterValue.objects.filter(
             character__short_name=character_short_name):
-            if not cv.value_str:
-                continue
-            clist.append({
-                    'value_str': cv.value_str,
-                    })
-        return clist
+            if cv.value_str:
+                r['type'] = 'str'
+                r['list'].append(cv.value_str)
+            elif cv.value_min is not None and cv.value_max is not None:
+                r['type'] = 'length'
+                r['list'].append([cv.value_min, cv.value_max])
+        return r
 
 
 class BasePileHandler(BaseHandler):
