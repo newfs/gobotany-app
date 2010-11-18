@@ -92,8 +92,7 @@ class Importer(object):
                 rank = 2
             content_image, created = models.ContentImage.objects.get_or_create(
                 rank=rank,
-                alt = '%s %s: %s'%(pile.name, image_type.name,
-                                   filename),
+                alt='%s %s: %s' % (pile.name, image_type.name, filename),
                 image_type=image_type,
                 object_id=pile.pk,
                 content_type=ContentType.objects.get_for_model(pile))

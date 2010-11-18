@@ -349,7 +349,7 @@ class GlossaryTermForPileCharacter(models.Model):
 
 
 class ImageType(models.Model):
-    """The textual tags that identiy image types in our image database.
+    """The textual tags that identify image types in our image database.
 
     These type values are typically used to determine what part of a
     plant is featured in a particular image, and have values like
