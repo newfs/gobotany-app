@@ -1,3 +1,5 @@
+    <h2>{{ pile.name }}</h2>
+
     <div class="species_image_ribbon">
         {% for image in pile.sample_species_images.all %}
             <div>
@@ -10,24 +12,16 @@
         {% endfor %}
     </div>
 
-    {% if pile.friendly_name %}
-        <h3 class="PileFriendlyName">{{ pile.friendly_name }}</h3>
-    {% endif %}
     <div class="PileDescription">
         {{ pile.description }}
     </div>
-    {% with pile.get_default_image as pile_image %}
-    {% if pile_image %}
-        <img width="200"
-             class="PileImage" src="{{ pile_image.image.url }}"
-             alt="{{ pile_image.alt }}" />
-    {% endif %}
-    {% endwith %}
+
     {% if pile.youtube_id %}
         <div class="PileVideo" id="{{ pile.slug }}-video">
             <a href="http://www.youtube.com/v/{{ pile.youtube_id }}?enablejsapi=1&version=3&playerid={{ pile.slug }}">video</a>
         </div>
     {% endif %}
+
     <div class="KeyCharacteristics">
         <h4>Key Characteristics</h4>
         {{ pile.key_characteristics|safe }}
