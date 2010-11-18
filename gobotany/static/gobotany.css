@@ -176,6 +176,38 @@ p {
     text-align: center;
 }
 
+#search-suggest input {
+    width: 347px;
+}
+#search-suggest input, #search-suggest ul {
+    font-family: "Lucida Sans Typewriter", "Lucida Console", monospace;
+    font-size: 1.2em;
+}
+#search-suggest div {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-bottom-color: #999;
+    border-right-color: #999;
+    left: 300px;
+    margin: 0 auto;
+    position: absolute;
+    text-align: left;
+    top: 68px;
+    width: 351px;
+}
+#search-suggest li {
+    padding: 0.3em 0.4em;
+}
+#search-suggest li:hover {
+    background-color: #abd6ff;
+    color: #000;
+}
+#search-suggest a {
+    color: #000;
+    cursor: default;
+    text-decoration: none;
+}
+
 #navlinks p {
     color: #ccc;
     font-size: 0.9em;

@@ -9,12 +9,17 @@
 {% block content %}
 <div id="search-results">
     {% if query %}
-    <h1>Results
-        <strong>{% if page.number > 1 %}{{ page.number|add:'-1' }}{% endif %}1&#8211;{% if page.end_index|divisibleby:'10' %}{{ page.number }}0
-        {% else %}{{ page.end_index }}{% endif %}</strong>
-        of
-        <strong>{{ paginator.count }}</strong> for
-        <strong>{{ query }}</strong>
+    <h1>
+        {% if paginator.count > 0 %}
+            Results
+            <strong>{% if page.number > 1 %}{{ page.number|add:'-1' }}{% endif %}1&#8211;{% if page.end_index|divisibleby:'10' %}{{ page.number }}0
+                {% else %}{{ page.end_index }}{% endif %}</strong>
+                of
+                <strong>{{ paginator.count }}</strong>
+        {% else %}
+            <strong>No Results</strong>
+        {% endif %}
+        for <strong>{{ query }}</strong>
     </h1>
 
     <ul id="search-results-list">
@@ -52,7 +57,7 @@
             <p>
         </li>
         {% empty %}
-        <li class="no-results">No results found.</li>
+        <li class="no-results">Please adjust your search and try again.</li>
     {% endfor %}
     </ul>
 
