@@ -12,7 +12,7 @@ import tarfile
 
 from gobotany.core import models
 from gobotany.simplekey.models import Blurb, Video, HelpPage, \
-                                      GlossaryHelpPage
+                                      GlossaryHelpPage, SearchSuggestion
 
 from django.contrib.contenttypes.models import ContentType
 
@@ -68,6 +68,7 @@ class Importer(object):
         self._import_help()
         for taxonf in taxonfiles:
             self._import_taxon_character_values(taxonf)
+        self._import_search_suggestions()
 
     def _import_pile_groups(self, pilegroupf):
         print >> self.logfile, 'Setting up pile groups'
@@ -1007,6 +1008,18 @@ class Importer(object):
         self._create_understanding_plant_collections_page()
         self._create_video_help_topics_page()
         self._create_glossary_pages()
+
+
+    def _import_search_suggestions(self):
+        print >> self.logfile, 'Setting up search suggestions'
+        
+        # Pull in all scientific names.
+        for taxon in models.Taxon.objects.all():
+            s = SearchSuggestion(term=taxon.scientific_name)
+            s.save()
+            print >> self.logfile, u'  Added suggestion term: %s' % s.term
+
+        # TODO: add other kinds of information as well
 
 
 def main():
