@@ -15,6 +15,9 @@ urlpatterns = patterns(
 
     # Hidden test pages.
     url('^_rulertest/$', views.rulertest),
+    
+    # Auto-suggestions for search
+    url('^suggest/$', views.suggest_view, name='simplekey-search-suggest'),
 
     # Simple key navigation
     url('^$', views.index_view),

@@ -1,12 +1,15 @@
 import string
+
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
+from django.utils import simplejson
+
 from gobotany.core import botany
 from gobotany.core.models import GlossaryTerm, Pile, PileGroup, Genus, \
     Family, Taxon, TaxonCharacterValue, Lookalike, CharacterGroup
-from gobotany.simplekey.models import Page, get_blurb
+from gobotany.simplekey.models import Page, get_blurb, SearchSuggestion
 
 
 def get_simple_url(item):
@@ -387,3 +390,15 @@ def video_pile_view(request, pilegroup_slug, pile_slug):
 def rulertest(request):
     return render_to_response('simplekey/rulertest.html', {
             }, context_instance=RequestContext(request))
+
+def suggest_view(request):
+    # Return some search suggestions for the auto-suggest feature.
+    MAX_RESULTS = 10
+    query = request.GET.get('q', '')
+    suggestions = []
+    if query != '':
+        suggestions = list(SearchSuggestion.objects.filter(
+            term__istartswith=query).values_list('term',
+            flat=True)[:MAX_RESULTS])
+    return HttpResponse(simplejson.dumps(suggestions),
+                        mimetype='application/json')
