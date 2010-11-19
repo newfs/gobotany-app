@@ -83,3 +83,11 @@ class GlossaryHelpPage(models.Model):
 
     def __unicode__(self):
         return u'%s' % self.title
+
+
+class SearchSuggestion(models.Model):
+    """An index of terms for auto-suggesting searches."""
+    term = models.CharField(max_length=100, unique=True, db_index=True)
+
+    def __unicode__(self):
+        return u'%s' % self.term
