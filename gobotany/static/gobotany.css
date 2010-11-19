@@ -194,6 +194,7 @@ p {
     text-align: left;
     top: 68px;
     width: 351px;
+    z-index: 1;
 }
 #search-suggest li {
     padding: 0.3em 0.4em;

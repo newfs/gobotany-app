@@ -1,10 +1,13 @@
 dojo.provide('gobotany.sk.SearchSuggest');
 
+dojo.require('dojox.data.JsonRestStore');
+
 dojo.declare('gobotany.sk.SearchSuggest', null, {
     constants: { TIMEOUT_INTERVAL_MS: 500, },
     stored_search_box_value: '',
     search_box: null,
     menu: null,
+    menu_list: null,
     result_cache: {},   // for caching results for each search string queried
 
     constructor: function(initial_search_box_value) {
@@ -21,29 +24,22 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
         if (this.search_box === undefined) {
             console.error('SearchSuggest.js: Search box not found.');
         }
-        
+
         this.menu = dojo.query('#search-suggest div')[0];
         if (this.menu === undefined) {
             console.error('SearchSuggest.js: Menu not found.');
         }
+
+        this.menu_list = dojo.query('#search-suggest div ul')[0];
+        if (this.menu_list === undefined) {
+            console.error('SearchSuggest.js: Menu list not found.');
+        }
     },
 
     setup: function() {
-        // Set up the search box suggestion feature.
-
         // Set up a handler that runs every so often to check for search
         // box changes.
         this.set_timer();
-
-        // For now, attach a click handler to each of the dummy
-        // suggestions here. Later will need to attach this on the fly
-        // whenever new suggestions are placed in the box.
-        var list_items = dojo.query('#search-suggest li');
-        for (var i = 0; i < list_items.length; i++) {
-            dojo.connect(list_items[i], 'onclick', 
-                dojo.hitch(this, this.select_suggestion, list_items[i]));
-        }
-
     },
     
     set_timer: function(interval_milliseconds) {
@@ -55,11 +51,12 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
     },
 
     check_for_change: function() {
-        //console.log('check_for_change');
         if (this.has_search_box_changed()) {
             this.update_menu_visibility();
             this.handle_search_query();
         }
+
+        // Set the timer again to keep the loop going.
         this.set_timer();
     },
 
@@ -96,14 +93,65 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
         }
     },
 
+    format_suggestion: function(suggestion, search_query) {
+        // Format a suggestion for display.
+        return (suggestion = search_query + '<strong>' +
+            suggestion.substr(search_query.length) +
+            '</strong>').toLowerCase();
+    },
+
+    display_suggestions: function(suggestions, search_query) {
+        dojo.empty(this.menu_list);
+
+        for (var i = 0; i < suggestions.length; i++) {
+            var suggestion = suggestions[i];
+            var url = '/simple/search/?q=' + suggestion.toLowerCase();
+            var label = this.format_suggestion(suggestion, search_query);
+            var item = dojo.create('li');
+            var link = dojo.create('a', { href: url,
+                                          innerHTML: label,
+                                        }, item);
+            dojo.connect(item, 'onclick',
+                dojo.hitch(this, this.select_suggestion, item));
+            dojo.place(item, this.menu_list);
+        }
+    },
+
+    get_cached_suggestions: function(search_query) {
+        return this.result_cache[search_query];
+    },
+
+    get_suggestions: function(search_query) {
+        var SUGGEST_URL = '/simple/suggest/';
+        var store = new dojox.data.JsonRestStore({target: SUGGEST_URL});
+        store.fetch({
+            query: { q: search_query },
+            scope: this,
+            onComplete: function(suggestions) {
+                this.result_cache[search_query] = suggestions;
+                this.display_suggestions(suggestions, search_query);
+            }
+        });
+
+    },
+
     handle_search_query: function() {
-        console.log('handle_search_query: ' + this.stored_search_box_value);
-        
-        // TODO:
-        // First check the results cache to see if this value had been queried
-        // previously.
-        //
-        // If not in the cache, issue a request to the server.
+        var search_query = this.stored_search_box_value;
+
+        if (search_query.length > 0) {
+            // First check the results cache to see if this value had been
+            // queried previously.
+            var suggestions = this.get_cached_suggestions(search_query);
+            if (suggestions === undefined) {
+                // Call the server and let the asynchronous response update
+                // the display.
+                this.get_suggestions(search_query);
+            }
+            else {
+                this.display_suggestions(suggestions, search_query);
+            }
+        }
+
     },
 
     select_suggestion: function(list_item) {
