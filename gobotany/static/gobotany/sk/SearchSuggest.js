@@ -52,7 +52,6 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
 
     check_for_change: function() {
         if (this.has_search_box_changed()) {
-            this.update_menu_visibility();
             this.handle_search_query();
         }
 
@@ -82,16 +81,6 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
             dojo.addClass(this.menu, CLASS_NAME);
         }
     },
-    
-    update_menu_visibility: function() {
-        if (this.stored_search_box_value === '') {
-            // When the search box is empty, hide the menu.
-            this.show_menu(false);
-        }
-        else {
-            this.show_menu(true);
-        }
-    },
 
     format_suggestion: function(suggestion, search_query) {
         // Format a suggestion for display.
@@ -103,17 +92,24 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
     display_suggestions: function(suggestions, search_query) {
         dojo.empty(this.menu_list);
 
-        for (var i = 0; i < suggestions.length; i++) {
-            var suggestion = suggestions[i];
-            var url = '/simple/search/?q=' + suggestion.toLowerCase();
-            var label = this.format_suggestion(suggestion, search_query);
-            var item = dojo.create('li');
-            var link = dojo.create('a', { href: url,
-                                          innerHTML: label,
-                                        }, item);
-            dojo.connect(item, 'onclick',
-                dojo.hitch(this, this.select_suggestion, item));
-            dojo.place(item, this.menu_list);
+        if (suggestions.length > 0) {
+            this.show_menu(true);
+
+            for (var i = 0; i < suggestions.length; i++) {
+                var suggestion = suggestions[i];
+                var url = '/simple/search/?q=' + suggestion.toLowerCase();
+                var label = this.format_suggestion(suggestion, search_query);
+                var item = dojo.create('li');
+                var link = dojo.create('a', { href: url,
+                                              innerHTML: label,
+                                            }, item);
+                dojo.connect(item, 'onclick',
+                    dojo.hitch(this, this.select_suggestion, item));
+                dojo.place(item, this.menu_list);
+            }
+        }
+        else {
+            this.show_menu(false);
         }
     },
 
@@ -150,6 +146,10 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
             else {
                 this.display_suggestions(suggestions, search_query);
             }
+        }
+        else {
+            // Hide the menu because the search box is empty.
+            this.show_menu(false);
         }
 
     },
