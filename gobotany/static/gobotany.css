@@ -175,29 +175,34 @@ p {
     padding: 1em 0;
     text-align: center;
 }
+#head {
+    font-size: 9px;
+    margin: 0 0 10px;
+    padding: 10px 0;
+}
 
 #search-suggest input {
-    width: 347px;
+    width: 348px;
 }
 #search-suggest input, #search-suggest ul {
     font-family: "Lucida Sans Typewriter", "Lucida Console", monospace;
-    font-size: 1.2em;
+    font-size: 12px;
 }
 #search-suggest div {
     background: #fff;
     border: 1px solid #ccc;
     border-bottom-color: #999;
     border-right-color: #999;
-    left: 300px;
+    left: 299px;
     margin: 0 auto;
     position: absolute;
     text-align: left;
-    top: 68px;
-    width: 351px;
+    top: 67px;
+    width: 352px;
     z-index: 1;
 }
 #search-suggest li {
-    padding: 0.3em 0.4em;
+    padding: 3px 4px;
 }
 #search-suggest li.highlighted {
     background-color: #abd6ff;
