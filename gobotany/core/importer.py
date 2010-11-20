@@ -1034,11 +1034,9 @@ class Importer(object):
 
         for pile_group in models.PileGroup.objects.all():
             self._add_suggestion_term(pile_group.name)
-            self._add_suggestion_term(pile_group.friendly_name)
 
         for pile in models.Pile.objects.all():
             self._add_suggestion_term(pile.name)
-            self._add_suggestion_term(pile.friendly_name)
 
         for glossary_term in models.GlossaryTerm.objects.all():
             self._add_suggestion_term(glossary_term.term)
