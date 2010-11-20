@@ -199,8 +199,12 @@ p {
 #search-suggest li {
     padding: 0.3em 0.4em;
 }
-#search-suggest li:hover {
+#search-suggest li.highlighted {
     background-color: #abd6ff;
+    color: #000;
+}
+#search-suggest li:hover {
+    background-color: #c4e2ff;
     color: #000;
 }
 #search-suggest a {

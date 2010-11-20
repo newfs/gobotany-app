@@ -3,7 +3,7 @@ dojo.provide('gobotany.sk.SearchSuggest');
 dojo.require('dojox.data.JsonRestStore');
 
 dojo.declare('gobotany.sk.SearchSuggest', null, {
-    constants: { TIMEOUT_INTERVAL_MS: 500, },
+    constants: { TIMEOUT_INTERVAL_MS: 500 },
     stored_search_box_value: '',
     search_box: null,
     menu: null,
@@ -40,8 +40,101 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
         // Set up a handler that runs every so often to check for search
         // box changes.
         this.set_timer();
+
+        // Set up keyboard event handlers.
+        dojo.connect(this.search_box, 'onkeypress',
+            dojo.hitch(this, this.handle_keys));
+    },
+
+    get_highlighted_menu_item_index: function() {
+        var found = false;
+        var menu_items = dojo.query('li', this.menu);
+        var item_index = -1;
+        var i = 0;
+        while ((found === false) && (i < menu_items.length)) {
+            if (dojo.hasClass(menu_items[i], 'highlighted')) {
+                found = true;
+                item_index = i;
+            }
+            i++;
+        }
+        return item_index;
+    },
+
+    get_text_from_item_html: function(item_html) {
+        // Get the text value of a suggestion from its list item HTML.
+        var begin = item_html.indexOf('q=') + 2;
+        var end = item_html.indexOf('">');
+        var text = item_html.slice(begin, end);
+        return text;
+    },
+
+    highlight_menu_item: function(item_index) {
+        var HIGHLIGHT_CLASS = 'highlighted';
+
+        var menu_item = dojo.query('li', this.menu)[item_index];
+
+        if (menu_item !== undefined) {
+            // First turn off any already-highlighted item.
+            var highlighted_item_index =
+                this.get_highlighted_menu_item_index();
+            if (highlighted_item_index >= 0) {
+                var highlighted_item =
+                    dojo.query('li', this.menu)[highlighted_item_index];
+                dojo.removeClass(highlighted_item, HIGHLIGHT_CLASS);
+            }
+
+            // Highlight the new item.
+            dojo.addClass(menu_item, HIGHLIGHT_CLASS);
+
+            // Put the menu item text in the search box, but
+            // first set the stored value so this won't fire a
+            // change event.
+            var menu_item_text =
+                unescape(this.get_text_from_item_html(menu_item.innerHTML));
+            this.stored_search_box_value = menu_item_text;
+            this.search_box.value = menu_item_text;
+        }
+        else {
+            console.log('menu item ' + item_index + ' undefined');
+        }
     },
     
+    highlight_next_menu_item: function() {
+        var highlighted_item_index = this.get_highlighted_menu_item_index();
+        var next_item_index = highlighted_item_index + 1;
+        var num_menu_items = dojo.query('li', this.menu).length;
+        if (next_item_index >= num_menu_items) {
+            next_item_index = 0;
+        }
+        this.highlight_menu_item(next_item_index);
+    },
+    
+    highlight_previous_menu_item: function() {
+        var highlighted_item_index = this.get_highlighted_menu_item_index();
+        var previous_item_index = highlighted_item_index - 1;
+        var num_menu_items = dojo.query('li', this.menu).length;
+        if (previous_item_index < 0) {
+            previous_item_index = num_menu_items - 1;
+        }
+        this.highlight_menu_item(previous_item_index);
+    },
+
+    handle_keys: function(e) {
+        switch(e.charOrCode) {
+            case dojo.keys.DOWN_ARROW:
+                this.highlight_next_menu_item();
+                break;
+            case dojo.keys.UP_ARROW:
+                this.highlight_previous_menu_item();
+                break;
+            case dojo.keys.TAB:
+            case dojo.keys.ESCAPE:
+                this.show_menu(false);
+                break;
+        }
+    },
+
     set_timer: function(interval_milliseconds) {
         // Set the timer that calls the change-monitoring function. This must
         // be called again every time the function runs in order for it to
@@ -100,9 +193,8 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
                 var url = '/simple/search/?q=' + suggestion.toLowerCase();
                 var label = this.format_suggestion(suggestion, search_query);
                 var item = dojo.create('li');
-                var link = dojo.create('a', { href: url,
-                                              innerHTML: label,
-                                            }, item);
+                dojo.create('a', { href: url, innerHTML: label },
+                    item);
                 dojo.connect(item, 'onclick',
                     dojo.hitch(this, this.select_suggestion, item));
                 dojo.place(item, this.menu_list);
@@ -167,6 +259,6 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
                 window.location.href = href;
             }
         }
-    },
+    }
 
 });
