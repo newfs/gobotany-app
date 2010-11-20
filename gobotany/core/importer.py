@@ -1010,16 +1010,42 @@ class Importer(object):
         self._create_glossary_pages()
 
 
+    def _add_suggestion_term(self, term):
+        if len(term) > 0:
+            s, created = SearchSuggestion.objects.get_or_create(term=term)
+            if created:
+                s.save()
+                print >> self.logfile, u'  Added suggestion term: %s' % term
+
+
     def _import_search_suggestions(self):
         print >> self.logfile, 'Setting up search suggestions'
-        
-        # Pull in all scientific names.
-        for taxon in models.Taxon.objects.all():
-            s = SearchSuggestion(term=taxon.scientific_name)
-            s.save()
-            print >> self.logfile, u'  Added suggestion term: %s' % s.term
 
-        # TODO: add other kinds of information as well
+        for family in models.Family.objects.all():
+            self._add_suggestion_term(family.name)
+            self._add_suggestion_term(family.common_name)
+
+        for genus in models.Genus.objects.all():
+            self._add_suggestion_term(genus.name)
+
+        for taxon in models.Taxon.objects.all():
+            self._add_suggestion_term(taxon.scientific_name)
+            # TODO: Add common names once they are added to the database.
+
+        for pile_group in models.PileGroup.objects.all():
+            self._add_suggestion_term(pile_group.name)
+            self._add_suggestion_term(pile_group.friendly_name)
+
+        for pile in models.Pile.objects.all():
+            self._add_suggestion_term(pile.name)
+            self._add_suggestion_term(pile.friendly_name)
+
+        for glossary_term in models.GlossaryTerm.objects.all():
+            self._add_suggestion_term(glossary_term.term)
+
+        for character in models.Character.objects.all():
+            self._add_suggestion_term(character.name)
+            self._add_suggestion_term(character.friendly_name)
 
 
 def main():

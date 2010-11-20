@@ -128,12 +128,10 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
                 this.display_suggestions(suggestions, search_query);
             }
         });
-
     },
 
     handle_search_query: function() {
         var search_query = this.stored_search_box_value;
-
         if (search_query.length > 0) {
             // First check the results cache to see if this value had been
             // queried previously.
@@ -151,7 +149,6 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
             // Hide the menu because the search box is empty.
             this.show_menu(false);
         }
-
     },
 
     select_suggestion: function(list_item) {
