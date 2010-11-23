@@ -1,1 +1,0 @@
-/Users/john/Documents/dev/newfs/gobotany-buildout/src/django-autocomplete/autocomplete/media/js/yui_autocomplete.js
