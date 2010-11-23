@@ -182,23 +182,26 @@ p {
 }
 
 #search-suggest input {
-    width: 348px;
+    width: 300px;
 }
 #search-suggest input, #search-suggest ul {
     font-family: "Lucida Sans Typewriter", "Lucida Console", monospace;
-    font-size: 12px;
+    font-size: 16px;
+}
+#search-suggest button {
+    font-size: 14px;
 }
 #search-suggest div {
     background: #fff;
     border: 1px solid #ccc;
     border-bottom-color: #999;
     border-right-color: #999;
-    left: 299px;
+    left: 319px;
     margin: 0 auto;
     position: absolute;
     text-align: left;
-    top: 67px;
-    width: 352px;
+    top: 71px;
+    width: 303px;
     z-index: 1;
 }
 #search-suggest li {
