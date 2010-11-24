@@ -12,10 +12,9 @@ from gobotany.core.models import Character, Parameter, TaxonCharacterValue
 def compute_character_entropies(pile, species_list):
     """Find the most effective characters for narrowing down these species.
 
-    The return value will be an already-sorted list of tuples, each of
-    which looks like::
+    A list of tuples is returned, each of which looks like::
 
-        (entropy, character_id)
+        (character_id, entropy, coverage)
 
     """
     # We start by fetching the character values for this pile (ignoring

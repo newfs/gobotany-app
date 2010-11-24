@@ -80,9 +80,9 @@ class SampleData(TestCase):
 
         make_cv('cute', character=self.cuteness)
 
-        make_cv('size1',character=self.length, value_min=2, value_max=4)
+        make_cv('size1', character=self.length, value_min=2, value_max=4)
         make_cv('size2', character=self.length, value_min=3, value_max=4)
-        make_cv('size3',character=self.length, value_min=5, value_max=5)
+        make_cv('size3', character=self.length, value_min=5, value_max=5)
         
         self.create(models.ImageType, 'habit')
         self.create(models.ImageType, 'stem')
@@ -392,7 +392,11 @@ class APITests(SampleData):
 
         celist = igdt.compute_character_entropies(
             self.pets, list(models.Taxon.objects.all()))
-        self.assertEqual(celist[0], (1, 0.66666666666666663, 1.0))
+        self.assertEqual(sorted(celist), [
+                (self.color.id, 0.66666666666666663, 1.0),
+                (self.cuteness.id, 0.66666666666666663, 0.66666666666666663),
+                (self.length.id, 0.0, 1.0),
+                ])
 
 
 class ImportTestCase(TestCase):
