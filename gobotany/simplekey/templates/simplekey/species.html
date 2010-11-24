@@ -110,11 +110,11 @@
 
           <h3 id="all-characteristics">All Characteristics</h3>
 
-          {% for character_group in character_groups|dictsort:'short_name' %}
+          {% for character_group in character_groups|dictsort:'name' %}
           <div id="title-pane-{{ character_group.name|slugify }}"
                dojoType="dijit.TitlePane" open="false"
-               title="{{ character_group.short_name }}">
-              <h4>{{ character_group.short_name }}</h4>
+               title="{{ character_group.name }}">
+              <h4>{{ character_group.name }}</h4>
               {% for character_value in taxon.character_values.all %}
                   {% if character_value.character.character_group.name == character_group.name %}
                       <p><strong>{{ character_value.character.name|lower }}:</strong>

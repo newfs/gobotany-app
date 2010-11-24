@@ -188,27 +188,6 @@ def _get_wetland_status(status_code):
         status = 'Never occurs in wetlands.'
     return status
 
-def _add_character_group_short_names(character_groups):
-    # Streamline the names of the character groups in order to deliver more
-    # scannable and relevant labels on the page.
-    # TODO: Consider storing these short names in the database instead of
-    # transforming them here.
-
-    STRINGS_TO_REMOVE = ['characters of the ', 'characters of', ' characters',
-        'carex ', 'composite ', 'equisetaceae ', 'lycophyte ', 'monilophyte ',
-        'non-orchid monocot ', 'non-thalloid aquatic ', 'orchid monocot ',
-        'poaceae ', 'remaining graminoid ', 'remaining non-monocot ',
-        'thalloid_aquatic ']
-
-    for character_group in character_groups:
-        for string_to_remove in STRINGS_TO_REMOVE:
-            if character_group.name.find(string_to_remove) > -1:
-                # Add a new property for the short name.
-                character_group.short_name = character_group.name.replace(
-                    string_to_remove, '').strip()
-                break;   # Stop searching a name after a replacement is made.
-    return character_groups
-
 def species_view(request,  genus_slug, specific_epithet_slug,
                  pilegroup_slug=None, pile_slug=None):
     scientific_name = '%s %s' % (genus_slug.capitalize(), 
@@ -238,7 +217,6 @@ def species_view(request,  genus_slug, specific_epithet_slug,
                     'character', flat=True).distinct()
     character_groups = CharacterGroup.objects.filter(
                        character__in=character_ids).distinct()
-    character_groups = _add_character_group_short_names(character_groups)
 
     return render_to_response('simplekey/species.html', {
            'pilegroup': pilegroup,
