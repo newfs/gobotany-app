@@ -41,7 +41,7 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant,
                 dojo.create('dd',
                             {innerHTML: taxon[ppc.character_short_name]},
                             list);
-                }
+            }
 
             // List the collections (piles) to which this plant belongs.
             dojo.create('dt', {innerHTML: 'Collection'}, list);
@@ -54,17 +54,16 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant,
             }
             dojo.create('dd', {innerHTML: piles}, list);
 
-            gobotany.sk.plant_preview.images = [];
+            image_browser.images = [];
             if (taxon.images.length) {
                 // Store the info for the images to allow for browsing them.
                 for (i = 0; i < taxon.images.length; i++) {
                     image_browser.images.push(taxon.images[i]);
                 }
-                // If the alt text of the thumbnail the user clicked on in the
-                // page is different from the alt text of the first image
-                // showing on the popup, look for matching alt text and show
-                // that image first on the popup.
-                if ((clicked_image !== undefined) && (clicked_image.length)) {
+                // Compare the alt text of the thumbnail the user clicked on
+                // with that of each image. Show the image that has alt text
+                // that matches the thumbnail alt text.
+                if (clicked_image !== undefined) {
                     var clicked_image_alt_text = dojo.attr(clicked_image,
                         'alt');
                     for (i = 0; i < image_browser.images.length; i++) {

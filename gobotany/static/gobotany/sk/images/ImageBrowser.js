@@ -14,6 +14,14 @@ dojo.declare('gobotany.sk.images.ImageBrowser', null, {
     },
 
     setup: function() {
+        // Clear and reconstruct the navigation area so as not to keep
+        // connecting more event handlers to the name previous and next
+        // links every time the user opens a new popup.
+        var navigation_node = dojo.query(this.css_selector + ' p.nav')[0];
+        dojo.empty(navigation_node);
+        var nav_html = '<a>&lt; prev</a> <span>? of ?</span><a>next &gt;</a>';
+        dojo.attr(navigation_node, { innerHTML: nav_html });
+
         // Set some frequently used nodes as properties.
         var image_selector = this.css_selector + ' img';
         this.image_node = dojo.query(image_selector)[0];
@@ -23,7 +31,7 @@ dojo.declare('gobotany.sk.images.ImageBrowser', null, {
         // Clear the image and message.
         dojo.attr(this.image_node, 'src', '');
         dojo.attr(this.image_node, 'alt', 'not available');
-        this.message_node.innerHTML = ''
+        this.message_node.innerHTML = '';
 
         // Set whichever image is to be the first one shown.
         if (this.images.length > 0) {
@@ -61,8 +69,7 @@ dojo.declare('gobotany.sk.images.ImageBrowser', null, {
         
         // Display the navigation links and message.
         dojo.query(this.css_selector + ' .nav').style({
-            'display': 'block',
-        });
+            'display': 'block' });
     },
 
     change_image: function(link_text) {
@@ -71,16 +78,19 @@ dojo.declare('gobotany.sk.images.ImageBrowser', null, {
         // Get the index of the image that is showing.
         var current_image_index = this.get_current_image_index(
             current_image_url);
+        if (current_image_index < 0) {
+            console.error('ImageBrowser: current_image_index is ' +
+                current_image_index + ' (should not be < 0)');
+        }
 
         // Get the index of the image to show next.
         var new_image_index = this.get_new_image_index(current_image_index,
             link_text);
 
         // Change the image and update the count message.
-        var image = this.images[new_image_index];
         this.set_image(new_image_index);
     },
-    
+
     previous_image: function() {
         this.change_image('prev');
     },
@@ -138,6 +148,6 @@ dojo.declare('gobotany.sk.images.ImageBrowser', null, {
         }
 
         return first_image_index;
-    },
+    }
 
 });
