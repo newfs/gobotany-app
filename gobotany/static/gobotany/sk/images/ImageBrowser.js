@@ -15,8 +15,8 @@ dojo.declare('gobotany.sk.images.ImageBrowser', null, {
 
     setup: function() {
         // Clear and reconstruct the navigation area so as not to keep
-        // connecting more event handlers to the name previous and next
-        // links every time the user opens a new popup.
+        // connecting more event handlers to the Previous and Next links
+        // every time the user opens another popup.
         var navigation_node = dojo.query(this.css_selector + ' p.nav')[0];
         dojo.empty(navigation_node);
         var nav_html = '<a>&lt; prev</a> <span>? of ?</span><a>next &gt;</a>';
