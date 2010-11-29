@@ -94,6 +94,31 @@ gobotany.sk.species.init = function(scientific_name) {
         var link = dojo.byId('results-link');
         dojo.attr(link, 'href', last_plant_id_url);
     }
+
+    // Decide whether to add a Go Back link based on whether the previous
+    // URL was a pile/results page. If it was, add the link.
+    var previous_url = '';
+    if (document.referrer !== undefined) {
+        previous_url = document.referrer;
+    }
+
+    // If the previous URL can be found as a substring in the current species
+    // page URL, then the previous page was indeed a pile/results page.
+    if (previous_url.length > 0) {
+        if (window.location.href.indexOf(previous_url) > -1) {
+            var species_node = dojo.query('#species')[0];
+            if (species_node) {
+                var back_link = dojo.create('a',
+                    { innerHTML: '&lt; Back to plant identification' });
+                dojo.attr(back_link, 'class', 'back');
+                // The last plant identification URL should be the correct
+                // destination for the link.
+                dojo.attr(back_link, 'href', last_plant_id_url);
+                dojo.place(back_link, species_node);
+            }
+        }
+    }
+
 };
 
 gobotany.sk.species.persist_visibility = function(scientific_name) {
