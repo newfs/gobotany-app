@@ -898,6 +898,11 @@ input.filter_int, input.filter_int2 {
     width: 290px;
 }
 
+#species .back {
+    clear: left;
+    display: block;
+}
+
 #drawings {
     min-height: 400px;
 }
