@@ -142,7 +142,7 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         // to update any value counts.
         if (dojo.style('filter-working', 'display') === 'block') {
             var short_name = this.results_helper.filter_section
-                .simplekey_character_short_name;
+                .visible_filter_short_name;
             var filter = this.results_helper.filter_manager.get_filter(
                 short_name);
             if (filter !== null) {

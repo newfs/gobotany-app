@@ -61,24 +61,25 @@ gobotany.utils.clone = function(obj, updated_args) {
 
 
 gobotany.utils.pretty_length = function(unit, mmvalue) {
+    var SPACE = '&#160;';
     var mm = parseFloat(mmvalue); /* make sure it is a float */
     if (isNaN(mm)) {
         console.log('gobotany.utils.pretty_length: ' + mmvalue +
                     ' is not a number');
     }
     if (unit == 'mm') {
-        return mm.toFixed(1) + '&#8239;mm'; /* narrow space + unit */
+        return mm.toFixed(1) + SPACE + 'mm';
     } else if (unit == 'cm') {
-        return (mm / 10.0).toFixed(1) + '&#8239;cm';
+        return (mm / 10.0).toFixed(1) + SPACE + 'cm';
     } else if (unit == 'm') {
-        return (mm / 1000.0).toFixed(2) + '&#8239;m';
+        return (mm / 1000.0).toFixed(2) + SPACE + 'm';
     }
     inches = mm / 25.4;
     feet = Math.floor(inches / 12.0);
     inches = inches % 12.0;
     var value = '';
     if (feet > 0) {
-        value += feet + '&#8239;ft&nbsp;';
+        value += feet + SPACE + 'ft' + SPACE;
     }
     var wholein = Math.floor(inches);
     if (wholein > 0) {
@@ -92,6 +93,6 @@ gobotany.utils.pretty_length = function(unit, mmvalue) {
     if (wholein == 0 && eighths == 0) {
         value += '0';
     }
-    value += '&#8239;in';
+    value += SPACE + 'in';
     return value;
 };
