@@ -1,3 +1,6 @@
+// Global declaration for JSLint (http://www.jslint.com/)
+/*global dojo, dojox, dijit, gobotany, window */
+
 dojo.provide('gobotany.sk.plant_preview');
 
 dojo.require('dojox.data.JsonRestStore');

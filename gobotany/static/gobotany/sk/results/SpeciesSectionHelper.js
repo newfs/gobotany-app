@@ -1,3 +1,6 @@
+// Global declaration for JSLint (http://www.jslint.com/)
+/*global dojo, dijit, gobotany */
+
 dojo.provide('gobotany.sk.results.SpeciesSectionHelper');
 
 dojo.require('dojo.html');
@@ -6,6 +9,7 @@ dojo.require('dijit.form.Button');
 dojo.require('gobotany.sk.plant_preview');
 
 dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
+    genus_to_family: {},
     PAGE_COUNT: 12,
 
     constructor: function(results_helper) {
@@ -31,7 +35,7 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         dojo.query('#plants .species_count .count').addClass('hidden');
 
         // Build a list of short names for the filters visible at left.
-        filter_short_names = [];
+        var filter_short_names = [];
         dojo.query('#filters ul li').forEach(function(node) {
             filter_short_names.push(dojo.attr(node, 'id'));
         });
@@ -70,10 +74,11 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         var family_store = family_select.store;
 
         family_store.fetch({onComplete: dojo.hitch(this, function(items) {
-            for (var i = 0; i < items.length; i++)
+            for (var i = 0; i < items.length; i++) {
                 family_store.deleteItem(items[i]);
+            }
             family_store.save();
-            for (var i = 0; i < family_list.length; i++) {
+            for (i = 0; i < family_list.length; i++) {
                 var f = family_list[i];
                 family_store.newItem({ name: f, family: f });
             }
@@ -81,15 +86,13 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
 
             var fm = this.results_helper.filter_manager;
             var v = fm.get_selected_value('family');
-            if (v)
+            if (v) {
                 family_select.set('value', v);
+            }
         })});
     },
 
     rebuild_genus_select: function(items) {
-
-        genus_to_family = {};  // global, for use in another function below
-
         // Does sort | uniq really have to be this painful in JavaScript?
 
         var genera_seen = {};
@@ -100,7 +103,7 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
             if (! genera_seen[item.genus]) {
                 genus_list.push(item.genus);
                 genera_seen[item.genus] = true;
-                genus_to_family[item.genus] = item.family;
+                this.genus_to_family[item.genus] = item.family;
             }
         }
 
@@ -112,10 +115,11 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         var genus_store = genus_select.store;
 
         genus_store.fetch({onComplete: dojo.hitch(this, function(items) {
-            for (var i = 0; i < items.length; i++)
+            for (var i = 0; i < items.length; i++) {
                 genus_store.deleteItem(items[i]);
+            }
             genus_store.save();
-            for (var i = 0; i < genus_list.length; i++) {
+            for (i = 0; i < genus_list.length; i++) {
                 var g = genus_list[i];
                 genus_store.newItem({ name: g, genus: g });
             }
@@ -123,8 +127,9 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
 
             var fm = this.results_helper.filter_manager;
             var v = fm.get_selected_value('genus');
-            if (v)
+            if (v) {
                 genus_select.set('value', v);
+            }
         })});
     },
 
@@ -176,14 +181,14 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         var list;
         var previous_genus = 'this string matches no actual genus';
         var genus_number = -1;  // incremented each time we reach a new genus
-        for (i = 0; i < items.length; i++) {
-            item = items[i];
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
             if (item.genus != previous_genus) {
                 genus_number++;
                 previous_genus = item.genus;
             }
             var remainder = i % this.PAGE_COUNT;
-            if (remainder == 0) {
+            if (remainder === 0) {
                 page_num = ((i - remainder) / this.PAGE_COUNT) + 1;
                 page = dojo.create('li', {
                     'class': 'PlantScrollPage',
@@ -194,8 +199,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                 // All items on the first page have been loaded
                 dojo.attr(page, 'x-loaded', page_num == 1 ? 'true' : 'false');
             }
-            this.render_item(item, list, genus_number,
-                             partial = (page_num != 1), this);
+            var partial = (page_num !== 1);
+            this.render_item(item, list, genus_number, partial, this);
         }
         return start;
     },
@@ -211,12 +216,13 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         }, start_node);
         var anchor = dojo.create('a', {href: '#'}, li_node);
         var image = item.default_image;
+        var img;
         if (image) {
-            var img = dojo.create('img', {height: image.thumb_height,
-                                          width: image.thumb_width,
-                                          alt: image.title,
-                                          'x-plant-id': item.scientific_name},
-                                  anchor);
+            img = dojo.create('img', {height: image.thumb_height,
+                                      width: image.thumb_width,
+                                      alt: image.title,
+                                      'x-plant-id': item.scientific_name},
+                              anchor);
             // If a partial rendering was requested,
             // set a secret attribute instead of src
             // We can use that to fill src when scrolling

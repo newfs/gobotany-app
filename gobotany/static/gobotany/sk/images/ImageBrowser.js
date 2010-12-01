@@ -1,3 +1,6 @@
+// Global declaration for JSLint (http://www.jslint.com/)
+/*global dojo, console */
+
 dojo.provide('gobotany.sk.images.ImageBrowser');
 
 // Class for helping create a browsable set of images on a page (such as in

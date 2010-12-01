@@ -1,3 +1,6 @@
+// Global declaration for JSLint (http://www.jslint.com/)
+/*global dojo, dojox, dijit, gobotany, window, document */
+
 dojo.provide('gobotany.sk.species');
 
 dojo.require('dijit.TitlePane');
@@ -36,7 +39,7 @@ gobotany.sk.species.init = function(scientific_name) {
     var image_browser = gobotany.sk.images.ImageBrowser();
     image_browser.css_selector = '#species #images';
 
-    taxon_url = '/taxon/' + scientific_name + '/';
+    var taxon_url = '/taxon/' + scientific_name + '/';
     var taxon_store = new dojox.data.JsonRestStore({target: taxon_url});
     taxon_store.fetch({
         onComplete: function(taxon) {

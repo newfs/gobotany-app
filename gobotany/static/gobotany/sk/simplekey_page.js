@@ -1,3 +1,6 @@
+// Global declaration for JSLint (http://www.jslint.com/)
+/*global dojo, dojox, dijit, gobotany */
+
 dojo.provide('gobotany.sk.simplekey_page');
 
 dojo.require('gobotany.filters');
@@ -18,7 +21,7 @@ gobotany.sk.simplekey_page.init = function() {
     /* A filter manager is needed by plant_preview.js. */
     gobotany.sk.simplekey_page.filter_manager =
         new gobotany.filters.FilterManager({
-            pile_slug: 'none',
+            pile_slug: 'none'
         });
 
     var image_buttons = dojo.query('.species_image_ribbon div');
@@ -27,7 +30,7 @@ gobotany.sk.simplekey_page.init = function() {
             dijit.byId('plant-preview').show();
             var img = dojo.query('img', node)[0];
             var plant = {
-                scientific_name: img.getAttribute('scientific_name'),
+                scientific_name: img.getAttribute('scientific_name')
             };
             gobotany.sk.plant_preview.show_plant_preview(plant,
                 gobotany.sk.simplekey_page.filter_manager.plant_preview_characters,
@@ -37,10 +40,8 @@ gobotany.sk.simplekey_page.init = function() {
 
     dojo.query('.PileVideo').forEach(function(node, index, attr) {
         var path = dojo.attr(dojo.query('> a', node)[0], 'href');
-        var player = new dojox.embed.Flash({path: path,
-                                            width: 200,
-                                            height: 200},
-                                            node);
+        dojox.embed.Flash({path: path, width: 200, height: 200},
+                          node);
     });
 
 };
@@ -56,7 +57,7 @@ gobotany.sk.simplekey_page.toggle_tooltip = function(slug) {
     // Initialize a pile manager
     gobotany.sk.simplekey_page.pile_manager =
         new gobotany.piles.PileManager({
-            pile_slug: slug,
+            pile_slug: slug
         });
     gobotany.sk.simplekey_page.pile_manager.load();
 };

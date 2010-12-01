@@ -1,3 +1,6 @@
+// Global declaration for JSLint (http://www.jslint.com/)
+/*global dojo, dojox, window, console, setTimeout, unescape */
+
 dojo.provide('gobotany.sk.SearchSuggest');
 
 dojo.require('dojox.data.JsonRestStore');
