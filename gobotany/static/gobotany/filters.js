@@ -70,13 +70,21 @@ dojo.declare('gobotany.filters.NumericRangeFilter',
              [gobotany.filters.MultipleChoiceFilter], {
     process_value: function(character_value, index) {
         // We make this.values an object: {min: a, max: b}
-        if (this.values.length == 0) this.values = {};
-        if (character_value.value == null) return;
+        if (this.values.length === 0) {
+            this.values = {};
+        }
+        if (character_value.value === null) {
+            return;
+        }
         var v = this.values;
         var vmin = character_value.value[0];
         var vmax = character_value.value[1];
-        if (vmin != null && (v.min == null || v.min > vmin)) v.min = vmin;
-        if (vmax != null && (v.max == null || v.max < vmax)) v.max = vmax;
+        if (vmin !== null && (v.min === null || v.min > vmin)) {
+            v.min = vmin;
+        }
+        if (vmax !== null && (v.max === null || v.max < vmax)) {
+            v.max = vmax;
+        }
     }
 });
 
@@ -100,32 +108,38 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         this.filters = [];
         this.filters_loading = 0;
 
-        if (!args.pile_url) args.pile_url = '/piles/';
-        if (!args.taxon_url) args.taxon_url = '/taxon/';
+        if (!args.pile_url) {
+            args.pile_url = '/piles/';
+        }
+        if (!args.taxon_url) {
+            args.taxon_url = '/taxon/';
+        }
 
-        this.chars_store = new dojox.data.JsonRestStore({target: args.pile_url + args.pile_slug + '/characters/'});
-        this.result_store = new dojox.data.JsonRestStore({target: args.taxon_url, 
-                                                          idAttribute: 'scientific_name'});
+        this.chars_store = new dojox.data.JsonRestStore(
+            {target: args.pile_url + args.pile_slug + '/characters/'});
+        this.result_store = new dojox.data.JsonRestStore(
+            {target: args.taxon_url, idAttribute: 'scientific_name'});
     },
 
     query_best_filters: function(args) {
         var choose_best = 3;
-        if (args.choose_best)
+        if (args.choose_best) {
             choose_best = args.choose_best;
+        }
         this.chars_store.fetch({
             query: {choose_best: choose_best,
                     species_id: this.species_ids || [],
                     character_group_id: args.character_group_ids || [],
                     exclude: args.existing_characters || []},
             scope: {filter_manager: this, args: args},
-            onComplete: args.onLoaded,
+            onComplete: args.onLoaded
         });
     },
     query_filters: function(args) {
         this.chars_store.fetch({
             query: {include: args.short_names || []},
             scope: {filter_manager: this, args: args},
-            onComplete: args.onLoaded,
+            onComplete: args.onLoaded
         });
     },
     on_pile_info_loaded: function() {},
@@ -140,9 +154,11 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         return false;
     },
     has_filter: function(short_name) {
-        for (var x = 0; x < this.filters.length; x++)
-            if (this.filters[x].character_short_name === short_name)
+        for (var x = 0; x < this.filters.length; x++) {
+            if (this.filters[x].character_short_name === short_name) {
                 return true;
+            }
+        }
         return false;
     },
     remove_filter: function(short_name) {
@@ -167,8 +183,9 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         //     into gobotany.filters.filter_factory().
 
         var f = obj;
-        if (!obj.isInstanceOf || !obj.isInstanceOf(gobotany.filters.Filter))
+        if (!obj.isInstanceOf || !obj.isInstanceOf(gobotany.filters.Filter)) {
             f = gobotany.filters.filter_factory(obj);
+        }
         this.filters.push(f);
         return f;
     },
@@ -197,8 +214,9 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                 // Character values must be stringified, since their
                 // .length is checked before allowing them to become
                 // part of our query URL.
-                if (selected_value != null)
+                if (selected_value !== undefined) {
                     selected_value = String(selected_value);
+                }
                 this.filters[i].selected_value = selected_value;
                 this.on_filter_changed(this.filters[i], selected_value);
                 return;
@@ -208,10 +226,11 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                     character_short_name);
     },
     get_selected_value: function(character_short_name) {
-        var selected_value = null;
         for (var i = 0; i < this.filters.length; i++) {
-            if (this.filters[i].character_short_name === character_short_name)
+            if (this.filters[i].character_short_name ===
+                character_short_name) {
                 return this.filters[i].selected_value;
+            }
         }
         return undefined;
     },
@@ -245,7 +264,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             obj[f.character_short_name] = f.selected_value;
         }
 
-        return '_filters=' + filter_names.join(',') + '&' + dojo.objectToQuery(obj);
+        return '_filters=' + filter_names.join(',') + '&' + 
+            dojo.objectToQuery(obj);
     },
 
     empty_filters: function() {
@@ -258,11 +278,11 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         for (var i = 0; i < this.filters.length; i++) {
             var filter = this.filters[i];
 
-            if (filter.filter_callback != null) {
+            if (filter.filter_callback !== undefined) {
                 special.push(filter);
             }
 
-            if (filter.selected_value !== null && 
+            if (filter.selected_value !== null &&   
                 filter.selected_value !== undefined &&
                 filter.selected_value.length) {
 
@@ -271,16 +291,16 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         }
 
         // Add the filter names for which to return character value counts.
-        var filter_short_names = args['filter_short_names'];
+        var filter_short_names = args.filter_short_names;
         if (filter_short_names.length) {
-            short_names = '';
-            for (var i = 0; i < filter_short_names.length; i++) {
+            var short_names = '';
+            for (i = 0; i < filter_short_names.length; i++) {
                 if (i > 0) {
                     short_names += ',';
                 }
                 short_names += filter_short_names[i];
             }
-            content['_counts_for'] = short_names;
+            content._counts_for = short_names;
         }
 
         this.result_store.fetch({
@@ -289,8 +309,9 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             onComplete: function(data) {
                 this.species_count = data.items.length;
                 this.species_ids = [];
-                for (i = 0; i < data.items.length; i++)
+                for (i = 0; i < data.items.length; i++) {
                     this.species_ids[i] = data.items[i].id;
+                }
 
                 if (special.length > 0) {
                     // run special filters
@@ -306,8 +327,9 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                             }
                         }
 
-                        if (!removed)
+                        if (!removed) {
                             newdata.push(item);
+                        }
                     }
                     data.items = newdata;
                     console.log('FilterManager.run_filtered_query:' +
@@ -317,27 +339,29 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                 // Process counts for filter character values.
                 for (i = 0; i < data.value_counts.length; i++) {
                     var filter = data.value_counts[i];
-                    var counts = filter['counts'];
+                    var counts = filter.counts;
                     for (var value_name in counts) {
                         if (counts.hasOwnProperty(value_name) &&
                             value_name !== '__parent') {
 
-                            this.set_count_for_value(filter['name'],
+                            this.set_count_for_value(filter.name,
                                 value_name, counts[value_name]);
                         }
                     }
                 }
 
                 // Call the passed-in callback function.
-                if (args && args.on_complete)
+                if (args && args.on_complete) {
                     args.on_complete(data);
+                }
                 this.on_new_results(data);
             },
             onError: function(error) {
                 console.log('Taxon search encountered an error!');
                 console.log(error);
-                if (args && args.on_error)
+                if (args && args.on_error) {
                     args.on_error(error);
+                }
             }
         });
     },
@@ -358,8 +382,9 @@ dojo.declare('gobotany.filters.FilterLoadingWatcher', null, {
         if (args.on_values_loaded) {
             loading_args.onLoaded = dojo.hitch(this, function() {
                 this._filters_loading--;
-                if (this._filters_loading == 0)
+                if (this._filters_loading === 0) {
                     args.on_values_loaded(this.filters);
+                }
             });
         }
             

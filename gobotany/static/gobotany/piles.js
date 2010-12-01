@@ -1,3 +1,6 @@
+// Global declaration for JSLint (http://www.jslint.com/)
+/*global dojo, dojox */
+
 dojo.provide('gobotany.piles');
 
 dojo.declare('gobotany.piles.PileManager', null, {
@@ -20,6 +23,6 @@ dojo.declare('gobotany.piles.PileManager', null, {
         });
     },
 
-    on_pile_info_changed: function(pile_info) {},
+    on_pile_info_changed: function(pile_info) {}
 
 });

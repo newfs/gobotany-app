@@ -1,3 +1,6 @@
+// Global declaration for JSLint (http://www.jslint.com/)
+/*global dojo, dojox, dijit */
+
 dojo.provide('gobotany.sk.glossarize');
 dojo.require("dojo.regexp");
 dojo.require('dojox.data.JsonRestStore');
@@ -15,12 +18,12 @@ dojo.declare('gobotany.sk.results.Glossarizer', null, {
         this.n = 0;
         this.store = new dojox.data.JsonRestStore({
             target: '/glossaryblob/',
-            syncMode: true,
+            syncMode: true
         });
         this.glossaryblob = this.store.fetch().results;
-        var terms = new Array();
-        for (term in this.glossaryblob) {
-            terms.push(dojo.regexp.escapeString(term));
+        var terms = [];
+        for (var i = 0; i < this.glossaryblob.length; i++) {
+            terms.push(dojo.regexp.escapeString(terms[i]));
         }
         /* For incredible speed, we pre-build a regular expression of
            all glossary terms.  This has the incredible advantage of
@@ -41,15 +44,16 @@ dojo.declare('gobotany.sk.results.Glossarizer', null, {
         );
         var gize = this;
         dojo.query('.gloss', node).forEach(function (node2) {
-            gize.n ++;
+            gize.n++;
             var gloss_id = 'gloss' + gize.n;
             node2.id = gloss_id;
-            new dijit.Tooltip({
+            dijit.Tooltip({
                 connectId: [ gloss_id ],
                 label: '<span class="glosstip">' + gize.glossaryblob[
                     node2.innerHTML] + '</span>',
-                position: 'above',
+                position: 'above'
             });
         });
-    },
-})
+    }
+});
+

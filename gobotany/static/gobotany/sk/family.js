@@ -1,3 +1,6 @@
+// Global declaration for JSLint (http://www.jslint.com/)
+/*global dojo, dojox, gobotany */
+
 dojo.provide('gobotany.sk.family');
 
 dojo.require('dojox.data.JsonRestStore');
@@ -30,4 +33,4 @@ gobotany.sk.family.init = function(family_slug) {
     dojo.query('#info p').forEach(function(node) {
         glossarizer.markup(node);
     });
-}
+};
