@@ -579,6 +579,11 @@ class CharacterListTestCase(TestCase):
             '/piles/pile1/characters/?character_groups=0')  # id of char group
         self.assertEqual(200, response.status_code)
 
+    def test_get_ignores_unknown_includes(self):
+        response = self.client.get(
+            '/piles/pile1/characters/?include=foo&include=c1&include=bar')
+        self.assertEqual(200, response.status_code)
+
 
 class CharacterValuesTestCase(TestCase):
     def setUp(self):

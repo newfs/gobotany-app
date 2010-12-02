@@ -293,8 +293,9 @@ class CharacterListingHandler(BaseHandler):
     def _get_characters(self, short_names):
         """Return a list of characters with `short_names`, in that order."""
         cl = models.Character.objects.filter(short_name__in=short_names)
-        by_short_name = dict( (c.short_name, c) for c in cl )
-        return [ by_short_name[short_name] for short_name in short_names ]
+        by_short_name = dict((c.short_name, c) for c in cl)
+        return [by_short_name[short_name] for short_name in short_names
+                if short_name in by_short_name]
 
     def _choose_best(self, pile, count, species_ids,
                      character_group_ids, exclude_short_names):
