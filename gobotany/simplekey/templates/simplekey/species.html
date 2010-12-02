@@ -45,14 +45,26 @@
                  {{ taxon.description }}
              {% else %}
                  This is a placeholder description. (Test glossary highlighting with
-                 the term monomorphic here.)
+                 the term reticulate here.)
              {% endif %}</p>
 
           <h3>Characteristics</h3>
           {% if characteristics %}
               {% for characteristic in characteristics %}
                   <p><strong>{{ characteristic.name|lower }}:</strong>
-                     {{ characteristic.value }}</p>
+                  {% for character_value in taxon.character_values.all %}
+                      {% if character_value.character.name|lower == characteristic.name|lower %}
+                          {% if character_value.character.value_type == 'TEXT' %}
+                              {{ character_value.value_str }}
+                          {% else %}
+                              {{ character_value.value_min }}
+                              {{ character_value.character.unit }} to
+                              {{ character_value.value_max }}
+                              {{ character_value.character.unit }}
+                          {% endif %}
+                      {% endif %}
+                  {% endfor %}
+                  </p>
               {% endfor %}
           {% else %}
               <p>N/A</p>

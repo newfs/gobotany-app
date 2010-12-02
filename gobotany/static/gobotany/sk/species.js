@@ -83,6 +83,7 @@ gobotany.sk.species.init = function(scientific_name) {
     // Make glossary highlights appear where appropriate throughout the page.
     var glossarizer = gobotany.sk.results.Glossarizer();
     dojo.query('#info p').forEach(function(node) {
+        // TODO: fix markup!
         glossarizer.markup(node);
     });
 

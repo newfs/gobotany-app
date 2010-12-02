@@ -22,8 +22,10 @@ dojo.declare('gobotany.sk.results.Glossarizer', null, {
         });
         this.glossaryblob = this.store.fetch().results;
         var terms = [];
-        for (var i = 0; i < this.glossaryblob.length; i++) {
-            terms.push(dojo.regexp.escapeString(terms[i]));
+        for (term in this.glossaryblob) {
+            if (this.glossaryblob.hasOwnProperty(term)) {
+-               terms.push(dojo.regexp.escapeString(term));
+            }
         }
         /* For incredible speed, we pre-build a regular expression of
            all glossary terms.  This has the incredible advantage of
