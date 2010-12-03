@@ -79,10 +79,10 @@ dojo.declare('gobotany.filters.NumericRangeFilter',
         var v = this.values;
         var vmin = character_value.value[0];
         var vmax = character_value.value[1];
-        if (vmin !== null && (v.min === null || v.min > vmin)) {
+        if (vmin !== undefined && (v.min === undefined || v.min > vmin)) {
             v.min = vmin;
         }
-        if (vmax !== null && (v.max === null || v.max < vmax)) {
+        if (vmax !== undefined && (v.max === undefined || v.max < vmax)) {
             v.max = vmax;
         }
     }
