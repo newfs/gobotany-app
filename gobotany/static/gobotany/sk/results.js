@@ -831,7 +831,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             var selectedvalue =
                 this.results_helper.filter_manager.get_selected_value(
                     filter.character_short_name);
-            if (selectedvalue !== undefined) {
+            if (selectedvalue !== undefined && selectedvalue !== null) {
                 startvalue = selectedvalue;
             }
 
