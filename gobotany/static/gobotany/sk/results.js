@@ -525,9 +525,11 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         var first = null;
         if (idx !== undefined) {
             var nodes = dojo.query('li', filter_ul);
-            first = nodes[idx];
-            if (first === undefined) {
-                first = nodes[nodes.length - 1];
+            if (nodes !== undefined) {
+                first = nodes[idx];
+                if (first === undefined) {
+                    first = nodes[nodes.length - 1];
+                }
             }
         }
 
@@ -573,7 +575,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             dojo.place(removeLink, filterItem);
             dojo.place(clearLink, filterItem);
 
-            if (first !== null) {
+            if (first !== undefined && first !== null) {
                 dojo.place(filterItem, first, 'before');
                 dojo.style(filterItem, {backgroundColor: '#C8B560'});
             } else {
