@@ -1,13 +1,40 @@
-{{ object.scientific_name }}.
-Family:
-    {{ object.family.name }}.
+{{ object.scientific_name }} {{object.taxonomic_authority}}.
+
+{{ object.common_name }}.
+
 {% for pile in object.piles.all %}
     {{ pile.pilegroup.name }} {{ pile.name }}
 {% endfor %}
+
 {{ object.description }}.
+
+{# TODO: need to account for numeric values and units. #}
 {% for character_value in object.character_values.all %}
     {% if character_value.value_str %}
         {{ character_value.character.friendly_name }}:
         {{ character_value.value_str }}.
     {% endif %}
 {% endfor %}
+
+{# TODO: Replace the vertical bars between multiple habitats with a better delimiter. #}
+Habitat: {{ object.habitat }}
+
+{# TODO: Add Sometimes Confused With (if present for the plant) #}
+
+Distribution and Conservation Status:
+{# TODO: add these, for each state, as on species pages. #}
+
+Wetland Status:
+{# TODO: add this. Species page view currently calls a function for formatting. #}
+
+{# The following formatting does not match the species page exactly, but aims #}
+{# to allow for searching on the words native and introduced. #}
+{% if object.north_american_native %}
+    North American Native Plant: Yes
+{% else %}
+    No (introduced)
+{% endif %}
+
+Classification:
+    Family: {{ object.family.name }}.
+    Genus: {{ object.genus.name}}.
