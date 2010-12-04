@@ -34,11 +34,13 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         dojo.query('#plants .species_count .loading').removeClass('hidden');
         dojo.query('#plants .species_count .count').addClass('hidden');
 
-        // Build a list of short names for the filters visible at left.
+        // Build a list of short names for the filters visible at left (which
+        // is the same as the internal collection of filters).
         var filter_short_names = [];
-        dojo.query('#filters ul li').forEach(function(node) {
-            filter_short_names.push(dojo.attr(node, 'id'));
-        });
+        var filters = this.results_helper.filter_manager.filters;
+        for (var i = 0; i < filters.length; i++) {
+            filter_short_names.push(filters[i].character_short_name);
+        }
 
         // Run the query, passing a callback function to be run when finished.
         // Also pass the list of filter short names for which to get counts.

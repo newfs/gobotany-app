@@ -3,8 +3,10 @@
 
 dojo.provide('gobotany.sk.plant_preview');
 
-dojo.require('dojox.data.JsonRestStore');
 dojo.require('gobotany.sk.images.ImageBrowser');
+dojo.require('gobotany.utils');
+
+dojo.require('dojox.data.JsonRestStore');
 
 gobotany.sk.plant_preview.show_plant_preview = function(plant,
                                                plant_preview_characters,
@@ -41,9 +43,19 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant,
                 var ppc = plant_preview_characters[i];
                 dojo.create('dt', {innerHTML: ppc.character_friendly_name},
                             list);
-                dojo.create('dd',
-                            {innerHTML: taxon[ppc.character_short_name]},
-                            list);
+                var display_value = '';
+                var character_value = taxon[ppc.character_short_name];
+                if (character_value !== undefined) {
+                    display_value = character_value;
+                    if (ppc.value_type === 'LENGTH') {
+                        var min = character_value[0];
+                        var max = character_value[1];
+                        display_value = gobotany.utils.pretty_length(
+                            ppc.unit, min) + ' to ' +
+                            gobotany.utils.pretty_length(ppc.unit, max);
+                    }
+                }
+                dojo.create('dd', {innerHTML: display_value}, list);
             }
 
             // List the collections (piles) to which this plant belongs.

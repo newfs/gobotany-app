@@ -743,14 +743,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }
 
         if (this.results_helper.filter_manager.has_filter(
-                filter.character_short_name)) {
+            filter.character_short_name)) {
 
+            dojo.query('#' + filter.character_short_name).orphan();
             this.results_helper.filter_manager.remove_filter(
                 filter.character_short_name);
             this.results_helper.species_section.perform_query();
         }
-
-        dojo.query('#' + filter.character_short_name).orphan();
     },
 
     hide_filter_working: function() {

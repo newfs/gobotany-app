@@ -259,6 +259,8 @@ class PileHandler(BasePileHandler):
             character['character_friendly_name'] = \
                 preview_character.character.friendly_name
             character['order'] = preview_character.order
+            character['unit'] = preview_character.character.unit
+            character['value_type'] = preview_character.character.value_type
             characters_list.append(character)
         return characters_list
 
