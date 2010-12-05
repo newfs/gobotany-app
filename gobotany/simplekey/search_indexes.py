@@ -42,6 +42,9 @@ class TaxonIndex(indexes.SearchIndex):
         template_name='simplekey/search_text_species.txt')
 
     # extra non-searchable, retrievable fields, used for display
+    #
+    # JG note: I think Description was just used for example here. Description
+    # is now a regular field in the taxon model rather than a character.
     description = CharacterCharField(indexed=True,
                                      character_name='description',
                                      default='description not yet available')

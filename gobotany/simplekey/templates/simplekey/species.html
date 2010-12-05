@@ -184,14 +184,22 @@
           <p><strong>Genus:</strong>
               <em><a href="/simple/genera/{{ taxon.genus|lower }}/">{{ taxon.genus }}</a></em></p>
 
-          <h3>Also Known As</h3>
-          <p>First synonym here, <a id='more-aka' class='more'>more</a>
-              <span dojoType='dijit.Tooltip' connectId='more-aka' position='above'>
-                    <span class='moretip'>Second synonym,
-                    third synonym, fourth synonym, fifth synonym,
-                    sixth synonym, seventh synonym</span>
-              </span>
-          </p>
+          {% if taxon.synonyms.all|length > 0 %}
+              <h3>Also Known As</h3>
+              <p>First synonym{% if taxon.synonyms.all|length > 1 %},
+                  <a id='more-aka' class='more'>more</a>
+                  <span dojoType='dijit.Tooltip' connectId='more-aka' position='above'>
+                      <span class='moretip'>
+                          {% for synonym in taxon.synonyms.all %}
+                              {% if not loop.first %}
+                                  {{ synonym.scientific_name }}{% if not loop.last %}, {% endif %}
+                              {% endif %}
+                          {% endfor %}
+                      </span>
+                  </span>
+                  {% endif %}
+              </p>
+           {% endif %}
 
       </div>
   </div>

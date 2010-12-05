@@ -8,7 +8,7 @@ from django.utils import simplejson
 
 from gobotany.core import botany
 from gobotany.core.models import GlossaryTerm, Pile, PileGroup, Genus, \
-    Family, Taxon, TaxonCharacterValue, Lookalike, CharacterGroup
+    Family, Synonym, Taxon, TaxonCharacterValue, Lookalike, CharacterGroup
 from gobotany.simplekey.models import Page, get_blurb, SearchSuggestion
 
 

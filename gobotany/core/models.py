@@ -486,6 +486,20 @@ class Genus(models.Model):
         super(Genus, self).save(*args, **kw)
 
 
+class Synonym(models.Model):
+    """Other (generally previous) scientific names for species."""
+    taxon = models.ForeignKey('Taxon')
+    scientific_name = models.CharField(max_length=100)
+    
+    class Meta:
+        ordering = ['scientific_name']
+        unique_together = ('taxon', 'scientific_name')
+
+    def __unicode__(self):
+        return '%s (synonym for %s)' % (self.scientific_name,
+                                        self.taxon.scientific_name)
+
+
 class Taxon(models.Model):
     """Despite its general name, this currently represents a single species."""
     # TODO: taxa should probably have a "slug" as well, to prevent us
@@ -514,6 +528,7 @@ class Taxon(models.Model):
     invasive_in_states = models.CharField(max_length=50)
     sale_prohibited_in_states = models.CharField(max_length=50)
     description = models.CharField(max_length=500) # TODO: import descriptions
+    synonyms = models.ManyToManyField(Synonym, related_name='taxa')
 
     class Meta:
         verbose_name_plural = 'taxa'
@@ -557,7 +572,7 @@ class TaxonCharacterValue(models.Model):
 
 
 class TaxonGroup(models.Model):
-    """A way to group taxa together (why, again?)."""
+    """A way to group taxa together for partner site collections."""
     name = models.CharField(max_length=100)
     taxa = models.ManyToManyField(Taxon, through='TaxonGroupEntry')
 
@@ -622,6 +637,9 @@ class PlantPreviewCharacter(models.Model):
                                 self.pile.name)
 
 
+# TODO: Make this a many-to-many relation to Taxon, like TaxonCharacterValue
+# and Synonym. This will bring the values together more conveniently for both
+# the HTML and search engine text templates.
 class Lookalike(models.Model):
     """Species that can be mistaken for others."""
     scientific_name = models.CharField(max_length=100)

@@ -1,4 +1,4 @@
-{{ object.scientific_name }} {{object.taxonomic_authority}}.
+{{ object.scientific_name }} {{ object.taxonomic_authority }}.
 
 {{ object.common_name }}.
 
@@ -37,4 +37,11 @@ Wetland Status:
 
 Classification:
     Family: {{ object.family.name }}.
-    Genus: {{ object.genus.name}}.
+    Genus: {{ object.genus.name }}.
+
+{% if object.synonyms.all|length > 0 %}
+    Also Known As:
+    {% for synonym in object.synonyms.all %}
+        {{ synonym.scientific_name }}.
+    {% endfor %}
+{% endif %}
