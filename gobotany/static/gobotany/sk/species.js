@@ -4,6 +4,7 @@
 dojo.provide('gobotany.sk.species');
 
 dojo.require('dijit.TitlePane');
+dojo.require('dijit.Tooltip');
 dojo.require('dojo.cookie');
 dojo.require('dojox.data.JsonRestStore');
 

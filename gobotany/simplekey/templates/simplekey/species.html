@@ -17,11 +17,11 @@
   <h1><em>{{ scientific_name }}</em>
       <span class="auth">{{ taxon.taxonomic_authority }}</span></h1>
   <div id="species">
-    <h2>{% if taxon.common_name %}
-            {{ taxon.common_name }}
-        {% else %}
-            Common name here
-        {% endif %}</h2>
+      <h2>{% if taxon.common_name %}
+              {{ taxon.common_name }}
+          {% else %}
+              Common name here
+          {% endif %}</h2>
       <div id="images">
           <h3>Images</h3>
           <p>
@@ -183,6 +183,15 @@
               <a href="/simple/families/{{ taxon.family|lower }}/">{{ taxon.family }}</a></p>
           <p><strong>Genus:</strong>
               <em><a href="/simple/genera/{{ taxon.genus|lower }}/">{{ taxon.genus }}</a></em></p>
+
+          <h3>Also Known As</h3>
+          <p>First synonym here, <a id='more-aka' class='more'>more</a>
+              <span dojoType='dijit.Tooltip' connectId='more-aka' position='above'>
+                    <span class='moretip'>Second synonym,
+                    third synonym, fourth synonym, fifth synonym,
+                    sixth synonym, seventh synonym</span>
+              </span>
+          </p>
 
       </div>
   </div>

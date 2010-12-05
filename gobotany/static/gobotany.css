@@ -779,11 +779,11 @@ input.filter_int, input.filter_int2 {
 
 /* Highlighted glossary words in text. */
 
-.gloss {
+.gloss, .more {
     border-bottom: 1px dashed;
     cursor: pointer;
 }
-.glosstip {
+.glosstip, .moretip {
     font-size: 0.72em;
 }
 
