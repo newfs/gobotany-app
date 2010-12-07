@@ -183,6 +183,10 @@
               <a href="/simple/families/{{ taxon.family|lower }}/">{{ taxon.family }}</a></p>
           <p><strong>Genus:</strong>
               <em><a href="/simple/genera/{{ taxon.genus|lower }}/">{{ taxon.genus }}</a></em></p>
+          <p><strong>Species:</strong>
+              <em>{{ scientific_name }}</em></p>
+          <p><strong>Full name:</strong>
+              <em>{{ scientific_name }}</em> {{ taxon.taxonomic_authority }}</p>
 
           {% if taxon.synonyms.all|length > 0 %}
               <h3>Also Known As</h3>
