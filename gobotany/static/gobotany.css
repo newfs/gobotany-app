@@ -249,6 +249,7 @@ p {
 
 #filter-working .close, #pick-filters .close {
     color: #00e;
+    cursor: pointer;
     display: inline;
     float: right;
 }

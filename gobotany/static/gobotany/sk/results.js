@@ -54,18 +54,21 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         console.log('ResultsHelper: setting up page - ' + this.pile_slug);
 
-        this.species_section = new gobotany.sk.results.SpeciesSectionHelper(this);
+        this.species_section =
+            new gobotany.sk.results.SpeciesSectionHelper(this);
         this.species_section.setup_section();
 
-        this.filter_section = new gobotany.sk.results.FilterSectionHelper(this);
+        this.filter_section =
+            new gobotany.sk.results.FilterSectionHelper(this);
         this.filter_section.setup_section();
 
         // Wire up the filter working area's close button.
         var el = dojo.query('#filter-working .close')[0];
-        dojo.connect(el, 'onclick', null, 
-                     dojo.hitch(this, this.filter_section.hide_filter_working));
+        dojo.connect(el, 'onclick', dojo.hitch(this.filter_section,
+            this.filter_section.hide_filter_working));
 
-        dojo.subscribe("results_loaded", dojo.hitch(this, this.populate_image_types));
+        dojo.subscribe('results_loaded',
+            dojo.hitch(this, this.populate_image_types));
 
         // Update images on selction change
         var select_box = dijit.byId('image-type-selector');
@@ -93,11 +96,27 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                     watcher.load_values({on_values_loaded: dojo.hitch(this,
                         function(filters) { 
                             this.filter_section.display_filters(filters);
-                            this.filter_section.update_filter_display('family');
-                            this.filter_section.update_filter_display('genus');
+                            this.filter_section.update_filter_display(
+                                'family');
+                            this.filter_section.update_filter_display(
+                                'genus');
 
-                            dojo.query('#filters .loading').addClass('hidden');
+                            dojo.query('#filters .loading').addClass(
+                                'hidden');
                             this.species_section.perform_query();
+
+                            // Show the filter working area if necessary.
+                            var filter_name =
+                                this.filter_section.visible_filter_short_name;
+                            if (filter_name !== '') {
+
+                                var filter = this.filter_manager.get_filter(
+                                    filter_name);
+                                if (filter !== undefined) {
+                                    this.filter_section.show_filter_working(
+                                        filter);
+                                }
+                            }
                         }
                     )});
                 });
@@ -108,7 +127,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                     this.setup_filters_from_hash({on_complete: complete});
                 }
                 else {
-                    this.setup_filters_from_pile_info({on_complete: complete});
+                    this.setup_filters_from_pile_info(
+                        {on_complete: complete});
                 }
             })
         );
@@ -193,6 +213,13 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             }
         }
 
+        // Restore the name of the filter visible in the filter working area,
+        // if applicable. It will be shown later when results are loaded.
+        if (hash_object._visible !== undefined) {
+            this.filter_section.visible_filter_short_name =
+                hash_object._visible;
+        }
+
         this.filter_manager.query_filters({
             short_names: filter_names,
             onLoaded: dojo.hitch(this, function(items) {
@@ -221,16 +248,20 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         var LAST_URL_COOKIE_NAME = 'last_plant_id_url';
 
         console.log('saving filter info in url and cookie');
-        
-        // Retain the previous state, for supporting Undo.
-        //var previous_url = dojo.cookie(LAST_URL_COOKIE_NAME);
-        //if (previous_url === undefined) {
-        //    previous_url = '';
-        //}
-        //dojo.cookie('previous_plant_id_url', previous_url, {path: '/'});
-        
+
         // Save the current state.
-        dojo.hash(this.filter_manager.as_query_string());
+
+        var hash = this.filter_manager.as_query_string();
+
+        // Include a URL parameter indicating whether the filter working area
+        // is open.
+        if (/&$/.test(hash) === false) {
+            hash = hash + '&';
+        }
+        hash = hash + '_visible=' +
+            this.filter_section.visible_filter_short_name;
+
+        dojo.hash(hash);
         dojo.cookie(LAST_URL_COOKIE_NAME, window.location.href, {path: '/'});
     },
 
@@ -238,7 +269,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         var image_type = dijit.byId('image-type-selector').value;
         var images = dojo.query('#plant-listing li img');
         // Replace the image for each plant on the page
-        for (var i=0; i < images.length; i++) {
+        for (var i = 0; i < images.length; i++) {
             var image = images[i];
             // Fetch the species for the current image
             this.filter_manager.result_store.fetchItemByIdentity({
@@ -330,7 +361,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         // This variable is for keeping track of which filter is currently
         // visible in the filter working area (if any).
-        this.visible_filter_short_name = null;
+        this.visible_filter_short_name = '';
     },
 
     setup_section: function() {
@@ -756,7 +787,16 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
     hide_filter_working: function() {
         dojo.query('#filter-working').style({display: 'none'});
-        this.visible_filter_short_name = null;
+
+        // Get the filter section object, which can be in one of two places
+        // depending on the call context.
+        var filter_section = this;
+
+        this.visible_filter_short_name = '';
+
+        // Save the state, which includes whether the filter working area is
+        // being shown.
+        this.results_helper.save_filter_state();
     },
 
     sort_filter_values: function(a, b) {
@@ -928,6 +968,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         var ne = dojo.query('#filter-working .info .notable-exceptions')[0];
         ne.innerHTML = filter.notable_exceptions;
+
+        // Save the state, which includes whether the filter working area is
+        // being shown.
+        this.results_helper.save_filter_state();
     },
 
     // Update the filter working area "help text," which consists of the Key
