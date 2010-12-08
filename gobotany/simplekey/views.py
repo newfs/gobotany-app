@@ -9,6 +9,7 @@ from django.utils import simplejson
 from gobotany.core import botany
 from gobotany.core.models import GlossaryTerm, Pile, PileGroup, Genus, \
     Family, Synonym, Taxon, TaxonCharacterValue, Lookalike, CharacterGroup
+from gobotany.simplekey import partners
 from gobotany.simplekey.models import Page, get_blurb, SearchSuggestion
 
 
@@ -27,12 +28,18 @@ def get_simple_url(item):
         raise ValueError('the Simple Key has no URL for %r' % (item,))
 
 def index_view(request):
+    site = partners.get_site(request)
+    main_heading = site.index_page_main_heading()
+
     blurb = get_blurb('getting_started')
+
     c = request.COOKIES.get('skip_getting_started', '')
     skip_getting_started = (c == 'skip')
     if skip_getting_started and request.GET.get('skip') != 'no':
         return redirect('1/')
+
     return render_to_response('simplekey/index.html', {
+            'main_heading': main_heading,
             'blurb': blurb,
             'skip_getting_started': skip_getting_started,
             }, context_instance=RequestContext(request))
