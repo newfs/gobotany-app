@@ -61,6 +61,7 @@ class Importer(object):
         self._import_character_values(charvf)
         self._import_character_glossary(char_glossaryf)
         self._import_glossary(glossaryf, glossary_images)
+        self._import_place_characters_and_values(taxaf)
         self._import_default_filters()
         self._import_plant_preview_characters()
         self._import_lookalikes(lookalikesf)
@@ -325,7 +326,7 @@ class Importer(object):
     def _import_characters(self, f):
         print >> self.logfile, 'Setting up characters in file: %s' % f
         iterator = iter(CSVReader(f).read())
-        colnames = [ x.lower() for x in iterator.next() ]
+        colnames = [x.lower() for x in iterator.next()]
 
         for cols in iterator:
             row = dict(zip(colnames, cols))
@@ -467,15 +468,14 @@ class Importer(object):
             # XXX for now assume char was already created by _import_char.
             # We don't have character_group in current data file.
             char = models.Character.objects.get(short_name=ch_short_name)
-            pile,ignore = models.Pile.objects.get_or_create(name=pile_mapping[pile_suffix])
-            term, created = models.GlossaryTerm.objects.get_or_create(term=ch_name,
-                                                                      question_text=row['friendly_text'],
-                                                                      hint=row['hint'],
-                                                                      visible=False)
+            pile,ignore = models.Pile.objects.get_or_create(
+                name=pile_mapping[pile_suffix])
+            term, created = models.GlossaryTerm.objects.get_or_create(
+                term=ch_name, question_text=row['friendly_text'],
+                hint=row['hint'], visible=False)
 
-            models.GlossaryTermForPileCharacter.objects.get_or_create(character=char,
-                                                                      pile=pile,
-                                                                      glossary_term=term)
+            models.GlossaryTermForPileCharacter.objects.get_or_create(
+                character=char, pile=pile, glossary_term=term)
 
     def _import_glossary(self, f, imagef):
         print >> self.logfile, 'Setting up glossary'
@@ -528,7 +528,8 @@ class Importer(object):
                 chars = models.Character.objects.filter(
                     short_name__iexact=term.term.replace(' ', '_'))
                 for char in chars:
-                    gpc, created = models.GlossaryTermForPileCharacter.objects.get_or_create(
+                    gpc, created = \
+                        models.GlossaryTermForPileCharacter.objects.get_or_create(
                             character=char,
                             pile=default_pile,
                             glossary_term=term)
@@ -702,6 +703,21 @@ class Importer(object):
                 content_image.image.thumbnail.width()
                 content_image.image.extra_thumbnails['large'].width()
 
+
+    def _import_place_characters_and_values(self, taxaf):
+        print >> self.logfile, '    Setting up place characters and values'
+
+        # Create character group for place characters.
+        chargroup, created = models.CharacterGroup.objects.get_or_create(
+            name='place')
+        if created:
+            print >> self.logfile, u'    New Character Group:', \
+                chargroup.name
+
+        # Create characters and values for all the taxa.
+        # TODO
+
+
     def _create_default_filters(self, pile_name, character_short_names):
         print >> self.logfile, '    Set up default filters for %s' % pile_name
         pile = models.Pile.objects.get(name=pile_name)
@@ -713,9 +729,11 @@ class Importer(object):
 
     def _import_default_filters(self):
         print >> self.logfile, 'Setting up some default filters'
-        
-        # Set up default filters here until there's a way to do so in Access
-        # or the Django Admin.
+
+        # TODO: Will we continue to load the initial default filters from
+        # this hard-coded list (after which they are editable in the Pile
+        # admin), or will we make a place in the Access database for them?
+
         self._create_default_filters('Lycophytes',
             ['horizontal_shoot_position', 'spore_form', 'strobilus_base'])
         self._create_default_filters('Monilophytes',
@@ -816,18 +834,22 @@ class Importer(object):
         print >> self.logfile, 'Setting up demo Pile attributes'
         pile = models.Pile.objects.get(name='Woody Angiosperms')
         if not pile.key_characteristics:
-            pile.key_characteristics = '<ul><li>A key characteristic</li><li>Another one</li></ul>'
+            pile.key_characteristics = \
+                '<ul><li>A key characteristic</li><li>Another one</li></ul>'
         if not pile.notable_exceptions:
-            pile.notable_exceptions = '<ul><li>An Exception</li><li>Another one</li></ul>'
+            pile.notable_exceptions = \
+                '<ul><li>An Exception</li><li>Another one</li></ul>'
         if not pile.description:
             pile.description = 'A description of the Woody Angiosperms pile'
         pile.save()
 
         pile = models.PileGroup.objects.get(name='Woody Plants')
         if not pile.key_characteristics:
-            pile.key_characteristics = '<ul><li>A key characteristic</li><li>Another one</li></ul>'
+            pile.key_characteristics = \
+                '<ul><li>A key characteristic</li><li>Another one</li></ul>'
         if not pile.notable_exceptions:
-            pile.notable_exceptions = '<ul><li>An Exception</li><li>Another one</li></ul>'
+            pile.notable_exceptions = \
+                '<ul><li>An Exception</li><li>Another one</li></ul>'
         if not pile.description:
             pile.description = 'A description of the Woody Plants pile group'
         pile.save()

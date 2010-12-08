@@ -133,7 +133,6 @@ class Character(models.Model):
         blank=True,
         null=True)
 
-
     VALUE_CHOICES = {
         u'TEXT': u'Textual', # string
         u'LENGTH': u'Length', # length
