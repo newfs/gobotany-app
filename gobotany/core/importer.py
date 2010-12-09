@@ -46,6 +46,15 @@ pile_mapping = {
     'wg': u'Woody Gymnosperms',
     }
 
+state_names = {
+    'ct': u'Connecticut',
+    'ma': u'Massachusetts',
+    'me': u'Maine',
+    'nh': u'New Hampshire',
+    'ri': u'Rhode Island',
+    'vt': u'Vermont',
+    }
+
 class Importer(object):
 
     def __init__(self, logfile=sys.stdout):
@@ -704,18 +713,111 @@ class Importer(object):
                 content_image.image.extra_thumbnails['large'].width()
 
 
+    def _add_place_character_value(self, character, value_str, piles, taxon):
+        # Don't try to add a value if it's empty.
+        if not value_str:
+            return
+
+        # Look for an existing character value for this character and string
+        # value.
+        cvs = models.CharacterValue.objects.filter(character=character,
+            value_str=value_str)
+        if cvs:
+            cv = cvs[0]
+        else:
+            # The character value doesn't exist; create.
+            cv = models.CharacterValue(character=character)
+            cv.value_str = value_str
+            cv.save()
+
+        # Finally, add the character value.
+        for pile in piles:
+            pile.character_values.add(cv)
+
+        models.TaxonCharacterValue(taxon=taxon, character_value=cv).save()
+        print >> self.logfile, '  New TaxonCharacterValue: %s for ' \
+            'Character: %s (Species: %s)' % (cv.value_str, character.name,
+            taxon.scientific_name)
+
+
     def _import_place_characters_and_values(self, taxaf):
         print >> self.logfile, '    Setting up place characters and values'
 
-        # Create character group for place characters.
-        chargroup, created = models.CharacterGroup.objects.get_or_create(
-            name='place')
+        # Create a character group for place characters.
+        character_group, created = \
+            models.CharacterGroup.objects.get_or_create(name='place')
         if created:
-            print >> self.logfile, u'    New Character Group:', \
-                chargroup.name
+            print >> self.logfile, u'  New Character Group:', \
+                character_group.name
 
-        # Create characters and values for all the taxa.
-        # TODO
+        # Create characters.
+        character_short_names = ['habitat', 'state_distribution']
+        value_type = 'TEXT'
+        for short_name in character_short_names:
+            # Create a friendly name automatically for now.
+            temp_friendly_name = short_name.replace('_', ' ').capitalize()
+
+            character, created = models.Character.objects.get_or_create(
+                short_name=short_name,
+                name=temp_friendly_name,
+                friendly_name=temp_friendly_name,
+                character_group=character_group,
+                value_type=value_type,
+                unit='',
+                ease_of_observability=1,
+                key_characteristics='',
+                notable_exceptions='')
+            if created:
+                print >> self.logfile, u'    New Character: %s (%s)' % \
+                    (short_name, value_type)
+
+        # Go through all of the taxa and create character values.
+        print >> self.logfile, \
+            'Setting up taxon character values in file: %s' % taxaf
+        iterator = iter(CSVReader(taxaf).read())
+        colnames = list(iterator.next())  # do NOT lower(); case is important
+
+        for cols in iterator:
+            row = dict(zip(colnames, cols))
+        
+            # Look up the taxon and if it exists, import character values.
+            scientific_name = row['Scientific_Name']
+            taxa = models.Taxon.objects.filter(
+                scientific_name__iexact=scientific_name)
+            if not taxa:
+                print >> self.logfile, u'Error: taxon does not exist: %s' % \
+                    scientific_name
+                continue
+            taxon = taxa[0]
+            
+            # Get the pile (or piles) for associating character values.
+            piles = []
+            pile_names = row['Pile'].split('| ')
+            for pile_name in pile_names:
+                try:
+                    pile = models.Pile.objects.get(name__iexact=pile_name)
+                except models.Pile.DoesNotExist:
+                    print >> self.logfile, u'Error: pile does not exist: ' \
+                        '%s (%s)' % (pile_name, taxon.scientific_name)
+                    continue
+                piles.append(pile)
+
+            # Create the Habitat character values.
+            character = models.Character.objects.get(short_name='habitat')
+            habitats = row['habitat'].lower().split('| ')
+            for habitat in habitats:
+                self._add_place_character_value(character, habitat, piles,
+                    taxon)
+
+            # Create the State Distribution character values.
+            character = \
+                models.Character.objects.get(short_name='state_distribution')
+            state_codes = row['Distribution'].lower().split('| ')
+            for state_code in state_codes:
+                state = ''
+                if state_code in state_names:
+                    state = state_names[state_code]
+                self._add_place_character_value(character, state, piles, taxon)
 
 
     def _create_default_filters(self, pile_name, character_short_names):
