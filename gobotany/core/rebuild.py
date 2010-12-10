@@ -11,7 +11,7 @@ management.setup_environ(settings)
 from gobotany.core import igdt, models
 
 
-DEFAULT_FILTERS_PER_PILE = 3
+DEFAULT_BEST_FILTERS_PER_PILE = 3
 
 def rebuild_default_filters():
     """Rebuild default-filters for every pile, choosing 'best' characters."""
@@ -22,20 +22,46 @@ def rebuild_default_filters():
         print "  Removing %d old default filters" % len(old_filters)
         old_filters.delete()
 
-        print "  Computing new 'best' filters"
-        t = time.time()
-        result = igdt.rank_characters(pile, list(pile.species.all()))
-        print "  Computation took %.3f seconds" % (time.time() - t)
-
-        print "  Inserting new 'best' filters"
-        result = result[:DEFAULT_FILTERS_PER_PILE]
-        for n, (score, entropy, coverage, character) in enumerate(result):
+        common_filter_character_names = ['habitat', 'state_distribution']
+        print "  Inserting 'common' filters"
+        for n, character_name in enumerate(common_filter_character_names):
+            try:
+                character = models.Character.objects.get( \
+                    short_name=character_name)
+            except models.Character.DoesNotExist:
+                print "Error: Character does not exist: %s" % character_name
+                continue
             print "   ", character.name
             defaultfilter = models.DefaultFilter()
             defaultfilter.pile = pile
             defaultfilter.character = character
             defaultfilter.order = n
             defaultfilter.save()
+
+        print "  Computing new 'best' filters"
+        t = time.time()
+        result = igdt.rank_characters(pile, list(pile.species.all()))
+        print "  Computation took %.3f seconds" % (time.time() - t)
+
+        print "  Inserting new 'best' filters"
+        number_of_filters_to_evaluate = DEFAULT_BEST_FILTERS_PER_PILE + \
+            len(common_filter_character_names)
+        result = result[:number_of_filters_to_evaluate]
+        number_added = 0
+        for n, (score, entropy, coverage, character) in enumerate(result):
+            # Skip any 'common' filters if they come up in the 'best' filters,
+            # because they've already been added.
+            if (character.short_name not in common_filter_character_names):
+                print "   ", character.name
+                defaultfilter = models.DefaultFilter()
+                defaultfilter.pile = pile
+                defaultfilter.character = character
+                defaultfilter.order = n + len(common_filter_character_names)
+                defaultfilter.save()
+                number_added += 1
+                # If no more filters need to be added, stop now.
+                if number_added == DEFAULT_BEST_FILTERS_PER_PILE:
+                    break;
 
 
 SAMPLE_IMAGES_PER_PILE = 6

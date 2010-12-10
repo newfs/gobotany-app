@@ -600,7 +600,7 @@ class TaxonGroupEntry(models.Model):
 
 
 class DefaultFilter(models.Model):
-    """A designation that a particular filter be shown by default for a taxon.
+    """A designation that a particular filter be shown by default for a pile.
 
     Each instance of this class dubs a particular `character` as one
     deserving a default filter, already displayed on the screen, when a
@@ -622,7 +622,8 @@ class DefaultFilter(models.Model):
 
 
 class PlantPreviewCharacter(models.Model):
-    """Meta-data about a character to be displayed in the plant preview (?)."""
+    """A designation that a character appear on the preview popup for a plant.
+    """
     pile = models.ForeignKey(Pile)
     character = models.ForeignKey(Character)
     order = models.IntegerField()
