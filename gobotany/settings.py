@@ -84,3 +84,6 @@ HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 
 TINYMCE_JS_URL = MEDIA_URL + "tinymce/tiny_mce/tiny_mce.js"
 TINYMCE_JS_ROOT = os.path.join(MEDIA_ROOT, "tinymce/tiny_mce")
+
+# For partner sites, the request hostname will indicate the site.
+MONTSHIRE_HOSTNAME_SUBSTRING = ':8001'  # Just look for a port number for now

@@ -1,5 +1,7 @@
 # partners.py: Module for helping customize the Simple Key for partner sites.
 
+from gobotany.settings import MONTSHIRE_HOSTNAME_SUBSTRING
+
 class MainSite(object):
     # Base class for the main Go-Botany Simple Key site.
 
@@ -22,8 +24,7 @@ class MontshireSite(MainSite):
 
 def get_site(request):
     host = request.get_host()
-    if (host.find(':8001') > -1):
-        # For now, port 8001 = Montshire Museum's Simple Key site
+    if (host.find(MONTSHIRE_HOSTNAME_SUBSTRING) > -1):
         return MontshireSite(host)
     else:
         return MainSite(host)

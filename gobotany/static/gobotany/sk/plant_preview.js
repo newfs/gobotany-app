@@ -4,6 +4,7 @@
 dojo.provide('gobotany.sk.plant_preview');
 
 dojo.require('gobotany.sk.images.ImageBrowser');
+dojo.require('gobotany.sk.partners');
 dojo.require('gobotany.utils');
 
 dojo.require('dojox.data.JsonRestStore');
@@ -38,24 +39,29 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant,
     var taxon_store = new dojox.data.JsonRestStore({target: taxon_url});
     taxon_store.fetch({
         onComplete: function(taxon) {
+            var partner_site = gobotany.sk.partners.partner_site();
+            console.log('partner_site: ' + partner_site);
             // List any designated characters and their values.
             for (var i = 0; i < plant_preview_characters.length; i++) {
                 var ppc = plant_preview_characters[i];
-                dojo.create('dt', {innerHTML: ppc.character_friendly_name},
-                            list);
-                var display_value = '';
-                var character_value = taxon[ppc.character_short_name];
-                if (character_value !== undefined) {
-                    display_value = character_value;
-                    if (ppc.value_type === 'LENGTH') {
-                        var min = character_value[0];
-                        var max = character_value[1];
-                        display_value = gobotany.utils.pretty_length(
-                            ppc.unit, min) + ' to ' +
-                            gobotany.utils.pretty_length(ppc.unit, max);
+                if (ppc.partner_site === partner_site) {
+                    dojo.create('dt',
+                        {innerHTML: ppc.character_friendly_name},
+                        list);
+                    var display_value = '';
+                    var character_value = taxon[ppc.character_short_name];
+                    if (character_value !== undefined) {
+                        display_value = character_value;
+                        if (ppc.value_type === 'LENGTH') {
+                            var min = character_value[0];
+                            var max = character_value[1];
+                            display_value = gobotany.utils.pretty_length(
+                                ppc.unit, min) + ' to ' +
+                                gobotany.utils.pretty_length(ppc.unit, max);
+                        }
                     }
+                    dojo.create('dd', {innerHTML: display_value}, list);
                 }
-                dojo.create('dd', {innerHTML: display_value}, list);
             }
 
             // List the collections (piles) to which this plant belongs.

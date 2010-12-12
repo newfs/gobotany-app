@@ -867,7 +867,7 @@ class Importer(object):
         # Set up some sample filters for a partner site.
         self._create_plant_preview_characters('Lycophytes',
             ['trophophyll_form', 'upright_shoot_form',
-             'trophophyll_length'], 'montshire')
+             'sporophyll_orientation'], 'montshire')
 
         self._create_plant_preview_characters('Non-Orchid Monocots',
             ['anther_length', 'leaf_arrangement'])

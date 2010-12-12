@@ -1,8 +1,9 @@
 from operator import itemgetter
 
-from gobotany.core import botany, igdt, models
 from piston.handler import BaseHandler
 from piston.utils import rc
+
+from gobotany.core import botany, igdt, models
 
 def _taxon_image(image):
     if image:
@@ -145,6 +146,7 @@ class TaxonImageHandler(BaseHandler):
 class CharactersHandler(BaseHandler):
     """List characters and character values across all piles."""
     methods_allowed = ('GET')
+
     def read(self, request):
         group_map = {}
         for character_group in models.CharacterGroup.objects.all():
@@ -163,6 +165,7 @@ class CharactersHandler(BaseHandler):
 class CharacterHandler(BaseHandler):
     """Retrieve all character values for a character regardless of pile."""
     methods_allowed = ('GET')
+
     def read(self, request, character_short_name):
         r = {'type': '', 'list': []}
         for cv in models.CharacterValue.objects.filter(
@@ -210,7 +213,7 @@ class BasePileHandler(BaseHandler):
 class PileHandler(BasePileHandler):
     model = models.Pile
     fields = BasePileHandler.fields + ('character_groups', 'default_filters',
-                                       'plant_preview_characters')
+        'plant_preview_characters')
 
     @staticmethod
     def resource_uri(pile=None):
@@ -259,6 +262,10 @@ class PileHandler(BasePileHandler):
             character['character_friendly_name'] = \
                 preview_character.character.friendly_name
             character['order'] = preview_character.order
+            partner_site = None
+            if preview_character.partner_site:
+                partner_site = preview_character.partner_site.short_name
+            character['partner_site'] = partner_site
             character['unit'] = preview_character.character.unit
             character['value_type'] = preview_character.character.value_type
             characters_list.append(character)
