@@ -63,6 +63,7 @@ class Importer(object):
     def import_data(self, pilegroupf, pilef, taxaf, charf, charvf,
                     char_glossaryf, glossaryf, glossary_images,
                     lookalikesf, *taxonfiles):
+        self._import_partner_sites()
         self._import_pile_groups(pilegroupf)
         self._import_piles(pilef)
         self._import_taxa(taxaf)
@@ -78,6 +79,17 @@ class Importer(object):
         for taxonf in taxonfiles:
             self._import_taxon_character_values(taxonf)
         self._import_search_suggestions()
+
+
+    def _import_partner_sites(self):
+        print >> self.logfile, 'Setting up partner sites'
+        partner_site_short_names = ['montshire']
+        for short_name in partner_site_short_names:
+            partner_site, created = models.PartnerSite.objects.get_or_create(
+                short_name=short_name)
+            if created:
+                print >> self.logfile, u'  New partner site: %s' % short_name
+
 
     def _import_pile_groups(self, pilegroupf):
         print >> self.logfile, 'Setting up pile groups'
@@ -819,44 +831,46 @@ class Importer(object):
                 self._add_place_character_value(character, state, piles, taxon)
 
 
+    def _create_plant_preview_characters(self, pile_name, character_short_names,
+                                        partner_site_short_name=None):
+        pile = models.Pile.objects.get(name=pile_name)
+        partner_site = None
+        if partner_site_short_name:
+            partner_site = models.PartnerSite.objects.get( \
+                short_name=partner_site_short_name)
+
+        for order, short_name in enumerate(character_short_names):
+            character = models.Character.objects.get(short_name=short_name)
+
+            preview_character, created = \
+                models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
+                    character=character, order=order,
+                    partner_site=partner_site)
+
+            message = 'plant_preview_character: %s' % short_name
+            if partner_site:
+                message = '%s (%s)' % (message, partner_site)
+
+            if created:
+                message = 'Created %s' % message
+            else:
+                message = 'Error: did not create %s' % message
+            print >> self.logfile, message
+
+
     def _import_plant_preview_characters(self):
         print >> self.logfile, ('Setting up sample plant preview characters')
 
-        pile = models.Pile.objects.get(name='Lycophytes')
+        self._create_plant_preview_characters('Lycophytes',
+            ['horizontal_shoot_position', 'spore_form',
+             'trophophyll_length'])
+        # Set up some sample filters for a partner site.
+        self._create_plant_preview_characters('Lycophytes',
+            ['trophophyll_form', 'upright_shoot_form',
+             'trophophyll_length'], 'montshire')
 
-        character = models.Character.objects.get(
-            short_name='horizontal_shoot_position')
-        preview_character, created = \
-            models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
-                character=character, order=1)
-        preview_character.save()
-
-        character = models.Character.objects.get(short_name='spore_form')
-        preview_character, created = \
-            models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
-                character=character, order=2)
-        preview_character.save()
-
-        character = models.Character.objects.get(short_name='trophophyll_length')
-        preview_character, created = \
-            models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
-                character=character, order=3)
-        preview_character.save()
-
-        pile = models.Pile.objects.get(name='Non-Orchid Monocots')
-
-        character = models.Character.objects.get(short_name='anther_length')
-        preview_character, created = \
-            models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
-                character=character, order=1)
-        preview_character.save()
-
-        character = models.Character.objects.get(
-            short_name='leaf_arrangement')
-        preview_character, created = \
-            models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
-                character=character, order=2)
-        preview_character.save()
+        self._create_plant_preview_characters('Non-Orchid Monocots',
+            ['anther_length', 'leaf_arrangement'])
 
 
     def _import_lookalikes(self, lookalikesf):
