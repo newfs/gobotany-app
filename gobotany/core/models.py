@@ -621,17 +621,33 @@ class DefaultFilter(models.Model):
                                        self.character.friendly_name)
 
 
+# Call this PartnerSite instead of just Site in order to avoid confusion
+# with the Django "sites" framework.
+class PartnerSite(models.Model):
+    """An indicator of to which site--the default main site, or one of the
+       partner sites--the associated record pertains.
+    """
+    short_name = models.CharField(max_length=30)
+
+    class Meta:
+        ordering = ['short_name']
+
+    def __unicode__(self):
+        return '%s' % self.short_name
+
+
 class PlantPreviewCharacter(models.Model):
     """A designation that a character appear on the preview popup for a plant.
     """
     pile = models.ForeignKey(Pile)
     character = models.ForeignKey(Character)
+    partner_site = models.ForeignKey(PartnerSite, blank=True, null=True)
     order = models.IntegerField()
     
     class Meta:
         ordering = ['order']
-        unique_together = ('pile', 'character')
-        
+        unique_together = ('pile', 'character', 'partner_site')
+
     def __unicode__(self):
         return '%d: %s (%s)' % (self.order, self.character.friendly_name,
                                 self.pile.name)

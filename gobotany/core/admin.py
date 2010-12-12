@@ -59,7 +59,7 @@ class TaxonAdmin(GobotanyAdminBase):
 class PileDefaultFiltersForm(forms.ModelForm):
     class Meta:
         model = models.Pile.plant_preview_characters.through
-    character = ModelChoiceField('character')
+    list_display = ('character')
 
 class PileDefaultFiltersInline(admin.StackedInline):
     model = models.Pile.default_filters.through
@@ -69,7 +69,7 @@ class PileDefaultFiltersInline(admin.StackedInline):
 class PilePlantPreviewCharactersForm(forms.ModelForm):
     class Meta:
         model = models.Pile.plant_preview_characters.through
-    character = ModelChoiceField('character')
+    list_display = ('character')
 
 class PilePlantPreviewCharactersInline(admin.StackedInline):
     model = models.Pile.plant_preview_characters.through
@@ -92,7 +92,7 @@ class GlossaryMappingInline(admin.TabularInline):
     extra = 1
 
 class CharacterAdmin(GobotanyAdminBase):
-    inlines=[GlossaryMappingInline]
+    inlines = [GlossaryMappingInline]
     list_display = ('short_name', 'character_group', 'ease_of_observability',)
     search_fields = ('short_name', 'name',)
     list_filter = ('character_group',)
@@ -143,6 +143,7 @@ admin.site.register(models.Pile, PileAdmin)
 admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.CharacterValue, CharacterValueAdmin)
+admin.site.register(models.PartnerSite)
 admin.site.register(models.Taxon, TaxonAdmin)
 admin.site.register(models.TaxonGroup, TaxonGroupAdmin)
 admin.site.register(models.TaxonCharacterValue, TaxonCharacterValueAdmin)
