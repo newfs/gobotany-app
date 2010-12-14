@@ -821,7 +821,7 @@ input.filter_int, input.filter_int2 {
     margin-right: 16px;
 }
 
-#species > div div.dist-status-col, #family > div div, #genus > div div {
+#species > div, #family > div div, #genus > div div {
     float: left;
     margin-bottom: 0.5em;
     margin-right: 1em;
