@@ -144,12 +144,12 @@ def _get_all_states_status(taxon):
 
     invasive_states = []
     if taxon.invasive_in_states:
-        invasive_states = taxon.invasive_in_states.replace(' ', '').split('|')
+        invasive_states = taxon.invasive_in_states.replace(' ', '').split(',')
 
     prohibited_states = []
     if taxon.sale_prohibited_in_states:
         prohibited_states = \
-            taxon.sale_prohibited_in_states.replace(' ', '').split('|')
+            taxon.sale_prohibited_in_states.replace(' ', '').split(',')
 
     print taxon.north_american_native
     for state in STATES:
