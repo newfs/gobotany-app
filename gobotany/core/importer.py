@@ -172,7 +172,8 @@ class Importer(object):
                 uses = row['uses'],
                 wetland_status = row['wetland_status'],
                 north_american_native = \
-                    (row['native_to_north_america'] == 'TRUE'),
+                    (row['native_to_north_america'] == 'yes' or
+                     row['native_to_north_america'] == 'TRUE'),
                 conservation_status_ct = row['conservation_status_ct'],
                 conservation_status_ma = row['conservation_status_ma'],
                 conservation_status_me = row['conservation_status_me'],
