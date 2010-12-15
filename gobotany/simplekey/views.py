@@ -141,10 +141,10 @@ def _get_state_status(state_code, distribution, conservation_status_code=None,
 def _get_all_states_status(taxon):
     STATES = ['CT', 'MA', 'ME', 'NH', 'RI', 'VT']
     states_status = dict().fromkeys(STATES, '')
-
+    
     distribution = []
     if taxon.distribution:
-        distribution = taxon.distribution.replace(' ', '').split('|')
+        distribution = taxon.distribution.replace(' ', '').split(',')
 
     invasive_states = []
     if taxon.invasive_in_states:
@@ -173,7 +173,6 @@ def _get_species_characteristics(pile, taxon):
     # Get all the character values for this taxon.
     cvs = TaxonCharacterValue.objects.filter(taxon=taxon)
     if cvs:
-        #for filter in pile.default_filters.all():
         for character in pile.plant_preview_characters.all():
             i = 0
             found = False
