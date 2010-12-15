@@ -95,9 +95,6 @@ def _get_state_status(state_code, distribution, conservation_status_code=None,
                       is_prohibited=False):
     status = ['absent']
 
-    if conservation_status_code == 'X':
-        status.append('extinct')
-
     for state in distribution:
         if state == state_code:
             status = ['present']
@@ -124,6 +121,15 @@ def _get_state_status(state_code, distribution, conservation_status_code=None,
 
             if is_invasive == True:
                 status.append('invasive')
+
+    # Extinct status applies to plants that are absent or present. (Present
+    # suggests the plant used to be found in the state.)
+    if conservation_status_code == 'X':
+        # If status is just 'present' or 'absent' so far, clear it so that
+        # 'extinct' appears alone.
+        if status == ['present'] or status == ['absent']:
+            status = []
+        status.append('extinct')
 
     # Prohibited status applies even to plants that are absent.
     if is_prohibited == True:

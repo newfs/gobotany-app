@@ -58,7 +58,11 @@ class SpeciesDistributionAndConservationStatusTests(TestCase):
     def test_get_state_status_is_extinct(self):
         status = views._get_state_status('ME', self.DISTRIBUTION,
                                          conservation_status_code='X')
-        self.assertEqual('absent, extinct', status)
+        self.assertEqual('extinct', status)
+        # Extinct should appear alone even if the plant is marked present.
+        status = views._get_state_status('MA', self.DISTRIBUTION,
+                                         conservation_status_code='X')
+        self.assertEqual('extinct', status)
 
     def test_get_state_status_is_rare(self):
         status = views._get_state_status('MA', self.DISTRIBUTION,
