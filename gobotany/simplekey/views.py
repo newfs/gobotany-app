@@ -146,6 +146,8 @@ def _get_all_states_status(taxon):
     if taxon.distribution:
         distribution = taxon.distribution.replace(' ', '').split(',')
 
+    is_native = (taxon.north_american_native == True)
+
     invasive_states = []
     if taxon.invasive_in_states:
         invasive_states = taxon.invasive_in_states.replace(' ', '').split('|')
@@ -155,6 +157,7 @@ def _get_all_states_status(taxon):
         prohibited_states = \
             taxon.sale_prohibited_in_states.replace(' ', '').split('|')
 
+    print taxon.north_american_native
     for state in STATES:
         status_field_name = 'conservation_status_%s' % state.lower()
         conservation_status = getattr(taxon, status_field_name)

@@ -165,26 +165,23 @@ class Importer(object):
                 scientific_name=row['scientific_name'],
                 family=family,
                 genus=genus,
-                taxonomic_authority = row['taxonomic_authority'],
-                simple_key = (row['simple_key'] == 'TRUE'),
-                habitat = row['habitat'],
-                factoid = row['factoid'],
-                uses = row['uses'],
-                wetland_status = row['wetland_status'],
-                north_american_native = \
-                    (row['native_to_north_america'] == 'yes' or
-                     row['native_to_north_america'] == 'TRUE'),
-                conservation_status_ct = row['conservation_status_ct'],
-                conservation_status_ma = row['conservation_status_ma'],
-                conservation_status_me = row['conservation_status_me'],
-                conservation_status_nh = row['conservation_status_nh'],
-                conservation_status_ri = row['conservation_status_ri'],
-                conservation_status_vt = row['conservation_status_vt'],
-                distribution = row['distribution'],
-                invasive_in_states = row['invasive_in_which_states'],
-                sale_prohibited_in_states = \
-                    row['prohibited_from_sale_states'],
-                )
+                taxonomic_authority=row['taxonomic_authority'],
+                simple_key=(row['simple_key'] == 'TRUE'),
+                habitat=row['habitat'],
+                factoid=row['factoid'],
+                uses=row['uses'],
+                wetland_status=row['wetland_status'],
+                north_american_native=\
+                    (row['native_to_north_america_2'] == 'TRUE'),
+                conservation_status_ct=row['conservation_status_ct'],
+                conservation_status_ma=row['conservation_status_ma'],
+                conservation_status_me=row['conservation_status_me'],
+                conservation_status_nh=row['conservation_status_nh'],
+                conservation_status_ri=row['conservation_status_ri'],
+                conservation_status_vt=row['conservation_status_vt'],
+                distribution=row['distribution'],
+                invasive_in_states=row['invasive_in_which_states'],
+                sale_prohibited_in_states=row['prohibited_from_sale_states'])
             taxon.save()
             print >> self.logfile, u'    New Taxon:', taxon
 
