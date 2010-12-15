@@ -95,6 +95,9 @@ def _get_state_status(state_code, distribution, conservation_status_code=None,
                       is_prohibited=False):
     status = ['absent']
 
+    if conservation_status_code == 'X':
+        status.append('extinct')
+
     for state in distribution:
         if state == state_code:
             status = ['present']
@@ -102,33 +105,24 @@ def _get_state_status(state_code, distribution, conservation_status_code=None,
             # Most further status information applies only to plants that are
             # present.
 
-            if is_north_american_native == True:
-                # Conservation status applies only to plants that are native
-                # to North America. [TODO: verify this in the data, especially
-                # Special Concern and Historic--any non-natives?]
-                if conservation_status_code == 'E':
-                    status = ['endangered']
-                elif conservation_status_code == 'T':
-                    status = ['threatened']
-                elif conservation_status_code == 'SC' or \
-                     conservation_status_code == 'SC*':
-                    status = ['special concern']
-                elif conservation_status_code == 'H':
-                    status = ['historic']
-                elif conservation_status_code == 'X':
-                    status = ['extinct']
-                elif conservation_status_code == 'C':
-                    status = ['rare']
-            else:
-                status = ['not native']
+            # TODO: remove this code (and the method parameter) once it's
+            # confirmed that native status does not need to be included here.
+            #if is_north_american_native == False:
+            #    status.append('not native')
 
-            # [TODO: verify this in the data.]
+            if conservation_status_code == 'E':
+                status.append('endangered')
+            elif conservation_status_code == 'T':
+                status.append('threatened')
+            elif conservation_status_code == 'SC' or \
+                 conservation_status_code == 'SC*':
+                status.append('special concern')
+            elif conservation_status_code == 'H':
+                status.append('historic')
+            elif conservation_status_code == 'C':
+                status.append('rare')
+
             if is_invasive == True:
-                if is_north_american_native == True:
-                    # If the plant is native, clear any status, so that
-                    # present' won't also show, and because conservation
-                    # status likely is not a factor for an invasive native.
-                    status = []
                 status.append('invasive')
 
     # Prohibited status applies even to plants that are absent.
@@ -250,7 +244,7 @@ def species_view(request,  genus_slug, specific_epithet_slug,
     states_status = _get_all_states_status(taxon)
     habitats = []
     if taxon.habitat:
-        habitats = taxon.habitat.split('|')
+        habitats = taxon.habitat.split(',')
     lookalikes = Lookalike.objects.filter(scientific_name=scientific_name)
 
     character_ids = taxon.character_values.all().values_list(

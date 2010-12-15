@@ -72,14 +72,18 @@
           <p><a href="#all-characteristics">All characteristics</a></p>
 
           <h3>Habitat</h3>
-              {% if habitats|length > 0 %}
+              {% if habitats|length > 1 %}
               <ul>
                   {% for habitat in habitats %}
                       <li>{{ habitat }}</li>
                   {% endfor %}
               </ul>
               {% else %}
-                  <p>(missing)</p>
+                  {% if habitats|length == 1 %}
+                      <p>{{ habitats|first }}</p>
+                  {% else %}
+                      <p>(missing)</p>
+                  {% endif %}
               {% endif %}
           </ul>
 
@@ -92,6 +96,15 @@
               {% endfor %}
           </dl>
           {% endif %}
+
+          <h3>North American Native Status</h3>
+          <p>
+              {% if taxon.north_american_native %}
+                  native
+              {% else %}
+                  non-native
+              {% endif %}
+          </p>
 
           <h3>Distribution &amp; Conservation Status</h3>
 
@@ -107,15 +120,6 @@
           <h3>Wetland Status</h3>
           <p>
               {{ wetland_status }}
-          </p>
-
-          <h3>North American Native Plant</h3>
-          <p>
-              {% if taxon.north_american_native %}
-                  Yes
-              {% else %}
-                  No (introduced)
-              {% endif %}
           </p>
 
           <h3 id="all-characteristics">All Characteristics</h3>

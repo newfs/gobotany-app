@@ -21,19 +21,18 @@ Habitat: {{ object.habitat }}
 
 {# TODO: Add Sometimes Confused With (if present for the plant) #}
 
+North American Native Status:
+{% if object.north_american_native %}
+    native
+{% else %}
+    non-native
+{% endif %}
+
 Distribution and Conservation Status:
 {# TODO: add these, for each state, as on species pages. #}
 
 Wetland Status:
 {# TODO: add this. Species page view currently calls a function for formatting. #}
-
-{# The following formatting does not match the species page exactly, but aims #}
-{# to allow for searching on the words native and introduced. #}
-{% if object.north_american_native %}
-    North American Native Plant: Yes
-{% else %}
-    No (introduced)
-{% endif %}
 
 Classification:
     Family: {{ object.family.name }}.
