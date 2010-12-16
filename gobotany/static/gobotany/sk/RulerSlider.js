@@ -11,13 +11,13 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
     min_pixels_per_tick: 4.0,
     min_pixels_per_label: 25.0,
 
-    constructor: function(node, pxwidth, themin, themax, startvalue) {
+    constructor: function(node, idname, pxwidth, themin, themax, startvalue) {
         this.pxwidth = pxwidth;
         var distance = this.mmwidth = themax - themin;
 
         this.slider = new dijit.form.HorizontalSlider({
-            id: 'character_slider',
-            name: 'character_slider',
+            id: idname,
+            name: idname,
             showButtons: false,
             value: startvalue,
             minimum: themin,
@@ -76,7 +76,8 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             thing = labels_and_ticks[i];
 
             if (typeof thing === 'number') {  /* number means do tick marks */
-                var tickheight = (i === 0 || i === labels_and_ticks.length - 1) ?
+                var tickheight =
+                    (i === 0 || i === labels_and_ticks.length - 1) ?
                     6 : 4;  /* lowest set of ticks should be longer */
                 new dijit.form.HorizontalRule({
                     container: 'topDecoration',

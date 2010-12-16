@@ -94,7 +94,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                     var watcher =
                         new gobotany.filters.FilterLoadingWatcher(filters);
                     watcher.load_values({on_values_loaded: dojo.hitch(this,
-                        function(filters) { 
+                        function(filters) {
                             this.filter_section.display_filters(filters);
                             this.filter_section.update_filter_display(
                                 'family');
@@ -137,7 +137,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         this.setup_onhashchange();
     },
-    
+
     setup_onhashchange: function() {
         // Set up the onhashchange event handler, which will be used to detect
         // Back button undo events for modern browsers.
@@ -380,7 +380,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         // Wire up the Family and Genus submit buttons.
         var family_store = new dojo.data.ItemFileWriteStore(
             {data: { label: 'name', identifier: 'family', items: [] }});
-        
+
         var genus_store = new dojo.data.ItemFileWriteStore(
             {data: { label: 'name', identifier: 'genus', items: [] }});
 
@@ -447,7 +447,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                         filter_manager.add_filter(filter_json);
                         new_filter_names.push(filter_json.short_name);
                     });
-                    
+
                     // Get all the newly added filters, so they can be
                     // listed on the page and so their values can be loaded.
                     var new_filters = [];
@@ -459,7 +459,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     // Add the new filters to the filters list.
                     var added = this.display_filters(new_filters, 0);
                     added.style({backgroundColor: '#C8B560'});
-                    gobotany.utils.notify('More filters added'); 
+                    gobotany.utils.notify('More filters added');
                     gobotany.utils.animate_changed(added);
 
                     // Load the values for the newly added filters.
@@ -500,7 +500,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         return display_value;
     },
-    
+
     _apply_filter: function(event) {
         dojo.stopEvent(event);
 
@@ -599,7 +599,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                              this.clear_filter(filter);
                          });
 
-            filterItem = dojo.create('li', 
+            filterItem = dojo.create('li',
                                      {id: filter.character_short_name});
             dojo.place(filterLink, filterItem);
             dojo.place(choiceDiv, filterItem);
@@ -687,7 +687,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     clear_family: function(event) {
-        dojo.stopEvent(event); 
+        dojo.stopEvent(event);
         this.set_value('family', null);
     },
 
@@ -747,7 +747,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 if (value !== null) {
                     var display_value = this._get_filter_display_value(value,
                         char_name);
-                    var choice_div = dojo.query('#' + char_name + 
+                    var choice_div = dojo.query('#' + char_name +
                                                 ' .choice')[0];
                     choice_div.innerHTML = display_value;
                 }
@@ -887,7 +887,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
             this.slider_node = dojo.create('div', null, valuesList);
             this.ruler = gobotany.sk.RulerSlider(
-                this.slider_node, 600, themin, themax, startvalue);
+                this.slider_node, 'character_slider', 600,
+                themin, themax, startvalue);
 
         } else {
 
@@ -925,9 +926,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     var display_value =
                         this._get_filter_display_value(v.value,
                             filter.character_short_name);
-                    item_html = item_html + '><span> ' + display_value + 
+                    item_html = item_html + '><span> ' + display_value +
                         '</span> <span>(' + v.count + ')</span>';
-                    var character_value_item = dojo.create('label', 
+                    var character_value_item = dojo.create('label',
                         {'innerHTML': item_html}, valuesList);
                     this.glossarizer.markup(
                         character_value_item.childNodes[1]);
