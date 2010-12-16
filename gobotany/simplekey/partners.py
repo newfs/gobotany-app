@@ -7,6 +7,7 @@ class MainSite(object):
 
     def __init__(self, host):
         self.host = host
+        self.short_name = None
 
     def index_page_main_heading(self):
         return 'Plant Identifier: Getting Started'
@@ -14,6 +15,10 @@ class MainSite(object):
 
 class MontshireSite(MainSite):
     # Subclass for the Montshire Museum's Simple Key site.
+
+    def __init__(self, host):
+        super(MontshireSite, self).__init__(host)
+        self.short_name = 'montshire'
 
     def index_page_main_heading(self):
         return 'Montshire %s' % MainSite.index_page_main_heading(self)

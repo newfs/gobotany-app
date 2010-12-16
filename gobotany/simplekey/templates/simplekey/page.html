@@ -55,6 +55,7 @@
 
 {% block js_bottom %}
 <script>
+    {% include "simplekey/partner_site_inline_js.html" %}
     dojo.require('gobotany.sk.simplekey_page');
     dojo.addOnLoad(function() {
         gobotany.sk.simplekey_page.init();

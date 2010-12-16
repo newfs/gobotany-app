@@ -46,6 +46,7 @@
 {% endblock %}
 {% block js_bottom %}
 <script>
+    {% include "simplekey/partner_site_inline_js.html" %}
     dojo.require('gobotany.sk.results');
     dojo.addOnLoad(function() {
         var helper = gobotany.sk.results.ResultsHelper('{{ pile.slug }}');

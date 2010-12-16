@@ -62,7 +62,9 @@ def page_view(request, number):
     except ValueError:
         raise Http404
     page = get_object_or_404(Page, number=number)
+    site = partners.get_site(request)
     return render_to_response('simplekey/page.html', {
+            'partner_site': site.short_name,
             'page': page,
             'pilegroups_and_urls': [
                 (pilegroup, get_simple_url(pilegroup))
@@ -72,7 +74,9 @@ def page_view(request, number):
 
 def pilegroup_view(request, pilegroup_slug):
     pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
+    site = partners.get_site(request)
     return render_to_response('simplekey/pilegroup.html', {
+            'partner_site': site.short_name,
             'pilegroup': pilegroup,
             'piles_and_urls': [
                 (pile, get_simple_url(pile))
@@ -84,7 +88,9 @@ def results_view(request, pilegroup_slug, pile_slug):
     pile = get_object_or_404(Pile, slug=pile_slug)
     if pile.pilegroup.slug != pilegroup_slug:
         raise Http404
+    site = partners.get_site(request)
     return render_to_response('simplekey/results.html', {
+           'partner_site': site.short_name,
            'pilegroup': pile.pilegroup,
            'pile': pile,
            }, context_instance=RequestContext(request))

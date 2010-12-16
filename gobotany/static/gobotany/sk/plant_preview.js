@@ -1,10 +1,9 @@
 // Global declaration for JSLint (http://www.jslint.com/)
-/*global dojo, dojox, dijit, gobotany, window */
+/*global dojo, dojox, dijit, gobotany, window, gobotany_sk_partner_site */
 
 dojo.provide('gobotany.sk.plant_preview');
 
 dojo.require('gobotany.sk.images.ImageBrowser');
-dojo.require('gobotany.sk.partners');
 dojo.require('gobotany.utils');
 
 dojo.require('dojox.data.JsonRestStore');
@@ -39,12 +38,10 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant,
     var taxon_store = new dojox.data.JsonRestStore({target: taxon_url});
     taxon_store.fetch({
         onComplete: function(taxon) {
-            var partner_site = gobotany.sk.partners.partner_site();
-            console.log('partner_site: ' + partner_site);
             // List any designated characters and their values.
             for (var i = 0; i < plant_preview_characters.length; i++) {
                 var ppc = plant_preview_characters[i];
-                if (ppc.partner_site === partner_site) {
+                if (ppc.partner_site === gobotany_sk_partner_site) {
                     dojo.create('dt',
                         {innerHTML: ppc.character_friendly_name},
                         list);
