@@ -8,29 +8,29 @@ dojo.declare('gobotany.sk.rulertest', null, {
         dojo.query('#filter-working').style({display: 'block'});
 
         this.count = 0;
-        this.working = dojo.byId('filter-working');
+        this.enclosing_container = dojo.byId('filter-working');
         var RS = gobotany.sk.RulerSlider;
 
-        new RS(this.n(), this.nextid(), 600, 0.0, 6.31, 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 10, 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 15.8, 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 25.1, 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 39.8, 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 63.1, 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 100, 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 158., 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 251., 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 398., 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 631., 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 1000, 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 1580., 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 2510., 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 3980., 1.0, updater);
-        new RS(this.n(), this.nextid(), 600, 0.0, 6310., 1.0, updater);
+        new RS(this.n(), this.nextid(), 600, 0.0, 6.31, 1.0, [[2, 3]]);
+        new RS(this.n(), this.nextid(), 600, 0.0, 10, 1.0);
+        new RS(this.n(), this.nextid(), 600, 0.0, 15.8, 1.0);
+        new RS(this.n(), this.nextid(), 600, 0.0, 25.1, 1.0);
+        new RS(this.n(), this.nextid(), 600, 0.0, 39.8, 1.0);
+        new RS(this.n(), this.nextid(), 600, 0.0, 63.1, 1.0);
+        new RS(this.n(), this.nextid(), 600, 0.0, 100, 1.0);
+        new RS(this.n(), this.nextid(), 600, 0.0, 158., 1.0);
+        new RS(this.n(), this.nextid(), 600, 0.0, 251., 1.0);
+        new RS(this.n(), this.nextid(), 600, 0.0, 398., 1.0);
+        new RS(this.n(), this.nextid(), 600, 0.0, 631., 1.0);
+        new RS(this.n(), this.nextid(), 600, 0.0, 1000, 1.0);
+        new RS(this.n(), this.nextid(), 600, 0.0, 1580., 1.0);
+        new RS(this.n(), this.nextid(), 600, 0.0, 2510., 1.0);
+        new RS(this.n(), this.nextid(), 600, 0.0, 3980., 1.0);
+        new RS(this.n(), this.nextid(), 600, 0.0, 6310., 1.0);
     },
 
     n: function() {
-        return dojo.create('div', null, this.working);
+        return dojo.create('div', null, this.enclosing_container);
     },
 
     nextid: function() {

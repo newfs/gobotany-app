@@ -11,9 +11,15 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
     min_pixels_per_tick: 4.0,
     min_pixels_per_label: 25.0,
 
-    constructor: function(node, idname, pxwidth, themin, themax, startvalue) {
+    constructor: function(node, idname, pxwidth, themin, themax,
+                          startvalue, illegal_regions) {
         this.pxwidth = pxwidth;
         var distance = this.mmwidth = themax - themin;
+        this.pxper = pxwidth / distance;
+        this.illegal_regions = illegal_regions || [];
+
+        dojo.addClass(node, 'moz_ruler_slider_wrapper');
+        var dijitnode = dojo.create('div', null, node); /* becomes table */
 
         this.slider = new dijit.form.HorizontalSlider({
             id: idname,
@@ -25,7 +31,7 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             intermediateChanges: true,
             style: 'width: ' + pxwidth + 'px;',
             onChange: dojo.hitch(this, this.do_update)
-        }, node);
+        }, dijitnode);
 
         /* Put metric on top. */
 
@@ -58,13 +64,14 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
         /* Add a second handle below the English tick marks. */
 
         var handles = dojo.query('.dijitSliderImageHandleH');
-        var handle = handles[handles.length - 1]; /* from last ruler on page */
+        this.handle = handles[handles.length - 1]; /* from last ruler on page */
         var second_handle = dojo.create('div', {
             'class': 'second_handle',
             'style': 'top: ' + dojo.position(this.slider.containerNode).h + 'px'
-        }, handle);
+        }, this.handle);
         this.metric_display = dojo.create(
-            'div', {'class': 'metric_display'}, handle);
+            'div', {'class': 'metric_display'},
+            this.slider.containerNode);
         this.english_display = dojo.create(
             'div', {'class': 'english_display'}, second_handle);
         this.draw_value();
@@ -161,9 +168,24 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
     draw_value: function() {
         var p = gobotany.utils.pretty_length;
         var mm = this.slider.value;
+        mm = this.nearest_legal_value(mm);
+        var desiredOffset = Math.floor(mm * this.pxper) - 30;
+        this.metric_display.style['left'] = '' + desiredOffset + 'px';
         this.metric_display.innerHTML =
             p('m', mm) + '<br>' + p('cm', mm) + '<br>' + p('mm', mm);
         this.english_display.innerHTML = p('in', mm);
+    },
+
+    // Returns null if the value is legal to begin with.
+    nearest_legal_value: function(mm) {
+        for (var i = 0; i < this.illegal_regions.length; i++) {
+            var region = this.illegal_regions[i];
+            var imin = region[0];
+            var imax = region[1];
+            if (imin < mm && mm < imax)
+                return mm - imin > imax - mm ? imax : imin;
+        }
+        return mm;
     },
 
     destroy: function() {

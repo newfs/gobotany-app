@@ -304,6 +304,15 @@ p {
 
 /* Make the Dijit horizontal slider look like a ruler */
 
+.moz_ruler_slider_wrapper {
+    /* Create a context in which we can absolutely position english/metric
+       divs.  This has to be done on a div placed around the actual
+       slider because Dijit uses a table, and Mozilla ignores a relative
+       position when it is placed on a table, per this bug:
+       https://bugzilla.mozilla.org/show_bug.cgi?id=63895
+       */
+    position: relative;
+}
 #filter-working .dijitSliderH {
     margin-top: 48px;
     margin-bottom: 18px;
@@ -331,16 +340,17 @@ p {
     background-image: url("http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/form/images/sliderThumbs.png");
     background-position: -108px 0;
 }
-#filter-working .dijitSliderImageHandleH div.metric_display {
+#filter-working div.metric_display {
     position: absolute;
-    bottom: 18px;
-    right: -18px;
+    top: 0px;
+    left: -30px;
+    width: 60px;
     text-align: center;
 }
-#filter-working .dijitSliderImageHandleH div.english_display {
+#filter-working div.english_display {
     position: absolute;
     top: 20px;
-    right: -18px;
+    right: -12px;
     text-align: right;
 }
 #filter-working .dijitRuleLabelH {
