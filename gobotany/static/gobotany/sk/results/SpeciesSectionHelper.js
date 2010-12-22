@@ -237,16 +237,16 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         var title = dojo.create('span', {'class': 'PlantTitle'}, anchor);
         dojo.html.set(title, item.scientific_name);
 
+        var pile_slug = this.results_helper.pile_slug;
+
         // Connect the click event last so it's possible to pass the image node.
         dojo.connect(li_node, 'onclick', item, function(event) {
             event.preventDefault();
             dijit.byId('plant-preview').show();
             var plant = this;
-            gobotany.sk.plant_preview.show_plant_preview(
-                plant,
-                species_section.results_helper.filter_manager
-                    .plant_preview_characters,
-                img);
+            gobotany.sk.plant_preview.show(plant,
+                {'pile_slug': pile_slug,
+                 'clicked_image_alt_text': dojo.attr(img, 'alt')});
         });
     },
 

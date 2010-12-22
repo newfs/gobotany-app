@@ -8,9 +8,8 @@ dojo.require('gobotany.utils');
 
 dojo.require('dojox.data.JsonRestStore');
 
-gobotany.sk.plant_preview.show_plant_preview = function(plant,
-                                               plant_preview_characters,
-                                               clicked_image) {
+gobotany.sk.plant_preview.show = function(plant, args) {
+
     dojo.query('#plant-preview h3')[0].innerHTML = '<i>' +
         plant.scientific_name + '</i>';
     var list = dojo.query('#plant-preview dl')[0];
@@ -38,6 +37,41 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant,
     var taxon_store = new dojox.data.JsonRestStore({target: taxon_url});
     taxon_store.fetch({
         onComplete: function(taxon) {
+            var plant_preview_characters;
+
+            // If a pile slug was provided, get the set of plant preview
+            // characters for that particular pile.
+            if (args && args['pile_slug']) {
+                var pile_slug = args['pile_slug'];
+                if (taxon.plant_preview_characters_per_pile.hasOwnProperty(
+                    pile_slug)) {
+
+                    plant_preview_characters =
+                        taxon.plant_preview_characters_per_pile[pile_slug];
+                    // TODO: remove
+                    console.log('got characters for pile_slug ' + pile_slug);
+                }
+                else {
+                    console.error('Could not find plant preview characters ' +
+                                  ' pile slug=' + pile_slug);
+                }
+            }
+            else {
+                // When no pile slug is provided, just get the first set of
+                // plant preview characters.
+                for (var pile_slug in
+                     taxon.plant_preview_characters_per_pile) {
+
+                    if (taxon.plant_preview_characters_per_pile.hasOwnProperty(
+                        pile_slug)) {
+
+                        plant_preview_characters =
+                            taxon.plant_preview_characters_per_pile[pile_slug];
+                        break;
+                    }
+                }
+            }
+
             // List any designated characters and their values.
             for (var i = 0; i < plant_preview_characters.length; i++) {
                 var ppc = plant_preview_characters[i];
@@ -81,11 +115,9 @@ gobotany.sk.plant_preview.show_plant_preview = function(plant,
                 // Compare the alt text of the thumbnail the user clicked on
                 // with that of each image. Show the image that has alt text
                 // that matches the thumbnail alt text.
-                if (clicked_image !== undefined) {
-                    var clicked_image_alt_text = dojo.attr(clicked_image,
-                        'alt');
+                if (args && args['clicked_image_alt_text']) {
                     for (i = 0; i < image_browser.images.length; i++) {
-                        if (clicked_image_alt_text ===
+                        if (args['clicked_image_alt_text'] ===
                             image_browser.images[i].title) {
 
                             image_browser.first_image_index = i;

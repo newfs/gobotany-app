@@ -31,15 +31,22 @@ def _simple_taxon(taxon):
     res['taxonomic_authority'] = taxon.taxonomic_authority
     res['default_image'] = _taxon_image(taxon.get_default_image())
     # Get all rank 1 images
-    res['images'] = [ _taxon_image(i) for i
-                      in botany.species_images(taxon, max_rank=1) ]
+    res['images'] = [_taxon_image(i) for i
+                     in botany.species_images(taxon, max_rank=1)]
     return res
 
 def _taxon_with_chars(taxon):
     res = _simple_taxon(taxon)
-    res['piles'] = taxon.get_piles()
+    piles = taxon.get_piles()
+    res['piles'] = piles
     for cv in taxon.character_values.all():
         res[cv.character.short_name] = cv.value
+    preview_characters_per_pile = {}
+    for pile_name in piles:
+        pile = models.Pile.objects.get(name=pile_name)
+        preview_characters_per_pile[pile.slug] = \
+            PileHandler.plant_preview_characters(pile)
+    res['plant_preview_characters_per_pile'] = preview_characters_per_pile
     return res
 
 
