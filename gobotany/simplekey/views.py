@@ -163,7 +163,6 @@ def _get_all_states_status(taxon):
         prohibited_states = \
             taxon.sale_prohibited_in_states.replace(' ', '').split(',')
 
-    print taxon.north_american_native
     for state in STATES:
         status_field_name = 'conservation_status_%s' % state.lower()
         conservation_status = getattr(taxon, status_field_name)
