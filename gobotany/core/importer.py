@@ -99,11 +99,14 @@ class Importer(object):
         for cols in iterator:
             row = dict(zip(colnames, cols))
 
+            characteristics = self._clean_up_html(row['key_characteristics'])
+            exceptions = self._clean_up_html(row['notable_exceptions'])
+
             pilegroup, created = models.PileGroup.objects.get_or_create(
                 name=row['name'],
                 friendly_name=row['friendly_name'],
-                key_characteristics=row['key_characteristics'],
-                notable_exceptions=row['notable_exceptions'])
+                key_characteristics=characteristics,
+                notable_exceptions=exceptions)
             if created:
                 print >> self.logfile, u'  New PileGroup:', pilegroup
 
@@ -133,8 +136,10 @@ class Importer(object):
             # Update various fields.
             pile.friendly_name = row['friendly_name']
             pile.description = row['description']
-            pile.key_characteristics = row['key_characteristics']
-            pile.notable_exceptions = row['notable_exceptions']
+            pile.key_characteristics = \
+                self._clean_up_html(row['key_characteristics'])
+            pile.notable_exceptions = \
+                self._clean_up_html(row['notable_exceptions'])
             pile.save()
             if created:
                 print >> self.logfile, u'    New Pile:', pile
@@ -375,8 +380,8 @@ class Importer(object):
                     '    ERR: Bad ease of observability value', repr(eoo)
                 eoo = 10
 
-            key_chars = row['key_characteristics']
-            notable_ex = row['notable_exceptions']
+            key_chars = self._clean_up_html(row['key_characteristics'])
+            notable_ex = self._clean_up_html(row['notable_exceptions'])
             
             res = models.Character.objects.filter(short_name=short_name)
             if len(res) == 0:
@@ -394,6 +399,18 @@ class Importer(object):
                                              key_characteristics=key_chars,
                                              notable_exceptions=notable_ex)
                 character.save()
+
+    def _clean_up_html(self, html):
+        """Clean up HTML ugliness arising from Access rich text export."""
+
+        # Get rid of non-breaking spaces. These are sometimes seen in the data
+        # when a sentence ends (after a period and a regular space).
+        html = html.replace('&nbsp;', '')
+
+        # Get rid of any <font> tags.
+        html = re.sub(r'<\/?font.*?>', '', html)
+
+        return html
 
     def _import_character_values(self, f):
         print >> self.logfile, 'Setting up character values in file: %s' % f
@@ -427,8 +444,8 @@ class Importer(object):
                 continue
             character = res[0]
             
-            key_chars = row['key_characteristics']
-            notable_ex = row['notable_exceptions']
+            key_chars = self._clean_up_html(row['key_characteristics'])
+            notable_ex = self._clean_up_html(row['notable_exceptions'])
 
             # note that CharacterValues can be used by multiple Characters
             res = models.CharacterValue.objects.filter(

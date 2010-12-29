@@ -415,6 +415,19 @@ class ImportTestCase(TestCase):
         im._import_taxa(testdata('taxa.csv'))
         self.assertEquals(len(models.Taxon.objects.all()), 71)
 
+    def test_clean_up_html_non_breaking_spaces(self):
+        im = importer.Importer(StringIO())
+        self.assertEquals('Remove non-breaking spaces. Please.',
+            im._clean_up_html('Remove non-breaking spaces. &nbsp;Please.'))
+
+    def test_clean_up_html_font_tags(self):
+        im = importer.Importer(StringIO())
+        html = ('<div><font color=""#333333"">non-grasses have very narrow '
+                'leaves, but produce showy flowers</font></div>')
+        expected = ('<div>non-grasses have very narrow leaves, but produce '
+                    'showy flowers</div>')
+        self.assertEquals(expected, im._clean_up_html(html))
+
 
 def setup_integration(test):
     pilegroup1 = models.PileGroup(name='pilegroup1')
