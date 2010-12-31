@@ -72,7 +72,7 @@
               {% if habitats|length > 1 %}
               <ul>
                   {% for habitat in habitats %}
-                      <li>{{ habitat }}</li>
+                      <li>{{ habitat|lower }}</li>
                   {% endfor %}
               </ul>
               {% else %}
