@@ -17,11 +17,8 @@
   <h1><em>{{ scientific_name }}</em>
       <span class="auth">{{ taxon.taxonomic_authority }}</span></h1>
   <div id="species">
-      <h2>{% if taxon.common_name %}
-              {{ taxon.common_name }}
-          {% else %}
-              Common name here
-          {% endif %}</h2>
+      <h2>{% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}
+              {{ common_name }}{% endfor %}</h2>
       <div id="images">
           <h3>Images</h3>
           <p>

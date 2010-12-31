@@ -203,6 +203,18 @@ class Importer(object):
                         print >> self.logfile, u'      ERR: cannot find pile:', \
                             pile_name
 
+            # Add any common names.
+            common_name_fields = ['common_name1', 'common_name2']
+            for common_name_field in common_name_fields:
+                name = row[common_name_field]
+                if len(name) > 0:
+                    cn, created = models.CommonName.objects.get_or_create( \
+                        common_name=name)
+                    taxon.common_names.add(cn)
+                    taxon.save()
+                    print >> self.logfile, u'      Added common name:', name
+
+
     def _import_taxon_character_values(self, f):
         print >> self.logfile, 'Setting up taxon character values in file: %s' % f
         iterator = iter(CSVReader(f).read())
@@ -1154,7 +1166,8 @@ class Importer(object):
 
         for taxon in models.Taxon.objects.all():
             self._add_suggestion_term(taxon.scientific_name)
-            # TODO: Add common names once they are added to the database.
+            for common_name in taxon.common_names.all():
+                self._add_suggestion_term(common_name.common_name)
 
         for pile_group in models.PileGroup.objects.all():
             self._add_suggestion_term(pile_group.name)

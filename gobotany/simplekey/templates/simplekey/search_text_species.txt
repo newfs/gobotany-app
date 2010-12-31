@@ -1,6 +1,7 @@
 {{ object.scientific_name }} {{ object.taxonomic_authority }}.
 
-{{ object.common_name }}.
+{% for common_name in object.common_names.all %}{% if not forloop.first %}, {% endif %}
+              {{ common_name }}{% endfor %}.
 
 {% for pile in object.piles.all %}
     {{ pile.pilegroup.name }} {{ pile.name }}
