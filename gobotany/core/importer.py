@@ -766,6 +766,18 @@ class Importer(object):
             taxon.scientific_name)
 
 
+    def _has_unexpected_delimiter(self, text, unexpected_delimiter):
+        """Check for an unexpected delimiter to help guard against breaking
+           the app completely silently.
+        """
+        if text.find(unexpected_delimiter) > -1:
+            print >> self.logfile, u'  Error: unexpected delimiter:', \
+                unexpected_delimiter
+            return True
+        else:
+            return False
+
+
     def _import_place_characters_and_values(self, taxaf):
         print >> self.logfile, '    Setting up place characters and values'
 
@@ -818,7 +830,9 @@ class Importer(object):
 
             # Get the pile (or piles) for associating character values.
             piles = []
-            pile_names = row['Pile'].split('| ')
+            self._has_unexpected_delimiter(row['Pile'],
+                                           unexpected_delimiter='|')
+            pile_names = row['Pile'].split(', ')
             for pile_name in pile_names:
                 try:
                     pile = models.Pile.objects.get(name__iexact=pile_name)
@@ -830,7 +844,9 @@ class Importer(object):
 
             # Create the Habitat character values.
             character = models.Character.objects.get(short_name='habitat')
-            habitats = row['habitat'].lower().split('| ')
+            self._has_unexpected_delimiter(row['habitat'],
+                                           unexpected_delimiter='|')
+            habitats = row['habitat'].lower().split(', ')
             for habitat in habitats:
                 self._add_place_character_value(character, habitat, piles,
                     taxon)
@@ -838,7 +854,9 @@ class Importer(object):
             # Create the State Distribution character values.
             character = \
                 models.Character.objects.get(short_name='state_distribution')
-            state_codes = row['Distribution'].lower().split('| ')
+            self._has_unexpected_delimiter(row['Distribution'],
+                                           unexpected_delimiter='|')
+            state_codes = row['Distribution'].lower().split(', ')
             for state_code in state_codes:
                 state = ''
                 if state_code in state_names:

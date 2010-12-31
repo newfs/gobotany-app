@@ -428,6 +428,14 @@ class ImportTestCase(TestCase):
                     'showy flowers</div>')
         self.assertEquals(expected, im._clean_up_html(html))
 
+    def test_has_unexpected_delimiter(self):
+        im = importer.Importer(StringIO())
+        text = 'This, has, no, unexpected, delimiter'
+        self.assertFalse(im._has_unexpected_delimiter(text,
+                        unexpected_delimiter='|'))
+        text = 'This|has|an|unexpected|delimiter'
+        self.assertTrue(im._has_unexpected_delimiter(text,
+                         unexpected_delimiter='|'))
 
 def setup_integration(test):
     pilegroup1 = models.PileGroup(name='pilegroup1')
