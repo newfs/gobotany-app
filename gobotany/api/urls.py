@@ -56,7 +56,7 @@ urlpatterns = patterns(
 
     url(r'^glossaryblob/$', Resource(handler=handlers.GlossaryBlobHandler)),
 
-    url(r'^maps/(?P<genus>[^/]+)-(?P<specific_epithet>[^/]+)-distribution-map/$',
+    url(r'^maps/(?P<genus>[^/]+)-(?P<specific_epithet>[^/]+)-distribution-map(\.svg|/)?$',
         Resource(handler=handlers.DistributionMapHandler), name='distribution-map'),
 
     url(r'^families/(?P<family_slug>[^/]+)/$',

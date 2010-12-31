@@ -1,9 +1,16 @@
+from django.http import HttpResponse
+
 from operator import itemgetter
 
 from piston.handler import BaseHandler
 from piston.utils import rc
 
+import xml.etree.ElementTree
+from xml.etree.ElementTree import ElementTree as et
+from xml.etree.ElementTree import parse
+
 from gobotany.core import botany, igdt, models
+from gobotany.settings import STATIC_ROOT
 
 def _taxon_image(image):
     if image:
@@ -499,12 +506,6 @@ class DistributionMapHandler(BaseHandler):
         """Return an SVG map of New England with counties that contain the
         species shaded in."""
 
-        from django.http import HttpResponse
-        import xml.etree.ElementTree
-        from xml.etree.ElementTree import ElementTree as et
-        from xml.etree.ElementTree import parse
-        from gobotany.settings import STATIC_ROOT
-
         blank_map  = ''.join([STATIC_ROOT,
             '/graphics/new-england-counties.svg'])
 
@@ -512,7 +513,7 @@ class DistributionMapHandler(BaseHandler):
         taxon = models.Taxon.objects.filter(scientific_name=name)
         distribution = []
         if len(taxon) > 0:
-            states = taxon[0].distribution.split('|')
+            states = taxon[0].distribution.split(',')
             distribution = [state.strip() for state in states]
 
         svg = parse(blank_map)
