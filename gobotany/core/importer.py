@@ -215,10 +215,10 @@ class Importer(object):
                     print >> self.logfile, u'      Added common name:', name
 
             # Add any synonyms.
-            synonym_fields = ['synonymy_1', 'synonymy_2', 'synonymy_3']
+            synonym_fields = ['comment']
             for synonym_field in synonym_fields:
-                name = row[synonym_field]
-                if len(name) > 0:
+                names = row[synonym_field].split('; ')
+                for name in names:
                     s, created = models.Synonym.objects.get_or_create ( \
                         scientific_name=name)
                     taxon.synonyms.add(s)

@@ -487,7 +487,7 @@ class Genus(models.Model):
 
 class Synonym(models.Model):
     """Other (generally previous) scientific names for species."""
-    scientific_name = models.CharField(max_length=100)
+    scientific_name = models.CharField(max_length=150)
 
     class Meta:
         ordering = ['scientific_name']
