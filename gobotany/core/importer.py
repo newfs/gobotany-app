@@ -214,6 +214,17 @@ class Importer(object):
                     taxon.save()
                     print >> self.logfile, u'      Added common name:', name
 
+            # Add any synonyms.
+            synonym_fields = ['synonymy_1', 'synonymy_2', 'synonymy_3']
+            for synonym_field in synonym_fields:
+                name = row[synonym_field]
+                if len(name) > 0:
+                    s, created = models.Synonym.objects.get_or_create ( \
+                        scientific_name=name)
+                    taxon.synonyms.add(s)
+                    taxon.save()
+                    print >> self.logfile, u'      Added synonym:', name
+
 
     def _import_taxon_character_values(self, f):
         print >> self.logfile, 'Setting up taxon character values in file: %s' % f
@@ -1168,6 +1179,8 @@ class Importer(object):
             self._add_suggestion_term(taxon.scientific_name)
             for common_name in taxon.common_names.all():
                 self._add_suggestion_term(common_name.common_name)
+            for synonym in taxon.synonyms.all():
+                self._add_suggestion_term(synonym.scientific_name)
 
         for pile_group in models.PileGroup.objects.all():
             self._add_suggestion_term(pile_group.name)
