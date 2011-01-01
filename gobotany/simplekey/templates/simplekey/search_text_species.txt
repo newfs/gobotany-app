@@ -18,7 +18,7 @@
 {% endfor %}
 
 {# TODO: Replace the vertical bars between multiple habitats with a better delimiter. #}
-Habitat: {{ object.habitat }}
+Habitat: {{ object.habitat|lower }}
 
 {# TODO: Add Sometimes Confused With (if present for the plant) #}
 
