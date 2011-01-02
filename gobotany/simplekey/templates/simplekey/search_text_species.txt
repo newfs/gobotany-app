@@ -9,6 +9,7 @@
 
 {{ object.description }}.
 
+All Characteristics:
 {# TODO: need to account for numeric values and units. #}
 {% for character_value in object.character_values.all %}
     {% if character_value.value_str %}
@@ -17,7 +18,6 @@
     {% endif %}
 {% endfor %}
 
-{# TODO: Replace the vertical bars between multiple habitats with a better delimiter. #}
 Habitat: {{ object.habitat|lower }}
 
 {# TODO: Add Sometimes Confused With (if present for the plant) #}
