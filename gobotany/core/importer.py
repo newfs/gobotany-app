@@ -217,13 +217,14 @@ class Importer(object):
             # Add any synonyms.
             synonym_fields = ['comment']
             for synonym_field in synonym_fields:
-                names = row[synonym_field].split('; ')
+                names = [n.strip() for n in row[synonym_field].split('; ')]
                 for name in names:
-                    s, created = models.Synonym.objects.get_or_create ( \
-                        scientific_name=name)
-                    taxon.synonyms.add(s)
-                    taxon.save()
-                    print >> self.logfile, u'      Added synonym:', name
+                    if len(name) > 0:
+                        s, created = models.Synonym.objects.get_or_create ( \
+                            scientific_name=name)
+                        taxon.synonyms.add(s)
+                        taxon.save()
+                        print >> self.logfile, u'      Added synonym:', name
 
 
     def _import_taxon_character_values(self, f):
