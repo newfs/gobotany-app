@@ -39,6 +39,22 @@ All Characteristics:
     {% endif %}
 {% endfor %}
 
+{# Distribution by County: TODO: perhaps add a text equivalent if it'd help to search by county. #}
+
+Common Uses:
+{% if object.uses|length > 0 %}
+    {{ object.uses }}
+{% else %}
+    N/A
+{% endif %}
+
+Folklore & History:
+{% if object.factoid|length > 0 %}
+    {{ object.factoid }}
+{% else %}
+    N/A
+{% endif %}
+
 Classification:
     Family: {{ object.family.name }}
     Genus: {{ object.genus.name }}

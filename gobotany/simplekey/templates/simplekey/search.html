@@ -11,11 +11,15 @@
     {% if query %}
     <h1>
         {% if paginator.count > 0 %}
-            Results
-            <strong>{% if page.number > 1 %}{{ page.number|add:'-1' }}{% endif %}1&#8211;{% if page.end_index|divisibleby:'10' %}{{ page.number }}0
-                {% else %}{{ page.end_index }}{% endif %}</strong>
-                of
-                <strong>{{ paginator.count }}</strong>
+            {% if paginator.count > 1 %}
+                Results
+                <strong>{% if page.number > 1 %}{{ page.number|add:'-1' }}{% endif %}1&#8211;{% if page.end_index|divisibleby:'10' %}{{ page.number }}0
+                    {% else %}{{ page.end_index }}{% endif %}</strong>
+                    of
+                    <strong>{{ paginator.count }}</strong>
+            {% else %}
+                Result
+            {% endif %}
         {% else %}
             <strong>No Results</strong>
         {% endif %}
