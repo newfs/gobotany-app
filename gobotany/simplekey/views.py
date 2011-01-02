@@ -204,35 +204,6 @@ def _get_species_characteristics(pile, taxon):
             characteristics.append(characteristic)
     return characteristics
 
-def _get_wetland_status(status_code):
-    '''
-    Return plain language text for a wetland status code.
-    '''
-    status = 'not classified'
-    if status_code == 'FAC' or status_code == 'FAC+' or status_code == 'FAC-':
-        status = 'Occurs in wetlands or uplands.'
-    elif status_code == 'FACU':
-        status = 'Usually occurs in uplands, but occasionally occurs in ' \
-                 'wetlands.'
-    elif status_code == 'FACU+':
-        status = 'Occurs most often in uplands; rarely in wetlands.'
-    elif status_code == 'FACU-':
-        status = 'Usually occurs in uplands, but occurs in wetlands more ' \
-                 'than occasionally.'
-    elif status_code == 'FACW':
-        status = 'Usually occurs in wetlands, but occasionally occurs in ' \
-                 'non-wetlands.'
-    elif status_code == 'FACW+':
-        status = 'Occurs most often in wetlands; rarely in non-wetlands.'
-    elif status_code == 'FACW-':
-        status = 'Occurs in wetlands but also occurs in uplands more than ' \
-                 'occasionally.'
-    elif status_code == 'OBL':
-        status = 'Occurs only in wetlands.'
-    elif status_code == 'UPL':
-        status = 'Never occurs in wetlands.'
-    return status
-
 def species_view(request,  genus_slug, specific_epithet_slug,
                  pilegroup_slug=None, pile_slug=None):
     scientific_name = '%s %s' % (genus_slug.capitalize(), 
@@ -271,7 +242,6 @@ def species_view(request,  genus_slug, specific_epithet_slug,
            'states_status': states_status,
            'habitats': habitats,
            'characteristics': _get_species_characteristics(pile, taxon),
-           'wetland_status': _get_wetland_status(taxon.wetland_status),
            'specific_epithet': specific_epithet_slug,
            'character_groups': character_groups,
            }, context_instance=RequestContext(request))

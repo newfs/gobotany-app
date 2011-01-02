@@ -33,8 +33,7 @@ North American Native Status:
 Distribution and Conservation Status:
 {# TODO: add these, for each state, as on species pages. #}
 
-Wetland Status:
-{# TODO: add this. Species page view currently calls a function for formatting. #}
+Wetland Status: {{ object.wetland_status_text }}
 
 All Characteristics:
 {# TODO: need to account for numeric values and units. #}

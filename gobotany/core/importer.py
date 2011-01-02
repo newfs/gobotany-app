@@ -146,6 +146,38 @@ class Importer(object):
             else:
                 print >> self.logfile, u'    Updated Pile:', pile
 
+
+    def _get_wetland_status(self, status_code):
+        '''
+        Return plain language text for a wetland status code.
+        '''
+        status = 'not classified'
+        if status_code == 'FAC' or status_code == 'FAC+' or \
+           status_code == 'FAC-':
+            status = 'Occurs in wetlands or uplands.'
+        elif status_code == 'FACU':
+            status = 'Usually occurs in uplands, but occasionally occurs ' \
+                     'in wetlands.'
+        elif status_code == 'FACU+':
+            status = 'Occurs most often in uplands; rarely in wetlands.'
+        elif status_code == 'FACU-':
+            status = 'Usually occurs in uplands, but occurs in wetlands ' \
+                     'more than occasionally.'
+        elif status_code == 'FACW':
+            status = 'Usually occurs in wetlands, but occasionally occurs ' \
+                     'in non-wetlands.'
+        elif status_code == 'FACW+':
+            status = 'Occurs most often in wetlands; rarely in non-wetlands.'
+        elif status_code == 'FACW-':
+            status = 'Occurs in wetlands but also occurs in uplands more ' \
+                     'than occasionally.'
+        elif status_code == 'OBL':
+            status = 'Occurs only in wetlands.'
+        elif status_code == 'UPL':
+            status = 'Never occurs in wetlands.'
+        return status
+
+
     def _import_taxa(self, taxaf):
         print >> self.logfile, 'Setting up taxa in file: %s' % taxaf
         iterator = iter(CSVReader(taxaf).read())
@@ -175,7 +207,9 @@ class Importer(object):
                 habitat=row['habitat'],
                 factoid=row['factoid'],
                 uses=row['uses'],
-                wetland_status=row['wetland_status'],
+                wetland_status_code=row['wetland_status'],
+                wetland_status_text=self._get_wetland_status(
+                    row['wetland_status']),
                 north_american_native=\
                     (row['native_to_north_america_2'] == 'TRUE'),
                 conservation_status_ct=row['conservation_status_ct'],
