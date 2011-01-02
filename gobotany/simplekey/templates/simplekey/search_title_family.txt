@@ -1,1 +1,3 @@
-Family {{ object.name }}
+{% spaceless %}
+    Family {{ object.name }}
+{% endspaceless %}

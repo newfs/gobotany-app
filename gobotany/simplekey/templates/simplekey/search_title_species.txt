@@ -1,1 +1,3 @@
-{{ object.scientific_name }}
+{% spaceless %}
+    {{ object.scientific_name }}
+{% endspaceless %}

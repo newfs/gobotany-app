@@ -1,1 +1,3 @@
-Genus {{ object.name }}
+{% spaceless %}
+    Genus {{ object.name }}
+{% endspaceless %}
