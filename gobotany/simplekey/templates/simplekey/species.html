@@ -84,10 +84,10 @@
               {% endif %}
           </ul>
 
-          {% if lookalikes|length > 0 %}
+          {% if taxon.lookalikes|length > 0 %}
           <h3>Sometimes Confused With</h3>
           <dl>
-              {% for lookalike in lookalikes %}
+              {% for lookalike in taxon.lookalikes.all %}
               <dt>{{ lookalike.lookalike_characteristic }}:</dt>
               <dd><em>{{ lookalike.lookalike_scientific_name }}</em></dd>
               {% endfor %}

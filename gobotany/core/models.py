@@ -507,6 +507,16 @@ class CommonName(models.Model):
        return self.common_name
 
 
+class Lookalike(models.Model):
+    """Species that can be mistaken for others."""
+    lookalike_scientific_name = models.CharField(max_length=100)
+    lookalike_characteristic = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return '%s (%s)' % (self.lookalike_scientific_name,
+                            self.lookalike_characteristic)
+
+
 class Taxon(models.Model):
     """Despite its general name, this currently represents a single species."""
     # TODO: taxa should probably have a "slug" as well, to prevent us
@@ -537,6 +547,7 @@ class Taxon(models.Model):
     description = models.CharField(max_length=500) # TODO: import descriptions
     synonyms = models.ManyToManyField(Synonym, related_name='taxa')
     common_names = models.ManyToManyField(CommonName, related_name='taxa')
+    lookalikes = models.ManyToManyField(Lookalike, related_name='taxa')
 
     class Meta:
         verbose_name_plural = 'taxa'
@@ -660,18 +671,3 @@ class PlantPreviewCharacter(models.Model):
     def __unicode__(self):
         return '%d: %s (%s)' % (self.order, self.character.friendly_name,
                                 self.pile.name)
-
-
-# TODO: Make this a many-to-many relation to Taxon, like TaxonCharacterValue
-# and Synonym. This will bring the values together more conveniently for both
-# the HTML and search engine text templates.
-class Lookalike(models.Model):
-    """Species that can be mistaken for others."""
-    scientific_name = models.CharField(max_length=100)
-    lookalike_scientific_name = models.CharField(max_length=100)
-    lookalike_characteristic = models.CharField(max_length=100)
-
-    def __unicode__(self):
-        return '%s: %s (%s)' % (self.scientific_name,
-                                self.lookalike_scientific_name,
-                                self.lookalike_characteristic)

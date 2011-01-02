@@ -937,13 +937,19 @@ class Importer(object):
 
         for cols in iterator:
             row = dict(zip(colnames, cols))
+            scientific_name = row['taxon']
 
             lookalike, created = models.Lookalike.objects.get_or_create(
-                scientific_name=row['taxon'],
                 lookalike_scientific_name=row['lookalike_taxon'],
                 lookalike_characteristic=row['how_to_tell'])
             if created:
-                print >> self.logfile, u'  New Lookalike:', lookalike
+                print >> self.logfile, u'  New Lookalike for %s: %s' % \
+                    (scientific_name, lookalike)
+
+            # Add the lookalike to the taxon model's collection of them.
+            taxon = models.Taxon.objects.get(scientific_name=scientific_name)
+            taxon.lookalikes.add(lookalike)
+            taxon.save()
 
 
     def _set_youtube_id(self, name, youtube_id, pilegroup=False):

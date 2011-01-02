@@ -256,7 +256,6 @@ def species_view(request,  genus_slug, specific_epithet_slug,
     habitats = []
     if taxon.habitat:
         habitats = taxon.habitat.split(',')
-    lookalikes = Lookalike.objects.filter(scientific_name=scientific_name)
 
     character_ids = taxon.character_values.all().values_list(
                     'character', flat=True).distinct()
@@ -273,7 +272,6 @@ def species_view(request,  genus_slug, specific_epithet_slug,
            'habitats': habitats,
            'characteristics': _get_species_characteristics(pile, taxon),
            'wetland_status': _get_wetland_status(taxon.wetland_status),
-           'lookalikes': lookalikes,
            'specific_epithet': specific_epithet_slug,
            'character_groups': character_groups,
            }, context_instance=RequestContext(request))

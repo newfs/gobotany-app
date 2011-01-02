@@ -15,7 +15,13 @@ Habitat: {{ object.habitat|lower }}
 {# just an excerpt of the All Characteristics section further down the   #}
 {# page, so there is probably not a need to repeat it here.              #}
 
-{# TODO: Add Sometimes Confused With (if present for the plant) #}
+{% if object.lookalikes|length > 0 %}
+    Sometimes Confused With:
+    {% for lookalike in object.lookalikes.all %}
+        {{ lookalike.lookalike_characteristic }}:
+        {{ lookalike.lookalike_scientific_name }}
+    {% endfor %}
+{% endif %}
 
 North American Native Status:
 {% if object.north_american_native %}
