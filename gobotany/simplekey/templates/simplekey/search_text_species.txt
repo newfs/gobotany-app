@@ -31,7 +31,12 @@ North American Native Status:
 {% endif %}
 
 Distribution and Conservation Status:
-{# TODO: add these, for each state, as on species pages. #}
+    Connecticut: {{ object.conservation_status_ct }}
+    Maine: {{ object.conservation_status_me }}
+    Massachusetts: {{ object.conservation_status_ma }}
+    New Hampshire: {{ object.conservation_status_nh }}
+    Rhode Island: {{ object.conservation_status_ri }}
+    Vermont: {{ object.conservation_status_vt }}
 
 Wetland Status: {{ object.wetland_status_text }}
 

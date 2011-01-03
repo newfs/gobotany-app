@@ -401,6 +401,8 @@ class APITests(SampleData):
 
 class ImportTestCase(TestCase):
 
+    DISTRIBUTION = ['MA', 'VT']
+
     def test_import_characters(self):
         im = importer.Importer(StringIO())
         im._import_characters(testdata('characters.csv'))
@@ -436,6 +438,88 @@ class ImportTestCase(TestCase):
         text = 'This|has|an|unexpected|delimiter'
         self.assertTrue(im._has_unexpected_delimiter(text,
                          unexpected_delimiter='|'))
+
+    def test_get_state_status_is_present(self):
+        im = importer.Importer(StringIO())
+        status = im._get_state_status('MA', self.DISTRIBUTION)
+        self.assertEqual('present', status)
+
+    def test_get_state_status_is_absent(self):
+        im = importer.Importer(StringIO())
+        status = im._get_state_status('CT', self.DISTRIBUTION)
+        self.assertEqual('absent', status)
+
+    def test_get_state_status_is_absent_and_has_conservation_status(self):
+        # Exclude extinct status ('X') from this list; it is an exception
+        # and has its own test.
+        im = importer.Importer(StringIO())
+        status_codes = ['E', 'T', 'SC', 'SC*', 'H', 'C']
+        for status_code in status_codes:
+            status = im._get_state_status('CT', self.DISTRIBUTION,
+                conservation_status_code=status_code)
+            self.assertEqual('absent', status)
+
+    def test_get_state_status_is_endangered(self):
+        im = importer.Importer(StringIO())
+        status = im._get_state_status('MA', self.DISTRIBUTION,
+                                      conservation_status_code='E')
+        self.assertEqual('present, endangered', status)
+
+    def test_get_state_status_is_threatened(self):
+        im = importer.Importer(StringIO())
+        status = im._get_state_status('MA', self.DISTRIBUTION,
+                                      conservation_status_code='T')
+        self.assertEqual('present, threatened', status)
+
+    def test_get_state_status_has_special_concern(self):
+        im = importer.Importer(StringIO())
+        status_codes = ['SC', 'SC*']
+        for status_code in status_codes:
+            status = im._get_state_status('MA', self.DISTRIBUTION,
+                conservation_status_code=status_code)
+            self.assertEqual('present, special concern', status)
+
+    def test_get_state_status_is_historic(self):
+        im = importer.Importer(StringIO())
+        status = im._get_state_status('MA', self.DISTRIBUTION,
+                                      conservation_status_code='H')
+        self.assertEqual('present, historic', status)
+
+    def test_get_state_status_is_extinct(self):
+        im = importer.Importer(StringIO())
+        status = im._get_state_status('ME', self.DISTRIBUTION,
+                                      conservation_status_code='X')
+        self.assertEqual('extinct', status)
+        # Extinct should appear alone even if the plant is marked present.
+        status = im._get_state_status('MA', self.DISTRIBUTION,
+                                      conservation_status_code='X')
+        self.assertEqual('extinct', status)
+
+    def test_get_state_status_is_rare(self):
+        im = importer.Importer(StringIO())
+        status = im._get_state_status('MA', self.DISTRIBUTION,
+                                      conservation_status_code='C')
+        self.assertEqual('present, rare', status)
+
+    def test_get_state_status_is_invasive(self):
+        im = importer.Importer(StringIO())
+        status = im._get_state_status('MA', self.DISTRIBUTION,
+                                      is_invasive=True)
+        self.assertEqual('present, invasive', status)
+
+    def test_get_state_status_is_invasive_and_prohibited(self):
+        im = importer.Importer(StringIO())
+        status = im._get_state_status('MA', self.DISTRIBUTION,
+                                      is_invasive=True,
+                                      is_prohibited=True)
+        self.assertEqual('present, invasive, prohibited', status)
+
+    def test_get_state_status_is_absent_and_prohibited(self):
+        im = importer.Importer(StringIO())
+        status = im._get_state_status('ME', self.DISTRIBUTION,
+                                      is_prohibited=True)
+        self.assertEqual('absent, prohibited', status)
+
 
 def setup_integration(test):
     pilegroup1 = models.PileGroup(name='pilegroup1')

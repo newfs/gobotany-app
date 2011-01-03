@@ -96,86 +96,6 @@ def results_view(request, pilegroup_slug, pile_slug):
            }, context_instance=RequestContext(request))
 
 
-def _get_state_status(state_code, distribution, conservation_status_code=None,
-                      is_north_american_native=True, is_invasive=False,
-                      is_prohibited=False):
-    status = ['absent']
-
-    for state in distribution:
-        if state == state_code:
-            status = ['present']
-
-            # Most further status information applies only to plants that are
-            # present.
-
-            # TODO: remove this code (and the method parameter) once it's
-            # confirmed that native status does not need to be included here.
-            #if is_north_american_native == False:
-            #    status.append('not native')
-
-            if conservation_status_code == 'E':
-                status.append('endangered')
-            elif conservation_status_code == 'T':
-                status.append('threatened')
-            elif conservation_status_code == 'SC' or \
-                 conservation_status_code == 'SC*':
-                status.append('special concern')
-            elif conservation_status_code == 'H':
-                status.append('historic')
-            elif conservation_status_code == 'C':
-                status.append('rare')
-
-            if is_invasive == True:
-                status.append('invasive')
-
-    # Extinct status applies to plants that are absent or present. (Present
-    # suggests the plant used to be found in the state.)
-    if conservation_status_code == 'X':
-        # If status is just 'present' or 'absent' so far, clear it so that
-        # 'extinct' appears alone.
-        if status == ['present'] or status == ['absent']:
-            status = []
-        status.append('extinct')
-
-    # Prohibited status applies even to plants that are absent.
-    if is_prohibited == True:
-        status.append('prohibited')
-
-    return ', '.join(status)
-
-
-def _get_all_states_status(taxon):
-    STATES = ['CT', 'MA', 'ME', 'NH', 'RI', 'VT']
-    states_status = dict().fromkeys(STATES, '')
-    
-    distribution = []
-    if taxon.distribution:
-        distribution = taxon.distribution.replace(' ', '').split(',')
-
-    is_native = (taxon.north_american_native == True)
-
-    invasive_states = []
-    if taxon.invasive_in_states:
-        invasive_states = taxon.invasive_in_states.replace(' ', '').split(',')
-
-    prohibited_states = []
-    if taxon.sale_prohibited_in_states:
-        prohibited_states = \
-            taxon.sale_prohibited_in_states.replace(' ', '').split(',')
-
-    for state in STATES:
-        status_field_name = 'conservation_status_%s' % state.lower()
-        conservation_status = getattr(taxon, status_field_name)
-        invasive = (state in invasive_states)
-        prohibited = (state in prohibited_states)
-        states_status[state] = _get_state_status(state, distribution,
-            conservation_status_code=conservation_status,
-            is_north_american_native=taxon.north_american_native,
-            is_invasive=invasive, is_prohibited=prohibited)
-
-    return states_status
-
-
 def _get_species_characteristics(pile, taxon):
     characteristics = []
     # Get all the character values for this taxon.
@@ -223,7 +143,6 @@ def species_view(request,  genus_slug, specific_epithet_slug,
     pilegroup = pile.pilegroup
 
     species_images = botany.species_images(taxon)
-    states_status = _get_all_states_status(taxon)
     habitats = []
     if taxon.habitat:
         habitats = taxon.habitat.split(',')
@@ -239,7 +158,6 @@ def species_view(request,  genus_slug, specific_epithet_slug,
            'scientific_name': scientific_name,
            'taxon': taxon,
            'species_images': species_images,
-           'states_status': states_status,
            'habitats': habitats,
            'characteristics': _get_species_characteristics(pile, taxon),
            'specific_epithet': specific_epithet_slug,

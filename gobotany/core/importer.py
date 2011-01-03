@@ -178,6 +178,88 @@ class Importer(object):
         return status
 
 
+    def _get_state_status(self, state_code, distribution,
+                          conservation_status_code=None,
+                          is_north_american_native=True, is_invasive=False,
+                          is_prohibited=False):
+        status = ['absent']
+
+        for state in distribution:
+            if state == state_code:
+                status = ['present']
+
+                # Most further status information applies only to plants that
+                # are present.
+
+                # TODO: remove this code (and the method parameter) once it's
+                # confirmed that native status doesn't need to be here.
+                #if is_north_american_native == False:
+                #    status.append('not native')
+
+                if conservation_status_code == 'E':
+                    status.append('endangered')
+                elif conservation_status_code == 'T':
+                    status.append('threatened')
+                elif conservation_status_code == 'SC' or \
+                     conservation_status_code == 'SC*':
+                    status.append('special concern')
+                elif conservation_status_code == 'H':
+                    status.append('historic')
+                elif conservation_status_code == 'C':
+                    status.append('rare')
+
+                if is_invasive == True:
+                    status.append('invasive')
+
+        # Extinct status applies to plants that are absent or present.
+        # (Present suggests the plant used to be found in the state.)
+        if conservation_status_code == 'X':
+            # If status is just 'present' or 'absent' so far, clear it so that
+            # 'extinct' appears alone.
+            if status == ['present'] or status == ['absent']:
+                status = []
+            status.append('extinct')
+
+        # Prohibited status applies even to plants that are absent.
+        if is_prohibited == True:
+            status.append('prohibited')
+
+        return ', '.join(status)
+
+
+    def _get_all_states_status(self, taxon, taxon_data_row):
+        STATES = ['CT', 'MA', 'ME', 'NH', 'RI', 'VT']
+        states_status = dict().fromkeys(STATES, '')
+    
+        distribution = []
+        if taxon.distribution:
+            distribution = taxon.distribution.replace(' ', '').split(',')
+
+        is_native = (taxon.north_american_native == True)
+
+        invasive_states = []
+        if taxon.invasive_in_states:
+            invasive_states = taxon.invasive_in_states.replace( \
+                ' ', '').split(',')
+
+        prohibited_states = []
+        if taxon.sale_prohibited_in_states:
+            prohibited_states = \
+                taxon.sale_prohibited_in_states.replace(' ', '').split(',')
+
+        for state in STATES:
+            status_field_name = 'conservation_status_%s' % state.lower()
+            conservation_status = taxon_data_row[status_field_name]
+            invasive = (state in invasive_states)
+            prohibited = (state in prohibited_states)
+            states_status[state] = self._get_state_status(state, distribution,
+                conservation_status_code=conservation_status,
+                is_north_american_native=taxon.north_american_native,
+                is_invasive=invasive, is_prohibited=prohibited)
+
+        return states_status
+
+
     def _import_taxa(self, taxaf):
         print >> self.logfile, 'Setting up taxa in file: %s' % taxaf
         iterator = iter(CSVReader(taxaf).read())
@@ -212,17 +294,18 @@ class Importer(object):
                     row['wetland_status']),
                 north_american_native=\
                     (row['native_to_north_america_2'] == 'TRUE'),
-                conservation_status_ct=row['conservation_status_ct'],
-                conservation_status_ma=row['conservation_status_ma'],
-                conservation_status_me=row['conservation_status_me'],
-                conservation_status_nh=row['conservation_status_nh'],
-                conservation_status_ri=row['conservation_status_ri'],
-                conservation_status_vt=row['conservation_status_vt'],
                 distribution=row['distribution'],
                 invasive_in_states=row['invasive_in_which_states'],
                 sale_prohibited_in_states=row['prohibited_from_sale_states'])
             taxon.save()
             print >> self.logfile, u'    New Taxon:', taxon
+
+            # Assign distribution and conservation status for all states.
+            states_status = self._get_all_states_status(taxon, row)
+            for state in states_status.keys():
+                status_field_name = 'conservation_status_%s' % state.lower()
+                setattr(taxon, status_field_name, states_status[state])
+            taxon.save()
 
             # Assign this Taxon to the Pile(s) specified for it.
             if row['pile']:
