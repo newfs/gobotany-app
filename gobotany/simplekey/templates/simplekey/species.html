@@ -186,7 +186,7 @@
 
           {% if taxon.synonyms.all|length > 0 %}
               <h3>Also Known As</h3>
-              <p>{{ taxon.synonyms.all|first }}{% if taxon.synonyms.all|length > 1 %},
+              <p>{% for synonym in taxon.synonyms.all %}{% if forloop.first %}{{ synonym.scientific_name }}{% endif %}{% endfor %}{% if taxon.synonyms.all|length > 1 %},
                   <a id='more-aka' class='more'>more</a>
                   <span dojoType='dijit.Tooltip' connectId='more-aka' position='above'>
                       <span class='moretip'>

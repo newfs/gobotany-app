@@ -401,8 +401,6 @@ class APITests(SampleData):
 
 class ImportTestCase(TestCase):
 
-    DISTRIBUTION = ['MA', 'VT']
-
     def test_import_characters(self):
         im = importer.Importer(StringIO())
         im._import_characters(testdata('characters.csv'))
@@ -438,6 +436,11 @@ class ImportTestCase(TestCase):
         text = 'This|has|an|unexpected|delimiter'
         self.assertTrue(im._has_unexpected_delimiter(text,
                          unexpected_delimiter='|'))
+
+
+class StateStatusTestCase(TestCase):
+
+    DISTRIBUTION = ['MA', 'VT']
 
     def test_get_state_status_is_present(self):
         im = importer.Importer(StringIO())
@@ -519,6 +522,83 @@ class ImportTestCase(TestCase):
         status = im._get_state_status('ME', self.DISTRIBUTION,
                                       is_prohibited=True)
         self.assertEqual('absent, prohibited', status)
+
+
+class StripTaxonomicAuthorityTestCase(TestCase):
+
+    def test_strip_taxonomic_authority_species(self):
+        im = importer.Importer(StringIO())
+        name = im._strip_taxonomic_authority('Viburnum cassanoides L.')
+        self.assertEqual('Viburnum cassanoides', name)
+
+    def test_strip_taxonomic_authority_species_extra_punctuation(self):
+        im = importer.Importer(StringIO())
+        name = im._strip_taxonomic_authority( \
+            'Actaea alba, of authors not (L.) P. Mill.')
+        self.assertEqual('Actaea alba', name)
+
+    def test_strip_taxonomic_authority_subspecies(self):
+        im = importer.Importer(StringIO())
+        name = im._strip_taxonomic_authority( \
+            'Lysimachia lanceolata subsp. hybrida (Michx.) J.D. Ray')
+        self.assertEqual('Lysimachia lanceolata subsp. hybrida', name)
+        # Test alternate connector.
+        name = im._strip_taxonomic_authority( \
+            'Lysimachia lanceolata ssp. hybrida (Michx.) J.D. Ray')
+        self.assertEqual('Lysimachia lanceolata ssp. hybrida', name)
+
+    def test_strip_taxonomic_authority_variety(self):
+        im = importer.Importer(StringIO())
+        name = im._strip_taxonomic_authority( \
+            'Vitis labrusca var. subedentata Fern.')
+        self.assertEqual('Vitis labrusca var. subedentata', name)
+
+    def test_strip_taxonomic_authority_subvariety(self):
+        im = importer.Importer(StringIO())
+        name = im._strip_taxonomic_authority( \
+            'Potentilla anserina subvar. minima (Peterm. ex Th.Wolf) Th.Wolf')
+        self.assertEqual('Potentilla anserina subvar. minima', name)
+
+    def test_strip_taxonomic_authority_forma(self):
+        im = importer.Importer(StringIO())
+        name = im._strip_taxonomic_authority( \
+            ('Acanthocalycium spiniflorum f. klimpelianum (Weidlich & '
+             'Werderm.) Donald'))
+        self.assertEqual('Acanthocalycium spiniflorum f. klimpelianum', name)
+        # Test alternate connector.
+        name = im._strip_taxonomic_authority( \
+            ('Acanthocalycium spiniflorum forma klimpelianum (Weidlich & '
+             'Werderm.) Donald'))
+        self.assertEqual('Acanthocalycium spiniflorum forma klimpelianum',
+                         name)
+
+    def test_strip_taxonomic_authority_subforma(self):
+        im = importer.Importer(StringIO())
+        name = im._strip_taxonomic_authority( \
+            'Saxifraga aizoon subf. surculosa Engl. & Irmsch.')
+        self.assertEqual('Saxifraga aizoon subf. surculosa', name)
+
+    def test_strip_taxonomic_authority_infraspecific_epithet_later(self):
+        im = importer.Importer(StringIO())
+        name = im._strip_taxonomic_authority( \
+            'Actaea spicata L. ssp. rubra (Ait.) Hulten')
+        self.assertEqual('Actaea spicata ssp. rubra', name)
+        # Test another connector, with the epithet coming even later.
+        im = importer.Importer(StringIO())
+        name = im._strip_taxonomic_authority( \
+            'Gerardia paupercula (Gray) Britt. var. typica Pennell')
+        self.assertEqual('Gerardia paupercula var. typica', name)
+
+    def test_strip_taxonomic_authority_skip_consecutive_connector(self):
+        im = importer.Importer(StringIO())
+        name = im._strip_taxonomic_authority( \
+            'Betula lutea Michx. f. var. fallax Fassett')
+        self.assertEqual('Betula lutea var. fallax', name)
+
+    def test_strip_taxonomic_authority_no_epithet_after_connector(self):
+        im = importer.Importer(StringIO())
+        name = im._strip_taxonomic_authority('Betula lutea Michx. f.')
+        self.assertEqual('Betula lutea', name)
 
 
 def setup_integration(test):

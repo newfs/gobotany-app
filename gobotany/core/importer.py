@@ -260,6 +260,35 @@ class Importer(object):
         return states_status
 
 
+    def _strip_taxonomic_authority(self, full_plant_name):
+        """Strip the taxonomic authority out of a full plant name."""
+        CONNECTING_TERMS = ['subsp.', 'ssp.', 'var.', 'subvar.', 'f.',
+                            'forma', 'subf.']
+        name = []
+        words = full_plant_name.split(' ')
+        if len(words) > 1:
+            # Start with the generic name and specific epithet.
+            name.append(words[0])
+            name.append(words[1].strip(','))
+            
+            # Move through the remaining words, looking for an infraspecific
+            # epithet.
+            for i in range(2, len(words)):
+                if words[i] in CONNECTING_TERMS:
+                    if len(words) > (i + 1):
+                        if words[i + 1] in CONNECTING_TERMS:
+                            # If the next word is a connector too, skip ahead.
+                            continue
+                    # Only append the connector (and the epithet that follows)
+                    # if an epithet is actually there, that is, if the string
+                    # hasn't ended without one.
+                    if len(words) > (i + 1):
+                        name.append(words[i])
+                        name.append(words[i + 1])
+                    break
+        return ' '.join(name)
+
+
     def _import_taxa(self, taxaf):
         print >> self.logfile, 'Setting up taxa in file: %s' % taxaf
         iterator = iter(CSVReader(taxaf).read())
@@ -338,7 +367,8 @@ class Importer(object):
                 for name in names:
                     if len(name) > 0:
                         s, created = models.Synonym.objects.get_or_create ( \
-                            scientific_name=name)
+                            scientific_name=self._strip_taxonomic_authority(
+                                name), full_name=name)
                         taxon.synonyms.add(s)
                         taxon.save()
                         print >> self.logfile, u'      Added synonym:', name

@@ -74,6 +74,6 @@ Classification:
 {% if object.synonyms.all|length > 0 %}
     Also Known As:
     {% for synonym in object.synonyms.all %}
-        {{ synonym.scientific_name }}.
+        {{ synonym.scientific_name }}{% if not forloop.last %},{% endif %}
     {% endfor %}
 {% endif %}
