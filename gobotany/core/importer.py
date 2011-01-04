@@ -264,6 +264,15 @@ class Importer(object):
         """Strip the taxonomic authority out of a full plant name."""
         CONNECTING_TERMS = ['subsp.', 'ssp.', 'var.', 'subvar.', 'f.',
                             'forma', 'subf.']
+        UNEXPECTED_CHARACTERS = [u'\N{NO-BREAK SPACE}', u'\N{DAGGER}',
+            u'\N{EURO SIGN}', u'\N{LATIN SMALL LETTER A WITH CIRCUMFLEX}']
+
+        # Replace unexpected characters before splitting.
+        if not isinstance(full_plant_name, unicode):
+            full_plant_name = unicode(full_plant_name, 'UTF-8')
+        for character in UNEXPECTED_CHARACTERS:
+            full_plant_name = full_plant_name.replace(character, u' ')
+
         name = []
         words = full_plant_name.split(' ')
         if len(words) > 1:
@@ -286,7 +295,7 @@ class Importer(object):
                         name.append(words[i])
                         name.append(words[i + 1])
                     break
-        return ' '.join(name)
+        return ' '.join(name).encode('utf-8')
 
 
     def _import_taxa(self, taxaf):
