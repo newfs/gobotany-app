@@ -293,7 +293,15 @@ class Importer(object):
                     # hasn't ended without one.
                     if len(words) > (i + 1):
                         name.append(words[i])
-                        name.append(words[i + 1])
+                        epithet = words[i + 1]
+                        # If anything but lowercase letters or a hyphen is
+                        # found, chop off the string starting at that point.
+                        # This is to handle some cases where a space is
+                        # missing after the epithet.
+                        match = re.search('[^a-z\-]', epithet)
+                        if match:
+                            epithet = epithet[:match.start()]
+                        name.append(epithet)
                     break
         return ' '.join(name).encode('utf-8')
 

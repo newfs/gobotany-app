@@ -539,18 +539,6 @@ class StripTaxonomicAuthorityTestCase(TestCase):
             'Actaea alba, of authors not (L.) P. Mill.')
         self.assertEqual('Actaea alba', name)
 
-    def test_strip_taxonomic_authority_species_unexpected_characters(self):
-        im = importer.Importer(StringIO())
-        # This name has some unknown Windows-1252 character data in it, copied
-        # from the CSV. It is decoded here using Windows-1252 like the
-        # importer does when reading CSV files. (See CSVReader read method
-        # override in importer.py.)
-        name_with_unexpected_characters = \
-            'Cornus amomum var. schuetzeana†(C.A. Mey.) Rickett'.decode(
-            'Windows-1252')
-        name = im._strip_taxonomic_authority(name_with_unexpected_characters)
-        self.assertEqual('Cornus amomum var. schuetzeana', name)
-
     def test_strip_taxonomic_authority_subspecies(self):
         im = importer.Importer(StringIO())
         name = im._strip_taxonomic_authority( \
@@ -613,6 +601,28 @@ class StripTaxonomicAuthorityTestCase(TestCase):
         im = importer.Importer(StringIO())
         name = im._strip_taxonomic_authority('Betula lutea Michx. f.')
         self.assertEqual('Betula lutea', name)
+
+    def test_strip_taxonomic_authority_unexpected_characters(self):
+        im = importer.Importer(StringIO())
+        # This name has some undesirable character data in it (showing up as
+        # a dagger here), as copied from the CSV. It is decoded here using
+        # Windows-1252 like the importer does when reading CSV files (see
+        # CSVReader read method override in importer.py).
+        name_with_unexpected_characters = \
+            'Cornus amomum var. schuetzeana†(C.A. Mey.) Rickett'.decode(
+            'Windows-1252')
+        name = im._strip_taxonomic_authority(name_with_unexpected_characters)
+        self.assertEqual('Cornus amomum var. schuetzeana', name)
+
+    def test_strip_taxonomic_authority_missing_space_after_epithet(self):
+        im = importer.Importer(StringIO())
+        name_missing_space = 'Lycopodium annotinum var. montanumTuckerman'
+        name = im._strip_taxonomic_authority(name_missing_space)
+        self.assertEqual('Lycopodium annotinum var. montanum', name)
+        # Sometimes there are parentheses instead of a capital letter.
+        name_missing_space = 'Huperzia selago ssp. appressa(Desv.)'
+        name = im._strip_taxonomic_authority(name_missing_space)
+        self.assertEqual('Huperzia selago ssp. appressa', name)
 
 
 def setup_integration(test):
