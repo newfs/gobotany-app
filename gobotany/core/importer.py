@@ -279,7 +279,7 @@ class Importer(object):
             # Start with the generic name and specific epithet.
             name.append(words[0])
             name.append(words[1].strip(','))
-            
+
             # Move through the remaining words, looking for an infraspecific
             # epithet.
             for i in range(2, len(words)):
@@ -384,12 +384,14 @@ class Importer(object):
                 names = [n.strip() for n in row[synonym_field].split('; ')]
                 for name in names:
                     if len(name) > 0:
-                        s, created = models.Synonym.objects.get_or_create ( \
-                            scientific_name=self._strip_taxonomic_authority(
-                                name), full_name=name)
+                        scientific_name = self._strip_taxonomic_authority(
+                            name)
+                        s, created = models.Synonym.objects.get_or_create( \
+                            scientific_name=scientific_name, full_name=name)
                         taxon.synonyms.add(s)
                         taxon.save()
-                        print >> self.logfile, u'      Added synonym:', name
+                        print >> self.logfile, u'      Added synonym:', \
+                            scientific_name
 
 
     def _import_taxon_character_values(self, f):
