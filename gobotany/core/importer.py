@@ -284,16 +284,17 @@ class Importer(object):
             # epithet.
             for i in range(2, len(words)):
                 if words[i] in CONNECTING_TERMS:
-                    if len(words) > (i + 1):
-                        if words[i + 1] in CONNECTING_TERMS:
+                    next_index = i + 1
+                    if len(words) > next_index:
+                        if words[next_index] in CONNECTING_TERMS:
                             # If the next word is a connector too, skip ahead.
                             continue
                     # Only append the connector (and the epithet that follows)
                     # if an epithet is actually there, that is, if the string
                     # hasn't ended without one.
-                    if len(words) > (i + 1):
+                    if len(words) > next_index:
                         name.append(words[i])
-                        epithet = words[i + 1]
+                        epithet = words[next_index]
                         # If anything but lowercase letters or a hyphen is
                         # found, chop off the string starting at that point.
                         # This is to handle some cases where a space is
