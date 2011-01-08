@@ -383,9 +383,14 @@ class Importer(object):
             for synonym_field in synonym_fields:
                 names = [n.strip() for n in row[synonym_field].split('; ')]
                 for name in names:
-                    if len(name) > 0:
-                        scientific_name = self._strip_taxonomic_authority(
-                            name)
+                    scientific_name = self._strip_taxonomic_authority(
+                        name)
+                    # Besides checking to see that the scientific name isn't
+                    # empty, also avoid those that look obviously malformed,
+                    # as was seen with some bad data.
+                    if len(scientific_name) > 0 and \
+                        not scientific_name.startswith(' '):
+
                         s, created = models.Synonym.objects.get_or_create( \
                             scientific_name=scientific_name, full_name=name)
                         taxon.synonyms.add(s)
