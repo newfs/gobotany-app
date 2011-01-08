@@ -84,14 +84,14 @@
               {% endif %}
           </ul>
 
-          {% if taxon.lookalikes|length > 0 %}
-          <h3>Sometimes Confused With</h3>
-          <dl>
-              {% for lookalike in taxon.lookalikes.all %}
-              <dt>{{ lookalike.lookalike_characteristic }}:</dt>
-              <dd><em>{{ lookalike.lookalike_scientific_name }}</em></dd>
-              {% endfor %}
-          </dl>
+          {% if taxon.lookalikes.all|length > 0 %}
+            <h3>Sometimes Confused With</h3>
+            <dl>
+                {% for lookalike in taxon.lookalikes.all %}
+                    <dt>{{ lookalike.lookalike_characteristic }}:</dt>
+                    <dd><em>{{ lookalike.lookalike_scientific_name }}</em></dd>
+                {% endfor %}
+            </dl>
           {% endif %}
 
           <h3>North American Native Status</h3>
