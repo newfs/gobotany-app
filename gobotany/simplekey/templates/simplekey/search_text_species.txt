@@ -41,11 +41,15 @@ Distribution and Conservation Status:
 Wetland Status: {{ object.wetland_status_text }}
 
 All Characteristics:
-{# TODO: need to account for numeric values and units. #}
 {% for character_value in object.character_values.all %}
+    {{ character_value.character.friendly_name }}:
     {% if character_value.value_str %}
-        {{ character_value.character.friendly_name }}:
         {{ character_value.value_str }}.
+    {% else %}
+        {{ character_value.value_min }}
+        {{ character_value.character.unit }} to
+        {{ character_value.value_max }}
+        {{ character_value.character.unit }}.
     {% endif %}
 {% endfor %}
 
