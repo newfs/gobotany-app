@@ -1,17 +1,36 @@
 """Rebuild parts of our database that we generate rather than import."""
 
+import csv
+import os
 import random
 import sys
 import time
 from itertools import chain
 
 from django.core import management
+from django.core.exceptions import ObjectDoesNotExist
+
 from gobotany import settings
 management.setup_environ(settings)
 from gobotany.core import igdt, models
 
 
 DEFAULT_BEST_FILTERS_PER_PILE = 3
+
+
+class CSVReader(object):
+
+    def __init__(self, filename):
+        self.filename = filename
+
+    def read(self):
+        # Open in universal newline mode in order to deal with newlines in
+        # CSV files saved on Mac OS.
+        with open(self.filename, 'rU') as f:
+            r = csv.reader(f, dialect=csv.excel, delimiter=',')
+            for row in r:
+                yield [c.decode('Windows-1252') for c in row]
+
 
 def rebuild_default_filters():
     """Rebuild default-filters for every pile, choosing 'best' characters."""
@@ -64,44 +83,74 @@ def rebuild_default_filters():
                     break;
 
 
-SAMPLE_IMAGES_PER_PILE = 6
+def rebuild_sample_pile_images(pile_or_group_csv_1, pile_or_group_csv_2):
+    """Assign sample species images to each pile group and pile."""
+    print 'Rebuild sample pile images:'
 
-def rebuild_sample_pile_images():
-    """Randomly assign sample species images to each pilegroup and pile."""
-    for p in chain(models.Pile.objects.all(),
-                      models.PileGroup.objects.all()):
-        print '%-26s -' % (type(p).__name__ + ' ' + p.name),
-
+    print '  Removing old images:'
+    for p in chain(models.PileGroup.objects.all(),models.Pile.objects.all()):
+        print '    ', (type(p).__name__ + ': ' + p.name),
         old_images = p.sample_species_images.all()
         if len(old_images):
-            print "removing %d old images;" % len(old_images),
+            print '      removing %d old images' % len(old_images)
             for image in old_images:
                 p.sample_species_images.remove(image)
+        else:
+            print '      none'
 
-        piles = [p] if isinstance(p, models.Pile) else p.piles.all()
-        image_list = []
-        for pile in piles:
-            for species in pile.species.all():
-                image_list.extend(list(species.images.filter(
-                    image_type__name='habit')))
+    print '  Adding images from CSV data:'
+    files = [pile_or_group_csv_1, pile_or_group_csv_2]
+    for f in files:
+        iterator = iter(CSVReader(f).read())
+        colnames = [x.lower() for x in iterator.next()]
 
-        if len(image_list) > SAMPLE_IMAGES_PER_PILE:
-            image_list = random.sample(image_list, SAMPLE_IMAGES_PER_PILE)
+        for cols in iterator:
+            row = dict(zip(colnames, cols))
+            # Skip junk rows.
+            if row['name'].lower() == 'all' or \
+               row['name'].lower() == 'unused':
+                continue
 
-        print "inserting %d random images" % len(image_list)
+            image_list = []
+            try:
+                p = models.PileGroup.objects.get(name=row['name'])
+                print '    PileGroup:', p.name
+                for pile in p.piles.all():
+                    for species in pile.species.all():
+                        image_list.extend(list(species.images.all()))
+            except ObjectDoesNotExist:
+                p = models.Pile.objects.get(name=row['name'].title())
+                print '    Pile:', p.name
+                for species in p.species.all():
+                    image_list.extend(list(species.images.all()))
 
-        for image in image_list:
-            p.sample_species_images.add(image)
+            image_filenames = row['image_filenames'].split(';')
+            for filename in image_filenames:
+                # Skip malformed filenames.
+                if not filename.lower().endswith('.jpg'):
+                    continue
+                print '      filename:', filename,
+                found = False
+                for image_instance in image_list:
+                    if image_instance.image.name.find(filename) > -1:
+                        p.sample_species_images.add(image_instance)
+                        found = True
+                        break   # Found image, so no need to continue the loop.
+                if found:
+                    print '- found, added'
+                else:
+                    print '- not found'
+
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print >>sys.stderr, "Usage: rebuild THING"
+    if len(sys.argv) < 2:
+        print >>sys.stderr, "Usage: rebuild THING {args}"
         exit(2)
     thing = sys.argv[1]
     function_name = 'rebuild_' + thing
     if function_name in globals():
         function = globals()[function_name]
-        function()
+        function(*sys.argv[2:])
     else:
         print >>sys.stderr, "Error: rebuild target %r unknown" % thing
         exit(2)

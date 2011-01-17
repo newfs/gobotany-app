@@ -110,6 +110,7 @@ class Importer(object):
             if created:
                 print >> self.logfile, u'  New PileGroup:', pilegroup
 
+
     def _import_piles(self, pilef):
         print >> self.logfile, 'Setting up piles'
         iterator = iter(CSVReader(pilef).read())
