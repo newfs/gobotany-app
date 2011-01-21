@@ -1,5 +1,6 @@
 import os
 import sys
+from postgis_paths import *
 
 gettext = lambda s: s
 
