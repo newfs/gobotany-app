@@ -665,7 +665,7 @@ class PlantPreviewCharacter(models.Model):
     character = models.ForeignKey(Character)
     partner_site = models.ForeignKey(PartnerSite, blank=True, null=True)
     order = models.IntegerField()
-    
+
     class Meta:
         ordering = ['order']
         unique_together = ('pile', 'character', 'partner_site')
@@ -673,3 +673,24 @@ class PlantPreviewCharacter(models.Model):
     def __unicode__(self):
         return '%d: %s (%s)' % (self.order, self.character.friendly_name,
                                 self.pile.name)
+
+
+class PlantName(models.Model):
+    """A lookup table intended for efficient querying of scientific and common
+       plant name suggestions.
+
+       A plant that has multiple common names will have multiple rows in this
+       table: one for each common name.
+    """
+    scientific_name = models.CharField(max_length=100)
+    common_name = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ['scientific_name']
+        unique_together = ('scientific_name', 'common_name')
+
+    def __unicode__(self):
+        unicode_string = u'%s' % self.scientific_name
+        if self.common_name:
+            unicode_string += u' (%s)' % self.common_name
+        return unicode_string

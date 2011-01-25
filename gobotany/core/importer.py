@@ -67,6 +67,7 @@ class Importer(object):
         self._import_pile_groups(pilegroupf)
         self._import_piles(pilef)
         self._import_taxa(taxaf)
+        self._import_plant_names(taxaf)
         self._import_characters(charf)
         self._import_character_values(charvf)
         self._import_character_glossary(char_glossaryf)
@@ -310,6 +311,8 @@ class Importer(object):
 
     def _import_taxa(self, taxaf):
         print >> self.logfile, 'Setting up taxa in file: %s' % taxaf
+        COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
+        SYNONYM_FIELDS = ['comment']
         iterator = iter(CSVReader(taxaf).read())
         colnames = [x.lower() for x in iterator.next()]
 
@@ -369,19 +372,18 @@ class Importer(object):
                             pile_name
 
             # Add any common names.
-            common_name_fields = ['common_name1', 'common_name2']
-            for common_name_field in common_name_fields:
-                name = row[common_name_field]
-                if len(name) > 0:
+            for common_name_field in COMMON_NAME_FIELDS:
+                common_name = row[common_name_field]
+                if len(common_name) > 0:
                     cn, created = models.CommonName.objects.get_or_create( \
-                        common_name=name)
+                        common_name=common_name)
                     taxon.common_names.add(cn)
                     taxon.save()
-                    print >> self.logfile, u'      Added common name:', name
+                    print >> self.logfile, u'      Added common name:', \
+                        common_name
 
             # Add any synonyms.
-            synonym_fields = ['comment']
-            for synonym_field in synonym_fields:
+            for synonym_field in SYNONYM_FIELDS:
                 names = [n.strip() for n in row[synonym_field].split('; ')]
                 for name in names:
                     scientific_name = self._strip_taxonomic_authority(
@@ -398,6 +400,31 @@ class Importer(object):
                         taxon.save()
                         print >> self.logfile, u'      Added synonym:', \
                             scientific_name
+
+
+    def _import_plant_names(self, taxaf):
+        print >> self.logfile, 'Setting up plant names in file: %s' % taxaf
+        COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
+        iterator = iter(CSVReader(taxaf).read())
+        colnames = [x.lower() for x in iterator.next()]
+
+        for cols in iterator:
+            row = dict(zip(colnames, cols))
+
+            scientific_name = row['scientific_name']
+            num_common_names = 0
+            for common_name_field in COMMON_NAME_FIELDS:
+                common_name = row[common_name_field]
+                if len(common_name) > 0:
+                    num_common_names += 1
+                    pn, created = models.PlantName.objects.get_or_create( \
+                    scientific_name=scientific_name, common_name=common_name)
+                    print >> self.logfile, u'  Added plant name:', pn
+            # If there were no common names for this plant, add it now.
+            if num_common_names == 0:
+                pn, created = models.PlantName.objects.get_or_create( \
+                    scientific_name=scientific_name)
+                print >> self.logfile, u'  Added plant name:', pn
 
 
     def _import_taxon_character_values(self, f):

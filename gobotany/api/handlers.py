@@ -1,4 +1,7 @@
+import math
+
 from django.http import HttpResponse
+from django.utils import simplejson
 
 from operator import itemgetter
 
@@ -550,13 +553,13 @@ class FamilyHandler(BaseHandler):
 
 class GenusHandler(BaseHandler):
     methods_allowed = ('GET',)
-    
+
     def read(self, request, genus_slug):
         try:
             genus = models.Genus.objects.get(slug=genus_slug)
         except (models.Genus.DoesNotExist):
             return rc.NOT_FOUND
-        
+
         #images = genus.images.all() # TODO: filter image_type 'example image'
         # For now, just use all the images from this genus's species.
         images = []
@@ -565,8 +568,48 @@ class GenusHandler(BaseHandler):
             images = images + [_taxon_image(i) for i in taxon.images.all()]
 
         drawings = genus.images.all() # TODO: filter image_type 'example drawing'
-        
+
         return {'name': genus.name,
                 'slug': genus.slug,
                 'images': images,
                 'drawings': drawings}
+
+
+class PlantNamesHandler(BaseHandler):
+    methods_allowed = ('GET',)
+
+    """Return scientific and common name matches for a string."""
+    def read(self, request):
+        MAX_NAMES = 20   # Max. total names, both sci. and common
+        query = request.GET.get('q', '')
+        names = []
+        if query != '':
+            scientific_names = list(models.PlantName.objects.filter(
+                scientific_name__istartswith=query)[:MAX_NAMES])
+            common_names = list(models.PlantName.objects.filter(
+                common_name__istartswith=query).order_by(
+                'common_name')[:MAX_NAMES])
+
+            # Balance the lists if necessary so that the total returned
+            # is as close to the maximum as possible.
+            half_max = int(math.floor(MAX_NAMES / 2))
+            if len(scientific_names) >= half_max and \
+               len(common_names) >= half_max:
+                # Return half scientific and half common names.
+                scientific_names = scientific_names[:half_max]
+                common_names = common_names[:half_max]
+            elif len(scientific_names) >= half_max and \
+                 len(common_names) < half_max:
+                 # Return more sci. names because common names are fewer.
+                 scientific_names = scientific_names[:(MAX_NAMES - len(
+                    common_names))]
+            elif len(scientific_names) < half_max and \
+                 len(common_names) >= half_max:
+                 # Return more common names because sci. names are fewer.
+                 common_names = common_names[:(MAX_NAMES - len(
+                    scientific_names))]
+
+            names = {'scientific': [unicode(n) for n in scientific_names],
+                     'common': [unicode(n) for n in common_names]}
+        return HttpResponse(simplejson.dumps(names),
+            mimetype='application/json; charset=utf-8')
