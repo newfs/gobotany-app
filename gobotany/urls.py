@@ -1,9 +1,8 @@
 from django.conf.urls.defaults import include, patterns
+import staticfiles.urls
 
 import gobotany.api.urls
 import gobotany.core.urls
-import gobotany.simplekey.urls
-import tinymce.urls
 
 handler404 = 'django.views.defaults.page_not_found'
 handler500 = 'django.views.defaults.server_error'
@@ -18,12 +17,7 @@ urlpatterns += gobotany.core.urls.urlpatterns
 urlpatterns += gobotany.api.urls.urlpatterns
 
 if gobotany.settings.DEBUG:
-    urlpatterns += patterns(
-        '',
-        (r'^media/(?P<path>.*)$', 'django.views.static.serve',
-         {'document_root': gobotany.settings.MEDIA_ROOT,
-          'show_indexes': True}),
-        )
+    urlpatterns += staticfiles.urls.urlpatterns
 
 if gobotany.settings.DEBUG_DOJO:
     import os

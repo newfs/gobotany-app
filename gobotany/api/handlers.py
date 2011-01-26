@@ -9,7 +9,6 @@ from piston.handler import BaseHandler
 from piston.utils import rc
 
 import xml.etree.ElementTree
-from xml.etree.ElementTree import ElementTree as et
 from xml.etree.ElementTree import parse
 
 from gobotany.core import botany, igdt, models

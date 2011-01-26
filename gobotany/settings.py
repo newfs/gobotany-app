@@ -1,9 +1,32 @@
 import os
 import sys
+
+import gobotany
+GOBOTANY_DIR = os.path.dirname(gobotany.__file__)
+
 try:
     from postgis_paths import GDAL_LIBRARY_PATH, GEOS_LIBRARY_PATH
 except ImportError:  # since it does not exist under the Go Botany! buildout
     pass
+
+# Make sure that our current directory is a buildout, so we can
+# determine where the var/media and the var/static directories live.
+
+buildout_dir = os.getcwd()
+ls = os.listdir(buildout_dir)
+if '.installed.cfg' not in ls:
+    print >>sys.stderr, (
+        '\n'
+        'Error: the "gobotany" project must be run from inside a buildout,\n'
+        'but your current working directory lacks an ".installed.cfg" file.\n'
+        )
+    sys.exit(1)
+
+# src/gobotany/media - tinymce
+# src/gobotany/static - gobotany/**.js, graphics, *.css, etc
+# 
+#
+# REMOVE src/gobotany/admin-media?
 
 gettext = lambda s: s
 
@@ -33,13 +56,13 @@ INSTALLED_APPS = [
     'gobotany.core',
     'gobotany.simplekey',
     'piston',
+
     'django.contrib.admin',
     'django.contrib.sessions',
     'django.contrib.contenttypes',
-
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'appmedia',
+    'staticfiles',
 
     'haystack',
     'sorl.thumbnail',
@@ -56,6 +79,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
         "django.core.context_processors.i18n",
         "django.core.context_processors.request",
         "django.core.context_processors.media",
+        "staticfiles.context_processors.static_url",
         "gobotany.core.context_processors.dojo",
 )
 THUMBNAIL_PROCESSORS = (
@@ -69,13 +93,12 @@ THUMBNAIL_PROCESSORS = (
 ROOT_URLCONF = 'gobotany.urls'
 DEBUG = True
 
-# XXX: It would be nice if we could put this into the buildout var
-# instead of the package
-MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media')
+MEDIA_ROOT = os.path.join(buildout_dir, 'var', 'media')
 MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
+STATIC_ROOT = os.path.join(buildout_dir, 'var', 'static')
 STATIC_URL = '/static/'
-ADMIN_MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'admin-media')
+STATICFILES_DIRS = [('', os.path.join(GOBOTANY_DIR, 'static'))]
+ADMIN_MEDIA_ROOT = os.path.join(buildout_dir, 'var', 'admin')
 ADMIN_MEDIA_PREFIX = '/admin-media/'
 THUMBNAIL_BASEDIR = 'content-thumbs'
 
@@ -86,8 +109,8 @@ HAYSTACK_SEARCH_ENGINE = 'solr'
 HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 
-TINYMCE_JS_URL = MEDIA_URL + "tinymce/tiny_mce/tiny_mce.js"
-TINYMCE_JS_ROOT = os.path.join(MEDIA_ROOT, "tinymce/tiny_mce")
+TINYMCE_JS_URL = "tiny_mce/tiny_mce.js"
+TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "tiny_mce")
 
 # For partner sites, the request hostname will indicate the site.
 MONTSHIRE_HOSTNAME_SUBSTRING = ':8001'  # Just look for a port number for now

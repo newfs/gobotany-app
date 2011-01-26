@@ -35,9 +35,6 @@ urlpatterns = patterns(
     url(r'^best-characters/$', views.pile_characters_select),
     url(r'^best-characters/(?P<pile_slug>.*)/$', views.pile_characters),
 
-    url(r'^static/(?P<path>.*)$', 'gobotany.core.views.static_serve',
-        {'package': gobotany, 'relative_path': 'static', 'show_indexes': True}),
-
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^piles-pile-groups$', views.piles_pile_groups),

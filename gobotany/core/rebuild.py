@@ -1,8 +1,6 @@
 """Rebuild parts of our database that we generate rather than import."""
 
 import csv
-import os
-import random
 import sys
 import time
 from itertools import chain
