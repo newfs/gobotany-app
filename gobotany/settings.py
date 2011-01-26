@@ -1,6 +1,9 @@
 import os
 import sys
-from postgis_paths import *
+try:
+    from postgis_paths import GDAL_LIBRARY_PATH, GEOS_LIBRARY_PATH
+except ImportError:  # since it does not exist under the Go Botany! buildout
+    pass
 
 gettext = lambda s: s
 
