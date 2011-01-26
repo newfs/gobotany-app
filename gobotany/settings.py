@@ -22,7 +22,7 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'gobotany',
-            'HOST': '/tmp',
+            'HOST': '',
             'USER': '',
             'PASSWORD': '',
         }
