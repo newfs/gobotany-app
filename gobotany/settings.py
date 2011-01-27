@@ -105,6 +105,8 @@ ADMIN_MEDIA_ROOT = os.path.join(buildout_dir, 'var', 'admin')
 ADMIN_MEDIA_PREFIX = '/admin-media/'
 THUMBNAIL_BASEDIR = 'content-thumbs'
 
+SESSION_COOKIE_AGE = 2 * 24 * 60 * 60  # two days
+
 DEBUG_DOJO = bool(int(os.environ.get('DEBUG_DOJO', False)))
 
 HAYSTACK_SITECONF = 'gobotany.simplekey.search_sites'
