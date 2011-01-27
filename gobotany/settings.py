@@ -9,10 +9,13 @@ try:
 except ImportError:  # since it does not exist under the Go Botany! buildout
     pass
 
-# Make sure that our current directory is a buildout, so we can
-# determine where the var/media and the var/static directories live.
+# Make sure that our current directory is a buildout (or at least the
+# "bin" directory inside of a buildout), so we can determine where our
+# MEDIA and STATIC directories live.
 
 buildout_dir = os.getcwd()
+if os.path.basename(buildout_dir) == 'bin':
+    buildout_dir = os.path.dirname(buildout_dir)
 ls = os.listdir(buildout_dir)
 if '.installed.cfg' not in ls:
     print >>sys.stderr, (
