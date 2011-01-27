@@ -93,9 +93,9 @@ THUMBNAIL_PROCESSORS = (
 ROOT_URLCONF = 'gobotany.urls'
 DEBUG = True
 
-MEDIA_ROOT = os.path.join(buildout_dir, 'var', 'media')
+MEDIA_ROOT = os.path.join(buildout_dir, 'var', 'gobotany-media')
 MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(buildout_dir, 'var', 'static')
+STATIC_ROOT = os.path.join(buildout_dir, 'var', 'gobotany-static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [('', os.path.join(GOBOTANY_DIR, 'static'))]
 ADMIN_MEDIA_ROOT = os.path.join(buildout_dir, 'var', 'admin')
