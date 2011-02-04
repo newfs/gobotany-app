@@ -1,5 +1,6 @@
 import os
 import sys
+import traceback
 
 import gobotany
 GOBOTANY_DIR = os.path.dirname(gobotany.__file__)
@@ -17,6 +18,12 @@ buildout_dir = os.getcwd()
 if os.path.basename(buildout_dir) == 'bin':
     buildout_dir = os.path.dirname(buildout_dir)
 ls = os.listdir(buildout_dir)
+if '.installed.cfg' not in ls:
+    # Maybe the path to django.wsgi is the bottom frame?
+    frames = traceback.extract_stack()
+    wsgi_script = frames[0][0]  # filename of the bottom stack frame
+    buildout_dir = os.path.dirname(os.path.dirname(wsgi_script))
+    ls = os.listdir(buildout_dir)
 if '.installed.cfg' not in ls:
     print >>sys.stderr, (
         '\n'
