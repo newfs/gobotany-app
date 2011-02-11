@@ -239,10 +239,12 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             var filter = this.filters[i];
             if (filter.character_short_name === character_short_name) {
                 // Found the filter; now look for the character value.
-                for (var j = 0; j < filter.values.length; j++) {
-                    if (filter.values[j].value === value_name) {
-                        filter.values[j].count = count;
-                        return;
+                if (typeof filter.values !== 'undefined') {
+                    for (var j = 0; j < filter.values.length; j++) {
+                        if (filter.values[j].value === value_name) {
+                            filter.values[j].count = count;
+                            return;
+                        }
                     }
                 }
                 return;

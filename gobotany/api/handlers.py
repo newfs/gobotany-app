@@ -67,7 +67,7 @@ class TaxonQueryHandler(BaseHandler):
         if character_names:
             for character_name in character_names:
                 counts = {}
-                pile = models.Pile.objects.get(slug=kwargs['pile'])
+                #pile = models.Pile.objects.get(slug=pile_slug)
                 try:
                     character = models.Character.objects.get(
                         short_name=character_name)
@@ -75,8 +75,13 @@ class TaxonQueryHandler(BaseHandler):
                     # Ignore any characters that don't exist in the database.
                     continue
                 if character.value_type == 'TEXT':
-                    for cv in models.CharacterValue.objects.filter(
-                              pile=pile, character=character):
+                    filter_args = {"character": character}
+                    if 'pile' in kwargs:
+                        pile = models.Pile.objects.get(slug=kwargs['pile'])
+                        filter_args['pile'] = pile
+                    character_values = models.CharacterValue.objects.filter(
+                        **filter_args)
+                    for cv in character_values:
                         # Get the species with the current query, setting this
                         # character value as a 'hypothetical' one in order to
                         # elicit the desired count.
