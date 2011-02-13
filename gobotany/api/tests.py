@@ -248,7 +248,7 @@ class TaxonListTestCase(TestCase):
     def test_get_with_char_param_returns_ok_if_bad_char_value(self):
         response = self.client.get('/taxon/?c1=badvalue')
         self.assertEqual(200, response.status_code)
-        
+
     def test_get_with_char_param_returns_no_items_if_bad_char_value(self):
         response = self.client.get('/taxon/?c1=badvalue')
         expected = {u'items': [],
@@ -256,6 +256,15 @@ class TaxonListTestCase(TestCase):
                     u'value_counts': [],
                     u'label': u'scientific_name'}
         self.assertEqual(expected, json.loads(response.content))
+
+    def test_get_with_char_param_returns_value_counts(self):
+        response = self.client.get('/taxon/?c1=cv1_1&_counts_for=c1')
+        self.assertEqual(200, response.status_code)
+
+    def test_get_with_char_param_returns_value_counts_in_pile(self):
+        response = self.client.get( \
+            '/taxon/?c1=cv1_1&pile=pile1&_counts_for=c1')
+        self.assertEqual(200, response.status_code)
 
 
 class TaxaListTestCase(TestCase):
@@ -291,6 +300,15 @@ class TaxaListTestCase(TestCase):
                     u'value_counts': [],
                     u'label': u'scientific_name'}
         self.assertEqual(expected, json.loads(response.content))
+
+    def test_get_with_char_param_returns_value_counts(self):
+        response = self.client.get('/taxa/?c1=cv1_1&_counts_for=c1')
+        self.assertEqual(200, response.status_code)
+
+    def test_get_with_char_param_returns_value_counts_in_pile(self):
+        response = self.client.get( \
+            '/taxa/?c1=cv1_1&pile=pile1&_counts_for=c1')
+        self.assertEqual(200, response.status_code)
 
 
 class TaxonTestCase(TestCase):
