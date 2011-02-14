@@ -1055,8 +1055,8 @@ class Importer(object):
             # Get the pile (or piles) for associating character values.
             piles = []
             self._has_unexpected_delimiter(row['Pile'],
-                                           unexpected_delimiter='|')
-            pile_names = row['Pile'].split(', ')
+                                           unexpected_delimiter=',')
+            pile_names = row['Pile'].split('| ')
             for pile_name in pile_names:
                 try:
                     pile = models.Pile.objects.get(name__iexact=pile_name)
@@ -1069,8 +1069,8 @@ class Importer(object):
             # Create the Habitat character values.
             character = models.Character.objects.get(short_name='habitat')
             self._has_unexpected_delimiter(row['habitat'],
-                                           unexpected_delimiter='|')
-            habitats = row['habitat'].lower().split(', ')
+                                           unexpected_delimiter=',')
+            habitats = row['habitat'].lower().split('| ')
             for habitat in habitats:
                 self._add_place_character_value(character, habitat, piles,
                     taxon)
@@ -1079,8 +1079,8 @@ class Importer(object):
             character = \
                 models.Character.objects.get(short_name='state_distribution')
             self._has_unexpected_delimiter(row['Distribution'],
-                                           unexpected_delimiter='|')
-            state_codes = row['Distribution'].lower().split(', ')
+                                           unexpected_delimiter=',')
+            state_codes = row['Distribution'].lower().split('| ')
             for state_code in state_codes:
                 state = ''
                 if state_code in state_names:
