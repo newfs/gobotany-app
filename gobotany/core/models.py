@@ -690,7 +690,7 @@ class PlantName(models.Model):
         unique_together = ('scientific_name', 'common_name')
 
     def __unicode__(self):
-        unicode_string = u'%s' % self.scientific_name
+        unicode_string = u'%s' % self.scientific_name.strip()
         if self.common_name:
-            unicode_string += u' (%s)' % self.common_name
+            unicode_string += u' (%s)' % self.common_name.strip()
         return unicode_string

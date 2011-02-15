@@ -418,9 +418,10 @@ class Importer(object):
                 if len(common_name) > 0:
                     num_common_names += 1
                     pn, created = models.PlantName.objects.get_or_create( \
-                    scientific_name=scientific_name, common_name=common_name)
+                        scientific_name=scientific_name,
+                        common_name=common_name)
                     print >> self.logfile, u'  Added plant name:', pn
-            # If there were no common names for this plant, add it now.
+            # If there were no common names for this plant, add the plant now.
             if num_common_names == 0:
                 pn, created = models.PlantName.objects.get_or_create( \
                     scientific_name=scientific_name)
