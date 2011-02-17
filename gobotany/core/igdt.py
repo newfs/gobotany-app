@@ -138,6 +138,10 @@ def _length_entropy(cv_set, species_set, cv_counts):
     for cv in cv_set:
         if cv.value_min is None or cv.value_max is None:
             continue
+        if cv.value_min > cv.value_max:
+            print '    Skipped invalid range: min %.1f, max %.1f' % \
+                (cv.value_min, cv.value_max)
+            continue
         endpoints.append((cv.value_min, +1))
         endpoints.append((cv.value_max, -1))
     endpoints.sort()
