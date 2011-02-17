@@ -230,24 +230,27 @@ class Importer(object):
 
 
     def _get_all_states_status(self, taxon, taxon_data_row):
+        DATA_DELIMITER = '|'
         STATES = ['CT', 'MA', 'ME', 'NH', 'RI', 'VT']
         states_status = dict().fromkeys(STATES, '')
     
         distribution = []
         if taxon.distribution:
-            distribution = taxon.distribution.replace(' ', '').split(',')
+            distribution = taxon.distribution.replace(' ', '').split( \
+                DATA_DELIMITER)
 
         is_native = (taxon.north_american_native == True)
 
         invasive_states = []
         if taxon.invasive_in_states:
             invasive_states = taxon.invasive_in_states.replace( \
-                ' ', '').split(',')
+                ' ', '').split(DATA_DELIMITER)
 
         prohibited_states = []
         if taxon.sale_prohibited_in_states:
             prohibited_states = \
-                taxon.sale_prohibited_in_states.replace(' ', '').split(',')
+                taxon.sale_prohibited_in_states.replace(' ', '').split( \
+                    DATA_DELIMITER)
 
         for state in STATES:
             status_field_name = 'conservation_status_%s' % state.lower()
