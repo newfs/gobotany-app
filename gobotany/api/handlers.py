@@ -511,7 +511,9 @@ class DistributionMapHandler(BaseHandler):
 
     def read(self, request, genus, specific_epithet):
         """Return an SVG map of New England with counties that contain the
-        species shaded in."""
+        species shaded in.
+        """
+        STATES_DELIMITER = '|'
 
         blank_map  = ''.join([STATIC_ROOT,
             '/graphics/new-england-counties.svg'])
@@ -520,7 +522,8 @@ class DistributionMapHandler(BaseHandler):
         taxon = models.Taxon.objects.filter(scientific_name=name)
         distribution = []
         if len(taxon) > 0:
-            states = taxon[0].distribution.split(',')
+            states = taxon[0].distribution.replace(' ', '').split( \
+                STATES_DELIMITER)
             distribution = [state.strip() for state in states]
 
         svg = parse(blank_map)
