@@ -631,7 +631,7 @@ class DefaultFilter(models.Model):
 
     """
     pile = models.ForeignKey(Pile)
-    character = models.ForeignKey(Character)
+    character = models.ForeignKey(Character, null=True)
     order = models.IntegerField()
 
     class Meta:

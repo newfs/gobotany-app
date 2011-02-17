@@ -986,7 +986,7 @@ class Importer(object):
             pile.character_values.add(cv)
 
         models.TaxonCharacterValue(taxon=taxon, character_value=cv).save()
-        print >> self.logfile, '  New TaxonCharacterValue: %s for ' \
+        print >> self.logfile, '    New TaxonCharacterValue: %s for ' \
             'Character: %s (Species: %s)' % (cv.value_str, character.name,
             taxon.scientific_name)
 
@@ -1004,7 +1004,7 @@ class Importer(object):
 
 
     def _import_place_characters_and_values(self, taxaf):
-        print >> self.logfile, '    Setting up place characters and values'
+        print >> self.logfile, 'Setting up place characters and values'
 
         # Create a character group for place characters.
         character_group, created = \
@@ -1031,12 +1031,14 @@ class Importer(object):
                 key_characteristics='',
                 notable_exceptions='')
             if created:
-                print >> self.logfile, u'    New Character: %s (%s)' % \
-                    (short_name, value_type)
+                print >> self.logfile, \
+                    u'    New Character: %s (%s) in group: %s' % \
+                    (character.short_name, character.value_type,
+                     character.character_group.name)
 
         # Go through all of the taxa and create character values.
         print >> self.logfile, \
-            'Setting up taxon character values in file: %s' % taxaf
+            '  Setting up taxon character values in file: %s' % taxaf
         iterator = iter(CSVReader(taxaf).read())
         colnames = list(iterator.next())  # do NOT lower(); case is important
 

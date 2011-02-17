@@ -36,8 +36,10 @@ def rebuild_default_filters():
         print "Pile", pile.name
 
         old_filters = pile.default_filters.all()
-        print "  Removing %d old default filters" % len(old_filters)
-        old_filters.delete()
+        print "  Clearing %d old default filters" % len(old_filters)
+        # Just clear the old filters rather than deleting them, so as to not
+        # have a delete-cascade that also deletes character records.
+        pile.default_filters.clear()
 
         common_filter_character_names = ['habitat', 'state_distribution']
         print "  Inserting 'common' filters"
