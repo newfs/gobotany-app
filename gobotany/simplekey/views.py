@@ -145,7 +145,7 @@ def species_view(request,  genus_slug, specific_epithet_slug,
     species_images = botany.species_images(taxon)
     habitats = []
     if taxon.habitat:
-        habitats = taxon.habitat.split(',')
+        habitats = taxon.habitat.split('| ')
 
     character_ids = taxon.character_values.all().values_list(
                     'character', flat=True).distinct()
