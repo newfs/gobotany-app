@@ -60,6 +60,59 @@ class Importer(object):
     def __init__(self, logfile=sys.stdout):
         self.logfile = logfile
 
+
+    def validate_data(self, pilegroupf, pilef, taxaf, charf, charvf,
+                      char_glossaryf, glossaryf, glossary_images,
+                      lookalikesf, *taxonfiles):
+        """Perform some basic validation on the data to be imported."""
+        print >> self.logfile, 'Validating data'
+        is_valid = True
+
+        # Make sure some important columns are present.
+        # (This is not yet an exhaustive list of required column names.)
+        REQUIRED_COLUMNS = ['Distribution', 'invasive_in_which_states',
+                            'prohibited_from_sale_states', 'habitat']
+        iterator = iter(CSVReader(taxaf).read())
+        colnames = [x for x in iterator.next()]
+
+        print >> self.logfile, '  Checking for required columns:'
+        for column in REQUIRED_COLUMNS:
+            message = '    Column %s in taxa.csv: ' % column
+            if column in colnames:
+                message += 'OK'
+            else:
+                message += 'missing'
+                is_valid = False
+            print >> self.logfile, message
+
+        # For columns where multiple delimited values are allowed, look for
+        # the expected delimiter. (It's been known to change in the Access
+        # exports, quietly resulting in bugs.)
+        MULTIVALUE_COLUMNS = ['Distribution', 'invasive_in_which_states',
+                              'prohibited_from_sale_states', 'habitat']
+        EXPECTED_DELIMITER = '| '
+
+        print >> self.logfile, \
+            '  Checking for expected multi-value delimiters:'
+        for multivalue_column in MULTIVALUE_COLUMNS:
+            message = '    Column %s in taxa.csv, expected delimiter (%s): ' \
+                % (multivalue_column, EXPECTED_DELIMITER)
+            delimiter_found = False
+            for cols in iterator:
+                row = dict(zip(colnames, cols))
+                if row[multivalue_column].find(EXPECTED_DELIMITER) > 0:
+                    delimiter_found = True
+                    break
+            if delimiter_found:
+                message += 'OK'
+            else:
+                message += 'not found'
+                is_valid = False
+            print >> self.logfile, message
+
+        return is_valid
+
+
     def import_data(self, pilegroupf, pilef, taxaf, charf, charvf,
                     char_glossaryf, glossaryf, glossary_images,
                     lookalikesf, *taxonfiles):
@@ -1410,12 +1463,18 @@ class Importer(object):
 
 
 def main():
-    # Incredibly lame option parsing, since we can't rely on real option parsing
+    # Incredibly lame option parsing, since we can't rely on real option
+    # parsing
+    importer = Importer()
     if sys.argv[1] == 'species-images':
         species_image_dir = os.path.join(settings.MEDIA_ROOT, 'species')
-        Importer().import_species_images(species_image_dir, *sys.argv[2:])
+        importer.import_species_images(species_image_dir, *sys.argv[2:])
     else:
-        Importer().import_data(*sys.argv[1:])
+        is_data_valid = importer.validate_data(*sys.argv[1:])
+        if is_data_valid:
+            importer.import_data(*sys.argv[1:])
+        else:
+            print >> importer.logfile, 'Validation failed; import canceled.'
 
 
 if __name__ == '__main__':
