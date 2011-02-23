@@ -439,6 +439,25 @@ class ImportTestCase(TestCase):
         self.assertTrue(im._has_unexpected_delimiter(text,
                          unexpected_delimiter='|'))
 
+    def test_create_character_name(self):
+        im = importer.Importer(StringIO())
+        name = im._create_character_name('stamen_morphology')
+        self.assertEqual('Stamen morphology', name)
+
+    def test_get_character_friendly_name(self):
+        im = importer.Importer(StringIO())
+        friendly_name = im._get_character_friendly_name( \
+            'spike_number_per_stem', 'Number of spikes')
+        self.assertEqual('Number of spikes', friendly_name)
+
+    def test_get_character_friendly_name_not_defined(self):
+        im = importer.Importer(StringIO())
+        friendly_name = im._get_character_friendly_name('plant_habit', '')
+        self.assertEqual('Plant habit', friendly_name)
+        friendly_name = im._get_character_friendly_name('leaf_disposition',
+            None)
+        self.assertEqual('Leaf disposition', friendly_name)
+
 
 class StateStatusTestCase(TestCase):
 

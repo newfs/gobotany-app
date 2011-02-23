@@ -627,6 +627,23 @@ class Importer(object):
                                                         cname,
                                                         taxon.scientific_name)
 
+
+    def _create_character_name(self, short_name):
+        """Create a character name from the short name."""
+        name = short_name.replace('_', ' ').capitalize()
+        return name
+
+
+    def _get_character_friendly_name(self, short_name, friendly_name):
+        """Return a laypersons' version of the character name, making one
+           from the short name if needed.
+        """
+        if not friendly_name:
+            # Create a character friendly name from the short name.
+            friendly_name = self._create_character_name(short_name)
+        return friendly_name
+
+
     def _import_characters(self, f):
         print >> self.logfile, 'Setting up characters in file: %s' % f
         iterator = iter(CSVReader(f).read())
@@ -668,11 +685,12 @@ class Importer(object):
             if len(res) == 0:
                 print >> self.logfile, u'      New Character: %s (%s)' % \
                     (short_name, value_type)
-                # Create a friendly name automatically for now.
-                temp_friendly_name = short_name.replace('_', ' ').capitalize()
+                name = self._create_character_name(short_name)
+                friendly_name = self._get_character_friendly_name(short_name,
+                    row['filter_label'])
                 character = models.Character(short_name=short_name,
-                                             name=temp_friendly_name,
-                                             friendly_name=temp_friendly_name,
+                                             name=name,
+                                             friendly_name=friendly_name,
                                              character_group=chargroup,
                                              value_type=value_type,
                                              unit=unit,
