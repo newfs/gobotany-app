@@ -15,6 +15,8 @@ dojo.declare('gobotany.filters.Filter', null, {
     unit: '',
     key_characteristics: null,
     notable_exceptions: null,
+    question: null,
+    hint: null,
     selected_value: null,
     filter_callback: null,
 
@@ -411,9 +413,13 @@ gobotany.filters.filter_factory = function(args) {
 
     var notable_exceptions = args.notable_exceptions;
     var key_characteristics = args.key_characteristics;
+    var question = args.question;
+    var hint = args.hint;
     if (args.filter) {
         notable_exceptions = args.filter.notable_exceptions;
         key_characteristics = args.filter.key_characteristics;
+        question = args.filter.question;
+        hint = args.filter.hint;
     }
 
     var filter = new filter_type({
@@ -422,6 +428,8 @@ gobotany.filters.filter_factory = function(args) {
         order: args.order,
         notable_exceptions: notable_exceptions,
         key_characteristics: key_characteristics,
+        question: question,
+        hint: hint,
         value_type: args.value_type,
         unit: args.unit,
         pile_slug: args.pile_slug

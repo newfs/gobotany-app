@@ -960,6 +960,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             }
             dojo.query(selector)[0].checked = true;
         }
+        
+        // Set any question and hint text for this filter.
+        var q = dojo.query('#filter-working .info .question')[0];
+        q.innerHTML = '<p>' + filter.question + '</p>';
+        
+        var h = dojo.query('#filter-working .info .hint')[0];
+        h.innerHTML = '<p>' + filter.hint + '</p>';
 
         // Set the key characteristics and notable exceptions for the filter
         // (character). (The ones for character values are set elsewhere.)

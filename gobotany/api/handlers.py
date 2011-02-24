@@ -204,7 +204,7 @@ class BasePileHandler(BaseHandler):
     methods_allowed = ('GET', 'PUT', 'DELETE')
     fields = ('name', 'friendly_name', 'description', 'resource_uri',
               'youtube_id', 'key_characteristics', 'notable_exceptions',
-              'default_image')
+              'question', 'hint', 'default_image')
 
     def read(self, request, slug):
         try:
@@ -267,6 +267,8 @@ class PileHandler(BasePileHandler):
                                                    'notable_exceptions', u'')
             filter['key_characteristics'] = getattr(default_filter,
                                                     'key_characteristics', u'')
+            filter['question'] = default_filter.character.question
+            filter['hint'] = default_filter.character.hint
             filters.append(filter)
         return filters
 
@@ -367,6 +369,8 @@ class CharacterListingHandler(BaseHandler):
             'characteracter_group': character.character_group.name,
             'key_characteristics': character.key_characteristics,
             'notable_exceptions': character.notable_exceptions,
+            'question': character.question,
+            'hint': character.hint,
             'pile_slug': pile_slug,
             }
 

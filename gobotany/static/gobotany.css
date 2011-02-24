@@ -298,8 +298,8 @@ p {
     width: 410px;
 }
 
-#filter-working .info p {
-    padding: 2em 0;
+#filter-working .info .hint {
+    font-size: 0.85em;
 }
 
 /* Make the Dijit horizontal slider look like a ruler */
