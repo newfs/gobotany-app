@@ -680,6 +680,8 @@ class Importer(object):
 
             key_chars = self._clean_up_html(row['key_characteristics'])
             notable_ex = self._clean_up_html(row['notable_exceptions'])
+            question = row['friendly_text']
+            hint = row['hint']
             
             res = models.Character.objects.filter(short_name=short_name)
             if len(res) == 0:
@@ -696,7 +698,9 @@ class Importer(object):
                                              unit=unit,
                                              ease_of_observability=eoo,
                                              key_characteristics=key_chars,
-                                             notable_exceptions=notable_ex)
+                                             notable_exceptions=notable_ex,
+                                             question=question,
+                                             hint=hint)
                 character.save()
 
     def _clean_up_html(self, html):

@@ -149,6 +149,8 @@ class Character(models.Model):
         max_length=2, null=True, blank=True, choices=UNIT_CHOICES.items())
     key_characteristics = models.TextField(blank=True)
     notable_exceptions = models.TextField(blank=True)
+    question = models.TextField(blank=True)
+    hint = models.TextField(blank=True)
 
     class Meta:
         ordering = ['short_name']
