@@ -749,6 +749,7 @@ class Importer(object):
             
             key_chars = self._clean_up_html(row['key_characteristics'])
             notable_ex = self._clean_up_html(row['notable_exceptions'])
+            friendly_text = self._clean_up_html(row['friendly_text'])
 
             # note that CharacterValues can be used by multiple Characters
             res = models.CharacterValue.objects.filter(
@@ -758,7 +759,8 @@ class Importer(object):
                 cv = models.CharacterValue(value_str=row['character_value'],
                                            character=character,
                                            key_characteristics=key_chars,
-                                           notable_exceptions=notable_ex)
+                                           notable_exceptions=notable_ex,
+                                           friendly_text=friendly_text)
                 cv.save()
                 print >> self.logfile, u'  New Character Value: %s ' \
                     'for Character: %s [%s]' % (cv.value_str, character.name,

@@ -220,6 +220,7 @@ class CharacterValue(models.Model):
     glossary_term = models.ForeignKey(GlossaryTerm, blank=True, null=True)
     key_characteristics = models.TextField(blank=True)
     notable_exceptions = models.TextField(blank=True)
+    friendly_text = models.TextField(blank=True)
 
     class Meta:
         ordering = ['character__short_name', 'value_str', 'value_flt',
