@@ -245,7 +245,7 @@ p {
 #filter-working, #pick-filters {
     border: 1px dashed #ddd;
     display: none;
-    height: 200px;
+    height: 215px;
     padding: 1em;
 }
 
@@ -264,8 +264,12 @@ p {
     padding: 0;
 }
 
+#filter-working .info {
+    width: 100%;
+}
+
 #filter-working .info .info-sub {
-    float: left;
+    float: right;
     border: 1px dashed #ddd;
     margin-right: 1em;
 }
@@ -275,14 +279,35 @@ p {
 }
 
 #filter-working .values {
+    background: #fff;
+    border: 1px solid #999;
     float: left;
-    padding: 0.5em 0 0.5em 0;
-    width: 350px;
+    height: 150px;
+    margin: 0 0 10px 0;
+    overflow-y: scroll;
+    padding: 0;
+    width: 400px;
 }
 
 #filter-working .values label {
+    border-top: 1px solid #999;
     display: block;
+    height: 50px;
     line-height: 1.2em;
+}
+
+#filter-working .values label img {
+    border: 1px dashed #ccc;
+    float: right;
+    height: 40px;
+    margin: 5px 5px 0 0;
+    width: 30px;
+}
+
+#filter-working .values label > span:first-child {
+    display: inline-block;
+    padding-left: 0.3em;
+    width: 340px;
 }
 
 #filter-working .values input {
@@ -300,6 +325,7 @@ p {
 
 #filter-working .info .hint {
     font-size: 0.85em;
+    margin-bottom: 10px;
 }
 
 #filter-working .info .hint p {
@@ -309,6 +335,7 @@ p {
 #filter-working button {
     clear: left;
     display: block;
+    margin-bottom: 1em;
 }
 
 /* Make the Dijit horizontal slider look like a ruler */

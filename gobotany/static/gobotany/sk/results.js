@@ -525,7 +525,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
             this.results_helper.filter_manager.set_selected_value(
                 this.visible_filter_short_name, value);
-            var display_value = this._get_filter_display_value(value,
+            var display_value = this._get_filter_display_value('', value,
                 this.visible_filter_short_name);
             choice_div.innerHTML = display_value;
             this.results_helper.save_filter_state();
@@ -545,7 +545,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             this.results_helper.filter_manager.set_selected_value(
                 this.visible_filter_short_name, checked_item.value);
             choice_div.innerHTML =
-                this._get_filter_display_value(checked_item.value,
+                this._get_filter_display_value('', checked_item.value,
                     this.visible_filter_short_name);
             this.results_helper.species_section.perform_query();
             this.show_or_hide_filter_clear(
@@ -577,7 +577,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 href: '#', innerHTML: filter.friendly_name});
             var choiceDiv = dojo.create('div', {
                 'class': 'choice',
-                innerHTML: this._get_filter_display_value('', '')});
+                innerHTML: this._get_filter_display_value('', '', '')});
             var removeLink = dojo.create('a', {
                 href: '#', innerHTML: '× remove'});
             var clearLink = dojo.create('a', {
@@ -752,8 +752,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             }
             else {
                 if (value !== null) {
-                    var display_value = this._get_filter_display_value(value,
-                        char_name);
+                    var display_value = this._get_filter_display_value('',
+                        value, char_name);
                     var choice_div = dojo.query('#' + char_name +
                                                 ' .choice')[0];
                     choice_div.innerHTML = display_value;
@@ -773,7 +773,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }
 
         dojo.query('#' + filter.character_short_name + ' .choice'
-                  )[0].innerHTML = this._get_filter_display_value('', '');
+                  )[0].innerHTML = this._get_filter_display_value('', '', '');
         this.show_or_hide_filter_clear(filter.character_short_name);
     },
 
@@ -903,8 +903,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             // Create the radio-button widget.
 
             // Create a Don't Know radio button item.
-            var item_html = '<input type="radio" name="char_name" value="" ' +
-                        'checked> ' + this._get_filter_display_value('', '');
+            var item_html = '<span><input type="radio" name="char_name" ' +
+                'value="" checked> ' + this._get_filter_display_value('',
+                '', '') + '</span>';
             var dont_know_item = dojo.create('label',
                                              {'innerHTML': item_html});
             // Connect filter radio button item to a function that will set the
@@ -926,20 +927,23 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
                 if ( !((v.count === 0) && (v.value === 'NA')) ) {
 
-                    item_html = '<input type="radio" name="char_name" ' +
-                        'value="' + v.value + '"';
+                    item_html = '<span><input type="radio" name="char_name"' +
+                        ' value="' + v.value + '"';
                     if (v.count === 0) {
-                        item_html = item_html + ' class="zero" disabled';
+                        item_html += ' class="zero" disabled';
                     }
                     var display_value =
                         this._get_filter_display_value(v.friendly_text,
                             v.value, filter.character_short_name);
-                    item_html = item_html + '><span> ' + display_value +
-                        '</span> <span>(' + v.count + ')</span>';
+                    item_html += '><span> ' + display_value +
+                        '</span> <span>(' + v.count + ')</span></span>';
+                    // TODO: once images are ready, add some sensible
+                    // alt text
+                    item_html += ' <img src="images/test.png" alt="TBD">';
                     var character_value_item = dojo.create('label',
                         {'innerHTML': item_html}, valuesList);
                     this.glossarizer.markup(
-                        character_value_item.childNodes[1]);
+                        character_value_item.childNodes[0].childNodes[1]);
                     // Connect filter character value radio button item to a
                     // function that will set the Key Characteristics and
                     // Notable Exceptions for filter particular character
