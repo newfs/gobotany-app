@@ -478,11 +478,18 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         });
     },
 
-    _get_filter_display_value: function(value, filter_short_name) {
+    _get_filter_display_value: function(friendly_text, value,
+        filter_short_name) {
+
         var display_value = 'don\'t know';
 
         if (value !== undefined && value !== '') {
             display_value = value;
+
+            // If a non-technical label was supplied, use it instead.
+            if (friendly_text !== undefined && friendly_text !== '') {
+                display_value = friendly_text;
+            }
 
             // If the value is numeric, format with correct decimals and unit.
             if (!isNaN(value)) {
@@ -828,7 +835,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
     show_filter_working: function(filter) {
         dojo.query('#filter-working').style({display: 'block'});
-        dojo.query('#filter-working .name')[0].innerHTML = filter.friendly_name;
+        dojo.query('#filter-working .name')[0].innerHTML =
+            filter.friendly_name;
 
         this.visible_filter_short_name = filter.character_short_name;
 
@@ -924,8 +932,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                         item_html = item_html + ' class="zero" disabled';
                     }
                     var display_value =
-                        this._get_filter_display_value(v.value,
-                            filter.character_short_name);
+                        this._get_filter_display_value(v.friendly_text,
+                            v.value, filter.character_short_name);
                     item_html = item_html + '><span> ' + display_value +
                         '</span> <span>(' + v.count + ')</span>';
                     var character_value_item = dojo.create('label',
@@ -962,11 +970,19 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }
         
         // Set any question and hint text for this filter.
+        var html = ''
         var q = dojo.query('#filter-working .info .question')[0];
-        q.innerHTML = '<p>' + filter.question + '</p>';
-        
+        if (filter.question.length > 0) {
+            html = '<p>' + filter.question + '</p>';
+        }
+        q.innerHTML = html;
+
+        html = '';
         var h = dojo.query('#filter-working .info .hint')[0];
-        h.innerHTML = '<p>' + filter.hint + '</p>';
+        if (filter.hint.length > 0) {
+            html = '<p>' + filter.hint + '</p>';
+        }
+        h.innerHTML = html;
 
         // Set the key characteristics and notable exceptions for the filter
         // (character). (The ones for character values are set elsewhere.)

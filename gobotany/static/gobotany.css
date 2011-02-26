@@ -38,21 +38,21 @@ p {
 }
 
 #content {
-    width: 960px;
+    width: 940px;
 }
 
 #main {
     border: 1px dashed #ddd;
     float: right;
-    margin: 0 0 1em;
-    width: 750px;
+    margin: 0 10px 1em;
+    width: 765px;
 }
 
 #filters, #help #nav {
     border: 1px dashed #ccc;
     float: left;
     min-height: 150px;
-    width: 200px;
+    width: 150px;
 }
 
 #filters {
@@ -60,12 +60,12 @@ p {
 }
 
 #help h1 {
-    margin-left: 8.8em;
+    margin-left: 177px;
 }
 
 #help #main {
     padding-left: 1em;
-    width: 730px;
+    width: 750px;
 }
 
 #help #main h2 {
@@ -146,7 +146,7 @@ p {
 }
 
 #filters ul {
-    font-size: 0.75em;
+    font-size: 0.7em;
 }
 
 #filters li {
@@ -164,7 +164,8 @@ p {
 }
 
 #filters .loading {
-    margin: 1em;
+    font-size: 0.9em;
+    margin: 0.6em;
 }
 
 #head, #foot, #plants {
@@ -178,7 +179,8 @@ p {
 #head {
     font-size: 9px;
     margin: 0 0 10px;
-    padding: 10px 0;
+    padding: 10px 10px 10px 0;
+    width: 918px;
 }
 
 #search-suggest input {
@@ -243,7 +245,7 @@ p {
 #filter-working, #pick-filters {
     border: 1px dashed #ddd;
     display: none;
-    height: 180px;
+    height: 200px;
     padding: 1em;
 }
 
@@ -257,13 +259,14 @@ p {
 #filter-working h3.name, #pick-filters h3.name {
     font-size: 1em;
     font-weight: bold;
-    text-align: center;
+    line-height: 1em;
+    margin: 0 0 0.3em 0;
+    padding: 0;
 }
 
 #filter-working .info .info-sub {
     float: left;
     border: 1px dashed #ddd;
-    padding: 0.5em;
     margin-right: 1em;
 }
 
@@ -273,9 +276,8 @@ p {
 
 #filter-working .values {
     float: left;
-    font-size: 0.85em;
-    padding: 1em 0 0;
-    width: 250px;
+    padding: 0.5em 0 0.5em 0;
+    width: 350px;
 }
 
 #filter-working .values label {
@@ -294,12 +296,19 @@ p {
 #filter-working .info {
     float: left;
     font-size: 0.85em;
-    padding: 1em;
-    width: 410px;
 }
 
 #filter-working .info .hint {
     font-size: 0.85em;
+}
+
+#filter-working .info .hint p {
+    margin-bottom: 0;
+}
+
+#filter-working button {
+    clear: left;
+    display: block;
 }
 
 /* Make the Dijit horizontal slider look like a ruler */
@@ -358,7 +367,6 @@ p {
     text-align: right;
 }
 
-/* --- */
 
 form#results-display {
     font-size: 0.7em;

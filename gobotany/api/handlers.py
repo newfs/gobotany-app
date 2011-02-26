@@ -431,6 +431,7 @@ class CharacterValuesHandler(BaseHandler):
             notable_exceptions = cv.notable_exceptions
             if count > 0:
                 yield {'value': cv.value,
+                       'friendly_text': cv.friendly_text,
                        'count': count,
                        'key_characteristics': key_characteristics,
                        'notable_exceptions': notable_exceptions}
