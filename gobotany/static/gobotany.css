@@ -296,6 +296,10 @@ p {
     line-height: 1.2em;
 }
 
+#filter-working .values label:first-child {
+    border-top: 0;
+}
+
 #filter-working .values label img {
     border: 1px dashed #ccc;
     float: right;

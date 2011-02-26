@@ -62,6 +62,14 @@ dojo.declare('gobotany.filters.MultipleChoiceFilter',
     },
     process_value: function(character_value, index) {
         this.values.push(character_value);
+    },
+    get_value_object: function(value_string) {
+        for (var i = 0; i < this.values.length; i++) {
+            if (this.values[i].value === value_string) {
+                return this.values[i];
+            }
+        }
+        return undefined;
     }
 });
 
