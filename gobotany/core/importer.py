@@ -9,6 +9,7 @@ import os
 import re
 import sys
 import tarfile
+import zipfile
 
 from gobotany.core import models
 from gobotany.simplekey.models import Blurb, Video, HelpPage, \
@@ -62,8 +63,8 @@ class Importer(object):
 
 
     def validate_data(self, pilegroupf, pilef, taxaf, charf, charvf,
-                      char_glossaryf, glossaryf, glossary_images,
-                      lookalikesf, *taxonfiles):
+                      char_val_images, char_glossaryf, glossaryf,
+                      glossary_images, lookalikesf, *taxonfiles):
         """Perform some basic validation on the data to be imported."""
         print >> self.logfile, 'Validating data'
         is_valid = True
@@ -114,15 +115,15 @@ class Importer(object):
 
 
     def import_data(self, pilegroupf, pilef, taxaf, charf, charvf,
-                    char_glossaryf, glossaryf, glossary_images,
-                    lookalikesf, *taxonfiles):
+                    char_val_images, char_glossaryf, glossaryf,
+                    glossary_images, lookalikesf, *taxonfiles):
         self._import_partner_sites()
         self._import_pile_groups(pilegroupf)
         self._import_piles(pilef)
         self._import_taxa(taxaf)
         self._import_plant_names(taxaf)
         self._import_characters(charf)
-        self._import_character_values(charvf)
+        self._import_character_values(charvf, char_val_images)
         self._import_character_glossary(char_glossaryf)
         self._import_glossary(glossaryf, glossary_images)
         self._import_place_characters_and_values(taxaf)
@@ -715,10 +716,11 @@ class Importer(object):
 
         return html
 
-    def _import_character_values(self, f):
+    def _import_character_values(self, f, imagef):
         print >> self.logfile, 'Setting up character values in file: %s' % f
         iterator = iter(CSVReader(f).read())
         colnames = [x.lower() for x in iterator.next()]
+        images = tarfile.open(imagef)
 
         for cols in iterator:
             row = dict(zip(colnames, cols))
@@ -767,6 +769,18 @@ class Importer(object):
                                                 row['character'])
             else:
                 cv = res[0]
+
+            # Add drawing image (if present) for this character value.
+            if row['image_name']:
+                try:
+                    image = images.getmember(row['image_name'])
+                    image_file = File(images.extractfile(image.name))
+                    cv.image.save(image.name, image_file)
+                except KeyError:
+                    print >> self.logfile, \
+                        '    ERR: No image found for character value'
+
+            cv.save()
 
             if not 'friendly_text' in row:
                 continue

@@ -221,6 +221,9 @@ class CharacterValue(models.Model):
     key_characteristics = models.TextField(blank=True)
     notable_exceptions = models.TextField(blank=True)
     friendly_text = models.TextField(blank=True)
+    image = models.ImageField(upload_to='character-value',
+                              blank=True,
+                              null=True)
 
     class Meta:
         ordering = ['character__short_name', 'value_str', 'value_flt',
