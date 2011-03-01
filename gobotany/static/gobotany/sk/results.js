@@ -975,10 +975,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                         {'innerHTML': item_html}, valuesList);
 
                     // Once the label is added, add a tooltip for the drawing.
-                    var image_html = '<img id="' + image_id + '" src="' +
-                        image_path + '" alt="drawing showing ' +
-                        v.friendly_text + '">';
                     if (image_path.length > 0) {
+                        var image_html = '<img id="' + image_id + '" src="' +
+                            image_path + '" alt="drawing showing ' +
+                            v.friendly_text + '">';
                         new dijit.Tooltip({
                             connectId: [image_id],
                             label: image_html,
