@@ -776,6 +776,8 @@ class Importer(object):
                     image = images.getmember(row['image_name'])
                     image_file = File(images.extractfile(image.name))
                     cv.image.save(image.name, image_file)
+                    # Force the thumbnail to be generated.
+                    cv.image.thumbnail.height()
                 except KeyError:
                     print >> self.logfile, \
                         '    ERR: No image found for character value'

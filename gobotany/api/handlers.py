@@ -431,8 +431,10 @@ class CharacterValuesHandler(BaseHandler):
             notable_exceptions = cv.notable_exceptions
 
             image_url = ''
+            thumbnail_url = ''
             if cv.image:
                 image_url = cv.image.url
+                thumbnail_url = cv.image.thumbnail.absolute_url
 
             if count > 0:
                 yield {'value': cv.value,
@@ -440,7 +442,8 @@ class CharacterValuesHandler(BaseHandler):
                        'count': count,
                        'key_characteristics': key_characteristics,
                        'notable_exceptions': notable_exceptions,
-                       'image_url': image_url}
+                       'image_url': image_url,
+                       'thumbnail_url': thumbnail_url}
 
     # Piston doesn't seem to like being returned a generator
     def read(self, request, pile_slug, character_short_name):

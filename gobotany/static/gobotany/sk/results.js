@@ -846,6 +846,15 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         return 0; // default value (no sort)
     },
+    
+    get_image_id_from_path: function(image_path) {
+        // Get a value suitable for use as an image element id from
+        // the image filename found in the image path.
+        var last_slash_index = image_path.lastIndexOf('/');
+        var dot_index = image_path.indexOf('.', last_slash_index);
+        var image_id = image_path.substring(last_slash_index + 1, dot_index);
+        return image_id;
+    },
 
     show_filter_working: function(filter) {
         dojo.query('#filter-working').style({display: 'block'});
@@ -951,11 +960,32 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                             v.value, filter.character_short_name);
                     item_html += '><span> ' + display_value +
                         '</span> <span>(' + v.count + ')</span></span>';
-                    // TODO: once images are ready, add some sensible
-                    // alt text
-                    item_html += ' <img src="images/test.png" alt="TBD">';
+
+                    var image_path = v.image_url;
+                    var thumbnail_html = '';
+                    if (image_path.length > 0) {
+                        var image_id = this.get_image_id_from_path(image_path);
+                        thumbnail_html = '<img id="' + image_id +
+                            '" src="' + v.thumbnail_url + '" alt="drawing ' +
+                            'showing ' + v.friendly_text + '">';
+                        item_html += ' <div>' + thumbnail_html + '</div>';
+                    }
+
                     var character_value_item = dojo.create('label',
                         {'innerHTML': item_html}, valuesList);
+
+                    // Once the label is added, add a tooltip for the drawing.
+                    var image_html = '<img id="' + image_id + '" src="' +
+                        image_path + '" alt="drawing showing ' +
+                        v.friendly_text + '">';
+                    if (image_path.length > 0) {
+                        new dijit.Tooltip({
+                            connectId: [image_id],
+                            label: image_html,
+                            position: ["after", "above"]
+                        });
+                    }
+
                     this.glossarizer.markup(
                         character_value_item.childNodes[0].childNodes[1]);
                     // Connect filter character value radio button item to a

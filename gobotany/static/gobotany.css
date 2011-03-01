@@ -282,7 +282,7 @@ p {
     background: #fff;
     border: 1px solid #999;
     float: left;
-    height: 150px;
+    height: 153px;
     margin: 0 0 10px 0;
     overflow-y: scroll;
     padding: 0;
@@ -291,6 +291,7 @@ p {
 
 #filter-working .values label {
     border-top: 1px solid #999;
+    clear: both;
     display: block;
     height: 50px;
     line-height: 1.2em;
@@ -300,18 +301,10 @@ p {
     border-top: 0;
 }
 
-#filter-working .values label img {
-    border: 1px dashed #ccc;
-    float: right;
-    height: 40px;
-    margin: 5px 5px 0 0;
-    width: 30px;
-}
-
 #filter-working .values label > span:first-child {
     display: inline-block;
     padding-left: 0.3em;
-    width: 340px;
+    width: 330px;
 }
 
 #filter-working .values input {
@@ -320,6 +313,22 @@ p {
 
 #filter-working .values input.zero ~ span {
     color: #ccc;
+}
+
+#filter-working .values label div {
+    border: 1px dashed #ccc;
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    height: 40px;
+    margin: 4px 4px 0 0;
+    padding: 0;
+    text-align: center;
+    width: 40px;
+}
+
+#filter-working .values label div img {
+    height: 40px;
 }
 
 #filter-working .info {
