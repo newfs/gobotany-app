@@ -866,6 +866,19 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         var valuesList = dojo.query('#filter-working form .values')[0];
         dojo.empty(valuesList);
 
+        // Allow for numeric filters to be styled differently than
+        // multiple-choice filters.
+        var NUMERIC_VALUES_CLASS = 'numeric';
+        var MULTIPLE_CHOICE_VALUES_CLASS = 'multiple';
+        if (filter.value_type === 'LENGTH') {
+            dojo.addClass(valuesList, NUMERIC_VALUES_CLASS);
+            dojo.removeClass(valuesList, MULTIPLE_CHOICE_VALUES_CLASS);
+        }
+        else {
+            dojo.addClass(valuesList, MULTIPLE_CHOICE_VALUES_CLASS);
+            dojo.removeClass(valuesList, NUMERIC_VALUES_CLASS);
+        }
+
         if (filter.values === undefined) {
             console.log(
                 'No filter values exist: ' + filter.friendly_name +
@@ -886,7 +899,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         /* Build the new DOM elements. */
 
-        if (filter.value_type == 'LENGTH') {
+        if (filter.value_type === 'LENGTH') {
             var unit = filter.unit;
 
             if (unit === null || unit === undefined) {

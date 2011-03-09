@@ -289,7 +289,13 @@ p {
     width: 400px;
 }
 
-#filter-working .values label {
+#filter-working .values.numeric {
+    border: 0;
+    height: auto;
+    overflow: visible;
+}
+
+#filter-working .values.multiple label {
     border-top: 1px solid #999;
     clear: both;
     display: block;
@@ -297,11 +303,11 @@ p {
     line-height: 1.2em;
 }
 
-#filter-working .values label:first-child {
+#filter-working .values.multiple label:first-child {
     border-top: 0;
 }
 
-#filter-working .values label > span:first-child {
+#filter-working .values.multiple label > span:first-child {
     display: inline-block;
     padding-left: 0.3em;
     width: 330px;
