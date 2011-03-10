@@ -900,41 +900,56 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         /* Build the new DOM elements. */
 
         if (filter.value_type === 'LENGTH') {
-            var unit = filter.unit;
+            // TODO: Consider changing the value type (perhaps to "NUMERIC"),
+            // since it turns out not all numeric filters are length filters.
+            if ((filter.character_short_name.indexOf('length') > -1) ||
+                (filter.character_short_name.indexOf('width') > -1) ||
+                (filter.character_short_name.indexOf('height') > -1) ||
+                (filter.character_short_name.indexOf('thickness') > -1)) {
 
-            if (unit === null || unit === undefined) {
-                unit = 'mm';
-                console.warn('[' + filter.character_short_name +
-                    '] Measurement has no unit, defaulting to mm');
+                // Show a ruler slider for length measurements.
+
+                var unit = filter.unit;
+
+                if (unit === null || unit === undefined) {
+                    unit = 'mm';
+                    console.warn('[' + filter.character_short_name +
+                        '] Measurement has no unit, defaulting to mm');
+                }
+
+                // Create a slider with horizontal rules and labels.
+
+                var themin = filter.values.min;
+                var themax = filter.values.max;
+                var startvalue = (themax + themin) / 2.0;
+
+                var selectedvalue =
+                    this.results_helper.filter_manager.get_selected_value(
+                        filter.character_short_name);
+                if (selectedvalue !== undefined && selectedvalue !== null) {
+                    startvalue = selectedvalue;
+                }
+
+                var p = gobotany.utils.pretty_length;
+                dojo.place('<label>Select a length between<br>' +
+                           p('mm', themin) +
+                           ' (' + p('in', themin) + ') and<br>' +
+                           p('mm', themax) +
+                           ' (' + p('in', themax) + ')<br></label>',
+                           valuesList);
+
+                this.slider_node = dojo.create('div', null, valuesList);
+                this.ruler = gobotany.sk.RulerSlider(
+                    this.slider_node, 'character_slider', 600,
+                    themin, themax, startvalue);
             }
-
-            // Create a slider with horizontal rules and labels.
-
-            var themin = filter.values.min;
-            var themax = filter.values.max;
-            var startvalue = (themax + themin) / 2.0;
-
-            var selectedvalue =
-                this.results_helper.filter_manager.get_selected_value(
-                    filter.character_short_name);
-            if (selectedvalue !== undefined && selectedvalue !== null) {
-                startvalue = selectedvalue;
+            else {
+                // For non-length numeric ("count") filters, show a simple
+                // slider without a ruler.
+                console.log('Non-length numeric filter: show simple slider');
             }
-
-            var p = gobotany.utils.pretty_length;
-            dojo.place('<label>Select a length between<br>' +
-                       p('mm', themin) +
-                       ' (' + p('in', themin) + ') and<br>' +
-                       p('mm', themax) +
-                       ' (' + p('in', themax) + ')<br></label>',
-                       valuesList);
-
-            this.slider_node = dojo.create('div', null, valuesList);
-            this.ruler = gobotany.sk.RulerSlider(
-                this.slider_node, 'character_slider', 600,
-                themin, themax, startvalue);
-
-        } else {
+        }
+        else {
 
             // Create the radio-button widget.
 
