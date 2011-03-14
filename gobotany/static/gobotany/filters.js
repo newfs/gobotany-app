@@ -64,7 +64,8 @@ dojo.declare('gobotany.filters.MultipleChoiceFilter',
         this.values.push(character_value);
     },
     get_value_object: function(value_string) {
-        for (var i = 0; i < this.values.length; i++) {
+        var i = 0;
+        for (i = 0; i < this.values.length; i++) {
             if (this.values[i].value === value_string) {
                 return this.values[i];
             }
@@ -95,6 +96,14 @@ dojo.declare('gobotany.filters.NumericRangeFilter',
         if (vmax !== undefined && (v.max === undefined || v.max < vmax)) {
             v.max = vmax;
         }
+    },
+    is_length: function() {
+        // Return true if this numeric filter appears to measure a length
+        // rather than a count.
+        return ((this.character_short_name.indexOf('length') > -1) ||
+                (this.character_short_name.indexOf('width') > -1) ||
+                (this.character_short_name.indexOf('height') > -1) ||
+                (this.character_short_name.indexOf('thickness') > -1));
     }
 });
 
@@ -156,7 +165,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     on_default_filters_loaded: function() {},
 
     get_filter: function(short_name) {
-        for (var x = 0; x < this.filters.length; x++) {
+        var x = 0;
+        for (x = 0; x < this.filters.length; x++) {
             if (this.filters[x].character_short_name === short_name) {
                 return this.filters[x];
             }
@@ -164,7 +174,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         return false;
     },
     has_filter: function(short_name) {
-        for (var x = 0; x < this.filters.length; x++) {
+        var x = 0;
+        for (x = 0; x < this.filters.length; x++) {
             if (this.filters[x].character_short_name === short_name) {
                 return true;
             }
@@ -172,7 +183,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         return false;
     },
     remove_filter: function(short_name) {
-        for (var x = 0; x < this.filters.length; x++) {
+        var x = 0;
+        for (x = 0; x < this.filters.length; x++) {
             if (this.filters[x].character_short_name === short_name) {
                 var filter = this.filters[x];
                 this.filters.splice(x, 1);
@@ -193,7 +205,9 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         //     into gobotany.filters.filter_factory().
 
         var f = obj;
-        if (!obj.isInstanceOf || !obj.isInstanceOf(gobotany.filters.Filter)) {
+        if (!obj.isInstanceOf ||
+            !obj.isInstanceOf(gobotany.filters.Filter)) {
+
             f = gobotany.filters.filter_factory(obj);
         }
         this.filters.push(f);
@@ -218,7 +232,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         console.log('add_callback_filter: ' + filter.character_short_name);
     },
     set_selected_value: function(character_short_name, selected_value) {
-        for (var i = 0; i < this.filters.length; i++) {
+        var i = 0;
+        for (i = 0; i < this.filters.length; i++) {
             if (this.filters[i].character_short_name ===
                   character_short_name) {
                 // Character values must be stringified, since their
@@ -236,7 +251,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                     character_short_name);
     },
     get_selected_value: function(character_short_name) {
-        for (var i = 0; i < this.filters.length; i++) {
+        var i = 0;
+        for (i = 0; i < this.filters.length; i++) {
             if (this.filters[i].character_short_name ===
                 character_short_name) {
                 return this.filters[i].selected_value;
@@ -245,12 +261,14 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         return undefined;
     },
     set_count_for_value: function(character_short_name, value_name, count) {
-        for (var i = 0; i < this.filters.length; i++) {
+        var i = 0;
+        for (i = 0; i < this.filters.length; i++) {
             var filter = this.filters[i];
             if (filter.character_short_name === character_short_name) {
                 // Found the filter; now look for the character value.
                 if (typeof filter.values !== 'undefined') {
-                    for (var j = 0; j < filter.values.length; j++) {
+                    var j = 0;
+                    for (j = 0; j < filter.values.length; j++) {
                         if (filter.values[j].value === value_name) {
                             filter.values[j].count = count;
                             return;
@@ -270,7 +288,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     as_query_string: function() {
         var filter_names = [];
         var obj = {};
-        for (var x = 0; x < this.filters.length; x++) {
+        var x = 0;
+        for (x = 0; x < this.filters.length; x++) {
             var f = this.filters[x];
             filter_names.push(f.character_short_name);
             obj[f.character_short_name] = f.selected_value;
@@ -287,7 +306,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         var content = {pile: this.pile_slug};
         var special = [];
         console.log('FilterManager: running filtered query');
-        for (var i = 0; i < this.filters.length; i++) {
+        var i = 0;
+        for (i = 0; i < this.filters.length; i++) {
             var filter = this.filters[i];
 
             if (filter.filter_callback !== undefined) {
@@ -328,10 +348,12 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                 if (special.length > 0) {
                     // run special filters
                     var newdata = [];
-                    for (var x = 0; x < data.items.length; x++) {
+                    var x = 0;
+                    for (x = 0; x < data.items.length; x++) {
                         var item = data.items[x];
                         var removed = false;
-                        for (var y = 0; y < special.length; y++) {
+                        var y = 0;
+                        for (y = 0; y < special.length; y++) {
                             var callback = special[y].filter_callback;
                             if (!callback(special[y], item)) {
                                 removed = true;
@@ -352,7 +374,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                 for (i = 0; i < data.value_counts.length; i++) {
                     var filter = data.value_counts[i];
                     var counts = filter.counts;
-                    for (var value_name in counts) {
+                    var value_name = '';
+                    for (value_name in counts) {
                         if (counts.hasOwnProperty(value_name) &&
                             value_name !== '__parent') {
 
@@ -399,8 +422,8 @@ dojo.declare('gobotany.filters.FilterLoadingWatcher', null, {
                 }
             });
         }
-            
-        for (var y = 0; y < this.filters.length; y++) {
+        var y = 0;
+        for (y = 0; y < this.filters.length; y++) {
             var filter = this.filters[y];
             filter.load_values(loading_args);
         }
@@ -411,11 +434,13 @@ dojo.declare('gobotany.filters.FilterLoadingWatcher', null, {
 gobotany.filters.filter_factory = function(args) {
     var filter_type;
 
-    if (args.value_type == 'LENGTH') {
+    if (args.value_type === 'LENGTH') {
         filter_type = gobotany.filters.NumericRangeFilter;
-    } else if (args.value_type == 'TEXT')  {
+    }
+    else if (args.value_type === 'TEXT')  {
         filter_type = gobotany.filters.MultipleChoiceFilter;
-    } else {
+    }
+    else {
         filter_type = gobotany.filters.Filter;
     }
 

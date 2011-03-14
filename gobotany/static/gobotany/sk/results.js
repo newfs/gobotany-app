@@ -22,10 +22,12 @@ dojo.require('dijit.form.CheckBox');
 dojo.require("dijit.form.FilteringSelect");
 dojo.require('dijit.form.Form');
 dojo.require('dijit.form.Select');
+dojo.require('dijit.form.Slider');
 
 dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     slider_node: null,
     ruler: null,
+    simple_slider: null,
 
     constructor: function(/*String*/ pile_slug) {
         // summary:
@@ -492,11 +494,18 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             }
 
             // If the value is numeric, format with correct decimals and unit.
+            // TODO: Unless it's a 'count' filter, in which case don't
+            // do anything to the formatting.
             if (!isNaN(value)) {
                 var filter = this.results_helper.filter_manager.get_filter(
                     filter_short_name);
-                display_value = gobotany.utils.pretty_length(filter.unit,
-                    value);
+                if (filter.is_length()) {
+                    display_value = gobotany.utils.pretty_length(filter.unit,
+                        value);
+                }
+                else {
+                    display_value = value;
+                }
             }
 
             // Use special display text for NA values.
@@ -508,6 +517,17 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         return display_value;
     },
 
+    _apply_numeric_value: function(choice_div, value) {
+        this.results_helper.filter_manager.set_selected_value(
+            this.visible_filter_short_name, value);
+        var display_value = this._get_filter_display_value('', value,
+            this.visible_filter_short_name);
+        choice_div.innerHTML = display_value;
+        this.results_helper.save_filter_state();
+        this.results_helper.species_section.perform_query();
+        this.show_or_hide_filter_clear(this.visible_filter_short_name);
+    },
+
     _apply_filter: function(event) {
         dojo.stopEvent(event);
 
@@ -516,22 +536,22 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         // First, see if this is a numeric field.
 
-        if (dojo.byId('character_slider') !== null) {
+        if (dojo.byId('character_slider') !== null) {   // ruler slider
             var char_value_q = dijit.byId('character_slider');
             var value = char_value_q.value;
             if (isNaN(value)) {
                 return;
             }
-
-            this.results_helper.filter_manager.set_selected_value(
-                this.visible_filter_short_name, value);
-            var display_value = this._get_filter_display_value('', value,
-                this.visible_filter_short_name);
-            choice_div.innerHTML = display_value;
-            this.results_helper.save_filter_state();
-            this.results_helper.species_section.perform_query();
-            this.show_or_hide_filter_clear(
-                this.visible_filter_short_name);
+            this._apply_numeric_value(choice_div, value);
+            return;
+        }
+        else if (dojo.byId('simple-slider') !== null) {   // count slider
+            var char_value_q = dijit.byId('simple-slider');
+            var value = char_value_q.value;
+            if (isNaN(value)) {
+                return;
+            }
+            this._apply_numeric_value(choice_div, value);
             return;
         }
 
@@ -856,6 +876,16 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         return image_id;
     },
 
+    set_simple_slider_value: function() {
+        var count_display =
+            dojo.query('#filter-working #simple-slider .count')[0];
+        count_display.innerHTML = this.simple_slider.value;
+        var handle = dojo.query('.dijitSliderImageHandleH')[0];
+        var pos = dojo.position(handle, true);
+        count_display.style.top = (pos.y - 20) + 'px';
+        count_display.style.left = pos.x + 'px';
+    },
+
     show_filter_working: function(filter) {
         dojo.query('#filter-working').style({display: 'block'});
         dojo.query('#filter-working .name')[0].innerHTML =
@@ -889,23 +919,27 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             return;
         }
 
-        /* Clean up an old ruler before rebuilding the working area. */
-
+        /* Clean up an old ruler or simple slider before rebuilding the
+           working area.
+           */
         if (this.ruler) {
             this.ruler.destroy();
             dojo.query(this.slider_node).orphan();
             this.ruler = this.slider_node = null;
         }
+        if (this.simple_slider) {
+            this.simple_slider.destroy();
+            dojo.query(this.slider_node).orphan();
+            this.simple_slider = this.slider_node = null;
+        }
 
         /* Build the new DOM elements. */
 
+        // TODO: Consider changing the value type (perhaps to "NUMERIC"),
+        // since it turns out not all numeric filters are actually length
+        // filters (some are count filters).
         if (filter.value_type === 'LENGTH') {
-            // TODO: Consider changing the value type (perhaps to "NUMERIC"),
-            // since it turns out not all numeric filters are length filters.
-            if ((filter.character_short_name.indexOf('length') > -1) ||
-                (filter.character_short_name.indexOf('width') > -1) ||
-                (filter.character_short_name.indexOf('height') > -1) ||
-                (filter.character_short_name.indexOf('thickness') > -1)) {
+            if (filter.is_length()) {
 
                 // Show a ruler slider for length measurements.
 
@@ -946,7 +980,35 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             else {
                 // For non-length numeric ("count") filters, show a simple
                 // slider without a ruler.
-                console.log('Non-length numeric filter: show simple slider');
+                var num_values = filter.values.max - filter.values.min + 1;
+                var startvalue = Math.ceil(num_values / 2);
+                var selectedvalue =
+                    this.results_helper.filter_manager.get_selected_value(
+                        filter.character_short_name);
+                if (selectedvalue !== undefined && selectedvalue !== null) {
+                    startvalue = selectedvalue;
+                }
+                dojo.place('<label>Select a number between<br>' +
+                           filter.values.min + ' and ' +
+                           filter.values.max + '</label>', valuesList);
+                this.slider_node = dojo.create('div', null, valuesList);
+                this.simple_slider = new dijit.form.HorizontalSlider({
+                    id: 'simple-slider',
+                    name: 'simple-slider',
+                    value: startvalue,
+                    minimum: filter.values.min,
+                    maximum: filter.values.max,
+                    discreteValues: num_values,
+                    intermediateChanges: true,
+                    showButtons: false,
+                    onChange: dojo.hitch(this, this.set_simple_slider_value),
+                    onMouseUp: dojo.hitch(this, this.set_simple_slider_value)
+                    }, this.slider_node);
+                dojo.create('div', {
+                    'class': 'count',
+                    'innerHTML': startvalue
+                    }, this.simple_slider.containerNode);
+                this.set_simple_slider_value();
             }
         }
         else {

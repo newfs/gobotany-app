@@ -292,7 +292,7 @@ p {
 #filter-working .values.numeric {
     border: 0;
     height: auto;
-    overflow: visible;
+    overflow-y: visible;
 }
 
 #filter-working .values.multiple label {
@@ -357,7 +357,7 @@ p {
     margin-bottom: 1em;
 }
 
-/* Make the Dijit horizontal slider look like a ruler */
+/* Make a Dijit horizontal slider look like a ruler */
 
 .moz_ruler_slider_wrapper {
     /* Create a context in which we can absolutely position english/metric
@@ -413,6 +413,16 @@ p {
     text-align: right;
 }
 
+
+/* overrides for the non-length (count) slider */
+
+#filter-working #simple-slider .dijitSliderDecoration {
+    background: #fff;
+    border-bottom: 0;
+}
+#filter-working #simple-slider .count {
+    position: absolute; /* top/left set by JS */
+}
 
 form#results-display {
     font-size: 0.7em;
