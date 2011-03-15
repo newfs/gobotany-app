@@ -1110,11 +1110,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             var values_element = dojo.query('#filter-working .values')[0];
             var top_offset = 0;
             if (selector.indexOf('[value') > -1) {
-                top_offset = dojo.query(selector)[0].offsetTop;
+                // Adjust the height to position the selected item at around
+                // the middle of the scrolling list.
+                top_offset = dojo.query(selector)[0].offsetTop - 334;
             }
             values_element.scrollTop = top_offset;
         }
-        
+
         // Set any question and hint text for this filter.
         var html = ''
         var q = dojo.query('#filter-working .info .question')[0];
