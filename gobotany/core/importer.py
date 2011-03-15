@@ -1110,16 +1110,14 @@ class Importer(object):
                 character_group.name
 
         # Create characters.
-        character_short_names = ['habitat', 'state_distribution']
+        character_names = [('habitat', 'Habitat'),
+                           ('state_distribution', 'New England state')]
         value_type = 'TEXT'
-        for short_name in character_short_names:
-            # Create a friendly name automatically for now.
-            temp_friendly_name = short_name.replace('_', ' ').capitalize()
-
+        for short_name, friendly_name in character_names:
             character, created = models.Character.objects.get_or_create(
                 short_name=short_name,
-                name=temp_friendly_name,
-                friendly_name=temp_friendly_name,
+                name=friendly_name,
+                friendly_name=friendly_name,
                 character_group=character_group,
                 value_type=value_type,
                 unit='',
