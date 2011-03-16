@@ -1,0 +1,5 @@
+/* some fixes to things that the Claro Dijit theme styles clobber */
+
+ol li, ul li {
+    line-height: inherit;
+}

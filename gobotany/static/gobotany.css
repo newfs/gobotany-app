@@ -1,4 +1,5 @@
-/* Go-Botany site styles */
+/* These are the rough Go Botany site styles that we are now (Mar 2011)
+   beginning to phase out in favor of the production design styles. */
 
 body {
     padding: 24px;
@@ -198,11 +199,11 @@ p {
     border: 1px solid #ccc;
     border-bottom-color: #999;
     border-right-color: #999;
-    left: 319px;
+    left: 296px;
     margin: 0 auto;
     position: absolute;
     text-align: left;
-    top: 71px;
+    top: 73px;
     width: 303px;
     z-index: 1;
 }

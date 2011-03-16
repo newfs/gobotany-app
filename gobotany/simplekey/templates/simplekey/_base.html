@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}: New England Wild Flower Society</title>
+        <meta charset="utf-8">
+        {% block js_top %}{% endblock %}
+
+        {% include "dojobase.html" %}
+
+        {% include "simplekey/search_suggest_script.html" %}
+
+        <link rel="stylesheet" href="/static/css/clarofix.css">
+        <link rel="stylesheet" href="/static/css/reset.css">
+        <link rel="stylesheet" href="/static/css/basic.css">
+        <link rel="stylesheet" href="/static/css/styles.css">
+        <link rel="stylesheet" href="/static/css/searchsuggest.css">
+        <link rel="stylesheet" href="/static/css/shadowbox.css">
+        <link rel="shortcut icon" href="/static/images/branding/favicon.png">
+        <!--[if IE 7]>
+            <link rel="stylesheet" href="/static/css/ie7.css">
+        <![endif]-->
+        <!--[if IE 8]>
+            <link rel="stylesheet" href="/static/css/ie8.css">
+        <![endif]-->
+
+        <!-- TODO: add jQuery JS here -->
+    </head>
+
+    {% block body %}{% endblock %}
+
+</html>

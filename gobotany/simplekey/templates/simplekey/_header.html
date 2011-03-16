@@ -1,0 +1,33 @@
+    <header>
+        <div class="container">
+            <!--Branding-->
+            <h2><a href="#">New England Wild Flower Society</a></h2>
+            <h1><a href="index.php">Go Botany features thousands of native
+                New England plants for you to learn and explore</a></h1>
+
+            <!--Navigation-->
+            <nav>
+                <div id="search">
+                    <form id="search-suggest" action="/simple/search" autocomplete="off">
+                        <button>Search</button>
+                        <input type="text" name="q" placeholder="Search..."
+                            value="{{ request.GET.q }}">
+                        <div class="hidden">
+                            <ul></ul>
+                        </div>
+                        <div class="clearit"></div>
+                    </form>
+                </div>
+                <ul>
+                    <li class="home"><a href="index.php">Home</a></li>
+                    <li class="plant-id"><a href="1/">Plant Identifier</a></li>
+                    <li class="my-plants"><a href="#">MyPlants</a></li>
+                    <li class="advanced-id"><a href="advanced/">Advanced ID Tools</a></li>
+                    <li class="teaching-tools"><a href="#">Teaching Tools</a></li>
+                    <li class="about last"><a href="#">About</a></li>
+                </ul>
+                <div class="clearit"></div>
+            </nav>
+            <div class="clearit"></div>
+        </div><!--Closes .container-->
+    </header>

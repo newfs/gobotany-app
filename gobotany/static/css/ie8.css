@@ -1,0 +1,28 @@
+/*////////////////////////////////*/
+/* IE8 Stylesheet */
+/*////////////////////////////////*/
+
+/*global styles*/
+header {
+    height: auto;
+}
+/*////////////////////////////////*/
+/* Home page */
+/*////////////////////////////////*/
+
+#banner #inner {
+    border: 6px solid #fff;
+}
+#banner #overlay {
+    background: url(../images/layout/white80.png) repeat;
+}
+
+/*/////////////////////////////*/
+/*Inside App pages*/
+/*////////////////////////////*/
+.list-item {
+    border-top: 1px solid #eeeddf;
+}
+.list-item.last {
+    border-bottom: 1px solid #eeeddf;
+}

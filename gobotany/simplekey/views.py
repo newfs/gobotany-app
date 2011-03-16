@@ -44,6 +44,10 @@ def index_view(request):
             'skip_getting_started': skip_getting_started,
             }, context_instance=RequestContext(request))
 
+def advanced_view(request):
+    return render_to_response('simplekey/advanced.html', {},
+            context_instance=RequestContext(request))
+
 def map_view(request):
     return render_to_response('simplekey/map.html', {
             'pages': Page.objects.order_by('number').all(),

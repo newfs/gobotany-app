@@ -1,25 +1,62 @@
-{% extends "simplekey/base.html" %}
-{% block title %}Getting Started{% endblock %}
-{% block content %}
-    <h1>{{ main_heading }}</h1>
-    <div>
-      {{ blurb|safe }}
-    </div>
-    <p>
-      <a href="1/">Start: Choose Collection</a>
-    </p>
-    <p>
-      <a href="guided-search/">Guided Search</a>
-    </p>
-    <form>
-      <input id="skip_getting_started" type="checkbox"
-             {% if skip_getting_started %} checked {% endif %}>
-      Don't show <i>Getting Started</i> message again — I get it
-    </form>
-    <p id="resume"></p>
-{% endblock %}
-{% block js_bottom %}
-    <script>
-        dojo.require('gobotany.sk.index');
-    </script>
+{% extends "simplekey/_base.html" %}
+
+{% block title %}Go Botany{% endblock %}
+
+{% block body %}
+    <body id="home" class="claro top-level">
+        {% include "simplekey/_header.html" %}
+
+        <div class="content">
+            <div class="container">
+                <!--Main Image Area-->
+                <div id="banner">
+                    <div id="inner">
+                        <div id="overlay">
+                            <h2>Plant Identifier</h2>
+                            <img src="/static/images/layout/separator.png" alt="Go Botany">
+                            <p>Want to know what that plant is? With our Plant Identifier, you can identify over 1,200 native New England plants! Answer some questions step by step, and narrow down the possibilities. The key works best if you have an actual sample or a few photos of your plant.</p>
+                            <a href="1/" id="cta">Get Started</a>
+                        </div><!--Closes #overlay-->
+                    </div><!--Closes #inner-->
+                </div><!--Closes #banner-->
+
+                <!--3 Column Section-->
+                <div class="three-col">
+                    <h3>MyPlants</h3>
+                    <h5>Connect with other plant fans!</h5>
+                    <p>Join our on-line community of plant enthusiasts! Find friends, collaborate on field surveys for plants, share your discoveries, get help identifying plants, make maps, and develop checklists of plants for particular sites you are exploring.</p>
+                    <a class="learn-more">Learn More</a>
+                </div><!--Closes .three-col-->
+
+                <div class="three-col">
+                    <h3>Advanced ID Tools</h3>
+                    <h5>For experienced botanists!</h5>
+                    <p>Identify over 3,000 New England plants by using our Full Identification Key, including technical multiple-access and dichotomous keys to families, genera, and species. Also learn about subspecies and varieties native to our region.</p>
+                    <a class="learn-more" href="advanced/">Learn More</a>
+                </div><!--Closes .three-col-->
+
+                <div class="three-col last">
+                    <h3>Teaching Tools</h3>
+                    <h5>A useful teaching resource!</h5>
+                    <p>Go Botany encourages informal, self-directed education in botany for science stduents and beginning and amateur botanists. Professors, teachers, and environmental educators can share curricula and teaching ideas.</p>
+                    <a class="learn-more" href="#">Learn More</a>
+                </div><!--Closes .three-col-->
+
+                <div class="clearit"></div>
+
+                <!--Plant of the Day Section-->
+                <div id="potd">
+                    <img src="/static/images/layout/potd-img1.jpg" alt="Magnolia Virginiana" />
+                    <div class="details">
+                        <h4>Plant of the Day: <span class="latin">Magnolia Virginiana</span> <span class="english">Sweet Bay</span></h4>
+                        <p>Although it attains impressive sizes in the south, sweetbay magnolia is a medium-sized tree (20-60 feet or 10-20 meters tall) in southern New England. The leaves are lustrous green on top and white-hairy beneath, and often remain on the plant into early winter.</p>
+                        <a class="learn-more" href="#">Learn More</a>
+                    </div><!--Closes .details-->
+                    <div class="clearit"></div>
+                </div><!--Closes #potd-->
+            </div><!--Closes .container-->
+        </div><!--Closes .content-->
+
+        {% include "simplekey/_footer.html" %}
+    </body>
 {% endblock %}

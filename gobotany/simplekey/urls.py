@@ -19,8 +19,9 @@ urlpatterns = patterns(
     # Auto-suggestions for search
     url('^suggest/$', views.suggest_view, name='simplekey-search-suggest'),
 
-    # Simple key navigation
+    # Site pages
     url('^$', views.index_view),
+    url('^advanced/$', views.advanced_view, name='advanced-id-tools'),
     url('^help/$', views.help_about_view, name='simplekey-help-about'),
     url('^help/start/$', views.help_start_view, name='simplekey-help-start'),
     url('^help/collections/$', views.help_collections_view,
