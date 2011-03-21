@@ -30,7 +30,7 @@
 
                     <!--Begin Group List-->
                     {% for pilegroup, url in pilegroups_and_urls %}
-                    <div class="list-item">
+                    <div class="list-item{% if forloop.last %} last{% endif %}">
                         <div class="img-gallery">
                             <div class="frame"></div>
                             <div class="img-container">
@@ -64,119 +64,6 @@
                         <div class="clearit"></div>
                     </div><!--Closes .list-item-->
                     {% endfor %}
-                    
-                    <div class="list-item">
-
-                        <div class="img-gallery">
-                            <div class="frame"></div>
-                            <div class="img-container">
-                                <div class="images">
-                                    <img src="images/galleries/woody/woody-1.jpg" alt="Woody Plants 1" />
-                                    <img src="images/galleries/woody/woody-2.jpg" alt="Woody Plants 2" />
-                                    <img src="images/galleries/woody/woody-3.jpg" alt="Woody Plants 3" />
-                                    <img src="images/galleries/woody/woody-4.jpg" alt="Woody Plants 4" />
-                                    <img src="images/galleries/woody/woody-5.jpg" alt="Woody Plants 5" />
-                                </div><!--Closes .images-->
-                            </div><!--Closes .img-container-->
-                            <div class="controls">
-                                <a class="prev">Prev</a>
-                                <a class="next">Next</a>
-                            </div><!--Closes .controls-->
-                        </div><!--Closes .img-gallery-->
-
-                        <div class="details">
-                            <h3>Woody Plants <span>Trees, shrubs, sub-shrubs, and lianas</span></h3>
-                            <p class="key-char">
-                                <span class="section-title">Key Characteristics</span>
-                                Stems have a thick outer layer called bark.
-                            </p>
-                            <p class="exceptions">
-                                <span class="section-title">Exceptions</span>
-                                Some small, low-lying shrubs can be mistaken for herbaceous plants.
-                            </p>
-                            <p class="vid">
-                                <a href="http://www.youtube.com/v/VWDc9oyBj5Q" rel="shadowbox;height=380;width=640;" title="Title of the video can go here">View a short video about this plant group.</a>
-                            </p>
-                            <a class="plant-in-group" href="id-level-2.php">My plant is in this group.</a>
-                        </div><!--Closes .details-->
-                        <div class="clearit"></div>
-
-                    </div><!--Closes .list-item-->
-
-                    <div class="list-item">
-                        <div class="img-gallery">
-                            <div class="frame"></div>
-                            <div class="img-container">
-                                <div class="images">
-                                    <img src="images/galleries/aquatic/aquatic-1.jpg" alt="aquatic Plants 1" />
-                                    <img src="images/galleries/aquatic/aquatic-2.jpg" alt="aquatic Plants 2" />
-                                    <img src="images/galleries/aquatic/aquatic-3.jpg" alt="aquatic Plants 3" />
-                                    <img src="images/galleries/aquatic/aquatic-4.jpg" alt="aquatic Plants 4" />
-                                </div><!--Closes .images-->
-                            </div><!--Closes .img-container-->
-                            <div class="controls">
-                                <a class="prev">Prev</a>
-                                <a class="next">Next</a>
-                            </div><!--Closes .controls-->
-                        </div><!--Closes .img-gallery-->
-
-                        <div class="details">
-                            <h3>Aquatic Plants <span>Plants with most of their parts submerged under water</span></h3>
-                            <p class="key-char">
-                                <span class="section-title">Key Characteristics</span>
-                                Many aquatic plants have specialized leaves and tissues that can withstand flooding.
-                            </p>
-                            <p class="exceptions">
-                                <span class="section-title">Exceptions</span>
-                                Some upland plants can be flooded temporarily but are not specialized for living under water.
-                            </p>
-                            <p class="vid">
-                                <a href="http://www.youtube.com/v/VWDc9oyBj5Q" rel="shadowbox;height=380;width=640;" title="Title of the video can go here">View a short video about this plant group.</a>
-                            </p>
-                            <a class="plant-in-group" href="id-level-2.php">My plant is in this group.</a>
-
-                        </div><!--Closes .details-->
-                        <div class="clearit"></div>
-
-                    </div><!--Closes .list-item-->
-
-                    <div class="list-item last">
-                        <div class="img-gallery">
-                            <div class="frame"></div>
-                            <div class="img-container">
-                                <div class="images">
-                                    <img src="images/galleries/ferns/ferns-1.jpg" alt="ferns 1" />
-                                    <img src="images/galleries/ferns/ferns-2.jpg" alt="ferns 2" />
-                                    <img src="images/galleries/ferns/ferns-3.jpg" alt="ferns 3" />
-                                    <img src="images/galleries/ferns/ferns-4.jpg" alt="ferns 4" />
-                                    <img src="images/galleries/ferns/ferns-5.jpg" alt="ferns 5" />
-                                    <img src="images/galleries/ferns/ferns-6.jpg" alt="ferns 6" />
-                                </div><!--Closes .images-->
-                            </div><!--Closes .img-container-->
-                            <div class="controls">
-                                <a class="prev">Prev</a>
-                                <a class="next">Next</a>
-                            </div><!--Closes .controls-->
-                        </div><!--Closes .img-gallery-->
-                
-                        <div class="details">
-                            <h3>Ferns and Allies <span>Ferns, horestails, quillworts, lycopods, and relatives</span></h3>
-                            <p class="key-char">
-                                <span class="section-title">Key Characteristics</span>
-                                Plants that reproduce by spores.
-                            </p>
-                            <p class="exceptions">
-                                <span class="section-title">Exceptions</span>
-                                Some seed plans have very frilly, highly dissected leaves that resemble ferns.
-                            </p>
-                            <p class="vid">
-                                <a href="http://www.youtube.com/v/VWDc9oyBj5Q" rel="shadowbox;height=380;width=640;" title="Title of the video can go here">View a short video about this plant group.</a>
-                            </p>
-                            <a class="plant-in-group" href="id-level-2.php">My plant is in this group.</a>
-                        </div><!--Closes .details-->
-                        <div class="clearit"></div>
-
-                    </div><!--Closes .list-item-->
 
                     <div class="not-my-plant">
                         <h6>My plant isn't in these groups.</h6>
@@ -218,8 +105,4 @@
         gobotany.sk.simplekey_page.init();
     });
 </script>
-{% endblock %}
-
-{% block footer %}
-  {% include "simplekey/footcrumbs.html" %}
 {% endblock %}

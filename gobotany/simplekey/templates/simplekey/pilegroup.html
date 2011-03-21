@@ -1,54 +1,105 @@
-{% extends "simplekey/_old_base.html" %}
+{% extends "simplekey/_base.html" %}
 
 {% block title %}{{ pilegroup.name }}{% endblock %}
 
-{% block content %}
-  <div class="PilePage" id="pile-finder">
-    <h1>{{ pilegroup.name }}</h1>
+{% block body %}
+    <body id="plant-id" class="claro app">
+        {% include "simplekey/_header.html" %}
 
-    <h2>Key Characteristics</h2>
-    {{ pilegroup.key_characteristics|safe }}
+        <div class="content">
+            <div class="container">
+                <div id="main">
+                    <div id="breadcrumb">
+                        <ul>
+                            <li class="first completed"><a href="../help/start/"><img src="/static/images/icons/start.png" alt="Get Started"> Get Started</a></li>
+                            <li class="second completed"><a href="javascript:history.back(1)"><img src="/static/images/icons/group.png" alt="Choose Group"> Choose Group</a></li>
+                            <li class="third current"><a><img src="/static/images/icons/group.png" alt="Group">{{ pilegroup.name }}</a></li>
+                            <li class="last upcoming"><a><img src="/static/images/icons/subgroup.png" alt="Subgroup"> Subgroup</a></li>
+                        </ul>
+                    </div><!--Closes #breadcrumb-->
 
-    <h2>Notable Exceptions</h2>
-    {{ pilegroup.notable_exceptions|safe }}
+                    <div class="not-my-plant">
+                        <h6>My plant isn't in these groups.</h6>
+                        <a class="back-level"
+                            href="javascript:history.back(1)">Go back one level</a>
+                    </div><!--Closes .not-my-plant-->
 
-    <hr>
+                    <h2>Plant Identifier</h2>
+                    <h4>Is your plant in one of these groups?</h4>
 
-    <div id="simplekey-left-column">
-        <p>Which of the following best describes your plant?</p>
+                    <div class="clearit"></div>
 
-        {% for pile, url in piles_and_urls %}
-        <div class="Pile" id="{{ pile.slug }}-info">
-            <h2><a href="{{ url }}">{{ pile.name }}</a></h2>
-            <button dojoType="dijit.form.Button"
-                    onclick="gobotany.sk.simplekey_page.toggle_tooltip('{{ pile.slug }}')"
-                    >more info</button>
-        </div>
-        {% endfor %}
-    </div>
+                    <!--Begin Group List-->
+                    {% for pile, url in piles_and_urls %}
+                    <div class="list-item{% if forloop.last %} last{% endif %}">
+                        <div class="img-gallery">
+                            <div class="frame"></div>
+                            <div class="img-container">
+                                <div class="images">
+                                    {% for image in pile.sample_species_images.all %}
+                                        <img src="{{ image.image.thumbnail.absolute_url }}"
+                                            alt="{{ image.alt }}">
+                                    {% endfor %}
+                                </div><!--Closes .images-->
+                            </div><!--Closes .img-container-->
+                            <div class="controls">
+                                <a class="prev">Prev</a>
+                                <a class="next">Next</a>
+                            </div><!--Closes .controls-->
+                        </div><!--Closes .img-gallery-->
+                        <div class="details">
+                            <h3>{{ pile.name }} <span>{{ pile.friendly_name|capfirst }}</span></h3>
+                            <p class="key-char">
+                                <span class="section-title">Key Characteristics</span>
+                                {{ pile.key_characteristics|removetags:"div ul li"|safe }}
+                            </p>
+                            <p class="exceptions">
+                                <span class="section-title">Exceptions</span>
+                                {{ pile.notable_exceptions|removetags:"div ul li"|safe }}
+                            </p>
+                            <p class="vid">
+                                <a href="http://www.youtube.com/v/{{ pile.youtube_id }}" rel="shadowbox;height=380;width=640;">View a short video about this plant group.</a>
+                            </p>
+                            <a class="plant-in-group" href="{{ url }}">My plant is in this group.</a>
+                        </div>
+                        <div class="clearit"></div>
+                    </div><!--Closes .list-item-->
+                    {% endfor %}
 
-    <div id="simplekey-right-column">
-    {% for pile, url in piles_and_urls %}
-        <div class="PileInfo tooltip" id="{{ pile.slug }}-tooltip">
-            {% include "simplekey/pile_tooltip.html" %}
-        </div>
-    {% endfor %}
-    </div>
-    <div style="clear: both">&nbsp;</div>
-    </div>
+                    <div class="not-my-plant">
+                        <h6>My plant isn't in these groups.</h6>
+                        <a class="back-level" 
+                            href="javascript:history.back(1)">Go back one level</a>
+                    </div><!--Closes .not-my-plant-->
 
-    <div id="plant-preview" dojoType="dijit.Dialog" title="Plant Preview"
-     aria-describedby="preview-intro">
-    {% include "simplekey/plant_preview.html" %}
-    </div>
+                </div><!--closes #main-->
 
-  </div>
+                <div id="sidebar">
+
+                    <div class="section">
+                        <h5>Want help getting started?</h5>
+                        <p>If you're not sure what to do from here, take a look at this Help page for instructions.</p>
+                        <a class="get-help-btn" href="../help/start/">Get Help</a>
+                    </div><!--Closes .section-->
+
+                    <div class="section">
+                        <h5>Plant Map</h5>
+                        <p>If you already know what group your plant is in, start with the clickable plant map to find a plant more quickly.</p>
+                        <a class="view-map-btn" href="../map/">View Map</a>
+                    </div><!--Closes .section-->
+
+                </div><!--Closes #sidebar-->
+
+                <div class="clearit"></div>
+
+            </div><!--Closes .container-->
+        </div><!--Closes .content-->
+
+        {% include "simplekey/_footer.html" %}
+    </body>
 {% endblock %}
-{% block footer %}
-  {% include "simplekey/footcrumbs.html" %}
-{% endblock %}
+
 {% block js_bottom %}
-
 <script>
     {% include "simplekey/partner_site_inline_js.html" %}
     dojo.require('gobotany.sk.simplekey_page');
