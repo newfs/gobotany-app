@@ -3,3 +3,9 @@
 ol li, ul li {
     line-height: inherit;
 }
+
+.claro {
+    color: #1a2e11;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+}

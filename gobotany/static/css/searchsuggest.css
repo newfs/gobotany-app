@@ -51,6 +51,10 @@ nav #search-suggest a:hover, #search-suggest li:hover {
     z-index: 1;
 }
 
+#plant-id #search-suggest div {
+    top: 106px;
+}
+
 #search-suggest li.highlighted {
     background-color: #abd6ff;
     color: #000;

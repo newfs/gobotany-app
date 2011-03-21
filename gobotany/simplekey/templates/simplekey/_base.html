@@ -23,7 +23,25 @@
             <link rel="stylesheet" href="/static/css/ie8.css">
         <![endif]-->
 
-        <!-- TODO: add jQuery JS here -->
+        <!--JQuery-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+        <!--Global JS File-->
+        <script type="text/javascript" src="/static/scripts/global.js"></script>
+        <!--Shadowbox-->
+        <script type="text/javascript" src="/static/scripts/shadowbox.js"></script>
+        <script type="text/javascript">
+            Shadowbox.init();
+        </script>
+        <!--Image Gallery Slider-->
+        <script type="text/javascript"
+            src="http://cdn.jquerytools.org/1.2.5/full/jquery.tools.min.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                //Start
+                $('.img-container').scrollable();
+            });
+        </script>
+
     </head>
 
     {% block body %}{% endblock %}

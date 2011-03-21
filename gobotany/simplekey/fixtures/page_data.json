@@ -40,13 +40,13 @@
     "model": "simplekey.page", 
     "fields": {
       "pilegroups": [
-        4, 
-        1, 
-        2
+        1,
+        2,
+        4
       ], 
       "next_page": 2, 
       "number": 1, 
-      "title": "Start: Choose Collection"
+      "title": "Plant Identifier"
     }
   }
 ]

@@ -88,7 +88,7 @@ def rebuild_sample_pile_images(pile_or_group_csv_1, pile_or_group_csv_2):
     print 'Rebuild sample pile images:'
 
     print '  Removing old images:'
-    for p in chain(models.PileGroup.objects.all(),models.Pile.objects.all()):
+    for p in chain(models.PileGroup.objects.all(), models.Pile.objects.all()):
         print '    ', (type(p).__name__ + ': ' + p.name),
         old_images = p.sample_species_images.all()
         if len(old_images):

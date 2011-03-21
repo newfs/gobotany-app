@@ -1,56 +1,213 @@
-{% extends "simplekey/_old_base.html" %}
-{% block title %}
-    {{ page.title }}
-{% endblock %}
-{% block content %}
-  <div class="PilePage" id="pilegroup-finder">
-    <h1>{{ page.title }}</h1>
-<div>
-<div id="simplekey-left-column">
-    <p>
-      Which of the following best describes your plant?
-    </p>
+{% extends "simplekey/_base.html" %}
 
-    {% for pilegroup, url in pilegroups_and_urls %}
-      <div class="PileGroup" id="{{ pilegroup.slug }}-info">
-        <h2><a href="{{ url }}">{{ pilegroup.name }}</a></h2>
-        <button dojoType="dijit.form.Button"
-                onclick="gobotany.sk.simplekey_page.toggle_tooltip('{{ pilegroup.slug }}')"
-                >more info</button>
-      </div>
-    {% endfor %}
+{% block title %}{{ page.title }}{% endblock %}
 
-    {% if page.next_page %}
-      <div>
-        <h2><a href="{{ page.next_page.get_absolute_url }}"
-               >More choices »</a></h2>
-      </div>
-    {% endif %}
+{% block body %}
+    <body id="plant-id" class="claro app">
+        {% include "simplekey/_header.html" %}
 
-    <hr/>
-    <div>
-      <a href="/simple/map/"
-         >Advanced users — see plant map</a>
-    </div>
-</div>
+        <div class="content">
+            <div class="container">
+                <div id="main">
+                    <div id="breadcrumb">
+                        <ul>
+                            <li class="first completed"><a href="../help/start/"><img src="/static/images/icons/start.png" alt="Get Started"> Get Started</a></li>
+                            <li class="second current"><a><img src="/static/images/icons/group.png" alt="Choose Group"> Choose Group</a></li>
+                            <li class="third upcoming"><a><img src="/static/images/icons/group.png" alt="Group"> Group</a></li>
+                            <li class="last upcoming"><a><img src="/static/images/icons/subgroup.png" alt="Subgroup"> Subgroup</a></li>
+                        </ul>
+                    </div><!--Closes #breadcrumb-->
 
-<div id="simplekey-right-column">
-    {% for pilegroup, url in pilegroups_and_urls %}
-        <div class="PileInfo tooltip" id="{{ pilegroup.slug }}-tooltip">
-            {% with pilegroup as pile %}
-            {% include "simplekey/pile_tooltip.html" %}
-            {% endwith %}
-        </div>
-    {% endfor %}
-</div>
-<div style="clear: both">&nbsp;</div>
-</div>
+                    <div class="not-my-plant">
+                        <h6>My plant isn't in these groups.</h6>
+                        <a href="{{ page.next_page.get_absolute_url }}">Show me other groups</a>
+                    </div><!--Closes .not-my-plant-->
 
-<div id="plant-preview" dojoType="dijit.Dialog" title="Plant Preview"
-     aria-describedby="preview-intro">
-    {% include "simplekey/plant_preview.html" %}
-</div>
+                    <h2>Plant Identifier</h2>
+                    <h4>Is your plant in one of these groups?</h4>
 
+                    <div class="clearit"></div>
+
+                    <!--Begin Group List-->
+                    {% for pilegroup, url in pilegroups_and_urls %}
+                    <div class="list-item">
+                        <div class="img-gallery">
+                            <div class="frame"></div>
+                            <div class="img-container">
+                                <div class="images">
+                                    {% for image in pilegroup.sample_species_images.all %}
+                                        <img src="{{ image.image.thumbnail.absolute_url }}"
+                                            alt="{{ image.alt }}">
+                                    {% endfor %}
+                                </div><!--Closes .images-->
+                            </div><!--Closes .img-container-->
+                            <div class="controls">
+                                <a class="prev">Prev</a>
+                                <a class="next">Next</a>
+                            </div><!--Closes .controls-->
+                        </div><!--Closes .img-gallery-->
+                        <div class="details">
+                            <h3>{{ pilegroup.name }} <span>{{ pilegroup.friendly_name|capfirst }}</span></h3>
+                            <p class="key-char">
+                                <span class="section-title">Key Characteristics</span>
+                                {{ pilegroup.key_characteristics|removetags:"div"|capfirst }}
+                            </p>
+                            <p class="exceptions">
+                                <span class="section-title">Exceptions</span>
+                                {{ pilegroup.notable_exceptions|removetags:"div"|capfirst }}
+                            </p>
+                            <p class="vid">
+                                <a href="http://www.youtube.com/v/{{ pilegroup.youtube_id }}" rel="shadowbox;height=380;width=640;">View a short video about this plant group.</a>
+                            </p>
+                            <a class="plant-in-group" href="{{ url }}">My plant is in this group.</a>
+                        </div>
+                        <div class="clearit"></div>
+                    </div><!--Closes .list-item-->
+                    {% endfor %}
+                    
+                    <div class="list-item">
+
+                        <div class="img-gallery">
+                            <div class="frame"></div>
+                            <div class="img-container">
+                                <div class="images">
+                                    <img src="images/galleries/woody/woody-1.jpg" alt="Woody Plants 1" />
+                                    <img src="images/galleries/woody/woody-2.jpg" alt="Woody Plants 2" />
+                                    <img src="images/galleries/woody/woody-3.jpg" alt="Woody Plants 3" />
+                                    <img src="images/galleries/woody/woody-4.jpg" alt="Woody Plants 4" />
+                                    <img src="images/galleries/woody/woody-5.jpg" alt="Woody Plants 5" />
+                                </div><!--Closes .images-->
+                            </div><!--Closes .img-container-->
+                            <div class="controls">
+                                <a class="prev">Prev</a>
+                                <a class="next">Next</a>
+                            </div><!--Closes .controls-->
+                        </div><!--Closes .img-gallery-->
+
+                        <div class="details">
+                            <h3>Woody Plants <span>Trees, shrubs, sub-shrubs, and lianas</span></h3>
+                            <p class="key-char">
+                                <span class="section-title">Key Characteristics</span>
+                                Stems have a thick outer layer called bark.
+                            </p>
+                            <p class="exceptions">
+                                <span class="section-title">Exceptions</span>
+                                Some small, low-lying shrubs can be mistaken for herbaceous plants.
+                            </p>
+                            <p class="vid">
+                                <a href="http://www.youtube.com/v/VWDc9oyBj5Q" rel="shadowbox;height=380;width=640;" title="Title of the video can go here">View a short video about this plant group.</a>
+                            </p>
+                            <a class="plant-in-group" href="id-level-2.php">My plant is in this group.</a>
+                        </div><!--Closes .details-->
+                        <div class="clearit"></div>
+
+                    </div><!--Closes .list-item-->
+
+                    <div class="list-item">
+                        <div class="img-gallery">
+                            <div class="frame"></div>
+                            <div class="img-container">
+                                <div class="images">
+                                    <img src="images/galleries/aquatic/aquatic-1.jpg" alt="aquatic Plants 1" />
+                                    <img src="images/galleries/aquatic/aquatic-2.jpg" alt="aquatic Plants 2" />
+                                    <img src="images/galleries/aquatic/aquatic-3.jpg" alt="aquatic Plants 3" />
+                                    <img src="images/galleries/aquatic/aquatic-4.jpg" alt="aquatic Plants 4" />
+                                </div><!--Closes .images-->
+                            </div><!--Closes .img-container-->
+                            <div class="controls">
+                                <a class="prev">Prev</a>
+                                <a class="next">Next</a>
+                            </div><!--Closes .controls-->
+                        </div><!--Closes .img-gallery-->
+
+                        <div class="details">
+                            <h3>Aquatic Plants <span>Plants with most of their parts submerged under water</span></h3>
+                            <p class="key-char">
+                                <span class="section-title">Key Characteristics</span>
+                                Many aquatic plants have specialized leaves and tissues that can withstand flooding.
+                            </p>
+                            <p class="exceptions">
+                                <span class="section-title">Exceptions</span>
+                                Some upland plants can be flooded temporarily but are not specialized for living under water.
+                            </p>
+                            <p class="vid">
+                                <a href="http://www.youtube.com/v/VWDc9oyBj5Q" rel="shadowbox;height=380;width=640;" title="Title of the video can go here">View a short video about this plant group.</a>
+                            </p>
+                            <a class="plant-in-group" href="id-level-2.php">My plant is in this group.</a>
+
+                        </div><!--Closes .details-->
+                        <div class="clearit"></div>
+
+                    </div><!--Closes .list-item-->
+
+                    <div class="list-item last">
+                        <div class="img-gallery">
+                            <div class="frame"></div>
+                            <div class="img-container">
+                                <div class="images">
+                                    <img src="images/galleries/ferns/ferns-1.jpg" alt="ferns 1" />
+                                    <img src="images/galleries/ferns/ferns-2.jpg" alt="ferns 2" />
+                                    <img src="images/galleries/ferns/ferns-3.jpg" alt="ferns 3" />
+                                    <img src="images/galleries/ferns/ferns-4.jpg" alt="ferns 4" />
+                                    <img src="images/galleries/ferns/ferns-5.jpg" alt="ferns 5" />
+                                    <img src="images/galleries/ferns/ferns-6.jpg" alt="ferns 6" />
+                                </div><!--Closes .images-->
+                            </div><!--Closes .img-container-->
+                            <div class="controls">
+                                <a class="prev">Prev</a>
+                                <a class="next">Next</a>
+                            </div><!--Closes .controls-->
+                        </div><!--Closes .img-gallery-->
+                
+                        <div class="details">
+                            <h3>Ferns and Allies <span>Ferns, horestails, quillworts, lycopods, and relatives</span></h3>
+                            <p class="key-char">
+                                <span class="section-title">Key Characteristics</span>
+                                Plants that reproduce by spores.
+                            </p>
+                            <p class="exceptions">
+                                <span class="section-title">Exceptions</span>
+                                Some seed plans have very frilly, highly dissected leaves that resemble ferns.
+                            </p>
+                            <p class="vid">
+                                <a href="http://www.youtube.com/v/VWDc9oyBj5Q" rel="shadowbox;height=380;width=640;" title="Title of the video can go here">View a short video about this plant group.</a>
+                            </p>
+                            <a class="plant-in-group" href="id-level-2.php">My plant is in this group.</a>
+                        </div><!--Closes .details-->
+                        <div class="clearit"></div>
+
+                    </div><!--Closes .list-item-->
+
+                    <div class="not-my-plant">
+                        <h6>My plant isn't in these groups.</h6>
+                        <a href="{{ page.next_page.get_absolute_url }}">Show me other groups</a>
+                    </div><!--Closes .not-my-plant-->
+
+                </div><!--closes #main-->
+
+                <div id="sidebar">
+
+                    <div class="section">
+                        <h5>Want help getting started?</h5>
+                        <p>If you're not sure what to do from here, take a look at this Help page for instructions.</p>
+                        <a class="get-help-btn" href="../help/start/">Get Help</a>
+                    </div><!--Closes .section-->
+
+                    <div class="section">
+                        <h5>Plant Map</h5>
+                        <p>If you already know what group your plant is in, start with the clickable plant map to find a plant more quickly.</p>
+                        <a class="view-map-btn" href="../map/">View Map</a>
+                    </div><!--Closes .section-->
+
+                </div><!--Closes #sidebar-->
+
+                <div class="clearit"></div>
+
+            </div><!--Closes .container-->
+        </div><!--Closes .content-->
+
+        {% include "simplekey/_footer.html" %}
+    </body>
 {% endblock %}
 
 {% block js_bottom %}

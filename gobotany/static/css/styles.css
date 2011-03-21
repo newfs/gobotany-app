@@ -481,13 +481,13 @@ color: #606060;
 }
 .img-gallery {
 position: relative;
-width: 175px;
+width: 165px; /*175px;*/
 float: left;
 margin: 0 10px 0 0;
 }
 .img-gallery .img-container {
 position: relative;
-width: 170px;
+width: 160px; /*170px;*/
 height: 149px;
 overflow: hidden;
 box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
@@ -495,7 +495,7 @@ box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
 .img-gallery .frame {
-width: 160px;
+width: 150px; /*160px;*/
 height: 139px;
 border: 5px solid rgba(255, 255, 255, 0.8);
 position: absolute;
