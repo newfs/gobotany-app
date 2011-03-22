@@ -19,7 +19,13 @@
                     </div><!--Closes #breadcrumb-->
 
                     <div class="not-my-plant">
-                        <h6>My plant isn't in these groups.</h6>
+                        <h6>My plant isn't in
+                            {% if piles_and_urls|length > 1 %}
+                                these groups.
+                            {% else %}
+                                this group.
+                            {% endif %}
+                        </h6>
                         <a class="back-level"
                             href="javascript:history.back(1)">Go back one level</a>
                     </div><!--Closes .not-my-plant-->
@@ -67,7 +73,13 @@
                     {% endfor %}
 
                     <div class="not-my-plant">
-                        <h6>My plant isn't in these groups.</h6>
+                        <h6>My plant isn't in
+                            {% if piles_and_urls|length > 1 %}
+                                these groups.
+                            {% else %}
+                                this group.
+                            {% endif %}
+                        </h6>
                         <a class="back-level" 
                             href="javascript:history.back(1)">Go back one level</a>
                     </div><!--Closes .not-my-plant-->
