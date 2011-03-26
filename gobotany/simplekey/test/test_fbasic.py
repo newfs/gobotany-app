@@ -32,7 +32,7 @@ class BasicFunctionalTests(unittest2.TestCase):
         e = d.find_element_by_link_text('Get Started')
         self.assertEqual(e.get_attribute('href'), '1/')
 
-    def test_group_pages(self):
+    def test_ubergroup_pages(self):
         d = self.get('/1/')
         h3 = self.find('h3')
         self.assertEqual(len(h3), 3)
@@ -53,6 +53,20 @@ class BasicFunctionalTests(unittest2.TestCase):
         assert h3[0].text.startswith('Non-Monocots')
         e = d.find_elements_by_link_text('Show me other groups')
         self.assertEqual(e, [])
+
         # Do group links get constructed correctly?
         e = d.find_element_by_link_text('My plant is in this group.')
         self.assertEqual(e.get_attribute('href'), base + '/non-monocots/')
+
+    def test_group_page(self):
+        d = self.get('/ferns/')
+        h3 = self.find('h3')
+        self.assertEqual(len(h3), 3)
+        assert h3[0].text.startswith('Equisetaceae')
+        assert h3[1].text.startswith('Lycophytes')
+        assert h3[2].text.startswith('Monilophytes')
+        a = d.find_elements_by_link_text('My plant is in this group.')
+        b = base + '/ferns'
+        self.assertEqual(a[0].get_attribute('href'), b + '/equisetaceae/')
+        self.assertEqual(a[1].get_attribute('href'), b + '/lycophytes/')
+        self.assertEqual(a[2].get_attribute('href'), b + '/monilophytes/')
