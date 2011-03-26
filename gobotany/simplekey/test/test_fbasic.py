@@ -16,6 +16,8 @@ class FunctionalTestCase(unittest2.TestCase):
 
     def setUp(self):
         self.driver.implicitly_wait(0)  # reset to default value
+        self.css = self.driver.find_elements_by_css_selector
+        self.css1 = self.driver.find_element_by_css_selector
 
     # Helpers
 
@@ -89,47 +91,45 @@ class BasicFunctionalTests(FunctionalTestCase):
 
 class FilterFunctionalTests(FunctionalTestCase):
 
-    def wait_on_species(self):
+    def wait_on_species(self, expected_count):
         """Wait for a new batch of species to be displayed."""
         with self.wait(4):
-            css = '#plant-listing li li'
-            return self.driver.find_elements_by_css_selector(css)
+            q = self.css('#plant-listing li li')
+        self.assertEqual(len(q), expected_count)
+        count_words = self.css1('.count').text.split()  # "9 species matched"
+        count = int(count_words[0])
+        self.assertEqual(count, expected_count)
+        return q
 
     def test_filter_page_narrows(self):
 
         # Does the page load and show 18 species?
 
         d = self.get('/ferns/lycophytes/')
-        q = self.wait_on_species()
-        q = d.find_elements_by_css_selector('#plant-listing li li')
-        self.assertEqual(len(q), 18)
+        q = self.wait_on_species(18)
 
         # filter on Rhode Island
 
         d.find_element_by_link_text('New England state').click()
         d.find_element_by_css_selector('[value="Rhode Island"]').click()
         d.find_element_by_name('apply').click()
-        q = self.wait_on_species()
-        self.assertEqual(len(q), 13)
+        q = self.wait_on_species(13)
 
         # filter on bogs
 
         d.find_element_by_link_text('Habitat').click()
         d.find_element_by_css_selector('[value="bogs"]').click()
         d.find_element_by_name('apply').click()
-        q = self.wait_on_species()
-        self.assertEqual(len(q), 1)
+        q = self.wait_on_species(1)
 
         # switch from bogs to forest
 
         d.find_element_by_css_selector('[value="forest"]').click()
         d.find_element_by_name('apply').click()
-        q = self.wait_on_species()
-        self.assertEqual(len(q), 6)
+        q = self.wait_on_species(6)
 
         # clear the New England state
 
         d.find_element_by_css_selector('#state_distribution .clear').click()
         d.find_element_by_name('apply').click()
-        q = self.wait_on_species()
-        self.assertEqual(len(q), 9)
+        q = self.wait_on_species(9)
