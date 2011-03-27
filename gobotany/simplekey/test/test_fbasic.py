@@ -134,6 +134,21 @@ class FilterFunctionalTests(FunctionalTestCase):
         d.find_element_by_css_selector('#state_distribution .clear').click()
         self.wait_on_species(9)
 
+    def test_quickly_press_apply_twice(self):
+
+        # Does a double tap of "apply" load species twice?
+
+        d = self.get('/ferns/lycophytes/')
+        self.wait_on_species(18)
+
+        # filter on Rhode Island
+
+        d.find_element_by_link_text('New England state').click()
+        d.find_element_by_css_selector('[value="Rhode Island"]').click()
+        d.find_element_by_name('apply').click()
+        d.find_element_by_name('apply').click()
+        self.wait_on_species(13)
+
     def test_quickly_press_apply_and_clear(self):
 
         # Does pressing the "apply" button and a "clear" link
