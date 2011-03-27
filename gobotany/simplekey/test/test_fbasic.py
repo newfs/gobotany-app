@@ -1,18 +1,47 @@
-"""Selenium-driven basic functional tests of Go Botany."""
+"""Selenium-driven basic functional tests of Go Botany.
 
+Two environmental variables control the behavior of these tests.
+
+* SELENIUM - If this variable is not provided, then Selenium simply
+  starts up a local browser.  But if it is provided, then it should be
+  the URL of a selenium remote server - either one you have set up on
+  one of your own machines by running the "standalone" server you can
+  download from their web site, or one run by Sauce Labs, who will
+  provide the URL for you on their web site.
+
+* SIMPLEHOST - The hostname on which you have the Simple Key running.
+  Defaults to `localhost` if not set.
+
+"""
+import os
 import unittest2
 from contextlib import contextmanager
 from selenium import webdriver
-
-host = 'http://localhost:8000'
-base = '/simple'
 
 class FunctionalTestCase(unittest2.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = webdriver.Chrome()
-        #cls.driver = webdriver.Firefox()
+        if 'SELENIUM' in os.environ:
+            cls.driver = webdriver.Remote(os.environ['SELENIUM'], {
+                    "browserName": "internet explorer",
+                    #"version": "9",
+                    "platform": "WINDOWS",
+                    "javascriptEnabled": True,
+                    "max-duration": 300,
+                    })
+        if 'SIMPLEHOST' in os.environ:
+            cls.host = 'http://' + os.environ['SIMPLEHOST']
+            cls.base = '/simple'
+        else:
+            cls.driver = webdriver.Chrome()
+            cls.host = 'http://localhost:8000'
+            cls.base = '/simple'
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.driver.stop_client()
+        del cls.driver
 
     def setUp(self):
         self.driver.implicitly_wait(0)  # reset to zero wait time
@@ -23,7 +52,7 @@ class FunctionalTestCase(unittest2.TestCase):
 
     def get(self, path):
         """Retrieve a URL, and return the driver object."""
-        self.driver.get(host + base + path)
+        self.driver.get(self.host + self.base + path)
         return self.driver
 
     @contextmanager
@@ -70,7 +99,8 @@ class BasicFunctionalTests(FunctionalTestCase):
 
         # Do group links get constructed correctly?
         e = d.find_element_by_link_text('My plant is in this group.')
-        self.assertEqual(e.get_attribute('href'), base + '/non-monocots/')
+        self.assertEqual(e.get_attribute('href'),
+                         self.base + '/non-monocots/')
 
     def test_group_page(self):
         d = self.get('/ferns/')
@@ -80,7 +110,7 @@ class BasicFunctionalTests(FunctionalTestCase):
         assert q[1].text.startswith('Lycophytes')
         assert q[2].text.startswith('Monilophytes')
         q = d.find_elements_by_link_text('My plant is in this group.')
-        b = base + '/ferns'
+        b = self.base + '/ferns'
         self.assertEqual(q[0].get_attribute('href'), b + '/equisetaceae/')
         self.assertEqual(q[1].get_attribute('href'), b + '/lycophytes/')
         self.assertEqual(q[2].get_attribute('href'), b + '/monilophytes/')
