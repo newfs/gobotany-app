@@ -15,7 +15,7 @@ class FunctionalTestCase(unittest2.TestCase):
         #cls.driver = webdriver.Firefox()
 
     def setUp(self):
-        self.driver.implicitly_wait(0)  # reset to default value
+        self.driver.implicitly_wait(0)  # reset to zero wait time
         self.css = self.driver.find_elements_by_css_selector
         self.css1 = self.driver.find_element_by_css_selector
 
@@ -93,8 +93,9 @@ class FilterFunctionalTests(FunctionalTestCase):
 
     def wait_on_species(self, expected_count):
         """Wait for a new batch of species to be displayed."""
-        with self.wait(4):
-            q = self.css('#plant-listing li li')
+        with self.wait(12):
+            self.css1('#plant-listing li li')
+        q = self.css('#plant-listing li li')
         self.assertEqual(len(q), expected_count)
         count_words = self.css1('.count').text.split()  # "9 species matched"
         count = int(count_words[0])
@@ -106,30 +107,57 @@ class FilterFunctionalTests(FunctionalTestCase):
         # Does the page load and show 18 species?
 
         d = self.get('/ferns/lycophytes/')
-        q = self.wait_on_species(18)
+        self.wait_on_species(18)
 
         # filter on Rhode Island
 
         d.find_element_by_link_text('New England state').click()
         d.find_element_by_css_selector('[value="Rhode Island"]').click()
         d.find_element_by_name('apply').click()
-        q = self.wait_on_species(13)
+        self.wait_on_species(13)
 
         # filter on bogs
 
         d.find_element_by_link_text('Habitat').click()
         d.find_element_by_css_selector('[value="bogs"]').click()
         d.find_element_by_name('apply').click()
-        q = self.wait_on_species(1)
+        self.wait_on_species(1)
 
         # switch from bogs to forest
 
         d.find_element_by_css_selector('[value="forest"]').click()
         d.find_element_by_name('apply').click()
-        q = self.wait_on_species(6)
+        self.wait_on_species(6)
 
         # clear the New England state
 
         d.find_element_by_css_selector('#state_distribution .clear').click()
+        self.wait_on_species(9)
+
+    def test_quickly_press_apply_and_clear(self):
+
+        # Does pressing the "apply" button and a "clear" link
+        # simultaneously result in the result being updated twice?
+
+        d = self.get('/ferns/lycophytes/')
+        self.wait_on_species(18)
+
+        # filter on Rhode Island
+
+        d.find_element_by_link_text('New England state').click()
+        d.find_element_by_css_selector('[value="Rhode Island"]').click()
         d.find_element_by_name('apply').click()
-        q = self.wait_on_species(9)
+        self.wait_on_species(13)
+
+        # filter on bogs
+
+        d.find_element_by_link_text('Habitat').click()
+        d.find_element_by_css_selector('[value="bogs"]').click()
+        d.find_element_by_name('apply').click()
+        self.wait_on_species(1)
+
+        # clear the New England state AND press "apply" again
+
+        d.find_element_by_css_selector('#state_distribution .clear').click()
+        d.find_element_by_name('apply').click()
+        self.wait_on_species(1)
