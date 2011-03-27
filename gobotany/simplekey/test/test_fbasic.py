@@ -178,11 +178,19 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Are different images displayed when you select "Show:" choices?
 
-        d = self.get('/ferns/lycophytes/')
+        self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
         e = self.css1('#plant-dendrolycopodium-dendroideum img')
         assert '-ha-' in e.get_attribute('src')
-        # select shoots
         self.css1('#results-display .dijitSelectLabel').click()
         self.css1('#dijit_MenuItem_2_text').click()  # 'shoots'
         assert '-sh-' in e.get_attribute('src')
+
+    def test_get_more_filters(self):
+        self.get('/ferns/lycophytes/')
+        self.wait_on_species(18)
+        filters = self.css('#filters > ul > li')
+        n = len(filters)
+        self.css1('#get_more_filters_button').click()
+        filters = self.css('#filters > ul > li')
+        self.assertEqual(len(filters), n + 3)
