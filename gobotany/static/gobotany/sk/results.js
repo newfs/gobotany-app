@@ -19,7 +19,7 @@ dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
 dojo.require('dijit.form.CheckBox');
-dojo.require("dijit.form.FilteringSelect");
+dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.Form');
 dojo.require('dijit.form.Select');
 dojo.require('dijit.form.Slider');
@@ -567,7 +567,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             var filter = this.results_helper.filter_manager.get_filter(
                 this.visible_filter_short_name);
             var value_object = filter.get_value_object(value);
-            var friendly_text = ''
+            var friendly_text = '';
             if (value_object !== undefined) {
                 friendly_text = value_object.friendly_text;
             }
@@ -782,7 +782,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             else {
                 if (value !== null) {
                     var value_object = filter.get_value_object(value);
-                    var friendly_text = ''
+                    var friendly_text = '';
                     if (value_object !== undefined) {
                         friendly_text = value_object.friendly_text;
                     }
@@ -866,7 +866,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         return 0; // default value (no sort)
     },
-    
+
     get_image_id_from_path: function(image_path) {
         // Get a value suitable for use as an image element id from
         // the image filename found in the image path.
@@ -1038,7 +1038,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             for (var i = 0; i < values.length; i++) {
                 var v = values[i];
 
-                if ( !((v.count === 0) && (v.value === 'NA')) ) {
+                if (!((v.count === 0) && (v.value === 'NA'))) {
 
                     item_html = '<span><input type="radio" name="char_name"' +
                         ' value="' + v.value + '"';
@@ -1072,7 +1072,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                         new dijit.Tooltip({
                             connectId: [image_id],
                             label: image_html,
-                            position: ["after", "above"]
+                            position: ['after', 'above']
                         });
                     }
 
@@ -1118,7 +1118,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }
 
         // Set any question and hint text for this filter.
-        var html = ''
+        var html = '';
         var q = dojo.query('#filter-working .info .question')[0];
         if (filter.question.length > 0) {
             html = '<p>' + filter.question + '</p>';
