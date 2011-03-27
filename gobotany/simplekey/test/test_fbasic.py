@@ -26,9 +26,6 @@ class FunctionalTestCase(unittest2.TestCase):
         self.driver.get(host + base + path)
         return self.driver
 
-    def find(self, css):
-        return self.driver.find_elements_by_css_selector(css)
-
     @contextmanager
     def wait(self, seconds):
         self.driver.implicitly_wait(seconds)
@@ -51,21 +48,21 @@ class BasicFunctionalTests(FunctionalTestCase):
 
     def test_ubergroup_pages(self):
         d = self.get('/1/')
-        h3 = self.find('h3')
+        h3 = self.css('h3')
         self.assertEqual(len(h3), 3)
         assert h3[0].text.startswith('Ferns')
         assert h3[1].text.startswith('Woody Plants')
         assert h3[2].text.startswith('Aquatic Plants')
         d.find_element_by_link_text('Show me other groups').click()
-        h3 = self.find('h3')
+        h3 = self.css('h3')
         self.assertEqual(len(h3), 1)
         assert h3[0].text.startswith('Graminoids')
         d.find_element_by_link_text('Show me other groups').click()
-        h3 = self.find('h3')
+        h3 = self.css('h3')
         self.assertEqual(len(h3), 1)
         assert h3[0].text.startswith('Monocots')
         d.find_element_by_link_text('Show me other groups').click()
-        h3 = self.find('h3')
+        h3 = self.css('h3')
         self.assertEqual(len(h3), 1)
         assert h3[0].text.startswith('Non-Monocots')
         e = d.find_elements_by_link_text('Show me other groups')
@@ -77,7 +74,7 @@ class BasicFunctionalTests(FunctionalTestCase):
 
     def test_group_page(self):
         d = self.get('/ferns/')
-        q = self.find('h3')
+        q = self.css('h3')
         self.assertEqual(len(q), 3)
         assert q[0].text.startswith('Equisetaceae')
         assert q[1].text.startswith('Lycophytes')
@@ -112,26 +109,26 @@ class FilterFunctionalTests(FunctionalTestCase):
         # filter on Rhode Island
 
         d.find_element_by_link_text('New England state').click()
-        d.find_element_by_css_selector('[value="Rhode Island"]').click()
+        self.css1('[value="Rhode Island"]').click()
         d.find_element_by_name('apply').click()
         self.wait_on_species(13)
 
         # filter on bogs
 
         d.find_element_by_link_text('Habitat').click()
-        d.find_element_by_css_selector('[value="bogs"]').click()
+        self.css1('[value="bogs"]').click()
         d.find_element_by_name('apply').click()
         self.wait_on_species(1)
 
         # switch from bogs to forest
 
-        d.find_element_by_css_selector('[value="forest"]').click()
+        self.css1('[value="forest"]').click()
         d.find_element_by_name('apply').click()
         self.wait_on_species(6)
 
         # clear the New England state
 
-        d.find_element_by_css_selector('#state_distribution .clear').click()
+        self.css1('#state_distribution .clear').click()
         self.wait_on_species(9)
 
     def test_quickly_press_apply_twice(self):
@@ -144,7 +141,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         # filter on Rhode Island
 
         d.find_element_by_link_text('New England state').click()
-        d.find_element_by_css_selector('[value="Rhode Island"]').click()
+        self.css1('[value="Rhode Island"]').click()
         d.find_element_by_name('apply').click()
         d.find_element_by_name('apply').click()
         self.wait_on_species(13)
@@ -160,19 +157,32 @@ class FilterFunctionalTests(FunctionalTestCase):
         # filter on Rhode Island
 
         d.find_element_by_link_text('New England state').click()
-        d.find_element_by_css_selector('[value="Rhode Island"]').click()
+        self.css1('[value="Rhode Island"]').click()
         d.find_element_by_name('apply').click()
         self.wait_on_species(13)
 
         # filter on bogs
 
         d.find_element_by_link_text('Habitat').click()
-        d.find_element_by_css_selector('[value="bogs"]').click()
+        self.css1('[value="bogs"]').click()
         d.find_element_by_name('apply').click()
         self.wait_on_species(1)
 
         # clear the New England state AND press "apply" again
 
-        d.find_element_by_css_selector('#state_distribution .clear').click()
+        self.css1('#state_distribution .clear').click()
         d.find_element_by_name('apply').click()
         self.wait_on_species(1)
+
+    def test_thumbnail_presentation(self):
+
+        # Are different images displayed when you select "Show:" choices?
+
+        d = self.get('/ferns/lycophytes/')
+        self.wait_on_species(18)
+        e = self.css1('#plant-dendrolycopodium-dendroideum img')
+        assert '-ha-' in e.get_attribute('src')
+        # select shoots
+        self.css1('#results-display .dijitSelectLabel').click()
+        self.css1('#dijit_MenuItem_2_text').click()  # 'shoots'
+        assert '-sh-' in e.get_attribute('src')
