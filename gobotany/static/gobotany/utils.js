@@ -2,7 +2,7 @@ dojo.provide('gobotany.utils');
 
 
 // notify()
-// display a notification message at the top of the script
+// display a notification message at the top of the page
 // that will eventually fade away
 gobotany.utils.notify = function(txt) {
     var holder = dojo.byId('notification-msg');

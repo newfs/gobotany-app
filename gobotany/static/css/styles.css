@@ -622,7 +622,7 @@ Level 3 Id styles
 --------*****/
 div.show {
 float: right;
-margin: 0 0 10px 0;
+margin: -3px 0 7px 0; /*0 0 10px 0;*/ /* JG adjust due to Dijit menu widget */
 }
 
 div.genus {
@@ -681,6 +681,7 @@ box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
 .plant p.plant-name {
+font-size: 0.9em; /* JG: make some longer names fit */
 margin: 7px 0 0 0;
 }
 .plant p.plant-name span.latin {
@@ -723,7 +724,7 @@ ul.option-list li.last {
 border-bottom: 1px solid #e1e1dc;
 }
 ul.option-list li:hover, ul.option-list li.active {
-background: #1a2e11;
+background: #1a2e11 !important; /* important used to override style attribute added by yellow fade */
 cursor: pointer;
 }
 ul.option-list li:hover a.option, ul.option-list li.active a.option {
@@ -738,7 +739,7 @@ color: #1a2e11;
 .option-list a.option:hover {
 text-decoration: none;
 }
-.option-list .option span {
+.option-list .option span.name {
 display: block;
 margin: 0 0 3px 0;
 font-weight: bold;
@@ -820,3 +821,283 @@ background-position: 0 -32px;
 .working-area .apply-btn:active {
 background-position: 0 -64px;
 }
+
+
+/* Following: various styles from the pre-visual-design version of the site,
+   some of which are here temporarily as work continues on the visual design.
+ */
+
+#sidebar .loading {
+    background: url(../ajax-loader.gif) no-repeat scroll 0 0 transparent;
+    font-weight: bold;
+    margin: 0 0 20px 16px;
+    padding: 0 0 0 20px;
+}
+
+/* ordinarily this msg will have its centering done
+by javascript, see gobotany.sk.results.notify() */
+#notification-msg {
+    background-color: #eeee9a;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    font-size: 1.2em;
+    -moz-border-bottom-left-radius: 15px;
+    -moz-border-bottom-right-radius: 15px;
+    padding: 0.25em 0.75em;
+}
+
+/* Plant preview dialogs, wherever they appear */
+
+#plant-preview {
+    background-color: #fff;
+    color: #000;
+}
+
+#plant-preview h3 {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    text-align: center;
+}
+
+#plant-preview #preview-intro {
+    position: absolute;
+    left: -2000px;
+}
+
+#plant-preview div.photos {
+    float: left;
+    font-size: 0.9em;
+    height: 220px;
+    margin: 0 0.5em;
+    position: relative;
+    text-align: center;
+    width: 202px;
+}
+
+#plant-preview div.photos img {
+    max-height: 200px;
+    max-width: 200px;
+    min-height: 100px;
+    min-width: 100px;
+}
+
+#plant-preview div.photos p {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 205px;
+    width: 200px;
+}
+
+#plant-preview div.photos a {
+    padding: 0 1em;
+}
+
+#plant-preview dl {
+    padding: 0.5em;
+    float: right;
+}
+
+#plant-preview dt {
+    clear: left;
+    float: left;
+    font-weight: bold;
+    text-align: right;
+    width: 200px;
+}
+
+#plant-preview dd {
+    margin: 0 0 0 210px;
+    padding: 0 0 1em 0;
+}
+
+#plant-preview div.nav {
+    clear: both;
+    text-align: center;
+}
+
+
+
+div.working-area {
+    border: 1px dashed #ddd;
+    clear: left;
+    display: none;
+    height: 215px;
+    padding: 1em;
+}
+
+div.working-area .close {
+    color: #00e;
+    cursor: pointer;
+    display: inline;
+    float: right;
+}
+
+div.working-area h3.name {
+    font-size: 1em;
+    font-weight: bold;
+    line-height: 1em;
+    margin: 0 0 0.3em 0;
+    padding: 0;
+}
+
+div.working-area .info {
+    width: 100%;
+}
+
+div.working-area .info .info-sub {
+    float: right;
+    border: 1px dashed #ddd;
+    margin-right: 1em;
+}
+
+div.working-area .info .info-sub h3 {
+    font-weight: bold;
+}
+
+div.working-area .values {
+    border: 1px solid #999;
+    float: left;
+    height: 153px;
+    margin: 0 0 10px 0;
+    overflow-y: scroll;
+    padding: 0;
+    width: 400px;
+}
+
+div.working-area .values.numeric {
+    border: 0;
+    height: auto;
+    overflow-y: visible;
+}
+
+div.working-area .values.multiple label {
+    border-top: 1px solid #999;
+    clear: both;
+    display: block;
+    height: 50px;
+    line-height: 1.2em;
+}
+
+div.working-area .values.multiple label:first-child {
+    border-top: 0;
+}
+
+div.working-area .values.multiple label > span:first-child {
+    display: inline-block;
+    padding-left: 0.3em;
+    width: 330px;
+}
+
+div.working-area .values input {
+    margin: 0.6em 0;
+}
+
+div.working-area .values input.zero ~ span {
+    color: #ccc;
+}
+
+div.working-area .values label div {
+    border: 1px dashed #ccc;
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    height: 40px;
+    margin: 4px 4px 0 0;
+    padding: 0;
+    text-align: center;
+    width: 40px;
+}
+
+div.working-area .values label div img {
+    height: 40px;
+}
+
+div.working-area .info {
+    float: left;
+    font-size: 0.85em;
+}
+
+div.working-area .info .hint {
+    font-size: 0.85em;
+    margin-bottom: 10px;
+}
+
+div.working-area .info .hint p {
+    margin-bottom: 0;
+}
+
+div.working-area button {
+    border: 1px solid gray;
+    clear: left;
+    display: block;
+    margin-bottom: 1em;
+}
+
+/* Make a Dijit horizontal slider look like a ruler */
+
+.moz_ruler_slider_wrapper {
+    /* Create a context in which we can absolutely position english/metric
+       divs.  This has to be done on a div placed around the actual
+       slider because Dijit uses a table, and Mozilla ignores a relative
+       position when it is placed on a table, per this bug:
+       https://bugzilla.mozilla.org/show_bug.cgi?id=63895
+       */
+    position: relative;
+}
+div.working-area .dijitSliderH {
+    margin-top: 48px;
+    margin-bottom: 18px;
+}
+div.working-area .dijitSliderButtonContainerH {
+    padding: 0;
+}
+
+div.working-area .dijitSliderBumperH {
+    width: 0px;  /* hmm, not quite right - still 1px off on left - hmm */
+}
+
+div.working-area .dijitSliderDecoration {
+    background-color: #fe8;
+    border-bottom: 1px solid black;
+}
+div.working-area .dijitSliderImageHandleH > div {
+    font-size: 0.88em;
+}
+div.working-area .dijitSliderImageHandleH div.second_handle {
+    /* A second handle at the bottom of the ruler, against the inches */
+    position: absolute;
+    height: 16px;
+    width: 18px;
+    background-image: url("http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/form/images/sliderThumbs.png");
+    background-position: -108px 0;
+}
+div.working-area div.metric_display {
+    position: absolute;
+    top: 0px;
+    left: -30px;
+    width: 60px;
+    text-align: center;
+}
+div.working-area div.english_display {
+    position: absolute;
+    top: 20px;
+    right: -12px;
+    text-align: right;
+}
+div.working-area .dijitRuleLabelH {
+    left: -100%;  /* print lengths left of ticks */
+    text-align: right;
+}
+
+
+/* overrides for the non-length (count) slider */
+
+div.working-area #simple-slider .dijitSliderDecoration {
+    background: #fff;
+    border-bottom: 0;
+}
+div.working-area #simple-slider .count {
+    position: absolute; /* top/left set by JS */
+}
+

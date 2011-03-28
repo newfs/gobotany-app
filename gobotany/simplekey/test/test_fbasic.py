@@ -121,10 +121,10 @@ class FilterFunctionalTests(FunctionalTestCase):
     def wait_on_species(self, expected_count):
         """Wait for a new batch of species to be displayed."""
         with self.wait(12):
-            self.css1('#plant-listing li li')
-        q = self.css('#plant-listing li li')
+            self.css1('div.plant-list div.plant')
+        q = self.css('div.plant-list div.plant')
         self.assertEqual(len(q), expected_count)
-        count_words = self.css1('.count').text.split()  # "9 species matched"
+        count_words = self.css1('h3 .species-count').text.split()  # "9 species matched"
         count = int(count_words[0])
         self.assertEqual(count, expected_count)
         return q
@@ -138,14 +138,14 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # filter on Rhode Island
 
-        d.find_element_by_link_text('New England state').click()
+        self.css1('#state_distribution a.option').click()
         self.css1('[value="Rhode Island"]').click()
         d.find_element_by_name('apply').click()
         self.wait_on_species(13)
 
         # filter on bogs
 
-        d.find_element_by_link_text('Habitat').click()
+        self.css1('#habitat a.option').click()
         self.css1('[value="bogs"]').click()
         d.find_element_by_name('apply').click()
         self.wait_on_species(1)
@@ -170,7 +170,8 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # filter on Rhode Island
 
-        d.find_element_by_link_text('New England state').click()
+        #d.find_element_by_link_text('New England state').click()
+        self.css1('#state_distribution a.option').click()
         self.css1('[value="Rhode Island"]').click()
         d.find_element_by_name('apply').click()
         d.find_element_by_name('apply').click()
@@ -186,14 +187,14 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # filter on Rhode Island
 
-        d.find_element_by_link_text('New England state').click()
+        self.css1('#state_distribution a.option').click()
         self.css1('[value="Rhode Island"]').click()
         d.find_element_by_name('apply').click()
         self.wait_on_species(13)
 
         # filter on bogs
 
-        d.find_element_by_link_text('Habitat').click()
+        self.css1('#habitat a.option').click()
         self.css1('[value="bogs"]').click()
         d.find_element_by_name('apply').click()
         self.wait_on_species(1)
@@ -217,10 +218,11 @@ class FilterFunctionalTests(FunctionalTestCase):
         assert '-sh-' in e.get_attribute('src')
 
     def test_get_more_filters(self):
+        FILTERS_CSS = 'ul.option-list li'
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
-        filters = self.css('#filters > ul > li')
+        filters = self.css(FILTERS_CSS)
         n = len(filters)
-        self.css1('#get_more_filters_button').click()
-        filters = self.css('#filters > ul > li')
+        self.css1('#sidebar a.get-choices').click()
+        filters = self.css(FILTERS_CSS)
         self.assertEqual(len(filters), n + 3)

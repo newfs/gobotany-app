@@ -65,14 +65,14 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         this.filter_section.setup_section();
 
         // Wire up the filter working area's close button.
-        var el = dojo.query('#filter-working .close')[0];
+        var el = dojo.query('div.working-area .close')[0];
         dojo.connect(el, 'onclick', dojo.hitch(this.filter_section,
             this.filter_section.hide_filter_working));
 
         dojo.subscribe('results_loaded',
             dojo.hitch(this, this.populate_image_types));
 
-        // Update images on selction change
+        // Update images on selection change
         var select_box = dijit.byId('image-type-selector');
         dojo.connect(select_box, 'onChange',
                      dojo.hitch(this, this.load_selected_image_type));
@@ -103,7 +103,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                             this.filter_section.update_filter_display(
                                 'genus');
 
-                            dojo.query('#filters .loading').addClass(
+                            dojo.query('#sidebar .loading').addClass(
                                 'hidden');
                             this.species_section.perform_query();
 
@@ -175,7 +175,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         var pile_info = this.pile_manager.pile_info;
         var filters = [];
-        for (var x = 0; x < pile_info.default_filters.length; x++) {
+        var x;
+        for (x = 0; x < pile_info.default_filters.length; x++) {
             var obj = pile_info.default_filters[x];
             obj.pile_slug = this.pile_slug;
             var filter = this.filter_manager.add_filter(
@@ -203,7 +204,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         var comma = hash_object._filters.split(',');
         var filter_values = {};
         var filter_names = [];
-        for (var x = 0; x < comma.length; x++) {
+        var x;
+        for (x = 0; x < comma.length; x++) {
             var char_name = comma[x];
             var value = hash_object[char_name];
             if (this.filter_manager.has_filter(char_name)) {
@@ -268,52 +270,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     },
 
     load_selected_image_type: function(event) {
-        var image_type = dijit.byId('image-type-selector').value;
-        var images = dojo.query('#plant-listing li img');
-        // Replace the image for each plant on the page
-        for (var i = 0; i < images.length; i++) {
-            var image = images[i];
-            // Fetch the species for the current image
-            this.filter_manager.result_store.fetchItemByIdentity({
-                scope: {image: image,
-                        image_type: image_type},
-                identity: dojo.attr(image, 'x-plant-id'),
-                onItem: function(item) {
-                    var new_image;
-                    // Search for an image of the correct type
-                    for (var j = 0; j < item.images.length; j++) {
-                        if (item.images[j].type == image_type) {
-                            new_image = item.images[j];
-                            break;
-                        }
-                    }
-                    if (new_image) {
-                        // Replace either src or x-tmp-src depending on
-                        // whether the current image has already been
-                        // loaded.  This may result in a significant
-                        // performance impact on large result sets
-                        // which have already been scrolled before
-                        // changing image types.  The alternative would
-                        // be to unload previously loaded image pages.
-                        var src_var = dojo.attr(image, 'x-tmp-src') ?
-                            'x-tmp-src' : 'src';
-                        dojo.attr(image, src_var, new_image.thumb_url);
-                        dojo.attr(image, 'alt', new_image.title);
-                        // Hide the empty box if it exists and make
-                        // sure the image is visible.
-                        dojo.query('+ span.MissingImage', image).orphan();
-                        dojo.style(image, 'display', 'inline');
-                    }
-                    else if (dojo.style(image, 'display') != 'none') {
-                        // If there's no matching image display the
-                        // empty box and hide the image
-                        dojo.style(image, 'display', 'none');
-                        dojo.create('span', {'class': 'MissingImage'},
-                            image, 'after');
-                    }
-                }
-            });
-        }
+        // TODO: revise for new visual design
+        return;
     },
 
     // A subscriber for results_loaded
@@ -326,11 +284,13 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         // the result set for now
         var image_types = [];
         var image_type;
-        for (var i = 0; i < results.length; i++) {
+        var i;
+        for (i = 0; i < results.length; i++) {
             var images = results[i].images;
-            for (var j = 0; j < images.length; j++) {
+            var j;
+            for (j = 0; j < images.length; j++) {
                 image_type = images[j].type;
-                if (image_types.indexOf(image_type) == -1) {
+                if (image_types.indexOf(image_type) === -1) {
                     image_types.push(image_type);
                 }
             }
@@ -342,7 +302,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             select_box.addOption({value: image_type,
                 label: image_type});
             // Habit is selected by default
-            if (image_type == 'habit') {
+            if (image_type === 'habit') {
                 select_box.attr('value', 'habit');
             }
         }
@@ -368,9 +328,16 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
     setup_section: function() {
         console.log('FilterSectionHelper: setting up section');
-        // Wire up the "More filters" button.
-        var form = dijit.byId('more_filters_form');
-        dojo.connect(form, 'onSubmit', this, function(event) {
+
+        // Wire up the Get Choices links (a button atop the sidebar and
+        // a hyperlink at bottom).
+        var choices_button = dojo.query('#sidebar .get-choices')[0];
+        dojo.connect(choices_button, 'onclick', this, function(event) {
+            dojo.stopEvent(event);
+            this.query_best_filters();
+        });
+        var choices_link = dojo.query('#sidebar .get-more-choices')[0];
+        dojo.connect(choices_link, 'onclick', this, function(event) {
             dojo.stopEvent(event);
             this.query_best_filters();
         });
@@ -406,29 +373,29 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     _setup_character_groups: function(character_groups) {
-        console.log('FilterSectionHelper: Updating char groups');
-        var menu = dijit.byId('character_groups_menu');
+        console.log('FilterSectionHelper: Updating character groups');
 
-        for (var i = 0; i < character_groups.length; i++) {
+        var character_groups_list = dojo.query('ul#char-groups')[0];
+        dojo.empty(character_groups_list);
+        var i;
+        for (i = 0; i < character_groups.length; i++) {
             var character_group = character_groups[i];
-            var item = new dijit.CheckedMenuItem({label: character_group.name,
-                                                  value: character_group.id});
-            menu.addChild(item);
+            var item = dojo.create('li', { innerHTML: '<label>' +
+                '<input type="checkbox" value="' + character_group.id +
+                '"> ' + character_group.name + '</label>'});
+            dojo.place(item, character_groups_list);
         }
     },
 
     query_best_filters: function() {
         var filter_manager = this.results_helper.filter_manager;
-
         console.log('FilterSectionHelper: getting more filters...');
 
-        var button = dijit.byId('get_more_filters_button');
-        button.set('disabled', true);
-
-        var menu = dijit.byId('character_groups_menu');
         var character_group_ids = [];
-        for (var x = 0; x < menu.getChildren().length; x++) {
-            var item = menu.getChildren()[x];
+        var character_group_items = dojo.query('ul#char-groups input');
+        var x;
+        for (x = 0; x < character_group_items.length; x++) {
+            var item = character_group_items[x];
             if (item.checked) {
                 character_group_ids.push(item.value);
             }
@@ -453,15 +420,16 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     // Get all the newly added filters, so they can be
                     // listed on the page and so their values can be loaded.
                     var new_filters = [];
-                    for (var i = 0; i < new_filter_names.length; i++) {
+                    var i;
+                    for (i = 0; i < new_filter_names.length; i++) {
                         new_filters.push(filter_manager.get_filter(
                             new_filter_names[i]));
                     }
 
                     // Add the new filters to the filters list.
                     var added = this.display_filters(new_filters, 0);
-                    added.style({backgroundColor: '#C8B560'});
-                    gobotany.utils.notify('More filters added');
+                    added.style({backgroundColor: '#eeee9a'});
+                    gobotany.utils.notify('More choices added');
                     gobotany.utils.animate_changed(added);
 
                     // Load the values for the newly added filters.
@@ -471,11 +439,11 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                         this, function() {} ) });
 
                     this.results_helper.save_filter_state();
-                } else {
-                    gobotany.utils.notify(
-                        'No filters left for the selected character groups');
                 }
-                button.set('disabled', false);
+                else {
+                    gobotany.utils.notify(
+                        'No more choices left for the boxes checked');
+                }
             })
         });
     },
@@ -531,27 +499,28 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     _apply_filter: function(event) {
         dojo.stopEvent(event);
 
-        var choice_div = dojo.query('#' + this.visible_filter_short_name +
-                                    ' .choice')[0];
+        var value_label = dojo.query('li#' + this.visible_filter_short_name +
+            ' span.value')[0];
 
         // First, see if this is a numeric field.
-
+        var char_value_q;
+        var value;
         if (dojo.byId('character_slider') !== null) {   // ruler slider
-            var char_value_q = dijit.byId('character_slider');
-            var value = char_value_q.value;
+            char_value_q = dijit.byId('character_slider');
+            value = char_value_q.value;
             if (isNaN(value)) {
                 return;
             }
-            this._apply_numeric_value(choice_div, value);
+            this._apply_numeric_value(value_label, value);
             return;
         }
         else if (dojo.byId('simple-slider') !== null) {   // count slider
-            var char_value_q = dijit.byId('simple-slider');
-            var value = char_value_q.value;
+            char_value_q = dijit.byId('simple-slider');
+            value = char_value_q.value;
             if (isNaN(value)) {
                 return;
             }
-            this._apply_numeric_value(choice_div, value);
+            this._apply_numeric_value(value_label, value);
             return;
         }
 
@@ -561,7 +530,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             '#character_values_form input:checked');
 
         if (checked_item_q.length) {
-            var value = checked_item_q[0].value;
+            value = checked_item_q[0].value;
             this.results_helper.filter_manager.set_selected_value(
                 this.visible_filter_short_name, value);
             var filter = this.results_helper.filter_manager.get_filter(
@@ -571,7 +540,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             if (value_object !== undefined) {
                 friendly_text = value_object.friendly_text;
             }
-            choice_div.innerHTML = this._get_filter_display_value(
+            value_label.innerHTML = this._get_filter_display_value(
                 friendly_text, value, this.visible_filter_short_name);
             this.results_helper.species_section.perform_query();
             this.show_or_hide_filter_clear(
@@ -585,7 +554,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     display_filter: function(filter, idx) {
-        var filter_ul = dojo.query('#filters ul')[0];
+        var filter_ul = dojo.query('#sidebar ul.option-list')[0];
         var first = null;
         if (idx !== undefined) {
             var nodes = dojo.query('li', filter_ul);
@@ -599,28 +568,24 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         var filterItem = null;
         if (filter.value_type !== null) {
-            var filterLink = dojo.create('a', {
-                href: '#', innerHTML: filter.friendly_name});
-            var choiceDiv = dojo.create('div', {
-                'class': 'choice',
-                innerHTML: this._get_filter_display_value('', '', '')});
-            var removeLink = dojo.create('a', {
-                href: '#', innerHTML: '× remove'});
+            var closeLink = dojo.create('a', {
+                href: '#', 'class': 'close'});
+            var labelsLink = dojo.create('a', {
+                href: '#', 'class': 'option',
+                innerHTML: '<span class="name">' + filter.friendly_name +
+                    ':</span> <span class="value">' +
+                    this._get_filter_display_value('', '', '') + '</span>'});
+
             var clearLink = dojo.create('a', {
-                'class': 'clear hidden', href: '#', innerHTML: '× clear'});
+                'class': 'clear hidden', href: '#', innerHTML: '<br>× clear'});
 
             // Pass the filter to the function as its context (this).
-            dojo.connect(filterLink, 'onclick', this,
-                         function(event) {
-                             dojo.stopEvent(event);
-                             this.show_filter_working(filter);
-                         });
-            dojo.connect(removeLink, 'onclick', this,
+            dojo.connect(closeLink, 'onclick', this,
                          function(event) {
                              dojo.stopEvent(event);
                              this.remove_filter(filter);
                              var current_filter_name = dojo.query(
-                                 '#filter-working .name')[0].innerHTML;
+                                 'div.working-area .name')[0].innerHTML;
                              if (filter.friendly_name ===
                                  current_filter_name) {
                                 this.hide_filter_working();
@@ -634,9 +599,14 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
             filterItem = dojo.create('li',
                                      {id: filter.character_short_name});
-            dojo.place(filterLink, filterItem);
-            dojo.place(choiceDiv, filterItem);
-            dojo.place(removeLink, filterItem);
+            dojo.connect(filterItem, 'onclick', this,
+                         function(event) {
+                             dojo.stopEvent(event);
+                             this.show_filter_working(filter);
+                         });
+
+            dojo.place(closeLink, filterItem);
+            dojo.place(labelsLink, filterItem);
             dojo.place(clearLink, filterItem);
 
             if (first !== undefined && first !== null) {
@@ -655,8 +625,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     show_or_hide_filter_clear: function(filter_character_short_name) {
         // Show or hide the Clear link for a filter at left.
         var filter_id = '#' + filter_character_short_name;
-        var should_hide_clear = dojo.query(filter_id +
-            ' .choice')[0].innerHTML === 'don\'t know';
+        var should_hide_clear = dojo.query('li#' + filter_id +
+            ' span.value')[0].innerHTML === 'don\'t know';
         var clear = dojo.query(filter_id + ' .clear');
         if (should_hide_clear) {
             clear.addClass('hidden');
@@ -667,13 +637,14 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     clear_filters: function() {
-        dojo.query('#filters ul').empty();
+        dojo.query('#sidebar ul.option-list').empty();
         this.save_filter_state();
     },
 
     display_filters: function(filters, idx) {
         var added = dojo.NodeList();
-        for (var i = 0; i < filters.length; i++) {
+        var i;
+        for (i = 0; i < filters.length; i++) {
             var f = this.display_filter(filters[i], idx);
             added.push(f);
             if (idx !== undefined) {
@@ -707,7 +678,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
             var new_family =
                 this.results_helper.species_section.genus_to_family[genus];
-            if (family != new_family) {
+            if (family !== new_family) {
                 this.did_they_just_choose_a_genus = true;
                 this.set_value('family', new_family);
             } else {
@@ -736,7 +707,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 if (!filter.selected_value) {
                     return true;
                 }
-                return filter.selected_value == item.family;
+                return filter.selected_value === item.family;
             }
         });
         this.results_helper.filter_manager.add_callback_filter({
@@ -745,7 +716,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 if (!filter.selected_value) {
                     return true;
                 }
-                return filter.selected_value == item.genus;
+                return filter.selected_value === item.genus;
             }
         });
     },
@@ -773,10 +744,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         char_name = filter.character_short_name;
 
         if (value !== undefined) {
-            if (char_name == 'family') {
+            if (char_name === 'family') {
                 dijit.byId('family_select').set('value', value);
             }
-            else if (char_name == 'genus') {
+            else if (char_name === 'genus') {
                 dijit.byId('genus_select').set('value', value);
             }
             else {
@@ -788,9 +759,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     }
                     var display_value = this._get_filter_display_value(
                         friendly_text, value, char_name);
-                    var choice_div = dojo.query('#' + char_name +
-                                                ' .choice')[0];
-                    choice_div.innerHTML = display_value;
+                    var value_label = dojo.query('li#' + char_name +
+                        ' span.value')[0];
+                    value_label.innerHTML = display_value;
                 }
                 this.show_or_hide_filter_clear(char_name);
             }
@@ -806,13 +777,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             this.results_helper.species_section.perform_query();
         }
 
-        dojo.query('#' + filter.character_short_name + ' .choice'
+        dojo.query('li#' + filter.character_short_name + ' span.value'
                   )[0].innerHTML = this._get_filter_display_value('', '', '');
         this.show_or_hide_filter_clear(filter.character_short_name);
     },
 
     remove_filter: function(filter) {
-        if (filter.character_short_name == this.visible_filter_short_name) {
+        if (filter.character_short_name === this.visible_filter_short_name) {
             this.hide_filter_working();
         }
 
@@ -827,13 +798,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     hide_filter_working: function() {
-        dojo.query('#filter-working').style({display: 'none'});
-
-        // Get the filter section object, which can be in one of two places
-        // depending on the call context.
-        var filter_section = this;
-
-        this.visible_filter_short_name = '';
+        dojo.query('div.working-area').style({display: 'none'});
 
         // Save the state, which includes whether the filter working area is
         // being shown.
@@ -878,7 +843,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
     set_simple_slider_value: function() {
         var count_display =
-            dojo.query('#filter-working #simple-slider .count')[0];
+            dojo.query('div.working-area #simple-slider .count')[0];
         count_display.innerHTML = this.simple_slider.value;
         var handle = dojo.query('.dijitSliderImageHandleH')[0];
         var pos = dojo.position(handle, true);
@@ -887,13 +852,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     show_filter_working: function(filter) {
-        dojo.query('#filter-working').style({display: 'block'});
-        dojo.query('#filter-working .name')[0].innerHTML =
+        dojo.query('div.working-area').style({display: 'block'});
+        dojo.query('div.working-area h4')[0].innerHTML =
             filter.friendly_name;
 
         this.visible_filter_short_name = filter.character_short_name;
 
-        var valuesList = dojo.query('#filter-working form .values')[0];
+        var valuesList = dojo.query('div.working-area form .values')[0];
         dojo.empty(valuesList);
 
         // Allow for numeric filters to be styled differently than
@@ -938,6 +903,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         // TODO: Consider changing the value type (perhaps to "NUMERIC"),
         // since it turns out not all numeric filters are actually length
         // filters (some are count filters).
+        var startvalue;
+        var selectedvalue;
         if (filter.value_type === 'LENGTH') {
             if (filter.is_length()) {
 
@@ -955,9 +922,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
                 var themin = filter.values.min;
                 var themax = filter.values.max;
-                var startvalue = (themax + themin) / 2.0;
+                startvalue = (themax + themin) / 2.0;
 
-                var selectedvalue =
+                selectedvalue =
                     this.results_helper.filter_manager.get_selected_value(
                         filter.character_short_name);
                 if (selectedvalue !== undefined && selectedvalue !== null) {
@@ -981,8 +948,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 // For non-length numeric ("count") filters, show a simple
                 // slider without a ruler.
                 var num_values = filter.values.max - filter.values.min + 1;
-                var startvalue = Math.ceil(num_values / 2);
-                var selectedvalue =
+                startvalue = Math.ceil(num_values / 2);
+                selectedvalue =
                     this.results_helper.filter_manager.get_selected_value(
                         filter.character_short_name);
                 if (selectedvalue !== undefined && selectedvalue !== null) {
@@ -1035,7 +1002,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             values.sort(this.sort_filter_values);
 
             // Create radio button items for each character value.
-            for (var i = 0; i < values.length; i++) {
+            var i;
+            for (i = 0; i < values.length; i++) {
                 var v = values[i];
 
                 if (!((v.count === 0) && (v.value === 'NA'))) {
@@ -1053,8 +1021,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
                     var image_path = v.image_url;
                     var thumbnail_html = '';
+                    var image_id = '';
                     if (image_path.length > 0) {
-                        var image_id = this.get_image_id_from_path(image_path);
+                        image_id = this.get_image_id_from_path(image_path);
                         thumbnail_html = '<img id="' + image_id +
                             '" src="' + v.thumbnail_url + '" alt="drawing ' +
                             'showing ' + v.friendly_text + '">';
@@ -1096,7 +1065,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             // pre-check that radio button, instead of pre-checking the
             // first (the "Don't know") radio button like we normally do.
 
-            var selector = '#filter-working .values input';
+            var selector = 'div.working-area .values input';
             var already_selected_value =
                 this.results_helper.filter_manager.get_selected_value(
                     filter.character_short_name);
@@ -1107,7 +1076,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             dojo.query(selector)[0].checked = true;
 
             // Scroll the values list so the selected value is showing.
-            var values_element = dojo.query('#filter-working .values')[0];
+            var values_element = dojo.query('div.working-area .values')[0];
             var top_offset = 0;
             if (selector.indexOf('[value') > -1) {
                 // Adjust the height to position the selected item at around
@@ -1119,14 +1088,14 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         // Set any question and hint text for this filter.
         var html = '';
-        var q = dojo.query('#filter-working .info .question')[0];
+        var q = dojo.query('div.working-area .info .question')[0];
         if (filter.question.length > 0) {
             html = '<p>' + filter.question + '</p>';
         }
         q.innerHTML = html;
 
         html = '';
-        var h = dojo.query('#filter-working .info .hint')[0];
+        var h = dojo.query('div.working-area .info .hint')[0];
         if (filter.hint.length > 0) {
             html = '<p>' + filter.hint + '</p>';
         }
@@ -1135,10 +1104,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         // Set the key characteristics and notable exceptions for the filter
         // (character). (The ones for character values are set elsewhere.)
 
-        var kc = dojo.query('#filter-working .info .key-characteristics')[0];
+        var kc = dojo.query('div.working-area .info .key-characteristics')[0];
         kc.innerHTML = filter.key_characteristics;
 
-        var ne = dojo.query('#filter-working .info .notable-exceptions')[0];
+        var ne = dojo.query('div.working-area .info .notable-exceptions')[0];
         ne.innerHTML = filter.notable_exceptions;
 
         // Save the state, which includes whether the filter working area is
@@ -1149,10 +1118,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     // Update the filter working area "help text," which consists of the Key
     // Characteristics and Notable Exceptions areas.
     update_filter_working_help_text: function(filter) {
-        var kc = dojo.query('#filter-working .info .key-characteristics')[0];
+        var kc = dojo.query('div.working-area .info .key-characteristics')[0];
         kc.innerHTML = filter.key_characteristics;
 
-        var ne = dojo.query('#filter-working .info .notable-exceptions')[0];
+        var ne = dojo.query('div.working-area .info .notable-exceptions')[0];
         ne.innerHTML = filter.notable_exceptions;
 
         this.glossarizer.markup(kc);

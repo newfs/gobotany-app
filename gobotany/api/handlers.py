@@ -33,7 +33,14 @@ def _taxon_image(image):
 
 def _simple_taxon(taxon):
     res = {}
+
+    first_common_name = '';
+    common_names = taxon.common_names.all()
+    if (common_names):
+        first_common_name = common_names[0].common_name
+
     res['scientific_name'] = taxon.scientific_name
+    res['common_name'] = first_common_name
     res['genus'] = taxon.scientific_name.split()[0] # faster than .genus.name
     res['family'] = taxon.family.name
     res['id'] = taxon.id
