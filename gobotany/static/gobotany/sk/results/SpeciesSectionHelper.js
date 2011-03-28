@@ -256,8 +256,6 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                         var pile_slug = this.results_helper.pile_slug;
                         dojo.connect(plant_link, 'onclick', species,
                             function(event) {
-                                console.log('onclick - species:');
-                                console.log(genus.species[k]);
                                 event.preventDefault();
                                 var plant = this;
                                 dijit.byId('plant-preview').show();
