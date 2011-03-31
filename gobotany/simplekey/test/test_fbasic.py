@@ -50,9 +50,13 @@ class FunctionalTestCase(unittest2.TestCase):
 
     # Helpers
 
+    def url(self, path):
+        """Compute and return a site URL."""
+        return self.base + path
+
     def get(self, path):
         """Retrieve a URL, and return the driver object."""
-        self.driver.get(self.host + self.base + path)
+        self.driver.get(self.host + self.url(path))
         return self.driver
 
     @contextmanager
@@ -226,3 +230,47 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.css1('#sidebar a.get-choices').click()
         filters = self.css(FILTERS_CSS)
         self.assertEqual(len(filters), n + 3)
+
+
+class GlossaryFunctionalTests(FunctionalTestCase):
+
+    def test_help_start_links_to_glossary(self): 
+        d = self.get('/help/start/')
+        e = d.find_element_by_link_text('Glossary')
+        self.assertEqual(e.get_attribute('href'),
+                         self.url('/help/glossary/a/'))
+
+    def test_glossary_a_page_contains_a_terms(self):
+        d = self.get('/help/glossary/a/')
+        xterms = self.css('h2')
+        self.assertEqual(xterms[0].text[0], 'a')
+        self.assertEqual(xterms[-1].text[0], 'a')
+
+    def test_glossary_g_page_contains_g_terms(self):
+        d = self.get('/help/glossary/g/')
+        xterms = self.css('h2')
+        self.assertEqual(xterms[0].text[0], 'g')
+        self.assertEqual(xterms[-1].text[0], 'g')
+
+    def test_glossary_z_page_contains_z_terms(self):
+        d = self.get('/help/glossary/z/')
+        xterms = self.css('h2')
+        self.assertEqual(xterms[0].text[0], 'z')
+        self.assertEqual(xterms[-1].text[0], 'z')
+
+    def test_glossary_g_page_does_not_link_to_itself(self):
+        d = self.get('/help/glossary/g/')
+        e = d.find_elements_by_link_text('G')
+        self.assertEqual(len(e), 0)
+
+    def test_glossary_g_page_link_to_other_letters(self):
+        d = self.get('/help/glossary/g/')
+        for letter in 'ABCWYZ':  # 'X' currently has no terms
+            e = d.find_elements_by_link_text(letter)
+            self.assertTrue(len(e))
+
+    def test_glossary_g_page_link_is_correct(self):
+        d = self.get('/help/glossary/a/')
+        e = d.find_element_by_link_text('G')
+        self.assertEqual(e.get_attribute('href'),
+                         self.url('/help/glossary/g/'))
