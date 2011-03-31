@@ -80,7 +80,7 @@ def rebuild_default_filters():
                 number_added += 1
                 # If no more filters need to be added, stop now.
                 if number_added == DEFAULT_BEST_FILTERS_PER_PILE:
-                    break;
+                    break
 
 
 def rebuild_sample_pile_images(pile_or_group_csv_1, pile_or_group_csv_2):
