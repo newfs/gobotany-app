@@ -21,9 +21,9 @@
                     <div class="not-my-plant">
                         <h6>My plant isn't in
                             {% if piles_and_urls|length > 1 %}
-                                these groups.
+                                these subgroups.
                             {% else %}
-                                this group.
+                                this subgroup.
                             {% endif %}
                         </h6>
                         <a class="back-level"
@@ -31,7 +31,7 @@
                     </div><!--Closes .not-my-plant-->
 
                     <h2>Plant Identifier</h2>
-                    <h4>Is your plant in one of these groups?</h4>
+                    <h4>Is your plant in one of these subgroups?</h4>
 
                     <div class="clearit"></div>
 
@@ -66,7 +66,7 @@
                             <p class="vid">
                                 <a href="http://www.youtube.com/v/{{ pile.youtube_id }}" rel="shadowbox;height=380;width=640;">View a short video about this plant group.</a>
                             </p>
-                            <a class="plant-in-group" href="{{ url }}">My plant is in this group.</a>
+                            <a class="plant-in-subgroup" href="{{ url }}">My plant is in this subgroup.</a>
                         </div>
                         <div class="clearit"></div>
                     </div><!--Closes .list-item-->
@@ -75,9 +75,9 @@
                     <div class="not-my-plant">
                         <h6>My plant isn't in
                             {% if piles_and_urls|length > 1 %}
-                                these groups.
+                                these subgroups.
                             {% else %}
-                                this group.
+                                this subgroup.
                             {% endif %}
                         </h6>
                         <a class="back-level" 
