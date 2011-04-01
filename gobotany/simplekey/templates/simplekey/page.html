@@ -67,11 +67,11 @@
                             <h3>{{ pilegroup.name }} <span>{{ pilegroup.friendly_name|capfirst }}</span></h3>
                             <p class="key-char">
                                 <span class="section-title">Key Characteristics</span>
-                                {{ pilegroup.key_characteristics|removetags:"div"|capfirst }}
+                                {{ pilegroup.key_characteristics|removetags:"div"|safe|capfirst }}
                             </p>
                             <p class="exceptions">
                                 <span class="section-title">Exceptions</span>
-                                {{ pilegroup.notable_exceptions|removetags:"div"|capfirst }}
+                                {{ pilegroup.notable_exceptions|removetags:"div"|safe|capfirst }}
                             </p>
                             <p class="vid">
                                 <a href="http://www.youtube.com/v/{{ pilegroup.youtube_id }}" rel="shadowbox;height=380;width=640;">View a short video about this plant group.</a>
