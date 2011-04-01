@@ -988,13 +988,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 '', '') + '</span>';
             var dont_know_item = dojo.create('label',
                                              {'innerHTML': item_html});
-            // Connect filter radio button item to a function that will set the
-            // Key Characteristics and Notable Exceptions for the filter.
-            // Here the *filter* is passed as the context.
-            dojo.connect(dont_know_item, 'onclick', this,
-                         function(event) {
-                             this.update_filter_working_help_text(filter);
-                         });
             dojo.place(dont_know_item, valuesList);
 
             // Apply a custom sort to the filter values.
@@ -1047,17 +1040,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
                     this.glossarizer.markup(
                         character_value_item.childNodes[0].childNodes[1]);
-                    // Connect filter character value radio button item to a
-                    // function that will set the Key Characteristics and
-                    // Notable Exceptions for filter particular character
-                    // value. Here the *character value* is passed as the
-                    // context.
-                    dojo.connect(character_value_item, 'onclick',
-                        {helper: this, value: v}, function(event) {
-                            this.helper.update_filter_working_help_text(
-                                this.value);
-                        }
-                    );
                 }
             }
 
@@ -1101,31 +1083,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }
         h.innerHTML = html;
 
-        // Set the key characteristics and notable exceptions for the filter
-        // (character). (The ones for character values are set elsewhere.)
-
-        var kc = dojo.query('div.working-area .info .key-characteristics')[0];
-        kc.innerHTML = filter.key_characteristics;
-
-        var ne = dojo.query('div.working-area .info .notable-exceptions')[0];
-        ne.innerHTML = filter.notable_exceptions;
-
         // Save the state, which includes whether the filter working area is
         // being shown.
         this.results_helper.save_filter_state();
     },
-
-    // Update the filter working area "help text," which consists of the Key
-    // Characteristics and Notable Exceptions areas.
-    update_filter_working_help_text: function(filter) {
-        var kc = dojo.query('div.working-area .info .key-characteristics')[0];
-        kc.innerHTML = filter.key_characteristics;
-
-        var ne = dojo.query('div.working-area .info .notable-exceptions')[0];
-        ne.innerHTML = filter.notable_exceptions;
-
-        this.glossarizer.markup(kc);
-        this.glossarizer.markup(ne);
-    }
 
 });

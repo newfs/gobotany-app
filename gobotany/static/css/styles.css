@@ -945,16 +945,6 @@ div.working-area .info {
     width: 100%;
 }
 
-div.working-area .info .info-sub {
-    float: right;
-    border: 1px dashed #ddd;
-    margin-right: 1em;
-}
-
-div.working-area .info .info-sub h3 {
-    font-weight: bold;
-}
-
 div.working-area .values {
     border: 1px solid #999;
     float: left;
