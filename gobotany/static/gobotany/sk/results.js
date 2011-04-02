@@ -137,10 +137,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         this.pile_manager.load();
 
-        this.setup_onhashchange();
-    },
-
-    setup_onhashchange: function() {
         // Set up the onhashchange event handler, which will be used to detect
         // Back button undo events for modern browsers.
         dojo.connect(document.body, 'onhashchange', this, this.handle_undo,
