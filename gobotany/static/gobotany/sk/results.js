@@ -428,6 +428,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
                     // Add the new filters to the filters list.
                     var added = this.display_filters(new_filters, 0);
+                    _global_setSidebarHeight();
                     added.style({backgroundColor: '#eeee9a'});
                     gobotany.utils.notify('More choices added');
                     gobotany.utils.animate_changed(added);
@@ -584,8 +585,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                          function(event) {
                              dojo.stopEvent(event);
                              this.remove_filter(filter);
-                             var current_filter_name = dojo.query(
-                                 'div.working-area .name')[0].innerHTML;
+                             var current_filter_name = '';
+                             var working_area_name = dojo.query(
+                                 'div.working-area .name');
+                             if (working_area_name.length) {
+                                 current_filter_name = 
+                                    working_area_name[0].innerHTML;
+                             }
                              if (filter.friendly_name ===
                                  current_filter_name) {
                                 this.hide_filter_working();
@@ -795,6 +801,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 filter.character_short_name);
             this.results_helper.species_section.perform_query();
         }
+
+        _global_setSidebarHeight();
     },
 
     hide_filter_working: function() {
@@ -1086,6 +1094,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         // Save the state, which includes whether the filter working area is
         // being shown.
         this.results_helper.save_filter_state();
+
+        _global_setSidebarHeight();
     },
 
 });

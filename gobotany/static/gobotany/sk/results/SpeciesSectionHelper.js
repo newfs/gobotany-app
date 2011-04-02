@@ -161,6 +161,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
 
         var plant_list = dojo.query('#main .plant-list')[0];
         this.display_results(data.items, plant_list);
+
+        _global_setSidebarHeight();
     },
 
     organize_by_genera: function(items) {
