@@ -215,7 +215,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
-        e = self.css1('#plant-dendrolycopodium-dendroideum img')
+        e = self.css1('.plant-list img')
         assert '-ha-' in e.get_attribute('src')
         self.css1('#results-display .dijitSelectLabel').click()
         self.css1('#dijit_MenuItem_2_text').click()  # 'shoots'
