@@ -17,14 +17,14 @@ dojo.declare('gobotany.sk.results.Glossarizer', null, {
     constructor: function() {
         this.n = 0;
         this.store = new dojox.data.JsonRestStore({
-            target: '/glossaryblob/',
+            target: API_URL + 'glossaryblob/',
             syncMode: true
         });
         this.glossaryblob = this.store.fetch().results;
         var terms = [];
         for (term in this.glossaryblob) {
             if (this.glossaryblob.hasOwnProperty(term)) {
--               terms.push(dojo.regexp.escapeString(term));
+                terms.push(dojo.regexp.escapeString(term));
             }
         }
         /* For incredible speed, we pre-build a regular expression of
@@ -58,4 +58,3 @@ dojo.declare('gobotany.sk.results.Glossarizer', null, {
         });
     }
 });
-
