@@ -113,7 +113,7 @@ class BasicFunctionalTests(FunctionalTestCase):
         assert q[0].text.startswith('Equisetaceae')
         assert q[1].text.startswith('Lycophytes')
         assert q[2].text.startswith('Monilophytes')
-        q = d.find_elements_by_link_text('My plant is in this group.')
+        q = d.find_elements_by_link_text('My plant is in this subgroup.')
         b = self.base + '/ferns'
         self.assertEqual(q[0].get_attribute('href'), b + '/equisetaceae/')
         self.assertEqual(q[1].get_attribute('href'), b + '/lycophytes/')
