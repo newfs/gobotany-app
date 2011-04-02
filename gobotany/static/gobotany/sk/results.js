@@ -270,8 +270,52 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     },
 
     load_selected_image_type: function(event) {
-        // TODO: revise for new visual design
-        return;
+        var image_type = dijit.byId('image-type-selector').value;
+        var images = dojo.query('.plant-list img');
+        // Replace the image for each plant on the page
+        for (var i = 0; i < images.length; i++) {
+            var image = images[i];
+            // Fetch the species for the current image
+            this.filter_manager.result_store.fetchItemByIdentity({
+                scope: {image: image,
+                        image_type: image_type},
+                identity: dojo.attr(image, 'x-plant-id'),
+                onItem: function(item) {
+                    var new_image;
+                    // Search for an image of the correct type
+                    for (var j = 0; j < item.images.length; j++) {
+                        if (item.images[j].type == image_type) {
+                            new_image = item.images[j];
+                            break;
+                        }
+                    }
+                    if (new_image) {
+                        // Replace either src or x-tmp-src depending on
+                        // whether the current image has already been
+                        // loaded.  This may result in a significant
+                        // performance impact on large result sets
+                        // which have already been scrolled before
+                        // changing image types.  The alternative would
+                        // be to unload previously loaded image pages.
+                        var src_var = dojo.attr(image, 'x-tmp-src') ?
+                            'x-tmp-src' : 'src';
+                        dojo.attr(image, src_var, new_image.thumb_url);
+                        dojo.attr(image, 'alt', new_image.title);
+                        // Hide the empty box if it exists and make
+                        // sure the image is visible.
+                        dojo.query('+ span.MissingImage', image).orphan();
+                        dojo.style(image, 'display', 'inline');
+                    }
+                    else if (dojo.style(image, 'display') != 'none') {
+                        // If there's no matching image display the
+                        // empty box and hide the image
+                        dojo.style(image, 'display', 'none');
+                        dojo.create('span', {'class': 'MissingImage'},
+                            image, 'after');
+                    }
+                }
+            });
+        }
     },
 
     // A subscriber for results_loaded

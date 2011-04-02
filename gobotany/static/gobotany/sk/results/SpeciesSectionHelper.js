@@ -237,7 +237,7 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                         }
                         var plant = dojo.create('div',
                             {'class': plant_class_value});
-                        
+
                         var plant_link = dojo.create('a', {'href': '#'});
                         var frame = dojo.create('div', {'class': 'frame'},
                             plant_link);
@@ -245,8 +245,10 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                         var image_container = dojo.create('div',
                             {'class': 'img-container'});
                         var image = dojo.create('img', {'alt': ''});
+                        dojo.attr(image, 'x-plant-id',
+                                  species.scientific_name);
                         dojo.attr(image, 'src',
-                            species.default_image.thumb_url);
+                                  species.default_image.thumb_url);
                         dojo.place(image, image_container);
                         dojo.place(image_container, plant_link);
 
