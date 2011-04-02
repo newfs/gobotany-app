@@ -163,6 +163,12 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         this.display_results(data.items, plant_list);
 
         _global_setSidebarHeight();
+
+        // Signal the "Show:" button to scrape our data to discover what
+        // kinds of thumbnail images are available.
+        dojo.publish('results_loaded',
+                     [{filter_manager: this.results_helper.filter_manager,
+                       data: data}]);
     },
 
     organize_by_genera: function(items) {
