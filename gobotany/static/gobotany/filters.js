@@ -29,7 +29,7 @@ dojo.declare('gobotany.filters.Filter', null, {
         this.unit = args.unit;
         this.filter_callback = args.filter_callback;
         dojo.safeMixin(this, args);
-        var url = '/piles/' + this.pile_slug + '/' + 
+        var url = API_URL + 'piles/' + this.pile_slug + '/' +
                   this.character_short_name + '/';
         this.store = new dojox.data.JsonRestStore({target: url});
     },
@@ -43,7 +43,7 @@ dojo.declare('gobotany.filters.Filter', null, {
 
 // MultipleChoiceFilter
 //
-dojo.declare('gobotany.filters.MultipleChoiceFilter', 
+dojo.declare('gobotany.filters.MultipleChoiceFilter',
              [gobotany.filters.Filter], {
     values: null, // List of character value objects from the JSON
     constructor: function(args) {
@@ -128,10 +128,10 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         this.filters_loading = 0;
 
         if (!args.pile_url) {
-            args.pile_url = '/piles/';
+            args.pile_url = API_URL + 'piles/';
         }
         if (!args.taxon_url) {
-            args.taxon_url = '/taxon/';
+            args.taxon_url = API_URL + 'taxon/';
         }
 
         this.chars_store = new dojox.data.JsonRestStore(
@@ -295,7 +295,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             obj[f.character_short_name] = f.selected_value;
         }
 
-        return '_filters=' + filter_names.join(',') + '&' + 
+        return '_filters=' + filter_names.join(',') + '&' +
             dojo.objectToQuery(obj);
     },
 
@@ -314,7 +314,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                 special.push(filter);
             }
 
-            if (filter.selected_value !== null &&   
+            if (filter.selected_value !== null &&
                 filter.selected_value !== undefined &&
                 filter.selected_value.length) {
 
@@ -428,7 +428,6 @@ dojo.declare('gobotany.filters.FilterLoadingWatcher', null, {
             filter.load_values(loading_args);
         }
     }
-    
 });
 
 gobotany.filters.filter_factory = function(args) {
@@ -437,7 +436,7 @@ gobotany.filters.filter_factory = function(args) {
     if (args.value_type === 'LENGTH') {
         filter_type = gobotany.filters.NumericRangeFilter;
     }
-    else if (args.value_type === 'TEXT')  {
+    else if (args.value_type === 'TEXT') {
         filter_type = gobotany.filters.MultipleChoiceFilter;
     }
     else {

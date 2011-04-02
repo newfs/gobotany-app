@@ -206,7 +206,7 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
 
             for (var i = 0; i < suggestions.length; i++) {
                 var suggestion = suggestions[i];
-                var url = '/simple/search/?q=' + suggestion.toLowerCase();
+                var url = SEARCH_URL + '/?q=' + suggestion.toLowerCase();
                 var label = this.format_suggestion(suggestion, search_query);
                 var item = dojo.create('li');
                 dojo.create('a', { href: url, innerHTML: label },
@@ -226,7 +226,6 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
     },
 
     get_suggestions: function(search_query) {
-        var SUGGEST_URL = '/simple/suggest/';
         var store = new dojox.data.JsonRestStore({target: SUGGEST_URL});
         store.fetch({
             query: { q: search_query },

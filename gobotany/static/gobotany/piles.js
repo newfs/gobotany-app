@@ -8,7 +8,7 @@ dojo.declare('gobotany.piles.PileManager', null, {
         this.pile_slug = pile_slug;
         this.pile_info = {};
 
-        var piles_url = '/piles/';
+        var piles_url = API_URL + 'piles/';
         this.store = new dojox.data.JsonRestStore({target: piles_url});
     },
 

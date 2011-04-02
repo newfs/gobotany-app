@@ -11,7 +11,7 @@ urlpatterns = patterns(
             template='simplekey/search.html',
             form_class=HighlightedSearchForm,
             ),
-        name='simplekey_search'),
+        name='simplekey-search'),
 
     # Hidden test pages.
     url('^_rulertest/$', views.rulertest),

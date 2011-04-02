@@ -19,7 +19,7 @@ doh.register('gobotany.tests.core.TestFilter', [
         doh.assertEqual('p. slug', f.pile_slug);
         doh.assertEqual(3, f.order);
         doh.assertEqual('text', f.value_type);
-    },
+    }
 ]);
 
 doh.register('gobotany.tests.core.TestMultipleChoiceFilter', [
@@ -50,7 +50,7 @@ doh.register('gobotany.tests.core.TestMultipleChoiceFilter', [
         f.process_value(value2);
         f.process_value(value3);
         doh.assertEqual(3, f.values.length);
-    },
+    }
 ]);
 
 doh.register('gobotany.tests.core.TestFilterManager', [
@@ -99,5 +99,5 @@ doh.register('gobotany.tests.core.TestFilterManager', [
         fm.add_filter({filter_json: {'character_short_name': 'bar'}});
         fm.set_selected_value('bar', 'val');
         doh.assertEqual('val', fm.get_selected_value('bar'));
-    },
+    }
 ]);
