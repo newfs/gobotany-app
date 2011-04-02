@@ -29,7 +29,7 @@ urlpatterns = patterns(
     url('^help/glossary/(?P<letter>[1a-z])/$', views.help_glossary_view,
         name='simplekey-help-glossary'),
     url('^help/glossary/$', views.help_glossary_redirect_view, 
-        name='simplekey-help-glossary-redirect'),
+        name='simplekey-help-glossary0'),
     url('^help/video/$', views.help_video_view, name='simplekey-help-video'),
     url('^help/video/(?P<pilegroup_slug>[^/]*)/$',
         views.video_pilegroup_view, name='simplekey-help-video-pilegroup'),

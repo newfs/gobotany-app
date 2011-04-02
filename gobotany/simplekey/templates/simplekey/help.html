@@ -12,15 +12,21 @@
     </div>
     <div id="nav">
         <ul>
-            <li><a {% ifequal request.path "/simple/help/" %}class="current"{% else %}href="/simple/help/"{% endifequal %}>About Go-Botany</a></li>
+            {% url simplekey-help-about as u %}
+            <li><a {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-about %}"{% endifequal %}>About Go-Botany</a></li>
+            
             <li><p>How To Use Plant Identifier:</p>
                 <ul>
-                    <li><a {% ifequal request.path "/simple/help/start/" %}class="current"{% else %}href="/simple/help/start/"{% endifequal %}>Getting Started</a></li>
-                    <li><a {% ifequal request.path "/simple/help/collections/" %}class="current"{% else %}href="/simple/help/collections/"{% endifequal %}>Understanding Plant Collections</a></li>
+                    {% url simplekey-help-start as u %}
+                    <li><a {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-start %}"{% endifequal %}>Getting Started</a></li>
+                    {% url simplekey-help-collections as u%}
+                    <li><a {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-collections %}"{% endifequal %}>Understanding Plant Collections</a></li>
                 </ul>
             </li>
-            <li><a {% ifequal request.path "/simple/help/glossary/a/" %}class="current"{% else %}href="/simple/help/glossary/a/"{% endifequal %}>Glossary</a></li>
-            <li><a {% ifequal request.path "/simple/help/video/" %}class="current"{% else %}href="/simple/help/video/"{% endifequal %}>Video Help Topics</a></li>
+            {% url simplekey-help-glossary0 as u %}
+            <li><a {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-glossary0 %}"{% endifequal %}>Glossary</a></li>
+            {% url simplekey-help-video as u %}
+            <li><a {% ifequal request.path u %} class="current"{% else %}href="{% url simplekey-help-video %}"{% endifequal %}>Video Help Topics</a></li>
         </ul>
     </div>
 </div>

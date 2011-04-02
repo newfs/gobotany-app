@@ -15,7 +15,9 @@
                             <h2>Plant Identifier</h2>
                             <img src="/static/images/layout/separator.png" alt="Go Botany">
                             <p>Want to know what that plant is? With our Plant Identifier, you can identify over 1,200 native New England plants! Answer some questions step by step, and narrow down the possibilities. The key works best if you have an actual sample or a few photos of your plant.</p>
-                            <a href="1/" id="cta">Get Started</a>
+                            <a href="{% url simplekey-page 1 %}" id="cta">
+                              Get Started
+                            </a>
                         </div><!--Closes #overlay-->
                     </div><!--Closes #inner-->
                 </div><!--Closes #banner-->
@@ -32,7 +34,9 @@
                     <h3>Advanced ID Tools</h3>
                     <h5>For experienced botanists!</h5>
                     <p>Identify over 3,000 New England plants by using our Full Identification Key, including technical multiple-access and dichotomous keys to families, genera, and species. Also learn about subspecies and varieties native to our region.</p>
-                    <a class="learn-more" href="advanced/">Learn More</a>
+                    <a class="learn-more" href="{% url advanced-id-tools %}">
+                      Learn More
+                    </a>
                 </div><!--Closes .three-col-->
 
                 <div class="three-col last">
