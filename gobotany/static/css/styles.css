@@ -367,7 +367,7 @@ display: block;
 position: absolute;
 width: 174px;
 padding: 0 0 0 13px;
-background: url(/images/layout/breadcrumb-tails.png) 0 0 no-repeat transparent;
+background: url(/static/images/layout/breadcrumb-tails.png) 0 0 no-repeat transparent;
 }
 
 #breadcrumb li.first {
