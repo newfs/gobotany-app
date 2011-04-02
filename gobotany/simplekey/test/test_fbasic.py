@@ -32,11 +32,11 @@ class FunctionalTestCase(unittest2.TestCase):
                     })
         if 'SIMPLEHOST' in os.environ:
             cls.host = 'http://' + os.environ['SIMPLEHOST']
-            cls.base = '/simple'
+            cls.base = ''
         else:
             cls.driver = webdriver.Chrome()
             cls.host = 'http://localhost:8000'
-            cls.base = '/simple'
+            cls.base = ''
 
     @classmethod
     def tearDownClass(cls):
@@ -77,7 +77,7 @@ class BasicFunctionalTests(FunctionalTestCase):
         self.assertEqual(
             d.title, u'Go Botany: New England Wild Flower Society')
         e = d.find_element_by_link_text('Get Started')
-        self.assertEqual(e.get_attribute('href'), '1/')
+        self.assertEqual(e.get_attribute('href'), '/1/')
 
     def test_ubergroup_pages(self):
         d = self.get('/1/')
@@ -237,8 +237,7 @@ class GlossaryFunctionalTests(FunctionalTestCase):
     def test_help_start_links_to_glossary(self): 
         d = self.get('/help/start/')
         e = d.find_element_by_link_text('Glossary')
-        self.assertEqual(e.get_attribute('href'),
-                         self.url('/help/glossary/a/'))
+        self.assertEqual(e.get_attribute('href'), self.url('/help/glossary/'))
 
     def test_glossary_a_page_contains_a_terms(self):
         d = self.get('/help/glossary/a/')
