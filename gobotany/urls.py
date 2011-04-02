@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import include, patterns
+from django.conf.urls.defaults import include, patterns, url
 import staticfiles.urls
 
 import gobotany.api.urls
@@ -9,12 +9,11 @@ handler500 = 'django.views.defaults.server_error'
 
 urlpatterns = patterns(
     '',
-    (r'^simple/', include('gobotany.simplekey.urls')),
+    (r'^api/', include('gobotany.api.urls')),
+    (r'^core/', include('gobotany.core.urls')),
     (r'^tinymce/', include('tinymce.urls')),
+    (r'^', include('gobotany.simplekey.urls')),
     )
-
-urlpatterns += gobotany.core.urls.urlpatterns
-urlpatterns += gobotany.api.urls.urlpatterns
 
 if gobotany.settings.DEBUG:
     urlpatterns += staticfiles.urls.urlpatterns

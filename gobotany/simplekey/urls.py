@@ -20,7 +20,7 @@ urlpatterns = patterns(
     url('^suggest/$', views.suggest_view, name='simplekey-search-suggest'),
 
     # Site pages
-    url('^$', views.index_view),
+    url('^$', views.index_view, name='simplekey-index'),
     url('^advanced/$', views.advanced_view, name='advanced-id-tools'),
     url('^help/$', views.help_about_view, name='simplekey-help-about'),
     url('^help/start/$', views.help_start_view, name='simplekey-help-start'),
@@ -45,7 +45,7 @@ urlpatterns = patterns(
         views.species_view, name='simplekey-species'),
     url('^species/(?P<genus_slug>[^/]*)/$',
         views.genus_redirect_view, name='simplekey-genus-redirect'),
-    url('^(?P<number>[0-9]+)/$', views.page_view),
+    url('^(?P<number>\d+)/$', views.page_view, name='simplekey-page'),
     url('^(?P<pilegroup_slug>[^/]*)/$',
         views.pilegroup_view, name='simplekey-pilegroup'),
     url('^(?P<pilegroup_slug>[^/]*)/(?P<pile_slug>[^/]*)/$',
