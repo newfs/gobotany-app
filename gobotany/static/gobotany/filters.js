@@ -61,7 +61,8 @@ dojo.declare('gobotany.filters.MultipleChoiceFilter',
         });
     },
     process_value: function(character_value, index) {
-        this.values.push(character_value);
+        if (character_value.simple_key_count)
+            this.values.push(character_value);
     },
     get_value_object: function(value_string) {
         var i = 0;
@@ -81,6 +82,8 @@ dojo.declare('gobotany.filters.NumericRangeFilter',
              [gobotany.filters.MultipleChoiceFilter], {
     process_value: function(character_value, index) {
         // We make this.values an object: {min: a, max: b}
+        if (character_value.simple_key_count == 0)
+            return;
         if (this.values.length === 0) {
             this.values = {};
         }
