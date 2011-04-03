@@ -42,6 +42,7 @@ Glossary: {{ this_letter|upper }}
 {% block js_bottom %}
 <script type="text/javascript">
 dojo.require('gobotany.sk.glossary');
+API_URL = '{% url api-base %}';
 dojo.addOnLoad(function() {
     glossary_helper = gobotany.sk.glossary.GlossaryHelper();
     glossary_helper.setup();
