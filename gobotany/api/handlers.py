@@ -433,7 +433,15 @@ class CharacterValuesHandler(BaseHandler):
         for cv in models.CharacterValue.objects.filter(
             pile=pile, character=character):
 
-            species = models.Taxon.objects.filter(character_values=cv)
+            # The following query makes this view specific to the Simple
+            # Key - which we had hoped to avoid for API calls, which we
+            # wanted to all be gloriously generic - but it seems to be
+            # the only clean way to have both rulers and radio-button
+            # character-value selections to only include values for
+            # species that can actually be viewed in the Simple Key.
+
+            species = models.Taxon.objects.filter(
+                character_values=cv, simple_key=True)
             count = species.count()
             key_characteristics = cv.key_characteristics
             notable_exceptions = cv.notable_exceptions
