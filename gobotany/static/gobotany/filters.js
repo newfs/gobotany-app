@@ -121,6 +121,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     species_count: 0,
     species_ids: [],
     entries: [],
+    fetch_counter: 0,  // to assure that most recent request "wins"
+
     constructor: function(args) {
         this.pile_slug = args.pile_slug;
         this.plant_preview_characters = [];
@@ -335,10 +337,17 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             content._counts_for = short_names;
         }
 
+        this.fetch_counter = this.fetch_counter + 1;
+        var this_fetch = this.fetch_counter;
         this.result_store.fetch({
             scope: this,
             query: content,
             onComplete: function(data) {
+                if (this_fetch < this.fetch_counter) {
+                    // If another request has started in the meantime,
+                    // we refuse to update the results.
+                    return;
+                }
                 this.species_count = data.items.length;
                 this.species_ids = [];
                 for (i = 0; i < data.items.length; i++) {

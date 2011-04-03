@@ -1136,6 +1136,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.results_helper.save_filter_state();
 
         _global_setSidebarHeight();
-    },
+    }
 
 });
