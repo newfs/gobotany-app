@@ -6,7 +6,7 @@
 dojo.provide('gobotany.sk.results');
 
 dojo.require('gobotany.sk.RulerSlider');
-dojo.require('gobotany.sk.glossarize');
+dojo.require('gobotany.sk.glossary');
 dojo.require('gobotany.sk.results.SpeciesSectionHelper');
 dojo.require('gobotany.filters');
 dojo.require('gobotany.piles');
@@ -359,7 +359,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         //   An instance of gobotany.sk.results.ResultsHelper
 
         this.results_helper = results_helper;
-        this.glossarizer = gobotany.sk.results.Glossarizer();
+        this.glossarizer = gobotany.sk.glossary.Glossarizer();
 
         // This variable is for keeping track of which filter is currently
         // visible in the filter working area (if any).

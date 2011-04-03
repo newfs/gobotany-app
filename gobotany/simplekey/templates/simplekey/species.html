@@ -10,9 +10,12 @@
 {% endblock %}
 
 {% block content %}
-  <p><a href="/simple/{{ pilegroup.slug }}/">{{ pilegroup.name }}</a>: 
-     <a id="results-link"
-        href="/simple/{{ pilegroup.slug }}/{{ pile.slug }}/">{{ pile.name }}</a>
+  <p>
+    <a href="{% url simplekey-pilegroup pilegroup.slug %}"
+       >{{ pilegroup.name }}</a>:
+    <a id="results-link"
+       href="{% url simplekey-pile pilegroup.slug pile.slug %}"
+       >{{ pile.name }}</a>
   </p>
   <h1><em>{{ scientific_name }}</em>
       <span class="auth">{{ taxon.taxonomic_authority }}</span></h1>
@@ -176,9 +179,11 @@
 
           <h3>Classification</h3>
           <p><strong>Family:</strong>
-              <a href="/simple/families/{{ taxon.family|lower }}/">{{ taxon.family }}</a></p>
+            <a href="{% url simplekey-family taxon.family.slug %}"
+               >{{ taxon.family }}</a></p>
           <p><strong>Genus:</strong>
-              <em><a href="/simple/genera/{{ taxon.genus|lower }}/">{{ taxon.genus }}</a></em></p>
+            <em><a href="{% url simplekey-genus taxon.genus.slug %}"
+                   >{{ taxon.genus }}</a></em></p>
           <p><strong>Species:</strong>
               <em>{{ scientific_name }}</em></p>
           <p><strong>Full name:</strong>
@@ -207,6 +212,7 @@
 
 {% block js_bottom %}
   <script>
+      API_URL = '{% url api-base %}';
       dojo.require('gobotany.sk.species');
       dojo.addOnLoad(function() {
           gobotany.sk.species.init('{{ scientific_name }}');

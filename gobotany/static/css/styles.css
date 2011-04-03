@@ -1064,7 +1064,7 @@ div.working-area .dijitSliderImageHandleH div.second_handle {
 }
 div.working-area div.metric_display {
     position: absolute;
-    top: 0px;
+    top: -40px;
     left: -30px;
     width: 60px;
     text-align: center;

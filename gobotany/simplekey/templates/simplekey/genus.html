@@ -31,21 +31,23 @@
 
     <div id="info">
         <h3>Family</h3>
-        <p><a href="../../families/{{ item.family.slug }}">{{ item.family.name }}</a></p>
+        <p><a href="{% url simplekey-family item.family.slug %}"
+              >{{ item.family.name }}</a></p>
 
         <h3>Description</h3>
         <p>{% if item.description %}
                {{ item.description }}
            {% else %}
-               This is a placeholder description. (Test glossary highlighting with
-               the term monomorphic here.)
+               This is a placeholder description.
+               (Test glossary highlighting with the term isophyllous here.)
            {% endif %}</p>
 
         <h3>Species:</h3>
         <ul class="species">
-            {% for species in item.taxa.all %}
-            <li><a href="/simple/species/{{ species.scientific_name|split:' '|at_index:'0'|lower }}/{{ species.scientific_name|split:' '|at_index:'1'|lower }}/"><em>{{ species.scientific_name }}</em></a></li>
-            {% endfor %}
+          {% for species in item.taxa.all %}
+            <li><a href="{% url simplekey-species species.genus.slug species.epithet %}"
+                   ><em>{{ species.scientific_name }}</em></a></li>
+          {% endfor %}
         </ul>
     </div>
 
@@ -83,6 +85,7 @@
 
 {% block js_bottom %}
   <script>
+      API_URL = '{% url api-base %}';
       dojo.require('gobotany.sk.genus');
       dojo.addOnLoad(function() {
           gobotany.sk.genus.init('{{ item.slug }}');

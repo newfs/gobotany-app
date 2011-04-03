@@ -40,9 +40,9 @@ dojo.declare('gobotany.sk.glossary.Glossarizer', null, {
             }
         }
         /* For incredible speed, we pre-build a regular expression of
-           all glossary terms.  This has the incredible advantage of
-           always selecting the longest possible glossary term if
-           several words together could be a glossary term! */
+           all glossary terms.  This has the advantage of always selecting
+           the longest possible glossary term if several words together
+           could be a glossary term! */
         var re = '\\b(' + terms.join('|') + ')\\b';
         this.regexp = new RegExp(re, 'gi');
     },

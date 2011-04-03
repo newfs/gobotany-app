@@ -8,7 +8,7 @@ dojo.require('dijit.Tooltip');
 dojo.require('dojo.cookie');
 dojo.require('dojox.data.JsonRestStore');
 
-dojo.require('gobotany.sk.glossarize');
+dojo.require('gobotany.sk.glossary');
 dojo.require('gobotany.sk.images.ImageBrowser');
 
 // Image info storage for images that appear on the species page.
@@ -82,7 +82,7 @@ gobotany.sk.species.init = function(scientific_name) {
 
 
     // Make glossary highlights appear where appropriate throughout the page.
-    var glossarizer = gobotany.sk.results.Glossarizer();
+    var glossarizer = gobotany.sk.glossary.Glossarizer();
     dojo.query('#info p').forEach(function(node) {
         // TODO: fix markup!
         glossarizer.markup(node);

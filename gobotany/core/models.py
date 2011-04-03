@@ -568,6 +568,11 @@ class Taxon(models.Model):
     def __unicode__(self):
         return u'%s id=%s' % (self.scientific_name, self.id)
 
+    @property
+    def epithet(self):
+        # convenience for forming URLs
+        return self.scientific_name.split(' ', 1)[1].lower()
+
     def get_default_image(self):
         try:
             return self.images.get(rank=1, image_type__name='habit')
