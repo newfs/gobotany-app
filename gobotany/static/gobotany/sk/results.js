@@ -987,10 +987,15 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                            ' (' + p('in', themax) + ')<br></label>',
                            valuesList);
 
+                var illegal_regions = [];
+                if (themin > 0) {
+                    console.log('themin', themin);
+                    illegal_regions.push([- 2 * themin, themin]);
+                }
                 this.slider_node = dojo.create('div', null, valuesList);
                 this.ruler = gobotany.sk.RulerSlider(
                     this.slider_node, 'character_slider', 600,
-                    themin, themax, startvalue);
+                    0, themax, startvalue, illegal_regions);
             }
             else {
                 // For non-length numeric ("count") filters, show a simple
