@@ -59,9 +59,6 @@ class SpeciesReader(object):
                     base_query = base_query.filter(family__name=v)
                 elif k == 'genus':
                     base_query = base_query.filter(genus__name=v)
-                elif k.startswith('_'):
-                    # Ignore parameters that begin with an underscore.
-                    continue
                 else:
                     character = models.Character.objects.get(short_name=k)
 

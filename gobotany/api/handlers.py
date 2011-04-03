@@ -102,8 +102,10 @@ class TaxonQueryHandler(BaseHandler):
 
 
     def read(self, request, scientific_name=None):
+        getdict = dict(request.GET.items())  # call items() to avoid lists
+        counts_for = getdict.pop('_counts_for', None)
         kwargs = {}
-        for k, v in request.GET.items():
+        for k, v in getdict.items():
             kwargs[str(k)] = v
         try:
             species = botany.query_species(**kwargs)
@@ -117,7 +119,6 @@ class TaxonQueryHandler(BaseHandler):
 
             # Add value counts for each character requested.
             value_counts = [];
-            counts_for = request.GET.get('_counts_for')
             if counts_for:
                 character_names = counts_for.split(',')
                 value_counts = self._get_character_value_counts(
