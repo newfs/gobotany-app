@@ -550,17 +550,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             value = this.ruler.nearest_legal_value();
             this._apply_numeric_value(value_label, value);
             return;
-        } else if (dojo.byId('character_slider') !== null) {   // other slider?
-            // does this ever happen?
-            char_value_q = dijit.byId('character_slider');
-            value = char_value_q.value;
-            if (isNaN(value)) {
-                return;
-            }
-            this._apply_numeric_value(value_label, value);
-            return;
-        }
-        else if (dojo.byId('simple-slider') !== null) {   // count slider
+        } else if (dojo.byId('simple-slider') !== null) {   // count slider
             char_value_q = dijit.byId('simple-slider');
             value = char_value_q.value;
             if (isNaN(value)) {
@@ -999,8 +989,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 }
                 this.slider_node = dojo.create('div', null, valuesList);
                 this.ruler = gobotany.sk.RulerSlider(
-                    this.slider_node, 'character_slider', 600,
-                    0, themax, startvalue, illegal_regions);
+                    this.slider_node, 'character_slider', 600, themax,
+                    startvalue, illegal_regions);
             }
             else {
                 // For non-length numeric ("count") filters, show a simple

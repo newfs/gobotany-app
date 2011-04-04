@@ -11,11 +11,11 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
     min_pixels_per_tick: 4.0,
     min_pixels_per_label: 25.0,
 
-    constructor: function(node, idname, pxwidth, themin, themax,
+    constructor: function(node, idname, pxwidth, mmwidth,
                           startvalue, illegal_regions) {
         this.pxwidth = pxwidth;
-        var distance = this.mmwidth = themax - themin;
-        this.pxper = pxwidth / distance;
+        this.mmwidth = mmwidth;
+        this.pxper = pxwidth / mmwidth;
         this.illegal_regions = illegal_regions || [];
 
         dojo.addClass(node, 'moz_ruler_slider_wrapper');
@@ -26,8 +26,8 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
             name: idname,
             showButtons: false,
             value: startvalue,
-            minimum: themin,
-            maximum: themax,
+            minimum: 0,
+            maximum: mmwidth,
             intermediateChanges: true,
             style: 'width: ' + pxwidth + 'px;',
             onChange: dojo.hitch(this, this.do_update)
