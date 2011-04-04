@@ -167,8 +167,7 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
 
     draw_value: function() {
         var p = gobotany.utils.pretty_length;
-        var mm = this.slider.value;
-        mm = this.nearest_legal_value(mm);
+        mm = this.nearest_legal_value();
         var desiredOffset = Math.floor(mm * this.pxper) - 30;
         this.metric_display.style['left'] = '' + desiredOffset + 'px';
         this.metric_display.innerHTML =
@@ -176,8 +175,8 @@ dojo.declare('gobotany.sk.RulerSlider', null, {
         this.english_display.innerHTML = p('in', mm);
     },
 
-    // Returns null if the value is legal to begin with.
-    nearest_legal_value: function(mm) {
+    nearest_legal_value: function() {
+        var mm = this.slider.value;
         for (var i = 0; i < this.illegal_regions.length; i++) {
             var region = this.illegal_regions[i];
             var imin = region[0];

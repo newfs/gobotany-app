@@ -546,7 +546,12 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         // First, see if this is a numeric field.
         var char_value_q;
         var value;
-        if (dojo.byId('character_slider') !== null) {   // ruler slider
+        if (this.ruler !== null) {   // ruler
+            value = this.ruler.nearest_legal_value();
+            this._apply_numeric_value(value_label, value);
+            return;
+        } else if (dojo.byId('character_slider') !== null) {   // other slider?
+            // does this ever happen?
             char_value_q = dijit.byId('character_slider');
             value = char_value_q.value;
             if (isNaN(value)) {
