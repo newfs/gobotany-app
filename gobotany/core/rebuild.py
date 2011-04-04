@@ -67,7 +67,7 @@ def _add_best_filters(pile, common_filter_character_names):
     result = igdt.rank_characters(pile, list(pile.species.all()))
     print "  Computation took %.3f seconds" % (time.time() - t)
 
-    print "  Inserting new 'best' filters"
+    print "  Inserting new 'best' filters:"
     DEFAULT_BEST_FILTERS_PER_PILE = 3
     number_of_filters_to_evaluate = DEFAULT_BEST_FILTERS_PER_PILE + \
         len(common_filter_character_names)
@@ -103,7 +103,7 @@ def rebuild_default_filters(default_filters_csv):
         pile.default_filters.clear()
 
         COMMON_FILTER_CHARACTER_NAMES = ['habitat', 'state_distribution']
-        print "  Inserting 'common' filters"
+        print "  Inserting common filters:"
         for n, character_name in enumerate(COMMON_FILTER_CHARACTER_NAMES):
             try:
                 character = models.Character.objects.get( \
@@ -123,6 +123,7 @@ def rebuild_default_filters(default_filters_csv):
         default_filter_characters = _get_default_filters_from_csv(pile.name,
             default_filters_csv)
         if len(default_filter_characters) > 0:
+            print "  Inserting new default filters from CSV data:"
             for n, character in enumerate(default_filter_characters):
                 print "   ", character.name
                 defaultfilter = models.DefaultFilter()
