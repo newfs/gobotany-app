@@ -2,22 +2,25 @@
 function sidebarHeight() {
     var MINIMUM_HEIGHT = 850;
 
-    var helpButtonTopPosition =
-        $('div#sidebar a.get-help-btn').position().top;
-    var headerHeight = $('header').height();
+    var helpButton = $('div#sidebar a.get-help-btn');
+    if (helpButton.length > 0) {
+        var helpButtonTopPosition = helpButton.position().top;
 
-    var newHeight = helpButtonTopPosition - headerHeight;
+        var headerHeight = $('header').height();
 
-    var mainHeight = $('div#main').height();
-    if (mainHeight > newHeight) {
-        newHeight = mainHeight;
+        var newHeight = helpButtonTopPosition - headerHeight;
+
+        var mainHeight = $('div#main').height();
+        if (mainHeight > newHeight) {
+            newHeight = mainHeight;
+        }
+
+        if (newHeight < MINIMUM_HEIGHT) {
+            newHeight = MINIMUM_HEIGHT;
+        }
+
+        $('div#sidebar').css('height', newHeight);
     }
-
-    if (newHeight < MINIMUM_HEIGHT) {
-        newHeight = MINIMUM_HEIGHT;
-    }
-
-    $('div#sidebar').css('height', newHeight);
 }
 
 // Wrapper for calling from elsewhere using a name that could be easier
