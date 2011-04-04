@@ -1,6 +1,7 @@
 """Rebuild parts of our database that we generate rather than import."""
 
 import csv
+import re
 import sys
 import time
 from itertools import chain
@@ -11,9 +12,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from gobotany import settings
 management.setup_environ(settings)
 from gobotany.core import igdt, models
-
-
-DEFAULT_BEST_FILTERS_PER_PILE = 3
 
 
 class CSVReader(object):
@@ -30,8 +28,71 @@ class CSVReader(object):
                 yield [c.decode('Windows-1252') for c in row]
 
 
-def rebuild_default_filters():
-    """Rebuild default-filters for every pile, choosing 'best' characters."""
+def _get_default_filters_from_csv(pile_name, default_filters_csv):
+    iterator = iter(CSVReader(default_filters_csv).read())
+    colnames = [x.lower() for x in iterator.next()]
+    filters = []
+    for cols in iterator:
+        row = dict(zip(colnames, cols))
+
+        if row['pile'].lower() == pile_name.lower():
+            character_name = row['character']
+            order = row['order']
+
+            # Clean the pile code (if present) off the character name.
+            pattern = re.compile('_[a-z]{2}$')
+            if pattern.search(character_name):
+                character_name = character_name[:-3]
+
+            filters.append((order, character_name))
+
+    default_filter_characters = []
+    filters.sort()
+    for f in filters:
+        character_name = f[1]
+        try:
+            character = models.Character.objects.get( \
+                short_name__startswith=character_name)
+            default_filter_characters.append(character)
+        except models.Character.DoesNotExist:
+            print "Error: Character does not exist: %s" % character_name
+            continue
+
+    return default_filter_characters
+
+
+def _add_best_filters(pile, common_filter_character_names):
+    print "  Computing new 'best' filters"
+    t = time.time()
+    result = igdt.rank_characters(pile, list(pile.species.all()))
+    print "  Computation took %.3f seconds" % (time.time() - t)
+
+    print "  Inserting new 'best' filters"
+    DEFAULT_BEST_FILTERS_PER_PILE = 3
+    number_of_filters_to_evaluate = DEFAULT_BEST_FILTERS_PER_PILE + \
+        len(common_filter_character_names)
+    result = result[:number_of_filters_to_evaluate]
+    number_added = 0
+    for n, (score, entropy, coverage, character) in enumerate(result):
+        # Skip any 'common' filters if they come up in the 'best' filters,
+        # because they've already been added.
+        if (character.short_name not in common_filter_character_names):
+            print "   ", character.name
+            defaultfilter = models.DefaultFilter()
+            defaultfilter.pile = pile
+            defaultfilter.character = character
+            defaultfilter.order = n + len(common_filter_character_names)
+            defaultfilter.save()
+            number_added += 1
+            # If no more filters need to be added, stop now.
+            if number_added == DEFAULT_BEST_FILTERS_PER_PILE:
+                break
+
+
+def rebuild_default_filters(default_filters_csv):
+    """Rebuild default filters for every pile, using CSV data where
+       available or choosing 'best' characters otherwise.
+    """
     for pile in models.Pile.objects.all():
         print "Pile", pile.name
 
@@ -41,9 +102,9 @@ def rebuild_default_filters():
         # have a delete-cascade that also deletes character records.
         pile.default_filters.clear()
 
-        common_filter_character_names = ['habitat', 'state_distribution']
+        COMMON_FILTER_CHARACTER_NAMES = ['habitat', 'state_distribution']
         print "  Inserting 'common' filters"
-        for n, character_name in enumerate(common_filter_character_names):
+        for n, character_name in enumerate(COMMON_FILTER_CHARACTER_NAMES):
             try:
                 character = models.Character.objects.get( \
                     short_name=character_name)
@@ -57,30 +118,20 @@ def rebuild_default_filters():
             defaultfilter.order = n
             defaultfilter.save()
 
-        print "  Computing new 'best' filters"
-        t = time.time()
-        result = igdt.rank_characters(pile, list(pile.species.all()))
-        print "  Computation took %.3f seconds" % (time.time() - t)
-
-        print "  Inserting new 'best' filters"
-        number_of_filters_to_evaluate = DEFAULT_BEST_FILTERS_PER_PILE + \
-            len(common_filter_character_names)
-        result = result[:number_of_filters_to_evaluate]
-        number_added = 0
-        for n, (score, entropy, coverage, character) in enumerate(result):
-            # Skip any 'common' filters if they come up in the 'best' filters,
-            # because they've already been added.
-            if (character.short_name not in common_filter_character_names):
+        # Look for default filters specified in the CSV data. If not found,
+        # add some next 'best' filters instead.
+        default_filter_characters = _get_default_filters_from_csv(pile.name,
+            default_filters_csv)
+        if len(default_filter_characters) > 0:
+            for n, character in enumerate(default_filter_characters):
                 print "   ", character.name
                 defaultfilter = models.DefaultFilter()
                 defaultfilter.pile = pile
                 defaultfilter.character = character
-                defaultfilter.order = n + len(common_filter_character_names)
+                defaultfilter.order = n + len(COMMON_FILTER_CHARACTER_NAMES)
                 defaultfilter.save()
-                number_added += 1
-                # If no more filters need to be added, stop now.
-                if number_added == DEFAULT_BEST_FILTERS_PER_PILE:
-                    break
+        else:
+            _add_best_filters(pile, COMMON_FILTER_CHARACTER_NAMES)
 
 
 def rebuild_sample_pile_images(pile_or_group_csv_1, pile_or_group_csv_2):
