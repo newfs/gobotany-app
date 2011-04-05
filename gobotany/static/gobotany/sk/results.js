@@ -561,7 +561,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         // First, see if this is a numeric field.
         var char_value_q;
         var value;
-        if (this.ruler !== null) {   // ruler
+        if (this.ruler !== undefined && this.ruler !== null) {   // ruler
             value = this.ruler.nearest_legal_value();
             this._apply_numeric_value(value_label, value);
             return;
