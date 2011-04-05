@@ -261,7 +261,22 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         hash = hash + '_visible=' +
             this.filter_section.visible_filter_short_name;
 
-        dojo.hash(hash);
+        // Usually, do not replace the current Back history entry; rather,
+        // create a new one, to enable the user to move back and forward
+        // through their keying choices.
+        var replace_current_history_entry = false;
+
+        // However, upon the initial entry to plant ID keying (where there's
+        // no hash yet), do not create a new Back history entry.
+        // This is because when filters load up a bit later, a longer version
+        // of the same URL (with a hash) *will* get a history entry, and more
+        // than one history entry here would create a two-click "barrier" when
+        // the user tries to navigate back to the pile ID pages.
+        if (window.location.href.indexOf('#') === -1) {
+            replace_current_history_entry = true;
+        }
+        dojo.hash(hash, replace_current_history_entry);
+
         dojo.cookie(LAST_URL_COOKIE_NAME, window.location.href, {path: '/'});
     },
 
