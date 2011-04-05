@@ -213,11 +213,11 @@ class StartTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/')
+        response = self.client.get('/core/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_html(self):
-        response = self.client.get('/')
+        response = self.client.get('/core/')
         self.assertEqual('text/html; charset=utf-8', response['Content-Type'])
 
 
@@ -227,30 +227,30 @@ class TaxonListTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/taxon/')
+        response = self.client.get('/api/taxon/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/taxon/')
+        response = self.client.get('/api/taxon/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     # TODO: change URI from /taxon/ to /taxa/.
 
     def test_get_with_char_param_returns_ok(self):
-        response = self.client.get('/taxon/?c1=cv1_1')
+        response = self.client.get('/api/taxon/?c1=cv1_1')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_char_param_returns_not_found_if_no_char(self):
-        response = self.client.get('/taxon/?none=cv1_1')
+        response = self.client.get('/api/taxon/?none=cv1_1')
         self.assertEqual(404, response.status_code)
 
     def test_get_with_char_param_returns_ok_if_bad_char_value(self):
-        response = self.client.get('/taxon/?c1=badvalue')
+        response = self.client.get('/api/taxon/?c1=badvalue')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_char_param_returns_no_items_if_bad_char_value(self):
-        response = self.client.get('/taxon/?c1=badvalue')
+        response = self.client.get('/api/taxon/?c1=badvalue')
         expected = {u'items': [],
                     u'identifier': u'scientific_name',
                     u'value_counts': [],
@@ -258,12 +258,12 @@ class TaxonListTestCase(TestCase):
         self.assertEqual(expected, json.loads(response.content))
 
     def test_get_with_char_param_returns_value_counts(self):
-        response = self.client.get('/taxon/?c1=cv1_1&_counts_for=c1')
+        response = self.client.get('/api/taxon/?c1=cv1_1&_counts_for=c1')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_char_param_returns_value_counts_in_pile(self):
         response = self.client.get( \
-            '/taxon/?c1=cv1_1&pile=pile1&_counts_for=c1')
+            '/api/taxon/?c1=cv1_1&pile=pile1&_counts_for=c1')
         self.assertEqual(200, response.status_code)
 
 
@@ -273,28 +273,28 @@ class TaxaListTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/taxa/')
+        response = self.client.get('/api/taxa/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/taxa/')
+        response = self.client.get('/api/taxa/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_get_with_char_param_returns_ok(self):
-        response = self.client.get('/taxa/?c1=cv1_1')
+        response = self.client.get('/api/taxa/?c1=cv1_1')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_char_param_returns_not_found_if_no_char(self):
-        response = self.client.get('/taxa/?none=cv1_1')
+        response = self.client.get('/api/taxa/?none=cv1_1')
         self.assertEqual(404, response.status_code)
 
     def test_get_with_char_param_returns_ok_if_bad_char_value(self):
-        response = self.client.get('/taxa/?c1=badvalue')
+        response = self.client.get('/api/taxa/?c1=badvalue')
         self.assertEqual(200, response.status_code)
         
     def test_get_with_char_param_returns_no_items_if_bad_char_value(self):
-        response = self.client.get('/taxa/?c1=badvalue')
+        response = self.client.get('/api/taxa/?c1=badvalue')
         expected = {u'items': [],
                     u'identifier': u'scientific_name',
                     u'value_counts': [],
@@ -302,12 +302,12 @@ class TaxaListTestCase(TestCase):
         self.assertEqual(expected, json.loads(response.content))
 
     def test_get_with_char_param_returns_value_counts(self):
-        response = self.client.get('/taxa/?c1=cv1_1&_counts_for=c1')
+        response = self.client.get('/api/taxa/?c1=cv1_1&_counts_for=c1')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_char_param_returns_value_counts_in_pile(self):
         response = self.client.get( \
-            '/taxa/?c1=cv1_1&pile=pile1&_counts_for=c1')
+            '/api/taxa/?c1=cv1_1&pile=pile1&_counts_for=c1')
         self.assertEqual(200, response.status_code)
 
 
@@ -317,18 +317,18 @@ class TaxonTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/taxon/Fooium%20barula/')
+        response = self.client.get('/api/taxon/Fooium%20barula/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/taxon/Fooium%20barula/')
+        response = self.client.get('/api/taxon/Fooium%20barula/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
-    # TODO: change URI from /taxon/ to /taxa/.
+    # TODO: change URI from /api/taxon/ to /api/taxa/.
 
     def test_get_returns_not_found_when_nonexistent_species(self):
-        response = self.client.get('/taxon/Not%20here/')
+        response = self.client.get('/api/taxon/Not%20here/')
         self.assertEqual(404, response.status_code)
 
     # TODO: For the following tests:
@@ -337,23 +337,23 @@ class TaxonTestCase(TestCase):
     # one context) but it might not have been intended here.
 
     def test_get_with_char_param_returns_ok(self):
-        response = self.client.get('/taxon/Fooium%20fooia/?c1=cv1_1')
+        response = self.client.get('/api/taxon/Fooium%20fooia/?c1=cv1_1')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_char_param_returns_not_found_if_no_species(self):
-        response = self.client.get('/taxon/Not%20here/?c1=cv1_1')
+        response = self.client.get('/api/taxon/Not%20here/?c1=cv1_1')
         self.assertEqual(404, response.status_code)
         
     def test_get_with_char_param_returns_not_found_if_no_char(self):
-        response = self.client.get('/taxon/Fooium%20fooia/?none=cv1_1')
+        response = self.client.get('/api/taxon/Fooium%20fooia/?none=cv1_1')
         self.assertEqual(404, response.status_code)
 
     def test_get_with_char_param_returns_ok_if_bad_char_value(self):
-        response = self.client.get('/taxon/Fooium%20fooia/?c1=badvalue')
+        response = self.client.get('/api/taxon/Fooium%20fooia/?c1=badvalue')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_char_param_returns_no_item_if_bad_char_value(self):
-        response = self.client.get('/taxon/Fooium%20fooia/?c1=badvalue')
+        response = self.client.get('/api/taxon/Fooium%20fooia/?c1=badvalue')
         self.assertEqual('{}', response.content)
 
 
@@ -363,16 +363,16 @@ class TaxaTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/taxa/Fooium%20barula/')
+        response = self.client.get('/api/taxa/Fooium%20barula/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/taxa/Fooium%20barula/')
+        response = self.client.get('/api/taxa/Fooium%20barula/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_get_returns_not_found_when_nonexistent_species(self):
-        response = self.client.get('/taxa/Not%20here/')
+        response = self.client.get('/api/taxa/Not%20here/')
         self.assertEqual(404, response.status_code)
 
     # TODO: For the following tests:
@@ -381,23 +381,23 @@ class TaxaTestCase(TestCase):
     # one context) but it might not have been intended here.
 
     def test_get_with_char_param_returns_ok(self):
-        response = self.client.get('/taxa/Fooium%20fooia/?c1=cv1_1')
+        response = self.client.get('/api/taxa/Fooium%20fooia/?c1=cv1_1')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_char_param_returns_not_found_if_no_species(self):
-        response = self.client.get('/taxa/Not%20here/?c1=cv1_1')
+        response = self.client.get('/api/taxa/Not%20here/?c1=cv1_1')
         self.assertEqual(404, response.status_code)
         
     def test_get_with_char_param_returns_not_found_if_no_char(self):
-        response = self.client.get('/taxa/Fooium%20fooia/?none=cv1_1')
+        response = self.client.get('/api/taxa/Fooium%20fooia/?none=cv1_1')
         self.assertEqual(404, response.status_code)
 
     def test_get_with_char_param_returns_ok_if_bad_char_value(self):
-        response = self.client.get('/taxa/Fooium%20fooia/?c1=badvalue')
+        response = self.client.get('/api/taxa/Fooium%20fooia/?c1=badvalue')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_char_param_returns_no_item_if_bad_char_value(self):
-        response = self.client.get('/taxa/Fooium%20fooia/?c1=badvalue')
+        response = self.client.get('/api/taxa/Fooium%20fooia/?c1=badvalue')
         self.assertEqual('{}', response.content)
 
 
@@ -407,23 +407,23 @@ class TaxonCountTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/taxon-count/')
+        response = self.client.get('/api/taxon-count/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/taxon-count/')
+        response = self.client.get('/api/taxon-count/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
-    # TODO: change URI from /taxon-count/ to /taxa-count/.
+    # TODO: change URI from /api/taxon-count/ to /api/taxa-count/.
     # (This is started in the code.)
 
     def test_get_with_character_value_param_returns_ok(self):
-        response = self.client.get('/taxon-count/?c1=cv1_1')
+        response = self.client.get('/api/taxon-count/?c1=cv1_1')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_char_value_param_returns_not_found_if_no_char(self):
-        response = self.client.get('/taxon-count/?none=cv1_1')
+        response = self.client.get('/api/taxon-count/?none=cv1_1')
         self.assertEqual(404, response.status_code)
 
 
@@ -433,20 +433,20 @@ class TaxaCountTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/taxa-count/')
+        response = self.client.get('/api/taxa-count/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/taxa-count/')
+        response = self.client.get('/api/taxa-count/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_get_with_character_value_param_returns_ok(self):
-        response = self.client.get('/taxa-count/?c1=cv1_1')
+        response = self.client.get('/api/taxa-count/?c1=cv1_1')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_char_value_param_returns_not_found_if_no_char(self):
-        response = self.client.get('/taxa-count/?none=cv1_1')
+        response = self.client.get('/api/taxa-count/?none=cv1_1')
         self.assertEqual(404, response.status_code)
 
 
@@ -456,25 +456,25 @@ class TaxonImageTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/taxon-image/?species=Fooium%20barula')
+        response = self.client.get('/api/taxon-image/?species=Fooium%20barula')
         self.assertEqual(200, response.status_code)
         # TODO: test other params that can be passed; taxon id?
 
     def test_get_returns_json(self):
-        response = self.client.get('/taxon-image/?species=Fooium%20barula')
+        response = self.client.get('/api/taxon-image/?species=Fooium%20barula')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_get_returns_not_found_when_nonexistent_species(self):
-        response = self.client.get('/taxon-image/?species=Not%20here')
+        response = self.client.get('/api/taxon-image/?species=Not%20here')
         self.assertEqual(404, response.status_code)
 
     def test_get_returns_bad_request_when_no_params(self):
-        response = self.client.get('/taxon-image/')
+        response = self.client.get('/api/taxon-image/')
         self.assertEqual(400, response.status_code)
 
     def test_get_returns_data_when_images_exist(self):
-        response = self.client.get('/taxon-image/?species=Fooium%20barula')
+        response = self.client.get('/api/taxon-image/?species=Fooium%20barula')
         json_object = json.loads(response.content)
         self.assertEqual(2, len(json_object))   # Expect 2 images.
         for image in json_object:
@@ -492,7 +492,7 @@ class TaxonImageTestCase(TestCase):
             self.assertEqual(int, type(image['scaled_width']))
 
     def test_get_returns_empty_list_when_images_do_not_exist(self):
-        response = self.client.get('/taxon-image/?species=Fooium%20fooia')
+        response = self.client.get('/api/taxon-image/?species=Fooium%20fooia')
         self.assertEqual('[]', response.content)
 
 
@@ -502,11 +502,11 @@ class PileGroupListTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/pilegroups/')
+        response = self.client.get('/api/pilegroups/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/pilegroups/')
+        response = self.client.get('/api/pilegroups/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
@@ -517,35 +517,35 @@ class PileGroupTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/pilegroups/pilegroup1/')
+        response = self.client.get('/api/pilegroups/pilegroup1/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/pilegroups/pilegroup1/')
+        response = self.client.get('/api/pilegroups/pilegroup1/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_get_returns_not_found_when_nonexistent_pile_group(self):
-        response = self.client.get('/pilegroups/nogroup/')
+        response = self.client.get('/api/pilegroups/nogroup/')
         self.assertEqual(404, response.status_code)
 
     def test_delete_returns_no_content(self):
-        response = self.client.delete('/pilegroups/pilegroup1/')
+        response = self.client.delete('/api/pilegroups/pilegroup1/')
         self.assertEqual(204, response.status_code)
 
     def test_put_returns_ok(self):
-        response = self.client.put('/pilegroups/pilegroup1/',
+        response = self.client.put('/api/pilegroups/pilegroup1/',
                                    data={'friendly_name': 'Pile Group 1'})
         self.assertEqual(200, response.status_code)
 
     def test_put_returns_json(self):
-        response = self.client.put('/pilegroups/pilegroup1/',
+        response = self.client.put('/api/pilegroups/pilegroup1/',
                                    data={'friendly_name': 'Pile Group 1'})
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_put_ignores_unknown_key(self):
-        response = self.client.put('/pilegroups/pilegroup1/',
+        response = self.client.put('/api/pilegroups/pilegroup1/',
                                    data={'friendly_name': 'Pile Group 1',
                                          'foo': 'bar'})
         self.assertEqual(200, response.status_code)
@@ -557,11 +557,11 @@ class PileListTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/piles/')
+        response = self.client.get('/api/piles/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/piles/')
+        response = self.client.get('/api/piles/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
@@ -572,35 +572,35 @@ class PileTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/piles/pile1/')
+        response = self.client.get('/api/piles/pile1/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/piles/pile1/')
+        response = self.client.get('/api/piles/pile1/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_get_returns_not_found_when_nonexistent_pile(self):
-        response = self.client.get('/piles/nopile/')
+        response = self.client.get('/api/piles/nopile/')
         self.assertEqual(404, response.status_code)
 
     def test_delete_returns_no_content(self):
-        response = self.client.delete('/piles/pile1/')
+        response = self.client.delete('/api/piles/pile1/')
         self.assertEqual(204, response.status_code)
 
     def test_put_returns_ok(self):
-        response = self.client.put('/piles/pile1/',
+        response = self.client.put('/api/piles/pile1/',
                                    data={'friendly_name': 'Pile 1'})
         self.assertEqual(200, response.status_code)
 
     def test_put_returns_json(self):
-        response = self.client.put('/piles/pile1/',
+        response = self.client.put('/api/piles/pile1/',
                                    data={'friendly_name': 'Pile 1'})
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_put_ignores_unknown_key(self):
-        response = self.client.put('/piles/pile1/',
+        response = self.client.put('/api/piles/pile1/',
                                    data={'friendly_name': 'Pile 1',
                                          'foo': 'bar'})
         self.assertEqual(200, response.status_code)
@@ -612,40 +612,40 @@ class CharacterListTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/piles/pile1/characters/')
+        response = self.client.get('/api/piles/pile1/characters/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/piles/pile1/characters/')
+        response = self.client.get('/api/piles/pile1/characters/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_get_returns_not_found_when_nonexistent_pile(self):
-        response = self.client.get('/piles/nopile/characters/')
+        response = self.client.get('/api/piles/nopile/characters/')
         self.assertEqual(404, response.status_code)
 
     def test_get_with_choose_best_param_returns_ok(self):
-        response = self.client.get('/piles/pile1/characters/?choose_best=3')
+        response = self.client.get('/api/piles/pile1/characters/?choose_best=3')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_exclude_chars_param_returns_ok(self):
         response = self.client.get(
-            '/piles/pile1/characters/?exclude=c1')
+            '/api/piles/pile1/characters/?exclude=c1')
         self.assertEqual(200, response.status_code)
 
     def test_get_with_character_groups_param_returns_ok(self):
         response = self.client.get(
-            '/piles/pile1/characters/?character_groups=1')  # id of char group
+            '/api/piles/pile1/characters/?character_groups=1')  # id of char group
         self.assertEqual(200, response.status_code)
 
     def test_get_with_nonexistent_char_group_returns_ok(self):
         response = self.client.get(
-            '/piles/pile1/characters/?character_groups=0')  # id of char group
+            '/api/piles/pile1/characters/?character_groups=0')  # id of char group
         self.assertEqual(200, response.status_code)
 
     def test_get_ignores_unknown_includes(self):
         response = self.client.get(
-            '/piles/pile1/characters/?include=foo&include=c1&include=bar')
+            '/api/piles/pile1/characters/?include=foo&include=c1&include=bar')
         self.assertEqual(200, response.status_code)
 
 
@@ -655,20 +655,20 @@ class CharacterValuesTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/piles/pile1/c1/')
+        response = self.client.get('/api/piles/pile1/c1/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/piles/pile1/c1/')
+        response = self.client.get('/api/piles/pile1/c1/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_get_returns_not_found_when_nonexistent_pile(self):
-        response = self.client.get('/piles/nopile/c1/')
+        response = self.client.get('/api/piles/nopile/c1/')
         self.assertEqual(404, response.status_code)
 
     def test_get_returns_not_found_when_nonexistent_character(self):
-        response = self.client.get('/piles/pile1/nochar/')
+        response = self.client.get('/api/piles/pile1/nochar/')
         self.assertEqual(404, response.status_code)
 
 
@@ -678,16 +678,16 @@ class FamilyTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/families/fooaceae/')
+        response = self.client.get('/api/families/fooaceae/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/families/fooaceae/')
+        response = self.client.get('/api/families/fooaceae/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_get_returns_not_found_when_nonexistent_family(self):
-        response = self.client.get('/families/no-family/')
+        response = self.client.get('/api/families/no-family/')
         self.assertEqual(404, response.status_code)
 
 
@@ -697,16 +697,16 @@ class GenusTestCase(TestCase):
         self.client = Client()
 
     def test_get_returns_ok(self):
-        response = self.client.get('/genera/fooium/')
+        response = self.client.get('/api/genera/fooium/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/genera/fooium/')
+        response = self.client.get('/api/genera/fooium/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_get_returns_not_found_when_nonexistent_genus(self):
-        response = self.client.get('/genera/no-genus/')
+        response = self.client.get('/api/genera/no-genus/')
         self.assertEqual(404, response.status_code)
 
 
@@ -721,22 +721,22 @@ class PlantNamesTestCase(TestCase):
         return int(math.floor(self.MAX_NAMES / 2))
 
     def test_get_returns_ok(self):
-        response = self.client.get('/plant-names/')
+        response = self.client.get('/api/plant-names/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/plant-names/')
+        response = self.client.get('/api/plant-names/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
     def test_get_returns_scientific_and_common_name_matches(self):
-        response = self.client.get('/plant-names/?q=a')
+        response = self.client.get('/api/plant-names/?q=a')
         response_json = json.loads(response.content)
         self.assertTrue(len(response_json.get('scientific')) > 0)
         self.assertTrue(len(response_json.get('common')) > 0)
 
     def test_get_returns_names_in_expected_format(self):
-        response = self.client.get('/plant-names/?q=a')
+        response = self.client.get('/api/plant-names/?q=a')
         response_json = json.loads(response.content)
         all_names = response_json.get('scientific') + \
                     response_json.get('common')
@@ -745,7 +745,7 @@ class PlantNamesTestCase(TestCase):
                             name), 'Name "%s" not in expected format' % name)
 
     def test_get_returns_equal_number_scientific_and_common(self):
-        response = self.client.get('/plant-names/?q=a')
+        response = self.client.get('/api/plant-names/?q=a')
         response_json = json.loads(response.content)
         num_scientific_names = len(response_json.get('scientific'))
         num_common_names = len(response_json.get('common'))
@@ -754,7 +754,7 @@ class PlantNamesTestCase(TestCase):
         self.assertEqual(self.half_max_names(), num_common_names)
 
     def test_get_returns_more_scientific_than_common(self):
-        response = self.client.get('/plant-names/?q=ac')
+        response = self.client.get('/api/plant-names/?q=ac')
         response_json = json.loads(response.content)
         num_scientific_names = len(response_json.get('scientific'))
         num_common_names = len(response_json.get('common'))
@@ -764,7 +764,7 @@ class PlantNamesTestCase(TestCase):
         self.assertTrue(num_scientific_names > self.half_max_names())
 
     def test_get_returns_more_common_than_scientific(self):
-        response = self.client.get('/plant-names/?q=ame')
+        response = self.client.get('/api/plant-names/?q=ame')
         response_json = json.loads(response.content)
         num_scientific_names = len(response_json.get('scientific'))
         num_common_names = len(response_json.get('common'))

@@ -6,5 +6,5 @@ class SimpleTests(TestCase):
 
     def test_start_page(self):
         c = Client()
-        r = c.get('/simple/1/')
-        assert 'More choices' in r.content
+        r = c.get('/1/')
+        assert 'Show me other groups' in r.content
