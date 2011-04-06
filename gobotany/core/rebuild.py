@@ -28,23 +28,28 @@ class CSVReader(object):
                 yield [c.decode('Windows-1252') for c in row]
 
 
-def _get_default_filters_from_csv(pile_name, default_filters_csv):
-    iterator = iter(CSVReader(default_filters_csv).read())
+def _get_default_filters_from_csv(pile_name, characters_csv):
+    iterator = iter(CSVReader(characters_csv).read())
     colnames = [x.lower() for x in iterator.next()]
     filters = []
     for cols in iterator:
         row = dict(zip(colnames, cols))
 
         if row['pile'].lower() == pile_name.lower():
-            character_name = row['character']
-            order = row['order']
+            if row['default_question'] != '':
+                character_name = row['character']
+                order = row['default_question']
 
-            # Clean the pile code (if present) off the character name.
-            pattern = re.compile('_[a-z]{2}$')
-            if pattern.search(character_name):
-                character_name = character_name[:-3]
+                # Clean the pile code (if present) off the character name.
+                pattern = re.compile('_[a-z]{2}$')
+                if pattern.search(character_name):
+                    character_name = character_name[:-3]
 
-            filters.append((order, character_name))
+                # Clean min/max suffix (if present) off the character name.
+                if character_name.endswith(('_min', '_max')):
+                    character_name = character_name[:-4]
+
+                filters.append((order, character_name))
 
     default_filter_characters = []
     filters.sort()
@@ -52,7 +57,7 @@ def _get_default_filters_from_csv(pile_name, default_filters_csv):
         character_name = f[1]
         try:
             character = models.Character.objects.get( \
-                short_name__startswith=character_name)
+                short_name=character_name)
             default_filter_characters.append(character)
         except models.Character.DoesNotExist:
             print "Error: Character does not exist: %s" % character_name
@@ -89,7 +94,7 @@ def _add_best_filters(pile, common_filter_character_names):
                 break
 
 
-def rebuild_default_filters(default_filters_csv):
+def rebuild_default_filters(characters_csv):
     """Rebuild default filters for every pile, using CSV data where
        available or choosing 'best' characters otherwise.
     """
@@ -121,7 +126,7 @@ def rebuild_default_filters(default_filters_csv):
         # Look for default filters specified in the CSV data. If not found,
         # add some next 'best' filters instead.
         default_filter_characters = _get_default_filters_from_csv(pile.name,
-            default_filters_csv)
+            characters_csv)
         if len(default_filter_characters) > 0:
             print "  Inserting new default filters from CSV data:"
             for n, character in enumerate(default_filter_characters):
