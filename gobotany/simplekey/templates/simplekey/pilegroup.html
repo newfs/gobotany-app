@@ -18,6 +18,11 @@
                         </ul>
                     </div><!--Closes #breadcrumb-->
 
+                    <div id="breadcrumb-nav">
+                        <p><a href="{% url simplekey-page 1 %}">Start</a> &gt;
+                        {{ pilegroup.name }}</p>
+                    </div>
+                    
                     <div class="not-my-plant">
                         <h6>My plant isn't in
                             {% if piles_and_urls|length > 1 %}

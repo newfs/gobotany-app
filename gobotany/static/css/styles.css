@@ -1091,3 +1091,8 @@ div.working-area #simple-slider .count {
     position: absolute; /* top/left set by JS */
 }
 
+/* alternate breadcrumb navigation */
+#breadcrumb-nav {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 1.5em;
+}

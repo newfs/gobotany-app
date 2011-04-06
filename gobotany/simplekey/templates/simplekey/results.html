@@ -41,6 +41,12 @@
                             </li>
                         </ul>
                     </div><!--Closes #breadcrumb-->
+                    
+                    <div id="breadcrumb-nav">
+                        <p><a href="{% url simplekey-page 1 %}">Start</a> &gt;
+                        <a href="{% url simplekey-pilegroup pilegroup.slug %}">{{ pilegroup.name }}</a> &gt;
+                        {{ pile.name }}</p>
+                    </div>
 
                     <h2>Plant Identifier</h2>
                         <h3>{{ pile.name }} (<span class="species-count">calculating</span> matching species)</h3>
