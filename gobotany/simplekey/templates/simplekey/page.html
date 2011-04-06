@@ -39,7 +39,7 @@
                             <a href="{{ page.next_page.get_absolute_url }}">Show me other groups</a>
                         {% else %}
                             <a class="back-level"
-                                href="javascript:history.back(1)">Go back one level</a>
+                                href="{% url simplekey-page page.number|add:"-1" %}">Go back one level</a>
                         {% endif %}
                     </div><!--Closes .not-my-plant-->
 
@@ -103,7 +103,7 @@
                             <a href="{{ page.next_page.get_absolute_url }}">Show me other groups</a>
                         {% else %}
                             <a class="back-level"
-                                href="javascript:history.back(1)">Go back one level</a>
+                                href="{% url simplekey-page page.number|add:"-1" %}">Go back one level</a>
                         {% endif %}
                     </div><!--Closes .not-my-plant-->
 
