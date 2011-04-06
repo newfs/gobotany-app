@@ -46,13 +46,13 @@ nav #search-suggest a:hover, #search-suggest li:hover {
     margin: 0 auto;
     position: absolute;
     text-align: left;
-    top: 163px;
+    top: 106px;
     width: 233px;
     z-index: 1;
 }
 
-#plant-id #search-suggest div {
-    top: 106px;
+#home #search-suggest div {
+    top: 163px;
 }
 
 #search-suggest li.highlighted {

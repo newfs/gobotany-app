@@ -144,11 +144,9 @@
 
         {% include "simplekey/_footer.html" %}
 
-        <script>
-            API_URL = '{% url api-base %}';
-            SEARCH_URL = '{% url simplekey-search %}';
-            SUGGEST_URL = '{% url simplekey-search-suggest %}';
+        {% include "simplekey/_script_constants.html" %}
 
+        <script>
             {% include "simplekey/partner_site_inline_js.html" %}
             dojo.require('gobotany.sk.results');
             dojo.addOnLoad(function() {
