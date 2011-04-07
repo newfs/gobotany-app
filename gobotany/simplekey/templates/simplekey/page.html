@@ -11,21 +11,21 @@
                 <div id="main">
                     <div id="breadcrumb">
                         <ul>
-                            <li class="first completed"><a href="../help/start/"><img src="/static/images/icons/start.png" alt="Get Started"> Get Started</a></li>
-                            <li class="second current"><a{% if page.number > 1 %} href="javascript:history.back(1)"{% endif %}><img src="/static/images/icons/group.png" alt="Choose Group"> Choose Group</a></li>
-                            <li class="third upcoming"><a><img src="/static/images/icons/group.png" alt="Group"> Group</a></li>
-                            <li class="last upcoming"><a><img src="/static/images/icons/subgroup.png" alt="Subgroup"> Subgroup</a></li>
+                            {% if page.number > 1 %}
+                                <li class="first completed"><a href="{% url simplekey-page 1 %}"><img
+                                    src="/static/images/icons/start.png" alt=""> Start</a></li>
+                                <li class="second current"><a><img
+                                    src="/static/images/icons/group.png" alt=""> Choose Group</a></li>
+                            {% else %}
+                                <li class="first current"><a><img
+                                    src="/static/images/icons/start.png" alt=""> Start</a></li>
+                                <li class="second upcoming"><a><img
+                                    src="/static/images/icons/group.png" alt=""> Group</a></li>
+                            {% endif %}
+                            <li class="third upcoming"><a><img 
+                                src="/static/images/icons/subgroup.png" alt=""> Subgroup</a></li>
                         </ul>
                     </div><!--Closes #breadcrumb-->
-
-                    <div id="breadcrumb-nav">
-                        <p>
-                            {% if page.number > 1 %}
-                                <a href="{% url simplekey-page 1 %}">Start</a> &gt; Choose Group
-                            {% else %}
-                                Start: Choose Group
-                            {% endif %}
-                    </div>
 
                     <div class="not-my-plant">
                         <h6>My plant isn't in
