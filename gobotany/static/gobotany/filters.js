@@ -351,27 +351,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         }
         return undefined;
     },
-    set_count_for_value: function(character_short_name, value_name, count) {
-        var i = 0;
-        for (i = 0; i < this.filters.length; i++) {
-            var filter = this.filters[i];
-            if (filter.character_short_name === character_short_name) {
-                // Found the filter; now look for the character value.
-                if (typeof filter.values !== 'undefined') {
-                    var j = 0;
-                    for (j = 0; j < filter.values.length; j++) {
-                        if (filter.values[j].value === value_name) {
-                            filter.values[j].count = count;
-                            return;
-                        }
-                    }
-                }
-                return;
-            }
-        }
-        console.log('FilterManager cannot set a count for unknown filter: ',
-                    character_short_name);
-    },
     on_filter_added: function(filter) {},
     on_filter_removed: function(filter) {},
     on_filter_changed: function(filter) {},
@@ -423,7 +402,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                 }
                 short_names += filter_short_names[i];
             }
-            content._counts_for = short_names;
         }
 
         this.fetch_counter = this.fetch_counter + 1;
@@ -466,21 +444,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                     data.items = newdata;
                     console.log('FilterManager.run_filtered_query:' +
                                 ' data was specially filtered');
-                }
-
-                // Process counts for filter character values.
-                for (i = 0; i < data.value_counts.length; i++) {
-                    var filter = data.value_counts[i];
-                    var counts = filter.counts;
-                    var value_name = '';
-                    for (value_name in counts) {
-                        if (counts.hasOwnProperty(value_name) &&
-                            value_name !== '__parent') {
-
-                            this.set_count_for_value(filter.name,
-                                value_name, counts[value_name]);
-                        }
-                    }
                 }
 
                 // Call the passed-in callback function.
