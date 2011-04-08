@@ -6,8 +6,8 @@
 dojo.provide('gobotany.filters');
 dojo.require('dojox.data.JsonRestStore');
 
-var get_vector = function(path, _this, load) {
-    var u = API_URL + 'vectors/' + path;
+var get_json = function(path, _this, load) {
+    var u = API_URL + path;
     if (path.substr(-1) !== '/') u += '/';
     dojo.xhrGet({url: u, handleAs: 'json', load: dojo.hitch(_this, load)});
 };
@@ -58,9 +58,9 @@ dojo.declare('gobotany.filters.Filter', null, {
         }
     },
     load_vectors: function(args) {
-        var path = 'character/' + this.character_short_name;
+        var path = 'vectors/character/' + this.character_short_name;
         if (this.vectors === false) {
-            get_vector(path, this, function(data) {
+            get_json(path, this, function(data) {
                 this.vectors = data;
                 this.vectormap = {};
                 for (var i = 0; i < this.vectors.length; i++) {
@@ -179,16 +179,33 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         this.result_store = new dojox.data.JsonRestStore(
             {target: args.taxon_url, idAttribute: 'scientific_name'});
 
-        this.filters_loading = 2;
+        this.stage1();
+    },
 
-        get_vector('key/simple', this, function(data) {
+    // When a FilterManager is first created, it preloads the list of
+    // species applicable to its key and pile and then fetches the data
+    // for those species.  This is performed in stages.
+
+    stage1: function() {
+        this.stage1_countdown = 3;
+        get_json('species/' + this.pile_slug, this, function(data) {
+            this.species_list = data;
+            this.stage2();
+        });
+        get_json('vectors/key/simple', this, function(data) {
             this.simple_vector = data[0].species;
-            this.filter_loaded();
+            this.stage2();
         });
-        get_vector('pile/lycophytes/', this, function(data) {
+        get_json('vectors/pile/' + this.pile_slug, this, function(data) {
             this.pile_vector = data[0].species;
-            this.filter_loaded();
+            this.stage2();
         });
+    },
+    stage2: function() {
+        this.stage1_countdown--;
+        if (this.stage1_countdown)
+            return;
+        console.log('done with initial fetches');
     },
 
     // Callback invoked each time a vector is returned.
