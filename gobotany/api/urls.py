@@ -68,5 +68,10 @@ urlpatterns = patterns(
     url(r'^plant-names/',
         Resource(handler=handlers.PlantNamesHandler), name='api-plant-names'),
 
-    url(r'^$', 'nonexistent', name='api-base')
+    url(r'^$', 'nonexistent', name='api-base'),  # helps compute the base URL
+    )
+
+urlpatterns += patterns(
+    'gobotany.api.views',
+    url(r'^vectors/character/([\w]+)/$', 'vector_character'),
     )

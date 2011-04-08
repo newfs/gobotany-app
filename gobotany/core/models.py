@@ -227,8 +227,9 @@ class CharacterValue(models.Model):
                                      null=True)
 
     class Meta:
-        ordering = ['character__short_name', 'value_str', 'value_flt',
-                    'value_min', 'value_max']
+        pass
+        # ordering = ['character__short_name', 'value_str', 'value_flt',
+        #             'value_min', 'value_max']
 
     @property
     def value(self):
@@ -601,7 +602,7 @@ class TaxonCharacterValue(models.Model):
         unique_together = ('taxon', 'character_value')
         verbose_name = 'taxon character value'
         verbose_name_plural = 'character values for taxon'
-        ordering = ['taxon__scientific_name']
+        #ordering = ['taxon__scientific_name']  # This makes queries expensive!
 
     def __unicode__(self):
         return u'%s: %s' % (self.taxon.scientific_name, self.character_value)
