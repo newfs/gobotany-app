@@ -12,6 +12,17 @@ var get_vector = function(path, _this, load) {
     dojo.xhrGet({url: u, handleAs: 'json', load: dojo.hitch(_this, load)});
 };
 
+var intersect = function(a, b) {
+    var ai = 0, bi = 0;
+    var result = new Array();
+    while (ai < a.length && bi < b.length) {
+        if (a[ai] < b[bi]) ai++;
+        else if (a[ai] > b[bi]) bi++;
+        else { result.push(a[ai]); ai++; bi++; }
+    }
+    return result;
+};
+
 dojo.declare('gobotany.filters.Filter', null, {
     character_short_name: '',
     friendly_name: '',
@@ -174,28 +185,29 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         });
     },
 
-    intersect: function(a, b) {
-        var ai = 0, bi = 0;
-        var result = new Array();
-
-        while (ai < a.length && bi < b.length) {
-            if (a[ai] < b[bi]) ai++;
-            else if (a[ai] > b[bi]) bi++;
-            else { result.push(a[ai]); ai++; bi++; }
-        }
-
-        return result;
-    },
-
     filter_loaded: function() {
         this.filters_loading = this.filters_loading - 1;
         if (this.filters_loading > 0)
             return;  // do nothing until all outstanding filters load
         if (this.base_vector === false) {
-            this.base_vector = this.intersect(
-                this.simple_vector, this.pile_vector);
+            this.base_vector = intersect(this.simple_vector, this.pile_vector);
             console.log('base_vector:', this.base_vector.length, 'species');
         }
+    },
+
+    // Given a filter, returns an object whose attributes are character
+    // value short names and whose values are the number of species that
+    // would remain if that filter were applied.
+    compute_filter_counts: function(filter) {
+        var vector = this.base_vector;
+        // TODO: apply all other active filters, save for the filter
+        // itself, to reduce the base_vector to a smaller vector.
+        var counts = {};
+        for (var i = 0; i < filter.vectors.length; i++) {
+            var v = filter.vectors[i];
+            counts[v.value] = intersect(vector, v.species).length;
+        }
+        return counts;
     },
 
     query_best_filters: function(args) {

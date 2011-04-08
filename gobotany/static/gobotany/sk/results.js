@@ -1063,23 +1063,27 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             var values = gobotany.utils.clone(filter.values);
             values.sort(this.sort_filter_values);
 
-            // Create radio button items for each character value.
-            var i;
-            for (i = 0; i < values.length; i++) {
-                var v = values[i];
+            // Determine how many species each value would select.
+            var counts = this.results_helper.filter_manager.
+                compute_filter_counts(filter);
 
-                if (!((v.count === 0) && (v.value === 'NA'))) {
+            // Create radio button items for each character value.
+            for (var i = 0; i < values.length; i++) {
+                var v = values[i];
+                var count = counts[v.value];
+
+                if (!((count === 0) && (v.value === 'NA'))) {
 
                     item_html = '<span><input type="radio" name="char_name"' +
                         ' value="' + v.value + '"';
-                    if (v.count === 0) {
+                    if (count === 0) {
                         item_html += ' class="zero" disabled';
                     }
                     var display_value =
                         this._get_filter_display_value(v.friendly_text,
                             v.value, filter.character_short_name);
                     item_html += '><span> ' + display_value +
-                        '</span> <span>(' + v.count + ')</span></span>';
+                        '</span> <span>(' + count + ')</span></span>';
 
                     var image_path = v.image_url;
                     var thumbnail_html = '';
