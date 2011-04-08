@@ -130,7 +130,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         this.pile_slug = args.pile_slug;
         this.plant_preview_characters = [];
         this.filters = [];
-        this.filters_loading = 0;
+        this.base_vector = false;  // intersection(simple_vector, pile_vector)
 
         if (!args.pile_url) {
             args.pile_url = API_URL + 'piles/';
@@ -143,6 +143,46 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             {target: args.pile_url + args.pile_slug + '/characters/'});
         this.result_store = new dojox.data.JsonRestStore(
             {target: args.taxon_url, idAttribute: 'scientific_name'});
+
+        this.filters_loading = 2;
+
+        this.get_vector('key/simple', function(data) {
+            this.simple_vector = data[0].species;
+            this.filter_loaded();
+        });
+        this.get_vector('pile/lycophytes/', function(data) {
+            this.pile_vector = data[0].species;
+            this.filter_loaded();
+        });
+    },
+
+    get_vector: function(path, load) {
+        var u = API_URL + 'vectors/' + path;
+        if (path.substr(-1) !== '/') u += '/';
+        dojo.xhrGet({url: u, handleAs: 'json', load: dojo.hitch(this, load)});
+    },
+
+    intersect: function(a, b) {
+        var ai = 0, bi = 0;
+        var result = new Array();
+
+        while (ai < a.length && bi < b.length) {
+            if (a[ai] < b[bi]) ai++;
+            else if (a[ai] > b[bi]) bi++;
+            else { result.push(a[ai]); ai++; bi++; }
+        }
+
+        return result;
+    },
+
+    filter_loaded: function() {
+        this.filters_loading = this.filters_loading - 1;
+        if (this.filters_loading > 0)
+            return;  // do nothing until all outstanding filters load
+        if (this.base_vector === false) {
+            this.base_vector = this.intersect(
+                this.simple_vector, this.pile_vector);
+        }
     },
 
     query_best_filters: function(args) {
