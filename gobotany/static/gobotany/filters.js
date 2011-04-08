@@ -6,6 +6,12 @@
 dojo.provide('gobotany.filters');
 dojo.require('dojox.data.JsonRestStore');
 
+var get_vector = function(path, _this, load) {
+    var u = API_URL + 'vectors/' + path;
+    if (path.substr(-1) !== '/') u += '/';
+    dojo.xhrGet({url: u, handleAs: 'json', load: dojo.hitch(_this, load)});
+};
+
 dojo.declare('gobotany.filters.Filter', null, {
     character_short_name: '',
     friendly_name: '',
@@ -32,11 +38,23 @@ dojo.declare('gobotany.filters.Filter', null, {
         var url = API_URL + 'piles/' + this.pile_slug + '/' +
                   this.character_short_name + '/';
         this.store = new dojox.data.JsonRestStore({target: url});
+        this.vectors = false;
     },
     load_values: function(args) {
         if (args && args.onLoaded) {
             args.onLoaded();
         }
+    },
+    load_vectors: function(load) {
+        var path = 'character/' + this.character_short_name;
+        if (this.vectors === false) {
+            get_vector(path, this, function(data) {
+                this.vectors = data;
+                console.log('vectors loaded!');
+                load(this);
+            });
+        } else
+            load(this);
     }
 });
 
@@ -146,20 +164,14 @@ dojo.declare('gobotany.filters.FilterManager', null, {
 
         this.filters_loading = 2;
 
-        this.get_vector('key/simple', function(data) {
+        get_vector('key/simple', this, function(data) {
             this.simple_vector = data[0].species;
             this.filter_loaded();
         });
-        this.get_vector('pile/lycophytes/', function(data) {
+        get_vector('pile/lycophytes/', this, function(data) {
             this.pile_vector = data[0].species;
             this.filter_loaded();
         });
-    },
-
-    get_vector: function(path, load) {
-        var u = API_URL + 'vectors/' + path;
-        if (path.substr(-1) !== '/') u += '/';
-        dojo.xhrGet({url: u, handleAs: 'json', load: dojo.hitch(this, load)});
     },
 
     intersect: function(a, b) {
@@ -182,6 +194,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         if (this.base_vector === false) {
             this.base_vector = this.intersect(
                 this.simple_vector, this.pile_vector);
+            console.log('base_vector:', this.base_vector.length, 'species');
         }
     },
 
