@@ -36,6 +36,8 @@ dojo.declare('gobotany.filters.Filter', null, {
     hint: null,
     selected_value: null,
     filter_callback: null,
+    vectors: false,  // array of vectors
+    vectormap: false,  // character short_name -> vector
 
     constructor: function(args) {
         this.character_short_name = args.character_short_name;
@@ -49,23 +51,27 @@ dojo.declare('gobotany.filters.Filter', null, {
         var url = API_URL + 'piles/' + this.pile_slug + '/' +
                   this.character_short_name + '/';
         this.store = new dojox.data.JsonRestStore({target: url});
-        this.vectors = false;
     },
     load_values: function(args) {
         if (args && args.onLoaded) {
             args.onLoaded();
         }
     },
-    load_vectors: function(load) {
+    load_vectors: function(args) {
         var path = 'character/' + this.character_short_name;
         if (this.vectors === false) {
             get_vector(path, this, function(data) {
                 this.vectors = data;
+                this.vectormap = {};
+                for (var i = 0; i < this.vectors.length; i++) {
+                    var v = this.vectors[i];
+                    this.vectormap[v.value] = v;
+                }
                 console.log('vectors loaded!');
-                load(this);
+                args.onload(this);
             });
         } else
-            load(this);
+            args.onload(this);
     }
 });
 
@@ -185,6 +191,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         });
     },
 
+    // Callback invoked each time a vector is returned.
     filter_loaded: function() {
         this.filters_loading = this.filters_loading - 1;
         if (this.filters_loading > 0)
@@ -197,11 +204,21 @@ dojo.declare('gobotany.filters.FilterManager', null, {
 
     // Given a filter, returns an object whose attributes are character
     // value short names and whose values are the number of species that
-    // would remain if that filter were applied.
+    // would remain if the results were filtered by that value.
     compute_filter_counts: function(filter) {
         var vector = this.base_vector;
-        // TODO: apply all other active filters, save for the filter
-        // itself, to reduce the base_vector to a smaller vector.
+        // TODO: there might be a race condition here until the
+        // architecure is sufficiently reworked to assure that each
+        // active value's vector has been loaded by the time we get here.
+        for (var i = 0; i < this.filters.length; i++) {
+            var f = this.filters[i];
+            if (f === filter)
+                continue; // ignore this filter itself
+            if (f.selected_value) {
+                var species = f.vectormap[f.selected_value].species;
+                vector = intersect(vector, species);
+            }
+        }
         var counts = {};
         for (var i = 0; i < filter.vectors.length; i++) {
             var v = filter.vectors[i];
@@ -302,6 +319,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         console.log('add_callback_filter: ' + filter.character_short_name);
     },
     set_selected_value: function(character_short_name, selected_value) {
+        console.log('SET', character_short_name, selected_value);
         var i = 0;
         for (i = 0; i < this.filters.length; i++) {
             if (this.filters[i].character_short_name ===
@@ -313,7 +331,10 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                     selected_value = String(selected_value);
                 }
                 this.filters[i].selected_value = selected_value;
-                this.on_filter_changed(this.filters[i], selected_value);
+                this.filters[i].load_vectors({
+                    onload: dojo.hitch(this, function() {
+                        this.on_filter_changed(this.filters[i], selected_value);
+                    })});
                 return;
             }
         }

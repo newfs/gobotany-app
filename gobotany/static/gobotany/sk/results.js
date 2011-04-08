@@ -912,7 +912,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     show_filter_working: function(filter) {
-        filter.load_vectors(dojo.hitch(this, 'show_filter_working_onload'));
+        filter.load_vectors({
+            onload: dojo.hitch(this, 'show_filter_working_onload')
+        });
     },
 
     show_filter_working_onload: function(filter) {
