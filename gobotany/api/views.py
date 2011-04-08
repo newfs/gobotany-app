@@ -2,8 +2,7 @@ import json
 from collections import defaultdict
 
 from django.http import HttpResponse
-from gobotany.core.models import Character, CharacterValue, \
-    TaxonCharacterValue
+from gobotany.core.models import CharacterValue, Pile, TaxonCharacterValue
 
 def jsonify(value):
     """Convert the value into a JSON HTTP response."""
@@ -17,4 +16,9 @@ def vector_character(request, name):
         species[tcv.character_value_id].append(tcv.taxon_id)
     return jsonify([
             {'value': v.value_str, 'species': sorted(species[v.id]) }
-            for v in values ])
+            for v in values
+            ])
+
+def vector_pile(request, slug):
+    ids = sorted( s.id for s in Pile.objects.get(slug=slug).species.all() )
+    return jsonify([{'pile': slug, 'species': ids}])
