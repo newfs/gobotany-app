@@ -91,7 +91,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 // set.
 
                 var complete = dojo.hitch(this, function(filters) {
-                    this.save_filter_state();
 
                     var watcher =
                         new gobotany.filters.FilterLoadingWatcher(filters);
@@ -267,14 +266,17 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         var replace_current_history_entry = false;
 
         // However, upon the initial entry to plant ID keying (where there's
-        // no hash yet), do not create a new Back history entry.
-        // This is because when filters load up a bit later, a longer version
-        // of the same URL (with a hash) *will* get a history entry, and more
-        // than one history entry here would create a two-click "barrier" when
-        // the user tries to navigate back to the pile ID pages.
-        if (window.location.href.indexOf('#') === -1) {
+        // no hash yet), do not create a new Back history entry when replacing
+        // the hash. This is to help avoid creating a "barrier" when the user
+        // tries to navigate back to the pile ID pages using the Back button.
+        //console.log('** href: ' + window.location.href);
+        //console.log('** hash: ' + window.location.hash);
+        if (window.location.hash === '') {   // empty hash: initial page load
             replace_current_history_entry = true;
         }
+        //console.log('** replace_current_history_entry: ' +
+        //    replace_current_history_entry);
+
         dojo.hash(hash, replace_current_history_entry);
 
         dojo.cookie(LAST_URL_COOKIE_NAME, window.location.href, {path: '/'});
