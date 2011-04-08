@@ -290,6 +290,5 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
 
             dojo.place(genus_container, plants_container);
         }
-    },
-
+    }
 });

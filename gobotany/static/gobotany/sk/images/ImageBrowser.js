@@ -69,7 +69,7 @@ dojo.declare('gobotany.sk.images.ImageBrowser', null, {
                 dojo.addClass(links[i], 'hidden');
             }
         }
-        
+
         // Display the navigation links and message.
         dojo.query(this.css_selector + ' .nav').style({
             'display': 'block' });

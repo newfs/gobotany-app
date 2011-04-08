@@ -35,7 +35,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         // description:
         //   Coordinates all of the dynamic logic on the results page.
         //   The procedure for using this class is to instantiate it
-        //   and then call it's setup() method.
+        //   and then call its setup() method.
         // | var helper = new gobotany.sk.results.ResultsHelper('some_pile');
         // | helper.setup();
 
@@ -494,7 +494,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     var watcher = new gobotany.filters.FilterLoadingWatcher(
                         new_filters);
                     watcher.load_values({on_values_loaded: dojo.hitch(
-                        this, function() {} ) });
+                        this, function() {})});
 
                     this.results_helper.save_filter_state();
                 }
