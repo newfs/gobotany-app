@@ -67,7 +67,7 @@ dojo.declare('gobotany.filters.Filter', null, {
                     var v = this.vectors[i];
                     this.vectormap[v.value] = v;
                 }
-                console.log('vectors loaded!');
+                console.log('vectors loaded for', this.character_short_name);
                 args.onload(this);
             });
         } else
@@ -205,25 +205,26 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         this.stage1_countdown--;
         if (this.stage1_countdown)
             return;
-        console.log('done with initial fetches');
+        this.base_vector = intersect(this.simple_vector, this.pile_vector);
+        console.log('base_vector:', this.base_vector.length, 'species');
     },
 
-    // Callback invoked each time a vector is returned.
-    filter_loaded: function() {
-        this.filters_loading = this.filters_loading - 1;
-        if (this.filters_loading > 0)
-            return;  // do nothing until all outstanding filters load
-        if (this.base_vector === false) {
-            this.base_vector = intersect(this.simple_vector, this.pile_vector);
-            console.log('base_vector:', this.base_vector.length, 'species');
-        }
-    },
+    // // Callback invoked each time a vector is returned.
+    // filter_loaded: function() {
+    //     this.filters_loading = this.filters_loading - 1;
+    //     if (this.filters_loading > 0)
+    //         return;  // do nothing until all outstanding filters load
+    //     if (this.base_vector === false) {
+    //     }
+    // },
 
     // Given a filter, returns an object whose attributes are character
     // value short names and whose values are the number of species that
     // would remain if the results were filtered by that value.
     compute_filter_counts: function(filter) {
+        console.log('compute_filter_counts()');
         var vector = this.base_vector;
+
         // TODO: there might be a race condition here until the
         // architecure is sufficiently reworked to assure that each
         // active value's vector has been loaded by the time we get here.
@@ -348,6 +349,9 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                     selected_value = String(selected_value);
                 }
                 this.filters[i].selected_value = selected_value;
+                if (character_short_name == 'family' ||
+                    character_short_name == 'genus')
+                    return;
                 this.filters[i].load_vectors({
                     onload: dojo.hitch(this, function() {
                         this.on_filter_changed(this.filters[i], selected_value);
