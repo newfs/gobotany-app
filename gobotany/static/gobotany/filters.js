@@ -195,6 +195,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                 this.species_by_id[info.id] = info;
                 this.species_by_scientific_name[info.scientific_name] = info;
             }
+            this.build_family_genus_filters(data);
             this.stage2();
         });
         get_json('vectors/key/simple', this, function(data) {
@@ -212,6 +213,31 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             return;
         this.base_vector = intersect(this.simple_vector, this.pile_vector);
         console.log('base_vector:', this.base_vector.length, 'species');
+    },
+
+    // build_family_genus_filters()
+    // Generate synthetic family and genus filters, whose vectors are
+    // computed from our own species list instead of being pulled from a
+    // separate API call.
+
+    build_family_genus_filters: function(species_list) {
+        var f = gobotany.filters.Filter({character_short_name: 'family'});
+        var g = gobotany.filters.Filter({character_short_name: 'genus'});
+        f.vectormap = {};
+        g.vectormap = {};
+        for (var i = 0; i < species_list.length; i++) {
+            var family = species_list[i].family;
+            if (!f.vectormap[family])
+                f.vectormap[family] = [];
+            f.vectormap[family].push(species_list[i].id);
+            var genus = species_list[i].genus;
+            if (!g.vectormap[genus])
+                g.vectormap[genus] = [];
+            g.vectormap[genus].push(species_list[i].id);
+        }
+        this.filters.push(f);
+        console.log(f);
+        this.filters.push(g);
     },
 
     // get_species({scientific_name: s, onload: function})
