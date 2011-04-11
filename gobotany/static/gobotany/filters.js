@@ -428,10 +428,15 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         this.species_ids = vector;
         this.species_count = vector.length;
 
-        // Call the passed-in callback function.
         var species_list = [];
         for (var i = 0; i < vector.length; i++)
             species_list.push(this.species_by_id[vector[i]]);
+
+        // Sort and return the matching species.
+
+        species_list.sort(function(a, b) {
+            return a.scientific_name < b.scientific_name ? -1 : 1;
+        });
 
         var data = {items: species_list};
         if (args && args.on_complete)
