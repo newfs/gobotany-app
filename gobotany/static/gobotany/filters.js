@@ -57,6 +57,10 @@ dojo.declare('gobotany.filters.Filter', null, {
             args.onLoaded();
         }
     },
+    // load_vectors({onload: function})
+    // Does an async load of the filter's species id list, then invokes
+    // the caller-supplied callback.  The vector is stored, so the second
+    // and subsequent invocations can invoke the callback immediately.
     load_vectors: function(args) {
         var path = 'vectors/character/' + this.character_short_name;
         if (this.vectors === false) {
@@ -65,7 +69,7 @@ dojo.declare('gobotany.filters.Filter', null, {
                 this.vectormap = {};
                 for (var i = 0; i < this.vectors.length; i++) {
                     var v = this.vectors[i];
-                    this.vectormap[v.value] = v;
+                    this.vectormap[v.value] = v.species;
                 }
                 console.log('vectors loaded for', this.character_short_name);
                 args.onload(this);
@@ -153,6 +157,7 @@ dojo.declare('gobotany.filters.NumericRangeFilter',
 dojo.declare('gobotany.filters.FilterManager', null, {
     pile_slug: '',
     filters: null,
+    all_species: {},  // species_id -> { species object }
     species_count: 0,
     species_ids: [],
     entries: [],
@@ -186,7 +191,10 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     stage1: function() {
         this.stage1_countdown = 3;
         get_json('species/' + this.pile_slug, this, function(data) {
-            this.species_list = data;
+            for (var i = 0; i < data.length; i++) {
+                var info = data[i];
+                this.all_species[info.id] = info;
+            }
             this.stage2();
         });
         get_json('vectors/key/simple', this, function(data) {
@@ -230,7 +238,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             if (f === filter)
                 continue; // ignore this filter itself
             if (f.selected_value) {
-                var species = f.vectormap[f.selected_value].species;
+                var species = f.vectormap[f.selected_value];
                 vector = intersect(vector, species);
             }
         }
@@ -391,93 +399,37 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         this.filters = [];
     },
     perform_query: function(args) {
-        var content = {pile: this.pile_slug};
-        var special = [];
         console.log('FilterManager: running filtered query');
-        var i = 0;
-        for (i = 0; i < this.filters.length; i++) {
+
+        // Narrow down the pile's list of species to only those that
+        // match the selected filters.
+
+        var vector = this.base_vector;
+
+        for (var i = 0; i < this.filters.length; i++) {
             var filter = this.filters[i];
-
-            if (filter.filter_callback !== undefined) {
-                special.push(filter);
-            }
-
             if (filter.selected_value !== null &&
                 filter.selected_value !== undefined &&
                 filter.selected_value.length) {
-
-                content[filter.character_short_name] = filter.selected_value;
+                var fvector = filter.vectormap[filter.selected_value];
+                vector = intersect(vector, fvector);
             }
         }
 
-        // Add the filter names for which to return character value counts.
-        var filter_short_names = args.filter_short_names;
-        if (filter_short_names.length) {
-            var short_names = '';
-            for (i = 0; i < filter_short_names.length; i++) {
-                if (i > 0) {
-                    short_names += ',';
-                }
-                short_names += filter_short_names[i];
-            }
-        }
+        // Update our state with this final result.
 
-        this.fetch_counter = this.fetch_counter + 1;
-        var this_fetch = this.fetch_counter;
-        this.result_store.fetch({
-            scope: this,
-            query: content,
-            onComplete: function(data) {
-                if (this_fetch < this.fetch_counter) {
-                    // If another request has started in the meantime,
-                    // we refuse to update the results.
-                    return;
-                }
-                this.species_count = data.items.length;
-                this.species_ids = [];
-                for (i = 0; i < data.items.length; i++) {
-                    this.species_ids[i] = data.items[i].id;
-                }
+        this.species_ids = vector;
+        this.species_count = vector.length;
 
-                if (special.length > 0) {
-                    // run special filters
-                    var newdata = [];
-                    var x = 0;
-                    for (x = 0; x < data.items.length; x++) {
-                        var item = data.items[x];
-                        var removed = false;
-                        var y = 0;
-                        for (y = 0; y < special.length; y++) {
-                            var callback = special[y].filter_callback;
-                            if (!callback(special[y], item)) {
-                                removed = true;
-                                break;
-                            }
-                        }
+        // Call the passed-in callback function.
+        var species_list = [];
+        for (var i = 0; i < vector.length; i++)
+            species_list.push(this.all_species[vector[i]]);
 
-                        if (!removed) {
-                            newdata.push(item);
-                        }
-                    }
-                    data.items = newdata;
-                    console.log('FilterManager.run_filtered_query:' +
-                                ' data was specially filtered');
-                }
-
-                // Call the passed-in callback function.
-                if (args && args.on_complete) {
-                    args.on_complete(data);
-                }
-                this.on_new_results(data);
-            },
-            onError: function(error) {
-                console.log('Taxon search encountered an error!');
-                console.log(error);
-                if (args && args.on_error) {
-                    args.on_error(error);
-                }
-            }
-        });
+        var data = {items: species_list};
+        if (args && args.on_complete)
+            args.on_complete(data);
+        this.on_new_results(data);
     },
 
     on_new_results: function(data) {}

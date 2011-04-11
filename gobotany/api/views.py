@@ -1,6 +1,7 @@
 import json
 from collections import defaultdict
 
+from django.conf import settings
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
 from gobotany.core import botany
@@ -10,7 +11,11 @@ from gobotany.core.models import (
 
 def jsonify(value):
     """Convert the value into a JSON HTTP response."""
-    return HttpResponse(json.dumps(value), mimetype='application/json')
+    print settings.DEBUG
+    return HttpResponse(
+        json.dumps(value, indent=1 if settings.DEBUG else None),
+        mimetype='application/json',
+        )
 
 # API helpers.
 
@@ -38,7 +43,7 @@ def _simple_taxon(taxon):
         'id': taxon.id,
         'scientific_name': taxon.scientific_name,
         'genus': taxon.scientific_name.split()[0],  # faster than .genus.name
-        'family_id': taxon.family_id,
+        'family': taxon.family_name,
         'taxonomic_authority': taxon.taxonomic_authority,
         #'default_image': _taxon_image(taxon.get_default_image()),
         }

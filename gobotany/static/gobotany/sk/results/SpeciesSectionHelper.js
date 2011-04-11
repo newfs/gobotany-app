@@ -198,6 +198,15 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         return genera;
     },
 
+    default_image: function(species) {
+        for (var i = 0; i < species.images.length; i++) {
+            var image = species.images[i];
+            if (image.rank == 1 && image.type == 'habit')
+                return image;
+        }
+        return {};
+    },
+
     display_results: function(items, plants_container) {
         var genera = this.organize_by_genera(items);
 
@@ -248,7 +257,7 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                         dojo.attr(image, 'x-plant-id',
                                   species.scientific_name);
                         dojo.attr(image, 'src',
-                                  species.default_image.thumb_url);
+                                  this.default_image(species).thumb_url);
                         dojo.place(image, image_container);
                         dojo.place(image_container, plant_link);
 
