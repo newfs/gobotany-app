@@ -289,11 +289,9 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         for (var i = 0; i < images.length; i++) {
             var image = images[i];
             // Fetch the species for the current image
-            this.filter_manager.result_store.fetchItemByIdentity({
-                scope: {image: image,
-                        image_type: image_type},
-                identity: dojo.attr(image, 'x-plant-id'),
-                onItem: function(item) {
+            this.filter_manager.get_species({
+                scientific_name: dojo.attr(image, 'x-plant-id'),
+                onload: function(item) {
                     var new_image;
                     // Search for an image of the correct type
                     for (var j = 0; j < item.images.length; j++) {

@@ -157,7 +157,8 @@ dojo.declare('gobotany.filters.NumericRangeFilter',
 dojo.declare('gobotany.filters.FilterManager', null, {
     pile_slug: '',
     filters: null,
-    all_species: {},  // species_id -> { species object }
+    species_by_id: {},  // species_id -> { species object }
+    species_by_scientific_name: {},  // scientific_name -> { species object }
     species_count: 0,
     species_ids: [],
     entries: [],
@@ -178,8 +179,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
 
         this.chars_store = new dojox.data.JsonRestStore(
             {target: args.pile_url + args.pile_slug + '/characters/'});
-        this.result_store = new dojox.data.JsonRestStore(
-            {target: args.taxon_url, idAttribute: 'scientific_name'});
 
         this.stage1();
     },
@@ -193,7 +192,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         get_json('species/' + this.pile_slug, this, function(data) {
             for (var i = 0; i < data.length; i++) {
                 var info = data[i];
-                this.all_species[info.id] = info;
+                this.species_by_id[info.id] = info;
+                this.species_by_scientific_name[info.scientific_name] = info;
             }
             this.stage2();
         });
@@ -212,6 +212,13 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             return;
         this.base_vector = intersect(this.simple_vector, this.pile_vector);
         console.log('base_vector:', this.base_vector.length, 'species');
+    },
+
+    // get_species({scientific_name: s, onload: function})
+    // Return the information about a particular species.
+
+    get_species: function(args) {
+        args.onload(this.species_by_scientific_name[args.scientific_name]);
     },
 
     // // Callback invoked each time a vector is returned.
@@ -424,7 +431,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         // Call the passed-in callback function.
         var species_list = [];
         for (var i = 0; i < vector.length; i++)
-            species_list.push(this.all_species[vector[i]]);
+            species_list.push(this.species_by_id[vector[i]]);
 
         var data = {items: species_list};
         if (args && args.on_complete)
