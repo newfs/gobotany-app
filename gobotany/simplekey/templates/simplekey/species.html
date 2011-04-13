@@ -72,20 +72,13 @@
           <p><a href="#all-characteristics">All characteristics</a></p>
 
           <h3>Habitat</h3>
-              {% if habitats|length > 1 %}
-              <ul>
-                  {% for habitat in habitats %}
-                      <li>{{ habitat|lower }}</li>
-                  {% endfor %}
-              </ul>
+          <p>
+              {% if habitats|length > 0 %}
+                {{ habitats|join:", "|lower|capfirst }}
               {% else %}
-                  {% if habitats|length == 1 %}
-                      <p>{{ habitats|first }}</p>
-                  {% else %}
-                      <p>(missing)</p>
-                  {% endif %}
+                (missing)
               {% endif %}
-          </ul>
+          </p>
 
           {% if taxon.lookalikes.all|length > 0 %}
             <h3>Sometimes Confused With</h3>
