@@ -236,7 +236,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             g.vectormap[genus].push(species_list[i].id);
         }
         this.filters.push(f);
-        console.log(f);
         this.filters.push(g);
     },
 
