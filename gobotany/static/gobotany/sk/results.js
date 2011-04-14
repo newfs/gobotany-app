@@ -122,8 +122,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                     )});
                 });
 
-                this.filter_section.add_callback_filters();
-
                 if (dojo.hash()) {
                     this.setup_filters_from_hash({on_complete: complete});
                 }
@@ -754,27 +752,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     clear_genus: function(event) {
         dojo.stopEvent(event);
         this.set_value('genus', null);
-    },
-
-    add_callback_filters: function() {
-        this.results_helper.filter_manager.add_callback_filter({
-            character_short_name: 'family',
-            filter_callback: function(filter, item) {
-                if (!filter.selected_value) {
-                    return true;
-                }
-                return filter.selected_value === item.family;
-            }
-        });
-        this.results_helper.filter_manager.add_callback_filter({
-            character_short_name: 'genus',
-            filter_callback: function(filter, item) {
-                if (!filter.selected_value) {
-                    return true;
-                }
-                return filter.selected_value === item.genus;
-            }
-        });
     },
 
     set_value: function(char_name, value) {

@@ -173,9 +173,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         if (!args.pile_url) {
             args.pile_url = API_URL + 'piles/';
         }
-        if (!args.taxon_url) {
-            args.taxon_url = API_URL + 'taxon/';
-        }
 
         this.chars_store = new dojox.data.JsonRestStore(
             {target: args.pile_url + args.pile_slug + '/characters/'});
@@ -245,15 +242,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     get_species: function(args) {
         args.onload(this.species_by_scientific_name[args.scientific_name]);
     },
-
-    // // Callback invoked each time a vector is returned.
-    // filter_loaded: function() {
-    //     this.filters_loading = this.filters_loading - 1;
-    //     if (this.filters_loading > 0)
-    //         return;  // do nothing until all outstanding filters load
-    //     if (this.base_vector === false) {
-    //     }
-    // },
 
     // Given a filter, returns an object whose attributes are character
     // value short names and whose values are the number of species that
@@ -354,24 +342,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         }
         this.filters.push(f);
         return f;
-    },
-    add_callback_filter: function(args) {
-        // summary:
-        //     Add a callback filter to this manager
-        // description:
-        //     Add the given object as a callback filter to this
-        //     manager.  A callback filter is a filter with
-        //     a callback function that will be used realtime
-        //     to filter items.
-        // args:
-        //     a kwArgs object suitable for passing into
-        //     'new gobotany.filters.Filter()'
-
-        var filter_args = gobotany.utils.clone(args);
-        filter_args.pile_slug = this.pile_slug;
-        var filter = new gobotany.filters.Filter(filter_args);
-        this.filters.push(filter);
-        console.log('add_callback_filter: ' + filter.character_short_name);
     },
     set_selected_value: function(character_short_name, selected_value) {
         console.log('SET', character_short_name, selected_value);
