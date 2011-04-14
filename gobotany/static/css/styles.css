@@ -1090,3 +1090,9 @@ div.working-area #simple-slider .dijitSliderDecoration {
 div.working-area #simple-slider .count {
     position: absolute; /* top/left set by JS */
 }
+/* end overrides for count slider */
+
+/* glossary term underline for popup */
+.gloss {
+    border-bottom: 1px dashed #000;
+}
