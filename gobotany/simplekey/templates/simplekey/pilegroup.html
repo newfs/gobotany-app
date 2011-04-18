@@ -20,17 +20,7 @@
                         </ul>
                     </div><!--Closes #breadcrumb-->
 
-                    <div class="not-my-plant">
-                        <h6>My plant isn't in
-                            {% if piles_and_urls|length > 1 %}
-                                these subgroups.
-                            {% else %}
-                                this subgroup.
-                            {% endif %}
-                        </h6>
-                        <a class="back-level"
-                            href="javascript:history.back(1)">Go back one level</a>
-                    </div><!--Closes .not-my-plant-->
+                    {% include "simplekey/_plant_not_in_subgroup.html" %}
 
                     <h2>Plant Identifier</h2>
                     <h4>Is your plant in one of these subgroups?</h4>
@@ -74,17 +64,7 @@
                     </div><!--Closes .list-item-->
                     {% endfor %}
 
-                    <div class="not-my-plant">
-                        <h6>My plant isn't in
-                            {% if piles_and_urls|length > 1 %}
-                                these subgroups.
-                            {% else %}
-                                this subgroup.
-                            {% endif %}
-                        </h6>
-                        <a class="back-level" 
-                            href="javascript:history.back(1)">Go back one level</a>
-                    </div><!--Closes .not-my-plant-->
+                    {% include "simplekey/_plant_not_in_subgroup.html" %}
 
                 </div><!--closes #main-->
 

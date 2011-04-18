@@ -76,11 +76,17 @@ def page_view(request, number):
                 ]
             }, context_instance=RequestContext(request))
 
+def get_parent_page(pilegroup):
+    parent_page = Page.objects.get(pilegroups=pilegroup)
+    return parent_page
+
 def pilegroup_view(request, pilegroup_slug):
     pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
     site = partners.get_site(request)
+    parent_page = get_parent_page(pilegroup)
     return render_to_response('simplekey/pilegroup.html', {
             'partner_site': site.short_name,
+            'parent_page': parent_page,
             'pilegroup': pilegroup,
             'piles_and_urls': [
                 (pile, get_simple_url(pile))

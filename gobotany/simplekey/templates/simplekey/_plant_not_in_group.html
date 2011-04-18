@@ -1,0 +1,12 @@
+                    {% if page.next_page %}
+                        <div class="not-my-plant">
+                            <h6>My plant isn't in
+                                {% if pilegroups_and_urls|length > 1 %}
+                                    these groups.
+                                {% else %}
+                                    this group.
+                                {% endif %}
+                            </h6>
+                            <a href="{{ page.next_page.get_absolute_url }}">Show me other groups</a>
+                        </div><!--Closes .not-my-plant-->
+                    {% endif %}

@@ -27,21 +27,7 @@
                         </ul>
                     </div><!--Closes #breadcrumb-->
 
-                    <div class="not-my-plant">
-                        <h6>My plant isn't in
-                            {% if pilegroups_and_urls|length > 1 %}
-                                these groups.
-                            {% else %}
-                                this group.
-                            {% endif %}
-                        </h6>
-                        {% if page.next_page %}
-                            <a href="{{ page.next_page.get_absolute_url }}">Show me other groups</a>
-                        {% else %}
-                            <a class="back-level"
-                                href="{% url simplekey-page page.number|add:"-1" %}">Go back one level</a>
-                        {% endif %}
-                    </div><!--Closes .not-my-plant-->
+                    {% include "simplekey/_plant_not_in_group.html" %}
 
                     <h2>Plant Identifier</h2>
                     <h4>Is your plant in
@@ -91,21 +77,7 @@
                     </div><!--Closes .list-item-->
                     {% endfor %}
 
-                    <div class="not-my-plant">
-                        <h6>My plant isn't in
-                            {% if pilegroups_and_urls|length > 1 %}
-                                these groups.
-                            {% else %}
-                                this group.
-                            {% endif %}
-                        </h6>
-                        {% if page.next_page %}
-                            <a href="{{ page.next_page.get_absolute_url }}">Show me other groups</a>
-                        {% else %}
-                            <a class="back-level"
-                                href="{% url simplekey-page page.number|add:"-1" %}">Go back one level</a>
-                        {% endif %}
-                    </div><!--Closes .not-my-plant-->
+                    {% include "simplekey/_plant_not_in_group.html" %}
 
                 </div><!--closes #main-->
 
