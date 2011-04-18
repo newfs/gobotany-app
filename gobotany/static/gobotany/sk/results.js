@@ -396,7 +396,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         });
 
         // Wire up the Apply button in the filter working area.
-        var apply_button = dojo.query('#character_values_form button')[0];
+        var apply_button = dojo.query('.working-area a.apply-btn')[0];
         dojo.connect(apply_button, 'onclick', this, this._apply_filter);
 
         // Wire up the Family and Genus submit buttons.
@@ -1026,15 +1026,16 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }
         else {
 
-            // Create the radio-button widget.
+            // Create the radio-buttons widget.
 
             // Create a Don't Know radio button item.
-            var item_html = '<span><input type="radio" name="char_name" ' +
-                'value="" checked> ' + this._get_filter_display_value('',
-                '', '') + '</span>';
-            var dont_know_item = dojo.create('label',
-                                             {'innerHTML': item_html});
-            dojo.place(dont_know_item, valuesList);
+            var item_html = '<div><label><input name="char_name" type="radio" ' +
+                'value=""> ' + this._get_filter_display_value('','', '') + 
+                '</label></div>';
+            //var dont_know_item = dojo.create('label',
+            //                                 {'innerHTML': item_html});
+            //dojo.place(dont_know_item, valuesList);
+            dojo.place(item_html, valuesList);
 
             // Apply a custom sort to the filter values.
             var values = gobotany.utils.clone(filter.values);
@@ -1051,32 +1052,48 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
                 if (!((count === 0) && (v.value === 'NA'))) {
 
-                    item_html = '<span><input type="radio" name="char_name"' +
-                        ' value="' + v.value + '"';
+                    //item_html = '<span><input type="radio" name="char_name"' +
+                    //    ' value="' + v.value + '"';
+                    item_html = '<label ';
                     if (count === 0) {
-                        item_html += ' class="zero" disabled';
+                        item_html += ' class="zero"';
+                    }
+                    item_html += '><input name="char_name" ' +
+                        'type="radio" value="' + v.value + '"';
+                    if (count === 0) {
+                        item_html += ' disabled';
                     }
                     var display_value =
                         this._get_filter_display_value(v.friendly_text,
                             v.value, filter.character_short_name);
-                    item_html += '><span> ' + display_value +
-                        '</span> <span>(' + count + ')</span></span>';
+                    //item_html += '><span> ' + display_value +
+                    //    '</span> <span>(' + count + ')</span></span>';
+                    item_html += '>';
 
+                    // Add a drawing image thumbnail if present.
+                    
                     var image_path = v.image_url;
                     var thumbnail_html = '';
                     var image_id = '';
                     if (image_path.length > 0) {
                         image_id = this.get_image_id_from_path(image_path);
+                        // TODO: consider using an actual thumbnail, but the
+                        // current thumbnail is only 40px wide (why?).
+                        // v.thumbnail_url
                         thumbnail_html = '<img id="' + image_id +
-                            '" src="' + v.thumbnail_url + '" alt="drawing ' +
-                            'showing ' + v.friendly_text + '">';
-                        item_html += ' <div>' + thumbnail_html + '</div>';
+                            '" src="' + image_path + '" alt="drawing ' +
+                            'showing ' + v.friendly_text + '"><br>';
+                        item_html += thumbnail_html;
                     }
+                    
+                    item_html += ' <span class="label">' + display_value + 
+                        '</span> <span class="count">(' + count + ')</span>' +
+                        '</label>';
 
-                    var character_value_item = dojo.create('label',
+                    var character_value_item = dojo.create('div',
                         {'innerHTML': item_html}, valuesList);
 
-                    // Once the label is added, add a tooltip for the drawing.
+                    // Once the item is added, add a tooltip for the drawing.
                     if (image_path.length > 0) {
                         var image_html = '<img id="' + image_id + '" src="' +
                             image_path + '" alt="drawing showing ' +
@@ -1088,8 +1105,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                         });
                     }
 
-                    this.glossarizer.markup(
-                        character_value_item.childNodes[0].childNodes[1]);
+                    var label = dojo.query('span.label', character_value_item)[0];
+                    this.glossarizer.markup(label);
                 }
             }
 
@@ -1106,16 +1123,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     '"]';
             }
             dojo.query(selector)[0].checked = true;
-
-            // Scroll the values list so the selected value is showing.
-            var values_element = dojo.query('div.working-area .values')[0];
-            var top_offset = 0;
-            if (selector.indexOf('[value') > -1) {
-                // Adjust the height to position the selected item at around
-                // the middle of the scrolling list.
-                top_offset = dojo.query(selector)[0].offsetTop - 334;
-            }
-            values_element.scrollTop = top_offset;
         }
 
         // Set any question and hint text for this filter.

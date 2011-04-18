@@ -813,7 +813,7 @@ float: right;
 width: 92px;
 height: 32px;
 background: url(/static/images/layout/apply-btn.png) no-repeat 0 0 transparent;
-text-indent: -9000px;
+text-indent: 9000px;
 }
 .working-area .apply-btn:hover {
 background-position: 0 -32px;
@@ -919,10 +919,9 @@ by javascript, see gobotany.sk.results.notify() */
 
 
 div.working-area {
-    border: 1px dashed #ddd;
+    border: 1px solid #ddd;
     clear: left;
     display: none;
-    height: 215px;
     padding: 1em;
 }
 
@@ -945,16 +944,6 @@ div.working-area .info {
     width: 100%;
 }
 
-div.working-area .values {
-    border: 1px solid #999;
-    float: left;
-    height: 153px;
-    margin: 0 0 10px 0;
-    overflow-y: scroll;
-    padding: 0;
-    width: 400px;
-}
-
 div.working-area .values.numeric {
     border: 0;
     height: auto;
@@ -965,6 +954,7 @@ div.working-area .values.multiple label {
     border-top: 1px solid #999;
     clear: both;
     display: block;
+    font-size: 12px;
     height: 50px;
     line-height: 1.2em;
 }
@@ -983,7 +973,7 @@ div.working-area .values input {
     margin: 0.6em 0;
 }
 
-div.working-area .values input.zero ~ span {
+div.working-area .values .zero {
     color: #ccc;
 }
 
@@ -999,17 +989,45 @@ div.working-area .values label div {
     width: 40px;
 }
 
-div.working-area .values label div img {
-    height: 40px;
+div.working-area .values.multiple div {
+    display: inline-block;
+    margin: 0 12px 16px 0;
+    max-width: 120px;
+    min-height: 60px;
+}
+
+div.working-area .values.multiple div label {
+    display: inline-block;
+    font-family: Tahoma, sans-serif;
+    font-size: 12px;
+    height: 100%;
+    margin-left: 18px;
+    max-width: 120px;
+    min-width: 110px;
+    vertical-align: top;
+    word-wrap: break-word;
+}
+
+div.working-area .values.multiple div input {
+    float: left;
+    margin: 3px 3px 0 -18px;
+}
+
+div.working-area .values.multiple div img {
+    background: #fff;
+    border: 1px solid #ddd;
+    display: inline-block;
+    height: 100px;    
 }
 
 div.working-area .info {
     float: left;
-    font-size: 0.85em;
+    font-family: Tahoma, sans-serif;
+    font-size: 14px;
 }
 
 div.working-area .info .hint {
-    font-size: 0.85em;
+    font-size: 12px;
     margin-bottom: 10px;
 }
 
@@ -1017,11 +1035,8 @@ div.working-area .info .hint p {
     margin-bottom: 0;
 }
 
-div.working-area button {
-    border: 1px solid gray;
-    clear: left;
-    display: block;
-    margin-bottom: 1em;
+div.working-area .actions {
+    text-align: right;
 }
 
 /* Make a Dijit horizontal slider look like a ruler */
@@ -1063,17 +1078,20 @@ div.working-area .dijitSliderImageHandleH div.second_handle {
     background-position: -108px 0;
 }
 div.working-area div.metric_display {
-    position: absolute;
-    top: -40px;
+    font-size: 11px;
     left: -30px;
-    width: 60px;
+    line-height: 13px;
+    position: absolute;
     text-align: center;
+    top: 0px;
+    width: 60px;
 }
 div.working-area div.english_display {
+    font-size: 11px;
     position: absolute;
-    top: 20px;
     right: -12px;
     text-align: right;
+    top: 20px;
 }
 div.working-area .dijitRuleLabelH {
     left: -100%;  /* print lengths left of ticks */
@@ -1094,5 +1112,6 @@ div.working-area #simple-slider .count {
 
 /* glossary term underline for popup */
 .gloss {
-    border-bottom: 1px dashed #000;
+    border-bottom: 1px dashed;
+    cursor: pointer;
 }
