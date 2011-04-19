@@ -107,6 +107,9 @@ def results_view(request, pilegroup_slug, pile_slug):
 
 
 def _get_species_characteristics(pile, taxon):
+    """Get the short list of characteristics that help give a quick
+       impression of the plant.
+    """
     characteristics = []
     # Get all the character values for this taxon.
     cvs = TaxonCharacterValue.objects.filter(taxon=taxon)
@@ -133,6 +136,48 @@ def _get_species_characteristics(pile, taxon):
             characteristic['value'] = value
             characteristics.append(characteristic)
     return characteristics
+
+
+def _get_all_species_characteristics(pile, taxon, character_groups):
+    """Get all characteristics for a plant, organized by character group."""
+    all_characteristics = []
+    for group in character_groups:
+
+        taxon_character_values = TaxonCharacterValue.objects.filter( \
+            taxon=taxon,
+            character_value__character__character_group__name=group.name)
+
+        character_names = []
+        character_values = []
+        values_dict = {}
+
+        for tcv in taxon_character_values:
+            character_name = tcv.character_value.character.name
+            if character_name not in character_names:
+                character_names.append(character_name)
+                character_values = []
+                values_dict[character_name] = character_values
+
+            if tcv.character_value.character.value_type == 'TEXT':
+                character_values.append(tcv.character_value.value_str)
+            else:
+                character_values.append(str(tcv.character_value.value_min) + \
+                    ' ' + tcv.character_value.character.unit + ' to ' + \
+                    str(tcv.character_value.value_max) + ' ' + \
+                    tcv.character_value.character.unit)
+            values_dict[character_name] = character_values
+        
+        characters = []
+        for character_name in character_names:
+            characters.append({'name': character_name,
+                               'value': str.join(', ',
+                                                 values_dict[character_name])
+                              })
+        
+        all_characteristics.append({'name': group.name,
+                                    'characters': characters})
+    return all_characteristics
+
 
 def species_view(request,  genus_slug, specific_epithet_slug,
                  pilegroup_slug=None, pile_slug=None):
@@ -170,6 +215,8 @@ def species_view(request,  genus_slug, specific_epithet_slug,
            'species_images': species_images,
            'habitats': habitats,
            'characteristics': _get_species_characteristics(pile, taxon),
+           'all_characteristics': _get_all_species_characteristics(pile,
+                taxon, character_groups),
            'specific_epithet': specific_epithet_slug,
            'character_groups': character_groups,
            }, context_instance=RequestContext(request))

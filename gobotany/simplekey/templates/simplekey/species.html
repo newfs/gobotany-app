@@ -114,25 +114,16 @@
 
           <h3 id="all-characteristics">All Characteristics</h3>
 
-          {% for character_group in character_groups|dictsort:'name' %}
+          {% for character_group in all_characteristics %}
           <div id="title-pane-{{ character_group.name|slugify }}"
                dojoType="dijit.TitlePane" open="false"
                title="{{ character_group.name }}">
-              <h4>{{ character_group.name }}</h4>
-              {% for character_value in taxon.character_values.all %}
-                  {% if character_value.character.character_group.name == character_group.name %}
-                      <p><strong>{{ character_value.character.name|lower }}:</strong>
-                         {% if character_value.character.value_type == 'TEXT' %}
-                             {{ character_value.value_str }}
-                         {% else %}
-                            {{ character_value.value_min }}
-                            {{ character_value.character.unit }} to
-                            {{ character_value.value_max }}
-                            {{ character_value.character.unit }}
-                         {% endif %}
-                      </p>
-                  {% endif %}
-              {% endfor %}
+               <h4>{{ character_group.name }}</h4>
+               {% for character in character_group.characters %}
+                   <p><strong>{{ character.name }}:</strong>
+                       {{ character.value }}
+                   </p>
+               {% endfor %}
           </div>
           {% endfor %}
 
