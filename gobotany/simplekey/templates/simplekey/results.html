@@ -11,13 +11,29 @@
                 <div id="main">
                     <div id="breadcrumb">
                         <ul>
-                            <li class="first completed"><a href="{% url simplekey-page 1 %}"><img
-                                src="/static/images/icons/start.png" alt=""> Start</a></li>
-                            <li class="second completed"><a
-                                href="{% url simplekey-pilegroup pilegroup.slug %}"><img
-                                src="/static/images/icons/group.png" alt=""> {{ pilegroup.name }}</a></li>
-                            <li class="third current"><a><img
-                                src="/static/images/icons/subgroup.png" alt=""> {{ pile.name }}</a></li>
+                            {% if 'skip_help_start' in request.COOKIES.keys and request.COOKIES.skip_help_start != 'y' %}
+                                <li class="first completed"><a href="/help/start/"><img
+                                    src="/static/images/icons/start.png" alt=""> Start: Help</a></li>
+                                <li class="second completed"><a href="{% url simplekey-page 1 %}"><img
+                                    src="/static/images/icons/group.png" alt=""> Choose Group</a></li>
+                                <li class="third completed"><a
+                                    href="{% url simplekey-pilegroup pilegroup.slug %}"><img
+                                    src="/static/images/icons/group.png" alt=""> 
+                                    {{ pilegroup.name }}</a></li>
+                                <li class="last current"><a><img
+                                    src="/static/images/icons/subgroup.png" alt=""> 
+                                    {{ pile.name }}</a></li>
+                            {% else %}
+                                <li class="first completed"><a href="{% url simplekey-page 1 %}"><img
+                                    src="/static/images/icons/start.png" alt=""> Start</a></li>
+                                <li class="second completed"><a
+                                    href="{% url simplekey-pilegroup pilegroup.slug %}"><img
+                                    src="/static/images/icons/group.png" alt=""> 
+                                    {{ pilegroup.name }}</a></li>
+                                <li class="third current"><a><img
+                                    src="/static/images/icons/subgroup.png" alt=""> 
+                                    {{ pile.name }}</a></li>
+                            {% endif %}
                         </ul>
                     </div><!--Closes #breadcrumb-->
 

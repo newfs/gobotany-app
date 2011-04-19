@@ -15,9 +15,7 @@
                             <h2>Plant Identifier</h2>
                             <img src="/static/images/layout/separator.png" alt="Go Botany">
                             <p>Want to know what that plant is? With our Plant Identifier, you can identify over 1,200 native New England plants! Answer some questions step by step, and narrow down the possibilities. The key works best if you have an actual sample or a few photos of your plant.</p>
-                            <a href="{% url simplekey-page 1 %}" id="cta">
-                              Get Started
-                            </a>
+                            <a href="{% if 'skip_help_start' in request.COOKIES.keys and request.COOKIES.skip_help_start == 'y' %}{% url simplekey-page 1 %}{% else %}/help/start/{% endif %}" id="cta">Get Started</a>
                         </div><!--Closes #overlay-->
                     </div><!--Closes #inner-->
                 </div><!--Closes #banner-->

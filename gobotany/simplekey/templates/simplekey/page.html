@@ -11,19 +11,32 @@
                 <div id="main">
                     <div id="breadcrumb">
                         <ul>
-                            {% if page.number > 1 %}
-                                <li class="first completed"><a href="{% url simplekey-page 1 %}"><img
-                                    src="/static/images/icons/start.png" alt=""> Start</a></li>
+                            {% if 'skip_help_start' in request.COOKIES.keys and request.COOKIES.skip_help_start != 'y' %}
+                                <li class="first completed"><a href="/help/start/"><img
+                                    src="/static/images/icons/start.png" alt=""> Start: Help</a></li>
                                 <li class="second current"><a><img
-                                    src="/static/images/icons/group.png" alt=""> Choose Group</a></li>
-                            {% else %}
-                                <li class="first current"><a><img
-                                    src="/static/images/icons/start.png" alt=""> Start</a></li>
-                                <li class="second upcoming"><a><img
+                                        src="/static/images/icons/group.png" alt=""> Choose
+                                        Group</a></li>
+                                <li class="third upcoming"><a><img
                                     src="/static/images/icons/group.png" alt=""> Group</a></li>
+                                <li class="last upcoming"><a><img 
+                                    src="/static/images/icons/subgroup.png" alt=""> Subgroup</a></li>
+                            {% else %}
+                                {% if page.number > 1 %}
+                                    <li class="first completed"><a href="{% url simplekey-page 1 %}"><img
+                                        src="/static/images/icons/start.png" alt=""> Start</a></li>
+                                    <li class="second current"><a><img
+                                        src="/static/images/icons/group.png" alt=""> Choose Group</a></li>
+                                {% else %}
+                                    <li class="first current"><a><img
+                                        src="/static/images/icons/start.png" alt=""> Start</a></li>
+                                    <li class="second upcoming"><a><img
+                                        src="/static/images/icons/group.png" alt=""> Group</a></li>
+                                {% endif %}
+                                <li class="third upcoming"><a><img 
+                                    src="/static/images/icons/subgroup.png" alt=""> Subgroup</a></li>
                             {% endif %}
-                            <li class="third upcoming"><a><img 
-                                src="/static/images/icons/subgroup.png" alt=""> Subgroup</a></li>
+
                         </ul>
                     </div><!--Closes #breadcrumb-->
 

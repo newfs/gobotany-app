@@ -118,7 +118,7 @@ p {
     padding: 1em 1em 0 0;
 }
 
-#help #next {
+#help form, #help #next {
     clear: both;
 }
 

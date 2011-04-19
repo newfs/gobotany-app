@@ -33,15 +33,9 @@ def index_view(request):
 
     blurb = get_blurb('getting_started')
 
-    c = request.COOKIES.get('skip_getting_started', '')
-    skip_getting_started = (c == 'skip')
-    if skip_getting_started and request.GET.get('skip') != 'no':
-        return redirect('1/')
-
     return render_to_response('simplekey/index.html', {
             'main_heading': main_heading,
             'blurb': blurb,
-            'skip_getting_started': skip_getting_started,
             }, context_instance=RequestContext(request))
 
 def advanced_view(request):
