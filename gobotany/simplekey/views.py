@@ -48,7 +48,7 @@ def map_view(request):
             }, context_instance=RequestContext(request))
 
 def glossary_redirect_view(request):
-    return HttpResponseRedirect('/simple/help/glossary/a/')
+    return HttpResponseRedirect('/help/glossary/a/')
 
 def guided_search_view(request):
     return render_to_response('simplekey/guided_search.html', {

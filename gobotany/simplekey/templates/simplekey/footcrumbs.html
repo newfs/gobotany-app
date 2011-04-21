@@ -1,18 +1,18 @@
 <ul id="footcrumbs">
   <li>
-    <a href="/simple/?skip=no">Getting Started</a>
+    <a href="/help/start/">Getting Started</a>
   </li>
   <li>
 {% if not pilegroup %}
     Start: Choose Collection
 {% else %}
-    <a href="/simple/1/">Start: Choose Collection</a>
+    <a href="/1/">Start: Choose Collection</a>
   </li>
   <li>
 {% if not pile %}
     <b>{{ pilegroup.name }}</b>
 {% else %}
-    <a href="/simple/{{ pilegroup.slug }}/"><b>{{ pilegroup.name }}</b></a>
+    <a href="/{{ pilegroup.slug }}/"><b>{{ pilegroup.name }}</b></a>
   </li>
   <li>
     <b>{{ pile.name }}</b>
