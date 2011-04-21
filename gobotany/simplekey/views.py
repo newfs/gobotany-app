@@ -152,21 +152,23 @@ def _get_all_species_characteristics(pile, taxon, character_groups):
                 character_values = []
                 values_dict[character_name] = character_values
 
+            value = ''
             if tcv.character_value.character.value_type == 'TEXT':
-                character_values.append(tcv.character_value.value_str)
+                value = tcv.character_value.value_str
             else:
-                character_values.append(str(tcv.character_value.value_min) + \
+                value = str(tcv.character_value.value_min) + \
                     ' ' + tcv.character_value.character.unit + ' to ' + \
                     str(tcv.character_value.value_max) + ' ' + \
-                    tcv.character_value.character.unit)
+                    tcv.character_value.character.unit
+            if value != None:
+                character_values.append(value)
             values_dict[character_name] = character_values
         
         characters = []
         for character_name in character_names:
+            value_string = str.join(', ', values_dict[character_name])
             characters.append({'name': character_name,
-                               'value': str.join(', ',
-                                                 values_dict[character_name])
-                              })
+                               'value': value_string})
         
         all_characteristics.append({'name': group.name,
                                     'characters': characters})
