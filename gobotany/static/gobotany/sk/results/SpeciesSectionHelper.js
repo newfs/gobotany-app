@@ -1,5 +1,5 @@
 // Global declaration for JSLint (http://www.jslint.com/)
-/*global dojo, dijit, gobotany */
+/*global dojo, dijit, gobotany, _global_setSidebarHeight */
 
 dojo.provide('gobotany.sk.results.SpeciesSectionHelper');
 
@@ -38,7 +38,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         // is the same as the internal collection of filters).
         var filter_short_names = [];
         var filters = this.results_helper.filter_manager.filters;
-        for (var i = 0; i < filters.length; i++) {
+        var i;
+        for (i = 0; i < filters.length; i++) {
             filter_short_names.push(filters[i].character_short_name);
         }
 
@@ -59,8 +60,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
 
         var families_seen = {};
         var family_list = [];
-
-        for (var i = 0; i < items.length; i++) {
+        var i;
+        for (i = 0; i < items.length; i++) {
             var item = items[i];
             if (! families_seen[item.family]) {
                 family_list.push(item.family);
@@ -76,7 +77,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         var family_store = family_select.store;
 
         family_store.fetch({onComplete: dojo.hitch(this, function(items) {
-            for (var i = 0; i < items.length; i++) {
+            var i;
+            for (i = 0; i < items.length; i++) {
                 family_store.deleteItem(items[i]);
             }
             family_store.save();
@@ -99,8 +101,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
 
         var genera_seen = {};
         var genus_list = [];
-
-        for (var i = 0; i < items.length; i++) {
+        var i;
+        for (i = 0; i < items.length; i++) {
             var item = items[i];
             if (! genera_seen[item.genus]) {
                 genus_list.push(item.genus);
@@ -117,7 +119,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         var genus_store = genus_select.store;
 
         genus_store.fetch({onComplete: dojo.hitch(this, function(items) {
-            for (var i = 0; i < items.length; i++) {
+            var i;
+            for (i = 0; i < items.length; i++) {
                 genus_store.deleteItem(items[i]);
             }
             genus_store.save();
@@ -141,7 +144,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
 
         // Update the species count on the screen.
         var count_elements = dojo.query('.species-count');
-        for (var i = 0; i < count_elements.length; i++) {
+        var i;
+        for (i = 0; i < count_elements.length; i++) {
             count_elements[i].innerHTML = data.items.length;
         }
 
@@ -177,7 +181,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         var genera = [];
         var genus = '';
         var species = [];
-        for (var i = 0; i < items.length; i++) {
+        var i;
+        for (i = 0; i < items.length; i++) {
             if ((i > 0) && (items[i].genus !== genus)) {
                 // There's a new genus, so add the prior genus and species to
                 // to the genera list.
@@ -199,18 +204,32 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
     },
 
     default_image: function(species) {
-        for (var i = 0; i < species.images.length; i++) {
+        var i;
+        for (i = 0; i < species.images.length; i++) {
             var image = species.images[i];
-            if (image.rank == 1 && image.type == 'habit')
+            if (image.rank === 1 && image.type === 'habit') {
                 return image;
+            }
         }
         return {};
+    },
+
+    connect_plant_preview_popup: function(plant_link, species, pile_slug) {
+        dojo.connect(plant_link, 'onclick', species, function(event) {
+            event.preventDefault();
+            var plant = this;
+            dijit.byId('plant-preview').show();
+            gobotany.sk.plant_preview.show(
+                plant,
+                {'pile_slug': pile_slug});
+        });
     },
 
     display_results: function(items, plants_container) {
         var genera = this.organize_by_genera(items);
 
         var SPECIES_PER_ROW = 4;
+        var i;
         for (i = 0; i < genera.length; i++) {
             var class_value = 'genus';
             if ((i + 1) % 2) {
@@ -227,8 +246,9 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
             });
 
             // Add the species for this genus.
-            genus = genera[i];
-            for (var j = 0; j < genus.species.length; j += SPECIES_PER_ROW) {
+            var genus = genera[i];
+            var j;
+            for (j = 0; j < genus.species.length; j += SPECIES_PER_ROW) {
                 var row_class_value = 'row';
                 if (j + SPECIES_PER_ROW >= genus.species.length) {
                     row_class_value = 'row last';
@@ -236,7 +256,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                 var row = dojo.create('div', {'class': row_class_value});
 
                 var plant_index_in_row = 0;
-                for (var k = j; k < j + SPECIES_PER_ROW; k++) {
+                var k;
+                for (k = j; k < j + SPECIES_PER_ROW; k++) {
                     if (genus.species[k] !== undefined) {
                         var species = genus.species[k];
                         var plant_class_value = 'plant';
@@ -248,8 +269,7 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                             {'class': plant_class_value});
 
                         var plant_link = dojo.create('a', {'href': '#'});
-                        var frame = dojo.create('div', {'class': 'frame'},
-                            plant_link);
+                        dojo.create('div', {'class': 'frame'}, plant_link);
 
                         var image_container = dojo.create('div',
                             {'class': 'img-container'});
@@ -266,22 +286,15 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                         if (species.common_name !== '') {
                             name_html += ' ' + species.common_name;
                         }
-                        var name = dojo.create('p', {'class': 'plant-name',
+                        dojo.create('p', {'class': 'plant-name',
                             'innerHTML': name_html}, plant_link);
 
                         // Connect a "plant preview" popup. Pass species as
                         // context in the connect function, which becomes
                         // 'this' to pass along as the variable plant.
                         var pile_slug = this.results_helper.pile_slug;
-                        dojo.connect(plant_link, 'onclick', species,
-                            function(event) {
-                                event.preventDefault();
-                                var plant = this;
-                                dijit.byId('plant-preview').show();
-                                gobotany.sk.plant_preview.show(
-                                    plant,
-                                    {'pile_slug': pile_slug});
-                            });
+                        this.connect_plant_preview_popup(plant_link, species,
+                            pile_slug);
 
                         dojo.place(plant_link, plant);
                         dojo.place(plant, row);
