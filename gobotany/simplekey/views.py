@@ -8,7 +8,8 @@ from django.utils import simplejson
 
 from gobotany.core import botany
 from gobotany.core.models import GlossaryTerm, Pile, PileGroup, Genus, \
-    Family, Synonym, Taxon, TaxonCharacterValue, Lookalike, CharacterGroup
+    Family, Synonym, Taxon, TaxonCharacterValue, Lookalike, CharacterGroup, \
+    Habitat
 from gobotany.simplekey import partners
 from gobotany.simplekey.models import Page, get_blurb, SearchSuggestion
 
@@ -154,7 +155,10 @@ def _get_all_species_characteristics(pile, taxon, character_groups):
 
             value = ''
             if tcv.character_value.character.value_type == 'TEXT':
-                value = tcv.character_value.value_str
+                if tcv.character_value.friendly_text:
+                    value = tcv.character_value.friendly_text
+                else:
+                    value = tcv.character_value.value_str
             else:
                 value = str(tcv.character_value.value_min) + \
                     ' ' + tcv.character_value.character.unit + ' to ' + \
@@ -196,7 +200,15 @@ def species_view(request,  genus_slug, specific_epithet_slug,
     species_images = botany.species_images(taxon)
     habitats = []
     if taxon.habitat:
-        habitats = taxon.habitat.split('| ')
+        habitat_names = taxon.habitat.split('| ')
+        for name in habitat_names:
+            friendly_name = None
+            try:
+                habitat = Habitat.objects.get(name__iexact=name)
+                habitats.append(habitat.friendly_name)
+            except Habitat.DoesNotExist:
+                continue
+        habitats.sort()
 
     character_ids = taxon.character_values.all().values_list(
                     'character', flat=True).distinct()
