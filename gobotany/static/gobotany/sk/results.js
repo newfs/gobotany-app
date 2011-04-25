@@ -1036,8 +1036,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             // Create the radio-buttons widget.
 
             // Create a Don't Know radio button item.
-            var item_html = '<div><label><input name="char_name" type="radio" ' +
-                'value=""> ' + this._get_filter_display_value('','', '') + 
+            var item_html = '<div><label><input name="char_name" type="radio"' +
+                ' value=""> ' + this._get_filter_display_value('', '', '') +
                 '</label></div>';
             dojo.place(item_html, valuesList);
 
@@ -1072,7 +1072,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     item_html += '>';
 
                     // Add a drawing image thumbnail if present.
-                    
+
                     var image_path = v.image_url;
                     var thumbnail_html = '';
                     var image_id = '';
@@ -1083,8 +1083,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                             'showing ' + v.friendly_text + '"><br>';
                         item_html += thumbnail_html;
                     }
-                    
-                    item_html += ' <span class="label">' + display_value + 
+
+                    item_html += ' <span class="label">' + display_value +
                         '</span> <span class="count">(' + count + ')</span>' +
                         '</label>';
 
@@ -1103,7 +1103,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                         });
                     }
 
-                    var label = dojo.query('span.label', character_value_item)[0];
+                    var label = dojo.query(
+                        'span.label', character_value_item)[0];
                     this.glossarizer.markup(label);
                 }
             }
