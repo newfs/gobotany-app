@@ -1062,7 +1062,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                         item_html += ' class="zero"';
                     }
                     item_html += '><input name="char_name" ' +
-                        'type="radio" value="' + v.value + '"';
+                        'type="radio" value="' + v.choice + '"';
                     if (count === 0) {
                         item_html += ' disabled';
                     }
