@@ -33,7 +33,7 @@ gobotany.sk.plant_preview.show = function(plant, args) {
         window.location.href = url;
     });
 
-    var taxon_url = '/taxon/' + plant.scientific_name + '/';
+    var taxon_url = '/api/taxon/' + plant.scientific_name + '/';
     var taxon_store = new dojox.data.JsonRestStore({target: taxon_url});
     taxon_store.fetch({
         onComplete: function(taxon) {
