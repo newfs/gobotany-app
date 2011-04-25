@@ -4,9 +4,8 @@ from collections import defaultdict
 from django.conf import settings
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
-from gobotany.core import botany
 from gobotany.core.models import (
-    CharacterValue, ContentImage, Family, Pile, Taxon, TaxonCharacterValue,
+    CharacterValue, ContentImage, Pile, Taxon, TaxonCharacterValue,
     )
 
 def jsonify(value):
@@ -42,24 +41,28 @@ def _simple_taxon(taxon):
     return {
         'id': taxon.id,
         'scientific_name': taxon.scientific_name,
+        'common_name': taxon.common_name,
         'genus': taxon.scientific_name.split()[0],  # faster than .genus.name
         'family': taxon.family_name,
         'taxonomic_authority': taxon.taxonomic_authority,
-        #'default_image': _taxon_image(taxon.get_default_image()),
         }
-    # Get all rank 1 images
-    # res['images'] = [
-    #     _taxon_image(i) for i in botany.species_images(taxon, max_rank=1)
-    #     ]
 
 # API views.
 
 def species(request, pile_slug):
 
-    # Efficiently fetch the species that belong to this pile.
+    # Efficiently fetch the species that belong to this pile.  (Common
+    # name is selected nondeterministically because, frankly, the data
+    # model gives us no other choice if a plant has more than one common
+    # name listed in the database.)
 
     species_query = Taxon.objects.raw(
-        "SELECT core_taxon.*, core_family.name AS family_name"
+        "SELECT core_taxon.*, core_family.name AS family_name,"
+        " (SELECT common_name FROM core_commonname JOIN core_taxon_common_names"
+        "  ON (core_commonname.id = core_taxon_common_names.commonname_id)"
+        "  WHERE core_taxon_common_names.taxon_id = core_taxon.id"
+        "  LIMIT 1)"
+        "  AS common_name"
         " FROM core_taxon"
         " JOIN core_family ON (core_taxon.family_id = core_family.id)"
         " JOIN core_pile_species ON (taxon_id = core_taxon.id)"
@@ -108,10 +111,19 @@ def vectors_character(request, name):
     species = defaultdict(list)
     for tcv in tcvs:
         species[tcv.character_value_id].append(tcv.taxon_id)
-    return jsonify([
-            {'value': v.value_str, 'species': sorted(species[v.id]) }
-            for v in values
-            ])
+    return jsonify([{
+        'friendly_text': v.friendly_text,
+        'key_characteristics': v.key_characteristics,
+        'notable_exceptions': v.notable_exceptions,
+        'species': sorted(species[v.id]),
+        'choice': v.value_str,
+        'scalar': v.value_flt,
+        'min': v.value_min,
+        'max': v.value_max,
+        #
+        'thumbnail_url': v.image.thumbnail.absolute_url if v.image else '',
+        'image_url': v.image.url if v.image else '',
+        } for v in values ])
 
 def vectors_key(request, key):
     if key != 'simple':
@@ -120,5 +132,6 @@ def vectors_key(request, key):
     return jsonify([{'key': 'simple', 'species': ids}])
 
 def vectors_pile(request, slug):
-    ids = sorted( s.id for s in Pile.objects.get(slug=slug).species.all() )
+    pile = get_object_or_404(Pile, slug=slug)
+    ids = sorted( s.id for s in pile.species.all() )
     return jsonify([{'pile': slug, 'species': ids}])

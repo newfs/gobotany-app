@@ -219,6 +219,7 @@ class PileHandler(BasePileHandler):
         filters = []
         default_filters = list(
             models.DefaultFilter.objects.filter(pile=pile)
+            .select_related('character')
             )
 
         for default_filter in default_filters:
@@ -243,7 +244,9 @@ class PileHandler(BasePileHandler):
     def plant_preview_characters(pile=None):
         characters_list = []
         plant_preview_characters = list(
-            models.PlantPreviewCharacter.objects.filter(pile=pile))
+            models.PlantPreviewCharacter.objects.filter(pile=pile)
+            .select_related('character', 'partner_site')
+            )
 
         for preview_character in plant_preview_characters:
             character = {}

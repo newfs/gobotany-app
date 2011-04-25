@@ -29,6 +29,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     slider_node: null,
     ruler: null,
     simple_slider: null,
+    _loading_filter_count: 0,
 
     constructor: function(/*String*/ pile_slug) {
         // summary:
@@ -91,44 +92,46 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 // default filters for a pile if filter state has already been
                 // set.
 
-                var complete = dojo.hitch(this, function(filters) {
+                var filters_loaded = dojo.hitch(this, function(filters) {
+                    this._loading_filter_count = filters.length;
+                    var filter_loaded = dojo.hitch(this, function() {
+                        this._loading_filter_count--;
+                        if (this._loading_filter_count > 0)
+                            return;  // wait on last filter to be loaded
 
-                    var watcher =
-                        new gobotany.filters.FilterLoadingWatcher(filters);
-                    watcher.load_values({on_values_loaded: dojo.hitch(this,
-                        function(filters) {
-                            this.filter_section.display_filters(filters);
-                            this.filter_section.update_filter_display(
-                                'family');
-                            this.filter_section.update_filter_display(
-                                'genus');
+                        this.filter_section.display_filters(filters);
+                        this.filter_section.update_filter_display('family');
+                        this.filter_section.update_filter_display('genus');
 
-                            dojo.query('#sidebar .loading').addClass(
-                                'hidden');
-                            this.species_section.perform_query();
+                        dojo.query('#sidebar .loading').addClass('hidden');
+                        this.species_section.perform_query();
 
-                            // Show the filter working area if necessary.
-                            var filter_name =
-                                this.filter_section.visible_filter_short_name;
-                            if (filter_name !== '') {
-
-                                var filter = this.filter_manager.get_filter(
-                                    filter_name);
-                                if (filter !== undefined) {
-                                    this.filter_section.show_filter_working(
-                                        filter);
-                                }
+                        // Show the filter working area if necessary.
+                        var filter_name =
+                            this.filter_section.visible_filter_short_name;
+                        if (filter_name !== '') {
+                            var filter = this.filter_manager.get_filter(
+                                filter_name);
+                            if (filter !== undefined) {
+                                this.filter_section.show_filter_working(filter);
                             }
                         }
-                    )});
+                    });
+                    for (i = 0; i < filters.length; i++) {
+                        filters[i].load_values({
+                            base_vector:
+                            this.filter_manager.base_vector,
+                            onload: filter_loaded
+                        });
+                    }
                 });
 
                 if (dojo.hash()) {
-                    this.setup_filters_from_hash({on_complete: complete});
+                    this.setup_filters_from_hash({on_complete: filters_loaded});
                 }
                 else {
-                    this.setup_filters_from_pile_info(
-                        {on_complete: complete});
+                    this.setup_filters_from_pile_info({
+                        on_complete: filters_loaded});
                 }
             })
         );
@@ -489,12 +492,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     gobotany.utils.notify('More choices added');
                     gobotany.utils.animate_changed(added);
 
-                    // Load the values for the newly added filters.
-                    var watcher = new gobotany.filters.FilterLoadingWatcher(
-                        new_filters);
-                    watcher.load_values({on_values_loaded: dojo.hitch(
-                        this, function() {})});
-
                     this.results_helper.save_filter_state();
                 }
                 else {
@@ -587,11 +584,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 this.visible_filter_short_name, value);
             var filter = this.results_helper.filter_manager.get_filter(
                 this.visible_filter_short_name);
-            var value_object = filter.get_value_object(value);
-            var friendly_text = '';
-            if (value_object !== undefined) {
-                friendly_text = value_object.friendly_text;
-            }
+            var value_object = filter.choicemap[value];
+            var friendly_text = (value_object === undefined ? '' :
+                                 value_object.friendly_text);
             value_label.innerHTML = this._get_filter_display_value(
                 friendly_text, value, this.visible_filter_short_name);
             this.results_helper.species_section.perform_query();
@@ -640,7 +635,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                              var working_area_name = dojo.query(
                                  'div.working-area .name');
                              if (working_area_name.length) {
-                                 current_filter_name = 
+                                 current_filter_name =
                                     working_area_name[0].innerHTML;
                              }
                              if (filter.friendly_name ===
@@ -788,11 +783,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             }
             else {
                 if (value !== null) {
-                    var value_object = filter.get_value_object(value);
-                    var friendly_text = '';
-                    if (value_object !== undefined) {
-                        friendly_text = value_object.friendly_text;
-                    }
+                    var value_object = filter.choicemap[value];
+                    var friendly_text = (value_object === undefined ? '' :
+                                         value_object.friendly_text);
                     var display_value = this._get_filter_display_value(
                         friendly_text, value, char_name);
                     var value_label = dojo.query('li#' + char_name +
@@ -843,10 +836,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.results_helper.save_filter_state();
     },
 
-    sort_filter_values: function(a, b) {
+    sort_filter_choices: function(a, b) {
         // Custom sort for ordering filter values for display.
-        var value_a = a.value.toLowerCase();
-        var value_b = b.value.toLowerCase();
+        var value_a = a.choice.toLowerCase();
+        var value_b = b.choice.toLowerCase();
 
         // If both values are a number or begin with one, sort numerically.
         var int_value_a = parseInt(value_a, 10);
@@ -890,7 +883,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     show_filter_working: function(filter) {
-        filter.load_vectors({
+        filter.load_values({
+            base_vector: this.results_helper.filter_manager.base_vector,
             onload: dojo.hitch(this, 'show_filter_working_onload')
         });
     },
@@ -918,7 +912,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             dojo.removeClass(valuesList, NUMERIC_VALUES_CLASS);
         }
 
-        if (filter.values === undefined) {
+        if (filter.choicemap === undefined) {
             console.log(
                 'No filter values exist: ' + filter.friendly_name +
                     ' (character_short_name: ' + filter.character_short_name +
@@ -959,13 +953,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 if (unit === null || unit === undefined) {
                     unit = 'mm';
                     console.warn('[' + filter.character_short_name +
-                        '] Measurement has no unit, defaulting to mm');
+                        '] Measurement has no unit, assuming mm');
                 }
 
                 // Create a slider with horizontal rules and labels.
 
-                var themin = filter.values.min;
-                var themax = filter.values.max;
+                var themin = filter.min;
+                var themax = filter.max;
                 startvalue = (themax + themin) / 2.0;
 
                 selectedvalue =
@@ -983,11 +977,21 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                            ' (' + p('in', themax) + ')<br></label>',
                            valuesList);
 
+                var filter_manager = this.results_helper.filter_manager;
+                var vector = filter_manager.compute_species_without(
+                    filter.character_short_name);
+                var ranges = filter.allowed_ranges(vector);
+                var rmin = ranges[0].min;
+                var rmax = ranges[ranges.length - 1].max;
+
                 var illegal_regions = [];
-                if (themin > 0) {
-                    console.log('themin', themin);
-                    illegal_regions.push([- 2 * themin, themin]);
-                }
+
+                if (rmin > 0) illegal_regions.push([- 2 * rmin, rmin]);
+                if (rmax < themax) illegal_regions.push([rmax, themax * 2]);
+
+                for (i = 0; i < ranges.length - 1; i++)
+                    illegal_regions.push([ranges[i].max, ranges[i + 1].min]);
+
                 this.slider_node = dojo.create('div', null, valuesList);
                 this.ruler = gobotany.sk.RulerSlider(
                     this.slider_node, 'character_slider', 600, themax,
@@ -996,7 +1000,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             else {
                 // For non-length numeric ("count") filters, show a simple
                 // slider without a ruler.
-                var num_values = filter.values.max - filter.values.min + 1;
+                var num_values = filter.max - filter.min + 1;
                 startvalue = Math.ceil(num_values / 2);
                 selectedvalue =
                     this.results_helper.filter_manager.get_selected_value(
@@ -1005,15 +1009,15 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     startvalue = selectedvalue;
                 }
                 dojo.place('<label>Select a number between<br>' +
-                           filter.values.min + ' and ' +
-                           filter.values.max + '</label>', valuesList);
+                           filter.min + ' and ' +
+                           filter.max + '</label>', valuesList);
                 this.slider_node = dojo.create('div', null, valuesList);
                 this.simple_slider = new dijit.form.HorizontalSlider({
                     id: 'simple-slider',
                     name: 'simple-slider',
                     value: startvalue,
-                    minimum: filter.values.min,
-                    maximum: filter.values.max,
+                    minimum: filter.min,
+                    maximum: filter.max,
                     discreteValues: num_values,
                     intermediateChanges: true,
                     showButtons: false,
@@ -1039,7 +1043,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
             // Apply a custom sort to the filter values.
             var values = gobotany.utils.clone(filter.values);
-            values.sort(this.sort_filter_values);
+            values.sort(this.sort_filter_choices);
 
             // Determine how many species each value would select.
             var counts = this.results_helper.filter_manager.
@@ -1049,9 +1053,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             var i;
             for (i = 0; i < values.length; i++) {
                 var v = values[i];
-                var count = counts[v.value];
+                var count = counts[v.choice];
 
-                if (!((count === 0) && (v.value === 'NA'))) {
+                if (!((count === 0) && (v.choice === 'NA'))) {
 
                     item_html = '<label ';
                     if (count === 0) {
@@ -1064,7 +1068,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     }
                     var display_value =
                         this._get_filter_display_value(v.friendly_text,
-                            v.value, filter.character_short_name);
+                            v.choice, filter.character_short_name);
                     item_html += '>';
 
                     // Add a drawing image thumbnail if present.
