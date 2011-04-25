@@ -710,3 +710,12 @@ class PlantName(models.Model):
         if self.common_name:
             unicode_string += u' (%s)' % self.common_name.strip()
         return unicode_string
+
+
+class Habitat(models.Model):
+    """A habitat in which a plant lives."""
+    name = models.CharField(max_length=100)
+    friendly_name = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return '%s (%s)' % (self.name, self.friendly_name)

@@ -62,8 +62,8 @@ class Importer(object):
         self.logfile = logfile
 
 
-    def validate_data(self, pilegroupf, pilef, taxaf, charf, charvf,
-                      char_val_images, char_glossaryf, glossaryf,
+    def validate_data(self, pilegroupf, pilef, habitatsf, taxaf, charf,
+                      charvf, char_val_images, char_glossaryf, glossaryf,
                       glossary_images, lookalikesf, *taxonfiles):
         """Perform some basic validation on the data to be imported."""
         print >> self.logfile, 'Validating data'
@@ -114,12 +114,13 @@ class Importer(object):
         return is_valid
 
 
-    def import_data(self, pilegroupf, pilef, taxaf, charf, charvf,
+    def import_data(self, pilegroupf, pilef, habitatsf, taxaf, charf, charvf,
                     char_val_images, char_glossaryf, glossaryf,
                     glossary_images, lookalikesf, *taxonfiles):
         self._import_partner_sites()
         self._import_pile_groups(pilegroupf)
         self._import_piles(pilef)
+        self._import_habitats(habitatsf)
         self._import_taxa(taxaf)
         self._import_plant_names(taxaf)
         self._import_characters(charf)
@@ -201,6 +202,21 @@ class Importer(object):
                 print >> self.logfile, u'    New Pile:', pile
             else:
                 print >> self.logfile, u'    Updated Pile:', pile
+
+
+    def _import_habitats(self, habitatsf):
+        print >> self.logfile, 'Setting up habitats'
+        iterator = iter(CSVReader(habitatsf).read())
+        colnames = [x.lower() for x in iterator.next()]
+
+        for cols in iterator:
+            row = dict(zip(colnames, cols))
+
+            habitat, created = models.Habitat.objects.get_or_create(
+                name=row['desc'],
+                friendly_name=row['friendly_text'])
+            if created:
+                print >> self.logfile, u'  New Habitat:', habitat
 
 
     def _get_wetland_status(self, status_code):
@@ -784,19 +800,6 @@ class Importer(object):
 
             cv.save()
 
-            if not 'friendly_text' in row:
-                continue
-
-            friendly_text = row['friendly_text']
-            if friendly_text and friendly_text != row['character_value']:
-                term, created = models.GlossaryTerm.objects.get_or_create(
-                    term=row['character_value'],
-                    lay_definition=friendly_text)
-                if created:
-                    print >> self.logfile, \
-                        u'      New Definition: ' + friendly_text
-                cv.glossary_term = term
-
             pile.character_values.add(cv)
             pile.save()
 
@@ -1060,7 +1063,8 @@ class Importer(object):
                 content_image.image.extra_thumbnails['large'].width()
 
 
-    def _add_place_character_value(self, character, value_str, piles, taxon):
+    def _add_place_character_value(self, character, value_str, piles, taxon,
+                                   friendly_text_value=None):
         # Don't try to add a value if it's empty.
         if not value_str:
             return
@@ -1075,6 +1079,8 @@ class Importer(object):
             # The character value doesn't exist; create.
             cv = models.CharacterValue(character=character)
             cv.value_str = value_str
+            if friendly_text_value:
+                cv.friendly_text = friendly_text_value
             cv.save()
 
         # Finally, add the character value.
@@ -1097,6 +1103,18 @@ class Importer(object):
             return True
         else:
             return False
+
+
+    def _get_friendly_habitat_name(self, habitat_name):
+        """For a given habitat name, return the friendly name (if present)."""
+        friendly_name = None
+        try:
+            habitat = models.Habitat.objects.get(name__iexact=habitat_name)
+            friendly_name = habitat.friendly_name
+        except models.Habitat.DoesNotExist:
+            print >> self.logfile, u'  Error: habitat does not exist:', \
+                habitat_name
+        return friendly_name
 
 
     def _import_place_characters_and_values(self, taxaf):
@@ -1169,8 +1187,12 @@ class Importer(object):
                                            unexpected_delimiter=',')
             habitats = row['habitat'].lower().split('| ')
             for habitat in habitats:
-                self._add_place_character_value(character, habitat, piles,
-                    taxon)
+                friendly_habitat = \
+                    self._get_friendly_habitat_name(habitat)
+                if friendly_habitat:
+                    friendly_habitat = friendly_habitat.lower()
+                self._add_place_character_value(character, habitat.lower(),
+                    piles, taxon, friendly_habitat)
 
             # Create the State Distribution character values.
             character = \
