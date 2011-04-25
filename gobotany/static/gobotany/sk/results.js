@@ -1,7 +1,8 @@
 // UI code for the Simple Key results/filter page.
 
 // Global declaration for JSLint (http://www.jslint.com/)
-/*global console, dojo, dojox, dijit, gobotany, document, window */
+/*global console, dojo, dojox, dijit, gobotany, document, window,
+  _global_setSidebarHeight */
 
 dojo.provide('gobotany.sk.results');
 
@@ -284,16 +285,18 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         var image_type = dijit.byId('image-type-selector').value;
         var images = dojo.query('.plant-list img');
         // Replace the image for each plant on the page
-        for (var i = 0; i < images.length; i++) {
+        var i;
+        for (i = 0; i < images.length; i++) {
             var image = images[i];
             // Fetch the species for the current image
             this.filter_manager.get_species({
                 scientific_name: dojo.attr(image, 'x-plant-id'),
                 onload: function(item) {
-                    var new_image;
                     // Search for an image of the correct type
-                    for (var j = 0; j < item.images.length; j++) {
-                        if (item.images[j].type == image_type) {
+                    var new_image;
+                    var j;
+                    for (j = 0; j < item.images.length; j++) {
+                        if (item.images[j].type === image_type) {
                             new_image = item.images[j];
                             break;
                         }
@@ -315,7 +318,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                         dojo.query('+ span.MissingImage', image).orphan();
                         dojo.style(image, 'display', 'inline');
                     }
-                    else if (dojo.style(image, 'display') != 'none') {
+                    else if (dojo.style(image, 'display') !== 'none') {
                         // If there's no matching image display the
                         // empty box and hide the image
                         dojo.style(image, 'display', 'none');
@@ -1032,9 +1035,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             var item_html = '<div><label><input name="char_name" type="radio" ' +
                 'value=""> ' + this._get_filter_display_value('','', '') + 
                 '</label></div>';
-            //var dont_know_item = dojo.create('label',
-            //                                 {'innerHTML': item_html});
-            //dojo.place(dont_know_item, valuesList);
             dojo.place(item_html, valuesList);
 
             // Apply a custom sort to the filter values.
@@ -1046,14 +1046,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 compute_filter_counts(filter);
 
             // Create radio button items for each character value.
-            for (var i = 0; i < values.length; i++) {
+            var i;
+            for (i = 0; i < values.length; i++) {
                 var v = values[i];
                 var count = counts[v.value];
 
                 if (!((count === 0) && (v.value === 'NA'))) {
 
-                    //item_html = '<span><input type="radio" name="char_name"' +
-                    //    ' value="' + v.value + '"';
                     item_html = '<label ';
                     if (count === 0) {
                         item_html += ' class="zero"';
@@ -1066,8 +1065,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     var display_value =
                         this._get_filter_display_value(v.friendly_text,
                             v.value, filter.character_short_name);
-                    //item_html += '><span> ' + display_value +
-                    //    '</span> <span>(' + count + ')</span></span>';
                     item_html += '>';
 
                     // Add a drawing image thumbnail if present.
@@ -1077,9 +1074,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     var image_id = '';
                     if (image_path.length > 0) {
                         image_id = this.get_image_id_from_path(image_path);
-                        // TODO: consider using an actual thumbnail, but the
-                        // current thumbnail is only 40px wide (why?).
-                        // v.thumbnail_url
                         thumbnail_html = '<img id="' + image_id +
                             '" src="' + image_path + '" alt="drawing ' +
                             'showing ' + v.friendly_text + '"><br>';
