@@ -28,43 +28,10 @@ Getting Started
 
 {% block js_bottom %}
     <script>
-        dojo.require('dojo.cookie');
-        dojo.require('dojox.embed.Flash');
-        
-        var SKIP_PAGE_COOKIE_NAME = 'skip_help_start';
-        
-        function set_skip_page_checkbox(checkbox) {
-            var cookie_value = dojo.cookie(SKIP_PAGE_COOKIE_NAME);
-            checkbox.checked = (cookie_value == 'y');
-        }
-
-        function set_skip_page_cookie() {
-            var cookie_value = 'n';
-            if (this.checked) {
-                cookie_value = 'y';
-            }
-            dojo.cookie(SKIP_PAGE_COOKIE_NAME, cookie_value, {path: '/'});
-        }
-
-        function set_up_skip_checkbox() {
-            // Set up the checkbox that allows skipping this Getting Started
-            // help page when starting a new plant identification session.
-
-            // Wire up a checkbox handler that changes the cookie value.
-            var checkbox = dojo.query('#skip-page')[0];
-            dojo.connect(checkbox, 'onchange', null, set_skip_page_cookie);
-
-            // Set the checkbox state from the current cookie value.
-            set_skip_page_checkbox(checkbox);
-        }
+        dojo.require('gobotany.sk.help_start');
 
         dojo.addOnLoad(function() {
-            var node = dojo.query('#clip')[0];
-            var path = dojo.attr(dojo.query('> a', node)[0], 'href');
-            var player = new dojox.embed.Flash({path: path,
-                                                width: 250,
-                                                height: 250}, node);
-            set_up_skip_checkbox();
+            gobotany.sk.help_start.init();
         });
     </script>
 {% endblock %}
