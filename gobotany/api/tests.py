@@ -3,6 +3,18 @@ import math
 import os
 import re
 
+# When calling _setup_sample_data(load_images=True), PIL gives a deprecation
+# warning:
+# /Library/Python/2.6/site-packages/PIL/Image.py:1706: DeprecationWarning:
+# integer argument expected, got float
+# self.im = self.im.crop(self.__crop)
+#
+# Ignore deprecation warnings for now. (According to docs, Python 2.7 will
+# ignore deprecation warnings by default:
+# http://docs.python.org/library/warnings.html#warning-categories)
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
 from django.test import TestCase
 from django.test.client import Client
 
