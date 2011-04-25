@@ -890,6 +890,7 @@ by javascript, see gobotany.sk.results.notify() */
 }
 
 #plant-preview div.photos a {
+    cursor: pointer;
     padding: 0 1em;
 }
 
