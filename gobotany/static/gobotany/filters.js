@@ -163,6 +163,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         this.species_by_id = {};  // species_id -> species_obj
         this.species_by_scientific_name = {}; // scientific_name -> species_obj
         this.species_ids = [];
+        this.onload = args.onload;
 
         if (!args.pile_url) {
             args.pile_url = API_URL + 'piles/';
@@ -204,6 +205,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             return;
         this.base_vector = intersect(this.simple_vector, this.pile_vector);
         console.log('base_vector:', this.base_vector.length, 'species');
+        var onload = this.onload;
+        if (onload !== undefined) onload(this);
     },
 
     // build_family_genus_filters()

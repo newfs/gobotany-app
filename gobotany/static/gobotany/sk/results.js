@@ -29,7 +29,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     slider_node: null,
     ruler: null,
     simple_slider: null,
-    _loading_filter_count: 0,
+    _loading_filter_count: 2, // 1 for the FilterManager, 1 assuming a filter
 
     constructor: function(/*String*/ pile_slug) {
         // summary:
@@ -44,7 +44,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         this.pile_slug = pile_slug;
         this.pile_manager = new gobotany.piles.PileManager(this.pile_slug);
         this.filter_manager = new gobotany.filters.FilterManager({
-            pile_slug: this.pile_slug
+            pile_slug: this.pile_slug,
+            onload: dojo.hitch(this, this.filter_loaded)
         });
    },
 
@@ -93,34 +94,15 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 // set.
 
                 var filters_loaded = dojo.hitch(this, function(filters) {
-                    this._loading_filter_count = filters.length;
-                    var filter_loaded = dojo.hitch(this, function() {
-                        this._loading_filter_count--;
-                        if (this._loading_filter_count > 0)
-                            return;  // wait on last filter to be loaded
-
-                        this.filter_section.display_filters(filters);
-                        this.filter_section.update_filter_display('family');
-                        this.filter_section.update_filter_display('genus');
-
-                        dojo.query('#sidebar .loading').addClass('hidden');
-                        this.species_section.perform_query();
-
-                        // Show the filter working area if necessary.
-                        var filter_name =
-                            this.filter_section.visible_filter_short_name;
-                        if (filter_name !== '') {
-                            var filter = this.filter_manager.get_filter(
-                                filter_name);
-                            if (filter !== undefined) {
-                                this.filter_section.show_filter_working(filter);
-                            }
-                        }
-                    });
+                    // Note that we increment _loading_filter_count,
+                    // because it might be non-zero if the page is still
+                    // doing its initial load.
+                    this._loading_filter_count += filters.length - 1;
+                    this._loaded_filters = filters;
+                    var filter_loaded = dojo.hitch(this, this.filter_loaded);
                     for (i = 0; i < filters.length; i++) {
                         filters[i].load_values({
-                            base_vector:
-                            this.filter_manager.base_vector,
+                            base_vector: this.filter_manager.base_vector,
                             onload: filter_loaded
                         });
                     }
@@ -142,6 +124,31 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         // Back button undo events for modern browsers.
         dojo.connect(document.body, 'onhashchange', this, this.handle_undo,
                      true);
+    },
+
+    // Called each time a filter is finished loading; when the last
+    // filter that we are currently waiting for finishes, we kick off
+    // some page-update code.
+    filter_loaded: function() {
+        this._loading_filter_count--;
+        if (this._loading_filter_count > 0)
+            return;  // wait on last filter to be loaded
+
+        this.filter_section.display_filters(this._loaded_filters);
+        this.filter_section.update_filter_display('family');
+        this.filter_section.update_filter_display('genus');
+
+        dojo.query('#sidebar .loading').addClass('hidden');
+        this.species_section.perform_query();
+
+        // Show the filter working area if necessary.
+        var filter_name = this.filter_section.visible_filter_short_name;
+        if (filter_name !== '') {
+            var filter = this.filter_manager.get_filter(filter_name);
+            if (filter !== undefined) {
+                this.filter_section.show_filter_working(filter);
+            }
+        }
     },
 
     handle_undo: function() {
