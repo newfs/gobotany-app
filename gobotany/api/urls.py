@@ -74,7 +74,7 @@ urlpatterns = patterns(
 urlpatterns += patterns(
     'gobotany.api.views',
     url(r'^species/([\w-]+)/$', 'species'),
-    url(r'^vectors/character/([\w-]+)/$', 'vectors_character'),
+    url(r'^vectors/character/([\w()-]+)/$', 'vectors_character'),
     url(r'^vectors/key/([\w-]+)/$', 'vectors_key'),
     url(r'^vectors/pile/([\w-]+)/$', 'vectors_pile'),
     )
