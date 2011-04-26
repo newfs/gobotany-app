@@ -10,7 +10,6 @@ from gobotany.core.models import (
 
 def jsonify(value):
     """Convert the value into a JSON HTTP response."""
-    print settings.DEBUG
     return HttpResponse(
         json.dumps(value, indent=1 if settings.DEBUG else None),
         mimetype='application/json',
