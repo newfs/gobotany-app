@@ -67,12 +67,15 @@ dojo.declare('gobotany.filters.Filter', null, {
         get_json(url, this, function(data) {
             this.values = [];
             this.choicemap = {};
+            if (!args.base_vector) {
+                console.log('load_values: species apparently not ' +
+                            'loaded yet (base vector is false)');
+            }
+            else {
+                console.log(args.base_vector);
+            }            
             for (var i = 0; i < data.length; i++) {
                 var value = data[i];
-                if (args.base_vector.length === 0) {
-                    console.log('load_values: species apparently not ' +
-                        'loaded yet (base vector is zero length)');
-                }
                 if (intersect(args.base_vector, value.species).length === 0)
                     continue; // ignore value with no species in this pile
                 this.values.push(value);
