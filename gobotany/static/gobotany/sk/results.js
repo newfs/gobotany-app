@@ -98,6 +98,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                     // because it might be non-zero if the page is still
                     // doing its initial load.
                     this._loading_filter_count += filters.length - 1;
+                    console.log('setup: increment _loading_filter_count' +
+                        ' to ' + this._loading_filter_count);
                     this._loaded_filters = filters;
                     var filter_loaded = dojo.hitch(this, this.filter_loaded);
                     for (i = 0; i < filters.length; i++) {
@@ -131,8 +133,13 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     // some page-update code.
     filter_loaded: function() {
         this._loading_filter_count--;
+        console.log('filter_loaded: decrement _loading_filter_count to ' +
+                    this._loading_filter_count);
         if (this._loading_filter_count > 0)
             return;  // wait on last filter to be loaded
+
+        console.log('filter_loaded: all filters loaded. About to list ' +
+                    'filters, then run query');
 
         this.filter_section.display_filters(this._loaded_filters);
         this.filter_section.update_filter_display('family');
