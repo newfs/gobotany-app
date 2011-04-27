@@ -69,8 +69,11 @@ dojo.declare('gobotany.filters.Filter', null, {
             this.choicemap = {};
             for (var i = 0; i < data.length; i++) {
                 var value = data[i];
-                if (intersect(args.base_vector, value.species).length == 0)
+                if (intersect(args.base_vector, value.species).length == 0) {
+                    console.log('Ignoring value (' + value.choice +
+                                ') because no matching species in this pile');
                     continue;  // ignore value with no species in this pile
+                }
                 this.values.push(value);
 
                 if (value.choice !== null)
@@ -84,7 +87,8 @@ dojo.declare('gobotany.filters.Filter', null, {
                     if (this.max === null || value.max > this.max)
                         this.max = value.max;
             }
-            console.log('values loaded for', this.character_short_name);
+            console.log(this.values.length + ' values loaded for',
+                        this.character_short_name);
             if (args.onload !== undefined) args.onload(this);
         });
     },
