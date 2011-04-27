@@ -111,7 +111,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 });
 
                 if (dojo.hash()) {
-                    this.setup_filters_from_hash({on_complete: filters_loaded});
+                    this.setup_filters_from_hash({
+                        on_complete: filters_loaded});
                 }
                 else {
                     this.setup_filters_from_pile_info({
@@ -638,7 +639,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     this._get_filter_display_value('', '', '') + '</span>'});
 
             var clearLink = dojo.create('a', {
-                'class': 'clear hidden', href: '#', innerHTML: '<br>× clear'});
+                'class': 'clear hidden', href: '#',
+                innerHTML: '<br>× clear'});
 
             // Pass the filter to the function as its context (this).
             dojo.connect(closeLink, 'onclick', this,
@@ -1050,8 +1052,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             // Create the radio-buttons widget.
 
             // Create a Don't Know radio button item.
-            var item_html = '<div><label><input name="char_name" type="radio"' +
-                ' value=""> ' + this._get_filter_display_value('', '', '') +
+            var item_html = '<div><label><input name="char_name" ' +
+                'type="radio" value=""> ' +
+                this._get_filter_display_value('', '', '') +
                 '</label></div>';
             dojo.place(item_html, valuesList);
 
