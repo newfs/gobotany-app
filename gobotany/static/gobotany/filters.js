@@ -69,11 +69,12 @@ dojo.declare('gobotany.filters.Filter', null, {
             this.choicemap = {};
             for (var i = 0; i < data.length; i++) {
                 var value = data[i];
-                if (intersect(args.base_vector, value.species).length == 0) {
-                    console.log('Ignoring value (' + value.choice +
-                        ') because no matching species in this pile');
-                    continue; // ignore value with no species in this pile
+                if (args.base_vector.length === 0) {
+                    console.log('load_values: species apparently not ' +
+                        'loaded yet (base vector is zero length)');
                 }
+                if (intersect(args.base_vector, value.species).length === 0)
+                    continue; // ignore value with no species in this pile
                 this.values.push(value);
 
                 if (value.choice !== null)
