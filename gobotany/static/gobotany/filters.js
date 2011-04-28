@@ -29,9 +29,10 @@ dojo.declare('gobotany.filters.Filter', null, {
     choicemap: false,  // load_values() creates {short_name: value, ...}
     min: null,
     max: null,
-    json_data: null,  // original JSON data, so values can be reloaded later
 
-    constructor: function(args) {
+    constructor: function(args, args2) {
+        this.manager = args2.manager;  // FilterManager to which this belongs
+
         this.order = args.order;
         this.pile_slug = args.pile_slug;
         this.unit = args.unit;
@@ -51,32 +52,12 @@ dojo.declare('gobotany.filters.Filter', null, {
 
         dojo.safeMixin(this, args);
     },
-
-    // Add a value to the filter.
-    // Values that have no species in common with the given base_vector
-    // are not stored, since they do not apply to this key and pile.
-    add_value: function(value, base_vector) {
-        if (intersect(base_vector, value.species).length === 0)
-            return;  // ignore value with no species in this pile
-        this.values.push(value);
-
-        if (value.choice !== null)
-            this.choicemap[value.choice] = value;
-
-        if (value.min !== null)
-            if (this.min === null || value.min < this.min)
-                this.min = value.min;
-
-        if (value.max !== null)
-            if (this.max === null || value.max > this.max)
-                this.max = value.max;
-
-    },
-
     // load_values({base_vector: [...], onload: function})
     // Does an async load of the filter's species id list, then invokes
     // the caller-supplied callback.  The vector is stored so the second
     // and subsequent invocations can invoke the callback immediately.
+    // Values that have no species in common with the given base_vector
+    // are not stored, since they do not apply to this key and pile.
     load_values: function(args) {
         var url = 'vectors/character/' + this.character_short_name;
 
@@ -88,36 +69,48 @@ dojo.declare('gobotany.filters.Filter', null, {
         get_json(url, this, function(data) {
             this.values = [];
             this.choicemap = {};
-            this.json_data = data;
+            if (!args.base_vector) {
+                console.log('load_values: species apparently not ' +
+                            'loaded yet (base vector is false)');
+            }
+            else {
+                console.log(args.base_vector);
+            }
             for (var i = 0; i < data.length; i++) {
                 var value = data[i];
-                this.add_value(value, args.base_vector);
+                this.values.push(value);
+
+                if (value.choice !== null)
+                    this.choicemap[value.choice] = value;
+
+                if (value.min !== null)
+                    if (this.min === null || value.min < this.min)
+                        this.min = value.min;
+
+                if (value.max !== null)
+                    if (this.max === null || value.max > this.max)
+                        this.max = value.max;
             }
             console.log(this.values.length + ' values loaded for',
                         this.character_short_name);
+
+            // If our FilterManager has already finished loading and
+            // computing its base_vector, then we should cull ourselves.
+            if (this.manager.base_vector !== null)
+                this.cull_values();
+
             if (args.onload !== undefined) args.onload(this);
         });
     },
-    
-    // reload_values({base_vector: [...]})
-    // Reloads the values for a filter using the stored original JSON data.
-    // (If JSON data is not present, the object might actually be of another
-    // type, such as FilterManager, in which case just skip.)
-    reload_values: function(args) {
-        if (this.json_data === null) {
-            return;
-        }
-        this.values = [];
-        this.choicemap = {};
-        var i;
-        for (i = 0; i < this.json_data.length; i++) {
-            var value = this.json_data[i];
-            this.add_value(value, args.base_vector);
-        }
-        console.log(this.values.length + ' values reloaded for',
-                    this.character_short_name);
+    // Remove values that have absolutely no species in common with our
+    // FilterManager's base_vector, so that pile-irrelevant character
+    // values do not get displayed when a filter is pulled up.
+    cull_values: function() {
+        var base_vector = this.manager.base_vector;
+        for (var i = this.values.length - 1; i >= 0; i--)
+            if (intersect(base_vector, this.values[i].species).length === 0)
+                this.values.splice(i, 1);
     },
-
     // Return true if the name of this filter appears to name a length
     // value (as opposed to something like a count).
     is_length: function() {
@@ -187,7 +180,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     constructor: function(args) {
         this.entries = [];
         this.filters = [];
-        this.base_vector = false;  // intersection(simple_vector, pile_vector)
+        this.base_vector = null;  // intersection(simple_vector, pile_vector)
         this.pile_slug = args.pile_slug;
         this.plant_preview_characters = [];
         this.species_by_id = {};  // species_id -> species_obj
@@ -235,6 +228,13 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             return;
         this.base_vector = intersect(this.simple_vector, this.pile_vector);
         console.log('base_vector:', this.base_vector.length, 'species');
+
+        // Since this.base_vector has been null until this moment, none
+        // of the filters loaded so far has been able to cull itself of
+        // inapplicable values.
+        for (var i = 0; i < this.filters.length; i++)
+            this.filters[i].cull_values();
+
         var onload = this.onload;
         if (onload !== undefined) onload(this);
     },
@@ -245,8 +245,9 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     // species list, instead of being pulled from a separate API call.
 
     build_family_genus_filters: function(species_list) {
-        var f = gobotany.filters.Filter({character_short_name: 'family'});
-        var g = gobotany.filters.Filter({character_short_name: 'genus'});
+        var m = {manager: this};
+        var f = gobotany.filters.Filter({character_short_name: 'family'}, m);
+        var g = gobotany.filters.Filter({character_short_name: 'genus'}, m);
         f.choicemap = {};
         g.choicemap = {};
         for (var i = 0; i < species_list.length; i++) {
@@ -370,7 +371,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
 
         var f = obj;
         if (!obj.isInstanceOf || !obj.isInstanceOf(gobotany.filters.Filter)) {
-            f = new gobotany.filters.Filter(obj);
+            f = new gobotany.filters.Filter(obj, {manager: this});
         }
         this.filters.push(f);
         return f;
