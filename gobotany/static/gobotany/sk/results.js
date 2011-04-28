@@ -30,6 +30,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     ruler: null,
     simple_slider: null,
     _loading_filter_count: 2, // 1 for the FilterManager, 1 assuming a filter
+    _loaded_filters: null,
 
     constructor: function(/*String*/ pile_slug) {
         // summary:
@@ -139,13 +140,22 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         if (this._loading_filter_count > 0)
             return;  // wait on last filter to be loaded
 
+        // Now that all filters are loaded, reload their values in
+        // order to ensure they are all initialized properly.
+        console.log('filter_loaded: about to reload filter values');
+        var i;
+        for (i = 0; i < this.filter_manager.filters.length; i++) {
+            var filter = this.filter_manager.filters[i];
+            filter.reload_values({
+                base_vector: this.filter_manager.base_vector
+            });
+        }
+
         console.log('filter_loaded: all filters loaded. About to list ' +
                     'filters, then run query');
-
         this.filter_section.display_filters(this._loaded_filters);
         this.filter_section.update_filter_display('family');
         this.filter_section.update_filter_display('genus');
-
         dojo.query('#sidebar .loading').addClass('hidden');
         this.species_section.perform_query();
 

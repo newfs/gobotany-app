@@ -29,6 +29,7 @@ dojo.declare('gobotany.filters.Filter', null, {
     choicemap: false,  // load_values() creates {short_name: value, ...}
     min: null,
     max: null,
+    json_data: null,  // original JSON data, so values can be reloaded later
 
     constructor: function(args) {
         this.order = args.order;
@@ -50,12 +51,32 @@ dojo.declare('gobotany.filters.Filter', null, {
 
         dojo.safeMixin(this, args);
     },
+
+    // Add a value to the filter.
+    // Values that have no species in common with the given base_vector
+    // are not stored, since they do not apply to this key and pile.
+    add_value: function(value, base_vector) {
+        if (intersect(base_vector, value.species).length === 0)
+            return;  // ignore value with no species in this pile
+        this.values.push(value);
+
+        if (value.choice !== null)
+            this.choicemap[value.choice] = value;
+
+        if (value.min !== null)
+            if (this.min === null || value.min < this.min)
+                this.min = value.min;
+
+        if (value.max !== null)
+            if (this.max === null || value.max > this.max)
+                this.max = value.max;
+
+    },
+
     // load_values({base_vector: [...], onload: function})
     // Does an async load of the filter's species id list, then invokes
     // the caller-supplied callback.  The vector is stored so the second
     // and subsequent invocations can invoke the callback immediately.
-    // Values that have no species in common with the given base_vector
-    // are not stored, since they do not apply to this key and pile.
     load_values: function(args) {
         var url = 'vectors/character/' + this.character_short_name;
 
@@ -67,35 +88,36 @@ dojo.declare('gobotany.filters.Filter', null, {
         get_json(url, this, function(data) {
             this.values = [];
             this.choicemap = {};
-            if (!args.base_vector) {
-                console.log('load_values: species apparently not ' +
-                            'loaded yet (base vector is false)');
-            }
-            else {
-                console.log(args.base_vector);
-            }            
+            this.json_data = data;
             for (var i = 0; i < data.length; i++) {
                 var value = data[i];
-                if (intersect(args.base_vector, value.species).length === 0)
-                    continue; // ignore value with no species in this pile
-                this.values.push(value);
-
-                if (value.choice !== null)
-                    this.choicemap[value.choice] = value;
-
-                if (value.min !== null)
-                    if (this.min === null || value.min < this.min)
-                        this.min = value.min;
-
-                if (value.max !== null)
-                    if (this.max === null || value.max > this.max)
-                        this.max = value.max;
+                this.add_value(value, args.base_vector);
             }
             console.log(this.values.length + ' values loaded for',
                         this.character_short_name);
             if (args.onload !== undefined) args.onload(this);
         });
     },
+    
+    // reload_values({base_vector: [...]})
+    // Reloads the values for a filter using the stored original JSON data.
+    // (If JSON data is not present, the object might actually be of another
+    // type, such as FilterManager, in which case just skip.)
+    reload_values: function(args) {
+        if (this.json_data === null) {
+            return;
+        }
+        this.values = [];
+        this.choicemap = {};
+        var i;
+        for (i = 0; i < this.json_data.length; i++) {
+            var value = this.json_data[i];
+            this.add_value(value, args.base_vector);
+        }
+        console.log(this.values.length + ' values reloaded for',
+                    this.character_short_name);
+    },
+
     // Return true if the name of this filter appears to name a length
     // value (as opposed to something like a count).
     is_length: function() {
