@@ -26,9 +26,6 @@ dojo.require('dijit.form.HorizontalSlider');
 dojo.require('dijit.form.Select');
 
 dojo.declare('gobotany.sk.results.ResultsHelper', null, {
-    slider_node: null,
-    ruler: null,
-    simple_slider: null,
     _loading_filter_count: 2, // 1 for the FilterManager, 1 assuming a filter
 
     constructor: function(/*String*/ pile_slug) {
@@ -385,6 +382,10 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
 
 dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
+    ruler: null,
+    simple_slider: null,
+    slider_node: null,
+
     constructor: function(results_helper) {
         // summary:
         //   Manages the filters section of the results page (including
@@ -941,7 +942,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         /* Clean up an old ruler or simple slider before rebuilding the
            working area.
            */
-        if (this.ruler) {
+        if (this.ruler !== null) {
             this.ruler.destroy();
             dojo.query(this.slider_node).orphan();
             this.ruler = this.slider_node = null;
