@@ -22,8 +22,8 @@ dojo.require('dijit.form.Button');
 dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.Form');
+dojo.require('dijit.form.HorizontalSlider');
 dojo.require('dijit.form.Select');
-dojo.require('dijit.form.Slider');
 
 dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     slider_node: null,
@@ -574,7 +574,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         // First, see if this is a numeric field.
         var char_value_q;
         var value;
-        if (this.ruler !== undefined && this.ruler !== null) {   // ruler
+        if (this.ruler !== null) {   // ruler
             value = this.ruler.nearest_legal_value();
             this._apply_numeric_value(value_label, value);
             return;
