@@ -454,8 +454,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                 } else if (!isNaN(sv)) {
                     // a number has to be checked against each species' range
                     var fvector = [];
-                    for (i = 0; i < filter.values.length; i++) {
-                        var value = filter.values[i];
+                    for (j = 0; j < filter.values.length; j++) {
+                        var value = filter.values[j];
                         if (sv >= value.min && sv <= value.max)
                             fvector = fvector.concat(value.species);
                     }
