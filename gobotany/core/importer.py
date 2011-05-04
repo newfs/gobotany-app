@@ -674,6 +674,7 @@ class Importer(object):
             short_name, pile_suffix = row['character'].rsplit('_', 1)
 
             # Detect lengths and set the short_name and value_type properly
+            unit = ''
             if short_name.endswith('_min') or short_name.endswith('_max'):
                 short_name = short_name[:-4]
                 value_type = 'LENGTH'
