@@ -2,9 +2,9 @@
 
 {% if debug_dojo %}
     <script type="text/javascript">
-	djConfig = { 
+	djConfig = {
            isDebug: true,
-           debugAtAllCosts:true,
+           debugAtAllCosts: true,
            useXDomain: false,
            modulePaths: {
                gobotany: '/static/gobotany'
@@ -16,18 +16,25 @@
 
 {% else %}
     <script type="text/javascript">
-	djConfig = { 
+	djConfig = {
            isDebug: false,
-           debugAtAllCosts:false,
+           debugAtAllCosts: false,
            useXDomain: false,
-           baseUrl: 'http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/',
+           baseUrl: 'http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/static/js/',
            modulePaths: {
-               gobotany: '/static/gobotany'
+               dojo: '/static/js/dojo',
+               dojox: '/static/js/dojox',
+               dijit: '/static/js/dijit',
+               gobotany: '/static/gobotany',
+               layers: '/static/js/layers'
            },
-           parseOnLoad: true,
+           parseOnLoad: true
        };
     </script>
-    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/dojo.xd.js" type="text/javascript"></script>
+    <script type="text/javascript"
+            src="/static/js/dojo/dojo.js"></script>
+    <script type="text/javascript"
+            src="/static/js/layers/sk.js"></script>
 
 {% endif %}
 
