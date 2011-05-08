@@ -22,9 +22,11 @@
            useXDomain: false,
            baseUrl: 'http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/static/js/',
            modulePaths: {
-               dojo: '/static/js/dojo',
-               dojox: '/static/js/dojox',
-               dijit: '/static/js/dijit',
+             <!-- If you built Dojo using "buildout -N install dojo-build": -->
+               <!-- dijit: '/static/js/dijit', -->
+               <!-- dojo: '/static/js/dojo', -->
+               <!-- dojox: '/static/js/dojox', -->
+             <!-- Always necessary: -->
                gobotany: '/static/gobotany',
                layers: '/static/js/layers'
            },
@@ -32,9 +34,11 @@
        };
     </script>
     <script type="text/javascript"
-            src="/static/js/dojo/dojo.js"></script>
+            src="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/dojo.xd.js"
+            ></script>
     <script type="text/javascript"
-            src="/static/js/layers/sk.js"></script>
+            src="/static/js/layers/sk.js"
+            ></script>
 
 {% endif %}
 
