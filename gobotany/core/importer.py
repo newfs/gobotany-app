@@ -939,6 +939,10 @@ class Importer(object):
                 if '.' not in filename:  # skip files without an extension
                     continue
 
+                if filename.count('.') > 1: # skip files with more than one dot
+                    print >> self.logfile, 'ERR: image has multiple periods:', filename
+                    continue
+
                 name, ext = filename.split('.')
                 if ext.lower() not in ('jpg', 'gif', 'png', 'tif'):
                     continue  # not an image
@@ -963,11 +967,14 @@ class Importer(object):
 
                 _type = pieces[type_field]
                 photographer = pieces[type_field + 1]
-                if len(pieces) > (type_field + 2) \
-                        and pieces[type_field + 2].isdigit():
-                    rank = int(pieces[4])
-                else:
-                    rank = None
+                rank = None
+                # Filenames no longer contain 'rank' data, so skip this
+                # for now.
+                # if len(pieces) > (type_field + 2) \
+                #         and pieces[type_field + 2].isdigit():
+                #     rank = int(pieces[4])
+                # else:
+                #     rank = None
 
                 scientific_name = ' '.join((genus, species)).capitalize()
 
