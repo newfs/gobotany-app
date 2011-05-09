@@ -77,7 +77,9 @@ class BasicFunctionalTests(FunctionalTestCase):
         self.assertEqual(
             d.title, u'Go Botany: New England Wild Flower Society')
         e = d.find_element_by_link_text('Get Started')
-        self.assertEqual(e.get_attribute('href'), '/1/')
+        self.assertEqual(e.get_attribute('href'), '/help/start/')
+        # Once you have selected "don't show me this", should change to:
+        # self.assertEqual(e.get_attribute('href'), '/1/')
 
     def test_ubergroup_pages(self):
         d = self.get('/1/')
