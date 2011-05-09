@@ -10,12 +10,6 @@ from gobotany.core.models import (
     Taxon, TaxonCharacterValue,
     )
 
-# To turn caching off during development, uncomment this function.
-# def cache_page(seconds):
-#     def wrap(f):
-#         return f
-#     return wrap
-
 def jsonify(value):
     """Convert the value into a JSON HTTP response."""
     return HttpResponse(

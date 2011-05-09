@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.conf.urls.defaults import patterns, url
 from django.contrib import admin
+from django.views.decorators.cache import cache_control
 from django.views.decorators.cache import cache_page
 
 from gobotany.api import handlers, views
@@ -77,8 +79,18 @@ urlpatterns = patterns(
     url(r'^$', 'nonexistent', name='api-base'),  # helps compute the base URL
     )
 
+# We only use caching if memcached itself is configured; otherwise, we
+# assume that the developer does not really intend caching to take
+# place.
+
 def c(view):
-    return cache_page(view, 20 * 60)
+    if settings.CACHE_BACKEND.startswith('memcached:'):
+        ten_minutes = 10 * 60
+        view = cache_control(maxage=ten_minutes)(view)
+        view = cache_page(ten_minutes)(view)
+        return view
+    else:
+        return view
 
 urlpatterns += patterns(
     'gobotany.api.views',
