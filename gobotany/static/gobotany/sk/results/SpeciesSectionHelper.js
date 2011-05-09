@@ -268,7 +268,10 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                         var plant = dojo.create('div',
                             {'class': plant_class_value});
 
-                        var plant_link = dojo.create('a', {'href': '#'});
+                        var path = window.location.pathname.split('#')[0];
+                        var url = (path + species.scientific_name.toLowerCase()
+                                   .replace(' ', '/') + '/');
+                        var plant_link = dojo.create('a', {'href': url});
                         dojo.create('div', {'class': 'frame'}, plant_link);
 
                         var image_container = dojo.create('div',
