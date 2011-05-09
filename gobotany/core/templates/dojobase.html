@@ -1,4 +1,4 @@
-<!-- dojobase.html -->
+<!-- start dojobase.html -->
 
 {% if debug_dojo %}
     <script type="text/javascript">
@@ -6,8 +6,10 @@
            isDebug: true,
            debugAtAllCosts: true,
            useXDomain: false,
+           baseUrl: 'http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/static/js/',
            modulePaths: {
-               gobotany: '/static/gobotany'
+               gobotany: '/static/gobotany',
+               layers: '/static/js/layers'
            },
            parseOnLoad: true,
        };
@@ -46,3 +48,5 @@
       href="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/claro.css"
       type="text/css" media="screen" title="Dijit Claro Style" charset="utf-8"
       />
+
+<!-- end dojobase.html -->
