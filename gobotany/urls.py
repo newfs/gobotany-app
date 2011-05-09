@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import include, patterns, url
+from django.contrib import admin
 import staticfiles.urls
 
 import gobotany.api.urls
@@ -7,12 +8,15 @@ import gobotany.core.urls
 handler404 = 'django.views.defaults.page_not_found'
 handler500 = 'django.views.defaults.server_error'
 
+admin.autodiscover()
+
 urlpatterns = patterns(
     '',
-    (r'^api/', include('gobotany.api.urls')),
-    (r'^core/', include('gobotany.core.urls')),
-    (r'^tinymce/', include('tinymce.urls')),
-    (r'^', include('gobotany.simplekey.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^api/', include('gobotany.api.urls')),
+    url(r'^core/', include('gobotany.core.urls')),
+    url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^', include('gobotany.simplekey.urls')),
     )
 
 if gobotany.settings.DEBUG:

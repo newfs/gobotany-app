@@ -1,12 +1,8 @@
 from django.conf.urls.defaults import include, patterns, url
-from django.contrib import admin
 from autocomplete.views import autocomplete
 
-import gobotany
 from gobotany.core import views
 from gobotany.core import models
-
-admin.autodiscover()
 
 autocomplete.register(
     id='character_value',
@@ -34,9 +30,6 @@ urlpatterns = patterns(
     url(r'^species-lists/$', views.species_lists),
     url(r'^best-characters/$', views.pile_characters_select),
     url(r'^best-characters/(?P<pile_slug>.*)/$', views.pile_characters),
-
-    url(r'^admin/', include(admin.site.urls)),
-
     url(r'^piles-pile-groups$', views.piles_pile_groups),
     url('^autocomplete/(\w+)/$', autocomplete, name='autocomplete'),
     )
