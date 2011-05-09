@@ -1,4 +1,5 @@
 import os
+import socket
 import sys
 import traceback
 
@@ -127,3 +128,14 @@ TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "tiny_mce")
 
 # For partner sites, the request hostname will indicate the site.
 MONTSHIRE_HOSTNAME_SUBSTRING = ':8001'  # Just look for a port number for now
+
+# Use memcached for caching if we can connect.
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind(('127.0.0.1', 0))
+try:
+    s.connect(('127.0.0.1', 11211))
+    s.close()
+    CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+except socket.error:
+    pass

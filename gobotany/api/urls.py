@@ -54,8 +54,6 @@ urlpatterns = patterns(
     url(r'^pilegroups/(?P<slug>[^/]+)/$',
         Resource(handler=handlers.PileGroupHandler), name='api-pilegroup'),
 
-    url(r'^glossaryblob/$', Resource(handler=handlers.GlossaryBlobHandler)),
-
     url(r'^maps/(?P<genus>[^/]+)-(?P<specific_epithet>[^/]+)-distribution-map(\.svg|/)?$',
         Resource(handler=handlers.DistributionMapHandler), name='distribution-map'),
 
@@ -73,6 +71,7 @@ urlpatterns = patterns(
 
 urlpatterns += patterns(
     'gobotany.api.views',
+    url(r'^glossaryblob/$', 'glossary_blob'),
     url(r'^species/([\w-]+)/$', 'species'),
     url(r'^vectors/character/([\w()-]+)/$', 'vectors_character'),
     url(r'^vectors/key/([\w-]+)/$', 'vectors_key'),

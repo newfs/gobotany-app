@@ -4,8 +4,10 @@ from collections import defaultdict
 from django.conf import settings
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
+from django.views.decorators.cache import cache_page
 from gobotany.core.models import (
-    CharacterValue, ContentImage, Pile, Taxon, TaxonCharacterValue,
+    CharacterValue, ContentImage, GlossaryTerm, Pile,
+    Taxon, TaxonCharacterValue,
     )
 
 def jsonify(value):
@@ -48,6 +50,43 @@ def _simple_taxon(taxon):
 
 # API views.
 
+@cache_page(20 * 60)
+def glossary_blob(request):
+    """Return a dictionary of glossary terms and definitions.
+
+    For now we omit glossary terms for which there are duplicates -
+    like "Absent", which as of the writing of this comment has six
+    definitions:
+
+    Absent. no, spores are present throughout
+    Absent. no horizontal stem
+    Absent. no constrictions
+    Absent. no branches
+    Absent. no, all leaves on the horizontal stem are about the same size
+    Absent. no stomates
+
+    Since we cannot guess which of these six meanings is intended in an
+    arbitrary context (like the glossary itself), we had better restrict
+    ourselves for the moment to highlighting terms which *are* unique
+    across our current glossary.
+
+    """
+    terms = {}
+    discards = set()
+    for g in GlossaryTerm.objects.all():
+        term = g.term
+        if len(term) < 3 or not g.lay_definition:
+            pass
+        elif term in discards:
+            pass
+        elif term in terms:
+            del terms[term]
+            discards.add(term)
+        else:
+            terms[term] = g.lay_definition
+    return jsonify(terms)
+
+@cache_page(20 * 60)
 def species(request, pile_slug):
 
     # Efficiently fetch the species that belong to this pile.  (Common
@@ -104,6 +143,7 @@ def species(request, pile_slug):
 
 #
 
+@cache_page(20 * 60)
 def vectors_character(request, name):
     values = list(CharacterValue.objects.filter(character__short_name=name))
     tcvs = list(TaxonCharacterValue.objects.filter(character_value__in=values))
@@ -124,12 +164,14 @@ def vectors_character(request, name):
         'image_url': v.image.url if v.image else '',
         } for v in values ])
 
+@cache_page(20 * 60)
 def vectors_key(request, key):
     if key != 'simple':
         raise Http404()
     ids = sorted( s.id for s in Taxon.objects.filter(simple_key=True) )
     return jsonify([{'key': 'simple', 'species': ids}])
 
+@cache_page(20 * 60)
 def vectors_pile(request, slug):
     pile = get_object_or_404(Pile, slug=slug)
     ids = sorted( s.id for s in pile.species.all() )
