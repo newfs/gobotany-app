@@ -11,7 +11,7 @@ from piston.utils import rc
 import xml.etree.ElementTree
 from xml.etree.ElementTree import parse
 
-from gobotany.core import botany, igdt, models
+from gobotany.core import botany, models
 from gobotany.settings import STATIC_ROOT
 
 def _taxon_image(image):
@@ -287,101 +287,6 @@ class PileGroupListingHandler(BaseHandler):
     def read(self, request):
         lst = [x for x in models.PileGroup.objects.all()]
         return {'items': lst}
-
-
-class CharacterListingHandler(BaseHandler):
-    methods_allowed = ('GET',)
-
-    def _get_characters(self, short_names):
-        """Return a list of characters with `short_names`, in that order."""
-        cl = models.Character.objects.filter(short_name__in=short_names)
-        by_short_name = dict((c.short_name, c) for c in cl)
-        return [by_short_name[short_name] for short_name in short_names
-                if short_name in by_short_name]
-
-    def _choose_best(self, pile, count, species_ids,
-                     character_group_ids, exclude_short_names):
-        """Return a list of characters, best first, for these species.
-
-        `count` - how many characters to return.
-        `species_ids` - the species you want to distinguish.
-        `character_groups` - if non-empty, only characters from these groups.
-        `exclude_short_names` - characters to exclude from the list.
-
-        """
-        result = igdt.rank_characters(pile, species_ids)
-        characters = []
-        for score, entropy, coverage, character in result:
-            # There are several reasons we might disqualify a character.
-
-            if character.value_type not in (u'TEXT', u'LENGTH'):
-                continue
-            if character.short_name in exclude_short_names:
-                continue
-            if character_group_ids and (character.character_group_id
-                                        not in character_group_ids):
-                continue
-
-            # Otherwise, keep this character!
-
-            characters.append(character)
-            if len(characters) == count:
-                break
-
-        return characters
-
-    def _jsonify_character(self, character, pile_slug):
-        return {
-            'friendly_name': character.friendly_name,
-            'short_name': character.short_name,
-            'value_type': character.value_type,
-            'unit': character.unit,
-            'characteracter_group': character.character_group.name,
-            'key_characteristics': character.key_characteristics,
-            'notable_exceptions': character.notable_exceptions,
-            'question': character.question,
-            'hint': character.hint,
-            'pile_slug': pile_slug,
-            }
-
-    def read(self, request, pile_slug):
-        """Returns a list of characters."""
-
-        piles = models.Pile.objects.filter(slug=pile_slug).all()
-        if not piles:
-            return rc.NOT_FOUND
-        pile = piles[0]
-
-        # First, build a list of raw character values.
-
-        characters = []
-
-        include_short_names = request.GET.getlist('include')
-        if include_short_names:
-            characters.extend(self._get_characters(include_short_names))
-
-        choose_best = int(request.GET.get('choose_best', 0))
-        species_ids = request.GET.getlist('species_id')
-
-        if choose_best and species_ids:
-            character_group_ids = set(
-                int(n) for n in request.GET.getlist('character_group_id')
-                )
-            exclude_short_names = set(request.GET.getlist('exclude'))
-            exclude_short_names.update(include_short_names)
-            characters.extend(self._choose_best(
-                    pile=pile,
-                    count=choose_best,
-                    species_ids=species_ids,
-                    character_group_ids=character_group_ids,
-                    exclude_short_names=exclude_short_names,
-                    ))
-
-        # Turn the characters into a data structure for JSON.
-
-        return [
-            self._jsonify_character(c, pile_slug) for c in characters
-            ]
 
 
 class CharacterValuesHandler(BaseHandler):

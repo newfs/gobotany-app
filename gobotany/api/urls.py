@@ -1,7 +1,8 @@
 from django.conf.urls.defaults import patterns, url
 from django.contrib import admin
+from django.views.decorators.cache import cache_page
 
-from gobotany.api import handlers
+from gobotany.api import handlers, views
 from piston.resource import Resource
 
 admin.autodiscover()
@@ -37,12 +38,19 @@ urlpatterns = patterns(
 
     url(r'^piles/$',
         Resource(handler=handlers.PileListingHandler), name='api-pile-list'),
-    url(r'^piles/(?P<slug>[^/]+)/?$',
-        Resource(handler=handlers.PileHandler), name='api-pile'),
+
+    # New-style API view (instead of one of the crufty old Handlers),
+    # but which still needs to be listed up here because it needs to
+    # take priority over the patterns that follow it:
 
     url(r'^piles/(?P<pile_slug>[^/]+)/characters/$',
-        Resource(handler=handlers.CharacterListingHandler), 
+        'gobotany.api.views.piles_characters',
         name='api-character-list'),
+
+    #
+
+    url(r'^piles/(?P<slug>[^/]+)/?$',
+        Resource(handler=handlers.PileHandler), name='api-pile'),
 
     url(r'^piles/(?P<pile_slug>[^/]+)/(?P<character_short_name>[^/]+)/$',
         Resource(handler=handlers.CharacterValuesHandler), 
@@ -69,11 +77,14 @@ urlpatterns = patterns(
     url(r'^$', 'nonexistent', name='api-base'),  # helps compute the base URL
     )
 
+def c(view):
+    return cache_page(view, 20 * 60)
+
 urlpatterns += patterns(
     'gobotany.api.views',
-    url(r'^glossaryblob/$', 'glossary_blob'),
-    url(r'^species/([\w-]+)/$', 'species'),
-    url(r'^vectors/character/([\w()-]+)/$', 'vectors_character'),
-    url(r'^vectors/key/([\w-]+)/$', 'vectors_key'),
-    url(r'^vectors/pile/([\w-]+)/$', 'vectors_pile'),
+    url(r'^glossaryblob/$', c(views.glossary_blob)),
+    url(r'^species/([\w-]+)/$', c(views.species)),
+    url(r'^vectors/character/([\w()-]+)/$', c(views.vectors_character)),
+    url(r'^vectors/key/([\w-]+)/$', c(views.vectors_key)),
+    url(r'^vectors/pile/([\w-]+)/$', c(views.vectors_pile)),
     )
