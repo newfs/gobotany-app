@@ -146,20 +146,20 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.css1('#state_distribution a.option').click()
         self.css1('[value="Rhode Island"]').click()
-        d.find_element_by_name('apply').click()
+        self.css1('.apply-btn').click()
         self.wait_on_species(13)
 
         # filter on bogs
 
         self.css1('#habitat a.option').click()
         self.css1('[value="bogs"]').click()
-        d.find_element_by_name('apply').click()
+        self.css1('.apply-btn').click()
         self.wait_on_species(1)
 
         # switch from bogs to forest
 
         self.css1('[value="forest"]').click()
-        d.find_element_by_name('apply').click()
+        self.css1('.apply-btn').click()
         self.wait_on_species(6)
 
         # clear the New England state
@@ -179,8 +179,8 @@ class FilterFunctionalTests(FunctionalTestCase):
         #d.find_element_by_link_text('New England state').click()
         self.css1('#state_distribution a.option').click()
         self.css1('[value="Rhode Island"]').click()
-        d.find_element_by_name('apply').click()
-        d.find_element_by_name('apply').click()
+        self.css1('.apply-btn').click()
+        self.css1('.apply-btn').click()
         self.wait_on_species(13)
 
     def test_quickly_press_apply_and_clear(self):
@@ -195,20 +195,20 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.css1('#state_distribution a.option').click()
         self.css1('[value="Rhode Island"]').click()
-        d.find_element_by_name('apply').click()
+        self.css1('.apply-btn').click()
         self.wait_on_species(13)
 
         # filter on bogs
 
         self.css1('#habitat a.option').click()
         self.css1('[value="bogs"]').click()
-        d.find_element_by_name('apply').click()
+        self.css1('.apply-btn').click()
         self.wait_on_species(1)
 
         # clear the New England state AND press "apply" again
 
         self.css1('#state_distribution .clear').click()
-        d.find_element_by_name('apply').click()
+        self.css1('.apply-btn').click()
         self.wait_on_species(1)
 
     def test_thumbnail_presentation(self):
