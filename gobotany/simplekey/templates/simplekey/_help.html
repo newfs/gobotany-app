@@ -1,0 +1,21 @@
+{% extends "simplekey/_base.html" %}
+
+{% block title %}{% block pagetitle %}{% endblock %} - Help{% endblock %}
+
+{% block body %}
+    <body id="getting-started" class="claro app getting-started">
+        {% include "simplekey/_header.html" %}
+
+        {% block content %}{% endblock %}
+
+        {% include "simplekey/_footer.html" %}
+
+        {% include "simplekey/_script_constants.html" %}
+
+        <script>
+            {% include "simplekey/partner_site_inline_js.html" %}
+        </script>
+        
+        {% block js_bottom %}{% endblock %}
+    </body>
+{% endblock %}

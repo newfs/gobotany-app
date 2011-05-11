@@ -43,7 +43,12 @@ function set_up_skip_checkbox() {
     set_skip_page_checkbox(checkbox);
 }
 
+function set_up_toggle_questions() {
+    _global_toggleQuestions();
+}
+
 gobotany.sk.help_start.init = function() {
-    embed_video_player();
+    set_up_toggle_questions();
+    //embed_video_player();
     set_up_skip_checkbox();
 }

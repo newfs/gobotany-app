@@ -23,8 +23,8 @@ function sidebarHeight() {
     }
 }
 
-// Wrapper for calling from elsewhere using a name that could be easier
-// to keep track of
+// Wrapper for calling from elsewhere; make code in global.js easier to keep
+// track of when called from the Dojo-based code.
 function _global_setSidebarHeight() {
     sidebarHeight();
 }
@@ -61,3 +61,75 @@ $(function() {
         return false;
     });
 });
+
+// Show/Hide for questions on Getting Started page
+function _global_toggleQuestions() {
+    $('.question h4').toggle(function(){
+        $(this).parent().find('li.hidden, a.screenshot').show();
+        $(this).css('background-image','url("/static/images/icons/minus.png")');
+        sidebarHeight();
+        $(this).parent().find('a.show').text('Less...');
+        return false;
+    }, function() {
+        $(this).parent().find('li.hidden, a.screenshot').hide();
+        $(this).css('background-image','url("/static/images/icons/plus.png")');
+        $(this).parent().find('a.show').text('More...');
+        sidebarHeight();
+        return false;
+    });
+    
+    $('a.show').toggle(function() {
+        $(this).parent().parent().parent().find(
+            'li.hidden, a.screenshot').show();
+        $(this).parent().parent().parent().find('h4').css('background-image',
+            'url("/static/images/icons/minus.png")');
+        sidebarHeight();
+        $(this).text('Less...');
+        return false;
+    }, function() {
+        $(this).parent().parent().parent().find(
+            'li.hidden, a.screenshot').hide();
+        $(this).parent().parent().parent().find('h4').css('background-image',
+            'url("/static/images/icons/plus.png")');
+        sidebarHeight();
+        $(this).text('More...');
+        return false;
+    });
+}
+
+// Show/Hide for showing the whole list of characteristics on the Taxon page
+function _global_toggleList() {
+    $('a.description-control').toggle(function(){
+        $('ul.full-description').show();
+        $(this).text('Hide Full Description');
+        $(this).css('background-image',
+            'url("/static/images/icons/minus.png")');
+        toggleInfo();
+        sidebarHeight();
+        return false;
+    }, function() {
+        $('ul.full-description').hide();
+        $(this).text('Show Full Description');
+        $(this).css('background-image',
+            'url("/static/images/icons/plus.png")');
+        sidebarHeight();
+        return false;
+    });
+}
+
+//// Show/Hide for Characteristic List on Taxon page
+function _global_toggleInfo() {
+    $('ul.full-description li').toggle(function(){
+        $(this).children('ul').show();
+        $(this).children('h5').css('background-image',
+            'url("/static/images/icons/minus.png")');
+        sidebarHeight();
+        return false;
+    }, function() {
+        $(this).children('ul').hide();
+        $(this).children('h5').css('background-image',
+            'url("/static/images/icons/plus.png")');
+        sidebarHeight();
+        return false;
+    }); 
+}
