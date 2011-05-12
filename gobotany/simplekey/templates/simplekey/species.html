@@ -132,12 +132,12 @@
       <div id="more-info">
           <h3>Distribution by County</h3>
           <!--[if IE]>
-          <object src="/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map.svg"
+          <object src="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map.svg"
                   classid="image/svg+xml" id="dist-county-map"
                   title="distribution map for {{ scientific_name }}">
           <![endif]-->
           <!--[if !IE]>-->
-          <object data="/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map.svg"
+          <object data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map.svg"
                   type="image/svg+xml" id="dist-county-map"
                   title="distribution map for {{ scientific_name }}">
           <!--<![endif]-->
