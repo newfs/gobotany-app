@@ -40,7 +40,7 @@ gobotany.sk.species.init = function(scientific_name) {
     var image_browser = gobotany.sk.images.ImageBrowser();
     image_browser.css_selector = '#species #images';
 
-    var taxon_url = '/taxon/' + scientific_name + '/';
+    var taxon_url = '/api/taxon/' + scientific_name + '/';
     var taxon_store = new dojox.data.JsonRestStore({target: taxon_url});
     taxon_store.fetch({
         onComplete: function(taxon) {
