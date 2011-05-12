@@ -24,19 +24,23 @@ def _taxon_image(image):
         return
     img = image.image
     large = img.extra_thumbnails['large']
-    return {
+    thumbnail = img.thumbnail
+    json = {
         'url': img.url,
         'type': image.image_type_name,
         'rank': image.rank,
         'title': image.alt,
         'description': image.description,
-        'thumb_url': img.thumbnail.absolute_url,
-        'thumb_width': img.thumbnail.width(),
-        'thumb_height': img.thumbnail.height(),
+        'thumb_url': thumbnail.absolute_url,
+        'thumb_width': thumbnail.width(),
+        'thumb_height': thumbnail.height(),
         'scaled_url': large.absolute_url,
         'scaled_width': large.width(),
         'scaled_height': large.height(),
         }
+    # RESOURCE LEAK - to prevent too many open files:
+    image.image.extra_thumbnails['large']._data.fp.close()
+    return json
 
 def _simple_taxon(taxon):
     return {
@@ -222,13 +226,18 @@ def species(request, pile_slug):
     for image in image_query:
         image_dict[image.object_id].append(image)
 
+    del species_query  # beware of leaving object references around
+    del image_query
+
     # Build and return our response.
 
     result = []
-    for species in species_list:
+    while species_list:
+        species = species_list.pop()  # pop() to free memory as we go
         d = _simple_taxon(species)
         d['images'] = images = []
-        for image in image_dict[species.id]:
+        image_list = image_dict.pop(species.id, ())
+        for image in image_list:
             images.append(_taxon_image(image))
         result.append(d)
 
