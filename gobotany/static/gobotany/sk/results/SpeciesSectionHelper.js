@@ -23,6 +23,22 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
     },
 
     setup_section: function() {
+        // Call the lazy image loader when the page loads.
+        this.lazy_load_images();
+
+        // Assign other events that will trigger the lazy image loader,
+        // with timers so as not to suffer multiple continuous event firings.
+        var scroll_timer;
+        dojo.connect(window, 'onscroll', this, function() {
+            clearTimeout(scroll_timer);
+            scroll_timer = setTimeout(this.lazy_load_images, 500);
+        });
+
+        var resize_timer;
+        dojo.connect(window, 'onresize', this, function() {
+            clearTimeout(resize_timer);
+            resize_timer = setTimeout(this.lazy_load_images, 500);
+        });
     },
 
     perform_query: function() {
@@ -280,8 +296,12 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                         dojo.attr(image, 'x-plant-id',
                                   species.scientific_name);
                         var thumb_url = this.default_image(species).thumb_url;
-                        if (thumb_url)  // undefined when no image available
-                            dojo.attr(image, 'src', thumb_url);
+                        if (thumb_url) { // undefined when no image available
+                            // Set the image URL in a dummy attribute, so we
+                            // can lazy load images, switching to the proper
+                            // attribute when the image comes into view.
+                            dojo.attr(image, 'x-tmp-src', thumb_url);
+                        }
                         dojo.place(image, image_container);
                         dojo.place(image_container, plant_link);
 
@@ -316,5 +336,74 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
 
             dojo.place(genus_container, plants_container);
         }
+    },
+
+    lazy_load_images: function() {
+        var viewport = dijit.getViewport();
+        var viewport_height = viewport.h;
+        var viewport_width = viewport.w;
+        //console.log('viewport_height: ' + viewport_height +
+        //            ' viewport_width: ' + viewport_width);
+
+        var scroll_top = 0;
+        var scroll_left = 0;
+        if (window.pageYOffset || window.pageXOffset) {
+            scroll_top = window.pageYOffset;
+            scroll_left = window.pageXOffset;
+	    }
+        /*else if (dojo.exists(document, 'documentElement.scrollTop')) {
+            scroll_top = document.documentElement.scrollTop;
+            scroll_left = document.documentElement.scrollLeft;
+	    } <-- FIXME: fires an error on loading sometimes; doc not ready yet? */ 
+        else if (document.body) {
+		    scroll_top = document.body.scrollTop;
+            scroll_left = document.body.scrollLeft;
+	    }
+        //console.log('scroll_top: ' + scroll_top +
+        //            ' scroll_left: ' + scroll_left);
+
+        var image_elements = dojo.query('div.plant-list img');
+        var i;
+        for (i = 0; i < image_elements.length; i++) {
+            var element = image_elements[i];
+            if (element.style.visibility !== 'hidden' && 
+                element.style.display !== 'none') {
+
+                var total_offset_left = 0;
+                var total_offset_top = 0;
+                var current_element = element;
+                do {
+                    total_offset_left += current_element.offsetLeft;
+                    total_offset_top += current_element.offsetTop;
+                }
+                while (current_element = current_element.offsetParent)
+
+                var is_element_visible = false;
+                // Only worry about top/bottom scroll visibility, not
+                // left/right scroll visibility.
+                if (total_offset_top > (scroll_top - element.height) &&
+                    total_offset_top < viewport_height + scroll_top) {
+
+                    is_element_visible = true;
+                }
+
+                if (is_element_visible === true) {
+                    var image_url = dojo.attr(element, 'x-tmp-src');
+
+                    /*
+                    // Write a console message
+                    var message = image_url + ':';
+                    message += ' total_offset_top: ' + total_offset_top;
+                    message += ' total_offset_left: ' + total_offset_left;
+                    message += ' is_element_visible: ' + is_element_visible;
+                    console.log(message);
+                    */
+
+                    // Set the src attribute so the image will load.
+                    dojo.attr(element, 'src', image_url);
+                }
+            }
+        }
     }
+
 });

@@ -327,6 +327,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                         var src_var = dojo.attr(image, 'x-tmp-src') ?
                             'x-tmp-src' : 'src';
                         dojo.attr(image, src_var, new_image.thumb_url);
+
                         dojo.attr(image, 'alt', new_image.title);
                         // Hide the empty box if it exists and make
                         // sure the image is visible.
@@ -343,6 +344,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 }
             });
         }
+        this.species_section.lazy_load_images();
     },
 
     // A subscriber for results_loaded
