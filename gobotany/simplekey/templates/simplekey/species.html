@@ -1,7 +1,7 @@
-{% extends "simplekey/_old_base.html" %}
-{% block title %}
-{{ scientific_name }}
-{% endblock %}
+{% extends "simplekey/_base.html" %}
+{% load simplekey_extras %}
+
+{% block title %}{{ scientific_name }}{% endblock %}
 
 {% block js_top %}
     <!-- SVGWeb script - must be first, must have data-path.
@@ -9,7 +9,258 @@
     <script src="/static/svgweb/svg.js" data-path="/static/svgweb/"></script>
 {% endblock %}
 
-{% block content %}
+{% block body %}
+<body id="taxon" class="claro app taxon">
+    {% include "simplekey/_header.html" %}
+
+    <div class="content">
+        <div class="container">
+            <div id="main">
+                <div id="breadcrumb">
+                    {# TODO: implement breacrumbs #}
+                    <ul>
+                        <li class="first completed">
+                        <a href="{% url simplekey-page 1 %}"><img
+                            src="/static/images/icons/start.png" 
+                            alt="">Start</a>
+                        </li>
+                        <li class="second completed">
+                        <a href="{% url simplekey-pilegroup pilegroup.slug %}"
+                            ><img
+                            src="/static/images/icons/group.png" 
+                            alt="">{{ pilegroup.name }}</a>
+                        </li>
+                        <li class="third completed">
+                        <a id="results-link"
+                            href="{% url simplekey-pile pilegroup.slug pile.slug %}"
+                            ><img
+                            src="/static/images/icons/subgroup.png" 
+                            alt="">{{ pile.name }}</a>
+                        </li>
+                        <li class="last current">
+                        <a><img
+                            src="/static/images/icons/subgroup.png"
+                            alt="">{{ scientific_name }}</a>
+                        </li>
+                    </ul>
+
+                </div>
+                
+                <h2>
+                    <em>{{ scientific_name }}</em>
+                    <span class="origin">{{ taxon.taxonomic_authority }}</span>
+                    <span class="common">{% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}
+                        {{ common_name }}{% endfor %}</span>
+                </h2>
+                
+                <div class="img-gallery">
+                    {# TODO: implement images #}
+                    <div class="frame"></div>
+                    <div class="img-container">
+                    </div>
+                    <div class="controls">
+                    </div>
+                </div>
+                <div class="clearit"></div>
+                
+                <h3>Facts about...</h3>
+                <p>
+                    {% if taxon.factoid|length > 0 %}
+                        {{ taxon.factoid }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </p>
+                
+                <h3>Characteristics</h3>
+                <ul class="characteristics">
+                    {% if characteristics %}
+                        {% for characteristic in characteristics %}
+                            <li>{{ characteristic.name|upper }}:
+                            {% for character_value in taxon.character_values.all %}
+                                {% if character_value.character.name|lower == characteristic.name|lower %}
+                                    {% if character_value.character.value_type == 'TEXT' %}
+                                        {{ character_value.value_str }}
+                                    {% else %}
+                                        {{ character_value.value_min }}
+                                        {{ character_value.character.unit }} to
+                                        {{ character_value.value_max }}
+                                        {{ character_value.character.unit }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li>N/A</li>
+                    {% endif %}
+                </ul>
+                <a class="description-control" href="#" 
+                    style="background-image: url(/static/images/icons/plus.png)">Show 
+                    Full Description</a>
+                <ul class="full-description">
+                    {% for character_group in all_characteristics %}
+				        <li>
+                            <h5>{{ character_group.name|capfirst }}</h5>
+                            <ul>
+                            {% for character in character_group.characters %}
+                                <li><strong>{{ character.name }}:</strong>
+                                    {{ character.value }}
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+                
+                <h3>Habitat</h3>
+                <p>
+                    {% if habitats|length > 0 %}
+                        {{ habitats|join:", "|lower|capfirst }}
+                    {% else %}
+                        (missing)
+                    {% endif %}
+                </p>
+                
+                <h3>Wetland Plant?</h3>
+                <p>{{ taxon.wetland_status_text }}</p>
+                
+                <h3>Distribution &amp; Conservation/Invasiveness Status</h3>
+                <table width="33%" cellspacing="0" cellpadding="0" border="0"
+                    class="status">
+                    <tbody>
+                        <tr>
+					        <th>Connecticut</th>
+					        <td>{{ taxon.conservation_status_ct }}</td>
+				        </tr>
+				        <tr>
+					        <td>Maine</td>
+					        <td>{{ taxon.conservation_status_me }}</td>
+				        </tr>
+				        <tr>
+					        <td>Massachusetts</td>
+					        <td>{{ taxon.conservation_status_ma }}</td>
+				        </tr>
+				        <tr>
+					        <td>New Hampshire</td>
+					        <td>{{ taxon.conservation_status_nh }}</td>
+				        </tr>
+				        <tr>
+					        <td>Rhode Island</td>
+					        <td>{{ taxon.conservation_status_ri }}</td>
+				        </tr>
+				        <tr>
+					        <td>Vermont</td>
+					        <td>{{ taxon.conservation_status_vt }}</td>
+				        </tr>
+                    </tbody>
+                </table>
+                
+            </div>
+
+            <div id="sidebar" style="height: 1116px">
+                <div class="section">
+                    <h5>New England Distribution</h5>
+                    <!--[if IE]>
+                    <object src="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map.svg"
+                        classid="image/svg+xml" id="dist-county-map"
+                        title="distribution map for {{ scientific_name }}">
+                    <![endif]-->
+                    <!--[if !IE]>-->
+                    <object data="/api/maps/{{ taxon.genus|lower }}-{{ specific_epithet }}-distribution-map.svg"
+                        type="image/svg+xml" id="dist-county-map"
+                        title="distribution map for {{ scientific_name }}"
+                        style="height: 280px">
+                    <!--<![endif]-->
+                    </object>
+                </div>
+
+                <div class="section">
+                    <h5>US Distribution</h5>
+                    <img
+                        src="http://bonap.org/BONAPmaps2010/map%20sized/{{ scientific_name }}.png"
+                        alt="US Map" class="map" style="width: 193px">
+                        <a class="enlarge"
+                            href="http://bonap.org/BONAPmaps2010/map%20sized/{{ scientific_name }}.png"
+                            title="US Distribution" 
+                            rel="shadowbox"><img 
+                            src="/static/images/icons/zoom.png" 
+                            alt="" align="absmiddle"> Click to enlarge</a>
+				    <ul class="legend">
+                        <li><img src="/static/images/icons/legend-1.jpg"
+                        alt=""> more than 1000 per square mile</li>
+                        <li><img src="/static/images/icons/legend-2.jpg"
+                        alt=""> 500 to 1000 per square mile</li>
+                        <li><img src="/static/images/icons/legend-3.jpg"
+                        alt=""> less than 1000 per square mile</li>
+				    </ul>
+                </div>
+
+                <div class="section">
+                    <h5>Native to North America?</h5>
+                    {% if taxon.north_american_native %}
+                        Yes.
+                    {% else %}
+                        No.
+                    {% endif %}
+                </div>
+
+                {% if taxon.lookalikes.all|length > 0 %}
+                <div class="section">
+                    <h5>Sometimes Confused With</h5>
+                    <dl>
+                    {% for lookalike in taxon.lookalikes.all %}
+                    <dt><a href="/species/{{ lookalike.lookalike_scientific_name|lower|replace:' ,/' }}/"><em>{{ lookalike.lookalike_scientific_name }}</em></a>
+                        -</dt>
+                        <dd>{{ lookalike.lookalike_characteristic }}</dd>
+                    {% endfor %}
+                    </dl>
+                </div>
+                {% endif %}
+
+                {% if taxon.synonyms.all|length > 0 %}
+                <div class="section">
+                    <h5>Synonyms:</h3>
+                    <p>{% for synonym in taxon.synonyms.all %}{% if forloop.first %}{{ synonym.scientific_name }}{% endif %}{% endfor %}{% if taxon.synonyms.all|length > 1 %},
+                        <a id='more-aka' class='more'>more</a>
+                        <span dojoType='dijit.Tooltip' connectId='more-aka' position='above'>
+                        <span class='moretip'>
+                            {% for synonym in taxon.synonyms.all %}
+                                {% if not forloop.first %}
+                                    {{ synonym.scientific_name }}{% if not forloop.last %}, {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                    </span>
+                    {% endif %}
+                    </p>
+                </div>
+                {% endif %}
+
+                <div class="section">
+                    <h5>Family:</h5>
+                    <p><a href="{% url simplekey-family taxon.family.slug %}"
+                        >{{ taxon.family }}</a></p>
+                </div>
+
+                <div class="section">
+                    <h5>Genus:</h5>
+                    <p><em><a href="{% url simplekey-genus taxon.genus.slug %}"
+                        >{{ taxon.genus }}</a></em></p>
+                </div>
+                
+                <div class="section">
+				    <h5 class="left help">Need Help?</h5>
+                    <a href="/help/" class="get-help-btn left">Get Help</a>
+				    <div class="clearit"></div>
+			    </div>
+            </div>
+            
+            <div class="clearit"></div>
+        </div>
+    </div>
+
+  {# TODO: use in breadcrumbs #} 
   <p>
     <a href="{% url simplekey-pilegroup pilegroup.slug %}"
        >{{ pilegroup.name }}</a>:
@@ -17,18 +268,14 @@
        href="{% url simplekey-pile pilegroup.slug pile.slug %}"
        >{{ pile.name }}</a>
   </p>
-  <h1><em>{{ scientific_name }}</em>
-      <span class="auth">{{ taxon.taxonomic_authority }}</span></h1>
   <div id="species">
-      <h2>{% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}
-              {{ common_name }}{% endfor %}</h2>
       <div id="images">
           <h3>Images</h3>
           <p>
               {% if species_images %}
                   {% for i in species_images %}
                       {% if forloop.first %}
-                          <img src="{{ i.image.url }}">
+                          <img src="{{ i.image.url }}" style="width:200px">
                       {% endif %}
                   {% endfor %}
               {% else %}
@@ -38,171 +285,27 @@
           <p class="nav"><a>&lt; prev</a> <span>? of ?</span>
              <a>next &gt;</a></p>
       </div>
-
-      <div id="info">
-          <h3>Description</h3>
-          <p>{% if taxon.description %}
-                 {{ taxon.description }}
-             {% else %}
-                 This is a placeholder description. (Test glossary highlighting with
-                 the term reticulate here.)
-             {% endif %}</p>
-
-          <h3>Characteristics</h3>
-          {% if characteristics %}
-              {% for characteristic in characteristics %}
-                  <p><strong>{{ characteristic.name|lower }}:</strong>
-                  {% for character_value in taxon.character_values.all %}
-                      {% if character_value.character.name|lower == characteristic.name|lower %}
-                          {% if character_value.character.value_type == 'TEXT' %}
-                              {{ character_value.value_str }}
-                          {% else %}
-                              {{ character_value.value_min }}
-                              {{ character_value.character.unit }} to
-                              {{ character_value.value_max }}
-                              {{ character_value.character.unit }}
-                          {% endif %}
-                      {% endif %}
-                  {% endfor %}
-                  </p>
-              {% endfor %}
-          {% else %}
-              <p>N/A</p>
-          {% endif %}
-          <p><a href="#all-characteristics">All characteristics</a></p>
-
-          <h3>Habitat</h3>
-          <p>
-              {% if habitats|length > 0 %}
-                {{ habitats|join:", "|lower|capfirst }}
-              {% else %}
-                (missing)
-              {% endif %}
-          </p>
-
-          {% if taxon.lookalikes.all|length > 0 %}
-            <h3>Sometimes Confused With</h3>
-            <dl>
-                {% for lookalike in taxon.lookalikes.all %}
-                    <dt>{{ lookalike.lookalike_characteristic }}:</dt>
-                    <dd><em>{{ lookalike.lookalike_scientific_name }}</em></dd>
-                {% endfor %}
-            </dl>
-          {% endif %}
-
-          <h3>North American Native Status</h3>
-          <p>
-              {% if taxon.north_american_native %}
-                  native
-              {% else %}
-                  non-native
-              {% endif %}
-          </p>
-
-          <h3>Distribution &amp; Conservation Status</h3>
-          <div>
-              <p><strong>Connecticut:</strong> {{ taxon.conservation_status_ct }}</p>
-              <p><strong>Maine:</strong> {{ taxon.conservation_status_me }}</p>
-              <p><strong>Massachusetts:</strong> {{ taxon.conservation_status_ma }}</p>
-              <p><strong>New Hampshire:</strong> {{ taxon.conservation_status_nh }}</p>
-              <p><strong>Rhode Island:</strong> {{ taxon.conservation_status_ri }}</p>
-              <p><strong>Vermont:</strong> {{ taxon.conservation_status_vt }}</p>
-          </div>
-
-          <h3>Wetland Status</h3>
-          <p>{{ taxon.wetland_status_text }}</p>
-
-          <h3 id="all-characteristics">All Characteristics</h3>
-
-          {% for character_group in all_characteristics %}
-          <div id="title-pane-{{ character_group.name|slugify }}"
-               dojoType="dijit.TitlePane" open="false"
-               title="{{ character_group.name }}">
-               <h4>{{ character_group.name }}</h4>
-               {% for character in character_group.characters %}
-                   <p><strong>{{ character.name }}:</strong>
-                       {{ character.value }}
-                   </p>
-               {% endfor %}
-          </div>
-          {% endfor %}
-
-      </div>
-
-      <div id="more-info">
-          <h3>Distribution by County</h3>
-          <!--[if IE]>
-          <object src="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map.svg"
-                  classid="image/svg+xml" id="dist-county-map"
-                  title="distribution map for {{ scientific_name }}">
-          <![endif]-->
-          <!--[if !IE]>-->
-          <object data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map.svg"
-                  type="image/svg+xml" id="dist-county-map"
-                  title="distribution map for {{ scientific_name }}">
-          <!--<![endif]-->
-          </object>
-
-          <h3>Common Uses</h3>
-          <p>
-              {% if taxon.uses|length > 0 %}
-                  {{ taxon.uses }}
-              {% else %}
-                  N/A
-              {% endif %}
-          </p>
-
-          <h3>Folklore &amp; History</h3>
-          <p>
-              {% if taxon.factoid|length > 0 %}
-                  {{ taxon.factoid }}
-              {% else %}
-                  N/A
-              {% endif %}
-          </p>
-
-          <h3>Classification</h3>
-          <p><strong>Family:</strong>
-            <a href="{% url simplekey-family taxon.family.slug %}"
-               >{{ taxon.family }}</a></p>
-          <p><strong>Genus:</strong>
-            <em><a href="{% url simplekey-genus taxon.genus.slug %}"
-                   >{{ taxon.genus }}</a></em></p>
-          <p><strong>Species:</strong>
-              <em>{{ scientific_name }}</em></p>
-          <p><strong>Full name:</strong>
-              <em>{{ scientific_name }}</em> {{ taxon.taxonomic_authority }}</p>
-
-          {% if taxon.synonyms.all|length > 0 %}
-              <h3>Also Known As</h3>
-              <p>{% for synonym in taxon.synonyms.all %}{% if forloop.first %}{{ synonym.scientific_name }}{% endif %}{% endfor %}{% if taxon.synonyms.all|length > 1 %},
-                  <a id='more-aka' class='more'>more</a>
-                  <span dojoType='dijit.Tooltip' connectId='more-aka' position='above'>
-                      <span class='moretip'>
-                          {% for synonym in taxon.synonyms.all %}
-                              {% if not forloop.first %}
-                                  {{ synonym.scientific_name }}{% if not forloop.last %}, {% endif %}
-                              {% endif %}
-                          {% endfor %}
-                      </span>
-                  </span>
-                  {% endif %}
-              </p>
-           {% endif %}
-
-      </div>
   </div>
-{% endblock %}
 
-{% block js_bottom %}
-  <script>
+    {% include "simplekey/_footer.html" %}
+
+    {% include "simplekey/_script_constants.html" %}
+
+    <script>
+        {% include "simplekey/partner_site_inline_js.html" %}
+    </script>
+
+    <script>
       API_URL = '{% url api-base %}';
       dojo.require('gobotany.sk.species');
       dojo.addOnLoad(function() {
+          _global_toggleList();
           gobotany.sk.species.init('{{ scientific_name }}');
       });
       dojo.addOnUnload(function() {
           gobotany.sk.species.persist_visibility();
       });
   </script>
+
+</body>
 {% endblock %}

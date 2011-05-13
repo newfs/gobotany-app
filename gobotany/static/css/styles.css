@@ -1141,6 +1141,144 @@ div.working-area #simple-slider .count {
 }
 
 /*///////////////////////////**
+Taxon (Species) Page Styles
+////////////////////////////*/
+span.origin {
+	font-size: 24px;
+}
+span.common {
+	font-size: 14px;
+	color: #606060;
+}
+
+#taxon #main p {
+	margin: 0 0 15px;	
+}
+a.my-plant {
+	display: block;
+	width: 151px;
+	height: 32px;
+	margin: 0 0 8px 0;
+	background: url(../images/layout/myplant-btn.png) 0 0 no-repeat;
+	text-indent: -9000px;	
+}
+a.my-plant:hover {
+	background-position: 0 -32px;	
+}
+a.my-plant:active {
+	background-position: 0 -64px;	
+}
+a.description-control {
+	display: block;
+	padding: 3px 0 3px 25px;
+	margin: 10px 0 12px 0;
+	background: url(../images/icons/plus.png) left 50% no-repeat;	
+}
+ul.characteristics span {
+	text-transform: uppercase;	
+}
+ul.full-description {
+	display: none;
+	margin: 0 0 15px 0;
+	border: 1px solid #e1e1dc;	
+	background: #fbfbf8;	
+}
+ul.full-description li {
+	display: block;
+	padding: 18px;
+	margin: 0 0 0 0;
+	border-bottom: 1px solid #e1e1dc;	
+	cursor: pointer;
+}
+ul.full-description li:last-child {
+	border-bottom: none;	
+}
+ul.full-description li:hover {
+	background-color: #fff;
+}
+ul.full-description li h5 {
+	background: url(../images/icons/plus.png) right 50% no-repeat;	
+}
+ul.full-description li ul {
+	display: none;	
+}
+ul.full-description li ul li {
+	border-bottom: none;
+    margin: 1em 0 0;
+    padding: 0;
+}
+table.status {
+	border-top: 1px solid #e2dfca;
+	margin: 0 0 15px 0;
+}
+table.status th, table.status td {
+	padding: 5px 0;
+	border-bottom: 1px solid #e2dfca;	
+}
+table.status td:last-child {
+	text-align: right;
+}
+#taxon #sidebar .get-help-btn {
+	margin: 0 0 0 10px;	
+}
+a.enlarge {
+	display: block;
+	margin: 0 0 8px 0;
+	color: #1a2e11;	
+}
+a.enlarge:hover {
+	text-decoration: none;	
+}
+.map {
+	display: block;	
+	margin: 0 0 5px 0;
+	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
+}
+/**Larger gallery styles**/
+#taxon .img-gallery {
+	width: 710px;
+	float: none;
+	margin: 0 0 0 0;	
+}
+#taxon .img-gallery .img-container {
+	width: 710px;
+	height: 273px;
+}
+#taxon .img-gallery .frame {
+	width: 700px;
+	height: 239px;	
+}
+#taxon .img-gallery .images .single-img {
+	position: relative;
+	float: left;	
+}
+#taxon .img-gallery .images img {
+	float: none;	
+}
+#taxon #main .img-gallery p.caption {
+	position: absolute;
+	right: 0;
+	bottom: -22px;
+	margin: 0 0 0 0;
+}
+#taxon .controls {
+	position: relative;
+}
+#taxon .controls span {
+	position: absolute;
+	top: -22px;	
+}
+#taxon #main h2 {
+    line-height: 1em;
+    margin: 0.5em 0 0.2em 0;
+}
+#taxon dl {
+    line-height: 1.7em;
+}
+
+/*///////////////////////////**
 Getting Started Page Styles
 ////////////////////////////*/
 #getting-started .question {

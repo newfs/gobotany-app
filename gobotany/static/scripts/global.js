@@ -104,7 +104,7 @@ function _global_toggleList() {
         $(this).text('Hide Full Description');
         $(this).css('background-image',
             'url("/static/images/icons/minus.png")');
-        toggleInfo();
+        _global_toggleInfo();
         sidebarHeight();
         return false;
     }, function() {
