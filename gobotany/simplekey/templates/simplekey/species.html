@@ -1,5 +1,6 @@
 {% extends "simplekey/_base.html" %}
 {% load simplekey_extras %}
+{% load thumbnail %}
 
 {% block title %}{{ scientific_name }}{% endblock %}
 
@@ -17,7 +18,6 @@
         <div class="container">
             <div id="main">
                 <div id="breadcrumb">
-                    {# TODO: implement breacrumbs #}
                     <ul>
                         <li class="first completed">
                         <a href="{% url simplekey-page 1 %}"><img
@@ -54,11 +54,24 @@
                 </h2>
                 
                 <div class="img-gallery">
-                    {# TODO: implement images #}
                     <div class="frame"></div>
                     <div class="img-container">
+                        <div class="images">
+                        {% for i in species_images %}
+                            <div class="single-img">
+                                {% thumbnail i.image "710x249" crop="center" as im %}
+                                <img src="{{ im }}"
+                                    alt="{{ i.image_type|capfirst }}: {{ scientific_name }}">
+                                <p class="caption">{{ i.image_type|capfirst }}</p>
+                            </div>
+                        {% endfor %}
+                        </div>
                     </div>
                     <div class="controls">
+						<span>
+							<a class="prev disabled">Prev</a>
+							<a class="next">Next</a>
+						</span>                        
                     </div>
                 </div>
                 <div class="clearit"></div>
@@ -259,33 +272,6 @@
             <div class="clearit"></div>
         </div>
     </div>
-
-  {# TODO: use in breadcrumbs #} 
-  <p>
-    <a href="{% url simplekey-pilegroup pilegroup.slug %}"
-       >{{ pilegroup.name }}</a>:
-    <a id="results-link"
-       href="{% url simplekey-pile pilegroup.slug pile.slug %}"
-       >{{ pile.name }}</a>
-  </p>
-  <div id="species">
-      <div id="images">
-          <h3>Images</h3>
-          <p>
-              {% if species_images %}
-                  {% for i in species_images %}
-                      {% if forloop.first %}
-                          <img src="{{ i.image.url }}" style="width:200px">
-                      {% endif %}
-                  {% endfor %}
-              {% else %}
-                  <img src="/static/nothing.png" alt="not available">
-              {% endif %}
-          </p>
-          <p class="nav"><a>&lt; prev</a> <span>? of ?</span>
-             <a>next &gt;</a></p>
-      </div>
-  </div>
 
     {% include "simplekey/_footer.html" %}
 
