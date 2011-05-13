@@ -189,6 +189,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         dojo.publish('results_loaded',
                      [{filter_manager: this.results_helper.filter_manager,
                        data: data}]);
+
+        this.results_helper.species_section.lazy_load_images();
     },
 
     organize_by_genera: function(items) {

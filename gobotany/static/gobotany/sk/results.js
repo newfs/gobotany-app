@@ -844,11 +844,14 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             this.results_helper.species_section.perform_query();
         }
 
+        this.results_helper.species_section.lazy_load_images();
+
         _global_setSidebarHeight();
     },
 
     hide_filter_working: function() {
         dojo.query('div.working-area').style({display: 'none'});
+        this.results_helper.species_section.lazy_load_images();
 
         // Save the state, which includes whether the filter working area is
         // being shown.
