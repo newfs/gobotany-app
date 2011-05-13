@@ -1283,6 +1283,9 @@ a.enlarge:hover {
 #taxon dl {
     line-height: 1.7em;
 }
+#taxon a.more {
+    cursor: pointer;
+}
 
 /*///////////////////////////**
 Getting Started Page Styles
