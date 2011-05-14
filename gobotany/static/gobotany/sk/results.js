@@ -136,9 +136,17 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         if (this._loading_filter_count > 0)
             return;  // wait on last filter to be loaded
 
-        console.log('filter_loaded: all filters loaded. About to list ' +
-                    'filters, then run query');
+        console.log('filter_loaded: all filters loaded.');
 
+        // If there's a URL hash, make a call to set up filter values from it
+        // again now that all the filters and values have finally loaded; this
+        // time omit the onComplete callback.
+        if (dojo.hash()) {
+            console.log('filter_loaded: about to set up filters from hash');
+            this.setup_filters_from_hash();
+        }
+
+        console.log('filter_loaded: about to list filters, then run query');
         this.filter_section.display_filters(this._loaded_filters);
         this.filter_section.update_filter_display('family');
         this.filter_section.update_filter_display('genus');
