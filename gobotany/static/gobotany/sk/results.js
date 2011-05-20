@@ -772,6 +772,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     clear_family: function(event) {
         dojo.stopEvent(event);
         this.set_value('family', null);
+        this.set_value('genus', null);
     },
 
     clear_genus: function(event) {
