@@ -12,6 +12,10 @@ var get_json = function(path, _this, load) {
     dojo.xhrGet({url: u, handleAs: 'json', load: dojo.hitch(_this, load)});
 };
 
+var intsort = function(array) {
+    array.sort(function(a, b) {return a - b});
+};
+
 var intersect = function(a, b) {
     var ai = 0, bi = 0;
     var result = new Array();
@@ -260,6 +264,10 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                 g.choicemap[genus] = {species: []};
             g.choicemap[genus].species.push(species_list[i].id);
         }
+        for (var family in f.choicemap)
+            intsort(f.choicemap[family].species);
+        for (var genus in g.choicemap)
+            intsort(g.choicemap[genus].species);
         this.filters.push(f);
         this.filters.push(g);
     },
