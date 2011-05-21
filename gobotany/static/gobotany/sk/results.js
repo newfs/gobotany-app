@@ -869,8 +869,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
     sort_filter_choices: function(a, b) {
         // Custom sort for ordering filter values for display.
-        var value_a = a.choice.toLowerCase();
-        var value_b = b.choice.toLowerCase();
+        var value_a = a.friendly_text.toLowerCase();
+        var value_b = b.friendly_text.toLowerCase();
 
         // If both values are a number or begin with one, sort numerically.
         var int_value_a = parseInt(value_a, 10);
@@ -880,10 +880,16 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }
 
         // Otherwise, sort alphabetically.
+        
         // Exception: always make Doesn't Apply (NA) last.
-        if (value_a === 'na') {
+        // (There is no friendly_text property for this value.)
+        if (value_a === undefined || value_a === null || value_a === '') {
             return 1;
         }
+        if (value_b === undefined || value_b === null || value_b === '') {
+            return -1;
+        }
+
         if (value_a < value_b) {
             return -1;
         }
