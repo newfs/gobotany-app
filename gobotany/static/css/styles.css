@@ -662,6 +662,7 @@ div.genus.last {
     position: relative;
     float: left;
     margin: 0 15px 0 0;
+    width: 160px; /* prevent long names from blowing out layout; allow wrap */
 }
 .genus .plant.last {
     margin: 0 0 0 0;
@@ -690,7 +691,6 @@ div.genus.last {
     -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
 .plant p.plant-name {
-    font-size: 0.9em; /* JG: make some longer names fit */
     margin: 7px 0 0 0;
 }
 .plant p.plant-name span.latin {
