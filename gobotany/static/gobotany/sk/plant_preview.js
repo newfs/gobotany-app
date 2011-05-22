@@ -21,12 +21,12 @@ gobotany.sk.plant_preview.show = function(plant, args) {
 
     dojo.connect(dijit.byId('taxon_button'), 'onClick', function() {
         var path = window.location.pathname.split('#')[0];
-        var re = /^\/simple\/.[^\/]*\/$/;
+        var re = /^.[^\/]*\/$/;
         if (path.match(re)) {
             // If on a 'numbered' collection page or other pile group page,
             // use the generic path to a species page rather than the usual
             // full pile path.
-            path = '/simple/species/';
+            path = '/species/';
         }
         var url = path + plant.scientific_name.toLowerCase().replace(
             ' ', '/') + '/';

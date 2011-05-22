@@ -1340,7 +1340,7 @@ class Importer(object):
 
     def _create_about_gobotany_page(self):
         help_page, created = HelpPage.objects.get_or_create(
-            title='About Go-Botany', url_path='/simple/help/')
+            title='About Go-Botany', url_path='/help/')
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
 
@@ -1363,7 +1363,7 @@ class Importer(object):
 
     def _create_getting_started_page(self):
         help_page, created = HelpPage.objects.get_or_create(
-            title='Getting Started', url_path='/simple/help/start/')
+            title='Getting Started', url_path='/help/start/')
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
 
@@ -1419,7 +1419,7 @@ class Importer(object):
     def _create_understanding_plant_collections_page(self):
         help_page, created = HelpPage.objects.get_or_create(
             title='Understanding Plant Collections',
-            url_path='/simple/help/collections/')
+            url_path='/help/collections/')
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
 
@@ -1434,7 +1434,7 @@ class Importer(object):
 
     def _create_video_help_topics_page(self):
         help_page, created = HelpPage.objects.get_or_create(
-            title='Video Help Topics', url_path='/simple/help/video/')
+            title='Video Help Topics', url_path='/help/video/')
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
 
@@ -1468,7 +1468,7 @@ class Importer(object):
             if len(glossary) > 0:
                 help_page, created = GlossaryHelpPage.objects.get_or_create(
                     title='Glossary: ' + letter.upper(),
-                    url_path='/simple/help/glossary/' + letter + '/',
+                    url_path='/help/glossary/' + letter + '/',
                     letter=letter)
                 if created:
                     print >> self.logfile, u'  New Glossary Help page: ', \
