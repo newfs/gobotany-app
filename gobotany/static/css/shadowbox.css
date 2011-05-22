@@ -28,3 +28,19 @@
 #sb-counter a.sb-counter-current{text-decoration:underline;}
 div.sb-message{font-size:12px;padding:10px;text-align:center;}
 div.sb-message a:link,div.sb-message a:visited{color:#fff;text-decoration:underline;}
+
+/* Styles to help move close button to upper right, from:
+   http://dustincaruso.com/javascript/move-the-shadowbox-js-close-button-to-the-upper-right/
+ */
+#sb-title-inner {
+    width: 90%;
+}
+#sb-nav-close {
+    float: right;
+    width: 16px;
+    height: 16px;
+    display: block;
+    margin: -50px 0px 0px 0px;
+    background: url(../images/shadowbox/close.png) 2px 0px no-repeat;
+    cursor: pointer;
+}
