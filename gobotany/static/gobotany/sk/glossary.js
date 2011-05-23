@@ -64,7 +64,7 @@ dojo.declare('gobotany.sk.glossary.Glossarizer', null, {
             dijit.Tooltip({
                 connectId: [gloss_id],
                 label: '<span class="glosstip">' + gize.glossaryblob[
-                    node2.innerHTML] + '</span>',
+                    node2.innerHTML.toLowerCase()] + '</span>',
                 position: 'above'
             });
         });
