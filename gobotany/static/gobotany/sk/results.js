@@ -868,32 +868,49 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     sort_filter_choices: function(a, b) {
-        // Custom sort for ordering filter values for display.
-        var value_a = a.friendly_text.toLowerCase();
-        var value_b = b.friendly_text.toLowerCase();
+        // Order filter choices for display.
 
-        // If both values are a number or begin with one, sort numerically.
-        var int_value_a = parseInt(value_a, 10);
-        var int_value_b = parseInt(value_b, 10);
-        if (!isNaN(int_value_a) && !isNaN(int_value_b)) {
-            return int_value_a - int_value_b;
+        var friendly_text_a = a.friendly_text.toLowerCase();
+        var friendly_text_b = b.friendly_text.toLowerCase();
+        var choice_a = a.choice.toLowerCase();
+        var choice_b = b.choice.toLowerCase();
+
+        // If both are a number or begin with one, sort numerically.
+        var int_friendly_text_a = parseInt(friendly_text_a, 10);
+        var int_friendly_text_b = parseInt(friendly_text_b, 10);
+        if (!isNaN(int_friendly_text_a) && !isNaN(int_friendly_text_b)) {
+            return int_friendly_text_a - int_friendly_text_b;
+        }
+        var int_choice_a = parseInt(choice_a, 10);
+        var int_choice_b = parseInt(choice_b, 10);
+        if (!isNaN(int_choice_a) && !isNaN(int_choice_b)) {
+            return int_choice_a - int_choice_b;
         }
 
         // Otherwise, sort alphabetically.
         
         // Exception: always make Doesn't Apply (NA) last.
-        // (There is no friendly_text property for this value.)
-        if (value_a === undefined || value_a === null || value_a === '') {
+        // (There is no friendly_text present for this.)
+        if (choice_a === 'na') {
             return 1;
         }
-        if (value_b === undefined || value_b === null || value_b === '') {
+        if (choice_b === 'na') {
             return -1;
         }
 
-        if (value_a < value_b) {
+        // If friendly text is present, sort using it.
+        if (friendly_text_a < friendly_text_b) {
             return -1;
         }
-        if (value_a > value_b) {
+        if (friendly_text_a > friendly_text_b) {
+            return 1;
+        }
+
+        // If there is no friendly text, sort using the choices instead.
+        if (choice_a < choice_b) {
+            return -1;
+        }
+        if (choice_a > choice_b) {
             return 1;
         }
 
@@ -926,27 +943,227 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         });
     },
 
+    get_row_for_choice: function(choices_count, choices_per_row) {
+        var rows = dojo.query('div.working-area div.choices div.row');
+
+        var row_number = Math.floor(
+                (choices_count - 1 + choices_per_row) / choices_per_row);
+        
+        return rows[row_number - 1];
+    },
+
+    clean_up_old_slider: function() {
+        // Clean up an old ruler or simple slider before rebuilding the
+        // working area.
+        if (this.ruler !== null) {
+            this.ruler.destroy();
+            dojo.query(this.slider_node).orphan();
+            this.ruler = this.slider_node = null;
+        }
+        if (this.simple_slider) {
+            this.simple_slider.destroy();
+            dojo.query(this.slider_node).orphan();
+            this.simple_slider = this.slider_node = null;
+        }
+    },
+
+    show_ruler_slider: function(filter, values_list) {
+        var unit = filter.unit;
+        if (unit === null || unit === undefined) {
+            unit = 'mm';
+            console.warn('[' + filter.character_short_name +
+                '] Measurement has no unit, assuming mm');
+        }
+
+        // Create a slider with horizontal rules and labels.
+
+        var themin = filter.min;
+        var themax = filter.max;
+        var startvalue = (themax + themin) / 2.0;
+        var selectedvalue =
+            this.results_helper.filter_manager.get_selected_value(
+                filter.character_short_name);
+        if (selectedvalue !== undefined && selectedvalue !== null) {
+            startvalue = selectedvalue;
+        }
+
+        var p = gobotany.utils.pretty_length;
+        dojo.place('<label>Select a length between<br>' +
+                   p('mm', themin) +
+                   ' (' + p('in', themin) + ') and<br>' +
+                   p('mm', themax) +
+                   ' (' + p('in', themax) + ')<br></label>',
+                   values_list);
+
+        var filter_manager = this.results_helper.filter_manager;
+        var vector = filter_manager.compute_species_without(
+            filter.character_short_name);
+        var ranges = filter.allowed_ranges(vector);
+        var rmin = ranges[0].min;
+        var rmax = ranges[ranges.length - 1].max;
+
+        var illegal_regions = [];
+
+        if (rmin > 0) illegal_regions.push([- 2 * rmin, rmin]);
+        if (rmax < themax) illegal_regions.push([rmax, themax * 2]);
+
+        for (i = 0; i < ranges.length - 1; i++)
+            illegal_regions.push([ranges[i].max, ranges[i + 1].min]);
+
+        this.slider_node = dojo.create('div', null, values_list);
+        this.ruler = gobotany.sk.RulerSlider(
+            this.slider_node, 'character_slider', 600, themax,
+            startvalue, illegal_regions);
+    },
+    
+    show_slider: function(filter, values_list) {
+        var num_values = filter.max - filter.min + 1;
+        var startvalue = Math.ceil(num_values / 2);
+        var selectedvalue =
+            this.results_helper.filter_manager.get_selected_value(
+                filter.character_short_name);
+        if (selectedvalue !== undefined && selectedvalue !== null) {
+            startvalue = selectedvalue;
+        }
+        dojo.place('<label>Select a number between<br>' +
+                   filter.min + ' and ' +
+                   filter.max + '</label>', values_list);
+        this.slider_node = dojo.create('div', null, values_list);
+        this.simple_slider = new dijit.form.HorizontalSlider({
+            id: 'simple-slider',
+            name: 'simple-slider',
+            value: startvalue,
+            minimum: filter.min,
+            maximum: filter.max,
+            discreteValues: num_values,
+            intermediateChanges: true,
+            showButtons: false,
+            onChange: dojo.hitch(this, this.set_simple_slider_value),
+            onMouseUp: dojo.hitch(this, this.set_simple_slider_value)
+            }, this.slider_node);
+        dojo.create('div', {
+            'class': 'count',
+            'innerHTML': startvalue
+            }, this.simple_slider.containerNode);
+        this.set_simple_slider_value();
+    },
+
+    show_multiple_choices: function(filter, values_list) {
+        var CHOICES_PER_ROW = 5;
+        
+        // Apply a custom sort to the filter values.
+        var values = gobotany.utils.clone(filter.values);
+        values.sort(this.sort_filter_choices);
+
+        var choices_div = dojo.create('div', {'class': 'choices'},
+            values_list);
+
+        // Add row divs, to which choices will then be added.
+        var num_rows = Math.ceil((values.length + 1) / CHOICES_PER_ROW);
+        console.log('num_rows: ' + num_rows);
+        var i;
+        for (i = 0; i < num_rows; i++) {
+            dojo.create('div', {'class': 'row'}, choices_div);
+        }
+
+        // Create a Don't Know radio button item.
+        var item_html = '<div><label><input name="char_name" ' +
+            'type="radio" value=""> ' +
+            this._get_filter_display_value('', '', '') + '</label></div>';
+        var choices_count = 1;
+        var row = this.get_row_for_choice(choices_count, CHOICES_PER_ROW);
+        dojo.place(item_html, row);
+
+        // Determine how many species each value would select.
+        var counts = this.results_helper.filter_manager.
+            compute_filter_counts(filter);
+
+        // Create radio button items for each character value.
+        for (i = 0; i < values.length; i++) {
+            var v = values[i];
+            var count = counts[v.choice];
+            if (!((count === 0) && (v.choice === 'NA'))) {
+                item_html = '<label ';
+                if (count === 0) {
+                    item_html += ' class="zero"';
+                }
+                item_html += '><input name="char_name" ' +
+                    'type="radio" value="' + v.choice + '"';
+                if (count === 0) {
+                    item_html += ' disabled';
+                }
+                var display_value =
+                    this._get_filter_display_value(v.friendly_text,
+                        v.choice, filter.character_short_name);
+                item_html += '>';
+
+                // Add a drawing image thumbnail if present.
+                var image_path = v.image_url;
+                var thumbnail_html = '';
+                var image_id = '';
+                if (image_path.length > 0) {
+                    image_id = this.get_image_id_from_path(image_path);
+                    thumbnail_html = '<img id="' + image_id +
+                        '" src="' + image_path + '" alt="drawing ' +
+                        'showing ' + v.friendly_text + '"><br>';
+                    item_html += thumbnail_html;
+                }
+
+                item_html += ' <span class="label">' + display_value +
+                    '</span> <span class="count">(' + count + ')</span>' +
+                    '</label>';
+
+                // Get the correct row for placing this item.
+                choices_count += 1;
+                row = this.get_row_for_choice(choices_count, CHOICES_PER_ROW);
+                var character_value_item = dojo.create('div',
+                        {'innerHTML': item_html}, row);
+
+                // Once the item is added, add a tooltip for the drawing.
+                if (image_path.length > 0) {
+                    var image_html = '<img id="' + image_id + '" src="' +
+                        image_path + '" alt="drawing showing ' +
+                    v.friendly_text + '">';
+                    new dijit.Tooltip({connectId: [image_id],
+                        label: image_html, position: ['after', 'above']});
+                }
+
+                var label = dojo.query('span.label', character_value_item)[0];
+                this.glossarizer.markup(label);
+            }
+        }
+
+        // If the user has already selected a value for the filter, check
+        // that radio button, instead of checking "don't know" as usual.
+        var selector = 'div.working-area .values input';
+        var already_selected_value =
+            this.results_helper.filter_manager.get_selected_value(
+                filter.character_short_name);
+        if (already_selected_value) {
+            selector = selector + '[value="' + already_selected_value + '"]';
+        }
+        dojo.query(selector)[0].checked = true;
+    },
+
     show_filter_working_onload: function(filter) {
         dojo.query('div.working-area').style({display: 'block'});
-        dojo.query('div.working-area h4')[0].innerHTML =
-            filter.friendly_name;
-
+        dojo.query('div.working-area h4')[0].innerHTML = filter.friendly_name;
         this.visible_filter_short_name = filter.character_short_name;
 
-        var valuesList = dojo.query('div.working-area form .values')[0];
-        dojo.empty(valuesList);
+        var values_list = dojo.query('div.working-area form .values')[0];
+        dojo.empty(values_list);
 
         // Allow for numeric filters to be styled differently than
         // multiple-choice filters.
         var NUMERIC_VALUES_CLASS = 'numeric';
         var MULTIPLE_CHOICE_VALUES_CLASS = 'multiple';
         if (filter.value_type === 'LENGTH') {
-            dojo.addClass(valuesList, NUMERIC_VALUES_CLASS);
-            dojo.removeClass(valuesList, MULTIPLE_CHOICE_VALUES_CLASS);
+            dojo.addClass(values_list, NUMERIC_VALUES_CLASS);
+            dojo.removeClass(values_list, MULTIPLE_CHOICE_VALUES_CLASS);
         }
         else {
-            dojo.addClass(valuesList, MULTIPLE_CHOICE_VALUES_CLASS);
-            dojo.removeClass(valuesList, NUMERIC_VALUES_CLASS);
+            dojo.addClass(values_list, MULTIPLE_CHOICE_VALUES_CLASS);
+            dojo.removeClass(values_list, NUMERIC_VALUES_CLASS);
         }
 
         if (filter.choicemap === undefined) {
@@ -959,210 +1176,26 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             return;
         }
 
-        /* Clean up an old ruler or simple slider before rebuilding the
-           working area.
-           */
-        if (this.ruler !== null) {
-            this.ruler.destroy();
-            dojo.query(this.slider_node).orphan();
-            this.ruler = this.slider_node = null;
-        }
-        if (this.simple_slider) {
-            this.simple_slider.destroy();
-            dojo.query(this.slider_node).orphan();
-            this.simple_slider = this.slider_node = null;
-        }
+        this.clean_up_old_slider();
 
-        /* Build the new DOM elements. */
+        // Build the new DOM elements.
 
-        // TODO: Consider changing the value type (perhaps to "NUMERIC"),
-        // since it turns out not all numeric filters are actually length
-        // filters (some are count filters).
-        var startvalue;
-        var selectedvalue;
-        if (filter.value_type === 'LENGTH') {
+        // TODO: Change the value type to NUMERIC, since it turns out not all
+        // numeric filters are actually length filters (some are count
+        // filters). This probably will require API changes at least.
+        if (filter.value_type === 'LENGTH') { // change to 'NUMERIC'
             if (filter.is_length()) {
-
-                // Show a ruler slider for length measurements.
-
-                var unit = filter.unit;
-
-                if (unit === null || unit === undefined) {
-                    unit = 'mm';
-                    console.warn('[' + filter.character_short_name +
-                        '] Measurement has no unit, assuming mm');
-                }
-
-                // Create a slider with horizontal rules and labels.
-
-                var themin = filter.min;
-                var themax = filter.max;
-                startvalue = (themax + themin) / 2.0;
-
-                selectedvalue =
-                    this.results_helper.filter_manager.get_selected_value(
-                        filter.character_short_name);
-                if (selectedvalue !== undefined && selectedvalue !== null) {
-                    startvalue = selectedvalue;
-                }
-
-                var p = gobotany.utils.pretty_length;
-                dojo.place('<label>Select a length between<br>' +
-                           p('mm', themin) +
-                           ' (' + p('in', themin) + ') and<br>' +
-                           p('mm', themax) +
-                           ' (' + p('in', themax) + ')<br></label>',
-                           valuesList);
-
-                var filter_manager = this.results_helper.filter_manager;
-                var vector = filter_manager.compute_species_without(
-                    filter.character_short_name);
-                var ranges = filter.allowed_ranges(vector);
-                var rmin = ranges[0].min;
-                var rmax = ranges[ranges.length - 1].max;
-
-                var illegal_regions = [];
-
-                if (rmin > 0) illegal_regions.push([- 2 * rmin, rmin]);
-                if (rmax < themax) illegal_regions.push([rmax, themax * 2]);
-
-                for (i = 0; i < ranges.length - 1; i++)
-                    illegal_regions.push([ranges[i].max, ranges[i + 1].min]);
-
-                this.slider_node = dojo.create('div', null, valuesList);
-                this.ruler = gobotany.sk.RulerSlider(
-                    this.slider_node, 'character_slider', 600, themax,
-                    startvalue, illegal_regions);
-            }
-            else {
+                this.show_ruler_slider(filter, values_list);
+            } else {
                 // For non-length numeric ("count") filters, show a simple
                 // slider without a ruler.
-                var num_values = filter.max - filter.min + 1;
-                startvalue = Math.ceil(num_values / 2);
-                selectedvalue =
-                    this.results_helper.filter_manager.get_selected_value(
-                        filter.character_short_name);
-                if (selectedvalue !== undefined && selectedvalue !== null) {
-                    startvalue = selectedvalue;
-                }
-                dojo.place('<label>Select a number between<br>' +
-                           filter.min + ' and ' +
-                           filter.max + '</label>', valuesList);
-                this.slider_node = dojo.create('div', null, valuesList);
-                this.simple_slider = new dijit.form.HorizontalSlider({
-                    id: 'simple-slider',
-                    name: 'simple-slider',
-                    value: startvalue,
-                    minimum: filter.min,
-                    maximum: filter.max,
-                    discreteValues: num_values,
-                    intermediateChanges: true,
-                    showButtons: false,
-                    onChange: dojo.hitch(this, this.set_simple_slider_value),
-                    onMouseUp: dojo.hitch(this, this.set_simple_slider_value)
-                    }, this.slider_node);
-                dojo.create('div', {
-                    'class': 'count',
-                    'innerHTML': startvalue
-                    }, this.simple_slider.containerNode);
-                this.set_simple_slider_value();
+                this.show_slider(filter, values_list);    
             }
-        }
-        else {
-
-            // Create the radio-buttons widget.
-
-            // Create a Don't Know radio button item.
-            var item_html = '<div><label><input name="char_name" ' +
-                'type="radio" value=""> ' +
-                this._get_filter_display_value('', '', '') +
-                '</label></div>';
-            dojo.place(item_html, valuesList);
-
-            // Apply a custom sort to the filter values.
-            var values = gobotany.utils.clone(filter.values);
-            values.sort(this.sort_filter_choices);
-
-            // Determine how many species each value would select.
-            var counts = this.results_helper.filter_manager.
-                compute_filter_counts(filter);
-
-            // Create radio button items for each character value.
-            var i;
-            for (i = 0; i < values.length; i++) {
-                var v = values[i];
-                var count = counts[v.choice];
-
-                if (!((count === 0) && (v.choice === 'NA'))) {
-
-                    item_html = '<label ';
-                    if (count === 0) {
-                        item_html += ' class="zero"';
-                    }
-                    item_html += '><input name="char_name" ' +
-                        'type="radio" value="' + v.choice + '"';
-                    if (count === 0) {
-                        item_html += ' disabled';
-                    }
-                    var display_value =
-                        this._get_filter_display_value(v.friendly_text,
-                            v.choice, filter.character_short_name);
-                    item_html += '>';
-
-                    // Add a drawing image thumbnail if present.
-
-                    var image_path = v.image_url;
-                    var thumbnail_html = '';
-                    var image_id = '';
-                    if (image_path.length > 0) {
-                        image_id = this.get_image_id_from_path(image_path);
-                        thumbnail_html = '<img id="' + image_id +
-                            '" src="' + image_path + '" alt="drawing ' +
-                            'showing ' + v.friendly_text + '"><br>';
-                        item_html += thumbnail_html;
-                    }
-
-                    item_html += ' <span class="label">' + display_value +
-                        '</span> <span class="count">(' + count + ')</span>' +
-                        '</label>';
-
-                    var character_value_item = dojo.create('div',
-                        {'innerHTML': item_html}, valuesList);
-
-                    // Once the item is added, add a tooltip for the drawing.
-                    if (image_path.length > 0) {
-                        var image_html = '<img id="' + image_id + '" src="' +
-                            image_path + '" alt="drawing showing ' +
-                            v.friendly_text + '">';
-                        new dijit.Tooltip({
-                            connectId: [image_id],
-                            label: image_html,
-                            position: ['after', 'above']
-                        });
-                    }
-
-                    var label = dojo.query(
-                        'span.label', character_value_item)[0];
-                    this.glossarizer.markup(label);
-                }
-            }
-
-            // If the user has already selected a value for the filter, we
-            // pre-check that radio button, instead of pre-checking the
-            // first (the "Don't know") radio button like we normally do.
-
-            var selector = 'div.working-area .values input';
-            var already_selected_value =
-                this.results_helper.filter_manager.get_selected_value(
-                    filter.character_short_name);
-            if (already_selected_value) {
-                selector = selector + '[value="' + already_selected_value +
-                    '"]';
-            }
-            dojo.query(selector)[0].checked = true;
+        } else {
+            this.show_multiple_choices(filter, values_list);
         }
 
-        // Set any question and hint text for this filter.
+        // Set the question and hint text.
         var html = '';
         var q = dojo.query('div.working-area .info .question')[0];
         if (filter.question.length > 0) {

@@ -1,4 +1,4 @@
-/*////////////////////////////////*/
+//*////////////////////////////////*/
 /* Global Page Structure */
 /*////////////////////////////////*/
 header, .content, footer {
@@ -769,13 +769,45 @@ h5.help {
     margin: 0 0 0 10px;
 }
 
-/**Working area**/
+/** Working area **/
 .working-area {
     display: none;
     padding: 15px;
     margin: 0 0 15px 0;
     border: 1px solid #F6F6D1;
     background: #f9f9e4;
+}
+.choices {
+    border-spacing: 5px 20px;
+    display: table;
+}
+.choices .row {
+    display: table-row;
+}
+.choices .row div {
+    display: table-cell;
+    margin: 0 0.5em 1em 0;
+    min-height: 50px;
+}
+.choices .row div label {
+    cursor: pointer;
+    display: inline-block;
+    font-family: Tahoma, sans-serif;
+    font-size: 12px;
+    margin-left: 18px;
+    min-width: 70px;
+    vertical-align: top;
+    word-wrap: break-word; /* can break mid-word */
+}
+.choices .row div input {
+    float: left;
+    margin: 3px 3px 0 -18px;
+}
+.choices .row div img {
+    background: #fff;
+    border: 1px solid #ddd;
+    display: inline-block;
+    height: 100px;
 }
 .working-area a.close {
     display: block;
@@ -831,10 +863,6 @@ h5.help {
     background-position: 0 -64px;
 }
 
-
-/* Following: various styles from the pre-visual-design version of the site,
-   some of which are here temporarily as work continues on the visual design.
- */
 
 #sidebar .loading {
     background: url(../ajax-loader.gif) no-repeat scroll 0 0 transparent;
@@ -960,74 +988,8 @@ div.working-area .values.numeric {
     overflow-y: visible;
 }
 
-div.working-area .values.multiple label {
-    border-top: 1px solid #999;
-    clear: both;
-    display: block;
-    font-size: 12px;
-    height: 50px;
-    line-height: 1.2em;
-}
-
-div.working-area .values.multiple label:first-child {
-    border-top: 0;
-}
-
-div.working-area .values.multiple label > span:first-child {
-    display: inline-block;
-    padding-left: 0.3em;
-    width: 330px;
-}
-
-div.working-area .values input {
-    margin: 0.6em 0;
-}
-
 div.working-area .values .zero {
     color: #ccc;
-}
-
-div.working-area .values label div {
-    border: 1px dashed #ccc;
-    cursor: pointer;
-    display: inline-block;
-    float: right;
-    height: 40px;
-    margin: 4px 4px 0 0;
-    padding: 0;
-    text-align: center;
-    width: 40px;
-}
-
-div.working-area .values.multiple div {
-    display: inline-block;
-    margin: 0 12px 16px 0;
-    max-width: 120px;
-    min-height: 60px;
-}
-
-div.working-area .values.multiple div label {
-    display: inline-block;
-    font-family: Tahoma, sans-serif;
-    font-size: 12px;
-    height: 100%;
-    margin-left: 18px;
-    max-width: 120px;
-    min-width: 110px;
-    vertical-align: top;
-    word-wrap: break-word;
-}
-
-div.working-area .values.multiple div input {
-    float: left;
-    margin: 3px 3px 0 -18px;
-}
-
-div.working-area .values.multiple div img {
-    background: #fff;
-    border: 1px solid #ddd;
-    display: inline-block;
-    height: 100px;    
 }
 
 div.working-area .info {
