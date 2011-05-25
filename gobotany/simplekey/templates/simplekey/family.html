@@ -2,7 +2,7 @@
 {% load thumbnail %}
 {% load simplekey_extras %}
 {% block title %}
-{{ item.name }}
+Family {{ item.name }} ({% if item.common_name %}{{ item.common_name }}{% else %}common name here{% endif %})
 {% endblock %}
 {% block content %}
   <h1>Family {{ item.name }}</h1>
@@ -49,9 +49,17 @@
 
       <h3>Species</h3>
       <ul class="Species">
-        {% for species in item.taxa.all %}
-        <li><a href="{% url simplekey-species species.genus.slug species.epithet %}"
-               ><em>{{ species.scientific_name }}</em></a></li>
+        {% for genus in item.genera.all %}
+        <li><em>{{ genus.name }}</em>:
+            <ul>
+                {% for species in item.taxa.all %}
+                    {% ifequal genus.name|cut:' ' species.genus|cut:' ' %}
+                        <li><a href="{% url simplekey-species species.genus.slug species.epithet %}"
+                        ><em>{{ species.genus|make_list|first }}. {{ species.epithet }}</em></a></li>
+                    {% endifequal %}    
+                {% endfor %}
+            </ul>
+        </li>
         {% endfor %}
       </ul>
     </div>

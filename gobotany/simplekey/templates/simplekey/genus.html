@@ -2,14 +2,15 @@
 {% load thumbnail %}
 {% load simplekey_extras %}
 {% block title %}
-{{ item.name }}
+Genus {{ item.name }} ({% if item.common_name %}{{ item.common_name }}{% else %}common name here{% endif %})
 {% endblock %}
 {% block content %}
   <h1>Genus <em>{{ item.name }}</em></h1>
   <div id="genus">
-    {# Common name is not currently planned for genera, but include it if it exists. #}
     {% if item.common_name %}
         <h2>{{ item.common_name }}</h2>
+    {% else %}
+        <h2>common name here</h2>
     {% endif %}
 
     <div id="images">
@@ -45,8 +46,8 @@
         <h3>Species:</h3>
         <ul class="species">
           {% for species in item.taxa.all %}
-            <li><a href="{% url simplekey-species species.genus.slug species.epithet %}"
-                   ><em>{{ species.scientific_name }}</em></a></li>
+            <li><a href="{% url simplekey-species species.genus.slug species.epithet|cut:' ' %}"
+                ><em>{{ species.genus|make_list|first }}. {{ species.epithet }}</em></a></li>
           {% endfor %}
         </ul>
     </div>

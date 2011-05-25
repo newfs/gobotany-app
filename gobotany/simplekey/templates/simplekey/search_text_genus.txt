@@ -15,5 +15,5 @@ Description:
 
 Species:
 {% for species in object.taxa.all %}
-    {{ species.scientific_name }}
+    {{ species.genus|make_list|first }}. {{ species.epithet }}
 {% endfor %}

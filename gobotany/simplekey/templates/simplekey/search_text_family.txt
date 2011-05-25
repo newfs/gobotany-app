@@ -14,5 +14,15 @@ Genera:
 
 Species:
 {% for species in object.taxa.all %}
-    {{ species.scientific_name }}
+    {{ species.genus|make_list|first }}. {{ species.epithet }}
 {% endfor %}
+
+{% for genus in object.genera.all %}
+{{ genus.name }}:
+    {% for species in object.taxa.all %}
+        {% ifequal genus.name|cut:' ' species.genus|cut:' ' %}
+            {{ species.genus|make_list|first }}. {{ species.epithet }}
+        {% endifequal %}    
+    {% endfor %}
+{% endfor %}
+
