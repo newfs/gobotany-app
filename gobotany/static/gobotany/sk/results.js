@@ -9,6 +9,7 @@ dojo.provide('gobotany.sk.results');
 dojo.require('gobotany.sk.RulerSlider');
 dojo.require('gobotany.sk.glossary');
 dojo.require('gobotany.sk.results.SpeciesSectionHelper');
+dojo.require('gobotany.sk.working_area');
 dojo.require('gobotany.filters');
 dojo.require('gobotany.piles');
 dojo.require('gobotany.utils');
@@ -867,65 +868,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.results_helper.save_filter_state();
     },
 
-    sort_filter_choices: function(a, b) {
-        // Order filter choices for display.
-
-        var friendly_text_a = a.friendly_text.toLowerCase();
-        var friendly_text_b = b.friendly_text.toLowerCase();
-        var choice_a = a.choice.toLowerCase();
-        var choice_b = b.choice.toLowerCase();
-
-        // If both are a number or begin with one, sort numerically.
-        var int_friendly_text_a = parseInt(friendly_text_a, 10);
-        var int_friendly_text_b = parseInt(friendly_text_b, 10);
-        if (!isNaN(int_friendly_text_a) && !isNaN(int_friendly_text_b)) {
-            return int_friendly_text_a - int_friendly_text_b;
-        }
-        var int_choice_a = parseInt(choice_a, 10);
-        var int_choice_b = parseInt(choice_b, 10);
-        if (!isNaN(int_choice_a) && !isNaN(int_choice_b)) {
-            return int_choice_a - int_choice_b;
-        }
-
-        // Otherwise, sort alphabetically.
-        
-        // Exception: always make Doesn't Apply (NA) last.
-        // (There is no friendly_text present for this.)
-        if (choice_a === 'na') {
-            return 1;
-        }
-        if (choice_b === 'na') {
-            return -1;
-        }
-
-        // If friendly text is present, sort using it.
-        if (friendly_text_a < friendly_text_b) {
-            return -1;
-        }
-        if (friendly_text_a > friendly_text_b) {
-            return 1;
-        }
-
-        // If there is no friendly text, sort using the choices instead.
-        if (choice_a < choice_b) {
-            return -1;
-        }
-        if (choice_a > choice_b) {
-            return 1;
-        }
-
-        return 0; // default value (no sort)
-    },
-
-    get_image_id_from_path: function(image_path) {
-        // Get a value suitable for use as an image element id from
-        // the image filename found in the image path.
-        var last_slash_index = image_path.lastIndexOf('/');
-        var dot_index = image_path.indexOf('.', last_slash_index);
-        var image_id = image_path.substring(last_slash_index + 1, dot_index);
-        return image_id;
-    },
-
     set_simple_slider_value: function() {
         var count_display =
             dojo.query('div.working-area #simple-slider .count')[0];
@@ -941,15 +883,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             base_vector: this.results_helper.filter_manager.base_vector,
             onload: dojo.hitch(this, 'show_filter_working_onload')
         });
-    },
-
-    get_row_for_choice: function(choices_count, choices_per_row) {
-        var rows = dojo.query('div.working-area div.choices div.row');
-
-        var row_number = Math.floor(
-                (choices_count - 1 + choices_per_row) / choices_per_row);
-        
-        return rows[row_number - 1];
     },
 
     clean_up_old_slider: function() {
@@ -1015,7 +948,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             this.slider_node, 'character_slider', 600, themax,
             startvalue, illegal_regions);
     },
-    
+
     show_slider: function(filter, values_list) {
         var num_values = filter.max - filter.min + 1;
         var startvalue = Math.ceil(num_values / 2);
@@ -1048,170 +981,19 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.set_simple_slider_value();
     },
 
-    show_multiple_choices: function(filter, values_list) {
-        var CHOICES_PER_ROW = 5;
-        
-        // Apply a custom sort to the filter values.
-        var values = gobotany.utils.clone(filter.values);
-        values.sort(this.sort_filter_choices);
-
-        var choices_div = dojo.create('div', {'class': 'choices'},
-            values_list);
-
-        // Add row divs, to which choices will then be added.
-        var num_rows = Math.ceil((values.length + 1) / CHOICES_PER_ROW);
-        console.log('num_rows: ' + num_rows);
-        var i;
-        for (i = 0; i < num_rows; i++) {
-            dojo.create('div', {'class': 'row'}, choices_div);
-        }
-
-        // Create a Don't Know radio button item.
-        var item_html = '<div><label><input name="char_name" ' +
-            'type="radio" value=""> ' +
-            this._get_filter_display_value('', '', '') + '</label></div>';
-        var choices_count = 1;
-        var row = this.get_row_for_choice(choices_count, CHOICES_PER_ROW);
-        dojo.place(item_html, row);
-
-        // Determine how many species each value would select.
-        var counts = this.results_helper.filter_manager.
-            compute_filter_counts(filter);
-
-        // Create radio button items for each character value.
-        for (i = 0; i < values.length; i++) {
-            var v = values[i];
-            var count = counts[v.choice];
-            if (!((count === 0) && (v.choice === 'NA'))) {
-                item_html = '<label ';
-                if (count === 0) {
-                    item_html += ' class="zero"';
-                }
-                item_html += '><input name="char_name" ' +
-                    'type="radio" value="' + v.choice + '"';
-                if (count === 0) {
-                    item_html += ' disabled';
-                }
-                var display_value =
-                    this._get_filter_display_value(v.friendly_text,
-                        v.choice, filter.character_short_name);
-                item_html += '>';
-
-                // Add a drawing image thumbnail if present.
-                var image_path = v.image_url;
-                var thumbnail_html = '';
-                var image_id = '';
-                if (image_path.length > 0) {
-                    image_id = this.get_image_id_from_path(image_path);
-                    thumbnail_html = '<img id="' + image_id +
-                        '" src="' + image_path + '" alt="drawing ' +
-                        'showing ' + v.friendly_text + '"><br>';
-                    item_html += thumbnail_html;
-                }
-
-                item_html += ' <span class="label">' + display_value +
-                    '</span> <span class="count">(' + count + ')</span>' +
-                    '</label>';
-
-                // Get the correct row for placing this item.
-                choices_count += 1;
-                row = this.get_row_for_choice(choices_count, CHOICES_PER_ROW);
-                var character_value_item = dojo.create('div',
-                        {'innerHTML': item_html}, row);
-
-                // Once the item is added, add a tooltip for the drawing.
-                if (image_path.length > 0) {
-                    var image_html = '<img id="' + image_id + '" src="' +
-                        image_path + '" alt="drawing showing ' +
-                    v.friendly_text + '">';
-                    new dijit.Tooltip({connectId: [image_id],
-                        label: image_html, position: ['after', 'above']});
-                }
-
-                var label = dojo.query('span.label', character_value_item)[0];
-                this.glossarizer.markup(label);
-            }
-        }
-
-        // If the user has already selected a value for the filter, check
-        // that radio button, instead of checking "don't know" as usual.
-        var selector = 'div.working-area .values input';
-        var already_selected_value =
-            this.results_helper.filter_manager.get_selected_value(
-                filter.character_short_name);
-        if (already_selected_value) {
-            selector = selector + '[value="' + already_selected_value + '"]';
-        }
-        dojo.query(selector)[0].checked = true;
-    },
+    /* A filter object has been returned from Ajax!  We can now set up
+       the working area and save the new page state. */
 
     show_filter_working_onload: function(filter) {
-        dojo.query('div.working-area').style({display: 'block'});
-        dojo.query('div.working-area h4')[0].innerHTML = filter.friendly_name;
-        this.visible_filter_short_name = filter.character_short_name;
-
-        var values_list = dojo.query('div.working-area form .values')[0];
-        dojo.empty(values_list);
-
-        // Allow for numeric filters to be styled differently than
-        // multiple-choice filters.
-        var NUMERIC_VALUES_CLASS = 'numeric';
-        var MULTIPLE_CHOICE_VALUES_CLASS = 'multiple';
-        if (filter.value_type === 'LENGTH') {
-            dojo.addClass(values_list, NUMERIC_VALUES_CLASS);
-            dojo.removeClass(values_list, MULTIPLE_CHOICE_VALUES_CLASS);
-        }
-        else {
-            dojo.addClass(values_list, MULTIPLE_CHOICE_VALUES_CLASS);
-            dojo.removeClass(values_list, NUMERIC_VALUES_CLASS);
-        }
-
-        if (filter.choicemap === undefined) {
-            console.log(
-                'No filter values exist: ' + filter.friendly_name +
-                    ' (character_short_name: ' + filter.character_short_name +
-                    '  value_type: ' + filter.value_type +
-                    '  unit: ' + filter.unit +
-                    '  pile_slug: ' + filter.pile_slug + ')');
-            return;
-        }
-
-        this.clean_up_old_slider();
-
-        // Build the new DOM elements.
-
-        // TODO: Change the value type to NUMERIC, since it turns out not all
-        // numeric filters are actually length filters (some are count
-        // filters). This probably will require API changes at least.
-        if (filter.value_type === 'LENGTH') { // change to 'NUMERIC'
-            if (filter.is_length()) {
-                this.show_ruler_slider(filter, values_list);
-            } else {
-                // For non-length numeric ("count") filters, show a simple
-                // slider without a ruler.
-                this.show_slider(filter, values_list);    
-            }
-        } else {
-            this.show_multiple_choices(filter, values_list);
-        }
-
-        // Set the question and hint text.
-        var html = '';
-        var q = dojo.query('div.working-area .info .question')[0];
-        if (filter.question.length > 0) {
-            html = '<p>' + filter.question + '</p>';
-        }
-        q.innerHTML = html;
-
-        html = '';
-        var h = dojo.query('div.working-area .info .hint')[0];
-        if (filter.hint.length > 0) {
-            html = '<p>' + filter.hint + '</p>';
-        }
-        h.innerHTML = html;
+        var C = gobotany.sk.working_area.select_working_area(filter);
+        var species_vector = this.results_helper.filter_manager.
+            compute_species_without(filter.character_short_name);
+        this.working_area = C(dojo.query('div.working-area'), filter,
+                              species_vector, this.glossarizer, null);
 
         // Save the state, which includes whether the filter working area is
         // being shown.
+        this.visible_filter_short_name = filter.character_short_name;
         this.results_helper.save_filter_state();
 
         _global_setSidebarHeight();

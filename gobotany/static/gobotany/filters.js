@@ -16,7 +16,14 @@ var intsort = function(array) {
     array.sort(function(a, b) {return a - b});
 };
 
-var intersect = function(a, b) {
+/**
+ * Compute the intersection of two already-sorted lists of species ids.
+ *
+ * @param {Array} a One list of integer species ids.
+ * @param {Array} b Another list of integer species ids.
+ * @return {Array} The resulting list of integer species ids.
+ */
+gobotany.filters.intersect = function(a, b) {
     var ai = 0, bi = 0;
     var result = new Array();
     while (ai < a.length && bi < b.length) {
@@ -26,6 +33,8 @@ var intersect = function(a, b) {
     }
     return result;
 };
+
+var intersect = gobotany.filters.intersect;
 
 dojo.declare('gobotany.filters.Filter', null, {
     selected_value: null,
@@ -76,9 +85,6 @@ dojo.declare('gobotany.filters.Filter', null, {
             if (!args.base_vector) {
                 console.log('load_values: species apparently not ' +
                             'loaded yet (base vector is false)');
-            }
-            else {
-                console.log(args.base_vector);
             }
             for (var i = 0; i < data.length; i++) {
                 var value = data[i];
@@ -291,29 +297,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             var vector = this.species_ids;
         }
         return vector;
-    },
-
-    // Given a filter, returns an object whose attributes are character
-    // value short names and whose values are the number of species that
-    // would remain if the results were filtered by that value.
-    compute_filter_counts: function(filter) {
-        var vector = this.base_vector;
-
-        // TODO: there might be a race condition here until the
-        // architecure is sufficiently reworked to assure that each
-        // active value's vector has been loaded by the time we get here.
-
-        // Count how many species would be left by applying each of this
-        // filter's possible values.
-
-        var short_name = filter.character_short_name;
-        var vector = this.compute_species_without(short_name);
-        var counts = {};
-        for (var i = 0; i < filter.values.length; i++) {
-            var v = filter.values[i];
-            counts[v.choice] = intersect(vector, v.species).length;
-        }
-        return counts;
     },
 
     query_best_filters: function(args) {
