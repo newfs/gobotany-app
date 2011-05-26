@@ -50,25 +50,12 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         var plant_list = dojo.query('#main .plant-list')[0];
         dojo.empty(plant_list);
 
-        // Build a list of short names for the filters visible at left (which
-        // is the same as the internal collection of filters).
-        var filter_short_names = [];
-        var filters = this.results_helper.filter_manager.filters;
-        var i;
-        for (i = 0; i < filters.length; i++) {
-            filter_short_names.push(filters[i].character_short_name);
-        }
-
-        // Run the query, passing a callback function to be run when finished.
-        // Also pass the list of filter short names for which to get counts.
         this.results_helper.filter_manager.perform_query({
-            on_complete: dojo.hitch(this, this.on_complete_perform_query),
-            filter_short_names: filter_short_names
+            on_complete: dojo.hitch(this, 'on_complete_perform_query')
         });
 
         this.results_helper.save_filter_state();
     },
-
 
     rebuild_family_select: function(items) {
 
@@ -158,26 +145,8 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         this.rebuild_family_select(data.items);
         this.rebuild_genus_select(data.items);
 
-        // Update the species count on the screen.
-        var count_elements = dojo.query('.species-count');
-        var i;
-        for (i = 0; i < count_elements.length; i++) {
-            count_elements[i].innerHTML = data.items.length;
-        }
-
-        // If the filter working area is showing, refresh its display in order
-        // to update any value counts.
-        var working_area = dojo.query('div.working-area')[0];
-        if (dojo.style(working_area, 'display') === 'block') {
-            var short_name = this.results_helper.filter_section
-                .visible_filter_short_name;
-            var filter = this.results_helper.filter_manager.get_filter(
-                short_name);
-            if (filter !== null) {
-                this.results_helper.filter_section.show_filter_working(
-                    filter);
-            }
-        }
+        // Update the species count everywhere it appears on the screen.
+        dojo.query('.species-count').html(data.items.length + '');
 
         var plant_list = dojo.query('#main .plant-list')[0];
         this.display_results(data.items, plant_list);

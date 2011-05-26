@@ -12,7 +12,7 @@
  * Inputs:
  *
  * clear() - the user has pressed the "x" next to the filter's name in
- *     the sidebar summary, and the filter value should be cleared. [TODO]
+ *     the sidebar summary, and the filter value should be cleared.
  * set_species_vector(vector) - some other filter has changed or cleared,
  *     so the set of available species has changed; the counts next to
  *     each character value should be changed, or, for a length filter,
@@ -23,12 +23,7 @@
  *
  * on_change(filter) - the working area invokes this callback whenever
  *     a user action has caused the filter value to be selected and set.
- */
-
-/* TODO
- *
- * - Get clear() working, and have the manager call it.
- * - Get dismiss() working, and have the manager call it.
+ * on_dismiss(filter) - called when the user dismisses the working area.
  */
 
 dojo.provide('gobotany.sk.working_area');
@@ -51,15 +46,31 @@ gobotany.sk.working_area.select_working_area = function(filter) {
 dojo.declare('gobotany.sk.working_area.Choice', null, {
 
     div_map: null,  // maps choice value -> <input> element
+    close_button_connection: null,  // connection from the close button to us
 
     constructor: function(div, filter, species_vector, glossarizer,
-                          on_change) {
+                          on_change, on_dismiss) {
         this.div = div;
         this.filter = filter;
+        this.short_name = filter.short_name;
         this.glossarizer = glossarizer;
         this._draw();
         this.set_species_vector(species_vector);
         this.on_change = on_change;
+        this.on_dismiss = on_dismiss;
+    },
+
+    /* Events that can be triggered from outside. */
+
+    clear: function() {
+        dojo.query('input', this.div_map['']).attr('checked', true);
+    },
+
+    dismiss: function() {
+        dojo.disconnect(this.close_button_connection);
+        this.close_button_connection = null;
+        dojo.query('div.working-area').style({display: 'none'});
+        this.on_dismiss(this.filter);
     },
 
     /* Draw the working area. */
@@ -73,6 +84,10 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         dojo.query('div.working-area .hint').html(p(f.hint));
         //dojo.query('div.working-area .actions').html('actions');
         dojo.query('div.working-area').style({display: 'block'});
+
+        var close_button = dojo.query('div.working-area .close')[0];
+        this.close_button_connection = dojo.connect(
+            close_button, 'onclick', dojo.hitch(this, 'dismiss'));
     },
 
     _draw: function() {
@@ -105,7 +120,6 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         for (i = 0; i < values.length; i++) {
             var v = values[i];
 
-            console.log(v, v.choice);
             var item_html = '<label><input name="char_name" type="radio"' +
                 checked(f.selected_value === v.choice) +
                 ' value="' + v.choice + '">';

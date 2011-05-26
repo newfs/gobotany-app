@@ -65,10 +65,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             new gobotany.sk.results.FilterSectionHelper(this);
         this.filter_section.setup_section();
 
-        // Wire up the filter working area's close button.
-        var el = dojo.query('div.working-area .close')[0];
-        dojo.connect(el, 'onclick', dojo.hitch(this.filter_section,
-            this.filter_section.hide_filter_working));
+        this.working_area = null;
 
         dojo.subscribe('results_loaded',
             dojo.hitch(this, this.populate_image_types));
@@ -662,14 +659,14 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                              var current_filter_name = '';
                              var working_area_name = dojo.query(
                                  'div.working-area .name');
-                             if (working_area_name.length) {
+
+                             if (working_area_name.length)
                                  current_filter_name =
                                     working_area_name[0].innerHTML;
-                             }
+
                              if (filter.friendly_name ===
-                                 current_filter_name) {
-                                this.hide_filter_working();
-                             }
+                                 current_filter_name)
+                                 this.working_area.dismiss();
                          });
             dojo.connect(clearLink, 'onclick', this,
                          function(event) {
@@ -781,6 +778,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.set_value('genus', null);
     },
 
+    /* Used when our family and genus widgets need to make updates: */
     set_value: function(char_name, value) {
         this.results_helper.filter_manager.set_selected_value(char_name,
             value);
@@ -827,6 +825,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     clear_filter: function(filter) {
+        if (this.working_area.filter === filter)
+            this.working_area.clear();
+
         if (this.results_helper.filter_manager.get_selected_value(
             filter.character_short_name)) {
 
@@ -841,9 +842,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     remove_filter: function(filter) {
-        if (filter.character_short_name === this.visible_filter_short_name) {
-            this.hide_filter_working();
-        }
+        if (filter.character_short_name === this.visible_filter_short_name)
+            this.working_area.dismiss();
 
         if (this.results_helper.filter_manager.has_filter(
             filter.character_short_name)) {
@@ -857,15 +857,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.results_helper.species_section.lazy_load_images();
 
         _global_setSidebarHeight();
-    },
-
-    hide_filter_working: function() {
-        dojo.query('div.working-area').style({display: 'none'});
-        this.results_helper.species_section.lazy_load_images();
-
-        // Save the state, which includes whether the filter working area is
-        // being shown.
-        this.results_helper.save_filter_state();
     },
 
     set_simple_slider_value: function() {
@@ -989,7 +980,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         var species_vector = this.results_helper.filter_manager.
             compute_species_without(filter.character_short_name);
         this.working_area = C(dojo.query('div.working-area'), filter,
-                              species_vector, this.glossarizer, null);
+                              species_vector, this.glossarizer, null,
+                              dojo.hitch(this, 'on_working_area_dismiss'));
 
         // Save the state, which includes whether the filter working area is
         // being shown.
@@ -997,6 +989,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.results_helper.save_filter_state();
 
         _global_setSidebarHeight();
-    }
+    },
 
+    /* When the working area is dismissed, we clean up and save state. */
+
+    on_working_area_dismiss: function(filter) {
+        this.working_area = null;
+        this.results_helper.species_section.lazy_load_images();
+        this.results_helper.save_filter_state();
+    }
 });
