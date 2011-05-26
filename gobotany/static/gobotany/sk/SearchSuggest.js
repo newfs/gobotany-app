@@ -6,7 +6,7 @@ dojo.provide('gobotany.sk.SearchSuggest');
 dojo.require('dojox.data.JsonRestStore');
 
 dojo.declare('gobotany.sk.SearchSuggest', null, {
-    constants: { TIMEOUT_INTERVAL_MS: 500 },
+    constants: { TIMEOUT_INTERVAL_MS: 200 },
     stored_search_box_value: '',
     search_box: null,
     menu: null,
