@@ -531,7 +531,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         var display_value = 'don\'t know';
 
-        if (value !== undefined && value !== '') {
+        if (value !== null && value !== undefined && value !== '') {
             display_value = value;
 
             // If a non-technical label was supplied, use it instead.
@@ -596,30 +596,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             this._apply_numeric_value(value_label, value);
             return;
         }
-
-        // Next, look for a traditional checked multiple-choice field.
-
-        var checked_item_q = dojo.query(
-            '#character_values_form input:checked');
-
-        if (checked_item_q.length) {
-            value = checked_item_q[0].value;
-            this.results_helper.filter_manager.set_selected_value(
-                this.visible_filter_short_name, value);
-            var filter = this.results_helper.filter_manager.get_filter(
-                this.visible_filter_short_name);
-            var value_object = filter.choicemap[value];
-            var friendly_text = (value_object === undefined ? '' :
-                                 value_object.friendly_text);
-            value_label.innerHTML = this._get_filter_display_value(
-                friendly_text, value, this.visible_filter_short_name);
-            this.results_helper.species_section.perform_query();
-            this.show_or_hide_filter_clear(
-                this.visible_filter_short_name);
-            return;
-        }
-
-        // Well, drat.
 
         console.log('"Apply" button pressed, but no widget found');
     },
@@ -933,7 +909,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         var species_vector = this.results_helper.filter_manager.
             compute_species_without(filter.character_short_name);
         this.working_area = C(dojo.query('div.working-area')[0], filter,
-                              species_vector, this.glossarizer, null,
+                              species_vector, this.glossarizer,
+                              dojo.hitch(this, 'on_working_area_change'),
                               dojo.hitch(this, 'on_working_area_dismiss'));
 
         // Save the state, which includes whether the filter working area is
@@ -950,5 +927,19 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.working_area = null;
         this.results_helper.species_section.lazy_load_images();
         this.results_helper.save_filter_state();
+    },
+
+    /* When the filter value is changed in the working area, we respond. */
+
+    on_working_area_change: function(filter) {
+        var value = filter.selected_value;
+        var value_label = dojo.query(
+            'li#' + this.visible_filter_short_name + ' span.value')[0];
+        var friendly_text = (value === null) ? "don't know" :
+            filter.choicemap[value].friendly_text;
+        value_label.innerHTML = this._get_filter_display_value(
+            friendly_text, value, this.visible_filter_short_name);
+        this.results_helper.species_section.perform_query();
+        this.show_or_hide_filter_clear(this.visible_filter_short_name);
     }
 });

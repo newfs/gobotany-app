@@ -77,7 +77,9 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
 
     dismiss: function() {
         dojo.disconnect(this.close_button_connection);
+        dojo.disconnect(this.apply_button_connection);
         this.close_button_connection = null;
+        this.apply_button_connection = null;
         dojo.query(this.div).style({display: 'none'});
         this.on_dismiss(this.filter);
     },
@@ -174,6 +176,11 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
             var label = dojo.query('span.label', character_value_div)[0];
             this.glossarizer.markup(label);
         }
+
+        // Hook up the Apply button.
+        var button = dojo.query('.apply-btn', this.div)[0];
+        this.apply_button_connection = dojo.connect(
+            button, 'onclick', dojo.hitch(this, '_apply_button_clicked'));
     },
 
     /* Get a value suitable for use as an image element id from the
@@ -199,6 +206,14 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
             var input_field_q = dojo.query('input', this.div_map[v.choice]);
             input_field_q.attr('disabled', vector.length === 0);
         }
+    },
+
+    /* When the apply button is pressed, we announce a value change. */
+
+    _apply_button_clicked: function() {
+        var value = dojo.query('input:checked', this.div).attr('value')[0];
+        this.filter.selected_value = value || null;
+        this.on_change(this.filter);
     }
 });
 
@@ -293,23 +308,34 @@ dojo.declare('gobotany.sk.working_area.Length', [
         );
         v.query('[name="units"]').connect('onchange', this, '_unit_changed');
         v.query('[type="text"]').connect('onchange', this, '_measure_changed');
+        v.query('[type="text"]').connect('onkeyup', this, '_measure_changed');
     },
 
     _unit_changed: function(event) {
         this.unit = event.target.value;
         this.factor = ({mm: 1.0, cm: 0.1, m: 0.001})[this.unit];
-        console.log('units_changed!', event);
-        this._update_permitted_ranges();
+        this._redraw_permitted_ranges();
         this._measure_changed();
     },
 
-    _measure_changed: function() {
-        1;
+    _measure_changed: function(event) {
+        var text = dojo.query('[name="measure"]', this.div).attr('value')[0];
+        var mm = parseFloat(text) * this.factor;
+        var legal = false;
+        for (var i = 0; i < this.permitted_ranges.length; i++) {
+            var pr = this.permitted_ranges[i];
+            if (pr.min <= mm && mm <= pr.max) {
+                var legal = true;
+                break;
+            }
+        }
+        console.log('Are we happy with this input?', legal);
+        // drat, cannot disable the apply button? must ask Sid about what
+        // approach to take instead:
+        // dojo.query('a.apply-btn', this.div).attr('disabled', ! legal);
     },
 
-    _update_permitted_ranges: function() {
-        console.log('permitted ranges!');
-        console.log(this.permitted_ranges);
+    _redraw_permitted_ranges: function() {
         var p = 'Please choose a measurement in the range ';
         for (var i = 0; i < this.permitted_ranges.length; i++) {
             var pr = this.permitted_ranges[i];
@@ -322,7 +348,7 @@ dojo.declare('gobotany.sk.working_area.Length', [
 
     set_species_vector: function(species_vector) {
         this.permitted_ranges = this.filter.allowed_ranges(species_vector);
-        this._update_permitted_ranges();
+        this._redraw_permitted_ranges();
     }
 });
 
