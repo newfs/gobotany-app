@@ -137,38 +137,32 @@ dojo.declare('gobotany.filters.Filter', null, {
         var ranges = [];
         for (i = 0; i < this.values.length; i++) {
             var value = this.values[i];
-            if (value.min === null || value.max === null)
+            var vmin = value.min;
+            var vmax = value.max;
+
+            if (vmin === null || vmax === null)
                 continue;  // ignore values that are not ranges anyway
+
             if (intersect(vector, value.species).length == 0)
                 continue;  // ignore values that apply to none of these species
 
-            // Iterate over the ranges we already know
-            // about, looking for where this new range fits.
-            // If it overlaps with one already stored, then
-            // extend the existing range.
+            // First we skip any ranges lying entirely to the left of this one.
 
-            for (j = 0; j < ranges.length; j++) {
-                var r = ranges[j];
-                if (value.max < r.min) {
-                    var newrange = {min: value.min, max: value.max};
-                    ranges.splice(j, 0, newrange);
-                    break;
-                }
-                if (value.min <= r.max && r.min <= value.max) {
-                    r.min = Math.min(r.min, value.min);
-                    r.max = Math.max(r.max, value.max);
-                    break;
-                }
+            var j = 0;
+            for (j = 0; j < ranges.length && ranges[j].max < value.min; j++);
+
+            // Next, we absorb every range with which we overlap.
+
+            while (j < ranges.length &&
+                   vmin <= ranges[j].max && ranges[j].min <= vmax) {
+                vmin = Math.min(ranges[j].min, vmin);
+                vmax = Math.max(ranges[j].max, vmax);
+                ranges.splice(j, 1);
             }
 
-            // If we reached the end of the list of ranges
-            // without finding a match, then insert a new
-            // range at the end of our list.
+            // Finally, we insert this new range into the list.
 
-            if (j == ranges.length) {
-                var newrange = {min: value.min, max: value.max};
-                ranges.push(newrange);
-            }
+            ranges.splice(j, 0, {min: vmin, max: vmax});
         }
         return ranges;
     }

@@ -652,22 +652,12 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 innerHTML: '<br>× clear'});
 
             // Pass the filter to the function as its context (this).
-            dojo.connect(closeLink, 'onclick', this,
-                         function(event) {
-                             dojo.stopEvent(event);
-                             this.remove_filter(filter);
-                             var current_filter_name = '';
-                             var working_area_name = dojo.query(
-                                 'div.working-area .name');
-
-                             if (working_area_name.length)
-                                 current_filter_name =
-                                    working_area_name[0].innerHTML;
-
-                             if (filter.friendly_name ===
-                                 current_filter_name)
-                                 this.working_area.dismiss();
-                         });
+            dojo.connect(closeLink, 'onclick', this, function(event) {
+                dojo.stopEvent(event);
+                this.remove_filter(filter);
+                if (filter === this.working_area.filter)
+                    this.working_area.dismiss();
+            });
             dojo.connect(clearLink, 'onclick', this,
                          function(event) {
                              dojo.stopEvent(event);
@@ -884,11 +874,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             dojo.query(this.slider_node).orphan();
             this.ruler = this.slider_node = null;
         }
-        if (this.simple_slider) {
-            this.simple_slider.destroy();
-            dojo.query(this.slider_node).orphan();
-            this.simple_slider = this.slider_node = null;
-        }
     },
 
     show_ruler_slider: function(filter, values_list) {
@@ -940,38 +925,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             startvalue, illegal_regions);
     },
 
-    show_slider: function(filter, values_list) {
-        var num_values = filter.max - filter.min + 1;
-        var startvalue = Math.ceil(num_values / 2);
-        var selectedvalue =
-            this.results_helper.filter_manager.get_selected_value(
-                filter.character_short_name);
-        if (selectedvalue !== undefined && selectedvalue !== null) {
-            startvalue = selectedvalue;
-        }
-        dojo.place('<label>Select a number between<br>' +
-                   filter.min + ' and ' +
-                   filter.max + '</label>', values_list);
-        this.slider_node = dojo.create('div', null, values_list);
-        this.simple_slider = new dijit.form.HorizontalSlider({
-            id: 'simple-slider',
-            name: 'simple-slider',
-            value: startvalue,
-            minimum: filter.min,
-            maximum: filter.max,
-            discreteValues: num_values,
-            intermediateChanges: true,
-            showButtons: false,
-            onChange: dojo.hitch(this, this.set_simple_slider_value),
-            onMouseUp: dojo.hitch(this, this.set_simple_slider_value)
-            }, this.slider_node);
-        dojo.create('div', {
-            'class': 'count',
-            'innerHTML': startvalue
-            }, this.simple_slider.containerNode);
-        this.set_simple_slider_value();
-    },
-
     /* A filter object has been returned from Ajax!  We can now set up
        the working area and save the new page state. */
 
@@ -979,7 +932,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         var C = gobotany.sk.working_area.select_working_area(filter);
         var species_vector = this.results_helper.filter_manager.
             compute_species_without(filter.character_short_name);
-        this.working_area = C(dojo.query('div.working-area'), filter,
+        this.working_area = C(dojo.query('div.working-area')[0], filter,
                               species_vector, this.glossarizer, null,
                               dojo.hitch(this, 'on_working_area_dismiss'));
 

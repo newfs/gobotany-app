@@ -12,7 +12,8 @@
  * Inputs:
  *
  * clear() - the user has pressed the "x" next to the filter's name in
- *     the sidebar summary, and the filter value should be cleared.
+ *     the sidebar summary, and the filter value should be moved back
+ *     to "don't know" if that is not already the value.
  * set_species_vector(vector) - some other filter has changed or cleared,
  *     so the set of available species has changed; the counts next to
  *     each character value should be changed, or, for a length filter,
@@ -37,11 +38,18 @@ dojo.require('dojo.NodeList-html');
  * @return {Class} The class that will manage this kind of working area.
  */
 gobotany.sk.working_area.select_working_area = function(filter) {
-    if (filter.value_type == 'TEXT') {
+    if (filter.value_type == 'TEXT')
         return gobotany.sk.working_area.Choice;
-    } else
-        console.log('*****WORKING AREA CHOOSE******', filter);
+    else if (filter.is_length())
+        return gobotany.sk.working_area.Length;
+    else
+        return gobotany.sk.working_area.Slider;
 };
+
+/*
+ * The most basic working-area class, which the other versions of the class
+ * inherit from and specialize, is the standard multiple-choice selection.
+ */
 
 dojo.declare('gobotany.sk.working_area.Choice', null, {
 
@@ -54,7 +62,8 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         this.filter = filter;
         this.short_name = filter.short_name;
         this.glossarizer = glossarizer;
-        this._draw();
+        this._draw_basics();
+        this._draw_specifics();
         this.set_species_vector(species_vector);
         this.on_change = on_change;
         this.on_dismiss = on_dismiss;
@@ -69,33 +78,32 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
     dismiss: function() {
         dojo.disconnect(this.close_button_connection);
         this.close_button_connection = null;
-        dojo.query('div.working-area').style({display: 'none'});
+        dojo.query(this.div).style({display: 'none'});
         this.on_dismiss(this.filter);
     },
 
     /* Draw the working area. */
 
     _draw_basics: function() {
+        var d = dojo.query(this.div);
         var f = this.filter;
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
 
-        dojo.query('div.working-area h4').html(f.friendly_name);
-        dojo.query('div.working-area .question').html(p(f.question));
-        dojo.query('div.working-area .hint').html(p(f.hint));
-        //dojo.query('div.working-area .actions').html('actions');
-        dojo.query('div.working-area').style({display: 'block'});
+        d.query('h4').html(f.friendly_name);
+        d.query('.question').html(p(f.question));
+        d.query('.hint').html(p(f.hint));
+        //q('.actions').html('actions');
+        d.style({display: 'block'});
 
-        var close_button = dojo.query('div.working-area .close')[0];
+        var close_button = d.query('.close')[0];
         this.close_button_connection = dojo.connect(
             close_button, 'onclick', dojo.hitch(this, 'dismiss'));
     },
 
-    _draw: function() {
+    _draw_specifics: function() {
         var CHOICES_PER_ROW = 5;
         var checked = function(cond) {return cond ? ' checked' : ''};
         var f = this.filter;
-
-        this._draw_basics();
 
         var values_q = dojo.query('div.working-area .values');
         values_q.empty().addClass('multiple').removeClass('numeric');
@@ -192,8 +200,135 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
             input_field_q.attr('disabled', vector.length === 0);
         }
     }
-
 });
+
+/*
+ * Next comes the slider, for integer numeric fields.
+ */
+
+dojo.declare('gobotany.sk.working_area.Slider', [
+    gobotany.sk.working_area.Choice
+], {
+
+    slider_node: null,
+    simple_slider: null,
+
+    /* See the comments on the Choice class, above, to learn about when
+       and how these methods are invoked. */
+
+    clear: function() {
+    },  // *shrug* - slider just stays there (or should Apply light back up?)
+
+    dismiss: function() {
+        this.simple_slider.destroy();
+        dojo.query(this.slider_node).orphan();
+        this.simple_slider = this.slider_node = null;
+    },
+
+    _draw_specifics: function() {
+        // values_list?
+        var filter = this.filter;
+        var num_values = filter.max - filter.min + 1;
+        var startvalue = Math.ceil(num_values / 2);
+        if (filter.selected_value !== null)
+            startvalue = filter.selected_value;
+
+        var values_q = dojo.query('div.working-area .values');
+        var values_div = values_q[0];
+        dojo.place('<label>Select a number between<br>' +
+                   filter.min + ' and ' +
+                   filter.max + '</label>', values_div);
+        this.slider_node = dojo.create('div', null, values_div);
+        this.simple_slider = new dijit.form.HorizontalSlider({
+            id: 'simple-slider',
+            name: 'simple-slider',
+            value: startvalue,
+            minimum: filter.min,
+            maximum: filter.max,
+            discreteValues: num_values,
+            intermediateChanges: true,
+            showButtons: false,
+            onChange: dojo.hitch(this, this.set_simple_slider_value),
+            onMouseUp: dojo.hitch(this, this.set_simple_slider_value)
+        }, this.slider_node);
+        dojo.create('div', {
+            'class': 'count',
+            'innerHTML': startvalue
+        }, this.simple_slider.containerNode);
+        this.set_simple_slider_value();
+    },
+
+    set_species_vector: function(species_vector) {
+    }
+});
+
+/*
+ * Finally, the text box where users can enter lengths.
+ */
+
+dojo.declare('gobotany.sk.working_area.Length', [
+    gobotany.sk.working_area.Choice
+], {
+    permitted_ranges: [],  // [{min: n, max: m}, ...] all measured in mm
+    unit: 'mm',
+    factor: 1.0,
+
+    _draw_specifics: function() {
+        var v = dojo.query('div.working-area .values');
+        v.empty().addClass('numeric').removeClass('multiple').html(
+            '<div class="permitted_ranges"></div>' +
+            '<div class="current_length"></div>' +
+            '<div class="choose_length">' +
+            'Length: <input name="measure" type="text" value=""><br>' +
+            '<label>' +
+            '<input name="units" type="radio" value="mm" checked>mm' +
+            '</label>' +
+            '<label>' +
+            '<input name="units" type="radio" value="cm">cm' +
+            '</label>' +
+            '<label>' +
+            '<input name="units" type="radio" value="m">m' +
+            '</label>' +
+                '</div>'
+        );
+        v.query('[name="units"]').connect('onchange', this, '_unit_changed');
+        v.query('[type="text"]').connect('onchange', this, '_measure_changed');
+    },
+
+    _unit_changed: function(event) {
+        this.unit = event.target.value;
+        this.factor = ({mm: 1.0, cm: 0.1, m: 0.001})[this.unit];
+        console.log('units_changed!', event);
+        this._update_permitted_ranges();
+        this._measure_changed();
+    },
+
+    _measure_changed: function() {
+        1;
+    },
+
+    _update_permitted_ranges: function() {
+        console.log('permitted ranges!');
+        console.log(this.permitted_ranges);
+        var p = 'Please choose a measurement in the range ';
+        for (var i = 0; i < this.permitted_ranges.length; i++) {
+            var pr = this.permitted_ranges[i];
+            if (i) p += ' or ';
+            p += (pr.min * this.factor) + '–' +
+                (pr.max * this.factor) + '&nbsp;' + this.unit;
+        }
+        dojo.query('.permitted_ranges', this.div).html(p);
+    },
+
+    set_species_vector: function(species_vector) {
+        this.permitted_ranges = this.filter.allowed_ranges(species_vector);
+        this._update_permitted_ranges();
+    }
+});
+
+/*
+ * Helper functions
+ */
 
 /* Generate a human-readable representation of a value.
  */
