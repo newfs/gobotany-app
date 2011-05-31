@@ -647,10 +647,11 @@ div.show {
     border-bottom: 1px solid #e1e1dc;
 }
 .plant-list .row .plant {
-    position: relative;
     float: left;
+    height: 205px;
     margin: 0;
-    padding: 10px 8px; 
+    padding: 10px 8px;
+    position: relative;
     width: 160px; /* prevent long names from blowing out layout; allow wrap */
 }
 .plant-list .row .plant.first {
