@@ -308,8 +308,6 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
         var viewport = dijit.getViewport();
         var viewport_height = viewport.h;
         var viewport_width = viewport.w;
-        //console.log('viewport_height: ' + viewport_height +
-        //            ' viewport_width: ' + viewport_width);
 
         var scroll_top = 0;
         var scroll_left = 0;
@@ -317,16 +315,15 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
             scroll_top = window.pageYOffset;
             scroll_left = window.pageXOffset;
 	    }
-        /*else if (dojo.exists(document, 'documentElement.scrollTop')) {
+        else if (document.documentElement && 
+                 document.documentElement.scrollTop) {
             scroll_top = document.documentElement.scrollTop;
             scroll_left = document.documentElement.scrollLeft;
-	    } <-- FIXME: fires an error on loading sometimes; doc not ready yet? */ 
+        }
         else if (document.body) {
 		    scroll_top = document.body.scrollTop;
             scroll_left = document.body.scrollLeft;
 	    }
-        //console.log('scroll_top: ' + scroll_top +
-        //            ' scroll_left: ' + scroll_left);
 
         var image_elements = dojo.query('div.plant-list img');
         var i;
@@ -345,10 +342,10 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                 while (current_element = current_element.offsetParent)
 
                 var is_element_visible = false;
-                // Only worry about top/bottom scroll visibility, not
+                // Only worry about top/bottom scroll visibility, not also
                 // left/right scroll visibility.
                 if (total_offset_top > (scroll_top - element.height) &&
-                    total_offset_top < viewport_height + scroll_top) {
+                    total_offset_top < (viewport_height + scroll_top)) {
 
                     is_element_visible = true;
                 }
@@ -356,16 +353,7 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                 if (is_element_visible === true) {
                     var image_url = dojo.attr(element, 'x-tmp-src');
 
-                    /*
-                    // Write a console message
-                    var message = image_url + ':';
-                    message += ' total_offset_top: ' + total_offset_top;
-                    message += ' total_offset_left: ' + total_offset_left;
-                    message += ' is_element_visible: ' + is_element_visible;
-                    console.log(message);
-                    */
-
-                    // Set the src attribute so the image will load.
+                    // Set the attribute that will make the image load.
                     dojo.attr(element, 'src', image_url);
                 }
             }
