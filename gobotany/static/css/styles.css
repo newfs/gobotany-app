@@ -634,7 +634,7 @@ div.show {
     margin: -3px 0 7px 0; /* adjusted due to Dijit menu widget */
 }
 
-div.row {
+.plant-list div.row {
     border-top: 1px solid #e1e1dc;
     border-right: 1px solid #e1e1dc;
     border-left: 1px solid #e1e1dc;
@@ -643,40 +643,40 @@ div.row {
     text-align: center;
 }
 
-div.row.last {
+.plant-list div.row.last {
     border-bottom: 1px solid #e1e1dc;
 }
-.row .plant {
+.plant-list .row .plant {
     position: relative;
     float: left;
     margin: 0;
     padding: 10px 8px; 
     width: 160px; /* prevent long names from blowing out layout; allow wrap */
 }
-.row .plant.first {
+.plant-list .row .plant.first {
     padding-left: 10px;
 }
-.row .plant.last {
+.plant-list .row .plant.last {
     padding-right: 10px;
 }
 
-.row .plant.genus1 {
+.plant-list .row .plant.genus1 {
     background: #fff;
 }
-.row .plant.genus2 {
+.plant-list .row .plant.genus2 {
     background: #d4e8bc; /* halfway between g3 and g5 */
 }
-.row .plant.genus3 {
+.plant-list .row .plant.genus3 {
     background: #e2f0d3; /* halfway between g1 and g5 */
 }
-.row .plant.genus4 {
+.plant-list .row .plant.genus4 {
     background: #eff5e9; /* halfway between g1 and g3 */
 }
-.row .plant.genus5 {
+.plant-list .row .plant.genus5 {
     background: #cce5af;
 }
 
-.row .plant .frame {
+.plant-list .row .plant .frame {
     border: 5px solid rgba(255, 255, 255, 0.8);
     height: 139px;
     position: absolute;
@@ -684,14 +684,14 @@ div.row.last {
     width: 150px;
     z-index: 100;
 }
-.row .plant a {
+.plant-list .row .plant a {
     display: block;
     color: #1a2e11;
 }
-.row .plant a:hover {
+.plant-list .row .plant a:hover {
     color: #6eae3e;
 }
-.row .plant .img-container {
+.plant-list .row .plant .img-container {
     width: 160px;
     height: 149px;
     overflow: hidden;
