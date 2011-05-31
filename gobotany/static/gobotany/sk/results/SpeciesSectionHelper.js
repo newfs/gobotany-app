@@ -214,24 +214,16 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
 
     display_results: function(items, plants_container) {
         var SPECIES_PER_ROW = 4;
+        var NUM_GENUS_COLORS = 5;
+        var genus_color = 1;
         var num_rows = Math.ceil(items.length / SPECIES_PER_ROW);
         var r;
         for (r = 0; r < num_rows; r++) {
-            // Temporarily continue using the 'genus' container, until some
-            // refactoring can be done. Use one per row.
-            var class_value = 'genus';
+            var class_value = 'row';
             if (r === num_rows - 1) {
                 class_value += ' last';
             }
-            var genus_container = dojo.create('div', {
-                'class': class_value
-            });
-
-            var row_class_value = 'row';
-            if (r === num_rows - 1) {
-                row_class_value += ' last';
-            }
-            var row = dojo.create('div', {'class': row_class_value});
+            var row = dojo.create('div', {'class': class_value});
 
             // Add the species for this row.
             var s;
@@ -241,10 +233,27 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                 if (items[s] !== undefined) {
                     var species = items[s];
                     var plant_class_value = 'plant';
-                    if ((s === (r * SPECIES_PER_ROW) + SPECIES_PER_ROW - 1) ||
+                    if (s === (r * SPECIES_PER_ROW)) {
+                        plant_class_value += ' first';
+                    }
+                    else if ((s === (r * SPECIES_PER_ROW) + 
+                                     SPECIES_PER_ROW - 1) ||
                             (items[s + 1] === undefined)) {                
                         plant_class_value += ' last';
                     }
+                    
+                    // Set a background color, changing color if a new genus.
+                    if (s > 0) {
+                        if (items[s].genus !== items[s - 1].genus) {
+                            genus_color += 1;
+                            if (genus_color > NUM_GENUS_COLORS) {
+                                genus_color = 1;
+                            }
+                        }
+                    }
+                    plant_class_value += ' genus' + genus_color;
+                    
+
                     var plant = dojo.create('div',
                         {'class': plant_class_value});
                     var path = window.location.pathname.split('#')[0];
@@ -291,8 +300,7 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
                     }
                 }
             }
-            dojo.place(row, genus_container);
-            dojo.place(genus_container, plants_container);
+            dojo.place(row, plants_container);
         }    
     },
 
