@@ -701,10 +701,15 @@ div.show {
     -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
 .plant p.plant-name {
+    font-family: Tahoma, sans-serif; /* Tahoma because it's narrower; less
+                                        wrapping and fewer names pushing out
+                                        to 4 lines */
     margin: 7px 0 0 0;
 }
 .plant p.plant-name span.latin {
     display: block;
+    font-family: Verdana, sans-serif; /* Verdana because it's wider; easier
+                                         to read in italic */
     font-style: italic;
 }
 p.list-all {
