@@ -933,6 +933,8 @@ class Importer(object):
 
             for filename in filenames:
 
+                print >> self.logfile, 'INFO: current image, ', filename
+
                 if filename.startswith('.'):  # skip hidden files
                     continue
 
@@ -941,6 +943,10 @@ class Importer(object):
 
                 if filename.count('.') > 1: # skip files with more than one dot
                     print >> self.logfile, 'ERR: image has multiple periods:', filename
+                    continue
+
+                if filename.count('_') > 0: # skip files with underscores
+                    print >> self.logfile, 'ERR: image has underscores:', filename
                     continue
 
                 name, ext = filename.split('.')
