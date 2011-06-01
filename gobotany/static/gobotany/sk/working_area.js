@@ -56,17 +56,17 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
     div_map: null,  // maps choice value -> <input> element
     close_button_connection: null,  // connection from the close button to us
 
-    constructor: function(div, filter, species_vector, glossarizer,
-                          on_change, on_dismiss) {
-        this.div = div;
-        this.filter = filter;
-        this.short_name = filter.short_name;
-        this.glossarizer = glossarizer;
+    /* {div, filter, species_vector, glossarizer, on_change, on_dismiss} */
+    constructor: function(args) {
+        this.div = args.div;
+        this.filter = args.filter;
+        this.short_name = args.filter.short_name;
+        this.glossarizer = args.glossarizer;
         this._draw_basics();
         this._draw_specifics();
-        this.set_species_vector(species_vector);
-        this.on_change = on_change;
-        this.on_dismiss = on_dismiss;
+        this.set_species_vector(args.species_vector);
+        this.on_change = args.on_change;
+        this.on_dismiss = args.on_dismiss;
     },
 
     /* Events that can be triggered from outside. */
@@ -210,7 +210,8 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
 
     /* When the apply button is pressed, we announce a value change. */
 
-    _apply_button_clicked: function() {
+    _apply_button_clicked: function(event) {
+        dojo.stopEvent(event);
         var value = dojo.query('input:checked', this.div).attr('value')[0];
         this.filter.selected_value = value || null;
         this.on_change(this.filter);

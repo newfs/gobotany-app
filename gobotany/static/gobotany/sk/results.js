@@ -65,8 +65,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             new gobotany.sk.results.FilterSectionHelper(this);
         this.filter_section.setup_section();
 
-        this.working_area = null;
-
         dojo.subscribe('results_loaded',
             dojo.hitch(this, this.populate_image_types));
 
@@ -381,9 +379,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             select_box.addOption({value: image_type,
                 label: image_type});
             // Habit is selected by default
-            if (image_type === 'habit') {
-                select_box.attr('value', 'habit');
-            }
+            if (image_type === 'habit')
+                select_box.set('value', 'habit');
         }
     }
 });
@@ -403,6 +400,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         this.results_helper = results_helper;
         this.glossarizer = gobotany.sk.glossary.Glossarizer();
+        this.working_area = null;
 
         // This variable is for keeping track of which filter is currently
         // visible in the filter working area (if any).
@@ -424,10 +422,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             dojo.stopEvent(event);
             this.query_best_filters();
         });
-
-        // Wire up the Apply button in the filter working area.
-        var apply_button = dojo.query('.working-area a.apply-btn')[0];
-        dojo.connect(apply_button, 'onclick', this, this._apply_filter);
 
         // Wire up the Family and Genus submit buttons.
         var family_store = new dojo.data.ItemFileWriteStore(
@@ -575,6 +569,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     _apply_filter: function(event) {
+        // TODO: remove this function once sliders and measurements work again
         dojo.stopEvent(event);
 
         var value_label = dojo.query('li#' + this.visible_filter_short_name +
@@ -791,7 +786,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     clear_filter: function(filter) {
-        if (this.working_area.filter === filter)
+        if (this.working_area !== null && this.working_area.filter === filter)
             this.working_area.clear();
 
         if (this.results_helper.filter_manager.get_selected_value(
@@ -905,13 +900,22 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
        the working area and save the new page state. */
 
     show_filter_working_onload: function(filter) {
+        // Dismiss old working area, to avoid having an Apply button
+        // that is wired up to two different filters!
+        if (this.working_area !== null)
+            this.working_area.dismiss();
+
         var C = gobotany.sk.working_area.select_working_area(filter);
         var species_vector = this.results_helper.filter_manager.
             compute_species_without(filter.character_short_name);
-        this.working_area = C(dojo.query('div.working-area')[0], filter,
-                              species_vector, this.glossarizer,
-                              dojo.hitch(this, 'on_working_area_change'),
-                              dojo.hitch(this, 'on_working_area_dismiss'));
+        this.working_area = C({
+            div: dojo.query('div.working-area')[0],
+            filter: filter,
+            species_vector: species_vector,
+            glossarizer: this.glossarizer,
+            on_change: dojo.hitch(this, 'on_working_area_change'),
+            on_dismiss: dojo.hitch(this, 'on_working_area_dismiss')
+        });
 
         // Save the state, which includes whether the filter working area is
         // being shown.
@@ -934,12 +938,12 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     on_working_area_change: function(filter) {
         var value = filter.selected_value;
         var value_label = dojo.query(
-            'li#' + this.visible_filter_short_name + ' span.value')[0];
+            'li#' + filter.short_name + ' span.value')[0];
         var friendly_text = (value === null) ? "don't know" :
             filter.choicemap[value].friendly_text;
         value_label.innerHTML = this._get_filter_display_value(
-            friendly_text, value, this.visible_filter_short_name);
+            friendly_text, value, filter.short_name);
         this.results_helper.species_section.perform_query();
-        this.show_or_hide_filter_clear(this.visible_filter_short_name);
+        this.show_or_hide_filter_clear(filter.short_name);
     }
 });
