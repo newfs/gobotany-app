@@ -1253,7 +1253,7 @@ a.enlarge:hover {
 	position: relative;
 }
 #taxon .controls span {
-	position: absolute;
+	position: relative;
 	top: -22px;	
 }
 #taxon #main h2 {
