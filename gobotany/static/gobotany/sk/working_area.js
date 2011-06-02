@@ -241,12 +241,13 @@ dojo.declare('gobotany.sk.working_area.Slider', [
        and how these methods are invoked. */
 
     clear: function() {
-    },  // *shrug* - slider just stays there (or should Apply light back up?)
+    },
 
     dismiss: function() {
         this.simple_slider.destroy();
         dojo.query(this.slider_node).orphan();
         this.simple_slider = this.slider_node = null;
+        this.inherited(arguments);
     },
 
     _draw_specifics: function() {
@@ -258,11 +259,11 @@ dojo.declare('gobotany.sk.working_area.Slider', [
             startvalue = filter.selected_value;
 
         var values_q = dojo.query('div.working-area .values');
-        var values_div = values_q[0];
-        dojo.place('<label>Select a number between<br>' +
-                   filter.min + ' and ' +
-                   filter.max + '</label>', values_div);
-        this.slider_node = dojo.create('div', null, values_div);
+        values_q.addClass('multiple').removeClass('numeric').
+            html('<label>Select a number between<br>' +
+                 filter.min + ' and ' +
+                 filter.max + '</label>');
+        this.slider_node = dojo.create('div', null, values_q[0]);
         this.simple_slider = new dijit.form.HorizontalSlider({
             id: 'simple-slider',
             name: 'simple-slider',
@@ -272,17 +273,27 @@ dojo.declare('gobotany.sk.working_area.Slider', [
             discreteValues: num_values,
             intermediateChanges: true,
             showButtons: false,
-            onChange: dojo.hitch(this, this.set_simple_slider_value),
-            onMouseUp: dojo.hitch(this, this.set_simple_slider_value)
+            onChange: dojo.hitch(this, this._value_changed),
+            onMouseUp: dojo.hitch(this, this._value_changed)
         }, this.slider_node);
         dojo.create('div', {
             'class': 'count',
             'innerHTML': startvalue
         }, this.simple_slider.containerNode);
-        this.set_simple_slider_value();
+        this._value_changed();
+    },
+
+    _current_value: function() {
+        return dijit.byId('simple-slider').value;
+    },
+
+    _value_changed: function() {
+        var value = this._current_value();
+        dojo.query('#simple-slider .count').html(value + '');
     },
 
     set_species_vector: function(species_vector) {
+        this.species_vector = species_vector;
     }
 });
 

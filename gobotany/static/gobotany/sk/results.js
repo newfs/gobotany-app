@@ -154,9 +154,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         var filter_name = this.filter_section.visible_filter_short_name;
         if (filter_name !== '') {
             var filter = this.filter_manager.get_filter(filter_name);
-            if (filter !== undefined) {
+            if (filter !== undefined)
                 this.filter_section.show_filter_working(filter);
-            }
         }
     },
 
@@ -526,7 +525,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         if (value === null)
             return "don't know";
 
-        if (value == 'NA')
+        if (value === 'NA')
             return "doesn't apply";
 
         if (filter.value_type === 'TEXT') {
@@ -534,22 +533,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             return choice.friendly_text || value;
         }
 
-        return value + ' mm';
-    },
+        if (filter.is_length())
+            return value + ' mm';
 
-    _apply_filter: function(event) {
-        // TODO: remove this function once sliders and measurements work again
-        dojo.stopEvent(event);
-        var value_label = dojo.query('li#' + this.visible_filter_short_name +
-            ' span.value')[0];
-        //...
-        if (dojo.byId('simple-slider') !== null) {   // count slider
-            char_value_q = dijit.byId('simple-slider');
-            value = char_value_q.value;
-            if (isNaN(value))
-                return;
-            this._apply_numeric_value(value_label, value);
-        }
+        return value + '';
     },
 
     display_filter: function(filter, idx) {
@@ -778,80 +765,11 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         _global_setSidebarHeight();
     },
 
-    set_simple_slider_value: function() {
-        var count_display =
-            dojo.query('div.working-area #simple-slider .count')[0];
-        count_display.innerHTML = this.simple_slider.value;
-        var handle = dojo.query('.dijitSliderImageHandleH')[0];
-        var pos = dojo.position(handle, true);
-        count_display.style.top = (pos.y - 20) + 'px';
-        count_display.style.left = pos.x + 'px';
-    },
-
     show_filter_working: function(filter) {
         filter.load_values({
             base_vector: this.results_helper.filter_manager.base_vector,
             onload: dojo.hitch(this, 'show_filter_working_onload')
         });
-    },
-
-    clean_up_old_slider: function() {
-        // Clean up an old ruler or simple slider before rebuilding the
-        // working area.
-        if (this.ruler !== null) {
-            this.ruler.destroy();
-            dojo.query(this.slider_node).orphan();
-            this.ruler = this.slider_node = null;
-        }
-    },
-
-    show_ruler_slider: function(filter, values_list) {
-        var unit = filter.unit;
-        if (unit === null || unit === undefined) {
-            unit = 'mm';
-            console.warn('[' + filter.character_short_name +
-                '] Measurement has no unit, assuming mm');
-        }
-
-        // Create a slider with horizontal rules and labels.
-
-        var themin = filter.min;
-        var themax = filter.max;
-        var startvalue = (themax + themin) / 2.0;
-        var selectedvalue =
-            this.results_helper.filter_manager.get_selected_value(
-                filter.character_short_name);
-        if (selectedvalue !== undefined && selectedvalue !== null) {
-            startvalue = selectedvalue;
-        }
-
-        var p = gobotany.utils.pretty_length;
-        dojo.place('<label>Select a length between<br>' +
-                   p('mm', themin) +
-                   ' (' + p('in', themin) + ') and<br>' +
-                   p('mm', themax) +
-                   ' (' + p('in', themax) + ')<br></label>',
-                   values_list);
-
-        var filter_manager = this.results_helper.filter_manager;
-        var vector = filter_manager.compute_species_without(
-            filter.character_short_name);
-        var ranges = filter.allowed_ranges(vector);
-        var rmin = ranges[0].min;
-        var rmax = ranges[ranges.length - 1].max;
-
-        var illegal_regions = [];
-
-        if (rmin > 0) illegal_regions.push([- 2 * rmin, rmin]);
-        if (rmax < themax) illegal_regions.push([rmax, themax * 2]);
-
-        for (i = 0; i < ranges.length - 1; i++)
-            illegal_regions.push([ranges[i].max, ranges[i + 1].min]);
-
-        this.slider_node = dojo.create('div', null, values_list);
-        this.ruler = gobotany.sk.RulerSlider(
-            this.slider_node, 'character_slider', 600, themax,
-            startvalue, illegal_regions);
     },
 
     /* A filter object has been returned from Ajax!  We can now set up
