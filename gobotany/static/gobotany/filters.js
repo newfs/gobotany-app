@@ -138,10 +138,12 @@ dojo.declare('gobotany.filters.Filter', null, {
         } else {
             // A number has to be checked against each species' range.
             var vector = [];
-            for (var j = 0; j < this.values.length; j++) {
-                var value = this.values[j];
-                if (sv >= value.min && sv <= value.max)
-                    vector = vector.concat(value.species);
+            if (value === null)
+                return vector;
+            for (var i = 0; i < this.values.length; i++) {
+                var vi = this.values[i];
+                if (value >= vi.min && value <= vi.max)
+                    vector = vector.concat(vi.species);
             }
             vector.sort();
             return vector;
