@@ -129,6 +129,24 @@ dojo.declare('gobotany.filters.Filter', null, {
                 (this.character_short_name.indexOf('height') > -1) ||
                 (this.character_short_name.indexOf('thickness') > -1));
     },
+    // Return the vector of species IDs for species that matching a
+    // given value for this character.
+    species_matching: function(value) {
+        if (this.value_type == 'TEXT') {
+            // Looking up a multiple-choice filter is a single step.
+            return this.choicemap[value].species;
+        } else {
+            // A number has to be checked against each species' range.
+            var vector = [];
+            for (var j = 0; j < this.values.length; j++) {
+                var value = this.values[j];
+                if (sv >= value.min && sv <= value.max)
+                    vector = vector.concat(value.species);
+            }
+            vector.sort();
+            return vector;
+        }
+    },
     // For a numeric filter, figure out which ranges of values are legal
     // given a possible set of species as a species ID array.  Returns a
     // sorted list of disjoint ranges like:
@@ -431,23 +449,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         for (var i = 0; i < this.filters.length; i++) {
             var filter = this.filters[i];
             var sv = filter.selected_value;
-            if (sv !== null) {
-                if (isNaN(sv) && sv.length) {
-                    // looking up a multiple-choice filter is a single step
-                    var value = filter.choicemap[sv];
-                    vector = intersect(vector, value.species);
-                } else if (!isNaN(sv)) {
-                    // a number has to be checked against each species' range
-                    var fvector = [];
-                    for (j = 0; j < filter.values.length; j++) {
-                        var value = filter.values[j];
-                        if (sv >= value.min && sv <= value.max)
-                            fvector = fvector.concat(value.species);
-                    }
-                    fvector.sort();
-                    vector = intersect(vector, fvector);
-                }
-            }
+            if (sv !== null)
+                vector = intersect(vector, filter.species_matching(sv));
         }
 
         return vector;
