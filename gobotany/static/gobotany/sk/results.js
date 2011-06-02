@@ -607,7 +607,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     show_or_hide_filter_clear: function(filter_character_short_name) {
         // Show or hide the Clear link for a filter at left.
         var filter_id = '#' + filter_character_short_name;
-        var should_hide_clear = dojo.query('li#' + filter_id +
+        var should_hide_clear = dojo.query('li' + filter_id +
             ' span.value')[0].innerHTML === 'don\'t know';
         var clear = dojo.query(filter_id + ' .clear');
         if (should_hide_clear) {
