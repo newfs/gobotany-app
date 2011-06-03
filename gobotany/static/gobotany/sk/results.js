@@ -562,6 +562,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     ':</span> <span class="value">' +
                     this._get_filter_display_value(filter) + '</span>'});
 
+            this.glossarizer.markup(labelsLink);
+
             var clearLink = dojo.create('a', {
                 'class': 'clear hidden', href: '#',
                 innerHTML: '<br>× clear'});

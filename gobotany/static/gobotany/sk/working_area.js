@@ -61,10 +61,9 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         this.div = args.div;
         this.filter = args.filter;
         this.short_name = args.filter.short_name;
-        this.glossarizer = args.glossarizer;
+        this.glossarize = dojo.hitch(args.glossarizer, 'markup');
         this._draw_basics();
         this._draw_specifics();
-        this.glossarizer.markup(this.div);
         this.set_species_vector(args.species_vector);
         this.on_change = args.on_change;
         this.on_dismiss = args.on_dismiss;
@@ -93,8 +92,8 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
 
         d.query('h4').html(f.friendly_name);
-        d.query('.question').html(p(f.question));
-        d.query('.hint').html(p(f.hint));
+        d.query('.question').html(p(f.question)).forEach(this.glossarize);
+        d.query('.hint').html(p(f.hint)).forEach(this.glossarize);
         //q('.actions').html('actions');
         d.style({display: 'block'});
 
@@ -180,7 +179,8 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
                 });
             }
 
-            var label = dojo.query('span.label', character_value_div)[0];
+            dojo.query('span.label', character_value_div).forEach(
+                this.glossarize);
         }
     },
 
