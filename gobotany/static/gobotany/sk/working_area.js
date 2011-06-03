@@ -64,6 +64,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         this.glossarizer = args.glossarizer;
         this._draw_basics();
         this._draw_specifics();
+        this.glossarizer.markup(this.div);
         this.set_species_vector(args.species_vector);
         this.on_change = args.on_change;
         this.on_dismiss = args.on_dismiss;
@@ -180,7 +181,6 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
             }
 
             var label = dojo.query('span.label', character_value_div)[0];
-            this.glossarizer.markup(label);
         }
     },
 
