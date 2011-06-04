@@ -396,7 +396,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
     constructor: function(family_filter, genus_filter) {
         this.family_store = new dojo.data.ItemFileWriteStore(
-            {data: {label: 'name', identifier: 'family', items: []}});
+            {data: {label: 'name', identifier: 'name', items: []}});
 
         this.genus_store = new dojo.data.ItemFileWriteStore(
             {data: {label: 'name', identifier: 'genus', items: []}});
@@ -418,24 +418,26 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
        rebuild the family and genus selectors to include only "legal"
        values given the other filter values. */
     on_filter_change: function(filter_manager) {
-        var family_store = this.family_store;
+        this._rebuild_selector(filter_manager, this.family_store, 'family');
+    },
 
-        var vector = filter_manager.compute_species_without('family');
-        var family_filter = filter_manager.get_filter('family');
-        var choices = family_filter.safe_choices(vector);
+    _rebuild_selector: function(filter_manager, store, short_name) {
+        var vector = filter_manager.compute_species_without(short_name);
+        var filter = filter_manager.get_filter(short_name);
+        var choices = filter.safe_choices(vector);
 
-        this.family_store.fetch({onItem: function(item) {
-            var i = dojo.indexOf(choices, item.family[0]);
+        store.fetch({onItem: function(item) {
+            var i = dojo.indexOf(choices, item.name[0]);
             if (i == -1)
-                family_store.deleteItem(item);
+                store.deleteItem(item);
             else
                 choices.splice(i, 1); // this choice is already present
         }});
 
         for (var i = 0; i < choices.length; i++)
-            family_store.newItem({ name: choices[i], family: choices[i] });
+            store.newItem({ name: choices[i] });
 
-        family_store.save();
+        store.save();
     }
 });
 
