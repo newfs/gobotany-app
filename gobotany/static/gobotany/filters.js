@@ -132,10 +132,10 @@ dojo.declare('gobotany.filters.Filter', null, {
     // Return the vector of species IDs for species that matching a
     // given value for this character.
     species_matching: function(value) {
-        if (this.value_type == 'TEXT') {
+        if (this.value_type === 'TEXT') {
             // Looking up a multiple-choice filter is a single step.
             return this.choicemap[value].species;
-        } else {
+        } else if (this.value_type === 'LENGTH') {
             // A number has to be checked against each species' range.
             var vector = [];
             if (value === null)
@@ -147,7 +147,8 @@ dojo.declare('gobotany.filters.Filter', null, {
             }
             vector.sort();
             return vector;
-        }
+        } else
+            console.error('Error: unknown value_type', this.value_type);
     },
     // For a numeric filter, figure out which ranges of values are legal
     // given a possible set of species as a species ID array.  Returns a
@@ -270,8 +271,10 @@ dojo.declare('gobotany.filters.FilterManager', null, {
 
     build_family_genus_filters: function(species_list) {
         var m = {manager: this};
-        var f = gobotany.filters.Filter({character_short_name: 'family'}, m);
-        var g = gobotany.filters.Filter({character_short_name: 'genus'}, m);
+        var f = gobotany.filters.Filter(
+            {character_short_name: 'family', value_type: 'TEXT'}, m);
+        var g = gobotany.filters.Filter(
+            {character_short_name: 'genus', value_type: 'TEXT'}, m);
         f.choicemap = {};
         g.choicemap = {};
         for (var i = 0; i < species_list.length; i++) {

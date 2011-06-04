@@ -130,12 +130,13 @@ class FilterFunctionalTests(FunctionalTestCase):
             self.css1('div.plant-list div.plant')
         q = self.css('div.plant-list div.plant')
         self.assertEqual(len(q), expected_count)
-        count_words = self.css1('h3 .species-count').text.split()  # "9 species matched"
+        count_words = self.css1('h3 .species-count').text.split()
+        # "9 species matched" -> ["9", "species", "matched"]
         count = int(count_words[0])
         self.assertEqual(count, expected_count)
         return q
 
-    def test_filter_page_narrows(self):
+    def test_multiple_choice_filters(self):
 
         # Does the page load and show 18 species?
 
@@ -172,6 +173,38 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.css1('#state_distribution .clear').click()
         self.wait_on_species(9)
+
+    def test_family_genus_filters(self):
+
+        # Does the page load and show 18 species?
+
+        self.get('/ferns/lycophytes/')
+        self.wait_on_species(18)
+
+        # Do the family and genus dropdowns start by displaying all options?
+
+        self.css1('[widgetid="genus_select"] .dijitArrowButtonInner').click()
+        items = self.css('#genus_select_popup li')
+        self.assertEqual([ item.text for item in items ], [
+                u'', u'Dendrolycopodium', u'Diphasiastrum', u'Huperzia',
+                u'Isoetes', u'Lycopodiella', u'Lycopodium', u'Selaginella',
+                u'Spinulum', u'',
+                ])
+
+        self.css1('[widgetid="family_select"] .dijitArrowButtonInner').click()
+        items = self.css('#family_select_popup li')
+        self.assertEqual([ item.text for item in items ], [
+                u'', u'Huperziaceae', u'Isoetaceae', u'Lycopodiaceae',
+                u'Selaginellaceae', u'',
+                ])
+
+        # Try selecting a family.
+
+        li = self.css('#family_select_popup li')[2]
+        self.assertEqual(li.text, 'Isoetaceae')
+        li.click()
+        # Yeah, this does not work at all - am investigating:
+        self.wait_on_species(3)
 
     def test_quickly_press_apply_twice(self):
 
