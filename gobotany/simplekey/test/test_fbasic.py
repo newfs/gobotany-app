@@ -266,7 +266,7 @@ class GlossaryFunctionalTests(FunctionalTestCase):
 
     def test_glossary_g_page_link_to_other_letters(self):
         d = self.get('/help/glossary/g/')
-        for letter in 'ABCWYZ':  # 'X' currently has no terms
+        for letter in 'ABCVWZ':  # 'X' and 'Y' currently have no terms
             e = d.find_elements_by_link_text(letter)
             self.assertTrue(len(e))
 

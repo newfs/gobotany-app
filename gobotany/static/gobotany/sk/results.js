@@ -606,18 +606,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         return filterItem;
     },
 
-    show_or_hide_filter_clear: function(filter_character_short_name) {
+    show_or_hide_filter_clear: function(filter) {
         // Show or hide the Clear link for a filter at left.
-        var filter_id = '#' + filter_character_short_name;
-        var should_hide_clear = dojo.query('li' + filter_id +
-            ' span.value')[0].innerHTML === 'don\'t know';
-        var clear = dojo.query(filter_id + ' .clear');
-        if (should_hide_clear) {
-            clear.addClass('hidden');
-        }
-        else {
-            clear.removeClass('hidden');
-        }
+        var div = dojo.query('#' + filter.character_short_name + ' .clear');
+        div.toggleClass('hidden', filter.selected_value === null);
     },
 
     clear_filters: function() {
@@ -721,7 +713,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     dojo.query('li#' + char_name + ' span.value'
                               ).html(display_value);
                 }
-                this.show_or_hide_filter_clear(char_name);
+                this.show_or_hide_filter_clear(filter);
             }
         }
     },
@@ -746,7 +738,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         dojo.query('li#' + filter.character_short_name + ' span.value'
                   ).html(this._get_filter_display_value(filter));
-        this.show_or_hide_filter_clear(filter.character_short_name);
+        this.show_or_hide_filter_clear(filter);
     },
 
     remove_filter: function(filter) {
@@ -818,6 +810,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         dojo.query('li#' + filter.short_name + ' span.value'
                   ).html(this._get_filter_display_value(filter));
         this.results_helper.species_section.perform_query();
-        this.show_or_hide_filter_clear(filter.short_name);
+        this.show_or_hide_filter_clear(filter);
     }
 });
