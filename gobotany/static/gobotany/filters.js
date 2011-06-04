@@ -112,6 +112,18 @@ dojo.declare('gobotany.filters.Filter', null, {
             if (args.onload !== undefined) args.onload(this);
         });
     },
+    /*
+     * Determine which of our choices are "safe" and will not cause zero
+     * species to be selected if run against the species in `vector`.
+     */
+    safe_choices: function(vector) {
+        var result = [];
+        for (var choice in this.choicemap)
+            if (intersect(vector, this.choicemap[choice].species).length > 0)
+                result.push(choice);
+        result.sort();
+        return result;
+    },
     // Remove values that have absolutely no species in common with our
     // FilterManager's base_vector, so that pile-irrelevant character
     // values do not get displayed when a filter is pulled up.

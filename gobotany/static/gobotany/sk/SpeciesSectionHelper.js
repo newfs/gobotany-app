@@ -1,16 +1,15 @@
 // Global declaration for JSLint (http://www.jslint.com/)
 /*global dojo, dijit, gobotany, _global_setSidebarHeight */
 
-dojo.provide('gobotany.sk.results.SpeciesSectionHelper');
+dojo.provide('gobotany.sk.SpeciesSectionHelper');
 
 dojo.require('dojo.html');
 dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
 dojo.require('gobotany.sk.plant_preview');
 
-dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
-    genus_to_family: {},
-    PAGE_COUNT: 12,
+dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
+    genus_to_family: {}, // TODO: still needed?
 
     constructor: function(results_helper) {
         // summary:
@@ -144,6 +143,7 @@ dojo.declare('gobotany.sk.results.SpeciesSectionHelper', null, {
     on_complete_perform_query: function(data) {
         this.rebuild_family_select(data.items);
         this.rebuild_genus_select(data.items);
+        this.results_helper.on_filter_change();
 
         // Update the species count everywhere it appears on the screen.
         dojo.query('.species-count').html(data.items.length + '');

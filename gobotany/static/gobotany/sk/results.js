@@ -8,7 +8,7 @@ dojo.provide('gobotany.sk.results');
 
 dojo.require('gobotany.sk.RulerSlider');
 dojo.require('gobotany.sk.glossary');
-dojo.require('gobotany.sk.results.SpeciesSectionHelper');
+dojo.require('gobotany.sk.SpeciesSectionHelper');
 dojo.require('gobotany.sk.working_area');
 dojo.require('gobotany.filters');
 dojo.require('gobotany.piles');
@@ -57,8 +57,11 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         console.log('ResultsHelper: setting up page - ' + this.pile_slug);
 
+        this.family_genus_selectors =
+            gobotany.sk.results.FamilyGenusSelectors();
+
         this.species_section =
-            new gobotany.sk.results.SpeciesSectionHelper(this);
+            new gobotany.sk.SpeciesSectionHelper(this);
         this.species_section.setup_section();
 
         this.filter_section =
@@ -381,6 +384,44 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             if (image_type === 'habit')
                 select_box.set('value', 'habit');
         }
+    },
+
+    /* Respond to a change in filter value from somewhere on the page. */
+    on_filter_change: function() {
+        this.family_genus_selectors.on_filter_change(this.filter_manager);
+    }
+});
+
+
+dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
+    constructor: function(family_filter, genus_filter) {
+        this.family_store = new dojo.data.ItemFileWriteStore(
+            {data: {label: 'name', identifier: 'family', items: []}});
+
+        this.genus_store = new dojo.data.ItemFileWriteStore(
+            {data: {label: 'name', identifier: 'genus', items: []}});
+
+        this.family_select = dijit.byId('family_select');
+        this.family_select.set('required', false);
+        this.family_select.set('store', this.family_store);
+        // dojo.connect(family_select, 'onChange', this,
+        //              this.apply_family_filter);
+
+        this.genus_select = dijit.byId('genus_select');
+        this.genus_select.set('required', false);
+        this.genus_select.set('store', this.genus_store);
+        // dojo.connect(genus_select, 'onChange', this,
+        //              this.apply_genus_filter);
+    },
+
+    /* A filter somewhere, somehow, has changed value, so we need to
+       rebuild the family and genus selectors to include only "legal"
+       values given the other filter values. */
+    on_filter_change: function(filter_manager) {
+        var vector = filter_manager.compute_species_without('family');
+        var family_filter = filter_manager.get_filter('family');
+        var choices = family_filter.safe_choices(vector);
+        // TODO: keep going here
     }
 });
 
@@ -421,25 +462,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             dojo.stopEvent(event);
             this.query_best_filters();
         });
-
-        // Wire up the Family and Genus submit buttons.
-        var family_store = new dojo.data.ItemFileWriteStore(
-            {data: { label: 'name', identifier: 'family', items: [] }});
-
-        var genus_store = new dojo.data.ItemFileWriteStore(
-            {data: { label: 'name', identifier: 'genus', items: [] }});
-
-        var family_select = dijit.byId('family_select');
-        family_select.set('required', false);
-        family_select.set('store', family_store);
-        dojo.connect(family_select, 'onChange', this,
-                     this.apply_family_filter);
-
-        var genus_select = dijit.byId('genus_select');
-        genus_select.set('required', false);
-        genus_select.set('store', genus_store);
-        dojo.connect(genus_select, 'onChange', this,
-                     this.apply_genus_filter);
 
         // Wire up the "Clear" buttons for the family and genus.
         dojo.connect(dijit.byId('clear_family'), 'onClick', this,
