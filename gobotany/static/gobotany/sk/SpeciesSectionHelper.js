@@ -56,48 +56,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.results_helper.save_filter_state();
     },
 
-    rebuild_family_select: function(items) {
-
-        // Does sort | uniq really have to be this painful in JavaScript?
-
-        var families_seen = {};
-        var family_list = [];
-        var i;
-        for (i = 0; i < items.length; i++) {
-            var item = items[i];
-            if (! families_seen[item.family]) {
-                family_list.push(item.family);
-                families_seen[item.family] = true;
-            }
-        }
-
-        family_list.sort();
-
-        // Update the Family data store.
-
-        var family_select = dijit.byId('family_select');
-        var family_store = family_select.store;
-
-        family_store.fetch({onComplete: dojo.hitch(this, function(items) {
-            var i;
-            for (i = 0; i < items.length; i++) {
-                family_store.deleteItem(items[i]);
-            }
-            family_store.save();
-            for (i = 0; i < family_list.length; i++) {
-                var f = family_list[i];
-                family_store.newItem({ name: f, family: f });
-            }
-            family_store.save();
-
-            var fm = this.results_helper.filter_manager;
-            var v = fm.get_selected_value('family');
-            if (v) {
-                family_select.set('value', v);
-            }
-        })});
-    },
-
     rebuild_genus_select: function(items) {
         // Does sort | uniq really have to be this painful in JavaScript?
 
@@ -141,7 +99,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     on_complete_perform_query: function(data) {
-        this.rebuild_family_select(data.items);
         this.rebuild_genus_select(data.items);
         this.results_helper.on_filter_change();
 

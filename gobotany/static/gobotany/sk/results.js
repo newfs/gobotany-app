@@ -418,10 +418,24 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
        rebuild the family and genus selectors to include only "legal"
        values given the other filter values. */
     on_filter_change: function(filter_manager) {
+        var family_store = this.family_store;
+
         var vector = filter_manager.compute_species_without('family');
         var family_filter = filter_manager.get_filter('family');
         var choices = family_filter.safe_choices(vector);
-        // TODO: keep going here
+
+        this.family_store.fetch({onItem: function(item) {
+            var i = dojo.indexOf(choices, item.family[0]);
+            if (i == -1)
+                family_store.deleteItem(item);
+            else
+                choices.splice(i, 1); // this choice is already present
+        }});
+
+        for (var i = 0; i < choices.length; i++)
+            family_store.newItem({ name: choices[i], family: choices[i] });
+
+        family_store.save();
     }
 });
 
