@@ -56,50 +56,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.results_helper.save_filter_state();
     },
 
-    rebuild_genus_select: function(items) {
-        // Does sort | uniq really have to be this painful in JavaScript?
-
-        var genera_seen = {};
-        var genus_list = [];
-        var i;
-        for (i = 0; i < items.length; i++) {
-            var item = items[i];
-            if (! genera_seen[item.genus]) {
-                genus_list.push(item.genus);
-                genera_seen[item.genus] = true;
-                this.genus_to_family[item.genus] = item.family;
-            }
-        }
-
-        genus_list.sort();
-
-        // Update the Genus data store.
-
-        var genus_select = dijit.byId('genus_select');
-        var genus_store = genus_select.store;
-
-        genus_store.fetch({onComplete: dojo.hitch(this, function(items) {
-            var i;
-            for (i = 0; i < items.length; i++) {
-                genus_store.deleteItem(items[i]);
-            }
-            genus_store.save();
-            for (i = 0; i < genus_list.length; i++) {
-                var g = genus_list[i];
-                genus_store.newItem({ name: g, genus: g });
-            }
-            genus_store.save();
-
-            var fm = this.results_helper.filter_manager;
-            var v = fm.get_selected_value('genus');
-            if (v) {
-                genus_select.set('value', v);
-            }
-        })});
-    },
-
     on_complete_perform_query: function(data) {
-        this.rebuild_genus_select(data.items);
         this.results_helper.on_filter_change();
 
         // Update the species count everywhere it appears on the screen.

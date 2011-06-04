@@ -399,7 +399,7 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
             {data: {label: 'name', identifier: 'name', items: []}});
 
         this.genus_store = new dojo.data.ItemFileWriteStore(
-            {data: {label: 'name', identifier: 'genus', items: []}});
+            {data: {label: 'name', identifier: 'name', items: []}});
 
         this.family_select = dijit.byId('family_select');
         this.family_select.set('required', false);
@@ -419,6 +419,7 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
        values given the other filter values. */
     on_filter_change: function(filter_manager) {
         this._rebuild_selector(filter_manager, this.family_store, 'family');
+        this._rebuild_selector(filter_manager, this.genus_store, 'genus');
     },
 
     _rebuild_selector: function(filter_manager, store, short_name) {
