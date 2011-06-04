@@ -139,12 +139,14 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Does the page load and show 18 species?
 
-        d = self.get('/ferns/lycophytes/')
+        self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
 
         # filter on Rhode Island
 
         self.css1('#state_distribution a.option').click()
+        count = self.css1('[value="Rhode Island"] + .label + .count').text
+        self.assertEqual(count, '(13)')
         self.css1('[value="Rhode Island"]').click()
         self.css1('.apply-btn').click()
         self.wait_on_species(13)
@@ -152,6 +154,8 @@ class FilterFunctionalTests(FunctionalTestCase):
         # filter on bogs
 
         self.css1('#habitat a.option').click()
+        count = self.css1('[value="bogs"] + .label + .count').text
+        self.assertEqual(count, '(1)')
         self.css1('[value="bogs"]').click()
         self.css1('.apply-btn').click()
         self.wait_on_species(1)
@@ -159,6 +163,8 @@ class FilterFunctionalTests(FunctionalTestCase):
         # switch from bogs to forest
 
         self.css1('[value="forest"]').click()
+        count = self.css1('[value="forest"] + .label + .count').text
+        self.assertEqual(count, '(6)')
         self.css1('.apply-btn').click()
         self.wait_on_species(6)
 
