@@ -225,7 +225,8 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
 
     _apply_button_clicked: function(event) {
         dojo.stopEvent(event);
-        this.filter.selected_value = this._current_value();
+        this.filter_manager.set_selected_value(
+            this.filter.character_short_name, this._current_value());
         dojo.publish('/sk/filter/change', [this.filter]);
     }
 });

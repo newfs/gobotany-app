@@ -528,7 +528,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         });
 
         // Respond to filter value changes.
-        dojo.subscribe('/sk/filter/change', this, 'on_filter_change');
+        dojo.subscribe('/sk/filter/change', this, '_on_filter_change');
     },
 
     _setup_character_groups: function(character_groups) {
@@ -833,10 +833,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
     /* When the filter value is changed in the working area, we respond. */
 
-    on_filter_change: function(filter) {
-        dojo.query('li#' + filter.short_name + ' span.value'
+    _on_filter_change: function(filter) {
+        dojo.query('li#' + filter.character_short_name + ' span.value'
                   ).html(this._get_filter_display_value(filter));
-        // this.results_helper.species_section.perform_query();
-        // this.show_or_hide_filter_clear(filter);
+        this.show_or_hide_filter_clear(filter);
     }
 });
