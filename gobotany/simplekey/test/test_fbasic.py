@@ -120,7 +120,7 @@ class BasicFunctionalTests(FunctionalTestCase):
         self.assertEqual(
             d.title, u'Go Botany: New England Wild Flower Society')
         e = d.find_element_by_link_text('Get Started')
-        self.assertEqual(e.get_attribute('href'), '/help/start/')
+        self.assertEqual(e.get_attribute('href'), self.aurl('/help/start/'))
         # Once you have selected "don't show me this", should change to:
         # self.assertEqual(e.get_attribute('href'), '/1/')
 
@@ -148,8 +148,7 @@ class BasicFunctionalTests(FunctionalTestCase):
 
         # Do group links get constructed correctly?
         e = d.find_element_by_link_text('My plant is in this group.')
-        self.assertEqual(e.get_attribute('href'),
-                         self.base + '/non-monocots/')
+        self.assertEqual(e.get_attribute('href'), self.aurl('/non-monocots/'))
 
     def test_group_page(self):
         d = self.get('/ferns/')
@@ -159,7 +158,7 @@ class BasicFunctionalTests(FunctionalTestCase):
         assert q[1].text.startswith('Lycophytes')
         assert q[2].text.startswith('Monilophytes')
         q = d.find_elements_by_link_text('My plant is in this subgroup.')
-        b = self.base + '/ferns'
+        b = self.aurl('/ferns')
         self.assertEqual(q[0].get_attribute('href'), b + '/equisetaceae/')
         self.assertEqual(q[1].get_attribute('href'), b + '/lycophytes/')
         self.assertEqual(q[2].get_attribute('href'), b + '/monilophytes/')
@@ -295,7 +294,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Does a double tap of "apply" load species twice?
 
-        d = self.get('/ferns/lycophytes/')
+        self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
 
         # filter on Rhode Island
@@ -312,7 +311,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         # Does pressing the "apply" button and a "clear" link
         # simultaneously result in the result being updated twice?
 
-        d = self.get('/ferns/lycophytes/')
+        self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
 
         # filter on Rhode Island
@@ -354,6 +353,9 @@ class FilterFunctionalTests(FunctionalTestCase):
         filters = self.css(FILTERS_CSS)
         n = len(filters)
         self.css1('#sidebar a.get-choices').click()
+
+        # Hacky, pile-specific way to wait on the choices to appear:
+        self.wait_on(1, self.css, '#spore_surface')
         filters = self.css(FILTERS_CSS)
         self.assertEqual(len(filters), n + 3)
 
