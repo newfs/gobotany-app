@@ -14,9 +14,21 @@ Two environmental variables control the behavior of these tests.
 
 """
 import os
+import time
 import unittest2
 from contextlib import contextmanager
 from selenium import webdriver
+from selenium.common.exceptions import (
+    NoSuchElementException, StaleElementReferenceException
+    )
+from selenium.webdriver.common.keys import Keys
+
+def is_displayed(element):
+    """Return whether an element is visible on the page."""
+    try:
+        return element.is_displayed()
+    except StaleElementReferenceException:
+        return False
 
 class FunctionalTestCase(unittest2.TestCase):
 
@@ -34,7 +46,7 @@ class FunctionalTestCase(unittest2.TestCase):
             cls.host = 'http://' + os.environ['SIMPLEHOST']
             cls.base = ''
         else:
-            cls.driver = webdriver.Chrome()
+            cls.driver = webdriver.Firefox() #Chrome()
             cls.host = 'http://localhost:8000'
             cls.base = ''
 
@@ -45,10 +57,13 @@ class FunctionalTestCase(unittest2.TestCase):
 
     def setUp(self):
         self.driver.implicitly_wait(0)  # reset to zero wait time
-        self.css = self.driver.find_elements_by_css_selector
         self.css1 = self.driver.find_element_by_css_selector
 
     # Helpers
+
+    def css(self, *args, **kw):
+        elements = self.driver.find_elements_by_css_selector(*args, **kw)
+        return [ e for e in elements if is_displayed(e) ]
 
     def url(self, path):
         """Compute and return a site URL."""
@@ -67,6 +82,30 @@ class FunctionalTestCase(unittest2.TestCase):
         finally:
             self.driver.implicitly_wait(0)
 
+    def wait_on(self, timeout, function, *args, **kw):
+        t0 = t1 = time.time()
+        while t1 - t0 < timeout:
+            try:
+                v = function(*args, **kw)
+                if v:
+                    return v
+            except NoSuchElementException:
+                pass
+            time.sleep(0.1)
+            t1 = time.time()
+        return function(*args, **kw)  # one last try to really raise exception
+
+    def wait_until_disappear(self, timeout, selector):
+        t0 = t1 = time.time()
+        while t1 - t0 < timeout:
+            elements = self.css(selector)
+            if len(elements) == 0:
+                return
+            time.sleep(0.1)
+            t1 = time.time()
+        raise RuntimeError(
+            'after %s seconds there are still %s elements that match %r'
+            % (timeout, len(elements), selector))
 
 class BasicFunctionalTests(FunctionalTestCase):
 
@@ -126,8 +165,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
     def wait_on_species(self, expected_count):
         """Wait for a new batch of species to be displayed."""
-        with self.wait(12):
-            self.css1('div.plant-list div.plant')
+        self.wait_on(5, self.css1, 'div.plant-list div.plant')
         q = self.css('div.plant-list div.plant')
         self.assertEqual(len(q), expected_count)
         count_words = self.css1('h3 .species-count').text.split()
@@ -174,6 +212,16 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.css1('#state_distribution .clear').click()
         self.wait_on_species(9)
 
+    def list_family_choices(self):
+        self.css1('[widgetid="family_select"] .dijitArrowButtonInner').click()
+        items = self.wait_on(1, self.css, '#family_select_popup li')
+        return [ item.text for item in items ]
+
+    def list_genus_choices(self):
+        self.css1('[widgetid="genus_select"] .dijitArrowButtonInner').click()
+        items = self.wait_on(1, self.css, '#genus_select_popup li')
+        return [ item.text for item in items ]
+
     def test_family_genus_filters(self):
 
         # Does the page load and show 18 species?
@@ -183,28 +231,34 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Do the family and genus dropdowns start by displaying all options?
 
-        self.css1('[widgetid="genus_select"] .dijitArrowButtonInner').click()
-        items = self.css('#genus_select_popup li')
-        self.assertEqual([ item.text for item in items ], [
-                u'', u'Dendrolycopodium', u'Diphasiastrum', u'Huperzia',
+        self.assertEqual(self.list_genus_choices(), [
+                u'Dendrolycopodium', u'Diphasiastrum', u'Huperzia',
                 u'Isoetes', u'Lycopodiella', u'Lycopodium', u'Selaginella',
-                u'Spinulum', u'',
+                u'Spinulum',
                 ])
 
-        self.css1('[widgetid="family_select"] .dijitArrowButtonInner').click()
-        items = self.css('#family_select_popup li')
-        self.assertEqual([ item.text for item in items ], [
-                u'', u'Huperziaceae', u'Isoetaceae', u'Lycopodiaceae',
-                u'Selaginellaceae', u'',
+        self.assertEqual(self.list_family_choices(), [
+                u'Huperziaceae', u'Isoetaceae', u'Lycopodiaceae',
+                u'Selaginellaceae',
                 ])
 
         # Try selecting a family.
 
-        li = self.css('#family_select_popup li')[2]
-        self.assertEqual(li.text, 'Isoetaceae')
-        li.click()
-        # Yeah, this does not work at all - am investigating:
-        self.wait_on_species(3)
+        self.css1('#family_select').send_keys(u'Lycopodiaceae', Keys.RETURN)
+        self.wait_on_species(11)
+        self.assertEqual(self.list_genus_choices(), [
+                u'Dendrolycopodium', u'Diphasiastrum',
+                u'Lycopodiella', u'Lycopodium', u'Spinulum',
+                ])
+
+        # check how many genuses
+        # unselect
+        # then a genus
+        # check list of families
+        # unselect
+        # check a genus
+        # check its family
+        # uncheck the genus
 
     def test_quickly_press_apply_twice(self):
 
