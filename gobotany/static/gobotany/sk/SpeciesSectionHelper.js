@@ -9,7 +9,6 @@ dojo.require('dijit.form.Button');
 dojo.require('gobotany.sk.plant_preview');
 
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
-    genus_to_family: {}, // TODO: still needed?
 
     constructor: function(results_helper) {
         // summary:
@@ -57,8 +56,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     on_complete_perform_query: function(data) {
-        this.results_helper.on_filter_change();
-
         // Update the species count everywhere it appears on the screen.
         dojo.query('.species-count').html(data.items.length + '');
 

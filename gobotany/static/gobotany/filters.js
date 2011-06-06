@@ -318,13 +318,11 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     // given short_name did not have a currently selected value.
     compute_species_without: function(short_name) {
         var selected_value = this.get_selected_value(short_name);
-        if (selected_value) {
+        if (selected_value)
             this.set_selected_value(short_name, null);
-            var vector = this.compute_query();
+        var vector = this.compute_query();
+        if (selected_value)
             this.set_selected_value(short_name, selected_value);
-        } else {
-            var vector = this.species_ids;
-        }
         return vector;
     },
 

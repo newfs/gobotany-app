@@ -58,7 +58,9 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         console.log('ResultsHelper: setting up page - ' + this.pile_slug);
 
         this.family_genus_selectors =
-            gobotany.sk.results.FamilyGenusSelectors();
+            gobotany.sk.results.FamilyGenusSelectors({
+                filter_manager: this.filter_manager
+            });
 
         this.species_section =
             new gobotany.sk.SpeciesSectionHelper(this);
@@ -152,6 +154,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         dojo.query('#sidebar .loading').addClass('hidden');
         this.species_section.perform_query();
+        dojo.publish('/sk/filter/change'); // is this the right place?
 
         // Show the filter working area if necessary.
         var filter_name = this.filter_section.visible_filter_short_name;
@@ -384,48 +387,76 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             if (image_type === 'habit')
                 select_box.set('value', 'habit');
         }
-    },
-
-    /* Respond to a change in filter value from somewhere on the page. */
-    on_filter_change: function() {
-        this.family_genus_selectors.on_filter_change(this.filter_manager);
     }
 });
 
 
+/*
+ * Events:
+ *
+ * '/sk/filter/change' is produced when the user interacts with one of
+ * our select boxes to choose a new family or genus from the dropdown
+ * (or, conversely, when they clear one of the select widgets).
+ *
+ * '/sk/filter/change' is consumed and induces us to re-compute the set
+ * of valid family and genus values in our select boxes, based on the
+ * species that remain.
+ */
 dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
-    constructor: function(family_filter, genus_filter) {
+    constructor: function(args) {
+        this.filter_manager = args.filter_manager;
+
         this.family_store = new dojo.data.ItemFileWriteStore(
             {data: {label: 'name', identifier: 'name', items: []}});
 
         this.genus_store = new dojo.data.ItemFileWriteStore(
             {data: {label: 'name', identifier: 'name', items: []}});
 
-        this.family_select = dijit.byId('family_select');
-        this.family_select.set('required', false);
-        this.family_select.set('store', this.family_store);
-        // dojo.connect(family_select, 'onChange', this,
-        //              this.apply_family_filter);
+        var family_select = dijit.byId('family_select');
+        family_select.set('required', false);
+        family_select.set('store', this.family_store);
 
-        this.genus_select = dijit.byId('genus_select');
-        this.genus_select.set('required', false);
-        this.genus_select.set('store', this.genus_store);
-        // dojo.connect(genus_select, 'onChange', this,
-        //              this.apply_genus_filter);
+        var genus_select = dijit.byId('genus_select');
+        genus_select.set('required', false);
+        genus_select.set('store', this.genus_store);
+
+        dojo.connect(family_select, 'onChange', this, '_on_change');
+        dojo.connect(genus_select, 'onChange', this, '_on_change');
+
+        // Wire up the "Clear" buttons for the family and genus.
+        dojo.connect(dijit.byId('clear_family'), 'onClick', function(event) {
+            dojo.stopEvent(event);
+            family_select.set('value', '');
+        });
+        dojo.connect(dijit.byId('clear_genus'), 'onClick', function(event) {
+            dojo.stopEvent(event);
+            genus_select.set('value', '');
+        });
+
+        // Save objects that our callbacks will need.
+        this.family_select = family_select;
+        this.genus_select = genus_select;
+
+        // React when filters change anywhere on the page.
+        dojo.subscribe('/sk/filter/change', this, '_on_filter_change');
     },
 
-    /* A filter somewhere, somehow, has changed value, so we need to
-       rebuild the family and genus selectors to include only "legal"
-       values given the other filter values. */
-    on_filter_change: function(filter_manager) {
-        this._rebuild_selector(filter_manager, this.family_store, 'family');
-        this._rebuild_selector(filter_manager, this.genus_store, 'genus');
+    /*
+     * A filter somewhere else on the page has changed value, so we need
+     * to rebuild the family and genus selectors to include only "safe"
+     * values that will not result in 0 search results.
+     */
+    _on_filter_change: function() {
+        console.log('rebuilding!');
+        this._rebuild_selector(this.family_store, 'family');
+        this._rebuild_selector(this.genus_store, 'genus');
     },
 
-    _rebuild_selector: function(filter_manager, store, short_name) {
-        var vector = filter_manager.compute_species_without(short_name);
-        var filter = filter_manager.get_filter(short_name);
+    _rebuild_selector: function(store, short_name) {
+        var vector = this.filter_manager.compute_species_without(short_name);
+        var filter = this.filter_manager.get_filter(short_name);
         var choices = filter.safe_choices(vector);
+        console.log('choices:', short_name, vector, choices);
 
         store.fetch({onItem: function(item) {
             var i = dojo.indexOf(choices, item.name[0]);
@@ -439,6 +470,18 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
             store.newItem({ name: choices[i] });
 
         store.save();
+    },
+
+    /*
+     * One of our own select boxes has changed value, so we broadcast
+     * that fact to all of the other parts of the page.
+     */
+    _on_change: function(event) {
+        var family = this.family_select.value;
+        var genus = this.genus_select.value;
+        this.filter_manager.set_selected_value('family', family);
+        this.filter_manager.set_selected_value('genus', genus);
+        dojo.publish('/sk/filter/change');
     }
 });
 
@@ -479,12 +522,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             dojo.stopEvent(event);
             this.query_best_filters();
         });
-
-        // Wire up the "Clear" buttons for the family and genus.
-        dojo.connect(dijit.byId('clear_family'), 'onClick', this,
-                     this.clear_family);
-        dojo.connect(dijit.byId('clear_genus'), 'onClick', this,
-                     this.clear_genus);
     },
 
     _setup_character_groups: function(character_groups) {
@@ -668,59 +705,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }
 
         return added;
-    },
-
-    apply_family_filter: function(event) {
-        if (! this.did_they_just_choose_a_genus) {
-            dijit.byId('genus_select').set('value', '');
-        }
-
-        var family_select = dijit.byId('family_select');
-        var family = family_select.value;
-        this.set_value('family', family);
-
-        this.results_helper.species_section.perform_query();
-        this.did_they_just_choose_a_genus = false;
-    },
-
-    apply_genus_filter: function(event) {
-        var genus = dijit.byId('genus_select').value;
-        this.set_value('genus', genus);
-
-        var family_select = dijit.byId('family_select');
-        if (genus) {
-            var family = family_select.value;
-
-            var new_family =
-                this.results_helper.species_section.genus_to_family[genus];
-            if (family !== new_family) {
-                this.did_they_just_choose_a_genus = true;
-                this.set_value('family', new_family);
-            } else {
-                this.results_helper.species_section.perform_query();
-            }
-        }
-        else {
-            this.results_helper.species_section.perform_query();
-        }
-    },
-
-    clear_family: function(event) {
-        dojo.stopEvent(event);
-        this.set_value('family', null);
-        this.set_value('genus', null);
-    },
-
-    clear_genus: function(event) {
-        dojo.stopEvent(event);
-        this.set_value('genus', null);
-    },
-
-    /* Used when our family and genus widgets need to make updates: */
-    set_value: function(char_name, value) {
-        this.results_helper.filter_manager.set_selected_value(char_name,
-            value);
-        this.update_filter_display(char_name);
     },
 
     update_filter_display: function(obj) {
