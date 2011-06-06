@@ -224,6 +224,16 @@ class FilterFunctionalTests(FunctionalTestCase):
 
     def test_family_genus_filters(self):
 
+        all_families = [
+            u'Huperziaceae', u'Isoetaceae', u'Lycopodiaceae',
+            u'Selaginellaceae',
+            ]
+        all_genera = [
+            u'Dendrolycopodium', u'Diphasiastrum', u'Huperzia',
+            u'Isoetes', u'Lycopodiella', u'Lycopodium', u'Selaginella',
+            u'Spinulum',
+            ]
+
         # Does the page load and show 18 species?
 
         self.get('/ferns/lycophytes/')
@@ -231,16 +241,8 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Do the family and genus dropdowns start by displaying all options?
 
-        self.assertEqual(self.list_genus_choices(), [
-                u'Dendrolycopodium', u'Diphasiastrum', u'Huperzia',
-                u'Isoetes', u'Lycopodiella', u'Lycopodium', u'Selaginella',
-                u'Spinulum',
-                ])
-
-        self.assertEqual(self.list_family_choices(), [
-                u'Huperziaceae', u'Isoetaceae', u'Lycopodiaceae',
-                u'Selaginellaceae',
-                ])
+        self.assertEqual(self.list_genus_choices(), all_genera)
+        self.assertEqual(self.list_family_choices(), all_families)
 
         # Try selecting a family.
 
@@ -251,8 +253,13 @@ class FilterFunctionalTests(FunctionalTestCase):
                 u'Lycopodiella', u'Lycopodium', u'Spinulum',
                 ])
 
-        # check how many genuses
-        # unselect
+        # Clear the family.
+
+        self.css1('h6').click()
+        self.css1('#clear_family').click()
+        self.assertEqual(self.list_family_choices(), all_families)
+        self.assertEqual(self.list_genus_choices(), all_genera)
+
         # then a genus
         # check list of families
         # unselect

@@ -406,12 +406,12 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
     constructor: function(args) {
         this.filter_manager = args.filter_manager;
 
-        this.family_store = new dojo.data.ItemFileWriteStore(
-            {data: {label: 'name', identifier: 'name', items: []}});
-
-        this.genus_store = new dojo.data.ItemFileWriteStore(
-            {data: {label: 'name', identifier: 'name', items: []}});
-
+        this.family_store = new dojo.data.ItemFileWriteStore({
+            data: {label: 'name', identifier: 'name', items: []}
+        });
+        this.genus_store = new dojo.data.ItemFileWriteStore({
+            data: {label: 'name', identifier: 'name', items: []}
+        });
         var family_select = dijit.byId('family_select');
         family_select.set('required', false);
         family_select.set('store', this.family_store);
@@ -459,17 +459,12 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
             filter.short_name);
         var choices = filter.safe_choices(vector);
 
-        store.fetch({onItem: function(item) {
-            var i = dojo.indexOf(choices, item.name[0]);
-            if (i == -1)
-                store.deleteItem(item);
-            else
-                choices.splice(i, 1); // this choice is already present
-        }});
-
+        // We cannot control the order of terms in the selector without
+        // deleting them all and starting over from the beginning.
+        store.fetch({onItem: dojo.hitch(store, 'deleteItem')});
+        store.save();
         for (var i = 0; i < choices.length; i++)
             store.newItem({ name: choices[i] });
-
         store.save();
     },
 
