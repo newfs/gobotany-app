@@ -216,7 +216,16 @@ dojo.declare('gobotany.filters.FilterManager', null, {
 
     constructor: function(args) {
         this.entries = [];
-        this.filters = [];
+        this.filters = [
+            gobotany.filters.Filter(
+                {character_short_name: 'family', value_type: 'TEXT'},
+                {manager: this}
+            ),
+            gobotany.filters.Filter(
+                {character_short_name: 'genus', value_type: 'TEXT'},
+                {manager: this}
+            )
+        ];
         this.base_vector = null;  // intersection(simple_vector, pile_vector)
         this.pile_slug = args.pile_slug;
         this.plant_preview_characters = [];
@@ -282,11 +291,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     // species list, instead of being pulled from a separate API call.
 
     build_family_genus_filters: function(species_list) {
-        var m = {manager: this};
-        var f = gobotany.filters.Filter(
-            {character_short_name: 'family', value_type: 'TEXT'}, m);
-        var g = gobotany.filters.Filter(
-            {character_short_name: 'genus', value_type: 'TEXT'}, m);
+        var f = this.get_filter('family');
+        var g = this.get_filter('genus');
         f.choicemap = {};
         g.choicemap = {};
         for (var i = 0; i < species_list.length; i++) {

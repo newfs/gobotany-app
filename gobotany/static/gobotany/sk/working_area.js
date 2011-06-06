@@ -22,8 +22,6 @@
  *
  * Outputs:
  *
- * on_change(filter) - the working area invokes this callback whenever
- *     a user action has caused the filter value to be selected and set.
  * on_dismiss(filter) - called when the user dismisses the working area.
  */
 
@@ -60,13 +58,18 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
     constructor: function(args) {
         this.div = args.div;
         this.filter = args.filter;
+        this.filter_manager = args.filter_manager;
         this.short_name = args.filter.short_name;
         this.glossarize = dojo.hitch(args.glossarizer, 'markup');
         this._draw_basics();
         this._draw_specifics();
-        this.set_species_vector(args.species_vector);
-        this.on_change = args.on_change;
         this.on_dismiss = args.on_dismiss;
+
+        // The set of values we can let the user select can change as
+        // they select and deselect other filters on the page.
+
+        dojo.subscribe('/sk/filter/change', this, '_on_filter_change');
+        this._on_filter_change();
     },
 
     /* Events that can be triggered from outside. */
@@ -201,11 +204,12 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         return image_id;
     },
 
-    /* Given the vector of species to which all other active filters
-       narrow the current pile, compute how many species would remain
-       if each possible filter value were applied. */
-
-    set_species_vector: function(species_vector) {
+    /* When the set of selected filters changes, we need to recompute
+       how many species would remain if each of our possible filter
+       values were applied. */
+    _on_filter_change: function() {
+        var species_vector = this.filter_manager.compute_species_without(
+            this.filter.short_name);
         for (var i = 0; i < this.filter.values.length; i++) {
             var v = this.filter.values[i];
             var vector = gobotany.filters.intersect(species_vector, v.species);
@@ -222,7 +226,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
     _apply_button_clicked: function(event) {
         dojo.stopEvent(event);
         this.filter.selected_value = this._current_value();
-        this.on_change(this.filter);
+        dojo.publish('/sk/filter/change', [this.filter]);
     }
 });
 
