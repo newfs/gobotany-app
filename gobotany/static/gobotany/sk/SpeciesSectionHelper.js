@@ -21,6 +21,10 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     setup_section: function() {
+        // We need to perform a fresh species query whenever a filter
+        // value changes anywhere on the page.
+        dojo.subscribe('/sk/filter/change', this, 'perform_query');
+
         // Call the lazy image loader when the page loads.
         this.lazy_load_images();
 

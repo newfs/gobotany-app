@@ -447,7 +447,6 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
      * values that will not result in 0 search results.
      */
     _on_filter_change: function() {
-        console.log('rebuilding!');
         this._rebuild_selector(this.family_store, 'family');
         this._rebuild_selector(this.genus_store, 'genus');
     },
@@ -456,7 +455,6 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
         var vector = this.filter_manager.compute_species_without(short_name);
         var filter = this.filter_manager.get_filter(short_name);
         var choices = filter.safe_choices(vector);
-        console.log('choices:', short_name, vector, choices);
 
         store.fetch({onItem: function(item) {
             var i = dojo.indexOf(choices, item.name[0]);
