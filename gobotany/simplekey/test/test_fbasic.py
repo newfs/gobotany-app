@@ -248,6 +248,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.css1('#family_select').send_keys(u'Lycopodiaceae', Keys.RETURN)
         self.wait_on_species(11)
+        self.assertEqual(self.list_family_choices(), all_families)
         self.assertEqual(self.list_genus_choices(), [
                 u'Dendrolycopodium', u'Diphasiastrum',
                 u'Lycopodiella', u'Lycopodium', u'Spinulum',
@@ -255,17 +256,36 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Clear the family.
 
-        self.css1('h6').click()
         self.css1('#clear_family').click()
         self.assertEqual(self.list_family_choices(), all_families)
         self.assertEqual(self.list_genus_choices(), all_genera)
 
-        # then a genus
-        # check list of families
-        # unselect
-        # check a genus
-        # check its family
-        # uncheck the genus
+        # Try selecting a genus first.
+
+        self.css1('#genus_select').send_keys(u'Lycopodium', Keys.RETURN)
+        self.wait_on_species(2)
+        self.assertEqual(self.list_family_choices(), [u'Lycopodiaceae'])
+        self.assertEqual(self.list_genus_choices(), all_genera)
+
+        # Select the one family that is now possible.
+
+        self.css1('#family_select').send_keys(u'Lycopodiaceae', Keys.RETURN)
+        self.wait_on_species(2)
+        self.assertEqual(self.list_family_choices(), [u'Lycopodiaceae'])
+        self.assertEqual(self.list_genus_choices(), [
+                u'Dendrolycopodium', u'Diphasiastrum',
+                u'Lycopodiella', u'Lycopodium', u'Spinulum',
+                ])
+
+        # Clear the genus, leaving the family in place.
+
+        self.css1('#clear_genus').click()
+        self.wait_on_species(11)
+        self.assertEqual(self.list_family_choices(), all_families)
+        self.assertEqual(self.list_genus_choices(), [
+                u'Dendrolycopodium', u'Diphasiastrum',
+                u'Lycopodiella', u'Lycopodium', u'Spinulum',
+                ])
 
     def test_quickly_press_apply_twice(self):
 
