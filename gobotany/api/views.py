@@ -74,20 +74,24 @@ def glossary_blob(request):
     across our current glossary.
 
     """
-    terms = {}
+    definitions = {}
+    images = {}
     discards = set()
-    for g in GlossaryTerm.objects.all():
+    for g in GlossaryTerm.objects.select_related('image'):
         term = g.term
         if len(term) < 3 or not g.lay_definition:
             pass
         elif term in discards:
             pass
-        elif term in terms:
-            del terms[term]
+        elif term in definitions:
+            del definitions[term]
             discards.add(term)
         else:
-            terms[term] = g.lay_definition
-    return jsonify(terms)
+            definitions[term] = g.lay_definition
+            image = g.image
+            if image:
+                images[term] = image.url
+    return jsonify({'definitions': definitions, 'images': images})
 
 #
 
@@ -145,7 +149,6 @@ def _jsonify_character(character, pile_slug):
 
 def piles_characters(request, pile_slug):
     """Returns a list of characters."""
-    print 'pile_slug is', repr(pile_slug)
     piles = Pile.objects.filter(slug=pile_slug).all()
     if not piles:
         raise Http404()

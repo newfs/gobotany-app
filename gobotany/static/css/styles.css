@@ -1105,6 +1105,16 @@ div.working-area #simple-slider .count {
     border-bottom: 1px dashed;
     cursor: pointer;
 }
+/* glossary tooltip */
+.glosstip {
+    position: relative;
+    max-width: 30em;
+}
+.glosstip img {
+    position: absolute;
+    bottom: 100%;
+    border: 3px solid black;
+}
 
 /* Help navigation styles */
 #help-nav {

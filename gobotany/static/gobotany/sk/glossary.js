@@ -34,11 +34,11 @@ dojo.declare('gobotany.sk.glossary.Glossarizer', null, {
         });
         this.glossaryblob = this.store.fetch().results;
         var terms = [];
-        for (term in this.glossaryblob) {
-            if (this.glossaryblob.hasOwnProperty(term)) {
+        var defs = this.glossaryblob.definitions;
+        for (term in defs)
+            if (defs.hasOwnProperty(term))
                 terms.push(dojo.regexp.escapeString(term));
-            }
-        }
+
         /* For incredible speed, we pre-build a regular expression of
            all glossary terms.  This has the advantage of always selecting
            the longest possible glossary term if several words together
@@ -56,15 +56,20 @@ dojo.declare('gobotany.sk.glossary.Glossarizer', null, {
         node.innerHTML = node.innerHTML.replace(
             this.regexp, '<span class="gloss">$1</span>'
         );
-        var gize = this;
+        var self = this;
+        var defs = this.glossaryblob.definitions;
+        var images = this.glossaryblob.images;
         dojo.query('.gloss', node).forEach(function(node2) {
-            gize.n++;
-            var gloss_id = 'gloss' + gize.n;
+            self.n++;
+            var gloss_id = 'gloss' + self.n;
+            var term = node2.innerHTML.toLowerCase();
+            var imgsrc = images[term];
             node2.id = gloss_id;
             dijit.Tooltip({
                 connectId: [gloss_id],
-                label: '<span class="glosstip">' + gize.glossaryblob[
-                    node2.innerHTML.toLowerCase()] + '</span>',
+                label: '<p class="glosstip">' +
+                    (imgsrc ? '<img src="' + imgsrc + '">' : '') +
+                    defs[term] + '</p>',
                 position: 'above'
             });
         });

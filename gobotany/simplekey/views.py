@@ -10,9 +10,10 @@ from django.template import RequestContext
 from django.utils import simplejson
 
 from gobotany.core import botany
-from gobotany.core.models import GlossaryTerm, Pile, PileGroup, Genus, \
-    Family, Synonym, Taxon, TaxonCharacterValue, Lookalike, CharacterGroup, \
-    Habitat, CharacterValue
+from gobotany.core.models import (
+    CharacterGroup, CharacterValue, Family, Genus, GlossaryTerm, Habitat,
+    Pile, PileGroup, Taxon, TaxonCharacterValue,
+    )
 from gobotany.simplekey import partners
 from gobotany.simplekey.models import Page, get_blurb, SearchSuggestion
 
@@ -50,9 +51,6 @@ def map_view(request):
     return render_to_response('simplekey/map.html', {
             'pages': Page.objects.order_by('number').all(),
             }, context_instance=RequestContext(request))
-
-def glossary_redirect_view(request):
-    return HttpResponseRedirect('/help/glossary/a/')
 
 def guided_search_view(request):
     return render_to_response('simplekey/guided_search.html', {
