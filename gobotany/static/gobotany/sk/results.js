@@ -27,7 +27,7 @@ dojo.require('dijit.form.HorizontalSlider');
 dojo.require('dijit.form.Select');
 
 dojo.declare('gobotany.sk.results.ResultsHelper', null, {
-    _loading_filter_count: 2, // 1 for the FilterManager, 1 assuming a filter
+    _loading_filter_count: 2, // assume at least the FilterManager + 1 filter
 
     constructor: function(/*String*/ pile_slug) {
         // summary:

@@ -41,7 +41,7 @@ urlpatterns = patterns(
         views.family_view, name='simplekey-family'),
     url('^genera/(?P<genus_slug>[^/]*)/$',
         views.genus_view, name='simplekey-genus'),
-    url('^species/(?P<genus_slug>[^/]*)/(?P<specific_epithet_slug>[^/]*)/$',
+    url('^species/(?P<genus_slug>[^/]*)/(?P<specific_name_slug>[^/]*)/$',
         views.species_view, name='simplekey-species'),
     url('^species/(?P<genus_slug>[^/]*)/$',
         views.genus_redirect_view, name='simplekey-genus-redirect'),
@@ -51,6 +51,6 @@ urlpatterns = patterns(
     url('^(?P<pilegroup_slug>[^/]*)/(?P<pile_slug>[^/]*)/$',
         views.results_view, name='simplekey-pile'),
     url('^(?P<pilegroup_slug>[^/]*)/(?P<pile_slug>[^/]*)/' \
-        '(?P<genus_slug>[^/]*)/(?P<specific_epithet_slug>[^/]*)/$',
+        '(?P<genus_slug>[^/]*)/(?P<specific_name_slug>[^/]*)/$',
         views.species_view, name='simplekey-pile-species'),
     )

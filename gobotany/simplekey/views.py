@@ -133,7 +133,7 @@ def _get_species_characteristics(pile, taxon):
     return characteristics
 
 
-def _get_all_species_characteristics(pile, taxon, character_groups):
+def _get_all_species_characteristics(taxon, character_groups):
     """Get all characteristics for a plant, organized by character group."""
     all_characteristics = []
     for group in character_groups:
@@ -179,14 +179,10 @@ def _get_all_species_characteristics(pile, taxon, character_groups):
     return all_characteristics
 
 
-def species_view(request,  genus_slug, specific_epithet_slug,
+def species_view(request, genus_slug, specific_name_slug,
                  pilegroup_slug=None, pile_slug=None):
-    scientific_name = '%s %s' % (genus_slug.capitalize(), 
-                                 specific_epithet_slug)
-    taxa = Taxon.objects.filter(scientific_name=scientific_name)
-    if not taxa:
-        raise Http404
-    taxon = taxa[0]
+    scientific_name = '%s %s' % (genus_slug.capitalize(), specific_name_slug)
+    taxon = get_object_or_404(Taxon, scientific_name=scientific_name)
 
     if pile_slug and pilegroup_slug:
         pile = get_object_or_404(Pile, slug=pile_slug)
@@ -202,7 +198,6 @@ def species_view(request,  genus_slug, specific_epithet_slug,
     if taxon.habitat:
         habitat_names = taxon.habitat.split('| ')
         for name in habitat_names:
-            friendly_name = None
             try:
                 habitat = Habitat.objects.get(name__iexact=name)
                 habitats.append(habitat.friendly_name)
@@ -210,7 +205,7 @@ def species_view(request,  genus_slug, specific_epithet_slug,
                 continue
         habitats.sort()
 
-    character_ids = taxon.character_values.all().values_list(
+    character_ids = taxon.character_values.values_list(
                     'character', flat=True).distinct()
     character_groups = CharacterGroup.objects.filter(
                        character__in=character_ids).distinct()
@@ -223,9 +218,9 @@ def species_view(request,  genus_slug, specific_epithet_slug,
            'species_images': species_images,
            'habitats': habitats,
            'characteristics': _get_species_characteristics(pile, taxon),
-           'all_characteristics': _get_all_species_characteristics(pile,
+           'all_characteristics': _get_all_species_characteristics(
                 taxon, character_groups),
-           'specific_epithet': specific_epithet_slug,
+           'specific_epithet': specific_name_slug,
            'character_groups': character_groups,
            }, context_instance=RequestContext(request))
 
