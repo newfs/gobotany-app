@@ -236,24 +236,19 @@
                 </div>
                 {% endif %}
 
-                {% if taxon.synonyms.all|length > 0 %}
+                {% with taxon.synonyms.all as synonyms %}
+                {% if synonyms|length > 0 %}
                 <div class="section">
-                    <h5>Synonyms:</h3>
-                    <p>{% for synonym in taxon.synonyms.all %}{% if forloop.first %}{{ synonym.scientific_name }}{% endif %}{% endfor %}{% if taxon.synonyms.all|length > 1 %},
-                        <a id='more-aka' class='more'>more</a>
-                        <span dojoType='dijit.Tooltip' connectId='more-aka' position='above'>
-                        <span class='moretip'>
-                            {% for synonym in taxon.synonyms.all %}
-                                {% if not forloop.first %}
-                                    {{ synonym.scientific_name }}{% if not forloop.last %}, {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </span>
-                    </span>
-                    {% endif %}
+                    <h5>Synonyms:</h5>
+                    <p>
+                      {% for synonym in synonyms %}
+                      {{ synonym.full_name }}
+                      {% if not forloop.last %}<br>{% endif %}
+                      {% endfor %}
                     </p>
                 </div>
                 {% endif %}
+                {% endwith %}
 
                 <div class="section">
                     <h5>Family:</h5>
