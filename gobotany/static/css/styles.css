@@ -658,7 +658,7 @@ div.show {
     padding-left: 10px;
 }
 .plant-list .row .plant.last {
-    padding-right: 10px;
+    padding-right: 9.5px;  /* was 10px; makes it less likely to wrap */
 }
 
 .plant-list .row .plant.genus1 {
