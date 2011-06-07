@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 import string
 from itertools import groupby
-from operator import itemgetter
+from operator import attrgetter, itemgetter
 
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -135,70 +136,40 @@ def _get_species_characteristics(pile, taxon):
     return characteristics
 
 
+def _format_character_value(character_value):
+    """Render a character value for display."""
+    character = character_value.character
+    if character.value_type == 'TEXT':
+        return character_value.friendly_text or character_value.value_str
+    elif character.unit not in (None, '', 'NA'):
+        return u'%.1f–%.1f %s' % (character_value.value_min,
+                                  character_value.value_max, character.unit)
+    else:
+        return u'%d–%d' % (
+            character_value.value_min, character_value.value_max)
+
 def _get_all_species_characteristics(taxon, character_groups):
     """Get all characteristics for a plant, organized by character group."""
 
     q = CharacterValue.objects.filter(taxon_character_values__taxon=taxon)
-    characters = sorted(
-        {
-            'name': cv.character.friendly_name,
-            'value': cv.value_str,
-            'group': cv.character.character_group.name,
-        }
-        for cv in q)
-    characters_by_group = [
-        {
-            'name': name,
-            'characters': sorted(characters, key=itemgetter('name')),
-        }
-        for name, characters in groupby(characters, itemgetter('group'))
-        ]
-    characters_by_group.sort(key=itemgetter('name'))
-    print characters_by_group
 
-    all_characteristics = []
-    for group in character_groups:
+    # Combine multiple values that belong to a single character.
+    cgetter = attrgetter('character')
+    cvgroups = groupby(sorted(q, key=cgetter), cgetter)
+    characters = ({
+        'group': character.character_group.name,
+        'name': character.name,
+        'value': ', '.join(_format_character_value(cv) for cv in values),
+        } for character, values in cvgroups)
 
-        taxon_character_values = TaxonCharacterValue.objects.filter( \
-            taxon=taxon,
-            character_value__character__character_group__name=group.name)
-
-        character_names = []
-        character_values = []
-        values_dict = {}
-
-        for tcv in taxon_character_values:
-            character_name = tcv.character_value.character.name
-            if character_name not in character_names:
-                character_names.append(character_name)
-                character_values = []
-                values_dict[character_name] = character_values
-
-            value = ''
-            if tcv.character_value.character.value_type == 'TEXT':
-                if tcv.character_value.friendly_text:
-                    value = tcv.character_value.friendly_text
-                else:
-                    value = tcv.character_value.value_str
-            else:
-                value = str(tcv.character_value.value_min) + \
-                    ' ' + tcv.character_value.character.unit + ' to ' + \
-                    str(tcv.character_value.value_max) + ' ' + \
-                    tcv.character_value.character.unit
-            if value != None:
-                character_values.append(value)
-            values_dict[character_name] = character_values
-        
-        characters = []
-        for character_name in character_names:
-            value_string = str.join(', ', values_dict[character_name])
-            characters.append({'name': character_name,
-                               'value': value_string})
-        
-        all_characteristics.append({'name': group.name,
-                                    'characters': characters})
-    print all_characteristics
-    return all_characteristics
+    # Group the characters by character-group.
+    ggetter = itemgetter('group')
+    cgroups = groupby(sorted(characters, key=ggetter), key=ggetter)
+    groups = ({
+        'name': name,
+        'characters': sorted(members, key=itemgetter('name')),
+        } for name, members in cgroups)
+    return sorted(groups, key=itemgetter('name'))
 
 
 def species_view(request, genus_slug, specific_name_slug,
