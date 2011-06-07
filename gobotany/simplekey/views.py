@@ -1,4 +1,6 @@
 import string
+from itertools import groupby
+from operator import itemgetter
 
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -9,7 +11,7 @@ from django.utils import simplejson
 from gobotany.core import botany
 from gobotany.core.models import GlossaryTerm, Pile, PileGroup, Genus, \
     Family, Synonym, Taxon, TaxonCharacterValue, Lookalike, CharacterGroup, \
-    Habitat
+    Habitat, CharacterValue
 from gobotany.simplekey import partners
 from gobotany.simplekey.models import Page, get_blurb, SearchSuggestion
 
@@ -135,6 +137,25 @@ def _get_species_characteristics(pile, taxon):
 
 def _get_all_species_characteristics(taxon, character_groups):
     """Get all characteristics for a plant, organized by character group."""
+
+    q = CharacterValue.objects.filter(taxon_character_values__taxon=taxon)
+    characters = sorted(
+        {
+            'name': cv.character.friendly_name,
+            'value': cv.value_str,
+            'group': cv.character.character_group.name,
+        }
+        for cv in q)
+    characters_by_group = [
+        {
+            'name': name,
+            'characters': sorted(characters, key=itemgetter('name')),
+        }
+        for name, characters in groupby(characters, itemgetter('group'))
+        ]
+    characters_by_group.sort(key=itemgetter('name'))
+    print characters_by_group
+
     all_characteristics = []
     for group in character_groups:
 
@@ -176,6 +197,7 @@ def _get_all_species_characteristics(taxon, character_groups):
         
         all_characteristics.append({'name': group.name,
                                     'characters': characters})
+    print all_characteristics
     return all_characteristics
 
 
@@ -221,7 +243,6 @@ def species_view(request, genus_slug, specific_name_slug,
            'all_characteristics': _get_all_species_characteristics(
                 taxon, character_groups),
            'specific_epithet': specific_name_slug,
-           'character_groups': character_groups,
            }, context_instance=RequestContext(request))
 
 def genus_view(request, genus_slug):
