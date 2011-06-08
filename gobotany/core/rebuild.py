@@ -4,14 +4,16 @@ import csv
 import re
 import sys
 import time
+
 from itertools import chain
+from StringIO import StringIO
 
 from django.core import management
 from django.core.exceptions import ObjectDoesNotExist
 
 from gobotany import settings
 management.setup_environ(settings)
-from gobotany.core import igdt, models
+from gobotany.core import igdt, importer, models
 
 
 class CSVReader(object):
@@ -40,16 +42,10 @@ def _get_default_filters_from_csv(pile_name, characters_csv):
                 character_name = row['character']
                 order = row['default_question']
 
-                # Clean the pile code (if present) off the character name.
-                pattern = re.compile('_[a-z]{2}$')
-                if pattern.search(character_name):
-                    character_name = character_name[:-3]
+                im = importer.Importer(StringIO())
+                short_name = im.character_short_name(character_name)
 
-                # Clean min/max suffix (if present) off the character name.
-                if character_name.endswith(('_min', '_max')):
-                    character_name = character_name[:-4]
-
-                filters.append((order, character_name))
+                filters.append((order, short_name))
 
     default_filter_characters = []
     filters.sort()

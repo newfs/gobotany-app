@@ -56,11 +56,18 @@ state_names = {
     'vt': u'Vermont',
     }
 
+
 class Importer(object):
 
     def __init__(self, logfile=sys.stdout):
         self.logfile = logfile
 
+    def character_short_name(self, raw_character_name):
+        """Return a short name for a character, to be used in the database."""
+        short_name = raw_character_name
+        short_name = short_name.replace('_min', '')
+        short_name = short_name.replace('_max', '')
+        return short_name
 
     def validate_data(self, pilegroupf, pilef, habitatsf, taxaf, charf,
                       charvf, char_val_images, char_glossaryf, glossaryf,
@@ -526,29 +533,28 @@ class Importer(object):
                 continue
             taxon = taxa[0]
             
-            # Create structure for tracking whether both min & max values have
-            # seen for this character, in order to avoid creating unneccessary
-            # CharacterValues.
+            # Create a structure for tracking whether both min and max values
+            # have been seen for this character, in order to avoid creating
+            # unnecessary CharacterValues.
             length_values_seen = {}
 
             # Go through the key/value pairs for this row.
-            for k, v in row.items():
+            for character_name, v in row.items():
                 if not v.strip():
                     continue
-                if not k.endswith(_pile_suffix):  # '_ca' or whatever
+                if not character_name.endswith(_pile_suffix):  # '_ca', etc.
                     continue
 
-                cname = k[:-3]
-                is_min = cname.lower().endswith('_min')
-                is_max = cname.lower().endswith('_max')
-                if is_min or is_max:
-                    cname = cname[:-4]
+                is_min = (character_name.lower().find('_min') > -1)
+                is_max = (character_name.lower().find('_max') > -1)
+                short_name = self.character_short_name(character_name)
 
                 try:
-                    character = models.Character.objects.get(short_name=cname)
+                    character = models.Character.objects.get(
+                        short_name=short_name)
                 except ObjectDoesNotExist:
                     print >> self.logfile, '    ERR: No such character ' \
-                        'exists: %s, [%s]' % (cname, k)
+                        'exists: %s, [%s]' % (short_name, character_name)
                     continue
 
                 if is_min or is_max:
@@ -557,7 +563,8 @@ class Importer(object):
                         numv = float(v)
                     except ValueError:
                         print >> self.logfile, '    ERR: Can\'t convert to ' \
-                            'a number: %s=%s [%s]' % (cname, v, k)
+                            'a number: %s=%s [%s]' % (short_name, v,
+                                                      character_name)
                         continue
 
                     # Min and max get stored in the same char-value row.
@@ -570,34 +577,34 @@ class Importer(object):
                     else:
                         # If this character hasn't been seen before, make a
                         # place for it.
-                        if length_values_seen.has_key(cname) == False:
-                            length_values_seen[cname] = {}
+                        if length_values_seen.has_key(short_name) == False:
+                            length_values_seen[short_name] = {}
 
                         # Set the min or max value in the temporary data
                         # structure.
                         if is_min:
-                            length_values_seen[cname]['min'] = numv
+                            length_values_seen[short_name]['min'] = numv
                         else:
-                            length_values_seen[cname]['max'] = numv
+                            length_values_seen[short_name]['max'] = numv
 
                         # If we've seen both min and max values for this
                         # character:
-                        if length_values_seen[cname].has_key('min') and \
-                           length_values_seen[cname].has_key('max'):
+                        if length_values_seen[short_name].has_key('min') and \
+                           length_values_seen[short_name].has_key('max'):
                             # Look for an existing character value for this
                             # character and min/max values.
                             cvs = models.CharacterValue.objects.filter(
                                 character=character,
-                                value_min=length_values_seen[cname]['min'],
-                                value_max=length_values_seen[cname]['max'])
+                                value_min=length_values_seen[short_name]['min'],
+                                value_max=length_values_seen[short_name]['max'])
                             if cvs:
                                 cv = cvs[0]
                             else:
                                 # The character value doesn't exist; create.
                                 cv = models.CharacterValue(
                                     character=character)
-                                cv.value_min = length_values_seen[cname]['min']
-                                cv.value_max = length_values_seen[cname]['max']
+                                cv.value_min = length_values_seen[short_name]['min']
+                                cv.value_max = length_values_seen[short_name]['max']
                                 cv.save()
                             # Finally, add the character value.
                             pile.character_values.add(cv)
@@ -607,7 +614,8 @@ class Importer(object):
                                 '  New TaxonCharacterValue: %s, %s for ' \
                                 'Character: %s [%s] (Species: %s)' % \
                                 (str(cv.value_min), str(cv.value_max),
-                                 character.name, cname, taxon.scientific_name)
+                                 character.name, short_name,
+                                 taxon.scientific_name)
 
                 else:
                     # A regular comma-separated list of string values.
@@ -633,7 +641,8 @@ class Importer(object):
                         if len(cv) == 0:
                             print >> self.logfile, \
                                 '    ERR: No such value: %s for character: ' \
-                                '%s [%s] exists' % (val, cname, k)
+                                '%s [%s] exists' % (val, short_name,
+                                                    character_name)
                             continue
 
                         models.TaxonCharacterValue.objects.get_or_create(
@@ -641,13 +650,19 @@ class Importer(object):
                         print >> self.logfile, \
                             '  New TaxonCharacterValue: %s for Character:' \
                             ' %s [%s] (Species: %s)' % (val, character.name,
-                                                        cname,
+                                                        short_name,
                                                         taxon.scientific_name)
 
 
     def _create_character_name(self, short_name):
         """Create a character name from the short name."""
-        name = short_name.replace('_', ' ').capitalize()
+        name = short_name
+
+        # Remove pile suffix, if present.
+        if re.search('_[a-z]{2}$', name):
+            name = name[:-3]
+
+        name = name.replace('_', ' ').capitalize()
         return name
 
 
@@ -671,16 +686,18 @@ class Importer(object):
 
             if '_' not in row['character']:
                 continue # ignore "family" rows for right now
-            short_name, pile_suffix = row['character'].rsplit('_', 1)
 
-            # Detect lengths and set the short_name and value_type properly
+            # Detect length characters and handle accordingly.
+            character_name = row['character']
+            is_min = (character_name.lower().find('_min') > -1)
+            is_max = (character_name.lower().find('_max') > -1)
+            short_name = self.character_short_name(character_name)
+
+            value_type = 'TEXT'
             unit = ''
-            if short_name.endswith('_min') or short_name.endswith('_max'):
-                short_name = short_name[:-4]
+            if is_min or is_max:
                 value_type = 'LENGTH'
                 unit = row['units']
-            else:
-                value_type = 'TEXT'
 
             chargroup, created = models.CharacterGroup.objects.get_or_create(
                 name=row['character_group'])
@@ -744,13 +761,11 @@ class Importer(object):
 
             if '_' not in row['character']:
                 continue # ignore "family" rows for right now
-            short_name, pile_suffix = row['character'].rsplit('_', 1)
 
-            # Detect lengths and set the short_name properly
-            if short_name.endswith('_min') or short_name.endswith('_max'):
-                short_name = short_name[:-4]
+            character_name = row['character']
+            pile_suffix = character_name.rsplit('_', 1)[1]
+            short_name = self.character_short_name(character_name)
 
-            # only handling the two _ly and _ca piles for now
             if not pile_suffix in pile_mapping:
                 continue
 
@@ -814,24 +829,23 @@ class Importer(object):
             for pos, c in enumerate(cols):
                 row[colnames[pos]] = c
 
-            ch = row['character'].split('_')
-            pile_suffix = ch[-1]
-            ch_short_name = '_'.join(ch[:-1])
-            ch_name = ' '.join(ch[:-1])
+            character_name = row['character']
+            pile_suffix = character_name.rsplit('_', 1)[1]
+            short_name = self.character_short_name(character_name)
+            friendly_name = self._create_character_name(short_name)
 
             if not row['friendly_text']:
                 continue
-            # only handling the two _ly and _ca piles for now
             if not pile_suffix in pile_mapping:
                 continue
 
             # XXX for now assume char was already created by _import_char.
             # We don't have character_group in current data file.
-            char = models.Character.objects.get(short_name=ch_short_name)
+            char = models.Character.objects.get(short_name=short_name)
             pile,ignore = models.Pile.objects.get_or_create(
                 name=pile_mapping[pile_suffix])
             term, created = models.GlossaryTerm.objects.get_or_create(
-                term=ch_name, question_text=row['friendly_text'],
+                term=friendly_name, question_text=row['friendly_text'],
                 hint=row['hint'], visible=False)
 
             models.GlossaryTermForPileCharacter.objects.get_or_create(
@@ -1252,15 +1266,15 @@ class Importer(object):
         print >> self.logfile, ('Setting up sample plant preview characters')
 
         self._create_plant_preview_characters('Lycophytes',
-            ['horizontal_shoot_position', 'spore_form',
-             'trophophyll_length'])
-        # Set up some sample filters for a partner site.
+            ['horizontal_shoot_position_ly', 'spore_form_ly',
+             'trophophyll_length_ly'])
+        # Set up some different plant preview characters for a partner site.
         self._create_plant_preview_characters('Lycophytes',
-            ['trophophyll_form', 'upright_shoot_form',
-             'sporophyll_orientation'], 'montshire')
+            ['trophophyll_form_ly', 'upright_shoot_form_ly',
+             'sporophyll_orientation_ly'], 'montshire')
 
         self._create_plant_preview_characters('Non-Orchid Monocots',
-            ['anther_length', 'leaf_arrangement'])
+            ['anther_length_nm', 'leaf_arrangement_nm'])
 
 
     def _import_lookalikes(self, lookalikesf):

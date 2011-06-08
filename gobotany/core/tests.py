@@ -403,6 +403,21 @@ class APITests(SampleData):
 
 class ImportTestCase(TestCase):
 
+    def test_character_short_name_retains_pile_suffix(self):
+        im = importer.Importer(StringIO())
+        short_name = im.character_short_name('this_is_a_character_ly')
+        self.assertEquals('this_is_a_character_ly', short_name)
+
+    def test_character_short_name_removes_min(self):
+        im = importer.Importer(StringIO())
+        short_name = im.character_short_name('this_is_a_length_char_min_ly')
+        self.assertEquals('this_is_a_length_char_ly', short_name)
+
+    def test_character_short_name_removes_max(self):
+        im = importer.Importer(StringIO())
+        short_name = im.character_short_name('this_is_a_length_char_max_ly')
+        self.assertEquals('this_is_a_length_char_ly', short_name)
+
     def test_import_characters(self):
         im = importer.Importer(StringIO())
         im._import_characters(testdata('characters.csv'))
