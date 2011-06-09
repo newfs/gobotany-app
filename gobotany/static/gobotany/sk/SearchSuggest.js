@@ -107,7 +107,7 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
             console.log('menu item ' + item_index + ' undefined');
         }
     },
-    
+
     highlight_next_menu_item: function() {
         var highlighted_item_index = this.get_highlighted_menu_item_index();
         var next_item_index = highlighted_item_index + 1;
@@ -117,7 +117,7 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
         }
         this.highlight_menu_item(next_item_index);
     },
-    
+
     highlight_previous_menu_item: function() {
         var highlighted_item_index = this.get_highlighted_menu_item_index();
         var previous_item_index = highlighted_item_index - 1;
@@ -129,7 +129,7 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
     },
 
     handle_keys: function(e) {
-        switch(e.charOrCode) {
+        switch (e.charOrCode) {
             case dojo.keys.DOWN_ARROW:
                 this.highlight_next_menu_item();
                 break;
@@ -172,14 +172,14 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
 
         return has_changed;
     },
-    
+
     set_horizontal_position: function() {
         // Adjust the menu's horizontal position so it lines up with the
         // search box regardless of window width.
         var box_position = dojo.position(this.search_box, true);
         this.menu.style.left = (box_position.x - 3) + 'px';
     },
-    
+
     show_menu: function(should_show) {
         var CLASS_NAME = 'hidden';
         if (should_show) {

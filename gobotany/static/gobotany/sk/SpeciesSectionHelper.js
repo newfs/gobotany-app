@@ -144,19 +144,19 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             var s;
             for (s = r * SPECIES_PER_ROW;
                  s < (r * SPECIES_PER_ROW) + SPECIES_PER_ROW; s++) {
-                
+
                 if (items[s] !== undefined) {
                     var species = items[s];
                     var plant_class_value = 'plant';
                     if (s === (r * SPECIES_PER_ROW)) {
                         plant_class_value += ' first';
                     }
-                    else if ((s === (r * SPECIES_PER_ROW) + 
+                    else if ((s === (r * SPECIES_PER_ROW) +
                                      SPECIES_PER_ROW - 1) ||
-                            (items[s + 1] === undefined)) {                
+                            (items[s + 1] === undefined)) {
                         plant_class_value += ' last';
                     }
-                    
+
                     // Set a background color, changing color if a new genus.
                     if (s > 0) {
                         if (items[s].genus !== items[s - 1].genus) {
@@ -167,7 +167,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         }
                     }
                     plant_class_value += ' genus' + genus_color;
-                    
+
 
                     var plant = dojo.create('div',
                         {'class': plant_class_value});
@@ -216,7 +216,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                 }
             }
             dojo.place(row, plants_container);
-        }    
+        }
     },
 
     lazy_load_images: function() {
@@ -229,22 +229,22 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         if (window.pageYOffset || window.pageXOffset) {
             scroll_top = window.pageYOffset;
             scroll_left = window.pageXOffset;
-	    }
-        else if (document.documentElement && 
+        }
+        else if (document.documentElement &&
                  document.documentElement.scrollTop) {
             scroll_top = document.documentElement.scrollTop;
             scroll_left = document.documentElement.scrollLeft;
         }
         else if (document.body) {
-		    scroll_top = document.body.scrollTop;
+            scroll_top = document.body.scrollTop;
             scroll_left = document.body.scrollLeft;
-	    }
+        }
 
         var image_elements = dojo.query('div.plant-list img');
         var i;
         for (i = 0; i < image_elements.length; i++) {
             var element = image_elements[i];
-            if (element.style.visibility !== 'hidden' && 
+            if (element.style.visibility !== 'hidden' &&
                 element.style.display !== 'none') {
 
                 var total_offset_left = 0;
@@ -254,7 +254,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     total_offset_left += current_element.offsetLeft;
                     total_offset_top += current_element.offsetTop;
                 }
-                while (current_element = current_element.offsetParent)
+                while (current_element = current_element.offsetParent);
 
                 var is_element_visible = false;
                 // Only worry about top/bottom scroll visibility, not also

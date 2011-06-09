@@ -51,4 +51,4 @@ gobotany.sk.help_start.init = function() {
     set_up_toggle_questions();
     //embed_video_player();
     set_up_skip_checkbox();
-}
+};

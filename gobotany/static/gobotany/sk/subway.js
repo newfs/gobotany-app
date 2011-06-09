@@ -29,21 +29,21 @@ gobotany.sk.subway.init = function(is_help_collections) {
                     dojo.attr(link, 'href'));
             });
         });
-        
+
     }
 };
 
 gobotany.sk.subway.get_api_path = function(pile_group, pile) {
     // Return the API URL path for the pile group or pile.
     var api_path = '/';
-    
+
     if (pile !== '') {
         api_path += 'piles/' + pile + '/';
     }
     else {
         api_path += 'pilegroups/' + pile_group + '/';
     }
-    
+
     return api_path;
 };
 
