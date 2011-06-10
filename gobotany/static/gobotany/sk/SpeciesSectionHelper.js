@@ -30,16 +30,18 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         // Assign other events that will trigger the lazy image loader,
         // with timers so as not to suffer multiple continuous event firings.
+        var SCROLL_WAIT_MS = 0;
         var scroll_timer;
         dojo.connect(window, 'onscroll', this, function() {
             clearTimeout(scroll_timer);
-            scroll_timer = setTimeout(this.lazy_load_images, 500);
+            scroll_timer = setTimeout(this.lazy_load_images, SCROLL_WAIT_MS);
         });
 
+        var RESIZE_WAIT_MS = 500;
         var resize_timer;
         dojo.connect(window, 'onresize', this, function() {
             clearTimeout(resize_timer);
-            resize_timer = setTimeout(this.lazy_load_images, 500);
+            resize_timer = setTimeout(this.lazy_load_images, RESIZE_WAIT_MS);
         });
     },
 
