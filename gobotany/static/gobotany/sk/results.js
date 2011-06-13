@@ -715,8 +715,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             else {
                 if (value !== null) {
                     var display_value = this._get_filter_display_value(filter);
-                    dojo.query('li#' + char_name + ' span.value'
-                              ).html(display_value);
+                    var q = dojo.query('li#' + char_name + ' span.value');
+                    q.html(display_value);
+                    this.glossarizer.markup(q[0]);
+
                 }
                 this.show_or_hide_filter_clear(filter);
             }
