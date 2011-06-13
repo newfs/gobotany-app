@@ -111,7 +111,7 @@ STATIC_ROOT = os.path.join(buildout_dir, 'var', 'gobotany-static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [('', os.path.join(GOBOTANY_DIR, 'static'))]
 ADMIN_MEDIA_ROOT = os.path.join(buildout_dir, 'var', 'admin')
-ADMIN_MEDIA_PREFIX = '/admin-media/'
+ADMIN_MEDIA_PREFIX = '/static/admin/'
 THUMBNAIL_BASEDIR = 'content-thumbs'
 
 SESSION_COOKIE_AGE = 2 * 24 * 60 * 60  # two days
