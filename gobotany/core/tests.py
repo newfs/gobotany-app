@@ -159,17 +159,6 @@ class ModelTests(SampleData):
     def test_TaxonCharacterValue_unicode(self):
         self.do_unicode(self.tcv, u'Oryctolagus rabbit: length: 2 - 4')
 
-    def test_TaxonGroup_unicode(self):
-        self.create(models.TaxonGroup, 'taxongroup1')
-
-        taxongroupentry1 = models.TaxonGroupEntry()
-        taxongroupentry1.taxon = self.cat
-        taxongroupentry1.group = self.taxongroup1
-        taxongroupentry1.save()
-
-        self.do_unicode(self.taxongroup1, u'taxongroup1')
-        self.do_unicode(taxongroupentry1, u'taxongroup1: Felis cat')
-
     def test_DefaultFilter_unicode(self):
         defaultfilter1 = models.DefaultFilter()
         defaultfilter1.pile = self.carnivores

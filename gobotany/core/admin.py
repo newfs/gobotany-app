@@ -115,15 +115,6 @@ class CharacterValueAdmin(GobotanyAdminBase):
     inlines = [CharacterValuePileInline,]
 
 
-class TaxonGroupEntryInline(admin.TabularInline):
-    model = models.TaxonGroupEntry
-    extra = 5
-
-class TaxonGroupAdmin(GobotanyAdminBase):
-    search_fields = ('name', 'taxa__scientific_name')
-    ordering = ('name',)
-    inlines = (TaxonGroupEntryInline,)
-
 class FamilyAdmin(GobotanyAdminBase):
     inlines = [ContentImageInline]
     search_fields = ('name', 'common_name')
@@ -143,7 +134,7 @@ admin.site.register(models.Pile, PileAdmin)
 admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.CharacterValue, CharacterValueAdmin)
-admin.site.register(models.PartnerSite)
 admin.site.register(models.Taxon, TaxonAdmin)
-admin.site.register(models.TaxonGroup, TaxonGroupAdmin)
+admin.site.register(models.PartnerSite)
+admin.site.register(models.PartnerSpecies)
 admin.site.register(models.TaxonCharacterValue, TaxonCharacterValueAdmin)

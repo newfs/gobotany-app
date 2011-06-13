@@ -608,35 +608,6 @@ class TaxonCharacterValue(models.Model):
         return u'%s: %s' % (self.taxon.scientific_name, self.character_value)
 
 
-class TaxonGroup(models.Model):
-    """A way to group taxa together for partner site collections."""
-    name = models.CharField(max_length=100)
-    taxa = models.ManyToManyField(Taxon, through='TaxonGroupEntry')
-
-    class Meta:
-        ordering = ['name']
-
-    def __unicode__(self):
-        return self.name
-
-
-class TaxonGroupEntry(models.Model):
-    """A binary relation putting taxa in `TaxonGroup` collections."""
-    taxon = models.ForeignKey(Taxon)
-    group = models.ForeignKey(TaxonGroup)
-    # Does this species appear in the simple key for the TaxaGroup
-    simple_key = models.BooleanField(default=True)
-
-    class Meta:
-        # A group can reference a taxon only once
-        unique_together = ('taxon', 'group')
-        ordering = ['group__name', 'taxon__scientific_name']
-        verbose_name_plural = 'taxon group entries'
-
-    def __unicode__(self):
-        return '%s: %s' % (self.group.name, self.taxon.scientific_name)
-
-
 class DefaultFilter(models.Model):
     """A designation that a particular filter be shown by default for a pile.
 
@@ -666,12 +637,29 @@ class PartnerSite(models.Model):
        partner sites--the associated record pertains.
     """
     short_name = models.CharField(max_length=30)
+    species = models.ManyToManyField(Taxon, through='PartnerSpecies')
 
     class Meta:
         ordering = ['short_name']
 
     def __unicode__(self):
         return '%s' % self.short_name
+
+
+class PartnerSpecies(models.Model):
+    """A binary relation putting taxa in `TaxonGroup` collections."""
+    species = models.ForeignKey(Taxon)
+    partner = models.ForeignKey(PartnerSite)
+    # Does this species appear in the simple key for the TaxaGroup
+    simple_key = models.BooleanField(default=True)
+
+    class Meta:
+        # A group can reference a taxon only once
+        unique_together = ('species', 'partner')
+
+    def __unicode__(self):
+        return '%s: %s' % (self.partner.short_name,
+                           self.species.scientific_name)
 
 
 class PlantPreviewCharacter(models.Model):
