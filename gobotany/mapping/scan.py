@@ -2,10 +2,12 @@
 
 import xml.etree.ElementTree as etree
 from collections import namedtuple
+from csv import DictReader
 
 from PIL import Image
 
 MapPoint = namedtuple('MapPoint', ['state', 'county', 'x', 'y'])
+MapStatus = namedtuple('MapStatus', ['state', 'county', 'status'])
 
 def c(rgbhex):
     """Convert 0x008000 to (0, 128, 0)."""
@@ -32,7 +34,7 @@ PIXEL_VALUES = [          # From the http://www.bonap.org/MapKey.html page:
 del c
 range3 = range(3)
 
-def diagnose_pixel(pixel):
+def pixel_status(pixel):
     for rgb, value in PIXEL_VALUES:
         dsq = sum((pixel[i] - rgb[i]) ** 2 for i in range3)
         if dsq < 100:
@@ -59,15 +61,37 @@ class MapScanner(object):
 
     def scan(self, map_image_path):
         im = Image.open(map_image_path)
-        return [(p.state, p.county, diagnose_pixel(im.getpixel((p.x, p.y))))
-                for p in self.points]
+        return [
+            MapStatus(p.state, p.county, pixel_status(im.getpixel((p.x, p.y))))
+            for p in self.points
+            ]
 
 if __name__ == '__main__':
     import os
     data = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'data')
     ms = MapScanner(os.path.join(data, 'new-england-counties.svg'))
-    if True:
+    if False:
         # Simple test; just print out data from one map.
         pngpath = os.path.join(data, 'Acorus americanus New England.png')
         for tup in ms.scan(pngpath):
             print tup
+    if True:
+        # Read in taxa.csv and compare.
+        csvdir = os.path.join(data, '..', '..', 'gobotany-buildout', 'data')
+        csvpath = os.path.join(csvdir, 'taxa.csv')
+        with open(csvpath) as csvfile:
+            for row in DictReader(csvfile):
+                sn = row['Scientific_Name']
+
+                pngpath = os.path.join(data, sn + ' New England.png')
+                if not os.path.exists(pngpath):
+                    continue
+                tups = ms.scan(pngpath)
+                nstates = set(s.state for s in ms.scan(pngpath))
+
+                bstates = set(s.strip() for s in row['Distribution'].split('|'))
+
+                for state in nstates - bstates:
+                    print 'We think that {0} is in {1}'.format(sn, state)
+                for state in bstates - nstates:
+                    print 'BONAP thinks that {0} is in {1}'.format(sn, state)
