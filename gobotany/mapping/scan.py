@@ -7,11 +7,29 @@ from PIL import Image
 
 MapPoint = namedtuple('MapPoint', ['state', 'county', 'x', 'y'])
 
-PIXEL_VALUES = [
-    ((0, 128, 0), 'absent'),
-    ((0, 255, 0), 'present'),
+def c(rgbhex):
+    """Convert 0x008000 to (0, 128, 0)."""
+    rg, b = divmod(rgbhex, 0x100)
+    r, g = divmod(rg, 0x100)
+    return (r, g, b)
+
+PIXEL_VALUES = [          # From the http://www.bonap.org/MapKey.html page:
+    (c(0x008000), True),  # Species present in state and native
+    (c(0x00FF00), True),  # Species present and not rare
+    (c(0xFE0000), False), # Species extinct
+    (c(0x00DD90), True),  # Species native, but adventive in state
+    (c(0x3AB2E6), False), # Species waif    See http://en.wikipedia.org/wiki/Waif
+    (c(0x0000EA), True),  # Species present in state and exotic
+    (c(0xFFFF00), True),  # Species present and rare
+    (c(0xFF00FE), True),  # Species noxious
+    (c(0x000000), False), # Species eradicated
+    (c(0xAD8E00), False), # Species not present in state
+    (c(0xFE9900), False), # Species extirpated (historic)
+    (c(0x00FFFF), True),  # Species exotic and present
+    #(c(0x), True),  # Questionable Presence (cross-hatched)
     ]
 
+del c
 range3 = range(3)
 
 def diagnose_pixel(pixel):
@@ -41,12 +59,15 @@ class MapScanner(object):
 
     def scan(self, map_image_path):
         im = Image.open(map_image_path)
-        for point in self.points:
-            value = diagnose_pixel(im.getpixel((point.x, point.y)))
-            print point.state, point.county, value
+        return [(p.state, p.county, diagnose_pixel(im.getpixel((p.x, p.y))))
+                for p in self.points]
 
 if __name__ == '__main__':
     import os
     data = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'data')
     ms = MapScanner(os.path.join(data, 'new-england-counties.svg'))
-    ms.scan(os.path.join(data, 'Acorus americanus New England.png'))
+    if True:
+        # Simple test; just print out data from one map.
+        pngpath = os.path.join(data, 'Acorus americanus New England.png')
+        for tup in ms.scan(pngpath):
+            print tup
