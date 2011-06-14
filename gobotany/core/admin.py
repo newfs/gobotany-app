@@ -5,6 +5,14 @@ from django import forms
 from autocomplete.fields import ModelChoiceField
 from gobotany.core import models
 
+# Inline classes
+
+class PartnerSpeciesInline(admin.TabularInline):
+    model = models.PartnerSpecies
+    extra = 1
+
+# View classes
+
 class GobotanyAdminBase(admin.ModelAdmin):
     class Media:
         css = {
@@ -122,6 +130,10 @@ class FamilyAdmin(GobotanyAdminBase):
 class GenusAdmin(FamilyAdmin):
     list_filter = ('family',)
 
+class PartnerSiteAdmin(admin.ModelAdmin):
+    inlines = (PartnerSpeciesInline,)
+
+# Registrations
 
 admin.site.register(models.Parameter)
 admin.site.register(models.Character, CharacterAdmin)
@@ -135,6 +147,5 @@ admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.CharacterValue, CharacterValueAdmin)
 admin.site.register(models.Taxon, TaxonAdmin)
-admin.site.register(models.PartnerSite)
-admin.site.register(models.PartnerSpecies)
 admin.site.register(models.TaxonCharacterValue, TaxonCharacterValueAdmin)
+admin.site.register(models.PartnerSite, PartnerSiteAdmin)
