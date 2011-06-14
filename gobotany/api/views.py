@@ -6,7 +6,8 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
 from gobotany.core import igdt
 from gobotany.core.models import (
-    Character, CharacterValue, ContentImage, GlossaryTerm, Pile,
+    Character, CharacterValue, ContentImage,
+    GlossaryTerm, PartnerSite, PartnerSpecies, Pile,
     Taxon, TaxonCharacterValue,
     )
 
@@ -271,7 +272,20 @@ def vectors_character(request, name):
 def vectors_key(request, key):
     if key != 'simple':
         raise Http404()
-    ids = sorted( s.id for s in Taxon.objects.filter(simple_key=True) )
+    hostname = request.get_host().split('.', 1)[0]
+    partner_matches = list(PartnerSite.objects.filter(short_name=hostname))
+    if partner_matches:
+        # Each partner site has its own species list, maintained as a
+        # many-to-many relation from its own PartnerSite object.
+        partner = partner_matches[0]
+        ids = sorted( ps.species_id for ps in PartnerSpecies.objects
+                      .filter(partner=partner, simple_key=True) )
+    else:
+        # The main site decides which species are in the simple key
+        # through the simple_key attribute directly attached to each
+        # species.
+        ids = sorted( s.id for s in Taxon.objects.filter(simple_key=True) )
+
     return jsonify([{'key': 'simple', 'species': ids}])
 
 def vectors_pile(request, slug):
