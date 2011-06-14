@@ -654,8 +654,9 @@ class PartnerSpecies(models.Model):
     simple_key = models.BooleanField(default=True)
 
     class Meta:
-        # A group can reference a taxon only once
         unique_together = ('species', 'partner')
+        verbose_name = 'Partner species'
+        verbose_name_plural = 'Partner species list'
 
     def __unicode__(self):
         return '%s: %s' % (self.partner.short_name,
