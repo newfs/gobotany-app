@@ -9,7 +9,6 @@ dojo.require('dojo.cookie');
 dojo.require('dojox.data.JsonRestStore');
 
 dojo.require('gobotany.sk.glossary');
-dojo.require('gobotany.sk.images.ImageBrowser');
 
 // Image info storage for images that appear on the species page.
 gobotany.sk.species.images = [];
@@ -35,56 +34,9 @@ gobotany.sk.species.reopen_character_groups = function() {
 gobotany.sk.species.init = function(scientific_name) {
     gobotany.sk.species.reopen_character_groups();
 
-    // Set up the image browser and load the image information.
-
-    var image_browser = gobotany.sk.images.ImageBrowser();
-    image_browser.css_selector = '#species #images';
-
-    var taxon_url = '/api/taxon/' + scientific_name + '/';
-    var taxon_store = new dojox.data.JsonRestStore({target: taxon_url});
-    taxon_store.fetch({
-        onComplete: function(taxon) {
-            if (taxon.images.length) {
-                for (var i = 0; i < taxon.images.length; i++) {
-                    image_browser.images.push(taxon.images[i]);
-                }
-                // If the alt text of the thumbnail the user clicked on in the
-                // page is different from the alt text of the first image
-                // showing on the popup, look for matching alt text and show
-                // that image first on the popup.
-                //
-                // TODO: pass image that was visible on the plant preview
-                // popup when the user came to the species page.
-                // Like in plant_preview.js, e.g.:
-                //var clicked_image_alt_text = dojo.attr(clicked_image, 'alt');
-                //
-                //var preview_image_alt_text = 'TODO';
-                //
-                //for (var i = 0; i < image_browser.images.length; i++) {
-                //    if (preview_image_alt_text ===
-                //        image_browser.images[i].title) {
-                //
-                //        image_browser.first_image_index = i;
-                //        break;
-                //    }
-                //}
-            }
-
-            var first_habit_image_index =
-                image_browser.get_first_image_index_of_type('habit');
-            if (first_habit_image_index >= 0) {
-                image_browser.first_image_index = first_habit_image_index;
-            }
-
-            image_browser.setup();
-        }
-    });
-
-
     // Make glossary highlights appear where appropriate throughout the page.
     var glossarizer = gobotany.sk.glossary.Glossarizer();
     dojo.query('#info p').forEach(function(node) {
-        // TODO: fix markup!
         glossarizer.markup(node);
     });
 
