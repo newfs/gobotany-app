@@ -413,7 +413,8 @@ class ImportTestCase(TestCase):
         f = open(testdata('characters.csv'))
         content = f.read()
         f.close()
-        expected = len(content.splitlines()) - content.count('_max') - 1
+        expected = len(content.splitlines()) - min(content.count('_min'),
+                                                   content.count('_max')) - 1
         self.assertEquals(len(models.Character.objects.all()), expected)
 
     def test_import_taxons(self):

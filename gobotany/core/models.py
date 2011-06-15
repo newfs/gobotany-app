@@ -83,11 +83,11 @@ class Character(models.Model):
 
         >>> group,ignore = CharacterGroup.objects.get_or_create(
         ...     name=u'characters of the spores')
-        >>> char = Character.objects.create(short_name='spore_form',
+        >>> char = Character.objects.create(short_name='spore_form_ly',
         ...                                 name=u'Spore Form',
         ...                                 character_group=group)
         >>> char
-        <Character: spore_form name="Spore Form" id=...>
+        <Character: spore_form_ly name="Spore Form" id=...>
         >>> char.character_group.name
         u'characters of the spores'
         >>> char.glossary_terms.all()
@@ -104,7 +104,7 @@ class Character(models.Model):
         >>> GlossaryTermForPileCharacter.objects.create(character=char,
         ...                                             pile=pile,
         ...                                             glossary_term=term)
-        <...: "Spore Form" character=spore_form pile=Lycophytes>
+        <...: "Spore Form" character=spore_form_ly pile=Lycophytes>
         >>> char.glossary_terms.all()
         [<GlossaryTerm: Spore Form:...>]
 
@@ -168,15 +168,15 @@ class CharacterValue(models.Model):
     CharacterValue and assigning it to a character:
 
         >>> group,ignore = CharacterGroup.objects.get_or_create(
-        ...     name=u'characters of the tropophylls')
-        >>> char = Character.objects.create(short_name='tropophyll_form',
-        ...                                 name=u'Tropophyll Form',
+        ...     name=u'characters of the trophophylls')
+        >>> char = Character.objects.create(short_name='trophophyll_form_ly',
+        ...                                 name=u'Trophophyll Form',
         ...                                 character_group=group)
         >>> char_val = CharacterValue.objects.create(
         ...    value_str='short and scale-like',
         ...    character=char)
         >>> char_val
-        <CharacterValue: tropophyll_form: short and scale-like>
+        <CharacterValue: trophophyll_form_ly: short and scale-like>
 
     Now we can associate that character value with a Pile, which
     effectively associates the character with the Pile as well:
@@ -186,29 +186,29 @@ class CharacterValue(models.Model):
         []
         >>> pile.character_values.add(char_val)
         >>> Character.objects.filter(character_values__pile=pile)
-        [<Character: tropophyll_form name="Tropophyll Form" id=...>]
+        [<Character: trophophyll_form_ly name="Trophophyll Form" id=...>]
         >>> CharacterValue.objects.filter(pile=pile)
-        [<CharacterValue: tropophyll_form: short and scale-like>]
+        [<CharacterValue: trophophyll_form_ly: short and scale-like>]
 
     We don't yet have an associated glossary term for this value.
     Let's make one:
 
         >>> term = GlossaryTerm.objects.create(
-        ...     term='Short and Scale-like (Tropophylls)',
-        ...     lay_definition='The Tropophylls look like small fish scales.')
+        ...     term='Short and Scale-like (Trophophylls)',
+        ...     lay_definition='The Trophophylls look like small fish scales.')
        >>> char_val.glossary_term = term
        >>> char_val.glossary_term
-       <GlossaryTerm: Short and Scale-like (Tropophylls): ...>
+       <GlossaryTerm: Short and Scale-like (Trophophylls): ...>
 
     The display for the character values change depending on the type
     being used.
 
        >>> CharacterValue.objects.create(character=char, value_str='foo')
-       <CharacterValue: tropophyll_form: foo>
+       <CharacterValue: trophophyll_form_ly: foo>
        >>> CharacterValue.objects.create(character=char, value_min=1)
-       <CharacterValue: tropophyll_form: None>
+       <CharacterValue: trophophyll_form_ly: None>
        >>> CharacterValue.objects.create(character=char, value_flt=3.2)
-       <CharacterValue: tropophyll_form: 3.2>
+       <CharacterValue: trophophyll_form_ly: 3.2>
     """
 
     value_str = models.CharField(max_length=260, null=True, blank=True)
