@@ -59,7 +59,6 @@ gobotany.utils.clone = function(obj, updated_args) {
     return new_obj;
 };
 
-
 gobotany.utils.pretty_length = function(unit, mmvalue) {
     var SPACE = '&#160;';
     var mm = parseFloat(mmvalue); /* make sure it is a float */
@@ -96,3 +95,21 @@ gobotany.utils.pretty_length = function(unit, mmvalue) {
     value += SPACE + 'in';
     return value;
 };
+
+/* Programatically click a link, running its attached event handlers as if a
+   user clicked it.
+
+   Code based on the answer provided by Matthew Crumley at:
+   http://stackoverflow.com/questions/902713/how-do-i-automatically-click-a-link-with-javascript
+ */
+gobotany.utils.click_link = function(link) {
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0,
+            false, false, false, false, 0, null);
+        link.dispatchEvent(event);
+    } else if (link.fireEvent) {
+        link.fireEvent('onclick');
+    }
+};
+

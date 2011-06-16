@@ -60,9 +60,15 @@
                         <div class="images">
                         {% for i in species_images %}
                             <div class="single-img">
-                                {% thumbnail i.image "710x249" crop="center" as im %}
-                                <img src="{{ im }}"
-                                    alt="{{ i.image_type|capfirst }}: {{ scientific_name }}">
+                                {% thumbnail i.image "710x249" crop="center" as thumb %}
+                                {% if i.image.height > i.image.width %}
+                                    {% thumbnail i.image "600x800" as full %}                                   {% else %}
+                                    {% thumbnail i.image "800x600" as full %}
+                                {% endif %}
+                                <a href="{{ full }}" rel="shadowbox">
+                                    <img src="{{ thumb }}"
+                                         alt="{{ i.image_type|capfirst }}: 
+                                         {{ scientific_name }}"></a>
                                 <p class="caption">{{ i.image_type|capfirst }}</p>
                             </div>
                         {% endfor %}
@@ -108,7 +114,7 @@
                     {% else %}
                         <li>
                           No “plant preview characters” have been established
-                          for the “{{ pile.friendly_name }}” ({{ pile.name}})
+                          for the “{{ pile.friendly_name }}” ({{ pile.name }})
                           pile.
                         </li>
                     {% endif %}
@@ -200,7 +206,6 @@
                         alt="US Map" class="map" style="width: 193px">
                         <a class="enlarge"
                             href="http://bonap.org/BONAPmaps2010/map%20sized/{{ scientific_name }}.png"
-                            title="US Distribution" 
                             rel="shadowbox"><img 
                             src="/static/images/icons/zoom.png" 
                             alt="" align="absmiddle"> Click to enlarge</a>
