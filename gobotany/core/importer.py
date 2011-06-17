@@ -9,7 +9,7 @@ import os
 import re
 import sys
 import tarfile
-import zipfile
+import xlrd
 
 from gobotany.core import models
 from gobotany.simplekey.models import Blurb, Video, HelpPage, \
@@ -397,7 +397,7 @@ class Importer(object):
         colnames = [x.lower() for x in iterator.next()]
 
         for cols in iterator:
-            row = dict(zip(colnames, cols))
+            row = dict(zip(colnames, (c.strip() for c in cols)))
 
             # Find the family and genus.
             family, created = models.Family.objects.get_or_create(
@@ -1549,12 +1549,31 @@ class Importer(object):
             self._add_suggestion_term(character.name)
             self._add_suggestion_term(character.friendly_name)
 
+# Import (well, for right now, just print out diagnoses about!) a
+# partner species list Excel spreadsheet.
+
+def import_partner_species(excel_path):
+    book = xlrd.open_workbook(excel_path)
+    sheet = book.sheet_by_index(0)
+    cells = sheet.col(1)[1:]  # skip first row; it contains the column title
+    theirs = set(' '.join(c.value.split()[:2]) for c in cells)
+    ours = set(t.scientific_name for t in models.Taxon.objects.all())
+    print 'We list', len(ours), 'species'
+    print 'They list', len(theirs), 'species'
+    print 'We know about', len(theirs & ours), 'of their species'
+    print 'That leaves', len(theirs - ours), 'species we have not heard of:'
+    for species in sorted(theirs - ours):
+        print '   ', species
+
+# Parse the command line.
 
 def main():
     # Incredibly lame option parsing, since we can't rely on real option
     # parsing
     importer = Importer()
-    if sys.argv[1] == 'species-images':
+    if sys.argv[1] == 'partner':
+        import_partner_species(*sys.argv[2:])
+    elif sys.argv[1] == 'species-images':
         species_image_dir = os.path.join(settings.MEDIA_ROOT, 'species')
         importer.import_species_images(species_image_dir, *sys.argv[2:])
     else:
