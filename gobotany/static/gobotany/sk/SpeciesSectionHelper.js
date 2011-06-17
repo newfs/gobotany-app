@@ -73,7 +73,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     on_complete_perform_query: function(data) {
         "use strict";
 
-        var plant_list, see_list;
+        var plant_list, see_list, show_menu;
             
         plant_list = dojo.query('#main .plant-list')[0];
 
