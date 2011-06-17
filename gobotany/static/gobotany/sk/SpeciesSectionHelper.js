@@ -80,10 +80,14 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         // Update the species count everywhere it appears on the screen.
         dojo.query('.species-count').html(String(data.items.length));
 
+        // Show the "Show" drop-down menu.
+        show_menu = dojo.query('.show')[0];
+        dojo.removeClass(show_menu, 'hidden');
+
         this.display_results(data.items, plant_list);
 
         // Show the "See a list" link.
-        see_list = dojo.query('p.list-all')['0'];
+        see_list = dojo.query('.list-all')[0];
         dojo.removeClass(see_list, 'hidden');
 
         global_setSidebarHeight();

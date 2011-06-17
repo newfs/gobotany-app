@@ -12,46 +12,50 @@
                     <div id="breadcrumb">
                         <ul>
                             {% if 'skip_help_start' in request.COOKIES.keys and request.COOKIES.skip_help_start != 'y' %}
-                                <li class="first completed"><a href="/help/start/"><img
-                                    src="/static/images/icons/start.png" alt=""> Start: Help</a></li>
-                                <li class="second completed"><a href="{% url simplekey-page 1 %}"><img
-                                    src="/static/images/icons/group.png" alt=""> Choose Group</a></li>
+                            <li class="first completed"><a 
+                                href="/help/start/"><img
+                                src="/static/images/icons/start.png" 
+                                alt=""> Start: Help</a></li>
+                            <li class="second completed"><a 
+                                href="{% url simplekey-page 1 %}"><img
+                                src="/static/images/icons/group.png" 
+                                alt=""> Choose Group</a></li>
                                 <li class="third completed"><a
                                     href="{% url simplekey-pilegroup pilegroup.slug %}"><img
-                                    src="/static/images/icons/group.png" alt=""> 
-                                    {{ pilegroup.name }}</a></li>
+                                    src="/static/images/icons/group.png" 
+                                    alt=""> {{ pilegroup.name }}</a></li>
                                 <li class="last current"><a><img
-                                    src="/static/images/icons/subgroup.png" alt=""> 
+                                    src="/static/images/icons/subgroup.png"
+                                    alt=""> 
                                     {{ pile.name }}</a></li>
                             {% else %}
-                                <li class="first completed"><a href="{% url simplekey-page 1 %}"><img
-                                    src="/static/images/icons/start.png" alt=""> Start</a></li>
+                            <li class="first completed"><a 
+                                href="{% url simplekey-page 1 %}"><img
+                                src="/static/images/icons/start.png" 
+                                alt=""> Start</a></li>
                                 <li class="second completed"><a
                                     href="{% url simplekey-pilegroup pilegroup.slug %}"><img
-                                    src="/static/images/icons/group.png" alt=""> 
-                                    {{ pilegroup.name }}</a></li>
+                                    src="/static/images/icons/group.png"
+                                    alt=""> {{ pilegroup.name }}</a></li>
                                 <li class="third current"><a><img
-                                    src="/static/images/icons/subgroup.png" alt=""> 
+                                    src="/static/images/icons/subgroup.png"
+                                    alt=""> 
                                     {{ pile.name }}</a></li>
                             {% endif %}
                         </ul>
                     </div><!--Closes #breadcrumb-->
 
                     <h2>Plant Identifier</h2>
-                        <h3>{{ pile.name }} (<span class="species-count">calculating</span> matching species)</h3>
-                        <div class="show">
-                            <form id="results-display">
-                              <label for="image-type-selector">Show:</label>
-                              <select dojoType="dijit.form.Select"
-                                      id="image-type-selector" name="image-type-selector">
-                              </select>
-                            </form>
-                        </div><!--Closes .show-->
-                        <h6 class="subtitle"><em>Narrow down your results using the 
-                            options on the left side of the page.</em></h6>
+                    <h3>{{ pile.name }} 
+                        (<span class="species-count">calculating</span> 
+                        matching species)</h3>
+                    <h6 class="subtitle"><em>Narrow down your results 
+                            using the options on the left side of the 
+                            page.</em></h6>
                         <div class="clearit"></div>
 
-                        <div class="working-area" aria-live="polite" aria-relevant="additions removals">
+                        <div class="working-area" aria-live="polite" 
+                            aria-relevant="additions removals">
                             <a href="#" class="close"></a>
                             <h4>Leaf Arrangement</h4>
                             <form id="character_values_form">
@@ -64,7 +68,8 @@
                                         <div class="values"></div>
 
                                         <div class="actions">
-                                            <a class="apply-btn" href="#">Apply</a>
+                                            <a class="apply-btn" 
+                                                href="#">Apply</a>
                                         </div>
 
                                     </div>
@@ -73,54 +78,71 @@
                             <div class="clearit"></div>
                         </div><!--Closes .working-area-->
 
+                        <div class="show hidden">
+                            <form id="results-display">
+                              <label for="image-type-selector">Show:</label>
+                              <select dojoType="dijit.form.Select"
+                                  id="image-type-selector"
+                                  name="image-type-selector">
+                              </select>
+                          </form>
+                        </div><!--Closes .show-->
+                        <div class="clearit"></div>
+
                         <!--Begin Plant List-->
                         <div class="plant-list">
                         </div>
 
-                        <p class="list-all hidden"><a href="#">See a list of all 
-                            <span class="species-count">...</span> matching
-                            species.</a></p>
+                        <p class="list-all hidden"><a href="#">See a list 
+                            of all <span class="species-count">...</span> 
+                            matching species.</a></p>
 
                     </div><!--closes #main-->
 
                 <div id="sidebar">
                     <div class="section">
-                        <h6>If you already know the Family or Genus, select here:</h6>
+                        <h6>If you already know the Family or Genus, select 
+                            here:</h6>
                         <label>Family:</label><br>
-                        <!-- TODO: move menu widths into external CSS -->
                         <select id="family_select" name="family_select"
                             dojoType="dijit.form.FilteringSelect"
-                            autocomplete="true" value="sel" style="width:140px">
+                            autocomplete="true" value="sel">
                         </select>
-                        <button dojoType="dijit.form.Button" id="clear_family">Clear</button>
+                        <button dojoType="dijit.form.Button" 
+                            id="clear_family">Clear</button>
                         <label>Genus:</label><br>
                         <select id="genus_select" name="genus_select"
                             dojoType="dijit.form.FilteringSelect"
-                            autocomplete="true" value="sel" style="width:140px">
+                            autocomplete="true" value="sel">
                         </select>
-                        <button dojoType="dijit.form.Button" id="clear_genus">Clear</button>
+                        <button dojoType="dijit.form.Button" 
+                            id="clear_genus">Clear</button>
                     </div><!--Closes .section-->
 
                     <div class="section">
-                        <h6>What types of things can you tell about your plant?</h6>
+                        <h6>What types of things can you tell about your
+                            plant?</h6>
                         <ul id="char-groups">
                         </ul>
                         <a class="get-choices" href="#">Get More Choices</a>
                     </div><!--Closes .section-->
 
                     <div class="section">
-                        <h6>Narrow your results by clicking on choices below.</h6>
+                        <h6>Narrow your results by clicking on choices
+                            below.</h6>
                     </div><!--Closes .section-->
 
                     <div class="loading">Loading choices…</div>
 
-                    <ul class="option-list" aria-live="polite" aria-relevant="additions removals">
+                    <ul class="option-list" aria-live="polite"
+                        aria-relevant="additions removals">
                     </ul><!--Closes .option-list-->
 
                     <div class="section">
                         <p>
-                            <a class="get-more-choices" href="#">Get More Choices &raquo;</a><br>
-                            We'll add a few more ways to narrow your selections.
+                        <a class="get-more-choices"
+                            href="#">Get More Choices &raquo;</a><br>
+                        We'll add a few more ways to narrow your selections.
                         </p>
                     </div><!--Closes .section-->
 
@@ -146,12 +168,12 @@
         {% include "simplekey/_script_constants.html" %}
 
         <script>
-            {% include "simplekey/partner_site_inline_js.html" %}
-            dojo.require('gobotany.sk.results');
-            dojo.addOnLoad(function() {
-                var helper = gobotany.sk.results.ResultsHelper('{{ pile.slug }}');
-                helper.setup();
-            });
+        {% include "simplekey/partner_site_inline_js.html" %}
+        dojo.require('gobotany.sk.results');
+        dojo.addOnLoad(function() {
+            var helper = gobotany.sk.results.ResultsHelper('{{ pile.slug }}');
+            helper.setup();
+        });
         </script>
     </body>
 {% endblock %}

@@ -787,12 +787,15 @@ h5.help {
 #plant-id-3 a.get-help-btn {
     margin: 0 0 0 10px;
 }
+#family_select, #genus_select {
+    width: 140px;
+}
 
 /** Working area **/
 .working-area {
     display: none;
     padding: 15px;
-    margin: 0 0 15px 0;
+    margin: 10px 0 15px 0;
     border: 1px solid #F6F6D1;
     background: #f9f9e4;
 }
