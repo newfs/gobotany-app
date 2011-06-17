@@ -1,5 +1,5 @@
 // Global declaration for JSLint (http://www.jslint.com/)
-/*global dojo, dojox, gobotany */
+/*global dojo, dojox, gobotany, global_toggleQuestions */
 
 dojo.provide('gobotany.sk.help_start');
 
@@ -44,7 +44,7 @@ function set_up_skip_checkbox() {
 }
 
 function set_up_toggle_questions() {
-    _global_toggleQuestions();
+    global_toggleQuestions();
 }
 
 gobotany.sk.help_start.init = function() {

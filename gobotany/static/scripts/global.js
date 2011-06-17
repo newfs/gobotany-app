@@ -25,7 +25,7 @@ function sidebarHeight() {
 
 // Wrapper for calling from elsewhere; make code in global.js easier to keep
 // track of when called from the Dojo-based code.
-function _global_setSidebarHeight() {
+function global_setSidebarHeight() {
     sidebarHeight();
 }
 
@@ -63,7 +63,7 @@ $(function() {
 });
 
 // Show/Hide for questions on Getting Started page
-function _global_toggleQuestions() {
+function global_toggleQuestions() {
     $('.question h4').toggle(function(){
         $(this).parent().find('li.hidden, a.screenshot').show();
         $(this).css('background-image','url("/static/images/icons/minus.png")');
@@ -98,13 +98,13 @@ function _global_toggleQuestions() {
 }
 
 // Show/Hide for showing the whole list of characteristics on the Taxon page
-function _global_toggleList() {
+function global_toggleList() {
     $('a.description-control').toggle(function(){
         $('ul.full-description').show();
         $(this).text('Hide Full Description');
         $(this).css('background-image',
             'url("/static/images/icons/minus.png")');
-        _global_toggleInfo();
+        global_toggleInfo();
         sidebarHeight();
         return false;
     }, function() {
@@ -118,7 +118,7 @@ function _global_toggleList() {
 }
 
 //// Show/Hide for Characteristic List on Taxon page
-function _global_toggleInfo() {
+function global_toggleInfo() {
     $('ul.full-description li').toggle(function(){
         $(this).children('ul').show();
         $(this).children('h5').css('background-image',

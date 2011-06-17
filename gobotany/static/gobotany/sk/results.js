@@ -2,7 +2,7 @@
 
 // Global declaration for JSLint (http://www.jslint.com/)
 /*global console, dojo, dojox, dijit, gobotany, document, window,
-  _global_setSidebarHeight */
+  global_setSidebarHeight */
 
 dojo.provide('gobotany.sk.results');
 
@@ -582,7 +582,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
                     // Add the new filters to the filters list.
                     var added = this.display_filters(new_filters, 0);
-                    _global_setSidebarHeight();
+                    global_setSidebarHeight();
                     added.style({backgroundColor: '#eeee9a'});
                     gobotany.utils.notify('More choices added');
                     gobotany.utils.animate_changed(added);
@@ -762,7 +762,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         this.results_helper.species_section.lazy_load_images();
 
-        _global_setSidebarHeight();
+        global_setSidebarHeight();
     },
 
     show_filter_working: function(filter) {
@@ -796,7 +796,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.visible_filter_short_name = filter.character_short_name;
         this.results_helper.save_filter_state();
 
-        _global_setSidebarHeight();
+        global_setSidebarHeight();
     },
 
     /* When the working area is dismissed, we clean up and save state. */

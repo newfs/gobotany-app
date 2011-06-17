@@ -1,5 +1,6 @@
 // Global declaration for JSLint (http://www.jslint.com/)
-/*global dojo, dijit, gobotany, _global_setSidebarHeight */
+/*global window, document, clearTimeout, setTimeout, dojo, dijit, gobotany,
+  global_setSidebarHeight */
 
 dojo.provide('gobotany.sk.SpeciesSectionHelper');
 
@@ -11,6 +12,7 @@ dojo.require('gobotany.sk.plant_preview');
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
     constructor: function(results_helper) {
+        "use strict";
         // summary:
         //   Manages the species section of the results page
         // results_helper:
@@ -21,6 +23,11 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     setup_section: function() {
+        "use strict";
+
+        var SCROLL_WAIT_MS = 0, scroll_timer,
+            RESIZE_WAIT_MS = 0, resize_timer;
+
         // We need to perform a fresh species query whenever a filter
         // value changes anywhere on the page.
         dojo.subscribe('/sk/filter/change', this, 'perform_query');
@@ -30,15 +37,14 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         // Assign other events that will trigger the lazy image loader,
         // with timers so as not to suffer multiple continuous event firings.
-        var SCROLL_WAIT_MS = 0;
-        var scroll_timer;
+
+        // No delay for scrolling allows images to load during the pressing
+        // and holding of a cursor key.
         dojo.connect(window, 'onscroll', this, function() {
             clearTimeout(scroll_timer);
             scroll_timer = setTimeout(this.lazy_load_images, SCROLL_WAIT_MS);
         });
 
-        var RESIZE_WAIT_MS = 500;
-        var resize_timer;
         dojo.connect(window, 'onresize', this, function() {
             clearTimeout(resize_timer);
             resize_timer = setTimeout(this.lazy_load_images, RESIZE_WAIT_MS);
@@ -46,12 +52,15 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     perform_query: function() {
+        "use strict";
+
+        var plant_list = dojo.query('#main .plant-list')[0];
+
         // Unbind the prior scroll event handler
         if (this.scroll_event_handle) {
             dojo.disconnect(this.scroll_event_handle);
         }
 
-        var plant_list = dojo.query('#main .plant-list')[0];
         dojo.empty(plant_list);
 
         this.results_helper.filter_manager.perform_query({
@@ -62,13 +71,16 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     on_complete_perform_query: function(data) {
-        // Update the species count everywhere it appears on the screen.
-        dojo.query('.species-count').html(data.items.length + '');
+        "use strict";
 
         var plant_list = dojo.query('#main .plant-list')[0];
+
+        // Update the species count everywhere it appears on the screen.
+        dojo.query('.species-count').html(String(data.items.length));
+
         this.display_results(data.items, plant_list);
 
-        _global_setSidebarHeight();
+        global_setSidebarHeight();
 
         // Signal the "Show:" button to scrape our data to discover what
         // kinds of thumbnail images are available.
@@ -80,17 +92,17 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     organize_by_genera: function(items) {
+        "use strict";
+
+        var genera = [], genus = '', species = [], i, genus_with_species;
+
         // Build a data structure convenient for iterating over genera with
         // species for each.
-        var genera = [];
-        var genus = '';
-        var species = [];
-        var i;
-        for (i = 0; i < items.length; i++) {
+        for (i = 0; i < items.length; i += 1) {
             if ((i > 0) && (items[i].genus !== genus)) {
                 // There's a new genus, so add the prior genus and species to
                 // to the genera list.
-                var genus_with_species = {
+                genus_with_species = {
                     'genus': genus,
                     'species': species
                 };
@@ -108,9 +120,12 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     default_image: function(species) {
-        var i;
-        for (i = 0; i < species.images.length; i++) {
-            var image = species.images[i];
+        "use strict";
+
+        var i, image;
+
+        for (i = 0; i < species.images.length; i += 1) {
+            image = species.images[i];
             if (image.rank === 1 && image.type === 'habit') {
                 return image;
             }
@@ -119,6 +134,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     connect_plant_preview_popup: function(plant_link, species, pile_slug) {
+        "use strict";
+
         dojo.connect(plant_link, 'onclick', species, function(event) {
             event.preventDefault();
             var plant = this;
@@ -130,26 +147,28 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     display_results: function(items, plants_container) {
-        var SPECIES_PER_ROW = 4;
-        var NUM_GENUS_COLORS = 5;
-        var genus_color = 1;
-        var num_rows = Math.ceil(items.length / SPECIES_PER_ROW);
-        var r;
-        for (r = 0; r < num_rows; r++) {
-            var class_value = 'row';
+        "use strict";
+
+        var SPECIES_PER_ROW = 4, NUM_GENUS_COLORS = 5, genus_color = 1,
+            num_rows = Math.ceil(items.length / SPECIES_PER_ROW), r,
+            class_value, row, s, species, plant_class_value, plant, path, url,
+            plant_link, image_container, image, thumb_url, name_html,
+            pile_slug;
+
+        for (r = 0; r < num_rows; r += 1) {
+            class_value = 'row';
             if (r === num_rows - 1) {
                 class_value += ' last';
             }
-            var row = dojo.create('div', {'class': class_value});
+            row = dojo.create('div', {'class': class_value});
 
             // Add the species for this row.
-            var s;
             for (s = r * SPECIES_PER_ROW;
-                 s < (r * SPECIES_PER_ROW) + SPECIES_PER_ROW; s++) {
+                 s < (r * SPECIES_PER_ROW) + SPECIES_PER_ROW; s += 1) {
 
                 if (items[s] !== undefined) {
-                    var species = items[s];
-                    var plant_class_value = 'plant';
+                    species = items[s];
+                    plant_class_value = 'plant';
                     if (s === (r * SPECIES_PER_ROW)) {
                         plant_class_value += ' first';
                     }
@@ -168,23 +187,22 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                             }
                         }
                     }
-                    plant_class_value += ' genus' + genus_color;
+                    plant_class_value += ' genus' + String(genus_color);
 
-
-                    var plant = dojo.create('div',
+                    plant = dojo.create('div',
                         {'class': plant_class_value});
-                    var path = window.location.pathname.split('#')[0];
-                    var url = (path + species.scientific_name.toLowerCase()
-                               .replace(' ', '/') + '/');
-                    var plant_link = dojo.create('a', {'href': url});
+                    path = window.location.pathname.split('#')[0];
+                    url = (path + species.scientific_name.toLowerCase()
+                           .replace(' ', '/') + '/');
+                    plant_link = dojo.create('a', {'href': url});
                     dojo.create('div', {'class': 'frame'}, plant_link);
 
-                    var image_container = dojo.create('div',
+                    image_container = dojo.create('div',
                         {'class': 'img-container'});
-                    var image = dojo.create('img', {'alt': ''});
+                    image = dojo.create('img', {'alt': ''});
                     dojo.attr(image, 'x-plant-id',
                               species.scientific_name);
-                    var thumb_url = this.default_image(species).thumb_url;
+                    thumb_url = this.default_image(species).thumb_url;
                     if (thumb_url) { // undefined when no image available
                         // Set the image URL in a dummy attribute, so we
                         // can lazy load images, switching to the proper
@@ -194,7 +212,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     dojo.place(image, image_container);
                     dojo.place(image_container, plant_link);
 
-                    var name_html = '<span class="latin">' +
+                    name_html = '<span class="latin">' +
                         species.scientific_name + '</span>';
                     if (species.common_name) {
                         name_html += ' ' + species.common_name;
@@ -205,7 +223,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     // Connect a "plant preview" popup. Pass species as
                     // context in the connect function, which becomes
                     // 'this' to pass along as the variable plant.
-                    var pile_slug = this.results_helper.pile_slug;
+                    pile_slug = this.results_helper.pile_slug;
                     this.connect_plant_preview_popup(plant_link, species,
                         pile_slug);
 
@@ -222,12 +240,17 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     lazy_load_images: function() {
-        var viewport = dijit.getViewport();
-        var viewport_height = viewport.h;
-        var viewport_width = viewport.w;
+        "use strict";
+        
+        var viewport, viewport_height, scroll_top, scroll_left,
+            image_elements, i, element, total_offset_left, total_offset_top,
+            current_element, is_element_visible, image_url;
 
-        var scroll_top = 0;
-        var scroll_left = 0;
+        viewport = dijit.getViewport();
+        viewport_height = viewport.h;
+        scroll_top = 0;
+        scroll_left = 0;
+
         if (window.pageYOffset || window.pageXOffset) {
             scroll_top = window.pageYOffset;
             scroll_left = window.pageXOffset;
@@ -242,23 +265,23 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             scroll_left = document.body.scrollLeft;
         }
 
-        var image_elements = dojo.query('div.plant-list img');
-        var i;
-        for (i = 0; i < image_elements.length; i++) {
-            var element = image_elements[i];
+        image_elements = dojo.query('div.plant-list img');
+        for (i = 0; i < image_elements.length; i += 1) {
+            element = image_elements[i];
             if (element.style.visibility !== 'hidden' &&
                 element.style.display !== 'none') {
+                
+                current_element = element;
+                total_offset_left = current_element.offsetLeft;
+                total_offset_top = current_element.offsetTop;
 
-                var total_offset_left = 0;
-                var total_offset_top = 0;
-                var current_element = element;
-                do {
+                while (current_element.offsetParent !== null) {
+                    current_element = current_element.offsetParent;
                     total_offset_left += current_element.offsetLeft;
                     total_offset_top += current_element.offsetTop;
                 }
-                while (current_element = current_element.offsetParent);
 
-                var is_element_visible = false;
+                is_element_visible = false;
                 // Only worry about top/bottom scroll visibility, not also
                 // left/right scroll visibility.
                 if (total_offset_top > (scroll_top - element.height) &&
@@ -268,7 +291,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                 }
 
                 if (is_element_visible === true) {
-                    var image_url = dojo.attr(element, 'x-tmp-src');
+                    image_url = dojo.attr(element, 'x-tmp-src');
 
                     // Set the attribute that will make the image load.
                     dojo.attr(element, 'src', image_url);
