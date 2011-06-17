@@ -73,12 +73,18 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     on_complete_perform_query: function(data) {
         "use strict";
 
-        var plant_list = dojo.query('#main .plant-list')[0];
+        var plant_list, see_list;
+            
+        plant_list = dojo.query('#main .plant-list')[0];
 
         // Update the species count everywhere it appears on the screen.
         dojo.query('.species-count').html(String(data.items.length));
 
         this.display_results(data.items, plant_list);
+
+        // Show the "See a list" link.
+        see_list = dojo.query('p.list-all')['0'];
+        dojo.removeClass(see_list, 'hidden');
 
         global_setSidebarHeight();
 
