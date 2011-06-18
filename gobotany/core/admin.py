@@ -10,6 +10,7 @@ from gobotany.core import models
 class PartnerSpeciesInline(admin.TabularInline):
     model = models.PartnerSpecies
     extra = 1
+    raw_id_fields = ('species',)
 
 # View classes
 
