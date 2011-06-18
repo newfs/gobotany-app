@@ -290,7 +290,7 @@
       API_URL = '{% url api-base %}';
       dojo.require('gobotany.sk.species');
       dojo.addOnLoad(function() {
-          _global_toggleList();
+          global_toggleList();
           gobotany.sk.species.init('{{ scientific_name }}');
       });
       dojo.addOnUnload(function() {
