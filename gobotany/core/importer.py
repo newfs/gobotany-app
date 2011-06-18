@@ -2,6 +2,7 @@ from django.core import management
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files import File
 from gobotany import settings
+from operator import attrgetter
 management.setup_environ(settings)
 
 import csv
@@ -397,7 +398,7 @@ class Importer(object):
         colnames = [x.lower() for x in iterator.next()]
 
         for cols in iterator:
-            row = dict(zip(colnames, (c.strip() for c in cols)))
+            row = dict(zip(colnames, cols))
 
             # Find the family and genus.
             family, created = models.Family.objects.get_or_create(
@@ -407,12 +408,12 @@ class Importer(object):
             #    'row[\'scientific_name\']=%s row[\'family\']=%s' % \
             #    (row['scientific_name'], row['family'])
             genus, created = models.Genus.objects.get_or_create(
-                name=row['scientific_name'].split()[0],
+                name=row['scientific__name'].split()[0],
                 family=family)
 
             # Create a Taxon.
             taxon = models.Taxon(
-                scientific_name=row['scientific_name'],
+                scientific_name=row['scientific__name'],
                 family=family,
                 genus=genus,
                 taxonomic_authority=row['taxonomic_authority'],
@@ -491,7 +492,7 @@ class Importer(object):
         for cols in iterator:
             row = dict(zip(colnames, cols))
 
-            scientific_name = row['scientific_name']
+            scientific_name = row['scientific__name']
             num_common_names = 0
             for common_name_field in COMMON_NAME_FIELDS:
                 common_name = row[common_name_field]
@@ -528,7 +529,7 @@ class Importer(object):
 
             # Look up the taxon and if it exists, import character values.
             taxa = models.Taxon.objects.filter(
-                scientific_name__iexact=row['Scientific_Name'])
+                scientific_name__iexact=row['Scientific__Name'])
             if not taxa:
                 continue
             taxon = taxa[0]
@@ -1186,7 +1187,7 @@ class Importer(object):
             row = dict(zip(colnames, cols))
 
             # Look up the taxon and if it exists, import character values.
-            scientific_name = row['Scientific_Name']
+            scientific_name = row['Scientific__Name']
             taxa = models.Taxon.objects.filter(
                 scientific_name__iexact=scientific_name)
             if not taxa:
@@ -1555,15 +1556,36 @@ class Importer(object):
 def import_partner_species(excel_path):
     book = xlrd.open_workbook(excel_path)
     sheet = book.sheet_by_index(0)
+
+    partner = models.PartnerSite.objects.get(short_name='montshire')
+    specieslist = sorted(models.Taxon.objects.all(),
+                         key=attrgetter('scientific_name'))
+
     cells = sheet.col(1)[1:]  # skip first row; it contains the column title
     theirs = set(' '.join(c.value.split()[:2]) for c in cells)
-    ours = set(t.scientific_name for t in models.Taxon.objects.all())
+    ours = set(s.scientific_name for s in specieslist)
+
+    knowns = theirs & ours
+    unknowns = theirs - ours
+
     print 'We list', len(ours), 'species'
     print 'They list', len(theirs), 'species'
-    print 'We know about', len(theirs & ours), 'of their species'
-    print 'That leaves', len(theirs - ours), 'species we have not heard of:'
-    for species in sorted(theirs - ours):
-        print '   ', species
+    print 'We know about', len(knowns), 'of their species'
+    if unknowns:
+        print 'That leaves', len(unknowns), 'species we have not heard of:'
+        for name in sorted(unknowns):
+            print '   ', repr(name)
+
+    print
+    for species in specieslist:
+        ps = models.PartnerSpecies.objects.filter(
+            species=species, partner=partner)
+        if ps and species.scientific_name not in theirs:
+            print 'Removing', species.scientific_name
+            ps[0].delete()
+        elif not ps and species.scientific_name in theirs:
+            print 'Adding', species.scientific_name
+            models.PartnerSpecies(species=species, partner=partner).save()
 
 # Parse the command line.
 
