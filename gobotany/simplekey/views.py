@@ -150,7 +150,8 @@ def _format_character_value(character_value):
     """Render a character value for display."""
     character = character_value.character
     if character.value_type == 'TEXT':
-        return character_value.friendly_text or character_value.value_str
+        return (character_value.friendly_text or 
+                character_value.value_str or u'')
     elif character.unit not in (None, '', 'NA'):
         return u'%.1f–%.1f %s' % (character_value.value_min,
                                   character_value.value_max, character.unit)
@@ -169,7 +170,7 @@ def _get_all_species_characteristics(taxon, character_groups):
     characters = ({
         'group': character.character_group.name,
         'name': character.name,
-        'value': ', '.join(_format_character_value(cv) for cv in values),
+        'value': u', '.join(_format_character_value(cv) for cv in values),
         } for character, values in cvgroups)
 
     # Group the characters by character-group.
