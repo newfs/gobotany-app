@@ -8,15 +8,27 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.utils import simplejson
+from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
 from gobotany.core.models import (
     CharacterGroup, CharacterValue, Family, Genus, GlossaryTerm, Habitat,
     Pile, PileGroup, Taxon, TaxonCharacterValue,
     )
+from gobotany.core.partner import which_partner
 from gobotany.simplekey import partners
 from gobotany.simplekey.models import Page, get_blurb, SearchSuggestion
 
+#
+
+def per_partner_template(request, template_path):
+    partner = which_partner(request)
+    if partner:
+        return '{0}/{1}'.format(partner.short_name, template_path)
+    else:
+        return template_path
+
+#
 
 def get_simple_url(item):
     """Return the URL to where `item` lives in the Simple Key navigation."""
@@ -261,16 +273,18 @@ def help_about_view(request):
            'section_3_content_blurb': get_blurb('section_3_content'),
            }, context_instance=RequestContext(request))
 
+@vary_on_headers('Host')
 def help_start_view(request):
     youtube_id = ''
     youtube_id_blurb = get_blurb('getting_started_youtube_id')
     if not youtube_id_blurb.startswith('[Provide text'):
         # We have an actual YouTube id defined in the database.
         youtube_id = youtube_id_blurb
-    return render_to_response('simplekey/help_start.html', {
-           'getting_started_blurb': get_blurb('getting_started'),
-           'getting_started_youtube_id': youtube_id,
-           }, context_instance=RequestContext(request))
+    return render_to_response(
+        per_partner_template(request, 'simplekey/help_start.html'), {
+            'getting_started_blurb': get_blurb('getting_started'),
+            'getting_started_youtube_id': youtube_id,
+            }, context_instance=RequestContext(request))
 
 def help_collections_view(request):
     return render_to_response('simplekey/help_collections.html', {

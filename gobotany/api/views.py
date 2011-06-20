@@ -8,9 +8,10 @@ from django.views.decorators.vary import vary_on_headers
 from gobotany.core import igdt
 from gobotany.core.models import (
     Character, CharacterValue, ContentImage,
-    GlossaryTerm, PartnerSite, PartnerSpecies, Pile,
+    GlossaryTerm, PartnerSpecies, Pile,
     Taxon, TaxonCharacterValue,
     )
+from gobotany.core.partner import which_partner
 
 def jsonify(value):
     """Convert the value into a JSON HTTP response."""
@@ -274,12 +275,10 @@ def vectors_character(request, name):
 def vectors_key(request, key):
     if key != 'simple':
         raise Http404()
-    hostname = request.get_host().split('.', 1)[0]
-    partner_matches = list(PartnerSite.objects.filter(short_name=hostname))
-    if partner_matches:
+    partner = which_partner(request)
+    if partner is not None:
         # Each partner site has its own species list, maintained as a
         # many-to-many relation from its own PartnerSite object.
-        partner = partner_matches[0]
         ids = sorted( ps.species_id for ps in PartnerSpecies.objects
                       .filter(partner=partner, simple_key=True) )
     else:
