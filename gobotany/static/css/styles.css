@@ -1093,6 +1093,46 @@ div.working-area .actions {
     padding: 5px 10px;
 }
 
+/* Results list view */
+.plant-list table {
+    width: 100%;
+}
+.plant-list table tr {
+    height: 20px;
+}
+.plant-list table td {
+    border-top: 1px solid #e1e1dc;
+    padding: 10px 0;
+    vertical-align: middle;
+}
+.plant-list table tr.first-visible td {
+    border-top: 0;
+}
+.plant-list table .genus {
+    color: #1a2e11;
+    font-family:  "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 200%;
+    padding: 3px 0 0 0;
+    vertical-align: top;
+}
+.plant-list table .scientific-name {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 155%;
+    padding: 10px 0 8px 0;
+}
+.plant-list table .scientific-name img {
+    padding-bottom: 2px;
+    vertical-align: middle;
+}
+.plant-list table .details a {
+    text-decoration: underline;
+}
+
+
 /* Make a Dijit horizontal slider look like a ruler */
 
 .moz_ruler_slider_wrapper {

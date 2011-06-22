@@ -104,49 +104,21 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         var plant_list = dojo.query('#main .plant-list')[0];
         this.display_results(data.items, plant_list);
 
-        // Show the "See a list" link.
-        var see_list = dojo.query('.list-all')[0];
-        dojo.removeClass(see_list, 'hidden');
+        // Show the "See a list" (or "See photos") link.
+        var see_link = dojo.query('.list-all')[0];
+        dojo.removeClass(see_link, 'hidden');
 
         global_setSidebarHeight();
 
-        // Signal the "Show:" button to scrape our data to discover what
-        // kinds of thumbnail images are available.
-        dojo.publish('results_loaded',
-                     [{filter_manager: this.results_helper.filter_manager,
-                       data: data}]);
+        if (this.current_view === this.PHOTOS_VIEW) {
+            // Signal the "Show:" button to scrape our data to discover what
+            // kinds of thumbnail images are available.
+            dojo.publish('results_loaded',
+                         [{filter_manager: this.results_helper.filter_manager,
+                           data: data}]);
 
-        this.results_helper.species_section.lazy_load_images();
-    },
-
-    organize_by_genera: function(items) {
-        'use strict';
-
-        // Build a data structure convenient for iterating over genera with
-        // species for each.
-        var genera = [];
-        var genus = '';
-        var species = [];
-        var i;
-        for (i = 0; i < items.length; i += 1) {
-            if ((i > 0) && (items[i].genus !== genus)) {
-                // There's a new genus, so add the prior genus and species to
-                // to the genera list.
-                var genus_with_species = {
-                    'genus': genus,
-                    'species': species
-                };
-                genera.push(genus_with_species);
-                // Clear the species list for the new genus.
-                species = [];
-            }
-            genus = items[i].genus;
-            species.push(items[i]);
+            this.results_helper.species_section.lazy_load_images();
         }
-        // Add the last genus with its species.
-        genera.push({'genus': genus, 'species': species});
-
-        return genera;
     },
 
     default_image: function(species) {
@@ -212,28 +184,64 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.perform_query();
     },
 
-    display_in_list_view: function(items, container) {
-        var species_by_genus = this.organize_by_genera(items);
-
-        var html = '';
+    get_number_of_rows_to_span: function(items, start) {
+        // From a starting point in a list of plant items, return the number
+        // of rows it takes to get to the next genus (or the end of the list).
+        
+        var rows = 1;
         var i;
-        for (i = 0; i < species_by_genus.length; i += 1) {
-            var genus = species_by_genus[i].genus;
-            html += '<h4>Genus: ' + genus + '</h4>';
-            
-            var j;
-            for (j = 0; j < species_by_genus[i].species.length; j += 1) {
-                var species = species_by_genus[i].species[j];
-                html += '<p>' + species.scientific_name + ' (' +
-                    species.common_name + ') <a href="#">Details</a></p>';
+        for (i = start; i < items.length; i += 1) {
+            var is_last_item = (i === items.length - 1);
+            if (is_last_item || items[i].genus !== items[i + 1].genus) {
+                break;
+            }
+            else {
+                rows += 1;
             }
         }
-        var list = dojo.create('div', {'innerHTML': html});
 
+        return rows;
+    },
+
+    display_in_list_view: function(items, container) {
+        /* Display plant results in a list view. Use a table, with hidden
+           caption and header row for accessibility. */
+        var html =
+            '<caption class="hidden">List of matching plants</caption>' +
+            '<tr class="hidden"><th>Genus</th><th>Scientific Name</th>' +
+            '<th>Common Name</th><th>Details</th></tr>';
+        var i;
+        for (i = 0; i < items.length; i += 1) {
+            if (i > 0) {
+                html += '<tr>';
+            }
+            else {
+                html += '<tr class="first-visible">';
+            }
+            if (i === 0 || (items[i].genus !== items[i - 1].genus)) {
+                var rowspan = this.get_number_of_rows_to_span(items, i);
+                html += '<td class="genus" rowspan="' + rowspan +
+                    '">Genus: ' + items[i].genus + '</td>';
+            }
+            html += '<td class="scientific-name">' +
+                '<a href="#" title="Photo"><img ' +
+                'src="/static/images/icons/camera.jpg" alt=""></a>' +
+                items[i].scientific_name + '</td>';
+            html += '<td class="common-name">' + items[i].common_name +
+                '</td>';
+            html += '<td class="details"><a href="#">Details</a></td>';
+            html += '</tr>';
+        }
+
+        var list = dojo.create('table', {'innerHTML': html});
         dojo.place(list, container);
     },
 
     display_in_photos_view: function(items, container) {
+        /* Display plant results as a grid of photo thumbnails with captions.
+           Give plants in each genus a background color, cycling among several
+           colors so plants in adjacent rows don't have the same color unless
+           they are of the same genus. */
         var SPECIES_PER_ROW = 4;
         var NUM_GENUS_COLORS = 5;
         var genus_color = 1;
@@ -340,6 +348,19 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
     lazy_load_images: function() {
         'use strict';
+
+        // If the current view is the List view, do nothing. This allows
+        // event handlers for the photos view to remain in effect without
+        // awkwardly removing and adding them when the user toggles views.
+        //
+        // Check the DOM instead of the SpeciesSectionHelper object, because
+        // when this function is called via setTimeout, the 'this' context
+        // is not what we need, and passing a saved reference to 'this', as
+        // recommended for these situations, did not work.
+        var list_view_table_nodes = dojo.query('.plant-list table');
+        if (list_view_table_nodes.length > 0) {
+            return;
+        }
 
         var viewport = dijit.getViewport();
         var viewport_height = viewport.h;
