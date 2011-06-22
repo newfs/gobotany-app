@@ -236,7 +236,9 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             html += items[i].scientific_name + '</td>';
             html += '<td class="common-name">' + items[i].common_name +
                 '</td>';
-            html += '<td class="details"><a href="#">Details</a></td>';
+            html += '<td class="details"><a href="' +
+                items[i].scientific_name.toLowerCase().replace(' ', '/') +
+                '/">Details</a></td>';
             html += '</tr>';
         }
 
