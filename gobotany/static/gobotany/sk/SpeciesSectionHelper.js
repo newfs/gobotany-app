@@ -4,7 +4,7 @@
    var statements per function," and the globals declaration below. */
 /*jslint vars: true, maxerr: 50, indent: 4 */
 /*global window, document, clearTimeout, setTimeout, console, dojo, dijit,
-  gobotany, global_setSidebarHeight */
+  gobotany, global_setSidebarHeight, Shadowbox */
 
 dojo.provide('gobotany.sk.SpeciesSectionHelper');
 
@@ -185,9 +185,11 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     get_number_of_rows_to_span: function(items, start) {
-        // From a starting point in a list of plant items, return the number
-        // of rows it takes to get to the next genus (or the end of the list).
-        
+        /* From a starting point in a list of plant items, return the number
+           of rows it takes to get to the next genus (or the end of the list).
+         */
+        'use strict';
+
         var rows = 1;
         var i;
         for (i = start; i < items.length; i += 1) {
@@ -206,6 +208,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     display_in_list_view: function(items, container) {
         /* Display plant results in a list view. Use a table, with hidden
            caption and header row for accessibility. */
+        'use strict';
+
         var html =
             '<caption class="hidden">List of matching plants</caption>' +
             '<tr class="hidden"><th>Genus</th><th>Scientific Name</th>' +
@@ -220,13 +224,16 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             }
             if (i === 0 || (items[i].genus !== items[i - 1].genus)) {
                 var rowspan = this.get_number_of_rows_to_span(items, i);
-                html += '<td class="genus" rowspan="' + rowspan +
+                html += '<td class="genus" rowspan="' + String(rowspan) +
                     '">Genus: ' + items[i].genus + '</td>';
             }
-            html += '<td class="scientific-name">' +
-                '<a href="#" title="Photo"><img ' +
-                'src="/static/images/icons/camera.jpg" alt=""></a>' +
-                items[i].scientific_name + '</td>';
+            html += '<td class="scientific-name">';
+            if (items[i].images[0] !== undefined) {
+                html += '<a href="' + items[i].images[0].scaled_url +
+                    '" title="Photo"><img ' +
+                    'src="/static/images/icons/camera.jpg" alt=""></a>';
+            }
+            html += items[i].scientific_name + '</td>';
             html += '<td class="common-name">' + items[i].common_name +
                 '</td>';
             html += '<td class="details"><a href="#">Details</a></td>';
@@ -235,6 +242,9 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         var list = dojo.create('table', {'innerHTML': html});
         dojo.place(list, container);
+
+        Shadowbox.setup('.plant-list table td.scientific-name a', 
+                        {title: ''});
     },
 
     display_in_photos_view: function(items, container) {
@@ -242,6 +252,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
            Give plants in each genus a background color, cycling among several
            colors so plants in adjacent rows don't have the same color unless
            they are of the same genus. */
+        'use strict';
+
         var SPECIES_PER_ROW = 4;
         var NUM_GENUS_COLORS = 5;
         var genus_color = 1;
