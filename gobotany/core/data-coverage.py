@@ -87,7 +87,7 @@ class DataCoverageChecker(object):
 
     def _add_data_from_file(self, data_file_name, pile):
         '''Add data from a character data file to the coverage data set.'''
-        data_file_path = self.data_directory_path + '/' + data_file_name
+        data_file_path = '%s/%s' % (self.data_directory_path, data_file_name)
         iterator = iter(CSVReader(data_file_path).read())
         column_names = [x.lower() for x in iterator.next()]
         for columns in iterator:
@@ -100,10 +100,10 @@ class DataCoverageChecker(object):
                 scientific_name = row['scientific_name']
             # Add the species to the pile from the master list.
             if scientific_name in self.species:
-                self.data_set[pile][scientific_name] = \
-                    { 'simple_key': self.species[scientific_name]
-                                    ['simple_key'],
-                      'character_data': {} }
+                self.data_set[pile][scientific_name] = {
+                    'simple_key': self.species[scientific_name]
+                                  ['simple_key'],
+                    'character_data': {} }
             else:
                 print '    Error: %s not in taxa.csv' % scientific_name
                 continue
@@ -127,11 +127,11 @@ class DataCoverageChecker(object):
         self._add_all_species()
         piles = self._get_piles()
         for pile in piles:
-            print 'Collecting data for ' + pile + '...'
+            print 'Collecting data for %s...' % pile
             self._add_pile(pile)
 
-    def report_on_data(self, is_simple_key=False):
-        PERCENT_PRECISION = 1
+    def report_on_data(self, simple_key_only=False):
+        '''Report coverage for the full data set or just the simple key.'''
         total_species = 0
         total_characters = 0
         total_data_values = 0
@@ -147,12 +147,12 @@ class DataCoverageChecker(object):
             for species in pile_value.itervalues():
                 # If we are only checking for the simple key and this
                 # species isn't in it, move on.
-                if is_simple_key and not species['simple_key']:
+                if simple_key_only and not species['simple_key']:
                     continue
                 num_species += 1
                 for character in species['character_data'].keys():
-                    if species['character_data'][character] and \
-                            len(species['character_data'][character]) > 0:
+                    if (species['character_data'][character] and
+                        len(species['character_data'][character]) > 0):
                         num_filled_in_data_values += 1
             total_species += num_species
             num_data_values = num_species * num_characters
@@ -160,38 +160,31 @@ class DataCoverageChecker(object):
             total_filled_in_data_values += num_filled_in_data_values
             percent_filled_in = 0.0
             if num_data_values > 0:
-                percent_filled_in = round(float( \
-                    1.0 * num_filled_in_data_values / num_data_values) * 100,
-                    PERCENT_PRECISION)
-            print pile_key + \
-                ': ' + str(percent_filled_in) + '% (' + \
-                locale.format('%d', num_filled_in_data_values,
-                              grouping=True) + ' of ' + \
-                locale.format('%d', num_data_values, grouping=True) + \
-                ' data values for ' + \
-                locale.format('%d', num_species, grouping=True) + \
-                ' species and ' + \
-                locale.format('%d', num_characters, grouping=True) + \
-                ' characters)'
-        total_percent_filled_in = round(float( \
-                1.0 * total_filled_in_data_values / total_data_values) * 100,
-                PERCENT_PRECISION)
-        print 'TOTAL: ' + str(total_percent_filled_in) + '% (' + \
-            locale.format('%d', total_filled_in_data_values,
-                          grouping=True) + ' of ' + \
-            locale.format('%d', total_data_values, grouping=True) + \
-            ' data values for ' + \
-            locale.format('%d', total_species, grouping=True) + \
-            ' species and ' + \
-            locale.format('%d', total_characters, grouping=True) + \
-            ' characters)'
+                percent_filled_in = float(1.0 * num_filled_in_data_values /
+                    num_data_values) * 100
+            print ('%s: %.1f%% (%s of %s data values for %s species and %s '
+                   'characters)') % (pile_key, percent_filled_in,
+                   locale.format('%d', num_filled_in_data_values,
+                                     grouping=True),
+                   locale.format('%d', num_data_values, grouping=True),
+                   locale.format('%d', num_species, grouping=True),
+                   locale.format('%d', num_characters, grouping=True))
+        total_percent_filled_in = float(1.0 * total_filled_in_data_values /
+            total_data_values) * 100
+        print ('TOTAL: %.1f%% (%s of %s data values for %s species and %s '
+               'characters)') % (total_percent_filled_in,
+               locale.format('%d', total_filled_in_data_values,
+                                 grouping=True),
+               locale.format('%d', total_data_values, grouping=True),
+               locale.format('%d', total_species, grouping=True),
+               locale.format('%d', total_characters, grouping=True))
 
     def report(self):
         '''Using data already collected, report the coverage statistics.'''
         print '\nFULL DATA SET\n'
-        self.report_on_data(is_simple_key=False)
+        self.report_on_data(simple_key_only=False)
         print '\nSIMPLE KEY\n'
-        self.report_on_data(is_simple_key=True)
+        self.report_on_data(simple_key_only=True)
         print
 
 
