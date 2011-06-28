@@ -98,12 +98,14 @@ class DataCoverageChecker(object):
                 scientific_name = row['scientific__name']
             else:
                 scientific_name = row['scientific_name']
-            # Add the species to the pile from the master list.
+            # Add the species to the pile from the master list if
+            # necessary.
             if scientific_name in self.species:
-                self.data_set[pile][scientific_name] = {
-                    'simple_key': self.species[scientific_name]
-                                  ['simple_key'],
-                    'character_data': {} }
+                if scientific_name not in self.data_set[pile]:
+                    self.data_set[pile][scientific_name] = {
+                        'simple_key': self.species[scientific_name]
+                                      ['simple_key'],
+                        'character_data': {} }
             else:
                 print '    Error: %s not in taxa.csv' % scientific_name
                 continue
