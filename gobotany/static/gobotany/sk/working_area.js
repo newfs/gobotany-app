@@ -194,6 +194,11 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         return value || null;
     },
 
+    set_species_vector: function(species_vector) {
+        this.species_vector = species_vector;
+        this._on_filter_change();
+    },
+
     /* Get a value suitable for use as an image element id from the
        image filename found in the image path. */
 
@@ -216,7 +221,10 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
             var count_span_q = dojo.query('.count', this.div_map[v.choice]);
             count_span_q.html('(' + vector.length + ')');
             var input_field_q = dojo.query('input', this.div_map[v.choice]);
-            input_field_q.attr('disabled', vector.length === 0);
+            if (vector.length === 0)
+                input_field_q.attr('disabled', 'disabled');
+            else
+                input_field_q.attr('disabled'); // remove the attribute 
         }
     },
 

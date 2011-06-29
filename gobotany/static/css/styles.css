@@ -831,6 +831,10 @@ h5.help {
     float: left;
     margin: 3px 3px 0 -18px;
 }
+.choices .row div input[disabled='disabled'] + span,
+.choices .row div input[disabled='disabled'] + span + span {
+    color: #aaa;
+}
 .choices .row div img {
     background: #fff;
     border: 1px solid #ddd;
