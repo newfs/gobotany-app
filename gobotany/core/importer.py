@@ -1091,6 +1091,21 @@ class Importer(object):
                 content_image.image.thumbnail.width()
                 content_image.image.extra_thumbnails['large'].width()
 
+                # Log a message if the image is smaller than the
+                # dimensions of the wide gallery box on the Simple Key
+                # site's species page.
+                GALLERY_MIN_WIDTH = 710
+                GALLERY_MIN_HEIGHT = 249
+                if (content_image.image.width < GALLERY_MIN_WIDTH or
+                    content_image.image.height < GALLERY_MIN_HEIGHT):
+                    message = ('    Warning: image too small (%d w x %d h); '
+                               'should be at least %d w x %d h: %s') % \
+                              (content_image.image.width,
+                               content_image.image.height,
+                               GALLERY_MIN_WIDTH, GALLERY_MIN_HEIGHT,
+                               filename)
+                    print >> self.logfile, message
+
 
     def _add_place_character_value(self, character, value_str, piles, taxon,
                                    friendly_text_value=None):
