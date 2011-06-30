@@ -59,18 +59,23 @@
                     <div class="img-container">
                         <div class="images">
                         {% for i in species_images %}
-                            <div class="single-img">
-                                {% thumbnail i.image "710x249" crop="center" as thumb %}
-                                {% if i.image.height > i.image.width %}
-                                    {% thumbnail i.image "600x800" as full %}                                   {% else %}
-                                    {% thumbnail i.image "800x600" as full %}
-                                {% endif %}
-                                <a href="{{ full }}" rel="shadowbox">
-                                    <img src="{{ thumb }}"
-                                         alt="{{ i.image_type|capfirst }}: 
-                                         {{ scientific_name }}"></a>
-                                <p class="caption">{{ i.image_type|capfirst }}</p>
-                            </div>
+                            {# Skip any images that are too small to #}
+                            {# present in the wide gallery box.      #}
+                            {% if i.image.width >= 710 and i.image.height >= 249 %}
+                                <div class="single-img">
+                                    {% thumbnail i.image "710x249" crop="center" as thumb %}
+                                    {% if i.image.height > i.image.width %}
+                                        {% thumbnail i.image "600x800" as full %}
+                                    {% else %}
+                                        {% thumbnail i.image "800x600" as full %}
+                                    {% endif %}
+                                    <a href="{{ full }}" rel="shadowbox">
+                                        <img src="{{ thumb }}"
+                                             alt="{{ i.image_type|capfirst }}: 
+                                        {{ scientific_name }}"></a>
+                                    <p class="caption">{{ i.image_type|capfirst }}</p>
+                                </div>
+                            {% endif %}
                         {% endfor %}
                         </div>
                     </div>
