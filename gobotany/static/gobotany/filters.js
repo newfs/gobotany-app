@@ -87,8 +87,10 @@ dojo.declare('gobotany.filters.Filter', null, {
                 console.log('load_values: species apparently not ' +
                             'loaded yet (base vector is false)');
             }
+            var knowns = [];  // species with any value whatsoever, even NA
             for (var i = 0; i < data.length; i++) {
                 var value = data[i];
+                var knowns = _.uniq(knowns.concat(value.species));
                 this.values.push(value);
 
                 if (value.choice !== null)
@@ -102,8 +104,12 @@ dojo.declare('gobotany.filters.Filter', null, {
                     if (this.max === null || value.max > this.max)
                         this.max = value.max;
             }
-            console.log(this.values.length + ' values loaded for',
-                        this.character_short_name);
+            this.unknowns = _.without.apply(
+                0, [args.base_vector].concat(knowns));
+            console.log(this.character_short_name, ' has ', this.values.length,
+                        ' values which mention ', knowns.length,
+                        ' species, leaving ', this.unknowns.length,
+                        ' unknowns');
 
             // If our FilterManager has already finished loading and
             // computing its base_vector, then we should cull ourselves.
@@ -142,8 +148,8 @@ dojo.declare('gobotany.filters.Filter', null, {
                 (this.character_short_name.indexOf('height') > -1) ||
                 (this.character_short_name.indexOf('thickness') > -1));
     },
-    // Return the vector of species IDs for species that matching a
-    // given value for this character.
+    // Return the vector of species IDs for species that match a given
+    // value for this character.
     species_matching: function(value) {
         if (this.value_type === 'TEXT') {
             // Looking up a multiple-choice filter is a single step.
@@ -471,8 +477,11 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         for (var i = 0; i < this.filters.length; i++) {
             var filter = this.filters[i];
             var sv = filter.selected_value;
-            if (sv !== null)
-                vector = intersect(vector, filter.species_matching(sv));
+            if (sv !== null) {
+                var matches = filter.species_matching(sv);
+                var matches_and_unknowns = matches.concat(filter.unknowns);
+                vector = _.intersect(vector, matches_and_unknowns);
+            }
         }
 
         return vector;
