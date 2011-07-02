@@ -32,8 +32,10 @@ class DataCoverageChecker(object):
         # Initialize a dictionary where a full data set will be built.
         # Data set structure:
         # { 'pile1': { 'sci_name1': { 'simple_key': True/False,
-        #                             'character_data: { 'char1': 'val1',
-        #                                                'char2': 'val2' }
+        #                             'character_data: {
+        #                                 'char1': 'val1',
+        #                                 'char2': 'val2', ...
+        #                                 }
         #                           },
         #              'sci_name2': { ... },
         #              ...
@@ -42,6 +44,12 @@ class DataCoverageChecker(object):
         #   ...
         # }
         self.data_set = {}
+
+    def _get_initialized_species(self, scientific_name, is_in_simple_key):
+        return {
+            'simple_key': is_in_simple_key,
+            'character_data': {}
+        }
 
     def _add_all_species(self):
         '''Collect all the species and whether each is in the Simple Key for
@@ -52,8 +60,19 @@ class DataCoverageChecker(object):
         for columns in iterator:
             row = dict(zip(column_names, columns))
             scientific_name = row['scientific__name']
-            is_simple_key = (row['simple_key'] == 'TRUE')
-            self.species[scientific_name] = { 'simple_key': is_simple_key }
+            piles = row['pile'].lower().split('| ')
+            is_in_simple_key = (row['simple_key'] == 'TRUE')
+            self.species[scientific_name] = {
+                'simple_key': is_in_simple_key,
+                'piles': piles
+            }
+            # Place this plant in the assigned piles.
+            for pile in piles:
+                if not pile in self.data_set:
+                    self.data_set[pile] = {}
+                self.data_set[pile][scientific_name] = \
+                    self._get_initialized_species(scientific_name,
+                                                  is_in_simple_key)
 
     def _get_piles(self):
         '''Get a list of all the pile names to be checked.'''
@@ -64,9 +83,10 @@ class DataCoverageChecker(object):
         column_names = [x.lower() for x in iterator.next()]
         for columns in iterator:
             row = dict(zip(column_names, columns))
-            if row['name'].lower() in JUNK_PILE_NAMES:
+            pile_name = row['name'].lower()
+            if pile_name in JUNK_PILE_NAMES:
                 continue
-            piles.append(row['name'])
+            piles.append(pile_name)
         return piles
 
     def _get_data_file_name_mask(self, pile_name):
@@ -98,14 +118,13 @@ class DataCoverageChecker(object):
                 scientific_name = row['scientific__name']
             else:
                 scientific_name = row['scientific_name']
-            # Add the species to the pile from the master list if
+            # Add this species to the pile from the master list if
             # necessary.
             if scientific_name in self.species:
                 if scientific_name not in self.data_set[pile]:
-                    self.data_set[pile][scientific_name] = {
-                        'simple_key': self.species[scientific_name]
-                                      ['simple_key'],
-                        'character_data': {} }
+                    self.data_set[pile][scientific_name] = \
+                        self._get_initialized_species(scientific_name,
+                            self.species[scientific_name]['simple_key'])
             else:
                 print '    Error: %s not in taxa.csv' % scientific_name
                 continue
@@ -129,7 +148,7 @@ class DataCoverageChecker(object):
         self._add_all_species()
         piles = self._get_piles()
         for pile in piles:
-            print 'Collecting data for %s...' % pile
+            print 'Collecting data for %s...' % pile.title()
             self._add_pile(pile)
 
     def report_on_data(self, simple_key_only=False):
@@ -164,8 +183,9 @@ class DataCoverageChecker(object):
             if num_data_values > 0:
                 percent_filled_in = float(1.0 * num_filled_in_data_values /
                     num_data_values) * 100
-            print ('%s: %.1f%% (%s of %s data values for %s species and %s '
-                   'characters)') % (pile_key, percent_filled_in,
+            print ('%s: %.1f%% (%s of %s values; %s species with character '
+                   'data; %s characters)') % (pile_key.title(),
+                   percent_filled_in,
                    locale.format('%d', num_filled_in_data_values,
                                      grouping=True),
                    locale.format('%d', num_data_values, grouping=True),
@@ -173,13 +193,37 @@ class DataCoverageChecker(object):
                    locale.format('%d', num_characters, grouping=True))
         total_percent_filled_in = float(1.0 * total_filled_in_data_values /
             total_data_values) * 100
-        print ('TOTAL: %.1f%% (%s of %s data values for %s species and %s '
-               'characters)') % (total_percent_filled_in,
-               locale.format('%d', total_filled_in_data_values,
-                                 grouping=True),
-               locale.format('%d', total_data_values, grouping=True),
-               locale.format('%d', total_species, grouping=True),
-               locale.format('%d', total_characters, grouping=True))
+        print ('TOTAL: %.1f%% (%s of %s values; %s species with character '
+               'data; %s characters)') % (total_percent_filled_in,
+                locale.format('%d', total_filled_in_data_values,
+                                  grouping=True),
+                locale.format('%d', total_data_values, grouping=True),
+                locale.format('%d', total_species, grouping=True),
+                locale.format('%d', total_characters, grouping=True))
+
+    def report_on_all_species(self):
+        '''Report on all the species data collected from taxa.csv, for
+           checking consistency.'''
+        print 'Number of species loaded from taxa.csv: %s' % \
+            locale.format('%d', len(self.species), grouping=True)
+        # Because the number of species in taxa.csv has come up larger
+        # than the total for the piles, go through the taxa.csv list and
+        # report on any species that do not appear in any of the pile
+        # character data files.
+        plants_without_character_data = []
+        for taxon_key, taxon_value in self.species.iteritems():
+            taxon_found = False
+            for pile_key, pile_value in self.data_set.iteritems():
+                if taxon_key in self.data_set[pile_key]:
+                    taxon_found = True
+                    break
+            if not taxon_found:
+                plants_without_character_data.append(taxon_key)
+        print 'Number of species that do not have any character data: %s' % \
+            locale.format('%d', len(plants_without_character_data),
+                          grouping=True),
+        print '(%s)' % \
+            ', '.join([x for x in sorted(plants_without_character_data)])
 
     def report(self):
         '''Using data already collected, report the coverage statistics.'''
@@ -187,6 +231,8 @@ class DataCoverageChecker(object):
         self.report_on_data(simple_key_only=False)
         print '\nSIMPLE KEY\n'
         self.report_on_data(simple_key_only=True)
+        print '\nSPECIES LISTED IN TAXA.CSV\n'
+        self.report_on_all_species()
         print
 
 
