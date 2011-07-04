@@ -4,21 +4,12 @@
 dojo.provide('gobotany.sk.help_start');
 
 dojo.require('dojo.cookie');
-dojo.require('dojox.embed.Flash');
 
 var SKIP_PAGE_COOKIE_NAME = 'skip_help_start';
 
-function embed_video_player() {
-    var node = dojo.query('#clip')[0];
-    var path = dojo.attr(dojo.query('> a', node)[0], 'href');
-    var player = new dojox.embed.Flash({path: path,
-                                        width: 250,
-                                        height: 250}, node);
-}
-
 function set_skip_page_checkbox(checkbox) {
     var cookie_value = dojo.cookie(SKIP_PAGE_COOKIE_NAME);
-    checkbox.checked = (cookie_value == 'y');
+    checkbox.checked = (cookie_value === 'y');
 }
 
 function set_skip_page_cookie() {
@@ -49,6 +40,5 @@ function set_up_toggle_questions() {
 
 gobotany.sk.help_start.init = function() {
     set_up_toggle_questions();
-    //embed_video_player();
     set_up_skip_checkbox();
 };
