@@ -1,8 +1,6 @@
-from django import forms
 from django.contrib import admin
 
-from gobotany.simplekey.models import Blurb, Page, Video, \
-                                      HelpPage, GlossaryHelpPage
+from gobotany.simplekey.models import Blurb, Page, Video, HelpPage
 
 class PageAdmin(admin.ModelAdmin):
     filter_horizontal = ('pilegroups',)

@@ -475,9 +475,7 @@ class Genus(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
     common_name = models.CharField(max_length=100)
-    description = models.TextField(verbose_name=u'description',
-                                   blank=True)
-    #XXX: We don't have this data yet
+    description = models.TextField(verbose_name=u'description', blank=True)
     family = models.ForeignKey(Family, related_name='genera')
     # We use 'example image' and 'example drawing' for the image types here
     images = generic.GenericRelation(ContentImage)
@@ -543,7 +541,7 @@ class Taxon(models.Model):
     images = generic.GenericRelation(ContentImage)
     habitat = models.CharField(max_length=300)
     factoid = models.CharField(max_length=300)
-    uses = models.CharField(max_length=300)
+    uses = models.CharField(max_length=300, blank=True)
     wetland_status_code = models.CharField(max_length=20)
     wetland_status_text = models.CharField(max_length=150)
     north_american_native = models.BooleanField(default=False)
@@ -554,12 +552,16 @@ class Taxon(models.Model):
     conservation_status_ri = models.CharField(max_length=100)
     conservation_status_vt = models.CharField(max_length=100)
     distribution = models.CharField(max_length=50)
-    invasive_in_states = models.CharField(max_length=50)
-    sale_prohibited_in_states = models.CharField(max_length=50)
-    description = models.CharField(max_length=500) # TODO: import descriptions
-    synonyms = models.ManyToManyField(Synonym, related_name='taxa')
-    common_names = models.ManyToManyField(CommonName, related_name='taxa')
-    lookalikes = models.ManyToManyField(Lookalike, related_name='taxa')
+    invasive_in_states = models.CharField(max_length=50, blank=True)
+    sale_prohibited_in_states = models.CharField(max_length=50, blank=True)
+    description = models.CharField(max_length=500, blank=True)
+    # TODO: import descriptions!
+    synonyms = models.ManyToManyField(
+        Synonym, related_name='taxa', blank=True)
+    common_names = models.ManyToManyField(
+        CommonName, related_name='taxa', blank=True)
+    lookalikes = models.ManyToManyField(
+        Lookalike, related_name='taxa', blank=True)
 
     class Meta:
         verbose_name_plural = 'taxa'

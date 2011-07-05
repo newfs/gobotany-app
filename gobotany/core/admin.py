@@ -37,6 +37,9 @@ class TaxonCharacterValueInline(admin.StackedInline):
     form = TaxonCharacterValueForm
     extra = 1
 
+class TaxonSynonymInline(admin.StackedInline):
+    model = models.Synonym
+
 class ContentImageInline(generic.GenericStackedInline):
     model = models.ContentImage
     extra = 1
@@ -46,8 +49,8 @@ class TaxonAdminForm(forms.ModelForm):
         model = models.Taxon
 
     def clean_character_values(self):
-        """Validate that the selected character values are allowed in
-        the Taxon's pile"""
+        # Are the selected character values are allowed in the Taxon's pile?
+
         pile = self.cleaned_data['pile']
         for cv in self.cleaned_data['character_values']:
             try:
@@ -57,12 +60,39 @@ class TaxonAdminForm(forms.ModelForm):
                     'The value %s is not allowed for Pile %s'%(cv, pile.name))
         return self.cleaned_data['character_values']
 
+    def clean(self):
+        data = self.cleaned_data
+
+        # Does the scientific name match the genus?
+
+        genus_name = data['scientific_name'].split()[0]
+        if genus_name != data['genus'].name:
+            raise forms.ValidationError(
+                'The genus %r in the scientific name does not match the'
+                ' genus %r that you have selected for this species'
+                % (genus_name, data['genus']))
+
+        # Is the genus in the family?
+
+        if data['genus'].family.id != data['family'].id:
+            raise forms.ValidationError(
+                'The genus %r belongs to the family %r but you have instead'
+                ' selected the family %r for this species'
+                % (data['genus'], data['genus'].family, data['family']))
+
+        # Return!
+
+        return self.cleaned_data
+
 class TaxonAdmin(GobotanyAdminBase):
-    inlines = [TaxonCharacterValueInline, ContentImageInline]
+    inlines = [
+        TaxonCharacterValueInline, ContentImageInline,
+        ]
     #exclude = ('character_values',)
     form = TaxonAdminForm
     # XXX: Cannot filter on a reverse relation in Django 1.2
     list_filter = ('family',)
+    #readonly_fields = ('scientific_name',)
     search_fields = ('scientific_name', 'piles__name', 'piles__friendly_name')
 
 class PileDefaultFiltersForm(forms.ModelForm):
