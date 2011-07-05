@@ -273,10 +273,10 @@ Getting Started
 
 {% block js_bottom %}
     <script>
-        dojo.require('gobotany.sk.help_start');
-
+        dojo.require('gobotany.sk.GettingStartedHelper');
         dojo.addOnLoad(function() {
-            gobotany.sk.help_start.init();
+            var getting_started_helper = gobotany.sk.GettingStartedHelper();
+            getting_started_helper.setup();
         });
     </script>
 {% endblock %}
