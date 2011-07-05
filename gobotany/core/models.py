@@ -540,7 +540,6 @@ class Taxon(models.Model):
         CharacterValue,
         through='TaxonCharacterValue')
     taxonomic_authority = models.CharField(max_length=100)
-    simple_key = models.BooleanField(default=True)
     images = generic.GenericRelation(ContentImage)
     habitat = models.CharField(max_length=300)
     factoid = models.CharField(max_length=300)

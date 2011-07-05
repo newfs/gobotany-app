@@ -276,17 +276,8 @@ def vectors_key(request, key):
     if key != 'simple':
         raise Http404()
     partner = which_partner(request)
-    if partner is not None:
-        # Each partner site has its own species list, maintained as a
-        # many-to-many relation from its own PartnerSite object.
-        ids = sorted( ps.species_id for ps in PartnerSpecies.objects
-                      .filter(partner=partner, simple_key=True) )
-    else:
-        # The main site decides which species are in the simple key
-        # through the simple_key attribute directly attached to each
-        # species.
-        ids = sorted( s.id for s in Taxon.objects.filter(simple_key=True) )
-
+    ids = sorted( ps.species_id for ps in PartnerSpecies.objects
+                  .filter(partner=partner, simple_key=True) )
     return jsonify([{'key': 'simple', 'species': ids}])
 
 def vectors_pile(request, slug):

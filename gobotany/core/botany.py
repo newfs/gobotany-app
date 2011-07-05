@@ -12,7 +12,7 @@ CHAR_MAP = {
 
 class SpeciesReader(object):
 
-    def query_species(self, scientific_name=None, is_simple_key=True, **kw):
+    def query_species(self, scientific_name=None, **kw):
         """Support rich queries for species stored as `Taxon` objects.
 
         This function supports both a primitive query for a single
@@ -26,10 +26,7 @@ class SpeciesReader(object):
 
           objects = query_species(scientific_name='Isoetes echinospora')
 
-        Running this query will yield a list of zero or one taxa.  You
-        can also optionally provide a ``simple_key=True`` parameter if
-        you only want species returned that qualify for display in the
-        Go Botany simple key.
+        Running this query will yield a list of zero or one taxa.
 
         Queries for possibly many taxa can be built up by providing
         several keyword arguments; here are all of the different kinds
@@ -46,8 +43,7 @@ class SpeciesReader(object):
         """
         if scientific_name is not None:
             return models.Taxon.objects.filter(
-                scientific_name__iexact=scientific_name,
-                simple_key=is_simple_key)
+                scientific_name__iexact=scientific_name)
         else:
             base_query = models.Taxon.objects
             for k, v in kw.items():
@@ -75,7 +71,7 @@ class SpeciesReader(object):
                             character_values__value_str=v)
 
 
-            return base_query.filter(simple_key=is_simple_key)
+            return base_query
 
     def species_images(self, species, max_rank=10, image_types=None):
         """Return a Django query for images of the given `species`.

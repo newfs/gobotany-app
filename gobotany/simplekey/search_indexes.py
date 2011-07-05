@@ -50,7 +50,7 @@ class TaxonIndex(indexes.SearchIndex):
                                      default='description not yet available')
 
     def get_queryset(self):
-        return Taxon.objects.filter(simple_key=True)
+        return Taxon.objects.filter()
 
 
 class FamilyIndex(indexes.SearchIndex):

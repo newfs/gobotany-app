@@ -147,7 +147,7 @@ class Importer(object):
 
     def _import_partner_sites(self):
         print >> self.logfile, 'Setting up partner sites'
-        partner_site_short_names = ['montshire']
+        partner_site_short_names = ['gobotany', 'montshire']
         for short_name in partner_site_short_names:
             partner_site, created = models.PartnerSite.objects.get_or_create(
                 short_name=short_name)
@@ -317,7 +317,7 @@ class Importer(object):
             distribution = taxon.distribution.replace(' ', '').split( \
                 DATA_DELIMITER)
 
-        is_native = (taxon.north_american_native == True)
+        #is_native = (taxon.north_american_native == True)
 
         invasive_states = []
         if taxon.invasive_in_states:
@@ -396,6 +396,7 @@ class Importer(object):
         SYNONYM_FIELDS = ['comment']
         iterator = iter(CSVReader(taxaf).read())
         colnames = [x.lower() for x in iterator.next()]
+        partnersite = models.PartnerSite.objects.get(short_name='gobotany')
 
         for cols in iterator:
             row = dict(zip(colnames, cols))
@@ -417,7 +418,6 @@ class Importer(object):
                 family=family,
                 genus=genus,
                 taxonomic_authority=row['taxonomic_authority'],
-                simple_key=(row['simple_key'] == 'TRUE'),
                 habitat=row['habitat'],
                 factoid=row['factoid'],
                 uses=row['uses'],
@@ -430,6 +430,10 @@ class Importer(object):
                 invasive_in_states=row['invasive_in_which_states'],
                 sale_prohibited_in_states=row['prohibited_from_sale_states'])
             taxon.save()
+            models.PartnerSpecies.objects.create(
+                species=taxon, partner=partnersite,
+                simple_key=(row['simple_key'] == 'TRUE'),
+                ).save()
             print >> self.logfile, u'    New Taxon:', taxon
 
             # Assign distribution and conservation status for all states.
