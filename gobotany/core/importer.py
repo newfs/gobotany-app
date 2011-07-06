@@ -1,10 +1,3 @@
-from django.core import management
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.files import File
-from gobotany import settings
-from operator import attrgetter
-management.setup_environ(settings)
-
 import csv
 import os
 import re
@@ -12,6 +5,16 @@ import sys
 import tarfile
 import xlrd
 
+from django.core import management
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.files import File
+from gobotany import settings
+from operator import attrgetter
+
+# Some imports have to be performed after Django settings are loaded.
+management.setup_environ(settings)
+
+from django.db import transaction
 from gobotany.core import models
 from gobotany.simplekey.models import Blurb, Video, HelpPage, \
                                       GlossaryHelpPage, SearchSuggestion
@@ -144,7 +147,7 @@ class Importer(object):
             self._import_taxon_character_values(taxonf)
         self._import_search_suggestions()
 
-
+    @transaction.commit_on_success
     def _import_partner_sites(self):
         print >> self.logfile, 'Setting up partner sites'
         partner_site_short_names = ['gobotany', 'montshire']
@@ -154,7 +157,7 @@ class Importer(object):
             if created:
                 print >> self.logfile, u'  New partner site: %s' % short_name
 
-
+    @transaction.commit_on_success
     def _import_pile_groups(self, pilegroupf):
         print >> self.logfile, 'Setting up pile groups'
         iterator = iter(CSVReader(pilegroupf).read())
@@ -174,7 +177,7 @@ class Importer(object):
             if created:
                 print >> self.logfile, u'  New PileGroup:', pilegroup
 
-
+    @transaction.commit_on_success
     def _import_piles(self, pilef):
         print >> self.logfile, 'Setting up piles'
         iterator = iter(CSVReader(pilef).read())
@@ -211,7 +214,7 @@ class Importer(object):
             else:
                 print >> self.logfile, u'    Updated Pile:', pile
 
-
+    @transaction.commit_on_success
     def _import_habitats(self, habitatsf):
         print >> self.logfile, 'Setting up habitats'
         iterator = iter(CSVReader(habitatsf).read())
@@ -389,7 +392,7 @@ class Importer(object):
                     break
         return ' '.join(name).encode('utf-8')
 
-
+    @transaction.commit_on_success
     def _import_taxa(self, taxaf):
         print >> self.logfile, 'Setting up taxa in file: %s' % taxaf
         COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
@@ -460,10 +463,8 @@ class Importer(object):
             for common_name_field in COMMON_NAME_FIELDS:
                 common_name = row[common_name_field]
                 if len(common_name) > 0:
-                    cn, created = models.CommonName.objects.get_or_create( \
-                        common_name=common_name)
-                    taxon.common_names.add(cn)
-                    taxon.save()
+                    models.CommonName.objects.create(
+                        common_name=common_name, taxon=taxon).save()
                     print >> self.logfile, u'      Added common name:', \
                         common_name
 
@@ -479,14 +480,13 @@ class Importer(object):
                     if len(scientific_name) > 0 and \
                         not scientific_name.startswith(' '):
 
-                        s, created = models.Synonym.objects.get_or_create( \
-                            scientific_name=scientific_name, full_name=name)
-                        taxon.synonyms.add(s)
-                        taxon.save()
+                        models.Synonym.objects.create(
+                            scientific_name=scientific_name, full_name=name,
+                            taxon=taxon).save()
                         print >> self.logfile, u'      Added synonym:', \
                             scientific_name
 
-
+    @transaction.commit_on_success
     def _import_plant_names(self, taxaf):
         print >> self.logfile, 'Setting up plant names in file: %s' % taxaf
         COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
@@ -512,7 +512,7 @@ class Importer(object):
                     scientific_name=scientific_name)
                 print >> self.logfile, u'  Added plant name:', pn
 
-
+    @transaction.commit_on_success
     def _import_taxon_character_values(self, f):
         print >> self.logfile, 'Setting up taxon character values in file: %s' % f
         iterator = iter(CSVReader(f).read())
@@ -680,7 +680,7 @@ class Importer(object):
             friendly_name = self._create_character_name(short_name)
         return friendly_name
 
-
+    @transaction.commit_on_success
     def _import_characters(self, f):
         print >> self.logfile, 'Setting up characters in file: %s' % f
         iterator = iter(CSVReader(f).read())
@@ -755,6 +755,7 @@ class Importer(object):
 
         return html
 
+    @transaction.commit_on_success
     def _import_character_values(self, f, imagef):
         print >> self.logfile, 'Setting up character values in file: %s' % f
         iterator = iter(CSVReader(f).read())
@@ -824,6 +825,7 @@ class Importer(object):
             pile.character_values.add(cv)
             pile.save()
 
+    @transaction.commit_on_success
     def _import_character_glossary(self, f):
         print >> self.logfile, 'Setting up character glossary'
         iterator = iter(CSVReader(f).read())
@@ -856,6 +858,7 @@ class Importer(object):
             models.GlossaryTermForPileCharacter.objects.get_or_create(
                 character=char, pile=pile, glossary_term=term)
 
+    @transaction.commit_on_success
     def _import_glossary(self, f, imagef):
         print >> self.logfile, 'Setting up glossary'
 
@@ -1155,6 +1158,8 @@ class Importer(object):
 
     def _get_friendly_habitat_name(self, habitat_name):
         """For a given habitat name, return the friendly name (if present)."""
+        if not habitat_name:
+            return None
         friendly_name = None
         try:
             habitat = models.Habitat.objects.get(name__iexact=habitat_name)
@@ -1165,6 +1170,7 @@ class Importer(object):
         return friendly_name
 
 
+    @transaction.commit_on_success
     def _import_place_characters_and_values(self, taxaf):
         print >> self.logfile, 'Setting up place characters and values'
 
@@ -1281,7 +1287,7 @@ class Importer(object):
                 message = 'Error: did not create %s' % message
             print >> self.logfile, message
 
-
+    @transaction.commit_on_success
     def _import_plant_preview_characters(self):
         print >> self.logfile, ('Setting up sample plant preview characters')
 
@@ -1296,7 +1302,7 @@ class Importer(object):
         self._create_plant_preview_characters('Non-Orchid Monocots',
             ['anther_length_nm', 'leaf_arrangement_nm'])
 
-
+    @transaction.commit_on_success
     def _import_lookalikes(self, lookalikesf):
         print >> self.logfile, 'Importing look-alike plants.'
         iterator = iter(CSVReader(lookalikesf).read())
@@ -1306,17 +1312,13 @@ class Importer(object):
             row = dict(zip(colnames, cols))
             scientific_name = row['taxon']
 
-            lookalike, created = models.Lookalike.objects.get_or_create(
-                lookalike_scientific_name=row['lookalike_taxon'],
-                lookalike_characteristic=row['how_to_tell'])
-            if created:
-                print >> self.logfile, u'  New Lookalike for %s: %s' % \
-                    (scientific_name, lookalike)
-
-            # Add the lookalike to the taxon model's collection of them.
             taxon = models.Taxon.objects.get(scientific_name=scientific_name)
-            taxon.lookalikes.add(lookalike)
-            taxon.save()
+            models.Lookalike.objects.create(
+                lookalike_scientific_name=row['lookalike_taxon'],
+                lookalike_characteristic=row['how_to_tell'],
+                taxon=taxon).save()
+            print >> self.logfile, u'  New Lookalike for %s: %s' % \
+                (scientific_name, row['lookalike_taxon'])
 
 
     def _set_youtube_id(self, name, youtube_id, pilegroup=False):
@@ -1328,7 +1330,7 @@ class Importer(object):
             p.youtube_id = youtube_id
         p.save()
 
-
+    @transaction.commit_on_success
     def _import_extra_demo_data(self):
         print >> self.logfile, 'Setting up demo Pile attributes'
         pile = models.Pile.objects.get(name='Woody Angiosperms')
@@ -1539,6 +1541,7 @@ class Importer(object):
                 print >> self.logfile, u'  Added suggestion term: %s' % term
 
 
+    @transaction.commit_on_success
     def _import_search_suggestions(self):
         print >> self.logfile, 'Setting up search suggestions'
 

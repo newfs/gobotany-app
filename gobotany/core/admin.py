@@ -39,6 +39,15 @@ class TaxonCharacterValueInline(admin.StackedInline):
 
 class TaxonSynonymInline(admin.StackedInline):
     model = models.Synonym
+    extra = 1
+
+class TaxonCommonNameInline(admin.StackedInline):
+    model = models.CommonName
+    extra = 1
+
+class TaxonLookalikeInline(admin.StackedInline):
+    model = models.Lookalike
+    extra = 1
 
 class ContentImageInline(generic.GenericStackedInline):
     model = models.ContentImage
@@ -86,7 +95,8 @@ class TaxonAdminForm(forms.ModelForm):
 
 class TaxonAdmin(GobotanyAdminBase):
     inlines = [
-        TaxonCharacterValueInline, ContentImageInline,
+        TaxonCharacterValueInline, TaxonSynonymInline, TaxonCommonNameInline,
+        TaxonLookalikeInline, ContentImageInline,
         ]
     #exclude = ('character_values',)
     form = TaxonAdminForm

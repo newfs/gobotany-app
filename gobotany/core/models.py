@@ -498,6 +498,7 @@ class Synonym(models.Model):
     """Other (generally previous) scientific names for species."""
     scientific_name = models.CharField(max_length=100)
     full_name = models.CharField(max_length=150)
+    taxon = models.ForeignKey('Taxon', related_name='synonyms')
 
     class Meta:
         ordering = ['scientific_name']
@@ -507,20 +508,22 @@ class Synonym(models.Model):
 
 
 class CommonName(models.Model):
-   """A common name for a species, of which there can be more than one."""
-   common_name = models.CharField(max_length=100)
+    """A common name for a species, of which there can be more than one."""
+    common_name = models.CharField(max_length=100)
+    taxon = models.ForeignKey('Taxon', related_name='common_names')
 
-   class Meta:
-       ordering = ['common_name']
+    class Meta:
+        ordering = ['common_name']
 
-   def __unicode__(self):
-       return self.common_name
+    def __unicode__(self):
+        return self.common_name
 
 
 class Lookalike(models.Model):
     """Species that can be mistaken for others."""
     lookalike_scientific_name = models.CharField(max_length=100)
     lookalike_characteristic = models.CharField(max_length=100)
+    taxon = models.ForeignKey('Taxon', related_name='lookalikes')
 
     def __unicode__(self):
         return '%s (%s)' % (self.lookalike_scientific_name,
@@ -556,12 +559,9 @@ class Taxon(models.Model):
     sale_prohibited_in_states = models.CharField(max_length=50, blank=True)
     description = models.CharField(max_length=500, blank=True)
     # TODO: import descriptions!
-    synonyms = models.ManyToManyField(
-        Synonym, related_name='taxa', blank=True)
-    common_names = models.ManyToManyField(
-        CommonName, related_name='taxa', blank=True)
-    lookalikes = models.ManyToManyField(
-        Lookalike, related_name='taxa', blank=True)
+    # synonyms: see Synonym
+    # common_names: see CommonName
+    # lookalikes: see Lookalike
 
     class Meta:
         verbose_name_plural = 'taxa'
