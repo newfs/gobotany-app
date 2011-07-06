@@ -310,7 +310,7 @@ class PileInfo(models.Model):
 class Pile(PileInfo):
     """An informal grouping of species distinguished by common characters."""
     character_values = models.ManyToManyField(CharacterValue)
-    species = models.ManyToManyField('Taxon', related_name='piles')
+    species = models.ManyToManyField('Taxon', related_name='+')
     pilegroup = models.ForeignKey('PileGroup', related_name='piles', null=True)
     default_filters = models.ManyToManyField(Character,
                                              through='DefaultFilter')
@@ -535,6 +535,8 @@ class Taxon(models.Model):
     # TODO: taxa should probably have a "slug" as well, to prevent us
     # from having to create them on the fly in Javascript
     scientific_name = models.CharField(max_length=100, unique=True)
+    piles = models.ManyToManyField(
+        Pile, through=Pile.species.through, related_name='+')
     family = models.ForeignKey(Family, related_name='taxa')
     genus = models.ForeignKey(Genus, related_name='taxa')
     character_values = models.ManyToManyField(

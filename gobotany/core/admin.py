@@ -48,12 +48,29 @@ class ContentImageInline(generic.GenericStackedInline):
     model = models.ContentImage
     extra = 1
 
+class TaxonFiltersWidget(forms.Widget):
+    def render(self, name, value, attrs=None):
+        #import pdb; pdb.set_trace()
+        return u'name %r value %r attrs %r' % (name, value, attrs)
+
+class TaxonFiltersField(forms.ChoiceField):
+    widget = TaxonFiltersWidget
+
 class TaxonAdminForm(forms.ModelForm):
+    filters = TaxonFiltersField()
+
     class Meta:
         model = models.Taxon
 
+    def __init__(self, *args, **kw):
+        super(TaxonAdminForm, self).__init__(*args, **kw)
+        # instance = kw.get('instance')
+        # if instance is not None:
+        #     print instance
+        # self.initial['foo'] = 'bar!'
+
     def clean_character_values(self):
-        # Are the selected character values are allowed in the Taxon's pile?
+        # Are the selected character values allowed in the Taxon's pile?
 
         pile = self.cleaned_data['pile']
         for cv in self.cleaned_data['character_values']:
@@ -88,30 +105,24 @@ class TaxonAdminForm(forms.ModelForm):
 
         return self.cleaned_data
 
-class TaxonCharacterValuesWidget(forms.Widget):
-    def render(self, name, value, attrs=None):
-        return u'name %r value %r attrs %r' % (name, value, attrs)
-
-class TaxonCharacterValuesField(forms.ChoiceField):
-    widget = TaxonCharacterValuesWidget
-
 class TaxonAdmin(GobotanyAdminBase):
     inlines = [
         TaxonSynonymInline, TaxonCommonNameInline,
         TaxonLookalikeInline, ContentImageInline,
         ]
     #exclude = ('character_values',)
+    filter_horizontal = ('piles',)
     form = TaxonAdminForm
     # XXX: Cannot filter on a reverse relation in Django 1.2
     list_filter = ('family',)
     #readonly_fields = ('scientific_name',)
     search_fields = ('scientific_name', 'piles__name', 'piles__friendly_name')
 
-    def formfield_for_manytomany(self, db_field, request, **kwargs):
-        if db_field.name == 'character_values':
-            return TaxonCharacterValuesField()
-        s = super(TaxonAdmin, self)
-        return s.formfield_for_manytomany(db_field, request, **kwargs)
+    # def formfield_for_manytomany(self, db_field, request, **kwargs):
+    #     if db_field.name == 'character_values':
+    #         pass #return TaxonCharacterValuesField()
+    #     s = super(TaxonAdmin, self)
+    #     return s.formfield_for_manytomany(db_field, request, **kwargs)
 
 class PileDefaultFiltersForm(forms.ModelForm):
     class Meta:
