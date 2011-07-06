@@ -1,6 +1,8 @@
+from operator import itemgetter
 from django.contrib import admin
 from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
+from django.template import Context, Template
 from django import forms
 from autocomplete.fields import ModelChoiceField
 from gobotany.core import models
@@ -48,10 +50,40 @@ class ContentImageInline(generic.GenericStackedInline):
     model = models.ContentImage
     extra = 1
 
+filters_template = Template('''\
+<br clear="left"><br>
+{% for pile, clist in piles %}
+  <h2>Pile {{ pile.name }}</h2>
+  {% for character in clist %}
+    <h3>{{ character.name }}</h3>
+    {% for value in character.values %}
+      <input type="checkbox" name="foo" value="bar"
+       > {{ value.text }}<br>
+    {% endfor %}
+  {% endfor %}
+{% endfor %}
+''')
+
 class TaxonFiltersWidget(forms.Widget):
     def render(self, name, value, attrs=None):
-        #import pdb; pdb.set_trace()
-        return u'name %r value %r attrs %r' % (name, value, attrs)
+        pilelist = []
+        for pile in value.piles.order_by('name'):
+            characterdict = {}
+            for cv in pile.character_values.all():
+                if not cv.value_str:
+                    continue
+                c = cv.character
+                if c.id not in characterdict:
+                    characterdict[c.id] = {'name': c.name, 'values': []}
+                characterdict[c.id]['values'].append({
+                    'id': cv.id, 'text': cv.friendly_text or cv.value_str,
+                    })
+            characterlist = sorted(characterdict.values(),
+                                   key=itemgetter('name'))
+            pilelist.append((pile, characterlist))
+        return filters_template.render(Context({
+            'piles': pilelist,
+            }))
 
 class TaxonFiltersField(forms.ChoiceField):
     widget = TaxonFiltersWidget
@@ -64,10 +96,9 @@ class TaxonAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kw):
         super(TaxonAdminForm, self).__init__(*args, **kw)
-        # instance = kw.get('instance')
-        # if instance is not None:
-        #     print instance
-        # self.initial['foo'] = 'bar!'
+        instance = kw.get('instance')
+        if instance is not None:
+            self.initial['filters'] = instance
 
     def clean_character_values(self):
         # Are the selected character values allowed in the Taxon's pile?
