@@ -199,9 +199,8 @@ def species(request, pile_slug):
 
     species_query = Taxon.objects.raw(
         "SELECT core_taxon.*, core_family.name AS family_name,"
-        " (SELECT common_name FROM core_commonname JOIN core_taxon_common_names"
-        "  ON (core_commonname.id = core_taxon_common_names.commonname_id)"
-        "  WHERE core_taxon_common_names.taxon_id = core_taxon.id"
+        " (SELECT common_name FROM core_commonname"
+        "  WHERE core_commonname.taxon_id = core_taxon.id"
         "  LIMIT 1)"
         "  AS common_name"
         " FROM core_taxon"
