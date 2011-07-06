@@ -102,9 +102,6 @@ class TaxonFiltersWidget(forms.CheckboxSelectMultiple):
     """Check box for each character value, grouped by pile."""
 
     def render(self, name, value, attrs=None):
-        print repr(name), repr(value), repr(attrs)
-        if not value:
-            return u'NOTHING HERE'
 
         # value will either look like:
         # ['d123'] for taxons that are being newly displayed
@@ -112,7 +109,7 @@ class TaxonFiltersWidget(forms.CheckboxSelectMultiple):
 
         value.sort()  # move the taxon ID to the end of the list
         id_field = value.pop()
-        taxon_id = int(id_field.strip('df'))
+        taxon_id = int(id_field.lstrip('df'))
         taxon = models.Taxon.objects.get(pk=taxon_id)
         if id_field.startswith('d'):
             cv_ids = set( cv.id for cv in taxon.character_values.all() )
@@ -159,6 +156,11 @@ class TaxonFiltersWidget(forms.CheckboxSelectMultiple):
 class TaxonFiltersField(forms.MultipleChoiceField):
     widget = TaxonFiltersWidget
 
+    def valid_value(self, value):
+        """Values should look like 'd123', 'f123', or '123'."""
+        int(value.lstrip('df'))
+        return True
+
 class TaxonAdminForm(forms.ModelForm):
     filters = TaxonFiltersField()
 
@@ -173,7 +175,6 @@ class TaxonAdminForm(forms.ModelForm):
 
     def clean_character_values(self):
         # Are the selected character values allowed in the Taxon's pile?
-
         pile = self.cleaned_data['pile']
         for cv in self.cleaned_data['character_values']:
             try:
