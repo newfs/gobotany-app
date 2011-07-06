@@ -32,11 +32,6 @@ class TaxonCharacterValueAdmin(GobotanyAdminBase):
     search_fields = ('taxon__scientific_name',
                      'character_value__character__short_name')
 
-class TaxonCharacterValueInline(admin.StackedInline):
-    model = models.TaxonCharacterValue
-    form = TaxonCharacterValueForm
-    extra = 1
-
 class TaxonSynonymInline(admin.StackedInline):
     model = models.Synonym
     extra = 1
@@ -93,9 +88,16 @@ class TaxonAdminForm(forms.ModelForm):
 
         return self.cleaned_data
 
+class TaxonCharacterValuesWidget(forms.Widget):
+    def render(self, name, value, attrs=None):
+        return u'name %r value %r attrs %r' % (name, value, attrs)
+
+class TaxonCharacterValuesField(forms.ChoiceField):
+    widget = TaxonCharacterValuesWidget
+
 class TaxonAdmin(GobotanyAdminBase):
     inlines = [
-        TaxonCharacterValueInline, TaxonSynonymInline, TaxonCommonNameInline,
+        TaxonSynonymInline, TaxonCommonNameInline,
         TaxonLookalikeInline, ContentImageInline,
         ]
     #exclude = ('character_values',)
@@ -104,6 +106,12 @@ class TaxonAdmin(GobotanyAdminBase):
     list_filter = ('family',)
     #readonly_fields = ('scientific_name',)
     search_fields = ('scientific_name', 'piles__name', 'piles__friendly_name')
+
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name == 'character_values':
+            return TaxonCharacterValuesField()
+        s = super(TaxonAdmin, self)
+        return s.formfield_for_manytomany(db_field, request, **kwargs)
 
 class PileDefaultFiltersForm(forms.ModelForm):
     class Meta:
