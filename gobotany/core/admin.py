@@ -57,8 +57,8 @@ filters_template = Template('''\
   {% for character in clist %}
     <h3>{{ character.name }}</h3>
     {% for value in character.values %}
-      <input type="checkbox" name="foo" value="bar"
-       > {{ value.text }}<br>
+      <input type="checkbox" name="cv{{ value.id }}" value="1"
+       {% if value.checked %}checked{% endif %}> {{ value.text }}<br>
     {% endfor %}
   {% endfor %}
 {% endfor %}
@@ -66,6 +66,9 @@ filters_template = Template('''\
 
 class TaxonFiltersWidget(forms.Widget):
     def render(self, name, value, attrs=None):
+        if not value:
+            return u'NOTHING HERE'
+        cv_ids = set( cv.id for cv in value.character_values.all() )
         pilelist = []
         for pile in value.piles.order_by('name'):
             characterdict = {}
@@ -76,7 +79,9 @@ class TaxonFiltersWidget(forms.Widget):
                 if c.id not in characterdict:
                     characterdict[c.id] = {'name': c.name, 'values': []}
                 characterdict[c.id]['values'].append({
-                    'id': cv.id, 'text': cv.friendly_text or cv.value_str,
+                    'id': cv.id,
+                    'text': cv.friendly_text or cv.value_str,
+                    'checked': cv.id in cv_ids,
                     })
             characterlist = sorted(characterdict.values(),
                                    key=itemgetter('name'))
@@ -114,6 +119,7 @@ class TaxonAdminForm(forms.ModelForm):
 
     def clean(self):
         data = self.cleaned_data
+        #print data
 
         # Does the scientific name match the genus?
 
