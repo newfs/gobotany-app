@@ -50,47 +50,113 @@ class ContentImageInline(generic.GenericStackedInline):
     model = models.ContentImage
     extra = 1
 
+#
+# The fancy widget that presents character-value choices in the Django
+# Admin interface goes through several stages during the lifetime of a
+# particular taxon as that taxon is presented by the Admin interface.
+#
+# 1. Assume a taxon whose .id is 123.  The "initial value" of the HTML
+#    form field, as set by TaxonAdminForm.__init__(), will be "d123",
+#    which is a special hint to the TaxonFiltersWidget that it should
+#    render the character values already stored in the database for the
+#    taxon whose .id is 123.  Forms never come back from the web page
+#    with a "d"-value included; that only happens if the initial value
+#    is being used.
+#
+# 2. The TaxonFiltersWidget draws a series of form elements.  A single
+#    hidden element specifies the value "f123", meaning "this is a real
+#    form submission, for the taxon whose id == 123".  All of the other
+#    elements are checkboxes whose value is the character_value.id of
+#    the character value they are representing (thus these values look
+#    simply like "1", "2", and so forth).
+#
+# 3. When the user submits the form, something happens...?
+#
+# 4. Should the form need to be re-displayed because of an error or an
+#    illegal value somewhere on the Taxon page, then the rendering
+#    function of TaxonFiltersWidget will see the "f" in front of the
+#    Taxon ID field and, instead of hitting the database to learn which
+#    character values are currently set for the taxon, it will re-draw
+#    the form using the selections that came in from the last version of
+#    the form alongside the "f123" so that character value settings do
+#    not re-set each time the user submits the form.
+#
+# 5. When the form is finally ready...?
+
 filters_template = Template('''\
 <br clear="left"><br>
+<input type="hidden" name="{{ name }}" value="f{{ taxon_id }}">
 {% for pile, clist in piles %}
   <h2>Pile {{ pile.name }}</h2>
   {% for character in clist %}
     <h3>{{ character.name }}</h3>
     {% for value in character.values %}
-      <input type="checkbox" name="cv{{ value.id }}" value="1"
+      <input type="checkbox" name="{{ name }}" value="{{ value.id }}"
        {% if value.checked %}checked{% endif %}> {{ value.text }}<br>
     {% endfor %}
   {% endfor %}
 {% endfor %}
 ''')
 
-class TaxonFiltersWidget(forms.Widget):
+class TaxonFiltersWidget(forms.CheckboxSelectMultiple):
+    """Check box for each character value, grouped by pile."""
+
     def render(self, name, value, attrs=None):
+        print repr(name), repr(value), repr(attrs)
         if not value:
             return u'NOTHING HERE'
-        cv_ids = set( cv.id for cv in value.character_values.all() )
+
+        # value will either look like:
+        # ['d123'] for taxons that are being newly displayed
+        # ['f123', '37, '47', '782'] for taxons coming back from the form
+
+        value.sort()  # move the taxon ID to the end of the list
+        id_field = value.pop()
+        taxon_id = int(id_field.strip('df'))
+        taxon = models.Taxon.objects.get(pk=taxon_id)
+        if id_field.startswith('d'):
+            cv_ids = set( cv.id for cv in taxon.character_values.all() )
+        else:
+            cv_ids = set( int(cvid) for cvid in value )
+
         pilelist = []
-        for pile in value.piles.order_by('name'):
+        for pile in taxon.piles.order_by('name'):
             characterdict = {}
+
+            # Pull pile values from the database.
+
             for cv in pile.character_values.all():
                 if not cv.value_str:
                     continue
                 c = cv.character
                 if c.id not in characterdict:
                     characterdict[c.id] = {'name': c.name, 'values': []}
+                if cv.friendly_text:
+                    text = u'%s = %s' % (cv.value_str, cv.friendly_text)
+                else:
+                    text = cv.value_str
                 characterdict[c.id]['values'].append({
                     'id': cv.id,
-                    'text': cv.friendly_text or cv.value_str,
+                    'text': text,
                     'checked': cv.id in cv_ids,
                     })
+
+            # Sort characters and character values for presentation.
+
             characterlist = sorted(characterdict.values(),
                                    key=itemgetter('name'))
+            for characterdict in characterlist:
+                characterdict['values'].sort(key=itemgetter('text'))
+
             pilelist.append((pile, characterlist))
+
         return filters_template.render(Context({
+            'name': name,
             'piles': pilelist,
+            'taxon_id': taxon_id,
             }))
 
-class TaxonFiltersField(forms.ChoiceField):
+class TaxonFiltersField(forms.MultipleChoiceField):
     widget = TaxonFiltersWidget
 
 class TaxonAdminForm(forms.ModelForm):
@@ -103,7 +169,7 @@ class TaxonAdminForm(forms.ModelForm):
         super(TaxonAdminForm, self).__init__(*args, **kw)
         instance = kw.get('instance')
         if instance is not None:
-            self.initial['filters'] = instance
+            self.initial['filters'] = ['d%d' % instance.id]
 
     def clean_character_values(self):
         # Are the selected character values allowed in the Taxon's pile?
