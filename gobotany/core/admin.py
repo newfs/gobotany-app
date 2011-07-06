@@ -89,7 +89,12 @@ filters_template = Template('''\
 {% for pile, clist in piles %}
   <h2>Pile {{ pile.name }}</h2>
   {% for character in clist %}
-    <h3>{{ character.name }}</h3>
+    <h3>
+      {{ character.obj.short_name }} = {{ character.obj.name }}
+      {% if character.obj.friendly_name %}
+        = "{{ character.obj.friendly_name }}"
+      {% endif %}
+    </h3>
     {% for value in character.values %}
       <input type="checkbox" name="{{ name }}" value="{{ value.id }}"
        {% if value.checked %}checked{% endif %}> {{ value.text }}<br>
@@ -127,7 +132,9 @@ class TaxonFiltersWidget(forms.CheckboxSelectMultiple):
                     continue
                 c = cv.character
                 if c.id not in characterdict:
-                    characterdict[c.id] = {'name': c.name, 'values': []}
+                    characterdict[c.id] = {
+                        'short_name': c.short_name, 'obj': c, 'values': [],
+                        }
                 if cv.friendly_text:
                     text = u'%s = %s' % (cv.value_str, cv.friendly_text)
                 else:
@@ -141,7 +148,7 @@ class TaxonFiltersWidget(forms.CheckboxSelectMultiple):
             # Sort characters and character values for presentation.
 
             characterlist = sorted(characterdict.values(),
-                                   key=itemgetter('name'))
+                                   key=itemgetter('short_name'))
             for characterdict in characterlist:
                 characterdict['values'].sort(key=itemgetter('text'))
 
