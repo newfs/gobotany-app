@@ -110,7 +110,7 @@ class TaxonFiltersWidget(forms.CheckboxSelectMultiple):
         value.sort()  # move the taxon ID to the end of the list
         id_field = value.pop()
         taxon_id = int(id_field.lstrip('df'))
-        taxon = models.Taxon.objects.get(pk=taxon_id)
+        taxon = models.Taxon.objects.get(id=taxon_id)
         if id_field.startswith('d'):
             cv_ids = set( cv.id for cv in taxon.character_values.all() )
         else:
@@ -173,20 +173,12 @@ class TaxonAdminForm(forms.ModelForm):
         if instance is not None:
             self.initial['filters'] = ['d%d' % instance.id]
 
-    def clean_character_values(self):
-        # Are the selected character values allowed in the Taxon's pile?
-        pile = self.cleaned_data['pile']
-        for cv in self.cleaned_data['character_values']:
-            try:
-                cv.pile_set.get(id=pile.id)
-            except ObjectDoesNotExist:
-                raise forms.ValidationError(
-                    'The value %s is not allowed for Pile %s'%(cv, pile.name))
-        return self.cleaned_data['character_values']
+    def clean_filters(self):
+        """Why check - how can the user screw up checkboxes?"""
+        return self.cleaned_data['filters']
 
     def clean(self):
         data = self.cleaned_data
-        #print data
 
         # Does the scientific name match the genus?
 
@@ -208,6 +200,31 @@ class TaxonAdminForm(forms.ModelForm):
         # Return!
 
         return self.cleaned_data
+
+    def save(self, commit=True):
+        # Set the new taxon character values.
+
+        filters = self.cleaned_data['filters']
+        filters.sort()
+        taxon_id = int(filters.pop().lstrip('f'))  # the "f123" value
+        cv_ids = set( int(v) for v in filters )
+        taxon = models.Taxon.objects.get(id=taxon_id)
+
+        for tcv in models.TaxonCharacterValue.objects.filter(taxon=taxon):
+            cv_id = tcv.character_value.id
+            if cv_id in cv_ids:
+                cv_ids.remove(cv_id)  # does not need to be added to db
+            else:
+                tcv.delete()  # needs to be removed from db
+
+        for cv_id in cv_ids:
+            cv = models.CharacterValue.objects.get(id=cv_id)
+            models.TaxonCharacterValue.objects.create(
+                taxon=taxon, character_value=cv).save()
+
+        # Save everything else normally.
+
+        return super(TaxonAdminForm, self).save(commit=commit)
 
 class TaxonAdmin(GobotanyAdminBase):
     inlines = [
