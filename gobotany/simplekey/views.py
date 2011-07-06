@@ -23,7 +23,7 @@ from gobotany.simplekey.models import Page, get_blurb, SearchSuggestion
 
 def per_partner_template(request, template_path):
     partner = which_partner(request)
-    if partner:
+    if partner and partner.short_name != 'gobotany':
         return '{0}/{1}'.format(partner.short_name, template_path)
     else:
         return template_path
