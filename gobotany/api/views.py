@@ -13,14 +13,15 @@ from gobotany.core.models import (
     )
 from gobotany.core.partner import which_partner
 
-def jsonify(value, headers):
+def jsonify(value, headers=None):
     """Convert the value into a JSON HTTP response."""
     response = HttpResponse(
         json.dumps(value, indent=1 if settings.DEBUG else None),
         mimetype='application/json; charset=utf-8',
         )
-    for k, v in headers.items():  # set headers
-        response[k] = v
+    if headers:
+        for k, v in headers.items():  # set headers
+            response[k] = v
     return response
 
 # API helpers.
