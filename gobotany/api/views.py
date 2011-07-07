@@ -13,12 +13,15 @@ from gobotany.core.models import (
     )
 from gobotany.core.partner import which_partner
 
-def jsonify(value):
+def jsonify(value, headers):
     """Convert the value into a JSON HTTP response."""
-    return HttpResponse(
+    response = HttpResponse(
         json.dumps(value, indent=1 if settings.DEBUG else None),
         mimetype='application/json; charset=utf-8',
         )
+    for k, v in headers.items():  # set headers
+        response[k] = v
+    return response
 
 # API helpers.
 
@@ -277,7 +280,8 @@ def vectors_key(request, key):
     partner = which_partner(request)
     ids = sorted( ps.species_id for ps in PartnerSpecies.objects
                   .filter(partner=partner, simple_key=True) )
-    return jsonify([{'key': 'simple', 'species': ids}])
+    return jsonify([{'key': 'simple', 'species': ids}],
+                   headers={'Expires': 'Thu, 1 Jan 1970 00:00:00 GMT'})
 
 def vectors_pile(request, slug):
     pile = get_object_or_404(Pile, slug=slug)
