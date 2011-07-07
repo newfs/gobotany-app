@@ -478,7 +478,7 @@ ul#plant-listing {
     border-left-color: #c5e8ff;
 }
 
-#plant-listing li.PlantScollPage {
+#plant-listing li.PlantScrollPage {
     margin: 0;
     text-align: center;
 }
