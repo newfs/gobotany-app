@@ -16,7 +16,6 @@ from gobotany.core.models import (
     Pile, PileGroup, Taxon, TaxonCharacterValue,
     )
 from gobotany.core.partner import which_partner
-from gobotany.simplekey import partners
 from gobotany.simplekey.models import Page, get_blurb, SearchSuggestion
 
 #
@@ -45,8 +44,19 @@ def get_simple_url(item):
         raise ValueError('the Simple Key has no URL for %r' % (item,))
 
 def index_view(request):
-    site = partners.get_site(request)
-    main_heading = site.index_page_main_heading()
+    """View for the main page of the Go Botany site.
+
+    Note: The "main heading" variable was used to demo early
+    capabilities for partner sites before the visual design was
+    implemented. Currently the value of this variable does not get
+    displayed on the page, but the code is left in place pending our
+    eventual earnest customizations for specific partner sites.
+    """
+    main_heading = 'Plant Identifier: Getting Started'
+    partner = which_partner(request)
+    if partner:
+        if partner.short_name == 'montshire':
+            main_heading = 'Montshire %s' % main_heading
 
     blurb = get_blurb('getting_started')
 
@@ -68,15 +78,24 @@ def guided_search_view(request):
     return render_to_response('simplekey/guided_search.html', {
             }, context_instance=RequestContext(request))
 
+def _partner_short_name(partner):
+    short_name = None
+    if partner:
+        short_name = partner.short_name
+    return short_name
+
 def page_view(request, number):
     try:
         number = int(number)
     except ValueError:
         raise Http404
     page = get_object_or_404(Page, number=number)
-    site = partners.get_site(request)
+
+    partner = which_partner(request)
+    short_name = _partner_short_name(partner)
+
     return render_to_response('simplekey/page.html', {
-            'partner_site': site.short_name,
+            'partner_site': short_name,
             'page': page,
             'pilegroups_and_urls': [
                 (pilegroup, get_simple_url(pilegroup))
@@ -90,10 +109,13 @@ def get_parent_page(pilegroup):
 
 def pilegroup_view(request, pilegroup_slug):
     pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
-    site = partners.get_site(request)
+
+    partner = which_partner(request)
+    short_name = _partner_short_name(partner)
+
     parent_page = get_parent_page(pilegroup)
     return render_to_response('simplekey/pilegroup.html', {
-            'partner_site': site.short_name,
+            'partner_site': short_name,
             'parent_page': parent_page,
             'pilegroup': pilegroup,
             'piles_and_urls': [
@@ -106,9 +128,12 @@ def results_view(request, pilegroup_slug, pile_slug):
     pile = get_object_or_404(Pile, slug=pile_slug)
     if pile.pilegroup.slug != pilegroup_slug:
         raise Http404
-    site = partners.get_site(request)
+
+    partner = which_partner(request)
+    short_name = _partner_short_name(partner)
+
     return render_to_response('simplekey/results.html', {
-           'partner_site': site.short_name,
+           'partner_site': short_name,
            'pilegroup': pile.pilegroup,
            'pile': pile,
            }, context_instance=RequestContext(request))
@@ -150,7 +175,7 @@ def _format_character_value(character_value):
     """Render a character value for display."""
     character = character_value.character
     if character.value_type == 'TEXT':
-        return (character_value.friendly_text or 
+        return (character_value.friendly_text or
                 character_value.value_str or u'')
     elif character.unit not in (None, '', 'NA'):
         return u'%.1f–%.1f %s' % (character_value.value_min,
@@ -249,14 +274,14 @@ def genus_redirect_view(request, genus_slug):
 
 def family_view(request, family_slug):
     family = get_object_or_404(Family, slug=family_slug.lower())
-    
+
     family_images = family.images.filter(image_type__name='example image')
     # If no family images are set, use the images from a species for now.
     if not family_images:
         species = family.taxa.all()
         for s in species:
             family_images = botany.species_images(s)
-    
+
     family_drawings = family.images.filter(image_type__name='example drawing')
     return render_to_response('simplekey/family.html', {
            'item': family,
@@ -320,9 +345,9 @@ def _get_pilegroup_youtube_id(pilegroup_name):
 def _get_pile_youtube_id(pile_name):
     pile = Pile.objects.get(name=pile_name)
     return pile.youtube_id
-    
+
 def _get_pilegroup_dict(pilegroup_name):
-    return {'title': pilegroup_name, 
+    return {'title': pilegroup_name,
             'youtube_id': _get_pilegroup_youtube_id(pilegroup_name)}
 
 def _get_pile_dict(pile_name):
