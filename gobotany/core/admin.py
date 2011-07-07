@@ -109,8 +109,12 @@ class TaxonFiltersWidget(forms.CheckboxSelectMultiple):
     def render(self, name, value, attrs=None):
 
         # value will either look like:
+        # None when a species is being added
         # ['d123'] for taxons that are being newly displayed
         # ['f123', '37, '47', '782'] for taxons coming back from the form
+
+        if value is None:
+            return u''
 
         value.sort()  # move the taxon ID to the end of the list
         id_field = value.pop()
