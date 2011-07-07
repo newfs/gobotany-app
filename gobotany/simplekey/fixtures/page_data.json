@@ -1,38 +1,16 @@
 [
   {
-    "pk": 4,
-    "model": "simplekey.page",
-    "fields": {
-      "pilegroups": [
-        6
-      ],
-      "next_page": null,
-      "number": 4,
-      "title": "Other Groups: Non-Monocots"
-    }
-  },
-  {
-    "pk": 3, 
-    "model": "simplekey.page",
-    "fields": {
-      "pilegroups": [
-        5
-      ],
-      "next_page": 4,
-      "number": 3,
-      "title": "Other Groups: Monocots"
-    }
-  },
-  {
     "pk": 2,
     "model": "simplekey.page",
     "fields": {
       "pilegroups": [
-        3
+        3,
+        5,
+        6
       ],
-      "next_page": 3,
+      "next_page": null,
       "number": 2,
-      "title": "Other Groups: Graminoids"
+      "title": "Other Groups"
     }
   },
   {
