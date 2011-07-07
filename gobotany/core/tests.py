@@ -419,6 +419,7 @@ class ImportTestCase(TestCase):
 
     def test_import_taxons(self):
         im = importer.Importer(StringIO())
+        im._import_partner_sites()
         im._import_taxa(testdata('taxa.csv'))
         self.assertEquals(len(models.Taxon.objects.all()), 71)
 
