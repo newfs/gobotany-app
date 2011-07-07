@@ -4,6 +4,7 @@ from collections import defaultdict
 from django.conf import settings
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
+from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
 from gobotany.core import igdt
 from gobotany.core.models import (
@@ -274,6 +275,7 @@ def vectors_character(request, name):
         'image_url': v.image.url if v.image else '',
         } for v in values ])
 
+@cache_page(0)
 @vary_on_headers('Host')
 def vectors_key(request, key):
     if key != 'simple':
