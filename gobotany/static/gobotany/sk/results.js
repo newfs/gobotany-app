@@ -278,10 +278,16 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         // Include a URL parameter indicating whether the filter working area
         // is open.
         if (/&$/.test(hash) === false) {
-            hash = hash + '&';
+            hash += '&';
         }
-        hash = hash + '_visible=' +
-            this.filter_section.visible_filter_short_name;
+        hash += '_visible=' + this.filter_section.visible_filter_short_name;
+        
+        // Include a URL parameter indicating the current view of the
+        // results area.
+        if (/&$/.test(hash) === false) {
+            hash += '&';
+        }
+        hash += '_view=' + this.species_section.current_view;
 
         // Usually, do not replace the current Back history entry; rather,
         // create a new one, to enable the user to move back and forward

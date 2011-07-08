@@ -8,6 +8,7 @@
 
 dojo.provide('gobotany.sk.SpeciesSectionHelper');
 
+dojo.require('dojo.hash');
 dojo.require('dojo.html');
 dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
@@ -68,6 +69,13 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         var view_toggle_link = dojo.query('.list-all a')[0];
         dojo.connect(view_toggle_link, 'onclick', this, this.toggle_view);
+
+        // Set the initial view for showing the results.
+        var hash_object = dojo.queryToObject(dojo.hash());
+        if (hash_object._view !== undefined) {
+            this.current_view = hash_object._view;
+            this.set_navigation_to_view(this.current_view);
+        }
     },
 
     perform_query: function() {
@@ -147,6 +155,33 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         });
     },
 
+    set_navigation_to_view: function(view) {
+        'use strict';
+
+        var HIDDEN_CLASS = 'hidden';
+        var CURRENT_TAB_CLASS = 'current';
+        var photos_tab = dojo.query('#results-tabs li:first-child a')[0];
+        var list_tab = dojo.query('#results-tabs li:last-child a')[0];
+        var view_type = dojo.query('.list-all a span.view-type')[0];
+        var photos_show_menu = dojo.query('.show')[0];       
+
+        if (view === this.PHOTOS_VIEW) {
+            dojo.removeClass(list_tab, CURRENT_TAB_CLASS);
+            dojo.addClass(photos_tab, CURRENT_TAB_CLASS);
+
+            view_type.innerHTML = 'a list of';
+            dojo.removeClass(photos_show_menu, HIDDEN_CLASS);
+        } else if (view === this.LIST_VIEW) {
+            dojo.removeClass(photos_tab, CURRENT_TAB_CLASS);
+            dojo.addClass(list_tab, CURRENT_TAB_CLASS);
+
+            view_type.innerHTML = 'photos for';
+            dojo.addClass(photos_show_menu, HIDDEN_CLASS);
+        } else {
+           console.log('Unknown view name: ' + view);
+        }
+    },
+
     toggle_view: function(event) {
         'use strict';
     
@@ -164,23 +199,11 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         if (this.current_view === this.PHOTOS_VIEW) {
             this.current_view = this.LIST_VIEW;
-
-            dojo.removeClass(photos_tab, CURRENT_TAB_CLASS);
-            dojo.addClass(list_tab, CURRENT_TAB_CLASS);
-
-            view_type.innerHTML = 'photos for';
-            dojo.addClass(photos_show_menu, HIDDEN_CLASS);
-        }
-        else {
+        } else {
             this.current_view = this.PHOTOS_VIEW;
-
-            dojo.removeClass(list_tab, CURRENT_TAB_CLASS);
-            dojo.addClass(photos_tab, CURRENT_TAB_CLASS);
-
-            view_type.innerHTML = 'a list of';
-            dojo.removeClass(photos_show_menu, HIDDEN_CLASS);
         }
 
+        this.set_navigation_to_view(this.current_view);
         this.perform_query();
     },
 
