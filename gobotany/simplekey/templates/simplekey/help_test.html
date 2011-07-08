@@ -279,5 +279,10 @@ Test
         //    getting_started_helper.setup();
         //});
     </script>
+    <!-- Try loading without dojo.require() -->
     <script src="/static/gobotany/sk/GettingStartedHelper.js"></script>
+    <script>
+        var getting_started_helper = gobotany.sk.GettingStartedHelper();
+        getting_started_helper.setup();
+    </script>
 {% endblock %}
