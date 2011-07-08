@@ -272,14 +272,15 @@ Test
 {% endblock %}
 
 {% block js_bottom %}
-    <script>
+    <!--script>
         //dojo.require('gobotany.sk.GettingStartedHelper');
         //dojo.addOnLoad(function() {
         //    var getting_started_helper = gobotany.sk.GettingStartedHelper();
         //    getting_started_helper.setup();
         //});
-    </script>
-    <!-- Try loading without dojo.require() -->
+    </script-->
+    <!-- Try loading without dojo.require(). This seems to get around
+         mysterious errors that occur in IE8. -->
     <script src="/static/gobotany/sk/GettingStartedHelper.js"></script>
     <script>
         var getting_started_helper = gobotany.sk.GettingStartedHelper();

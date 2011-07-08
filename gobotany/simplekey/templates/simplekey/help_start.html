@@ -272,11 +272,11 @@ Getting Started
 {% endblock %}
 
 {% block js_bottom %}
+    <!-- Load this code without using dojo.require(). This seems to get
+         around mysterious errors that occur here in IE8. -->
+    <script src="/static/gobotany/sk/GettingStartedHelper.js"></script>
     <script>
-        dojo.require('gobotany.sk.GettingStartedHelper');
-        dojo.addOnLoad(function() {
-            var getting_started_helper = gobotany.sk.GettingStartedHelper();
-            getting_started_helper.setup();
-        });
+        var getting_started_helper = gobotany.sk.GettingStartedHelper();
+        getting_started_helper.setup();
     </script>
 {% endblock %}
