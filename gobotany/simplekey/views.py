@@ -312,6 +312,13 @@ def help_start_view(request):
             'getting_started_youtube_id': youtube_id,
             }, context_instance=RequestContext(request))
 
+@vary_on_headers('Host')
+def help_test_view(request):
+    """View for a diagnostic dummy page to help debug IE8 JS errors."""
+    return render_to_response(
+        per_partner_template(request, 'simplekey/help_test.html'), {
+            }, context_instance=RequestContext(request))
+
 def help_collections_view(request):
     return render_to_response('simplekey/help_collections.html', {
             'pages': Page.objects.order_by('number').all(),

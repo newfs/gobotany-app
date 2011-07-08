@@ -15,7 +15,7 @@ urlpatterns = patterns(
 
     # Hidden test pages.
     url('^_rulertest/$', views.rulertest),
-    
+
     # Auto-suggestions for search
     url('^suggest/$', views.suggest_view, name='simplekey-search-suggest'),
 
@@ -24,11 +24,12 @@ urlpatterns = patterns(
     url('^advanced/$', views.advanced_view, name='advanced-id-tools'),
     url('^help/$', views.help_about_view, name='simplekey-help-about'),
     url('^help/start/$', views.help_start_view, name='simplekey-help-start'),
+    url('^help/test/$', views.help_test_view, name='simplekey-help-test'),
     url('^help/collections/$', views.help_collections_view,
         name='simplekey-help-collections'),
     url('^help/glossary/(?P<letter>[1a-z])/$', views.help_glossary_view,
         name='simplekey-help-glossary'),
-    url('^help/glossary/$', views.help_glossary_redirect_view, 
+    url('^help/glossary/$', views.help_glossary_redirect_view,
         name='simplekey-help-glossary0'),
     url('^help/video/$', views.help_video_view, name='simplekey-help-video'),
     url('^help/video/(?P<pilegroup_slug>[^/]*)/$',
