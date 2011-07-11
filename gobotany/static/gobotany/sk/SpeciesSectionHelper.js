@@ -28,6 +28,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.results_helper = results_helper;
         this.scroll_event_handle = null;
         this.current_view = this.PHOTOS_VIEW;
+        this.show_photos_type = null;
     },
 
     setup_section: function() {
@@ -119,12 +120,11 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         global_setSidebarHeight();
 
         if (this.current_view === this.PHOTOS_VIEW) {
-            // Signal the "Show:" button to scrape our data to discover what
+            // Signal the "Show:" menu to scrape our data to discover what
             // kinds of thumbnail images are available.
             dojo.publish('results_loaded',
-                         [{filter_manager: this.results_helper.filter_manager,
-                           data: data}]);
-
+                [{filter_manager: this.results_helper.filter_manager,
+                  data: data}]);
             this.results_helper.species_section.lazy_load_images();
         }
     },
@@ -168,13 +168,11 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         if (view === this.PHOTOS_VIEW) {
             dojo.removeClass(list_tab, CURRENT_TAB_CLASS);
             dojo.addClass(photos_tab, CURRENT_TAB_CLASS);
-
             view_type.innerHTML = 'a list of';
             dojo.removeClass(photos_show_menu, HIDDEN_CLASS);
         } else if (view === this.LIST_VIEW) {
             dojo.removeClass(photos_tab, CURRENT_TAB_CLASS);
             dojo.addClass(list_tab, CURRENT_TAB_CLASS);
-
             view_type.innerHTML = 'photos for';
             dojo.addClass(photos_show_menu, HIDDEN_CLASS);
         } else {
@@ -209,8 +207,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
     get_number_of_rows_to_span: function(items, start) {
         /* From a starting point in a list of plant items, return the number
-           of rows it takes to get to the next genus (or the end of the list).
-         */
+           of rows it takes to get to the next genus (or the end of the
+           list). */
         'use strict';
 
         var rows = 1;
@@ -273,10 +271,10 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     display_in_photos_view: function(items, container) {
-        /* Display plant results as a grid of photo thumbnails with captions.
-           Give plants in each genus a background color, cycling among several
-           colors so plants in adjacent rows don't have the same color unless
-           they are of the same genus. */
+        /* Display plant results as a grid of photo thumbnails with
+           captions. Give plants in each genus a background color, cycling
+           among several colors so plants in adjacent rows don't have the
+           same color unless they are of the same genus. */
         'use strict';
 
         var SPECIES_PER_ROW = 4;
@@ -338,8 +336,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     var thumb_url = this.default_image(species).thumb_url;
                     if (thumb_url) { // undefined when no image available
                         // Set the image URL in a dummy attribute, so we can
-                        // lazy-load images, switching to the proper attribute
-                        // when the image comes into view.
+                        // lazy-load images, switching to the proper
+                        // attribute when the image comes into view.
                         dojo.attr(image, 'x-tmp-src', thumb_url);
                     }
                     dojo.place(image, image_container);

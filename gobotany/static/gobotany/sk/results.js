@@ -289,6 +289,13 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         }
         hash += '_view=' + this.species_section.current_view;
 
+        // Include a URL parameter indicating the current type of photos
+        // to show for the photos view.
+        if (/&$/.test(hash) === false) {
+            hash += '&';
+        }
+        hash += '_show=' + dijit.byId('image-type-selector').value;
+
         // Usually, do not replace the current Back history entry; rather,
         // create a new one, to enable the user to move back and forward
         // through their keying choices.
@@ -360,6 +367,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             });
         }
         this.species_section.lazy_load_images();
+        this.save_filter_state();
     },
 
     // A subscriber for results_loaded
@@ -393,6 +401,19 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             if (image_type === 'habit')
                 select_box.set('value', 'habit');
         }
+
+        // Set the last shown image type if possible.
+        var hash_object = dojo.queryToObject(dojo.hash());
+        if (hash_object._show !== undefined &&
+            hash_object._show && hash_object._show !== '') {
+
+            // Only set the image type if it's a currently valid one.
+            var types_regex = RegExp('^(' + image_types.join('|') + ')$');
+            if (types_regex.test(hash_object._show)) {
+                dijit.byId('image-type-selector').attr('value',
+                    hash_object._show);
+            }
+        }   
     }
 });
 
