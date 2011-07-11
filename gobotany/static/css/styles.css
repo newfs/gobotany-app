@@ -625,6 +625,9 @@ Sidebar Styles
 #sidebar a.view-map-btn:active {
     background-position: 0 -64px;
 }
+a.sidebarlink {
+    color: #1a2e11;
+}
 
 
 /*******------
@@ -1468,3 +1471,20 @@ Getting Started Page Styles
 	margin: 0 5px 0 0;	
 }
 
+
+/*///////////////////////////**
+Video Help Topics Page Styles
+////////////////////////////*/
+
+.video-row {
+    margin: 20px 0;
+}
+.video-topic {
+    float: left;
+    margin-right: 16px;
+    width: 220px;
+}
+.video-topic img {
+    height: 137px;
+    width: 220px;
+}

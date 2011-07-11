@@ -4,7 +4,7 @@
     <!--
        BE SURE TO RUN "<buildout>/scripts/dojo-build.sh" BEFORE DEBUGGING!
       -->
-    <script type="text/javascript">
+    <script>
 	djConfig = {
            isDebug: true,
            debugAtAllCosts: true,
@@ -21,16 +21,12 @@
        };
     </script>
     <!-- src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.0/dojo/dojo.xd.js" -->
-    <script type="text/javascript"
-            src="/static/dojo/dojo.js"
-            ></script>
+    <script src="/static/dojo/dojo.js"></script>
     <!-- speeds things up immensely, but you cannot debug dojo itself: -->
-    <script type="text/javascript"
-            src="/static/js/layers/sk.js"
-            ></script>
+    <script src="/static/js/layers/sk.js"></script>
 
 {% else %}
-    <script type="text/javascript">
+    <script>
 	djConfig = {
            isDebug: false,
            debugAtAllCosts: false,
@@ -48,18 +44,13 @@
            parseOnLoad: true
        };
     </script>
-    <script type="text/javascript"
-            src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.0/dojo/dojo.xd.js"
-            ></script>
-    <script type="text/javascript"
-            src="/static/js/layers/sk.js"
-            ></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.0/dojo/dojo.xd.js"></script>
+    <script src="/static/js/layers/sk.js"></script>
 
 {% endif %}
 
 <link rel="stylesheet"
-      href="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/claro.css"
-      type="text/css" media="screen" title="Dijit Claro Style" charset="utf-8"
-      />
+      href="http://ajax.googleapis.com/ajax/libs/dojo/1.6.0/dijit/themes/claro/claro.css"
+      type="text/css" media="screen" title="Dijit Claro Style">
 
 <!-- end dojobase.html -->

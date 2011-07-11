@@ -1,34 +1,53 @@
-{% extends "simplekey/_old_help.html" %}
+{% extends "simplekey/_help.html" %}
+
 {% block pagetitle %}
 Video Help Topics
 {% endblock %}
-{% block pageheading %}
-Video Help Topics
-{% endblock %}
-{% block maincontent %}
-<div id="video-topics">
 
-    {% for video in videos %}
-        <h2>{{ video.title }}</h2>
-        <div class="clip">
-            <a href="http://www.youtube.com/v/{{ video.youtube_id }}?enablejsapi=1&version=3">YouTube Video: {{ video.title }}</a>
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <div id="main">
+                <h2>Video Help Topics</h2>
+                {% for video in videos %}
+                    {% if forloop.counter0|divisibleby:"3" and forloop.counter0 > 0 %}
+                        <div class="clearit"></div>
+                    </div><!-- end video-row -->
+                    {% endif %}
+                    {% if forloop.counter0|divisibleby:"3" %}
+                    <div class="video-row">
+                    {% endif %}
+                        <div class="video-topic">
+                            <a rel="shadowbox;height=380;width=640;"
+                              href="http://www.youtube.com/v/{{ video.youtube_id }}">
+                                <img class="shadow" src="http://img.youtube.com/vi/{{ video.youtube_id }}/hq2.jpg" alt="">
+                            </a>
+                            <h4>{{ video.title }}</h4>
+                        </div>
+                {% endfor %}
+                <div class="clearit"></div>
+                </div><!-- end video-row -->
+            </div>
+                <div id="sidebar" style="height: 1420px;">
+                <div class="section">
+                    <h5><a class="sidebarlink" 
+                        {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-start %}"{% endifequal %}>Getting Started with Plant Identifier</a></h5>	
+			    </div>
+			    <div class="section">
+                    <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-about %}"{% endifequal %}>About Go-Botany</a></h5>
+			    </div>
+			    <div class="section">
+                    <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-collections %}"{% endifequal %}>Advanced Map to Groups</a></h5>
+			    </div>
+			    <div class="section">
+                    <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-glossary0 %}"{% endifequal %}>Glossary</a></h5>
+			    </div>
+			    <div class="section">
+                    <h5><a>Video Help Topics</a></h5>
+                </div>
+            </div>
+            <div class="clearit"></div>
         </div>
-    {% endfor %}
-
-</div>
-
+    </div>
 {% endblock %}
 
-{% block js_bottom %}
-    <script>
-        dojo.require('dojox.embed.Flash');
-        dojo.addOnLoad(function() {
-            dojo.query('.clip').forEach(function (node, index, attr) {
-                var path = dojo.attr(dojo.query('> a', node)[0], 'href');
-                var player = new dojox.embed.Flash({path: path,
-                                                    width: 250,
-                                                    height: 250}, node);
-            });
-        });
-    </script>
-{% endblock %}
