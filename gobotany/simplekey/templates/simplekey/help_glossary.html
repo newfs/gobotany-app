@@ -1,10 +1,64 @@
-{% extends "simplekey/_old_help.html" %}
-{% block pagetitle %}
-Glossary
+{% extends "simplekey/_help.html" %}
+
+{% block pagetitle %}Glossary{% endblock %}
+
+{% block body_id %}getting-started{% endblock %}
+{% block body_class %}getting-started{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <div id="main">
+                <h2>Glossary: {{ this_letter|upper }}</h2>
+                <ul id="alphabet">
+                    {% for letter in letters %}
+                        {% if letter = this_letter %}
+                            <li class="current"><a>{{ letter|upper }}</a></li>
+                        {% else %}
+                            {% if letter in letters_in_glossary %}
+                                <li><a href="{% url simplekey-help-glossary letter %}">{{ letter|upper }}</a></li>
+                            {% else %}
+                                <li class="inactive">{{ letter|upper }}</li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                <dl id="terms">
+                    {% for term in glossary %}
+                        <dt>
+                            {% if term.image %}
+                                <a rel="shadowbox" href="{{ term.image.url }}">
+                                    <img alt="{{ term.term }}" 
+                                    src="/static/images/icons/camera.jpg"></a>
+                            {% endif %}
+                            {{ term.term }}
+                        </dt>
+                        <dd>{{ term.lay_definition|capfirst }}{% if not term.lay_definition|make_list|last == '.' %}.{% endif %}</dd>
+                    {% endfor %}
+                </dl>
+            </div>
+            <div id="sidebar" style="height: 1420px;">
+                <div class="section">
+                    <h5><a class="sidebarlink" 
+                        {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-start %}"{% endifequal %}>Getting Started with Plant Identifier</a></h5>	
+			    </div>
+			    <div class="section">
+                    <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-about %}"{% endifequal %}>About Go-Botany</a></h5>
+			    </div>
+			    <div class="section">
+                    <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-collections %}"{% endifequal %}>Advanced Map to Groups</a></h5>
+			    </div>
+			    <div class="section">
+                    <h5><a>Glossary</a></h5>
+			    </div>
+			    <div class="section">
+                    <h5><a class="sidebarlink" {% ifequal request.path u %} class="current"{% else %}href="{% url simplekey-help-video %}"{% endifequal %}>Video Help Topics</a></h5>
+                </div>
+            </div>
+            <div class="clearit"></div>
+        </div>
 {% endblock %}
-{% block pageheading %}
-Glossary: {{ this_letter|upper }}
-{% endblock %}
+
 {% block maincontent %}
 <div>
 

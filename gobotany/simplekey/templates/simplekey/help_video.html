@@ -1,8 +1,9 @@
 {% extends "simplekey/_help.html" %}
 
-{% block pagetitle %}
-Video Help Topics
-{% endblock %}
+{% block pagetitle %}Video Help Topics{% endblock %}
+
+{% block body_id %}video-help-topics{% endblock %}
+{% block body_class %}video-help-topics{% endblock %}
 
 {% block content %}
     <div class="content">
@@ -28,7 +29,7 @@ Video Help Topics
                 <div class="clearit"></div>
                 </div><!-- end video-row -->
             </div>
-                <div id="sidebar" style="height: 1420px;">
+            <div id="sidebar" style="height: 1420px;">
                 <div class="section">
                     <h5><a class="sidebarlink" 
                         {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-start %}"{% endifequal %}>Getting Started with Plant Identifier</a></h5>	

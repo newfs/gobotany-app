@@ -1211,23 +1211,9 @@ div.working-area #simple-slider .count {
 }
 /* end overrides for count slider */
 
-/* glossary term underline for popup */
-.gloss {
-    border-bottom: 1px dashed;
-    cursor: pointer;
-}
-/* glossary tooltip */
-.glosstip {
-    position: relative;
-    max-width: 30em;
-}
-.glosstip img {
-    position: absolute;
-    bottom: 100%;
-    border: 3px solid black;
-}
 
 /* Help navigation styles */
+/* (Remove after Iteration 15, when they'll be obsolete) */
 #help-nav {
     color: #666;
 }
@@ -1488,3 +1474,81 @@ Video Help Topics Page Styles
     height: 137px;
     width: 220px;
 }
+
+/*//////////////////**
+Glossary Page Styles
+///////////////////*/
+
+/* glossary term underline for popup */
+.gloss {
+    border-bottom: 1px dashed;
+    cursor: pointer;
+}
+/* glossary tooltip */
+.glosstip {
+    position: relative;
+    max-width: 30em;
+}
+.glosstip img {
+    position: absolute;
+    bottom: 100%;
+    border: 3px solid black;
+}
+
+#alphabet {
+    height: 33px;
+    margin: 7px 0;
+    padding: 0;
+    width: 712px; /* 2px wider than its parent box so no wrap in Moz */
+}
+
+#alphabet li {
+    border-left: 1px solid #e1e1dc;
+    float: left;
+    font-size: 18px;
+    margin: 0;
+    padding: 0 7px;
+}
+#alphabet li:first-child {
+    border-left: 0;
+}
+#alphabet li.current a {
+    color: #000;
+}
+#alphabet li.inactive {
+    color: #ccc;
+}
+
+#terms {
+    background-color: #fff;
+    border: 1px solid #e1e1dc;
+    clear: left;
+    margin-bottom: 30px;
+    width: 710px;
+}
+#terms dt, #terms dd {
+    border-top: 1px solid #e1e1dc;
+    min-height: 24px;
+}
+#terms dt {
+    clear: left;
+    float: left;
+    font: 15px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
+    line-height: 25px;
+    padding: 7px 10px 10px 38px;
+    width: 190px;
+}
+#terms dt a {
+    float: left;
+    margin-left: -34px;
+}
+#terms dd {
+    margin-left: 224px;
+    padding: 13px;
+}
+#terms dt:first-child, #terms dt:first-child + dd {
+    border-top: 0;
+}
+
+
+

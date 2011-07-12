@@ -1,9 +1,10 @@
 {% extends "simplekey/_base.html" %}
 
-{% block title %}{% block pagetitle %}{% endblock %} - Help{% endblock %}
+{% block title %}{% block pagetitle %}{% endblock %}: Help{% endblock %}
 
 {% block body %}
-    <body id="getting-started" class="claro app getting-started">
+<body id="{% block body_id %}{% endblock %}"
+    class="claro app {% block body_class %}{% endblock %}">
         {% include "simplekey/_header.html" %}
 
         {% block content %}{% endblock %}
