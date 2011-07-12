@@ -36,6 +36,9 @@ Getting Started
                                 <li class="third upcoming"><a><img 
                                     src="/static/images/icons/subgroup.png" 
                                     alt=""> Subgroup</a></li>
+                                <li class="last upcoming"><a><img 
+                                    src="/static/images/icons/subgroup.png" 
+                                    alt=""> My Plant</a></li>
                             {% endif %}
                         </ul>
 			        </div><!--Closes #breadcrumb-->
@@ -219,36 +222,21 @@ Getting Started
                 </div>
 
                 <div id="sidebar" style="height: 1046px">
-                    <div class="section" id="help-nav">
-                        <h5>Help</h5>
-                        <ul>
-                            {% url simplekey-help-about as u %}
-                            <li><a {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-about %}"{% endifequal %}>About Go-Botany</a></li>
-                            
-                            <li><p>How To Use Plant Identifier:</p>
-                                <ul>
-                                    {% url simplekey-help-start as u %}
-                                    <li><a {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-start %}"{% endifequal %}>Getting Started</a></li>
-                                    {% url simplekey-help-collections as u%}
-                                    <li><a {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-collections %}"{% endifequal %}>Understanding Plant Collections</a></li>
-                                </ul>
-                            </li>
-                            
-                            {% url simplekey-help-glossary0 as u %}
-                            <li><a {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-glossary0 %}"{% endifequal %}>Glossary</a></li>
-                            
-                            {% url simplekey-help-video as u %}
-                            <li><a {% ifequal request.path u %} class="current"{% else %}href="{% url simplekey-help-video %}"{% endifequal %}>Video Help Topics</a></li>
-                        
-                        </ul>
+                    <div class="section">
+                        <h5><a>Getting Started with Plant Identifier</a></h5>	
+			        </div>
+			        <div class="section">
+                        <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-about %}"{% endifequal %}>About Go-Botany</a></h5>
+			        </div>
+			        <div class="section">
+                        <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-collections %}"{% endifequal %}>Advanced Map to Groups</a></h5>
+			        </div>
+			        <div class="section">
+                        <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-glossary0 %}"{% endifequal %}>Glossary</a></h5>
+			        </div>
+			        <div class="section">
+                        <h5><a class="sidebarlink" {% ifequal request.path u %} class="current"{% else %}href="{% url simplekey-help-video %}"{% endifequal %}>Video Help Topics</a></h5>
                     </div>
-
-                    <!--<div class="section">
-        				<h5>Want Help Getting Started?</h5>
-                        <p>Click on "Get Help" if you get stuck or want more
-                            information.</p>
-				        <a class="get-help-btn" href="/help/">Get Help</a>
-                    </div>-->
                     
                     <div class="section">
                         <h5>Watch Video</h5>
@@ -273,7 +261,8 @@ Getting Started
 
 {% block js_bottom %}
     <!-- Load this code without using dojo.require(). This seems to get
-         around mysterious errors that occur here in IE8. -->
+    around mysterious errors that occur here in IE8 for now, but it
+    is probably not a true solution if it skirts the Dojo build system. -->
     <script src="/static/gobotany/sk/GettingStartedHelper.js"></script>
     <script>
         var getting_started_helper = gobotany.sk.GettingStartedHelper();
