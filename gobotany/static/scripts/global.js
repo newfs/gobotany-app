@@ -1,26 +1,27 @@
 // 100% Height for Sidebar
 function sidebarHeight() {
-    var MINIMUM_HEIGHT = 850;
+    var MINIMUM_HEIGHT = 550;
+    var newHeight = 0;
+
+    var headerHeight = $('header').height();
 
     var helpButton = $('div#sidebar a.get-help-btn');
     if (helpButton.length > 0) {
         var helpButtonTopPosition = helpButton.position().top;
-
-        var headerHeight = $('header').height();
-
-        var newHeight = helpButtonTopPosition - headerHeight;
-
-        var mainHeight = $('div#main').height();
-        if (mainHeight > newHeight) {
-            newHeight = mainHeight;
-        }
-
-        if (newHeight < MINIMUM_HEIGHT) {
-            newHeight = MINIMUM_HEIGHT;
-        }
-
-        $('div#sidebar').css('height', newHeight);
+        
+        newHeight = helpButtonTopPosition - headerHeight;
     }
+
+    var mainHeight = $('div#main').height();
+    if (mainHeight > newHeight) {
+        newHeight = mainHeight;
+    }
+
+    if (newHeight < MINIMUM_HEIGHT) {
+        newHeight = MINIMUM_HEIGHT;
+    }
+
+    $('div#sidebar').css('height', newHeight);
 }
 
 // Wrapper for calling from elsewhere; make code in global.js easier to keep
