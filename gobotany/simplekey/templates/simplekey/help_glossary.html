@@ -2,8 +2,8 @@
 
 {% block pagetitle %}Glossary{% endblock %}
 
-{% block body_id %}getting-started{% endblock %}
-{% block body_class %}getting-started{% endblock %}
+{% block body_id %}glossary{% endblock %}
+{% block body_class %}glossary{% endblock %}
 
 {% block content %}
     <div class="content">
@@ -57,40 +57,6 @@
             </div>
             <div class="clearit"></div>
         </div>
-{% endblock %}
-
-{% block maincontent %}
-<div>
-
-<ul id="glossary_pages">
-  {% for letter in letters %}
-    <li>
-      {% if letter = this_letter %}
-        {{ letter|upper }}
-      {% else %}
-        {% if letter in letters_in_glossary %}
-          <a href="{% url simplekey-help-glossary letter %}">{{ letter|upper }}</a>
-        {% else %}
-          <span class="inactive">{{ letter|upper }}</span>
-        {% endif %}
-      {% endif %}
-    </li>
-  {% endfor %}
-</ul>
-
-<ul id="glossary">
-  {% for term in glossary %}
-    <li>
-      <h2>{{ term.term }}</h2>
-      <span class="definition">{{ term.lay_definition|capfirst }}.</span>
-      {% if term.image %}
-        <img src="{{ term.image.url }}" alt="{{ term.term }}">
-      {% endif %}
-    </li>
-  {% endfor %}
-</ul>
-
-</div>
 {% endblock %}
 
 {% block js_bottom %}

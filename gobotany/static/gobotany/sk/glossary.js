@@ -12,7 +12,7 @@ dojo.declare('gobotany.sk.glossary.GlossaryHelper', null, {
     },
     setup: function() {
         var glossarizer = this.glossarizer;
-        dojo.query('#glossary .definition').forEach(function(node) {
+        dojo.query('#terms dd').forEach(function(node) {
             glossarizer.markup(node);
         });
     }
