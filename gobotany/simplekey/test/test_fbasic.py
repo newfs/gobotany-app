@@ -42,11 +42,13 @@ class FunctionalTestCase(unittest2.TestCase):
                     "javascriptEnabled": True,
                     "max-duration": 300,
                     })
+        else:
+            cls.driver = webdriver.Firefox() #Chrome()
+
         if 'SIMPLEHOST' in os.environ:
             cls.host = 'http://' + os.environ['SIMPLEHOST']
             cls.base = ''
         else:
-            cls.driver = webdriver.Firefox() #Chrome()
             cls.host = 'http://localhost:8000'
             cls.base = ''
 
@@ -133,22 +135,16 @@ class BasicFunctionalTests(FunctionalTestCase):
         assert h3[2].text.startswith('Aquatic Plants')
         d.find_element_by_link_text('Show me other groups').click()
         h3 = self.css('h3')
-        self.assertEqual(len(h3), 1)
+        self.assertEqual(len(h3), 3)
         assert h3[0].text.startswith('Graminoids')
-        d.find_element_by_link_text('Show me other groups').click()
-        h3 = self.css('h3')
-        self.assertEqual(len(h3), 1)
-        assert h3[0].text.startswith('Monocots')
-        d.find_element_by_link_text('Show me other groups').click()
-        h3 = self.css('h3')
-        self.assertEqual(len(h3), 1)
-        assert h3[0].text.startswith('Non-Monocots')
+        assert h3[1].text.startswith('Monocots')
+        assert h3[2].text.startswith('Non-Monocots')
         e = d.find_elements_by_link_text('Show me other groups')
         self.assertEqual(e, [])
 
         # Do group links get constructed correctly?
         e = d.find_element_by_link_text('My plant is in this group.')
-        self.assertEqual(e.get_attribute('href'), self.aurl('/non-monocots/'))
+        self.assertEqual(e.get_attribute('href'), self.aurl('/graminoids/'))
 
     def test_group_page(self):
         d = self.get('/ferns/')
