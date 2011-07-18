@@ -212,14 +212,20 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.wait_on_species(9)
 
     def list_family_choices(self):
-        self.css1('[widgetid="family_select"] .dijitArrowButtonInner').click()
-        items = self.wait_on(1, self.css, '#family_select_popup li')
-        return [ item.text for item in items ]
+        b = self.css1('[widgetid="family_select"] .dijitArrowButtonInner')
+        b.click()
+        items = self.wait_on(4, self.css, '#family_select_popup li')
+        texts = [ item.text for item in items ]
+        b.click()
+        return texts
 
     def list_genus_choices(self):
-        self.css1('[widgetid="genus_select"] .dijitArrowButtonInner').click()
-        items = self.wait_on(1, self.css, '#genus_select_popup li')
-        return [ item.text for item in items ]
+        b = self.css1('[widgetid="genus_select"] .dijitArrowButtonInner')
+        b.click()
+        items = self.wait_on(4, self.css, '#genus_select_popup li')
+        texts = [ item.text for item in items ]
+        b.click()
+        return texts
 
     def test_family_genus_filters(self):
 
