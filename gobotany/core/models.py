@@ -536,7 +536,7 @@ class Taxon(models.Model):
     # from having to create them on the fly in Javascript
     scientific_name = models.CharField(max_length=100, unique=True)
     piles = models.ManyToManyField(
-        Pile, through=Pile.species.through, related_name='+')
+        Pile, through=Pile.species.through, related_name='+', blank=True)
     family = models.ForeignKey(Family, related_name='taxa')
     genus = models.ForeignKey(Genus, related_name='taxa')
     character_values = models.ManyToManyField(

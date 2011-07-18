@@ -1,7 +1,6 @@
 from operator import itemgetter
 from django.contrib import admin
 from django.contrib.contenttypes import generic
-from django.core.exceptions import ObjectDoesNotExist
 from django.template import Context, Template
 from django import forms
 from autocomplete.fields import ModelChoiceField
@@ -70,18 +69,24 @@ class ContentImageInline(generic.GenericStackedInline):
 #    the character value they are representing (thus these values look
 #    simply like "1", "2", and so forth).
 #
-# 3. When the user submits the form, something happens...?
+# 3. Should the form need to be re-displayed because of an error or an
+#    illegal value somewhere on the Taxon page, the rendering function
+#    of TaxonFiltersWidget will see the "f" in front of the Taxon ID
+#    field and, instead of hitting the database to learn which character
+#    values are currently set for the taxon, it will re-draw the form
+#    using the selections that came in from the last version of the form
+#    alongside the "f123" so that character value settings do not re-set
+#    each time the user submits the form.
 #
-# 4. Should the form need to be re-displayed because of an error or an
-#    illegal value somewhere on the Taxon page, then the rendering
-#    function of TaxonFiltersWidget will see the "f" in front of the
-#    Taxon ID field and, instead of hitting the database to learn which
-#    character values are currently set for the taxon, it will re-draw
-#    the form using the selections that came in from the last version of
-#    the form alongside the "f123" so that character value settings do
-#    not re-set each time the user submits the form.
+# 4. When the form is finally ready, TaxonAdminForm.save() swings into
+#    action and makes sure that the filters selected for the species are
+#    brought completely into line with the checkboxes that were set by
+#    the user.  Note that a species being removed from a particular pile
+#    necessarily results in that species losing ALL of the filters
+#    related to that pile; if the species is later re-added to the pile,
+#    it will start over again with all of the filters being blank!
 #
-# 5. When the form is finally ready...?
+
 
 filters_template = Template('''\
 <br clear="left"><br>
@@ -174,7 +179,7 @@ class TaxonFiltersField(forms.MultipleChoiceField):
         return True
 
 class TaxonAdminForm(forms.ModelForm):
-    filters = TaxonFiltersField()
+    filters = TaxonFiltersField(required=False)
 
     class Meta:
         model = models.Taxon
@@ -217,22 +222,23 @@ class TaxonAdminForm(forms.ModelForm):
         # Set the new taxon character values.
 
         filters = self.cleaned_data['filters']
-        filters.sort()
-        taxon_id = int(filters.pop().lstrip('f'))  # the "f123" value
-        cv_ids = set( int(v) for v in filters )
-        taxon = models.Taxon.objects.get(id=taxon_id)
+        if filters:  # can be blank if the species belongs to no piles
+            filters.sort()
+            taxon_id = int(filters.pop().lstrip('f'))  # the "f123" value
+            cv_ids = set( int(v) for v in filters )
+            taxon = models.Taxon.objects.get(id=taxon_id)
 
-        for tcv in models.TaxonCharacterValue.objects.filter(taxon=taxon):
-            cv_id = tcv.character_value.id
-            if cv_id in cv_ids:
-                cv_ids.remove(cv_id)  # does not need to be added to db
-            else:
-                tcv.delete()  # needs to be removed from db
+            for tcv in models.TaxonCharacterValue.objects.filter(taxon=taxon):
+                cv_id = tcv.character_value.id
+                if cv_id in cv_ids:
+                    cv_ids.remove(cv_id)  # does not need to be added to db
+                else:
+                    tcv.delete()  # needs to be removed from db
 
-        for cv_id in cv_ids:
-            cv = models.CharacterValue.objects.get(id=cv_id)
-            models.TaxonCharacterValue.objects.create(
-                taxon=taxon, character_value=cv).save()
+            for cv_id in cv_ids:
+                cv = models.CharacterValue.objects.get(id=cv_id)
+                models.TaxonCharacterValue.objects.create(
+                    taxon=taxon, character_value=cv).save()
 
         # Save everything else normally.
 
