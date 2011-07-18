@@ -628,7 +628,12 @@ Sidebar Styles
 a.sidebarlink {
     color: #1a2e11;
 }
-
+#sidebar .clear-filter {
+    display: block;
+}
+#sidebar .clear-filter.hidden {
+    display: none;
+}
 
 /*******------
 Level 3 Id styles

@@ -663,8 +663,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 this._get_filter_display_value(filter) + '</span>'
         }, filter_li);
         var clearLink = dojo.create('a', {
-            'class': 'clear hidden', href: '#',
-            innerHTML: '<br>× clear'
+            'class': 'clear-filter hidden', href: '#',
+            innerHTML: '× clear'
         }, filter_li);
 
         this.glossarizer.markup(labelsLink);
@@ -695,7 +695,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
     show_or_hide_filter_clear: function(filter) {
         // Show or hide the Clear link for a filter at left.
-        var div = dojo.query('#' + filter.character_short_name + ' .clear');
+        var name = filter.character_short_name;
+        var div = dojo.query('#' + name + ' .clear-filter');
         div.toggleClass('hidden', filter.selected_value === null);
     },
 

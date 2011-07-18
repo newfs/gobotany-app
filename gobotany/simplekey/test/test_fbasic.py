@@ -43,8 +43,8 @@ class FunctionalTestCase(unittest2.TestCase):
                     "max-duration": 300,
                     })
         else:
-            cls.driver = webdriver.Firefox()
-            #cls.driver = webdriver.Chrome()
+            #cls.driver = webdriver.Firefox()
+            cls.driver = webdriver.Chrome()
 
         if 'SIMPLEHOST' in os.environ:
             cls.host = 'http://' + os.environ['SIMPLEHOST']
@@ -209,7 +209,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # clear the New England state
 
-        self.css1('#state_distribution .clear').click()
+        self.css1('#state_distribution .clear-filter').click()
         self.wait_on_species(9)
 
     def list_family_choices(self):
@@ -333,7 +333,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # clear the New England state AND press "apply" again
 
-        self.css1('#state_distribution .clear').click()
+        self.css1('#state_distribution .clear-filter').click()
         self.css1('.apply-btn').click()
         self.wait_on_species(1)
 
