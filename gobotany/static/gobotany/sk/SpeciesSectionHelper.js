@@ -444,9 +444,10 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
                 if (is_element_visible === true) {
                     var image_url = dojo.attr(element, 'x-tmp-src');
-
-                    // Set the attribute that will make the image load.
-                    dojo.attr(element, 'src', image_url);
+                    if (image_url !== null) {
+                        // Set the attribute that will make the image load.
+                        dojo.attr(element, 'src', image_url);
+                    }
                 }
             }
         }
