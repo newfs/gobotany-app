@@ -256,7 +256,9 @@ def species(request, pile_slug):
 #
 
 def vectors_character(request, name):
-    values = list(CharacterValue.objects.filter(character__short_name=name))
+    character = get_object_or_404(Character, short_name=name)
+    mm = character.UNIT_MM[character.unit] if character.unit else 1.0
+    values = character.character_values.all()
     tcvs = list(TaxonCharacterValue.objects.filter(character_value__in=values))
     species = defaultdict(list)
     for tcv in tcvs:
@@ -268,8 +270,8 @@ def vectors_character(request, name):
         'species': sorted(species[v.id]),
         'choice': v.value_str,
         'scalar': v.value_flt,
-        'min': v.value_min,
-        'max': v.value_max,
+        'min': v.value_min and v.value_min * mm,
+        'max': v.value_max and v.value_max * mm,
         #
         'thumbnail_url': v.image.thumbnail.absolute_url if v.image else '',
         'image_url': v.image.url if v.image else '',

@@ -143,6 +143,11 @@ class Character(models.Model):
         u'cm': u'Centimeters',
         u'm': u'Meters',
         }
+    UNIT_MM = {
+        u'mm': 1.0,
+        u'cm': 10.0,
+        u'm': 1000.0,
+        }
     value_type = models.CharField(
         max_length=10, choices=VALUE_CHOICES.items())
     unit = models.CharField(
