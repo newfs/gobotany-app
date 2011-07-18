@@ -123,7 +123,7 @@ class BasicFunctionalTests(FunctionalTestCase):
         self.assertEqual(
             d.title, u'Go Botany: New England Wild Flower Society')
         e = d.find_element_by_link_text('Get Started')
-        self.assertEqual(e.get_attribute('href'), self.aurl('/help/start/'))
+        self.assertEqual(e.get_attribute('href'), '/help/start/')
         # Once you have selected "don't show me this", should change to:
         # self.assertEqual(e.get_attribute('href'), '/1/')
 
@@ -145,7 +145,7 @@ class BasicFunctionalTests(FunctionalTestCase):
 
         # Do group links get constructed correctly?
         e = d.find_element_by_link_text('My plant is in this group.')
-        self.assertEqual(e.get_attribute('href'), self.aurl('/graminoids/'))
+        self.assertEqual(e.get_attribute('href'), '/graminoids/')
 
     def test_group_page(self):
         d = self.get('/ferns/')
@@ -155,10 +155,9 @@ class BasicFunctionalTests(FunctionalTestCase):
         assert q[1].text.startswith('Lycophytes')
         assert q[2].text.startswith('Monilophytes')
         q = d.find_elements_by_link_text('My plant is in this subgroup.')
-        b = self.aurl('/ferns')
-        self.assertEqual(q[0].get_attribute('href'), b + '/equisetaceae/')
-        self.assertEqual(q[1].get_attribute('href'), b + '/lycophytes/')
-        self.assertEqual(q[2].get_attribute('href'), b + '/monilophytes/')
+        self.assertEqual(q[0].get_attribute('href'), '/ferns/equisetaceae/')
+        self.assertEqual(q[1].get_attribute('href'), '/ferns/lycophytes/')
+        self.assertEqual(q[2].get_attribute('href'), '/ferns/monilophytes/')
 
 
 class FilterFunctionalTests(FunctionalTestCase):
@@ -368,30 +367,30 @@ class GlossaryFunctionalTests(FunctionalTestCase):
     def test_help_start_links_to_glossary(self): 
         d = self.get('/help/start/')
         e = d.find_element_by_link_text('Glossary')
-        self.assertEqual(e.get_attribute('href'), self.aurl('/help/glossary/'))
+        self.assertEqual(e.get_attribute('href'), '/help/glossary/')
 
     def test_glossary_a_page_contains_a_terms(self):
         self.get('/help/glossary/a/')
-        xterms = self.css('h2')
+        xterms = self.css('#terms dt')
         self.assertEqual(xterms[0].text[0], 'a')
         self.assertEqual(xterms[-1].text[0], 'a')
 
     def test_glossary_g_page_contains_g_terms(self):
         self.get('/help/glossary/g/')
-        xterms = self.css('h2')
+        xterms = self.css('#terms dt')
         self.assertEqual(xterms[0].text[0], 'g')
         self.assertEqual(xterms[-1].text[0], 'g')
 
     def test_glossary_z_page_contains_z_terms(self):
         self.get('/help/glossary/z/')
-        xterms = self.css('h2')
+        xterms = self.css('#terms dt')
         self.assertEqual(xterms[0].text[0], 'z')
         self.assertEqual(xterms[-1].text[0], 'z')
 
-    def test_glossary_g_page_does_not_link_to_itself(self):
-        d = self.get('/help/glossary/g/')
-        e = d.find_elements_by_link_text('G')
-        self.assertEqual(len(e), 0)
+    # def test_glossary_g_page_does_not_link_to_itself(self):
+    #     d = self.get('/help/glossary/g/')
+    #     e = d.find_elements_by_link_text('G')
+    #     self.assertEqual(len(e), 0)
 
     def test_glossary_g_page_link_to_other_letters(self):
         d = self.get('/help/glossary/g/')
@@ -402,5 +401,4 @@ class GlossaryFunctionalTests(FunctionalTestCase):
     def test_glossary_g_page_link_is_correct(self):
         d = self.get('/help/glossary/a/')
         e = d.find_element_by_link_text('G')
-        self.assertEqual(e.get_attribute('href'),
-                         self.aurl('/help/glossary/g/'))
+        self.assertEqual(e.get_attribute('href'), '/help/glossary/g/')
