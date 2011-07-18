@@ -43,7 +43,8 @@ class FunctionalTestCase(unittest2.TestCase):
                     "max-duration": 300,
                     })
         else:
-            cls.driver = webdriver.Firefox() #Chrome()
+            cls.driver = webdriver.Firefox()
+            #cls.driver = webdriver.Chrome()
 
         if 'SIMPLEHOST' in os.environ:
             cls.host = 'http://' + os.environ['SIMPLEHOST']

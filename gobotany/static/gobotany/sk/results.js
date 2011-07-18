@@ -764,9 +764,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             if (this.working_area.filter === filter)
                 this.working_area.clear();
             else
-                this.working_area.set_species_vector(
-                    this.results_helper.filter_manager.compute_species_without(
-                        this.working_area.filter));
+                dojo.publish('/sk/filter/change', [filter]);
         }
 
         dojo.query('li#' + filter.character_short_name + ' span.value'

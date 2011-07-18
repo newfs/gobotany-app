@@ -14,10 +14,6 @@
  * clear() - the user has pressed the "x" next to the filter's name in
  *     the sidebar summary, and the filter value should be moved back
  *     to "don't know" if that is not already the value.
- * set_species_vector(vector) - some other filter has changed or cleared,
- *     so the set of available species has changed; the counts next to
- *     each character value should be changed, or, for a length filter,
- *     the set of allowable input ranges.
  * dismiss() - the filter working area should be dismissed.
  *
  * Outputs:
@@ -54,7 +50,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
     div_map: null,  // maps choice value -> <input> element
     close_button_connection: null,  // connection from the close button to us
 
-    /* {div, filter, species_vector, glossarizer, on_change, on_dismiss} */
+    /* {div, filter, filter_manager, glossarizer, on_dismiss} */
     constructor: function(args) {
         this.div = args.div;
         this.filter = args.filter;
@@ -194,11 +190,6 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         return value || null;
     },
 
-    set_species_vector: function(species_vector) {
-        this.species_vector = species_vector;
-        this._on_filter_change();
-    },
-
     /* Get a value suitable for use as an image element id from the
        image filename found in the image path. */
 
@@ -303,10 +294,6 @@ dojo.declare('gobotany.sk.working_area.Slider', [
     _value_changed: function() {
         var value = this._current_value();
         dojo.query('#simple-slider .count').html(value + '');
-    },
-
-    set_species_vector: function(species_vector) {
-        this.species_vector = species_vector;
     }
 });
 
