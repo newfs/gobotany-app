@@ -1521,6 +1521,9 @@ Glossary Page Styles
 #alphabet li.current a {
     color: #000;
 }
+#alphabet li.current a:hover {
+    text-decoration: none;
+}
 #alphabet li.inactive {
     color: #ccc;
 }
