@@ -432,3 +432,67 @@ class SearchFunctionalTests(FunctionalTestCase):
         species = ' '.join(url_parts[-3:-1]).capitalize()
         self.assertEqual('Polystichum acrostichoides', species)
 
+    def test_search_results_page_has_species_results(self):
+        self.get('/search/?q=sapindaceae')
+        result_icons = self.css('#search-results-list li img')
+        self.assertTrue(len(result_icons))
+        num_species_icons = 0
+        for result_icon in result_icons:
+            if result_icon.get_attribute('src').find('species-icon') > 0:
+                num_species_icons += 1
+                break
+        self.assertTrue(num_species_icons > 0)
+
+    def test_search_results_page_has_family_results(self):
+        self.get('/search/?q=sapindaceae')
+        result_icons = self.css('#search-results-list li img')
+        self.assertTrue(len(result_icons))
+        num_family_icons = 0
+        for result_icon in result_icons:
+            if result_icon.get_attribute('src').find('family-icon') > 0:
+                num_family_icons += 1
+                break
+        self.assertTrue(num_family_icons > 0)
+
+    def test_search_results_page_has_genus_results(self):
+        self.get('/search/?q=sapindaceae')
+        result_icons = self.css('#search-results-list li img')
+        self.assertTrue(len(result_icons))
+        num_genus_icons = 0
+        for result_icon in result_icons:
+            if result_icon.get_attribute('src').find('genus-icon') > 0:
+                num_genus_icons += 1
+                break
+        self.assertTrue(num_genus_icons > 0)
+
+    def test_search_results_page_has_help_results(self):
+        self.get('/search/?q=start')
+        result_icons = self.css('#search-results-list li img')
+        self.assertTrue(len(result_icons))
+        num_help_icons = 0
+        for result_icon in result_icons:
+            if result_icon.get_attribute('src').find('help-icon') > 0:
+                num_help_icons += 1
+                break
+        self.assertTrue(num_help_icons > 0)
+
+    def test_search_results_page_has_glossary_results(self):
+        self.get('/search/?q=fruit')
+        result_icons = self.css('#search-results-list li img')
+        self.assertTrue(len(result_icons))
+        num_glossary_icons = 0
+        for result_icon in result_icons:
+            if result_icon.get_attribute('src').find('glossary-icon') > 0:
+                num_glossary_icons += 1
+                break
+        self.assertTrue(num_glossary_icons > 0)
+
+    def test_search_results_page_returns_no_results(self):
+        self.get('/search/?q=abcd')
+        heading = self.css('#search-results h1')
+        self.assertTrue(len(heading))
+        self.assertEqual('No Results for abcd', heading[0].text)
+        message = self.css('.no-results')
+        self.assertTrue(len(message))
+        self.assertEqual('Please adjust your search and try again.',
+                         message[0].text)
