@@ -402,3 +402,11 @@ class GlossaryFunctionalTests(FunctionalTestCase):
         d = self.get('/help/glossary/a/')
         e = d.find_element_by_link_text('G')
         self.assertEqual(e.get_attribute('href'), '/help/glossary/g/')
+
+
+class SearchFunctionalTests(FunctionalTestCase):
+
+    def test_search_results_page(self):
+        d = self.get('/search/?q=acer')
+        results = self.css('#search-results-list li')
+        self.assertEqual(len(results), 10)
