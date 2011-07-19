@@ -407,6 +407,28 @@ class GlossaryFunctionalTests(FunctionalTestCase):
 class SearchFunctionalTests(FunctionalTestCase):
 
     def test_search_results_page(self):
-        d = self.get('/search/?q=acer')
+        self.get('/search/?q=acer')
         results = self.css('#search-results-list li')
         self.assertEqual(len(results), 10)
+
+    def test_search_results_page_has_navigation_links(self):
+        d = self.get('/search/?q=carex&page=2')
+        self.assertTrue(d.find_element_by_link_text('Previous'))
+        self.assertTrue(d.find_element_by_link_text('Next'))
+        nav_links = d.find_elements_by_css_selector('.search-navigation a')
+        self.assertTrue(len(nav_links) >= 5)
+
+    def test_search_results_page_scientific_name_returns_first_result(self):
+        self.get('/search/?q=acer%20rubrum')
+        result_links = self.css('#search-results-list li h2 a')
+        self.assertTrue(len(result_links))
+        self.assertEqual(result_links[0].text, 'Acer rubrum (red maple)')
+
+    def test_search_results_page_common_name_finds_correct_plant(self):
+        self.get('/search/?q=christmas+fern')
+        result_links = self.css('#search-results-list li h2 a')
+        self.assertTrue(len(result_links))
+        url_parts = result_links[0].get_attribute('href').split('/')
+        species = ' '.join(url_parts[-3:-1]).capitalize()
+        self.assertEqual('Polystichum acrostichoides', species)
+
