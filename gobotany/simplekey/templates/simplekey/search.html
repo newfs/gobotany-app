@@ -1,78 +1,113 @@
-{% extends "simplekey/_old_base.html" %}
+{% extends "simplekey/_base.html" %}
 {% load highlight %}
+{% load humanize %}
 {% load simplekey_extras %}
 
-{% block title %}
-{{ query }} - Search
-{% endblock %}
+{% block title %}{{ query }}: Search{% endblock %}
 
-{% block content %}
-<div id="search-results">
-    {% if query %}
-    <h1>
-        {% if paginator.count > 0 %}
-            {% if paginator.count > 1 %}
-                Results
-                <strong>{% if page.number > 1 %}{{ page.number|add:'-1' }}{% endif %}1&#8211;{% if page.end_index|divisibleby:'10' %}{{ page.number }}0
-                    {% else %}{{ page.end_index }}{% endif %}</strong>
-                    of
-                    <strong>{{ paginator.count }}</strong>
-            {% else %}
-                Result
-            {% endif %}
-        {% else %}
-            <strong>No Results</strong>
-        {% endif %}
-        for <strong>{{ query }}</strong>
-    </h1>
+{% block body %}
+<body id="search-results" class="claro app search-results">
+        {% include "simplekey/_header.html" %}
 
-    <ul id="search-results-list">
-    {% for result in page.object_list %}
-        <li>
-            <!-- TODO: need custom highlighter that does not excerpt the document title -->
-            {% if result.scientific_name %}
-                <img src="/static/graphics/species-icon.jpg" alt="">
-                <h2><a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/species/{{ result.scientific_name|split:' '|at_index:'0'|lower }}/{{ result.scientific_name|split:' '|at_index:'1'|lower }}/">{% highlight result.title with query %}</a></h2>
-            {% else %}
-                {% if result.model_name == 'family' %}
-                    <img src="/static/graphics/family-icon.jpg" alt="">
-                    <h2><a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/families/{{ result.name|lower }}/">{% highlight result.title with query %}</a></h2>
-                {% else %}
-                    {% if result.model_name == 'genus' %}
-                        <img src="/static/graphics/genus-icon.jpg" alt="">
-                        <h2><a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/genera/{{ result.name|lower }}/">{% highlight result.title with query %}</a></h2>
-                    {% else %}
-                        {% if result.model_name == 'helppage' %}
-                            <img src="/static/graphics/help-icon.jpg" alt="">
-                            <h2><a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% highlight result.title with query %}</a></h2>
-                        {% else %}
-                            {% if result.model_name == 'glossaryhelppage' %}
-                                <img src="/static/graphics/glossary-icon.jpg" alt="">
-                                <h2><a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% highlight result.title with query %}</a></h2>
-                            {% else %}
-                                (unknown model name)
+        <div class="content">
+            <div class="container">
+                <div id="main">
+                    <h2>
+                        {% if paginator.count > 0 %}
+                            {% if page.number > 1 %}
+                                Page {{ page.number }} of 
                             {% endif %}
+                            {{ paginator.count|intcomma }}
+                        {% else %}
+                            No
                         {% endif %}
+                        Result{% if paginator.count != 1 %}s{% endif %}
+                        for
+                        <strong>{{ query }}</strong>
+                        </h2>
+                    <ul id="search-results-list">
+                    {% for result in page.object_list %}
+                        <li>
+                            <!-- TODO: need custom highlighter that does not excerpt the document title -->
+                            {% if result.scientific_name %}
+                                <img src="/static/images/icons/leaficon.jpg" alt="">
+                                <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/species/{{ result.scientific_name|split:' '|at_index:'0'|lower }}/{{ result.scientific_name|split:' '|at_index:'1'|lower }}/">{% highlight result.title with query %}</a>
+                            {% else %}
+                                {% if result.model_name == 'family' %}
+                                    <img src="/static/images/icons/familyicon.jpg" alt="">
+                                    <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/families/{{ result.name|lower }}/">{% highlight result.title with query %}</a>
+                                {% else %}
+                                    {% if result.model_name == 'genus' %}
+                                        <img src="/static/images/icons/genusicon.jpg" alt="">
+                                        <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/genera/{{ result.name|lower }}/">{% highlight result.title with query %}</a>
+                                    {% else %}
+                                        {% if result.model_name == 'helppage' %}
+                                            <img src="/static/graphics/help-icon.jpg" alt="">
+                                            <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% highlight result.title with query %}</a>
+                                        {% else %}
+                                            {% if result.model_name == 'glossaryhelppage' %}
+                                                <img src="/static/graphics/glossary-icon.jpg" alt="">
+                                                <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% highlight result.title with query %}</a>
+                                            {% else %}
+                                                (unknown model name)
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                            <p>
+                            {# TODO: result.text|split:'--'|at_index:'0' doesn't work below #}
+                            {% highlight result.text with query %}
+                            </p>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    {% if page.object_list|length == 0 %}
+                        <p>Please adjust your search and try again.</p>
+                    {% else %}
+                        <div class="search-navigation">
+                            <p>Page:</p>
+                            <ul>
+                            {% if page.has_previous %}
+                                <li><a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">Previous</a></li>
+                            {% endif %}
+
+                            {# Set a maximum number of pages to display. #}
+                            {% for page_num in paginator.page_range|slice:':20' %}
+                                {% if page_num == page.number %}
+                                    <li>{{ page_num }}</li>
+                                {% else %}
+                                <li><a href="?q={{ query }}&amp;page={{ page_num }}">{{ page_num }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {# Display ellipsis if omitting some pages. #}
+                            {% if paginator.page_range|length > 20 %}
+                                ...
+                            {% endif %}
+
+                            {% if page.has_next %}
+                                <li><a href="?q={{ query }}&amp;page={{ page.next_page_number }}">Next</a></li>
+                            {% endif %}
+                            </ul>
+                        </div>
                     {% endif %}
-                {% endif %}
-            {% endif %}
-            <p>
-            {# TODO: result.text|split:'--'|at_index:'0' doesn't work below #}
-            {% highlight result.text with query %}
-            <p>
-        </li>
-        {% empty %}
-        <li class="no-results">Please adjust your search and try again.</li>
-    {% endfor %}
-    </ul>
+                </div>
+                <div id="sidebar" style="height: 515px;">
+                    {% include "simplekey/_sidebar_items.html" %}
+                </div>
+                <div class="clearit"></div>
+            </div>
+        </div>
 
-    {% include "simplekey/search_navigation.html" %}
+        {% include "simplekey/_footer.html" %}
 
-    {% else %}
-        {# Show some example queries to run? #}
-    {% endif %}
-</div>
+        {% include "simplekey/_script_constants.html" %}
 
-{% include "simplekey/_script_constants.html" %}
-
+        <script>
+            {% include "simplekey/partner_site_inline_js.html" %}
+        </script>
+        
+        {% block js_bottom %}{% endblock %}
+    </body>
 {% endblock %}
+

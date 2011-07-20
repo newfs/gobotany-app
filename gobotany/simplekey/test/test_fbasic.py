@@ -420,79 +420,62 @@ class SearchFunctionalTests(FunctionalTestCase):
 
     def test_search_results_page_scientific_name_returns_first_result(self):
         self.get('/search/?q=acer%20rubrum')
-        result_links = self.css('#search-results-list li h2 a')
+        result_links = self.css('#search-results-list li a')
         self.assertTrue(len(result_links))
         self.assertEqual(result_links[0].text, 'Acer rubrum (red maple)')
 
     def test_search_results_page_common_name_finds_correct_plant(self):
         self.get('/search/?q=christmas+fern')
-        result_links = self.css('#search-results-list li h2 a')
+        result_links = self.css('#search-results-list li a')
         self.assertTrue(len(result_links))
         url_parts = result_links[0].get_attribute('href').split('/')
         species = ' '.join(url_parts[-3:-1]).capitalize()
         self.assertEqual('Polystichum acrostichoides', species)
 
+    def _has_icon(self, url_substring, result_icons):
+        has_icon = False
+        for result_icon in result_icons:
+            if result_icon.get_attribute('src').find(url_substring) > 0:
+                has_icon = True
+                break
+        return has_icon
+
     def test_search_results_page_has_species_results(self):
         self.get('/search/?q=sapindaceae')
         result_icons = self.css('#search-results-list li img')
         self.assertTrue(len(result_icons))
-        num_species_icons = 0
-        for result_icon in result_icons:
-            if result_icon.get_attribute('src').find('species-icon') > 0:
-                num_species_icons += 1
-                break
-        self.assertTrue(num_species_icons > 0)
+        self.assertTrue(self._has_icon('leaficon', result_icons))
 
     def test_search_results_page_has_family_results(self):
         self.get('/search/?q=sapindaceae')
         result_icons = self.css('#search-results-list li img')
         self.assertTrue(len(result_icons))
-        num_family_icons = 0
-        for result_icon in result_icons:
-            if result_icon.get_attribute('src').find('family-icon') > 0:
-                num_family_icons += 1
-                break
-        self.assertTrue(num_family_icons > 0)
+        self.assertTrue(self._has_icon('familyicon', result_icons))
 
     def test_search_results_page_has_genus_results(self):
         self.get('/search/?q=sapindaceae')
         result_icons = self.css('#search-results-list li img')
         self.assertTrue(len(result_icons))
-        num_genus_icons = 0
-        for result_icon in result_icons:
-            if result_icon.get_attribute('src').find('genus-icon') > 0:
-                num_genus_icons += 1
-                break
-        self.assertTrue(num_genus_icons > 0)
+        self.assertTrue(self._has_icon('genusicon', result_icons))
 
     def test_search_results_page_has_help_results(self):
         self.get('/search/?q=start')
         result_icons = self.css('#search-results-list li img')
         self.assertTrue(len(result_icons))
-        num_help_icons = 0
-        for result_icon in result_icons:
-            if result_icon.get_attribute('src').find('help-icon') > 0:
-                num_help_icons += 1
-                break
-        self.assertTrue(num_help_icons > 0)
+        self.assertTrue(self._has_icon('help-icon', result_icons))
 
     def test_search_results_page_has_glossary_results(self):
         self.get('/search/?q=fruit')
         result_icons = self.css('#search-results-list li img')
         self.assertTrue(len(result_icons))
-        num_glossary_icons = 0
-        for result_icon in result_icons:
-            if result_icon.get_attribute('src').find('glossary-icon') > 0:
-                num_glossary_icons += 1
-                break
-        self.assertTrue(num_glossary_icons > 0)
+        self.assertTrue(self._has_icon('glossary-icon', result_icons))
 
     def test_search_results_page_returns_no_results(self):
         self.get('/search/?q=abcd')
-        heading = self.css('#search-results h1')
+        heading = self.css('#main h2')
         self.assertTrue(len(heading))
         self.assertEqual('No Results for abcd', heading[0].text)
-        message = self.css('.no-results')
+        message = self.css('#main p')
         self.assertTrue(len(message))
         self.assertEqual('Please adjust your search and try again.',
                          message[0].text)

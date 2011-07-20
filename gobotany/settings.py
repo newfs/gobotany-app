@@ -69,10 +69,10 @@ INSTALLED_APPS = [
     'piston',
 
     'django.contrib.admin',
-    'django.contrib.sessions',
-    'django.contrib.contenttypes',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.humanize',
+    'django.contrib.sessions',
     'staticfiles',
 
     'haystack',

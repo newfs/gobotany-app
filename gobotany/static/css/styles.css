@@ -1481,9 +1481,9 @@ Video Help Topics Page Styles
     width: 220px;
 }
 
-/*//////////////////**
-Glossary Page Styles
-///////////////////*/
+/*/////////////**
+Glossary Styles
+//////////////*/
 
 /* glossary term underline for popup */
 .gloss {
@@ -1560,4 +1560,45 @@ Glossary Page Styles
 }
 
 
+/*///////////////////**
+Search Results Styles
+////////////////////*/
+
+#search-results-list {
+    border-top: 1px solid #e1e1dc;
+    margin: 15px 0 13px;
+}
+#search-results-list .highlighted {
+    font-weight: bold;
+}
+#search-results-list li {    
+    border-bottom: 1px solid #e1e1dc;
+    padding: 6px 0 10px;
+}
+#search-results-list li img {
+    height: 37px; /* remove height after all icons have been provided */
+    margin: -6px 10px 0;
+    vertical-align: middle;
+    width: 31px; /* remove width after all icons have been provided */
+}
+#search-results-list li a {
+    font: 15px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
+    text-decoration: underline;
+}
+#search-results-list li p {
+    margin-left: 55px;
+}
+.search-navigation {
+    text-align: right;
+}
+.search-navigation p, .search-navigation ul {
+    display: inline;
+}
+.search-navigation li {
+    display: inline;
+    margin: 0 2px;
+}
+.search-navigation a {
+    text-decoration: underline;
+}
 
