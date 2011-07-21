@@ -30,7 +30,7 @@ gobotany.sk.family.init = function(family_slug) {
 
     // Make glossary highlights appear where appropriate throughout the page.
     var glossarizer = gobotany.sk.glossary.Glossarizer();
-    dojo.query('#info p').forEach(function(node) {
+    dojo.query('.description').forEach(function(node) {
         glossarizer.markup(node);
     });
 };

@@ -1602,3 +1602,40 @@ Search Results Styles
     text-decoration: underline;
 }
 
+/*////////////////**
+Family Page Styles
+/////////////////*/
+
+#family .genera {
+    font: 14px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
+}
+#family .familypics {
+    margin-top: 20px;
+}
+#family .familypics div {
+    float: left;
+    margin-right: 20px;
+}
+#family .familypics p {
+    display: inline-block;
+    float: left;
+    font: 14px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
+}
+#family h4 {
+    clear: left;
+    padding-top: 30px;
+}
+#family .family-genera-btn {
+    background: url(../images/layout/family-btn.png) no-repeat scroll 0 0 transparent;
+    clear: both;
+    display: block;
+    float: left;
+    height: 32px;
+    margin: 15px 0 0;
+    text-indent: -9000px;
+    width: 280px;
+}
+img.zoom {
+    display: inline-block;
+    float: right;
+}

@@ -272,8 +272,13 @@ def genus_view(request, genus_slug):
 def genus_redirect_view(request, genus_slug):
     return redirect('simplekey-genus', genus_slug=genus_slug)
 
+
 def family_view(request, family_slug):
     family = get_object_or_404(Family, slug=family_slug.lower())
+
+    # If it's decided that common names will not be required, change the
+    # default below to None and the template will omit them when missing.
+    common_name = family.common_name or 'common name here'
 
     family_images = family.images.filter(image_type__name='example image')
     # If no family images are set, use the images from a species for now.
@@ -282,12 +287,25 @@ def family_view(request, family_slug):
         for s in species:
             family_images = botany.species_images(s)
 
-    family_drawings = family.images.filter(image_type__name='example drawing')
+    family_drawings = \
+        family.images.filter(image_type__name='example drawing')
+    if not family_drawings:
+        # Prepare some dummy drawings with dummy captions so it's
+        # obvious that the images aren't correct.
+        species = family.taxa.all()[10]
+        print 'species: ', species
+        family_drawings = botany.species_images(species)[0:3]
+        for drawing in family_drawings:
+            drawing.alt = 'Placeholder image'
+        print 'family drawings: ', family_drawings
+
     return render_to_response('simplekey/family.html', {
-           'item': family,
-           'item_images': family_images,
-           'item_drawings': family_drawings,
+           'family': family,
+           'common_name': common_name,
+           'family_drawings': family_drawings,
+           'family_images': family_images,
            }, context_instance=RequestContext(request))
+
 
 def help_about_view(request):
     return render_to_response('simplekey/help_about.html', {
