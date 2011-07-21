@@ -206,7 +206,7 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
 
             for (var i = 0; i < suggestions.length; i++) {
                 var suggestion = suggestions[i];
-                var url = SEARCH_URL + '/?q=' + suggestion.toLowerCase();
+                var url = SEARCH_URL + '?q=' + suggestion.toLowerCase();
                 var label = this.format_suggestion(suggestion, search_query);
                 var item = dojo.create('li');
                 dojo.create('a', { href: url, innerHTML: label },
