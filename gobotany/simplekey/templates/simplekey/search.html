@@ -82,7 +82,7 @@
                             {% endfor %}
                             {# Display ellipsis if omitting some pages. #}
                             {% if paginator.page_range|length > 20 %}
-                                ...
+                                <li>...</li>
                             {% endif %}
 
                             {% if page.has_next %}

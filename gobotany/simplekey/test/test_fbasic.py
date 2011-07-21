@@ -422,7 +422,7 @@ class SearchFunctionalTests(FunctionalTestCase):
         self.get('/search/?q=acer%20rubrum')
         result_links = self.css('#search-results-list li a')
         self.assertTrue(len(result_links))
-        self.assertEqual(result_links[0].text, 'Acer rubrum (red maple)')
+        self.assertEqual('Acer rubrum (red maple)', result_links[0].text)
 
     def test_search_results_page_common_name_finds_correct_plant(self):
         self.get('/search/?q=christmas+fern')
@@ -432,43 +432,35 @@ class SearchFunctionalTests(FunctionalTestCase):
         species = ' '.join(url_parts[-3:-1]).capitalize()
         self.assertEqual('Polystichum acrostichoides', species)
 
-    def _has_icon(self, url_substring, result_icons):
+    def _has_icon(self, url_substring):
         has_icon = False
+        result_icons = self.css('#search-results-list li img')
+        self.assertTrue(len(result_icons))
         for result_icon in result_icons:
-            if result_icon.get_attribute('src').find(url_substring) > 0:
+            if result_icon.get_attribute('src').find(url_substring) > -1:
                 has_icon = True
                 break
         return has_icon
 
     def test_search_results_page_has_species_results(self):
         self.get('/search/?q=sapindaceae')
-        result_icons = self.css('#search-results-list li img')
-        self.assertTrue(len(result_icons))
-        self.assertTrue(self._has_icon('leaficon', result_icons))
+        self.assertTrue(self._has_icon('leaficon'))
 
     def test_search_results_page_has_family_results(self):
         self.get('/search/?q=sapindaceae')
-        result_icons = self.css('#search-results-list li img')
-        self.assertTrue(len(result_icons))
-        self.assertTrue(self._has_icon('familyicon', result_icons))
+        self.assertTrue(self._has_icon('familyicon'))
 
     def test_search_results_page_has_genus_results(self):
         self.get('/search/?q=sapindaceae')
-        result_icons = self.css('#search-results-list li img')
-        self.assertTrue(len(result_icons))
-        self.assertTrue(self._has_icon('genusicon', result_icons))
+        self.assertTrue(self._has_icon('genusicon'))
 
     def test_search_results_page_has_help_results(self):
         self.get('/search/?q=start')
-        result_icons = self.css('#search-results-list li img')
-        self.assertTrue(len(result_icons))
-        self.assertTrue(self._has_icon('help-icon', result_icons))
+        self.assertTrue(self._has_icon('help-icon'))
 
     def test_search_results_page_has_glossary_results(self):
         self.get('/search/?q=fruit')
-        result_icons = self.css('#search-results-list li img')
-        self.assertTrue(len(result_icons))
-        self.assertTrue(self._has_icon('glossary-icon', result_icons))
+        self.assertTrue(self._has_icon('glossary-icon'))
 
     def test_search_results_page_returns_no_results(self):
         self.get('/search/?q=abcd')
@@ -479,3 +471,54 @@ class SearchFunctionalTests(FunctionalTestCase):
         self.assertTrue(len(message))
         self.assertEqual('Please adjust your search and try again.',
                          message[0].text)
+
+    def test_search_results_page_has_singular_heading(self):
+        self.get('/search/?q=honeycomb')
+        heading = self.css('#main h2')
+        self.assertTrue(len(heading))
+        self.assertTrue(heading[0].text.startswith('1 Result for'))
+
+    def test_search_results_page_heading_starts_with_page_number(self):
+        self.get('/search/?q=monocot&page=2')
+        heading = self.css('#main h2')
+        self.assertTrue(len(heading))
+        self.assertTrue(heading[0].text.startswith('Page 2 of'))
+
+    def test_search_results_page_previous_link_is_present(self):
+        d = self.get('/search/?q=monocot&page=2')
+        self.assertTrue(d.find_element_by_link_text('Previous'))
+
+    def test_search_results_page_next_link_is_present(self):
+        d = self.get('/search/?q=monocot&page=2')
+        self.assertTrue(d.find_element_by_link_text('Next'))
+
+    def test_search_results_page_heading_number_has_thousands_comma(self):
+        self.get('/search/?q=monocot')  # query that returns > 1,000 results
+        heading = self.css('#main h2')
+        self.assertTrue(len(heading))
+        results_count = heading[0].text.split(' ')[0]
+        self.assertTrue(results_count.find(',') > -1)
+        self.assertTrue(int(results_count.replace(',', '')) > 1000)
+
+    def test_search_results_page_omits_navigation_links_above_limit(self):
+        MAX_PAGE_LINKS = 20
+        self.get('/search?q=monocot')  # query that returns > 1,000 results
+        nav_links = self.css('.search-navigation li a')
+        self.assertTrue(len(nav_links))
+        # The number of links should equal the maximum page links: all
+        # the page links minus one (the current unlinked page) plus one
+        # for the Next link.
+        self.assertTrue(len(nav_links) == MAX_PAGE_LINKS)
+
+    def test_search_results_page_navigation_has_ellipsis_above_limit(self):
+        self.get('/search?q=monocot')  # query that returns > 1,000 results
+        nav_list_items = self.css('.search-navigation li')
+        self.assertTrue(len(nav_list_items))
+        ellipsis = nav_list_items[-2]
+        self.assertTrue(ellipsis.text == '...')
+
+    def test_search_results_page_query_is_in_search_box(self):
+        self.get('/search/?q=acer')
+        search_box = self.css('#search input[type="text"]')
+        self.assertTrue(len(search_box))
+        self.assertTrue(search_box[0].value == 'acer')
