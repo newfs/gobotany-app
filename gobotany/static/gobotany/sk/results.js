@@ -638,8 +638,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             return choice.friendly_text || value;
         }
 
-        if (filter.is_length())
-            return value + ' mm';
+        if (filter.is_length()) {
+            var units = filter.display_units || 'mm';
+            return gobotany.utils.pretty_length(units, value);
+        }
 
         return value + '';
     },

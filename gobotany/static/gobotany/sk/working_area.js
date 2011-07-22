@@ -365,12 +365,13 @@ dojo.declare('gobotany.sk.working_area.Length', [
             instructions = 'Please enter a valid number that is within' +
                 ' the range specified.';
         div.html(instructions);
-        // drat, cannot disable the apply button?
-        //dojo.query('a.apply-btn', this.div).attr('disabled', ! legal);
+
+        // Stash a hint about how the sidebar should display our value.
+        this.filter.display_units = this.unit;
     },
 
     _redraw_permitted_ranges: function() {
-        var p = 'Please choose a measurement in the range ';
+        var p = 'Please enter a length in the range ';
         for (var i = 0; i < this.permitted_ranges.length; i++) {
             var pr = this.permitted_ranges[i];
             if (i) p += ' or ';
@@ -382,6 +383,10 @@ dojo.declare('gobotany.sk.working_area.Length', [
     },
 
     _on_filter_change: function() {
+        // A filter somewhere on the page changed, so we might need to
+        // adjust our statement about the number of species matched by
+        // the value in our input field.
+
         var species_vector = this.filter_manager.compute_species_without(
             this.filter.short_name);
         this.species_vector = species_vector;

@@ -421,13 +421,13 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertIn('to the 1 matching species', instructions.text)
         apply_button.click()
         self.wait_on_species(unknowns + 1)
-        self.assertEqual(sidebar_value_span.text, '10000 mm')
+        self.assertEqual(sidebar_value_span.text, '10000.0 mm')
 
         measure_input.send_keys(Keys.BACK_SPACE)  # '1000'
         self.assertIn('to the 157 matching species', instructions.text)
         apply_button.click()
         self.wait_on_species(unknowns + 157)
-        self.assertEqual(sidebar_value_span.text, '1000 mm')
+        self.assertEqual(sidebar_value_span.text, '1000.0 mm')
 
         # Switch to cm and then mm.
 
@@ -436,14 +436,14 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertIn('to the 1 matching species', instructions.text)
         apply_button.click()
         self.wait_on_species(unknowns + 1)
-        self.assertEqual(sidebar_value_span.text, '10000 mm')
+        self.assertEqual(sidebar_value_span.text, '1000.0 cm')
 
         self.css1('input[value="m"]').click()
         self.assertIn(u' 0.01 m – 15 m', range_div.text)
         self.assertIn('enter a valid', instructions.text)
         apply_button.click()  # should do nothing
         self.wait_on_species(unknowns + 1)
-        self.assertEqual(sidebar_value_span.text, '10000 mm')
+        self.assertEqual(sidebar_value_span.text, '1000.0 cm')
 
         # Two backspaces are necessary to reduce '1000' meters down to
         # the acceptable value of '10' meters.
@@ -455,7 +455,18 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertIn('to the 1 matching species', instructions.text)
         apply_button.click()  # should do nothing
         self.wait_on_species(unknowns + 1)
-        self.assertEqual(sidebar_value_span.text, '10000 mm')
+        self.assertEqual(sidebar_value_span.text, '10.00 m')
+
+    def test_length_filter_display_on_page_load(self):
+        self.get('/')  # to start fresh and prevent partial reload
+        self.get('/non-monocots/remaining-non-monocots/'
+                 '#_filters=family,genus,plant_height_rn'
+                 '&_visible=plant_height_rn'
+                 '&plant_height_rn=5000')
+        unknowns = 86
+        self.wait_on_species(unknowns + 8)
+        sidebar_value_span = self.css1('#plant_height_rn .value')
+        self.assertEqual(sidebar_value_span.text, '5000.0 mm')
 
 
 class GlossaryFunctionalTests(FunctionalTestCase):
