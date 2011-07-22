@@ -165,13 +165,19 @@ class FilterFunctionalTests(FunctionalTestCase):
     def wait_on_species(self, expected_count):
         """Wait for a new batch of species to be displayed."""
         self.wait_on(5, self.css1, 'div.plant-list div.plant')
-        q = self.css('div.plant-list div.plant')
-        self.assertEqual(len(q), expected_count)
+
+        # Returning several hundred divs takes ~10 seconds, so we have
+        # jQuery count the divs for us and just return the count.
+
+        plant_div_count = self.driver.execute_script(
+            "return $('div.plant-list div.plant').length;")
+        self.assertEqual(plant_div_count, expected_count)
+
+        # Split "9 species matched" into ["9", "species", "matched"].
+
         count_words = self.css1('h3 .species-count').text.split()
-        # "9 species matched" -> ["9", "species", "matched"]
         count = int(count_words[0])
         self.assertEqual(count, expected_count)
-        return q
 
     def test_multiple_choice_filters(self):
 
@@ -367,6 +373,61 @@ class FilterFunctionalTests(FunctionalTestCase):
         filters = self.css(FILTERS_CSS)
         self.assertEqual(len(filters), n + 3)
 
+    def test_length_filter(self):
+        self.get('/non-monocots/remaining-non-monocots/'
+                 '#_filters=family,genus,plant_height_rn'
+                 '&_visible=plant_height_rn')
+        self.wait_on_species(499)
+        sidebar_value_span = self.css1('#plant_height_rn .value')
+        range_div = self.css1('.permitted_ranges')
+        measure_input = self.css1('input[name="measure"]')
+        instructions = self.css1('.instructions')
+        apply_button = self.css1('.apply-btn')
+
+        self.assertIn(' 10 mm', range_div.text)
+        self.assertIn(' 15000 mm', range_div.text)
+        self.assertIn('enter a valid', instructions.text)
+
+        # Type in a big number and watch the number of advertised
+        # matching species change with each digit.
+
+        measure_input.send_keys('1')
+        self.assertIn('enter a valid', instructions.text)
+
+        measure_input.send_keys('0')  # '10'
+        self.assertIn('to the 1 matching species', instructions.text)
+
+        measure_input.send_keys('0')  # '100'
+        self.assertIn('to the 64 matching species', instructions.text)
+
+        measure_input.send_keys('0')  # '1000'
+        self.assertIn('to the 52 matching species', instructions.text)
+
+        measure_input.send_keys('0')  # '10000'
+        self.assertIn('to the 1 matching species', instructions.text)
+
+        measure_input.send_keys('0')  # '100000'
+        self.assertIn('enter a valid', instructions.text)
+
+        # Submitting when there are no matching species does nothing.
+
+        unknowns = 86
+
+        apply_button.click()  # should do nothing
+        self.wait_on_species(499)
+        self.assertEqual(sidebar_value_span.text, "don't know")
+
+        measure_input.send_keys(Keys.BACK_SPACE)  # '10000'
+        self.assertIn('to the 1 matching species', instructions.text)
+        apply_button.click()
+        self.wait_on_species(unknowns + 1)
+        self.assertEqual(sidebar_value_span.text, '10000 mm')
+
+        # measure_input.send_keys(Keys.BACK_SPACE)  # '1000'
+        # self.assertIn('to the 52 matching species', instructions.text)
+        # apply_button.click()
+        # self.wait_on_species(unknowns + 52)
+        # self.assertEqual(sidebar_value_span.text, '1000 mm')
 
 class GlossaryFunctionalTests(FunctionalTestCase):
 

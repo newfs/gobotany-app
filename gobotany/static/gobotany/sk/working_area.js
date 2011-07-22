@@ -215,7 +215,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
             if (vector.length === 0)
                 input_field_q.attr('disabled', 'disabled');
             else
-                input_field_q.attr('disabled'); // remove the attribute 
+                input_field_q.attr('disabled'); // remove the attribute
         }
     },
 
@@ -224,8 +224,11 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
 
     _apply_button_clicked: function(event) {
         dojo.stopEvent(event);
+        var value = this._current_value();
+        if (this.filter.species_matching(value).length == 0)
+            return;
         this.filter_manager.set_selected_value(
-            this.filter.character_short_name, this._current_value());
+            this.filter.character_short_name, value);
         dojo.publish('/sk/filter/change', [this.filter]);
     }
 });
@@ -371,7 +374,8 @@ dojo.declare('gobotany.sk.working_area.Length', [
         for (var i = 0; i < this.permitted_ranges.length; i++) {
             var pr = this.permitted_ranges[i];
             if (i) p += ' or ';
-            p += (pr.min / this.factor) + '–' + // en-dash: separates ranges!
+            p += (pr.min / this.factor) + '&nbsp;' + this.unit +
+                '&nbsp;–&nbsp;' +  // en-dash for numeric ranges
                 (pr.max / this.factor) + '&nbsp;' + this.unit;
         }
         dojo.query('.permitted_ranges', this.div).html(p);
