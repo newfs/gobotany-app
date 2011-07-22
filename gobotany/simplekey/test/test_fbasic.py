@@ -395,13 +395,13 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertIn('enter a valid', instructions.text)
 
         measure_input.send_keys('0')  # '10'
-        self.assertIn('to the 1 matching species', instructions.text)
+        self.assertIn('to the 3 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '100'
-        self.assertIn('to the 64 matching species', instructions.text)
+        self.assertIn('to the 175 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '1000'
-        self.assertIn('to the 52 matching species', instructions.text)
+        self.assertIn('to the 157 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '10000'
         self.assertIn('to the 1 matching species', instructions.text)
@@ -423,11 +423,11 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.wait_on_species(unknowns + 1)
         self.assertEqual(sidebar_value_span.text, '10000 mm')
 
-        # measure_input.send_keys(Keys.BACK_SPACE)  # '1000'
-        # self.assertIn('to the 52 matching species', instructions.text)
-        # apply_button.click()
-        # self.wait_on_species(unknowns + 52)
-        # self.assertEqual(sidebar_value_span.text, '1000 mm')
+        measure_input.send_keys(Keys.BACK_SPACE)  # '1000'
+        self.assertIn('to the 157 matching species', instructions.text)
+        apply_button.click()
+        self.wait_on_species(unknowns + 157)
+        self.assertEqual(sidebar_value_span.text, '1000 mm')
 
 class GlossaryFunctionalTests(FunctionalTestCase):
 

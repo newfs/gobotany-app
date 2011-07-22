@@ -208,7 +208,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
             this.filter.short_name);
         for (var i = 0; i < this.filter.values.length; i++) {
             var v = this.filter.values[i];
-            var vector = gobotany.filters.intersect(species_vector, v.species);
+            var vector = _.intersect(species_vector, v.species);
             var count_span_q = dojo.query('.count', this.div_map[v.choice]);
             count_span_q.html('(' + vector.length + ')');
             var input_field_q = dojo.query('input', this.div_map[v.choice]);
@@ -356,7 +356,7 @@ dojo.declare('gobotany.sk.working_area.Length', [
     _measure_changed: function(event) {
         var mm = this._current_value();
         var vector = this.filter.species_matching(mm);
-        vector = gobotany.filters.intersect(vector, this.species_vector);
+        vector = _.intersect(vector, this.species_vector);
         var div = dojo.query('.instructions', this.div);
         if (vector.length > 0)
             instructions = 'Press “Apply” to narrow your selection to the ' +

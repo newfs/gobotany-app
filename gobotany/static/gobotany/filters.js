@@ -12,30 +12,6 @@ var get_json = function(path, _this, load) {
     dojo.xhrGet({url: u, handleAs: 'json', load: dojo.hitch(_this, load)});
 };
 
-var intsort = function(array) {
-    array.sort(function(a, b) {return a - b});
-};
-
-/**
- * Compute the intersection of two already-sorted lists of species ids.
- *
- * @param {Array} a One list of integer species ids.
- * @param {Array} b Another list of integer species ids.
- * @return {Array} The resulting list of integer species ids.
- */
-gobotany.filters.intersect = function(a, b) {
-    var ai = 0, bi = 0;
-    var result = new Array();
-    while (ai < a.length && bi < b.length) {
-        if (a[ai] < b[bi]) ai++;
-        else if (a[ai] > b[bi]) bi++;
-        else { result.push(a[ai]); ai++; bi++; }
-    }
-    return result;
-};
-
-var intersect = gobotany.filters.intersect;
-
 dojo.declare('gobotany.filters.Filter', null, {
     selected_value: null,
     values: false,  // load_values() creates [value, ...] array
@@ -126,7 +102,7 @@ dojo.declare('gobotany.filters.Filter', null, {
     safe_choices: function(vector) {
         var result = [];
         for (var choice in this.choicemap)
-            if (intersect(vector, this.choicemap[choice].species).length > 0)
+            if (_.intersect(vector, this.choicemap[choice].species).length > 0)
                 result.push(choice);
         result.sort();
         return result;
@@ -137,7 +113,7 @@ dojo.declare('gobotany.filters.Filter', null, {
     cull_values: function() {
         var base_vector = this.manager.base_vector;
         for (var i = this.values.length - 1; i >= 0; i--)
-            if (intersect(base_vector, this.values[i].species).length === 0)
+            if (_.intersect(base_vector, this.values[i].species).length === 0)
                 this.values.splice(i, 1);
     },
     // Return true if the name of this filter appears to name a length
@@ -183,7 +159,7 @@ dojo.declare('gobotany.filters.Filter', null, {
             if (vmin === null || vmax === null)
                 continue;  // ignore values that are not ranges anyway
 
-            if (intersect(vector, value.species).length == 0)
+            if (_.intersect(vector, value.species).length == 0)
                 continue;  // ignore values that apply to none of these species
 
             // First we skip any ranges lying entirely to the left of this one.
@@ -279,7 +255,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         this.stage1_countdown--;
         if (this.stage1_countdown)
             return;
-        this.base_vector = intersect(this.simple_vector, this.pile_vector);
+        this.base_vector = _.intersect(this.simple_vector, this.pile_vector);
         console.log('base_vector:', this.base_vector.length, 'species');
 
         // Since this.base_vector has been null until this moment, none
@@ -312,10 +288,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                 g.choicemap[genus] = {species: []};
             g.choicemap[genus].species.push(species_list[i].id);
         }
-        for (var family in f.choicemap)
-            intsort(f.choicemap[family].species);
-        for (var genus in g.choicemap)
-            intsort(g.choicemap[genus].species);
         this.filters.push(f);
         this.filters.push(g);
     },
