@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 """Selenium-driven basic functional tests of Go Botany.
 
 Two environmental variables control the behavior of these tests.
@@ -384,8 +385,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         instructions = self.css1('.instructions')
         apply_button = self.css1('.apply-btn')
 
-        self.assertIn(' 10 mm', range_div.text)
-        self.assertIn(' 15000 mm', range_div.text)
+        self.assertIn(u' 10 mm – 15000 mm', range_div.text)
         self.assertIn('enter a valid', instructions.text)
 
         # Type in a big number and watch the number of advertised
@@ -428,6 +428,35 @@ class FilterFunctionalTests(FunctionalTestCase):
         apply_button.click()
         self.wait_on_species(unknowns + 157)
         self.assertEqual(sidebar_value_span.text, '1000 mm')
+
+        # Switch to cm and then mm.
+
+        self.css1('input[value="cm"]').click()
+        self.assertIn(u' 1 cm – 1500 cm', range_div.text)
+        self.assertIn('to the 1 matching species', instructions.text)
+        apply_button.click()
+        self.wait_on_species(unknowns + 1)
+        self.assertEqual(sidebar_value_span.text, '10000 mm')
+
+        self.css1('input[value="m"]').click()
+        self.assertIn(u' 0.01 m – 15 m', range_div.text)
+        self.assertIn('enter a valid', instructions.text)
+        apply_button.click()  # should do nothing
+        self.wait_on_species(unknowns + 1)
+        self.assertEqual(sidebar_value_span.text, '10000 mm')
+
+        # Two backspaces are necessary to reduce '1000' meters down to
+        # the acceptable value of '10' meters.
+
+        measure_input.send_keys(Keys.BACK_SPACE)  # '100'
+        self.assertIn('enter a valid', instructions.text)
+
+        measure_input.send_keys(Keys.BACK_SPACE)  # '10'
+        self.assertIn('to the 1 matching species', instructions.text)
+        apply_button.click()  # should do nothing
+        self.wait_on_species(unknowns + 1)
+        self.assertEqual(sidebar_value_span.text, '10000 mm')
+
 
 class GlossaryFunctionalTests(FunctionalTestCase):
 
