@@ -377,7 +377,9 @@ dojo.declare('gobotany.sk.working_area.Length', [
         dojo.query('.permitted_ranges', this.div).html(p);
     },
 
-    set_species_vector: function(species_vector) {
+    _on_filter_change: function() {
+        var species_vector = this.filter_manager.compute_species_without(
+            this.filter.short_name);
         this.species_vector = species_vector;
         this.permitted_ranges = this.filter.allowed_ranges(species_vector);
         this._redraw_permitted_ranges();
