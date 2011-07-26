@@ -87,9 +87,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 this.filter_manager.plant_preview_characters =
                     pile_info.plant_preview_characters;
 
-                // A hash means filter state has been set: don't load up the
-                // default filters for a pile if filter state has already been
-                // set.
+                // Set up a callback function that will be called once
+                // the filters are set up.
 
                 var filters_loaded = dojo.hitch(this, function(filters) {
                     // Note that we increment _loading_filter_count,
@@ -108,7 +107,24 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                     }
                 });
 
-                if (dojo.hash()) {
+                // Set up the filters from URL hash values if the list of
+                // filters is present in the hash. Otherwise, set up the
+                // default filters from the pile info, and if just a family
+                // or genus was passed (examples: /#family=... /#genus=...),
+                // those values will be set later.
+
+                var should_set_up_from_hash = false;
+                var hash_value = dojo.hash();
+                if (hash_value !== undefined) {
+                    var hash_object = dojo.queryToObject(hash_value);
+                    if (hash_object._filters) {  // hash parameter '_filters'
+                        should_set_up_from_hash = true;
+                    }
+                }
+                console.log('should_set_up_from_hash = ' +
+                    should_set_up_from_hash);
+
+                if (should_set_up_from_hash) {
                     this.setup_filters_from_hash({
                         on_complete: filters_loaded});
                 }
@@ -201,7 +217,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 pile_info.default_filters[x]);
             filters.push(filter);
         }
-
+        
         if (args && args.on_complete) {
             args.on_complete(filters);
         }
@@ -215,53 +231,73 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         console.log('setting up from hash - ' + dojo.hash());
 
         var hash_object = dojo.queryToObject(dojo.hash());
-        if (hash_object._filters === undefined) {
-            return;
-        }
+        console.log('hash_object:');
+        console.log(hash_object);
 
-        var comma = hash_object._filters.split(',');
         var filter_values = {};
         var filter_names = [];
-        var x;
-        for (x = 0; x < comma.length; x++) {
-            var char_name = comma[x];
-            var value = hash_object[char_name];
-            if (this.filter_manager.has_filter(char_name)) {
-                this.filter_manager.set_selected_value(char_name, value);
-            }
-            else {
-                filter_values[char_name] = value;
-                filter_names.push(comma[x]);
+        if (hash_object._filters !== undefined) {
+            var comma = hash_object._filters.split(',');
+            for (var x = 0; x < comma.length; x++) {
+                var char_name = comma[x];
+                var value = hash_object[char_name];
+                if (this.filter_manager.has_filter(char_name)) {
+                    this.filter_manager.set_selected_value(char_name, value);
+                }
+                else {
+                    filter_values[char_name] = value;
+                    filter_names.push(comma[x]);
+                }
             }
         }
 
-        // Restore the name of the filter visible in the filter working area,
-        // if applicable. It will be shown later when results are loaded.
+        // Handle family or genus filter values, if applicable.
+        if (hash_object.family) {
+            this.filter_manager.set_selected_value('family',
+                hash_object.family);
+            dojo.publish('/sk/filter/change',
+                [this.family_genus_selectors.family_filter]);
+        }
+        if (hash_object.genus) {
+            this.filter_manager.set_selected_value('genus',
+                hash_object.family);
+            dojo.publish('/sk/filter/change',
+                [this.family_genus_selectors.genus_filter]);
+        }
+
+        // Restore the filter that was last visible in the filter working
+        // area, if applicable. It will be shown later when results load.
         if (hash_object._visible !== undefined) {
             this.filter_section.visible_filter_short_name =
                 hash_object._visible;
         }
 
-        this.filter_manager.query_filters({
-            short_names: filter_names,
-            onLoaded: dojo.hitch(this, function(items) {
-                var filters = [];
-                dojo.forEach(items, dojo.hitch(this, function(item) {
-                    var filter_args = gobotany.utils.clone(item,
-                        {pile_slug: this.pile_slug});
-                    var filter = this.filter_manager.add_filter(filter_args);
-                    filters.push(filter);
-                    var name = filter.character_short_name;
-                    var v = filter_values[name];
-                    if (v !== undefined) {
-                        this.filter_manager.set_selected_value(name, v);
+        if (filter_names.length > 0) {
+            console.log('setup_filters_from_hash: about to call ' +
+                'filter_manager.query_filters with filter_names: ' +
+                filter_names);
+            this.filter_manager.query_filters({
+                short_names: filter_names,
+                onLoaded: dojo.hitch(this, function(items) {
+                    var filters = [];
+                    dojo.forEach(items, dojo.hitch(this, function(item) {
+                        var filter_args = gobotany.utils.clone(item,
+                            {pile_slug: this.pile_slug});
+                        var filter = this.filter_manager.add_filter(
+                            filter_args);
+                        filters.push(filter);
+                        var name = filter.character_short_name;
+                        var v = filter_values[name];
+                        if (v !== undefined) {
+                            this.filter_manager.set_selected_value(name, v);
+                        }
+                    }));
+                    if (args && args.on_complete) {
+                        args.on_complete(filters);
                     }
-                }));
-                if (args && args.on_complete) {
-                    args.on_complete(filters);
-                }
-            })
-        });
+                })
+            });
+        }
     },
 
     save_filter_state: function() {

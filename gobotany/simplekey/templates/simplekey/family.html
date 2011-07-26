@@ -38,7 +38,8 @@ Family: {{ family.name }} {% if common_name %}({{ common_name }}){% endif %}{% e
                                 <a class="enlarge" rel="shadowbox"
                                     href="{{ drawing.image.url }}">
                                     <img class="zoom"
-                                    src="/static/images/icons/zoom.png"></a>
+                                    src="/static/images/icons/zoom.png"
+                                    alt="enlarge"></a>
                             </div>
                         {% endfor %}
                     </div>
@@ -51,7 +52,7 @@ Family: {{ family.name }} {% if common_name %}({{ common_name }}){% endif %}{% e
                     {% endfor %}
                     </ul>
 
-                    <a class="family-genera-btn" href="#"></a>
+                    <a class="family-genera-btn" href="{% url simplekey-pile pilegroup.slug pile.slug %}#family={{ family.name }}"></a>
 
                 </div>
                 <div id="sidebar" style="height: 634px;">
@@ -80,89 +81,3 @@ Family: {{ family.name }} {% if common_name %}({{ common_name }}){% endif %}{% e
         {% endblock %}
     </body>
 {% endblock %}
-
-{# TODO: remove this code once it is confirmed that it will not be needed #}
-{% block content %}
-  <div id="family">
-    <div id="images">
-      <h3>Images</h3>
-      <p>
-          {% if family_images %}
-              {% for i in family_images %}
-                  {% if forloop.first %}
-                      <img src="{{ i.image.url }}">
-                  {% endif %}
-              {% endfor %}
-          {% else %}
-              <img src="/static/nothing.png" alt="not available">
-          {% endif %}
-      </p>
-      <p class="nav"><a>&lt; prev</a> <span>? of ?</span>
-          <a>next &gt;</a></p>
-    </div>
-
-    <div id="info">
-      <h3>Description</h3>
-      <p>{% if family.description %}
-             {{ family.description }}
-         {% else %}
-             This is a placeholder description.
-             (Test glossary highlighting with the term isophyllous here.)
-         {% endif %}</p>
-
-      <h3>Genera</h3>
-      <ul class="Genera">
-        {% for genus in family.genera.all %}
-        <li><em><a href="{% url simplekey-genus genus.slug %}"
-                   >{{ genus.name }}</a></em></li>
-        {% endfor %}
-      </ul>
-
-      <h3>Species</h3>
-      <ul class="Species">
-        {% for genus in family.genera.all %}
-        <li><em>{{ genus.name }}</em>:
-            <ul>
-                {% for species in family.taxa.all %}
-                    {% ifequal genus.name|cut:' ' species.genus|cut:' ' %}
-                        <li><a href="{% url simplekey-species species.genus.slug species.epithet %}"
-                        ><em>{{ species.genus|make_list|first }}. {{ species.epithet }}</em></a></li>
-                    {% endifequal %}    
-                {% endfor %}
-            </ul>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-
-    <div id="drawings">
-      {% if item_drawings %}
-      <ul>
-        {% for i in item_drawings %}
-        <li>
-          <div class="ItemDrawing">
-            {{ i.image.thumbnail_tag }}
-          </div>
-         <h4>{{ i.alt }}</h4>
-        </li>
-        {% endfor %}
-      </ul>
-      {% else %}
-          {# temporary dummy presentation until we have data #}
-          <div>
-              <img src="/media/character-value/basal-lobes-absent-ap.gif" alt="placeholder image 1">
-              <p>placeholder caption 1</p>
-          </div>
-          <div>
-              <img src="/static/nothing.png" alt="placeholder image 2">
-              <p>placeholder caption 2</p>
-          </div>
-          <div>
-              <img src="/static/nothing.png" alt="placeholder image 3">
-              <p>placeholder caption 3</p>
-          </div>
-      {% endif %}
-    </div>
-  </div>
-{% endblock %}
-

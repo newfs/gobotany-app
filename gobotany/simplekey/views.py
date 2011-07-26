@@ -290,20 +290,27 @@ def family_view(request, family_slug):
     family_drawings = \
         family.images.filter(image_type__name='example drawing')
     if not family_drawings:
-        # Prepare some dummy drawings with dummy captions so it's
-        # obvious that the images aren't correct.
-        species = family.taxa.all()[10]
-        print 'species: ', species
-        family_drawings = botany.species_images(species)[0:3]
+        # Prepare some dummy drawings with dummy captions to try and
+        # make it obvious that the images aren't the final ones.
+        species = family.taxa.all()
+        for s in species:
+            species_images = botany.species_images(s)
+            if len(species_images) > 2:
+                family_drawings = species_images[0:3]
+                break
         for drawing in family_drawings:
             drawing.alt = 'Placeholder image'
-        print 'family drawings: ', family_drawings
+
+    pile = family.taxa.all()[0].piles.all()[0]
+    pilegroup = pile.pilegroup
 
     return render_to_response('simplekey/family.html', {
            'family': family,
            'common_name': common_name,
            'family_drawings': family_drawings,
            'family_images': family_images,
+           'pilegroup': pilegroup,
+           'pile': pile,
            }, context_instance=RequestContext(request))
 
 
