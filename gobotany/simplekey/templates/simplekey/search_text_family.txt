@@ -1,28 +1,10 @@
-Family:
-    {{ object.name }}.
+Family: {{ object.name }}.
 
-Common name:
-    {{ object.common_name }}.
+{% if object.common_name %}{{ object.common_name }}.{% else %}common name here.{% endif %}
 
-Description:
-    {{ object.description }}
+{{ object.description }}
 
-Genera:
+Genera in this Plant Family:
 {% for genus in object.genera.all %}
     {{ genus.name }}
 {% endfor %}
-
-Species:
-{% for species in object.taxa.all %}
-    {{ species.genus|make_list|first }}. {{ species.epithet }}
-{% endfor %}
-
-{% for genus in object.genera.all %}
-{{ genus.name }}:
-    {% for species in object.taxa.all %}
-        {% ifequal genus.name|cut:' ' species.genus|cut:' ' %}
-            {{ species.genus|make_list|first }}. {{ species.epithet }}
-        {% endifequal %}    
-    {% endfor %}
-{% endfor %}
-
