@@ -629,3 +629,40 @@ class SearchFunctionalTests(FunctionalTestCase):
         search_box = self.css('#search input[type="text"]')
         self.assertTrue(len(search_box))
         self.assertTrue(search_box[0].get_attribute('value') == 'acer')
+
+class FamilyFunctionalTests(FunctionalTestCase):
+
+    def test_family_page(self):
+        self.get('/families/lycopodiaceae/')
+        heading = self.css('#main h2')
+        self.assertTrue(len(heading))
+        self.assertTrue(heading[0].text == 'Family: Lycopodiaceae')
+        common_name = self.css('#main h3')
+        self.assertTrue(len(common_name))
+
+    def test_family_page_has_glossarized_description(self):
+        self.get('/families/lycopodiaceae/')
+        description = self.css('#main p.description')
+        self.assertTrue(len(description))
+        self.assertTrue(len(description[0].text) > 0)
+        glossary_items = self.css('#main p.description .gloss')
+        self.assertTrue(len(glossary_items))
+
+    def test_family_page_has_example_images(self):
+        self.get('/families/lycopodiaceae/')
+        example_images = self.css('#main .familypics a img')
+        self.assertTrue(len(example_images))
+
+    def test_family_page_has_list_of_genera(self):
+        self.get('/families/lycopodiaceae/')
+        genera = self.css('#main .genera li')
+        self.assertTrue(len(genera))
+
+    def test_family_page_has_link_to_key(self):
+        self.get('/families/lycopodiaceae/')
+        key_link = self.css('#main a.family-genera-btn')
+        self.assertTrue(len(key_link))
+        self.assertEqual('/ferns/lycophytes/#family=Lycopodiaceae',
+                         key_link[0].get_attribute('href'))
+
+
