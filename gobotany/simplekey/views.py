@@ -276,9 +276,10 @@ def genus_redirect_view(request, genus_slug):
 def family_view(request, family_slug):
     family = get_object_or_404(Family, slug=family_slug.lower())
 
-    # If it's decided that common names will not be required, change the
-    # default below to None and the template will omit them when missing.
-    common_name = family.common_name or 'common name here'
+    # If it is decided that common names will not be required, change the
+    # default below to None so the template will omit the name if missing.
+    DEFAULT_COMMON_NAME = 'common name here'
+    common_name = family.common_name or DEFAULT_COMMON_NAME
 
     family_drawings = \
         family.images.filter(image_type__name='example drawing')
