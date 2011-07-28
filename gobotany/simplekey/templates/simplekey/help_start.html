@@ -260,11 +260,9 @@
 {% endblock %}
 
 {% block js_bottom %}
-    <!-- Load this code without using dojo.require(). This seems to get
-    around mysterious errors that occur here in IE8 for now, but it
-    is probably not a true solution if it skirts the Dojo build system. -->
-    <script src="/static/gobotany/sk/GettingStartedHelper.js"></script>
     <script>
+        dojo.require('gobotany.sk.GettingStartedHelper');
+
         var getting_started_helper = gobotany.sk.GettingStartedHelper();
         getting_started_helper.setup();
     </script>
