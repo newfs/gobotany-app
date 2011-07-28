@@ -280,13 +280,6 @@ def family_view(request, family_slug):
     # default below to None and the template will omit them when missing.
     common_name = family.common_name or 'common name here'
 
-    family_images = family.images.filter(image_type__name='example image')
-    # If no family images are set, use the images from a species for now.
-    if not family_images:
-        species = family.taxa.all()
-        for s in species:
-            family_images = botany.species_images(s)
-
     family_drawings = \
         family.images.filter(image_type__name='example drawing')
     if not family_drawings:
@@ -308,7 +301,6 @@ def family_view(request, family_slug):
            'family': family,
            'common_name': common_name,
            'family_drawings': family_drawings,
-           'family_images': family_images,
            'pilegroup': pilegroup,
            'pile': pile,
            }, context_instance=RequestContext(request))
