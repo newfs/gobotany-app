@@ -38,21 +38,6 @@ $(function() {
     // Hide Working Area
     $('div.working-area').hide();
     
-    // Toggling sidebar options
-    $('a.option').toggle(function(){
-        $('div.working-area').slideDown('fast', function(){
-            sidebarHeight();
-        });
-        $(this).parent().addClass('active');
-        return false;
-    }, function(){
-        $('div.working-area').slideUp('fast', function(){
-            sidebarHeight();
-        });
-        $(this).parent().removeClass('active');
-        return false;
-    });
-
     // Clicking Close button in working area
     $('div.working-area a.close').click(function(){
         $(this).parent().slideUp('fast', function(){

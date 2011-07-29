@@ -711,9 +711,15 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         dojo.connect(closeLink, 'onclick', this, function(event) {
             dojo.stopEvent(event);
-            this.remove_filter(filter);
+
+            // Using jQuery, close the working area with a slide effect.
+            $('div.working-area').slideUp('fast', function() {
+                global_setSidebarHeight();
+            });
+
             if (filter === this.working_area.filter)
                 this.working_area.dismiss();
+            this.remove_filter(filter);
         });
         dojo.connect(clearLink, 'onclick', this, function(event) {
             dojo.stopEvent(event);
@@ -722,6 +728,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         dojo.connect(filter_li, 'onclick', this, function(event) {
             dojo.stopEvent(event);
             this.show_filter_working(filter);
+
+            // Set the just-selected filter as active at left.
+            dojo.query('.option-list li').removeClass('active');
+            dojo.addClass(filter_li, 'active');
         });
 
         if (typeof(pos) === 'number')

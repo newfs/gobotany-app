@@ -94,7 +94,9 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         d.query('.question').html(p(f.question)).forEach(this.glossarize);
         d.query('.hint').html(p(f.hint)).forEach(this.glossarize);
         //q('.actions').html('actions');
-        d.style({display: 'block'});
+        
+        // Use jQuery to show the working area with a slide effect.
+        $(d).slideDown('fast');
 
         // Hook up the Close button.
         var close_button = d.query('.close')[0];
