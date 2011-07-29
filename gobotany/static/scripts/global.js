@@ -56,37 +56,45 @@ $(function() {
 });
 
 // Show/Hide for questions on Getting Started page
+function _isHidden(questionDiv) {
+    return ($(questionDiv).find('a.show').text() === 'More...');
+}
+
+function _showQuestion(questionDiv) {
+    $(questionDiv).find('li.hidden, a.screenshot').show();
+    $(questionDiv).css('background-image',
+                       'url(/static/images/icons/minus.png)');
+    sidebarHeight();
+    $(questionDiv).find('a.show').text('Less...');
+}
+
+function _hideQuestion(questionDiv) {
+    $(questionDiv).find('li.hidden, a.screenshot').hide();
+    $(questionDiv).css('background-image',
+                       'url(/static/images/icons/plus.png)');
+    sidebarHeight();
+    $(questionDiv).find('a.show').text('More...');
+}
+
 function global_toggleQuestions() {
-    $('.question h4').toggle(function(){
-        $(this).parent().find('li.hidden, a.screenshot').show();
-        $(this).css('background-image','url("/static/images/icons/minus.png")');
-        sidebarHeight();
-        $(this).parent().find('a.show').text('Less...');
-        return false;
-    }, function() {
-        $(this).parent().find('li.hidden, a.screenshot').hide();
-        $(this).css('background-image','url("/static/images/icons/plus.png")');
-        $(this).parent().find('a.show').text('More...');
-        sidebarHeight();
-        return false;
+    $('.question h4').click(function() {
+        var questionDiv = $(this).parent();
+        if (_isHidden(questionDiv)) {
+            _showQuestion(questionDiv);
+        }
+        else {
+            _hideQuestion(questionDiv);
+        }
     });
     
-    $('a.show').toggle(function() {
-        $(this).parent().parent().parent().find(
-            'li.hidden, a.screenshot').show();
-        $(this).parent().parent().parent().find('h4').css('background-image',
-            'url("/static/images/icons/minus.png")');
-        sidebarHeight();
-        $(this).text('Less...');
-        return false;
-    }, function() {
-        $(this).parent().parent().parent().find(
-            'li.hidden, a.screenshot').hide();
-        $(this).parent().parent().parent().find('h4').css('background-image',
-            'url("/static/images/icons/plus.png")');
-        sidebarHeight();
-        $(this).text('More...');
-        return false;
+    $('a.show').click(function() {
+        var questionDiv = $(this).parent().parent().parent();
+        if (_isHidden(questionDiv)) {
+            _showQuestion(questionDiv);
+        }
+        else {
+            _hideQuestion(questionDiv);
+        }
     });
 }
 
