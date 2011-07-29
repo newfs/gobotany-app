@@ -3,18 +3,25 @@ function sidebarHeight() {
     var MINIMUM_HEIGHT = 550;
     var newHeight = 0;
 
-    var headerHeight = $('header').height();
-
-    var helpButton = $('div#sidebar a.get-help-btn');
-    if (helpButton.length > 0) {
-        var helpButtonTopPosition = helpButton.position().top;
-        
-        newHeight = helpButtonTopPosition - headerHeight;
-    }
-
     var mainHeight = $('div#main').height();
     if (mainHeight > newHeight) {
         newHeight = mainHeight;
+    }
+
+    // Handle cases where the sidebar is taller than the main content.
+    // Because the sidebar is usually set to a static height when the
+    // page loads, its height cannot be trusted as accurate (hence this
+    // function). So, tally the heights of all the items in the sidebar.
+    var SIDEBAR_SECTION_VERTICAL_PAD = 16;
+    var sidebarChildNodes = $('div#sidebar').children();
+    var sidebarContentsHeight = 0;
+    for (var i = 0; i < sidebarChildNodes.length; i++) {
+        var sectionHeight = $(sidebarChildNodes[i]).height() +
+            SIDEBAR_SECTION_VERTICAL_PAD;
+        sidebarContentsHeight += sectionHeight;
+    }
+    if (sidebarContentsHeight > newHeight) {
+        newHeight = sidebarContentsHeight;
     }
 
     if (newHeight < MINIMUM_HEIGHT) {
