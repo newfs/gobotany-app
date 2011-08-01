@@ -41,14 +41,18 @@ Distribution and Conservation Status:
 Wetland Status: {{ object.wetland_status_text }}
 
 All Characteristics:
+{# TODO: may want to add brief characteristics, and group full list by character group, like species page. #}
 {% for character_value in object.character_values.all %}
     {{ character_value.character.friendly_name }}:
-    {% if character_value.value_str %}
-        {{ character_value.value_str }}.
+    {% if character_value.character.value_type == 'TEXT' %}
+        {% if character_value.friendly_text %}
+            {{ character_value.friendly_text }}.
+        {% else %}
+            {{ character_value.value_str }}.
+        {% endif %}
     {% else %}
         {{ character_value.value_min }}
-        {{ character_value.character.unit }} to
-        {{ character_value.value_max }}
+        {{ character_value.character.unit }}–{{ character_value.value_max }}
         {{ character_value.character.unit }}.
     {% endif %}
 {% endfor %}

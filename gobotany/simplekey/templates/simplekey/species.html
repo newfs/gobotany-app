@@ -99,22 +99,10 @@
                 
                 <h3>Characteristics</h3>
                 <ul class="characteristics">
-                    {% if characteristics %}
-                        {% for characteristic in characteristics %}
-                            <li>{{ characteristic.name|upper }}:
-                            {% for character_value in taxon.character_values.all %}
-                                {% if character_value.character.name|lower == characteristic.name|lower %}
-                                    {% if character_value.character.value_type == 'TEXT' %}
-                                        {{ character_value.value_str }}
-                                    {% else %}
-                                        {{ character_value.value_min }}
-                                        {{ character_value.character.unit }} to
-                                        {{ character_value.value_max }}
-                                        {{ character_value.character.unit }}
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                            </li>
+                    {% if brief_characteristics %}
+                        {% for character in brief_characteristics %}
+                            <li>{{ character.name|upper }}:
+                                {{ character.value }}</li>
                         {% endfor %}
                     {% else %}
                         <li>

@@ -139,38 +139,6 @@ def results_view(request, pilegroup_slug, pile_slug):
            }, context_instance=RequestContext(request))
 
 
-def _get_species_characteristics(pile, taxon):
-    """Get the short list of characteristics that help give a quick
-       impression of the plant.
-    """
-    characteristics = []
-    # Get all the character values for this taxon.
-    cvs = TaxonCharacterValue.objects.filter(taxon=taxon)
-    if cvs:
-        for character in pile.plant_preview_characters.all():
-            i = 0
-            found = False
-            value = ''
-            while found == False and i < len(cvs):
-                if cvs[i].character_value.character.short_name == \
-                   character.short_name:
-                    found = True
-                    if (character.value_type == 'TEXT'):
-                        value = cvs[i].character_value.value_str
-                    else:
-                        # TODO: Properly handle numeric values and units.
-                        #value = cvs[i].character_value.value_str
-                        value = '%s (mm?) - %s (mm?)' % \
-                            (str(cvs[i].character_value.value_min),
-                            str(cvs[i].character_value.value_max))
-                i = i + 1
-            characteristic = {}
-            characteristic['name'] = character.name
-            characteristic['value'] = value
-            characteristics.append(characteristic)
-    return characteristics
-
-
 def _format_character_value(character_value):
     """Render a character value for display."""
     character = character_value.character
@@ -184,7 +152,8 @@ def _format_character_value(character_value):
         return u'%d–%d' % (
             character_value.value_min, character_value.value_max)
 
-def _get_all_species_characteristics(taxon, character_groups):
+
+def _get_all_characteristics(taxon, character_groups):
     """Get all characteristics for a plant, organized by character group."""
 
     q = CharacterValue.objects.filter(taxon_character_values__taxon=taxon)
@@ -192,9 +161,10 @@ def _get_all_species_characteristics(taxon, character_groups):
     # Combine multiple values that belong to a single character.
     cgetter = attrgetter('character')
     cvgroups = groupby(sorted(q, key=cgetter), cgetter)
+    print 'cvgroups: ', cvgroups
     characters = ({
         'group': character.character_group.name,
-        'name': character.name,
+        'name': character.friendly_name,
         'value': u', '.join(_format_character_value(cv) for cv in values),
         } for character, values in cvgroups)
 
@@ -206,6 +176,23 @@ def _get_all_species_characteristics(taxon, character_groups):
         'characters': sorted(members, key=itemgetter('name')),
         } for name, members in cgroups)
     return sorted(groups, key=itemgetter('name'))
+
+
+def _get_brief_characteristics(taxon, character_groups, pile):
+    """Get the short list of characteristics that help give a quick
+       impression of the plant.
+    """
+    all_characteristics = _get_all_characteristics(taxon, character_groups)
+
+    plant_preview_character_names = [character.friendly_name for character in
+            pile.plant_preview_characters.all()]
+
+    brief_characteristics = []
+    for character_group in all_characteristics:
+        for character in character_group['characters']:
+            if character['name'] in plant_preview_character_names:
+                brief_characteristics.append(character)
+    return sorted(brief_characteristics, key=itemgetter('name'))
 
 
 def species_view(request, genus_slug, specific_name_slug,
@@ -246,9 +233,10 @@ def species_view(request, genus_slug, specific_name_slug,
            'taxon': taxon,
            'species_images': species_images,
            'habitats': habitats,
-           'characteristics': _get_species_characteristics(pile, taxon),
-           'all_characteristics': _get_all_species_characteristics(
-                taxon, character_groups),
+           'brief_characteristics': _get_brief_characteristics(taxon,
+               character_groups, pile),
+           'all_characteristics': _get_all_characteristics(taxon,
+               character_groups),
            'specific_epithet': specific_name_slug,
            }, context_instance=RequestContext(request))
 
