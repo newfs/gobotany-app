@@ -1569,7 +1569,6 @@ class Importer(object):
             self._add_suggestion_term(glossary_term.term)
 
         for character in models.Character.objects.all():
-            self._add_suggestion_term(character.name)
             self._add_suggestion_term(character.friendly_name)
 
 # Import (well, for right now, just print out diagnoses about!) a
