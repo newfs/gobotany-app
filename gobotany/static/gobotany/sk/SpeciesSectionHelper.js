@@ -226,6 +226,25 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         return rows;
     },
 
+    get_image: function(item, image_type) {
+        /* From a species JSON record, return the first image encountered
+         * with the specified image type. If no images of that type exist,
+         * return the first image. */
+        'use strict';
+        
+        var i, image_index;
+
+        image_index = 0;   // Fallback: first image
+        for (i = 0; i < item.images.length; i++) {
+            if (item.images[i].type === image_type) {
+                image_index = i;
+                break;
+            }
+        }
+
+        return item.images[image_index];
+    },
+
     display_in_list_view: function(items, container) {
         /* Display plant results in a list view. Use a table, with hidden
            caption and header row for accessibility. */
@@ -249,10 +268,10 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     '">Genus: ' + items[i].genus + '</td>';
             }
             html += '<td class="scientific-name">';
-            if (items[i].images[0] !== undefined) {
-                html += '<a href="' + items[i].images[0].scaled_url +
-                    '" title="Photo"><img ' +
-                    'src="/static/images/icons/camera.jpg" alt=""></a>';
+            var image = this.get_image(items[i], 'habit');
+            if (image !== undefined) {
+                html += '<a href="' + image.scaled_url + '" title="Photo">' +
+                    '<img src="/static/images/icons/camera.jpg" alt=""></a>';
             }
             html += items[i].scientific_name + '</td>';
             html += '<td class="common-name">' + items[i].common_name +
