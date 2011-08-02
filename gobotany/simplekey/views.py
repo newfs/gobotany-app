@@ -156,16 +156,19 @@ def _format_character_value(character_value):
 def _get_all_characteristics(taxon, character_groups):
     """Get all characteristics for a plant, organized by character group."""
 
-    q = CharacterValue.objects.filter(taxon_character_values__taxon=taxon)
+    # Ensure the query is ordered so the character values can
+    # successfully be grouped.
+    q = (CharacterValue.objects.filter(taxon_character_values__taxon=taxon)
+                               .order_by('character'))
 
     # Combine multiple values that belong to a single character.
     cgetter = attrgetter('character')
-    cvgroups = groupby(sorted(q, key=cgetter), cgetter)
-    print 'cvgroups: ', cvgroups
+    cvgroups = groupby(q, key=cgetter)
     characters = ({
         'group': character.character_group.name,
         'name': character.friendly_name,
-        'value': u', '.join(_format_character_value(cv) for cv in values),
+        'value': \
+            u', '.join(sorted(_format_character_value(cv) for cv in values)),
         } for character, values in cvgroups)
 
     # Group the characters by character-group.
