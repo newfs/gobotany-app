@@ -634,6 +634,11 @@ a.sidebarlink {
 #sidebar .clear-filter.hidden {
     display: none;
 }
+#dist-county-map {
+    height: 290px; /* SVG map: WebKit needs height and width set */
+    width: 187px;
+}
+
 
 /*******------
 Level 3 Id styles

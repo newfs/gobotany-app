@@ -178,17 +178,24 @@
             <div id="sidebar" style="height: 1116px">
                 <div class="section">
                     <h5>New England Distribution</h5>
-                    <!--[if IE]>
-                    <object src="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map.svg"
-                        classid="image/svg+xml" id="dist-county-map"
-                        title="distribution map for {{ scientific_name }}">
-                    <![endif]-->
                     <!--[if !IE]>-->
-                    <object data="/api/maps/{{ taxon.genus|lower }}-{{ specific_epithet }}-distribution-map.svg"
-                        type="image/svg+xml" id="dist-county-map"
+                    <object
+                        data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map.svg"
+                        type="image/svg+xml"
                         title="distribution map for {{ scientific_name }}"
-                        style="height: 290px; width: 205px">
-                    <!--<![endif]-->
+                        id="dist-county-map"> <!--<![endif]-->
+                    <!--[if lt IE 9]>
+                    <object
+                        src="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map.svg"
+                        classid="image/svg+xml"
+                        title="distribution map for {{ scientific_name }}"
+                        id="dist-county-map"> <![endif]-->
+                    <!--[if gte IE 9]>
+                    <object
+                        data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map.svg"
+                        type="image/svg+xml"
+                        title="distribution map for {{ scientific_name }}"
+                        id="dist-county-map"> <![endif]-->
                     </object>
                 </div>
 
