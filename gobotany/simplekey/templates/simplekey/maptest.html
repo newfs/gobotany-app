@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Map Test</title>
+        <meta charset="utf-8">
+
+        <!-- SVGWeb script - must be first, must have data-path.
+        Also, SVG must be served from same domain as the page. -->
+        <script src="/static/svgweb/svg.js"
+            data-path="/static/svgweb/"></script>
+    </head>
+    <body>
+        <h1>Map Test</h1>
+        <p>Display the plain New England counties map.</p>
+
+    <!--[if !IE]>-->
+    <object data="/static/graphics/new-england-counties.svg"
+        type="image/svg+xml" id="mySVGObject"> <!--<![endif]-->
+    <!--[if lt IE 9]>
+    <object src="/static/graphics/new-england-counties.svg"
+        classid="image/svg+xml" id="mySVGObject"> <![endif]-->
+    <!--[if gte IE 9]>
+    <object data="/static/graphics/new-england-counties.svg"
+        type="image/svg+xml" id="mySVGObject"> <![endif]-->
+      </object>
+        
+    </body>
+</html>

@@ -14,6 +14,7 @@ urlpatterns = patterns(
         name='simplekey-search'),
 
     # Hidden test pages.
+    url('^_maptest/$', views.maptest),
     url('^_rulertest/$', views.rulertest),
 
     # Auto-suggestions for search
