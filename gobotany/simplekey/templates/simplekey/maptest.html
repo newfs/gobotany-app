@@ -8,21 +8,31 @@
         Also, SVG must be served from same domain as the page. -->
         <script src="/static/svgweb/svg.js"
             data-path="/static/svgweb/"></script>
+
+        <style>
+            #ne-counties-map {
+                height: 290px; /* WebKit needs height and width set */
+                width: 187px;
+            }
+        </style>
     </head>
     <body>
         <h1>Map Test</h1>
         <p>Display the plain New England counties map.</p>
 
-    <!--[if !IE]>-->
-    <object data="/static/graphics/new-england-counties.svg"
-        type="image/svg+xml" id="mySVGObject"> <!--<![endif]-->
-    <!--[if lt IE 9]>
-    <object src="/static/graphics/new-england-counties.svg"
-        classid="image/svg+xml" id="mySVGObject"> <![endif]-->
-    <!--[if gte IE 9]>
-    <object data="/static/graphics/new-england-counties.svg"
-        type="image/svg+xml" id="mySVGObject"> <![endif]-->
-      </object>
+        <!--[if !IE]>-->
+        <object data="/static/graphics/new-england-counties.svg"
+            type="image/svg+xml" title="New England counties map"
+            id="ne-counties-map"> <!--<![endif]-->
+        <!--[if lt IE 9]>
+        <object src="/static/graphics/new-england-counties.svg"
+            classid="image/svg+xml" title="New England counties map"
+            id="ne-counties-map"> <![endif]-->
+        <!--[if gte IE 9]>
+        <object data="/static/graphics/new-england-counties.svg"
+            type="image/svg+xml" title="New England counties map"
+            id="ne-counties-map"> <![endif]-->
+        </object>
         
     </body>
 </html>
