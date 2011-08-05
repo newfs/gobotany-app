@@ -226,6 +226,10 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
 
     _apply_button_clicked: function(event) {
         dojo.stopEvent(event);
+        this._apply_filter_value();
+    },
+
+    _apply_filter_value: function() {
         var value = this._current_value();
         if (this.filter.species_matching(value).length == 0)
             return;
@@ -339,7 +343,14 @@ dojo.declare('gobotany.sk.working_area.Length', [
         );
         v.query('[name="units"]').connect('onchange', this, '_unit_changed');
         v.query('[type="text"]').connect('onchange', this, '_measure_changed');
-        v.query('[type="text"]').connect('onkeyup', this, '_measure_changed');
+        v.query('[type="text"]').connect('onkeyup', this, '_key_pressed');
+    },
+
+    _key_pressed: function(event) {
+        if (event.keyCode == 10 || event.keyCode == 13)
+            this._apply_filter_value();
+        else
+            this._measure_changed();
     },
 
     _current_value: function() {
@@ -355,7 +366,7 @@ dojo.declare('gobotany.sk.working_area.Length', [
         this._measure_changed();
     },
 
-    _measure_changed: function(event) {
+    _measure_changed: function() {
         var mm = this._current_value();
         var vector = this.filter.species_matching(mm);
         vector = _.intersect(vector, this.species_vector);
