@@ -20,7 +20,7 @@ PIXEL_VALUES = [          # From the http://www.bonap.org/MapKey.html page:
     (c(0x00FF00), True),  # Species present and not rare
     (c(0xFE0000), False), # Species extinct
     (c(0x00DD90), True),  # Species native, but adventive in state
-    (c(0x3AB2E6), False), # Species waif    See http://en.wikipedia.org/wiki/Waif
+    (c(0x3AB2E6), False), # Species waif; see http://en.wikipedia.org/wiki/Waif
     (c(0x0000EA), True),  # Species present in state and exotic
     (c(0xFFFF00), True),  # Species present and rare
     (c(0xFF00FE), True),  # Species noxious
@@ -39,7 +39,8 @@ def pixel_status(pixel):
         dsq = sum((pixel[i] - rgb[i]) ** 2 for i in range3)
         if dsq < 100:
             return value
-    raise ValueError('I cannot determine what the pixel {} means'.format(value))
+    raise ValueError('I cannot determine what the pixel {0} means'
+                     .format(pixel))
 
 class MapScanner(object):
 
@@ -60,7 +61,13 @@ class MapScanner(object):
         self.points.sort()
 
     def scan(self, map_image_path):
+        print map_image_path
         im = Image.open(map_image_path)
+        for p in self.points:
+            print '--'
+            print p
+            print im.getpixel((p.x, p.y))
+            print pixel_status(im.getpixel((p.x, p.y)))
         return [
             MapStatus(p.state, p.county, pixel_status(im.getpixel((p.x, p.y))))
             for p in self.points
@@ -68,8 +75,12 @@ class MapScanner(object):
 
 if __name__ == '__main__':
     import os
-    data = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'data')
-    ms = MapScanner(os.path.join(data, 'new-england-counties.svg'))
+    dirname = os.path.dirname
+    thisdir = dirname(__file__)
+    topdir = dirname(dirname(dirname(dirname(thisdir))))
+    mapdir = os.path.join(topdir, 'kartesz_maps', 'New_England_maps')
+    csvdir = os.path.join(topdir, 'buildout-myplants', 'data')
+    ms = MapScanner(os.path.join(thisdir, 'new-england-counties.svg'))
     if False:
         # Simple test; just print out data from one map.
         pngpath = os.path.join(data, 'Acorus americanus New England.png')
@@ -77,14 +88,17 @@ if __name__ == '__main__':
             print tup
     if True:
         # Read in taxa.csv and compare.
-        csvdir = os.path.join(data, '..', '..', 'gobotany-buildout', 'data')
         csvpath = os.path.join(csvdir, 'taxa.csv')
         with open(csvpath) as csvfile:
-            for row in DictReader(csvfile):
-                sn = row['Scientific_Name']
+            total = misses = 0
 
-                pngpath = os.path.join(data, sn + ' New England.png')
+            for row in DictReader(csvfile):
+                total += 1
+                sn = row['Scientific__Name']
+
+                pngpath = os.path.join(mapdir, sn + '.png')
                 if not os.path.exists(pngpath):
+                    misses += 1
                     continue
                 tups = ms.scan(pngpath)
                 nstates = set(s.state for s in ms.scan(pngpath))
@@ -95,3 +109,6 @@ if __name__ == '__main__':
                     print 'We think that {0} is in {1}'.format(sn, state)
                 for state in bstates - nstates:
                     print 'BONAP thinks that {0} is in {1}'.format(sn, state)
+
+        print '%d/%d (%f%%) species have images' % (
+            total - misses, total, 100. * (total - misses) / total)
