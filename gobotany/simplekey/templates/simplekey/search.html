@@ -1,6 +1,6 @@
 {% extends "simplekey/_base.html" %}
-{% load highlight %}
 {% load humanize %}
+{% load search_highlight %}
 {% load simplekey_extras %}
 
 {% block title %}{{ query }}: Search{% endblock %}
@@ -31,23 +31,23 @@
                             <!-- TODO: need custom highlighter that does not excerpt the document title -->
                             {% if result.scientific_name %}
                                 <img src="/static/images/icons/leaficon.jpg" alt="">
-                                <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/species/{{ result.scientific_name|split:' '|at_index:'0'|lower }}/{{ result.scientific_name|split:' '|at_index:'1'|lower }}/">{% highlight result.title with query %}</a>
+                                <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/species/{{ result.scientific_name|split:' '|at_index:'0'|lower }}/{{ result.scientific_name|split:' '|at_index:'1'|lower }}/">{% search_highlight result.title with query excerpt 'False' %}</a>
                             {% else %}
                                 {% if result.model_name == 'family' %}
                                     <img src="/static/images/icons/familyicon.jpg" alt="">
-                                    <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/families/{{ result.name|lower }}/">{% highlight result.title with query %}</a>
+                                    <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/families/{{ result.name|lower }}/">{% search_highlight result.title with query excerpt 'False' %}</a>
                                 {% else %}
                                     {% if result.model_name == 'genus' %}
                                         <img src="/static/images/icons/genusicon.jpg" alt="">
-                                        <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/genera/{{ result.name|lower }}/">{% highlight result.title with query %}</a>
+                                        <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/genera/{{ result.name|lower }}/">{% search_highlight result.title with query excerpt 'False' %}</a>
                                     {% else %}
                                         {% if result.model_name == 'helppage' %}
                                             <img src="/static/graphics/help-icon.jpg" alt="">
-                                            <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% highlight result.title with query %}</a>
+                                            <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% search_highlight result.title with query excerpt 'False' %}</a>
                                         {% else %}
                                             {% if result.model_name == 'glossaryhelppage' %}
                                                 <img src="/static/graphics/glossary-icon.jpg" alt="">
-                                                <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% highlight result.title with query %}</a>
+                                                <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% search_highlight result.title with query excerpt 'False' %}</a>
                                             {% else %}
                                                 (unknown model name)
                                             {% endif %}
@@ -57,7 +57,8 @@
                             {% endif %}
                             <p>
                             {# TODO: result.text|split:'--'|at_index:'0' doesn't work below #}
-                            {% highlight result.text with query %}
+                            {# highlight result.text with query #}
+                            {% search_highlight result.text with query ignore_between '\n--\n' %}
                             </p>
                         </li>
                     {% endfor %}

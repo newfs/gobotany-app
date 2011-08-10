@@ -87,7 +87,6 @@ Classification:
 {% endif %}
 
 --
-
 {# Index the scientific name more times to boost ranking. #}
 {{ object.scientific_name }} 
 {{ object.scientific_name }} 
@@ -99,4 +98,4 @@ Classification:
 {{ object.scientific_name }} 
 {{ object.scientific_name }} 
 {{ object.scientific_name }} 
-
+--

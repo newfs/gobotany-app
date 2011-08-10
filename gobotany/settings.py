@@ -65,6 +65,7 @@ else:
 INSTALLED_APPS = [
     'gobotany.api',
     'gobotany.core',
+    'gobotany.search',
     'gobotany.simplekey',
     'piston',
 
