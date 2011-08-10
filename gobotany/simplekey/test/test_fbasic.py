@@ -580,7 +580,7 @@ class SearchFunctionalTests(FunctionalTestCase):
                          message[0].text)
 
     def test_search_results_page_has_singular_heading(self):
-        self.get('/search/?q=honeycomb')
+        self.get('/search/?q=carved+quillwort')
         heading = self.css('#main h2')
         self.assertTrue(len(heading))
         self.assertTrue(heading[0].text.startswith('1 Result for'))
@@ -629,6 +629,38 @@ class SearchFunctionalTests(FunctionalTestCase):
         search_box = self.css('#search input[type="text"]')
         self.assertTrue(len(search_box))
         self.assertTrue(search_box[0].get_attribute('value') == 'acer')
+
+    def test_search_results_page_result_titles_are_not_excerpted(self):
+        self.get('/search/?q=virginica')
+        result_links = self.css('#search-results-list li a')
+        self.assertTrue(len(result_links))
+        for link in result_links:
+            self.assertTrue(link.text.find('...') == -1)
+
+    def test_search_results_page_document_excerpts_ignore_marked_text(self):
+        # Verify that search result document excerpts for species pages
+        # no longer show text that is marked to be ignored, in this case
+        # a series of repeating scientific names.
+        self.get('/search/?q=rhexia+virginica')
+        result_document_excerpts = self.css('#search-results-list li p')
+        self.assertTrue(len(result_document_excerpts))
+        species_page_excerpt = result_document_excerpts[0].text
+        text_to_be_ignored = ('Rhexia virginica Rhexia virginica '
+                              'Rhexia virginica Rhexia virginica '
+                              'Rhexia virginica Rhexia virginica')
+        self.assertTrue(species_page_excerpt.find(text_to_be_ignored) == -1)
+
+    def test_search_results_page_shows_some_text_to_left_of_excerpt(self):
+        self.get('/search/?q=rhexia+virginica')
+        result_document_excerpts = self.css('#search-results-list li p')
+        self.assertTrue(len(result_document_excerpts))
+        for excerpt in result_document_excerpts:
+            # Rhexia should not appear right at the beginning after an
+            # ellipsis, i.e., the excerpt should start with something
+            # like '...Genus: Rhexia' rather than '...Rhexia'.
+            self.assertTrue(excerpt.text.find('...Rhexia') == -1)
+            self.assertTrue(excerpt.text.find('Rhexia') > 3)
+
 
 class FamilyFunctionalTests(FunctionalTestCase):
 
