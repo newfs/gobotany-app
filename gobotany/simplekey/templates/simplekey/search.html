@@ -30,23 +30,30 @@
                         <li>
                             <!-- TODO: need custom highlighter that does not excerpt the document title -->
                             {% if result.scientific_name %}
-                                <img src="/static/images/icons/leaficon.jpg" alt="">
+                                <img src="/static/images/icons/leaficon.jpg"
+                                    alt="" title="Species page">
                                 <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/species/{{ result.scientific_name|split:' '|at_index:'0'|lower }}/{{ result.scientific_name|split:' '|at_index:'1'|lower }}/">{% search_highlight result.title with query excerpt 'False' %}</a>
                             {% else %}
                                 {% if result.model_name == 'family' %}
-                                    <img src="/static/images/icons/familyicon.jpg" alt="">
+                                    <img src="/static/images/icons/familyicon.jpg"
+                                        alt="" title="Family page">
                                     <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/families/{{ result.name|lower }}/">{% search_highlight result.title with query excerpt 'False' %}</a>
                                 {% else %}
                                     {% if result.model_name == 'genus' %}
-                                        <img src="/static/images/icons/genusicon.jpg" alt="">
+                                        <img src="/static/images/icons/genusicon.jpg"
+                                            alt="" title="Genus page">
                                         <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/genera/{{ result.name|lower }}/">{% search_highlight result.title with query excerpt 'False' %}</a>
                                     {% else %}
                                         {% if result.model_name == 'helppage' %}
-                                            <img src="/static/graphics/help-icon.jpg" alt="">
+                                            <img src="/static/graphics/help-icon.jpg"
+                                                alt="" title="Help page">
                                             <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% search_highlight result.title with query excerpt 'False' %}</a>
                                         {% else %}
                                             {% if result.model_name == 'glossaryhelppage' %}
-                                                <img src="/static/graphics/glossary-icon.jpg" alt="">
+                                                <img src="/static/graphics/glossary-icon.jpg"
+                                                    alt=""
+                                                    title="Glossary
+                                                    page">
                                                 <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% search_highlight result.title with query excerpt 'False' %}</a>
                                             {% else %}
                                                 (unknown model name)
