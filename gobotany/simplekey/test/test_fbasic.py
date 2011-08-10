@@ -681,6 +681,9 @@ class FamilyFunctionalTests(FunctionalTestCase):
         self.assertTrue(len(glossary_items))
 
     @unittest2.skip('is this really broken or does Brandon lack the images?')
+    # TODO: This test passes after import_sample, but not after
+    # import_data, due to whether or not local images are available. Will
+    # probably need to rearrange import scripts to fix.
     def test_family_page_has_example_images(self):
         self.get('/families/lycopodiaceae/')
         example_images = self.css('#main .familypics a img')
