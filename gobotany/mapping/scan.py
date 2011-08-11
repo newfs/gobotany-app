@@ -104,7 +104,7 @@ if __name__ == '__main__':
                 total += 1
                 sn = row['Scientific__Name']
 
-                if sn == 'Rubus pensilvanicus':  # skip immediately to this species
+                if sn == 'Carex abscondita':  # skip immediately to this species
                     go = True
                 if not go:
                     continue
