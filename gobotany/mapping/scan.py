@@ -6,8 +6,11 @@ from csv import DictReader
 
 from PIL import Image
 
+Point = namedtuple('Point', ['x', 'y'])
 MapPoint = namedtuple('MapPoint', ['state', 'county', 'x', 'y'])
 MapStatus = namedtuple('MapStatus', ['state', 'county', 'status'])
+
+# Turning pixel colors into species status.
 
 def c(rgbhex):
     """Convert 0x008000 to (0, 128, 0)."""
@@ -15,7 +18,7 @@ def c(rgbhex):
     r, g = divmod(rg, 0x100)
     return (r, g, b)
 
-PIXEL_VALUES = [          # From the http://www.bonap.org/MapKey.html page:
+PIXEL_STATUSES = [          # From the http://www.bonap.org/MapKey.html page:
     (c(0x008000), True),  # Species present in state and native
     (c(0x00FF00), True),  # Species present and not rare
     (c(0xFE0000), False), # Species extinct
@@ -35,12 +38,14 @@ del c
 range3 = range(3)
 
 def pixel_status(pixel):
-    for rgb, value in PIXEL_VALUES:
+    for rgb, status in PIXEL_STATUSES:
         dsq = sum((pixel[i] - rgb[i]) ** 2 for i in range3)
         if dsq < 100:
-            return value
+            return status
     raise ValueError('I cannot determine what the pixel {0} means'
                      .format(pixel))
+
+# The scanner class itself.
 
 class MapScanner(object):
 
@@ -80,7 +85,7 @@ if __name__ == '__main__':
     topdir = dirname(dirname(dirname(dirname(thisdir))))
     mapdir = os.path.join(topdir, 'kartesz_maps', 'New_England_maps')
     csvdir = os.path.join(topdir, 'buildout-myplants', 'data')
-    ms = MapScanner(os.path.join(thisdir, 'new-england-counties.svg'))
+    ms = MapScanner(os.path.join(thisdir, 'new-england-counties2.svg'))
     if False:
         # Simple test; just print out data from one map.
         pngpath = os.path.join(data, 'Acorus americanus New England.png')
