@@ -38,9 +38,11 @@ del c
 range3 = range(3)
 
 def pixel_status(pixel):
+    #print '---'
     for rgb, status in PIXEL_STATUSES:
         dsq = sum((pixel[i] - rgb[i]) ** 2 for i in range3)
-        if dsq < 100:
+        #print rgb, status, dsq
+        if dsq < 200:
             return status
     raise ValueError('I cannot determine what the pixel {0} means'
                      .format(pixel))
@@ -100,6 +102,7 @@ if __name__ == '__main__':
             for row in DictReader(csvfile):
                 total += 1
                 sn = row['Scientific__Name']
+                #if sn != 'Lycopodiella appressa': continue
 
                 pngpath = os.path.join(mapdir, sn + '.png')
                 if not os.path.exists(pngpath):
