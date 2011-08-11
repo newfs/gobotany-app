@@ -98,18 +98,23 @@ if __name__ == '__main__':
         csvpath = os.path.join(csvdir, 'taxa.csv')
         with open(csvpath) as csvfile:
             total = misses = 0
+            go = False
 
             for row in DictReader(csvfile):
                 total += 1
                 sn = row['Scientific__Name']
-                #if sn != 'Lycopodiella appressa': continue
+
+                if sn == 'Rubus pensilvanicus':  # skip immediately to this species
+                    go = True
+                if not go:
+                    continue
 
                 pngpath = os.path.join(mapdir, sn + '.png')
                 if not os.path.exists(pngpath):
                     misses += 1
                     continue
                 tups = ms.scan(pngpath)
-                nstates = set(s.state for s in ms.scan(pngpath))
+                nstates = set(s.state for s in tups)
 
                 bstates = set(s.strip() for s in row['Distribution'].split('|'))
 
