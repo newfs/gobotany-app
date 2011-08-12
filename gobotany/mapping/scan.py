@@ -24,6 +24,7 @@ PIXEL_STATUSES = [          # From the http://www.bonap.org/MapKey.html page:
     (c(0xFE0000), False), # Species extinct
     (c(0x00DD90), True),  # Species native, but adventive in state
     (c(0x3AB2E6), False), # Species waif; see http://en.wikipedia.org/wiki/Waif
+    (c(0x57A6FF), False), # ANOTHER color for waif? see Galeopsis ladanum
     (c(0x0000EA), True),  # Species present in state and exotic
     (c(0xFFFF00), True),  # Species present and rare
     (c(0xFF00FE), True),  # Species noxious
@@ -104,7 +105,7 @@ if __name__ == '__main__':
                 total += 1
                 sn = row['Scientific__Name']
 
-                if sn == 'Carex abscondita':  # skip immediately to this species
+                if sn == 'Galeopsis ladanum':  # skip immediately to this species
                     go = True
                 if not go:
                     continue
@@ -114,9 +115,13 @@ if __name__ == '__main__':
                     misses += 1
                     continue
                 tups = ms.scan(pngpath)
-                nstates = set(s.state for s in tups)
+                bstates = set(s.state for s in tups)
 
-                bstates = set(s.strip() for s in row['Distribution'].split('|'))
+                nstates = set(s.strip() for s in row['Distribution'].split('|'))
+
+                if not nstates:
+                    print 'We have no distribution for {1}'.format(sn)
+                    continue
 
                 for state in nstates - bstates:
                     print 'We think that {0} is in {1}'.format(sn, state)
