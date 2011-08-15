@@ -69,9 +69,9 @@ class MapScanner(object):
         self.points.sort()
 
     def scan(self, map_image_path):
-        print map_image_path
+        #print map_image_path
         im = Image.open(map_image_path)
-        for p in self.points:
+        if False: #for p in self.points:
             print '--'
             print p
             print im.getpixel((p.x, p.y))
@@ -99,34 +99,47 @@ if __name__ == '__main__':
         csvpath = os.path.join(csvdir, 'taxa.csv')
         with open(csvpath) as csvfile:
             total = misses = 0
-            go = False
+            # go = False
 
             for row in DictReader(csvfile):
                 total += 1
                 sn = row['Scientific__Name']
+                print 'SN:', sn, '/ Distribution:', repr(row['Distribution'])
 
-                if sn == 'Galeopsis ladanum':  # skip immediately to this species
-                    go = True
-                if not go:
-                    continue
+                # Skip immediately to a later species in the file.
+                # if sn == 'Galeopsis ladanum':
+                #     go = True
+                # if not go:
+                #     continue
 
                 pngpath = os.path.join(mapdir, sn + '.png')
                 if not os.path.exists(pngpath):
+                    print 'No map for species {0}'.format(sn)
                     misses += 1
                     continue
                 tups = ms.scan(pngpath)
-                bstates = set(s.state for s in tups)
+                for tup in tups:
+                    print '  ', sn, tup.status, tup.state, tup.county
+                bstates = set(s.state for s in tups if s.status)
 
-                nstates = set(s.strip() for s in row['Distribution'].split('|'))
-
-                if not nstates:
-                    print 'We have no distribution for {1}'.format(sn)
+                distribution = row['Distribution'].strip()
+                if not distribution:
+                    print 'We have no distribution for {0}'.format(sn)
                     continue
+                nstates = set(s.strip() for s in distribution.split('|'))
 
-                for state in nstates - bstates:
-                    print 'We think that {0} is in {1}'.format(sn, state)
-                for state in bstates - nstates:
-                    print 'BONAP thinks that {0} is in {1}'.format(sn, state)
+                if nstates == bstates:
+                    print 'Everything matches perfectly for {0}'.format(sn)
+                    continue
+                ours = nstates - bstates
+                theirs = bstates - nstates
+                if ours or theirs:
+                    print sn,
+                if ours:
+                    print 'NEWFS says', ' '.join(ours),
+                if theirs:
+                    print 'BONAP says', ' '.join(theirs),
+                print
 
         print '%d/%d (%f%%) species have images' % (
             total - misses, total, 100. * (total - misses) / total)
