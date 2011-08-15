@@ -1581,10 +1581,10 @@ Search Results Styles
     padding: 6px 0 10px;
 }
 #search-results-list li img {
-    height: 37px; /* remove height after all icons have been provided */
+    height: 37px; /* TODO: remove height after all icons have been provided */
     margin: -6px 10px 0;
     vertical-align: middle;
-    width: 31px; /* remove width after all icons have been provided */
+    width: 31px; /* TODO: remove width after all icons have been provided */
 }
 #search-results-list li a {
     font: 15px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
@@ -1607,26 +1607,29 @@ Search Results Styles
     text-decoration: underline;
 }
 
-/*////////////////**
-Family Page Styles
-/////////////////*/
+/*///////////////////////////**
+Family and Genus Pages Styles
+///////////////////////////*/
 
-#family .genera {
+#family ul.genera, #genus ul.species {
     font: 14px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
 }
-#family .familypics {
+#family .pics, #genus .pics {
     margin-top: 20px;
 }
-#family .familypics div {
+#family .pics div, #genus .pics div {
     float: left;
     margin-right: 20px;
 }
-#family .familypics p {
+#family .pics p, #genus .pics p {
     display: inline-block;
     float: left;
     font: 14px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
 }
-#family h4 {
+#genus p.family {
+    font: 14px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
+}
+#family h4, #genus h4 {
     clear: left;
     padding-top: 30px;
 }
@@ -1640,7 +1643,13 @@ Family Page Styles
     text-indent: -9000px;
     width: 280px;
 }
-img.zoom {
+#genus .genus-species-btn {
+    /* TODO: replace with styles like above once we have a button image */
+    clear: both;
+    display: block;
+    margin: 30px 0 0;
+}
+#family img.zoom, #genus img.zoom {
     display: inline-block;
     float: right;
 }

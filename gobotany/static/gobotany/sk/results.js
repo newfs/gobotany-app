@@ -260,7 +260,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         }
         if (hash_object.genus) {
             this.filter_manager.set_selected_value('genus',
-                hash_object.family);
+                hash_object.genus);
             dojo.publish('/sk/filter/change',
                 [this.family_genus_selectors.genus_filter]);
         }

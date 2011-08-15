@@ -246,18 +246,33 @@ def species_view(request, genus_slug, specific_name_slug,
 def genus_view(request, genus_slug):
     genus = get_object_or_404(Genus, slug=genus_slug.lower())
 
-    genus_images = genus.images.filter(image_type__name='example image')
-    # If no genus images are set, use the images from a species for now.
-    if not genus_images:
-        species = genus.taxa.all()
-        for s in species:
-            genus_images = botany.species_images(s)
+    # If it is decided that common names will not be required, change the
+    # default below to None so the template will omit the name if missing.
+    DEFAULT_COMMON_NAME = 'common name here'
+    common_name = genus.common_name or DEFAULT_COMMON_NAME
 
     genus_drawings = genus.images.filter(image_type__name='example drawing')
+    if not genus_drawings:
+        # Prepare some dummy drawings with dummy captions to try and
+        # make it obvious that the images aren't the final ones.
+        species = genus.taxa.all()
+        for s in species:
+            species_images = botany.species_images(s)
+            if len(species_images) > 2:
+                genus_drawings = species_images[0:3]
+                break
+        for drawing in genus_drawings:
+            drawing.alt = 'Placeholder image'
+
+    pile = genus.taxa.all()[0].piles.all()[0]
+    pilegroup = pile.pilegroup
+
     return render_to_response('simplekey/genus.html', {
-           'item': genus,
-           'item_images': genus_images,
-           'item_drawings': genus_drawings,
+           'genus': genus,
+           'common_name': common_name,
+           'genus_drawings': genus_drawings,
+           'pilegroup': pilegroup,
+           'pile': pile,
            }, context_instance=RequestContext(request))
 
 def genus_redirect_view(request, genus_slug):
@@ -272,8 +287,8 @@ def family_view(request, family_slug):
     DEFAULT_COMMON_NAME = 'common name here'
     common_name = family.common_name or DEFAULT_COMMON_NAME
 
-    family_drawings = \
-        family.images.filter(image_type__name='example drawing')
+    family_drawings = (family.images.filter(
+                       image_type__name='example drawing'))
     if not family_drawings:
         # Prepare some dummy drawings with dummy captions to try and
         # make it obvious that the images aren't the final ones.
