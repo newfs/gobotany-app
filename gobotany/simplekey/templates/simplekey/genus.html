@@ -3,8 +3,7 @@
 {% load simplekey_extras %}
 
 {% block title %}
-Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}
-{% endblock %}
+Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}{% endblock %}
 
 {% block body %}
     <body id="genus" class="claro app genus">

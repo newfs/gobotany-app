@@ -1,19 +1,14 @@
-Genus:
-    {{ object.name }}.
+Genus: {{ object.name }}.
 
-{# Common name is not currently planned for genera, but include it if it exists. #}
-{% if object.common_name %}
-    Common name:
-        {{ object.common_name }}.
-{% endif %}
+{% if object.common_name %}{{ object.common_name }}.{% endif %}
 
-Family:
-    {{ object.family.name }}.
+{{ object.description }}
 
-Description:
-    {{ object.description }}
+Family: {{ object.family.name }}.
 
-Species:
+This Genus's Species:
 {% for species in object.taxa.all %}
-    {{ species.genus|make_list|first }}. {{ species.epithet }}
+    {{ species.genus }} {{ species.epithet }}
 {% endfor %}
+
+Key To This Genus's Species

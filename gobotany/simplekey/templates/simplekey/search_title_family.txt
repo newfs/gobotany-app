@@ -1,3 +1,3 @@
 {% spaceless %}
-Family: {{ object.name }} ({% if object.common_name %}{{ object.common_name }}{% else %}common name here{% endif %})
+Family: {{ object.name }}{% if object.common_name %} ({{ object.common_name }}){% endif %}
 {% endspaceless %}

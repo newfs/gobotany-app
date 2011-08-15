@@ -1,6 +1,6 @@
 Family: {{ object.name }}.
 
-{% if object.common_name %}{{ object.common_name }}.{% else %}common name here.{% endif %}
+{% if object.common_name %}{{ object.common_name }}.{% endif %}
 
 {{ object.description }}
 
@@ -8,3 +8,5 @@ This Family's Genera:
 {% for genus in object.genera.all %}
     {{ genus.name }}
 {% endfor %}
+
+Key To This Family's Genera
