@@ -86,8 +86,10 @@ urlpatterns = patterns(
 def c(view):
     if settings.CACHE_BACKEND.startswith('memcached:'):
         one_hour = 60 * 60
-        view = cache_control(maxage=one_hour)(view)
-        view = cache_page(one_hour)(view)
+        turn_on_browser_cache = cache_control(maxage=one_hour)
+        turn_on_memcached = cache_page(one_hour)
+        view = turn_on_browser_cache(view)
+        view = turn_on_memcached(view)
         return view
     else:
         return view
