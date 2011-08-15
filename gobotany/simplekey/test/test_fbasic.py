@@ -56,7 +56,7 @@ class FunctionalTestCase(unittest2.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.driver.stop_client()
+        cls.driver.close()
         del cls.driver
 
     def setUp(self):
@@ -326,6 +326,11 @@ class FilterFunctionalTests(FunctionalTestCase):
         # filter on Rhode Island
 
         self.css1('#state_distribution a.option').click()
+
+        # Pausing to fetch the item count makes this test stable, so:
+        count = self.css1('[value="Rhode Island"] + .label + .count').text
+        self.assertEqual(count, '(13)')
+
         self.css1('[value="Rhode Island"]').click()
         self.css1('.apply-btn').click()
         self.wait_on_species(13)
