@@ -15,6 +15,7 @@ Two environmental variables control the behavior of these tests.
 
 """
 import os
+import sys
 import time
 import unittest2
 from contextlib import contextmanager
@@ -653,7 +654,7 @@ class SearchFunctionalTests(FunctionalTestCase):
         text_to_be_ignored = ('Rhexia virginica Rhexia virginica '
                               'Rhexia virginica Rhexia virginica '
                               'Rhexia virginica Rhexia virginica')
-        self.assertTrue(species_page_excerpt.find(text_to_be_ignored) == -1)
+        self.assertEqual(species_page_excerpt.find(text_to_be_ignored), -1)
 
     def test_search_results_page_shows_some_text_to_left_of_excerpt(self):
         self.get('/search/?q=rhexia+virginica')
