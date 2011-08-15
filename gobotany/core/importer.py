@@ -127,7 +127,7 @@ class Importer(object):
 
     def import_data(self, pilegroupf, pilef, habitatsf, taxaf, charf, charvf,
                     char_val_images, char_glossaryf, glossaryf,
-                    glossary_images, lookalikesf, *taxonfiles):
+                    glossary_images, lookalikesf):
         self._import_partner_sites()
         self._import_pile_groups(pilegroupf)
         self._import_piles(pilef)
@@ -143,8 +143,6 @@ class Importer(object):
         self._import_lookalikes(lookalikesf)
         self._import_extra_demo_data()
         self._import_help()
-        for taxonf in taxonfiles:
-            self._import_taxon_character_values(taxonf)
         self._import_search_suggestions()
 
     @transaction.commit_on_success
@@ -513,7 +511,7 @@ class Importer(object):
                 print >> self.logfile, u'  Added plant name:', pn
 
     @transaction.commit_on_success
-    def _import_taxon_character_values(self, f):
+    def import_taxon_character_values(self, f):
         print >> self.logfile, 'Setting up taxon character values in file: %s' % f
         iterator = iter(CSVReader(f).read())
         colnames = list(iterator.next())  # do NOT lower(); case is important
@@ -1619,6 +1617,9 @@ def main():
     elif sys.argv[1] == 'species-images':
         species_image_dir = os.path.join(settings.MEDIA_ROOT, 'species')
         importer.import_species_images(species_image_dir, *sys.argv[2:])
+    elif sys.argv[1] == 'character-values':
+        for taxonf in sys.argv[2:]:
+            importer.import_taxon_character_values(taxonf)
     else:
         is_data_valid = importer.validate_data(*sys.argv[1:])
         if is_data_valid:

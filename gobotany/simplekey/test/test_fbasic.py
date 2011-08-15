@@ -311,6 +311,10 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         #d.find_element_by_link_text('New England state').click()
         self.css1('#state_distribution a.option').click()
+
+        count = self.css1('[value="Rhode Island"] + .label + .count').text
+        self.assertEqual(count, '(13)')
+
         self.css1('[value="Rhode Island"]').click()
         self.css1('.apply-btn').click()
         self.css1('.apply-btn').click()
