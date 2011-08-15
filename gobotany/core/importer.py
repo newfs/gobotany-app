@@ -1572,11 +1572,12 @@ class Importer(object):
 # Import (well, for right now, just print out diagnoses about!) a
 # partner species list Excel spreadsheet.
 
-def import_partner_species(excel_path):
+@transaction.commit_on_success
+def import_partner_species(partner_short_name, excel_path):
     book = xlrd.open_workbook(excel_path)
     sheet = book.sheet_by_index(0)
 
-    partner = models.PartnerSite.objects.get(short_name='montshire')
+    partner = models.PartnerSite.objects.get(short_name=partner_short_name)
     specieslist = sorted(models.Taxon.objects.all(),
                          key=attrgetter('scientific_name'))
 
