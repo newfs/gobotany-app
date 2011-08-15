@@ -692,7 +692,7 @@ class FamilyFunctionalTests(FunctionalTestCase):
     # probably need to rearrange import scripts to fix.
     def test_family_page_has_example_images(self):
         self.get('/families/lycopodiaceae/')
-        example_images = self.css('#main .familypics a img')
+        example_images = self.css('#main .pics a img')
         self.assertTrue(len(example_images))
 
     def test_family_page_has_list_of_genera(self):
@@ -707,4 +707,48 @@ class FamilyFunctionalTests(FunctionalTestCase):
         self.assertEqual('/ferns/lycophytes/#family=Lycopodiaceae',
                          key_link[0].get_attribute('href'))
 
+
+class GenusFunctionalTests(FunctionalTestCase):
+
+    def test_genus_page(self):
+        self.get('/genera/dendrolycopodium/')
+        heading = self.css('#main h2')
+        self.assertTrue(len(heading))
+        self.assertTrue(heading[0].text == 'Genus: Dendrolycopodium')
+        common_name = self.css('#main h3')
+        self.assertTrue(len(common_name))
+
+    def test_genus_page_has_glossarized_description(self):
+        self.get('/genera/dendrolycopodium/')
+        description = self.css('#main p.description')
+        self.assertTrue(len(description))
+        self.assertTrue(len(description[0].text) > 0)
+        glossary_items = self.css('#main p.description .gloss')
+        self.assertTrue(len(glossary_items))
+
+    @unittest2.skip('is this really broken or does Brandon lack the images?')
+    # TODO: This test passes after import_sample, but not after
+    # import_data, due to whether or not local images are available. Will
+    # probably need to rearrange import scripts to fix.
+    def test_genus_page_has_example_images(self):
+        self.get('/genera/dendrolycopodium/')
+        example_images = self.css('#main .pics a img')
+        self.assertTrue(len(example_images))
+
+    def test_genus_page_has_family_link(self):
+        self.get('/genera/dendrolycopodium/')
+        family_link = self.css('#main p.family a')
+        self.assertTrue(len(family_link))
+
+    def test_genus_page_has_list_of_species(self):
+        self.get('/genera/dendrolycopodium/')
+        species = self.css('#main .species li')
+        self.assertTrue(len(species))
+
+    def test_species_page_has_link_to_key(self):
+        self.get('/genera/dendrolycopodium/')
+        key_link = self.css('#main a.genus-species-btn')
+        self.assertTrue(len(key_link))
+        self.assertEqual('/ferns/lycophytes/#genus=Dendrolycopodium',
+                         key_link[0].get_attribute('href'))
 
