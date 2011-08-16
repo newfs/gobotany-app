@@ -9,56 +9,80 @@
 
         <div class="content">
             <div class="container">
-                <!--Main Image Area-->
-                <div id="banner">
+                 <div id="banner">
                     <div id="inner">
                         <div id="overlay">
                             <h2>Plant Identifier</h2>
-                            <img src="/static/images/layout/separator.png" alt="Go Botany">
-                            <p>Want to know what that plant is? With our Plant Identifier, you can identify over 1,200 native New England plants! Answer some questions step by step, and narrow down the possibilities. The key works best if you have an actual sample or a few photos of your plant.</p>
+                            <img src="/static/images/layout/separator.png"
+                                alt="Go Botany">
+                            <p>Want to know what that plant is? With our
+                            Plant Identifier, you can identify over
+                            1,200 native New England plants! Answer some
+                            questions step by step, and narrow down the
+                            possibilities. The key works best if you
+                            have an actual sample or a few photos of
+                            your plant.</p>
+                            {# If the user has elected to skip the start page, go right to the key. #}
                             <a href="{% if 'skip_help_start' in request.COOKIES.keys and request.COOKIES.skip_help_start == 'y' %}{% url simplekey-page 1 %}{% else %}/help/start/{% endif %}" id="cta">Get Started</a>
-                        </div><!--Closes #overlay-->
-                    </div><!--Closes #inner-->
-                </div><!--Closes #banner-->
+                        </div>
+                    </div>
+                </div>
 
-                <!--3 Column Section-->
                 <div class="three-col">
                     <h3>MyPlants</h3>
                     <h5>Connect with other plant fans!</h5>
-                    <p>Join our on-line community of plant enthusiasts! Find friends, collaborate on field surveys for plants, share your discoveries, get help identifying plants, make maps, and develop checklists of plants for particular sites you are exploring.</p>
+                    <p>Join our on-line community of plant enthusiasts! Find
+                    friends, collaborate on field surveys for plants, share
+                    your discoveries, get help identifying plants, make maps,
+                    and develop checklists of plants for particular sites you
+                    are exploring.</p>
                     <a class="learn-more">Learn More</a>
-                </div><!--Closes .three-col-->
+                </div>
 
                 <div class="three-col">
                     <h3>Advanced ID Tools</h3>
                     <h5>For experienced botanists!</h5>
-                    <p>Identify over 3,000 New England plants by using our Full Identification Key, including technical multiple-access and dichotomous keys to families, genera, and species. Also learn about subspecies and varieties native to our region.</p>
+                    <p>Identify over 3,000 New England plants by using our
+                    Full Identification Key, including technical
+                    multiple-access and dichotomous keys to families, genera,
+                    and species. Also learn about subspecies and varieties
+                    native to our region.</p>
                     <a class="learn-more" href="{% url advanced-id-tools %}">
                       Learn More
                     </a>
-                </div><!--Closes .three-col-->
+                </div>
 
                 <div class="three-col last">
                     <h3>Teaching Tools</h3>
                     <h5>A useful teaching resource!</h5>
-                    <p>Go Botany encourages informal, self-directed education in botany for science stduents and beginning and amateur botanists. Professors, teachers, and environmental educators can share curricula and teaching ideas.</p>
+                    <p>Go Botany encourages informal, self-directed education
+                    in botany for science stduents and beginning and amateur
+                    botanists. Professors, teachers, and environmental
+                    educators can share curricula and teaching ideas.</p>
                     <a class="learn-more" href="#">Learn More</a>
-                </div><!--Closes .three-col-->
+                </div>
 
                 <div class="clearit"></div>
 
-                <!--Plant of the Day Section-->
                 <div id="potd">
-                    <img src="/static/images/layout/potd-img1.jpg" alt="Magnolia Virginiana" />
+                    <img src="/static/images/layout/potd-img1.jpg" 
+                        alt="Magnolia Virginiana" />
                     <div class="details">
-                        <h4>Plant of the Day: <span class="latin">Magnolia Virginiana</span> <span class="english">Sweet Bay</span></h4>
-                        <p>Although it attains impressive sizes in the south, sweetbay magnolia is a medium-sized tree (20-60 feet or 10-20 meters tall) in southern New England. The leaves are lustrous green on top and white-hairy beneath, and often remain on the plant into early winter.</p>
+                        <h4>Plant of the Day: 
+                            <span class="latin">Magnolia Virginiana</span> 
+                            <span class="english">Sweet Bay</span></h4>
+                        <p>Although it attains impressive sizes in the south,
+                        sweetbay magnolia is a medium-sized tree (20-60 feet
+                        or 10-20 meters tall) in southern New England. The
+                        leaves are lustrous green on top and white-hairy
+                        beneath, and often remain on the plant into early
+                        winter.</p>
                         <a class="learn-more" href="#">Learn More</a>
-                    </div><!--Closes .details-->
+                    </div>
                     <div class="clearit"></div>
-                </div><!--Closes #potd-->
-            </div><!--Closes .container-->
-        </div><!--Closes .content-->
+                </div>
+            </div>
+        </div>
 
         {% include "simplekey/_footer.html" %}
         
