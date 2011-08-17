@@ -1653,3 +1653,26 @@ Family and Genus Pages Styles
     display: inline-block;
     float: right;
 }
+
+
+/*** Notification for draft status ***/
+
+#notify {
+    color: ##d4ee3b;
+    font-size: 150%;
+    font-weight: bold;
+    height: 0;
+    left: 0;
+    position: fixed;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+#notify div {
+    background-color: #e39f19;
+    border-bottom: 1px solid #d6800c;
+    color: #735005;
+    padding: 7px 0;
+}
+
