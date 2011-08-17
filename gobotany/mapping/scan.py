@@ -4,7 +4,7 @@ import csv
 import os
 import sys
 import xml.etree.ElementTree as etree
-from collections import namedtuple
+from collections import defaultdict, namedtuple
 from csv import DictReader
 from os.path import dirname, join
 
@@ -71,11 +71,14 @@ class MapScanner(object):
         self.points.sort()
 
     def scan(self, map_image_path):
+        #print map_image_path
         im = Image.open(map_image_path)
-        return [
-            MapStatus(p.state, p.county, pixel_status(im.getpixel((p.x, p.y))))
-            for p in self.points
-            ]
+        statuses = []
+        for p in self.points:
+            #print p.state, p.county, p.x, p.y, im.getpixel((p.x, p.y))
+            status = pixel_status(im.getpixel((p.x, p.y)))
+            statuses.append(MapStatus(p.state, p.county, status))
+        return statuses
 
 #
 
@@ -83,17 +86,71 @@ def scan(svg_path, mapdir, bonap_path):
     ms = MapScanner(svg_path)
     csv_writer = csv.writer(open(bonap_path, 'wb'))
     csv_writer.writerow(('scientific_name', 'state', 'county', 'status'))
-    for pngname in os.listdir(mapdir):
+    for pngname in sorted(os.listdir(mapdir)):
         if not pngname.endswith('.png'):
             continue
+        # if pngname < 'Sanicula canadensis':
+        #     # Skip ahead to a problematic map, for faster debugging
+        #     continue
         scientific_name = pngname[:-4]
         pngpath = join(mapdir, pngname)
         for tup in ms.scan(pngpath):
             row = [scientific_name, tup.state, tup.county, tup.status]
             csv_writer.writerow(row)
 
-def report():
-    pass
+def report(bonap_path, taxa_path):
+
+    # Make a dictionary of BONAP presence: scientific_name -> {state, ...}
+
+    bonap_reader = csv.DictReader(open(bonap_path, 'rb'))
+    bonap_states = defaultdict(set)
+    for row in bonap_reader:
+        if None in row.values():
+            # Survive a partially-written row, in case reports are being
+            # run while bonap.csv itself is being regenerated.
+            break
+        state_set = bonap_states[row['scientific_name']]
+        if 'present' in row['status']:
+            state_set.add(row['state'])
+
+    # Compare BONAP's ideas to our own.
+
+    taxa_reader = DictReader(open(taxa_path, 'rb'))
+    total = misses = 0
+    for row in taxa_reader:
+        total += 1
+        sn = row['Scientific__Name']
+        #print 'SN:', sn, '/ Distribution:', repr(row['Distribution'])
+
+        bstates = bonap_states.get(sn)
+        if bstates is None:
+            print '{0} - BONAP has no map'.format(sn)
+            misses += 1
+            continue
+
+        distribution = row['Distribution'].strip()
+        if not distribution:
+            print '{0} - our taxa.csv has no distribution'.format(sn)
+            continue
+
+        nstates = set(s.strip() for s in distribution.split('|'))
+
+        if nstates == bstates:
+            print '{0} - perfect match'.format(sn)
+            continue
+        ours = nstates - bstates
+        theirs = bstates - nstates
+        if ours or theirs:
+            print sn,
+            print '- both={0}'.format('|'.join(nstates & bstates)),
+        if ours:
+            print 'newfs_only={0}'.format('|'.join(ours)),
+        if theirs:
+            print 'bonap_only={0}'.format('|'.join(theirs)),
+        print
+
+    print '%d/%d (%f%%) species have images' % (
+        total - misses, total, 100. * (total - misses) / total)
 
 #
 
@@ -116,58 +173,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-    if False:
-        # Simple test; just print out data from one map.
-        pngpath = join(data, 'Acorus americanus New England.png')
-        for tup in ms.scan(pngpath):
-            print tup
-    if False:
-        # Read in taxa.csv and compare.
-        csvpath = join(csvdir, 'taxa.csv')
-        with open(csvpath) as csvfile:
-            total = misses = 0
-            # go = False
-
-            for row in DictReader(csvfile):
-                total += 1
-                sn = row['Scientific__Name']
-                print 'SN:', sn, '/ Distribution:', repr(row['Distribution'])
-
-                # Skip immediately to a later species in the file.
-                # if sn == 'Galeopsis ladanum':
-                #     go = True
-                # if not go:
-                #     continue
-
-                pngpath = join(mapdir, sn + '.png')
-                if not os.path.exists(pngpath):
-                    print 'No map for species {0}'.format(sn)
-                    misses += 1
-                    continue
-                tups = ms.scan(pngpath)
-                for tup in tups:
-                    print '  ', sn, tup.status, tup.state, tup.county
-                bstates = set(s.state for s in tups if s.status)
-
-                distribution = row['Distribution'].strip()
-                if not distribution:
-                    print 'We have no distribution for {0}'.format(sn)
-                    continue
-                nstates = set(s.strip() for s in distribution.split('|'))
-
-                if nstates == bstates:
-                    print 'Everything matches perfectly for {0}'.format(sn)
-                    continue
-                ours = nstates - bstates
-                theirs = bstates - nstates
-                if ours or theirs:
-                    print sn,
-                if ours:
-                    print 'NEWFS says', ' '.join(ours),
-                if theirs:
-                    print 'BONAP says', ' '.join(theirs),
-                print
-
-        print '%d/%d (%f%%) species have images' % (
-            total - misses, total, 100. * (total - misses) / total)
