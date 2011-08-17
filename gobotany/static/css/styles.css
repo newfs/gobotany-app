@@ -42,8 +42,7 @@ nav a {
     color: #fff;
 }
 nav a:hover {
-    background: url(/static/images/layout/active-nav.jpg) bottom center no-repeat;
-    color: #c3d941;
+    background: url(/static/images/layout/active-nav.png) bottom center no-repeat;
     text-decoration: none;
 }
 nav #search {
@@ -51,7 +50,7 @@ nav #search {
     height: 20px;
     padding: 0 0 0 11px;
     margin: 4px 4px 0 0;
-    background: url(/static/images/layout/search-left.jpg) left center no-repeat;
+    background: url(/static/images/layout/search-left.png) left center no-repeat;
 }
 nav #search input {
     width: 194px;
@@ -67,7 +66,7 @@ nav #search button {
     height: 20px;
     padding: 0;
     margin: 0;
-    background: url(/static/images/layout/search-btn.jpg) 0 0 no-repeat;
+    background: url(/static/images/layout/search-btn.png) 0 0 no-repeat;
     text-indent: -9000px;
     cursor: pointer;
 }
@@ -75,45 +74,43 @@ nav #search button:active {
     background-position: 0 -20px;
 }
 /***Active Nav State***/
-#home li.home a,
 #plant-id li.plant-id a,
-#plant-id-2 li.plant-id a,
-#plant-id-3 li.plant-id a,
-#getting-started li.plant-id a,
 #myplants li.myplants a,
 #advanced-id li.advanced-id a,
 #teaching-tools li.teaching-tools a,
 #about li.about a {
-    background: url(/static/images/layout/active-nav.jpg) bottom center no-repeat;
-    color: #c3d941;
+	background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;	
 }
+
+#home li.home a, #home li a:hover {
+	background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent;	
+}
+
 footer p {
-    margin: 0 0 10px 0;
-    font-size: 9px;
+	margin: 0 0 10px 0;
+	font-size: 9px;	
 }
 footer div.three-col {
-    width: 305px;
-    height: auto;
-    padding: 18px 0;
-    margin: 0 20px 0 0;
-    background: none;
+	width: 305px;
+	height: auto;
+	padding: 18px 0;
+	margin: 0 20px 0 0;
+	background: none;	
 }
 footer div.three-col.last {
-    padding: 18px 0;
+	padding: 18px 0;	
 }
 footer a {
-    color: #1a2e11;
+	color: #508e31;	
 }
-footer a:hover {
-    color: #6eae3e;
-}
+
 footer h6 {
-    font-weight: 11px;
-    font-family: Verdana, Geneva, sans-serif;
+	font-weight: 11px;
+	font-family: Verdana, Geneva, sans-serif;	
 }
 footer .nsf-logo {
-    float: left;
-    margin: 0 10px 0 0;
+	float: left;
+	margin: 0 10px 0 0;	
 }
 
 
@@ -148,161 +145,160 @@ footer .nsf-logo {
 	-webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);	
 }
 /*////////////////////////////////*/
-/* Page Structure for Top level pages
+/* Page Structure for Top level pages 
 (Non-app pages - Home, About, FAQ, etc.) */
 /*////////////////////////////////*/
 body.top-level {
-    background: url(/static/images/layout/bg-tile.jpg) repeat 0 0;
+	background: url(/static/images/layout/body-home.jpg) repeat-x left top #f3f3c3;	
 }
 .top-level header {
-    height: 177px;
+	height: 146px;	
 }
 .top-level header h1 {
-    width: 414px;
-    padding: 14px 0 0 0;
-    margin: 0 0 0 59px;
+	width: 414px;
+	margin: 0 0 0 67px;	
 }
 .top-level header h1 a {
-    width: 414px;
-    height: 123px;
-    background: url(/static/images/layout/logo-toplevel.png) no-repeat transparent;
+	width: 595px;
+	height: 107px;
+	background: url(/static/images/branding/logo-toplevel.png) no-repeat transparent;
 }
 
 .top-level header h2 a {
-    width: 160px;
-    height: 116px;
-    background: url(/static/images/layout/newfs-logo-toplevel.png) no-repeat transparent;
+	width: 160px;
+	height: 88px;
+	background: url(/static/images/branding/newfs-logo-toplevel.png) no-repeat transparent;	
 }
 .top-level nav {
-    padding: 0 0 0 29px;
-    background: url(/static/images/layout/nav-toplevel.png) no-repeat;
+	padding: 0 0 0 29px;
+	background: url(/static/images/layout/nav-toplevel.png) no-repeat; 	
 }
 .top-level nav li.home {
-    margin: 0 83px 0 0;
+	margin: 0 83px 0 0;	
 }
 
 /*////////////////////////////////*/
 /* Home Page Styles */
 /*////////////////////////////////*/
 body#home {
-    background: url(/static/images/layout/bg-tile.jpg) repeat 0 0;
-}
-body#home .content {
-    background: url(/static/images/layout/content-home-bg.jpg) repeat-x 0 0 #fff;
-    border-bottom: 1px solid #e1e1e1;
-}
-#banner {
-    height: 325px;
-    margin: 10px 0 0 0;
-    background: url(/static/images/layout/banner-img1.jpg) no-repeat;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-    -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-    -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+	background: url(/static/images/layout/body-home.jpg) repeat-x left top #f3f3c3;	
 }
 
-#banner #inner {
-    height: 313px;
-    border: 6px solid rgba(255, 255, 255, 0.8);
+body#home #top-wrapper {
+	background: url(/static/images/layout/content-home-bg.jpg) center 72px no-repeat transparent;	
+}
+#banner {
+	width: 948px;
+	height: 333px;	
+	padding: 6px;
+	margin: 10px 0 0 0;
+	background: url(/static/images/layout/banner-img1.jpg) no-repeat;
+	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+	-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
 
 #banner #overlay {
-    float: right;
-    width: 244px;
-    height: 276px;
-    padding: 15px 30px 22px;
-    background: rgba(255, 255, 255, 0.8);
+	float: right;
+	width: 244px;
+	height: 318px;
+	padding: 15px 30px 0px;
+	background: rgba(255, 255, 255, 0.8);	
 }
 
 #banner h2 {
-    margin: 0 0 15px 0;
-    line-height: normal;
-    color: #519136;
+	margin: 0 0 15px 0;
+	line-height: normal;
+	color: #519136;	
 }
 #banner p {
-    margin: 12px 0 0 0;
-    text-shadow: 0px 1px 1px #fff;
+	margin: 12px 0 0 0;
+	text-shadow: 0px 1px 1px #fff;	
 }
 #banner a#cta {
-    display: block;
-    width: 240px;
-    height: 37px;
-    margin: 21px 0 0;
-    background: url(/static/images/layout/get-started-btn.png) 0 0 no-repeat transparent;
-    text-indent: -9000px;
+	display: block;
+	width: 244px;
+	height: 41px;
+	margin: 21px 0 0;
+	background: url(/static/images/layout/get-started-btn-orange.png) 0 0 no-repeat transparent;	
+	text-indent: -9000px;
 }
 #banner a#cta:hover {
-    background-position: 0 -37px;
+	background-position: 0 -41px;	
 }
 #banner a#cta:active {
-    background-position: 0 -74px;
+	background-position: 0 -82px;		
 }
 div.three-col {
-    float: left;
-    width: 289px;
-    height: 230px;
-    padding: 18px 23px 0 0;
-    margin: 0 23px 0 0;
-    background: url(/static/images/layout/dot.png) right top repeat-y;
+	float: left;
+	width: 289px;
+	height: 230px;
+	padding: 8px 23px 0 0;
+	margin: 0 23px 0 0;
+	background: url(/static/images/layout/dot.png) right top repeat-y;	
 }
 div.three-col.last {
-    padding: 18px 0 0 0;
-    margin: 0 0 0 0;
-    background: 0;
+	padding: 8px 0 0 0;
+	margin: 0 0 0 0;
+	background: 0;	
 }
-        
-div.three-col h3 {
-    margin: 0 0 13px 0;
+div.three-col.last a.learn-more {
+	margin: 33px 0 0 0;
 }
+
 div.three-col h5 {
-    margin: 0 0 3px 0;
-    font-style: italic;
+	margin: 0 0 3px 0;
+	font-style: italic;	
+	color: #807121;
 }
 div.three-col a.learn-more {
-    margin: 15px 0 0 0;
+	margin: 13px 0 0 0;	
 }
 a.learn-more {
-    display: block;
-    width: 111px;
-    height: 32px;
-    background: url(/static/images/layout/learn-more-btn.png) 0 0 no-repeat;
-    text-indent: -9000px;
+	display: block;
+	width: 111px;
+	height: 32px;
+	background: url(/static/images/layout/learn-more-btn.png) 0 0 no-repeat;
+	text-indent: -9000px;	
 }
 a.learn-more:hover {
-    background-position: 0 -32px;
+	background-position: 0 -32px;	
 }
 a.learn-more:active {
-    background-position: 0 -64px;
+	background-position: 0 -64px;	
 }
 /*Plant of the Day Module*/
 div#potd {
-    padding: 10px;
-    margin: 0 0 25px 0;
-    border: 3px solid #fff;
-    background: #fafae1;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+	padding: 10px;
+	margin: 15px 0 15px 0;
+	border: 3px solid #fff;
+	background: #c7e2a1;
+	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
 }
 #potd img {
-    float: left;
-    margin: 0 15px 0 0;
+	float: left;
+	margin: 0 15px 0 0;	
 }
-#potd h4 {
-    margin: 0 0 10px 0;
+#potd .details {
+	float: left;	
+	width: 640px;
 }
 #potd h4 span.latin {
-    font-size: 14px;
-    text-transform: uppercase;
+	font-size: 14px;
+	text-transform: uppercase;	
 }
 #potd h4 span.english {
-    font-size: 12px;
-    font-style: italic;
-    color: #808080;
+	font-size: 12px;
+	font-style: italic;
+	color: #807121;	
 }
 #potd a.learn-more {
-    float: right;
-    margin: -8px 0 0 0;
+	float: right;
+	margin: -12px 0 0 0;	
 }
+
 /*////////////////////////////////*/
 /*Styles for App level pages 
 (App pages - all levels of Plant Identifier etc.) */
@@ -1263,7 +1259,7 @@ a.my-plant {
 	width: 151px;
 	height: 32px;
 	margin: 0 0 8px 0;
-	background: url(../images/layout/myplant-btn.png) 0 0 no-repeat;
+	background: url(/static/images/layout/myplant-btn.png) 0 0 no-repeat;
 	text-indent: -9000px;	
 }
 a.my-plant:hover {
@@ -1276,7 +1272,7 @@ a.description-control {
 	display: block;
 	padding: 3px 0 3px 25px;
 	margin: 10px 0 12px 0;
-	background: url(../images/icons/plus.png) left 50% no-repeat;	
+	background: url(/static/images/icons/plus.png) left 50% no-repeat;	
 }
 ul.characteristics span {
 	text-transform: uppercase;	
@@ -1301,7 +1297,7 @@ ul.full-description li:hover {
 	background-color: #fff;
 }
 ul.full-description li h5 {
-	background: url(../images/icons/plus.png) right 50% no-repeat;	
+	background: url(/static/images/icons/plus.png) right 50% no-repeat;	
 }
 ul.full-description li ul {
 	display: none;	
@@ -1395,24 +1391,24 @@ Getting Started Page Styles
 #getting-started .first.question {
 	margin: 11px 0 0 0;
 	border-top: 1px solid #e2dfcb;
-	background: url(../images/icons/1.png) left 18px no-repeat;	
+	background: url(/static/images/icons/1.png) left 18px no-repeat;	
 }
 
 #getting-started .second.question {
-	background: url(../images/icons/2.png) left 18px no-repeat;	
+	background: url(/static/images/icons/2.png) left 18px no-repeat;	
 }
 #getting-started .third.question {
-	background: url(../images/icons/3.png) left 18px no-repeat;	
+	background: url(/static/images/icons/3.png) left 18px no-repeat;	
 }
 #getting-started .fourth.question {
-	background: url(../images/icons/4.png) left 18px no-repeat;	
+	background: url(/static/images/icons/4.png) left 18px no-repeat;	
 }
 #getting-started .fifth.question {
-	background: url(../images/icons/5.png) left 18px no-repeat;	
+	background: url(/static/images/icons/5.png) left 18px no-repeat;	
 }
 #getting-started .sixth.question {
 	margin: 0 0 11px 0;
-	background: url(../images/icons/6.png) left 18px no-repeat;	
+	background: url(/static/images/icons/6.png) left 18px no-repeat;	
 }
 #getting-started a.screenshot {
 	display: none;
@@ -1437,7 +1433,7 @@ Getting Started Page Styles
 }
 #getting-started .question h4 {
 	margin: 0 0 15px 0;
-	background: url(../images/icons/plus.png) right 50% no-repeat;	
+	background: url(/static/images/icons/plus.png) right 50% no-repeat;	
 	cursor: pointer;
 }
 #getting-started .first.question h4 {
@@ -1450,7 +1446,7 @@ Getting Started Page Styles
 	width: 280px;
 	height: 32px;
 	margin: 10px 0 0 0;
-	background: url(../images/layout/onward-btn.png) 0 0 no-repeat transparent;
+	background: url(/static/images/layout/onward-btn.png) 0 0 no-repeat transparent;
 	text-indent: -9000px;	
 }
 #getting-started a.onward-btn:hover {
@@ -1634,7 +1630,7 @@ Family and Genus Pages Styles
     padding-top: 30px;
 }
 #family .family-genera-btn {
-    background: url(../images/layout/family-btn.png) no-repeat scroll 0 0 transparent;
+    background: url(/static/images/layout/family-btn.png) no-repeat scroll 0 0 transparent;
     clear: both;
     display: block;
     float: left;

@@ -3,7 +3,7 @@ nav #search #search-suggest input {
     font-size: 14px;
 }
 
-/* For now, need both rules to style WebKit and Moz. HTML5 placeholder text */
+/* For now, need both rules to style WebKit and Moz HTML5 placeholder text */
 nav #search #search-suggest input::-webkit-input-placeholder {
     color: #999;
 }
@@ -52,7 +52,7 @@ nav #search-suggest a:hover, #search-suggest li:hover {
 }
 
 #home #search-suggest div {
-    top: 163px;
+    top: 133px;
 }
 
 #search-suggest li.highlighted {

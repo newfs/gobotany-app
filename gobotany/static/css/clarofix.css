@@ -5,7 +5,7 @@ ol li, ul li {
 }
 
 .claro {
-    color: #1a2e11;
+   	color: #000;
     font-family: Verdana, Geneva, sans-serif;
-    font-size: 11px;
+	font-size: 12px;
 }
