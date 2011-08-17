@@ -6,6 +6,7 @@ import sys
 import xml.etree.ElementTree as etree
 from collections import defaultdict, namedtuple
 from csv import DictReader
+from operator import itemgetter
 from os.path import dirname, join
 
 from PIL import Image
@@ -117,14 +118,26 @@ def report(bonap_path, taxa_path):
 
     taxa_reader = DictReader(open(taxa_path, 'rb'))
     total = misses = 0
-    for row in taxa_reader:
+    rows = sorted(taxa_reader, key=itemgetter('Scientific__Name'))
+
+    for row in rows:
         total += 1
         sn = row['Scientific__Name']
         #print 'SN:', sn, '/ Distribution:', repr(row['Distribution'])
 
+        if sn not in bonap_states:
+            # Accept a map named "Asplenium trichomanes ssp. trichomanes"
+            # for the species we call simply "Asplenium trichomanes"
+            sn = '{0} ssp. {1}'.format(sn, sn.split()[1])
+
         bstates = bonap_states.get(sn)
         if bstates is None:
-            print '{0} - BONAP has no map'.format(sn)
+            print '{0} - BONAP has no map'.format(sn),
+            similars = [ n for n in bonap_states if n.startswith(sn+' ') ]
+            if similars:
+                print '(but does have {0})'.format(
+                    ', '.join('"{0}"'.format(s) for s in similars)),
+            print
             misses += 1
             continue
 
