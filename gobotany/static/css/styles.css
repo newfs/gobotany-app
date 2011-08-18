@@ -42,7 +42,7 @@ nav a {
     color: #fff;
 }
 nav a:hover {
-    background: url(/static/images/layout/active-nav.png) bottom center no-repeat;
+    background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
     text-decoration: none;
 }
 nav #search {
@@ -86,6 +86,9 @@ nav #search button:active {
 	background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent;	
 }
 
+footer {
+    height: 124px;
+}
 footer p {
 	margin: 0 0 10px 0;
 	font-size: 9px;	
@@ -303,286 +306,275 @@ div#potd {
 /*Styles for App level pages 
 (App pages - all levels of Plant Identifier etc.) */
 /*////////////////////////////////*/
+body.app {
+	background: #f0f0c0;
+}
 .app header {
-    height: 120px;
-    background: url(/static/images/layout/bg-tile.jpg) repeat 0 0;
+	height: 120px;
 }
 .app .content {
-    padding: 8px 0 0 0;
-    background: url(/static/images/layout/bg-tile.jpg) repeat 0 0;
+	padding: 8px 0 0 0;
+	background: url(/static/images/layout/little-plants.jpg) center bottom no-repeat;
 }
 .app header h1 {
-    width: 460px;
-    padding: 14px 0 0 0;
-    margin: 0 0 0 -15px;
+	width: 443px;
+	padding: 14px 0 0 0;
+	margin: 0 0 0 -15px;	
 }
 .app header h1 a {
-    width: 460px;
-    height: 66px;
-    background: url(/static/images/layout/logo-app.png) no-repeat transparent;
+	width: 443px;
+	height: 65px;
+	background: url(/static/images/layout/logo-app.png) no-repeat transparent;
 }
 
 .app header h2 a {
-    width: 94px;
-    height: 69px;
-    background: url(/static/images/layout/newfs-logo-app.png) no-repeat transparent;
+	width: 116px;
+	height: 66px;
+	background: url(/static/images/layout/newfs-logo-app.png) no-repeat transparent;	
 }
 .app nav {
-    padding: 0 0 0 48px;
-    background: url(/static/images/layout/nav-app.png) no-repeat;
+	padding: 0 0 0 48px;
+	background: url(/static/images/layout/nav-app-green.png) no-repeat; 	
 }
 .app footer {
-    border-top: 1px solid #e3e3de;
-    background: #fff;
+	background: #b4d57f;
 }
 #main {
-    float: right;
-    width: 710px;
+	float: right;
+	width: 710px;	
 }
 #sidebar {
-    float: left;
-    width: 228px;
-    padding: 16px 0;
-    border-top: 1px solid #e1e1dc;
-    border-right: 1px solid #e1e1dc;
-    border-left: 1px solid #e1e1dc;
-    background: rgba(255, 255, 255, 0.35);
+	float: left;
+	width: 228px;
+	padding: 16px 0;
+	border-top: 1px solid #c3d941;	
+	border-right: 1px solid #c3d941;	
+	border-left: 1px solid #c3d941;	
+	background: #fff;
 }
 #sidebar .section {
-    padding: 0 16px 16px;
+	padding: 0 16px 16px;	
+}
+#sidebar .section.plant-map {
+	padding: 0 25px 16px 16px;
+	background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat;	
+}
+#sidebar .section.plant-map p {
+	margin: 15px 0 0 0;
 }
 
 /*****-----------
 Breadcrumb Styles
 ----------******/
 #breadcrumb {
-    height: 29px;
-    position: relative;
-    margin: 0 0 12px 0;
-    font-size: 12px;
-    line-height: 29px;
-    letter-spacing: 0.75px;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    text-transform: uppercase;
+	height: 29px;
+	position: relative;
+	margin: 0 0 12px 0;
+	font-size: 12px;
+	line-height: 29px;
+	letter-spacing: 0.75px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	text-transform: uppercase;
 }
 #breadcrumb li {
-    display: block;
-    position: absolute;
-    width: 174px;
-    padding: 0 0 0 13px;
-    background: url(/static/images/layout/breadcrumb-tails.png) 0 0 no-repeat transparent;
+	display: block;
+	position: absolute;
+	width: 174px;
+	padding: 0 0 0 13px;
+	background: url(/static/images/layout/breadcrumb-tails-orange.png) 0 0 no-repeat transparent;
 }
 
 #breadcrumb li.first {
-    width: 170px;
-    padding: 0;
-    left: 0;
+	width: 170px;
+	padding: 0;
+	left: 0;
 }
 #breadcrumb li.second {
-    left: 163px;
+	left: 163px;	
 }
 #breadcrumb li.third {
-    left: 343px;
+	left: 343px;	
 }
 #breadcrumb li.last {
-    right: 0;
+	right: 0;	
 }
 #breadcrumb li a {
-    display: block;
-    height: 29px;
-    padding: 0 0 0 13px;
-    color: #fff;
+	display: block;
+	height: 29px;
+	padding: 0 0 0 13px;
+	color: #fff;
 }
 #breadcrumb li a img {
-    margin: 0 3px 0 0;
-    vertical-align: -3px;
-}
+	margin: 0 3px 0 0;
+	vertical-align: -3px;
+}	
 #breadcrumb li.first a img {
-    vertical-align: -4px;
+	vertical-align: -4px;	
 }
 #breadcrumb li.current {
-    background-position: 0 0;
+	background-position: 0 0;	
 }
 #breadcrumb li.current a {
-    background: #519136 url(/static/images/layout/breadcrumb-tips.png) right 0 no-repeat;
+	background: url(/static/images/layout/breadcrumb-tips.jpg) right 0 no-repeat;	
+	cursor: default;
 }
 #breadcrumb li.upcoming {
-    background-position: 0 -58px;
+	background-position: 0 -58px;	
 }
 #breadcrumb li.upcoming a {
-    background: #d3d3d3 url(/static/images/layout/breadcrumb-tips.png) right -58px no-repeat;
+	background: url(/static/images/layout/breadcrumb-tips.jpg) right -58px no-repeat;	
 }
 #breadcrumb li.completed {
-    background-position: 0 -29px;
+	background-position: 0 0;	
 }
 #breadcrumb li.completed a {
-    background: #c3d941 url(/static/images/layout/breadcrumb-tips.png) right -29px no-repeat;
+	background: url(/static/images/layout/breadcrumb-tips.jpg) right 0 no-repeat;	
 }
 #breadcrumb li.completed:hover {
-    background-position: 0 -116px;
-    cursor: pointer;
+	background-position: 0 -29px;
+	cursor: pointer;
 }
 #breadcrumb li.completed:hover a {
-    background-position: right -116px;
-    background-color: #d4ee3b;
+	background-position: right -29px;
 }
 #breadcrumb li a:hover {
-    text-decoration: none;
+	text-decoration: none;	
 }
-
-
 .app .content h2 {
-    color: #519136;
-}
+	color: #519136;
+}	
 
 .not-my-plant {
-    float: right;
-    padding: 15px 0 0 0;
-    text-align: center;
+	float: right;	
+	padding: 40px 0 0 0;
+	text-align: center;
 }
 .not-my-plant h6 {
-    color: #606060;
-}
-.not-my-plant a {
-    display: block;
-    width: 216px;
-    height: 32px;
-    margin: 5px 0 0 0;
-    background: url(/static/images/layout/other-groups-btn.png) 0 0 no-repeat transparent;
-    text-indent: -9000px;
-}
-.not-my-plant a.back-level {
-    background: url(/static/images/layout/back-level-btn.png) 0 0 no-repeat transparent;
-}
-.not-my-plant a:hover {
-    background-position: 0 -32px;
-}
-.not-my-plant a:active {
-    background-position: 0 -64px;
+	color: #606060;	
 }
 
 /*****-----------
 Plant Listing Styles
 ----------******/
 .list-item {
-    padding: 20px 0 0 0;
-    margin: 20px 0 0 0;
-    border-top: 1px solid rgba(128, 113, 33, 0.1);
+	padding: 20px 0 0 0;	
+	margin: 20px 0 0 0;
+	border-top: 1px solid rgba(128, 113, 33, 0.1);
 }
 .list-item.last {
-    padding: 20px 0;
-    border-bottom: 1px solid rgba(128, 113, 33, 0.1);
+	padding: 20px 0;
+	border-bottom: 1px solid rgba(128, 113, 33, 0.1);	
 }
 .list-item h3 {
-    margin: 0 0 5px 0;
-    line-height: 90%;
+	margin: 0 0 5px 0;	
+	line-height: 90%;
 }
 .list-item h3 span {
-    font-size: 12px;
-    font-style: italic;
-    color: #606060;
+	font-size: 12px;
+	font-style: italic;
+	color: #807121;	
 }
 .img-gallery {
-    position: relative;
-    width: 165px; /*175px;*/
-    float: left;
-    margin: 0 10px 0 0;
+	position: relative;
+	width: 165px; /* 175px */;
+	float: left;
+	margin: 0 10px 0 0;	
 }
 .img-gallery .img-container {
-    position: relative;
-    width: 160px; /*170px;*/
-    height: 149px;
-    overflow: hidden;
+	position: relative;
+	width: 160px; /*170px;*/
+	height: 149px;
+	overflow: hidden;
+	
 }
-
 .img-gallery .frame {
-    border: 5px solid rgba(255, 255, 255, 0.8);
-    cursor: pointer;
+	width: 150px; /*160px;*/
     height: 139px;	
-    position: absolute;
-    top: 0;
-    width: 150px; /*160px;*/
-    z-index: 100;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-    -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-    -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+	border: 5px solid rgba(255, 255, 255, 0.8);
+	position: absolute;
+	z-index: 100;
+	top: 0;
+	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+	-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
-
 .img-gallery .images {
-    position: absolute;
-    width: 12000px;
-    clear: both;
-    margin: 0;
-    padding: 0;
+	position: absolute;
+	width: 12000px;
+	clear: both;
+	margin: 0;
+	padding: 0;	
 }
 .img-gallery .images img {
-    float: left;
+	float: left;	
 }
 .img-gallery .controls {
-    margin: 8px 0 0 0;
-    text-align: center;
+	margin: 8px 0 0 0;
+	text-align: center;	
 }
 .controls a {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    text-indent: -9000px;
-    cursor: pointer;
+	display: inline-block;
+	width: 17px;
+	height: 17px;
+	text-indent: -9000px;	
+	cursor: pointer;
 }
 .controls a.next {
-    background: url(/static/images/icons/next.png) 0 0 no-repeat transparent;
+	background: url(/static/images/icons/next-large.png) 0 0 no-repeat transparent;	
 }
 .controls a.prev {
-    background: url(/static/images/icons/prev.png) 0 0 no-repeat transparent;
+	background: url(/static/images/icons/prev-large.png) 0 0 no-repeat transparent;	
 }
 .list-item .details {
-    float: left;
-    width: 525px;
+	float: left;	
+	width: 525px;
 }
 .list-item p {
-    padding: 0 0 7px 25px;
+	padding: 0 0 7px 25px;
 }
 .list-item .section-title {
-    display: block;
-    text-transform: uppercase;
+	display: block;
+	text-transform: uppercase;	
 }
 
-.list-item p.key-char {
-    background: url(/static/images/icons/icon1.png) 0 2px no-repeat;
+p.key-char {
+	background: url(/static/images/icons/icon1.png) 0 2px no-repeat;	
+	
 }
-.list-item p.exceptions {
-    background: url(/static/images/icons/icon2.png) 0 2px no-repeat;
+p.exceptions {
+	background: url(/static/images/icons/icon2.png) 0 2px no-repeat;	
 }
-.list-item p.vid {
-    background: url(/static/images/icons/icon3.png) 0 2px no-repeat;
+p.vid {
+	padding: 0 0 7px 25px;
+	background: url(/static/images/icons/icon3.png) 0 2px no-repeat;	
 }
 .list-item a.plant-in-group {
-    display: block;
-    width: 212px;
-    height: 31px;
-    margin: 10px 0 0 0;
-    background: url(/static/images/layout/plant-in-group-btn.png) no-repeat 0 0;
-    text-indent: -9000px;
+	display: block;
+	width: 212px;
+	height: 31px;
+	margin: 10px 0 0 0;
+	background: url(/static/images/layout/plant-in-group-btn-orange.png) no-repeat 0 0;	
+	text-indent: -9000px;
 }
 .list-item a.plant-in-group:hover {
-    background-position: 0 -31px;
+	background-position: 0 -31px;	
 }
 .list-item a.plant-in-group:active {
-    background-position: 0 -62px;
+	background-position: 0 -62px;	
 }
 .list-item a.plant-in-subgroup {
-    display: block;
-    width: 233px;
-    height: 32px;
-    margin: 10px 0 0 0;
-    background: url(/static/images/layout/plant-in-subgroup-btn.png) no-repeat 0 0;
-    text-indent: -9000px;
+	display: block;
+	width: 233px;
+	height: 32px;
+	margin: 10px 0 0 0;
+	background: url(/static/images/layout/plant-in-subgroup-btn-orange.png) no-repeat 0 0;	
+	text-indent: -9000px;
 }
 .list-item a.plant-in-subgroup:hover {
-    background-position: 0 -32px;
+	background-position: 0 -32px;	
 }
 .list-item a.plant-in-subgroup:active {
-    background-position: 0 -64px;
+	background-position: 0 -64px;	
 }
 
 
@@ -590,45 +582,54 @@ Plant Listing Styles
 Sidebar Styles
 --------*****/
 #sidebar h5 {
-    margin: 0 0 5px 0;
+	margin: 0 0 5px 0;	
 }
 #sidebar a.get-help-btn {
-    display: block;
-    width: 113px;
-    height: 32px;
-    margin: 10px 0 20px;
-    background: url(/static/images/layout/get-help-btn.png) 0 0 no-repeat transparent;
-    text-indent: -9000px;
+	display: block;
+	width: 104px;
+	height: 32px;
+	margin: 10px 0 20px;
+	background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent;
+	text-indent: -9000px;
 }
 #sidebar a.get-help-btn:hover {
-    background-position: 0 -32px;
+	background-position: 0 -32px;
 }
 #sidebar a.get-help-btn:active {
-    background-position: 0 -64px;
+	background-position: 0 -64px;
+}
+
+#sidebar a.clear-all-btn {
+	display: block;
+	width: 104px;
+	height: 32px;
+	margin: 0 0 0 6px;
+	background: url(/static/images/layout/clear-all-btn.png) 0 0 no-repeat transparent;
+	text-indent: -9000px;
+}
+#sidebar a.clear-all-btn:hover {
+	background-position: 0 -32px;
+}
+#sidebar a.clear-all-btn:active {
+	background-position: 0 -64px;
 }
 
 #sidebar a.view-map-btn {
-    display: block;
-    width: 113px;
-    height: 32px;
-    margin: 10px 0 20px;
-    background: url(/static/images/layout/view-map-btn.png) 0 0 no-repeat transparent;
-    text-indent: -9000px;
+	display: block;
+	width: 113px;
+	height: 32px;
+	margin: 10px 0 20px;
+	background: url(/static/images/layout/view-map-btn-orange.png) 0 0 no-repeat transparent;
+	text-indent: -9000px;
 }
 #sidebar a.view-map-btn:hover {
-    background-position: 0 -32px;
+	background-position: 0 -32px;
 }
 #sidebar a.view-map-btn:active {
-    background-position: 0 -64px;
+	background-position: 0 -64px;
 }
-a.sidebarlink {
-    color: #1a2e11;
-}
-#sidebar .clear-filter {
-    display: block;
-}
-#sidebar .clear-filter.hidden {
-    display: none;
+#sidebar a.sidebarlink {
+	color: #1a2e11;
 }
 #dist-county-map {
     height: 290px; /* SVG map: WebKit needs height and width set */

@@ -46,7 +46,7 @@ nav #search-suggest a:hover, #search-suggest li:hover {
     margin: 0 auto;
     position: absolute;
     text-align: left;
-    top: 106px;
+    top: 105px;
     width: 233px;
     z-index: 101;
 }

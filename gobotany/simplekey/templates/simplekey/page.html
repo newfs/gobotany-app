@@ -42,16 +42,8 @@
                         </ul>
                     </div><!--Closes #breadcrumb-->
 
-                    {% include "simplekey/_plant_not_in_group.html" %}
-
                     <h2>Plant Identifier</h2>
-                    <h4>Is your plant in
-                        {% if pilegroups_and_urls|length > 1 %}
-                            one of these groups?
-                        {% else %}
-                            this group?
-                        {% endif %}
-                    </h4>
+                    <h4>Which group best describes your plant?</h4>
 
                     <div class="clearit"></div>
 
@@ -92,11 +84,9 @@
                     </div><!--Closes .list-item-->
                     {% endfor %}
 
-                    {% include "simplekey/_plant_not_in_group.html" %}
-
                 </div><!--closes #main-->
 
-                <div id="sidebar">
+                <div id="sidebar" style="height: 1639px;">
                     {% include "simplekey/_sidebar_items.html" %}
                 </div><!--Closes #sidebar-->
 
