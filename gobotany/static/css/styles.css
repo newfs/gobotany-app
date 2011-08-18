@@ -445,12 +445,14 @@ Breadcrumb Styles
 }	
 
 .not-my-plant {
-	float: right;	
-	padding: 40px 0 0 0;
+	float: right;
+    font-family: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif;
+    padding: 40px 0 0 0;
 	text-align: center;
 }
 .not-my-plant h6 {
-	color: #606060;	
+	color: #606060;
+    padding: 0 0 1px 0;
 }
 
 /*****-----------
