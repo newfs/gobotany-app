@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
@@ -549,11 +550,11 @@ class Taxon(models.Model):
         through='TaxonCharacterValue')
     taxonomic_authority = models.CharField(max_length=100)
     images = generic.GenericRelation(ContentImage)
-    habitat = models.CharField(max_length=300)
+    habitat = models.CharField(max_length=300, blank=True)
     factoid = models.CharField(max_length=300, blank=True)
     uses = models.CharField(max_length=300, blank=True)
-    wetland_status_code = models.CharField(max_length=20)
-    wetland_status_text = models.CharField(max_length=150)
+    wetland_status_code = models.CharField(max_length=20, blank=True)
+    wetland_status_text = models.CharField(max_length=150, blank=True)
     north_american_native = models.BooleanField(default=False)
     conservation_status_ct = models.CharField(max_length=100)
     conservation_status_me = models.CharField(max_length=100)
@@ -590,6 +591,17 @@ class Taxon(models.Model):
 
     def get_piles(self):
         return [pile.name for pile in self.piles.all()]
+
+    def partners(self):
+        return PartnerSite.objects.filter(species=self)
+
+    def partner_users(self):
+        users = []
+        for site in self.partners():
+            print 'site!', site
+            print 'users', site.users.all()
+            users.extend(site.users.all())
+        return users
 
 
 class TaxonCharacterValue(models.Model):
@@ -646,13 +658,13 @@ class PartnerSite(models.Model):
     """
     short_name = models.CharField(max_length=30)
     species = models.ManyToManyField(Taxon, through='PartnerSpecies')
+    users = models.ManyToManyField(User)
 
     class Meta:
         ordering = ['short_name']
 
     def __unicode__(self):
         return '%s' % self.short_name
-
 
 class PartnerSpecies(models.Model):
     """A binary relation putting taxa in `TaxonGroup` collections."""
