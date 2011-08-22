@@ -1,3 +1,6 @@
+// TODO: Integrate all this code into an appropriate place within the
+// main JavaScript code base, and get rid of this file.
+
 // 100% Height for Sidebar
 function sidebarHeight() {
     var MINIMUM_HEIGHT = 550;
@@ -42,9 +45,6 @@ $(function() {
     // Set sidebar height
     sidebarHeight();
 
-    // Hide Working Area
-    $('div.working-area').hide();
-    
     // Clicking Close button in working area
     $('div.working-area a.close').click(function(){
         $(this).parent().slideUp('fast', function(){

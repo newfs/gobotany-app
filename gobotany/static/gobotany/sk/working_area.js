@@ -90,11 +90,17 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         var f = this.filter;
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
 
+        // Show the heading, question text and Apply button.
         d.query('h4').html(f.friendly_name);
+        d.query('h4').style({display: 'block'});
         d.query('.question').html(p(f.question)).forEach(this.glossarize);
         d.query('.hint').html(p(f.hint)).forEach(this.glossarize);
-        //q('.actions').html('actions');
-        
+        d.query('.info').style({display: 'block'});
+        d.query('.apply-btn').style({display: 'block'});
+
+        // Hide the introduction message.
+        d.query('.intro-message').style({display: 'none'});
+
         // Use jQuery to show the working area with a slide effect.
         $(d).slideDown('fast');
 

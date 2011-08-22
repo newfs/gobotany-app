@@ -811,11 +811,18 @@ h5.help {
 
 /** Working area **/
 .working-area {
-    display: none;
-    padding: 15px;
-    margin: 10px 0 15px 0;
-    border: 1px solid #F6F6D1;
-    background: #f9f9e4;
+    background: #fff;
+    border: 1px solid #c3d941;
+    clear: left;
+    margin: 0 0 15px 0;
+    padding: 10px 15px 15px;
+    position: relative;
+}
+.working-area img.arrow {
+    display: block;
+    left: -12px;
+    position: absolute;
+    top: 33px;
 }
 .choices {
     border-spacing: 5px 20px;
@@ -861,7 +868,15 @@ h5.help {
     background: url(/static/images/icons/close.png) 0 -16px no-repeat transparent;
 }
 .working-area h4 {
-    color: #519136;
+    color: #807121;
+    display: none;
+    margin: 0 0 12px;
+}
+.working-area .intro-message h4 {
+    display: block;
+}
+.working-area .info {
+    display: none;
 }
 .working-area span.hint {
     font-style: italic;
@@ -893,13 +908,13 @@ h5.help {
     border: 1px solid #e1e1dc;
 }
 .working-area .apply-btn {
-    display: block;
-    float: right;
-    width: 92px;
-    height: 32px;
     background: url(/static/images/layout/apply-btn.png) no-repeat 0 0 transparent;
+    display: none;
+    float: right;
+    height: 32px;
     text-align: left;
     text-indent: -9000px;
+    width: 92px;
 }
 .working-area .apply-btn:hover {
     background-position: 0 -32px;
@@ -997,15 +1012,6 @@ by javascript, see gobotany.sk.results.notify() */
 #plant-preview div.nav {
     clear: both;
     text-align: center;
-}
-
-
-
-div.working-area {
-    border: 1px solid #ddd;
-    clear: left;
-    display: none;
-    padding: 1em;
 }
 
 div.working-area .close {

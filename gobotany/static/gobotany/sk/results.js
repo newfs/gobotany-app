@@ -172,7 +172,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         this.species_section.perform_query();
         dojo.publish('/sk/filter/change', [filter]);
 
-        // Show the filter working area if necessary.
+        // Show a filter in the filter working area if necessary.
         var filter_name = this.filter_section.visible_filter_short_name;
         if (filter_name !== '') {
             var filter = this.filter_manager.get_filter(filter_name);
