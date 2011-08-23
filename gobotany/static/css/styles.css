@@ -642,6 +642,36 @@ Sidebar Styles
 /*******------
 Level 3 Id styles
 --------*****/
+.already-know {
+    float: left;
+    margin: 0 0 15px 0;
+}	
+.show-me {
+    float: right;
+    margin: 0 0 15px 0;
+}	
+.already-know h6, .show-me h6 {
+    margin: 0 0 5px 0;
+    font-weight: bold;
+    color: #807121;
+}
+.already-know label {
+    vertical-align: middle;
+}
+.already-know .dijitButton {
+    margin: 0 10px 0 0;
+}
+
+.already-know .dijitButton .dijitButtonNode {
+    height: 14px;
+    line-height: 14px;
+    vertical-align: middle;
+    width: 40px;
+}
+.already-know .dijitButton .dijitButtonText {
+    font-size: 10px;
+}
+
 div.show {
     float: right;
     margin: -3px 0 7px 0; /* adjusted due to Dijit menu widget */
@@ -715,15 +745,15 @@ div.show {
 }
 .plant p.plant-name {
     font-family: Tahoma, sans-serif; /* Tahoma because it's narrower; less
-                                        wrapping and fewer names pushing out
-                                        to 4 lines */
-    margin: 7px 0 0 0;
+    wrapping and fewer names pushing out
+    to 4 lines */
+margin: 7px 0 0 0;
 }
 .plant p.plant-name span.latin {
     display: block;
     font-family: Verdana, sans-serif; /* Verdana because it's wider; easier
-                                         to read in italic */
-    font-style: italic;
+    to read in italic */
+font-style: italic;
 }
 p.list-all {
     clear: left;
@@ -735,7 +765,7 @@ p.list-all a {
 
 /***
 Sidebar Styles for 3rd Level
-****/
+ ****/
 a.get-choices {
     display: block;
     width: 171px;
@@ -804,7 +834,7 @@ h5.help {
     margin: 0 0 0 10px;
 }
 /* These two next items are called family_select and genus_select in the HTML,
-   but Dojo/Dijit transforms them into divs with ids starting with widget_. */
+but Dojo/Dijit transforms them into divs with ids starting with widget_. */
 #widget_family_select, #widget_genus_select {
     width: 140px;
 }

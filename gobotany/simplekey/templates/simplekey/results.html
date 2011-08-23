@@ -39,6 +39,25 @@
                     <h3>{{ pile.name }} 
                         (<span class="species-count">calculating</span> 
                         matching species)</h3>
+
+                        <div class="already-know">
+                            <h6>If you already know the Family or Genus,
+                                select here:</h6>
+                            <label>Family:</label>
+                            <select id="family_select" name="family_select"
+                                dojoType="dijit.form.FilteringSelect"
+                                autocomplete="true" value="sel">
+                            </select>
+                            <button dojoType="dijit.form.Button" 
+                                id="clear_family">Clear</button>
+                            <label>Genus:</label>
+                            <select id="genus_select" name="genus_select"
+                                dojoType="dijit.form.FilteringSelect"
+                                autocomplete="true" value="sel">
+                            </select>
+                            <button dojoType="dijit.form.Button" 
+                                id="clear_genus">Clear</button>
+			            </div>
                                                 
                         <div class="working-area" aria-live="polite" 
                             aria-relevant="additions removals">
@@ -99,25 +118,6 @@
                     </div><!--closes #main-->
 
                 <div id="sidebar">
-                    <div class="section">
-                        <h6>If you already know the Family or Genus, select 
-                            here:</h6>
-                        <label>Family:</label><br>
-                        <select id="family_select" name="family_select"
-                            dojoType="dijit.form.FilteringSelect"
-                            autocomplete="true" value="sel">
-                        </select>
-                        <button dojoType="dijit.form.Button" 
-                            id="clear_family">Clear</button>
-                        <label>Genus:</label><br>
-                        <select id="genus_select" name="genus_select"
-                            dojoType="dijit.form.FilteringSelect"
-                            autocomplete="true" value="sel">
-                        </select>
-                        <button dojoType="dijit.form.Button" 
-                            id="clear_genus">Clear</button>
-                    </div><!--Closes .section-->
-
                     <div class="section">
                         <h6>What types of things can you tell about your
                             plant?</h6>
