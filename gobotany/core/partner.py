@@ -9,6 +9,6 @@ def which_partner(request):
     matches = list(PartnerSite.objects.filter(short_name__in=(possibilities)))
     if len(matches) > 1 and matches[1].short_name == short_name:
         return matches[1]
-    elif len(matches) == 1:
+    elif len(matches):
         return matches[0]
     return None

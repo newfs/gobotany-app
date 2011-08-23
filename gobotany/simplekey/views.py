@@ -11,6 +11,7 @@ from django.utils import simplejson
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
+from gobotany.core import models
 from gobotany.core.models import (
     CharacterGroup, CharacterValue, Family, Genus, GlossaryTerm, Habitat,
     Pile, PileGroup, Taxon, TaxonCharacterValue,
@@ -215,6 +216,14 @@ def species_view(request, genus_slug, specific_name_slug,
         pile = taxon.piles.all()[0]
     pilegroup = pile.pilegroup
 
+    partner = which_partner(request)
+    partner_species = None
+    if partner:
+        rows = models.PartnerSpecies.objects.filter(
+            species=taxon, partner=partner).all()
+        if rows:
+            partner_species = rows[0]
+
     species_images = botany.species_images(taxon)
     habitats = []
     if taxon.habitat:
@@ -238,6 +247,10 @@ def species_view(request, genus_slug, specific_name_slug,
            'scientific_name': scientific_name,
            'taxon': taxon,
            'species_images': species_images,
+           'partner_heading': partner_species.species_page_heading
+               if partner_species else None,
+           'partner_blurb': partner_species.species_page_blurb
+               if partner_species else None,
            'habitats': habitats,
            'brief_characteristics': _get_brief_characteristics(taxon,
                character_groups, pile),

@@ -670,6 +670,9 @@ class PartnerSpecies(models.Model):
     partner = models.ForeignKey(PartnerSite)
     # Does this species appear in the simple key for the TaxaGroup
     simple_key = models.BooleanField(default=True)
+    species_page_heading = models.CharField(max_length=128, null=True,
+                                            blank=True)
+    species_page_blurb = models.TextField(null=True, blank=True)
 
     class Meta:
         unique_together = ('species', 'partner')

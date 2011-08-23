@@ -87,7 +87,12 @@
                     </div>
                 </div>
                 <div class="clearit"></div>
-                
+
+                {% if partner_heading or partner_blurb %}
+                  <h3>{{ partner_heading }}</h3>
+                  <p>{{ partner_blurb }} </p>
+                {% endif %}
+
                 <h3>Facts About...</h3>
                 <p>
                     {% if taxon.factoid|length > 0 %}
