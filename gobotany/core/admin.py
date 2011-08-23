@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 from operator import itemgetter
 from django.contrib import admin
 from django.contrib.contenttypes import generic
@@ -88,7 +90,7 @@ class ContentImageInline(generic.GenericStackedInline):
 #
 
 
-filters_template = Template('''\
+filters_template = Template(u'''\
 <br clear="left"><br>
 <input type="hidden" name="{{ name }}" value="f{{ taxon_id }}">
 {% for pile, clist in piles %}
@@ -100,10 +102,21 @@ filters_template = Template('''\
         = "{{ character.obj.friendly_name }}"
       {% endif %}
     </h3>
-    {% for value in character.values %}
-      <input type="checkbox" name="{{ name }}" value="{{ value.id }}"
-       {% if value.checked %}checked{% endif %}> {{ value.text }}<br>
-    {% endfor %}
+    {% if character.value_type == 'TEXT' and character.values %}
+      {% for value in character.values %}
+        <input type="checkbox" name="{{ name }}" value="{{ value.id }}"
+         {% if value.checked %}checked{% endif %}> {{ value.text }}<br>
+      {% endfor %}
+    {% endif %}
+    {% if character.value_type == 'LENGTH' %}
+      Min–Max:
+      <input name="{{ name }}__{{ pile.slug }}__{{ character.short_name }}__min"
+             value="{{ character.min }}" size="7">
+      –
+      <input name="{{ name }}__{{ pile.slug }}__{{ character.short_name }}__max"
+             value="{{ character.max }}" size="7">
+      {% if character.unit != 'NA' %} {{ character.unit }} {% endif %}
+    {% endif %}
   {% endfor %}
 {% endfor %}
 ''')
@@ -138,22 +151,34 @@ class TaxonFiltersWidget(forms.CheckboxSelectMultiple):
             # Pull pile values from the database.
 
             for cv in pile.character_values.all():
-                if not cv.value_str:
-                    continue
+
                 c = cv.character
                 if c.id not in characterdict:
                     characterdict[c.id] = {
-                        'short_name': c.short_name, 'obj': c, 'values': [],
+                        'short_name': c.short_name, 'obj': c,
+                        'value_type': c.value_type, 'values': [],
+                        'unit': c.unit,
                         }
-                if cv.friendly_text:
-                    text = u'%s = %s' % (cv.value_str, cv.friendly_text)
-                else:
-                    text = cv.value_str
-                characterdict[c.id]['values'].append({
-                    'id': cv.id,
-                    'text': text,
-                    'checked': cv.id in cv_ids,
-                    })
+
+                if c.value_type == 'TEXT':  # Multiple-choice value
+
+                    if cv.friendly_text:
+                        text = u'%s = %s' % (cv.value_str, cv.friendly_text)
+                    else:
+                        text = cv.value_str
+                    characterdict[c.id]['values'].append({
+                        'id': cv.id,
+                        'text': text,
+                        'checked': cv.id in cv_ids,
+                        })
+
+                elif c.value_type == 'LENGTH':  # Length measurement
+
+                    if cv.id in cv_ids:
+                        characterdict[c.id]['min'] = (
+                            cv.value_min if cv.value_min is not None else '')
+                        characterdict[c.id]['max'] = (
+                            cv.value_max if cv.value_max is not None else '')
 
             # Sort characters and character values for presentation.
 
@@ -174,7 +199,7 @@ class TaxonFiltersField(forms.MultipleChoiceField):
     widget = TaxonFiltersWidget
 
     def valid_value(self, value):
-        """Values should look like 'd123', 'f123', or '123'."""
+        """Each value should look like 'd123', 'f123', or '123'."""
         int(value.lstrip('df'))
         return True
 
@@ -220,9 +245,10 @@ class TaxonAdminForm(forms.ModelForm):
 
     def save(self, commit=True):
 
-        # Set the new taxon character values.
+        # Set character multiple-choice values.
 
         filters = self.cleaned_data['filters']
+
         if filters:  # can be blank if the species belongs to no piles
             filters.sort()
             taxon_id = int(filters.pop().lstrip('f'))  # the "f123" value
@@ -243,11 +269,23 @@ class TaxonAdminForm(forms.ModelForm):
             for cv_id in cv_ids:
                 cv = models.CharacterValue.objects.get(id=cv_id)
                 models.TaxonCharacterValue.objects.create(
-                    taxon=taxon, character_value=cv).save()
+                    taxon=taxon, character_value=cv)
 
         # Save everything else normally.
 
         return super(TaxonAdminForm, self).save(commit=commit)
+
+        # NOTE: the above loop removes *all* length character values
+        # from the species, because its logic says "remove each CV that
+        # is not in the list of multiple-choice selections".  And this
+        # form does not have access to the length text fields anyway,
+        # since the "cleaned" data removes all fields not mentioned in
+        # this form's list of fields - and we do not list specific
+        # fields like "filters_spore_diameter_ly_max" but instead
+        # generate and process them on-the-fly.
+
+        # So length measures are reinstated in TaxonAdmin.save_model().
+
 
 class TaxonAdmin(GobotanyAdminBase):
     inlines = [
@@ -276,8 +314,47 @@ class TaxonAdmin(GobotanyAdminBase):
         if this_is_an_add:
             user = request.user
             for partner in models.PartnerSite.objects.filter(users=user):
-                print 'partnersite!', partner
                 models.PartnerSpecies(species=obj, partner=partner).save()
+
+        # Save length ranges.
+
+        names = set( name[:-5] for name in request.POST
+                     if name.startswith('filters__')
+                     and (name.endswith('__min') or name.endswith('__max')) )
+
+        for name in names:
+            x, pile_slug, character_name = name.split('__')
+            pile = models.Pile.objects.get(slug=pile_slug)
+            pile_cv_ids = set( cv.id for cv in pile.character_values.all() )
+
+            min_str = request.POST.get(name + '__min')
+            max_str = request.POST.get(name + '__max')
+            try:
+                value_min = float(min_str or '')
+            except ValueError:
+                value_min = None
+            try:
+                value_max = float(max_str or '')
+            except ValueError:
+                value_max = None
+
+            if value_min is None and value_max is None:
+                continue
+
+            c = models.Character.objects.get(short_name=character_name)
+            cvs = models.CharacterValue.objects.filter(
+                character=c, value_min=value_min, value_max=value_max).all()
+            cvs = [ cv for cv in cvs if cv.id in pile_cv_ids ]
+            if not cvs:
+                # There is not already a character value with this
+                # particular min and max?  Then create one!
+                cv = models.CharacterValue.objects.create(
+                    value_min=value_min, value_max=value_max, character=c,
+                    )
+                pile.character_values.add(cv)
+                cvs = [ cv ]
+            models.TaxonCharacterValue.objects.create(
+                taxon=obj, character_value=cvs[0])
 
     # def formfield_for_manytomany(self, db_field, request, **kwargs):
     #     if db_field.name == 'character_values':

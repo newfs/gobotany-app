@@ -146,8 +146,11 @@ def _format_character_value(character_value):
         return (character_value.friendly_text or
                 character_value.value_str or u'')
     elif character.unit not in (None, '', 'NA'):
-        return u'%.1f–%.1f %s' % (character_value.value_min,
-                                  character_value.value_max, character.unit)
+        minstr = ('Anything' if character_value.value_min is None
+                  else u'%.1f' % character_value.value_min)
+        maxstr = ('Anything' if character_value.value_max is None
+                  else u'%.1f' % character_value.value_max)
+        return u'%s–%s %s' % (minstr, maxstr, character.unit)
     else:
         return u'%d–%d' % (
             character_value.value_min, character_value.value_max)
