@@ -219,6 +219,7 @@ class TaxonAdminForm(forms.ModelForm):
         return self.cleaned_data
 
     def save(self, commit=True):
+
         # Set the new taxon character values.
 
         filters = self.cleaned_data['filters']
@@ -228,12 +229,16 @@ class TaxonAdminForm(forms.ModelForm):
             cv_ids = set( int(v) for v in filters )
             taxon = models.Taxon.objects.get(id=taxon_id)
 
+            # Do the existing values look good?  Remove the ones that aren't.
+
             for tcv in models.TaxonCharacterValue.objects.filter(taxon=taxon):
                 cv_id = tcv.character_value.id
                 if cv_id in cv_ids:
                     cv_ids.remove(cv_id)  # does not need to be added to db
                 else:
                     tcv.delete()  # needs to be removed from db
+
+            # Add every value that is not already in the database.
 
             for cv_id in cv_ids:
                 cv = models.CharacterValue.objects.get(id=cv_id)
@@ -256,6 +261,23 @@ class TaxonAdmin(GobotanyAdminBase):
     list_filter = ('family',)
     #readonly_fields = ('scientific_name',)
     search_fields = ('scientific_name', 'piles__name', 'piles__friendly_name')
+
+    def save_model(self, request, obj, form, change):
+
+        this_is_an_add = obj.id is None
+
+        # Save the object.
+
+        super(TaxonAdmin, self).save_model(request, obj, form, change)
+
+        # If this is a new species, we go ahead and add it to the
+        # admin's partner sites.
+
+        if this_is_an_add:
+            user = request.user
+            for partner in models.PartnerSite.objects.filter(users=user):
+                print 'partnersite!', partner
+                models.PartnerSpecies(species=obj, partner=partner).save()
 
     # def formfield_for_manytomany(self, db_field, request, **kwargs):
     #     if db_field.name == 'character_values':

@@ -1,7 +1,10 @@
 {% extends "admin/change_form.html" %}
 
+The test "not original" means "if this is an Add form", because in the
+case of an Add there is no "original" object which is being modified.
+
 {% block content %}
-{% if request.user in original.partner_users %}
+{% if not original or request.user in original.partner_users %}
   {{ block.super }}
 {% else %}
   {% with original.partners as partners %}
@@ -16,7 +19,7 @@
       as belonging to any of these partners.<br>
       Therefore, you are not permitted to edit this species.
     {% else %}
-      This species does not belong to NEWFS nor any other partners.<br>
+      This species does not belong to NEWFS or to any of our partners.<br>
       Therefore, no admins have permission to edit it.
     {% endif %}
   {% endwith %}

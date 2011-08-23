@@ -598,8 +598,6 @@ class Taxon(models.Model):
     def partner_users(self):
         users = []
         for site in self.partners():
-            print 'site!', site
-            print 'users', site.users.all()
             users.extend(site.users.all())
         return users
 
