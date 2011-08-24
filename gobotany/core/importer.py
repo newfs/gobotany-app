@@ -421,7 +421,6 @@ class Importer(object):
                 taxonomic_authority=row['taxonomic_authority'],
                 habitat=row['habitat'],
                 factoid=row['factoid'],
-                uses=row['uses'],
                 wetland_status_code=row['wetland_status'],
                 wetland_status_text=self._get_wetland_status(
                     row['wetland_status']),
