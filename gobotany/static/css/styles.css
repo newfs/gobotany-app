@@ -650,10 +650,11 @@ Level 3 Id styles
     float: right;
     margin: 0 0 15px 0;
 }	
-.already-know h6, .show-me h6 {
-    margin: 0 0 5px 0;
-    font-weight: bold;
+.already-know h6, .already-know label, .show label {
     color: #807121;
+    font-family: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    margin: 0 0 5px 0;
 }
 .already-know label {
     vertical-align: middle;
@@ -664,7 +665,7 @@ Level 3 Id styles
 
 .already-know .dijitButton .dijitButtonNode {
     height: 14px;
-    line-height: 14px;
+    line-height: 13px;
     vertical-align: middle;
     width: 40px;
 }
@@ -672,70 +673,74 @@ Level 3 Id styles
     font-size: 10px;
 }
 
-div.show {
+.show {
     float: right;
     margin: -3px 0 7px 0; /* adjusted due to Dijit menu widget */
 }
+.show label {
+    height: 16px;
+    line-height: 16px;
+    vertical-align: middle;
+}
+.show .icon {
+    vertical-align: middle;
+}
 
 .plant-list div.row {
-    border-top: 1px solid #e1e1dc;
-    border-right: 1px solid #e1e1dc;
-    border-left: 1px solid #e1e1dc;
     margin: 0;
     padding: 0;
     text-align: center;
 }
 
-.plant-list div.row.last {
-    border-bottom: 1px solid #e1e1dc;
-}
-.plant-list .row .plant {
+.plant-list .row .genus {
+    border: 1px solid #508e31;
     float: left;
-    height: 205px;
+    margin: 0 0 4px 0;
+    padding: 8px 6px;
+}
+
+.plant-list .row .genus.first {
+    background: #9cc86b;
+}
+
+.plant-list .row .genus.second {
+    background: #fff;
+}
+
+.plant-list .row .genus .plant {
+    float: left;
+    height: 210px;
     margin: 0;
-    padding: 10px 8px;
     position: relative;
     width: 160px; /* prevent long names from blowing out layout; allow wrap */
 }
-.plant-list .row .plant.first {
-    padding-left: 10px;
+
+.plant-list .row .genus .plant.push {
+    margin: 0 18px 0 0;
 }
-.plant-list .row .plant.last {
-    padding-right: 9.5px;  /* was 10px; makes it less likely to wrap */
+.plant-list .row .genus.push {
+    margin: 0 4px 4px 0;
 }
 
-.plant-list .row .plant.genus1 {
-    background: #fff;
-}
-.plant-list .row .plant.genus2 {
-    background: #d4e8bc; /* halfway between g3 and g5 */
-}
-.plant-list .row .plant.genus3 {
-    background: #e2f0d3; /* halfway between g1 and g5 */
-}
-.plant-list .row .plant.genus4 {
-    background: #eff5e9; /* halfway between g1 and g3 */
-}
-.plant-list .row .plant.genus5 {
-    background: #cce5af;
-}
-
-.plant-list .row .plant .frame {
+.plant-list .row .genus .plant .frame {
     border: 5px solid rgba(255, 255, 255, 0.8);
     height: 139px;
     position: absolute;
-    top: 10px;
+    top: 0;
     width: 150px;
     z-index: 100;
 }
-.plant-list .row .plant a {
+.plant-list .row .genus .plant a {
     display: block;
     color: #1a2e11;
 }
-.plant-list .row .plant a:hover {
+.plant-list .row .genus.first .plant a:hover {
+    color: #fff;
+}
+.plant-list .row .genus.second .plant a:hover {
     color: #6eae3e;
 }
-.plant-list .row .plant .img-container {
+.plant-list .row .genus .plant .img-container {
     width: 160px;
     height: 149px;
     overflow: hidden;
@@ -745,15 +750,17 @@ div.show {
 }
 .plant p.plant-name {
     font-family: Tahoma, sans-serif; /* Tahoma because it's narrower; less
-    wrapping and fewer names pushing out
-    to 4 lines */
-margin: 7px 0 0 0;
+                                        wrapping and fewer names pushing out
+                                        to 4 lines */
+    line-height: 14px;
+    margin: 7px 0 0 0;
 }
 .plant p.plant-name span.latin {
     display: block;
     font-family: Verdana, sans-serif; /* Verdana because it's wider; easier
-    to read in italic */
-font-style: italic;
+                                         to read in italic */
+    font-style: italic;
+    padding-bottom: 4px;
 }
 p.list-all {
     clear: left;
@@ -891,11 +898,12 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     height: 100px;
 }
 .working-area a.close {
+    background: url(/static/images/icons/close.png) no-repeat transparent;
     display: block;
     float: right;
-    width: 16px;
     height: 16px;
-    background: url(/static/images/icons/close.png) 0 -16px no-repeat transparent;
+    margin: 5px 0 0 0;
+    width: 16px;
 }
 .working-area h4 {
     color: #807121;
@@ -1098,7 +1106,8 @@ div.working-area .actions {
 
 /* Tabs for the different views of results */
 #results-tabs {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #c3d941;
+    clear: left;
     height: 24px;
     margin: 10px 0;
 }
@@ -1107,7 +1116,7 @@ div.working-area .actions {
     background: #d6e6c5;
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
     background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5);
-    border: 1px solid #ddd;
+    border: 1px solid #c3d941;
     color: #638e3a;
     cursor: pointer;
     display: block;
@@ -1138,8 +1147,8 @@ div.working-area .actions {
 }
 #results-tabs li a.current, results-tabs li a.current:hover {
     background: #fbfaf5;
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#fbfaf5));
-    background: -moz-linear-gradient(center top, #ffffff, #fbfaf5);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0c0));
+    background: -moz-linear-gradient(center top, #ffffff, #f0f0c0);
     border-bottom: 0;
     color: #1a2e11;
     cursor: default;
@@ -1178,6 +1187,7 @@ div.working-area .actions {
     padding: 10px 0 8px 0;
 }
 .plant-list table .scientific-name img {
+    margin: 0 8px 0 0;
     padding-bottom: 2px;
     vertical-align: middle;
 }

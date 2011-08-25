@@ -271,7 +271,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             var image = this.get_image(items[i], 'habit');
             if (image !== undefined) {
                 html += '<a href="' + image.scaled_url + '" title="Photo">' +
-                    '<img src="/static/images/icons/camera.jpg" alt=""></a>';
+                    '<img src="/static/images/icons/icon-camera.png" ' +
+                    'alt=""></a>';
             }
             html += items[i].scientific_name + '</td>';
             html += '<td class="common-name">' + items[i].common_name +
@@ -291,13 +292,12 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
     display_in_photos_view: function(items, container) {
         /* Display plant results as a grid of photo thumbnails with
-           captions. Give plants in each genus a background color, cycling
-           among several colors so plants in adjacent rows don't have the
-           same color unless they are of the same genus. */
+           captions.
+           */
         'use strict';
 
         var SPECIES_PER_ROW = 4;
-        var NUM_GENUS_COLORS = 5;
+        var NUM_GENUS_COLORS = 2;
         var genus_color = 1;
 
         var num_rows = Math.ceil(items.length / SPECIES_PER_ROW);
@@ -310,33 +310,77 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             row = dojo.create('div', {'class': class_value});
 
             // Add the species for this row.
-            var s;
+            var s, genus_box;
             for (s = r * SPECIES_PER_ROW;
                  s < (r * SPECIES_PER_ROW) + SPECIES_PER_ROW; s += 1) {
 
                 if (items[s] !== undefined) {
+                    
                     var species = items[s];
                     var plant_class_value = 'plant';
+                    var needs_new_genus_box = false;
+                    var is_last_plant_in_row = false;
+
                     if (s === (r * SPECIES_PER_ROW)) {
-                        plant_class_value += ' first';
+                        needs_new_genus_box = true;
                     }
-                    else if ((s === (r * SPECIES_PER_ROW) +
-                                     SPECIES_PER_ROW - 1) ||
-                            (items[s + 1] === undefined)) {
-                        plant_class_value += ' last';
+                    if ((s === (r * SPECIES_PER_ROW) +
+                               SPECIES_PER_ROW - 1) ||
+                        (items[s + 1] === undefined)) {
+                        
+                        is_last_plant_in_row = true;
+                    }
+                    // If there will be more plants in this genus box, add
+                    // a class that will provide some space on the right.
+                    if (items[s + 1] !== undefined &&
+                        items[s + 1].genus === items[s].genus &&
+                        !is_last_plant_in_row) {
+
+                        plant_class_value += ' push';
                     }
 
-                    // Set a background color, changing color if a new
-                    // genus.
+                    // Determine if a new "genus box" is needed. A genus
+                    // box holds plants of a genus, but only in one row.
+                    // So a single genus may have multiple genus boxes
+                    // across multiple rows.
                     if (s > 0) {
                         if (items[s].genus !== items[s - 1].genus) {
+                            needs_new_genus_box = true;
                             genus_color += 1;
                             if (genus_color > NUM_GENUS_COLORS) {
                                 genus_color = 1;
                             }
                         }
                     }
-                    plant_class_value += ' genus' + String(genus_color);
+
+                    if (needs_new_genus_box) {
+                        var genus_box_class_value = 'genus';
+                        if (genus_color === 1) {
+                            genus_box_class_value += ' first';
+                        }
+                        else if (genus_color === 2) {
+                            genus_box_class_value += ' second';
+                        }
+                        // Look ahead to determine whether there will be more
+                        // genus boxes on this row.
+                        for (var x = 1; x < SPECIES_PER_ROW; x++) {
+                            // First check that the plant exists and isn't on
+                            // the next row.
+                            if (items[s + x] !== undefined &&
+                                (s + x) <= ((r * SPECIES_PER_ROW) +
+                                            (SPECIES_PER_ROW - 1))) {
+                                // Then, if the plant has a different genus,
+                                // expect another genus box on this row.
+                                if (items[s].genus !== items[s + x].genus) {
+
+                                    genus_box_class_value += ' push';
+                                    break;
+                                }
+                            }
+                        }
+                        genus_box = dojo.create('div',
+                            {'class': genus_box_class_value});
+                    }
 
                     var plant = dojo.create('div',
                         {'class': plant_class_value});
@@ -378,7 +422,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         pile_slug);
 
                     dojo.place(plant_link, plant);
-                    dojo.place(plant, row);
+                    dojo.place(plant, genus_box);
+                    dojo.place(genus_box, row);
 
                     if (plant_class_value.indexOf('last') > -1) {
                         dojo.create('div', {'class': 'clearit'}, row);

@@ -36,7 +36,16 @@
         <!--Shadowbox-->
         <script type="text/javascript" src="/static/scripts/shadowbox.js"></script>
         <script type="text/javascript">
-            Shadowbox.init();
+            function moveCloseLink() {
+                var cb = document.getElementById('sb-nav-close');
+                var tb = document.getElementById('sb-wrapper-inner');
+                if (tb) {
+                    tb.appendChild(cb);
+                }
+            }
+            Shadowbox.init({
+                onOpen: moveCloseLink
+            });
         </script>
         <!--Image Gallery Slider-->
         <script type="text/javascript"
