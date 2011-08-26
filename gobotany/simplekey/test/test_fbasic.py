@@ -129,25 +129,20 @@ class BasicFunctionalTests(FunctionalTestCase):
         # Once you have selected "don't show me this", should change to:
         # self.assertEqual(e.get_attribute('href'), '/1/')
 
-    def test_ubergroup_pages(self):
+    def test_ubergroup_page(self):
         d = self.get('/1/')
         h3 = self.css('h3')
-        self.assertEqual(len(h3), 3)
+        self.assertEqual(len(h3), 6)
         assert h3[0].text.startswith('Ferns')
         assert h3[1].text.startswith('Woody Plants')
-        assert h3[2].text.startswith('Aquatic Plants')
-        d.find_element_by_link_text('Show me other groups').click()
-        h3 = self.css('h3')
-        self.assertEqual(len(h3), 3)
-        assert h3[0].text.startswith('Graminoids')
-        assert h3[1].text.startswith('Monocots')
-        assert h3[2].text.startswith('Non-Monocots')
-        e = d.find_elements_by_link_text('Show me other groups')
-        self.assertEqual(e, [])
+        assert h3[2].text.startswith('Graminoids')
+        assert h3[3].text.startswith('Aquatic Plants')
+        assert h3[4].text.startswith('Monocots')
+        assert h3[5].text.startswith('Non-Monocots')
 
         # Do group links get constructed correctly?
-        e = d.find_element_by_link_text('My plant is in this group.')
-        self.assertEqual(e.get_attribute('href'), '/graminoids/')
+        e = d.find_element_by_link_text('My plant is in this group')
+        self.assertEqual(e.get_attribute('href'), '/ferns/')
 
     def test_group_page(self):
         d = self.get('/ferns/')
@@ -156,7 +151,7 @@ class BasicFunctionalTests(FunctionalTestCase):
         assert q[0].text.startswith('Equisetaceae')
         assert q[1].text.startswith('Lycophytes')
         assert q[2].text.startswith('Monilophytes')
-        q = d.find_elements_by_link_text('My plant is in this subgroup.')
+        q = d.find_elements_by_link_text('My plant is in this subgroup')
         self.assertEqual(q[0].get_attribute('href'), '/ferns/equisetaceae/')
         self.assertEqual(q[1].get_attribute('href'), '/ferns/lycophytes/')
         self.assertEqual(q[2].get_attribute('href'), '/ferns/monilophytes/')
@@ -377,7 +372,10 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.wait_on_species(18)
         filters = self.css(FILTERS_CSS)
         n = len(filters)
-        self.css1('#sidebar a.get-choices').click()
+        self.css1('#sidebar .get-more a').click()
+
+        self.wait_on(1, self.css, '#sb-container h4')
+        self.css1('#sb-container a.get-choices').click()
 
         # Hacky, pile-specific way to wait on the choices to appear:
         self.wait_on(1, self.css, '#spore_surface')

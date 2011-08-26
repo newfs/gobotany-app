@@ -1,0 +1,64 @@
+<div id="modal">
+	<div class="modal-wrap">
+		<div class="inner">
+            <h4 class="heading">What types of things can you tell about your
+                plant?</h4>
+			<div id="choices">
+				<ul class="char-groups">
+                </ul>
+                <!-- The onclick handler needs to be here rather than in the
+                     JS code because this HTML gets copied temporarily by
+                     Shadowbox.js. -->
+                <a class="get-choices"
+                    onclick="helper.filter_section.query_best_filters();
+                    Shadowbox.close();">Get More
+                    Choices</a>
+				<div class="clearit"></div>
+			</div><!-- // Closes #choices -->
+		</div><!-- // Closes .inner -->	
+	</div><!-- // Closes .modal-wrap -->
+</div><!-- // Closes #modal -->
+
+<div id="plant-detail-modal">
+	<div class="modal-wrap">
+		<div class="inner">
+			<h3 class="heading">Genus species <span>common name</span></h3>
+			<div id="plant-details">
+				<!--Begin Group List-->
+				<div class="list-item">
+				
+					<div class="img-gallery">
+						<div class="frame"></div>
+						<div class="img-container">
+							<div class="images">
+                                <img src="" alt="">
+                                <img src="" alt="">
+							</div><!--Closes .images-->
+						</div><!--Closes .img-container-->
+						<div class="controls">
+							<a class="prev">Prev</a>
+							<a class="next">Next</a>
+						</div><!--Closes .controls-->
+					</div><!--Closes .img-gallery-->
+					
+					<div class="details">
+						<h4>Facts about...</h4>
+                        <p></p>
+						
+						<h4>Characteristics</h4>
+						<ul>
+                            <li>CHARACTER: Value</li>
+                            <li>CHARACTER: Value</li>
+                            <li>CHARACTER: Value</li>
+						</ul>
+						<a class="get-more-info" href="taxon.php"></a>
+					</div><!--Closes .details-->
+					<div class="clearit"></div>
+					
+				</div><!--Closes .list-item-->
+				
+			</div><!-- // Closes #plant-details -->
+		</div><!-- // Closes .inner -->	
+	</div><!-- // Closes .modal-wrap -->
+</div><!-- // Closes #modal -->
+

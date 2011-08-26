@@ -6,6 +6,8 @@
     <body id="plant-id-3" class="claro app">
         {% include "simplekey/_header.html" %}
 
+        {% include "simplekey/_results_modal_dialogs.html" %}
+
         <div class="content">
             <div class="container">
                 <div id="main">
@@ -120,40 +122,39 @@
 
                     </div><!--closes #main-->
 
-                <div id="sidebar">
-                    <div class="section">
-                        <h6>What types of things can you tell about your
-                            plant?</h6>
-                        <ul id="char-groups">
-                        </ul>
-                        <a class="get-choices" href="#">Get More Choices</a>
-                    </div><!--Closes .section-->
-
-                    <div class="section">
-                        <h6>Narrow your results by clicking on choices
-                            below.</h6>
-                    </div><!--Closes .section-->
-
-                    <div class="loading">Loading choices…</div>
-
-                    <ul class="option-list" aria-live="polite"
+                <div id="sidebar" class="tinted">
+                    <div class="section instructions">
+                        <h5>Choose a question below to answer about your
+                            plant</h5>
+                    </div>
+                    <div class="scroll">
+                        <div class="loading">Loading choices…</div>
+                        <ul class="option-list" aria-live="polite"
                         aria-relevant="additions removals">
-                    </ul><!--Closes .option-list-->
+                        </ul><!--Closes .option-list-->
+                    </div><!-- // Closes .scroll -->
 
                     <div class="section">
-                        <p>
-                        <a class="get-more-choices"
-                            href="#">Get More Choices &raquo;</a><br>
-                        We'll add a few more ways to narrow your selections.
-                        </p>
-                    </div><!--Closes .section-->
-
+                        <p class="get-more">
+                            <a rel="shadowbox;height=450" href="#modal">
+                            Get More Choices &raquo;</a> 
+                            We'll add a few more ways to narrow your
+                            selections.</p>
+			        </div><!--Closes .section-->
+			
+			        <div class="section">
+				        <h5 class="left help">Clear Choices</h5>
+				        <a class="clear-all-btn left">Clear All</a>
+				        <div class="clearit"></div>
+			        </div><!--Closes .section-->
+			
                     <div class="section">
                         <h5 class="left help">Need Help?</h5>
                         <a href="{% url simplekey-help-about %}"
-                           class="get-help-btn left">Get Help</a>
+                            class="get-help-btn left">Get Help</a>
                         <div class="clearit"></div>
                     </div><!--Closes .section-->
+                    
                 </div><!--Closes #sidebar-->
 
                 <div class="clearit"></div>
@@ -173,7 +174,7 @@
         {% include "simplekey/partner_site_inline_js.html" %}
         dojo.require('gobotany.sk.results');
         dojo.addOnLoad(function() {
-            var helper = gobotany.sk.results.ResultsHelper('{{ pile.slug }}');
+            helper = gobotany.sk.results.ResultsHelper('{{ pile.slug }}');
             helper.setup();
         });
         </script>

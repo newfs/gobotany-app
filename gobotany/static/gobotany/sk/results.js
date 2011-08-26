@@ -165,6 +165,10 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         console.log('filter_loaded: about to list filters, then run query');
         this.filter_section.display_filters(this._loaded_filters);
+        
+        // Re-initialize the scroll pane now that its contents have changed.
+        this.filter_section.scroll_pane_api.reinitialise();
+        
         this.filter_section.update_filter_display('family');
         this.filter_section.update_filter_display('genus');
 
@@ -552,6 +556,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     ruler: null,
     simple_slider: null,
     slider_node: null,
+    scroll_pane: null,
+    scroll_pane_api: null,
 
     constructor: function(results_helper) {
         // summary:
@@ -572,18 +578,17 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     setup_section: function() {
         console.log('FilterSectionHelper: setting up section');
 
-        // Wire up the Get Choices links (a button atop the sidebar and
-        // a hyperlink at bottom).
-        var choices_button = dojo.query('#sidebar .get-choices')[0];
-        dojo.connect(choices_button, 'onclick', this, function(event) {
-            dojo.stopEvent(event);
-            this.query_best_filters();
-        });
-        var choices_link = dojo.query('#sidebar .get-more-choices')[0];
-        dojo.connect(choices_link, 'onclick', this, function(event) {
-            dojo.stopEvent(event);
-            this.query_best_filters();
-        });
+        // Set up the jQuery scrolling box for filters.
+        this.scroll_pane = $('.scroll').jScrollPane({
+			                   verticalGutter: 0,
+			                   showArrows: true
+		                   });
+        this.scroll_pane_api = this.scroll_pane.data('jsp');
+
+        // Wire up the Clear All button.
+        var clear_all_button = dojo.query('a.clear-all-btn')[0];
+        dojo.connect(clear_all_button, 'onclick', this,
+            this.clear_all_filter_choices);
 
         // Respond to filter value changes.
         dojo.subscribe('/sk/filter/change', this, '_on_filter_change');
@@ -592,7 +597,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     _setup_character_groups: function(character_groups) {
         console.log('FilterSectionHelper: Updating character groups');
 
-        var character_groups_list = dojo.query('ul#char-groups')[0];
+        var character_groups_list = dojo.query('ul.char-groups')[0];
         dojo.empty(character_groups_list);
         var i;
         for (i = 0; i < character_groups.length; i++) {
@@ -609,7 +614,12 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         console.log('FilterSectionHelper: getting more filters...');
 
         var character_group_ids = [];
-        var character_group_items = dojo.query('ul#char-groups input');
+        // Get the character group checkbox items that are currently in
+        // the Shadowbox modal dialog. These are a copy of the contents
+        // of our static HTML div with id "modal" and only exist as long
+        // as the Shadowbox dialog is visible.
+        var character_group_items =
+            dojo.query('#sb-container ul.char-groups input');
         var x;
         for (x = 0; x < character_group_items.length; x++) {
             var item = character_group_items[x];
@@ -617,6 +627,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 character_group_ids.push(item.value);
             }
         }
+        console.log('character_group_items:');
+        console.log(character_group_items);
+        console.log('checked character_group_ids:');
+        console.log(character_group_ids);
 
         var existing = [];
         for (x = 0; x < filter_manager.filters.length; x++) {
@@ -649,6 +663,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     added.style({backgroundColor: '#eeee9a'});
                     gobotany.utils.notify('More choices added');
                     gobotany.utils.animate_changed(added);
+
+                    // Re-initialize the scroll pane now that its
+                    // contents have changed.
+                    this.scroll_pane_api.reinitialise();
 
                     this.results_helper.save_filter_state();
                 }
@@ -690,10 +708,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         var filter_ul = dojo.query('#sidebar ul.option-list')[0];
         var filter_li = dojo.create('li', {id: filter.character_short_name},
                                     filter_ul, pos);
-
-        var closeLink = dojo.create('a', {
-            href: '#', 'class': 'close'
-        }, filter_li);
         var labelsLink = dojo.create('a', {
             href: '#', 'class': 'option',
             innerHTML: '<span class="name">' + filter.friendly_name +
@@ -701,26 +715,14 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 this._get_filter_display_value(filter) + '</span>'
         }, filter_li);
         var clearLink = dojo.create('a', {
-            'class': 'clear-filter hidden', href: '#',
-            innerHTML: '× clear'
+            'class': 'clear-filter', href: '#',
+            innerHTML: 'Clear'
         }, filter_li);
 
         this.glossarizer.markup(labelsLink);
 
         // Event handling
 
-        dojo.connect(closeLink, 'onclick', this, function(event) {
-            dojo.stopEvent(event);
-
-            // Using jQuery, close the working area with a slide effect.
-            $('div.working-area').slideUp('fast', function() {
-                global_setSidebarHeight();
-            });
-
-            if (filter === this.working_area.filter)
-                this.working_area.dismiss();
-            this.remove_filter(filter);
-        });
         dojo.connect(clearLink, 'onclick', this, function(event) {
             dojo.stopEvent(event);
             this.clear_filter(filter);
@@ -745,7 +747,14 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         // Show or hide the Clear link for a filter at left.
         var name = filter.character_short_name;
         var div = dojo.query('#' + name + ' .clear-filter');
-        div.toggleClass('hidden', filter.selected_value === null);
+        var display_value = 'block';
+        if (filter.selected_value === null) {
+            display_value = 'none';
+        }
+        div.style('display', display_value);
+
+        // Re-initialize the scroll pane now that its contents have changed.
+        this.scroll_pane_api.reinitialise();
     },
 
     clear_filters: function() {
@@ -821,22 +830,11 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.show_or_hide_filter_clear(filter);
     },
 
-    remove_filter: function(filter) {
-        if (filter.character_short_name === this.visible_filter_short_name)
-            this.working_area.dismiss();
-
-        if (this.results_helper.filter_manager.has_filter(
-            filter.character_short_name)) {
-
-            dojo.query('#' + filter.character_short_name).orphan();
-            this.results_helper.filter_manager.remove_filter(
-                filter.character_short_name);
-            this.results_helper.species_section.perform_query();
+    clear_all_filter_choices: function() {
+        var filters = this.results_helper._loaded_filters;
+        for (var i = 0; i < filters.length; i++) {
+            this.clear_filter(filters[i]);
         }
-
-        this.results_helper.species_section.lazy_load_images();
-
-        global_setSidebarHeight();
     },
 
     show_filter_working: function(filter) {

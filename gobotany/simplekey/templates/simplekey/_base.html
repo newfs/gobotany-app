@@ -15,6 +15,8 @@
         <link rel="stylesheet" href="/static/css/styles.css">
         <link rel="stylesheet" href="/static/css/searchsuggest.css">
         <link rel="stylesheet" href="/static/css/shadowbox.css">
+        <link rel="stylesheet"
+            href="/static/css/jquery.jscrollpane.css">
         <link rel="shortcut icon" href="/static/images/branding/favicon.png">
         <!--[if IE 7]>
             <link rel="stylesheet" href="/static/css/ie7.css">
@@ -24,18 +26,18 @@
         <![endif]-->
         <!--HTML5 Fix for IE-->
         <!--[if lt IE 9]>
-        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <script
+            src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
-        <!--underscore.js-->
-        <script src="/static/underscore-min.js"></script>
-        <!--JQuery-->
+        <script src="/static/underscore-min.js"></script>   
         <script src="/static/jquery-1.6.2.min.js"></script>
-        <!--Global JS File-->
-        <script type="text/javascript" src="/static/scripts/global.js"></script>
-        <!--Shadowbox-->
-        <script type="text/javascript" src="/static/scripts/shadowbox.js"></script>
-        <script type="text/javascript">
+        <script src="/static/scripts/jquery.mousewheel.min.js"></script>    
+        <script src="/static/scripts/jquery.jscrollpane.min.js"></script>
+      
+        <script src="/static/scripts/global.js"></script>
+        <script src="/static/scripts/shadowbox.js"></script>
+        <script>
             function moveCloseLink() {
                 var cb = document.getElementById('sb-nav-close');
                 var tb = document.getElementById('sb-wrapper-inner');
@@ -48,12 +50,17 @@
             });
         </script>
         <!--Image Gallery Slider-->
-        <script type="text/javascript"
-            src="/static/jquery.tools.min.js"></script>
-        <script type="text/javascript">
-            $(function() {
+        <!-- TODO: Find out what the gallery really needs from jQuery tools.
+             Be careful with this library because it's configurable and
+             can contain its own (older) version of jQuery. Evidently
+             the noConflict() call below somehow allowed the jScrollPane
+             to finally begin working. -->
+        <script src="/static/jquery.tools.min.js"></script>
+        <script>
+            var jq = jQuery.noConflict();
+            jq(document).ready(function() {
                 //Start
-                $('.img-container').scrollable();
+                jq('.img-container').scrollable();
             });
         </script>
 

@@ -587,12 +587,12 @@ Sidebar Styles
 	margin: 0 0 5px 0;	
 }
 #sidebar a.get-help-btn {
+    background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent;
 	display: block;
-	width: 104px;
 	height: 32px;
 	margin: 10px 0 20px;
-	background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent;
 	text-indent: -9000px;
+    width: 104px;
 }
 #sidebar a.get-help-btn:hover {
 	background-position: 0 -32px;
@@ -602,19 +602,22 @@ Sidebar Styles
 }
 
 #sidebar a.clear-all-btn {
+    background: url(/static/images/layout/clear-all-btn.png) 0 0 no-repeat transparent;
 	display: block;
-	width: 104px;
 	height: 32px;
 	margin: 0 0 0 6px;
-	background: url(/static/images/layout/clear-all-btn.png) 0 0 no-repeat transparent;
 	text-indent: -9000px;
+   	width: 104px;
 }
 #sidebar a.clear-all-btn:hover {
 	background-position: 0 -32px;
+    cursor: pointer;
 }
 #sidebar a.clear-all-btn:active {
 	background-position: 0 -64px;
+    cursor: pointer;
 }
+
 
 #sidebar a.view-map-btn {
 	display: block;
@@ -684,6 +687,67 @@ Level 3 Id styles
 }
 .show .icon {
     vertical-align: middle;
+}
+
+div#modal, div#plant-detail-modal {
+	display: none;	
+}
+div.modal-wrap {
+	border: 5px solid rgba(255, 255, 255, 0.5);
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;	
+}
+.modal-wrap .inner {
+	background: #fff;
+    padding: 0 0 20px 0;
+}
+.modal-wrap .inner h4.heading, .modal-wrap .inner h3.heading {
+	border-bottom: 1px solid #ededed;
+	margin: 0 0 13px 0;
+    padding: 13px 0 13px 20px;
+}
+.modal-wrap .inner h3.heading {
+	font-style: italic;	
+}
+.modal-wrap .inner h3.heading span {
+	color: #807121;
+    font-size: 12px;
+    font-style: normal;	
+}
+.modal-wrap #choices {
+	padding: 10px 20px 0 20px;	
+}
+.modal-wrap #plant-details {
+	padding: 10px 20px 0 20px;	
+}
+.modal-wrap .list-item {
+	border-top: none;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+.modal-wrap .list-item p {
+	padding: 0 0 7px 0;	
+}
+.modal-wrap .list-item .details {
+	margin: 0 0 0 10px;	
+}
+.modal-wrap .list-item h4 {
+	color: #807121;	
+}
+a.get-more-info {
+	background: url(/static/images/layout/get-more-info.png) 0 0 no-repeat transparent;
+    display: block;
+	height: 32px;
+	margin: 20px 0 0 0;
+	text-indent: -9000px;
+    width: 163px;
+}
+a.get-more-info:hover {
+	background-position: 0 -32px;
+}
+a.get-more-info:active {
+	background-position: 0 -64px;
 }
 
 .plant-list div.row {
@@ -773,13 +837,37 @@ p.list-all a {
 /***
 Sidebar Styles for 3rd Level
  ****/
+#sidebar.tinted {
+    background: #fcfdf5;
+}
+#sidebar div.scroll {
+    border-bottom: 1px solid #c3d941;
+    border-top: 1px solid #c3d941;
+    display: block;
+    height: 335px;
+    margin: 0 0 10px 0;
+    overflow: auto;
+    width: 100%;
+}
+#plant-id-3 #sidebar {
+    padding: 0 0 16px 0;
+}
+#sidebar .section.instructions {
+    background: #9cc86b;
+    color: #fff;
+    padding: 16px;
+}
+#sidebar .section.instructions h5 {
+    line-height: 120%;
+    margin: 0;
+}
 a.get-choices {
     display: block;
     width: 171px;
     height: 32px;
     margin: 15px 0 0 0;
     text-indent: -9000px;
-    background: url(/static/images/layout/get-choices-btn.png) 0 0 no-repeat transparent;
+    background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent;
 }
 a.get-choices:hover {
     background-position: 0 -32px;
@@ -799,20 +887,15 @@ ul.option-list li {
     display: block;
     padding: 12px;
     margin: 0;
-    border-top: 1px solid #e1e1dc;
+    border-top: 1px solid #c3d941;
 }
 ul.option-list li.last {
-    border-bottom: 1px solid #e1e1dc;
+    border-bottom: 1px solid #c3d941;
 }
 ul.option-list li:hover, ul.option-list li.active {
-    background: #1a2e11 !important; /* important used to override style attribute added by yellow fade */
+    background: #dce890 !important; /* important used to override style
+                                       attribute added by yellow fade */
     cursor: pointer;
-}
-ul.option-list li:hover a.option, ul.option-list li.active a.option {
-    color: #fff;
-}
-ul.option-list li:hover a.close, ul.option-list li.active a.close {
-    background-position: 0 0;
 }
 .option-list a.option {
     color: #1a2e11;
@@ -825,20 +908,28 @@ ul.option-list li:hover a.close, ul.option-list li.active a.close {
     margin: 0 0 3px 0;
     font-weight: bold;
 }
-.option-list a.close {
-    display: block;
-    float: right;
-    width: 16px;
-    height: 16px;
-    margin: 9px 0 0 0;
-    background: url(/static/images/icons/close.png) 0 -16px no-repeat transparent;
+.option-list a.clear-filter {
+    display: none;
+    margin-top: 4px;
 }
+
+.get-more {
+    line-height: 16px;
+}
+.get-more a {
+    display: block;
+    font-family: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 14px 0 10px;
+}
+
 h5.help {
     padding: 3px 0 0 0;
     margin: 0 0 0 0;
 }
 #plant-id-3 a.get-help-btn {
-    margin: 0 0 0 10px;
+    margin: 0 0 0 19px;
 }
 /* These two next items are called family_select and genus_select in the HTML,
 but Dojo/Dijit transforms them into divs with ids starting with widget_. */
@@ -963,9 +1054,9 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
 
 
 #sidebar .loading {
-    background: url(../ajax-loader.gif) no-repeat scroll 0 0 transparent;
+    background: url(/static/images/icons/wait-sm.gif) no-repeat scroll 0 0 transparent;
     font-weight: bold;
-    margin: 0 0 20px 16px;
+    margin: 12px;
     padding: 0 0 0 20px;
 }
 
@@ -1267,6 +1358,14 @@ div.working-area #simple-slider .count {
 }
 /* end overrides for count slider */
 
+
+/* "New" non-ruler length input */
+.choose_length label {
+    margin: 0 10px 0 0;
+}
+.choose_length label input {
+    margin: 0 4px 0 0;
+}
 
 /* Help navigation styles */
 /* (Remove after Iteration 15, when they'll be obsolete) */
