@@ -150,16 +150,9 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         dojo.connect(plant_link, 'onclick', species, function(event) {
             event.preventDefault();
             var plant = this;   // species passed in as context
-            //dijit.byId('plant-preview').show();
-            //gobotany.sk.plant_preview.show(
-            //    plant,
-            //    {'pile_slug': pile_slug});
-            // TODO: (remove code above)
             
             // Populate the hidden content area with information about
             // this plant.
-            console.log('Plant:');
-            console.log(plant);
             var name = plant.scientific_name + ' <span>' +
                 plant.common_name + '</span>';
             dojo.html.set(dojo.query('#plant-detail-modal h3')[0], name);
@@ -213,7 +206,18 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     var button =
                         dojo.query('#plant-detail-modal a.get-more-info')[0];
                     dojo.attr(button, 'href', url);
-                    
+
+                    // Add images.
+                    var images_html = '';
+                    for (i = 0; i < taxon.images.length; i++) {
+                        images_html += '<img src="' +
+                            taxon.images[i].thumb_url + '" alt="' +
+                            taxon.images[i].title + '">';
+                    }
+                    dojo.html.set(
+                        dojo.query('#plant-detail-modal div.images')[0],
+                        images_html);
+
                     // Open the Shadowbox modal dialog with a copy of the
                     // HTML in the hidden content area.
                     var content_element =
@@ -224,6 +228,11 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         height: 530,
                         width: 790
                     });
+
+                    // Initialize the jQuery scrolling image viewer now
+                    // showing in the modal dialog.
+                    // TODO: Fix; don't know why it's not working
+                    //$('#sb-container .img-container').scrollable();
                 }
             });
         });
