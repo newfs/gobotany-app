@@ -1258,8 +1258,9 @@ class Importer(object):
                 self._add_place_character_value(character, state, piles, taxon)
 
 
-    def _create_plant_preview_characters(self, pile_name, character_short_names,
-                                        partner_site_short_name=None):
+    def _create_plant_preview_characters(self, pile_name,
+                                         character_short_names,
+                                         partner_site_short_name='gobotany'):
         pile = models.Pile.objects.get(name=pile_name)
         partner_site = None
         if partner_site_short_name:

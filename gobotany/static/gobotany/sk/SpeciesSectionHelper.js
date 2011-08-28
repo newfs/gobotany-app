@@ -10,9 +10,11 @@ dojo.provide('gobotany.sk.SpeciesSectionHelper');
 
 dojo.require('dojo.hash');
 dojo.require('dojo.html');
+dojo.require('dojox.data.JsonRestStore');
 dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
 dojo.require('gobotany.sk.plant_preview');
+dojo.require('gobotany.utils');
 
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
@@ -147,11 +149,83 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         dojo.connect(plant_link, 'onclick', species, function(event) {
             event.preventDefault();
-            var plant = this;
-            dijit.byId('plant-preview').show();
-            gobotany.sk.plant_preview.show(
-                plant,
-                {'pile_slug': pile_slug});
+            var plant = this;   // species passed in as context
+            //dijit.byId('plant-preview').show();
+            //gobotany.sk.plant_preview.show(
+            //    plant,
+            //    {'pile_slug': pile_slug});
+            // TODO: (remove code above)
+            
+            // Populate the hidden content area with information about
+            // this plant.
+            console.log('Plant:');
+            console.log(plant);
+            var name = plant.scientific_name + ' <span>' +
+                plant.common_name + '</span>';
+            dojo.html.set(dojo.query('#plant-detail-modal h3')[0], name);
+
+            // Call the API to get more information.
+            var taxon_url = '/api/taxon/' + plant.scientific_name + '/';
+            var taxon_store = new dojox.data.JsonRestStore({
+                target: taxon_url});
+            taxon_store.fetch({onComplete:
+                function(taxon) {
+
+                    // Fill in Characteristics.
+                    var characters =
+                        taxon.plant_preview_characters_per_pile[pile_slug];
+                    console.log('Plant preview characters:');
+                    console.log(characters);
+                    var characters_html = '';
+                    for (var i = 0; i < characters.length; i++) {
+                        var ppc = characters[i];
+                        if (ppc.partner_site === gobotany_sk_partner_site) {
+                            characters_html += '<li>' +
+                                ppc.character_friendly_name.toUpperCase() +
+                                ': ';
+                            var display_value = '';
+                            var character_value =
+                                taxon[ppc.character_short_name];
+                            if (character_value !== undefined) {
+                                display_value = character_value;
+                                if (ppc.value_type === 'LENGTH') {
+                                    var min = character_value[0];
+                                    var max = character_value[1];
+                                    display_value =
+                                        gobotany.utils.pretty_length(
+                                        ppc.unit, min) + ' to ' +
+                                        gobotany.utils.pretty_length(
+                                        ppc.unit, max);
+                                }
+                            }
+                            characters_html += display_value + '</li>';
+                        }
+                    }
+                    dojo.html.set(
+                        dojo.query('#plant-detail-modal div.details ul')[0],
+                        characters_html);
+
+                    // Wire up the Get More Info button.
+                    var path = window.location.pathname.split('#')[0];
+                    var url = path +
+                        plant.scientific_name.toLowerCase().replace(' ',
+                        '/') + '/';
+                    var button =
+                        dojo.query('#plant-detail-modal a.get-more-info')[0];
+                    dojo.attr(button, 'href', url);
+                    
+                    // Open the Shadowbox modal dialog with a copy of the
+                    // HTML in the hidden content area.
+                    var content_element =
+                        dojo.query('#plant-detail-modal')[0];
+                    Shadowbox.open({
+                        content: content_element.innerHTML,
+                        player: 'html',
+                        height: 530,
+                        width: 790
+                    });
+                }
+            });
         });
     },
 
