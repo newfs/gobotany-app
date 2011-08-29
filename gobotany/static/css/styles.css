@@ -1743,6 +1743,7 @@ Search Results Styles
 #search-results-list {
     border-top: 1px solid #e1e1dc;
     margin: 15px 0 13px;
+    padding: 6px 0 0;
 }
 #search-results-list .highlighted {
     font-weight: bold;
@@ -1752,10 +1753,10 @@ Search Results Styles
     padding: 6px 0 10px;
 }
 #search-results-list li img {
-    height: 37px; /* TODO: remove height after all icons have been provided */
-    margin: -6px 10px 0;
+    height: 24px; /* TODO: remove height after all icons have been provided */
+    margin: -1px 10px 0;
     vertical-align: middle;
-    width: 31px; /* TODO: remove width after all icons have been provided */
+    width: 24px; /* TODO: remove width after all icons have been provided */
 }
 #search-results-list li a {
     font: 15px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
