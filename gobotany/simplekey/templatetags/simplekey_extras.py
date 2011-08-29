@@ -21,7 +21,26 @@ def replace(value, arg):
     return value.replace(characters[0], characters[1])
 
 
+def _italicize_word(word):
+    return '<i>' + word + '</i>'
+
+@stringfilter
+def italicize_plant(value):
+    '''Italicize the latin parts of a plant scientific name.'''
+    words = value.split(' ')
+    # Assume the first two words are the genus and specific epithet.
+    words[0] = _italicize_word(words[0])
+    words[1] = _italicize_word(words[1])
+    # Look for more words to italicize, such as a variety or subspecies.
+    CONNECTING_TERMS = ['subsp.', 'ssp.', 'var.', 'subvar.', 'f.',
+                        'forma', 'subf.']
+    for i in range(2 , len(words)):
+        if words[i] in CONNECTING_TERMS and words[i + 1]:
+            words[i + 1] = _italicize_word(words[i + 1])
+    return ' '.join(words)
+
+
 register.filter('split', split)
 register.filter('at_index', at_index)
 register.filter('replace', replace)
-
+register.filter('italicize_plant', italicize_plant)

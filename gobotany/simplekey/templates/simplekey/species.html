@@ -152,7 +152,11 @@
                     class="status">
                     <tbody>
                         <tr>
-					        <th>Connecticut</th>
+                            <th>State</th>
+                            <th>Distribution &amp; Additional Status</th>
+                        </tr>
+                        <tr>
+					        <td>Connecticut</td>
 					        <td>{{ taxon.conservation_status_ct }}</td>
 				        </tr>
 				        <tr>
@@ -239,8 +243,7 @@
                     <h5>Sometimes Confused With</h5>
                     <dl>
                     {% for lookalike in taxon.lookalikes.all %}
-                    <dt><a href="/species/{{ lookalike.lookalike_scientific_name|lower|replace:' ,/' }}/"><em>{{ lookalike.lookalike_scientific_name }}</em></a>
-                        -</dt>
+                    <dt><a href="/species/{{ lookalike.lookalike_scientific_name|lower|replace:' ,/' }}/"><em>{{ lookalike.lookalike_scientific_name }}</em></a>:</dt>
                         <dd>{{ lookalike.lookalike_characteristic }}</dd>
                     {% endfor %}
                     </dl>
@@ -252,10 +255,9 @@
                 <div class="section">
                     <h5>Synonyms:</h5>
                     <p>
-                      {% for synonym in synonyms %}
-                      {{ synonym.full_name }}
-                      {% if not forloop.last %}<br>{% endif %}
-                      {% endfor %}
+                        {% for synonym in synonyms %}
+                            {{ synonym.full_name|italicize_plant|safe }}{% if not forloop.last %},{% endif %}
+                        {% endfor %}
                     </p>
                 </div>
                 {% endif %}
