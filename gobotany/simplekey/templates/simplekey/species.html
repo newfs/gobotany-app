@@ -53,38 +53,28 @@
                     <span class="common">{% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}
                         {{ common_name }}{% endfor %}</span>
                 </h2>
-                
-                <div class="img-gallery">
-                    <div class="frame"></div>
-                    <div class="img-container">
-                        <div class="images">
-                        {% for i in species_images %}
-                            {# Skip any images that are too small to #}
-                            {# present in the wide gallery box.      #}
-                            {% if i.image.width >= 710 and i.image.height >= 249 %}
-                                <div class="single-img">
-                                    {% thumbnail i.image "710x249" crop="center" as thumb %}
-                                    {% if i.image.height > i.image.width %}
-                                        {% thumbnail i.image "600x800" as full %}
-                                    {% else %}
-                                        {% thumbnail i.image "800x600" as full %}
-                                    {% endif %}
-                                    <a href="{{ full }}" rel="shadowbox">
-                                        <img src="{{ thumb }}"
-                                             alt="{{ i.image_type|capfirst }}: 
-                                        {{ scientific_name }}"></a>
-                                    <p class="caption">{{ i.image_type|capfirst }}</p>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                        </div>
-                    </div>
-                    <div class="controls">
-						<span>
-							<a class="prev disabled">Prev</a>
-							<a class="next">Next</a>
-						</span>                        
-                    </div>
+
+                <div id="species-images">
+                    <div class="scrollingHotSpotLeft"></div>
+		            <div class="scrollingHotSpotRight"></div>
+		            <div class="scrollWrapper">
+                        <div class="scrollableArea">
+                            {% for i in species_images %}
+                                {% thumbnail i.image "239x239" as thumb %}
+                                {% if i.image.height > i.image.width %}
+                                    {% thumbnail i.image "600x800" as full %}
+                                {% else %}
+                                    {% thumbnail i.image "800x600" as full %}
+                                {% endif %}
+                                <a href="{{ full }}" {% if forloop.counter == 1 %}id="startimage"{% endif %}
+                                    rel="shadowbox"
+                                    title="{{ i.image_type|capfirst }}">
+                                    <img src="{{ thumb }}"
+                                        alt="{{ i.image_type|capfirst }}: {( scientific_name }}">
+                                </a>
+                            {% endfor %}
+			            </div>
+		            </div>
                 </div>
                 <div class="clearit"></div>
 
@@ -240,7 +230,7 @@
 
                 {% if taxon.lookalikes.all|length > 0 %}
                 <div class="section">
-                    <h5>Sometimes Confused With</h5>
+                    <h5>Sometimes Confused With:</h5>
                     <dl>
                     {% for lookalike in taxon.lookalikes.all %}
                     <dt><a href="/species/{{ lookalike.lookalike_scientific_name|lower|replace:' ,/' }}/"><em>{{ lookalike.lookalike_scientific_name }}</em></a>:</dt>
@@ -295,15 +285,26 @@
     </script>
 
     <script>
-      API_URL = '{% url api-base %}';
-      dojo.require('gobotany.sk.species');
-      dojo.addOnLoad(function() {
-          global_toggleList();
-          gobotany.sk.species.init('{{ scientific_name }}');
-      });
-      dojo.addOnUnload(function() {
-          gobotany.sk.species.persist_visibility();
-      });
+        API_URL = '{% url api-base %}';
+        dojo.require('gobotany.sk.species');
+        dojo.addOnLoad(function() {
+            global_toggleList();
+            gobotany.sk.species.init('{{ scientific_name }}');
+        });
+        dojo.addOnUnload(function() {
+            gobotany.sk.species.persist_visibility();
+        });
+        
+        var jq = jQuery.noConflict();
+        jq(document).ready(function() {
+            jq('#taxon #species-images').smoothDivScroll({
+                autoScroll: 'onstart', 
+			    autoScrollDirection: 'backandforth', 
+			    autoScrollStep: 1, 
+                autoScrollInterval: 75,
+                visibleHotSpots: 'always'
+            });
+        });
   </script>
 
 </body>
