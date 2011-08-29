@@ -294,6 +294,14 @@
         dojo.addOnUnload(function() {
             gobotany.sk.species.persist_visibility();
         });
+        
+        /* So far the Smooth Div Scroll plugin is only working in
+           Firefox, not in WebKit-based browsers. This is apparently due
+           to a jQuery conflict; one time running code something like below
+           from the Chrome console got the plugin working there
+           temporarily. For more on the overall problem, see: 
+           http://stackoverflow.com/questions/833883/weird-chrome-prototype-jquery-conflict
+           */
         var jq = jQuery.noConflict();
         jq(document).ready(function() {
             jq('#taxon #species-images').smoothDivScroll({
