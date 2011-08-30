@@ -1037,19 +1037,20 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     border: 1px solid #e1e1dc;
 }
 .working-area .apply-btn {
-    background: url(/static/images/layout/apply-btn.png) no-repeat 0 0 transparent;
+    background: url(/static/images/layout/apply-selection.png) no-repeat 0 0 transparent;
     display: none;
     float: right;
-    height: 32px;
+    height: 41px;
+    margin: 15px 0 0;
     text-align: left;
     text-indent: -9000px;
-    width: 92px;
+    width: 244px;
 }
 .working-area .apply-btn:hover {
-    background-position: 0 -32px;
+    background-position: 0 -41px;
 }
 .working-area .apply-btn:active {
-    background-position: 0 -64px;
+    background-position: 0 -82px;
 }
 
 
