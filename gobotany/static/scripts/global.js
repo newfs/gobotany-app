@@ -62,7 +62,7 @@ function _isHidden(questionDiv) {
 
 function _showQuestion(questionDiv) {
     $(questionDiv).find('li.hidden, a.screenshot').show();
-    $(questionDiv).css('background-image',
+    $(questionDiv).find('h4').css('background-image',
                        'url(/static/images/icons/minus.png)');
     sidebarHeight();
     $(questionDiv).find('a.show').text('Less...');
@@ -70,7 +70,7 @@ function _showQuestion(questionDiv) {
 
 function _hideQuestion(questionDiv) {
     $(questionDiv).find('li.hidden, a.screenshot').hide();
-    $(questionDiv).css('background-image',
+    $(questionDiv).find('h4').css('background-image',
                        'url(/static/images/icons/plus.png)');
     sidebarHeight();
     $(questionDiv).find('a.show').text('More...');
