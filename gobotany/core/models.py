@@ -729,3 +729,15 @@ class Habitat(models.Model):
 
     def __unicode__(self):
         return '%s (%s)' % (self.name, self.friendly_name)
+
+
+class Distribution(models.Model):
+    """County-level distribution data for plants."""
+    scientific_name = models.CharField(max_length=100)
+    state = models.CharField(max_length=2)
+    county = models.CharField(max_length=50)
+    status = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return '%s: %s County, %s (%s)' % (self.scientific_name, self.county,
+                                           self.state, self.status)

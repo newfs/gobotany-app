@@ -127,7 +127,7 @@ class Importer(object):
 
     def import_data(self, pilegroupf, pilef, habitatsf, taxaf, charf, charvf,
                     char_val_images, char_glossaryf, glossaryf,
-                    glossary_images, lookalikesf):
+                    glossary_images, lookalikesf, distributionsf):
         self._import_partner_sites()
         self._import_pile_groups(pilegroupf)
         self._import_piles(pilef)
@@ -141,6 +141,7 @@ class Importer(object):
         self._import_place_characters_and_values(taxaf)
         self._import_plant_preview_characters()
         self._import_lookalikes(lookalikesf)
+        self._import_distributions(distributionsf)
         self._import_extra_demo_data()
         self._import_help()
         self._import_search_suggestions()
@@ -1327,6 +1328,24 @@ class Importer(object):
         if not p.youtube_id:
             p.youtube_id = youtube_id
         p.save()
+
+
+    @transaction.commit_on_success
+    def _import_distributions(self, distributionsf):
+        print >> self.logfile, 'Importing distribution data (BONAP)'
+        iterator = iter(CSVReader(distributionsf).read())
+        colnames = [x.lower() for x in iterator.next()]
+
+        for cols in iterator:
+            row = dict(zip(colnames, cols))
+            distribution, created = \
+                models.Distribution.objects.get_or_create(
+                    scientific_name=row['scientific_name'],
+                    state=row['state'],
+                    county=row['county'],
+                    status=row['status'])
+            print >> self.logfile, u'  Added Distribution: %s' % distribution
+
 
     @transaction.commit_on_success
     def _import_extra_demo_data(self):
