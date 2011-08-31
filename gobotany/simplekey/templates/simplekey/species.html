@@ -60,7 +60,7 @@
 		            <div class="scrollWrapper">
                         <div class="scrollableArea">
                             {% for i in species_images %}
-                                {% thumbnail i.image "239x239" crop="center" as thumb %}
+                                {% thumbnail i.image "233x239" crop="center" as thumb %}
                                 {% if i.image.height > i.image.width %}
                                     {% thumbnail i.image "600x800" as full %}
                                 {% else %}
