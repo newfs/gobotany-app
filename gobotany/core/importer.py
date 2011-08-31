@@ -1301,23 +1301,33 @@ class Importer(object):
         self._create_plant_preview_characters('Non-Orchid Monocots',
             ['anther_length_nm', 'leaf_arrangement_nm'])
 
+
     @transaction.commit_on_success
     def _import_lookalikes(self, lookalikesf):
-        print >> self.logfile, 'Importing look-alike plants.'
+        print >> self.logfile, 'Importing look-alike plants'
         iterator = iter(CSVReader(lookalikesf).read())
         colnames = [x.lower() for x in iterator.next()]
 
         for cols in iterator:
             row = dict(zip(colnames, cols))
-            scientific_name = row['taxon']
+            if row['lookalike_tips'] != '':
+                scientific_name = row['scientific__name']
+                taxon = \
+                    models.Taxon.objects.get(scientific_name=scientific_name)
 
-            taxon = models.Taxon.objects.get(scientific_name=scientific_name)
-            models.Lookalike.objects.create(
-                lookalike_scientific_name=row['lookalike_taxon'],
-                lookalike_characteristic=row['how_to_tell'],
-                taxon=taxon).save()
-            print >> self.logfile, u'  New Lookalike for %s: %s' % \
-                (scientific_name, row['lookalike_taxon'])
+                # Clean up Windows dash characters.
+                tips = row['lookalike_tips'].replace(u'\u2013', '-')
+
+                parts = re.split('(\w+ \w+):', tips)   # Split on plant name
+                parts = parts[1:]   # Strip the first item, which is empty
+
+                for lookalike, how_to_tell in zip(parts[0::2], parts[1::2]):
+                    models.Lookalike.objects.create(
+                        lookalike_scientific_name=lookalike.strip(),
+                        lookalike_characteristic=how_to_tell.strip(),
+                        taxon=taxon).save()
+                    print >> self.logfile, u'  New Lookalike for %s: %s' % \
+                        (scientific_name, lookalike)
 
 
     def _set_youtube_id(self, name, youtube_id, pilegroup=False):
