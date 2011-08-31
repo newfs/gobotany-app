@@ -163,12 +163,14 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                 target: taxon_url});
             taxon_store.fetch({onComplete:
                 function(taxon) {
+                    // Fill in Facts About.
+                    dojo.html.set(
+                        dojo.query('#plant-detail-modal div.details p')[0],
+                        taxon.factoid);
 
                     // Fill in Characteristics.
                     var characters =
                         taxon.plant_preview_characters_per_pile[pile_slug];
-                    console.log('Plant preview characters:');
-                    console.log(characters);
                     var characters_html = '';
                     for (var i = 0; i < characters.length; i++) {
                         var ppc = characters[i];
