@@ -1554,12 +1554,12 @@ a.enlarge:hover {
     width: 700px;
 }
 #taxon #species-images div.scrollableArea img {
+    border-right: 5px solid #fff;
     float: left;
     margin: 0;
     padding: 0;
     position: relative;
 }
-
 
 /*///////////////////////////**
 Getting Started Page Styles
