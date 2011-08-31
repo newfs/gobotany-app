@@ -1479,6 +1479,10 @@ table.status td:first-child {
     width: 120px;
 }
 
+#taxon #sidebar dt, #taxon #sidebar dd {
+    display: inline;
+}
+
 #taxon #sidebar .get-help-btn {
 	margin: 0 0 0 10px;	
 }
