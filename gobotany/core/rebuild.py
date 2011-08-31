@@ -103,7 +103,8 @@ def rebuild_default_filters(characters_csv):
         # have a delete-cascade that also deletes character records.
         pile.default_filters.clear()
 
-        COMMON_FILTER_CHARACTER_NAMES = ['habitat', 'state_distribution']
+        COMMON_FILTER_CHARACTER_NAMES = ['habitat_general',
+                                         'state_distribution']
         print "  Inserting common filters:"
         for n, character_name in enumerate(COMMON_FILTER_CHARACTER_NAMES):
             try:

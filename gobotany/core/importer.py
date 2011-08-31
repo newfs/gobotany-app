@@ -1181,6 +1181,7 @@ class Importer(object):
 
         # Create characters.
         character_names = [('habitat', 'Habitat'),
+                           ('habitat_general', 'Habitat (general)'),
                            ('state_distribution', 'New England state')]
         value_type = 'TEXT'
         for short_name, friendly_name in character_names:
@@ -1245,6 +1246,16 @@ class Importer(object):
                     friendly_habitat = friendly_habitat.lower()
                 self._add_place_character_value(character, habitat.lower(),
                     piles, taxon, friendly_habitat)
+
+            # Create the Habitat (general) chararcter values.
+            character = \
+                models.Character.objects.get(short_name='habitat_general')
+            self._has_unexpected_delimiter(row['habitat_general'],
+                                           unexpected_delimiter=',')
+            habitats = row['habitat_general'].lower().split('| ')
+            for habitat in habitats:
+                self._add_place_character_value(character, habitat, piles,
+                                                taxon, habitat)
 
             # Create the State Distribution character values.
             character = \
