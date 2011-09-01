@@ -585,8 +585,21 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 		                   });
         this.scroll_pane_api = this.scroll_pane.data('jsp');
 
+        // Wire up the Get More Choices link.
+        var get_more_choices = dojo.query('#sidebar .get-more a')[0];
+        dojo.connect(get_more_choices, 'onclick', this,
+            function() {
+                var content_element = dojo.query('#modal')[0];
+                Shadowbox.open({
+                    content: content_element.innerHTML,
+                    player: 'html',
+                    height: 450
+                });
+            }
+        );
+
         // Wire up the Clear All button.
-        var clear_all_button = dojo.query('a.clear-all-btn')[0];
+        var clear_all_button = dojo.query('#sidebar a.clear-all-btn')[0];
         dojo.connect(clear_all_button, 'onclick', this,
             this.clear_all_filter_choices);
 

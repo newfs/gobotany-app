@@ -917,6 +917,7 @@ ul.option-list li:hover, ul.option-list li.active {
     line-height: 16px;
 }
 .get-more a {
+    cursor: pointer;
     display: block;
     font-family: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif;
     font-size: 14px;
