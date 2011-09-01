@@ -171,6 +171,7 @@ class Importer(object):
             pilegroup, created = models.PileGroup.objects.get_or_create(
                 name=row['name'],
                 friendly_name=row['friendly_name'],
+                friendly_title=row['friendly_title'],
                 key_characteristics=characteristics,
                 notable_exceptions=exceptions)
             if created:
@@ -202,6 +203,7 @@ class Importer(object):
             pile.pilegroup = pilegroup
             # Update various fields.
             pile.friendly_name = row['friendly_name']
+            pile.friendly_title = row['friendly_title']
             pile.description = row['description']
             pile.key_characteristics = \
                 self._clean_up_html(row['key_characteristics'])

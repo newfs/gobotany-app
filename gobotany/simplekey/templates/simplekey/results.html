@@ -1,6 +1,6 @@
 {% extends "simplekey/_base.html" %}
 
-{% block title %}{{ pilegroup.name }}: {{ pile.name }}{% endblock %}
+{% block title %}{{ pilegroup.friendly_title }}: {{ pile.friendly_title }}{% endblock %}
 
 {% block body %}
     <body id="plant-id-3" class="claro app">
@@ -38,7 +38,7 @@
                     </div><!--Closes #breadcrumb-->
 
                     <h2>Plant Identifier</h2>
-                    <h3>{{ pile.name }} 
+                    <h3>{{ pile.friendly_title }} 
                         (<span class="species-count">calculating</span> 
                         matching species)</h3>
 

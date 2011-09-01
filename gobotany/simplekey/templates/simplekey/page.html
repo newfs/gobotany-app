@@ -66,7 +66,7 @@
                             </div><!--Closes .controls-->
                         </div><!--Closes .img-gallery-->
                         <div class="details">
-                            <h3>{{ pilegroup.name }} <span>{{ pilegroup.friendly_name|capfirst }}</span></h3>
+                            <h3>{{ pilegroup.friendly_title }} <span>{{ pilegroup.friendly_name|capfirst }}</span></h3>
                             <p class="key-char">
                                 <span class="section-title">Key Characteristics</span>
                                 {{ pilegroup.key_characteristics|removetags:"div"|safe|capfirst }}

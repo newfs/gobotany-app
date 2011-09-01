@@ -287,6 +287,7 @@ class PileInfo(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
     friendly_name = models.CharField(max_length=100, blank=True)
+    friendly_title = models.CharField(max_length=100, blank=True)
     description = models.CharField(max_length=2500, blank=True)
     images = generic.GenericRelation('ContentImage')
     youtube_id = models.CharField(max_length=20, blank=True)
