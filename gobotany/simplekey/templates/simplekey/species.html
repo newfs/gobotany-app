@@ -296,15 +296,18 @@
         });
         
         /* So far the Smooth Div Scroll plugin is only working in
-           Firefox, not in WebKit-based browsers. This is apparently due
-           to a jQuery conflict; one time running code something like below
-           from the Chrome console got the plugin working there
-           temporarily. For more on the overall problem, see: 
-           http://stackoverflow.com/questions/833883/weird-chrome-prototype-jquery-conflict
+           Firefox, not in WebKit-based browsers. Smooth Div Scroll
+           is said to require jQuery 1.5.2; our jQuery Tools library
+           contains only 1.4.2. However, even when loading jQuery 1.5.2
+           or 1.6.x, Smooth Div Scroll usually doesn't work on our page in
+           in WebKit. But, it does work fine on the Smooth Div Scroll demo
+           page, so there is probably a way to get it working.
+           Also, even with jQuery 1.4.2, Smooth Div Scroll works in
+           Firefox (and once in a while in Chrome), so it appears 1.4.2 will
+           be fine. More investigation needed for the WebKit-based browsers.
            */
-        var jq = jQuery.noConflict();
-        jq(document).ready(function() {
-            jq('#taxon #species-images').smoothDivScroll({
+        $(document).ready(function() {
+            $('#taxon #species-images').smoothDivScroll({
                 autoScroll: 'onstart', 
 			    autoScrollDirection: 'backandforth', 
 			    autoScrollStep: 1, 
