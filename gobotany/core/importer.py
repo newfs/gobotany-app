@@ -1,9 +1,11 @@
+import codecs
 import csv
 import os
 import re
 import sys
 import tarfile
 import xlrd
+from contextlib import contextmanager
 
 from django.core import management
 from django.core.exceptions import ObjectDoesNotExist
@@ -14,12 +16,25 @@ from operator import attrgetter
 # Some imports have to be performed after Django settings are loaded.
 management.setup_environ(settings)
 
-from django.db import transaction
+from django.db import connection, transaction
 from gobotany.core import models
 from gobotany.simplekey.models import Blurb, Video, HelpPage, \
                                       GlossaryHelpPage, SearchSuggestion
 
+DEBUG=False
+
 from django.contrib.contenttypes.models import ContentType
+
+@contextmanager
+def open_csv(filename):
+    """Our CSVs are produced on Windows and sometimes re-saved from a Mac.
+
+    This means we have to be careful about both their encoding and the
+    line endings.
+
+    """
+    with codecs.open(filename, 'rU', 'Windows-1252') as f:
+        yield csv.DictReader(f)
 
 class CSVReader(object):
 
@@ -1355,18 +1370,35 @@ class Importer(object):
     @transaction.commit_on_success
     def _import_distributions(self, distributionsf):
         print >> self.logfile, 'Importing distribution data (BONAP)'
-        iterator = iter(CSVReader(distributionsf).read())
-        colnames = [x.lower() for x in iterator.next()]
 
-        for cols in iterator:
-            row = dict(zip(colnames, cols))
-            distribution, created = \
-                models.Distribution.objects.get_or_create(
-                    scientific_name=row['scientific_name'],
-                    state=row['state'],
-                    county=row['county'],
-                    status=row['status'])
-            print >> self.logfile, u'  Added Distribution: %s' % distribution
+        cursor = connection.cursor()
+
+        # We are inside of a transaction, so no one will see the table
+        # empty; by the end of our transaction, it will be full again.
+        cursor.execute('DELETE FROM core_distribution')
+
+        statements = []
+        data = []
+        with open_csv(distributionsf) as csv:
+            for row in csv:
+                statements.append(
+                    "INSERT INTO core_distribution"
+                    "(scientific_name, state, county, status)"
+                    " VALUES (%s, %s, %s, %s)")
+                data.append(row['scientific_name'])
+                data.append(row['state'])
+                data.append(row['county'])
+                data.append(row['status'])
+
+        print >> self.logfile, 'Inserting distribution data (BONAP)'
+        skip = 1000
+        for i in range(0, len(statements), skip):
+            if DEBUG:
+                print i,
+            cursor.execute(';'.join(statements[i : i+skip]),
+                           data[i*4 : i*4 + skip*4])
+
+        connection.commit()
 
 
     @transaction.commit_on_success
