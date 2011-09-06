@@ -734,7 +734,7 @@ class Habitat(models.Model):
 
 class Distribution(models.Model):
     """County-level distribution data for plants."""
-    scientific_name = models.CharField(max_length=100)
+    scientific_name = models.CharField(max_length=100, db_index=True)
     state = models.CharField(max_length=2)
     county = models.CharField(max_length=50)
     status = models.CharField(max_length=100)
