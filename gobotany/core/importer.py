@@ -127,7 +127,7 @@ class Importer(object):
 
     def import_data(self, pilegroupf, pilef, habitatsf, taxaf, charf, charvf,
                     char_val_images, char_glossaryf, glossaryf,
-                    glossary_images, lookalikesf, distributionsf):
+                    glossary_images, lookalikesf):
         self._import_partner_sites()
         self._import_pile_groups(pilegroupf)
         self._import_piles(pilef)
@@ -141,7 +141,6 @@ class Importer(object):
         self._import_place_characters_and_values(taxaf)
         self._import_plant_preview_characters()
         self._import_lookalikes(lookalikesf)
-        self._import_distributions(distributionsf)
         self._import_extra_demo_data()
         self._import_help()
         self._import_search_suggestions()
@@ -1663,6 +1662,8 @@ def main():
     elif sys.argv[1] == 'character-values':
         for taxonf in sys.argv[2:]:
             importer.import_taxon_character_values(taxonf)
+    elif sys.argv[1] == 'distributions':
+        importer._import_distributions(sys.argv[2])
     else:
         is_data_valid = importer.validate_data(*sys.argv[1:])
         if is_data_valid:
