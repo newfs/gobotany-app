@@ -605,9 +605,9 @@ Sidebar Styles
     background: url(/static/images/layout/clear-all-btn.png) 0 0 no-repeat transparent;
 	display: block;
 	height: 32px;
-	margin: 0 0 0 6px;
+	margin: 0 0 0 22px;
 	text-indent: -9000px;
-   	width: 104px;
+	width: 104px;
 }
 #sidebar a.clear-all-btn:hover {
 	background-position: 0 -32px;
