@@ -29,7 +29,7 @@
                         <a {% ifnotequal request.path "/" %}href="{% url simplekey-index %}"{% endifnotequal %}>Home</a>
                     </li>
                     <li class="plant-id">
-                        <a href="{% if 'skip_help_start' in request.COOKIES.keys and request.COOKIES.skip_help_start == 'y' %}{% url simplekey-page 1 %}{% else %}/help/start/{% endif %}">Plant Identifier</a>
+                        <a href="{% url simplekey-page 1 %}">Plant Identifier</a>
                     </li>
                     <li class="my-plants"><a href="{% if ':8000' in request.META.HTTP_HOST %}http://127.0.0.1:8001/{% else %}https://myplants.newfs.org/{% endif %}">MyPlants</a></li>
                     <li class="advanced-id">

@@ -24,7 +24,7 @@
                             have an actual sample or a few photos of
                             your plant.</p>
                             {# If the user has elected to skip the start page, go right to the key. #}
-                            <a href="{% if 'skip_help_start' in request.COOKIES.keys and request.COOKIES.skip_help_start == 'y' %}{% url simplekey-page 1 %}{% else %}/help/start/{% endif %}" id="cta">Get Started</a>
+                            <a href="{% url simplekey-page 1 %}" id="cta">Get Started</a>
                         </div>
                         </div>
                     </div>
