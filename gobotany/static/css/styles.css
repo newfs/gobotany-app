@@ -677,13 +677,14 @@ Level 3 Id styles
 }
 
 #plant-id-3 .show {
-    float: right;
+    float: left;
     margin: -3px 0 7px 0; /* adjusted due to Dijit menu widget */
 }
 #plant-id-3 .show label {
     height: 16px;
     line-height: 16px;
     vertical-align: middle;
+    font-size: 16px;
 }
 #plant-id-3 .show .icon {
     vertical-align: middle;
