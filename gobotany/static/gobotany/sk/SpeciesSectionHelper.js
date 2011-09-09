@@ -14,7 +14,6 @@ dojo.require('dojo.NodeList-fx');
 dojo.require('dojox.data.JsonRestStore');
 dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
-dojo.require('gobotany.sk.plant_preview');
 dojo.require('gobotany.utils');
 
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {

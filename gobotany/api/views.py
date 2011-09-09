@@ -8,7 +8,7 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
 from gobotany.core import igdt
 from gobotany.core.models import (
-    Character, CharacterValue, ContentImage,
+    Character, ContentImage,
     GlossaryTerm, PartnerSpecies, Pile,
     Taxon, TaxonCharacterValue,
     )
