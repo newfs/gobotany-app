@@ -102,9 +102,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     on_complete_perform_query: function(data) {
         'use strict';
 
-        // Update the species count everywhere it appears on the screen.
-        dojo.query('.species-count').html(String(data.items.length));
-
         // Show the "Show" drop-down menu for image types, if necessary.
         if (this.current_view === this.PHOTOS_VIEW) {
             var show_menu = dojo.query('.show')[0];
@@ -605,4 +602,18 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         }
     }
 
+});
+
+/*
+ * Manage everywhere on the page that we maintain a species count.
+ */
+dojo.declare('gobotany.sk.SpeciesCounts', null, {
+    constructor: function() {
+        dojo.subscribe('/filters/query-result', this, '_update_counts');
+    },
+
+    _update_counts: function(args) {
+        var count_str = String(args.species_list.length);
+        dojo.query('.species-count').html(count_str);
+    }
 });

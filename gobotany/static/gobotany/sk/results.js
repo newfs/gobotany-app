@@ -66,6 +66,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             new gobotany.sk.SpeciesSectionHelper(this);
         this.species_section.setup_section();
 
+        new gobotany.sk.SpeciesCounts(this);
+
         this.filter_section =
             new gobotany.sk.results.FilterSectionHelper(this);
         this.filter_section.setup_section();

@@ -483,5 +483,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         var data = {items: species_list};
         if (args && args.on_complete)
             args.on_complete(data);
+
+        dojo.publish('/filters/query-result', [{species_list: species_list}]);
     }
 });
