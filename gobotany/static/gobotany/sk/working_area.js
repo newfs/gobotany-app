@@ -222,7 +222,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
             if (vector.length === 0)
                 input_field_q.attr('disabled', 'disabled');
             else
-                input_field_q.attr('disabled'); // remove the attribute
+                input_field_q.attr('disabled', false); // remove the attribute
         }
     },
 
