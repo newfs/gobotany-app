@@ -10,6 +10,7 @@ dojo.provide('gobotany.sk.SpeciesSectionHelper');
 
 dojo.require('dojo.hash');
 dojo.require('dojo.html');
+dojo.require('dojo.NodeList-fx');
 dojo.require('dojox.data.JsonRestStore');
 dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
@@ -608,6 +609,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
  * Manage everywhere on the page that we maintain a species count.
  */
 dojo.declare('gobotany.sk.SpeciesCounts', null, {
+    animation: null,
+
     constructor: function() {
         dojo.subscribe('/filters/query-result', this, '_update_counts');
     },
@@ -615,5 +618,19 @@ dojo.declare('gobotany.sk.SpeciesCounts', null, {
     _update_counts: function(args) {
         var count_str = String(args.species_list.length);
         dojo.query('.species-count').html(count_str);
+
+        if (this.animation !== null)
+            this.animation.stop();
+
+        this.animation = dojo.query('.species-count-phrase').animateProperty({
+            duration: 2000,
+            properties: {
+                backgroundColor: {
+                    start: '#FF0',
+                    end: '#F0F0C0'
+                }
+            }
+        });
+        this.animation.play();
     }
 });
