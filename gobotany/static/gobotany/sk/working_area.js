@@ -96,7 +96,6 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         d.query('.question').html(p(f.question)).forEach(this.glossarize);
         d.query('.hint').html(p(f.hint)).forEach(this.glossarize);
         d.query('.info').style({display: 'block'});
-        d.query('.apply-btn').style({display: 'block'});
 
         // Hide the introduction message.
         d.query('.intro-message').style({display: 'none'});
