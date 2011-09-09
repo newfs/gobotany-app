@@ -156,7 +156,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             dojo.html.set(dojo.query('#plant-detail-modal h3')[0], name);
 
             // Call the API to get more information.
-            var taxon_url = '/api/taxon/' + plant.scientific_name + '/';
+            var taxon_url = API_URL + 'taxon/' + plant.scientific_name + '/';
             var taxon_store = new dojox.data.JsonRestStore({
                 target: taxon_url});
             taxon_store.fetch({

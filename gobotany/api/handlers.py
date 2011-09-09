@@ -57,7 +57,7 @@ def _taxon_with_chars(taxon):
     piles = taxon.get_piles()
     res['piles'] = piles
     for cv in taxon.character_values.all():
-        res[cv.character.short_name] = cv.value
+        res[cv.character.short_name] = cv.friendliest_text()
     return res
 
 

@@ -245,6 +245,11 @@ class CharacterValue(models.Model):
             return (self.value_min, self.value_max)
         return self.value_str
 
+    def friendliest_text(self):
+        """The official way to grab the friendly text, else the plain value."""
+        f = self.friendly_text
+        return f if f else self.value
+
     def clean(self):
         """Make sure one and only one value type is set"""
         # no empty strings allowed
