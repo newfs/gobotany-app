@@ -58,12 +58,6 @@ def _taxon_with_chars(taxon):
     res['piles'] = piles
     for cv in taxon.character_values.all():
         res[cv.character.short_name] = cv.value
-    preview_characters_per_pile = {}
-    for pile_name in piles:
-        pile = models.Pile.objects.get(name=pile_name)
-        preview_characters_per_pile[pile.slug] = \
-            PileHandler.plant_preview_characters(pile)
-    res['plant_preview_characters_per_pile'] = preview_characters_per_pile
     return res
 
 

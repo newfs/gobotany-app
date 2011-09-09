@@ -86,7 +86,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 this.filter_section._setup_character_groups(
                     pile_info.character_groups);
 
-                this.filter_manager.plant_preview_characters =
+                this.species_section.plant_preview_characters =
                     pile_info.plant_preview_characters;
 
                 // Set up a callback function that will be called once

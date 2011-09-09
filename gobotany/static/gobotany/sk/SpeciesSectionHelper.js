@@ -18,6 +18,8 @@ dojo.require('gobotany.utils');
 
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
+    plant_preview_characters: null,  // set by results.js during page load
+
     constructor: function(results_helper) {
         'use strict';
         // summary:
@@ -141,13 +143,12 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         return {};
     },
 
-    connect_plant_preview_popup: function(plant_link, species, pile_slug) {
+    connect_plant_preview_popup: function(plant_link, plant, pile_slug) {
         'use strict';
 
-        dojo.connect(plant_link, 'onclick', species, function(event) {
+        dojo.connect(plant_link, 'onclick', this, function(event) {
             event.preventDefault();
-            var plant = this;   // species passed in as context
-            
+
             // Populate the hidden content area with information about
             // this plant.
             var name = plant.scientific_name + ' <span>' +
@@ -158,16 +159,15 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             var taxon_url = '/api/taxon/' + plant.scientific_name + '/';
             var taxon_store = new dojox.data.JsonRestStore({
                 target: taxon_url});
-            taxon_store.fetch({onComplete:
-                function(taxon) {
+            taxon_store.fetch({
+                onComplete: dojo.hitch(this, function(taxon) {
                     // Fill in Facts About.
                     dojo.html.set(
                         dojo.query('#plant-detail-modal div.details p')[0],
                         taxon.factoid);
 
                     // Fill in Characteristics.
-                    var characters =
-                        taxon.plant_preview_characters_per_pile[pile_slug];
+                    var characters = this.plant_preview_characters;
                     var characters_html = '';
                     for (var i = 0; i < characters.length; i++) {
                         var ppc = characters[i];
@@ -236,7 +236,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     // runs. Is there an onload() for the Shadowbox?
                     $('#sb-container .img-container').scrollable();
                 }
-            });
+            )});
         });
     },
 

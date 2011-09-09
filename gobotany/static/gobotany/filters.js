@@ -211,7 +211,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         ];
         this.base_vector = null;  // intersection(simple_vector, pile_vector)
         this.pile_slug = args.pile_slug;
-        this.plant_preview_characters = [];
         this.species_by_id = {};  // species_id -> species_obj
         this.species_by_scientific_name = {}; // scientific_name -> species_obj
         this.species_ids = [];
