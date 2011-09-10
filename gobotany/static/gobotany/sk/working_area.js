@@ -236,7 +236,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
 
     _apply_filter_value: function() {
         var value = this._current_value();
-        if (this.filter.species_matching(value).length == 0)
+        if (value !== null && this.filter.species_matching(value).length == 0)
             return;
         this.filter_manager.set_selected_value(
             this.filter.character_short_name, value);
