@@ -225,16 +225,11 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         content: content_element.innerHTML,
                         player: 'html',
                         height: 530,
-                        width: 790
+                        width: 790,
+                        options: {onFinish: function() {
+                            $('#sb-container .img-container').scrollable();
+                        }}
                     });
-
-                    // Initialize the jQuery scrolling image viewer now
-                    // showing in the modal dialog.
-                    // TODO: Fix; don't know why it's not working.
-                    // It can be activated from the console in FF, so
-                    // maybe the images aren't ready yet when this line
-                    // runs. Is there an onload() for the Shadowbox?
-                    $('#sb-container .img-container').scrollable();
                 }
             )});
         });
