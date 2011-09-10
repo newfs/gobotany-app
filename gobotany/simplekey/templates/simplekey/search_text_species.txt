@@ -3,25 +3,27 @@
 {% for common_name in object.common_names.all %}{% if not forloop.first %}, {% endif %}
               {{ common_name }}{% endfor %}.
 
-{% for pile in object.piles.all %}
+{% for pile in object.get_piles_with_pilegroups %}
     {{ pile.pilegroup.name }} {{ pile.name }}
 {% endfor %}
 
 Description: {{ object.description }}
 
-Habitat: {{ object.habitat|lower }}
+Habitat: {{ object.get_habitats|join:", " }}
 
 {# At this point the species page has a Characteristics section. This is #}
 {# just an excerpt of the All Characteristics section further down the   #}
 {# page, so there is probably not a need to repeat it here.              #}
 
-{% if object.lookalikes|length > 0 %}
+{% with object.lookalikes.all as all_lookalikes %}
+  {% if all_lookalikes|length > 0 %}
     Sometimes Confused With:
-    {% for lookalike in object.lookalikes.all %}
+    {% for lookalike in all_lookalikes %}
         {{ lookalike.lookalike_characteristic }}:
         {{ lookalike.lookalike_scientific_name }}
     {% endfor %}
-{% endif %}
+  {% endif %}
+{% endwith %}
 
 North American Native Status:
 {% if object.north_american_native %}
@@ -42,9 +44,10 @@ Wetland Status: {{ object.wetland_status_text }}
 
 All Characteristics:
 {# TODO: may want to add brief characteristics, and group full list by character group, like species page. #}
-{% for character_value in object.character_values.all %}
-    {{ character_value.character.friendly_name }}:
-    {% if character_value.character.value_type == 'TEXT' %}
+{% for character_value in object.get_character_values_with_characters.all %}
+  {% with character_value.character as character %}
+    {{ character.friendly_name }}:
+    {% if character.value_type == 'TEXT' %}
         {% if character_value.friendly_text %}
             {{ character_value.friendly_text }}.
         {% else %}
@@ -52,19 +55,13 @@ All Characteristics:
         {% endif %}
     {% else %}
         {{ character_value.value_min }}
-        {{ character_value.character.unit }}–{{ character_value.value_max }}
-        {{ character_value.character.unit }}.
+        {{ character.unit }}–{{ character_value.value_max }}
+        {{ character.unit }}.
     {% endif %}
+  {% endwith %}
 {% endfor %}
 
 {# Distribution by County: TODO: perhaps add a text equivalent if it'd help to search by county. #}
-
-Common Uses:
-{% if object.uses|length > 0 %}
-    {{ object.uses }}
-{% else %}
-    N/A
-{% endif %}
 
 Folklore & History:
 {% if object.factoid|length > 0 %}
@@ -75,16 +72,18 @@ Folklore & History:
 
 Classification:
     Family: {{ object.family.name }}
-    Genus: {{ object.genus.name }}
+    Genus: {{ object.genus_name }}
     Species: {{ object.scientific_name }}
     Full name: {{ object.scientific_name }} {{ object.taxonomic_authority }}
 
-{% if object.synonyms.all|length > 0 %}
+{% with object.synonyms.all as all_synonyms %}
+  {% if all_synonyms|length > 0 %}
     Also Known As:
-    {% for synonym in object.synonyms.all %}
+    {% for synonym in all_synonyms %}
         {{ synonym.scientific_name }}{% if not forloop.last %},{% endif %}
     {% endfor %}
-{% endif %}
+  {% endif %}
+{% endwith %}
 
 --
 {# Index the scientific name more times to boost ranking. #}

@@ -584,10 +584,17 @@ class Taxon(models.Model):
     def __unicode__(self):
         return u'%s id=%s' % (self.scientific_name, self.id)
 
+    def genus_name(self):
+        """Determine the genus name without incurring a database query."""
+        return self.scientific_name.split(' ', 1)[0]
+
     @property
     def epithet(self):
         # convenience for forming URLs
         return self.scientific_name.split(' ', 1)[1].lower()
+
+    def get_character_values_with_characters(self):
+        return self.character_values.select_related('character')
 
     def get_default_image(self):
         try:
@@ -597,6 +604,9 @@ class Taxon(models.Model):
 
     def get_piles(self):
         return [pile.name for pile in self.piles.all()]
+
+    def get_piles_with_pilegroups(self):
+        return self.piles.select_related('pilegroup')
 
     def partners(self):
         return PartnerSite.objects.filter(species=self)
