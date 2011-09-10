@@ -92,6 +92,15 @@
                     {% endif %}
                 </p>
                 
+                <h3>Habitat</h3>
+                <p>
+                    {% if habitats|length > 0 %}
+                        {{ habitats|join:", "|lower|capfirst }}
+                    {% else %}
+                        (missing)
+                    {% endif %}
+                </p>
+                
                 <h3>Characteristics</h3>
                 <ul class="characteristics">
                     {% if brief_characteristics %}
@@ -124,15 +133,6 @@
                         </li>
                     {% endfor %}
                 </ul>
-                
-                <h3>Habitat</h3>
-                <p>
-                    {% if habitats|length > 0 %}
-                        {{ habitats|join:", "|lower|capfirst }}
-                    {% else %}
-                        (missing)
-                    {% endif %}
-                </p>
                 
                 <h3>Wetland Plant?</h3>
                 <p>{{ taxon.wetland_status_text }}</p>
