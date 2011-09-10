@@ -7,7 +7,7 @@
     {{ pile.pilegroup.name }} {{ pile.name }}
 {% endfor %}
 
-Description: {{ object.description }}
+Description: {{ object.description }}.
 
 Habitat: {{ object.get_habitats|join:", " }}
 

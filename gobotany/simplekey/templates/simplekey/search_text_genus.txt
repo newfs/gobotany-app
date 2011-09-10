@@ -8,7 +8,7 @@ Family: {{ object.family.name }}.
 
 This Genus's Species:
 {% for species in object.taxa.all %}
-    {{ species.genus }} {{ species.epithet }}
+    {{ species.scientific_name }}
 {% endfor %}
 
 Key To This Genus's Species

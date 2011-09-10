@@ -602,6 +602,9 @@ class Taxon(models.Model):
         except ObjectDoesNotExist:
             return None
 
+    def get_habitats(self):
+        return [ h.strip() for h in self.habitat.split('|') ]
+
     def get_piles(self):
         return [pile.name for pile in self.piles.all()]
 
