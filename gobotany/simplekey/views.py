@@ -206,6 +206,7 @@ def _get_brief_characteristics(all_characteristics, pile, partner):
 def species_view(request, genus_slug, specific_name_slug,
                  pilegroup_slug=None, pile_slug=None):
     scientific_name = '%s %s' % (genus_slug.capitalize(), specific_name_slug)
+    scientific_name_short = '%s. %s' % (scientific_name[0], specific_name_slug)
     taxon = get_object_or_404(Taxon, scientific_name=scientific_name)
 
     if pile_slug and pilegroup_slug:
@@ -248,6 +249,7 @@ def species_view(request, genus_slug, specific_name_slug,
            'pilegroup': pilegroup,
            'pile': pile,
            'scientific_name': scientific_name,
+           'scientific_name_short': scientific_name_short,
            'taxon': taxon,
            'species_images': species_images,
            'partner_heading': partner_species.species_page_heading

@@ -403,6 +403,9 @@ Breadcrumb Styles
 	height: 29px;
 	padding: 0 0 0 13px;
 	color: #fff;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
 }
 #breadcrumb li a img {
 	margin: 0 3px 0 0;
