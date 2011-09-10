@@ -380,8 +380,7 @@ dojo.declare('gobotany.sk.working_area.Length', [
             instructions = 'Press “Apply” to narrow your selection to the ' +
                 vector.length + ' matching species.';
         else
-            instructions = 'Please enter a valid number that is within' +
-                ' the range specified.';
+            instructions = '';
         div.html(instructions);
 
         // Stash a hint about how the sidebar should display our value.
@@ -389,7 +388,7 @@ dojo.declare('gobotany.sk.working_area.Length', [
     },
 
     _redraw_permitted_ranges: function() {
-        var p = 'Please enter a length in the range ';
+        var p = 'Please enter a measurement in the range ';
         for (var i = 0; i < this.permitted_ranges.length; i++) {
             var pr = this.permitted_ranges[i];
             if (i) p += ' or ';
