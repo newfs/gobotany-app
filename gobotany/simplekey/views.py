@@ -14,7 +14,7 @@ from gobotany.core import botany
 from gobotany.core import models
 from gobotany.core.models import (
     CharacterGroup, CharacterValue, Family, Genus, GlossaryTerm, Habitat,
-    Pile, PileGroup, Taxon, TaxonCharacterValue,
+    Pile, PileGroup, PlantPreviewCharacter, Taxon,
     )
 from gobotany.core.partner import which_partner
 from gobotany.simplekey.models import Page, get_blurb, SearchSuggestion
@@ -185,14 +185,15 @@ def _get_all_characteristics(taxon, character_groups):
     return sorted(groups, key=itemgetter('name'))
 
 
-def _get_brief_characteristics(taxon, character_groups, pile):
+def _get_brief_characteristics(all_characteristics, pile, partner):
     """Get the short list of characteristics that help give a quick
        impression of the plant.
     """
-    all_characteristics = _get_all_characteristics(taxon, character_groups)
-
-    plant_preview_character_names = [character.friendly_name for character in
-            pile.plant_preview_characters.all()]
+    plant_preview_character_names = [
+        ppc.character.friendly_name
+        for ppc in PlantPreviewCharacter.objects.filter(
+            pile=pile, partner_site=partner)
+        ]
 
     brief_characteristics = []
     for character_group in all_characteristics:
@@ -241,6 +242,8 @@ def species_view(request, genus_slug, specific_name_slug,
     character_groups = CharacterGroup.objects.filter(
                        character__in=character_ids).distinct()
 
+    all_characteristics = _get_all_characteristics(taxon, character_groups)
+
     return render_to_response('simplekey/species.html', {
            'pilegroup': pilegroup,
            'pile': pile,
@@ -252,10 +255,9 @@ def species_view(request, genus_slug, specific_name_slug,
            'partner_blurb': partner_species.species_page_blurb
                if partner_species else None,
            'habitats': habitats,
-           'brief_characteristics': _get_brief_characteristics(taxon,
-               character_groups, pile),
-           'all_characteristics': _get_all_characteristics(taxon,
-               character_groups),
+           'brief_characteristics': _get_brief_characteristics(
+                all_characteristics, pile, which_partner(request)),
+           'all_characteristics': all_characteristics,
            'specific_epithet': specific_name_slug,
            }, context_instance=RequestContext(request))
 
