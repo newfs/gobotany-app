@@ -232,13 +232,19 @@ dojo.declare('gobotany.filters.FilterManager', null, {
 
     stage1: function() {
         this.stage1_countdown = 3;
-        get_json('species/' + this.pile_slug, this, function(data) {
-            for (var i = 0; i < data.length; i++) {
-                var info = data[i];
+        get_json('species/' + this.pile_slug, this, function(species_list) {
+            for (var i = 0; i < species_list.length; i++) {
+                var info = species_list[i];
                 this.species_by_id[info.id] = info;
                 this.species_by_scientific_name[info.scientific_name] = info;
             }
-            this.build_family_genus_filters(data);
+            species_list.sort(function(a, b) {
+                return a.scientific_name < b.scientific_name ? -1 : 1;
+            });
+            this.build_family_genus_filters(species_list);
+            dojo.publish('/filters/species-loaded', [{
+                species_list: species_list
+            }]);
             this.stage2();
         });
         get_json('vectors/key/simple', this, function(data) {

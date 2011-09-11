@@ -754,61 +754,51 @@ a.get-more-info:active {
 	background-position: 0 -64px;
 }
 
-.plant-list div.row {
-    margin: 0;
-    padding: 0;
+.plant-list {
+    position: relative;
     text-align: center;
 }
-
-.plant-list .row .genus {
+.plant-list .plant {
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
     border: 1px solid #508e31;
-    float: left;
-    margin: 0 0 4px 0;
-    padding: 8px 6px;
-}
-
-.plant-list .row .genus.first {
     background: #9cc86b;
-}
-
-.plant-list .row .genus.second {
-    background: #fff;
-}
-
-.plant-list .row .genus .plant {
-    float: left;
+    padding: 8px 6px;
     height: 210px;
-    margin: 0;
-    position: relative;
     width: 160px; /* prevent long names from blowing out layout; allow wrap */
 }
-
-.plant-list .row .genus .plant.push {
-    margin: 0 18px 0 0;
+.plant-list .plant.genus_alt {
+    background: #fff;
 }
-.plant-list .row .genus.push {
-    margin: 0 4px 4px 0;
+.plant-list .plant.genus_join_left {
+    border-left: none;
 }
-
-.plant-list .row .genus .plant .frame {
-    border: 5px solid rgba(255, 255, 255, 0.8);
-    height: 139px;
-    position: absolute;
-    top: 0;
-    width: 150px;
-    z-index: 100;
+.plant-list .plant.genus_join_right {
+    border-right: none;
+    padding-right: 12px;
 }
-.plant-list .row .genus .plant a {
+.plant-list .plant a {
     display: block;
     color: #1a2e11;
 }
-.plant-list .row .genus.first .plant a:hover {
+.plant-list .plant a:hover {
     color: #fff;
 }
-.plant-list .row .genus.second .plant a:hover {
+.plant-list .plant.genus_alt a:hover {
     color: #6eae3e;
 }
-.plant-list .row .genus .plant .img-container {
+.plant-list .plant .frame {
+    border: 5px solid rgba(255, 255, 255, 0.8);
+    height: 139px;
+    position: absolute;
+    top: 8px;
+    width: 150px;
+    z-index: 100;
+}
+
+.plant-list .plant .img-container {
     width: 160px;
     height: 149px;
     overflow: hidden;
