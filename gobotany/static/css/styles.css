@@ -769,6 +769,9 @@ a.get-more-info:active {
     height: 210px;
     width: 160px; /* prevent long names from blowing out layout; allow wrap */
 }
+.plant-list .plant.in-results {
+    display: block;
+}
 .plant-list .plant.genus_alt {
     background: #fff;
 }

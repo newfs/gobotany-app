@@ -29,6 +29,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         this.PHOTOS_VIEW = 'photos';
         this.LIST_VIEW = 'list';
+        this.animation = null;
         this.plant_list = dojo.query('#main .plant-list')[0];
         this.plant_data = [];
         this.plant_divs = [];
@@ -457,9 +458,9 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                 dojo.removeClass(div, 'genus_join_left');
                 dojo.removeClass(div, 'genus_join_right');
 
-                if (div.style.display !== 'block') {
+                if (!dojo.hasClass(div, 'in-results')) {
                     // bring new species in from the far right
-                    div.style.display = 'block';
+                    dojo.addClass(div, 'in-results');
                     div.style.top = desty + 'px';
                     anim_list.push(dojo.animateProperty({
                         node: div,
@@ -476,13 +477,15 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     }));
                 }
             } else {
-                div.style.display = 'none';
+                dojo.removeClass(div, 'in-results');
             }
         }
         anim_list.push(dojo.animateProperty({
             node: this.plant_list,
             properties: {height: {end: desty + HEIGHT}},
             onEnd: function() {
+                this.animation = null;
+
                 // Set up genus colors now that everyone has arrived!
                 var last_species_in_row = SPECIES_PER_ROW - 1;
                 var genus_alt = false;
@@ -508,11 +511,17 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                 }
             }
         }));
-        dojo.fx.combine(anim_list).play();
+        this.animation = dojo.fx.combine(anim_list);
+        this.animation.play();
     },
 
     display_results: function(items) {
         'use strict';
+
+        if (this.animation !== null) {
+            this.animation.stop();
+            this.animation = null;
+        }
 
         if (this.current_view === this.LIST_VIEW) {
             this.display_in_list_view(items);

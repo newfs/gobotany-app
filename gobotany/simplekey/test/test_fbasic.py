@@ -160,13 +160,13 @@ class FilterFunctionalTests(FunctionalTestCase):
 
     def wait_on_species(self, expected_count):
         """Wait for a new batch of species to be displayed."""
-        self.wait_on(5, self.css1, 'div.plant-list div.plant')
+        self.wait_on(5, self.css1, 'div.plant.in-results')
 
         # Returning several hundred divs takes ~10 seconds, so we have
         # jQuery count the divs for us and just return the count.
 
         plant_div_count = self.driver.execute_script(
-            "return $('div.plant-list div.plant').length;")
+            "return $('div.plant.in-results').length;")
         self.assertEqual(plant_div_count, expected_count)
 
         # Split "9 species matched" into ["9", "species", "matched"].
