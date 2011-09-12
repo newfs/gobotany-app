@@ -45,6 +45,11 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             pile_slug: this.pile_slug,
             onload: dojo.hitch(this, this.filter_loaded)
         });
+
+        // Whenever a new filter value on the page is applied, the
+        // filter manager should re-run its query and notify everyone.
+        dojo.subscribe('/sk/filter/change', this.filter_manager,
+                       'perform_query');
    },
 
     setup: function() {
@@ -175,7 +180,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         this.filter_section.update_filter_display('genus');
 
         dojo.query('#sidebar .loading').addClass('hidden');
-        this.species_section.perform_query();
+
         dojo.publish('/sk/filter/change', [filter]);
 
         // Show a filter in the filter working area if necessary.
@@ -839,15 +844,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
             this.results_helper.filter_manager.set_selected_value(
                 filter.character_short_name, undefined);
-            this.results_helper.species_section.perform_query();
         }
 
-        if (this.working_area !== null) {
+        if (this.working_area !== null)
             if (this.working_area.filter === filter)
                 this.working_area.clear();
-            else
-                dojo.publish('/sk/filter/change', [filter]);
-        }
+
+        dojo.publish('/sk/filter/change', [filter]);
 
         dojo.query('li#' + filter.character_short_name + ' span.value'
                   ).html(this._get_filter_display_value(filter));

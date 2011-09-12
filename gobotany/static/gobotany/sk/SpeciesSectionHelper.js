@@ -47,10 +47,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     setup_section: function() {
         'use strict';
 
-        // We need to perform a fresh species query whenever a filter
-        // value changes anywhere on the page.
-        dojo.subscribe('/sk/filter/change', this, 'perform_query');
-
         // Call the lazy image loader when the page loads.
         this.lazy_load_images();
 
@@ -88,26 +84,21 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         }
     },
 
-    perform_query: function() {
-        'use strict';
-
-        // Unbind the prior scroll event handler
-        if (this.scroll_event_handle) {
-            dojo.disconnect(this.scroll_event_handle);
-        }
-
-        this.results_helper.filter_manager.perform_query();
-
-        this.results_helper.save_filter_state();
-    },
-
     on_query_result: function(message) {
         'use strict';
 
+        // Unbind the prior scroll event handler
+        if (this.scroll_event_handle)
+            dojo.disconnect(this.scroll_event_handle);
+
+        // Save the results.
         this.query_results = message.species_list;
 
         // Display the results.
         this.display_results();
+
+        // Save the current state of our filters.
+        this.results_helper.save_filter_state();
     },
 
     default_image: function(species) {
