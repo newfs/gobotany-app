@@ -761,7 +761,6 @@ a.get-more-info:active {
 
 .plant-list {
     position: relative;
-    text-align: center;
 }
 .plant-list .plant {
     display: none;
@@ -773,6 +772,7 @@ a.get-more-info:active {
     padding: 8px 6px;
     height: 210px;
     width: 160px; /* prevent long names from blowing out layout; allow wrap */
+    text-align: center;
 }
 .plant-list .plant.in-results {
     display: block;

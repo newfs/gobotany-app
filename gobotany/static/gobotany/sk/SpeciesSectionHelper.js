@@ -331,6 +331,9 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
            caption and header row for accessibility. */
         'use strict';
 
+        dojo.query('.plant.in-results').removeClass('in-results');
+        dojo.query('.plant-list table').orphan();
+
         var html =
             '<caption class="hidden">List of matching plants</caption>' +
             '<tr class="hidden"><th>Genus</th><th>Scientific Name</th>' +
@@ -364,8 +367,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             html += '</tr>';
         }
 
-        var list = dojo.create('table', {'innerHTML': html});
-        dojo.place(list, this.plant_list);
+        var list = dojo.create('table', {'innerHTML': html}, this.plant_list);
         global_setSidebarHeight();
 
         Shadowbox.setup('.plant-list table td.scientific-name a', 
@@ -425,6 +427,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
            captions.
            */
         'use strict';
+
+        dojo.query('.plant-list table').orphan();
 
         var visible_species = {};
         for (var i = 0; i < items.length; i++)
