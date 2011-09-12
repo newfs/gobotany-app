@@ -1,44 +1,70 @@
-{% extends "simplekey/_old_help.html" %}
-{% block pagetitle %}
-Understanding Plant Collections
-{% endblock %}
-{% block pageheading %}
-Understanding Plant Collections
-{% endblock %}
-{% block maincontent %}
-<div id="subway">
-  <p>The map below shows how we have grouped over 3,000 native New England plants
-     into six major categories, which we call Plant Collections. These are not
-     scientific categories, but rather groupings that a typical person might see
-     as related. Click on one of the categories below to learn about that category.</p>
+{% extends "simplekey/_help.html" %}
 
-  <ul>
-    {% for page in pages %}
-      {% for pilegroup in page.pilegroups.all %}
-        <li>
-          <a class="video" href="{% url simplekey-help-video-pilegroup pilegroup.slug %}"
-             >{{ pilegroup.name }}</a>
-          <br><a href="#" class="more">more...</a>
-          <ul>
-            {% for pile in pilegroup.piles.all %}
-              <li>
-                <a class="video" href="{% url simplekey-help-video-pile pilegroup.slug pile.slug %}"
-                   >{{ pile.name }}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        </li>
-      {% endfor %}
-    {% endfor %}
-  </ul>
 
-</div>
+{% block pagetitle %}Advanced Map to Groups{% endblock %}
 
-<div id="video" dojoType="dijit.Dialog" title="Video"
-     aria-describedby="video">
-  <p></p>
-  <div id="clip"></div>
-</div>
+{% block body_id %}advanced-map{% endblock %}
+{% block body_class %}advanced-map{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <div id="main">        
+                <div id="subway">
+                    <h2>Advanced Map to Groups</h2>
+                    <h4>If you know the plant collection you want to
+                        start with, select it.</h4>
+                    <ul>
+                    {% for page in pages %}
+                        {% for pilegroup in page.pilegroups.all %}
+                            <li>
+                                <a href="{% url simplekey-help-video-pilegroup pilegroup.slug %}"
+                                >{{ pilegroup.name }}</a>
+                                <br><a href="#" class="more">more...</a>
+                                <ul>
+                                {% for pile in pilegroup.piles.all %}
+                                    <li>
+                                    <a href="{% url simplekey-help-video-pile pilegroup.slug pile.slug %}"
+                                    >{{ pile.name }}</a>
+                                    </li>
+                                {% endfor %}
+                                </ul>
+                            </li>
+                        {% endfor %}
+                    {% endfor %}
+                    </ul>
+                </div>
+    
+            </div>
+
+            <div id="sidebar" style="height: 1046px">
+                    <div class="section">
+                        <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-start %}"{% endifequal %}>Getting Started with Plant Identifier</a></h5>	
+			        </div>
+			        <div class="section">
+                        <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-about %}"{% endifequal %}>About Go-Botany</a></h5>
+			        </div>
+			        <div class="section">
+                        <h5><a>Advanced Map to Groups</a></h5>
+			        </div>
+			        <div class="section">
+                        <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-glossary0 %}"{% endifequal %}>Glossary</a></h5>
+			        </div>
+			        <div class="section">
+                        <h5><a class="sidebarlink" {% ifequal request.path u %} class="current"{% else %}href="{% url simplekey-help-video %}"{% endifequal %}>Video Help Topics</a></h5>
+                    </div>
+                </div>
+                <div class="clearit"></div>
+            </div>
+
+            <div id="video" dojoType="dijit.Dialog" title="Video"
+                aria-describedby="video">
+                <p></p>
+                <div id="clip"></div>
+            </div>
+
+        </div>
+    </div>           
 {% endblock %}
 
 {% block js_bottom %}

@@ -20,9 +20,9 @@ Video Help
 
     dojo.addOnLoad(function() {
         var api_path = {% if pile %}
-            '/piles/{{ pile.slug }}/';
+            '/api/piles/{{ pile.slug }}/';
         {% else %}
-            '/pilegroups/{{ pilegroup.slug }}/';
+            '/api/pilegroups/{{ pilegroup.slug }}/';
         {% endif %}
 
         gobotany.sk.subway.embed_video(api_path);
