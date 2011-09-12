@@ -337,7 +337,9 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             html += '</tr>';
         }
 
-        var list = dojo.create('table', {'innerHTML': html}, this.plant_list);
+        var table = dojo.create('table', {'innerHTML': html}, this.plant_list);
+        this.plant_list.style.height = table.clientHeight;
+
         global_setSidebarHeight();
 
         Shadowbox.setup('.plant-list table td.scientific-name a', 
