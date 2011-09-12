@@ -414,7 +414,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
     // A subscriber for results_loaded
     populate_image_types: function(message) {
-        var results = message.data.items;
+        var results = message.query_results;
         var select_box = dijit.byId('image-type-selector');
         // clear the select
         select_box.options.length = 0;
