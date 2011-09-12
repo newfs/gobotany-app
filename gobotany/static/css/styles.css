@@ -1203,7 +1203,7 @@ div.working-area .actions {
 #results-tabs {
     border-bottom: 1px solid #c3d941;
     clear: left;
-    height: 24px;
+    height: 32px;
     margin: 10px 0;
 }
 
@@ -1217,12 +1217,12 @@ div.working-area .actions {
     display: block;
     float: left;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    line-height: 14px;
+    font-size: 22px;
+    line-height: 22px;
     margin: 0;
     padding: 5px 10px 4px;
     text-align: center;
-    width: 50px;
+    width: 100px;
     -webkit-border-top-left-radius: 6px;
     -webkit-border-top-right-radius: 6px;
     -moz-border-radius-topleft: 6px;
