@@ -596,7 +596,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 player: 'html',
                 height: 450,
                 options: {onFinish: function() {
-                    // Wire up the box's "Get more choices" now that it exists
+                    // Wire up "Get more choices" button now that it exists.
                     var button = dojo.query('#sb-container a.get-choices');
                     button.onclick(function() {
                         helper.filter_section.query_best_filters();
@@ -687,8 +687,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     gobotany.utils.animate_changed(added);
 
                     // Re-initialize the scroll pane now that its
-                    // contents have changed.
+                    // contents have changed, and move the scroll bar to
+                    // the top so that they can see their new choices.
                     this.scroll_pane_api.reinitialise();
+                    this.scroll_pane_api.scrollTo(0, 0);
 
                     this.results_helper.save_filter_state();
                 }
