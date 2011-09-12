@@ -1429,14 +1429,23 @@ class Importer(object):
         # Set up YouTube videos for all pile groups and piles.
         TEMP_VIDEO_ID1 = 'LQ-jv8g1YVI'
         TEMP_VIDEO_ID2 = 'VWDc9oyBj5Q'
-        self._set_youtube_id('Ferns', TEMP_VIDEO_ID1, pilegroup=True)
-        self._set_youtube_id('Woody Plants', TEMP_VIDEO_ID2, pilegroup=True)
-        self._set_youtube_id('Aquatic Plants', TEMP_VIDEO_ID1, pilegroup=True)
-        self._set_youtube_id('Graminoids', TEMP_VIDEO_ID2, pilegroup=True)
+
+        VIDEO_INTRO   = '4zwyQiUbJv0'
+        VIDEO_AQUATIC = 'GGk8ehlJqO8'
+        VIDEO_LYCOPHYTES = 'AW9OXoTt5F8'
+        VIDEO_FERNS = 'yXZ3H_QHnxc'
+        VIDEO_GRAMINOIDS = '9GfTL4r19ag'
+        VIDEO_WOODY_PLANTS = 'X5Pe0UJx_uU'
+        VIDEO_NON_ORCHID_MONOCOTS = 'HGrQ9ysU8IM'
+
+        self._set_youtube_id('Ferns', VIDEO_FERNS, pilegroup=True)
+        self._set_youtube_id('Woody Plants', VIDEO_WOODY_PLANTS, pilegroup=True)
+        self._set_youtube_id('Aquatic Plants', VIDEO_AQUATIC, pilegroup=True)
+        self._set_youtube_id('Graminoids', VIDEO_GRAMINOIDS, pilegroup=True)
         self._set_youtube_id('Monocots', TEMP_VIDEO_ID1, pilegroup=True)
         self._set_youtube_id('Non-Monocots', TEMP_VIDEO_ID2, pilegroup=True)
         self._set_youtube_id('Equisetaceae', TEMP_VIDEO_ID2)
-        self._set_youtube_id('Lycophytes', TEMP_VIDEO_ID1)
+        self._set_youtube_id('Lycophytes', VIDEO_LYCOPHYTES)
         self._set_youtube_id('Monilophytes', TEMP_VIDEO_ID2)
         self._set_youtube_id('Woody Angiosperms', TEMP_VIDEO_ID1)
         self._set_youtube_id('Woody Gymnosperms', TEMP_VIDEO_ID2)
@@ -1445,7 +1454,7 @@ class Importer(object):
         self._set_youtube_id('Carex', TEMP_VIDEO_ID1)
         self._set_youtube_id('Poaceae', TEMP_VIDEO_ID2)
         self._set_youtube_id('Remaining Graminoids', TEMP_VIDEO_ID1)
-        self._set_youtube_id('Non-Orchid Monocots', TEMP_VIDEO_ID2)
+        self._set_youtube_id('Non-Orchid Monocots', VIDEO_NON_ORCHID_MONOCOTS)
         self._set_youtube_id('Orchid Monocots', TEMP_VIDEO_ID1)
         self._set_youtube_id('Composites', TEMP_VIDEO_ID2)
         self._set_youtube_id('Remaining Non-Monocots', TEMP_VIDEO_ID1)
@@ -1486,9 +1495,10 @@ class Importer(object):
         help_page.blurbs.add(blurb)
 
         TEMP_VIDEO_ID = 'LQ-jv8g1YVI'
+        VIDEO_INTRO   = '4zwyQiUbJv0'
         blurb, created = Blurb.objects.get_or_create(
             name='getting_started_youtube_id',
-            text=TEMP_VIDEO_ID)
+            text=VIDEO_INTRO)
         help_page.blurbs.add(blurb)
 
         help_page.save()
