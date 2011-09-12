@@ -336,16 +336,16 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # filter on bogs
 
-        self.css1('#habitat a.option').click()
-        self.css1('[value="bogs"]').click()
+        self.css1('#habitat_general a.option').click()
+        self.css1('[value="aquatic"]').click()
         self.css1('.apply-btn').click()
-        self.wait_on_species(1)
+        self.wait_on_species(3)
 
         # clear the New England state AND press "apply" again
 
         self.css1('#state_distribution .clear-filter').click()
         self.css1('.apply-btn').click()
-        self.wait_on_species(1)
+        self.wait_on_species(3)
 
     def OFF_test_thumbnail_presentation(self):
 
