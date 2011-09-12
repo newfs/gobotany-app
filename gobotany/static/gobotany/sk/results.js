@@ -455,7 +455,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 dijit.byId('image-type-selector').attr('value',
                     hash_object._show);
             }
-        }   
+        }
     }
 });
 
