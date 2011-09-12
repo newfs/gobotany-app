@@ -475,9 +475,11 @@ Plant Listing Styles
 	line-height: 90%;
 }
 .list-item h3 span {
+    color: #807121;
+    display: block;
 	font-size: 12px;
 	font-style: italic;
-	color: #807121;	
+    margin-top: 4px;
 }
 .img-gallery {
 	position: relative;
