@@ -591,10 +591,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 			                   showArrows: true
 		                   });
         this.scroll_pane_api = this.scroll_pane.data('jsp');
+        var filter_section = this.results_helper.filter_section;
 
         // Wire up the Get More Choices link.
-        var get_more_choices = dojo.query('#sidebar .get-more a')[0];
-        dojo.connect(get_more_choices, 'onclick', this, function() {
+        dojo.query('#sidebar .get-more a').onclick(this, function() {
             var content_element = dojo.query('#modal')[0];
             Shadowbox.open({
                 content: content_element.innerHTML,
@@ -604,7 +604,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     // Wire up "Get more choices" button now that it exists.
                     var button = dojo.query('#sb-container a.get-choices');
                     button.onclick(function() {
-                        helper.filter_section.query_best_filters();
+                        filter_section.query_best_filters();
                         Shadowbox.close();
                     });
                     button.addClass('get-choices-ready');  // for tests
