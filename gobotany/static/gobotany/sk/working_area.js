@@ -332,8 +332,11 @@ dojo.declare('gobotany.sk.working_area.Length', [
         v.empty().addClass('numeric').removeClass('multiple').html(
             '<div class="permitted_ranges"></div>' +
             '<div class="current_length"></div>' +
-            '<div class="choose_length">' +
-            'Length: <input name="measure" type="text" value=""><br>' +
+
+            '<div>' +
+            'Metric length: ' +
+            '<input class="measure_metric" name="measure_metric"' +
+            ' type="text" value="">' +
             '<label>' +
             '<input name="units" type="radio" value="mm" checked>mm' +
             '</label>' +
@@ -344,6 +347,19 @@ dojo.declare('gobotany.sk.working_area.Length', [
             '<input name="units" type="radio" value="m">m' +
             '</label>' +
             '</div>' +
+
+            '<div>' +
+            'English length: ' +
+            '<input class="measure_english" name="measure_english" ' +
+            'type="text" value="" disabled>' +
+            '<label>' +
+            '<input name="units" type="radio" value="in">in' +
+            '</label>' +
+            '<label>' +
+            '<input name="units" type="radio" value="ft">ft' +
+            '</label>' +
+            '</div>' +
+
             '<div class="instructions">' +
             '</div>'
         );
@@ -360,14 +376,20 @@ dojo.declare('gobotany.sk.working_area.Length', [
     },
 
     _current_value: function() {
-        var text = dojo.query('[name="measure"]', this.div).attr('value')[0];
+        var selector = this.is_english ? '[name="measure_english"]' :
+            '[name="measure_metric"]';
+        var text = dojo.query(selector, this.div).attr('value')[0];
         var mm = parseFloat(text) * this.factor;
         return isNaN(mm) ? null : mm;
     },
 
     _unit_changed: function(event) {
         this.unit = event.target.value;
-        this.factor = ({mm: 1.0, cm: 10.0, m: 1000.0})[this.unit];
+        this.factor = ({'mm': 1.0, 'cm': 10.0, 'm': 1000.0,
+                        'in': 25.4, 'ft': 304.8})[this.unit];
+        this.is_english = (this.unit == 'in' || this.unit == 'ft');
+        dojo.query('.measure_metric').attr('disabled', this.is_english);
+        dojo.query('.measure_english').attr('disabled', ! this.is_english);
         this._redraw_permitted_ranges();
         this._measure_changed();
     },
@@ -390,12 +412,16 @@ dojo.declare('gobotany.sk.working_area.Length', [
 
     _redraw_permitted_ranges: function() {
         var p = 'Please enter a measurement in the range ';
+        var truncate = function(value, precision) {
+            var power = Math.pow(10, precision || 0);
+            return String(Math.round(value * power) / power);
+        };
         for (var i = 0; i < this.permitted_ranges.length; i++) {
             var pr = this.permitted_ranges[i];
             if (i) p += ' or ';
-            p += (pr.min / this.factor) + '&nbsp;' + this.unit +
+            p += truncate(pr.min / this.factor, 2) + '&nbsp;' + this.unit +
                 '&nbsp;–&nbsp;' +  // en-dash for numeric ranges
-                (pr.max / this.factor) + '&nbsp;' + this.unit;
+                truncate(pr.max / this.factor, 2) + '&nbsp;' + this.unit;
         }
         dojo.query('.permitted_ranges', this.div).html(p);
     },
