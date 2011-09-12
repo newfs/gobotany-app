@@ -373,11 +373,11 @@ class FilterFunctionalTests(FunctionalTestCase):
         n = len(filters)
         self.css1('#sidebar .get-more a').click()
 
-        self.wait_on(1, self.css, '#sb-container h4')
-        self.css1('#sb-container a.get-choices').click()
+        self.wait_on(5, self.css, '#sb-container a.get-choices-ready')
+        self.css1('#sb-container a.get-choices-ready').click()
 
         # Hacky, pile-specific way to wait on the choices to appear:
-        self.wait_on(1, self.css, '#spore_surface')
+        self.wait_on(1, self.css, 'li#spore_surface_ly')
         filters = self.css(FILTERS_CSS)
         self.assertEqual(len(filters), n + 3)
 

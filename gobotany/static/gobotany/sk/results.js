@@ -589,16 +589,23 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         // Wire up the Get More Choices link.
         var get_more_choices = dojo.query('#sidebar .get-more a')[0];
-        dojo.connect(get_more_choices, 'onclick', this,
-            function() {
-                var content_element = dojo.query('#modal')[0];
-                Shadowbox.open({
-                    content: content_element.innerHTML,
-                    player: 'html',
-                    height: 450
-                });
-            }
-        );
+        dojo.connect(get_more_choices, 'onclick', this, function() {
+            var content_element = dojo.query('#modal')[0];
+            Shadowbox.open({
+                content: content_element.innerHTML,
+                player: 'html',
+                height: 450,
+                options: {onFinish: function() {
+                    // Wire up the box's "Get more choices" now that it exists
+                    var button = dojo.query('#sb-container a.get-choices');
+                    button.onclick(function() {
+                        helper.filter_section.query_best_filters();
+                        Shadowbox.close();
+                    });
+                    button.addClass('get-choices-ready');  // for tests
+                }}
+            });
+        });
 
         // Wire up the Clear All button.
         var clear_all_button = dojo.query('#sidebar a.clear-all-btn')[0];
