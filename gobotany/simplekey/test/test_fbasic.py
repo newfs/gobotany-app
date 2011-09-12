@@ -191,27 +191,27 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.css1('.apply-btn').click()
         self.wait_on_species(13)
 
-        # filter on bogs
+        # filter on wetlants
 
-        self.css1('#habitat a.option').click()
-        count = self.css1('[value="bogs"] + .label + .count').text
-        self.assertEqual(count, '(1)')
-        self.css1('[value="bogs"]').click()
+        self.css1('#habitat_general a.option').click()
+        count = self.css1('[value="wetlands"] + .label + .count').text
+        self.assertEqual(count, '(3)')
+        self.css1('[value="wetlands"]').click()
         self.css1('.apply-btn').click()
-        self.wait_on_species(1)
+        self.wait_on_species(3)
 
         # switch from bogs to forest
 
-        self.css1('[value="forest"]').click()
-        count = self.css1('[value="forest"] + .label + .count').text
-        self.assertEqual(count, '(6)')
+        self.css1('[value="terrestrial"]').click()
+        count = self.css1('[value="terrestrial"] + .label + .count').text
+        self.assertEqual(count, '(10)')
         self.css1('.apply-btn').click()
-        self.wait_on_species(6)
+        self.wait_on_species(10)
 
         # clear the New England state
 
         self.css1('#state_distribution .clear-filter').click()
-        self.wait_on_species(9)
+        self.wait_on_species(15)
 
     def list_family_choices(self):
         b = self.css1('[widgetid="family_select"] .dijitArrowButtonInner')
@@ -393,13 +393,13 @@ class FilterFunctionalTests(FunctionalTestCase):
         apply_button = self.css1('.apply-btn')
 
         self.assertIn(u' 10 mm – 15000 mm', range_div.text)
-        self.assertIn('enter a valid', instructions.text)
+        self.assertEqual('', instructions.text)
 
         # Type in a big number and watch the number of advertised
         # matching species change with each digit.
 
         measure_input.send_keys('1')
-        self.assertIn('enter a valid', instructions.text)
+        self.assertEqual('', instructions.text)
 
         measure_input.send_keys('0')  # '10'
         self.assertIn('to the 3 matching species', instructions.text)
@@ -414,7 +414,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertIn('to the 1 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '100000'
-        self.assertIn('enter a valid', instructions.text)
+        self.assertEqual('', instructions.text)
 
         # Submitting when there are no matching species does nothing.
 
@@ -447,7 +447,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.css1('input[value="m"]').click()
         self.assertIn(u' 0.01 m – 15 m', range_div.text)
-        self.assertIn('enter a valid', instructions.text)
+        self.assertEqual('', instructions.text)
         apply_button.click()  # should do nothing
         self.wait_on_species(unknowns + 1)
         self.assertEqual(sidebar_value_span.text, '1000.0 cm')
@@ -456,7 +456,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         # the acceptable value of '10' meters.
 
         measure_input.send_keys(Keys.BACK_SPACE)  # '100'
-        self.assertIn('enter a valid', instructions.text)
+        self.assertEqual('', instructions.text)
 
         measure_input.send_keys(Keys.BACK_SPACE)  # '10'
         self.assertIn('to the 1 matching species', instructions.text)
