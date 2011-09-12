@@ -382,9 +382,9 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertEqual(len(filters), n + 3)
 
     def test_length_filter(self):
-        self.get('/non-monocots/remaining-non-monocots/'
-                 '#_filters=family,genus,plant_height_rn'
-                 '&_visible=plant_height_rn')
+        self.get(
+            '/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn&_visible=plant_height_rn'
+            )
         self.wait_on_species(499)
         sidebar_value_span = self.css1('#plant_height_rn .value')
         range_div = self.css1('.permitted_ranges')
