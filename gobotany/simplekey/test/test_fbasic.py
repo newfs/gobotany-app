@@ -15,7 +15,6 @@ Two environmental variables control the behavior of these tests.
 
 """
 import os
-import sys
 import time
 import unittest2
 from contextlib import contextmanager
@@ -125,7 +124,7 @@ class BasicFunctionalTests(FunctionalTestCase):
         self.assertEqual(
             d.title, u'Go Botany: New England Wild Flower Society')
         e = d.find_element_by_link_text('Get Started')
-        self.assertEqual(e.get_attribute('href'), '/help/start/')
+        self.assertEqual(e.get_attribute('href'), '/1/')
         # Once you have selected "don't show me this", should change to:
         # self.assertEqual(e.get_attribute('href'), '/1/')
 
@@ -135,10 +134,10 @@ class BasicFunctionalTests(FunctionalTestCase):
         self.assertEqual(len(h3), 6)
         assert h3[0].text.startswith('Ferns')
         assert h3[1].text.startswith('Woody Plants')
-        assert h3[2].text.startswith('Graminoids')
-        assert h3[3].text.startswith('Aquatic Plants')
-        assert h3[4].text.startswith('Monocots')
-        assert h3[5].text.startswith('Non-Monocots')
+        assert h3[2].text.startswith('Grass-like plants')
+        assert h3[3].text.startswith('Aquatic plants')
+        assert h3[4].text.startswith('Orchids and other monocots')
+        assert h3[5].text.startswith('All other flowering non-woody plants')
 
         # Do group links get constructed correctly?
         e = d.find_element_by_link_text('My plant is in this group')
@@ -148,9 +147,9 @@ class BasicFunctionalTests(FunctionalTestCase):
         d = self.get('/ferns/')
         q = self.css('h3')
         self.assertEqual(len(q), 3)
-        assert q[0].text.startswith('Equisetaceae')
-        assert q[1].text.startswith('Lycophytes')
-        assert q[2].text.startswith('Monilophytes')
+        assert q[0].text.startswith('Horsetails and ')
+        assert q[1].text.startswith('Clubmosses and ')
+        assert q[2].text.startswith('True ferns and ')
         q = d.find_elements_by_link_text('My plant is in this subgroup')
         self.assertEqual(q[0].get_attribute('href'), '/ferns/equisetaceae/')
         self.assertEqual(q[1].get_attribute('href'), '/ferns/lycophytes/')
