@@ -520,17 +520,17 @@ Plant Listing Styles
 	text-align: center;	
 }
 .controls a {
-	display: inline-block;
-	width: 17px;
-	height: 17px;
-	text-indent: -9000px;	
 	cursor: pointer;
+    display: inline-block;
+	height: 32px;
+	text-indent: -9000px;	
+	width: 32px;
 }
 .controls a.next {
-	background: url(/static/images/icons/next-large.png) 0 0 no-repeat transparent;	
+	background: url(/static/images/icons/next-larger.png) 0 0 no-repeat transparent;	
 }
 .controls a.prev {
-	background: url(/static/images/icons/prev-large.png) 0 0 no-repeat transparent;	
+	background: url(/static/images/icons/prev-larger.png) 0 0 no-repeat transparent;	
 }
 .list-item .details {
 	float: left;	
