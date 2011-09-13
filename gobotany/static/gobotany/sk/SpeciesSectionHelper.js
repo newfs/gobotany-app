@@ -133,9 +133,17 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             taxon_store.fetch({
                 onComplete: dojo.hitch(this, function(taxon) {
                     // Fill in Facts About.
-                    dojo.html.set(
-                        dojo.query('#plant-detail-modal div.details p')[0],
+                    dojo.html.set(dojo.query(
+                        '#plant-detail-modal div.details p.facts')[0],
                         taxon.factoid);
+
+                    // Fill in Habitat.
+                    var habitat_list = taxon.habitat.sort().join(', ');
+                    habitat_list = habitat_list[0].toUpperCase() +
+                        habitat_list.slice(1);
+                    dojo.html.set(dojo.query(
+                        '#plant-detail-modal div.details p.habitat')[0],
+                        habitat_list);
 
                     // Fill in Characteristics.
                     var characters = this.plant_preview_characters;

@@ -67,19 +67,19 @@ def _setup_sample_data(load_images=False):
 
     famfoo, created = models.Family.objects.get_or_create(name='Fooaceae')
     fambaz, created = models.Family.objects.get_or_create(name='Bazaceae')
-    
+
     genfoo, created = models.Genus.objects.get_or_create(name='Fooium',
                       family=famfoo)
     genbaz, created = models.Genus.objects.get_or_create(name='Bazia',
                       family=fambaz)
 
-    foo = models.Taxon(family=famfoo, genus=genfoo, 
+    foo = models.Taxon(family=famfoo, genus=genfoo,
         scientific_name='Fooium fooia')
     foo.save()
-    bar = models.Taxon(family=famfoo, genus=genfoo, 
+    bar = models.Taxon(family=famfoo, genus=genfoo,
         scientific_name='Fooium barula')
     bar.save()
-    abc = models.Taxon(family=fambaz, genus=genbaz, 
+    abc = models.Taxon(family=fambaz, genus=genbaz,
         scientific_name='Bazia americana')
     abc.save()
 
@@ -133,6 +133,9 @@ def _setup_sample_data(load_images=False):
     c4 = models.Character(short_name='c4', name='Character 4',
                           character_group=cg1)
     c4.save()
+    char_habitat = models.Character(short_name='habitat', name='Habitat',
+                                    character_group=cg1)
+    char_habitat.save()
 
     cv1_1 = models.CharacterValue(value_str='cv1_1', character=c1)
     cv1_1.save()
@@ -142,16 +145,27 @@ def _setup_sample_data(load_images=False):
     cv2.save()
     cv3 = models.CharacterValue(value_min=5, value_max=11, character=c3)
     cv3.save()
+    cv_habitat1 = models.CharacterValue(value_str='forests',
+        character=char_habitat)
+    cv_habitat1.save()
+    cv_habitat2 = models.CharacterValue(value_str='edges of forests',
+        character=char_habitat)
+    cv_habitat2.save()
 
     pile1.character_values.add(cv1_1)
     pile1.character_values.add(cv1_2)
     pile1.character_values.add(cv2)
     pile1.character_values.add(cv3)
+    pile1.character_values.add(cv_habitat1)
+    pile1.character_values.add(cv_habitat2)
     pile1.save()
 
     models.TaxonCharacterValue(taxon=foo, character_value=cv1_1).save()
+    models.TaxonCharacterValue(taxon=bar, character_value=cv1_2).save()
     models.TaxonCharacterValue(taxon=bar, character_value=cv2).save()
-    
+    models.TaxonCharacterValue(taxon=bar, character_value=cv_habitat1).save()
+    models.TaxonCharacterValue(taxon=bar, character_value=cv_habitat2).save()
+
     # Create a couple of default filters here, making sure not to create
     # one for *every* character, so as to exercise some code in the
     # handlers that deals with a default filter not existing for a character.
@@ -160,10 +174,10 @@ def _setup_sample_data(load_images=False):
 
     df2 = models.DefaultFilter(pile=pile1, character=c2, order=2)
     df2.save()
-    
+
     ppc1 = models.PlantPreviewCharacter(pile=pile1, character=c1, order=1)
     ppc1.save()
-    
+
     ppc2 = models.PlantPreviewCharacter(pile=pile1, character=c2, order=2)
     ppc2.save()
 
@@ -214,7 +228,7 @@ def _setup_sample_data(load_images=False):
     for name in names:
         n = models.PlantName(scientific_name=name[0], common_name=name[1])
         n.save()
-    
+
 
 # This is currently the "demo" page.  Its URL and view is actually specified
 # in the core/ app.  TODO: consider moving the page elsewhere, and having a
@@ -294,7 +308,7 @@ class TaxaListTestCase(TestCase):
     def test_get_with_char_param_returns_ok_if_bad_char_value(self):
         response = self.client.get('/api/taxa/?c1=badvalue')
         self.assertEqual(200, response.status_code)
-        
+
     def test_get_with_char_param_returns_no_items_if_bad_char_value(self):
         response = self.client.get('/api/taxa/?c1=badvalue')
         expected = {u'items': [],
@@ -335,7 +349,7 @@ class TaxonTestCase(TestCase):
     def test_get_with_char_param_returns_not_found_if_no_species(self):
         response = self.client.get('/api/taxon/Not%20here/?c1=cv1_1')
         self.assertEqual(404, response.status_code)
-        
+
     def test_get_with_char_param_returns_not_found_if_no_char(self):
         response = self.client.get('/api/taxon/Fooium%20fooia/?none=cv1_1')
         self.assertEqual(404, response.status_code)
@@ -347,6 +361,22 @@ class TaxonTestCase(TestCase):
     def test_get_with_char_param_returns_no_item_if_bad_char_value(self):
         response = self.client.get('/api/taxon/Fooium%20fooia/?c1=badvalue')
         self.assertEqual('{}', response.content)
+
+    def test_get_response_contains_habitat(self):
+        response = self.client.get('/api/taxon/Fooium%20barula/')
+        json_object = json.loads(response.content)
+        self.assertTrue(json_object['habitat'])
+
+    def test_get_response_habitat_has_multiple_values(self):
+        response = self.client.get('/api/taxon/Fooium%20barula/')
+        json_object = json.loads(response.content)
+        self.assertEqual(2, len(json_object['habitat'])) # Expect 2 habitats.
+
+    def test_get_response_most_characters_have_single_values(self):
+        response = self.client.get('/api/taxon/Fooium%20barula/')
+        json_object = json.loads(response.content)
+        self.assertEqual('cv1_2', json_object['c1'])
+        self.assertEqual('cv2', json_object['c2'])
 
 
 class TaxaTestCase(TestCase):
@@ -379,7 +409,7 @@ class TaxaTestCase(TestCase):
     def test_get_with_char_param_returns_not_found_if_no_species(self):
         response = self.client.get('/api/taxa/Not%20here/?c1=cv1_1')
         self.assertEqual(404, response.status_code)
-        
+
     def test_get_with_char_param_returns_not_found_if_no_char(self):
         response = self.client.get('/api/taxa/Fooium%20fooia/?none=cv1_1')
         self.assertEqual(404, response.status_code)
@@ -708,7 +738,7 @@ class PlantNamesTestCase(TestCase):
     def setUp(self):
         _setup_sample_data()
         self.client = Client()
-        
+
     def half_max_names(self):
         return int(math.floor(self.MAX_NAMES / 2))
 

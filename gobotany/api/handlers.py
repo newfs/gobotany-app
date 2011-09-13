@@ -53,11 +53,19 @@ def _simple_taxon(taxon):
     return res
 
 def _taxon_with_chars(taxon):
+    MULTIVALUE_TEXT_CHARACTERS = ['habitat', 'habitat_general',
+                                  'state_distribution']
     res = _simple_taxon(taxon)
     piles = taxon.get_piles()
     res['piles'] = piles
     for cv in taxon.character_values.all():
-        res[cv.character.short_name] = cv.friendliest_text()
+        name = cv.character.short_name
+        if name in MULTIVALUE_TEXT_CHARACTERS:
+            if not res.has_key(name):
+                res[name] = []
+            res[name].append(cv.friendliest_text())
+        else:
+            res[name] = cv.friendliest_text()
     return res
 
 
