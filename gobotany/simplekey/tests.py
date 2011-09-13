@@ -7,4 +7,4 @@ class SimpleTests(TestCase):
     def test_start_page(self):
         c = Client()
         r = c.get('/1/')
-        assert 'My plant is in this group' in r.content
+        assert 'Which group best describes your plant?' in r.content
