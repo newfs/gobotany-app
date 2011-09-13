@@ -1176,6 +1176,13 @@ div.working-area .values .zero {
     color: #ccc;
 }
 
+div.working-area .measurement {
+    margin-top: 8px;
+}
+div.working-area .measurement label input {
+    margin: 0 4px 0 8px;
+}
+
 div.working-area .info {
     float: left;
     font-family: Tahoma, sans-serif;

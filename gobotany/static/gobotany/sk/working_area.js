@@ -333,7 +333,7 @@ dojo.declare('gobotany.sk.working_area.Length', [
             '<div class="permitted_ranges"></div>' +
             '<div class="current_length"></div>' +
 
-            '<div>' +
+            '<div class="measurement">' +
             'Metric length: ' +
             '<input class="measure_metric" name="measure_metric"' +
             ' type="text" value="">' +
@@ -348,7 +348,7 @@ dojo.declare('gobotany.sk.working_area.Length', [
             '</label>' +
             '</div>' +
 
-            '<div>' +
+            '<div class="measurement">' +
             'English length: ' +
             '<input class="measure_english" name="measure_english" ' +
             'type="text" value="" disabled>' +
