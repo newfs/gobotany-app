@@ -257,7 +257,9 @@ def species(request, pile_slug):
 
 def vectors_character(request, name):
     character = get_object_or_404(Character, short_name=name)
-    mm = character.UNIT_MM[character.unit] if character.unit else 1.0
+    mm = character.UNIT_MM.get(character.unit)
+    if mm is None:
+        mm = 1.0
     values = character.character_values.all()
     tcvs = list(TaxonCharacterValue.objects.filter(character_value__in=values))
     species = defaultdict(list)

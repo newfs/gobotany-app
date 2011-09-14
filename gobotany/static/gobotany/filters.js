@@ -137,6 +137,8 @@ dojo.declare('gobotany.filters.Filter', null, {
                 return vector;
             for (var i = 0; i < this.values.length; i++) {
                 var vi = this.values[i];
+                if (vi.min === 0 && vi.max === 0)  // length way of saying "NA"
+                    continue;
                 if (value >= vi.min && value <= vi.max)
                     vector = vector.concat(vi.species);
             }
@@ -158,6 +160,9 @@ dojo.declare('gobotany.filters.Filter', null, {
 
             if (vmin === null || vmax === null)
                 continue;  // ignore values that are not ranges anyway
+
+            if (vmin === 0 && vmax === 0)
+                continue;  // ignore "NA" values
 
             if (_.intersect(vector, value.species).length == 0)
                 continue;  // ignore values that apply to none of these species
