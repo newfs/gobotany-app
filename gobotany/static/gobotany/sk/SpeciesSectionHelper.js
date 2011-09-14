@@ -481,7 +481,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         var SPECIES_PER_ROW = 4;
         var WIDTH = 178;
         var HEIGHT = 232;
-        var NUM_GENUS_COLORS = 2;
 
         var anim_list = [];
         var displayed_plants = [];

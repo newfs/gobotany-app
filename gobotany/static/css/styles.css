@@ -768,7 +768,7 @@ a.get-more-info:active {
     top: 0px;
     left: 0px;
     border: 1px solid #508e31;
-    background: #9cc86b;
+    background: #fff;
     padding: 8px 6px;
     height: 210px;
     width: 160px; /* prevent long names from blowing out layout; allow wrap */
@@ -776,9 +776,6 @@ a.get-more-info:active {
 }
 .plant-list .plant.in-results {
     display: block;
-}
-.plant-list .plant.genus_alt {
-    background: #fff;
 }
 .plant-list .plant.genus_join_left {
     border-left: none;
@@ -792,10 +789,7 @@ a.get-more-info:active {
     color: #1a2e11;
 }
 .plant-list .plant a:hover {
-    color: #fff;
-}
-.plant-list .plant.genus_alt a:hover {
-    color: #6eae3e;
+    color: #508e31;
 }
 .plant-list .plant .frame {
     border: 5px solid rgba(255, 255, 255, 0.8);
