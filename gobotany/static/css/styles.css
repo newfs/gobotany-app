@@ -1450,10 +1450,13 @@ ul.full-description li:hover {
 	background-color: #fff;
 }
 ul.full-description li h5 {
-	background: url(/static/images/icons/plus.png) right 50% no-repeat;	
+	background: url(/static/images/icons/plus.png) left 50% no-repeat;
 }
 ul.full-description li ul {
-	display: none;	
+	display: none;
+}
+ul.full-description li h5, ul.full-description li ul {
+    padding-left: 28px;
 }
 ul.full-description li ul li {
 	border-bottom: none;
