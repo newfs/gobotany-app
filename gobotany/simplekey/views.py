@@ -13,8 +13,8 @@ from django.views.decorators.vary import vary_on_headers
 from gobotany.core import botany
 from gobotany.core import models
 from gobotany.core.models import (
-    CharacterGroup, CharacterValue, Family, Genus, GlossaryTerm, Habitat,
-    Pile, PileGroup, PlantPreviewCharacter, Taxon,
+    CharacterGroup, CharacterValue, DefaultFilter, Family, Genus,
+    GlossaryTerm, Habitat, Pile, PileGroup, PlantPreviewCharacter, Taxon,
     )
 from gobotany.core.partner import which_partner
 from gobotany.simplekey.models import Page, get_blurb, SearchSuggestion
@@ -188,17 +188,36 @@ def _get_all_characteristics(taxon, character_groups):
 def _get_brief_characteristics(all_characteristics, pile, partner):
     """Get the short list of characteristics that help give a quick
        impression of the plant.
+       Like the plant preview popups on the filtering page, this is a
+       combination of plant preview characters and some of the pile's
+       default filters.
     """
+    print 'partner: ', partner # TODO: remove
     plant_preview_character_names = [
         ppc.character.friendly_name
         for ppc in PlantPreviewCharacter.objects.filter(
             pile=pile, partner_site=partner)
         ]
+    print 'plant_preview_character_names:', plant_preview_character_names
+
+    default_filter_character_names = [
+        df.character.friendly_name
+        for df in DefaultFilter.objects.filter(pile=pile)
+        ]
+    print 'default_filter_character_names:', default_filter_character_names
+
+    combined_character_names = plant_preview_character_names
+    for name in default_filter_character_names:
+        # Exclude some default filters for which the information is
+        # already displayed elsewhere.
+        if name != 'Habitat (general)' and name != 'New England state':
+            if name not in combined_character_names:
+                combined_character_names.append(name)
 
     brief_characteristics = []
     for character_group in all_characteristics:
         for character in character_group['characters']:
-            if character['name'] in plant_preview_character_names:
+            if character['name'] in combined_character_names:
                 brief_characteristics.append(character)
     return sorted(brief_characteristics, key=itemgetter('name'))
 

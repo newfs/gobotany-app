@@ -19,6 +19,7 @@ dojo.require('gobotany.utils');
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
     plant_preview_characters: null,  // set by results.js during page load
+    default_filters: null,           // set by results.js during page load
 
     constructor: function(results_helper) {
         'use strict';
@@ -114,6 +115,50 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         return {};
     },
 
+    sort_character_list: function(a, b) {
+        // Custom sort function for sorting the combined character list.
+        if (a['character_friendly_name'] > b['character_friendly_name']) {
+            return 1;
+        }
+        if (a['character_friendly_name'] < b['character_friendly_name']) {
+            return -1;
+        }
+        return 0;
+    },
+
+    get_character_list: function(plant_preview_characters, default_filters) {
+        var characters = [];
+        characters = characters.concat(plant_preview_characters);
+        for (var i = 0; i < default_filters.length; i++) {
+            var short_name = default_filters[i].character_short_name;
+            // Don't show Habitat (general) because we already display
+            // Habitat, and don't show New England State because we aim
+            // to show the same characters as on the species page, where
+            // the state distribution is already displayed elsewhere.
+            if (short_name !== 'habitat_general' &&
+                short_name !== 'state_distribution') {
+                // Don't duplicate characters.
+                var is_duplicate = false;
+                for (var j = 0; j < plant_preview_characters.length; j++) {
+                    var character = plant_preview_characters[j];
+                    // Only consider plant preview characters for this
+                    // partner site.
+                    if (character.partner_site ===
+                        gobotany_sk_partner_site) {
+                        if (short_name === character.character_short_name) {
+                            is_duplicate = true;
+                            break;
+                        }
+                    }
+                }
+                if (!is_duplicate) {
+                    characters.push(default_filters[i]);
+                }
+            }
+        }
+        return characters.sort(this.sort_character_list);
+    },
+
     connect_plant_preview_popup: function(plant_link, plant, pile_slug) {
         'use strict';
 
@@ -146,11 +191,22 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         habitat_list);
 
                     // Fill in Characteristics.
-                    var characters = this.plant_preview_characters;
+                    // Both the plant preview characters and most of the
+                    // default filter characters are shown.
+                    var characters = this.get_character_list(
+                        this.plant_preview_characters, this.default_filters);
                     var characters_html = '';
                     for (var i = 0; i < characters.length; i++) {
                         var ppc = characters[i];
-                        if (ppc.partner_site === gobotany_sk_partner_site) {
+                        
+                        // Default filters are not partner-site specific
+                        // at this point, so they will always be
+                        // displayed.
+                        var is_default_filter = !(ppc.partner_site);
+                    
+                        if (is_default_filter ||
+                            ppc.partner_site === gobotany_sk_partner_site) {
+
                             characters_html += '<li>' +
                                 ppc.character_friendly_name.toUpperCase() +
                                 ': ';
@@ -168,13 +224,21 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                                         gobotany.utils.pretty_length(
                                         ppc.unit, max);
                                 }
+                                else {
+                                    // For multiple-value characters,
+                                    // display a comma-separated list.
+                                    if (typeof(display_value) != 'string') {
+                                        display_value =
+                                            display_value.join(', ');
+                                    }
+                                }
                             }
                             characters_html += display_value + '</li>';
                         }
                     }
-                    dojo.html.set(
-                        dojo.query('#plant-detail-modal div.details ul')[0],
-                        characters_html);
+                    var characters_list = 
+                        dojo.query('#plant-detail-modal div.details ul')[0];
+                    dojo.html.set(characters_list, characters_html);
 
                     // Wire up the Get More Info button.
                     var path = window.location.pathname.split('#')[0];
@@ -203,7 +267,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     Shadowbox.open({
                         content: content_element.innerHTML,
                         player: 'html',
-                        height: 530,
+                        height: 650,
                         width: 790,
                         options: {onFinish: function() {
                             $('#sb-container .img-container').scrollable();
