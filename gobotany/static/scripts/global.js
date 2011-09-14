@@ -55,49 +55,6 @@ $(function() {
     });
 });
 
-// Show/Hide for questions on Getting Started page
-function _isHidden(questionDiv) {
-    return ($(questionDiv).find('a.show').text() === 'More...');
-}
-
-function _showQuestion(questionDiv) {
-    $(questionDiv).find('li.hidden, a.screenshot').show();
-    $(questionDiv).find('h4').css('background-image',
-                       'url(/static/images/icons/minus.png)');
-    sidebarHeight();
-    $(questionDiv).find('a.show').text('Less...');
-}
-
-function _hideQuestion(questionDiv) {
-    $(questionDiv).find('li.hidden, a.screenshot').hide();
-    $(questionDiv).find('h4').css('background-image',
-                       'url(/static/images/icons/plus.png)');
-    sidebarHeight();
-    $(questionDiv).find('a.show').text('More...');
-}
-
-function global_toggleQuestions() {
-    $('.question h4').click(function() {
-        var questionDiv = $(this).parent();
-        if (_isHidden(questionDiv)) {
-            _showQuestion(questionDiv);
-        }
-        else {
-            _hideQuestion(questionDiv);
-        }
-    });
-    
-    $('a.show').click(function() {
-        var questionDiv = $(this).parent().parent().parent();
-        if (_isHidden(questionDiv)) {
-            _showQuestion(questionDiv);
-        }
-        else {
-            _hideQuestion(questionDiv);
-        }
-    });
-}
-
 // Show/Hide for showing the whole list of characteristics on the Taxon page
 function global_toggleList() {
     $('a.description-control').toggle(function(){
@@ -118,7 +75,7 @@ function global_toggleList() {
     });
 }
 
-//// Show/Hide for Characteristic List on Taxon page
+// Show/Hide for Characteristic List on Taxon page
 function global_toggleInfo() {
     $('ul.full-description li').toggle(function(){
         $(this).children('ul').show();

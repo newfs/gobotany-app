@@ -1594,7 +1594,6 @@ Getting Started Page Styles
 	background: url(/static/images/icons/6.png) left 18px no-repeat;	
 }
 #getting-started a.screenshot {
-	display: none;
 	float: right;	
 	margin: 0 0 0 15px;
 	color: #1A2E11;
@@ -1613,15 +1612,6 @@ Getting Started Page Styles
 #getting-started .question ul {
 	padding: 0 0 0 15px;
 	list-style-type: disc;	
-}
-#getting-started .question h4 {
-	margin: 0 0 15px 0;
-	background: url(/static/images/icons/plus.png) right 50% no-repeat;	
-	cursor: pointer;
-}
-#getting-started .first.question h4 {
-	background: none;
-	cursor: default;	
 }
 #getting-started a.onward-btn {
 	display: block;

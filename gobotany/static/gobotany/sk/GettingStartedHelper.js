@@ -47,15 +47,7 @@ dojo.declare('gobotany.sk.GettingStartedHelper', null, {
         this._set_skip_page_checkbox(this.checkbox);
     },
 
-    _set_up_toggle_questions: function() {
-        // Call code currently in a global library that uses jQuery,
-        // provided by the visual designer; may want to better integrate
-        // at some point.
-        global_toggleQuestions();
-    },
-
     setup: function() {
-        this._set_up_toggle_questions();
         this._set_up_skip_checkbox();
     }
 });
