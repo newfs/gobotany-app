@@ -1436,7 +1436,7 @@ class Importer(object):
         VIDEO_FERNS = 'yXZ3H_QHnxc'
         VIDEO_GRAMINOIDS = '9GfTL4r19ag'
         VIDEO_WOODY_PLANTS = 'X5Pe0UJx_uU'
-        VIDEO_NON_ORCHID_MONOCOTS = 'HGrQ9ysU8IM'
+        VIDEO_NON_ORCHID_MONOCOTS = 'fPmlPnosWf8'
 
         self._set_youtube_id('Ferns', VIDEO_FERNS, pilegroup=True)
         self._set_youtube_id('Woody Plants', VIDEO_WOODY_PLANTS, pilegroup=True)
