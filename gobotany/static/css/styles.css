@@ -911,7 +911,7 @@ ul.option-list li:hover, ul.option-list li.active {
 
 .get-more {
     line-height: 16px;
-    margin-bottom: 10px;
+    margin: 0 12px 20px;
 }
 .get-more a {
     cursor: pointer;
@@ -920,6 +920,9 @@ ul.option-list li:hover, ul.option-list li.active {
     font-size: 18px;
     font-weight: bold;
     margin: 18px 0 10px;
+}
+.get-more a.get-choices {
+    margin: 0 auto 4px;
 }
 
 h5.help {
