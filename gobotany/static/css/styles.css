@@ -837,14 +837,35 @@ Sidebar Styles for 3rd Level
     background: #fcfdf5;
 }
 #sidebar div.scroll {
-    border-bottom: 1px solid #c3d941;
-    border-top: 1px solid #c3d941;
+    border-bottom: 1px solid #9cc86b;
+    border-left: 2px solid #519136;
+    border-right: 1px solid #d6e6c5;
+    border-top: 2px solid #519136;
     display: block;
     height: 335px;
     margin: 0 0 10px 0;
     overflow: auto;
-    width: 100%;
+    width: 225px;
 }
+
+/* For tablets and smartphones, style the scrollbar differently because
+   our regular scrollbar is not the expected way to scroll there, and
+   has problems besides (arrows too small, vertical bar not draggable).
+   Instead, just present the thin vertical bar as an indicator that the
+   area is scrollable and to provide feedback while swiping to scroll. */
+@media only screen and (max-device-width:1024px) {
+    #sidebar div.scroll .jspVerticalBar {
+        border-left: 0;
+    }
+    #sidebar div.scroll .jspTrack, #sidebar div.scroll .jspArrowUp,
+    #sidebar div.scroll .jspArrowDown {
+        background: none;
+    }
+    #sidebar div.scroll .jspPane {
+        width: 225px !important;
+    }
+}
+
 #plant-id-3 #sidebar {
     padding: 0 0 16px 0;
 }
@@ -876,9 +897,6 @@ a.get-choices:active {
     font-weight: bold;
     color: #807121;
 }
-ul.option-list {
-    margin: 0 0 12px 0;
-}
 ul.option-list li {
     display: block;
     padding: 12px;
@@ -888,10 +906,11 @@ ul.option-list li {
 ul.option-list li.last {
     border-bottom: 1px solid #c3d941;
 }
-ul.option-list li:hover, ul.option-list li.active {
-    background: #dce890 !important; /* important used to override style
-                                       attribute added by yellow fade */
+ul.option-list li.hover, ul.option-list li.active {
     cursor: pointer;
+}
+ul.option-list li.active {
+    background: #dce890;
 }
 .option-list a.option {
     color: #1a2e11;
