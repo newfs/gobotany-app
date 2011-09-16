@@ -45,25 +45,6 @@
                       </span>
                     </h3>
 
-                        <div class="already-know">
-                            <h6>If you already know the Family or Genus,
-                                select here:</h6>
-                            <label>Family:</label>
-                            <select id="family_select" name="family_select"
-                                dojoType="dijit.form.FilteringSelect"
-                                autocomplete="true" value="sel">
-                            </select>
-                            <button dojoType="dijit.form.Button" 
-                                id="clear_family">Clear</button>
-                            <label>Genus:</label>
-                            <select id="genus_select" name="genus_select"
-                                dojoType="dijit.form.FilteringSelect"
-                                autocomplete="true" value="sel">
-                            </select>
-                            <button dojoType="dijit.form.Button" 
-                                id="clear_genus">Clear</button>
-			            </div>
-                                                
                         <div class="working-area" aria-live="polite" 
                             aria-relevant="additions removals">
                             <img class="arrow" alt=""
@@ -142,7 +123,28 @@
                             <a class="get-choices">Get More Choices</a>
                             Add a few more choices for narrowing your
                             matching species.</p>
-			        </div><!--Closes .section-->
+                    </div><!--Closes .section-->
+
+
+                    <div class="section">
+                        <div class="already-know">
+                            <h6>Already know the family or genus?</h6>
+                            <label>Family:</label>
+                            <select id="family_select" name="family_select"
+                                dojoType="dijit.form.FilteringSelect"
+                                autocomplete="true" value="sel">
+                            </select>
+                            <button dojoType="dijit.form.Button" 
+                                id="clear_family">Clear</button> 
+                            <label>Genus:</label>
+                            <select id="genus_select" name="genus_select"
+                                dojoType="dijit.form.FilteringSelect"
+                                autocomplete="true" value="sel">
+                            </select>
+                            <button dojoType="dijit.form.Button" 
+                                id="clear_genus">Clear</button>
+			            </div>
+                    </div>
 			
 			        <div class="section">
 				        <h5 class="left help">Start Over:</h5>

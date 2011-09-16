@@ -652,7 +652,7 @@ Level 3 Id styles
 --------*****/
 .already-know {
     float: left;
-    margin: 0 0 15px 0;
+    margin: 0 0 40px 0;
 }	
 .show-me {
     float: right;
@@ -665,6 +665,9 @@ Level 3 Id styles
     margin: 0 0 5px 0;
 }
 .already-know label {
+    display: block;
+    font-weight: normal;
+    margin: 5px 0 3px;
     vertical-align: middle;
 }
 .already-know .dijitButton {
@@ -675,7 +678,7 @@ Level 3 Id styles
     height: 14px;
     line-height: 13px;
     vertical-align: middle;
-    width: 40px;
+    width: 32px;
 }
 .already-know .dijitButton .dijitButtonText {
     font-size: 10px;
@@ -954,7 +957,7 @@ h5.help {
 /* These two next items are called family_select and genus_select in the HTML,
 but Dojo/Dijit transforms them into divs with ids starting with widget_. */
 #widget_family_select, #widget_genus_select {
-    width: 140px;
+    width: 135px;
 }
 
 /** Working area **/
@@ -962,7 +965,7 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     background: #fff;
     border: 1px solid #c3d941;
     clear: left;
-    margin: 0 0 15px 0;
+    margin: 5px 0 15px 0;
     padding: 10px 15px 15px;
     position: relative;
 }
