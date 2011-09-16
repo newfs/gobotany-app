@@ -899,6 +899,7 @@ a.get-choices:active {
 }
 ul.option-list li {
     background: #fff;
+    cursor: pointer;
     display: block;
     padding: 12px;
     margin: 0;
@@ -907,16 +908,12 @@ ul.option-list li {
 ul.option-list li.last {
     border-bottom: 1px solid #c3d941;
 }
-ul.option-list li.hover, ul.option-list li.active {
-    cursor: pointer;
-}
 ul.option-list li.active {
     background: #dce890;
+    cursor: pointer;
 }
 .option-list a.option {
     color: #1a2e11;
-}
-.option-list a.option:hover {
     text-decoration: none;
 }
 .option-list .option span.name {
