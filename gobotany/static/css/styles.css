@@ -898,6 +898,7 @@ a.get-choices:active {
     color: #807121;
 }
 ul.option-list li {
+    background: #fff;
     display: block;
     padding: 12px;
     margin: 0;
