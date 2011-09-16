@@ -79,7 +79,10 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         dojo.disconnect(this.apply_button_connection);
         this.close_button_connection = null;
         this.apply_button_connection = null;
-        dojo.query(this.div).style({display: 'none'});
+
+        // Use jQuery to hide the working area with a slide effect.
+        $(this.div).slideUp('fast');
+
         this.on_dismiss(this.filter);
     },
 
@@ -232,6 +235,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
     _apply_button_clicked: function(event) {
         dojo.stopEvent(event);
         this._apply_filter_value();
+        this.dismiss();
     },
 
     _apply_filter_value: function() {

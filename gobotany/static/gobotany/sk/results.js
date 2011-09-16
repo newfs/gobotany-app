@@ -907,6 +907,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.results_helper.species_section.lazy_load_images();
         this.visible_filter_short_name = '';
         this.results_helper.save_filter_state();
+
+        // Clear selected state in the choices list at left.
+        dojo.query('.option-list li').removeClass('active');
     },
 
     /* When the filter value is changed in the working area, we respond. */
