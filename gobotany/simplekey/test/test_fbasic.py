@@ -191,7 +191,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.css1('.apply-btn').click()
         self.wait_on_species(13)
 
-        # filter on wetlants
+        # filter on wetlands
 
         self.css1('#habitat_general a.option').click()
         count = self.css1('[value="wetlands"] + .label + .count').text
@@ -200,11 +200,12 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.css1('.apply-btn').click()
         self.wait_on_species(3)
 
-        # switch from bogs to forest
+        # switch from wetlands to terrestrial
 
-        self.css1('[value="terrestrial"]').click()
+        self.css1('#habitat_general a.option').click()
         count = self.css1('[value="terrestrial"] + .label + .count').text
         self.assertEqual(count, '(10)')
+        self.css1('[value="terrestrial"]').click()
         self.css1('.apply-btn').click()
         self.wait_on_species(10)
 
@@ -294,6 +295,7 @@ class FilterFunctionalTests(FunctionalTestCase):
                 u'Lycopodiella', u'Lycopodium', u'Spinulum',
                 ])
 
+    @unittest2.skip('delete if closing working area upon Apply is approved')
     def test_quickly_press_apply_twice(self):
 
         # Does a double tap of "apply" load species twice?
@@ -314,6 +316,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.css1('.apply-btn').click()
         self.wait_on_species(13)
 
+    @unittest2.skip('delete if closing working area upon Apply is approved')
     def test_quickly_press_apply_and_clear(self):
 
         # Does pressing the "apply" button and a "clear" link
@@ -388,7 +391,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.wait_on_species(499)
         sidebar_value_span = self.css1('#plant_height_rn .value')
         range_div = self.css1('.permitted_ranges')
-        measure_input = self.css1('input[name="measure"]')
+        measure_input = self.css1('input[name="measure_metric"]')
         instructions = self.css1('.instructions')
         apply_button = self.css1('.apply-btn')
 
@@ -424,20 +427,29 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.wait_on_species(499)
         self.assertEqual(sidebar_value_span.text, "don't know")
 
+        # Open the working area again and set the metric length back to
+        # what it was before the working area closed.
+        self.css1('#plant_height_rn a.option').click()
+        measure_input.send_keys('100000')
+
         measure_input.send_keys(Keys.BACK_SPACE)  # '10000'
         self.assertIn('to the 1 matching species', instructions.text)
         apply_button.click()
         self.wait_on_species(unknowns + 1)
         self.assertEqual(sidebar_value_span.text, '10000.0 mm')
 
+        self.css1('#plant_height_rn a.option').click()
+        measure_input.send_keys('10000')
         measure_input.send_keys(Keys.BACK_SPACE)  # '1000'
         self.assertIn('to the 157 matching species', instructions.text)
         apply_button.click()
         self.wait_on_species(unknowns + 157)
         self.assertEqual(sidebar_value_span.text, '1000.0 mm')
 
-        # Switch to cm and then mm.
+        # Switch to cm and then m.
 
+        self.css1('#plant_height_rn a.option').click()
+        measure_input.send_keys('1000')
         self.css1('input[value="cm"]').click()
         self.assertIn(u' 1 cm – 1500 cm', range_div.text)
         self.assertIn('to the 1 matching species', instructions.text)
@@ -445,12 +457,18 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.wait_on_species(unknowns + 1)
         self.assertEqual(sidebar_value_span.text, '1000.0 cm')
 
+        self.css1('#plant_height_rn a.option').click()
+        measure_input.send_keys('1000')
         self.css1('input[value="m"]').click()
         self.assertIn(u' 0.01 m – 15 m', range_div.text)
         self.assertEqual('', instructions.text)
         apply_button.click()  # should do nothing
         self.wait_on_species(unknowns + 1)
         self.assertEqual(sidebar_value_span.text, '1000.0 cm')
+
+        self.css1('#plant_height_rn a.option').click()
+        measure_input.send_keys('1000')
+        self.css1('input[value="m"]').click()
 
         # Two backspaces are necessary to reduce '1000' meters down to
         # the acceptable value of '10' meters.

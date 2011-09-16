@@ -75,6 +75,8 @@ nav #search button:active {
 }
 /***Active Nav State***/
 #plant-id li.plant-id a,
+#plant-id-2 li.plant-id a,
+#plant-id-3 li.plant-id a,
 #myplants li.myplants a,
 #advanced-id li.advanced-id a,
 #teaching-tools li.teaching-tools a,
@@ -450,7 +452,7 @@ Breadcrumb Styles
 .not-my-plant {
 	float: right;
     font-family: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif;
-    padding: 40px 0 0 0;
+    padding: 20px 0 0;
 	text-align: center;
 }
 .not-my-plant h6 {
@@ -973,7 +975,7 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     display: block;
     left: -12px;
     position: absolute;
-    top: 33px;
+    top: 18px;
 }
 .choices {
     border-spacing: 6px 12px;
@@ -1238,7 +1240,7 @@ div.working-area .actions {
 #results-tabs {
     border-bottom: 1px solid #c3d941;
     clear: left;
-    height: 32px;
+    height: 28px;
     margin: 10px 0;
 }
 
@@ -1252,8 +1254,8 @@ div.working-area .actions {
     display: block;
     float: left;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 22px;
-    line-height: 22px;
+    font-size: 18px;
+    line-height: 18px;
     margin: 0;
     padding: 5px 10px 4px;
     text-align: center;

@@ -37,72 +37,71 @@
                         </ul>
                     </div><!--Closes #breadcrumb-->
 
-                    <h2>Plant Identifier</h2>
-                    <h3>{{ pile.friendly_title }}
-                      <span class="species-count-phrase">
-                        (<span class="species-count">calculating</span>
-                        matching species)
-                      </span>
-                    </h3>
+                    <h2>{{ pile.friendly_title }}</h2>
+                    
+                    <div class="working-area" aria-live="polite" 
+                        aria-relevant="additions removals">
+                        <img class="arrow" alt=""
+                            src="/static/images/layout/working-area-arrow.png">
+                        <a href="#" class="close"></a>
 
-                        <div class="working-area" aria-live="polite" 
-                            aria-relevant="additions removals">
-                            <img class="arrow" alt=""
-                                src="/static/images/layout/working-area-arrow.png">
-                            <a href="#" class="close"></a>
-
-                            <div class="intro-message">
-				    	        <h4>Narrow Your Matching Species</h4>
-                                <p>Pick a choice in the list
-                                at left. Then make a selection here
-                                that most closely matches your plant.
-                                Repeat.</p>
-    				        </div>
-                            
-                            <h4></h4>
-                            <div>
-                                <div class="info">
-                                    <div class="question"></div>
-                                    <div class="hint"></div>
-                                    <div class="values"></div>
-                                    <div class="actions">
-                                      <a class="apply-btn" href="#">Apply</a>
-                                    </div>
+                        <div class="intro-message">
+                            <h4>Narrow Your Matching Species</h4>
+                            <p>Pick a choice in the list
+                            at left. Then make a selection here
+                            that most closely matches your plant.
+                            Repeat.</p>
+                        </div>
+                        
+                        <h4></h4>
+                        <div>
+                            <div class="info">
+                                <div class="question"></div>
+                                <div class="hint"></div>
+                                <div class="values"></div>
+                                <div class="actions">
+                                  <a class="apply-btn" href="#">Apply</a>
                                 </div>
                             </div>
-                            <div class="clearit"></div>
-                        </div><!--Closes .working-area-->
-
-                        <div id="results-tabs">
-                            <ul>
-                                <li><a class="current">Photos</a></li>
-                                <li><a>List</a></li>
-                            </ul>
                         </div>
                         <div class="clearit"></div>
+                    </div><!--Closes .working-area-->
 
-                        <div class="show hidden">
-                            <form id="results-display">
-                                <img class="icon" alt=""
-                                    src="/static/images/icons/show-me.png">
-                                <label for="image-type-selector">Show me 
-                                    photos of:</label>
-                                <select dojoType="dijit.form.Select"
-                                    id="image-type-selector"
-                                    name="image-type-selector">
-                              </select>
-                          </form>
-                        </div><!--Closes .show-->
-                        <div class="clearit"></div>
+                    <h3><span class="species-count-phrase">
+                        <span class="species-count">finding</span>
+                        matching species</span>
+                    </h3>
 
-                        <!--Begin Plant List-->
-                        <div class="plant-list">
-                        </div>
+                    <div id="results-tabs">
+                        <ul>
+                            <li><a class="current">Photos</a></li>
+                            <li><a>List</a></li>
+                        </ul>
+                    </div>
+                    <div class="clearit"></div>
 
-                        <p class="list-all hidden"><a>See 
-                            <span class="view-type">a list of</span>
-                            all <span class="species-count">...</span> 
-                            matching species.</a></p>
+                    <div class="show hidden">
+                        <form id="results-display">
+                            <img class="icon" alt=""
+                                src="/static/images/icons/show-me.png">
+                            <label for="image-type-selector">Show me 
+                                photos of:</label>
+                            <select dojoType="dijit.form.Select"
+                                id="image-type-selector"
+                                name="image-type-selector">
+                          </select>
+                      </form>
+                    </div><!--Closes .show-->
+                    <div class="clearit"></div>
+
+                    <!--Begin Plant List-->
+                    <div class="plant-list">
+                    </div>
+
+                    <p class="list-all hidden"><a>See 
+                        <span class="view-type">a list of</span>
+                        all <span class="species-count">...</span> 
+                        matching species.</a></p>
 
                     </div><!--closes #main-->
 
