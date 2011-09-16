@@ -976,7 +976,7 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     top: 33px;
 }
 .choices {
-    border-spacing: 5px 20px;
+    border-spacing: 6px 12px;
     display: table;
 }
 .choices .row {
@@ -1022,7 +1022,7 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
 .working-area h4 {
     color: #807121;
     display: none;
-    margin: 0 0 12px;
+    margin: 0;
 }
 .working-area .intro-message h4 {
     display: block;
@@ -1030,9 +1030,13 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
 .working-area .info {
     display: none;
 }
+.working-area .info .question p {
+    line-height: 140%;
+    margin-bottom: 4px;
+}
 .working-area span.hint {
-    font-style: italic;
     color: #707070;
+    font-style: italic;
 }
 .working-area li {
     display: block;
@@ -1063,7 +1067,7 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     background: url(/static/images/layout/apply-selection.png) no-repeat 0 0 transparent;
     display: inline-block;
     height: 41px;
-    margin: 15px 0 0;
+    margin: 0;
     text-align: left;
     text-indent: -9000px;
     width: 244px;
@@ -1188,6 +1192,7 @@ div.working-area .info {
 div.working-area .values.numeric {
     border: 0;
     height: auto;
+    margin-top: 8px;
     overflow-y: visible;
 }
 
@@ -1196,7 +1201,7 @@ div.working-area .values .zero {
 }
 
 div.working-area .measurement {
-    margin-top: 8px;
+    margin: 8px 0;
 }
 div.working-area .measurement label input {
     margin: 0 4px 0 8px;
@@ -1210,11 +1215,15 @@ div.working-area .info {
 
 div.working-area .info .hint {
     font-size: 12px;
-    margin-bottom: 10px;
 }
 
 div.working-area .info .hint p {
+    line-height: 120%;
     margin-bottom: 0;
+}
+
+div.working-area .instructions {
+    margin-bottom: 8px;
 }
 
 div.working-area .actions {
