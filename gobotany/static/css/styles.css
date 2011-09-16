@@ -927,6 +927,7 @@ ul.option-list li.active {
 .option-list a.clear-filter {
     display: none;
     margin-top: 4px;
+    width: 45px;
 }
 
 .get-more {
