@@ -913,7 +913,8 @@ ul.option-list li.last {
     border-bottom: 1px solid #c3d941;
 }
 ul.option-list li.active {
-    background: #dce890;
+    background: #dce890 !important; /* Important overrides inline background
+                                       color from More Choices animation */
     cursor: pointer;
 }
 .option-list a.option {
