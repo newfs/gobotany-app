@@ -6,7 +6,7 @@ header, .content, footer {
 }
 .container {
     width: 960px;
-    padding: 0 30px;
+    padding: 0 10px;
     margin: 0 auto;
 }
 header h1 a {
