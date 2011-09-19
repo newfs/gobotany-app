@@ -1865,6 +1865,14 @@ Family and Genus Pages Styles
     float: right;
 }
 
+/* Shadowbox close button */
+#sb-nav-close {
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 12px; /* Increase click target area */
+    right: -14px !important; /* Nestle into top right corner */
+    top: -14px !important;
+}
 
 /*** Notification for draft status ***/
 
