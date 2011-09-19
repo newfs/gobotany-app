@@ -18,8 +18,9 @@
                                 <li class="first completed"><a href="{% url simplekey-page 1 %}"><img
                                     src="/static/images/icons/start.png" alt=""> Start</a></li>
                             {% endif %}
-                            <li class="second completed"><a href="{% url simplekey-page 1 %}"><img
-                                src="/static/images/icons/group.png" alt=""> {{ pilegroup.name }}</a></li>
+                            <li class="second completed"><a href="{% url simplekey-page 1 %}" title="{{ pilegroup.friendly_title }}"><img
+                                src="/static/images/icons/group.png"
+                                alt=""> {{ pilegroup.friendly_title }}</a></li>
                             <li class="third current"><a><img
                                 src="/static/images/icons/subgroup.png" alt=""> 
                                 Subgroup</a></li>

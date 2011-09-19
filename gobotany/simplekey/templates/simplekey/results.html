@@ -25,12 +25,12 @@
                                     alt=""> Start</a></li>
                             {% endif %}
                             <li class="second completed"><a 
-                                href="{% url simplekey-pilegroup pilegroup.slug %}"><img
+                                href="{% url simplekey-pilegroup pilegroup.slug %}" title="{{ pilegroup.friendly_title }}"><img
                                 src="/static/images/icons/group.png" 
-                                alt=""> {{ pilegroup.name }}</a></li>
-                            <li class="third current"><a><img
+                                alt=""> {{ pilegroup.friendly_title }}</a></li>
+                            <li class="third current"><a title="{{ pile.friendly_title }}"><img
                                 src="/static/images/icons/subgroup.png"
-                                alt=""> {{ pile.name }}</a></li>
+                                alt=""> {{ pile.friendly_title }}</a></li>
                             <li class="last upcoming"><a><img
                                 src="/static/images/icons/subgroup.png"
                                 alt=""> My Plant</a></li>
