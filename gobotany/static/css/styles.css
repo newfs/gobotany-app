@@ -484,38 +484,39 @@ Plant Listing Styles
     margin-top: 4px;
 }
 .img-gallery {
-	position: relative;
-	width: 165px; /* 175px */;
-	float: left;
+    float: left;
 	margin: 0 10px 0 0;	
+	position: relative;
+	width: 244px;
 }
 .img-gallery .img-container {
-	position: relative;
-	width: 160px; /*170px;*/
-	height: 149px;
+	height: 239px;
 	overflow: hidden;
-	
+	position: relative;
+	width: 239px;
 }
 .img-gallery .frame, #taxon #species-images {
-	width: 150px; /*160px;*/
-    height: 139px;	
 	border: 5px solid rgba(255, 255, 255, 0.8);
 	position: absolute;
-	z-index: 100;
 	top: 0;
-	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+	z-index: 100;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 	-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
+.img-gallery .frame {
+    height: 229px;
+	width: 229px;
+}
 .img-gallery .images {
-	position: absolute;
-	width: 12000px;
 	clear: both;
 	margin: 0;
 	padding: 0;	
+	position: absolute;
+	width: 12000px;
 }
 .img-gallery .images img {
-	float: left;	
+	float: left;
 }
 .img-gallery .controls {
 	margin: 8px 0 0 0;
@@ -536,7 +537,7 @@ Plant Listing Styles
 }
 .list-item .details {
 	float: left;	
-	width: 525px;
+	width: 460px;
 }
 .list-item p {
 	padding: 0 0 7px 25px;

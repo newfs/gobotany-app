@@ -253,7 +253,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     var images_html = '';
                     for (i = 0; i < taxon.images.length; i++) {
                         images_html += '<img src="' +
-                            taxon.images[i].thumb_url + '" alt="' +
+                            taxon.images[i].scaled_url + '" alt="' +
                             taxon.images[i].title + '">';
                     }
                     dojo.html.set(

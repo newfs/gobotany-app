@@ -404,7 +404,10 @@ class ContentImage(models.Model):
                                                 'options': {'crop': 'smart'}
                                                },
                                      extra_thumbnails={'large': {
-                                                           'size': (600, 400),
+                                                           'size': (239, 239),
+                                                           'options': {
+                                                               'crop': 'smart'
+                                                               }
                                                            },
                                                        },
                                      # Note: sizes are width, height

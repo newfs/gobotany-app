@@ -977,12 +977,14 @@ class Importer(object):
                 if '.' not in filename:  # skip files without an extension
                     continue
 
-                if filename.count('.') > 1: # skip files with more than one dot
-                    print >> self.logfile, 'ERR: image has multiple periods:', filename
+                if filename.count('.') > 1: # skip files w/more than one dot
+                    print >> self.logfile, \
+                        'ERR: image has multiple periods:', filename
                     continue
 
                 if filename.count('_') > 0: # skip files with underscores
-                    print >> self.logfile, 'ERR: image has underscores:', filename
+                    print >> self.logfile, \
+                        'ERR: image has underscores:', filename
                     continue
 
                 name, ext = filename.split('.')
@@ -1050,8 +1052,8 @@ class Importer(object):
                     if key in taxon_image_types:
                         break
                 else:
-                    print >> self.logfile, '  ERR: unknown image type %r:' % (
-                        _type), filename
+                    print >> self.logfile, \
+                        '  ERR: unknown image type %r:' % (_type), filename
                     continue
 
                 image_type, created = models.ImageType.objects \
@@ -1111,21 +1113,6 @@ class Importer(object):
                 # by (at least) the Simple Key application.
                 content_image.image.thumbnail.width()
                 content_image.image.extra_thumbnails['large'].width()
-
-                # Log a message if the image is smaller than the
-                # dimensions of the wide gallery box on the Simple Key
-                # site's species page.
-                GALLERY_MIN_WIDTH = 710
-                GALLERY_MIN_HEIGHT = 249
-                if (content_image.image.width < GALLERY_MIN_WIDTH or
-                    content_image.image.height < GALLERY_MIN_HEIGHT):
-                    message = ('    Warning: image too small (%d w x %d h); '
-                               'should be at least %d w x %d h: %s') % \
-                              (content_image.image.width,
-                               content_image.image.height,
-                               GALLERY_MIN_WIDTH, GALLERY_MIN_HEIGHT,
-                               filename)
-                    print >> self.logfile, message
 
 
     def _add_place_character_value(self, character, value_str, piles, taxon,

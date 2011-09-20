@@ -60,17 +60,11 @@
 		            <div class="scrollWrapper">
                         <div class="scrollableArea">
                             {% for i in species_images %}
-                                {% thumbnail i.image "233x239" crop="center" as thumb %}
-                                {% if i.image.height > i.image.width %}
-                                    {% thumbnail i.image "600x800" as full %}
-                                {% else %}
-                                    {% thumbnail i.image "800x600" as full %}
-                                {% endif %}
-                                <a href="{{ full }}" {% if forloop.counter == 1 %}id="startimage"{% endif %}
+                                <a href="{{ i.image.url }}" {% if forloop.counter == 1 %}id="startimage"{% endif %}
                                     rel="shadowbox"
                                     title="{{ i.image_type|capfirst }}">
-                                    <img src="{{ thumb }}"
-                                        alt="{{ i.image_type|capfirst }}: {( scientific_name }}">
+                                    <img src="{{ i.image.extra_thumbnails.large.absolute_url }}"
+                                        alt="{{ i.image_type|capfirst }}: {{ scientific_name }}">
                                 </a>
                             {% endfor %}
 			            </div>

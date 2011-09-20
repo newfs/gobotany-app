@@ -49,7 +49,7 @@ class TaxonIndex(indexes.SearchIndex):
                                      character_name='description',
                                      default='description not yet available')
 
-    def get_queryset(self):
+    def index_queryset(self):
         return Taxon.objects.filter()
 
 
