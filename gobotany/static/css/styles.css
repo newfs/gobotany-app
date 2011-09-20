@@ -1870,8 +1870,8 @@ Family and Genus Pages Styles
     background-position: center;
     background-repeat: no-repeat;
     padding: 12px; /* Increase click target area */
-    right: -14px !important; /* Nestle into top right corner */
-    top: -14px !important;
+    right: -20px !important; /* Place at top right corner */
+    top: 6px !important;
 }
 
 /*** Notification for draft status ***/
