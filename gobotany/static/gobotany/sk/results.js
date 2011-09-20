@@ -689,7 +689,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     // Add the new filters to the filters list.
                     var added = this.display_filters(new_filters, 0);
                     global_setSidebarHeight();
-                    added.style({backgroundColor: '#eeee9a'});
+                    added.style({backgroundColor: '#ff0'});
                     gobotany.utils.notify('More choices added');
                     gobotany.utils.animate_changed(added);
 
@@ -732,7 +732,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     display_filter: function(filter, pos) {
-
         if (filter.value_type === null)
             return null;
 
@@ -768,7 +767,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         });
 
         if (typeof(pos) === 'number')
-            dojo.style(filter_li, {backgroundColor: '#C8B560'});
+            dojo.style(filter_li, {backgroundColor: '#c8b560'});
 
         this.update_filter_display(filter);
         return filter_li;
@@ -915,8 +914,20 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     /* When the filter value is changed in the working area, we respond. */
 
     _on_filter_change: function(filter) {
-        dojo.query('li#' + filter.character_short_name + ' span.value'
-                  ).html(this._get_filter_display_value(filter));
+        var q = 'li#' + filter.character_short_name + ' span.value';
+        dojo.query(q).html(this._get_filter_display_value(filter));
+
+        var animation = dojo.query(q).animateProperty({
+            duration: 2000,
+            properties: {
+                backgroundColor: {
+                    start: '#ff0',
+                    end: '#fff'
+                }
+            }
+        });
+        animation.play();
+
         this.show_or_hide_filter_clear(filter);
     }
 });

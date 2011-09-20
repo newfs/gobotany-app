@@ -926,7 +926,7 @@ ul.option-list li {
 ul.option-list li.last {
     border-bottom: 1px solid #c3d941;
 }
-ul.option-list li.active {
+ul.option-list li.active, ul.option-list li.active span.value {
     background: #dce890 !important; /* Important overrides inline background
                                        color from More Choices animation */
     cursor: pointer;
@@ -1106,7 +1106,7 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
 /* ordinarily this msg will have its centering done
 by javascript, see gobotany.sk.results.notify() */
 #notification-msg {
-    background-color: #eeee9a;
+    background-color: #ff0;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
     font-size: 1.2em;
