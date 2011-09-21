@@ -42,7 +42,7 @@
                             <div class="img-container">
                                 <div class="images">
                                     {% for image in pile.sample_species_images.all %}
-                                        <img src="{{ image.image.thumbnail.absolute_url }}"
+                                        <img src="{{ image.image.extra_thumbnails.large.absolute_url }}"
                                             alt="{{ image.alt }}">
                                     {% endfor %}
                                 </div><!--Closes .images-->

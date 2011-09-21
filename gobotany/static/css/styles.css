@@ -487,20 +487,13 @@ Plant Listing Styles
     float: left;
 	margin: 0 10px 0 0;	
 	position: relative;
-	width: 165px;
-}
-#plant-id-3 .img-gallery {
-    width: 244px;
+	width: 244px;
 }
 .img-gallery .img-container {
-	height: 149px;
+	height: 239px;
 	overflow: hidden;
 	position: relative;
-	width: 160px;
-}
-#plant-id-3 .img-gallery .img-container {
-    height: 239px;
-    width: 239px;
+	width: 239px;
 }
 .img-gallery .frame, #taxon #species-images {
 	border: 5px solid rgba(255, 255, 255, 0.8);
@@ -512,10 +505,6 @@ Plant Listing Styles
 	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
 .img-gallery .frame {
-    height: 139px;
-    width: 150px;
-}
-#plant-id-3 .img-gallery .frame {
     height: 229px;
     width: 229px;
 }
@@ -548,7 +537,7 @@ Plant Listing Styles
 }
 .list-item .details {
 	float: left;	
-	width: 525px;
+	width: 425px;
 }
 #plant-id-3 .list-item .details {
     width: 460px;
