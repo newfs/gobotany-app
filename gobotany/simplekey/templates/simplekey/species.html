@@ -131,41 +131,62 @@
                 <h3>Wetland Plant?</h3>
                 <p>{{ taxon.wetland_status_text }}</p>
                 
-                <h3>Distribution &amp; Conservation/Invasiveness Status</h3>
-                <table width="33%" cellspacing="0" cellpadding="0" border="0"
-                    class="status">
-                    <tbody>
+                <h3>New England Distribution and Conservation Status</h3>
+                <table>
+                    <thead>
                         <tr>
-                            <th>State</th>
-                            <th>Distribution &amp; Additional Status</th>
+                            <td></td>
+                            <th>Connecticut</th>
+                            <th>Maine</th>
+                            <th>Massachusetts</th>
+                            <th>New Hampshire</th>
+                            <th>Rhode Island</th>
+                            <th>Vermont</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% collect taxon.conservation_status_ct taxon.conservation_status_me taxon.conservation_status_ma taxon.conservation_status_nh taxon.conservation_status_ri taxon.conservation_status_vt as statuses %}
+                        <tr>
+                            {% with 'present' as value %}
+                                <th>{{ value|capfirst }}?</th>
+                                {% for status in statuses %}
+                                    <td>
+                                        {% if value in status %}
+                                            {{ value }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            {% endwith %}
                         </tr>
                         <tr>
-					        <td>Connecticut</td>
-					        <td>{{ taxon.conservation_status_ct }}</td>
-				        </tr>
-				        <tr>
-					        <td>Maine</td>
-					        <td>{{ taxon.conservation_status_me }}</td>
-				        </tr>
-				        <tr>
-					        <td>Massachusetts</td>
-					        <td>{{ taxon.conservation_status_ma }}</td>
-				        </tr>
-				        <tr>
-					        <td>New Hampshire</td>
-					        <td>{{ taxon.conservation_status_nh }}</td>
-				        </tr>
-				        <tr>
-					        <td>Rhode Island</td>
-					        <td>{{ taxon.conservation_status_ri }}</td>
-				        </tr>
-				        <tr>
-					        <td>Vermont</td>
-					        <td>{{ taxon.conservation_status_vt }}</td>
-				        </tr>
+                            <th>Conservation Status:</th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% collect 'endangered' 'threatened' 'special concern' 'historic' 'rare' 'extinct' 'invasive' 'prohibited' as status_values %}
+                        {% for value in status_values %}
+                            <tr>
+                                <th class="status">{{ value|capfirst }}?</th>
+                                {% for status in statuses %}
+                                    <td>
+                                        {% if value in status %}
+                                            {{ value }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
-                
+
             </div>
 
             <div id="sidebar" style="height: 1116px">

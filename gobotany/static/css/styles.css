@@ -1504,26 +1504,57 @@ ul.full-description li ul li {
     padding: 0;
 }
 
-table.status {
-    border-top: 1px solid #c3d941;
-    margin: 0 0 15px;
-    width: 60%;
+#taxon table {
+    border-collapse: collapse;
+    font-family: Verdana, sans-serif;
+    font-size: 12px;
+    margin-top: 8px;
+    width: 690px;
 }
-table.status th {
-    background: none repeat scroll 0 0 #b4d57f;
-    font-size: 10px;
-    padding: 3px 0;
-    text-align: center;
+#taxon th, #taxon td {
+    line-height: 105%;
+    padding: 6px 4px;
+}
+#taxon th {
+    background: #b4d57f;
+    font-weight: normal;
     text-transform: uppercase;
 }
-table.status td {
-    border-bottom: 1px solid #c3d941;
-    padding: 5px 3px 5px 5px;
+#taxon td {
+    border: 1px solid #c3d941;
+    border-bottom: 0px;
+    border-top: 0px;
     text-align: center;
 }
-table.status td:first-child {
+#taxon thead th {
+    border: 1px solid #c3d941;
+    border-right: 1px solid #b4d57f;
+    font-size: 10px;
+    text-align: center;
+    vertical-align: bottom;
+}
+#taxon thead th:last-child {
+    border-right-color: #c3d941;
+}
+#taxon tbody th, #taxon thead td {
+    background: inherit;
+    border: 0;
+    font-size: 10px;
+    font-weight: bold;
+    padding-right: 8px;
+    text-align: right;
+    width: 103px;
+}
+#taxon tbody th {
+    padding-left: 0;
+    white-space: nowrap;
+}
+#taxon tbody th.status {
+    font-size: 12px;
+    font-weight: normal;
+    padding-left: 40px;
     text-align: left;
-    width: 120px;
+    text-transform: none;
 }
 
 #taxon #sidebar dt, #taxon #sidebar dd {
