@@ -254,21 +254,21 @@ class Importer(object):
            status_code == 'FAC-':
             status = 'Occurs in wetlands or uplands.'
         elif status_code == 'FACU':
-            status = 'Usually occurs in uplands, but occasionally occurs ' \
-                     'in wetlands.'
+            status = ('Usually occurs in uplands, but occasionally occurs '
+                      'in wetlands.')
         elif status_code == 'FACU+':
             status = 'Occurs most often in uplands; rarely in wetlands.'
         elif status_code == 'FACU-':
-            status = 'Usually occurs in uplands, but occurs in wetlands ' \
-                     'more than occasionally.'
+            status = ('Usually occurs in uplands, but occurs in wetlands '
+                      'more than occasionally.')
         elif status_code == 'FACW':
-            status = 'Usually occurs in wetlands, but occasionally occurs ' \
-                     'in non-wetlands.'
+            status = ('Usually occurs in wetlands, but occasionally occurs '
+                      'in non-wetlands.')
         elif status_code == 'FACW+':
             status = 'Occurs most often in wetlands; rarely in non-wetlands.'
         elif status_code == 'FACW-':
-            status = 'Occurs in wetlands but also occurs in uplands more ' \
-                     'than occasionally.'
+            status = ('Occurs in wetlands but also occurs in uplands more '
+                      'than occasionally.')
         elif status_code == 'OBL':
             status = 'Occurs only in wetlands.'
         elif status_code == 'UPL':
