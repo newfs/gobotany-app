@@ -1113,6 +1113,7 @@ by javascript, see gobotany.sk.results.notify() */
     -moz-border-bottom-left-radius: 15px;
     -moz-border-bottom-right-radius: 15px;
     padding: 0.25em 0.75em;
+    z-index: 100;
 }
 
 /* Plant preview dialogs, wherever they appear */
@@ -1892,7 +1893,7 @@ Family and Genus Pages Styles
 
 #notify {
     color: ##d4ee3b;
-    font-size: 150%;
+    font-size: 100%;
     font-weight: bold;
     height: 0;
     left: 0;
@@ -1900,7 +1901,7 @@ Family and Genus Pages Styles
     text-align: center;
     top: 0;
     width: 100%;
-    z-index: 1000;
+    z-index: 2;
 }
 #notify div {
     background-color: #e39f19;
