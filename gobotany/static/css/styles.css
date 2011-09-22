@@ -644,8 +644,8 @@ Sidebar Styles
 #sidebar a.view-map-btn:active {
 	background-position: 0 -64px;
 }
-#sidebar a.sidebarlink {
-	color: #1a2e11;
+#sidebar a.sidebarlink[href] {
+    color: #1a2e11;
 }
 #dist-county-map {
     height: 290px; /* SVG map: WebKit needs height and width set */
@@ -1637,6 +1637,19 @@ a.enlarge:hover {
     margin: 0;
     padding: 0;
     position: relative;
+}
+
+/* Help section: sidebar styles */
+#getting-started #sidebar, #about #sidebar, #advanced-map #sidebar {
+    height: 1046px;
+}
+#glossary #sidebar, #video-help-topics #sidebar {
+    height: 1420px;
+}
+#getting-started #sidebar a:hover, #about #sidebar a:hover,
+#advanced-map #sidebar a:hover, #glossary #sidebar a:hover, 
+#video-help-topics #sidebar a:hover {
+    text-decoration: none;
 }
 
 /*///////////////////////////**

@@ -12,19 +12,18 @@
     </div>
     <div id="nav">
         <ul>
+            {% url simplekey-help-start as u %}
+            <li><a {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-start %}"{% endifequal %}>Getting Started</a></li>
+
             {% url simplekey-help-about as u %}
             <li><a {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-about %}"{% endifequal %}>About Go-Botany</a></li>
             
-            <li><p>How To Use Plant Identifier:</p>
-                <ul>
-                    {% url simplekey-help-start as u %}
-                    <li><a {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-start %}"{% endifequal %}>Getting Started</a></li>
-                    {% url simplekey-help-collections as u%}
-                    <li><a {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-collections %}"{% endifequal %}>Understanding Plant Collections</a></li>
-                </ul>
-            </li>
+            {% url simplekey-help-map as u %}
+            <li><a {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-map %}"{% endifequal %}>Advanced Map to Groups</a></li>
+            
             {% url simplekey-help-glossary0 as u %}
             <li><a {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-glossary0 %}"{% endifequal %}>Glossary</a></li>
+            
             {% url simplekey-help-video as u %}
             <li><a {% ifequal request.path u %} class="current"{% else %}href="{% url simplekey-help-video %}"{% endifequal %}>Video Help Topics</a></li>
         </ul>

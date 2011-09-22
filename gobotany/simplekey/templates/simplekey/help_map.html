@@ -1,0 +1,51 @@
+{% extends "simplekey/_help.html" %}
+
+
+{% block pagetitle %}Advanced Map to Groups{% endblock %}
+
+{% block body_id %}advanced-map{% endblock %}
+{% block body_class %}advanced-map{% endblock %}
+
+{% block main_content %}     
+    <div id="subway">
+        <h2>Advanced Map to Groups</h2>
+        <h4>If you know the plant collection you want to
+            start with, select it.</h4>
+        <ul>
+        {% for page in pages %}
+            {% for pilegroup in page.pilegroups.all %}
+                <li>
+                    <a href="{% url simplekey-help-video-pilegroup pilegroup.slug %}"
+                    >{{ pilegroup.name }}</a>
+                    <br><a href="#" class="more">more...</a>
+                    <ul>
+                    {% for pile in pilegroup.piles.all %}
+                        <li>
+                        <a href="{% url simplekey-help-video-pile pilegroup.slug pile.slug %}"
+                        >{{ pile.name }}</a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div id="video" dojoType="dijit.Dialog" title="Video"
+        aria-describedby="video">
+        <p></p>
+        <div id="clip"></div>
+    </div>          
+{% endblock %}
+
+{% block js_bottom %}
+  <script>
+      dojo.require('dijit.Dialog');
+      dojo.require('gobotany.sk.subway');
+      dojo.addOnLoad(function() {
+          var is_help_collections = true;
+          gobotany.sk.subway.init(is_help_collections);
+      });
+  </script>
+{% endblock %}

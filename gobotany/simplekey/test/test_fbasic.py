@@ -499,7 +499,7 @@ class GlossaryFunctionalTests(FunctionalTestCase):
     def test_help_start_links_to_glossary(self):
         d = self.get('/help/start/')
         e = d.find_element_by_link_text('Glossary')
-        self.assertEqual(e.get_attribute('href'), '/help/glossary/')
+        self.assertTrue(e.get_attribute('href').endswith('/help/glossary/'))
 
     def test_glossary_a_page_contains_a_terms(self):
         self.get('/help/glossary/a/')
@@ -533,7 +533,7 @@ class GlossaryFunctionalTests(FunctionalTestCase):
     def test_glossary_g_page_link_is_correct(self):
         d = self.get('/help/glossary/a/')
         e = d.find_element_by_link_text('G')
-        self.assertEqual(e.get_attribute('href'), '/help/glossary/g/')
+        self.assertTrue(e.get_attribute('href').endswith('/help/glossary/g/'))
 
 
 class SearchFunctionalTests(FunctionalTestCase):

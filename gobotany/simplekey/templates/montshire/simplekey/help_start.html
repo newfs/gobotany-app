@@ -229,7 +229,9 @@
                         <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-about %}"{% endifequal %}>About Go-Botany</a></h5>
 			        </div>
 			        <div class="section">
-                        <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-collections %}"{% endifequal %}>Advanced Map to Groups</a></h5>
+                        <h5><a class="sidebarlink" {% ifequal
+                                request.path u %}class="current"{% else
+                                %}href="{% url simplekey-help-map %}"{% endifequal %}>Advanced Map to Groups</a></h5>
 			        </div>
 			        <div class="section">
                         <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-glossary0 %}"{% endifequal %}>Glossary</a></h5>
