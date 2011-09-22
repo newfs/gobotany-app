@@ -124,11 +124,9 @@ class BasicFunctionalTests(FunctionalTestCase):
         self.assertEqual(
             d.title, u'Go Botany: New England Wild Flower Society')
         e = d.find_element_by_link_text('Get Started')
-        self.assertEqual(e.get_attribute('href'), '/1/')
-        # Once you have selected "don't show me this", should change to:
-        # self.assertEqual(e.get_attribute('href'), '/1/')
+        self.assertTrue(e.get_attribute('href').endswith('/1/'))
 
-    def test_ubergroup_page(self):
+    def test_groups_page(self):
         d = self.get('/1/')
         h3 = self.css('h3')
         self.assertEqual(len(h3), 6)
@@ -141,9 +139,9 @@ class BasicFunctionalTests(FunctionalTestCase):
 
         # Do group links get constructed correctly?
         e = d.find_element_by_link_text('My plant is in this group')
-        self.assertEqual(e.get_attribute('href'), '/ferns/')
+        self.assertTrue(e.get_attribute('href').endswith('/ferns/'))
 
-    def test_group_page(self):
+    def test_subgroups_page(self):
         d = self.get('/ferns/')
         q = self.css('h3')
         self.assertEqual(len(q), 3)
@@ -151,9 +149,12 @@ class BasicFunctionalTests(FunctionalTestCase):
         assert q[1].text.startswith('Clubmosses and ')
         assert q[2].text.startswith('True ferns and ')
         q = d.find_elements_by_link_text('My plant is in this subgroup')
-        self.assertEqual(q[0].get_attribute('href'), '/ferns/equisetaceae/')
-        self.assertEqual(q[1].get_attribute('href'), '/ferns/lycophytes/')
-        self.assertEqual(q[2].get_attribute('href'), '/ferns/monilophytes/')
+        self.assertTrue(q[0].get_attribute('href').endswith(
+            '/ferns/equisetaceae/'))
+        self.assertTrue(q[1].get_attribute('href').endswith(
+            '/ferns/lycophytes/'))
+        self.assertTrue(q[2].get_attribute('href').endswith(
+            '/ferns/monilophytes/'))
 
 
 class FilterFunctionalTests(FunctionalTestCase):
@@ -370,6 +371,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
     def test_get_more_filters(self):
         FILTERS_CSS = 'ul.option-list li'
+
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
         filters = self.css(FILTERS_CSS)
@@ -385,14 +387,19 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertEqual(len(filters), n + 3)
 
     def test_length_filter(self):
+        RANGE_DIV_CSS = '.permitted_ranges'
+        INPUT_METRIC_CSS = 'input[name="measure_metric"]'
+        INSTRUCTIONS_CSS = '.instructions'
+        FILTER_LINK_CSS = '#plant_height_rn a.option'
+
         self.get(
             '/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn&_visible=plant_height_rn'
             )
         self.wait_on_species(499)
         sidebar_value_span = self.css1('#plant_height_rn .value')
-        range_div = self.css1('.permitted_ranges')
-        measure_input = self.css1('input[name="measure_metric"]')
-        instructions = self.css1('.instructions')
+        range_div = self.css1(RANGE_DIV_CSS)
+        measure_input = self.css1(INPUT_METRIC_CSS)
+        instructions = self.css1(INSTRUCTIONS_CSS)
         apply_button = self.css1('.apply-btn')
 
         self.assertIn(u' 10 mm – 15000 mm', range_div.text)
@@ -429,18 +436,22 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Open the working area again and set the metric length back to
         # what it was before the working area closed.
-        self.css1('#plant_height_rn a.option').click()
+        self.css1(FILTER_LINK_CSS).click()
+        measure_input = self.css1(INPUT_METRIC_CSS)
         measure_input.send_keys('100000')
 
         measure_input.send_keys(Keys.BACK_SPACE)  # '10000'
+        instructions = self.css1(INSTRUCTIONS_CSS)
         self.assertIn('to the 1 matching species', instructions.text)
         apply_button.click()
         self.wait_on_species(unknowns + 1)
         self.assertEqual(sidebar_value_span.text, '10000.0 mm')
 
-        self.css1('#plant_height_rn a.option').click()
+        self.css1(FILTER_LINK_CSS).click()
+        measure_input = self.css1(INPUT_METRIC_CSS)
         measure_input.send_keys('10000')
         measure_input.send_keys(Keys.BACK_SPACE)  # '1000'
+        instructions = self.css1(INSTRUCTIONS_CSS)
         self.assertIn('to the 157 matching species', instructions.text)
         apply_button.click()
         self.wait_on_species(unknowns + 157)
@@ -448,25 +459,32 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Switch to cm and then m.
 
-        self.css1('#plant_height_rn a.option').click()
+        self.css1(FILTER_LINK_CSS).click()
+        measure_input = self.css1(INPUT_METRIC_CSS)
         measure_input.send_keys('1000')
         self.css1('input[value="cm"]').click()
+        range_div = self.css1(RANGE_DIV_CSS)
         self.assertIn(u' 1 cm – 1500 cm', range_div.text)
+        instructions = self.css1(INSTRUCTIONS_CSS)
         self.assertIn('to the 1 matching species', instructions.text)
         apply_button.click()
         self.wait_on_species(unknowns + 1)
         self.assertEqual(sidebar_value_span.text, '1000.0 cm')
 
-        self.css1('#plant_height_rn a.option').click()
+        self.css1(FILTER_LINK_CSS).click()
+        measure_input = self.css1(INPUT_METRIC_CSS)
         measure_input.send_keys('1000')
         self.css1('input[value="m"]').click()
+        range_div = self.css1(RANGE_DIV_CSS)
         self.assertIn(u' 0.01 m – 15 m', range_div.text)
+        instructions = self.css1(INSTRUCTIONS_CSS)
         self.assertEqual('', instructions.text)
         apply_button.click()  # should do nothing
         self.wait_on_species(unknowns + 1)
         self.assertEqual(sidebar_value_span.text, '1000.0 cm')
 
-        self.css1('#plant_height_rn a.option').click()
+        self.css1(FILTER_LINK_CSS).click()
+        measure_input = self.css1(INPUT_METRIC_CSS)
         measure_input.send_keys('1000')
         self.css1('input[value="m"]').click()
 
@@ -474,6 +492,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         # the acceptable value of '10' meters.
 
         measure_input.send_keys(Keys.BACK_SPACE)  # '100'
+        instructions = self.css1(INSTRUCTIONS_CSS)
         self.assertEqual('', instructions.text)
 
         measure_input.send_keys(Keys.BACK_SPACE)  # '10'
@@ -725,8 +744,8 @@ class FamilyFunctionalTests(FunctionalTestCase):
         self.get('/families/lycopodiaceae/')
         key_link = self.css('#main a.family-genera-btn')
         self.assertTrue(len(key_link))
-        self.assertEqual('/ferns/lycophytes/#family=Lycopodiaceae',
-                         key_link[0].get_attribute('href'))
+        self.assertTrue(key_link[0].get_attribute('href').endswith(
+            '/ferns/lycophytes/#family=Lycopodiaceae'))
 
 
 class GenusFunctionalTests(FunctionalTestCase):
@@ -766,10 +785,10 @@ class GenusFunctionalTests(FunctionalTestCase):
         species = self.css('#main .species li')
         self.assertTrue(len(species))
 
-    def test_species_page_has_link_to_key(self):
+    def test_genus_page_has_link_to_key(self):
         self.get('/genera/dendrolycopodium/')
         key_link = self.css('#main a.genus-species-btn')
         self.assertTrue(len(key_link))
-        self.assertEqual('/ferns/lycophytes/#genus=Dendrolycopodium',
-                         key_link[0].get_attribute('href'))
+        self.assertTrue(key_link[0].get_attribute('href').endswith(
+            '/ferns/lycophytes/#genus=Dendrolycopodium'))
 
