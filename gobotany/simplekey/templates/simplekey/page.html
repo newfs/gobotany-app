@@ -11,43 +11,29 @@
                 <div id="main">
                     <div id="breadcrumb">
                         <ul>
-                            {% if 'skip_help_start' in request.COOKIES.keys and request.COOKIES.skip_help_start != 'y' %}
-                                <li class="first completed"><a href="/help/start/"><img
-                                    src="/static/images/icons/start.png" alt=""> Start: Help</a></li>
-                                <li class="second current"><a 
-                                    {% if page.number > 1 %}href="{% url simplekey-page 1 %}"{% endif %}><img
+                            {% if page.number > 1 or '/help/start' in request.META.HTTP_REFERER %}
+                                <li class="first completed"><a href="{% url simplekey-page 1 %}"><img
+                                    src="/static/images/icons/start.png" alt=""> Start</a></li>
+                                <li class="second current"><a><img
                                     src="/static/images/icons/group.png" alt=""> Group</a></li>
-                                <li class="third upcoming"><a><img
-                                    src="/static/images/icons/subgroup.png" alt=""> Subgroup</a></li>
-                                <li class="last upcoming"><a><img 
-                                    src="/static/images/icons/subgroup.png" alt=""> My Plant</a></li>
                             {% else %}
-                                {% if page.number > 1 or '/help/start' in request.META.HTTP_REFERER %}
-                                    <li class="first completed"><a href="{% url simplekey-page 1 %}"><img
-                                        src="/static/images/icons/start.png" alt=""> Start</a></li>
-                                    <li class="second current"><a><img
-                                        src="/static/images/icons/group.png" alt=""> Group</a></li>
-                                {% else %}
-                                    <li class="first current"><a><img
-                                        src="/static/images/icons/start.png" alt=""> Start</a></li>
-                                    <li class="second upcoming"><a><img
-                                        src="/static/images/icons/group.png" alt=""> Group</a></li>
-                                {% endif %}
-                                <li class="third upcoming"><a><img 
-                                    src="/static/images/icons/subgroup.png" alt=""> Subgroup</a></li>
-                                <li class="last upcoming"><a><img 
-                                    src="/static/images/icons/subgroup.png" alt=""> My Plant</a></li>
+                                <li class="first current"><a><img
+                                    src="/static/images/icons/start.png" alt=""> Start</a></li>
+                                <li class="second upcoming"><a><img
+                                    src="/static/images/icons/group.png" alt=""> Group</a></li>
                             {% endif %}
+                            <li class="third upcoming"><a><img 
+                                src="/static/images/icons/subgroup.png" alt=""> Subgroup</a></li>
+                            <li class="last upcoming"><a><img 
+                                src="/static/images/icons/subgroup.png" alt=""> My Plant</a></li>
 
                         </ul>
-                    </div><!--Closes #breadcrumb-->
+                    </div>
 
-                    <!--<h2>Plant Identifier</h2>-->
                     <h2>Which group best describes your plant?</h2>
 
                     <div class="clearit"></div>
 
-                    <!--Begin Group List-->
                     {% for pilegroup, url in pilegroups_and_urls %}
                     <div class="list-item{% if forloop.last %} last{% endif %}">
                         <div class="img-gallery">
@@ -58,13 +44,13 @@
                                         <img src="{{ image.image.extra_thumbnails.large.absolute_url }}"
                                             alt="{{ image.alt }}">
                                     {% endfor %}
-                                </div><!--Closes .images-->
-                            </div><!--Closes .img-container-->
+                                </div>
+                            </div>
                             <div class="controls">
                                 <a class="prev">Prev</a>
                                 <a class="next">Next</a>
-                            </div><!--Closes .controls-->
-                        </div><!--Closes .img-gallery-->
+                            </div>
+                        </div>
                         <div class="details">
                             <h3>{{ pilegroup.friendly_title }} <span>{{ pilegroup.friendly_name|capfirst }}</span></h3>
                             <p class="key-char">
@@ -81,7 +67,7 @@
                             <a class="plant-in-group" href="{{ url }}">My plant is in this group</a>
                         </div>
                         <div class="clearit"></div>
-                    </div><!--Closes .list-item-->
+                    </div>
                     {% endfor %}
 
                 </div><!--closes #main-->

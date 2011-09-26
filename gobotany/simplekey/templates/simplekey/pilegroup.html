@@ -11,13 +11,8 @@
                 <div id="main">
                     <div id="breadcrumb">
                         <ul>
-                            {% if 'skip_help_start' in request.COOKIES.keys and request.COOKIES.skip_help_start != 'y' %}
-                                <li class="first completed"><a href="/help/start/"><img
-                                    src="/static/images/icons/start.png" alt=""> Start: Help</a></li>
-                            {% else %}
-                                <li class="first completed"><a href="{% url simplekey-page 1 %}"><img
-                                    src="/static/images/icons/start.png" alt=""> Start</a></li>
-                            {% endif %}
+                            <li class="first completed"><a href="{% url simplekey-page 1 %}"><img
+                                src="/static/images/icons/start.png" alt=""> Start</a></li>
                             <li class="second completed"><a href="{% url simplekey-page 1 %}" title="{{ pilegroup.friendly_title }}"><img
                                 src="/static/images/icons/group.png"
                                 alt=""> {{ pilegroup.friendly_title }}</a></li>

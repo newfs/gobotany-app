@@ -8,37 +8,21 @@
 {% block main_content %}
     <div id="breadcrumb">
         <ul>
-            {% if 'skip_help_start' in request.COOKIES.keys and request.COOKIES.skip_help_start != 'y' %}
-                <li class="first current"><a 
-                    href="/help/start/"><img
-                    src="/static/images/icons/start.png" 
-                    alt=""> Start: Help</a></li>
-                <li class="second upcoming"><a><img
-                    src="/static/images/icons/group.png"
-                    alt=""> Group</a></li>
-                <li class="third upcoming"><a><img
-                    src="/static/images/icons/group.png" 
-                    alt=""> Subgroup</a></li>
-                <li class="last upcoming"><a><img 
-                    src="/static/images/icons/subgroup.png" 
-                    alt=""> My Plant</a></li>
-            {% else %}
-                <li class="first completed"><a
-                    href="{% url simplekey-page 1 %}"><img
-                    src="/static/images/icons/start.png" 
-                    alt=""> Start</a></li>
-                <li class="second upcoming"><a><img
-                    src="/static/images/icons/group.png" 
-                    alt=""> Group</a></li>
-                <li class="third upcoming"><a><img 
-                    src="/static/images/icons/subgroup.png" 
-                    alt=""> Subgroup</a></li>
-                <li class="last upcoming"><a><img 
-                    src="/static/images/icons/subgroup.png" 
-                    alt=""> My Plant</a></li>
-            {% endif %}
+            <li class="first completed"><a
+                href="{% url simplekey-page 1 %}"><img
+                src="/static/images/icons/start.png" 
+                alt=""> Start</a></li>
+            <li class="second upcoming"><a><img
+                src="/static/images/icons/group.png" 
+                alt=""> Group</a></li>
+            <li class="third upcoming"><a><img 
+                src="/static/images/icons/subgroup.png" 
+                alt=""> Subgroup</a></li>
+            <li class="last upcoming"><a><img 
+                src="/static/images/icons/subgroup.png" 
+                alt=""> My Plant</a></li>
         </ul>
-    </div><!--Closes #breadcrumb-->
+    </div>
 			
     <a class="onward-btn"
         href="{% url simplekey-page 1 %}">Onward to Plant Identifier</a>
@@ -182,13 +166,6 @@
 
     <a href="{% url simplekey-page 1 %}"
         class="onward-btn">Onward to Plant Identifier</a>
-    <form>
-        <label class="got-it">
-            <input type="checkbox" id="skip-page"> 
-            <strong>I've got it! Don't show this page every
-                time I start identifying.</strong>
-        </label>
-    </form>
 {% endblock %}
 
 {% block more_sidebar_content %}
@@ -209,11 +186,3 @@
     </div>
 {% endblock %}
 
-{% block js_bottom %}
-    <script>
-        dojo.require('gobotany.sk.GettingStartedHelper');
-
-        var getting_started_helper = gobotany.sk.GettingStartedHelper();
-        getting_started_helper.setup();
-    </script>
-{% endblock %}
