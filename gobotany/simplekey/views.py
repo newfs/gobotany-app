@@ -197,13 +197,11 @@ def _get_brief_characteristics(all_characteristics, pile, partner):
         for ppc in PlantPreviewCharacter.objects.filter(
             pile=pile, partner_site=partner)
         ]
-    print 'plant_preview_character_names:', plant_preview_character_names
 
     default_filter_character_names = [
         df.character.friendly_name
         for df in DefaultFilter.objects.filter(pile=pile)
         ]
-    print 'default_filter_character_names:', default_filter_character_names
 
     combined_character_names = plant_preview_character_names
     for name in default_filter_character_names:
