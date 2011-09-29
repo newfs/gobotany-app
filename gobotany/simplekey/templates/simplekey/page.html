@@ -52,7 +52,7 @@
                             </div>
                         </div>
                         <div class="details">
-                            <h3>{{ pilegroup.friendly_title }} <span>{{ pilegroup.friendly_name|capfirst }}</span></h3>
+                            <h3>{{ pilegroup.friendly_title|lower|capfirst }} <span>{{ pilegroup.friendly_name|capfirst }}</span></h3>
                             <p class="key-char">
                                 <span class="section-title">Key Characteristics</span>
                                 {{ pilegroup.key_characteristics|removetags:"div"|safe|capfirst }}
@@ -70,16 +70,16 @@
                     </div>
                     {% endfor %}
 
-                </div><!--closes #main-->
+                </div>
 
                 <div id="sidebar" style="height: 1639px;">
                     {% include "simplekey/_sidebar_items.html" %}
-                </div><!--Closes #sidebar-->
+                </div>
 
                 <div class="clearit"></div>
 
-            </div><!--Closes .container-->
-        </div><!--Closes .content-->
+            </div>
+        </div>
 
         {% include "simplekey/_footer.html" %}
 

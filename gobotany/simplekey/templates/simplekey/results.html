@@ -28,9 +28,9 @@
                                 src="/static/images/icons/subgroup.png"
                                 alt=""> My Plant</a></li>
                         </ul>
-                    </div><!--Closes #breadcrumb-->
+                    </div>
 
-                    <h2>{{ pile.friendly_title }}</h2>
+                    <h2>{{ pile.friendly_title|lower|capfirst }}</h2>
                     
                     <div class="working-area" aria-live="polite" 
                         aria-relevant="additions removals">
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                         <div class="clearit"></div>
-                    </div><!--Closes .working-area-->
+                    </div>
 
                     <h3><span class="species-count-phrase">
                         <span class="species-count">Finding</span>
@@ -84,10 +84,9 @@
                                 name="image-type-selector">
                           </select>
                       </form>
-                    </div><!--Closes .show-->
+                    </div>
                     <div class="clearit"></div>
 
-                    <!--Begin Plant List-->
                     <div class="plant-list">
                     </div>
 
@@ -96,7 +95,7 @@
                         all <span class="species-count">...</span> 
                         matching species.</a></p>
 
-                    </div><!--closes #main-->
+                    </div>
 
                 <div id="sidebar" class="tinted">
                     <div class="section instructions">
@@ -107,15 +106,15 @@
                         <div class="loading">Loading choices…</div>
                         <ul class="option-list" aria-live="polite"
                         aria-relevant="additions removals">
-                        </ul><!--Closes .option-list-->
-                    </div><!-- // Closes .scroll -->
+                        </ul>
+                    </div>
 
                     <div class="section">
                         <p class="get-more">
                             <a class="get-choices">Get More Choices</a>
                             Add a few more choices for narrowing your
                             matching species.</p>
-                    </div><!--Closes .section-->
+                    </div>
 
 
                     <div class="section">
@@ -142,20 +141,20 @@
 				        <h5 class="left help">Start Over:</h5>
 				        <a class="clear-all-btn left">Clear All</a>
 				        <div class="clearit"></div>
-			        </div><!--Closes .section-->
+			        </div>
 			
                     <div class="section">
                         <h5 class="left help">Need Help?</h5>
                         <a href="{% url simplekey-help-start %}"
                             class="get-help-btn left">Get Help</a>
                         <div class="clearit"></div>
-                    </div><!--Closes .section-->
+                    </div>
                     
-                </div><!--Closes #sidebar-->
+                </div>
 
                 <div class="clearit"></div>
-            </div><!--Closes .container-->
-        </div><!--Closes .content-->
+            </div>
+        </div>
 
         {% include "simplekey/_footer.html" %}
 

@@ -13,7 +13,7 @@
     <div id="plant-map-list">
         {% for group in page.pilegroups.all %}
             <div class="plant-group{% if forloop.first %} first{% else %}{% if forloop.last %} last{% endif %}{% endif %}{% if group.friendly_title|length > 18 %} multi-line{% endif %}">
-                <h5>{{ group.friendly_title }}</h5>
+                <h5>{{ group.friendly_title|lower|capfirst }}</h5>
                 <div class="image">
                     <div class="frame"></div>
                     <div class="img-container">
@@ -37,7 +37,7 @@
             <div class="subgroups hidden">
                 {% for subgroup in group.piles.all %}
                     <div class="plant-subgroup{% if forloop.last %} last{% endif %}">
-                        <h5>{{ subgroup.friendly_title }}</h5>
+                        <h5>{{ subgroup.friendly_title|lower|capfirst }}</h5>
                         <div class="image">
                             <div class="frame"></div>
                             <div class="img-container">

@@ -22,14 +22,12 @@
                             <li class="last upcoming"><a><img 
                                 src="/static/images/icons/subgroup.png" alt=""> My Plant</a></li>
                         </ul>
-                    </div><!--Closes #breadcrumb-->
+                    </div>
                     
-                    <!--h2>Plant Identifier</h2-->
                     <h2>Is your plant in one of these subgroups?</h2>
 
                     <div class="clearit"></div>
 
-                    <!--Begin Group List-->
                     {% for pile, url in piles_and_urls %}
                     <div class="list-item{% if forloop.last %} last{% endif %}">
                         <div class="img-gallery">
@@ -40,15 +38,15 @@
                                         <img src="{{ image.image.extra_thumbnails.large.absolute_url }}"
                                             alt="{{ image.alt }}">
                                     {% endfor %}
-                                </div><!--Closes .images-->
-                            </div><!--Closes .img-container-->
+                                </div>
+                            </div>
                             <div class="controls">
                                 <a class="prev">Prev</a>
                                 <a class="next">Next</a>
-                            </div><!--Closes .controls-->
-                        </div><!--Closes .img-gallery-->
+                            </div>
+                        </div>
                         <div class="details">
-                            <h3>{{ pile.friendly_title }} <span>{{ pile.friendly_name|capfirst }}</span></h3>
+                            <h3>{{ pile.friendly_title|lower|capfirst }} <span>{{ pile.friendly_name|capfirst }}</span></h3>
                             <p class="key-char">
                                 <span class="section-title">Key Characteristics</span>
                                 {{ pile.key_characteristics|removetags:"div ul li"|safe }}
@@ -63,21 +61,21 @@
                             <a class="plant-in-subgroup" href="{{ url }}">My plant is in this subgroup</a>
                         </div>
                         <div class="clearit"></div>
-                    </div><!--Closes .list-item-->
+                    </div>
                     {% endfor %}
 
                     {% include "simplekey/_plant_not_in_subgroup.html" %}
 
-                </div><!--closes #main-->
+                </div>
 
                 <div id="sidebar">
                     {% include "simplekey/_sidebar_items.html" %}
-                </div><!--Closes #sidebar-->
+                </div>
 
                 <div class="clearit"></div>
 
-            </div><!--Closes .container-->
-        </div><!--Closes .content-->
+            </div>
+        </div>
 
         {% include "simplekey/_footer.html" %}
 
