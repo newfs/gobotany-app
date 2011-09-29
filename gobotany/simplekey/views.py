@@ -70,11 +70,6 @@ def advanced_view(request):
     return render_to_response('simplekey/advanced.html', {},
             context_instance=RequestContext(request))
 
-def map_view(request):
-    return render_to_response('simplekey/map.html', {
-            'pages': Page.objects.order_by('number').all(),
-            }, context_instance=RequestContext(request))
-
 def guided_search_view(request):
     return render_to_response('simplekey/guided_search.html', {
             }, context_instance=RequestContext(request))
@@ -377,7 +372,7 @@ def help_start_view(request):
 
 def help_map_view(request):
     return render_to_response('simplekey/help_map.html', {
-            'pages': Page.objects.order_by('number').all(),
+            'page': Page.objects.order_by('number')[0],
             }, context_instance=RequestContext(request))
 
 def help_glossary_view(request, letter):

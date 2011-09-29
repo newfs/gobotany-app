@@ -1,51 +1,93 @@
 {% extends "simplekey/_help.html" %}
 
-
 {% block pagetitle %}Advanced Map to Groups{% endblock %}
 
 {% block body_id %}advanced-map{% endblock %}
 {% block body_class %}advanced-map{% endblock %}
 
 {% block main_content %}     
-    <div id="subway">
-        <h2>Advanced Map to Groups</h2>
-        <h4>If you know the plant collection you want to
-            start with, select it.</h4>
-        <ul>
-        {% for page in pages %}
-            {% for pilegroup in page.pilegroups.all %}
-                <li>
-                    <a href="{% url simplekey-help-video-pilegroup pilegroup.slug %}"
-                    >{{ pilegroup.name }}</a>
-                    <br><a href="#" class="more">more...</a>
-                    <ul>
-                    {% for pile in pilegroup.piles.all %}
-                        <li>
-                        <a href="{% url simplekey-help-video-pile pilegroup.slug pile.slug %}"
-                        >{{ pile.name }}</a>
-                        </li>
-                    {% endfor %}
-                    </ul>
-                </li>
-            {% endfor %}
+<div>
+    <h2>Advanced Map to Groups</h2>
+    <h3>For a shortcut through the plant groups, you can start here.</h3>
+
+    <div id="plant-map-list">
+        {% for group in page.pilegroups.all %}
+            <div class="plant-group{% if forloop.first %} first{% else %}{% if forloop.last %} last{% endif %}{% endif %}{% if group.friendly_title|length > 18 %} multi-line{% endif %}">
+                <h5>{{ group.friendly_title }}</h5>
+                <div class="image">
+                    <div class="frame"></div>
+                    <div class="img-container">
+                        {% for i in group.sample_species_images.all %}
+                            {% if forloop.first %}
+                                <img src="{{ i.image.thumbnail.absolute_url }}"
+                                    alt="{{ i.alt }}">
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <p class="more-info">
+                        <a rel="shadowbox;height=380;width=640;"
+                            href="http://www.youtube.com/v/{{ group.youtube_id }}">
+                        Get more info</a>
+                    </p>
+                </div>
+            </div>
         {% endfor %}
-        </ul>
+        <div class="clearit"></div>
+        {% for group in page.pilegroups.all %}
+            <div class="subgroups hidden">
+                {% for subgroup in group.piles.all %}
+                    <div class="plant-subgroup{% if forloop.last %} last{% endif %}">
+                        <h5>{{ subgroup.friendly_title }}</h5>
+                        <div class="image">
+                            <div class="frame"></div>
+                            <div class="img-container">
+                                {% for i in subgroup.sample_species_images.all %}
+                                    {% if forloop.first %}
+                                        <img src="{{ i.image.thumbnail.absolute_url }}"
+                                            alt="{{ i.alt }}">
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <a class="choose-btn"
+                            href="/{{ group.slug }}/{{ subgroup.slug }}/"></a>
+                        <p class="more-info">
+                            <a rel="shadowbox;height=380;width=640;"
+                                href="http://www.youtube.com/v/{{ subgroup.youtube_id }}">
+                            Get more info</a>
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <div class="clearit"></div>
     </div>
 
-    <div id="video" dojoType="dijit.Dialog" title="Video"
-        aria-describedby="video">
-        <p></p>
-        <div id="clip"></div>
-    </div>          
+    <h3>About plant groups and subgroups</h3>
+
+    <p>The boxes above show how we have grouped over 3,000 New
+    England plants into six major categories, which we call
+    &#8220;groups.&#8221; These groups contain smaller subsets of species we
+    have organized into &#8220;subgroups.&#8221; These are not scientific
+    categories, but rather groupings of superficially similar plants that
+    seem to belong together. The goal is to make identification easier.</p>
+
+    <p class="vid">
+        <!-- TODO: Change YouTube ID to actual groups/subgroups video
+                   clip when it becomes available -->
+        <a rel="shadowbox;height=380;width=640;"
+            href="http://www.youtube.com/v/VWDc9oyBj5Q">View a short video
+            explaining plant groups and subgroups</a>
+    </p>
+</div>
 {% endblock %}
 
 {% block js_bottom %}
   <script>
-      dojo.require('dijit.Dialog');
-      dojo.require('gobotany.sk.subway');
+      dojo.require('gobotany.sk.help');
       dojo.addOnLoad(function() {
-          var is_help_collections = true;
-          gobotany.sk.subway.init(is_help_collections);
+          var helper = gobotany.sk.help.MapToGroupsHelper();
+          helper.setup();
       });
   </script>
 {% endblock %}

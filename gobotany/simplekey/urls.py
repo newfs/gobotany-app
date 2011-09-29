@@ -36,7 +36,6 @@ urlpatterns = patterns(
         views.video_pilegroup_view, name='simplekey-help-video-pilegroup'),
     url('^help/video/(?P<pilegroup_slug>[^/]*)/(?P<pile_slug>[^/]*)/$',
         views.video_pile_view, name='simplekey-help-video-pile'),
-    url('^map/$', views.map_view),
     url('^guided-search/$', views.guided_search_view),
     url('^families/(?P<family_slug>[^/]*)/$',
         views.family_view, name='simplekey-family'),
