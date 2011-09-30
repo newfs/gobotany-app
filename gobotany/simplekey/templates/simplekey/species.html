@@ -33,7 +33,7 @@
                         </li>
                         <li class="third completed">
                         <a id="results-link"
-                            href="{% url simplekey-pile pilegroup.slug pile.slug %}"
+                            href="{% if last_plant_id_url %}{{ last_plant_id_url }}{% else %}{% url simplekey-pile pilegroup.slug pile.slug %}{% endif %}"
                             title="{{ pile.friendly_title }}"><img
                             src="/static/images/icons/subgroup.png" 
                             alt="">{{ pile.friendly_title }}</a>

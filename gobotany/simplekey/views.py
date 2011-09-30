@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import string
+import urllib2
+
 from itertools import groupby
 from operator import attrgetter, itemgetter
 
@@ -256,6 +258,10 @@ def species_view(request, genus_slug, specific_name_slug,
 
     all_characteristics = _get_all_characteristics(taxon, character_groups)
 
+    last_plant_id_url = request.COOKIES.get('last_plant_id_url', None)
+    if last_plant_id_url:
+        last_plant_id_url = urllib2.unquote(last_plant_id_url)
+
     return render_to_response('simplekey/species.html', {
            'pilegroup': pilegroup,
            'pile': pile,
@@ -272,6 +278,7 @@ def species_view(request, genus_slug, specific_name_slug,
                 all_characteristics, pile, which_partner(request)),
            'all_characteristics': all_characteristics,
            'specific_epithet': specific_name_slug,
+           'last_plant_id_url': last_plant_id_url,
            }, context_instance=RequestContext(request))
 
 def genus_view(request, genus_slug):
