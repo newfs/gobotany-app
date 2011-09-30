@@ -131,7 +131,7 @@ class BasicFunctionalTests(FunctionalTestCase):
         h3 = self.css('h3')
         self.assertEqual(len(h3), 6)
         assert h3[0].text.startswith('Ferns')
-        assert h3[1].text.startswith('Woody Plants')
+        assert h3[1].text.startswith('Woody plants')
         assert h3[2].text.startswith('Grass-like plants')
         assert h3[3].text.startswith('Aquatic plants')
         assert h3[4].text.startswith('Orchids and other monocots')
