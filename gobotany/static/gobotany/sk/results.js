@@ -741,7 +741,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         var labelsLink = dojo.create('a', {
             href: '#', 'class': 'option',
             innerHTML: '<span class="name">' + filter.friendly_name +
-                ':</span> <span class="value">' +
+                '?</span> <span class="value">' +
                 this._get_filter_display_value(filter) + '</span>'
         }, filter_li);
         var clearLink = dojo.create('a', {
