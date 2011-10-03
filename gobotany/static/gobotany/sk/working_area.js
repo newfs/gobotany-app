@@ -94,9 +94,9 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
 
         // Show the heading, question text and Apply button.
-        d.query('h4').html(f.friendly_name + '?');
+        d.query('h4').html('<span class="title">' + f.friendly_name +
+            ':</span> ' + f.question).forEach(this.glossarize);
         d.query('h4').style({display: 'block'});
-        d.query('.question').html(p(f.question)).forEach(this.glossarize);
         d.query('.hint').html(p(f.hint)).forEach(this.glossarize);
         d.query('.info').style({display: 'block'});
 

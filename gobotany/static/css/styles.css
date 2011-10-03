@@ -888,11 +888,11 @@ a.get-choices:active {
 }
 ul.option-list li {
     background: #fff;
+    border-top: 1px solid #c3d941;
     cursor: pointer;
     display: block;
     padding: 12px;
     margin: 0;
-    border-top: 1px solid #c3d941;
 }
 ul.option-list li.last {
     border-bottom: 1px solid #c3d941;
@@ -977,7 +977,7 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     border: 1px solid #c3d941;
     clear: left;
     margin: 5px 0 15px 0;
-    padding: 10px 15px 15px;
+    padding: 10px 15px;
     position: relative;
 }
 .working-area img.arrow {
@@ -1033,21 +1033,28 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
 .working-area h4 {
     color: #807121;
     display: none;
-    margin: 0;
+    line-height: 130%;
+    margin: 0 0 6px;
+    width: 650px;
+}
+.working-area h4 .title {
+    font-weight: bold;
 }
 .working-area .intro-message h4 {
     display: block;
+    font-weight: bold;
+}
+.working-area .intro-message p {
+    font-size: 14px;
+    margin-bottom: 5px;
 }
 .working-area .info {
     display: none;
 }
-.working-area .info .question p {
+.working-area .info .hint p {
+    font-size: 14px;
     line-height: 140%;
     margin-bottom: 4px;
-}
-.working-area span.hint {
-    color: #707070;
-    font-style: italic;
 }
 .working-area li {
     display: block;
