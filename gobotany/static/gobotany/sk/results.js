@@ -713,7 +713,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         var value = filter.selected_value;
 
         if (value === null)
-            return "don't know";
+            return "";   // Do not display a "don't know" value
 
         if (value === 'NA')
             return "doesn't apply";
