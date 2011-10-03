@@ -37,11 +37,22 @@ gobotany.utils.animate_changed = function(node) {
         nodes = [nodes];
     }
 
-    setTimeout(function() {
-        for (var x = 0; x < nodes.length; x++) {
-            dojo.anim(nodes[x], {backgroundColor: 'white'});
+    var animation = nodes.animateProperty({
+        duration: 2000,
+        properties: {
+            backgroundColor: {
+                start: '#ff0',
+                end: '#fff'
+            }
+        },
+        onEnd: function() {
+            // When the animation is done, remove the inline style
+            // property containing the background color so it will
+            // not interfere with future hover or selection states.
+            nodes.removeAttr('style');
         }
-    }, 2000);
+    });
+    animation.play();
 };
 
 gobotany.utils.clone = function(obj, updated_args) {

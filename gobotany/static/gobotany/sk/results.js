@@ -690,7 +690,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     // Add the new filters to the filters list.
                     var added = this.display_filters(new_filters, 0);
                     global_setSidebarHeight();
-                    added.style({backgroundColor: '#ff0'});
                     gobotany.utils.notify('More questions added');
                     gobotany.utils.animate_changed(added);
 
@@ -918,16 +917,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         var q = 'li#' + filter.character_short_name + ' span.value';
         dojo.query(q).html(this._get_filter_display_value(filter));
 
-        var animation = dojo.query(q).animateProperty({
-            duration: 2000,
-            properties: {
-                backgroundColor: {
-                    start: '#ff0',
-                    end: '#fff'
-                }
-            }
-        });
-        animation.play();
+        gobotany.utils.animate_changed(dojo.query(q));
 
         this.show_or_hide_filter_clear(filter);
     }

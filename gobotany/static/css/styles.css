@@ -855,24 +855,6 @@ Sidebar Styles for 3rd Level
     width: 227px;
 }
 
-/* For tablets and smartphones, style the scrollbar differently because
-   our regular scrollbar is not the expected way to scroll there, and
-   has problems besides (arrows too small, vertical bar not draggable).
-   Instead, just present the thin vertical bar as an indicator that the
-   area is scrollable and to provide feedback while swiping to scroll. */
-@media only screen and (max-device-width:1024px) {
-    #sidebar div.scroll .jspVerticalBar {
-        border-left: 0;
-    }
-    #sidebar div.scroll .jspTrack, #sidebar div.scroll .jspArrowUp,
-    #sidebar div.scroll .jspArrowDown {
-        background: none;
-    }
-    #sidebar div.scroll .jspPane {
-        width: 227px !important;
-    }
-}
-
 #plant-id-3 #sidebar {
     padding: 0 0 16px 0;
 }
@@ -915,9 +897,9 @@ ul.option-list li {
 ul.option-list li.last {
     border-bottom: 1px solid #c3d941;
 }
-ul.option-list li.active, ul.option-list li.active span.value {
-    background: #dce890 !important; /* Important overrides inline background
-                                       color from More Choices animation */
+ul.option-list li.active, ul.option-list li:hover,
+ul.option-list li.active span.value {
+    background: #dce890;
     cursor: pointer;
 }
 .option-list a.option {
@@ -933,6 +915,30 @@ ul.option-list li.active, ul.option-list li.active span.value {
     display: none;
     margin-top: 4px;
     width: 45px;
+}
+
+/* For tablets and smartphones, style the scrollbar differently because
+   our regular scrollbar is not the expected way to scroll there, and
+   has problems besides (arrows too small, vertical bar not draggable).
+   Instead, just present the thin vertical bar as an indicator that the
+   area is scrollable and to provide feedback while swiping to scroll. */
+@media only screen and (max-device-width:1024px) {
+    #sidebar div.scroll .jspVerticalBar {
+        border-left: 0;
+    }
+    #sidebar div.scroll .jspTrack, #sidebar div.scroll .jspArrowUp,
+    #sidebar div.scroll .jspArrowDown {
+        background: none;
+    }
+    #sidebar div.scroll .jspPane {
+        width: 227px !important;
+    }
+    ul.option-list li:hover {
+        background: #fff;   /* No hover color on mobile */
+    }
+    ul.option-list li.active:hover {
+        background: #dce890;   /* Except hover color on the active filter */
+    }
 }
 
 .get-more {
