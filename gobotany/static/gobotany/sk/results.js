@@ -595,7 +595,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.scroll_pane_api = this.scroll_pane.data('jsp');
         var filter_section = this.results_helper.filter_section;
 
-        // Wire up the Get More Choices link.
+        // Wire up the Get More Questions button.
         dojo.query('#sidebar .get-more a').onclick(this, function() {
             var content_element = dojo.query('#modal')[0];
             Shadowbox.open({
@@ -603,7 +603,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 player: 'html',
                 height: 450,
                 options: {onFinish: function() {
-                    // Wire up "Get more choices" button now that it exists.
+                    // Wire up the second Get More Questions button--the one
+                    // on the dialog box--now that it exists.
                     var button = dojo.query('#sb-container a.get-choices');
                     button.onclick(function() {
                         filter_section.query_best_filters();
@@ -690,12 +691,12 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     var added = this.display_filters(new_filters, 0);
                     global_setSidebarHeight();
                     added.style({backgroundColor: '#ff0'});
-                    gobotany.utils.notify('More choices added');
+                    gobotany.utils.notify('More questions added');
                     gobotany.utils.animate_changed(added);
 
                     // Re-initialize the scroll pane now that its
                     // contents have changed, and move the scroll bar to
-                    // the top so that they can see their new choices.
+                    // the top so that they can see their new questions.
                     this.scroll_pane_api.reinitialise();
                     this.scroll_pane_api.scrollTo(0, 0);
 
@@ -703,7 +704,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 }
                 else {
                     gobotany.utils.notify(
-                        'No more choices left for the boxes checked');
+                        'No more questions left for the boxes checked');
                 }
             })
         });
@@ -907,7 +908,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.visible_filter_short_name = '';
         this.results_helper.save_filter_state();
 
-        // Clear selected state in the choices list at left.
+        // Clear selected state in the questions list at left.
         dojo.query('.option-list li').removeClass('active');
     },
 
