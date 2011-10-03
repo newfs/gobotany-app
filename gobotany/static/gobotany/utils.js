@@ -31,7 +31,18 @@ gobotany.utils.notify = function(txt) {
     }, 5000);
 };
 
-gobotany.utils.animate_changed = function(node) {
+gobotany.utils.animate_changed = function(node, options) {
+    var start_color = '#ff0';
+    var end_color = '#fff';
+    if (options !== undefined) {
+        if (options['start_color']) {
+            start_color = options['start_color'];
+        }
+        if (options['end_color']) {
+            end_color = options['end_color'];
+        }
+    }
+
     var nodes = node;
     if (nodes.length === undefined) {
         nodes = [nodes];
@@ -41,8 +52,8 @@ gobotany.utils.animate_changed = function(node) {
         duration: 2000,
         properties: {
             backgroundColor: {
-                start: '#ff0',
-                end: '#fff'
+                start: start_color,
+                end: end_color
             }
         },
         onEnd: function() {

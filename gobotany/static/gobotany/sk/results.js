@@ -735,14 +735,16 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         if (filter.value_type === null)
             return null;
 
+        var display_value = this._get_filter_display_value(filter);
+        
         var filter_ul = dojo.query('#sidebar ul.option-list')[0];
-        var filter_li = dojo.create('li', {id: filter.character_short_name},
-                                    filter_ul, pos);
+        var filter_li = dojo.create('li', {
+            id: filter.character_short_name
+        }, filter_ul, pos);
         var labelsLink = dojo.create('a', {
             href: '#', 'class': 'option',
             innerHTML: '<span class="name">' + filter.friendly_name +
-                '?</span> <span class="value">' +
-                this._get_filter_display_value(filter) + '</span>'
+                '?</span> <span class="value">' + display_value + '</span>'
         }, filter_li);
         var clearLink = dojo.create('a', {
             'class': 'clear-filter', href: '#',
@@ -782,6 +784,18 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             display_value = 'none';
         }
         div.style('display', display_value);
+
+        // Update the list item CSS class for whether the question is
+        // currently answered or not.
+        var ANSWERED_CLASS = 'answered';
+        var li = dojo.query('li#' + name)[0];
+        var filter_display_value = this._get_filter_display_value(filter);
+        if (filter_display_value.length === 0) {
+            dojo.removeClass(li, ANSWERED_CLASS);
+        }
+        else {
+            dojo.addClass(li, ANSWERED_CLASS);
+        }
 
         // Re-initialize the scroll pane now that its contents have changed.
         this.scroll_pane_api.reinitialise();
@@ -829,7 +843,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             }
             else {
                 if (value !== null) {
-                    var display_value = this._get_filter_display_value(filter);
+                    var display_value =
+                        this._get_filter_display_value(filter);
                     var q = dojo.query('li#' + char_name + ' span.value');
                     q.html(display_value);
                     this.glossarizer.markup(q[0]);
@@ -853,8 +868,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         dojo.publish('/sk/filter/change', [filter]);
 
+        var display_value = this._get_filter_display_value(filter); 
         dojo.query('li#' + filter.character_short_name + ' span.value'
-                  ).html(this._get_filter_display_value(filter));
+                  ).html(display_value);
+
         this.show_or_hide_filter_clear(filter);
     },
 
@@ -917,7 +934,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         var q = 'li#' + filter.character_short_name + ' span.value';
         dojo.query(q).html(this._get_filter_display_value(filter));
 
-        gobotany.utils.animate_changed(dojo.query(q));
+        gobotany.utils.animate_changed(dojo.query(q), {'end_color': '#ffd'});
 
         this.show_or_hide_filter_clear(filter);
     }

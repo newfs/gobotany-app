@@ -897,8 +897,12 @@ ul.option-list li {
 ul.option-list li.last {
     border-bottom: 1px solid #c3d941;
 }
+ul.option-list li.answered {
+    background: #ffd;
+}
 ul.option-list li.active, ul.option-list li:hover,
-ul.option-list li.active span.value {
+ul.option-list li.active span.value,
+ul.option-list li.answered.active {
     background: #dce890;
     cursor: pointer;
 }
