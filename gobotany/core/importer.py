@@ -1175,7 +1175,7 @@ class Importer(object):
     def _import_place_characters_and_values(self, taxaf):
         print >> self.logfile, 'Setting up place characters and values'
 
-        # Create a character group for place characters.
+        # Create a character group for "place" characters.
         character_group, created = \
             models.CharacterGroup.objects.get_or_create(name='place')
         if created:
@@ -1183,11 +1183,16 @@ class Importer(object):
                 character_group.name
 
         # Create characters.
-        character_names = [('habitat', 'Habitat'),
-                           ('habitat_general', 'Habitat (general)'),
-                           ('state_distribution', 'New England state')]
+        characters = [
+            ('habitat', 'Specific habitat',
+             'What specific kind of habitat is your plant found in?'),
+            ('habitat_general', 'Habitat',
+             'What kind of habitat is your plant found in?'),
+            ('state_distribution', 'New England state',
+             'In which New England state did you find the plant?')
+        ]
         value_type = 'TEXT'
-        for short_name, friendly_name in character_names:
+        for short_name, friendly_name, question in characters:
             character, created = models.Character.objects.get_or_create(
                 short_name=short_name,
                 name=friendly_name,
@@ -1197,7 +1202,8 @@ class Importer(object):
                 unit='',
                 ease_of_observability=1,
                 key_characteristics='',
-                notable_exceptions='')
+                notable_exceptions='',
+                question=question)
             if created:
                 print >> self.logfile, \
                     u'    New Character: %s (%s) in group: %s' % \
