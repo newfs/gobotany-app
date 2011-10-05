@@ -9,3 +9,24 @@ ol li, ul li {
     font-family: Verdana, Geneva, sans-serif;
 	font-size: 12px;
 }
+
+.claro .dijit {
+    font-family: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif;
+    font-size: 15px;
+}
+
+
+/* Always show hover colors on select menu: otherwise looks a bit disabled */
+.claro .dijitSelect .dijitArrowButton {
+    background-color: #ABD6FF;
+}
+.claro .dijitSelect .dijitArrowButton .dijitArrowButtonInner {
+    background-position: -70px 70%;
+}
+.claro .dijitSelect {
+    background-color: #E9F4FE;
+    background-image: url("form/images/textBox_back.png");
+    background-repeat: repeat-x;
+    border: 1px solid #769DC0;
+}
+

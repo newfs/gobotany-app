@@ -672,6 +672,7 @@ Level 3 Id styles
 }
 .already-know label {
     display: block;
+    font-size: 12px;
     font-weight: normal;
     margin: 5px 0 3px;
     vertical-align: middle;
@@ -681,21 +682,21 @@ Level 3 Id styles
 }
 
 .already-know .dijitButton .dijitButtonNode {
-    height: 14px;
-    line-height: 13px;
+    height: 16px;
+    line-height: 15px;
     vertical-align: middle;
     width: 32px;
 }
 .already-know .dijitButton .dijitButtonText {
-    font-size: 10px;
+    font-size: 11px;
 }
 
 #plant-id-3 .show {
-    margin: -3px auto 7px auto; /* adjusted due to Dijit menu widget;
-                                   auto left and right to center */
-    text-align: center;
+    margin-bottom: 7px;
+    text-align: left;
 }
 #plant-id-3 .show label {
+    color: #000;
     font-size: 15px;
     font-weight: normal;
     height: 16px;
