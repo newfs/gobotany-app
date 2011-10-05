@@ -729,7 +729,7 @@ div.modal-wrap {
 }
 .modal-wrap .inner h3.heading span {
 	color: #807121;
-    font-size: 12px;
+    font-size: 16px;
     font-style: normal;	
 }
 .modal-wrap #choices {
@@ -1453,12 +1453,13 @@ div.working-area #simple-slider .count {
 /*///////////////////////////**
 Taxon (Species) Page Styles
 ////////////////////////////*/
-span.origin {
-	font-size: 24px;
-}
-span.common {
+#taxon span.origin {
 	font-size: 14px;
-	color: #606060;
+}
+#taxon span.common {
+    display: block;
+	font-size: 30px;
+	color: #807121;
 }
 
 #taxon #main p {
@@ -1632,7 +1633,7 @@ a.enlarge:hover {
 }
 #taxon #main h2 {
     line-height: 1em;
-    margin: 0.5em 0 0.2em 0;
+    margin: 0.5em 0;
 }
 #taxon dl {
     line-height: 1.7em;
