@@ -560,6 +560,7 @@ p.exceptions {
 p.vid {
 	padding: 0 0 7px 25px;
 	background: url(/static/images/icons/icon3.png) 0 2px no-repeat;	
+    text-transform: uppercase;
 }
 .list-item a.plant-in-group {
 	display: block;
