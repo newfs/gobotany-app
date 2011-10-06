@@ -51,9 +51,7 @@
                     <em>{{ scientific_name }}</em>
                     <span class="origin">{{ taxon.taxonomic_authority }}</span>
                     <span class="common">
-                        {% for common_name in taxon.common_names.all %}
-                            {% if not forloop.first %}, {% endif %}{{ common_name }}
-                        {% endfor %}
+                        {% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}
                     </span>
                 </h2>
 
