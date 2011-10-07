@@ -1,3 +1,5 @@
+{% load simplekey_extras %}
+
 Family: {{ object.name }}.
 
 {% if object.common_name %}{{ object.common_name }}.{% endif %}
@@ -10,3 +12,13 @@ This Family's Genera:
 {% endfor %}
 
 Key To This Family's Genera
+
+--
+{# Index the family scientific name many more times to boost ranking. This #}
+{# will be hidden from the user because it is inside double-dash markers. #}
+{% with object.name as the_name %}
+    {% for i in 100|get_range %}
+        {{ the_name }}
+    {% endfor %}
+{% endwith %}
+

@@ -84,6 +84,13 @@ class GlossaryHelpPageIndex(indexes.SearchIndex):
         document=True, use_template=True,
         template_name='simplekey/search_text_glossary_help_page.txt')
 
+    def prepare(self, obj):
+        data = super(GlossaryHelpPageIndex, self).prepare(obj)
+        # Boost glossary pages 200% to help ensure they come first when
+        # searching on glossary terms.
+        data['boost'] = 2.0
+        return data
+
 
 site.register(Taxon, TaxonIndex)
 site.register(Family, FamilyIndex)

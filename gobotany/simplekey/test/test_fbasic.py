@@ -569,13 +569,6 @@ class SearchFunctionalTests(FunctionalTestCase):
         nav_links = d.find_elements_by_css_selector('.search-navigation a')
         self.assertTrue(len(nav_links) >= 5)
 
-    @unittest2.skip('really broken')
-    def test_search_results_page_scientific_name_returns_first_result(self):
-        self.get('/search/?q=acer%20rubrum')
-        result_links = self.css('#search-results-list li a')
-        self.assertTrue(len(result_links))
-        self.assertEqual('Acer rubrum (red maple)', result_links[0].text)
-
     def test_search_results_page_common_name_finds_correct_plant(self):
         self.get('/search/?q=christmas+fern')
         result_links = self.css('#search-results-list li a')
@@ -610,9 +603,8 @@ class SearchFunctionalTests(FunctionalTestCase):
         self.get('/search/?q=start')
         self.assertTrue(self._has_icon('help-icon'))
 
-    @unittest2.skip('really broken, or does Brandon not have the glossary loaded?')
     def test_search_results_page_has_glossary_results(self):
-        self.get('/search/?q=fruit')
+        self.get('/search/?q=abaxial')
         self.assertTrue(self._has_icon('glossary-icon'))
 
     def test_search_results_page_returns_no_results(self):
@@ -706,6 +698,88 @@ class SearchFunctionalTests(FunctionalTestCase):
             # like '...Genus: Rhexia' rather than '...Rhexia'.
             self.assertTrue(excerpt.text.find('...Rhexia') == -1)
             self.assertTrue(excerpt.text.find('Rhexia') > 3)
+
+    # Tests for search ranking.
+
+    def test_search_results_page_scientific_name_returns_first_result(self):
+        plants = [
+            ('Acer rubrum', 'red maple'),
+            ('Calycanthus floridus', 'eastern sweetshrub'),
+            ('Halesia carolina', 'Carolina silverbell'),
+            ('Magnolia virginiana', 'sweet-bay'),
+            ('Vaccinium corymbosum', 'highbush blueberry')
+        ]
+        for scientific_name, common_names in plants:
+            self.get('/search/?q=%s' % scientific_name.lower().replace(' ',
+                                                                       '+'))
+            result_links = self.css('#search-results-list li a')
+            self.assertTrue(len(result_links))
+            self.assertEqual('%s (%s)' % (scientific_name, common_names),
+                result_links[0].text)
+
+    def test_search_results_page_common_name_returns_first_result(self):
+        plants = [
+            ('Ligustrum obtusifolium', 'border privet'),
+            ('Matteuccia struthiopteris', 'fiddlehead fern, ostrich fern'),
+            ('Nardus stricta', 'doormat grass'),
+            ('Quercus rubra', 'northern red oak'),
+            ('Rhus copallinum', 'winged sumac')
+        ]
+        for scientific_name, common_names in plants:
+            common_name = common_names.split(',')[0]
+            self.get('/search/?q=%s' % common_name.lower().replace(' ', '+'))
+            result_links = self.css('#search-results-list li a')
+            self.assertTrue(len(result_links))
+            self.assertEqual('%s (%s)' % (scientific_name, common_names),
+                result_links[0].text)
+
+    def test_search_results_page_family_returns_first_result(self):
+        families = ['Azollaceae', 'Equisetaceae', 'Isoetaceae',
+                    'Marsileaceae', 'Salviniaceae']
+        for family in families:
+            self.get('/search/?q=%s' % family.lower())
+            result_links = self.css('#search-results-list li a')
+            self.assertTrue(len(result_links))
+            self.assertEqual('Family: %s' % family, result_links[0].text)
+
+    # TODO: Add a test for family common names when they become available.
+
+    def test_search_results_page_genus_returns_first_result(self):
+        genera = ['Claytonia', 'Echinochloa', 'Koeleria', 'Panicum',
+                  'Saponaria', 'Verbascum']
+        for genus in genera:
+            self.get('/search/?q=%s' % genus.lower())
+            result_links = self.css('#search-results-list li a')
+            self.assertTrue(len(result_links))
+            self.assertEqual('Genus: %s' % genus, result_links[0].text)
+
+    # TODO: Add a test for genus common names if they become available.
+
+    def test_search_results_page_glossary_term_returns_first_result(self):
+        terms = ['acuminate', 'dichasial cyme', 'joint',
+                 #'perigynium', # Why does this one still fail?
+                 'terminal', 'woody']
+        for term in terms:
+            self.get('/search/?q=%s' % term.lower())
+            result_links = self.css('#search-results-list li a')
+            self.assertTrue(len(result_links))
+            self.assertEqual('Glossary: %s' % term[0].upper(),
+                             result_links[0].text)
+
+    # TODO: Add tests for plant groups and subgroups once they are
+    # properly added (with any relevant friendly-title processing) to the
+    # search indexes. (There is an upcoming user story for this.)
+
+    # TODO: explore searching species names enclosed in quotes.
+    # Maybe want to try and detect and search this way behind the
+    # scenes if we can't reliably rank them first without quotes?
+
+    # TODO: Test searching on synonyms.
+    # Example:
+    # q=saxifraga+pensylvanica
+    # Returns:
+    #Micranthes pensylvanica (swamp small-flowered-saxifrage)
+    #Micranthes virginiensis (early small-flowered-saxifrage) 
 
 
 class FamilyFunctionalTests(FunctionalTestCase):

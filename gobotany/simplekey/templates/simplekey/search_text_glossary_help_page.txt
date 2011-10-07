@@ -1,5 +1,19 @@
+{% load simplekey_extras %}
+
 {{ object.title }}
 
 {% for term in object.terms.all %}
-    {{ term.term|capfirst }}: {{ term.lay_definition|capfirst }}.
+    {{ term.term }}: {{ term.lay_definition|capfirst }}{% if not term.lay_definition|make_list|last == '.' %}.{% endif %}
 {% endfor %}
+
+--
+{# Index the glossary terms many more times to boost ranking. This will #}
+{# be hidden from the user because it is inside double-dash markers. #}
+{% for term in object.terms.all %}
+    {% with term.term as the_term %}
+        {% for i in 200|get_range %}
+            {{ the_term }}
+        {% endfor %}
+    {% endwith %}
+{% endfor %}
+--

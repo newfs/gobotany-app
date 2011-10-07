@@ -1,3 +1,5 @@
+{% load simplekey_extras %}
+
 {{ object.scientific_name }} {{ object.taxonomic_authority }}.
 
 {% for common_name in object.common_names.all %}{% if not forloop.first %}, {% endif %}
@@ -86,15 +88,11 @@ Classification:
 {% endwith %}
 
 --
-{# Index the scientific name more times to boost ranking. #}
-{{ object.scientific_name }} 
-{{ object.scientific_name }} 
-{{ object.scientific_name }} 
-{{ object.scientific_name }} 
-{{ object.scientific_name }} 
-{{ object.scientific_name }} 
-{{ object.scientific_name }} 
-{{ object.scientific_name }} 
-{{ object.scientific_name }} 
-{{ object.scientific_name }} 
+{# Index the scientific name many more times to boost ranking. This will #}
+{# be hidden from the user because it is inside double-dash markers. #}
+{% with object.scientific_name as the_name %}
+    {% for i in 500|get_range %}
+        {{ the_name }}
+    {% endfor %}
+{% endwith %}
 --

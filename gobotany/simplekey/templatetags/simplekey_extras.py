@@ -63,7 +63,31 @@ def italicize_plant(value):
     return ' '.join(words)
 
 
+# Range filter courtesy of http://djangosnippets.org/snippets/1357/
+# Allows a for loop to a number defined in the template.
+def get_range(value):
+  """
+    Filter - returns a list containing range made from given value
+    Usage (in template):
+
+    <ul>{% for i in 3|get_range %}
+      <li>{{ i }}. Do something</li>
+    {% endfor %}</ul>
+
+    Results with the HTML:
+    <ul>
+      <li>0. Do something</li>
+      <li>1. Do something</li>
+      <li>2. Do something</li>
+    </ul>
+
+    Instead of 3 one may use the variable set in the views
+  """
+  return range(value)
+
+
 register.filter('split', split)
 register.filter('at_index', at_index)
 register.filter('replace', replace)
 register.filter('italicize_plant', italicize_plant)
+register.filter('get_range', get_range)

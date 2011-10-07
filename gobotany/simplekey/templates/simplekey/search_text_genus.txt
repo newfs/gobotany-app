@@ -1,3 +1,5 @@
+{% load simplekey_extras %}
+
 Genus: {{ object.name }}.
 
 {% if object.common_name %}{{ object.common_name }}.{% endif %}
@@ -12,3 +14,13 @@ This Genus's Species:
 {% endfor %}
 
 Key To This Genus's Species
+
+--
+{# Index the genus scientific name many more times to boost ranking. This #}
+{# will be hidden from the user because it is inside double-dash markers. #}
+{% with object.name as the_name %}
+    {% for i in 100|get_range %}
+        {{ the_name }}
+    {% endfor %}
+{% endwith %}
+--
