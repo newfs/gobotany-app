@@ -1,13 +1,15 @@
 from django.conf.urls.defaults import patterns, url
+
 from haystack.forms import HighlightedSearchForm
-from haystack.views import SearchView
+
+from gobotany.search.views import GoBotanySearchView
 from gobotany.simplekey import views
 
 urlpatterns = patterns(
     '',
 
-    # Custom index page.
-    url(r'^search/$', SearchView(
+    # Search results page.
+    url(r'^search/$', GoBotanySearchView(
             template='simplekey/search.html',
             form_class=HighlightedSearchForm,
             ),
