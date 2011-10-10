@@ -28,43 +28,45 @@
                     <ul id="search-results-list">
                     {% for result in page.object_list %}
                         <li>
-                            <!-- TODO: need custom highlighter that does not excerpt the document title -->
                             {% if result.scientific_name %}
-                                <img src="/static/images/icons/icon-leaf.png"
+                                <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/species/{{ result.scientific_name|split:' '|at_index:'0'|lower }}/{{ result.scientific_name|split:' '|at_index:'1'|lower }}/"><img 
+                                    src="/static/images/icons/icon-leaf.png"
                                     alt="" title="Species page">
-                                <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/species/{{ result.scientific_name|split:' '|at_index:'0'|lower }}/{{ result.scientific_name|split:' '|at_index:'1'|lower }}/">{% search_highlight result.title with query excerpt 'False' %}</a>
+{% search_highlight result.title with query excerpt 'False' %}</a>
                             {% else %}
                                 {% if result.model_name == 'family' %}
-                                    <img src="/static/images/icons/icon-family.png"
-                                        alt="" title="Family page">
-                                    <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/families/{{ result.name|lower }}/">{% search_highlight result.title with query excerpt 'False' %}</a>
+                                <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/families/{{ result.name|lower }}/"><img
+                                    src="/static/images/icons/icon-family.png"
+                                    alt="" title="Family page">
+{% search_highlight result.title with query excerpt 'False' %}</a>
                                 {% else %}
                                     {% if result.model_name == 'genus' %}
-                                        <img src="/static/images/icons/icon-genus.png"
-                                            alt="" title="Genus page">
-                                        <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/genera/{{ result.name|lower }}/">{% search_highlight result.title with query excerpt 'False' %}</a>
+                                    <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/genera/{{ result.name|lower }}/"><img
+                                        src="/static/images/icons/icon-genus.png"
+                                        alt="" title="Genus page">
+{% search_highlight result.title with query excerpt 'False' %}</a>
                                     {% else %}
                                         {% if result.model_name == 'helppage' %}
-                                            <img src="/static/graphics/help-icon.jpg"
-                                                alt="" title="Help page">
-                                            <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% search_highlight result.title with query excerpt 'False' %}</a>
+                                        <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{  result.object.url_path }}"><img
+                                            src="/static/graphics/help-icon.jpg"
+                                            alt="" title="Help page">
+{% search_highlight result.title with query excerpt 'False' %}</a>
                                         {% else %}
                                             {% if result.model_name == 'glossaryhelppage' %}
-                                                <img src="/static/graphics/glossary-icon.jpg"
-                                                    alt=""
-                                                    title="Glossary
-                                                    page">
-                                                <a href="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}">{% search_highlight result.title with query excerpt 'False' %}</a>
+                                            <a href="http{% if request.is_secure%}s{% endif %}://{{ request.get_host }}{{ result.object.url_path }}"><img
+                                                src="/static/graphics/glossary-icon.jpg"
+                                                alt=""
+                                                title="Glossary page">
+{% search_highlight result.title with query excerpt 'False' %}</a>
                                             {% else %}
-                                                (unknown model name)
+                                                Error: unknown search
+                                                result model name.
                                             {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
                             <p>
-                            {# TODO: result.text|split:'--'|at_index:'0' doesn't work below #}
-                            {# highlight result.text with query #}
                             {% search_highlight result.text with query ignore_between '\n--\n' %}
                             </p>
                         </li>

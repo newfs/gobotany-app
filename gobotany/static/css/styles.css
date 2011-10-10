@@ -1863,6 +1863,7 @@ Search Results Styles
     padding: 6px 0 10px;
 }
 #search-results-list li img {
+    float: left;
     height: 24px; /* TODO: remove height after all icons have been provided */
     margin: -1px 10px 0;
     vertical-align: middle;
@@ -1873,7 +1874,9 @@ Search Results Styles
     text-decoration: underline;
 }
 #search-results-list li p {
-    margin-left: 55px;
+    line-height: 140%;
+    margin-left: 44px;
+    margin-top: 2px;
 }
 .search-navigation {
     text-align: right;
