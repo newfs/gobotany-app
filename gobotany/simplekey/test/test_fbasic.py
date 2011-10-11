@@ -866,3 +866,26 @@ class GenusFunctionalTests(FunctionalTestCase):
         self.assertTrue(key_link[0].get_attribute('href').endswith(
             '/ferns/lycophytes/#genus=Dendrolycopodium'))
 
+
+class GlossarizerFunctionalTests(FunctionalTestCase):
+    # Tests that verify that portions of the site have any glossary
+    # terms highlighted and made into pop-up links.
+
+    def test_glossarized_groups_page(self):
+        self.get('/1/')
+        glossarized_key_characteristics = self.css('.key-char .gloss')
+        self.assertTrue(len(glossarized_key_characteristics))
+        glossarized_exceptions = self.css('.exceptions .gloss')
+        self.assertTrue(len(glossarized_exceptions))
+
+    def test_glossarized_subgroups_pages(self):
+        subgroup_slugs = ['ferns', 'woody-plants', 'graminoids',
+                          'aquatic-plants', 'monocots', 'non-monocots']
+        for slug in subgroup_slugs:
+            self.get('/%s/' % slug)
+            glossarized_key_characteristics = self.css('.key-char .gloss')
+            self.assertTrue(len(glossarized_key_characteristics))
+            if slug != 'ferns':  # Ferns: no words glossarized in Exceptions
+                glossarized_exceptions = self.css('.exceptions .gloss')
+                self.assertTrue(len(glossarized_exceptions))
+

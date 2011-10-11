@@ -88,5 +88,13 @@
         <script>
             {% include "simplekey/partner_site_inline_js.html" %}
         </script>
+
+        <script>
+            dojo.require('gobotany.sk.groups');
+            dojo.addOnLoad(function() {
+                var helper = gobotany.sk.groups.GroupsHelper();
+                helper.setup();
+            });
+        </script>
     </body>
 {% endblock %}
