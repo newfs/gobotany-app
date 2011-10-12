@@ -14,7 +14,7 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
         this.glossarizer = gobotany.sk.glossary.Glossarizer();
     },
 
-    toggle_info: function() {
+    toggle_character_group: function() {
         // Set handlers for toggling a character group.
         // (Uses jQuery for historical reasons.)
         $('ul.full-description li').toggle(function(){
@@ -41,7 +41,7 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
             $(this).text('Hide Full Description');
             $(this).css('background-image',
                 'url("/static/images/icons/minus.png")');
-            that.toggle_info();
+            that.toggle_character_group();
             global_setSidebarHeight(); // TODO: remove global.js
             return false;
         }, function() {
