@@ -300,11 +300,8 @@
         API_URL = '{% url api-base %}';
         dojo.require('gobotany.sk.species');
         dojo.addOnLoad(function() {
-            global_toggleList();
-            gobotany.sk.species.init('{{ scientific_name }}');
-        });
-        dojo.addOnUnload(function() {
-            gobotany.sk.species.persist_visibility();
+            var helper = gobotany.sk.species.SpeciesPageHelper();
+            helper.setup();
         });
         
         /* So far the Smooth Div Scroll plugin is only working in
