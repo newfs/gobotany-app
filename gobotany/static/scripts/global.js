@@ -40,7 +40,8 @@ function global_setSidebarHeight() {
     sidebarHeight();
 }
 
-// Show Working Area when sidebar options are selected
+// Show Working Area when sidebar options are selected.
+// (Note: This code is applied to all pages upon loading.)
 $(function() {
     // Set sidebar height
     sidebarHeight();
@@ -54,43 +55,6 @@ $(function() {
         return false;
     });
 });
-
-// Show/Hide for showing the whole list of characteristics on the Taxon page
-function global_toggleList() {
-    $('a.description-control').toggle(function(){
-        $('ul.full-description').show();
-        $(this).text('Hide Full Description');
-        $(this).css('background-image',
-            'url("/static/images/icons/minus.png")');
-        global_toggleInfo();
-        sidebarHeight();
-        return false;
-    }, function() {
-        $('ul.full-description').hide();
-        $(this).text('Show Full Description');
-        $(this).css('background-image',
-            'url("/static/images/icons/plus.png")');
-        sidebarHeight();
-        return false;
-    });
-}
-
-// Show/Hide for Characteristic List on Taxon page
-function global_toggleInfo() {
-    $('ul.full-description li').toggle(function(){
-        $(this).children('ul').show();
-        $(this).children('h5').css('background-image',
-            'url("/static/images/icons/minus.png")');
-        sidebarHeight();
-        return false;
-    }, function() {
-        $(this).children('ul').hide();
-        $(this).children('h5').css('background-image',
-            'url("/static/images/icons/plus.png")');
-        sidebarHeight();
-        return false;
-    }); 
-}
 
 // Animate and position the Shadowbox close link.
 function global_moveShadowboxCloseLink() {

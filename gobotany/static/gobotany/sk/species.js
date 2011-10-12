@@ -1,7 +1,6 @@
 /*
  * Code for adding behavior to species pages.
  */
-
 dojo.provide('gobotany.sk.species');
 
 dojo.require('dojo.cookie');
@@ -13,6 +12,46 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
 
     constructor: function() {
         this.glossarizer = gobotany.sk.glossary.Glossarizer();
+    },
+
+    toggle_info: function() {
+        // Set handlers for toggling a character group.
+        // (Uses jQuery for historical reasons.)
+        $('ul.full-description li').toggle(function(){
+            $(this).children('ul').show();
+            $(this).children('h5').css('background-image',
+                'url("/static/images/icons/minus.png")');
+            global_setSidebarHeight(); // TODO: remove global.js
+            return false;
+        }, function() {
+            $(this).children('ul').hide();
+            $(this).children('h5').css('background-image',
+                'url("/static/images/icons/plus.png")');
+            global_setSidebarHeight(); // TODO: remove global.js
+            return false;
+        });                
+    },
+
+    toggle_characters_full_list: function() {
+        // Set handlers for toggling the full characteristics list.
+        // (Uses jQuery for historical reasons.)
+        var that = this;
+        $('a.description-control').toggle(function(){
+            $('ul.full-description').show();
+            $(this).text('Hide Full Description');
+            $(this).css('background-image',
+                'url("/static/images/icons/minus.png")');
+            that.toggle_info();
+            global_setSidebarHeight(); // TODO: remove global.js
+            return false;
+        }, function() {
+            $('ul.full-description').hide();
+            $(this).text('Show Full Description');
+            $(this).css('background-image',
+                'url("/static/images/icons/plus.png")');
+            global_setSidebarHeight(); // TODO: remove global.js
+            return false;
+        });
     },
 
     prepare_to_open_image: function() {
@@ -69,7 +108,6 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
                 });
             });
         });
-
     },
 
     add_image_frame_handler: function() {
@@ -100,7 +138,7 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
     },
 
     setup: function() {
-        global_toggleList();
+        this.toggle_characters_full_list();
 
         // Highlight glossary terms where appropriate throughout the page.
         var that = this;
