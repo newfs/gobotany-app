@@ -1659,6 +1659,18 @@ a.enlarge:hover {
     position: relative;
 }
 
+/* Shadowbox tweaks to allow multiple title lines. */
+#taxon #sb-title, #taxon #sb-title-inner {
+    height: 46px;
+    line-height: 120%;
+}
+#taxon #sb-title-inner span {
+    font-size: 12px;
+}
+#taxon #sb-nav-close {
+    top: 26px !important;
+}
+
 /* Help section: sidebar styles */
 #getting-started #sidebar, #about #sidebar{
     height: 1046px;

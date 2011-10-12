@@ -32,9 +32,60 @@ gobotany.sk.species.reopen_character_groups = function() {
     }
 };
 
+gobotany.sk.species.wire_up_image_links = function() {
+    // Wire up each image link to a Shadowbox popup handler.
+    
+    dojo.query('#species-images .scrollableArea a').forEach(function(link) {
+        dojo.connect(link, 'onclick', this, function(event) {
+            // Prevent the regular link (href) from taking over.
+            event.preventDefault();
+
+            // Open the image.
+            Shadowbox.open({
+                content: link.href,
+                player: 'img',
+                title: link.title,
+                options: {
+                    onOpen: function() {
+                        var title_element = dojo.query('#sb-title-inner')[0];
+                                                
+                        // Temporarily hide the title element.
+                        dojo.addClass(title_element, 'hidden');
+
+                        // Call a function to move the close link
+                        // because an existing onOpen handler with this
+                        // function call is being overridden here.
+                        global_moveShadowboxCloseLink();
+                    },
+                    onFinish: function() {
+                        var title_element = dojo.query('#sb-title-inner')[0];
+                        var title_text = title_element.innerHTML;
+
+                        // Parse and mark up the title text.
+                        var parts = title_text.split('.');
+
+                        var image_type = parts[0].split(':')[0];
+                        // Get the properly-italicized scientific name
+                        // from the heading on the page.
+                        var name = dojo.query('h2 .scientific')[0].innerHTML;
+                        var title = image_type + ': ' + dojo.trim(name) + '.';
+
+                        var html = title + '<br><span>' + parts[1] + '.' +
+                                   parts[2] + '.' + parts[3] + '.</span>';
+                        title_element.innerHTML = html;
+
+                        // Show the title element again.
+                        dojo.removeClass(title_element, 'hidden');
+                    }
+                }
+            });
+        });
+    });
+};
+
 gobotany.sk.species.set_up_images_link = function() {
     // Add a handler to the image frame in order to be able to activate the
-    // shadowbox popup for the image underneath it. Otherwise the popup would
+    // Shadowbox popup for the image underneath it. Otherwise the popup would
     // not be available because the image frame layer overlays it and blocks
     // events, despite the image being visible.
 
@@ -106,6 +157,7 @@ gobotany.sk.species.init = function(scientific_name) {
     }
 
     // Make image gallery able to show larger images.
+    gobotany.sk.species.wire_up_image_links();
     gobotany.sk.species.set_up_images_link();
 };
 

@@ -14,7 +14,9 @@ Two environmental variables control the behavior of these tests.
   Defaults to `localhost` if not set.
 
 """
+import datetime
 import os
+import re
 import time
 import unittest2
 from contextlib import contextmanager
@@ -155,6 +157,14 @@ class BasicFunctionalTests(FunctionalTestCase):
             '/ferns/lycophytes/'))
         self.assertTrue(q[2].get_attribute('href').endswith(
             '/ferns/monilophytes/'))
+
+    def test_copyright_contains_current_year(self):
+        # If this test fails, perhaps the template containing the
+        # copyright years needs to be updated.
+        d = self.get('/')
+        copyright = self.css('footer .copyright')[0]
+        current_year = str(datetime.datetime.now().year)
+        self.assertTrue(copyright.text.find(current_year) > -1)
 
 
 class FilterFunctionalTests(FunctionalTestCase):
@@ -889,3 +899,19 @@ class GlossarizerFunctionalTests(FunctionalTestCase):
                 glossarized_exceptions = self.css('.exceptions .gloss')
                 self.assertTrue(len(glossarized_exceptions))
 
+
+class SpeciesFunctionalTests(FunctionalTestCase):
+
+    def test_species_page_photos_have_title_and_credit(self):
+        REGEX_PATTERN = '^.*: .*\. Photo by .*\. Copyright .*\s+NEWFS.'
+        self.get('/ferns/lycophytes/dendrolycopodium/dendroideum/')
+        links = self.css('#species-images a')
+        self.assertTrue(len(links))
+        for link in links:
+            title = link.get_attribute('title')
+            self.assertTrue(re.match(REGEX_PATTERN, title))
+        images = self.css('#species-images a img')
+        self.assertTrue(len(images))
+        for image in images:
+            alt_text = image.get_attribute('alt')
+            self.assertTrue(re.match(REGEX_PATTERN, alt_text))

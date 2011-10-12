@@ -91,3 +91,13 @@ function global_toggleInfo() {
         return false;
     }); 
 }
+
+// Animate and position the Shadowbox close link.
+function global_moveShadowboxCloseLink() {
+    var cb = document.getElementById('sb-nav-close');
+    var tb = document.getElementById('sb-wrapper');
+    if (tb) {
+        tb.appendChild(cb);
+    }
+}
+

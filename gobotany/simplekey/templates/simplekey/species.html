@@ -48,7 +48,9 @@
                 </div>
                 
                 <h2>
-                    <em>{{ scientific_name }}</em>
+                    <span class="scientific">
+                        {{ scientific_name|italicize_plant|safe }}
+                    </span>
                     <span class="origin">{{ taxon.taxonomic_authority }}</span>
                     <span class="common">
                         {% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}
@@ -61,12 +63,13 @@
 		            <div class="scrollWrapper">
                         <div class="scrollableArea">
                             {% for i in species_images %}
+                                {% with i.image.url|split:"-"|at_index:"-2" as photographer %}
                                 <a href="{{ i.image.url }}" {% if forloop.counter == 1 %}id="startimage"{% endif %}
-                                    rel="shadowbox"
-                                    title="{{ i.image_type|capfirst }}">
+                                    title="{% photo_title_credit i.image_type scientific_name photographer %}">
                                     <img src="{{ i.image.extra_thumbnails.large.absolute_url }}"
-                                        alt="{{ i.image_type|capfirst }}: {{ scientific_name }}">
+                                        alt="{% photo_title_credit i.image_type scientific_name photographer %}">
                                 </a>
+                                {% endwith %}
                             {% endfor %}
 			            </div>
 		            </div>

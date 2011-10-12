@@ -57,15 +57,8 @@
         <script src="/static/scripts/global.js"></script>
         <script src="/static/scripts/shadowbox.js"></script>
         <script>
-            function moveCloseLink() {
-                var cb = document.getElementById('sb-nav-close');
-                var tb = document.getElementById('sb-wrapper');
-                if (tb) {
-                    tb.appendChild(cb);
-                }
-            }
             Shadowbox.init({
-                onOpen: moveCloseLink
+                onOpen: global_moveShadowboxCloseLink
             });
         </script>
 
