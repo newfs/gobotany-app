@@ -108,45 +108,6 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
             that.glossarizer.markup(node);
         });
 
-        // Check for whether the stored filter-state cookie pertains to the
-        // pile/results page for this plant. If so, replace the hyperlink href
-        // for the pile/results page with the URL from the cookie in order to
-        // persist filter state when the user clicks the link to go back.
-        var last_plant_id_url = dojo.cookie('last_plant_id_url');
-        if (last_plant_id_url !== undefined) {
-            var url_parts = window.location.toString().split('/');
-            var pile_results_url = url_parts.slice(0, 6).join('/'); 
-            if (last_plant_id_url.indexOf(pile_results_url) !== -1) {
-                var link = dojo.byId('results-link');
-                dojo.attr(link, 'href', last_plant_id_url);
-            }
-        }
-
-        // Decide whether to add a Go Back link based on whether the previous
-        // URL was a pile/results page. If it was, add the link.
-        var previous_url = '';
-        if (document.referrer !== undefined) {
-            previous_url = document.referrer;
-        }
-
-        // If the previous URL can be found as a substring in the current
-        // species page URL, then the previous page was indeed a pile/results
-        // page.
-        if (previous_url.length > 0) {
-            if (window.location.href.indexOf(previous_url) > -1) {
-                var species_node = dojo.query('#species')[0];
-                if (species_node) {
-                    var back_link = dojo.create('a',
-                        {innerHTML: '&lt; Back to plant identification'});
-                    dojo.attr(back_link, 'class', 'back');
-                    // The last plant identification URL should be the
-                    // correct destination for the link.
-                    dojo.attr(back_link, 'href', last_plant_id_url);
-                    dojo.place(back_link, species_node);
-                }
-            }
-        }
-
         // Make image gallery able to show larger images.
         this.wire_up_image_links();
         this.add_image_frame_handler();
