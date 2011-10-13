@@ -33,17 +33,7 @@
 
         <script src="/static/underscore-min.js"></script>
 
-        <!-- Image Gallery Slider -->
-        <!-- Note: jQuery Tools below contains its own jQuery, v. 1.4.2.
-             Rely on this one for now, in order to avoid conflicts which
-             do occur when loading a newer version too. It also improves
-             download time. -->
-        <script src="/static/jquery.tools.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                $('.img-container').scrollable({keyboard: false});
-            });
-        </script>
+        {% include "simplekey/_image_gallery_js.html" %}
 
         <!-- Temporarily remove the 'extra' jQuery here for now until
              all components' problems can be sorted out. jQuery Tools
