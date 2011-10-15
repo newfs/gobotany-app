@@ -4,7 +4,11 @@ require([
 ], function() {
 
     Shadowbox.init({
-        onOpen: global_moveShadowboxCloseLink
+        onOpen: function() {
+            // Move the Shadowbox close link.
+            var tb = document.getElementById('sb-wrapper');
+            if (tb) tb.appendChild(document.getElementById('sb-nav-close'));
+        }
     });
 
     dojo.require('gobotany.sk.groups');
