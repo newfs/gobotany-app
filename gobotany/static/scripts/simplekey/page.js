@@ -1,4 +1,8 @@
 require([
+    'dojo_config',
+    '/static/js/dojo/dojo.js',
+    '/static/js/layers/sk.js',
+
     'activate_image_gallery',
     'activate_search_suggest',
     'shadowbox'
