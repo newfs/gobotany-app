@@ -60,12 +60,6 @@
         <script src="/static/scripts/jquery.mousewheel.min.js"></script>    
         <script src="/static/scripts/jquery.jscrollpane.min.js"></script>     
         <script src="/static/scripts/global.js"></script>
-        <script src="/static/scripts/shadowbox.js"></script>
-        <script>
-            Shadowbox.init({
-                onOpen: global_moveShadowboxCloseLink
-            });
-        </script>
         <!-- Smooth Div Scroll -->
         <script
             src="/static/scripts/jquery-ui-1.8.16.custom.min.js"></script>
@@ -73,6 +67,11 @@
             src="/static/scripts/jquery.smoothDivScroll-1.1-min.js"></script>
 
         <!-- This block is for adding any page-specific JS. -->
+        <script src="/static/scripts/require.js"></script>
+        <script>
+            require.config({baseUrl: "/static/scripts"});
+            {% block js_require %}{% endblock %}
+        </script>
         {% block js_bottom %}{% endblock %}
     </body>
 </html>
