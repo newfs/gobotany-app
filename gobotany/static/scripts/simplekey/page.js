@@ -1,8 +1,4 @@
 require([
-    'dojo_config',
-    '/static/js/dojo/dojo.js',
-    '/static/js/layers/sk.js',
-
     'activate_image_gallery',
     'activate_search_suggest',
     'shadowbox'
@@ -15,6 +11,13 @@ require([
             if (tb) tb.appendChild(document.getElementById('sb-nav-close'));
         }
     });
+});
+
+require([
+    'dojo_config',
+    '/static/js/dojo/dojo.js',
+    '/static/js/layers/sk.js'
+], function() {
 
     dojo.require('gobotany.sk.groups');
     dojo.addOnLoad(function() {
