@@ -1,5 +1,6 @@
 require([
     'activate_image_gallery',
+    'activate_search_suggest',
     'shadowbox'
 ], function() {
 

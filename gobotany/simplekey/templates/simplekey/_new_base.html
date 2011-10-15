@@ -44,28 +44,17 @@
              such as SVGWeb. -->
         {% block js_top %}{% endblock %}
 
-
         <!-- Any global JS goes here. -->
         <!-- TODO: reduce and optimize as much as possible. -->
         {% include "_dojobase.html" %}
-        {% include "simplekey/search_suggest_script.html" %}
+
         <!-- HTML5 Fix for IE -->
         <!--[if lt IE 9]>
         <script
             src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        <script src="/static/underscore-min.js"></script>
-        <!-- jQuery Tools also bundles jQuery itself: -->
-        <script src="/static/scripts/jquery.tools.min.js"></script>
-        <script src="/static/scripts/jquery.mousewheel.min.js"></script>    
-        <script src="/static/scripts/jquery.jscrollpane.min.js"></script>     
-        <!-- Smooth Div Scroll -->
-        <script
-            src="/static/scripts/jquery-ui-1.8.16.custom.min.js"></script>
-        <script
-            src="/static/scripts/jquery.smoothDivScroll-1.1-min.js"></script>
 
-        <!-- This block is for adding any page-specific JS. -->
+        <!-- These blocks are for adding any page-specific JS. -->
         <script src="/static/scripts/require.js"></script>
         <script>
             require.config({baseUrl: "/static/scripts"});
