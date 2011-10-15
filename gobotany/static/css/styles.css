@@ -515,8 +515,9 @@ Plant Listing Styles
 	position: absolute;
 	width: 12000px;
 }
-.img-gallery .images img {
-	float: left;
+.img-gallery .images > * {
+  display: block;  /* for example, it might be an <a> instead of an <img> */
+  float: left;     /* this is what makes .scrollable() actually work! */
 }
 .img-gallery .controls {
 	margin: 8px 0 0 0;

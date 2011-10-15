@@ -41,8 +41,10 @@
                             <div class="img-container">
                                 <div class="images">
                                     {% for image in pilegroup.sample_species_images.all %}
+                                      <a href="{{ image.image.url }}">
                                         <img src="{{ image.image.extra_thumbnails.large.absolute_url }}"
                                             alt="{{ image.alt }}">
+                                      </a>
                                     {% endfor %}
                                 </div>
                             </div>

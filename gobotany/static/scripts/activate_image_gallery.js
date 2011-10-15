@@ -9,7 +9,22 @@ require([
 ], function() {
 
     $(document).ready(function() {
-        $('.img-container').scrollable({keyboard: false});
-    });
 
+        // Turn on the scrollable for every gallery.
+
+        $('.img-container').scrollable({keyboard: false});
+
+        // For each gallery, clicking its frame should bring up Shadowbox.
+
+        $('.img-gallery').each(function() {
+            var gallery = this;
+            $(gallery).children('.frame').click(function() {
+                var container = $(gallery).children('.img-container');
+                var scroll = container.data('scrollable');
+                var a = scroll.getItems()[scroll.getIndex()];
+                window.location = $(a).attr('href');
+            });
+        });
+
+    });
 });
