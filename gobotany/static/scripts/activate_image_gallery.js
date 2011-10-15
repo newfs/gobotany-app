@@ -22,7 +22,14 @@ require([
                 var container = $(gallery).children('.img-container');
                 var scroll = container.data('scrollable');
                 var a = scroll.getItems()[scroll.getIndex()];
-                window.location = $(a).attr('href');
+                var rel = $(a).attr('rel');
+                var galleryname = rel.split('[')[1].split(']')[0];
+                Shadowbox.open({
+                    content: a,
+                    gallery: galleryname,
+                    player: 'img',
+                    options: {counterType: 'skip', overlayOpacity: 0.8}
+                });
             });
         });
 
