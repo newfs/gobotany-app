@@ -1,8 +1,8 @@
-{% extends "simplekey/_base.html" %}
+{% extends "simplekey/_new_base.html" %}
 
 {% block title %}{{ pilegroup.name }}{% endblock %}
 
-{% block body %}
+{% block body_content %}
     <body id="plant-id-2" class="claro app">
         {% include "simplekey/_header.html" %}
 
@@ -35,8 +35,11 @@
                             <div class="img-container">
                                 <div class="images">
                                     {% for image in pile.sample_species_images.all %}
+                                      <a href="{{ image.image.url }}"
+                                         rel="shadowbox[{{ pile.slug }}]">
                                         <img src="{{ image.image.extra_thumbnails.large.absolute_url }}"
                                             alt="{{ image.alt }}">
+                                      </a>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -93,4 +96,8 @@
             });
         </script>
     </body>
+{% endblock %}
+
+{% block js_require %}
+    require(['simplekey/page']);
 {% endblock %}
