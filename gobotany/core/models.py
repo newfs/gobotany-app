@@ -158,6 +158,11 @@ class Character(models.Model):
     question = models.TextField(blank=True)
     hint = models.TextField(blank=True)
 
+    image = ImageWithThumbnailsField(upload_to='character-value',
+                                     thumbnail={'size': (40, 40)},
+                                     blank=True,
+                                     null=True)  # the famous "DLD"
+
     class Meta:
         ordering = ['short_name']
 
@@ -230,7 +235,7 @@ class CharacterValue(models.Model):
     image = ImageWithThumbnailsField(upload_to='character-value',
                                      thumbnail={'size': (40, 40)},
                                      blank=True,
-                                     null=True)
+                                     null=True)  # the famous "DLD"
 
     class Meta:
         pass

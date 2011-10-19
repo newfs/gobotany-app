@@ -149,7 +149,7 @@ class Importer(object):
         self._import_habitats(habitatsf)
         self._import_taxa(taxaf)
         self._import_plant_names(taxaf)
-        self._import_characters(charf)
+        self._import_characters(charf, char_val_images)
         self._import_character_values(charvf, char_val_images)
         self._import_character_glossary(char_glossaryf)
         self._import_glossary(glossaryf, glossary_images)
@@ -695,10 +695,11 @@ class Importer(object):
         return friendly_name
 
     @transaction.commit_on_success
-    def _import_characters(self, f):
+    def _import_characters(self, f, imagef):
         print >> self.logfile, 'Setting up characters in file: %s' % f
         iterator = iter(CSVReader(f).read())
         colnames = [x.lower() for x in iterator.next()]
+        images = tarfile.open(imagef)
 
         for cols in iterator:
             row = dict(zip(colnames, cols))
@@ -756,6 +757,18 @@ class Importer(object):
                                              question=question,
                                              hint=hint)
                 character.save()
+
+                # Add drawing image (if present) for this character value.
+                if row['image_name']:
+                    try:
+                        image = images.getmember(row['image_name'])
+                        image_file = File(images.extractfile(image.name))
+                        character.image.save(image.name, image_file)
+                    # Force the thumbnail to be generated.
+                        character.image.thumbnail.height()
+                    except KeyError:
+                        print >> self.logfile, \
+                            '    ERR: No image found for character'
 
     def _clean_up_html(self, html):
         """Clean up HTML ugliness arising from Access rich text export."""
