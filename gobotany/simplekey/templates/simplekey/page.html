@@ -10,24 +10,7 @@
             <div class="container">
                 <div id="main">
                     <div id="breadcrumb">
-                        <ul>
-                            {% if page.number > 1 or '/help/start' in request.META.HTTP_REFERER %}
-                                <li class="first completed"><a href="{% url simplekey-page 1 %}"><img
-                                    src="/static/images/icons/start.png" alt=""> Start</a></li>
-                                <li class="second current"><a><img
-                                    src="/static/images/icons/group.png" alt=""> Group</a></li>
-                            {% else %}
-                                <li class="first current"><a><img
-                                    src="/static/images/icons/start.png" alt=""> Start</a></li>
-                                <li class="second upcoming"><a><img
-                                    src="/static/images/icons/group.png" alt=""> Group</a></li>
-                            {% endif %}
-                            <li class="third upcoming"><a><img 
-                                src="/static/images/icons/subgroup.png" alt=""> Subgroup</a></li>
-                            <li class="last upcoming"><a><img 
-                                src="/static/images/icons/subgroup.png" alt=""> My Plant</a></li>
-
-                        </ul>
+                        <p>You are here: <span>Start</span></p>
                     </div>
 
                     <h2>Which group best describes your plant?</h2>

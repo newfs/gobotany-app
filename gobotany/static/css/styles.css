@@ -368,83 +368,15 @@ body.app {
 /*****-----------
 Breadcrumb Styles
 ----------******/
-#breadcrumb {
-	height: 29px;
-	position: relative;
-	margin: 0 0 12px 0;
-	font-size: 12px;
-	line-height: 29px;
-	letter-spacing: 0.75px;
-	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-	text-transform: uppercase;
+#breadcrumb p {
+    color: #807121;
+    line-height: 100%;
+    margin: 0 0 14px;
 }
-#breadcrumb li {
-	background: url(/static/images/layout/breadcrumb-tails-orange.png) 0 0 no-repeat transparent;
-    display: block;
-	padding: 0 0 0 13px;
-	position: absolute;
-	width: 174px;
-}
-
-#breadcrumb li.first {
-	width: 170px;
-	padding: 0;
-	left: 0;
-}
-#breadcrumb li.second {
-	left: 163px;	
-}
-#breadcrumb li.third {
-	left: 343px;	
-}
-#breadcrumb li.last {
-	right: 0;	
-}
-#breadcrumb li a {
-	color: #fff;
-    display: block;
-	height: 29px;
-    overflow: hidden;
-	padding: 0 0 0 13px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-#breadcrumb li a img {
-	margin: 0 3px 0 0;
-	vertical-align: -3px;
-}	
-#breadcrumb li.first a img {
-	vertical-align: -4px;	
-}
-#breadcrumb li.current {
-	background-position: 0 0;	
-}
-#breadcrumb li.current a {
-	background: url(/static/images/layout/breadcrumb-tips.jpg) right 0 no-repeat;	
-	cursor: default;
-}
-#breadcrumb li.upcoming {
-	background-position: 0 -58px;	
-}
-#breadcrumb li.upcoming a {
-	background: url(/static/images/layout/breadcrumb-tips.jpg) right -58px no-repeat;	
-}
-#breadcrumb li.completed {
-	background-position: 0 0;	
-}
-#breadcrumb li.completed a {
-	background: url(/static/images/layout/breadcrumb-tips.jpg) right 0 no-repeat;	
-}
-#breadcrumb li.completed:hover {
-	background-position: 0 -29px;
-	cursor: pointer;
-}
-#breadcrumb li.completed:hover a {
-	background-position: right -29px;
-}
-#breadcrumb li a:hover {
-	text-decoration: none;	
-}
+#breadcrumb span {
+    color: #000;
+}    
+    
 .app .content h2 {
 	color: #519136;
 }	

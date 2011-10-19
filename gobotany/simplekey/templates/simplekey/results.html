@@ -12,22 +12,10 @@
             <div class="container">
                 <div id="main">
                     <div id="breadcrumb">
-                        <ul>
-                            <li class="first completed"><a 
-                                href="{% url simplekey-page 1 %}"><img
-                                src="/static/images/icons/start.png" 
-                                alt=""> Start</a></li>
-                            <li class="second completed"><a 
-                                href="{% url simplekey-pilegroup pilegroup.slug %}" title="{{ pilegroup.friendly_title }}"><img
-                                src="/static/images/icons/group.png" 
-                                alt=""> {{ pilegroup.friendly_title }}</a></li>
-                            <li class="third current"><a title="{{ pile.friendly_title }}"><img
-                                src="/static/images/icons/subgroup.png"
-                                alt=""> {{ pile.friendly_title }}</a></li>
-                            <li class="last upcoming"><a><img
-                                src="/static/images/icons/subgroup.png"
-                                alt=""> My Plant</a></li>
-                        </ul>
+                        <p>You are here: <a href="{% url simplekey-page 1 %}">Start</a>
+                        &gt; <a href="{% url simplekey-pilegroup pilegroup.slug %}"
+                            >{{ pilegroup.friendly_title }}</a>
+                        &gt; <span>{{ pile.friendly_title }}</span></p>
                     </div>
 
                     <h2>{{ pile.friendly_title|lower|capfirst }}</h2>
