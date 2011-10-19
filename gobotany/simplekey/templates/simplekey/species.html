@@ -24,7 +24,7 @@
                     <a href="{% url simplekey-pilegroup pilegroup.slug %}"
                             >{{ pilegroup.friendly_title }}</a>
                         &gt; 
-                        <a href="{% if last_plant_id_url %}{{ last_plant_id_url }}{% else %}{% url simplekey-pile pilegroup.slug pile.slug %}{% endif %}"
+                        <a href="{% if last_plant_id_url and pile.slug in last_plant_id_url %}{{ last_plant_id_url }}{% else %}{% url simplekey-pile pilegroup.slug pile.slug %}{% endif %}"
                             >{{ pile.friendly_title }}</a>
                         &gt;
                         <span>{{ scientific_name|italicize_plant|safe }}
