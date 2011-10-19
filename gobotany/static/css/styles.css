@@ -995,6 +995,9 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     line-height: 140%;
     margin-bottom: 4px;
 }
+.working-area .dld {
+  float: right;
+}
 .working-area li {
     display: block;
     float: left;

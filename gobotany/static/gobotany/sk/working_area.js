@@ -100,6 +100,16 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         d.query('.hint').html(p(f.hint)).forEach(this.glossarize);
         d.query('.info').style({display: 'block'});
 
+        // Display character DLD, if an image is available.
+        if (f.image_url) {
+            var image_id = this._get_image_id_from_path(f.image_url);
+            var dld_html = '<img id="' + image_id +
+                '" src="' + f.image_url + '" alt="character illustration">';
+            d.query('.dld').html(dld_html).style({display: 'block'});
+        } else {
+            d.query('.dld').html('').style({display: 'none'});
+        }
+
         // Hide the introduction message.
         d.query('.intro-message').style({display: 'none'});
 

@@ -152,6 +152,7 @@ def _jsonify_character(character, pile_slug):
         'notable_exceptions': character.notable_exceptions,
         'question': character.question,
         'hint': character.hint,
+        'image_url': (character.image.url if character.image else ''),
         'pile_slug': pile_slug,
         }
 
