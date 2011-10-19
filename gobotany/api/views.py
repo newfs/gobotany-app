@@ -147,7 +147,7 @@ def _jsonify_character(character, pile_slug):
         'short_name': character.short_name,
         'value_type': character.value_type,
         'unit': character.unit,
-        'characteracter_group': character.character_group.name,
+        'character_group': character.character_group.name,
         'key_characteristics': character.key_characteristics,
         'notable_exceptions': character.notable_exceptions,
         'question': character.question,
