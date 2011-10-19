@@ -27,11 +27,8 @@ dojo.declare('gobotany.filters.Filter', null, {
         this.unit = args.unit;
         this.value_type = args.value_type;
 
-        this.character_short_name =
-            args.character_short_name || args.short_name;
-        this.short_name = this.character_short_name;
-        this.friendly_name =
-            args.character_friendly_name || args.friendly_name;
+        this.character_short_name = this.short_name = args.short_name;
+        this.friendly_name = args.friendly_name;
 
         var f = args.filter ? args.filter : args;
 

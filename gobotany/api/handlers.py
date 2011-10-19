@@ -13,6 +13,7 @@ from xml.etree.ElementTree import parse
 
 from gobotany.core import botany, models
 from gobotany.settings import STATIC_ROOT
+from .views import _jsonify_character
 
 def _taxon_image(image):
     if image:
@@ -226,20 +227,8 @@ class PileHandler(BasePileHandler):
             )
 
         for default_filter in default_filters:
-            filter = {}
-            filter['character_short_name'] = \
-                default_filter.character.short_name
-            filter['character_friendly_name'] = \
-                default_filter.character.friendly_name
+            filter = _jsonify_character(default_filter.character, pile.slug)
             filter['order'] = default_filter.order
-            filter['value_type'] = default_filter.character.value_type
-            filter['unit'] = default_filter.character.unit
-            filter['notable_exceptions'] = getattr(default_filter,
-                                                   'notable_exceptions', u'')
-            filter['key_characteristics'] = getattr(default_filter,
-                                                    'key_characteristics', u'')
-            filter['question'] = default_filter.character.question
-            filter['hint'] = default_filter.character.hint
             filters.append(filter)
         return filters
 
