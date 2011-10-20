@@ -1,8 +1,8 @@
-{% extends "simplekey/_base.html" %}
+{% extends "simplekey/_new_base.html" %}
 
 {% block title %}{{ pilegroup.friendly_title }}: {{ pile.friendly_title }}{% endblock %}
 
-{% block body %}
+{% block body_content %}
     <body id="plant-id-3" class="claro app">
         {% include "simplekey/_header.html" %}
 
@@ -149,11 +149,12 @@
 
         <script>
         {% include "simplekey/partner_site_inline_js.html" %}
-        dojo.require('gobotany.sk.results');
-        dojo.addOnLoad(function() {
-            helper = gobotany.sk.results.ResultsHelper('{{ pile.slug }}');
-            helper.setup();
-        });
         </script>
     </body>
+{% endblock %}
+
+{% block js_require %}
+    require(['simplekey/results'], function(results) {
+        results.go('{{ pile.slug }}');
+    });
 {% endblock %}
