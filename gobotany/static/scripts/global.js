@@ -1,6 +1,8 @@
 // TODO: Integrate all this code into an appropriate place within the
 // main JavaScript code base, and get rid of this file.
 
+require(['jquery.tools.min'], function() {
+
 // 100% Height for Sidebar
 function sidebarHeight() {
     var MINIMUM_HEIGHT = 550;
@@ -65,3 +67,4 @@ function global_moveShadowboxCloseLink() {
     }
 }
 
+});

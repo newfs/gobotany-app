@@ -14,20 +14,23 @@ require([
 });
 
 define([
-    'simplekey/results_overlay',  // we activate this early
-    'dojo_config',
-    '/static/js/dojo/dojo.js',
-    '/static/js/layers/sk.js',
-    'jquery.tools.min',
-    'jquery.jscrollpane.min',
+    'dojo',
+    'order!jquery.tools.min',
+    'order!jquery.jscrollpane.min',
     'underscore-min',
-    'global'  // for global_setSidebarHeight
-], {
-    go: function(pile_slug) {
+    'global',  // for global_setSidebarHeight
+    'simplekey/results_overlay'
+], function() {
+
+    /* Since the HTML template is what knows the pile_slug, we provide
+     * it with a function it can invoke that takes the pile_slug as an
+     * argument.
+     */
+    return function(pile_slug) {
         dojo.require('gobotany.sk.results');
         dojo.addOnLoad(function() {
             helper = gobotany.sk.results.ResultsHelper(pile_slug);
             helper.setup();
         });
-    }
+    };
 });

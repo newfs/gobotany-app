@@ -148,13 +148,23 @@
         </script>
 
     <div id="intro-overlay">
-      
+      <div class="number-of-species">
+        <h1>33 species</h1>
+        in this subgroup
+      </div>
+      <div class="number-of-questions">
+        <h1>35 questions</h1>
+        to narrow your search
+      </div>
+      <div class="get-started">
+        <h1>Get started!</h1>
+      </div>
     </div>
   </body>
 {% endblock %}
 
 {% block js_require %}
     require(['simplekey/results'], function(results) {
-        results.go('{{ pile.slug }}');
+        results('{{ pile.slug }}');
     });
 {% endblock %}
