@@ -85,7 +85,7 @@ class SampleData(TestCase):
         make_cv('size1', character=self.length, value_min=2, value_max=4)
         make_cv('size2', character=self.length, value_min=3, value_max=4)
         make_cv('size3', character=self.length, value_min=5, value_max=5)
-        
+
         self.create(models.ImageType, 'habit')
         self.create(models.ImageType, 'stem')
         self.create(models.ImageType, 'pile image')
@@ -409,7 +409,8 @@ class ImportTestCase(TestCase):
 
     def test_import_characters(self):
         im = importer.Importer(StringIO())
-        im._import_characters(testdata('characters.csv'))
+        im._import_characters(testdata('characters.csv'),
+            testdata('testdata-character-value-images.tar.bz2'))
         f = open(testdata('characters.csv'))
         content = f.read()
         f.close()
