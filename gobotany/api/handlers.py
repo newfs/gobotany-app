@@ -244,7 +244,7 @@ class PileHandler(BasePileHandler):
             character = {}
             character['character_short_name'] = \
                 preview_character.character.short_name
-            character['character_friendly_name'] = \
+            character['friendly_name'] = \
                 preview_character.character.friendly_name
             character['order'] = preview_character.order
             partner_site = None
