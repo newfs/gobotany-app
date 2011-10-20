@@ -59,7 +59,7 @@ $(function() {
 });
 
 // Animate and position the Shadowbox close link.
-global_moveShadowboxCloseLink() = function() {
+global_moveShadowboxCloseLink = function() {
     var cb = document.getElementById('sb-nav-close');
     var tb = document.getElementById('sb-wrapper');
     if (tb) {
