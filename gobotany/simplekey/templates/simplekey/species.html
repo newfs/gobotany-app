@@ -48,7 +48,7 @@
 		            <div class="scrollWrapper">
                         <div class="scrollableArea">
                             {% for i in species_images %}
-                                {% with i.image.url|split:"-"|at_index:"-2" as photographer %}
+                                {% with i.creator as photographer %}
                                 <a href="{{ i.image.url }}" {% if forloop.counter == 1 %}id="startimage"{% endif %}
                                     title="{% photo_title_credit i.image_type scientific_name photographer %}">
                                     <img src="{{ i.image.extra_thumbnails.large.absolute_url }}"
