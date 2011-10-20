@@ -440,6 +440,9 @@ Plant Listing Styles
     height: 229px;
     width: 229px;
 }
+#plant-id .img-gallery .frame, #plant-id-2 .img-gallery .frame {
+    cursor: pointer;
+}
 .img-gallery .images {
 	clear: both;
 	margin: 0;
@@ -1656,15 +1659,19 @@ a.enlarge:hover {
     position: relative;
 }
 
-/* Shadowbox tweaks to allow multiple title lines. */
-#taxon #sb-title, #taxon #sb-title-inner {
+/* Shadowbox tweaks to allow multiple title lines, for presenting a
+ * photo title, photographer credit, and copyright. */
+#taxon #sb-title, #taxon #sb-title-inner,
+#plant-id #sb-title, #plant-id #sb-title-inner,
+#plant-id-2 #sb-title, #plant-id-2 #sb-title-inner {
     height: 46px;
     line-height: 120%;
 }
-#taxon #sb-title-inner span {
+#taxon #sb-title-inner span, #plant-id #sb-title-inner span,
+#plant-id-2 #sb-title-inner span {
     font-size: 12px;
 }
-#taxon #sb-nav-close {
+#taxon #sb-nav-close, #plant-id #sb-nav-close, #plant-id-2 #sb-nav-close {
     top: 26px !important;
 }
 

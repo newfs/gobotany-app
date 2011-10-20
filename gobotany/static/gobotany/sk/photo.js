@@ -11,6 +11,9 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
     prepare_to_enlarge: function() {
         // Do a few things before enlarging the photo on the screen.
         // Intended to be called using the Shadowbox onOpen handler.
+        
+        // Please see notes in activate_image_gallery.js.
+        console.log('inside prepare_to_enlarge');
 
         var title_element = dojo.query('#sb-title-inner')[0];
                                                     
@@ -26,16 +29,34 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
         // Format the title text for a better presentation atop the photo.
         // Intended to be called using the Shadowbox onFinish handler.
 
+        // Please see notes in activate_image_gallery.js.
+        console.log('inside process_title_and_credit');
+
         var title_element = dojo.query('#sb-title-inner')[0];
         var title_text = title_element.innerHTML;
 
         // Parse and mark up the title text.
         var parts = title_text.split('.');
 
-        var image_type = parts[0].split(':')[0];
-        // Get the properly-italicized scientific name from the page heading.
-        var name = dojo.query('h2 .scientific')[0].innerHTML;
-        var title = image_type + ': ' + dojo.trim(name) + '.';
+        var title_parts = parts[0].split(':');
+        var image_type = title_parts[0];
+        var title = image_type;
+        var name = '';
+        // Get the properly-italicized scientific name from the page heading,
+        // if available. (This is available on the species page.)
+        // TODO: Replace with a function to properly italicize any
+        // scientific name.
+        var scientific_name = dojo.query('h2 .scientific');
+        if (scientific_name.length > 0) {
+            name = scientific_name[0].innerHTML;
+        }
+        else {
+            name = '<i>' + dojo.trim(title_parts[1]) + '</i>';
+        }
+        if (name.length > 0) {
+            title += ': ' + dojo.trim(name);
+        }
+        title += '.';
 
         var html = title + '<br><span>' + parts[1] + '.' + parts[2] + '.' +
             parts[3] + '.</span>';

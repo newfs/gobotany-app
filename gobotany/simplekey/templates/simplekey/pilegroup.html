@@ -1,4 +1,5 @@
 {% extends "simplekey/_new_base.html" %}
+{% load simplekey_extras %}
 
 {% block title %}{{ pilegroup.name }}{% endblock %}
 
@@ -25,12 +26,15 @@
                         <div class="frame"></div>
                         <div class="img-container">
                             <div class="images">
-                                {% for image in pile.sample_species_images.all %}
-                                  <a href="{{ image.image.url }}"
-                                     rel="shadowbox[{{ pile.slug }}]">
-                                    <img src="{{ image.image.extra_thumbnails.large.absolute_url }}"
-                                        alt="{{ image.alt }}">
-                                  </a>
+                                {% for i in pile.sample_species_images.all %}
+                                    {% with i.creator as photographer %}
+                                    <a href="{{ i.image.url }}"
+                                        rel="shadowbox[{{ pilegroup.slug }}]"
+                                        title="{% photo_title_credit i.image_type i.content_object.scientific_name photographer %}">
+                                        <img src="{{ i.image.extra_thumbnails.large.absolute_url }}"
+                                            alt="{% photo_title_credit i.image_type i.content_object.scientific_name photographer %}">
+                                    </a>
+                                    {% endwith %}
                                 {% endfor %}
                             </div>
                         </div>
