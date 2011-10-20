@@ -1,7 +1,7 @@
 // TODO: Integrate all this code into an appropriate place within the
 // main JavaScript code base, and get rid of this file.
 
-require(['jquery.tools.min'], function() {
+define(['jquery.tools.min'], function() {
 
 // 100% Height for Sidebar
 function sidebarHeight() {
@@ -38,9 +38,9 @@ function sidebarHeight() {
 
 // Wrapper for calling from elsewhere; make code in global.js easier to keep
 // track of when called from the Dojo-based code.
-function global_setSidebarHeight() {
+global_setSidebarHeight = function() {
     sidebarHeight();
-}
+};
 
 // Show Working Area when sidebar options are selected.
 // (Note: This code is applied to all pages upon loading.)
@@ -59,12 +59,12 @@ $(function() {
 });
 
 // Animate and position the Shadowbox close link.
-function global_moveShadowboxCloseLink() {
+global_moveShadowboxCloseLink() = function() {
     var cb = document.getElementById('sb-nav-close');
     var tb = document.getElementById('sb-wrapper');
     if (tb) {
         tb.appendChild(cb);
     }
-}
+};
 
 });
