@@ -1,18 +1,13 @@
-{% extends "simplekey/_base.html" %}
+{% extends "simplekey/_new_base.html" %}
 {% load simplekey_extras %}
 {% load thumbnail %}
 
 {% block title %}{{ scientific_name }} 
 ({% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}){% endblock %}
 
-{% block js_top %}
-    <!-- SVGWeb script - must be first, must have data-path.
-         Also, SVG must be served from same domain as the page. -->
-    <script src="/static/svgweb/svg.js" data-path="/static/svgweb/"></script>
-{% endblock %}
+{% block body_attributes %}id="taxon" class="claro app taxon"{% endblock %}
 
-{% block body %}
-<body id="taxon" class="claro app taxon">
+{% block body_content %}
     {% include "simplekey/_header.html" %}
 
     <div class="content">
@@ -272,44 +267,22 @@
             <div class="clearit"></div>
         </div>
     </div>
+{% endblock %}
 
-    {% include "simplekey/_footer.html" %}
-
-    {% include "simplekey/_script_constants.html" %}
+{% block js_top %}
+    <!-- SVGWeb script - must be first, must have data-path.
+         Also, SVG must be served from same domain as the page. -->
+    <script src="/static/svgweb/svg.js"
+        data-path="/static/svgweb/"></script>
 
     <script>
+        {# TODO: eventually move elsewhere #}
         {% include "simplekey/partner_site_inline_js.html" %}
-    </script>
-
-    <script>
-        API_URL = '{% url api-base %}';
-        dojo.require('gobotany.sk.species');
-        dojo.addOnLoad(function() {
-            var helper = gobotany.sk.species.SpeciesPageHelper();
-            helper.setup();
-        });
         
-        /* So far the Smooth Div Scroll plugin is only working in
-           Firefox, not in WebKit-based browsers. Smooth Div Scroll
-           is said to require jQuery 1.5.2; our jQuery Tools library
-           contains only 1.4.2. However, even when loading jQuery 1.5.2
-           or 1.6.x, Smooth Div Scroll usually doesn't work on our page in
-           in WebKit. But, it does work fine on the Smooth Div Scroll demo
-           page, so there is probably a way to get it working.
-           Also, even with jQuery 1.4.2, Smooth Div Scroll works in
-           Firefox (and once in a while in Chrome), so it appears 1.4.2 will
-           be fine. More investigation needed for the WebKit-based browsers.
-           */
-        $(document).ready(function() {
-            $('#taxon #species-images').smoothDivScroll({
-                autoScroll: 'onstart', 
-			    autoScrollDirection: 'backandforth', 
-			    autoScrollStep: 1, 
-                autoScrollInterval: 75,
-                visibleHotSpots: 'always'
-            });
-        });
-  </script>
+        API_URL = '{% url api-base %}';
+    </script>
+{% endblock %}
 
-</body>
+{% block js_require %}
+    require(['simplekey/species']);
 {% endblock %}

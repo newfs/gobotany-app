@@ -2,82 +2,79 @@
 
 {% block title %}{{ pilegroup.name }}{% endblock %}
 
+{% block body_attributes %}id="plant-id-2" class="claro app"{% endblock %}
+
 {% block body_content %}
-    <body id="plant-id-2" class="claro app">
-        {% include "simplekey/_header.html" %}
+    {% include "simplekey/_header.html" %}
 
-        <div class="content">
-            <div class="container">
-                <div id="main">
-                    <div id="breadcrumb">
-                        <p>You are here: <a href="{% url simplekey-page 1 %}">Start</a>
-                        &gt; <span>{{ pilegroup.friendly_title }}</span></p>
-                    </div>
-                    
-                    <h2>Is your plant in one of these subgroups?</h2>
-
-                    <div class="clearit"></div>
-
-                    {% for pile, url in piles_and_urls %}
-                    <div class="list-item{% if forloop.last %} last{% endif %}">
-                        <div class="img-gallery">
-                            <div class="frame"></div>
-                            <div class="img-container">
-                                <div class="images">
-                                    {% for image in pile.sample_species_images.all %}
-                                      <a href="{{ image.image.url }}"
-                                         rel="shadowbox[{{ pile.slug }}]">
-                                        <img src="{{ image.image.extra_thumbnails.large.absolute_url }}"
-                                            alt="{{ image.alt }}">
-                                      </a>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            <div class="controls">
-                                <a class="prev">Prev</a>
-                                <a class="next">Next</a>
-                            </div>
-                        </div>
-                        <div class="details">
-                            <h3>{{ pile.friendly_title|lower|capfirst }} <span>{{ pile.friendly_name|capfirst }}</span></h3>
-                            <p class="key-char">
-                                <span class="section-title">Key Characteristics</span>
-                                {{ pile.key_characteristics|removetags:"div ul li"|safe }}
-                            </p>
-                            <p class="exceptions">
-                                <span class="section-title">Exceptions</span>
-                                {{ pile.notable_exceptions|removetags:"div ul li"|safe }}
-                            </p>
-                            <p class="vid">
-                                <a href="http://www.youtube.com/v/{{ pile.youtube_id }}" rel="shadowbox;height=380;width=640;">View a short video about this plant group</a>
-                            </p>
-                            <a class="plant-in-subgroup" href="{{ url }}">My plant is in this subgroup</a>
-                        </div>
-                        <div class="clearit"></div>
-                    </div>
-                    {% endfor %}
-
-                    {% include "simplekey/_plant_not_in_subgroup.html" %}
-
+    <div class="content">
+        <div class="container">
+            <div id="main">
+                <div id="breadcrumb">
+                    <p>You are here: <a href="{% url simplekey-page 1 %}">Start</a>
+                    &gt; <span>{{ pilegroup.friendly_title }}</span></p>
                 </div>
-
-                <div id="sidebar">
-                    {% include "simplekey/_sidebar_items.html" %}
-                </div>
+                
+                <h2>Is your plant in one of these subgroups?</h2>
 
                 <div class="clearit"></div>
 
+                {% for pile, url in piles_and_urls %}
+                <div class="list-item{% if forloop.last %} last{% endif %}">
+                    <div class="img-gallery">
+                        <div class="frame"></div>
+                        <div class="img-container">
+                            <div class="images">
+                                {% for image in pile.sample_species_images.all %}
+                                  <a href="{{ image.image.url }}"
+                                     rel="shadowbox[{{ pile.slug }}]">
+                                    <img src="{{ image.image.extra_thumbnails.large.absolute_url }}"
+                                        alt="{{ image.alt }}">
+                                  </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="controls">
+                            <a class="prev">Prev</a>
+                            <a class="next">Next</a>
+                        </div>
+                    </div>
+                    <div class="details">
+                        <h3>{{ pile.friendly_title|lower|capfirst }} <span>{{ pile.friendly_name|capfirst }}</span></h3>
+                        <p class="key-char">
+                            <span class="section-title">Key Characteristics</span>
+                            {{ pile.key_characteristics|removetags:"div ul li"|safe }}
+                        </p>
+                        <p class="exceptions">
+                            <span class="section-title">Exceptions</span>
+                            {{ pile.notable_exceptions|removetags:"div ul li"|safe }}
+                        </p>
+                        <p class="vid">
+                            <a href="http://www.youtube.com/v/{{ pile.youtube_id }}" rel="shadowbox;height=380;width=640;">View a short video about this plant group</a>
+                        </p>
+                        <a class="plant-in-subgroup" href="{{ url }}">My plant is in this subgroup</a>
+                    </div>
+                    <div class="clearit"></div>
+                </div>
+                {% endfor %}
+
+                {% include "simplekey/_plant_not_in_subgroup.html" %}
+
             </div>
+
+            <div id="sidebar">
+                {% include "simplekey/_sidebar_items.html" %}
+            </div>
+
+            <div class="clearit"></div>
+
         </div>
+    </div>
+{% endblock %}
 
-        {% include "simplekey/_footer.html" %}
-
-        {% include "simplekey/_script_constants.html" %}
-
-        <script>
-            {% include "simplekey/partner_site_inline_js.html" %}
-        </script>
-    </body>
+{% block js_top %}
+    {# TODO: eventually move elsewhere #}
+    {% include "simplekey/partner_site_inline_js.html" %}
 {% endblock %}
 
 {% block js_require %}
