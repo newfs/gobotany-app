@@ -26,7 +26,6 @@ require([
             var gallery = this;
             var photo_helper = gobotany.sk.photo.PhotoHelper();
             $(gallery).children('.frame').click(function() {
-                console.log(photo_helper);
                 var container = $(gallery).children('.img-container');
                 var scroll = container.data('scrollable');
                 var a = scroll.getItems()[scroll.getIndex()];
