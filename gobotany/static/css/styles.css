@@ -880,6 +880,20 @@ ul.option-list li.answered.active {
     }
 }
 
+/***
+Styles for results page introductory overlay
+ ****/
+
+#intro-overlay {
+    display: none;
+    z-index: 10000;
+    background-color: #fff;
+}
+
+/***
+Styles for results page
+ ****/
+
 .get-more {
     font-size: 11px;
     line-height: 16px;

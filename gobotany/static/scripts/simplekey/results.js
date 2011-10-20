@@ -1,4 +1,5 @@
 define([
+    'simplekey/results_overlay',  // we activate this early
     'dojo_config',
     '/static/js/dojo/dojo.js',
     '/static/js/layers/sk.js',
