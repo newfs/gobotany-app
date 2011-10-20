@@ -733,8 +733,6 @@ class Importer(object):
                     '    ERR: Bad ease of observability value', repr(eoo)
                 eoo = 10
 
-            key_chars = self._clean_up_html(row['key_characteristics'])
-            notable_ex = self._clean_up_html(row['notable_exceptions'])
             question = row['friendly_text']
             hint = row['hint']
             
@@ -752,8 +750,6 @@ class Importer(object):
                                              value_type=value_type,
                                              unit=unit,
                                              ease_of_observability=eoo,
-                                             key_characteristics=key_chars,
-                                             notable_exceptions=notable_ex,
                                              question=question,
                                              hint=hint)
                 character.save()
@@ -814,8 +810,6 @@ class Importer(object):
                 continue
             character = res[0]
             
-            key_chars = self._clean_up_html(row['key_characteristics'])
-            notable_ex = self._clean_up_html(row['notable_exceptions'])
             friendly_text = self._clean_up_html(row['friendly_text'])
 
             # note that CharacterValues can be used by multiple Characters
@@ -825,8 +819,6 @@ class Importer(object):
             if len(res) == 0:
                 cv = models.CharacterValue(value_str=row['character_value'],
                                            character=character,
-                                           key_characteristics=key_chars,
-                                           notable_exceptions=notable_ex,
                                            friendly_text=friendly_text)
                 cv.save()
                 print >> self.logfile, u'  New Character Value: %s ' \
@@ -1214,8 +1206,6 @@ class Importer(object):
                 value_type=value_type,
                 unit='',
                 ease_of_observability=1,
-                key_characteristics='',
-                notable_exceptions='',
                 question=question)
             if created:
                 print >> self.logfile, \

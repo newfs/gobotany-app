@@ -33,8 +33,6 @@ dojo.declare('gobotany.filters.Filter', null, {
         var f = args.filter ? args.filter : args;
 
         this.hint = f.hint;
-        this.key_characteristics = f.key_characteristics;
-        this.notable_exceptions = f.notable_exceptions;
         this.question = f.question;
 
         dojo.safeMixin(this, args);

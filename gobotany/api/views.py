@@ -148,8 +148,6 @@ def _jsonify_character(character, pile_slug):
         'value_type': character.value_type,
         'unit': character.unit,
         'character_group': character.character_group.name,
-        'key_characteristics': character.key_characteristics,
-        'notable_exceptions': character.notable_exceptions,
         'question': character.question,
         'hint': character.hint,
         'image_url': (character.image.url if character.image else ''),
@@ -268,8 +266,6 @@ def vectors_character(request, name):
         species[tcv.character_value_id].append(tcv.taxon_id)
     return jsonify([{
         'friendly_text': v.friendly_text,
-        'key_characteristics': v.key_characteristics,
-        'notable_exceptions': v.notable_exceptions,
         'species': sorted(species[v.id]),
         'choice': v.value_str,
         'scalar': v.value_flt,

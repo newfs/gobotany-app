@@ -153,8 +153,6 @@ class Character(models.Model):
         max_length=10, choices=VALUE_CHOICES.items())
     unit = models.CharField(
         max_length=2, null=True, blank=True, choices=UNIT_CHOICES.items())
-    key_characteristics = models.TextField(blank=True)
-    notable_exceptions = models.TextField(blank=True)
     question = models.TextField(blank=True)
     hint = models.TextField(blank=True)
 
@@ -229,8 +227,6 @@ class CharacterValue(models.Model):
 
     character = models.ForeignKey(Character, related_name='character_values')
     glossary_term = models.ForeignKey(GlossaryTerm, blank=True, null=True)
-    key_characteristics = models.TextField(blank=True)
-    notable_exceptions = models.TextField(blank=True)
     friendly_text = models.TextField(blank=True)
     image = ImageWithThumbnailsField(upload_to='character-value',
                                      thumbnail={'size': (40, 40)},

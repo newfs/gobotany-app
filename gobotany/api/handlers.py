@@ -292,9 +292,6 @@ class CharacterValuesHandler(BaseHandler):
         for cv in models.CharacterValue.objects.filter(
             pile=pile, character=character):
 
-            key_characteristics = cv.key_characteristics
-            notable_exceptions = cv.notable_exceptions
-
             image_url = ''
             thumbnail_url = ''
             if cv.image:
@@ -303,8 +300,6 @@ class CharacterValuesHandler(BaseHandler):
 
             yield {'value': cv.value,
                    'friendly_text': cv.friendly_text,
-                   'key_characteristics': key_characteristics,
-                   'notable_exceptions': notable_exceptions,
                    'image_url': image_url,
                    'thumbnail_url': thumbnail_url}
 
