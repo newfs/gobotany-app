@@ -6,12 +6,14 @@ dojo.provide('gobotany.sk.species');
 dojo.require('dojo.cookie');
 
 dojo.require('gobotany.sk.glossary');
+dojo.require('gobotany.sk.photo');
 dojo.require('gobotany.utils');
 
 dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
 
     constructor: function() {
         this.glossarizer = gobotany.sk.glossary.Glossarizer();
+        this.photo_helper = gobotany.sk.photo.PhotoHelper();
     },
 
     toggle_character_group: function() {
@@ -54,39 +56,6 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
         });
     },
 
-    prepare_to_open_image: function() {
-        var title_element = dojo.query('#sb-title-inner')[0];
-                                                    
-        // Temporarily hide the title element.
-        dojo.addClass(title_element, 'hidden');
-
-        // Call a function to move the close link because an existing
-        // onOpen handler with this function call is being overridden here.
-        global_moveShadowboxCloseLink();
-    },
-
-    process_photo_title_and_credit: function() {
-        // Format the title text for a better presentation atop the photo.
-
-        var title_element = dojo.query('#sb-title-inner')[0];
-        var title_text = title_element.innerHTML;
-
-        // Parse and mark up the title text.
-        var parts = title_text.split('.');
-
-        var image_type = parts[0].split(':')[0];
-        // Get the properly-italicized scientific name from the page heading.
-        var name = dojo.query('h2 .scientific')[0].innerHTML;
-        var title = image_type + ': ' + dojo.trim(name) + '.';
-
-        var html = title + '<br><span>' + parts[1] + '.' + parts[2] + '.' +
-            parts[3] + '.</span>';
-        title_element.innerHTML = html;
-
-        // Show the title element again.
-        dojo.removeClass(title_element, 'hidden');
-    },
-
     wire_up_image_links: function() {
         // Wire up each image link to a Shadowbox popup handler.
         var IMAGE_LINKS_CSS = '#species-images .scrollableArea a';
@@ -102,8 +71,8 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
                     player: 'img',
                     title: link.title,
                     options: {
-                        onOpen: that.prepare_to_open_image,
-                        onFinish: that.process_photo_title_and_credit
+                        onOpen: that.photo_helper.prepare_to_enlarge,
+                        onFinish: that.photo_helper.process_title_and_credit
                     }
                 });
             });
