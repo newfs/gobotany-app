@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import include, patterns, url
 from django.contrib import admin
-import staticfiles.urls
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 import gobotany.api.urls
 import gobotany.core.urls
@@ -20,7 +20,7 @@ urlpatterns = patterns(
     )
 
 if gobotany.settings.DEBUG:
-    urlpatterns += staticfiles.urls.urlpatterns
+    urlpatterns += staticfiles_urlpatterns()
 
 if gobotany.settings.DEBUG_DOJO:
     import os

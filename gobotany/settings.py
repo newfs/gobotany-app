@@ -74,7 +74,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.humanize',
     'django.contrib.sessions',
-    'staticfiles',
+    'django.contrib.staticfiles',
 
     'haystack',
     'sorl.thumbnail',
@@ -92,7 +92,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
         "django.core.context_processors.i18n",
         "django.core.context_processors.request",
         "django.core.context_processors.media",
-        "staticfiles.context_processors.static_url",
+        "django.core.context_processors.static",
         "gobotany.core.context_processors.dojo",
 )
 THUMBNAIL_PROCESSORS = (
