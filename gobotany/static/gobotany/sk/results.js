@@ -11,7 +11,6 @@ dojo.require('gobotany.sk.glossary');
 dojo.require('gobotany.sk.SpeciesSectionHelper');
 dojo.require('gobotany.sk.working_area');
 dojo.require('gobotany.filters');
-dojo.require('gobotany.piles');
 dojo.require('gobotany.utils');
 
 dojo.require('dojo.cookie');
@@ -40,7 +39,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         // | helper.setup();
 
         this.pile_slug = pile_slug;
-        this.pile_manager = new gobotany.piles.PileManager(this.pile_slug);
         this.filter_manager = new gobotany.filters.FilterManager({
             pile_slug: this.pile_slug,
             onload: dojo.hitch(this, this.filter_loaded)
@@ -85,8 +83,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         dojo.connect(select_box, 'onChange',
                      dojo.hitch(this, this.load_selected_image_type));
 
-        dojo.connect(this.pile_manager, 'on_pile_info_changed', dojo.hitch(
-            this, function(pile_info) {
+        simplekey_resources.pile(this.pile_slug).done(
+            dojo.hitch(this, function(pile_info) {
 
                 this.filter_section._setup_character_groups(
                     pile_info.character_groups);
@@ -136,12 +134,10 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 }
                 else {
                     this.setup_filters_from_pile_info({
+                        pile_info: pile_info,
                         on_complete: filters_loaded});
                 }
-            })
-        );
-
-        this.pile_manager.load();
+            }));
 
         // Set up the onhashchange event handler, which will be used to detect
         // Back button undo events for modern browsers.
@@ -217,7 +213,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         //   Sets up the internal filter data structure based on default
         //   filters in the pile info.
 
-        var pile_info = this.pile_manager.pile_info;
+        var pile_info = args.pile_info;
         var filters = [];
         var x;
         for (x = 0; x < pile_info.default_filters.length; x++) {
@@ -227,7 +223,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 pile_info.default_filters[x]);
             filters.push(filter);
         }
-        
+
         if (args && args.on_complete) {
             args.on_complete(filters);
         }
