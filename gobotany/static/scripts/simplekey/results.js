@@ -1,18 +1,3 @@
-require([
-    'activate_image_gallery',
-    'activate_search_suggest',
-    'shadowbox'
-], function() {
-
-    Shadowbox.init({
-        onOpen: function() {
-            // Move the Shadowbox close link.
-            var tb = document.getElementById('sb-wrapper');
-            if (tb) tb.appendChild(document.getElementById('sb-nav-close'));
-        }
-    });
-});
-
 define([
     'dojo',
     'order!jquery.tools.min',
@@ -30,6 +15,25 @@ define([
         dojo.addOnLoad(function() {
             helper = gobotany.sk.results.ResultsHelper(pile_slug);
             helper.setup();
+        });
+
+        /* Hook up our gallery applications. */
+
+        require([
+            'activate_image_gallery',
+            'activate_search_suggest',
+            'shadowbox'
+        ], function() {
+            Shadowbox.init({
+                onOpen: function() {
+                    // Move the Shadowbox close link.
+                    var tb = document.getElementById('sb-wrapper');
+                    if (tb) {
+                        var snc = document.getElementById('sb-nav-close');
+                        tb.appendChild(snc);
+                    }
+                }
+            });
         });
     }
 });
