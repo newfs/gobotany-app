@@ -21,8 +21,13 @@ define([
         return d;
     },
     /*
-     * Simple AJAX requests.
+     * Our AJAX resources.
      */
+
+    module.pile_species = _.memoize(function(pile_slug) {
+        return module.get('species/' + pile_slug + '/');
+    });
+
     module.character_vector = _.memoize(function(short_name) {
         return module.get('vectors/character/' + short_name + '/');
     });
@@ -32,6 +37,7 @@ define([
     module.pile_vector = _.memoize(function(pile_slug) {
         return module.get('vectors/pile/' + pile_slug + '/');
     });
+
     /*
      * Functions that combine data from multiple AJAX requests.
      */
