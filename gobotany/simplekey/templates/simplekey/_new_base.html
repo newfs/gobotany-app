@@ -26,6 +26,11 @@
         <!--[if IE 8]>
             <link rel="stylesheet" href="/static/css/ie8.css">
         <![endif]-->
+        <script src="/static/scripts/require.js"></script>
+        <script>
+            require.config({baseUrl: "/static/scripts"});
+            {% block js_require %}{% endblock %}
+        </script>
     </head>
 
     <body {% block body_attributes %}{% endblock %}>
@@ -51,11 +56,6 @@
         <![endif]-->
 
         <!-- These blocks are for adding any page-specific JS. -->
-        <script src="/static/scripts/require.js"></script>
-        <script>
-            require.config({baseUrl: "/static/scripts"});
-            {% block js_require %}{% endblock %}
-        </script>
         {% block js_bottom %}{% endblock %}
     </body>
 </html>
