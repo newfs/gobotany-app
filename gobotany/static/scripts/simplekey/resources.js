@@ -26,6 +26,9 @@ define([
      * Our AJAX resources.
      */
 
+    module.pile = _.memoize(function(pile_slug) {
+        return module.get('piles/' + pile_slug + '/');
+    });
     module.pile_characters = _.memoize(function(pile_slug, character_names) {
         return module.get('piles/' + pile_slug + '/characters/', {
             include: character_names
