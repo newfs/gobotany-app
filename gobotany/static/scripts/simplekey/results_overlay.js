@@ -1,6 +1,14 @@
 require([
-    'jquery.tools.min'
-], function() {
+    'args',
+    'jquery.tools.min',
+    'simplekey/resources'
+], function(args, ignore, resources) {
+
+    var d = resources.species_vector('simple', args.pile_slug);
+    d.done(function(species_vector) {
+        $('.number-of-species .number').html(species_vector.length);
+    });
+
     $(document).ready(function() {
 
         $('#intro-overlay').overlay({
