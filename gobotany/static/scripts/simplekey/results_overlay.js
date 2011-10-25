@@ -4,9 +4,9 @@ require([
     'simplekey/resources'
 ], function(args, ignore, resources) {
 
-    var d = resources.species_vector('simple', args.pile_slug);
-    d.done(function(species_vector) {
-        $('.number-of-species .number').html(species_vector.length);
+    var bv = resources.base_vector('simple', args.pile_slug);
+    bv.done(function(base_vector) {
+        $('.number-of-species .number').html(base_vector.length);
     });
 
     $(document).ready(function() {

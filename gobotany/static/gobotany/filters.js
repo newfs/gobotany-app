@@ -37,27 +37,27 @@ dojo.declare('gobotany.filters.Filter', null, {
 
         dojo.safeMixin(this, args);
     },
-    // load_values({base_vector: [...], onload: function})
+    // load_values({onload: function})
     // Does an async load of the filter's species id list, then invokes
     // the caller-supplied callback.  The vector is stored so the second
     // and subsequent invocations can invoke the callback immediately.
     // Values that have no species in common with the given base_vector
     // are not stored, since they do not apply to this key and pile.
     load_values: function(args) {
-        var url = 'vectors/character/' + this.character_short_name;
 
         if (this.values !== false) {
             if (args.onload !== undefined) args.onload(this);
             return;
         }
 
-        get_json(url, this, function(data) {
+        $.when(
+            simplekey_resources.base_vector('simple', this.pile_slug),
+            simplekey_resources.character_vector(this.short_name)
+        ).done(_.bind(function(base_vector, data) {
+
             this.values = [];
             this.choicemap = {};
-            if (!args.base_vector) {
-                console.log('load_values: species apparently not ' +
-                            'loaded yet (base vector is false)');
-            }
+
             var knowns = [];  // species with any value whatsoever, even NA
             for (var i = 0; i < data.length; i++) {
                 var value = data[i];
@@ -76,19 +76,16 @@ dojo.declare('gobotany.filters.Filter', null, {
                         this.max = value.max;
             }
             this.unknowns = _.without.apply(
-                0, [args.base_vector].concat(knowns));
+                0, [base_vector].concat(knowns));
             console.log(this.character_short_name, ' has ', this.values.length,
                         ' values which mention ', knowns.length,
                         ' species, leaving ', this.unknowns.length,
                         ' unknowns');
 
-            // If our FilterManager has already finished loading and
-            // computing its base_vector, then we should cull ourselves.
-            if (this.manager.base_vector !== null)
-                this.cull_values();
+            this.cull_values(base_vector);
 
             if (args.onload !== undefined) args.onload(this);
-        });
+        }, this));
     },
     /*
      * Determine which of our choices are "safe" and will not cause zero
@@ -105,8 +102,7 @@ dojo.declare('gobotany.filters.Filter', null, {
     // Remove values that have absolutely no species in common with our
     // FilterManager's base_vector, so that pile-irrelevant character
     // values do not get displayed when a filter is pulled up.
-    cull_values: function() {
-        var base_vector = this.manager.base_vector;
+    cull_values: function(base_vector) {
         for (var i = this.values.length - 1; i >= 0; i--)
             if (_.intersect(base_vector, this.values[i].species).length === 0)
                 this.values.splice(i, 1);
@@ -267,7 +263,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         // of the filters loaded so far has been able to cull itself of
         // inapplicable values.
         for (var i = 0; i < this.filters.length; i++)
-            this.filters[i].cull_values();
+            this.filters[i].cull_values(this.base_vector);
 
         var onload = this.onload;
         if (onload !== undefined) onload(this);
@@ -413,7 +409,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                 if (character_short_name == 'family' ||
                     character_short_name == 'genus')
                     return;
-                this.filters[i].load_values({base_vector: this.base_vector});
+                this.filters[i].load_values({});
                 return;
             }
         }

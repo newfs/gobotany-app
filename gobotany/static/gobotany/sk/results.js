@@ -109,10 +109,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                     this._loaded_filters = filters;
                     var filter_loaded = dojo.hitch(this, this.filter_loaded);
                     for (i = 0; i < filters.length; i++) {
-                        filters[i].load_values({
-                            base_vector: this.filter_manager.base_vector,
-                            onload: filter_loaded
-                        });
+                        filters[i].load_values({onload: filter_loaded});
                     }
                 });
 
@@ -884,7 +881,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
     show_filter_working: function(filter) {
         filter.load_values({
-            base_vector: this.results_helper.filter_manager.base_vector,
             onload: dojo.hitch(this, 'show_filter_working_onload')
         });
     },
