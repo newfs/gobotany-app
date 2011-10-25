@@ -1,20 +1,27 @@
 define([
-    'dojo',
-    'order!jquery.tools.min',
-    'order!jquery.jscrollpane.min',
-    'underscore-min',
-    'global',  // for global_setSidebarHeight
-    'simplekey/results_overlay'
 ], {
     /* Since the HTML template is what knows the pile_slug, we provide
      * it with a function it can invoke that takes the pile_slug as an
      * argument.
      */
     startup: function(pile_slug) {
-        dojo.require('gobotany.sk.results');
-        dojo.addOnLoad(function() {
-            helper = gobotany.sk.results.ResultsHelper(pile_slug);
-            helper.setup();
+
+        require([
+            'simplekey/results_overlay'
+        ]);
+
+        require([
+            'dojo',
+            'order!jquery.tools.min',  // needed by jscrollpane
+            'order!jquery.jscrollpane.min',  // sk/results.js
+            'underscore-min',  // filters.js, etc
+            'global'  // sk/results.js, etc
+        ], function() {
+            dojo.require('gobotany.sk.results');
+            dojo.addOnLoad(function() {
+                helper = gobotany.sk.results.ResultsHelper(pile_slug);
+                helper.setup();
+            });
         });
 
         /* Hook up our gallery applications. */
