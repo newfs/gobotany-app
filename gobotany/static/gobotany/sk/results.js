@@ -658,10 +658,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         for (x = 0; x < filter_manager.filters.length; x++) {
             existing.push(filter_manager.filters[x].character_short_name);
         }
-        filter_manager.query_best_filters({
+        simplekey_resources.pile_best_characters({
+            pile_slug: filter_manager.pile_slug,
+            species_ids: filter_manager.species_ids,
             character_group_ids: character_group_ids,
-            existing_characters: existing,
-            onLoaded: dojo.hitch(this, function(items) {
+            exclude_characters: existing
+        }).done(
+            dojo.hitch(this, function(items) {
                 if (items.length > 0) {
                     // Add the new filters to the Filter Manager.
                     var new_filter_names = [];
@@ -697,8 +700,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     gobotany.utils.notify(
                         'No more questions left for the boxes checked');
                 }
-            })
-        });
+            }));
     },
 
     _get_filter_display_value: function(filter) {

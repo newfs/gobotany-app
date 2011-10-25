@@ -31,6 +31,14 @@ define([
             include: character_names
         });
     });
+    module.pile_best_characters = _.memoize(function(args) {
+        return module.get('piles/' + args.pile_slug + '/characters/', {
+            choose_best: 3,
+            species_id: args.species_ids,
+            character_group_id: args.character_group_ids,
+            exclude: args.exclude_characters
+        });
+    });
     module.pile_species = _.memoize(function(pile_slug) {
         return module.get('species/' + pile_slug + '/');
     });
