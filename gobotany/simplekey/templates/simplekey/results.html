@@ -165,6 +165,6 @@
 
 {% block js_require %}
     require(['simplekey/results'], function(results) {
-        results('{{ pile.slug }}');
+        results.startup('{{ pile.slug }}');
     });
 {% endblock %}
