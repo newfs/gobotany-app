@@ -205,7 +205,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                 {manager: this}
             )
         ];
-        this.base_vector = null;  // intersection(simple_vector, pile_vector)
+        this.base_vector = null;
         this.pile_slug = args.pile_slug;
         this.species_by_id = {};  // species_id -> species_obj
         this.species_by_scientific_name = {}; // scientific_name -> species_obj
@@ -219,15 +219,15 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         this.chars_store = new dojox.data.JsonRestStore(
             {target: args.pile_url + args.pile_slug + '/characters/'});
 
-        this.stage1();
+        this.load_stuff();
     },
 
     // When a FilterManager is first created, it preloads the list of
     // species applicable to its key and pile and then fetches the data
     // for those species.  This is performed in stages.
 
-    stage1: function() {
-        this.stage1_countdown = 3;
+    load_stuff: function() {
+        var stuff_built = $.Deferred();
         var ps = simplekey_resources.pile_species(this.pile_slug);
         ps.done(_.bind(function(species_list) {
             for (var i = 0; i < species_list.length; i++) {
@@ -239,32 +239,17 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                 return a.scientific_name < b.scientific_name ? -1 : 1;
             });
             this.build_family_genus_filters(species_list);
-            this.stage2();
+            stuff_built.resolve();
         }, this));
-        get_json('vectors/key/simple', this, function(data) {
-            this.simple_vector = data[0].species;
-            this.stage2();
-        });
-        get_json('vectors/pile/' + this.pile_slug, this, function(data) {
-            this.pile_vector = data[0].species;
-            this.stage2();
-        });
-    },
-    stage2: function() {
-        this.stage1_countdown--;
-        if (this.stage1_countdown)
-            return;
-        this.base_vector = _.intersect(this.simple_vector, this.pile_vector);
-        console.log('base_vector:', this.base_vector.length, 'species');
 
-        // Since this.base_vector has been null until this moment, none
-        // of the filters loaded so far has been able to cull itself of
-        // inapplicable values.
-        for (var i = 0; i < this.filters.length; i++)
-            this.filters[i].cull_values(this.base_vector);
-
-        var onload = this.onload;
-        if (onload !== undefined) onload(this);
+        $.when(
+            stuff_built,
+            simplekey_resources.base_vector('simple', this.pile_slug)
+        ).done(_.bind(function(nothing, base_vector) {
+            this.base_vector = base_vector;
+            console.log('base_vector:', base_vector.length, 'species');
+            if (this.onload !== undefined) this.onload(this);
+        }, this));
     },
 
     // build_family_genus_filters()
