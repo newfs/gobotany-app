@@ -13,9 +13,11 @@ define([
      * contrast, returns simple data to .get() but an awkward triple
      * [data, status, jqXHR] when passed through $.when().
      */
-    module.get = function(path) {
+    module.get = function(path, data) {
         var d = $.Deferred();
-        $.get(API_URL + path).done(function(r) {
+        $.ajax({
+            url: API_URL + path, data: data, traditional: true
+        }).done(function(r) {
             d.resolve(r);
         });
         return d;
@@ -24,6 +26,11 @@ define([
      * Our AJAX resources.
      */
 
+    module.pile_characters = _.memoize(function(pile_slug, character_names) {
+        return module.get('piles/' + pile_slug + '/characters/', {
+            include: character_names
+        });
+    });
     module.pile_species = _.memoize(function(pile_slug) {
         return module.get('species/' + pile_slug + '/');
     });

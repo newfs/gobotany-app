@@ -6,12 +6,6 @@
 dojo.provide('gobotany.filters');
 dojo.require('dojox.data.JsonRestStore');
 
-var get_json = function(path, _this, load) {
-    var u = API_URL + path;
-    if (path.substr(-1) !== '/') u += '/';
-    dojo.xhrGet({url: u, handleAs: 'json', load: dojo.hitch(_this, load)});
-};
-
 dojo.declare('gobotany.filters.Filter', null, {
     selected_value: null,
     values: false,  // load_values() creates [value, ...] array
@@ -305,13 +299,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                     species_id: this.species_ids || [],
                     character_group_id: args.character_group_ids || [],
                     exclude: args.existing_characters || []},
-            scope: {filter_manager: this, args: args},
-            onComplete: args.onLoaded
-        });
-    },
-    query_filters: function(args) {
-        this.chars_store.fetch({
-            query: {include: args.short_names || []},
             scope: {filter_manager: this, args: args},
             onComplete: args.onLoaded
         });

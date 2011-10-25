@@ -283,12 +283,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         }
 
         if (filter_names.length > 0) {
-            console.log('setup_filters_from_hash: about to call ' +
-                'filter_manager.query_filters with filter_names: ' +
-                filter_names);
-            this.filter_manager.query_filters({
-                short_names: filter_names,
-                onLoaded: dojo.hitch(this, function(items) {
+            simplekey_resources.pile_characters(this.pile_slug, filter_names)
+                .done(dojo.hitch(this, function(items) {
                     var filters = [];
                     dojo.forEach(items, dojo.hitch(this, function(item) {
                         var filter_args = gobotany.utils.clone(item,
@@ -305,8 +301,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                     if (args && args.on_complete) {
                         args.on_complete(filters);
                     }
-                })
-            });
+                }));
         }
     },
 
