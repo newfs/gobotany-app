@@ -8,11 +8,9 @@ from operator import itemgetter
 from piston.handler import BaseHandler
 from piston.utils import rc
 
-import xml.etree.ElementTree
-from xml.etree.ElementTree import parse
-
 from gobotany.core import botany, models
-from gobotany.settings import STATIC_ROOT
+from gobotany.mapping.map import NewEnglandPlantDistributionMap
+
 from .views import _jsonify_character
 
 def _taxon_image(image):
@@ -314,64 +312,21 @@ class CharacterValuesHandler(BaseHandler):
 class DistributionMapHandler(BaseHandler):
     methods_allowed = ('GET',)
 
-    def _shade_map(self, svgmap, distribution, hexcolor='#ff0000', opacity=1):
-        """Color in New England states that match the passed distribution
-        list. Note: this method needs to be modified to color in counties
-        instead of states when we get the county level data."""
-
-        # Shade in the color of the states.
-        inkscape_label = '{http://www.inkscape.org/namespaces/inkscape}label'
-        nodes = svgmap.findall('{http://www.w3.org/2000/svg}path')
-        for node in nodes:
-            if inkscape_label in node.keys():
-                label = node.attrib[inkscape_label]   # e.g. Hartford, CT
-                state = label[-2:]                    # e.g. CT
-                if state in distribution:
-                    style = node.get('style')
-                    shaded_style = style.replace('fill:none;', 'fill:%s;' % \
-                                                str(hexcolor))
-                    shaded_style = shaded_style.replace('stroke-opacity:1;', \
-                                                'stroke-opacity:%s;' % str(opacity))
-                    node.set('style', shaded_style)
-
-        # Shade in the color of the 'present' legend box.
-        rect_nodes = svgmap.findall('{http://www.w3.org/2000/svg}rect')
-        for rect_node in rect_nodes:
-            if rect_node.get('id') == 'present-box':
-                style = rect_node.get('style')
-                shaded_style = style.replace('fill:#000000;fill-opacity:0;',
-                                             'fill:%s;fill-opacity:%s;' % \
-                                             (hexcolor, str(opacity)))
-                rect_node.set('style', shaded_style)
-
     def read(self, request, genus, specific_epithet):
-        """Return an SVG map of New England with counties that contain the
-        species shaded in.
+        """Return a vector map of New England showing county-level
+        distribution data for a plant.
         """
-        STATES_DELIMITER = '|'
-
-        blank_map  = ''.join([STATIC_ROOT,
-            '/graphics/new-england-counties.svg'])
-
-        name = ' '.join([genus.title(), specific_epithet.lower()])
-        taxon = models.Taxon.objects.filter(scientific_name=name)
-        distribution = []
-        if len(taxon) > 0:
-            states = taxon[0].distribution.replace(' ', '').split( \
-                STATES_DELIMITER)
-            distribution = [state.strip() for state in states]
-
-        svg = parse(blank_map)
-        self._shade_map(svg, distribution, hexcolor='#D5ECC5', opacity=1)
-
-        if taxon:
-            return HttpResponse(xml.etree.ElementTree.tostring(svg.getroot()),
-                mimetype="image/svg+xml")
+        scientific_name = ' '.join([genus.title(), specific_epithet.lower()])
+        distribution_map = NewEnglandPlantDistributionMap()
+        distribution_map.set_plant(scientific_name)
+        distribution_map.shade()
+        return HttpResponse(distribution_map.tostring(),
+                            mimetype='image/svg+xml')
 
 
 class FamilyHandler(BaseHandler):
     methods_allowed = ('GET',)
-    
+
     def read(self, request, family_slug):
         try:
             family = models.Family.objects.get(slug=family_slug)
