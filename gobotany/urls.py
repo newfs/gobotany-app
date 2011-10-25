@@ -21,15 +21,3 @@ urlpatterns = patterns(
 
 if gobotany.settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()
-
-if gobotany.settings.DEBUG_DOJO:
-    import os
-    import gobotany
-    dojo_path = os.path.abspath(os.path.join(gobotany.__path__[0],
-                                             '..', '..', '..', 'dojo'))
-    urlpatterns += patterns(
-        '',
-        (r'^dojo/(?P<path>.*)$', 'django.views.static.serve',
-         {'document_root': dojo_path,
-          'show_indexes': True}),
-        )
