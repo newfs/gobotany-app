@@ -4,8 +4,9 @@ require([
     'simplekey/resources'
 ], function(args, ignore, resources) {
 
-    var bv = resources.base_vector('simple', args.pile_slug);
-    bv.done(function(base_vector) {
+    resources.base_vector({
+        key_name: 'simple', pile_slug: args.pile_slug
+    }).done(function(base_vector) {
         $('.number-of-species .number').html(base_vector.length);
     });
 

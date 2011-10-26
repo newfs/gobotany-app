@@ -44,7 +44,9 @@ dojo.declare('gobotany.filters.Filter', null, {
         }
 
         $.when(
-            simplekey_resources.base_vector('simple', this.pile_slug),
+            simplekey_resources.base_vector({
+                key_name: 'simple', pile_slug: this.pile_slug
+            }),
             simplekey_resources.character_vector(this.short_name)
         ).done(_.bind(function(base_vector, data) {
 
@@ -230,7 +232,9 @@ dojo.declare('gobotany.filters.FilterManager', null, {
 
         $.when(
             stuff_built,
-            simplekey_resources.base_vector('simple', this.pile_slug)
+            simplekey_resources.base_vector({
+                key_name: 'simple', pile_slug: this.pile_slug
+            })
         ).done(_.bind(function(nothing, base_vector) {
             this.base_vector = base_vector;
             console.log('base_vector:', base_vector.length, 'species');

@@ -57,11 +57,11 @@ define([
     /*
      * Functions that combine data from multiple AJAX requests.
      */
-    module.base_vector = _.memoize(function(key_name, pile_slug) {
+    module.base_vector = _.memoize(function(args) {
         var deferred = $.Deferred();
         $.when(
-            module.key_vector(key_name),
-            module.pile_vector(pile_slug)
+            module.key_vector(args.key_name),
+            module.pile_vector(args.pile_slug)
         ).done(function(kv, pv) {
             deferred.resolve(_.intersect(kv[0].species, pv[0].species));
         });
