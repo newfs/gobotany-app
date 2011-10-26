@@ -657,7 +657,7 @@ class SearchFunctionalTests(FunctionalTestCase):
 
     def test_search_results_page_omits_navigation_links_above_limit(self):
         MAX_PAGE_LINKS = 20
-        self.get('/search?q=monocot')  # query that returns > 1,000 results
+        self.get('/search/?q=monocot')  # query that returns > 1,000 results
         nav_links = self.css('.search-navigation li a')
         self.assertTrue(len(nav_links))
         # The number of links should equal the maximum page links: all
@@ -666,7 +666,7 @@ class SearchFunctionalTests(FunctionalTestCase):
         self.assertTrue(len(nav_links) == MAX_PAGE_LINKS)
 
     def test_search_results_page_navigation_has_ellipsis_above_limit(self):
-        self.get('/search?q=monocot')  # query that returns > 1,000 results
+        self.get('/search/?q=monocot')  # query that returns > 1,000 results
         nav_list_items = self.css('.search-navigation li')
         self.assertTrue(len(nav_list_items))
         ellipsis = nav_list_items[-2]
