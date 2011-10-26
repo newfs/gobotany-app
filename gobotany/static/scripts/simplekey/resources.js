@@ -29,10 +29,8 @@ define([
     module.pile = _.memoize(function(pile_slug) {
         return module.get('piles/' + pile_slug + '/');
     });
-    module.pile_characters = _.memoize(function(pile_slug, character_names) {
-        return module.get('piles/' + pile_slug + '/characters/', {
-            include: character_names
-        });
+    module.pile_characters = _.memoize(function(pile_slug) {
+        return module.get('piles/' + pile_slug + '/characters/');
     });
     module.pile_best_characters = _.memoize(function(args) {
         return module.get('piles/' + args.pile_slug + '/characters/', {

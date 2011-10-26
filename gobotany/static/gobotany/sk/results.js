@@ -279,10 +279,14 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         }
 
         if (filter_names.length > 0) {
-            simplekey_resources.pile_characters(this.pile_slug, filter_names)
+            simplekey_resources.pile_characters(this.pile_slug)
                 .done(dojo.hitch(this, function(items) {
                     var filters = [];
                     dojo.forEach(items, dojo.hitch(this, function(item) {
+                        if (_.indexOf(filter_names, item.short_name) == -1)
+                            // Because all filters come back, we have to
+                            // skip the ones we do not want.
+                            return;
                         var filter_args = gobotany.utils.clone(item,
                             {pile_slug: this.pile_slug});
                         var filter = this.filter_manager.add_filter(

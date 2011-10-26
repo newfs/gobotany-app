@@ -9,6 +9,10 @@ require([
         $('.number-of-species .number').html(base_vector.length);
     });
 
+    resources.pile_characters(args.pile_slug, []).done(function(clist) {
+        $('.number-of-questions .number').html(clist.length);
+    });
+
     $(document).ready(function() {
 
         $('#intro-overlay').overlay({

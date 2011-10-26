@@ -156,10 +156,7 @@ def _jsonify_character(character, pile_slug):
 
 def piles_characters(request, pile_slug):
     """Returns a list of characters."""
-    piles = Pile.objects.filter(slug=pile_slug).all()
-    if not piles:
-        raise Http404()
-    pile = piles[0]
+    pile = get_object_or_404(Pile, slug=pile_slug)
 
     # First, build a list of raw character values.
 
@@ -185,6 +182,9 @@ def piles_characters(request, pile_slug):
                 character_group_ids=character_group_ids,
                 exclude_short_names=exclude_short_names,
                 ))
+    elif not characters:
+        characters = Character.objects.filter(
+            character_values__pile=pile).distinct()
 
     # Turn the characters into a data structure for JSON.
 
