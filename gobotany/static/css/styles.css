@@ -193,22 +193,30 @@ body#home #top-wrapper {
 	background: url(/static/images/layout/content-home-bg.jpg) center 72px no-repeat transparent;	
 }
 #banner {
-	width: 948px;
-	height: 333px;	
-	padding: 6px;
-	margin: 10px 0 0 0;
-	background: url(/static/images/layout/banner-img1.jpg) no-repeat;
-	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-	-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+    margin: 10px 0 0;
+    position: absolute;
 }
-
-#banner #overlay {
-	float: right;
-	width: 244px;
-	height: 318px;
-	padding: 15px 30px 0px;
-	background: rgba(255, 255, 255, 0.8);	
+#banner > img {
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+    display: none;
+    height: 345px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 960px;
+}
+#banner img:first-child {
+    display: block;
+}
+#overlay {
+    background: rgba(255, 255, 255, 0.8);
+    height: 318px;
+    padding: 15px 30px 0;
+    position: absolute;
+    left: 650px;
+    top: 6px;
+    width: 244px;
+    z-index: 100;
 }
 
 #banner h2 {
@@ -235,17 +243,17 @@ body#home #top-wrapper {
 	background-position: 0 -82px;		
 }
 div.three-col {
+	background: url(/static/images/layout/dot.png) right top repeat-y;
 	float: left;
-	width: 289px;
 	height: 230px;
+	margin: 354px 23px 0 0;
 	padding: 8px 23px 0 0;
-	margin: 0 23px 0 0;
-	background: url(/static/images/layout/dot.png) right top repeat-y;	
+	width: 289px;
 }
 div.three-col.last {
+  	background: 0;	
+	margin-right: 0;
 	padding: 8px 0 0 0;
-	margin: 0 0 0 0;
-	background: 0;	
 }
 div.three-col.last a.learn-more {
 	margin: 33px 0 0 0;

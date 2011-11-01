@@ -11,22 +11,23 @@
 
         <div class="content">
             <div class="container">
-                 <div id="banner">
-                    <div id="inner">
-                        <div id="overlay">
-                            <h2>Plant Identifier</h2>
-                            <img src="/static/images/layout/separator.png"
-                                alt="Go Botany">
-                            <p>Want to know what that plant is? With our
-                            Plant Identifier, you can identify over
-                            1,200 New England plants! Answer some
-                            questions step by step, and narrow down the
-                            possibilities. The key works best if you
-                            have an actual sample or a few photos of
-                            your plant.</p>
-                            <a href="{% url simplekey-page 1 %}"
-                                id="cta">Get Started</a>
-                        </div>
+                <div id="banner">
+                    {% for image in home_page_images %}
+                        <img src="{{ image.image.url }}" alt="">
+                    {% endfor %}
+                    <div id="overlay">
+                        <h2>Plant Identifier</h2>
+                        <img src="/static/images/layout/separator.png"
+                            alt="Go Botany">
+                        <p>Want to know what that plant is? With our
+                        Plant Identifier, you can identify over
+                        1,200 New England plants! Answer some
+                        questions step by step, and narrow down the
+                        possibilities. The key works best if you
+                        have an actual sample or a few photos of
+                        your plant.</p>
+                        <a href="{% url simplekey-page 1 %}"
+                            id="cta">Get Started</a>
                     </div>
                 </div>
 

@@ -16,7 +16,8 @@ from gobotany.core import botany
 from gobotany.core import models
 from gobotany.core.models import (
     CharacterGroup, CharacterValue, DefaultFilter, Family, Genus,
-    GlossaryTerm, Habitat, Pile, PileGroup, PlantPreviewCharacter, Taxon,
+    GlossaryTerm, Habitat, HomePageImage, Pile, PileGroup,
+    PlantPreviewCharacter, Taxon,
     )
 from gobotany.core.partner import which_partner
 from gobotany.simplekey.models import Page, get_blurb, SearchSuggestion
@@ -63,9 +64,12 @@ def index_view(request):
 
     blurb = get_blurb('getting_started')
 
+    home_page_images = HomePageImage.objects.order_by('order')
+
     return render_to_response('simplekey/index.html', {
             'main_heading': main_heading,
             'blurb': blurb,
+            'home_page_images': home_page_images,
             }, context_instance=RequestContext(request))
 
 def advanced_view(request):
