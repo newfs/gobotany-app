@@ -1122,6 +1122,34 @@ class Importer(object):
                 content_image.image.extra_thumbnails['large'].width()
 
 
+    def import_home_page_images(self, dest_image_dir_path, images_archive):
+        """Import default home page images and put image files in the
+        specified directory.
+        """
+        print >> self.logfile, 'Importing home page images.'
+        print >> self.logfile, 'Deleting existing images:'
+        for image in models.HomePageImage.objects.all():
+            print >> self.logfile, '  Deleting image %s' % image
+            image.delete()
+
+        'Adding images from archive file:'
+        images = tarfile.open(images_archive)
+        image_names = [name for name in images.getnames()
+                       if not name.startswith('.')]
+        # The default images are just added in reverse directory order
+        # because that was a pretty good sequence without having to
+        # code up a way to specify the default order in the archive file.
+        image_names.reverse()
+        order = 1
+        for name in image_names:
+            print '  Adding image: %s' % name
+            image_file = File(images.extractfile(name))
+            hpi, created = models.HomePageImage.objects.get_or_create(
+                order=order)
+            hpi.image.save(name, image_file)
+            order += 1
+
+
     def _add_place_character_value(self, character, value_str, piles, taxon,
                                    friendly_text_value=None):
         # Don't try to add a value if it's empty.
@@ -1684,6 +1712,10 @@ def main():
     elif sys.argv[1] == 'species-images':
         species_image_dir = os.path.join(settings.MEDIA_ROOT, 'species')
         importer.import_species_images(species_image_dir, *sys.argv[2:])
+    elif sys.argv[1] == 'home-page-images':
+        home_page_image_dir = os.path.join(settings.MEDIA_ROOT,
+                                           'content_images')
+        importer.import_home_page_images(home_page_image_dir, *sys.argv[2:])
     elif sys.argv[1] == 'character-values':
         for taxonf in sys.argv[2:]:
             importer.import_taxon_character_values(taxonf)
