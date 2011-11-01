@@ -5,7 +5,9 @@ from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
 from django.template.defaultfilters import slugify
+
 from sorl.thumbnail.fields import ImageWithThumbnailsField
+
 from tinymce import models as tinymce_models
 
 
@@ -460,6 +462,18 @@ class ContentImage(models.Model):
             name += '%s: %s' % (self.content_type.name, self.object_id)
         name += ' %s: %s' % (self.rank, self.image.name)
         return name
+
+
+class HomePageImage(models.Model):
+    """An image that appears on the home page, cycled among others."""
+    image = models.ImageField(upload_to='content_images')
+    order = models.IntegerField()
+
+    class Meta:
+        ordering = ['order']
+
+    def __unicode__(self):
+        return '%d: %s' % (self.order, self.image.name)
 
 
 class Family(models.Model):

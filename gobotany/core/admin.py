@@ -437,6 +437,7 @@ class PartnerSiteAdmin(admin.ModelAdmin):
 admin.site.register(models.Parameter)
 admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.ContentImage)
+admin.site.register(models.HomePageImage)
 admin.site.register(models.ImageType)
 admin.site.register(models.Family, FamilyAdmin)
 admin.site.register(models.Genus, GenusAdmin)
