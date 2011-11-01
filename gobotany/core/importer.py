@@ -1128,9 +1128,10 @@ class Importer(object):
         """
         print >> self.logfile, 'Importing home page images.'
         print >> self.logfile, 'Deleting existing images:'
-        for image in models.HomePageImage.objects.all():
-            print >> self.logfile, '  Deleting image %s' % image
-            image.delete()
+        for home_page_image in models.HomePageImage.objects.all():
+            print >> self.logfile, '  Deleting image %s' % home_page_image
+            home_page_image.image.delete()
+            home_page_image.delete()
 
         'Adding images from archive file:'
         images = tarfile.open(images_archive)
