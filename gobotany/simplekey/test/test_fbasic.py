@@ -121,12 +121,19 @@ class BasicFunctionalTests(FunctionalTestCase):
 
     # Tests
 
-    def test_front_page(self):
+    def test_home_page(self):
         d = self.get('/')
         self.assertEqual(
             d.title, u'Go Botany: New England Wild Flower Society')
         e = d.find_element_by_link_text('Get Started')
         self.assertTrue(e.get_attribute('href').endswith('/1/'))
+
+    def test_home_page_shows_one_banner_image(self):
+        d = self.get('/')
+        images = self.css('#banner > img')
+        # All but the first of the images should be hidden. The css()
+        # function returns only visible elements, so expect just one.
+        self.assertEqual(len(images), 1)
 
     def test_groups_page(self):
         d = self.get('/1/')
