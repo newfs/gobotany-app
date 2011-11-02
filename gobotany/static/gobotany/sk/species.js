@@ -111,7 +111,9 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
 
         // Highlight glossary terms where appropriate throughout the page.
         var that = this;
-        dojo.query('#info p').forEach(function(node) {
+        var selectors = '#sidebar dd, #main p:not(.nogloss), #main li, ' +
+                        '#main th, #main td';
+        dojo.query(selectors).forEach(function(node) {
             that.glossarizer.markup(node);
         });
 

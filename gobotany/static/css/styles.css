@@ -1495,9 +1495,6 @@ a.description-control {
 	margin: 10px 0 12px 0;
 	background: url(/static/images/icons/plus.png) left 50% no-repeat;	
 }
-ul.characteristics span {
-	text-transform: uppercase;	
-}
 ul.full-description {
 	display: none;
 	margin: 0 0 15px 0;
