@@ -912,6 +912,16 @@ class GlossarizerFunctionalTests(FunctionalTestCase):
                 glossarized_exceptions = self.css('.exceptions .gloss')
                 self.assertTrue(len(glossarized_exceptions))
 
+    def test_glossarized_species_page(self):
+        self.get('/ferns/lycophytes/dendrolycopodium/dendroideum/')
+        # Wait a bit for the glossarizer to finish.
+        self.wait_on(5, self.css1, '#sidebar dd')
+        self.assertTrue(len(self.css('#sidebar dd')))
+        self.assertTrue(len(self.css('#main p')))
+        self.assertTrue(len(self.css('#main li')))
+        self.assertTrue(len(self.css('#main th')))
+
+
 
 class SpeciesFunctionalTests(FunctionalTestCase):
 
