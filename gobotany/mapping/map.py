@@ -62,6 +62,7 @@ class NewEnglandPlantDistributionMap(PlantDistributionMap):
         # scans existing maps.
         blank_map_path  = ''.join([STATIC_ROOT,
                                   '/graphics/new-england-counties.svg'])
+        print blank_map_path # TODO: remove
         maximum_legend_items = 5
         super(NewEnglandPlantDistributionMap, self).__init__(blank_map_path,
             maximum_legend_items)
@@ -151,3 +152,17 @@ class NewEnglandPlantDistributionMap(PlantDistributionMap):
                         '{http://www.w3.org/2000/svg}tspan')
                     label_text_node.text = item_label
                     break
+
+
+class UnitedStatesPlantDistributionMap(PlantDistributionMap):
+    """Class for a map that shows United States county-level distribution
+    data for a plant.
+    """
+
+    def __init__(self):
+        blank_map_path  = ''.join([STATIC_ROOT, '/graphics/us-counties.svg'])
+        print blank_map_path # TODO: remove
+        maximum_legend_items = 5
+        super(UnitedStatesPlantDistributionMap, self).__init__(blank_map_path,
+            maximum_legend_items)
+

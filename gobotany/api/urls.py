@@ -55,24 +55,29 @@ urlpatterns = patterns(
         Resource(handler=handlers.PileHandler), name='api-pile'),
 
     url(r'^piles/(?P<pile_slug>[^/]+)/(?P<character_short_name>[^/]+)/$',
-        Resource(handler=handlers.CharacterValuesHandler), 
+        Resource(handler=handlers.CharacterValuesHandler),
         name='api-character-values'),
 
     url(r'^pilegroups/$',
-        Resource(handler=handlers.PileGroupListingHandler), 
+        Resource(handler=handlers.PileGroupListingHandler),
         name='api-pilegroup-list'),
     url(r'^pilegroups/(?P<slug>[^/]+)/$',
         Resource(handler=handlers.PileGroupHandler), name='api-pilegroup'),
 
-    url(r'^maps/(?P<genus>[^/]+)-(?P<specific_epithet>[^/]+)-distribution-map(\.svg|/)?$',
-        Resource(handler=handlers.DistributionMapHandler), name='distribution-map'),
+    # Distribution maps
+    url(r'^maps/(?P<genus>[^/]+)-(?P<specific_epithet>[^/]+)-ne-distribution-map(\.svg|/)?$',
+        Resource(handler=handlers.NewEnglandDistributionMapVectorHandler),
+        name='ne-distribution-map-vector'),
+    url(r'^maps/(?P<genus>[^/]+)-(?P<specific_epithet>[^/]+)-us-distribution-map(\.svg|/)?$',
+        Resource(handler=handlers.UnitedStatesDistributionMapVectorHandler),
+        name='us-distribution-map-vector'),
 
     url(r'^families/(?P<family_slug>[^/]+)/$',
         Resource(handler=handlers.FamilyHandler), name='api-family'),
-        
+
     url(r'^genera/(?P<genus_slug>[^/]+)/$',
         Resource(handler=handlers.GenusHandler), name='api-genus'),
-        
+
     url(r'^plant-names/',
         Resource(handler=handlers.PlantNamesHandler), name='api-plant-names'),
 

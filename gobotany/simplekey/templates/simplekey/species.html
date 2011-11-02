@@ -8,7 +8,7 @@
 {% block body_attributes %}id="taxon" class="claro app taxon"{% endblock %}
 
 {% block js_top %}
-    <!-- SVGWeb script - must be first, must have data-path.
+    <!-- SVGWeb script: must be first of all JS, must have data-path.
          Also, SVG must be served from same domain as the page. -->
     <script src="/static/svgweb/svg.js"
         data-path="/static/svgweb/"></script>
@@ -197,22 +197,22 @@
                     <h5>New England Distribution</h5>
                     <!--[if !IE]>-->
                     <object
-                        data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map.svg"
+                        data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-ne-distribution-map.svg"
                         type="image/svg+xml"
                         title="distribution map for {{ scientific_name }}"
-                        id="dist-county-map"> <!--<![endif]-->
+                        id="ne-dist-county-map"> <!--<![endif]-->
                     <!--[if lt IE 9]>
                     <object
-                        src="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map.svg"
+                        src="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-ne-distribution-map.svg"
                         classid="image/svg+xml"
                         title="distribution map for {{ scientific_name }}"
-                        id="dist-county-map"> <![endif]-->
+                        id="ne-dist-county-map"> <![endif]-->
                     <!--[if gte IE 9]>
                     <object
-                        data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-distribution-map.svg"
+                        data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-ne-distribution-map.svg"
                         type="image/svg+xml"
                         title="distribution map for {{ scientific_name }}"
-                        id="dist-county-map"> <![endif]-->
+                        id="ne-dist-county-map"> <![endif]-->
                     </object>
                 </div>
 
@@ -226,7 +226,27 @@
                             href="http://bonap.org/BONAPmaps2010/map%20sized/{{ scientific_name }}.png"
                             rel="shadowbox"><img 
                             src="/static/images/icons/zoom.png" 
-                            alt="" align="absmiddle"> Click to enlarge</a>
+                            alt="" align="absmiddle"> Click to
+                            enlarge</a>
+
+                    <object
+                        data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-us-distribution-map.svg"
+                        type="image/svg+xml"
+                        title="distribution map for {{ scientific_name }}"
+                        id="us-dist-county-map"> <!--<![endif]-->
+                    <!--[if lt IE 9]>
+                    <object
+                        src="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-us-distribution-map.svg"
+                        classid="image/svg+xml"
+                        title="distribution map for {{ scientific_name }}"
+                        id="us-dist-county-map"> <![endif]-->
+                    <!--[if gte IE 9]>
+                    <object
+                        data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-us-distribution-map.svg"
+                        type="image/svg+xml"
+                        title="distribution map for {{ scientific_name }}"
+                        id="us-dist-county-map"> <![endif]-->
+                    </object>
                 </div>
 
                 <div class="section">

@@ -592,11 +592,16 @@ Sidebar Styles
 #sidebar a.sidebarlink[href] {
     color: #1a2e11;
 }
-#dist-county-map {
-    height: 290px; /* SVG map: WebKit needs height and width set */
+#ne-dist-county-map {
+    /* SVG map: WebKit needs height and width set */
+    height: 290px;
     width: 187px;
 }
-
+#us-dist-county-map {
+    /* SVG map: WebKit needs height and width set */
+    height: 120px;
+    width: 187px;
+}
 
 /*******------
 Level 3 Id styles
