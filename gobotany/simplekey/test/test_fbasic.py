@@ -890,8 +890,11 @@ class GlossarizerFunctionalTests(FunctionalTestCase):
 
     def test_glossarized_groups_page(self):
         self.get('/1/')
+        # Wait a bit for the glossarizer to finish.
+        self.wait_on(5, self.css1, '.key-char .gloss')
         glossarized_key_characteristics = self.css('.key-char .gloss')
         self.assertTrue(len(glossarized_key_characteristics))
+        self.wait_on(5, self.css1, '.exceptions .gloss')
         glossarized_exceptions = self.css('.exceptions .gloss')
         self.assertTrue(len(glossarized_exceptions))
 
@@ -900,9 +903,12 @@ class GlossarizerFunctionalTests(FunctionalTestCase):
                           'aquatic-plants', 'monocots', 'non-monocots']
         for slug in subgroup_slugs:
             self.get('/%s/' % slug)
+            # Wait a bit for the glossarizer to finish.
+            self.wait_on(5, self.css1, '.key-char .gloss')
             glossarized_key_characteristics = self.css('.key-char .gloss')
             self.assertTrue(len(glossarized_key_characteristics))
             if slug != 'ferns':  # Ferns: no words glossarized in Exceptions
+                self.wait_on(5, self.css1, '.exceptions .gloss')
                 glossarized_exceptions = self.css('.exceptions .gloss')
                 self.assertTrue(len(glossarized_exceptions))
 
