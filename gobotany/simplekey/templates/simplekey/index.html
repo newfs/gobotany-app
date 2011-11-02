@@ -5,8 +5,12 @@
 
 {% block body_attributes %}id="home" class="claro top-level"{% endblock %}
 
+{% block js_require %}
+    require(['simplekey/index']);
+{% endblock %}
+
 {% block body_content %}
-        <div id="top-wrapper">
+    <div id="top-wrapper">
         {% include "simplekey/_header.html" %}
 
         <div class="content">
@@ -86,8 +90,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block js_require %}
-    require(['simplekey/index']);
 {% endblock %}

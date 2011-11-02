@@ -26,7 +26,22 @@
         <!--[if IE 8]>
             <link rel="stylesheet" href="/static/css/ie8.css">
         <![endif]-->
+
+        <!-- JS goes here. -->
+        {% include "simplekey/_script_constants.html" %}
+
+        <!-- This block is for adding any JS that *has* to come first,
+             such as SVGWeb. -->
+        {% block js_top %}{% endblock %}
+
+        <!-- HTML5 Fix for IE -->
+        <!--[if lt IE 9]>
+        <script
+            src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
         <script src="/static/scripts/require.js"></script>
+        <!-- This block is for adding any page-specific JS. -->
         <script>
             require.config({baseUrl: "/static/scripts"});
             {% block js_require %}{% endblock %}
@@ -42,20 +57,5 @@
         {% block body_content %}{% endblock %}
 
         {% include "simplekey/_footer.html" %}
-
-        {% include "simplekey/_script_constants.html" %}
-
-        <!-- This block is for adding any JS that *has* to come first,
-             such as SVGWeb. -->
-        {% block js_top %}{% endblock %}
-
-        <!-- HTML5 Fix for IE -->
-        <!--[if lt IE 9]>
-        <script
-            src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-
-        <!-- These blocks are for adding any page-specific JS. -->
-        {% block js_bottom %}{% endblock %}
     </body>
 </html>

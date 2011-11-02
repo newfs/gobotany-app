@@ -5,6 +5,15 @@
 
 {% block body_attributes %}id="plant-id-2" class="claro app"{% endblock %}
 
+{% block js_top %}
+    {# TODO: eventually move elsewhere #}
+    {% include "simplekey/partner_site_inline_js.html" %}
+{% endblock %}
+
+{% block js_require %}
+    require(['simplekey/page']);
+{% endblock %}
+
 {% block body_content %}
     {% include "simplekey/_header.html" %}
 
@@ -74,13 +83,4 @@
 
         </div>
     </div>
-{% endblock %}
-
-{% block js_top %}
-    {# TODO: eventually move elsewhere #}
-    {% include "simplekey/partner_site_inline_js.html" %}
-{% endblock %}
-
-{% block js_require %}
-    require(['simplekey/page']);
 {% endblock %}

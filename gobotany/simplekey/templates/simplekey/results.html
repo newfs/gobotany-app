@@ -2,6 +2,13 @@
 
 {% block title %}{{ pilegroup.friendly_title }}: {{ pile.friendly_title }}{% endblock %}
 
+{% block js_require %}
+    define('args', [], {
+        pile_slug: '{{ pile.slug }}'
+    });
+    require(['simplekey/results']);
+{% endblock %}
+
 {% block body_content %}
     <body id="plant-id-3" class="claro app">
         {% include "simplekey/_header.html" %}
@@ -144,28 +151,22 @@
         </div>
 
         <script>
-        {% include "simplekey/partner_site_inline_js.html" %}
+            {# TODO: eventually move elsewhere #}
+            {% include "simplekey/partner_site_inline_js.html" %}
         </script>
 
-    <div id="intro-overlay">
-      <div class="number-of-species">
-        <h1><span class="number">33</span> species</h1>
-        in this subgroup
-      </div>
-      <div class="number-of-questions">
-        <h1><span class="number">35</span> questions</h1>
-        to narrow your search
-      </div>
-      <div class="get-started">
-        <h1>Get started!</h1>
-      </div>
-    </div>
-  </body>
-{% endblock %}
-
-{% block js_require %}
-    define('args', [], {
-        pile_slug: '{{ pile.slug }}'
-    });
-    require(['simplekey/results']);
+        <div id="intro-overlay">
+           <div class="number-of-species">
+                <h1><span class="number">33</span> species</h1>
+                in this subgroup
+            </div>
+            <div class="number-of-questions">
+                <h1><span class="number">35</span> questions</h1>
+                to narrow your search
+            </div>
+            <div class="get-started">
+                <h1>Get started!</h1>
+            </div>
+        </div>
+    </body>
 {% endblock %}
