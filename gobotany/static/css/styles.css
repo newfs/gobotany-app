@@ -602,6 +602,15 @@ Sidebar Styles
     height: 120px;
     width: 187px;
 }
+#sb-player #us-dist-county-map {
+    background: #fff;
+    height: 100%;
+    width: 100%;
+}
+#taxon #sb-player.html {
+    overflow: hidden;  /* Get rid of vertical scrollbar in WebKit for
+                          the enlarged U.S. distribution map. */
+}
 
 /*******------
 Level 3 Id styles
@@ -1595,12 +1604,15 @@ ul.full-description li ul li {
 	margin: 0 0 0 10px;	
 }
 a.enlarge {
+	color: #1a2e11;
 	display: block;
-	margin: 0 0 8px 0;
-	color: #1a2e11;	
+    margin: 0 0 8px 0;
 }
 a.enlarge:hover {
-	text-decoration: none;	
+	text-decoration: none;
+}
+a.enlarge img {
+    vertical-align: middle;
 }
 .map {
 	display: block;	

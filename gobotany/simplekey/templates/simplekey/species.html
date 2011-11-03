@@ -226,27 +226,34 @@
                             href="http://bonap.org/BONAPmaps2010/map%20sized/{{ scientific_name }}.png"
                             rel="shadowbox"><img 
                             src="/static/images/icons/zoom.png" 
-                            alt="" align="absmiddle"> Click to
-                            enlarge</a>
+                            alt=""> Click to enlarge</a>
+                </div>
 
-                    <object
-                        data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-us-distribution-map.svg"
-                        type="image/svg+xml"
-                        title="distribution map for {{ scientific_name }}"
-                        id="us-dist-county-map"> <!--<![endif]-->
-                    <!--[if lt IE 9]>
-                    <object
-                        src="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-us-distribution-map.svg"
-                        classid="image/svg+xml"
-                        title="distribution map for {{ scientific_name }}"
-                        id="us-dist-county-map"> <![endif]-->
-                    <!--[if gte IE 9]>
-                    <object
-                        data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-us-distribution-map.svg"
-                        type="image/svg+xml"
-                        title="distribution map for {{ scientific_name }}"
-                        id="us-dist-county-map"> <![endif]-->
-                    </object>
+                <div class="section usmap">
+                    <!-- TODO: move U.S. Distribution heading here -->
+                    <div>
+                        <object
+                            data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-us-distribution-map.svg"
+                            type="image/svg+xml"
+                            title="distribution map for {{ scientific_name }}"
+                            id="us-dist-county-map"> <!--<![endif]-->
+                        <!--[if lt IE 9]>
+                        <object
+                            src="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-us-distribution-map.svg"
+                            classid="image/svg+xml"
+                            title="distribution map for {{ scientific_name }}"
+                            id="us-dist-county-map"> <![endif]-->
+                        <!--[if gte IE 9]>
+                        <object
+                            data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-us-distribution-map.svg"
+                            type="image/svg+xml"
+                            title="distribution map for {{ scientific_name }}"
+                            id="us-dist-county-map"> <![endif]-->
+                        </object>
+                    </div>
+                    <a class="enlarge" href="#">
+                        <img src="/static/images/icons/zoom.png" alt="">
+                        Click to enlarge</a>
                 </div>
 
                 <div class="section">

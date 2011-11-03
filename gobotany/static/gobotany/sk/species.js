@@ -106,6 +106,22 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
         });
     },
 
+    wire_up_us_map_link: function() {
+        var image_link = dojo.query('#sidebar .section.usmap a.enlarge')[0];
+        dojo.connect(image_link, 'onclick', this, function(event) {
+            event.preventDefault();
+            // Open the U.S. distribution map in a lightbox.
+            var content_element =
+                dojo.query('#sidebar .section.usmap div')[0];
+            Shadowbox.open({
+                content: content_element.innerHTML,
+                player: 'html',
+                height: 490,
+                width: 748
+            });
+        });
+    },
+
     setup: function() {
         this.toggle_characters_full_list();
 
@@ -120,5 +136,8 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
         // Make image gallery able to show larger images.
         this.wire_up_image_links();
         this.add_image_frame_handler();
+
+        // Wire up the enlarge link on the U.S. map.
+        this.wire_up_us_map_link();
     }
 });
