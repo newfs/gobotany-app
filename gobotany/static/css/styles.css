@@ -966,11 +966,13 @@ Styles for results page introductory overlay
 Styles for results page
  ****/
 
-#main h3 {  /* move "18 matching species" to the right of Photos/List tab */
+#main h3.species-count-heading {
+    /* move "18 matching species" to the right of Photos/List tab */
     position: relative;
     height: 0px;
+    text-wrap: pre;
 }
-#main h3 > span {
+#main h3.species-count-heading > span {
     position: absolute;
     top: 0px;
     left: 330px;

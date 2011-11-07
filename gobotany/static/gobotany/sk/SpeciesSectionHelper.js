@@ -699,7 +699,8 @@ dojo.declare('gobotany.sk.SpeciesCounts', null, {
         if (this.animation !== null)
             this.animation.stop();
 
-        this.animation = dojo.query('.species-count-phrase').animateProperty({
+        var span = dojo.query('.species-count-heading > span');
+        this.animation = span.animateProperty({
             duration: 2000,
             properties: {
                 backgroundColor: {
