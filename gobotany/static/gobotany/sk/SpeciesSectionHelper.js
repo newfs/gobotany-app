@@ -271,9 +271,18 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         player: 'html',
                         height: 650,
                         width: 790,
-                        options: {onFinish: function() {
-                            $('#sb-container .img-container').scrollable();
-                        }}
+                        options: {onFinish: dojo.hitch(this, function() {
+                            var $sb = $('#sb-container');
+                            var $children = $sb.find('p, li');
+                            var markup = dojo.hitch(
+                                this.results_helper.filter_section
+                                    .glossarizer, 'markup');
+
+                            $sb.find('.img-container').scrollable();
+                            for (var i = 0; i < $children.length; i++) {
+                                markup($children[i]);
+                            }
+                        })}
                     });
                 }
             )});

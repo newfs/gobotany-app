@@ -26,6 +26,10 @@ define([
      * Our AJAX resources.
      */
 
+    module.glossaryblob = _.memoize(function() {
+        return module.get('glossaryblob/');
+    });
+
     module.pile = _.memoize(function(pile_slug) {
         return module.get('piles/' + pile_slug + '/');
     });

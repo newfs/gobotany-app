@@ -20,19 +20,19 @@ dojo.declare('gobotany.sk.glossary.GlossaryHelper', null, {
 
 dojo.declare('gobotany.sk.glossary.Glossarizer', null, {
 
-    /* The glossarizer downloads the glossary blob - the glossary
-       represented as a single JavaScript object - synchronously
-       because I am not quite sure how to batch up requests for
-       glossarization and then do them all once the glossary blob
-       arrives. */
+    /* The glossarizer downloads the glossary blob, parses and prepares
+       its data, then fires off its .ready Deferred so that .markup()
+       can run. */
 
     constructor: function() {
         this.n = 0;
-        this.store = new dojox.data.JsonRestStore({
-            target: API_URL + 'glossaryblob/',
-            syncMode: true
-        });
-        this.glossaryblob = this.store.fetch().results;
+        this.ready = $.Deferred();
+        simplekey_resources.glossaryblob().done($.proxy(this, 'parse'));
+    },
+
+    parse: function(glossaryblob) {
+        this.glossaryblob = glossaryblob;
+
         var terms = [];
         var defs = this.glossaryblob.definitions;
         for (term in defs)
@@ -45,6 +45,8 @@ dojo.declare('gobotany.sk.glossary.Glossarizer', null, {
            could be a glossary term! */
         var re = '\\b(' + terms.join('|') + ')\\b';
         this.regexp = new RegExp(re, 'gi');
+
+        this.ready.resolve();
     },
 
     /* Call "markup" on a node - hopefully one with no elements
@@ -53,25 +55,27 @@ dojo.declare('gobotany.sk.glossary.Glossarizer', null, {
        to which a Dijit tooltip is then attached. */
 
     markup: function(node) {
-        node.innerHTML = node.innerHTML.replace(
-            this.regexp, '<span class="gloss">$1</span>'
-        );
-        var self = this;
-        var defs = this.glossaryblob.definitions;
-        var images = this.glossaryblob.images;
-        dojo.query('.gloss', node).forEach(function(node2) {
-            self.n++;
-            var gloss_id = 'gloss' + self.n;
-            var term = node2.innerHTML.toLowerCase();
-            var imgsrc = images[term];
-            node2.id = gloss_id;
-            dijit.Tooltip({
-                connectId: [gloss_id],
-                label: '<p class="glosstip">' +
-                    (imgsrc ? '<img src="' + imgsrc + '">' : '') +
-                    defs[term] + '</p>',
-                position: 'above'
+        this.ready.done(_.bind(function() {
+            node.innerHTML = node.innerHTML.replace(
+                this.regexp, '<span class="gloss">$1</span>'
+            );
+            var self = this;
+            var defs = this.glossaryblob.definitions;
+            var images = this.glossaryblob.images;
+            dojo.query('.gloss', node).forEach(function(node2) {
+                self.n++;
+                var gloss_id = 'gloss' + self.n;
+                var term = node2.innerHTML.toLowerCase();
+                var imgsrc = images[term];
+                node2.id = gloss_id;
+                dijit.Tooltip({
+                    connectId: [gloss_id],
+                    label: '<p class="glosstip">' +
+                        (imgsrc ? '<img src="' + imgsrc + '">' : '') +
+                        defs[term] + '</p>',
+                    position: 'above'
+                });
             });
-        });
+        }, this));
     }
 });
