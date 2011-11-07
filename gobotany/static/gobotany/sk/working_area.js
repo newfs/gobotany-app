@@ -81,7 +81,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         this.apply_button_connection = null;
 
         // Use jQuery to hide the working area with a slide effect.
-        $(this.div).slideUp('fast');
+        $(this.div).hide();
 
         this.on_dismiss(this.filter);
     },
@@ -111,8 +111,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         }
 
         // Use jQuery to show the working area with a slide effect.
-        $(d).css('top', y + 'px');
-        $(d).slideDown('fast');
+        $(d).css('top', y + 'px').slideDown('fast');
 
         // Hook up the Close button.
         var close_button = d.query('.close')[0];
