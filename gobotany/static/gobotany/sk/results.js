@@ -554,6 +554,7 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
 
 
 dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
+    get_choices_values: [],
     ruler: null,
     simple_slider: null,
     slider_node: null,
@@ -585,23 +586,41 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 			                   showArrows: true
 		                   });
         this.scroll_pane_api = this.scroll_pane.data('jsp');
-        var filter_section = this.results_helper.filter_section;
+        var filter_section = this;
+        var gcv = this.get_choices_values;
 
         // Wire up the Get More Questions button.
-        dojo.query('#sidebar .get-more a').onclick(this, function() {
+        dojo.query('#sidebar .get-choices').onclick(this, function() {
             var content_element = dojo.query('#modal')[0];
             Shadowbox.open({
                 content: content_element.innerHTML,
                 player: 'html',
                 height: 450,
-                options: {onFinish: function() {
+                options: {fadeDuration: 0.1, onFinish: function() {
                     // Wire up the second Get More Questions button--the one
                     // on the dialog box--now that it exists.
+                    var $inputs = $('#sb-container ul.char-groups input');
                     var button = dojo.query('#sb-container a.get-choices');
+
                     button.onclick(function() {
+                        // Remember which check boxes were checked.
+                        gcv.splice(0, gcv.length);  // remove old values
+                        $inputs.each(function(i, input) {
+                            if ($(input).prop('checked'))
+                                gcv.push($(input).attr('value'));
+                        });
+
+                        // Start the more-filter query while Shadowbox closes.
                         filter_section.query_best_filters();
                         Shadowbox.close();
                     });
+
+                    // Re-check any check boxes that were set last time.
+                    $inputs.each(function(i, input) {
+                        var value = $(input).attr('value');
+                        $(input).prop('checked', _.indexOf(gcv, value) != -1);
+                    });
+
                     button.addClass('get-choices-ready');  // for tests
                 }}
             });
