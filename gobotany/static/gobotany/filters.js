@@ -14,6 +14,7 @@ dojo.declare('gobotany.filters.Filter', null, {
 
     constructor: function(args, args2) {
         this.manager = args2.manager;  // FilterManager to which this belongs
+        this.loaded = $.Deferred();
 
         this.order = args.order;
         this.pile_slug = args.pile_slug;
@@ -30,18 +31,17 @@ dojo.declare('gobotany.filters.Filter', null, {
 
         dojo.safeMixin(this, args);
     },
-    // load_values({onload: function})
-    // Does an async load of the filter's species id list, then invokes
-    // the caller-supplied callback.  The vector is stored so the second
-    // and subsequent invocations can invoke the callback immediately.
-    // Values that have no species in common with the given base_vector
-    // are not stored, since they do not apply to this key and pile.
-    load_values: function(args) {
+    // load_values()
+    // Does an async load of the filter's species id list, and returns a
+    // Deferred that will be resolved once the id list arrives.  The
+    // vector is stored so the second and subsequent invocations can
+    // invoke the callback immediately.  Values that have no species in
+    // common with the given base_vector are not stored, since they do
+    // not apply to this key and pile.
+    load_values: function() {
 
-        if (this.values !== false) {
-            if (args.onload !== undefined) args.onload(this);
-            return;
-        }
+        if (this.values !== false)
+            return this.loaded;
 
         $.when(
             simplekey_resources.base_vector({
@@ -79,8 +79,10 @@ dojo.declare('gobotany.filters.Filter', null, {
 
             this.cull_values(base_vector);
 
-            if (args.onload !== undefined) args.onload(this);
+            this.loaded.resolve(this);
         }, this));
+
+        return this.loaded;
     },
     /*
      * Determine which of our choices are "safe" and will not cause zero
@@ -360,7 +362,7 @@ dojo.declare('gobotany.filters.FilterManager', null, {
                 if (character_short_name == 'family' ||
                     character_short_name == 'genus')
                     return;
-                this.filters[i].load_values({});
+                this.filters[i].load_values();
                 return;
             }
         }

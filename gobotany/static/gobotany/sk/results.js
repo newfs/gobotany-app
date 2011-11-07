@@ -107,7 +107,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                     this._loaded_filters = filters;
                     var filter_loaded = dojo.hitch(this, this.filter_loaded);
                     for (i = 0; i < filters.length; i++) {
-                        filters[i].load_values({onload: filter_loaded});
+                        filters[i].load_values().done(filter_loaded);
                     }
                 });
 
@@ -774,7 +774,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         });
         dojo.connect(filter_li, 'onclick', this, function(event) {
             dojo.stopEvent(event);
-            this.show_filter_working(filter);
+            var y = $(event.target).offset().top - 20;
+            this.show_filter_working(filter, y);
 
             // Set the just-selected filter as active at left.
             dojo.query('.option-list li').removeClass('active');
@@ -895,16 +896,17 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }
     },
 
-    show_filter_working: function(filter) {
-        filter.load_values({
-            onload: dojo.hitch(this, 'show_filter_working_onload')
+    show_filter_working: function(filter, y) {
+        var t = this;
+        filter.load_values().done(function() {
+            t.show_filter_working_onload(filter, y);
         });
     },
 
     /* A filter object has been returned from Ajax!  We can now set up
        the working area and save the new page state. */
 
-    show_filter_working_onload: function(filter) {
+    show_filter_working_onload: function(filter, y) {
         // Dismiss old working area, to avoid having an Apply button
         // that is wired up to two different filters!
         if (this.working_area !== null)
@@ -916,6 +918,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             div: dojo.query('div.working-area')[0],
             filter: filter,
             filter_manager: this.results_helper.filter_manager,
+            y: y,
             glossarizer: this.glossarizer,
             on_dismiss: dojo.hitch(this, 'on_working_area_dismiss')
         });

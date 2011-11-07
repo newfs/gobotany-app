@@ -966,6 +966,16 @@ Styles for results page introductory overlay
 Styles for results page
  ****/
 
+#main h3 {  /* move "18 matching species" to the right of Photos/List tab */
+    position: relative;
+    height: 0px;
+}
+#main h3 > span {
+    position: absolute;
+    top: 0px;
+    left: 330px;
+}
+
 .get-more {
     font-size: 11px;
     line-height: 16px;
@@ -998,12 +1008,17 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
 
 /** Working area **/
 .working-area {
+    display: none;
+    position: absolute;
+    z-index: 200;
     background: #fff;
     border: 1px solid #c3d941;
-    clear: left;
-    margin: 5px 0 15px 0;
     padding: 10px 15px;
-    position: relative;
+
+    -moz-box-shadow: black 1px 1px 5px 0;
+    -webkit-box-shadow: black 1px 1px 5px 0;
+    -o-box-shadow: black 1px 1px 5px 0;
+    box-shadow: black 1px 1px 5px 0;
 }
 .working-area img.arrow {
     display: block;

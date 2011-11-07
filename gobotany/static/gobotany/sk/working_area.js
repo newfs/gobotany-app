@@ -57,7 +57,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         this.filter_manager = args.filter_manager;
         this.short_name = args.filter.short_name;
         this.glossarize = dojo.hitch(args.glossarizer, 'markup');
-        this._draw_basics();
+        this._draw_basics(args.y);
         this._draw_specifics();
         this.on_dismiss = args.on_dismiss;
 
@@ -88,7 +88,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
 
     /* Draw the working area. */
 
-    _draw_basics: function() {
+    _draw_basics: function(y) {
         var d = dojo.query(this.div);
         var f = this.filter;
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
@@ -110,10 +110,8 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
             d.query('.dld').html('').style({display: 'none'});
         }
 
-        // Hide the introduction message.
-        d.query('.intro-message').style({display: 'none'});
-
         // Use jQuery to show the working area with a slide effect.
+        $(d).css('top', y + 'px');
         $(d).slideDown('fast');
 
         // Hook up the Close button.
