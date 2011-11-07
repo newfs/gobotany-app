@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -15,10 +16,9 @@
    viewBox="0 0 555.22198 351.66797"
    id="svg9559"
    sodipodi:version="0.32"
-   inkscape:version="0.46"
-   sodipodi:docname="United States (counties) v2.svg"
-   inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   sodipodi:docbase="C:\Users\Emil\Desktop\Matté's Work\Pix\svg">
+   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="us-counties.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
   <metadata
      id="metadata3671">
     <rdf:RDF>
@@ -31,8 +31,8 @@
     </rdf:RDF>
   </metadata>
   <sodipodi:namedview
-     inkscape:window-height="814"
-     inkscape:window-width="1152"
+     inkscape:window-height="881"
+     inkscape:window-width="1318"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      guidetolerance="10.0"
@@ -42,15 +42,16 @@
      bordercolor="#666666"
      pagecolor="#ffffff"
      id="base"
-     inkscape:zoom="1"
-     inkscape:cx="314.92982"
-     inkscape:cy="188.01381"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:zoom="4.2426407"
+     inkscape:cx="479.22782"
+     inkscape:cy="64.205776"
+     inkscape:window-x="1557"
+     inkscape:window-y="238"
      inkscape:current-layer="svg9559"
      showguides="true"
      inkscape:guide-bbox="true"
-     showgrid="false" />
+     showgrid="false"
+     inkscape:window-maximized="0" />
   <defs
      id="defs9561">
     <inkscape:perspective
@@ -16051,4 +16052,99 @@
      d="M 154.32743,294.71587 L 154.32743,330.08203 L 177.47618,351.01798 M 0.64999998,250.99045 L 111.24502,250.99045 L 154.32743,294.71587 L 209.62724,294.71587 L 243.70736,329.43901 L 243.70736,351.01798"
      style="fill: none; stroke: rgb(169, 169, 169); stroke-width: 1.3;"
      id="separator" />
+  <rect
+     style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.8888889;stroke-opacity:1"
+     id="box1"
+     width="11.111111"
+     height="11.111111"
+     x="489.79446"
+     y="252.67308" />
+  <text
+     xml:space="preserve"
+     style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana"
+     x="504.27441"
+     y="261.14575"
+     id="label1"
+     sodipodi:linespacing="125%"><tspan
+       sodipodi:role="line"
+       id="tspan6370"
+       x="504.27441"
+       y="261.14575"
+       style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Verdana;-inkscape-font-specification:Verdana">label1</tspan></text>
+  <rect
+     y="273.03293"
+     x="489.79446"
+     height="11.111111"
+     width="11.111111"
+     id="box2"
+     style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.8888889;stroke-opacity:1" />
+  <text
+     sodipodi:linespacing="125%"
+     id="label2"
+     y="281.52075"
+     x="504.31348"
+     style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana"
+     xml:space="preserve"><tspan
+       style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Verdana;-inkscape-font-specification:Verdana"
+       y="281.52075"
+       x="504.31348"
+       id="tspan6376"
+       sodipodi:role="line">label2</tspan></text>
+  <rect
+     y="293.39276"
+     x="489.79446"
+     height="11.111111"
+     width="11.111111"
+     id="box3"
+     style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.8888889;stroke-opacity:1" />
+  <text
+     sodipodi:linespacing="125%"
+     id="label3"
+     y="301.89575"
+     x="504.21338"
+     style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana"
+     xml:space="preserve"><tspan
+       style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Verdana;-inkscape-font-specification:Verdana"
+       y="301.89575"
+       x="504.21338"
+       id="tspan6382"
+       sodipodi:role="line">label3</tspan></text>
+  <rect
+     style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.8888889;stroke-opacity:1"
+     id="box4"
+     width="11.111111"
+     height="11.111111"
+     x="489.79446"
+     y="313.75259" />
+  <text
+     xml:space="preserve"
+     style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana"
+     x="504.09375"
+     y="322.27075"
+     id="label4"
+     sodipodi:linespacing="125%"><tspan
+       sodipodi:role="line"
+       id="tspan6388"
+       x="504.09375"
+       y="322.27075"
+       style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Verdana;-inkscape-font-specification:Verdana">label4</tspan></text>
+  <rect
+     y="334.11243"
+     x="489.79446"
+     height="11.111111"
+     width="11.111111"
+     id="box5"
+     style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.8888889;stroke-opacity:1" />
+  <text
+     sodipodi:linespacing="125%"
+     id="label5"
+     y="342.64575"
+     x="504.25"
+     style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana"
+     xml:space="preserve"><tspan
+       style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Verdana;-inkscape-font-specification:Verdana"
+       y="342.64575"
+       x="504.25"
+       id="tspan6394"
+       sodipodi:role="line">label5</tspan></text>
 </svg>
