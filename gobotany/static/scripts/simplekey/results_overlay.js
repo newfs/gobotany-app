@@ -14,7 +14,7 @@ require([
         $('.number-of-questions .number').html(clist.length);
     });
 
-    $(document).ready(function() {
+    if (!original_location_hash) $(document).ready(function() {
 
         $('#intro-overlay').overlay({
             mask: {

@@ -3,6 +3,7 @@
 {% block title %}{{ pilegroup.friendly_title }}: {{ pile.friendly_title }}{% endblock %}
 
 {% block js_require %}
+    original_location_hash = window.location.hash; // for results_overlay.js
     define('args', [], {
         pile_slug: '{{ pile.slug }}'
     });
