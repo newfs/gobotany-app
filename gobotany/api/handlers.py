@@ -335,7 +335,7 @@ class UnitedStatesDistributionMapVectorHandler(BaseHandler):
         scientific_name = ' '.join([genus.title(), specific_epithet.lower()])
         distribution_map = UnitedStatesPlantDistributionMap()
         distribution_map.set_plant(scientific_name)
-        #distribution_map.shade()
+        distribution_map.shade()
         return HttpResponse(distribution_map.tostring(),
                             mimetype='image/svg+xml')
 

@@ -74,7 +74,7 @@
   <defs
      id="defs9561" />
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 46.223259,236.30281 13.482951,-3.18667 1.260119,3.0819 5.165616,11.01801 0.09314,0.20659 0.157084,0.86725 -1.350327,1.05056 -1.63844,-2.04585 -3.256518,1.07677 -2.214654,1.04766 -0.59078,2.04587 -6.806949,-0.66934 -2.348532,-5.59923 1.760673,-0.74791 0.154255,-6.5334 -3.77744,1.19317 -0.09024,-2.80543"
      id="09003"
      inkscape:label="Hartford, CT"
@@ -83,7 +83,7 @@
        id="title3184">Hartford County, CT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 45.01553,236.57637 1.207729,-0.27354 0.09024,2.80544 3.777439,-1.19319 -0.154277,6.53339 -1.760676,0.74792 2.348534,5.59923 -2.898565,3.62029 -5.011348,3.54171 -0.09018,0.50055 0.06116,0.31139 0.238549,0.23858 0.355039,0.22115 -0.05233,0.0786 -0.392864,0.009 -1.498772,-0.40162 -2.203026,-0.76246 -0.244541,-0.43071 -0.526752,-0.86724 -1.469648,-3.0848 -0.235687,-0.27357 -0.762477,-0.15704 -2.569661,-14.27122 11.792127,-2.49405"
      id="09005"
      inkscape:label="Litchfield, CT"
@@ -92,7 +92,7 @@
        id="title2992">Litchfield County, CT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 36.68364,258.53673 -0.890528,-5.19472 0.762464,0.15704 0.235689,0.27359 1.469664,3.0848 0.526744,0.86725 0.244493,0.4307 2.203028,0.76247 1.49876,0.40161 0.392877,-0.009 0.05231,-0.0787 1.021485,0.38124 2.205923,0.72172 4.877489,3.4515 -0.09319,1.82179 -0.340494,0.78575 -0.06682,0.30266 0.08166,1.78686 0.07861,0.17753 0.448176,0.27947 -1.891626,0.51218 -4.749455,3.5912 -6.515922,5.53228 -0.160095,0.30557 -0.08169,0.40451 -2.933472,-3.77452 2.04297,-2.08662 0.174717,-0.17162 0.890523,-6.05903 -0.459816,-2.64827 -1.024378,-6.00666"
      id="09001"
      inkscape:label="Fairfield, CT"
@@ -101,7 +101,7 @@
        id="title3266">Fairfield County, CT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 57.331492,251.46493 0.957454,2.92477 1.993491,2.06039 1.012743,-0.50053 0.392879,0.25009 1.219378,1.37654 3.27688,4.06845 -1.443446,-0.0786 -0.916718,0.22117 -3.777444,1.14371 -2.360162,0.99238 -1.286321,0.18613 -0.605314,-0.74793 -0.221163,0.0902 -3.201215,3.72796 -0.433622,0.60533 -0.512189,0.9691 -0.03481,0.14265 0,0.0407 -0.448176,-0.27948 -0.07854,-0.17753 -0.08162,-1.78685 0.06682,-0.30266 0.340501,-0.78575 0.09316,-1.8218 -4.877485,-3.45149 -2.205935,-0.72172 -1.021478,-0.38124 -0.35505,-0.22117 -0.238569,-0.23856 -0.06114,-0.31142 0.09018,-0.50055 5.011352,-3.5417 2.898564,-3.62029 6.806951,0.66933"
      id="09009"
      inkscape:label="New Haven, CT"
@@ -110,7 +110,7 @@
        id="title2997">New Haven County, CT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 65.031878,249.3405 6.335502,10.16532 -5.183063,2.139 -3.27688,-4.06846 -1.219378,-1.37653 -0.392879,-0.2501 -1.012743,0.50055 -1.993491,-2.06041 -0.957454,-2.92475 0.590785,-2.04588 2.214644,-1.04767 3.256514,-1.07677 1.638443,2.04588"
      id="09007"
      inkscape:label="Middlesex, CT"
@@ -119,7 +119,7 @@
        id="title3000">Middlesex County, CT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 83.235166,244.16034 0.71009,10.53201 -3.474772,0.97201 -7.071782,3.27688 -1.481288,0.57912 -0.276507,0.0378 -0.27345,-0.0523 -6.335501,-10.16533 1.350326,-1.05056 3.579538,-5.28494 1.783965,1.02149 0.957454,0.47435 5.770921,-0.57912 2.453301,-1.00693 1.89162,-0.32886 0.416155,1.57442"
      id="09011"
      inkscape:label="New London, CT"
@@ -128,7 +128,7 @@
        id="title3003">New London County, CT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 70.709673,230.54643 0.730468,2.52898 -2.590091,0.65478 -0.564567,0.18318 1.126258,4.51373 1.286287,0.73337 1.126255,1.82469 -0.797386,0.9429 -1.065147,1.07678 -3.579543,5.28493 -0.157084,-0.86724 -0.09314,-0.20659 -5.165598,-11.01801 -1.260128,-3.08189 10.086754,-2.38928 0.916699,-0.18049"
      id="09013"
      inkscape:label="Tolland, CT"
@@ -137,7 +137,7 @@
        id="title3006">Tolland County, CT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 79.050298,229.19319 2.953859,10.29628 0.814849,3.09645 -1.891624,0.32886 -2.453308,1.00693 -5.77091,0.57912 -0.957451,-0.47435 -1.783963,-1.02148 1.065147,-1.07678 0.797386,-0.9429 -1.126255,-1.8247 -1.286287,-0.73337 -1.126258,-4.51372 0.564567,-0.18319 2.590091,-0.65478 -0.730468,-2.52897 1.155342,-0.23857 7.001952,-1.66463 0.183182,0.55002"
      id="09015"
      inkscape:label="Windham, CT"
@@ -146,7 +146,7 @@
        id="title3009">Windham County, CT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 69.714381,204.19458 0.116365,0.26194 2.019683,2.05751 1.353242,-0.3143 0.436535,-0.39288 2.185554,0.27357 1.073862,0.13105 4.001524,1.6268 0.421979,0.77701 0.195064,2.04588 0.104776,2.09535 -0.32594,1.06511 -0.841044,1.65301 1.862525,4.69413 0.733364,0.68391 0.867246,0.28514 2.33398,0.36959 0.79738,5.23254 -8.000132,2.45331 -0.183182,-0.55004 -7.001934,1.66463 -1.155342,0.23857 -0.916709,0.18047 -1.207741,-4.81348 -1.757753,0.47147 -1.914907,-0.40452 -0.128112,-0.47436 0.0091,-0.28516 0.692625,-1.77231 -3.419497,-2.95095 -0.485996,-1.92946 -0.157085,-3.21286 0.32594,-1.95275 -0.573309,-3.12264 -1.786864,-3.84436 9.519269,-2.06042 0.803206,-0.18041"
      id="25027"
      inkscape:label="Worcester, MA"
@@ -155,7 +155,7 @@
        id="title3012">Worcester County, MA</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 86.605166,198.89512 1.04186,2.50568 2.67447,1.79559 3.04117,1.81014 2.17683,2.76761 -0.15709,1.00984 -0.6286,1.41434 -1.07678,1.00112 -1.12625,0.71881 0.14267,2.95095 -1.32415,-1.03604 -0.0786,-0.0523 -0.66934,-0.0641 -0.45691,0.0641 -1.458,0.98363 0.3434,0.53838 0.64025,0.83814 0.36958,0.78866 -0.64606,2.03423 -1.34742,1.20483 -1.81304,1.33869 -2.33399,-0.3696 -0.867241,-0.28515 -0.733365,-0.68389 -1.86252,-4.69414 0.841041,-1.65299 0.325941,-1.06514 -0.10475,-2.09534 -0.194951,-2.04587 -0.421982,-0.77702 -4.001517,-1.6268 -1.073867,-0.13106 -2.185548,-0.27357 -0.436545,0.39288 -1.353242,0.3143 -2.019665,-2.0575 -0.116364,-0.26194 6.635261,-1.4842 0.407424,-0.0902 0.116365,-0.0255 9.053635,-2.08662 0.67805,-1.61225"
      id="25017"
      inkscape:label="Middlesex, MA"
@@ -164,7 +164,7 @@
        id="title3015">Middlesex County, MA</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 132.04211,242.69069 0.24753,-0.13105 0.43653,-0.50056 0.3143,-0.58786 0.2096,-0.76248 -0.12808,-0.75956 -0.14864,-0.26194 -0.28806,-0.2649 -0.26489,-0.20957 -0.15424,-0.13111 -0.0254,-0.14268 0.48601,0.10478 0.57619,0.50929 2.49114,2.82288 0.14864,0.52385 -0.016,0.39287 -0.009,0.0785 -0.19815,0.26195 -0.64316,0.48599 -0.35504,0.15706 -2.2263,0.51219 -0.60241,0.11636 -1.55114,-0.10477 -2.63665,-0.52384 -0.35212,-0.15705 -0.2501,-0.20958 -0.14548,-0.30266 0.40743,-0.10477 0.35505,0.0785 0.15708,0.0523 1.37653,-0.0523 1.95274,-0.50927 0.84105,-0.38125"
      id="25019"
      inkscape:label="Nantucket, MA"
@@ -173,7 +173,7 @@
        id="title3018">Nantucket County, MA</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 114.87484,227.31903 0.18318,0.1949 0.55294,0.39288 0.7974,0.44526 0.72171,0.29102 1.76068,0.18318 1.0564,-0.0668 2.80833,-0.28807 3.792,-2.33397 1.40271,-0.94582 0.91963,-0.82358 0.28229,-0.61697 0.0583,-0.31721 -0.32886,-1.08841 -0.5122,-1.33871 -0.23567,-0.52381 -0.86431,-1.23103 -2.80252,-3.27979 -0.43654,-0.30267 -0.486,-0.18317 -0.77412,-0.18319 -0.19495,0.0407 -0.36669,0.20659 -0.20063,0.18612 -0.15707,0.27649 -0.0902,0.45689 0.0254,0.19819 -1.54823,-0.60242 -0.0901,-0.1076 0.10477,-0.37834 0.27649,-0.30266 0.47145,-0.26195 0.45692,-0.14555 0.80902,-0.0786 1.30086,0.0668 1.02732,0.22397 0.78282,0.34048 0.90799,0.62861 0.86433,0.86432 1.08841,1.26012 0.86723,1.24556 1.29796,2.24377 0.61988,1.23392 0.89052,2.4242 0.51801,1.7985 0.0932,0.8265 -0.4307,3.58245 -0.26192,0.25903 -0.0901,-2.49114 -0.0641,-0.2096 -0.13362,-0.23566 -0.69556,-0.32885 -0.32593,-0.0786 -0.19816,0.0406 -8.34353,3.72214 -0.35213,0.16019 -6.0765,5.25872 -0.96909,1.26011 -1.02148,-0.10475 -0.60532,-7.3046 1.91782,-4.15869"
      id="25001"
      inkscape:label="Barnstable, MA"
@@ -182,7 +182,7 @@
        id="title3021">Barnstable County, MA</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 95.539496,207.77414 1.32703,0.52674 0.61406,4.40605 -4.78727,2.16227 -0.14264,-2.95095 1.12624,-0.71881 1.07678,-1.00112 0.62859,-1.41434 0.15707,-1.00984"
      id="25025"
      inkscape:label="Suffolk, MA"
@@ -191,7 +191,7 @@
        id="title3024">Suffolk County, MA</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 90.490286,227.09494 7.00484,-6.18998 2.1099,4.60101 2.351454,4.27799 2.79087,1.08841 1.24557,0.86434 2.92475,4.50208 -0.49764,-0.0292 -1.24557,0.18318 -0.50928,0.66933 -0.30558,0.3958 -0.0495,0.0901 0.0901,1.21938 0.12808,0.44526 0.42197,0.86724 -2.41257,2.2554 -2.28449,0.68392 -3.748324,-5.94262 -1.1408,-1.06222 -3.1372,-1.74613 -3.73668,-7.17365"
      id="25005"
      inkscape:label="Bristol, MA"
@@ -200,7 +200,7 @@
        id="title3027">Bristol County, MA</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 100.09395,213.63818 2.55516,-0.78866 1.33869,0.19506 0.26489,0.0292 0.22111,0.14554 1.49003,0.99529 3.37583,3.75125 4.88914,6.4519 0.47145,1.07677 0.17476,1.8247 -1.91782,4.15868 -4.03936,4.7611 -2.92475,-4.50207 -1.24556,-0.86435 -2.79089,-1.0884 -2.351434,-4.278 -2.10991,-4.60102 2.598824,-7.26676"
      id="25023"
      inkscape:label="Plymouth, MA"
@@ -209,7 +209,7 @@
        id="title3030">Plymouth County, MA</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 97.480586,212.70693 2.613364,0.93125 -2.598824,7.26678 -7.00484,6.18998 -3.43984,-0.35504 -0.7974,-5.23254 1.81305,-1.33869 1.34742,-1.20482 0.64606,-2.03424 -0.3696,-0.78866 -0.64023,-0.83814 -0.34341,-0.53838 1.458,-0.98364 0.45691,-0.0641 0.66935,0.0641 0.0786,0.0523 1.32414,1.03604 4.78727,-2.16227"
      id="25021"
      inkscape:label="Norfolk, MA"
@@ -218,7 +218,7 @@
        id="title3033">Norfolk County, MA</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 96.866526,190.72327 0.19509,0.78575 1.00984,2.41258 1.57151,3.01785 1.626804,0.72175 -2.622104,5.44207 -1.78105,5.19761 -1.32703,-0.52674 -2.17684,-2.76761 -3.04114,-1.81014 -2.67448,-1.79559 -1.04185,-2.50568 0.17476,-0.3958 1.4813,-2.97422 0.35504,-0.36957 0.64024,-0.55005 1.9411,-1.65299 2.52896,-1.87708 0.009,0 0.21546,-0.0902 0.18317,-0.0932 0.7974,-0.0523 1.93236,-0.11637"
      id="25009"
      inkscape:label="Essex, MA"
@@ -227,7 +227,7 @@
        id="title3036">Essex County, MA</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 65.488781,223.44847 -0.692631,1.77231 -0.0091,0.28514 0.128089,0.47438 1.914911,0.40451 1.757762,-0.47146 1.207737,4.81348 -10.086741,2.38927 -13.482962,3.18666 -1.207731,0.27354 -1.024385,-1.84798 -0.131031,-0.3405 -0.314304,-1.66753 1.024394,-0.0641 -0.08162,-4.15868 -0.523846,-2.2554 0.972008,-1.46964 1.583145,-0.26187 0.357954,0.22398 0.733372,2.43874 -0.419064,0.78576 1.140788,0.57913 2.543526,0.38123 2.691924,-0.0407 2.240858,-1.66464 4.892045,-2.02258 4.787166,-1.7432"
      id="25013"
      inkscape:label="Hampden, MA"
@@ -236,7 +236,7 @@
        id="title3039">Hampden County, MA</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 62.069299,220.49751 3.419482,2.95096 -4.787272,1.7432 -4.89205,2.02257 -2.240846,1.66465 -2.69194,0.0407 -2.543515,-0.38123 -1.140799,-0.57913 0.419068,-0.78576 -0.733367,-2.43874 -0.357959,-0.2239 -1.583142,0.26194 -0.972006,1.46963 -0.0902,0.31432 -0.590765,0.0254 -1.140806,-0.52383 -0.616967,-1.86255 0,-0.32884 1.533681,-0.0255 -0.116364,-3.34384 -0.183182,-2.80833 -0.331759,-0.53548 3.454401,1.94111 4.571929,0.11636 4.702873,-0.22395 1.385256,-0.60239 3.189581,-0.28806 2.336892,2.40091"
      id="25015"
      inkscape:label="Hampshire, MA"
@@ -245,7 +245,7 @@
        id="title3042">Hampshire County, MA</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 32.987685,212.08996 6.50429,-1.40563 2.936396,6.46937 0.331753,0.53547 0.183182,2.80834 0.116364,3.34383 -1.533679,0.0255 0,0.32884 0.616976,1.86254 1.140792,0.52383 0.59076,-0.0254 0.09018,-0.31428 0.523846,2.2554 0.08164,4.15867 -1.024383,0.064 0.314289,1.66754 0.131031,0.34049 1.024396,1.84799 -11.792121,2.49403 -0.261922,0.0641 -0.628603,-1.27175 0.413241,-16.55321 0.241523,-9.21951"
      id="25003"
      inkscape:label="Berkshire, MA"
@@ -254,7 +254,7 @@
        id="title3045">Berkshire County, MA</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 54.668658,207.44528 4.723267,-1.00983 1.78685,3.84437 0.573311,3.12264 -0.325949,1.95274 0.157084,3.21286 0.485996,1.92945 -2.336894,-2.40091 -3.189572,0.28806 -1.385259,0.60242 -4.702872,0.22387 -4.571916,-0.11636 -3.454399,-1.9411 -2.936393,-6.46937 2.494035,-0.52383 12.682648,-2.71523"
      id="25011"
      inkscape:label="Franklin, MA"
@@ -264,7 +264,7 @@
   </path>
   <path
      id="25007"
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 116.67043,240.10643 4.44971,0.78575 0.35212,0.85269 0.37833,1.57442 -0.0255,0.22389 -7.82845,2.8578 -0.81484,-0.69262 1.06222,-3.33218 0.29102,-0.486 0.81194,-0.99821 1.01857,-1.11169 0.16014,0.009 0.14558,0.31429 m -2.0866,-1.21936 -2.24086,2.83452 -0.65771,0.74501 -1.83633,1.44345 -0.95746,0.30268 -0.25902,-0.0523 1.26885,-1.29796 2.46784,-2.71523 1.19318,-1.36488 1.02149,0.10478"
      inkscape:label="Dukes, MA"
      inkscape:connector-curvature="0">
@@ -272,7 +272,7 @@
        id="title3051">Dukes County, MA</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 112.22657,48.760892 -1.94402,-6.320944 -22.425984,6.425712 -7.543242,2.124447 -0.564577,-4.432227 -0.01244,-0.116399 0.02911,-0.09319 0.680988,-2.019679 1.912004,-5.61377 3.701777,-10.756095 4.98517,-14.42876 2.0313,-0.168787 2.41547,-0.05242 0.3667,0.104776 0.44235,0.602406 0.0932,0.160056 -0.18318,0.247402 -0.0254,0.04079 -0.0524,0.875969 1.31248,4.225608 0.38123,0.340498 0.20961,0.09311 3.922934,1.283403 1.00693,-0.875969 2.72976,-2.598807 3.01498,-2.7414 4.64466,-4.053912 0.64316,-0.366684 1.21937,-0.381231 1.14081,-0.104801 0.4598,0.09312 2.09825,0.707175 6.11143,2.610454 5.49737,3.463137 0.0786,0.183267 8.74805,27.952457 5.13068,16.579409 -0.41032,0.614045 -0.0255,0.355046 0.8265,3.713422 0.44527,0.366676 -5.6487,3.317636 -4.84257,2.793782 -0.009,0.13111 0.0641,0.19501 -1.78762,1.01271 -1.88873,1.04765 -0.58786,-0.0902 -1.76992,-6.009587 -0.42199,-1.769402 -0.81194,-2.884009 -0.78867,-2.49403 -4.89205,-15.61905 -6.59741,1.440559 -3.10518,0.890516"
      id="23003"
      inkscape:label="Aroostook, ME"
@@ -281,7 +281,7 @@
        id="title3054">Aroostook County, ME</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 112.22657,48.760892 1.46673,5.247085 2.6221,8.945953 3.27978,11.4138 -3.16047,1.7956 1.4551,5.43042 2.54643,-1.32705 5.09866,9.72007 -1.00983,4.11793 -7.10671,3.71341 -4.89495,2.47949 -3.60574,2.95093 -2.51733,1.26013 -1.78394,-2.97714 -7.726584,-15.08355 -0.95454,-8.02925 1.05932,-4.52536 -2.17685,-3.960768 -1.75774,-1.993476 -3.64649,-12.499319 -1.55695,-6.574137 22.425984,-6.425712 1.94402,6.320944"
      id="23021"
      inkscape:label="Piscataquis, ME"
@@ -291,7 +291,7 @@
   </path>
   <path
      id="23013"
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 137.8916,132.85107 -0.36668,0.81487 -0.24753,0.22399 -1.07679,0.58787 -0.28807,0.0668 -0.48309,-0.14558 -2.203,-2.37183 -0.0698,-0.1047 0.0553,-0.71008 0.27649,-0.77414 1.44054,-1.78394 0.5355,-0.28805 0.20962,0.15704 2.29905,3.33218 0.13966,0.30265 -0.10767,0.49473 -0.11354,0.19815 m -18.98904,-5.23254 0.23566,-0.6286 2.98878,-1.73157 5.9688,2.46494 1.32415,0.69554 -0.24756,2.625 -0.0197,0.15424 0.0197,0.16007 0.41617,1.40272 0.39287,0.95745 0.96037,0.8003 -2.79379,4.23725 -2.06043,1.30959 -2.52023,0.44817 0.17473,-2.16518 1.10005,-1.75776 -1.17863,-2.70068 -1.6821,-2.50858 -0.85268,0.39578 -0.91671,0.0668 -0.86433,-0.38124 -0.80322,-1.16989 -0.5762,-1.84798 0.26489,-0.48309 0.66935,-0.34341"
      inkscape:label="Knox, ME"
      inkscape:connector-curvature="0">
@@ -299,7 +299,7 @@
        id="title3060">Knox County, ME</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 111.83078,137.0214 2.80833,-0.12805 -1.31248,-3.73961 -0.1456,-2.00803 2.83455,-0.0757 0.22116,-0.2096 0.26491,-0.69552 -0.26491,-2.34854 2.66574,-0.19812 -0.66934,0.3434 -0.26489,0.4831 0.57621,1.84797 0.80322,1.16989 0.86431,0.38125 0.91672,-0.0668 0.8527,-0.39579 1.68209,2.50859 1.17863,2.70067 -1.10005,1.75776 -0.17477,2.16519 -0.68097,-0.0785 -0.52383,-0.0668 -0.40453,0.52383 -0.1135,0.13105 -0.0197,0.88179 0.18318,1.45509 -0.45689,2.70066 -0.22399,0.31431 -3.46314,1.54821 -0.82651,0.26191 -0.61694,0 -4.58939,-11.16351"
      id="23015"
      inkscape:label="Lincoln, ME"
@@ -308,7 +308,7 @@
        id="title3063">Lincoln County, ME</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 111.83078,137.0214 4.58938,11.16351 -4.23726,2.91311 -0.58784,-2.80543 -1.35034,-2.49404 -0.57913,0.73335 -1.51911,-0.009 -1.21065,-0.71008 -0.58787,-0.83813 -0.7712,-5.59922 1.99058,-0.1311 0.89343,-0.69845 0.0641,-0.89052 0.0523,-0.26194 0.23567,-0.4336 0.19502,-0.24756 2.54351,-0.14557 0.20061,0.2501 0.0786,0.20656"
      id="23023"
      inkscape:label="Sagadahoc, ME"
@@ -317,7 +317,7 @@
        id="title3066">Sagadahoc County, ME</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 94.192066,146.15359 -0.016,0.0786 0.0787,0.11637 0.972,0.39288 1.48421,0.23858 8.209664,1.08553 0.70717,-0.9691 0.72174,-2.12444 0.58785,0.83814 1.21065,0.71006 1.51911,0.009 0.57913,-0.73337 1.35035,2.49405 0.58785,2.80543 -1.7432,0.85267 -1.36198,-0.82649 -0.66934,-1.92945 -0.25312,-0.18051 -0.23567,0.0902 -2.54353,3.32926 -1.03311,1.79851 -0.71008,2.92475 0,0.2501 0.52384,0.55003 0.14553,3.72505 -1.83924,1.57442 -1.16409,-0.39288 -3.175024,-1.19609 0.53547,-1.53367 -3.14301,-2.00514 -7.06014,-1.90326 0.30266,-5.8495 1.67919,-4.40604 0.4307,0.68098 0.71009,0.65771 0.18319,0.0902 1.02438,0.15702 1.40562,-1.40272"
      id="23005"
      inkscape:label="Cumberland, ME"
@@ -326,7 +326,7 @@
        id="title3069">Cumberland County, ME</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 88.456066,156.22579 7.06014,1.90327 3.14301,2.00513 -0.53547,1.53367 3.175014,1.19609 1.16409,0.39288 -0.11636,2.61045 -3.163394,14.7547 -0.35214,1.58897 -0.13102,0.26197 -0.69845,0.6024 -3.66977,-1.46965 -1.01856,-4.09174 -0.0817,-0.0901 -3.17212,-1.89166 -1.3154,-0.65478 -0.4831,-0.2501 -0.76247,-1.0593 -0.24755,-0.52674 -0.20062,-0.83815 -0.45691,-5.11613 -3.30598,-8.6171 5.16852,-2.24376"
      id="23031"
      inkscape:label="York, ME"
@@ -335,7 +335,7 @@
        id="title3072">York County, ME</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 96.156446,128.9456 2.53187,-1.82471 1.757764,3.47479 2.47657,6.32093 2.65411,2.45622 0.7712,5.59922 -0.72172,2.12446 -0.70718,0.96908 -8.209674,-1.08552 -1.4842,-0.23857 -0.97201,-0.39286 -0.0785,-0.11637 0.016,-0.0785 -0.42198,-0.9982 2.41255,-6.53049 0.24761,-1.11752 0,-4.90658 -0.86433,-1.79269 -0.14552,-0.96036 0.73627,-0.90216"
      id="23001"
      inkscape:label="Androscoggin, ME"
@@ -344,7 +344,7 @@
        id="title3075">Androscoggin County, ME</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 72.953433,104.03429 2.045869,4.74944 0.576219,4.15868 4.187783,9.84811 3.329262,-3.38164 4.36821,5.36349 6.49265,0.45981 1.44346,2.17682 0.75956,1.5366 -0.73628,0.90215 0.14556,0.96038 0.86433,1.79268 0,4.90659 -0.24756,1.11751 -2.41255,6.53048 0.42198,0.9982 -1.40563,1.40273 -1.02438,-0.157 -0.18317,-0.0902 -0.71009,-0.65772 -0.43071,-0.68098 -1.67918,4.40604 -0.30267,5.84951 -5.16851,2.24375 -5.360576,-17.74638 -4.921154,-15.64813 -0.392877,-1.26012 -5.549739,-16.73654 -1.009843,-2.88401 1.798498,-1.00984 3.620285,2.00512 0.366692,0.18318 0.762464,0.009 0.0091,0 0.314288,-0.28806 0.05525,-0.14266 -0.02911,-0.91962"
      id="23017"
      inkscape:label="Oxford, ME"
@@ -353,7 +353,7 @@
        id="title3078">Oxford County, ME</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 102.55888,121.21901 2.80543,-0.66935 5.9048,-0.48599 0.29975,-0.35213 -0.13363,-1.64136 -0.89053,-0.65479 -0.35213,-0.10474 -0.45982,-0.47437 -0.30266,-0.62861 -0.13102,-0.39287 3.62028,-1.82469 0.36669,-0.009 0.18617,0.34049 0.0348,0.57624 0.7945,1.57441 1.77812,-0.24761 1.52495,3.34382 0.30266,3.29145 -1.3416,0.13107 -0.32885,4.82803 0.26488,2.34853 -0.26488,0.69555 -0.22115,0.20955 -2.83453,0.0757 0.14556,2.00803 1.3125,3.73961 -2.80833,0.12806 -0.0787,-0.20653 -0.20065,-0.2501 -2.54351,0.1456 -0.19505,0.24753 -0.23569,0.43362 -0.0523,0.26194 -0.0641,0.89052 -0.89343,0.69845 -1.99057,0.13105 -2.6541,-2.45634 -2.47657,-6.32095 -1.757774,-3.47477 3.870564,-5.90188"
      id="23011"
      inkscape:label="Kennebec, ME"
@@ -362,7 +362,7 @@
        id="title3081">Kennebec County, ME</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 118.46603,112.34 1.49584,-0.73628 1.45801,2.92474 8.26205,-4.6825 0.74793,0.49765 -0.18622,2.33688 0.0553,0.20957 0.16591,0.23567 0.68681,0.4307 0.8818,0.77703 0.98073,2.5959 0.14266,0.72172 0.0255,0.20956 -0.32595,0.19504 -2.81707,2.00804 -1.1699,0.82649 -0.0932,0.47435 0.35214,0.60243 0.25312,0.34048 0.35213,0.0932 0.22399,0.18318 0.53841,0.58787 0.1687,1.19318 0,0.38123 -1.24557,3.67268 -1.32414,-0.69555 -5.96881,-2.46493 -2.98878,1.73157 -0.23565,0.6286 -2.66575,0.19815 0.32887,-4.82801 1.3416,-0.13106 -0.30267,-3.29143 -1.52494,-3.34381 -1.77813,0.24756 -0.79448,-1.57442 4.95897,-2.55515"
      id="23027"
      inkscape:label="Waldo, ME"
@@ -372,7 +372,7 @@
   </path>
   <path
      id="23009"
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 138.19426,123.90803 0.13106,-0.0524 0.22403,0.064 1.37654,0.40744 0.42197,0.30265 0.29975,0.45691 0.19504,1.88871 -0.36378,1.03604 -0.54129,0.90506 -0.0787,0.0786 -0.18318,0.0125 -1.15244,-0.61696 -0.17161,-0.20959 -0.60242,-1.79559 -0.0378,-0.14559 0.0495,-0.20959 0.17162,-0.0668 0.23566,-0.2765 0.22399,-1.16407 0,-0.2649 -0.0668,-0.23273 -0.13106,-0.11927 m 7.17655,-5.71853 1.39398,-1.06223 1.17281,-0.66934 1.52495,-0.14559 0.0255,0.0254 0.50927,0.52385 0.52675,0.84104 0.19495,0.53838 -0.22114,0.89052 -0.0122,0.0407 -0.10476,0.10472 -0.75956,0.86433 -1.07676,0.3143 -0.31432,0.29103 -0.14266,0.3405 0.0841,0.35212 0.0727,0.11636 0.0787,0.0292 0.26192,0.47146 -0.44526,1.02146 -0.54131,0.25011 -1.912,-0.58786 -0.71008,-0.6577 -0.55002,-0.78577 -0.14267,-0.50055 0.16872,-1.07386 0.65479,-1.16699 0.2649,-0.36669 m -14.94102,-7.84576 0.73629,-0.32594 1.41434,-0.78867 0.64607,-1.19317 1.68791,-1.26013 4.12085,-2.12445 -2.78216,-5.58758 -0.98365,-1.82177 3.05572,-1.56278 1.57732,-4.48462 -2.16809,-4.10629 5.91643,-3.09354 2.33397,4.39148 1.94111,4.1325 0.44817,1.87707 -2.55806,1.33578 3.27979,5.91643 1.87417,2.83453 0.8003,2.01967 0.11637,1.15245 1.61225,2.88692 0.77701,1.37651 0.72174,1.12917 0.34049,0.36668 0.0523,0.64316 -0.30264,0.56458 -0.18319,0.0495 -0.14264,-0.13104 -0.29102,-0.24756 -0.32593,0.48311 -0.10478,0.72464 -0.0932,0.50928 -0.0379,0.66934 -0.0125,0.20957 0,0.30266 -0.29973,0.0407 -0.0122,0 -0.19814,-0.0785 -1.47839,-1.49585 -0.41033,-0.52674 -0.66642,-1.51913 -0.14559,-0.51219 0.0255,-0.32885 -0.14556,-0.23569 -0.18319,-0.10475 -0.74793,0.0932 -1.01856,0.20959 -0.9109,0.18319 -0.92835,0.40451 -0.14559,1.32414 -0.98366,0.97202 -0.87888,0.60532 -0.59078,0.52384 -0.44525,0.86433 -0.11636,0.0932 -0.1747,0.0378 -0.19493,-0.13103 -0.23568,-0.90507 -0.0611,-0.4831 -0.34631,-0.23857 -0.23569,0.0125 -0.15423,0.11636 -0.0961,0.19814 -0.0233,0.26191 0.37833,0.93127 0.3172,1.1408 -0.10472,0.0932 -0.33176,0.0641 -0.23569,-0.32593 -0.0348,-0.35505 -0.66936,-0.45981 -0.71007,0.8556 -0.39871,1.03603 0.42489,2.1099 0.0641,0.15706 0.10473,0.15704 0.27649,0.20959 0.47437,-0.10471 0.27349,0.28804 0.59077,0.81486 0.0407,0.18318 0.16871,0.90507 0.0407,0.3143 -0.25906,0 -0.50346,-0.13101 -0.0233,-0.0668 -0.3958,-0.2619 -1.33578,-0.64024 -0.81486,-0.21252 -2.8287,-0.55003 -1.1699,0.38124 -0.47146,0.64024 -0.8847,0.0932 -0.0757,-0.15709 -0.81486,-3.38457 -0.0255,-0.73336 0.0698,-0.0931 0.20961,-0.26193 0.10182,-1.11461 -0.0495,-0.41907 -0.30556,0.18319 -0.0255,-0.20955 -0.14266,-0.72175 -0.98075,-2.59588 -0.88178,-0.77703 -0.68681,-0.43071 -0.16592,-0.23569 -0.0552,-0.20959 0.18614,-2.33689"
      inkscape:label="Hancock, ME"
      inkscape:connector-curvature="0">
@@ -380,7 +380,7 @@
        id="title3087">Hancock County, ME</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 145.31553,66.798315 8.82954,0.407416 0.30266,-0.21246 0.52384,-0.183251 0.16872,0.02542 0.86723,0.654802 0.1311,0.235714 2.17684,6.888424 0.20955,1.32416 -0.29976,1.78395 -0.10753,0.18322 -0.43655,0.36669 0.0322,0.39578 1.05931,1.12624 2.35144,2.36018 1.54532,0.81485 0.0523,0.0254 0.0932,0.0406 0.27348,0.0641 0.13115,-0.0254 0.6577,-0.95747 -0.10474,-0.61694 0,-1.03604 0.13103,-0.20959 0.32595,-0.0669 3.09645,0.14562 0.0125,0 1.15244,0.84105 0.64606,0.57622 5.54685,6.75458 0.57621,1.12916 0.69554,1.66462 0.0524,0.26192 -0.69264,1.67918 -2.29613,4.73489 -0.60533,1.12916 -1.74321,1.9149 -0.98655,0.20958 -3.5912,1.717 -8.60253,9.45815 -1.03895,0.53838 -0.87888,0.39288 -0.23567,0.0786 -0.34058,-0.36666 -0.72173,-1.12927 -0.77702,-1.37653 -1.61226,-2.88692 -0.11637,-1.15244 -0.80025,-2.01956 -1.87417,-2.83454 -3.27986,-5.91641 2.55805,-1.33578 -0.44836,-1.87705 -1.94111,-4.13248 -2.33397,-4.3915 0.73628,-0.28806 2.09534,-1.05057 -1.35034,-2.97714 -5.46534,-9.562917 5.64869,-3.31762"
      id="23029"
      inkscape:label="Washington, ME"
@@ -389,7 +389,7 @@
        id="title3090">Washington County, ME</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 139.66684,70.115935 5.46533,9.562905 1.35034,2.97714 -2.09534,1.05058 -0.73628,0.28805 -5.91643,3.09355 2.1681,4.10629 -1.57734,4.48461 -3.05571,1.56279 0.98366,1.82178 2.78214,5.58757 -4.12083,2.12445 -1.68792,1.26013 -0.64608,1.19317 -1.41434,0.78866 -0.73628,0.32594 -0.74793,-0.49764 -8.26205,4.6825 -1.45801,-2.92474 -1.49584,0.73628 -5.94262,-12.04239 4.89495,-2.4795 7.10671,-3.71342 1.00983,-4.11792 -5.09866,-9.72008 -2.54643,1.32707 -1.4551,-5.43044 3.16047,-1.79558 -3.27978,-11.41381 -2.6221,-8.945944 -1.46673,-5.247094 3.10517,-0.890508 6.59743,-1.440559 4.89204,15.619042 0.78867,2.494039 0.81195,2.884001 0.42197,1.769401 1.7694,6.009562 0.58786,0.0901 1.88872,-1.04766 1.78685,-1.01276 -0.0641,-0.19501 0.009,-0.13112 4.84257,-2.793791"
      id="23019"
      inkscape:label="Penobscot, ME"
@@ -398,7 +398,7 @@
        id="title3093">Penobscot County, ME</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 76.13719,87.6004 3.466049,7.47632 5.049197,10.29626 3.26524,-0.13103 2.95094,-0.81194 0.57623,-0.30267 9.632754,14.75472 1.48128,2.33689 -3.870564,5.90188 -2.53187,1.82469 -0.75956,-1.53658 -1.44346,-2.17684 -6.49265,-0.4598 -4.36821,-5.36351 -3.329262,3.38166 -4.187783,-9.84811 -0.576219,-4.15868 -2.045869,-4.74944 -0.02546,-1.2572 -0.02546,-1.20775 0.352124,-7.47628 0.366691,-2.00513 0.238571,-0.47436 0.273509,-0.55002 0.646055,-1.167 0.992382,-1.82179 0.08164,-0.13364 0.285146,-0.3405"
      id="23007"
      inkscape:label="Franklin, ME"
@@ -407,7 +407,7 @@
        id="title3096">Franklin County, ME</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 87.856566,48.86566 1.55695,6.574137 3.64649,12.499319 1.75774,1.993476 2.17685,3.960768 -1.05932,4.52536 0.95454,8.02925 7.726584,15.08355 1.78394,2.97714 2.51733,-1.26013 3.60574,-2.95093 5.94262,12.0424 -4.95899,2.55516 -0.0348,-0.57623 -0.18613,-0.34049 -0.3667,0.009 -3.62029,1.82469 0.13106,0.39288 0.30266,0.62861 0.45981,0.47435 0.35214,0.10478 0.89051,0.6548 0.13364,1.64134 -0.29975,0.35214 -5.9048,0.486 -2.80543,0.66935 -1.48129,-2.33688 -9.632764,-14.75472 -0.57622,0.30266 -2.95093,0.81195 -3.26524,0.13103 -5.049202,-10.29627 -3.466042,-7.4763 0.212516,-0.26194 1.458004,-1.74612 3.384567,-8.18348 0.06116,-0.6024 -0.06116,-1.56279 -0.407443,-0.3143 -0.419057,-0.19507 -1.260119,0 -0.485962,-1.60311 -0.421978,-1.754842 -0.81195,-4.708699 0.328855,-2.546426 0.407423,-3.055713 0.01244,-0.0378 0.285149,-0.814842 0.253147,-0.392878 0.03479,-0.02517 0.06976,-0.0378 0.824058,-0.604957 1.455183,-2.255243 -0.299661,-2.400743 -0.445254,-3.503878 7.543216,-2.124455"
      id="23025"
      inkscape:label="Somerset, ME"
@@ -416,7 +416,7 @@
        id="title3099">Somerset County, ME</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 66.053358,104.19434 1.009848,2.88402 5.549739,16.73655 0.392871,1.26012 4.921151,15.64813 -0.384152,1.92655 -7.487935,4.80181 -1.967305,-1.28337 -1.062214,-1.15535 -0.788667,-0.20957 -3.4864,-0.8265 -2.881099,-0.48601 -2.694853,-2.00802 0.56168,0.0524 0.841025,-0.61696 0.06682,-0.10185 0.366673,-0.47435 0.15421,-0.22393 0.107537,-0.16878 1.297954,-2.28159 0.131032,-0.22399 0,-0.009 0.302654,-0.84104 0.352135,-3.26525 -0.68099,-1.10004 -0.116365,-0.18617 -0.657711,-0.81486 -1.204816,-1.48129 -0.986548,-0.972 -0.221163,-0.62569 0.03784,-9.21079 0.631528,-1.29794 -0.221163,-2.22921 0.628604,-6.78077 2.109888,-2.75597 0.291021,-0.20653 0.56167,0.28804 0.235664,0.46855 0.119284,0.13363 0.841049,0.41907 1.376517,0.0932 1.152447,-0.23853 0.171615,-0.14264 0.628596,-2.49113"
      id="33007"
      inkscape:label="Coos, NH"
@@ -425,7 +425,7 @@
        id="title3102">Coos County, NH</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 55.416584,143.76433 1.757758,-2.2816 2.694853,2.00803 2.881099,0.48601 3.4864,0.82648 0.788667,0.2096 1.062214,1.15534 1.289227,1.85962 1.885819,2.87237 1.088405,5.69235 -5.075387,2.20302 1.478389,3.38456 0.590771,1.06222 0.919611,2.40091 -3.134273,2.23214 -0.983658,4.05098 -1.510392,0.486 -2.136086,-1.40271 -0.77411,1.63844 -0.695529,1.97894 -1.722847,0.13364 -3.012053,0.11636 -3.055711,-0.47146 -3.253599,0.26194 1.664626,-7.06887 0.72174,-15.13594 -0.445259,-0.35505 -0.488913,-0.65771 -0.861427,-3.00331 0,-0.23569 0.09024,-0.38124 0.878871,-1.58605 0.08162,-0.0641 0.13669,-0.13105 1.815966,-1.12916 1.836339,-1.15534"
      id="33009"
      inkscape:label="Grafton, NH"
@@ -434,7 +434,7 @@
        id="title3105">Grafton County, NH</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 81.192204,168.89679 0.614061,-1.4842 1.062222,2.29614 2.988779,-0.91671 0.73626,-1.70537 0.45692,5.11613 0.20061,0.83813 0.24761,0.52675 0.76247,1.05932 0.48309,0.2501 1.3154,0.65479 3.17212,1.89165 0.0817,0.0901 1.01857,4.09174 -0.82649,1.61516 -0.23569,0.3405 -5.23253,1.35323 0.66934,-2.37762 -7.135818,-3.39619 0.198143,-0.47145 1.297955,-3.12264 -1.297955,-2.91311 -1.062218,-2.55807 0.485998,-1.17863"
      id="33017"
      inkscape:label="Strafford, NH"
@@ -443,7 +443,7 @@
        id="title3108">Strafford County, NH</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 98.001516,183.07527 -1.13499,7.648 -1.93235,0.11637 -0.79741,0.0524 -0.18317,0.0932 -0.21546,0.0902 -0.009,0 -2.52896,1.87708 -1.94111,1.65298 -0.64024,0.55005 -0.35504,0.36958 -1.4813,2.97423 -3.09644,-0.34048 -2.610447,-1.60062 -0.919621,-2.04587 -0.654805,-1.4289 0.81485,-3.26525 1.257215,-10.67752 7.135798,3.3962 -0.66933,2.37764 5.23253,-1.35324 0.23568,-0.3405 0.8265,-1.61516 3.66976,1.46965"
      id="33015"
      inkscape:label="Rockingham, NH"
@@ -452,7 +452,7 @@
        id="title3111">Rockingham County, NH</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 50.824286,191.52358 0.777022,0.79739 1.61225,-0.27342 0.07861,-0.95746 0.695547,-0.43362 4.458426,-1.88872 -0.133634,1.3125 0.02915,0.66643 3.736691,-0.83813 0.497653,4.14703 0.590762,2.7414 1.495843,-0.35503 3.09936,5.24708 1.149544,2.68611 -9.519268,2.06042 -4.723262,1.00984 -3.000406,-2.41256 -0.77702,-1.66754 -0.119285,-0.37833 1.708288,-5.8495 -0.715915,-4.01315 -0.0584,-0.22399 -0.881781,-1.37653"
      id="33005"
      inkscape:label="Cheshire, NH"
@@ -461,7 +461,7 @@
        id="title3114">Cheshire County, NH</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 49.986152,174.66772 3.253599,-0.26194 3.055711,0.47145 3.012053,-0.11636 1.722847,-0.13363 -1.818885,5.06373 -0.317199,3.50388 1.28339,2.29324 0.931257,1.00984 1.18155,1.06513 -0.212562,2.34562 -3.736701,0.83814 -0.02911,-0.66643 0.133635,-1.3125 -4.458421,1.88872 -0.695536,0.43361 -0.07854,0.95746 -1.612257,0.2734 -0.777016,-0.79739 -0.104775,-2.76761 0.119194,-3.27978 -0.561661,-1.46965 -1.30086,-5.98045 1.009836,-3.35838"
      id="33019"
      inkscape:label="Sullivan, NH"
@@ -470,7 +470,7 @@
        id="title3117">Sullivan County, NH</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 62.290475,187.5628 2.345612,-1.36487 7.004843,0.29975 5.10158,2.72976 3.570814,0.59077 -0.814852,3.26524 0.654794,1.42891 0.919631,2.04588 2.610449,1.60061 3.09645,0.34047 -0.17472,0.3958 -0.67807,1.61225 -9.053627,2.08662 -0.116364,0.0255 -0.407434,0.0902 -6.635245,1.48421 -0.803215,0.18044 -1.149527,-2.68612 -3.099357,-5.24708 -1.49584,0.35503 -0.59077,-2.74139 -0.497649,-4.14704 0.21254,-2.34562"
      id="33011"
      inkscape:label="Hillsborough, NH"
@@ -479,7 +479,7 @@
        id="title3120">Hillsborough County, NH</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 69.344799,163.24228 2.307774,1.44346 6.664367,3.69886 2.875264,0.51219 -0.485989,1.17863 1.062218,2.55807 1.297944,2.9131 -1.297944,3.12265 -3.530082,-1.46965 -6.283117,-2.46786 -1.231002,1.01277 -0.340497,-0.0406 -2.336889,-1.86252 -0.459812,-0.43362 -1.440555,-1.4813 0.983658,-4.05098 3.134273,-2.23213 -0.919611,-2.40092"
      id="33001"
      inkscape:label="Belknap, NH"
@@ -488,7 +488,7 @@
        id="title3123">Belknap County, NH</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 66.146479,171.92631 1.440555,1.4813 0.459812,0.43362 2.336889,1.86252 0.340497,0.0406 1.231002,-1.01274 6.283117,2.46786 3.530082,1.46964 -0.198098,0.47144 -1.257206,10.67753 -3.570811,-0.59077 -5.101576,-2.72976 -7.004854,-0.29976 -2.345622,1.36488 -1.181541,-1.06512 -0.931257,-1.00985 -1.283402,-2.29323 0.317214,-3.50389 1.818883,-5.06373 0.695529,-1.97894 0.774114,-1.63844 2.136082,1.40271 1.510389,-0.486"
      id="33013"
      inkscape:label="Merrimack, NH"
@@ -497,7 +497,7 @@
        id="title3126">Merrimack County, NH</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 77.926967,140.72316 5.360579,17.74639 3.30598,8.6171 -0.73626,1.70537 -2.988779,0.91671 -1.062222,-2.29614 -0.614061,1.4842 -2.875264,-0.51219 -6.664367,-3.69886 -2.307774,-1.44346 -0.590771,-1.06224 -1.478389,-3.38454 5.075387,-2.20302 -1.088405,-5.69235 -1.885819,-2.87237 -1.289227,-1.85961 1.967305,1.28337 7.487935,-4.80181 0.384152,-1.92655"
      id="33003"
      inkscape:label="Carroll, NH"
@@ -506,7 +506,7 @@
        id="title3129">Carroll County, NH</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 93.717696,236.50069 -0.74792,2.88402 -1.55113,2.40092 -8.18348,2.37471 -0.41616,-1.57442 -0.814849,-3.09645 8.879009,-2.62208 0.0787,-0.0408 0.20957,-0.35502 -0.0786,-0.37833 0.0786,-0.38124 0.0817,-0.0785 0.83814,-0.48601 0.36667,0.0668 0.34049,0.25011 0.5384,0.61697 0.38124,0.41907"
      id="44003"
      inkscape:label="Kent, RI"
@@ -515,7 +515,7 @@
        id="title3132">Kent County, RI</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 87.050446,226.7399 3.43984,0.35504 3.7367,7.17363 -0.89052,1.81307 -0.53839,-0.61696 -0.3405,-0.25011 -0.36667,-0.0668 -0.83815,0.48601 -0.0817,0.0786 -0.0786,0.38124 0.0786,0.37831 -0.20962,0.35505 -0.0785,0.0407 -8.87902,2.62207 -2.953851,-10.29627 8.000151,-2.45329"
      id="44007"
      inkscape:label="Providence, RI"
@@ -524,7 +524,7 @@
        id="title3135">Providence County, RI</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 93.717696,236.50069 -0.38123,-0.41905 0.89052,-1.81307 3.1372,1.74613 1.14078,1.06221 -1.14078,1.71994 -0.41908,0.69262 -0.0437,0.14561 -2.05751,-0.63152 -1.12625,-2.50277"
      id="44001"
      inkscape:label="Bristol, RI"
@@ -533,7 +533,7 @@
        id="title3138">Bristol County, RI</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 98.504966,237.07691 3.748354,5.94263 -0.99528,1.28341 -3.698884,1.79558 -1.07385,0.2765 -0.40744,-0.26196 -0.0113,-0.16874 0.8265,-6.27148 0.009,-0.0378 0.0438,-0.14555 0.41907,-0.69261 1.1408,-1.71994"
      id="44005"
      inkscape:label="Newport, RI"
@@ -542,7 +542,7 @@
        id="title3141">Newport County, RI</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 83.235166,244.16034 8.18348,-2.37471 1.55113,-2.40092 0.74792,2.3107 0.40453,2.75304 0.17749,1.18154 0.0322,0.46854 0.0254,0.71009 -0.0495,0.38124 -0.2416,1.50749 -0.4016,1.52202 -8.9576,4.537 -0.76247,-0.0641 -0.71005,-10.532"
      id="44009"
      inkscape:label="Washington, RI"
@@ -551,7 +551,7 @@
        id="title3144">Washington County, RI</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 48.042143,120.4449 10.115855,-2.80833 -0.631518,1.29794 -0.03784,9.21078 0.221162,0.62569 0.98656,0.97201 1.204809,1.48129 0.657718,0.81484 0.116365,0.18622 0.680986,1.10005 -0.352135,3.26524 -0.302652,0.84103 0,0.009 -0.131077,0.22399 -1.297941,2.28162 -0.10765,0.16874 -0.154278,0.22399 -0.366684,0.47436 -0.06682,0.10183 -0.841062,0.61697 -0.561654,-0.0524 -1.757772,2.2816 -2.950936,-2.4125 -1.245574,-7.60725 1.140805,-3.07026 -3.148832,-1.20482 -1.050579,-0.40743 0.0407,-4.7087 -0.160072,-3.90839"
      id="50009"
      inkscape:label="Essex, VT"
@@ -560,7 +560,7 @@
        id="title3147">Essex County, VT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 48.042143,120.4449 0.160162,3.90839 -0.0407,4.7087 1.050583,0.40743 -0.93127,2.32233 -0.695538,0.55006 -2.706462,-1.01277 -1.044769,4.89495 -0.864349,3.64358 -3.279811,-0.78575 -0.483079,-0.47146 -2.269954,-2.79378 -0.174739,-1.62681 -4.155745,-0.96911 -1.522032,-8.53851 16.957731,-4.23725"
      id="50019"
      inkscape:label="Orleans, VT"
@@ -569,7 +569,7 @@
        id="title3150">Orleans County, VT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 40.242812,190.51376 -0.829403,-0.0668 0.156993,2.19137 0.657702,3.41075 -3.466042,0.62861 0.131032,0.78576 1.286307,6.20454 2.339798,-0.44528 1.466736,6.93793 -2.494038,0.52382 -6.504285,1.40564 -2.008038,-7.18818 -2.805431,-13.70704 10.360307,-2.01968 1.708287,1.33869"
      id="50003"
      inkscape:label="Bennington, VT"
@@ -578,7 +578,7 @@
        id="title3153">Bennington County, VT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 14.650524,128.69531 1.638442,10.83176 -2.045869,6.6789 -0.433621,-0.36669 -0.785752,-1.46964 -1.335781,-7.83134 -0.960365,-6.15216 0.04075,-0.64315 3.882204,-1.04768"
      id="50013"
      inkscape:label="Grand Isle, VT"
@@ -587,7 +587,7 @@
        id="title3156">Grand Isle County, VT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 38.863382,142.30922 6.21618,1.58606 0.104798,0.0817 0.19812,0.36668 -0.04065,0.60241 -1.964387,7.95066 -1.495829,-0.2765 -3.867661,3.33218 -0.384159,2.86944 -0.736285,3.12265 -1.661754,-0.22408 -6.731296,-3.44857 0.448171,-4.56319 -0.448171,-0.10478 0.788664,-4.9066 0.445261,-1.97893 4.406039,0.96909 4.001524,-2.07206 0.721731,-3.30597"
      id="50023"
      inkscape:label="Washington, VT"
@@ -596,7 +596,7 @@
        id="title3159">Washington County, VT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 49.212041,129.46942 3.148836,1.20482 -1.140796,3.07028 1.245553,7.60724 2.95095,2.41257 -1.836334,1.15533 -1.815962,1.12916 -0.136712,0.1311 -0.08167,0.0641 -0.878879,1.58606 -0.0902,0.38123 0,0.23562 0.861428,3.00332 0.488917,0.6577 0.445253,0.35505 -3.725054,-0.44817 -3.436936,1.21937 -1.833432,-0.33757 1.964384,-7.95067 0.04065,-0.60242 -0.198074,-0.36667 -0.104754,-0.0817 -6.216175,-1.58604 0.826484,-3.22741 3.279791,0.78574 0.864333,-3.64356 1.044764,-4.89496 2.706485,1.01277 0.695529,-0.55004 0.93128,-2.32233"
      id="50005"
      inkscape:label="Caledonia, VT"
@@ -605,7 +605,7 @@
        id="title3162">Caledonia County, VT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 32.606446,133.22066 4.155766,0.96911 0.174693,1.62681 2.269961,2.79378 0.483096,0.47146 -0.826499,3.2274 -0.721726,3.30598 -4.001517,2.07205 -4.40605,-0.96908 -4.734892,-5.8524 1.17863,-3.31764 2.010947,-3.41074 3.355457,-1.42891 1.062225,0.51218"
      id="50015"
      inkscape:label="Lamoille, VT"
@@ -614,7 +614,7 @@
        id="title3165">Lamoille County, VT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 31.084416,124.68215 1.52203,8.53851 -1.062216,-0.51218 -3.355462,1.42891 -2.010948,3.41074 -1.178629,3.31764 -8.710225,-1.3387 -1.638442,-10.83176 16.433892,-4.01316"
      id="50011"
      inkscape:label="Franklin, VT"
@@ -623,7 +623,7 @@
        id="title3168">Franklin County, VT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 16.288966,139.52707 8.710225,1.3387 4.734891,5.8524 -0.44526,1.97894 -0.788662,4.90659 0.448169,0.10477 -0.448169,4.56322 -1.193183,-3.12265 -1.574416,-0.96909 -6.411167,2.51733 -1.417267,0.15704 -0.878881,-4.56318 0.145506,-1.57443 -0.04075,-0.40741 -0.01458,-0.0224 -0.485928,-1.31344 -0.375417,-0.81485 -1.248476,-1.50751 -0.762473,-0.44524 2.045871,-6.67892"
      id="50007"
      inkscape:label="Chittenden, VT"
@@ -632,7 +632,7 @@
        id="title3171">Chitenden County, VT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 17.904127,156.85439 1.417267,-0.15702 6.411167,-2.51734 1.574416,0.96911 1.193183,3.12264 6.731289,3.44859 -0.683897,2.79378 -0.550032,1.65592 -1.143709,1.0884 -2.191374,1.848 0.462721,0.99818 0.250289,0.44526 -2.060426,-0.27651 -3.265243,0.95745 -1.586058,0.60241 0.954546,2.50568 -3.949139,1.46963 -0.972005,-1.88872 -0.4569,-0.82651 -3.128465,-7.38607 -0.05818,-0.12807 0,-0.009 -0.06402,-1.24846 0,-1.2223 0.01462,-3.10518 1.100056,-3.13719"
      id="50001"
      inkscape:label="Addison, VT"
@@ -641,7 +641,7 @@
        id="title3174">Addison County, VT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 21.469119,175.80851 3.949141,-1.46965 -0.954547,-2.50567 1.586059,-0.60242 3.265242,-0.95745 2.060421,0.2765 1.932375,-1.70538 2.293231,0.53839 0.468552,0.50928 3.399103,4.22561 0.616962,7.93611 -1.158259,3.94915 -0.392877,3.1721 -10.360305,2.01968 -1.588968,-7.38607 -4.510807,-0.9953 -0.890522,-0.3696 -0.10476,-0.13963 -0.264828,-2.19138 0.148415,-1.52202 0.506374,-2.78215"
      id="50021"
      inkscape:label="Rutland, VT"
@@ -650,7 +650,7 @@
        id="title3177">Rutland County, VT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 40.242812,190.51376 3.841455,0.32593 3.410762,-1.37652 3.224504,-0.70719 0.104775,2.7676 0.881812,1.37652 0.05829,0.22408 0.715914,4.01318 -1.708286,5.84949 0.119216,0.37834 0.777032,1.66754 3.000406,2.41255 -12.682648,2.71522 -1.466726,-6.93792 -2.339806,0.44526 -1.286297,-6.20453 -0.131031,-0.78576 3.466045,-0.6286 -0.657705,-3.41076 -0.156993,-2.19138 0.829401,0.0668"
      id="50025"
      inkscape:label="Windham, VT"
@@ -659,7 +659,7 @@
        id="title3180">Windham County, VT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 34.547552,164.51403 0.157129,0.57914 0.355041,0.56456 2.139,0.18319 3.078982,0.36667 7.869185,0.90508 3.503871,0.48599 -1.664626,7.06889 -1.009844,3.35837 1.30087,5.98044 0.561659,1.46965 -0.119261,3.27979 -3.224502,0.70718 -3.410769,1.37654 -3.841463,-0.32592 -1.708284,-1.33871 0.392877,-3.17211 1.158266,-3.94914 -0.617003,-7.93608 -3.399118,-4.22561 -0.468538,-0.50928 -2.293236,-0.53839 -1.932375,1.70539 -0.250282,-0.44526 -0.462719,-0.99819 2.191378,-1.84799 1.143709,-1.08841 0.55003,-1.65591"
      id="50027"
      inkscape:label="Windsor, VT"
@@ -668,7 +668,7 @@
        id="title3183">Windsor County, VT</title>
   </path>
   <path
-     style="font-size:12px;fill:none;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
+     style="font-size:12px;fill:#fff;stroke:#000000;stroke-width:0.29101977;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none"
      d="m 52.372518,152.4629 -0.72174,15.13594 -3.503871,-0.486 -7.869183,-0.90507 -3.07898,-0.36669 -2.139004,-0.18318 -0.355034,-0.56457 -0.15713,-0.57915 0.683895,-2.79378 1.661729,0.224 0.736269,-3.12265 0.384161,-2.86946 3.867647,-3.33219 1.495843,0.27651 1.833423,0.33758 3.43695,-1.21938 3.725052,0.44818"
      id="50017"
      inkscape:label="Orange, VT"
@@ -707,7 +707,7 @@
      id="path9363"
      inkscape:connector-curvature="0" />
   <rect
-     style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.83076739;stroke-opacity:1"
+     style="fill:#fff;fill-opacity:1;stroke:#000000;stroke-width:0.83076739;stroke-opacity:1"
      id="box1"
      width="12.923708"
      height="12.923708"
@@ -722,7 +722,7 @@
      height="12.923708"
      width="12.923708"
      id="box2"
-     style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.83076739;stroke-opacity:1"
+     style="fill:#fff;fill-opacity:1;stroke:#000000;stroke-width:0.83076739;stroke-opacity:1"
      inkscape:label="#box2" />
   <text
      xml:space="preserve"
@@ -751,7 +751,7 @@
        sodipodi:role="line">label2</tspan></text>
   <rect
      inkscape:label="#box3"
-     style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.83076739;stroke-opacity:1"
+     style="fill:#fff;fill-opacity:1;stroke:#000000;stroke-width:0.83076739;stroke-opacity:1"
      id="box3"
      width="12.923708"
      height="12.923708"
@@ -765,11 +765,11 @@
      height="12.923708"
      width="12.923708"
      id="box4"
-     style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.83076739;stroke-opacity:1"
+     style="fill:#fff;fill-opacity:1;stroke:#000000;stroke-width:0.83076739;stroke-opacity:1"
      inkscape:label="#box4" />
   <rect
      inkscape:label="#box5"
-     style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.83076739;stroke-opacity:1"
+     style="fill:#fff;fill-opacity:1;stroke:#000000;stroke-width:0.83076739;stroke-opacity:1"
      id="box5"
      width="12.923708"
      height="12.923708"

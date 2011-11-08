@@ -3,6 +3,83 @@ import xml.etree.ElementTree as ET
 from gobotany.core import models
 from gobotany.settings import STATIC_ROOT
 
+class Path(object):
+    """Class for operating on a SVG path node."""
+    STYLE_ATTR = 'style'
+    FILL_OPACITY = 1
+    STROKE_OPACITY = 1
+
+    def __init__(self, path_node):
+        self.path_node = path_node
+
+    def get_style(self):
+        return self.path_node.get(Path.STYLE_ATTR)
+
+    def set_style(self, value):
+        self.path_node.set(Path.STYLE_ATTR, value)
+
+    def color(self, fill_color, stroke_color=None):
+        style = self.get_style()
+        shaded_style = style.replace('fill:#fff;',
+                                     'fill:%s;' % fill_color)
+        shaded_style = shaded_style.replace('fill-opacity:1;',
+            'fill-opacity:%s;' % str(Path.FILL_OPACITY))
+        shaded_style = shaded_style.replace('stroke-opacity:1;',
+            'stroke-opacity:%s;' % str(Path.STROKE_OPACITY))
+        if stroke_color:
+            shaded_style = shaded_style.replace('stroke:#000000;',
+                'stroke:%s;' % str(stroke_color))
+        self.set_style(shaded_style)
+
+
+class Legend(object):
+    """Class for configuring the legend on a SVG plant distribution map."""
+
+    # This list controls the order, label and color of legend items.
+    ITEMS = [('native', '#78bf47'), ('rare', '#a7e37d'),
+             ('introduced', '#fa9691'), ('invasive', '#f00'),
+             ('historic', '#ccc'), ('absent', '#fff')]
+    COLORS = dict(ITEMS)  # Colors for labels, ex.: COLORS['rare']
+
+    def __init__(self, svg_map, maximum_items):
+        self.box_nodes = svg_map.findall('{http://www.w3.org/2000/svg}rect')
+        self.label_nodes = svg_map.findall('{http://www.w3.org/2000/svg}text')
+        self.maximum_items = maximum_items
+
+    def _set_item_label(self, label_node, label):
+        label_text_node = label_node.find('{http://www.w3.org/2000/svg}tspan')
+        label_text_node.text = label
+
+    def _set_item(self, slot_number, fill_color, stroke_color, item_label):
+        box_node_id = 'box%s' % str(slot_number)
+        label_node_id = 'label%s' % str(slot_number)
+        for box_node in self.box_nodes:
+            if box_node.get('id') == box_node_id:
+                box = Path(box_node)
+                box.color(fill_color, stroke_color)
+                break
+        for label_node in self.label_nodes:
+            if label_node.get('id') == label_node_id:
+                self._set_item_label(label_node, item_label)
+                break
+
+    def show_items(self, legend_labels_found):
+        """Set the colors and labels of the legend items."""
+        for item_slot_number in range(1, self.maximum_items + 1):
+            # Only show legend items for data values shown on this map.
+            if len(legend_labels_found) >= item_slot_number:
+                # Show the legend item.
+                label = legend_labels_found[item_slot_number - 1]
+                fill_color = Legend.COLORS[label]
+                stroke_color = '#000'
+            else:
+                # Do not show the legend item, and hide its box.
+                label = ''
+                fill_color = '#fff'
+                stroke_color = '#fff'
+            self._set_item(item_slot_number, fill_color, stroke_color, label)
+
+
 class ChloroplethMap(object):
     """Base class for a chloropleth SVG map."""
 
@@ -17,10 +94,12 @@ class ChloroplethMap(object):
 class PlantDistributionMap(ChloroplethMap):
     """Base class for a map that shows plant distribution data."""
 
-    def __init__(self, blank_map_path, maximum_legend_items):
-        super(PlantDistributionMap, self).__init__(blank_map_path,
-                                                   maximum_legend_items)
+    def __init__(self, blank_map_path):
+        self.maximum_legend_items = 5
         self.scientific_name = None
+        super(PlantDistributionMap, self).__init__(blank_map_path,
+            self.maximum_legend_items)
+        self.legend = Legend(self.svg_map, self.maximum_legend_items)
 
     def _get_label_for_status(self, status):
         """Return the appropriate label for a distribution status string."""
@@ -39,15 +118,55 @@ class PlantDistributionMap(ChloroplethMap):
             label = 'absent'
         return label
 
+    def _set_title(self):
+        """Make the map title begin with the plant name."""
+        title = self.svg_map.find('{http://www.w3.org/2000/svg}title')
+        title.text = '%s: %s' % (self.scientific_name, title.text)
+
     def set_plant(self, scientific_name):
         """Look up the plant and get its distribution records."""
         self.scientific_name = scientific_name
+        self._set_title()
         self.taxon = (models.Taxon.objects.filter(
                       scientific_name=self.scientific_name))
         if len(self.taxon) > 0:
             self.distribution_records = (models.Distribution.objects.filter(
                 scientific_name=self.scientific_name))
 
+    def _shade_counties(self):
+        """Set the colors of the counties based on distribution data."""
+        inkscape_label = '{http://www.inkscape.org/namespaces/inkscape}label'
+        path_nodes = self.svg_map.getiterator(
+            '{http://www.w3.org/2000/svg}path')
+        legend_labels_found = []
+        for record in self.distribution_records.all():
+            for node in path_nodes:
+                if inkscape_label in node.keys():
+                    label_val = node.attrib[inkscape_label] # ex.: Suffolk, MA
+                    if not label_val.startswith('#'):  # Ignore #State_borders
+                        county, state = label_val.split(', ')
+                        if county == record.county and state == record.state:
+                            label = self._get_label_for_status(record.status)
+                            if label != '':
+                                if label not in legend_labels_found:
+                                    legend_labels_found.append(label)
+                                box = Path(node)
+                                box.color(Legend.COLORS[label])
+                            break;   # Found matching county and state for
+                                     # this record, so go to the next record.
+
+        # Order the found labels as they are to be presented in the legend.
+        all_labels = [item[0] for item in Legend.ITEMS]
+        legend_labels_found = [label for label in all_labels
+                               if label in legend_labels_found]
+        return legend_labels_found
+
+    def shade(self):
+        """Shade a New England plant distribution map. Assumes the base
+        class method set_plant(scientific_name) has already been called.
+        """
+        legend_labels_found = self._shade_counties()
+        self.legend.show_items(legend_labels_found)
 
 
 class NewEnglandPlantDistributionMap(PlantDistributionMap):
@@ -56,102 +175,13 @@ class NewEnglandPlantDistributionMap(PlantDistributionMap):
     """
 
     def __init__(self):
-        # Note that this version of the New England counties map is in
-        # the static directory. It is not to be confused with versions
-        # in the "mapping" app's directory, which are used by code that
-        # scans existing maps.
+        # Note that this version of the New England counties map is
+        # under the static directory. It is not to be confused with
+        # versions in the "mapping" app's directory, which are used by
+        # code that scans existing maps.
         blank_map_path  = ''.join([STATIC_ROOT,
                                   '/graphics/new-england-counties.svg'])
-        print blank_map_path # TODO: remove
-        maximum_legend_items = 5
-        super(NewEnglandPlantDistributionMap, self).__init__(blank_map_path,
-            maximum_legend_items)
-
-    def shade(self):
-        """Shade a New England plant distribution map. Assumes the base
-        class method set_plant(scientific_name) has already been called.
-        """
-        STROKE_OPACITY = 1
-        FILL_OPACITY = 1
-
-        # This list controls the order, label and color of legend items.
-        LEGEND_ITEMS = [('native', '#78bf47'), ('rare', '#a7e37d'),
-                        ('introduced', '#fa9691'), ('invasive', '#f00'),
-                        ('historic', '#ccc'), ('absent', '#fff')]
-        colors_for_labels = dict(LEGEND_ITEMS)
-
-        # Prefix the map title with the plant name.
-        title = self.svg_map.find('{http://www.w3.org/2000/svg}title')
-        title.text = '%s: %s' % (self.scientific_name, title.text)
-
-        # Set the colors of the counties based on distribution data.
-        inkscape_label = '{http://www.inkscape.org/namespaces/inkscape}label'
-        path_nodes = self.svg_map.findall('{http://www.w3.org/2000/svg}path')
-        legend_labels_found = []
-        for node in path_nodes:
-            if inkscape_label in node.keys():
-                label = node.attrib[inkscape_label]   # ex.: Suffolk, MA
-                county, state = label.split(', ')
-                county_record = (self.distribution_records.filter(
-                    county=county, state=state))
-                if len(county_record) > 0:
-                    status = county_record[0].status
-                    label = self._get_label_for_status(status)
-                    if label not in legend_labels_found:
-                        legend_labels_found.append(label)
-                    if label != '':
-                        hex_color = colors_for_labels[label]
-                        style = node.get('style')
-                        shaded_style = style.replace('fill:none;',
-                            'fill:%s;' % str(hex_color))
-                        shaded_style = shaded_style.replace(
-                            'stroke-opacity:1;',
-                            'stroke-opacity:%s;' % str(STROKE_OPACITY))
-                        node.set('style', shaded_style)
-
-        # Order the found labels as they are to be presented in the legend.
-        all_labels = [item[0] for item in LEGEND_ITEMS]
-        legend_labels_found = [label for label in all_labels
-                               if label in legend_labels_found]
-
-        # Set the colors and labels of the legend items.
-        box_nodes = self.svg_map.findall('{http://www.w3.org/2000/svg}rect')
-        label_nodes = self.svg_map.findall('{http://www.w3.org/2000/svg}text')
-
-        for legend_slot_number in range(1, self.maximum_legend_items + 1):
-            box_node_id = 'box%s' % str(legend_slot_number)
-            label_node_id = 'label%s' % str(legend_slot_number)
-            # Only show legend items for data values shown on this map.
-            if len(legend_labels_found) >= legend_slot_number:
-                # Show the legend item.
-                item_label = legend_labels_found[legend_slot_number - 1]
-                hex_color = colors_for_labels[item_label]
-                box_stroke_color = '#000'
-            else:
-                # Do not show the legend item, and hide its box.
-                item_label = ''
-                hex_color = '#fff'
-                box_stroke_color = '#fff'
-
-            # Set the legend box color, or hide the box.
-            for box_node in box_nodes:
-                if box_node.get('id') == box_node_id:
-                    style = box_node.get('style')
-                    shaded_style = style.replace(
-                        'fill:#000000;fill-opacity:0;',
-                        'fill:%s;fill-opacity:%s;' % (hex_color,
-                                                      str(FILL_OPACITY)))
-                    shaded_style = shaded_style.replace('stroke:#000000;',
-                        'stroke:%s;' % str(box_stroke_color))
-                    box_node.set('style', shaded_style)
-                    break
-            # Set the legend label, or hide it.
-            for label_node in label_nodes:
-                if label_node.get('id') == label_node_id:
-                    label_text_node = label_node.find( \
-                        '{http://www.w3.org/2000/svg}tspan')
-                    label_text_node.text = item_label
-                    break
+        super(NewEnglandPlantDistributionMap, self).__init__(blank_map_path)
 
 
 class UnitedStatesPlantDistributionMap(PlantDistributionMap):
@@ -160,9 +190,8 @@ class UnitedStatesPlantDistributionMap(PlantDistributionMap):
     """
 
     def __init__(self):
-        blank_map_path  = ''.join([STATIC_ROOT, '/graphics/us-counties.svg'])
-        print blank_map_path # TODO: remove
-        maximum_legend_items = 5
-        super(UnitedStatesPlantDistributionMap, self).__init__(blank_map_path,
-            maximum_legend_items)
+        blank_map_path  = ''.join([STATIC_ROOT,
+                                  '/graphics/us-counties.svg'])
+        super(UnitedStatesPlantDistributionMap, self).__init__(blank_map_path)
+
 
