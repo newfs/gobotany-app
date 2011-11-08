@@ -16,7 +16,8 @@ require([
     'dojo_config',
     '/static/js/dojo/dojo.js',
     '/static/js/layers/sk.js',
-    'global'  // for global_setSidebarHeight
+    'global',  // for global_setSidebarHeight
+    'simplekey/resources'
 ], function() {
 
     dojo.require('gobotany.sk.species');
