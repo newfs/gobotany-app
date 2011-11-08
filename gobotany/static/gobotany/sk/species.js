@@ -107,8 +107,12 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
     },
 
     wire_up_us_map_link: function() {
-        var image_link = dojo.query('#sidebar .section.usmap a.enlarge')[0];
-        dojo.connect(image_link, 'onclick', this, function(event) {
+        // Because the map is in an <object> element, a transparent div
+        // is needed to make it clickable. Make this div cover the link
+        // that appears below the map, too, for one large clickable area.
+        var transparent_div =
+            dojo.query('#sidebar .section.usmap div.trans')[0];
+        dojo.connect(transparent_div, 'onclick', this, function(event) {
             event.preventDefault();
             // Open the U.S. distribution map in a lightbox.
             var content_element =

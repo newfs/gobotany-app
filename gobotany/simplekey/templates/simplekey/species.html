@@ -216,21 +216,8 @@
                     </object>
                 </div>
 
-                <div class="section">
-                    <h5>U.S. Distribution</h5>
-                    <img
-                        src="http://bonap.org/BONAPmaps2010/map%20sized/{{ scientific_name }}.png"
-                        alt="US Map" class="map"
-                        style="height: 134px; width: 193px">
-                        <a class="enlarge"
-                            href="http://bonap.org/BONAPmaps2010/map%20sized/{{ scientific_name }}.png"
-                            rel="shadowbox"><img 
-                            src="/static/images/icons/zoom.png" 
-                            alt=""> Click to enlarge</a>
-                </div>
-
                 <div class="section usmap">
-                    <!-- TODO: move U.S. Distribution heading here -->
+                    <h5>U.S. Distribution</h5>
                     <div>
                         <object
                             data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-us-distribution-map.svg"
@@ -251,6 +238,7 @@
                             id="us-dist-county-map"> <![endif]-->
                         </object>
                     </div>
+                    <div class="trans"></div>
                     <a class="enlarge" href="#">
                         <img src="/static/images/icons/zoom.png" alt="">
                         Click to enlarge</a>

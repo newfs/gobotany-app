@@ -1638,6 +1638,20 @@ a.enlarge img {
 	-moz-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
 	-webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
 }
+div.section.usmap {
+    position: relative;
+}
+div.section.usmap div.trans {
+    /* Transparent div to make U.S. map object element clickable */
+    cursor: pointer;
+    background: transparent;
+    height: 145px; /* Cover the map plus the link below it */
+    margin-bottom: 0;
+    padding: 0;
+    position: absolute;
+    top: 25px;
+    width: 196px;
+}
 /**Larger gallery styles**/
 #taxon .img-gallery {
 	width: 710px;
