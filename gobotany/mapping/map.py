@@ -87,6 +87,17 @@ class ChloroplethMap(object):
         self.svg_map = ET.parse(blank_map_path)
         self.maximum_legend_items = maximum_legend_items
 
+    def _get_title_node(self):
+        return self.svg_map.find('{http://www.w3.org/2000/svg}title')
+
+    def get_title(self):
+        title = self._get_title_node()
+        return title.text
+
+    def set_title(self, value):
+        title = self._get_title_node()
+        title.text = value
+
     def tostring(self):
         return ET.tostring(self.svg_map.getroot())
 
@@ -118,20 +129,26 @@ class PlantDistributionMap(ChloroplethMap):
             label = 'absent'
         return label
 
-    def _set_title(self):
-        """Make the map title begin with the plant name."""
-        title = self.svg_map.find('{http://www.w3.org/2000/svg}title')
-        title.text = '%s: %s' % (self.scientific_name, title.text)
+    def _add_name_to_title(self, scientific_name):
+        """Add the plant name to the map's title."""
+        title_text = self.get_title()
+        title_text = '%s: %s' % (scientific_name, title_text)
+        self.set_title(title_text)
+
+    def _get_distribution_records(self, scientific_name):
+        """Look up the plant and get its distribution records."""
+        self.taxon = (models.Taxon.objects.filter(
+                      scientific_name=scientific_name))
+        if len(self.taxon) > 0:
+            return (models.Distribution.objects.filter(
+                    scientific_name=scientific_name))
 
     def set_plant(self, scientific_name):
-        """Look up the plant and get its distribution records."""
+        """Set the plant to be shown and gather its data."""
         self.scientific_name = scientific_name
-        self._set_title()
-        self.taxon = (models.Taxon.objects.filter(
-                      scientific_name=self.scientific_name))
-        if len(self.taxon) > 0:
-            self.distribution_records = (models.Distribution.objects.filter(
-                scientific_name=self.scientific_name))
+        self._add_name_to_title(self.scientific_name)
+        self.distribution_records = (self._get_distribution_records(
+                                        self.scientific_name))
 
     def _shade_counties(self):
         """Set the colors of the counties based on distribution data."""
@@ -162,11 +179,12 @@ class PlantDistributionMap(ChloroplethMap):
         return legend_labels_found
 
     def shade(self):
-        """Shade a New England plant distribution map. Assumes the base
-        class method set_plant(scientific_name) has already been called.
+        """Shade a New England plant distribution map. Assumes the method
+        set_plant(scientific_name) has already been called.
         """
         legend_labels_found = self._shade_counties()
         self.legend.show_items(legend_labels_found)
+        return legend_labels_found
 
 
 class NewEnglandPlantDistributionMap(PlantDistributionMap):
