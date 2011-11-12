@@ -6,6 +6,7 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
+
 from gobotany.core import igdt
 from gobotany.core.models import (
     Character, ContentImage,
@@ -13,6 +14,8 @@ from gobotany.core.models import (
     Taxon, TaxonCharacterValue,
     )
 from gobotany.core.partner import which_partner
+from gobotany.mapping.map import (NewEnglandPlantDistributionMap,
+                                  UnitedStatesPlantDistributionMap)
 
 def jsonify(value, headers=None):
     """Convert the value into a JSON HTTP response."""
@@ -291,3 +294,29 @@ def vectors_pile(request, slug):
     pile = get_object_or_404(Pile, slug=slug)
     ids = sorted( s.id for s in pile.species.all() )
     return jsonify([{'pile': slug, 'species': ids}])
+
+
+# Plant distribution maps
+
+def _distribution_map(request, distribution_map, genus, specific_epithet):
+    scientific_name = ' '.join([genus.title(), specific_epithet.lower()])
+    distribution_map.set_plant(scientific_name)
+    distribution_map.shade()
+    return HttpResponse(distribution_map.tostring(), mimetype='image/svg+xml')
+
+def new_england_distribution_map(request, genus, specific_epithet):
+    """Return a vector map of New England showing county-level
+    distribution data for a plant.
+    """
+    distribution_map = NewEnglandPlantDistributionMap()
+    return _distribution_map(request, distribution_map, genus,
+                             specific_epithet)
+
+def united_states_distribution_map(request, genus, specific_epithet):
+    """Return a vector map of the United States showing county-level
+    distribution data for a plant.
+    """
+    distribution_map = UnitedStatesPlantDistributionMap()
+    return _distribution_map(request, distribution_map, genus,
+                             specific_epithet)
+

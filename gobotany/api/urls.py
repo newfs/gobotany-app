@@ -1,8 +1,7 @@
 from django.conf import settings
 from django.conf.urls.defaults import patterns, url
 from django.contrib import admin
-from django.views.decorators.cache import cache_control
-from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_control, cache_page
 
 from gobotany.api import handlers, views
 from piston.resource import Resource
@@ -64,12 +63,13 @@ urlpatterns = patterns(
     url(r'^pilegroups/(?P<slug>[^/]+)/$',
         Resource(handler=handlers.PileGroupHandler), name='api-pilegroup'),
 
-    # Distribution maps
-    url(r'^maps/(?P<genus>[^/]+)-(?P<specific_epithet>[^/]+)-ne-distribution-map(\.svg|/)?$',
-        Resource(handler=handlers.NewEnglandDistributionMapVectorHandler),
-        name='ne-distribution-map-vector'),
-    url(r'^maps/(?P<genus>[^/]+)-(?P<specific_epithet>[^/]+)-us-distribution-map(\.svg|/)?$',
-        Resource(handler=handlers.UnitedStatesDistributionMapVectorHandler),
+    # Plant distribution maps
+    url(r'^maps/(?P<genus>[^/]+)-(?P<specific_epithet>[^/]+)'
+         '-ne-distribution-map(\.svg|/)?$',
+        views.new_england_distribution_map, name='ne-distribution-map'),
+    url(r'^maps/(?P<genus>[^/]+)-(?P<specific_epithet>[^/]+)'
+         '-us-distribution-map(\.svg|/)?$',
+        views.united_states_distribution_map,
         name='us-distribution-map-vector'),
 
     url(r'^families/(?P<family_slug>[^/]+)/$',

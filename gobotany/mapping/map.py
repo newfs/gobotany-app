@@ -202,6 +202,17 @@ class NewEnglandPlantDistributionMap(PlantDistributionMap):
         super(NewEnglandPlantDistributionMap, self).__init__(blank_map_path)
 
 
+    def _get_distribution_records(self, scientific_name):
+        """Look up the plant and get its New England distribution records."""
+        NEW_ENGLAND_STATES = ['CT', 'MA', 'ME', 'NH', 'RI', 'VT']
+        self.taxon = (models.Taxon.objects.filter(
+                      scientific_name=scientific_name))
+        if len(self.taxon) > 0:
+            return (models.Distribution.objects.filter(
+                    scientific_name=scientific_name,
+                    state__in=NEW_ENGLAND_STATES))
+
+
 class UnitedStatesPlantDistributionMap(PlantDistributionMap):
     """Class for a map that shows United States county-level distribution
     data for a plant.

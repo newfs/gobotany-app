@@ -9,8 +9,6 @@ from piston.handler import BaseHandler
 from piston.utils import rc
 
 from gobotany.core import botany, models
-from gobotany.mapping.map import (NewEnglandPlantDistributionMap,
-                                  UnitedStatesPlantDistributionMap)
 
 from .views import _jsonify_character
 
@@ -309,35 +307,6 @@ class CharacterValuesHandler(BaseHandler):
                                           character_short_name)]
         except (models.Pile.DoesNotExist, models.Character.DoesNotExist):
             return rc.NOT_FOUND
-
-class NewEnglandDistributionMapVectorHandler(BaseHandler):
-    methods_allowed = ('GET',)
-
-    def read(self, request, genus, specific_epithet):
-        """Return a vector map of New England showing county-level
-        distribution data for a plant.
-        """
-        scientific_name = ' '.join([genus.title(), specific_epithet.lower()])
-        distribution_map = NewEnglandPlantDistributionMap()
-        distribution_map.set_plant(scientific_name)
-        distribution_map.shade()
-        return HttpResponse(distribution_map.tostring(),
-                            mimetype='image/svg+xml')
-
-
-class UnitedStatesDistributionMapVectorHandler(BaseHandler):
-    methods_allowed = ('GET',)
-
-    def read(self, request, genus, specific_epithet):
-        """Return a vector map of the United States showing county-level
-        distribution data for a plant.
-        """
-        scientific_name = ' '.join([genus.title(), specific_epithet.lower()])
-        distribution_map = UnitedStatesPlantDistributionMap()
-        distribution_map.set_plant(scientific_name)
-        distribution_map.shade()
-        return HttpResponse(distribution_map.tostring(),
-                            mimetype='image/svg+xml')
 
 
 class FamilyHandler(BaseHandler):

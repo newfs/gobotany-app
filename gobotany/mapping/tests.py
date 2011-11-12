@@ -103,25 +103,29 @@ class ChloroplethMapTestCase(TestCase):
         self.assertEqual(u'<ns0:svg ', self.chloropleth_map.tostring()[0:9])
 
 
+def create_distribution_records():
+    """Create dummy distribution records for New England and beyond."""
+    SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
+    family, created = Family.objects.get_or_create(name='Lycopodiaceae')
+    genus, created = Genus.objects.get_or_create(name='Dendrolycopodium',
+        family=family)
+    taxon, created = (Taxon.objects.get_or_create(
+        scientific_name=SCIENTIFIC_NAME, family=family, genus=genus))
+    distribution_data = [('Piscataquis', 'ME', 'native'),
+        ('Coos', 'NH', 'native'), ('Worcester', 'MA', 'native'),
+        ('Kent', 'RI', 'rare'), ('Orange', 'VT', 'native'),
+        ('New London', 'CT', 'native'), ('Dutchess', 'NY', 'native'),
+        ('Sussex', 'NJ', 'rare'), ('Lawrence', 'PA', 'native')]
+    for entry in distribution_data:
+        dist, created = (Distribution.objects.get_or_create(
+            scientific_name=SCIENTIFIC_NAME, county=entry[0], state=entry[1],
+            status=entry[2]))
+
+
 class PlantDistributionMapTestCase(TestCase):
     def setUp(self):
         self.distribution_map = NewEnglandPlantDistributionMap()
-        # Create dummy distribution records for New England and beyond.
-        SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
-        family, created = Family.objects.get_or_create(name='Lycopodiaceae')
-        genus, created = Genus.objects.get_or_create(name='Dendrolycopodium',
-            family=family)
-        taxon, created = (Taxon.objects.get_or_create(
-            scientific_name=SCIENTIFIC_NAME, family=family, genus=genus))
-        distribution_data = [('Piscataquis', 'ME', 'native'),
-            ('Coos', 'NH', 'native'), ('Worcester', 'MA', 'native'),
-            ('Kent', 'RI', 'rare'), ('Orange', 'VT', 'native'),
-            ('New London', 'CT', 'native'), ('Dutchess', 'NY', 'native'),
-            ('Sussex', 'NJ', 'rare'), ('Lawrence', 'PA', 'native')]
-        for entry in distribution_data:
-            dist, created = (Distribution.objects.get_or_create(
-                scientific_name=SCIENTIFIC_NAME, county=entry[0],
-                state=entry[1], status=entry[2]))
+        create_distribution_records()
 
     def test_map_init(self):
         self.assertTrue(self.distribution_map)
@@ -230,10 +234,21 @@ class PlantDistributionMapTestCase(TestCase):
 class NewEnglandPlantDistributionMapTestCase(TestCase):
     def setUp(self):
         self.distribution_map = NewEnglandPlantDistributionMap()
+        create_distribution_records()
 
     def test_is_correct_map(self):
         self.assertEqual('New England Distribution Map',
                          self.distribution_map.get_title())
+
+    def test_get_distribution_records(self):
+        NEW_ENGLAND_STATES = ['CT', 'MA', 'ME', 'NH', 'RI', 'VT']
+        SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        records = (self.distribution_map._get_distribution_records(
+                   SCIENTIFIC_NAME))
+        self.assertTrue(len(records) > 0)
+        [self.assertTrue(record.state in NEW_ENGLAND_STATES)
+         for record in records]
 
 
 class UnitedStatesPlantDistributionMapTestCase(TestCase):
