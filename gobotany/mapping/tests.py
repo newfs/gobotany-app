@@ -219,9 +219,7 @@ class PlantDistributionMapTestCase(TestCase):
     def test_shade(self):
         SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
-        legend_labels_found = self.distribution_map.shade()
-        self.assertEqual(['native', 'rare'], legend_labels_found)
-        self._verify_shaded_counties(legend_labels_found)
+        self.distribution_map.shade()
         # Verify that the labels found are shown in the legend.
         labels = [label_node.find('{http://www.w3.org/2000/svg}tspan').text
                   for label_node in self.distribution_map.legend.label_nodes]

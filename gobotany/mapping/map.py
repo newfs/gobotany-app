@@ -184,7 +184,7 @@ class PlantDistributionMap(ChloroplethMap):
         """
         legend_labels_found = self._shade_counties()
         self.legend.show_items(legend_labels_found)
-        return legend_labels_found
+        return self
 
 
 class NewEnglandPlantDistributionMap(PlantDistributionMap):
