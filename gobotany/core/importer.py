@@ -18,6 +18,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files import File
 from django.db import connection, transaction
+from django.template.defaultfilters import slugify
 
 import bulkup
 from gobotany.core import models
@@ -186,25 +187,26 @@ class Importer(object):
         partnersite.save()
 
     @transaction.commit_on_success
-    def _import_pile_groups(self, pilegroupf):
-        print >> self.logfile, 'Setting up pile groups'
-        iterator = iter(CSVReader(pilegroupf).read())
-        colnames = [x.lower() for x in iterator.next()]
+    def _import_pile_groups(self, db, pilegroupf):
+        log.info('Setting up pile groups')
+        pilegroup = db.table('core_pilegroup')
+        clean = self._clean_up_html
 
-        for cols in iterator:
-            row = dict(zip(colnames, cols))
+        with open_csv(pilegroupf) as csv:
+            for row in csv:
+                pilegroup.get(
+                    slug=slugify(row['name']),
+                    ).set(
+                    description='',
+                    friendly_name=row['friendly_name'],
+                    friendly_title=row['friendly_title'],
+                    key_characteristics=clean(row['key_characteristics']),
+                    name=row['name'],
+                    notable_exceptions=clean(row['notable_exceptions']),
+                    youtube_id='',
+                    )
 
-            characteristics = self._clean_up_html(row['key_characteristics'])
-            exceptions = self._clean_up_html(row['notable_exceptions'])
-
-            pilegroup, created = models.PileGroup.objects.get_or_create(
-                name=row['name'],
-                friendly_name=row['friendly_name'],
-                friendly_title=row['friendly_title'],
-                key_characteristics=characteristics,
-                notable_exceptions=exceptions)
-            if created:
-                print >> self.logfile, u'  New PileGroup:', pilegroup
+        pilegroup.save()
 
     @transaction.commit_on_success
     def _import_piles(self, pilef):
@@ -1722,10 +1724,13 @@ def main():
     importer = Importer()
     name = sys.argv[1].replace('-', '_')  # like 'partner_sites'
     method = getattr(importer, '_import_' + name, None)
-    modern = name in ('partner_sites',)  # keep old commands working for now!
+    modern = name in (
+        'partner_sites', 'pile_groups',
+        )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
-        method(db)
+        filenames = sys.argv[2:]
+        method(db, *filenames)
         return
 
     # Incredibly lame option parsing, since we can't rely on real option
