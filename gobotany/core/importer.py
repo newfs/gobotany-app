@@ -237,20 +237,18 @@ class Importer(object):
         pile.save()
 
     @transaction.commit_on_success
-    def _import_habitats(self, habitatsf):
-        print >> self.logfile, 'Setting up habitats'
-        iterator = iter(CSVReader(habitatsf).read())
-        colnames = [x.lower() for x in iterator.next()]
+    def _import_habitats(self, db, habitatsf):
+        log.info('Setting up habitats')
+        habitat = db.table('core_habitat')
 
-        for cols in iterator:
-            row = dict(zip(colnames, cols))
-
-            habitat, created = models.Habitat.objects.get_or_create(
+        for row in open_csv(habitatsf):
+            habitat.get(
                 name=row['desc'],
-                friendly_name=row['friendly_text'])
-            if created:
-                print >> self.logfile, u'  New Habitat:', habitat
+                ).set(
+                friendly_name=row['friendly_text'],
+                )
 
+        habitat.save()
 
     def _get_wetland_status(self, status_code):
         '''
@@ -1714,7 +1712,7 @@ def main():
     name = sys.argv[1].replace('-', '_')  # like 'partner_sites'
     method = getattr(importer, '_import_' + name, None)
     modern = name in (
-        'partner_sites', 'pile_groups', 'piles',
+        'partner_sites', 'pile_groups', 'piles', 'habitats',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
