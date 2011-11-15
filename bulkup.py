@@ -1,5 +1,8 @@
 """Perform bulk inserts and updates."""
 
+import logging
+log = logging.getLogger('bulkup')
+
 class Database(object):
     def __init__(self, connection):
         self.connection = connection
@@ -58,9 +61,10 @@ class Table(object):
 class Row(object):
     def __init__(self, identity):
         self.identity = identity
+        self.values = {}
 
     def set(self, **kw):
-        self.values = kw
+        self.values.update(kw)
         return self
 
 class Batch(object):
@@ -77,7 +81,8 @@ class Batch(object):
 
     def __exit__(self, type, value, traceback):
         self.flush()
-        print 'Performed', self.inserts, 'inserts and', self.updates, 'updates'
+        log.info('Performed %s inserts and %s updates',
+                 self.inserts, self.updates)
 
     def insert(self, row):
         self.inserts += 1

@@ -1,21 +1,22 @@
 import codecs
 import csv
+import logging
 import os
 import re
 import sys
 import tarfile
 import xlrd
 from contextlib import contextmanager
-
-from django.core import management
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.files import File
-from gobotany import settings
 from operator import attrgetter
 
-# Some imports have to be performed after Django settings are loaded.
+# The GoBotany settings have to be imported before most of Django.
+from gobotany import settings
+from django.core import management
 management.setup_environ(settings)
 
+from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.files import File
 from django.db import connection, transaction
 
 import bulkup
@@ -24,8 +25,20 @@ from gobotany.simplekey.models import Blurb, Video, HelpPage, \
                                       GlossaryHelpPage, SearchSuggestion
 
 DEBUG=False
+log = logging.getLogger('gobotany.import')
 
-from django.contrib.contenttypes.models import ContentType
+def start_logging():
+    # Log everything to the import.log file.
+
+    logging.basicConfig(filename='import.log', level=logging.DEBUG)
+
+    # Log only INFO and above to the console.
+
+    console = logging.StreamHandler()
+    console.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(levelname)s  %(message)s')
+    console.setFormatter(formatter)
+    logging.getLogger('').addHandler(console)
 
 @contextmanager
 def open_csv(filename):
@@ -163,14 +176,14 @@ class Importer(object):
         self._import_search_suggestions()
 
     @transaction.commit_on_success
-    def _import_partner_sites(self):
-        print >> self.logfile, 'Setting up partner sites'
-        partner_site_short_names = ['gobotany', 'montshire']
-        for short_name in partner_site_short_names:
-            partner_site, created = models.PartnerSite.objects.get_or_create(
-                short_name=short_name)
-            if created:
-                print >> self.logfile, u'  New partner site: %s' % short_name
+    def _import_partner_sites(self, db):
+        log.info('Setting up partner sites')
+        partnersite = db.table('core_partnersite')
+
+        for short_name in ['gobotany', 'montshire']:
+            partnersite.get(short_name=short_name)
+
+        partnersite.save()
 
     @transaction.commit_on_success
     def _import_pile_groups(self, pilegroupf):
@@ -1705,9 +1718,18 @@ def import_partner_species(partner_short_name, excel_path):
 # Parse the command line.
 
 def main():
+    start_logging()
+    importer = Importer()
+    name = sys.argv[1].replace('-', '_')  # like 'partner_sites'
+    method = getattr(importer, '_import_' + name, None)
+    modern = name in ('partner_sites',)  # keep old commands working for now!
+    if modern and method is not None:
+        db = bulkup.Database(connection)
+        method(db)
+        return
+
     # Incredibly lame option parsing, since we can't rely on real option
     # parsing
-    importer = Importer()
     if sys.argv[1] == 'partner':
         import_partner_species(*sys.argv[2:])
     elif sys.argv[1] == 'species-images':
