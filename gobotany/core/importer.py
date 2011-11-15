@@ -1,4 +1,3 @@
-import codecs
 import csv
 import logging
 import os
@@ -6,7 +5,6 @@ import re
 import sys
 import tarfile
 import xlrd
-from contextlib import contextmanager
 from operator import attrgetter
 
 # The GoBotany settings have to be imported before most of Django.
@@ -41,16 +39,21 @@ def start_logging():
     console.setFormatter(formatter)
     logging.getLogger('').addHandler(console)
 
-@contextmanager
 def open_csv(filename):
     """Our CSVs are produced on Windows and sometimes re-saved from a Mac.
 
     This means we have to be careful about both their encoding and the
-    line endings.
+    line endings.  Note that the file must be read as bytes, parsed by
+    the CSV module, and then decoded field-by-field; trying to decode
+    the file with codecs.open() causes an exception in the csv module.
 
     """
-    with codecs.open(filename, 'rU', 'Windows-1252') as f:
-        yield csv.DictReader(f)
+    w = 'Windows-1252'
+    with open(filename, 'r') as f:
+        r = csv.reader(f)
+        names = [ name.decode(w).lower() for name in r.next() ]
+        for row in r:
+            yield dict(zip(names, (s.decode(w) for s in row)))
 
 class CSVReader(object):
 
@@ -192,59 +195,46 @@ class Importer(object):
         pilegroup = db.table('core_pilegroup')
         clean = self._clean_up_html
 
-        with open_csv(pilegroupf) as csv:
-            for row in csv:
-                pilegroup.get(
-                    slug=slugify(row['name']),
-                    ).set(
-                    description='',
-                    friendly_name=row['friendly_name'],
-                    friendly_title=row['friendly_title'],
-                    key_characteristics=clean(row['key_characteristics']),
-                    name=row['name'],
-                    notable_exceptions=clean(row['notable_exceptions']),
-                    youtube_id='',
-                    )
+        for row in open_csv(pilegroupf):
+            pilegroup.get(
+                slug = slugify(row['name']),
+                ).set(
+                description = '',
+                friendly_name = row['friendly_name'],
+                friendly_title = row['friendly_title'],
+                key_characteristics = clean(row['key_characteristics']),
+                name = row['name'].title(),
+                notable_exceptions = clean(row['notable_exceptions']),
+                youtube_id = '',
+                )
 
         pilegroup.save()
 
     @transaction.commit_on_success
-    def _import_piles(self, pilef):
-        print >> self.logfile, 'Setting up piles'
-        iterator = iter(CSVReader(pilef).read())
-        colnames = [x.lower() for x in iterator.next()]
+    def _import_piles(self, db, pilef):
+        log.info('Setting up piles')
+        pilegroup_map = db.map('core_pilegroup', 'slug', 'id')
+        pile = db.table('core_pile')
+        clean = self._clean_up_html
 
-        for cols in iterator:
-            row = dict(zip(colnames, cols))
-            # Skip the 'All' pile
-            if row['name'].lower() == 'all':
+        for row in open_csv(pilef):
+            if row['name'].lower() in ('all', 'unused'):
                 continue
 
-            pilegroup = None
-            # If a Pile Group is specified, create it if doesn't exist yet.
-            if row['pile_group']:
-                pilegroup, created = models.PileGroup.objects.get_or_create(
-                    name=row['pile_group'].title())
-                if created:
-                    print >> self.logfile, u'  New PileGroup:', pilegroup
+            pile.get(
+                slug = slugify(row['name']),
+                ).set(
+                name = row['name'].title(),
+                pilegroup_id = pilegroup_map[slugify(row['pile_group'])],
+                friendly_name = row['friendly_name'],
+                friendly_title = row['friendly_title'],
+                description = row['description'],
+                key_characteristics = clean(row['key_characteristics']),
+                notable_exceptions = clean(row['notable_exceptions']),
+                youtube_id = '',
+                )
 
-            # Create the Pile.
-            pile, created = models.Pile.objects.get_or_create(
-                name=row['name'].title())
-            pile.pilegroup = pilegroup
-            # Update various fields.
-            pile.friendly_name = row['friendly_name']
-            pile.friendly_title = row['friendly_title']
-            pile.description = row['description']
-            pile.key_characteristics = \
-                self._clean_up_html(row['key_characteristics'])
-            pile.notable_exceptions = \
-                self._clean_up_html(row['notable_exceptions'])
-            pile.save()
-            if created:
-                print >> self.logfile, u'    New Pile:', pile
-            else:
-                print >> self.logfile, u'    Updated Pile:', pile
+        pile.save()
 
     @transaction.commit_on_success
     def _import_habitats(self, habitatsf):
@@ -1416,15 +1406,14 @@ class Importer(object):
         db = bulkup.Database(connection)
         distribution = db.table('core_distribution')
 
-        with open_csv(distributionsf) as csv:
-            for row in csv:
-                distribution.get(
-                    scientific_name=row['scientific_name'],
-                    state=row['state'],
-                    county=row['county'],
-                    ).set(
-                    status=row['status'],
-                    )
+        for row in open_csv(distributionsf):
+            distribution.get(
+                scientific_name=row['scientific_name'],
+                state=row['state'],
+                county=row['county'],
+                ).set(
+                status=row['status'],
+                )
 
         distribution.save()
 
@@ -1725,7 +1714,7 @@ def main():
     name = sys.argv[1].replace('-', '_')  # like 'partner_sites'
     method = getattr(importer, '_import_' + name, None)
     modern = name in (
-        'partner_sites', 'pile_groups',
+        'partner_sites', 'pile_groups', 'piles',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)

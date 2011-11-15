@@ -8,6 +8,12 @@ class Database(object):
         self.connection = connection
         self.tabledict = {}
 
+    def map(self, name, key, value):
+        """Return a dict mapping column `key` to `value` from table `name`."""
+        c = self.connection.cursor()
+        c.execute('SELECT {0}, {1} FROM {2}'.format(key, value, name))
+        return dict(c.fetchall())
+
     def table(self, name):
         t = self.tabledict.get(name)
         if t is None:
@@ -39,6 +45,8 @@ class Table(object):
         return r
 
     def save(self):
+        if not self.rowdict:
+            return
         c = self.database.connection.cursor()
         c.execute('SELECT * FROM {0}'.format(self.name))
         columndict = dict((co.name, i) for (i, co) in enumerate(c.description))
@@ -108,7 +116,7 @@ class Batch(object):
     def do(self, text, args):
         self.text += text
         self.args.extend(args)
-        if len(self.text) > self.maxlen:
+        if len(self.text) >= self.maxlen:
             self.flush()
 
     def flush(self):
