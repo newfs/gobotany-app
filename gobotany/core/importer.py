@@ -159,11 +159,11 @@ class Importer(object):
         return is_valid
 
 
-    def import_data(self, taxaf, charvf,
+    def import_data(self, taxaf,
                     char_val_images, char_glossaryf, glossaryf,
                     glossary_images, lookalikesf):
         self._import_plant_names(taxaf)
-        self._import_character_values(charvf, char_val_images)
+        # TODO: char_val_images
         self._import_character_glossary(char_glossaryf)
         self._import_glossary(glossaryf, glossary_images)
         self._import_place_characters_and_values(taxaf)
@@ -824,14 +824,14 @@ class Importer(object):
         return html
 
     @transaction.commit_on_success
-    def _import_character_values(self, f, imagef):
-        print >> self.logfile, 'Setting up character values in file: %s' % f
-        iterator = iter(CSVReader(f).read())
-        colnames = [x.lower() for x in iterator.next()]
-        images = tarfile.open(imagef)
+    def _import_character_values(self, db, filename):
+        log.info('Loading character values from: %s', filename)
+        pile_map = db.map('core_pile', 'name', 'id')
+        character_map = db.map('core_character', 'short_name', 'id')
+        charactervalue_table = db.table('core_charactervalue')
+        pile_character_values_table = db.table('core_pile_character_values')
 
-        for cols in iterator:
-            row = dict(zip(colnames, cols))
+        for row in open_csv(filename):
 
             if '_' not in row['character']:
                 continue # ignore "family" rows for right now
@@ -839,55 +839,50 @@ class Importer(object):
             character_name = row['character']
             pile_suffix = character_name.rsplit('_', 1)[1]
             short_name = self.character_short_name(character_name)
+            value_str = row['character_value']
 
             if not pile_suffix in pile_mapping:
                 continue
 
-            pile, created = models.Pile.objects.get_or_create(
-                name=pile_mapping[pile_suffix].title())
-            if created:
-                print >> self.logfile, u'  New Pile:', pile.name
-
-            res = models.Character.objects.filter(short_name=short_name)
-            if len(res) == 0:
-                print >> self.logfile, u'      ERR: missing character: %s' % \
-                    short_name
+            try:
+                character_id = character_map[short_name]
+            except KeyError:
+                log.error('Bad character: %r', short_name)
                 continue
-            character = res[0]
-            
-            friendly_text = self._clean_up_html(row['friendly_text'])
+            pile_title = pile_mapping[pile_suffix].title()
 
-            # note that CharacterValues can be used by multiple Characters
-            res = models.CharacterValue.objects.filter(
-                value_str=row['character_value'],
-                character=character)
-            if len(res) == 0:
-                cv = models.CharacterValue(value_str=row['character_value'],
-                                           character=character,
-                                           friendly_text=friendly_text)
-                cv.save()
-                print >> self.logfile, u'  New Character Value: %s ' \
-                    'for Character: %s [%s]' % (cv.value_str, character.name,
-                                                row['character'])
-            else:
-                cv = res[0]
+            charactervalue_table.get(
+                character_id=character_id,
+                value_str=value_str,
+                ).set(
+                friendly_text=self._clean_up_html(row['friendly_text'])
+                )
 
+            pile_character_values_table.get(
+                pile_id=pile_map[pile_title],
+                charactervalue_id=(character_id, value_str),
+                )
+
+        charactervalue_table.save()
+        charactervalue_map = db.map(
+            'core_charactervalue', ('character_id', 'value_str'), 'id')
+        pile_character_values_table.replace(
+            'charactervalue_id', charactervalue_map)
+        pile_character_values_table.save(delete_old=True)
+
+            # TODO:
+            # images = tarfile.open(imagef)
             # Add drawing image (if present) for this character value.
-            if row['image_name']:
-                try:
-                    image = images.getmember(row['image_name'])
-                    image_file = File(images.extractfile(image.name))
-                    cv.image.save(image.name, image_file)
-                    # Force the thumbnail to be generated.
-                    cv.image.thumbnail.height()
-                except KeyError:
-                    print >> self.logfile, \
-                        '    ERR: No image found for character value'
-
-            cv.save()
-
-            pile.character_values.add(cv)
-            pile.save()
+            # if row['image_name']:
+            #     try:
+            #         image = images.getmember(row['image_name'])
+            #         image_file = File(images.extractfile(image.name))
+            #         cv.image.save(image.name, image_file)
+            #         # Force the thumbnail to be generated.
+            #         cv.image.thumbnail.height()
+            #     except KeyError:
+            #         print >> self.logfile, \
+            #             '    ERR: No image found for character value'
 
     @transaction.commit_on_success
     def _import_character_glossary(self, f):
@@ -1753,7 +1748,7 @@ def main():
     method = getattr(importer, '_import_' + name, None)
     modern = name in (
         'partner_sites', 'pile_groups', 'piles', 'habitats', 'taxa',
-        'characters',
+        'characters', 'character_values',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)

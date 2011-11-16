@@ -11,8 +11,13 @@ class Database(object):
     def map(self, name, key, value):
         """Return a dict mapping column `key` to `value` from table `name`."""
         c = self.connection.cursor()
-        c.execute('SELECT {0}, {1} FROM {2}'.format(key, value, name))
-        return dict(c.fetchall())
+        if isinstance(key, tuple):
+            keylist = ', '.join(key)
+            c.execute('SELECT {0}, {1} FROM {2}'.format(keylist, value, name))
+            return dict((tuple(row[:-1]), row[-1]) for row in c.fetchall())
+        else:
+            c.execute('SELECT {0}, {1} FROM {2}'.format(key, value, name))
+            return dict(c.fetchall())
 
     def table(self, name):
         t = self.tabledict.get(name)
