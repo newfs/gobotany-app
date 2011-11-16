@@ -117,11 +117,11 @@ class Batch(object):
     def __exit__(self, type, value, traceback):
         self.flush()
         if self.deletes:
-            log.info('Performed %s inserts, %s updates, and %s deletes',
-                     self.inserts, self.updates, self.deletes)
+            log.info('%s: %s inserts, %s updates, and %s deletes',
+                     self.table.name, self.inserts, self.updates, self.deletes)
         else:
-            log.info('Performed %s inserts and %s updates',
-                     self.inserts, self.updates)
+            log.info('%s: %s inserts and %s updates',
+                     self.table.name, self.inserts, self.updates)
 
     def insert(self, row):
         self.inserts += 1
