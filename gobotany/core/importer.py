@@ -162,7 +162,6 @@ class Importer(object):
     def import_data(self, taxaf,
                     char_val_images, glossaryf,
                     glossary_images, lookalikesf):
-        self._import_plant_names(taxaf)
         # TODO: char_val_images
         self._import_glossary(glossaryf, glossary_images)
         self._import_place_characters_and_values(taxaf)
@@ -543,6 +542,8 @@ class Importer(object):
         commonname_table.save(delete_old=True)
         synonym_table.replace('taxon_id', taxon_map)
         synonym_table.save(delete_old=True)
+
+    # TODO: remove this import function, and the unused model PlantNames.
 
     @transaction.commit_on_success
     def _import_plant_names(self, taxaf):
