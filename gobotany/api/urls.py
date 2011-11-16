@@ -69,8 +69,7 @@ urlpatterns = patterns(
         views.new_england_distribution_map, name='ne-distribution-map'),
     url(r'^maps/(?P<genus>[^/]+)-(?P<specific_epithet>[^/]+)'
          '-us-distribution-map(\.svg|/)?$',
-        views.united_states_distribution_map,
-        name='us-distribution-map-vector'),
+        views.united_states_distribution_map, name='us-distribution-map'),
 
     url(r'^families/(?P<family_slug>[^/]+)/$',
         Resource(handler=handlers.FamilyHandler), name='api-family'),
