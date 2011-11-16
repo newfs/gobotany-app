@@ -159,11 +159,10 @@ class Importer(object):
         return is_valid
 
 
-    def import_data(self, taxaf, charf, charvf,
+    def import_data(self, taxaf, charvf,
                     char_val_images, char_glossaryf, glossaryf,
                     glossary_images, lookalikesf):
         self._import_plant_names(taxaf)
-        self._import_characters(charf, char_val_images)
         self._import_character_values(charvf, char_val_images)
         self._import_character_glossary(char_glossaryf)
         self._import_glossary(glossaryf, glossary_images)
@@ -409,7 +408,7 @@ class Importer(object):
 
     @transaction.commit_on_success
     def _import_taxa(self, db, taxaf):
-        log.info('Setting up taxa in file: %s', taxaf)
+        log.info('Loading taxa from file: %s', taxaf)
 
         COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
         SYNONYM_FIELDS = ['comment']
@@ -741,76 +740,76 @@ class Importer(object):
         return friendly_name
 
     @transaction.commit_on_success
-    def _import_characters(self, f, imagef):
-        print >> self.logfile, 'Setting up characters in file: %s' % f
-        iterator = iter(CSVReader(f).read())
-        colnames = [x.lower() for x in iterator.next()]
-        images = tarfile.open(imagef)
+    def _import_characters(self, db, filename):
+        log.info('Loading characters from file: %s', filename)
+        charactergroup_table = db.table('core_charactergroup')
+        character_table = db.table('core_character')
 
-        for cols in iterator:
-            row = dict(zip(colnames, cols))
+        for row in open_csv(filename):
 
             if '_' not in row['character']:
                 continue # ignore "family" rows for right now
 
             # Detect length characters and handle accordingly.
             character_name = row['character']
-            is_min = (character_name.lower().find('_min') > -1)
-            is_max = (character_name.lower().find('_max') > -1)
+            is_min = '_min' in character_name.lower()
+            is_max = '_max' in character_name.lower()
             short_name = self.character_short_name(character_name)
 
-            value_type = 'TEXT'
-            unit = ''
             if is_min or is_max:
                 value_type = 'LENGTH'
                 unit = row['units']
+            else:
+                value_type = 'TEXT'
+                unit = ''
 
-            chargroup, created = models.CharacterGroup.objects.get_or_create(
-                name=row['character_group'])
-            if created:
-                print >> self.logfile, u'    New Character Group:', \
-                    chargroup.name
+            charactergroup = charactergroup_table.get(
+                name=row['character_group'],
+                )
 
             eoo = row['ease_of_observability']
             try:
                 eoo = int(eoo)
             except ValueError:
-                print >> self.logfile, \
-                    '    ERR: Bad ease of observability value', repr(eoo)
+                log.error('Bad ease-of-observability value: %s', repr(eoo))
                 eoo = 10
 
             question = row['friendly_text']
             hint = row['hint']
-            
-            res = models.Character.objects.filter(short_name=short_name)
-            if len(res) == 0:
-                print >> self.logfile, u'      New Character: %s (%s)' % \
-                    (short_name, value_type)
-                name = self._create_character_name(short_name)
-                friendly_name = self._get_character_friendly_name(short_name,
-                    row['filter_label'])
-                character = models.Character(short_name=short_name,
-                                             name=name,
-                                             friendly_name=friendly_name,
-                                             character_group=chargroup,
-                                             value_type=value_type,
-                                             unit=unit,
-                                             ease_of_observability=eoo,
-                                             question=question,
-                                             hint=hint)
-                character.save()
 
-                # Add drawing image (if present) for this character value.
-                if row['image_name']:
-                    try:
-                        image = images.getmember(row['image_name'])
-                        image_file = File(images.extractfile(image.name))
-                        character.image.save(image.name, image_file)
-                    # Force the thumbnail to be generated.
-                        character.image.thumbnail.height()
-                    except KeyError:
-                        print >> self.logfile, \
-                            '    ERR: No image found for character'
+            name = self._create_character_name(short_name)
+            friendly_name = self._get_character_friendly_name(
+                short_name, row['filter_label'])
+            character_table.get(
+                short_name=short_name,
+                ).set(
+                name=name,
+                friendly_name=friendly_name,
+                character_group_id=charactergroup.name,
+                value_type=value_type,
+                unit=unit,
+                ease_of_observability=eoo,
+                question=question,
+                hint=hint,
+                )
+
+        charactergroup_table.save()
+        charactergroup_map = db.map('core_charactergroup', 'name', 'id')
+        character_table.replace('character_group_id', charactergroup_map)
+        character_table.save()
+
+                # TODO:
+                # # Add drawing image (if present) for this character value.
+                # if row['image_name']:
+                #     try:
+                #         image = images.getmember(row['image_name'])
+                #         image_file = File(images.extractfile(image.name))
+                #         character.image.save(image.name, image_file)
+                #     # Force the thumbnail to be generated.
+                #         character.image.thumbnail.height()
+                #     except KeyError:
+                #         print >> self.logfile, \
+                #             '    ERR: No image found for character'
 
     def _clean_up_html(self, html):
         """Clean up HTML ugliness arising from Access rich text export."""
@@ -1754,6 +1753,7 @@ def main():
     method = getattr(importer, '_import_' + name, None)
     modern = name in (
         'partner_sites', 'pile_groups', 'piles', 'habitats', 'taxa',
+        'characters',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
