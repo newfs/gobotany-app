@@ -160,10 +160,9 @@ class Importer(object):
 
 
     def import_data(self, taxaf,
-                    char_val_images, glossaryf,
+                    char_val_images,
                     glossary_images, lookalikesf):
         # TODO: char_val_images
-        self._import_glossary(glossaryf, glossary_images)
         self._import_place_characters_and_values(taxaf)
         self._import_plant_preview_characters()
         self._import_lookalikes(lookalikesf)
@@ -885,37 +884,36 @@ class Importer(object):
             #             '    ERR: No image found for character value'
 
     @transaction.commit_on_success
-    def _import_glossary(self, f, imagef):
-        print >> self.logfile, 'Setting up glossary'
+    def _import_glossary(self, db, filename):
+        log.info('Loading glossary from file: %s', filename)
+        glossaryterm_table = db.table('core_glossaryterm')
 
-        iterator = iter(CSVReader(f).read())
-        colnames = [x.lower() for x in iterator.next()]
-        images = tarfile.open(imagef)
-
-        for cols in iterator:
-            row = {}
-            for pos, c in enumerate(cols):
-                row[colnames[pos]] = c
+        for row in open_csv(filename):
 
             if not row['definition'] or row['definition'] == row['term']:
                 continue
+
             # For now we assume term titles are unique
             # SK: this is now a problem, we don't have unique terms anymore
-            term, created = models.GlossaryTerm.objects.get_or_create(
-                term=row['term'], lay_definition=row['definition'])
-            # for new entries add the definition
-            if created:
-                print >> self.logfile, u'  New glossary term: ' + term.term
-            else:
-                print >> self.logfile, u'  Updated glossary term: ' + term.term
-            try:
-                image = images.getmember(row['illustration'])
-                image_file = File(images.extractfile(image.name))
-                term.image.save(image.name, image_file)
-            except KeyError:
-                print >> self.logfile, '    ERR: No image found for term'
+            glossaryterm_table.get(
+                term=row['term'],
+                ).set(
+                hint='',
+                lay_definition=row['definition'],
+                question_text='',
+                visible=True,
+                )
 
-            term.save()
+        glossaryterm_table.save()
+
+            # TODO: reinstate glossary image import
+            # images = tarfile.open(imagef)
+            # try:
+            #     image = images.getmember(row['illustration'])
+            #     image_file = File(images.extractfile(image.name))
+            #     term.image.save(image.name, image_file)
+            # except KeyError:
+            #     print >> self.logfile, '    ERR: No image found for term'
 
     def import_species_images(self, dirpath, image_categories_csv):
         """Given a directory's ``dirpath``, find species images inside."""
@@ -1688,7 +1686,7 @@ def main():
     method = getattr(importer, '_import_' + name, None)
     modern = name in (
         'partner_sites', 'pile_groups', 'piles', 'habitats', 'taxa',
-        'characters', 'character_values',
+        'characters', 'character_values', 'glossary',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
