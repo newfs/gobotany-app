@@ -1,14 +1,14 @@
 from django.test import TestCase
 
 from gobotany.core.models import Distribution, Family, Genus, Taxon
-from gobotany.mapping.map import (Path, Legend,
+from gobotany.mapping.map import (NAMESPACES, Path, Legend,
                                   NewEnglandPlantDistributionMap,
                                   UnitedStatesPlantDistributionMap)
 
 class PathTestCase(TestCase):
     def setUp(self):
         dist_map = NewEnglandPlantDistributionMap()
-        path_nodes = dist_map.svg_map.getiterator(
+        path_nodes = dist_map.svg_map.findall(
             '{http://www.w3.org/2000/svg}path')
         self.path = Path(path_nodes[0])
 
@@ -43,10 +43,19 @@ class LegendTestCase(TestCase):
 
     def test_set_item_label(self):
         LABEL = 'native'
-        label_node = self.legend.label_nodes[0]
+        label_node = self.legend.svg_map.xpath('svg:text',
+            namespaces=NAMESPACES)[0]
         self.legend._set_item_label(label_node, LABEL)
         label_text_node = label_node.find('{http://www.w3.org/2000/svg}tspan')
         self.assertEqual(LABEL, label_text_node.text)
+
+    def _get_labels(self):
+        return [label_node.text for label_node in self.legend.svg_map.xpath(
+            'svg:text/svg:tspan', namespaces=NAMESPACES)]
+
+    def _get_paths(self):
+        return [Path(box_node) for box_node in self.legend.svg_map.xpath(
+            'svg:rect', namespaces=NAMESPACES)]
 
     def test_set_item(self):
         SLOT = 1
@@ -55,11 +64,10 @@ class LegendTestCase(TestCase):
         LABEL = 'native'
         self.legend._set_item(SLOT, FILL_COLOR, STROKE_COLOR, LABEL)
 
-        labels = [label_node.find('{http://www.w3.org/2000/svg}tspan').text
-                  for label_node in self.legend.label_nodes]
+        labels = self._get_labels()
         self.assertEqual('native', labels[0])
 
-        paths = [Path(box_node) for box_node in self.legend.box_nodes]
+        paths = self._get_paths()
         self.assertTrue(paths[0].get_style().find(
             'fill:%s' % FILL_COLOR) > -1)
         self.assertTrue(paths[0].get_style().find(
@@ -69,13 +77,12 @@ class LegendTestCase(TestCase):
         legend_labels_found = ['native', 'rare']
         self.legend.show_items(legend_labels_found)
 
-        labels = [label_node.find('{http://www.w3.org/2000/svg}tspan').text
-                  for label_node in self.legend.label_nodes]
+        labels = self._get_labels()
         self.assertEqual('native', labels[0])
         self.assertEqual('rare', labels[1])
         [self.assertEqual('', label) for label in labels[2:]]
 
-        paths = [Path(box_node) for box_node in self.legend.box_nodes]
+        paths = self._get_paths()
         self.assertTrue(paths[0].get_style().find('fill:#78bf47') > -1)
         self.assertTrue(paths[1].get_style().find('fill:#a7e37d') > -1)
         [self.assertTrue(path.get_style().find('fill:#fff') > -1)
@@ -100,7 +107,7 @@ class ChloroplethMapTestCase(TestCase):
         self.assertEqual(TITLE, self.chloropleth_map.get_title())
 
     def test_tostring(self):
-        self.assertEqual(u'<ns0:svg ', self.chloropleth_map.tostring()[0:9])
+        self.assertEqual(u'<svg xmlns', self.chloropleth_map.tostring()[0:10])
 
 
 def create_distribution_records():
@@ -192,7 +199,7 @@ class PlantDistributionMapTestCase(TestCase):
         return list1[1:] == list2[:-1]
 
     def _verify_shaded_counties(self, legend_labels_found):
-        path_nodes = self.distribution_map.svg_map.getiterator(
+        path_nodes = self.distribution_map.svg_map.findall(
             '{http://www.w3.org/2000/svg}path')
         paths = [Path(path_node) for path_node in path_nodes]
         statuses_verified = []
@@ -213,7 +220,6 @@ class PlantDistributionMapTestCase(TestCase):
         SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         legend_labels_found = self.distribution_map._shade_counties()
-        self.assertEqual(['native', 'rare'], legend_labels_found)
         self._verify_shaded_counties(legend_labels_found)
 
     def test_shade(self):
@@ -221,8 +227,9 @@ class PlantDistributionMapTestCase(TestCase):
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
         # Verify that the labels found are shown in the legend.
-        labels = [label_node.find('{http://www.w3.org/2000/svg}tspan').text
-                  for label_node in self.distribution_map.legend.label_nodes]
+        labels = [label_node.text for label_node in
+            self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
+            namespaces=NAMESPACES)]
         self.assertEqual('native', labels[0])
         self.assertEqual('rare', labels[1])
         [self.assertEqual('', label) for label in labels[2:]]

@@ -1,7 +1,10 @@
-import xml.etree.ElementTree as ET
+from lxml import etree
 
 from gobotany.core import models
 from gobotany.settings import STATIC_ROOT
+
+NAMESPACES = {'svg': 'http://www.w3.org/2000/svg',
+              'inkscape': 'http://www.inkscape.org/namespaces/inkscape'}
 
 class Path(object):
     """Class for operating on a SVG path node."""
@@ -39,11 +42,11 @@ class Legend(object):
     ITEMS = [('native', '#78bf47'), ('rare', '#a7e37d'),
              ('introduced', '#fa9691'), ('invasive', '#f00'),
              ('historic', '#ccc'), ('absent', '#fff')]
-    COLORS = dict(ITEMS)  # Colors for labels, ex.: COLORS['rare']
+    COLORS = dict(ITEMS)  # Color lookup for labels, ex.: COLORS['rare'].
+                          # This does not preserve the order of items.
 
     def __init__(self, svg_map, maximum_items):
-        self.box_nodes = svg_map.findall('{http://www.w3.org/2000/svg}rect')
-        self.label_nodes = svg_map.findall('{http://www.w3.org/2000/svg}text')
+        self.svg_map = svg_map
         self.maximum_items = maximum_items
 
     def _set_item_label(self, label_node, label):
@@ -52,16 +55,15 @@ class Legend(object):
 
     def _set_item(self, slot_number, fill_color, stroke_color, item_label):
         box_node_id = 'box%s' % str(slot_number)
+        box_node = self.svg_map.xpath('svg:rect[@id="%s"]' % box_node_id,
+            namespaces=NAMESPACES)[0]
+        box = Path(box_node)
+        box.color(fill_color, stroke_color)
+
         label_node_id = 'label%s' % str(slot_number)
-        for box_node in self.box_nodes:
-            if box_node.get('id') == box_node_id:
-                box = Path(box_node)
-                box.color(fill_color, stroke_color)
-                break
-        for label_node in self.label_nodes:
-            if label_node.get('id') == label_node_id:
-                self._set_item_label(label_node, item_label)
-                break
+        label_node = self.svg_map.xpath('svg:text[@id="%s"]' % label_node_id,
+            namespaces=NAMESPACES)[0]
+        self._set_item_label(label_node, item_label)
 
     def show_items(self, legend_labels_found):
         """Set the colors and labels of the legend items."""
@@ -84,7 +86,7 @@ class ChloroplethMap(object):
     """Base class for a chloropleth SVG map."""
 
     def __init__(self, blank_map_path, maximum_legend_items):
-        self.svg_map = ET.parse(blank_map_path)
+        self.svg_map = etree.parse(blank_map_path)
         self.maximum_legend_items = maximum_legend_items
 
     def _get_title_node(self):
@@ -99,11 +101,13 @@ class ChloroplethMap(object):
         title.text = value
 
     def tostring(self):
-        return ET.tostring(self.svg_map.getroot())
+        return etree.tostring(self.svg_map.getroot())
 
 
 class PlantDistributionMap(ChloroplethMap):
     """Base class for a map that shows plant distribution data."""
+
+    PATH_NODES_XPATH = 'svg:path'
 
     def __init__(self, blank_map_path):
         self.maximum_legend_items = 5
@@ -152,25 +156,25 @@ class PlantDistributionMap(ChloroplethMap):
 
     def _shade_counties(self):
         """Set the colors of the counties based on distribution data."""
-        inkscape_label = '{http://www.inkscape.org/namespaces/inkscape}label'
-        path_nodes = self.svg_map.getiterator(
-            '{http://www.w3.org/2000/svg}path')
+        LABEL_ATTR = '{http://www.inkscape.org/namespaces/inkscape}label'
+
         legend_labels_found = []
+
+        path_nodes = self.svg_map.xpath(self.PATH_NODES_XPATH,
+            namespaces=NAMESPACES)
         for record in self.distribution_records.all():
+            county_and_state = '%s, %s' % (record.county, record.state)
+            # Look through all the path nodes until the one for this
+            # county and state is found. (Note: this is significantly
+            # faster than selecting the node via XPath; at least 2x.)
             for node in path_nodes:
-                if inkscape_label in node.keys():
-                    label_val = node.attrib[inkscape_label] # ex.: Suffolk, MA
-                    if not label_val.startswith('#'):  # Ignore #State_borders
-                        county, state = label_val.split(', ')
-                        if county == record.county and state == record.state:
-                            label = self._get_label_for_status(record.status)
-                            if label != '':
-                                if label not in legend_labels_found:
-                                    legend_labels_found.append(label)
-                                box = Path(node)
-                                box.color(Legend.COLORS[label])
-                            break;   # Found matching county and state for
-                                     # this record, so go to the next record.
+                if node.get(LABEL_ATTR) == county_and_state:
+                    label = self._get_label_for_status(record.status)
+                    if label not in legend_labels_found:
+                        legend_labels_found.append(label)
+                    box = Path(node)
+                    box.color(Legend.COLORS[label])
+                    break   # Move on to the next distribution record.
 
         # Order the found labels as they are to be presented in the legend.
         all_labels = [item[0] for item in Legend.ITEMS]
@@ -217,6 +221,8 @@ class UnitedStatesPlantDistributionMap(PlantDistributionMap):
     """Class for a map that shows United States county-level distribution
     data for a plant.
     """
+
+    PATH_NODES_XPATH = 'svg:g/svg:path'
 
     def __init__(self):
         blank_map_path  = ''.join([STATIC_ROOT,
