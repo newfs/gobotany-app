@@ -409,97 +409,143 @@ class Importer(object):
         return ' '.join(name).encode('utf-8')
 
     @transaction.commit_on_success
-    def _import_taxa(self, taxaf):
-        print >> self.logfile, 'Setting up taxa in file: %s' % taxaf
+    def _import_taxa(self, db, taxaf):
+        log.info('Setting up taxa in file: %s', taxaf)
+
         COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
         SYNONYM_FIELDS = ['comment']
-        iterator = iter(CSVReader(taxaf).read())
-        colnames = [x.lower() for x in iterator.next()]
-        partnersite = models.PartnerSite.objects.get(short_name='gobotany')
+        gobotany_id = models.PartnerSite.objects.get(short_name='gobotany').id
 
-        for cols in iterator:
-            row = dict(zip(colnames, cols))
+        family_table = db.table('core_family')
+        genus_table = db.table('core_genus')
+        taxon_table = db.table('core_taxon')
+        partnerspecies_table = db.table('core_partnerspecies')
+        pile_species_table = db.table('core_pile_species')
+        commonname_table = db.table('core_commonname')
+        synonym_table = db.table('core_synonym')
 
-            # Find the family and genus.
-            family, created = models.Family.objects.get_or_create(
-                name=row['family'])
-            # Uncomment the following statement to diagnose integrity errors.
-            #print >> self.logfile, u'TEMP: about to get or create genus: ' \
-            #    'row[\'scientific_name\']=%s row[\'family\']=%s' % \
-            #    (row['scientific_name'], row['family'])
-            genus, created = models.Genus.objects.get_or_create(
-                name=row['scientific__name'].split()[0],
-                family=family)
+        pile_map = db.map('core_pile', 'slug', 'id')
+
+        for row in open_csv(taxaf):
+
+            family_slug = slugify(row['family'])
+            family_table.get(
+                slug=family_slug,
+                ).set(
+                common_name='',
+                description='',
+                name=row['family'],
+                )
+
+            genus_name = row['scientific__name'].split()[0]
+            genus_slug = slugify(genus_name)
+            genus_table.get(
+                slug=genus_slug,
+                ).set(
+                common_name='',
+                description='',
+                family_id=family_slug,
+                name=genus_name,
+                )
 
             # Create a Taxon.
-            taxon = models.Taxon(
+            taxon_proxy_id = row['scientific__name']
+
+            taxon = taxon_table.get(
                 scientific_name=row['scientific__name'],
-                family=family,
-                genus=genus,
+                ).set(
+                family_id=family_slug,
+                genus_id=genus_slug,
                 taxonomic_authority=row['taxonomic_authority'],
                 habitat=row['habitat'],
+                habitat_general='',
                 factoid=row['factoid'],
                 wetland_status_code=row['wetland_status'],
                 wetland_status_text=self._get_wetland_status(
                     row['wetland_status']),
-                north_american_native=\
-                    (row['native_to_north_america_2'] == 'TRUE'),
+                north_american_native=(
+                    row['native_to_north_america_2'] == 'TRUE'),
                 distribution=row['distribution'],
                 invasive_in_states=row['invasive_in_which_states'],
-                sale_prohibited_in_states=row['prohibited_from_sale_states'])
-            taxon.save()
-            models.PartnerSpecies.objects.create(
-                species=taxon, partner=partnersite,
-                simple_key=(row['simple_key'] == 'TRUE'),
-                ).save()
-            print >> self.logfile, u'    New Taxon:', taxon
+                sale_prohibited_in_states=row['prohibited_from_sale_states'],
+                description='',
+                )
 
             # Assign distribution and conservation status for all states.
+
             states_status = self._get_all_states_status(taxon, row)
             for state in states_status.keys():
                 status_field_name = 'conservation_status_%s' % state.lower()
                 setattr(taxon, status_field_name, states_status[state])
-            taxon.save()
+
+            # Assign all imported species to the Go Botany "partner" site.
+
+            partnerspecies_table.get(
+                species_id=taxon_proxy_id,
+                partner_id=gobotany_id,
+                ).set(
+                simple_key=(row['simple_key'] == 'TRUE'),
+                )
 
             # Assign this Taxon to the Pile(s) specified for it.
+
             if row['pile']:
                 for pile_name in re.split(r'[,;|]', row['pile']):
-                    # Look for a Pile with this name.
-                    piles = models.Pile.objects.filter(
-                        name__iexact=pile_name.strip())
-                    if piles:
-                        pile = piles[0]
-                        pile.species.add(taxon)
-                    else:
-                        print >> self.logfile, u'      ERR: cannot find pile:', \
-                            pile_name
+                    pile_slug = slugify(pile_name.strip())
+                    pile_species_table.get(
+                        pile_id=pile_map[pile_slug],
+                        taxon_id=taxon_proxy_id,
+                        )
 
             # Add any common names.
+
             for common_name_field in COMMON_NAME_FIELDS:
-                common_name = row[common_name_field]
-                if len(common_name) > 0:
-                    models.CommonName.objects.create(
-                        common_name=common_name, taxon=taxon).save()
-                    print >> self.logfile, u'      Added common name:', \
-                        common_name
+                common_name = row[common_name_field].strip()
+                if common_name:
+                    commonname_table.get(
+                        common_name=common_name,
+                        taxon_id=taxon_proxy_id,
+                        )
 
             # Add any synonyms.
+
             for synonym_field in SYNONYM_FIELDS:
-                names = [n.strip() for n in row[synonym_field].split('; ')]
+                names = [n.strip() for n in row[synonym_field].split(';')]
                 for name in names:
-                    scientific_name = self._strip_taxonomic_authority(
-                        name)
+                    scientific_name = self._strip_taxonomic_authority(name)
                     # Besides checking to see that the scientific name isn't
                     # empty, also avoid those that look obviously malformed,
                     # as was seen with some bad data.
-                    if len(scientific_name) > 0 and \
-                        not scientific_name.startswith(' '):
+                    if not scientific_name:
+                        continue
+                    if scientific_name.startswith(' '):
+                        continue
+                    synonym_table.get(
+                        scientific_name=scientific_name,
+                        taxon_id=taxon_proxy_id,
+                        ).set(
+                        full_name=name,
+                        )
 
-                        models.Synonym.objects.create(
-                            scientific_name=scientific_name, full_name=name,
-                            taxon=taxon).save()
-                        print >> self.logfile, u'      Added synonym:', \
-                            scientific_name
+        # Write out the tables.
+
+        family_table.save()
+        family_map = db.map('core_family', 'slug', 'id')
+        genus_table.replace('family_id', family_map)
+        genus_table.save()
+        genus_map = db.map('core_genus', 'slug', 'id')
+        taxon_table.replace('family_id', family_map)
+        taxon_table.replace('genus_id', genus_map)
+        taxon_table.save()
+        taxon_map = db.map('core_taxon', 'scientific_name', 'id')
+        partnerspecies_table.replace('species_id', taxon_map)
+        partnerspecies_table.save()
+        pile_species_table.replace('taxon_id', taxon_map)
+        pile_species_table.save(delete_old=True)
+        commonname_table.replace('taxon_id', taxon_map)
+        commonname_table.save(delete_old=True)
+        synonym_table.replace('taxon_id', taxon_map)
+        synonym_table.save(delete_old=True)
 
     @transaction.commit_on_success
     def _import_plant_names(self, taxaf):
@@ -1708,7 +1754,7 @@ def main():
     name = sys.argv[1].replace('-', '_')  # like 'partner_sites'
     method = getattr(importer, '_import_' + name, None)
     modern = name in (
-        'partner_sites', 'pile_groups', 'piles', 'habitats',
+        'partner_sites', 'pile_groups', 'piles', 'habitats', 'taxa',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)

@@ -28,6 +28,9 @@ class Table(object):
         self.keycolumns = None
         self.keycolumnset = None
 
+    def __iter__(self):
+        return self.rowdict.itervalues()
+
     def get(self, **kw):
         keycolumns = list(kw)
         keycolumns.sort()
@@ -42,11 +45,27 @@ class Table(object):
         key = tuple(kw[name] for name in self.keycolumns)
         row = self.rowdict.get(key)
         if row is None:
-            r = Row(kw)
-            self.rowdict[key] = r
-        return r
+            row = Row(kw)
+            self.rowdict[key] = row
+        return row
 
-    def save(self):
+    def replace(self, attr, mapping):
+        """For every row, replace row.attr1 with row.attr2 through mapping."""
+        for row in self.rowdict.itervalues():
+            d = row.__dict__
+            d[attr] = mapping[d[attr]]
+
+        # If rows are indexed by the changed column, then rebuild our index.
+
+        if attr in self.keycolumnset:
+            rows = self.rowdict.itervalues()
+            rowdict = self.rowdict = {}
+            for row in rows:
+                d = row.__dict__
+                key = tuple(d[name] for name in self.keycolumns)
+                rowdict[key] = row
+
+    def save(self, delete_old=True):
         if not self.rowdict:
             return
         c = self.database.connection.cursor()
@@ -54,11 +73,14 @@ class Table(object):
         columndict = dict((co.name, i) for (i, co) in enumerate(c.description))
         keycolumnids = [columndict[cn] for cn in self.keycolumns]
         inserts = dict(self.rowdict)
+        deletes = []
         with Batch(c, self) as batch:
             for old in c.fetchall():
                 key = tuple(old[i] for i in keycolumnids)
                 row = inserts.pop(key, None)
                 if row is None:
+                    if delete_old:
+                        deletes.append(key)
                     continue
                 writeables = set(row.__dict__.iterkeys()) - self.keycolumnset
                 for columnname in writeables:
@@ -69,6 +91,8 @@ class Table(object):
                         break
             for row in inserts.values():
                 batch.insert(row)
+            for key in deletes:
+                batch.delete(self.keycolumns, key)
 
 class Row(object):
     def __init__(self, identity):
@@ -85,15 +109,19 @@ class Batch(object):
         self.maxlen = maxlen
         self.text = ''
         self.args = []
-        self.inserts = self.updates = 0
+        self.inserts = self.updates = self.deletes = 0
 
     def __enter__(self):
         return self
 
     def __exit__(self, type, value, traceback):
         self.flush()
-        log.info('Performed %s inserts and %s updates',
-                 self.inserts, self.updates)
+        if self.deletes:
+            log.info('Performed %s inserts, %s updates, and %s deletes',
+                     self.inserts, self.updates, self.deletes)
+        else:
+            log.info('Performed %s inserts and %s updates',
+                     self.inserts, self.updates)
 
     def insert(self, row):
         self.inserts += 1
@@ -114,6 +142,13 @@ class Batch(object):
                 ' AND '.join(s + ' = %s' for s in keycolumns),
                 ), values)
 
+    def delete(self, keycolumns, keyvalues):
+        self.deletes += 1
+        self.do('DELETE FROM {0} WHERE {1};'.format(
+                self.table.name,
+                ' AND '.join(s + ' = %s' for s in keycolumns)
+                ), keyvalues)
+
     def do(self, text, args):
         self.text += text
         self.args.extend(args)
@@ -121,7 +156,13 @@ class Batch(object):
             self.flush()
 
     def flush(self):
-        if self.text:
-            self.cursor.execute(self.text, self.args)
+        # Move parameters into local variables in case we trigger an
+        # exception whose cleanup tries to run flush() again.
+
+        text = self.text
+        args = self.args
         self.text = ''
         self.args = []
+
+        if text:
+            self.cursor.execute(text, args)
