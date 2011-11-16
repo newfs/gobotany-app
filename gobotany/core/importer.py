@@ -160,11 +160,10 @@ class Importer(object):
 
 
     def import_data(self, taxaf,
-                    char_val_images, char_glossaryf, glossaryf,
+                    char_val_images, glossaryf,
                     glossary_images, lookalikesf):
         self._import_plant_names(taxaf)
         # TODO: char_val_images
-        self._import_character_glossary(char_glossaryf)
         self._import_glossary(glossaryf, glossary_images)
         self._import_place_characters_and_values(taxaf)
         self._import_plant_preview_characters()
@@ -883,6 +882,11 @@ class Importer(object):
             #     except KeyError:
             #         print >> self.logfile, \
             #             '    ERR: No image found for character value'
+
+    # TODO: remove the following function; the entire model class
+    # GlossaryTermForPileCharacter and the multiple relation it powers;
+    # and the sample/glossary-lycophytes-characters-no-lengths.csv file
+    # in the data/ directory.
 
     @transaction.commit_on_success
     def _import_character_glossary(self, f):
