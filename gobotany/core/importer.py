@@ -162,7 +162,6 @@ class Importer(object):
     def import_data(self, taxaf, charf, charvf,
                     char_val_images, char_glossaryf, glossaryf,
                     glossary_images, lookalikesf):
-        self._import_taxa(taxaf)
         self._import_plant_names(taxaf)
         self._import_characters(charf, char_val_images)
         self._import_character_values(charvf, char_val_images)
