@@ -26,12 +26,14 @@ class Table(object):
         self.name = name
         self.rowdict = {}
         self.keycolumns = None
+        self.keycolumnset = None
 
     def get(self, **kw):
         keycolumns = list(kw)
         keycolumns.sort()
         if self.keycolumns is None:
             self.keycolumns = keycolumns
+            self.keycolumnset = set(kw)
         elif self.keycolumns != keycolumns:
             raise ValueError(
                 'please be consistent and always access table {0}'
@@ -58,21 +60,22 @@ class Table(object):
                 row = inserts.pop(key, None)
                 if row is None:
                     continue
-                for columnname, columnvalue in row.values.items():
+                writeables = set(row.__dict__.iterkeys()) - self.keycolumnset
+                for columnname in writeables:
                     columnno = columndict[columnname]
+                    columnvalue = row.__dict__[columnname]
                     if old[columnno] != columnvalue:
-                        batch.update(row)
+                        batch.update(row, writeables, self.keycolumns, key)
                         break
             for row in inserts.values():
                 batch.insert(row)
 
 class Row(object):
     def __init__(self, identity):
-        self.identity = identity
-        self.values = {}
+        self.__dict__.update(identity)
 
     def set(self, **kw):
-        self.values.update(kw)
+        self.__dict__.update(kw)
         return self
 
 class Batch(object):
@@ -94,23 +97,21 @@ class Batch(object):
 
     def insert(self, row):
         self.inserts += 1
-        columns = row.identity.keys()
-        columns.extend(row.values.iterkeys())
-        values = row.identity.values()
-        values.extend(row.values.itervalues())
+        columns = row.__dict__.keys()
+        values = row.__dict__.values()
         self.do('INSERT INTO {0} ({1}) VALUES ({2});'
                 .format(self.table.name, ','.join(columns),
                         ','.join(['%s'] * len(columns))),
                 values)
 
-    def update(self, row):
+    def update(self, row, writeables, keycolumns, key):
         self.updates += 1
-        values = row.values.values()
-        values.extend(row.identity.itervalues())
+        values = [ row.__dict__[k] for k in writeables ]
+        values.extend(key)
         self.do('UPDATE {0} SET {1} WHERE {2};'.format(
                 self.table.name,
-                ','.join(s + '= %s' for s in row.values),
-                ' AND '.join(s + ' = %s' for s in row.identity),
+                ','.join(s + '= %s' for s in writeables),
+                ' AND '.join(s + ' = %s' for s in keycolumns),
                 ), values)
 
     def do(self, text, args):
