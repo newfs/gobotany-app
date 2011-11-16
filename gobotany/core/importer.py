@@ -919,15 +919,9 @@ class Importer(object):
                 term=friendly_name, question_text=row['friendly_text'],
                 hint=row['hint'], visible=False)
 
-            models.GlossaryTermForPileCharacter.objects.get_or_create(
-                character=char, pile=pile, glossary_term=term)
-
     @transaction.commit_on_success
     def _import_glossary(self, f, imagef):
         print >> self.logfile, 'Setting up glossary'
-
-        # XXX: Assume the default pile for now
-        default_pile = models.Pile.objects.all()[0]
 
         iterator = iter(CSVReader(f).read())
         colnames = [x.lower() for x in iterator.next()]
@@ -957,24 +951,6 @@ class Importer(object):
                 print >> self.logfile, '    ERR: No image found for term'
 
             term.save()
-
-            # search for matching character values
-            cvs = models.CharacterValue.objects.filter(
-                value_str__iexact=term.term)
-
-            # For those that didn't match, we search for matching
-            # botanic characters by short_name
-            if not cvs:
-                chars = models.Character.objects.filter(
-                    short_name__iexact=term.term.replace(' ', '_'))
-                for char in chars:
-                    gpc, created = \
-                        models.GlossaryTermForPileCharacter.objects.get_or_create(
-                            character=char,
-                            pile=default_pile,
-                            glossary_term=term)
-                    print >> self.logfile, u'   Term %s mapped to ' \
-                          'character: %s' % (term.term, repr(char))
 
     def import_species_images(self, dirpath, image_categories_csv):
         """Given a directory's ``dirpath``, find species images inside."""

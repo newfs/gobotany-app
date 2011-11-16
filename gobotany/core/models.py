@@ -93,34 +93,7 @@ class Character(models.Model):
         <Character: spore_form_ly name="Spore Form" id=...>
         >>> char.character_group.name
         u'characters of the spores'
-        >>> char.glossary_terms.all()
-        []
 
-    The list of associated glossary terms is empty.  Let's associate
-    a definition for the 'Spore Form' character within the
-    'Lycophytes' Pile:
-
-        >>> pile,ignore = Pile.objects.get_or_create(name='Lycophytes')
-        >>> term = GlossaryTerm.objects.create(
-        ...     term='Spore Form',
-        ...     lay_definition='What form do the spores have?')
-        >>> GlossaryTermForPileCharacter.objects.create(character=char,
-        ...                                             pile=pile,
-        ...                                             glossary_term=term)
-        <...: "Spore Form" character=spore_form_ly pile=Lycophytes>
-        >>> char.glossary_terms.all()
-        [<GlossaryTerm: Spore Form:...>]
-
-    Now our character has associated glossary terms.  Generally, we'll
-    want to retrieve only the glossary term specific to the pile in
-    which we are interested.  We can do by searching either with the
-    pile object or the name of the pile:
-
-        >>> char.glossary_terms.get(glossarytermforpilecharacter__pile=pile)
-        <GlossaryTerm: Spore Form:...>
-        >>> char.glossary_terms.get(
-        ...     glossarytermforpilecharacter__pile__name='Lycophytes')
-        <GlossaryTerm: Spore Form:...>
     """
 
     short_name = models.CharField(max_length=100, unique=True)
@@ -129,12 +102,6 @@ class Character(models.Model):
     character_group = models.ForeignKey(CharacterGroup)
     ease_of_observability = models.PositiveSmallIntegerField(null=True,
         blank=True, choices=zip(range(1, 6), range(1, 6)))
-
-    glossary_terms = models.ManyToManyField(
-        GlossaryTerm,
-        through='GlossaryTermForPileCharacter',
-        blank=True,
-        null=True)
 
     VALUE_CHOICES = {
         u'TEXT': u'Textual', # string
@@ -328,35 +295,6 @@ class PileGroup(PileInfo):
     """A group of Pile objects; the top level of basic-key navigation."""
     sample_species_images = models.ManyToManyField(
         'ContentImage', related_name='sample_for_pilegroups')
-
-
-class GlossaryTermForPileCharacter(models.Model):
-    """A binary relation associating glossary terms with characters.
-
-    Note that this relationship is slightly complex: a particular
-    character does not *simply* have a list of glossary terms associated
-    with it!  Instead, the appropriate glossary terms depend on the pile
-    being considered: the character "leaf shape" might be linked to
-    glossary terms "diamond-shaped" and "square-shaped" for the pile
-    Lycophytes (since lycophyte leaves are very primitive in shape),
-    whereas the glossary terms might be "pinnate", "lobed", and so forth
-    when the pile "Woody Angiosperms" is under consideration.
-
-    """
-    character = models.ForeignKey(Character)
-    pile = models.ForeignKey(Pile)
-    glossary_term = models.ForeignKey(GlossaryTerm)
-
-    class Meta:
-        # Only one glossary term allowed per character/pile combination
-        unique_together = ('character', 'pile')
-        verbose_name = 'character glossary term'
-        verbose_name_plural = 'glossary terms for characters'
-
-    def __unicode__(self):
-        return u'"%s" character=%s pile=%s' % (self.glossary_term.term,
-                                             self.character.short_name,
-                                             self.pile.name)
 
 
 class ImageType(models.Model):

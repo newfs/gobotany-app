@@ -393,12 +393,7 @@ class PileAdmin(PileAdminBase):
     inlines = [PileDefaultFiltersInline, ContentImageInline,
                PilePlantPreviewCharactersInline]
 
-class GlossaryMappingInline(admin.TabularInline):
-    model = models.GlossaryTermForPileCharacter
-    extra = 1
-
 class CharacterAdmin(GobotanyAdminBase):
-    inlines = [GlossaryMappingInline]
     list_display = ('short_name', 'character_group', 'ease_of_observability',)
     search_fields = ('short_name', 'name',)
     list_filter = ('character_group',)
