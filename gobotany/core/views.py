@@ -6,7 +6,6 @@ from urllib import urlencode
 
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django import forms
 from django.views import static 
 
 from gobotany.core import botany, igdt, models
@@ -17,57 +16,9 @@ def default_view(request):
                               context_instance=RequestContext(request))
 
 
-class PileSearchForm(forms.Form):
-    """A form listing all botanic characters for a pile along with
-    possible values. For now only characters with text values are shown.
-    """
-
-    def __init__(self, pile_name, *args, **kwargs):
-        """Iterate over pile characters and create widgets with the values"""
-        super(PileSearchForm, self).__init__(*args, **kwargs)
-        characters = models.Character.objects.filter(
-                    character_values__pile__name__iexact=pile_name,
-                    value_type='TEXT').order_by('character_group',
-                                                'short_name')
-        character_values = models.CharacterValue.objects
-        for character in characters:
-            try:
-                term = character.glossary_terms.get(
-                    glossarytermforpilecharacter__pile__name__iexact=pile_name)
-                label = '%s: %s'%(term.term, term.question_text)
-            except models.GlossaryTerm.DoesNotExist:
-                label=character.short_name
-            choices = [('', '----------')] + [(c.value_str, \
-                (c.glossary_term and c.glossary_term.lay_definition) and \
-                "%s - %s" % (c.glossary_term.term, \
-                c.glossary_term.lay_definition) or c.value_str) for c in \
-                character_values.filter(character=character)]
-            self.fields[character.short_name] = forms.ChoiceField(label=label,
-                required=False, choices=choices)
-
-
 def piles_pile_groups(request):
     return render_to_response('piles_pile_groups.html',
                               context_instance=RequestContext(request))
-
-
-def pile_search(request, pile_name):
-    data = []
-    if request.method == 'POST':
-        form = PileSearchForm(pile_name, request.POST)
-        if form.is_valid():
-            params = dict((str(k), v) for k, v in \
-                     form.cleaned_data.iteritems() if v)
-            data = botany.query_species(**params)
-    else:
-        form = PileSearchForm(pile_name)
-    return render_to_response('pile_search.html',
-                              {'pile': pile_name,
-                               'form': form,
-                               'data': data,
-                               'submitted': request.method == 'POST'},
-                              context_instance=RequestContext(request))
-
 
 def taxon_search(request):
     kwargs = {}
