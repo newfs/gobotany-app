@@ -159,13 +159,9 @@ class Importer(object):
         return is_valid
 
 
-    def import_data(self, pilegroupf, pilef, habitatsf, taxaf, charf, charvf,
+    def import_data(self, taxaf, charf, charvf,
                     char_val_images, char_glossaryf, glossaryf,
                     glossary_images, lookalikesf):
-        self._import_partner_sites()
-        self._import_pile_groups(pilegroupf)
-        self._import_piles(pilef)
-        self._import_habitats(habitatsf)
         self._import_taxa(taxaf)
         self._import_plant_names(taxaf)
         self._import_characters(charf, char_val_images)
