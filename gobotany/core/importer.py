@@ -961,12 +961,6 @@ class Importer(object):
             # search for matching character values
             cvs = models.CharacterValue.objects.filter(
                 value_str__iexact=term.term)
-            for cv in cvs:
-                if not cv.glossary_term:
-                    cv.glossary_term = term
-                    cv.save()
-                    print >> self.logfile, u'   Term %s mapped to character ' \
-                          'value: %s' % (term.term, repr(cv))
 
             # For those that didn't match, we search for matching
             # botanic characters by short_name

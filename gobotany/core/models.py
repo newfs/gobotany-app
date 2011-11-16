@@ -201,16 +201,6 @@ class CharacterValue(models.Model):
         >>> CharacterValue.objects.filter(pile=pile)
         [<CharacterValue: trophophyll_form_ly: short and scale-like>]
 
-    We don't yet have an associated glossary term for this value.
-    Let's make one:
-
-        >>> term = GlossaryTerm.objects.create(
-        ...     term='Short and Scale-like (Trophophylls)',
-        ...     lay_definition='The Trophophylls look like small fish scales.')
-       >>> char_val.glossary_term = term
-       >>> char_val.glossary_term
-       <GlossaryTerm: Short and Scale-like (Trophophylls): ...>
-
     The display for the character values change depending on the type
     being used.
 
@@ -228,7 +218,6 @@ class CharacterValue(models.Model):
     value_flt = models.FloatField(null=True, blank=True)
 
     character = models.ForeignKey(Character, related_name='character_values')
-    glossary_term = models.ForeignKey(GlossaryTerm, blank=True, null=True)
     friendly_text = models.TextField(blank=True)
     image = ImageWithThumbnailsField(upload_to='character-value',
                                      thumbnail={'size': (40, 40)},
