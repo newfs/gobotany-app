@@ -884,41 +884,6 @@ class Importer(object):
             #         print >> self.logfile, \
             #             '    ERR: No image found for character value'
 
-    # TODO: remove the following function; the entire model class
-    # GlossaryTermForPileCharacter and the multiple relation it powers;
-    # and the sample/glossary-lycophytes-characters-no-lengths.csv file
-    # in the data/ directory.
-
-    @transaction.commit_on_success
-    def _import_character_glossary(self, f):
-        print >> self.logfile, 'Setting up character glossary'
-        iterator = iter(CSVReader(f).read())
-        colnames = [x.lower() for x in iterator.next()]
-
-        for cols in iterator:
-            row = {}
-            for pos, c in enumerate(cols):
-                row[colnames[pos]] = c
-
-            character_name = row['character']
-            pile_suffix = character_name.rsplit('_', 1)[1]
-            short_name = self.character_short_name(character_name)
-            friendly_name = self._create_character_name(short_name)
-
-            if not row['friendly_text']:
-                continue
-            if not pile_suffix in pile_mapping:
-                continue
-
-            # XXX for now assume char was already created by _import_char.
-            # We don't have character_group in current data file.
-            char = models.Character.objects.get(short_name=short_name)
-            pile,ignore = models.Pile.objects.get_or_create(
-                name=pile_mapping[pile_suffix])
-            term, created = models.GlossaryTerm.objects.get_or_create(
-                term=friendly_name, question_text=row['friendly_text'],
-                hint=row['hint'], visible=False)
-
     @transaction.commit_on_success
     def _import_glossary(self, f, imagef):
         print >> self.logfile, 'Setting up glossary'
