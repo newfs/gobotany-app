@@ -158,12 +158,9 @@ class Importer(object):
 
         return is_valid
 
-
-    def import_data(self, taxaf,
-                    char_val_images,
-                    glossary_images):
+    def _import_constants(self, db):
         # TODO: char_val_images
-        self._import_place_characters_and_values(taxaf)
+        # TODO: glossary_images
         self._import_plant_preview_characters()
         self._import_extra_demo_data()
         self._import_help()
@@ -1126,36 +1123,6 @@ class Importer(object):
             order += 1
 
 
-    def _add_place_character_value(self, character, value_str, piles, taxon,
-                                   friendly_text_value=None):
-        # Don't try to add a value if it's empty.
-        if not value_str:
-            return
-
-        # Look for an existing character value for this character and string
-        # value.
-        cvs = models.CharacterValue.objects.filter(character=character,
-            value_str=value_str)
-        if cvs:
-            cv = cvs[0]
-        else:
-            # The character value doesn't exist; create.
-            cv = models.CharacterValue(character=character)
-            cv.value_str = value_str
-            if friendly_text_value:
-                cv.friendly_text = friendly_text_value
-            cv.save()
-
-        # Finally, add the character value.
-        for pile in piles:
-            pile.character_values.add(cv)
-
-        models.TaxonCharacterValue(taxon=taxon, character_value=cv).save()
-        print >> self.logfile, '    New TaxonCharacterValue: %s for ' \
-            'Character: %s (Species: %s)' % (cv.value_str, character.name,
-            taxon.scientific_name)
-
-
     def _has_unexpected_delimiter(self, text, unexpected_delimiter):
         """Check for an unexpected delimiter to help guard against breaking
            the app completely silently.
@@ -1179,21 +1146,28 @@ class Importer(object):
         except models.Habitat.DoesNotExist:
             print >> self.logfile, u'  Error: habitat does not exist:', \
                 habitat_name
-        return friendly_name
+        return friendly_name and friendly_name.lower()
 
 
     @transaction.commit_on_success
-    def _import_place_characters_and_values(self, taxaf):
-        print >> self.logfile, 'Setting up place characters and values'
+    def _import_places(self, db, taxaf):
+        log.info('Setting up place characters and values')
 
         # Create a character group for "place" characters.
-        character_group, created = \
-            models.CharacterGroup.objects.get_or_create(name='place')
-        if created:
-            print >> self.logfile, u'  New Character Group:', \
-                character_group.name
+
+        charactergroup_table = db.table('core_charactergroup')
+        charactergroup_table.get(
+            name='place',
+            )
+        charactergroup_table.save()
+
+        charactergroup_map = db.map('core_charactergroup', 'name', 'id')
+        charactergroup_id = charactergroup_map['place']
 
         # Create characters.
+
+        character_table = db.table('core_character')
+
         characters = [
             ('habitat', 'Specific habitat',
              'What specific kind of habitat is your plant found in?'),
@@ -1201,91 +1175,110 @@ class Importer(object):
              'What kind of habitat is your plant found in?'),
             ('state_distribution', 'New England state',
              'In which New England state did you find the plant?')
-        ]
+            ]
         value_type = 'TEXT'
         for short_name, friendly_name, question in characters:
-            character, created = models.Character.objects.get_or_create(
+
+            character_table.get(
                 short_name=short_name,
+                ).set(
                 name=friendly_name,
                 friendly_name=friendly_name,
-                character_group=character_group,
+                character_group_id=charactergroup_id,
                 value_type=value_type,
                 unit='',
                 ease_of_observability=1,
-                question=question)
-            if created:
-                print >> self.logfile, \
-                    u'    New Character: %s (%s) in group: %s' % \
-                    (character.short_name, character.value_type,
-                     character.character_group.name)
+                question=question,
+                hint='',
+                )
+
+        character_table.save()
 
         # Go through all of the taxa and create character values.
-        print >> self.logfile, \
-            '  Setting up taxon character values in file: %s' % taxaf
-        iterator = iter(CSVReader(taxaf).read())
-        colnames = list(iterator.next())  # do NOT lower(); case is important
 
-        for cols in iterator:
-            row = dict(zip(colnames, cols))
+        character_map = db.map('core_character', 'short_name', 'id')
+        taxon_map = db.map('core_taxon', 'scientific_name', 'id')
+        pile_map = db.map('core_pile', 'slug', 'id')
 
-            # Look up the taxon and if it exists, import character values.
-            scientific_name = row['Scientific__Name']
-            taxa = models.Taxon.objects.filter(
-                scientific_name__iexact=scientific_name)
-            if not taxa:
-                print >> self.logfile, u'Error: taxon does not exist: %s' % \
-                    scientific_name
-                continue
-            taxon = taxa[0]
+        charactervalue_table = db.table('core_charactervalue')
+        taxoncharactervalue_table = db.table('core_taxoncharactervalue')
+        pile_character_values_table = db.table('core_pile_character_values')
 
-            # Get the pile (or piles) for associating character values.
-            piles = []
-            self._has_unexpected_delimiter(row['Pile'],
-                                           unexpected_delimiter=',')
-            pile_names = row['Pile'].split('| ')
-            for pile_name in pile_names:
-                try:
-                    pile = models.Pile.objects.get(name__iexact=pile_name)
-                except models.Pile.DoesNotExist:
-                    print >> self.logfile, u'Error: pile does not exist: ' \
-                        '%s (%s)' % (pile_name, taxon.scientific_name)
-                    continue
-                piles.append(pile)
+        for row in open_csv(taxaf):
 
-            # Create the Habitat character values.
-            character = models.Character.objects.get(short_name='habitat')
-            self._has_unexpected_delimiter(row['habitat'],
-                                           unexpected_delimiter=',')
+            # Get the taxon and pile (or piles) associated with this row.
+
+            taxon_id = taxon_map[row['scientific__name']]
+
+            pile_names = row['pile'].split('| ')
+            pile_ids = [pile_map[slugify(name)] for name in pile_names]
+
+            # We will build a list of values to insert.
+
+            cvfs = []  # (character_id, value_str, friendly_text) tuples
+
+            # Habitat character values.
+
+            character_id = character_map['habitat']
             habitats = row['habitat'].lower().split('| ')
             for habitat in habitats:
-                friendly_habitat = \
-                    self._get_friendly_habitat_name(habitat)
-                if friendly_habitat:
-                    friendly_habitat = friendly_habitat.lower()
-                self._add_place_character_value(character, habitat.lower(),
-                    piles, taxon, friendly_habitat)
+                friendly_habitat = self._get_friendly_habitat_name(habitat)
+                cvfs.append((character_id, habitat.lower(), friendly_habitat))
 
-            # Create the Habitat (general) chararcter values.
-            character = \
-                models.Character.objects.get(short_name='habitat_general')
-            self._has_unexpected_delimiter(row['habitat_general'],
-                                           unexpected_delimiter=',')
+            # Habitat (general) chararcter values.
+
+            character_id = character_map['habitat_general']
             habitats = row['habitat_general'].lower().split('| ')
             for habitat in habitats:
-                self._add_place_character_value(character, habitat, piles,
-                                                taxon, habitat)
+                cvfs.append((character_id, habitat, habitat))
 
-            # Create the State Distribution character values.
-            character = \
-                models.Character.objects.get(short_name='state_distribution')
-            self._has_unexpected_delimiter(row['Distribution'],
-                                           unexpected_delimiter=',')
-            state_codes = row['Distribution'].lower().split('| ')
+            # State Distribution character values.
+
+            character_id = character_map['state_distribution']
+            state_codes = row['distribution'].lower().split('| ')
             for state_code in state_codes:
                 state = ''
                 if state_code in state_names:
                     state = state_names[state_code]
-                self._add_place_character_value(character, state, piles, taxon)
+                cvfs.append((character_id, state, ''))
+
+            # Based on the little list we have created, do the inserts!
+
+            for character_id, value_str, friendly_text in cvfs:
+
+                # Don't try to add a value if it's empty.
+                if not value_str:
+                    continue
+
+                charactervalue_table.get(
+                    character_id=character_id,
+                    value_str=value_str,
+                    ).set(
+                    friendly_text=friendly_text,
+                    )
+
+                for pile_id in pile_ids:
+                    pile_character_values_table.get(
+                        pile_id=pile_id,
+                        charactervalue_id=(character_id, value_str),
+                        )
+
+                taxoncharactervalue_table.get(
+                    taxon_id=taxon_id,
+                    character_value_id=(character_id, value_str),
+                    )
+
+        # Finally, save everything.
+
+        charactervalue_table.save()
+        cv_map = db.map(
+            'core_charactervalue', ('character_id', 'value_str'), 'id')
+
+        taxoncharactervalue_table.replace('character_value_id', cv_map)
+        taxoncharactervalue_table.save()
+
+        pile_character_values_table.replace('charactervalue_id', cv_map)
+        pile_character_values_table.save()
 
 
     def _create_plant_preview_characters(self, pile_name,
@@ -1684,6 +1677,7 @@ def main():
     modern = name in (
         'partner_sites', 'pile_groups', 'piles', 'habitats', 'taxa',
         'characters', 'character_values', 'glossary', 'lookalikes',
+        'constants', 'places',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
@@ -1708,12 +1702,7 @@ def main():
     elif sys.argv[1] == 'distributions':
         importer._import_distributions(sys.argv[2])
     else:
-        is_data_valid = importer.validate_data(*sys.argv[1:])
-        if is_data_valid:
-            importer.import_data(*sys.argv[1:])
-        else:
-            print >> importer.logfile, 'Validation failed; import canceled.'
-
+        log.error('command not recognized: %r', sys.argv[1])
 
 if __name__ == '__main__':
     main()

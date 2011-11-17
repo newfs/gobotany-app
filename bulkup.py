@@ -70,7 +70,7 @@ class Table(object):
                 key = tuple(d[name] for name in self.keycolumns)
                 rowdict[key] = row
 
-    def save(self, delete_old=True):
+    def save(self, delete_old=False):
         if not self.rowdict:
             return
         c = self.database.connection.cursor()
@@ -120,6 +120,8 @@ class Batch(object):
         return self
 
     def __exit__(self, type, value, traceback):
+        if value is not None:  # refuse to flush() on an exception
+            return
         self.flush()
         if self.deletes:
             log.info('%s: %s inserts, %s updates, and %s deletes',
