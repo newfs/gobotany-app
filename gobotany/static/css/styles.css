@@ -608,8 +608,10 @@ Sidebar Styles
     width: 100%;
 }
 #taxon #sb-player.html {
+    background: #fff;
     overflow: hidden;  /* Get rid of vertical scrollbar in WebKit for
                           the enlarged U.S. distribution map. */
+    padding: 5px;
 }
 
 /*******------
