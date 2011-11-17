@@ -1569,43 +1569,28 @@ class Importer(object):
         self._create_glossary_pages()
 
 
-    def _add_suggestion_term(self, term):
-        if len(term) > 0:
-            s, created = SearchSuggestion.objects.get_or_create(term=term)
-            if created:
-                s.save()
-                print >> self.logfile, u'  Added suggestion term: %s' % term
-
-
     @transaction.commit_on_success
     def _import_search_suggestions(self):
         print >> self.logfile, 'Setting up search suggestions'
 
-        for family in models.Family.objects.all():
-            self._add_suggestion_term(family.name)
-            self._add_suggestion_term(family.common_name)
+        db = bulkup.Database(connection)
+        terms = set()
 
-        for genus in models.Genus.objects.all():
-            self._add_suggestion_term(genus.name)
+        terms.update(db.map('core_family', 'name'))
+        terms.update(db.map('core_family', 'common_name'))
+        terms.update(db.map('core_genus', 'name'))
+        terms.update(db.map('core_taxon', 'scientific_name'))
+        terms.update(db.map('core_commonname', 'common_name'))
+        terms.update(db.map('core_synonym', 'scientific_name'))
+        terms.update(db.map('core_pilegroup', 'name'))
+        terms.update(db.map('core_pile', 'name'))
+        terms.update(db.map('core_glossaryterm', 'term'))
+        terms.update(db.map('core_character', 'friendly_name'))
 
-        for taxon in models.Taxon.objects.all():
-            self._add_suggestion_term(taxon.scientific_name)
-            for common_name in taxon.common_names.all():
-                self._add_suggestion_term(common_name.common_name)
-            for synonym in taxon.synonyms.all():
-                self._add_suggestion_term(synonym.scientific_name)
-
-        for pile_group in models.PileGroup.objects.all():
-            self._add_suggestion_term(pile_group.name)
-
-        for pile in models.Pile.objects.all():
-            self._add_suggestion_term(pile.name)
-
-        for glossary_term in models.GlossaryTerm.objects.all():
-            self._add_suggestion_term(glossary_term.term)
-
-        for character in models.Character.objects.all():
-            self._add_suggestion_term(character.friendly_name)
+        table = db.table('simplekey_searchsuggestion')
+        for term in terms:
+            table.get(term=term)
+        table.save()
 
 # Import (well, for right now, just print out diagnoses about!) a
 # partner species list Excel spreadsheet.

@@ -8,10 +8,13 @@ class Database(object):
         self.connection = connection
         self.tabledict = {}
 
-    def map(self, name, key, value):
+    def map(self, name, key, value=None):
         """Return a dict mapping column `key` to `value` from table `name`."""
         c = self.connection.cursor()
-        if isinstance(key, tuple):
+        if value is None:
+            c.execute('SELECT {0} FROM {1}'.format(key, name))
+            return set(row[0] for row in c.fetchall())
+        elif isinstance(key, tuple):
             keylist = ', '.join(key)
             c.execute('SELECT {0}, {1} FROM {2}'.format(keylist, value, name))
             return dict((tuple(row[:-1]), row[-1]) for row in c.fetchall())
