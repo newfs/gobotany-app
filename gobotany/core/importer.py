@@ -161,11 +161,10 @@ class Importer(object):
 
     def import_data(self, taxaf,
                     char_val_images,
-                    glossary_images, lookalikesf):
+                    glossary_images):
         # TODO: char_val_images
         self._import_place_characters_and_values(taxaf)
         self._import_plant_preview_characters()
-        self._import_lookalikes(lookalikesf)
         self._import_extra_demo_data()
         self._import_help()
         self._import_search_suggestions()
@@ -1333,32 +1332,30 @@ class Importer(object):
 
 
     @transaction.commit_on_success
-    def _import_lookalikes(self, lookalikesf):
-        print >> self.logfile, 'Importing look-alike plants'
-        iterator = iter(CSVReader(lookalikesf).read())
-        colnames = [x.lower() for x in iterator.next()]
+    def _import_lookalikes(self, db, filename):
+        log.info('Loading look-alike plants from file: %s', filename)
+        lookalike_table = db.table('core_lookalike')
+        taxon_map = db.map('core_taxon', 'scientific_name', 'id')
 
-        for cols in iterator:
-            row = dict(zip(colnames, cols))
-            if row['lookalike_tips'] != '':
-                scientific_name = row['scientific__name']
-                taxon = \
-                    models.Taxon.objects.get(scientific_name=scientific_name)
+        for row in open_csv(filename):
+            if row['lookalike_tips'] == '':
+                continue
 
-                # Clean up Windows dash characters.
-                tips = row['lookalike_tips'].replace(u'\u2013', '-')
+            # Clean up Windows dash characters.
+            tips = row['lookalike_tips'].replace(u'\u2013', '-')
 
-                parts = re.split('(\w+ \w+):', tips)   # Split on plant name
-                parts = parts[1:]   # Strip the first item, which is empty
+            parts = re.split('(\w+ \w+):', tips)   # Split on plant name
+            parts = parts[1:]   # Strip the first item, which is empty
 
-                for lookalike, how_to_tell in zip(parts[0::2], parts[1::2]):
-                    models.Lookalike.objects.create(
-                        lookalike_scientific_name=lookalike.strip(),
-                        lookalike_characteristic=how_to_tell.strip(),
-                        taxon=taxon).save()
-                    print >> self.logfile, u'  New Lookalike for %s: %s' % \
-                        (scientific_name, lookalike)
+            for lookalike, how_to_tell in zip(parts[0::2], parts[1::2]):
+                lookalike_table.get(
+                    taxon_id=taxon_map[row['scientific__name']],
+                    ).set(
+                    lookalike_scientific_name=lookalike.strip(),
+                    lookalike_characteristic=how_to_tell.strip(),
+                    )
 
+        lookalike_table.save()
 
     def _set_youtube_id(self, name, youtube_id, pilegroup=False):
         if pilegroup:
@@ -1686,7 +1683,7 @@ def main():
     method = getattr(importer, '_import_' + name, None)
     modern = name in (
         'partner_sites', 'pile_groups', 'piles', 'habitats', 'taxa',
-        'characters', 'character_values', 'glossary',
+        'characters', 'character_values', 'glossary', 'lookalikes',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
