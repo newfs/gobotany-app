@@ -13,7 +13,7 @@ class PathTestCase(TestCase):
         self.path = Path(path_nodes[0])
 
     def test_get_style(self):
-        self.assertTrue(self.path.get_style().startswith('font-size:12px'))
+        self.assertTrue(self.path.get_style().find('fill:#fff') > -1)
 
     def test_set_style(self):
         NEW_STYLE = 'font-size:14px'

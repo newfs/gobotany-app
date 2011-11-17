@@ -3,14 +3,11 @@ from lxml import etree
 from gobotany.core import models
 from gobotany.settings import STATIC_ROOT
 
-NAMESPACES = {'svg': 'http://www.w3.org/2000/svg',
-              'inkscape': 'http://www.inkscape.org/namespaces/inkscape'}
+NAMESPACES = {'svg': 'http://www.w3.org/2000/svg'}
 
 class Path(object):
     """Class for operating on a SVG path node."""
     STYLE_ATTR = 'style'
-    FILL_OPACITY = 1
-    STROKE_OPACITY = 1
 
     def __init__(self, path_node):
         self.path_node = path_node
@@ -23,14 +20,9 @@ class Path(object):
 
     def color(self, fill_color, stroke_color=None):
         style = self.get_style()
-        shaded_style = style.replace('fill:#fff;',
-                                     'fill:%s;' % fill_color)
-        shaded_style = shaded_style.replace('fill-opacity:1;',
-            'fill-opacity:%s;' % str(Path.FILL_OPACITY))
-        shaded_style = shaded_style.replace('stroke-opacity:1;',
-            'stroke-opacity:%s;' % str(Path.STROKE_OPACITY))
+        shaded_style = style.replace('fill:#fff', 'fill:%s' % fill_color)
         if stroke_color:
-            shaded_style = shaded_style.replace('stroke:#000000;',
+            shaded_style = shaded_style.replace('stroke:#000',
                 'stroke:%s;' % str(stroke_color))
         self.set_style(shaded_style)
 
@@ -156,19 +148,17 @@ class PlantDistributionMap(ChloroplethMap):
 
     def _shade_counties(self):
         """Set the colors of the counties based on distribution data."""
-        LABEL_ATTR = '{http://www.inkscape.org/namespaces/inkscape}label'
-
         legend_labels_found = []
-
         path_nodes = self.svg_map.xpath(self.PATH_NODES_XPATH,
             namespaces=NAMESPACES)
         for record in self.distribution_records.all():
-            county_and_state = '%s, %s' % (record.county, record.state)
+            state_and_county = '%s_%s' % (record.state,
+                                          record.county.replace(' ', '_'))
             # Look through all the path nodes until the one for this
-            # county and state is found. (Note: this is significantly
+            # state and county is found. (Note: this is significantly
             # faster than selecting the node via XPath; at least 2x.)
             for node in path_nodes:
-                if node.get(LABEL_ATTR) == county_and_state:
+                if node.get('id') == state_and_county:
                     label = self._get_label_for_status(record.status)
                     if label not in legend_labels_found:
                         legend_labels_found.append(label)
@@ -202,7 +192,7 @@ class NewEnglandPlantDistributionMap(PlantDistributionMap):
         # versions in the "mapping" app's directory, which are used by
         # code that scans existing maps.
         blank_map_path  = ''.join([STATIC_ROOT,
-                                  '/graphics/new-england-counties.svg'])
+            '/graphics/new-england-counties-scoured.svg'])
         super(NewEnglandPlantDistributionMap, self).__init__(blank_map_path)
 
 
@@ -226,7 +216,7 @@ class UnitedStatesPlantDistributionMap(PlantDistributionMap):
 
     def __init__(self):
         blank_map_path  = ''.join([STATIC_ROOT,
-                                  '/graphics/us-counties.svg'])
+                                  '/graphics/us-counties-scoured.svg'])
         super(UnitedStatesPlantDistributionMap, self).__init__(blank_map_path)
 
 
