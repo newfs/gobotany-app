@@ -39,7 +39,7 @@ def start_logging():
     console.setFormatter(formatter)
     logging.getLogger('').addHandler(console)
 
-def open_csv(filename):
+def open_csv(filename, lower=True):
     """Our CSVs are produced on Windows and sometimes re-saved from a Mac.
 
     This means we have to be careful about both their encoding and the
@@ -51,7 +51,9 @@ def open_csv(filename):
     w = 'Windows-1252'
     with open(filename, 'r') as f:
         r = csv.reader(f)
-        names = [ name.decode(w).lower() for name in r.next() ]
+        names = [ name.decode(w) for name in r.next() ]
+        if lower:
+            names = [ name.lower() for name in names ]
         for row in r:
             yield dict(zip(names, (s.decode(w) for s in row)))
 
@@ -68,7 +70,7 @@ class CSVReader(object):
             for row in r:
                 yield [c.decode('Windows-1252') for c in row]
 
-pile_mapping = {
+pile_suffixes = {
     'ca': u'Carex',
     'co': u'Composites',
     'eq': u'Equisetaceae',
@@ -567,151 +569,136 @@ class Importer(object):
                 print >> self.logfile, u'  Added plant name:', pn
 
     @transaction.commit_on_success
-    def import_taxon_character_values(self, f):
-        print >> self.logfile, 'Setting up taxon character values in file: %s' % f
-        iterator = iter(CSVReader(f).read())
-        colnames = list(iterator.next())  # do NOT lower(); case is important
+    def _import_taxon_character_values(self, db, *filenames):
 
-        _pile_suffix = colnames[-2][-3:]  # like '_ca'
-        pile_suffix = _pile_suffix[1:]   # like 'ca'
-        if pile_suffix not in pile_mapping:
-            print >> self.logfile, "  ERR: Pile '%s' isn't mapped" % pile_suffix
-            return
+        # Create a pile_map {'_ca': 8, '_nm': 9, ...}
+        pile_map1 = db.map('core_pile', 'slug', 'id')
+        pile_map = dict(('_' + suffix, pile_map1[slugify(name)])
+                        for (suffix, name) in pile_suffixes.iteritems())
 
-        pile = models.Pile.objects.get(name__iexact=pile_mapping[pile_suffix])
-        print >> self.logfile, '  Setting up taxon character values in ' \
-            'pile %s' % pile_mapping[pile_suffix]
+        taxon_map = db.map('core_taxon', 'scientific_name', 'id')
+        character_map = db.map('core_character', 'short_name', 'id')
+        cv_map = db.map(
+            'core_charactervalue', ('character_id', 'value_str'), 'id')
+        tcv_table = db.table('core_taxoncharactervalue')
+        unknown_characters = set()
+        unknown_character_values = set()
 
-        for cols in iterator:
-            row = dict(zip(colnames, cols))
+        for filename in filenames:
+            log.info('Loading %s', filename)
+            pile_id = None
 
-            # Look up the taxon and if it exists, import character values.
-            taxa = models.Taxon.objects.filter(
-                scientific_name__iexact=row['Scientific__Name'])
-            if not taxa:
-                continue
-            taxon = taxa[0]
-            
-            # Create a structure for tracking whether both min and max values
-            # have been seen for this character, in order to avoid creating
-            # unnecessary CharacterValues.
-            length_values_seen = {}
+            # Do *not* lower() column names; case is important!
+            for row in open_csv(filename, lower=False):
 
-            # Go through the key/value pairs for this row.
-            for character_name, v in row.items():
-                if not v.strip():
-                    continue
-                if not character_name.endswith(_pile_suffix):  # '_ca', etc.
+                # Look up the taxon.
+                taxon_id = taxon_map.get(row['Scientific__Name'])
+                if taxon_id is None:
+                    log.error('Unknown taxon: %r', row['Scientific__Name'])
                     continue
 
-                is_min = (character_name.lower().find('_min') > -1)
-                is_max = (character_name.lower().find('_max') > -1)
-                short_name = self.character_short_name(character_name)
+                # Create a structure for tracking whether both min and
+                # max values have been seen for this character, in order
+                # to avoid creating unnecessary CharacterValues.
+                length_values_seen = {}
 
-                try:
-                    character = models.Character.objects.get(
-                        short_name=short_name)
-                except ObjectDoesNotExist:
-                    print >> self.logfile, '    ERR: No such character ' \
-                        'exists: %s, [%s]' % (short_name, character_name)
-                    continue
-
-                if is_min or is_max:
-
-                    try:
-                        numv = float(v)
-                    except ValueError:
-                        print >> self.logfile, '    ERR: Can\'t convert to ' \
-                            'a number: %s=%s [%s]' % (short_name, v,
-                                                      character_name)
+                # Go through the key/value pairs for this row.
+                for character_name, v in row.items():
+                    #print repr(character_name), repr(pile_suffix)
+                    if not v.strip():
+                        continue
+                    suffix = character_name[-3:]  # '_ca', etc.
+                    pile_id = pile_map.get(suffix)
+                    if pile_id is None:
                         continue
 
-                    # Min and max get stored in the same char-value row.
-                    tcvs = models.TaxonCharacterValue.objects.filter(
-                        taxon=taxon,
-                        character_value__character=character,
-                        ).all()
-                    if tcvs:
-                        cv = tcvs[0].character_value
-                    else:
-                        # If this character hasn't been seen before, make a
-                        # place for it.
-                        if length_values_seen.has_key(short_name) == False:
-                            length_values_seen[short_name] = {}
+                    is_min = '_min' in character_name.lower()
+                    is_max = '_max' in character_name.lower()
+                    short_name = self.character_short_name(character_name)
 
-                        # Set the min or max value in the temporary data
-                        # structure.
-                        if is_min:
-                            length_values_seen[short_name]['min'] = numv
-                        else:
-                            length_values_seen[short_name]['max'] = numv
-
-                        # If we've seen both min and max values for this
-                        # character:
-                        if length_values_seen[short_name].has_key('min') and \
-                           length_values_seen[short_name].has_key('max'):
-                            # Look for an existing character value for this
-                            # character and min/max values.
-                            cvs = models.CharacterValue.objects.filter(
-                                character=character,
-                                value_min=length_values_seen[short_name]['min'],
-                                value_max=length_values_seen[short_name]['max'])
-                            if cvs:
-                                cv = cvs[0]
-                            else:
-                                # The character value doesn't exist; create.
-                                cv = models.CharacterValue(
-                                    character=character)
-                                cv.value_min = length_values_seen[short_name]['min']
-                                cv.value_max = length_values_seen[short_name]['max']
-                                cv.save()
-                            # Finally, add the character value.
-                            pile.character_values.add(cv)
-                            models.TaxonCharacterValue(taxon=taxon,
-                                character_value=cv).save()
-                            print >> self.logfile, \
-                                '  New TaxonCharacterValue: %s, %s for ' \
-                                'Character: %s [%s] (Species: %s)' % \
-                                (str(cv.value_min), str(cv.value_max),
-                                 character.name, short_name,
-                                 taxon.scientific_name)
-
-                else:
-                    # A regular comma-separated list of string values.
-                    for val in v.split('|'):
-                        val = val.strip()
-                        # Don't use get_or_created here, otherwise an illegal
-                        # CharacterValue could get associated with the taxon.
-                        # The universe of possible CharacterValues have already
-                        # been constructed in an earlier method.
-                        cv = models.CharacterValue.objects.filter(
-                            value_str=val,
-                            character=character)
-                        # Some character values contain commas and shouldn't be 
-                        # treated as a comma-seperated list. So let's try
-                        # looking it up as single field.
-                        if len(cv) == 0:
-                            cv = models.CharacterValue.objects.filter(
-                                value_str=v,
-                                character=character)
-                        # Shockingly, if we still get nothing it means the
-                        # csv probably contain dirty data, and it's a good
-                        # idea to log it.
-                        if len(cv) == 0:
-                            print >> self.logfile, \
-                                '    ERR: No such value: %s for character: ' \
-                                '%s [%s] exists' % (val, short_name,
-                                                    character_name)
+                    if is_min or is_max:
+                        pile_id
+                        continue
+                        try:
+                            numv = float(v)
+                        except ValueError:
+                            print >> self.logfile, '    ERR: Can\'t convert to ' \
+                                'a number: %s=%s [%s]' % (short_name, v,
+                                                          character_name)
                             continue
 
-                        models.TaxonCharacterValue.objects.get_or_create(
-                            taxon=taxon, character_value=cv[0])
-                        print >> self.logfile, \
-                            '  New TaxonCharacterValue: %s for Character:' \
-                            ' %s [%s] (Species: %s)' % (val, character.name,
-                                                        short_name,
-                                                        taxon.scientific_name)
+                        # Min and max get stored in the same char-value row.
+                        tcvs = models.TaxonCharacterValue.objects.filter(
+                            taxon=taxon,
+                            character_value__character=character,
+                            ).all()
+                        if tcvs:
+                            cv = tcvs[0].character_value
+                        else:
+                            # If this character hasn't been seen before, make a
+                            # place for it.
+                            if length_values_seen.has_key(short_name) == False:
+                                length_values_seen[short_name] = {}
 
+                            # Set the min or max value in the temporary data
+                            # structure.
+                            if is_min:
+                                length_values_seen[short_name]['min'] = numv
+                            else:
+                                length_values_seen[short_name]['max'] = numv
+
+                            # If we've seen both min and max values for this
+                            # character:
+                            if length_values_seen[short_name].has_key('min') and \
+                               length_values_seen[short_name].has_key('max'):
+                                # Look for an existing character value for this
+                                # character and min/max values.
+                                cvs = models.CharacterValue.objects.filter(
+                                    character=character,
+                                    value_min=length_values_seen[short_name]['min'],
+                                    value_max=length_values_seen[short_name]['max'])
+                                if cvs:
+                                    cv = cvs[0]
+                                else:
+                                    # The character value doesn't exist; create.
+                                    cv = models.CharacterValue(
+                                        character=character)
+                                    cv.value_min = length_values_seen[short_name]['min']
+                                    cv.value_max = length_values_seen[short_name]['max']
+                                    cv.save()
+                                # Finally, add the character value.
+                                pile.character_values.add(cv)
+                                models.TaxonCharacterValue(taxon=taxon,
+                                    character_value=cv).save()
+                                print >> self.logfile, \
+                                    '  New TaxonCharacterValue: %s, %s for ' \
+                                    'Character: %s [%s] (Species: %s)' % \
+                                    (str(cv.value_min), str(cv.value_max),
+                                     character.name, short_name,
+                                     taxon.scientific_name)
+
+                    else:
+                        character_id = character_map.get(short_name)
+                        if character_id is None:
+                            unknown_characters.add(short_name)
+                            continue
+                        for value_str in v.split('|'):
+                            value_str = value_str.strip()
+                            cvkey = (character_id, value_str)
+                            cv_id = cv_map.get(cvkey)
+                            if cv_id is None:
+                                unknown_character_values.add(cvkey)
+                                continue
+                            tcv_table.get(
+                                taxon_id=taxon_id,
+                                character_value_id=cv_id,
+                                )
+
+        tcv_table.save()
+        for short_name in sorted(unknown_characters):
+            log.info('Unknown character: %s', short_name)
+        for cvkey in sorted(unknown_character_values):
+            log.info('Unknown character value: %s', cvkey)
 
     def _create_character_name(self, short_name):
         """Create a character name from the short name."""
@@ -836,7 +823,7 @@ class Importer(object):
             short_name = self.character_short_name(character_name)
             value_str = row['character_value']
 
-            if not pile_suffix in pile_mapping:
+            if not pile_suffix in pile_suffixes:
                 continue
 
             try:
@@ -844,7 +831,7 @@ class Importer(object):
             except KeyError:
                 log.error('Bad character: %r', short_name)
                 continue
-            pile_title = pile_mapping[pile_suffix].title()
+            pile_title = pile_suffixes[pile_suffix].title()
 
             charactervalue_table.get(
                 character_id=character_id,
@@ -1677,7 +1664,7 @@ def main():
     modern = name in (
         'partner_sites', 'pile_groups', 'piles', 'habitats', 'taxa',
         'characters', 'character_values', 'glossary', 'lookalikes',
-        'constants', 'places',
+        'constants', 'places', 'taxon_character_values',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
@@ -1696,9 +1683,6 @@ def main():
         home_page_image_dir = os.path.join(settings.MEDIA_ROOT,
                                            'content_images')
         importer.import_home_page_images(home_page_image_dir, *sys.argv[2:])
-    elif sys.argv[1] == 'character-values':
-        for taxonf in sys.argv[2:]:
-            importer.import_taxon_character_values(taxonf)
     elif sys.argv[1] == 'distributions':
         importer._import_distributions(sys.argv[2])
     else:
