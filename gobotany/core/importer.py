@@ -5,6 +5,7 @@ import re
 import sys
 import tarfile
 import xlrd
+from collections import defaultdict
 from operator import attrgetter
 
 # The GoBotany settings have to be imported before most of Django.
@@ -580,7 +581,11 @@ class Importer(object):
         character_map = db.map('core_character', 'short_name', 'id')
         cv_map = db.map(
             'core_charactervalue', ('character_id', 'value_str'), 'id')
+
+        cv_table = db.table('core_charactervalue')
         tcv_table = db.table('core_taxoncharactervalue')
+
+        bad_float_values = set()
         unknown_characters = set()
         unknown_character_values = set()
 
@@ -600,11 +605,10 @@ class Importer(object):
                 # Create a structure for tracking whether both min and
                 # max values have been seen for this character, in order
                 # to avoid creating unnecessary CharacterValues.
-                length_values_seen = {}
+                length_pairs = defaultdict(lambda: [None, None])
 
                 # Go through the key/value pairs for this row.
                 for character_name, v in row.items():
-                    #print repr(character_name), repr(pile_suffix)
                     if not v.strip():
                         continue
                     suffix = character_name[-3:]  # '_ca', etc.
@@ -612,76 +616,30 @@ class Importer(object):
                     if pile_id is None:
                         continue
 
+                    short_name = self.character_short_name(character_name)
+                    character_id = character_map.get(short_name)
+                    if character_id is None:
+                        unknown_characters.add(short_name)
+                        continue
+
                     is_min = '_min' in character_name.lower()
                     is_max = '_max' in character_name.lower()
-                    short_name = self.character_short_name(character_name)
 
                     if is_min or is_max:
-                        pile_id
-                        continue
+                        if v == 'n/a':
+                            continue
                         try:
                             numv = float(v)
                         except ValueError:
-                            print >> self.logfile, '    ERR: Can\'t convert to ' \
-                                'a number: %s=%s [%s]' % (short_name, v,
-                                                          character_name)
+                            bad_float_values.add(v)
                             continue
 
-                        # Min and max get stored in the same char-value row.
-                        tcvs = models.TaxonCharacterValue.objects.filter(
-                            taxon=taxon,
-                            character_value__character=character,
-                            ).all()
-                        if tcvs:
-                            cv = tcvs[0].character_value
-                        else:
-                            # If this character hasn't been seen before, make a
-                            # place for it.
-                            if length_values_seen.has_key(short_name) == False:
-                                length_values_seen[short_name] = {}
-
-                            # Set the min or max value in the temporary data
-                            # structure.
-                            if is_min:
-                                length_values_seen[short_name]['min'] = numv
-                            else:
-                                length_values_seen[short_name]['max'] = numv
-
-                            # If we've seen both min and max values for this
-                            # character:
-                            if length_values_seen[short_name].has_key('min') and \
-                               length_values_seen[short_name].has_key('max'):
-                                # Look for an existing character value for this
-                                # character and min/max values.
-                                cvs = models.CharacterValue.objects.filter(
-                                    character=character,
-                                    value_min=length_values_seen[short_name]['min'],
-                                    value_max=length_values_seen[short_name]['max'])
-                                if cvs:
-                                    cv = cvs[0]
-                                else:
-                                    # The character value doesn't exist; create.
-                                    cv = models.CharacterValue(
-                                        character=character)
-                                    cv.value_min = length_values_seen[short_name]['min']
-                                    cv.value_max = length_values_seen[short_name]['max']
-                                    cv.save()
-                                # Finally, add the character value.
-                                pile.character_values.add(cv)
-                                models.TaxonCharacterValue(taxon=taxon,
-                                    character_value=cv).save()
-                                print >> self.logfile, \
-                                    '  New TaxonCharacterValue: %s, %s for ' \
-                                    'Character: %s [%s] (Species: %s)' % \
-                                    (str(cv.value_min), str(cv.value_max),
-                                     character.name, short_name,
-                                     taxon.scientific_name)
+                        index = 0 if is_min else 1
+                        length_pairs[short_name][index] = numv
 
                     else:
-                        character_id = character_map.get(short_name)
-                        if character_id is None:
-                            unknown_characters.add(short_name)
-                            continue
+                        # We can create normal tcv rows very simply.
+
                         for value_str in v.split('|'):
                             value_str = value_str.strip()
                             cvkey = (character_id, value_str)
@@ -694,11 +652,44 @@ class Importer(object):
                                 character_value_id=cv_id,
                                 )
 
+                # Now we have seen both the min and max of every range.
+
+                for character_name, (vmin, vmax) in length_pairs.iteritems():
+                    # if vmin is None or vmax is None:  # should we do this?
+                    #     continue
+                    character_id = character_map[character_name]
+                    cv_table.get(
+                        character_id=character_id,
+                        value_min=vmin,
+                        value_max=vmax,
+                        ).set(
+                        friendly_text='',
+                        )
+                    tcv_table.get(
+                        taxon_id=taxon_id,
+                        character_value_id=(character_id, vmin, vmax),
+                        )
+
+        for s in sorted(bad_float_values):
+            log.debug('Bad floating-point value: %s', s)
+        for s in sorted(unknown_characters):
+            log.debug('Unknown character: %s', s)
+        for s in sorted(unknown_character_values):
+            log.debug('Unknown character value: %s', s)
+
+        cv_table.save()
+
+        # Build a composite map so that ids we already have can pass
+        # through unscathed, while our triples get dereferenced.
+        cv_map = db.map('core_charactervalue', 'id', 'id')
+        cv_map2 = db.map('core_charactervalue',
+                        ('character_id', 'value_min', 'value_max'),
+                        'id')
+        cv_map.update(cv_map2)
+
+        tcv_table.replace('character_value_id', cv_map)
+
         tcv_table.save()
-        for short_name in sorted(unknown_characters):
-            log.info('Unknown character: %s', short_name)
-        for cvkey in sorted(unknown_character_values):
-            log.info('Unknown character value: %s', cvkey)
 
     def _create_character_name(self, short_name):
         """Create a character name from the short name."""
