@@ -21,8 +21,7 @@ from django.template.defaultfilters import slugify
 
 import bulkup
 from gobotany.core import models
-from gobotany.simplekey.models import Blurb, Video, HelpPage, \
-                                      GlossaryHelpPage, SearchSuggestion
+from gobotany.simplekey.models import Blurb, Video, HelpPage
 
 DEBUG=False
 log = logging.getLogger('gobotany.import')
@@ -1534,27 +1533,37 @@ class Importer(object):
 
 
     def _create_glossary_pages(self):
-        LETTERS = ('a b c d e f g h i j k l m n o p q r s t u v w x '
-                   'y z').split(' ')
-        for letter in LETTERS:
-            glossary = models.GlossaryTerm.objects.filter(visible=True).extra(
-                select={'lower_term': 'lower(term)'}).order_by('lower_term')
-            # Skip any glossary terms that start with a number, and filter to
-            # the desired letter.
-            glossary = glossary.filter(term__gte='a', term__startswith=letter)
-            # If terms exist for the letter, create a help page record.
-            if len(glossary) > 0:
-                help_page, created = GlossaryHelpPage.objects.get_or_create(
-                    title='Glossary: ' + letter.upper(),
-                    url_path='/help/glossary/' + letter + '/',
-                    letter=letter)
-                if created:
-                    print >> self.logfile, u'  New Glossary Help page: ', \
-                        help_page
-                # Assign all the terms to the help page.
-                for term in glossary:
-                    help_page.terms.add(term)
-                help_page.save()
+        db = bulkup.Database(connection)
+
+        terms = db.map('core_glossaryterm', 'term')
+        letters = set(t[0].lower() for t in terms if t[0].isalpha())
+
+        # Make sure a glossary page is registered for each letter for
+        # which at least one glossary term exists.
+
+        ghp_table = db.table('simplekey_glossaryhelppage')
+        for letter in letters:
+            ghp_table.get(
+                letter=letter,
+                ).set(
+                title='Glossary: ' + letter.upper(),
+                url_path='/help/glossary/' + letter + '/',
+                )
+        ghp_table.save()
+
+        # Add every term to its appropriate glossary page.
+
+        ghp_ids = db.map('simplekey_glossaryhelppage', 'letter', 'id')
+        term_ids = db.map('core_glossaryterm', 'term', 'id')
+
+        multi = db.table('simplekey_glossaryhelppage_terms')
+        for term in terms:
+            letter = term[0].lower()
+            multi.get(
+                glossaryhelppage_id=ghp_ids[letter],
+                glossaryterm_id=term_ids[term],
+                )
+        multi.save()
 
 
     def _import_help(self):
