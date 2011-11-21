@@ -438,9 +438,9 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             image_type = image_types[i];
             select_box.addOption({value: image_type,
                 label: image_type});
-            // Habit is selected by default
-            if (image_type === 'habit')
-                select_box.set('value', 'habit');
+            // "Plant form" images are selected by default
+            if (image_type === 'plant form')
+                select_box.set('value', 'plant form');
         }
 
         // Set the last shown image type if possible.
