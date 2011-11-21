@@ -161,8 +161,6 @@ class Importer(object):
         return is_valid
 
     def _import_constants(self, db):
-        # TODO: char_val_images
-        # TODO: glossary_images
         self._import_plant_preview_characters()
         self._import_extra_demo_data()
         self._import_help()
@@ -540,7 +538,8 @@ class Importer(object):
         synonym_table.replace('taxon_id', taxon_map)
         synonym_table.save(delete_old=True)
 
-    # TODO: remove this import function, and the unused model PlantNames.
+    # TODO: can we remove this import function and the model PlantNames?
+    # It claims to be used by MyPlants but is a completely unindexed table.
 
     @transaction.commit_on_success
     def _import_plant_names(self, taxaf):
@@ -842,7 +841,7 @@ class Importer(object):
             'charactervalue_id', charactervalue_map)
         pile_character_values_table.save(delete_old=True)
 
-            # TODO:
+            # TODO: char_val_images
             # images = tarfile.open(imagef)
             # Add drawing image (if present) for this character value.
             # if row['image_name']:
@@ -879,7 +878,7 @@ class Importer(object):
 
         glossaryterm_table.save()
 
-            # TODO: reinstate glossary image import
+            # TODO: glossary_images - reinstate glossary image import
             # images = tarfile.open(imagef)
             # try:
             #     image = images.getmember(row['illustration'])
