@@ -931,14 +931,27 @@ class Importer(object):
 
         glossaryterm_table.save()
 
-            # TODO: glossary_images - reinstate glossary image import
-            # images = tarfile.open(imagef)
-            # try:
-            #     image = images.getmember(row['illustration'])
-            #     image_file = File(images.extractfile(image.name))
-            #     term.image.save(image.name, image_file)
-            # except KeyError:
-            #     print >> self.logfile, '    ERR: No image found for term'
+    @transaction.commit_on_success
+    def _import_glossary_images(self, db, csvfilename, tarfilename):
+        log.info('Loading glossary images')
+        images = tarfile.open(tarfilename)
+
+        for row in open_csv(csvfilename):
+
+            if not row['definition'] or row['definition'] == row['term']:
+                continue
+
+            if not row['illustration']:
+                continue
+
+            try:
+                image = images.getmember(row['illustration'])
+            except KeyError:
+                log.error('cannot find image: %s', row['illustration'])
+
+            image_file = File(images.extractfile(image.name))
+            term = models.GlossaryTerm.objects.get(term=row['term'])
+            term.image.save(image.name, image_file)
 
     def import_species_images(self, dirpath, image_categories_csv):
         """Given a directory's ``dirpath``, find species images inside."""
@@ -1702,7 +1715,7 @@ def main():
         'partner_sites', 'pile_groups', 'piles', 'habitats', 'taxa',
         'characters', 'character_values', 'glossary', 'lookalikes',
         'constants', 'places', 'taxon_character_values',
-        'character_images', 'character_value_images',
+        'character_images', 'character_value_images', 'glossary_images',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
