@@ -769,18 +769,31 @@ class Importer(object):
         character_table.replace('character_group_id', charactergroup_map)
         character_table.save()
 
-                # TODO:
-                # # Add drawing image (if present) for this character value.
-                # if row['image_name']:
-                #     try:
-                #         image = images.getmember(row['image_name'])
-                #         image_file = File(images.extractfile(image.name))
-                #         character.image.save(image.name, image_file)
-                #     # Force the thumbnail to be generated.
-                #         character.image.thumbnail.height()
-                #     except KeyError:
-                #         print >> self.logfile, \
-                #             '    ERR: No image found for character'
+    @transaction.commit_on_success
+    def _import_character_images(self, db, csvfilename, tarfilename):
+        log.info('Loading character images')
+        images = tarfile.open(tarfilename)
+
+        n = 0
+        for row in open_csv(csvfilename):
+            image_name = row['image_name']
+            if not image_name:
+                continue
+            try:
+                image = images.getmember(image_name)
+            except KeyError:
+                log.error('cannot find image: %s', image_name)
+                continue
+            image_file = File(images.extractfile(image.name))
+
+            short_name = self.character_short_name(row['character'])
+            character = models.Character.objects.get(short_name=short_name)
+
+            character.image.save(image.name, image_file)
+            character.image.thumbnail.height()  # generate thumbnail
+            n += 1
+
+        log.info('Done loading %s images', n)
 
     def _clean_up_html(self, html):
         """Clean up HTML ugliness arising from Access rich text export."""
@@ -1649,6 +1662,7 @@ def main():
         'partner_sites', 'pile_groups', 'piles', 'habitats', 'taxa',
         'characters', 'character_values', 'glossary', 'lookalikes',
         'constants', 'places', 'taxon_character_values',
+        'character_images',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
