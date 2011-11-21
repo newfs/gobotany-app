@@ -817,16 +817,19 @@ class Importer(object):
 
         for row in open_csv(filename):
 
-            if '_' not in row['character']:
-                continue # ignore "family" rows for right now
-
             character_name = row['character']
-            pile_suffix = character_name.rsplit('_', 1)[1]
-            short_name = self.character_short_name(character_name)
-            value_str = row['character_value']
+            if character_name == 'family':
+                continue
+            if '_' not in character_name:
+                log.warn('ignoring %r', character_name)
+                continue
 
+            pile_suffix = character_name.rsplit('_', 1)[1]
             if not pile_suffix in pile_suffixes:
                 continue
+
+            short_name = self.character_short_name(character_name)
+            value_str = row['character_value']
 
             try:
                 character_id = character_map[short_name]
@@ -854,19 +857,56 @@ class Importer(object):
             'charactervalue_id', charactervalue_map)
         pile_character_values_table.save(delete_old=True)
 
-            # TODO: char_val_images
-            # images = tarfile.open(imagef)
-            # Add drawing image (if present) for this character value.
-            # if row['image_name']:
-            #     try:
-            #         image = images.getmember(row['image_name'])
-            #         image_file = File(images.extractfile(image.name))
-            #         cv.image.save(image.name, image_file)
-            #         # Force the thumbnail to be generated.
-            #         cv.image.thumbnail.height()
-            #     except KeyError:
-            #         print >> self.logfile, \
-            #             '    ERR: No image found for character value'
+    @transaction.commit_on_success
+    def _import_character_value_images(self, db, csvfilename, tarfilename):
+        log.info('Loading character value images')
+        images = tarfile.open(tarfilename)
+        character_map = db.map('core_character', 'short_name', 'id')
+
+        n = 0
+        for row in open_csv(csvfilename):
+
+            character_name = row['character']
+            if character_name == 'family':
+                continue
+            if '_' not in character_name:
+                log.warn('ignoring %r', character_name)
+                continue
+
+            image_name = row['image_name']
+            if not image_name:
+                continue
+            try:
+                image = images.getmember(image_name)
+            except KeyError:
+                log.error('cannot find image: %s', image_name)
+                continue
+            image_file = File(images.extractfile(image.name))
+
+            # Get character-value, using logic like that above.
+
+            pile_suffix = character_name.rsplit('_', 1)[1]
+            if not pile_suffix in pile_suffixes:
+                continue
+
+            short_name = self.character_short_name(character_name)
+            value_str = row['character_value']
+
+            try:
+                character_id = character_map[short_name]
+            except KeyError:
+                log.error('Bad character: %r', short_name)
+                continue
+
+            cv = models.CharacterValue.objects.get(
+                character=character_id,
+                value_str=value_str,
+                )
+            cv.image.save(image.name, image_file)
+            cv.image.thumbnail.height()  # generate thumbnail
+            n += 1
+
+        log.info('Done loading %s images', n)
 
     @transaction.commit_on_success
     def _import_glossary(self, db, filename):
@@ -1662,7 +1702,7 @@ def main():
         'partner_sites', 'pile_groups', 'piles', 'habitats', 'taxa',
         'characters', 'character_values', 'glossary', 'lookalikes',
         'constants', 'places', 'taxon_character_values',
-        'character_images',
+        'character_images', 'character_value_images',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
