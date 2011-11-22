@@ -143,19 +143,26 @@ def results_view(request, pilegroup_slug, pile_slug):
 
 def _format_character_value(character_value):
     """Render a character value for display."""
-    character = character_value.character
-    if character.value_type == 'TEXT':
-        return (character_value.friendly_text or
-                character_value.value_str or u'')
-    elif character.unit not in (None, '', 'NA'):
-        minstr = ('Anything' if character_value.value_min is None
-                  else u'%.1f' % character_value.value_min)
-        maxstr = ('Anything' if character_value.value_max is None
-                  else u'%.1f' % character_value.value_max)
-        return u'%s–%s %s' % (minstr, maxstr, character.unit)
+    if character_value:
+        character = character_value.character
+        if character.value_type == 'TEXT':
+            return (character_value.friendly_text or
+                    character_value.value_str or u'')
+        else:
+            if character.unit not in (None, '', 'NA'):
+                minstr = ('Anything' if character_value.value_min is None
+                          else u'%.3g' % character_value.value_min)
+                maxstr = ('Anything' if character_value.value_max is None
+                          else u'%.3g' % character_value.value_max)
+                return u'%s–%s %s' % (minstr, maxstr, character.unit)
+            else:
+                minstr = ('?' if character_value.value_min is None
+                          else u'%.3g' % character_value.value_min)
+                maxstr = ('?' if character_value.value_max is None
+                          else u'%.3g' % character_value.value_max)
+                return u'%s–%s' % (minstr, maxstr)
     else:
-        return u'%d–%d' % (
-            character_value.value_min, character_value.value_max)
+        return ''
 
 
 def _get_all_characteristics(taxon, character_groups):
