@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from gobotany.core.models import Distribution, Family, Genus, Taxon
+from gobotany.core.models import Distribution, Family, Genus, Synonym, Taxon
 from gobotany.mapping.map import (NAMESPACES, Path, Legend,
                                   NewEnglandPlantDistributionMap,
                                   UnitedStatesPlantDistributionMap)
@@ -112,21 +112,40 @@ class ChloroplethMapTestCase(TestCase):
 
 def create_distribution_records():
     """Create dummy distribution records for New England and beyond."""
-    SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
-    family, created = Family.objects.get_or_create(name='Lycopodiaceae')
-    genus, created = Genus.objects.get_or_create(name='Dendrolycopodium',
-        family=family)
-    taxon, created = (Taxon.objects.get_or_create(
-        scientific_name=SCIENTIFIC_NAME, family=family, genus=genus))
-    distribution_data = [('Piscataquis', 'ME', 'native'),
-        ('Coos', 'NH', 'native'), ('Worcester', 'MA', 'native'),
-        ('Kent', 'RI', 'rare'), ('Orange', 'VT', 'native'),
-        ('New London', 'CT', 'native'), ('Dutchess', 'NY', 'native'),
-        ('Sussex', 'NJ', 'rare'), ('Lawrence', 'PA', 'native')]
-    for entry in distribution_data:
-        dist, created = (Distribution.objects.get_or_create(
-            scientific_name=SCIENTIFIC_NAME, county=entry[0], state=entry[1],
-            status=entry[2]))
+    taxa = {'Dendrolycopodium dendroideum': 'Lycopodiaceae',
+            'Vaccinium vitis-idaea': 'Ericaceae'}
+    for scientific_name, family_name in taxa.items():
+        family = Family(name=family_name)
+        family.save()
+        genus = Genus(name=scientific_name.split(' ')[0], family=family)
+        genus.save()
+        taxon = Taxon(scientific_name=scientific_name, family=family,
+                      genus=genus)
+        taxon.save()
+
+    taxon = Taxon.objects.get(scientific_name='Vaccinium vitis-idaea')
+    synonym = Synonym(scientific_name='Vaccinium vitis-idaea ssp. minus',
+            full_name='Vaccinium vitis-idaea ssp. minus (Lodd.) Hulten',
+            taxon=taxon)
+    synonym.save()
+
+    distribution_data = {
+        'Dendrolycopodium dendroideum': [('Piscataquis', 'ME', 'native'),
+            ('Coos', 'NH', 'native'), ('Worcester', 'MA', 'native'),
+            ('Kent', 'RI', 'rare'), ('Orange', 'VT', 'native'),
+            ('New London', 'CT', 'native'), ('Dutchess', 'NY', 'native'),
+            ('Sussex', 'NJ', 'rare'), ('Lawrence', 'PA', 'native')],
+        'Vaccinium vitis-idaea ssp. minus': [('Pistcataquis', 'ME', 'native'),
+            ('Coos', 'NH', 'native'), ('Worcester', 'MA', 'rare'),
+            ('Kent', 'RI', 'absent'), ('Orange', 'VT', 'native'),
+            ('New London', 'CT', 'native'), ('Dutchess', 'NY', 'native'),
+            ('Sussex', 'NJ', 'rare'), ('Lawrence', 'PA', 'native')]
+        }
+    for scientific_name, data_list in distribution_data.items():
+        for entry in data_list:
+            distribution = Distribution(scientific_name=scientific_name,
+                county=entry[0], state=entry[1], status=entry[2])
+            distribution.save()
 
 
 class PlantDistributionMapTestCase(TestCase):
@@ -210,11 +229,13 @@ class PlantDistributionMapTestCase(TestCase):
                 status = 'native'
             elif style.find('fill:#a7e37d') > -1:
                 status = 'rare'
+            elif style.find('fill:#fff') > -1:
+                status = 'absent'
             if status and status not in statuses_verified:
                 statuses_verified.append(status)
             if statuses_verified == legend_labels_found:
                 break
-        self.assertEqual(statuses_verified, legend_labels_found)
+        self.assertEqual(statuses_verified.sort(), legend_labels_found.sort())
 
     def test_shade_counties(self):
         SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
@@ -226,7 +247,7 @@ class PlantDistributionMapTestCase(TestCase):
         SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
-        # Verify that the labels found are shown in the legend.
+        self._verify_shaded_counties(['native', 'rare'])
         labels = [label_node.text for label_node in
             self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
             namespaces=NAMESPACES)]
@@ -234,6 +255,51 @@ class PlantDistributionMapTestCase(TestCase):
         self.assertEqual('rare', labels[1])
         [self.assertEqual('', label) for label in labels[2:]]
 
+    def test_plant_with_distribution_data_has_plant_name_in_title(self):
+        SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        self.distribution_map.shade()
+        self.assertEqual('%s: New England Distribution Map' % SCIENTIFIC_NAME,
+                         self.distribution_map.get_title())
+
+    def test_plant_with_no_distribution_data_returns_blank_map(self):
+        SCIENTIFIC_NAME = 'Foo bar'
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        self.distribution_map.shade()
+        # Verify that the map is not shaded.
+        path_nodes = self.distribution_map.svg_map.findall(
+            '{http://www.w3.org/2000/svg}path')
+        paths = [Path(path_node) for path_node in path_nodes]
+        for path in paths:
+            style = path.get_style()
+            self.assertTrue(style.find('fill:#fff') > -1 or
+                            style.find('fill:none') > -1)
+        # Verify that the legend contains only a 'no data' label.
+        labels = [label_node.text for label_node in
+            self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
+            namespaces=NAMESPACES)]
+        self.assertEqual(['no data', '', '', '', ''], labels)
+
+    def test_plant_with_no_distribution_data_has_no_plant_name_in_title(self):
+        SCIENTIFIC_NAME = 'Foo bar'
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        self.distribution_map.shade()
+        self.assertEqual('New England Distribution Map',
+                         self.distribution_map.get_title())
+
+    def test_plant_with_data_only_under_synonym_returns_shaded_map(self):
+        # This plant's distribution data is listed only under the
+        # synonym Vaccinium vitis-idaea ssp. minus.
+        SCIENTIFIC_NAME = 'Vaccinium vitis-idaea'
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        self.distribution_map.shade()
+        self._verify_shaded_counties(['native', 'rare', 'absent'])
+        labels = [label_node.text for label_node in
+            self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
+            namespaces=NAMESPACES)]
+        self.assertEqual(['native', 'rare', 'absent', '', ''], labels)
+        self.assertEqual('%s: New England Distribution Map' % SCIENTIFIC_NAME,
+                         self.distribution_map.get_title())
 
 
 class NewEnglandPlantDistributionMapTestCase(TestCase):

@@ -1,3 +1,5 @@
+from django.core.exceptions import ObjectDoesNotExist
+
 from lxml import etree
 
 from gobotany.core import models
@@ -73,6 +75,10 @@ class Legend(object):
                 stroke_color = '#fff'
             self._set_item(item_slot_number, fill_color, stroke_color, label)
 
+        # If no distribution data were mapped, set a label saying so.
+        if len(legend_labels_found) == 0:
+            self._set_item(1, '#fff', '#fff', 'no data')
+
 
 class ChloroplethMap(object):
     """Base class for a chloropleth SVG map."""
@@ -128,48 +134,68 @@ class PlantDistributionMap(ChloroplethMap):
     def _add_name_to_title(self, scientific_name):
         """Add the plant name to the map's title."""
         title_text = self.get_title()
+        sep_index = title_text.find(':')
+        if sep_index > -1:
+            title_text = title_text[sep_index + 1:].strip()
         title_text = '%s: %s' % (scientific_name, title_text)
         self.set_title(title_text)
 
     def _get_distribution_records(self, scientific_name):
         """Look up the plant and get its distribution records."""
-        self.taxon = (models.Taxon.objects.filter(
-                      scientific_name=scientific_name))
-        if len(self.taxon) > 0:
-            return (models.Distribution.objects.filter(
-                    scientific_name=scientific_name))
+        return (models.Distribution.objects.filter(
+                scientific_name=scientific_name))
 
     def set_plant(self, scientific_name):
         """Set the plant to be shown and gather its data."""
         self.scientific_name = scientific_name
-        self._add_name_to_title(self.scientific_name)
-        self.distribution_records = (self._get_distribution_records(
-                                        self.scientific_name))
+        records = self._get_distribution_records(self.scientific_name)
+        if not records:
+            # Distribution records might be listed under one of the
+            # synonyms for this plant instead.
+            try:
+                taxon = models.Taxon.objects.get( \
+                    scientific_name=self.scientific_name)
+                if taxon.synonyms:
+                    for synonym in taxon.synonyms.all():
+                        name = synonym.scientific_name
+                        records = self._get_distribution_records(name)
+                        if records:
+                            break
+            except ObjectDoesNotExist:
+                pass  # Didn't find the plant in the database
+        self.distribution_records = records
+
+        # Only add the plant name to the title if distribution data are
+        # found, to keep the title neutral in the event of junk in the URL.
+        if records:
+            self._add_name_to_title(self.scientific_name)
+
 
     def _shade_counties(self):
         """Set the colors of the counties based on distribution data."""
         legend_labels_found = []
-        path_nodes = self.svg_map.xpath(self.PATH_NODES_XPATH,
-            namespaces=NAMESPACES)
-        for record in self.distribution_records.all():
-            state_and_county = '%s_%s' % (record.state,
-                                          record.county.replace(' ', '_'))
-            # Look through all the path nodes until the one for this
-            # state and county is found. (Note: this is significantly
-            # faster than selecting the node via XPath; at least 2x.)
-            for node in path_nodes:
-                if node.get('id') == state_and_county:
-                    label = self._get_label_for_status(record.status)
-                    if label not in legend_labels_found:
-                        legend_labels_found.append(label)
-                    box = Path(node)
-                    box.color(Legend.COLORS[label])
-                    break   # Move on to the next distribution record.
+        if self.distribution_records:
+            path_nodes = self.svg_map.xpath(self.PATH_NODES_XPATH,
+                namespaces=NAMESPACES)
+            for record in self.distribution_records.all():
+                state_and_county = '%s_%s' % (record.state,
+                                              record.county.replace(' ', '_'))
+                # Look through all the path nodes until the one for this
+                # state and county is found. (Note: this is at least
+                # twice as fast as selecting each node via XPath.)
+                for node in path_nodes:
+                    if node.get('id') == state_and_county:
+                        label = self._get_label_for_status(record.status)
+                        if label not in legend_labels_found:
+                            legend_labels_found.append(label)
+                        box = Path(node)
+                        box.color(Legend.COLORS[label])
+                        break   # Move on to the next distribution record.
 
-        # Order the found labels as they are to be presented in the legend.
-        all_labels = [item[0] for item in Legend.ITEMS]
-        legend_labels_found = [label for label in all_labels
-                               if label in legend_labels_found]
+            # Put the found labels in display order.
+            all_labels = [item[0] for item in Legend.ITEMS]
+            legend_labels_found = [label for label in all_labels
+                                   if label in legend_labels_found]
         return legend_labels_found
 
     def shade(self):
@@ -199,12 +225,9 @@ class NewEnglandPlantDistributionMap(PlantDistributionMap):
     def _get_distribution_records(self, scientific_name):
         """Look up the plant and get its New England distribution records."""
         NEW_ENGLAND_STATES = ['CT', 'MA', 'ME', 'NH', 'RI', 'VT']
-        self.taxon = (models.Taxon.objects.filter(
-                      scientific_name=scientific_name))
-        if len(self.taxon) > 0:
-            return (models.Distribution.objects.filter(
-                    scientific_name=scientific_name,
-                    state__in=NEW_ENGLAND_STATES))
+        return (models.Distribution.objects.filter(
+                scientific_name=scientific_name,
+                state__in=NEW_ENGLAND_STATES))
 
 
 class UnitedStatesPlantDistributionMap(PlantDistributionMap):
