@@ -4,14 +4,15 @@ import doctest
 import os
 import re
 import unittest
-from StringIO import StringIO
-from django.forms import ValidationError 
-from django.test import TestCase
-from gobotany.core import botany
-from gobotany.core import models
-from gobotany.core import igdt
-from gobotany.core import importer
 
+from django.db import connection
+from django.forms import ValidationError
+from django.test import TestCase
+
+from StringIO import StringIO
+
+import bulkup
+from gobotany.core import botany, igdt, importer, models
 
 def testdata(s):
     """Return the path to a test data file relative to this directory."""
@@ -391,6 +392,8 @@ class APITests(SampleData):
 
 
 class ImportTestCase(TestCase):
+    def setUp(self):
+        self.db = bulkup.Database(connection)
 
     def test_character_short_name_retains_pile_suffix(self):
         im = importer.Importer(StringIO())
@@ -409,8 +412,7 @@ class ImportTestCase(TestCase):
 
     def test_import_characters(self):
         im = importer.Importer(StringIO())
-        im._import_characters(testdata('characters.csv'),
-            testdata('testdata-character-value-images.tar.bz2'))
+        im._import_characters(self.db, testdata('characters.csv'))
         f = open(testdata('characters.csv'))
         content = f.read()
         f.close()
@@ -420,7 +422,7 @@ class ImportTestCase(TestCase):
 
     def test_import_taxons(self):
         im = importer.Importer(StringIO())
-        im._import_partner_sites()
+        im._import_partner_sites(self.db)
         im._import_taxa(testdata('taxa.csv'))
         self.assertEquals(len(models.Taxon.objects.all()), 71)
 
