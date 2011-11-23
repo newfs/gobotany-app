@@ -7,13 +7,13 @@
 
 {% block main_content %}			
     <a class="onward-btn"
-        href="{% url simplekey-page 1 %}">Onward to Plant Identifier</a>
+        href="{% url simplekey-page 1 %}">Onward to the Simple Key</a>
 
     <h2>Getting Started</h2>
 
     <div class="first question">
         <h4>What kinds of plants can I identify?</h4>
-        <p>The Go Botany Plant Identifier helps you identify thousands of
+        <p>The Go Botany Simple Key helps you identify thousands of
         native and naturalized plant species in New England. You can also
         identify subspecies and varieties. Many of these plants grow outside
         of New England, though, so this key is useful well beyond our
@@ -33,8 +33,7 @@
     </div>
 
     <div class="third question">
-        <h4>How do I get started using the Plant
-            Identifier?</h4>
+        <h4>How do I get started using the Simple Key?</h4>
         <a class="screenshot"
             href="/static/images/layout/screenshot-3.jpg"
             rel="shadowbox">
@@ -149,7 +148,7 @@
     </div>
 
     <a href="{% url simplekey-page 1 %}"
-        class="onward-btn">Onward to Plant Identifier</a>
+        class="onward-btn">Onward to the Simple Key</a>
 {% endblock %}
 
 {% block more_sidebar_content %}
@@ -159,11 +158,11 @@
             <a href="http://www.youtube.com/v/{{ getting_started_youtube_id }}"
                 rel="shadowbox;height=380;width=640;"><img
                 class="shadow" alt=""
-                title="How to use the Go Botany Plant Identifier"
+                title="How to use the Go Botany Simple Key"
                 src="http://img.youtube.com/vi/{{ getting_started_youtube_id }}/hq2.jpg"
                 style="width: 100%">
             </a>
-            <p>How to use the Go Botany Plant Identifier</p>
+            <p>How to use the Go Botany Simple Key</p>
         {% else %}
             Admin: set the blurb 'getting_started_youtube_id'.
         {% endif %}

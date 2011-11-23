@@ -23,7 +23,7 @@ nav #search-suggest a:hover, #search-suggest li:hover {
     color: #000;
 }
 #search-suggest input, #search-suggest li {
-    width: 227px;
+    width: 250px;
 }
 #search-suggest input, #search-suggest ul {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -47,7 +47,7 @@ nav #search-suggest a:hover, #search-suggest li:hover {
     position: absolute;
     text-align: left;
     top: 105px;
-    width: 233px;
+    width: 256px;
     z-index: 101;
 }
 

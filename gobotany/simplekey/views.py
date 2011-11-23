@@ -56,7 +56,7 @@ def index_view(request):
     displayed on the page, but the code is left in place pending our
     eventual earnest customizations for specific partner sites.
     """
-    main_heading = 'Plant Identifier: Getting Started'
+    main_heading = 'Simple Key: Getting Started'
     partner = which_partner(request)
     if partner:
         if partner.short_name == 'montshire':

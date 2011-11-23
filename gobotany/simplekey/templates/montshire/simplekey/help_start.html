@@ -44,14 +44,15 @@
 			        </div><!--Closes #breadcrumb-->
 			
 			        <a class="onward-btn"
-                        href="{% url simplekey-page 1 %}">Onward to Plant Identifier</a>
+                        href="{% url simplekey-page 1 %}">Onward to
+                        Simple Key</a>
 			
 			        <h2>Plants at Montshire</h2>
 			
                     <!-- // Begin List of Questions/Answers // -->
                     <div class="first question">
                         <h4>What kinds of plants does Montshire support?</h4>
-                        <p>The Go Botany Plant Identifier helps you identify
+                        <p>The Go Botany Simple Key helps you identify
                         thousands of native and naturalized plant species in 
                         New England. You can also identify subspecies and
                         varieties. Many of these plants grow outside of New
@@ -75,8 +76,8 @@
                     </div><!-- // Closes .question -->
                         
                     <div class="third question">
-                        <h4>How do I get started using the Plant
-                            Identifier at Montshire?</h4>
+                        <h4>How do I get started using the Simple Key
+                            at Montshire?</h4>
                         <a class="screenshot"
                             href="/static/images/layout/screenshot-3.jpg"
                             rel="shadowbox">
@@ -205,7 +206,7 @@
                     </div><!-- // Closes .question -->
                     
                     <a href="{% url simplekey-page 1 %}"
-                        class="onward-btn">Onward to Plant Identifier</a>
+                        class="onward-btn">Onward to Simple Key</a>
                     <form>
                         <label class="got-it">
                             <input type="checkbox" id="skip-page"> 
@@ -217,7 +218,7 @@
 
                 <div id="sidebar" style="height: 1046px">
                     <div class="section">
-                        <h5><a>Getting Started with Plant Identifier</a></h5>	
+                        <h5><a>Getting Started with the Simple Key</a></h5>	
 			        </div>
 			        <div class="section">
                         <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-about %}"{% endifequal %}>About Go-Botany</a></h5>
@@ -240,11 +241,12 @@
                             <a href="http://www.youtube.com/v/{{ getting_started_youtube_id }}"
                                 rel="shadowbox;height=380;width=640;"><img
                                 class="shadow" alt=""
-                                title="How to use the Go Botany Plant Identifier"
+                                title="How to use the Go Botany Simple
+                                Key"
                                 src="http://img.youtube.com/vi/{{ getting_started_youtube_id }}/hq2.jpg"
                                 style="width: 100%">
                             </a>
-                            <p>How to use the Go Botany Plant Identifier</p>
+                            <p>How to use the Go Botany Simple Key</p>
                         {% else %}
                             Admin: set the blurb 'getting_started_youtube_id'.
                         {% endif %}
