@@ -2002,10 +2002,14 @@ Family and Genus Pages Styles
     width: 280px;
 }
 #genus .genus-species-btn {
-    /* TODO: replace with styles like above once we have a button image */
+    background: url(/static/images/layout/genus-btn.png) no-repeat scroll 0 0 transparent;
     clear: both;
     display: block;
-    margin: 30px 0 0;
+    float: left;
+    height: 32px;
+    margin: 15px 0 0;
+    text-indent: -9000px;
+    width: 280px;
 }
 #family img.zoom, #genus img.zoom {
     display: inline-block;
