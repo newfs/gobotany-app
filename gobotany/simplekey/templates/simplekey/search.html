@@ -48,13 +48,13 @@
                                     {% else %}
                                         {% if result.model_name == 'helppage' %}
                                         <a href="{{ url_base }}{{ result.object.url_path }}"><img
-                                            src="/static/graphics/help-icon.jpg"
+                                            src="/static/images/icons/icon-help.png"
                                             alt="" title="Help page">
 {% search_highlight result.title with query excerpt 'False' %}</a>
                                         {% else %}
                                             {% if result.model_name == 'glossaryhelppage' %}
                                             <a href="{{ url_base }}{{ result.object.url_path }}"><img
-                                                src="/static/graphics/glossary-icon.jpg"
+                                                src="/static/images/icons/icon-glossary.png"
                                                 alt=""
                                                 title="Glossary page">
 {% search_highlight result.title with query excerpt 'False' %}</a>
