@@ -57,7 +57,7 @@ def italicize_plant(value):
     # Look for more words to italicize, such as a variety or subspecies.
     CONNECTING_TERMS = ['subsp.', 'ssp.', 'var.', 'subvar.', 'f.',
                         'forma', 'subf.']
-    for i in range(2 , len(words)):
+    for i in range(2, len(words)):
         if words[i] in CONNECTING_TERMS and words[i + 1]:
             words[i + 1] = _italicize_word(words[i + 1])
     return ' '.join(words)

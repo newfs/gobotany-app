@@ -1,4 +1,5 @@
 from django import template
+from django.utils.safestring import mark_safe
 
 from haystack.templatetags.highlight import HighlightNode
 
@@ -8,10 +9,12 @@ register = template.Library()
 
 
 class ExtendedHighlightNode(HighlightNode):
-    def __init__(self, text_block, query, html_tag=None, css_class=None,
-                 max_length=None, excerpt=None, ignore_between=None):
+    def __init__(self, text_block, query, var_name, html_tag=None,
+                 css_class=None, max_length=None, excerpt=None,
+                 ignore_between=None):
         self.excerpt = excerpt
         self.ignore_between = None
+        self.var_name = var_name
 
         if excerpt is not None:
             self.excerpt = template.Variable(excerpt)
@@ -51,13 +54,13 @@ class ExtendedHighlightNode(HighlightNode):
         # not yet needed here.
         highlighter = ExtendedHighlighter(query, **kwargs)
         highlighted_text = highlighter.highlight(text_block)
-        return highlighted_text
+        context[self.var_name] = mark_safe(highlighted_text)
+        return ''
 
 
 @register.tag
 def search_highlight(parser, token):
-    """
-    Takes a block of text and highlights words from a provided query
+    """Takes a block of text and highlights words from a provided query
     within that block of text. Optionally accepts arguments to provide
     the HTML tag to wrap highlighted word in, a CSS class to use with
     the tag, a maximum length of the blurb in characters, and whether
@@ -65,31 +68,34 @@ def search_highlight(parser, token):
 
     Syntax::
 
-        {% highlight <text_block> with <query> [css_class "class_name"]
-        [html_tag "span"] [max_length 200] %}
+        {% highlight <text_block> with <query> as <var_name>
+        [css_class "class_name"] [html_tag "span"] [max_length 200]
+        [excerpt 'False'] [ignore_between '\n--\n'] %}
 
-    Example::
+    Examples::
 
         # Highlight summary with default behavior.
-        {% highlight result.summary with request.query %}
+        {% highlight result.summary with request.query as my_summary %}
 
         # Highlight summary but wrap highlighted words with a div and the
         # following CSS class.
-        {% highlight result.summary with request.query html_tag "div"
-        css_class "highlight_me_please" %}
+        {% highlight result.summary with request.query as my_summary
+        html_tag "div" css_class "highlight_me_please" %}
 
         # Highlight summary but only show 40 characters.
-        {% highlight result.summary with request.query max_length 40 %}
+        {% highlight result.summary with request.query as my_summary
+        max_length 40 %}
 
         # Highlight summary but do not excerpt text at the beginning.
-        {% highlight result.summary with request.query excerpt 'False' %}
+        {% highlight result.summary with request.query as my_summary
+        excerpt 'False' %}
 
         # Highlight summary but ignore any text between markers that
         # match the given regular expression.
         # Markers are the same at the beginning and end of the piece to
         # be ignored: there are no opening and closing styles.
-        {% highlight result.summary with request.query ignore_between
-        '\n--\n' %}
+        {% highlight result.summary with request.query as my_summary
+        ignore_between '\n--\n' %}
     """
     bits = token.split_contents()
     tag_name = bits[0]
@@ -109,8 +115,10 @@ def search_highlight(parser, token):
             "should be 'with'." % tag_name)
 
     query = bits[3]
+    # bits[4] = 'as'
+    var_name = bits[5]
 
-    arg_bits = iter(bits[4:])
+    arg_bits = iter(bits[6:])
     kwargs = {}
 
     for bit in arg_bits:
@@ -129,4 +137,4 @@ def search_highlight(parser, token):
         if bit == 'ignore_between':
             kwargs['ignore_between'] = arg_bits.next()
 
-    return ExtendedHighlightNode(text_block, query, **kwargs)
+    return ExtendedHighlightNode(text_block, query, var_name, **kwargs)

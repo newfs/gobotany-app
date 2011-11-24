@@ -32,32 +32,32 @@
                             <a href="{{ url_base }}/species/{{ result.scientific_name|split:' '|at_index:'0'|lower }}/{{ result.scientific_name|split:' '|at_index:'1'|lower }}/"><img 
                                     src="/static/images/icons/icon-leaf.png"
                                     alt="" title="Species page">
-{% search_highlight result.title with query excerpt 'False' %}</a>
+{% search_highlight result.title with query as item_title excerpt 'False' %}{{ item_title|italicize_plant|safe }}</a>
                             {% else %}
                                 {% if result.model_name == 'family' %}
                                 <a href="{{ url_base }}/families/{{ result.name|lower }}/"><img
                                     src="/static/images/icons/icon-family.png"
                                     alt="" title="Family page">
-{% search_highlight result.title with query excerpt 'False' %}</a>
+{% search_highlight result.title with query as item_title excerpt 'False' %}{{ item_title }}</a>
                                 {% else %}
                                     {% if result.model_name == 'genus' %}
                                     <a href="{{ url_base }}/genera/{{ result.name|lower }}/"><img
                                         src="/static/images/icons/icon-genus.png"
                                         alt="" title="Genus page">
-{% search_highlight result.title with query excerpt 'False' %}</a>
+{% search_highlight result.title with query as item_title excerpt 'False' %}{{ item_title }}</a>
                                     {% else %}
                                         {% if result.model_name == 'helppage' %}
                                         <a href="{{ url_base }}{{ result.object.url_path }}"><img
                                             src="/static/images/icons/icon-help.png"
                                             alt="" title="Help page">
-{% search_highlight result.title with query excerpt 'False' %}</a>
+{% search_highlight result.title with query as item_title excerpt 'False' %}{{ item_title }}</a>
                                         {% else %}
                                             {% if result.model_name == 'glossaryhelppage' %}
                                             <a href="{{ url_base }}{{ result.object.url_path }}"><img
                                                 src="/static/images/icons/icon-glossary.png"
                                                 alt=""
                                                 title="Glossary page">
-{% search_highlight result.title with query excerpt 'False' %}</a>
+{% search_highlight result.title with query as item_title excerpt 'False' %}{{ item_title }}</a>
                                             {% else %}
                                                 Error: unknown search
                                                 result model name.
@@ -67,7 +67,7 @@
                                 {% endif %}
                             {% endif %}
                             <p>
-                            {% search_highlight result.text with query ignore_between '\n--\n' %}
+                            {% search_highlight result.text with query as result_excerpt ignore_between '\n--\n' %}{{ result_excerpt }}
                             </p>
                         </li>
                     {% endfor %}
