@@ -20,7 +20,7 @@ require([
             mask: {
                 color: $('body').css('background-color'),
                 loadSpeed: 500,
-                opacity: 0.8,
+                opacity: 0.5,
                 top: 0
             },
             closeOnClick: true,
