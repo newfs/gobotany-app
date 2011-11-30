@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'gobotany.api',
     'gobotany.core',
     'gobotany.mapping',
+    'gobotany.plantoftheday',
     'gobotany.search',
     'gobotany.simplekey',
     'piston',

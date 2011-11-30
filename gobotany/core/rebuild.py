@@ -14,6 +14,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from gobotany import settings
 management.setup_environ(settings)
 from gobotany.core import igdt, importer, models
+from gobotany.plantoftheday.models import PlantOfTheDay
 
 
 class CSVReader(object):
@@ -242,6 +243,44 @@ def rebuild_sample_pile_images(pile_or_group_csv_1, pile_or_group_csv_2):
                     print '- found, ' + message
                 else:
                     print '- not found'
+
+
+def rebuild_plant_of_the_day(include_plants='SIMPLEKEY'):   # or 'ALL'
+    """Rebuild the Plant of the Day list without wiping it out.
+
+    This means that plant data can be reloaded and the Plant of the Day
+    list then updated to include the current list of plants, minus any
+    exclusions. This will ensure any new plants (or those with changed
+    names) make it into the list.
+
+    Any records in the list that do not have their last_modified field
+    showing the latest rebuild date are likely old and should be deleted.
+    For now, this is left as an occasional manual maintenance task.
+    """
+    if include_plants not in ['SIMPLEKEY', 'ALL']:
+        print '  Unknown include_plants value: %s' % include_plants
+    else:
+        print '  Rebuilding Plant of the Day list (%s):' % include_plants
+        for partner_site in models.PartnerSite.objects.all():
+            print '    Partner site: %s' % partner_site
+            species = models.PartnerSpecies.objects.filter(
+                partner=partner_site)
+            if include_plants == 'SIMPLEKEY':
+                species = species.filter(simple_key=True)
+            for s in species:
+                try:
+                    potd = PlantOfTheDay.objects.get(
+                        scientific_name=s.species.scientific_name,
+                        partner_short_name=s.partner.short_name)
+                    # Save the existing record so its last_updated field
+                    # will be updated.
+                    potd.save()
+                except ObjectDoesNotExist:
+                    # Create a new Plant of the Day record.
+                    potd = PlantOfTheDay(
+                        scientific_name=s.species.scientific_name,
+                        partner_short_name=s.partner.short_name)
+                    potd.save()
 
 
 if __name__ == '__main__':
