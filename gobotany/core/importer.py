@@ -2,11 +2,13 @@ import csv
 import logging
 import os
 import re
+import shutil
 import sys
 import tarfile
 import xlrd
 from collections import defaultdict
 from operator import attrgetter
+from StringIO import StringIO
 
 # The GoBotany settings have to be imported before most of Django.
 from gobotany import settings
@@ -16,6 +18,7 @@ management.setup_environ(settings)
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files import File
+from django.core.files.base import ContentFile
 from django.db import connection, transaction
 from django.template.defaultfilters import slugify
 
@@ -882,25 +885,44 @@ class Importer(object):
 
     @transaction.commit_on_success
     def _import_glossary_images(self, db, csvfilename, tarfilename):
-        log.info('Loading glossary images')
-        images = tarfile.open(tarfilename)
+        dirname = models.GlossaryTerm._meta.get_field('image').upload_to
+        dirpath = os.path.join(settings.MEDIA_ROOT, dirname)
+        log.info('Deleting every file under MEDIA_ROOT/%s' % dirname)
 
+        if os.path.isdir(dirpath):
+            shutil.rmtree(dirpath)
+
+        # When an archive is compressed, reading all of its members in a
+        # single sweep is vastly more efficient than asking for each
+        # member separately which makes `tarfile` re-read the compressed
+        # archive over and over again.
+
+        log.info('Reading glossary images from archive')
+        image_dict = {}
+        archive = tarfile.open(tarfilename)
+        while True:
+            member = archive.next()
+            if member is None: break
+            data = archive.extractfile(member).read()
+            image_dict[member.name] = ContentFile(data)
+
+        log.info('Saving glossary images in MEDIA_ROOT/%s' % dirname)
         for row in open_csv(csvfilename):
 
             if not row['definition'] or row['definition'] == row['term']:
                 continue
 
-            if not row['illustration']:
+            image_name = row['illustration']
+            if not image_name:
                 continue
 
-            try:
-                image = images.getmember(row['illustration'])
-            except KeyError:
+            image_file = image_dict.get(row['illustration'])
+            if image_file is None:
                 log.error('cannot find image: %s', row['illustration'])
+                continue
 
-            image_file = File(images.extractfile(image.name))
             term = models.GlossaryTerm.objects.get(term=row['term'])
-            term.image.save(image.name, image_file)
+            term.image.save(image_name, image_file)
 
     def import_species_images(self, dirpath, image_categories_csv):
         """Given a directory's ``dirpath``, find species images inside."""
