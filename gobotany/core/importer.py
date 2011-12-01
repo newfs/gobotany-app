@@ -8,7 +8,6 @@ import tarfile
 import xlrd
 from collections import defaultdict
 from operator import attrgetter
-from StringIO import StringIO
 
 # The GoBotany settings have to be imported before most of Django.
 from gobotany import settings
@@ -1250,7 +1249,7 @@ class Importer(object):
                 friendly_habitat = self._get_friendly_habitat_name(habitat)
                 cvfs.append((character_id, habitat.lower(), friendly_habitat))
 
-            # Habitat (general) chararcter values.
+            # Habitat (general) character values.
 
             character_id = character_map['habitat_general']
             habitats = row['habitat_general'].lower().split('| ')
