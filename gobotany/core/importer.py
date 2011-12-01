@@ -1689,10 +1689,11 @@ def import_partner_species(partner_short_name, excel_path):
 # Utilities.
 
 def delete_files_in(dirname):
-    dirpath = os.path.join(settings.MEDIA_ROOT, dirname)
-    if os.path.isdir(dirpath):
-        log.info('Deleting every file under MEDIA_ROOT/%s' % dirname)
-        shutil.rmtree(dirpath)
+    for dirpart in (dirname, os.path.join('content-thumbs', dirname)):
+        dirpath = os.path.join(settings.MEDIA_ROOT, dirpart)
+        if os.path.isdir(dirpath):
+            log.info('Deleting every file under MEDIA_ROOT/%s' % dirpart)
+            shutil.rmtree(dirpath)
 
 # Parse the command line.
 
