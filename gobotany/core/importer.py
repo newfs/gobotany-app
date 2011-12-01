@@ -109,57 +109,6 @@ class Importer(object):
         short_name = short_name.replace('_max', '')
         return short_name
 
-    def validate_data(self, pilegroupf, pilef, habitatsf, taxaf, charf,
-                      charvf, char_val_images, char_glossaryf, glossaryf,
-                      glossary_images, lookalikesf, *taxonfiles):
-        """Perform some basic validation on the data to be imported."""
-        print >> self.logfile, 'Validating data'
-        is_valid = True
-
-        # Make sure some important columns are present.
-        # (This is not yet an exhaustive list of required column names.)
-        REQUIRED_COLUMNS = ['Distribution', 'invasive_in_which_states',
-                            'prohibited_from_sale_states', 'habitat']
-        iterator = iter(CSVReader(taxaf).read())
-        colnames = [x for x in iterator.next()]
-
-        print >> self.logfile, '  Checking for required columns:'
-        for column in REQUIRED_COLUMNS:
-            message = '    Column %s in taxa.csv: ' % column
-            if column in colnames:
-                message += 'OK'
-            else:
-                message += 'missing'
-                is_valid = False
-            print >> self.logfile, message
-
-        # For columns where multiple delimited values are allowed, look for
-        # the expected delimiter. (It's been known to change in the Access
-        # exports, quietly resulting in bugs.)
-        MULTIVALUE_COLUMNS = ['Distribution', 'invasive_in_which_states',
-                              'prohibited_from_sale_states', 'habitat']
-        EXPECTED_DELIMITER = '| '
-
-        print >> self.logfile, \
-            '  Checking for expected multi-value delimiters:'
-        for multivalue_column in MULTIVALUE_COLUMNS:
-            message = '    Column %s in taxa.csv, expected delimiter (%s): ' \
-                % (multivalue_column, EXPECTED_DELIMITER)
-            delimiter_found = False
-            for cols in iterator:
-                row = dict(zip(colnames, cols))
-                if row[multivalue_column].find(EXPECTED_DELIMITER) > 0:
-                    delimiter_found = True
-                    break
-            if delimiter_found:
-                message += 'OK'
-            else:
-                message += 'not found'
-                is_valid = False
-            print >> self.logfile, message
-
-        return is_valid
-
     def _import_constants(self, db):
         self._import_plant_preview_characters()
         self._import_extra_demo_data()
