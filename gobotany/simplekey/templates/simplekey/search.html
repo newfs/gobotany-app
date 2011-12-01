@@ -1,12 +1,20 @@
-{% extends "simplekey/_base.html" %}
+{% extends "simplekey/_new_base.html" %}
 {% load humanize %}
 {% load search_highlight %}
 {% load simplekey_extras %}
 
-{% block title %}{{ query }}: Search{% endblock %}
+{% block title %}“{{ query }}” search{% endblock %}
 
-{% block body %}
-    <body id="search-results" class="claro app search-results">
+{% block js_require %}
+    require(['simplekey/search']);
+{% endblock %}
+
+{% block body_attributes %}
+    id="search-results" class="claro app search-results"
+{% endblock %}
+
+{% block body_content %}
+
         {% include "simplekey/_header.html" %}
 
         <div class="content">
@@ -111,13 +119,4 @@
 
         {% include "simplekey/_footer.html" %}
 
-        {% include "simplekey/_script_constants.html" %}
-
-        <script>
-            {% include "simplekey/partner_site_inline_js.html" %}
-        </script>
-        
-        {% block js_bottom %}{% endblock %}
-    </body>
 {% endblock %}
-
