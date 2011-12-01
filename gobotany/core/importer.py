@@ -723,27 +723,38 @@ class Importer(object):
 
     @transaction.commit_on_success
     def _import_character_images(self, db, csvfilename, tarfilename):
-        log.info('Loading character images')
-        images = tarfile.open(tarfilename)
 
-        n = 0
+        log.info('Reading CSV to determine which characters need images')
+        image_names = {}  # image_name -> Character
+
         for row in open_csv(csvfilename):
             image_name = row['image_name']
             if not image_name:
                 continue
-            try:
-                image = images.getmember(image_name)
-            except KeyError:
-                log.error('cannot find image: %s', image_name)
-                continue
-            image_file = File(images.extractfile(image.name))
-
             short_name = self.character_short_name(row['character'])
             character = models.Character.objects.get(short_name=short_name)
+            image_names[image_name] = character
 
-            character.image.save(image.name, image_file)
+        dirname = models.Character._meta.get_field('image').upload_to
+        delete_files_in(dirname)
+
+        log.info('Loading character images from archive')
+        archive = tarfile.open(tarfilename)
+        n = 0
+        while True:
+            member = archive.next()
+            if member is None:
+                break
+            character = image_names.pop(member.name, None)
+            if character is None:
+                continue
+            data = archive.extractfile(member).read()
+            character.image.save(member.name, ContentFile(data))
             character.image.thumbnail.height()  # generate thumbnail
             n += 1
+
+        for name in image_names:
+            log.error('Could not find character image %s' % name)
 
         log.info('Done loading %s images', n)
 
@@ -886,11 +897,7 @@ class Importer(object):
     @transaction.commit_on_success
     def _import_glossary_images(self, db, csvfilename, tarfilename):
         dirname = models.GlossaryTerm._meta.get_field('image').upload_to
-        dirpath = os.path.join(settings.MEDIA_ROOT, dirname)
-        log.info('Deleting every file under MEDIA_ROOT/%s' % dirname)
-
-        if os.path.isdir(dirpath):
-            shutil.rmtree(dirpath)
+        delete_files_in(dirname)
 
         # When an archive is compressed, reading all of its members in a
         # single sweep is vastly more efficient than asking for each
@@ -1674,6 +1681,14 @@ def import_partner_species(partner_short_name, excel_path):
         elif not ps and species.scientific_name in theirs:
             print 'Adding', species.scientific_name
             models.PartnerSpecies(species=species, partner=partner).save()
+
+# Utilities.
+
+def delete_files_in(dirname):
+    dirpath = os.path.join(settings.MEDIA_ROOT, dirname)
+    if os.path.isdir(dirpath):
+        log.info('Deleting every file under MEDIA_ROOT/%s' % dirname)
+        shutil.rmtree(dirpath)
 
 # Parse the command line.
 

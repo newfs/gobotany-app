@@ -125,7 +125,7 @@ class Character(models.Model):
     question = models.TextField(blank=True)
     hint = models.TextField(blank=True)
 
-    image = ImageWithThumbnailsField(upload_to='character-value',
+    image = ImageWithThumbnailsField(upload_to='character',
                                      thumbnail={'size': (40, 40)},
                                      blank=True,
                                      null=True)  # the famous "DLD"
