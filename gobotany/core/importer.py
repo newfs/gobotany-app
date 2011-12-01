@@ -33,6 +33,7 @@ def start_logging():
     # Log everything to the import.log file.
 
     logging.basicConfig(filename='import.log', level=logging.DEBUG)
+    logging.getLogger('django').setLevel(logging.WARN)
 
     # Log only INFO and above to the console.
 
