@@ -822,52 +822,56 @@ class Importer(object):
 
     @transaction.commit_on_success
     def _import_character_value_images(self, db, csvfilename, tarfilename):
-        log.info('Loading character value images')
-        images = tarfile.open(tarfilename)
+
+        log.info('Reading CSV to determine which character values need images')
+        image_names = {}  # image_name -> CharacterValue
         character_map = db.map('core_character', 'short_name', 'id')
 
-        n = 0
         for row in open_csv(csvfilename):
-
+            image_name = row['image_name']
+            if not image_name:
+                continue
             character_name = row['character']
             if character_name == 'family':
                 continue
             if '_' not in character_name:
-                log.warn('ignoring %r', character_name)
+                log.warn('character lacks pile suffix: %r', character_name)
                 continue
-
-            image_name = row['image_name']
-            if not image_name:
-                continue
-            try:
-                image = images.getmember(image_name)
-            except KeyError:
-                log.error('cannot find image: %s', image_name)
-                continue
-            image_file = File(images.extractfile(image.name))
-
-            # Get character-value, using logic like that above.
-
             pile_suffix = character_name.rsplit('_', 1)[1]
             if not pile_suffix in pile_suffixes:
+                log.warn('character has bad pile suffix: %r', character_name)
                 continue
-
             short_name = self.character_short_name(character_name)
-            value_str = row['character_value']
-
-            try:
-                character_id = character_map[short_name]
-            except KeyError:
-                log.error('Bad character: %r', short_name)
+            character_id = character_map.get(short_name)
+            if character_id is None:
+                log.warn('character does not exist: %r', short_name)
                 continue
-
             cv = models.CharacterValue.objects.get(
                 character=character_id,
-                value_str=value_str,
+                value_str=row['character_value'],
                 )
-            cv.image.save(image.name, image_file)
+            image_names[image_name] = cv
+
+        dirname = models.CharacterValue._meta.get_field('image').upload_to
+        delete_files_in(dirname)
+
+        log.info('Loading character-value images from archive')
+        archive = tarfile.open(tarfilename)
+        n = 0
+        while True:
+            member = archive.next()
+            if member is None:
+                break
+            cv = image_names.pop(member.name, None)
+            if cv is None:
+                continue
+            data = archive.extractfile(member).read()
+            cv.image.save(member.name, ContentFile(data))
             cv.image.thumbnail.height()  # generate thumbnail
             n += 1
+
+        for name in image_names:
+            log.error('Could not find character value image %s' % name)
 
         log.info('Done loading %s images', n)
 
