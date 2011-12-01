@@ -1,4 +1,45 @@
+from datetime import date
+
 from django.db import models
+
+class PlantOfTheDayManager(models.Manager):
+    """Custom model manager for getting Plant of the Day records by date."""
+
+    def for_day(self, day_date, partner_name):
+        plant_for_day = None
+        plants = self.filter(last_seen=day_date,
+                             partner_short_name=partner_name,
+                             include=True)
+        if len(plants) > 0:
+            plant_for_day = plants[0]
+        else:
+            # A plant wasn't found for the requested date.
+            if day_date > date.today():
+                # The requested date is in the future.
+                plant_for_day = None
+            else:
+                # Pick a new Plant of the Day for this date.
+
+                # Try picking a yet-unseen plant at random.
+                plants = self.filter(last_seen__isnull=True,
+                                     partner_short_name=partner_name,
+                                     include=True).order_by('?')
+                if len(plants) > 0:
+                    plant_for_day = plants[0]
+                else:
+                    # If none are unseen, pick the one last seen longest ago.
+                    plants = self.filter(last_seen__isnull=False,
+                                         partner_short_name=partner_name,
+                                         include=True).order_by('last_seen')
+                    if len(plants) > 0:
+                        plant_for_day = plants[0]
+
+                if plant_for_day:
+                    plant_for_day.last_seen = date.today()
+                    plant_for_day.save()
+
+        return plant_for_day
+
 
 class PlantOfTheDay(models.Model):
     """A plant that can appear in Plant of the Day."""
@@ -27,6 +68,14 @@ class PlantOfTheDay(models.Model):
     # Date and time that this record was last updated, including it being
     # "touched" when rebuilding. Intended only to help maintain the list.
     last_updated = models.DateTimeField(auto_now=True)
+
+    # Define a custom model manager.
+    get_by_date = PlantOfTheDayManager()
+
+    # Keep the default model manager as well. Because a custom model
+    # manager was added, the default manager must be explicitly defined
+    # for it to be kept.
+    objects = models.Manager()
 
     class Meta:
         # Defining app_label changes the heading in the Admin successfully
