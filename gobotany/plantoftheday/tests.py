@@ -10,7 +10,7 @@ from django.test import TestCase
 from gobotany.core.models import (Family, Genus, PartnerSite, PartnerSpecies,
                                   Taxon)
 from gobotany.core.rebuild import rebuild_plant_of_the_day
-from gobotany.plantoftheday.models import PlantOfTheDay, PlantOfTheDayManager
+from gobotany.plantoftheday.models import PlantOfTheDay
 
 # Test data
 
