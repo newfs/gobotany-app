@@ -268,8 +268,8 @@ class PlantOfTheDayManagerTestCase(TestCase):
             p.last_seen = date.today() - timedelta(days=count)
             p.save()
         # Ask the manager for today's Plant of the Day. Verify that it
-        # is one of the species that haven't been seen yet, and that its
-        # last_seen date is now today.
+        # is one of the species that hasn't been seen yet, and that its
+        # last_seen date is now today's date.
         plant_for_today = PlantOfTheDay.get_by_date.for_day(date.today(),
                                                             PARTNER)
         self.assertTrue(plant_for_today)
@@ -294,7 +294,7 @@ class PlantOfTheDayManagerTestCase(TestCase):
 
         # Ask the manager for today's Plant of the Day. Verify that it
         # is the plant that had been previously seen longest ago, and
-        # that its last_seen date is now today.
+        # that its last_seen date is now today' date.
         plant_for_today = PlantOfTheDay.get_by_date.for_day(date.today(),
                                                             PARTNER)
         self.assertTrue(plant_for_today)
