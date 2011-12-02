@@ -369,6 +369,34 @@ class Importer(object):
 
         pile_map = db.map('core_pile', 'slug', 'id')
 
+        # Make sure some important columns are present.
+        # (This is not yet an exhaustive list of required column names.)
+        REQUIRED_COLUMNS = ['distribution', 'invasive_in_which_states',
+                            'prohibited_from_sale_states', 'habitat']
+        iterator = iter(open_csv(taxaf))
+        colnames = [x for x in iterator.next()]
+        for column in REQUIRED_COLUMNS:
+            if column not in colnames:
+                log.error('Required column missing from taxa.csv: %s', column)
+
+        # For columns where multiple delimited values are allowed, look for
+        # the expected delimiter. (It's been known to change in the Access
+        # exports, quietly resulting in bugs.)
+        MULTIVALUE_COLUMNS = ['distribution', 'invasive_in_which_states',
+                              'prohibited_from_sale_states', 'habitat']
+        EXPECTED_DELIMITER = '| '
+        for column in MULTIVALUE_COLUMNS:
+            delimiter_found = False
+            for row in open_csv(taxaf):
+                if row[column].find(EXPECTED_DELIMITER) > 0:
+                    delimiter_found = True
+                    break
+            if not delimiter_found:
+                log.error('Expected delimiter "%s" not found taxa.csv '
+                          'column: %s' % (EXPECTED_DELIMITER, column))
+
+        # Start import.
+
         for row in open_csv(taxaf):
 
             family_slug = slugify(row['family'])
