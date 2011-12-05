@@ -1,22 +1,26 @@
 from datetime import date
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+
+from gobotany.core.models import Taxon
 
 class PlantOfTheDayManager(models.Manager):
     """Custom model manager for getting Plant of the Day records by date."""
 
-    def for_day(self, day_date, partner_name):
-        plant_for_day = None
+    def _pick_candidate_plant(self, day_date, partner_name):
+        """Pick a candidate Plant of the Day for a given day and partner."""
+        candidate_plant = None
         plants = self.filter(last_seen=day_date,
                              partner_short_name=partner_name,
                              include=True)
         if len(plants) > 0:
-            plant_for_day = plants[0]
+            candidate_plant = plants[0]
         else:
             # A plant wasn't found for the requested date.
             if day_date > date.today():
                 # The requested date is in the future.
-                plant_for_day = None
+                candidate_plant = None
             else:
                 # Pick a new Plant of the Day for this date.
 
@@ -25,18 +29,43 @@ class PlantOfTheDayManager(models.Manager):
                                      partner_short_name=partner_name,
                                      include=True).order_by('?')
                 if len(plants) > 0:
-                    plant_for_day = plants[0]
+                    candidate_plant = plants[0]
                 else:
                     # If none are unseen, pick the one last seen longest ago.
                     plants = self.filter(last_seen__isnull=False,
                                          partner_short_name=partner_name,
                                          include=True).order_by('last_seen')
                     if len(plants) > 0:
-                        plant_for_day = plants[0]
+                        candidate_plant = plants[0]
 
-                if plant_for_day:
-                    plant_for_day.last_seen = date.today()
-                    plant_for_day.save()
+        return candidate_plant
+
+    def for_day(self, day_date, partner_name):
+        """Return the Plant of the Day for a given day and partner site."""
+
+        plant_for_day = None
+        taxon = None
+
+        while not taxon:
+            candidate_plant = self._pick_candidate_plant(
+                day_date, partner_name)
+            if candidate_plant:
+                # Make sure this plant still exists in the main database.
+                try:
+                    taxon = Taxon.objects.get(
+                        scientific_name=candidate_plant.scientific_name)
+                    plant_for_day = candidate_plant
+                except ObjectDoesNotExist:
+                    # Disable this plant in the Plant of the Day list,
+                    # so it cannot be picked again.
+                    candidate_plant.include = False
+                    candidate_plant.save()
+            else:
+                break
+
+        if plant_for_day:
+            plant_for_day.last_seen = date.today()
+            plant_for_day.save()
 
         return plant_for_day
 

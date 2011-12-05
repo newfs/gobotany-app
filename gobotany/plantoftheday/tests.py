@@ -294,7 +294,7 @@ class PlantOfTheDayManagerTestCase(TestCase):
 
         # Ask the manager for today's Plant of the Day. Verify that it
         # is the plant that had been previously seen longest ago, and
-        # that its last_seen date is now today' date.
+        # that its last_seen date is now today's date.
         plant_for_today = PlantOfTheDay.get_by_date.for_day(date.today(),
                                                             PARTNER)
         self.assertTrue(plant_for_today)
@@ -302,3 +302,55 @@ class PlantOfTheDayManagerTestCase(TestCase):
         self.assertTrue(len(specific_epithet) > 0)
         self.assertEqual(specific_epithet, plants[len(plants) - 1])
         self.assertEqual(date.today(), plant_for_today.last_seen)
+
+    def test_manager_excludes_plant_for_nonexistent_taxon(self):
+        # Ensure that if the manager encounters a candidate Plant of the
+        # Day that no longer exists as a Taxon in the database, that it
+        # excludes that candidate from the Plant of the Day list and
+        # then picks another plant.
+        PARTNER = 'montshire'
+
+        # With initial plant data imported (see setUp), build the Plant
+        # of the Day list for the first time.
+        initial_output = _run_rebuild_plant_of_the_day('SIMPLEKEY')
+
+        # Import a new set of plant data with some changes.
+        _import_plant_data(UPDATED_SIMPLEKEY_PLANTS,
+                           UPDATED_NON_SIMPLEKEY_PLANTS)
+        incorrect_plant = Taxon.objects.get(scientific_name='Acer ginala')
+        self.assertTrue(incorrect_plant)
+        incorrect_plant.delete()
+
+        # Now that plant data have been imported again, rebuild the
+        # Plant of the Day list.
+        rebuild_output = _run_rebuild_plant_of_the_day('SIMPLEKEY')
+
+        # Set some last_seen dates so the manager will pick the old,
+        # incorrect plant ('ginala') first.
+        seen_plants = ['ginnala', 'negundo', 'rubrum', 'saccharum']
+        for (count, epithet) in enumerate(seen_plants, start=1):
+            scientific_name = '%s %s' % (GENUS, epithet)
+            p = PlantOfTheDay.objects.filter(scientific_name=scientific_name,
+                                             partner_short_name=PARTNER,
+                                             include=True)[0]
+            p.last_seen = date.today() - timedelta(days=count)
+            p.save()
+
+        # Ask the manager for today's Plant of the Day. Verify that it
+        # is the plant that had been previously seen longest ago, and
+        # that its last_seen date is now today's date.
+        plant_for_today = PlantOfTheDay.get_by_date.for_day(date.today(),
+                                                            PARTNER)
+        self.assertTrue(plant_for_today)
+        specific_epithet = plant_for_today.scientific_name.split(' ')[1]
+        self.assertTrue(len(specific_epithet) > 0)
+        self.assertEqual(specific_epithet, seen_plants[len(seen_plants) - 1])
+        self.assertEqual(date.today(), plant_for_today.last_seen)
+
+        # Verify that the old, incorrect plant has now been excluded,
+        # and that its last_seen date has not been updated.
+        excluded_plant = PlantOfTheDay.objects.get(
+            scientific_name='Acer ginala')
+        self.assertTrue(excluded_plant)
+        self.assertEqual(False, excluded_plant.include)
+        self.assertEqual(None, excluded_plant.last_seen)
