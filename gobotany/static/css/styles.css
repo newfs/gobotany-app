@@ -294,10 +294,11 @@ div#potd {
 }
 #potd img {
 	float: left;
-	margin: 0 15px 0 0;	
+	margin: 0 15px 0 0;
 }
 #potd .details {
-	float: left;	
+    margin: 0 0 0 285px;
+    position: absolute;
 	width: 640px;
 }
 #potd h4 span.latin {
@@ -310,8 +311,9 @@ div#potd {
 	color: #807121;	
 }
 #potd a.learn-more {
-	float: right;
-	margin: -12px 0 0 0;	
+    position: absolute;
+    right: 0;
+    top: 79px;
 }
 
 /*////////////////////////////////*/
@@ -380,7 +382,7 @@ Breadcrumb Styles
 ----------******/
 #breadcrumb p {
     color: #807121;
-    line-height: 100%;
+    line-height: 120%;
     margin: 0 0 14px;
 }
 #breadcrumb span {

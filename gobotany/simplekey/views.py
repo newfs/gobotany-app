@@ -2,9 +2,11 @@
 import string
 import urllib2
 
+from datetime import date
 from itertools import groupby
 from operator import attrgetter, itemgetter
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
@@ -20,6 +22,7 @@ from gobotany.core.models import (
     PlantPreviewCharacter, Taxon,
     )
 from gobotany.core.partner import which_partner
+from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.models import Page, get_blurb, SearchSuggestion
 
 #
@@ -66,10 +69,29 @@ def index_view(request):
 
     home_page_images = HomePageImage.objects.order_by('order')
 
+    # Get or generate today's Plant of the Day.
+    plant_of_the_day = PlantOfTheDay.get_by_date.for_day(
+        date.today(), partner.short_name)
+    # Get the Taxon record of the Plant of the Day.
+    plant_of_the_day_taxon = None
+    try:
+        plant_of_the_day_taxon = Taxon.objects.get(
+            scientific_name=plant_of_the_day.scientific_name)
+    except ObjectDoesNotExist:
+        pass
+
+    plant_of_the_day_image = None
+    species_images = botany.species_images(plant_of_the_day_taxon)
+    if species_images:
+        plant_of_the_day_image = botany.species_images(
+            plant_of_the_day_taxon)[0]
+
     return render_to_response('simplekey/index.html', {
             'main_heading': main_heading,
             'blurb': blurb,
             'home_page_images': home_page_images,
+            'plant_of_the_day': plant_of_the_day_taxon,
+            'plant_of_the_day_image': plant_of_the_day_image,
             }, context_instance=RequestContext(request))
 
 def advanced_view(request):

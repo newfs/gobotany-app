@@ -6,11 +6,11 @@
         <meta charset="utf-8">
         <link rel="shortcut icon" href="/static/images/branding/favicon.png">
 
-        <!-- CSS goes here. -->
+        {# CSS goes here. #}
         {% include "_claro_css.html" %}
-        <!-- TODO: get rid of clarofix.css; integrate as many others as
-             possible. Ideally have just one file, styles.css, plus any
-             conditional stylesheets. -->
+        {# TODO: get rid of clarofix.css; integrate as many others as #}
+        {# possible. Ideally have just one file, styles.css, plus any #}
+        {# conditional stylesheets. #}
         <link rel="stylesheet" href="/static/css/clarofix.css">
         <link rel="stylesheet" href="/static/css/reset.css">
         <link rel="stylesheet" href="/static/css/basic.css">
@@ -27,11 +27,11 @@
             <link rel="stylesheet" href="/static/css/ie8.css">
         <![endif]-->
 
-        <!-- JS goes here. -->
+        {# JS goes here. #}
         {% include "simplekey/_script_constants.html" %}
 
-        <!-- This block is for adding any JS that *has* to come first,
-             such as SVGWeb. -->
+        {# This block is for adding any JS that *has* to come first, #}
+        {# such as SVGWeb. #}
         {% block js_top %}{% endblock %}
 
         <!-- HTML5 Fix for IE -->
@@ -41,7 +41,7 @@
         <![endif]-->
 
         <script src="/static/scripts/require.js"></script>
-        <!-- This block is for adding any page-specific JS. -->
+        {# This block is for adding any page-specific JS. #}
         <script>
             require.config({baseUrl: "/static/scripts"});
             {% block js_require %}{% endblock %}
@@ -50,9 +50,9 @@
 
     <body {% block body_attributes %}{% endblock %}>
 
-        <!-- Note: So far, header has to be added per-page, since the
-             home page puts the header in a special container div that
-             other pages do not use. (Maybe this can be eliminated?) -->
+        {# Note: So far, header has to be added per-page, since the  #}
+        {# home page puts the header in a special container div that #}
+        {# other pages do not use. (Maybe this can be eliminated?)   #}
 
         {% block body_content %}{% endblock %}
 

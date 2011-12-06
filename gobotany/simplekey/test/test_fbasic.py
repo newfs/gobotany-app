@@ -174,6 +174,30 @@ class BasicFunctionalTests(FunctionalTestCase):
         self.assertTrue(copyright.text.find(current_year) > -1)
 
 
+class PlantOfTheDayFunctionalTests(FunctionalTestCase):
+
+    def test_home_page_has_plant_of_the_day(self):
+        d = self.get('/')
+        potd_heading = self.css('#potd .details h4')
+        assert potd_heading[0]
+        assert potd_heading[0].text.startswith('Plant of the Day')
+
+    def test_plant_of_the_day_has_linked_image(self):
+        d = self.get('/')
+        linked_image = self.css('#potd a img')
+        assert linked_image
+
+    def test_plant_of_the_day_has_description_excerpt(self):
+        d = self.get('/')
+        description = self.css('#potd .details p')
+        assert description
+
+    def test_plant_of_the_day_has_learn_more_button(self):
+        d = self.get('/')
+        learn_more_button = self.css('#potd .details a.learn-more')
+        assert learn_more_button
+
+
 class FilterFunctionalTests(FunctionalTestCase):
 
     def wait_on_species(self, expected_count):
