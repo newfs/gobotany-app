@@ -85,7 +85,8 @@
                                 <span class="latin">{{ plant_of_the_day.scientific_name }}</span>
                                 <span class="english">{% for common_name in plant_of_the_day.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</span>                           
                             </h4>
-                            <p>{{ plant_of_the_day.factoid|truncatewords:"38" }}</p>
+                            <p>{{ plant_of_the_day.factoid|slice:":274"}}
+                            {% if plant_of_the_day.factoid|length > 274 %}...{% endif %}</p>
                             <a class="learn-more" href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/">Learn More</a>
                     {% else %}
                         <p>Error: Plant of the Day information

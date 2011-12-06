@@ -315,6 +315,10 @@ div#potd {
     right: 0;
     top: 79px;
 }
+#potd .details p {
+    height: 79px;
+    overflow: hidden;
+}
 
 /*////////////////////////////////*/
 /*Styles for App level pages 
