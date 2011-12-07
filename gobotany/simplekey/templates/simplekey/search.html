@@ -52,7 +52,9 @@
                                     <a href="{{ url_base }}/genera/{{ result.name|lower }}/"><img
                                         src="/static/images/icons/icon-genus.png"
                                         alt="" title="Genus page">
-{% search_highlight result.title with query as item_title excerpt 'False' %}{{ item_title }}</a>
+{% search_highlight result.title with query as item_title excerpt 'False' %}{{ item_title|split:' '|at_index:'0' }}
+                                        <i>{{ item_title|split:' '|slice:'1:'|safeseq|join:' ' }}</i>
+                                    </a>
                                     {% else %}
                                         {% if result.model_name == 'helppage' %}
                                         <a href="{{ url_base }}{{ result.object.url_path }}"><img
