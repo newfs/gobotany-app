@@ -49,17 +49,24 @@ def _italicize_word(word):
 
 @stringfilter
 def italicize_plant(value):
-    '''Italicize the latin parts of a plant scientific name.'''
+    """Italicize the latin parts of a plant scientific name."""
     words = value.split(' ')
-    # Assume the first two words are the genus and specific epithet.
-    words[0] = _italicize_word(words[0])
-    words[1] = _italicize_word(words[1])
-    # Look for more words to italicize, such as a variety or subspecies.
-    CONNECTING_TERMS = ['subsp.', 'ssp.', 'var.', 'subvar.', 'f.',
-                        'forma', 'subf.']
-    for i in range(2, len(words)):
-        if words[i] in CONNECTING_TERMS and words[i + 1]:
-            words[i + 1] = _italicize_word(words[i + 1])
+    if len(words) >= 2:
+        # Assume the first two words are the genus and specific epithet.
+        words[0] = _italicize_word(words[0])
+        words[1] = _italicize_word(words[1])
+        # Look for more words to italicize, such as a variety or subspecies.
+        CONNECTING_TERMS = ['subsp.', 'ssp.', 'var.', 'subvar.', 'f.',
+                            'forma', 'subf.']
+        for i in range(2, len(words)):
+            try:
+                if words[i] in CONNECTING_TERMS:
+                    # Check also for whether the next word is a
+                    # connecting term, such as with "L. f. var.".
+                    if words[i + 1] not in CONNECTING_TERMS:
+                        words[i + 1] = _italicize_word(words[i + 1])
+            except IndexError:
+                pass
     return ' '.join(words)
 
 
