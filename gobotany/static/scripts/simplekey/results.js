@@ -11,6 +11,7 @@ define([
         'order!jquery.tools.min',  // needed by jscrollpane
         'order!jquery.jscrollpane.min',  // sk/results.js
         'underscore-min',  // filters.js, etc
+        'sidebar',
         'global',  // sk/results.js, etc
         'simplekey/resources'  // now used in filters.js
     ], function() {

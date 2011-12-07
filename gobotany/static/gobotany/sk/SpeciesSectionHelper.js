@@ -1,11 +1,3 @@
-/* This code should pass when run through Closure Linter
-   (http://code.google.com/p/closure-linter/) and also JSLint
-   (http://www.jslint.com/). For JSLint, we enable the option "Tolerate many
-   var statements per function," and the globals declaration below. */
-/*jslint vars: true, maxerr: 50, indent: 4 */
-/*global window, document, clearTimeout, setTimeout, console, dojo, dijit,
-  gobotany, global_setSidebarHeight, Shadowbox */
-
 dojo.provide('gobotany.sk.SpeciesSectionHelper');
 
 dojo.require('dojo.hash');
@@ -423,7 +415,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         var table = dojo.create('table', {'innerHTML': html}, this.plant_list);
         this.plant_list.style.height = table.clientHeight;
 
-        global_setSidebarHeight();
+        sidebar_set_height();
 
         Shadowbox.setup('.plant-list table td.scientific-name a', 
                         {title: ''});
@@ -542,7 +534,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             properties: {height: {end: desty + HEIGHT}},
             onEnd: function() {
                 this.animation = null;
-                global_setSidebarHeight();
+                sidebar_set_height();
 
                 // Set up genus colors now that everyone has arrived!
                 var last_species_in_row = SPECIES_PER_ROW - 1;

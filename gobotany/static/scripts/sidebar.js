@@ -33,5 +33,9 @@ define(['jquery.tools.min'], function() {
         $('div#sidebar').css('height', new_height);
     };
 
+    $(document).ready(function() {
+        // Set the initial sidebar height.
+        sidebar_set_height();
+    });
 });
 

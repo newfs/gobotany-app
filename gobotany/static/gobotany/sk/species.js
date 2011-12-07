@@ -23,13 +23,13 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
             $(this).children('ul').show();
             $(this).children('h5').css('background-image',
                 'url("/static/images/icons/minus.png")');
-            global_setSidebarHeight(); // TODO: remove global.js
+            sidebar_set_height();
             return false;
         }, function() {
             $(this).children('ul').hide();
             $(this).children('h5').css('background-image',
                 'url("/static/images/icons/plus.png")');
-            global_setSidebarHeight(); // TODO: remove global.js
+            sidebar_set_height();
             return false;
         });                
     },
@@ -44,14 +44,14 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
             $(this).css('background-image',
                 'url("/static/images/icons/minus.png")');
             that.toggle_character_group();
-            global_setSidebarHeight(); // TODO: remove global.js
+            sidebar_set_height();
             return false;
         }, function() {
             $('ul.full-description').hide();
             $(this).text('Show Full Description');
             $(this).css('background-image',
                 'url("/static/images/icons/plus.png")');
-            global_setSidebarHeight(); // TODO: remove global.js
+            sidebar_set_height();
             return false;
         });
     },

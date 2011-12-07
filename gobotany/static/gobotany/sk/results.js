@@ -1,9 +1,5 @@
 // UI code for the Simple Key results/filter page.
 
-// Global declaration for JSLint (http://www.jslint.com/)
-/*global console, dojo, dojox, dijit, gobotany, document, window,
-  global_setSidebarHeight */
-
 dojo.provide('gobotany.sk.results');
 
 dojo.require('gobotany.sk.RulerSlider');
@@ -703,7 +699,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
                     // Add the new filters to the filters list.
                     var added = this.display_filters(new_filters, 0);
-                    global_setSidebarHeight();
+                    sidebar_set_height();
                     gobotany.utils.notify('More questions added');
                     gobotany.utils.animate_changed(added);
 
@@ -928,7 +924,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.visible_filter_short_name = filter.character_short_name;
         this.results_helper.save_filter_state();
 
-        global_setSidebarHeight();
+        sidebar_set_height();
     },
 
     /* When the working area is dismissed, we clean up and save state. */
