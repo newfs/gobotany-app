@@ -51,11 +51,34 @@ def _italicize_word(word):
 def italicize_plant(value):
     """Italicize the latin parts of a plant scientific name."""
     words = value.split(' ')
+
+    # Join any false word breaks resulting from HTML span tags added
+    # for search result highlighting.
+    fixed_words = []
+    for count, word in enumerate(words):
+        # If the word contains an opening HTML span tag, join it with
+        # the next word, which will contain the closing HTML span tag.
+        # (A pair of highlight span tags only surrounds a single word.)
+        if word.find('<span') > -1:
+            try:
+                new_word = word + ' ' + words[count + 1]
+            except IndexError:
+                pass
+        elif word.find('</span>') > -1:
+            # If it contains a closing HTML span tag, ignore it because
+            # it has already been joined with the opening tag.
+            continue
+        else:
+            new_word = word
+        fixed_words.append(new_word)
+    words = fixed_words
+
     if len(words) >= 2:
         # Assume the first two words are the genus and specific epithet.
         words[0] = _italicize_word(words[0])
         words[1] = _italicize_word(words[1])
-        # Look for more words to italicize, such as a variety or subspecies.
+        # Look for more words to italicize, such as epithets in a variety
+        # or subspecies name.
         CONNECTING_TERMS = ['subsp.', 'ssp.', 'var.', 'subvar.', 'f.',
                             'forma', 'subf.']
         for i in range(2, len(words)):

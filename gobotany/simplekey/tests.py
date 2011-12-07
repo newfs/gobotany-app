@@ -121,3 +121,33 @@ class SimpleKeyExtrasItalicizePlantTestCase(TestCase):
             italicize_plant('Saxifraga aizoon subf. surculosa'))
 
 
+    # Names that already have some HTML markup, such as for search
+    # results highlighting
+
+    def test_italicize_plant_with_highlight(self):
+        self.assertEqual(
+            ('<i><span class="highlighted">Aesculus</span></i> <i>glabra</i> '
+             '(Ohio buckeye)'),
+            italicize_plant('<span class="highlighted">Aesculus</span> '
+                            'glabra (Ohio buckeye)'))
+
+    def test_italicize_plant_with_highlight_multiple_words(self):
+        # The Haystack highlighter outputs multiple adjacent highlight
+        # words as each wrapped with their own span tags.
+        self.assertEqual(
+            ('<i><span class="highlighted">Aesculus</span></i> '
+             '<i><span class="highlighted">glabra</span></i> (Ohio buckeye)'),
+            italicize_plant(
+                '<span class="highlighted">Aesculus</span> '
+                '<span class="highlighted">glabra</span> (Ohio buckeye)'))
+
+    def test_italicize_plant_variety_with_highlight_and_authority(self):
+        self.assertEqual(
+            ('<i><span class="highlighted">Lycopodium</span></i> '
+             '<i><span class="highlighted">obscurum</span></i> '
+             'L. var. <i>hybridum</i> Farw.'),
+            italicize_plant(
+                '<span class="highlighted">Lycopodium</span> '
+                '<span class="highlighted">obscurum</span> '
+                'L. var. hybridum Farw.'))
+
