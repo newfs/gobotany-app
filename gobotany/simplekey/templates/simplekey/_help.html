@@ -1,11 +1,12 @@
-{% extends "simplekey/_base.html" %}
+{% extends "simplekey/_new_base.html" %}
 
 {% block title %}{% block pagetitle %}{% endblock %}: Help{% endblock %}
 
-{% block body %}
-    <body id="{% block body_id %}{% endblock %}"
-        class="claro app {% block body_class %}{% endblock %}">
-    
+{% block js_require %}
+    require(['simplekey/help']);
+{% endblock %}
+
+{% block body_content %}    
         {% include "simplekey/_header.html" %}
 
         <div class="content">
@@ -39,15 +40,5 @@
                 <div class="clearit"></div>
             </div>
         </div>
-
-        {% include "simplekey/_footer.html" %}
-
-        {% include "simplekey/_script_constants.html" %}
-
-        <script>
-            {% include "simplekey/partner_site_inline_js.html" %}
-        </script>
-        
-        {% block js_bottom %}{% endblock %}
     </body>
 {% endblock %}

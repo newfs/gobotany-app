@@ -2,8 +2,12 @@
 
 {% block pagetitle %}Advanced Map to Groups{% endblock %}
 
-{% block body_id %}advanced-map{% endblock %}
-{% block body_class %}advanced-map{% endblock %}
+{# Override the js_require block in the parent template. #}
+{% block js_require %}
+    require(['simplekey/help_map']);
+{% endblock %}
+
+{% block body_attributes %}id="advanced-map" class="claro app advanced-map"{% endblock %}
 
 {% block main_content %}     
 <div>
@@ -80,14 +84,4 @@
             explaining plant groups and subgroups</a>
     </p>
 </div>
-{% endblock %}
-
-{% block js_bottom %}
-  <script>
-      dojo.require('gobotany.sk.help');
-      dojo.addOnLoad(function() {
-          var helper = gobotany.sk.help.MapToGroupsHelper();
-          helper.setup();
-      });
-  </script>
 {% endblock %}

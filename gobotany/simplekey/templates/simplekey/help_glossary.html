@@ -2,8 +2,16 @@
 
 {% block pagetitle %}Glossary{% endblock %}
 
-{% block body_id %}glossary{% endblock %}
-{% block body_class %}glossary{% endblock %}
+{% block js_top %}
+    API_URL = '{% url api-base %}';
+{% endblock %}
+
+{# Override the js_require block in the parent template. #}
+{% block js_require %}
+    require(['simplekey/help_glossary']);
+{% endblock %}
+
+{% block body_attributes %}id="glossary" class="claro app glossary"{% endblock %}
 
 {% block main_content %}
     <h2>Glossary: {{ this_letter|upper }}</h2>
@@ -33,17 +41,4 @@
             <dd>{{ term.lay_definition|capfirst }}{% if not term.lay_definition|make_list|last == '.' %}.{% endif %}</dd>
         {% endfor %}
     </dl>
-{% endblock %}
-
-{% block js_bottom %}
-<script type="text/javascript">
-API_URL = '{% url api-base %}';
-dojo.require('gobotany.sk.glossary');
-dojo.addOnLoad(function() {
-    glossary_helper = gobotany.sk.glossary.GlossaryHelper();
-    glossary_helper.setup();
-
-    global_setSidebarHeight();
-});
-</script>
 {% endblock %}

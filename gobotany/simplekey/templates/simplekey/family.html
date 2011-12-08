@@ -1,84 +1,80 @@
-{% extends "simplekey/_base.html" %}
+{% extends "simplekey/_new_base.html" %}
 {% load thumbnail %}
 {% load simplekey_extras %}
 
 {% block title %}
-Family: {{ family.name }} {% if common_name %}({{ common_name }}){% endif %}{% endblock %}
+Family: {{ family.name }} {% if common_name %}({{ common_name }}){% endif %}
+{% endblock %}
 
-{% block body %}
-    <body id="family" class="claro app family">
-        {% include "simplekey/_header.html" %}
+{% block js_top %}
+    API_URL = '{% url api-base %}';
+    {# TODO: eventually move elsewhere #}
+    {% include "simplekey/partner_site_inline_js.html" %}
+{% endblock %}
 
-        <div class="content">
-            <div class="container">
-                <div id="main">
-                    <h2>Family: {{ family.name }}</h2>
-                    <h3>{% if common_name %}{{ common_name }}{% endif %}</h3>
-                    <p class="description">
-                    {% if item.description %}
-                        {{ item.description }}
-                    {% else %}
-                        TO DO: Add description in the database.
-                        This is a placeholder description.
-                        (Test glossary highlighting here with a few terms,
-                        such as abaxial, berry, creeping, fruit and
-                        perennial.)
-                    {% endif %}
-                    </p>
-                    
-                    <div class="pics">
-                        {% for drawing in family_drawings %}
-                            <div>
-                                <a rel="shadowbox"
-                                    href="{{ drawing.image.url }}">
-                                    <img class="map"
-                                        src="{{ drawing.image.thumbnail.absolute_url }}"
-                                        alt="{{ drawing.alt }}"></a>
-                                <p>{{ drawing.alt }}</p>
-                                <a class="enlarge" rel="shadowbox"
-                                    href="{{ drawing.image.url }}">
-                                    <img class="zoom"
-                                    src="/static/images/icons/zoom.png"
-                                    alt="enlarge"></a>
-                            </div>
-                        {% endfor %}
-                    </div>
+{% block js_require %}
+    define('args', [], {
+        family_slug: '{{ family.slug }}'
+    });
+    require(['simplekey/family']);
+{% endblock %}
 
-                    <h4>This Family&#8217;s Genera:</h4>
-                    <ul class="genera">
-                    {% for genus in family.genera.all %}
-                        <li><i><a href="{% url simplekey-genus genus.slug %}"
-                        >{{ genus.name }}</a></i></li>
+{% block body_attributes %}id="family" class="claro app family"{% endblock %}
+
+{% block body_content %}
+    {% include "simplekey/_header.html" %}
+
+    <div class="content">
+        <div class="container">
+            <div id="main">
+                <h2>Family: {{ family.name }}</h2>
+                <h3>{% if common_name %}{{ common_name }}{% endif %}</h3>
+                <p class="description">
+                {% if item.description %}
+                    {{ item.description }}
+                {% else %}
+                    TO DO: Add description in the database.
+                    This is a placeholder description.
+                    (Test glossary highlighting here with a few terms,
+                    such as abaxial, berry, creeping, fruit and
+                    perennial.)
+                {% endif %}
+                </p>
+                
+                <div class="pics">
+                    {% for drawing in family_drawings %}
+                        <div>
+                            <a rel="shadowbox"
+                                href="{{ drawing.image.url }}">
+                                <img class="map"
+                                    src="{{ drawing.image.thumbnail.absolute_url }}"
+                                    alt="{{ drawing.alt }}"></a>
+                            <p>{{ drawing.alt }}</p>
+                            <a class="enlarge" rel="shadowbox"
+                                href="{{ drawing.image.url }}">
+                                <img class="zoom"
+                                src="/static/images/icons/zoom.png"
+                                alt="enlarge"></a>
+                        </div>
                     {% endfor %}
-                    </ul>
-
-                    <a class="family-genera-btn" href="{% url simplekey-pile pilegroup.slug pile.slug %}#family={{ family.name }}">Key
-                        to this Family&#8217;s Genera</a>
-
                 </div>
-                <div id="sidebar" style="height: 634px;">
-                    {% include "simplekey/_sidebar_items.html" %}
-                </div>
-                <div class="clearit"></div>
+
+                <h4>This Family&#8217;s Genera:</h4>
+                <ul class="genera">
+                {% for genus in family.genera.all %}
+                    <li><i><a href="{% url simplekey-genus genus.slug %}"
+                    >{{ genus.name }}</a></i></li>
+                {% endfor %}
+                </ul>
+
+                <a class="family-genera-btn" href="{% url simplekey-pile pilegroup.slug pile.slug %}#family={{ family.name }}">Key
+                    to this Family&#8217;s Genera</a>
+
             </div>
+            <div id="sidebar" style="height: 634px;">
+                {% include "simplekey/_sidebar_items.html" %}
+            </div>
+            <div class="clearit"></div>
         </div>
-
-        {% include "simplekey/_footer.html" %}
-
-        {% include "simplekey/_script_constants.html" %}
-
-        <script>
-            {% include "simplekey/partner_site_inline_js.html" %}
-        </script>
-        
-        {% block js_bottom %}
-        <script>
-        API_URL = '{% url api-base %}';
-        dojo.require('gobotany.sk.family');
-        dojo.addOnLoad(function() {
-            gobotany.sk.family.init('{{ family.slug }}');
-        });
-        </script>
-        {% endblock %}
-    </body>
+    </div>
 {% endblock %}

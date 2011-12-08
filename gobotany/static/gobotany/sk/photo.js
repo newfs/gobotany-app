@@ -22,7 +22,7 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
 
         // Call a function to move the close link because an existing
         // onOpen handler with this function call is being overridden here.
-        global_moveShadowboxCloseLink();
+        shadowbox_close_move_button();
     },
 
     process_title_and_credit: function() {

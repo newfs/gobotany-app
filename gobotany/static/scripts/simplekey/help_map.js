@@ -8,18 +8,13 @@ require([
     'dojo_config',
     '/static/js/dojo/dojo.js',
     '/static/js/layers/sk.js',
-    'sidebar',
-    'simplekey/resources'
+    'sidebar'
 ], function() {
 
-    dojo.require('gobotany.sk.species');
+    dojo.require('gobotany.sk.help');
     dojo.addOnLoad(function() {
-        var helper = gobotany.sk.species.SpeciesPageHelper();
-        helper.setup();
-    });    
+      var helper = gobotany.sk.help.MapToGroupsHelper();
+      helper.setup();
+    });
 
 });
-
-require([
-    'activate_smooth_div_scroll'
-]);

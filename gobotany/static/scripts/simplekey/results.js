@@ -12,7 +12,6 @@ define([
         'order!jquery.jscrollpane.min',  // sk/results.js
         'underscore-min',  // filters.js, etc
         'sidebar',
-        'global',  // sk/results.js, etc
         'simplekey/resources'  // now used in filters.js
     ], function() {
         dojo.require('gobotany.sk.results');
@@ -27,18 +26,7 @@ define([
     require([
         'activate_image_gallery',
         'activate_search_suggest',
-        'shadowbox'
-    ], function() {
-        Shadowbox.init({
-            onOpen: function() {
-                // Move the Shadowbox close link.
-                var tb = document.getElementById('sb-wrapper');
-                if (tb) {
-                    var snc = document.getElementById('sb-nav-close');
-                    tb.appendChild(snc);
-                }
-            }
-        });
-
-    });
+        'shadowbox',
+        'shadowbox_close'
+    ]);
 });
