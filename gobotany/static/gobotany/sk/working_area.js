@@ -74,14 +74,19 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         dojo.query('input', this.div_map['']).attr('checked', true);
     },
 
-    dismiss: function() {
+    dismiss: function(event) {
+        if (event) {
+            event.preventDefault();
+        }
+
         dojo.disconnect(this.close_button_connection);
         dojo.disconnect(this.apply_button_connection);
         this.close_button_connection = null;
         this.apply_button_connection = null;
 
-        // Use jQuery to hide the working area with a slide effect.
         $(this.div).hide();
+
+        $('.option-list li').removeClass('active');
 
         this.on_dismiss(this.filter);
     },

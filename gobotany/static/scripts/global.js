@@ -3,18 +3,6 @@
 
 define(['jquery.tools.min'], function() {
 
-// (Note: This code is applied to all pages upon loading.)
-$(function() {
-    // Clicking Close button in working area
-    $('div.working-area a.close').click(function(){
-        $(this).parent().slideUp('fast', function(){
-            sidebar_set_height();
-        });
-        $('.option-list li').removeClass('active');
-        return false;
-    });
-});
-
 // Animate and position the Shadowbox close link.
 global_moveShadowboxCloseLink = function() {
     var cb = document.getElementById('sb-nav-close');
