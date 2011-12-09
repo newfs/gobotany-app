@@ -376,16 +376,10 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                         }
                     }
                     if (new_image) {
-                        // Replace either src or x-tmp-src depending on
-                        // whether the current image has already been
-                        // loaded.  This may result in a significant
-                        // performance impact on large result sets
-                        // which have already been scrolled before
-                        // changing image types.  The alternative would
-                        // be to unload previously loaded image pages.
-                        var src_var = dojo.attr(image, 'x-tmp-src') ?
-                            'x-tmp-src' : 'src';
-                        dojo.attr(image, src_var, new_image.thumb_url);
+                        // Set the image URL in a temporary attribute
+                        // that will be changed to the valid attribute
+                        // when the image is scrolled into view.
+                        dojo.attr(image, 'x-tmp-src', new_image.thumb_url);
 
                         dojo.attr(image, 'alt', new_image.title);
                         // Hide the empty box if it exists and make
