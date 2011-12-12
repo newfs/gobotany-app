@@ -288,13 +288,46 @@ class Pile(PileInfo):
     plant_preview_characters = models.ManyToManyField(Character,
         through='PlantPreviewCharacter', related_name='preview_characters')
     sample_species_images = models.ManyToManyField(
-        'ContentImage', related_name='sample_for_piles')
+        'ContentImage', related_name='sample_for_piles', through='PileImage')
+
+
+class PileImage(models.Model):
+    """Intermediary model used to govern the many-to-many relationship
+    between a Pile and its sample species images.
+    """
+    content_image = models.ForeignKey('ContentImage')
+    pile = models.ForeignKey('Pile')
+    order = models.IntegerField(null=True)
+
+    class Meta:
+        ordering = ['order']
+
+    def __unicode__(self):
+        return '%s (%s: order %s)' % (self.content_image.image.name,
+                                      self.pile.name, self.order)
 
 
 class PileGroup(PileInfo):
     """A group of Pile objects; the top level of basic-key navigation."""
     sample_species_images = models.ManyToManyField(
-        'ContentImage', related_name='sample_for_pilegroups')
+        'ContentImage', related_name='sample_for_pilegroups',
+        through='PileGroupImage')
+
+
+class PileGroupImage(models.Model):
+    """Intermediary model used to govern the many-to-many relationship
+    between a PileGroup and its sample species images.
+    """
+    content_image = models.ForeignKey('ContentImage')
+    pile_group = models.ForeignKey('PileGroup')
+    order = models.IntegerField(null=True)
+
+    class Meta:
+        ordering = ['order']
+
+    def __unicode__(self):
+        return '%s (%s: order %s)' % (self.content_image.image.name,
+                                      self.pile_group.name, self.order)
 
 
 class ImageType(models.Model):

@@ -1,11 +1,9 @@
 """Rebuild parts of our database that we generate rather than import."""
 
 import csv
-import re
 import sys
 import time
 
-from itertools import chain
 from StringIO import StringIO
 
 from django.core import management
@@ -138,16 +136,15 @@ def rebuild_default_filters(characters_csv):
             _add_best_filters(pile, COMMON_FILTER_CHARACTER_NAMES)
 
 
-def _remove_sample_pile_images():
-    """Remove any sample species images from each pile group and pile."""
+def _remove_sample_species_images(pile_or_group_model):
+    """Remove any sample species_images from all piles or all pile groups."""
     print '  Removing old images:'
-    for p in chain(models.PileGroup.objects.all(), models.Pile.objects.all()):
-        print '    ', (type(p).__name__ + ': ' + p.name),
-        old_images = p.sample_species_images.all()
+    for pile in pile_or_group_model.objects.all():
+        print '    %s ' % pile.name
+        old_images = pile.sample_species_images.all()
         if len(old_images):
             print '      removing %d old images' % len(old_images)
-            for image in old_images:
-                p.sample_species_images.remove(image)
+            pile.sample_species_images.clear()
         else:
             print '      none'
 
@@ -159,90 +156,126 @@ def _extend_image_list(image_list, pile):
     return image_list
 
 
-def _add_sample_species_image(image_instance, pile_or_group):
-    """Add a sample species image to a pile group or pile. In the case of a
-       pile, also add a sample species image to that pile's pile group, being
-       careful not to add any duplicates.
-    """
-    p = pile_or_group
-    p.sample_species_images.add(image_instance)
-    message = 'added'
+def rebuild_sample_pile_group_images(pilegroup_csv):
+    """Assign sample species images to each pile group."""
 
-    try:
-        if p.pilegroup:
-            # See whether this image has already been added to the pile group.
-            image_found = False
-            for existing_instance in p.pilegroup.sample_species_images.all():
-                if existing_instance.image.name == image_instance.image.name:
-                    image_found = True
-                    break
-            if not image_found:
-                p.pilegroup.sample_species_images.add(image_instance)
-                message += ', and added to pile group ' + p.pilegroup.name
-    except AttributeError:
-        pass
-    finally:
-        return message
-
-
-def rebuild_sample_pile_images(pile_or_group_csv_1, pile_or_group_csv_2):
-    """Assign sample species images to each pile group and pile."""
-    print 'Rebuild sample pile images:'
-
-    _remove_sample_pile_images()
+    print 'Rebuild sample pile group images:'
+    _remove_sample_species_images(models.PileGroup)
 
     print '  Adding images from CSV data:'
-    files = [pile_or_group_csv_1, pile_or_group_csv_2]
-    for f in files:
-        iterator = iter(CSVReader(f).read())
-        colnames = [x.lower() for x in iterator.next()]
+    iterator = iter(CSVReader(pilegroup_csv).read())
+    colnames = [c.lower() for c in iterator.next()]
+    for cols in iterator:
+        row = dict(zip(colnames, cols))
+        # Skip junk rows.
+        if row['name'].lower() in ['all', 'unused']:
+            continue
 
-        for cols in iterator:
-            row = dict(zip(colnames, cols))
-            # Skip junk rows.
-            if row['name'].lower() == 'all' or \
-               row['name'].lower() == 'unused':
+        # Build a list of all species images in the pile group.
+        image_list = []
+        pile_group = models.PileGroup.objects.get(name=row['name'])
+        print '    PileGroup:', pile_group.name
+        # Extend the image list with the list of all species images for
+        # all piles in the group.
+        for pile in pile_group.piles.all():
+            _extend_image_list(image_list, pile)
+
+        # Go through the image filenames specified in the CSV data and
+        # look for them in the image list. If found, add them to the
+        # pile group as sample species images.
+        image_filenames = row['image_filenames'].split(';')
+        for filename in image_filenames:
+            # Skip malformed filenames.
+            if not filename.lower().endswith('.jpg'):
                 continue
+            print '      filename:', filename,
+            found = False
+            message = ''
+            for image_instance in image_list:
+                if image_instance.image.name.find(filename) > -1:
+                    sample_species_image = models.PileGroupImage(
+                        content_image=image_instance,
+                        pile_group=pile_group)
+                    sample_species_image.save()
+                    # Set an ordering field, editable in the Admin.
+                    sample_species_image.order = sample_species_image.id
+                    sample_species_image.save()
+                    found = True
+                    break
+            if found:
+                print '- found, added to pile group'
+            else:
+                print '- not found'
 
-            # Build a list of all species images in the pile or pile group.
-            image_list = []
-            try:
-                # First check whether this row is a pile group.
-                p = models.PileGroup.objects.get(name=row['name'])
-                print '    PileGroup:', p.name
-                # If so, extend the image list with the list of all species
-                # images for all piles in the group.
-                for pile in p.piles.all():
-                    _extend_image_list(image_list, pile)
-            except ObjectDoesNotExist:
-                # If this row is not a pile group, it must be a pile.
-                p = models.Pile.objects.get(name=row['name'].title())
-                print '    Pile:', p.name
-                # Extend the image list with the list of all species images
-                # for the pile.
-                _extend_image_list(image_list, p)
 
-            # Go through the image filenames specified in the CSV data and
-            # look for them in the image list. If found, add them to the
-            # pile or pile group as a sample species image. For piles, also
-            # add any images to that pile's pile groups, if present.
-            image_filenames = row['image_filenames'].split(';')
-            for filename in image_filenames:
-                # Skip malformed filenames.
-                if not filename.lower().endswith('.jpg'):
-                    continue
-                print '      filename:', filename,
-                found = False
-                message = ''
-                for image_instance in image_list:
-                    if image_instance.image.name.find(filename) > -1:
-                        message = _add_sample_species_image(image_instance, p)
-                        found = True
-                        break
-                if found:
-                    print '- found, ' + message
-                else:
-                    print '- not found'
+def rebuild_sample_pile_images(pile_csv):
+    """Assign sample species images to each pile."""
+
+    print 'Rebuild sample pile images:'
+    _remove_sample_species_images(models.Pile)
+
+    print '  Adding images from CSV data:'
+    iterator = iter(CSVReader(pile_csv).read())
+    colnames = [c.lower() for c in iterator.next()]
+
+    for cols in iterator:
+        row = dict(zip(colnames, cols))
+        # Skip junk rows.
+        if row['name'].lower() in ['all', 'unused']:
+            continue
+
+        # Build a list of all species images in the pile.
+        image_list = []
+        p = models.Pile.objects.get(name=row['name'].title())
+        print '    Pile:', p.name
+        # Extend the image list with the list of all species images for
+        # the pile.
+        _extend_image_list(image_list, p)
+
+        # Go through the image filenames specified in the CSV data and
+        # look for them in the image list. If found, add them to the
+        # pile as sample species images.
+        image_filenames = row['image_filenames'].split(';')
+        for filename in image_filenames:
+            # Skip malformed filenames.
+            if not filename.lower().endswith('.jpg'):
+                continue
+            print '      filename:', filename,
+            found = False
+            message = '- not found'
+            for image_instance in image_list:
+                if image_instance.image.name.find(filename) > -1:
+                    found = True
+                    sample_species_image = models.PileImage(
+                        content_image=image_instance, pile=p)
+                    sample_species_image.save()
+                    # Set an ordering field, editable in the Admin.
+                    sample_species_image.order = sample_species_image.id
+                    sample_species_image.save()
+                    message = '- found, added to pile'
+                    # Add the image to the pile's group, if it hasn't
+                    # already been added there.
+                    try:
+                        if p.pilegroup:
+                            image_found = False
+                            for i in p.pilegroup.sample_species_images.all():
+                                if i.image.name == image_instance.image.name:
+                                    image_found = True
+                                    break
+                            if not image_found:
+                                sample_species_image = models.PileGroupImage(
+                                    content_image=image_instance,
+                                    pile_group=p.pilegroup)
+                                sample_species_image.save()
+                                sample_species_image.order = \
+                                    sample_species_image.id
+                                sample_species_image.save()
+                                message += ', and added to pile group ' + \
+                                    p.pilegroup.name
+                    except AttributeError:
+                        pass
+                    break
+            print message
 
 
 def rebuild_plant_of_the_day(include_plants='SIMPLEKEY'):   # or 'ALL'

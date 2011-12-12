@@ -382,16 +382,22 @@ class PilePlantPreviewCharactersInline(admin.StackedInline):
     form = PilePlantPreviewCharactersForm
     extra = 1
 
+class PileGroupImageInline(admin.StackedInline):
+    model = models.PileGroup.sample_species_images.through
+
 class PileAdminBase(GobotanyAdminBase):
-    inlines = [ContentImageInline]
+    inlines = [ContentImageInline, PileGroupImageInline]
     search_fields = ('name',)
     prepopulated_fields = {"slug": ("slug",)}
+
+class PileImageInline(admin.StackedInline):
+    model = models.Pile.sample_species_images.through
 
 class PileAdmin(PileAdminBase):
     filter_horizontal = ('species',)
     exclude = ('character_values',)
     inlines = [PileDefaultFiltersInline, ContentImageInline,
-               PilePlantPreviewCharactersInline]
+               PilePlantPreviewCharactersInline, PileImageInline]
 
 class CharacterAdmin(GobotanyAdminBase):
     list_display = ('short_name', 'character_group', 'ease_of_observability',)

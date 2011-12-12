@@ -29,46 +29,48 @@
 
                 <div class="clearit"></div>
 
-                {% for pile, url in piles_and_urls %}
-                <div class="list-item{% if forloop.last %} last{% endif %}">
-                    <div class="img-gallery">
-                        <div class="frame"></div>
-                        <div class="img-container">
-                            <div class="images">
-                                {% for i in pile.sample_species_images.all %}
-                                    {% with i.creator as photographer %}
-                                    <a href="{{ i.image.url }}"
-                                        rel="shadowbox[{{ pilegroup.slug }}]"
-                                        title="{% photo_title_credit i.image_type i.content_object.scientific_name photographer %}">
-                                        <img src="{{ i.image.extra_thumbnails.large.absolute_url }}"
-                                            alt="{% photo_title_credit i.image_type i.content_object.scientific_name photographer %}">
-                                    </a>
-                                    {% endwith %}
-                                {% endfor %}
+                {% for pile, pile_images, pile_url in piles %}
+                    <div class="list-item{% if forloop.last %} last{% endif %}">
+                        <div class="img-gallery">
+                            <div class="frame"></div>
+                            <div class="img-container">
+                                <div class="images">
+                                    {% for pile_image in pile_images %}
+                                        {% with pile_image.content_image as i %}
+                                            {% with i.creator as photographer %}
+                                            <a href="{{ i.image.url }}"
+                                                rel="shadowbox[{{ pilegroup.slug }}]"
+                                                title="{% photo_title_credit i.image_type i.content_object.scientific_name photographer %}">
+                                                <img src="{{ i.image.extra_thumbnails.large.absolute_url }}"
+                                                    alt="{% photo_title_credit i.image_type i.content_object.scientific_name photographer %}">
+                                            </a>
+                                            {% endwith %}
+                                        {% endwith %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="controls">
+                                <a class="prev">Prev</a>
+                                <a class="next">Next</a>
                             </div>
                         </div>
-                        <div class="controls">
-                            <a class="prev">Prev</a>
-                            <a class="next">Next</a>
+                        <div class="details">
+                            <h3>{{ pile.friendly_title|lower|capfirst }} <span>{{ pile.friendly_name|capfirst }}</span></h3>
+                            <p class="key-char">
+                                <span class="section-title">Key Characteristics</span>
+                                {{ pile.key_characteristics|removetags:"div ul li"|safe }}
+                            </p>
+                            <p class="exceptions">
+                                <span class="section-title">Exceptions</span>
+                                {{ pile.notable_exceptions|removetags:"div ul li"|safe }}
+                            </p>
+                            <p class="vid">
+                                <a href="http://www.youtube.com/v/{{ pile.youtube_id }}" rel="shadowbox;height=380;width=640;">View a short video about this plant group</a>
+                            </p>
+                            <a class="plant-in-subgroup" href="{{ pile_url }}">My plant is in this subgroup</a>
                         </div>
+                        <div class="clearit"></div>
                     </div>
-                    <div class="details">
-                        <h3>{{ pile.friendly_title|lower|capfirst }} <span>{{ pile.friendly_name|capfirst }}</span></h3>
-                        <p class="key-char">
-                            <span class="section-title">Key Characteristics</span>
-                            {{ pile.key_characteristics|removetags:"div ul li"|safe }}
-                        </p>
-                        <p class="exceptions">
-                            <span class="section-title">Exceptions</span>
-                            {{ pile.notable_exceptions|removetags:"div ul li"|safe }}
-                        </p>
-                        <p class="vid">
-                            <a href="http://www.youtube.com/v/{{ pile.youtube_id }}" rel="shadowbox;height=380;width=640;">View a short video about this plant group</a>
-                        </p>
-                        <a class="plant-in-subgroup" href="{{ url }}">My plant is in this subgroup</a>
-                    </div>
-                    <div class="clearit"></div>
-                </div>
                 {% endfor %}
 
                 {% include "simplekey/_plant_not_in_subgroup.html" %}

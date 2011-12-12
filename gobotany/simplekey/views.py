@@ -121,8 +121,9 @@ def page_view(request, number):
     return render_to_response('simplekey/page.html', {
             'partner_site': short_name,
             'page': page,
-            'pilegroups_and_urls': [
-                (pilegroup, get_simple_url(pilegroup))
+            'pilegroups': [
+                (pilegroup, pilegroup.pilegroupimage_set.all(),
+                 get_simple_url(pilegroup))
                 for pilegroup in page.pilegroups.order_by('id').all()
                 ]
             }, context_instance=RequestContext(request))
@@ -142,8 +143,8 @@ def pilegroup_view(request, pilegroup_slug):
             'partner_site': short_name,
             'parent_page': parent_page,
             'pilegroup': pilegroup,
-            'piles_and_urls': [
-                (pile, get_simple_url(pile))
+            'piles': [
+                (pile, pile.pileimage_set.all(), get_simple_url(pile))
                 for pile in pilegroup.piles.order_by('slug').all()
                 ]
             }, context_instance=RequestContext(request))
