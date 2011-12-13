@@ -1,3 +1,4 @@
+from django.conf.urls.defaults import patterns, url
 from autocomplete.views import autocomplete
 
 from gobotany.core import views
