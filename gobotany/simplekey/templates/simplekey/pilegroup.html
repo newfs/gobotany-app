@@ -22,7 +22,7 @@
             <div id="main">
                 <div id="breadcrumb">
                     <p>You are here: <a href="{% url simplekey %}">Simple Key</a>
-                    &gt; <span>{{ pilegroup.friendly_title }}</span></p>
+                    &gt; <span>{{ pilegroup.friendly_title|lower|capfirst }}</span></p>
                 </div>
                 
                 <h2>Is your plant in one of these subgroups?</h2>
