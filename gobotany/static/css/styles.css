@@ -945,6 +945,7 @@ Styles for results page introductory overlay
 }
 #intro-overlay .get-started {
     background-color: #631121;
+    cursor: pointer;
 }
 #intro-overlay h1 {
     font-weight: bold;
