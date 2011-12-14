@@ -14,7 +14,6 @@
 {% endblock %}
 
 {% block body_content %}
-
         {% include "simplekey/_header.html" %}
 
         <div class="content">
@@ -57,68 +56,65 @@
                                     </a>
                                     {% else %}
                                         {% if result.model_name == 'helppage' %}
+                                    <a href="{{ url_base }}{{ result.object.url_path }}"><img
+                                        src="/static/images/icons/icon-help.png"
+                                        alt="" title="Help page">
+{% search_highlight result.title with query as item_title excerpt 'False' %}{{ item_title }}</a>
+                                    {% else %}
+                                        {% if result.model_name == 'glossaryhelppage' %}
                                         <a href="{{ url_base }}{{ result.object.url_path }}"><img
-                                            src="/static/images/icons/icon-help.png"
-                                            alt="" title="Help page">
+                                            src="/static/images/icons/icon-glossary.png"
+                                            alt=""
+                                            title="Glossary page">
 {% search_highlight result.title with query as item_title excerpt 'False' %}{{ item_title }}</a>
                                         {% else %}
-                                            {% if result.model_name == 'glossaryhelppage' %}
-                                            <a href="{{ url_base }}{{ result.object.url_path }}"><img
-                                                src="/static/images/icons/icon-glossary.png"
-                                                alt=""
-                                                title="Glossary page">
-{% search_highlight result.title with query as item_title excerpt 'False' %}{{ item_title }}</a>
-                                            {% else %}
-                                                Error: unknown search
-                                                result model name.
-                                            {% endif %}
+                                            Error: unknown search
+                                            result model name.
                                         {% endif %}
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
-                            <p>
-                            {% search_highlight result.text with query as result_excerpt ignore_between '\n--\n' %}{{ result_excerpt }}
-                            </p>
-                        </li>
-                    {% endfor %}
-                    </ul>
-                    {% if page.object_list|length == 0 %}
-                        <p>Please adjust your search and try again.</p>
-                    {% else %}
-                        <div class="search-navigation">
-                            <p>Page:</p>
-                            <ul>
-                            {% if page.has_previous %}
-                                <li><a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">Previous</a></li>
-                            {% endif %}
+                        {% endif %}
+                        <p>
+                        {% search_highlight result.text with query as result_excerpt ignore_between '\n--\n' %}{{ result_excerpt }}
+                        </p>
+                    </li>
+                {% endfor %}
+                </ul>
+                {% if page.object_list|length == 0 %}
+                    <p>Please adjust your search and try again.</p>
+                {% else %}
+                    <div class="search-navigation">
+                        <p>Page:</p>
+                        <ul>
+                        {% if page.has_previous %}
+                            <li><a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">Previous</a></li>
+                        {% endif %}
 
-                            {# Set a maximum number of pages to display. #}
-                            {% for page_num in paginator.page_range|slice:':20' %}
-                                {% if page_num == page.number %}
-                                    <li>{{ page_num }}</li>
-                                {% else %}
-                                <li><a href="?q={{ query }}&amp;page={{ page_num }}">{{ page_num }}</a></li>
-                                {% endif %}
-                            {% endfor %}
-                            {# Display ellipsis if omitting some pages. #}
-                            {% if paginator.page_range|length > 20 %}
-                                <li>...</li>
+                        {# Set a maximum number of pages to display. #}
+                        {% for page_num in paginator.page_range|slice:':20' %}
+                            {% if page_num == page.number %}
+                                <li>{{ page_num }}</li>
+                            {% else %}
+                            <li><a href="?q={{ query }}&amp;page={{ page_num }}">{{ page_num }}</a></li>
                             {% endif %}
+                        {% endfor %}
+                        {# Display ellipsis if omitting some pages. #}
+                        {% if paginator.page_range|length > 20 %}
+                            <li>...</li>
+                        {% endif %}
 
-                            {% if page.has_next %}
-                                <li><a href="?q={{ query }}&amp;page={{ page.next_page_number }}">Next</a></li>
-                            {% endif %}
-                            </ul>
-                        </div>
-                    {% endif %}
-                </div>
-                <div id="sidebar" style="height: 515px;">
-                    {% include "simplekey/_sidebar_items.html" %}
-                </div>
-                <div class="clearit"></div>
+                        {% if page.has_next %}
+                            <li><a href="?q={{ query }}&amp;page={{ page.next_page_number }}">Next</a></li>
+                        {% endif %}
+                        </ul>
+                    </div>
+                {% endif %}
             </div>
+            <div id="sidebar" style="height: 515px;">
+                {% include "simplekey/_sidebar_items.html" %}
+            </div>
+            <div class="clearit"></div>
         </div>
-
-        {% include "simplekey/_footer.html" %}
-
+    </div>
 {% endblock %}
