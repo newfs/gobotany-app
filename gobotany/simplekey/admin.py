@@ -1,9 +1,6 @@
 from django.contrib import admin
 
-from gobotany.simplekey.models import Blurb, Page, Video, HelpPage
-
-class PageAdmin(admin.ModelAdmin):
-    filter_horizontal = ('pilegroups',)
+from gobotany.simplekey.models import Blurb, Video, HelpPage
 
 class BlurbsInline(admin.StackedInline):
     model = HelpPage.blurbs.through
@@ -19,5 +16,4 @@ class HelpPageAdmin(admin.ModelAdmin):
 
 admin.site.register(Blurb)
 admin.site.register(HelpPage, HelpPageAdmin)
-admin.site.register(Page, PageAdmin)
 admin.site.register(Video)

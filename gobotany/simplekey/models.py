@@ -1,5 +1,5 @@
 from django.db import models
-from gobotany.core.models import GlossaryTerm, PileGroup
+from gobotany.core.models import GlossaryTerm
 
 
 class Blurb(models.Model):
@@ -16,24 +16,6 @@ def get_blurb(name):
         return blurbs[0].text
     return ('[Provide text for this by creating a blurb in the Admin'
             ' interface named %r]' % (name,))
-
-
-class Page(models.Model):
-    number = models.IntegerField(unique=True)
-    title = models.CharField(max_length=50)
-    pilegroups = models.ManyToManyField(PileGroup, blank=True)
-    next_page = models.ForeignKey('Page', blank=True, null=True)
-
-    class Meta:
-        pass
-
-    def __unicode__(self):
-        return u'Page "%d"' % (self.number,)
-
-    @models.permalink
-    def get_absolute_url(self):
-        return ('gobotany.simplekey.views.page_view',
-                (), { 'number': str(self.number) })
 
 
 # Note: The motivation for creating the following classes was to organize

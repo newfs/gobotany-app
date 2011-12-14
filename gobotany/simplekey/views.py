@@ -23,7 +23,8 @@ from gobotany.core.models import (
     )
 from gobotany.core.partner import which_partner
 from gobotany.plantoftheday.models import PlantOfTheDay
-from gobotany.simplekey.models import Page, get_blurb, SearchSuggestion
+from gobotany.simplekey.groups_order import PILEGROUP_IDS, PILE_IDS
+from gobotany.simplekey.models import get_blurb, SearchSuggestion
 
 #
 
@@ -38,8 +39,6 @@ def per_partner_template(request, template_path):
 
 def get_simple_url(item):
     """Return the URL to where `item` lives in the Simple Key navigation."""
-    if isinstance(item, Page):
-        return item.get_absolute_url()
     if isinstance(item, PileGroup):
         return reverse('gobotany.simplekey.views.pilegroup_view',
                        kwargs={'pilegroup_slug': item.slug})
@@ -49,6 +48,22 @@ def get_simple_url(item):
                                'pile_slug': item.slug})
     else:
         raise ValueError('the Simple Key has no URL for %r' % (item,))
+
+
+def ordered_pilegroups():
+    """Return all pile groups in display order."""
+    return [
+        PileGroup.objects.get(pk=pilegroup_id) for pilegroup_id
+        in PILEGROUP_IDS]
+
+
+def ordered_piles(pilegroup):
+    """Return all piles for a pile group in display order."""
+    return [
+        pile for pile in
+        [Pile.objects.get(pk=pile_id) for pile_id in PILE_IDS]
+        if pile in pilegroup.piles.all()]
+
 
 def index_view(request):
     """View for the main page of the Go Botany site.
@@ -108,29 +123,18 @@ def _partner_short_name(partner):
         short_name = partner.short_name
     return short_name
 
-def page_view(request, number):
-    try:
-        number = int(number)
-    except ValueError:
-        raise Http404
-    page = get_object_or_404(Page, number=number)
-
+def simple_key_view(request):
     partner = which_partner(request)
     short_name = _partner_short_name(partner)
 
-    return render_to_response('simplekey/page.html', {
+    return render_to_response('simplekey/simple.html', {
             'partner_site': short_name,
-            'page': page,
             'pilegroups': [
                 (pilegroup, pilegroup.pilegroupimage_set.all(),
                  get_simple_url(pilegroup))
-                for pilegroup in page.pilegroups.order_by('id').all()
+                for pilegroup in ordered_pilegroups()
                 ]
             }, context_instance=RequestContext(request))
-
-def get_parent_page(pilegroup):
-    parent_page = Page.objects.get(pilegroups=pilegroup)
-    return parent_page
 
 def pilegroup_view(request, pilegroup_slug):
     pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
@@ -138,14 +142,12 @@ def pilegroup_view(request, pilegroup_slug):
     partner = which_partner(request)
     short_name = _partner_short_name(partner)
 
-    parent_page = get_parent_page(pilegroup)
     return render_to_response('simplekey/pilegroup.html', {
             'partner_site': short_name,
-            'parent_page': parent_page,
             'pilegroup': pilegroup,
             'piles': [
                 (pile, pile.pileimage_set.all(), get_simple_url(pile))
-                for pile in pilegroup.piles.order_by('slug').all()
+                for pile in ordered_piles(pilegroup)
                 ]
             }, context_instance=RequestContext(request))
 
@@ -412,8 +414,11 @@ def help_start_view(request):
             }, context_instance=RequestContext(request))
 
 def help_map_view(request):
+    pilegroups = [(pilegroup, ordered_piles(pilegroup))
+                  for pilegroup in ordered_pilegroups()]
+
     return render_to_response('simplekey/help_map.html', {
-            'page': Page.objects.order_by('number')[0],
+            'pilegroups': pilegroups
             }, context_instance=RequestContext(request))
 
 def help_glossary_view(request, letter):
@@ -459,12 +464,10 @@ def help_video_view(request):
     videos = [{'title': 'Getting Started',
                'youtube_id': get_blurb('getting_started_youtube_id')}]
 
-    pages = Page.objects.order_by('number').all()
-    for page in pages:
-        for pilegroup in page.pilegroups.all():
-            videos.append(_get_pilegroup_dict(pilegroup.name))
-            for pile in pilegroup.piles.all():
-                videos.append(_get_pile_dict(pile.name))
+    for pilegroup in ordered_pilegroups():
+        videos.append(_get_pilegroup_dict(pilegroup.name))
+        for pile in ordered_piles(pilegroup):
+            videos.append(_get_pile_dict(pile.name))
 
     return render_to_response('simplekey/help_video.html', {
            'videos': videos,

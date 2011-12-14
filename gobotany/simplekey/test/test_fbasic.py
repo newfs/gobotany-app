@@ -126,7 +126,7 @@ class BasicFunctionalTests(FunctionalTestCase):
         self.assertEqual(
             d.title, u'Go Botany: New England Wild Flower Society')
         e = d.find_element_by_link_text('Get Started')
-        self.assertTrue(e.get_attribute('href').endswith('/1/'))
+        self.assertTrue(e.get_attribute('href').endswith('/simple/'))
 
     def test_home_page_shows_one_banner_image(self):
         d = self.get('/')
@@ -136,7 +136,7 @@ class BasicFunctionalTests(FunctionalTestCase):
         self.assertEqual(len(images), 1)
 
     def test_groups_page(self):
-        d = self.get('/1/')
+        d = self.get('/simple/')
         h3 = self.css('h3')
         self.assertEqual(len(h3), 6)
         assert h3[0].text.startswith('Ferns')
@@ -913,7 +913,7 @@ class GlossarizerFunctionalTests(FunctionalTestCase):
     # terms highlighted and made into pop-up links.
 
     def test_glossarized_groups_page(self):
-        self.get('/1/')
+        self.get('/simple/')
         # Wait a bit for the glossarizer to finish.
         self.wait_on(5, self.css1, '.key-char .gloss')
         glossarized_key_characteristics = self.css('.key-char .gloss')

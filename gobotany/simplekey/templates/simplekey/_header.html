@@ -27,7 +27,7 @@
                         <a {% ifnotequal request.path "/" %}href="{% url simplekey-index %}"{% endifnotequal %}>Home</a>
                     </li>
                     <li class="plant-id">
-                        <a href="{% url simplekey-page 1 %}">Simple Key</a>
+                        <a href="{% url simplekey %}">Simple Key</a>
                     </li>
                     <li class="my-plants"><a href="{% if ':8000' in request.META.HTTP_HOST %}http://127.0.0.1:8001/{% else %}https://myplants.newfs.org/{% endif %}">MyPlants</a></li>
                     <li class="advanced-id">

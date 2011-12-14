@@ -4,11 +4,10 @@ from django.test.client import Client
 from gobotany.simplekey.templatetags.simplekey_extras import italicize_plant
 
 class SimpleTests(TestCase):
-    fixtures = ['page_data']
 
     def test_start_page(self):
         c = Client()
-        r = c.get('/1/')
+        r = c.get('/simple/')
         assert 'Which group best describes your plant?' in r.content
 
 

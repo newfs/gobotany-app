@@ -52,13 +52,19 @@ dojo.declare('gobotany.sk.help.MapToGroupsHelper', null, {
         );
 
         // Get the maximum left margin allowed for the subgroup set.
-        var EXTRA_PADDING = 13;  // Will subtract to ensure fit
+        var EXTRA_PADDING = 22;  // Will subtract to ensure fit
         var maximum_left_margin = last_group_right_x_position -
             first_group_left_x_position - subgroup_set_width - EXTRA_PADDING;
 
         // Calculate the left margin based on positions and widths.
         var left_margin = group_center_x_position -
             Math.floor(subgroup_set_width / 2) - first_group_left_x_position;
+
+        // If this is the last group, tweak the left margin for better
+        // right alignment.
+        if (group_number === this.groups.length - 1) {
+            maximum_left_margin += 11;
+        }
 
         // If the left margin is out of bounds, correct it.
         if (left_margin < 0) {
