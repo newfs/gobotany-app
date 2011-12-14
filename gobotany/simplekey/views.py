@@ -442,20 +442,19 @@ def help_glossary_view(request, letter):
 def help_glossary_redirect_view(request):
     return redirect('simplekey-help-glossary', letter='a')
 
-def _get_pilegroup_youtube_id(pilegroup_name):
-    pilegroup = PileGroup.objects.get(name=pilegroup_name)
-    return pilegroup.youtube_id
-
-def _get_pile_youtube_id(pile_name):
-    pile = Pile.objects.get(name=pile_name)
-    return pile.youtube_id
-
 def _get_pilegroup_dict(pilegroup_name):
-    return {'title': pilegroup_name,
-            'youtube_id': _get_pilegroup_youtube_id(pilegroup_name)}
+    pilegroup = PileGroup.objects.get(name=pilegroup_name)
+    return {
+        'title': pilegroup.friendly_title,
+        'youtube_id': pilegroup.youtube_id
+    }
 
 def _get_pile_dict(pile_name):
-    return {'title': pile_name, 'youtube_id': _get_pile_youtube_id(pile_name)}
+    pile = Pile.objects.get(name=pile_name)
+    return {
+        'title': pile.friendly_title,
+        'youtube_id': pile.youtube_id
+    }
 
 def help_video_view(request):
     # The Getting Started video is first, followed by videos for the pile
