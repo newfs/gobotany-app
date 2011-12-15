@@ -6,8 +6,9 @@ from gobotany.simplekey.groups_order import ORDERED_GROUPS
 from gobotany.simplekey.templatetags.simplekey_extras import italicize_plant
 from gobotany.simplekey.views import ordered_pilegroups, ordered_piles
 
-# Group and subgroup data in the order that it is created in the
-# database by the importer:
+# Following are data for groups and subgroups in the order that they are
+# created in the database by the importer. This will be tested against
+# the desired display order.
 
 GROUPS = [('Woody Plants', 'woody-plants'),
           ('Aquatic Plants', 'aquatic-plants'),
