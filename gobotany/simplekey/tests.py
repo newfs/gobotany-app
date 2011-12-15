@@ -1,9 +1,57 @@
 from django.test import TestCase
 from django.test.client import Client
 
+from gobotany.core.models import Pile, PileGroup
+from gobotany.simplekey.groups_order import ORDERED_GROUPS
 from gobotany.simplekey.templatetags.simplekey_extras import italicize_plant
+from gobotany.simplekey.views import ordered_pilegroups, ordered_piles
+
+# Group and subgroup data in the order that it is created in the
+# database by the importer:
+
+GROUPS = [('Woody Plants', 'woody-plants'),
+          ('Aquatic Plants', 'aquatic-plants'),
+          ('Graminoids', 'graminoids'),
+          ('Monocots', 'monocots'),
+          ('Ferns', 'ferns'),
+          ('Non-Monocots', 'non-monocots')]
+
+SUBGROUPS = [
+    ('woody-plants', 'Woody Angiosperms', 'woody-angiosperms'),
+    ('non-monocots', 'Remaining Non-Monocots', 'remaining-non-monocots'),
+    ('graminoids', 'Remaining Graminoids', 'remaining-graminoids'),
+    ('graminoids', 'Poaceae', 'poaceae'),
+    ('non-monocots', 'Composites', 'composites'),
+    ('graminoids', 'Carex', 'carex'),
+    ('monocots', 'Non-Orchid Monocots', 'non-orchid-monocots'),
+    ('woody-plants', 'Woody Gymnosperms', 'woody-gymnosperms'),
+    ('ferns', 'Equisetaceae', 'equisetaceae'),
+    ('monocots', 'Orchid Monocots', 'orchid-monocots'),
+    ('aquatic-plants', 'Thalloid Aquatic', 'thalloid-aquatic'),
+    ('ferns', 'Monilophytes', 'monilophytes'),
+    ('ferns', 'Lycophytes', 'lycophytes'),
+    ('aquatic-plants', 'Non-Thalloid Aquatic', 'non-thalloid-aquatic')
+]
+
+def create_groups():
+    """Create pile groups and then piles, putting piles into groups in the
+    same order that the importer does.
+    """
+    for name, slug in GROUPS:
+        pilegroup = PileGroup(name=name, slug=slug)
+        pilegroup.save()
+    for pilegroup_slug, name, pile_slug in SUBGROUPS:
+        pile = Pile(name=name, slug=pile_slug)
+        pile.save()
+        pilegroup = PileGroup.objects.get(slug=pilegroup_slug)
+        pilegroup.piles.add(pile)
+        pilegroup.save()
+
 
 class SimpleTests(TestCase):
+
+    def setUp(self):
+        create_groups()
 
     def test_start_page(self):
         c = Client()
@@ -149,4 +197,30 @@ class SimpleKeyExtrasItalicizePlantTestCase(TestCase):
                 '<span class="highlighted">Lycopodium</span> '
                 '<span class="highlighted">obscurum</span> '
                 'L. var. hybridum Farw.'))
+
+
+class SimpleKeyGroupsOrderTestCase(TestCase):
+    """Test the display order of plant groups and subgroups."""
+
+    def setUp(self):
+        create_groups()
+
+    def test_groups_count(self):
+        self.assertEqual(len(GROUPS), len(PileGroup.objects.all()))
+
+    def test_groups_order(self):
+        self.assertEqual(
+            [group.keys()[0] for group in ORDERED_GROUPS],
+            [pilegroup.slug for pilegroup in ordered_pilegroups()]
+        )
+
+    def test_subgroups_count(self):
+        self.assertEqual(len(SUBGROUPS), len(Pile.objects.all()))
+
+    def test_subgroups_order(self):
+        for group in ORDERED_GROUPS:
+            for pilegroup_slug, piles in group.items():
+                pilegroup = PileGroup.objects.get(slug=pilegroup_slug)
+                self.assertEqual(piles, [pile.slug for pile
+                                         in ordered_piles(pilegroup)])
 

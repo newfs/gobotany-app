@@ -3,7 +3,7 @@ import string
 import urllib2
 
 from datetime import date
-from itertools import groupby
+from itertools import chain, groupby
 from operator import attrgetter, itemgetter
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -23,7 +23,7 @@ from gobotany.core.models import (
     )
 from gobotany.core.partner import which_partner
 from gobotany.plantoftheday.models import PlantOfTheDay
-from gobotany.simplekey.groups_order import PILEGROUP_IDS, PILE_IDS
+from gobotany.simplekey.groups_order import ORDERED_GROUPS
 from gobotany.simplekey.models import get_blurb, SearchSuggestion
 
 #
@@ -52,17 +52,19 @@ def get_simple_url(item):
 
 def ordered_pilegroups():
     """Return all pile groups in display order."""
-    return [
-        PileGroup.objects.get(pk=pilegroup_id) for pilegroup_id
-        in PILEGROUP_IDS]
+    return [PileGroup.objects.get(slug=group.keys()[0])
+            for group in ORDERED_GROUPS]
 
 
 def ordered_piles(pilegroup):
     """Return all piles for a pile group in display order."""
     return [
-        pile for pile in
-        [Pile.objects.get(pk=pile_id) for pile_id in PILE_IDS]
-        if pile in pilegroup.piles.all()]
+        pile for pile in [
+            Pile.objects.get(slug=pile_slug) for pile_slug in
+            list(chain(*[group.values()[0] for group in ORDERED_GROUPS]))
+        ]
+        if pile in pilegroup.piles.all()
+    ]
 
 
 def index_view(request):
