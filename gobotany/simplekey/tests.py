@@ -109,6 +109,11 @@ class SimpleKeyExtrasItalicizePlantTestCase(TestCase):
             '<i>Solidago</i> <i>speciosa</i> subsp. <i>pallida</i>',
             italicize_plant('Solidago speciosa subsp. pallida'))
 
+    def test_italicize_plant_subspecies_2(self):
+        self.assertEqual(
+            '<i>Solidago</i> <i>speciosa</i> ssp. <i>pallida</i>',
+            italicize_plant('Solidago speciosa ssp. pallida'))
+
     def test_italicize_plant_subspecies_with_authority(self):
         self.assertEqual(
             ('<i>Cornus</i> <i>alba</i> L. ssp. <i>stolonifera</i> (Michx.) '
