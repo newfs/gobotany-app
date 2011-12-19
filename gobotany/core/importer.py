@@ -435,7 +435,7 @@ class Importer(object):
                 wetland_status_text=self._get_wetland_status(
                     row['wetland_status']),
                 north_american_native=(
-                    row['native_to_north_america_2'] == 'TRUE'),
+                    'yes' in row['native_to_north_america'].lower()),
                 distribution=row['distribution'],
                 invasive_in_states=row['invasive_in_which_states'],
                 sale_prohibited_in_states=row['prohibited_from_sale_states'],
