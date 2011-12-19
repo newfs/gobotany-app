@@ -105,7 +105,7 @@ THUMBNAIL_PROCESSORS = (
     'sorl.thumbnail.processors.filters',
 )
 
-APPEND_SLASH = False
+APPEND_SLASH = True
 ROOT_URLCONF = 'gobotany.urls'
 DEBUG = True
 
