@@ -928,27 +928,46 @@ Styles for results page introductory overlay
 #intro-overlay div {
     position: relative;
     margin-bottom: 10%;
-    border-radius: 1em;
-    -moz-border-radius: 1em;
+    border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
     box-shadow: 0px 5px 20px rgba(0, 0, 0, 100);
     -moz-box-shadow: 0px 5px 20px rgba(0, 0, 0, 100);
     -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 100);
     background-color: #f0f0c0;
-    padding: 0.5em 1.5em;
+    padding: 0.5em 1em;
     color: #fff;
 }
 #intro-overlay .number-of-species {
-    background-color: #526612;
+    background-color: #508e31;
 }
 #intro-overlay .number-of-questions {
-    background-color: #0c4636;
+    background-color: #508e31;
 }
 #intro-overlay .get-started {
-    background-color: #631121;
+    background-color: #dc9402;
+    border: 2px solid #dc9402;
     cursor: pointer;
+    letter-spacing: 3px;
+    text-shadow: 1px 1px 2px #dc9402;
+    text-transform: uppercase;
+    border-radius: 2em;
+    -moz-border-radius: 2em;
+
+    /* Gradient generated using the tool "Ultimate CSS Gradient Generator":
+     * www.colorzilla.com/gradient-editor
+     */
+    background: #dc9302; /* Old browsers */
+    background: -moz-linear-gradient(top,  #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dc9302), color-stop(50%,#f4bc53), color-stop(100%,#dc9302)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* IE10+ */
+    background: linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dc9302', endColorstr='#dc9302',GradientType=0 ); /* IE6-9 */
+
 }
+
 #intro-overlay h1 {
-    font-weight: bold;
     font-size: 140%;
 }
 
@@ -966,11 +985,12 @@ Styles for results page introductory overlay
 }
 #intro-overlay .number-of-species:before  {
     right: -5em;
-    border-color: transparent transparent transparent #526612;
+    border-color: transparent;
 }
 #intro-overlay .number-of-questions:before  {
-    left: -5em;
-    border-color: transparent #0c4636 transparent transparent;
+    left: -4.3em;
+    border-color: transparent #508e31 transparent transparent;
+    top: 0.6em;
 }
 
 /***
