@@ -237,11 +237,6 @@ class Importer(object):
                 # Most further status information applies only to plants that
                 # are present.
 
-                # TODO: remove this code (and the method parameter) once it's
-                # confirmed that native status doesn't need to be here.
-                #if is_north_american_native == False:
-                #    status.append('not native')
-
                 if conservation_status_code == 'E':
                     status.append('endangered')
                 elif conservation_status_code == 'T':
@@ -277,13 +272,11 @@ class Importer(object):
         DATA_DELIMITER = '|'
         STATES = ['CT', 'MA', 'ME', 'NH', 'RI', 'VT']
         states_status = dict().fromkeys(STATES, '')
-    
+
         distribution = []
         if taxon.distribution:
             distribution = taxon.distribution.replace(' ', '').split( \
                 DATA_DELIMITER)
-
-        #is_native = (taxon.north_american_native == True)
 
         invasive_states = []
         if taxon.invasive_in_states:
