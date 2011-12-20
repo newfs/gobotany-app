@@ -42,6 +42,12 @@ def start_logging():
     console.setFormatter(formatter)
     logging.getLogger('').addHandler(console)
 
+def open_universal_newline(filename):
+    """ Open a file for reading in universal newline mode in order to
+    handle newlines in files saved on Mac OS.
+    """
+    return open(filename, 'rU')
+
 def open_csv(filename, lower=True):
     """Our CSVs are produced on Windows and sometimes re-saved from a Mac.
 
@@ -52,7 +58,7 @@ def open_csv(filename, lower=True):
 
     """
     w = 'Windows-1252'
-    with open(filename, 'r') as f:
+    with open_universal_newline(filename) as f:
         r = csv.reader(f)
         names = [ name.decode(w) for name in r.next() ]
         if lower:
@@ -66,9 +72,7 @@ class CSVReader(object):
         self.filename = filename
 
     def read(self):
-        # Open in universal newline mode in order to deal with newlines in
-        # CSV files saved on Mac OS.
-        with open(self.filename, 'rU') as f:
+        with open_universal_newline(self.filename) as f:
             r = csv.reader(f, dialect=csv.excel, delimiter=',')
             for row in r:
                 yield [c.decode('Windows-1252') for c in row]
