@@ -536,7 +536,7 @@ class Taxon(models.Model):
     images = generic.GenericRelation(ContentImage)
     habitat = models.CharField(max_length=300, blank=True)
     habitat_general = models.CharField(max_length=300, blank=True)
-    factoid = models.CharField(max_length=900, blank=True)
+    factoid = models.CharField(max_length=1000, blank=True)
     wetland_status_code = models.CharField(max_length=20, blank=True)
     wetland_status_text = models.CharField(max_length=150, blank=True)
     north_american_native = models.BooleanField(default=False)
