@@ -88,6 +88,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'gobotany.middleware.SmartAppendSlashMiddleware',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
         "django.contrib.auth.context_processors.auth",
@@ -105,7 +106,9 @@ THUMBNAIL_PROCESSORS = (
     'sorl.thumbnail.processors.filters',
 )
 
-APPEND_SLASH = True
+APPEND_SLASH = False
+SMART_APPEND_SLASH = True
+
 ROOT_URLCONF = 'gobotany.urls'
 DEBUG = True
 

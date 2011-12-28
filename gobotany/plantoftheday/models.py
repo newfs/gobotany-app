@@ -1,3 +1,5 @@
+import random
+
 from datetime import date
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -11,6 +13,7 @@ class PlantOfTheDayManager(models.Manager):
     def _pick_candidate_plant(self, day_date, partner_name):
         """Pick a candidate Plant of the Day for a given day and partner."""
         candidate_plant = None
+        # First check to see if there is already a plant for this day.
         plants = self.filter(last_seen=day_date,
                              partner_short_name=partner_name,
                              include=True)
@@ -27,9 +30,10 @@ class PlantOfTheDayManager(models.Manager):
                 # Try picking a yet-unseen plant at random.
                 plants = self.filter(last_seen__isnull=True,
                                      partner_short_name=partner_name,
-                                     include=True).order_by('?')
+                                     include=True)
                 if len(plants) > 0:
-                    candidate_plant = plants[0]
+                    index = random.randrange(0, len(plants))
+                    candidate_plant = plants[index]
                 else:
                     # If none are unseen, pick the one last seen longest ago.
                     plants = self.filter(last_seen__isnull=False,
@@ -64,7 +68,7 @@ class PlantOfTheDayManager(models.Manager):
                 break
 
         if plant_for_day:
-            plant_for_day.last_seen = date.today()
+            plant_for_day.last_seen = day_date
             plant_for_day.save()
 
         return plant_for_day
@@ -124,4 +128,5 @@ class PlantOfTheDay(models.Model):
         verbose_name_plural = 'Plants of the Day'
 
     def __unicode__(self):
-        return '%s (%s)' % (self.scientific_name, self.partner_short_name)
+        return '%s (%s) %s' % (self.scientific_name, self.partner_short_name,
+                               self.last_seen)

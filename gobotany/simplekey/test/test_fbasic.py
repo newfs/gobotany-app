@@ -197,6 +197,13 @@ class PlantOfTheDayFunctionalTests(FunctionalTestCase):
         learn_more_button = self.css('#potd .details a.learn-more')
         assert learn_more_button
 
+    def test_plant_of_the_day_feed_exists(self):
+        f1 = self.get('/plantoftheday/')
+        assert f1
+        f2 = self.get('/plantoftheday/atom.xml')
+        assert f2
+        assert f1 == f2
+
 
 class FilterFunctionalTests(FunctionalTestCase):
 
