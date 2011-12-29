@@ -1198,7 +1198,7 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
 
 
 #sidebar .loading {
-    background: url(/static/images/icons/wait-sm.gif) no-repeat scroll 0 0 transparent;
+    background: url(/static/images/icons/preloaders-dot-net-sm.gif) no-repeat scroll 0 0 transparent;
     font-weight: bold;
     margin: 12px;
     padding: 0 0 0 20px;
@@ -1404,6 +1404,12 @@ div.working-area .actions {
 }
 
 /* Results list view */
+.plant-list .wait {
+    background: url(/static/images/icons/preloaders-dot-net-lg.gif) no-repeat scroll center center transparent;
+    height: 350px;
+    margin: auto;
+}
+
 .plant-list table {
     width: 100%;
 }

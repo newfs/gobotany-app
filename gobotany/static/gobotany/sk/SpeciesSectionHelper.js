@@ -579,6 +579,10 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             dojo.removeClass(show_menu, 'hidden');
         }
 
+        // Remove the "wait" spinner.
+        dojo.query('.wait', this.plant_list).orphan();
+
+        // Display the results in the appropriate tab view.
         if (this.current_view === this.LIST_VIEW) {
             this.display_in_list_view(this.query_results);
         }
