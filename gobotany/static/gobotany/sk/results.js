@@ -139,6 +139,21 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         // Back button undo events for modern browsers.
         dojo.connect(document.body, 'onhashchange', this, this.handle_undo,
                      true);
+
+        // Set up a handler to detect an Esc keypress, which will close
+        // the filter working area if it is open.
+        dojo.connect(document.body, 'onkeypress',
+            dojo.hitch(this, this.handle_keys));
+    },
+
+    handle_keys: function(e) {
+        switch (e.charOrCode) {
+            case dojo.keys.ESCAPE:
+                if (this.filter_section.working_area) {
+                    this.filter_section.working_area.dismiss();
+                }
+                break;
+        }
     },
 
     // Called each time a filter is finished loading; when the last
