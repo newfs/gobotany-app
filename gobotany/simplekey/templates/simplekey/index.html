@@ -5,6 +5,12 @@
 {% block title %}Go Botany: New England Wild Flower Society{% endblock %}
 {% block title_suffix %}{% endblock %}
 
+{% block more_meta_link %}
+    <link rel="alternate" type="application/atom+xml"
+        title="Atom feed: Plant of the Day"
+        href="http://{{ request.META.HTTP_HOST }}/plantoftheday/atom.xml">
+{% endblock %}
+
 {% block body_attributes %}id="home" class="claro top-level"{% endblock %}
 
 {% block js_require %}
@@ -73,14 +79,18 @@
 
                 <div id="potd">
                     {% if plant_of_the_day %}
-                        {% thumbnail plant_of_the_day_image.image "270x111" crop="center" as im %}
+                        {% thumbnail plant_of_the_day_image.image "270x131" crop="center" as im %}
                         <a href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/"
                             title="Learn more about {{ plant_of_the_day.scientific_name }}">
                             <img src="{{ im.absolute_url }}"
                                 alt="{{ plant_of_the_day.scientific_name }}"
-                                height="111" width="270">
+                                height="131" width="270">
                         </a>
                         <div class="details">
+                            <a class="subscribe"
+                                href="http://{{ request.META.HTTP_HOST }}/plantoftheday/atom.xml"
+                                title="Subscribe to the Plant of the Day news feed"
+                                >Subscribe</a>
                             <h4>Plant of the Day:
                                 <span class="latin">{{ plant_of_the_day.scientific_name }}</span>
                                 <span class="english">{% for common_name in plant_of_the_day.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</span>                           

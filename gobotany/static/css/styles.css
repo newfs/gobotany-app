@@ -282,6 +282,21 @@ a.learn-more:hover {
 a.learn-more:active {
 	background-position: 0 -64px;	
 }
+a.subscribe {
+    cursor: pointer;
+    display: block;
+    width: 87px;
+    height: 16px;
+    background: url(/static/images/layout/subscribe.png) 0 0 no-repeat;
+    text-indent: -9000px;
+}
+a.subscribe:hover {
+    background-position: 0 -16px;
+}
+a.subscribe:active {
+    background-position: 0 -32px;
+}
+
 /*Plant of the Day Module*/
 div#potd {
 	padding: 10px;
@@ -301,6 +316,9 @@ div#potd {
     position: absolute;
 	width: 640px;
 }
+#potd h4 {
+    padding-top: 4px;
+}
 #potd h4 span.latin {
 	font-size: 14px;
 	text-transform: uppercase;	
@@ -313,7 +331,7 @@ div#potd {
 #potd a.learn-more {
     position: absolute;
     right: 0;
-    top: 79px;
+    top: 102px;
 }
 #potd .details p {
     height: 79px;
