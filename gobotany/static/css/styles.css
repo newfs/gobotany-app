@@ -1035,7 +1035,7 @@ Styles for results page
 .get-more {
     font-size: 11px;
     line-height: 16px;
-    margin: 0 4px 20px;
+    margin: 0 0 20px;
     text-align: center;
 }
 .get-more a {
@@ -1069,7 +1069,9 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     z-index: 200;
     background: #fff;
     border: 1px solid #c3d941;
+    margin-left: -40px;
     padding: 10px 15px;
+    width: 730px;
 
     -moz-box-shadow: black 1px 1px 5px 0;
     -webkit-box-shadow: black 1px 1px 5px 0;
@@ -1078,7 +1080,7 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
 }
 .working-area img.arrow {
     display: block;
-    left: -12px;
+    left: -15px;
     position: absolute;
     top: 18px;
 }
@@ -1127,14 +1129,11 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     width: 16px;
 }
 .working-area h4 {
-    color: #807121;
+    color: #000;
     display: none;
     line-height: 130%;
-    margin: 0 0 6px;
+    margin: 6px 0;
     width: 650px;
-}
-.working-area h4 .title {
-    font-weight: bold;
 }
 .working-area .intro-message h4 {
     display: block;
@@ -1184,7 +1183,7 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     background: url(/static/images/layout/apply-selection.png) no-repeat 0 0 transparent;
     display: inline-block;
     height: 41px;
-    margin: 0;
+    margin: 4px 0 0;
     text-align: left;
     text-indent: -9000px;
     width: 244px;
@@ -1333,6 +1332,7 @@ div.working-area .info {
 
 div.working-area .info .hint {
     font-size: 12px;
+    margin: 6px 0;
 }
 
 div.working-area .info .hint p {

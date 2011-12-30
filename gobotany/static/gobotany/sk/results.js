@@ -779,7 +779,12 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         });
         dojo.connect(filter_li, 'onclick', this, function(event) {
             dojo.stopEvent(event);
-            var y = $(event.target).offset().top - 20;
+            var $target = $(event.target);
+            // Because the click event may have happened on sub-elements
+            // of the list element, get the list element itself for
+            // consistent positioning.
+            $target = $target.closest('li');
+            var y = $target.offset().top - 15;
             this.show_filter_working(filter, y);
 
             // Set the just-selected filter as active at left.
