@@ -10,6 +10,21 @@ from sorl.thumbnail.fields import ImageWithThumbnailsField
 
 from tinymce import models as tinymce_models
 
+# Monkeypatch PIL because recent versions care about whether they are
+# asked to crop to floating-point dimensions (which the ancient version
+# of sorl-thumbnail we use asks for):
+
+import PIL.Image
+from PIL.Image import _ImageCrop
+
+class fixed_ImageCrop(_ImageCrop):
+    def __init__(self, im, box):
+        box = tuple(int(n) for n in box)
+        _ImageCrop.__init__(self, im, box)
+
+PIL.Image._ImageCrop = fixed_ImageCrop
+
+# And, back to our regularly-scheduled models:
 
 class Parameter(models.Model):
     """An admin-configurable value."""
