@@ -1,9 +1,10 @@
-define([
+ define([
     'args'
 ], function(args) {
 
     require([
-        'simplekey/results_overlay'
+        'simplekey/results_overlay',
+        'simplekey/results_photo_menu'
     ]);
 
     require([

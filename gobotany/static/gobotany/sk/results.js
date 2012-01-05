@@ -44,7 +44,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         // filter manager should re-run its query and notify everyone.
         dojo.subscribe('/sk/filter/change', this.filter_manager,
                        'perform_query');
-   },
+    },
 
     setup: function() {
         // summary:
@@ -418,12 +418,18 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
     // A subscriber for results_loaded
     populate_image_types: function(message) {
+        // Get an object that tells which image type should be the
+        // default selected menu item, and any image types to omit.
+        var menu_config = results_photo_menu[this.pile_slug];
+
         var results = message.query_results;
         var select_box = dijit.byId('image-type-selector');
-        // clear the select
+
+        // Clear any existing menu items.
         select_box.options.length = 0;
-        // image types depend on the pile, we get the allowed values from
-        // the result set for now
+
+        // Image types depend on the pile. Get the allowed values from
+        // the result set.
         var image_types = [];
         var image_type;
         var i;
@@ -437,27 +443,16 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 }
             }
         }
-        // sort lexicographically
+
+        // Sort image types alphabetically and add them as menu items.
         image_types.sort();
         for (i = 0; i < image_types.length; i++) {
             image_type = image_types[i];
             select_box.addOption({value: image_type,
                 label: image_type});
-            // "Plant form" images are selected by default
-            if (image_type === 'plant form')
-                select_box.set('value', 'plant form');
-        }
-
-        // Set the last shown image type if possible.
-        var hash_object = dojo.queryToObject(dojo.hash());
-        if (hash_object._show !== undefined &&
-            hash_object._show && hash_object._show !== '') {
-
-            // Only set the image type if it's a currently valid one.
-            var types_regex = RegExp('^(' + image_types.join('|') + ')$');
-            if (types_regex.test(hash_object._show)) {
-                dijit.byId('image-type-selector').attr('value',
-                    hash_object._show);
+            // Set the default menu selection.
+            if (image_type === menu_config['default']) {
+                select_box.set('value', menu_config['default']);
             }
         }
     }
