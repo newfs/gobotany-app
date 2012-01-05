@@ -1,4 +1,4 @@
-/* Configuration information for results page photo menu items, by pile. */
+/* Configuration for Simple Key results page "Show photos of" menu items. */
 var results_photo_menu = {
     "woody-angiosperms": {
         "default": "plant form",

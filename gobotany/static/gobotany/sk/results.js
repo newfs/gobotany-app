@@ -438,8 +438,11 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             var j;
             for (j = 0; j < images.length; j++) {
                 image_type = images[j].type;
-                if (image_types.indexOf(image_type) === -1) {
-                    image_types.push(image_type);
+                // Add the image type unless it should be omitted.
+                if (_.include(menu_config['omit'], image_type) === false) {
+                    if (image_types.indexOf(image_type) === -1) {
+                        image_types.push(image_type);
+                    }
                 }
             }
         }

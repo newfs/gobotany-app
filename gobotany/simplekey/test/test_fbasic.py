@@ -139,31 +139,32 @@ class BasicFunctionalTests(FunctionalTestCase):
         d = self.get('/simple/')
         h3 = self.css('h3')
         self.assertEqual(len(h3), 6)
-        assert h3[0].text.startswith('Ferns')
-        assert h3[1].text.startswith('Woody plants')
+        assert h3[0].text.startswith('Woody plants')
+        assert h3[1].text.startswith('Aquatic plants')
         assert h3[2].text.startswith('Grass-like plants')
-        assert h3[3].text.startswith('Aquatic plants')
-        assert h3[4].text.startswith('Orchids and other monocots')
+        assert h3[3].text.startswith('Orchids and related plants')
+        assert h3[4].text.startswith('Ferns')
         assert h3[5].text.startswith('All other flowering non-woody plants')
 
         # Do group links get constructed correctly?
         e = d.find_element_by_link_text('My plant is in this group')
-        self.assertTrue(e.get_attribute('href').endswith('/ferns/'))
+        self.assertTrue(e.get_attribute('href').endswith('/woody-plants/'))
 
     def test_subgroups_page(self):
         d = self.get('/ferns/')
         q = self.css('h3')
         self.assertEqual(len(q), 3)
-        assert q[0].text.startswith('Horsetails and ')
-        assert q[1].text.startswith('Clubmosses and ')
-        assert q[2].text.startswith('True ferns and ')
+        assert q[0].text.startswith('True ferns and moonworts')
+        assert q[1].text.startswith(
+            'Clubmosses and relatives, plus quillworts')
+        assert q[2].text.startswith('Horsetails and scouring rushes')
         q = d.find_elements_by_link_text('My plant is in this subgroup')
         self.assertTrue(q[0].get_attribute('href').endswith(
-            '/ferns/equisetaceae/'))
+            '/ferns/monilophytes/'))
         self.assertTrue(q[1].get_attribute('href').endswith(
             '/ferns/lycophytes/'))
         self.assertTrue(q[2].get_attribute('href').endswith(
-            '/ferns/monilophytes/'))
+            '/ferns/equisetaceae/'))
 
     def test_copyright_contains_current_year(self):
         # If this test fails, perhaps the template containing the
@@ -399,23 +400,45 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.css1('.apply-btn').click()
         self.wait_on_species(3)
 
-    def OFF_test_thumbnail_presentation(self):
+    def test_thumbnail_presentation(self):
 
-        # Currently turned OFF because thumbnail images are no longer
-        # loading on Brandon's dev machine when he runs an import - is
-        # this because he's running the wrong data import ("import-data"
-        # vs "import-sample"), and only one of them loads images without
-        # having the huge image database?
-
-        # Are different images displayed when you select "Show:" choices?
+        # Are different images shown upon selecting "Show photos of" choices?
 
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
-        e = self.css1('.plant-list img')
+        self.css1('#intro-overlay .get-started').click()
+        e = self.css1('.plant-list div a div.img-container img')
         assert '-ha-' in e.get_attribute('src')
         self.css1('#results-display .dijitSelectLabel').click()
         self.css1('#dijit_MenuItem_2_text').click()  # 'shoots'
         assert '-sh-' in e.get_attribute('src')
+
+    def test_show_photos_menu_default_item(self):
+
+        # Verify that "plant form" is the default menu item for lycophytes.
+
+        self.get('/ferns/lycophytes/')
+        self.wait_on_species(18)
+        self.css1('#intro-overlay .get-started').click()
+        e = self.css1('.plant-list div a div.img-container img')
+        assert '-ha-' in e.get_attribute('src')   # 'ha' = 'plant form' image
+        default_item = self.css1('#results-display .dijitSelectLabel').text
+        self.assertEqual('plant form', default_item)
+
+    def test_show_photos_menu_omitted_items(self):
+
+        # Verify that certain menu items are omitted from the "Show
+        # Photos of" menu for lycophytes.
+
+        OMITTED_ITEMS = ['flowers and fruits', 'inflorescences', 'leaves',
+                         'stems']
+        self.get('/ferns/lycophytes/')
+        self.wait_on_species(18)
+        self.css1('#intro-overlay .get-started').click()
+        self.css1('#results-display .dijitSelectLabel').click()
+        menu_items = self.css('#image-type-selector_menu .dijitMenuItemLabel')
+        for menu_item in menu_items:
+            self.assertTrue(menu_item.text not in OMITTED_ITEMS)
 
     def test_get_more_filters(self):
         FILTERS_CSS = 'ul.option-list li'
