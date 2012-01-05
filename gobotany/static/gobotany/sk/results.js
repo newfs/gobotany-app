@@ -399,15 +399,17 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                         dojo.attr(image, 'alt', new_image.title);
                         // Hide the empty box if it exists and make
                         // sure the image is visible.
-                        dojo.query('+ span.MissingImage', image).orphan();
+                        dojo.query('+ div.missing-mage', image).orphan();
                         dojo.style(image, 'display', 'inline');
                     }
                     else if (dojo.style(image, 'display') !== 'none') {
                         // If there's no matching image display the
                         // empty box and hide the image
                         dojo.style(image, 'display', 'none');
-                        dojo.create('span', {'class': 'MissingImage'},
-                            image, 'after');
+                        dojo.create('div', {
+                            'class': 'missing-image',
+                            'innerHTML': '<p>Image not available yet</p>'
+                        }, image, 'after');
                     }
                 }
             });
