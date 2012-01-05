@@ -440,6 +440,18 @@ class FilterFunctionalTests(FunctionalTestCase):
         for menu_item in menu_items:
             self.assertTrue(menu_item.text not in OMITTED_ITEMS)
 
+    def test_missing_image_has_placeholder_text(self):
+        self.get('/ferns/lycophytes/')
+        self.wait_on_species(18)
+        self.css1('#intro-overlay .get-started').click()
+        e = self.css1('.plant-list div a div.img-container img')
+        self.css1('#results-display .dijitSelectLabel').click()
+        self.css1('#dijit_MenuItem_0_text').click()  # 'branches'
+        assert '-br-' in e.get_attribute('src')
+        missing_images = self.css('.plant-list .plant .missing-image p')
+        assert len(missing_images) > 0
+        self.assertEqual('Image not available yet', missing_images[0].text)
+
     def test_get_more_filters(self):
         FILTERS_CSS = 'ul.option-list li'
 
