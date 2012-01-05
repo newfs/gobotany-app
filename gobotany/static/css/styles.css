@@ -811,6 +811,7 @@ a.get-more-info:active {
 }
 
 .plant-list .plant .img-container .missing-image {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
     background: -moz-linear-gradient(center top , #eaf2e2, #d6e6c5) repeat scroll 0 0 transparent;
     color: #354d1e;
     height: 149px;
@@ -818,6 +819,7 @@ a.get-more-info:active {
     width: 160px;
 }
 .plant-list .plant .img-container .missing-image p {
+    font-size: 12px;
     height: 40px;
     left: 50%;
     line-height: 130%;
@@ -826,6 +828,14 @@ a.get-more-info:active {
     text-align: center;
     top: 50%;
     width: 100px;
+}
+/* On hover, no underline on "image not available" placeholder text, but
+ * do underline the plant name below the image box. */
+.plant-list .plant a:hover {
+    text-decoration: none;
+}
+.plant-list .plant a:hover p.plant-name {
+    text-decoration: underline;
 }
 
 .plant p.plant-name {
