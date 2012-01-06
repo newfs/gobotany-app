@@ -886,9 +886,12 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 filter.character_short_name, undefined);
         }
 
-        if (this.working_area !== null)
-            if (this.working_area.filter === filter)
+        if (this.working_area !== null) {
+            if (this.working_area.filter === filter) {
                 this.working_area.clear();
+            }
+            this.working_area.dismiss();
+        }
 
         dojo.publish('/sk/filter/change', [filter]);
 
