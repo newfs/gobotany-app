@@ -585,11 +585,22 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     setup_section: function() {
         console.log('FilterSectionHelper: setting up section');
 
-        // Set up the jQuery scrolling box for filters.
-        this.scroll_pane = $('.scroll').jScrollPane({
-			                   verticalGutter: 0,
-			                   showArrows: true
-		                   });
+        // Set up the jQuery scrolling box for filters, first binding a
+        // function to dismiss the working area upon scrolling.
+        this.scroll_pane = $('.scroll')
+            .bind(
+                'jsp-scroll-y',
+                {that: this},
+                function(event) {
+                    if (event.data.that.working_area !== null) {
+                        event.data.that.working_area.dismiss();
+                    }
+                }
+            )
+            .jScrollPane({
+			    verticalGutter: 0,
+			    showArrows: true
+		    });
         this.scroll_pane_api = this.scroll_pane.data('jsp');
         var filter_section = this;
         var gcv = this.get_choices_values;
