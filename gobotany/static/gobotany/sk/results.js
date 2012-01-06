@@ -607,6 +607,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         // Wire up the Get More Questions button.
         dojo.query('#sidebar .get-choices').onclick(this, function() {
+            if (this.working_area !== null) {
+                this.working_area.dismiss();
+            }
             var content_element = dojo.query('#modal')[0];
             Shadowbox.open({
                 content: content_element.innerHTML,
