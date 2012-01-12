@@ -28,6 +28,9 @@ class Path(object):
                 'stroke:%s;' % str(stroke_color))
         self.set_style(shaded_style)
 
+    def __str__(self):
+        return '%s (%s)' % (self.path_node.get('id'), self.get_style())
+
 
 class Legend(object):
     """Class for configuring the legend on a SVG plant distribution map."""
@@ -171,26 +174,48 @@ class PlantDistributionMap(ChloroplethMap):
             self._add_name_to_title(self.scientific_name)
 
 
-    def _shade_counties(self):
-        """Set the colors of the counties based on distribution data."""
+    def _shade_areas(self):
+        """Set the colors of the counties (or, in the case of Canada,
+        provinces, until county/district data become available) based
+        on distribution data.
+        """
+        # Only 8 of the 10 Canadian provinces are shown on the current map.
+        CANADIAN_PROVINCES = ['NS', 'NB', 'QC', 'ON', 'MB', 'SK', 'AB', 'BC']
         legend_labels_found = []
         if self.distribution_records:
             path_nodes = self.svg_map.xpath(self.PATH_NODES_XPATH,
                 namespaces=NAMESPACES)
             for record in self.distribution_records.all():
-                state_and_county = '%s_%s' % (record.state,
-                                              record.county.replace(' ', '_'))
-                # Look through all the path nodes until the one for this
-                # state and county is found. (Note: this is at least
-                # twice as fast as selecting each node via XPath.)
-                for node in path_nodes:
-                    if node.get('id') == state_and_county:
-                        label = self._get_label_for_status(record.status)
-                        if label not in legend_labels_found:
-                            legend_labels_found.append(label)
-                        box = Path(node)
-                        box.color(Legend.COLORS[label])
-                        break   # Move on to the next distribution record.
+                if record.state.upper() in CANADIAN_PROVINCES:
+                    # This record is for Canada. Shade all paths for
+                    # this province.
+                    for node in path_nodes:
+                        id_province = node.get('id').split('_')[0].upper()
+                        if id_province == record.state.upper():
+                            label = self._get_label_for_status(record.status)
+                            if label not in legend_labels_found:
+                                legend_labels_found.append(label)
+                            box = Path(node)
+                            box.color(Legend.COLORS[label])
+                            # Keep going rather than break, because some
+                            # provinces (like BC) can have multiple path
+                            # areas to shade for the province.
+                else:
+                    state_and_county = '%s_%s' % (record.state.lower(),
+                                                  record.county.replace(
+                                                      ' ', '_').lower())
+                    # Look through all the path nodes until the one for this
+                    # state and county is found. (Note: this is at least
+                    # twice as fast as selecting each node via XPath.)
+                    for node in path_nodes:
+                        node_id = node.get('id').lower()
+                        if node_id == state_and_county:
+                            label = self._get_label_for_status(record.status)
+                            if label not in legend_labels_found:
+                                legend_labels_found.append(label)
+                            box = Path(node)
+                            box.color(Legend.COLORS[label])
+                            break   # Move on to the next distribution record.
 
             # Put the found labels in display order.
             all_labels = [item[0] for item in Legend.ITEMS]
@@ -202,7 +227,7 @@ class PlantDistributionMap(ChloroplethMap):
         """Shade a New England plant distribution map. Assumes the method
         set_plant(scientific_name) has already been called.
         """
-        legend_labels_found = self._shade_counties()
+        legend_labels_found = self._shade_areas()
         self.legend.show_items(legend_labels_found)
         return self
 
@@ -243,3 +268,19 @@ class UnitedStatesPlantDistributionMap(PlantDistributionMap):
         super(UnitedStatesPlantDistributionMap, self).__init__(blank_map_path)
 
 
+class NorthAmericanPlantDistributionMap(PlantDistributionMap):
+    """Class for a map that shows North American distribution data for a
+    plant. Data for the United States are shown at the county level. Data
+    for Canada are currently shown at the province level, not the county
+    or county equivalent level, because it is not yet available. Also,
+    only the southern parts of eight Canadian provinces are shown so far,
+    because that is the extent of the available data.
+    """
+
+    PATH_NODES_XPATH = 'svg:g/svg:path'
+
+    def __init__(self):
+        blank_map_path = ''.join([STATIC_ROOT,
+                                 '/graphics/north-america-scoured.svg'])
+        super(NorthAmericanPlantDistributionMap, self).__init__(
+            blank_map_path)

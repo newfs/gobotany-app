@@ -17,6 +17,7 @@ from gobotany.core.models import (
     )
 from gobotany.core.partner import which_partner
 from gobotany.mapping.map import (NewEnglandPlantDistributionMap,
+                                  NorthAmericanPlantDistributionMap,
                                   UnitedStatesPlantDistributionMap)
 
 def jsonify(value, headers=None):
@@ -335,3 +336,10 @@ def united_states_distribution_map(request, genus, specific_epithet):
     return _distribution_map(request, distribution_map, genus,
                              specific_epithet)
 
+def north_american_distribution_map(request, genus, specific_epithet):
+    """Return a vector map of the United States showing county-level
+    distribution data for a plant.
+    """
+    distribution_map = NorthAmericanPlantDistributionMap()
+    return _distribution_map(request, distribution_map, genus,
+                             specific_epithet)
