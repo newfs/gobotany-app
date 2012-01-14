@@ -623,12 +623,12 @@ Sidebar Styles
     height: 290px;
     width: 187px;
 }
-#us-dist-county-map {
+#na-dist-county-map {
     /* SVG map: WebKit needs height and width set */
-    height: 120px;
+    height: 109px;
     width: 187px;
 }
-#sb-player #us-dist-county-map {
+#sb-player #na-dist-county-map {
     background: #fff;
     height: 100%;
     width: 100%;
@@ -636,8 +636,8 @@ Sidebar Styles
 #taxon #sb-player.html {
     background: #fff;
     overflow: hidden;  /* Get rid of vertical scrollbar in WebKit for
-                          the enlarged U.S. distribution map. */
-    padding: 5px;
+                          the enlarged North America distribution map. */
+    padding: 0 5px 5px;
 }
 
 /*******------
@@ -1727,14 +1727,14 @@ a.enlarge img {
 	-moz-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
 	-webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
 }
-div.section.usmap {
+div.section.namap {
     position: relative;
 }
-div.section.usmap div.trans {
+div.section.namap div.trans {
     /* Transparent div to make U.S. map object element clickable */
     cursor: pointer;
     background: transparent;
-    height: 145px; /* Cover the map plus the link below it */
+    height: 133px; /* Cover the map plus the link below it */
     margin-bottom: 0;
     padding: 0;
     position: absolute;

@@ -111,17 +111,17 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
         // is needed to make it clickable. Make this div cover the link
         // that appears below the map, too, for one large clickable area.
         var transparent_div =
-            dojo.query('#sidebar .section.usmap div.trans')[0];
+            dojo.query('#sidebar .section.namap div.trans')[0];
         dojo.connect(transparent_div, 'onclick', this, function(event) {
             event.preventDefault();
-            // Open the U.S. distribution map in a lightbox.
+            // Open the North America distribution map in a lightbox.
             var content_element =
-                dojo.query('#sidebar .section.usmap div')[0];
+                dojo.query('#sidebar .section.namap div')[0];
             Shadowbox.open({
                 content: content_element.innerHTML,
                 player: 'html',
-                height: 490,
-                width: 748
+                height: 507,
+                width: 872
             });
         });
     },
