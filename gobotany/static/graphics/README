@@ -40,9 +40,9 @@ For generating the New England counties scoured map (and the no-longer-used U.S.
 $ python scour.py -i us-counties.svg -o us-counties-scoured.svg
 --disable-style-to-xml --indent=none --enable-comment-stripping --set-precision=4
 
-For generating the North America scoured map, leave off the --set-precision switch, like this:
+For generating the North America scoured map, leave off the --set-precision switch, and add the --remove-metadata switch, like this:
 
 $ python scour.py -i us-counties.svg -o us-counties-scoured.svg
---disable-style-to-xml --indent=none --enable-comment-stripping
+--disable-style-to-xml --indent=none --enable-comment-stripping --remove-metadata
 
 The previously included --set-precision=4 somehow fouled the alignment of the U.S. state lines following the Canada additions. Leaving it off (default precision = 5) fixes this.
