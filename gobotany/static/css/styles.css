@@ -2272,3 +2272,71 @@ Advanced Map Page Styles
     padding: 7px 0;
 }
 
+/* Search suggest */
+nav #search #search-suggest input {
+    color: #000;
+    font-size: 14px;
+}
+
+/* For now, need both rules to style WebKit and Moz HTML5 placeholder text */
+nav #search #search-suggest input::-webkit-input-placeholder {
+    color: #999;
+}
+nav #search #search-suggest input:-moz-placeholder {
+    color: #999;
+}
+
+nav #search-suggest li {
+    margin: 0;
+    padding: 3px;
+}
+nav #search-suggest a {
+    height: inherit;
+}
+nav #search-suggest a:hover, #search-suggest li:hover {
+    background: #c4e2ff;
+    color: #000;
+}
+#search-suggest input, #search-suggest li {
+    width: 250px;
+}
+#search-suggest input, #search-suggest ul {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+#search-suggest input:focus {
+    outline: none;
+}
+#search-suggest ul {
+    font-size: 16px;
+}
+#search-suggest button {
+    font-size: 14px;
+}
+#search-suggest div {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-bottom-color: #999;
+    border-right-color: #999;
+    left: 758px; /* JS needed at runtime to set this reliably */
+    margin: 0 auto;
+    position: absolute;
+    text-align: left;
+    top: 105px;
+    width: 256px;
+    z-index: 101;
+}
+
+#home #search-suggest div {
+    top: 133px;
+}
+
+#search-suggest li.highlighted {
+    background-color: #abd6ff;
+    color: #000;
+}
+#search-suggest a {
+    color: #000;
+    cursor: default;
+    text-decoration: none;
+}
+

@@ -18,7 +18,6 @@
         <link rel="stylesheet" href="/static/css/reset.css">
         <link rel="stylesheet" href="/static/css/basic.css">
         <link rel="stylesheet" href="/static/css/styles.css">
-        <link rel="stylesheet" href="/static/css/searchsuggest.css">
         <link rel="stylesheet" href="/static/css/shadowbox.css">
         <link rel="stylesheet"
             href="/static/css/jquery.jscrollpane.css">
@@ -35,7 +34,9 @@
 
         {# This block is for adding any JS that *has* to come first, #}
         {# such as SVGWeb. #}
-        {% block js_top %}{% endblock %}
+        <script>
+            {% block js_top %}{% endblock %}
+        </script>
 
         {# HTML5 fix for IE #}
         <!--[if lt IE 9]>
