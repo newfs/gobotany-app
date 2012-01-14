@@ -1,6 +1,4 @@
-//*////////////////////////////////*/
-/* Global Page Structure */
-/*////////////////////////////////*/
+/* Global page structure */
 header, .content, footer {
     width: 100%;
 }
@@ -73,7 +71,7 @@ nav #search button {
 nav #search button:active {
     background-position: 0 -20px;
 }
-/***Active Nav State***/
+/* Active navigation state */
 #plant-id li.plant-id a,
 #plant-id-2 li.plant-id a,
 #plant-id-3 li.plant-id a,
@@ -110,8 +108,8 @@ footer a {
 }
 
 footer h6 {
-	font-weight: 11px;
-	font-family: Verdana, Geneva, sans-serif;	
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 11px;
 }
 footer .nsf-logo {
 	float: left;
@@ -119,10 +117,8 @@ footer .nsf-logo {
 }
 
 
-/*////////////////////////////////*/
-/* Global Classes */
-/*////////////////////////////////*/
-    
+/* Global classes */
+
 .left {
     float: left;
 }
@@ -149,10 +145,10 @@ footer .nsf-logo {
 	-moz-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
 	-webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);	
 }
-/*////////////////////////////////*/
-/* Page Structure for Top level pages 
-(Non-app pages - Home, About, FAQ, etc.) */
-/*////////////////////////////////*/
+
+/* Page structure for top level pages
+ * (Non-app pages: Home, About, FAQ, etc.) */
+
 body.top-level {
 	background: url(/static/images/layout/body-home.jpg) repeat-x left top #f3f3c3;	
 }
@@ -182,9 +178,8 @@ body.top-level {
 	margin: 0 83px 0 0;	
 }
 
-/*////////////////////////////////*/
-/* Home Page Styles */
-/*////////////////////////////////*/
+/* Home page styles */
+
 body#home {
 	background: url(/static/images/layout/body-home.jpg) repeat-x left top #f3f3c3;	
 }
@@ -197,7 +192,7 @@ body#home #top-wrapper {
     position: absolute;
 }
 #banner > img {
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
     display: none;
     height: 345px;
     left: 0;
@@ -297,7 +292,8 @@ a.subscribe:active {
     background-position: 0 -32px;
 }
 
-/*Plant of the Day Module*/
+/* Plant of the Day */
+
 div#potd {
 	padding: 10px;
 	margin: 15px 0 15px 0;
@@ -338,10 +334,8 @@ div#potd {
     overflow: hidden;
 }
 
-/*////////////////////////////////*/
-/*Styles for App level pages 
-(App pages - all levels of Simple Key etc.) */
-/*////////////////////////////////*/
+/* Styles for app pages: all levels of Simple Key, etc. */
+
 body.app {
 	background: #f0f0c0;
 }
@@ -399,9 +393,8 @@ body.app {
 	margin: 15px 0 0 0;
 }
 
-/*****-----------
-Breadcrumb Styles
-----------******/
+/* Breadcrumb styles */
+
 #breadcrumb p {
     color: #807121;
     line-height: 120%;
@@ -426,9 +419,8 @@ Breadcrumb Styles
     padding: 0 0 1px 0;
 }
 
-/*****-----------
-Plant Listing Styles
-----------******/
+/* Plant listing styles */
+
 .list-item {
 	padding: 20px 0 0 0;	
 	margin: 20px 0 0 0;
@@ -561,10 +553,8 @@ p.vid {
 	background-position: 0 -64px;	
 }
 
+/* Sidebar styles */
 
-/*******------
-Sidebar Styles
---------*****/
 #sidebar h5 {
 	margin: 0 0 5px 0;	
 }
@@ -640,9 +630,8 @@ Sidebar Styles
     padding: 0 5px 5px;
 }
 
-/*******------
-Level 3 Id styles
---------*****/
+/* Level 3 id styles */
+
 .already-know {
     float: left;
     margin: 0 0 40px 0;
@@ -860,9 +849,8 @@ p.list-all a {
     cursor: pointer;
 }
 
-/***
-Sidebar Styles for 3rd Level
- ****/
+/* Sidebar styles for 3rd level */
+
 #sidebar.tinted {
     background: #fcfdf5;
 }
@@ -967,9 +955,7 @@ ul.option-list li.answered.active {
     }
 }
 
-/***
-Styles for results page introductory overlay
- ****/
+/* Styles for results page introductory overlay */
 
 #intro-overlay {
     display: none;
@@ -1045,15 +1031,12 @@ Styles for results page introductory overlay
     top: 0.6em;
 }
 
-/***
-Styles for results page
- ****/
+/* Styles for results page */
 
 #main h3.species-count-heading {
-    /* move "18 matching species" to the right of Photos/List tab */
+    /* Move "18 matching species" to the right of Photos/List tab */
     position: relative;
     height: 0px;
-    text-wrap: pre;
 }
 #main h3.species-count-heading > span {
     position: absolute;
@@ -1091,7 +1074,8 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     width: 135px;
 }
 
-/** Working area **/
+/* Working area */
+
 .working-area {
     display: none;
     position: absolute;
@@ -1232,8 +1216,8 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     padding: 0 0 0 20px;
 }
 
-/* ordinarily this msg will have its centering done
-by javascript, see gobotany.sk.results.notify() */
+/* Ordinarily this message will have its centering done
+ * by JavaScript. See gobotany.sk.results.notify() */
 #notification-msg {
     background-color: #ff0;
     border-bottom-left-radius: 15px;
@@ -1382,6 +1366,7 @@ div.working-area .actions {
 }
 
 /* Tabs for the different views of results */
+
 #results-tabs {
     border-bottom: 1px solid #c3d941;
     clear: left;
@@ -1433,6 +1418,7 @@ div.working-area .actions {
 }
 
 /* Results list view */
+
 .plant-list .wait {
     background: url(/static/images/icons/preloaders-dot-net-lg.gif) no-repeat scroll center center transparent;
     height: 350px;
@@ -1560,7 +1546,7 @@ div.working-area #simple-slider .count {
 }
 
 /* Help navigation styles */
-/* (Remove after Iteration 15, when they'll be obsolete) */
+/* (Remove after the About page is styled, when they'll be obsolete) */
 #help-nav {
     color: #666;
 }
@@ -1580,9 +1566,8 @@ div.working-area #simple-slider .count {
     margin-left: 1em;
 }
 
-/*///////////////////////////**
-Taxon (Species) Page Styles
-////////////////////////////*/
+/* Taxon (species) page styles */
+
 #taxon span.origin {
 	font-size: 14px;
 }
@@ -1741,7 +1726,9 @@ div.section.namap div.trans {
     top: 25px;
     width: 196px;
 }
-/**Larger gallery styles**/
+
+/* Larger gallery styles */
+
 #taxon .img-gallery {
 	width: 710px;
 	float: none;
@@ -1818,6 +1805,7 @@ div.section.namap div.trans {
 }
 
 /* Help section: sidebar styles */
+
 #getting-started #sidebar, #about #sidebar{
     height: 1046px;
 }
@@ -1916,9 +1904,7 @@ Getting Started Page Styles
     cursor: pointer;
 }
 
-/*///////////////////////////**
-Video Help Topics Page Styles
-////////////////////////////*/
+/* Video Help Topics page styles */
 
 .video-row {
     margin: 20px 0;
@@ -1933,16 +1919,14 @@ Video Help Topics Page Styles
     width: 220px;
 }
 
-/*/////////////**
-Glossary Styles
-//////////////*/
+/* Glossary styles */
 
-/* glossary term underline for popup */
+/* Glossary term underline for popup */
 .gloss {
     border-bottom: 1px dashed;
     cursor: pointer;
 }
-/* glossary tooltip */
+/* Glossary tooltip */
 .glosstip {
     position: relative;
     max-width: 30em;
@@ -2012,9 +1996,7 @@ Glossary Styles
 }
 
 
-/*///////////////////**
-Search Results Styles
-////////////////////*/
+/* Search results styles */
 
 #search-results-list {
     border-top: 1px solid #e1e1dc;
@@ -2030,10 +2012,8 @@ Search Results Styles
 }
 #search-results-list li img {
     float: left;
-    height: 24px; /* TODO: remove height after all icons have been provided */
     margin: -1px 10px 0;
     vertical-align: middle;
-    width: 24px; /* TODO: remove width after all icons have been provided */
 }
 #search-results-list li a {
     font: 15px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
@@ -2058,9 +2038,7 @@ Search Results Styles
     text-decoration: underline;
 }
 
-/*///////////////////////////**
-Family and Genus Pages Styles
-///////////////////////////*/
+/* Family and Genus pages styles */
 
 #family ul.genera, #genus ul.species {
     font: 14px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
@@ -2109,10 +2087,8 @@ Family and Genus Pages Styles
     float: right;
 }
 
+/* Advanced Map page styles */
 
-/*///////////////////////////**
-Advanced Map Page Styles
-////////////////////////////*/
 #advanced-map #main p {
     margin: 10px 0 0;
 }
@@ -2240,8 +2216,6 @@ Advanced Map Page Styles
 	background-position: 0 -64px;
 }
 
-
-
 /* Shadowbox close button */
 #sb-nav-close {
     background-position: center;
@@ -2251,10 +2225,10 @@ Advanced Map Page Styles
     top: 6px !important;
 }
 
-/*** Notification for draft status ***/
+/* Notification for draft status: remove upon release */
 
 #notify {
-    color: ##d4ee3b;
+    color: #d4ee3b;
     font-size: 100%;
     font-weight: bold;
     height: 0;
@@ -2278,7 +2252,8 @@ nav #search #search-suggest input {
     font-size: 14px;
 }
 
-/* For now, need both rules to style WebKit and Moz HTML5 placeholder text */
+/* For now, we need two separate rules to style WebKit and Moz HTML5 
+ * placeholder text (cannot combine with comma). */
 nav #search #search-suggest input::-webkit-input-placeholder {
     color: #999;
 }
@@ -2339,4 +2314,3 @@ nav #search-suggest a:hover, #search-suggest li:hover {
     cursor: default;
     text-decoration: none;
 }
-
