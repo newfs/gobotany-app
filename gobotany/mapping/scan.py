@@ -110,15 +110,21 @@ class MapScanner(object):
             x = int(float(tspan.get('x')))  # int() forces pixel boundaries
             y = int(float(tspan.get('y')))
             s = tspan.text  # reach inside of the single <tspan> child
-            state, county = s.split(None, 1)
+            if ' ' in s:
+                state, county = s.split(None, 1)
+            else:
+                state, county = s, ''
             self.points.append(MapPoint(state=state, county=county, x=x, y=y))
 
         self.points.sort()
 
-    def scan(self, map_image_path):
+    def scan(self, is_north_america, map_image_path):
         #print map_image_path
         im = Image.open(map_image_path)
-        scale = find_map_scale(im)
+        if is_north_america:
+            scale = 1.0
+        else:
+            scale = find_map_scale(im)  # NE county maps have different scales
         statuses = []
         for p in self.points:
             #print p.state, p.county, p.x, p.y, im.getpixel((p.x, p.y))
@@ -137,7 +143,7 @@ class MapScanner(object):
 
 #
 
-def scan(svg_path, mapdir, bonap_path):
+def scan(is_north_america, svg_path, mapdir, bonap_path):
     ms = MapScanner(svg_path)
     csv_writer = csv.writer(open(bonap_path, 'wb'))
     csv_writer.writerow(('scientific_name', 'state', 'county', 'status'))
@@ -151,7 +157,7 @@ def scan(svg_path, mapdir, bonap_path):
         scientific_name = pngname[:-4]
         pngpath = join(mapdir, pngname)
         try:
-            tuples = ms.scan(pngpath)
+            tuples = ms.scan(is_north_america, pngpath)
         except ValueError as e:
             log_write(
                 'Error\n'
@@ -243,6 +249,8 @@ def main():
     parser_s = subparsers.add_parser(
         'scan', help='Scan New England BONAP maps for distribution data')
     parser_s.add_argument('mapdir', help='The directory of BONAP maps')
+    parser_s.add_argument('-a', action='store_true',
+                          help='Maps are North America, not New England')
 
     parser_r = subparsers.add_parser(
         'report', help='Compare BONAP distribution data with NEWFS data')
@@ -254,13 +262,18 @@ def main():
     topdir = dirname(dirname(dirname(dirname(thisdir))))
     datadir = join(topdir, 'buildout-myplants', 'data')
 
-    svg_path = join(join(thisdir, 'new-england-counties2.svg'))
-    bonap_path = join(datadir, 'bonap.csv')
     taxa_path = join(datadir, 'taxa.csv')
 
     if args.command == 'scan':
-        scan(svg_path, args.mapdir, bonap_path)
+        if args.a:
+            svg_path = join(join(thisdir, 'north-america.svg'))
+            bonap_path = join(datadir, 'bonap-north-america.csv')
+        else:
+            svg_path = join(join(thisdir, 'new-england-counties2.svg'))
+            bonap_path = join(datadir, 'bonap.csv')
+        scan(args.a, svg_path, args.mapdir, bonap_path)
     elif args.command == 'report':
+        bonap_path = join(datadir, 'bonap.csv')
         report(bonap_path, taxa_path)
     else:
         print >>sys.stderr, 'usage: {0} scan|report'.format(sys.argv[0])
