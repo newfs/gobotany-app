@@ -411,9 +411,11 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                 '/">Details</a></td>';
             html += '</tr>';
         }
-
-        var table = dojo.create('table', {'innerHTML': html}, this.plant_list);
-        this.plant_list.style.height = table.clientHeight;
+        
+        var table = dojo.create('table', {'innerHTML': html},
+                                this.plant_list);
+        var table_height = table.clientHeight;
+        $('#plant-list').height(table_height);
 
         sidebar_set_height();
 
