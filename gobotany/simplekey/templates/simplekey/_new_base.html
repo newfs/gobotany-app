@@ -30,7 +30,6 @@
         <![endif]-->
 
         {# JS goes here. #}
-        {% include "simplekey/_script_constants.html" %}
 
         {# This block is for adding any JS that *has* to come first, #}
         {# such as SVGWeb. #}
@@ -43,6 +42,8 @@
         <script
             src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+
+        {% include "simplekey/_script_constants.html" %}
 
         <script src="/static/scripts/require.js"></script>
         {# This block is for adding any page-specific JS. #}

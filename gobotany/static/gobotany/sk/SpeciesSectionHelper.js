@@ -121,36 +121,9 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         return 0;
     },
 
-    get_character_list: function(plant_preview_characters, default_filters) {
+    get_character_list: function(plant_preview_characters) {
         var characters = [];
         characters = characters.concat(plant_preview_characters);
-        for (var i = 0; i < default_filters.length; i++) {
-            var short_name = default_filters[i].character_short_name;
-            // Don't show Habitat (general) because we already display
-            // Habitat, and don't show New England State because we aim
-            // to show the same characters as on the species page, where
-            // the state distribution is already displayed elsewhere.
-            if (short_name !== 'habitat_general' &&
-                short_name !== 'state_distribution') {
-                // Don't duplicate characters.
-                var is_duplicate = false;
-                for (var j = 0; j < plant_preview_characters.length; j++) {
-                    var character = plant_preview_characters[j];
-                    // Only consider plant preview characters for this
-                    // partner site.
-                    if (character.partner_site ===
-                        gobotany_sk_partner_site) {
-                        if (short_name === character.character_short_name) {
-                            is_duplicate = true;
-                            break;
-                        }
-                    }
-                }
-                if (!is_duplicate) {
-                    characters.push(default_filters[i]);
-                }
-            }
-        }
         return characters.sort(this.sort_character_list);
     },
 
@@ -186,21 +159,13 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         habitat_list);
 
                     // Fill in Characteristics.
-                    // Both the plant preview characters and most of the
-                    // default filter characters are shown.
                     var characters = this.get_character_list(
-                        this.plant_preview_characters, this.default_filters);
+                        this.plant_preview_characters);
                     var characters_html = '';
                     for (var i = 0; i < characters.length; i++) {
                         var ppc = characters[i];
 
-                        // Default filters are not partner-site specific
-                        // at this point, so they will always be
-                        // displayed.
-                        var is_default_filter = !(ppc.partner_site);
-                    
-                        if (is_default_filter ||
-                            ppc.partner_site === gobotany_sk_partner_site) {
+                        if (ppc.partner_site === gobotany_sk_partner_site) {
 
                             characters_html += '<li>' +
                                 ppc.friendly_name.toUpperCase() + ': ';

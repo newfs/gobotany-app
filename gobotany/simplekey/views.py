@@ -233,23 +233,10 @@ def _get_brief_characteristics(all_characteristics, pile, partner):
             pile=pile, partner_site=partner)
         ]
 
-    default_filter_character_names = [
-        df.character.friendly_name
-        for df in DefaultFilter.objects.filter(pile=pile)
-        ]
-
-    combined_character_names = plant_preview_character_names
-    for name in default_filter_character_names:
-        # Exclude some default filters for which the information is
-        # already displayed elsewhere.
-        if name != 'Habitat (general)' and name != 'New England state':
-            if name not in combined_character_names:
-                combined_character_names.append(name)
-
     brief_characteristics = []
     for character_group in all_characteristics:
         for character in character_group['characters']:
-            if character['name'] in combined_character_names:
+            if character['name'] in plant_preview_character_names:
                 brief_characteristics.append(character)
     return sorted(brief_characteristics, key=itemgetter('name'))
 
