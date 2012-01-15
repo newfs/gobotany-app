@@ -134,6 +134,7 @@ class MapScanner(object):
             except Exception as e:
                 e.path = map_image_path
                 e.scale = scale
+                e.state = p.state
                 e.county = p.county
                 e.xy = p.x, p.y
                 e.xy2 = x, y
@@ -163,10 +164,11 @@ def scan(is_north_america, svg_path, mapdir, bonap_path):
                 'Error\n'
                 'Path: {0}\n'
                 'Scale: {1}\n'
-                'County: {2} at {3}\n'
-                '{4}\n{5}'
+                'Place: {2} {3} at {4}\n'
+                '{5}\n{6}'
                 '\n'
-                .format(e.path, e.scale, e.county, e.xy2, str(e), e.report)
+                .format(e.path, e.scale, e.county, e.state, e.xy2,
+                        str(e), e.report)
                 )
             continue
         for tup in tuples:
