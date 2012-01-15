@@ -1,5 +1,6 @@
 """Scan a map to learn how a species is distributed."""
 
+import argparse
 import csv
 import os
 import sys
@@ -43,13 +44,56 @@ PIXEL_STATUSES = [
 del c
 range3 = range(3)
 
+THRESHOLD = 999
+
 def pixel_status(pixel):
+    answer = None
     for rgb, status in PIXEL_STATUSES:
         dsq = sum((pixel[i] - rgb[i]) ** 2 for i in range3)
-        if dsq < 200:
-            return status
-    raise ValueError('I cannot determine what the pixel {0} means'
-                     .format(pixel))
+        if dsq < THRESHOLD:
+            answer = status if (answer is None) else ValueError
+    if answer is not None and answer is not ValueError:
+        return answer
+    e = ValueError(
+        'I cannot determine what pixel {0} = {1:02x}{2:02x}{3:02x} means'
+        .format(pixel, pixel[0], pixel[1], pixel[2])
+        )
+    e.report = 'Here is how it measures up to the colors we know about:\n'
+    for rgb, status in PIXEL_STATUSES:
+        dsq = sum((pixel[i] - rgb[i]) ** 2 for i in range3)
+        e.report += ' {0} {1} {2}\n'.format(rgb, status, dsq)
+    raise e
+
+# How to determine how much an image has been scaled.
+
+def brightness_of(color):
+    # We refuse to let the brightness fall to zero, since that would
+    # make the `center` forumla attempt a divide-by-zero.
+    return float(color[0] + color[1] + color[2])
+
+Y = namedtuple('Y', 'value y')
+
+def find_map_scale(im):
+    y_straddle = range(2180, 2300)  # straddles border of New York state
+    samples = [ Y(brightness_of(im.getpixel((0, y))), y) for y in y_straddle ]
+    samples.sort()
+
+    # Ignore any zero pixels in the middle of the black line.
+
+    n = 0
+    while samples[n].value == 0:
+        n += 1
+
+    # Interpolate between the two dim pixels astride the line's center.
+
+    a, b = samples[n], samples[n+1]
+    center = a.y + (b.y - a.y) * a.value / (a.value + b.value)
+
+    # Deduce how much the image has been scaled relative to the
+    # canonical image that we used to map county pixels.
+
+    expected_center = 2226.625
+    return center / expected_center
 
 # The scanner class itself.
 
@@ -74,10 +118,20 @@ class MapScanner(object):
     def scan(self, map_image_path):
         #print map_image_path
         im = Image.open(map_image_path)
+        scale = find_map_scale(im)
         statuses = []
         for p in self.points:
             #print p.state, p.county, p.x, p.y, im.getpixel((p.x, p.y))
-            status = pixel_status(im.getpixel((p.x, p.y)))
+            x, y = p.x * scale, p.y * scale
+            try:
+                status = pixel_status(im.getpixel((x, y)))
+            except Exception as e:
+                e.path = map_image_path
+                e.scale = scale
+                e.county = p.county
+                e.xy = p.x, p.y
+                e.xy2 = x, y
+                raise
             statuses.append(MapStatus(p.state, p.county, status))
         return statuses
 
@@ -87,6 +141,7 @@ def scan(svg_path, mapdir, bonap_path):
     ms = MapScanner(svg_path)
     csv_writer = csv.writer(open(bonap_path, 'wb'))
     csv_writer.writerow(('scientific_name', 'state', 'county', 'status'))
+    log_write = open(bonap_path.replace('csv', 'log'), 'w').write
     for pngname in sorted(os.listdir(mapdir)):
         if not pngname.endswith('.png'):
             continue
@@ -95,7 +150,20 @@ def scan(svg_path, mapdir, bonap_path):
         #     continue
         scientific_name = pngname[:-4]
         pngpath = join(mapdir, pngname)
-        for tup in ms.scan(pngpath):
+        try:
+            tuples = ms.scan(pngpath)
+        except ValueError as e:
+            log_write(
+                'Error\n'
+                'Path: {0}\n'
+                'Scale: {1}\n'
+                'County: {2} at {3}\n'
+                '{4}\n{5}'
+                '\n'
+                .format(e.path, e.scale, e.county, e.xy2, str(e), e.report)
+                )
+            continue
+        for tup in tuples:
             row = [scientific_name, tup.state, tup.county, tup.status]
             csv_writer.writerow(row)
 
@@ -168,18 +236,31 @@ def report(bonap_path, taxa_path):
 #
 
 def main():
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    subparsers = parser.add_subparsers(
+        dest='command', help='designate an action to run')
+
+    parser_s = subparsers.add_parser(
+        'scan', help='Scan New England BONAP maps for distribution data')
+    parser_s.add_argument('mapdir', help='The directory of BONAP maps')
+
+    parser_r = subparsers.add_parser(
+        'report', help='Compare BONAP distribution data with NEWFS data')
+    parser_r  # (add future arguments here)
+
+    args = parser.parse_args()
+
     thisdir = dirname(__file__)
     topdir = dirname(dirname(dirname(dirname(thisdir))))
-    mapdir = join(topdir, 'kartesz_maps', 'New_England_maps')
     datadir = join(topdir, 'buildout-myplants', 'data')
 
     svg_path = join(join(thisdir, 'new-england-counties2.svg'))
     bonap_path = join(datadir, 'bonap.csv')
     taxa_path = join(datadir, 'taxa.csv')
 
-    if sys.argv[1:] == ['scan']:
-        scan(svg_path, mapdir, bonap_path)
-    elif sys.argv[1:] == ['report']:
+    if args.command == 'scan':
+        scan(svg_path, args.mapdir, bonap_path)
+    elif args.command == 'report':
         report(bonap_path, taxa_path)
     else:
         print >>sys.stderr, 'usage: {0} scan|report'.format(sys.argv[0])
