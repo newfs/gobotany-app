@@ -172,7 +172,9 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                             var display_value = '';
                             var character_value =
                                 taxon[ppc.character_short_name];
-                            if (character_value !== undefined) {
+                            if (character_value !== undefined &&
+                                character_value !== null) {
+
                                 display_value = character_value;
                                 if (ppc.value_type === 'LENGTH') {
                                     var min = character_value[0];
@@ -209,11 +211,30 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     dojo.attr(button, 'href', url);
 
                     // Add images.
+                    var clicked_image_path = $('img', plant_link).attr('src');
+                    clicked_image_path = clicked_image_path.substr(
+                        0, clicked_image_path.indexOf('_jpg_'));
+                    var is_missing_image = $('div.missing-image',
+                        plant_link).length ? true : false;
                     var images_html = '';
                     for (i = 0; i < taxon.images.length; i++) {
-                        images_html += '<img src="' +
-                            taxon.images[i].scaled_url + '" alt="' +
-                            taxon.images[i].title + '">';
+                        var taxon_image = taxon.images[i];
+                        var new_image = '<img src="' +
+                            taxon_image.scaled_url + '" alt="' +
+                            taxon_image.title + '">';
+                        var taxon_image_path = taxon_image.scaled_url;
+                        taxon_image_path = taxon_image_path.substr(
+                            0, taxon_image_path.indexOf('_jpg_'));
+                        if (clicked_image_path === taxon_image_path &&
+                            !is_missing_image) {
+
+                            // Since this is the same image as was
+                            // clicked, show it first.
+                            images_html = new_image + images_html;
+                        }
+                        else {
+                            images_html += new_image;
+                        }
                     }
                     dojo.html.set(
                         dojo.query('#plant-detail-modal div.images')[0],

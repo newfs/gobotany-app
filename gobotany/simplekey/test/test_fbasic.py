@@ -595,6 +595,45 @@ class FilterFunctionalTests(FunctionalTestCase):
         sidebar_value_span = self.css1('#plant_height_rn .value')
         self.assertEqual(sidebar_value_span.text, '5000.0 mm')
 
+    def test_plant_preview_popup_appears(self):
+        d = self.get('/ferns/lycophytes')
+        self.wait_on_species(18)
+        self.css1('#intro-overlay .get-started').click()
+        plant_links = self.css('.plant-list .plant a')
+        self.assertTrue(len(plant_links) > 0)
+        link = plant_links[0]
+        link.click()
+        POPUP_HEADING_CSS = '#sb-player div.modal-wrap div.inner h3'
+        self.wait_on(5, self.css1, POPUP_HEADING_CSS)
+        heading = self.css1(POPUP_HEADING_CSS).text
+        self.assertEqual('Dendrolycopodium dendroideum prickly tree-clubmoss',
+                         heading)
+
+    def test_plant_preview_popup_shows_same_image_as_page(self):
+
+        # Verify that the initial photo for a plant preview popup is the
+        # same one that is showing on the page. (If the photo is missing
+        # on the page, it doesn't matter which one the popup shows first.)
+
+        d = self.get('/ferns/lycophytes')
+        self.wait_on_species(18)
+        self.css1('#intro-overlay .get-started').click()
+        plant_links = self.css('.plant-list .plant a')
+        self.assertTrue(len(plant_links) > 0)
+        linked_images = self.css('.plant-list .plant a img')
+        self.assertTrue(len(linked_images) > 0)
+        link = plant_links[0]
+        link.click()
+        clicked_image = linked_images[0].get_attribute('src')
+        clicked_image = clicked_image[0:clicked_image.find('_jpg_')]
+        POPUP_HEADING_CSS = '#sb-player div.modal-wrap div.inner h3'
+        self.wait_on(5, self.css1, POPUP_HEADING_CSS)
+        popup_images = self.css('#sb-player .img-gallery .images img')
+        self.assertTrue(len(popup_images) > 0)
+        popup_image = popup_images[0].get_attribute('src')
+        popup_image = popup_image[0:popup_image.find('_jpg_')]
+        self.assertEqual(popup_image, clicked_image)
+
 
 class GlossaryFunctionalTests(FunctionalTestCase):
 
