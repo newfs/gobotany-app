@@ -37,8 +37,9 @@ def _taxon_image(image):
     if image is None:
         return
     img = image.image
-    large = img.extra_thumbnails['large']
     thumbnail = img.thumbnail
+    large = img.extra_thumbnails['large']
+    scaled = img.extra_thumbnails['scaled']
     json = {
         'url': img.url,
         'type': image.image_type_name,
@@ -48,12 +49,16 @@ def _taxon_image(image):
         'thumb_url': thumbnail.absolute_url,
         'thumb_width': thumbnail.width(),
         'thumb_height': thumbnail.height(),
-        'scaled_url': large.absolute_url,
-        'scaled_width': large.width(),
-        'scaled_height': large.height(),
+        'large_thumb_url': large.absolute_url,
+        'large_thumb_width': large.width(),
+        'large_thumb_height': large.height(),
+        'scaled_url': scaled.absolute_url,
+        'scaled_width': scaled.width(),
+        'scaled_height': scaled.height(),
         }
     # RESOURCE LEAK - to prevent too many open files:
-    image.image.extra_thumbnails['large']._data.fp.close()
+    for key in img.extra_thumbnails.keys():
+        img.extra_thumbnails[key]._data.fp.close()
     return json
 
 def _simple_taxon(taxon):

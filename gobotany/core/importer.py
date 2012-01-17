@@ -1140,7 +1140,8 @@ class Importer(object):
                 # Force generation of the thumbnails that will be used
                 # by (at least) the Simple Key application.
                 content_image.image.thumbnail.width()
-                content_image.image.extra_thumbnails['large'].width()
+                for key in content_image.image.extra_thumbnails.keys():
+                    content_image.image.extra_thumbnails[key].width()
 
 
     def import_home_page_images(self, dest_image_dir_path, images_archive):

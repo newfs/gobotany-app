@@ -23,9 +23,12 @@ def _taxon_image(image):
                 'thumb_url': img.thumbnail.absolute_url,
                 'thumb_width': img.thumbnail.width(),
                 'thumb_height': img.thumbnail.height(),
-                'scaled_url': img.extra_thumbnails['large'].absolute_url,
-                'scaled_width': img.extra_thumbnails['large'].width(),
-                'scaled_height': img.extra_thumbnails['large'].height(),
+                'large_thumb_url': img.extra_thumbnails['large'].absolute_url,
+                'large_thumb_width': img.extra_thumbnails['large'].width(),
+                'large_thumb_height': img.extra_thumbnails['large'].height(),
+                'scaled_url': img.extra_thumbnails['scaled'].absolute_url,
+                'scaled_width': img.extra_thumbnails['scaled'].width(),
+                'scaled_height': img.extra_thumbnails['scaled'].height(),
                 }
     return ''
 

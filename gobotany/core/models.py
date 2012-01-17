@@ -378,19 +378,19 @@ class ContentImage(models.Model):
     image = ImageWithThumbnailsField('content image',
                                      max_length=300,  # long filenames
                                      upload_to='content_images',
+                                     # Note: sizes are width, height
                                      thumbnail={'size': (160, 149),
                                                 'options': {'crop': 'smart'}
                                                },
-                                     extra_thumbnails={'large': {
-                                                           'size': (239, 239),
-                                                           'options': {
-                                                               'crop': 'smart'
-                                                               }
-                                                           },
-                                                       },
-                                     # Note: sizes are width, height
-                                     # XXX: Should we create
-                                     # thumbnails on import or lazily?
+                                     extra_thumbnails={
+                                         'large': {
+                                             'size': (239, 239),
+                                             'options': {'crop': 'smart'}
+                                         },
+                                         'scaled': {
+                                             'size': (1000, 1000)
+                                         }
+                                     },
                                      generate_on_save=True,
                                      )
     alt = models.CharField(max_length=300,

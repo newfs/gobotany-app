@@ -38,7 +38,7 @@
                                     {% for pile_image in pile_images %}
                                         {% with pile_image.content_image as i %}
                                             {% with i.creator as photographer %}
-                                            <a href="{{ i.image.url }}"
+                                            <a href="{{ i.image.extra_thumbnails.scaled.absolute_url }}"
                                                 rel="shadowbox[{{ pilegroup.slug }}]"
                                                 title="{% photo_title_credit i.image_type i.content_object.scientific_name photographer %}">
                                                 <img src="{{ i.image.extra_thumbnails.large.absolute_url }}"

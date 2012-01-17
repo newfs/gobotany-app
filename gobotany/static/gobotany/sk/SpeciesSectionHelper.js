@@ -220,9 +220,9 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     for (i = 0; i < taxon.images.length; i++) {
                         var taxon_image = taxon.images[i];
                         var new_image = '<img src="' +
-                            taxon_image.scaled_url + '" alt="' +
+                            taxon_image.large_thumb_url + '" alt="' +
                             taxon_image.title + '">';
-                        var taxon_image_path = taxon_image.scaled_url;
+                        var taxon_image_path = taxon_image.large_thumb_url;
                         taxon_image_path = taxon_image_path.substr(
                             0, taxon_image_path.indexOf('_jpg_'));
                         if (clicked_image_path === taxon_image_path &&
@@ -385,9 +385,10 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             html += '<td class="scientific-name">';
             var image = this.get_image(items[i], 'habit');
             if (image !== undefined) {
-                html += '<a href="' + image.scaled_url + '" title="Photo">' +
-                    '<img src="/static/images/icons/icon-camera.png" ' +
-                    'alt=""></a>';
+                html += '<a href="' + image.large_thumb_url + '" ' +
+                        'title="Photo">' +
+                        '<img src="/static/images/icons/icon-camera.png" ' +
+                        'alt=""></a>';
             }
             html += items[i].scientific_name + '</td>';
             html += '<td class="common-name">' + items[i].common_name +
