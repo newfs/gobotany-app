@@ -401,7 +401,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         var table = dojo.create('table', {'innerHTML': html},
                                 this.plant_list);
         var table_height = table.clientHeight;
-        $('#plant-list').height(table_height);
+        $('.plant-list').height(table_height);
 
         sidebar_set_height();
 

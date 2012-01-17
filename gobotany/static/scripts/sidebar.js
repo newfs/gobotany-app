@@ -30,6 +30,7 @@ define(['jquery.tools.min'], function() {
             new_height = MINIMUM_HEIGHT;
         }
 
+        console.log('sidebar_set_height: about to set to ', new_height);
         $('div#sidebar').css('height', new_height);
     };
 
