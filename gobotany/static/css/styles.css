@@ -26,18 +26,19 @@ nav {
 nav li {
     display: block;
     float: left;
-    padding: 5px 0 0 0;
-    margin: 0 33px 0 0;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 14px;
+    margin: 0 13px 0 0;
+    padding: 0;
 }
 nav li.last {
-    margin: 0 0 0 0;
+    margin: 0;
 }
 nav a {
+    color: #fff;
     display: block;
     height: 35px;
-    color: #fff;
+    padding: 5px 10px 0;
 }
 nav a:hover {
     background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
@@ -171,11 +172,11 @@ body.top-level {
 	background: url(/static/images/branding/newfs-logo-toplevel.png) no-repeat transparent;	
 }
 .top-level nav {
-	padding: 0 0 0 29px;
+	padding: 0 0 0 19px;
 	background: url(/static/images/layout/nav-toplevel.png) no-repeat; 	
 }
 .top-level nav li.home {
-	margin: 0 83px 0 0;	
+	margin: 0 63px 0 0;	
 }
 
 /* Home page styles */
