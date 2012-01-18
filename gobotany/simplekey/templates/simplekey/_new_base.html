@@ -33,9 +33,7 @@
 
         {# This block is for adding any JS that *has* to come first, #}
         {# such as SVGWeb. #}
-        <script>
-            {% block js_top %}{% endblock %}
-        </script>
+        {% block js_top %}{% endblock %}
 
         {# HTML5 fix for IE #}
         <!--[if lt IE 9]>

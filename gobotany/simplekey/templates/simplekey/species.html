@@ -8,15 +8,15 @@
 {% block body_attributes %}id="taxon" class="claro app taxon"{% endblock %}
 
 {% block js_top %}
-    <!-- SVGWeb script: must be first of all JS, must have data-path.
-         Also, SVG must be served from same domain as the page. -->
+    {# SVGWeb script: must be first of all JS, must have data-path. #}
+    {# Also, SVG must be served from same domain as the page. #}
     <script src="/static/svgweb/svg.js"
         data-path="/static/svgweb/"></script>
 
-    <script>
-        {# TODO: eventually move elsewhere #}
-        {% include "simplekey/partner_site_inline_js.html" %}
-        
+    {# TODO: eventually move elsewhere #}
+    {% include "simplekey/_partner_site_js.html" %}
+
+    <script>        
         API_URL = '{% url api-base %}';
     </script>
 {% endblock %}
