@@ -17,7 +17,7 @@ div.scrollingHotSpotLeft
 	z-index: 200;
 	left: 0;
 	/*  The first url is for Firefox and other browsers, the second is for Internet Explorer */
-	cursor: url(/static/images/smoothDivScroll/cursors/cursor_arrow_left.cur), url(images/cursors/cursor_arrow_left.cur),w-resize;
+	cursor: url(/static/images/smoothDivScroll/cursors/cursor_arrow_left.png), url(../images/smoothDivScroll/cursors/cursor_arrow_left.png),w-resize;
 }
 
 /* Visible left hotspot */
@@ -44,7 +44,7 @@ div.scrollingHotSpotRight
 	position: absolute;
 	z-index: 200;
 	right: 0;
-	cursor: url(/static/images/smoothDivScroll/cursors/cursor_arrow_right.cur), url(images/cursors/cursor_arrow_right.cur),e-resize;
+	cursor: url(/static/images/smoothDivScroll/cursors/cursor_arrow_right.png), url(../images/smoothDivScroll/cursors/cursor_arrow_right.png),e-resize;
 }
 
 /* Visible right hotspot */
