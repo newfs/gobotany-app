@@ -122,8 +122,8 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
             Shadowbox.open({
                 content: content_element.innerHTML,
                 player: 'html',
-                height: 507,
-                width: 872
+                height: 582,
+                width: 1000
             });
         });
     },
