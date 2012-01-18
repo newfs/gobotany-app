@@ -6,7 +6,7 @@
 require([
     'jquery.tools.min',
     'jquery-ui-1.8.16.custom.min',
-    'jquery.smoothDivScroll-1.1' /* 'jquery.smoothDivScroll-1.1-min' */
+    'jquery.smoothDivScroll-1.1-mod' /* un-minified, w/bugfix by Go Botany */
 ], function() {
 
     /* So far the Smooth Div Scroll plugin is only working in
