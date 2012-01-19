@@ -723,11 +723,11 @@ class SearchFunctionalTests(FunctionalTestCase):
 
     def test_search_results_page_has_help_results(self):
         self.get('/search/?q=start')
-        self.assertTrue(self._has_icon('help-icon'))
+        self.assertTrue(self._has_icon('help'))
 
     def test_search_results_page_has_glossary_results(self):
         self.get('/search/?q=abaxial')
-        self.assertTrue(self._has_icon('glossary-icon'))
+        self.assertTrue(self._has_icon('glossary'))
 
     def test_search_results_page_returns_no_results(self):
         self.get('/search/?q=abcd')
