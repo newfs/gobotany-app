@@ -498,6 +498,11 @@ body.app {
 .controls a.prev {
 	background: url(/static/images/icons/prev-larger.png) 0 0 no-repeat transparent;	
 }
+.controls a.disabled {
+    cursor: default;
+    opacity: 0.4;
+    filter:Alpha(opacity=40) /* For IE8 and earlier */
+}
 .list-item .details {
 	float: left;	
 	width: 425px;
