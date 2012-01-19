@@ -151,12 +151,14 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         taxon.factoid);
 
                     // Fill in Habitat.
-                    var habitat_list = taxon.habitat.sort().join(', ');
-                    habitat_list = habitat_list[0].toUpperCase() +
-                        habitat_list.slice(1);
-                    dojo.html.set(dojo.query(
-                        '#plant-detail-modal div.details p.habitat')[0],
-                        habitat_list);
+                    if (taxon.habitat !== undefined) {
+                        var habitat_list = taxon.habitat.sort().join(', ');
+                        habitat_list = habitat_list[0].toUpperCase() +
+                            habitat_list.slice(1);
+                        dojo.html.set(dojo.query(
+                            '#plant-detail-modal div.details p.habitat')[0],
+                            habitat_list);
+                    }
 
                     // Fill in Characteristics.
                     var characters = this.get_character_list(
@@ -211,29 +213,32 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     dojo.attr(button, 'href', url);
 
                     // Add images.
-                    var clicked_image_path = $('img', plant_link).attr('src');
-                    clicked_image_path = clicked_image_path.substr(
-                        0, clicked_image_path.indexOf('_jpg_'));
-                    var is_missing_image = $('div.missing-image',
-                        plant_link).length ? true : false;
                     var images_html = '';
-                    for (i = 0; i < taxon.images.length; i++) {
-                        var taxon_image = taxon.images[i];
-                        var new_image = '<img src="' +
-                            taxon_image.large_thumb_url + '" alt="' +
-                            taxon_image.title + '">';
-                        var taxon_image_path = taxon_image.large_thumb_url;
-                        taxon_image_path = taxon_image_path.substr(
-                            0, taxon_image_path.indexOf('_jpg_'));
-                        if (clicked_image_path === taxon_image_path &&
-                            !is_missing_image) {
+                    var clicked_image_path = $('img', plant_link).attr('src');
+                    if (clicked_image_path !== undefined) {
+                        clicked_image_path = clicked_image_path.substr(
+                            0, clicked_image_path.indexOf('_jpg_'));
+                        var is_missing_image = $('div.missing-image',
+                            plant_link).length ? true : false;
+                        for (i = 0; i < taxon.images.length; i++) {
+                            var taxon_image = taxon.images[i];
+                            var new_image = '<img src="' +
+                                taxon_image.large_thumb_url + '" alt="' +
+                                taxon_image.title + '">';
+                            var taxon_image_path = 
+                                taxon_image.large_thumb_url;
+                            taxon_image_path = taxon_image_path.substr(
+                                0, taxon_image_path.indexOf('_jpg_'));
+                            if (clicked_image_path === taxon_image_path &&
+                                !is_missing_image) {
 
-                            // Since this is the same image as was
-                            // clicked, show it first.
-                            images_html = new_image + images_html;
-                        }
-                        else {
-                            images_html += new_image;
+                                // Since this is the same image as was
+                                // clicked, show it first.
+                                images_html = new_image + images_html;
+                            }
+                            else {
+                                images_html += new_image;
+                            }
                         }
                     }
                     dojo.html.set(
