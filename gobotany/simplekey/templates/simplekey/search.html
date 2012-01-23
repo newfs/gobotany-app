@@ -68,8 +68,17 @@
                                             title="Glossary page">
 {% search_highlight result.title with query as item_title excerpt 'False' %}{{ item_title }}</a>
                                         {% else %}
-                                            Error: unknown search
-                                            result model name.
+                                            {% if result.model_name == 'groupslistpage' %}
+                                            <a href="{% url simplekey %}"><img
+                                                src="/static/images/icons/icon-groups-list.png"
+                                                alt=""
+                                                title="Simple Key plant groups page">
+{% search_highlight result.title with query as item_title excerpt 'False' %}{{ item_title }}</a>
+                                            </a>
+                                            {% else %}
+                                                Error: unknown search
+                                                result model name.
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 {% endif %}

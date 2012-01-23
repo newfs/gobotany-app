@@ -1,5 +1,6 @@
 from django.db import models
-from gobotany.core.models import GlossaryTerm
+
+from gobotany.core.models import GlossaryTerm, PileGroup
 
 
 class Blurb(models.Model):
@@ -19,7 +20,7 @@ def get_blurb(name):
 
 
 # Note: The motivation for creating the following classes was to organize
-# information for the Help and Glossary pages in order to build Haystack
+# information for various page type in order to build Haystack/Solr
 # search engine indexes for them.
 
 class Video(models.Model):
@@ -41,7 +42,7 @@ class HelpPage(models.Model):
     url_path = models.CharField(max_length=100)
     blurbs = models.ManyToManyField(Blurb)
     videos = models.ManyToManyField(Video)
-    
+
     class Meta:
         verbose_name_plural = 'help pages'
 
@@ -51,7 +52,7 @@ class HelpPage(models.Model):
 
 class GlossaryHelpPage(models.Model):
     """A Help page that lists glossary terms for a letter (or number).
-       
+
        (Do not inherit from HelpPage here, in order to keep records separate
        for search engine indexing.)
     """
@@ -62,6 +63,21 @@ class GlossaryHelpPage(models.Model):
 
     class Meta:
         verbose_name_plural = 'glossary help pages'
+
+    def __unicode__(self):
+        return u'%s' % self.title
+
+
+class GroupsListPage(models.Model):
+    """Outline of the contents of the first Simple Key page: a list of
+    plant groups.
+    """
+    title = models.CharField(max_length=100)
+    main_heading = models.CharField(max_length=100)
+    groups = models.ManyToManyField(PileGroup)
+
+    class Meta:
+        verbose_name = 'groups list page'
 
     def __unicode__(self):
         return u'%s' % self.title

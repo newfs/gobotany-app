@@ -23,7 +23,7 @@ from django.template.defaultfilters import slugify
 
 import bulkup
 from gobotany.core import models
-from gobotany.simplekey.models import Blurb, Video, HelpPage
+from gobotany.simplekey.models import Blurb, Video, HelpPage, GroupsListPage
 
 DEBUG=False
 log = logging.getLogger('gobotany.import')
@@ -120,6 +120,7 @@ class Importer(object):
         self._import_plant_preview_characters()
         self._import_extra_demo_data()
         self._import_help()
+        self._import_simple_key_pages()
         self._import_search_suggestions()
 
     @transaction.commit_on_success
@@ -1649,6 +1650,30 @@ class Importer(object):
         self._create_understanding_plant_collections_page()
         self._create_video_help_topics_page()
         self._create_glossary_pages()
+
+
+    def _create_plant_groups_list_page(self):
+        groups_list_page, created = GroupsListPage.objects.get_or_create(
+            title='Simple Key for Plant Identification',
+            main_heading='Which group best describes your plant?')
+        if created:
+            print >> self.logfile, \
+                     u'  New Groups List page: ', groups_list_page
+        # Add plant groups.
+        groups = models.PileGroup.objects.all()
+        for group in groups:
+            groups_list_page.groups.add(group)
+        groups_list_page.save()
+
+
+    def _import_simple_key_pages(self):
+        print >> self.logfile, 'Setting up Simple Key pages'
+
+        # Create Simple Key page model records to be used for search
+        # engine indexing and ideally also by the page templates.
+        self._create_plant_groups_list_page()
+        #self._create_plant_subgroups_list_pages()
+        #self._create_plant_subgroup_keying_pages()
 
 
     @transaction.commit_on_success

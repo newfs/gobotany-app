@@ -1,0 +1,17 @@
+{{ object.title }}.
+
+You are here: Simple Key
+
+{{ object.main_heading }}
+
+{% for group in object.groups.all %}
+    Group:
+    {{ group.friendly_title }}.
+    {{ group.friendly_name }}.
+
+    Key Characteristics:
+    {{ group.key_characteristics|striptags }}
+    Exceptions:
+    {{ group.notable_exceptions|striptags }}
+{% endfor %}
+

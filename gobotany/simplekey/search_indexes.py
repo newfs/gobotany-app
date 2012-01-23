@@ -1,7 +1,10 @@
 from haystack import indexes
 from haystack import site
+
 from gobotany.core.models import Taxon, Family, Genus
-from gobotany.simplekey.models import HelpPage, GlossaryHelpPage
+
+from gobotany.simplekey.models import (HelpPage, GlossaryHelpPage,
+                                       GroupsListPage)
 
 class CharacterCharField(indexes.CharField):
     '''A CharField that understands how to get the character value
@@ -40,14 +43,6 @@ class TaxonIndex(indexes.SearchIndex):
     text = indexes.CharField(
         document=True, use_template=True,
         template_name='simplekey/search_text_species.txt')
-
-    # extra non-searchable, retrievable fields, used for display
-    #
-    # JG note: I think Description was just used for example here. Description
-    # is now a regular field in the taxon model rather than a character.
-    description = CharacterCharField(indexed=True,
-                                     character_name='description',
-                                     default='description not yet available')
 
     def index_queryset(self):
         return Taxon.objects.filter()
@@ -92,8 +87,16 @@ class GlossaryHelpPageIndex(indexes.SearchIndex):
         return data
 
 
+class GroupsListPageIndex(indexes.SearchIndex):
+    title = indexes.CharField(model_attr='title')
+    text = indexes.CharField(
+        document=True, use_template=True,
+        template_name = 'simplekey/search_text_groups_list_page.txt')
+
+
 site.register(Taxon, TaxonIndex)
 site.register(Family, FamilyIndex)
 site.register(Genus, GenusIndex)
 site.register(HelpPage, HelpPageIndex)
 site.register(GlossaryHelpPage, GlossaryHelpPageIndex)
+site.register(GroupsListPage, GroupsListPageIndex)
