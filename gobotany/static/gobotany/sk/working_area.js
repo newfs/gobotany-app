@@ -202,6 +202,15 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
             dojo.query('span.label', character_value_div).forEach(
                 this.glossarize);
         }
+
+        // Call a method when radio button is clicked.
+        var inputs = values_q.query('input');
+        for (var i = 0; i < inputs.length; i++)
+            dojo.connect(inputs[i], 'onclick',
+                         dojo.hitch(this, '_on_choice_change'));
+
+        // Set up the Apply Selection button.
+        this._on_choice_change();
     },
 
     /* How to grab the currently-selected value from the DOM. */
@@ -209,6 +218,16 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
     _current_value: function() {
         var value = dojo.query('input:checked', this.div).attr('value')[0];
         return value || null;
+    },
+
+    /* Update whether the "Apply Selection" button is gray or not. */
+
+    _on_choice_change: function(event) {
+        var apply_button = dojo.query('.apply-btn', this.div);
+        if (this._current_value() === this.filter.selected_value)
+            apply_button.addClass('disabled');
+        else
+            apply_button.removeClass('disabled');
     },
 
     /* Get a value suitable for use as an image element id from the
@@ -245,6 +264,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
 
     _apply_button_clicked: function(event) {
         dojo.stopEvent(event);
+        apply_button.removeClass('disabled');
         this._apply_filter_value();
         this.dismiss();
     },
