@@ -1,6 +1,6 @@
 from django.db import models
 
-from gobotany.core.models import GlossaryTerm, PileGroup
+from gobotany.core.models import GlossaryTerm, Pile, PileGroup
 
 
 class Blurb(models.Model):
@@ -78,6 +78,23 @@ class GroupsListPage(models.Model):
 
     class Meta:
         verbose_name = 'groups list page'
+        verbose_name_plural = 'groups list pages'
+
+    def __unicode__(self):
+        return u'%s' % self.title
+
+
+class SubgroupsListPage(models.Model):
+    """Outline of the contents of a second-level Simple Key page:
+    a list of plant subgroups.
+    """
+    title = models.CharField(max_length=100)
+    main_heading = models.CharField(max_length=100)
+    group = models.ForeignKey(PileGroup)
+
+    class Meta:
+        verbose_name = 'subgroups list page'
+        verbose_name_plural = 'subgroups list pages'
 
     def __unicode__(self):
         return u'%s' % self.title

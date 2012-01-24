@@ -4,7 +4,7 @@ from haystack import site
 from gobotany.core.models import Taxon, Family, Genus
 
 from gobotany.simplekey.models import (HelpPage, GlossaryHelpPage,
-                                       GroupsListPage)
+                                       GroupsListPage, SubgroupsListPage)
 
 class CharacterCharField(indexes.CharField):
     '''A CharField that understands how to get the character value
@@ -94,9 +94,17 @@ class GroupsListPageIndex(indexes.SearchIndex):
         template_name = 'simplekey/search_text_groups_list_page.txt')
 
 
+class SubgroupsListPageIndex(indexes.SearchIndex):
+    title = indexes.CharField(model_attr='title')
+    text = indexes.CharField(
+        document=True, use_template=True,
+        template_name = 'simplekey/search_text_subgroups_list_page.txt')
+
+
 site.register(Taxon, TaxonIndex)
 site.register(Family, FamilyIndex)
 site.register(Genus, GenusIndex)
 site.register(HelpPage, HelpPageIndex)
 site.register(GlossaryHelpPage, GlossaryHelpPageIndex)
 site.register(GroupsListPage, GroupsListPageIndex)
+site.register(SubgroupsListPage, SubgroupsListPageIndex)

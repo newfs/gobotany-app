@@ -10,8 +10,8 @@ You are here: Simple Key
     {{ group.friendly_name }}.
 
     Key Characteristics:
-    {{ group.key_characteristics|striptags }}
+    {{ group.key_characteristics|striptags|safe }}
     Exceptions:
-    {{ group.notable_exceptions|striptags }}
+    {{ group.notable_exceptions|striptags|safe }}
 {% endfor %}
 

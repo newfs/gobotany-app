@@ -1,0 +1,16 @@
+{{ object.title }}.
+
+You are here: Simple Key > {{ object.group.friendly_title }}
+
+{{ object.main_heading }}
+
+{% for subgroup in object.group.piles.all %}
+    Subgroup:
+    {{ subgroup.friendly_title }}.
+    {{ subgroup.friendly_name }}.
+
+    Key Characteristics:
+    {{ subgroup.key_characteristics|striptags|safe }}
+    Exceptions:
+    {{ subgroup.notable_exceptions|striptags|safe }}
+{% endfor %}

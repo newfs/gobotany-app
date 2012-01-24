@@ -958,12 +958,12 @@ class SearchFunctionalTests(FunctionalTestCase):
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_group_page_found(result_links))
 
-#    def test_search_results_subgroup_page_main_heading(self):
-#        self.get('/search/?q=woody%20broad-leaved%20plants')
-#        result_links = self._result_links()
-#        self.assertTrue(len(result_links) > 0)
-#        self.assertTrue(self._is_subgroup_page_found(result_links,
-#                                                     'Woody Plants'))
+    def test_search_results_subgroup_page_main_heading(self):
+        self.get('/search/?q=these%20subgroups')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 5)
+        self.assertTrue(self._is_subgroup_page_found(result_links,
+                                                     'Woody Plants'))
 
     # Search on plant group or subgroup "friendly title"
 
@@ -973,12 +973,12 @@ class SearchFunctionalTests(FunctionalTestCase):
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_group_page_found(result_links))
 
-#    def test_search_results_have_subgroup_page_for_friendly_title(self):
-#        self.get('/search/?q=woody%20broad-leaved%20plants')
-#        result_links = self._result_links()
-#        self.assertTrue(len(result_links) > 0)
-#        self.assertTrue(self._is_subgroup_page_found(result_links,
-#                                                     'Woody Plants'))
+    def test_search_results_have_subgroup_page_for_friendly_title(self):
+        self.get('/search/?q=woody%20broad-leaved%20plants')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_subgroup_page_found(result_links,
+                                                     'Woody Plants'))
 
     # Search on portion of plant group or subgroup "friendly name"
 
@@ -988,12 +988,12 @@ class SearchFunctionalTests(FunctionalTestCase):
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_group_page_found(result_links))
 
-#    def test_search_results_have_subgroup_page_for_friendly_name(self):
-#        self.get('/search/?q=bulrushes')
-#        result_links = self._result_links()
-#        self.assertTrue(len(result_links) > 0)
-#        self.assertTrue(self._is_subgroup_page_found(result_links,
-#                                                     'Graminoids'))
+    def test_search_results_have_subgroup_page_for_friendly_name(self):
+        self.get('/search/?q=bulrushes')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_subgroup_page_found(result_links,
+                                                     'Grass-like plants'))
 
     # Search on portion of plant group or subgroup key characteristics
     # or exceptions text
@@ -1004,12 +1004,12 @@ class SearchFunctionalTests(FunctionalTestCase):
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_group_page_found(result_links))
 
-#    def test_search_results_have_subgroup_page_for_key_characteristics(self):
-#        self.get('/search/?q=sedges%20have%20edges')
-#        result_links = self._result_links()
-#        self.assertTrue(len(result_links) > 0)
-#        self.assertTrue(self._is_subgroup_page_found(result_links,
-#                                                     'Graminoids'))
+    def test_search_results_have_subgroup_page_for_key_characteristics(self):
+        self.get('/search/?q=sedges%20have%20edges')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_subgroup_page_found(result_links,
+                                                     'Grass-like plants'))
 
     def test_search_results_have_group_page_for_exceptions(self):
         self.get('/search/?q=dissected%20leaves')   # Ferns
@@ -1017,11 +1017,11 @@ class SearchFunctionalTests(FunctionalTestCase):
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_group_page_found(result_links))
 
-#    def test_search_results_have_subgroup_page_for_exceptions(self):
-#        self.get('/search/?q=curly%20stems')   # Horsetails
-#        result_links = self._result_links()
-#        self.assertTrue(len(result_links) > 0)
-#        self.assertTrue(self._is_subgroup_page_found(result_links, 'Ferns'))
+    def test_search_results_have_subgroup_page_for_exceptions(self):
+        self.get('/search/?q=curly%20stems')   # Horsetails
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_subgroup_page_found(result_links, 'Ferns'))
 
     # Search on plant scientific name
 

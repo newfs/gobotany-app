@@ -23,7 +23,8 @@ from django.template.defaultfilters import slugify
 
 import bulkup
 from gobotany.core import models
-from gobotany.simplekey.models import Blurb, Video, HelpPage, GroupsListPage
+from gobotany.simplekey.models import (Blurb, GroupsListPage, HelpPage,
+                                       SubgroupsListPage, Video)
 
 DEBUG=False
 log = logging.getLogger('gobotany.import')
@@ -1666,13 +1667,27 @@ class Importer(object):
         groups_list_page.save()
 
 
+    def _create_plant_subgroups_list_pages(self):
+        groups = models.PileGroup.objects.all()
+        for group in groups:
+            title = '%s: Simple Key' % group.friendly_title
+            subgroups_list_page, created = \
+                SubgroupsListPage.objects.get_or_create(
+                    title=title,
+                    main_heading='Is your plant in one of these subgroups?',
+                    group=group)   # Subgroups can be accessed via group
+        if created:
+            print >> self.logfile, \
+                     u'  New Subgroups List page: ', subgroups_list_page
+
+
     def _import_simple_key_pages(self):
         print >> self.logfile, 'Setting up Simple Key pages'
 
         # Create Simple Key page model records to be used for search
         # engine indexing and ideally also by the page templates.
         self._create_plant_groups_list_page()
-        #self._create_plant_subgroups_list_pages()
+        self._create_plant_subgroups_list_pages()
         #self._create_plant_subgroup_keying_pages()
 
 

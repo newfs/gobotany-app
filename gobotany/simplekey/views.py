@@ -24,7 +24,8 @@ from gobotany.core.models import (
 from gobotany.core.partner import which_partner
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ORDERED_GROUPS
-from gobotany.simplekey.models import get_blurb, SearchSuggestion
+from gobotany.simplekey.models import (get_blurb, GroupsListPage,
+                                       SearchSuggestion, SubgroupsListPage)
 
 #
 
@@ -128,9 +129,11 @@ def _partner_short_name(partner):
 def simple_key_view(request):
     partner = which_partner(request)
     short_name = _partner_short_name(partner)
+    groups_list_page = GroupsListPage.objects.all()[0]
 
     return render_to_response('simplekey/simple.html', {
             'partner_site': short_name,
+            'groups_list_page': groups_list_page,
             'pilegroups': [
                 (pilegroup, pilegroup.pilegroupimage_set.all(),
                  get_simple_url(pilegroup))
@@ -143,9 +146,11 @@ def pilegroup_view(request, pilegroup_slug):
 
     partner = which_partner(request)
     short_name = _partner_short_name(partner)
+    subgroups_list_page = SubgroupsListPage.objects.get(group=pilegroup)
 
     return render_to_response('simplekey/pilegroup.html', {
             'partner_site': short_name,
+            'subgroups_list_page': subgroups_list_page,
             'pilegroup': pilegroup,
             'piles': [
                 (pile, pile.pileimage_set.all(), get_simple_url(pile))

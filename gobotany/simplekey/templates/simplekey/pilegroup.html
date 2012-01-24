@@ -1,7 +1,7 @@
 {% extends "simplekey/_new_base.html" %}
 {% load simplekey_extras %}
 
-{% block title %}{{ pilegroup.name }}: Simple Key{% endblock %}
+{% block title %}{{ subgroups_list_page.title }}{% endblock %}
 
 {% block body_attributes %}id="plant-id-2" class="claro app"{% endblock %}
 
@@ -25,7 +25,7 @@
                     &gt; <span>{{ pilegroup.friendly_title|lower|capfirst }}</span></p>
                 </div>
                 
-                <h2>Is your plant in one of these subgroups?</h2>
+                <h2>{{ subgroups_list_page.main_heading }}</h2>
 
                 <div class="clearit"></div>
 

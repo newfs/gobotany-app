@@ -1,7 +1,7 @@
 {% extends "simplekey/_new_base.html" %}
 {% load simplekey_extras %}
 
-{% block title %}Simple Key for Plant Identification{% endblock %}
+{% block title %}{{ groups_list_page.title }}{% endblock %}
 
 {% block body_attributes %}id="plant-id" class="claro app"{% endblock %}
 
@@ -24,7 +24,7 @@
                     <p>You are here: <span>Simple Key</span></p>
                 </div>
 
-                <h2>Which group best describes your plant?</h2>
+                <h2>{{ groups_list_page.main_heading }}</h2>
 
                 <div class="clearit"></div>
 
