@@ -4,6 +4,10 @@ You are here: Simple Key > {{ object.group.friendly_title }}
 
 {{ object.main_heading }}
 
+{# In the search result excerpt, plant subgroups will not appear in the   #}
+{# same order as they do on the page because there is not a convenient    #}
+{# way to pass along the ordered list. However, this should be OK and not #}
+{# too noticeable. What is important is making the subgroups searchable.  #}
 {% for subgroup in object.group.piles.all %}
     Subgroup:
     {{ subgroup.friendly_title }}.

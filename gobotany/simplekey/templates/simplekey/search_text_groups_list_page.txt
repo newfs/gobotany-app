@@ -4,6 +4,10 @@ You are here: Simple Key
 
 {{ object.main_heading }}
 
+{# In the search result excerpt, plant groups will not appear in the same #}
+{# order as they do on the page because there is not a convenient way to  #}
+{# pass along the ordered list. However, this should be OK and not too    #}
+{# noticeable. What is important is making the groups searchable.         #}
 {% for group in object.groups.all %}
     Group:
     {{ group.friendly_title }}.
