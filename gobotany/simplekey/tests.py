@@ -3,6 +3,7 @@ from django.test.client import Client
 
 from gobotany.core.models import Pile, PileGroup
 from gobotany.simplekey.groups_order import ORDERED_GROUPS
+from gobotany.simplekey.models import GroupsListPage
 from gobotany.simplekey.templatetags.simplekey_extras import italicize_plant
 from gobotany.simplekey.views import ordered_pilegroups, ordered_piles
 
@@ -49,10 +50,23 @@ def create_groups():
         pilegroup.save()
 
 
+def create_simple_key_pages():
+    """Create page objects for the Simple Key that supply some basic
+    information for page display and for search engine indexing.
+    """
+    groups_list_page = GroupsListPage(
+        title='Simple Key for Plant Identification',
+        main_heading='Which group best describes your plant?')
+    groups_list_page.save()
+    groups_list_page.groups = PileGroup.objects.all()
+    groups_list_page.save()
+
+
 class SimpleTests(TestCase):
 
     def setUp(self):
         create_groups()
+        create_simple_key_pages()
 
     def test_start_page(self):
         c = Client()
