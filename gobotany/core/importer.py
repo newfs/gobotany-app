@@ -24,7 +24,8 @@ from django.template.defaultfilters import slugify
 import bulkup
 from gobotany.core import models
 from gobotany.simplekey.models import (Blurb, GroupsListPage, HelpPage,
-                                       SubgroupsListPage, Video)
+                                       SubgroupResultsPage, SubgroupsListPage,
+                                       Video)
 
 DEBUG=False
 log = logging.getLogger('gobotany.import')
@@ -1681,14 +1682,30 @@ class Importer(object):
                      u'  New Subgroups List page: ', subgroups_list_page
 
 
+    def _create_plant_subgroup_results_pages(self):
+        subgroups = models.Pile.objects.all()
+        for subgroup in subgroups:
+            title = '%s: %s: Simple Key' % (subgroup.friendly_title,
+                                            subgroup.pilegroup.friendly_title)
+            subgroup_results_page, created = \
+                SubgroupResultsPage.objects.get_or_create(
+                    title=title,
+                    main_heading=subgroup.friendly_title,
+                    subgroup=subgroup)   # Taxa can be accessed via subgroup
+        if created:
+            print >> self.logfile, \
+                     u'  New Subgroup Results page: ', subgroup_results_page
+
+
     def _import_simple_key_pages(self):
         print >> self.logfile, 'Setting up Simple Key pages'
 
         # Create Simple Key page model records to be used for search
-        # engine indexing and ideally also by the page templates.
+        # engine indexing and also to supply some basic information to
+        # the page templates.
         self._create_plant_groups_list_page()
         self._create_plant_subgroups_list_pages()
-        #self._create_plant_subgroup_keying_pages()
+        self._create_plant_subgroup_results_pages()
 
 
     @transaction.commit_on_success

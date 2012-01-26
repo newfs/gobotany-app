@@ -1,0 +1,16 @@
+{{ object.title }}.
+
+You are here: Simple Key > {{ object.subgroup.pilegroup.friendly_title }} >
+{{ object.subgroup.friendly_title }}
+
+{{ object.main_heading }}
+
+{# In the search result excerpt, plant species will not appear in the     #}
+{# same order as they do on the page because there is not a convenient    #}
+{# way to pass along the ordered list. However, this should be OK and not #}
+{# too noticeable. What is important is making the species searchable.    #}
+{% for plant in object.subgroup.species.all %}
+    {{ plant.scientific_name }}.
+    {{ plant.common_names.all.0 }}.
+{% endfor %}
+

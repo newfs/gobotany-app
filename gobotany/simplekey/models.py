@@ -100,6 +100,22 @@ class SubgroupsListPage(models.Model):
         return u'%s' % self.title
 
 
+class SubgroupResultsPage(models.Model):
+    """Outline of the contents of a third-level Simple Key page:
+    the results page, with questions, for a subgroup.
+    """
+    title = models.CharField(max_length=200)
+    main_heading = models.CharField(max_length=200)
+    subgroup = models.ForeignKey(Pile)
+
+    class Meta:
+        verbose_name = 'subgroup results page'
+        verbose_name_plural = 'subgroup results pages'
+
+    def __unicode__(self):
+        return u'%s' % self.title
+
+
 class SearchSuggestion(models.Model):
     """An index of terms for auto-suggesting searches."""
     term = models.CharField(max_length=150, unique=True, db_index=True)

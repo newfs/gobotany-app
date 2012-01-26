@@ -81,6 +81,13 @@
                                 alt="" title="Simple Key plant subgroups page">
                                 {{ item_title }}</a>
                         {% endif %}
+                        {% if result.model_name == 'subgroupresultspage' %}
+                            <a href="{% url simplekey-pile result.object.subgroup.pilegroup.slug result.object.subgroup.slug %}">
+                            <img src="/static/images/icons/icon-grid.png"
+                                alt=""
+                                title="Simple Key plant group results page">
+                                {{ item_title }}</a>
+                        {% endif %}
                         <p>
                         {% search_highlight result.text with query as result_excerpt ignore_between '\n--\n' %}{{ result_excerpt }}
                         </p>

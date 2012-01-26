@@ -4,7 +4,8 @@ from haystack import site
 from gobotany.core.models import Taxon, Family, Genus
 
 from gobotany.simplekey.models import (HelpPage, GlossaryHelpPage,
-                                       GroupsListPage, SubgroupsListPage)
+                                       GroupsListPage, SubgroupResultsPage,
+                                       SubgroupsListPage)
 
 class CharacterCharField(indexes.CharField):
     '''A CharField that understands how to get the character value
@@ -46,6 +47,13 @@ class TaxonIndex(indexes.SearchIndex):
 
     def index_queryset(self):
         return Taxon.objects.filter()
+
+    def prepare(self, obj):
+        data = super(TaxonIndex, self).prepare(obj)
+        # Boost 150% to help ensure species results come first when
+        # searching on scientific names or common names.
+        data['boost'] = 1.5
+        return data
 
 
 class FamilyIndex(indexes.SearchIndex):
@@ -93,12 +101,26 @@ class GroupsListPageIndex(indexes.SearchIndex):
         document=True, use_template=True,
         template_name = 'simplekey/search_text_groups_list_page.txt')
 
+    def prepare(self, obj):
+        data = super(GroupsListPageIndex, self).prepare(obj)
+        # Boost 200% to help ensure high ranking when searching on
+        # parts of group friendly names, such as "trees."
+        data['boost'] = 2.0
+        return data
+
 
 class SubgroupsListPageIndex(indexes.SearchIndex):
     title = indexes.CharField(model_attr='title')
     text = indexes.CharField(
         document=True, use_template=True,
         template_name = 'simplekey/search_text_subgroups_list_page.txt')
+
+
+class SubgroupResultsPageIndex(indexes.SearchIndex):
+    title = indexes.CharField(model_attr='title')
+    text = indexes.CharField(
+        document=True, use_template=True,
+        template_name = 'simplekey/search_text_subgroup_results_page.txt')
 
 
 site.register(Taxon, TaxonIndex)
@@ -108,3 +130,4 @@ site.register(HelpPage, HelpPageIndex)
 site.register(GlossaryHelpPage, GlossaryHelpPageIndex)
 site.register(GroupsListPage, GroupsListPageIndex)
 site.register(SubgroupsListPage, SubgroupsListPageIndex)
+site.register(SubgroupResultsPage, SubgroupResultsPageIndex)

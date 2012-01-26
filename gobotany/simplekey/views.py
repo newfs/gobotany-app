@@ -25,7 +25,8 @@ from gobotany.core.partner import which_partner
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ORDERED_GROUPS
 from gobotany.simplekey.models import (get_blurb, GroupsListPage,
-                                       SearchSuggestion, SubgroupsListPage)
+                                       SearchSuggestion, SubgroupResultsPage,
+                                       SubgroupsListPage)
 
 #
 
@@ -165,9 +166,11 @@ def results_view(request, pilegroup_slug, pile_slug):
 
     partner = which_partner(request)
     short_name = _partner_short_name(partner)
+    subgroup_results_page = SubgroupResultsPage.objects.get(subgroup=pile)
 
     return render_to_response('simplekey/results.html', {
            'partner_site': short_name,
+           'subgroup_results_page': subgroup_results_page,
            'pilegroup': pile.pilegroup,
            'pile': pile,
            }, context_instance=RequestContext(request))

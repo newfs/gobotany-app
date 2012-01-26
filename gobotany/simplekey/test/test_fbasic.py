@@ -697,9 +697,14 @@ class SearchFunctionalTests(FunctionalTestCase):
         self.get('/search/?q=christmas+fern')
         result_links = self._result_links()
         self.assertTrue(len(result_links))
-        url_parts = result_links[0].get_attribute('href').split('/')
-        species = ' '.join(url_parts[-3:-1]).capitalize()
-        self.assertEqual('Polystichum acrostichoides', species)
+        plant_found = False
+        for result_link in result_links:
+            url_parts = result_link.get_attribute('href').split('/')
+            species = ' '.join(url_parts[-3:-1]).capitalize()
+            if species == 'Polystichum acrostichoides':
+                plant_found = True
+                break
+        self.assertTrue(plant_found)
 
     def _has_icon(self, url_substring):
         has_icon = False
@@ -742,7 +747,8 @@ class SearchFunctionalTests(FunctionalTestCase):
                          message[0].text)
 
     def test_search_results_page_has_singular_heading(self):
-        self.get('/search/?q=carved+quillwort')
+        query = '%22simple+key+for+plant+identification%22'   # in quotes
+        self.get('/search/?q=%s' % query)   # query that returns 1 result
         heading = self.css('#main h2')
         self.assertTrue(len(heading))
         self.assertTrue(heading[0].text.startswith('1 Result for'))
@@ -910,8 +916,8 @@ class SearchFunctionalTests(FunctionalTestCase):
     # - Group page (aka Level 1 page: the list of plant groups)
     # - Subgroup page (aka Level 2 page: a list of plant subgroups for
     #   a group)
-    # - Keying page (aka Level 3 page: the keying/results page for a
-    #   plant subgroup)
+    # - Results page (aka Level 3 page: the questions/results page for
+    #   a plant subgroup)
     #####
 
     def _is_page_found(self, result_links, page_title_text):
@@ -930,24 +936,24 @@ class SearchFunctionalTests(FunctionalTestCase):
         return self._is_page_found(result_links,
                                    '%s: Simple Key' % group_name)
 
-    def _is_keying_page_found(self, result_links, group_name, subgroup_name):
+    def _is_results_page_found(self, result_links, group_name, subgroup_name):
         return self._is_page_found(
-            result_links, '%s: %s: Simple Key' % (group_name, subgroup_name))
+            result_links, '%s: %s: Simple Key' % (subgroup_name, group_name))
 
     # Search on site feature name "Simple Key"
 
-#    def test_search_results_have_simple_key_pages(self):
-#        self.get('/search/?q=simple%20key')
-#        result_links = self._result_links()
-#        self.assertTrue(len(result_links) > 2)
-#        results_with_simple_key_in_title = []
-#        for link in result_links:
-#            if link.text.find('Simple Key') > -1:
-#                results_with_simple_key_in_title.append(link)
-#        # There should be at least three pages with Simple Key in the
-#        # title: the initial groups list page, any of the subgroups list
-#        # pages, and any of the subgroup keying/results pages.
-#        self.assertTrue(len(resuts_with_simple_key_in_title) > 2)
+    def test_search_results_have_simple_key_pages(self):
+        self.get('/search/?q=simple%20key')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 2)
+        results_with_simple_key_in_title = []
+        for link in result_links:
+            if link.text.find('Simple Key') > -1:
+                results_with_simple_key_in_title.append(link)
+        # There should be at least three pages with Simple Key in the
+        # title: the initial groups list page, any of the subgroups list
+        # pages, and any of the subgroup results pages.
+        self.assertTrue(len(results_with_simple_key_in_title) > 2)
 
 
     # Search on main heading of plant group or subgroup pages
@@ -983,17 +989,17 @@ class SearchFunctionalTests(FunctionalTestCase):
     # Search on portion of plant group or subgroup "friendly name"
 
     def test_search_results_have_group_page_for_friendly_name(self):
-        self.get('/search/?q=trees')
+        self.get('/search/?q=lianas')
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_group_page_found(result_links))
 
     def test_search_results_have_subgroup_page_for_friendly_name(self):
-        self.get('/search/?q=bulrushes')
+        self.get('/search/?q=aroids')
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
-        self.assertTrue(self._is_subgroup_page_found(result_links,
-                                                     'Grass-like plants'))
+        self.assertTrue(self._is_subgroup_page_found(
+            result_links, 'Orchids and related plants'))
 
     # Search on portion of plant group or subgroup key characteristics
     # or exceptions text
@@ -1005,14 +1011,14 @@ class SearchFunctionalTests(FunctionalTestCase):
         self.assertTrue(self._is_group_page_found(result_links))
 
     def test_search_results_have_subgroup_page_for_key_characteristics(self):
-        self.get('/search/?q=sedges%20have%20edges')
+        self.get('/search/?q=%22sedges%20have%20edges%22')   # quoted query
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_subgroup_page_found(result_links,
                                                      'Grass-like plants'))
 
     def test_search_results_have_group_page_for_exceptions(self):
-        self.get('/search/?q=dissected%20leaves')   # Ferns
+        self.get('/search/?q=showy%20flowers')   # Grass-like plants
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_group_page_found(result_links))
@@ -1025,33 +1031,33 @@ class SearchFunctionalTests(FunctionalTestCase):
 
     # Search on plant scientific name
 
-#    def test_search_results_have_keying_page_for_scientific_name(self):
-#        self.get('/search/?q=dendrolycopodium%20dendroideum')
-#        result_links = self._result_links()
-#        self.assertTrue(len(result_links) > 0)
-#        self.assertTrue(self._is_keying_page_found(
-#            result_links, 'Ferns',
-#            'Clubmosses and relatives, plus quillworts'))
+    def test_search_results_contain_results_page_for_scientific_name(self):
+        self.get('/search/?q=dendrolycopodium%20dendroideum')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_results_page_found(
+            result_links, 'Ferns',
+            'Clubmosses and relatives, plus quillworts'))
 
     # Search on plant common name
 
-#    def test_search_results_contain_results_page_for_common_name(self):
-#        self.get('/search/?q=prickly%20tree-clubmoss')
-#        result_links = self._result_links()
-#        self.assertTrue(len(result_links) > 0)
-#        self.assertTrue(self._is_keying_page_found(
-#            result_links, 'Ferns',
-#            'Clubmosses and relatives, plus quillworts'))
+    def test_search_results_contain_results_page_for_common_name(self):
+        self.get('/search/?q=prickly%20tree-clubmoss')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_results_page_found(
+            result_links, 'Ferns',
+            'Clubmosses and relatives, plus quillworts'))
 
     # Search on plant genus name
 
-#    def test_search_results_contain_results_page_for_genus_name(self):
-#        self.get('/search/?q=dendrolycopdium')
-#        result_links = self._result_links()
-#        self.assertTrue(len(result_links) > 0)
-#        self.assertTrue(self._is_keying_page_found(
-#            result_links, 'Ferns',
-#            'Clubmosses and relatives, plus quillworts'))
+    def test_search_results_contain_results_page_for_genus_name(self):
+        self.get('/search/?q=dendrolycopodium')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_results_page_found(
+            result_links, 'Ferns',
+            'Clubmosses and relatives, plus quillworts'))
 
 
 class FamilyFunctionalTests(FunctionalTestCase):

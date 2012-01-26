@@ -1,6 +1,6 @@
 {% extends "simplekey/_new_base.html" %}
 
-{% block title %}{{ pilegroup.friendly_title }}: {{ pile.friendly_title }}: Simple Key{% endblock %}
+{% block title %}{{ subgroup_results_page.title }}: Simple Key{% endblock %}
 
 {% block js_require %}
     original_location_hash = window.location.hash; // for results_overlay.js
@@ -26,7 +26,7 @@
                         &gt; <span>{{ pile.friendly_title }}</span></p>
                     </div>
 
-                    <h2>{{ pile.friendly_title|lower|capfirst }}</h2>
+                    <h2>{{ subgroup_results_page.main_heading|lower|capfirst }}</h2>
                     
                     <div class="working-area" aria-live="polite" 
                         aria-relevant="additions removals">

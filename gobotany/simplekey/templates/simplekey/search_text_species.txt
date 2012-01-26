@@ -88,11 +88,17 @@ Classification:
 {% endwith %}
 
 --
-{# Index the scientific name many more times to boost ranking. This will #}
-{# be hidden from the user because it is inside double-dash markers. #}
+{# Index the scientific name and any common names many more times to #}
+{# boost ranking. This will be hidden from the user because it is    #}
+{# inside double-dash markers. #}
 {% with object.scientific_name as the_name %}
     {% for i in 500|get_range %}
         {{ the_name }}
     {% endfor %}
 {% endwith %}
+{% for common_name in object.common_names.all %}
+    {% for i in 500|get_range %}
+        {{ common_name }}
+    {% endfor %}
+{% endfor %}
 --

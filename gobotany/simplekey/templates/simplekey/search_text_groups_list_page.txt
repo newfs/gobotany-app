@@ -1,3 +1,5 @@
+{% load simplekey_extras %}
+
 {{ object.title }}.
 
 You are here: Simple Key
@@ -19,3 +21,12 @@ You are here: Simple Key
     {{ group.notable_exceptions|striptags|safe }}
 {% endfor %}
 
+--
+{# Index the group friendly name many more times to boost ranking. This   #}
+{# will be hidden from the user because it is inside double-dash markers. #}
+{% with object.group.friendly_name as the_name %}
+    {% for i in 200|get_range %}
+        {{ the_name }}
+    {% endfor %}
+{% endwith %}
+--
