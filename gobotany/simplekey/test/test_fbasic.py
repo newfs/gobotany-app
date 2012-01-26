@@ -345,61 +345,6 @@ class FilterFunctionalTests(FunctionalTestCase):
                 u'Lycopodiella', u'Lycopodium', u'Spinulum',
                 ])
 
-    @unittest2.skip('delete if closing working area upon Apply is approved')
-    def test_quickly_press_apply_twice(self):
-
-        # Does a double tap of "apply" load species twice?
-
-        self.get('/ferns/lycophytes/')
-        self.wait_on_species(18)
-
-        # filter on Rhode Island
-
-        #d.find_element_by_link_text('New England state').click()
-        self.css1('#state_distribution a.option').click()
-
-        count = self.css1('[value="Rhode Island"] + .label + .count').text
-        self.assertEqual(count, '(13)')
-
-        self.css1('[value="Rhode Island"]').click()
-        self.css1('.apply-btn').click()
-        self.css1('.apply-btn').click()
-        self.wait_on_species(13)
-
-    @unittest2.skip('delete if closing working area upon Apply is approved')
-    def test_quickly_press_apply_and_clear(self):
-
-        # Does pressing the "apply" button and a "clear" link
-        # simultaneously result in the result being updated twice?
-
-        self.get('/ferns/lycophytes/')
-        self.wait_on_species(18)
-
-        # filter on Rhode Island
-
-        self.css1('#state_distribution a.option').click()
-
-        # Pausing to fetch the item count makes this test stable, so:
-        count = self.css1('[value="Rhode Island"] + .label + .count').text
-        self.assertEqual(count, '(13)')
-
-        self.css1('[value="Rhode Island"]').click()
-        self.css1('.apply-btn').click()
-        self.wait_on_species(13)
-
-        # filter on bogs
-
-        self.css1('#habitat_general a.option').click()
-        self.css1('[value="aquatic"]').click()
-        self.css1('.apply-btn').click()
-        self.wait_on_species(3)
-
-        # clear the New England state AND press "apply" again
-
-        self.css1('#state_distribution .clear-filter').click()
-        self.css1('.apply-btn').click()
-        self.wait_on_species(3)
-
     def test_thumbnail_presentation(self):
 
         # Are different images shown upon selecting "Show photos of" choices?
@@ -1075,13 +1020,11 @@ class FamilyFunctionalTests(FunctionalTestCase):
         description = self.css('#main p.description')
         self.assertTrue(len(description))
         self.assertTrue(len(description[0].text) > 0)
-        glossary_items = self.css('#main p.description .gloss')
+        GLOSSARY_ITEMS_CSS = '#main p.description .gloss'
+        self.wait_on(5, self.css1, GLOSSARY_ITEMS_CSS)
+        glossary_items = self.css(GLOSSARY_ITEMS_CSS)
         self.assertTrue(len(glossary_items))
 
-    @unittest2.skip('is this really broken or does Brandon lack the images?')
-    # TODO: This test passes after import_sample, but not after
-    # import_data, due to whether or not local images are available. Will
-    # probably need to rearrange import scripts to fix.
     def test_family_page_has_example_images(self):
         self.get('/families/lycopodiaceae/')
         example_images = self.css('#main .pics a img')
@@ -1120,10 +1063,6 @@ class GenusFunctionalTests(FunctionalTestCase):
         glossary_items = self.css(GLOSSARY_ITEMS_CSS)
         self.assertTrue(len(glossary_items))
 
-    @unittest2.skip('is this really broken or does Brandon lack the images?')
-    # TODO: This test passes after import_sample, but not after
-    # import_data, due to whether or not local images are available. Will
-    # probably need to rearrange import scripts to fix.
     def test_genus_page_has_example_images(self):
         self.get('/genera/dendrolycopodium/')
         example_images = self.css('#main .pics a img')
