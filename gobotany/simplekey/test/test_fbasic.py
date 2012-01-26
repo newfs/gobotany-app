@@ -1115,7 +1115,9 @@ class GenusFunctionalTests(FunctionalTestCase):
         description = self.css('#main p.description')
         self.assertTrue(len(description))
         self.assertTrue(len(description[0].text) > 0)
-        glossary_items = self.css('#main p.description .gloss')
+        GLOSSARY_ITEMS_CSS = '#main p.description .gloss'
+        self.wait_on(5, self.css1, GLOSSARY_ITEMS_CSS)
+        glossary_items = self.css(GLOSSARY_ITEMS_CSS)
         self.assertTrue(len(glossary_items))
 
     @unittest2.skip('is this really broken or does Brandon lack the images?')
