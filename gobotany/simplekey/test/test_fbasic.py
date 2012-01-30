@@ -1005,6 +1005,201 @@ class SearchFunctionalTests(FunctionalTestCase):
             'Clubmosses and relatives, plus quillworts'))
 
 
+class SearchSuggestionsFunctionalTests(FunctionalTestCase):
+    SEARCH_INPUT_CSS = '#search input'
+    SEARCH_MENU_CSS = '#search .menu:not(.hidden)'
+    SEARCH_SUGGESTIONS_CSS = '#search .menu li'
+
+    def test_search_suggestions_menu_appears_on_home_page(self):
+        self.get('/')
+        search_input = self.css1(self.SEARCH_INPUT_CSS)
+        search_input.send_keys('a')
+        # Verify that the menu becomes visible.
+        self.wait_on(5, self.css1, self.SEARCH_MENU_CSS)
+        menu = self.css1(self.SEARCH_MENU_CSS)
+        self.assertTrue(menu)
+        # Verify that the menu contains suggestions.
+        suggestions = self.css(self.SEARCH_SUGGESTIONS_CSS)
+        self.assertTrue(len(suggestions) == 10)
+
+    # TODO: test that the menu appears on other pages besides Home
+
+    def _suggestion_exists(self, suggestion):
+        search_input = self.css1(self.SEARCH_INPUT_CSS)
+        search_input.click()
+        search_input.clear()
+        search_input.send_keys(suggestion)
+
+        suggestion_exists = False
+        menu = None
+        try:
+            # Wait for the menu. In the case of no suggestions at all,
+            # the menu will disappear after briefly appearing as the
+            # first few characters of the suggestion are keyed in.
+            self.wait_on(1, self.css1, self.SEARCH_MENU_CSS)
+            menu = self.css1(self.SEARCH_MENU_CSS)
+        except NoSuchElementException:
+            pass
+
+        if menu:
+            # Wait until the suggestions menu is finished updating, to avoid
+            # "stale" elements that cannot be examined.
+            MAX_TRIES = 50   # prevent infinite loop if no suggestions
+            suggestion_items = []
+            tries = 0
+            while suggestion_items == [] and tries < MAX_TRIES:
+                suggestion_list_items = self.css(self.SEARCH_SUGGESTIONS_CSS)
+                try:
+                    # Try getting all the items' text, which will trigger
+                    # an exception if any of them are stale.
+                    suggestion_items = [item.text
+                                        for item in suggestion_list_items]
+                    tries += 1
+                except StaleElementReferenceException:
+                    pass
+            # Check whether the menu contains the suggestion.
+            suggestion_exists = False
+            for suggestion_item in suggestion_items:
+                if suggestion_item == suggestion:
+                    suggestion_exists = True
+                    break
+            if not suggestion_exists:
+                print 'Search suggestion does not exist:', suggestion
+
+        return suggestion_exists
+
+    def _suggestions_found(self, test_suggestions):
+        suggestions_found = []
+        for test_suggestion in test_suggestions:
+            self.get('/')
+            if self._suggestion_exists(test_suggestion):
+                suggestions_found.append(test_suggestion)
+        return sorted(suggestions_found)
+
+    # Test for the name of the Simple Key feature
+
+    def test_simple_key_feature_name_suggestions_exist(self):
+        SUGGESTIONS = ['simple key', 'plant identification']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    # Tests for each of the Simple Key plant groups
+
+    def test_simple_key_woody_plants_suggestions_exist(self):
+        SUGGESTIONS = ['woody plants', 'trees', 'shrubs', 'sub-shrubs',
+                       'lianas']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_aquatic_plants_suggestions_exist(self):
+        SUGGESTIONS = ['aquatic plants']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_grasslike_plants_suggestions_exist(self):
+        SUGGESTIONS = ['grass-like plants', 'grasses', 'sedges',
+                       'narrow leaves']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_orchids_and_related_plants_suggestions_exist(self):
+        SUGGESTIONS = ['orchids', 'lilies', 'irises', 'aroids']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_ferns_suggestions_exist(self):
+        SUGGESTIONS = ['ferns', 'horsetails', 'quillworts', 'lycopods']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_other_flowering_plants_suggestions_exist(self):
+        SUGGESTIONS = ['flowering dicots']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    # Tests for each of the Simple Key plant subgroups
+
+    def test_simple_key_angiosperms_suggestions_exist(self):
+        SUGGESTIONS = ['woody broad-leaved plants']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_gymnosperms_suggestions_exist(self):
+        SUGGESTIONS = ['woody needle-leaved plants']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_non_thalloid_aquatic_suggestions_exist(self):
+        SUGGESTIONS = ['water plants', 'milfoils', 'watershields',
+                       'bladderworts', 'submerged plants']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_thalloid_aquatic_suggestions_exist(self):
+        SUGGESTIONS = ['tiny water plants', 'duckweeds']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_sedges_suggestions_exist(self):
+        SUGGESTIONS = ['sedges']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_true_grasses_suggestions_exist(self):
+        SUGGESTIONS = ['true grasses', 'poaceae']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_remaining_graminoids_suggestions_exist(self):
+        SUGGESTIONS = ['grass-like plants', 'bulrushes', 'rushes',
+                       'cat-tails', 'narrow-leaved plants']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_orchids_suggestions_exist(self):
+        SUGGESTIONS = ['orchids']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_non_orchid_monocots_suggestions_exist(self):
+        SUGGESTIONS = ['irises', 'lilies', 'aroids', 'monocots']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_true_ferns_suggestions_exist(self):
+        SUGGESTIONS = [
+            'true ferns', 'ferns', 'moonworts',] #'adder\'s-tongues']
+            # TODO: Enable "adder's-tongues" above upon a future possible
+            # bug fix: changing the CSV data so the quote character is a
+            # plain straight quote. 
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_lycophytes_suggestions_exist(self):
+        SUGGESTIONS = ['clubmosses', 'quillworts']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_equisetaceae_suggestions_exist(self):
+        SUGGESTIONS = ['horsetails', 'scouring rushes']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_composites_suggestions_exist(self):
+        # 'Goldenrods' below has a typo to match the current CSV data.
+        SUGGESTIONS = ['daisies', 'goldnerods', 'aster family plants']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_simple_key_remaining_non_monocots_suggestions_exist(self):
+        SUGGESTIONS = ['flowering dicots']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    # TODO: Tests for each of the other types of search suggestions
+    # (scientific and common species and family names, genera, etc.)
+
+
 class FamilyFunctionalTests(FunctionalTestCase):
 
     def test_family_page(self):

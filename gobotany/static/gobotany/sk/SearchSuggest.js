@@ -28,12 +28,12 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
             console.error('SearchSuggest.js: Search box not found.');
         }
 
-        this.menu = dojo.query('#search-suggest div')[0];
+        this.menu = dojo.query('#search-suggest .menu')[0];
         if (this.menu === undefined) {
             console.error('SearchSuggest.js: Menu not found.');
         }
 
-        this.menu_list = dojo.query('#search-suggest div ul')[0];
+        this.menu_list = dojo.query('#search-suggest .menu ul')[0];
         if (this.menu_list === undefined) {
             console.error('SearchSuggest.js: Menu list not found.');
         }
@@ -270,7 +270,7 @@ dojo.declare('gobotany.sk.SearchSuggest', null, {
                 // order to prevent a change event from firing.
                 this.stored_search_box_value = search_string;
                 this.search_box.value = search_string;
-                dojo.addClass(this.menu, 'hidden');
+                this.show_menu(false);
                 window.location.href = href;
             }
         }

@@ -1,3 +1,5 @@
+import re
+
 from django.db import models
 
 from gobotany.core.models import GlossaryTerm, Pile, PileGroup
@@ -68,6 +70,46 @@ class GlossaryHelpPage(models.Model):
         return u'%s' % self.title
 
 
+def _get_search_suggestions(input_list):
+    """Return search suggestions for a Simple Key page. Attempt to
+    reasonably extract parts of a list of input strings for inclusion
+    as suggestions.
+    """
+    suggestions = []
+    for input_string in input_list:
+        suggestions.extend(re.split('(\, )?(and )?(for )?(with )?',
+                                    input_string))
+    # Remove junk pieces from after the split.
+    suggestions = [suggestion.lower() for suggestion in suggestions
+                   if suggestion not in [None, '', ' ', ', ', 'and ', 'for ',
+                                         'with ']
+                  ]
+    # Omit long suggestions.
+    MAX_SUGGESTION_LENGTH = 30
+    suggestions = [suggestion for suggestion in suggestions
+                   if len(suggestion) < MAX_SUGGESTION_LENGTH]
+    # Remove some more words and characters.
+    WORDS_TO_REMOVE = ['all', 'others', 'other', 'long', 'plus', 'herbaceous',
+                       '"']
+    for word in WORDS_TO_REMOVE:
+        suggestions = [suggestion.replace(word, '')
+                       for suggestion in suggestions]
+    # Strip spaces.
+    suggestions = [suggestion.strip() for suggestion in suggestions]
+    # Omit empty strings.
+    suggestions = [suggestion for suggestion in suggestions
+                   if suggestion != '']
+    # Omit suggestions that begin with certain words.
+    OMIT_PREFIXES = ['plants', 'relatives', 'related', 'no', 'lacking',
+                     'leaves', 'stems', 'obvious']
+    for omit_prefix in OMIT_PREFIXES:
+        suggestions = [suggestion for suggestion in suggestions
+                       if suggestion.find(omit_prefix) != 0]
+    # Omit duplicates.
+    suggestions = list(set(suggestions))
+    return suggestions
+
+
 class GroupsListPage(models.Model):
     """Outline of the contents of the first Simple Key page: a list of
     plant groups.
@@ -82,6 +124,11 @@ class GroupsListPage(models.Model):
 
     def __unicode__(self):
         return u'%s' % self.title
+
+    def search_suggestions(self):
+        """Helper function to supply search suggestions for the importer."""
+        suggestions = _get_search_suggestions([self.title])
+        return suggestions
 
 
 class SubgroupsListPage(models.Model):
@@ -99,6 +146,12 @@ class SubgroupsListPage(models.Model):
     def __unicode__(self):
         return u'%s' % self.title
 
+    def search_suggestions(self):
+        """Helper function to supply search suggestions for the importer."""
+        suggestions = _get_search_suggestions(
+            [self.group.friendly_name, self.group.friendly_title])
+        return suggestions
+
 
 class SubgroupResultsPage(models.Model):
     """Outline of the contents of a third-level Simple Key page:
@@ -114,6 +167,13 @@ class SubgroupResultsPage(models.Model):
 
     def __unicode__(self):
         return u'%s' % self.title
+
+    def search_suggestions(self):
+        """Helper function to supply search suggestions for the importer."""
+        suggestions = _get_search_suggestions(
+            [self.subgroup.friendly_name, self.subgroup.friendly_title])
+
+        return suggestions
 
 
 class SearchSuggestion(models.Model):

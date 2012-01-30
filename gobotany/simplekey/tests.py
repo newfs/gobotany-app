@@ -2,8 +2,11 @@ from django.test import TestCase
 from django.test.client import Client
 
 from gobotany.core.models import Pile, PileGroup
+
 from gobotany.simplekey.groups_order import ORDERED_GROUPS
-from gobotany.simplekey.models import GroupsListPage
+from gobotany.simplekey.models import (GroupsListPage,
+                                       SubgroupResultsPage,
+                                       SubgroupsListPage)
 from gobotany.simplekey.templatetags.simplekey_extras import italicize_plant
 from gobotany.simplekey.views import ordered_pilegroups, ordered_piles
 
@@ -11,39 +14,72 @@ from gobotany.simplekey.views import ordered_pilegroups, ordered_piles
 # created in the database by the importer. This will be tested against
 # the desired display order.
 
-GROUPS = [('Woody Plants', 'woody-plants'),
-          ('Aquatic Plants', 'aquatic-plants'),
-          ('Graminoids', 'graminoids'),
-          ('Monocots', 'monocots'),
-          ('Ferns', 'ferns'),
-          ('Non-Monocots', 'non-monocots')]
+GROUPS = [('Woody Plants', 'woody-plants', 'Woody Plants',
+           'Trees, shrubs, sub-shrubs, and lianas'),
+          ('Aquatic Plants', 'aquatic-plants', 'Aquatic plants',
+           'Plants with most of their parts submerged under water'),
+          ('Graminoids', 'graminoids', 'Grass-like plants',
+           'Grasses, sedges, and other plants with long, narrow leaves'),
+          ('Monocots', 'monocots', 'Orchids and related plants',
+           'Lilies, orchids, irises, aroids, and other monocots'),
+          ('Ferns', 'ferns', 'Ferns',
+           'Ferns, horsetails, quillworts, lycopods, and relatives'),
+          ('Non-Monocots', 'non-monocots',
+           'All other flowering non-woody plants',
+           'Asters and all other flowering dicots')]
 
 SUBGROUPS = [
-    ('woody-plants', 'Woody Angiosperms', 'woody-angiosperms'),
-    ('non-monocots', 'Remaining Non-Monocots', 'remaining-non-monocots'),
-    ('graminoids', 'Remaining Graminoids', 'remaining-graminoids'),
-    ('graminoids', 'Poaceae', 'poaceae'),
-    ('non-monocots', 'Composites', 'composites'),
-    ('graminoids', 'Carex', 'carex'),
-    ('monocots', 'Non-Orchid Monocots', 'non-orchid-monocots'),
-    ('woody-plants', 'Woody Gymnosperms', 'woody-gymnosperms'),
-    ('ferns', 'Equisetaceae', 'equisetaceae'),
-    ('monocots', 'Orchid Monocots', 'orchid-monocots'),
-    ('aquatic-plants', 'Thalloid Aquatic', 'thalloid-aquatic'),
-    ('ferns', 'Monilophytes', 'monilophytes'),
-    ('ferns', 'Lycophytes', 'lycophytes'),
-    ('aquatic-plants', 'Non-Thalloid Aquatic', 'non-thalloid-aquatic')
+    ('woody-plants', 'Woody Angiosperms', 'woody-angiosperms',
+     'Woody broad-leaved plants', 'Woody broad-leaved plants'),
+    ('woody-plants', 'Woody Gymnosperms', 'woody-gymnosperms',
+     'Woody needle-leaved plants', 'Woody needle-leaved plants'),
+    ('aquatic-plants', 'Non-Thalloid Aquatic', 'non-thalloid-aquatic',
+     'Water plants with leaves and stems',
+     'Milfoils, watershields, bladderworts, and other submerged plants'),
+    ('aquatic-plants', 'Thalloid Aquatic', 'thalloid-aquatic',
+     'Tiny water plants with no true stem',
+     'Duckweeds and other very small floating species'),
+    ('graminoids', 'Carex', 'carex', 'Sedges', 'Plants in the genus Carex'),
+    ('graminoids', 'Poaceae', 'poaceae', 'True grasses',
+     'Plants in the grass family, Poaceae'),
+    ('graminoids', 'Remaining Graminoids', 'remaining-graminoids',
+     'All other grass-like plants',
+     'Bulrushes, rushes, cat-tails, and other narrow-leaved plants'),
+    ('monocots', 'Orchid Monocots', 'orchid-monocots', 'Orchids',
+     'Plants in the family Orchidaceae'),
+    ('monocots', 'Non-Orchid Monocots', 'non-orchid-monocots',
+     'Irises, lilies, and other "monocots"',
+     'Lilies, irises, aroids and others'),
+    ('ferns', 'Monilophytes', 'monilophytes', 'True ferns and moonworts',
+     'Ferns, Moonworts and Adder\'s-tongues with obvious leaves'),
+    ('ferns', 'Lycophytes', 'lycophytes',
+     'Clubmosses and relatives, plus quillworts',
+     'Plants in the families Lycopodiaceae or Isoetaceae'),
+    ('ferns', 'Equisetaceae', 'equisetaceae',
+     'Horsetails and scouring rushes ',
+     'Primitive plants in the genus Equisetum, lacking true leaves'),
+    ('non-monocots', 'Composites', 'composites',
+     'Daisies, goldenrods, and other aster family plants',
+     'Plants in the family Asteraceae'),
+    ('non-monocots', 'Remaining Non-Monocots', 'remaining-non-monocots',
+     'All other herbaceous, flowering dicots', '')
 ]
 
 def create_groups():
     """Create pile groups and then piles, putting piles into groups in the
     same order that the importer does.
     """
-    for name, slug in GROUPS:
-        pilegroup = PileGroup(name=name, slug=slug)
+    for name, slug, friendly_title, friendly_name in GROUPS:
+        pilegroup = PileGroup(name=name, slug=slug,
+                              friendly_title=friendly_title,
+                              friendly_name=friendly_name)
         pilegroup.save()
-    for pilegroup_slug, name, pile_slug in SUBGROUPS:
-        pile = Pile(name=name, slug=pile_slug)
+
+    for pilegroup_slug, name, pile_slug, friendly_title, friendly_name \
+        in SUBGROUPS:
+
+        pile = Pile(name=name, slug=pile_slug, friendly_title=friendly_title,
+                    friendly_name=friendly_name)
         pile.save()
         pilegroup = PileGroup.objects.get(slug=pilegroup_slug)
         pilegroup.piles.add(pile)
@@ -60,6 +96,18 @@ def create_simple_key_pages():
     groups_list_page.save()
     groups_list_page.groups = PileGroup.objects.all()
     groups_list_page.save()
+
+    # Here assume that create_groups() has been called, which creates
+    # the PileGroup and Pile records.
+    for group in PileGroup.objects.all():
+        subgroups_list_page = SubgroupsListPage(
+            group=group)
+        subgroups_list_page.save()
+
+    for subgroup in Pile.objects.all():
+        subgroup_results_page = SubgroupResultsPage(
+            subgroup=subgroup)
+        subgroup_results_page.save()
 
 
 class SimpleTests(TestCase):
@@ -244,3 +292,168 @@ class SimpleKeyGroupsOrderTestCase(TestCase):
                 self.assertEqual(piles, [pile.slug for pile
                                          in ordered_piles(pilegroup)])
 
+
+class SimpleKeyPagesSearchSuggestionsTestCase(TestCase):
+    """Test the search suggestions generated for each Simple Key page
+    that are to be added to the database by the importer.
+    """
+
+    def setUp(self):
+        create_groups()
+        create_simple_key_pages()
+
+    # Simple Key feature
+
+    def test_groups_list_page_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['simple key', 'plant identification']
+        groups_list_page = GroupsListPage.objects.all()[0]
+        self.assertEqual(sorted(groups_list_page.search_suggestions()),
+                         sorted(EXPECTED_SUGGESTIONS))
+
+    # Plant groups
+
+    def _subgroups_list_suggestions(self, group_name):
+        subgroups_list_page = SubgroupsListPage.objects.get(
+            group__name=group_name)
+        suggestions = subgroups_list_page.search_suggestions()
+        return suggestions
+
+    def test_subgroups_list_page_woody_plants_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['woody plants', 'trees', 'shrubs',
+                                'sub-shrubs', 'lianas']
+        self.assertEqual(
+            sorted(self._subgroups_list_suggestions('Woody Plants')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroups_list_page_aquatic_plants_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['aquatic plants']
+        self.assertEqual(
+            sorted(self._subgroups_list_suggestions('Aquatic Plants')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroups_list_page_grasses_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['grass-like plants', 'grasses', 'sedges',
+                                'narrow leaves']
+        self.assertEqual(
+            sorted(self._subgroups_list_suggestions('Graminoids')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+
+    def test_subgroups_list_page_orchids_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['orchids', 'lilies', 'irises', 'aroids',
+                                'monocots']
+        self.assertEqual(
+            sorted(self._subgroups_list_suggestions('Monocots')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroups_list_page_ferns_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['ferns', 'horsetails', 'quillworts',
+                                'lycopods']
+        self.assertEqual(
+            sorted(self._subgroups_list_suggestions('Ferns')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroups_list_page_non_monocots_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['asters', 'flowering dicots']
+        self.assertEqual(
+            sorted(self._subgroups_list_suggestions('Non-Monocots')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    # Plant subgroups
+
+    def _subgroup_results_suggestions(self, subgroup_name):
+        subgroup_results_page = SubgroupResultsPage.objects.get(
+            subgroup__name=subgroup_name)
+        suggestions = subgroup_results_page.search_suggestions()
+        return suggestions
+
+    def test_subgroup_results_page_angiosperms_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['woody broad-leaved plants']
+        self.assertEqual(
+            sorted(self._subgroup_results_suggestions('Woody Angiosperms')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroup_results_page_gymnosperms_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['woody needle-leaved plants']
+        self.assertEqual(
+            sorted(self._subgroup_results_suggestions('Woody Gymnosperms')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroup_results_page_non_thalloid_aquatic_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['water plants', 'milfoils', 'watershields',
+                                'bladderworts', 'submerged plants']
+        self.assertEqual(
+            sorted(self._subgroup_results_suggestions(
+                   'Non-Thalloid Aquatic')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroup_results_page_thalloid_aquatic_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['duckweeds', 'tiny water plants']
+        self.assertEqual(
+            sorted(self._subgroup_results_suggestions('Thalloid Aquatic')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroup_results_page_carex_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['sedges']
+        self.assertEqual(
+            sorted(self._subgroup_results_suggestions('Carex')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroup_results_page_poaceae_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['poaceae', 'true grasses']
+        self.assertEqual(
+            sorted(self._subgroup_results_suggestions('Poaceae')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroup_results_page_remaining_graminoids_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['grass-like plants', 'bulrushes', 'rushes',
+                                'cat-tails', 'narrow-leaved plants']
+        self.assertEqual(
+            sorted(self._subgroup_results_suggestions(
+                   'Remaining Graminoids')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroup_results_page_orchid_monocots_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['orchids']
+        self.assertEqual(
+            sorted(self._subgroup_results_suggestions('Orchid Monocots')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroup_results_page_non_orchid_monocots_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['irises', 'lilies', 'aroids', 'monocots']
+        self.assertEqual(
+            sorted(self._subgroup_results_suggestions('Non-Orchid Monocots')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroup_results_page_monilophytes_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['true ferns', 'ferns', 'moonworts',
+                                'adder\'s-tongues']
+        self.assertEqual(
+            sorted(self._subgroup_results_suggestions('Monilophytes')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroup_results_page_lycophytes_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['clubmosses', 'quillworts']
+        self.assertEqual(
+            sorted(self._subgroup_results_suggestions('Lycophytes')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroup_results_page_equisetaceae_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['horsetails', 'scouring rushes']
+        self.assertEqual(
+            sorted(self._subgroup_results_suggestions('Equisetaceae')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroup_results_page_composites_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['aster family plants', 'daisies',
+                                'goldenrods']
+        self.assertEqual(
+            sorted(self._subgroup_results_suggestions('Composites')),
+            sorted(EXPECTED_SUGGESTIONS))
+
+    def test_subgroup_results_page_remaining_non_monocots_suggestions(self):
+        EXPECTED_SUGGESTIONS = ['flowering dicots']
+        self.assertEqual(
+            sorted(self._subgroup_results_suggestions(
+                   'Remaining Non-Monocots')),
+            sorted(EXPECTED_SUGGESTIONS))

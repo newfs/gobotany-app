@@ -2270,33 +2270,34 @@ nav #search #search-suggest input:-moz-placeholder {
     color: #999;
 }
 
-nav #search-suggest li {
+nav #search-suggest .menu li {
     margin: 0;
     padding: 3px;
 }
-nav #search-suggest a {
+nav #search-suggest .menu a {
     height: inherit;
+    padding: 0;
 }
-nav #search-suggest a:hover, #search-suggest li:hover {
+nav #search-suggest .menu a:hover, #search-suggest .menu li:hover {
     background: #c4e2ff;
     color: #000;
 }
-#search-suggest input, #search-suggest li {
+#search-suggest input, #search-suggest .menu li {
     width: 250px;
 }
-#search-suggest input, #search-suggest ul {
+#search-suggest input, #search-suggest .menu ul {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
 #search-suggest input:focus {
     outline: none;
 }
-#search-suggest ul {
+#search-suggest .menu ul {
     font-size: 16px;
 }
 #search-suggest button {
     font-size: 14px;
 }
-#search-suggest div {
+#search-suggest .menu {
     background: #fff;
     border: 1px solid #ccc;
     border-bottom-color: #999;
@@ -2310,16 +2311,18 @@ nav #search-suggest a:hover, #search-suggest li:hover {
     z-index: 101;
 }
 
-#home #search-suggest div {
+#home #search-suggest .menu {
     top: 133px;
 }
 
-#search-suggest li.highlighted {
+#search-suggest .menu li.highlighted {
     background-color: #abd6ff;
     color: #000;
 }
-#search-suggest a {
+#search-suggest .menu a {
     color: #000;
     cursor: default;
     text-decoration: none;
 }
+/* TODO: once _old_base template is gone (after About page is styled),
+   combine nav #search-suggest and #search-suggest items above, etc. */

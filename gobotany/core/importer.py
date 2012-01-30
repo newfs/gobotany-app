@@ -24,8 +24,8 @@ from django.template.defaultfilters import slugify
 import bulkup
 from gobotany.core import models
 from gobotany.simplekey.models import (Blurb, GroupsListPage, HelpPage,
-                                       SubgroupResultsPage, SubgroupsListPage,
-                                       Video)
+                                       SearchSuggestion, SubgroupResultsPage,
+                                       SubgroupsListPage, Video)
 
 DEBUG=False
 log = logging.getLogger('gobotany.import')
@@ -1730,6 +1730,24 @@ class Importer(object):
         for term in terms:
             table.get(term=term)
         table.save()
+
+        # Add extra search suggestions for the Simple Key pages.
+        groups_list_page = GroupsListPage.objects.all()[0]
+        suggestions = groups_list_page.search_suggestions()
+        groups = SubgroupsListPage.objects.all()
+        for group in groups:
+            suggestions.extend(group.search_suggestions())
+        subgroups = SubgroupResultsPage.objects.all()
+        for subgroup in subgroups:
+            suggestions.extend(subgroup.search_suggestions())
+        suggestions = list(set(suggestions))   # remove duplicates
+        for suggestion in suggestions:
+            s, created = SearchSuggestion.objects.get_or_create(
+                term=suggestion)
+            if created:
+                print >> self.logfile, u'  New SearchSuggestion:', suggestion
+
+
 
 # Import (well, for right now, just print out diagnoses about!) a
 # partner species list Excel spreadsheet.
