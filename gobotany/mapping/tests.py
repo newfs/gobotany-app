@@ -134,9 +134,9 @@ def create_distribution_records():
     # but the code is case-insensitive to make both the map and data
     # more resilient.
     #
-    # Currently, data for Canada is only available and shown at the
-    # province level, so any (or no) county or district for a given
-    # province should shade in that province on the map.
+    # Currently, North America distribution data is at the state,
+    # province, or territory level. These records will be present
+    # alongside the New England records.
     distribution_data = {
         'Dendrolycopodium dendroideum': [('Piscataquis', 'ME', 'native'),
             ('Coos', 'NH', 'native'), ('Worcester', 'MA', 'native'),
@@ -146,7 +146,10 @@ def create_distribution_records():
             ('', 'NS', 'present'), ('Albert', 'NB', 'present'),
             ('Terrebone', 'QC', 'present'), ('', 'ON', 'present'),
             ('', 'MB', 'present'), ('', 'SK', 'present'),
-            ('', 'AB', 'present'), ('', 'BC', 'present')],
+            ('', 'AB', 'present'), ('', 'BC', 'present'),
+            ('', 'ME', 'native'), ('', 'NH', 'native'), ('', 'MA', 'native'),
+            ('', 'RI', 'rare'), ('', 'VT', 'native'), ('', 'CT', 'native'),
+            ('', 'NY', 'native'), ('', 'nj', 'rare'), ('', 'PA', 'native')],
         'Vaccinium vitis-idaea ssp. minus': [('Pistcataquis', 'ME', 'native'),
             ('Coos', 'NH', 'native'), ('Worcester', 'MA', 'rare'),
             ('Kent', 'RI', 'absent'), ('Orange', 'VT', 'native'),
@@ -155,7 +158,10 @@ def create_distribution_records():
             ('Halifax', 'NS', 'present'), ('', 'NB', 'present'),
             ('', 'QC', 'present'), ('Cochrane', 'ON', 'present'),
             ('Dauphin', 'MB', 'present'), ('', 'SK', 'present'),
-            ('Cypress', 'AB', 'present'), ('', 'BC', 'present')]
+            ('Cypress', 'AB', 'present'), ('', 'BC', 'present'),
+            ('', 'ME', 'native'), ('', 'NH', 'native'), ('', 'MA', 'rare'),
+            ('', 'RI', 'absent'), ('', 'VT', 'native'), ('', 'CT', 'native'),
+            ('', 'NY', 'native'), ('', 'NJ', 'rare'), ('', 'pa', 'native')]
         }
     for scientific_name, data_list in distribution_data.items():
         for entry in data_list:
@@ -359,25 +365,26 @@ class NorthAmericanPlantDistributionMapTestCase(TestCase):
     def test_distribution_areas_are_shaded_correctly(self):
         SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
         COLORS = Legend.COLORS
+        # Currently, data for North America are only available at the
+        # state, province, and territory level.
         EXPECTED_SHADED_AREAS = {
-            'CT_New_London': COLORS['native'],
-            'MA_Worcester': COLORS['native'],
-            'ME_Piscataquis': COLORS['native'],
-            'NH_Coos': COLORS['native'],
-            'NJ_Sussex': COLORS['rare'],
-            'NY_Dutchess': COLORS['native'],
-            'PA_Lawrence': COLORS['native'],
-            'RI_Kent': COLORS['rare'],
-            'VT_Orange': COLORS['native'],
-            'NS_southern': COLORS['native'],
-            'NB_southern': COLORS['native'],
-            'QC_southern': COLORS['native'],
-            'ON_southern': COLORS['native'],
-            'MB_southern': COLORS['native'],
-            'SK_southern': COLORS['native'],
-            'AB_southern': COLORS['native'],
-            'BC_southern_Vancouver_Island': COLORS['native'],
-            'BC_southern': COLORS['native']
+            'CT': COLORS['native'],
+            'MA': COLORS['native'],
+            'ME': COLORS['native'],
+            'NH': COLORS['native'],
+            'NJ': COLORS['rare'],
+            'NY': COLORS['native'],
+            'PA': COLORS['native'],
+            'RI': COLORS['rare'],
+            'VT': COLORS['native'],
+            'NS': COLORS['native'],
+            'NB': COLORS['native'],
+            'QC': COLORS['native'],
+            'ON': COLORS['native'],
+            'MB': COLORS['native'],
+            'SK': COLORS['native'],
+            'AB': COLORS['native'],
+            'BC': COLORS['native'],
             }
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         records = (self.distribution_map._get_distribution_records(
@@ -387,17 +394,21 @@ class NorthAmericanPlantDistributionMapTestCase(TestCase):
         path_nodes = self.distribution_map.svg_map.xpath(
             'svg:g/svg:path', namespaces=NAMESPACES)
         paths = [Path(path_node) for path_node in path_nodes]
-        shaded_areas = []
+        shaded_paths = []
         for path in paths:
             style = path.get_style()
             if style.find('fill:#') > -1 and style.find('fill:#fff') == -1:
-                shaded_areas.append(path)
-        self.assertEqual(len(EXPECTED_SHADED_AREAS), len(shaded_areas))
+                shaded_paths.append(path)
+        # There can be more shaded paths than expected shaded areas.
+        # Example: BC has two paths, one for the mainland and one for
+        # Vancouver Island.
+        self.assertTrue(len(shaded_paths) >= len(EXPECTED_SHADED_AREAS))
         # Check that each shaded area and its color is expected.
-        for path in shaded_areas:
+        for path in shaded_paths:
             path_id = path.path_node.get('id')
-            self.assertTrue(path_id in EXPECTED_SHADED_AREAS.keys())
-            expected_color = EXPECTED_SHADED_AREAS[path_id]
+            area_key = path_id[0:2]
+            self.assertTrue(area_key in EXPECTED_SHADED_AREAS.keys())
+            expected_color = EXPECTED_SHADED_AREAS[area_key]
             fill_declaration = 'fill:%s' % expected_color
             self.assertTrue(path.get_style().find(fill_declaration) > -1)
 

@@ -173,54 +173,40 @@ class PlantDistributionMap(ChloroplethMap):
         if records:
             self._add_name_to_title(self.scientific_name)
 
+    def _order_labels(self, labels):
+        """Put legend labels in display order."""
+        all_labels = [item[0] for item in Legend.ITEMS]
+        ordered_labels = [label for label in all_labels if label in labels]
+        return ordered_labels
 
     def _shade_areas(self):
         """Set the colors of the counties (or, in the case of Canada,
         provinces, until county/district data become available) based
         on distribution data.
         """
-        # Only 8 of the 10 Canadian provinces are shown on the current map.
-        CANADIAN_PROVINCES = ['NS', 'NB', 'QC', 'ON', 'MB', 'SK', 'AB', 'BC']
         legend_labels_found = []
         if self.distribution_records:
             path_nodes = self.svg_map.xpath(self.PATH_NODES_XPATH,
                 namespaces=NAMESPACES)
             for record in self.distribution_records.all():
-                if record.state.upper() in CANADIAN_PROVINCES:
-                    # This record is for Canada. Shade all paths for
-                    # this province.
-                    for node in path_nodes:
-                        id_province = node.get('id').split('_')[0].upper()
-                        if id_province == record.state.upper():
-                            label = self._get_label_for_status(record.status)
-                            if label not in legend_labels_found:
-                                legend_labels_found.append(label)
-                            box = Path(node)
-                            box.color(Legend.COLORS[label])
-                            # Keep going rather than break, because some
-                            # provinces (like BC) can have multiple path
-                            # areas to shade for the province.
-                else:
-                    state_and_county = '%s_%s' % (record.state.lower(),
-                                                  record.county.replace(
-                                                      ' ', '_').lower())
-                    # Look through all the path nodes until the one for this
-                    # state and county is found. (Note: this is at least
-                    # twice as fast as selecting each node via XPath.)
-                    for node in path_nodes:
-                        node_id = node.get('id').lower()
-                        if node_id == state_and_county:
-                            label = self._get_label_for_status(record.status)
-                            if label not in legend_labels_found:
-                                legend_labels_found.append(label)
-                            box = Path(node)
-                            box.color(Legend.COLORS[label])
-                            break   # Move on to the next distribution record.
+                state_and_county = '%s_%s' % (record.state.lower(),
+                                              record.county.replace(
+                                                  ' ', '_').lower())
+                # Look through all the path nodes until the one for this
+                # state and county is found. (Note: this is at least
+                # twice as fast as selecting each node via XPath.)
+                for node in path_nodes:
+                    node_id = node.get('id').lower()
+                    if node_id == state_and_county:
+                        label = self._get_label_for_status(record.status)
+                        if label not in legend_labels_found:
+                            legend_labels_found.append(label)
+                        box = Path(node)
+                        box.color(Legend.COLORS[label])
+                        break   # Move on to the next distribution record.
 
-            # Put the found labels in display order.
-            all_labels = [item[0] for item in Legend.ITEMS]
-            legend_labels_found = [label for label in all_labels
-                                   if label in legend_labels_found]
+            legend_labels_found = self._order_labels(legend_labels_found)
+
         return legend_labels_found
 
     def shade(self):
@@ -284,3 +270,29 @@ class NorthAmericanPlantDistributionMap(PlantDistributionMap):
                                  '/graphics/north-america-scoured.svg'])
         super(NorthAmericanPlantDistributionMap, self).__init__(
             blank_map_path)
+
+    def _shade_areas(self):
+        """Set the colors of the states, provinces, or territories.
+        Originally we expected county-level data, at least for the U.S.,
+        so this routine shades all county paths within a state.
+        """
+        legend_labels_found = []
+        if self.distribution_records:
+            path_nodes = self.svg_map.xpath(self.PATH_NODES_XPATH,
+                namespaces=NAMESPACES)
+            for record in self.distribution_records.filter(county=''):
+                for node in path_nodes:
+                    id_province = node.get('id').split('_')[0].upper()
+                    if id_province == record.state.upper():
+                        label = self._get_label_for_status(record.status)
+                        if label not in legend_labels_found:
+                            legend_labels_found.append(label)
+                        box = Path(node)
+                        box.color(Legend.COLORS[label])
+                        # Keep going rather than break, because
+                        # there are often multiple paths to shade.
+
+            legend_labels_found = self._order_labels(legend_labels_found)
+
+        return legend_labels_found
+
