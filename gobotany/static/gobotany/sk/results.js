@@ -696,6 +696,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         for (x = 0; x < filter_manager.filters.length; x++) {
             existing.push(filter_manager.filters[x].character_short_name);
         }
+        console.log('existing filters:', existing);
+
         simplekey_resources.pile_best_characters({
             pile_slug: filter_manager.pile_slug,
             species_ids: filter_manager.species_ids,
@@ -704,6 +706,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }).done(
             dojo.hitch(this, function(items) {
                 if (items.length > 0) {
+                    console.log('new filters to add:', items);
+
                     // Add the new filters to the Filter Manager.
                     var new_filter_names = [];
                     dojo.forEach(items, function(filter_json) {
@@ -735,6 +739,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     this.results_helper.save_filter_state();
                 }
                 else {
+                    console.log('no new filters to add');
                     gobotany.utils.notify(
                         'No more questions left for the boxes checked');
                 }

@@ -43,7 +43,16 @@ define([
             character_group_id: args.character_group_ids,
             exclude: args.exclude_characters
         });
-    });
+    },
+        /* Custom hash function, so arguments that vary will always
+         * be considered. The default hash function for memoize just
+         * uses the first argument, which may have been the pile_slug. */
+        function(args) {
+            // Make a hash key out of the arguments that can vary.
+            return args.exclude_characters + args.character_group_ids +
+                   args.species_ids;
+        }
+    );
     module.pile_species = _.memoize(function(pile_slug) {
         return module.get('species/' + pile_slug + '/');
     });
