@@ -498,8 +498,18 @@ def suggest_view(request):
     query = request.GET.get('q', '')
     suggestions = []
     if query != '':
+        # This query is case-insensitive while the database field is
+        # case-sensitive. By querying case-insensitively here, if
+        # the import process did not screen duplicates, then duplicate
+        # suggestions will be returned. However, this is better than
+        # querying case-sensitively and potentially missing a bunch
+        # of valid suggestion results because cases didn't match.
         suggestions = list(SearchSuggestion.objects.filter(
             term__istartswith=query).values_list('term',
-            flat=True)[:MAX_RESULTS])
+            flat=True)[:MAX_RESULTS * 2])
+        # Remove any duplicates due to case-sensitivity and pare down to
+        # the desired number of results.
+        suggestions = list(set(
+            [suggestion.lower() for suggestion in suggestions]))[:MAX_RESULTS]
     return HttpResponse(simplejson.dumps(suggestions),
                         mimetype='application/json')

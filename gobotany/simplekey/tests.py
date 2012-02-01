@@ -1,3 +1,5 @@
+import json
+
 from django.test import TestCase
 from django.test.client import Client
 
@@ -5,6 +7,7 @@ from gobotany.core.models import Pile, PileGroup
 
 from gobotany.simplekey.groups_order import ORDERED_GROUPS
 from gobotany.simplekey.models import (GroupsListPage,
+                                       SearchSuggestion,
                                        SubgroupResultsPage,
                                        SubgroupsListPage)
 from gobotany.simplekey.templatetags.simplekey_extras import italicize_plant
@@ -291,6 +294,38 @@ class SimpleKeyGroupsOrderTestCase(TestCase):
                 pilegroup = PileGroup.objects.get(slug=pilegroup_slug)
                 self.assertEqual(piles, [pile.slug for pile
                                          in ordered_piles(pilegroup)])
+
+
+class SearchSuggestionsTestCase(TestCase):
+    """General tests for the search suggestions Web service API."""
+
+    def create_search_suggestions(self):
+        # Include a case-sensitive repeat suggestion ("ferns") just
+        # for testing, even though this might be eliminated in the
+        # import routines.
+        SUGGESTIONS = ['fern flatsedge', 'fern-leaved yarrow', 'Ferns',
+                       'fern-leaved false foxglove', 'ferns', 'fern',
+                       'fern grass']
+        for suggestion in SUGGESTIONS:
+            s, created = SearchSuggestion.objects.get_or_create(
+                term=suggestion)
+
+    def setUp(self):
+        self.create_search_suggestions()
+
+    def test_search_suggestions_have_no_duplicates(self):
+        # The search suggestions are meant to be case-insensitive in the
+        # user interface, but the database field is case-sensitive.
+        # Ensure that the search suggestions do not include any duplicates
+        # that may exist in the database due to case sensitivity.
+        EXPECTED_SUGGESTIONS = ['fern flatsedge', 'fern-leaved yarrow',
+                                'fern-leaved false foxglove', 'ferns',
+                                'fern', 'fern grass']
+        client = Client()
+        response = client.get('/suggest/?q=fer')
+        #print 'response.content:', response.content
+        suggestions = json.loads(response.content)
+        self.assertEqual(sorted(suggestions), sorted(EXPECTED_SUGGESTIONS))
 
 
 class SimpleKeyPagesSearchSuggestionsTestCase(TestCase):
