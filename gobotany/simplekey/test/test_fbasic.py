@@ -296,6 +296,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
+        self.css1('#intro-overlay .get-started').click()
 
         # Do the family and genus dropdowns start by displaying all options?
 

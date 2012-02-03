@@ -529,7 +529,7 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
 
     _rebuild_selector: function(store, filter) {
         var vector = this.filter_manager.compute_species_without(
-            filter.short_name);
+            filter.character_short_name);
         var choices = filter.safe_choices(vector);
 
         // We cannot control the order of terms in the selector without
