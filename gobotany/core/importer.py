@@ -120,7 +120,6 @@ class Importer(object):
 
     def _import_constants(self, db):
         self._import_plant_preview_characters()
-        self._import_extra_demo_data()
         self._import_help()
         self._import_simple_key_pages()
         self._import_search_suggestions()
@@ -1418,31 +1417,6 @@ class Importer(object):
                 )
 
         distribution.save()
-
-    @transaction.commit_on_success
-    def _import_extra_demo_data(self):
-        print >> self.logfile, 'Setting up demo Pile attributes'
-        pile = models.Pile.objects.get(name='Woody Angiosperms')
-        if not pile.key_characteristics:
-            pile.key_characteristics = \
-                '<ul><li>A key characteristic</li><li>Another one</li></ul>'
-        if not pile.notable_exceptions:
-            pile.notable_exceptions = \
-                '<ul><li>An Exception</li><li>Another one</li></ul>'
-        if not pile.description:
-            pile.description = 'A description of the Woody Angiosperms pile'
-        pile.save()
-
-        pile = models.PileGroup.objects.get(name='Woody Plants')
-        if not pile.key_characteristics:
-            pile.key_characteristics = \
-                '<ul><li>A key characteristic</li><li>Another one</li></ul>'
-        if not pile.notable_exceptions:
-            pile.notable_exceptions = \
-                '<ul><li>An Exception</li><li>Another one</li></ul>'
-        if not pile.description:
-            pile.description = 'A description of the Woody Plants pile group'
-        pile.save()
 
     @transaction.commit_on_success
     def _import_videos(self, db, videofilename):
