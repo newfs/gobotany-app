@@ -1460,7 +1460,6 @@ class Importer(object):
         TEMP_VIDEO_ID1 = 'LQ-jv8g1YVI'
         TEMP_VIDEO_ID2 = 'VWDc9oyBj5Q'
 
-        VIDEO_INTRO   = '4zwyQiUbJv0'
         VIDEO_AQUATIC = 'GGk8ehlJqO8'
         VIDEO_LYCOPHYTES = 'AW9OXoTt5F8'
         VIDEO_FERNS = 'yXZ3H_QHnxc'
@@ -1524,7 +1523,6 @@ class Importer(object):
             text='this is the blurb called getting_started')
         help_page.blurbs.add(blurb)
 
-        TEMP_VIDEO_ID = 'LQ-jv8g1YVI'
         VIDEO_INTRO   = '4zwyQiUbJv0'
         blurb, created = Blurb.objects.get_or_create(
             name='getting_started_youtube_id',
