@@ -64,11 +64,13 @@
                                 <span class="section-title">Exceptions</span>
                                 {{ pile.notable_exceptions|removetags:"div ul li"|safe }}
                             </p>
+                            {% if pile.youtube_id %}
                             <p class="vid">
                                 <a href="http://www.youtube.com/v/{{ pile.youtube_id }}&amp;autoplay=1"
                                     rel="shadowbox;height=380;width=640;">View
                                     a short video about this subgroup</a>
                             </p>
+                            {% endif %}
                             <a class="plant-in-subgroup" href="{{ pile_url }}">My plant is in this subgroup</a>
                         </div>
                         <div class="clearit"></div>
