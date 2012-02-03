@@ -1401,18 +1401,6 @@ class Importer(object):
                     lookalike_characteristic=how_to_tell.strip(),
                     )
 
-        lookalike_table.save()
-
-    def _set_youtube_id(self, name, youtube_id, pilegroup=False):
-        if pilegroup:
-            p = models.PileGroup.objects.get(name=name)
-        else:
-            p = models.Pile.objects.get(name=name)
-        if not p.youtube_id:
-            p.youtube_id = youtube_id
-        p.save()
-
-
     @transaction.commit_on_success
     def _import_distributions(self, distributionsf):
         print >> self.logfile, 'Importing distribution data (BONAP)'
@@ -1456,38 +1444,23 @@ class Importer(object):
             pile.description = 'A description of the Woody Plants pile group'
         pile.save()
 
-        # Set up YouTube videos for all pile groups and piles.
-        TEMP_VIDEO_ID1 = 'LQ-jv8g1YVI'
-        TEMP_VIDEO_ID2 = 'VWDc9oyBj5Q'
+    @transaction.commit_on_success
+    def _import_videos(self, db, videofilename):
 
-        VIDEO_AQUATIC = 'GGk8ehlJqO8'
-        VIDEO_LYCOPHYTES = 'AW9OXoTt5F8'
-        VIDEO_FERNS = 'yXZ3H_QHnxc'
-        VIDEO_GRAMINOIDS = '9GfTL4r19ag'
-        VIDEO_WOODY_PLANTS = 'X5Pe0UJx_uU'
-        VIDEO_NON_ORCHID_MONOCOTS = 'fPmlPnosWf8'
+        log.info('Reading CSV to determine which piles/pilegroups have videos')
 
-        self._set_youtube_id('Ferns', VIDEO_FERNS, pilegroup=True)
-        self._set_youtube_id('Woody Plants', VIDEO_WOODY_PLANTS, pilegroup=True)
-        self._set_youtube_id('Aquatic Plants', VIDEO_AQUATIC, pilegroup=True)
-        self._set_youtube_id('Graminoids', VIDEO_GRAMINOIDS, pilegroup=True)
-        self._set_youtube_id('Monocots', TEMP_VIDEO_ID1, pilegroup=True)
-        self._set_youtube_id('Non-Monocots', TEMP_VIDEO_ID2, pilegroup=True)
-        self._set_youtube_id('Equisetaceae', TEMP_VIDEO_ID2)
-        self._set_youtube_id('Lycophytes', VIDEO_LYCOPHYTES)
-        self._set_youtube_id('Monilophytes', TEMP_VIDEO_ID2)
-        self._set_youtube_id('Woody Angiosperms', TEMP_VIDEO_ID1)
-        self._set_youtube_id('Woody Gymnosperms', TEMP_VIDEO_ID2)
-        self._set_youtube_id('Non-Thalloid Aquatic', TEMP_VIDEO_ID1)
-        self._set_youtube_id('Thalloid Aquatic', TEMP_VIDEO_ID2)
-        self._set_youtube_id('Carex', TEMP_VIDEO_ID1)
-        self._set_youtube_id('Poaceae', TEMP_VIDEO_ID2)
-        self._set_youtube_id('Remaining Graminoids', TEMP_VIDEO_ID1)
-        self._set_youtube_id('Non-Orchid Monocots', VIDEO_NON_ORCHID_MONOCOTS)
-        self._set_youtube_id('Orchid Monocots', TEMP_VIDEO_ID1)
-        self._set_youtube_id('Composites', TEMP_VIDEO_ID2)
-        self._set_youtube_id('Remaining Non-Monocots', TEMP_VIDEO_ID1)
+        cursor = connection.cursor()
+        cursor.execute("UPDATE core_pilegroup SET youtube_id = ''")
+        cursor.execute("UPDATE core_pile SET youtube_id = ''")
 
+        for row in open_csv(videofilename):
+            try:
+                p = models.PileGroup.objects.get(name=row['pile-or-subpile'])
+            except models.PileGroup.DoesNotExist:
+                p = models.Pile.objects.get(name=row['pile-or-subpile'])
+
+            p.youtube_id = row['youtube-id']
+            p.save()
 
     def _create_about_gobotany_page(self):
         help_page, created = HelpPage.objects.get_or_create(
@@ -1806,6 +1779,7 @@ def main():
         'characters', 'character_values', 'glossary', 'lookalikes',
         'constants', 'places', 'taxon_character_values',
         'character_images', 'character_value_images', 'glossary_images',
+        'videos',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
