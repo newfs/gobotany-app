@@ -76,7 +76,7 @@ nav #search button:active {
 #plant-id li.plant-id a,
 #plant-id-2 li.plant-id a,
 #plant-id-3 li.plant-id a,
-#plantshare li.plantshare a,
+#myplants li.myplants a,
 #advanced-id li.advanced-id a,
 #teaching-tools li.teaching-tools a,
 #about li.about a {
@@ -1589,7 +1589,7 @@ div.working-area #simple-slider .count {
 #taxon #main p {
 	margin: 0 0 15px;	
 }
-a.plant-share {
+a.my-plant {
 	display: block;
 	width: 151px;
 	height: 32px;
@@ -1597,10 +1597,10 @@ a.plant-share {
 	background: url(/static/images/layout/myplant-btn.png) 0 0 no-repeat;
 	text-indent: -9000px;	
 }
-a.plant-share:hover {
+a.my-plant:hover {
 	background-position: 0 -32px;	
 }
-a.plant-share:active {
+a.my-plant:active {
 	background-position: 0 -64px;	
 }
 a.description-control {
