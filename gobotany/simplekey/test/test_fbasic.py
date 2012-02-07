@@ -231,6 +231,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
+        self.css1('#intro-overlay .get-started').click()
 
         # filter on Rhode Island
 
@@ -403,6 +404,8 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
+        self.css1('#intro-overlay .get-started').click()
+
         filters = self.css(FILTERS_CSS)
         n = len(filters)
         self.css1('#sidebar .get-more a').click()
@@ -425,6 +428,7 @@ class FilterFunctionalTests(FunctionalTestCase):
             '/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn&_visible=plant_height_rn'
             )
         self.wait_on_species(499)
+
         sidebar_value_span = self.css1('#plant_height_rn .value')
         range_div = self.css1(RANGE_DIV_CSS)
         measure_input = self.css1(INPUT_METRIC_CSS)
@@ -438,16 +442,16 @@ class FilterFunctionalTests(FunctionalTestCase):
         # matching species change with each digit.
 
         measure_input.send_keys('1')
-        self.assertEqual('', instructions.text)
+        self.assertIn('to the 38 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '10'
-        self.assertIn('to the 3 matching species', instructions.text)
+        self.assertIn('to the 41 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '100'
-        self.assertIn('to the 175 matching species', instructions.text)
+        self.assertIn('to the 212 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '1000'
-        self.assertIn('to the 157 matching species', instructions.text)
+        self.assertIn('to the 178 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '10000'
         self.assertIn('to the 1 matching species', instructions.text)
@@ -457,11 +461,11 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Submitting when there are no matching species does nothing.
 
-        unknowns = 86
+        unknowns = 49
 
         apply_button.click()  # should do nothing
         self.wait_on_species(499)
-        self.assertEqual(sidebar_value_span.text, "don't know")
+        self.assertEqual(sidebar_value_span.text, '')
 
         # Open the working area again and set the metric length back to
         # what it was before the working area closed.
@@ -481,9 +485,9 @@ class FilterFunctionalTests(FunctionalTestCase):
         measure_input.send_keys('10000')
         measure_input.send_keys(Keys.BACK_SPACE)  # '1000'
         instructions = self.css1(INSTRUCTIONS_CSS)
-        self.assertIn('to the 157 matching species', instructions.text)
+        self.assertIn('to the 178 matching species', instructions.text)
         apply_button.click()
-        self.wait_on_species(unknowns + 157)
+        self.wait_on_species(unknowns + 178)
         self.assertEqual(sidebar_value_span.text, '1000.0 mm')
 
         # Switch to cm and then m.
@@ -536,8 +540,9 @@ class FilterFunctionalTests(FunctionalTestCase):
                  '#_filters=family,genus,plant_height_rn'
                  '&_visible=plant_height_rn'
                  '&plant_height_rn=5000')
-        unknowns = 86
-        self.wait_on_species(unknowns + 8)
+        unknowns = 49
+        self.wait_on_species(unknowns + 9)
+
         sidebar_value_span = self.css1('#plant_height_rn .value')
         self.assertEqual(sidebar_value_span.text, '5000.0 mm')
 
