@@ -1146,7 +1146,8 @@ class Importer(object):
                     content_image.image.extra_thumbnails[key].width()
 
 
-    def import_home_page_images(self, dest_image_dir_path, images_archive):
+    def import_home_page_images(self, dest_image_dir_path,
+                                source_image_dir_path):
         """Import default home page images and put image files in the
         specified directory.
         """
@@ -1157,22 +1158,22 @@ class Importer(object):
             home_page_image.image.delete()
             home_page_image.delete()
 
-        'Adding images from archive file:'
-        images = tarfile.open(images_archive)
-        image_names = [name for name in images.getnames()
-                       if not name.startswith('.')]
+        'Adding images from directory:'
+        image_names = os.listdir(source_image_dir_path)
         # The default images are just added in reverse directory order
         # because that was a pretty good sequence without having to
         # code up a way to specify the default order in the archive file.
         image_names.reverse()
         order = 1
         for name in image_names:
-            print '  Adding image: %s' % name
-            image_file = File(images.extractfile(name))
-            hpi, created = models.HomePageImage.objects.get_or_create(
-                order=order)
-            hpi.image.save(name, image_file)
-            order += 1
+            if not name.startswith('.'):   # ignore hidden files
+                print '  Adding image: %s' % name
+                file_path = '%s/%s' % (source_image_dir_path, name)
+                image_file = File(open(file_path, 'r'))
+                hpi, created = models.HomePageImage.objects.get_or_create(
+                    order=order)
+                hpi.image.save(name, image_file)
+                order += 1
 
 
     def _has_unexpected_delimiter(self, text, unexpected_delimiter):
