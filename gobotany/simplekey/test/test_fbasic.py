@@ -1341,3 +1341,116 @@ class SpeciesFunctionalTests(FunctionalTestCase):
         for image in images:
             alt_text = image.get_attribute('alt')
             self.assertTrue(re.match(REGEX_PATTERN, alt_text))
+
+
+class CharacterValueImagesFunctionalTests(FunctionalTestCase):
+
+    def _character_value_images_exist(self, page_url, character_short_name,
+                                      character_value_image_ids):
+        INTRO_OVERLAY_CSS = '#intro-overlay .get-started'
+        self.get(page_url)
+        self.wait_on(6, self.css1, INTRO_OVERLAY_CSS)
+        self.css1(INTRO_OVERLAY_CSS).click()
+
+        # Click on a question that has character value images.
+        question_css = 'li#%s' % character_short_name
+        self.wait_on(6, self.css1, question_css)
+        self.css1(question_css).click()
+
+        # Verify the HTML for the images expected in the working area.
+        self.wait_on(6, self.css1, '.choices')
+        for image_id in character_value_image_ids:
+            image_css = '.choices img#%s' % image_id
+            self.assertTrue(self.css1(image_css))
+
+    def test_woody_angiosperms_character_value_images_exist(self):
+        self._character_value_images_exist(
+            '/woody-plants/woody-angiosperms/',
+            'plant_habit_wa',   # Q: "Growth form?"
+            ['liana', 'shrub-subshrub', 'tree'])
+
+    def test_woody_gymnosperms_character_value_images_exist(self):
+        self._character_value_images_exist(
+            '/woody-plants/woody-gymnosperms/',
+            'habit_wg',   # Q: "Growth form?"
+            ['gymnosperm-habit-shrub', 'gymnosperm-habit-tree'])
+
+    def test_non_thalloid_aquatic_character_value_images_exist(self):
+        self._character_value_images_exist(
+            '/aquatic-plants/non-thalloid-aquatic/',
+            'leaf_disposition_ap',   # Q: "Leaf position?"
+            ['leaves-some-floating-ap', 'leaves-all-submersed-ap'])
+
+    def test_thalloid_aquatic_character_value_images_exist(self):
+        self._character_value_images_exist(
+            '/aquatic-plants/thalloid-aquatic/',
+            'root_presence_ta',   # Q: "Roots?"
+            ['roots-none-ta', 'roots-two-or-more-ta', 'roots-one-ta'])
+
+    def test_carex_character_value_images_exist(self):
+        self._character_value_images_exist(
+            '/graminoids/carex',
+            'perigynia_indument_ca',   # Q: "Fruit texture?"
+            ['carex-perigynium-hairy', 'carex-perigynium-smooth'])
+
+    # TODO: Add a test for Poaceae once the images are keyed to the
+    # database. As of 7 Feb 2012, this has not been done yet.
+    #def test_poaceae_character_value_images_exist(self):
+    #    self._character_value_images_exist(
+    #        '/graminoids/poaceae',
+    #        'TODO',   # Q: "TODO?"
+    #        ['TODO', 'TODO'])
+
+    def test_remaining_graminoids_character_value_images_exist(self):
+        self._character_value_images_exist(
+            '/graminoids/remaining-graminoids/',
+            'stem_cross-section_rg',   # Q: "Stem shape in cross-section?"
+            ['stem-triangular-rg', 'stem-terete-rg'])
+
+    def test_orchid_monocots_character_value_images_exist(self):
+        self._character_value_images_exist(
+            '/monocots/orchid-monocots/',
+            'leaf_arrangement_om',   # Q: "Leaf arrangement?"
+            ['foliage-alternate-om', 'foliage-opposite-om', 'basal-leaves-om',
+             'foliage-leaves-absent-om', 'foliage-whorled-om'])
+
+    def test_non_orchid_monocots_character_value_images_exist(self):
+        self._character_value_images_exist(
+            '/monocots/non-orchid-monocots/',
+            'leaf_arrangement_nm',   # Q: "Leaf arrangement?"
+            ['leaves-alternate-nm', 'leaves-basal-nm', 'leaves-whorled-nm'])
+
+    def test_monilophytes_character_value_images_exist(self):
+        self._character_value_images_exist(
+            '/ferns/monilophytes/',
+            'leaf_blade_morphology_mo',   # Q: "Leaf divisions?"
+            ['fern-once-compound', # 7 Feb 2012: missing image for "lobed"
+             'fern-blade-simple', 'fern-thrice-compound',
+             'fern-twice-compound'])
+
+    def test_lycophytes_character_value_images_exist(self):
+        self._character_value_images_exist(
+            '/ferns/lycophytes/',
+            'horizontal_shoot_position_ly',   # Q: "Horizontal stem?"
+            ['stem-on-surface', 'stem-subterranean'])
+
+    def test_equisetaceae_character_value_images_exist(self):
+        self._character_value_images_exist(
+            '/ferns/equisetaceae/',
+            'aerial_stem_habit_eq',   # Q: "Stem form?"
+            ['equisetum-curved-stem', 'equisetum-straight-stem'])
+
+    def test_composites_character_value_images_exist(self):
+        self._character_value_images_exist(
+            '/non-monocots/composites/',
+            'leaf_arrangement_co',   # Q: "Leaf arrangement?"
+            ['leaves-alternate-co', 'leaves-opposite-co', 'leaves-basal-co',
+             'leaves-whorled-co'])
+
+    def test_remaining_non_monocots_character_value_images_exist(self):
+        self._character_value_images_exist(
+            '/non-monocots/remaining-non-monocots/',
+            'leaf_type_general_rn',   # Q: "Leaf type?"
+            ['leaf-type-compound-rn',
+             # 7 Feb 2012: missimg image for "simple"
+            ])
