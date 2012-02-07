@@ -926,23 +926,12 @@ class Importer(object):
         glossaryterm_table.save()
 
     @transaction.commit_on_success
-    def _import_glossary_images(self, db, csvfilename, tarfilename):
+    def _import_glossary_images(self, db, csvfilename, source_dirname):
         dirname = models.GlossaryTerm._meta.get_field('image').upload_to
         delete_files_in(dirname)
 
-        # When an archive is compressed, reading all of its members in a
-        # single sweep is vastly more efficient than asking for each
-        # member separately which makes `tarfile` re-read the compressed
-        # archive over and over again.
-
-        log.info('Reading glossary images from archive')
-        image_dict = {}
-        archive = tarfile.open(tarfilename)
-        while True:
-            member = archive.next()
-            if member is None: break
-            data = archive.extractfile(member).read()
-            image_dict[member.name] = ContentFile(data)
+        log.info('Reading glossary images from directory')
+        image_filenames = os.listdir(source_dirname)
 
         log.info('Saving glossary images in MEDIA_ROOT/%s' % dirname)
         for row in open_csv(csvfilename):
@@ -954,9 +943,13 @@ class Importer(object):
             if not image_name:
                 continue
 
-            image_file = image_dict.get(row['illustration'])
+            image_file = None
+            if image_name in image_filenames:
+                file_path = '%s/%s' % (source_dirname, image_name)
+                image_file = File(open(file_path, 'r'))
+
             if image_file is None:
-                log.error('cannot find image: %s', row['illustration'])
+                log.error('cannot find image: %s', image_name)
                 continue
 
             term = models.GlossaryTerm.objects.get(term=row['term'])
