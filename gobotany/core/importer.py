@@ -848,9 +848,10 @@ class Importer(object):
         pile_character_values_table.save(delete_old=True)
 
     @transaction.commit_on_success
-    def _import_character_value_images(self, db, csvfilename, tarfilename):
+    def _import_character_value_images(self, db, csvfilename, source_dirname):
 
-        log.info('Reading CSV to determine which character values need images')
+        log.info(
+            'Reading CSV to determine which character values need images')
         image_names = {}  # image_name -> CharacterValue
         character_map = db.map('core_character', 'short_name', 'id')
 
@@ -882,20 +883,19 @@ class Importer(object):
         dirname = models.CharacterValue._meta.get_field('image').upload_to
         delete_files_in(dirname)
 
-        log.info('Loading character-value images from archive')
-        archive = tarfile.open(tarfilename)
+        log.info('Loading character-value images from directory')
+        image_filenames = os.listdir(source_dirname)
         n = 0
-        while True:
-            member = archive.next()
-            if member is None:
-                break
-            cv = image_names.pop(member.name, None)
-            if cv is None:
-                continue
-            data = archive.extractfile(member).read()
-            cv.image.save(member.name, ContentFile(data))
-            cv.image.thumbnail.height()  # generate thumbnail
-            n += 1
+        for filename in image_filenames:
+            if not filename.startswith('.'):   # ignore hidden files
+                cv = image_names.pop(filename, None)
+                if cv is None:
+                    continue
+                file_path = '%s/%s' % (source_dirname, filename)
+                image_file = File(open(file_path, 'r'))
+                cv.image.save(filename, image_file)
+                cv.image.thumbnail.height()  # generate thumbnail
+                n += 1
 
         for name in image_names:
             log.error('Could not find character value image %s' % name)
