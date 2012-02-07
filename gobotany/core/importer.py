@@ -749,7 +749,7 @@ class Importer(object):
         character_table.save()
 
     @transaction.commit_on_success
-    def _import_character_images(self, db, csvfilename, tarfilename):
+    def _import_character_images(self, db, csvfilename, source_dirname):
 
         log.info('Reading CSV to determine which characters need images')
         image_names = {}  # image_name -> Character
@@ -765,20 +765,20 @@ class Importer(object):
         dirname = models.Character._meta.get_field('image').upload_to
         delete_files_in(dirname)
 
-        log.info('Loading character images from archive')
-        archive = tarfile.open(tarfilename)
+        log.info('Loading character images from directory')
+        image_filenames = os.listdir(source_dirname)
+
         n = 0
-        while True:
-            member = archive.next()
-            if member is None:
-                break
-            character = image_names.pop(member.name, None)
-            if character is None:
-                continue
-            data = archive.extractfile(member).read()
-            character.image.save(member.name, ContentFile(data))
-            character.image.thumbnail.height()  # generate thumbnail
-            n += 1
+        for filename in image_filenames:
+            if not filename.startswith('.'):   # ignore hidden files
+                character = image_names.pop(filename, None)
+                if character is None:
+                    continue
+                file_path = '%s/%s' % (source_dirname, filename)
+                image_file = File(open(file_path, 'r'))
+                character.image.save(filename, image_file)
+                character.image.thumbnail.height()  # generate thumbnail
+                n += 1
 
         for name in image_names:
             log.error('Could not find character image %s' % name)
