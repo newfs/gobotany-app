@@ -4,8 +4,6 @@ import csv
 import sys
 import time
 
-from StringIO import StringIO
-
 from django.core import management
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -13,7 +11,6 @@ from gobotany import settings
 management.setup_environ(settings)
 from gobotany.core import igdt, importer, models
 from gobotany.plantoftheday.models import PlantOfTheDay
-
 
 class CSVReader(object):
 
@@ -27,39 +24,6 @@ class CSVReader(object):
             r = csv.reader(f, dialect=csv.excel, delimiter=',')
             for row in r:
                 yield [c.decode('Windows-1252') for c in row]
-
-
-def _get_default_filters_from_csv(pile_name, characters_csv):
-    iterator = iter(CSVReader(characters_csv).read())
-    colnames = [x.lower() for x in iterator.next()]
-    filters = []
-    for cols in iterator:
-        row = dict(zip(colnames, cols))
-
-        if row['pile'].lower() == pile_name.lower():
-            if row['default_question'] != '':
-                character_name = row['character']
-                order = row['default_question']
-
-                im = importer.Importer(StringIO())
-                short_name = im.character_short_name(character_name)
-
-                filters.append((order, short_name))
-
-    default_filter_characters = []
-    filters.sort()
-    for f in filters:
-        character_name = f[1]
-        try:
-            character = models.Character.objects.get( \
-                short_name=character_name)
-            default_filter_characters.append(character)
-        except models.Character.DoesNotExist:
-            print "Error: Character does not exist: %s" % character_name
-            continue
-
-    return default_filter_characters
-
 
 def _add_best_filters(pile, common_filter_character_names):
     print "  Computing new 'best' filters"
@@ -121,8 +85,8 @@ def rebuild_default_filters(characters_csv):
 
         # Look for default filters specified in the CSV data. If not found,
         # add some next 'best' filters instead.
-        default_filter_characters = _get_default_filters_from_csv(pile.name,
-            characters_csv)
+        default_filter_characters = importer.get_default_filters_from_csv(
+            pile.name, characters_csv)
         if len(default_filter_characters) > 0:
             print "  Inserting new default filters from CSV data:"
             for n, character in enumerate(default_filter_characters):

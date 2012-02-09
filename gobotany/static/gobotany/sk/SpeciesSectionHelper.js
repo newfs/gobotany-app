@@ -169,8 +169,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
                         if (ppc.partner_site === gobotany_sk_partner_site) {
 
-                            characters_html += '<li>' +
-                                ppc.friendly_name.toUpperCase() + ': ';
                             var display_value = '';
                             var character_value =
                                 taxon[ppc.character_short_name];
@@ -190,13 +188,20 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                                 else {
                                     // For multiple-value characters,
                                     // display a comma-separated list.
-                                    if (typeof(display_value) != 'string') {
+                                    if (typeof(display_value) !== 'string') {
                                         display_value =
                                             display_value.join(', ');
                                     }
                                 }
                             }
-                            characters_html += display_value + '</li>';
+
+                            // Only display this character if it has a value.
+                            if (display_value !== undefined &&
+                                display_value !== '') {
+                                characters_html += '<li>' +
+                                    ppc.friendly_name.toUpperCase() + ': ' +
+                                    display_value + '</li>';
+                            }
                         }
                     }
                     var characters_list = 

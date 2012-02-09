@@ -1454,3 +1454,173 @@ class CharacterValueImagesFunctionalTests(FunctionalTestCase):
             ['leaf-type-compound-rn',
              # 7 Feb 2012: missimg image for "simple"
             ])
+
+
+class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
+
+    CHARACTER_PATTERN = re.compile('[^a-z]{2,}: .?')
+    GROUPS = {
+        'woody-angiosperms': 'woody-plants',
+        'woody-gymnosperms': 'woody-plants',
+        'non-thalloid-aquatic': 'aquatic-plants',
+        'thalloid-aquatic': 'aquatic-plants',
+        'carex': 'graminoids',
+        'poaceae': 'graminoids',
+        'remaining-graminoids': 'graminoids',
+        'orchid-monocots': 'monocots',
+        'non-orchid-monocots': 'monocots',
+        'monilophytes': 'ferns',
+        'lycophytes': 'ferns',
+        'equisetaceae': 'ferns',
+        'composites': 'non-monocots',
+        'remaining-non-monocots': 'non-monocots'
+        }
+    SPECIES = {
+        'woody-angiosperms': ['Acer negundo', 'Ilex glabra', 'Ulmus rubra'],
+        'woody-gymnosperms': ['Abies balsamea', 'Picea rubens',
+                              'Tsuga canadensis'],
+        'non-thalloid-aquatic': ['Alisma subcordatum', 'Najas flexilis',
+                                 'Zostera marina'],
+        'thalloid-aquatic': ['Lemna minor', 'Spirodela polyrrhiza',
+                             'Wolffia columbiana'],
+        'carex': ['Carex albicans', 'Carex limosa', 'Carex viridula'],
+        'poaceae': ['Agrostis capillaris', 'Festuca rubra', 'Tridens flavus'],
+        'remaining-graminoids': ['Bolboschoenus fluviatilis', 'Juncus tenuis',
+                                 'Typha latifolia'],
+        'orchid-monocots': ['Arethusa bulbosa', 'Isotria verticillata',
+                            'Spiranthes lacera'],
+        'non-orchid-monocots': ['Acorus americanus', 'Hypoxis hirsuta',
+                                'Xyris montana'],
+        'monilophytes': ['Adiantum pedatum', 'Osmunda regalis',
+                         'Woodwardia virginica'],
+        'lycophytes': ['Dendrolycopodium dendroideum', 'Huperzia lucidula',
+                       'Selaginella apoda'],
+        'equisetaceae': ['Equisetum arvense', 'Equisetum palustre',
+                         'Equisetum variegatum'],
+        'composites': ['Achillea millefolium', 'Packera obovata',
+                       'Xanthium strumarium'],
+        'remaining-non-monocots': ['Abutilon theophrasti', 'Nelumbo lutea',
+                                   'Zizia aurea']
+        }
+
+    # Plant subgroups pages tests: the "plant preview" popups should
+    # contain the expected characters.
+
+    def _preview_popups_have_characters(self, subgroup):
+        INTRO_OVERLAY_CSS = '#intro-overlay .get-started'
+        subgroup_page_url = '/%s/%s/' % (self.GROUPS[subgroup], subgroup)
+        page = self.get(subgroup_page_url)
+        self.wait_on(12, self.css1, INTRO_OVERLAY_CSS)
+        self.css1(INTRO_OVERLAY_CSS).click()
+        self.wait_on(12, self.css1, 'div.plant.in-results')
+
+        PLANT_PREVIEW_LIST_ITEMS_CSS = '#sb-player .details li'
+        species = self.SPECIES[subgroup]
+        for s in species:
+            species_link = page.find_element_by_partial_link_text(s)
+            species_link.click()
+            self.wait_on(5, self.css1, PLANT_PREVIEW_LIST_ITEMS_CSS)
+            list_items = self.css(PLANT_PREVIEW_LIST_ITEMS_CSS)
+            self.assertTrue(len(list_items) > 1)
+            for list_item in list_items:
+                self.assertTrue(re.match(self.CHARACTER_PATTERN,
+                                         list_item.text))
+
+    def test_woody_angiosperms_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('woody-angiosperms')
+
+    def test_woody_gymnosperms_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('woody-gymnosperms')
+
+    def test_non_thalloid_aquatic_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('non-thalloid-aquatic')
+
+    def test_thalloid_aquatic_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('thalloid-aquatic')
+
+    def test_carex_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('carex')
+
+    def test_poaceae_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('poaceae')
+
+    def test_remaining_graminoids_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('remaining-graminoids')
+
+    def test_orchid_monocots_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('orchid-monocots')
+
+    def test_non_orchid_monocots_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('non-orchid-monocots')
+
+    def test_monilophytes_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('monilophytes')
+
+    def test_lycophytes_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('lycophytes')
+
+    def test_equisetaceae_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('equisetaceae')
+
+    def test_composites_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('composites')
+
+    def test_remaining_non_monocots_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('remaining-non-monocots')
+
+    # Species pages tests: The same "plant preview" characters should
+    # appear in the Characteristics section of the page, below the
+    # heading and above the expandable list of all characters.
+
+    def _species_pages_have_characters(self, subgroup):
+        species = self.SPECIES[subgroup]
+        for s in species:
+            species_page_url = '/species/%s/' % s.lower().replace(' ', '/')
+            self.get(species_page_url)
+            list_items = self.css('ul.characteristics li')
+            self.assertTrue(len(list_items) > 1)
+            for list_item in list_items:
+                self.assertTrue(re.match(self.CHARACTER_PATTERN,
+                                         list_item.text))
+
+    def test_woody_angiosperms_species_pages_have_characters(self):
+        self._species_pages_have_characters('woody-angiosperms')
+
+    def test_woody_gymnosperms_species_pages_have_characters(self):
+        self._species_pages_have_characters('woody-gymnosperms')
+
+    def test_non_thalloid_aquatic_species_pages_have_characters(self):
+        self._species_pages_have_characters('non-thalloid-aquatic')
+
+    def test_thalloid_aquatic_species_pages_have_characters(self):
+        self._species_pages_have_characters('thalloid-aquatic')
+
+    def test_carex_species_pages_have_characters(self):
+        self._species_pages_have_characters('carex')
+
+    def test_poaceae_species_pages_have_characters(self):
+        self._species_pages_have_characters('poaceae')
+
+    def test_remaining_graminoids_species_pages_have_characters(self):
+        self._species_pages_have_characters('remaining-graminoids')
+
+    def test_orchid_monocots_species_pages_have_characters(self):
+        self._species_pages_have_characters('orchid-monocots')
+
+    def test_non_orchid_monocots_species_pages_have_characters(self):
+        self._species_pages_have_characters('non-orchid-monocots')
+
+    def test_monilophytes_species_pages_have_characters(self):
+        self._species_pages_have_characters('monilophytes')
+
+    def test_lycophytes_species_pages_have_characters(self):
+        self._species_pages_have_characters('lycophytes')
+
+    def test_equisetaceae_species_pages_have_characters(self):
+        self._species_pages_have_characters('equisetaceae')
+
+    def test_composites_species_pages_have_characters(self):
+        self._species_pages_have_characters('composites')
+
+    def test_remaining_non_monocots_species_pages_have_characters(self):
+        self._species_pages_have_characters('remaining-non-monocots')

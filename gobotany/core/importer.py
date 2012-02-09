@@ -4,10 +4,10 @@ import os
 import re
 import shutil
 import sys
-import tarfile
 import xlrd
 from collections import defaultdict
 from operator import attrgetter
+from StringIO import StringIO
 
 # The GoBotany settings have to be imported before most of Django.
 from gobotany import settings
@@ -104,6 +104,37 @@ state_names = {
     'vt': u'Vermont',
     }
 
+def get_default_filters_from_csv(pile_name, characters_csv):
+    iterator = iter(CSVReader(characters_csv).read())
+    colnames = [x.lower() for x in iterator.next()]
+    filters = []
+    for cols in iterator:
+        row = dict(zip(colnames, cols))
+
+        if row['pile'].lower() == pile_name.lower():
+            if row['default_question'] != '':
+                character_name = row['character']
+                order = row['default_question']
+
+                im = Importer(StringIO())
+                short_name = im.character_short_name(character_name)
+
+                filters.append((order, short_name))
+
+    default_filter_characters = []
+    filters.sort()
+    for f in filters:
+        character_name = f[1]
+        try:
+            character = models.Character.objects.get( \
+                short_name=character_name)
+            default_filter_characters.append(character)
+        except models.Character.DoesNotExist:
+            print "Error: Character does not exist: %s" % character_name
+            continue
+
+    return default_filter_characters
+
 
 class Importer(object):
 
@@ -117,8 +148,8 @@ class Importer(object):
         short_name = short_name.replace('_max', '')
         return short_name
 
-    def _import_constants(self, db):
-        self._import_plant_preview_characters()
+    def _import_constants(self, db, characters_csv):
+        self._import_plant_preview_characters(characters_csv)
         self._import_help()
         self._import_simple_key_pages()
         self._import_search_suggestions()
@@ -1354,20 +1385,24 @@ class Importer(object):
             print >> self.logfile, message
 
     @transaction.commit_on_success
-    def _import_plant_preview_characters(self):
-        print >> self.logfile, ('Setting up sample plant preview characters')
+    def _import_plant_preview_characters(self, characters_csv):
+        print >> self.logfile, ('Setting up plant preview characters')
 
-        self._create_plant_preview_characters('Lycophytes',
-            ['horizontal_shoot_position_ly', 'spore_form_ly',
-             'trophophyll_length_ly'])
+        # For now, plant preview characters should initially be set to
+        # the same characters as are used for the default filters.
+        for pile in models.Pile.objects.all():
+            characters = get_default_filters_from_csv(pile.name,
+                                                      characters_csv)
+            character_short_names = [character.short_name
+                                     for character in characters]
+            self._create_plant_preview_characters(pile.name,
+                                                  character_short_names)
+
         # Set up some different plant preview characters for a partner site.
-        self._create_plant_preview_characters('Lycophytes',
-            ['trophophyll_form_ly', 'upright_shoot_form_ly',
-             'sporophyll_orientation_ly'], 'montshire')
-
-        self._create_plant_preview_characters('Non-Orchid Monocots',
-            ['anther_length_nm', 'leaf_arrangement_nm'])
-
+        # (Disabled this demo code pending partner customization decisions.)
+        #self._create_plant_preview_characters('Lycophytes',
+        #    ['trophophyll_form_ly', 'upright_shoot_form_ly',
+        #     'sporophyll_orientation_ly'], 'montshire')
 
     @transaction.commit_on_success
     def _import_lookalikes(self, db, filename):
