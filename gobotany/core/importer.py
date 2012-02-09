@@ -1391,10 +1391,12 @@ class Importer(object):
         # For now, plant preview characters should initially be set to
         # the same characters as are used for the default filters.
         for pile in models.Pile.objects.all():
+            # Start with some characters common to all plant subgroups.
+            character_short_names = ['habitat_general', 'state_distribution']
             characters = get_default_filters_from_csv(pile.name,
                                                       characters_csv)
-            character_short_names = [character.short_name
-                                     for character in characters]
+            character_short_names.extend([character.short_name
+                                          for character in characters])
             self._create_plant_preview_characters(pile.name,
                                                   character_short_names)
 

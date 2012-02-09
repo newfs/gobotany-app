@@ -1458,6 +1458,7 @@ class CharacterValueImagesFunctionalTests(FunctionalTestCase):
 
 class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
 
+    MIN_EXPECTED_CHARACTERS = 4   # Includes 2 common ones: Habitat, State
     CHARACTER_PATTERN = re.compile('[^a-z]{2,}: .?')
     GROUPS = {
         'woody-angiosperms': 'woody-plants',
@@ -1510,21 +1511,25 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         INTRO_OVERLAY_CSS = '#intro-overlay .get-started'
         subgroup_page_url = '/%s/%s/' % (self.GROUPS[subgroup], subgroup)
         page = self.get(subgroup_page_url)
-        self.wait_on(12, self.css1, INTRO_OVERLAY_CSS)
+        self.wait_on(13, self.css1, INTRO_OVERLAY_CSS)
         self.css1(INTRO_OVERLAY_CSS).click()
-        self.wait_on(12, self.css1, 'div.plant.in-results')
+        self.wait_on(13, self.css1, 'div.plant.in-results')
 
         PLANT_PREVIEW_LIST_ITEMS_CSS = '#sb-player .details li'
         species = self.SPECIES[subgroup]
         for s in species:
             species_link = page.find_element_by_partial_link_text(s)
+            self.wait(1)
             species_link.click()
-            self.wait_on(5, self.css1, PLANT_PREVIEW_LIST_ITEMS_CSS)
+            self.wait(1)   # The click doesn't always fire reliably
+            species_link.click()
+            self.wait_on(13, self.css1, PLANT_PREVIEW_LIST_ITEMS_CSS)
             list_items = self.css(PLANT_PREVIEW_LIST_ITEMS_CSS)
-            self.assertTrue(len(list_items) > 1)
+            self.assertTrue(len(list_items) >= self.MIN_EXPECTED_CHARACTERS)
             for list_item in list_items:
                 self.assertTrue(re.match(self.CHARACTER_PATTERN,
                                          list_item.text))
+            self.css1('a#sb-nav-close').click()
 
     def test_woody_angiosperms_preview_popups_have_characters(self):
         self._preview_popups_have_characters('woody-angiosperms')
@@ -1578,7 +1583,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
             species_page_url = '/species/%s/' % s.lower().replace(' ', '/')
             self.get(species_page_url)
             list_items = self.css('ul.characteristics li')
-            self.assertTrue(len(list_items) > 1)
+            self.assertTrue(len(list_items) >= self.MIN_EXPECTED_CHARACTERS)
             for list_item in list_items:
                 self.assertTrue(re.match(self.CHARACTER_PATTERN,
                                          list_item.text))
