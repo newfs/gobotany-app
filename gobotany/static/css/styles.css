@@ -1899,6 +1899,33 @@ Getting Started Page Styles
     cursor: pointer;
 }
 
+/*///////////////////////////**
+About Page Styles
+////////////////////////////*/
+
+#main ul.about {
+	list-style-type:disc;
+	margin: 10px 0 30px 15px;
+	line-height: 200%;
+	
+}
+#main ul.aboutlast {
+	list-style-type:disc;
+	margin: 10px 0 60px 15px;
+	line-height: 200%;
+	
+}
+
+img.margin {
+	float: right;
+	margin: 10px 0 20px 20px;
+}
+
+img.margin-bookcover {
+	float: right;
+	margin: 10px 89px 20px 20px;
+}
+
 /* Video Help Topics page styles */
 
 .video-row {
