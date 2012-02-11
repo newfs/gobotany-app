@@ -29,7 +29,7 @@
                     <li class="plant-id">
                         <a href="{% url simplekey %}">Simple Key</a>
                     </li>
-                    <li class="plantshare"><a href="{% if ':8000' in request.META.HTTP_HOST %}http://127.0.0.1:8001/{% else %}https://myplants.newfs.org/{% endif %}">PlantShare</a></li>
+                    <li class="plantshare"><a href="{% url plantshare-placeholder %}">PlantShare</a></li>
                     <li class="advanced-id">
                         <a href="{% url advanced-id-tools %}">Advanced ID Tools</a>
                     </li>
