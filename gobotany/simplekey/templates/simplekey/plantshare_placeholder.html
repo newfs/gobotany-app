@@ -4,6 +4,10 @@
 
 {% block body_attributes %}id="plantshare" class="claro app plantshare"{% endblock %}
 
+{% block js_require %}
+    require(['sidebar']);
+{% endblock %}
+
 {% block body_content %}
     <div id="top-wrapper">
         {% include "simplekey/_header.html" %}
@@ -14,9 +18,17 @@
                     <h2>PlantShare</h2>
                     <p>Soon, you'll be able to connect with other plant fans 
                     to share your plant discoveries, form affinity groups, 
-                    and create customized checklists of plants you have found. 
-                    PlantShare will go live in Summer 2012. Check back 
+                    and create customized checklists of plants you have 
+                    found.</p><br />
+                    <p>PlantShare will go live in Summer 2012. Check back 
                     soon!</p>
+                </div>
+                <div id="sidebar">
+                    <div class="section">
+                        {% url plantshare-placeholder as u %}
+                        <h5><a class="sidebarlink" {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>PlantShare</a></h5>
+                    </div>
+                    {% block more_sidebar_content %}{% endblock %}
                 </div>
 
                 <div class="clearit"></div>
