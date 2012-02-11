@@ -24,6 +24,9 @@ urlpatterns = patterns(
     url('^plantshare/$', views.placeholder_view, 
         {'template' : 'simplekey/plantshare_placeholder.html'},
         name='plantshare-placeholder'),
+    url('^teaching-tools/$', views.placeholder_view, 
+        {'template' : 'simplekey/teaching_placeholder.html'},
+        name='teaching-tools-placeholder'),
 
     # Auto-suggestions for search
     url('^suggest/$', views.suggest_view, name='simplekey-search-suggest'),
