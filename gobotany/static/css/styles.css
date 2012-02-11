@@ -83,7 +83,8 @@ nav #search button:active {
 	background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;	
 }
 
-#plantshare #sidebar a:hover {
+#plantshare #sidebar a:hover,
+#teaching-tools #sidebar a:hover {
     text-decoration: none;
 }
 
