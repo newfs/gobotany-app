@@ -19,6 +19,10 @@ urlpatterns = patterns(
     url('^_maptest/$', views.maptest),
     url('^_rulertest/$', views.rulertest),
 
+    # Temporary placeholder pages, to eventually be replaced with new 
+    # features / apps rather than flat views
+    url('^plantshare/$', views.plantshare_placeholder, name='plantshare-placeholder'),
+
     # Auto-suggestions for search
     url('^suggest/$', views.suggest_view, name='simplekey-search-suggest'),
 
