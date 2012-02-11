@@ -21,7 +21,9 @@ urlpatterns = patterns(
 
     # Temporary placeholder pages, to eventually be replaced with new 
     # features / apps rather than flat views
-    url('^plantshare/$', views.plantshare_placeholder, name='plantshare-placeholder'),
+    url('^plantshare/$', views.placeholder_view, 
+        {'template' : 'simplekey/plantshare_placeholder.html'},
+        name='plantshare-placeholder'),
 
     # Auto-suggestions for search
     url('^suggest/$', views.suggest_view, name='simplekey-search-suggest'),
