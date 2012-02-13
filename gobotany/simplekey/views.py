@@ -312,6 +312,7 @@ def species_view(request, genus_slug, specific_name_slug,
            'all_characteristics': all_characteristics,
            'specific_epithet': specific_name_slug,
            'last_plant_id_url': last_plant_id_url,
+           'in_simple_key': partner_species.simple_key,
            }, context_instance=RequestContext(request))
 
 def genus_view(request, genus_slug):

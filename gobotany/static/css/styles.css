@@ -1594,6 +1594,13 @@ div.working-area #simple-slider .count {
 #taxon #main p {
 	margin: 0 0 15px;	
 }
+
+#taxon p.note {
+    color: #807121;
+    font-weight: bold;
+    text-align: center;
+}
+
 a.description-control {
 	display: block;
 	padding: 3px 0 3px 25px;
