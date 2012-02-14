@@ -85,7 +85,8 @@ nav #search button:active {
 
 #plantshare #sidebar a:hover,
 #teaching-tools #sidebar a:hover,
-#privacy-policy #sidebar a:hover {
+#privacy-policy #sidebar a:hover,
+#terms-of-use #sidebar a:hover {
     text-decoration: none;
 }
 
