@@ -84,9 +84,11 @@ nav #search button:active {
 }
 
 #plantshare #sidebar a:hover,
-#teaching-tools #sidebar a:hover {
+#teaching-tools #sidebar a:hover,
+#privacy-policy #sidebar a:hover {
     text-decoration: none;
 }
+
 
 #home li.home a, #home li a:hover {
 	background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent;	
@@ -1950,6 +1952,32 @@ img.margin-bookcover {
 .video-topic img {
     height: 137px;
     width: 220px;
+}
+
+/* Legal information page styles */
+
+#terms-of-use #main ol.terms {
+    list-style-type: upper-roman;
+	margin: 10px 0 30px 15px;
+	line-height: 200%;
+}
+
+#terms-of-use ol.terms li {
+    font-weight: bold;
+}
+
+#terms-of-use ol.terms li p {
+    font-weight: normal;
+}
+
+#terms-of-use ol.terms ul {
+    list-style-type: disc;
+	margin: 10px 0 30px 15px;
+	line-height: 200%;
+}
+
+#terms-of-use ol.terms ul li {
+    font-weight: normal;
 }
 
 /* Glossary styles */
