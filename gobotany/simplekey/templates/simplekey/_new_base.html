@@ -4,6 +4,7 @@
     <head>
         <title>{% block title %}{% endblock %}{% block title_suffix %}: Go Botany{% endblock %}</title>
         <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8">
         <link rel="shortcut icon" href="/static/images/branding/favicon.png">
     
         {# This block is for any additional meta or link elements. #}
@@ -22,6 +23,8 @@
         <link rel="stylesheet"
             href="/static/css/jquery.jscrollpane.css">
         <link rel="stylesheet" href="/static/css/smoothDivScroll.css">
+        {# TODO: If we do decide to use Chrome Frame for IE 8 and #}
+        {# below, remove these conditional styles and their code. #}
         <!--[if IE 7]>
             <link rel="stylesheet" href="/static/css/ie7.css">
         <![endif]-->
@@ -35,7 +38,15 @@
         {# such as SVGWeb. #}
         {% block js_top %}{% endblock %}
 
-        {# HTML5 fix for IE #}
+        {# Chrome Frame installer #}
+        <!--[if IE]>
+        <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+        <![endif]-->
+
+        {# TODO: If we do decide to use Chrome Frame for IE 8 and #}
+        {# below, remove this conditional script and its code.    #}
+        {# HTML5 fix for IE 8 and below #}
         <!--[if lt IE 9]>
         <script
             src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -52,6 +63,15 @@
     </head>
 
     <body {% block body_attributes %}{% endblock %}>
+
+        {# Prompt to install Chrome Frame on IE 8 and below if needed #}
+        <!--[if IE]>
+        <script>
+            CFInstall.check({
+                mode: "overlay"
+            });
+        </script>
+        <![endif]-->
 
         {# Note: So far, header has to be added per-page, since the  #}
         {# home page puts the header in a special container div that #}
