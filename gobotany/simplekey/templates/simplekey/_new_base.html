@@ -39,7 +39,7 @@
         {% block js_top %}{% endblock %}
 
         {# Chrome Frame installer #}
-        <!--[if IE]>
+        <!--[if lt IE 9]>
         <script type="text/javascript"
             src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
         <![endif]-->
@@ -65,7 +65,7 @@
     <body {% block body_attributes %}{% endblock %}>
 
         {# Prompt to install Chrome Frame on IE 8 and below if needed #}
-        <!--[if IE]>
+        <!--[if lt IE 9]>
         <script>
             CFInstall.check({
                 mode: "overlay"
