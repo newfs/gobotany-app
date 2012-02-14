@@ -10,156 +10,156 @@
     require(['simplekey/results']);
 {% endblock %}
 
+{% block body_attributes %}id="plant-id-3" class="claro app"{% endblock %}
+
 {% block body_content %}
-    <body id="plant-id-3" class="claro app">
-        {% include "simplekey/_header.html" %}
+    {% include "simplekey/_header.html" %}
 
-        {% include "simplekey/_results_modal_dialogs.html" %}
+    {% include "simplekey/_results_modal_dialogs.html" %}
 
-        <div class="content">
-            <div class="container">
-                <div id="main">
-                    <div id="breadcrumb">
-                        <p>You are here: <a href="{% url simplekey %}">Simple Key</a>
-                        &gt; <a href="{% url simplekey-pilegroup pilegroup.slug %}"
-                            >{{ pilegroup.friendly_title|lower|capfirst }}</a>
-                        &gt; <span>{{ pile.friendly_title }}</span></p>
-                    </div>
-
-                    <h2>{{ subgroup_results_page.main_heading|lower|capfirst }}</h2>
-                    
-                    <div class="working-area" aria-live="polite" 
-                        aria-relevant="additions removals">
-                        <img class="arrow" alt=""
-                            src="/static/images/layout/working-area-arrow.png">
-                        <a href="#" class="close"></a>
-
-                        <h4></h4>
-                        <div>
-                            <div class="info">
-                                <div class="dld"></div>
-                                <div class="hint"></div>
-                                <div class="values"></div>
-                                <div class="actions">
-                                  <a class="apply-btn" href="#">Apply</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="clearit"></div>
-                    </div>
-
-                    <h3 class="species-count-heading">
-                      <span>
-                        <span class="species-count">Finding</span>
-                        matching species
-                      </span>
-                    </h3>
-
-                    <div id="results-tabs">
-                        <ul>
-                            <li><a class="current">Photos</a></li>
-                            <li><a>List</a></li>
-                        </ul>
-                    </div>
-                    <div class="clearit"></div>
-
-                    <div class="show hidden">
-                        <form id="results-display">
-                            <img class="icon" alt=""
-                                src="/static/images/icons/show-me.png">
-                            <label for="image-type-selector">Show photos
-                                of:</label>
-                            <select dojoType="dijit.form.Select"
-                                id="image-type-selector"
-                                name="image-type-selector">
-                          </select>
-                      </form>
-                    </div>
-                    <div class="clearit"></div>
-
-                    <div class="plant-list">
-                        <div class="wait"></div>
-                    </div>
-
-                    <p class="list-all hidden"><a>See 
-                        <span class="view-type">a list of</span>
-                        all <span class="species-count">...</span> 
-                        matching species.</a></p>
-
-                    </div>
-
-                <div id="sidebar" class="tinted">
-                    <div class="section instructions">
-                        <h5>Pick a question from this
-                            scrollable list:</h5>
-                    </div>
-                    <div class="scroll">
-                        <div class="loading">Loading questions…</div>
-                        <ul class="option-list" aria-live="polite"
-                        aria-relevant="additions removals">
-                        </ul>
-                    </div>
-
-                    <div class="section">
-                        <p class="get-more">
-                            <a class="get-choices">Get More Questions</a>
-                            Add a few more questions for narrowing your
-                            matching species.</p>
-                    </div>
-
-
-                    <div class="section">
-                        <div class="already-know">
-                            <h6>Already know the family or genus?</h6>
-                            <label>Family:</label>
-                            <select id="family_select" name="family_select"
-                                dojoType="dijit.form.FilteringSelect"
-                                autocomplete="true" value="sel">
-                            </select>
-                            <button dojoType="dijit.form.Button" 
-                                id="clear_family">Clear</button> 
-                            <label>Genus:</label>
-                            <select id="genus_select" name="genus_select"
-                                dojoType="dijit.form.FilteringSelect"
-                                autocomplete="true" value="sel">
-                            </select>
-                            <button dojoType="dijit.form.Button" 
-                                id="clear_genus">Clear</button>
-			            </div>
-                    </div>
-			
-			        <div class="section">
-				        <h5 class="left help">Start Over:</h5>
-				        <a class="clear-all-btn left">Clear All</a>
-				        <div class="clearit"></div>
-			        </div>
-			
-                    <div class="section">
-                        <h5 class="left help">Need Help?</h5>
-                        <a href="{% url simplekey-help-start %}"
-                            class="get-help-btn left">Get Help</a>
-                        <div class="clearit"></div>
-                    </div>
-                    
+    <div class="content">
+        <div class="container">
+            <div id="main">
+                <div id="breadcrumb">
+                    <p>You are here: <a href="{% url simplekey %}">Simple Key</a>
+                    &gt; <a href="{% url simplekey-pilegroup pilegroup.slug %}"
+                        >{{ pilegroup.friendly_title|lower|capfirst }}</a>
+                    &gt; <span>{{ pile.friendly_title }}</span></p>
                 </div>
 
+                <h2>{{ subgroup_results_page.main_heading|lower|capfirst }}</h2>
+                
+                <div class="working-area" aria-live="polite" 
+                    aria-relevant="additions removals">
+                    <img class="arrow" alt=""
+                        src="/static/images/layout/working-area-arrow.png">
+                    <a href="#" class="close"></a>
+
+                    <h4></h4>
+                    <div>
+                        <div class="info">
+                            <div class="dld"></div>
+                            <div class="hint"></div>
+                            <div class="values"></div>
+                            <div class="actions">
+                              <a class="apply-btn" href="#">Apply</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearit"></div>
+                </div>
+
+                <h3 class="species-count-heading">
+                  <span>
+                    <span class="species-count">Finding</span>
+                    matching species
+                  </span>
+                </h3>
+
+                <div id="results-tabs">
+                    <ul>
+                        <li><a class="current">Photos</a></li>
+                        <li><a>List</a></li>
+                    </ul>
+                </div>
                 <div class="clearit"></div>
-            </div>
-        </div>
 
-        {# TODO: eventually move elsewhere #}
-        {% include "simplekey/_partner_site_js.html" %}
+                <div class="show hidden">
+                    <form id="results-display">
+                        <img class="icon" alt=""
+                            src="/static/images/icons/show-me.png">
+                        <label for="image-type-selector">Show photos
+                            of:</label>
+                        <select dojoType="dijit.form.Select"
+                            id="image-type-selector"
+                            name="image-type-selector">
+                      </select>
+                  </form>
+                </div>
+                <div class="clearit"></div>
 
-        <div id="intro-overlay">
-           <div class="number-of-species">
-                <h1><span class="number">33</span> possible matches</h1>
+                <div class="plant-list">
+                    <div class="wait"></div>
+                </div>
+
+                <p class="list-all hidden"><a>See 
+                    <span class="view-type">a list of</span>
+                    all <span class="species-count">...</span> 
+                    matching species.</a></p>
+
+                </div>
+
+            <div id="sidebar" class="tinted">
+                <div class="section instructions">
+                    <h5>Pick a question from this
+                        scrollable list:</h5>
+                </div>
+                <div class="scroll">
+                    <div class="loading">Loading questions…</div>
+                    <ul class="option-list" aria-live="polite"
+                    aria-relevant="additions removals">
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <p class="get-more">
+                        <a class="get-choices">Get More Questions</a>
+                        Add a few more questions for narrowing your
+                        matching species.</p>
+                </div>
+
+
+                <div class="section">
+                    <div class="already-know">
+                        <h6>Already know the family or genus?</h6>
+                        <label>Family:</label>
+                        <select id="family_select" name="family_select"
+                            dojoType="dijit.form.FilteringSelect"
+                            autocomplete="true" value="sel">
+                        </select>
+                        <button dojoType="dijit.form.Button" 
+                            id="clear_family">Clear</button> 
+                        <label>Genus:</label>
+                        <select id="genus_select" name="genus_select"
+                            dojoType="dijit.form.FilteringSelect"
+                            autocomplete="true" value="sel">
+                        </select>
+                        <button dojoType="dijit.form.Button" 
+                            id="clear_genus">Clear</button>
+                    </div>
+                </div>
+        
+                <div class="section">
+                    <h5 class="left help">Start Over:</h5>
+                    <a class="clear-all-btn left">Clear All</a>
+                    <div class="clearit"></div>
+                </div>
+        
+                <div class="section">
+                    <h5 class="left help">Need Help?</h5>
+                    <a href="{% url simplekey-help-start %}"
+                        class="get-help-btn left">Get Help</a>
+                    <div class="clearit"></div>
+                </div>
+                
             </div>
-            <div class="number-of-questions">
-                <h1>Answer questions here</h1>
-            </div>
-            <div class="get-started">
-                <h1>Get started</h1>
-            </div>
+
+            <div class="clearit"></div>
         </div>
-    </body>
+    </div>
+
+    {# TODO: eventually move elsewhere #}
+    {% include "simplekey/_partner_site_js.html" %}
+
+    <div id="intro-overlay">
+       <div class="number-of-species">
+            <h1><span class="number">33</span> possible matches</h1>
+        </div>
+        <div class="number-of-questions">
+            <h1>Answer questions here</h1>
+        </div>
+        <div class="get-started">
+            <h1>Get started</h1>
+        </div>
+    </div>
 {% endblock %}
