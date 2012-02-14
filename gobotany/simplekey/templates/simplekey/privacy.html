@@ -1,0 +1,112 @@
+{% extends "simplekey/_new_base.html" %}
+
+{% block title %}Privacy Policy{% endblock %}
+
+{% block body_attributes %}id="privacy-policy" class="claro app privacy-policy"{% endblock %}
+
+{% block js_require %}
+    require(['sidebar']);
+{% endblock %}
+
+{% block body_content %}
+    <div id="top-wrapper">
+        {% include "simplekey/_header.html" %}
+
+        <div class="content">
+            <div class="container">
+                <div id="main">
+                    <h2>Legal Information</h2>
+                    <h3>Privacy Policy</h3>
+                    <p>Go Botany is designed to gather and disseminate 
+                    information about plant distribution and abundance 
+                    across the six states of New England, USA, and 
+                    adjacent provinces and states.  This privacy policy 
+                    governs the use of personal information from the site 
+                    and you agree to be bound to this policy as a user of 
+                    the Site.</p>
+                    <br />
+                    <h4>Submitted Information</h4>
+                    <p>Personal Information is voluntarily supplied by you 
+                    when you register and submit data to the <a 
+                    href="{% url plantshare-placeholder %}">PlantShare</a> sector 
+                    of the Site. By registering at PlantShare, you allow us to 
+                    associate your plant observations with a unique identifier 
+                    (login name or your name), so that you can track your 
+                    personal observations (e.g., checklists and customized 
+                    maps). Profile Information allows us to gain a better 
+                    understanding of the PlantShare participants and Go Botany 
+                    visitors and to determine how best to improve the web site 
+                    for Go Botany users.</p>
+                    <br />
+                    <p>You are able to view your personal observations (plant 
+                    sightings, postings, and questions to the Botanist) and 
+                    those of others (if they have made them available to you, 
+                    your affinity group, or the web), so please be aware that 
+                    your observations of species and their locations plus an 
+                    supporting information you provide, may be available to 
+                    other PlantShare users.</p>
+                    <br />
+                    <p>Plant observations are the most important pieces of 
+                    information that we collect. Details of a plant sighting 
+                    and its associated location (species, numbers, etc.) are 
+                    available only to the users designated by you as a 
+                    PlantShare member, which you choose upon uploading a 
+                    sighting to the Site.  Only information pertaining to 
+                    plant observations is available to your selected users; 
+                    no personal contact information is ever made public.</p>
+                    <br />
+                    <p>Cookies are pieces of data that we store on your 
+                    computer to tie your information to the PlantShare 
+                    program. Cookies allow you to store your login 
+                    information, so that you will not be required to log 
+                    in each time you visit the PlantShare web site.</p>
+                    <br />
+                    <p>Internet browsers allow you to determine whether 
+                    or not to accept cookies (check under the preferences 
+                    or options in the browser menu). If you decide not to 
+                    accept cookies, you can still use the PlantShare site, 
+                    but you will need to re-enter login information each 
+                    time you visit.</p>
+                    <br />
+                    <h4>Sensitive Species</h4>
+                    <p>If you submit an unusual observation or a sighting of a 
+                    plant known to be listed as Endangered, Threatened, 
+                    Special Concern, Historic or Invasive in a New England 
+                    state, we may e-mail you to request more details and to 
+                    confirm your sighting.  Your email address and contact 
+                    information will not be sold or distributed outside New 
+                    England Wild Flower Society.</p>
+                    <br />
+                    <h4>Your practices in obtaining sightings</h4>
+                    <p>As a conservation organization, New England Wild Flower 
+                    Society seeks to limit disturbance to plants, especially 
+                    those that are rare or occur on private property. Please 
+                    do not trespass on private property to observe plants; 
+                    always obtain landowner permission before gathering data 
+                    on plants and posting sightings from private property.
+                    By posting a sighting, you are agreeing that all applicable 
+                    landowner permissions have been obtained and that posting 
+                    of locational and other data has been approved by the 
+                    landowner.</p>
+                    <br />
+                    <h4>Changes to This Privacy Policy</h4>
+                    <p>We may occasionally update or amend New England Wild 
+                    Flower Society’s Privacy Statement. If we make changes, 
+                    we will post the changes here.</p>
+                </div>
+                <div id="sidebar">
+                    <div class="section">
+                        {% url privacy-policy as u %}
+                        <h5><a class="sidebarlink" {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Privacy Policy</a></h5>
+                    </div>
+                    <div class="section">
+                        {% url terms-of-use as u %}
+                        <h5><a class="sidebarlink" {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Terms of Use</a></h5>
+                    </div>
+                    {% block more_sidebar_content %}{% endblock %}
+                </div>
+
+                <div class="clearit"></div>
+            </div>
+        </div>
+{% endblock %}
