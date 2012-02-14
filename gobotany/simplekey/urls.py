@@ -28,6 +28,11 @@ urlpatterns = patterns(
         {'template' : 'simplekey/teaching_placeholder.html'},
         name='teaching-tools-placeholder'),
 
+    # Legal notification pages
+    url('^legal/$', views.legal_redirect_view, name='legal'),
+    url('^legal/privacy-policy/$', views.privacy_policy_view, name='privacy-policy'),
+    url('^legal/terms-of-use/$', views.terms_of_use_view, name='terms-of-use'),
+
     # Auto-suggestions for search
     url('^suggest/$', views.suggest_view, name='simplekey-search-suggest'),
 

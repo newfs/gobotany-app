@@ -384,6 +384,18 @@ def family_view(request, family_slug):
            'pile': pile,
            }, context_instance=RequestContext(request))
 
+def legal_redirect_view(request):
+    return redirect('privacy-policy')
+
+def privacy_policy_view(request):
+    return render_to_response('simplekey/privacy.html',
+            context_instance=RequestContext(request))
+
+def terms_of_use_view(request):
+    site_url = request.build_absolute_uri(reverse('simplekey-index'))
+    return render_to_response('simplekey/terms.html',
+            { 'site_url' : site_url },
+            context_instance=RequestContext(request))
 
 def help_redirect_view(request):
     return redirect('simplekey-help-start')
