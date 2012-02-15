@@ -17,7 +17,7 @@ from django.views.decorators.vary import vary_on_headers
 from gobotany.core import botany
 from gobotany.core import models
 from gobotany.core.models import (
-    CharacterGroup, CharacterValue, DefaultFilter, Family, Genus,
+    CharacterGroup, CharacterValue, Family, Genus,
     GlossaryTerm, Habitat, HomePageImage, Pile, PileGroup,
     PlantPreviewCharacter, Taxon,
     )
