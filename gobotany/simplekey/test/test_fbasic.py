@@ -1319,10 +1319,10 @@ class GlossarizerFunctionalTests(FunctionalTestCase):
         self.get('/ferns/lycophytes/dendrolycopodium/dendroideum/')
         # Wait a bit for the glossarizer to finish.
         self.wait_on(5, self.css1, '#sidebar dd')
-        self.assertTrue(len(self.css('#sidebar dd')))
-        self.assertTrue(len(self.css('#main p')))
-        self.assertTrue(len(self.css('#main li')))
-        self.assertTrue(len(self.css('#main th')))
+        self.assertTrue(len(self.css('#sidebar dd')))   # Lookalikes
+        self.assertTrue(len(self.css('#main p')))   # Facts About
+        self.assertTrue(len(self.css('#main li')))  # Characteristics
+        self.assertTrue(len(self.css('#main th')))  # Dist./Cons. Status
 
 
 
