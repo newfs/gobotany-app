@@ -1430,6 +1430,9 @@ class Importer(object):
                     lookalike_characteristic=how_to_tell.strip(),
                     )
 
+        lookalike_table.save()
+
+
     @transaction.commit_on_success
     def _import_distributions(self, distributionsf):
         print >> self.logfile, 'Importing distribution data (BONAP)'
