@@ -1548,9 +1548,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         species = self.SPECIES[subgroup]
         for s in species:
             species_link = page.find_element_by_partial_link_text(s)
-            self.wait(1)
-            species_link.click()
-            self.wait(1)   # The click doesn't always fire reliably
+            time.sleep(1)   # Wait a bit for animation to finish
             species_link.click()
             self.wait_on(13, self.css1, self.PLANT_PREVIEW_LIST_ITEMS_CSS)
             list_items = self.css(self.PLANT_PREVIEW_LIST_ITEMS_CSS)
@@ -1565,7 +1563,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
                                       expected_list_item):
         page = self._get_subgroup_page(subgroup)
         species_link = page.find_element_by_partial_link_text(species)
-        self.wait(1)
+        time.sleep(1)   # Wait a bit for animation to finish
         species_link.click()
         self.wait_on(13, self.css1, self.PLANT_PREVIEW_LIST_ITEMS_CSS)
         list_items = self.css(self.PLANT_PREVIEW_LIST_ITEMS_CSS)
