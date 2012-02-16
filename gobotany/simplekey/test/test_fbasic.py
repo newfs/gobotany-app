@@ -1529,15 +1529,22 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     # Plant subgroups pages tests: the "plant preview" popups should
     # contain the expected characters.
 
-    def _preview_popups_have_characters(self, subgroup):
-        INTRO_OVERLAY_CSS = '#intro-overlay .get-started'
+    INTRO_OVERLAY_CSS = '#intro-overlay .get-started'
+    PLANT_PREVIEW_LIST_ITEMS_CSS = '#sb-player .details li'
+    CLOSE_LINK_CSS = 'a#sb-nav-close'
+
+    def _get_subgroup_page(self, subgroup):
         subgroup_page_url = '/%s/%s/' % (self.GROUPS[subgroup], subgroup)
         page = self.get(subgroup_page_url)
-        self.wait_on(13, self.css1, INTRO_OVERLAY_CSS)
-        self.css1(INTRO_OVERLAY_CSS).click()
+        self.wait_on(13, self.css1, self.INTRO_OVERLAY_CSS)
+        self.css1(self.INTRO_OVERLAY_CSS).click()
         self.wait_on(13, self.css1, 'div.plant.in-results')
+        return page
 
-        PLANT_PREVIEW_LIST_ITEMS_CSS = '#sb-player .details li'
+    # Test that characters are present for several species, and that the
+    # characters appear to be formatted as expected.
+    def _preview_popups_have_characters(self, subgroup):
+        page = self.get_subgroup_page(subgroup)
         species = self.SPECIES[subgroup]
         for s in species:
             species_link = page.find_element_by_partial_link_text(s)
@@ -1545,13 +1552,37 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
             species_link.click()
             self.wait(1)   # The click doesn't always fire reliably
             species_link.click()
-            self.wait_on(13, self.css1, PLANT_PREVIEW_LIST_ITEMS_CSS)
-            list_items = self.css(PLANT_PREVIEW_LIST_ITEMS_CSS)
+            self.wait_on(13, self.css1, self.PLANT_PREVIEW_LIST_ITEMS_CSS)
+            list_items = self.css(self.PLANT_PREVIEW_LIST_ITEMS_CSS)
             self.assertTrue(len(list_items) >= self.MIN_EXPECTED_CHARACTERS)
             for list_item in list_items:
                 self.assertTrue(re.match(self.CHARACTER_PATTERN,
                                          list_item.text))
-            self.css1('a#sb-nav-close').click()
+            self.css1(self.CLOSE_LINK_CSS).click()
+
+    # Test a single species, including its expected character and value.
+    def _preview_popup_has_characters(self, subgroup, species,
+                                      expected_list_item):
+        page = self._get_subgroup_page(subgroup)
+        species_link = page.find_element_by_partial_link_text(species)
+        self.wait(1)
+        species_link.click()
+        self.wait_on(13, self.css1, self.PLANT_PREVIEW_LIST_ITEMS_CSS)
+        list_items = self.css(self.PLANT_PREVIEW_LIST_ITEMS_CSS)
+        self.assertTrue(len(list_items) >= self.MIN_EXPECTED_CHARACTERS)
+        for list_item in list_items:
+            self.assertTrue(re.match(self.CHARACTER_PATTERN,
+                                     list_item.text))
+        expected_item_found = False
+        for list_item in list_items:
+            if list_item.text == expected_list_item.decode('utf-8'):
+                expected_item_found = True
+                break
+        if not expected_item_found:
+            print '%s: Expected item not found: %s' % (species,
+                                                       expected_list_item)
+        self.assertTrue(expected_item_found)
+        self.css1(self.CLOSE_LINK_CSS).click()
 
     def test_woody_angiosperms_preview_popups_have_characters(self):
         self._preview_popups_have_characters('woody-angiosperms')
@@ -1594,6 +1625,19 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
 
     def test_remaining_non_monocots_preview_popups_have_characters(self):
         self._preview_popups_have_characters('remaining-non-monocots')
+
+    # Plant preview popups: Verify some expected characters and values.
+    def test_plant_preview_popups_have_expected_values(self):
+        values = [
+            ('non-thalloid-aquatic', 'Elatine minima',
+             'LEAF BLADE LENGTH: 0.7–5 cm'),
+            ('non-thalloid-aquatic', 'Brasenia schreberi',
+             'LEAF BLADE LENGTH: 35–135 cm'),
+            ('carex', 'Carex aquatilis', 'FRUIT LENGTH: 2–3.3 mm'),
+            ]
+        for subgroup, species, expected_list_item in values:
+            self._preview_popup_has_characters(subgroup, species,
+                                               expected_list_item)
 
     # Species pages tests: The same "plant preview" characters should
     # appear in the Characteristics section of the page, below the

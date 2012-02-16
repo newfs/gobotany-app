@@ -179,11 +179,15 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                                 if (ppc.value_type === 'LENGTH') {
                                     var min = character_value[0];
                                     var max = character_value[1];
+                                    var min_mm = gobotany.utils.convert(
+                                        min, ppc.unit, 'mm');
+                                    var max_mm = gobotany.utils.convert(
+                                        max, ppc.unit, 'mm');
                                     display_value =
                                         gobotany.utils.pretty_length(
-                                        ppc.unit, min) + ' to ' +
+                                        ppc.unit, min_mm, false) + '&#8211;' +
                                         gobotany.utils.pretty_length(
-                                        ppc.unit, max);
+                                        ppc.unit, max_mm);
                                 }
                                 else {
                                     // For multiple-value characters,

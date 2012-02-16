@@ -81,41 +81,79 @@ gobotany.utils.clone = function(obj, updated_args) {
     return new_obj;
 };
 
-gobotany.utils.pretty_length = function(unit, mmvalue) {
+gobotany.utils.pretty_length = function(unit, mmvalue, show_unit) {
+    if (show_unit === undefined) {
+        show_unit = true;
+    }
+    
     var SPACE = '&#160;';
     var mm = parseFloat(mmvalue); /* make sure it is a float */
     if (isNaN(mm)) {
         console.log('gobotany.utils.pretty_length: ' + mmvalue +
                     ' is not a number');
     }
-    if (unit == 'mm') {
-        return mm.toFixed(1) + SPACE + 'mm';
-    } else if (unit == 'cm') {
-        return (mm / 10.0).toFixed(1) + SPACE + 'cm';
-    } else if (unit == 'm') {
-        return (mm / 1000.0).toFixed(2) + SPACE + 'm';
-    }
-    inches = mm / 25.4;
-    feet = Math.floor(inches / 12.0);
-    inches = inches % 12.0;
     var value = '';
-    if (feet > 0) {
-        value += feet + SPACE + 'ft' + SPACE;
+    if (unit == 'mm') {
+        value = mm.toFixed(1);
+    } else if (unit === 'cm') {
+        value = (mm / 10.0).toFixed(1);
+    } else if (unit === 'm') {
+        value = (mm / 1000.0).toFixed(2);
+    } else {   // assume unit is 'in'
+        unit = 'in';
+        inches = mm / 25.4;
+        feet = Math.floor(inches / 12.0);
+        inches = inches % 12.0;
+        if (feet > 0) {
+            value += feet + SPACE + 'ft' + SPACE;
+        }
+        var wholein = Math.floor(inches);
+        if (wholein > 0) {
+            value += wholein;
+        }
+        var fracin = inches % 1.0;
+        var eighths = Math.floor(fracin * 8.0);
+        if (eighths > 0) {
+            value += ' ⅛¼⅜½⅝¾⅞'[eighths];
+        }
+        if (wholein === 0 && eighths === 0) {
+            value += '0';
+        }
     }
-    var wholein = Math.floor(inches);
-    if (wholein > 0) {
-        value += wholein;
+
+    // If .0 is at the end, omit it.
+    if (value.indexOf('.0', value.length - 2) !== -1) {
+        value = value.substring(0, value.length - 2);
     }
-    var fracin = inches % 1.0;
-    var eighths = Math.floor(fracin * 8.0);
-    if (eighths > 0) {
-        value += ' ⅛¼⅜½⅝¾⅞'[eighths];
+    if (show_unit) {
+        value += SPACE + unit;
     }
-    if (wholein == 0 && eighths == 0) {
-        value += '0';
-    }
-    value += SPACE + 'in';
+
     return value;
+};
+
+/* Unit conversion for number values. Limited to current needs. */
+gobotany.utils.convert = function(source_value, source_unit, dest_unit) {
+    var source_value = parseFloat(source_value), /* ensure it is a float */
+        dest_value;
+
+    if (isNaN(source_value)) {
+        console.log('gobotany.utils.convert: ' + source_value +
+                    ' is not a number');
+    }
+    if (source_unit === dest_unit) {
+        dest_value = source_value;
+    } else if (source_unit === 'cm' && dest_unit === 'mm') {
+        dest_value = source_value * 10;
+    } else if (source_unit === 'mm' && dest_unit === 'cm') {
+        dest_value = source_value / 10;
+    } else {
+        console.log('gobotany.utils.convert: unknown conversion, returning ' +
+                    'original value');
+        dest_value = source_value;
+    }
+
+    return dest_value;
 };
 
 /* Programatically click a link, running its attached event handlers as if a
