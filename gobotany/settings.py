@@ -1,3 +1,4 @@
+import urlparse
 import os
 import socket
 import sys
@@ -68,8 +69,29 @@ else:
     }
 
 if 'HEROKU_SHARED_POSTGRESQL_BLACK_URL' in os.environ:
+
+    # For the sake of Heroku.
+
     os.environ['DATABASE_URL'] = os.environ[
         'HEROKU_SHARED_POSTGRESQL_BLACK_URL']
+
+    # For the sake of scripts running locally on a developer
+    # workstation, but with a Heroku database URL provided.  This code
+    # is adapted from: http://devcenter.heroku.com/articles/django
+
+    url = urlparse.urlparse(os.environ['DATABASE_URL'])
+
+    # Ensure default database exists.
+    DATABASES['default'] = DATABASES.get('default', {})
+
+    # Update with environment configuration.
+    DATABASES['default'].update({
+            'NAME': url.path[1:],
+            'USER': url.username,
+            'PASSWORD': url.password,
+            'HOST': url.hostname,
+            'PORT': url.port,
+            })
 
 INSTALLED_APPS = [
     'gobotany.api',
@@ -139,6 +161,10 @@ HAYSTACK_SEARCH_ENGINE = 'solr'
 HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 HAYSTACK_SOLR_TIMEOUT = 20  # Longer than default timeout; added for indexing
+
+# For when we are running on Heroku:
+if 'WEBSOLR_URL' in os.environ:
+    HAYSTACK_SOLR_URL = os.environ['WEBSOLR_URL']
 
 TINYMCE_JS_URL = "tiny_mce/tiny_mce.js"
 TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "tiny_mce")
