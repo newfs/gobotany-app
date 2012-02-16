@@ -16,10 +16,11 @@ from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
 from gobotany.core import models
+from gobotany.core.importer import pile_suffixes
 from gobotany.core.models import (
     CharacterGroup, CharacterValue, Family, Genus,
     GlossaryTerm, Habitat, HomePageImage, Pile, PileGroup,
-    PlantPreviewCharacter, Taxon,
+    PlantPreviewCharacter, Taxon
     )
 from gobotany.core.partner import which_partner
 from gobotany.plantoftheday.models import PlantOfTheDay
@@ -27,6 +28,9 @@ from gobotany.simplekey.groups_order import ORDERED_GROUPS
 from gobotany.simplekey.models import (get_blurb, GroupsListPage,
                                        SearchSuggestion, SubgroupResultsPage,
                                        SubgroupsListPage)
+
+# Character short names common to all piles (but no suffix)
+COMMON_CHARACTERS = ['habitat', 'habitat_general', 'state_distribution']
 
 #
 
@@ -200,13 +204,21 @@ def _format_character_value(character_value):
         return ''
 
 
-def _get_all_characteristics(taxon, character_groups):
+def _get_all_characteristics(taxon, character_groups, pile):
     """Get all characteristics for a plant, organized by character group."""
+
+    pile_suffix_dict = dict((v.lower(), k.lower())
+                            for (k, v) in pile_suffixes.iteritems())
 
     # Ensure the query is ordered so the character values can
     # successfully be grouped.
     q = (CharacterValue.objects.filter(taxon_character_values__taxon=taxon)
                                .order_by('character'))
+
+    # Screen out any character values that do not belong to this pile.
+    pile_suffix = '_%s' % pile_suffix_dict[pile.name.lower()]
+    q = [cv for cv in q if (cv.character.short_name.endswith(pile_suffix) or
+         cv.character.short_name in COMMON_CHARACTERS)]
 
     # Combine multiple values that belong to a single character.
     cgetter = attrgetter('character')
@@ -230,10 +242,7 @@ def _get_all_characteristics(taxon, character_groups):
 
 def _get_brief_characteristics(all_characteristics, pile, partner):
     """Get the short list of characteristics that help give a quick
-       impression of the plant.
-       Like the plant preview popups on the filtering page, this is a
-       combination of plant preview characters and some of the pile's
-       default filters.
+    impression of the plant.
     """
     plant_preview_character_names = [
         ppc.character.friendly_name
@@ -289,7 +298,8 @@ def species_view(request, genus_slug, specific_name_slug,
     character_groups = CharacterGroup.objects.filter(
                        character__in=character_ids).distinct()
 
-    all_characteristics = _get_all_characteristics(taxon, character_groups)
+    all_characteristics = _get_all_characteristics(taxon, character_groups,
+                                                   pile)
 
     last_plant_id_url = request.COOKIES.get('last_plant_id_url', None)
     if last_plant_id_url:
@@ -308,7 +318,7 @@ def species_view(request, genus_slug, specific_name_slug,
                if partner_species else None,
            'habitats': habitats,
            'brief_characteristics': _get_brief_characteristics(
-                all_characteristics, pile, which_partner(request)),
+                all_characteristics, pile, partner),
            'all_characteristics': all_characteristics,
            'specific_epithet': specific_name_slug,
            'last_plant_id_url': last_plant_id_url,
