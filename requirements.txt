@@ -9,7 +9,7 @@ xlrd
 # Unsure which version satisfied minimum reqs
 PIL
 
-django-autocomplete
+# django-autocomplete - now provided literally
 django-haystack
 django-piston==0.2.2
 django-tinymce
