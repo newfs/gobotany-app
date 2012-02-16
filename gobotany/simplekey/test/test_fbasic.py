@@ -1544,7 +1544,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     # Test that characters are present for several species, and that the
     # characters appear to be formatted as expected.
     def _preview_popups_have_characters(self, subgroup):
-        page = self.get_subgroup_page(subgroup)
+        page = self._get_subgroup_page(subgroup)
         species = self.SPECIES[subgroup]
         for s in species:
             species_link = page.find_element_by_partial_link_text(s)
