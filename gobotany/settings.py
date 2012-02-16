@@ -3,7 +3,12 @@ import socket
 import sys
 import traceback
 
-import gobotany
+try:
+    import gobotany
+except ImportError:
+    sys.path[0:0] = [ os.path.dirname(os.path.dirname(os.path.abspath(__file__))) ]
+    import gobotany
+
 GOBOTANY_DIR = os.path.dirname(gobotany.__file__)
 
 try:
@@ -61,6 +66,10 @@ else:
             'PASSWORD': '',
         }
     }
+
+if 'HEROKU_SHARED_POSTGRESQL_BLACK_URL' in os.environ:
+    os.environ['DATABASE_URL'] = os.environ[
+        'HEROKU_SHARED_POSTGRESQL_BLACK_URL']
 
 INSTALLED_APPS = [
     'gobotany.api',
