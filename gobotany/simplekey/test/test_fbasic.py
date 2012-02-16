@@ -1652,6 +1652,22 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     def test_remaining_non_monocots_species_pages_have_characters(self):
         self._species_pages_have_characters('remaining-non-monocots')
 
+    # Verify there are no duplicate characters in the initially-visible
+    # "brief" Characteristics section on the species page.
+    def test_species_page_has_no_duplicate_brief_characteristics(self):
+        species = ['Elatine minima', 'Eleocharis acicularis',
+                   'Eleocharis robbinsii', 'Alisma subcordatum',
+                   'Sagittaria cuneata', 'Utricularia intermedia']
+        for s in species:
+            self.get('/species/%s/' % s.replace(' ', '/').lower())
+            list_items = self.css('ul.characteristics li')
+            character_names = []
+            for list_item in list_items:
+                character_name = list_item.text.split(':')[0]
+                character_names.append(character_name)
+            self.assertTrue(len(character_names) > 0)
+            self.assertEqual(len(character_names), len(set(character_names)))
+
 
 class LookalikesFunctionalTests(FunctionalTestCase):
 
