@@ -20,6 +20,10 @@ setuptools
 pysolr
 BeautifulSoup
 
+# For memcached on Heroku we need a caching back-end that does authentication:
+pylibmc==1.2.2
+django-pylibmc-sasl==0.2.4
+
 # coverage
 # selenium
 
@@ -27,3 +31,7 @@ BeautifulSoup
 # -e src/facebook-python-sdk-322930c
 # -e .
 # --extra-index-url=http://dist.pinaxproject.com/dev/ -e ../myplants
+
+# For deployment to Heroku.
+gunicorn
+newrelic

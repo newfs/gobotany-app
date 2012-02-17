@@ -172,13 +172,32 @@ TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "tiny_mce")
 # For partner sites, the request hostname will indicate the site.
 MONTSHIRE_HOSTNAME_SUBSTRING = ':8001'  # Just look for a port number for now
 
-# Use memcached for caching if we can connect.
+# Use memcached for caching.
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind(('127.0.0.1', 0))
+if 'MEMCACHE_SERVERS' in os.environ:  # Are we on Heroku with memcached?
+    CACHES = {'default': {
+        'BACKEND': 'django_pylibmc.memcached.PyLibMCCache'
+        }}
+else:
+    # Well, is memcached running locally?
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind(('127.0.0.1', 0))
+    try:
+        s.connect(('127.0.0.1', 11211))
+        s.close()
+    except socket.error:
+        pass
+    else:
+        CACHES = {'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': '127.0.0.1:11211',
+            }}
+
+# Enable gunicorn sub-command if gunicorn is available.
+
 try:
-    s.connect(('127.0.0.1', 11211))
-    s.close()
-    CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
-except socket.error:
+    import gunicorn
+except ImportError:
     pass
+else:
+    INSTALLED_APPS.append('gunicorn')
