@@ -1983,35 +1983,35 @@ img.margin-bookcover {
 
 /* Advanced ID Tools Placeholder styles */
 
-#advanced-id-tools #main {
+#advanced-id #main {
 	position: relative;
 }
 
-#advanced-id-tools #main .dk-landing-section {
+#advanced-id #main .dk-landing-section {
 	width: 330px;
 	float: left;
 	font: verdana, sans-serif;
 }
 
-#advanced-id-tools #main .dk-landing-section section {
+#advanced-id #main .dk-landing-section section {
 	margin: 20px 0 0;
 }
 
-#advanced-id-tools #main .dk-landing-section section p {
+#advanced-id #main .dk-landing-section section p {
 	margin: 10px 0;
 }
 
-#advanced-id-tools #main .dk-landing-section section ul {
+#advanced-id #main .dk-landing-section section ul {
 	margin: 10px 0;
 	padding: 0 0 0 15px;
 	list-style-type: disc;
 }
 
-#advanced-id-tools #main .dk-landing-section section ul li {
+#advanced-id #main .dk-landing-section section ul li {
 	margin: 10px 0;	
 }
 
-#advanced-id-tools #main .landing-divider {
+#advanced-id #main .landing-divider {
 	height: 410px;
 	width: 1px;
 	background-color: #b4d57f;
@@ -2021,22 +2021,22 @@ img.margin-bookcover {
 	
 }
 
-#advanced-id-tools #main .dichkey-buttons {
+#advanced-id #main .dichkey-buttons {
 	margin: 0;
 }
 
-#advanced-id-tools #main .dichkey-buttons div {
+#advanced-id #main .dichkey-buttons div {
 	width: 50%;
 	float: left;
 	padding: 15px 0 0;
 }
 
 /* buttons */
-#advanced-id-tools #main .dichkey-buttons a {
+#advanced-id #main .dichkey-buttons a {
 	margin: 10px auto;
 }
 
-#advanced-id-tools #main .dichkey-buttons a.go-fullkey-btn {
+#advanced-id #main .dichkey-buttons a.go-fullkey-btn {
 	background: url(/static/images/layout/go-fullkey-btn.png) 0 0 no-repeat transparent;
 	display: block;
 	width: 244px;
@@ -2045,16 +2045,16 @@ img.margin-bookcover {
 	margin: 0 auto;
 }
 
-#advanced-id-tools #main .dichkey-buttons a.go-fullkey-btn:hover {
+#advanced-id #main .dichkey-buttons a.go-fullkey-btn:hover {
 	background-position: 0 -41px;
 }
 
-#advanced-id-tools #main .dichkey-buttons a.go-fullkey-btn:active {
+#advanced-id #main .dichkey-buttons a.go-fullkey-btn:active {
 	background-position: 0 -82px;
 }
 
 /* using-dich-key buttons */
-#advanced-id-tools #main a.go-dichkey-btn {
+#advanced-id #main a.go-dichkey-btn {
 	background: url(../images/layout/go-dichkey-btn.png) 0 0 no-repeat transparent;
 	display: block;
 	width: 244px;
@@ -2063,20 +2063,20 @@ img.margin-bookcover {
 	margin: 0 auto;
 }
 
-#advanced-id-tools #main a.go-dichkey-btn-user {
+#advanced-id #main a.go-dichkey-btn-user {
 	margin: 20px auto 0;
 	z-index: 2;
 }
 
-#advanced-id-tools #main .dichkey-buttons a.go-dichkey-btn, #main .dichkey-buttons a.go-dichkey-btn:hover, #main .dichkey-buttons a.go-dichkey-btn:active {
+#advanced-id #main .dichkey-buttons a.go-dichkey-btn, #main .dichkey-buttons a.go-dichkey-btn:hover, #main .dichkey-buttons a.go-dichkey-btn:active {
 	margin-top: 0;
 }
 
-#advanced-id-tools #main a.go-dichkey-btn:hover {
+#advanced-id #main a.go-dichkey-btn:hover {
 	background-position: 0 -41px;
 }
 
-#advanced-id-tools #main a.go-dichkey-btn:active {
+#advanced-id #main a.go-dichkey-btn:active {
 	background-position: 0 -82px;
 }
 
