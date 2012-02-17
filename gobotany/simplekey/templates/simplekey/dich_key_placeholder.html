@@ -1,0 +1,37 @@
+{% extends "simplekey/_new_base.html" %}
+
+{% block title %}Dichotomous Key{% endblock %}
+
+{% block body_attributes %}id="advanced-id" class="claro app teaching-tools"{% endblock %}
+
+{% block js_require %}
+    require(['sidebar']);
+{% endblock %}
+
+{% block body_content %}
+    <div id="top-wrapper">
+        {% include "simplekey/_header.html" %}
+
+        <div class="content">
+            <div class="container">
+                <div id="main">
+                    <h2>Go Botany Dichotomous Key</h2>
+                    <p>This key will cover all 3500 species, subspecies, and
+                    varieties of native and naturalized plants in New
+                    England, and is designed for experienced botanists.</p><br />
+                    <p>It allows you to choose characteristics which match your
+                    plant from a series of paired options, eventually honing in
+                    on the indivdual species.</p><br />
+                    <p>We are completing data input for all these taxa, and the
+                    Dichotomous Key will be available in Summer 2012. Check back
+                    soon!</p><br />
+                </div>
+                <div id="sidebar">
+                    {# Use SimpleKey until a page-specific design is created #}
+                    {% include "simplekey/_sidebar_items.html" %}
+                </div>
+
+                <div class="clearit"></div>
+            </div>
+        </div>
+{% endblock %}
