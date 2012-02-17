@@ -1981,6 +1981,105 @@ img.margin-bookcover {
     font-weight: normal;
 }
 
+/* Advanced ID Tools Placeholder styles */
+
+#advanced-id-tools #main {
+	position: relative;
+}
+
+#advanced-id-tools #main .dk-landing-section {
+	width: 330px;
+	float: left;
+	font: verdana, sans-serif;
+}
+
+#advanced-id-tools #main .dk-landing-section section {
+	margin: 20px 0 0;
+}
+
+#advanced-id-tools #main .dk-landing-section section p {
+	margin: 10px 0;
+}
+
+#advanced-id-tools #main .dk-landing-section section ul {
+	margin: 10px 0;
+	padding: 0 0 0 15px;
+	list-style-type: disc;
+}
+
+#advanced-id-tools #main .dk-landing-section section ul li {
+	margin: 10px 0;	
+}
+
+#advanced-id-tools #main .landing-divider {
+	height: 410px;
+	width: 1px;
+	background-color: #b4d57f;
+	position: absolute;
+	top: 10px;
+	left: 350px;
+	
+}
+
+#advanced-id-tools #main .dichkey-buttons {
+	margin: 0;
+}
+
+#advanced-id-tools #main .dichkey-buttons div {
+	width: 50%;
+	float: left;
+	padding: 15px 0 0;
+}
+
+/* buttons */
+#advanced-id-tools #main .dichkey-buttons a {
+	margin: 10px auto;
+}
+
+#advanced-id-tools #main .dichkey-buttons a.go-fullkey-btn {
+	background: url(/static/images/layout/go-fullkey-btn.png) 0 0 no-repeat transparent;
+	display: block;
+	width: 244px;
+	height: 41px;
+	text-indent: -9999px;
+	margin: 0 auto;
+}
+
+#advanced-id-tools #main .dichkey-buttons a.go-fullkey-btn:hover {
+	background-position: 0 -41px;
+}
+
+#advanced-id-tools #main .dichkey-buttons a.go-fullkey-btn:active {
+	background-position: 0 -82px;
+}
+
+/* using-dich-key buttons */
+#advanced-id-tools #main a.go-dichkey-btn {
+	background: url(../images/layout/go-dichkey-btn.png) 0 0 no-repeat transparent;
+	display: block;
+	width: 244px;
+	height: 41px;
+	text-indent: -9999px;
+	margin: 0 auto;
+}
+
+#advanced-id-tools #main a.go-dichkey-btn-user {
+	margin: 20px auto 0;
+	z-index: 2;
+}
+
+#advanced-id-tools #main .dichkey-buttons a.go-dichkey-btn, #main .dichkey-buttons a.go-dichkey-btn:hover, #main .dichkey-buttons a.go-dichkey-btn:active {
+	margin-top: 0;
+}
+
+#advanced-id-tools #main a.go-dichkey-btn:hover {
+	background-position: 0 -41px;
+}
+
+#advanced-id-tools #main a.go-dichkey-btn:active {
+	background-position: 0 -82px;
+}
+
 /* Glossary styles */
 
 /* Glossary term underline for popup */

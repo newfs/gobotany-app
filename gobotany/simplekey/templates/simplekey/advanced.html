@@ -1,11 +1,93 @@
-{% extends "simplekey/_old_base.html" %}
+{% extends "simplekey/_new_base.html" %}
 
 {% block title %}Advanced ID Tools{% endblock %}
 
-{% block content %}
+{% block body_attributes %}id="advanced-id-tools" class="claro app advanced-id-tools"{% endblock %}
 
-<h1>Advanced ID Tools</h1>
+{% block js_require %}
+    require(['sidebar']);
+{% endblock %}
 
-<p><a href="../guided-search/">Guided Search</a></p>
+{% block body_content %}
+    <div id="top-wrapper">
+        {% include "simplekey/_header.html" %}
 
+        <div class="content">
+            <div class="container">
+                <div id="main">
+                    <div class="dk-landing-section" style="margin: 0 50px 0 0;">
+                        <h4>Advanced Interactive Key to All 3500 New England Taxa</h4>
+                        <section>
+                            <ul>
+                                <li>This key covers all 3500 species,
+                                subspecies, and varieties of native and
+                                naturalized plants in New England.</li>
+                                <li>It works in the same way as our Simple Key
+                                Plant Identifier, asking you to choose the
+                                broad group your plant is in, then offering you
+                                a series of questions based on the
+                                characteristics you are able to observe.</li>
+                                <li>Because there are many types of plants in
+                                this key, you may take a little longer to
+                                identify your plant, but once you do, you can
+                                get lots of information on each taxon.</li>
+                            </ul>
+                        </section>
+                    </div><!-- Closes .dk-landing-section -->
+                    <div class="landing-divider"></div>
+                    <div class="dk-landing-section">
+                        <h4>Dichotomous Key to All 3500 New England Taxa</h4>
+                        <section>
+                            <p>If you are an experienced botanist, use our
+                            Dichotomous Key tool!</p>
+                            <ul>
+                                <li>A dichotomous key presents a set of paired
+                                choices that describe various plant
+                                characteristics.</li>
+                                <li>You choose the one that best matches the
+                                plant you are trying to identify. Then  you get
+                                another pair of choices.</li>
+                                <li>As you march down the choices, you
+                                gradually hone in on your plant.</li>
+                                <li>The questions are technical and specific,
+                                but botanical terms are all defined and
+                                illustrated.</li>
+                            </ul>
+                            <p><a href="#">More on using the
+                                dichotomous key &raquo;</a></p>
+                            <p>The key is based on the <a
+                                href="http://newfs.org/store/flora-novae-angliae"
+                                target="_blank">Flora Novae Angliae</a> (Haines
+                            2011).</p>
+                        </section>
+                    </div><!-- Closes .dk-landing-section -->
+                    <div class="dichkey-buttons">
+                        <div><a href="#" class="go-fullkey-btn">Go To Full Key</a></div>
+                        <div><a href="dichotomous-key.php" class="go-dichkey-btn">Go To Dichotomous Key</a></div>
+                    </div><!-- .dichkey-buttons -->
+                    <div class="clearit"></div>
+                </div>
+                <div id="sidebar">
+                    <div class="section">
+                        <h5><a href="{% url simplekey-help-about %}">About Go Botany</a></h5>
+                    </div>
+                    <div class="section">
+                        <h5><a href="{% url simplekey-help-glossary0 %}">Glossary</a></h5>
+                    </div>
+                    <div class="section">
+                        <h5><a href="{% url simplekey-help-video %}">Video Help Topics</a></h5>
+                    </div>
+                    <div class="section">
+                        <h5>Watch Video</h5>
+                        <a href="http://www.youtube.com/v/VWDc9oyBj5Q"
+                            rel="shadowbox;height=380;width=640;" title="Title
+                            of the video can go here"><img class="shadow"
+                            src="/static/images/layout/video-screenshot.jpg" /></a>
+                        <p>How to use the Go Botany Plant Identifier</p>
+                    </div>
+                </div>
+
+                <div class="clearit"></div>
+            </div>
+        </div>
 {% endblock %}
