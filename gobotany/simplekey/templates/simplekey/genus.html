@@ -1,5 +1,4 @@
 {% extends "simplekey/_new_base.html" %}
-{% load thumbnail %}
 {% load simplekey_extras %}
 
 {% block title %}
@@ -48,13 +47,13 @@ Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}
                     {% for drawing in genus_drawings %}
                         <div>
                             <a rel="shadowbox"
-                                href="{{ drawing.image.url }}">
+                               href="{{ drawing.image_medium.url }}">
                                 <img class="map"
-                                    src="{{ drawing.image.thumbnail.absolute_url }}"
+                                    src="{{ drawing.thumb_small.url }}"
                                     alt="{{ drawing.alt }}"></a>
                             <p>{{ drawing.alt }}</p>
                             <a class="enlarge" rel="shadowbox"
-                                href="{{ drawing.image.url }}">
+                                href="{{ drawing.image_medium.url }}">
                                 <img class="zoom"
                                 src="/static/images/icons/zoom.png"
                                 alt="enlarge"></a>
