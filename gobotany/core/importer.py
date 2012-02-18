@@ -958,6 +958,7 @@ class Importer(object):
 
         log.info('Saved %d glossary images to table' % count)
 
+    @transaction.commit_on_success
     def _import_taxon_images(self, db, image_categories_csv):
         """Scan S3 for taxon images, and load their paths into the database."""
 
