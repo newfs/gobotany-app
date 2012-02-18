@@ -801,7 +801,6 @@ class Importer(object):
             character.image = field.upload_to + '/' + image_name
             character.save()
             count += 1
-            # character.image.thumbnail.height()  # generate thumbnail
 
         log.info('Done loading %d character images' % count)
 
@@ -906,7 +905,6 @@ class Importer(object):
             cv.image = field.upload_to + '/' + image_name
             cv.save()
             count += 1
-            #cv.image.thumbnail.height()  # generate thumbnail
 
         log.info('Done loading %d character-value images' % count)
 
@@ -986,9 +984,6 @@ class Importer(object):
         count = 0
 
         for dirname in sorted(dirnames):
-
-            if dirname not in ('Lycopodiaceae', 'Isoetaceae'):
-                continue
 
             dirpath = 'taxon-images/' + dirname
             nothings, filenames = default_storage.listdir(dirpath)
@@ -1112,12 +1107,6 @@ class Importer(object):
                     content_image.save()
 
                 count += 1
-
-                # Force generation of the thumbnails that will be used
-                # by (at least) the Simple Key application.
-                # content_image.image.thumbnail.width()
-                # for key in content_image.image.extra_thumbnails.keys():
-                #     content_image.image.extra_thumbnails[key].width()
 
         log.info('Imported %d taxon images', count)
 
