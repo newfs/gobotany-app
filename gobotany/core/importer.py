@@ -16,7 +16,6 @@ management.setup_environ(settings)
 
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.files import File
 from django.core.files.storage import default_storage
 from django.db import connection, transaction
 from django.template.defaultfilters import slugify
@@ -787,6 +786,7 @@ class Importer(object):
         directories, image_names = default_storage.listdir(field.upload_to)
 
         log.info('Saving character image paths to database')
+        count = 0
         for row in open_csv(csvfilename):
             image_name = row['image_name']
             if not image_name:
@@ -800,9 +800,10 @@ class Importer(object):
                 continue
             character.image = field.upload_to + '/' + image_name
             character.save()
+            count += 1
             # character.image.thumbnail.height()  # generate thumbnail
 
-        log.info('Done loading character images')
+        log.info('Done loading %d character images' % count)
 
     def _clean_up_html(self, html):
         """Clean up HTML ugliness arising from Access rich text export."""
@@ -875,6 +876,7 @@ class Importer(object):
         log.info('Saving character-value image paths to database')
         character_map = db.map('core_character', 'short_name', 'id')
 
+        count = 0
         for row in open_csv(csvfilename):
             image_name = row['image_name']
             if not image_name:
@@ -903,9 +905,10 @@ class Importer(object):
                 continue
             cv.image = field.upload_to + '/' + image_name
             cv.save()
+            count += 1
             #cv.image.thumbnail.height()  # generate thumbnail
 
-        log.info('Done loading character-value images')
+        log.info('Done loading %d character-value images' % count)
 
     @transaction.commit_on_success
     def _import_glossary(self, db, filename):
@@ -937,6 +940,7 @@ class Importer(object):
         directories, image_names = default_storage.listdir(field.upload_to)
 
         log.info('Saving glossary images to table')
+        count = 0
         for row in open_csv(csvfilename):
 
             if not row['definition'] or row['definition'] == row['term']:
@@ -952,72 +956,64 @@ class Importer(object):
             term = models.GlossaryTerm.objects.get(term=row['term'])
             term.image = field.upload_to + '/' + image_name
             term.save()
+            count += 1
 
-    def import_species_images(self, dirpath, image_categories_csv):
-        """Given a directory's ``dirpath``, find species images inside."""
+        log.info('Saved %d glossary images to table' % count)
+
+    def _import_taxon_images(self, db, image_categories_csv):
+        """Scan S3 for taxon images, and load their paths into the database."""
 
         # Right now, the image categories CSV is simply used to confirm
         # that we recognize the type of every image we import.
 
-        iterator = iter(CSVReader(image_categories_csv).read())
-        colnames = [x.lower() for x in iterator.next()]
-
-        # This dictionary will map (pile_name, type) to description
         taxon_image_types = {}
-        for cols in iterator:
-            row = dict(zip(colnames, cols))
+        for row in open_csv(image_categories_csv):
             # lower() is important because case is often mismatched
             # between the official name of a pile and its name here
             key = (row['pile'].lower(), row['code'])
             # The category looks like "bark, ba" so we split on the comma
             taxon_image_types[key] = row['category'].rsplit(',', 1)[0]
 
-        # We scan the image directory recursively, allowing images to be
-        # stored in as deep a directory as they wish.
+        # We expect our image storage to contain directories named by
+        # family, with taxon images beneath them (but we ignore the
+        # family name, so any two-level hierarchy of directories and
+        # images should work).
 
         ContentImage_objects = models.ContentImage.objects
-        print >> self.logfile, 'Searching for images in:', dirpath
+        log.info('Scanning S3 for taxon images')
 
-        for (subdir, dirnames, filenames) in os.walk(dirpath):
+        dirnames, nothings = default_storage.listdir('taxon-images')
+        count = 0
 
-            # Ignore hidden directories
+        for dirname in sorted(dirnames):
 
-            for i, dirname in reversed(list(enumerate(dirnames))):
-                if dirname.startswith('.'):
-                    del dirnames[i]
+            if dirname not in ('Lycopodiaceae', 'Isoetaceae'):
+                continue
 
-            # Process the filenames.
+            dirpath = 'taxon-images/' + dirname
+            nothings, filenames = default_storage.listdir(dirpath)
 
             for filename in filenames:
+                image_path = dirpath + '/' + filename
+                print image_path
+                # print >> self.logfile, 'INFO: current image, ', filename
 
-                print >> self.logfile, 'INFO: current image, ', filename
-
-                if filename.startswith('.'):  # skip hidden files
+                if '.' not in filename:
+                    log.error('  file lacks an extension: %s', filename)
                     continue
 
-                if '.' not in filename:  # skip files without an extension
+                if filename.count('.') > 1:
+                    log.error('  filename has multiple periods: %s', filename)
                     continue
 
-                if filename.count('.') > 1: # skip files w/more than one dot
-                    print >> self.logfile, \
-                        'ERR: image has multiple periods:', filename
-                    continue
-
-                if filename.count('_') > 0: # skip files with underscores
-                    print >> self.logfile, \
-                        'ERR: image has underscores:', filename
+                if filename.count('_') > 0:
+                    log.error('  filename has underscores: %s', filename)
                     continue
 
                 name, ext = filename.split('.')
                 if ext.lower() not in ('jpg', 'gif', 'png', 'tif'):
-                    continue  # not an image
-
-                # Some images either lack a rank in their name, or
-                # supply a letter - which apparently only functions to
-                # make unique a sequence of images taken by the same
-                # photographer of a particular species.  For all such
-                # photos, we assign the first one rank=1, and all
-                # subsequent ones rank=2, and issue a warning.
+                    log.error('  file lacks image extension: %s', filename)
+                    continue
 
                 pieces = name.split('-')
                 genus = pieces[0]
@@ -1032,14 +1028,7 @@ class Importer(object):
 
                 _type = pieces[type_field]
                 photographer = pieces[type_field + 1]
-                rank = None
-                # Filenames no longer contain 'rank' data, so skip this
-                # for now.
-                # if len(pieces) > (type_field + 2) \
-                #         and pieces[type_field + 2].isdigit():
-                #     rank = int(pieces[4])
-                # else:
-                #     rank = None
+                rank = None  # Filenames no longer contain 'rank' data
 
                 scientific_name = ' '.join((genus, species)).capitalize()
 
@@ -1057,8 +1046,7 @@ class Importer(object):
                         taxon = models.Taxon.objects.get(
                             scientific_name=scientific_name)
                     except:
-                        print >> self.logfile, (
-                            '  ERR: image %r names unknown taxon' % filename)
+                        log.error('  image names unknown taxon: %s', filename)
                         continue
 
                 content_type = ContentType.objects.get_for_model(taxon)
@@ -1073,8 +1061,7 @@ class Importer(object):
                     if key in taxon_image_types:
                         break
                 else:
-                    print >> self.logfile, \
-                        '  ERR: unknown image type %r:' % (_type), filename
+                    log.error('  unknown image type %r: %s', _type, filename)
                     continue
 
                 image_type, created = models.ImageType.objects \
@@ -1093,13 +1080,10 @@ class Importer(object):
                     if already_1:
                         rank = 2
                     else:
-                        print >> self.logfile, '  !WARNING -', \
-                            'promoting image to rank=1:', filename
                         rank = 1
 
                 # if we have already imported this image, update the
                 # image just in case
-                image_path = os.path.join(subdir, filename)
                 content_image, created = ContentImage_objects.get_or_create(
                     # If we were simply creating the object we could set
                     # content_object, but in case Django does a "get" we
@@ -1107,7 +1091,7 @@ class Importer(object):
                     object_id=taxon.pk,
                     content_type=content_type,
                     # Use filename to know if this is the "same" image.
-                    image=os.path.relpath(image_path, settings.MEDIA_ROOT),
+                    image=image_path,
                     defaults=dict(
                         # Integrity errors are triggered without setting
                         # these immediately during a create:
@@ -1119,22 +1103,23 @@ class Importer(object):
                 content_image.alt = '%s: %s %s' % (
                     taxon.scientific_name, image_type.name, rank)
 
-                msg = 'taxon image %s' % content_image.image
                 if created:
                     content_image.save()
-                    print >> self.logfile, '  Added', msg
                 else:
                     # Update values otherwise set in defaults={} on create.
                     content_image.rank = rank
                     content_image.image_type = image_type
                     content_image.save()
-                    print >> self.logfile, '  Updated', msg
+
+                count += 1
 
                 # Force generation of the thumbnails that will be used
                 # by (at least) the Simple Key application.
-                content_image.image.thumbnail.width()
-                for key in content_image.image.extra_thumbnails.keys():
-                    content_image.image.extra_thumbnails[key].width()
+                # content_image.image.thumbnail.width()
+                # for key in content_image.image.extra_thumbnails.keys():
+                #     content_image.image.extra_thumbnails[key].width()
+
+        log.info('Imported %d taxon images', count)
 
 
     def _import_home_page_images(self, db):
@@ -1160,6 +1145,7 @@ class Importer(object):
             hpi.save()
             order += 1
 
+        log.info('Loaded %d home page images' % (order - 1))
 
     def _has_unexpected_delimiter(self, text, unexpected_delimiter):
         """Check for an unexpected delimiter to help guard against breaking
@@ -1748,7 +1734,7 @@ def main():
         'characters', 'character_values', 'glossary', 'lookalikes',
         'constants', 'places', 'taxon_character_values',
         'character_images', 'character_value_images', 'glossary_images',
-        'videos', 'home_page_images',
+        'videos', 'home_page_images', 'taxon_images',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
@@ -1760,9 +1746,6 @@ def main():
     # parsing
     if sys.argv[1] == 'partner':
         import_partner_species(*sys.argv[2:])
-    elif sys.argv[1] == 'species-images':
-        species_image_dir = os.path.join(settings.MEDIA_ROOT, 'species')
-        importer.import_species_images(species_image_dir, *sys.argv[2:])
     elif sys.argv[1] == 'distributions':
         importer._import_distributions(sys.argv[2])
     else:

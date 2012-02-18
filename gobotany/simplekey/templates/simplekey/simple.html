@@ -1,4 +1,5 @@
 {% extends "simplekey/_new_base.html" %}
+{% load thumbnail %}
 {% load simplekey_extras %}
 
 {% block title %}{{ groups_list_page.title }}{% endblock %}
@@ -36,14 +37,18 @@
                                 <div class="images">
                                     {% for pilegroup_image in pilegroup_images %}
                                         {% with pilegroup_image.content_image as i %}
+                                          {% thumbnail i.image "1000x1000" as t1 %}
                                             {% with i.creator as photographer %}
-                                            <a href="{{ i.image.extra_thumbnails.scaled.absolute_url }}"
+                                            <a href="{{ t1.url }}"
                                                 rel="shadowbox[{{ pilegroup.slug }}]"
                                                 title="{% photo_title_credit i.image_type i.content_object.scientific_name photographer %}">
-                                                <img src="{{ i.image.extra_thumbnails.large.absolute_url }}"
+                                              {% thumbnail i.image "239x239" crop="center" as t2 %}
+                                                <img src="{{ t2.url }}"
                                                     alt="{% photo_title_credit i.image_type i.content_object.scientific_name photographer %}">
+                                              {% endthumbnail %}
                                             </a>
                                             {% endwith %}
+                                          {% endthumbnail %}
                                         {% endwith %}
                                     {% endfor %}
                                 </div>
