@@ -397,9 +397,6 @@ class ContentImage(models.Model):
                                      #         'size': (239, 239),
                                      #         'options': {'crop': 'smart'}
                                      #     },
-                                     #     'scaled': {
-                                     #         'size': (1000, 1000)
-                                     #     }
                                      # },
                                      # generate_on_save=True,
                                      )

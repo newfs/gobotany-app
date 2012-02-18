@@ -13,7 +13,6 @@ dojo.declare('gobotany.sk.images.ImageBrowser', null, {
         this.image_node = null;
         this.message_node = null;
         this.first_image_index = 0;
-        this.url_key = 'url';  // Or, can set to 'scaled_url'
     },
 
     setup: function() {
@@ -46,7 +45,7 @@ dojo.declare('gobotany.sk.images.ImageBrowser', null, {
 
     set_image: function(index) {
         // Set the image URL and alt text, and set the count message.
-        dojo.attr(this.image_node, 'src', this.images[index][this.url_key]);
+        dojo.attr(this.image_node, 'src', this.images[index]['url']);
         dojo.attr(this.image_node, 'alt', this.images[index].title);
         this.message_node.innerHTML = (index + 1) + ' of ' +
             this.images.length;
@@ -109,7 +108,7 @@ dojo.declare('gobotany.sk.images.ImageBrowser', null, {
         var current_image_index = -1;
         var i = 0;
         while (current_image_index === -1 && i < this.images.length) {
-            if (current_image_url === this.images[i][this.url_key]) {
+            if (current_image_url === this.images[i]['url']) {
                 current_image_index = i;
             }
             i++;
