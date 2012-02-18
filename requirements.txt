@@ -32,6 +32,10 @@ django-pylibmc-sasl==0.2.4
 # -e .
 # --extra-index-url=http://dist.pinaxproject.com/dev/ -e ../myplants
 
+# For storing images on S3.
+django-storages==1.1.4
+boto==2.2.2
+
 # For deployment to Heroku.
 gunicorn
 newrelic

@@ -193,6 +193,16 @@ else:
             'LOCATION': '127.0.0.1:11211',
             }}
 
+# Enable S3 filestorage (which we use mostly [entirely?] for images) if
+# the user has set the right environment variables.
+
+if 'AWS_STORAGE_BUCKET_NAME' in os.environ:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+    AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+    AWS_QUERYSTRING_AUTH = False
+
 # Enable gunicorn sub-command if gunicorn is available.
 
 try:

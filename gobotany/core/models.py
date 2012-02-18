@@ -77,7 +77,7 @@ class GlossaryTerm(models.Model):
     visible = models.BooleanField(default=True)
     # XXX: We will eventually factor this out into a distinct object
     # when we have real metadata
-    image = models.ImageField(upload_to='glossary',
+    image = models.ImageField(upload_to='glossary-images',
                               blank=True,
                               null=True)
 
@@ -140,7 +140,7 @@ class Character(models.Model):
     question = models.TextField(blank=True)
     hint = models.TextField(blank=True)
 
-    image = ImageWithThumbnailsField(upload_to='character',
+    image = ImageWithThumbnailsField(upload_to='character-value-images',
                                      thumbnail={'size': (40, 40)},
                                      blank=True,
                                      null=True)  # the famous "DLD"
@@ -201,7 +201,7 @@ class CharacterValue(models.Model):
 
     character = models.ForeignKey(Character, related_name='character_values')
     friendly_text = models.TextField(blank=True)
-    image = ImageWithThumbnailsField(upload_to='character-value',
+    image = ImageWithThumbnailsField(upload_to='character-value-images',
                                      thumbnail={'size': (40, 40)},
                                      blank=True,
                                      null=True)  # the famous "DLD"
@@ -453,7 +453,7 @@ class ContentImage(models.Model):
 
 class HomePageImage(models.Model):
     """An image that appears on the home page, cycled among others."""
-    image = models.ImageField(upload_to='content_images')
+    image = models.ImageField(upload_to='home-page-images')
     order = models.IntegerField()
 
     class Meta:

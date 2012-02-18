@@ -17,6 +17,7 @@ management.setup_environ(settings)
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files import File
+from django.core.files.storage import default_storage
 from django.db import connection, transaction
 from django.template.defaultfilters import slugify
 
@@ -33,6 +34,7 @@ def start_logging():
     # Log everything to the import.log file.
 
     logging.basicConfig(filename='import.log', level=logging.DEBUG)
+    logging.getLogger('boto').setLevel(logging.WARN)
     logging.getLogger('django').setLevel(logging.WARN)
 
     # Log only INFO and above to the console.
@@ -779,41 +781,28 @@ class Importer(object):
         character_table.save()
 
     @transaction.commit_on_success
-    def _import_character_images(self, db, csvfilename, source_dirname):
+    def _import_character_images(self, db, csvfilename):
+        log.info('Fetching list of S3 character images')
+        field = models.Character._meta.get_field('image')
+        directories, image_names = default_storage.listdir(field.upload_to)
 
-        log.info('Reading CSV to determine which characters need images')
-        image_names = {}  # image_name -> Character
-
+        log.info('Saving character image paths to database')
         for row in open_csv(csvfilename):
             image_name = row['image_name']
             if not image_name:
                 continue
             short_name = self.character_short_name(row['character'])
             character = models.Character.objects.get(short_name=short_name)
-            image_names[image_name] = character
+            if image_name not in image_names:
+                log.error('  Missing character image: %s' % image_name)
+                character.image = None
+                character.save()
+                continue
+            character.image = field.upload_to + '/' + image_name
+            character.save()
+            # character.image.thumbnail.height()  # generate thumbnail
 
-        dirname = models.Character._meta.get_field('image').upload_to
-        delete_files_in(dirname)
-
-        log.info('Loading character images from directory')
-        image_filenames = os.listdir(source_dirname)
-
-        n = 0
-        for filename in image_filenames:
-            if not filename.startswith('.'):   # ignore hidden files
-                character = image_names.pop(filename, None)
-                if character is None:
-                    continue
-                file_path = '%s/%s' % (source_dirname, filename)
-                image_file = File(open(file_path, 'r'))
-                character.image.save(filename, image_file)
-                character.image.thumbnail.height()  # generate thumbnail
-                n += 1
-
-        for name in image_names:
-            log.error('Could not find character image %s' % name)
-
-        log.info('Done loading %s images', n)
+        log.info('Done loading character images')
 
     def _clean_up_html(self, html):
         """Clean up HTML ugliness arising from Access rich text export."""
@@ -878,11 +867,12 @@ class Importer(object):
         pile_character_values_table.save(delete_old=True)
 
     @transaction.commit_on_success
-    def _import_character_value_images(self, db, csvfilename, source_dirname):
+    def _import_character_value_images(self, db, csvfilename):
+        log.info('Fetching list of S3 character value images')
+        field = models.Character._meta.get_field('image')
+        directories, image_names = default_storage.listdir(field.upload_to)
 
-        log.info(
-            'Reading CSV to determine which character values need images')
-        image_names = {}  # image_name -> CharacterValue
+        log.info('Saving character-value image paths to database')
         character_map = db.map('core_character', 'short_name', 'id')
 
         for row in open_csv(csvfilename):
@@ -908,29 +898,13 @@ class Importer(object):
                 character=character_id,
                 value_str=row['character_value'],
                 )
-            image_names[image_name] = cv
+            if image_name not in image_names:
+                log.error('character value image missing: %s' % image_name)
+                continue
+            cv.image = image_name
+            #cv.image.thumbnail.height()  # generate thumbnail
 
-        dirname = models.CharacterValue._meta.get_field('image').upload_to
-        delete_files_in(dirname)
-
-        log.info('Loading character-value images from directory')
-        image_filenames = os.listdir(source_dirname)
-        n = 0
-        for filename in image_filenames:
-            if not filename.startswith('.'):   # ignore hidden files
-                cv = image_names.pop(filename, None)
-                if cv is None:
-                    continue
-                file_path = '%s/%s' % (source_dirname, filename)
-                image_file = File(open(file_path, 'r'))
-                cv.image.save(filename, image_file)
-                cv.image.thumbnail.height()  # generate thumbnail
-                n += 1
-
-        for name in image_names:
-            log.error('Could not find character value image %s' % name)
-
-        log.info('Done loading %s images', n)
+        log.info('Done loading character-value images')
 
     @transaction.commit_on_success
     def _import_glossary(self, db, filename):
@@ -956,14 +930,12 @@ class Importer(object):
         glossaryterm_table.save()
 
     @transaction.commit_on_success
-    def _import_glossary_images(self, db, csvfilename, source_dirname):
-        dirname = models.GlossaryTerm._meta.get_field('image').upload_to
-        delete_files_in(dirname)
+    def _import_glossary_images(self, db, csvfilename):
+        log.info('Scanning glossary images on S3')
+        field = models.GlossaryTerm._meta.get_field('image')
+        directories, image_names = default_storage.listdir(field.upload_to)
 
-        log.info('Reading glossary images from directory')
-        image_filenames = os.listdir(source_dirname)
-
-        log.info('Saving glossary images in MEDIA_ROOT/%s' % dirname)
+        log.info('Saving glossary images to table')
         for row in open_csv(csvfilename):
 
             if not row['definition'] or row['definition'] == row['term']:
@@ -972,18 +944,13 @@ class Importer(object):
             image_name = row['illustration']
             if not image_name:
                 continue
-
-            image_file = None
-            if image_name in image_filenames:
-                file_path = '%s/%s' % (source_dirname, image_name)
-                image_file = File(open(file_path, 'r'))
-
-            if image_file is None:
-                log.error('cannot find image: %s', image_name)
+            if image_name not in image_names:
+                log.error('  Unknown image: %s' % image_name)
                 continue
 
             term = models.GlossaryTerm.objects.get(term=row['term'])
-            term.image.save(image_name, image_file)
+            term.image = field.upload_to + '/' + image_name
+            term.save()
 
     def import_species_images(self, dirpath, image_categories_csv):
         """Given a directory's ``dirpath``, find species images inside."""
@@ -1169,34 +1136,28 @@ class Importer(object):
                     content_image.image.extra_thumbnails[key].width()
 
 
-    def import_home_page_images(self, dest_image_dir_path,
-                                source_image_dir_path):
+    def _import_home_page_images(self, db):
         """Import default home page images and put image files in the
         specified directory.
         """
-        print >> self.logfile, 'Importing home page images.'
-        print >> self.logfile, 'Deleting existing images:'
+        log.info('Emptying the old home page image list')
         for home_page_image in models.HomePageImage.objects.all():
-            print >> self.logfile, '  Deleting image %s' % home_page_image
-            home_page_image.image.delete()
             home_page_image.delete()
 
-        'Adding images from directory:'
-        image_names = os.listdir(source_image_dir_path)
-        # The default images are just added in reverse directory order
-        # because that was a pretty good sequence without having to
-        # code up a way to specify the default order in the archive file.
+        log.info('Loading home page images')
+        field = models.HomePageImage._meta._name_map['image'][0]
+        directories, image_names = default_storage.listdir(field.upload_to)
+
+        # The images happen to look pretty good in reverse-alphabetical order.
         image_names.reverse()
         order = 1
         for name in image_names:
-            if not name.startswith('.'):   # ignore hidden files
-                print '  Adding image: %s' % name
-                file_path = '%s/%s' % (source_image_dir_path, name)
-                image_file = File(open(file_path, 'r'))
-                hpi, created = models.HomePageImage.objects.get_or_create(
-                    order=order)
-                hpi.image.save(name, image_file)
-                order += 1
+            log.info('  Adding image: %s' % name)
+            hpi, created = models.HomePageImage.objects.get_or_create(
+                image=field.upload_to + '/' + name,
+                order=order)
+            hpi.save()
+            order += 1
 
 
     def _has_unexpected_delimiter(self, text, unexpected_delimiter):
@@ -1786,7 +1747,7 @@ def main():
         'characters', 'character_values', 'glossary', 'lookalikes',
         'constants', 'places', 'taxon_character_values',
         'character_images', 'character_value_images', 'glossary_images',
-        'videos',
+        'videos', 'home_page_images',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
@@ -1801,10 +1762,6 @@ def main():
     elif sys.argv[1] == 'species-images':
         species_image_dir = os.path.join(settings.MEDIA_ROOT, 'species')
         importer.import_species_images(species_image_dir, *sys.argv[2:])
-    elif sys.argv[1] == 'home-page-images':
-        home_page_image_dir = os.path.join(settings.MEDIA_ROOT,
-                                           'content_images')
-        importer.import_home_page_images(home_page_image_dir, *sys.argv[2:])
     elif sys.argv[1] == 'distributions':
         importer._import_distributions(sys.argv[2])
     else:
