@@ -160,17 +160,13 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
                 checked(f.selected_value === v.choice) +
                 ' value="' + v.choice + '">';
 
-            // Add a drawing image thumbnail if present.
+            // Add a drawing image if present.
             var image_path = v.image_url;
-            var thumbnail_html = '';
-            var image_id = '';
-
             if (image_path.length > 0) {
-                image_id = this._get_image_id_from_path(image_path);
-                thumbnail_html = '<img id="' + image_id +
+                var image_id = this._get_image_id_from_path(image_path);
+                item_html += '<img id="' + image_id +
                     '" src="' + image_path + '" alt="drawing ' +
                     'showing ' + v.friendly_text + '"><br>';
-                item_html += thumbnail_html;
             }
 
             item_html += ' <span class="label">' + _format_value(v) +

@@ -36,7 +36,7 @@ def jsonify(value, headers=None):
 def _taxon_image(image):
     if image is None:
         return
-    thumbnail = image.thumb_small()
+    small = image.thumb_small()
     large = image.thumb_large()
     json = {
         'url': image.image.url,
@@ -44,9 +44,9 @@ def _taxon_image(image):
         'rank': image.rank,
         'title': image.alt,
         'description': image.description,
-        'thumb_url': thumbnail.url,
-        'thumb_width': thumbnail.width,
-        'thumb_height': thumbnail.height,
+        'thumb_url': small.url,
+        'thumb_width': small.width,
+        'thumb_height': small.height,
         'large_thumb_url': large.url,
         'large_thumb_width': large.width,
         'large_thumb_height': large.height,

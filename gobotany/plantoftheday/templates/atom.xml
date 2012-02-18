@@ -23,7 +23,7 @@
             <content type="xhtml">
                 <div xmlns="http://www.w3.org/1999/xhtml">
                     {% if plant.image %}
-                        <img src="http://{{ request.META.HTTP_HOST }}{{ plant.image.image.extra_thumbnails.large.absolute_url }}"
+                        <img src="http://{{ request.META.HTTP_HOST }}{{ plant.image.thumb_large.url }}"
                             alt="{% photo_title_credit plant.image.image_type plant.scientific_name plant.image.creator %}"
                             style="float: left; margin-right: 10px" />
                     {% endif %}

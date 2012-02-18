@@ -23,7 +23,7 @@
                     <div class="img-container">
                         {% for i in group.sample_species_images.all %}
                             {% if forloop.first %}
-                                <img src="{{ i.image.thumbnail.absolute_url }}"
+                                <img src="{{ i.thumb_small.url }}"
                                     alt="{{ i.alt }}">
                             {% endif %}
                         {% endfor %}
@@ -47,7 +47,7 @@
                             <div class="img-container">
                                 {% for i in subgroup.sample_species_images.all %}
                                     {% if forloop.first %}
-                                        <img src="{{ i.image.thumbnail.absolute_url }}"
+                                        <img src="{{ i.thumb_small.url }}"
                                             alt="{{ i.alt }}">
                                     {% endif %}
                                 {% endfor %}

@@ -1,6 +1,5 @@
 {% extends "simplekey/_new_base.html" %}
 {% load simplekey_extras %}
-{% load thumbnail %}
 
 {% block title %}{{ scientific_name }} 
 ({% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}){% endblock %}
