@@ -283,7 +283,6 @@ def vectors_character(request, name):
         'min': v.value_min and v.value_min * mm,
         'max': v.value_max and v.value_max * mm,
         #
-        'thumbnail_url': v.image.thumbnail.absolute_url if v.image else '',
         'image_url': v.image.url if v.image else '',
         } for v in values ])
 
