@@ -2,6 +2,7 @@ import math
 
 from django.http import HttpResponse
 from django.utils import simplejson
+from sorl.thumbnail import get_thumbnail
 
 from operator import itemgetter
 
@@ -15,17 +16,19 @@ from .views import _jsonify_character
 def _taxon_image(image):
     if image:
         img = image.image
+        thumbnail = get_thumbnail(img, '160x149', crop='center')
+        large = get_thumbnail(img, '239x239', crop='center')
         return {'url': img.url,
                 'type': image.image_type.name,
                 'rank': image.rank,
                 'title': image.alt,
                 'description': image.description,
-                'thumb_url': img.thumbnail.absolute_url,
-                'thumb_width': img.thumbnail.width(),
-                'thumb_height': img.thumbnail.height(),
-                'large_thumb_url': img.extra_thumbnails['large'].absolute_url,
-                'large_thumb_width': img.extra_thumbnails['large'].width(),
-                'large_thumb_height': img.extra_thumbnails['large'].height(),
+                'thumb_url': thumbnail.url,
+                'thumb_width': thumbnail.width,
+                'thumb_height': thumbnail.height,
+                'large_thumb_url': large.url,
+                'large_thumb_width': large.width,
+                'large_thumb_height': large.height,
                 }
     return ''
 
