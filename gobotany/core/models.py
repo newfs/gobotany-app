@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
 from django.template.defaultfilters import slugify
 
-from sorl.thumbnail.fields import ImageWithThumbnailsField
+from sorl.thumbnail.fields import ImageField as ImageWithThumbnailsField
 
 from tinymce import models as tinymce_models
 
@@ -14,15 +14,15 @@ from tinymce import models as tinymce_models
 # asked to crop to floating-point dimensions (which the ancient version
 # of sorl-thumbnail we use asks for):
 
-import PIL.Image
-from PIL.Image import _ImageCrop
+# import PIL.Image
+# from PIL.Image import _ImageCrop
 
-class fixed_ImageCrop(_ImageCrop):
-    def __init__(self, im, box):
-        box = tuple(int(n) for n in box)
-        _ImageCrop.__init__(self, im, box)
+# class fixed_ImageCrop(_ImageCrop):
+#     def __init__(self, im, box):
+#         box = tuple(int(n) for n in box)
+#         _ImageCrop.__init__(self, im, box)
 
-PIL.Image._ImageCrop = fixed_ImageCrop
+# PIL.Image._ImageCrop = fixed_ImageCrop
 
 # And, back to our regularly-scheduled models:
 
@@ -141,7 +141,6 @@ class Character(models.Model):
     hint = models.TextField(blank=True)
 
     image = ImageWithThumbnailsField(upload_to='character-value-images',
-                                     thumbnail={'size': (40, 40)},
                                      blank=True,
                                      null=True)  # the famous "DLD"
 
@@ -202,7 +201,6 @@ class CharacterValue(models.Model):
     character = models.ForeignKey(Character, related_name='character_values')
     friendly_text = models.TextField(blank=True)
     image = ImageWithThumbnailsField(upload_to='character-value-images',
-                                     thumbnail={'size': (40, 40)},
                                      blank=True,
                                      null=True)  # the famous "DLD"
 
@@ -390,20 +388,20 @@ class ContentImage(models.Model):
     image = ImageWithThumbnailsField('content image',
                                      max_length=300,  # long filenames
                                      upload_to='content_images',
-                                     # Note: sizes are width, height
-                                     thumbnail={'size': (160, 149),
-                                                'options': {'crop': 'smart'}
-                                               },
-                                     extra_thumbnails={
-                                         'large': {
-                                             'size': (239, 239),
-                                             'options': {'crop': 'smart'}
-                                         },
-                                         'scaled': {
-                                             'size': (1000, 1000)
-                                         }
-                                     },
-                                     generate_on_save=True,
+                                     # # Note: sizes are width, height
+                                     # thumbnail={'size': (160, 149),
+                                     #            'options': {'crop': 'smart'}
+                                     #           },
+                                     # extra_thumbnails={
+                                     #     'large': {
+                                     #         'size': (239, 239),
+                                     #         'options': {'crop': 'smart'}
+                                     #     },
+                                     #     'scaled': {
+                                     #         'size': (1000, 1000)
+                                     #     }
+                                     # },
+                                     # generate_on_save=True,
                                      )
     alt = models.CharField(max_length=300,
                            verbose_name=u'title (alt text)')

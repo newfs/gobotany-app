@@ -79,10 +79,10 @@
 
                 <div id="potd">
                     {% if plant_of_the_day %}
-                        {% thumbnail plant_of_the_day_image.image "270x131" crop="center" as im %}
+                      {% thumbnail plant_of_the_day_image.image "270x131" crop="center" as im %}
                         <a href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/"
                             title="Learn more about {{ plant_of_the_day.scientific_name }}">
-                            <img src="{{ im.absolute_url }}"
+                            <img src="{{ im.url }}"
                                 alt="{{ plant_of_the_day.scientific_name }}"
                                 height="131" width="270">
                         </a>
@@ -98,6 +98,7 @@
                             <p>{{ plant_of_the_day.factoid|slice:":274"}}
                             {% if plant_of_the_day.factoid|length > 274 %}...{% endif %}</p>
                             <a class="learn-more" href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/">Learn More</a>
+                      {% endthumbnail %}
                     {% else %}
                         <p>Error: Plant of the Day information
                         missing</p>
