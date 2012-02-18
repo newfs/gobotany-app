@@ -901,7 +901,7 @@ class Importer(object):
             if image_name not in image_names:
                 log.error('character value image missing: %s' % image_name)
                 continue
-            cv.image = image_name
+            cv.image = field.upload_to + '/' + image_name
             cv.save()
             #cv.image.thumbnail.height()  # generate thumbnail
 
