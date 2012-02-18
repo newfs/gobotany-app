@@ -8,7 +8,6 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import etag
 from django.views.decorators.vary import vary_on_headers
-from sorl.thumbnail import get_thumbnail
 
 from gobotany.core import igdt
 from gobotany.core.models import (
@@ -37,11 +36,10 @@ def jsonify(value, headers=None):
 def _taxon_image(image):
     if image is None:
         return
-    img = image.image
-    thumbnail = get_thumbnail(img, '160x149', crop='center')
-    large = get_thumbnail(img, '239x239', crop='center')
+    thumbnail = image.thumb_small()
+    large = image.thumb_large()
     json = {
-        'url': img.url,
+        'url': image.image.url,
         'type': image.image_type_name,
         'rank': image.rank,
         'title': image.alt,

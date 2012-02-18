@@ -71,18 +71,14 @@
 		            <div class="scrollWrapper">
                         <div class="scrollableArea">
                             {% for i in species_images %}
-                              {% thumbnail i.image "1000x1000" as t1 %}
                                 {% with i.creator as photographer %}
-                                <a href="{{ t1.url }}"
+                                <a href="{{ i.image_medium.url }}"
                                     {% if forloop.counter == 1 %}id="startimage"{% endif %}
                                     title="{% photo_title_credit i.image_type scientific_name photographer %}">
-                                    {% thumbnail i.image "239x239" crop="center" as t2 %}
-                                    <img src="{{ t2.url }}"
+                                    <img src="{{ i.thumb_large.url }}"
                                         alt="{% photo_title_credit i.image_type scientific_name photographer %}">
-                                    {% endthumbnail %}
                                 </a>
                                 {% endwith %}
-                              {% endthumbnail %}
                             {% endfor %}
 			            </div>
 		            </div>

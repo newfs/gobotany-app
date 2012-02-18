@@ -7,6 +7,7 @@ from django.forms import ValidationError
 from django.template.defaultfilters import slugify
 
 from sorl.thumbnail.fields import ImageField as ImageWithThumbnailsField
+from sorl.thumbnail import get_thumbnail
 
 from tinymce import models as tinymce_models
 
@@ -387,19 +388,7 @@ class ContentImage(models.Model):
     """
     image = ImageWithThumbnailsField('content image',
                                      max_length=300,  # long filenames
-                                     upload_to='content_images',
-                                     # # Note: sizes are width, height
-                                     # thumbnail={'size': (160, 149),
-                                     #            'options': {'crop': 'smart'}
-                                     #           },
-                                     # extra_thumbnails={
-                                     #     'large': {
-                                     #         'size': (239, 239),
-                                     #         'options': {'crop': 'smart'}
-                                     #     },
-                                     # },
-                                     # generate_on_save=True,
-                                     )
+                                     upload_to='content_images')
     alt = models.CharField(max_length=300,
                            verbose_name=u'title (alt text)')
     rank = models.PositiveSmallIntegerField(
@@ -413,6 +402,15 @@ class ContentImage(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
+
+    def thumb_small(self):
+        return get_thumbnail(self.image, '160x149', crop='center')
+
+    def thumb_large(self):
+        return get_thumbnail(self.image, '239x239', crop='center')
+
+    def image_medium(self):
+        return get_thumbnail(self.image, '1000x1000')
 
     def clean(self):
         """Some extra validation checks"""
