@@ -902,6 +902,7 @@ class Importer(object):
                 log.error('character value image missing: %s' % image_name)
                 continue
             cv.image = image_name
+            cv.save()
             #cv.image.thumbnail.height()  # generate thumbnail
 
         log.info('Done loading character-value images')
