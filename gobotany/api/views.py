@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import etag
 from django.views.decorators.vary import vary_on_headers
+from sorl.thumbnail import get_thumbnail
 
 from gobotany.core import igdt
 from gobotany.core.models import (
@@ -37,24 +38,21 @@ def _taxon_image(image):
     if image is None:
         return
     img = image.image
-    thumbnail = img.thumbnail
-    large = img.extra_thumbnails['large']
+    thumbnail = get_thumbnail(img, '160x149', crop='center')
+    large = get_thumbnail(img, '239x239', crop='center')
     json = {
         'url': img.url,
         'type': image.image_type_name,
         'rank': image.rank,
         'title': image.alt,
         'description': image.description,
-        'thumb_url': thumbnail.absolute_url,
-        'thumb_width': thumbnail.width(),
-        'thumb_height': thumbnail.height(),
-        'large_thumb_url': large.absolute_url,
-        'large_thumb_width': large.width(),
-        'large_thumb_height': large.height(),
+        'thumb_url': thumbnail.url,
+        'thumb_width': thumbnail.width,
+        'thumb_height': thumbnail.height,
+        'large_thumb_url': large.url,
+        'large_thumb_width': large.width,
+        'large_thumb_height': large.height,
         }
-    # RESOURCE LEAK - to prevent too many open files:
-    for key in img.extra_thumbnails.keys():
-        img.extra_thumbnails[key]._data.fp.close()
     return json
 
 def _simple_taxon(taxon):
