@@ -1,0 +1,79 @@
+Code,Category,Pile
+ac,"achenes, ac",Carex
+ha,"plant form, ha",Carex
+in,"inflorescence, in",Carex
+le,"leaves, le",Carex
+pe,"perigynia, pe",Carex
+sp,"spikes, sp",Carex
+ca,"capitula, ca",Composites
+fl,"flowers, fl",Composites
+fr,"fruits, fr",Composites
+ha,"plant form, ha",Composites
+le,"leaves, le",Composites
+st,"stems, st",Composites
+ha,"plant form, ha",Equisetaceae
+ln,"leaves and nodes, ln",Equisetaceae
+sc,"spore cones, sc",Equisetaceae
+st,"stem cross-section, st",Equisetaceae
+br,"branches, br",Lycophytes
+ha,"plant form, ha",Lycophytes
+sc,"spore cones, sc",Lycophytes
+sh,"shoots, sh",Lycophytes
+sp,"spores, sp",Lycophytes
+tr,"vegetative leaves, tr",Lycophytes
+ha,"plant form, ha",Monilophytes
+ld,"detail of leaf and/or divisions, ld",Monilophytes
+le,"leaf, le",Monilophytes
+pe,"petiole, pe",Monilophytes
+so,"sori, so",Monilophytes
+fl,"flowers, fl",Non-orchid Monocots
+fr,"fruits, fr",Non-orchid Monocots
+ha,"plant form, ha",Non-orchid Monocots
+in,"inflorescences, in",Non-orchid Monocots
+le,"leaves, le",Non-orchid Monocots
+ff,"flowers and fruits, ff",Non-thalloid Aquatic
+ha,"plant form, ha",Non-thalloid Aquatic
+in,"inflorescences, in",Non-thalloid Aquatic
+le,"leaves, le",Non-thalloid Aquatic
+sf,"special features, sf",Non-thalloid Aquatic
+st,"stems, st",Non-thalloid Aquatic
+fl,"flowers, fl",Orchid monocots
+fr,"fruits, fr",Orchid monocots
+ha,"plant form, ha",Orchid monocots
+in,"inflorescences, in",Orchid monocots
+le,"leaves, le",Orchid monocots
+ha,"plant form, ha",Poaceae
+in,"inflorescences, in",Poaceae
+le,"leaves, le",Poaceae
+li,"ligules, li",Poaceae
+si,"spikelets, si",Poaceae
+ss,"stems and sheaths, ss",Poaceae
+ff,"flowers and fruits, ff",Remaining graminoids
+ha,"plant form, ha",Remaining graminoids
+in,"inflorescences, in",Remaining graminoids
+la,"leaves and auricles, la",Remaining graminoids
+ss,"stems and sheaths, ss",Remaining graminoids
+af,"additional features, af",Remaining non-monocots
+fl,"flowers, fl",Remaining non-monocots
+fr,"fruits, fr",Remaining non-monocots
+ha,"plant form, ha",Remaining non-monocots
+le,"leaves, le",Remaining non-monocots
+st,"stems, st",Remaining non-monocots
+ff,"flowers and fruits, ff",Thalloid Aquatic
+ha,"plant form, ha",Thalloid Aquatic
+ro,"roots, ro",Thalloid Aquatic
+ta,"thalli, ta",Thalloid Aquatic
+ba,"bark, ba",Woody angiosperms
+fl,"flowers, fl",Woody angiosperms
+fr,"fruits, fr",Woody angiosperms
+ha,"plant form, ha",Woody angiosperms
+le,"leaves, le",Woody angiosperms
+mi,miscellaneous,Woody angiosperms
+wb,"winter buds, wb",Woody angiosperms
+ba,"bark, ba",Woody gymnosperms
+fl,"flowers, fl",Woody gymnosperms
+fr,"fruits, fr",Woody gymnosperms
+ha,"plant form, ha",Woody gymnosperms
+le,"leaves, le",Woody gymnosperms
+wb,"winter buds, wb",Woody gymnosperms
+mi,miscellaneous,Woody gymnosperms
