@@ -36,6 +36,6 @@ require([
          * can scroll down past the mask.  Therefore we change its
          * position to "fixed" so that it stays in the viewport.
          */
-        console.log($('#exposeMask').css('position', 'fixed'));
+        $('#exposeMask').css('position', 'fixed');
     });
 });
