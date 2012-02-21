@@ -24,6 +24,7 @@
 dojo.provide('gobotany.sk.working_area');
 
 dojo.require('dojo.NodeList-html');
+dojo.require('dijit.form.HorizontalSlider');
 
 /**
  * Return the correct working area class for a given filter.
