@@ -4,8 +4,8 @@
  */
 
 require([
-    'jquery.tools.min',
-    'jquery.mousewheel.min',
+    'order!jquery.tools.min',
+    'order!jquery.mousewheel.min',
     'dojo_config',
     '/static/js/dojo/dojo.js',
     '/static/js/layers/sk.js',
