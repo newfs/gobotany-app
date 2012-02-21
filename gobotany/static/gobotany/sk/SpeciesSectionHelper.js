@@ -127,11 +127,40 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         return characters.sort(this.sort_character_list);
     },
 
+    get_multivalue_list: function(display_value, is_compact) {
+        // Return a HTML list for presenting multiple character values.
+        var list, i;
+        
+        if (typeof(display_value) !== 'string') {
+            list = '<ul';
+            if (is_compact) {
+                list += ' class="compact"';
+            }                
+            list +='>';
+            for (i = 0; i < display_value.length; i++) {
+                list += '<li';
+                if (i === display_value.length - 1) {
+                    list += ' class="last"';
+                }
+                list +='>' + display_value[i] + '</li>';
+            }
+            list += '</ul>';
+        }
+        else {
+            list = display_value;
+        }
+        
+        return list;
+    },
+
     connect_plant_preview_popup: function(plant_link, plant, pile_slug) {
         'use strict';
 
         dojo.connect(plant_link, 'onclick', this, function(event) {
             event.preventDefault();
+
+            // A few characters get a "compact" list for multiple values.
+            var COMPACT_EX = /^habitat|habitat_general|state_distribution$/;
 
             // Populate the hidden content area with information about
             // this plant.
@@ -191,10 +220,13 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                                 }
                                 else {
                                     // For multiple-value characters,
-                                    // display a comma-separated list.
+                                    // make a list.
                                     if (typeof(display_value) !== 'string') {
+                                       var is_compact = (COMPACT_EX.test(
+                                            ppc.character_short_name));
                                         display_value =
-                                            display_value.join(', ');
+                                            this.get_multivalue_list(
+                                                display_value, is_compact);
                                     }
                                 }
                             }
@@ -202,14 +234,14 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                             // Only display this character if it has a value.
                             if (display_value !== undefined &&
                                 display_value !== '') {
-                                characters_html += '<li>' +
-                                    ppc.friendly_name.toUpperCase() + ': ' +
-                                    display_value + '</li>';
+                                characters_html += '<dl><dt>' +
+                                    ppc.friendly_name + '</dt><dd>' +
+                                    display_value + '</dd></dl>';
                             }
                         }
                     }
-                    var characters_list = 
-                        dojo.query('#plant-detail-modal div.details ul')[0];
+                    var characters_list = dojo.query(
+                        '#plant-detail-modal .details .characteristics')[0];
                     dojo.html.set(characters_list, characters_html);
 
                     // Wire up the Get More Info button.

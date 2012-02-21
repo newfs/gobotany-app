@@ -516,7 +516,7 @@ body.app {
 	width: 425px;
 }
 #plant-id-3 .list-item .details {
-    width: 460px;
+    width: 550px;
 }
 .list-item p {
 	padding: 0 0 7px 25px;
@@ -1248,6 +1248,8 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
 
 /* Plant preview dialogs, wherever they appear */
 
+/* Note: The id #plant-preview is nearly obsolete. Remove declarations
+ * that begin with it after the "guided search" has been styled. */
 #plant-preview {
     background-color: #fff;
     color: #000;
@@ -1316,6 +1318,53 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     clear: both;
     text-align: center;
 }
+
+/* Character/value styles, for plant preview popups, etc. */
+
+.details dl {
+    border: 1px solid #fff; /* border forces new row in WebKit when
+                             * char name, but not value, wraps */
+    margin: 0.2em 0 0;
+    padding: 0;
+}
+.details dt {
+    clear: left;
+    float: left;
+    line-height: 1em;
+    padding-top: 0.15em;
+    text-align: right;
+    text-transform: uppercase;
+    width: 170px;
+}
+.details dt:after {
+    content: ':';
+}
+.details dd {
+    margin-left: 180px;
+}
+.details dd ul {
+    list-style-type: disc;
+    margin: 0;
+    padding: 0 0 0 1.3em;
+    text-indent: -0.2em;
+}
+.details dd li {
+    margin: 0;
+    padding: 0;
+}
+.details dd ul.compact {
+    margin: 0;
+    padding: 0;
+    text-indent: 0;
+}
+.details dd ul.compact li {
+    display: inline;
+}
+.details dd ul.compact li:not([class='last']):after {
+    content: ', ';
+}
+
+/* Some question/answer working-area styles */
 
 div.working-area .close {
     color: #00e;
