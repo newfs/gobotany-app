@@ -28,12 +28,13 @@
     {% include "simplekey/_header.html" %}
 
     <div class="content">
+        {% if not in_simple_key %}
+            <div class="note">This is a species in our Full Key.
+            Complete data are coming soon.</div>
+        {% endif %}
+
         <div class="container">
             <div id="main">
-                {% if not in_simple_key %}
-                    <p class="note">This is a species in our Full Key.
-                    Complete data are coming soon.</p>
-                {% endif %}
 
                 {# TODO: After implementing Full Key and navigation, #}
                 {# show appropriate breadcrumb links.                #}

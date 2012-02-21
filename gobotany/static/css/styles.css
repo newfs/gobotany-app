@@ -1656,10 +1656,15 @@ div.working-area #simple-slider .count {
 	margin: 0 0 15px;	
 }
 
-#taxon p.note {
-    color: #807121;
-    font-weight: bold;
+#taxon .note {
+    background: #c4bd93;
+    border-bottom: 1px solid #ad9f50;
+    border-top: 1px solid #ad9f50;
+    color: #000;
+    margin-bottom: 0.5em;
+    padding: 0.5em 0;
     text-align: center;
+    width: 100%;
 }
 
 a.description-control {
