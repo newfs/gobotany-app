@@ -50,19 +50,23 @@ def _simple_taxon(taxon):
     return res
 
 def _taxon_with_chars(taxon):
-    MULTIVALUE_TEXT_CHARACTERS = ['habitat', 'habitat_general',
-                                  'state_distribution']
     res = _simple_taxon(taxon)
     piles = taxon.get_piles()
     res['piles'] = piles
     for cv in taxon.character_values.all():
         name = cv.character.short_name
-        if name in MULTIVALUE_TEXT_CHARACTERS:
-            if not res.has_key(name):
-                res[name] = []
-            res[name].append(cv.friendliest_text())
-        else:
+        # Any character might have multiple values. For any that do,
+        # return a list instead of a single value.
+        if not res.has_key(name):
+            # Add a single value the first time this name comes up.
             res[name] = cv.friendliest_text()
+        else:
+            # This name exists. Its value is either already a list,
+            # or needs to be converted into one before adding the value.
+            if not type(res[name]) == type(list()):
+                new_list = [res[name]]
+                res[name] = new_list
+            res[name].append(cv.friendliest_text())
     return res
 
 
