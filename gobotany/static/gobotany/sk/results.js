@@ -12,11 +12,8 @@ dojo.require('dojo.cookie');
 dojo.require('dojo.hash');
 dojo.require('dojo.html');
 dojo.require('dojo.data.ItemFileWriteStore');
-dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
-dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.FilteringSelect');
-dojo.require('dijit.form.Form');
 dojo.require('dijit.form.Select');
 
 dojo.declare('gobotany.sk.results.ResultsHelper', null, {
