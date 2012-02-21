@@ -60,6 +60,10 @@ gobotany.utils.animate_changed = function(node, options) {
             // When the animation is done, remove the inline style
             // property containing the background color so it will
             // not interfere with future hover or selection states.
+            // NOTE: Due to jQuery Ticket #9699 and a bug in Webkit, 
+            // we set style property to an empty string before 
+            // deleting it to be sure it's cleared.
+            nodes.attr('style', '');
             nodes.removeAttr('style');
         }
     });
