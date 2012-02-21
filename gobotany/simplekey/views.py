@@ -226,8 +226,7 @@ def _get_all_characteristics(taxon, character_groups, pile):
     characters = ({
         'group': character.character_group.name,
         'name': character.friendly_name,
-        'value': \
-            u', '.join(sorted(_format_character_value(cv) for cv in values)),
+        'values': sorted(_format_character_value(cv) for cv in values),
         } for character, values in cvgroups)
 
     # Group the characters by character-group.
@@ -260,6 +259,10 @@ def _get_brief_characteristics(all_characteristics, pile, partner):
 
 def species_view(request, genus_slug, specific_name_slug,
                  pilegroup_slug=None, pile_slug=None):
+
+    COMPACT_MULTIVALUE_CHARACTERS = ['Habitat', 'New England state',
+                                     'Specific Habitat']
+
     scientific_name = '%s %s' % (genus_slug.capitalize(), specific_name_slug)
     scientific_name_short = '%s. %s' % (scientific_name[0], specific_name_slug)
     taxon = get_object_or_404(Taxon, scientific_name=scientific_name)
@@ -317,6 +320,7 @@ def species_view(request, genus_slug, specific_name_slug,
            'partner_blurb': partner_species.species_page_blurb
                if partner_species else None,
            'habitats': habitats,
+           'compact_multivalue_characters': COMPACT_MULTIVALUE_CHARACTERS,
            'brief_characteristics': _get_brief_characteristics(
                 all_characteristics, pile, partner),
            'all_characteristics': all_characteristics,

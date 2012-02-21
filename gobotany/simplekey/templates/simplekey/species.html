@@ -108,20 +108,30 @@
                 </p>
                 
                 <h3>Characteristics</h3>
-                <ul class="characteristics">
+                <div class="characteristics">
                     {% if brief_characteristics %}
                         {% for character in brief_characteristics %}
-                            <li>{{ character.name|upper }}:
-                                {{ character.value }}</li>
+                            <dl>
+                                <dt>{{ character.name }}</dt>
+                                <dd>
+                                    {% if character.values|length_is:"1" %}
+                                        {{ character.values.0 }}
+                                    {% else %}
+                                        <ul{% if character.name in compact_multivalue_characters %} class="compact"{% endif %}>
+                                        {% for val in character.values %}
+                                            <li{% if forloop.last %} class="last"{% endif %}>{{ val }}</li>
+                                        {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </dd>
+                            </dl>
                         {% endfor %}
                     {% else %}
-                        <li>
-                          No “plant preview characters” have been established
+                        <p>No “plant preview characters” have been established
                           for the “{{ pile.friendly_name }}” ({{ pile.name }})
-                          pile.
-                        </li>
+                          pile.</p>
                     {% endif %}
-                </ul>
+                </div>
                 <a class="description-control" href="#" 
                     style="background-image: url(/static/images/icons/plus.png)">Show 
                     All Characteristics</a>
@@ -129,13 +139,24 @@
                     {% for character_group in all_characteristics %}
 				        <li>
                             <h5>{{ character_group.name|capfirst }}</h5>
-                            <ul>
-                            {% for character in character_group.characters %}
-                                <li><strong>{{ character.name }}:</strong>
-                                    {{ character.value }}
-                                </li>
-                            {% endfor %}
-                            </ul>
+                            <div class="characteristics full">
+                                {% for character in character_group.characters %}
+                                <dl>
+                                    <dt>{{ character.name }}</dt>
+                                    <dd>
+                                    {% if character.values|length_is:"1" %}
+                                        {{ character.values.0 }}
+                                    {% else %}
+                                        <ul{% if character.name in compact_multivalue_characters %} class="compact"{% endif %}>
+                                        {% for val in character.values %}
+                                            <li{% if forloop.last %} class="last"{% endif %}>{{ val }}</li>
+                                        {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                    </dd>
+                                </dl>
+                                {% endfor %}
+                            </div>
                         </li>
                     {% endfor %}
                 </ul>

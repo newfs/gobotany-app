@@ -20,13 +20,13 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
         // Set handlers for toggling a character group.
         // (Uses jQuery for historical reasons.)
         $('ul.full-description li').toggle(function() {
-            $(this).children('ul').show();
+            $(this).children('div').show();
             $(this).children('h5').css('background-image',
                 'url("/static/images/icons/minus.png")');
             sidebar_set_height();
             return false;
         }, function() {
-            $(this).children('ul').hide();
+            $(this).children('div').hide();
             $(this).children('h5').css('background-image',
                 'url("/static/images/icons/plus.png")');
             sidebar_set_height();
@@ -133,8 +133,8 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
 
         // Highlight glossary terms where appropriate throughout the page.
         var that = this;
-        var selectors = '#sidebar dd, #main p:not(.nogloss), #main li, ' +
-                        '#main th, #main td';
+        var selectors = '#sidebar dd, #main p:not(.nogloss), #main dt, ' +
+                        '#main dd, #main li, #main th, #main td';
         dojo.query(selectors).forEach(function(node) {
             that.glossarizer.markup(node);
         });

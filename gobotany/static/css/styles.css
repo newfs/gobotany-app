@@ -1321,13 +1321,16 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
 
 /* Character/value styles, for plant preview popups, etc. */
 
-.details dl {
-    border: 1px solid #fff; /* border forces new row in WebKit when
-                             * char name, but not value, wraps */
+.characteristics dl {
+    border: 1px transparent; /* border forces new row in WebKit when
+                              * char name, but not value, wraps */
     margin: 0.2em 0 0;
     padding: 0;
 }
-.details dt {
+#taxon .characteristics dl {
+    margin-top: 0.45em;
+}
+.characteristics dt {
     clear: left;
     float: left;
     line-height: 1em;
@@ -1336,31 +1339,37 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     text-transform: uppercase;
     width: 170px;
 }
-.details dt:after {
+.characteristics.full dt {
+    width: 270px;
+}
+.characteristics dt:after {
     content: ':';
 }
-.details dd {
+.characteristics dd {
     margin-left: 180px;
 }
-.details dd ul {
+.characteristics.full dd {
+    margin-left: 280px;
+}
+.characteristics dd ul {
     list-style-type: disc;
     margin: 0;
     padding: 0 0 0 1.3em;
     text-indent: -0.2em;
 }
-.details dd li {
+.characteristics dd li {
     margin: 0;
     padding: 0;
 }
-.details dd ul.compact {
+.characteristics dd ul.compact {
     margin: 0;
     padding: 0;
     text-indent: 0;
 }
-.details dd ul.compact li {
+.characteristics dd ul.compact li {
     display: inline;
 }
-.details dd ul.compact li:not([class='last']):after {
+.characteristics dd ul.compact li:not([class='last']):after {
     content: ', ';
 }
 
@@ -1665,33 +1674,30 @@ ul.full-description {
 	border: 1px solid #e1e1dc;	
 	background: #fbfbf8;	
 }
-ul.full-description li {
+ul.full-description > li {
+    clear: left;
 	display: block;
 	padding: 18px;
 	margin: 0 0 0 0;
 	border-bottom: 1px solid #e1e1dc;	
 	cursor: pointer;
 }
-ul.full-description li:last-child {
+ul.full-description > li:last-child {
 	border-bottom: none;	
 }
-ul.full-description li:hover {
+ul.full-description > li:hover {
 	background-color: #fff;
 }
-ul.full-description li h5 {
+ul.full-description > li h5 {
 	background: url(/static/images/icons/plus.png) left 50% no-repeat;
 }
-ul.full-description li ul {
+ul.full-description > li div {
 	display: none;
 }
-ul.full-description li h5, ul.full-description li ul {
+ul.full-description > li h5, ul.full-description > li div {
     padding-left: 28px;
 }
-ul.full-description li ul li {
-	border-bottom: none;
-    margin: 1em 0 0;
-    padding: 0;
-}
+
 
 #taxon table {
     border-collapse: collapse;
@@ -1823,9 +1829,6 @@ div.section.namap div.trans {
 #taxon #main h2 {
     line-height: 1em;
     margin: 0.5em 0;
-}
-#taxon dl {
-    line-height: 1.7em;
 }
 #taxon a.more {
     cursor: pointer;
