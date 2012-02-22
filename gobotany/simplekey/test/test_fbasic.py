@@ -1481,7 +1481,6 @@ class CharacterValueImagesFunctionalTests(FunctionalTestCase):
 class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
 
     MIN_EXPECTED_CHARACTERS = 4   # Includes 2 common ones: Habitat, State
-    CHARACTER_PATTERN = re.compile('[^a-z]{2,}: .?')
     GROUPS = {
         'woody-angiosperms': 'woody-plants',
         'woody-gymnosperms': 'woody-plants',
@@ -1499,38 +1498,30 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         'remaining-non-monocots': 'non-monocots'
         }
     SPECIES = {
-        'woody-angiosperms': ['Acer negundo', 'Ilex glabra', 'Ulmus rubra'],
-        'woody-gymnosperms': ['Abies balsamea', 'Picea rubens',
-                              'Tsuga canadensis'],
-        'non-thalloid-aquatic': ['Alisma subcordatum', 'Najas flexilis',
-                                 'Zostera marina'],
-        'thalloid-aquatic': ['Lemna minor', 'Spirodela polyrrhiza',
-                             'Wolffia columbiana'],
-        'carex': ['Carex albicans', 'Carex limosa', 'Carex viridula'],
-        'poaceae': ['Agrostis capillaris', 'Festuca rubra', 'Tridens flavus'],
-        'remaining-graminoids': ['Bolboschoenus fluviatilis', 'Juncus tenuis',
-                                 'Typha latifolia'],
-        'orchid-monocots': ['Arethusa bulbosa', 'Isotria verticillata',
-                            'Spiranthes lacera'],
-        'non-orchid-monocots': ['Acorus americanus', 'Hypoxis hirsuta',
-                                'Xyris montana'],
-        'monilophytes': ['Adiantum pedatum', 'Osmunda regalis',
-                         'Woodwardia virginica'],
-        'lycophytes': ['Dendrolycopodium dendroideum', 'Huperzia lucidula',
-                       'Selaginella apoda'],
-        'equisetaceae': ['Equisetum arvense', 'Equisetum palustre',
-                         'Equisetum variegatum'],
-        'composites': ['Achillea millefolium', 'Packera obovata',
-                       'Xanthium strumarium'],
-        'remaining-non-monocots': ['Abutilon theophrasti', 'Nelumbo lutea',
-                                   'Zizia aurea']
+        'woody-angiosperms': ['Acer negundo', 'Ilex glabra'],
+        'woody-gymnosperms': ['Abies balsamea', 'Picea rubens'],
+        'non-thalloid-aquatic': ['Alisma subcordatum', 'Najas flexilis'],
+        'thalloid-aquatic': ['Lemna minor', 'Spirodela polyrrhiza'],
+        'carex': ['Carex albicans', 'Carex limosa'],
+        'poaceae': ['Agrostis capillaris', 'Festuca rubra'],
+        'remaining-graminoids': ['Bolboschoenus fluviatilis',
+                                 'Juncus tenuis'],
+        'orchid-monocots': ['Arethusa bulbosa', 'Isotria verticillata'],
+        'non-orchid-monocots': ['Acorus americanus', 'Hypoxis hirsuta'],
+        'monilophytes': ['Athyrium angustum', 'Cystopteris tenuis'],
+        'lycophytes': ['Dendrolycopodium dendroideum', 'Isoetes echinospora'],
+        'equisetaceae': ['Equisetum arvense', 'Equisetum palustre'],
+        'composites': ['Achillea millefolium', 'Packera obovata'],
+        'remaining-non-monocots': ['Abutilon theophrasti', 'Nelumbo lutea']
         }
 
     # Plant subgroups pages tests: the "plant preview" popups should
     # contain the expected characters.
 
     INTRO_OVERLAY_CSS = '#intro-overlay .get-started'
-    PLANT_PREVIEW_LIST_ITEMS_CSS = '#sb-player .details li'
+    PLANT_PREVIEW_LIST_ITEMS_CSS = '#sb-player .details dl'
+    PLANT_PREVIEW_ITEM_CHAR_NAME_CSS = '#sb-player .details dl dt'
+    PLANT_PREVIEW_ITEM_CHAR_VALUE_CSS = '#sb-player .details dl dd'
     CLOSE_LINK_CSS = 'a#sb-nav-close'
 
     def _get_subgroup_page(self, subgroup):
@@ -1552,33 +1543,45 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
             species_link.click()
             self.wait_on(13, self.css1, self.PLANT_PREVIEW_LIST_ITEMS_CSS)
             list_items = self.css(self.PLANT_PREVIEW_LIST_ITEMS_CSS)
+            self.assertTrue(len(list_items))
             self.assertTrue(len(list_items) >= self.MIN_EXPECTED_CHARACTERS)
-            for list_item in list_items:
-                self.assertTrue(re.match(self.CHARACTER_PATTERN,
-                                         list_item.text))
             self.css1(self.CLOSE_LINK_CSS).click()
 
     # Test a single species, including its expected character and value.
     def _preview_popup_has_characters(self, subgroup, species,
-                                      expected_list_item):
+                                      expected_name, expected_values):
         page = self._get_subgroup_page(subgroup)
         species_link = page.find_element_by_partial_link_text(species)
         time.sleep(1)   # Wait a bit for animation to finish
         species_link.click()
         self.wait_on(13, self.css1, self.PLANT_PREVIEW_LIST_ITEMS_CSS)
         list_items = self.css(self.PLANT_PREVIEW_LIST_ITEMS_CSS)
+        char_names = self.css(self.PLANT_PREVIEW_ITEM_CHAR_NAME_CSS)
+        char_values = self.css(self.PLANT_PREVIEW_ITEM_CHAR_VALUE_CSS)
+        self.assertTrue(len(list_items))
         self.assertTrue(len(list_items) >= self.MIN_EXPECTED_CHARACTERS)
-        for list_item in list_items:
-            self.assertTrue(re.match(self.CHARACTER_PATTERN,
-                                     list_item.text))
         expected_item_found = False
-        for list_item in list_items:
-            if list_item.text == expected_list_item.decode('utf-8'):
+        for index, list_item in enumerate(list_items):
+            char_name = char_names[index]
+            char_value = char_values[index]
+            actual_values = []
+            ul_items = char_value.find_elements_by_css_selector('li')
+            if len(ul_items) == 0:
+                # Single character value.
+                actual_values.append(char_value.text)
+            else:
+                # Multiple character values.
+                for ul_item in ul_items:
+                    actual_values.append(ul_item.text)
+            if char_name.text == expected_name:
                 expected_item_found = True
+                for expected_value in expected_values:
+                    self.assertTrue(expected_value.decode('utf-8')
+                                    in actual_values)
                 break
         if not expected_item_found:
-            print '%s: Expected item not found: %s' % (species,
-                                                       expected_list_item)
+            print '%s: Expected item not found: %s %s' % (
+                species, expected_name, expected_values)
         self.assertTrue(expected_item_found)
         self.css1(self.CLOSE_LINK_CSS).click()
 
@@ -1628,17 +1631,18 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     def test_plant_preview_popups_have_expected_values(self):
         values = [
             ('non-thalloid-aquatic', 'Elatine minima',
-             'LEAF BLADE LENGTH: 0.7–5 cm'),
+             'LEAF BLADE LENGTH', ['0.7–5 cm']),
             ('non-thalloid-aquatic', 'Brasenia schreberi',
-             'LEAF BLADE LENGTH: 35–135 cm'),
-            ('carex', 'Carex aquatilis', 'FRUIT LENGTH: 2–3.3 mm'),
-            ('non-thalloid-aquatic', 'Elatine minima',
-             ('PETAL OR SEPAL NUMBER: there are three petals or sepals in '
-              'the flower, there are two petals or sepals in the flower')),
+             'LEAF BLADE LENGTH', ['35–135 cm']),
+            ('carex', 'Carex aquatilis', 'FRUIT LENGTH', ['2–3.3 mm']),
+             ('non-thalloid-aquatic', 'Elatine minima',
+              'PETAL OR SEPAL NUMBER',
+              ['there are three petals or sepals in the flower',
+               'there are two petals or sepals in the flower']),
             ]
-        for subgroup, species, expected_list_item in values:
+        for subgroup, species, expected_name, expected_values in values:
             self._preview_popup_has_characters(subgroup, species,
-                                               expected_list_item)
+                                               expected_name, expected_values)
 
     # Species pages tests: The same "plant preview" characters should
     # appear in the Characteristics section of the page, below the
@@ -1649,11 +1653,9 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         for s in species:
             species_page_url = '/species/%s/' % s.lower().replace(' ', '/')
             self.get(species_page_url)
-            list_items = self.css('ul.characteristics li')
+            list_items = self.css('.characteristics dl')
+            self.assertTrue(len(list_items))
             self.assertTrue(len(list_items) >= self.MIN_EXPECTED_CHARACTERS)
-            for list_item in list_items:
-                self.assertTrue(re.match(self.CHARACTER_PATTERN,
-                                         list_item.text))
 
     def test_woody_angiosperms_species_pages_have_characters(self):
         self._species_pages_have_characters('woody-angiosperms')
@@ -1705,10 +1707,10 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
                    'Sagittaria cuneata', 'Utricularia intermedia']
         for s in species:
             self.get('/species/%s/' % s.replace(' ', '/').lower())
-            list_items = self.css('ul.characteristics li')
+            list_items = self.css('.characteristics dt')
             character_names = []
             for list_item in list_items:
-                character_name = list_item.text.split(':')[0]
+                character_name = list_item.text
                 character_names.append(character_name)
             self.assertTrue(len(character_names) > 0)
             self.assertEqual(len(character_names), len(set(character_names)))
