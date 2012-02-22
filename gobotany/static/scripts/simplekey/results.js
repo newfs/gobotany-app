@@ -18,7 +18,6 @@
         dojo.require('gobotany.sk.results');
         dojo.addOnLoad(function() {
             helper = gobotany.sk.results.ResultsHelper(args.pile_slug);
-            helper.setup();
         });
     });
 

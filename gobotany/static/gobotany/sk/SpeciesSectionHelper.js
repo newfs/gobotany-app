@@ -35,10 +35,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             dojo.hitch(this, 'create_plant_divs')
         );
         dojo.subscribe('/filters/query-result', this, 'on_query_result');
-    },
-
-    setup_section: function() {
-        'use strict';
 
         // Call the lazy image loader when the page loads.
         this.lazy_load_images();

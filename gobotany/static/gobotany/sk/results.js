@@ -24,27 +24,13 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         //   Helper class for managing the sections on the results page.
         // description:
         //   Coordinates all of the dynamic logic on the results page.
-        //   The procedure for using this class is to instantiate it
-        //   and then call its setup() method.
-        // | var helper = new gobotany.sk.results.ResultsHelper('some_pile');
-        // | helper.setup();
 
         this.pile_slug = pile_slug;
+
         this.filter_manager = new gobotany.filters.FilterManager({
             pile_slug: this.pile_slug,
             onload: dojo.hitch(this, this.filter_loaded)
         });
-    },
-
-    setup: function() {
-        // summary:
-        //   Sets up the results page with appropriate callbacks
-        // description:
-        //   Connects callback functionality and generally sets up
-        //   the logic of the page ready for use, this should only
-        //   be called once.
-
-        console.log('ResultsHelper: setting up page - ' + this.pile_slug);
 
         this.family_genus_selectors =
             gobotany.sk.results.FamilyGenusSelectors({
@@ -53,13 +39,11 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         this.species_section =
             new gobotany.sk.SpeciesSectionHelper(this);
-        this.species_section.setup_section();
 
         new gobotany.sk.SpeciesCounts(this);
 
         this.filter_section =
             new gobotany.sk.results.FilterSectionHelper(this);
-        this.filter_section.setup_section();
 
         dojo.subscribe('results_loaded',
             dojo.hitch(this, this.populate_image_types));
@@ -570,10 +554,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         // This variable is for keeping track of which filter is currently
         // visible in the filter working area (if any).
         this.visible_filter_short_name = '';
-    },
-
-    setup_section: function() {
-        console.log('FilterSectionHelper: setting up section');
 
         // Set up the jQuery scrolling box for filters, first binding a
         // function to dismiss the working area upon scrolling.
