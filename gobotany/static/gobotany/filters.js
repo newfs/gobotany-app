@@ -3,6 +3,16 @@
 // Global declaration for JSLint (http://www.jslint.com/)
 /*global console, dojo, dojox, gobotany */
 
+/*
+   Dojo topics:
+
+   FilterManager subscribes to '/sk/filter/change': re-runs its query
+      logic to compute the set of species that match the new filter
+      values.  When the new list has been computed, publishes
+      '/filters/query-result' with the new species list as the
+      associated value.
+ */
+
 dojo.provide('gobotany.filters');
 
 dojo.declare('gobotany.filters.Filter', null, {
@@ -208,6 +218,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         this.species_by_scientific_name = {}; // scientific_name -> species_obj
         this.species_ids = [];
         this.onload = args.onload;
+
+        dojo.subscribe('/sk/filter/change', this, 'perform_query');
 
         this.load_stuff();
     },

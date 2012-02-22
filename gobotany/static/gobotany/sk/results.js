@@ -34,11 +34,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             pile_slug: this.pile_slug,
             onload: dojo.hitch(this, this.filter_loaded)
         });
-
-        // Whenever a new filter value on the page is applied, the
-        // filter manager should re-run its query and notify everyone.
-        dojo.subscribe('/sk/filter/change', this.filter_manager,
-                       'perform_query');
     },
 
     setup: function() {
