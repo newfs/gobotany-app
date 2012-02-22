@@ -241,19 +241,16 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
        how many species would remain if each of our possible filter
        values were applied. */
     _on_filter_change: function() {
-        var species_vector = this.filter_manager.compute_species_without(
-            this.filter.short_name);
-        for (var i = 0; i < this.filter.values.length; i++) {
-            var v = this.filter.values[i];
-            var vector = _.intersect(species_vector, v.taxa);
-            var count_span_q = dojo.query('.count', this.div_map[v.choice]);
-            count_span_q.html('(' + vector.length + ')');
-            var input_field_q = dojo.query('input', this.div_map[v.choice]);
-            if (vector.length === 0)
+        var div_map = this.div_map;
+        _.map(this.filter_manager.compute_impact(this.filter), function(i) {
+            var count_span_q = dojo.query('.count', div_map[i.value.choice]);
+            count_span_q.html('(' + i.taxa.length + ')');
+            var input_field_q = dojo.query('input', div_map[i.value.choice]);
+            if (i.taxa.length === 0)
                 input_field_q.attr('disabled', 'disabled');
             else
                 input_field_q.attr('disabled', false); // remove the attribute
-        }
+        });
     },
 
     /* When the apply button is pressed, we announce a value change
@@ -464,8 +461,8 @@ dojo.declare('gobotany.sk.working_area.Length', [
         // adjust our statement about the number of species matched by
         // the value in our input field.
 
-        var species_vector = this.filter_manager.compute_species_without(
-            this.filter.short_name);
+        var species_vector = this.filter_manager.compute_query({
+            without: this.filter});
         this.species_vector = species_vector;
         this.permitted_ranges = this.filter.allowed_ranges(species_vector);
         this._redraw_permitted_ranges();

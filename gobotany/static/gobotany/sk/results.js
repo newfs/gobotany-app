@@ -494,16 +494,13 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
     },
 
     _rebuild_selector: function(store, filter) {
-        var vector = this.filter_manager.compute_species_without(
-            filter.character_short_name);
-        var choices = filter.safe_choices(vector);
-
         // We cannot control the order of terms in the selector without
         // deleting them all and starting over from the beginning.
         store.fetch({onItem: dojo.hitch(store, 'deleteItem')});
         store.save();
-        for (var i = 0; i < choices.length; i++)
-            store.newItem({ name: choices[i] });
+        _.chain(this.filter_manager.compute_impact(filter))
+            .filter(function(item) {return item.taxa.length > 0})
+            .map(function(item) {store.newItem({name: item.value.choice})});
         store.save();
     },
 

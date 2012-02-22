@@ -45,56 +45,47 @@ dojo.declare('gobotany.filters.Filter', null, {
                 key_name: 'simple', pile_slug: this.pile_slug
             }),
             simplekey_resources.character_vector(this.short_name)
-        ).done(_.bind(function(base_vector, values) {
-
-            this.values = [];
-            this.choicemap = {};
-
-            var knowns = [];  // species with any value whatsoever, even NA
-            for (var i = 0; i < values.length; i++) {
-                var value = values[i];
-                value.taxa = _.intersect(value.taxa, base_vector);
-                if (!value.taxa)
-                    continue;  // value does not apply to this pile
-
-                var knowns = _.uniq(knowns.concat(value.taxa));
-                this.values.push(value);
-
-                if (value.choice !== null)
-                    this.choicemap[value.choice] = value;
-
-                if (value.min !== null)
-                    if (this.min === null || value.min < this.min)
-                        this.min = value.min;
-
-                if (value.max !== null)
-                    if (this.max === null || value.max > this.max)
-                        this.max = value.max;
-            }
-
-            // Report on whether every species in this pile has a value
-            // for this filter, or whether some are unknown.
-            this.unknowns = _.without.apply(0, [base_vector].concat(knowns));
-            console.log(this.character_short_name, '- covers', knowns.length,
-                        '/', base_vector.length, 'taxa');
-
-            this.loaded.resolve(this);
-        }, this));
-
+        ).done(_.bind(this.install_values, this));
         return this.loaded;
     },
-    /*
-     * Determine which of our choices are "safe" and will not cause zero
-     * species to be selected if run against the species in `vector`.
-     */
-    safe_choices: function(vector) {
-        var result = [];
-        for (var choice in this.choicemap)
-            if (_.intersect(vector, this.choicemap[choice].taxa).length > 0)
-                result.push(choice);
-        result.sort();
-        return result;
+
+    /* Install the given array of values as the choices offered by this
+       filter. */
+    install_values: function(base_vector, values) {
+        this.values = [];
+        this.choicemap = {};
+
+        var knowns = [];  // species with any value whatsoever, even NA
+        for (var i = 0; i < values.length; i++) {
+            var value = values[i];
+            value.taxa = _.intersect(value.taxa, base_vector);
+            if (!value.taxa)
+                continue;  // value does not apply to this pile
+
+            var knowns = _.uniq(knowns.concat(value.taxa));
+            this.values.push(value);
+
+            if (value.choice !== null)
+                this.choicemap[value.choice] = value;
+
+            if (value.min !== null)
+                if (this.min === null || value.min < this.min)
+                    this.min = value.min;
+
+            if (value.max !== null)
+                if (this.max === null || value.max > this.max)
+                    this.max = value.max;
+        }
+
+        // Report on whether every species in this pile has a value
+        // for this filter, or whether some are unknown.
+        this.unknowns = _.without.apply(0, [base_vector].concat(knowns));
+        console.log(this.character_short_name, '- covers', knowns.length,
+                    '/', base_vector.length, 'taxa');
+
+        this.loaded.resolve(this);
     },
+
     // Return true if the name of this filter appears to name a length
     // value (as opposed to something like a count).
     is_length: function() {
@@ -205,12 +196,12 @@ dojo.declare('gobotany.filters.FilterManager', null, {
 
     load_stuff: function() {
         var stuff_is_built = $.Deferred();
-        var pile_species_are_fetched = simplekey_resources.pile_species(
+        var fetch_pile_species = simplekey_resources.pile_species(
             this.pile_slug);
-        var base_vector_is_fetched = simplekey_resources.base_vector({
+        var fetch_base_vector = simplekey_resources.base_vector({
             key_name: 'simple', pile_slug: this.pile_slug});
 
-        pile_species_are_fetched.done(_.bind(function(species_list) {
+        fetch_pile_species.done(_.bind(function(species_list) {
             for (var i = 0; i < species_list.length; i++) {
                 var info = species_list[i];
                 this.species_by_id[info.id] = info;
@@ -219,13 +210,16 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             species_list.sort(function(a, b) {
                 return a.scientific_name < b.scientific_name ? -1 : 1;
             });
-            this.build_family_genus_filters(species_list);
             stuff_is_built.resolve();
         }, this));
 
         $.when(
-            stuff_is_built, base_vector_is_fetched
-        ).done(_.bind(function(nothing, base_vector) {
+            fetch_base_vector, fetch_pile_species
+        ).done(_.bind(this.build_family_genus_filters, this));
+
+        $.when(
+            fetch_base_vector, stuff_is_built
+        ).done(_.bind(function(base_vector, nothing) {
             this.base_vector = base_vector;
             console.log('base_vector has', base_vector.length, 'species');
             if (this.onload !== undefined) this.onload(this);
@@ -237,23 +231,16 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     // computed from the attributes "family" and "genus" of our own
     // species list, instead of being pulled from a separate API call.
 
-    build_family_genus_filters: function(species_list) {
-        var f = this.get_filter('family');
-        var g = this.get_filter('genus');
-        f.choicemap = {};
-        g.choicemap = {};
-        for (var i = 0; i < species_list.length; i++) {
-            var family = species_list[i].family;
-            if (!f.choicemap[family])
-                f.choicemap[family] = {taxa: []};
-            f.choicemap[family].taxa.push(species_list[i].id);
-            var genus = species_list[i].genus;
-            if (!g.choicemap[genus])
-                g.choicemap[genus] = {taxa: []};
-            g.choicemap[genus].taxa.push(species_list[i].id);
-        }
-        this.filters.push(f);
-        this.filters.push(g);
+    build_family_genus_filters: function(base_vector, taxa) {
+        var families = _.chain(taxa).groupBy('family')
+            .map(function(t, v) {return {choice: v, taxa: _.pluck(t, 'id')}})
+            .value();
+        this.get_filter('family').install_values(base_vector, families);
+
+        var genera = _.chain(taxa).groupBy('genus')
+            .map(function(t, v) {return {choice: v, taxa: _.pluck(t, 'id')}})
+            .value();
+        this.get_filter('genus').install_values(base_vector, genera);
     },
 
     // get_species({scientific_name: s, onload: function})
@@ -262,19 +249,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     get_species: function(args) {
         args.onload(this.species_by_scientific_name[args.scientific_name]);
     },
-
-    // Figure out which species would be selected if the filter with the
-    // given short_name did not have a currently selected value.
-    compute_species_without: function(short_name) {
-        var selected_value = this.get_selected_value(short_name);
-        if (selected_value)
-            this.set_selected_value(short_name, null);
-        var vector = this.compute_query();
-        if (selected_value)
-            this.set_selected_value(short_name, selected_value);
-        return vector;
-    },
-
     get_filter: function(short_name) {
         for (var i = 0; i < this.filters.length; i++)
             if (this.filters[i].short_name === short_name)
@@ -362,23 +336,34 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             dojo.objectToQuery(obj);
     },
 
-    // Return the list of species ids that remain selected after
-    // applying all currently active filters; this method does NOT save
-    // the results or alter the state of this FilterManager.
-    compute_query: function() {
+    // Return the list of taxon ids that remain after applying all of
+    // the currently active filters.  If args is {'without': filter}
+    // then that one filter is ignored in computing the result.
+    compute_query: function(args) {
         var vector = this.base_vector;
 
         for (var i = 0; i < this.filters.length; i++) {
             var filter = this.filters[i];
+            if (args && args.without === filter)
+                continue;
             var sv = filter.selected_value;
-            if (sv !== null) {
-                var matches = filter.species_matching(sv);
-                var matches_and_unknowns = matches.concat(filter.unknowns);
-                vector = _.intersect(vector, matches_and_unknowns);
-            }
+            if (sv === null)
+                continue;
+            var matches = filter.species_matching(sv);
+            var matches_and_unknowns = matches.concat(filter.unknowns);
+            vector = _.intersect(vector, matches_and_unknowns);
         }
 
         return vector;
+    },
+
+    /* Given a filter, return a list of {taxa:, value:} objects showing
+       which taxa would be left after filtering for each value. */
+    compute_impact: function(filter) {
+        var taxa = this.compute_query({without: filter});
+        return _.map(filter.values, function(value) {
+            return {taxa: _.intersect(taxa, value.taxa), value: value};
+        });
     },
 
     // Apply all active filters, and update all of our FilterManager
