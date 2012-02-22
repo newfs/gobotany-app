@@ -3,7 +3,7 @@ import json
 from django.test import TestCase
 from django.test.client import Client
 
-from gobotany.core.models import Pile, PileGroup
+from gobotany.core.models import Character, CharacterValue, Pile, PileGroup
 
 from gobotany.simplekey.groups_order import ORDERED_GROUPS
 from gobotany.simplekey.models import (GroupsListPage,
@@ -11,7 +11,8 @@ from gobotany.simplekey.models import (GroupsListPage,
                                        SubgroupResultsPage,
                                        SubgroupsListPage)
 from gobotany.simplekey.templatetags.simplekey_extras import italicize_plant
-from gobotany.simplekey.views import ordered_pilegroups, ordered_piles
+from gobotany.simplekey.views import (_format_character_value,
+                                      ordered_pilegroups, ordered_piles)
 
 # Following are data for groups and subgroups in the order that they are
 # created in the database by the importer. This will be tested against
@@ -492,3 +493,27 @@ class SimpleKeyPagesSearchSuggestionsTestCase(TestCase):
             sorted(self._subgroup_results_suggestions(
                    'Remaining Non-Monocots')),
             sorted(EXPECTED_SUGGESTIONS))
+
+
+class FormatCharacterValueTestCase(TestCase):
+    """Tests for character value display formatting."""
+
+    def test_character_value_displays_numeric_range(self):
+        character = Character(short_name='leaf_blade_length_ap',
+                              name='Leaf blade length',
+                              friendly_name='Leaf blade length',
+                              character_group_id=0,
+                              value_type='LENGTH',
+                              unit='cm')
+        character.save()
+        character_value = CharacterValue(character=character,
+                                         value_min=200.0,
+                                         value_max=2500.0)
+        character_value.save()
+
+        expected_value = u'200\u20132500 cm'
+        actual_value = _format_character_value(character_value)
+
+        # Use repr() to avoid the error "unprintable AssertionError object"
+        # when the values are not equal.
+        self.assertEqual(repr(expected_value), repr(actual_value))
