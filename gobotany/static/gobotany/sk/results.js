@@ -937,7 +937,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
     on_working_area_dismiss: function(filter) {
         this.working_area = null;
-        this.results_helper.species_section.lazy_load_images();
         this.visible_filter_short_name = '';
         this.results_helper.save_filter_state();
 

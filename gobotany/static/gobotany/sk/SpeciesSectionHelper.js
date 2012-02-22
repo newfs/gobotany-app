@@ -629,7 +629,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             dojo.publish('results_loaded',
                 [{filter_manager: this.results_helper.filter_manager,
                   query_results: this.query_results}]);
-            this.results_helper.species_section.lazy_load_images();
+            this.lazy_load_images();
         }
     },
 
