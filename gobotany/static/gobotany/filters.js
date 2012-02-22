@@ -22,24 +22,15 @@ dojo.declare('gobotany.filters.Filter', null, {
     min: null,
     max: null,
 
-    constructor: function(args, args2) {
-        this.manager = args2.manager;  // FilterManager to which this belongs
+    constructor: function(args) {
         this.loaded = $.Deferred();
 
-        this.order = args.order;
         this.pile_slug = args.pile_slug;
-        this.unit = args.unit;
         this.value_type = args.value_type;
-
         this.character_short_name = this.short_name = args.short_name;
         this.friendly_name = args.friendly_name;
-
-        var f = args.filter ? args.filter : args;
-
-        this.hint = f.hint;
-        this.question = f.question;
-
-        dojo.safeMixin(this, args);
+        this.hint = args.hint;
+        this.question = args.question;
     },
     // load_values()
     // Does an async load of the filter's species id list, and returns a
@@ -203,14 +194,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     constructor: function(args) {
         this.entries = [];
         this.filters = [
-            gobotany.filters.Filter(
-                {character_short_name: 'family', value_type: 'TEXT'},
-                {manager: this}
-            ),
-            gobotany.filters.Filter(
-                {character_short_name: 'genus', value_type: 'TEXT'},
-                {manager: this}
-            )
+            gobotany.filters.Filter({short_name: 'family', value_type: 'TEXT'}),
+            gobotany.filters.Filter({short_name: 'genus', value_type: 'TEXT'})
         ];
         this.base_vector = null;
         this.pile_slug = args.pile_slug;
@@ -328,21 +313,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             }
         }
     },
-    add_filter: function(obj) {
-        // summary:
-        //     Add a filter to this manager
-        // description:
-        //     Add the given object as a filter to this manager.  This
-        //     function does no value loading or other side effects.
-        // obj:
-        //     Either a gobotany.filters.Filter instance or a kwArgs object.
-        //     The kwArgs object should be something that can be passed
-        //     into gobotany.filters.Filter's constructor.
-
-        var f = obj;
-        if (!obj.isInstanceOf || !obj.isInstanceOf(gobotany.filters.Filter)) {
-            f = new gobotany.filters.Filter(obj, {manager: this});
-        }
+    add_filter: function(args) {
+        var f = new gobotany.filters.Filter(args);
         this.filters.push(f);
         return f;
     },

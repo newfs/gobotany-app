@@ -198,20 +198,14 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         //   Sets up the internal filter data structure based on default
         //   filters in the pile info.
 
-        var pile_info = args.pile_info;
+        var default_filters = args.pile_info.default_filters;
         var filters = [];
-        var x;
-        for (x = 0; x < pile_info.default_filters.length; x++) {
-            var obj = pile_info.default_filters[x];
-            obj.pile_slug = this.pile_slug;
-            var filter = this.filter_manager.add_filter(
-                pile_info.default_filters[x]);
+        for (var i = 0; i < default_filters.length; i++) {
+            var filter = this.filter_manager.add_filter(default_filters[i]);
             filters.push(filter);
         }
-
-        if (args && args.on_complete) {
+        if (args && args.on_complete)
             args.on_complete(filters);
-        }
     },
 
     setup_filters_from_hash: function(args) {
