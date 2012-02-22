@@ -1,9 +1,7 @@
 django==1.3
 lxml
 psycopg2>=2.3
-sorl-thumbnail==11.12
 supervisor==3.0a12
-unittest2
 xlrd
 # Unsure which version satisfied minimum reqs
 PIL
@@ -23,9 +21,6 @@ BeautifulSoup
 pylibmc==1.2.2
 django-pylibmc-sasl==0.2.4
 
-# coverage
-# selenium
-
 # -e src/django-autocomplete
 # -e src/facebook-python-sdk-322930c
 # -e .
@@ -38,3 +33,8 @@ boto==2.2.2
 # For deployment to Heroku.
 gunicorn
 newrelic
+
+# For testing.
+coverage
+unittest2
+selenium

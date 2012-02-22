@@ -6,26 +6,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
 from django.template.defaultfilters import slugify
 
-from sorl.thumbnail.fields import ImageField as ImageWithThumbnailsField
-from sorl.thumbnail import get_thumbnail
-
 from tinymce import models as tinymce_models
 
-# Monkeypatch PIL because recent versions care about whether they are
-# asked to crop to floating-point dimensions (which the ancient version
-# of sorl-thumbnail we use asks for):
-
-# import PIL.Image
-# from PIL.Image import _ImageCrop
-
-# class fixed_ImageCrop(_ImageCrop):
-#     def __init__(self, im, box):
-#         box = tuple(int(n) for n in box)
-#         _ImageCrop.__init__(self, im, box)
-
-# PIL.Image._ImageCrop = fixed_ImageCrop
-
-# And, back to our regularly-scheduled models:
+def add_suffix_to_base_directory(image, suffix):
+    """Instead of 'http://h/a/b/c' return 'http://h/a-suffix/b/c'."""
+    name = image.name.replace('/', '-' + suffix + '/', 1)
+    return image.storage.url(name)
 
 class Parameter(models.Model):
     """An admin-configurable value."""
@@ -141,9 +127,9 @@ class Character(models.Model):
     question = models.TextField(blank=True)
     hint = models.TextField(blank=True)
 
-    image = ImageWithThumbnailsField(upload_to='character-value-images',
-                                     blank=True,
-                                     null=True)  # the famous "DLD"
+    image = models.ImageField(upload_to='character-value-images',
+                              blank=True,
+                              null=True)  # the famous "DLD"
 
     class Meta:
         ordering = ['short_name']
@@ -201,9 +187,9 @@ class CharacterValue(models.Model):
 
     character = models.ForeignKey(Character, related_name='character_values')
     friendly_text = models.TextField(blank=True)
-    image = ImageWithThumbnailsField(upload_to='character-value-images',
-                                     blank=True,
-                                     null=True)  # the famous "DLD"
+    image = models.ImageField(upload_to='character-value-images',
+                              blank=True,
+                              null=True)  # the famous "DLD"
 
     class Meta:
         pass
@@ -386,9 +372,9 @@ class ContentImage(models.Model):
     any given (piece of content, image type) combination.
 
     """
-    image = ImageWithThumbnailsField('content image',
-                                     max_length=300,  # long filenames
-                                     upload_to='content_images')
+    image = models.ImageField('content image',
+                              max_length=300,  # long filenames
+                              upload_to='content_images')
     alt = models.CharField(max_length=300,
                            verbose_name=u'title (alt text)')
     rank = models.PositiveSmallIntegerField(
@@ -404,13 +390,13 @@ class ContentImage(models.Model):
     content_object = generic.GenericForeignKey('content_type', 'object_id')
 
     def thumb_small(self):
-        return get_thumbnail(self.image, '160x149', crop='center')
+        return add_suffix_to_base_directory(self.image, '160x149')
 
     def thumb_large(self):
-        return get_thumbnail(self.image, '239x239', crop='center')
+        return add_suffix_to_base_directory(self.image, '239x239')
 
     def image_medium(self):
-        return get_thumbnail(self.image, '1000x1000')
+        return add_suffix_to_base_directory(self.image, '1000s1000')
 
     def clean(self):
         """Some extra validation checks"""

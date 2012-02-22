@@ -38,10 +38,10 @@
                                     {% for pile_image in pile_images %}
                                         {% with pile_image.content_image as i %}
                                             {% with i.creator as photographer %}
-                                            <a href="{{ i.image_medium.url }}"
+                                            <a href="{{ i.image_medium }}"
                                                 rel="shadowbox[{{ pilegroup.slug }}]"
                                                 title="{% photo_title_credit i.image_type i.content_object.scientific_name photographer %}">
-                                                <img src="{{ i.thumb_large.url }}"
+                                                <img src="{{ i.thumb_large }}"
                                                     alt="{% photo_title_credit i.image_type i.content_object.scientific_name photographer %}">
                                             </a>
                                             {% endwith %}

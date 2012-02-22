@@ -280,17 +280,6 @@ def rebuild_plant_of_the_day(include_plants='SIMPLEKEY'):   # or 'ALL'
                     potd.save()
 
 
-def rebuild_thumbnails():
-    # Rebuild content-image thumbnails.
-    cis = models.ContentImage.objects.all()
-    for i, ci in enumerate(cis):
-        j = i + 1
-        print '\r%20d/%d  %6.2f%%' % (j, len(cis), 100.0 * j / len(cis)),
-        ci.thumb_small()
-        ci.thumb_large()
-        ci.image_medium()
-
-
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print >>sys.stderr, "Usage: rebuild THING {args}"

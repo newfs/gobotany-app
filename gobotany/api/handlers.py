@@ -14,19 +14,13 @@ from .views import _jsonify_character
 
 def _taxon_image(image):
     if image:
-        thumb_small = image.thumb_small()
-        thumb_large = image.thumb_large()
         return {'url': image.image.url,
                 'type': image.image_type.name,
                 'rank': image.rank,
                 'title': image.alt,
                 'description': image.description,
-                'thumb_url': thumb_small.url,
-                'thumb_width': thumb_small.width,
-                'thumb_height': thumb_small.height,
-                'large_thumb_url': thumb_large.url,
-                'large_thumb_width': thumb_large.width,
-                'large_thumb_height': thumb_large.height,
+                'thumb_url': image.thumb_small(),
+                'large_thumb_url': image.thumb_large(),
                 }
     return ''
 

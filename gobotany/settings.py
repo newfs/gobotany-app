@@ -1,6 +1,5 @@
 import urlparse
 import os
-import socket
 import sys
 import traceback
 
@@ -110,7 +109,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'haystack',
-    'sorl.thumbnail',
     'tinymce',
     ]
 MIDDLEWARE_CLASSES = (
@@ -128,13 +126,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
         "django.core.context_processors.media",
         "django.core.context_processors.static",
         "gobotany.core.context_processors.dojo",
-)
-THUMBNAIL_PROCESSORS = (
-    # Default processors
-    'sorl.thumbnail.processors.colorspace',
-    #'sorl.thumbnail.processors.autocrop',
-    'sorl.thumbnail.processors.scale_and_crop',
-    'sorl.thumbnail.processors.filters',
 )
 
 APPEND_SLASH = False
