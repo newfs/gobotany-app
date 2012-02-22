@@ -814,11 +814,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.scroll_pane_api.reinitialise();
     },
 
-    clear_filters: function() {
-        dojo.query('#sidebar ul.option-list').empty();
-        this.save_filter_state();
-    },
-
     display_filters: function(filters, pos) {
         var added = dojo.NodeList();
         var i;
