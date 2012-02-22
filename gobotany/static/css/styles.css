@@ -312,9 +312,12 @@ div#potd {
 	-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
 	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
 }
-#potd img {
+#potd > a {
 	float: left;
 	margin: 0 15px 0 0;
+	width: 270px;
+	height: 131px;
+	overflow: hidden;
 }
 #potd .details {
     margin: 0 0 0 285px;
