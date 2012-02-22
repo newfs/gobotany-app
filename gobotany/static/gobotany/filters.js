@@ -264,16 +264,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         }
         return false;
     },
-    remove_filter: function(short_name) {
-        var x = 0;
-        for (x = 0; x < this.filters.length; x++) {
-            if (this.filters[x].character_short_name === short_name) {
-                var filter = this.filters[x];
-                this.filters.splice(x, 1);
-                return;
-            }
-        }
-    },
     add_filter: function(args) {
         var f = new gobotany.filters.Filter(args);
         this.filters.push(f);
@@ -310,16 +300,6 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         // In case this is the way we first find out about a filter,
         // make sure that its vectors are loaded.
         filter.load_values();
-    },
-    get_selected_value: function(character_short_name) {
-        var i = 0;
-        for (i = 0; i < this.filters.length; i++) {
-            if (this.filters[i].character_short_name ===
-                character_short_name) {
-                return this.filters[i].selected_value;
-            }
-        }
-        return undefined;
     },
 
     as_query_string: function() {

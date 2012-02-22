@@ -852,11 +852,9 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     },
 
     clear_filter: function(filter) {
-        if (this.results_helper.filter_manager.get_selected_value(
-            filter.character_short_name)) {
-
+        if (filter.selected_value) {
             this.results_helper.filter_manager.set_selected_value(
-                filter.character_short_name, undefined);
+                filter.short_name, undefined);
         }
 
         if (this.working_area !== null) {
