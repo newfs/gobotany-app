@@ -33,12 +33,8 @@ dojo.declare('gobotany.filters.Filter', null, {
         this.question = args.question;
     },
     // load_values()
-    // Does an async load of the filter's species id list, and returns a
-    // Deferred that will be resolved once the id list arrives.  The
-    // vector is stored so the second and subsequent invocations can
-    // invoke the callback immediately.  Values that have no species in
-    // common with the given base_vector are not stored, since they do
-    // not apply to this key and pile.
+    // Kicks off a fetch of the filter's vectors (if a fetch has not been
+    // started already), and returns a Deferred supplying their values.
     load_values: function() {
 
         if (this.values !== false)
@@ -49,15 +45,19 @@ dojo.declare('gobotany.filters.Filter', null, {
                 key_name: 'simple', pile_slug: this.pile_slug
             }),
             simplekey_resources.character_vector(this.short_name)
-        ).done(_.bind(function(base_vector, data) {
+        ).done(_.bind(function(base_vector, values) {
 
             this.values = [];
             this.choicemap = {};
 
             var knowns = [];  // species with any value whatsoever, even NA
-            for (var i = 0; i < data.length; i++) {
-                var value = data[i];
-                var knowns = _.uniq(knowns.concat(value.species));
+            for (var i = 0; i < values.length; i++) {
+                var value = values[i];
+                value.taxa = _.intersect(value.taxa, base_vector);
+                if (!value.taxa)
+                    continue;  // value does not apply to this pile
+
+                var knowns = _.uniq(knowns.concat(value.taxa));
                 this.values.push(value);
 
                 if (value.choice !== null)
@@ -71,14 +71,12 @@ dojo.declare('gobotany.filters.Filter', null, {
                     if (this.max === null || value.max > this.max)
                         this.max = value.max;
             }
-            this.unknowns = _.without.apply(
-                0, [base_vector].concat(knowns));
-            console.log(this.character_short_name, ' has ', this.values.length,
-                        ' values which mention ', knowns.length,
-                        ' species, leaving ', this.unknowns.length,
-                        ' unknowns');
 
-            this.cull_values(base_vector);
+            // Report on whether every species in this pile has a value
+            // for this filter, or whether some are unknown.
+            this.unknowns = _.without.apply(0, [base_vector].concat(knowns));
+            console.log(this.character_short_name, '- covers', knowns.length,
+                        '/', base_vector.length, 'taxa');
 
             this.loaded.resolve(this);
         }, this));
@@ -92,18 +90,10 @@ dojo.declare('gobotany.filters.Filter', null, {
     safe_choices: function(vector) {
         var result = [];
         for (var choice in this.choicemap)
-            if (_.intersect(vector, this.choicemap[choice].species).length > 0)
+            if (_.intersect(vector, this.choicemap[choice].taxa).length > 0)
                 result.push(choice);
         result.sort();
         return result;
-    },
-    // Remove values that have absolutely no species in common with our
-    // FilterManager's base_vector, so that pile-irrelevant character
-    // values do not get displayed when a filter is pulled up.
-    cull_values: function(base_vector) {
-        for (var i = this.values.length - 1; i >= 0; i--)
-            if (_.intersect(base_vector, this.values[i].species).length === 0)
-                this.values.splice(i, 1);
     },
     // Return true if the name of this filter appears to name a length
     // value (as opposed to something like a count).
@@ -118,7 +108,7 @@ dojo.declare('gobotany.filters.Filter', null, {
     species_matching: function(value) {
         if (this.value_type === 'TEXT') {
             // Looking up a multiple-choice filter is a single step.
-            return this.choicemap[value].species;
+            return this.choicemap[value].taxa;
         } else if (this.value_type === 'LENGTH') {
             // A number has to be checked against each species' range.
             var vector = [];
@@ -129,12 +119,12 @@ dojo.declare('gobotany.filters.Filter', null, {
                 if (vi.min === 0 && vi.max === 0)  // length way of saying "NA"
                     continue;
                 if (value >= vi.min && value <= vi.max)
-                    vector = vector.concat(vi.species);
+                    vector = vector.concat(vi.taxa);
             }
             vector.sort();
             return vector;
         } else
-            console.error('Error: unknown value_type', this.value_type);
+            console.log('Error: unknown value_type', this.value_type);
     },
     // For a numeric filter, figure out which ranges of values are legal
     // given a possible set of species as a species ID array.  Returns a
@@ -153,7 +143,7 @@ dojo.declare('gobotany.filters.Filter', null, {
             if (vmin === 0 && vmax === 0)
                 continue;  // ignore "NA" values
 
-            if (_.intersect(vector, value.species).length == 0)
+            if (_.intersect(vector, value.taxa).length == 0)
                 continue;  // ignore values that apply to none of these species
 
             // First we skip any ranges lying entirely to the left of this one.
@@ -255,12 +245,12 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         for (var i = 0; i < species_list.length; i++) {
             var family = species_list[i].family;
             if (!f.choicemap[family])
-                f.choicemap[family] = {species: []};
-            f.choicemap[family].species.push(species_list[i].id);
+                f.choicemap[family] = {taxa: []};
+            f.choicemap[family].taxa.push(species_list[i].id);
             var genus = species_list[i].genus;
             if (!g.choicemap[genus])
-                g.choicemap[genus] = {species: []};
-            g.choicemap[genus].species.push(species_list[i].id);
+                g.choicemap[genus] = {taxa: []};
+            g.choicemap[genus].taxa.push(species_list[i].id);
         }
         this.filters.push(f);
         this.filters.push(g);
@@ -286,13 +276,10 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     },
 
     get_filter: function(short_name) {
-        var x = 0;
-        for (x = 0; x < this.filters.length; x++) {
-            if (this.filters[x].character_short_name === short_name) {
-                return this.filters[x];
-            }
-        }
-        return false;
+        for (var i = 0; i < this.filters.length; i++)
+            if (this.filters[i].short_name === short_name)
+                return this.filters[i];
+        console.log('Error: get_filter() unknown filter', short_name);
     },
     has_filter: function(short_name) {
         var x = 0;
@@ -320,39 +307,35 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     },
     // Always call set_selected_value() with a selected_value of null, a
     // string, or a number.
-    set_selected_value: function(character_short_name, selected_value) {
-        console.log('SET', character_short_name, selected_value);
+    set_selected_value: function(short_name, selected_value) {
+        console.log('SET', short_name, selected_value);
+
         if (selected_value === undefined || selected_value === '')
             selected_value = null;
 
-        for (i = 0; i < this.filters.length; i++) {
-            var filter = this.filters[i];
-            if (filter.character_short_name === character_short_name) {
-                // Character values must be stringified, since their
-                // .length is checked before allowing them to become
-                // part of our query URL.
-                if (selected_value !== null) {
-                    selected_value = String(selected_value);
-                }
-                // Ignore multiple choice values which are not valid.
-                if (selected_value !== null &&
-                    filter.value_type == 'TEXT' &&
-                    filter.choicemap[selected_value] === undefined) {
-                    console.log('Error: the filter', filter.short_name,
-                                'cannot take the value', selected_value);
-                    return;
-                }
-                // Set the value.
-                this.filters[i].selected_value = selected_value;
-                if (character_short_name == 'family' ||
-                    character_short_name == 'genus')
-                    return;
-                this.filters[i].load_values();
-                return;
-            }
+        var filter = this.get_filter(short_name);
+
+        // Character values must be stringified, since their .length is
+        // checked before allowing them to become part of our query URL.
+        if (selected_value !== null)
+            selected_value = String(selected_value);
+
+        // Ignore multiple choice values which are not valid.
+        if (selected_value !== null &&
+            filter.value_type == 'TEXT' &&
+            filter.choicemap[selected_value] === undefined) {
+            console.log('Error: the filter', filter.short_name,
+                        'cannot take the value', selected_value);
+            return;
         }
-        console.log('FilterManager cannot set a value for unknown filter',
-                    character_short_name);
+        // Set the value.
+        filter.selected_value = selected_value;
+        if (short_name == 'family' || short_name == 'genus')
+            return;
+
+        // In case this is the way we first find out about a filter,
+        // make sure that its vectors are loaded.
+        filter.load_values();
     },
     get_selected_value: function(character_short_name) {
         var i = 0;

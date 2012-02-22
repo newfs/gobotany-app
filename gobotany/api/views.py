@@ -263,7 +263,7 @@ def vectors_character(request, name):
         species[tcv.character_value_id].append(tcv.taxon_id)
     return jsonify([{
         'friendly_text': v.friendly_text,
-        'species': sorted(species[v.id]),
+        'taxa': sorted(species[v.id]),
         'choice': v.value_str,
         'scalar': v.value_flt,
         'min': v.value_min and v.value_min * mm,

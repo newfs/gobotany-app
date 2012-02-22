@@ -95,8 +95,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                         should_set_up_from_hash = true;
                     }
                 }
-                console.log('should_set_up_from_hash = ' +
-                    should_set_up_from_hash);
 
                 if (should_set_up_from_hash) {
                     this.setup_filters_from_hash({
@@ -216,8 +214,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         console.log('setting up from hash - ' + dojo.hash());
 
         var hash_object = dojo.queryToObject(dojo.hash());
-        console.log('hash_object:');
-        console.log(hash_object);
+        // console.log('hash_object:');
+        // console.log(hash_object);
 
         var filter_values = {};
         var filter_names = [];

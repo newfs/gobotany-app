@@ -245,7 +245,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
             this.filter.short_name);
         for (var i = 0; i < this.filter.values.length; i++) {
             var v = this.filter.values[i];
-            var vector = _.intersect(species_vector, v.species);
+            var vector = _.intersect(species_vector, v.taxa);
             var count_span_q = dojo.query('.count', this.div_map[v.choice]);
             count_span_q.html('(' + vector.length + ')');
             var input_field_q = dojo.query('input', this.div_map[v.choice]);
