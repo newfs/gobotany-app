@@ -17,7 +17,6 @@ dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.Select');
 
 dojo.declare('gobotany.sk.results.ResultsHelper', null, {
-    _loading_filter_count: 2, // assume at least the FilterManager + 1 filter
 
     constructor: function(/*String*/ pile_slug) {
         // summary:
@@ -28,8 +27,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         this.pile_slug = pile_slug;
 
         this.filter_manager = new gobotany.filters.FilterManager({
-            pile_slug: this.pile_slug,
-            onload: dojo.hitch(this, this.filter_loaded)
+            pile_slug: this.pile_slug
         });
 
         this.family_genus_selectors =
@@ -44,6 +42,12 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         this.filter_section =
             new gobotany.sk.results.FilterSectionHelper(this);
+
+        this.all_filters_loaded = $.Deferred();
+        $.when(
+            this.all_filters_loaded,
+            this.filter_section.load_complete
+        ).done($.proxy(this, 'finish_initialization'));
 
         dojo.subscribe('results_loaded',
             dojo.hitch(this, this.populate_image_types));
@@ -66,17 +70,13 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 // the filters are set up.
 
                 var filters_loaded = dojo.hitch(this, function(filters) {
-                    // Note that we increment _loading_filter_count,
-                    // because it might be non-zero if the page is still
-                    // doing its initial load.
-                    this._loading_filter_count += filters.length - 1;
-                    console.log('setup: increment _loading_filter_count' +
-                        ' to ' + this._loading_filter_count);
                     this._loaded_filters = filters;
-                    var filter_loaded = dojo.hitch(this, this.filter_loaded);
-                    for (i = 0; i < filters.length; i++) {
-                        filters[i].load_values().done(filter_loaded);
-                    }
+                    var deferreds = _.map(filters, function(filter) {
+                        return filter.load_values();
+                    });
+                    $.when.apply($, deferreds).done($.proxy(function() {
+                        this.all_filters_loaded.resolve();
+                    }, this));
                 });
 
                 // Set up the filters from URL hash values if the list of
@@ -129,24 +129,17 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     // Called each time a filter is finished loading; when the last
     // filter that we are currently waiting for finishes, we kick off
     // some page-update code.
-    filter_loaded: function(filter) {
-        this._loading_filter_count--;
-        console.log('filter_loaded: decrement _loading_filter_count to ' +
-                    this._loading_filter_count);
-        if (this._loading_filter_count > 0)
-            return;  // wait on last filter to be loaded
-
-        console.log('filter_loaded: all filters loaded.');
+    finish_initialization: function(filter) {
 
         // If there's a URL hash, make a call to set up filter values from it
         // again now that all the filters and values have finally loaded; this
         // time omit the onComplete callback.
         if (dojo.hash()) {
-            console.log('filter_loaded: about to set up filters from hash');
+            console.log('About to set up filters from hash');
             this.setup_filters_from_hash();
         }
 
-        console.log('filter_loaded: about to list filters, then run query');
+        console.log('About to list filters, then run query');
         this.filter_section.display_filters(this._loaded_filters);
         
         // Re-initialize the scroll pane now that its contents have changed.
@@ -157,7 +150,9 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         dojo.query('#sidebar .loading').addClass('hidden');
 
-        dojo.publish('/sk/filter/change', [filter]);
+        // Announce that all filters now have an initial value.
+        var non_family_genus_filters = this.filter_manager.filters.slice(2);
+        dojo.publish('/sk/filter/change', non_family_genus_filters, []);
 
         // Show a filter in the filter working area if necessary.
         var filter_name = this.filter_section.visible_filter_short_name;

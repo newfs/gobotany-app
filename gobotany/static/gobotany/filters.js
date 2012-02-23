@@ -23,7 +23,7 @@ dojo.declare('gobotany.filters.Filter', null, {
     max: null,
 
     constructor: function(args) {
-        this.loaded = $.Deferred();
+        this.finished_loading = $.Deferred();
 
         this.pile_slug = args.pile_slug;
         this.value_type = args.value_type;
@@ -38,7 +38,7 @@ dojo.declare('gobotany.filters.Filter', null, {
     load_values: function() {
 
         if (this.values !== false)
-            return this.loaded;
+            return this.finished_loading;
 
         $.when(
             simplekey_resources.base_vector({
@@ -46,7 +46,7 @@ dojo.declare('gobotany.filters.Filter', null, {
             }),
             simplekey_resources.character_vector(this.short_name)
         ).done(_.bind(this.install_values, this));
-        return this.loaded;
+        return this.finished_loading;
     },
 
     /* Install the given array of values as the choices offered by this
@@ -83,7 +83,7 @@ dojo.declare('gobotany.filters.Filter', null, {
         console.log(this.character_short_name, '- covers', knowns.length,
                     '/', base_vector.length, 'taxa');
 
-        this.loaded.resolve(this);
+        this.finished_loading.resolve(this);
     },
 
     // Return true if the name of this filter appears to name a length
@@ -178,19 +178,19 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         this.species_by_id = {};  // species_id -> species_obj
         this.species_by_scientific_name = {}; // scientific_name -> species_obj
         this.species_ids = [];
-        this.onload = args.onload;
+        this.load_complete = $.Deferred();
 
         dojo.subscribe('/sk/filter/change', this, 'perform_query');
 
-        this.load_stuff();
+        this.start_loading();
     },
 
     // When a FilterManager is first created, it preloads the list of
     // species applicable to its key and pile and then fetches the data
     // for those species.  This is performed in stages.
 
-    load_stuff: function() {
-        var stuff_is_built = $.Deferred();
+    start_loading: function() {
+        var taxa_sorted_out = $.Deferred();
         var fetch_pile_species = simplekey_resources.pile_species(
             this.pile_slug);
         var fetch_base_vector = simplekey_resources.base_vector({
@@ -205,19 +205,16 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             species_list.sort(function(a, b) {
                 return a.scientific_name < b.scientific_name ? -1 : 1;
             });
-            stuff_is_built.resolve();
+            taxa_sorted_out.resolve(species_list);
         }, this));
 
         $.when(
-            fetch_base_vector, fetch_pile_species
-        ).done(_.bind(this.build_family_genus_filters, this));
-
-        $.when(
-            fetch_base_vector, stuff_is_built
-        ).done(_.bind(function(base_vector, nothing) {
+            fetch_base_vector, taxa_sorted_out
+        ).done(_.bind(function(base_vector, taxa_objects) {
             this.base_vector = base_vector;
+            this.build_family_genus_filters(base_vector, taxa_objects);
             console.log('base_vector has', base_vector.length, 'species');
-            if (this.onload !== undefined) this.onload(this);
+            this.load_complete.resolve();
         }, this));
     },
 
