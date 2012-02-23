@@ -989,7 +989,7 @@ class Importer(object):
             dirpath = 'taxon-images/' + dirname
             nothings, filenames = default_storage.listdir(dirpath)
 
-            for filename in filenames:
+            for filename in sorted(filenames):
                 image_path = dirpath + '/' + filename
                 print image_path
                 # print >> self.logfile, 'INFO: current image, ', filename
@@ -1024,7 +1024,6 @@ class Importer(object):
 
                 _type = pieces[type_field]
                 photographer = pieces[type_field + 1]
-                rank = None  # Filenames no longer contain 'rank' data
 
                 scientific_name = ' '.join((genus, species)).capitalize()
 
@@ -1063,23 +1062,9 @@ class Importer(object):
                 image_type, created = models.ImageType.objects \
                     .get_or_create(name=taxon_image_types[key])
 
-                # If no rank was supplied, arbitrarily promote the first
-                # such image to Rank 1 for its species and type.
+                # Arbitrarily promote the first image for each
+                # species-type to Rank 1.
 
-                if rank is None:
-                    already_1 = ContentImage_objects.filter(
-                        rank=1,
-                        image_type=image_type,
-                        content_type=content_type,
-                        object_id=taxon.pk,
-                        )
-                    if already_1:
-                        rank = 2
-                    else:
-                        rank = 1
-
-                # if we have already imported this image, update the
-                # image just in case
                 content_image, created = ContentImage_objects.get_or_create(
                     # If we were simply creating the object we could set
                     # content_object, but in case Django does a "get" we
@@ -1089,23 +1074,28 @@ class Importer(object):
                     # Use filename to know if this is the "same" image.
                     image=image_path,
                     defaults=dict(
-                        # Integrity errors are triggered without setting
-                        # these immediately during a create:
-                        rank=rank,
+                        # Integrity errors are triggered unless we set
+                        # these during the create:
+                        rank=2,
                         image_type=image_type,
                         )
                     )
-                content_image.creator = photographer
-                content_image.alt = '%s: %s %s' % (
-                    taxon.scientific_name, image_type.name, rank)
 
                 if created:
-                    content_image.save()
-                else:
-                    # Update values otherwise set in defaults={} on create.
-                    content_image.rank = rank
-                    content_image.image_type = image_type
-                    content_image.save()
+                    already_1 = ContentImage_objects.filter(
+                        rank=1,
+                        image_type=image_type,
+                        content_type=content_type,
+                        object_id=taxon.pk,
+                        )
+                    if not already_1:
+                        content_image.rank = 1
+
+                content_image.image_type = image_type
+                content_image.creator = photographer
+                content_image.alt = '%s: %s %s' % (
+                    taxon.scientific_name, image_type.name, content_image.rank)
+                content_image.save()
 
                 count += 1
 
