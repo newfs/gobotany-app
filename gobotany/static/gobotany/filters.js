@@ -169,7 +169,6 @@ dojo.declare('gobotany.filters.Filter', null, {
 dojo.declare('gobotany.filters.FilterManager', null, {
 
     constructor: function(args) {
-        this.entries = [];
         this.filters = [
             gobotany.filters.Filter({short_name: 'family', value_type: 'TEXT'}),
             gobotany.filters.Filter({short_name: 'genus', value_type: 'TEXT'})
@@ -239,11 +238,8 @@ dojo.declare('gobotany.filters.FilterManager', null, {
         this.get_filter('genus').install_values(base_vector, genera);
     },
 
-    // get_species({scientific_name: s, onload: function})
-    // Return the information about a particular species.
-
-    get_species: function(args) {
-        args.onload(this.species_by_scientific_name[args.scientific_name]);
+    get_taxon: function(scientific_name) {
+        return this.species_by_scientific_name[scientific_name];
     },
     get_filter: function(short_name) {
         for (var i = 0; i < this.filters.length; i++)

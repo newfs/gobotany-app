@@ -338,47 +338,35 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
     load_selected_image_type: function(event) {
         var image_type = dijit.byId('image-type-selector').value;
-        var images = dojo.query('.plant-list img');
+        var image_tags = dojo.query('.plant-list img');
         // Replace the image for each plant on the page
         var i;
-        for (i = 0; i < images.length; i++) {
-            var image = images[i];
-            // Fetch the species for the current image
-            this.filter_manager.get_species({
-                scientific_name: dojo.attr(image, 'x-plant-id'),
-                onload: function(item) {
-                    // Search for an image of the correct type
-                    var new_image;
-                    var j;
-                    for (j = 0; j < item.images.length; j++) {
-                        if (item.images[j].type === image_type) {
-                            new_image = item.images[j];
-                            break;
-                        }
-                    }
-                    if (new_image) {
-                        // Set the image URL in a temporary attribute
-                        // that will be changed to the valid attribute
-                        // when the image is scrolled into view.
-                        dojo.attr(image, 'x-tmp-src', new_image.thumb_url);
+        for (i = 0; i < image_tags.length; i++) {
+            var image_tag = image_tags[i];
 
-                        dojo.attr(image, 'alt', new_image.title);
-                        // Hide the empty box if it exists and make
-                        // sure the image is visible.
-                        dojo.query('+ div.missing-mage', image).orphan();
-                        dojo.style(image, 'display', 'inline');
-                    }
-                    else if (dojo.style(image, 'display') !== 'none') {
-                        // If there's no matching image display the
-                        // empty box and hide the image
-                        dojo.style(image, 'display', 'none');
-                        dojo.create('div', {
-                            'class': 'missing-image',
-                            'innerHTML': '<p>Image not available yet</p>'
-                        }, image, 'after');
-                    }
-                }
-            });
+            // See if the taxon has an image for the new image type.
+            var scientific_name = dojo.attr(image_tag, 'x-plant-id');
+            taxon = this.filter_manager.get_taxon(scientific_name);
+            var new_image = _.find(taxon.images, function(image) {
+                return image.type === image_type});
+
+            if (new_image) {
+                dojo.attr(image_tag, 'x-tmp-src', new_image.thumb_url);
+                dojo.attr(image_tag, 'alt', new_image.title);
+                // Hide the empty box if it exists and make
+                // sure the image is visible.
+                dojo.query('+ div.missing-image', image_tag).orphan();
+                dojo.style(image_tag, 'display', 'inline');
+
+            } else if (dojo.style(image_tag, 'display') !== 'none') {
+                // If there's no matching image display the
+                // empty box and hide the image
+                dojo.style(image_tag, 'display', 'none');
+                dojo.create('div', {
+                    'class': 'missing-image',
+                    'innerHTML': '<p>Image not available yet</p>'
+                }, image_tag, 'after');
+            }
         }
         this.species_section.lazy_load_images();
         this.save_filter_state();
