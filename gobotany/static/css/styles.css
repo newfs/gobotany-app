@@ -2544,3 +2544,32 @@ nav #search-suggest .menu a:hover, #search-suggest .menu li:hover {
 }
 /* TODO: once _old_base template is gone (after About page is styled),
    combine nav #search-suggest and #search-suggest items above, etc. */
+
+
+/* Note for IE 6-9 about Chrome Frame plug-in or other browsers */
+
+#ie-note {
+    background: #000;
+    color: #fff;
+    font-size: 120%;
+    padding: 1em 0;
+    text-align: center;
+    width: 100%;
+}
+#ie-note p {
+    position: relative;
+    z-index: 2;
+}
+#ie-note a {
+    color: #fff;
+    text-decoration: underline;
+}
+#ie-note img {
+    clip: rect(0px,255px,94px,0px);
+    overflow: hidden;
+    position: absolute;
+    top: -20px;
+    z-index: 1;
+    opacity: 0.5;
+    filter:alpha(opacity=50); /* For IE8 and earlier */
+}

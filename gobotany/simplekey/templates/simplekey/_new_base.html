@@ -23,8 +23,8 @@
         <link rel="stylesheet"
             href="/static/css/jquery.jscrollpane.css">
         <link rel="stylesheet" href="/static/css/smoothDivScroll.css">
-        {# TODO: If we do decide to use Chrome Frame, remove these #}
-        {# conditional styles and their code.                      #}
+        {# These IE styles will only apply if the user views the site #}
+        {# in IE without the required Chrome Frame plug-in.           #}
         <!--[if IE 7]>
             <link rel="stylesheet" href="/static/css/ie7.css">
         <![endif]-->
@@ -44,9 +44,8 @@
             src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
         <![endif]-->
 
-        {# TODO: If we do decide to use Chrome Frame, remove this #}
-        {# conditional script and its code.                       #}
-        {# HTML5 fix for IE 8 and below #}
+        {# This HTML5 fix for IE 6-8 will only apply if the user views #}
+        {# the site in IE without the required Chrome Frame plug-in.   #}
         <!--[if lt IE 9]>
         <script
             src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -66,6 +65,21 @@
 
         {# Prompt to install Chrome Frame on IE 9 and below if needed #}
         <!--[if lt IE 10]>
+        <div id="ie-note">
+            <p><strong>Important:</strong> This site requires the free
+                <a href="http://code.google.com/chrome/chromeframe/">Google 
+                Chrome Frame plug-in</a> on Internet Explorer versions 6
+                through 9.</p>
+            <p>Or, you can use another browser, such as
+                <a
+                href="http://support.google.com/chrome/bin/answer.py?hl=en&amp;answer=95346">Chrome</a>,
+                <a
+                href="http://www.mozilla.org/en-US/firefox/">Firefox</a>,
+                or <a href="http://www.apple.com/safari/">Safari</a> 
+                (all free).</p>
+                <img src="/static/images/branding/logo-toplevel.png"
+                alt="">
+        </div>
         <script>
             CFInstall.check({
                 mode: "overlay"
