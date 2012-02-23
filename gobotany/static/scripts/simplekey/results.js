@@ -1,4 +1,4 @@
- define([
+define([
     'args'
 ], function(args) {
 
@@ -9,15 +9,18 @@
 
     require([
         'dojo',
-        'order!jquery.tools.min',  // needed by jscrollpane
-        'order!jquery.jscrollpane.min',  // sk/results.js
+        'jquery.tools.min',  // needed by jscrollpane
         'underscore-min',  // filters.js, etc
         'sidebar',
         'simplekey/resources'  // now used in filters.js
     ], function() {
-        dojo.require('gobotany.sk.results');
-        dojo.addOnLoad(function() {
-            helper = gobotany.sk.results.ResultsHelper(args.pile_slug);
+        require([
+            'jquery.jscrollpane.min'  // sk/results.js
+        ], function() {
+            dojo.require('gobotany.sk.results');
+            dojo.addOnLoad(function() {
+                helper = gobotany.sk.results.ResultsHelper(args.pile_slug);
+            });
         });
     });
 
