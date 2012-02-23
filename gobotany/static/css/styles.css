@@ -2551,8 +2551,8 @@ nav #search-suggest .menu a:hover, #search-suggest .menu li:hover {
 #ie-note {
     background: #000;
     color: #fff;
-    font-size: 120%;
-    padding: 1em 0;
+    font-size: 14px;
+    padding: 16px 0;
     text-align: center;
     width: 100%;
 }
@@ -2565,10 +2565,10 @@ nav #search-suggest .menu a:hover, #search-suggest .menu li:hover {
     text-decoration: underline;
 }
 #ie-note img {
-    clip: rect(0px,255px,94px,0px);
+    clip: rect(0px,255px,104px,0px);
     overflow: hidden;
     position: absolute;
-    top: -20px;
+    top: -24px;
     z-index: 1;
     opacity: 0.5;
     filter:alpha(opacity=50); /* For IE8 and earlier */
