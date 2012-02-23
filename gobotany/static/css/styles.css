@@ -238,7 +238,7 @@ body#home #top-wrapper {
 #banner a#cta {
 	display: block;
 	height: 41px;
-	margin: 21px auto 0;
+	margin: 21px 2px 0;
 	background: url(/static/images/layout/get-started-btn-orange.png) 0 0 no-repeat transparent;	
 	text-indent: -9000px;
 }
