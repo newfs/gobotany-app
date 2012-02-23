@@ -498,6 +498,11 @@ class SimpleKeyPagesSearchSuggestionsTestCase(TestCase):
 class FormatCharacterValueTestCase(TestCase):
     """Tests for character value display formatting."""
 
+    def _assert_unicode_equal(self, expected_value, actual_value):
+        # Use repr() to avoid the error "unprintable AssertionError object"
+        # when the values are not equal.
+        self.assertEqual(repr(expected_value), repr(actual_value))
+
     def test_character_value_displays_numeric_range(self):
         character = Character(short_name='leaf_blade_length_ap',
                               name='Leaf blade length',
@@ -513,7 +518,21 @@ class FormatCharacterValueTestCase(TestCase):
 
         expected_value = u'200\u20132500 cm'
         actual_value = _format_character_value(character_value)
+        self._assert_unicode_equal(expected_value, actual_value)
 
-        # Use repr() to avoid the error "unprintable AssertionError object"
-        # when the values are not equal.
-        self.assertEqual(repr(expected_value), repr(actual_value))
+    def test_character_value_collapses_range_when_min_equals_max(self):
+        character = Character(short_name='sepal_number_ap',
+                              name='Sepal number',
+                              friendly_name='Sepal number',
+                              character_group_id=0,
+                              value_type='LENGTH',
+                              unit='NA')
+        character.save()
+        character_value = CharacterValue(character=character,
+                                         value_min=2.0,
+                                         value_max=2.0)
+        character_value.save()
+
+        expected_value = u'2'
+        actual_value = _format_character_value(character_value)
+        self._assert_unicode_equal(expected_value, actual_value)

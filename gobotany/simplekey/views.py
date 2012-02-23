@@ -194,13 +194,19 @@ def _format_character_value(character_value):
                           else NUM_FORMAT % character_value.value_min)
                 maxstr = ('Anything' if character_value.value_max is None
                           else NUM_FORMAT % character_value.value_max)
-                return u'%s–%s %s' % (minstr, maxstr, character.unit)
+                if minstr == maxstr:
+                    return u'%s %s' % (minstr, character.unit)
+                else:
+                    return u'%s–%s %s' % (minstr, maxstr, character.unit)
             else:
                 minstr = ('?' if character_value.value_min is None
                           else NUM_FORMAT % character_value.value_min)
                 maxstr = ('?' if character_value.value_max is None
                           else NUM_FORMAT % character_value.value_max)
-                return u'%s–%s' % (minstr, maxstr)
+                if minstr == maxstr:
+                    return u'%s' % (minstr)
+                else:
+                    return u'%s–%s' % (minstr, maxstr)
     else:
         return ''
 
