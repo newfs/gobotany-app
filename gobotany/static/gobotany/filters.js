@@ -167,10 +167,6 @@ dojo.declare('gobotany.filters.Filter', null, {
 // as needed.
 //
 dojo.declare('gobotany.filters.FilterManager', null, {
-    pile_slug: '',
-    filters: null,
-    species_count: 0,
-    fetch_counter: 0,  // to assure that most recent request "wins"
 
     constructor: function(args) {
         this.entries = [];
@@ -350,22 +346,13 @@ dojo.declare('gobotany.filters.FilterManager', null, {
     // attributes to reflect the result.
     perform_query: function() {
         console.log('FilterManager: running filtered query');
-        vector = this.compute_query();
 
-        // Update our state with this final result.
-
-        this.species_ids = vector;
-        this.species_count = vector.length;
-
-        var species_list = [];
-        for (var i = 0; i < vector.length; i++)
-            species_list.push(this.species_by_id[vector[i]]);
-
-        // Sort and announce the result.
-
-        species_list.sort(function(a, b) {
+        var ids = this.species_ids = this.compute_query();
+        var taxa_by_id = this.species_by_id;
+        var taxa = _.map(ids, function(id) {return taxa_by_id[id]});
+        taxa.sort(function(a, b) {
             return a.scientific_name < b.scientific_name ? -1 : 1;
         });
-        dojo.publish('/filters/query-result', [{species_list: species_list}]);
+        dojo.publish('/filters/query-result', [{species_list: taxa}]);
     }
 });
