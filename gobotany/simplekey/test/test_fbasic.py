@@ -1415,13 +1415,11 @@ class CharacterValueImagesFunctionalTests(FunctionalTestCase):
             'perigynia_indument_ca',   # Q: "Fruit texture?"
             ['carex-perigynium-hairy', 'carex-perigynium-smooth'])
 
-    # TODO: Add a test for Poaceae once the images are keyed to the
-    # database. As of 7 Feb 2012, this has not been done yet.
-    #def test_poaceae_character_value_images_exist(self):
-    #    self._character_value_images_exist(
-    #        '/graminoids/poaceae',
-    #        'TODO',   # Q: "TODO?"
-    #        ['TODO', 'TODO'])
+    def test_poaceae_character_value_images_exist(self):
+        self._character_value_images_exist(
+            '/graminoids/poaceae',
+            'inflorescence_branches_general_po',# Q: "Inflorescence branches?"
+            ['inflo-branch-present-po', 'inflo-branch-no-po'])
 
     def test_remaining_graminoids_character_value_images_exist(self):
         self._character_value_images_exist(
