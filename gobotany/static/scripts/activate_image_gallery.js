@@ -4,13 +4,16 @@
  */
 
 require([
-    'order!jquery.tools.min',
-    'order!jquery.mousewheel.min',
+    'jquery.tools.min',
     'dojo_config',
     '/static/js/dojo/dojo.js',
     '/static/js/layers/sk.js',
     'sidebar'
 ], function() {
+
+  require([
+      'jquery.mousewheel.min'
+  ], function() {
 
     dojo.require('gobotany.sk.photo');
 
@@ -57,4 +60,5 @@ require([
         });
 
     });
+  });
 });
