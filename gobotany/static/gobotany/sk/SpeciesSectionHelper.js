@@ -9,7 +9,6 @@ dojo.require('gobotany.utils');
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
     plant_preview_characters: null,  // set by results.js during page load
-    default_filters: null,           // set by results.js during page load
 
     constructor: function(results_helper) {
         'use strict';

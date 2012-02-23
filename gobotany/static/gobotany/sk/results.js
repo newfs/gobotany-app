@@ -61,8 +61,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
                 this.species_section.plant_preview_characters =
                     pile_info.plant_preview_characters;
-                this.species_section.default_filters =
-                    pile_info.default_filters;
 
                 // Set up a callback function that will be called once
                 // the filters are set up.
