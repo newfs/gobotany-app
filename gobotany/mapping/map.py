@@ -1,10 +1,9 @@
+from os.path import abspath, dirname
 from django.core.exceptions import ObjectDoesNotExist
-
 from lxml import etree
-
 from gobotany.core import models
-from gobotany.settings import STATIC_ROOT
 
+GRAPHICS_ROOT = abspath(dirname(__file__) + '/../static/graphics')
 NAMESPACES = {'svg': 'http://www.w3.org/2000/svg'}
 
 class Path(object):
@@ -228,8 +227,7 @@ class NewEnglandPlantDistributionMap(PlantDistributionMap):
         # under the static directory. It is not to be confused with
         # versions in the "mapping" app's directory, which are used by
         # code that scans existing maps.
-        blank_map_path  = ''.join([STATIC_ROOT,
-            '/graphics/new-england-counties-scoured.svg'])
+        blank_map_path  = GRAPHICS_ROOT + '/new-england-counties-scoured.svg'
         super(NewEnglandPlantDistributionMap, self).__init__(blank_map_path)
 
 
@@ -249,8 +247,7 @@ class UnitedStatesPlantDistributionMap(PlantDistributionMap):
     PATH_NODES_XPATH = 'svg:g/svg:path'
 
     def __init__(self):
-        blank_map_path  = ''.join([STATIC_ROOT,
-                                  '/graphics/us-counties-scoured.svg'])
+        blank_map_path  = GRAPHICS_ROOT + '/us-counties-scoured.svg'
         super(UnitedStatesPlantDistributionMap, self).__init__(blank_map_path)
 
 
@@ -266,8 +263,7 @@ class NorthAmericanPlantDistributionMap(PlantDistributionMap):
     PATH_NODES_XPATH = 'svg:g/svg:path'
 
     def __init__(self):
-        blank_map_path = ''.join([STATIC_ROOT,
-                                 '/graphics/north-america-scoured.svg'])
+        blank_map_path = GRAPHICS_ROOT + '/north-america-scoured.svg'
         super(NorthAmericanPlantDistributionMap, self).__init__(
             blank_map_path)
 
