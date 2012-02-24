@@ -31,7 +31,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.show_photos_type = null;
 
         simplekey_resources.pile_species(this.results_helper.pile_slug).done(
-            dojo.hitch(this, 'create_plant_divs')
+            $.proxy(this, 'create_plant_divs')
         );
         dojo.subscribe('/filters/query-result', this, 'on_query_result');
 
@@ -495,6 +495,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             this.plant_data.push(species);
             this.plant_divs.push(plant);
         }
+        this.display_results();  // now that there are things to display
     },
 
     display_in_photos_view: function(items) {

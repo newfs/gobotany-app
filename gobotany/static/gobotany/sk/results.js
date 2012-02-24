@@ -46,7 +46,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         this.all_filters_loaded = $.Deferred();
         $.when(
             this.all_filters_loaded,
-            this.filter_section.load_complete
+            this.filter_manager.load_complete
         ).done($.proxy(this, 'finish_initialization'));
 
         dojo.subscribe('results_loaded',
@@ -126,9 +126,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         }
     },
 
-    // Called each time a filter is finished loading; when the last
-    // filter that we are currently waiting for finishes, we kick off
-    // some page-update code.
+    // Called when all filters are loaded and the species list has been
+    // received and processed by the filter manager.
     finish_initialization: function(filter) {
 
         // If there's a URL hash, make a call to set up filter values from it
@@ -150,9 +149,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         dojo.query('#sidebar .loading').addClass('hidden');
 
-        // Announce that all filters now have an initial value.
-        var non_family_genus_filters = this.filter_manager.filters.slice(2);
-        dojo.publish('/sk/filter/change', non_family_genus_filters, []);
+        this.filter_manager.perform_query();
 
         // Show a filter in the filter working area if necessary.
         var filter_name = this.filter_section.visible_filter_short_name;
