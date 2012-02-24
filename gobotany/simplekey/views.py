@@ -250,18 +250,22 @@ def _get_brief_characteristics(all_characteristics, pile, partner):
     """Get the short list of characteristics that help give a quick
     impression of the plant.
     """
-    plant_preview_character_names = [
-        ppc.character.friendly_name
+    plant_preview_characters = dict([
+        (ppc.character.friendly_name, ppc.order)
         for ppc in PlantPreviewCharacter.objects.filter(
             pile=pile, partner_site=partner)
-        ]
+        ])
 
-    brief_characteristics = []
-    for character_group in all_characteristics:
-        for character in character_group['characters']:
-            if character['name'] in plant_preview_character_names:
-                brief_characteristics.append(character)
-    return sorted(brief_characteristics, key=itemgetter('name'))
+    brief_characteristics = [
+        character 
+            for character_group in all_characteristics 
+                for character in character_group['characters']
+                    if character['name'] in plant_preview_characters
+        ]
+    # Sort by the 'order' field of PlantPreviewCharacter, which we
+    # stuffed in plant_preview_characters earlier
+    return sorted(brief_characteristics, 
+            key=lambda c: plant_preview_characters[c['name']])
 
 
 def species_view(request, genus_slug, specific_name_slug,
