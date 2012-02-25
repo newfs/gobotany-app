@@ -172,16 +172,16 @@ if 'MEMCACHE_SERVERS' in os.environ:
         'BACKEND': 'django_pylibmc.memcached.PyLibMCCache'
         }}
 
-# Enable S3 filestorage (which we use mostly [entirely?] for images) if
-# the user has set the right environment variables.
+# Normally we pull images in read-only mode from our NEWFS S3 bucket.
+# Environment variables can be set to provide real AWS keys for writing
+# images, or to point the application at an alternative bucket.
 
-if 'AWS_STORAGE_BUCKET_NAME' in os.environ:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-    AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
-    AWS_QUERYSTRING_AUTH = False
-    AWS_S3_SECURE_URLS = False
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'readonly')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'readonly')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'newfs')
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_SECURE_URLS = False
 
 # Enable gunicorn sub-command if gunicorn is available.
 
