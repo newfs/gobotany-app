@@ -27,19 +27,25 @@ def compute_character_entropies(pile, species_list):
                    .exclude(value_str='NA')
                    .exclude(value_min=0.0, value_max=0.0))
     taxon_character_values = TaxonCharacterValue.objects.filter(
-        taxon__in=species_list, character_value__in=cv_list)
+        taxon__in=species_list, character_value__in=cv_list).values_list(
+            'character_value_id', 'taxon_id').iterator()
 
     # Since Django's ORM will stupidly re-query the database if we ask
     # for the ".character_value" of one of these TaxonCharacterValue
     # objects, we put these character values in a dictionary by ID so
     # that we can get them more quickly ourselves.  We also go ahead and
-    # group them by character_id.
+    # group them by character_id, and also make a dictionary of
+    # character ids keyed by character-value ids.
 
     cv_by_id = {}
     cv_by_character_id = defaultdict(set)
+    char_ids_by_charval_id = {}
     for cv in cv_list:
-        cv_by_id[cv.id] = cv
-        cv_by_character_id[cv.character_id].add(cv)
+        cv_id = cv.id
+        cv_by_id[cv_id] = cv
+        char_id = cv.character_id
+        cv_by_character_id[char_id].add(cv)
+        char_ids_by_charval_id[cv_id] = char_id
 
     # To compute a character's entropy, we need to know two things:
     #
@@ -61,9 +67,10 @@ def compute_character_entropies(pile, species_list):
     character_species = defaultdict(set)
     cv_counts = defaultdict(int)
 
-    for tcv in taxon_character_values:
-        cv = cv_by_id[tcv.character_value_id]
-        character_species[cv.character_id].add(tcv.taxon_id)
+    for cv_id, taxon_id in taxon_character_values:
+        cv = cv_by_id[cv_id]
+        character_id = char_ids_by_charval_id[cv_id]
+        character_species[character_id].add(taxon_id)
         cv_counts[cv] += 1
 
     # Finally, we are ready to compute the entropies!  We tally up the
@@ -192,6 +199,7 @@ def get_weights():
             length_weight = parameter.value
     return coverage_weight, ease_weight, length_weight
 
+
 def rank_characters(pile, species_list):
     """Returns a list of (score, entropy, coverage, character), best first."""
     celist = compute_character_entropies(pile, species_list)
@@ -199,12 +207,18 @@ def rank_characters(pile, species_list):
 
     coverage_weight, ease_weight, length_weight = get_weights()
 
+    character_ids = [character_id for (character_id, entropy, coverage)
+                     in celist]
+    characters = dict((c.id, c) for c
+                      in Character.objects.filter(id__in=character_ids))
+
     for character_id, entropy, coverage in celist:
-        character = Character.objects.get(id=character_id)
-        if character.value_type not in (u'TEXT', u'LENGTH'):
+        character = characters[character_id]
+        char_value_type = character.value_type
+        if char_value_type not in (u'TEXT', u'LENGTH'):
             continue  # skip non-textual filters
         ease = character.ease_of_observability
-        score = compute_score(entropy, coverage, ease, character.value_type,
+        score = compute_score(entropy, coverage, ease, char_value_type,
                               coverage_weight, ease_weight, length_weight)
         result.append((score, entropy, coverage, character))
 
