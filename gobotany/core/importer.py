@@ -113,7 +113,7 @@ def get_default_filters_from_csv(pile_name, characters_csv):
         row = dict(zip(colnames, cols))
 
         if row['pile'].lower() == pile_name.lower():
-            if row['default_question'] != '':
+            if 'default_question' in row and row['default_question'] != '':
                 character_name = row['character']
                 order = row['default_question']
 
