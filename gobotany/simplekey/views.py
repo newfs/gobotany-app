@@ -211,7 +211,7 @@ def _format_character_value(character_value):
         return ''
 
 
-def _get_all_characteristics(taxon, character_groups, pile):
+def _get_characters(taxon, character_groups, pile, partner):
     """Get all characteristics for a plant, organized by character group."""
 
     pile_suffix_dict = dict((v.lower(), k.lower())
@@ -221,6 +221,13 @@ def _get_all_characteristics(taxon, character_groups, pile):
     # successfully be grouped.
     q = (CharacterValue.objects.filter(taxon_character_values__taxon=taxon)
                                .order_by('character'))
+
+    # Get the set of preview characteristics and sort order
+    plant_preview_characters = dict([
+        (ppc.character_id, ppc.order)
+        for ppc in PlantPreviewCharacter.objects.filter(
+            pile=pile, partner_site=partner)
+        ])
 
     # Screen out any character values that do not belong to this pile.
     pile_suffix = '_%s' % pile_suffix_dict[pile.name.lower()]
@@ -234,6 +241,8 @@ def _get_all_characteristics(taxon, character_groups, pile):
         'group': character.character_group.name,
         'name': character.friendly_name,
         'values': sorted(_format_character_value(cv) for cv in values),
+        'in_preview': character.id in plant_preview_characters,
+        'preview_order': plant_preview_characters.get(character.id, -1),
         } for character, values in cvgroups)
 
     # Group the characters by character-group.
@@ -244,28 +253,6 @@ def _get_all_characteristics(taxon, character_groups, pile):
         'characters': sorted(members, key=itemgetter('name')),
         } for name, members in cgroups)
     return sorted(groups, key=itemgetter('name'))
-
-
-def _get_brief_characteristics(all_characteristics, pile, partner):
-    """Get the short list of characteristics that help give a quick
-    impression of the plant.
-    """
-    plant_preview_characters = dict([
-        (ppc.character.friendly_name, ppc.order)
-        for ppc in PlantPreviewCharacter.objects.filter(
-            pile=pile, partner_site=partner)
-        ])
-
-    brief_characteristics = [
-        character 
-            for character_group in all_characteristics 
-                for character in character_group['characters']
-                    if character['name'] in plant_preview_characters
-        ]
-    # Sort by the 'order' field of PlantPreviewCharacter, which we
-    # stuffed in plant_preview_characters earlier
-    return sorted(brief_characteristics, 
-            key=lambda c: plant_preview_characters[c['name']])
 
 
 def species_view(request, genus_slug, specific_name_slug,
@@ -311,9 +298,13 @@ def species_view(request, genus_slug, specific_name_slug,
                     'character', flat=True).distinct()
     character_groups = CharacterGroup.objects.filter(
                        character__in=character_ids).distinct()
-
-    all_characteristics = _get_all_characteristics(taxon, character_groups,
-                                                   pile)
+    characters_by_group = _get_characters(taxon, character_groups, pile, partner)
+    preview_characters = sorted([
+        character 
+            for group in characters_by_group
+                for character in group['characters']
+                    if character['in_preview']
+        ], key=itemgetter('preview_order'))
 
     last_plant_id_url = request.COOKIES.get('last_plant_id_url', None)
     if last_plant_id_url:
@@ -332,9 +323,8 @@ def species_view(request, genus_slug, specific_name_slug,
                if partner_species else None,
            'habitats': habitats,
            'compact_multivalue_characters': COMPACT_MULTIVALUE_CHARACTERS,
-           'brief_characteristics': _get_brief_characteristics(
-                all_characteristics, pile, partner),
-           'all_characteristics': all_characteristics,
+           'brief_characteristics': preview_characters,
+           'all_characteristics': characters_by_group,
            'specific_epithet': specific_name_slug,
            'last_plant_id_url': last_plant_id_url,
            'in_simple_key': partner_species.simple_key,
