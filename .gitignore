@@ -1,0 +1,29 @@
+# Basic ignore patterns, probably covered by svn's global ignore
+*.pyc
+*.sw*
+
+# /
+/gobotany.egg-info
+
+# /gobotany/
+/gobotany/media/*
+
+# /gobotany/media/
+/gobotany/media/*
+
+# /gobotany/static/
+/gobotany/static/dijit
+/gobotany/static/dojo
+/gobotany/static/dojox
+/gobotany/static/util
+
+# /gobotany/static/js/
+/gobotany/static/js/dijit
+/gobotany/static/js/dojox
+/gobotany/static/js/dojo
+
+# /gobotany/static/js/layers/
+/gobotany/static/js/layers/*.uncompressed.js
+
+# /gobotany/static/js/layers/nls/
+/gobotany/static/js/layers/nls/*.js
