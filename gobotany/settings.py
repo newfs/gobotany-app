@@ -3,18 +3,11 @@ import os
 import sys
 
 try:
-    import gobotany
-except ImportError:
-    sys.path[0:0] = [ os.path.dirname(os.path.dirname(os.path.abspath(__file__))) ]
-    import gobotany
-
-THIS_DIRECTORY = os.path.dirname(gobotany.__file__)
-
-try:
     from postgis_paths import GDAL_LIBRARY_PATH, GEOS_LIBRARY_PATH
 except ImportError:
     pass
 
+THIS_DIRECTORY = os.path.dirname(__file__)
 gettext = lambda s: s
 
 if 'test' in sys.argv:
