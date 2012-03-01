@@ -1,7 +1,6 @@
 import urlparse
 import os
 import sys
-import traceback
 
 try:
     import gobotany
@@ -9,40 +8,12 @@ except ImportError:
     sys.path[0:0] = [ os.path.dirname(os.path.dirname(os.path.abspath(__file__))) ]
     import gobotany
 
-GOBOTANY_DIR = os.path.dirname(gobotany.__file__)
+THIS_DIRECTORY = os.path.dirname(gobotany.__file__)
 
 try:
     from postgis_paths import GDAL_LIBRARY_PATH, GEOS_LIBRARY_PATH
-except ImportError:  # since it does not exist under the Go Botany! buildout
+except ImportError:
     pass
-
-# Make sure that our current directory is a buildout (or at least the
-# "bin" directory inside of a buildout), so we can determine where our
-# MEDIA and STATIC directories live.
-
-buildout_dir = os.getcwd()
-if os.path.basename(buildout_dir) == 'bin':
-    buildout_dir = os.path.dirname(buildout_dir)
-ls = os.listdir(buildout_dir)
-if '.installed.cfg' not in ls:
-    # Maybe the path to django.wsgi is the bottom frame?
-    frames = traceback.extract_stack()
-    wsgi_script = frames[0][0]  # filename of the bottom stack frame
-    buildout_dir = os.path.dirname(os.path.dirname(wsgi_script))
-    ls = os.listdir(buildout_dir)
-if '.installed.cfg' not in ls:
-    print >>sys.stderr, (
-        '\n'
-        'Error: the "gobotany" project must be run from inside a buildout,\n'
-        'but your current working directory lacks an ".installed.cfg" file.\n'
-        )
-    sys.exit(1)
-
-# src/gobotany/media - tinymce
-# src/gobotany/static - gobotany/**.js, graphics, *.css, etc
-# 
-#
-# REMOVE src/gobotany/admin-media?
 
 gettext = lambda s: s
 
@@ -69,10 +40,13 @@ else:
 
 if 'HEROKU_SHARED_POSTGRESQL_BLACK_URL' in os.environ:
 
-    # For the sake of Heroku.
-
+    # Use the better database if it is available.
     os.environ['DATABASE_URL'] = os.environ[
         'HEROKU_SHARED_POSTGRESQL_BLACK_URL']
+
+running_on_heroku = bool('POST' in os.environ)
+
+if running_on_heroku:
 
     # For the sake of scripts running locally on a developer
     # workstation, but with a Heroku database URL provided.  This code
@@ -130,24 +104,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 APPEND_SLASH = False
 SMART_APPEND_SLASH = True
-
 ROOT_URLCONF = 'gobotany.urls'
 DEBUG = True
-
-MEDIA_ROOT = os.path.join(buildout_dir, 'var', 'gobotany-media')
-MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(buildout_dir, 'var', 'gobotany-static')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [('', os.path.join(GOBOTANY_DIR, 'static'))]
-ADMIN_MEDIA_ROOT = os.path.join(buildout_dir, 'var', 'admin')
-ADMIN_MEDIA_PREFIX = '/static/admin/'
-THUMBNAIL_BASEDIR = 'content-thumbs'
-THUMBNAIL_DEBUG = True
-
+STATICFILES_DIRS = [('', os.path.join(THIS_DIRECTORY, 'static'))]
 SESSION_COOKIE_AGE = 2 * 24 * 60 * 60  # two days
-
 DEBUG_DOJO = bool(int(os.environ.get('DEBUG_DOJO', False)))
-
 HAYSTACK_SITECONF = 'gobotany.simplekey.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'solr'
 HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
@@ -159,7 +121,8 @@ if 'WEBSOLR_URL' in os.environ:
     HAYSTACK_SOLR_URL = os.environ['WEBSOLR_URL']
 
 TINYMCE_JS_URL = "tiny_mce/tiny_mce.js"
-TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "tiny_mce")
+# With no local static root, what should we do with the following setting?
+# TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "tiny_mce")
 
 # For partner sites, the request hostname will indicate the site.
 MONTSHIRE_HOSTNAME_SUBSTRING = ':8001'  # Just look for a port number for now
