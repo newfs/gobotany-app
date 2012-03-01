@@ -959,11 +959,17 @@ class Importer(object):
         log.info('Saved %d glossary images to table' % count)
 
     @transaction.commit_on_success
-    def _import_taxon_images(self, db, image_categories_csv):
+    def _import_taxon_images(self, db):
         """Scan S3 for taxon images, and load their paths into the database."""
 
         # Right now, the image categories CSV is simply used to confirm
         # that we recognize the type of every image we import.
+
+        core_dir = os.path.dirname(os.path.abspath(__file__))
+        gobotany_dir = os.path.dirname(core_dir)
+        gobotany_app_dir = os.path.dirname(gobotany_dir)
+        data_dir = os.path.join(gobotany_app_dir, 'data')
+        image_categories_csv = os.path.join(data_dir, 'image_categories.csv')
 
         taxon_image_types = {}
         for row in open_csv(image_categories_csv):
