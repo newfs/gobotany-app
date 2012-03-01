@@ -31,19 +31,13 @@ else:
         }
     }
 
-if 'HEROKU_SHARED_POSTGRESQL_BLACK_URL' in os.environ:
-
-    # Use the better database if it is available.
-    os.environ['DATABASE_URL'] = os.environ[
-        'HEROKU_SHARED_POSTGRESQL_BLACK_URL']
-
-running_on_heroku = bool('POST' in os.environ)
+running_on_heroku = bool('DATABASE_URL' in os.environ)
 
 if running_on_heroku:
 
-    # For the sake of scripts running locally on a developer
-    # workstation, but with a Heroku database URL provided.  This code
-    # is adapted from: http://devcenter.heroku.com/articles/django
+    # This code lets script running locally on a developer workstation
+    # connect to a Heroku database in the cloud, if its URL provided.
+    # This code is adapted from: http://devcenter.heroku.com/articles/django
 
     url = urlparse.urlparse(os.environ['DATABASE_URL'])
 
