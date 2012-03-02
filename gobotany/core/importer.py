@@ -85,13 +85,13 @@ pile_suffixes = {
     'eq': u'Equisetaceae',
     'ly': u'Lycophytes',
     'mo': u'Monilophytes',
-    'nm': u'Non-orchid monocots',
-    'ap': u'Non-thalloid aquatic',
-    'om': u'Orchid monocots',
+    'nm': u'Non-Orchid Monocots',
+    'ap': u'Non-Thalloid Aquatic',
+    'om': u'Orchid Monocots',
     'po': u'Poaceae',
-    'rg': u'Remaining graminoids',
-    'rn': u'Remaining non-monocots',
-    'ta': u'Thalloid aquatic',
+    'rg': u'Remaining Graminoids',
+    'rn': u'Remaining Non-Monocots',
+    'ta': u'Thalloid Aquatic',
     'wa': u'Woody Angiosperms',
     'wg': u'Woody Gymnosperms',
     }
@@ -706,24 +706,23 @@ class Importer(object):
         have been created, ensure they are assigned to their respective
         pile character-values collections.
         """
-        print 'Assigning character values to piles:'
-        suffixes_for_piles = dict((v.lower(), k) for k, v
-                                  in pile_suffixes.iteritems())
-        for pile in models.Pile.objects.all():
-            pile.character_values.clear()
-            print 'Pile:', pile.name
-            suffix = suffixes_for_piles[pile.name.lower()]
-            characters = models.Character.objects.filter(
-                short_name__endswith=suffix)
-            print '  %d characters...' % characters.count()
-            values_added = 0
-            for character in characters.all():
-                character_values = models.CharacterValue.objects.filter(
-                    character=character)
-                for character_value in character_values:
-                    pile.character_values.add(character_value)
-                    values_added += 1
-            print '    Added %d character values' % values_added
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM core_pile_character_values;")
+        for suffix, pile_name in pile_suffixes.items():
+            cursor.execute("""
+
+                INSERT INTO core_pile_character_values
+                  (pile_id, charactervalue_id)
+                  SELECT p.id, cv.id
+                    FROM core_pile AS p,
+                      core_character AS c JOIN
+                      core_charactervalue AS cv
+                        ON (c.id = cv.character_id)
+                    WHERE p.name = %s
+                      AND SUBSTRING(c.short_name FROM '..$') = %s;
+
+                """, (pile_name, suffix))
+        connection.commit()
 
 
     def _create_character_name(self, short_name):
@@ -872,7 +871,7 @@ class Importer(object):
             except KeyError:
                 log.error('Bad character: %r', short_name)
                 continue
-            pile_title = pile_suffixes[pile_suffix].title()
+            pile_title = pile_suffixes[pile_suffix]
 
             charactervalue_table.get(
                 character_id=character_id,
