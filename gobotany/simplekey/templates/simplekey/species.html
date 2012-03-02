@@ -320,6 +320,13 @@
                     <p><em><a href="{% url simplekey-genus taxon.genus.slug %}"
                         >{{ taxon.genus }}</a></em></p>
                 </div>
+
+                {% if taxon.variety_notes %}
+                <div class="section">
+                    <h5>Notes on Subspecies and Varieties:</h5>
+                    <p>{{ taxon.variety_notes|safe }}</p>
+                </div>
+                {% endif %}
                 
                 <div class="section">
 				    <h5 class="left help">Need Help?</h5>
