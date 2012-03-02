@@ -700,6 +700,7 @@ class Importer(object):
         tcv_table.save()
 
 
+    @transaction.commit_on_success
     def _import_assign_character_values_to_piles(self, db):
         """Once all character values (including those for length characters)
         have been created, ensure they are assigned to their respective
