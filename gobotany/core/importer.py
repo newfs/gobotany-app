@@ -699,6 +699,32 @@ class Importer(object):
 
         tcv_table.save()
 
+
+    def _import_assign_character_values_to_piles(self, db):
+        """Once all character values (including those for length characters)
+        have been created, ensure they are assigned to their respective
+        pile character-values collections.
+        """
+        print 'Assigning character values to piles:'
+        suffixes_for_piles = dict((v.lower(), k) for k, v
+                                  in pile_suffixes.iteritems())
+        for pile in models.Pile.objects.all():
+            pile.character_values.clear()
+            print 'Pile:', pile.name
+            suffix = suffixes_for_piles[pile.name.lower()]
+            characters = models.Character.objects.filter(
+                short_name__endswith=suffix)
+            print '  %d characters...' % characters.count()
+            values_added = 0
+            for character in characters.all():
+                character_values = models.CharacterValue.objects.filter(
+                    character=character)
+                for character_value in character_values:
+                    pile.character_values.add(character_value)
+                    values_added += 1
+            print '    Added %d character values' % values_added
+
+
     def _create_character_name(self, short_name):
         """Create a character name from the short name."""
         name = short_name
@@ -1721,6 +1747,7 @@ def main():
         'constants', 'places', 'taxon_character_values',
         'character_images', 'character_value_images', 'glossary_images',
         'videos', 'home_page_images', 'taxon_images',
+        'assign_character_values_to_piles'
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
