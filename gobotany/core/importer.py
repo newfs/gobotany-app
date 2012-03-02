@@ -452,6 +452,16 @@ class Importer(object):
             # Create a Taxon.
             taxon_proxy_id = row['scientific__name']
 
+            variety_notes = ''
+            try:
+                # TODO: Get the real name of this column from Sid
+                variety_notes = row['variety_notes']
+            except KeyError:
+                # This should only happen before the CSV 
+                # data has the new column added.
+                pass
+
+
             taxon = taxon_table.get(
                 scientific_name=row['scientific__name'],
                 ).set(
@@ -470,6 +480,7 @@ class Importer(object):
                 invasive_in_states=row['invasive_in_which_states'],
                 sale_prohibited_in_states=row['prohibited_from_sale_states'],
                 description='',
+                variety_notes=variety_notes,
                 )
 
             # Assign distribution and conservation status for all states.
