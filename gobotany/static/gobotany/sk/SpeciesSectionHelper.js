@@ -156,7 +156,16 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
                     // Fill in Habitat.
                     if (taxon.habitat !== undefined) {
-                        var habitat_list = taxon.habitat.sort().join(', ');
+                        var habitat_list = [];
+                        // The API returns a string for a single value,
+                        // or a list for multiple values.
+                        if (typeof(taxon.habitat) == "string") {
+                            habitat_list.push(taxon.habitat);
+                        }
+                        else {
+                            habitat_list = taxon.habitat;
+                        }
+                        habitat_list = habitat_list.sort().join(', ');
                         habitat_list = habitat_list[0].toUpperCase() +
                             habitat_list.slice(1);
                         dojo.html.set(dojo.query(
