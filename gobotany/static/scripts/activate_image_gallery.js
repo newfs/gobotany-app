@@ -7,11 +7,11 @@ require([
     'jquery.tools.min',
     'dojo_config',
     '/static/js/dojo/dojo.js',
-    '/static/js/layers/sk.js',
     'sidebar'
 ], function() {
 
   require([
+      '/static/js/layers/sk.js',
       'jquery.mousewheel.min'
   ], function() {
 
