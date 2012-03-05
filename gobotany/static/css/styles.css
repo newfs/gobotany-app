@@ -330,9 +330,6 @@ div#potd {
     position: absolute;
 	width: 640px;
 }
-#potd h4 {
-    padding-top: 4px;
-}
 #potd h4 span.latin {
 	font-size: 14px;
 	text-transform: uppercase;	

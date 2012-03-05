@@ -84,10 +84,6 @@
                                alt="{{ plant_of_the_day.scientific_name }}">
                         </a>
                         <div class="details">
-                            <a class="subscribe"
-                                href="http://{{ request.META.HTTP_HOST }}/plantoftheday/atom.xml"
-                                title="Subscribe to the Plant of the Day news feed"
-                                >Subscribe</a>
                             <h4>Plant of the Day:
                                 <span class="latin">{{ plant_of_the_day.scientific_name }}</span>
                                 <span class="english">{% for common_name in plant_of_the_day.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</span>                           
