@@ -3,7 +3,9 @@
 {% block pagetitle %}Glossary{% endblock %}
 
 {% block js_top %}
-    API_URL = '{% url api-base %}';
+    <script>
+        API_URL = '{% url api-base %}';
+    </script>
 {% endblock %}
 
 {# Override the js_require block in the parent template. #}
