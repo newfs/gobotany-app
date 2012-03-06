@@ -2,13 +2,27 @@ GO BOTANY: ABOUT SVG MAP FILES
 
 There are two sets of SVG maps in this directory:
 
-1. Master: The New England counties map was originally obtained from Wikipedia Commons, with various tweaks made in Inkscape.
+1. Master: The New England counties map was originally obtained from a
+public-domain map from Wikipedia Commons, with various tweaks made using
+Inkscape.
 
-The U.S. counties map was done the same way, but is no longer used on the site's species pages. It has been replaced by an extended version that adds the southern portion of eight Canadian provinces in order to extend coverage a bit to more of North America. No Canadian counties or districts are outlined in this version, and the data for Canada is currently only at the province level.
+The North America map was made from another public-domain map from Wikimedia
+Commons, extended with the southern portions of eight Canadian provinces in
+order to show coverage of a bit of more of North America, and also with U.S.
+county lines removed in order to show data at the state level only.
+province level.
 
 - new-england-counties.svg
-- us-counties.svg
 - north-america.svg
+
+Two of the maps are earlier versions of the North America map: one shows
+U.S. counties (similar to or the same as the Wikimedia Commons map), and
+the same map extended with the southern portions of Canadian provinces:
+
+- us-counties.svg *
+- north-america-counties.svg *
+
+* = not currently in use on the Go Botany site
 
 2. Scoured: Files resulting from running the master files through an
 open-source Python SVG cleanup script called Scour, available at:
@@ -16,11 +30,17 @@ open-source Python SVG cleanup script called Scour, available at:
 These scoured files are NOT editable in Inkscape.
 
 - new-england-counties-scoured.svg
-- us-counties-scoured.svg
 - north-america-scoured.svg
 
+- us-counties-scoured.svg *
+- north-america-counties-scoured.svg *
 
-NOTE: At this point the master maps will not work properly when mapping actual distribution data with the Go Botany API code. Always generate and use the scoured version when developing and testing with the code and data.
+* = not currently in use on the Go Botany site
+
+
+NOTE: At this point the master maps will not work properly when mapping
+actual distribution data with the Go Botany API code. Always generate and
+use the scoured version when developing and testing with the code and data.
 
 
 EDITING THE MAPS
@@ -28,21 +48,30 @@ EDITING THE MAPS
 If you need to edit the map files, do so on the master versions and then
 generate new scoured versions by running Scour.
 
+
 RUNNING SCOUR
 
 Run scour.py one file at a time. Set the -i switch to the master input
 filename and the -o switch to the scoured output filename. Include the
 following configuration options for the Go Botany maps. The command should
-look like those show below. They should be all on one line, and you should add directory paths to the Scour script and the input and output files as needed.
+look like those show below. They should be all on one line, and you should
+add directory paths to the Scour script and the input and output files as
+needed.
 
-For generating the New England counties scoured map (and the no-longer-used U.S. counties scoured map):
+For generating the New England counties scoured map (and the no-longer-used
+U.S. counties scoured map):
 
-$ python scour.py -i us-counties.svg -o us-counties-scoured.svg
---disable-style-to-xml --indent=none --enable-comment-stripping --set-precision=4
+$ python {path/to/}scour.py -i {path/to/}new-england-counties.svg
+-o {path/to/}new-england-counties-scoured.svg --disable-style-to-xml
+--indent=none --enable-comment-stripping --set-precision=4
 
-For generating the North America scoured map, leave off the --set-precision switch, and add the --remove-metadata switch, like this:
+For generating the North America scoured map, leave off the --set-precision
+switch, and add the --remove-metadata switch, like this:
 
-$ python scour.py -i us-counties.svg -o us-counties-scoured.svg
---disable-style-to-xml --indent=none --enable-comment-stripping --remove-metadata
+$ python {path/to/}scour.py -i {path/to/}us-counties.svg
+-o {path/to/}us-counties-scoured.svg --disable-style-to-xml --indent=none
+--enable-comment-stripping --remove-metadata
 
-The previously included --set-precision=4 somehow fouled the alignment of the U.S. state lines following the Canada additions. Leaving it off (default precision = 5) fixes this.
+The previously included --set-precision=4 somehow fouled the alignment of
+the U.S. state lines following the Canada additions. Leaving it off (default
+precision = 5) fixes this.
