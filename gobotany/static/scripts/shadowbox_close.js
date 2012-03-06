@@ -1,4 +1,4 @@
-define(['jquery.tools.min'], function() {
+define(['jquery.tools.min', 'shadowbox'], function() {
 
     // Animate and position the Shadowbox close button.
     shadowbox_close_move_button = function() {
