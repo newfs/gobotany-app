@@ -4,11 +4,15 @@
  */
 
 require([
-    'jquery.tools.min',
-    'jquery-ui-1.8.16.custom.min',
-    'jquery.smoothDivScroll-1.1-mod' /* un-minified, w/bugfix by Go Botany */
+    'jquery.tools.min'
 ], function() {
 
+    require([
+        'jquery-ui-1.8.16.custom.min',
+        'jquery.smoothDivScroll-1.1-mod' /* un-minified, with bugfix by
+                                            Go Botany */
+    ], function() {
+    
     /* So far the Smooth Div Scroll plugin is only working in
        Firefox, not in WebKit-based browsers. Smooth Div Scroll
        is said to require jQuery 1.5.2. However, no matter whether using
@@ -16,14 +20,14 @@ require([
        doesn't work on our page in in WebKit. But, it does work fine on
        the Smooth Div Scroll demo page, so there is probably a way to get
        it working. */
-    $(document).ready(function() {
-        $('#species-images').smoothDivScroll({
-            autoScroll: 'onstart', 
-            autoScrollDirection: 'backandforth', 
-            autoScrollStep: 1, 
-            autoScrollInterval: 75,
-            visibleHotSpots: 'always'
+        $(document).ready(function() {
+            $('#species-images').smoothDivScroll({
+                autoScroll: 'onstart', 
+                autoScrollDirection: 'backandforth', 
+                autoScrollStep: 1, 
+                autoScrollInterval: 75,
+                visibleHotSpots: 'always'
+            });
         });
     });
-
 });
