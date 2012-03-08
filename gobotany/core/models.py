@@ -745,3 +745,19 @@ class Distribution(models.Model):
     def __unicode__(self):
         return '%s: %s County, %s (%s)' % (self.scientific_name, self.county,
                                            self.state, self.status)
+
+
+class CopyrightHolder(models.Model):
+    """A copyright holder for one or more images."""
+    coded_name = models.CharField(max_length=50, db_index=True)
+    expanded_name = models.CharField(max_length=100)
+    copyright = models.CharField(max_length=300)
+    source = models.CharField(max_length=300)
+
+    def __unicode__(self):
+        unicode_string = u'%s: %s. Copyright: %s.' % (self.coded_name,
+                                                      self.expanded_name,
+                                                      self.copyright)
+        if self.source:
+            unicode_string += u' Source: %s' % self.source
+        return unicode_string

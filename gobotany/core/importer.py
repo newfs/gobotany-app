@@ -156,6 +156,22 @@ class Importer(object):
         self._import_search_suggestions()
 
     @transaction.commit_on_success
+    def _import_copyright_holders(self, db, copyright_holders_csv):
+        log.info('Setting up copyright holders')
+        copyright_holder = db.table('core_copyrightholder')
+
+        for row in open_csv(copyright_holders_csv):
+            copyright_holder.get(
+                coded_name=row['coded_name'],
+                ).set(
+                expanded_name=row['expanded_name'],
+                copyright=row['copyright'],
+                source=row['image_source'],
+                )
+
+        copyright_holder.save()
+
+    @transaction.commit_on_success
     def _import_partner_sites(self, db):
         log.info('Setting up partner sites')
         partnersite = db.table('core_partnersite')
@@ -1758,7 +1774,7 @@ def main():
         'constants', 'places', 'taxon_character_values',
         'character_images', 'character_value_images', 'glossary_images',
         'videos', 'home_page_images', 'taxon_images',
-        'assign_character_values_to_piles'
+        'assign_character_values_to_piles', 'copyright_holders'
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
