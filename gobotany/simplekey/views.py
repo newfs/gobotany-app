@@ -18,7 +18,7 @@ from gobotany.core import botany
 from gobotany.core import models
 from gobotany.core.importer import pile_suffixes
 from gobotany.core.models import (
-    CharacterGroup, CharacterValue, Family, Genus,
+    CharacterGroup, CharacterValue, CopyrightHolder, Family, Genus,
     GlossaryTerm, Habitat, HomePageImage, Pile, PileGroup,
     PlantPreviewCharacter, Taxon
     )
@@ -136,14 +136,17 @@ def simple_key_view(request):
     short_name = _partner_short_name(partner)
     groups_list_page = GroupsListPage.objects.all()[0]
 
+    pilegroups = []
+    for pilegroup in ordered_pilegroups():
+        images = _images_with_copyright_holders(
+            [pi.content_image for pi in pilegroup.pilegroupimage_set.all()])
+        print '*Images:', images
+        pilegroups.append((pilegroup, images, get_simple_url(pilegroup)))
+
     return render_to_response('simplekey/simple.html', {
             'partner_site': short_name,
             'groups_list_page': groups_list_page,
-            'pilegroups': [
-                (pilegroup, pilegroup.pilegroupimage_set.all(),
-                 get_simple_url(pilegroup))
-                for pilegroup in ordered_pilegroups()
-                ]
+            'pilegroups': pilegroups
             }, context_instance=RequestContext(request))
 
 def pilegroup_view(request, pilegroup_slug):
@@ -153,14 +156,17 @@ def pilegroup_view(request, pilegroup_slug):
     short_name = _partner_short_name(partner)
     subgroups_list_page = SubgroupsListPage.objects.get(group=pilegroup)
 
+    piles = []
+    for pile in ordered_piles(pilegroup):
+        images = _images_with_copyright_holders(
+            [pi.content_image for pi in pile.pileimage_set.all()])
+        piles.append((pile, images, get_simple_url(pile)))
+
     return render_to_response('simplekey/pilegroup.html', {
             'partner_site': short_name,
             'subgroups_list_page': subgroups_list_page,
             'pilegroup': pilegroup,
-            'piles': [
-                (pile, pile.pileimage_set.all(), get_simple_url(pile))
-                for pile in ordered_piles(pilegroup)
-                ]
+            'piles': piles
             }, context_instance=RequestContext(request))
 
 def results_view(request, pilegroup_slug, pile_slug):
@@ -255,6 +261,25 @@ def _get_characters(taxon, character_groups, pile, partner):
     return sorted(groups, key=itemgetter('name'))
 
 
+def _images_with_copyright_holders(images):
+    # Get the copyright holders for this set of images.
+    copyright_name_codes = []
+    for image in images:
+        copyright_name_codes.append(image.creator)
+    copyright_name_codes = set(copyright_name_codes)
+    copyright_holders = CopyrightHolder.objects.filter(
+        coded_name__in=copyright_name_codes)
+
+    # Associate each image with its copyright holder, adding the
+    # copyright holder information as extra attributes.
+    for image in images:
+        copyright_holder = copyright_holders.get(coded_name=image.creator)
+        image.copyright_holder_name = copyright_holder.expanded_name
+        image.copyright = copyright_holder.copyright
+        image.source = copyright_holder.source
+    return images
+
+
 def species_view(request, genus_slug, specific_name_slug,
                  pilegroup_slug=None, pile_slug=None):
 
@@ -262,7 +287,8 @@ def species_view(request, genus_slug, specific_name_slug,
                                      'Specific Habitat']
 
     scientific_name = '%s %s' % (genus_slug.capitalize(), specific_name_slug)
-    scientific_name_short = '%s. %s' % (scientific_name[0], specific_name_slug)
+    scientific_name_short = '%s. %s' % (scientific_name[0],
+                                        specific_name_slug)
     taxon = get_object_or_404(Taxon, scientific_name=scientific_name)
 
     if pile_slug and pilegroup_slug:
@@ -283,6 +309,8 @@ def species_view(request, genus_slug, specific_name_slug,
             partner_species = rows[0]
 
     species_images = botany.species_images(taxon)
+    images = _images_with_copyright_holders(species_images)
+
     habitats = []
     if taxon.habitat:
         habitat_names = taxon.habitat.split('| ')
@@ -298,9 +326,10 @@ def species_view(request, genus_slug, specific_name_slug,
                     'character', flat=True).distinct()
     character_groups = CharacterGroup.objects.filter(
                        character__in=character_ids).distinct()
-    characters_by_group = _get_characters(taxon, character_groups, pile, partner)
+    characters_by_group = _get_characters(taxon, character_groups, pile,
+                                          partner)
     preview_characters = sorted([
-        character 
+        character
             for group in characters_by_group
                 for character in group['characters']
                     if character['in_preview']
@@ -316,7 +345,7 @@ def species_view(request, genus_slug, specific_name_slug,
            'scientific_name': scientific_name,
            'scientific_name_short': scientific_name_short,
            'taxon': taxon,
-           'species_images': species_images,
+           'images': images,
            'partner_heading': partner_species.species_page_heading
                if partner_species else None,
            'partner_blurb': partner_species.species_page_blurb

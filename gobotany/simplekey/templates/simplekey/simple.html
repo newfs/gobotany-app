@@ -34,14 +34,14 @@
                             <div class="frame"></div>
                             <div class="img-container">
                                 <div class="images">
-                                    {% for pilegroup_image in pilegroup_images %}
-                                        {% with pilegroup_image.content_image as i %}
+                                    {% for content_image in pilegroup_images %}
+                                        {% with content_image as i %}
                                             {% with i.creator as photographer %}
                                             <a href="{{ i.image_medium }}"
                                                 rel="shadowbox[{{ pilegroup.slug }}]"
-                                                title="{% photo_title_credit i.image_type i.content_object.scientific_name photographer %}">
+                                                title="{% photo_credit i i.content_object.scientific_name %}">
                                                 <img src="{{ i.thumb_large }}"
-                                                    alt="{% photo_title_credit i.image_type i.content_object.scientific_name photographer %}">
+                                                    alt="{% photo_credit i i.content_object.scientific_name %}">
                                             </a>
                                             {% endwith %}
                                         {% endwith %}

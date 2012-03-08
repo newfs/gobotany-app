@@ -12,9 +12,6 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
         // Do a few things before enlarging the photo on the screen.
         // Intended to be called using the Shadowbox onOpen handler.
         
-        // Please see notes in activate_image_gallery.js.
-        console.log('inside prepare_to_enlarge');
-
         var title_element = dojo.query('#sb-title-inner')[0];
                                                     
         // Temporarily hide the title element.
@@ -25,41 +22,51 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
         shadowbox_close_move_button();
     },
 
-    process_title_and_credit: function() {
+    process_credit: function() {
         // Format the title text for a better presentation atop the photo.
         // Intended to be called using the Shadowbox onFinish handler.
-
-        // Please see notes in activate_image_gallery.js.
-        console.log('inside process_title_and_credit');
 
         var title_element = dojo.query('#sb-title-inner')[0];
         var title_text = title_element.innerHTML;
 
         // Parse and mark up the title text.
-        var parts = title_text.split('.');
 
-        var title_parts = parts[0].split(':');
+        var parts = title_text.split(' ~ ');
+        var image_title = parts[0];
+        var copyright_holder = parts[1];
+        var copyright = parts[2];
+        var source = "";
+        if (parts[3]) {
+            source = parts[3];
+        }
+
+        var title_parts = image_title.split(':');
         var image_type = title_parts[0];
         var title = image_type;
         var name = '';
         // Get the properly-italicized scientific name from the page heading,
-        // if available. (This is available on the species page.)
-        // TODO: Replace with a function to properly italicize any
-        // scientific name.
+        // if available, such as on the species page. Otherwise, just
+        // italicize the entire plant name portion of the title for now. This
+        // will generally be correct for the groups and subgroups pages'
+        // galleries, which tend not to show varieties, subspecies, etc.
         var scientific_name = dojo.query('h2 .scientific');
         if (scientific_name.length > 0) {
-            name = scientific_name[0].innerHTML;
+            name = dojo.trim(scientific_name[0].innerHTML) + '.';
         }
         else {
             name = '<i>' + dojo.trim(title_parts[1]) + '</i>';
         }
         if (name.length > 0) {
-            title += ': ' + dojo.trim(name);
+            title += ': ' + name;
         }
-        title += '.';
 
-        var html = title + '<br><span>' + parts[1] + '.' + parts[2] + '.' +
-            parts[3] + '.</span>';
+        var html = '<div><h6>' + title + '</h6><span>' + copyright_holder +
+            ' ' + copyright + ' <a href="/legal/terms-of-use/#ip">Terms ' +
+            'of Use' + '</a></span>';
+        if (source !== "") {
+            html += '<br><span>' + parts[3] + '</span>';
+        }
+        html += '</div>';
         title_element.innerHTML = html;
 
         // Show the title element again.

@@ -74,7 +74,7 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
                     title: link.title,
                     options: {
                         onOpen: that.photo_helper.prepare_to_enlarge,
-                        onFinish: that.photo_helper.process_title_and_credit
+                        onFinish: that.photo_helper.process_credit
                     }
                 });
             });

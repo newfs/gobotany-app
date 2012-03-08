@@ -1867,15 +1867,37 @@ div.section.namap div.trans {
 #taxon #sb-title, #taxon #sb-title-inner,
 #plant-id #sb-title, #plant-id #sb-title-inner,
 #plant-id-2 #sb-title, #plant-id-2 #sb-title-inner {
-    height: 46px;
-    line-height: 120%;
+    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+    height: 76px;
+    line-height: 70%;
+    position: relative;
+}
+#taxon #sb-title-inner div, #plant-id #sb-title-inner div,
+#plant-id-2 #sb-title-inner div {
+    bottom: 6px;
+    position: absolute;
+}
+#taxon #sb-title-inner h6, #plant-id #sb-title-inner h6,
+#plant-id-2 #sb-title-inner h6 {
+    font-size: 16px;
+    line-height: 110%;
+    margin: 0 0 2px;
+    padding: 0;
 }
 #taxon #sb-title-inner span, #plant-id #sb-title-inner span,
 #plant-id-2 #sb-title-inner span {
-    font-size: 12px;
+    font-size: 10px;
 }
 #taxon #sb-nav-close, #plant-id #sb-nav-close, #plant-id-2 #sb-nav-close {
-    top: 26px !important;
+    top: 56px !important;
+}
+#taxon #sb-title-inner a, #plant-id #sb-title-inner a,
+#plant-id-2 #sb-title-inner a {
+    color: #fff;
+    text-decoration: underline;
+}
+#sb-counter {
+    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
 }
 
 /* Help section: sidebar styles */

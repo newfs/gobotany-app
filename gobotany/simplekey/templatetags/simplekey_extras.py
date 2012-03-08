@@ -118,10 +118,8 @@ def get_range(value):
 
 # Inclusion tag for formatting a combined title/credit/copyright string
 # for use with a photo.
-def photo_title_credit(image_type, name, photographer):
-    return {'image_type': image_type, 'name': name,
-            'photographer': photographer}
-
+def photo_credit(image, image_name):
+    return {'image': image, 'image_name': image_name}
 
 register.filter('split', split)
 register.filter('at_index', at_index)
@@ -130,4 +128,4 @@ register.filter('italicize_plant', italicize_plant)
 register.filter('get_range', get_range)
 
 register.inclusion_tag( \
-    'simplekey/_photo_title_credit.html')(photo_title_credit)
+    'simplekey/_photo_credit.html')(photo_credit)
