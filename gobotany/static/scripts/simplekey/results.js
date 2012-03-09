@@ -9,18 +9,15 @@ define([
 
     require([
         'dojo',
-        'jquery.tools.min',  // needed by jscrollpane
         'underscore-min',  // filters.js, etc
         'sidebar',
-        'simplekey/resources'  // now used in filters.js
+        'simplekey/resources',  // now used in filters.js
+        'jscrollpane',  // sk/results.js
+        'shadowbox'
     ], function() {
-        require([
-            'jquery.jscrollpane.min'  // sk/results.js
-        ], function() {
-            dojo.require('gobotany.sk.results');
-            dojo.addOnLoad(function() {
-                helper = gobotany.sk.results.ResultsHelper(args.pile_slug);
-            });
+        dojo.require('gobotany.sk.results');
+        dojo.addOnLoad(function() {
+            helper = gobotany.sk.results.ResultsHelper(args.pile_slug);
         });
     });
 
@@ -29,7 +26,6 @@ define([
     require([
         'activate_image_gallery',
         'activate_search_suggest',
-        'shadowbox',
         'shadowbox_close'
     ]);
 });
