@@ -153,21 +153,26 @@ def _length_entropy(cv_set, species_set, cv_counts):
         endpoints.append((cv.value_max, -1))
     endpoints.sort()
 
-    i = iter(endpoints)
-    left, weight = i.next()  # the first endpoint
     tally = 0.0
+    i = iter(endpoints)
+    try:
+        left, weight = i.next()  # the first endpoint
+    except StopIteration:
+        # empty
+        pass
+    else:
+        for endpoint in i:  # the rest of the endpoints
+            right, increment = endpoint
 
-    for endpoint in i:  # the rest of the endpoints
-        right, increment = endpoint
+            size = right - left
+            if size and weight:
+                tally += size * weight * math.log(weight, 2.)
 
-        size = right - left
-        if size and weight:
-            tally += size * weight * math.log(weight, 2.)
+            left = right
+            weight += increment
 
-        left = right
-        weight += increment
+        tally /= endpoints[-1][0] - endpoints[0][0]
 
-    tally /= endpoints[-1][0] - endpoints[0][0]
     return tally
 
 
