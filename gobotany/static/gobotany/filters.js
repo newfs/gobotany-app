@@ -31,6 +31,7 @@ dojo.declare('gobotany.filters.Filter', null, {
         this.friendly_name = args.friendly_name;
         this.hint = args.hint;
         this.question = args.question;
+        this.image_url = args.image_url;
     },
     // load_values()
     // Kicks off a fetch of the filter's vectors (if a fetch has not been
