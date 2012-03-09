@@ -140,7 +140,6 @@ def simple_key_view(request):
     for pilegroup in ordered_pilegroups():
         images = _images_with_copyright_holders(
             [pi.content_image for pi in pilegroup.pilegroupimage_set.all()])
-        print '*Images:', images
         pilegroups.append((pilegroup, images, get_simple_url(pilegroup)))
 
     return render_to_response('simplekey/simple.html', {
