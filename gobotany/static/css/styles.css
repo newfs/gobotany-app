@@ -1088,6 +1088,10 @@ h5.help {
 #plant-id-3 a.get-help-btn {
     margin: 0 0 0 19px;
 }
+#plant-id-3 input.dijitInputInner {
+    font-family: Verdana, sans-serif;
+    font-size: 12px;
+}
 /* These two next items are called family_select and genus_select in the HTML,
 but Dojo/Dijit transforms them into divs with ids starting with widget_. */
 #widget_family_select, #widget_genus_select {
