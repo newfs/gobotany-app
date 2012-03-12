@@ -130,6 +130,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     // received and processed by the filter manager.
     finish_initialization: function(filter) {
 
+        this.family_genus_selectors.populate();
+
         // If there's a URL hash, make a call to set up filter values from it
         // again now that all the filters and values have finally loaded; this
         // time omit the onComplete callback.
@@ -461,6 +463,12 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
         dojo.subscribe('/sk/filter/change', this, '_on_filter_change');
     },
 
+    /* Initially populate the selectors. */
+    populate: function() {
+        this._rebuild_selector(this.family_store, this.family_filter);
+        this._rebuild_selector(this.genus_store, this.genus_filter);
+    },
+
     /*
      * A filter somewhere else on the page has changed value, so we need
      * to rebuild the family and genus selectors to include only "safe"
@@ -769,12 +777,14 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         // currently answered or not.
         var ANSWERED_CLASS = 'answered';
         var li = dojo.query('li#' + name)[0];
-        var filter_display_value = this._get_filter_display_value(filter);
-        if (filter_display_value.length === 0) {
-            dojo.removeClass(li, ANSWERED_CLASS);
-        }
-        else {
-            dojo.addClass(li, ANSWERED_CLASS);
+        if (li !== undefined) {   // all except family and genus filters
+            var filter_display_value = this._get_filter_display_value(filter);
+            if (filter_display_value.length === 0) {
+                dojo.removeClass(li, ANSWERED_CLASS);
+            }
+            else {
+                dojo.addClass(li, ANSWERED_CLASS);
+            }
         }
 
         // Re-initialize the scroll pane now that its contents have changed.
