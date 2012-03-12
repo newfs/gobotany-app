@@ -1,6 +1,7 @@
 # Basic ignore patterns, probably covered by svn's global ignore
 *.pyc
 *.sw*
+*.DS_Store
 
 # /
 /gobotany.egg-info
