@@ -665,8 +665,13 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     var new_filters = [];
                     var i;
                     for (i = 0; i < new_filter_names.length; i++) {
-                        new_filters.push(filter_manager.get_filter(
-                            new_filter_names[i]));
+                        var new_filter = filter_manager.get_filter(
+                            new_filter_names[i]);
+                        new_filters.push(new_filter);
+                        // Ensure new filters are added to the loaded list
+                        // so they can be cleared later.
+                        this.results_helper._loaded_filters.push(new_filter);
+                        
                     }
 
                     // Add the new filters to the filters list.
