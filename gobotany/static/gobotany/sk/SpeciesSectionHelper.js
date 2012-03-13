@@ -554,6 +554,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             onEnd: function() {
                 this.animation = null;
                 sidebar_set_height();
+                this.lazy_load_images();
 
                 // Set up genus colors now that everyone has arrived!
                 var last_species_in_row = SPECIES_PER_ROW - 1;
