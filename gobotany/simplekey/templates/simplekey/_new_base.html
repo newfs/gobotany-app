@@ -4,6 +4,7 @@
     <head>
         <title>{% block title %}{% endblock %}{% block title_suffix %}: Go Botany{% endblock %}</title>
         <meta charset="utf-8">
+        {# For IE, activate Google Chrome Frame for version 9 or lower #}
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE9">
         <link rel="shortcut icon" href="/static/images/branding/favicon.png">
     
@@ -38,12 +39,6 @@
         {# such as SVGWeb. #}
         {% block js_top %}{% endblock %}
 
-        {# Chrome Frame installer: IE 9 and below #}
-        <!--[if lt IE 10]>
-        <script type="text/javascript"
-            src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
-        <![endif]-->
-
         {# This HTML5 fix for IE 6-8 will only apply if the user views #}
         {# the site in IE without the required Chrome Frame plug-in.   #}
         <!--[if lt IE 9]>
@@ -65,26 +60,7 @@
 
         {# Prompt to install Chrome Frame on IE 9 and below if needed #}
         <!--[if lt IE 10]>
-        <div id="ie-note">
-            <p><strong>Important:</strong> This site requires the free
-                <a href="http://code.google.com/chrome/chromeframe/">Google 
-                Chrome Frame plug-in</a> on Internet Explorer versions 6
-                through 9.</p>
-            <p>Or, you can use another browser, such as
-                <a
-                href="http://support.google.com/chrome/bin/answer.py?hl=en&amp;answer=95346">Chrome</a>,
-                <a
-                href="http://www.mozilla.org/en-US/firefox/">Firefox</a>,
-                or <a href="http://www.apple.com/safari/">Safari</a> 
-                (all free).</p>
-                <img src="/static/images/branding/logo-toplevel.png"
-                alt="">
-        </div>
-        <script>
-            CFInstall.check({
-                mode: "overlay"
-            });
-        </script>
+        {% include "simplekey/_chrome_frame.html" %}
         <![endif]-->
 
         {# Note: So far, header has to be added per-page, since the  #}
