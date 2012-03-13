@@ -1,7 +1,7 @@
 require([
-    'dojo_config',
-    'simplekey/resources',
-    '/static/js/dojo/dojo.js'
+    'order!dojo_config',
+    'order!/static/js/dojo/dojo.js',
+    'simplekey/resources'
 ], function() {
     
     require([
