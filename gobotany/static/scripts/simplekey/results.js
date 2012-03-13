@@ -21,7 +21,6 @@ define([
         ], function() {
             dojo.require('gobotany.sk.results');
             dojo.addOnLoad(function() {
-                console.log("Loaded simplekey/results.js");
                 helper = gobotany.sk.results.ResultsHelper(args.pile_slug);
             });
         });
