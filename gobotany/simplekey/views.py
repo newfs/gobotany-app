@@ -267,15 +267,20 @@ def _images_with_copyright_holders(images):
         copyright_name_codes.append(image.creator)
     copyright_name_codes = set(copyright_name_codes)
     copyright_holders = CopyrightHolder.objects.filter(
-        coded_name__in=copyright_name_codes)
+            coded_name__in=copyright_name_codes)
 
     # Associate each image with its copyright holder, adding the
     # copyright holder information as extra attributes.
     for image in images:
-        copyright_holder = copyright_holders.get(coded_name=image.creator)
-        image.copyright_holder_name = copyright_holder.expanded_name
-        image.copyright = copyright_holder.copyright
-        image.source = copyright_holder.source
+        try:
+            copyright_holder = copyright_holders.get(coded_name=image.creator)
+        except models.CopyrightHolder.DoesNotExist:
+            copyright_holder = None
+
+        if copyright_holder:
+            image.copyright_holder_name = copyright_holder.expanded_name
+            image.copyright = copyright_holder.copyright
+            image.source = copyright_holder.source
     return images
 
 
