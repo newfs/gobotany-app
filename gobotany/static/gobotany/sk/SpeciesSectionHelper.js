@@ -548,14 +548,14 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                 dojo.removeClass(div, 'in-results');
             }
         }
-        var that = this;
+        var species_section_helper = this;
         anim_list.push(dojo.animateProperty({
             node: this.plant_list,
             properties: {height: {end: desty + HEIGHT}},
             onEnd: function() {
                 this.animation = null;
                 sidebar_set_height();
-                that.lazy_load_images();
+                species_section_helper.lazy_load_images();
 
                 // Set up genus colors now that everyone has arrived!
                 var last_species_in_row = SPECIES_PER_ROW - 1;
