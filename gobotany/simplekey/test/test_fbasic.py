@@ -231,7 +231,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
-        self.css1('#intro-overlay .get-started').click()
+        self.css1('#intro-overlay .continue').click()
 
         # filter on Rhode Island
 
@@ -297,7 +297,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
-        self.css1('#intro-overlay .get-started').click()
+        self.css1('#intro-overlay .continue').click()
 
         # Do the family and genus dropdowns start by displaying all options?
 
@@ -353,7 +353,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
-        self.css1('#intro-overlay .get-started').click()
+        self.css1('#intro-overlay .continue').click()
         e = self.css1('.plant-list div a div.img-container img')
         assert '-ha-' in e.get_attribute('src')
         self.css1('#results-display .dijitSelectLabel').click()
@@ -366,7 +366,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
-        self.css1('#intro-overlay .get-started').click()
+        self.css1('#intro-overlay .continue').click()
         e = self.css1('.plant-list div a div.img-container img')
         assert '-ha-' in e.get_attribute('src')   # 'ha' = 'plant form' image
         default_item = self.css1('#results-display .dijitSelectLabel').text
@@ -381,7 +381,7 @@ class FilterFunctionalTests(FunctionalTestCase):
                          'stems']
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
-        self.css1('#intro-overlay .get-started').click()
+        self.css1('#intro-overlay .continue').click()
         self.css1('#results-display .dijitSelectLabel').click()
         menu_items = self.css('#image-type-selector_menu .dijitMenuItemLabel')
         for menu_item in menu_items:
@@ -390,7 +390,7 @@ class FilterFunctionalTests(FunctionalTestCase):
     def test_missing_image_has_placeholder_text(self):
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
-        self.css1('#intro-overlay .get-started').click()
+        self.css1('#intro-overlay .continue').click()
         e = self.css1('.plant-list div a div.img-container img')
         self.css1('#results-display .dijitSelectLabel').click()
         self.css1('#dijit_MenuItem_0_text').click()  # 'branches'
@@ -404,7 +404,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
-        self.css1('#intro-overlay .get-started').click()
+        self.css1('#intro-overlay .continue').click()
 
         filters = self.css(FILTERS_CSS)
         n = len(filters)
@@ -549,7 +549,7 @@ class FilterFunctionalTests(FunctionalTestCase):
     def test_plant_preview_popup_appears(self):
         d = self.get('/ferns/lycophytes')
         self.wait_on_species(18)
-        self.css1('#intro-overlay .get-started').click()
+        self.css1('#intro-overlay .continue').click()
         plant_links = self.css('.plant-list .plant a')
         self.assertTrue(len(plant_links) > 0)
         link = plant_links[0]
@@ -568,7 +568,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         d = self.get('/ferns/lycophytes')
         self.wait_on_species(18)
-        self.css1('#intro-overlay .get-started').click()
+        self.css1('#intro-overlay .continue').click()
         plant_links = self.css('.plant-list .plant a')
         self.assertTrue(len(plant_links) > 0)
         linked_images = self.css('.plant-list .plant a img')
@@ -1369,7 +1369,7 @@ class CharacterValueImagesFunctionalTests(FunctionalTestCase):
 
     def _character_value_images_exist(self, page_url, character_short_name,
                                       character_value_image_ids):
-        INTRO_OVERLAY_CSS = '#intro-overlay .get-started'
+        INTRO_OVERLAY_CSS = '#intro-overlay .continue'
         self.get(page_url)
         self.wait_on(6, self.css1, INTRO_OVERLAY_CSS)
         self.css1(INTRO_OVERLAY_CSS).click()
@@ -1516,7 +1516,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     # Plant subgroups pages tests: the "plant preview" popups should
     # contain the expected characters.
 
-    INTRO_OVERLAY_CSS = '#intro-overlay .get-started'
+    INTRO_OVERLAY_CSS = '#intro-overlay .continue'
     PLANT_PREVIEW_LIST_ITEMS_CSS = '#sb-player .details dl'
     PLANT_PREVIEW_ITEM_CHAR_NAME_CSS = '#sb-player .details dl dt'
     PLANT_PREVIEW_ITEM_CHAR_VALUE_CSS = '#sb-player .details dl dd'

@@ -1001,7 +1001,7 @@ ul.option-list li.answered.active {
 #intro-overlay .number-of-questions {
     background-color: #508e31;
 }
-#intro-overlay .get-started {
+#intro-overlay .continue {
     background-color: #dc9402;
     border: 2px solid #dc9402;
     cursor: pointer;
