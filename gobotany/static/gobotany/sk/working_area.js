@@ -241,6 +241,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
        how many species would remain if each of our possible filter
        values were applied. */
     _on_filter_change: function() {
+        console.log('this refers to: ' + this);
         var div_map = this.div_map;
         _.map(this.filter_manager.compute_impact(this.filter), function(i) {
             var count_span_q = dojo.query('.count', div_map[i.value.choice]);
@@ -293,8 +294,12 @@ dojo.declare('gobotany.sk.working_area.Slider', [
     },
 
     dismiss: function() {
-        this.simple_slider.destroy();
-        dojo.query(this.slider_node).orphan();
+        if(this.simple_slider) {
+            this.simple_slider.destroy();
+        }
+        if(this.slide_node) { 
+            dojo.query(this.slider_node).orphan();
+        }
         this.simple_slider = this.slider_node = null;
         this.inherited(arguments);
     },
@@ -339,7 +344,15 @@ dojo.declare('gobotany.sk.working_area.Slider', [
     _value_changed: function() {
         var value = this._current_value();
         dojo.query('#simple-slider .count').html(value + '');
-    }
+    },
+
+    /* Sliders only have one filter value, so we don't need to compute
+       number of taxa for each "choice."  We also don't want to get
+       javascript errors from the parent version of this function, so
+       just override it with an empty function. */
+    _on_filter_change: function() {
+    },
+
 });
 
 /*
