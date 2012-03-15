@@ -58,10 +58,7 @@
 
     <body {% block body_attributes %}{% endblock %}>
 
-        {# Prompt to install Chrome Frame on IE 9 and below if needed #}
-        <!--[if lt IE 10]>
         {% include "simplekey/_chrome_frame.html" %}
-        <![endif]-->
 
         {# Note: So far, header has to be added per-page, since the  #}
         {# home page puts the header in a special container div that #}

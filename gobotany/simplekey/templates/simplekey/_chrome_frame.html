@@ -1,3 +1,5 @@
+        {# Prompt to install Chrome Frame on IE 9 and below if needed #}
+        <!--[if lt IE 10]>
         <script type="text/javascript"
             src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
         <div id="ie-note">
@@ -8,10 +10,24 @@
             or <a href="http://www.apple.com/safari/">Safari</a>.</p>
             <p>
             To use the site with Internet Explorer, you'll need the
-            <strong><a
-                href="http://www.google.com/chromeframe/?user=true&redirect=http://{{ request.META.HTTP_HOST }}/"
-                title="Install Google Chrome Frame">Google
-            Chrome Frame plug-in</a></strong>&#8212;a quick-and-easy
+            <strong>Google Chrome Frame plug-in</strong>: a quick-and-easy
             one-time install.</p>
+            <p>After installing it below, please re-start Internet
+            Explorer.</p>
             <img src="/static/images/branding/logo-toplevel.png" alt="">
         </div>
+        <script>
+            // The conditional ensures that this code will only execute in
+            // IE, so we can use the IE-specific attachEvent without worry.
+            //
+            // Set user mode in the URL to install in single-user, non-admin
+            // mode to help ensure success and so that the user should not
+            // have to "Enable" the plug-in.
+	        window.attachEvent("onload", function() {
+	            CFInstall.check({
+                    mode: "inline",
+		            url: "http://www.google.com/chromeframe/?user=true"
+                });
+            });
+        </script>
+        <![endif]-->
