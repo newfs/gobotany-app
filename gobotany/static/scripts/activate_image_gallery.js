@@ -35,7 +35,7 @@ require([
                 var rel = $(a).attr('rel');
                 var title = $(a).attr('title');
                 var galleryname = rel.split('[')[1].split(']')[0];
-                Shadowbox.setup('.img-gallery a', {
+                Shadowbox.setup('.img-gallery .images a', {
                     onOpen: photo_helper.prepare_to_enlarge,
                     onChange: photo_helper.prepare_to_enlarge,
                     onFinish: photo_helper.process_credit

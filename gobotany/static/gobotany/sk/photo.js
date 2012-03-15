@@ -53,7 +53,7 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
         if (scientific_name.length > 0) {
             name = dojo.trim(scientific_name[0].innerHTML) + '.';
         }
-        else {
+        else if (title_parts[1] !== undefined) {
             name = '<i>' + dojo.trim(title_parts[1]) + '</i>';
         }
         if (name.length > 0) {
