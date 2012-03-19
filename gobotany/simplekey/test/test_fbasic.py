@@ -201,6 +201,9 @@ class PlantOfTheDayFunctionalTests(FunctionalTestCase):
     def test_plant_of_the_day_feed_exists(self):
         f1 = self.get('/plantoftheday/')
         assert f1
+        h1 = self.css('h1')
+        assert not h1   # Feed should not have an HTML heading. If it does,
+                        # an error page is probably showing instead.
         f2 = self.get('/plantoftheday/atom.xml')
         assert f2
         assert f1 == f2
