@@ -92,12 +92,12 @@ Classification:
 {# boost ranking. This will be hidden from the user because it is    #}
 {# inside double-dash markers. #}
 {% with object.scientific_name as the_name %}
-    {% for i in 500|get_range %}
+    {% for i in 600|get_range %}
         {{ the_name }}
     {% endfor %}
 {% endwith %}
 {% for common_name in object.common_names.all %}
-    {% for i in 500|get_range %}
+    {% for i in 600|get_range %}
         {{ common_name }}
     {% endfor %}
 {% endfor %}
