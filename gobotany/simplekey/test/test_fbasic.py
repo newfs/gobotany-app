@@ -1328,9 +1328,14 @@ class GlossarizerFunctionalTests(FunctionalTestCase):
 
 class SpeciesFunctionalTests(FunctionalTestCase):
 
-    def test_species_page_photos_have_title_and_credit(self):
-        REGEX_PATTERN = '^.*: .*\. Photo by .*\. Copyright .*\s+NEWFS.'
-        self.get('/ferns/lycophytes/dendrolycopodium/dendroideum/')
+    def _photos_have_expected_caption_format(self, species_page_url):
+        # For a species page, make sure the plant photos have the expected
+        # format for title/alt text that gets formatted on the fly atop 
+        # each photo when it is viewed large. The text should contain a
+        # title, image type, contributor, copyright holder. It can also
+        # optionally have a "source" note at the end.
+        REGEX_PATTERN = '.*: .*\. ~ By .*\. ~ Copyright .*\s+.( ~ .\s+)?'
+        self.get(species_page_url)
         links = self.css('#species-images a')
         self.assertTrue(len(links))
         for link in links:
@@ -1341,6 +1346,15 @@ class SpeciesFunctionalTests(FunctionalTestCase):
         for image in images:
             alt_text = image.get_attribute('alt')
             self.assertTrue(re.match(REGEX_PATTERN, alt_text))
+
+    def test_species_page_photos_have_title_credit_copyright(self):
+        species_page_url = '/ferns/lycophytes/dendrolycopodium/dendroideum/'
+        self._photos_have_expected_caption_format(species_page_url)
+
+    def test_species_page_photos_have_title_credit_copyright_source(self):
+        # Some images on this page have "sources" specified for them.
+        species_page_url = ('/species/gymnocarpium/dryopteris/')
+        self._photos_have_expected_caption_format(species_page_url)
 
     def test_simple_key_species_page_has_breadcrumb(self):
         VALID_URLS_FOR_SPECIES = ['/ferns/monilophytes/adiantum/pedatum/',
@@ -1362,7 +1376,7 @@ class SpeciesFunctionalTests(FunctionalTestCase):
     def test_non_simple_key_species_page_has_note_about_data(self):
         # Temporarily, non-Simple-Key pages show a data disclaimer.
         self.get('/species/adiantum/aleuticum/')
-        self.assertTrue(self.css1('#main p.note'))
+        self.assertTrue(self.css1('.content .note'))
 
 
 class CharacterValueImagesFunctionalTests(FunctionalTestCase):
