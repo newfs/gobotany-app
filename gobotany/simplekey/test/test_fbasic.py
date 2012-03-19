@@ -1192,8 +1192,7 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
                          sorted(SUGGESTIONS))
 
     def test_simple_key_composites_suggestions_exist(self):
-        # 'Goldenrods' below has a typo to match the current CSV data.
-        SUGGESTIONS = ['daisies', 'goldnerods', 'aster family plants']
+        SUGGESTIONS = ['daisies', 'goldenrods', 'aster family plants']
         self.assertEqual(self._suggestions_found(SUGGESTIONS),
                          sorted(SUGGESTIONS))
 
