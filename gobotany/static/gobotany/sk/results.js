@@ -486,6 +486,7 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
         store.save();
         _.chain(this.filter_manager.compute_impact(filter))
             .filter(function(item) {return item.taxa.length > 0})
+            .sortBy(function(item) {return item.value.choice})
             .map(function(item) {store.newItem({name: item.value.choice})});
         store.save();
     },
