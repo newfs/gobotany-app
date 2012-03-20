@@ -427,11 +427,14 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                 '/">Details</a></td>';
             html += '</tr>';
         }
-        
+
         var table = dojo.create('table', {'innerHTML': html},
                                 this.plant_list);
-        var table_height = table.clientHeight;
-        $('.plant-list').height(table_height);
+
+        /* Remove any explicit style="height: ..." that might be left
+           over from image animations, since it will not apply to the
+           list format. */
+        $('.plant-list').removeAttr('style');
 
         sidebar_set_height();
 
