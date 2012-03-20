@@ -1529,18 +1529,18 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     # Plant subgroups pages tests: the "plant preview" popups should
     # contain the expected characters.
 
-    INTRO_OVERLAY_CSS = '#intro-overlay .continue'
     PLANT_PREVIEW_LIST_ITEMS_CSS = '#sb-player .details dl'
     PLANT_PREVIEW_ITEM_CHAR_NAME_CSS = '#sb-player .details dl dt'
     PLANT_PREVIEW_ITEM_CHAR_VALUE_CSS = '#sb-player .details dl dd'
     CLOSE_LINK_CSS = 'a#sb-nav-close'
 
     def _get_subgroup_page(self, subgroup):
+        seconds = 16   # Long max. time to handle big plant subgroups
         subgroup_page_url = '/%s/%s/' % (self.GROUPS[subgroup], subgroup)
         page = self.get(subgroup_page_url)
-        self.wait_on(13, self.css1, self.INTRO_OVERLAY_CSS)
-        self.css1(self.INTRO_OVERLAY_CSS).click()
-        self.wait_on(13, self.css1, 'div.plant.in-results')
+        self.wait_on(seconds, self.css1, '#exposeMask')
+        self.css1('#intro-overlay .continue').click()
+        self.wait_on(seconds, self.css1, 'div.plant.in-results')
         return page
 
     # Test that characters are present for several species, and that the
