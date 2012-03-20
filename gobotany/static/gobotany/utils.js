@@ -125,10 +125,13 @@ gobotany.utils.pretty_length = function(unit, mmvalue, show_unit) {
         }
     }
 
-    // If .0 is at the end, omit it.
-    if (value.indexOf('.0', value.length - 2) !== -1) {
+    // If .0 or .00 is at the end, omit.
+    if (value.indexOf('.00', value.length - 3) !== -1) {
+        value = value.substring(0, value.length - 3);
+    } else if (value.indexOf('.0', value.length - 2) !== -1) {
         value = value.substring(0, value.length - 2);
     }
+
     if (show_unit) {
         value += SPACE + unit;
     }

@@ -211,9 +211,9 @@ class PlantOfTheDayFunctionalTests(FunctionalTestCase):
 
 class FilterFunctionalTests(FunctionalTestCase):
 
-    def wait_on_species(self, expected_count):
+    def wait_on_species(self, expected_count, seconds=5):
         """Wait for a new batch of species to be displayed."""
-        self.wait_on(5, self.css1, 'div.plant.in-results')
+        self.wait_on(seconds, self.css1, 'div.plant.in-results')
 
         # Returning several hundred divs takes ~10 seconds, so we have
         # jQuery count the divs for us and just return the count.
@@ -430,7 +430,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get(
             '/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn&_visible=plant_height_rn'
             )
-        self.wait_on_species(499)
+        self.wait_on_species(499, seconds=12)   # Big subgroup, wait longer
 
         sidebar_value_span = self.css1('#plant_height_rn .value')
         range_div = self.css1(RANGE_DIV_CSS)
@@ -454,7 +454,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertIn('to the 212 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '1000'
-        self.assertIn('to the 178 matching species', instructions.text)
+        self.assertIn('to the 183 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '10000'
         self.assertIn('to the 1 matching species', instructions.text)
@@ -464,7 +464,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Submitting when there are no matching species does nothing.
 
-        unknowns = 49
+        unknowns = 41
 
         apply_button.click()  # should do nothing
         self.wait_on_species(499)
@@ -481,17 +481,17 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertIn('to the 1 matching species', instructions.text)
         apply_button.click()
         self.wait_on_species(unknowns + 1)
-        self.assertEqual(sidebar_value_span.text, '10000.0 mm')
+        self.assertEqual(sidebar_value_span.text, '10000 mm')
 
         self.css1(FILTER_LINK_CSS).click()
         measure_input = self.css1(INPUT_METRIC_CSS)
         measure_input.send_keys('10000')
         measure_input.send_keys(Keys.BACK_SPACE)  # '1000'
         instructions = self.css1(INSTRUCTIONS_CSS)
-        self.assertIn('to the 178 matching species', instructions.text)
+        self.assertIn('to the 183 matching species', instructions.text)
         apply_button.click()
-        self.wait_on_species(unknowns + 178)
-        self.assertEqual(sidebar_value_span.text, '1000.0 mm')
+        self.wait_on_species(unknowns + 183)
+        self.assertEqual(sidebar_value_span.text, '1000 mm')
 
         # Switch to cm and then m.
 
@@ -505,7 +505,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertIn('to the 1 matching species', instructions.text)
         apply_button.click()
         self.wait_on_species(unknowns + 1)
-        self.assertEqual(sidebar_value_span.text, '1000.0 cm')
+        self.assertEqual(sidebar_value_span.text, '1000 cm')
 
         self.css1(FILTER_LINK_CSS).click()
         measure_input = self.css1(INPUT_METRIC_CSS)
@@ -517,7 +517,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertEqual('', instructions.text)
         apply_button.click()  # should do nothing
         self.wait_on_species(unknowns + 1)
-        self.assertEqual(sidebar_value_span.text, '1000.0 cm')
+        self.assertEqual(sidebar_value_span.text, '1000 cm')
 
         self.css1(FILTER_LINK_CSS).click()
         measure_input = self.css1(INPUT_METRIC_CSS)
@@ -533,9 +533,9 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         measure_input.send_keys(Keys.BACK_SPACE)  # '10'
         self.assertIn('to the 1 matching species', instructions.text)
-        apply_button.click()  # should do nothing
+        apply_button.click()
         self.wait_on_species(unknowns + 1)
-        self.assertEqual(sidebar_value_span.text, '10.00 m')
+        self.assertEqual(sidebar_value_span.text, '10 m')
 
     def test_length_filter_display_on_page_load(self):
         self.get('/')  # to start fresh and prevent partial reload
@@ -543,11 +543,12 @@ class FilterFunctionalTests(FunctionalTestCase):
                  '#_filters=family,genus,plant_height_rn'
                  '&_visible=plant_height_rn'
                  '&plant_height_rn=5000')
-        unknowns = 49
-        self.wait_on_species(unknowns + 9)
+        unknowns = 41
+        self.wait_on_species(unknowns + 9,
+                             seconds=12)   # Big subgroup, wait longer
 
         sidebar_value_span = self.css1('#plant_height_rn .value')
-        self.assertEqual(sidebar_value_span.text, '5000.0 mm')
+        self.assertEqual(sidebar_value_span.text, '5000 mm')
 
     def test_plant_preview_popup_appears(self):
         d = self.get('/ferns/lycophytes')
