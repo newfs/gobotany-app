@@ -20,7 +20,9 @@
                   {% if video.youtube_id %}
                     <img class="shadow" src="http://img.youtube.com/vi/{{ video.youtube_id }}/0.jpg" alt="">
                   {% else %}
-                    <img class="shadow" src="http://img.youtube.com/vi/" alt="">
+                    <div class="missing-image">
+                      <p>Video not available yet</p>
+                    </div>
                   {% endif %}
                 </a>
                 <h4>{{ video.title }}</h4>

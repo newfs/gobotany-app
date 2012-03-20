@@ -819,7 +819,7 @@ a.get-more-info:active {
     -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
 
-.plant-list .plant .img-container .missing-image {
+.missing-image {
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
     background: -moz-linear-gradient(center top , #eaf2e2, #d6e6c5) repeat scroll 0 0 transparent;
     color: #354d1e;
@@ -827,7 +827,7 @@ a.get-more-info:active {
     position: relative;
     width: 160px;
 }
-.plant-list .plant .img-container .missing-image p {
+.missing-image p {
     font-size: 12px;
     height: 40px;
     left: 50%;
@@ -2041,6 +2041,15 @@ img.margin-bookcover {
 .video-topic img {
     height: 137px;
     width: 220px;
+}
+.video-topic .missing-image {
+    border: 1px solid black;
+    height: 135px;
+    width: 218px;
+}
+.video-topic .missing-image p {
+    white-space: nowrap;
+    margin-left: -60px;
 }
 
 /* Legal information page styles */
