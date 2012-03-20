@@ -2587,6 +2587,7 @@ nav #search-suggest .menu a:hover, #search-suggest .menu li:hover {
     text-decoration: underline;
 }
 #ie-note img {
+    background-color: #fff;
     clip: rect(0px,255px,108px,0px);
     overflow: hidden;
     position: absolute;
