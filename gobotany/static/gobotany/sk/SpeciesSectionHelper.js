@@ -240,31 +240,29 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     var images_html = '';
                     var clicked_image = $('img', plant_link).attr('src');
                     console.log('* clicked_image:', clicked_image);
-                    if (clicked_image !== undefined) {
+
+                    if (clicked_image !== undefined)
                         clicked_image = clicked_image.substr(
                             clicked_image.lastIndexOf('/') + 1);
-                        console.log('** clicked_image:', clicked_image);
-                        var is_missing_image = $('div.missing-image',
-                            plant_link).length ? true : false;
-                        for (i = 0; i < taxon.images.length; i++) {
-                            var taxon_image = taxon.images[i];
-                            var new_image = '<img src="' +
-                                taxon_image.large_thumb_url + '" alt="' +
-                                taxon_image.title + '">';
-                            var taxon_image = taxon_image.large_thumb_url;
-                            taxon_image = taxon_image.substr(
-                                taxon_image.lastIndexOf('/') + 1);
-                            console.log('** taxon_image:', taxon_image);
-                            if (clicked_image === taxon_image &&
-                                !is_missing_image) {
 
-                                // Since this is the same image as was
-                                // clicked, show it first.
-                                images_html = new_image + images_html;
-                            }
-                            else {
-                                images_html += new_image;
-                            }
+                    var is_missing_image = $('div.missing-image', plant_link
+                                            ).length ? true : false;
+                    for (i = 0; i < taxon.images.length; i++) {
+                        var taxon_image = taxon.images[i];
+                        var new_image = '<img src="' +
+                            taxon_image.large_thumb_url + '" alt="' +
+                            taxon_image.title + '">';
+                        var taxon_image = taxon_image.large_thumb_url;
+                        taxon_image = taxon_image.substr(
+                            taxon_image.lastIndexOf('/') + 1);
+                        console.log('** taxon_image:', taxon_image);
+                        if (clicked_image === taxon_image &&
+                            !is_missing_image) {
+                            // Since this is the same image as was
+                            // clicked, show it first.
+                            images_html = new_image + images_html;
+                        } else {
+                            images_html += new_image;
                         }
                     }
                     dojo.html.set(
