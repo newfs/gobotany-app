@@ -28,11 +28,13 @@
                             {% endif %}
                         {% endfor %}
                     </div>
+                    {% if group.youtube_id %}
                     <p class="more-info">
                         <a rel="shadowbox;height=380;width=640;"
                             href="http://www.youtube.com/v/{{ group.youtube_id }}&amp;autoplay=1">
                         Get more info</a>
                     </p>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
@@ -55,11 +57,13 @@
                         </div>
                         <a class="choose-btn"
                             href="/{{ group.slug }}/{{ subgroup.slug }}/"></a>
+                        {% if subgroup.youtube_id %}
                         <p class="more-info">
                             <a rel="shadowbox;height=380;width=640;"
                                 href="http://www.youtube.com/v/{{ subgroup.youtube_id }}&amp;autoplay=1">
                             Get more info</a>
                         </p>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
