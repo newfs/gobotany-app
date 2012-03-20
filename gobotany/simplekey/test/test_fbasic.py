@@ -579,14 +579,12 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertTrue(len(linked_images) > 0)
         link = plant_links[0]
         link.click()
-        clicked_image = linked_images[0].get_attribute('src')
-        clicked_image = clicked_image[0:clicked_image.find('_jpg_')]
+        clicked_image = linked_images[0].get_attribute('src').split('/')[-1]
         POPUP_HEADING_CSS = '#sb-player div.modal-wrap div.inner h3'
         self.wait_on(5, self.css1, POPUP_HEADING_CSS)
         popup_images = self.css('#sb-player .img-gallery .images img')
         self.assertTrue(len(popup_images) > 0)
-        popup_image = popup_images[0].get_attribute('src')
-        popup_image = popup_image[0:popup_image.find('_jpg_')]
+        popup_image = popup_images[0].get_attribute('src').split('/')[-1]
         self.assertEqual(popup_image, clicked_image)
 
 

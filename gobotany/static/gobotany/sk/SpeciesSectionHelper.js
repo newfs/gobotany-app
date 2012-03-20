@@ -238,10 +238,12 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
                     // Add images.
                     var images_html = '';
-                    var clicked_image_path = $('img', plant_link).attr('src');
-                    if (clicked_image_path !== undefined) {
-                        clicked_image_path = clicked_image_path.substr(
-                            0, clicked_image_path.indexOf('_jpg_'));
+                    var clicked_image = $('img', plant_link).attr('src');
+                    console.log('* clicked_image:', clicked_image);
+                    if (clicked_image !== undefined) {
+                        clicked_image = clicked_image.substr(
+                            clicked_image.lastIndexOf('/') + 1);
+                        console.log('** clicked_image:', clicked_image);
                         var is_missing_image = $('div.missing-image',
                             plant_link).length ? true : false;
                         for (i = 0; i < taxon.images.length; i++) {
@@ -249,11 +251,11 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                             var new_image = '<img src="' +
                                 taxon_image.large_thumb_url + '" alt="' +
                                 taxon_image.title + '">';
-                            var taxon_image_path = 
-                                taxon_image.large_thumb_url;
-                            taxon_image_path = taxon_image_path.substr(
-                                0, taxon_image_path.indexOf('_jpg_'));
-                            if (clicked_image_path === taxon_image_path &&
+                            var taxon_image = taxon_image.large_thumb_url;
+                            taxon_image = taxon_image.substr(
+                                taxon_image.lastIndexOf('/') + 1);
+                            console.log('** taxon_image:', taxon_image);
+                            if (clicked_image === taxon_image &&
                                 !is_missing_image) {
 
                                 // Since this is the same image as was
