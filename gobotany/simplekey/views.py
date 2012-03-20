@@ -556,18 +556,18 @@ def rulertest(request):
 def suggest_view(request):
     # Return some search suggestions for the auto-suggest feature.
     MAX_RESULTS = 10
-    query = request.GET.get('q', '')
+    query = request.GET.get('q', '').lower()
     suggestions = []
     if query != '':
-        # This query is case-insensitive while the database field is
-        # case-sensitive. By querying case-insensitively here, if
-        # the import process did not screen duplicates, then duplicate
-        # suggestions will be returned. However, this is better than
-        # querying case-sensitively and potentially missing a bunch
-        # of valid suggestion results because cases didn't match.
+        # This query is case-sensitive for better speed than using a
+        # case-insensitive query. The database field is also case-
+        # sensitive, so it is important that all SearchSuggestion
+        # records be lowercased before import to ensure that they
+        # can be reached.
         suggestions = list(SearchSuggestion.objects.filter(
-            term__istartswith=query).values_list('term',
-            flat=True)[:MAX_RESULTS * 2])
+            term__startswith=query).values_list('term',
+            flat=True)[:MAX_RESULTS * 2])   # Fetch extra in case of
+                                            # case-sensitive duplicates
         # Remove any duplicates due to case-sensitivity and pare down to
         # the desired number of results.
         suggestions = list(set(

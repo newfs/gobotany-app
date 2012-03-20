@@ -1693,6 +1693,7 @@ class Importer(object):
 
         table = db.table('simplekey_searchsuggestion')
         for term in terms:
+            term = term.lower()
             table.get(term=term)
         table.save()
 
@@ -1707,6 +1708,7 @@ class Importer(object):
             suggestions.extend(subgroup.search_suggestions())
         suggestions = list(set(suggestions))   # remove duplicates
         for suggestion in suggestions:
+            suggestion = suggestion.lower()
             s, created = SearchSuggestion.objects.get_or_create(
                 term=suggestion)
             if created:
