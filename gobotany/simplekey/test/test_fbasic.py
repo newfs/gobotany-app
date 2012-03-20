@@ -1383,19 +1383,19 @@ class SpeciesFunctionalTests(FunctionalTestCase):
 class CharacterValueImagesFunctionalTests(FunctionalTestCase):
 
     def _character_value_images_exist(self, page_url, character_short_name,
-                                      character_value_image_ids):
-        INTRO_OVERLAY_CSS = '#intro-overlay .continue'
+                                      character_value_image_ids, seconds=15):
         self.get(page_url)
-        self.wait_on(6, self.css1, INTRO_OVERLAY_CSS)
-        self.css1(INTRO_OVERLAY_CSS).click()
+        self.wait_on(seconds, self.css1, '#exposeMask')
+        self.css1('#intro-overlay .continue').click()
 
         # Click on a question that has character value images.
+        self.wait_on(seconds, self.css1, 'li#habitat_general')
         question_css = 'li#%s' % character_short_name
-        self.wait_on(6, self.css1, question_css)
+        self.wait_on(seconds, self.css1, question_css)
         self.css1(question_css).click()
 
         # Verify the HTML for the images expected in the working area.
-        self.wait_on(6, self.css1, '.choices')
+        self.wait_on(seconds, self.css1, '.choices')
         for image_id in character_value_image_ids:
             image_css = '.choices img#%s' % image_id
             self.assertTrue(self.css1(image_css))
@@ -1426,13 +1426,13 @@ class CharacterValueImagesFunctionalTests(FunctionalTestCase):
 
     def test_carex_character_value_images_exist(self):
         self._character_value_images_exist(
-            '/graminoids/carex',
+            '/graminoids/carex/',
             'perigynia_indument_ca',   # Q: "Fruit texture?"
             ['carex-perigynium-hairy', 'carex-perigynium-smooth'])
 
     def test_poaceae_character_value_images_exist(self):
         self._character_value_images_exist(
-            '/graminoids/poaceae',
+            '/graminoids/poaceae/',
             'inflorescence_branches_general_po',# Q: "Inflorescence branches?"
             ['inflo-branch-present-po', 'inflo-branch-no-po'])
 
@@ -1486,9 +1486,7 @@ class CharacterValueImagesFunctionalTests(FunctionalTestCase):
         self._character_value_images_exist(
             '/non-monocots/remaining-non-monocots/',
             'leaf_type_general_rn',   # Q: "Leaf type?"
-            ['leaf-type-compound-rn',
-             # 7 Feb 2012: missimg image for "simple"
-            ])
+            ['leaf-type-compound-rn', 'leaf-type-simple-rn'])
 
 
 class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
