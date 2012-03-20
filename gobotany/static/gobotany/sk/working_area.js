@@ -244,13 +244,17 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         console.log('this refers to: ' + this);
         var div_map = this.div_map;
         _.map(this.filter_manager.compute_impact(this.filter), function(i) {
-            var count_span_q = dojo.query('.count', div_map[i.value.choice]);
+            var div = div_map[i.value.choice];
+            var count_span_q = dojo.query('.count', div);
             count_span_q.html('(' + i.taxa.length + ')');
-            var input_field_q = dojo.query('input', div_map[i.value.choice]);
-            if (i.taxa.length === 0)
+            var input_field_q = dojo.query('input', div);
+            if (i.taxa.length === 0) {
+                $(div).addClass('disabled');
                 input_field_q.attr('disabled', 'disabled');
-            else
+            } else {
+                $(div).removeClass('disabled');
                 input_field_q.attr('disabled', false); // remove the attribute
+            }
         });
     },
 
