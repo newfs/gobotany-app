@@ -26,19 +26,28 @@ def c(rgbhex):
 
 PIXEL_STATUSES = [
     # From the http://www.bonap.org/MapKey.html page:
-    (c(0x008000), 'present|native'),
-    (c(0x00FF00), 'present'),
-    (c(0xFE0000), 'absent|extinct'),
-    (c(0x00DD90), 'present|adventive|native'),
-    (c(0x3AB2E6), 'absent|waif'),
-    (c(0x57A6FF), 'absent|waif'), # another waif color? see Galeopsis ladanum
-    (c(0x0000EA), 'present|exotic'),
-    (c(0xFFFF00), 'present|rare'),
-    (c(0xFF00FE), 'present|noxious'),
-    (c(0x000000), 'absent|eradicated'),
-    (c(0xAD8E00), 'absent'),
-    (c(0xFE9900), 'absent|extirpated'),
-    (c(0x00FFFF), 'present|exotic'),
+
+    # "State color key" (from top to bottom)
+
+    (c(0x008000), 'Species present in state and native'),
+    (c(0x0000EA), 'Species present in state and exotic'),
+    (c(0xAD8E00), 'Species not present in state'),
+
+    # "County color key" (three rows, from left to right)
+
+    (c(0x00FF00), 'Species present and not rare'),
+    (c(0xFE0000), 'Species extinct'),
+    (c(0x00DD90), 'Species native, but adventive in state'),
+    (c(0x3AB2E6), 'Species waif'),
+    # Another waif color? see Galeopsis ladanum:
+    (c(0x57A6FF), 'Species waif'),
+
+    (c(0xFFFF00), 'Species present and rare'),
+    (c(0xFF00FE), 'Species noxious'),
+    (c(0x000000), 'Species eradicated'),
+
+    (c(0xFE9900), 'Species extirpated (historic)'),
+    (c(0x00FFFF), 'Species exotic and present'),
     ]
 
 del c
@@ -261,8 +270,8 @@ def main():
     args = parser.parse_args()
 
     thisdir = dirname(__file__)
-    topdir = dirname(dirname(dirname(dirname(thisdir))))
-    datadir = join(topdir, 'buildout-myplants', 'data')
+    topdir = dirname(dirname(dirname(thisdir)))
+    datadir = join(topdir, 'gobotany-deploy', 'data')
 
     taxa_path = join(datadir, 'taxa.csv')
 
