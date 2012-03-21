@@ -371,6 +371,7 @@ dojo.declare('gobotany.sk.working_area.Length', [
     permitted_ranges: [],  // [{min: n, max: m}, ...] all measured in mm
     species_vector: [],
     unit: 'mm',
+    is_metric: true,
     factor: 1.0,
     factormap: {'mm': 1.0, 'cm': 10.0, 'm': 1000.0, 'in': 25.4, 'ft': 304.8},
 
@@ -379,40 +380,45 @@ dojo.declare('gobotany.sk.working_area.Length', [
 
     _draw_specifics: function() {
         var v = dojo.query('div.working-area .values');
+
+        this._set_unit(this.filter.display_units || 'mm');
+        this_unit = this.unit;  // for the use of our inner functions
         var value = this.filter.selected_value;
         if (value === null)
             value = '';
+        else
+            value = value / this.factor;
+
+        var radio_for = function(unit) {
+            return '<label><input name="units" type="radio" value="' + unit +
+                '"' + (unit === this_unit ? ' checked' : '') +
+                '>' + unit + '</label>';
+        };
+
+        var input_for = function(name, insert_value) {
+            return '<input class="' + name + '" name="' + name +
+                '" type="text"' +
+                (insert_value ? ' value="' + value + '"' : ' disabled') +
+                '>';
+        };
+
         v.empty().addClass('numeric').removeClass('multiple').html(
             '<div class="permitted_ranges"></div>' +
             '<div class="current_length"></div>' +
 
             '<div class="measurement">' +
             'Metric length: ' +
-            '<input class="measure_metric" name="measure_metric"' +
-            ' type="text" value="' +
-            value +
-            '">' +
-            '<label>' +
-            '<input name="units" type="radio" value="mm" checked>mm' +
-            '</label>' +
-            '<label>' +
-            '<input name="units" type="radio" value="cm">cm' +
-            '</label>' +
-            '<label>' +
-            '<input name="units" type="radio" value="m">m' +
-            '</label>' +
+            input_for('measure_metric', this.is_metric) +
+            radio_for('mm') +
+            radio_for('cm') +
+            radio_for('m') +
             '</div>' +
 
             '<div class="measurement">' +
             'English length: ' +
-            '<input class="measure_english" name="measure_english" ' +
-            'type="text" value="" disabled>' +
-            '<label>' +
-            '<input name="units" type="radio" value="in">in' +
-            '</label>' +
-            '<label>' +
-            '<input name="units" type="radio" value="ft">ft' +
-            '</label>' +
+            input_for('measure_english', ! this.is_metric) +
+            radio_for('in') +
+            radio_for('ft') +
             '</div>' +
 
             '<div class="instructions">' +
@@ -431,19 +437,23 @@ dojo.declare('gobotany.sk.working_area.Length', [
     },
 
     _current_value: function() {
-        var selector = this.is_english ? '[name="measure_english"]' :
-            '[name="measure_metric"]';
+        var selector = this.is_metric ? '[name="measure_metric"]' :
+            '[name="measure_english"]';
         var text = dojo.query(selector, this.div).attr('value')[0];
         var mm = parseFloat(text) * this.factor;
         return isNaN(mm) ? null : mm;
     },
 
-    _unit_changed: function(event) {
-        this.unit = event.target.value;
+    _set_unit: function(unit) {
+        this.unit = unit;
         this.factor = this.factormap[this.unit];
-        this.is_english = (this.unit == 'in' || this.unit == 'ft');
-        dojo.query('.measure_metric').attr('disabled', this.is_english);
-        dojo.query('.measure_english').attr('disabled', ! this.is_english);
+        this.is_metric = /m$/.test(this.unit);
+    },
+
+    _unit_changed: function(event) {
+        this._set_unit(event.target.value);
+        dojo.query('.measure_metric').attr('disabled', ! this.is_metric);
+        dojo.query('.measure_english').attr('disabled', this.is_metric);
         this._redraw_permitted_ranges();
         this._measure_changed();
     },
@@ -454,7 +464,11 @@ dojo.declare('gobotany.sk.working_area.Length', [
         vector = _.intersect(vector, this.species_vector);
         var div = dojo.query('.instructions', this.div);
         var apply_button = dojo.query('.apply-btn', this.div);
-        if (vector.length > 0) {
+        if (parseFloat(this.filter.selected_value) === mm) {
+            instructions = 'Change the value to narrow your selection to a' +
+                ' new set of matching species.';
+            apply_button.addClass('disabled');
+        } else if (vector.length > 0) {
             instructions = 'Press “Apply” to narrow your selection to the ' +
                 vector.length + ' matching species.';
             apply_button.removeClass('disabled');
