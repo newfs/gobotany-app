@@ -117,19 +117,45 @@ class PlantDistributionMap(ChloroplethMap):
         self.legend = Legend(self.svg_map, self.maximum_legend_items)
 
     def _get_label_for_status(self, status):
-        """Return the appropriate label for a distribution status string."""
+        """Return the appropriate label for a distribution status string.
+
+        Because the Go Botany maps are aimed at a general audience, the
+        Go Botany map labels are fewer and simpler than those found on
+        the source maps.
+        """
         label = ''
-        if 'exotic' in status:
-           label = 'introduced'
+        status = status.lower()
+        if 'exotic' in status or 'waif' in status:
+            # Covers status:
+            # "Species present in state and exotic"
+            # "Species exotic and present"
+            # "Species waif"
+            label = 'introduced'
         elif 'noxious' in status:
-           label = 'invasive'
-        elif 'extirpated' in status:
-           label = 'historic'
-        elif 'rare' in status:
-           label = 'rare'
-        elif 'native' in status or 'present' in status:
+            # Covers status:
+            # "Species noxious"
+            label = 'invasive'
+        elif 'extirpated' in status or 'extinct' in status:
+            # Covers status:
+            # "Species extirpated (historic)"
+            # "Species extinct"
+            label = 'historic'
+        elif 'and rare' in status:
+            # Covers status:
+            # "Species present and rare"
+            label = 'rare'
+        elif 'native' in status or 'species present' in status:
+            # Covers status:
+            # "Species present in state and native"
+            # "Species present and not rare"
+            # "Species native, but adventive in state"
             label = 'native'
-        elif 'absent' in status:
+        elif ('not present' in status or 'eradicated' in status or
+              'questionable' in status):
+            # Cover status:
+            # "Species not present in state"
+            # "Species eradicated"
+            # "Questionable Presence (cross-hatched)"
             label = 'absent'
         return label
 
