@@ -372,6 +372,7 @@ dojo.declare('gobotany.sk.working_area.Length', [
     species_vector: [],
     unit: 'mm',
     factor: 1.0,
+    factormap: {'mm': 1.0, 'cm': 10.0, 'm': 1000.0, 'in': 25.4, 'ft': 304.8},
 
     clear: function() {
     },
@@ -439,8 +440,7 @@ dojo.declare('gobotany.sk.working_area.Length', [
 
     _unit_changed: function(event) {
         this.unit = event.target.value;
-        this.factor = ({'mm': 1.0, 'cm': 10.0, 'm': 1000.0,
-                        'in': 25.4, 'ft': 304.8})[this.unit];
+        this.factor = this.factormap[this.unit];
         this.is_english = (this.unit == 'in' || this.unit == 'ft');
         dojo.query('.measure_metric').attr('disabled', this.is_english);
         dojo.query('.measure_english').attr('disabled', ! this.is_english);
