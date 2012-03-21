@@ -396,22 +396,22 @@ class ImportTestCase(TestCase):
         self.db = bulkup.Database(connection)
 
     def test_character_short_name_retains_pile_suffix(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         short_name = im.character_short_name('this_is_a_character_ly')
         self.assertEquals('this_is_a_character_ly', short_name)
 
     def test_character_short_name_removes_min(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         short_name = im.character_short_name('this_is_a_length_char_min_ly')
         self.assertEquals('this_is_a_length_char_ly', short_name)
 
     def test_character_short_name_removes_max(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         short_name = im.character_short_name('this_is_a_length_char_max_ly')
         self.assertEquals('this_is_a_length_char_ly', short_name)
 
     def test_import_characters(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         im._import_characters(self.db, testdata('characters.csv'))
         f = open(testdata('characters.csv'))
         content = f.read()
@@ -421,18 +421,18 @@ class ImportTestCase(TestCase):
         self.assertEquals(len(models.Character.objects.all()), expected)
 
     def test_import_taxons(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         im._import_partner_sites(self.db)
         im._import_taxa(testdata('taxa.csv'))
         self.assertEquals(len(models.Taxon.objects.all()), 71)
 
     def test_clean_up_html_non_breaking_spaces(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         self.assertEquals('Remove non-breaking spaces. Please.',
             im._clean_up_html('Remove non-breaking spaces. &nbsp;Please.'))
 
     def test_clean_up_html_font_tags(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         html = ('<div><font color=""#333333"">non-grasses have very narrow '
                 'leaves, but produce showy flowers</font></div>')
         expected = ('<div>non-grasses have very narrow leaves, but produce '
@@ -440,7 +440,7 @@ class ImportTestCase(TestCase):
         self.assertEquals(expected, im._clean_up_html(html))
 
     def test_has_unexpected_delimiter(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         text = 'This, has, no, unexpected, delimiter'
         self.assertFalse(im._has_unexpected_delimiter(text,
                         unexpected_delimiter='|'))
@@ -449,18 +449,18 @@ class ImportTestCase(TestCase):
                          unexpected_delimiter='|'))
 
     def test_create_character_name(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         name = im._create_character_name('stamen_morphology')
         self.assertEqual('Stamen morphology', name)
 
     def test_get_character_friendly_name(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         friendly_name = im._get_character_friendly_name( \
             'spike_number_per_stem', 'Number of spikes')
         self.assertEqual('Number of spikes', friendly_name)
 
     def test_get_character_friendly_name_not_defined(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         friendly_name = im._get_character_friendly_name('plant_habit', '')
         self.assertEqual('Plant habit', friendly_name)
         friendly_name = im._get_character_friendly_name('leaf_disposition',
@@ -473,19 +473,19 @@ class StateStatusTestCase(TestCase):
     DISTRIBUTION = ['MA', 'VT']
 
     def test_get_state_status_is_present(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         status = im._get_state_status('MA', self.DISTRIBUTION)
         self.assertEqual('present', status)
 
     def test_get_state_status_is_absent(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         status = im._get_state_status('CT', self.DISTRIBUTION)
         self.assertEqual('absent', status)
 
     def test_get_state_status_is_absent_and_has_conservation_status(self):
         # Exclude extinct status ('X') from this list; it is an exception
         # and has its own test.
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         status_codes = ['E', 'T', 'SC', 'SC*', 'H', 'C']
         for status_code in status_codes:
             status = im._get_state_status('CT', self.DISTRIBUTION,
@@ -493,19 +493,19 @@ class StateStatusTestCase(TestCase):
             self.assertEqual('absent', status)
 
     def test_get_state_status_is_endangered(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         status = im._get_state_status('MA', self.DISTRIBUTION,
                                       conservation_status_code='E')
         self.assertEqual('present, endangered', status)
 
     def test_get_state_status_is_threatened(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         status = im._get_state_status('MA', self.DISTRIBUTION,
                                       conservation_status_code='T')
         self.assertEqual('present, threatened', status)
 
     def test_get_state_status_has_special_concern(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         status_codes = ['SC', 'SC*']
         for status_code in status_codes:
             status = im._get_state_status('MA', self.DISTRIBUTION,
@@ -513,13 +513,13 @@ class StateStatusTestCase(TestCase):
             self.assertEqual('present, special concern', status)
 
     def test_get_state_status_is_historic(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         status = im._get_state_status('MA', self.DISTRIBUTION,
                                       conservation_status_code='H')
         self.assertEqual('present, historic', status)
 
     def test_get_state_status_is_extinct(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         status = im._get_state_status('ME', self.DISTRIBUTION,
                                       conservation_status_code='X')
         self.assertEqual('extinct', status)
@@ -529,26 +529,26 @@ class StateStatusTestCase(TestCase):
         self.assertEqual('extinct', status)
 
     def test_get_state_status_is_rare(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         status = im._get_state_status('MA', self.DISTRIBUTION,
                                       conservation_status_code='C')
         self.assertEqual('present, rare', status)
 
     def test_get_state_status_is_invasive(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         status = im._get_state_status('MA', self.DISTRIBUTION,
                                       is_invasive=True)
         self.assertEqual('present, invasive', status)
 
     def test_get_state_status_is_invasive_and_prohibited(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         status = im._get_state_status('MA', self.DISTRIBUTION,
                                       is_invasive=True,
                                       is_prohibited=True)
         self.assertEqual('present, invasive, prohibited', status)
 
     def test_get_state_status_is_absent_and_prohibited(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         status = im._get_state_status('ME', self.DISTRIBUTION,
                                       is_prohibited=True)
         self.assertEqual('absent, prohibited', status)
@@ -557,18 +557,18 @@ class StateStatusTestCase(TestCase):
 class StripTaxonomicAuthorityTestCase(TestCase):
 
     def test_strip_taxonomic_authority_species(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         name = im._strip_taxonomic_authority('Viburnum cassanoides L.')
         self.assertEqual('Viburnum cassanoides', name)
 
     def test_strip_taxonomic_authority_species_extra_punctuation(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Actaea alba, of authors not (L.) P. Mill.')
         self.assertEqual('Actaea alba', name)
 
     def test_strip_taxonomic_authority_subspecies(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Lysimachia lanceolata subsp. hybrida (Michx.) J.D. Ray')
         self.assertEqual('Lysimachia lanceolata subsp. hybrida', name)
@@ -578,19 +578,19 @@ class StripTaxonomicAuthorityTestCase(TestCase):
         self.assertEqual('Lysimachia lanceolata ssp. hybrida', name)
 
     def test_strip_taxonomic_authority_variety(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Vitis labrusca var. subedentata Fern.')
         self.assertEqual('Vitis labrusca var. subedentata', name)
 
     def test_strip_taxonomic_authority_subvariety(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Potentilla anserina subvar. minima (Peterm. ex Th.Wolf) Th.Wolf')
         self.assertEqual('Potentilla anserina subvar. minima', name)
 
     def test_strip_taxonomic_authority_forma(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             ('Acanthocalycium spiniflorum f. klimpelianum (Weidlich & '
              'Werderm.) Donald'))
@@ -603,35 +603,35 @@ class StripTaxonomicAuthorityTestCase(TestCase):
                          name)
 
     def test_strip_taxonomic_authority_subforma(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Saxifraga aizoon subf. surculosa Engl. & Irmsch.')
         self.assertEqual('Saxifraga aizoon subf. surculosa', name)
 
     def test_strip_taxonomic_authority_infraspecific_epithet_later(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Actaea spicata L. ssp. rubra (Ait.) Hulten')
         self.assertEqual('Actaea spicata ssp. rubra', name)
         # Test another connector, with the epithet coming even later.
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Gerardia paupercula (Gray) Britt. var. typica Pennell')
         self.assertEqual('Gerardia paupercula var. typica', name)
 
     def test_strip_taxonomic_authority_skip_consecutive_connector(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Betula lutea Michx. f. var. fallax Fassett')
         self.assertEqual('Betula lutea var. fallax', name)
 
     def test_strip_taxonomic_authority_no_epithet_after_connector(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         name = im._strip_taxonomic_authority('Betula lutea Michx. f.')
         self.assertEqual('Betula lutea', name)
 
     def test_strip_taxonomic_authority_unexpected_characters(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         # This name has some undesirable character data in it (showing up as
         # a dagger here), as copied from the CSV. It is decoded here using
         # Windows-1252 like the importer does when reading CSV files (see
@@ -643,7 +643,7 @@ class StripTaxonomicAuthorityTestCase(TestCase):
         self.assertEqual('Cornus amomum var. schuetzeana', name)
 
     def test_strip_taxonomic_authority_missing_space_after_epithet(self):
-        im = importer.Importer(StringIO())
+        im = importer.Importer()
         name_missing_space = 'Lycopodium annotinum var. montanumTuckerman'
         name = im._strip_taxonomic_authority(name_missing_space)
         self.assertEqual('Lycopodium annotinum var. montanum', name)
@@ -661,7 +661,7 @@ def setup_integration(test):
     pile1.pilegroup = pilegroup1
     pile1.save()
 
-    im = importer.Importer(StringIO())
+    im = importer.Importer()
 
     im._import_piles(testdata('pile_info.csv'), None)
     im._import_taxa(testdata('taxa.csv'))
