@@ -39,7 +39,7 @@ define([
     module.pile_best_characters = _.memoize(function(args) {
         return module.get('piles/' + args.pile_slug + '/characters/', {
             choose_best: 3,
-            species_id: args.species_ids,
+            species_ids: args.species_ids.join('_'),
             character_group_id: args.character_group_ids,
             exclude: args.exclude_characters
         });

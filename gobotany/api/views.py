@@ -164,7 +164,8 @@ def piles_characters(request, pile_slug):
         characters.extend(_get_characters(include_short_names))
 
     choose_best = int(request.GET.get('choose_best', 0))
-    species_ids = request.GET.getlist('species_id')
+    species_ids = request.GET.get('species_ids', '')
+    species_ids = species_ids.split('_') if species_ids.strip() else ()
 
     if choose_best and species_ids:
         character_group_ids = set(
