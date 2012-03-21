@@ -446,11 +446,15 @@ dojo.declare('gobotany.sk.working_area.Length', [
         var vector = this.filter.species_matching(mm);
         vector = _.intersect(vector, this.species_vector);
         var div = dojo.query('.instructions', this.div);
-        if (vector.length > 0)
+        var apply_button = dojo.query('.apply-btn', this.div);
+        if (vector.length > 0) {
             instructions = 'Press “Apply” to narrow your selection to the ' +
                 vector.length + ' matching species.';
-        else
+            apply_button.removeClass('disabled');
+        } else {
             instructions = '';
+            apply_button.addClass('disabled');
+        }
         div.html(instructions);
 
         // Stash a hint about how the sidebar should display our value.
