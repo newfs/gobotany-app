@@ -138,30 +138,57 @@ def create_distribution_records():
     # province, or territory level. These records will be present
     # alongside the New England records.
     distribution_data = {
-        'Dendrolycopodium dendroideum': [('Piscataquis', 'ME', 'native'),
-            ('Coos', 'NH', 'native'), ('Worcester', 'MA', 'native'),
-            ('Kent', 'RI', 'rare'), ('Orange', 'VT', 'native'),
-            ('New London', 'CT', 'native'), ('Dutchess', 'NY', 'native'),
-            ('sussex', 'nj', 'rare'), ('Lawrence', 'PA', 'native'),
-            ('', 'NS', 'present'), ('Albert', 'NB', 'present'),
-            ('Terrebone', 'QC', 'present'), ('', 'ON', 'present'),
-            ('', 'MB', 'present'), ('', 'SK', 'present'),
-            ('', 'AB', 'present'), ('', 'BC', 'present'),
-            ('', 'ME', 'native'), ('', 'NH', 'native'), ('', 'MA', 'native'),
-            ('', 'RI', 'rare'), ('', 'VT', 'native'), ('', 'CT', 'native'),
-            ('', 'NY', 'native'), ('', 'nj', 'rare'), ('', 'PA', 'native')],
-        'Vaccinium vitis-idaea ssp. minus': [('Pistcataquis', 'ME', 'native'),
-            ('Coos', 'NH', 'native'), ('Worcester', 'MA', 'rare'),
-            ('Kent', 'RI', 'absent'), ('Orange', 'VT', 'native'),
-            ('New London', 'CT', 'native'), ('Dutchess', 'NY', 'native'),
-            ('Sussex', 'NJ', 'rare'), ('lawrence', 'pa', 'native'),
-            ('Halifax', 'NS', 'present'), ('', 'NB', 'present'),
-            ('', 'QC', 'present'), ('Cochrane', 'ON', 'present'),
-            ('Dauphin', 'MB', 'present'), ('', 'SK', 'present'),
-            ('Cypress', 'AB', 'present'), ('', 'BC', 'present'),
-            ('', 'ME', 'native'), ('', 'NH', 'native'), ('', 'MA', 'rare'),
-            ('', 'RI', 'absent'), ('', 'VT', 'native'), ('', 'CT', 'native'),
-            ('', 'NY', 'native'), ('', 'NJ', 'rare'), ('', 'pa', 'native')]
+        'Dendrolycopodium dendroideum': [
+            ('Piscataquis', 'ME', 'Species present and not rare'),
+            ('Coos', 'NH', 'Species present and not rare'),
+            ('Worcester', 'MA', 'Species present and not rare'),
+            ('Kent', 'RI', 'Species present in state and native'),
+            ('Orange', 'VT', 'Species present and not rare'),
+            ('New London', 'CT', 'Species present in state and native'),
+            ('', 'NS', 'Species present in state and native'),
+            ('', 'NB', 'Species present in state and native'),
+            ('', 'QC', 'Species present in state and native'),
+            ('', 'ON', 'Species present in state and native'),
+            ('', 'MB', 'Species present in state and native'),
+            ('', 'SK', 'Species present in state and native'),
+            ('', 'AB', 'Species present in state and native'),
+            ('', 'BC', 'Species present in state and native'),
+            ('', 'ME', 'Species present in state and native'),
+            ('', 'NH', 'Species present in state and native'),
+            ('', 'MA', 'Species present in state and native'),
+            ('', 'RI', 'Species present in state and native'),
+            ('', 'VT', 'Species present in state and native'),
+            ('', 'CT', 'Species present in state and native'),
+            ('', 'NY', 'Species present in state and native'),
+            ('', 'nj', 'Species present in state and native'),
+            ('', 'PA', 'Species present in state and native'),
+            ('', 'NC', 'Species present and rare'),
+            ],
+        'Vaccinium vitis-idaea ssp. minus': [
+            ('Pistcataquis', 'ME', 'Species present and not rare'),
+            ('Coos', 'NH', 'Species present and not rare'),
+            ('Worcester', 'MA', 'Species present and rare'),
+            ('Kent', 'RI', 'Species not present in state'),
+            ('Orange', 'VT', 'Species present in state and native'),
+            ('New London', 'CT', 'Species present in state and native'),
+            ('', 'NS', 'Species present in state and native'),
+            ('', 'NB', 'Species present in state and native'),
+            ('', 'QC', 'Species present in state and native'),
+            ('', 'ON', 'Species present in state and native'),
+            ('', 'MB', 'Species present in state and native'),
+            ('', 'SK', 'Species present in state and native'),
+            ('', 'AB', 'Species present in state and native'),
+            ('', 'BC', 'Species present in state and native'),
+            ('', 'ME', 'Species present in state and native'),
+            ('', 'NH', 'Species present in state and native'),
+            ('', 'MA', 'Species present and rare'),
+            ('', 'RI', 'Species not present in state'),
+            ('', 'VT', 'Species present and rare'),
+            ('', 'CT', 'Species extirpated (historic)'),
+            ('', 'NY', 'Species not present in state'),
+            ('', 'NJ', 'Species not present in state'),
+            ('', 'pa', 'Species not present in state')
+            ]
         }
     for scientific_name, data_list in distribution_data.items():
         for entry in data_list:
@@ -179,37 +206,56 @@ class PlantDistributionMapTestCase(TestCase):
         self.assertTrue(self.distribution_map)
 
     def test_get_label_for_status_native(self):
-        statuses = ['present', 'native', 'present|native']
+        statuses = [
+            'Species present in state and native',
+            'Species present and not rare',
+            'Species native, but adventive in state',
+            ]
         for status in statuses:
             self.assertEqual('native',
                 self.distribution_map._get_label_for_status(status))
 
     def test_get_label_for_status_rare(self):
-        statuses = ['rare', 'present|rare']
+        statuses = [
+            'Species present and rare',
+            ]
         for status in statuses:
             self.assertEqual('rare',
                 self.distribution_map._get_label_for_status(status))
 
     def test_get_label_for_status_introduced(self):
-        statuses = ['exotic', 'present|exotic']
+        statuses = [
+            'Species present in state and exotic',
+            'Species exotic and present',
+            'Species waif',
+            ]
         for status in statuses:
             self.assertEqual('introduced',
                 self.distribution_map._get_label_for_status(status))
 
     def test_get_label_for_status_invasive(self):
-        statuses = ['noxious', 'present|noxious']
+        statuses = [
+            'Species noxious',
+            ]
         for status in statuses:
             self.assertEqual('invasive',
                 self.distribution_map._get_label_for_status(status))
 
     def test_get_label_for_status_historic(self):
-        statuses = ['extirpated', 'present|extirpated']
+        statuses = [
+            'Species extirpated (historic)',
+            'Species extinct',
+            ]
         for status in statuses:
             self.assertEqual('historic',
                 self.distribution_map._get_label_for_status(status))
 
     def test_get_label_for_status_absent(self):
-        statuses = ['absent', 'absent|eradicated']
+        statuses = [
+            'Species not present in state',
+            'Species eradicated',
+            'Questionable Presence (cross-hatched)',
+            ]
         for status in statuses:
             self.assertEqual('absent',
                 self.distribution_map._get_label_for_status(status))
@@ -266,16 +312,17 @@ class PlantDistributionMapTestCase(TestCase):
         self._verify_shaded_counties(legend_labels_found)
 
     def test_shade(self):
-        SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
+        SCIENTIFIC_NAME = 'Vaccinium vitis-idaea ssp. minus'
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
-        self._verify_shaded_counties(['native', 'rare'])
+        self._verify_shaded_counties(['native', 'rare', 'absent'])
         labels = [label_node.text for label_node in
             self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
             namespaces=NAMESPACES)]
         self.assertEqual('native', labels[0])
         self.assertEqual('rare', labels[1])
-        [self.assertEqual('', label) for label in labels[2:]]
+        self.assertEqual('absent', labels[2])
+        [self.assertEqual('', label) for label in labels[3:]]
 
     def test_plant_with_distribution_data_has_plant_name_in_title(self):
         SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
@@ -372,10 +419,11 @@ class NorthAmericanPlantDistributionMapTestCase(TestCase):
             'MA': COLORS['native'],
             'ME': COLORS['native'],
             'NH': COLORS['native'],
-            'NJ': COLORS['rare'],
+            'NJ': COLORS['native'],
             'NY': COLORS['native'],
             'PA': COLORS['native'],
-            'RI': COLORS['rare'],
+            'NC': COLORS['rare'],
+            'RI': COLORS['native'],
             'VT': COLORS['native'],
             'NS': COLORS['native'],
             'NB': COLORS['native'],
