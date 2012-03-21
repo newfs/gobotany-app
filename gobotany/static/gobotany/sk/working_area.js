@@ -378,6 +378,9 @@ dojo.declare('gobotany.sk.working_area.Length', [
 
     _draw_specifics: function() {
         var v = dojo.query('div.working-area .values');
+        var value = this.filter.selected_value;
+        if (value === null)
+            value = '';
         v.empty().addClass('numeric').removeClass('multiple').html(
             '<div class="permitted_ranges"></div>' +
             '<div class="current_length"></div>' +
@@ -385,7 +388,9 @@ dojo.declare('gobotany.sk.working_area.Length', [
             '<div class="measurement">' +
             'Metric length: ' +
             '<input class="measure_metric" name="measure_metric"' +
-            ' type="text" value="">' +
+            ' type="text" value="' +
+            value +
+            '">' +
             '<label>' +
             '<input name="units" type="radio" value="mm" checked>mm' +
             '</label>' +
