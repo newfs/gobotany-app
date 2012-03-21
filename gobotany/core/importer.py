@@ -117,7 +117,7 @@ def get_default_filters_from_csv(pile_name, characters_csv):
                 character_name = row['character']
                 order = row['default_question']
 
-                im = Importer(StringIO())
+                im = Importer()
                 short_name = im.character_short_name(character_name)
 
                 filters.append((order, short_name))
@@ -137,10 +137,19 @@ def get_default_filters_from_csv(pile_name, characters_csv):
     return default_filter_characters
 
 
+class FakeLogfile(object):
+    """Since many statements below still do an ugly print >> self.logfile."""
+
+    def write(self, s):
+        s = s.strip()
+        if s:
+            log.info(s)
+
+
 class Importer(object):
 
-    def __init__(self, logfile=sys.stdout):
-        self.logfile = logfile
+    def __init__(self):
+        self.logfile = FakeLogfile()
 
     def character_short_name(self, raw_character_name):
         """Return a short name for a character, to be used in the database."""
