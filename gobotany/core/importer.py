@@ -1399,6 +1399,11 @@ class Importer(object):
         lookalike_table = db.table('core_lookalike')
         taxon_map = db.map('core_taxon', 'scientific_name', 'id')
 
+        # WARNING: this routine DOES NOT remove old lookalikes if an
+        # earlier run of the import routine inserted them; for the
+        # moment, it knows only how to insert new ones or update
+        # existing ones based on the input CSV.
+
         for row in open_csv(filename):
             if row['lookalike_tips'] == '':
                 continue
@@ -1412,8 +1417,8 @@ class Importer(object):
             for lookalike, how_to_tell in zip(parts[0::2], parts[1::2]):
                 lookalike_table.get(
                     taxon_id=taxon_map[row['scientific__name']],
-                    ).set(
                     lookalike_scientific_name=lookalike.strip(),
+                    ).set(
                     lookalike_characteristic=how_to_tell.strip(),
                     )
 

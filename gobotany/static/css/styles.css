@@ -1771,6 +1771,11 @@ ul.full-description > li h5, ul.full-description > li div {
     display: inline;
 }
 
+#taxon #sidebar .lookalikes dt {
+    margin-top: 1em;
+    display: block;
+}
+
 #taxon #sidebar .get-help-btn {
 	margin: 0 0 0 10px;	
 }
