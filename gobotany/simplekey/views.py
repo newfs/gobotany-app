@@ -565,13 +565,14 @@ def suggest_view(request):
         # records be lowercased before import to ensure that they
         # can be reached.
         suggestions = list(SearchSuggestion.objects.filter(
-            term__startswith=query).values_list('term',
+            term__startswith=query).order_by('term').values_list('term',
             flat=True)[:MAX_RESULTS * 2])   # Fetch extra in case of
                                             # case-sensitive duplicates
         # Remove any duplicates due to case-sensitivity and pare down to
         # the desired number of results.
-        suggestions = list(set(
-            [suggestion.lower() for suggestion in suggestions]))[:MAX_RESULTS]
+        suggestions = list(sorted(set([suggestion.lower()
+            for suggestion in suggestions])))[:MAX_RESULTS]
+
     return HttpResponse(simplejson.dumps(suggestions),
                         mimetype='application/json')
 

@@ -182,3 +182,9 @@ class SearchSuggestion(models.Model):
 
     def __unicode__(self):
         return u'%s' % self.term
+
+    def save(self, *args, **kw):
+        """Store all search suggestion terms in lower case."""
+        self.term = self.term.lower()
+        super(SearchSuggestion, self).save(*args, **kw)
+

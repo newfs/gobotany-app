@@ -1075,6 +1075,57 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
                 suggestions_found.append(test_suggestion)
         return sorted(suggestions_found)
 
+    # Tests for names and words from around the core models
+
+    def test_family_scientific_name_suggestions_exist(self):
+        SUGGESTIONS = ['sapindaceae', 'adoxaceae']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    # TODO when data available: Test for plant family common name
+
+    def test_genus_scientific_name_suggestions_exist(self):
+        SUGGESTIONS = ['acer', 'viburnum']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    # TODO when data available: Test for genus common name
+
+    def test_plant_scientific_name_suggestions_exist(self):
+        SUGGESTIONS = ['acer rubrum', 'viburnum acerifolium']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_plant_common_name_suggestions_exist(self):
+        SUGGESTIONS = ['red maple', 'maple-leaved viburnum']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_plant_synonym_suggestions_exist(self):
+        SUGGESTIONS = ['acer violaceum', 'negundo aceroides ssp. violaceum']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_plant_group_suggestions_exist(self):
+        SUGGESTIONS = ['woody plants', 'ferns']   # PileGroup names
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_plant_subgroup_suggestions_exist(self):
+        SUGGESTIONS = ['woody gymnosperms', 'lycophytes']   # Pile names
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_glossary_term_suggestions_exist(self):
+        SUGGESTIONS = ['acuminate', 'pinnately compound']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    def test_character_friendly_name_suggestions_exist(self):
+        SUGGESTIONS = ['hairs on underside of leaf blade', 'seed length']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
     # Test for the name of the Simple Key feature
 
     def test_simple_key_feature_name_suggestions_exist(self):
@@ -1193,9 +1244,6 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
         SUGGESTIONS = ['flowering dicots']
         self.assertEqual(self._suggestions_found(SUGGESTIONS),
                          sorted(SUGGESTIONS))
-
-    # TODO: Tests for each of the other types of search suggestions
-    # (scientific and common species and family names, genera, etc.)
 
 
 class FamilyFunctionalTests(FunctionalTestCase):
