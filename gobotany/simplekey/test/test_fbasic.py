@@ -430,7 +430,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get(
             '/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn&_visible=plant_height_rn'
             )
-        self.wait_on_species(499, seconds=12)   # Big subgroup, wait longer
+        self.wait_on_species(499, seconds=21)   # Big subgroup, wait longer
 
         sidebar_value_span = self.css1('#plant_height_rn .value')
         range_div = self.css1(RANGE_DIV_CSS)
@@ -467,15 +467,9 @@ class FilterFunctionalTests(FunctionalTestCase):
         unknowns = 41
 
         apply_button.click()  # should do nothing
-        self.wait_on_species(499)
         self.assertEqual(sidebar_value_span.text, '')
 
-        # Open the working area again and set the metric length back to
-        # what it was before the working area closed.
-        self.css1(FILTER_LINK_CSS).click()
         measure_input = self.css1(INPUT_METRIC_CSS)
-        measure_input.send_keys('100000')
-
         measure_input.send_keys(Keys.BACK_SPACE)  # '10000'
         instructions = self.css1(INSTRUCTIONS_CSS)
         self.assertIn('to the 1 matching species', instructions.text)
@@ -485,7 +479,6 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.css1(FILTER_LINK_CSS).click()
         measure_input = self.css1(INPUT_METRIC_CSS)
-        measure_input.send_keys('10000')
         measure_input.send_keys(Keys.BACK_SPACE)  # '1000'
         instructions = self.css1(INSTRUCTIONS_CSS)
         self.assertIn('to the 183 matching species', instructions.text)
@@ -497,7 +490,6 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.css1(FILTER_LINK_CSS).click()
         measure_input = self.css1(INPUT_METRIC_CSS)
-        measure_input.send_keys('1000')
         self.css1('input[value="cm"]').click()
         range_div = self.css1(RANGE_DIV_CSS)
         self.assertIn(u' 1 cm – 1500 cm', range_div.text)
@@ -509,33 +501,32 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.css1(FILTER_LINK_CSS).click()
         measure_input = self.css1(INPUT_METRIC_CSS)
-        measure_input.send_keys('1000')
         self.css1('input[value="m"]').click()
         range_div = self.css1(RANGE_DIV_CSS)
         self.assertIn(u' 0.01 m – 15 m', range_div.text)
         instructions = self.css1(INSTRUCTIONS_CSS)
         self.assertEqual('', instructions.text)
         apply_button.click()  # should do nothing
-        self.wait_on_species(unknowns + 1)
         self.assertEqual(sidebar_value_span.text, '1000 cm')
 
-        self.css1(FILTER_LINK_CSS).click()
+        # Three backspaces are necessary to reduce '1000' meters down to
+        # the acceptable value of '1' meter.
+
         measure_input = self.css1(INPUT_METRIC_CSS)
-        measure_input.send_keys('1000')
-        self.css1('input[value="m"]').click()
-
-        # Two backspaces are necessary to reduce '1000' meters down to
-        # the acceptable value of '10' meters.
-
         measure_input.send_keys(Keys.BACK_SPACE)  # '100'
         instructions = self.css1(INSTRUCTIONS_CSS)
-        self.assertEqual('', instructions.text)
+        self.assertIn('', instructions.text)
 
         measure_input.send_keys(Keys.BACK_SPACE)  # '10'
-        self.assertIn('to the 1 matching species', instructions.text)
+        instructions = self.css1(INSTRUCTIONS_CSS)
+        self.assertIn('to a new set of matching species', instructions.text)
+
+        measure_input.send_keys(Keys.BACK_SPACE)  # '1'
+        instructions = self.css1(INSTRUCTIONS_CSS)
+        self.assertIn('to the 183 matching species', instructions.text)
         apply_button.click()
-        self.wait_on_species(unknowns + 1)
-        self.assertEqual(sidebar_value_span.text, '10 m')
+        self.wait_on_species(unknowns + 183)
+        self.assertEqual(sidebar_value_span.text, '1 m')
 
     def test_length_filter_display_on_page_load(self):
         self.get('/')  # to start fresh and prevent partial reload
