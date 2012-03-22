@@ -45,18 +45,16 @@ Family: {{ family.name }} {% if common_name %}({{ common_name }}){% endif %}
                 
                 <div class="pics">
                     {% for drawing in family_drawings %}
-                        <div>
-                            <a rel="shadowbox"
-                               href="{{ drawing.image_medium }}">
-                                <img class="map"
-                                    src="{{ drawing.thumb_small }}"
-                                    alt="{{ drawing.alt }}"></a>
-                            <p>{{ drawing.alt }}</p>
-                            <a class="enlarge" rel="shadowbox"
-                                href="{{ drawing.image_medium }}">
-                                <img class="zoom"
-                                src="/static/images/icons/zoom.png"
-                                alt="enlarge"></a>
+                        <div class="img-gallery">
+                            <div class="plant">
+                                <div class="frame"></div>
+                                <a href="{{ drawing.image_medium }}"
+                                    title="{% photo_credit drawing drawing.content_object.scientific_name %}">
+                                    <img class="map"
+                                        src="{{ drawing.thumb_large }}"
+                                        alt="{% photo_credit drawing drawing.content_object.scientific_name %}"></a>
+                                </a>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>

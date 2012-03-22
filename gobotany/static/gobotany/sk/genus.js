@@ -6,25 +6,30 @@ dojo.provide('gobotany.sk.genus');
 dojo.require('dojox.data.JsonRestStore');
 
 dojo.require('gobotany.sk.glossary');
-dojo.require('gobotany.sk.images.ImageBrowser');
+dojo.require('gobotany.sk.photo');
 
 gobotany.sk.genus.init = function(genus_slug) {
-    var image_browser = gobotany.sk.images.ImageBrowser();
-    image_browser.css_selector = '#genus #images';
-
-    // Load the genus URL and set up the images.
-    var genus_url = API_URL + 'genera/' + genus_slug + '/';
-    var genus_store = new dojox.data.JsonRestStore({target: genus_url});
-    genus_store.fetch({
-        onComplete: function(genus) {
-            if (genus.images.length) {
-                // Store the info for the images to allow for browsing them.
-                for (var i = 0; i < genus.images.length; i++) {
-                    image_browser.images.push(genus.images[i]);
+    var photo_helper = gobotany.sk.photo.PhotoHelper();
+    
+    // Wire up each image link to a Shadowbox popup handler.
+    var IMAGE_CSS = '.pics .plant';
+    dojo.query(IMAGE_CSS).forEach(function(plant_image_div) {
+        var frame = $(plant_image_div).children('.frame');
+        var link = $(plant_image_div).children('a');
+        var href = $(link).attr('href');
+        var title = $(link).attr('title');
+        $(frame).click(function() {
+            // Open the image.
+            Shadowbox.open({
+                content: href,
+                player: 'img',
+                title: title,
+                options: {
+                    onOpen: photo_helper.prepare_to_enlarge,
+                    onFinish: photo_helper.process_credit
                 }
-            }
-            image_browser.setup();
-        }
+            });
+        });
     });
 
     // Make glossary highlights appear where appropriate throughout the page.

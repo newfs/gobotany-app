@@ -373,16 +373,17 @@ def genus_view(request, genus_slug):
 
     genus_drawings = genus.images.filter(image_type__name='example drawing')
     if not genus_drawings:
-        # Prepare some dummy drawings with dummy captions to try and
-        # make it obvious that the images aren't the final ones.
+        # No example drawings for this genus were specified. Including
+        # drawings here was planned early on but not finished for the
+        # initial release. In the meantime, the first two species
+        # images from the genus are shown.
         species = genus.taxa.all()
         for s in species:
             species_images = botany.species_images(s)
-            if len(species_images) > 2:
-                genus_drawings = species_images[0:3]
+            if len(species_images) > 1:
+                genus_drawings = species_images[0:2]
                 break
-        for drawing in genus_drawings:
-            drawing.alt = 'Placeholder image'
+    genus_drawings = _images_with_copyright_holders(genus_drawings)
 
     pile = genus.taxa.all()[0].piles.all()[0]
     pilegroup = pile.pilegroup
@@ -410,16 +411,17 @@ def family_view(request, family_slug):
     family_drawings = (family.images.filter(
                        image_type__name='example drawing'))
     if not family_drawings:
-        # Prepare some dummy drawings with dummy captions to try and
-        # make it obvious that the images aren't the final ones.
+        # No example drawings for this family were specified. Including
+        # drawings here was planned early on but not finished for the
+        # initial release. In the meantime, the first two species
+        # images from the family are shown.
         species = family.taxa.all()
         for s in species:
             species_images = botany.species_images(s)
-            if len(species_images) > 2:
-                family_drawings = species_images[0:3]
+            if len(species_images) > 1:
+                family_drawings = species_images[0:2]
                 break
-        for drawing in family_drawings:
-            drawing.alt = 'Placeholder image'
+    family_drawings = _images_with_copyright_holders(family_drawings)
 
     pile = family.taxa.all()[0].piles.all()[0]
     pilegroup = pile.pilegroup

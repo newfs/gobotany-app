@@ -481,7 +481,8 @@ body.app {
     height: 229px;
     width: 229px;
 }
-#plant-id .img-gallery .frame, #plant-id-2 .img-gallery .frame {
+#plant-id .img-gallery .frame, #plant-id-2 .img-gallery .frame,
+#family .frame, #genus .frame {
     cursor: pointer;
 }
 .img-gallery .images {
@@ -1871,33 +1872,40 @@ div.section.namap div.trans {
  * photo title, photographer credit, and copyright. */
 #taxon #sb-title, #taxon #sb-title-inner,
 #plant-id #sb-title, #plant-id #sb-title-inner,
-#plant-id-2 #sb-title, #plant-id-2 #sb-title-inner {
+#plant-id-2 #sb-title, #plant-id-2 #sb-title-inner,
+#family #sb-title, #family #sb-title-inner,
+#genus #sb-title, #genus #sb-title-inner {
     font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
     height: 76px;
     line-height: 70%;
     position: relative;
 }
 #taxon #sb-title-inner div, #plant-id #sb-title-inner div,
-#plant-id-2 #sb-title-inner div {
+#plant-id-2 #sb-title-inner div, #family #sb-title-inner div,
+#genus #sb-title-inner div {
     bottom: 6px;
     position: absolute;
 }
 #taxon #sb-title-inner h6, #plant-id #sb-title-inner h6,
-#plant-id-2 #sb-title-inner h6 {
+#plant-id-2 #sb-title-inner h6, #family #sb-title-inner h6,
+#genus #sb-title-inner h6 {
     font-size: 16px;
     line-height: 110%;
     margin: 0 0 2px;
     padding: 0;
 }
 #taxon #sb-title-inner span, #plant-id #sb-title-inner span,
-#plant-id-2 #sb-title-inner span {
+#plant-id-2 #sb-title-inner span, #family #sb-title-inner span,
+#genus #sb-title-inner span {
     font-size: 10px;
 }
-#taxon #sb-nav-close, #plant-id #sb-nav-close, #plant-id-2 #sb-nav-close {
+#taxon #sb-nav-close, #plant-id #sb-nav-close, #plant-id-2 #sb-nav-close,
+#family #sb-nav-close, #genus #sb-nav-close {
     top: 56px !important;
 }
 #taxon #sb-title-inner a, #plant-id #sb-title-inner a,
-#plant-id-2 #sb-title-inner a {
+#plant-id-2 #sb-title-inner a, #family #sb-title-inner a,
+#genus #sb-title-inner a {
     color: #fff;
     text-decoration: underline;
 }
