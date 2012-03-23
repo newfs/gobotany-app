@@ -1,11 +1,11 @@
                     <div class="not-my-plant">
                         <h6>My plant isn't in
-                            {% if piles_and_urls|length > 1 %}
+                            {% if piles|length > 1 %}
                                 these subgroups.
                             {% else %}
                                 this subgroup.
                             {% endif %}
                         </h6>
                         <a class="back-level"
-                            href="{{ parent_page.get_absolute_url }}">&laquo; Take me back a level.</a>
+                            href="{% url simplekey %}">&laquo; Take me back a level.</a>
                     </div>
