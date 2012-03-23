@@ -7,7 +7,6 @@ import sys
 import xlrd
 from collections import defaultdict
 from operator import attrgetter
-from StringIO import StringIO
 
 # The GoBotany settings have to be imported before most of Django.
 from gobotany import settings
