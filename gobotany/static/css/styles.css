@@ -1099,7 +1099,7 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     width: 135px;
 }
 
-/* Working area */
+/* Working Area styles */
 
 .working-area {
     display: none;
@@ -1256,6 +1256,94 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     z-index: 200;
 }
 
+div.working-area #simple-slider {
+    margin-top: 60px;
+    margin-bottom: 48px;
+}
+div.working-area #simple-slider .dijitSliderDecoration {
+    background: #fff;
+    border-bottom: 0;
+}
+div.working-area #simple-slider .count {
+    bottom: 130px;
+    left: 370px;   /* Left position set by JS with slide */
+    position: absolute;
+}
+
+/* Length input */
+.choose_length label {
+    margin: 0 10px 0 0;
+}
+.choose_length label input {
+    margin: 0 4px 0 0;
+}
+
+/* Some question/answer working-area styles */
+
+div.working-area .close {
+    color: #00e;
+    cursor: pointer;
+    display: inline;
+    float: right;
+}
+
+div.working-area h3.name {
+    font-size: 1em;
+    font-weight: bold;
+    line-height: 1em;
+    margin: 0 0 0.3em 0;
+    padding: 0;
+}
+
+div.working-area .info {
+    width: 100%;
+}
+
+div.working-area .values.numeric {
+    border: 0;
+    height: auto;
+    margin-top: 8px;
+    overflow-y: visible;
+}
+
+div.working-area .values .zero {
+    color: #ccc;
+}
+
+div.working-area .measurement {
+    margin: 8px 0;
+}
+div.working-area .measurement label input {
+    margin: 0 4px 0 8px;
+}
+
+div.working-area .info {
+    float: left;
+    font-family: Tahoma, sans-serif;
+    font-size: 14px;
+}
+
+div.working-area .info .hint {
+    font-size: 12px;
+    margin: 6px 0;
+}
+
+div.working-area .info .hint p {
+    line-height: 120%;
+    margin-bottom: 0;
+}
+
+div.working-area .instructions {
+    margin-bottom: 8px;
+}
+
+div.working-area .actions {
+    text-align: center;
+}
+
+/* end Working Area styles */
+
+
 /* Plant preview dialogs, wherever they appear */
 
 /* Note: The id #plant-preview is nearly obsolete. Remove declarations
@@ -1383,68 +1471,6 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
     content: ', ';
 }
 
-/* Some question/answer working-area styles */
-
-div.working-area .close {
-    color: #00e;
-    cursor: pointer;
-    display: inline;
-    float: right;
-}
-
-div.working-area h3.name {
-    font-size: 1em;
-    font-weight: bold;
-    line-height: 1em;
-    margin: 0 0 0.3em 0;
-    padding: 0;
-}
-
-div.working-area .info {
-    width: 100%;
-}
-
-div.working-area .values.numeric {
-    border: 0;
-    height: auto;
-    margin-top: 8px;
-    overflow-y: visible;
-}
-
-div.working-area .values .zero {
-    color: #ccc;
-}
-
-div.working-area .measurement {
-    margin: 8px 0;
-}
-div.working-area .measurement label input {
-    margin: 0 4px 0 8px;
-}
-
-div.working-area .info {
-    float: left;
-    font-family: Tahoma, sans-serif;
-    font-size: 14px;
-}
-
-div.working-area .info .hint {
-    font-size: 12px;
-    margin: 6px 0;
-}
-
-div.working-area .info .hint p {
-    line-height: 120%;
-    margin-bottom: 0;
-}
-
-div.working-area .instructions {
-    margin-bottom: 8px;
-}
-
-div.working-area .actions {
-    text-align: center;
-}
 
 .show label {
     vertical-align: middle;
@@ -1547,87 +1573,6 @@ div.working-area .actions {
 }
 .plant-list table .details a {
     text-decoration: underline;
-}
-
-
-/* Make a Dijit horizontal slider look like a ruler */
-
-.moz_ruler_slider_wrapper {
-    /* Create a context in which we can absolutely position english/metric
-       divs.  This has to be done on a div placed around the actual
-       slider because Dijit uses a table, and Mozilla ignores a relative
-       position when it is placed on a table, per this bug:
-       https://bugzilla.mozilla.org/show_bug.cgi?id=63895
-       */
-    position: relative;
-}
-div.working-area .dijitSliderH {
-    margin-top: 48px;
-    margin-bottom: 18px;
-}
-div.working-area .dijitSliderButtonContainerH {
-    padding: 0;
-}
-
-div.working-area .dijitSliderBumperH {
-    width: 0px;  /* hmm, not quite right - still 1px off on left - hmm */
-}
-
-div.working-area .dijitSliderDecoration {
-    background-color: #fe8;
-    border-bottom: 1px solid black;
-}
-div.working-area .dijitSliderImageHandleH > div {
-    font-size: 0.88em;
-}
-div.working-area .dijitSliderImageHandleH div.second_handle {
-    /* A second handle at the bottom of the ruler, against the inches */
-    position: absolute;
-    height: 16px;
-    width: 18px;
-    background-image: url("http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/form/images/sliderThumbs.png");
-    background-position: -108px 0;
-}
-div.working-area div.metric_display {
-    font-size: 11px;
-    left: -30px;
-    line-height: 13px;
-    position: absolute;
-    text-align: center;
-    top: 0px;
-    width: 60px;
-}
-div.working-area div.english_display {
-    font-size: 11px;
-    position: absolute;
-    right: -12px;
-    text-align: right;
-    top: 20px;
-}
-div.working-area .dijitRuleLabelH {
-    left: -100%;  /* print lengths left of ticks */
-    text-align: right;
-}
-
-
-/* overrides for the non-length (count) slider */
-
-div.working-area #simple-slider .dijitSliderDecoration {
-    background: #fff;
-    border-bottom: 0;
-}
-div.working-area #simple-slider .count {
-    position: absolute; /* top/left set by JS */
-}
-/* end overrides for count slider */
-
-
-/* "New" non-ruler length input */
-.choose_length label {
-    margin: 0 10px 0 0;
-}
-.choose_length label input {
-    margin: 0 4px 0 0;
 }
 
 /* Help navigation styles */

@@ -348,8 +348,25 @@ dojo.declare('gobotany.sk.working_area.Slider', [
     },
 
     _value_changed: function() {
+        /* Update the count label. */
+        var label = dojo.query('#simple-slider .count');
         var value = this._current_value();
-        dojo.query('#simple-slider .count').html(value + '');
+        label.html(value + '');
+
+        /* Position the label atop the slider. */
+        var MIN_LEFT_PX = 25;
+        var MAX_LEFT_PX = 728;
+        var filter = this.filter;
+        var num_segments = filter.max - filter.min;
+        var slider_length = MAX_LEFT_PX - MIN_LEFT_PX;
+        var pixels_per_value = slider_length / num_segments;
+        var offset = Math.floor((value - filter.min) * pixels_per_value);
+        var label_width_correction = 0;
+        if (value >= 10) {
+            label_width_correction = -4; /* for 2 digits, pull left a bit */
+        }
+        var left = offset + MIN_LEFT_PX + label_width_correction;
+        dojo.style(label[0], 'left', left + 'px');
     },
 
     /* Sliders only have one filter value, so we don't need to compute
