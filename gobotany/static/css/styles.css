@@ -1422,20 +1422,16 @@ div.working-area .actions {
 .characteristics dl {
     border: 1px transparent; /* border forces new row in WebKit when
                               * char name, but not value, wraps */
-    margin: 0.2em 0 0;
+    margin: 6px 0 0;
     padding: 0;
-}
-#taxon .characteristics dl {
-    margin-top: 0.45em;
 }
 .characteristics dt {
     clear: left;
     float: left;
-    line-height: 1em;
-    padding-top: 0.15em;
+    line-height: 18px;
     text-align: right;
     text-transform: uppercase;
-    width: 170px;
+    width: 200px;
 }
 .characteristics.full dt {
     width: 270px;
@@ -1444,7 +1440,8 @@ div.working-area .actions {
     content: ':';
 }
 .characteristics dd {
-    margin-left: 180px;
+    line-height: 18px;
+    margin-left: 210px;
 }
 .characteristics.full dd {
     margin-left: 280px;
@@ -1457,7 +1454,7 @@ div.working-area .actions {
 }
 .characteristics dd li {
     margin: 0;
-    padding: 0;
+    padding: 0 0 0.1em;
 }
 .characteristics dd ul.compact {
     margin: 0;
