@@ -1418,7 +1418,9 @@ div.working-area .actions {
 }
 
 /* Character/value styles, for plant preview popups, etc. */
-
+.characteristics {
+    margin-bottom: 16px;
+}
 .characteristics dl {
     border: 1px transparent; /* border forces new row in WebKit when
                               * char name, but not value, wraps */
