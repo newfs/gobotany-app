@@ -78,7 +78,7 @@ class Table(object):
             return
         c = self.database.connection.cursor()
         c.execute('SELECT * FROM {0}'.format(self.name))
-        columndict = dict((co.name, i) for (i, co) in enumerate(c.description))
+        columndict = dict((co[0], i) for (i, co) in enumerate(c.description))
         keycolumnids = [columndict[cn] for cn in self.keycolumns]
         inserts = dict(self.rowdict)
         deletes = []
@@ -173,6 +173,28 @@ class Batch(object):
         args = self.args
         self.text = ''
         self.args = []
+        db_module = self.table.database.connection.__class__.__module__
+        db_type = db_module.split('.')[3]
 
         if text:
-            self.cursor.execute(text, args)
+            if db_type == 'sqlite3':
+                self._flush_sqlite(text, args)
+            else:
+                self.cursor.execute(text, args)
+
+    def _flush_sqlite(self, text, args):
+        # sqlite3 doesn't support batching commands, so if we're using that
+        # as storage, such as during unit tests, split the commands up
+        commands = text.split(';')
+
+        print 'Flushing to sqlite'
+        print text
+        arg_index = 0
+        for command in commands:
+            arg_count = command.count('%s')
+            command_args = args[arg_index:arg_index + arg_count]
+            arg_index += arg_count
+
+            print 'Executing:\n{0}\nArgs: {1}'.format(command, command_args)
+            self.cursor.execute(command, command_args)
+
