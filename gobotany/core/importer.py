@@ -413,8 +413,6 @@ class Importer(object):
         SYNONYM_FIELDS = ['comment']
         gobotany_id = models.PartnerSite.objects.get(short_name='gobotany').id
 
-        family_table = db.table('core_family')
-        genus_table = db.table('core_genus')
         taxon_table = db.table('core_taxon')
         partnerspecies_table = db.table('core_partnerspecies')
         pile_species_table = db.table('core_pile_species')
@@ -450,28 +448,16 @@ class Importer(object):
                           'column: %s' % (EXPECTED_DELIMITER, column))
 
         # Start import.
+        family_map = db.map('core_family', 'slug', 'id')
+        genus_map = db.map('core_genus', 'slug', 'id')
 
         for row in open_csv(taxaf):
 
             family_slug = slugify(row['family'])
-            family_table.get(
-                slug=family_slug,
-                ).set(
-                common_name='',
-                description='',
-                name=row['family'],
-                )
 
             genus_name = row['scientific__name'].split()[0]
             genus_slug = slugify(genus_name)
-            genus_table.get(
-                slug=genus_slug,
-                ).set(
-                common_name='',
-                description='',
-                family_id=family_slug,
-                name=genus_name,
-                )
+
 
             # Create a Taxon.
             taxon_proxy_id = row['scientific__name']
@@ -485,12 +471,31 @@ class Importer(object):
                 # data has the new column added.
                 pass
 
+            # Add a simple check for data consistency
+            try:
+                family_id = family_map[family_slug]
+            except KeyError:
+                log.error('Bad family name: %r [Slug: %r]', row['family'],
+                        family_slug)
+                continue
+
+            try:
+                genus_id = genus_map[genus_slug]
+            except KeyError:
+                log.error('Bad genus name: %r [Slug: %r]', genus_name,
+                        genus_slug)
+                continue
+
+            if len(variety_notes) > 500:
+                log.error('Variety notes for taxa %r is too long.\n%r',
+                    row['scientific__name'], variety_notes)
+                continue
 
             taxon = taxon_table.get(
                 scientific_name=row['scientific__name'],
                 ).set(
-                family_id=family_slug,
-                genus_id=genus_slug,
+                family_id=family_id,
+                genus_id=genus_id,
                 taxonomic_authority=row['taxonomic_authority'],
                 habitat=row['habitat'],
                 habitat_general='',
@@ -565,13 +570,6 @@ class Importer(object):
 
         # Write out the tables.
 
-        family_table.save()
-        family_map = db.map('core_family', 'slug', 'id')
-        genus_table.replace('family_id', family_map)
-        genus_table.save()
-        genus_map = db.map('core_genus', 'slug', 'id')
-        taxon_table.replace('family_id', family_map)
-        taxon_table.replace('genus_id', genus_map)
         taxon_table.save()
         taxon_map = db.map('core_taxon', 'scientific_name', 'id')
         partnerspecies_table.replace('species_id', taxon_map)
@@ -582,6 +580,80 @@ class Importer(object):
         commonname_table.save(delete_old=True)
         synonym_table.replace('taxon_id', taxon_map)
         synonym_table.save(delete_old=True)
+
+    @transaction.commit_on_success
+    def _import_families(self, db, family_file):
+        log.info('Loading families from file: %s', family_file)
+
+        family_table = db.table('core_family')
+
+        # Make sure some important columns are present.
+        # (This is not yet an exhaustive list of required column names.)
+        REQUIRED_COLUMNS = ['family', 'family_common_name', 
+                'description_revised']
+        iterator = iter(open_csv(family_file))
+        colnames = [x for x in iterator.next()]
+        for column in REQUIRED_COLUMNS:
+            if column not in colnames:
+                log.error('Required column missing from family.csv: %s', column)
+
+        # Start import.
+
+        for row in open_csv(family_file):
+            family_slug = slugify(row['family'])
+            family_table.get(
+                slug=family_slug,
+                ).set(
+                common_name=row['family_common_name'],
+                description=row['description_revised'],
+                name=row['family'],
+                )
+
+        family_table.save()
+
+    @transaction.commit_on_success
+    def _import_genera(self, db, genera_file):
+        log.info('Loading genera from file: %s', genera_file)
+
+        genus_table = db.table('core_genus')
+
+        # Make sure some important columns are present.
+        # (This is not yet an exhaustive list of required column names.)
+        REQUIRED_COLUMNS = ['family', 'genus', 'genus_common_name', 
+                'description_revised']
+        iterator = iter(open_csv(genera_file))
+        colnames = [x for x in iterator.next()]
+        for column in REQUIRED_COLUMNS:
+            if column not in colnames:
+                log.error('Required column missing from genera.csv: %s', column)
+
+        family_map = db.map('core_family', 'slug', 'id')
+
+        # Start import.
+
+        for row in open_csv(genera_file):
+            family_slug = slugify(row['family'])
+
+            # Add a simple check for data consistency
+            try:
+                family_id = family_map[family_slug]
+            except KeyError:
+                log.error('Bad family name: %r [Slug: %r]', row['family'],
+                        family_slug)
+                continue
+
+            genus_name = row['genus']
+            genus_slug = slugify(genus_name)
+            genus_table.get(
+                slug=genus_slug,
+                ).set(
+                common_name=row['genus_common_name'],
+                description=row['description_revised'],
+                family_id=family_id,
+                name=genus_name,
+                )
+
+        genus_table.save()
 
     # TODO: can we remove this import function and the model PlantNames?
     # It claims to be used by MyPlants but is a completely unindexed table.
@@ -1784,9 +1856,9 @@ def main():
     name = sys.argv[1].replace('-', '_')  # like 'partner_sites'
     method = getattr(importer, '_import_' + name, None)
     modern = name in (
-        'partner_sites', 'pile_groups', 'piles', 'habitats', 'taxa',
-        'characters', 'character_values', 'glossary', 'lookalikes',
-        'constants', 'places', 'taxon_character_values',
+        'partner_sites', 'pile_groups', 'piles', 'habitats', 'families',
+        'genera', 'taxa', 'characters', 'character_values', 'glossary',
+        'lookalikes', 'constants', 'places', 'taxon_character_values',
         'character_images', 'character_value_images', 'glossary_images',
         'videos', 'home_page_images', 'taxon_images',
         'assign_character_values_to_piles', 'copyright_holders'
