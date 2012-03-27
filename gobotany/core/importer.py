@@ -413,6 +413,8 @@ class Importer(object):
         SYNONYM_FIELDS = ['comment']
         gobotany_id = models.PartnerSite.objects.get(short_name='gobotany').id
 
+        family_table = db.table('core_family')
+        genus_table = db.table('core_genus')
         taxon_table = db.table('core_taxon')
         partnerspecies_table = db.table('core_partnerspecies')
         pile_species_table = db.table('core_pile_species')
@@ -475,27 +477,44 @@ class Importer(object):
             try:
                 family_id = family_map[family_slug]
             except KeyError:
-                log.error('Bad family name: %r [Slug: %r]', row['family'],
+                # For now we're going to create a "placeholder" family for any
+                # family missing from the data file, so that we can avoid
+                # import problems while the data files are still being
+                # completed.
+                log.warn('Missing family name: %r [Slug: %r]', row['family'],
                         family_slug)
-                continue
+                family_table.get(
+                    slug=family_slug,
+                    ).set(
+                    common_name='',
+                    description='',
+                    name=row['family'],
+                    )
 
             try:
                 genus_id = genus_map[genus_slug]
             except KeyError:
-                log.error('Bad genus name: %r [Slug: %r]', genus_name,
+                # For now we're going to create a "placeholder" family for any
+                # family missing from the data file, so that we can avoid
+                # import problems while the data files are still being
+                # completed.
+                log.warn('Missing genus name: %r [Slug: %r]', genus_name,
                         genus_slug)
-                continue
+                genus_table.get(
+                    slug=genus_slug,
+                    ).set(
+                    common_name='',
+                    description='',
+                    family_id=family_slug,
+                    name=genus_name,
+                    )
 
-            if len(variety_notes) > 500:
-                log.error('Variety notes for taxa %r is too long.\n%r',
-                    row['scientific__name'], variety_notes)
-                continue
 
             taxon = taxon_table.get(
                 scientific_name=row['scientific__name'],
                 ).set(
-                family_id=family_id,
-                genus_id=genus_id,
+                family_id=family_slug,
+                genus_id=genus_slug,
                 taxonomic_authority=row['taxonomic_authority'],
                 habitat=row['habitat'],
                 habitat_general='',
@@ -569,7 +588,13 @@ class Importer(object):
                         )
 
         # Write out the tables.
-
+        family_table.save()
+        family_map = db.map('core_family', 'slug', 'id')
+        genus_table.replace('family_id', family_map)
+        genus_table.save()
+        genus_map = db.map('core_genus', 'slug', 'id')
+        taxon_table.replace('family_id', family_map)
+        taxon_table.replace('genus_id', genus_map)
         taxon_table.save()
         taxon_map = db.map('core_taxon', 'scientific_name', 'id')
         partnerspecies_table.replace('species_id', taxon_map)
