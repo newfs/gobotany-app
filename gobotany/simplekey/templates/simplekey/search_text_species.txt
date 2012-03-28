@@ -87,6 +87,11 @@ Classification:
   {% endif %}
 {% endwith %}
 
+{% if object.variety_notes %}
+    Notes on Subspecies and Varieties:
+    {{ object.variety_notes|safe }}
+{% endif %}
+
 --
 {# Index the scientific name and any common names many more times to #}
 {# boost ranking. This will be hidden from the user because it is    #}
