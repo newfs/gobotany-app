@@ -423,7 +423,9 @@ class ImportTestCase(TestCase):
     def test_import_taxons(self):
         im = importer.Importer()
         im._import_partner_sites(self.db)
-        im._import_taxa(testdata('taxa.csv'))
+        im._import_pile_groups(self.db, testdata('pile_group_info.csv'))
+        im._import_piles(self.db, testdata('pile_info.csv'))
+        im._import_taxa(self.db, testdata('taxa.csv'))
         self.assertEquals(len(models.Taxon.objects.all()), 71)
 
     def test_clean_up_html_non_breaking_spaces(self):
