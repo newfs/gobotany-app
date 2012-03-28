@@ -32,14 +32,10 @@ Family: {{ family.name }} {% if common_name %}({{ common_name }}){% endif %}
                 <h2>Family: {{ family.name }}</h2>
                 <h3>{% if common_name %}{{ common_name }}{% endif %}</h3>
                 <p class="description">
-                {% if item.description %}
-                    {{ item.description }}
+                {% if family.description %}
+                    {{ family.description }}
                 {% else %}
-                    TO DO: Add description in the database.
-                    This is a placeholder description.
-                    (Test glossary highlighting here with a few terms,
-                    such as abaxial, berry, creeping, fruit and
-                    perennial.)
+                    (Description Coming Soon)
                 {% endif %}
                 </p>
                 
