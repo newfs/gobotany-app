@@ -93,7 +93,8 @@ dojo.declare('gobotany.filters.Filter', null, {
         return ((this.character_short_name.indexOf('length') > -1) ||
                 (this.character_short_name.indexOf('width') > -1) ||
                 (this.character_short_name.indexOf('height') > -1) ||
-                (this.character_short_name.indexOf('thickness') > -1));
+                (this.character_short_name.indexOf('thickness') > -1) ||
+                (this.character_short_name.indexOf('diameter') > -1));
     },
     // Return the vector of species IDs for species that match a given
     // value for this character.
