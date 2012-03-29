@@ -426,7 +426,7 @@ class ImportTestCase(TestCase):
         im._import_pile_groups(self.db, testdata('pile_group_info.csv'))
         im._import_piles(self.db, testdata('pile_info.csv'))
         im._import_taxa(self.db, testdata('taxa.csv'))
-        self.assertEquals(len(models.Taxon.objects.all()), 71)
+        self.assertEquals(len(models.Taxon.objects.all()), 3522)
 
     def test_clean_up_html_non_breaking_spaces(self):
         im = importer.Importer()

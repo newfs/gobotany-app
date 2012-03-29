@@ -1,16 +1,124 @@
-name,friendly_name,description,pile_group
-Lycophytes,Clubmosses and relatives,,Ferns
-Monilophytes,True ferns and moonworts,,Ferns
-Equisetaceae,,,Ferns
-Woody Gymnosperms,Woody broad-leaved plants,,Woody Plants
-Woody Angiosperms,Woody broad-leaved plants,,Woody Plants
-Carex,Sedges,,Graminoids
-Poaceae,,,Graminoids
-Remaining graminoids,,,Graminoids
-Thalloid aquatic,"Small, floating aquatics",,Aquatic Plants
-Orchid monocots,,,Monocots
-Non-orchid monocots,,,Monocots
-Composites,Plants with daisy-like flowers,,Non-Monocots
-Non-thalloid aquatic,"Aquatic plants with branches, leaves",,Aquatic Plants
-Remaining non-monocots,,,Non-Monocots
-all,,,
+name,friendly_name,friendly_title,description,pile_group,Key_characteristics,Notable_exceptions,Image_filenames
+Lycophytes,Plants in the families Lycopodiaceae or Isoetaceae,"Clubmosses and relatives, plus quillworts","Spore-bearing plants with small, scale-like or grass-like leaves",Ferns,"<ul>
+ <li>Many species grow along the ground, attached by runners. &nbsp;They may have single upright stems, or be built like miniature trees.<strong> </strong></li>
+ <li>Species in the genus <em>Selaginella</em> look like mosses, with thin, tiny leaves.<strong> </strong></li>
+ <li>The quillworts (<em>Isoetes </em>species) are small aquatic plants that resemble chives. <strong>&nbsp;</strong></li>
+ <li>Lycophytes as a group all share <em>microphylls </em>- leaves with only a single vein.</li>
+</ul>","<ul>
+ <li>This is a very variable group of ancient plants. &nbsp;</li>
+ <li>You may not always be able to see the spores, which are sometimes tucked down inside the leaves.</li>
+</ul>",dendrolycopodium-dendroideum-ha-dkausen-a.jpg;dendrolycopodium-dendroideum-ha-mlovit-a.jpg;dendrolycopodium-dendroideum-tr-ahaines-d.jpg;dendrolycopodium-hickeyi-ha-dcameron-a.jpg;diphasiastrum-digitatum-ha-dcameron-a.jpg;diphasiastrum-tristachyum-ha-atal.jpg;huperzia-appressa-ha-ahaines-a.jpg;huperzia-lucidula-br-mlovit-a.jpg;huperzia-lucidula-ha-ahaines-b.jpg;isoetes-echinospora-ha-mlovit.jpg;isoetes-echinospora-tr-ahaines.jpg;isoetes-lacustris-tr-ahaines.jpg;lycopodiella-inundata-ha-dkausen-a.jpg;lycopodium-clavatum-ha-dkausen-a.jpg;lycopodium-lagopus-ha-ahaines-a.jpg;selaginella-apoda-ha-ahaines-a.jpg;selaginella-apoda-ha-dcameron-b.jpg;selaginella-rupestris-ha-ahaines.jpg;selaginella-rupestris-ha-dcameron-b.jpg
+Monilophytes,"Ferns, moonworts, and Adder's-tongues with obvious leaves",True ferns and moonworts,"Spore-bearing plants with large, often lobed or compound leaves",Ferns,"<ul>
+ <li>Many species of ferns have highly dissected, feathery leaves.</li>
+ <li>Look on the underside of the leaf or on a specialized leaf to see the spores, which look like tiny brownish-beads when ripe.</li>
+ <li>The structures bearing spores are often grouped into clusters, called sori. &nbsp;Sometimes these sori are covered with a special flap of tissue or the edge of a leaf, or take the shape of beads or goblets.</li>
+ <li>You'll never see a flower on a fern!</li>
+</ul>","<ul>
+ <li>Some flowering plants have very feathery leaves, so look carefully to see if flowers or fruits are present.</li>
+</ul>",polypodium-virginianum-ha-ahaines-a.jpg;cystopteris-bulbifera-so-ahaines-a.jpg;dennstaedtia-punctilobula-ha-wcullina.jpg;adiantum-pedatum-ha-dcameron-e.jpg;asplenium-rhizophyllum-ha-ahaines.jpg;botrychium-simplex-le-ahaines-b.jpg;botrychium-virginianum-ha-bkimball.jpg;dryopteris-cristata-ha-dcameron-a.jpg;marsilea-quadrifolia-le-clowe.jpg;polystichum-acrostichoides-af-jlynch.jpg;pteridium-aquilinum-ha-ahaines-c.jpg;woodsia-ilvensis-ha-ahaines.jpg;woodwardia-areolata-le-jlynch-b.jpg
+Equisetaceae,"Primitive plants in the genus Equisetum, lacking true leaves",Horsetails and scouring-rushes,"Spore-bearing plants with firm, jointed branches, usually hollow stems, and cones",Ferns,"<ul>
+ <li>Horsetails are simple, spindly-looking plants, often growing in moist or wet places.</li>
+ <li>Note whether the plant has whorls of branches on its main stem, and whether the main stem is hollow or not.</li>
+ <li>There are whorls of tiny leaves clasping the stem at each node, called the sheath. &nbsp;Note the color and number of &quot;teeth&quot; on this sheath.</li>
+ <li>Sometimes the spore cones are produced on separate, unbranched stems.</li>
+</ul>","<div>Some horsetails can be very small, with unusually curly stems.</div>
+
+<ul>
+ <li>Look at several plants to be sure whether all stems are unbranched or not.</li>
+</ul>",equisetum-arvense-ha-dcameron-c.jpg;equisetum-arvense-ha-dkausen-f.jpg;equisetum-arvense-ha-jlynch.jpg;equisetum-arvense-ln-ahaines-f.jpg;equisetum-arvense-sc-dkausen-a.jpg;equisetum-arvense-sc-fbramley-a.jpg;equisetum-hyemale-ha-fbramley-a.jpg;equisetum-scirpoides-ha-ahaines-a.jpg;equisetum-sylvaticum-ln-ahaines-c.jpg;equisetum-sylvaticum-sc-dkausen-b.jpg;equisetum-variegatum-ha-dcameron.jpg
+Woody Gymnosperms,Woody needle-leaved plants,Woody needle-leaved plants,"Woody plants with needle-like leaves, which bear their seeds in scaly or berry-like cones",Woody Plants,"<ul>
+ <li><font face=""Times New Roman"" size=3>This group is also called &quot;conifers&quot; in New England. Many species of gymnosperms produce a sticky, fragrant sap with a sweet or turpentine smell. Gymnosperms are named for their seeds, which are not enclosed in an ovary.</font>&nbsp;</li>
+ <li>Leaves can vary from very small, overlapping scales (i.e., arborvitae) to long needles (i.e., white pine).</li>
+ <li>If the tree has long needles, note how many grow out of each cluster.</li>
+ <li>If the upright tree makes needles with sharp points, you most likely have a spruce (<em>Picea </em>species).</li>
+ <li>Note the texture of the bark on the main trunk and on the twigs.</li>
+</ul>","<ul>
+ <li>Some gymnosperms, like common juniper, are small or creeping shrubs.</li>
+ <li>Don't be fooled! &nbsp;Some non-conifers (woody angiosperms) have very small, narrow leaves.</li>
+ <li>Not all gymnosperms are evergreen: the larch (<em>Larix laricina</em>) loses its leaves in winter.</li>
+</ul>",abies-balsamea-fr-jweber.jpg;chamaecyparis-thyoides-ba-dcameron.jpg;chamaecyparis-thyoides-fr-dcameron.jpg;juniperus-communis-fr-gmittelhauser.jpg;larix-laricina-fl-dcameron-c.jpg;larix-laricina-ha-jlynch.jpg;picea-abies-ha-jlynch-a.jpg;picea-glauca-fr-ahaines.jpg;pinus-resinosa-ba-dkausen-a.jpg;pinus-rigida-mi-atal-d.jpg;pinus-strobus-ha-dkausen-a.jpg;pinus-strobus-le-ahaines-a.jpg;taxus-canadensis-fr-dkausen-a.jpg;thuja-occidentalis-fr-dcameron-a.jpg;tsuga-canadensis-le-bkimball.jpg
+Woody Angiosperms,Woody broad-leaved plants,Woody broad-leaved plants,"Woody plants with flat or broad leaves, which bear flowers and fruits",Woody Plants,"<ul>
+ <li>Woody &quot;angiosperms&quot; are plants that produce seeds enclosed in an ovary.</li>
+ <li>Note whether the plant is a tree, shrub or vine.</li>
+ <li>In summer, note the size, shape, and arrangement of the leaves.</li>
+ <li>In winter, note the size and arrangement of the leaf buds and scars on the twigs.</li>
+</ul>
+
+<div>Look on the ground around the base of the plant to see if you can find its leaves.</div>
+
+<ul>
+ <li>Some species have evergreen leaves that stay on all winter (i.e., some rhododendrons and hollies).</li>
+ <li>Remember the phrase &quot;Mad-cap Horse&quot; (for <strong>M</strong>aple-<strong>A</strong>sh-<strong>D</strong>ogwood <strong>Cap</strong>rifoliaceae and <strong>Horse</strong> chestnut), which shows you the small number of opposite-leaved woody angiosperms in New England.</li>
+</ul>","<ul>
+ <li>Young saplings are sometimes hard to tell apart from shrubs. &nbsp;Try to find a mature plant (producing flowers). </li>
+ <li>Some angiosperms produce tiny, almost needle-like leaves that look like gymnosperm leaves - but these plants don't usually have fragrant sap.</li>
+</ul>",betula-papyrifera-ha-atal.jpg;acer-rubrum-ha-atal.jpg;benthamidia-florida-ha-wcullina.jpg;berberis-thunbergii-ha-mlovit.jpg;comptonia-peregrina-fr-gmittelhauser.jpg;decodon-verticillatus-ha-bkimball.jpg;hamamelis-virginiana-fl-apratt.jpg;ilex-verticillata-ha-mlovit.jpg;iva-frutescens-ha-ahaines.jpg;linnaea-borealis-fl-mlovit.jpg;menispermum-canadense-le-ksearcy.jpg;parthenocissus-quinquefolia-ha-wcullina.jpg;platanus-occidentalis-ba-jlynch.jpg;quercus-rubra-fr-gmittelhauser.jpg;quercus-rubra-wb-ahaines.jpg;rhododendron-maximum-fl-jlynch-b.jpg;rosa-carolina-fl-pwestover.jpg;salix-nigra-ha-azinovjev-a.jpg;toxicodendron-radicans-ha-atal-a.jpg;vaccinium-corymbosum-fr-ahaines.jpg;viburnum-acerifolium-ha-atal.jpg;viburnum-lantanoides-fr-dcameron.jpg;vinca-minor-ha-azinovjev.jpg
+Carex,Plants in the genus Carex,Sedges,"Grass-like plants with stems that have edges, and flowers that are enclosed inside an inflated sac (perigynium)",Graminoids,"<ul>
+ <li>&quot;Sedges have edges&quot; (note: some non-Carex species do, too). &nbsp;Feel the base of the stem - is it triangular in cross-section?</li>
+ <li>It's easiest to tell sedges apart by their reproductive parts, so it helps to collect or observe a flowering or fruiting plant.</li>
+ <li>The female flowers and fruits of sedges are enclosed inside a baggy skin called the perigynium. &nbsp;A fingernail-like scale often grows with the perigynium. &nbsp;Look at these structures under a microscope and note their color, relative size, and shape.</li>
+ <li>Note the color (if any) of the sheath - the tissue at the base of the leaf where it encloses the stem.</li>
+</ul>","<ul>
+ <li>Some close relatives of sedges (in the same family, Cyperaceae) also have &quot;edges&quot; on their stems, but produce different flowers without perigynia. &nbsp;In this key, they are in the group with &quot;rushes and other grass-like plants.&quot;</li>
+ <li>Some sedges are very small and squat, so it is hard to feel their &quot;edges.&quot; &nbsp;This is why it's helpful to look at plants with flowers or fruits.</li>
+</ul>",carex-brunnescens-ha-mlovit-b.jpg;carex-canescens-ha-mlovit.jpg;carex-communis-in-ahaines.jpg;carex-crinita-crinita-ha-gmittelhauser-a.jpg;carex-digitalis-ha-dcameron-b.jpg;carex-folliculata-in-mlovit.jpg;carex-gracillima-ha-mlovit-a.jpg;carex-hormathodes-ha-mlovit-a.jpg;carex-stricta-ha-dkausen.jpg;carex-tonsa-tonsa-sp-ahaines.jpg;carex-vulpinoidea-in-ahaines.jpg
+Poaceae,"Plants in the grass family, Poaceae",True grasses,"Plants with narrow leaves enclosing a hollow, rounded stem with a sheath at a swollen node",Graminoids,"<ul>
+ <li>True grasses are some of our most common plants, and take many sizes and forms. &nbsp;They all have hollow, rounded stems, with alternate long, narrow leaves that have parallel veins. &nbsp;The leaves join the stem at a swollen node that isn't hollow, and at least partially wrap the stem with a tissue called a sheath. &nbsp;Sometimes there is a band of hairs (called a ligule) at the top of the sheath.</li>
+ <li>It's easiest to tell grasses apart by their reproductive parts, so it helps to collect or observe a flowering or fruiting plant.</li>
+ <li>Grass flowers are reduced, specialized, and grouped into spikelets. &nbsp;Two leaf-like bracts called glumes enclose the base of the spikelet. &nbsp;Two bracts enclose each tiny flower in the spikelet: the outer one is called the lemma and the inner one the palea. </li>
+ <li>Grasses may grow in tight clumps or as tillers that are connected by long rhizomes.</li>
+</ul>","<ul>
+ <li>Many plants resemble grasses, with long narrow leaves and parallel veins. &nbsp;A true grass will have hollow stems, swollen nodes, and unique tiny groups of flowers.</li>
+</ul>",alopecurus-pratensis-ha-mlovit.jpg;agrostis-stolonifera-af-ahaines-a.jpg;anthoxanthum-odoratum-ha-atal.jpg;bromus-inermis-in-dcameron.jpg;calamagrostis-canadensis-si-dcameron-a.jpg;dichanthelium-clandestinum-in-dcameron-a.jpg;digitaria-ischaemum-in-jweber.jpg;echinochloa-muricata-in-gmittelhauser-b.jpg;glyceria-canadensis-si-mlovit-b.jpg;panicum-virgatum-in-atal.jpg;schizachyrium-scoparium-in-ahaines-a.jpg;setaria-pumila-ha-mlovit-b.jpg;spartina-patens-ha-mlovit-b.jpg
+Remaining graminoids,"Bulrushes, rushes, cat-tails, and other narrow-leaved plants",All other grass-like plants,"Grass-like plants without swollen stem nodes, that bear flowers in more than two ranks",Graminoids,"<ul>
+ <li>This collection includes a broad variety of plants with long, narrow leaves, some of which may be hollow or have compartments with air spaces. &nbsp;They may resemble grasses or sedges (<em>Carex </em>species), but they don't have perigynia (sacs enclosing the flowers and fruits) like <em>Carex</em>, nor flowers arranged in spikelets with many bracts (like true grasses).</li>
+</ul>","<ul>
+ <li>If you cannot find your plant in this group, see if it is a grass or a sedge (<em>Carex </em>species).</li>
+</ul>",bolboschoenus-maritimus-paludosus-ha-gmittelhauser-c.jpg;bulbostylis-capillaris-ha-gmittelhauser.jpg;cyperus-strigosus-ha-ahaines-b.jpg;dulichium-arundinaceum-ha-mlovit-a.jpg;eleocharis-obtusa-in-dcameron-a.jpg;eleocharis-palustris-in-ahaines-c.jpg;eriophorum-vaginatum-ff-dkausen.jpg;juncus-effusus-in-gmittelhauser.jpg;juncus-militaris-ss-dkausen-a.jpg;luzula-acuminata-in-ahaines-c.jpg;triglochin-maritima-ha-mlovit-c.jpg;typha-latifolia-in-ahaines-e.jpg
+Thalloid aquatic,Duckweeds and other very small floating species,Tiny water plants with no true stem,Floating plants that consist only of a small (10mm) body,Aquatic Plants,"<ul>
+ <li>These are tiny plants floating on the surface of ponds and other water bodies: duckweeds (<em>Lemna </em>and <em>Spirodela </em>species) and watermeal (Wolffia species).</li>
+ <li>The leaves and stems are merged into a structure loosely called a thallus, with tiny dangling rootlets.</li>
+ <li>This primitive structure makes these plants very efficient at photosynthesis and gathering nutrients - so they are very nutritious for wildlife.</li>
+ <li></li>
+</ul>","<ul>
+ <li>Some pieces of floating aquatic plants or algae may resemble these tiny plants, but they will have differentiated leaves and stems.</li>
+</ul>",lemna-minor-ta-dcameron.jpg;spirodela-polyrrhiza-ha-ahaines-a.jpg;wolffia-borealis-af-dcameron-b.jpg;wolffia-borealis-ta-dcameron-a.jpg
+Orchid monocots,Plants in the family Orchidaceae,Orchids,"Plants with showy, bilaterally symmetrical flowers with one part (the lip) often larger or more elaborate than the other petals",Monocots,"<ul>
+ <li>Orchids have highly specialized flowers with colors and structures that attract (and sometimes fool) insect pollinators.</li>
+ <li>Sacs, called pollinia, contain the pollen grains.</li>
+ <li>It is easiest to tell orchids apart by their flowers, so it helps to observe a mature, flowering plant.</li>
+ <li>The leaves have parallel veins and are often oval (narrow in a few species). &nbsp;Sometimes the veins are prominent enough to make the leaf look pleated (i.e., <em>Cypripedium </em>species).</li>
+ <li>Notice whether the leaves all grow at the base of the plant, or whether some grow on the stem. &nbsp;Some orchids produce leaves with green-and-white or spotted color patterns.</li>
+ <li>The seeds are tiny and dispersed by wind. &nbsp;Young embryos get a head-start by drawing nutrients from associated fungi (mycorrhizae).</li>
+</ul>","<ul>
+ <li>Orchid leaves can be confused with lily leaves, but orchid &nbsp;flowers -- with a large, modified lip -- are very different from all other monocots.</li>
+</ul>",cypripedium-parviflorum-parviflorum-fl-ahaines.jpg;arethusa-bulbosa-fl-dlong-c.jpg;corallorhiza-maculata-in-dcameron-b.jpg;cypripedium-acaule-ha-atal.jpg;epipactis-helleborine-in-ahaines.jpg;goodyera-pubescens-ha-jweber-b.jpg;isotria-verticillata-fl-fbramley-a.jpg;malaxis-unifolia-ha-dcameron-b.jpg;platanthera-lacera-fl-ahaines-a.jpg;platanthera-psycodes-fr-dcameron-a.jpg;platanthera-psycodes-ha-dcameron-c.jpg;spiranthes-cernua-fl-dcameron-b.jpg
+Non-orchid monocots,"Lilies, irises, aroids and others","Irises, lilies, and other ""monocots""",Plants with flower parts numbering 3 or 6 mostly equal-sized parts,Monocots,"<ul>
+ <li>&quot;Monocots&quot; are a broad category of plants that include grasses, sedges, and orchids (all plants whose embryos have only one leaf). &nbsp;Here, we separate out these other categories and just include the remaining species. </li>
+ <li>Look for flowers with 3 to 6 petals, usually arranged like spokes on a wheel (radially symmetrical).</li>
+ <li>Note the habitat the plant is growing in; this is helpful in narrowing down the species.</li>
+</ul>","<ul>
+ <li>Not all these plants have leaves with parallel veins.</li>
+ <li>Sometimes the flowers are not radially symmetrical, but unlike orchids, one flower part is not enlarged or modified.</li>
+</ul>",acorus-americanus-in-jweber-a.jpg;arisaema-triphyllum-fl-apratt.jpg;asparagus-officinalis-ha-mlovit-a.jpg;calla-palustris-fl-hhorwitz.jpg;iris-versicolor-ha-bkimball.jpg;lilium-canadense-fr-ahaines-b.jpg;lilium-canadense-in-dkausen.jpg;maianthemum-canadense-fr-apratt-d.jpg;pontederia-cordata-ha-dcameron-b.jpg;sagittaria-latifolia-fl-abussewitz-a.jpg;smilax-herbacea-le-ahaines-b.jpg;symplocarpus-foetidus-le-abussewitz-b.jpg;trillium-erectum-luteum-af-jlynch.jpg;uvularia-sessilifolia-fl-apratt-b.jpg
+Composites,Plants in the family Asteraceae,"Daisies, goldenrods, and other Aster family plants","Plants whose daisy-like ""flowers"" actually consist of two flowers - disks and rays",Non-Monocots,"<ul>
+ <li>What we think of as the &quot;daisy&quot; flower actually is a composite head containing two kinds of flowers: rays (which are the daisy &quot;petals&quot;) and tiny disk flowers making up the center.</li>
+ <li>Important characteristics of the composite flower head include color, shape of the head (flat-topped or rounded), the leaf-like bracts that enclose the base of the head, and seed shape.</li>
+ <li>If you don't have flowers, note whether the plant has milky sap or a strong odor. &nbsp;Also see if the stem is rounded or has edges.</li>
+ <li>Note how leaves are arranged, if they're simple or compound, and if they have hairs or spines.</li>
+</ul>","<ul>
+ <li>The Aster family includes daisies and sunflowers, but also species with smaller or less showy flowers like boneset, joe-pye weed, wild lettuce or goldenrod.</li>
+ <li>It's easiest to see specific flower characteristics under a hand lens or microscope.</li>
+</ul>",achillea-millefolium-ha-ahaines-a.jpg;ambrosia-artemisiifolia-artemisiifolia-ha-gmittelhauser-b.jpg;antennaria-neglecta-le-mlovit-a.jpg;arctium-lappa-ca-gmittelhauser-b.jpg;bidens-connata-le-gmittelhauser-d.jpg;centaurea-nigra-fl-ahaines.jpg;erechtites-hieraciifolius-fl-mlovit-b.jpg;erigeron-strigosus-fl-mlovit-a.jpg;eupatorium-perfoliatum-ha-ahaines-b.jpg;helianthus-tuberosus-ca-dkausen-e.jpg;hieracium-aurantiacum-fl-mlovit.jpg;lactuca-biennis-fr-atal.jpg;nabalus-altissimus-ha-gmittelhauser-a.jpg;solidago-altissima-ca-ahaines-b.jpg;solidago-nemoralis-fr-atal-a.jpg;taraxacum-officinale-fr-mlovit-a.jpg;taraxacum-officinale-ha-ahaines-c.jpg;xanthium-strumarium-canadense-fl-ahaines-b.jpg
+Non-thalloid aquatic,"Milfoils, watershields, bladderworts, and other submerged plants",Water plants with leaves and stems,Floating or submerged plants that have distinguishable leaves and stems,Aquatic Plants,"<ul>
+ <li>These are plants that spend all or part of their lives under water or floating near the water's surface. </li>
+ <li>They are larger than duckweeds and watermeal (<em>Lemna</em>, <em>Wolffia </em>and <em>Spirodela</em>) and have distinct leaves and stems.</li>
+</ul>","<ul>
+ <li>This is a diverse group. &nbsp;Leaves of some species may look very thin and feathery, and/or have bladders that help them float or capture prey.</li>
+</ul>",eriocaulon-aquaticum-ha-clowe.jpg;lobelia-dortmanna-ha-mlovit-b.jpg;ludwigia-palustris-ha-ahaines.jpg;myriophyllum-verticillatum-ha-dcameron-c.jpg;najas-flexilis-le-dcameron-b.jpg;nuphar-variegata-ha-dkausen.jpg;proserpinaca-palustris-ha-ahaines-b.jpg;ranunculus-flabellaris-ha-dcameron-d.jpg;sagittaria-cuneata-le-dcameron-c.jpg;sagittaria-graminea-ha-dcameron-b.jpg;sium-suave-le-mlovit-a.jpg;sparganium-angustifolium-ha-mlovit-b.jpg;zostera-marina-ha-bkimball.jpg
+Remaining non-monocots,,"All other herbaceous, flowering dicots",Herbaceous plants without composite flowers,Non-Monocots,"<ul>
+ <li>This is the very diverse group of plants that are not grass-like, woody, aquatic, monocots, or daisy-like.</li>
+ <li>Flowers are very helpful for identification, but with practice you'll learn to recognize features of the stem and leaves of many plants.</li>
+</ul>","<div>Look carefully at the growth form of the plant (vine or not?), leaf arrangement and type, special sap or scent, habitat (wetland or not?), and flower structure.</div>",aralia-hispida-fl-abussewitz-b.jpg;asarum-canadense-fl-wcullina-b.jpg;asclepias-syriaca-fr-gmittelhauser-b.jpg;asclepias-syriaca-fr-gmittelhauser-d.jpg;brassica-juncea-fl-gmittelhauser-b.jpg;cakile-edentula-fl-gmittelhauser-c.jpg;campanula-rotundifolia-fl-ahaines-b.jpg;daucus-carota-fl-gmittelhauser-d.jpg;dianthus-deltoides-fl-ahaines-a.jpg;drosera-intermedia-le-gmittelhauser-b.jpg;euphorbia-cyparissias-fl-ddentzer.jpg;fallopia-japonica-fl-mlovit.jpg;gentianopsis-crinita-fl-ahaines-c.jpg;geranium-maculatum-fl-ahaines-a.jpg;impatiens-capensis-fr-atal.jpg;ipomoea-hederacea-fl-lnewcomb-a.jpg;lathyrus-japonicus-maritimus-fl-gmittelhauser-c.jpg;lupinus-polyphyllus-fr-mlovit-a.jpg;lythrum-salicaria-fl-dcameron.jpg;monotropa-uniflora-fl-gmittelhauser-a.jpg;myosotis-scorpioides-fl-gmittelhauser-a.jpg;oenothera-biennis-fl-ahaines-d.jpg;prunella-vulgaris-fl-ahaines-a.jpg;sabatia-kennedyana-fl-dlong-a.jpg;salicornia-depressa-ha-gmittelhauser-b.jpg;sarracenia-purpurea-ha-dlong-c.jpg;silene-latifolia-fl-mlovit-a.jpg;suaeda-maritima-maritima-le-gmittelhauser-a.jpg;trifolium-pratense-fl-ahaines-a.jpg;triosteum-aurantiacum-fl-dcameron-c.jpg;viola-sagittata-ha-ahaines.jpg
+all,,,,,,,
+Unused,Unused,,,,,,
