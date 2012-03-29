@@ -51,7 +51,10 @@
         <script src="/static/scripts/require.js"></script>
         {# This block is for adding any page-specific JS. #}
         <script>
-            require.config({baseUrl: "/static/scripts"});
+            require.config({
+                baseUrl: "/static/scripts",
+                waitSeconds: 90
+            });
             {% block js_require %}{% endblock %}
         </script>
     </head>
