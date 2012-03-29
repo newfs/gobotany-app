@@ -82,7 +82,8 @@ def glossary_blob(request):
     definitions = {}
     images = {}
     discards = set()
-    for g in GlossaryTerm.objects.select_related('image'):
+    for g in (GlossaryTerm.objects.filter(is_highlighted=True)
+              .select_related('image')):
         term = g.term
         if len(term) < 3 or not g.lay_definition:
             pass

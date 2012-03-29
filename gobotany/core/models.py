@@ -61,7 +61,8 @@ class GlossaryTerm(models.Model):
     lay_definition = models.TextField(blank=True)
     question_text = models.TextField(blank=True)
     hint = models.TextField(blank=True)
-    visible = models.BooleanField(default=True)
+    visible = models.BooleanField(default=True)  # whether to show in glossary
+    is_highlighted = models.BooleanField(default=True)
     # XXX: We will eventually factor this out into a distinct object
     # when we have real metadata
     image = models.ImageField(upload_to='glossary-images',
