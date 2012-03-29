@@ -506,14 +506,7 @@ class TaxonImageTestCase(TestCase):
             self.assertEqual(unicode, type(image['title']))
             self.assertEqual(unicode, type(image['description']))
             self.assertEqual(unicode, type(image['thumb_url']))
-            self.assertEqual(int, type(image['thumb_width']))
-            self.assertEqual(int, type(image['thumb_height']))
             self.assertEqual(unicode, type(image['large_thumb_url']))
-            self.assertEqual(int, type(image['large_thumb_width']))
-            self.assertEqual(int, type(image['large_thumb_height']))
-            self.assertEqual(unicode, type(image['scaled_url']))
-            self.assertEqual(int, type(image['scaled_width']))
-            self.assertEqual(int, type(image['scaled_height']))
 
     def test_get_returns_empty_list_when_images_do_not_exist(self):
         response = self.client.get('/api/taxon-image/?species=Fooium%20fooia')
