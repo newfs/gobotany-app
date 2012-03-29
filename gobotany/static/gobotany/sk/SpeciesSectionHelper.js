@@ -255,7 +255,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         var taxon_image = taxon_image.large_thumb_url;
                         taxon_image = taxon_image.substr(
                             taxon_image.lastIndexOf('/') + 1);
-                        console.log('** taxon_image:', taxon_image);
                         if (clicked_image === taxon_image &&
                             !is_missing_image) {
                             // Since this is the same image as was
