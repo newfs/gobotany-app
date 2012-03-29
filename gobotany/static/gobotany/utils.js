@@ -98,9 +98,9 @@ gobotany.utils.pretty_length = function(unit, mmvalue, show_unit) {
     }
     var value = '';
     if (unit == 'mm') {
-        value = mm.toFixed(1);
+        value = mm.toFixed(2);
     } else if (unit === 'cm') {
-        value = (mm / 10.0).toFixed(1);
+        value = (mm / 10.0).toFixed(2);
     } else if (unit === 'm') {
         value = (mm / 1000.0).toFixed(2);
     } else {   // assume unit is 'in'
