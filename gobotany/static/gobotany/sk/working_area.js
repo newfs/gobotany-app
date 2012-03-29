@@ -348,6 +348,18 @@ dojo.declare('gobotany.sk.working_area.Slider', [
     },
 
     _value_changed: function() {
+        /* Disable the apply button when we're on either the default
+           value or the value that was previous selected */
+        var apply_button = dojo.query('.apply-btn', this.div);
+        var slider_value = this._current_value();
+        var filter_value = this.filter.selected_value;
+        // Allow type coersion in this comparison, since we're
+        // comparing text from the filter to a numerical slider value
+        if (slider_value == filter_value)
+            apply_button.addClass('disabled');
+        else
+            apply_button.removeClass('disabled');
+
         /* Update the count label. */
         var label = dojo.query('#simple-slider .count');
         var value = this._current_value();
