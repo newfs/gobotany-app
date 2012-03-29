@@ -187,14 +187,11 @@ class Batch(object):
         # as storage, such as during unit tests, split the commands up
         commands = text.split(';')
 
-        print 'Flushing to sqlite'
-        print text
         arg_index = 0
         for command in commands:
             arg_count = command.count('%s')
             command_args = args[arg_index:arg_index + arg_count]
             arg_index += arg_count
 
-            print 'Executing:\n{0}\nArgs: {1}'.format(command, command_args)
             self.cursor.execute(command, command_args)
 
