@@ -1597,10 +1597,10 @@ div.working-area .actions {
 
 /* Taxon (species) page styles */
 
-#taxon span.origin {
+h2 span.origin {
 	font-size: 14px;
 }
-#taxon span.common {
+h2 span.common {
     display: block;
 	font-size: 30px;
 	color: #807121;

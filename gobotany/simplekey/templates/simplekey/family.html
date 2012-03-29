@@ -29,13 +29,18 @@ Family: {{ family.name }} {% if common_name %}({{ common_name }}){% endif %}
     <div class="content">
         <div class="container">
             <div id="main">
-                <h2>Family: {{ family.name }}</h2>
-                <h3>{% if common_name %}{{ common_name }}{% endif %}</h3>
+                <h2>Family: {{ family.name }}
+                {% if common_name %}
+                    <span class="common">
+                    {{ common_name|cut:"The "|lower }}
+                    </span>
+                {% endif %}
+                </h2>
                 <p class="description">
                 {% if family.description %}
                     {{ family.description }}
                 {% else %}
-                    (Description Coming Soon)
+                    (Description coming soon)
                 {% endif %}
                 </p>
                 
@@ -62,9 +67,6 @@ Family: {{ family.name }} {% if common_name %}({{ common_name }}){% endif %}
                     >{{ genus.name }}</a></i></li>
                 {% endfor %}
                 </ul>
-
-                <a class="family-genera-btn" href="{% url simplekey-pile pilegroup.slug pile.slug %}#family={{ family.name }}">Key
-                    to this Family&#8217;s Genera</a>
 
             </div>
             <div id="sidebar" style="height: 634px;">
