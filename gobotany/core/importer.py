@@ -104,6 +104,26 @@ state_names = {
     'vt': u'Vermont',
     }
 
+# Precendence of distribution status to be assigned
+# when a species has differing status per subspecies
+# or variety.  Higher values will override lower.
+status_precedence = {
+    'Species noxious' : 13,
+    'Species present in state and exotic' : 12,
+    'Species exotic and present' : 11,
+    'Species waif' : 10,
+    'Species present in state and native' : 9,
+    'Species present and not rare' : 8,
+    'Species native, but adventive in state' : 7,
+    'Species present and rare' : 6,
+    'Species extirpated (historic)' : 5,
+    'Species extinct' : 4,
+    'Species not present in state' : 3,
+    'Species eradicated' : 2,
+    'Questionable Presence (cross-hatched)' : 1,
+    '' : 0,
+}
+
 def get_default_filters_from_csv(pile_name, characters_csv):
     iterator = iter(CSVReader(characters_csv).read())
     colnames = [x.lower() for x in iterator.next()]
@@ -1547,7 +1567,41 @@ class Importer(object):
                 status=row['status'],
                 )
 
+            self._apply_subspecies_status(row, distribution)
+
         distribution.save()
+
+    def _apply_subspecies_status(self, row, distribution):
+        distribution_status = row['status']
+        full_name = row['scientific_name']
+        state = row['state']
+        county = row['county']
+
+        scientific_name = _extract_scientific_name(full_name)
+        if scientific_name == full_name:
+            return
+        # If the new scientific name indicates that this is a subspecies or variety
+        # record, we will add it under the species name, modifying the
+        # current distribution status if the status from this record has
+        # higher precedence
+        distribution_row = distribution.get(
+            scientific_name=scientific_name,
+            state=state,
+            county=county,
+            )
+        current_status = distribution_row.get('status') or ''
+        if status_precedence[distribution_status] > status_precedence[current_status]:
+            # Interesting information, but there's SO much output it's annoying normally.
+            #log.info(
+            #    'Species %s status overridden from subspecies %s', 
+            #    scientific_name,
+            #    full_name
+            #)
+            #log.info('New distribution status ["%s" -> "%s"]',
+            #        current_status,
+            #        distribution_status
+            #)
+            distribution_row.set(status=distribution_status)
 
     @transaction.commit_on_success
     def _import_videos(self, db, videofilename):
@@ -1873,6 +1927,14 @@ def delete_files_in(dirname):
         if os.path.isdir(dirpath):
             log.info('Deleting every file under MEDIA_ROOT/%s' % dirpart)
             shutil.rmtree(dirpath)
+
+def _extract_scientific_name(name):
+    if not ('var.' in name or 'ssp.' in name):
+        return name
+    if 'var.' in name:
+        return name[:name.find('var.')].strip()
+    if 'ssp.' in name:
+        return name[:name.find('ssp.')].strip()
 
 # Parse the command line.
 
