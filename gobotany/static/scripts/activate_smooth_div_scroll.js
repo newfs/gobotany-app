@@ -5,16 +5,23 @@
 
 require([
     'jquery.tools.min',
-    'smoothDivScroll'
 ], function() {
-
-    $(document).ready(function() {
-        $('#species-images').smoothDivScroll({
-            autoScroll: 'onstart', 
-            autoScrollDirection: 'backandforth', 
-            autoScrollStep: 1, 
-            autoScrollInterval: 75,
-            visibleHotSpots: 'always'
+    require([
+        'jquery-ui-1.8.16.custom.min',
+    ], function() {
+        require([
+            'jquery.smoothDivScroll-1.1-mod', /* un-minified, with bugfix by
+                                                 Go Botany */
+        ], function() {
+            $(document).ready(function() {
+                $('#species-images').smoothDivScroll({
+                    autoScroll: 'onstart', 
+                    autoScrollDirection: 'backandforth', 
+                    autoScrollStep: 1, 
+                    autoScrollInterval: 75,
+                    visibleHotSpots: 'always'
+                });
+            });
         });
     });
 });
