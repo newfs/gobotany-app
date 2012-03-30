@@ -110,6 +110,9 @@ class Row(object):
         self.__dict__.update(kw)
         return self
 
+    def get(self, field):
+        self.__dict__.get(field, None)
+
 class Batch(object):
     def __init__(self, cursor, table, maxlen=10000):
         self.cursor = cursor
