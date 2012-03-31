@@ -2449,8 +2449,8 @@ img.margin-bookcover {
     background-position: center;
     background-repeat: no-repeat;
     padding: 12px; /* Increase click target area */
-    right: -20px !important; /* Place at top right corner */
-    top: 6px !important;
+    right: -28px !important; /* Place at top right corner */
+    top: -0px !important;
 }
 
 /* Notification for draft status: remove upon release */

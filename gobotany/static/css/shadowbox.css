@@ -20,12 +20,12 @@
 #sb-nav a{display:block;float:right;height:16px;width:16px;margin-left:3px;cursor:pointer;background-repeat:no-repeat;}
 #sb-nav-close{
 	position: absolute;
-	width: 16px;
-	height: 16px;
-	top: 24px;
-	right: 24px;
+	width: 32px;
+	height: 32px;
+	top: 48px;
+	right: 48px;
 	cursor: pointer;
-	background-image:url(../images/icons/close.png);
+	background-image:url(../images/icons/close-large.png);
 	}
 #sb-nav-next{background-image:url(../images/shadowbox/next.png);}
 #sb-nav-previous{background-image:url(../images/shadowbox/previous.png);}
