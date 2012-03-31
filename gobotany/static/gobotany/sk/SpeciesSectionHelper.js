@@ -227,13 +227,13 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         '#plant-detail-modal .details .characteristics')[0];
                     dojo.html.set(characters_list, characters_html);
 
-                    // Wire up the Get More Info button.
+                    // Wire up the Go To Species Page button.
                     var path = window.location.pathname.split('#')[0];
                     var url = path +
                         plant.scientific_name.toLowerCase().replace(' ',
                         '/') + '/';
                     var button =
-                        dojo.query('#plant-detail-modal a.get-more-info')[0];
+                        dojo.query('#plant-detail-modal a.go-to-species-page')[0];
                     dojo.attr(button, 'href', url);
 
                     // Add images.
@@ -275,8 +275,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     Shadowbox.open({
                         content: content_element.innerHTML,
                         player: 'html',
-                        height: 650,
-                        width: 880,
+                        height: 500,
+                        width: 980,
                         options: {onFinish: dojo.hitch(this, function() {
                             var $sb = $('#sb-container');
                             var $children = $sb.find('p, dt, dd, li');

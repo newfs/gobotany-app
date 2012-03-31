@@ -523,7 +523,7 @@ body.app {
 	width: 425px;
 }
 #plant-id-3 .list-item .details {
-    width: 550px;
+    width: 650px;
 }
 .list-item p {
 	padding: 0 0 7px 25px;
@@ -768,6 +768,20 @@ a.get-more-info:hover {
 }
 a.get-more-info:active {
 	background-position: 0 -64px;
+}
+a.go-to-species-page {
+	background: url(/static/images/layout/go-to-species-page.png) 0 0 no-repeat transparent;
+    	display: block;
+	height: 31px;
+	margin: 20px 0 0 0;
+	text-indent: -9000px;
+   	width: 212px;
+}
+a.go-to-species-page:hover {
+	background-position: 0 -31px;
+}
+a.go-to-species-page:active {
+	background-position: 0 -62px;
 }
 
 .plant-list {
