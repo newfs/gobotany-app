@@ -523,7 +523,7 @@ body.app {
 	width: 425px;
 }
 #plant-id-3 .list-item .details {
-    width: 650px;
+    width: 600px;
 }
 .list-item p {
 	padding: 0 0 7px 25px;
@@ -531,6 +531,9 @@ body.app {
 .list-item .section-title {
 	display: block;
 	text-transform: uppercase;	
+}
+#plant-details .img-gallery {
+	margin-top: 6px;
 }
 
 p.key-char {
@@ -728,7 +731,9 @@ div.modal-wrap {
     padding: 4px 20px 0;
 }
 .modal-wrap .inner h3.heading {
-	font-style: italic;	
+	font-style: italic;
+	margin-bottom: 0;
+	margin-left: 265px;
 }
 .modal-wrap .inner h3.heading span {
 	color: #807121;

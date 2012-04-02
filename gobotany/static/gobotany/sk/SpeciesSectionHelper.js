@@ -154,25 +154,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         '#plant-detail-modal div.details p.facts')[0],
                         taxon.factoid);
 
-                    // Fill in Habitat.
-                    if (taxon.habitat !== undefined) {
-                        var habitat_list = [];
-                        // The API returns a string for a single value,
-                        // or a list for multiple values.
-                        if (typeof(taxon.habitat) == "string") {
-                            habitat_list.push(taxon.habitat);
-                        }
-                        else {
-                            habitat_list = taxon.habitat;
-                        }
-                        habitat_list = habitat_list.sort().join(', ');
-                        habitat_list = habitat_list[0].toUpperCase() +
-                            habitat_list.slice(1);
-                        dojo.html.set(dojo.query(
-                            '#plant-detail-modal div.details p.habitat')[0],
-                            habitat_list);
-                    }
-
                     // Fill in Characteristics.
                     var characters = this.plant_preview_characters;
                     var characters_html = '';
@@ -276,7 +257,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         content: content_element.innerHTML,
                         player: 'html',
                         height: 500,
-                        width: 980,
+                        width: 920,
                         options: {onFinish: dojo.hitch(this, function() {
                             var $sb = $('#sb-container');
                             var $children = $sb.find('p, dt, dd, li');
