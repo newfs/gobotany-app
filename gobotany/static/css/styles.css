@@ -421,6 +421,7 @@ body.app {
     
 .app .content h2 {
 	color: #519136;
+	line-height: 110%;
 }	
 
 .not-my-plant {
@@ -447,7 +448,7 @@ body.app {
 }
 .list-item h3 {
 	margin: 0 0 5px 0;	
-	line-height: 90%;
+	line-height: 110%;
 }
 .list-item h3 span {
     color: #807121;
