@@ -2459,27 +2459,6 @@ img.margin-bookcover {
     top: 6px !important;
 }
 
-/* Notification for draft status: remove upon release */
-
-#notify {
-    color: #d4ee3b;
-    font-size: 100%;
-    font-weight: bold;
-    height: 0;
-    left: 0;
-    position: fixed;
-    text-align: center;
-    top: 0;
-    width: 100%;
-    z-index: 120;
-}
-#notify div {
-    background-color: #e39f19;
-    border-bottom: 1px solid #d6800c;
-    color: #735005;
-    padding: 7px 0;
-}
-
 /* Search suggest */
 nav #search #search-suggest input {
     color: #000;
