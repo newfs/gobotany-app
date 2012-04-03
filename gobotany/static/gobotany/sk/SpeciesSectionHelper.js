@@ -155,8 +155,10 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         taxon.factoid);
 
                     // Fill in Characteristics.
+		    var MAX_CHARACTERS = 6;
                     var characters = this.plant_preview_characters;
                     var characters_html = '';
+                    var characters_displayed = 0;
                     for (var i = 0; i < characters.length; i++) {
                         var ppc = characters[i];
 
@@ -195,12 +197,17 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                                 }
                             }
 
-                            // Only display this character if it has a value.
+                            // Only display this character if it has a value
+			    // and if the maximum number of characters for the
+                            // popup has not been exceeded.
                             if (display_value !== undefined &&
                                 display_value !== '') {
-                                characters_html += '<dl><dt>' +
-                                    ppc.friendly_name + '</dt><dd>' +
-                                    display_value + '</dd></dl>';
+				if (characters_displayed < MAX_CHARACTERS) {
+                                    characters_html += '<dl><dt>' +
+                                        ppc.friendly_name + '</dt><dd>' +
+                                        display_value + '</dd></dl>';
+				    characters_displayed += 1;
+                                }
                             }
                         }
                     }
@@ -257,7 +264,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         content: content_element.innerHTML,
                         player: 'html',
                         height: 520,
-                        width: 930,
+                        width: 940,
                         options: {onFinish: dojo.hitch(this, function() {
                             var $sb = $('#sb-container');
                             var $children = $sb.find('p, dt, dd, li');
