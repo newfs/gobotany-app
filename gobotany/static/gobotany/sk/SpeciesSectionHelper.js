@@ -256,8 +256,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     Shadowbox.open({
                         content: content_element.innerHTML,
                         player: 'html',
-                        height: 500,
-                        width: 920,
+                        height: 520,
+                        width: 930,
                         options: {onFinish: dojo.hitch(this, function() {
                             var $sb = $('#sb-container');
                             var $children = $sb.find('p, dt, dd, li');
