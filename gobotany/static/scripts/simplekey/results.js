@@ -12,16 +12,22 @@ define([
         'order!/static/js/dojo/dojo.js',
         'underscore-min',  // filters.js, etc
         'sidebar',
-        'simplekey/resources',  // now used in filters.js
-        'jscrollpane',  // sk/results.js
         'shadowbox'
     ], function() {
         require([
             '/static/js/layers/sk.js'
         ], function() {
-            dojo.require('gobotany.sk.results');
-            dojo.addOnLoad(function() {
-                helper = gobotany.sk.results.ResultsHelper(args.pile_slug);
+	    require([
+                'simplekey/resources'   // now used in filters.js
+            ], function() {
+                require([
+                    'jscrollpane'   // sk/results.js
+                ], function() {
+                    dojo.require('gobotany.sk.results');
+                    dojo.addOnLoad(function() {
+                        helper = gobotany.sk.results.ResultsHelper(args.pile_slug);
+                    });
+                });
             });
         });
     });
