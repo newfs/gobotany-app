@@ -31,9 +31,19 @@ else:
         }
     }
 
-running_on_heroku = bool('DATABASE_URL' in os.environ)
+# Are we running in production, where we are free to cache things and in
+# general to do things that would annoy a developer making quick changes
+# to the application?  We tell by looking for the $PORT environment
+# variable, which should always be set on Heroku, and which a developer
+# can set locally to test "production" behaviors.  (We do not actually
+# do anything with the value, since our Procfile makes it gunicorn's job
+# to actually grab the port.)
 
-if running_on_heroku:
+IN_PRODUCTION = 'PORT' in os.environ
+
+#
+
+if 'DATABASE_URL' in os.environ:
 
     # This code lets script running locally on a developer workstation
     # connect to a Heroku database in the cloud, if its URL provided.
