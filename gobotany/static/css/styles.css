@@ -2454,9 +2454,9 @@ img.margin-bookcover {
 #sb-nav-close {
     background-position: center;
     background-repeat: no-repeat;
-    padding: 12px; /* Increase click target area */
-    right: -28px !important; /* Place at top right corner */
-    top: -0px !important;
+    padding: 4px; /* Increase activation area a bit */
+    right: -21px !important; /* Place at top right corner */
+    top: 6px !important;
 }
 
 /* Notification for draft status: remove upon release */
