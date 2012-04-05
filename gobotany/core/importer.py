@@ -1165,6 +1165,8 @@ class Importer(object):
         # images should work).
 
         ContentImage_objects = models.ContentImage.objects
+        content_type = ContentType.objects.get_for_model(models.Taxon)
+
         log.info('Scanning S3 for taxon images')
 
         lsgz = default_storage.open('ls-taxon-images.gz')
@@ -1229,8 +1231,6 @@ class Importer(object):
                 except:
                     log.error('  image names unknown taxon: %s', filename)
                     continue
-
-            content_type = ContentType.objects.get_for_model(taxon)
 
             # Get the image type, now that we know what pile the
             # species belongs in (PROBLEM: it could be in several;
