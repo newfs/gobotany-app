@@ -227,7 +227,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     // Add images.
                     var images_html = '';
                     var clicked_image = $('img', plant_link).attr('src');
-                    console.log('* clicked_image:', clicked_image);
 
                     if (clicked_image !== undefined)
                         clicked_image = clicked_image.substr(
