@@ -1,4 +1,5 @@
 import csv
+import gzip
 import logging
 import os
 import re
@@ -1166,126 +1167,125 @@ class Importer(object):
         ContentImage_objects = models.ContentImage.objects
         log.info('Scanning S3 for taxon images')
 
-        dirnames, nothings = default_storage.listdir('taxon-images')
+        lsgz = default_storage.open('ls-taxon-images.gz')
+        # lsgz = open('ls-taxon-images.gz')
+        ls = gzip.GzipFile(fileobj=lsgz)
+
         count = 0
 
-        for dirname in sorted(dirnames):
+        for line in ls:
+            # if count == 200: os._exit(0)
+            image_path = line.split(' s3://newfs/')[1].strip()
+            dirname, filename = image_path.rsplit('/', 1)
 
-            dirpath = 'taxon-images/' + dirname
-            nothings, filenames = default_storage.listdir(dirpath)
+            # print >> self.logfile, 'INFO: current image, ', filename
 
-            for filename in sorted(filenames):
-                image_path = dirpath + '/' + filename
-                print image_path
-                # print >> self.logfile, 'INFO: current image, ', filename
+            if '.' not in filename:
+                log.error('  file lacks an extension: %s', filename)
+                continue
 
-                if '.' not in filename:
-                    log.error('  file lacks an extension: %s', filename)
-                    continue
+            if filename.count('.') > 1:
+                log.error('  filename has multiple periods: %s', filename)
+                continue
 
-                if filename.count('.') > 1:
-                    log.error('  filename has multiple periods: %s', filename)
-                    continue
+            if filename.count('_') > 0:
+                log.error('  filename has underscores: %s', filename)
+                continue
 
-                if filename.count('_') > 0:
-                    log.error('  filename has underscores: %s', filename)
-                    continue
+            name, ext = filename.split('.')
+            if ext.lower() not in ('jpg', 'gif', 'png', 'tif'):
+                log.error('  file lacks image extension: %s', filename)
+                continue
 
-                name, ext = filename.split('.')
-                if ext.lower() not in ('jpg', 'gif', 'png', 'tif'):
-                    log.error('  file lacks image extension: %s', filename)
-                    continue
+            pieces = name.split('-')
+            genus = pieces[0]
+            species = pieces[1]
 
-                pieces = name.split('-')
-                genus = pieces[0]
-                species = pieces[1]
+            # Skip subspecies and variety, if provided, and skip
+            # ahead to the type field, that always has length 2.
 
-                # Skip subspecies and variety, if provided, and skip
-                # ahead to the type field, that always has length 2.
+            type_field = 2
+            while len(pieces[type_field]) != 2:
+                type_field += 1
 
-                type_field = 2
-                while len(pieces[type_field]) != 2:
-                    type_field += 1
+            _type = pieces[type_field]
+            photographer = pieces[type_field + 1]
 
-                _type = pieces[type_field]
-                photographer = pieces[type_field + 1]
+            scientific_name = ' '.join((genus, species)).capitalize()
 
-                scientific_name = ' '.join((genus, species)).capitalize()
-
-                # Find the Taxon corresponding to this species.
+            # Find the Taxon corresponding to this species.
+            try:
+                taxon = models.Taxon.objects.get(
+                    scientific_name=scientific_name)
+            except ObjectDoesNotExist:
+                # Test whether the "subspecies" field that we
+                # skipped was, in fact, the second half of a
+                # hyphenated species name, like the species named
+                # "Carex merritt-fernaldii".
+                scientific_name = scientific_name + '-' + pieces[2]
                 try:
                     taxon = models.Taxon.objects.get(
                         scientific_name=scientific_name)
-                except ObjectDoesNotExist:
-                    # Test whether the "subspecies" field that we
-                    # skipped was, in fact, the second half of a
-                    # hyphenated species name, like the species named
-                    # "Carex merritt-fernaldii".
-                    scientific_name = scientific_name + '-' + pieces[2]
-                    try:
-                        taxon = models.Taxon.objects.get(
-                            scientific_name=scientific_name)
-                    except:
-                        log.error('  image names unknown taxon: %s', filename)
-                        continue
-
-                content_type = ContentType.objects.get_for_model(taxon)
-
-                # Get the image type, now that we know what pile the
-                # species belongs in (PROBLEM: it could be in several;
-                # will email Sid about this).  For why we use lower(),
-                # see the comment above.
-
-                for pile in taxon.piles.all():
-                    key = (pile.name.lower(), _type)
-                    if key in taxon_image_types:
-                        break
-                else:
-                    log.error('  unknown image type %r: %s', _type, filename)
+                except:
+                    log.error('  image names unknown taxon: %s', filename)
                     continue
 
-                image_type, created = models.ImageType.objects \
-                    .get_or_create(name=taxon_image_types[key])
+            content_type = ContentType.objects.get_for_model(taxon)
 
-                # Arbitrarily promote the first image for each
-                # species-type to Rank 1.
+            # Get the image type, now that we know what pile the
+            # species belongs in (PROBLEM: it could be in several;
+            # will email Sid about this).  For why we use lower(),
+            # see the comment above.
 
-                content_image, created = ContentImage_objects.get_or_create(
-                    # If we were simply creating the object we could set
-                    # content_object, but in case Django does a "get" we
-                    # need to use content_type and object_id instead.
-                    object_id=taxon.pk,
-                    content_type=content_type,
-                    # Use filename to know if this is the "same" image.
-                    image=image_path,
-                    defaults=dict(
-                        # Integrity errors are triggered unless we set
-                        # these during the create:
-                        rank=2,
-                        image_type=image_type,
-                        )
+            for pile in taxon.piles.all():
+                key = (pile.name.lower(), _type)
+                if key in taxon_image_types:
+                    break
+            else:
+                log.error('  unknown image type %r: %s', _type, filename)
+                continue
+
+            image_type, created = models.ImageType.objects \
+                .get_or_create(name=taxon_image_types[key])
+
+            # Arbitrarily promote the first image for each
+            # species-type to Rank 1.
+
+            content_image, created = ContentImage_objects.get_or_create(
+                # If we were simply creating the object we could set
+                # content_object, but in case Django does a "get" we
+                # need to use content_type and object_id instead.
+                object_id=taxon.pk,
+                content_type=content_type,
+                # Use filename to know if this is the "same" image.
+                image=image_path,
+                defaults=dict(
+                    # Integrity errors are triggered unless we set
+                    # these during the create:
+                    rank=2,
+                    image_type=image_type,
                     )
+                )
 
-                if created:
-                    already_1 = ContentImage_objects.filter(
-                        rank=1,
-                        image_type=image_type,
-                        content_type=content_type,
-                        object_id=taxon.pk,
-                        )
-                    if not already_1:
-                        content_image.rank = 1
+            if created:
+                already_1 = ContentImage_objects.filter(
+                    rank=1,
+                    image_type=image_type,
+                    content_type=content_type,
+                    object_id=taxon.pk,
+                    )
+                if not already_1:
+                    content_image.rank = 1
 
-                content_image.image_type = image_type
-                content_image.creator = photographer
-                content_image.alt = '%s: %s %s' % (
-                    taxon.scientific_name, image_type.name, content_image.rank)
-                content_image.save()
+            content_image.image_type = image_type
+            content_image.creator = photographer
+            content_image.alt = '%s: %s %s' % (
+                taxon.scientific_name, image_type.name, content_image.rank)
+            content_image.save()
 
-                count += 1
+            count += 1
 
         log.info('Imported %d taxon images', count)
-
 
     def _import_home_page_images(self, db):
         """Import default home page images and put image files in the
