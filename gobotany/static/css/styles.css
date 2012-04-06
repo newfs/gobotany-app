@@ -49,7 +49,7 @@ nav #search {
     height: 20px;
     padding: 0 0 0 11px;
     margin: 4px 4px 0 0;
-    background: url(/static/images/layout/search-left.png) left center no-repeat;
+    background: #fff url(/static/images/layout/search-left.png) left center no-repeat;
 }
 nav #search input {
     width: 219px;
@@ -65,7 +65,7 @@ nav #search button {
     height: 20px;
     padding: 0;
     margin: 0;
-    background: url(/static/images/layout/search-btn.png) 0 0 no-repeat;
+    background: #508e31 url(/static/images/layout/search-btn.png) 0 0 no-repeat;
     text-indent: -9000px;
     cursor: pointer;
 }
