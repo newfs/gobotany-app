@@ -2328,6 +2328,9 @@ img.margin-bookcover {
 
 /* Advanced Map page styles */
 
+#advanced-map h2 {
+    margin-bottom: 12px;
+}
 #advanced-map #main p {
     margin: 10px 0 0;
 }
