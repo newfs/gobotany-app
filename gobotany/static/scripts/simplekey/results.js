@@ -8,20 +8,32 @@ define([
     ]);
 
     require([
-        'order!dojo_config',
-        'order!/static/js/dojo/dojo.js',
-        'underscore-min',  // filters.js, etc
-        'sidebar',
-        'shadowbox'
+        'order!jscrollpane'   // sk/results.js
     ], function() {
         require([
-            '/static/js/layers/sk.js'
+            'order!dojo_config',
+            'order!/static/js/dojo/dojo.js',
+            'order!/static/js/layers/nls/sk_en-us.js',
+            'order!/static/js/layers/sk.js'
         ], function() {
-	    require([
-                'simplekey/resources'   // now used in filters.js
+            require([
+                'order!/static/gobotany/filters.js',
+                'order!/static/gobotany/utils.js',
+                'order!/static/gobotany/sk/glossary.js',
+                'order!/static/gobotany/sk/photo.js',
+                'order!/static/gobotany/sk/results.js',
+                'order!/static/gobotany/sk/SpeciesSectionHelper.js',
+                'order!/static/gobotany/sk/working_area.js',
+                'order!/static/gobotany/sk/SearchSuggest.js'
             ], function() {
                 require([
-                    'jscrollpane'   // sk/results.js
+                    'order!simplekey/resources',   // now used in filters.js
+                    'order!activate_search_suggest',
+                    'order!activate_image_gallery',
+                    'underscore-min',  // filters.js, etc
+                    'sidebar',
+                    'shadowbox',
+                    'shadowbox_close'
                 ], function() {
                     dojo.require('gobotany.sk.results');
                     dojo.addOnLoad(function() {
@@ -31,12 +43,4 @@ define([
             });
         });
     });
-
-    /* Hook up our gallery applications. */
-
-    require([
-        'activate_image_gallery',
-        'activate_search_suggest',
-        'shadowbox_close'
-    ]);
 });
