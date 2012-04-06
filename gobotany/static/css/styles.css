@@ -630,7 +630,7 @@ p.vid {
 #sidebar a.view-map-btn:active {
 	background-position: 0 -64px;
 }
-#sidebar a.sidebarlink[href] {
+#sidebar a.sidebarlink:not([href]) {
     color: #1a2e11;
 }
 #ne-dist-county-map {
