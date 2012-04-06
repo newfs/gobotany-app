@@ -2018,14 +2018,19 @@ img.margin-bookcover {
     height: 137px;
     width: 220px;
 }
+.video-topic h4 {
+    line-height: 105%;
+    margin-top: 4px;
+}
 .video-topic .missing-image {
-    border: 1px solid black;
+    border: 1px solid #508e31;
     height: 135px;
     width: 218px;
 }
 .video-topic .missing-image p {
     white-space: nowrap;
-    margin-left: -60px;
+    margin-left: -70px;
+    margin-top: -10px;
 }
 
 /* Legal information page styles */
