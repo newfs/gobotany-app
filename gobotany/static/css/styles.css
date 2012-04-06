@@ -45,29 +45,29 @@ nav a:hover {
     text-decoration: none;
 }
 nav #search {
+    background: #fff url(/static/images/layout/search-left.png) left center no-repeat;
     float: right;
     height: 20px;
-    padding: 0 0 0 11px;
     margin: 4px 4px 0 0;
-    background: #fff url(/static/images/layout/search-left.png) left center no-repeat;
+    padding: 0 0 0 11px;
 }
 nav #search input {
-    width: 219px;
-    height: 20px;
-    border: 0;
     background: #fff;
+    border: 0;
     color: #838383;
+    height: 20px;
+    width: 219px;
 }
 nav #search button {
+    background: #508e31 url(/static/images/layout/search-btn.png) 0 0 no-repeat;
+    cursor: pointer;
     display: block;
     float: right;
-    width: 43px;
     height: 20px;
-    padding: 0;
     margin: 0;
-    background: #508e31 url(/static/images/layout/search-btn.png) 0 0 no-repeat;
+    padding: 0;
     text-indent: -9000px;
-    cursor: pointer;
+    width: 43px;
 }
 nav #search button:active {
     background-position: 0 -20px;
