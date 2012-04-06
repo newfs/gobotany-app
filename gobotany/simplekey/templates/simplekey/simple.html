@@ -65,8 +65,9 @@
                             </p>
                             {% if pilegroup.youtube_id %}
                             <p class="vid">
-                            <a href="http://www.youtube.com/v/{{ pilegroup.youtube_id }}&amp;autoplay=1" 
-                                rel="shadowbox;height=380;width=640;">View a short video about this group</a>
+                                {% with pilegroup.youtube_id as youtube_id %}
+                                {% include "simplekey/_simplekey_video_link.html" %}
+                                {% endwith %}
                             </p>
                             {% endif %}
                             <a class="plant-in-group" href="{{ pilegroup_url }}">My plant is in this group</a>
