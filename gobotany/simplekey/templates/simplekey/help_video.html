@@ -15,16 +15,18 @@
         <div class="video-row">
         {% endif %}
             <div class="video-topic">
-                <a rel="shadowbox;height=380;width=640;"
-                  href="http://www.youtube.com/v/{{ video.youtube_id }}&amp;autoplay=1">
-                  {% if video.youtube_id %}
-                    <img class="shadow" src="http://img.youtube.com/vi/{{ video.youtube_id }}/0.jpg" alt="">
-                  {% else %}
+                {% if video.youtube_id %}
+                    <a rel="shadowbox;height=380;width=640;"
+                        href="http://www.youtube.com/v/{{ video.youtube_id }}&amp;autoplay=1">
+                        <img class="shadow"
+                            src="http://img.youtube.com/vi/{{ video.youtube_id }}/0.jpg"
+                            alt="">
+                    </a>
+                {% else %}
                     <div class="missing-image">
                       <p>Video not available yet</p>
                     </div>
-                  {% endif %}
-                </a>
+                {% endif %}
                 <h4>{{ video.title }}</h4>
             </div>
     {% endfor %}
