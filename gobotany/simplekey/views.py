@@ -153,7 +153,7 @@ def pilegroup_view(request, pilegroup_slug):
     piles = []
     for pile in ordered_piles(pilegroup):
         images = _images_with_copyright_holders(
-            [pi.content_image for pi in pile.pileimage_set.all()])
+            models.ContentImage.objects.filter(pileimage__pile=pile))
         piles.append((pile, images, get_simple_url(pile)))
 
     return render_to_response('simplekey/pilegroup.html', {
