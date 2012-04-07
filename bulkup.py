@@ -68,7 +68,7 @@ class Table(object):
         return row
 
     def replace(self, attr, mapping):
-        """For every row, replace row.attr1 with row.attr2 through mapping."""
+        """Set ``row.attr`` to the value ``mapping[row.attr]`` for each row."""
         for row in self.rowdict.itervalues():
             d = row.__dict__
             d[attr] = mapping[d[attr]]

@@ -1142,10 +1142,15 @@ class Importer(object):
     def _import_taxon_images(self, db):
         """Scan S3 for taxon images, and load their paths into the database."""
 
+        # Retrieve the tables and mappings we need.
+
         db = bulkup.Database(connection)
+
+        table_contentimage = db.table('core_contentimage')
+        table_imagetype = db.table('core_imagetype')
+        pile_names = db.map('core_pile', 'id', 'name')
         taxon_ids = db.map('core_taxon', 'scientific_name', 'id')
         taxonpile_map = db.manymap('core_pile_species', 'taxon_id', 'pile_id')
-        pile_names = db.map('core_pile', 'id', 'name')
 
         # Right now, the image categories CSV is simply used to confirm
         # that we recognize the type of every image we import.
@@ -1169,23 +1174,18 @@ class Importer(object):
         # family name, so any two-level hierarchy of directories and
         # images should work).
 
-        ContentImage_objects = models.ContentImage.objects
-        content_type = ContentType.objects.get_for_model(models.Taxon)
+        content_type_id = ContentType.objects.get_for_model(models.Taxon).id
 
         log.info('Scanning S3 for taxon images')
 
         lsgz = default_storage.open('ls-taxon-images.gz')
-        # lsgz = open('ls-taxon-images.gz')
         ls = gzip.GzipFile(fileobj=lsgz)
 
         count = 0
+        already_seen = set()
 
-        # import time
-        # t0 = time.time()
         for line in ls:
-            # if count == 200:
-            #     print time.time() - t0
-            #     os._exit(0)
+
             image_path = line.split(' s3://newfs/')[1].strip()
             dirname, filename = image_path.rsplit('/', 1)
 
@@ -1248,45 +1248,47 @@ class Importer(object):
                 log.error('  unknown image type %r: %s', _type, filename)
                 continue
 
-            image_type, created = models.ImageType.objects \
-                .get_or_create(name=taxon_image_types[key])
+            # Fetch or create a row representing this image type.
+
+            image_type_name = taxon_image_types[key]
+            table_imagetype.get(name=image_type_name)
 
             # Arbitrarily promote the first image for each
             # species-type to Rank 1.
 
-            content_image, created = ContentImage_objects.get_or_create(
-                # If we were simply creating the object we could set
-                # content_object, but in case Django does a "get" we
-                # need to use content_type and object_id instead.
-                object_id=taxon_id,
-                content_type=content_type,
+            rank_key = (taxon_id, image_type_name)
+            if rank_key in already_seen:
+                rank = 2
+            else:
+                rank = 1
+                already_seen.add(rank_key)
+
+            table_contentimage.get(
+                object_id = taxon_id,
+                content_type_id = content_type_id,
                 # Use filename to know if this is the "same" image.
-                image=image_path,
-                defaults=dict(
-                    # Integrity errors are triggered unless we set
-                    # these during the create:
-                    rank=2,
-                    image_type=image_type,
-                    )
+                image = image_path,
+                ).set(
+                alt = '%s: %s' % (scientific_name, image_type_name),
+                creator = photographer,
+                description = '',
+                image_type_id = image_type_name,  # replaced with id later
+                rank = rank,
                 )
 
-            if created:
-                already_1 = ContentImage_objects.filter(
-                    rank=1,
-                    image_type=image_type,
-                    content_type=content_type,
-                    object_id=taxon_id,
-                    )
-                if not already_1:
-                    content_image.rank = 1
-
-            content_image.image_type = image_type
-            content_image.creator = photographer
-            content_image.alt = '%s: %s %s' % (
-                scientific_name, image_type.name, content_image.rank)
-            content_image.save()
-
             count += 1
+
+        # Add image ranks to their alt descriptions.
+
+        for row in table_contentimage:
+            row.alt += ' %s' % (row.rank,)
+
+        # Save everything to the database.
+
+        table_imagetype.save()
+        imagetype_map = db.map('core_imagetype', 'name', 'id')
+        table_contentimage.replace('image_type_id', imagetype_map)
+        table_contentimage.save()
 
         log.info('Imported %d taxon images', count)
 
