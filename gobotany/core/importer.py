@@ -1142,6 +1142,11 @@ class Importer(object):
     def _import_taxon_images(self, db):
         """Scan S3 for taxon images, and load their paths into the database."""
 
+        db = bulkup.Database(connection)
+        taxon_ids = db.map('core_taxon', 'scientific_name', 'id')
+        taxonpile_map = db.manymap('core_pile_species', 'taxon_id', 'pile_id')
+        pile_names = db.map('core_pile', 'id', 'name')
+
         # Right now, the image categories CSV is simply used to confirm
         # that we recognize the type of every image we import.
 
@@ -1175,8 +1180,12 @@ class Importer(object):
 
         count = 0
 
+        # import time
+        # t0 = time.time()
         for line in ls:
-            # if count == 200: os._exit(0)
+            # if count == 200:
+            #     print time.time() - t0
+            #     os._exit(0)
             image_path = line.split(' s3://newfs/')[1].strip()
             dirname, filename = image_path.rsplit('/', 1)
 
@@ -1213,22 +1222,16 @@ class Importer(object):
             _type = pieces[type_field]
             photographer = pieces[type_field + 1]
 
-            scientific_name = ' '.join((genus, species)).capitalize()
-
             # Find the Taxon corresponding to this species.
-            try:
-                taxon = models.Taxon.objects.get(
-                    scientific_name=scientific_name)
-            except ObjectDoesNotExist:
-                # Test whether the "subspecies" field that we
-                # skipped was, in fact, the second half of a
-                # hyphenated species name, like the species named
-                # "Carex merritt-fernaldii".
+
+            scientific_name = ' '.join((genus, species)).capitalize()
+            taxon_id = taxon_ids.get(scientific_name)
+
+            if taxon_id is None:
                 scientific_name = scientific_name + '-' + pieces[2]
-                try:
-                    taxon = models.Taxon.objects.get(
-                        scientific_name=scientific_name)
-                except:
+                taxon_id = taxon_ids.get(scientific_name)
+
+                if taxon_id is None:
                     log.error('  image names unknown taxon: %s', filename)
                     continue
 
@@ -1237,8 +1240,8 @@ class Importer(object):
             # will email Sid about this).  For why we use lower(),
             # see the comment above.
 
-            for pile in taxon.piles.all():
-                key = (pile.name.lower(), _type)
+            for pile_id in taxonpile_map[taxon_id]:
+                key = (pile_names[pile_id].lower(), _type)
                 if key in taxon_image_types:
                     break
             else:
@@ -1255,7 +1258,7 @@ class Importer(object):
                 # If we were simply creating the object we could set
                 # content_object, but in case Django does a "get" we
                 # need to use content_type and object_id instead.
-                object_id=taxon.pk,
+                object_id=taxon_id,
                 content_type=content_type,
                 # Use filename to know if this is the "same" image.
                 image=image_path,
@@ -1272,7 +1275,7 @@ class Importer(object):
                     rank=1,
                     image_type=image_type,
                     content_type=content_type,
-                    object_id=taxon.pk,
+                    object_id=taxon_id,
                     )
                 if not already_1:
                     content_image.rank = 1
@@ -1280,7 +1283,7 @@ class Importer(object):
             content_image.image_type = image_type
             content_image.creator = photographer
             content_image.alt = '%s: %s %s' % (
-                taxon.scientific_name, image_type.name, content_image.rank)
+                scientific_name, image_type.name, content_image.rank)
             content_image.save()
 
             count += 1

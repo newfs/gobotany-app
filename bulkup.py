@@ -1,6 +1,7 @@
 """Perform bulk inserts and updates."""
 
 import logging
+from collections import defaultdict
 log = logging.getLogger('bulkup')
 
 class Database(object):
@@ -21,6 +22,15 @@ class Database(object):
         else:
             c.execute('SELECT {0}, {1} FROM {2}'.format(key, value, name))
             return dict(c.fetchall())
+
+    def manymap(self, name, key, value):
+        """Return a dict mapping `key` values to a set of `value` values."""
+        c = self.connection.cursor()
+        r = defaultdict(list)
+        c.execute('SELECT {0}, {1} FROM {2}'.format(key, value, name))
+        for key, value in c.fetchall():
+            r[key].append(value)
+        return r
 
     def table(self, name):
         t = self.tabledict.get(name)
