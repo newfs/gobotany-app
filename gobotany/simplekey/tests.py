@@ -5,7 +5,6 @@ from django.test.client import Client
 
 from gobotany.core.models import Character, CharacterValue, Pile, PileGroup
 
-from gobotany.simplekey.groups_order import ORDERED_GROUPS
 from gobotany.simplekey.models import (GroupsListPage,
                                        SearchSuggestion,
                                        SubgroupResultsPage,
@@ -281,21 +280,20 @@ class SimpleKeyGroupsOrderTestCase(TestCase):
         self.assertEqual(len(GROUPS), len(PileGroup.objects.all()))
 
     def test_groups_order(self):
-        self.assertEqual(
-            [group.keys()[0] for group in ORDERED_GROUPS],
-            [pilegroup.slug for pilegroup in ordered_pilegroups()]
-        )
+        grouplist = ordered_pilegroups()
+        self.assertEqual(grouplist[0].slug, 'woody-plants')
+        self.assertEqual(grouplist[-1].slug, 'non-monocots')
 
     def test_subgroups_count(self):
         self.assertEqual(len(SUBGROUPS), len(Pile.objects.all()))
 
     def test_subgroups_order(self):
-        for group in ORDERED_GROUPS:
-            for pilegroup_slug, piles in group.items():
-                pilegroup = PileGroup.objects.get(slug=pilegroup_slug)
-                self.assertEqual(piles, [pile.slug for pile
-                                         in ordered_piles(pilegroup)])
-
+        pilegroup = PileGroup.objects.filter(slug='graminoids').all()[0]
+        pilelist = ordered_piles(pilegroup)
+        self.assertEqual(len(pilelist), 3)
+        self.assertEqual(pilelist[0].slug, 'carex')
+        self.assertEqual(pilelist[1].slug, 'poaceae')
+        self.assertEqual(pilelist[2].slug, 'remaining-graminoids')
 
 class SearchSuggestionsTestCase(TestCase):
     """General tests for the search suggestions Web service API."""

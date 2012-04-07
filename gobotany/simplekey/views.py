@@ -24,7 +24,7 @@ from gobotany.core.models import (
     )
 from gobotany.core.partner import which_partner
 from gobotany.plantoftheday.models import PlantOfTheDay
-from gobotany.simplekey.groups_order import ORDERED_GROUPS
+from gobotany.simplekey.groups_order import PILEGROUP_ORDER, PILE_ORDER
 from gobotany.simplekey.models import (get_blurb, GroupsListPage,
                                        SearchSuggestion, SubgroupResultsPage,
                                        SubgroupsListPage)
@@ -58,19 +58,14 @@ def get_simple_url(item):
 
 def ordered_pilegroups():
     """Return all pile groups in display order."""
-    return [PileGroup.objects.get(slug=group.keys()[0])
-            for group in ORDERED_GROUPS]
+    return sorted(PileGroup.objects.all(),
+                  key=lambda pg: PILEGROUP_ORDER[pg.slug])
 
 
 def ordered_piles(pilegroup):
     """Return all piles for a pile group in display order."""
-    return [
-        pile for pile in [
-            Pile.objects.get(slug=pile_slug) for pile_slug in
-            list(chain(*[group.values()[0] for group in ORDERED_GROUPS]))
-        ]
-        if pile in pilegroup.piles.all()
-    ]
+    return sorted(pilegroup.piles.all(),
+                  key=lambda p: PILE_ORDER[p.slug])
 
 
 def index_view(request):
