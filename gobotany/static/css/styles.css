@@ -2463,7 +2463,9 @@ img.margin-bookcover {
     background-position: center;
     background-repeat: no-repeat;
     padding: 4px; /* Increase activation area a bit */
-    right: -21px !important; /* Place at top right corner */
+    right: -28px !important; /* Place at top right, but not right at the
+                                corner so as to avoid Flash video z-index
+                                problem */
     top: 6px !important;
 }
 

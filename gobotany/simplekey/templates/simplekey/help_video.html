@@ -16,8 +16,8 @@
         {% endif %}
             <div class="video-topic">
                 {% if video.youtube_id %}
-                    <a rel="shadowbox;height=380;width=640;"
-                        href="http://www.youtube.com/v/{{ video.youtube_id }}&amp;autoplay=1">
+                    <a class="video"
+                        href="http://www.youtube.com/embed/{{ video.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">
                         <img class="shadow"
                             src="http://img.youtube.com/vi/{{ video.youtube_id }}/0.jpg"
                             alt="">

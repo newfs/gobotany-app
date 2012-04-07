@@ -30,9 +30,8 @@
                     </div>
                     {% if group.youtube_id %}
                     <p class="more-info">
-                        <a rel="shadowbox;height=380;width=640;"
-                            href="http://www.youtube.com/v/{{ group.youtube_id }}&amp;autoplay=1">
-                        View video</a>
+                        <a class="video"
+                            href="http://www.youtube.com/embed/{{ group.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">View video</a>
                     </p>
                     {% endif %}
                 </div>
@@ -59,9 +58,8 @@
                             href="/{{ group.slug }}/{{ subgroup.slug }}/"></a>
                         {% if subgroup.youtube_id %}
                         <p class="more-info">
-                            <a rel="shadowbox;height=380;width=640;"
-                                href="http://www.youtube.com/v/{{ subgroup.youtube_id }}&amp;autoplay=1">
-                            View video</a>
+                            <a class="video"
+                                href="http://www.youtube.com/embed/{{ subgroup.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">View video</a>
                         </p>
                         {% endif %}
                     </div>

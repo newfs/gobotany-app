@@ -67,7 +67,7 @@
                             {% if pile.youtube_id %}
                             <p class="vid">
                                 {% with pile.youtube_id as youtube_id %}
-                                {% include "simplekey/_simplekey_video_link.html" %}
+                                {% include "simplekey/_simplekey_video_link.html" with item_type="subgroup" %}
                                 {% endwith %}
                             </p>
                             {% endif %}
