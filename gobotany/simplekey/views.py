@@ -256,22 +256,19 @@ def _get_characters(taxon, character_groups, pile, partner):
 
 
 def _images_with_copyright_holders(images):
+    # Reduce a live query object to a list to only run it once.
+    if not isinstance(images, list):
+        images = images.all()
+
     # Get the copyright holders for this set of images.
-    copyright_name_codes = []
-    for image in images:
-        copyright_name_codes.append(image.creator)
-    copyright_name_codes = set(copyright_name_codes)
-    copyright_holders = CopyrightHolder.objects.filter(
-            coded_name__in=copyright_name_codes)
+    codes = set(image.creator for image in images)
+    chdict = dict((ch.coded_name, ch) for ch in CopyrightHolder.objects.filter(
+            coded_name__in=codes))
 
     # Associate each image with its copyright holder, adding the
     # copyright holder information as extra attributes.
     for image in images:
-        try:
-            copyright_holder = copyright_holders.get(coded_name=image.creator)
-        except models.CopyrightHolder.DoesNotExist:
-            copyright_holder = None
-
+        copyright_holder = chdict.get(image.creator)
         if copyright_holder:
             image.copyright_holder_name = copyright_holder.expanded_name
             image.copyright = copyright_holder.copyright
