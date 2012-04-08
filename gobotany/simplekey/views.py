@@ -43,17 +43,15 @@ def per_partner_template(request, template_path):
 
 #
 
-def get_simple_url(item):
+def get_simple_url(pilegroup, pile=None):
     """Return the URL to where `item` lives in the Simple Key navigation."""
-    if isinstance(item, PileGroup):
+    if pile is None:
         return reverse('gobotany.simplekey.views.pilegroup_view',
-                       kwargs={'pilegroup_slug': item.slug})
-    elif isinstance(item, Pile):
-        return reverse('gobotany.simplekey.views.results_view',
-                       kwargs={'pilegroup_slug': item.pilegroup.slug,
-                               'pile_slug': item.slug})
+                       kwargs={'pilegroup_slug': pilegroup.slug})
     else:
-        raise ValueError('the Simple Key has no URL for %r' % (item,))
+        return reverse('gobotany.simplekey.views.results_view',
+                       kwargs={'pilegroup_slug': pilegroup.slug,
+                               'pile_slug': pile.slug})
 
 
 def ordered_pilegroups():
@@ -154,7 +152,7 @@ def pilegroup_view(request, pilegroup_slug):
     for pile in ordered_piles(pilegroup):
         images = _images_with_copyright_holders(
             models.ContentImage.objects.filter(pileimage__pile=pile))
-        piles.append((pile, images, get_simple_url(pile)))
+        piles.append((pile, images, get_simple_url(pilegroup, pile)))
 
     return render_to_response('simplekey/pilegroup.html', {
             'partner_site': short_name,
