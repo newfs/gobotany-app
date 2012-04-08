@@ -750,7 +750,7 @@ class Distribution(models.Model):
 
 class CopyrightHolder(models.Model):
     """A copyright holder for one or more images."""
-    coded_name = models.CharField(max_length=50, db_index=True)
+    coded_name = models.CharField(max_length=50, unique=True)
     expanded_name = models.CharField(max_length=100)
     copyright = models.CharField(max_length=300)
     source = models.CharField(max_length=300)
