@@ -3,7 +3,7 @@ import string
 import urllib2
 
 from datetime import date
-from itertools import chain, groupby
+from itertools import groupby
 from operator import attrgetter, itemgetter
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -12,6 +12,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.utils import simplejson
+from django.views.decorators.cache import cache_control
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
@@ -124,6 +125,8 @@ def _partner_short_name(partner):
         short_name = partner.short_name
     return short_name
 
+@vary_on_headers('Host')
+@cache_control(max_age=60 * 60)
 def simple_key_view(request):
     partner = which_partner(request)
     short_name = _partner_short_name(partner)
@@ -143,6 +146,8 @@ def simple_key_view(request):
             'pilegroups': pilegroups
             }, context_instance=RequestContext(request))
 
+@vary_on_headers('Host')
+@cache_control(max_age=60 * 60)
 def pilegroup_view(request, pilegroup_slug):
     pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
 
