@@ -127,12 +127,14 @@ def _partner_short_name(partner):
 def simple_key_view(request):
     partner = which_partner(request)
     short_name = _partner_short_name(partner)
-    groups_list_page = GroupsListPage.objects.all()[0]
+    groups_list_page = GroupsListPage.objects.get()
 
     pilegroups = []
     for pilegroup in ordered_pilegroups():
         images = _images_with_copyright_holders(
-            [pi.content_image for pi in pilegroup.pilegroupimage_set.all()])
+            models.ContentImage.objects.filter(
+                pilegroupimage__pile_group=pilegroup)
+            .select_related('image_type'))
         pilegroups.append((pilegroup, images, get_simple_url(pilegroup)))
 
     return render_to_response('simplekey/simple.html', {
