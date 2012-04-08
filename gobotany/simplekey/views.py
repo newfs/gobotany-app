@@ -264,14 +264,22 @@ def _images_with_copyright_holders(images):
     chdict = dict((ch.coded_name, ch) for ch in CopyrightHolder.objects.filter(
             coded_name__in=codes))
 
-    # Associate each image with its copyright holder, adding the
-    # copyright holder information as extra attributes.
     for image in images:
+
+        # Associate each image with its copyright holder, adding the
+        # copyright holder information as extra attributes.
+
         copyright_holder = chdict.get(image.creator)
         if copyright_holder:
             image.copyright_holder_name = copyright_holder.expanded_name
             image.copyright = copyright_holder.copyright
             image.source = copyright_holder.source
+
+        # Grab each image's "scientific name" - or whatever string is
+        # preceded by a ":" at the start of its alt text!
+
+        image.scientific_name = (image.alt or '').split(':', 1)[0]
+
     return images
 
 

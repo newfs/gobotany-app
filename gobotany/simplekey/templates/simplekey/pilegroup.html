@@ -40,9 +40,9 @@
                                             {% with i.creator as photographer %}
                                             <a href="{{ i.image_medium }}"
                                                 rel="shadowbox[{{ pile.slug }}]"
-                                                title="{% photo_credit i i.content_object.scientific_name %}">
+                                                title="{% photo_credit i i.scientific_name %}">
                                                 <img src="{{ i.thumb_large }}"
-                                                    alt="{% photo_credit i i.content_object.scientific_name %}">
+                                                    alt="{% photo_credit i i.scientific_name %}">
                                             </a>
                                             {% endwith %}
                                         {% endwith %}
