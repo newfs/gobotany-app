@@ -241,7 +241,6 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
        how many species would remain if each of our possible filter
        values were applied. */
     _on_filter_change: function() {
-        console.log('this refers to: ' + this);
         var div_map = this.div_map;
         _.map(this.filter_manager.compute_impact(this.filter), function(i) {
             var div = div_map[i.value.choice];
