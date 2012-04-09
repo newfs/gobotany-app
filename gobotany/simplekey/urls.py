@@ -17,7 +17,6 @@ urlpatterns = patterns(
 
     # Hidden test pages.
     url('^_maptest/$', views.maptest),
-    url('^_rulertest/$', views.rulertest),
 
     # Temporary placeholder pages, to eventually be replaced with new 
     # features / apps rather than flat views

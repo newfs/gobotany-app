@@ -557,10 +557,6 @@ def maptest(request):
     return render_to_response('simplekey/maptest.html', {
             }, context_instance=RequestContext(request))
 
-def rulertest(request):
-    return render_to_response('simplekey/rulertest.html', {
-            }, context_instance=RequestContext(request))
-
 def suggest_view(request):
     # Return some search suggestions for the auto-suggest feature.
     MAX_RESULTS = 10
