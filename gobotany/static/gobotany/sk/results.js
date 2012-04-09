@@ -56,6 +56,9 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         var select_box = dijit.byId('image-type-selector');
         dojo.connect(select_box, 'onChange',
                      dojo.hitch(this, this.load_selected_image_type));
+        var image_types = dojo.byId('image-types');
+        dojo.connect(image_types, 'onchange',
+                     dojo.hitch(this, this.load_selected_image_type));
 
         simplekey_resources.pile(this.pile_slug).done(
             dojo.hitch(this, function(pile_info) {
@@ -304,7 +307,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         if (/&$/.test(hash) === false) {
             hash += '&';
         }
-        hash += '_show=' + dijit.byId('image-type-selector').value;
+        hash += '_show=' + dojo.byId('image-types').value;
 
         // Usually, do not replace the current Back history entry; rather,
         // create a new one, to enable the user to move back and forward
@@ -329,7 +332,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     },
 
     load_selected_image_type: function(event) {
-        var image_type = dijit.byId('image-type-selector').value;
+        var image_type = dojo.byId('image-types').value;
         var image_tags = dojo.query('.plant-list img');
         // Replace the image for each plant on the page
         var i;
@@ -371,10 +374,10 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         var menu_config = results_photo_menu[this.pile_slug];
 
         var results = message.query_results;
-        var select_box = dijit.byId('image-type-selector');
+        var image_types_menu = dojo.byId('image-types');
 
         // Clear any existing menu items.
-        select_box.options.length = 0;
+        image_types_menu.options.length = 0;
 
         // Image types depend on the pile. Get the allowed values from
         // the result set.
@@ -399,12 +402,10 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         image_types.sort();
         for (i = 0; i < image_types.length; i++) {
             image_type = image_types[i];
-            select_box.addOption({value: image_type,
-                label: image_type});
-            // Set the default menu selection.
-            if (image_type === menu_config['default']) {
-                select_box.set('value', menu_config['default']);
-            }
+            var is_selected = (image_type === menu_config['default']) ?
+                true : false;
+            image_types_menu[image_types_menu.options.length] =
+                new Option(image_type, image_type, is_selected, is_selected);
         }
     }
 });

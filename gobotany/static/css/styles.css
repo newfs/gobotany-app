@@ -700,13 +700,15 @@ p.vid {
     color: #000;
     font-size: 15px;
     font-weight: normal;
-    height: 16px;
-    line-height: 16px;
-    vertical-align: middle;
 
 }
-#plant-id-3 .show .icon {
-    vertical-align: middle;
+#plant-id-3 .show select {
+    background: #ebf6df;
+    border: 1px solid #9cc86b;
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 15px;
+    padding: 0;
+    -webkit-appearance: menulist;
 }
 
 div#modal, div#plant-detail-modal {
@@ -1488,11 +1490,6 @@ div.working-area .actions {
 }
 .characteristics dd ul.compact li:not([class='last']):after {
     content: ', ';
-}
-
-
-.show label {
-    vertical-align: middle;
 }
 
 /* Tabs for the different views of results */
