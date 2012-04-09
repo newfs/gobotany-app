@@ -15,9 +15,6 @@ urlpatterns = patterns(
             ),
         name='search'),
 
-    # Hidden test pages.
-    url('^_maptest/$', views.maptest),
-
     # Temporary placeholder pages, to eventually be replaced with new 
     # features / apps rather than flat views
     url('^plantshare/$', views.placeholder_view, 
