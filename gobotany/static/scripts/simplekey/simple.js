@@ -2,7 +2,7 @@ require([
     'activate_image_gallery',
     'activate_search_suggest',
     'shadowbox',
-    'shadowbox_close',
+    'shadowbox_init',
     'activate_video_links'
 ]);
 

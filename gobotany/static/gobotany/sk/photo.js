@@ -17,9 +17,10 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
         // Temporarily hide the title element.
         dojo.addClass(title_element, 'hidden');
 
-        // Call a function to move the close link because an existing
-        // onOpen handler with this function call is being overridden here.
-        shadowbox_close_move_button();
+        // Call a function to do the usual Shadowbox initialization because
+        // an existing onOpen handler with this function call is being
+        // overridden here.
+        shadowbox_on_open();
     },
 
     process_credit: function() {

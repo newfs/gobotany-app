@@ -1,7 +1,7 @@
 require([
     'activate_search_suggest',
     'shadowbox',
-    'shadowbox_close'
+    'shadowbox_init'
 ]);
 
 require([

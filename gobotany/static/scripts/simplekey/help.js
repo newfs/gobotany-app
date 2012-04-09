@@ -14,7 +14,7 @@ require([
 
 require([
     'shadowbox',
-    'shadowbox_close',
+    'shadowbox_init',
     'sidebar'
 ]);
 

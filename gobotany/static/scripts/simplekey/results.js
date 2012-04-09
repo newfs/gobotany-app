@@ -33,7 +33,7 @@ define([
                     'underscore-min',  // filters.js, etc
                     'sidebar',
                     'shadowbox',
-                    'shadowbox_close'
+                    'shadowbox_init'
                 ], function() {
                     dojo.require('gobotany.sk.results');
                     dojo.addOnLoad(function() {
