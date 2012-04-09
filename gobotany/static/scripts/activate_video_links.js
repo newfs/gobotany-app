@@ -7,10 +7,10 @@ require([
 ], function() {
     $(document).ready(function() {
         $('a.video').click(function() {
-            // Work around a bug when using lightboxes on iPad:
+            // Work around a bug when using lightboxes on iOS:
             // Videos do not start playing if the page is scrolled down,
             // so scroll to the top.
-            if (navigator.userAgent.match(/(iPad)/)) {
+            if (navigator.userAgent.match(/(iPad|iPod|iPhone)/)) {
                 if (this.href.indexOf('youtube.com') > -1) {
                     window.scrollTo(0, 0);
                 }

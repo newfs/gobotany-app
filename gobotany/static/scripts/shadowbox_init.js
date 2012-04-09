@@ -12,10 +12,10 @@ define(['jquery.tools.min', 'shadowbox'], function() {
     };
 
     shadowbox_on_open = function() {
-        // Work around a bug when using lightboxes on iPad:
+        // Work around a bug when using lightboxes on iOS:
         // On iOS versions older than 5, lightboxes can appear off the
         // screen if the page is scrolled down, so scroll to the top.
-        if (navigator.userAgent.match(/(iPad)/)) {
+        if (navigator.userAgent.match(/(iPad|iPod|iPhone)/)) {
             if (navigator.userAgent.match(/(OS 3_|OS 4_)/)) {
                 window.scrollTo(0, 0);
             }
