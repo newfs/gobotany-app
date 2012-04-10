@@ -432,30 +432,30 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
         this.genus_store = new dojo.data.ItemFileWriteStore({
             data: {label: 'name', identifier: 'name', items: []}
         });
-        var family_select = dijit.byId('family_select');
-        family_select.set('required', false);
-        family_select.set('store', this.family_store);
+        
+        var families = dojo.byId('families');
+        var genera = dojo.byId('genera');
 
-        var genus_select = dijit.byId('genus_select');
-        genus_select.set('required', false);
-        genus_select.set('store', this.genus_store);
-
-        dojo.connect(family_select, 'onChange', this, '_on_family_change');
-        dojo.connect(genus_select, 'onChange', this, '_on_genus_change');
+        dojo.connect(families, 'onchange', this, '_on_family_change');
+        dojo.connect(genera, 'onchange', this, '_on_genus_change');
 
         // Wire up the "Clear" buttons for the family and genus.
-        dojo.connect(dijit.byId('clear_family'), 'onClick', function(event) {
+        var selectors = this;
+        dojo.connect(dojo.byId('family_clear'), 'onclick', function(event) {
             dojo.stopEvent(event);
-            family_select.set('value', '');
+            families.value = '';
+            selectors._on_family_change();
         });
-        dojo.connect(dijit.byId('clear_genus'), 'onClick', function(event) {
+        dojo.connect(dojo.byId('genus_clear'), 'onclick', function(event) {
             dojo.stopEvent(event);
-            genus_select.set('value', '');
+            genera.value = '';
+            selectors._on_genus_change();
         });
 
+
         // Save objects that our callbacks will need.
-        this.family_select = family_select;
-        this.genus_select = genus_select;
+        this.families = families;
+        this.genera = genera;
 
         this.family_filter = this.filter_manager.get_filter('family');
         this.genus_filter = this.filter_manager.get_filter('genus');
@@ -490,6 +490,31 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
             .sortBy(function(item) {return item.value.choice})
             .map(function(item) {store.newItem({name: item.value.choice})});
         store.save();
+
+        var menu;
+        if (filter.short_name === 'family') {
+            menu = this.families;
+        }
+        else if (filter.short_name === 'genus') {
+            menu = this.genera;
+        }
+        var selected_value = menu.value;
+        // Clear the menu.
+        menu.options.length = 0;
+
+        // Add the first item as a blank, for when no value is selected.
+        menu[0] = new Option('', '');
+
+        // Add the remaining items from the values store.
+        var values = store._arrayOfAllItems;
+        for (var i = 0; i < values.length; i++) {
+            if (values[i] !== null) {
+                var name = values[i].name[0];
+                var is_selected = (name === selected_value) ? true : false;
+                menu[menu.options.length] = new Option(name, name,
+                    is_selected, is_selected);
+            }
+        }
     },
 
     /*
@@ -497,13 +522,11 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
      * that fact to all of the other parts of the page.
      */
     _on_family_change: function(event) {
-        this.filter_manager.set_selected_value(
-            'family', this.family_select.value);
+        this.filter_manager.set_selected_value('family', this.families.value);
         dojo.publish('/sk/filter/change', [this.family_filter]);
     },
     _on_genus_change: function(event) {
-        this.filter_manager.set_selected_value(
-            'genus', this.genus_select.value);
+        this.filter_manager.set_selected_value('genus', this.genera.value);
         dojo.publish('/sk/filter/change', [this.genus_filter]);
     }
 });
@@ -828,10 +851,10 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         if (value !== undefined) {
             if (char_name === 'family') {
-                dijit.byId('family_select').set('value', value);
+                dojo.byId('families').value = value;
             }
             else if (char_name === 'genus') {
-                dijit.byId('genus_select').set('value', value);
+                dojo.byId('genera').value = value;
             }
             else {
                 if (value !== null) {

@@ -28,7 +28,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.results_helper = results_helper;
         this.scroll_event_handle = null;
         this.current_view = this.PHOTOS_VIEW;
-        this.show_photos_type = null;
 
         simplekey_resources.pile_species(this.results_helper.pile_slug).done(
             $.proxy(this, 'create_plant_divs')
@@ -155,7 +154,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         taxon.factoid);
 
                     // Fill in Characteristics.
-		    var MAX_CHARACTERS = 6;
+		            var MAX_CHARACTERS = 6;
                     var characters = this.plant_preview_characters;
                     var characters_html = '';
                     var characters_displayed = 0;
@@ -198,15 +197,15 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                             }
 
                             // Only display this character if it has a value
-			    // and if the maximum number of characters for the
+			                // and if the maximum number of characters for the
                             // popup has not been exceeded.
                             if (display_value !== undefined &&
                                 display_value !== '') {
-				if (characters_displayed < MAX_CHARACTERS) {
+				                if (characters_displayed < MAX_CHARACTERS) {
                                     characters_html += '<dl><dt>' +
                                         ppc.friendly_name + '</dt><dd>' +
                                         display_value + '</dd></dl>';
-				    characters_displayed += 1;
+				                    characters_displayed += 1;
                                 }
                             }
                         }
@@ -220,8 +219,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     var url = path +
                         plant.scientific_name.toLowerCase().replace(' ',
                         '/') + '/';
-                    var button =
-                        dojo.query('#plant-detail-modal a.go-to-species-page')[0];
+                    var button = dojo.query(
+                        '#plant-detail-modal a.go-to-species-page')[0];
                     dojo.attr(button, 'href', url);
 
                     // Add images.
@@ -625,6 +624,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         // when this function is called via setTimeout, the 'this' context
         // is not what we need, and passing a saved reference to 'this', as
         // recommended for these situations, did not work.
+
         var list_view_table_nodes = dojo.query('.plant-list table');
         if (list_view_table_nodes.length > 0) {
             return;
@@ -653,8 +653,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         var i;
         for (i = 0; i < image_elements.length; i += 1) {
             var element = image_elements[i];
-            if (element.style.visibility !== 'hidden' &&
-                element.style.display !== 'none') {
+
+            if (element.style.display !== 'none') {
 
                 var current_element = element;
                 var total_offset_left = current_element.offsetLeft;

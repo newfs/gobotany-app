@@ -678,19 +678,6 @@ p.vid {
     margin: 5px 0 3px;
     vertical-align: middle;
 }
-.already-know .dijitButton {
-    margin: 0 10px 0 0;
-}
-
-.already-know .dijitButton .dijitButtonNode {
-    height: 16px;
-    line-height: 15px;
-    vertical-align: middle;
-    width: 32px;
-}
-.already-know .dijitButton .dijitButtonText {
-    font-size: 11px;
-}
 
 #plant-id-3 .show {
     margin-bottom: 7px;
@@ -702,13 +689,26 @@ p.vid {
     font-weight: normal;
 
 }
-#plant-id-3 .show select {
+#plant-id-3 .show select, #plant-id-3 .already-know select {
     background: #ebf6df;
     border: 1px solid #9cc86b;
     font-family: "Trebuchet MS", sans-serif;
     font-size: 15px;
     padding: 0;
     -webkit-appearance: menulist;
+}
+#plant-id-3 .already-know select {
+    font-size: 13px;
+    width: 145px;
+}
+#plant-id-3 .already-know #family_clear,
+#plant-id-3 .already-know #genus_clear {
+    background: #ebf6df;
+    border: 1px solid #9cc86b;
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 12px;
+    padding: 2px 6px;
+    -webkit-appearance: button;
 }
 
 div#modal, div#plant-detail-modal {
