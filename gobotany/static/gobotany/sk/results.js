@@ -153,8 +153,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         this.filter_manager.perform_query();
 
-        this.load_selected_image_type();
-
         // Show a filter in the filter working area if necessary.
         var filter_name = this.filter_section.visible_filter_short_name;
         if (filter_name !== '') {
