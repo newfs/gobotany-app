@@ -699,8 +699,7 @@ dojo.declare('gobotany.sk.SpeciesCounts', null, {
     },
 
     _update_counts: function(args) {
-        var count_str = String(args.species_list.length);
-        dojo.query('.species-count').html(count_str);
+        App3.taxa.set('len', args.species_list.length);
 
         if (this.animation !== null)
             this.animation.stop();

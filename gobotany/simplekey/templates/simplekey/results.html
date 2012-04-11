@@ -1,4 +1,5 @@
 {% extends "simplekey/_new_base.html" %}
+{% load verbatim %}
 
 {% block title %}{{ subgroup_results_page.title }}{% endblock %}
 
@@ -51,8 +52,10 @@
 
                 <h3 class="species-count-heading">
                   <span>
-                    <span class="species-count">Finding</span>
-                    matching species
+                    {% handlebars %}
+                      <span class="species-count">{{App3.taxa.len}}</span>
+                      matching species
+                    {% endhandlebars %}
                   </span>
                 </h3>
 
@@ -80,7 +83,9 @@
 
                 <p class="list-all hidden"><a>See 
                     <span class="view-type">a list of</span>
-                    all <span class="species-count">...</span> 
+                    {% handlebars %}
+                      all <span class="species-count">{{App3.taxa.len}}</span>
+                    {% endhandlebars %}
                     matching species.</a></p>
 
                 </div>

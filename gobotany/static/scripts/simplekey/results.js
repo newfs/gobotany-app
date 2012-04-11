@@ -1,6 +1,11 @@
 define([
-    'args'
-], function(args) {
+    'args',
+    'simplekey/App3'
+], function(args, App3) {
+
+    App3.taxa = Ember.Object.create({
+        len: 'Loading'  // placeholder until we have an integer to display
+    });
 
     require([
         'simplekey/results_overlay',
@@ -12,7 +17,6 @@ define([
         'order!jscrollpane'   // sk/results.js
     ], function() {
         require([
-            'ember-0.9.6.min',
             'order!dojo_config',
             'order!/static/js/dojo/dojo.js',
             'order!/static/js/layers/nls/sk_en-us.js',
