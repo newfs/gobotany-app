@@ -399,14 +399,22 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         }
 
         // Sort image types alphabetically and add them as menu items.
+        var anything_is_selected = false;
         image_types.sort();
         for (i = 0; i < image_types.length; i++) {
             image_type = image_types[i];
             var is_selected = (image_type === menu_config['default']) ?
                 true : false;
+            anything_is_selected = anything_is_selected || is_selected;
             image_types_menu[image_types_menu.options.length] =
                 new Option(image_type, image_type, is_selected, is_selected);
         }
+
+        // Once a list of image types is present (depending on timing,
+        // the select element might still be empty on our first run
+        // through the above process), load images for the user to see.
+        if (anything_is_selected)
+            this.load_selected_image_type();
     }
 });
 
