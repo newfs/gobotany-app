@@ -7,6 +7,10 @@ define([
         len: 'Loading'  // placeholder until we have an integer to display
     });
 
+    App3.image_types = Ember.ArrayProxy.create({
+        content: []
+    });
+
     require([
         'simplekey/results_overlay',
         'simplekey/results_photo_menu'

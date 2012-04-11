@@ -53,9 +53,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             dojo.hitch(this, this.populate_image_types));
 
         // Update images on selection change
-        var image_types = dojo.byId('image-types');
-        dojo.connect(image_types, 'onchange',
-                     dojo.hitch(this, this.load_selected_image_type));
+        App3.addObserver('image_type',
+                         $.proxy(this, 'load_selected_image_type'));
 
         simplekey_resources.pile(this.pile_slug).done(
             dojo.hitch(this, function(pile_info) {
@@ -304,7 +303,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         if (/&$/.test(hash) === false) {
             hash += '&';
         }
-        hash += '_show=' + dojo.byId('image-types').value;
+        if (App3.image_type)
+            hash += '_show=' + App3.image_type;
 
         // Usually, do not replace the current Back history entry; rather,
         // create a new one, to enable the user to move back and forward
@@ -329,7 +329,10 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     },
 
     load_selected_image_type: function(event) {
-        var image_type = dojo.byId('image-types').value;
+        var image_type = App3.image_type;
+        if (!image_type)
+            return;
+
         var image_tags = dojo.query('.plant-list img');
         // Replace the image for each plant on the page
         var i;
@@ -369,49 +372,20 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         // Get an object that tells which image type should be the
         // default selected menu item, and any image types to omit.
         var menu_config = results_photo_menu[this.pile_slug];
-
         var results = message.query_results;
-        var image_types_menu = dojo.byId('image-types');
 
-        // Clear any existing menu items.
-        image_types_menu.options.length = 0;
+        var image_list = _.flatten(_.pluck(results, 'images'));
+        var all_image_types = _.uniq(_.pluck(image_list, 'type'));
+        var image_types = _.difference(all_image_types, menu_config['omit']);
 
-        // Image types depend on the pile. Get the allowed values from
-        // the result set.
-        var image_types = [];
-        var image_type;
-        var i;
-        for (i = 0; i < results.length; i++) {
-            var images = results[i].images;
-            var j;
-            for (j = 0; j < images.length; j++) {
-                image_type = images[j].type;
-                // Add the image type unless it should be omitted.
-                if (_.include(menu_config['omit'], image_type) === false) {
-                    if (image_types.indexOf(image_type) === -1) {
-                        image_types.push(image_type);
-                    }
-                }
-            }
-        }
-
-        // Sort image types alphabetically and add them as menu items.
-        var anything_is_selected = false;
+        // Add image types to the <select> and set the default value.
         image_types.sort();
-        for (i = 0; i < image_types.length; i++) {
-            image_type = image_types[i];
-            var is_selected = (image_type === menu_config['default']) ?
-                true : false;
-            anything_is_selected = anything_is_selected || is_selected;
-            image_types_menu[image_types_menu.options.length] =
-                new Option(image_type, image_type, is_selected, is_selected);
-        }
+        App3.image_types.set('content', image_types);
 
-        // Once a list of image types is present (depending on timing,
-        // the select element might still be empty on our first run
-        // through the above process), load images for the user to see.
-        if (anything_is_selected)
-            this.load_selected_image_type();
+        var default_type = menu_config['default'];
+        if (image_types.indexOf(default_type) === -1)
+            var default_type = image_types[0];
+        App3.set('image_type', default_type);
     }
 });
 
