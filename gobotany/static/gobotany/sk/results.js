@@ -53,9 +53,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             dojo.hitch(this, this.populate_image_types));
 
         // Update images on selection change
-        var select_box = dijit.byId('image-type-selector');
-        dojo.connect(select_box, 'onChange',
-                     dojo.hitch(this, this.load_selected_image_type));
         var image_types = dojo.byId('image-types');
         dojo.connect(image_types, 'onchange',
                      dojo.hitch(this, this.load_selected_image_type));
@@ -155,6 +152,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         dojo.query('#sidebar .loading').addClass('hidden');
 
         this.filter_manager.perform_query();
+
+        this.load_selected_image_type();
 
         // Show a filter in the filter working area if necessary.
         var filter_name = this.filter_section.visible_filter_short_name;
