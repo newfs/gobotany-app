@@ -8,9 +8,11 @@ define([
     ]);
 
     require([
+        'jquery.tools.min',
         'order!jscrollpane'   // sk/results.js
     ], function() {
         require([
+            'ember-0.9.6.min',
             'order!dojo_config',
             'order!/static/js/dojo/dojo.js',
             'order!/static/js/layers/nls/sk_en-us.js',
