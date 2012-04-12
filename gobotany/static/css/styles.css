@@ -746,6 +746,9 @@ div.modal-wrap {
 .modal-wrap #choices {
 	padding: 10px 20px 0 20px;	
 }
+.modal-wrap #choices li {
+    margin: 0 0 14px;
+}
 .modal-wrap #plant-details {
 	padding: 10px 20px 0 20px;	
 }
@@ -924,7 +927,7 @@ a.get-choices {
     display: block;
     width: 171px;
     height: 32px;
-    margin: 15px 0 0 0;
+    margin: 20px 0 0 0;
     text-indent: -9000px;
     background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent;
 }
