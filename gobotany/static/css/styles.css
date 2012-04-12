@@ -699,7 +699,7 @@ p.vid {
 }
 #plant-id-3 .already-know select {
     font-size: 13px;
-    width: 145px;
+    width: 143px;
 }
 #plant-id-3 .already-know #family_clear,
 #plant-id-3 .already-know #genus_clear {
@@ -1117,11 +1117,6 @@ h5.help {
 #plant-id-3 input.dijitInputInner {
     font-family: Verdana, sans-serif;
     font-size: 12px;
-}
-/* These two next items are called family_select and genus_select in the HTML,
-but Dojo/Dijit transforms them into divs with ids starting with widget_. */
-#widget_family_select, #widget_genus_select {
-    width: 135px;
 }
 
 /* Working Area styles */
