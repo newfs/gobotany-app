@@ -27,8 +27,16 @@
 	cursor: pointer;
 	background-image:url(../images/icons/close-large.png);
 	}
-#sb-nav-next{background-image:url(../images/shadowbox/next.png);}
-#sb-nav-previous{background-image:url(../images/shadowbox/previous.png);}
+#sb-nav-next {
+    background-image: url(../images/shadowbox/next.png);
+    background-position: 50% 0;
+    padding: 0 14px 14px;
+}
+#sb-nav-previous {
+    background-image: url(../images/shadowbox/previous.png);
+    background-position: 50% 0;
+    padding: 0 14px 14px;
+}
 #sb-nav-play{background-image:url(../images/shadowbox/play.png);}
 #sb-nav-pause{background-image:url(../images/shadowbox/pause.png);}
 #sb-counter{float:left;width:45%;}
