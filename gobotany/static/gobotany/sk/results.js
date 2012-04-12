@@ -468,7 +468,6 @@ dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
             selectors._on_genus_change();
         });
 
-
         // Save objects that our callbacks will need.
         this.families = families;
         this.genera = genera;
@@ -911,6 +910,17 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         var filters = this.results_helper._loaded_filters;
         for (var i = 0; i < filters.length; i++) {
             this.clear_filter(filters[i]);
+        }
+
+        var families = dojo.byId('families');
+        if (families.value.length > 0) {
+            families.value = '';
+            this.results_helper.family_genus_selectors._on_family_change();
+        }
+        var genera = dojo.byId('genera');
+        if (genera.value.length > 0) {
+            genera.value = '';
+            this.results_helper.family_genus_selectors._on_genus_change();
         }
     },
 
