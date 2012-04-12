@@ -59,9 +59,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         // Wire up tabs and a link for toggling between photo and list views.
         dojo.query('#results-tabs a').onclick(this, this.toggle_view);
-
-        var view_toggle_link = dojo.query('.list-all a')[0];
-        dojo.connect(view_toggle_link, 'onclick', this, this.toggle_view);
+        global_speciessectionhelper = this;
 
         // Set the initial view for showing the results.
         var hash_object = dojo.queryToObject(dojo.hash());
@@ -288,18 +286,15 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         var CURRENT_TAB_CLASS = 'current';
         var photos_tab = dojo.query('#results-tabs li:first-child a')[0];
         var list_tab = dojo.query('#results-tabs li:last-child a')[0];
-        var view_type = dojo.query('.list-all a span.view-type')[0];
         var photos_show_menu = dojo.query('.show')[0];       
 
         if (view === this.PHOTOS_VIEW) {
             dojo.removeClass(list_tab, CURRENT_TAB_CLASS);
             dojo.addClass(photos_tab, CURRENT_TAB_CLASS);
-            view_type.innerHTML = 'a list of';
             dojo.removeClass(photos_show_menu, HIDDEN_CLASS);
         } else if (view === this.LIST_VIEW) {
             dojo.removeClass(photos_tab, CURRENT_TAB_CLASS);
             dojo.addClass(list_tab, CURRENT_TAB_CLASS);
-            view_type.innerHTML = 'photos for';
             dojo.addClass(photos_show_menu, HIDDEN_CLASS);
         } else {
            console.log('Unknown view name: ' + view);
@@ -318,7 +313,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         var CURRENT_TAB_CLASS = 'current';
         var photos_tab = dojo.query('#results-tabs li:first-child a')[0];
         var list_tab = dojo.query('#results-tabs li:last-child a')[0];
-        var view_type = dojo.query('.list-all a span.view-type')[0];
         var photos_show_menu = dojo.query('.show')[0];
 
         if (this.current_view === this.PHOTOS_VIEW) {

@@ -11,6 +11,20 @@ define([
         content: []
     });
 
+    // Ugly: need a ref to legacy Dojo obj.
+    global_speciessectionhelper = null;
+
+    App3.TaxaView = Ember.View.extend({
+        list_not_photos: true,
+        taxa_countBinding: 'App3.taxa.len',
+
+        switch_photo_list: function(event) {
+            // Tell the old Dojo species section helper to switch views.
+            if (global_speciessectionhelper)
+                global_speciessectionhelper.toggle_view(event);
+        }
+    });
+
     require([
         'simplekey/results_overlay',
         'simplekey/results_photo_menu'

@@ -87,14 +87,17 @@
                     <div class="wait"></div>
                 </div>
 
-                <p class="list-all hidden"><a>See 
-                    <span class="view-type">a list of</span>
-                    {% handlebars %}
-                      all <span class="species-count">{{App3.taxa.len}}</span>
-                    {% endhandlebars %}
-                    matching species.</a></p>
+                {% handlebars %}
+                {{#view App3.TaxaView tagName="p" class="list-all hidden"}}
+                <a {{action "switch_photo_list"}}>
+                  See {{#if list_not_photos}}a list of{{else}}photos for{{/if}}
+                  all <span class="species-count">{{taxa_count}}</span>
+                  matching species.
+                </a>
+                {{/view}}
+                {% endhandlebars %}
 
-                </div>
+            </div>
 
             <div id="sidebar" class="tinted">
                 <div class="section instructions">
