@@ -372,6 +372,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         var results = message.query_results;
         var image_types_menu = dojo.byId('image-types');
+        var current_selection = image_types_menu.value;
 
         // Clear any existing menu items.
         image_types_menu.options.length = 0;
@@ -397,11 +398,21 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         // Sort image types alphabetically and add them as menu items.
         var anything_is_selected = false;
+        var is_selected;
         image_types.sort();
         for (i = 0; i < image_types.length; i++) {
             image_type = image_types[i];
-            var is_selected = (image_type === menu_config['default']) ?
-                true : false;
+            is_selected = false;
+            if (current_selection.length > 0) {
+                if (image_type === current_selection) {
+                    is_selected = true;
+                }
+            }
+            else {
+                if (image_type === menu_config['default']) {
+                    is_selected = true;
+                }
+            }
             anything_is_selected = anything_is_selected || is_selected;
             image_types_menu[image_types_menu.options.length] =
                 new Option(image_type, image_type, is_selected, is_selected);
