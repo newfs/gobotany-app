@@ -90,7 +90,7 @@
                 {% handlebars %}
                 {{#view App3.TaxaView tagName="p" class="list-all hidden"}}
                 <a {{action "switch_photo_list"}}>
-                  See {{#if list_not_photos}}a list of{{else}}photos for{{/if}}
+                  See {{#if show_list}}photos for{{else}}a list of{{/if}}
                   all <span class="species-count">{{taxa_count}}</span>
                   matching species.
                 </a>

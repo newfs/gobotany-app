@@ -4,7 +4,8 @@ define([
 ], function(args, App3) {
 
     App3.taxa = Ember.Object.create({
-        len: 'Loading'  // placeholder until we have an integer to display
+        len: 'Loading',   // placeholder until we have an integer to display
+        show_list: false  // whether to show list or grid
     });
 
     App3.image_types = Ember.ArrayProxy.create({
@@ -15,7 +16,7 @@ define([
     global_speciessectionhelper = null;
 
     App3.TaxaView = Ember.View.extend({
-        list_not_photos: true,
+        show_listBinding: 'App3.taxa.show_list',
         taxa_countBinding: 'App3.taxa.len',
 
         switch_photo_list: function(event) {

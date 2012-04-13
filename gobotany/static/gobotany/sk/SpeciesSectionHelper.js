@@ -316,8 +316,10 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         var photos_show_menu = dojo.query('.show')[0];
 
         if (this.current_view === this.PHOTOS_VIEW) {
+            App3.taxa.set('show_list', true);
             this.current_view = this.LIST_VIEW;
         } else {
+            App3.taxa.set('show_list', false);
             this.current_view = this.PHOTOS_VIEW;
         }
 
