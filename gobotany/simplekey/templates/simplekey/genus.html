@@ -29,9 +29,10 @@ Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}
     <div class="content">
         <div class="container">
             <div id="main">
-                <h2>Genus: <i>{{ genus.name }}</i>
-                <span class="common">{% if common_name %}{{ common_name|lower }}{% endif %}</span>
-                </h2>
+                <h2>Genus: <i>{{ genus.name }}</i></h2>
+                {% if common_name %}
+                    <h3>{{ common_name|cut:"The "|lower }}</h3>
+                {% endif %}
                 <p class="description">
                 {% if genus.description %}
                     {{ genus.description }}

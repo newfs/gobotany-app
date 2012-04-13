@@ -1610,16 +1610,20 @@ div.working-area .actions {
     margin-left: 1em;
 }
 
-/* Taxon (species) page styles */
-
-h2 span.origin {
+/* Headings for family, genus, and species pages */
+#taxon h2 span.origin {
 	font-size: 14px;
+    line-height: 100%;
 }
-h2 span.common {
-    display: block;
-	font-size: 30px;
-	color: #807121;
+#family h3, #genus h3, #taxon h3 {
+    font-size: 30px;
+    color: #807121;
 }
+#taxon h3 {
+    margin-bottom: 12px;
+}
+
+/* Taxon (species) page styles */
 
 #taxon #main p {
 	margin: 0 0 15px;	
@@ -1803,10 +1807,6 @@ div.section.namap div.trans {
 #taxon .controls span {
 	position: relative;
 	top: -22px;	
-}
-#taxon #main h2 {
-    line-height: 1em;
-    margin: 0.5em 0;
 }
 #taxon a.more {
     cursor: pointer;

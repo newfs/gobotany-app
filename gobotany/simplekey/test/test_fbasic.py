@@ -1281,6 +1281,7 @@ class FamilyFunctionalTests(FunctionalTestCase):
         genera = self.css('#main .genera li')
         self.assertTrue(len(genera))
 
+    @unittest2.skip("Skip because this button is temporarily removed")
     def test_family_page_has_link_to_key(self):
         self.get('/families/lycopodiaceae/')
         key_link = self.css('#main a.family-genera-btn')
@@ -1298,6 +1299,7 @@ class GenusFunctionalTests(FunctionalTestCase):
         self.assertTrue(heading[0].text == 'Genus: Dendrolycopodium')
         common_name = self.css('#main h3')
         self.assertTrue(len(common_name))
+        self.assertTrue(common_name[0].text == 'tree-clubmoss')
 
     def test_genus_page_has_glossarized_description(self):
         self.get('/genera/dendrolycopodium/')
@@ -1324,6 +1326,7 @@ class GenusFunctionalTests(FunctionalTestCase):
         species = self.css('#main .species li')
         self.assertTrue(len(species))
 
+    @unittest2.skip("Skip because this button is temporarily removed")
     def test_genus_page_has_link_to_key(self):
         self.get('/genera/dendrolycopodium/')
         key_link = self.css('#main a.genus-species-btn')

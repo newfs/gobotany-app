@@ -28,13 +28,10 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
     <div class="content">
         <div class="container">
             <div id="main">
-                <h2>Family: {{ family.name }}
+                <h2>Family: {{ family.name }}</h2>
                 {% if common_name %}
-                    <span class="common">
-                    {{ common_name|cut:"The "|lower }}
-                    </span>
+                    <h3>{{ common_name|cut:"The "|lower }}</h3>
                 {% endif %}
-                </h2>
                 <p class="description">
                 {% if family.description %}
                     {{ family.description }}
