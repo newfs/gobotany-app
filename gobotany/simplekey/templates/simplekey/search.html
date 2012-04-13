@@ -53,8 +53,7 @@
                             <a href="{{ url_base }}/genera/{{ result.name|lower }}/"><img
                                 src="/static/images/icons/icon-genus.png"
                                 alt="" title="Genus page">
-                                {{ item_title|split:' '|at_index:'0' }}
-                                <i>{{ item_title|split:' '|slice:'1:'|safeseq|join:' ' }}</i>
+                                {{ item_title|italicize_plant|safe }}
                             </a>
                         {% endif %}
                         {% if result.model_name == 'helppage' %}

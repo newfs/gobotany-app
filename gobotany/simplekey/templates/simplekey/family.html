@@ -2,8 +2,7 @@
 {% load simplekey_extras %}
 
 {% block title %}
-Family: {{ family.name }} {% if common_name %}({{ common_name }}){% endif %}
-{% endblock %}
+Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }}){% endif %}{% endblock %}
 
 {% block js_top %}
     <script>

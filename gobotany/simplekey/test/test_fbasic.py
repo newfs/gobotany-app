@@ -808,21 +808,26 @@ class SearchFunctionalTests(FunctionalTestCase):
                 result_links[0].text)
 
     def test_search_results_page_family_returns_first_result(self):
-        families = ['Azollaceae', 'Equisetaceae', 'Isoetaceae',
-                    'Marsileaceae', 'Salviniaceae']
+        families = ['Azollaceae (mosquito fern family)',
+                    'Equisetaceae (horsetail family)',
+                    'Isoetaceae (quillwort family)',
+                    'Marsileaceae (pepperwort family)',
+                    'Salviniaceae (watermoss family)']
         for family in families:
-            self.get('/search/?q=%s' % family.lower())
+            self.get('/search/?q=%s' % family.split(' ')[0].lower())
             result_links = self._result_links()
             self.assertTrue(len(result_links))
             self.assertEqual('Family: %s' % family, result_links[0].text)
 
-    # TODO: Add a test for family common names when they become available.
-
     def test_search_results_page_genus_returns_first_result(self):
-        genera = ['Claytonia', 'Echinochloa', 'Koeleria', 'Panicum',
-                  'Saponaria', 'Verbascum']
+        genera = ['Claytonia (spring-beauty)',
+                  'Echinochloa (barnyard grass)',
+                  'Koeleria (Koeler\'s grass)',
+                  'Panicum (panicgrass)',
+                  'Saponaria (soapwort)',
+                  'Verbascum (mullein)']
         for genus in genera:
-            self.get('/search/?q=%s' % genus.lower())
+            self.get('/search/?q=%s' % genus.split(' ')[0].lower())
             result_links = self._result_links()
             self.assertTrue(len(result_links))
             self.assertEqual('Genus: %s' % genus, result_links[0].text)
@@ -1231,7 +1236,7 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
                          sorted(SUGGESTIONS))
 
     def test_simple_key_equisetaceae_suggestions_exist(self):
-        SUGGESTIONS = ['horsetails', 'scouring rushes']
+        SUGGESTIONS = ['horsetails', 'scouring-rushes']
         self.assertEqual(self._suggestions_found(SUGGESTIONS),
                          sorted(SUGGESTIONS))
 
