@@ -130,6 +130,9 @@ gobotany.utils.pretty_length = function(unit, mmvalue, show_unit) {
         value = value.substring(0, value.length - 3);
     } else if (value.indexOf('.0', value.length - 2) !== -1) {
         value = value.substring(0, value.length - 2);
+    } else if (/\d?\.\d+0/.test(value)) {
+        // If 0 is at the end of a decimal, omit. (Ex.: 0.70 --> 0.7)
+        value = value.substring(0, value.length - 1);
     }
 
     if (show_unit) {

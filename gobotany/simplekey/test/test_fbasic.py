@@ -1689,11 +1689,12 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
              'LEAF BLADE LENGTH', ['0.7–5 cm']),
             ('non-thalloid-aquatic', 'Brasenia schreberi',
              'LEAF BLADE LENGTH', ['35–135 cm']),
-            ('carex', 'Carex aquatilis', 'FRUIT LENGTH', ['2–3.3 mm']),
-             ('non-thalloid-aquatic', 'Elatine minima',
-              'PETAL OR SEPAL NUMBER',
-              ['there are three petals or sepals in the flower',
-               'there are two petals or sepals in the flower']),
+            ('carex', 'Carex aquatilis',
+             'LEAF BLADE WIDTH', ['2.5–8 mm']),
+            ('non-thalloid-aquatic', 'Elatine minima',
+             'PETAL OR SEPAL NUMBER',
+             ['there are three petals or sepals in the flower',
+              'there are two petals or sepals in the flower']),
             ]
         for subgroup, species, expected_name, expected_values in values:
             self._preview_popup_has_characters(subgroup, species,
