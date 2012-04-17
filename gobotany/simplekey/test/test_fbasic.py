@@ -157,7 +157,7 @@ class BasicFunctionalTests(FunctionalTestCase):
         assert q[0].text.startswith('True ferns and moonworts')
         assert q[1].text.startswith(
             'Clubmosses and relatives, plus quillworts')
-        assert q[2].text.startswith('Horsetails and scouring rushes')
+        assert q[2].text.startswith('Horsetails and scouring-rushes')
         q = d.find_elements_by_link_text('My plant is in this subgroup')
         self.assertTrue(q[0].get_attribute('href').endswith(
             '/ferns/monilophytes/'))
@@ -258,30 +258,26 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.css1('#habitat_general a.option').click()
         count = self.css1('[value="terrestrial"] + .label + .count').text
-        self.assertEqual(count, '(10)')
+        self.assertEqual(count, '(9)')
         self.css1('[value="terrestrial"]').click()
         self.css1('.apply-btn').click()
-        self.wait_on_species(10)
+        self.wait_on_species(9)
 
         # clear the New England state
 
         self.css1('#state_distribution .clear-filter').click()
-        self.wait_on_species(15)
+        self.wait_on_species(14)
 
     def list_family_choices(self):
-        b = self.css1('[widgetid="family_select"] .dijitArrowButtonInner')
-        b.click()
-        items = self.wait_on(4, self.css, '#family_select_popup li')
-        texts = [ item.text for item in items ]
-        b.click()
+        menu_options = self.css('select#families option')
+        texts = [option.text for option in menu_options
+                 if len(option.text) > 0]
         return texts
 
     def list_genus_choices(self):
-        b = self.css1('[widgetid="genus_select"] .dijitArrowButtonInner')
-        b.click()
-        items = self.wait_on(4, self.css, '#genus_select_popup li')
-        texts = [ item.text for item in items ]
-        b.click()
+        menu_options = self.css('select#genera option')
+        texts = [option.text for option in menu_options
+                 if len(option.text) > 0]
         return texts
 
     def test_family_genus_filters(self):
@@ -309,7 +305,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Try selecting a family.
 
-        self.css1('#family_select').send_keys(u'Lycopodiaceae', Keys.RETURN)
+        self.css1('select#families option[value="Lycopodiaceae"]').click()
         self.wait_on_species(11)
         self.assertEqual(self.list_family_choices(), all_families)
         self.assertEqual(self.list_genus_choices(), [
@@ -319,20 +315,20 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Clear the family.
 
-        self.css1('#clear_family').click()
+        self.css1('#family_clear').click()
         self.assertEqual(self.list_family_choices(), all_families)
         self.assertEqual(self.list_genus_choices(), all_genera)
 
         # Try selecting a genus first.
 
-        self.css1('#genus_select').send_keys(u'Lycopodium', Keys.RETURN)
+        self.css1('select#genera option[value="Lycopodium"]').click()
         self.wait_on_species(2)
         self.assertEqual(self.list_family_choices(), [u'Lycopodiaceae'])
         self.assertEqual(self.list_genus_choices(), all_genera)
 
         # Select the one family that is now possible.
 
-        self.css1('#family_select').send_keys(u'Lycopodiaceae', Keys.RETURN)
+        self.css1('select#families option[value="Lycopodiaceae"]').click()
         self.wait_on_species(2)
         self.assertEqual(self.list_family_choices(), [u'Lycopodiaceae'])
         self.assertEqual(self.list_genus_choices(), [
@@ -342,7 +338,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Clear the genus, leaving the family in place.
 
-        self.css1('#clear_genus').click()
+        self.css1('#genus_clear').click()
         self.wait_on_species(11)
         self.assertEqual(self.list_family_choices(), all_families)
         self.assertEqual(self.list_genus_choices(), [
@@ -359,8 +355,9 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.css1('#intro-overlay .continue').click()
         e = self.css1('.plant-list div a div.img-container img')
         assert '-ha-' in e.get_attribute('src')
-        self.css1('#results-display .dijitSelectLabel').click()
-        self.css1('#dijit_MenuItem_2_text').click()  # 'shoots'
+        self.css1('#results-display #image-types').click()
+        self.css1(
+            '#results-display #image-types option[value="shoots"]').click()
         assert '-sh-' in e.get_attribute('src')
 
     def test_show_photos_menu_default_item(self):
@@ -372,8 +369,13 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.css1('#intro-overlay .continue').click()
         e = self.css1('.plant-list div a div.img-container img')
         assert '-ha-' in e.get_attribute('src')   # 'ha' = 'plant form' image
-        default_item = self.css1('#results-display .dijitSelectLabel').text
-        self.assertEqual('plant form', default_item)
+        menu_items = self.css('#results-display #image-types option')
+        self.assertTrue(len(menu_items) > 0)
+        for menu_item in menu_items:
+            if menu_item.text == 'plant form':
+                self.assertEqual('true', menu_item.get_attribute('selected'))
+            else:
+                self.assertEqual(None, menu_item.get_attribute('selected'))
 
     def test_show_photos_menu_omitted_items(self):
 
@@ -385,8 +387,9 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
-        self.css1('#results-display .dijitSelectLabel').click()
-        menu_items = self.css('#image-type-selector_menu .dijitMenuItemLabel')
+        self.css1('#results-display #image-types').click()
+        menu_items = self.css('#results-display #image-types option')
+        self.assertTrue(len(menu_items) > 0)
         for menu_item in menu_items:
             self.assertTrue(menu_item.text not in OMITTED_ITEMS)
 
@@ -395,8 +398,9 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
         e = self.css1('.plant-list div a div.img-container img')
-        self.css1('#results-display .dijitSelectLabel').click()
-        self.css1('#dijit_MenuItem_0_text').click()  # 'branches'
+        self.css1('#results-display #image-types').click()
+        self.css1(
+            '#results-display #image-types option[value="branches"]').click()
         assert '-br-' in e.get_attribute('src')
         missing_images = self.css('.plant-list .plant .missing-image p')
         assert len(missing_images) > 0
@@ -451,10 +455,10 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertIn('to the 41 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '100'
-        self.assertIn('to the 212 matching species', instructions.text)
+        self.assertIn('to the 215 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '1000'
-        self.assertIn('to the 183 matching species', instructions.text)
+        self.assertIn('to the 188 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '10000'
         self.assertIn('to the 1 matching species', instructions.text)
@@ -464,7 +468,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Submitting when there are no matching species does nothing.
 
-        unknowns = 41
+        unknowns = 32
 
         apply_button.click()  # should do nothing
         self.assertEqual(sidebar_value_span.text, '')
@@ -481,9 +485,9 @@ class FilterFunctionalTests(FunctionalTestCase):
         measure_input = self.css1(INPUT_METRIC_CSS)
         measure_input.send_keys(Keys.BACK_SPACE)  # '1000'
         instructions = self.css1(INSTRUCTIONS_CSS)
-        self.assertIn('to the 183 matching species', instructions.text)
+        self.assertIn('to the 188 matching species', instructions.text)
         apply_button.click()
-        self.wait_on_species(unknowns + 183)
+        self.wait_on_species(unknowns + 188)
         self.assertEqual(sidebar_value_span.text, '1000 mm')
 
         # Switch to cm and then m.
@@ -523,9 +527,9 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         measure_input.send_keys(Keys.BACK_SPACE)  # '1'
         instructions = self.css1(INSTRUCTIONS_CSS)
-        self.assertIn('to the 183 matching species', instructions.text)
+        self.assertIn('to the 188 matching species', instructions.text)
         apply_button.click()
-        self.wait_on_species(unknowns + 183)
+        self.wait_on_species(unknowns + 188)
         self.assertEqual(sidebar_value_span.text, '1 m')
 
     def test_length_filter_display_on_page_load(self):
@@ -534,9 +538,9 @@ class FilterFunctionalTests(FunctionalTestCase):
                  '#_filters=family,genus,plant_height_rn'
                  '&_visible=plant_height_rn'
                  '&plant_height_rn=5000')
-        unknowns = 41
+        unknowns = 32
         self.wait_on_species(unknowns + 9,
-                             seconds=12)   # Big subgroup, wait longer
+                             seconds=21)   # Big subgroup, wait longer
 
         sidebar_value_span = self.css1('#plant_height_rn .value')
         self.assertEqual(sidebar_value_span.text, '5000 mm')
@@ -1451,7 +1455,7 @@ class CharacterValueImagesFunctionalTests(FunctionalTestCase):
         self._character_value_images_exist(
             '/woody-plants/woody-angiosperms/',
             'plant_habit_wa',   # Q: "Growth form?"
-            ['liana', 'shrub-subshrub', 'tree'])
+            ['liana', 'shrub-subshrub-wa', 'tree'])
 
     def test_woody_gymnosperms_character_value_images_exist(self):
         self._character_value_images_exist(
@@ -1500,7 +1504,8 @@ class CharacterValueImagesFunctionalTests(FunctionalTestCase):
         self._character_value_images_exist(
             '/monocots/non-orchid-monocots/',
             'leaf_arrangement_nm',   # Q: "Leaf arrangement?"
-            ['leaves-alternate-nm', 'leaves-basal-nm', 'leaves-whorled-nm'])
+            ['leaf-one-per-node-nm', 'leaf-two-per-node-nm',
+             'leaves-basal-nm', 'leaf-three-per-node-nm'])
 
     def test_monilophytes_character_value_images_exist(self):
         self._character_value_images_exist(
@@ -1526,8 +1531,8 @@ class CharacterValueImagesFunctionalTests(FunctionalTestCase):
         self._character_value_images_exist(
             '/non-monocots/composites/',
             'leaf_arrangement_co',   # Q: "Leaf arrangement?"
-            ['leaves-alternate-co', 'leaves-opposite-co', 'leaves-basal-co',
-             'leaves-whorled-co'])
+            ['leaf-one-per-node-co', 'leaf-two-per-node-co',
+             'leaves-basal-co', 'leaf-three-per-node-co'])
 
     def test_remaining_non_monocots_character_value_images_exist(self):
         self._character_value_images_exist(
