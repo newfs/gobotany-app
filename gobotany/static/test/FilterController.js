@@ -5,7 +5,7 @@ module.exports = {
     'FilterController': {
         'should return a test value': function() {
             var f = requirejs('simplekey/FilterController');
-            f.should.eql([2, 3]);
+            f.testval.should.eql([2, 3]);
         }
     }
 };
