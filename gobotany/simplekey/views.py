@@ -576,6 +576,16 @@ def suggest_view(request):
     return HttpResponse(simplejson.dumps(suggestions),
                         mimetype='application/json')
 
+def sitemap_view(request):
+    host = request.get_host()
+    plant_names = Taxon.objects.values_list('scientific_name', flat=True)
+    urls = ['http://%s/species/%s/' % (host,
+                                       plant_name.lower().replace(' ', '/'))
+            for plant_name in plant_names]
+    return render_to_response('simplekey/sitemap.txt', {
+           'urls': urls,
+           }, mimetype='text/plain; charset=utf-8')
+
 # Placeholder views
 # This generic view basically does the same thing as direct_to_template,
 # but I wanted to be more explicit so placeholders would be obvious when it

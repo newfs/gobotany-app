@@ -38,6 +38,9 @@ urlpatterns = patterns(
     # Auto-suggestions for search
     url('^suggest/$', views.suggest_view, name='simplekey-search-suggest'),
 
+    # Sitemap for search engines
+    url('^sitemap.txt$', views.sitemap_view, name='sitemap'),
+
     # Site pages
     url('^$', views.index_view, name='simplekey-index'),
     url('^advanced/$', views.advanced_view, name='advanced-id-tools'),
