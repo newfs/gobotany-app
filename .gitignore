@@ -3,9 +3,6 @@
 *.sw*
 *.DS_Store
 
-# Ignore any modules that a Node test runner puts in a local directory.
-node_modules
-
 # /
 /gobotany.egg-info
 
