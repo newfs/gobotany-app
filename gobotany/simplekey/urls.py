@@ -42,6 +42,9 @@ urlpatterns = patterns(
     url('^sitemap.txt$', views.sitemap_view, name='sitemap'),
     url('^robots.txt$', views.robots_view, name='robots'),
 
+    # Unlinked page for some checks that can be verified via functional test
+    url('^checkup/$', views.checkup_view, name='checkup'),
+
     # Site pages
     url('^$', views.index_view, name='simplekey-index'),
     url('^advanced/$', views.advanced_view, name='advanced-id-tools'),

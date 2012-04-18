@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import re
 import string
 import urllib2
 
@@ -590,6 +591,36 @@ def robots_view(request):
     return render_to_response('simplekey/robots.txt', {},
                               context_instance=RequestContext(request),
                               mimetype='text/plain')
+
+def checkup_view(request):
+
+    # Do some checks that can be presented on an unlinked page to be
+    # verified either manually or by an automated functional test.
+
+    # Check the number of images that have valid copyright holders.
+    total_images = models.ContentImage.objects.count()
+    copyright_holders = CopyrightHolder.objects.values_list('coded_name',
+                                                            flat=True)
+    images_without_copyright = []
+    images = models.ContentImage.objects.all()
+    for image in images:
+        image_url = image.image.url
+        copyright_holder = image_url.split('.')[-2]
+        if re.search('-[a-z0-9]?$', copyright_holder):
+            copyright_holder = copyright_holder[:-2]
+        copyright_holder = copyright_holder.split('-')[-1]
+        if copyright_holder not in copyright_holders:
+            images_without_copyright.append(image_url)
+            # To see which images do not have valid copyright holders,
+            # temporarily enable this statement:
+            #print 'Copyright holder %s not found: %s' % (copyright_holder,
+            #                                             image_url)
+    images_copyright = total_images - len(images_without_copyright)
+
+    return render_to_response('simplekey/checkup.html', {
+            'images_copyright': images_copyright,
+            'total_images': total_images,
+        }, context_instance=RequestContext(request))
 
 # Placeholder views
 # This generic view basically does the same thing as direct_to_template,
