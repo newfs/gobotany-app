@@ -28,20 +28,84 @@ define([
     /* Install the list of values returned by the API for this filter. */
 
     install_values: function(args) {
-        var values = _.filter(args.values, function(v) {
-            // Only keep values that have one or more taxa in this pile.
-            return _.intersection(args.pile_taxa, v.taxa).length;
+        var values = _.filter(args.values, function(value) {
+            // Throw out values that had no taxa in this pile.
+            value.taxa = _.intersect(value.taxa, args.pile_taxa);
+            return value.taxa.length;
         });
         var alltaxa = [];
         var choicemap = {};
-        _.each(values, function(value) {
-            alltaxa = _.union(alltaxa, value.taxa);
-            if (value.choice)
-                choicemap[value.choice] = value;
+        _.each(values, function(v) {
+            alltaxa = _.union(alltaxa, v.taxa);
+            if (v.choice)
+                choicemap[v.choice] = v;
         });
         this.set('values', values);
         this.set('choicemap', choicemap);
         this.set('valueless_taxa', _.difference(args.pile_taxa, alltaxa));
+    },
+
+    /* Return the vector of species IDs for species that match a given
+     * value for this character. */
+
+    taxa_matching: function(value) {
+
+        // Looking up a multiple-choice filter is a single step.
+        if (this.value_type === 'TEXT') {
+            return this.choicemap[value].taxa;
+
+        // A number has to be checked against each range.
+        } else if (this.value_type === 'LENGTH') {
+            var values = _.filter(this.values, function(v) {
+                var NA = (v.min == 0 && v.max == 0);
+                return NA ? false : (value >= v.min && value <= v.max);
+            });
+            return _.uniq(_.flatten(_.pluck(values, 'taxa')));
+
+        } else
+            console.log('Error: unknown value_type', this.value_type);
+    },
+
+    /* For a numeric filter, figure out which ranges of values are legal
+     * given a possible set of species as a species ID array.  Returns a
+     * sorted list of disjoint ranges like: [{min: 2, max: 5}, {min: 7,
+     * max: 9}]. */
+
+    allowed_ranges: function(vector) {
+        var ranges = [];
+        for (i = 0; i < this.values.length; i++) {
+            var value = this.values[i];
+            var vmin = value.min;
+            var vmax = value.max;
+
+            if (vmin === null || vmax === null)
+                continue;  // ignore values that are not ranges anyway
+
+            if (vmin === 0 && vmax === 0)
+                continue;  // ignore "NA" values
+
+            if (_.intersect(vector, value.taxa).length == 0)
+                continue;  // ignore values that apply to none of these species
+
+            // First we skip any ranges lying entirely to the left of this one.
+
+            var j = 0;
+            for (j = 0; j < ranges.length && ranges[j].max < value.min; j++);
+
+            // Next, we absorb every range with which we overlap.
+
+            while (j < ranges.length &&
+                   vmin <= ranges[j].max && ranges[j].min <= vmax) {
+                vmin = Math.min(ranges[j].min, vmin);
+                vmax = Math.max(ranges[j].max, vmax);
+                ranges.splice(j, 1);
+            }
+
+            // Finally, we insert this new range into the list.
+
+            ranges.splice(j, 0, {min: vmin, max: vmax});
+        }
+        return ranges;
     }
 
 })});
