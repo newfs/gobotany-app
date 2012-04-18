@@ -1,11 +1,59 @@
 var requirejs = require('requirejs');
 requirejs.config({baseUrl: 'scripts'});
 
+var Filter = requirejs('simplekey/Filter');
+var sample_choices = [
+    {choice: 'red', taxa: [2, 3, 4]},
+    {choice: 'orange', taxa: [2, 9, 10]},
+    {choice: 'yellow', taxa: [4, 7]},
+    {choice: 'blue', taxa: [8]}
+];
+var sample_lengths = [
+    {min: 0, max: 2, taxa: [1]},
+    {min: 1, max: 8, taxa: [2]},
+    {min: 2, max: 5, taxa: [3, 4]},
+    {min: 3, max: 6, taxa: [5]},
+    {min: 9, max: 10, taxa: [6]}
+];
+var sample_choice_filter = function() {
+    var f = new Filter({short_name: 'flower_color'});
+    f.install_values({
+        pile_taxa: [2, 3, 4, 5, 6, 7],
+        values: sample_choices
+    });
+    return f;
+};
+var sample_length_filter = function() {
+    var f = new Filter({short_name: 'stem_length'});
+    f.install_values({
+        pile_taxa: [2, 3, 4, 5, 6, 7],
+        values: sample_lengths
+    });
+    return f;
+};
+
 module.exports = {
     'Filter': {
-        'should return a test value': function() {
-            var f = requirejs('simplekey/Filter');
-            f.should.equal('test value');
+        'knows its slug': function() {
+            var f = new Filter({short_name: 'stem_length'});
+            f.slug.should.equal('stem_length');
+        },
+        'only keeps choices that have taxa in the current pile': function() {
+            var f = sample_choice_filter();
+            f.values.length.should.equal(3);
+            _.keys(f.choicemap).should.eql(['red', 'orange', 'yellow']);
+        },
+        'only keeps lengths that have taxa in the current pile': function() {
+            var f = sample_length_filter();
+            f.values.length.should.equal(4);
+        },
+        'keeps the choicemap empty when given length values': function() {
+            var f = sample_length_filter();
+            _.keys(f.choicemap).length.should.equal(0);
+        },
+        'knows which taxa in the pile have no value': function() {
+            var f = sample_choice_filter();
+            f.valueless_taxa.should.eql([5, 6]);
         }
     }
 };
