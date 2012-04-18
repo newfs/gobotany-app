@@ -586,6 +586,11 @@ def sitemap_view(request):
            'urls': urls,
            }, mimetype='text/plain; charset=utf-8')
 
+def robots_view(request):
+    return render_to_response('simplekey/robots.txt', {},
+                              context_instance=RequestContext(request),
+                              mimetype='text/plain')
+
 # Placeholder views
 # This generic view basically does the same thing as direct_to_template,
 # but I wanted to be more explicit so placeholders would be obvious when it
