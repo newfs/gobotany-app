@@ -1,18 +1,26 @@
-var $ = require('jquery');
 var requirejs = require('requirejs');
+var FilterController = requirejs('simplekey/FilterController');
 
-requirejs.config({baseUrl: 'scripts'});
+var sample_filtercontroller = function() {
+    var data = require('../testdata/taxa.js');
+    return new FilterController({base_vector: data.base_vector,
+                                 taxadata: data.lycophytes});
+};
 
 module.exports = {
     'FilterController': {
-        'should return a test value': function() {
-            var f = requirejs('simplekey/FilterController');
-            var g = $.Deferred();
-            var d = f.add_filter('filtername', function(short_name) {
-                return g;
-            });
-            g.resolve();
-            f.testval.should.eql(2);
+        'builds its own family and genus filters': function() {
+            var f = sample_filtercontroller();
+            _.keys(f.filters).length.should.equal(2);
+
+            f.filters.family.slug.should.equal('family');
+            f.filters.family.values.length.should.equal(4);
+            f.filters.family.taxa_matching('Huperziaceae')
+                .length.should.equal(2);
+
+            f.filters.genus.slug.should.equal('genus');
+            f.filters.genus.values.length.should.equal(8);
+            f.filters.genus.taxa_matching('Isoetes').length.should.equal(3);
         }
     }
 };

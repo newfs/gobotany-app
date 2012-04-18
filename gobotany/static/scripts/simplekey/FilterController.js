@@ -1,23 +1,27 @@
 define([
-    'ember-metal',
-    'ember-runtime',
+    'ember',
     'jquery',
-    'underscore-min'
-], function(x, x, $, x) {
+    'underscore-min',
+    'simplekey/Filter'
+], function(x, $, x, Filter) {return Ember.Object.extend({
 
-    return Ember.Object.create({
+    init: function(args) {
+        this.filters = {};
+        this.pile_taxa = _.pluck(args.taxadata, 'id');
+        this.build_category_filter('family', args.taxadata);
+        this.build_category_filter('genus', args.taxadata);
+    },
 
-        testval: 1,
+    build_category_filter: function(name, taxadata) {
+        var f = new Filter({short_name: name, value_type: 'TEXT'});
+        var values = _.chain(taxadata).groupBy(name).map(function(taxad, v) {
+            return {choice: v, taxa: _.pluck(taxad, 'id')};
+        }).value();
+        f.install_values({pile_taxa: this.pile_taxa, values: values});
+        this.add(f);
+    },
 
-        add_filter: function(short_name, filter_getter) {
-            var d = $.Deferred();
-            var self = this;
-            filter_getter(short_name).done(function() {
-                self.testval = 2;
-                d.resolve(self);
-            });
-            return d;
-        }
-    });
-
-});
+    add: function(filter) {
+        this.filters[filter.slug] = filter;
+    }
+})});
