@@ -5,11 +5,13 @@ define([
     'simplekey/Filter'
 ], function(x, $, x, Filter) {return Ember.Object.extend({
 
-    init: function(args) {
-        this.filters = {};
-        this.pile_taxa = _.pluck(args.taxadata, 'id');
-        this.build_category_filter('family', args.taxadata);
-        this.build_category_filter('genus', args.taxadata);
+    init: function(taxadata) {
+        this.set('filters', []);
+        this.set('filtermap', {});
+        this.set('pile_taxa', _.sortBy(_.pluck(taxadata, 'id'), this.numsort));
+        this.build_category_filter('family', taxadata);
+        this.build_category_filter('genus', taxadata);
+        this.update();
     },
 
     build_category_filter: function(name, taxadata) {
@@ -22,6 +24,25 @@ define([
     },
 
     add: function(filter) {
-        this.filters[filter.slug] = filter;
-    }
+        this.get('filters').push(filter);
+        this.get('filtermap')[filter.slug] = filter;
+    },
+
+    compute: function(skip_filter) {
+        var taxa = this.get('pile_taxa');
+        _.each(this.filters, function(f) {
+            if (f !== skip_filter && f.value !== null) {
+                var matches = f.taxa_matching().concat(f.valueless_taxa);
+                taxa = _.intersect(taxa, matches);
+            }
+        });
+        return _.sortBy(taxa, this.numsort);
+    },
+
+    update: function() {
+        this.set('taxa', this.compute());
+    }.observes('filters.@each.value'),
+
+    numsort: function(a, b) {return a - b}
+
 })});

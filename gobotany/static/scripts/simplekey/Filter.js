@@ -47,6 +47,8 @@ define([
      * value for this character. */
 
     taxa_matching: function(value) {
+        if (arguments.length == 0)
+            value = this.get('value');
 
         // Looking up a multiple-choice filter is a single step.
         if (this.value_type === 'TEXT') {

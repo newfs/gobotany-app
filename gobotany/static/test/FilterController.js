@@ -3,24 +3,42 @@ var FilterController = requirejs('simplekey/FilterController');
 
 var sample_filtercontroller = function() {
     var data = require('../testdata/taxa.js');
-    return new FilterController({base_vector: data.base_vector,
-                                 taxadata: data.lycophytes});
+    return new FilterController(data.lycophytes);
 };
 
 module.exports = {
     'FilterController': {
         'builds its own family and genus filters': function() {
             var f = sample_filtercontroller();
-            _.keys(f.filters).length.should.equal(2);
+            f.filters.length.should.equal(2);
+            _.keys(f.filtermap).length.should.equal(2);
 
-            f.filters.family.slug.should.equal('family');
-            f.filters.family.values.length.should.equal(4);
-            f.filters.family.taxa_matching('Huperziaceae')
+            f.filtermap.family.slug.should.equal('family');
+            f.filtermap.family.values.length.should.equal(4);
+            f.filtermap.family.taxa_matching('Huperziaceae')
                 .length.should.equal(2);
 
-            f.filters.genus.slug.should.equal('genus');
-            f.filters.genus.values.length.should.equal(8);
-            f.filters.genus.taxa_matching('Isoetes').length.should.equal(3);
+            f.filtermap.genus.slug.should.equal('genus');
+            f.filtermap.genus.values.length.should.equal(8);
+            f.filtermap.genus.taxa_matching('Isoetes')
+                .length.should.equal(3);
+        },
+        'returns the whole pile when no filters are active': function() {
+            var f = sample_filtercontroller();
+            f.taxa.should.eql([
+                85, 150, 880, 928, 1216, 1254, 1305, 1332, 1598, 1771,
+                1907, 2123, 2555, 2720, 2839, 3062, 3257, 3321
+            ]);
+        },
+        'can filter by family': function() {
+            // App = Ember.Application.create();
+            // App.f = sample_filtercontroller();
+            // var f = App.f;
+            var f = sample_filtercontroller();
+            // Try this two different ways; still fails to see update:
+            f.get('filtermap').family.set('value', 'Huperziaceae');
+            f.get('filters')[0].set('value', 'Huperziaceae');
+            f.taxa.should.eql([85, 150, 880]);
         }
     }
 };
