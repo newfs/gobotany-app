@@ -580,9 +580,15 @@ def suggest_view(request):
 def sitemap_view(request):
     host = request.get_host()
     plant_names = Taxon.objects.values_list('scientific_name', flat=True)
+    families = Family.objects.values_list('name', flat=True)
+    genera = Genus.objects.values_list('name', flat=True)
     urls = ['http://%s/species/%s/' % (host,
                                        plant_name.lower().replace(' ', '/'))
             for plant_name in plant_names]
+    urls.extend(['http://%s/families/%s/' % (host, family_name.lower())
+                 for family_name in families])
+    urls.extend(['http://%s/genera/%s/' % (host, genus_name.lower())
+                 for genus_name in genera])
     return render_to_response('simplekey/sitemap.txt', {
            'urls': urls,
            }, mimetype='text/plain; charset=utf-8')
