@@ -1,6 +1,12 @@
 var requirejs = require('requirejs');
 requirejs.config({baseUrl: 'scripts'});
 
+/* Use Node's jquery rather than the full-fledged library. */
+
+requirejs.define('jquery', [], function() {
+    require('jquery');
+});
+
 /* Replace our own "ember.js" loader with a subset of ember that is
    available under and can run on node.js: */
 
