@@ -1,7 +1,5 @@
 define([
-    'ember-metal',
-    'ember-runtime',
-    'jquery',
+    'ember',
     'underscore-min'
 ], function() {return Ember.Object.extend({
 

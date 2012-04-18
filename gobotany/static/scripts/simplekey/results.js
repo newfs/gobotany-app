@@ -1,6 +1,7 @@
 define([
     'args',
-    'simplekey/App3'
+    'simplekey/App3',
+    'simplekey/Filter'
 ], function(args, App3) {
 
     App3.taxa = Ember.Object.create({

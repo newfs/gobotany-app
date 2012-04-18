@@ -1,7 +1,6 @@
 var requirejs = require('requirejs');
-requirejs.config({baseUrl: 'scripts'});
-
 var Filter = requirejs('simplekey/Filter');
+
 var sample_choices = [
     {choice: 'red', taxa: [2, 3, 4]},
     {choice: 'orange', taxa: [2, 9, 10]},

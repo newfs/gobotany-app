@@ -1,3 +1,4 @@
 --globals _,Ember,foo,Em,SproutCore,SC,sc_assert,ember_assert,YES,NO
+--require nodeshims
 --require should
 --ui exports
