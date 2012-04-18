@@ -8,10 +8,11 @@ requirejs.define('ember', [
     'ember-metal',
     'ember-runtime',
     'jsdom'
-], function(x, x, jsdom) {
+], function(x, Ember, jsdom) {
     jsdom.env({
         html: '<html><body></body></html>'
     }, function(err, window_) {
         window = window_;
     });
+    return Ember;
 });

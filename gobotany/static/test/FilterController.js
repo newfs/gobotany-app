@@ -31,14 +31,10 @@ module.exports = {
             ]);
         },
         'can filter by family': function() {
-            // App = Ember.Application.create();
-            // App.f = sample_filtercontroller();
-            // var f = App.f;
             var f = sample_filtercontroller();
-            // Try this two different ways; still fails to see update:
             f.get('filtermap').family.set('value', 'Huperziaceae');
-            f.get('filters')[0].set('value', 'Huperziaceae');
-            f.taxa.should.eql([85, 150, 880]);
+            f.update();  // TODO: why can't this fire automatically?
+            f.taxa.should.eql([1907, 3321]);
         }
     }
 };

@@ -28,6 +28,8 @@ define([
         this.get('filtermap')[filter.slug] = filter;
     },
 
+    // Run the query, but return rather than persist the results.
+
     compute: function(skip_filter) {
         var taxa = this.get('pile_taxa');
         _.each(this.filters, function(f) {
@@ -38,6 +40,8 @@ define([
         });
         return _.sortBy(taxa, this.numsort);
     },
+
+    // Run the query, saving the result so that observers get updates.
 
     update: function() {
         this.set('taxa', this.compute());
