@@ -66,30 +66,31 @@ define([
             console.log('Error: unknown value_type', this.value_type);
     },
 
-    /* For a numeric filter, figure out which ranges of values are legal
-     * given a possible set of species as a species ID array.  Returns a
-     * sorted list of disjoint ranges like: [{min: 2, max: 5}, {min: 7,
-     * max: 9}]. */
+    /* For a numeric filter, figure out which ranges of values are still
+     * legal given a list of taxa still on the page.  Returns a sorted
+     * list of disjoint ranges like:
+     * [{min: 2, max: 5}, {min: 7, max: 9}]
+     */
 
-    allowed_ranges: function(vector) {
+    allowed_ranges: function(taxa) {
         var ranges = [];
-        for (i = 0; i < this.values.length; i++) {
-            var value = this.values[i];
+
+        _.each(this.values, function(value) {
             var vmin = value.min;
             var vmax = value.max;
 
             if (vmin === null || vmax === null)
-                continue;  // ignore values that are not ranges anyway
+                return;  // ignore values that are not ranges anyway
 
             if (vmin === 0 && vmax === 0)
-                continue;  // ignore "NA" values
+                return;  // ignore "NA" values
 
-            if (_.intersect(vector, value.taxa).length == 0)
-                continue;  // ignore values that apply to none of these species
+            if (_.intersect(taxa, value.taxa).length == 0)
+                return;  // ignore values that apply to none of these species
 
             // First we skip any ranges lying entirely to the left of this one.
 
-            var j = 0;
+            var j;
             for (j = 0; j < ranges.length && ranges[j].max < value.min; j++);
 
             // Next, we absorb every range with which we overlap.
@@ -104,7 +105,7 @@ define([
             // Finally, we insert this new range into the list.
 
             ranges.splice(j, 0, {min: vmin, max: vmax});
-        }
+        });
         return ranges;
     }
 

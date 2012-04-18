@@ -72,6 +72,19 @@ module.exports = {
         'when filtering by length returns only in-pile taxa': function() {
             var f = sample_length_filter();
             f.taxa_matching(10).should.eql([6]);
+        },
+        'can return the length range that matches one taxon': function() {
+            var f = sample_length_filter();
+            f.allowed_ranges([2]).should.eql([{min: 1, max: 8}]);
+        },
+        'can return a combined range for several taxa': function() {
+            var f = sample_length_filter();
+            f.allowed_ranges([2, 3, 5]).should.eql([{min: 1, max: 8}]);
+        },
+        'can return disjoint ranges for several taxa': function() {
+            var f = sample_length_filter();
+            f.allowed_ranges([3, 5, 6]).should.eql([{min: 2, max: 6},
+                                                    {min: 9, max: 10}]);
         }
     }
 };
