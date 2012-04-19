@@ -9,12 +9,12 @@ define([
         this.set('filters', []);
         this.set('filtermap', {});
         this.set('pile_taxa', _.sortBy(_.pluck(taxadata, 'id'), this.numsort));
-        this.build_category_filter('family', taxadata);
-        this.build_category_filter('genus', taxadata);
+        this.build_classification_filter('family', taxadata);
+        this.build_classification_filter('genus', taxadata);
         this.update();
     },
 
-    build_category_filter: function(name, taxadata) {
+    build_classification_filter: function(name, taxadata) {
         var f = new Filter({short_name: name, value_type: 'TEXT'});
         var values = _.chain(taxadata).groupBy(name).map(function(taxad, v) {
             return {choice: v, taxa: _.pluck(taxad, 'id')};

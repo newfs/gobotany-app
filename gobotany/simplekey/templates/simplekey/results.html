@@ -105,10 +105,16 @@
                         scrollable list:</h5>
                 </div>
                 <div class="scroll">
-                    <div class="loading">Loading questions…</div>
-                    <ul class="option-list" aria-live="polite"
-                    aria-relevant="additions removals">
-                    </ul>
+                  <div class="loading">Loading questions…</div>
+                  {% handlebars %}
+                    {{#view App3.FilterView tagName="ul" class="option-list"}}
+                      {{#each items}}
+                        {{#if is_normal}}
+                          <li>PUT FILTER {{filter.slug}} HERE</li>
+                        {{/if}}
+                      {{/each}}
+                    {{/view}}
+                  {% endhandlebars %}
                 </div>
 
                 <div class="section">

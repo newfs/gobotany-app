@@ -1,8 +1,9 @@
 define([
     'args',
     'simplekey/App3',
-    'simplekey/Filter'
-], function(args, App3) {
+    'simplekey/Filter',
+    'simplekey/FilterController'
+], function(args, App3, Filter, FilterController) {
 
     App3.taxa = Ember.Object.create({
         len: 'Loading',   // placeholder until we have an integer to display
@@ -13,8 +14,12 @@ define([
         content: []
     });
 
-    // Ugly: need a ref to legacy Dojo obj.
+    App3.filter_controller = new FilterController();
+
+    // Dojo code needs globals, so we create some.
     global_speciessectionhelper = null;
+    Filter = Filter;
+    FilterController = FilterController;
 
     App3.TaxaView = Ember.View.extend({
         show_listBinding: 'App3.taxa.show_list',
@@ -25,6 +30,17 @@ define([
             if (global_speciessectionhelper)
                 global_speciessectionhelper.toggle_view(event);
         }
+    });
+
+    App3.FilterView = Ember.View.extend({
+        items: function() {
+            return _.map(App3.filter_controller.filters, function(f) {
+                return {
+                    filter: f,
+                    is_normal: (f.slug !== 'family' && f.slug !== 'genus')
+                };
+            });
+        }.property('App3.filter_controller.filters')
     });
 
     require([
