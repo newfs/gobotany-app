@@ -15,7 +15,7 @@ define([
     },
 
     build_classification_filter: function(name, taxadata) {
-        var f = new Filter({short_name: name, value_type: 'TEXT'});
+        var f = Filter.create({slug: name, value_type: 'TEXT'});
         var values = _.chain(taxadata).groupBy(name).map(function(taxad, v) {
             return {choice: v, taxa: _.pluck(taxad, 'id')};
         }).value();

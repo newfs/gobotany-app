@@ -34,6 +34,7 @@ module.exports = {
             var f = sample_filtercontroller();
             f.get('filtermap').family.set('value', 'Huperziaceae');
             f.update();  // TODO: why can't this fire automatically?
+            // Ember.run.sync();  and why doesn't this do the update?
             f.taxa.should.eql([1907, 3321]);
         }
     }

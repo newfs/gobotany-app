@@ -3,24 +3,23 @@ define([
     'underscore-min'
 ], function() {return Ember.Object.extend({
 
-    init: function(args) {
-        var slug = args.short_name;
+    init: function() {
+        var slug = this.slug;
         var is_length = (slug.indexOf('length') > -1) ||
             (slug.indexOf('width') > -1) ||
             (slug.indexOf('height') > -1) ||
             (slug.indexOf('thickness') > -1) ||
             (slug.indexOf('diameter') > -1);
 
-        this.set('slug', slug)
-            .set('value_type', args.value_type)
-            .set('friendly_name', args.friendly_name)
-            .set('hint', args.hint)
-            .set('question', args.question)
-            .set('image_url', args.image_url)
-            .set('is_length', is_length)
-            .set('value', null)
-            .set('values', null)
-            .set('choicemap', {});
+        // this.set('value_type', args.value_type);
+        // this.set('friendly_name', args.friendly_name);
+        // this.set('hint', args.hint);
+        // this.set('question', args.question);
+        // this.set('image_url', args.image_url);
+        this.set('is_length', is_length);
+        this.set('value', null);
+        this.set('values', null);
+        this.set('choicemap', {});
     },
 
     /* Install the list of values returned by the API for this filter. */

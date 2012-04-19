@@ -3,7 +3,12 @@ define([
     'simplekey/App3',
     'simplekey/Filter',
     'simplekey/FilterController'
-], function(args, App3, Filter, FilterController) {
+], function(args, App3, _Filter, _FilterController) {
+
+    // Dojo code needs globals, so we create some.
+    global_speciessectionhelper = null;
+    Filter = _Filter;
+    FilterController = _FilterController;
 
     App3.taxa = Ember.Object.create({
         len: 'Loading',   // placeholder until we have an integer to display
@@ -14,12 +19,7 @@ define([
         content: []
     });
 
-    App3.filter_controller = new FilterController();
-
-    // Dojo code needs globals, so we create some.
-    global_speciessectionhelper = null;
-    Filter = Filter;
-    FilterController = FilterController;
+    App3.filter_controller = FilterController.create();
 
     App3.TaxaView = Ember.View.extend({
         show_listBinding: 'App3.taxa.show_list',

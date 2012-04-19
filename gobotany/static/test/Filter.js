@@ -15,7 +15,7 @@ var sample_lengths = [
     {min: 9, max: 10, taxa: [6, 9, 10]}
 ];
 var sample_choice_filter = function() {
-    var f = new Filter({short_name: 'flower_color', value_type: 'TEXT'});
+    var f = Filter.create({slug: 'flower_color', value_type: 'TEXT'});
     f.install_values({
         pile_taxa: [2, 3, 4, 5, 6, 7],
         values: sample_choices
@@ -23,7 +23,7 @@ var sample_choice_filter = function() {
     return f;
 };
 var sample_length_filter = function() {
-    var f = new Filter({short_name: 'stem_length', value_type: 'LENGTH'});
+    var f = Filter.create({slug: 'stem_length', value_type: 'LENGTH'});
     f.install_values({
         pile_taxa: [2, 3, 4, 5, 6, 7],
         values: sample_lengths
@@ -34,7 +34,7 @@ var sample_length_filter = function() {
 module.exports = {
     'Filter': {
         'knows its slug': function() {
-            var f = new Filter({short_name: 'stem_length'});
+            var f = Filter.create({slug: 'stem_length'});
             f.slug.should.equal('stem_length');
         },
         'only keeps choices that have taxa in the current pile': function() {
