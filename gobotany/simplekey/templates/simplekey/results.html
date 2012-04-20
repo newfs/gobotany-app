@@ -106,15 +106,13 @@
                 </div>
                 <div class="scroll">
                   <div class="loading">Loading questions…</div>
-                  {% handlebars %}
-                    {{#view App3.FilterView tagName="ul" class="option-list"}}
-                      {{#each items}}
-                        {{#if is_normal}}
-                          <li>PUT FILTER {{filter.slug}} HERE</li>
-                        {{/if}}
+                  <ul class="option-list">
+                    {% handlebars %}
+                      {{#each App3.filter_controller}}
+                        <li>PUT FILTER {{slug}} HERE</li>
                       {{/each}}
-                    {{/view}}
-                  {% endhandlebars %}
+                    {% endhandlebars %}
+                  </ul>
                 </div>
 
                 <div class="section">

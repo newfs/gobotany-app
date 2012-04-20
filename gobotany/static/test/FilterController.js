@@ -10,7 +10,7 @@ module.exports = {
     'FilterController': {
         'builds its own family and genus filters': function() {
             var f = sample_filtercontroller();
-            f.filters.length.should.equal(2);
+            f.get('length').should.equal(2);
             _.keys(f.filtermap).length.should.equal(2);
 
             f.filtermap.family.slug.should.equal('family');

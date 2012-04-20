@@ -3,10 +3,10 @@ define([
     'jquery',
     'underscore-min',
     'simplekey/Filter'
-], function(x, $, x, Filter) {return Ember.Object.extend({
+], function(x, $, x, Filter) {return Ember.ArrayController.extend({
 
     init: function(taxadata) {
-        this.set('filters', []);
+        this.set('content', []);
         this.set('filtermap', {});
         this.set('pile_taxa', _.sortBy(_.pluck(taxadata, 'id'), this.numsort));
         this.build_classification_filter('family', taxadata);
@@ -24,7 +24,7 @@ define([
     },
 
     add: function(filter) {
-        this.get('filters').push(filter);
+        this.addObject(filter);
         this.get('filtermap')[filter.slug] = filter;
     },
 
@@ -32,7 +32,7 @@ define([
 
     compute: function(skip_filter) {
         var taxa = this.get('pile_taxa');
-        _.each(this.filters, function(f) {
+        this.forEach(function(f) {
             if (f !== skip_filter && f.value !== null) {
                 var matches = f.taxa_matching().concat(f.valueless_taxa);
                 taxa = _.intersect(taxa, matches);
@@ -45,7 +45,7 @@ define([
 
     update: function() {
         this.set('taxa', this.compute());
-    }.observes('filters.@each.value'),
+    }.observes('@each.value'),
 
     numsort: function(a, b) {return a - b}
 

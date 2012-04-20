@@ -596,8 +596,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         }
 
         // Show the "See a list" (or "See photos") link.
-        var see_link = dojo.query('.list-all')[0];
-        dojo.removeClass(see_link, 'hidden');
+        var see_link = dojo.query('.list-all').removeClass(see_link, 'hidden');
 
         if (this.current_view === this.PHOTOS_VIEW) {
             // Signal the "Show:" menu to scrape our data to discover what
