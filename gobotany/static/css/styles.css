@@ -103,11 +103,11 @@ nav #search button:active {
 
 #plantshare #sidebar a:hover,
 #teaching-tools #sidebar a:hover,
+#advanced-id #sidebar a:hover,
 #privacy-policy #sidebar a:hover,
 #terms-of-use #sidebar a:hover {
     text-decoration: none;
 }
-
 
 #home li.home a, #home li a:hover {
 	background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent;	
