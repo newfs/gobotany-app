@@ -3,7 +3,7 @@ var FilterController = requirejs('simplekey/FilterController');
 
 var sample_filtercontroller = function() {
     var data = require('../testdata/taxa.js');
-    return new FilterController(data.lycophytes);
+    return FilterController.create({taxadata: data.lycophytes});
 };
 
 module.exports = {

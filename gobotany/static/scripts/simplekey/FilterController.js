@@ -5,7 +5,7 @@ define([
     'simplekey/Filter'
 ], function(x, $, x, Filter) {return Ember.ArrayController.extend({
 
-    init: function(taxadata) {
+    init: function() {
         var taxadata = this.taxadata;
         delete this.taxadata;
 
@@ -23,7 +23,6 @@ define([
             return {choice: v, taxa: _.pluck(taxad, 'id')};
         }).value();
         f.install_values({pile_taxa: this.pile_taxa, values: values});
-        console.log(f.values);
         this.add(f);
     },
 
