@@ -6,6 +6,9 @@ define([
 ], function(x, $, x, Filter) {return Ember.ArrayController.extend({
 
     init: function(taxadata) {
+        var taxadata = this.taxadata;
+        delete this.taxadata;
+
         this.set('content', []);
         this.set('filtermap', {});
         this.set('pile_taxa', _.sortBy(_.pluck(taxadata, 'id'), this.numsort));
@@ -20,6 +23,7 @@ define([
             return {choice: v, taxa: _.pluck(taxad, 'id')};
         }).value();
         f.install_values({pile_taxa: this.pile_taxa, values: values});
+        console.log(f.values);
         this.add(f);
     },
 

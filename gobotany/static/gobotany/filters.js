@@ -199,6 +199,13 @@ dojo.declare('gobotany.filters.FilterManager', null, {
             key_name: 'simple', pile_slug: this.pile_slug});
 
         fetch_pile_species.done(_.bind(function(species_list) {
+
+            // NEW
+            App3.set('filter_controller', FilterController.create({
+                taxadata: species_list
+            }));
+
+            // OLD
             for (var i = 0; i < species_list.length; i++) {
                 var info = species_list[i];
                 this.species_by_id[info.id] = info;

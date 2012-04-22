@@ -19,8 +19,6 @@ define([
         content: []
     });
 
-    App3.filter_controller = FilterController.create();
-
     App3.TaxaView = Ember.View.extend({
         show_listBinding: 'App3.taxa.show_list',
         taxa_countBinding: 'App3.taxa.len',
