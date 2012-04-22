@@ -33,12 +33,16 @@ define([
         }
     });
 
-    // Start fetching resources.
+    // Fetch resources and do things with them.
 
     var async_key_vector = resources.key_vector('simple');
     var async_pile_taxa = resources.pile_species(pile_slug);
 
-    async_pile_taxa.done(function(taxadata) {
+    $.when(async_key_vector, async_pile_taxa).done(function(kv, taxadata) {
+        var simple_key_taxa = kv[0].species;
+        var taxadata = _.filter(taxadata, function(taxon) {
+            return _.indexOf(simple_key_taxa, taxon.id) != -1;
+        });
         App3.filter_controller = FilterController.create({taxadata: taxadata});
     });
 
