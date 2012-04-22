@@ -2,8 +2,11 @@ define([
     'args',
     'simplekey/App3',
     'simplekey/Filter',
-    'simplekey/FilterController'
-], function(args, App3, _Filter, _FilterController) {
+    'simplekey/FilterController',
+    'simplekey/resources'
+], function(args, App3, _Filter, _FilterController, resources) {
+
+    var pile_slug = args.pile_slug;
 
     // Dojo code needs globals, so we create some.
     global_speciessectionhelper = null;
@@ -29,6 +32,17 @@ define([
                 global_speciessectionhelper.toggle_view(event);
         }
     });
+
+    // Start fetching resources.
+
+    var async_key_vector = resources.key_vector('simple');
+    var async_pile_taxa = resources.pile_species(pile_slug);
+
+    async_pile_taxa.done(function(taxadata) {
+        App3.filter_controller = FilterController.create({taxadata: taxadata});
+    });
+
+    //
 
     require([
         'simplekey/results_overlay',
