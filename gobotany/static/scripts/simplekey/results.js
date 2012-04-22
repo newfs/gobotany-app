@@ -30,17 +30,6 @@ define([
         }
     });
 
-    App3.FilterView = Ember.View.extend({
-        items: function() {
-            return _.map(App3.filter_controller.filters, function(f) {
-                return {
-                    filter: f,
-                    is_normal: (f.slug !== 'family' && f.slug !== 'genus')
-                };
-            });
-        }.property('App3.filter_controller.filters')
-    });
-
     require([
         'simplekey/results_overlay',
         'simplekey/results_photo_menu'
