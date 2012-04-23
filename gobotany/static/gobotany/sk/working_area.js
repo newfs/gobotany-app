@@ -319,7 +319,7 @@ dojo.declare('gobotany.sk.working_area.Slider', [
         var num_values = filter.max - filter.min + 1;
         var startvalue = Math.ceil(num_values / 2);
         if (filter.selected_value !== null)
-            startvalue = filter.selected_value;
+            startvalue = filter.get('value');
 
         var values_q = dojo.query('div.working-area .values');
         values_q.addClass('multiple').removeClass('numeric').
@@ -355,7 +355,7 @@ dojo.declare('gobotany.sk.working_area.Slider', [
            value or the value that was previous selected */
         var apply_button = dojo.query('.apply-btn', this.div);
         var slider_value = this._current_value();
-        var filter_value = this.filter.selected_value;
+        var filter_value = this.filter.get('value');
         // Allow type coersion in this comparison, since we're
         // comparing text from the filter to a numerical slider value
         if (slider_value == filter_value)
@@ -415,7 +415,7 @@ dojo.declare('gobotany.sk.working_area.Length', [
 
         this._set_unit(this.filter.display_units || 'mm');
         this_unit = this.unit;  // for the use of our inner functions
-        var value = this.filter.selected_value;
+        var value = this.filter.get('value');
         if (value === null)
             value = '';
         else
@@ -492,11 +492,11 @@ dojo.declare('gobotany.sk.working_area.Length', [
 
     _measure_changed: function() {
         var mm = this._current_value();
-        var vector = this.filter.species_matching(mm);
+        var vector = this.filter.taxa_matching(mm);
         vector = _.intersect(vector, this.species_vector);
         var div = dojo.query('.instructions', this.div);
         var apply_button = dojo.query('.apply-btn', this.div);
-        if (parseFloat(this.filter.selected_value) === mm) {
+        if (parseFloat(this.filter.get('value')) === mm) {
             instructions = 'Change the value to narrow your selection to a' +
                 ' new set of matching species.';
             apply_button.addClass('disabled');
@@ -535,8 +535,7 @@ dojo.declare('gobotany.sk.working_area.Length', [
         // adjust our statement about the number of species matched by
         // the value in our input field.
 
-        var species_vector = this.filter_manager.compute_query({
-            without: this.filter});
+        var species_vector = App3.filter_controller.compute(this.filter);
         this.species_vector = species_vector;
         this.permitted_ranges = this.filter.allowed_ranges(species_vector);
         this._redraw_permitted_ranges();
