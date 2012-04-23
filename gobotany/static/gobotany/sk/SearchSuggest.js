@@ -2,14 +2,19 @@
 /*global dojo, dojox, window, console, setTimeout, unescape */
 
 // Configure this module here until we finish the migration
-define({
-    baseUrl: '/static/js/',
-    packages: [
-        { name: 'dojo', location: 'lib/dojo' },
-        { name: 'dojox', location: 'lib/dojox' },
-    ]},
-    ['dojo/_base/declare', 'dojox/data/JsonRestStore'], 
-    function(declare, JsonRestStore) {
+define(['dojo/_base/declare', 
+        'dojox/data/JsonRestStore', 
+        'dojo/query', 
+        'dojo/on', 
+        'dojo/_base/lang', 
+        'dojo/keys',
+        'dojo/dom', 
+        'dojo/dom-class',
+        'dojo/dom-geom',
+        'dojo/dom-construct',
+        'dojo/dom-prop'], 
+    function(declare, JsonRestStore, query, on, lang, keys,
+        dom, domClass, domGeom, domProp) {
         return declare('gobotany.sk.SearchSuggest', null {
             constants: { TIMEOUT_INTERVAL_MS: 200 },
             stored_search_box_value: '',
@@ -28,17 +33,17 @@ define({
                     this.stored_search_box_value = initial_search_box_value;
                 }
 
-                this.search_box = dojo.query('#search-suggest input')[0];
+                this.search_box = query('#search-suggest input')[0];
                 if (this.search_box === undefined) {
                     console.error('SearchSuggest.js: Search box not found.');
                 }
 
-                this.menu = dojo.query('#search-suggest .menu')[0];
+                this.menu = query('#search-suggest .menu')[0];
                 if (this.menu === undefined) {
                     console.error('SearchSuggest.js: Menu not found.');
                 }
 
-                this.menu_list = dojo.query('#search-suggest .menu ul')[0];
+                this.menu_list = query('#search-suggest .menu ul')[0];
                 if (this.menu_list === undefined) {
                     console.error('SearchSuggest.js: Menu list not found.');
                 }
@@ -50,22 +55,22 @@ define({
                 this.set_timer();
 
                 // Set up keyboard event handlers.
-                dojo.connect(this.search_box, 'onkeypress',
-                    dojo.hitch(this, this.handle_keys));
+                on(this.search_box, 'keypress',
+                    lang.hitch(this, this.handle_keys));
 
                 // Adjust the horizontal position of the menu when the browser window
                 // is resized.
-                dojo.connect(window, 'onresize',
-                    dojo.hitch(this, this.set_horizontal_position));
+                on(window, 'onresize',
+                    lang.hitch(this, this.set_horizontal_position));
             },
 
             get_highlighted_menu_item_index: function() {
                 var found = false;
-                var menu_items = dojo.query('li', this.menu);
+                var menu_items = query('li', this.menu);
                 var item_index = -1;
                 var i = 0;
                 while ((found === false) && (i < menu_items.length)) {
-                    if (dojo.hasClass(menu_items[i], 'highlighted')) {
+                    if (domClass.hasClass(menu_items[i], 'highlighted')) {
                         found = true;
                         item_index = i;
                     }
@@ -85,7 +90,7 @@ define({
             highlight_menu_item: function(item_index) {
                 var HIGHLIGHT_CLASS = 'highlighted';
 
-                var menu_item = dojo.query('li', this.menu)[item_index];
+                var menu_item = query('li', this.menu)[item_index];
 
                 if (menu_item !== undefined) {
                     // First turn off any already-highlighted item.
@@ -93,12 +98,12 @@ define({
                         this.get_highlighted_menu_item_index();
                     if (highlighted_item_index >= 0) {
                         var highlighted_item =
-                            dojo.query('li', this.menu)[highlighted_item_index];
-                        dojo.removeClass(highlighted_item, HIGHLIGHT_CLASS);
+                            query('li', this.menu)[highlighted_item_index];
+                        domClass.removeClass(highlighted_item, HIGHLIGHT_CLASS);
                     }
 
                     // Highlight the new item.
-                    dojo.addClass(menu_item, HIGHLIGHT_CLASS);
+                    domClass.addClass(menu_item, HIGHLIGHT_CLASS);
 
                     // Put the menu item text in the search box, but
                     // first set the stored value so this won't fire a
@@ -116,7 +121,7 @@ define({
             highlight_next_menu_item: function() {
                 var highlighted_item_index = this.get_highlighted_menu_item_index();
                 var next_item_index = highlighted_item_index + 1;
-                var num_menu_items = dojo.query('li', this.menu).length;
+                var num_menu_items = query('li', this.menu).length;
                 if (next_item_index >= num_menu_items) {
                     next_item_index = 0;
                 }
@@ -126,7 +131,7 @@ define({
             highlight_previous_menu_item: function() {
                 var highlighted_item_index = this.get_highlighted_menu_item_index();
                 var previous_item_index = highlighted_item_index - 1;
-                var num_menu_items = dojo.query('li', this.menu).length;
+                var num_menu_items = query('li', this.menu).length;
                 if (previous_item_index < 0) {
                     previous_item_index = num_menu_items - 1;
                 }
@@ -135,14 +140,14 @@ define({
 
             handle_keys: function(e) {
                 switch (e.charOrCode) {
-                    case dojo.keys.DOWN_ARROW:
+                    case keys.DOWN_ARROW:
                         this.highlight_next_menu_item();
                         break;
-                    case dojo.keys.UP_ARROW:
+                    case keys.UP_ARROW:
                         this.highlight_previous_menu_item();
                         break;
-                    case dojo.keys.TAB:
-                    case dojo.keys.ESCAPE:
+                    case keys.TAB:
+                    case keys.ESCAPE:
                         this.show_menu(false);
                         break;
                 }
@@ -152,7 +157,7 @@ define({
                 // Set the timer that calls the change-monitoring function. This must
                 // be called again every time the function runs in order for it to
                 // repeat indefinitely.
-                setTimeout(dojo.hitch(this, this.check_for_change),
+                setTimeout(lang.hitch(this, this.check_for_change),
                     this.constants.TIMEOUT_INTERVAL_MS);
             },
 
@@ -181,17 +186,17 @@ define({
             set_horizontal_position: function() {
                 // Adjust the menu's horizontal position so it lines up with the
                 // search box regardless of window width.
-                var box_position = dojo.position(this.search_box, true);
+                var box_position = domGeom.position(this.search_box, true);
                 this.menu.style.left = (box_position.x - 3) + 'px';
             },
 
             show_menu: function(should_show) {
                 var CLASS_NAME = 'hidden';
                 if (should_show) {
-                    dojo.removeClass(this.menu, CLASS_NAME);
+                    domClass.removeClass(this.menu, CLASS_NAME);
                 }
                 else {
-                    dojo.addClass(this.menu, CLASS_NAME);
+                    domClass.addClass(this.menu, CLASS_NAME);
                 }
                 this.set_horizontal_position();
             },
@@ -204,7 +209,7 @@ define({
             },
 
             display_suggestions: function(suggestions, search_query) {
-                dojo.empty(this.menu_list);
+                domConstruct.empty(this.menu_list);
 
                 if (suggestions.length > 0) {
                     this.show_menu(true);
@@ -213,12 +218,12 @@ define({
                         var suggestion = suggestions[i];
                         var url = SEARCH_URL + '?q=' + suggestion.toLowerCase();
                         var label = this.format_suggestion(suggestion, search_query);
-                        var item = dojo.create('li');
-                        dojo.create('a', { href: url, innerHTML: label },
+                        var item = domConstruct.create('li');
+                        domConstruct.create('a', { href: url, innerHTML: label },
                             item);
-                        dojo.connect(item, 'onclick',
-                            dojo.hitch(this, this.select_suggestion, item));
-                        dojo.place(item, this.menu_list);
+                        on(item, 'onclick',
+                            lang.hitch(this, this.select_suggestion, item));
+                        domConstruct.place(item, this.menu_list);
                     }
                 }
                 else {
@@ -265,9 +270,9 @@ define({
 
             select_suggestion: function(list_item) {
                 // Go to search results for the item selected.
-                var link = dojo.query('a', list_item)[0];
+                var link = query('a', list_item)[0];
                 if (link !== undefined) {
-                    var href = dojo.attr(link, 'href');
+                    var href = domProp.get(link, 'href');
                     if (href !== undefined) {
                         var search_string =
                             unescape(href.substring(href.indexOf('=') + 1));
