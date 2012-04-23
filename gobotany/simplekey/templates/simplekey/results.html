@@ -133,11 +133,19 @@
                     <div class="already-know">
                         <h6>Already know the family or genus?</h6>
                         <label>Family:</label>
-                        <select id="families"></select>
-                        <button id="family_clear">Clear</button>
+                        {% handlebars %}
+                          {{view Ember.Select viewName="select"
+                            contentBinding="App3.family_choices"
+                            selectionBinding="App3.family_filter.value"}}
+                          <button id="family_clear">Clear</button>
+                        {% endhandlebars %}
                         <label>Genus:</label>
-                        <select id="genera"></select>
-                        <button id="genus_clear">Clear<button>
+                        {% handlebars %}
+                          {{view Ember.Select viewName="select"
+                            contentBinding="App3.genus_choices"
+                            selectionBinding="App3.genus_filter.value"}}
+                          <button id="genus_clear">Clear<button>
+                        {% endhandlebars %}
                     </div>
                 </div>
         

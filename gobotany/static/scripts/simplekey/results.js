@@ -43,7 +43,43 @@ define([
         var taxadata = _.filter(taxadata, function(taxon) {
             return _.indexOf(simple_key_taxa, taxon.id) != -1;
         });
-        App3.filter_controller = FilterController.create({taxadata: taxadata});
+        var fc = FilterController.create({taxadata: taxadata});
+        App3.set('taxadata', taxadata);  // TODO: put this somewhere else?
+        App3.set('filter_controller', fc);
+        App3.set('family_filter', fc.filtermap.family);
+        App3.set('genus_filter', fc.filtermap.genus);
+    });
+
+    /* The Family and Genus filters are Ember-powered <select> elements
+       that the following logic keeps updated at all times with the set
+       of legal family and genus values. */
+
+    var choices_that_leave_more_than_zero_taxa = function(filter) {
+        var other_taxa = App3.filter_controller.compute(filter);
+        var keepers = _.filter(filter.values, function(value) {
+            return _.intersect(value.taxa, other_taxa).length;
+        });
+        var choices = _.pluck(keepers, 'choice');
+        choices.sort();
+        choices.splice(0, 0, '');  // to "not select" a family or genus
+        return choices;
+    };
+
+    App3.reopen({
+        family_choices: function() {
+            return choices_that_leave_more_than_zero_taxa(App3.family_filter);
+        }.property('filter_controller.@each.value'),
+
+        genus_choices: function() {
+            return choices_that_leave_more_than_zero_taxa(App3.genus_filter);
+        }.property('filter_controller.@each.value')
+    });
+
+    $('#family_clear').live('click', function(event) {
+        App3.family_filter.set('value', '');
+    });
+    $('#genus_clear').live('click', function(event) {
+        App3.genus_filter.set('value', '');
     });
 
     //
@@ -63,6 +99,23 @@ define([
             'order!/static/js/layers/nls/sk_en-us.js',
             'order!/static/js/layers/sk.js'
         ], function() {
+
+            /* Glue: tell Dojo when the set of selected species
+               changes. */
+
+            App3.reopen({
+                tell_dojo: function() {
+                    var taxa = App3.filter_controller.taxa;
+                    var t = _.filter(App3.taxadata, function(item) {
+                        return _.indexOf(taxa, item.id) != -1;
+                    });
+                    t.sort(function(a, b) {
+                        return a.scientific_name < b.scientific_name ? -1 : 1;
+                    });
+                    dojo.publish('/filters/query-result', [{species_list: t}]);
+                }.observes('filter_controller.taxa')
+            });
+
             require([
                 'order!/static/gobotany/filters.js',
                 'order!/static/gobotany/utils.js',

@@ -42,8 +42,8 @@ define([
         this.set('valueless_taxa', _.difference(args.pile_taxa, alltaxa));
     },
 
-    /* Return the vector of species IDs for species that match a given
-     * value for this character. */
+    /* Return the vector of taxa IDs for taxa that match a given value
+       for this character. */
 
     taxa_matching: function(value) {
         if (arguments.length == 0)

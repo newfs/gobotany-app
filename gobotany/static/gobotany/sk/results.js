@@ -30,11 +30,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             pile_slug: this.pile_slug
         });
 
-        this.family_genus_selectors =
-            gobotany.sk.results.FamilyGenusSelectors({
-                filter_manager: this.filter_manager
-            });
-
         this.species_section =
             new gobotany.sk.SpeciesSectionHelper(this);
 
@@ -129,8 +124,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     // received and processed by the filter manager.
     finish_initialization: function(filter) {
 
-        this.family_genus_selectors.populate();
-
         // If there's a URL hash, make a call to set up filter values from it
         // again now that all the filters and values have finally loaded; this
         // time omit the onComplete callback.
@@ -144,9 +137,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         
         // Re-initialize the scroll pane now that its contents have changed.
         this.filter_section.scroll_pane_api.reinitialise();
-        
-        this.filter_section.update_filter_display('family');
-        this.filter_section.update_filter_display('genus');
 
         dojo.query('#sidebar .loading').addClass('hidden');
 
@@ -226,18 +216,23 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         }
 
         // Handle family or genus filter values, if applicable.
-        if (hash_object.family) {
-            this.filter_manager.set_selected_value('family',
-                hash_object.family);
-            dojo.publish('/sk/filter/change',
-                [this.family_genus_selectors.family_filter]);
-        }
-        if (hash_object.genus) {
-            this.filter_manager.set_selected_value('genus',
-                hash_object.genus);
-            dojo.publish('/sk/filter/change',
-                [this.family_genus_selectors.genus_filter]);
-        }
+
+        // TODO: rewrite this to poke the new App3.family_filter and the
+        // new App3.genus_filter, but only after they have had the
+        // chance to be populated.
+
+        // if (hash_object.family) {
+        //     this.filter_manager.set_selected_value('family',
+        //         hash_object.family);
+        //     dojo.publish('/sk/filter/change',
+        //         [this.family_genus_selectors.family_filter]);
+        // }
+        // if (hash_object.genus) {
+        //     this.filter_manager.set_selected_value('genus',
+        //         hash_object.genus);
+        //     dojo.publish('/sk/filter/change',
+        //         [this.family_genus_selectors.genus_filter]);
+        // }
 
         // Restore the filter that was last visible in the filter working
         // area, if applicable. It will be shown later when results load.
@@ -386,127 +381,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         if (image_types.indexOf(default_type) === -1)
             var default_type = image_types[0];
         App3.set('image_type', default_type);
-    }
-});
-
-
-/*
- * Events:
- *
- * '/sk/filter/change' is produced when the user interacts with one of
- * our select boxes to choose a new family or genus from the dropdown
- * (or, conversely, when they clear one of the select widgets).
- *
- * '/sk/filter/change' is consumed and induces us to re-compute the set
- * of valid family and genus values in our select boxes, based on the
- * species that remain.
- */
-dojo.declare('gobotany.sk.results.FamilyGenusSelectors', null, {
-    constructor: function(args) {
-        this.filter_manager = args.filter_manager;
-
-        this.family_store = new dojo.data.ItemFileWriteStore({
-            data: {label: 'name', identifier: 'name', items: []}
-        });
-        this.genus_store = new dojo.data.ItemFileWriteStore({
-            data: {label: 'name', identifier: 'name', items: []}
-        });
-        
-        var families = dojo.byId('families');
-        var genera = dojo.byId('genera');
-
-        dojo.connect(families, 'onchange', this, '_on_family_change');
-        dojo.connect(genera, 'onchange', this, '_on_genus_change');
-
-        // Wire up the "Clear" buttons for the family and genus.
-        var selectors = this;
-        dojo.connect(dojo.byId('family_clear'), 'onclick', function(event) {
-            dojo.stopEvent(event);
-            families.value = '';
-            selectors._on_family_change();
-        });
-        dojo.connect(dojo.byId('genus_clear'), 'onclick', function(event) {
-            dojo.stopEvent(event);
-            genera.value = '';
-            selectors._on_genus_change();
-        });
-
-
-        // Save objects that our callbacks will need.
-        this.families = families;
-        this.genera = genera;
-
-        this.family_filter = this.filter_manager.get_filter('family');
-        this.genus_filter = this.filter_manager.get_filter('genus');
-
-        // React when filters change anywhere on the page.
-        dojo.subscribe('/sk/filter/change', this, '_on_filter_change');
-    },
-
-    /* Initially populate the selectors. */
-    populate: function() {
-        this._rebuild_selector(this.family_store, this.family_filter);
-        this._rebuild_selector(this.genus_store, this.genus_filter);
-    },
-
-    /*
-     * A filter somewhere else on the page has changed value, so we need
-     * to rebuild the family and genus selectors to include only "safe"
-     * values that will not result in 0 search results.
-     */
-    _on_filter_change: function() {
-        this._rebuild_selector(this.family_store, this.family_filter);
-        this._rebuild_selector(this.genus_store, this.genus_filter);
-    },
-
-    _rebuild_selector: function(store, filter) {
-        // We cannot control the order of terms in the selector without
-        // deleting them all and starting over from the beginning.
-        store.fetch({onItem: dojo.hitch(store, 'deleteItem')});
-        store.save();
-        _.chain(this.filter_manager.compute_impact(filter))
-            .filter(function(item) {return item.taxa.length > 0})
-            .sortBy(function(item) {return item.value.choice})
-            .map(function(item) {store.newItem({name: item.value.choice})});
-        store.save();
-
-        var menu;
-        if (filter.short_name === 'family') {
-            menu = this.families;
-        }
-        else if (filter.short_name === 'genus') {
-            menu = this.genera;
-        }
-        var selected_value = menu.value;
-        // Clear the menu.
-        menu.options.length = 0;
-
-        // Add the first item as a blank, for when no value is selected.
-        menu[0] = new Option('', '');
-
-        // Add the remaining items from the values store.
-        var values = store._arrayOfAllItems;
-        for (var i = 0; i < values.length; i++) {
-            if (values[i] !== null) {
-                var name = values[i].name[0];
-                var is_selected = (name === selected_value) ? true : false;
-                menu[menu.options.length] = new Option(name, name,
-                    is_selected, is_selected);
-            }
-        }
-    },
-
-    /*
-     * One of our own select boxes has changed value, so we broadcast
-     * that fact to all of the other parts of the page.
-     */
-    _on_family_change: function(event) {
-        this.filter_manager.set_selected_value('family', this.families.value);
-        dojo.publish('/sk/filter/change', [this.family_filter]);
-    },
-    _on_genus_change: function(event) {
-        this.filter_manager.set_selected_value('genus', this.genera.value);
-        dojo.publish('/sk/filter/change', [this.genus_filter]);
     }
 });
 
@@ -829,13 +703,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         char_name = filter.character_short_name;
 
         if (value !== undefined) {
-            if (char_name === 'family') {
-                dojo.byId('families').value = value;
-            }
-            else if (char_name === 'genus') {
-                dojo.byId('genera').value = value;
-            }
-            else {
                 if (value !== null) {
                     var display_value =
                         this._get_filter_display_value(filter);
@@ -844,7 +711,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     this.glossarizer.markup(q[0]);
                 }
                 this.show_or_hide_filter_clear(filter);
-            }
         }
     },
 
