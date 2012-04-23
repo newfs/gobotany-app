@@ -35,7 +35,7 @@ dojo.require('dijit.form.HorizontalSlider');
 gobotany.sk.working_area.select_working_area = function(filter) {
     if (filter.value_type == 'TEXT')
         return gobotany.sk.working_area.Choice;
-    else if (filter.is_length())
+    else if (filter.is_length)
         return gobotany.sk.working_area.Length;
     else
         return gobotany.sk.working_area.Slider;
@@ -55,8 +55,6 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
     constructor: function(args) {
         this.div = args.div;
         this.filter = args.filter;
-        this.filter_manager = args.filter_manager;
-        this.short_name = args.filter.short_name;
         this.glossarize = dojo.hitch(args.glossarizer, 'markup');
         this._draw_basics(args.y);
         this._draw_specifics();
@@ -100,16 +98,17 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
 
         // Show the question, hint and Apply button.
-        d.query('h4').html(f.question).forEach(this.glossarize);
+        d.query('h4').html(f.info.question).forEach(this.glossarize);
         d.query('h4').style({display: 'block'});
-        d.query('.hint').html(p(f.hint)).forEach(this.glossarize);
+        d.query('.hint').html(p(f.info.hint)).forEach(this.glossarize);
         d.query('.info').style({display: 'block'});
 
         // Display character drawing, if an image is available.
-        if (f.image_url) {
-            var image_id = this._get_image_id_from_path(f.image_url);
+        if (f.info.image_url) {
+            var image_id = this._get_image_id_from_path(f.info.image_url);
             var dld_html = '<img id="' + image_id +
-                '" src="' + f.image_url + '" alt="character illustration">';
+                '" src="' + f.info.image_url +
+                '" alt="character illustration">';
             d.query('.dld').html(dld_html).style({display: 'block'});
         } else {
             d.query('.dld').html('').style({display: 'none'});
@@ -241,13 +240,20 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
        how many species would remain if each of our possible filter
        values were applied. */
     _on_filter_change: function() {
+        var other_taxa = App3.filter_controller.compute(this.filter);
         var div_map = this.div_map;
-        _.map(this.filter_manager.compute_impact(this.filter), function(i) {
-            var div = div_map[i.value.choice];
+
+        _.map(this.filter.values, function(value) {
+
+            // How many taxa would be left if this value were chosen?
+            var num_taxa = _.intersect(value.taxa, other_taxa).length;
+
+            // Draw it accordingly.
+            var div = div_map[value.choice];
             var count_span_q = dojo.query('.count', div);
-            count_span_q.html('(' + i.taxa.length + ')');
+            count_span_q.html('(' + num_taxa + ')');
             var input_field_q = dojo.query('input', div);
-            if (i.taxa.length === 0) {
+            if (num_taxa === 0) {
                 $(div).addClass('disabled');
                 input_field_q.attr('disabled', 'disabled');
             } else {
@@ -272,12 +278,10 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
 
     _apply_filter_value: function() {
         var value = this._current_value();
-        if (value !== null && this.filter.species_matching(value).length == 0)
-            // Refuse to let the number of matching species be driven to zero.
+        if (value !== null && this.filter.taxa_matching(value).length == 0)
+            // Refuse to let the number of matching taxa be driven to zero.
             return;
-        this.filter_manager.set_selected_value(
-            this.filter.character_short_name, value);
-        dojo.publish('/sk/filter/change', [this.filter]);
+        this.filter.set('value', value);
     }
 });
 

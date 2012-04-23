@@ -133,7 +133,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         }
 
         console.log('About to list filters, then run query');
-        this.filter_section.display_filters(this._loaded_filters);
+        //this.filter_section.display_filters(this._loaded_filters);
         
         // Re-initialize the scroll pane now that its contents have changed.
         this.filter_section.scroll_pane_api.reinitialise();
@@ -553,7 +553,7 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                     }
 
                     // Add the new filters to the filters list.
-                    var added = this.display_filters(new_filters, 0);
+                    //var added = this.display_filters(new_filters, 0);
                     sidebar_set_height();
                     gobotany.utils.notify('More questions added');
                     gobotany.utils.animate_changed(added);
@@ -596,55 +596,11 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         return value + '';
     },
 
-    display_filter: function(filter, pos) {
-        if (filter.value_type === null)
-            return null;
-
-        var display_value = this._get_filter_display_value(filter);
-        
-        var filter_ul = dojo.query('#sidebar ul.option-list')[0];
-        var filter_li = dojo.create('li', {
-            id: filter.character_short_name
-        }, filter_ul, pos);
-        var labelsLink = dojo.create('a', {
-            href: '#', 'class': 'option',
-            innerHTML: '<span class="name">' + filter.friendly_name +
-                '?</span> <span class="value">' + display_value + '</span>'
-        }, filter_li);
-        var clearLink = dojo.create('a', {
-            'class': 'clear-filter', href: '#',
-            innerHTML: 'Clear'
-        }, filter_li);
-
-        this.glossarizer.markup(labelsLink);
-
-        // Event handling
-
-        dojo.connect(clearLink, 'onclick', this, function(event) {
-            dojo.stopEvent(event);
-            this.clear_filter(filter);
-        });
-        dojo.connect(filter_li, 'onclick', this, function(event) {
-            dojo.stopEvent(event);
-            var $target = $(event.target);
-            // Because the click event may have happened on sub-elements
-            // of the list element, get the list element itself for
-            // consistent positioning.
-            $target = $target.closest('li');
-            var y = $target.offset().top - 15;
-            this.show_filter_working(filter, y);
-
-            // Set the just-selected filter as active at left.
-            dojo.query('.option-list li').removeClass('active');
-            dojo.addClass(filter_li, 'active');
-        });
-
-        if (typeof(pos) === 'number')
-            dojo.style(filter_li, {backgroundColor: '#c8b560'});
-
-        this.update_filter_display(filter);
-        return filter_li;
-    },
+//        var display_value = this._get_filter_display_value(filter);
+//        this.glossarizer.markup(labelsLink);
+//        this.clear_filter(filter);
+        // if (typeof(pos) === 'number')
+        //     dojo.style(filter_li, {backgroundColor: '#c8b560'});
 
     show_or_hide_filter_clear: function(filter) {
         // Show or hide the Clear link for a filter at left.
@@ -672,18 +628,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         // Re-initialize the scroll pane now that its contents have changed.
         this.scroll_pane_api.reinitialise();
-    },
-
-    display_filters: function(filters, pos) {
-        var added = dojo.NodeList();
-        var i;
-        for (i = 0; i < filters.length; i++) {
-            var f = this.display_filter(filters[i], pos);
-            added.push(f);
-            if (typeof(pos) === 'number')  // place at successive positions
-                pos++;
-        }
-        return added;
     },
 
     update_filter_display: function(obj) {
@@ -741,13 +685,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         for (var i = 0; i < filters.length; i++) {
             this.clear_filter(filters[i]);
         }
-    },
-
-    show_filter_working: function(filter, y) {
-        var t = this;
-        filter.load_values().done(function() {
-            t.show_filter_working_onload(filter, y);
-        });
     },
 
     /* A filter object has been returned from Ajax!  We can now set up

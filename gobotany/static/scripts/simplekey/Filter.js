@@ -11,11 +11,6 @@ define([
             (slug.indexOf('thickness') > -1) ||
             (slug.indexOf('diameter') > -1);
 
-        // this.set('value_type', args.value_type);
-        // this.set('friendly_name', args.friendly_name);
-        // this.set('hint', args.hint);
-        // this.set('question', args.question);
-        // this.set('image_url', args.image_url);
         this.set('is_length', is_length);
         this.set('value', null);
         this.set('values', null);

@@ -33,7 +33,8 @@ define([
         }
     });
 
-    // Fetch resources and do things with them.
+    /* The FilterController can be activated once we know the full list
+       of species that it will be filtering. */
 
     var async_key_vector = resources.key_vector('simple');
     var async_pile_taxa = resources.pile_species(pile_slug);
@@ -86,13 +87,55 @@ define([
         App3.genus_filter.set('value', '');
     });
 
-    /* Other filters appear along the left sidebar. */
+    /* Other filters appear along the left sidebar, mediated through
+       this convenient FilterView. */
 
     App3.FilterView = Ember.View.extend({
         show: function() {
             return this.filter.slug != 'family' && this.filter.slug != 'genus';
-        }.property('filter.slug')
+        }.property('filter.slug'),
+
+        work: function(event) {
+            var filter = this.filter;
+            var $target = $(event.target).closest('li');
+
+            $('.option-list li').removeClass('active');
+            $target.addClass('active');
+
+            var y = $target.offset().top - 15;
+            var async = resources.character_vector(this.filter.slug);
+            $.when(async_pile_taxa, async).done(function(pile_taxa, values) {
+                var ids = _.pluck(pile_taxa, 'id');
+                filter.install_values({pile_taxa: ids, values: values});
+                helper.filter_section.show_filter_working_onload(filter, y);
+            });
+        }
     });
+
+    /* Filters need to be loaded. */
+
+    // TODO: John, this is where the hash stuff goes back in, this time
+    // without being Dojo-powered!
+
+    var use_hash = false;
+    if (use_hash) {
+        resources.pile_characters(pile_slug).done(function(info) {
+            // John, do awesome stuff here. :)
+        });
+    } else {
+        resources.pile(pile_slug).done(function(pile_info) {
+            _.each(pile_info.default_filters, function(filter_info) {
+                App3.filter_controller.add(Filter.create({
+                    slug: filter_info.short_name,
+                    value_type: filter_info.value_type,
+                    info: filter_info
+                }));
+                // Go ahead and start an async fetch, to make things
+                // faster in case the user clicks on the filter.
+                resources.character_vector(filter_info.short_name);
+            });
+        });
+    }
 
     //
 
