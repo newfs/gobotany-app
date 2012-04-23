@@ -91,11 +91,25 @@ define([
        this convenient FilterView. */
 
     App3.FilterView = Ember.View.extend({
+        answered: function() {
+            // Return whether to assign the "answered" CSS class.
+            return !! this.filter.value;
+        }.property('filter.value'),
+
         show: function() {
             return this.filter.slug != 'family' && this.filter.slug != 'genus';
         }.property('filter.slug'),
 
+        clear: function(event) {
+            if (helper.filter_section.working_area)
+                helper.filter_section.working_area.dismiss();
+            this.filter.set('value', null);
+        },
+
         work: function(event) {
+            if ($(event.target).hasClass('clear-filter'))
+                return;
+
             var filter = this.filter;
             var $target = $(event.target).closest('li');
 

@@ -111,14 +111,18 @@
                       {{#each App3.filter_controller}}
                         {{#view App3.FilterView filterBinding="this"}}
                           {{#if show}}
-                            <li {{action "work"}}>
+                            <li {{action "work"}}
+                                {{bindAttr class="answered"}}>
                               <a class="option">
                                 <span class="name"
                                       >{{filter.info.friendly_name}}?</span>
                                 <span class="value"
                                       >{{filter.value}}</span>
                               </a>
-                              <a href="#" class="clear-filter">Clear</a>
+                              {{#if filter.value}}
+                                <a class="clear-filter" {{action "clear"}}
+                                   >Clear</a>
+                              {{/if}}
                             </li>
                           {{/if}}
                         {{/view}}

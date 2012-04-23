@@ -598,7 +598,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
 //        var display_value = this._get_filter_display_value(filter);
 //        this.glossarizer.markup(labelsLink);
-//        this.clear_filter(filter);
         // if (typeof(pos) === 'number')
         //     dojo.style(filter_li, {backgroundColor: '#c8b560'});
 
@@ -658,33 +657,11 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         }
     },
 
-    clear_filter: function(filter) {
-        if (filter.selected_value) {
-            this.results_helper.filter_manager.set_selected_value(
-                filter.short_name, undefined);
-        }
-
-        if (this.working_area !== null) {
-            if (this.working_area.filter === filter) {
-                this.working_area.clear();
-            }
-            this.working_area.dismiss();
-        }
-
-        dojo.publish('/sk/filter/change', [filter]);
-
-        var display_value = this._get_filter_display_value(filter); 
-        dojo.query('li#' + filter.character_short_name + ' span.value'
-                  ).html(display_value);
-
-        this.show_or_hide_filter_clear(filter);
-    },
-
     clear_all_filter_choices: function() {
-        var filters = this.results_helper._loaded_filters;
-        for (var i = 0; i < filters.length; i++) {
-            this.clear_filter(filters[i]);
-        }
+        _.each(App3.filter_controller.get('content'), function(filter) {
+            console.log(filter.slug);
+            filter.set('value', null);
+        });
     },
 
     /* A filter object has been returned from Ajax!  We can now set up

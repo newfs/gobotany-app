@@ -969,7 +969,7 @@ ul.option-list li.answered.active {
     font-weight: bold;
 }
 .option-list a.clear-filter {
-    display: none;
+    display: block;
     margin-top: 4px;
     width: 45px;
 }
