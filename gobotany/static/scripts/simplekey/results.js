@@ -43,11 +43,15 @@ define([
         var taxadata = _.filter(taxadata, function(taxon) {
             return _.indexOf(simple_key_taxa, taxon.id) != -1;
         });
-        var fc = FilterController.create({taxadata: taxadata});
         App3.set('taxadata', taxadata);  // TODO: put this somewhere else?
+
+        var fc = FilterController.create({taxadata: taxadata});
         App3.set('filter_controller', fc);
         App3.set('family_filter', fc.filtermap.family);
         App3.set('genus_filter', fc.filtermap.genus);
+
+        // Hide the "Loading..." spinner.
+        $('.loading').hide();
     });
 
     /* The Family and Genus filters are Ember-powered <select> elements
@@ -80,6 +84,14 @@ define([
     });
     $('#genus_clear').live('click', function(event) {
         App3.genus_filter.set('value', '');
+    });
+
+    /* Other filters appear along the left sidebar. */
+
+    App3.FilterView = Ember.View.extend({
+        show: function() {
+            return this.filter.slug != 'family' && this.filter.slug != 'genus';
+        }.property('filter.slug')
     });
 
     //

@@ -109,13 +109,17 @@
                   <ul class="option-list">
                     {% handlebars %}
                       {{#each App3.filter_controller}}
-                        <li {{bindAttr id="slug"}}>
-                          <a href="#" class="option">
-                            <span class="name">{{info.friendly_name}}?</span>
-                            <span class="value">{{value}}</span>
-                          </a>
-                          <a href="#" class="clear-filter">Clear</a>
-                        </li>
+                        {{#view App3.FilterView filterBinding="this"}}
+                          {{#if show}}
+                            <li {{bindAttr id="filter.slug"}}>
+                              <a href="#" class="option">
+                                <span class="name">{{filter.slug}}?</span>
+                                <span class="value">{{filter.value}}</span>
+                              </a>
+                              <a href="#" class="clear-filter">Clear</a>
+                            </li>
+                          {{/if}}
+                        {{/view}}
                       {{/each}}
                     {% endhandlebars %}
                   </ul>
