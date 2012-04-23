@@ -96,6 +96,27 @@ define([
             return !! this.filter.value;
         }.property('filter.value'),
 
+        display_value: function() {
+            var filter = this.filter;
+            var value = filter.value;
+
+            if (value === null)
+                return '';   // Do not display a "don't know" value
+
+            if (value === 'NA')
+                return 'does not apply';
+
+            if (filter.value_type === 'TEXT')
+                return filter.choicemap[value].friendly_text || value;
+
+            if (filter.is_length()) {
+                var units = filter.display_units || 'mm';
+                return gobotany.utils.pretty_length(units, value);
+            }
+
+            return value + '';
+        }.property('filter.value'),
+
         show: function() {
             return this.filter.slug != 'family' && this.filter.slug != 'genus';
         }.property('filter.slug'),
