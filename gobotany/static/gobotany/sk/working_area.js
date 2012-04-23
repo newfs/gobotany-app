@@ -51,7 +51,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
     div_map: null,  // maps choice value -> <input> element
     close_button_connection: null,  // connection from the close button to us
 
-    /* {div, filter, filter_manager, glossarizer, on_dismiss} */
+    /* {div, filter, glossarizer, on_dismiss} */
     constructor: function(args) {
         this.div = args.div;
         this.filter = args.filter;

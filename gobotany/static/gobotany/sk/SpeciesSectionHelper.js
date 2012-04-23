@@ -602,8 +602,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             // Signal the "Show:" menu to scrape our data to discover what
             // kinds of thumbnail images are available.
             dojo.publish('results_loaded',
-                [{filter_manager: this.results_helper.filter_manager,
-                  query_results: this.query_results}]);
+                [{query_results: this.query_results}]);
             this.lazy_load_images();
         }
     },
