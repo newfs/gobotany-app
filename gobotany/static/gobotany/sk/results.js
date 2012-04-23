@@ -467,11 +467,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
                 }}
             });
         });
-
-        // Wire up the Clear All button.
-        var clear_all_button = dojo.query('#sidebar a.clear-all-btn')[0];
-        dojo.connect(clear_all_button, 'onclick', this,
-            this.clear_all_filter_choices);
     },
 
     _setup_character_groups: function(character_groups) {
@@ -576,13 +571,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     //     dojo.style(filter_li, {backgroundColor: '#c8b560'});
     //this.scroll_pane_api.reinitialise();
     // gobotany.utils.animate_changed(dojo.query(q), {'end_color': '#ffd'});
-
-    clear_all_filter_choices: function() {
-        _.each(App3.filter_controller.get('content'), function(filter) {
-            console.log(filter.slug);
-            filter.set('value', null);
-        });
-    },
 
     /* A filter object has been returned from Ajax!  We can now set up
        the working area and save the new page state. */

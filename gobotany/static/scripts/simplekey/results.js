@@ -147,6 +147,14 @@ define([
         }
     });
 
+    /* All filters can be cleared with a single button click. */
+
+    $('#sidebar a.clear-all-btn').click(function() {
+        _.each(App3.filter_controller.get('content'), function(filter) {
+            filter.set('value', null);
+        });
+    });
+
     /* Filters need to be loaded. */
 
     // TODO: John, this is where the hash stuff goes back in, this time
