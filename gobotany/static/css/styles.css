@@ -683,6 +683,9 @@ p.vid {
     margin-bottom: 7px;
     text-align: left;
 }
+#plant-id-3 .show div {
+    display: inline;
+}
 #plant-id-3 .show label {
     color: #000;
     font-size: 15px;
