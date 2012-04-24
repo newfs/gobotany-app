@@ -17,6 +17,13 @@ module.exports = {
             var results_page_state = ResultsPageState.create(
                                      {hash: sample_hash});
             results_page_state.hash.should.equal(sample_hash);
+        },
+
+        'can detect filters parameter in hash': function () {
+            var results_page_state = ResultsPageState.create(
+                                     {hash: sample_hash});
+            var has_filters = results_page_state.has_filters();
+            has_filters.should.equal(true);
         }
 
     }

@@ -5,12 +5,16 @@
 
 define([
     'ember'
-], function() {return Ember.Object.extend({
+], function () {return Ember.Object.extend({
 
-    init: function() {
+    init: function () {
         var hash = this.hash;
 
         this.set('hash', hash);
+    },
+
+    has_filters: function () {
+        return (this.hash.indexOf('_filters=') > -1);
     }
 
 })});
