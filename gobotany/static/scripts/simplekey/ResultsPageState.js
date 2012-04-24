@@ -22,10 +22,10 @@ define([
     },
 
     filters_from_hash: function () {
-        var filters = [];
-        var filters_parameter;
-        var i;
-        var parameters = this.hash.split('&');
+        var filters = [],
+            filters_parameter,
+            i,
+            parameters = this.hash.split('&');
 
         for (i = 0; i < parameters.length; i += 1) {
             if (parameters[i].indexOf('_filters=') > -1) {
@@ -58,6 +58,21 @@ define([
         }
 
         return filter_values;
+    },
+
+    visible_filter_from_hash: function () {
+        var i,
+            parameters = this.hash.split('&'),
+            visible_filter;
+
+        for (i = 0; i < parameters.length; i += 1) {
+            if (parameters[i].indexOf('_visible=') > -1) {
+                visible_filter = parameters[i].split('=')[1];
+                break;
+            }
+        }
+
+        return visible_filter;
     }
 
 })});
