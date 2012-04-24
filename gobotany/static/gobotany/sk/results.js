@@ -584,9 +584,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         var C = gobotany.sk.working_area.select_working_area(filter);
 
         this.working_area = C({
-            div: dojo.query('div.working-area')[0],
+            div: $('div.working-area')[0],
             filter: filter,
-            filter_manager: this.results_helper.filter_manager,
             y: y,
             glossarizer: this.glossarizer,
             on_dismiss: dojo.hitch(this, 'on_working_area_dismiss')
@@ -608,6 +607,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.results_helper.save_filter_state();
 
         // Clear selected state in the questions list at left.
-        dojo.query('.option-list li').removeClass('active');
+        $('.option-list li').removeClass('active');
     }
 });
