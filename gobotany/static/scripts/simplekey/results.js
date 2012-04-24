@@ -118,9 +118,6 @@ define([
         }.property('filter.value'),
 
         display_value: function() {
-            if (scroll_pane !== null)
-                scroll_pane.data('jsp').reinitialise();
-
             var filter = this.get('filter');
             var value = filter.get('value');
 
@@ -186,16 +183,18 @@ define([
 
     var scroll_pane = null;
     require(['lib/jquery.jscrollpane'], function() {
-        scroll_pane = $('.scroll').bind(
-            'jsp-scroll-y',
-            function(event) {
+        scroll_pane = $('.scroll')
+            .bind('jsp-scroll-y', function(event) {
                 if (helper.filter_section.working_area)
                     helper.filter_section.working_area.dismiss();
-            }
-        ).jScrollPane({
-            verticalGutter: 0,
-            showArrows: true
-        });
+            })
+            .jScrollPane({
+                autoReinitialise: true,
+                maintainPosition: true,
+                stickToBottom: true,
+                verticalGutter: 0,
+                showArrows: true
+            });
     });
 
     /* All filters can be cleared with a single button click. */
@@ -295,8 +294,6 @@ define([
             }));
         });
         gobotany.utils.notify('More questions added');
-        scroll_pane.data('jsp').reinitialise();
-        scroll_pane.data('jsp').scrollTo(0, 0);
         helper.save_filter_state();
     };
 
