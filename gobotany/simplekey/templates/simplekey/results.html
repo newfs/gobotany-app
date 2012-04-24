@@ -106,29 +106,7 @@
                 </div>
                 <div class="scroll">
                   <div class="loading">Loading questions…</div>
-                  <ul class="option-list">
-                    {% handlebars %}
-                      {{#each App3.filter_controller}}
-                        {{#view App3.FilterView filterBinding="this"}}
-                          {{#if show}}
-                            <li {{action "work"}}
-                                {{bindAttr class="answered"}}>
-                              <a class="option">
-                                <span class="name"
-                                      >{{filter.info.friendly_name}}?</span>
-                                <span class="value"
-                                      >{{display_value}}</span>
-                              </a>
-                              {{#if filter.value}}
-                                <a class="clear-filter" {{action "clear"}}
-                                   >Clear</a>
-                              {{/if}}
-                            </li>
-                          {{/if}}
-                        {{/view}}
-                      {{/each}}
-                    {% endhandlebars %}
-                  </ul>
+                  <div id="questions-go-here"></div>
                 </div>
 
                 <div class="section">
@@ -193,3 +171,15 @@
         </div>
     </div>
 {% endblock %}
+
+{% block ember_templates %}{% verbatim %}
+<script type="text/x-handlebars" data-template-name="filter-view">
+  <a class="option">
+    <span class="name">{{filter.info.friendly_name}}?</span>
+    <span class="value">{{display_value}}</span>
+  </a>
+  {{#if filter.value}}
+  <a class="clear-filter" {{action "clear"}}>Clear</a>
+  {{/if}}
+</script>
+{% endverbatim %}{% endblock %}

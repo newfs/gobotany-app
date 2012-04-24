@@ -70,6 +70,7 @@
 		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		  })();
 		</script>
+        {% block ember_templates %}{% endblock %}
     </head>
 
     <body {% block body_attributes %}{% endblock %}>

@@ -9,6 +9,11 @@ define([
 
     var pile_slug = args.pile_slug;
     var helper;  // legacy object; gets set way down at the bottom of this file
+    var document_is_ready = $.Deferred();
+
+    $(document).ready(function() {
+        document_is_ready.resolve();
+    });
 
     // Dojo code needs globals, so we create some.
     global_speciessectionhelper = null;
@@ -40,6 +45,7 @@ define([
 
     var async_key_vector = resources.key_vector('simple');
     var async_pile_taxa = resources.pile_species(pile_slug);
+    var filter_controller_is_built = $.Deferred();
 
     $.when(async_key_vector, async_pile_taxa).done(function(kv, taxadata) {
         var simple_key_taxa = kv[0].species;
@@ -48,10 +54,19 @@ define([
         });
         App3.set('taxadata', taxadata);  // TODO: put this somewhere else?
 
-        var fc = FilterController.create({taxadata: taxadata});
+        var fc = FilterController.create({
+            taxadata: taxadata,
+            plain_filters: [],
+            add: function(filter) {
+                this._super(filter);
+                if (filter.slug != 'family' && filter.slug != 'genus')
+                    this.plain_filters.addObject(filter);
+            }
+        });
         App3.set('filter_controller', fc);
         App3.set('family_filter', fc.filtermap.family);
         App3.set('genus_filter', fc.filtermap.genus);
+        filter_controller_is_built.resolve();
 
         // Hide the "Loading..." spinner.
         $('.loading').hide();
@@ -93,14 +108,18 @@ define([
        this convenient FilterView. */
 
     App3.FilterView = Ember.View.extend({
+        templateName: 'filter-view',
+        filterBinding: 'content',  // 'this.filter' makes more readable code
+        classNameBindings: ['answered'],
+
         answered: function() {
             // Return whether to assign the "answered" CSS class.
             return !! this.filter.value;
         }.property('filter.value'),
 
         display_value: function() {
-            var filter = this.filter;
-            var value = filter.value;
+            var filter = this.get('filter');
+            var value = filter.get('value');
 
             if (value === null)
                 return '';   // Do not display a "don't know" value
@@ -119,24 +138,20 @@ define([
             return value + '';
         }.property('filter.value'),
 
-        show: function() {
-            return this.filter.slug != 'family' && this.filter.slug != 'genus';
-        }.property('filter.slug'),
-
         clear: function(event) {
             if (helper.filter_section.working_area)
                 helper.filter_section.working_area.dismiss();
             this.filter.set('value', null);
         },
 
-        work: function(event) {
+        click: function(event) {
             if ($(event.target).hasClass('clear-filter'))
                 return;
 
-            var filter = this.filter;
+            var filter = this.get('filter');
             var $target = $(event.target).closest('li');
 
-            $('.option-list li').removeClass('active');
+            $('.option-list li .active').removeClass('active');
             $target.addClass('active');
 
             var y = $target.offset().top - 15;
@@ -147,6 +162,16 @@ define([
                 helper.filter_section.show_filter_working_onload(filter, y);
             });
         }
+    });
+
+    $.when(document_is_ready, filter_controller_is_built).done(function() {
+        App3.filters_view = Ember.CollectionView.create({
+            tagName: 'ul',
+            classNames: ['option-list'],
+            contentBinding: 'App3.filter_controller.plain_filters',
+            itemViewClass: App3.FilterView
+        });
+        App3.filters_view.appendTo('#questions-go-here');
     });
 
     /* All filters can be cleared with a single button click. */
