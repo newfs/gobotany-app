@@ -135,9 +135,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         console.log('About to list filters, then run query');
         //this.filter_section.display_filters(this._loaded_filters);
         
-        // Re-initialize the scroll pane now that its contents have changed.
-        this.filter_section.scroll_pane_api.reinitialise();
-
         dojo.query('#sidebar .loading').addClass('hidden');
 
         this.filter_manager.perform_query();
@@ -389,8 +386,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     ruler: null,
     simple_slider: null,
     slider_node: null,
-    scroll_pane: null,
-    scroll_pane_api: null,
 
     constructor: function(results_helper) {
         // summary:
@@ -406,24 +401,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         // This variable is for keeping track of which filter is currently
         // visible in the filter working area (if any).
         this.visible_filter_short_name = '';
-
-        // Set up the jQuery scrolling box for filters, first binding a
-        // function to dismiss the working area upon scrolling.
-        this.scroll_pane = $('.scroll')
-            .bind(
-                'jsp-scroll-y',
-                {that: this},
-                function(event) {
-                    if (event.data.that.working_area !== null) {
-                        event.data.that.working_area.dismiss();
-                    }
-                }
-            )
-            .jScrollPane({
-			    verticalGutter: 0,
-			    showArrows: true
-		    });
-        this.scroll_pane_api = this.scroll_pane.data('jsp');
     },
 
     _setup_character_groups: function(character_groups) {
@@ -444,7 +421,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     //        this.glossarizer.markup(labelsLink);
     // if (typeof(pos) === 'number')
     //     dojo.style(filter_li, {backgroundColor: '#c8b560'});
-    //this.scroll_pane_api.reinitialise();
     // gobotany.utils.animate_changed(dojo.query(q), {'end_color': '#ffd'});
 
     /* A filter object has been returned from Ajax!  We can now set up

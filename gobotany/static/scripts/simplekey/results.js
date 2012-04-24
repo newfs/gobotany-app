@@ -118,6 +118,9 @@ define([
         }.property('filter.value'),
 
         display_value: function() {
+            if (scroll_pane !== null)
+                scroll_pane.data('jsp').reinitialise();
+
             var filter = this.get('filter');
             var value = filter.get('value');
 
@@ -164,6 +167,10 @@ define([
         }
     });
 
+    /* The FilterView above is automatically instantiated and managed by
+       this CollectionView, which is careful to use the 'plain_filters'
+       attribute that omits the family and genus filters. */
+
     $.when(document_is_ready, filter_controller_is_built).done(function() {
         App3.filters_view = Ember.CollectionView.create({
             tagName: 'ul',
@@ -172,6 +179,23 @@ define([
             itemViewClass: App3.FilterView
         });
         App3.filters_view.appendTo('#questions-go-here');
+    });
+
+    /* Because filters would otherwise constantly change the height of
+       the sidebar, we give them their own scrollbar. */
+
+    var scroll_pane = null;
+    require(['lib/jquery.jscrollpane'], function() {
+        scroll_pane = $('.scroll').bind(
+            'jsp-scroll-y',
+            function(event) {
+                if (helper.filter_section.working_area)
+                    helper.filter_section.working_area.dismiss();
+            }
+        ).jScrollPane({
+            verticalGutter: 0,
+            showArrows: true
+        });
     });
 
     /* All filters can be cleared with a single button click. */
@@ -271,8 +295,8 @@ define([
             }));
         });
         gobotany.utils.notify('More questions added');
-        helper.filter_section.scroll_pane_api.reinitialise();
-        helper.filter_section.scroll_pane_api.scrollTo(0, 0);
+        scroll_pane.data('jsp').reinitialise();
+        scroll_pane.data('jsp').scrollTo(0, 0);
         helper.save_filter_state();
     };
 
@@ -283,10 +307,7 @@ define([
         'simplekey/results_photo_menu'
     ]);
 
-    require([
-        'jquery.tools.min',
-        'order!jscrollpane'   // sk/results.js
-    ], function() {
+    if (true) {
         require([
             'order!dojo_config',
             'order!/static/js/dojo/dojo.js',
@@ -336,5 +357,5 @@ define([
                 });
             });
         });
-    });
+    }
 });
