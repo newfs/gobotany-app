@@ -47,14 +47,18 @@ module.exports = {
 
         'can parse the visible filter from the hash': function () {
             var visible_filter =
-                results_page_state.visible_filter_from_hash();
+                results_page_state.parameter_from_hash('visible');
             visible_filter.should.equal('habitat_general');
         },
 
         'can parse the tab view from the hash': function () {
-            var tab_view = results_page_state.tab_view_from_hash();
+            var tab_view = results_page_state.parameter_from_hash('view');
             tab_view.should.equal('photos');
         },
 
+        'can parse the photo type from the hash': function () {
+            var photo_type = results_page_state.parameter_from_hash('show');
+            photo_type.should.equal('branches');
+        },
     }
 };

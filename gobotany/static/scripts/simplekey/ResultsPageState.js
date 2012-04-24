@@ -60,36 +60,21 @@ define([
         return filter_values;
     },
 
-    visible_filter_from_hash: function () {
+    parameter_from_hash: function (parameter_name) {
         var i,
-            parameters = this.hash.split('&'),
-            visible_filter;
+            parameter_key,
+            parameter_value,
+            parameters = this.hash.split('&');
 
+        parameter_key = '_' + parameter_name;
         for (i = 0; i < parameters.length; i += 1) {
-            if (parameters[i].indexOf('_visible=') > -1) {
-                visible_filter = parameters[i].split('=')[1];
+            if (parameters[i].indexOf(parameter_key) > -1) {
+                parameter_value = parameters[i].split('=')[1];
                 break;
             }
         }
 
-        return visible_filter;
+        return parameter_value;
     },
-
-    tab_view_from_hash: function () {
-        var i,
-            parameters = this.hash.split('&'),
-            tab_view;
-
-        for (i = 0; i < parameters.length; i += 1) {
-            if (parameters[i].indexOf('_view=') > -1) {
-                tab_view = parameters[i].split('=')[1];
-                break;
-            }
-        }
-
-        return tab_view;
-    },
-
-
 
 })});
