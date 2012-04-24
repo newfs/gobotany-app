@@ -184,7 +184,7 @@ define([
 
     /* More filters can be fetched with the "Get More Questions" button. */
 
-    var gcv = [];  // remembers choices from last time
+    var checked_groups = [];  // remembers choices from last time
 
     $('#sidebar .get-choices').click(function() {
         if (helper.filter_section.working_area !== null)
@@ -199,8 +199,9 @@ define([
                 onFinish: function() {
                     // Re-check any check boxes that were set last time.
                     $('#sb-container input').each(function(i, input) {
-                        var value = $(input).attr('value');
-                        $(input).prop('checked', _.indexOf(gcv, value) != -1);
+                        var value = $(input).val();
+                        var check = (_.indexOf(checked_groups, value) != -1);
+                        $(input).prop('checked', check);
                     });
                     $('#sb-container a.get-choices')
                         .addClass('get-choices-ready');  // for tests
@@ -210,15 +211,45 @@ define([
     });
 
     $('#sb-container a.get-choices').live('click', function() {
-        helper.filter_section.query_best_filters();
-        // Remember which check boxes were checked.
-        gcv = [];
+        checked_groups = [];  // reset array in enclosing scope
         $('#sb-container input').each(function(i, input) {
             if ($(input).prop('checked'))
-                gcv.push($(input).attr('value'));
+                checked_groups.push($(input).val());
         });
+
+        var existing = [];
+        _.each(App3.filter_controller.content, function(filter) {
+            existing.push(filter.slug);
+        });
+
+        simplekey_resources.pile_best_characters({
+            pile_slug: pile_slug,
+            species_ids: App3.filter_controller.taxa,
+            character_group_ids: checked_groups,
+            exclude_characters: existing
+        }).done(receive_new_filters);
+
         Shadowbox.close();
     });
+
+    var receive_new_filters = function(items) {
+        if (items.length === 0) {
+            gobotany.utils.notify(
+                'No more questions left for the boxes checked');
+            return;
+        }
+        _.each(items, function(filter_info) {
+            App3.filter_controller.add(Filter.create({
+                slug: filter_info.short_name,
+                value_type: filter_info.value_type,
+                info: filter_info
+            }));
+        });
+        gobotany.utils.notify('More questions added');
+        helper.filter_section.scroll_pane_api.reinitialise();
+        helper.filter_section.scroll_pane_api.scrollTo(0, 0);
+        helper.save_filter_state();
+    };
 
     //
 
