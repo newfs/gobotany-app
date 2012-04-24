@@ -16,6 +16,7 @@
 /gobotany/static/dijit
 /gobotany/static/dojo
 /gobotany/static/dojox
+/gobotany/static/node_modules
 /gobotany/static/util
 
 # /gobotany/static/js/
