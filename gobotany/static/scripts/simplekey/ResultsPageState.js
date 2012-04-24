@@ -10,6 +10,10 @@ define([
     init: function () {
         var hash = this.hash;
 
+        if (hash[0] === '#') {
+            hash = hash.substr(1);
+        }
+
         this.set('hash', hash);
     },
 
@@ -18,10 +22,10 @@ define([
     },
 
     filters_from_hash: function () {
-        var filters = [];
-        var filters_parameter;
-        var i;
-        var parameters = this.hash.split('&');
+        var filters = [],
+            filters_parameter,
+            i,
+            parameters = this.hash.split('&');
 
         for (i = 0; i < parameters.length; i += 1) {
             if (parameters[i].indexOf('_filters=') > -1) {
@@ -36,6 +40,39 @@ define([
         }
 
         return filters;
+    },
+
+    filter_values_from_hash: function () {
+        var filter_values = {},
+            i,
+            parameters = this.hash.split('&'),
+            parts;
+
+        for (i = 0; i < parameters.length; i += 1) {
+            parts = parameters[i].split('=');
+            // Parameters without leading underscores represent filters
+            // that have a value selected.
+            if (parts[0][0] !== '_') {
+                filter_values[parts[0]] = parts[1];
+            }
+        }
+
+        return filter_values;
+    },
+
+    visible_filter_from_hash: function () {
+        var i,
+            parameters = this.hash.split('&'),
+            visible_filter;
+
+        for (i = 0; i < parameters.length; i += 1) {
+            if (parameters[i].indexOf('_visible=') > -1) {
+                visible_filter = parameters[i].split('=')[1];
+                break;
+            }
+        }
+
+        return visible_filter;
     }
 
 })});
