@@ -35,7 +35,7 @@ module.exports = {
                 'trophophyll_morphology_ly', 'trophophyll_margins_ly']);
         },
 
-        'can parse filter values from the hash': function() {
+        'can parse filter values from the hash': function () {
             var filter_values = results_page_state.filter_values_from_hash();
             _.size(filter_values).should.be.above(0);
             filter_values.should.eql({
@@ -45,10 +45,15 @@ module.exports = {
                     'on%20the%20surface%20of%20the%20ground'});
         },
 
-        'can parse the visible filter from the hash': function() {
+        'can parse the visible filter from the hash': function () {
             var visible_filter =
                 results_page_state.visible_filter_from_hash();
             visible_filter.should.equal('habitat_general');
+        },
+
+        'can parse the tab view from the hash': function () {
+            var tab_view = results_page_state.tab_view_from_hash();
+            tab_view.should.equal('photos');
         },
 
     }

@@ -73,6 +73,23 @@ define([
         }
 
         return visible_filter;
-    }
+    },
+
+    tab_view_from_hash: function () {
+        var i,
+            parameters = this.hash.split('&'),
+            tab_view;
+
+        for (i = 0; i < parameters.length; i += 1) {
+            if (parameters[i].indexOf('_view=') > -1) {
+                tab_view = parameters[i].split('=')[1];
+                break;
+            }
+        }
+
+        return tab_view;
+    },
+
+
 
 })});
