@@ -1,12 +1,14 @@
 define([
     'args',
+    'jquery',
     'simplekey/App3',
     'simplekey/Filter',
     'simplekey/FilterController',
     'simplekey/resources'
-], function(args, App3, _Filter, _FilterController, resources) {
+], function(args, x, App3, _Filter, _FilterController, resources) {
 
     var pile_slug = args.pile_slug;
+    var helper;  // legacy object; gets set way down at the bottom of this file
 
     // Dojo code needs globals, so we create some.
     global_speciessectionhelper = null;
@@ -179,6 +181,44 @@ define([
             });
         });
     }
+
+    /* More filters can be fetched with the "Get More Questions" button. */
+
+    var gcv = [];  // remembers choices from last time
+
+    $('#sidebar .get-choices').click(function() {
+        if (helper.filter_section.working_area !== null)
+            helper.filter_section.working_area.dismiss();
+
+        Shadowbox.open({
+            content: $('#modal').html(),
+            player: 'html',
+            height: 450,
+            options: {
+                fadeDuration: 0.1,
+                onFinish: function() {
+                    // Re-check any check boxes that were set last time.
+                    $('#sb-container input').each(function(i, input) {
+                        var value = $(input).attr('value');
+                        $(input).prop('checked', _.indexOf(gcv, value) != -1);
+                    });
+                    $('#sb-container a.get-choices')
+                        .addClass('get-choices-ready');  // for tests
+                }
+            }
+        });
+    });
+
+    $('#sb-container a.get-choices').live('click', function() {
+        helper.filter_section.query_best_filters();
+        // Remember which check boxes were checked.
+        gcv = [];
+        $('#sb-container input').each(function(i, input) {
+            if ($(input).prop('checked'))
+                gcv.push($(input).attr('value'));
+        });
+        Shadowbox.close();
+    });
 
     //
 
