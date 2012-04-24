@@ -15,11 +15,12 @@ var results_page_state = ResultsPageState.create({hash: sample_hash});
 
 module.exports = {
     'ResultsPageState': {
-        'can set hash': function () {
-            results_page_state.hash.should.equal(sample_hash);
+        'can have a hash': function () {
+            var trimmed_sample_hash = sample_hash.substr(1);
+            results_page_state.hash.should.equal(trimmed_sample_hash);
         },
 
-        'can detect filters parameter in hash': function () {
+        'can detect the filters parameter in the hash': function () {
             var has_filters = results_page_state.hash_has_filters();
             has_filters.should.equal(true);
         },
@@ -27,12 +28,21 @@ module.exports = {
         'can parse a list of filters from the hash': function () {
             var filters = results_page_state.filters_from_hash();
             filters.length.should.be.above(0);
-            filters.should.eql(
-                ['family', 'genus', 'habitat_general', 'state_distribution',
-                 'trophophyll_form_ly', 'sporophyll_position_ly',
-                 'upright_shoot_form_ly', 'horizontal_shoot_position_ly',
-                 'trophophyll_morphology_ly', 'trophophyll_margins_ly']);
+            filters.should.eql([
+                'family', 'genus', 'habitat_general', 'state_distribution',
+                'trophophyll_form_ly', 'sporophyll_position_ly',
+                'upright_shoot_form_ly', 'horizontal_shoot_position_ly',
+                'trophophyll_morphology_ly', 'trophophyll_margins_ly']);
         },
 
+        'can parse filter values from the hash': function() {
+            var filter_values = results_page_state.filter_values_from_hash();
+            _.size(filter_values).should.be.above(0);
+            filter_values.should.eql({
+                'family': 'Lycopodiaceae',
+                'trophophyll_form_ly': 'short%20and%20scale-like',
+                'horizontal_shoot_position_ly':
+                    'on%20the%20surface%20of%20the%20ground'});
+        },
     }
 };
