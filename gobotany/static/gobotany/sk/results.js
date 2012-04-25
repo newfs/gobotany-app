@@ -38,12 +38,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         this.filter_section =
             new gobotany.sk.results.FilterSectionHelper(this);
 
-        this.all_filters_loaded = $.Deferred();
-        $.when(
-            this.all_filters_loaded,
-            this.filter_manager.load_complete
-        ).done($.proxy(this, 'finish_initialization'));
-
         dojo.subscribe('results_loaded',
             dojo.hitch(this, this.populate_image_types));
 
@@ -59,19 +53,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
                 this.species_section.plant_preview_characters =
                     pile_info.plant_preview_characters;
-
-                // Set up a callback function that will be called once
-                // the filters are set up.
-
-                var filters_loaded = dojo.hitch(this, function(filters) {
-                    this._loaded_filters = filters;
-                    var deferreds = _.map(filters, function(filter) {
-                        return filter.load_values();
-                    });
-                    $.when.apply($, deferreds).done($.proxy(function() {
-                        this.all_filters_loaded.resolve();
-                    }, this));
-                });
 
                 // Set up the filters from URL hash values if the list of
                 // filters is present in the hash. Otherwise, set up the
