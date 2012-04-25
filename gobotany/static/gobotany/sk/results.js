@@ -473,3 +473,5 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         $('.option-list li').removeClass('active');
     }
 });
+
+

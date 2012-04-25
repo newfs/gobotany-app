@@ -209,18 +209,17 @@ define([
 
     /* Filters need to be loaded. */
 
-    var hash_filters;
-    var hash_values;
-    var results_page_state;
     var use_hash = (window.location.hash !== '') ? true : false;
     if (use_hash) {
         // Restore the state of the page from a URL hash.
 
         // First, load the list of filters specified on the hash.
+        // The list of filters is given by the hash parameter named
+        // _filters.
 
-        results_page_state = ResultsPageState.create({
+        var results_page_state = ResultsPageState.create({
             'hash': window.location.hash});
-        hash_filters = results_page_state.filter_names();
+        var hash_filters = results_page_state.filter_names();
         resources.pile(pile_slug).done(function(pile_info) {
             _.each(pile_info.default_filters, function(filter_info) {
                 if (_.indexOf(hash_filters, filter_info.short_name) > -1) {
@@ -237,11 +236,13 @@ define([
 
         });
 
-        // Next, set any filter values specified on the hash.
+        // Next, set any filter values specified as selected on the hash.
+        // A filter value is given by a hash parameter without a leading
+        // underscore in its name, for example: &habitat_general=
 
         resources.pile_characters(pile_slug).done(function(info) {
-            hash_values = results_page_state.filter_values();
-            // If classification filter values were specified on the
+            var hash_values = results_page_state.filter_values();
+            // If family or genus filter values were specified on the
             // hash, set those up first.
             if (hash_values['family']) {
                 App3.family_filter.set('value', hash_values['family']);
@@ -249,6 +250,21 @@ define([
             if (hash_values['genus']) {
                 App3.genus_filter.set('value', hash_values['genus']);
             }
+            // Set the other selected filter values.
+            _.each(App3.filter_controller.get('content'), function(filter) {
+                if (_.has(hash_values, filter.slug)) {
+                    console.log('*** about to set filter ' + filter.slug +
+                                ' to ' + hash_values[filter.slug]);
+                    console.log('values:');
+                    console.log(filter.values);
+                    console.log('choicemap:');
+                    console.log(filter.choicemap);
+                    // TODO Set the value for this filter.
+                    // This doesn't work here, apparently because filter
+                    // values don't exist yet:
+                    //filter.set('value', hash_values[filter.slug]);
+                }
+            });
         });
     } else {
         // With no hash on the URL, load the default filters for this
@@ -394,3 +410,5 @@ define([
         });
     }
 });
+
+
