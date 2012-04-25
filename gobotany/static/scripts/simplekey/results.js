@@ -196,19 +196,27 @@ define([
        the sidebar, we give them their own scrollbar. */
 
     var scroll_pane = null;
+    var user_is_scrolling = true;
+
     require(['lib/jquery.jscrollpane'], function() {
         scroll_pane = $('.scroll')
             .bind('jsp-scroll-y', function(event) {
-                if (helper.filter_section.working_area)
-                    helper.filter_section.working_area.dismiss();
+                if (user_is_scrolling)  // because this could be a reinitialise
+                    if (helper.filter_section.working_area)
+                        helper.filter_section.working_area.dismiss();
             })
             .jScrollPane({
-                autoReinitialise: true,
                 maintainPosition: true,
                 stickToBottom: true,
                 verticalGutter: 0,
                 showArrows: true
             });
+
+        setInterval(function() {
+            user_is_scrolling = false;
+            scroll_pane.data('jsp').reinitialise(); // sends jsp-scroll-y!
+            user_is_scrolling = true;
+        }, 500);
     });
 
     /* All filters can be cleared with a single button click. */
