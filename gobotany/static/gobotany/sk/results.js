@@ -79,6 +79,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 // or genus was passed (examples: /#family=... /#genus=...),
                 // those values will be set later.
 
+                /* TODO: remove soon */
+                /*
                 var should_set_up_from_hash = false;
                 var hash_value = dojo.hash();
                 if (hash_value !== undefined) {
@@ -97,6 +99,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                         pile_info: pile_info,
                         on_complete: filters_loaded});
                 }
+                */
             }));
 
         // Set up the onhashchange event handler, which will be used to detect
@@ -127,10 +130,13 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         // If there's a URL hash, make a call to set up filter values from it
         // again now that all the filters and values have finally loaded; this
         // time omit the onComplete callback.
+        /* TODO: remove soon */
+        /*
         if (dojo.hash()) {
             console.log('About to set up filters from hash');
             this.setup_filters_from_hash();
         }
+        */
 
         console.log('About to list filters, then run query');
         //this.filter_section.display_filters(this._loaded_filters);
@@ -169,6 +175,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         }
     },
 
+    /* TODO: remove soon */
+    /*
     setup_filters_from_pile_info: function(args) {
         // summary:
         //   Sets up the internal filter data structure based on default
@@ -183,7 +191,10 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         if (args && args.on_complete)
             args.on_complete(filters);
     },
+    */
 
+    /* TODO: remove soon, but first, note the family & genus TODO below */
+    /*
     setup_filters_from_hash: function(args) {
         // summary:
         //   Sets up the internal filter data structure based on values in
@@ -264,6 +275,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 }));
         }
     },
+    */
 
     save_filter_state: function() {
         // summary:

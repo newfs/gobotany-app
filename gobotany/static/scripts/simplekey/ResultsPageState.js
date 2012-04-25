@@ -21,8 +21,8 @@ define([
         return (this.hash.indexOf('_filters=') > -1);
     },
 
-    filters_from_hash: function () {
-        var filters = [],
+    filter_names: function () {
+        var filter_names = [],
             filters_parameter,
             i,
             parameters = this.hash.split('&');
@@ -36,13 +36,13 @@ define([
 
         if (filters_parameter) {
             filters_parameter = filters_parameter.split('=')[1];
-            filters = filters_parameter.split(',');
+            filter_names = filters_parameter.split(',');
         }
 
-        return filters;
+        return filter_names;
     },
 
-    filter_values_from_hash: function () {
+    filter_values: function () {
         var filter_values = {},
             i,
             parameters = this.hash.split('&'),

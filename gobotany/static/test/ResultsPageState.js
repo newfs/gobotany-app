@@ -26,9 +26,9 @@ module.exports = {
         },
 
         'can parse a list of filters from the hash': function () {
-            var filters = results_page_state.filters_from_hash();
-            filters.length.should.be.above(0);
-            filters.should.eql([
+            var filter_names = results_page_state.filter_names();
+            filter_names.length.should.be.above(0);
+            filter_names.should.eql([
                 'family', 'genus', 'habitat_general', 'state_distribution',
                 'trophophyll_form_ly', 'sporophyll_position_ly',
                 'upright_shoot_form_ly', 'horizontal_shoot_position_ly',
@@ -36,7 +36,7 @@ module.exports = {
         },
 
         'can parse filter values from the hash': function () {
-            var filter_values = results_page_state.filter_values_from_hash();
+            var filter_values = results_page_state.filter_values();
             _.size(filter_values).should.be.above(0);
             filter_values.should.eql({
                 'family': 'Lycopodiaceae',

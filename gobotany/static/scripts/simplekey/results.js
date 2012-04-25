@@ -4,8 +4,10 @@ define([
     'simplekey/App3',
     'simplekey/Filter',
     'simplekey/FilterController',
-    'simplekey/resources'
-], function(args, x, App3, _Filter, _FilterController, resources) {
+    'simplekey/resources',
+    'simplekey/ResultsPageState'
+], function(args, x, App3, _Filter, _FilterController, resources,
+            ResultsPageState) {
 
     var pile_slug = args.pile_slug;
     var helper;  // legacy object; gets set way down at the bottom of this file
@@ -210,11 +212,36 @@ define([
     // TODO: John, this is where the hash stuff goes back in, this time
     // without being Dojo-powered!
 
-    var use_hash = false;
+    var filters_to_load;
+    var results_page_state;
+    var use_hash = (window.location.hash !== '') ? true : false;
+    console.log('** use hash:', use_hash);
     if (use_hash) {
-        resources.pile_characters(pile_slug).done(function(info) {
-            // John, do awesome stuff here. :)
+        results_page_state = ResultsPageState.create({
+            'hash': window.location.hash
         });
+        console.log('results_page_state created. Hash:',
+            results_page_state.hash);
+        filters_to_load = results_page_state.filters_from_hash();
+        console.log('filters_to_load:', filters_to_load);
+        resources.pile(pile_slug).done(function(pile_info) {
+            _.each(pile_info.default_filters, function(filter_info) {
+                if (_.indexOf(filters_to_load, filter_info.short_name) > -1) {
+                    App3.filter_controller.add(Filter.create({
+                        slug: filter_info.short_name,
+                        value_type: filter_info.value_type,
+                        info: filter_info
+                    }));
+                    // Go ahead and start an async fetch, to make things
+                    // faster in case the user clicks on the filter.
+                    resources.character_vector(filter_info.short_name);
+                }
+            });
+
+        });
+        //resources.pile_characters(pile_slug).done(function(info) {
+            // TODO: set up any selected filter values here?
+        //});
     } else {
         resources.pile(pile_slug).done(function(pile_info) {
             _.each(pile_info.default_filters, function(filter_info) {

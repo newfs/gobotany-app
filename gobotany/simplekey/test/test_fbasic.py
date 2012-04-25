@@ -1790,3 +1790,30 @@ class LookalikesFunctionalTests(FunctionalTestCase):
             self.assertTrue(len(notes) > 0)
             for note in notes:
                 self.assertTrue(len(note.text) > 0)
+
+class ResultsPageStateFunctionalTests(FunctionalTestCase):
+
+    # Tests for:
+    # - restoring the results page state from a URL
+    # - saving the results page state to URL and cookie
+    # - "undo" of filtering choices via Back button
+
+    def test_filters_load_with_no_hash(self):
+        page = self.get('/ferns/lycophytes/')
+        self.wait_on(10, self.css1, 'div.plant.in-results')
+        self.css1('#intro-overlay .continue').click()
+        self.assertTrue(page.find_element_by_xpath(
+            '//li/a/span[text() = "Habitat"]'))
+        self.assertTrue(page.find_element_by_xpath(
+            '//li/a/span[text() = "New England state"]'))
+
+    def test_filters_load_from_url_hash(self):
+        page = self.get(
+            '/ferns/lycophytes/#_filters=habitat_general,state_distribution')
+        self.wait_on(10, self.css1, 'div.plant.in-results')
+        # When setting up the page from the URL hash, there is no intro 
+        # overlay, so no need to wait for it as usual.
+        self.assertTrue(page.find_element_by_xpath(
+            '//li/a/span[text() = "Habitat"]'))
+        self.assertTrue(page.find_element_by_xpath(
+            '//li/a/span[text() = "New England state"]'))
