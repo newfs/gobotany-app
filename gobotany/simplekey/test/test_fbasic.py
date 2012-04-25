@@ -1832,3 +1832,15 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
         # Verify the filter value is set.
         self.assertTrue(page.find_element_by_xpath(
             '//select/option[@selected="selected" and @value="Isoetaceae"]'))
+
+    def test_set_genus_from_url_hash(self):
+        page = self.get('/ferns/lycophytes/#_filters=habitat_general,'
+                        'state_distribution&genus=Selaginella')
+        self.wait_on(10, self.css1, 'div.plant.in-results')
+        # Verify the species are filtered after waiting a bit.
+        matches_xpath = '//span[@class="species-count" and text()="2"]'
+        self.wait_on(10, page.find_element_by_xpath, matches_xpath)
+        self.assertTrue(page.find_element_by_xpath(matches_xpath))
+        # Verify the filter value is set.
+        self.assertTrue(page.find_element_by_xpath(
+            '//select/option[@selected="selected" and @value="Selaginella"]'))

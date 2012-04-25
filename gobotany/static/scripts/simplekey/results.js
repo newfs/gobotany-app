@@ -209,8 +209,8 @@ define([
 
     /* Filters need to be loaded. */
 
-    var filter_values_to_set;
-    var filters_to_load;
+    var hash_filters;
+    var hash_values;
     var results_page_state;
     var use_hash = (window.location.hash !== '') ? true : false;
     if (use_hash) {
@@ -220,10 +220,10 @@ define([
 
         results_page_state = ResultsPageState.create({
             'hash': window.location.hash});
-        filters_to_load = results_page_state.filter_names();
+        hash_filters = results_page_state.filter_names();
         resources.pile(pile_slug).done(function(pile_info) {
             _.each(pile_info.default_filters, function(filter_info) {
-                if (_.indexOf(filters_to_load, filter_info.short_name) > -1) {
+                if (_.indexOf(hash_filters, filter_info.short_name) > -1) {
                     App3.filter_controller.add(Filter.create({
                         slug: filter_info.short_name,
                         value_type: filter_info.value_type,
@@ -240,12 +240,14 @@ define([
         // Next, set any filter values specified on the hash.
 
         resources.pile_characters(pile_slug).done(function(info) {
-            filter_values_to_set = results_page_state.filter_values();
+            hash_values = results_page_state.filter_values();
             // If classification filter values were specified on the
             // hash, set those up first.
-            if (filter_values_to_set['family']) {
-                App3.family_filter.set('value',
-                                       filter_values_to_set['family']);
+            if (hash_values['family']) {
+                App3.family_filter.set('value', hash_values['family']);
+            }
+            if (hash_values['genus']) {
+                App3.genus_filter.set('value', hash_values['genus']);
             }
         });
     } else {
