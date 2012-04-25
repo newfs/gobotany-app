@@ -246,7 +246,8 @@ define([
         ).done(function(x, pile_info, character_list) {
 
             var character_map = {};
-            _.each(character_list, function(info) {
+            var all_filters = character_list.concat(pile_info.default_filters);
+            _.each(all_filters, function(info) {
                 character_map[info.short_name] = info;
             });
 
