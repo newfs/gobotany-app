@@ -193,7 +193,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     },
     */
 
-    /* TODO: remove soon, but first, note the family & genus TODO below */
+    /* TODO: remove soon */
     /*
     setup_filters_from_hash: function(args) {
         // summary:
@@ -225,22 +225,18 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         // Handle family or genus filter values, if applicable.
 
-        // TODO: rewrite this to poke the new App3.family_filter and the
-        // new App3.genus_filter, but only after they have had the
-        // chance to be populated.
-
-        // if (hash_object.family) {
-        //     this.filter_manager.set_selected_value('family',
-        //         hash_object.family);
-        //     dojo.publish('/sk/filter/change',
-        //         [this.family_genus_selectors.family_filter]);
-        // }
-        // if (hash_object.genus) {
-        //     this.filter_manager.set_selected_value('genus',
-        //         hash_object.genus);
-        //     dojo.publish('/sk/filter/change',
-        //         [this.family_genus_selectors.genus_filter]);
-        // }
+        if (hash_object.family) {
+            this.filter_manager.set_selected_value('family',
+                hash_object.family);
+            dojo.publish('/sk/filter/change',
+                [this.family_genus_selectors.family_filter]);
+        }
+        if (hash_object.genus) {
+            this.filter_manager.set_selected_value('genus',
+                hash_object.genus);
+            dojo.publish('/sk/filter/change',
+                [this.family_genus_selectors.genus_filter]);
+        }
 
         // Restore the filter that was last visible in the filter working
         // area, if applicable. It will be shown later when results load.
@@ -278,6 +274,9 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     */
 
     save_filter_state: function() {
+
+        return; // TODO: John will make this part of his ResultsPageState
+
         // summary:
         //   Saves the state of the filters in a cookie and in the url hash.
         var LAST_URL_COOKIE_NAME = 'last_plant_id_url';
