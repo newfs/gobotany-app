@@ -1808,8 +1808,10 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
             '//li/a/span[text() = "New England state"]'))
 
     def test_filters_load_from_url_hash(self):
-        page = self.get(
-            '/ferns/lycophytes/#_filters=habitat_general,state_distribution')
+        # Family and genus filters are always present so do not need to
+        # be included in the URL. However, they were present in the URL
+        # previously, so make sure the site still properly ignores them.
+        page = self.get('/ferns/lycophytes/#_filters=habitat_general,state_distribution,family,genus')
         self.wait_on(10, self.css1, 'div.plant.in-results')
         # When setting up the page from the URL hash, there is no intro 
         # overlay, so no need to wait for it as usual.

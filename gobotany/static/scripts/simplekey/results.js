@@ -222,7 +222,7 @@ define([
         });
         console.log('results_page_state created. Hash:',
             results_page_state.hash);
-        filters_to_load = results_page_state.filters_from_hash();
+        filters_to_load = results_page_state.filter_names();
         console.log('filters_to_load:', filters_to_load);
         resources.pile(pile_slug).done(function(pile_info) {
             _.each(pile_info.default_filters, function(filter_info) {
