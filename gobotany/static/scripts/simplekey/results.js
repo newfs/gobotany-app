@@ -1,12 +1,13 @@
 define([
     'args',
     'jquery',
+    'underscore-min',
     'simplekey/App3',
     'simplekey/Filter',
     'simplekey/FilterController',
     'simplekey/resources',
     'simplekey/ResultsPageState'
-], function(args, x, App3, _Filter, _FilterController, resources,
+], function(args, x, x, App3, _Filter, _FilterController, resources,
             ResultsPageState) {
 
     var pile_slug = args.pile_slug;
@@ -403,7 +404,6 @@ define([
             });
 
             require([
-                'order!/static/gobotany/filters.js',
                 'order!/static/gobotany/utils.js',
                 'order!/static/gobotany/sk/glossary.js',
                 'order!/static/gobotany/sk/photo.js',
@@ -413,10 +413,8 @@ define([
                 'order!/static/gobotany/sk/SearchSuggest.js'
             ], function() {
                 require([
-                    'order!simplekey/resources',   // now used in filters.js
                     'order!activate_search_suggest',
                     'order!activate_image_gallery',
-                    'underscore-min',  // filters.js, etc
                     'sidebar',
                     'shadowbox',
                     'shadowbox_init'
@@ -430,5 +428,3 @@ define([
         });
     }
 });
-
-

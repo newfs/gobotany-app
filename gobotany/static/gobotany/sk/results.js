@@ -5,7 +5,6 @@ dojo.provide('gobotany.sk.results');
 dojo.require('gobotany.sk.glossary');
 dojo.require('gobotany.sk.SpeciesSectionHelper');
 dojo.require('gobotany.sk.working_area');
-dojo.require('gobotany.filters');
 dojo.require('gobotany.utils');
 
 dojo.require('dojo.cookie');
@@ -25,10 +24,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         //   Coordinates all of the dynamic logic on the results page.
 
         this.pile_slug = pile_slug;
-
-        this.filter_manager = new gobotany.filters.FilterManager({
-            pile_slug: this.pile_slug
-        });
 
         this.species_section =
             new gobotany.sk.SpeciesSectionHelper(this);
