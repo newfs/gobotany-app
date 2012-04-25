@@ -60,6 +60,7 @@ define([
             taxadata: taxadata,
             plain_filters: [],
             add: function(filter) {
+                // Keep a separate list of only non-family/genus filters.
                 this._super(filter);
                 if (filter.slug != 'family' && filter.slug != 'genus')
                     this.plain_filters.addObject(filter);
@@ -213,56 +214,55 @@ define([
     if (use_hash) {
         // Restore the state of the page from a URL hash.
 
-        // First, load the list of filters specified on the hash.
-        // The list of filters is given by the hash parameter named
-        // _filters.
-
         var results_page_state = ResultsPageState.create({
-            'hash': window.location.hash});
-        var hash_filters = results_page_state.filter_names();
-        resources.pile(pile_slug).done(function(pile_info) {
-            _.each(pile_info.default_filters, function(filter_info) {
-                if (_.indexOf(hash_filters, filter_info.short_name) > -1) {
-                    App3.filter_controller.add(Filter.create({
-                        slug: filter_info.short_name,
-                        value_type: filter_info.value_type,
-                        info: filter_info
-                    }));
-                    // Go ahead and start an async fetch, to make things
-                    // faster in case the user clicks on the filter.
-                    resources.character_vector(filter_info.short_name);
-                }
+            'hash': window.location.hash
+        });
+        var filter_slugs = results_page_state.filter_names();
+        var filter_values = results_page_state.filter_values();
+
+        $.when(
+            filter_controller_is_built,
+            resources.pile(pile_slug),
+            resources.pile_characters(pile_slug)
+        ).done(function(x, pile_info, character_list) {
+
+            var character_map = {};
+            _.each(character_list, function(info) {
+                character_map[info.short_name] = info;
             });
 
-        });
+            var default_slugs = _.map(pile_info.default_filters, function(f) {
+                return f.short_name;
+            });
 
-        // Next, set any filter values specified as selected on the hash.
-        // A filter value is given by a hash parameter without a leading
-        // underscore in its name, for example: &habitat_general=
+            var other_slugs = _.difference(filter_slugs, default_slugs);
+            var all_slugs = default_slugs.concat(other_slugs);
 
-        resources.pile_characters(pile_slug).done(function(info) {
-            var hash_values = results_page_state.filter_values();
-            // If family or genus filter values were specified on the
-            // hash, set those up first.
-            if (hash_values['family']) {
-                App3.family_filter.set('value', hash_values['family']);
-            }
-            if (hash_values['genus']) {
-                App3.genus_filter.set('value', hash_values['genus']);
-            }
-            // Set the other selected filter values.
-            _.each(App3.filter_controller.get('content'), function(filter) {
-                if (_.has(hash_values, filter.slug)) {
-                    console.log('*** about to set filter ' + filter.slug +
-                                ' to ' + hash_values[filter.slug]);
-                    console.log('values:');
-                    console.log(filter.values);
-                    console.log('choicemap:');
-                    console.log(filter.choicemap);
-                    // TODO Set the value for this filter.
-                    // This doesn't work here, apparently because filter
-                    // values don't exist yet:
-                    //filter.set('value', hash_values[filter.slug]);
+            _.each(all_slugs, function(slug) {
+                if (!_.has(character_map, slug))
+                    return;
+
+                // Start an async load in case the user uses the filter.
+                resources.character_vector(slug);
+
+                // Create the filter if it does not exist already.
+                var info = character_map[slug];
+                if (!_.has(App3.filter_controller.filtermap, slug)) {
+                    App3.filter_controller.add(Filter.create({
+                        slug: info.short_name,
+                        value_type: info.value_type,
+                        info: info
+                    }));
+                }
+
+                // Set the filter's value if the hash specified one.
+                if (_.has(filter_values, slug)) {
+                    var filter = App3.filter_controller.filtermap[slug];
+                    var value = filter_values[slug];
+                    resources.character_vector(slug).done(function(values) {
+                        filter.install_values(values);
+                        filter.set('value', value);
+                    });
                 }
             });
         });
