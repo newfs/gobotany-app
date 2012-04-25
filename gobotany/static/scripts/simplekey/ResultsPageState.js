@@ -43,9 +43,10 @@ define([
     },
 
     filter_values: function () {
-        var filter_values = {},
+        var decoded_hash = decodeURIComponent(this.hash),
+            filter_values = {},
             i,
-            parameters = this.hash.split('&'),
+            parameters = decoded_hash.split('&'),
             parts;
 
         for (i = 0; i < parameters.length; i += 1) {

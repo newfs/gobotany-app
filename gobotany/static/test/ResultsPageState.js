@@ -40,9 +40,9 @@ module.exports = {
             _.size(filter_values).should.be.above(0);
             filter_values.should.eql({
                 'family': 'Lycopodiaceae',
-                'trophophyll_form_ly': 'short%20and%20scale-like',
+                'trophophyll_form_ly': 'short and scale-like',
                 'horizontal_shoot_position_ly':
-                    'on%20the%20surface%20of%20the%20ground'});
+                    'on the surface of the ground'});
         },
 
         'can parse the visible filter from the hash': function () {
