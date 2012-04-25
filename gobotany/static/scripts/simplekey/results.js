@@ -209,21 +209,18 @@ define([
 
     /* Filters need to be loaded. */
 
-    // TODO: John, this is where the hash stuff goes back in, this time
-    // without being Dojo-powered!
-
+    var filter_values_to_set;
     var filters_to_load;
     var results_page_state;
     var use_hash = (window.location.hash !== '') ? true : false;
-    console.log('** use hash:', use_hash);
     if (use_hash) {
+        // Restore the state of the page from a URL hash.
+
+        // First, load the list of filters specified on the hash.
+
         results_page_state = ResultsPageState.create({
-            'hash': window.location.hash
-        });
-        console.log('results_page_state created. Hash:',
-            results_page_state.hash);
+            'hash': window.location.hash});
         filters_to_load = results_page_state.filter_names();
-        console.log('filters_to_load:', filters_to_load);
         resources.pile(pile_slug).done(function(pile_info) {
             _.each(pile_info.default_filters, function(filter_info) {
                 if (_.indexOf(filters_to_load, filter_info.short_name) > -1) {
@@ -239,10 +236,22 @@ define([
             });
 
         });
-        //resources.pile_characters(pile_slug).done(function(info) {
-            // TODO: set up any selected filter values here?
-        //});
+
+        // Next, set any filter values specified on the hash.
+
+        resources.pile_characters(pile_slug).done(function(info) {
+            filter_values_to_set = results_page_state.filter_values();
+            // If classification filter values were specified on the
+            // hash, set those up first.
+            if (filter_values_to_set['family']) {
+                App3.family_filter.set('value',
+                                       filter_values_to_set['family']);
+            }
+        });
     } else {
+        // With no hash on the URL, load the default filters for this
+        // plant subgroup for a "fresh" load of the page.
+
         resources.pile(pile_slug).done(function(pile_info) {
             _.each(pile_info.default_filters, function(filter_info) {
                 App3.filter_controller.add(Filter.create({
