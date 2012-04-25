@@ -42,12 +42,23 @@ define([
         }
     });
 
-    /* The FilterController can be activated once we know the full list
-       of species that it will be filtering. */
+    /* Async resources and deferreds. */
 
     var async_key_vector = resources.key_vector('simple');
     var async_pile_taxa = resources.pile_species(pile_slug);
     var filter_controller_is_built = $.Deferred();
+
+    /* Various parts of the page need random access to taxa. */
+
+    App3.taxa_by_sciname = {};
+    async_pile_taxa.done(function(taxadata) {
+        _.each(taxadata, function(datum) {
+            App3.taxa_by_sciname[datum.scientific_name] = datum;
+        });
+    });
+
+    /* The FilterController can be activated once we know the full list
+       of species that it will be filtering. */
 
     $.when(async_key_vector, async_pile_taxa).done(function(kv, taxadata) {
         var simple_key_taxa = kv[0].species;

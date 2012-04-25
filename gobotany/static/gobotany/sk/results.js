@@ -345,7 +345,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
             // See if the taxon has an image for the new image type.
             var scientific_name = dojo.attr(image_tag, 'x-plant-id');
-            taxon = this.filter_manager.get_taxon(scientific_name);
+            taxon = App3.taxa_by_sciname[scientific_name];
             var new_image = _.find(taxon.images, function(image) {
                 return image.type === image_type});
 
