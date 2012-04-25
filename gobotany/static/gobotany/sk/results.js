@@ -127,31 +127,17 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     // received and processed by the filter manager.
     finish_initialization: function(filter) {
 
-        // If there's a URL hash, make a call to set up filter values from it
-        // again now that all the filters and values have finally loaded; this
-        // time omit the onComplete callback.
-        /* TODO: remove soon */
-        /*
-        if (dojo.hash()) {
-            console.log('About to set up filters from hash');
-            this.setup_filters_from_hash();
-        }
-        */
+        return;
 
-        console.log('About to list filters, then run query');
-        //this.filter_section.display_filters(this._loaded_filters);
-        
-        dojo.query('#sidebar .loading').addClass('hidden');
-
-        this.filter_manager.perform_query();
+        // TODO: John will pop up the working area based on URL, like this did:
 
         // Show a filter in the filter working area if necessary.
-        var filter_name = this.filter_section.visible_filter_short_name;
-        if (filter_name !== '') {
-            var filter = this.filter_manager.get_filter(filter_name);
-            if (filter !== undefined)
-                this.filter_section.show_filter_working(filter);
-        }
+        // var filter_name = this.filter_section.visible_filter_short_name;
+        // if (filter_name !== '') {
+        //     var filter = this.filter_manager.get_filter(filter_name);
+        //     if (filter !== undefined)
+        //         this.filter_section.show_filter_working(filter);
+        // }
     },
 
     handle_undo: function() {
