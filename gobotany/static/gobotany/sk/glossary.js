@@ -1,6 +1,3 @@
-// Global declaration for JSLint (http://www.jslint.com/)
-/*global dojo, dojox, dijit, gobotany */
-
 dojo.provide('gobotany.sk.glossary');
 
 escapeRegExp = function(str) {
@@ -14,7 +11,7 @@ dojo.declare('gobotany.sk.glossary.GlossaryHelper', null, {
     },
     setup: function() {
         var glossarizer = this.glossarizer;
-        dojo.query('#terms dd').forEach(function(node) {
+        $('#terms dd').each(function(i, node) {
             glossarizer.markup(node);
         });
     }
@@ -64,7 +61,7 @@ dojo.declare('gobotany.sk.glossary.Glossarizer', null, {
             var self = this;
             var defs = this.glossaryblob.definitions;
             var images = this.glossaryblob.images;
-            dojo.query('.gloss', node).forEach(function(node2) {
+            $('.gloss', node).each(function(i, node2) {
                 self.n++;
                 var gloss_id = 'gloss' + self.n;
                 var term = node2.innerHTML.toLowerCase();

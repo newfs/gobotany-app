@@ -8,6 +8,7 @@ require([
     'dojo_config',
     '/static/js/dojo/dojo.js',
     '/static/js/layers/sk.js',
+    'lib/tooltipsy',
     'sidebar'
 ], function() {
 
