@@ -9,7 +9,7 @@ djConfig = {
     },
     parseOnLoad: true,
     // Config for 1.7, using backward compatibility config object
-    async: false
+    async: false,
     packages: [
         { name: 'dojo', location: 'js/lib/dojo' },
         { name: 'dojox', location: 'js/lib/dojox' },
