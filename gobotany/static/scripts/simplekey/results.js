@@ -292,6 +292,14 @@ define([
                     });
                 }
             });
+
+            // Set any classification filter specified on the hash.
+            if (filter_values['family']) {
+                App3.family_filter.set('value', filter_values['family']);
+            }
+            if (filter_values['genus']) {
+                App3.genus_filter.set('value', filter_values['genus']);
+            }
         });
     } else {
         // With no hash on the URL, load the default filters for this
