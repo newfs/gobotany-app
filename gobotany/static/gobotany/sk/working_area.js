@@ -189,9 +189,8 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
                 var image_html = '<img id="' + image_id + '" src="' +
                     image_path + '" alt="drawing showing ' +
                     v.friendly_text + '">';
-                new dijit.Tooltip({
-                    connectId: [image_id],
-                    label: image_html, position: ['after', 'above']
+                $('#' + image_id).tooltipsy({
+                    content: image_html
                 });
             }
 

@@ -2,13 +2,14 @@ define([
     'args',
     'jquery',
     'underscore-min',
+    'lib/tooltipsy',
     'simplekey/App3',
     'simplekey/Filter',
     'simplekey/FilterController',
     'simplekey/animation',
     'simplekey/resources',
     'simplekey/ResultsPageState'
-], function(args, x, x, App3, _Filter, _FilterController,
+], function(args, x, x, x, App3, _Filter, _FilterController,
             animation, resources, ResultsPageState) {
 
     var pile_slug = args.pile_slug;
