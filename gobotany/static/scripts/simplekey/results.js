@@ -7,10 +7,11 @@ define([
     'simplekey/Filter',
     'simplekey/FilterController',
     'simplekey/animation',
+    'simplekey/cookie',
     'simplekey/resources',
     'simplekey/ResultsPageState'
 ], function(args, x, x, x, App3, _Filter, _FilterController,
-            animation, resources, ResultsPageState) {
+            animation, cookie, resources, ResultsPageState) {
 
     var pile_slug = args.pile_slug;
     var helper;  // legacy object; gets set way down at the bottom of this file
@@ -393,6 +394,35 @@ define([
         gobotany.utils.notify('More questions added');
         helper.save_filter_state();
     };
+
+    // On modern browsers that support the hashchange event, allow the
+    // user to "undo" actions via the Back button.
+    $(window).bind('hashchange', function() {
+        console.log('hashchange: hande undo (from jQuery).');
+        var current_url = decodeURIComponent(window.location.href);
+        console.log('* current_url:', current_url);
+
+        var last_plant_id_url = cookie('last_plant_id_url');
+        if (last_plant_id_url === undefined) {
+            last_plant_id_url = '';
+        }
+        console.log('* last_plant_id_url:', last_plant_id_url);
+
+        // When going forward and applying values, etc., the current URL and
+        // last plant ID URL are always the same. After pressing Back, they
+        // are different.
+        if (current_url !== last_plant_id_url) {
+            // Now reload the current URL, which reloads everything on the
+            // page and sets it up all again. This means a little more going
+            // on that usually seen with an Undo command, but is pretty
+            // quick and allows for robust yet uncomplicated Undo support.
+            // TODO: enable again once everything is working.
+            console.log('TODO: reload the page with the current URL');
+            /*
+            window.location.reload();
+            */
+        }
+    });
 
     //
 

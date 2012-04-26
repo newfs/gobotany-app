@@ -50,11 +50,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                     pile_info.plant_preview_characters;
             }));
 
-        // Set up the onhashchange event handler, which will be used to detect
-        // Back button undo events for modern browsers.
-        dojo.connect(document.body, 'onhashchange', this, this.handle_undo,
-                     true);
-
         // Set up a handler to detect an Esc keypress, which will close
         // the filter working area if it is open.
         dojo.connect(document.body, 'onkeypress',
@@ -68,27 +63,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                     this.filter_section.working_area.dismiss();
                 }
                 break;
-        }
-    },
-
-    handle_undo: function() {
-        // Detect and handle URL hash changes for which Undo is supported.
-        var current_url = window.location.href;
-
-        var last_plant_id_url = dojo.cookie('last_plant_id_url');
-        if (last_plant_id_url === undefined) {
-            last_plant_id_url = '';
-        }
-
-        // When going forward and applying values, etc., the current URL and
-        // last plant ID URL are always the same. After pressing Back, they
-        // are different.
-        if (current_url !== last_plant_id_url) {
-            // Now reload the current URL, which reloads everything on the
-            // page and sets it up all again. This means a little more going
-            // on that usually seen with an Undo command, but is pretty
-            // quick and allows for robust yet uncomplicated Undo support.
-            window.location.reload();
         }
     },
 
