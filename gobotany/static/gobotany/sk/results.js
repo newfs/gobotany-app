@@ -200,13 +200,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 [this.family_genus_selectors.genus_filter]);
         }
 
-        // Restore the filter that was last visible in the filter working
-        // area, if applicable. It will be shown later when results load.
-        if (hash_object._visible !== undefined) {
-            this.filter_section.visible_filter_short_name =
-                hash_object._visible;
-        }
-
         if (filter_names.length > 0) {
             simplekey_resources.pile_characters(this.pile_slug)
                 .done(dojo.hitch(this, function(items) {
@@ -248,13 +241,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         // Save the current state.
 
         var hash = this.filter_manager.as_query_string();
-
-        // Include a URL parameter indicating whether the filter working area
-        // is open.
-        if (/&$/.test(hash) === false) {
-            hash += '&';
-        }
-        hash += '_visible=' + this.filter_section.visible_filter_short_name;
         
         // Include a URL parameter indicating the current view of the
         // results area.
