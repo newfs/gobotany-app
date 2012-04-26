@@ -52,7 +52,12 @@ define([
             $('#' + gloss_id).tooltipsy({
                 content: '<p class="glosstip">' +
                     (imgsrc ? '<img src="' + imgsrc + '">' : '') +
-                    defs[term] + '</p>'
+                    defs[term] + '</p>',
+                show: function(event, $tooltip) {
+                    if (parseFloat($tooltip.css('left')) < 0)
+                        $tooltip.css('left', '0px');
+                    $tooltip.show();
+                }
             });
         });
     }
