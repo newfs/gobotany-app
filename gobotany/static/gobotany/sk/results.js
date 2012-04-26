@@ -4,13 +4,6 @@ dojo.provide('gobotany.sk.results');
 
 dojo.require('gobotany.sk.SpeciesSectionHelper');
 dojo.require('gobotany.sk.working_area');
-dojo.require('gobotany.utils');
-
-dojo.require('dojo.html');
-dojo.require('dojo.data.ItemFileWriteStore');
-dojo.require('dijit.form.Button');
-dojo.require('dijit.form.FilteringSelect');
-dojo.require('dijit.form.Select');
 
 dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
