@@ -5,14 +5,12 @@ dojo.provide('gobotany.sk.species');
 
 dojo.require('dojo.cookie');
 
-dojo.require('gobotany.sk.glossary');
 dojo.require('gobotany.sk.photo');
 dojo.require('gobotany.utils');
 
 dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
 
     constructor: function() {
-        this.glossarizer = gobotany.sk.glossary.Glossarizer();
         this.photo_helper = gobotany.sk.photo.PhotoHelper();
     },
 
@@ -131,13 +129,9 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
     setup: function() {
         this.toggle_characters_full_list();
 
-        // Highlight glossary terms where appropriate throughout the page.
-        var that = this;
         var selectors = '#sidebar dd, #main p:not(.nogloss), #main dt, ' +
-                        '#main dd, #main li, #main th, #main td';
-        dojo.query(selectors).forEach(function(node) {
-            that.glossarizer.markup(node);
-        });
+            '#main dd, #main li, #main th, #main td';
+        glossarize($(selectors));
 
         // Make image gallery able to show larger images.
         this.wire_up_image_links();

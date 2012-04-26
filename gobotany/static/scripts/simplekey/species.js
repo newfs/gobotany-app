@@ -7,8 +7,9 @@ require([
 require([
     'dojo_config',
     'sidebar',
-    'simplekey/resources'
-], function() {
+    'simplekey/glossarize'
+], function(x, x, _glossarize) {
+    glossarize = _glossarize;
     require([
         '/static/js/dojo/dojo.js'
     ], function() {
