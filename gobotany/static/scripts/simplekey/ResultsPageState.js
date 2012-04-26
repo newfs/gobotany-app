@@ -11,13 +11,13 @@ define([
         var hash = this.hash || '',
             filter_names = this.filter_names || [],
             filter_values = this.filter_values || [],
-            photo_type = this.photo_type || '',
+            image_type = this.image_type || '',
             tab_view = this.tab_view || '';
             
         delete this.hash;
         delete this.filter_names;
         delete this.filter_values;
-        delete this.photo_type;
+        delete this.image_type;
         delete this.tab_view;
 
         if (hash[0] === '#') {
@@ -27,7 +27,7 @@ define([
 
         this.set('_filter_names', filter_names);
         this.set('_filter_values', filter_values);
-        this.set('_photo_type', photo_type);
+        this.set('_image_type', image_type);
         this.set('_tab_view', tab_view);
     },
 
@@ -96,7 +96,7 @@ define([
         return this._parameter_from_hash('view');
     },
 
-    photo_type: function () {
+    image_type: function () {
         return this._parameter_from_hash('show');
     },
 
@@ -120,7 +120,7 @@ define([
         }
 
         hash += '&_view=' + this._tab_view;
-        hash += '&_show=' + this._photo_type;
+        hash += '&_show=' + this._image_type;
 
         return hash;
     }

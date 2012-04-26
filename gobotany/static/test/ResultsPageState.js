@@ -45,9 +45,9 @@ module.exports = {
             tab_view.should.equal('photos');
         },
 
-        'can parse the photo type from the hash': function () {
-            var photo_type = results_page_state.photo_type();
-            photo_type.should.equal('branches');
+        'can parse the image type from the hash': function () {
+            var image_type = results_page_state.image_type();
+            image_type.should.equal('branches');
         },
 
         'can create a hash from the page state': function () {
@@ -57,7 +57,7 @@ module.exports = {
                 page_state = ResultsPageState.create({
                     'filter_names': filter_names,
                     'filter_values': filter_values,
-                    'photo_type': 'branches',
+                    'image_type': 'branches',
                     'tab_view': 'photos'
                 });
             hash = page_state.hash();

@@ -81,9 +81,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         // Display the results.
         this.display_results();
-
-        // Save the current state of our filters.
-        this.results_helper.save_filter_state();
     },
 
     default_image: function(species) {

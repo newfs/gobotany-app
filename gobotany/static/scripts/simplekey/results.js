@@ -321,6 +321,68 @@ define([
         });
     }
 
+    /* When filters change, or other page elements (photo type,
+     * tab view) change, update the hash and save it. */
+
+    // TODO: Call this also when image type and tab view change.
+    var save_filter_state = function () {
+
+        var image_type = App3.image_type;
+        if (!image_type) {
+            // If the image type menu is not ready yet, the page is still
+            // loading, so do not save the state yet.
+            return;
+        }
+        var tab_view = global_speciessectionhelper.current_view;
+        var filter_names = Object.keys(App3.filter_controller.filtermap);
+        var filter_values = {};
+        for (key in App3.filter_controller.filtermap) {
+            if (App3.filter_controller.filtermap.hasOwnProperty(key)) {
+                if (App3.filter_controller.filtermap[key].value &&
+                    App3.filter_controller.filtermap[key].value.length > 0) {
+
+                    filter_values[key] =
+                        App3.filter_controller.filtermap[key].value;
+                }
+            }
+        }
+
+        var results_page_state = ResultsPageState.create({
+            'filter_names': filter_names,
+            'filter_values': filter_values,
+            'image_type': 'branches',
+            'tab_view': 'photos'
+        });
+        var hash = results_page_state.hash();
+
+        // Usually, do not replace the current Back history entry; rather,
+        // create a new one, to enable the user to move back and forward
+        // through their keying choices.
+        var create_new_history_entry = true;
+
+        // However, upon the initial entry to plant ID keying (where there's
+        // no hash yet), do not create a new Back history entry when replacing
+        // the hash. This is to help avoid creating a "barrier" when the user
+        // tries to navigate back to the pile ID pages using the Back button.
+        if (window.location.hash === '') {   // empty hash: initial page load
+            create_new_history_entry = false;
+        }
+
+        var url = window.location.href.split('#')[0] + hash;
+        if (create_new_history_entry) {
+            window.location.assign(url);
+        }
+        else {
+            window.location.replace(url);
+        }
+
+        cookie('last_plant_id_url', window.location.href, {path: '/'});
+    };
+
+    App3.addObserver('filter_controller.@each.value', function() {
+        save_filter_state();
+    });
+
     /* More filters can be fetched with the "Get More Questions" button. */
 
     var checked_groups = [];  // remembers choices from last time
@@ -392,21 +454,17 @@ define([
             scroll_pane.data('jsp').scrollToPercentY(100, true);
         });
         gobotany.utils.notify('More questions added');
-        helper.save_filter_state();
     };
 
     // On modern browsers that support the hashchange event, allow the
     // user to "undo" actions via the Back button.
     $(window).bind('hashchange', function() {
-        console.log('hashchange: hande undo (from jQuery).');
-        var current_url = decodeURIComponent(window.location.href);
-        console.log('* current_url:', current_url);
+        var current_url = window.location.href;
 
         var last_plant_id_url = cookie('last_plant_id_url');
         if (last_plant_id_url === undefined) {
             last_plant_id_url = '';
         }
-        console.log('* last_plant_id_url:', last_plant_id_url);
 
         // When going forward and applying values, etc., the current URL and
         // last plant ID URL are always the same. After pressing Back, they
@@ -416,11 +474,7 @@ define([
             // page and sets it up all again. This means a little more going
             // on that usually seen with an Undo command, but is pretty
             // quick and allows for robust yet uncomplicated Undo support.
-            // TODO: enable again once everything is working.
-            console.log('TODO: reload the page with the current URL');
-            /*
             window.location.reload();
-            */
         }
     });
 

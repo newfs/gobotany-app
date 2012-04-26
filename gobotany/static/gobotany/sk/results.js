@@ -7,8 +7,6 @@ dojo.require('gobotany.sk.SpeciesSectionHelper');
 dojo.require('gobotany.sk.working_area');
 dojo.require('gobotany.utils');
 
-dojo.require('dojo.cookie');
-dojo.require('dojo.hash');
 dojo.require('dojo.html');
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dijit.form.Button');
@@ -66,55 +64,25 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         }
     },
 
-    save_filter_state: function() {
+    handle_undo: function() {
+        // Detect and handle URL hash changes for which Undo is supported.
+        var current_url = window.location.href;
 
-        return; // TODO: John will make this part of his ResultsPageState
-
-        // summary:
-        //   Saves the state of the filters in a cookie and in the url hash.
-        var LAST_URL_COOKIE_NAME = 'last_plant_id_url';
-
-        console.log('saving filter info in url and cookie');
-
-        // Save the current state.
-
-        var hash = this.filter_manager.as_query_string();
-        
-        // Include a URL parameter indicating the current view of the
-        // results area.
-        if (/&$/.test(hash) === false) {
-            hash += '&';
+        var last_plant_id_url = dojo.cookie('last_plant_id_url');
+        if (last_plant_id_url === undefined) {
+            last_plant_id_url = '';
         }
-        hash += '_view=' + this.species_section.current_view;
 
-        // Include a URL parameter indicating the current type of photos
-        // to show for the photos view.
-        if (/&$/.test(hash) === false) {
-            hash += '&';
+        // When going forward and applying values, etc., the current URL and
+        // last plant ID URL are always the same. After pressing Back, they
+        // are different.
+        if (current_url !== last_plant_id_url) {
+            // Now reload the current URL, which reloads everything on the
+            // page and sets it up all again. This means a little more going
+            // on that usually seen with an Undo command, but is pretty
+            // quick and allows for robust yet uncomplicated Undo support.
+            window.location.reload();
         }
-        if (App3.image_type)
-            hash += '_show=' + App3.image_type;
-
-        // Usually, do not replace the current Back history entry; rather,
-        // create a new one, to enable the user to move back and forward
-        // through their keying choices.
-        var replace_current_history_entry = false;
-
-        // However, upon the initial entry to plant ID keying (where there's
-        // no hash yet), do not create a new Back history entry when replacing
-        // the hash. This is to help avoid creating a "barrier" when the user
-        // tries to navigate back to the pile ID pages using the Back button.
-        //console.log('** href: ' + window.location.href);
-        //console.log('** hash: ' + window.location.hash);
-        if (window.location.hash === '') {   // empty hash: initial page load
-            replace_current_history_entry = true;
-        }
-        //console.log('** replace_current_history_entry: ' +
-        //    replace_current_history_entry);
-
-        dojo.hash(hash, replace_current_history_entry);
-
-        dojo.cookie(LAST_URL_COOKIE_NAME, window.location.href, {path: '/'});
     },
 
     load_selected_image_type: function(event) {
@@ -153,7 +121,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             }
         }
         this.species_section.lazy_load_images();
-        this.save_filter_state();
     },
 
     // A subscriber for results_loaded
@@ -237,7 +204,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         // Save the state, which includes whether the filter working area is
         // being shown.
         this.visible_filter_short_name = filter.character_short_name;
-        this.results_helper.save_filter_state();
 
         sidebar_set_height();
     },
@@ -247,7 +213,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     on_working_area_dismiss: function(filter) {
         this.working_area = null;
         this.visible_filter_short_name = '';
-        this.results_helper.save_filter_state();
 
         // Clear selected state in the questions list at left.
         $('.option-list li').removeClass('active');
