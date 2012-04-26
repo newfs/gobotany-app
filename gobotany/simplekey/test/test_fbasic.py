@@ -1808,11 +1808,20 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
             '//li/a/span[text()="New England state"]'))
 
     def test_filters_load_from_url_hash(self):
+        # Although only two filters are specified on the URL hash, the
+        # entire list of default filters will come up in the UI, including
+        # these two hash-specified filters. This is OK now because the
+        # user can no longer delete filters from the UI as they once
+        # could. Actual URLs in the UI consist of the entire list of
+        # default filters followed by any "Get More Choices" filters the
+        # user has loaded.
+        #
         # Family and genus filters are always present so do not need to
         # be included in the URL. However, they were present in the URL
         # previously, so make sure the site still properly ignores them.
-        page = self.get('/ferns/lycophytes/#_filters=habitat_general,'
-                        'state_distribution,family,genus')
+        url = ('/ferns/lycophytes/#_filters=habitat_general,'
+               'state_distribution,family,genus')
+        page = self.get(url)
         self.wait_on(10, self.css1, 'div.plant.in-results')
         # When setting up the page from the URL hash, there is no intro 
         # overlay, so no need to wait for it as usual.
@@ -1822,8 +1831,9 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
             '//li/a/span[text()="New England state"]'))
 
     def test_set_family_from_url_hash(self):
-        page = self.get('/ferns/lycophytes/#_filters=habitat_general,'
-                        'state_distribution&family=Isoetaceae')
+        url = ('/ferns/lycophytes/#_filters=habitat_general,'
+               'state_distribution&family=Isoetaceae')
+        page = self.get(url)
         self.wait_on(10, self.css1, 'div.plant.in-results')
         # Verify the species are filtered after waiting a bit.
         matches_xpath = '//span[@class="species-count" and text()="3"]'
@@ -1834,8 +1844,9 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
             '//select/option[@selected="selected" and @value="Isoetaceae"]'))
 
     def test_set_genus_from_url_hash(self):
-        page = self.get('/ferns/lycophytes/#_filters=habitat_general,'
-                        'state_distribution&genus=Selaginella')
+        url = ('/ferns/lycophytes/#_filters=habitat_general,'
+               'state_distribution&genus=Selaginella')
+        page = self.get(url)
         self.wait_on(10, self.css1, 'div.plant.in-results')
         # Verify the species are filtered after waiting a bit.
         matches_xpath = '//span[@class="species-count" and text()="2"]'
