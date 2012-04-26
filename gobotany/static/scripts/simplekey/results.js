@@ -5,10 +5,11 @@ define([
     'simplekey/App3',
     'simplekey/Filter',
     'simplekey/FilterController',
+    'simplekey/animation',
     'simplekey/resources',
     'simplekey/ResultsPageState'
-], function(args, x, x, App3, _Filter, _FilterController, resources,
-            ResultsPageState) {
+], function(args, x, x, App3, _Filter, _FilterController,
+            animation, resources, ResultsPageState) {
 
     var pile_slug = args.pile_slug;
     var helper;  // legacy object; gets set way down at the bottom of this file
@@ -216,12 +217,6 @@ define([
                 verticalGutter: 0,
                 showArrows: true
             });
-
-        setInterval(function() {
-            user_is_scrolling = false;
-            scroll_pane.data('jsp').reinitialise(); // sends jsp-scroll-y!
-            user_is_scrolling = true;
-        }, 500);
     });
 
     /* All filters can be cleared with a single button click. */
@@ -376,6 +371,13 @@ define([
                 value_type: filter_info.value_type,
                 info: filter_info
             }));
+        });
+        Ember.run.next(function() {
+            var $filters = $('#sidebar ul li');
+            var $new = $filters.slice($filters.length - items.length);
+            animation.bright_change($new);
+            scroll_pane.data('jsp').reinitialise();
+            scroll_pane.data('jsp').scrollToPercentY(100, true);
         });
         gobotany.utils.notify('More questions added');
         helper.save_filter_state();

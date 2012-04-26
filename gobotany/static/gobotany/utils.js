@@ -31,45 +31,6 @@ gobotany.utils.notify = function(txt) {
     }, 5000);
 };
 
-gobotany.utils.animate_changed = function(node, options) {
-    var start_color = '#ff0';
-    var end_color = '#fff';
-    if (options !== undefined) {
-        if (options['start_color']) {
-            start_color = options['start_color'];
-        }
-        if (options['end_color']) {
-            end_color = options['end_color'];
-        }
-    }
-
-    var nodes = node;
-    if (nodes.length === undefined) {
-        nodes = [nodes];
-    }
-
-    var animation = nodes.animateProperty({
-        duration: 2000,
-        properties: {
-            backgroundColor: {
-                start: start_color,
-                end: end_color
-            }
-        },
-        onEnd: function() {
-            // When the animation is done, remove the inline style
-            // property containing the background color so it will
-            // not interfere with future hover or selection states.
-            // NOTE: Due to jQuery Ticket #9699 and a bug in Webkit, 
-            // we set style property to an empty string before 
-            // deleting it to be sure it's cleared.
-            nodes.attr('style', '');
-            nodes.removeAttr('style');
-        }
-    });
-    animation.play();
-};
-
 gobotany.utils.clone = function(obj, updated_args) {
     var new_obj = (obj instanceof Array) ? [] : {};
     for (i in obj) {
