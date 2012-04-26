@@ -9,7 +9,7 @@ var sample_hash = '#_filters=family,genus,habitat_general,' +
     'trophophyll_morphology_ly,trophophyll_margins_ly' +
     '&family=Lycopodiaceae&trophophyll_form_ly=short%20and%20scale-like' +
     '&horizontal_shoot_position_ly=on%20the%20surface%20of%20the%20ground' +
-    '&_visible=habitat_general&_view=photos&_show=branches';
+    '&_view=photos&_show=branches';
 
 var results_page_state = ResultsPageState.create({hash: sample_hash});
 
@@ -45,12 +45,6 @@ module.exports = {
                     'on the surface of the ground'});
         },
 
-        'can parse the visible filter from the hash': function () {
-            var visible_filter =
-                results_page_state.parameter_from_hash('visible');
-            visible_filter.should.equal('habitat_general');
-        },
-
         'can parse the tab view from the hash': function () {
             var tab_view = results_page_state.parameter_from_hash('view');
             tab_view.should.equal('photos');
@@ -60,5 +54,18 @@ module.exports = {
             var photo_type = results_page_state.parameter_from_hash('show');
             photo_type.should.equal('branches');
         },
+
+        'can create a hash from the page state': function () {
+            var filter_names = results_page_state.filter_names();
+            var filter_values = results_page_state.filter_values();
+
+            var hash = results_page_state.hash_from_page({
+                'filter_names': filter_names,
+                'filter_values': filter_values,
+                'view': 'photos',
+                'show': 'branches'
+            });
+            hash.should.equal(sample_hash);
+        }
     }
 };

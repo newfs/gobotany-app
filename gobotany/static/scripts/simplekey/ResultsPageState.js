@@ -14,6 +14,7 @@ define([
             hash = hash.substr(1);
         }
 
+        this.set('filters', {});
         this.set('hash', hash);
     },
 
@@ -77,5 +78,34 @@ define([
 
         return parameter_value;
     },
+
+    hash_from_page: function (args) {
+        var filter_names = args['filter_names'],
+            filter_values = args['filter_values'],
+            hash = '#_filters=',
+            i,
+            key,
+            view = args['view'] || 'photos',
+            show = args['show'] || '';
+
+        for (i = 0; i < filter_names.length; i += 1) {
+            if (i > 0) {
+                 hash += ',';
+            }
+            hash += filter_names[i];
+        }
+
+        for (key in filter_values) {
+            if (filter_values.hasOwnProperty(key)) {    
+                hash += '&' + key + '=' +
+                    encodeURIComponent(filter_values[key]);
+            }
+        }
+
+        hash += '&_view=' + view;
+        hash += '&_show=' + show;
+
+        return hash;
+    }
 
 })});
