@@ -3,21 +3,12 @@ require([
     'activate_search_suggest',
     'shadowbox',
     'shadowbox_init',
+    'sidebar',
     'activate_video_links'
 ]);
 
 require([
-    'dojo_config',
-    '/static/js/dojo/dojo.js',
-    '/static/js/layers/sk.js',
-    'sidebar',
-    'simplekey/resources'   // used by Glossarizer
-], function() {
-
-    dojo.require('gobotany.sk.groups');
-    dojo.addOnLoad(function() {
-        var helper = gobotany.sk.groups.GroupsHelper();
-        helper.setup();
-    });
-
+    'simplekey/glossarize'
+], function(glossarize) {
+    glossarize($('.key-char, .exceptions'));
 });
