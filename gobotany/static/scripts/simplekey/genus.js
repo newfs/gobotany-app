@@ -1,6 +1,12 @@
 define([
-    'args'
-], function(args) {
+    'args',
+    'jquery',
+    'simplekey/glossarize'
+], function(args, x, glossarize) {
+
+    $(document).ready(function() {
+        glossarize($('.description'));
+    });
 
     require([
         'activate_search_suggest',
