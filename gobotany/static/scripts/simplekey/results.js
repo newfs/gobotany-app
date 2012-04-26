@@ -222,6 +222,8 @@ define([
     /* All filters can be cleared with a single button click. */
 
     $('#sidebar a.clear-all-btn').click(function() {
+        if (helper.filter_section.working_area !== null)
+            helper.filter_section.working_area.dismiss();
         _.each(App3.filter_controller.get('content'), function(filter) {
             filter.set('value', null);
         });
