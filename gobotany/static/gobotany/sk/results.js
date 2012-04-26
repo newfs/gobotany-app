@@ -48,34 +48,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
                 this.species_section.plant_preview_characters =
                     pile_info.plant_preview_characters;
-
-                // Set up the filters from URL hash values if the list of
-                // filters is present in the hash. Otherwise, set up the
-                // default filters from the pile info, and if just a family
-                // or genus was passed (examples: /#family=... /#genus=...),
-                // those values will be set later.
-
-                /* TODO: remove soon */
-                /*
-                var should_set_up_from_hash = false;
-                var hash_value = dojo.hash();
-                if (hash_value !== undefined) {
-                    var hash_object = dojo.queryToObject(hash_value);
-                    if (hash_object._filters) {  // hash parameter '_filters'
-                        should_set_up_from_hash = true;
-                    }
-                }
-
-                if (should_set_up_from_hash) {
-                    this.setup_filters_from_hash({
-                        on_complete: filters_loaded});
-                }
-                else {
-                    this.setup_filters_from_pile_info({
-                        pile_info: pile_info,
-                        on_complete: filters_loaded});
-                }
-                */
             }));
 
         // Set up the onhashchange event handler, which will be used to detect
@@ -99,23 +71,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         }
     },
 
-    // Called when all filters are loaded and the species list has been
-    // received and processed by the filter manager.
-    finish_initialization: function(filter) {
-
-        return;
-
-        // TODO: John will pop up the working area based on URL, like this did:
-
-        // Show a filter in the filter working area if necessary.
-        // var filter_name = this.filter_section.visible_filter_short_name;
-        // if (filter_name !== '') {
-        //     var filter = this.filter_manager.get_filter(filter_name);
-        //     if (filter !== undefined)
-        //         this.filter_section.show_filter_working(filter);
-        // }
-    },
-
     handle_undo: function() {
         // Detect and handle URL hash changes for which Undo is supported.
         var current_url = window.location.href;
@@ -136,97 +91,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             window.location.reload();
         }
     },
-
-    /* TODO: remove soon */
-    /*
-    setup_filters_from_pile_info: function(args) {
-        // summary:
-        //   Sets up the internal filter data structure based on default
-        //   filters in the pile info.
-
-        var default_filters = args.pile_info.default_filters;
-        var filters = [];
-        for (var i = 0; i < default_filters.length; i++) {
-            var filter = this.filter_manager.add_filter(default_filters[i]);
-            filters.push(filter);
-        }
-        if (args && args.on_complete)
-            args.on_complete(filters);
-    },
-    */
-
-    /* TODO: remove soon */
-    /*
-    setup_filters_from_hash: function(args) {
-        // summary:
-        //   Sets up the internal filter data structure based on values in
-        //   in the url hash (dojo.hash())
-
-        console.log('setting up from hash - ' + dojo.hash());
-
-        var hash_object = dojo.queryToObject(dojo.hash());
-        // console.log('hash_object:');
-        // console.log(hash_object);
-
-        var filter_values = {};
-        var filter_names = [];
-        if (hash_object._filters !== undefined) {
-            var comma = hash_object._filters.split(',');
-            for (var x = 0; x < comma.length; x++) {
-                var char_name = comma[x];
-                var value = hash_object[char_name];
-                if (this.filter_manager.has_filter(char_name)) {
-                    this.filter_manager.set_selected_value(char_name, value);
-                }
-                else {
-                    filter_values[char_name] = value;
-                    filter_names.push(comma[x]);
-                }
-            }
-        }
-
-        // Handle family or genus filter values, if applicable.
-
-        if (hash_object.family) {
-            this.filter_manager.set_selected_value('family',
-                hash_object.family);
-            dojo.publish('/sk/filter/change',
-                [this.family_genus_selectors.family_filter]);
-        }
-        if (hash_object.genus) {
-            this.filter_manager.set_selected_value('genus',
-                hash_object.genus);
-            dojo.publish('/sk/filter/change',
-                [this.family_genus_selectors.genus_filter]);
-        }
-
-        if (filter_names.length > 0) {
-            simplekey_resources.pile_characters(this.pile_slug)
-                .done(dojo.hitch(this, function(items) {
-                    var filters = [];
-                    dojo.forEach(items, dojo.hitch(this, function(item) {
-                        if (_.indexOf(filter_names, item.short_name) == -1)
-                            // Because all filters come back, we have to
-                            // skip the ones we do not want.
-                            return;
-                        var filter_args = gobotany.utils.clone(item,
-                            {pile_slug: this.pile_slug});
-                        var filter = this.filter_manager.add_filter(
-                            filter_args);
-                        filters.push(filter);
-                        var name = filter.character_short_name;
-                        var v = filter_values[name];
-                        if (v !== undefined) {
-                            this.filter_manager.set_selected_value(name, v);
-                        }
-                    }));
-                    if (args && args.on_complete) {
-                        args.on_complete(filters);
-                    }
-                }));
-        }
-    },
-    */
 
     save_filter_state: function() {
 
@@ -376,10 +240,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             dojo.place(item, character_groups_list);
         }
     },
-
-    //        this.glossarizer.markup(labelsLink);
-    // if (typeof(pos) === 'number')
-    //     dojo.style(filter_li, {backgroundColor: '#c8b560'});
 
     /* A filter object has been returned from Ajax!  We can now set up
        the working area and save the new page state. */
