@@ -293,7 +293,7 @@ define([
                 }
             });
 
-            // Set any classification filter specified on the hash.
+            // Set any classification filter values specified on the hash.
             if (filter_values['family']) {
                 App3.family_filter.set('value', filter_values['family']);
             }
