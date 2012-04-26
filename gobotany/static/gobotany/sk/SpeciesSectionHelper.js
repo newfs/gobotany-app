@@ -261,14 +261,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         options: {onFinish: dojo.hitch(this, function() {
                             var $sb = $('#sb-container');
                             var $children = $sb.find('p, dt, dd, li');
-                            var markup = dojo.hitch(
-                                this.results_helper.filter_section
-                                    .glossarizer, 'markup');
-
                             $sb.find('.img-container').scrollable();
-                            for (var i = 0; i < $children.length; i++) {
-                                markup($children[i]);
-                            }
+                            glossarize($children);
                         })}
                     });
                 }

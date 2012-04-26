@@ -2,7 +2,6 @@
 
 dojo.provide('gobotany.sk.results');
 
-dojo.require('gobotany.sk.glossary');
 dojo.require('gobotany.sk.SpeciesSectionHelper');
 dojo.require('gobotany.sk.working_area');
 dojo.require('gobotany.utils');
@@ -159,7 +158,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         //   An instance of gobotany.sk.results.ResultsHelper
 
         this.results_helper = results_helper;
-        this.glossarizer = gobotany.sk.glossary.Glossarizer();
         this.working_area = null;
 
         // This variable is for keeping track of which filter is currently
@@ -197,7 +195,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             div: $('div.working-area')[0],
             filter: filter,
             y: y,
-            glossarizer: this.glossarizer,
             on_dismiss: dojo.hitch(this, 'on_working_area_dismiss')
         });
 

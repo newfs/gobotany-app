@@ -8,10 +8,11 @@ define([
     'simplekey/FilterController',
     'simplekey/animation',
     'simplekey/cookie',
+    'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState'
 ], function(args, x, x, x, App3, _Filter, _FilterController,
-            animation, cookie, resources, ResultsPageState) {
+            animation, cookie, _glossarize, resources, ResultsPageState) {
 
     var pile_slug = args.pile_slug;
     var helper;  // legacy object; gets set way down at the bottom of this file
@@ -25,6 +26,7 @@ define([
     global_speciessectionhelper = null;
     Filter = _Filter;
     FilterController = _FilterController;
+    glossarize = _glossarize;
 
     App3.taxa = Ember.Object.create({
         len: 'Loading',   // placeholder until we have an integer to display
@@ -511,7 +513,6 @@ define([
 
             require([
                 'order!/static/gobotany/utils.js',
-                'order!/static/gobotany/sk/glossary.js',
                 'order!/static/gobotany/sk/photo.js',
                 'order!/static/gobotany/sk/results.js',
                 'order!/static/gobotany/sk/SpeciesSectionHelper.js',

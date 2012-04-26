@@ -51,11 +51,10 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
     div_map: null,  // maps choice value -> <input> element
     close_button_connection: null,  // connection from the close button to us
 
-    /* {div, filter, glossarizer, on_dismiss} */
+    /* {div, filter, on_dismiss} */
     constructor: function(args) {
         this.div = args.div;
         this.filter = args.filter;
-        this.glossarize = dojo.hitch(args.glossarizer, 'markup');
         this._draw_basics(args.y);
         this._draw_specifics();
         this.on_dismiss = args.on_dismiss;
@@ -98,10 +97,10 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
 
         // Show the question, hint and Apply button.
-        d.query('h4').html(f.info.question).forEach(this.glossarize);
-        d.query('h4').style({display: 'block'});
-        d.query('.hint').html(p(f.info.hint)).forEach(this.glossarize);
-        d.query('.info').style({display: 'block'});
+        glossarize($('h4').html(f.info.question));
+        $('h4').css('display', 'block');
+        glossarize($('.hint').html(p(f.info.hint)));
+        $('.info').css('display', 'block');
 
         // Display character drawing, if an image is available.
         if (f.info.image_url) {
@@ -194,8 +193,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
                 });
             }
 
-            dojo.query('span.label', character_value_div).forEach(
-                this.glossarize);
+            glossarize($('span.label', character_value_div));
         }
 
         // Call a method when radio button is clicked.
