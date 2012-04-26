@@ -46,13 +46,18 @@ define([
     /* Async resources and deferreds. */
 
     var async_key_vector = resources.key_vector('simple');
-    var async_pile_taxa = resources.pile_species(pile_slug);
+    var async_pile_taxadata = resources.pile_species(pile_slug);
     var filter_controller_is_built = $.Deferred();
+
+    var pile_taxa_ready = $.Deferred();
+    async_pile_taxadata.done(function(taxadata) {
+        pile_taxa_ready.resolve(_.pluck(taxadata, 'id'));
+    });
 
     /* Various parts of the page need random access to taxa. */
 
     App3.taxa_by_sciname = {};
-    async_pile_taxa.done(function(taxadata) {
+    async_pile_taxadata.done(function(taxadata) {
         _.each(taxadata, function(datum) {
             App3.taxa_by_sciname[datum.scientific_name] = datum;
         });
@@ -61,7 +66,7 @@ define([
     /* The FilterController can be activated once we know the full list
        of species that it will be filtering. */
 
-    $.when(async_key_vector, async_pile_taxa).done(function(kv, taxadata) {
+    $.when(async_key_vector, async_pile_taxadata).done(function(kv, taxadata) {
         var simple_key_taxa = kv[0].species;
         var taxadata = _.filter(taxadata, function(taxon) {
             return _.indexOf(simple_key_taxa, taxon.id) != -1;
@@ -171,9 +176,8 @@ define([
 
             var y = $target.offset().top - 15;
             var async = resources.character_vector(this.filter.slug);
-            $.when(async_pile_taxa, async).done(function(pile_taxa, values) {
-                var ids = _.pluck(pile_taxa, 'id');
-                filter.install_values({pile_taxa: ids, values: values});
+            $.when(pile_taxa_ready, async).done(function(pile_taxa, values) {
+                filter.install_values({pile_taxa: pile_taxa, values: values});
                 helper.filter_section.show_filter_working_onload(filter, y);
             });
         }
@@ -280,8 +284,13 @@ define([
                 if (_.has(filter_values, slug)) {
                     var filter = App3.filter_controller.filtermap[slug];
                     var value = filter_values[slug];
-                    resources.character_vector(slug).done(function(values) {
-                        filter.install_values(values);
+                    var async = resources.character_vector(slug);
+                    $.when(pile_taxa_ready, async)
+                        .done(function(pile_taxa, values) {
+                        filter.install_values({
+                            pile_taxa: pile_taxa,
+                            values: values
+                        });
                         filter.set('value', value);
                     });
                 }

@@ -394,7 +394,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
     //        this.glossarizer.markup(labelsLink);
     // if (typeof(pos) === 'number')
     //     dojo.style(filter_li, {backgroundColor: '#c8b560'});
-    // gobotany.utils.animate_changed(dojo.query(q), {'end_color': '#ffd'});
 
     /* A filter object has been returned from Ajax!  We can now set up
        the working area and save the new page state. */
