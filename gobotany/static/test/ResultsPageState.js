@@ -15,11 +15,6 @@ var results_page_state = ResultsPageState.create({hash: sample_hash});
 
 module.exports = {
     'ResultsPageState': {
-        'can have a hash': function () {
-            var trimmed_sample_hash = sample_hash.substr(1);
-            results_page_state.hash.should.equal(trimmed_sample_hash);
-        },
-
         'can detect the filters parameter in the hash': function () {
             var has_filters = results_page_state.hash_has_filters();
             has_filters.should.equal(true);
@@ -46,25 +41,26 @@ module.exports = {
         },
 
         'can parse the tab view from the hash': function () {
-            var tab_view = results_page_state.parameter_from_hash('view');
+            var tab_view = results_page_state.tab_view();
             tab_view.should.equal('photos');
         },
 
         'can parse the photo type from the hash': function () {
-            var photo_type = results_page_state.parameter_from_hash('show');
+            var photo_type = results_page_state.photo_type();
             photo_type.should.equal('branches');
         },
 
         'can create a hash from the page state': function () {
-            var filter_names = results_page_state.filter_names();
-            var filter_values = results_page_state.filter_values();
-
-            var hash = results_page_state.hash_from_page({
-                'filter_names': filter_names,
-                'filter_values': filter_values,
-                'view': 'photos',
-                'show': 'branches'
-            });
+            var filter_names = results_page_state.filter_names(),
+                filter_values = results_page_state.filter_values(),
+                hash,
+                page_state = ResultsPageState.create({
+                    'filter_names': filter_names,
+                    'filter_values': filter_values,
+                    'photo_type': 'branches',
+                    'tab_view': 'photos'
+                });
+            hash = page_state.hash();
             hash.should.equal(sample_hash);
         }
     }

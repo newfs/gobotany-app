@@ -7,26 +7,39 @@ define([
     'ember'
 ], function () {return Ember.Object.extend({
 
-    init: function () {
-        var hash = this.hash;
+    init: function (args) {
+        var hash = this.hash || '',
+            filter_names = this.filter_names || [],
+            filter_values = this.filter_values || [],
+            photo_type = this.photo_type || '',
+            tab_view = this.tab_view || '';
+            
+        delete this.hash;
+        delete this.filter_names;
+        delete this.filter_values;
+        delete this.photo_type;
+        delete this.tab_view;
 
         if (hash[0] === '#') {
             hash = hash.substr(1);
         }
+        this.set('_hash', hash);
 
-        this.set('filters', {});
-        this.set('hash', hash);
+        this.set('_filter_names', filter_names);
+        this.set('_filter_values', filter_values);
+        this.set('_photo_type', photo_type);
+        this.set('_tab_view', tab_view);
     },
 
     hash_has_filters: function () {
-        return (this.hash.indexOf('_filters=') > -1);
+        return (this._hash.indexOf('_filters=') > -1);
     },
 
     filter_names: function () {
         var filter_names = [],
             filters_parameter,
             i,
-            parameters = this.hash.split('&');
+            parameters = this._hash.split('&');
 
         for (i = 0; i < parameters.length; i += 1) {
             if (parameters[i].indexOf('_filters=') > -1) {
@@ -44,7 +57,7 @@ define([
     },
 
     filter_values: function () {
-        var decoded_hash = decodeURIComponent(this.hash),
+        var decoded_hash = decodeURIComponent(this._hash),
             filter_values = {},
             i,
             parameters = decoded_hash.split('&'),
@@ -62,11 +75,11 @@ define([
         return filter_values;
     },
 
-    parameter_from_hash: function (parameter_name) {
+    _parameter_from_hash: function (parameter_name) {
         var i,
             parameter_key,
             parameter_value,
-            parameters = this.hash.split('&');
+            parameters = this._hash.split('&');
 
         parameter_key = '_' + parameter_name;
         for (i = 0; i < parameters.length; i += 1) {
@@ -79,31 +92,35 @@ define([
         return parameter_value;
     },
 
-    hash_from_page: function (args) {
-        var filter_names = args['filter_names'],
-            filter_values = args['filter_values'],
-            hash = '#_filters=',
-            i,
-            key,
-            view = args['view'] || 'photos',
-            show = args['show'] || '';
+    tab_view: function () {
+        return this._parameter_from_hash('view');
+    },
 
-        for (i = 0; i < filter_names.length; i += 1) {
+    photo_type: function () {
+        return this._parameter_from_hash('show');
+    },
+
+    hash: function (args) {
+        var hash = '#_filters=',
+            i,
+            key;
+
+        for (i = 0; i < this._filter_names.length; i += 1) {
             if (i > 0) {
                  hash += ',';
             }
-            hash += filter_names[i];
+            hash += this._filter_names[i];
         }
 
-        for (key in filter_values) {
-            if (filter_values.hasOwnProperty(key)) {    
+        for (key in this._filter_values) {
+            if (this._filter_values.hasOwnProperty(key)) {    
                 hash += '&' + key + '=' +
-                    encodeURIComponent(filter_values[key]);
+                    encodeURIComponent(this._filter_values[key]);
             }
         }
 
-        hash += '&_view=' + view;
-        hash += '&_show=' + show;
+        hash += '&_view=' + this._tab_view;
+        hash += '&_show=' + this._photo_type;
 
         return hash;
     }
