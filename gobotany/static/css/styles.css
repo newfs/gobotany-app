@@ -2546,17 +2546,26 @@ nav #search-suggest .menu a:hover, #search-suggest .menu li:hover {
 
 .tooltipsy {
   border: 1px solid #080;
+
   -moz-border-radius: 1em;
   -webkit-border-radius: 1em;
   -o-border-radius: 1em;
   -ms-border-radius: 1em;
   -khtml-border-radius: 1em;
   border-radius: 1em;
+
   -moz-box-shadow: 3px 3px 10px #333333;
   -webkit-box-shadow: 3px 3px 10px #333333;
   -o-box-shadow: 3px 3px 10px #333333;
   box-shadow: 3px 3px 10px #333333;
+
   background-color: #fff;
+  background: -webkit-linear-gradient(#ffffff, #f0f0c0);
+  background: -moz-linear-gradient(#ffffff, #f0f0c0);
+  background: -o-linear-gradient(#ffffff, #f0f0c0);
+  background: -ms-linear-gradient(#ffffff, #f0f0c0);
+  background: linear-gradient(#ffffff, #f0f0c0);
+
   padding: 1em;
 }
 

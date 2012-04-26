@@ -4,7 +4,6 @@
 dojo.provide('gobotany.sk.glossary');
 dojo.require('dojo.regexp');
 dojo.require('dojox.data.JsonRestStore');
-dojo.require('dijit.Tooltip');
 
 dojo.declare('gobotany.sk.glossary.GlossaryHelper', null, {
     constructor: function() {
@@ -68,12 +67,10 @@ dojo.declare('gobotany.sk.glossary.Glossarizer', null, {
                 var term = node2.innerHTML.toLowerCase();
                 var imgsrc = images[term];
                 node2.id = gloss_id;
-                dijit.Tooltip({
-                    connectId: [gloss_id],
-                    label: '<p class="glosstip">' +
+                $('#' + gloss_id).tooltipsy({
+                    content: '<p class="glosstip">' +
                         (imgsrc ? '<img src="' + imgsrc + '">' : '') +
-                        defs[term] + '</p>',
-                    position: 'above'
+                        defs[term] + '</p>'
                 });
             });
         }, this));
