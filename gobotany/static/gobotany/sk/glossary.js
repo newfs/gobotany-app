@@ -2,8 +2,11 @@
 /*global dojo, dojox, dijit, gobotany */
 
 dojo.provide('gobotany.sk.glossary');
-dojo.require('dojo.regexp');
-dojo.require('dojox.data.JsonRestStore');
+
+escapeRegExp = function(str) {
+    // http://stackoverflow.com/questions/3446170/
+    return str.replace(/[-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+};
 
 dojo.declare('gobotany.sk.glossary.GlossaryHelper', null, {
     constructor: function() {
@@ -36,7 +39,7 @@ dojo.declare('gobotany.sk.glossary.Glossarizer', null, {
         var defs = this.glossaryblob.definitions;
         for (term in defs)
             if (defs.hasOwnProperty(term))
-                terms.push(dojo.regexp.escapeString(term));
+                terms.push(escapeRegExp(term));
 
         /* For incredible speed, we pre-build a regular expression of
            all glossary terms.  This has the advantage of always selecting
