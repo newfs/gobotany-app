@@ -20,6 +20,7 @@ dojoConfig = {
     packages: [
         { name: 'dojo', location: 'lib/dojo' },
         { name: 'dojox', location: 'lib/dojox' },
+        { name: 'dijit', location: 'lib/dijit' },
         { name: 'gobotany', location: '/static/gobotany' }
     ],
     // Until we fix the rest of the AMD modules
