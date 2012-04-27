@@ -508,10 +508,14 @@ define([
 
     if (true) {
         require([
-            'order!dojo_config',
-            'order!/static/js/dojo/dojo.js',
-            'order!/static/js/layers/nls/sk_en-us.js',
-            'order!/static/js/layers/sk.js'
+            'order!/static/gobotany/filters.js',
+            'order!/static/gobotany/utils.js',
+            'order!/static/gobotany/sk/glossary.js',
+            'order!/static/gobotany/sk/photo.js',
+            'order!/static/gobotany/sk/results.js',
+            'order!/static/gobotany/sk/SpeciesSectionHelper.js',
+            'order!/static/gobotany/sk/working_area.js',
+            'order!/static/gobotany/sk/SearchSuggest.js'
         ], function() {
 
             /* Glue: tell Dojo when the set of selected species
