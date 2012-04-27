@@ -38,34 +38,6 @@ def canonical_images(request):
                                 {'results': results},
                                 context_instance=RequestContext(request))
 
-def species_lists(request):
-    biglist = []
-
-    for pilegroup in models.PileGroup.objects.all():
-        biglist.append({
-                'name': 'Pile-Group ' + pilegroup.name,
-                'url': '/taxon/?' + urlencode({'pilegroup': pilegroup.slug}),
-                })
-
-    for pile in models.Pile.objects.all():
-        biglist.append({
-                'name': 'Pile ' + pile.name,
-                'url': '/taxon/?' + urlencode({'pile': pile.slug}),
-                })
-
-    species_names = [ t.scientific_name for t in models.Taxon.objects.all() ]
-    genus_names = sorted(set( name.split()[0] for name in species_names ))
-    for genus_name in genus_names:
-        biglist.append({
-                'name': 'Genus ' + genus_name,
-                'url': '/taxon/?' + urlencode({'genus': genus_name}),
-                })
-
-    return render_to_response('species_lists.html', {
-            'biglist': biglist,
-            })
-
-
 def pile_characters_select(request):
     return render_to_response('pile_characters_select.html', {
             'piles': [ (pile.slug, pile.name) for pile
