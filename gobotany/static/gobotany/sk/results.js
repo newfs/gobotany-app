@@ -5,6 +5,8 @@ dojo.provide('gobotany.sk.results');
 dojo.require('gobotany.sk.SpeciesSectionHelper');
 dojo.require('gobotany.sk.working_area');
 
+var results_photo_menu = dojo.require('simplekey/results_photo_menu');
+
 dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
     constructor: function(/*String*/ pile_slug) {
