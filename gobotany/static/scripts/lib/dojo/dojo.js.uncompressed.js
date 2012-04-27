@@ -321,7 +321,13 @@
 
 	req.eval =
 		function(text, hint){
-			return eval_(text + "\r\n////@ sourceURL=" + hint);
+            try {
+                return eval_(text + "\r\n////@ sourceURL=" + hint);
+            }
+            catch(ex) {
+                console.log('Failed to evaluate module at: ' + hint);
+                throw ex;
+            }
 		};
 
 	//
