@@ -20,18 +20,6 @@ def piles_pile_groups(request):
     return render_to_response('piles_pile_groups.html',
                               context_instance=RequestContext(request))
 
-def taxon_search(request):
-    kwargs = {}
-    if request.method == 'POST':
-        kwargs['queried'] = True
-        s = kwargs['s'] = request.POST['s'].strip()
-        kwargs['query_results'] = botany.query_species(
-            scientific_name=s)
-
-    return render_to_response('taxon_search.html', kwargs,
-                               context_instance=RequestContext(request))
-
-
 def static_serve(request, path, package=None,
                  relative_path='', show_indexes=False):
     document_root = package.__path__[0]

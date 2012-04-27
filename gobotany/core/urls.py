@@ -24,7 +24,6 @@ urlpatterns = patterns(
     '',
     url('^$', views.default_view),
 
-    url(r'^taxon-search/$', views.taxon_search),
     url(r'^canonical-images?$', views.canonical_images),
     url(r'^species-lists/$', views.species_lists),
     url(r'^best-characters/$', views.pile_characters_select),
