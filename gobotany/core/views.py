@@ -1,12 +1,9 @@
-import os
 import time
 from collections import defaultdict
 from operator import attrgetter, itemgetter
-from urllib import urlencode
 
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.views import static 
 
 from gobotany.core import botany, igdt, models
 
@@ -32,7 +29,7 @@ def pile_characters_select(request):
             })
 
 
-def pile_characters(request, pile_slug):
+def _pile_characters(request, pile_slug):
     WIDTH = 500
 
     coverage_weight, ease_weight, length_weight = igdt.get_weights()
@@ -262,10 +259,9 @@ def pile_characters(request, pile_slug):
 # wrapper that prints a normal traceback:
 #
 
-_func = pile_characters
 def pile_characters(*args, **kw):
     try:
-        return _func(*args, **kw)
+        return _pile_characters(*args, **kw)
     except Exception:
         from django.http import HttpResponse
         import traceback

@@ -15,7 +15,6 @@ from django.core import management
 management.setup_environ(settings)
 
 from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import default_storage
 from django.db import connection, transaction
 from django.template.defaultfilters import slugify
