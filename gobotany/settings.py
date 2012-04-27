@@ -140,12 +140,15 @@ if 'MEMCACHE_SERVERS' in os.environ:
 # Environment variables can be set to provide real AWS keys for writing
 # images, or to point the application at an alternative bucket.
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'readonly')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'readonly')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'newfs')
-AWS_QUERYSTRING_AUTH = False
-AWS_S3_SECURE_URLS = False
+if 'test' in sys.argv:
+    pass
+else:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'readonly')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'readonly')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'newfs')
+    AWS_QUERYSTRING_AUTH = False
+    AWS_S3_SECURE_URLS = False
 
 # Enable gunicorn sub-command if gunicorn is available.
 
