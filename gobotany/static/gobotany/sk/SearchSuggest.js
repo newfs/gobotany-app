@@ -1,21 +1,21 @@
 // Global declaration for JSLint (http://www.jslint.com/)
-/*global dojo, dojox, window, console, setTimeout, unescape */
+/*global define, window, console, setTimeout, unescape */
 
 // Configure this module here until we finish the migration
-define(['dojo/_base/declare', 
-        'dojox/data/JsonRestStore', 
-        'dojo/query', 
-        'dojo/on', 
-        'dojo/_base/lang', 
+define(['dojo/_base/declare',
+        'dojox/data/JsonRestStore',
+        'dojo/query',
+        'dojo/on',
+        'dojo/_base/lang',
         'dojo/keys',
-        'dojo/dom', 
+        'dojo/dom',
         'dojo/dom-class',
-        'dojo/dom-geom',
+        'dojo/dom-geometry',
         'dojo/dom-construct',
-        'dojo/dom-prop'], 
+        'dojo/dom-prop'],
     function(declare, JsonRestStore, query, on, lang, keys,
-        dom, domClass, domGeom, domProp) {
-        return declare('gobotany.sk.SearchSuggest', null {
+            dom, domClass, domGeom, domConstruct, domProp) {
+        return declare('gobotany.sk.SearchSuggest', null, {
             constants: { TIMEOUT_INTERVAL_MS: 200 },
             stored_search_box_value: '',
             search_box: null,
@@ -70,7 +70,7 @@ define(['dojo/_base/declare',
                 var item_index = -1;
                 var i = 0;
                 while ((found === false) && (i < menu_items.length)) {
-                    if (domClass.hasClass(menu_items[i], 'highlighted')) {
+                    if (domClass.contains(menu_items[i], 'highlighted')) {
                         found = true;
                         item_index = i;
                     }
@@ -99,11 +99,11 @@ define(['dojo/_base/declare',
                     if (highlighted_item_index >= 0) {
                         var highlighted_item =
                             query('li', this.menu)[highlighted_item_index];
-                        domClass.removeClass(highlighted_item, HIGHLIGHT_CLASS);
+                        domClass.remove(highlighted_item, HIGHLIGHT_CLASS);
                     }
 
                     // Highlight the new item.
-                    domClass.addClass(menu_item, HIGHLIGHT_CLASS);
+                    domClass.add(menu_item, HIGHLIGHT_CLASS);
 
                     // Put the menu item text in the search box, but
                     // first set the stored value so this won't fire a
@@ -193,10 +193,10 @@ define(['dojo/_base/declare',
             show_menu: function(should_show) {
                 var CLASS_NAME = 'hidden';
                 if (should_show) {
-                    domClass.removeClass(this.menu, CLASS_NAME);
+                    domClass.remove(this.menu, CLASS_NAME);
                 }
                 else {
-                    domClass.addClass(this.menu, CLASS_NAME);
+                    domClass.add(this.menu, CLASS_NAME);
                 }
                 this.set_horizontal_position();
             },
@@ -285,6 +285,6 @@ define(['dojo/_base/declare',
                     }
                 }
             }
-        }
+        });
     }
 );
