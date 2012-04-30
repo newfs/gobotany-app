@@ -304,6 +304,10 @@ define([
             if (filter_values['genus']) {
                 App3.genus_filter.set('value', filter_values['genus']);
             }
+            // Set the image type specified on the hash.
+            var image_type = results_page_state.image_type();
+            console.log('** about to set image type:', image_type);
+            App3.set('image_type', image_type);
         });
     } else {
         // With no hash on the URL, load the default filters for this
@@ -326,13 +330,13 @@ define([
     /* When filters change, or other page elements (photo type,
      * tab view) change, update the hash and save it. */
 
-    // TODO: Call this also when image type and tab view change.
+    // TODO: Call this also when the tab view changes.
     var save_filter_state = function () {
 
         var image_type = App3.image_type;
-        if (!image_type) {
-            // If the image type menu is not ready yet, the page is still
-            // loading, so do not save the state yet.
+        if (!image_type || !global_speciessectionhelper) {
+            // If the image type menu or species section is not ready yet,
+            // the page is still loading, so do not save the state yet.
             return;
         }
         var tab_view = global_speciessectionhelper.current_view;
@@ -352,8 +356,8 @@ define([
         var results_page_state = ResultsPageState.create({
             'filter_names': filter_names,
             'filter_values': filter_values,
-            'image_type': 'branches',
-            'tab_view': 'photos'
+            'image_type': App3.image_type,
+            'tab_view': 'photos' // TODO: change to actual App3 value
         });
         var hash = results_page_state.hash();
 
@@ -382,6 +386,9 @@ define([
     };
 
     App3.addObserver('filter_controller.@each.value', function() {
+        save_filter_state();
+    });
+    App3.addObserver('image_type', function() {
         save_filter_state();
     });
 
