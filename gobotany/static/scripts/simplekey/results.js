@@ -306,8 +306,11 @@ define([
             }
             // Set the image type specified on the hash.
             var image_type = results_page_state.image_type();
-            console.log('** restore: about to set image type:', image_type);
-            App3.set('image_type', image_type);
+            if (image_type !== '') {
+                console.log('** restore: about to set image type:',
+                            image_type);
+                App3.set('image_type', image_type);
+            }
 
             // Set the tab view specified on the hash.
             var tab_view = results_page_state.tab_view();
