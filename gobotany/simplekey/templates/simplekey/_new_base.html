@@ -46,13 +46,17 @@
 
         {% include "simplekey/_script_constants.html" %}
 
-        <script src="/static/scripts/require.js"></script>
+        <script src="/static/scripts/dojo_config.js"></script>
+        <script src="/static/scripts/lib/dojo/dojo.js"></script>
+        <!-- <script src="/static/scripts/require.js"></script> -->
         {# This block is for adding any page-specific JS. #}
         <script>
+            /*
             require.config({
                 baseUrl: "/static/scripts",
                 waitSeconds: 180
             });
+            */
             {% block js_require %}{% endblock %}
         </script>
 
