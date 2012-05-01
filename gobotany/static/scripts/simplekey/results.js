@@ -306,8 +306,15 @@ define([
             }
             // Set the image type specified on the hash.
             var image_type = results_page_state.image_type();
-            console.log('** about to set image type:', image_type);
+            console.log('** restore: about to set image type:', image_type);
             App3.set('image_type', image_type);
+
+            // Set the tab view specified on the hash.
+            var tab_view = results_page_state.tab_view();
+            var is_list_view = (tab_view === 'list') ? true : false;
+            console.log('** restore: about to set view: is_list_view:',
+                        is_list_view);
+            App3.set('taxa.is_list', is_list_view);
         });
     } else {
         // With no hash on the URL, load the default filters for this
@@ -330,8 +337,8 @@ define([
     /* When filters change, or other page elements (photo type,
      * tab view) change, update the hash and save it. */
 
-    // TODO: Call this also when the tab view changes.
     var save_filter_state = function () {
+        var tab_view = App3.taxa.show_list ? 'list' : 'photos';
 
         var image_type = App3.image_type;
         if (!image_type || !global_speciessectionhelper) {
@@ -339,7 +346,6 @@ define([
             // the page is still loading, so do not save the state yet.
             return;
         }
-        var tab_view = global_speciessectionhelper.current_view;
         var filter_names = Object.keys(App3.filter_controller.filtermap);
         var filter_values = {};
         for (key in App3.filter_controller.filtermap) {
@@ -357,7 +363,7 @@ define([
             'filter_names': filter_names,
             'filter_values': filter_values,
             'image_type': App3.image_type,
-            'tab_view': 'photos' // TODO: change to actual App3 value
+            'tab_view': tab_view
         });
         var hash = results_page_state.hash();
 
@@ -389,6 +395,9 @@ define([
         save_filter_state();
     });
     App3.addObserver('image_type', function() {
+        save_filter_state();
+    });
+    App3.addObserver('taxa.show_list', function() {
         save_filter_state();
     });
 
