@@ -6,9 +6,6 @@ require([
 ]);
 
 require([
-    'dojo_config',
-    '/static/js/dojo/dojo.js',
-    '/static/js/layers/sk.js',
     'sidebar'
 ], function() {
 

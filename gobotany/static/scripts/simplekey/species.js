@@ -5,23 +5,14 @@ require([
 ]);
 
 require([
-    'dojo_config',
     'sidebar',
     'simplekey/glossarize'
-], function(x, x, _glossarize) {
+], function(x, _glossarize) {
     glossarize = _glossarize;
-    require([
-        '/static/js/dojo/dojo.js'
-    ], function() {
-        require([
-            '/static/js/layers/sk.js'
-        ], function() {
-            dojo.require('gobotany.sk.species');
-            dojo.addOnLoad(function() {
-                var helper = gobotany.sk.species.SpeciesPageHelper();
-                helper.setup();
-            });
-        });
+    dojo.require('gobotany.sk.species');
+    dojo.addOnLoad(function() {
+        var helper = gobotany.sk.species.SpeciesPageHelper();
+        helper.setup();
     });
 });
 
