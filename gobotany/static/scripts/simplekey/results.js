@@ -341,9 +341,9 @@ define([
         var tab_view = App3.taxa.show_list ? 'list' : 'photos';
 
         var image_type = App3.image_type;
-        if (!image_type || !global_speciessectionhelper) {
-            // If the image type menu or species section is not ready yet,
-            // the page is still loading, so do not save the state yet.
+        if (!image_type) {
+            // If the image type menu is not ready yet, the page is still
+            // loading, so do not save the state yet.
             return;
         }
         var filter_names = Object.keys(App3.filter_controller.filtermap);
