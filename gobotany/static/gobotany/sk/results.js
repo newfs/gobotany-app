@@ -23,6 +23,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         this.filter_section =
             new gobotany.sk.results.FilterSectionHelper(this);
 
+        this.image_types_populated = false;
         dojo.subscribe('results_loaded',
             dojo.hitch(this, this.populate_image_types));
 
@@ -117,6 +118,12 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
     // A subscriber for results_loaded
     populate_image_types: function(message) {
+        if (this.image_types_populated) {
+            // If the image types were already populated after the first
+            // set of results was loaded, skip doing so again.
+            return;
+        }
+
         // Get an object that tells which image type should be the
         // default selected menu item, and any image types to omit.
         var menu_config = results_photo_menu[this.pile_slug];
@@ -134,6 +141,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         if (image_types.indexOf(default_type) === -1)
             var default_type = image_types[0];
         App3.set('image_type', default_type);
+
+        this.image_types_populated = true;
     }
 });
 

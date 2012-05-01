@@ -365,7 +365,7 @@ define([
         var results_page_state = ResultsPageState.create({
             'filter_names': filter_names,
             'filter_values': filter_values,
-            'image_type': App3.image_type,
+            'image_type': image_type,
             'tab_view': tab_view
         });
         var hash = results_page_state.hash();
