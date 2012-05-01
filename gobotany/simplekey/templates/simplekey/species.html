@@ -52,15 +52,12 @@
                     </div>
                 {% endif %}
                 
-                <h2>
-                    <span class="scientific">
-                        {{ scientific_name|italicize_plant|safe }}
-                    </span>
-                    <span class="origin">{{ taxon.taxonomic_authority }}</span>
-                    <span class="common">
-                        {% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}
-                    </span>
-                </h2>
+                <h2><span class="scientific">{{ scientific_name|italicize_plant|safe }}</span>
+                    <span class="origin">{{ taxon.taxonomic_authority }}</span></h2>
+                {% if taxon.common_names.all %}
+                    <h3>{% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</h3>
+                {% endif %}
+
 
                 <div id="species-images">
                     <div class="scrollingHotSpotLeft"></div>

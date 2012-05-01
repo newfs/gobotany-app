@@ -74,8 +74,9 @@ def italicize_plant(value):
     words = fixed_words
 
     if len(words) >= 2:
-        # Assume the first two words are the genus and specific epithet.
-        words[0] = _italicize_word(words[0])
+        # Usually the first two words are the genus and specific epithet.
+        if words[0] != 'Genus:':
+            words[0] = _italicize_word(words[0])
         words[1] = _italicize_word(words[1])
         # Look for more words to italicize, such as epithets in a variety
         # or subspecies name.

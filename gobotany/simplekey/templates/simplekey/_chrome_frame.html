@@ -17,12 +17,11 @@
             <img src="/static/images/branding/logo-toplevel.png" alt="">
         </div>
         <script>
-            // The conditional ensures that this code will only execute in
-            // IE, so we can use the IE-specific attachEvent without worry.
-            //
-            // Set user mode in the URL to install in single-user, non-admin
-            // mode to help ensure success and so that the user should not
-            // have to "Enable" the plug-in.
+            {# The conditional ensures that this code will only run  #}
+            {# in IE, so we can use the IE-specific attachEvent      #}
+            {# without worry. Set user mode in the URL to install in #}
+            {# single-user, non-admin mode to help ensure success    #}
+            {# so that the user will not have to Enable the plug-in. #}
 	        window.attachEvent("onload", function() {
 	            CFInstall.check({
                     mode: "inline",

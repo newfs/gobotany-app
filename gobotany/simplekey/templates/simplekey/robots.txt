@@ -1,0 +1,1 @@
+Sitemap: http://{{ request.META.HTTP_HOST }}{% url sitemap %}

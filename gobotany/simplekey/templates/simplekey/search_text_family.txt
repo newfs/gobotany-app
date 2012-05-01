@@ -2,7 +2,7 @@
 
 Family: {{ object.name }}.
 
-{% if object.common_name %}{{ object.common_name }}.{% endif %}
+{% if object.common_name %}{{ object.common_name|cut:"The " }}.{% endif %}
 
 {{ object.description }}
 

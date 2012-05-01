@@ -1,3 +1,22 @@
+body, header {
+    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+}
+
+/* Claro fixes: fix some things overridden by the Claro Dijit theme styles */
+ol li, ul li {
+    line-height: inherit;
+}
+.claro {
+   	color: #000;
+    font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+}
+.claro .dijit {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 15px;
+}
+/* end Claro fixes */
+
 /* Global page structure */
 header, .content, footer {
     width: 100%;
@@ -26,7 +45,6 @@ nav {
 nav li {
     display: block;
     float: left;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 14px;
     margin: 0 13px 0 0;
     padding: 0;
@@ -85,11 +103,11 @@ nav #search button:active {
 
 #plantshare #sidebar a:hover,
 #teaching-tools #sidebar a:hover,
+#advanced-id #sidebar a:hover,
 #privacy-policy #sidebar a:hover,
 #terms-of-use #sidebar a:hover {
     text-decoration: none;
 }
-
 
 #home li.home a, #home li a:hover {
 	background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent;	
@@ -426,7 +444,6 @@ body.app {
 
 .not-my-plant {
 	float: right;
-    font-family: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif;
     padding: 20px 0 0;
 	text-align: center;
 }
@@ -524,7 +541,7 @@ body.app {
 	width: 425px;
 }
 #plant-id-3 .list-item .details {
-    width: 620px;
+    width: 610px;
 }
 .list-item p {
 	padding: 0 0 7px 25px;
@@ -667,12 +684,12 @@ p.vid {
 }	
 .already-know h6, .already-know label, .show label {
     color: #807121;
-    font-family: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif;
     font-weight: bold;
     margin: 0 0 5px 0;
 }
 .already-know label {
     display: block;
+    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
     font-size: 12px;
     font-weight: normal;
     margin: 5px 0 3px;
@@ -688,6 +705,7 @@ p.vid {
 }
 #plant-id-3 .show label {
     color: #000;
+    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
     font-size: 15px;
     font-weight: normal;
 
@@ -695,20 +713,18 @@ p.vid {
 #plant-id-3 .show select, #plant-id-3 .already-know select {
     background: #ebf6df;
     border: 1px solid #9cc86b;
-    font-family: "Trebuchet MS", sans-serif;
     font-size: 15px;
     padding: 0;
     -webkit-appearance: menulist;
 }
 #plant-id-3 .already-know select {
     font-size: 13px;
-    width: 145px;
+    width: 143px;
 }
 #plant-id-3 .already-know #family_clear,
 #plant-id-3 .already-know #genus_clear {
     background: #ebf6df;
     border: 1px solid #9cc86b;
-    font-family: "Trebuchet MS", sans-serif;
     font-size: 12px;
     padding: 2px 6px;
     -webkit-appearance: button;
@@ -748,6 +764,9 @@ div.modal-wrap {
 }
 .modal-wrap #choices {
 	padding: 10px 20px 0 20px;	
+}
+.modal-wrap #choices li {
+    margin: 0 0 14px;
 }
 .modal-wrap #plant-details {
 	padding: 10px 20px 0 20px;	
@@ -874,16 +893,19 @@ a.go-to-species-page:active {
 }
 
 .plant p.plant-name {
-    font-family: Tahoma, sans-serif; /* Tahoma because it's narrower; less
-                                        wrapping and fewer names pushing out
-                                        to 4 lines */
+    font-family: Tahoma, "Trebuchet MS", sans-serif; /* Tahoma or Trebuchet
+                                                        because it's narrower
+                                                        than Verdana: less
+                                                        wrapping and fewer
+                                                        names on 4 lines */
     line-height: 14px;
     margin: 7px 0 0 0;
 }
 .plant p.plant-name span.latin {
     display: block;
-    font-family: Verdana, sans-serif; /* Verdana because it's wider; easier
-                                         to read in italic */
+    font-family: Verdana, sans-serif; /* Verdana because it's wider than
+                                         Trebuchet: easier to read in
+                                         italics */
     font-style: italic;
     padding-bottom: 4px;
 }
@@ -927,7 +949,7 @@ a.get-choices {
     display: block;
     width: 171px;
     height: 32px;
-    margin: 15px 0 0 0;
+    margin: 20px 0 0 0;
     text-indent: -9000px;
     background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent;
 }
@@ -1047,8 +1069,6 @@ ul.option-list li.answered.active {
     background: -o-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* IE10+ */
     background: linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dc9302', endColorstr='#dc9302',GradientType=0 ); /* IE6-9 */
-
 }
 
 #intro-overlay h1 {
@@ -1099,7 +1119,6 @@ ul.option-list li.answered.active {
 .get-more a {
     cursor: pointer;
     display: block;
-    font-family: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif;
     font-weight: bold;
     margin: 18px 0 10px;
 }
@@ -1117,11 +1136,6 @@ h5.help {
 #plant-id-3 input.dijitInputInner {
     font-family: Verdana, sans-serif;
     font-size: 12px;
-}
-/* These two next items are called family_select and genus_select in the HTML,
-but Dojo/Dijit transforms them into divs with ids starting with widget_. */
-#widget_family_select, #widget_genus_select {
-    width: 135px;
 }
 
 /* Working Area styles */
@@ -1162,7 +1176,7 @@ but Dojo/Dijit transforms them into divs with ids starting with widget_. */
 .choices .row div label {
     cursor: pointer;
     display: inline-block;
-    font-family: Tahoma, sans-serif;
+    font-family: Tahoma, "Trebuchet MS", sans-serif;
     font-size: 12px;
     margin-left: 18px;
     min-width: 70px;
@@ -1344,7 +1358,7 @@ div.working-area .measurement label input {
 
 div.working-area .info {
     float: left;
-    font-family: Tahoma, sans-serif;
+    font-family: Tahoma, "Trebuchet MS", sans-serif;
     font-size: 14px;
 }
 
@@ -1367,80 +1381,6 @@ div.working-area .actions {
 }
 
 /* end Working Area styles */
-
-
-/* Plant preview dialogs, wherever they appear */
-
-/* Note: The id #plant-preview is nearly obsolete. Remove declarations
- * that begin with it after the "guided search" has been styled. */
-#plant-preview {
-    background-color: #fff;
-    color: #000;
-}
-
-#plant-preview h3 {
-    font-weight: bold;
-    margin-bottom: 0.5em;
-    text-align: center;
-}
-
-#plant-preview #preview-intro {
-    position: absolute;
-    left: -2000px;
-}
-
-#plant-preview div.photos {
-    float: left;
-    font-size: 0.9em;
-    height: 220px;
-    margin: 0 0.5em;
-    position: relative;
-    text-align: center;
-    width: 202px;
-}
-
-#plant-preview div.photos img {
-    max-height: 200px;
-    max-width: 200px;
-    min-height: 100px;
-    min-width: 100px;
-}
-
-#plant-preview div.photos p {
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    top: 205px;
-    width: 200px;
-}
-
-#plant-preview div.photos a {
-    cursor: pointer;
-    padding: 0 1em;
-}
-
-#plant-preview dl {
-    padding: 0.5em;
-    float: right;
-}
-
-#plant-preview dt {
-    clear: left;
-    float: left;
-    font-weight: bold;
-    text-align: right;
-    width: 200px;
-}
-
-#plant-preview dd {
-    margin: 0 0 0 210px;
-    padding: 0 0 1em 0;
-}
-
-#plant-preview div.nav {
-    clear: both;
-    text-align: center;
-}
 
 /* Character/value styles, for plant preview popups, etc. */
 .characteristics {
@@ -1513,7 +1453,7 @@ div.working-area .actions {
     cursor: pointer;
     display: block;
     float: left;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
     font-size: 18px;
     line-height: 18px;
     margin: 0;
@@ -1571,7 +1511,6 @@ div.working-area .actions {
 }
 .plant-list table .genus {
     color: #1a2e11;
-    font-family:  "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 18px;
     font-weight: normal;
     line-height: 200%;
@@ -1579,7 +1518,6 @@ div.working-area .actions {
     vertical-align: top;
 }
 .plant-list table .scientific-name {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 15px;
     font-weight: normal;
     line-height: 155%;
@@ -1594,37 +1532,20 @@ div.working-area .actions {
     text-decoration: underline;
 }
 
-/* Help navigation styles */
-/* (Remove after the About page is styled, when they'll be obsolete) */
-#help-nav {
-    color: #666;
+/* Headings for family, genus, and species pages */
+#taxon h2 span.origin {
+	font-size: 14px;
+    line-height: 100%;
 }
-
-#help-nav a.current {
-    color: #000;
+#family h3, #genus h3, #taxon h3 {
+    font-size: 30px;
+    color: #807121;
 }
-#help-nav a.current:hover {
-    text-decoration: none;
-}
-
-#help-nav ul ul {
-    margin: 0.5em 0 0.2em 0;
-}
-
-#help-nav ul ul li {
-    margin-left: 1em;
+#taxon h3 {
+    margin-bottom: 12px;
 }
 
 /* Taxon (species) page styles */
-
-h2 span.origin {
-	font-size: 14px;
-}
-h2 span.common {
-    display: block;
-	font-size: 30px;
-	color: #807121;
-}
 
 #taxon #main p {
 	margin: 0 0 15px;	
@@ -1635,7 +1556,6 @@ h2 span.common {
     border-bottom: 1px solid #ad9f50;
     border-top: 1px solid #ad9f50;
     color: #000;
-    font-family: "Trebuchet MS", sans-serif;
     font-size: 24px;
     margin-bottom: 0.5em;
     padding: 0.5em 0;
@@ -1763,7 +1683,7 @@ div.section.namap {
     position: relative;
 }
 div.section.namap div.trans {
-    /* Transparent div to make U.S. map object element clickable */
+    /* Transparent div to make North America map object element clickable */
     cursor: pointer;
     background: transparent;
     height: 133px; /* Cover the map plus the link below it */
@@ -1809,10 +1729,6 @@ div.section.namap div.trans {
 	position: relative;
 	top: -22px;	
 }
-#taxon #main h2 {
-    line-height: 1em;
-    margin: 0.5em 0;
-}
 #taxon a.more {
     cursor: pointer;
 }
@@ -1839,7 +1755,6 @@ div.section.namap div.trans {
 #plant-id-2 #sb-title, #plant-id-2 #sb-title-inner,
 #family #sb-title, #family #sb-title-inner,
 #genus #sb-title, #genus #sb-title-inner {
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
     height: 76px;
     line-height: 70%;
     position: relative;
@@ -1861,6 +1776,7 @@ div.section.namap div.trans {
 #taxon #sb-title-inner span, #plant-id #sb-title-inner span,
 #plant-id-2 #sb-title-inner span, #family #sb-title-inner span,
 #genus #sb-title-inner span {
+    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
     font-size: 10px;
 }
 #taxon #sb-nav-close, #plant-id #sb-nav-close, #plant-id-2 #sb-nav-close,
@@ -2068,7 +1984,7 @@ img.margin-bookcover {
 #advanced-id #main .dk-landing-section {
 	width: 330px;
 	float: left;
-	font: verdana, sans-serif;
+	font-family: Verdana, sans-serif;
 }
 
 #advanced-id #main .dk-landing-section section {
@@ -2217,7 +2133,6 @@ img.margin-bookcover {
 #terms dt {
     clear: left;
     float: left;
-    font: 15px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
     line-height: 25px;
     padding: 7px 10px 10px 38px;
     width: 190px;
@@ -2255,7 +2170,8 @@ img.margin-bookcover {
     vertical-align: middle;
 }
 #search-results-list li a {
-    font: 15px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
+    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+    font-size: 15px;
     text-decoration: underline;
 }
 #search-results-list li p {
@@ -2280,7 +2196,7 @@ img.margin-bookcover {
 /* Family and Genus pages styles */
 
 #family ul.genera, #genus ul.species {
-    font: 14px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
+    font-size: 14px;
 }
 #family .pics, #genus .pics {
     margin-top: 20px;
@@ -2292,10 +2208,10 @@ img.margin-bookcover {
 #family .pics p, #genus .pics p {
     display: inline-block;
     float: left;
-    font: 14px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
+    font-size: 14px;
 }
 #genus p.family {
-    font: 14px "Trebuchet MS", Trebuchet, Helvetica, Arial, sans-serif;
+    font-size: 14px;
 }
 #family h4, #genus h4 {
     clear: left;

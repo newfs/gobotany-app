@@ -367,10 +367,12 @@ dojo.declare('gobotany.sk.working_area.Slider', [
 
         /* Position the label atop the slider. */
         var MIN_LEFT_PX = 25;
-        var MAX_LEFT_PX = 728;
+        var slider_bar = dojo.query('div.dijitSliderBarContainerH')[0];
+        var slider_bar_width = dojo.style(slider_bar, 'width');
+        var max_left_px = MIN_LEFT_PX + slider_bar_width;
         var filter = this.filter;
         var num_segments = filter.max - filter.min;
-        var slider_length = MAX_LEFT_PX - MIN_LEFT_PX;
+        var slider_length = max_left_px - MIN_LEFT_PX;
         var pixels_per_value = slider_length / num_segments;
         var offset = Math.floor((value - filter.min) * pixels_per_value);
         var label_width_correction = 0;

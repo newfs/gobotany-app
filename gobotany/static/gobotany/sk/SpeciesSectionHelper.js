@@ -257,7 +257,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         content: content_element.innerHTML,
                         player: 'html',
                         height: 520,
-                        width: 940,
+                        width: 935,
                         options: {onFinish: dojo.hitch(this, function() {
                             var $sb = $('#sb-container');
                             var $children = $sb.find('p, dt, dd, li');
