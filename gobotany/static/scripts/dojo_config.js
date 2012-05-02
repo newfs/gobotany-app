@@ -1,15 +1,3 @@
-djConfig = {
-    isDebug: false,
-    debugAtAllCosts: false,
-    useXDomain: false,
-    baseUrl: '/static/js/dojo/',
-    modulePaths: {
-        gobotany: '/static/gobotany',
-        layers: '/static/js/layers'
-    },
-    parseOnLoad: true
-};
-
 // New Dojo 1.7 global configuration object
 // This must be loaded before the dojo AMD loader
 dojoConfig = {
