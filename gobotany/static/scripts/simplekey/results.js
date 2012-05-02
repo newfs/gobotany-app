@@ -116,18 +116,14 @@ define([
         return choices;
     };
 
-    // Don't bind these new properites until we're sure the filter controller
-    // is ready.
-    $.when(filter_controller_is_built).done(function() {
-        App3.reopen({
-            family_choices: function() {
-                return choices_that_leave_more_than_zero_taxa(App3.family_filter);
-            }.property('filter_controller.@each.value'),
+    App3.reopen({
+        family_choices: function() {
+            return choices_that_leave_more_than_zero_taxa(App3.family_filter);
+        }.property('filter_controller.@each.value'),
 
-            genus_choices: function() {
-                return choices_that_leave_more_than_zero_taxa(App3.genus_filter);
-            }.property('filter_controller.@each.value')
-        });
+        genus_choices: function() {
+            return choices_that_leave_more_than_zero_taxa(App3.genus_filter);
+        }.property('filter_controller.@each.value')
     });
 
     $('#family_clear').live('click', function(event) {
