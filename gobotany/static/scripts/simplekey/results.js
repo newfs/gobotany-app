@@ -217,18 +217,20 @@ define([
     var user_is_scrolling = true;
 
     require(['lib/jquery.jscrollpane'], function() {
-        scroll_pane = $('.scroll')
-            .bind('jsp-scroll-y', function(event) {
-                if (user_is_scrolling)  // because this could be a reinitialise
-                    if (helper.filter_section.working_area)
-                        helper.filter_section.working_area.dismiss();
-            })
-            .jScrollPane({
-                maintainPosition: true,
-                stickToBottom: true,
-                verticalGutter: 0,
-                showArrows: true
-            });
+        $.when(document_is_ready).done(function() {
+            scroll_pane = $('.scroll')
+                .bind('jsp-scroll-y', function(event) {
+                    if (user_is_scrolling)  // because this could be a reinitialise
+                        if (helper.filter_section.working_area)
+                            helper.filter_section.working_area.dismiss();
+                })
+                .jScrollPane({
+                    maintainPosition: true,
+                    stickToBottom: true,
+                    verticalGutter: 0,
+                    showArrows: true
+                });
+        });
     });
 
     /* All filters can be cleared with a single button click. */
