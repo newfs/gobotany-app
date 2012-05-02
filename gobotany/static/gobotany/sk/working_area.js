@@ -23,6 +23,7 @@
 
 dojo.provide('gobotany.sk.working_area');
 
+dojo.require('gobotany.utils');
 dojo.require('dojo.NodeList-html');
 dojo.require('dijit.form.HorizontalSlider');
 

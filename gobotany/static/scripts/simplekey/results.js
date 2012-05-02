@@ -3,6 +3,7 @@ define([
     'jquery',
     'underscore-min',
     'lib/tooltipsy',
+    'gobotany/utils',
     'simplekey/App3',
     'simplekey/Filter',
     'simplekey/FilterController',
@@ -11,7 +12,7 @@ define([
     'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState'
-], function(args, x, x, x, App3, _Filter, _FilterController,
+], function(args, x, x, x, utils, App3, _Filter, _FilterController,
             animation, cookie, _glossarize, resources, ResultsPageState) {
 
     var pile_slug = args.pile_slug;
@@ -161,7 +162,7 @@ define([
 
             if (filter.is_length()) {
                 var units = filter.display_units || 'mm';
-                return gobotany.utils.pretty_length(units, value);
+                return utils.pretty_length(units, value);
             }
 
             return value + '';
@@ -467,7 +468,7 @@ define([
 
     var receive_new_filters = function(items) {
         if (items.length === 0) {
-            gobotany.utils.notify(
+            utils.notify(
                 'No more questions left for the boxes checked');
             return;
         }
@@ -485,7 +486,7 @@ define([
             scroll_pane.data('jsp').reinitialise();
             scroll_pane.data('jsp').scrollToPercentY(100, true);
         });
-        gobotany.utils.notify('More questions added');
+        utils.notify('More questions added');
     };
 
     // On modern browsers that support the hashchange event, allow the
@@ -535,7 +536,6 @@ define([
         });
 
         require([
-            'order!/static/gobotany/utils.js',
             'order!/static/gobotany/sk/photo.js',
             'order!/static/gobotany/sk/results.js',
             'order!/static/gobotany/sk/SpeciesSectionHelper.js',
