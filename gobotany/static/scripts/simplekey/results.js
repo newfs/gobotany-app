@@ -71,11 +71,7 @@ define([
     /* The FilterController can be activated once we know the full list
        of species that it will be filtering. */
 
-    $.when(
-        async_key_vector, 
-        async_pile_taxadata, 
-        document_is_ready
-    ).done(function(kv, taxadata) {
+    $.when(async_key_vector, async_pile_taxadata).done(function(kv, taxadata) {
         var simple_key_taxa = kv[0].species;
         var taxadata = _.filter(taxadata, function(taxon) {
             return _.indexOf(simple_key_taxa, taxon.id) != -1;
@@ -97,9 +93,13 @@ define([
         App3.set('genus_filter', fc.filtermap.genus);
         filter_controller_is_built.resolve();
 
+    });
+
+    $.when(filter_controller_is_built, document_is_ready).done(function() {
         // Hide the "Loading..." spinner.
         $('.loading').hide();
     });
+
 
     /* The Family and Genus filters are Ember-powered <select> elements
        that the following logic keeps updated at all times with the set
