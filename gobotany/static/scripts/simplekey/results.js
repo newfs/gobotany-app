@@ -160,7 +160,7 @@ define([
             if (filter.value_type === 'TEXT')
                 return filter.choicemap[value].friendly_text || value;
 
-            if (filter.is_length()) {
+            if (filter.is_length) {
                 var units = filter.display_units || 'mm';
                 return utils.pretty_length(units, value);
             }
