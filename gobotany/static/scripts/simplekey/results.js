@@ -71,7 +71,11 @@ define([
     /* The FilterController can be activated once we know the full list
        of species that it will be filtering. */
 
-    $.when(async_key_vector, async_pile_taxadata).done(function(kv, taxadata) {
+    $.when(
+        async_key_vector, 
+        async_pile_taxadata, 
+        document_is_ready
+    ).done(function(kv, taxadata) {
         var simple_key_taxa = kv[0].species;
         var taxadata = _.filter(taxadata, function(taxon) {
             return _.indexOf(simple_key_taxa, taxon.id) != -1;
@@ -224,12 +228,13 @@ define([
     });
 
     /* All filters can be cleared with a single button click. */
-
-    $('#sidebar a.clear-all-btn').click(function() {
-        if (helper.filter_section.working_area !== null)
-            helper.filter_section.working_area.dismiss();
-        _.each(App3.filter_controller.get('content'), function(filter) {
-            filter.set('value', null);
+    $.when(document_is_ready).done(function() {
+        $('#sidebar a.clear-all-btn').click(function() {
+            if (helper.filter_section.working_area !== null)
+                helper.filter_section.working_area.dismiss();
+            _.each(App3.filter_controller.get('content'), function(filter) {
+                filter.set('value', null);
+            });
         });
     });
 
@@ -408,27 +413,29 @@ define([
 
     var checked_groups = [];  // remembers choices from last time
 
-    $('#sidebar .get-choices').click(function() {
-        if (helper.filter_section.working_area !== null)
-            helper.filter_section.working_area.dismiss();
+    $.when(document_is_ready).done(function() {
+        $('#sidebar .get-choices').click(function() {
+            if (helper.filter_section.working_area !== null)
+                helper.filter_section.working_area.dismiss();
 
-        Shadowbox.open({
-            content: $('#modal').html(),
-            player: 'html',
-            height: 450,
-            options: {
-                fadeDuration: 0.1,
-                onFinish: function() {
-                    // Re-check any check boxes that were set last time.
-                    $('#sb-container input').each(function(i, input) {
-                        var value = $(input).val();
-                        var check = (_.indexOf(checked_groups, value) != -1);
-                        $(input).prop('checked', check);
-                    });
-                    $('#sb-container a.get-choices')
-                        .addClass('get-choices-ready');  // for tests
+            Shadowbox.open({
+                content: $('#modal').html(),
+                player: 'html',
+                height: 450,
+                options: {
+                    fadeDuration: 0.1,
+                    onFinish: function() {
+                        // Re-check any check boxes that were set last time.
+                        $('#sb-container input').each(function(i, input) {
+                            var value = $(input).val();
+                            var check = (_.indexOf(checked_groups, value) != -1);
+                            $(input).prop('checked', check);
+                        });
+                        $('#sb-container a.get-choices')
+                            .addClass('get-choices-ready');  // for tests
+                    }
                 }
-            }
+            });
         });
     });
 
