@@ -116,10 +116,6 @@ def advanced_view(request):
     return render_to_response('simplekey/advanced.html', {},
             context_instance=RequestContext(request))
 
-def guided_search_view(request):
-    return render_to_response('simplekey/guided_search.html', {
-            }, context_instance=RequestContext(request))
-
 def _partner_short_name(partner):
     short_name = None
     if partner:
@@ -537,21 +533,6 @@ def help_video_view(request):
 
     return render_to_response('simplekey/help_video.html', {
            'videos': videos,
-           }, context_instance=RequestContext(request))
-
-def video_pilegroup_view(request, pilegroup_slug):
-    pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
-    return render_to_response('simplekey/video.html', {
-            'pilegroup': pilegroup,
-            }, context_instance=RequestContext(request))
-
-def video_pile_view(request, pilegroup_slug, pile_slug):
-    pile = get_object_or_404(Pile, slug=pile_slug)
-    if pile.pilegroup.slug != pilegroup_slug:
-        raise Http404
-    return render_to_response('simplekey/video.html', {
-           'pilegroup': pile.pilegroup,
-           'pile': pile,
            }, context_instance=RequestContext(request))
 
 def suggest_view(request):
