@@ -10,5 +10,7 @@ require([
 require([
     'simplekey/glossarize'
 ], function(glossarize) {
-    glossarize($('.key-char, .exceptions'));
+    $(document).ready(function() {
+        glossarize($('.key-char, .exceptions'));
+    });
 });
