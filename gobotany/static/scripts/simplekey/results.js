@@ -507,52 +507,40 @@ define([
     ]);
 
     if (true) {
+        /* Glue: tell Dojo when the set of selected species
+           changes. */
+
+        App3.reopen({
+            tell_dojo: function() {
+                var taxa = App3.filter_controller.taxa;
+                var t = _.filter(App3.taxadata, function(item) {
+                    return _.indexOf(taxa, item.id) != -1;
+                });
+                t.sort(function(a, b) {
+                    return a.scientific_name < b.scientific_name ? -1 : 1;
+                });
+                dojo.publish('/filters/query-result', [{species_list: t}]);
+            }.observes('filter_controller.taxa')
+        });
+
         require([
-            'order!/static/gobotany/filters.js',
             'order!/static/gobotany/utils.js',
-            'order!/static/gobotany/sk/glossary.js',
             'order!/static/gobotany/sk/photo.js',
             'order!/static/gobotany/sk/results.js',
             'order!/static/gobotany/sk/SpeciesSectionHelper.js',
             'order!/static/gobotany/sk/working_area.js',
             'order!/static/gobotany/sk/SearchSuggest.js'
         ], function() {
-
-            /* Glue: tell Dojo when the set of selected species
-               changes. */
-
-            App3.reopen({
-                tell_dojo: function() {
-                    var taxa = App3.filter_controller.taxa;
-                    var t = _.filter(App3.taxadata, function(item) {
-                        return _.indexOf(taxa, item.id) != -1;
-                    });
-                    t.sort(function(a, b) {
-                        return a.scientific_name < b.scientific_name ? -1 : 1;
-                    });
-                    dojo.publish('/filters/query-result', [{species_list: t}]);
-                }.observes('filter_controller.taxa')
-            });
-
             require([
-                'order!/static/gobotany/utils.js',
-                'order!/static/gobotany/sk/photo.js',
-                'order!/static/gobotany/sk/results.js',
-                'order!/static/gobotany/sk/SpeciesSectionHelper.js',
-                'order!/static/gobotany/sk/working_area.js',
-                'order!/static/gobotany/sk/SearchSuggest.js'
+                'order!activate_search_suggest',
+                'order!activate_image_gallery',
+                'sidebar',
+                'shadowbox',
+                'shadowbox_init'
             ], function() {
-                require([
-                    'order!activate_search_suggest',
-                    'order!activate_image_gallery',
-                    'sidebar',
-                    'shadowbox',
-                    'shadowbox_init'
-                ], function() {
-                    dojo.require('gobotany.sk.results');
-                    dojo.addOnLoad(function() {
-                        helper = gobotany.sk.results.ResultsHelper(args.pile_slug);
-                    });
+                dojo.require('gobotany.sk.results');
+                dojo.addOnLoad(function() {
+                    helper = gobotany.sk.results.ResultsHelper(args.pile_slug);
                 });
             });
         });
