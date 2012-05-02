@@ -116,14 +116,18 @@ define([
         return choices;
     };
 
-    App3.reopen({
-        family_choices: function() {
-            return choices_that_leave_more_than_zero_taxa(App3.family_filter);
-        }.property('filter_controller.@each.value'),
+    // Don't bind these new properites until we're sure the filter controller
+    // is ready.
+    $.when(filter_controller_is_built).done(function() {
+        App3.reopen({
+            family_choices: function() {
+                return choices_that_leave_more_than_zero_taxa(App3.family_filter);
+            }.property('filter_controller.@each.value'),
 
-        genus_choices: function() {
-            return choices_that_leave_more_than_zero_taxa(App3.genus_filter);
-        }.property('filter_controller.@each.value')
+            genus_choices: function() {
+                return choices_that_leave_more_than_zero_taxa(App3.genus_filter);
+            }.property('filter_controller.@each.value')
+        });
     });
 
     $('#family_clear').live('click', function(event) {
@@ -228,7 +232,7 @@ define([
     });
 
     /* All filters can be cleared with a single button click. */
-    $.when(document_is_ready).done(function() {
+    $.when(filter_controller_is_built, document_is_ready).done(function() {
         $('#sidebar a.clear-all-btn').click(function() {
             if (helper.filter_section.working_area !== null)
                 helper.filter_section.working_area.dismiss();
@@ -328,16 +332,18 @@ define([
         // With no hash on the URL, load the default filters for this
         // plant subgroup for a "fresh" load of the page.
 
-        resources.pile(pile_slug).done(function(pile_info) {
-            _.each(pile_info.default_filters, function(filter_info) {
-                App3.filter_controller.add(Filter.create({
-                    slug: filter_info.short_name,
-                    value_type: filter_info.value_type,
-                    info: filter_info
-                }));
-                // Go ahead and start an async fetch, to make things
-                // faster in case the user clicks on the filter.
-                resources.character_vector(filter_info.short_name);
+        $.when(filter_controller_is_built).done(function() {
+            resources.pile(pile_slug).done(function(pile_info) {
+                _.each(pile_info.default_filters, function(filter_info) {
+                    App3.filter_controller.add(Filter.create({
+                        slug: filter_info.short_name,
+                        value_type: filter_info.value_type,
+                        info: filter_info
+                    }));
+                    // Go ahead and start an async fetch, to make things
+                    // faster in case the user clicks on the filter.
+                    resources.character_vector(filter_info.short_name);
+                });
             });
         });
     }
