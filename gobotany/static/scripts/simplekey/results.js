@@ -347,10 +347,12 @@ define([
         });
     }
 
-    /* When filters change, or other page elements (photo type,
-     * tab view) change, update the hash and save it. */
+    /* Update the hash to reflect the page state and save the entire
+     * URL to a cookie. This is to be called when filters or other
+     * page elements (image type, tab view) change.
+     */
+    var save_page_state = function () {
 
-    var save_filter_state = function () {
         var tab_view = App3.taxa.show_list ? 'list' : 'photos';
 
         var image_type = App3.image_type;
@@ -359,6 +361,8 @@ define([
             // loading, so do not save the state yet.
             return;
         }
+
+        // Get all the current filter names and values.
         var filter_names = Object.keys(App3.filter_controller.filtermap);
         var filter_values = {};
         for (key in App3.filter_controller.filtermap) {
@@ -372,6 +376,7 @@ define([
             }
         }
 
+        // Create a hash for this page state.
         var results_page_state = ResultsPageState.create({
             'filter_names': filter_names,
             'filter_values': filter_values,
@@ -404,14 +409,17 @@ define([
         cookie('last_plant_id_url', window.location.href, {path: '/'});
     };
 
+    /* When any of the page elements that are to be tracked on the URL
+     * hash change, save the page state. */
+
     App3.addObserver('filter_controller.@each.value', function() {
-        save_filter_state();
+        save_page_state();
     });
     App3.addObserver('image_type', function() {
-        save_filter_state();
+        save_page_state();
     });
     App3.addObserver('taxa.show_list', function() {
-        save_filter_state();
+        save_page_state();
     });
 
     /* More filters can be fetched with the "Get More Questions" button. */
