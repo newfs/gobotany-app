@@ -15,6 +15,11 @@ The easiest way to run these functional tests is like this::
 
   $ bin/unit2 gobotany.simplekey.test.test_fbasic
 
+Note: If you notice that 'chromedriver' processes hang around after the
+tests finish, you can kill those processes:
+
+  $ bin/unit2 gobotany.simplekey.test.test_fbasic ; killall chromedriver
+
 The new Selenium 2 technology does not require a server; the Python code
 will start up a web browser directly.
 
