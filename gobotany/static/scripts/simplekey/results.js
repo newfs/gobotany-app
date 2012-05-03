@@ -302,12 +302,10 @@ define([
         cookie('last_plant_id_url', window.location.href, {path: '/'});
     };
 
-    /* When any of the page elements that are to be tracked on the URL
-     * hash change, save the page state.
+    /* Set up observers so that when page elements change, the URL hash
+     * will be updated and the URL will be saved.
      */
     var add_page_state_observers = function () {
-        console.log('** setting up observers for page state');
-
         App3.addObserver('filter_controller.@each.value', function() {
             save_page_state();
         });
@@ -393,24 +391,18 @@ define([
             // Set the image type specified on the hash.
             var image_type = results_page_state.image_type();
             if (image_type !== '') {
-                console.log('** restore: about to set image type:',
-                            image_type);
                 App3.set('image_type', image_type);
             }
 
             // Set the tab view specified on the hash.
             var tab_view = results_page_state.tab_view();
             var is_list_view = (tab_view === 'list') ? true : false;
-            console.log('** restore: about to set view: is_list_view:',
-                        is_list_view);
-            App3.set('taxa.is_list', is_list_view);
-
+            App3.taxa.set('show_list', is_list_view);
             
             // Now that filters are loaded, save the page state and set up
             // observers to automatically save it when page elements change.
             save_page_state();
             add_page_state_observers();
-
         });
     } else {
         // With no hash on the URL, load the default filters for this

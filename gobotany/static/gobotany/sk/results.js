@@ -119,7 +119,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         // sometimes there is a selected image type that should override
         // the default image type.
         var selected_image_type = App3.image_type;
-        console.log('** selected image type:', selected_image_type);
         if (selected_image_type) {
             App3.set('image_type', selected_image_type);
         }
