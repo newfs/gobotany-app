@@ -241,6 +241,84 @@ define([
         });
     });
 
+    /* Update the hash to reflect the page state and save the entire
+     * URL to a cookie. This is to be called when filters or other
+     * page elements (image type, tab view) change.
+     */
+    var save_page_state = function () {
+        var tab_view = App3.taxa.show_list ? 'list' : 'photos';
+
+        var image_type = App3.image_type;
+        if (!image_type) {
+            // If the image type menu is not ready yet, the page is still
+            // loading, so do not save the state yet.
+            return;
+        }
+
+        // Get all the current filter names and values.
+        var filter_names = Object.keys(App3.filter_controller.filtermap);
+        var filter_values = {};
+        for (key in App3.filter_controller.filtermap) {
+            if (App3.filter_controller.filtermap.hasOwnProperty(key)) {
+                if (App3.filter_controller.filtermap[key].value &&
+                    App3.filter_controller.filtermap[key].value.length > 0) {
+
+                    filter_values[key] =
+                        App3.filter_controller.filtermap[key].value;
+                }
+            }
+        }
+
+        // Create a hash for this page state.
+        var results_page_state = ResultsPageState.create({
+            'filter_names': filter_names,
+            'filter_values': filter_values,
+            'image_type': image_type,
+            'tab_view': tab_view
+        });
+        var hash = results_page_state.hash();
+
+        // Usually, do not replace the current Back history entry; rather,
+        // create a new one, to enable the user to move back and forward
+        // through their keying choices.
+        var create_new_history_entry = true;
+
+        // However, upon the initial entry to plant ID keying (where there's
+        // no hash yet), do not create a new Back history entry when replacing
+        // the hash. This is to help avoid creating a "barrier" when the user
+        // tries to navigate back to the pile ID pages using the Back button.
+        if (window.location.hash === '') {   // empty hash: initial page load
+            create_new_history_entry = false;
+        }
+
+        var url = window.location.href.split('#')[0] + hash;
+        if (create_new_history_entry) {
+            window.location.assign(url);
+        }
+        else {
+            window.location.replace(url);
+        }
+
+        cookie('last_plant_id_url', window.location.href, {path: '/'});
+    };
+
+    /* When any of the page elements that are to be tracked on the URL
+     * hash change, save the page state.
+     */
+    var add_page_state_observers = function () {
+        console.log('** setting up observers for page state');
+
+        App3.addObserver('filter_controller.@each.value', function() {
+            save_page_state();
+        });
+        App3.addObserver('image_type', function() {
+            save_page_state();
+        });
+        App3.addObserver('taxa.show_list', function() {
+            save_page_state();
+        });
+    };
+
     /* Filters need to be loaded. */
 
     var use_hash = (window.location.hash !== '') ? true : false;
@@ -326,6 +404,13 @@ define([
             console.log('** restore: about to set view: is_list_view:',
                         is_list_view);
             App3.set('taxa.is_list', is_list_view);
+
+            
+            // Now that filters are loaded, save the page state and set up
+            // observers to automatically save it when page elements change.
+            save_page_state();
+            add_page_state_observers();
+
         });
     } else {
         // With no hash on the URL, load the default filters for this
@@ -344,83 +429,12 @@ define([
                     resources.character_vector(filter_info.short_name);
                 });
             });
+
+            // Now that filters are loaded, set up observers to
+            // automatically save page state when page elements change.
+            add_page_state_observers();
         });
     }
-
-    /* Update the hash to reflect the page state and save the entire
-     * URL to a cookie. This is to be called when filters or other
-     * page elements (image type, tab view) change.
-     */
-    var save_page_state = function () {
-
-        var tab_view = App3.taxa.show_list ? 'list' : 'photos';
-
-        var image_type = App3.image_type;
-        if (!image_type) {
-            // If the image type menu is not ready yet, the page is still
-            // loading, so do not save the state yet.
-            return;
-        }
-
-        // Get all the current filter names and values.
-        var filter_names = Object.keys(App3.filter_controller.filtermap);
-        var filter_values = {};
-        for (key in App3.filter_controller.filtermap) {
-            if (App3.filter_controller.filtermap.hasOwnProperty(key)) {
-                if (App3.filter_controller.filtermap[key].value &&
-                    App3.filter_controller.filtermap[key].value.length > 0) {
-
-                    filter_values[key] =
-                        App3.filter_controller.filtermap[key].value;
-                }
-            }
-        }
-
-        // Create a hash for this page state.
-        var results_page_state = ResultsPageState.create({
-            'filter_names': filter_names,
-            'filter_values': filter_values,
-            'image_type': image_type,
-            'tab_view': tab_view
-        });
-        var hash = results_page_state.hash();
-
-        // Usually, do not replace the current Back history entry; rather,
-        // create a new one, to enable the user to move back and forward
-        // through their keying choices.
-        var create_new_history_entry = true;
-
-        // However, upon the initial entry to plant ID keying (where there's
-        // no hash yet), do not create a new Back history entry when replacing
-        // the hash. This is to help avoid creating a "barrier" when the user
-        // tries to navigate back to the pile ID pages using the Back button.
-        if (window.location.hash === '') {   // empty hash: initial page load
-            create_new_history_entry = false;
-        }
-
-        var url = window.location.href.split('#')[0] + hash;
-        if (create_new_history_entry) {
-            window.location.assign(url);
-        }
-        else {
-            window.location.replace(url);
-        }
-
-        cookie('last_plant_id_url', window.location.href, {path: '/'});
-    };
-
-    /* When any of the page elements that are to be tracked on the URL
-     * hash change, save the page state. */
-
-    App3.addObserver('filter_controller.@each.value', function() {
-        save_page_state();
-    });
-    App3.addObserver('image_type', function() {
-        save_page_state();
-    });
-    App3.addObserver('taxa.show_list', function() {
-        save_page_state();
-    });
 
     /* More filters can be fetched with the "Get More Questions" button. */
 
