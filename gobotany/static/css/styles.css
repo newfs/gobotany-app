@@ -1509,6 +1509,9 @@ div.working-area .actions {
 .plant-list table tr.first-visible td {
     border-top: 0;
 }
+.plant-list table .genus, .plant-list table .scientific-name {
+    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+}
 .plant-list table .genus {
     color: #1a2e11;
     font-size: 18px;
