@@ -58,27 +58,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         }
     },
 
-    handle_undo: function() {
-        // Detect and handle URL hash changes for which Undo is supported.
-        var current_url = window.location.href;
-
-        var last_plant_id_url = dojo.cookie('last_plant_id_url');
-        if (last_plant_id_url === undefined) {
-            last_plant_id_url = '';
-        }
-
-        // When going forward and applying values, etc., the current URL and
-        // last plant ID URL are always the same. After pressing Back, they
-        // are different.
-        if (current_url !== last_plant_id_url) {
-            // Now reload the current URL, which reloads everything on the
-            // page and sets it up all again. This means a little more going
-            // on that usually seen with an Undo command, but is pretty
-            // quick and allows for robust yet uncomplicated Undo support.
-            window.location.reload();
-        }
-    },
-
     load_selected_image_type: function(event) {
         var image_type = App3.image_type;
         if (!image_type)
