@@ -1796,9 +1796,9 @@ div.section.namap div.trans {
     font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
 }
 
-/* Help section: sidebar styles */
+/* Help section: sidebar, heading, list styles */
 
-#getting-started #sidebar, #about #sidebar{
+#getting-started #sidebar, #about #sidebar {
     height: 1046px;
 }
 #advanced-map #sidebar {
@@ -1813,9 +1813,22 @@ div.section.namap div.trans {
     text-decoration: none;
 }
 
-/*///////////////////////////**
-Getting Started Page Styles
-////////////////////////////*/
+#getting-started h2, #about h2, #advanced-map h2, #glossary h2,
+#video-help-topics h2 {
+    margin-bottom: 8px;
+}
+#getting-started h3, #about h3, #advanced-map h3, #glossary h3,
+#video-help-topics h3 {
+    margin: 8px 0;
+}
+
+#getting-started #main ul, #about #main ul {
+    list-style-type: disc;
+    line-height: 170%;
+}
+
+/* Getting Started page styles */
+
 #getting-started .question {
 	padding: 18px 0 18px 45px;	
 	border-bottom: 1px solid #e2dfcb;
@@ -1864,7 +1877,6 @@ Getting Started Page Styles
 }
 #getting-started .question ul {
 	padding: 0 0 0 15px;
-	list-style-type: disc;	
 }
 #getting-started a.onward-btn {
 	display: block;
@@ -1893,31 +1905,19 @@ Getting Started Page Styles
     cursor: pointer;
 }
 
-/*///////////////////////////**
-About Page Styles
-////////////////////////////*/
+/* About page styles */
 
-#main ul.about {
-	list-style-type:disc;
-	margin: 10px 0 30px 15px;
-	line-height: 200%;
-	
-}
-#main ul.aboutlast {
-	list-style-type:disc;
-	margin: 10px 0 60px 15px;
-	line-height: 200%;
-	
+#about #main ul {
+	margin: 0 5px 0 15px;
 }
 
-img.margin {
+#about #main img {
 	float: right;
-	margin: 10px 0 20px 20px;
+	margin: 5px 0 20px 20px;
 }
 
-img.margin-bookcover {
-	float: right;
-	margin: 10px 89px 20px 20px;
+#about #main img.margin-bookcover {
+	margin-right: 89px;
 }
 
 /* Video Help Topics page styles */
@@ -2244,14 +2244,8 @@ img.margin-bookcover {
 
 /* Advanced Map page styles */
 
-#advanced-map h2 {
-    margin-bottom: 12px;
-}
-#advanced-map #main p {
-    margin: 10px 0 0;
-}
 #advanced-map #plant-map-list {
-	margin: 15px 0;	
+	margin: 10px 0;	
 }
 #advanced-map #plant-map-list .plant-group {
   	cursor: pointer;
@@ -2323,7 +2317,7 @@ img.margin-bookcover {
 #advanced-map .plant-subgroup {
    	cursor: default;
     float: left;
-    height: 240px;
+    height: 230px;
    	margin: 0 11px 11px 0;
 	padding: 17px 0 0 0;
 	width: 160px;
