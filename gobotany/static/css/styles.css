@@ -1816,9 +1816,6 @@ div.section.namap div.trans {
 /*///////////////////////////**
 Getting Started Page Styles
 ////////////////////////////*/
-#getting-started #sidebar .section:last-child {
-    margin-top: 48px;
-}
 #getting-started .question {
 	padding: 18px 0 18px 45px;	
 	border-bottom: 1px solid #e2dfcb;
