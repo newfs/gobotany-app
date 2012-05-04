@@ -2,17 +2,17 @@ require([
     'activate_search_suggest',
     'shadowbox',
     'shadowbox_init',
-    'activate_video_links'
+    'activate_video_links',
+    'sidebar'
 ]);
 
 require([
-    'sidebar'
-], function() {
-
-    dojo.require('gobotany.sk.help');
-    dojo.addOnLoad(function() {
-      var helper = gobotany.sk.help.MapToGroupsHelper();
-      helper.setup();
+    'dojo/ready',
+    'gobotany/sk/help'
+], function(ready, MapToGroupsHelper) {
+    return ready(function() {
+        var helper = new MapToGroupsHelper();
+        helper.setup();
     });
-
 });
+
