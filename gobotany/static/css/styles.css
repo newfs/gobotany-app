@@ -2323,6 +2323,7 @@ img.margin-bookcover {
 #advanced-map .plant-subgroup {
    	cursor: default;
     float: left;
+    height: 240px;
    	margin: 0 11px 11px 0;
 	padding: 17px 0 0 0;
 	width: 160px;
