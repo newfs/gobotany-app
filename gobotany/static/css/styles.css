@@ -2495,15 +2495,19 @@ nav #search-suggest .menu a:hover, #search-suggest .menu li:hover {
     position: relative;
     z-index: 2;
 }
+#ie-note p.dismiss {
+    font-size: 12px;
+    padding: 2px 0;
+}
 #ie-note a {
     text-decoration: underline;
 }
 #ie-note img {
     background-color: #fff;
-    clip: rect(0px,255px,108px,0px);
+    clip: rect(0px,255px,78px,0px);
     overflow: hidden;
     position: absolute;
-    top: -16px;
+    top: 40px;
     z-index: 1;
     opacity: 0.5;
     filter:alpha(opacity=50); /* For IE8 and earlier */
@@ -2513,7 +2517,7 @@ nav #search-suggest .menu a:hover, #search-suggest .menu li:hover {
 	border: 4px solid #508e31;
 	border-top: 4px solid #fff;
 	height: 600px; /* not too short: don't allow blue button to scroll away */
-	top: 394px;
+	top: 418px;
 	z-index: 20000;  /* ensure installer is atop all other content */
 }
 
