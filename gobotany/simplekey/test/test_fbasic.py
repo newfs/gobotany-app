@@ -1435,9 +1435,9 @@ class CharacterValueImagesFunctionalTests(FunctionalTestCase):
 
     def _character_value_images_exist(self, page_url, character_short_name,
                                       character_value_image_ids, seconds=15):
-        self.get(page_url)
-        self.wait_on(seconds, self.css1, '#exposeMask')
-        self.css1('#intro-overlay .continue').click()
+        prevent_intro_overlay = '_view=photos'
+        delimeter = '&' if ('#' in page_url) else '#'
+        self.get(page_url + delimeter + prevent_intro_overlay)
 
         # Click on a question that has character value images.
         self.wait_on(seconds, self.css1, 'li#habitat_general')
