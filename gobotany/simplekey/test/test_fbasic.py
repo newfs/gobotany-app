@@ -232,9 +232,9 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Does the page load and show 18 species?
 
-        self.get('/ferns/lycophytes/')
+        prevent_intro_overlay = '#_view=photos'
+        self.get('/ferns/lycophytes/' + prevent_intro_overlay)
         self.wait_on_species(18)
-        self.css1('#intro-overlay .continue').click()
 
         # filter on Rhode Island
 
@@ -294,9 +294,9 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Does the page load and show 18 species?
 
-        self.get('/ferns/lycophytes/')
+        prevent_intro_overlay = '#_view=photos'
+        self.get('/ferns/lycophytes/' + prevent_intro_overlay)
         self.wait_on_species(18)
-        self.css1('#intro-overlay .continue').click()
 
         # Do the family and genus dropdowns start by displaying all options?
 
@@ -409,9 +409,9 @@ class FilterFunctionalTests(FunctionalTestCase):
     def test_get_more_filters(self):
         FILTERS_CSS = 'ul.option-list li'
 
-        self.get('/ferns/lycophytes/')
+        prevent_intro_overlay = '#_view=photos'
+        self.get('/ferns/lycophytes/' + prevent_intro_overlay)
         self.wait_on_species(18)
-        self.css1('#intro-overlay .continue').click()
 
         filters = self.css(FILTERS_CSS)
         n = len(filters)
