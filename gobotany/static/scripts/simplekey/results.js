@@ -142,6 +142,10 @@ define([
         filterBinding: 'content',  // 'this.filter' makes more readable code
         classNameBindings: ['answered'],
 
+        elementId: function() {
+            return this.content.slug;
+        }.property('content'),
+
         answered: function() {
             // Return whether to assign the "answered" CSS class.
             return !! this.filter.value;
