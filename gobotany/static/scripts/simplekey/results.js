@@ -131,8 +131,9 @@ define([
         App3.genus_filter.set('value', '');
     });
 
-    /* Other filters appear along the left sidebar, mediated through
-       this convenient FilterView. */
+    /* Other filters appear along the left sidebar, with each filter's
+       div being supplied with information through an instance of this
+       convenient FilterView. */
 
     App3.FilterView = Ember.View.extend({
         templateName: 'filter-view',
@@ -142,6 +143,11 @@ define([
         elementId: function() {
             return this.content.slug;
         }.property('content'),
+
+        didInsertElement: function() {
+            var id = this.get('elementId');
+            glossarize($('#' + id + ' span.name'));
+        },
 
         answered: function() {
             // Return whether to assign the "answered" CSS class.
