@@ -415,11 +415,18 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     create_plant_divs: function(species_list) {
+        // Sort the species so the plant divs are created in the correct
+        // initial order for display in the UI, where they are to appear
+        // sorted alphabetically by scientific name and grouped by genus.
+        var sorted_species_list = species_list.sort(function(a, b) {
+            return a.scientific_name < b.scientific_name ? -1 : 1;
+        });
+
         var WIDTH = 160 + 18;
         var HEIGHT = 210 + 4;
 
-        for (var i = 0; i < species_list.length; i++) {
-            var species = species_list[i];
+        for (var i = 0; i < sorted_species_list.length; i++) {
+            var species = sorted_species_list[i];
 
             var plant = dojo.create('div', {'class': 'plant'},
                                     this.plant_list);
