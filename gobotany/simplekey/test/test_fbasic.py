@@ -432,9 +432,12 @@ class FilterFunctionalTests(FunctionalTestCase):
         FILTER_LINK_CSS = '#plant_height_rn a.option'
 
         self.get(
-            '/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn&_visible=plant_height_rn'
+            '/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn'
             )
         self.wait_on_species(499, seconds=21)   # Big subgroup, wait longer
+
+        self.css1('#plant_height_rn').click()
+        self.wait_on(5, self.css, RANGE_DIV_CSS)
 
         sidebar_value_span = self.css1('#plant_height_rn .value')
         range_div = self.css1(RANGE_DIV_CSS)
@@ -443,7 +446,8 @@ class FilterFunctionalTests(FunctionalTestCase):
         apply_button = self.css1('.apply-btn')
 
         self.assertIn(u' 10 mm – 15000 mm', range_div.text)
-        self.assertEqual('', instructions.text)
+        self.assertEqual('Change the value to narrow your selection to a'
+                         ' new set of matching species.', instructions.text)
 
         # Type in a big number and watch the number of advertised
         # matching species change with each digit.
