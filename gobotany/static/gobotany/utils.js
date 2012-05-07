@@ -62,7 +62,7 @@ define([
                 show_unit = true;
             }
             
-            var SPACE = '&#160;';
+            var SPACE = '\u00A0';
             var mm = parseFloat(mmvalue); /* make sure it is a float */
             if (isNaN(mm)) {
                 console.log('gobotany.utils.pretty_length: ' + mmvalue +
