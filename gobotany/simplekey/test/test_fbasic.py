@@ -540,7 +540,6 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get('/')  # to start fresh and prevent partial reload
         self.get('/non-monocots/remaining-non-monocots/'
                  '#_filters=family,genus,plant_height_rn'
-                 '&_visible=plant_height_rn'
                  '&plant_height_rn=5000')
         unknowns = 32
         self.wait_on_species(unknowns + 9,
