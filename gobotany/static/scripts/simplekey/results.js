@@ -221,7 +221,9 @@ define([
         $.when(document_is_ready).done(function() {
             scroll_pane = $('.scroll')
                 .bind('jsp-scroll-y', function(event) {
-                    if (user_is_scrolling)  // because this could be a reinitialise
+                    // Make sure this is not a reinitialise
+                    if (user_is_scrolling)
+                        // and that the area is already set up
                         if (helper.filter_section.working_area)
                             helper.filter_section.working_area.dismiss();
                 })
@@ -402,11 +404,16 @@ define([
             var tab_view = results_page_state.tab_view();
             var is_list_view = (tab_view === 'list') ? true : false;
             App3.taxa.set('show_list', is_list_view);
-            
+
             // Now that filters are loaded, save the page state and set up
             // observers to automatically save it when page elements change.
             save_page_state();
             add_page_state_observers();
+
+            Ember.run.next(function() {
+                // Once the filter divs are actually added to the DOM
+                scroll_pane.data('jsp').reinitialise();
+            });
         });
     } else {
         // With no hash on the URL, load the default filters for this
@@ -423,6 +430,11 @@ define([
                     // Go ahead and start an async fetch, to make things
                     // faster in case the user clicks on the filter.
                     resources.character_vector(filter_info.short_name);
+
+                    Ember.run.next(function() {
+                        // Once the filter divs are actually added to the DOM
+                        scroll_pane.data('jsp').reinitialise();
+                    });
                 });
             });
 
