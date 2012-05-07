@@ -468,12 +468,19 @@ dojo.declare('gobotany.sk.working_area.Length', [
             this._measure_changed();
     },
 
+    _parse_value: function(text) {
+        var v = parseFloat(text);
+        if (isNaN(v))
+            return null;
+        return v;
+    },
+
     _current_value: function() {
         var selector = this.is_metric ? '[name="measure_metric"]' :
             '[name="measure_english"]';
         var text = dojo.query(selector, this.div).attr('value')[0];
-        var mm = parseFloat(text) * this.factor;
-        return isNaN(mm) ? null : mm;
+        var v = this._parse_value(text);
+        return (v === null) ? null : v * this.factor;
     },
 
     _set_unit: function(unit) {
@@ -492,11 +499,12 @@ dojo.declare('gobotany.sk.working_area.Length', [
 
     _measure_changed: function() {
         var mm = this._current_value();
+        var mm_old = this._parse_value(this.filter.get('value'));
         var vector = this.filter.taxa_matching(mm);
         vector = _.intersect(vector, this.species_vector);
         var div = dojo.query('.instructions', this.div);
         var apply_button = dojo.query('.apply-btn', this.div);
-        if (parseFloat(this.filter.get('value')) === mm) {
+        if (mm_old === mm) {
             instructions = 'Change the value to narrow your selection to a' +
                 ' new set of matching species.';
             apply_button.addClass('disabled');
