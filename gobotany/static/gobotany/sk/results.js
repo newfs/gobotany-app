@@ -60,8 +60,10 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
     load_selected_image_type: function(event) {
         var image_type = App3.image_type;
-        if (!image_type)
+        if (!image_type) {
+            // No image types available yet, so skip for now
             return;
+        }
 
         var image_tags = dojo.query('.plant-list img');
         // Replace the image for each plant on the page
@@ -125,6 +127,9 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         else {
             App3.set('image_type', default_type);
         }
+    
+        // Load the images.
+        this.load_selected_image_type();
     }
 });
 

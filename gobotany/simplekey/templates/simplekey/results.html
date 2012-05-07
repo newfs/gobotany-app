@@ -74,6 +74,7 @@
                         <label for="image-types">Show photos of:</label>
                         {% handlebars %}
                           {{view Ember.Select viewName="select"
+                            elementId="image-types"
                             contentBinding="App3.image_types"
                             optionLabelPath="content"
                             optionValuePath="content"
