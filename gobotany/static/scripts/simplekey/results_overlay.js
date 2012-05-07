@@ -1,20 +1,25 @@
 require([
     'args',
+    'document_is_ready',
     'jquery.tools.min',
     'simplekey/resources'
-], function(args, ignore, resources) {
+], function(args, document_is_ready, ignore, resources) {
 
-    resources.base_vector({
-        key_name: 'simple', pile_slug: args.pile_slug
-    }).done(function(base_vector) {
+    $.when(
+        document_is_ready,
+        resources.base_vector({key_name: 'simple', pile_slug: args.pile_slug})
+    ).done(function(x, base_vector) {
         $('.number-of-species .number').html(base_vector.length);
     });
 
-    resources.pile_characters(args.pile_slug, []).done(function(clist) {
+    $.when(
+        document_is_ready,
+        resources.pile_characters(args.pile_slug, [])
+    ).done(function(x, clist) {
         $('.number-of-questions .number').html(clist.length);
     });
 
-    if (!original_location_hash) $(document).ready(function() {
+    document_is_ready.done(function() {if (!original_location_hash) {
 
         $('#intro-overlay').overlay({
             mask: {
@@ -37,5 +42,6 @@ require([
          * position to "fixed" so that it stays in the viewport.
          */
         $('#exposeMask').css('position', 'fixed');
-    });
+
+    }});
 });

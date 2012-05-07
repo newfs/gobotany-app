@@ -1,5 +1,6 @@
 define([
     'args',
+    'document_is_ready',
     'jquery',
     'underscore-min',
     'lib/tooltipsy',
@@ -12,16 +13,12 @@ define([
     'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState'
-], function(args, x, x, x, utils, App3, _Filter, _FilterController,
-            animation, cookie, _glossarize, resources, ResultsPageState) {
+], function(args, document_is_ready, x, x, x, utils, App3, _Filter,
+            _FilterController, animation, cookie, _glossarize,
+            resources, ResultsPageState) {
 
     var pile_slug = args.pile_slug;
     var helper;  // legacy object; gets set way down at the bottom of this file
-    var document_is_ready = $.Deferred();
-
-    $(document).ready(function() {
-        document_is_ready.resolve();
-    });
 
     // Dojo code needs globals, so we create some.
     global_speciessectionhelper = null;
