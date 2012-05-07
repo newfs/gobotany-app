@@ -116,11 +116,21 @@ define([
 
     App3.reopen({
         family_choices: function() {
-            return choices_that_leave_more_than_zero_taxa(App3.family_filter);
+            var choices = [];
+            if (App3.family_filter) {
+                choices = choices_that_leave_more_than_zero_taxa(
+                    App3.family_filter);
+            }
+            return choices;
         }.property('filter_controller.@each.value'),
 
         genus_choices: function() {
-            return choices_that_leave_more_than_zero_taxa(App3.genus_filter);
+            var choices = [];
+            if (App3.genus_filter) {
+                choices = choices_that_leave_more_than_zero_taxa(
+                    App3.genus_filter);
+            }
+            return choices;
         }.property('filter_controller.@each.value')
     });
 
