@@ -236,6 +236,17 @@ define([
                     verticalGutter: 0,
                     showArrows: true
                 });
+
+            // Re-initialise the scroll pain regularly because new
+            // filters will get drawn and because existing filters will
+            // change their height as values get set and cleared.  It
+            // can only resize when the working area is gone, however;
+            // adjusting the scroll pane closes the working area!
+
+            setInterval(function() {
+                if (helper.filter_section.working_area === null)
+                    scroll_pane.data('jsp').reinitialise();
+            }, 500);
         });
     });
 
@@ -412,11 +423,6 @@ define([
             // observers to automatically save it when page elements change.
             save_page_state();
             add_page_state_observers();
-
-            Ember.run.next(function() {
-                // Once the filter divs are actually added to the DOM
-                scroll_pane.data('jsp').reinitialise();
-            });
         });
     } else {
         // With no hash on the URL, load the default filters for this
@@ -433,11 +439,6 @@ define([
                     // Go ahead and start an async fetch, to make things
                     // faster in case the user clicks on the filter.
                     resources.character_vector(filter_info.short_name);
-
-                    Ember.run.next(function() {
-                        // Once the filter divs are actually added to the DOM
-                        scroll_pane.data('jsp').reinitialise();
-                    });
                 });
             });
 
