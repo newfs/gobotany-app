@@ -1820,7 +1820,7 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
         self.wait_on(10, self.css1, 'div.plant.in-results')
         self.css1('#intro-overlay .continue').click()
         self.assertTrue(page.find_element_by_xpath(
-            '//li/a/span[text()="Habitat"]'))
+            '//li/a/span/span[text()="Habitat"]'))  # glossarized: extra span
         self.assertTrue(page.find_element_by_xpath(
             '//li/a/span[text()="New England state"]'))
 
@@ -1843,7 +1843,7 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
         # When setting up the page from the URL hash, there is no intro 
         # overlay, so no need to wait for it as usual.
         self.assertTrue(page.find_element_by_xpath(
-            '//li/a/span[text()="Habitat"]'))
+            '//li/a/span/span[text()="Habitat"]'))  # glossarized: extra span
         self.assertTrue(page.find_element_by_xpath(
             '//li/a/span[text()="New England state"]'))
 
