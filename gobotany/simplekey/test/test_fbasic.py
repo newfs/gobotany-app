@@ -542,8 +542,15 @@ class FilterFunctionalTests(FunctionalTestCase):
                  '#_filters=family,genus,plant_height_rn'
                  '&plant_height_rn=5000')
         unknowns = 32
-        self.wait_on_species(unknowns + 9,
-                             seconds=21)   # Big subgroup, wait longer
+
+        wait = 30  # Big subgroup, wait longer
+        try:
+            self.wait_on_species(unknowns + 9, seconds=wait)
+        except AssertionError:
+            # Give it a second chance - sometimes "499 species" flashes
+            # up briefly before the filtered value kicks in.
+            time.sleep(5.0)
+            self.wait_on_species(unknowns + 9, seconds=wait)
 
         sidebar_value_span = self.css1('#plant_height_rn .value')
         self.assertEqual(sidebar_value_span.text, '5000 mm')
