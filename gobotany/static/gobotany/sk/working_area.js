@@ -186,11 +186,13 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
 
             // Once the item is added, add a tooltip for the drawing.
             if (image_path.length > 0) {
-                var image_html = '<img id="' + image_id + '" src="' +
-                    image_path + '" alt="drawing showing ' +
-                    v.friendly_text + '">';
+                var image_html = '<img class="char-value-larger" id="' +
+                    image_id + '" src="' + image_path +
+                    '" alt="drawing showing ' + v.friendly_text + '">';
                 $('#' + image_id).tooltipsy({
-                    content: image_html
+                    alignTo: 'cursor',
+                    content: image_html,
+                    offset: [0, -200]
                 });
             }
 

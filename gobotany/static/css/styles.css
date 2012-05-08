@@ -1194,7 +1194,7 @@ h5.help {
     background: #fff;
     border: 1px solid #ddd;
     display: inline-block;
-    height: 100px;
+    height: 80px;
 }
 .working-area a.close {
     background: url(/static/images/icons/close.png) no-repeat transparent;
@@ -2083,6 +2083,7 @@ div.section.namap div.trans {
 }
 /* Glossary tooltip */
 .glosstip {
+    line-height: 140%;
     position: relative;
     max-width: 30em;
 }
@@ -2456,28 +2457,32 @@ nav #search-suggest .menu a:hover, #search-suggest .menu li:hover {
 /* Tooltips for working area images and highlighted glossary terms. */
 
 .tooltipsy {
-  border: 1px solid #080;
+    border: 1px solid #080;
 
-  -moz-border-radius: 1em;
-  -webkit-border-radius: 1em;
-  -o-border-radius: 1em;
-  -ms-border-radius: 1em;
-  -khtml-border-radius: 1em;
-  border-radius: 1em;
+    -moz-border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+    -o-border-radius: 0.5em;
+    -ms-border-radius: 0.5em;
+    -khtml-border-radius: 0.5em;
+    border-radius: 0.5em;
 
-  -moz-box-shadow: 3px 3px 10px #333333;
-  -webkit-box-shadow: 3px 3px 10px #333333;
-  -o-box-shadow: 3px 3px 10px #333333;
-  box-shadow: 3px 3px 10px #333333;
+    -moz-box-shadow: 1px 1px 2px #333333;
+    -webkit-box-shadow: 1px 1px 2px #333333;
+    -o-box-shadow: 1px 1px 2px #333333;
+    box-shadow: 1px 1px 2px #333333;
 
-  background-color: #fff;
-  background: -webkit-linear-gradient(#ffffff, #f0f0c0);
-  background: -moz-linear-gradient(#ffffff, #f0f0c0);
-  background: -o-linear-gradient(#ffffff, #f0f0c0);
-  background: -ms-linear-gradient(#ffffff, #f0f0c0);
-  background: linear-gradient(#ffffff, #f0f0c0);
+    background-color: #fff;
+    background: -webkit-linear-gradient(#ffffff, #f0f0c0);
+    background: -moz-linear-gradient(#ffffff, #f0f0c0);
+    background: -o-linear-gradient(#ffffff, #f0f0c0);
+    background: -ms-linear-gradient(#ffffff, #f0f0c0);
+    background: linear-gradient(#ffffff, #f0f0c0);
 
-  padding: 1em;
+    padding: 0.5em 0.7em;
+}
+
+img.char-value-larger {
+    height: 160px;  /* Consistent height for popup character value drawings */
 }
 
 /* Styles for IE 6-9 browser compatibility prompts */
