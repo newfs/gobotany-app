@@ -429,14 +429,14 @@ class FilterFunctionalTests(FunctionalTestCase):
         RANGE_DIV_CSS = '.permitted_ranges'
         INPUT_METRIC_CSS = 'input[name="measure_metric"]'
         INSTRUCTIONS_CSS = '.instructions'
-        FILTER_LINK_CSS = '#plant_height_rn a.option'
+        FILTER_LINK_CSS = '#plant_height_rn'
 
         self.get(
             '/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn'
             )
         self.wait_on_species(499, seconds=21)   # Big subgroup, wait longer
 
-        self.css1('#plant_height_rn').click()
+        self.css1(FILTER_LINK_CSS).click()
         self.wait_on(5, self.css, RANGE_DIV_CSS)
 
         sidebar_value_span = self.css1('#plant_height_rn .value')
