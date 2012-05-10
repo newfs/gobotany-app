@@ -288,13 +288,12 @@ define([
         // Get all the current filter names and values.
         var filter_names = Object.keys(App3.filter_controller.filtermap);
         var filter_values = {};
+        var filter;
         for (key in App3.filter_controller.filtermap) {
             if (App3.filter_controller.filtermap.hasOwnProperty(key)) {
-                if (App3.filter_controller.filtermap[key].value &&
-                    App3.filter_controller.filtermap[key].value.length > 0) {
-
-                    filter_values[key] =
-                        App3.filter_controller.filtermap[key].value;
+                filter = App3.filter_controller.filtermap[key];
+                if (filter.value && filter.value.toString().length > 0) {
+                    filter_values[key] = filter.value;
                 }
             }
         }
