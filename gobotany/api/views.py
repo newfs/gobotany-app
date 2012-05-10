@@ -5,7 +5,7 @@ from collections import defaultdict
 from django.conf import settings
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
-from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_control, cache_page
 from django.views.decorators.http import etag
 from django.views.decorators.vary import vary_on_headers
 
@@ -193,7 +193,15 @@ def piles_characters(request, pile_slug):
 
 #
 
+_species_cache = {}
+
+@cache_control(max_age=60 * 60)
 def species(request, pile_slug):
+
+    # Pull the result from our hard cache, if available.
+
+    if pile_slug in _species_cache:
+        return _species_cache[pile_slug]
 
     # Efficiently fetch the species that belong to this pile.  (Common
     # name is selected nondeterministically because, frankly, the data
@@ -249,7 +257,11 @@ def species(request, pile_slug):
             images.append(_taxon_image(image))
         result.append(d)
 
-    return jsonify(result)
+    # Hard-cache the result, since our species lists do not currently
+    # change during the day in production.
+
+    _species_cache[pile_slug] = jsonify(result)
+    return _species_cache[pile_slug]
 
 #
 
