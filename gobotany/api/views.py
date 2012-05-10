@@ -195,7 +195,6 @@ def piles_characters(request, pile_slug):
 
 _species_cache = {}
 
-@cache_control(max_age=60 * 60)
 def species(request, pile_slug):
 
     # Pull the result from our hard cache, if available.
