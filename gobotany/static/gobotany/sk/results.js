@@ -107,8 +107,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         // Set up the onhashchange event handler, which will be used to detect
         // Back button undo events for modern browsers.
-        dojo.connect(document.body, 'onhashchange', this, this.handle_undo,
-                     true);
+        dojo.connect(window, 'onhashchange', this, this.handle_undo, true);
 
         // Set up a handler to detect an Esc keypress, which will close
         // the filter working area if it is open.
@@ -152,14 +151,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         dojo.query('#sidebar .loading').addClass('hidden');
 
         this.filter_manager.perform_query();
-
-        // Show a filter in the filter working area if necessary.
-        var filter_name = this.filter_section.visible_filter_short_name;
-        if (filter_name !== '') {
-            var filter = this.filter_manager.get_filter(filter_name);
-            if (filter !== undefined)
-                this.filter_section.show_filter_working(filter);
-        }
     },
 
     handle_undo: function() {
@@ -170,6 +161,9 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         if (last_plant_id_url === undefined) {
             last_plant_id_url = '';
         }
+
+        console.log('current_url:', current_url);
+        console.log('last_plant_id_url', last_plant_id_url);
 
         // When going forward and applying values, etc., the current URL and
         // last plant ID URL are always the same. After pressing Back, they
@@ -240,13 +234,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
                 [this.family_genus_selectors.genus_filter]);
         }
 
-        // Restore the filter that was last visible in the filter working
-        // area, if applicable. It will be shown later when results load.
-        if (hash_object._visible !== undefined) {
-            this.filter_section.visible_filter_short_name =
-                hash_object._visible;
-        }
-
         if (filter_names.length > 0) {
             simplekey_resources.pile_characters(this.pile_slug)
                 .done(dojo.hitch(this, function(items) {
@@ -285,13 +272,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         var hash = this.filter_manager.as_query_string();
 
-        // Include a URL parameter indicating whether the filter working area
-        // is open.
-        if (/&$/.test(hash) === false) {
-            hash += '&';
-        }
-        hash += '_visible=' + this.filter_section.visible_filter_short_name;
-        
         // Include a URL parameter indicating the current view of the
         // results area.
         if (/&$/.test(hash) === false) {
@@ -565,10 +545,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
         this.results_helper = results_helper;
         this.glossarizer = gobotany.sk.glossary.Glossarizer();
         this.working_area = null;
-
-        // This variable is for keeping track of which filter is currently
-        // visible in the filter working area (if any).
-        this.visible_filter_short_name = '';
 
         // Set up the jQuery scrolling box for filters, first binding a
         // function to dismiss the working area upon scrolling.
@@ -951,9 +927,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             on_dismiss: dojo.hitch(this, 'on_working_area_dismiss')
         });
 
-        // Save the state, which includes whether the filter working area is
-        // being shown.
-        this.visible_filter_short_name = filter.character_short_name;
         this.results_helper.save_filter_state();
 
         sidebar_set_height();
@@ -963,7 +936,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
     on_working_area_dismiss: function(filter) {
         this.working_area = null;
-        this.visible_filter_short_name = '';
         this.results_helper.save_filter_state();
 
         // Clear selected state in the questions list at left.
