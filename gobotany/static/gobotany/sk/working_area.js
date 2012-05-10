@@ -313,10 +313,19 @@ dojo.declare('gobotany.sk.working_area.Slider', [
         this.inherited(arguments);
     },
 
+    _compute_min_and_max: function() {
+        var species_vector = App3.filter_controller.compute(this.filter);
+        var allowed = this.filter.allowed_ranges(species_vector);
+        this.min = allowed[0].min;
+        this.max = allowed[allowed.length - 1].max;
+    },
+
     _draw_specifics: function() {
         // values_list?
+        this._compute_min_and_max();
+
         var filter = this.filter;
-        var num_values = filter.max - filter.min + 1;
+        var num_values = this.max - this.min + 1;
         var startvalue = Math.ceil(num_values / 2);
         if (filter.value !== null)
             startvalue = filter.get('value');
@@ -324,15 +333,15 @@ dojo.declare('gobotany.sk.working_area.Slider', [
         var values_q = dojo.query('div.working-area .values');
         values_q.addClass('multiple').removeClass('numeric').
             html('<label>Select a number between<br>' +
-                 filter.min + ' and ' +
-                 filter.max + '</label>');
+                 this.min + ' and ' +
+                 this.max + '</label>');
         this.slider_node = dojo.create('div', null, values_q[0]);
         this.simple_slider = new dijit.form.HorizontalSlider({
             id: 'simple-slider',
             name: 'simple-slider',
             value: startvalue,
-            minimum: filter.min,
-            maximum: filter.max,
+            minimum: this.min,
+            maximum: this.max,
             discreteValues: num_values,
             intermediateChanges: true,
             showButtons: false,
@@ -353,6 +362,8 @@ dojo.declare('gobotany.sk.working_area.Slider', [
     _value_changed: function() {
         /* Disable the apply button when we're on either the default
            value or the value that was previous selected */
+        this._compute_min_and_max();
+
         var apply_button = dojo.query('.apply-btn', this.div);
         var slider_value = this._current_value();
         var filter_value = this.filter.get('value');
@@ -374,10 +385,10 @@ dojo.declare('gobotany.sk.working_area.Slider', [
         var slider_bar_width = dojo.style(slider_bar, 'width');
         var max_left_px = MIN_LEFT_PX + slider_bar_width;
         var filter = this.filter;
-        var num_segments = filter.max - filter.min;
+        var num_segments = this.max - this.min;
         var slider_length = max_left_px - MIN_LEFT_PX;
         var pixels_per_value = slider_length / num_segments;
-        var offset = Math.floor((value - filter.min) * pixels_per_value);
+        var offset = Math.floor((value - this.min) * pixels_per_value);
         var label_width_correction = 0;
         if (value >= 10) {
             label_width_correction = -4; /* for 2 digits, pull left a bit */
