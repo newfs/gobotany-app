@@ -146,7 +146,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         // Create a Don't Know radio button item.
         this.div_map = {};
         var item_html = '<div><label><input name="char_name"' +
-            checked(f.selected_value === null) +
+            checked(f.value === null) +
             ' type="radio" value=""> ' + _format_value() + '</label></div>';
         this.div_map[''] = dojo.place(item_html, row_div);
 
@@ -157,7 +157,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
             var v = values[i];
 
             var item_html = '<label><input name="char_name" type="radio"' +
-                checked(f.selected_value === v.choice) +
+                checked(f.value === v.choice) +
                 ' value="' + v.choice + '">';
 
             // Add a drawing image if present.
@@ -318,7 +318,7 @@ dojo.declare('gobotany.sk.working_area.Slider', [
         var filter = this.filter;
         var num_values = filter.max - filter.min + 1;
         var startvalue = Math.ceil(num_values / 2);
-        if (filter.selected_value !== null)
+        if (filter.value !== null)
             startvalue = filter.get('value');
 
         var values_q = dojo.query('div.working-area .values');
