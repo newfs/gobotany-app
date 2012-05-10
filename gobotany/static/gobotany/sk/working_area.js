@@ -220,7 +220,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
 
     _on_choice_change: function(event) {
         var apply_button = dojo.query('.apply-btn', this.div);
-        if (this._current_value() === this.filter.selected_value)
+        if (this._current_value() === this.filter.value)
             apply_button.addClass('disabled');
         else
             apply_button.removeClass('disabled');
