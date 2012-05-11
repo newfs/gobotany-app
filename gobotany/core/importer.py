@@ -701,6 +701,32 @@ class Importer(object):
         genus_table.save()
 
     @transaction.commit_on_success
+    def _import_plant_names(self, taxaf):
+        print >> self.logfile, 'Setting up plant names in file: %s' % taxaf
+        COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
+        iterator = iter(CSVReader(taxaf).read())
+        colnames = [x.lower() for x in iterator.next()]
+
+        for cols in iterator:
+            row = dict(zip(colnames, cols))
+
+            scientific_name = row['scientific__name']
+            num_common_names = 0
+            for common_name_field in COMMON_NAME_FIELDS:
+                common_name = row[common_name_field]
+                if len(common_name) > 0:
+                    num_common_names += 1
+                    pn, created = models.PlantName.objects.get_or_create( \
+                        scientific_name=scientific_name,
+                        common_name=common_name)
+                    print >> self.logfile, u'  Added plant name:', pn
+            # If there were no common names for this plant, add the plant now.
+            if num_common_names == 0:
+                pn, created = models.PlantName.objects.get_or_create( \
+                    scientific_name=scientific_name)
+                print >> self.logfile, u'  Added plant name:', pn
+
+    @transaction.commit_on_success
     def _import_taxon_character_values(self, db, *filenames):
 
         # Create a pile_map {'_ca': 8, '_nm': 9, ...}

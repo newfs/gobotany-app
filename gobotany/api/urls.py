@@ -80,6 +80,10 @@ urlpatterns = patterns(
     url(r'^genera/(?P<genus_slug>[^/]+)/$',
         Resource(handler=handlers.GenusHandler), name='api-genus'),
 
+    # For PlantShare (MyPlants) plant name picker
+    url(r'^plant-names/',
+        Resource(handler=handlers.PlantNamesHandler), name='api-plant-names'),
+
     url(r'^$', 'nonexistent', name='api-base'),  # helps compute the base URL
     )
 

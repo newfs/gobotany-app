@@ -184,6 +184,49 @@ def _setup_sample_data(load_images=False):
     pile1.save()
 
 
+    names = [   ('Abies balsamea', 'balsam fir'),
+                ('Abutilon theophrasti', 'velvetleaf Indian-mallow'),
+                ('Acalypha rhomboidea', 'common three-seeded-Mercury'),
+                ('Acer negundo', 'ash-leaved maple'),
+                ('Acer pensylvanicum', 'striped maple'),
+                ('Acer platanoides', 'Norway maple'),
+                ('Acer rubrum', 'red maple'),
+                ('Acer saccharinum', 'silver maple'),
+                ('Acer saccharum', 'sugar maple'),
+                ('Acer spicatum', 'mountain maple'),
+                ('Mimulus ringens', 'Allegheny monkey-flower'),
+                ('Adlumia fungosa', 'Allegheny-vine'),
+                ('Erythronium americanum', 'Amerian trout-lily'),
+                ('Echinochloa muricata', 'American barnyard grass'),
+                ('Ammophila breviligulata', 'American beach grass'),
+                ('Fagus grandifolia', 'American beech'),
+                ('Celastrus scandens', 'American bittersweet'),
+                ('Staphylea trifolia', 'American bladdernut'),
+                ('Sparganium americanum', 'American bur-reed'),
+                ('Erechtites hieraciifolius', 'American burnweed'),
+                ('Amelanchier arborea', 'downy shadbush'),
+                ('Amelanchier bartramiana', 'mountain shadbush'),
+                ('Amelanchier canadensis', 'eastern shadbush'),
+                ('Amelanchier laevis', 'smooth shadbush'),
+                ('Amelanchier spicata', 'dwarf shadbush'),
+                ('Castanea dentata', 'American chestnut'),
+                ('Heracleum maximum', 'American cow-parsnip'),
+                ('Viola labradorica', 'American dog violet'),
+                ('Ulmus americana', 'American elm'),
+                ('Veratrum viride', 'American false hellebore'),
+                ('Hedeoma pulegioides', 'American false pennyroyal'),
+                ('Cerastium strictum', 'American field chickweed'),
+                ('Achillea millefolium', 'common yarrow'),
+                ('Acorus americanus', 'several-veined sweetflag'),
+                ('Acorus calamus', 'single-veined sweetflag'),
+                ('Actaea pachypoda', 'white baneberry'),
+                ('Actaea rubra', ''),
+            ]
+    for name in names:
+        n = models.PlantName(scientific_name=name[0], common_name=name[1])
+        n.save()
+
+
 # This is currently the "demo" page.  Its URL and view is actually specified
 # in the core/ app.  TODO: consider moving the page elsewhere, and having a
 # service "start" URI here.
@@ -675,3 +718,69 @@ class GenusTestCase(TestCase):
     def test_get_returns_not_found_when_nonexistent_genus(self):
         response = self.client.get('/api/genera/no-genus/')
         self.assertEqual(404, response.status_code)
+
+
+# Tests for PlantShare (MyPlants) plant name picker API call
+
+class PlantNamesTestCase(TestCase):
+    MAX_NAMES = 20
+
+    def setUp(self):
+        _setup_sample_data()
+        self.client = Client()
+
+    def half_max_names(self):
+        return int(math.floor(self.MAX_NAMES / 2))
+
+    def test_get_returns_ok(self):
+        response = self.client.get('/api/plant-names/')
+        self.assertEqual(200, response.status_code)
+
+    def test_get_returns_json(self):
+        response = self.client.get('/api/plant-names/')
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
+
+    def test_get_returns_scientific_and_common_name_matches(self):
+        response = self.client.get('/api/plant-names/?q=a')
+        response_json = json.loads(response.content)
+        self.assertTrue(len(response_json.get('scientific')) > 0)
+        self.assertTrue(len(response_json.get('common')) > 0)
+
+    def test_get_returns_names_in_expected_format(self):
+        response = self.client.get('/api/plant-names/?q=a')
+        response_json = json.loads(response.content)
+        all_names = response_json.get('scientific') + \
+                    response_json.get('common')
+        for name in all_names:
+            self.assertTrue(re.match(r'^[A-Za-z \-]*( \([A-Za-z \-]*\))?$',
+                            name), 'Name "%s" not in expected format' % name)
+
+    def test_get_returns_equal_number_scientific_and_common(self):
+        response = self.client.get('/api/plant-names/?q=a')
+        response_json = json.loads(response.content)
+        num_scientific_names = len(response_json.get('scientific'))
+        num_common_names = len(response_json.get('common'))
+        self.assertEqual(num_scientific_names, num_common_names)
+        self.assertEqual(self.half_max_names(), num_scientific_names)
+        self.assertEqual(self.half_max_names(), num_common_names)
+
+    def test_get_returns_more_scientific_than_common(self):
+        response = self.client.get('/api/plant-names/?q=ac')
+        response_json = json.loads(response.content)
+        num_scientific_names = len(response_json.get('scientific'))
+        num_common_names = len(response_json.get('common'))
+        self.assertTrue(num_scientific_names > num_common_names,
+            '%d scientific names, %d common names' % (num_scientific_names,
+                                                      num_common_names))
+        self.assertTrue(num_scientific_names > self.half_max_names())
+
+    def test_get_returns_more_common_than_scientific(self):
+        response = self.client.get('/api/plant-names/?q=ame')
+        response_json = json.loads(response.content)
+        num_scientific_names = len(response_json.get('scientific'))
+        num_common_names = len(response_json.get('common'))
+        self.assertTrue(num_common_names > num_scientific_names,
+            '%d scientific names, %d common names' % (num_scientific_names,
+                                                      num_common_names))
+        self.assertTrue(num_common_names > self.half_max_names())
