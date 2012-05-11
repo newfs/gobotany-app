@@ -75,7 +75,7 @@ class Table(object):
 
         # If rows are indexed by the changed column, then rebuild our index.
 
-        if attr in self.keycolumnset:
+        if self.rowdict and (attr in self.keycolumnset):
             rows = self.rowdict.itervalues()
             rowdict = self.rowdict = {}
             for row in rows:
