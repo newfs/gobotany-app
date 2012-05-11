@@ -854,27 +854,12 @@ class Importer(object):
 
     @transaction.commit_on_success
     def _import_assign_character_values_to_piles(self, db):
-        """Once all character values (including those for length characters)
-        have been created, ensure they are assigned to their respective
-        pile character-values collections.
+        """Placeholder function.
+
+        We will be able to remove this once the 'ember' branch is merged
+        back into trunk, at which point we can remove the call to this
+        function from the gobotany-deploy/scripts/import-data.sh file.
         """
-        cursor = connection.cursor()
-        cursor.execute("DELETE FROM core_pile_character_values;")
-        for suffix, pile_name in pile_suffixes.items():
-            cursor.execute("""
-
-                INSERT INTO core_pile_character_values
-                  (pile_id, charactervalue_id)
-                  SELECT p.id, cv.id
-                    FROM core_pile AS p,
-                      core_character AS c JOIN
-                      core_charactervalue AS cv
-                        ON (c.id = cv.character_id)
-                    WHERE p.name = %s
-                      AND SUBSTRING(c.short_name FROM '..$') = %s;
-
-                """, (pile_name, suffix))
-        connection.commit()
 
 
     def _create_character_name(self, short_name):
@@ -901,8 +886,16 @@ class Importer(object):
     @transaction.commit_on_success
     def _import_characters(self, db, filename):
         log.info('Loading characters from file: %s', filename)
+
         charactergroup_table = db.table('core_charactergroup')
         character_table = db.table('core_character')
+
+        # Create a pile_map {'_ca': 8, '_nm': 9, ...}
+        pile_map1 = db.map('core_pile', 'slug', 'id')
+        pile_map = dict(('_' + suffix, pile_map1[slugify(name)])
+                        for (suffix, name) in pile_suffixes.iteritems()
+                        if slugify(name) in pile_map1  # for tests.py
+                        )
 
         for row in open_csv(filename):
 
@@ -921,6 +914,9 @@ class Importer(object):
             else:
                 value_type = 'TEXT'
                 unit = ''
+
+            suffix = character_name[-3:]  # '_ca', etc.
+            pile_id = pile_map.get(suffix)
 
             charactergroup = charactergroup_table.get(
                 name=row['character_group'],
@@ -945,6 +941,7 @@ class Importer(object):
                 name=name,
                 friendly_name=friendly_name,
                 character_group_id=charactergroup.name,
+                pile_id=pile_id,
                 value_type=value_type,
                 unit=unit,
                 ease_of_observability=eoo,
@@ -997,10 +994,8 @@ class Importer(object):
     @transaction.commit_on_success
     def _import_character_values(self, db, filename):
         log.info('Loading character values from: %s', filename)
-        pile_map = db.map('core_pile', 'name', 'id')
         character_map = db.map('core_character', 'short_name', 'id')
         charactervalue_table = db.table('core_charactervalue')
-        pile_character_values_table = db.table('core_pile_character_values')
 
         for row in open_csv(filename):
 
@@ -1023,7 +1018,6 @@ class Importer(object):
             except KeyError:
                 log.error('Bad character: %r', short_name)
                 continue
-            pile_title = pile_suffixes[pile_suffix]
 
             charactervalue_table.get(
                 character_id=character_id,
@@ -1032,17 +1026,9 @@ class Importer(object):
                 friendly_text=self._clean_up_html(row['friendly_text'])
                 )
 
-            pile_character_values_table.get(
-                pile_id=pile_map[pile_title],
-                charactervalue_id=(character_id, value_str),
-                )
-
         charactervalue_table.save()
         charactervalue_map = db.map(
             'core_charactervalue', ('character_id', 'value_str'), 'id')
-        pile_character_values_table.replace(
-            'charactervalue_id', charactervalue_map)
-        pile_character_values_table.save(delete_old=True)
 
     @transaction.commit_on_success
     def _import_character_value_images(self, db, csvfilename):
@@ -1395,7 +1381,6 @@ class Importer(object):
 
         charactervalue_table = db.table('core_charactervalue')
         taxoncharactervalue_table = db.table('core_taxoncharactervalue')
-        pile_character_values_table = db.table('core_pile_character_values')
 
         for row in open_csv(taxaf):
 
@@ -1450,12 +1435,6 @@ class Importer(object):
                     friendly_text=friendly_text,
                     )
 
-                for pile_id in pile_ids:
-                    pile_character_values_table.get(
-                        pile_id=pile_id,
-                        charactervalue_id=(character_id, value_str),
-                        )
-
                 taxoncharactervalue_table.get(
                     taxon_id=taxon_id,
                     character_value_id=(character_id, value_str),
@@ -1469,9 +1448,6 @@ class Importer(object):
 
         taxoncharactervalue_table.replace('character_value_id', cv_map)
         taxoncharactervalue_table.save()
-
-        pile_character_values_table.replace('charactervalue_id', cv_map)
-        pile_character_values_table.save()
 
 
     def _create_plant_preview_characters(self, pile_name,

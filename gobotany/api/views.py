@@ -182,8 +182,7 @@ def piles_characters(request, pile_slug):
                 exclude_short_names=exclude_short_names,
                 ))
     elif not characters:
-        characters = Character.objects.filter(
-            character_values__pile=pile).distinct()
+        characters = Character.objects.filter(pile=pile)
 
     # Turn the characters into a data structure for JSON.
 

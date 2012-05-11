@@ -208,7 +208,7 @@ class PileHandler(BasePileHandler):
     @staticmethod
     def character_groups(pile=None):
         groups = models.CharacterGroup.objects.filter(
-            character__character_values__pile=pile).distinct()
+            character__pile=pile).distinct()
         return [dict(name=group.name,
                      id=group.id) for group in groups]
 
@@ -279,12 +279,12 @@ class CharacterValuesHandler(BaseHandler):
     methods_allowed = ('GET',)
 
     def _read(self, request, pile_slug, character_short_name):
-        pile = models.Pile.objects.get(slug=pile_slug)
+        # Why pile_slug? The short name is already unique.
         character = models.Character.objects.get(
             short_name=character_short_name)
 
         for cv in models.CharacterValue.objects.filter(
-            pile=pile, character=character):
+            character=character):
 
             image_url = ''
             thumbnail_url = ''

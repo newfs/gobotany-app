@@ -103,6 +103,7 @@ class Character(models.Model):
     name = models.CharField(max_length=100)
     friendly_name = models.CharField(max_length=100)
     character_group = models.ForeignKey(CharacterGroup)
+    pile = models.ForeignKey('Pile', null=True, related_name='characters')
     ease_of_observability = models.PositiveSmallIntegerField(null=True,
         blank=True, choices=zip(range(1, 6), range(1, 6)))
 
@@ -157,18 +158,6 @@ class CharacterValue(models.Model):
         ...    character=char)
         >>> char_val
         <CharacterValue: trophophyll_form_ly: short and scale-like>
-
-    Now we can associate that character value with a Pile, which
-    effectively associates the character with the Pile as well:
-
-        >>> pile,ignore = Pile.objects.get_or_create(name='Lycophytes')
-        >>> Character.objects.filter(character_values__pile=pile)
-        []
-        >>> pile.character_values.add(char_val)
-        >>> Character.objects.filter(character_values__pile=pile)
-        [<Character: trophophyll_form_ly name="Trophophyll Form" id=...>]
-        >>> CharacterValue.objects.filter(pile=pile)
-        [<CharacterValue: trophophyll_form_ly: short and scale-like>]
 
     The display for the character values change depending on the type
     being used.
@@ -281,11 +270,11 @@ class PileInfo(models.Model):
 
 class Pile(PileInfo):
     """An informal grouping of species distinguished by common characters."""
-    character_values = models.ManyToManyField(CharacterValue)
     species = models.ManyToManyField('Taxon', related_name='+')
     pilegroup = models.ForeignKey('PileGroup', related_name='piles', null=True)
     default_filters = models.ManyToManyField(Character,
-                                             through='DefaultFilter')
+        through='DefaultFilter',
+        related_name='piles_this_is_the_default_for')
     plant_preview_characters = models.ManyToManyField(Character,
         through='PlantPreviewCharacter', related_name='preview_characters')
     sample_species_images = models.ManyToManyField(

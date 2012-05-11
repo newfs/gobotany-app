@@ -392,7 +392,6 @@ class PileImageInline(admin.StackedInline):
 
 class PileAdmin(PileAdminBase):
     filter_horizontal = ('species',)
-    exclude = ('character_values',)
     inlines = [PileDefaultFiltersInline, ContentImageInline,
                PilePlantPreviewCharactersInline, PileImageInline]
 
@@ -409,14 +408,9 @@ class GlossaryTermAdmin(GobotanyAdminBase):
     list_filter = ('visible',)
 
 
-class CharacterValuePileInline(admin.TabularInline):
-    model = models.Pile.character_values.through
-    extra = 0
-
 class CharacterValueAdmin(GobotanyAdminBase):
     search_fields = ('character__short_name', 'value_str')
     ordering = ('character__short_name',)
-    inlines = [CharacterValuePileInline,]
 
 
 class FamilyAdmin(GobotanyAdminBase):

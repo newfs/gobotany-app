@@ -152,12 +152,10 @@ def _setup_sample_data(load_images=False):
         character=char_habitat)
     cv_habitat2.save()
 
-    pile1.character_values.add(cv1_1)
-    pile1.character_values.add(cv1_2)
-    pile1.character_values.add(cv2)
-    pile1.character_values.add(cv3)
-    pile1.character_values.add(cv_habitat1)
-    pile1.character_values.add(cv_habitat2)
+    pile1.characters.add(c1)
+    pile1.characters.add(c2)
+    pile1.characters.add(c3)
+    pile1.characters.add(char_habitat)
     pile1.save()
 
     models.TaxonCharacterValue(taxon=foo, character_value=cv1_1).save()
@@ -679,10 +677,6 @@ class CharacterValuesTestCase(TestCase):
         response = self.client.get('/api/piles/pile1/c1/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
-
-    def test_get_returns_not_found_when_nonexistent_pile(self):
-        response = self.client.get('/api/piles/nopile/c1/')
-        self.assertEqual(404, response.status_code)
 
     def test_get_returns_not_found_when_nonexistent_character(self):
         response = self.client.get('/api/piles/pile1/nochar/')
