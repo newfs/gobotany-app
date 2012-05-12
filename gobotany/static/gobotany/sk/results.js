@@ -148,10 +148,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
         this.results_helper = results_helper;
         this.working_area = null;
-
-        // This variable is for keeping track of which filter is currently
-        // visible in the filter working area (if any).
-        this.visible_filter_short_name = '';
     },
 
     _setup_character_groups: function(character_groups) {
@@ -187,10 +183,6 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
             on_dismiss: dojo.hitch(this, 'on_working_area_dismiss')
         });
 
-        // Save the state, which includes whether the filter working area is
-        // being shown.
-        this.visible_filter_short_name = filter.character_short_name;
-
         sidebar_set_height();
     },
 
@@ -198,11 +190,8 @@ dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
 
     on_working_area_dismiss: function(filter) {
         this.working_area = null;
-        this.visible_filter_short_name = '';
 
         // Clear selected state in the questions list at left.
         $('.option-list li').removeClass('active');
     }
 });
-
-
