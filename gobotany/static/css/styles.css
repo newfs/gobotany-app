@@ -1745,12 +1745,11 @@ div.section.namap div.trans {
     position: relative;
     width: 700px;
 }
-#taxon #species-images div.scrollableArea img {
+#taxon #species-images div.scrollableArea > * {
     border-right: 5px solid #fff;
     float: left;
     margin: 0;
     padding: 0;
-    position: relative;
 }
 
 /* Shadowbox tweaks to allow multiple title lines, for presenting a
