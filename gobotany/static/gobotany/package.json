@@ -1,0 +1,12 @@
+{
+    "name": "gobotany",
+    "version": "1.0",
+    "main": null,
+    "dependencies": {
+        "dojo": "current",
+        "dijit": "current",
+        "dojox": "current",
+    },
+    "description": "The New England Wildflower Society's GoBotany site appliction.",
+    "homepage": "https://gobotany.newenglandwild.org"
+}
