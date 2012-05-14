@@ -113,6 +113,8 @@ nav #search button:active {
 	background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent;	
 }
 
+/* Page footer */
+
 footer {
     height: 124px;
 }
@@ -1814,11 +1816,11 @@ div.section.namap div.trans {
 }
 
 #getting-started h2, #about h2, #advanced-map h2, #glossary h2,
-#video-help-topics h2 {
+#plantshare h2, #teaching-tools h2, #video-help-topics h2 {
     margin-bottom: 8px;
 }
 #getting-started h3, #about h3, #advanced-map h3, #glossary h3,
-#video-help-topics h3 {
+#teaching-tools h3, #video-help-topics h3 {
     margin: 8px 0;
 }
 
@@ -2483,6 +2485,31 @@ nav #search-suggest .menu a:hover, #search-suggest .menu li:hover {
 
 img.char-value-larger {
     height: 160px;  /* Consistent height for popup character value drawings */
+}
+
+/* Teaching Tools section */
+
+#teaching-tools .new {
+    background: #fff;
+    display: inline-block;
+    font-size: 9px;
+    font-weight: normal;
+    margin: 0;
+    padding: 0 0.25em;
+    text-transform: uppercase;
+
+    -moz-border-radius: 0.25em;
+    -webkit-border-radius: 0.25em;
+    -o-border-radius: 0.25em;
+    -ms-border-radius: 0.25em;
+    -khtml-border-radius: 0.25em;
+    border-radius: 0.25em;
+}
+
+#teaching-tools .meta {
+    font-size: 10px;
+    font-style: italic;
+    margin: 4px 0;
 }
 
 /* Styles for IE 6-9 browser compatibility prompts */

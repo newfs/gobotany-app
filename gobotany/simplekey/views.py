@@ -611,6 +611,12 @@ def checkup_view(request):
             'total_images': total_images,
         }, context_instance=RequestContext(request))
 
+
+def teaching_tools_view(request, template):
+    return render_to_response(template, {
+            }, context_instance=RequestContext(request))
+
+
 # Placeholder views
 # This generic view basically does the same thing as direct_to_template,
 # but I wanted to be more explicit so placeholders would be obvious when it

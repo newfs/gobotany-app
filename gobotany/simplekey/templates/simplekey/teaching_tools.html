@@ -1,0 +1,61 @@
+{% extends "simplekey/_new_base.html" %}
+
+{% block title %}Teaching Tools{% endblock %}
+
+{% block body_attributes %}id="teaching-tools" class="claro app teaching-tools"{% endblock %}
+
+{% block js_require %}
+    require(['sidebar']);
+{% endblock %}
+
+{% block body_content %}
+    <div id="top-wrapper">
+        {% include "simplekey/_header.html" %}
+
+        <div class="content">
+            <div class="container">
+                <div id="main">
+                    <h2>Teaching Tools</h2>
+
+                    <p>Go Botany is designed for students and informal
+                    learners ages 10 and older, from beginners to
+                    professionals. We encourage educators to incorporate Go
+                    Botany tools into lessons for all ages!</p>
+
+                    <h3>Share Your Ideas</h3>
+
+                    <p>The Teaching Tools section of Go Botany is a place to
+                    share resources for teaching botany. We&#8217;ll post the
+                    curricula, modules, field workshops you have developed
+                    using Go Botany here. Send your great ideas to
+                    <a href="mailto:gobotany@newenglandwild.org">
+                        gobotany@newenglandwild.org</a>. Thank you!</p>
+
+                    <h3>Tools</h3>
+
+                    <p class="new">New</p>
+                    <h4><a
+                        href="/static/docs/books-for-kids-about-wildflowers.pdf"
+                        target="blank">Bibliography of Children&#8217;s Books on
+                        the Subject of Botany
+</a></h4>
+                    <p class="meta">PDF, 200 kB. Posted 19 May 2012</p>
+                    <p>
+                    This is a comprehensive, annotated list of botany-related
+                    books, with information on the age groups to which these
+                    books will appeal. Many thanks to Anne Dannenberg,
+                    Director of the 
+                    <a href="http://www.huntingtonpubliclibrary.org/"
+                        target="blank">Huntington Public Library</a> in
+                    Huntington,
+                    Vermont for compiling this useful bibliography!</p>
+                </div>
+                <div id="sidebar">
+                    {# Use SimpleKey until a page-specific design is created #}
+                    {% include "simplekey/_sidebar_items.html" %}
+                </div>
+
+                <div class="clearit"></div>
+            </div>
+        </div>
+{% endblock %}

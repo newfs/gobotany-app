@@ -20,15 +20,16 @@ urlpatterns = patterns(
     url('^plantshare/$', views.placeholder_view, 
         {'template' : 'simplekey/plantshare_placeholder.html'},
         name='plantshare-placeholder'),
-    url('^teaching-tools/$', views.placeholder_view, 
-        {'template' : 'simplekey/teaching_placeholder.html'},
-        name='teaching-tools-placeholder'),
     url('^advanced/full-key/$', views.placeholder_view, 
         {'template' : 'simplekey/full_key_placeholder.html'},
         name='full-key-placeholder'),
     url('^advanced/dich-key/$', views.placeholder_view, 
         {'template' : 'simplekey/dich_key_placeholder.html'},
         name='dich-key-placeholder'),
+
+    url('^teaching-tools/$', views.teaching_tools_view, 
+        {'template' : 'simplekey/teaching_tools.html'},
+        name='teaching-tools'),
 
     # Legal notification pages
     url('^legal/$', views.legal_redirect_view, name='legal'),
