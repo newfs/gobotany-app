@@ -1,21 +1,25 @@
-require([
+define([
+
+    // Basic resources
+
     'activate_search_suggest',
     'shadowbox',
-    'shadowbox_init'
-]);
+    'shadowbox_init',
 
-require([
+    // Page components
+
     'sidebar',
-    'simplekey/glossarize'
-], function(x, _glossarize) {
+    'simplekey/glossarize',
+
+    // Scrolling
+
+    'activate_smooth_div_scroll'
+
+], function(x, x, x, x, _glossarize, x) {
     glossarize = _glossarize;
     dojo.require('gobotany.sk.species');
     dojo.addOnLoad(function() {
-        var helper = gobotany.sk.species.SpeciesPageHelper();
-        helper.setup();
+        //var helper = gobotany.sk.species.SpeciesPageHelper();
+        //helper.setup();
     });
 });
-
-require([
-    'activate_smooth_div_scroll'
-]);
