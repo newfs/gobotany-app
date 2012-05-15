@@ -9,7 +9,8 @@ dojoConfig = {
         { name: 'dojo', location: 'lib/dojo' },
         { name: 'dojox', location: 'lib/dojox' },
         { name: 'dijit', location: 'lib/dijit' },
-        { name: 'gobotany', location: '../gobotany' }
+        { name: 'gobotany', location: '../gobotany' },
+        { name: 'simplekey', location: 'simplekey' }
     ],
     // Until we fix the rest of the AMD modules
     // we need to leave this as true
