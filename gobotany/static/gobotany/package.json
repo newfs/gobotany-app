@@ -7,6 +7,6 @@
         "dijit": "current",
         "dojox": "current",
     },
-    "description": "The New England Wildflower Society's GoBotany site appliction.",
+    "description": "The New England Wild Flower Society's Go Botany site application.",
     "homepage": "https://gobotany.newenglandwild.org"
 }
