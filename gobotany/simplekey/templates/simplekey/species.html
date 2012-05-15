@@ -60,20 +60,14 @@
 
 
                 <div id="species-images">
-                    <div class="scrollingHotSpotLeft"></div>
-		            <div class="scrollingHotSpotRight"></div>
-		            <div class="scrollWrapper">
-                        <div class="scrollableArea">
-                            {% for i in images %}
-                                <a href="{{ i.image_medium }}"
-                                    {% if forloop.counter == 1 %}id="startimage"{% endif %}
-                                    title="{% photo_credit i scientific_name %}">
-                                    <img src="{{ i.thumb_large }}"
-                                        alt="{% photo_credit i scientific_name %}">
-                                </a>
-                            {% endfor %}
-			            </div>
-		            </div>
+                    {% for i in images %}
+                        <a href="{{ i.image_medium }}"
+                            {% if forloop.counter == 1 %}id="startimage"{% endif %}
+                            title="{% photo_credit i scientific_name %}">
+                            <img src="{{ i.thumb_large }}"
+                                alt="{% photo_credit i scientific_name %}">
+                        </a>
+                    {% endfor %}
                 </div>
                 <div class="clearit"></div>
 

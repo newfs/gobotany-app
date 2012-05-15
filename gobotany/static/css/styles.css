@@ -1742,10 +1742,11 @@ div.section.namap div.trans {
 #taxon #species-images {
     height: 239px;
     margin: 0 0 20px 0;
+    overflow: hidden;
     position: relative;
     width: 700px;
 }
-#taxon #species-images div.scrollableArea > * {
+#taxon #species-images div.scrollableArea a {
     border-right: 5px solid #fff;
     float: left;
     margin: 0;

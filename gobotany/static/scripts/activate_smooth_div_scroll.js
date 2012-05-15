@@ -22,14 +22,14 @@ require([
                $.widget('fake.mousewheel', {});
 
                // Activate!
-
+               
                $('#species-images').smoothDivScroll({
-                    autoScrollingMode: 'onstart', 
-                    autoScrollingDirection: 'backandforth', 
-                    autoScrollingStep: 1, 
-                    autoScrollingInterval: 75,
-                    visibleHotSpotBackgrounds: 'always'
-                });
+                   autoScrollingMode: 'onstart', 
+                   autoScrollingDirection: 'backandforth', 
+                   autoScrollingStep: 1, 
+                   autoScrollingInterval: 75,
+                   visibleHotSpotBackgrounds: 'always'
+               });
             });
         });
     });
