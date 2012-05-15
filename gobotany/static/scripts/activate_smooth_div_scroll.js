@@ -28,7 +28,7 @@ require([
                     autoScrollDirection: 'backandforth', 
                     autoScrollStep: 1, 
                     autoScrollInterval: 75,
-                    visibleHotSpots: 'always'
+                    visibleHotSpotBackgrounds: 'always'
                 });
             });
         });
