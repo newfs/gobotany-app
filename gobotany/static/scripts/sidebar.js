@@ -36,5 +36,9 @@ define(['jquery.tools.min'], function() {
     $(document).ready(function() {
         // Set the initial sidebar height.
         sidebar_set_height();
+        $('#main img').load(function() {
+            // Each time an image loads, the page gets taller.
+            sidebar_set_height();
+        });
     });
 });
