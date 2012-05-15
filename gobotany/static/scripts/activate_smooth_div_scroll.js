@@ -24,10 +24,10 @@ require([
                // Activate!
 
                $('#species-images').smoothDivScroll({
-                    autoScroll: 'onstart', 
-                    autoScrollDirection: 'backandforth', 
-                    autoScrollStep: 1, 
-                    autoScrollInterval: 75,
+                    autoScrollingMode: 'onstart', 
+                    autoScrollingDirection: 'backandforth', 
+                    autoScrollingStep: 1, 
+                    autoScrollingInterval: 75,
                     visibleHotSpotBackgrounds: 'always'
                 });
             });
