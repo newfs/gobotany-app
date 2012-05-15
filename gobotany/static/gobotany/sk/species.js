@@ -58,7 +58,7 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
 
     wire_up_image_links: function() {
         // Wire up each image link to a Shadowbox popup handler.
-        var IMAGE_LINKS_CSS = '#species-images .scrollableArea a';
+        var IMAGE_LINKS_CSS = '#species-images a';
         var that = this;
         dojo.query(IMAGE_LINKS_CSS).forEach(function(link) {
             dojo.connect(link, 'onclick', this, function(event) {

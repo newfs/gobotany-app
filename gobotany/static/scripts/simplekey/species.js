@@ -19,7 +19,7 @@ define([
     glossarize = _glossarize;
     dojo.require('gobotany.sk.species');
     dojo.addOnLoad(function() {
-        //var helper = gobotany.sk.species.SpeciesPageHelper();
-        //helper.setup();
+        var helper = gobotany.sk.species.SpeciesPageHelper();
+        helper.setup();
     });
 });
