@@ -7,8 +7,6 @@ dojo.require('gobotany.utils');
 
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
-    plant_preview_characters: null,  // set by results.js during page load
-
     constructor: function(pile_slug) {
         'use strict';
         // summary:
@@ -17,6 +15,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.PHOTOS_VIEW = 'photos';
         this.LIST_VIEW = 'list';
         this.animation = null;
+        this.pile_slug = pile_slug;
         this.plant_list = dojo.query('#main .plant-list')[0];
         this.plant_data = [];
         this.plant_divs = [];
@@ -135,16 +134,18 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
             // Call the API to get more information.
 
-            simplekey_resources.taxon_info(plant.scientific_name).done(
-                $.proxy(function(taxon) {
+            var d1 = simplekey_resources.taxon_info(plant.scientific_name);
+            var d2 = simplekey_resources.pile(this.pile_slug);
+            $.when(d1, d2).done(
+                $.proxy(function(taxon, pile_info) {
                     // Fill in Facts About.
                     dojo.html.set(dojo.query(
                         '#plant-detail-modal div.details p.facts')[0],
                         taxon.factoid);
 
                     // Fill in Characteristics.
-		            var MAX_CHARACTERS = 6;
-                    var characters = this.plant_preview_characters;
+                    var MAX_CHARACTERS = 6;
+                    var characters = pile_info.plant_preview_characters;
                     var characters_html = '';
                     var characters_displayed = 0;
                     for (var i = 0; i < characters.length; i++) {

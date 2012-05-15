@@ -34,12 +34,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         simplekey_resources.pile(this.pile_slug).done(
             dojo.hitch(this, function(pile_info) {
-
                 this.filter_section._setup_character_groups(
                     pile_info.character_groups);
-
-                this.species_section.plant_preview_characters =
-                    pile_info.plant_preview_characters;
             }));
 
         // Set up a handler to detect an Esc keypress, which will close
