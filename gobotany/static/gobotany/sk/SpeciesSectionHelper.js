@@ -10,12 +10,10 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
     plant_preview_characters: null,  // set by results.js during page load
 
-    constructor: function(results_helper) {
+    constructor: function(pile_slug) {
         'use strict';
         // summary:
         //   Manages the species section of the results page
-        // results_helper:
-        //   An instance of gobotany.sk.results.ResultsHelper
 
         this.PHOTOS_VIEW = 'photos';
         this.LIST_VIEW = 'list';
@@ -25,11 +23,11 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.plant_divs = [];
         this.plant_divs_displayed_yet = false;
         this.query_results = [];  // list of speciecs info objects
-        this.results_helper = results_helper;
+        this.pile_slug = pile_slug;
         this.scroll_event_handle = null;
         this.current_view = this.PHOTOS_VIEW;
 
-        simplekey_resources.pile_species(this.results_helper.pile_slug).done(
+        simplekey_resources.pile_species(pile_slug).done(
             $.proxy(this, 'create_plant_divs')
         );
         dojo.subscribe('/filters/query-result', this, 'on_query_result');
@@ -461,7 +459,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             // Connect a "plant preview" popup. Pass species as
             // context in the connect function, which becomes 'this'
             // to pass along as the variable plant.
-            var pile_slug = this.results_helper.pile_slug;
+            var pile_slug = this.pile_slug;
             this.connect_plant_preview_popup(plant_link, species, pile_slug);
 
             this.plant_data.push(species);
