@@ -433,7 +433,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             dojo.create('div', {'class': 'frame'}, plant_link);
 
             var image_container = dojo.create('div', {
-                'class': 'img-container'
+                'class': 'plant-img-container'
             }, plant_link);
             var image = dojo.create('img', {'alt': ''}, image_container);
             dojo.attr(image, 'x-plant-id', species.scientific_name);

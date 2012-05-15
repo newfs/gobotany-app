@@ -857,7 +857,7 @@ a.go-to-species-page:active {
     z-index: 100;
 }
 
-.plant-list .plant .img-container {
+.plant-list .plant-img-container {
     width: 160px;
     height: 149px;
     overflow: hidden;
