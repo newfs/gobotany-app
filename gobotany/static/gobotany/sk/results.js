@@ -133,20 +133,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
 
 dojo.declare('gobotany.sk.results.FilterSectionHelper', null, {
-    ruler: null,
-    simple_slider: null,
-    slider_node: null,
-
-    constructor: function(results_helper) {
-        // summary:
-        //   Manages the filters section of the results page (including
-        //   the genus/family filters).
-        // results_helper:
-        //   An instance of gobotany.sk.results.ResultsHelper
-
-        this.results_helper = results_helper;
-        this.working_area = null;
-    },
+    working_area: null,
 
     _setup_character_groups: function(character_groups) {
         console.log('FilterSectionHelper: Updating character groups');
