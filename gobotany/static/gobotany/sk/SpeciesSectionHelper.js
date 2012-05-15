@@ -3,7 +3,6 @@ dojo.provide('gobotany.sk.SpeciesSectionHelper');
 dojo.require('dojo.hash');
 dojo.require('dojo.html');
 dojo.require('dojo.NodeList-fx');
-dojo.require('dojox.data.JsonRestStore');
 dojo.require('gobotany.utils');
 
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
@@ -135,11 +134,9 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             dojo.html.set(dojo.query('#plant-detail-modal h3')[0], name);
 
             // Call the API to get more information.
-            var taxon_url = API_URL + 'taxon/' + plant.scientific_name + '/';
-            var taxon_store = new dojox.data.JsonRestStore({
-                target: taxon_url});
-            taxon_store.fetch({
-                onComplete: dojo.hitch(this, function(taxon) {
+
+            simplekey_resources.taxon_info(plant.scientific_name).done(
+                $.proxy(function(taxon) {
                     // Fill in Facts About.
                     dojo.html.set(dojo.query(
                         '#plant-detail-modal div.details p.facts')[0],
@@ -262,8 +259,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                             glossarize($children);
                         })}
                     });
-                }
-            )});
+                }, this)
+            );
         });
     },
 
