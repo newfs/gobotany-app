@@ -111,23 +111,21 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         // Add image types to the <select> and set the default value.
         image_types.sort();
+
+        if (_.isEqual(App3.image_types.get('content'), image_types))
+            // Avoid generating events when nothing has changed.
+            return;
+
         App3.image_types.set('content', image_types);
 
-        var default_type = menu_config['default'];
-        if (image_types.indexOf(default_type) === -1)
-            var default_type = image_types[0];
-
-        // Since this function is called whenever results are loaded,
-        // sometimes there is a selected image type that should override
-        // the default image type.
-        var selected_image_type = App3.image_type;
-        if (selected_image_type) {
-            App3.set('image_type', selected_image_type);
-        }
-        else {
+        var old = App3.get('image_type');
+        if (typeof old === 'undefined' || image_types.indexOf(old) === -1) {
+            var default_type = menu_config['default'];
+            if (image_types.indexOf(default_type) === -1)
+                default_type = image_types[0];
             App3.set('image_type', default_type);
         }
-    
+
         // Load the images.
         this.load_selected_image_type();
     }
