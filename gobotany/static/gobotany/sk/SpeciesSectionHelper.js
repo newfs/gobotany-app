@@ -23,7 +23,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.plant_divs = [];
         this.plant_divs_displayed_yet = false;
         this.query_results = [];  // list of speciecs info objects
-        this.pile_slug = pile_slug;
         this.scroll_event_handle = null;
         this.current_view = this.PHOTOS_VIEW;
 
@@ -120,7 +119,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         return list;
     },
 
-    connect_plant_preview_popup: function(plant_link, plant, pile_slug) {
+    connect_plant_preview_popup: function(plant_link, plant) {
         'use strict';
 
         dojo.connect(plant_link, 'onclick', this, function(event) {
@@ -459,8 +458,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             // Connect a "plant preview" popup. Pass species as
             // context in the connect function, which becomes 'this'
             // to pass along as the variable plant.
-            var pile_slug = this.pile_slug;
-            this.connect_plant_preview_popup(plant_link, species, pile_slug);
+            this.connect_plant_preview_popup(plant_link, species);
 
             this.plant_data.push(species);
             this.plant_divs.push(plant);
