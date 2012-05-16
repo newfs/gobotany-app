@@ -867,12 +867,11 @@
 
 				// Start interval
 				el.data("autoScrollingInterval", setInterval(function () {
-                    // Go Botany added May 2012 (and earlier Jan 2012
-                    // for v1.1):
-                    // Check for showing hot spots continuously during
-                    // auto-scrolling. Fixes bug where autoscroll on
-                    // start never showed the left arrow.
-                    self._showHideHotSpots();
+					// Go Botany: bug fix May 2012 (and Jan 2012 for v1.1):
+					// Check for showing hot spots continuously during
+					// auto-scrolling. Fixes bug where autoscroll on
+					// start never showed the left arrow.
+					self._showHideHotSpots();
 
 					// If the scroller is not visible or
 					// if the scrollable area is shorter than the scroll wrapper
