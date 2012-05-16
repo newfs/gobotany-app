@@ -7,11 +7,12 @@ require([
     'jquery.tools.min'
 ], function() {
     require([
-        'jquery-ui-1.8.16.custom.min'
+        'jquery-ui-1.8.16.custom.min',
+        'lib/jquery.easing.1.3'
     ], function() {
         require([
-            'lib/jquery.smoothDivScroll-1.2' /* un-minified, with bugfix by
-                                                Go Botany */
+            'lib/jquery.smoothDivScroll-1.2' // un-minified, with bugfix
+                                             // by Go Botany
         ], function() {
             $(document).ready(function() {
 
