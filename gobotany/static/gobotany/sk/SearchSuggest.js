@@ -5,6 +5,7 @@ define(['dojo/_base/declare',
         'dojox/data/JsonRestStore',
         'dojo/query',
         'dojo/on',
+        'dojo/_base/connect',
         'dojo/_base/lang',
         'dojo/keys',
         'dojo/dom',
@@ -12,7 +13,7 @@ define(['dojo/_base/declare',
         'dojo/dom-geometry',
         'dojo/dom-construct',
         'dojo/dom-prop'],
-    function(declare, JsonRestStore, query, on, lang, keys,
+    function(declare, JsonRestStore, query, on, connect, lang, keys,
              dom, domClass, domGeom, domConstruct, domProp) {
         return declare('gobotany.sk.SearchSuggest', null, {
             constants: {TIMEOUT_INTERVAL_MS: 200},
@@ -55,12 +56,12 @@ define(['dojo/_base/declare',
                 this.set_timer();
 
                 // Set up keyboard event handlers.
-                on(this.search_box, 'keypress',
+                connect.connect(this.search_box, 'keypress',
                     lang.hitch(this, this.handle_keys));
 
                 // Adjust the horizontal position of the menu when the browser
                 // window is resized.
-                on(window, 'onresize',
+                connect.connect(window, 'resize',
                     lang.hitch(this, this.set_horizontal_position));
             },
 
