@@ -11,8 +11,8 @@ require([
         'lib/jquery.easing.1.3'
     ], function() {
         require([
-            'lib/jquery.smoothDivScroll-1.2' // un-minified, with bugfix
-                                             // by Go Botany
+            'lib/jquery.smoothDivScroll-1.2-mod' // un-minified, with bugfix
+                                                 // by Go Botany
         ], function() {
             $(document).ready(function() {
 
