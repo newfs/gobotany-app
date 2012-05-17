@@ -49,14 +49,14 @@ define([
     /* Async resources and deferreds. */
 
     var ResultsHelper_ready = $.Deferred();
-    var async_key_vector = resources.key_vector('simple');
-    var async_pile_taxadata = resources.pile_species(pile_slug);
     var filter_controller_is_built = $.Deferred();
     var image_type_ready = $.Deferred();
+    var key_vector_ready = resources.key_vector('simple');
     var pile_taxa_ready = $.Deferred();
+    var pile_taxadata_ready = resources.pile_species(pile_slug);
     var plant_divs_ready = $.Deferred();
 
-    async_pile_taxadata.done(function(taxadata) {
+    pile_taxadata_ready.done(function(taxadata) {
         pile_taxa_ready.resolve(_.pluck(taxadata, 'id'));
     });
 
@@ -67,7 +67,7 @@ define([
     /* Various parts of the page need random access to taxa. */
 
     App3.taxa_by_sciname = {};
-    async_pile_taxadata.done(function(taxadata) {
+    pile_taxadata_ready.done(function(taxadata) {
         _.each(taxadata, function(datum) {
             App3.taxa_by_sciname[datum.scientific_name] = datum;
         });
@@ -76,7 +76,7 @@ define([
     /* The FilterController can be activated once we know the full list
        of species that it will be filtering. */
 
-    $.when(async_key_vector, async_pile_taxadata).done(function(kv, taxadata) {
+    $.when(key_vector_ready, pile_taxadata_ready).done(function(kv, taxadata) {
         var simple_key_taxa = kv[0].species;
         var taxadata = _.filter(taxadata, function(taxon) {
             return _.indexOf(simple_key_taxa, taxon.id) != -1;
