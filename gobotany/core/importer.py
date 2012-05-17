@@ -527,13 +527,25 @@ class Importer(object):
                     name=genus_name,
                     )
 
-            north_american_native = None
+            # A plant can be marked as both native to North America and
+            # introduced. This is for some native plants that are also
+            # native to places elsewhere in the world, or that have
+            # varieties native to North America as well as varieties native
+            # elsewhere, or that have cultivated varieties that may have
+            # escaped. These are marked both Yes and No in the source data.
             native_data_value = row['native_to_north_america'].lower()
+            north_american_native = None
             if len(native_data_value) > 0:
                 if 'yes' in native_data_value:
                     north_american_native = True
                 else:
                     north_american_native = False
+            north_american_introduced = None
+            if len(native_data_value) > 0:
+                if 'no' in native_data_value:
+                    north_american_introduced = True
+                else:
+                    north_american_introduced = False
 
             taxon = taxon_table.get(
                 scientific_name=row['scientific__name'],
@@ -548,6 +560,7 @@ class Importer(object):
                 wetland_status_text=self._get_wetland_status(
                     row['wetland_status']),
                 north_american_native=north_american_native,
+                north_american_introduced=north_american_introduced,
                 distribution=row['distribution'],
                 invasive_in_states=row['invasive_in_which_states'],
                 sale_prohibited_in_states=row['prohibited_from_sale_states'],

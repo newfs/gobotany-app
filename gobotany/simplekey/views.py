@@ -351,6 +351,10 @@ def species_view(request, genus_slug, specific_name_slug,
     native_to_north_america = ''
     if taxon.north_american_native == True:
         native_to_north_america = 'Yes'
+        if taxon.north_american_introduced == True:
+            # This is for plants that are native to N. America but are
+            # also native elsewhere or have introduced varieties.
+            native_to_north_america += ' and No'
     elif taxon.north_american_native == False:
         native_to_north_america = 'No'
 

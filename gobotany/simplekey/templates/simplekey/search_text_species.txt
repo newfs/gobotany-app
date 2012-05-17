@@ -28,7 +28,19 @@ Habitat: {{ object.get_habitats|join:", " }}
 {% endwith %}
 
 Native to North America?
-{{ object.north_american_native|yesno:"Yes,No," }} {# Yes, No, or blank #}
+{% if object.north_american_native == None %}
+{% else %}
+    {% if not object.north_american_native %}
+        No
+    {% else %}
+        {% if object.north_american_native %}
+            Yes
+            {% if object.north_american_introduced %}
+                and No
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endif %}
 
 Distribution and Conservation Status:
     Connecticut: {{ object.conservation_status_ct }}
