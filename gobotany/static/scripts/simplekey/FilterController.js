@@ -1,6 +1,6 @@
 define([
     'ember',
-    'jquery',
+    'bridge/jquery',
     'underscore-min',
     'simplekey/Filter'
 ], function(x, $, x, Filter) {return Ember.ArrayController.extend({

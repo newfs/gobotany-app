@@ -1,7 +1,7 @@
 define([
-    'jquery',
+    'bridge/jquery',
     'lib/jquery.animate-colors'
-], function() {
+], function($, animate_colors) {
     var module = {};
 
     module.bright_change = function($elements, options) {

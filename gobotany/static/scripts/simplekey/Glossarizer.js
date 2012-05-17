@@ -1,6 +1,6 @@
 define([
     'ember',
-    'jquery',
+    'bridge/jquery',
     'lib/tooltipsy'
 ], function() {return Ember.Object.extend({
 

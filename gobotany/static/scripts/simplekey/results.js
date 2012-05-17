@@ -1,7 +1,7 @@
 define([
     'args',
     'document_is_ready',
-    'jquery',
+    'bridge/jquery',
     'underscore-min',
     'lib/tooltipsy',
     'gobotany/utils',

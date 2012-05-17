@@ -1,8 +1,8 @@
 define([
     'args',
-    'jquery',
+    'bridge/jquery',
     'simplekey/glossarize'
-], function(args, x, glossarize) {
+], function(args, $, glossarize) {
 
     $(document).ready(function() {
         glossarize($('.description'));

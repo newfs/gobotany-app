@@ -1,6 +1,6 @@
 define([
-    'jquery'
-], function() {
+    'bridge/jquery'
+], function($) {
     var document_is_ready = $.Deferred();
 
     $(document).ready(function() {
