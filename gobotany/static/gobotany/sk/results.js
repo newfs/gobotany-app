@@ -9,7 +9,7 @@ var results_photo_menu = dojo.require('simplekey/results_photo_menu');
 
 dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
-    constructor: function(/*String*/ pile_slug) {
+    constructor: function(pile_slug, plant_divs_ready) {
         // summary:
         //   Helper class for managing the sections on the results page.
         // description:
@@ -18,7 +18,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         this.pile_slug = pile_slug;
 
         this.species_section =
-            new gobotany.sk.SpeciesSectionHelper(pile_slug);
+            new gobotany.sk.SpeciesSectionHelper(pile_slug, plant_divs_ready);
 
         new gobotany.sk.SpeciesCounts(this);
 
@@ -27,10 +27,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         dojo.subscribe('results_loaded',
             dojo.hitch(this, this.populate_image_types));
-
-        // Update images on selection change
-        App3.addObserver('image_type',
-                         $.proxy(this, 'load_selected_image_type'));
 
         simplekey_resources.pile(this.pile_slug).done(
             dojo.hitch(this, function(pile_info) {
@@ -55,7 +51,7 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
     },
 
     load_selected_image_type: function(event) {
-        var image_type = App3.image_type;
+        var image_type = App3.get('image_type');
         if (!image_type) {
             // No image types available yet, so skip for now
             return;
@@ -115,15 +111,12 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         App3.image_types.set('content', image_types);
 
         var old = App3.get('image_type');
-        if (typeof old === 'undefined' || image_types.indexOf(old) === -1) {
+        if (image_types.indexOf(old) === -1) {
             var default_type = menu_config['default'];
             if (image_types.indexOf(default_type) === -1)
                 default_type = image_types[0];
             App3.set('image_type', default_type);
         }
-
-        // Load the images.
-        this.load_selected_image_type();
     }
 });
 

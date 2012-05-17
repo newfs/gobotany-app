@@ -48,13 +48,20 @@ define([
 
     /* Async resources and deferreds. */
 
+    var ResultsHelper_ready = $.Deferred();
     var async_key_vector = resources.key_vector('simple');
     var async_pile_taxadata = resources.pile_species(pile_slug);
     var filter_controller_is_built = $.Deferred();
-
+    var image_type_ready = $.Deferred();
     var pile_taxa_ready = $.Deferred();
+    var plant_divs_ready = $.Deferred();
+
     async_pile_taxadata.done(function(taxadata) {
         pile_taxa_ready.resolve(_.pluck(taxadata, 'id'));
+    });
+
+    App3.addObserver('image_type', function() {
+        image_type_ready.resolve();
     });
 
     /* Various parts of the page need random access to taxa. */
@@ -278,7 +285,7 @@ define([
     var save_page_state = function () {
         var tab_view = App3.taxa.show_list ? 'list' : 'photos';
 
-        var image_type = App3.image_type;
+        var image_type = App3.get('image_type');
         if (!image_type) {
             // If the image type menu is not ready yet, the page is still
             // loading, so do not save the state yet.
@@ -358,6 +365,25 @@ define([
         var filter_slugs = results_page_state.filter_names();
         var filter_values = results_page_state.filter_values();
 
+        /* Immediately set the image type specified on the hash, so that
+           the page does not first fall back on the default image type
+           for this pile and thus have to load all images twice. */
+
+        var image_type = results_page_state.image_type();
+        if (image_type !== '') {
+            // Simply setting the image_type, without also making
+            // sure that it is listed as a valid value in the
+            // image_types array, will cause the Ember.Select view
+            // to treat the value as illegal and reset the value
+            // back to "undefined", which kicks off several
+            // expensive rounds of repopulating the species area.
+            if (App3.image_types.get('content').length === 0) {
+                App3.image_types.set('content', [image_type]);
+            }
+            App3.set('image_type', image_type);
+
+        }
+
         $.when(
             filter_controller_is_built,
             resources.pile(pile_slug),
@@ -416,11 +442,6 @@ define([
             }
             if (filter_values['genus']) {
                 App3.genus_filter.set('value', filter_values['genus']);
-            }
-            // Set the image type specified on the hash.
-            var image_type = results_page_state.image_type();
-            if (image_type !== '') {
-                App3.set('image_type', image_type);
             }
 
             // Set the tab view specified on the hash.
@@ -554,6 +575,21 @@ define([
         }
     });
 
+    // Page load cascade - much of which is in the above code or over in
+    // our legacy Dojo modules, but all of which would be clearer and
+    // easier to think about and manage if it migrated down here.
+
+    $.when(
+        ResultsHelper_ready,
+        image_type_ready,
+        plant_divs_ready
+    ).done(function(rh) {
+        rh.load_selected_image_type();
+        App3.addObserver('image_type', function() {
+            rh.load_selected_image_type();
+        });
+    });
+
     //
 
     require([
@@ -594,7 +630,9 @@ define([
             ], function() {
                 dojo.require('gobotany.sk.results');
                 dojo.addOnLoad(function() {
-                    helper = gobotany.sk.results.ResultsHelper(args.pile_slug);
+                    helper = gobotany.sk.results.ResultsHelper(
+                        args.pile_slug, plant_divs_ready);
+                    ResultsHelper_ready.resolve(helper);
                 });
             });
         });

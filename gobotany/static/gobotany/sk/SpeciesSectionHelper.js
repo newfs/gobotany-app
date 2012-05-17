@@ -7,7 +7,7 @@ dojo.require('gobotany.utils');
 
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
-    constructor: function(pile_slug) {
+    constructor: function(pile_slug, plant_divs_ready) {
         'use strict';
         // summary:
         //   Manages the species section of the results page
@@ -20,6 +20,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.plant_data = [];
         this.plant_divs = [];
         this.plant_divs_displayed_yet = false;
+        this.plant_divs_ready = plant_divs_ready;
         this.query_results = [];  // list of speciecs info objects
         this.scroll_event_handle = null;
         this.current_view = this.PHOTOS_VIEW;
@@ -461,6 +462,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             this.plant_data.push(species);
             this.plant_divs.push(plant);
         }
+        this.plant_divs_ready.resolve();
         this.display_results();  // now that there are things to display
     },
 
