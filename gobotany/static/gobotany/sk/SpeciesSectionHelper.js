@@ -30,6 +30,11 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         );
         dojo.subscribe('/filters/query-result', this, 'display_results');
 
+        if (typeof App3.filtered_sorted_taxadata !== 'undefined')
+            /* Whoops, async loading of JavaScript loaded us too late to
+               receive the first message! */
+            this.display_results();
+
         // Call the lazy image loader when the page loads.
         this.lazy_load_images();
 
