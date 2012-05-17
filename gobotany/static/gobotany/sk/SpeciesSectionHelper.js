@@ -552,7 +552,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     display_results: function() {
         'use strict';
 
-        var query_results = App3.matching_filtered_taxadata;
+        var query_results = App3.filtered_sorted_taxadata;
 
         if (this.animation !== null) {
             this.animation.stop();
