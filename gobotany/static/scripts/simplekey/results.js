@@ -152,14 +152,36 @@ define([
                     App3.genus_filter);
             }
             return choices;
-        }.property('filter_controller.taxa')
+        }.property('filter_controller.taxa'),
+
+        /* These two properties translate between our internal filter
+           value of "null" and the empty string that the <select> needs
+           when nothing is selected, and also prevent */
+
+        family_value: function(key, new_value) {
+            if (! App3.family_filter)
+                return '';
+            if (arguments.length === 1)  // getter
+                return App3.family_filter.get('value') || '';
+            else
+                App3.family_filter.set('value', new_value || null);
+        }.property('App3.family_filter.value'),
+
+        genus_value: function(key, new_value) {
+            if (! App3.genus_filter)
+                return '';
+            if (arguments.length === 1)  // getter
+                return App3.genus_filter.get('value') || '';
+            else
+                App3.genus_filter.set('value', new_value || null);
+        }.property('App3.genus_filter.value')
     });
 
     $('#family_clear').live('click', function(event) {
-        App3.family_filter.set('value', '');
+        App3.set('family_value', '');
     });
     $('#genus_clear').live('click', function(event) {
-        App3.genus_filter.set('value', '');
+        App3.set('genus_value', '');
     });
 
     /* Other filters appear along the left sidebar, with each filter's

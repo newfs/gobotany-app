@@ -126,7 +126,7 @@
                           {{view Ember.Select viewName="select"
                             elementId="families"
                             contentBinding="App3.family_choices"
-                            selectionBinding="App3.family_filter.value"}}
+                            selectionBinding="App3.family_value"}}
                           <button id="family_clear">Clear</button>
                         {% endhandlebars %}
                         <label>Genus:</label>
@@ -134,7 +134,7 @@
                           {{view Ember.Select viewName="select"
                             elementId="genera"
                             contentBinding="App3.genus_choices"
-                            selectionBinding="App3.genus_filter.value"}}
+                            selectionBinding="App3.genus_value"}}
                           <button id="genus_clear">Clear<button>
                         {% endhandlebars %}
                     </div>
