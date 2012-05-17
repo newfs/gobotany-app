@@ -36,7 +36,7 @@ Native to North America?
         {% if object.north_american_native %}
             Yes
             {% if object.north_american_introduced %}
-                and No
+                and no (some introduced)
             {% endif %}
         {% endif %}
     {% endif %}
