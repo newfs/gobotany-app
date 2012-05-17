@@ -49,6 +49,7 @@ define([
     /* Async resources and deferreds. */
 
     var ResultsHelper_ready = $.Deferred();
+    var all_filters_ready = $.Deferred();
     var filter_controller_is_built = $.Deferred();
     var image_type_ready = $.Deferred();
     var key_vector_ready = resources.key_vector('simple');
@@ -73,11 +74,16 @@ define([
         });
     });
 
-    /* The FilterController can be activated once we know the full list
-       of species that it will be filtering. */
+    /* The FilterController can be created once we know the full list of
+       species that it will be filtering and once we have all of the
+       filters that it should include initially. */
 
-    $.when(key_vector_ready, pile_taxadata_ready).done(function(kv, taxadata) {
-        var simple_key_taxa = kv[0].species;
+    $.when(
+        all_filters_ready,
+        key_vector_ready,
+        pile_taxadata_ready
+    ).done(function(filters_config, key_vector, taxadata) {
+        var simple_key_taxa = key_vector[0].species;
         var taxadata = _.filter(taxadata, function(taxon) {
             return _.indexOf(simple_key_taxa, taxon.id) != -1;
         });
@@ -85,26 +91,34 @@ define([
 
         var fc = FilterController.create({
             taxadata: taxadata,
+
+            // Keep a separate list of only non-family/genus filters, to
+            // be displayed as a list in the sidebar.
             plain_filters: [],
             add: function(filter) {
-                // Keep a separate list of only non-family/genus filters.
                 this._super(filter);
                 if (filter.slug != 'family' && filter.slug != 'genus')
                     this.plain_filters.addObject(filter);
             }
         });
+
+        fc.filtermap.family.set('value', filters_config.family_value);
+        fc.filtermap.genus.set('value', filters_config.genus_value);
+
+        _.each(filters_config.other_filters, function(filter) {
+            fc.add(filter);
+        });
+
         App3.set('filter_controller', fc);
         App3.set('family_filter', fc.filtermap.family);
         App3.set('genus_filter', fc.filtermap.genus);
         filter_controller_is_built.resolve();
-
     });
 
     $.when(filter_controller_is_built, document_is_ready).done(function() {
-        // Hide the "Loading..." spinner.
+        // Hide the "Loading..." spinner in the sidebar.
         $('.loading').hide();
     });
-
 
     /* The Family and Genus filters are Ember-powered <select> elements
        that the following logic keeps updated at all times with the set
@@ -129,7 +143,7 @@ define([
                     App3.family_filter);
             }
             return choices;
-        }.property('filter_controller.@each.value'),
+        }.property('filter_controller.taxa'),
 
         genus_choices: function() {
             var choices = [];
@@ -138,7 +152,7 @@ define([
                     App3.genus_filter);
             }
             return choices;
-        }.property('filter_controller.@each.value')
+        }.property('filter_controller.taxa')
     });
 
     $('#family_clear').live('click', function(event) {
@@ -341,7 +355,9 @@ define([
     /* Set up observers so that when page elements change, the URL hash
      * will be updated and the URL will be saved.
      */
-    var add_page_state_observers = function () {
+    filter_controller_is_built.done(function() {
+        save_page_state();
+
         App3.addObserver('filter_controller.@each.value', function() {
             save_page_state();
         });
@@ -351,7 +367,7 @@ define([
         App3.addObserver('taxa.show_list', function() {
             save_page_state();
         });
-    };
+    });
 
     /* Filters need to be loaded. */
 
@@ -385,10 +401,9 @@ define([
         }
 
         $.when(
-            filter_controller_is_built,
             resources.pile(pile_slug),
             resources.pile_characters(pile_slug)
-        ).done(function(x, pile_info, character_list) {
+        ).done(function(pile_info, character_list) {
 
             var character_map = {};
             var all_filters = character_list.concat(pile_info.default_filters);
@@ -396,85 +411,80 @@ define([
                 character_map[info.short_name] = info;
             });
 
-            var default_slugs = _.map(pile_info.default_filters, function(f) {
-                return f.short_name;
-            });
+            // The default filters are always listed first.
 
+            var default_slugs = _.pluck(pile_info.default_filters,
+                                        'short_name');
             var other_slugs = _.difference(filter_slugs, default_slugs);
             var all_slugs = default_slugs.concat(other_slugs);
 
+            // Create filters; set values; give them to the controller.
+
+            var filter_readys = [];
+            var filters_config = {
+                family_value: filter_values['family'] || null,
+                genus_value: filter_values['genus'] || null,
+                other_filters: []
+            };
+
             _.each(all_slugs, function(slug) {
-                if (!_.has(character_map, slug))
+                var info = character_map[slug];
+                if (typeof info === 'undefined')
                     return;
 
-                // Start an async load in case the user uses the filter.
-                resources.character_vector(slug);
+                var filter = Filter.create({
+                    slug: info.short_name,
+                    value_type: info.value_type,
+                    info: info
+                });
+                filters_config.other_filters.push(filter);
 
-                // Create the filter if it does not exist already.
-                var info = character_map[slug];
-                if (!_.has(App3.filter_controller.filtermap, slug)) {
-                    App3.filter_controller.add(Filter.create({
-                        slug: info.short_name,
-                        value_type: info.value_type,
-                        info: info
-                    }));
-                }
-
-                // Set the filter's value if the hash specified one.
                 if (_.has(filter_values, slug)) {
-                    var filter = App3.filter_controller.filtermap[slug];
-                    var value = filter_values[slug];
-                    var async = resources.character_vector(slug);
-                    $.when(pile_taxa_ready, async)
-                        .done(function(pile_taxa, values) {
+                    filter.set('value', filter_values[slug]);
+
+                    var deferred = $.Deferred();
+                    filter_readys.push(deferred);
+                    $.when(
+                        pile_taxa_ready,
+                        resources.character_vector(slug)
+                    ).done(function(pile_taxa, values) {
                         filter.install_values({
                             pile_taxa: pile_taxa,
                             values: values
                         });
-                        filter.set('value', value);
+                        deferred.resolve();
                     });
                 }
             });
 
-            // Set any classification filter values specified on the hash.
-            if (filter_values['family']) {
-                App3.family_filter.set('value', filter_values['family']);
-            }
-            if (filter_values['genus']) {
-                App3.genus_filter.set('value', filter_values['genus']);
-            }
+            $.when.apply(this, filter_readys).done(function() {
+                all_filters_ready.resolve(filters_config);
+            });
 
             // Set the tab view specified on the hash.
             var tab_view = results_page_state.tab_view();
             var is_list_view = (tab_view === 'list') ? true : false;
             App3.taxa.set('show_list', is_list_view);
-
-            // Now that filters are loaded, save the page state and set up
-            // observers to automatically save it when page elements change.
-            save_page_state();
-            add_page_state_observers();
         });
     } else {
         // With no hash on the URL, load the default filters for this
         // plant subgroup for a "fresh" load of the page.
 
-        $.when(filter_controller_is_built).done(function() {
-            resources.pile(pile_slug).done(function(pile_info) {
-                _.each(pile_info.default_filters, function(filter_info) {
-                    App3.filter_controller.add(Filter.create({
-                        slug: filter_info.short_name,
-                        value_type: filter_info.value_type,
-                        info: filter_info
-                    }));
-                    // Go ahead and start an async fetch, to make things
-                    // faster in case the user clicks on the filter.
-                    resources.character_vector(filter_info.short_name);
+        resources.pile(pile_slug).done(function(pile_info) {
+            var filters_config = {
+                family_value: null,
+                genus_value: null,
+                other_filters: []
+            };
+            _.each(pile_info.default_filters, function(filter_info) {
+                var filter = Filter.create({
+                    slug: filter_info.short_name,
+                    value_type: filter_info.value_type,
+                    info: filter_info
                 });
+                filters_config.other_filters.push(filter);
             });
-
-            // Now that filters are loaded, set up observers to
-            // automatically save page state when page elements change.
-            add_page_state_observers();
+            all_filters_ready.resolve(filters_config);
         });
     }
 
