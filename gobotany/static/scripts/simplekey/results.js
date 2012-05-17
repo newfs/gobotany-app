@@ -653,15 +653,15 @@ define([
         });
 
         require([
-            'order!/static/gobotany/sk/photo.js',
-            'order!/static/gobotany/sk/results.js',
-            'order!/static/gobotany/sk/SpeciesSectionHelper.js',
-            'order!/static/gobotany/sk/working_area.js',
-            'order!/static/gobotany/sk/SearchSuggest.js'
+            'gobotany/sk/photo',
+            'gobotany/sk/results',
+            'gobotany/sk/SpeciesSectionHelper',
+            'gobotany/sk/working_area',
+            'gobotany/sk/SearchSuggest'
         ], function() {
             require([
-                'order!activate_search_suggest',
-                'order!activate_image_gallery',
+                'activate_search_suggest',
+                'activate_image_gallery',
                 'sidebar',
                 'shadowbox',
                 'shadowbox_init'
