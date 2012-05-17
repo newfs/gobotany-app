@@ -1,10 +1,10 @@
 /* Activate any video links to make them open in a lightbox. */
 
 require([
-    'jquery.tools.min',
+    'bridge/jquery',
     'shadowbox',
     'shadowbox_init'
-], function() {
+], function($) {
     $(document).ready(function() {
         $('a.video').each(function() {
             // On iOS, instead of trying to use the lightbox for videos

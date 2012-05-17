@@ -2,9 +2,9 @@
  * Async singletons.
  */
 define([
-    'jquery.tools.min',
+    'bridge/jquery',
     'underscore-min'
-], function() {
+], function($) {
     var module = {};
 
     /*

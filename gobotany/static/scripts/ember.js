@@ -1,6 +1,6 @@
 define([
-    'jquery.tools.min',
+    'bridge/jquery',
     'lib/ember-0.9.7.1'
-], function() {
+], function($) {
     return Ember;
 });

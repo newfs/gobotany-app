@@ -4,10 +4,10 @@
  */
 
 require([
-    'jquery.tools.min',
+    'bridge/jquery',
     'sidebar',
     'mousewheel'
-], function() {
+], function($) {
 
     dojo.require('gobotany.sk.photo');
 

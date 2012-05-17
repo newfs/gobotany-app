@@ -1,9 +1,9 @@
 require([
     'args',
     'document_is_ready',
-    'jquery.tools.min',
+    'bridge/jquery',
     'simplekey/resources'
-], function(args, document_is_ready, ignore, resources) {
+], function(args, document_is_ready, $, resources) {
 
     $.when(
         document_is_ready,

@@ -4,9 +4,9 @@
 // minimal at this point so we're still using 
 // the global object
 define([
-    'jquery.tools.min'
+    'bridge/jquery'
     ], 
-    function(jquery) {
+    function($) {
         // This is still global while we transition to AMD
         fade_next_banner_image = function() {
             var FADE_DURATION = 2 * 1000;

@@ -4,8 +4,8 @@
  */
 
 require([
-    'jquery.tools.min'
-], function() {
+    'bridge/jquery'
+], function($) {
     require([
         'jquery-ui-1.8.16.custom.min',
         'lib/jquery.easing.1.3'

@@ -1,4 +1,6 @@
-define(['jquery.tools.min'], function() {
+define([
+    'bridge/jquery'
+], function($) {
 
     // Make the sidebar as tall as it can be.
     sidebar_set_height = function() {

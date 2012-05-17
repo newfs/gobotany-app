@@ -1,6 +1,9 @@
 /* Make a few global customizations to Shadowbox initialization. */
 
-define(['jquery.tools.min', 'shadowbox'], function() {
+define([
+    'bridge/jquery', 
+    'shadowbox'
+], function($) {
 
     // Animate and position the close button.
     shadowbox_move_close_button = function() {
