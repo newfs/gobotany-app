@@ -620,6 +620,7 @@ define([
                 t.sort(function(a, b) {
                     return a.scientific_name < b.scientific_name ? -1 : 1;
                 });
+                App3.set('matching_filtered_taxadata', t);
                 dojo.publish('/filters/query-result', [{species_list: t}]);
             }.observes('filter_controller.taxa')
         });

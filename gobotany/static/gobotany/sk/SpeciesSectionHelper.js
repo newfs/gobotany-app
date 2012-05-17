@@ -23,14 +23,12 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.plant_divs = [];
         this.plant_divs_displayed_yet = false;
         this.plant_divs_ready = plant_divs_ready;
-        this.query_results = [];  // list of speciecs info objects
-        this.scroll_event_handle = null;
         this.current_view = this.PHOTOS_VIEW;
 
         simplekey_resources.pile_species(pile_slug).done(
             $.proxy(this, 'create_plant_divs')
         );
-        dojo.subscribe('/filters/query-result', this, 'on_query_result');
+        dojo.subscribe('/filters/query-result', this, 'display_results');
 
         // Call the lazy image loader when the page loads.
         this.lazy_load_images();
@@ -65,20 +63,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             this.current_view = hash_object._view;
             this.set_navigation_to_view(this.current_view);
         }
-    },
-
-    on_query_result: function(message) {
-        'use strict';
-
-        // Unbind the prior scroll event handler
-        if (this.scroll_event_handle)
-            dojo.disconnect(this.scroll_event_handle);
-
-        // Save the results.
-        this.query_results = message.species_list;
-
-        // Display the results.
-        this.display_results();
     },
 
     default_image: function(species) {
@@ -465,7 +449,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             this.plant_divs.push(plant);
         }
         this.plant_divs_ready.resolve();
-        this.display_results();  // now that there are things to display
     },
 
     display_in_photos_view: function(items) {
@@ -569,6 +552,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     display_results: function() {
         'use strict';
 
+        var query_results = App3.matching_filtered_taxadata;
+
         if (this.animation !== null) {
             this.animation.stop();
             this.animation = null;
@@ -585,17 +570,16 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         // Display the results in the appropriate tab view.
         if (this.current_view === this.LIST_VIEW) {
-            this.display_in_list_view(this.query_results);
-        }
-        else {
-            this.display_in_photos_view(this.query_results);
+            this.display_in_list_view(query_results);
+        } else {
+            this.display_in_photos_view(query_results);
         }
 
         // Show the "See a list" (or "See photos") link.
         var see_link = dojo.query('.list-all').removeClass(see_link, 'hidden');
 
         if (this.current_view === this.PHOTOS_VIEW) {
-            this.populate_image_types(this.query_results);
+            this.populate_image_types(query_results);
             this.lazy_load_images();
         }
     },
