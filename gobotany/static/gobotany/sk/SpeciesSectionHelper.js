@@ -5,6 +5,8 @@ dojo.require('dojo.html');
 dojo.require('dojo.NodeList-fx');
 dojo.require('gobotany.utils');
 
+var results_photo_menu = dojo.require('simplekey/results_photo_menu');
+
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
     constructor: function(pile_slug, plant_divs_ready) {
@@ -593,11 +595,33 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         var see_link = dojo.query('.list-all').removeClass(see_link, 'hidden');
 
         if (this.current_view === this.PHOTOS_VIEW) {
-            // Signal the "Show:" menu to scrape our data to discover what
-            // kinds of thumbnail images are available.
-            dojo.publish('results_loaded',
-                [{query_results: this.query_results}]);
+            this.populate_image_types(this.query_results);
             this.lazy_load_images();
+        }
+    },
+
+    populate_image_types: function(query_results) {
+        var menu_config = results_photo_menu[this.pile_slug];
+
+        var image_list = _.flatten(_.pluck(query_results, 'images'));
+        var all_image_types = _.uniq(_.pluck(image_list, 'type'));
+        var image_types = _.difference(all_image_types, menu_config['omit']);
+
+        // Add image types to the <select> and set the default value.
+        image_types.sort();
+
+        if (_.isEqual(App3.image_types.get('content'), image_types))
+            // Avoid generating events when nothing has changed.
+            return;
+
+        App3.image_types.set('content', image_types);
+
+        var old = App3.get('image_type');
+        if (image_types.indexOf(old) === -1) {
+            var default_type = menu_config['default'];
+            if (image_types.indexOf(default_type) === -1)
+                default_type = image_types[0];
+            App3.set('image_type', default_type);
         }
     },
 

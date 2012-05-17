@@ -5,8 +5,6 @@ dojo.provide('gobotany.sk.results');
 dojo.require('gobotany.sk.SpeciesSectionHelper');
 dojo.require('gobotany.sk.working_area');
 
-var results_photo_menu = dojo.require('simplekey/results_photo_menu');
-
 dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
     constructor: function(pile_slug, plant_divs_ready) {
@@ -24,9 +22,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
 
         this.filter_section =
             new gobotany.sk.results.FilterSectionHelper(this);
-
-        dojo.subscribe('results_loaded',
-            dojo.hitch(this, this.populate_image_types));
 
         simplekey_resources.pile(this.pile_slug).done(
             dojo.hitch(this, function(pile_info) {
@@ -88,35 +83,6 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
             }
         }
         this.species_section.lazy_load_images();
-    },
-
-    // A subscriber for results_loaded
-    populate_image_types: function(message) {
-        // Get an object that tells which image type should be the
-        // default selected menu item, and any image types to omit.
-        var menu_config = results_photo_menu[this.pile_slug];
-        var results = message.query_results;
-
-        var image_list = _.flatten(_.pluck(results, 'images'));
-        var all_image_types = _.uniq(_.pluck(image_list, 'type'));
-        var image_types = _.difference(all_image_types, menu_config['omit']);
-
-        // Add image types to the <select> and set the default value.
-        image_types.sort();
-
-        if (_.isEqual(App3.image_types.get('content'), image_types))
-            // Avoid generating events when nothing has changed.
-            return;
-
-        App3.image_types.set('content', image_types);
-
-        var old = App3.get('image_type');
-        if (image_types.indexOf(old) === -1) {
-            var default_type = menu_config['default'];
-            if (image_types.indexOf(default_type) === -1)
-                default_type = image_types[0];
-            App3.set('image_type', default_type);
-        }
     }
 });
 
