@@ -302,8 +302,7 @@ class Importer(object):
 
 
     def _get_state_status(self, state_code, distribution,
-                          conservation_status_code=None,
-                          is_north_american_native=True, is_invasive=False,
+                          conservation_status_code=None, is_invasive=False,
                           is_prohibited=False):
         status = ['absent']
 
@@ -373,7 +372,6 @@ class Importer(object):
             prohibited = (state in prohibited_states)
             states_status[state] = self._get_state_status(state, distribution,
                 conservation_status_code=conservation_status,
-                is_north_american_native=taxon.north_american_native,
                 is_invasive=invasive, is_prohibited=prohibited)
 
         return states_status
@@ -529,6 +527,13 @@ class Importer(object):
                     name=genus_name,
                     )
 
+            north_american_native = None
+            native_data_value = row['native_to_north_america'].lower()
+            if len(native_data_value) > 0:
+                if 'yes' in native_data_value:
+                    north_american_native = True
+                else:
+                    north_american_native = False
 
             taxon = taxon_table.get(
                 scientific_name=row['scientific__name'],
@@ -542,8 +547,7 @@ class Importer(object):
                 wetland_status_code=row['wetland_status'],
                 wetland_status_text=self._get_wetland_status(
                     row['wetland_status']),
-                north_american_native=(
-                    'yes' in row['native_to_north_america'].lower()),
+                north_american_native=north_american_native,
                 distribution=row['distribution'],
                 invasive_in_states=row['invasive_in_which_states'],
                 sale_prohibited_in_states=row['prohibited_from_sale_states'],

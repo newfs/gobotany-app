@@ -265,11 +265,7 @@
 
                 <div class="section">
                     <h5>Native to North America?</h5>
-                    {% if taxon.north_american_native %}
-                        Yes.
-                    {% else %}
-                        No.
-                    {% endif %}
+                    <p>{{ native_to_north_america }}</p>
                 </div>
 
                 {% if taxon.lookalikes.all|length > 0 %}

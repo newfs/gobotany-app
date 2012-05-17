@@ -535,7 +535,7 @@ class Taxon(models.Model):
     factoid = models.CharField(max_length=1000, blank=True)
     wetland_status_code = models.CharField(max_length=20, blank=True)
     wetland_status_text = models.CharField(max_length=150, blank=True)
-    north_american_native = models.BooleanField(default=False)
+    north_american_native = models.NullBooleanField()
     conservation_status_ct = models.CharField(max_length=100)
     conservation_status_me = models.CharField(max_length=100)
     conservation_status_ma = models.CharField(max_length=100)
