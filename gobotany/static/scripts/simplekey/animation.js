@@ -1,6 +1,6 @@
 define([
     'bridge/jquery',
-    'lib/jquery.animate-colors'
+    'bridge/jquery.animate-colors'
 ], function($, animate_colors) {
     var module = {};
 
