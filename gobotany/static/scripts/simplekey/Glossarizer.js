@@ -49,10 +49,22 @@ define([
             var term = node2.innerHTML.toLowerCase();
             var imgsrc = images[term];
             node2.id = gloss_id;
+            
+            var definition = defs[term];
+            if (definition === undefined) {
+                // If the definition was not found, try looking it up
+                // without converting the term to lowercase. This will
+                // allow finding all-uppercase terms (ex.: the wetland
+                // indicator code FACW). Converting the term to lower case
+                // is still desirable as the default because it allows
+                // markup of terms that appear in mixed case on the pages.
+                definition = defs[node2.innerHTML];
+            }
+
             $('#' + gloss_id).tooltipsy({
                 content: '<p class="glosstip">' +
                     (imgsrc ? '<img src="' + imgsrc + '">' : '') +
-                    defs[term] + '</p>',
+                    definition + '</p>',
                 show: function(event, $tooltip) {
                     if (parseFloat($tooltip.css('left')) < 0)
                         $tooltip.css('left', '0px');
