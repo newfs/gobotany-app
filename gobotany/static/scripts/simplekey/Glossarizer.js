@@ -27,7 +27,8 @@ define([
            all glossary terms.  This has the advantage of always selecting
            the longest possible glossary term if several words together
            could be a glossary term! */
-        var re = '\\b(' + terms.join('|') + ')\\b';
+        var re = '\\b(' + terms.join('|') +
+            ')([\\+\\-]|\\b)'; // Allow + or - at end: wetland indicator codes
         this.regexp = new RegExp(re, 'gi');
     },
 
@@ -38,7 +39,7 @@ define([
 
     markup: function(node) {
         node.innerHTML = node.innerHTML.replace(
-            this.regexp, '<span class="gloss">$1</span>'
+            this.regexp, '<span class="gloss">$1$2</span>'
         );
         var self = this;
         var defs = this.glossaryblob.definitions;
