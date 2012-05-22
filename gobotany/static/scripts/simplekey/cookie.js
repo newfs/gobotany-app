@@ -1,6 +1,6 @@
 define([
     'bridge/jquery',
-    'lib/jquery.cookie'
+    'bridge/jquery.cookie'
 ], function($, cookie) {
     var module = $.cookie;
 
