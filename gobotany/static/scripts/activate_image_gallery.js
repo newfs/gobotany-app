@@ -6,7 +6,7 @@
 require([
     'bridge/jquery',
     'sidebar',
-    'mousewheel'
+    'bridge/jquery.mousewheel'
 ], function($) {
 
     dojo.require('gobotany.sk.photo');
