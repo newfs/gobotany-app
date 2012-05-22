@@ -273,7 +273,7 @@ define([
     var scroll_pane = null;
     var user_is_scrolling = true;
 
-    require(['lib/jquery.jscrollpane'], function() {
+    require(['bridge/jquery.jscrollpane'], function() {
         $.when(document_is_ready).done(function() {
             scroll_pane = $('.scroll')
                 .bind('jsp-scroll-y', function(event) {
