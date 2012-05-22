@@ -1,4 +1,4 @@
-// AMD wrapper for jquery.mousewheel.min plugin.
+// AMD wrapper for jquery.animate-colors plugin.
 // This should ensure the AMD loader properly caches jquery
 // and only loads it once, and we can be sure that this plugin
 // has jquery loaded before it attempts to load. This also serves
