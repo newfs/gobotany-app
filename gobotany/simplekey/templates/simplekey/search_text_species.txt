@@ -51,6 +51,9 @@ Distribution and Conservation Status:
     Vermont: {{ object.conservation_status_vt }}
 
 Wetland Status: {{ object.wetland_status_text }}
+{% if object.wetland_status_text != 'not classified' %}
+    (Wetland indicator code: {{ object.wetland_status_code }})
+{% endif %}
 
 All Characteristics:
 {# TODO: may want to add brief characteristics, and group full list by character group, like species page. #}
