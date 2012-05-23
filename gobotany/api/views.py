@@ -339,7 +339,7 @@ def united_states_distribution_map(request, genus, specific_epithet):
                              specific_epithet)
 
 def north_american_distribution_map(request, genus, specific_epithet):
-    """Return a vector map of the United States showing county-level
+    """Return a vector map of North America showing county-level
     distribution data for a plant.
     """
     distribution_map = NorthAmericanPlantDistributionMap()

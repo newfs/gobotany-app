@@ -1558,13 +1558,22 @@ class Importer(object):
         db = bulkup.Database(connection)
         distribution = db.table('core_distribution')
 
+        # If adjusted status data are present, import from the
+        # appropriate column.
+        ADJUSTED_COLUMN_NAME = 'BDS adjustments (based on AH comments)'
+        status_column_name = 'status'
+        for row in open_csv(distributionsf):
+            if row.has_key(ADJUSTED_COLUMN_NAME.lower()):
+                status_column_name = ADJUSTED_COLUMN_NAME.lower()
+            break   # Now that the correct status column name is known
+
         for row in open_csv(distributionsf):
             distribution.get(
                 scientific_name=row['scientific_name'],
                 state=row['state'],
                 county=row['county'],
                 ).set(
-                status=row['status'],
+                status=row[status_column_name],
                 )
 
             self._apply_subspecies_status(row, distribution)

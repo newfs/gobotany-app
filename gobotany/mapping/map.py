@@ -186,9 +186,14 @@ class PlantDistributionMap(ChloroplethMap):
         self.set_title(title_text)
 
     def _get_distribution_records(self, scientific_name):
-        """Look up the plant and get its distribution records."""
-        return (models.Distribution.objects.filter(
-                scientific_name=scientific_name))
+        """Look up the plant and get its distribution records.
+        Exclude county-level records seen in the New England data.
+        """
+        return models.Distribution.objects.filter(
+                    scientific_name=scientific_name
+               ).exclude(
+                    county__gt=''
+               )
 
     def set_plant(self, scientific_name):
         """Set the plant to be shown and gather its data."""
@@ -275,11 +280,18 @@ class NewEnglandPlantDistributionMap(PlantDistributionMap):
 
 
     def _get_distribution_records(self, scientific_name):
-        """Look up the plant and get its New England distribution records."""
+        """Look up the plant and get its New England distribution records.
+        Exclude state-level records seen in the North America data.
+        """
         NEW_ENGLAND_STATES = ['CT', 'MA', 'ME', 'NH', 'RI', 'VT']
-        return (models.Distribution.objects.filter(
-                scientific_name=scientific_name,
-                state__in=NEW_ENGLAND_STATES))
+        records = models.Distribution.objects.filter(
+                        scientific_name=scientific_name
+                  ).filter(
+                        state__in=NEW_ENGLAND_STATES
+                  ).exclude(
+                        county__exact=''
+                  )
+        return records
 
 
 class UnitedStatesPlantDistributionMap(PlantDistributionMap):
