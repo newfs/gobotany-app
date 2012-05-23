@@ -2528,7 +2528,8 @@ img.char-value-larger {
     background: #fff;
     border-bottom: 4px solid #508e31;
     color: #000;
-    font-size: 14px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
     padding: 11px 0;
     text-align: center;
     width: 100%;
@@ -2538,8 +2539,22 @@ img.char-value-larger {
     z-index: 2;
 }
 #ie-note p.dismiss {
+    padding: 3px;
+}
+#ie-note p.dismiss a {
+    background-color: #3e6bbf;
+    border-bottom: 2px solid #365b99;
+    border-left: 2px solid #85b0f3;
+    border-right: 2px solid #365b99;
+    border-top: 2px solid #85b0f3;
+    color: white;
     font-size: 12px;
-    padding: 2px 0;
+    font-weight: bold;
+    padding: 2px 8px;
+    text-decoration: none;
+
+    -ms-border-radius: 0.3em;
+    border-radius: 0.3em;
 }
 #ie-note a {
     text-decoration: underline;
@@ -2549,7 +2564,7 @@ img.char-value-larger {
     clip: rect(0px,255px,78px,0px);
     overflow: hidden;
     position: absolute;
-    top: 40px;
+    top: 41px;
     z-index: 1;
     opacity: 0.5;
     filter:alpha(opacity=50); /* For IE8 and earlier */
@@ -2559,7 +2574,7 @@ img.char-value-larger {
 	border: 4px solid #508e31;
 	border-top: 4px solid #fff;
 	height: 600px; /* not too short: don't allow blue button to scroll away */
-	top: 418px;
+	top: 419px;
 	z-index: 20000;  /* ensure installer is atop all other content */
 }
 
