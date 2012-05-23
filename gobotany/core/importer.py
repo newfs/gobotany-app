@@ -201,6 +201,10 @@ class Importer(object):
         copyright_holder.save()
 
     @transaction.commit_on_success
+    def _import_wetland_indicators(self, db, wetland_indicators_csv):
+        return  # This is a stub for a future ember-branch function.
+
+    @transaction.commit_on_success
     def _import_partner_sites(self, db):
         log.info('Setting up partner sites')
         partnersite = db.table('core_partnersite')
@@ -1563,13 +1567,22 @@ class Importer(object):
         db = bulkup.Database(connection)
         distribution = db.table('core_distribution')
 
+        # If adjusted status data are present, import from the
+        # appropriate column.
+        ADJUSTED_COLUMN_NAME = 'BDS adjustments (based on AH comments)'
+        status_column_name = 'status'
+        for row in open_csv(distributionsf):
+            if row.has_key(ADJUSTED_COLUMN_NAME.lower()):
+                status_column_name = ADJUSTED_COLUMN_NAME.lower()
+            break   # Now that the correct status column name is known
+
         for row in open_csv(distributionsf):
             distribution.get(
                 scientific_name=row['scientific_name'],
                 state=row['state'],
                 county=row['county'],
                 ).set(
-                status=row['status'],
+                status=row[status_column_name],
                 )
 
             self._apply_subspecies_status(row, distribution)
@@ -1954,7 +1967,8 @@ def main():
         'lookalikes', 'constants', 'places', 'taxon_character_values',
         'character_images', 'character_value_images', 'glossary_images',
         'videos', 'home_page_images', 'taxon_images',
-        'assign_character_values_to_piles', 'copyright_holders'
+        'assign_character_values_to_piles', 'copyright_holders',
+        'wetland_indicators',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
