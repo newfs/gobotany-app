@@ -5,7 +5,7 @@ define([
     'bridge/ember',
     'bridge/shadowbox',
     'util/shadowbox_init',
-    'underscore-min',
+    'bridge/underscore',
     'gobotany/utils',
     'simplekey/App3',
     'simplekey/Filter',

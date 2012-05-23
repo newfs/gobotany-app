@@ -3,8 +3,8 @@
  */
 define([
     'bridge/jquery',
-    'underscore-min'
-], function($) {
+    'bridge/underscore'
+], function($, _) {
     var module = {};
 
     /*
