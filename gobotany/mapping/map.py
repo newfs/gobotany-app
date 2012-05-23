@@ -35,9 +35,17 @@ class Legend(object):
     """Class for configuring the legend on a SVG plant distribution map."""
 
     # This list controls the order, label and color of legend items.
-    ITEMS = [('native', '#78bf47'), ('rare', '#a7e37d'),
-             ('introduced', '#fa9691'), ('invasive', '#f00'),
-             ('historic', '#ccc'), ('absent', '#fff')]
+    #
+    # Some of the items are currently no longer shown on the maps, due
+    # to simpler and more accurate data in use. These items are left
+    # here in case it is desired to make the maps more elaborate again.
+    ITEMS = [('present', '#78bf47'),
+             ('native', '#78bf47'),     # Currently not shown on the maps.
+             ('rare', '#a7e37d'),       # Currently not shown on the maps.
+             ('introduced', '#fa9691'), # Currently not shown on the maps.
+             ('invasive', '#f00'),      # Currently not shown on the maps.
+             ('historic', '#ccc'),      # Currently not shown on the maps.
+             ('absent', '#fff')]
     COLORS = dict(ITEMS)  # Color lookup for labels, ex.: COLORS['rare'].
                           # This does not preserve the order of items.
 
@@ -122,41 +130,50 @@ class PlantDistributionMap(ChloroplethMap):
         Because the Go Botany maps are aimed at a general audience, the
         Go Botany map labels are fewer and simpler than those found on
         the source maps.
+
+        23 May 2012: Labels are down to just present and absent due to
+        the use of simpler and more accurate New England data. The
+        labels for North America data are now made to "match" the New
+        England ones, so the maps will be consistent.
         """
+        ABSENCE_INDICATORS = [
+                'absent',       # From adjusted New England data, covers
+                                # "absent"
+                'extirpated',   # Covers: "Species extirpated (historic)"
+                'extinct',      # Covers: "Species extinct"
+                'not present',  # Covers: "Species not present in state"
+                'eradicated',   # Covers: "Species eradicated"
+                'questionable', # Covers: "Questionable presence
+                                #          (cross-hatched)"
+                ]
+        PRESENCE_INDICATORS = [
+            'present',   # From adjusted New England data, covers "present"
+            'exotic',    # Covers: "Species present in state and exotic"
+                         #     and "Species exotic and present"
+            'waif',      # Covers: "Species waif"
+            'noxious',   # Covers: "Species noxious"
+            'and rare',  # Covers: "Species present and rare"
+            'native',    # Covers: "Species present in state and native"
+            'species present', # Covers: "Species present in state and
+                               #          not rare"
+            ]
         label = ''
         status = status.lower()
-        if 'exotic' in status or 'waif' in status:
-            # Covers status:
-            # "Species present in state and exotic"
-            # "Species exotic and present"
-            # "Species waif"
-            label = 'introduced'
-        elif 'noxious' in status:
-            # Covers status:
-            # "Species noxious"
-            label = 'invasive'
-        elif 'extirpated' in status or 'extinct' in status:
-            # Covers status:
-            # "Species extirpated (historic)"
-            # "Species extinct"
-            label = 'historic'
-        elif 'and rare' in status:
-            # Covers status:
-            # "Species present and rare"
-            label = 'rare'
-        elif 'native' in status or 'species present' in status:
-            # Covers status:
-            # "Species present in state and native"
-            # "Species present and not rare"
-            # "Species native, but adventive in state"
-            label = 'native'
-        elif ('not present' in status or 'eradicated' in status or
-              'questionable' in status):
-            # Cover status:
-            # "Species not present in state"
-            # "Species eradicated"
-            # "Questionable Presence (cross-hatched)"
-            label = 'absent'
+
+        # Look through the absence indicators first because otherwise
+        # a "false-present" label could occur.
+        for indicator in ABSENCE_INDICATORS:
+            if indicator in status:
+                label = 'absent'
+                break
+        # If an absence indicator did not set a label, look through the
+        # presence indicators.
+        if label == '':
+            for indicator in PRESENCE_INDICATORS:
+                if indicator in status:
+                    label = 'present'
+                    break
+
         return label
 
     def _add_name_to_title(self, scientific_name):
