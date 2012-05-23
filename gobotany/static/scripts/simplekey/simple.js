@@ -1,8 +1,8 @@
 require([
     'activate_image_gallery',
     'activate_search_suggest',
-    'shadowbox',
-    'shadowbox_init',
+    'bridge/shadowbox',
+    'util/shadowbox_init',
     'sidebar',
     'activate_video_links'
 ]);

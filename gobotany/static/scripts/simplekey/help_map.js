@@ -1,7 +1,7 @@
 require([
     'activate_search_suggest',
-    'shadowbox',
-    'shadowbox_init',
+    'bridge/shadowbox',
+    'util/shadowbox_init',
     'activate_video_links',
     'sidebar'
 ]);
