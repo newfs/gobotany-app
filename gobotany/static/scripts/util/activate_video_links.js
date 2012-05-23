@@ -2,9 +2,9 @@
 
 require([
     'bridge/jquery',
-    'shadowbox',
-    'shadowbox_init'
-], function($) {
+    'bridge/shadowbox',
+    'util/shadowbox_init'
+], function($, Shadowbox, shadowbox_init) {
     $(document).ready(function() {
         $('a.video').each(function() {
             // On iOS, instead of trying to use the lightbox for videos

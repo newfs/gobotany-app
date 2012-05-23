@@ -2,8 +2,8 @@
 
 define([
     'bridge/jquery', 
-    'shadowbox'
-], function($) {
+    'bridge/shadowbox'
+], function($, Shadowbox) {
 
     // Animate and position the close button.
     shadowbox_move_close_button = function() {

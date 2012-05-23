@@ -3,6 +3,8 @@ define([
     'document_is_ready',
     'bridge/jquery',
     'bridge/ember',
+    'bridge/shadowbox',
+    'util/shadowbox_init',
     'underscore-min',
     'gobotany/utils',
     'simplekey/App3',
@@ -13,7 +15,7 @@ define([
     'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState'
-], function(args, document_is_ready, $, Ember, _, utils, App3, _Filter,
+], function(args, document_is_ready, $, Ember, Shadowbox, shadowbox_init, _, utils, App3, _Filter,
             _FilterController, animation, cookie, _glossarize,
             resources, ResultsPageState) {
 
@@ -662,9 +664,7 @@ define([
             require([
                 'activate_search_suggest',
                 'activate_image_gallery',
-                'sidebar',
-                'shadowbox',
-                'shadowbox_init'
+                'sidebar'
             ], function() {
                 dojo.require('gobotany.sk.results');
                 dojo.addOnLoad(function() {

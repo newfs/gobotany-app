@@ -5,11 +5,11 @@
 
 require([
     'bridge/jquery',
-    'sidebar',
-    'bridge/jquery.mousewheel'
-], function($) {
-
-    dojo.require('gobotany.sk.photo');
+    'bridge/sidebar',
+    'bridge/jquery.mousewheel',
+    'bridge/shadowbox',
+    'gobotany/sk/photo'
+], function($, sidebar, mousewheel, Shadowbox, photo) {
 
     $(document).ready(function() {
 
@@ -21,7 +21,7 @@ require([
 
         $('.img-gallery').each(function() {
             var gallery = this;
-            var photo_helper = gobotany.sk.photo.PhotoHelper();
+            var photo_helper = photo.PhotoHelper();
             $(gallery).children('.frame').click(function() {
                 var container = $(gallery).children('.img-container');
                 var scroll = container.data('scrollable');
