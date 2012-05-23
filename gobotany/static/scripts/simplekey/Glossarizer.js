@@ -1,8 +1,8 @@
 define([
     'ember',
     'bridge/jquery',
-    'lib/tooltipsy'
-], function() {return Ember.Object.extend({
+    'bridge/tooltipsy'
+], function(Em, $, tooltipsy) {return Ember.Object.extend({
 
     /* The glossarizer takes the glossary blob delivered by the API,
        parses and prepares a regular expression, and then can mark up

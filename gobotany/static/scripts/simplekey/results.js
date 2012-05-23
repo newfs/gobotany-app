@@ -3,7 +3,6 @@ define([
     'document_is_ready',
     'bridge/jquery',
     'underscore-min',
-    'lib/tooltipsy',
     'gobotany/utils',
     'simplekey/App3',
     'simplekey/Filter',
@@ -13,7 +12,7 @@ define([
     'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState'
-], function(args, document_is_ready, x, x, x, utils, App3, _Filter,
+], function(args, document_is_ready, $, _, utils, App3, _Filter,
             _FilterController, animation, cookie, _glossarize,
             resources, ResultsPageState) {
 

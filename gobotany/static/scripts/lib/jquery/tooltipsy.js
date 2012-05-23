@@ -17,7 +17,6 @@
  * - $('element').data('tooltipsy').destroy(): Remove tooltip from DOM
  * More information visit http://tooltipsy.com/
  */
-define(['jquery'], function() {
 (function($){
     $.tooltipsy = function (el, options) {
         this.options = options;
@@ -224,4 +223,3 @@ define(['jquery'], function() {
     };
 
 })(jQuery);
-});
