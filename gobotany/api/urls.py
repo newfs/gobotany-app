@@ -91,22 +91,21 @@ urlpatterns = patterns(
 # assume that the developer does not really intend caching to take
 # place.
 
-def c(view):
-    if 'memcache' in settings.CACHES['default']['BACKEND']:
-        one_hour = 60 * 60
-        turn_on_browser_cache = cache_control(maxage=one_hour)
-        turn_on_memcached = cache_page(one_hour)
-        view = turn_on_browser_cache(view)
-        view = turn_on_memcached(view)
-        return view
-    else:
-        return view
+if 'memcache' in settings.CACHES['default']['BACKEND']:
+    one_hour = 60 * 60
+    browsercache = cache_control(maxage=one_hour)
+    memcache = cache_page(one_hour)
+    both = lambda view: browsercache(memcache(view))
+else:
+    browsercache = lambda view: view
+    memcache = lambda view: view
+    both = lambda view: view
 
 urlpatterns += patterns(
     'gobotany.api.views',
-    url(r'^glossaryblob/$', c(views.glossary_blob)),
-    url(r'^species/([\w-]+)/$', c(views.species)),
-    url(r'^vectors/character/([\w()-]+)/$', c(views.vectors_character)),
-    url(r'^vectors/key/([\w-]+)/$', c(views.vectors_key)),
-    url(r'^vectors/pile/([\w-]+)/$', c(views.vectors_pile)),
+    url(r'^glossaryblob/$', both(views.glossary_blob)),
+    url(r'^species/([\w-]+)/$', browsercache(views.species)),
+    url(r'^vectors/character/([\w()-]+)/$', both(views.vectors_character)),
+    url(r'^vectors/key/([\w-]+)/$', both(views.vectors_key)),
+    url(r'^vectors/pile/([\w-]+)/$', both(views.vectors_pile)),
     )
