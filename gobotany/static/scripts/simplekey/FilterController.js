@@ -1,9 +1,9 @@
 define([
-    'ember',
+    'bridge/ember',
     'bridge/jquery',
     'underscore-min',
     'simplekey/Filter'
-], function(x, $, x, Filter) {return Ember.ArrayController.extend({
+], function(Ember, $, x, Filter) {return Ember.ArrayController.extend({
 
     init: function() {
         var taxadata = this.taxadata;

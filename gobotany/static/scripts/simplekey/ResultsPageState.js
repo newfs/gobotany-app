@@ -5,7 +5,7 @@
 
 define([
     'ember'
-], function () {return Ember.Object.extend({
+], function (Ember) {return Ember.Object.extend({
 
     init: function (args) {
         var hash = this.hash || '',

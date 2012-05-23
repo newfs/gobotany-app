@@ -1,7 +1,7 @@
 define([
-    'ember',
+    'bridge/ember',
     'underscore-min'
-], function() {return Ember.Object.extend({
+], function(Ember) {return Ember.Object.extend({
 
     init: function() {
         var slug = this.slug;
