@@ -75,17 +75,17 @@ class LegendTestCase(TestCase):
             'stroke:%s' % STROKE_COLOR) > -1)
 
     def test_show_items(self):
-        legend_labels_found = ['present', 'rare']
+        legend_labels_found = ['present', 'absent']
         self.legend.show_items(legend_labels_found)
 
         labels = self._get_labels()
         self.assertEqual('present', labels[0])
-        self.assertEqual('rare', labels[1])
+        self.assertEqual('absent', labels[1])
         [self.assertEqual('', label) for label in labels[2:]]
 
         paths = self._get_paths()
         self.assertTrue(paths[0].get_style().find('fill:#78bf47') > -1)
-        self.assertTrue(paths[1].get_style().find('fill:#a7e37d') > -1)
+        self.assertTrue(paths[1].get_style().find('fill:#fff') > -1)
         [self.assertTrue(path.get_style().find('fill:#fff') > -1)
          for path in paths[2:]]
         [self.assertTrue(path.get_style().find('stroke:#000') > -1)
@@ -142,26 +142,26 @@ def create_distribution_records():
             ('Piscataquis', 'ME', 'Species present and not rare'),
             ('Coos', 'NH', 'Species present and not rare'),
             ('Worcester', 'MA', 'Species present and not rare'),
-            ('Kent', 'RI', 'Species present in state and present'),
+            ('Kent', 'RI', 'Species present in state and native'),
             ('Orange', 'VT', 'Species present and not rare'),
             ('New London', 'CT', 'Species present in state and present'),
-            ('', 'NS', 'Species present in state and present'),
-            ('', 'NB', 'Species present in state and present'),
-            ('', 'QC', 'Species present in state and present'),
-            ('', 'ON', 'Species present in state and present'),
-            ('', 'MB', 'Species present in state and present'),
-            ('', 'SK', 'Species present in state and present'),
-            ('', 'AB', 'Species present in state and present'),
-            ('', 'BC', 'Species present in state and present'),
-            ('', 'ME', 'Species present in state and present'),
-            ('', 'NH', 'Species present in state and present'),
-            ('', 'MA', 'Species present in state and present'),
-            ('', 'RI', 'Species present in state and present'),
-            ('', 'VT', 'Species present in state and present'),
-            ('', 'CT', 'Species present in state and present'),
-            ('', 'NY', 'Species present in state and present'),
-            ('', 'nj', 'Species present in state and present'),
-            ('', 'PA', 'Species present in state and present'),
+            ('', 'NS', 'Species present in state and native'),
+            ('', 'NB', 'Species present in state and native'),
+            ('', 'QC', 'Species present in state and native'),
+            ('', 'ON', 'Species present in state and native'),
+            ('', 'MB', 'Species present in state and native'),
+            ('', 'SK', 'Species present in state and native'),
+            ('', 'AB', 'Species present in state and native'),
+            ('', 'BC', 'Species present in state and native'),
+            ('', 'ME', 'Species present in state and native'),
+            ('', 'NH', 'Species present in state and native'),
+            ('', 'MA', 'Species present in state and native'),
+            ('', 'RI', 'Species present in state and native'),
+            ('', 'VT', 'Species present in state and native'),
+            ('', 'CT', 'Species present in state and native'),
+            ('', 'NY', 'Species present in state and native'),
+            ('', 'nj', 'Species present in state and native'),
+            ('', 'PA', 'Species present in state and native'),
             ('', 'NC', 'Species present and rare'),
             ],
         'Vaccinium vitis-idaea ssp. minus': [
@@ -169,18 +169,18 @@ def create_distribution_records():
             ('Coos', 'NH', 'Species present and not rare'),
             ('Worcester', 'MA', 'Species present and rare'),
             ('Kent', 'RI', 'Species not present in state'),
-            ('Orange', 'VT', 'Species present in state and present'),
-            ('New London', 'CT', 'Species present in state and present'),
-            ('', 'NS', 'Species present in state and present'),
-            ('', 'NB', 'Species present in state and present'),
-            ('', 'QC', 'Species present in state and present'),
-            ('', 'ON', 'Species present in state and present'),
-            ('', 'MB', 'Species present in state and present'),
-            ('', 'SK', 'Species present in state and present'),
-            ('', 'AB', 'Species present in state and present'),
-            ('', 'BC', 'Species present in state and present'),
-            ('', 'ME', 'Species present in state and present'),
-            ('', 'NH', 'Species present in state and present'),
+            ('Orange', 'VT', 'Species present in state and native'),
+            ('New London', 'CT', 'Species present in state and native'),
+            ('', 'NS', 'Species present in state and native'),
+            ('', 'NB', 'Species present in state and native'),
+            ('', 'QC', 'Species present in state and native'),
+            ('', 'ON', 'Species present in state and native'),
+            ('', 'MB', 'Species present in state and native'),
+            ('', 'SK', 'Species present in state and native'),
+            ('', 'AB', 'Species present in state and native'),
+            ('', 'BC', 'Species present in state and native'),
+            ('', 'ME', 'Species present in state and native'),
+            ('', 'NH', 'Species present in state and native'),
             ('', 'MA', 'Species present and rare'),
             ('', 'RI', 'Species not present in state'),
             ('', 'VT', 'Species present and rare'),
@@ -205,11 +205,11 @@ class PlantDistributionMapTestCase(TestCase):
     def test_map_init(self):
         self.assertTrue(self.distribution_map)
 
-    def test_get_label_for_status_present(self):
+    def test_get_label_for_status_native(self):
         statuses = [
-            'Species present in state and present',
+            'Species present in state and native',
             'Species present and not rare',
-            'Species present, but adventive in state',
+            'Species native, but adventive in state',
             ]
         for status in statuses:
             self.assertEqual('present',
@@ -313,7 +313,7 @@ class PlantDistributionMapTestCase(TestCase):
         SCIENTIFIC_NAME = 'Vaccinium vitis-idaea ssp. minus'
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
-        self._verify_shaded_counties(['present', 'rare', 'absent'])
+        self._verify_shaded_counties(['present', 'absent'])
         labels = [label_node.text for label_node in
             self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
             namespaces=NAMESPACES)]
@@ -359,7 +359,7 @@ class PlantDistributionMapTestCase(TestCase):
         SCIENTIFIC_NAME = 'Vaccinium vitis-idaea'
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
-        self._verify_shaded_counties(['present', 'rare', 'absent'])
+        self._verify_shaded_counties(['present', 'absent'])
         labels = [label_node.text for label_node in
             self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
             namespaces=NAMESPACES)]
