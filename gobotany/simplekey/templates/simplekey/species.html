@@ -149,11 +149,15 @@
                 </ul>
                 
                 <h3>Wetland Plant?</h3>
-                <p>{{ taxon.wetland_status_text }} 
-                {% if taxon.wetland_status_text != 'not classified' %}
-                    (Wetland indicator code: {{ taxon.wetland_status_code }})
+                {% if taxon.wetland_indicator_code %}
+                    <p>
+                        {{ taxon.wetland_indicator_text }}
+                        (Wetland indicator code:
+                        {{ taxon.wetland_indicator_code }})
+                    </p>
+                {% else %}
+                    <p>Not classified</p>
                 {% endif %}
-                </p>
                 
                 <h3>New England Distribution and Conservation Status</h3>
                 <table>

@@ -516,6 +516,20 @@ class Lookalike(models.Model):
                             self.lookalike_characteristic)
 
 
+class WetlandIndicator(models.Model):
+    """An indicator category for the wetland status of a plant."""
+    code = models.CharField(max_length=15, unique=True)
+    name = models.CharField(max_length=50)
+    friendly_description = models.CharField(max_length=200)
+    sequence = models.IntegerField()
+
+    class Meta:
+        ordering = ['sequence']
+
+    def __unicode__(self):
+        return '%s (%s)' % (self.code, self.name)
+
+
 class Taxon(models.Model):
     """Despite its general name, this currently represents a single species."""
     # TODO: taxa should probably have a "slug" as well, to prevent us
@@ -533,8 +547,10 @@ class Taxon(models.Model):
     habitat = models.CharField(max_length=300, blank=True)
     habitat_general = models.CharField(max_length=300, blank=True)
     factoid = models.CharField(max_length=1000, blank=True)
-    wetland_status_code = models.CharField(max_length=20, blank=True)
-    wetland_status_text = models.CharField(max_length=150, blank=True)
+    wetland_indicator_code = models.CharField(max_length=15, blank=True,
+                                              null=True)
+    wetland_indicator_text = models.CharField(max_length=200, blank=True,
+                                              null=True)
     north_american_native = models.NullBooleanField()
     north_american_introduced = models.NullBooleanField()
     conservation_status_ct = models.CharField(max_length=100)

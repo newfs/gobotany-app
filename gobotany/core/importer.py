@@ -200,6 +200,22 @@ class Importer(object):
         copyright_holder.save()
 
     @transaction.commit_on_success
+    def _import_wetland_indicators(self, db, wetland_indicators_csv):
+        log.info('Setting up wetland indicators')
+        wetland_indicator = db.table('core_wetlandindicator')
+
+        for row in open_csv(wetland_indicators_csv):
+            wetland_indicator.get(
+                code = row['code'],
+                ).set(
+                name = row['name'],
+                friendly_description = row['friendly_description'],
+                sequence = int(row['sequence']),
+                )
+
+        wetland_indicator.save()
+
+    @transaction.commit_on_success
     def _import_partner_sites(self, db):
         log.info('Setting up partner sites')
         partnersite = db.table('core_partnersite')
@@ -269,36 +285,6 @@ class Importer(object):
                 )
 
         habitat.save()
-
-    def _get_wetland_status(self, status_code):
-        '''
-        Return plain language text for a wetland status code.
-        '''
-        status = 'not classified'
-        if status_code == 'FAC' or status_code == 'FAC+' or \
-           status_code == 'FAC-':
-            status = 'Occurs in wetlands or uplands.'
-        elif status_code == 'FACU':
-            status = ('Usually occurs in uplands, but occasionally occurs '
-                      'in wetlands.')
-        elif status_code == 'FACU+':
-            status = 'Occurs most often in uplands; rarely in wetlands.'
-        elif status_code == 'FACU-':
-            status = ('Usually occurs in uplands, but occurs in wetlands '
-                      'more than occasionally.')
-        elif status_code == 'FACW':
-            status = ('Usually occurs in wetlands, but occasionally occurs '
-                      'in non-wetlands.')
-        elif status_code == 'FACW+':
-            status = 'Occurs most often in wetlands; rarely in non-wetlands.'
-        elif status_code == 'FACW-':
-            status = ('Occurs in wetlands but also occurs in uplands more '
-                      'than occasionally.')
-        elif status_code == 'OBL':
-            status = 'Occurs only in wetlands.'
-        elif status_code == 'UPL':
-            status = 'Never occurs in wetlands.'
-        return status
 
 
     def _get_state_status(self, state_code, distribution,
@@ -467,6 +453,15 @@ class Importer(object):
                 log.error('Expected delimiter "%s" not found taxa.csv '
                           'column: %s' % (EXPECTED_DELIMITER, column))
 
+        # Get the list of wetland indicator codes and associated text.
+        # These values will be added to the taxon records as needed.
+        # TODO: Consider making the taxon model just have a foreign key
+        # relation to WetlandIndicator instead of a code and text field,
+        # which requires some knowledge of how to import this with the
+        # current approach of bulk loading and updating tables.
+        wetland_indicators = dict(models.WetlandIndicator.objects.values_list(
+            'code', 'friendly_description'))
+
         # Start import.
         family_map = db.map('core_family', 'slug', 'id')
         genus_map = db.map('core_genus', 'slug', 'id')
@@ -527,6 +522,18 @@ class Importer(object):
                     name=genus_name,
                     )
 
+            # Get the wetland indicator category if present.
+            # Only one wetland indicator per plant is imported because
+            # wetland indicator categories represent non-overlapping,
+            # mutually exclusive probability ranges. If the taxon record
+            # has more than one indicator, the first is used.
+            wetland_code = None
+            wetland_text = None
+            if (row['wetland_status'] != '' and
+                row['wetland_status'].lower() != 'unclassified'):
+                wetland_code = row['wetland_status'].split('|')[0].strip()
+                wetland_text = wetland_indicators[wetland_code]
+
             # A plant can be marked as both native to North America and
             # introduced. This is for some native plants that are also
             # native to places elsewhere in the world, or that have
@@ -556,9 +563,8 @@ class Importer(object):
                 habitat=row['habitat'],
                 habitat_general='',
                 factoid=row['factoid'],
-                wetland_status_code=row['wetland_status'],
-                wetland_status_text=self._get_wetland_status(
-                    row['wetland_status']),
+                wetland_indicator_code=wetland_code,
+                wetland_indicator_text=wetland_text,
                 north_american_native=north_american_native,
                 north_american_introduced=north_american_introduced,
                 distribution=row['distribution'],
@@ -1943,7 +1949,8 @@ def main():
         'lookalikes', 'constants', 'places', 'taxon_character_values',
         'character_images', 'character_value_images', 'glossary_images',
         'videos', 'home_page_images', 'taxon_images',
-        'assign_character_values_to_piles', 'copyright_holders'
+        'assign_character_values_to_piles', 'copyright_holders',
+        'wetland_indicators',
         )  # keep old commands working for now!
     if modern and method is not None:
         db = bulkup.Database(connection)
