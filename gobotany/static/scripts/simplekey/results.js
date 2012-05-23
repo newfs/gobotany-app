@@ -2,6 +2,7 @@ define([
     'args',
     'document_is_ready',
     'bridge/jquery',
+    'bridge/ember',
     'underscore-min',
     'gobotany/utils',
     'simplekey/App3',
@@ -12,7 +13,7 @@ define([
     'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState'
-], function(args, document_is_ready, $, _, utils, App3, _Filter,
+], function(args, document_is_ready, $, Ember, _, utils, App3, _Filter,
             _FilterController, animation, cookie, _glossarize,
             resources, ResultsPageState) {
 
