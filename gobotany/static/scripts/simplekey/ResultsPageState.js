@@ -4,7 +4,7 @@
  */
 
 define([
-    'ember'
+    'bridge/ember'
 ], function (Ember) {return Ember.Object.extend({
 
     init: function (args) {

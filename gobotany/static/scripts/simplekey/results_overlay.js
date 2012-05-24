@@ -1,6 +1,6 @@
 require([
     'args',
-    'document_is_ready',
+    'util/document_is_ready',
     'bridge/jquery',
     'simplekey/resources'
 ], function(args, document_is_ready, $, resources) {

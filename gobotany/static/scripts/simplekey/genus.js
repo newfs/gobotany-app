@@ -9,13 +9,13 @@ define([
     });
 
     require([
-        'activate_search_suggest',
+        'util/activate_search_suggest',
         'bridge/shadowbox',
         'util/shadowbox_init'
     ]);
 
     require([
-        'sidebar'
+        'util/sidebar'
     ], function() {
         dojo.require('gobotany.sk.genus');
         dojo.addOnLoad(function() {

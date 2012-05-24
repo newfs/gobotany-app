@@ -2,18 +2,18 @@ define([
 
     // Basic resources
 
-    'activate_search_suggest',
+    'util/activate_search_suggest',
     'bridge/shadowbox',
     'util/shadowbox_init',
 
     // Page components
 
-    'sidebar',
+    'util/sidebar',
     'simplekey/glossarize',
 
     // Scrolling
 
-    'activate_smooth_div_scroll'
+    'util/activate_smooth_div_scroll'
 
 ], function(x, x, x, x, _glossarize, x) {
     glossarize = _glossarize;

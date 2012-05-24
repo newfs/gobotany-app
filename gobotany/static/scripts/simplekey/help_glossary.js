@@ -1,8 +1,8 @@
 require([
-    'activate_search_suggest',
+    'util/activate_search_suggest',
     'bridge/shadowbox',
     'util/shadowbox_init',
-    'sidebar'
+    'util/sidebar'
 ]);
 
 require([

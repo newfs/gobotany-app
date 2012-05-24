@@ -1,6 +1,6 @@
 define([
     'args',
-    'document_is_ready',
+    'util/document_is_ready',
     'bridge/jquery',
     'bridge/ember',
     'bridge/shadowbox',
@@ -662,9 +662,9 @@ define([
             'gobotany/sk/SearchSuggest'
         ], function() {
             require([
-                'activate_search_suggest',
-                'activate_image_gallery',
-                'sidebar'
+                'util/activate_search_suggest',
+                'util/activate_image_gallery',
+                'util/sidebar'
             ], function() {
                 dojo.require('gobotany.sk.results');
                 dojo.addOnLoad(function() {

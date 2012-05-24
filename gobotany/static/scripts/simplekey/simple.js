@@ -1,10 +1,10 @@
 require([
-    'activate_image_gallery',
-    'activate_search_suggest',
+    'util/activate_image_gallery',
+    'util/activate_search_suggest',
     'bridge/shadowbox',
     'util/shadowbox_init',
-    'sidebar',
-    'activate_video_links'
+    'util/sidebar',
+    'util/activate_video_links'
 ]);
 
 require([
