@@ -1,4 +1,5 @@
 {% extends "simplekey/_new_base.html" %}
+{% load simplekey_extras %}
 
 {% block title %}Go Botany: New England Wild Flower Society{% endblock %}
 {% block title_suffix %}{% endblock %}
@@ -85,8 +86,8 @@
                         </a>
                         <div class="details">
                             <h4>Plant of the Day:
-                                <span class="latin">{{ plant_of_the_day.scientific_name }}</span>
-                                <span class="english">{% for common_name in plant_of_the_day.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</span>                           
+                                <span class="latin">{{ plant_of_the_day.scientific_name|italicize_plant|safe }}</span>
+                                <span class="english">{{ plant_of_the_day.common_names.all.0 }}</span>
                             </h4>
                             <p>{{ plant_of_the_day.factoid|slice:":274"}}
                             {% if plant_of_the_day.factoid|length > 274 %}...{% endif %}</p>

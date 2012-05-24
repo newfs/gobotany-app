@@ -351,12 +351,10 @@ div#potd {
 	width: 630px;
 }
 #potd h4 span.latin {
-	font-size: 14px;
-	text-transform: uppercase;	
+    font-style: italic;
 }
 #potd h4 span.english {
 	font-size: 12px;
-	font-style: italic;
 	color: #807121;	
 }
 #potd a.learn-more {
