@@ -336,7 +336,7 @@ div#potd {
     display: block;
     float: left;
     height: 131px;
-    margin: 0 15px 0 0;
+    margin: 5px 5px;
     overflow: hidden;
     width: 270px;
 }
@@ -346,9 +346,9 @@ div#potd {
 	width: 270px;
 }
 #potd .details {
-    margin: 0 0 0 285px;
+    margin: 0 0 0 295px;
     position: absolute;
-	width: 640px;
+	width: 630px;
 }
 #potd h4 span.latin {
 	font-size: 14px;
@@ -361,7 +361,6 @@ div#potd {
 }
 #potd a.learn-more {
     position: absolute;
-    right: 0;
     top: 102px;
 }
 #potd .details p {
