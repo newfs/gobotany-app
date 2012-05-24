@@ -8,7 +8,7 @@ define('jquery.smoothdivscroll', [
     'bridge/jquery', 
     'bridge/jquery-ui',
     'bridge/jquery.mousewheel',
-    'jquery/jquery.smoothdivscroll-1.2-mod'
+    'jquery/jquery.smoothDivScroll-1.2-mod'
 ], function($, ui, mousewheel, smoothdivscroll) {
     var jquery;
     if($.fn.smoothDivScroll) {

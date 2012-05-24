@@ -7,7 +7,7 @@ require([
     'bridge/jquery',
     'bridge/jquery-ui',
     'bridge/jquery.easing',
-    'bridge/jquery.smoothDivScroll'
+    'bridge/jquery.smoothdivscroll'
 ], function($, ui, easing, smoothDivScroll) {
     $(document).ready(function() {
 

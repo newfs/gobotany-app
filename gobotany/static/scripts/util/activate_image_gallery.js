@@ -5,7 +5,7 @@
 
 require([
     'bridge/jquery',
-    'bridge/sidebar',
+    'util/sidebar',
     'bridge/jquery.mousewheel',
     'bridge/shadowbox',
     'gobotany/sk/photo'
