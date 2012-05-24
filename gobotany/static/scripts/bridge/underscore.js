@@ -1,5 +1,5 @@
 // AMD wrapper for underscore library
-define('underscore', [
+define([
     'tools/underscore-min'
 ], function(underscore) {
     var module;

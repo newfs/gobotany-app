@@ -4,7 +4,7 @@
 // has jquery loaded before it attempts to load. This also serves
 // as a thin abstraction layer so we don't have to worry about
 // versioned filenames in our module references.
-define('jquery.mousewheel', [
+define([
     'bridge/jquery', 
     'jquery/jquery.mousewheel.min'
 ], function($, mousewheel) {

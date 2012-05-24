@@ -1,5 +1,5 @@
 // Name this module so the AMD loader knows how to cache it properly.
-define('jquery', [
+define([
     'jquery/jquery.tools.min'
 ], function(jquery) {
     // jQuery loads itself into the global namespace by default, so

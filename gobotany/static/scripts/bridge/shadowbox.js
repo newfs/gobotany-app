@@ -1,5 +1,5 @@
 // AMD wrapper for Shadowbox script
-define('shadowbox', [
+define([
     'tools/shadowbox' 
 ], function(shadowbox) {
     var module;
