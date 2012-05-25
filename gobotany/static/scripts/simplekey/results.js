@@ -613,10 +613,15 @@ define([
 
     $.when(
         ResultsHelper_ready,
-        image_type_ready,
         plant_divs_ready
     ).done(function(rh) {
+        rh.species_section.display_results();
         rh.load_selected_image_type();
+
+        App3.addObserver('filtered_sorted_taxadata', function() {
+            rh.species_section.display_results();
+        });
+
         App3.addObserver('image_type', function() {
             rh.load_selected_image_type();
         });

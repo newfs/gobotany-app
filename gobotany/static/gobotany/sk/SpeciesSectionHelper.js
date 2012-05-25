@@ -28,19 +28,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         simplekey_resources.pile_species(pile_slug).done(
             $.proxy(this, 'create_plant_divs')
         );
-        dojo.subscribe('/filters/query-result', this, 'display_results');
-
-        if (typeof App3.filtered_sorted_taxadata !== 'undefined')
-            /* Whoops, async loading of JavaScript loaded us too late to
-               receive the first message! */
-            this.display_results();
-
-        // Call the lazy image loader when the page loads.
-        this.lazy_load_images();
-
-        // Assign other events that will trigger the lazy image loader,
-        // with timers so as not to suffer a quick succession of multiple
-        // event firings.
 
         // No delay for scrolling allows images to load during the pressing
         // and holding of a cursor key.
