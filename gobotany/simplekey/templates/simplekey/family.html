@@ -14,10 +14,12 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
 {% endblock %}
 
 {% block js_require %}
-    define('args', [], {
+    var args = {
         family_slug: '{{ family.slug }}'
+    };
+    require(['simplekey/family'], function(family_page_init) {
+        family_page_init(args);
     });
-    require(['simplekey/family']);
 {% endblock %}
 
 {% block body_attributes %}id="family" class="claro app family"{% endblock %}

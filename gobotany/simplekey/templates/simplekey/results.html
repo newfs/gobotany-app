@@ -5,10 +5,12 @@
 
 {% block js_require %}
     original_location_hash = window.location.hash; // for results_overlay.js
-    define('args', [], {
+    var args = {
         pile_slug: '{{ pile.slug }}'
+    };
+    require(['simplekey/results'], function(results_page_init) {
+        results_page_init(args);
     });
-    require(['simplekey/results']);
 {% endblock %}
 
 {% block body_attributes %}id="plant-id-3" class="claro app"{% endblock %}
