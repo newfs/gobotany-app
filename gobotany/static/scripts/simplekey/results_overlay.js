@@ -1,4 +1,4 @@
-require([
+define([
     'util/document_is_ready',
     'bridge/jquery',
     'simplekey/resources'
