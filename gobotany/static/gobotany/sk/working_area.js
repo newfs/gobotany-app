@@ -402,7 +402,7 @@ dojo.declare('gobotany.sk.working_area.Slider', [
        javascript errors from the parent version of this function, so
        just override it with an empty function. */
     _on_filter_change: function() {
-    },
+    }
 
 });
 

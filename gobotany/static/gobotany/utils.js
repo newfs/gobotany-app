@@ -6,7 +6,7 @@ define([
     'dojo/dom-class',
     'dojo/_base/window',
     'dojo/window',
-    'dojo/_base/fx',
+    'dojo/_base/fx'
 ], function(dom, domConstruct, domGeom, domStyle, domClass, 
     base_win, win, fx) {
 
