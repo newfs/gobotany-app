@@ -15,7 +15,8 @@ define([
 
     'util/activate_smooth_div_scroll'
 
-], function(x, x, x, x, _glossarize, x) {
+], function(search_suggest, ShadowBox, shadowbox_init, sidebar, _glossarize, 
+        activate_scroll) {
     glossarize = _glossarize;
     dojo.require('gobotany.sk.species');
     dojo.addOnLoad(function() {
