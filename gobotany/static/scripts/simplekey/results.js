@@ -609,21 +609,6 @@ define([
             }
         });
 
-        // Page load cascade - much of which is in the above code or over in
-        // our legacy Dojo modules, but all of which would be clearer and
-        // easier to think about and manage if it migrated down here.
-
-        // When going forward and applying values, etc., the current URL and
-        // last plant ID URL are always the same. After pressing Back, they
-        // are different.
-        if (current_url !== last_plant_id_url) {
-            // Now reload the current URL, which reloads everything on the
-            // page and sets it up all again. This means a little more going
-            // on that usually seen with an Undo command, but is pretty
-            // quick and allows for robust yet uncomplicated Undo support.
-            window.location.reload();
-        }
-    });
 
     // Page load cascade - much of which is in the above code or over in
     // our legacy Dojo modules, but all of which would be clearer and
@@ -642,11 +627,8 @@ define([
 
         App3.addObserver('image_type', function() {
             rh.load_selected_image_type();
-            App3.addObserver('image_type', function() {
-                rh.load_selected_image_type();
-            });
         });
-
+    });
         //
 
         require([
