@@ -310,9 +310,12 @@ define([
             $('#sidebar a.clear-all-btn').click(function() {
                 if (helper.filter_section.working_area !== null)
                     helper.filter_section.working_area.dismiss();
-                _.each(App3.filter_controller.get('content'), function(filter) {
+                var plains = App3.filter_controller.get('plain_filters');
+                _.each(plains, function(filter) {
                     filter.set('value', null);
                 });
+                App3.set('family_value', '');
+                App3.set('genus_value', '');
             });
         });
 
