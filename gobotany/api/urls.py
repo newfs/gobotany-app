@@ -48,7 +48,10 @@ urlpatterns = patterns(
         'gobotany.api.views.piles_characters',
         name='api-character-list'),
 
-    #
+    # Potential replacement for characters/?choose_best=3 that takes the
+    # current filtering state into account
+    url(r'^piles/(?P<pile_slug>[^/]+)/questions/$',
+        'gobotany.api.views.questions', name='api-questions'),
 
     url(r'^piles/(?P<slug>[^/]+)/?$',
         Resource(handler=handlers.PileHandler), name='api-pile'),
