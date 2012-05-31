@@ -39,9 +39,9 @@ define([
     module.more_questions = _.memoize(function(args) {
         return module.get('piles/' + args.pile_slug + '/questions/', {
             choose_best: 3,
+            species_ids: args.species_ids.join('_'),
             character_group_id: args.character_group_ids,
             exclude: args.exclude_characters,
-            answered: args.answered_questions
         });
     },
         /* Custom hash function, so arguments that vary will always
@@ -50,7 +50,7 @@ define([
         function(args) {
             // Make a hash key out of the arguments that can vary.
             return args.exclude_characters + args.character_group_ids +
-                   args.answered_questions;
+                   args.species_ids;
         }
     );
     module.pile_species = _.memoize(function(pile_slug) {

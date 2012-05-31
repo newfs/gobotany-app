@@ -553,18 +553,14 @@ define([
             });
 
             var existing = [];
-            var answered = [];
             _.each(App3.filter_controller.content, function(filter) {
                 existing.push(filter.slug);
-                if (filter.value !== null) {
-                    answered.push(filter.slug + '^' + filter.value);
-                }
             });
             simplekey_resources.more_questions({
                 pile_slug: pile_slug,
+                species_ids: App3.filter_controller.taxa,
                 character_group_ids: checked_groups,
-                exclude_characters: existing,
-                answered_questions: answered
+                exclude_characters: existing
             }).done(receive_new_filters);
 
             Shadowbox.close();

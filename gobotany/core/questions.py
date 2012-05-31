@@ -1,7 +1,4 @@
-from gobotany.core.models import (Character, PartnerSpecies, Taxon,
-                                  TaxonCharacterValue)
-from gobotany.core.partner import which_partner
-
+from gobotany.core.models import (Character, Taxon, TaxonCharacterValue)
 
 def _is_length(short_name):
     """Detect whether a filter is a numeric length filter."""
@@ -10,27 +7,6 @@ def _is_length(short_name):
             short_name.find('height') > -1 or
             short_name.find('thickness') > -1 or
             short_name.find('diameter') > -1)
-
-def _filter(query_set, question_short_name, answer_value):
-    """Filter a query set on a question and answer."""
-    filtered_query_set = None
-    if not _is_length(question_short_name):
-        filtered_query_set = query_set.filter(
-            character_values__character__short_name=question_short_name,
-            character_values__value_str=answer_value
-        )
-    else:
-        filtered_query_set = query_set.filter(
-            character_values__character__short_name=question_short_name,
-            character_values__value_min__lte=answer_value,
-            character_values__value_max__gte=answer_value
-        )
-    return filtered_query_set
-
-def _filter_on_questions(species, answered_questions, request):
-    for question, answer in answered_questions.items():
-        species = _filter(species, question, answer)
-    return species
 
 def _number_of_answers(species_query_set, question_short_name):
     """Return the number of answers for a question for the given species.
@@ -83,26 +59,10 @@ def get_questions(request, pile):
     candidate_questions = characters.values('character_group__id',
         'short_name', 'friendly_name', 'ease_of_observability')
 
-    # Get the list of species ids for the entire plant subgroup.
-    partner = which_partner(request)
-    subgroup_species = PartnerSpecies.objects.filter(
-        partner=partner,
-        simple_key=True,
-        species__piles=pile
-    ).values_list('species__id', flat=True)
-
-    # Get the species as taxa records to make subsequent querying faster
-    # and simpler.
-    species = Taxon.objects.filter(id__in=subgroup_species)
-
-    # Filter the species on the already-answered questions.
-    answered_questions = [key for key in request.GET.keys()
-                          if not key.startswith('_')]
-
-    answered_questions = dict([question.split('^') for question
-                               in request.GET.getlist('answered')])
-    filtered_species = _filter_on_questions(species, answered_questions,
-                                            request)
+    # Get the species that represent the current filtering state.
+    species_ids = request.GET.get('species_ids', '')
+    species_ids = species_ids.split('_') if species_ids.strip() else ()
+    filtered_species = Taxon.objects.filter(id__in=species_ids)
 
     # Build a list of the specified number of best questions (or a default
     # number), in order of ease of observability.
