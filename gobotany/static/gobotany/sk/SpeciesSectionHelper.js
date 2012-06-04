@@ -337,6 +337,11 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
            caption and header row for accessibility. */
         'use strict';
 
+        if (items === undefined) {
+            console.log('Error: no items to display in list view');
+            return;
+        }
+
         dojo.query('.plant.in-results').removeClass('in-results');
         dojo.query('.plant-list table').orphan();
 

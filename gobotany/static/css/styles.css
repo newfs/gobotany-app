@@ -2312,22 +2312,27 @@ div.section.namap div.trans {
 }
 #advanced-map .plant-group .img-container {
 	height: 101px;
+    margin-bottom: 6px;
 	overflow: hidden;
     width: 110px;
 	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 	-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
-#advanced-map #main .plant-group p.more-info {
-	background: url(/static/images/icons/more-info.png) left 4px no-repeat transparent;
-	margin: 5px 0 0 0;
-	padding: 0 0 0 19px;
+#advanced-map #plant-map-list p.video {
+	background: url(/static/images/icons/icon3.png) left 4px no-repeat transparent;
+	margin: 2px 0;
+	padding: 3px 0 0 22px;
 }
-
+#advanced-map #plant-map-list p.list {
+	background: url(/static/images/icons/icon1.png) left 4px no-repeat transparent;
+	margin: 2px 0 0;
+	padding: 3px 0 0 22px;
+}
 #advanced-map .plant-subgroup {
    	cursor: default;
     float: left;
-    height: 230px;
+    height: 264px;
    	margin: 0 11px 11px 0;
 	padding: 17px 0 0 0;
 	width: 160px;

@@ -29,9 +29,9 @@
                         {% endfor %}
                     </div>
                     {% if group.youtube_id %}
-                    <p class="more-info">
+                    <p class="video">
                         <a class="video"
-                            href="http://www.youtube.com/embed/{{ group.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">View video</a>
+                            href="http://www.youtube.com/embed/{{ group.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">Video</a>
                     </p>
                     {% endif %}
                 </div>
@@ -56,10 +56,14 @@
                         </div>
                         <a class="choose-btn"
                             href="/{{ group.slug }}/{{ subgroup.slug }}/"></a>
+                        <p class="list">
+                            <a href="/{{ group.slug }}/{{ subgroup.slug }}/#_view=list"
+                                >Species list</a>
+                        </p>
                         {% if subgroup.youtube_id %}
-                        <p class="more-info">
+                        <p class="video">
                             <a class="video"
-                                href="http://www.youtube.com/embed/{{ subgroup.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">View video</a>
+                                href="http://www.youtube.com/embed/{{ subgroup.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">Video</a>
                         </p>
                         {% endif %}
                     </div>
