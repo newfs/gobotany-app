@@ -10,6 +10,20 @@ admin.autodiscover()
 
 handler500 = 'django.views.defaults.server_error'
 
+def allow_cross_site_access(f):
+    """The Dichotomous Key needs to fetch lists of images for display.
+
+    Someday we might consider restricting the '*' down to a list of the
+    domains where the DK and its test and dev versions are actually
+    running; but for now we allow it to run anywhere.
+
+    """
+    def add_cross_site_header(*args, **kw):
+        httpresponse = f(*args, **kw)
+        httpresponse['Access-Control-Allow-Origin'] = '*'
+        return httpresponse
+    return add_cross_site_header
+
 urlpatterns = patterns(
     '',
 
@@ -18,8 +32,8 @@ urlpatterns = patterns(
     url(r'^taxon/$',
         Resource(handler=handlers.TaxonQueryHandler), name='api-taxon-list'),
     # Suggested eventual replacement URL (plural) for /taxon/ above:
-    url(r'^taxa/(?P<scientific_name>[^/]+)/$',
-        Resource(handler=handlers.TaxonQueryHandler), name='api-taxa'),
+    url(r'^taxa/(?P<scientific_name>[^/]+)/$', allow_cross_site_access(
+            Resource(handler=handlers.TaxonQueryHandler)), name='api-taxa'),
     url(r'^taxa/$',
         Resource(handler=handlers.TaxonQueryHandler), name='api-taxa-list'),
 
@@ -77,11 +91,11 @@ urlpatterns = patterns(
          '-us-distribution-map(\.svg|/)?$',
         views.united_states_distribution_map, name='us-distribution-map'),
 
-    url(r'^families/(?P<family_slug>[^/]+)/$',
-        Resource(handler=handlers.FamilyHandler), name='api-family'),
+    url(r'^families/(?P<family_slug>[^/]+)/$', allow_cross_site_access(
+            Resource(handler=handlers.FamilyHandler)), name='api-family'),
 
-    url(r'^genera/(?P<genus_slug>[^/]+)/$',
-        Resource(handler=handlers.GenusHandler), name='api-genus'),
+    url(r'^genera/(?P<genus_slug>[^/]+)/$', allow_cross_site_access(
+            Resource(handler=handlers.GenusHandler)), name='api-genus'),
 
     # For PlantShare (MyPlants) plant name picker
     url(r'^plant-names/',
