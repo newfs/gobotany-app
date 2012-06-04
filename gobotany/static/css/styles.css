@@ -426,6 +426,10 @@ body.app {
 #sidebar .section {
 	padding: 0 16px 16px;	
 }
+#sidebar .section.separate {
+    border-top: 1px solid #e2dfcb;
+    padding-top: 16px;
+}
 #sidebar .section.plant-map {
 	padding: 0 25px 16px 16px;
 	background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat;	
@@ -1956,6 +1960,19 @@ div.section.namap div.trans {
     white-space: nowrap;
     margin-left: -70px;
     margin-top: -10px;
+}
+
+/* Video in sidebar of Getting Started page */
+
+#getting-started .video-topic, #getting-started .video-topic img {
+    height: 147px;
+    width: 196px;
+}
+#getting-started .video-topic {
+    margin-bottom: 4px;
+}
+#getting-started .video-topic a [
+    cursor: pointer;
 }
 
 /* Legal information page styles */

@@ -1664,10 +1664,10 @@ class Importer(object):
             text='this is the blurb called getting_started')
         help_page.blurbs.add(blurb)
 
-        VIDEO_INTRO   = '4zwyQiUbJv0'
+        GETTING_STARTED_YOUTUBE_ID = 'hdC0I4FLR7o'
         blurb, created = Blurb.objects.get_or_create(
             name='getting_started_youtube_id',
-            text=VIDEO_INTRO)
+            text=GETTING_STARTED_YOUTUBE_ID)
         help_page.blurbs.add(blurb)
 
         help_page.save()
