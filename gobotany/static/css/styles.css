@@ -203,6 +203,9 @@ body.top-level {
 	padding: 0 0 0 19px;
 	background: url(/static/images/layout/nav-toplevel.png) no-repeat; 	
 }
+.top-level nav li {
+    margin-right: 9px;
+}
 .top-level nav li.home {
 	margin: 0 63px 0 0;	
 }
