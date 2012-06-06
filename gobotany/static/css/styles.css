@@ -122,15 +122,19 @@ footer p {
 	margin: 0 0 10px 0;
 	font-size: 9px;	
 }
-footer div.three-col {
-	width: 305px;
+footer .publisher, footer .navigation {
+	background: none;
+    float: left;
 	height: auto;
-	padding: 18px 0;
 	margin: 0 20px 0 0;
-	background: none;	
+	padding: 18px 0;
+	width: 305px;
 }
-footer div.three-col.last {
-	padding: 18px 0;	
+footer .navigation {
+    padding-left: 10px;
+}
+footer .support {
+	padding: 18px 0;
 }
 footer a {
 	color: #508e31;	
@@ -142,7 +146,7 @@ footer h6 {
 }
 footer .nsf-logo {
 	float: left;
-	margin: 0 10px 0 0;	
+	margin: 0 10px 0 7px;	
 }
 
 
@@ -328,7 +332,7 @@ a.subscribe:active {
 
 div#potd {
 	padding: 10px;
-	margin: 15px 0 15px 0;
+	margin: 15px 0;
 	border: 3px solid #fff;
 	background: #c7e2a1;
 	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
@@ -367,6 +371,39 @@ div#potd {
 #potd .details p {
     height: 79px;
     overflow: hidden;
+}
+
+/* Donate */
+
+.donate {
+	padding: 0;
+	margin: 15px 0;
+	border: 3px solid #fff;
+	background: #f1ebae;
+	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+}
+.donate p {
+    margin-left: 10px;
+    padding: 14px 0;
+}
+.donate a {
+	background: url(/static/images/layout/donate-btn.png) 0 0 no-repeat transparent;
+    cursor: pointer;
+    display: block;
+    float: right;
+	height: 32px;
+	margin: -5px 10px 0 0;
+    padding: 0;
+	text-indent: -9000px;
+	width: 104px;
+}
+.donate a:hover {
+	background-position: 0 -32px;
+}
+.donate a:active {
+	background-position: 0 -64px;
 }
 
 /* Styles for app pages: all levels of Simple Key, etc. */
