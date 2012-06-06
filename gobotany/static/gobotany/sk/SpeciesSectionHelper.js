@@ -454,6 +454,11 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
            */
         'use strict';
 
+        if (items === undefined) {
+            console.log('Error: no items to display in photos view');
+            return;
+        }
+
         dojo.query('.plant-list table').orphan();
 
         var visible_species = {};
