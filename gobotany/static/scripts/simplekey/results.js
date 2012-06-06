@@ -55,6 +55,7 @@ results_page_init: function(args) {
     var ResultsHelper_ready = $.Deferred();
     var all_filters_ready = $.Deferred();
     var filter_controller_is_built = $.Deferred();
+    var filtered_sorted_taxadata_ready = $.Deferred();
     var image_type_ready = $.Deferred();
     var key_vector_ready = resources.key_vector('simple');
     var pile_taxa_ready = $.Deferred();
@@ -613,27 +614,47 @@ results_page_init: function(args) {
         }
     });
 
-
     // Page load cascade - much of which is in the above code or over in
     // our legacy Dojo modules, but all of which would be clearer and
     // easier to think about and manage if it migrated down here.
 
+    var compute_filtered_sorted_taxadata = function() {
+        var taxa = App3.filter_controller.taxa;
+        var t = _.filter(App3.taxadata, function(item) {
+            return _.indexOf(taxa, item.id) != -1;
+        });
+        t.sort(function(a, b) {
+            return a.scientific_name < b.scientific_name ? -1 : 1;
+        });
+        App3.set('filtered_sorted_taxadata', t);
+        filtered_sorted_taxadata_ready.resolve();
+    }
+
+    App3.reopen({
+        run_filtered_sorted_taxadata: function() {
+            compute_filtered_sorted_taxadata();
+            filtered_sorted_taxadata_ready.resolve();
+        }.observes('filter_controller.taxa')
+    });
+
     $.when(
         ResultsHelper_ready,
+        filtered_sorted_taxadata_ready,
         plant_divs_ready
     ).done(function(rh) {
-        rh.species_section.display_results();
+        rh.species_counts._update_counts(App3.filtered_sorted_taxadata);
+        rh.species_section.display_results(App3.filtered_sorted_taxadata);
         rh.load_selected_image_type();
 
         App3.addObserver('filtered_sorted_taxadata', function() {
-            rh.species_section.display_results();
+            rh.species_counts._update_counts(App3.filtered_sorted_taxadata);
+            rh.species_section.display_results(App3.filtered_sorted_taxadata);
         });
 
         App3.addObserver('image_type', function() {
             rh.load_selected_image_type();
         });
     });
-    //
 
     require([
         'simplekey/results_overlay',
@@ -643,23 +664,6 @@ results_page_init: function(args) {
     });
 
     if (true) {
-        /* Glue: tell Dojo when the set of selected species
-           changes. */
-
-        App3.reopen({
-            tell_dojo: function() {
-                var taxa = App3.filter_controller.taxa;
-                var t = _.filter(App3.taxadata, function(item) {
-                    return _.indexOf(taxa, item.id) != -1;
-                });
-                t.sort(function(a, b) {
-                    return a.scientific_name < b.scientific_name ? -1 : 1;
-                });
-                App3.set('filtered_sorted_taxadata', t);
-                dojo.publish('/filters/query-result', [{species_list: t}]);
-            }.observes('filter_controller.taxa')
-        });
-
         require([
             'gobotany/sk/photo',
             'gobotany/sk/results',

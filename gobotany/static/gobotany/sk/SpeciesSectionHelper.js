@@ -337,11 +337,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
            caption and header row for accessibility. */
         'use strict';
 
-        if (items === undefined) {
-            console.log('Error: no items to display in list view');
-            return;
-        }
-
         dojo.query('.plant.in-results').removeClass('in-results');
         dojo.query('.plant-list table').orphan();
 
@@ -454,11 +449,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
            */
         'use strict';
 
-        if (items === undefined) {
-            console.log('Error: no items to display in photos view');
-            return;
-        }
-
         dojo.query('.plant-list table').orphan();
 
         var visible_species = {};
@@ -551,10 +541,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.animation.play();
     },
 
-    display_results: function() {
+    display_results: function(query_results) {
         'use strict';
-
-        var query_results = App3.filtered_sorted_taxadata;
 
         if (this.animation !== null) {
             this.animation.stop();
@@ -692,12 +680,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 dojo.declare('gobotany.sk.SpeciesCounts', null, {
     animation: null,
 
-    constructor: function() {
-        dojo.subscribe('/filters/query-result', this, '_update_counts');
-    },
-
-    _update_counts: function(args) {
-        App3.taxa.set('len', args.species_list.length);
+    _update_counts: function(species_list) {
+        App3.taxa.set('len', species_list.length);
 
         if (this.animation !== null)
             this.animation.stop();

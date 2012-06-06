@@ -18,7 +18,8 @@ dojo.declare('gobotany.sk.results.ResultsHelper', null, {
         this.species_section =
             new gobotany.sk.SpeciesSectionHelper(pile_slug, plant_divs_ready);
 
-        new gobotany.sk.SpeciesCounts(this);
+        this.species_counts =
+            new gobotany.sk.SpeciesCounts(this);
 
         this.filter_section =
             new gobotany.sk.results.FilterSectionHelper(this);
