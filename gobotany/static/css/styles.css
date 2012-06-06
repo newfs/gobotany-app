@@ -115,8 +115,11 @@ nav #search button:active {
 
 /* Page footer */
 
-footer {
+footer, footer div.container {
     height: 124px;
+}
+footer div div {
+    height: 88px;
 }
 footer p {
 	margin: 0 0 10px 0;
@@ -125,7 +128,6 @@ footer p {
 footer .publisher, footer .navigation {
 	background: none;
     float: left;
-	height: auto;
 	margin: 0 20px 0 0;
 	padding: 18px 0;
 	width: 305px;
@@ -134,6 +136,7 @@ footer .navigation {
     padding-left: 10px;
 }
 footer .support {
+    margin-right: 0;
 	padding: 18px 0;
 }
 footer a {
@@ -447,7 +450,7 @@ body.app {
 	padding: 0 0 0 48px;
 	background: url(/static/images/layout/nav-app-green.png) no-repeat; 	
 }
-.app footer {
+.app footer, .app footer div div {
 	background: #b4d57f;
 }
 #main {
