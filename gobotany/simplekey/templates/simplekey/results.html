@@ -8,8 +8,8 @@
     var args = {
         pile_slug: '{{ pile.slug }}'
     };
-    require(['simplekey/results'], function(results_page_init) {
-        results_page_init(args);
+    require(['simplekey/results'], function(results) {
+        results.results_page_init(args);
     });
 {% endblock %}
 
