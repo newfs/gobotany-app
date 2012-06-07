@@ -22,10 +22,10 @@ define([
 
 results_page_init: function(args) {
     var pile_slug = args.pile_slug;
-    var helper;  // legacy object; gets set way down at the bottom of this file
 
-    // Dojo code needs globals, so we create some.
-    global_speciessectionhelper = null;
+    /* Legacy dojo components */
+
+    var helper = null;
     Filter = _Filter;
     FilterController = _FilterController;
     glossarize = _glossarize;
@@ -45,8 +45,8 @@ results_page_init: function(args) {
 
         switch_photo_list: function(event) {
             // Tell the old Dojo species section helper to switch views.
-            if (global_speciessectionhelper)
-                global_speciessectionhelper.toggle_view(event);
+            if (speciessectionhelper)
+                speciessectionhelper.toggle_view(event);
         }
     });
 
@@ -665,24 +665,16 @@ results_page_init: function(args) {
 
     if (true) {
         require([
-            'gobotany/sk/photo',
-            'gobotany/sk/results',
-            'gobotany/sk/SpeciesSectionHelper',
-            'gobotany/sk/working_area',
-            'gobotany/sk/SearchSuggest'
-        ], function() {
-            require([
-                'util/activate_search_suggest',
-                'util/activate_image_gallery',
-                'util/sidebar'
-            ], function() {
-                dojo.require('gobotany.sk.results');
-                dojo.addOnLoad(function() {
-                    helper = gobotany.sk.results.ResultsHelper(
-                        args.pile_slug, plant_divs_ready);
-                    ResultsHelper_ready.resolve(helper);
-                });
-            });
+            'util/activate_search_suggest',
+            'util/activate_image_gallery',
+            'util/sidebar',
+            'gobotany/sk/ResultsHelper'
+        ], function(search_suggest, image_gallery, sidebar, ResultsHelper) {
+            // Explicitly pull in legacy dojo module, don't use globals
+            helper = new ResultsHelper(
+                args.pile_slug, plant_divs_ready);
+            speciessectionhelper = helper.species_section;
+            ResultsHelper_ready.resolve(helper);
         });
     }
 }}});
