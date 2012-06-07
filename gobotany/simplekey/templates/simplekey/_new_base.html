@@ -46,12 +46,19 @@
 
         {% include "simplekey/_script_constants.html" %}
 
+        <!-- DEVELOPMENT FILES -->
         <script src="/static/scripts/dojo_config.js"></script>
         {# In order to get better error messages during debugging, #}
         {# change 'dojo.js' to 'dojo.js.uncompressed.js' below.    #}
-        <script src="/static/scripts/lib/dojo/dojo.js"></script>
-        <!-- <script src="/static/scripts/require.js"></script> -->
+        <script src="/static/scripts/lib/dojo/dojo.js.uncompressed.js"></script>
+
+        <!-- PRODUCTION / DEPLOYMENT FILES -->
+        <!--
+        <script src="/static/scripts/dojo_config_deploy.js"></script>
+        <script src="/static/build/deploy/dojo.js.uncompressed.js"></script>
+        -->
         {# This block is for adding any page-specific JS. #}
+        <!-- <script src="/static/scripts/require.js"></script> -->
         <script>
             /*
             require.config({
@@ -59,7 +66,13 @@
                 waitSeconds: 180
             });
             */
+            function handleError(error) {
+                console.log("Dojo Error [" + error.id + "]: " + error.src);
+            }
+            require.on("error", handleError);
+            //require(["/static/build/deploy/gobotany.application.js.uncompressed.js"], function(app) {
             {% block js_require %}{% endblock %}
+            //});
         </script>
 
 		{# Google analytics tracking code #}
