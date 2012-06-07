@@ -4,6 +4,7 @@ dojo.require('dojo.hash');
 dojo.require('dojo.html');
 dojo.require('dojo.NodeList-fx');
 dojo.require('gobotany.utils');
+dojo.require('dijit._base.place');
 
 var results_photo_menu = dojo.require('simplekey/results_photo_menu');
 
@@ -47,7 +48,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         // Wire up tabs and a link for toggling between photo and list views.
         dojo.query('#results-tabs a').onclick(this, this.toggle_view);
-        global_speciessectionhelper = this;
 
         // Set the initial view for showing the results.
         var hash_object = dojo.queryToObject(dojo.hash());
