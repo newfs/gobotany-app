@@ -13,11 +13,16 @@ define([
     'simplekey/cookie',
     'simplekey/glossarize',
     'simplekey/resources',
-    'simplekey/ResultsPageState'
+    'simplekey/ResultsPageState',
+    'util/activate_search_suggest',
+    'util/activate_image_gallery',
+    'util/sidebar',
+    'gobotany/sk/ResultsHelper'
 ], function(
     document_is_ready, $, Ember, Shadowbox, shadowbox_init, _, utils,
     App3, _Filter, _FilterController, animation, cookie,
-    _glossarize, resources, ResultsPageState
+    _glossarize, resources, ResultsPageState,
+    search_suggest, image_gallery, sidebar, ResultsHelper
 ) {return {
 
 results_page_init: function(args) {
@@ -26,6 +31,17 @@ results_page_init: function(args) {
     /* Legacy dojo components */
 
     var helper = null;
+
+    $.when(
+        document_is_ready,
+        filtered_sorted_taxadata_ready,
+        taxa_by_sciname_ready
+    ).done(function() {
+        helper = new ResultsHelper(args.pile_slug, plant_divs_ready);
+        speciessectionhelper = helper.species_section;
+        ResultsHelper_ready.resolve(helper);
+    });
+
     Filter = _Filter;
     FilterController = _FilterController;
     glossarize = _glossarize;
@@ -61,6 +77,7 @@ results_page_init: function(args) {
     var pile_taxa_ready = $.Deferred();
     var pile_taxadata_ready = resources.pile_species(pile_slug);
     var plant_divs_ready = $.Deferred();
+    var taxa_by_sciname_ready = $.Deferred();
 
     pile_taxadata_ready.done(function(taxadata) {
         pile_taxa_ready.resolve(_.pluck(taxadata, 'id'));
@@ -76,6 +93,7 @@ results_page_init: function(args) {
     pile_taxadata_ready.done(function(taxadata) {
         _.each(taxadata, function(datum) {
             App3.taxa_by_sciname[datum.scientific_name] = datum;
+            taxa_by_sciname_ready.resolve();
         });
     });
 
@@ -662,21 +680,4 @@ results_page_init: function(args) {
     ], function(results_overlay_init, results_photo_menu) {
         results_overlay_init(args);
     });
-
-    if (true) {
-        require([
-            'util/activate_search_suggest',
-            'util/activate_image_gallery',
-            'util/sidebar',
-            'gobotany/sk/ResultsHelper'
-        ], function(search_suggest, image_gallery, sidebar, ResultsHelper) {
-            // Explicitly pull in legacy dojo module, don't use global
-            $(document).ready(function() {
-                helper = new ResultsHelper(
-                    args.pile_slug, plant_divs_ready);
-                speciessectionhelper = helper.species_section;
-                ResultsHelper_ready.resolve(helper);
-            });
-        });
-    }
 }}});

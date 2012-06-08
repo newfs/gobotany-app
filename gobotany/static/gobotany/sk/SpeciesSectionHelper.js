@@ -289,7 +289,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         }
 
         this.set_navigation_to_view(this.current_view);
-        this.display_results();
+        this.display_results(App3.filtered_sorted_taxadata);
     },
 
     get_number_of_rows_to_span: function(items, start) {

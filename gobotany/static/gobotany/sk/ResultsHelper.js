@@ -54,7 +54,7 @@ dojo.declare('gobotany.sk.ResultsHelper', null, {
             return;
         }
 
-        var image_tags = dojo.query('.plant-list img');
+        var image_tags = dojo.query('div.plant img');
         // Replace the image for each plant on the page
         var i;
         for (i = 0; i < image_tags.length; i++) {
