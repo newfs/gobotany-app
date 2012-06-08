@@ -1,6 +1,6 @@
-dojo.provide('gobotany.sk.FilterSectionHelper');
-
-dojo.require('gobotany.sk.working_area');
+define([
+    'gobotany/sk/working_area'
+], function() {
 
 dojo.declare('gobotany.sk.FilterSectionHelper', null, {
     working_area: null,
@@ -51,3 +51,5 @@ dojo.declare('gobotany.sk.FilterSectionHelper', null, {
     }
 });
 
+return gobotany.sk.FilterSectionHelper;
+});
