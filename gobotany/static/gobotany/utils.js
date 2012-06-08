@@ -154,7 +154,7 @@ define([
                 link.fireEvent('onclick');
             }
         }
-    }
+    };
 
     return utils;
 });

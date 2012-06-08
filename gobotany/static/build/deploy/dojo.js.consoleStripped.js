@@ -1836,7 +1836,7 @@
 		]
 });require({cache:{
 'dojo/main':function(){
-define([
+define("dojo/main", [
 	"./_base/kernel",
 	"./has",
 	"require",
@@ -2194,7 +2194,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 
 },
 'dojo/has':function(){
-define("dojo/has", ["require"], function(require) {
+define(["require"], function(require) {
 	// module:
 	//		dojo/has
 	// summary:
@@ -3798,7 +3798,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 
 },
 'dojo/ready':function(){
-define("dojo/ready", ["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], function(dojo, has, require, domReady, lang) {
+define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], function(dojo, has, require, domReady, lang) {
 	// module:
 	//		dojo/ready
 	// summary:
@@ -8341,7 +8341,7 @@ return dojo;
 
 },
 'dojo/json':function(){
-define(["./has"], function(has){
+define("dojo/json", ["./has"], function(has){
 	"use strict";
 	var hasJSON = typeof JSON != "undefined";
 	has.add("json-parse", hasJSON); // all the parsers work fine
@@ -9650,7 +9650,7 @@ define("dojo/dom-prop", ["exports", "./_base/kernel", "./_base/sniff", "./_base/
 
 },
 'dojo/dom-construct':function(){
-define("dojo/dom-construct", ["exports", "./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-attr", "./on"],
+define(["exports", "./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-attr", "./on"],
 		function(exports, dojo, has, win, dom, attr, on){
 	// module:
 	//		dojo/dom-construct
@@ -10029,7 +10029,7 @@ define("dojo/dom-construct", ["exports", "./_base/kernel", "./_base/sniff", "./_
 
 },
 'dojo/dom-class':function(){
-define("dojo/dom-class", ["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
+define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 	// module:
 	//		dojo/dom-class
 	// summary:
@@ -10455,7 +10455,7 @@ var NodeList = query.NodeList;
 
 },
 'dojo/query':function(){
-define("dojo/query", ["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/lang", "./selector/_loader", "./selector/_loader!default"],
+define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/lang", "./selector/_loader", "./selector/_loader!default"],
 	function(dojo, has, dom, on, array, lang, loader, defaultEngine){
 "use strict";
 
@@ -12702,7 +12702,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 
 },
 'dojo/NodeList-dom':function(){
-define("dojo/NodeList-dom", ["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-class", "./dom-construct", "./dom-geometry", "./dom-attr", "./dom-style"], function(dojo, query, array, lang, domCls, domCtr, domGeom, domAttr, domStyle){
+define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-class", "./dom-construct", "./dom-geometry", "./dom-attr", "./dom-style"], function(dojo, query, array, lang, domCls, domCtr, domGeom, domAttr, domStyle){
 	/*===== var NodeList = dojo.NodeList; =====*/
 	var magicGuard = function(a){
 		// summary:
@@ -15614,7 +15614,7 @@ define(["./kernel", "../has", "require", "module", "./json", "./lang", "./array"
 })();
 require({cache:{
 'dojo/require':function(){
-define("dojo/require", ["./_base/loader"], function(loader){
+define(["./_base/loader"], function(loader){
 	return {
 		dynamic:0,
 		normalize:function(id){return id;},
@@ -15624,7 +15624,7 @@ define("dojo/require", ["./_base/loader"], function(loader){
 
 },
 'dojo/i18n':function(){
-define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config", "./_base/lang", "./_base/xhr"],
+define("dojo/i18n", ["./_base/kernel", "require", "./has", "./_base/array", "./_base/config", "./_base/lang", "./_base/xhr"],
 	function(dojo, require, has, array, config, lang, xhr) {
 	// module:
 	//		dojo/i18n
@@ -16788,7 +16788,7 @@ return dojo.date.stamp;
 
 },
 'dojo/html':function(){
-define("dojo/html", ["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", "./dom", "./dom-construct", "./parser"], function(dojo, lang, darray, declare, dom, domConstruct, parser) {
+define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", "./dom", "./dom-construct", "./parser"], function(dojo, lang, darray, declare, dom, domConstruct, parser) {
 	// module:
 	//		dojo/html
 	// summary:
@@ -17787,7 +17787,7 @@ if(!dojo.isAsync){
 
 },
 'dojo/hash':function(){
-define("dojo/hash", ["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready", "./_base/sniff"],
+define(["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready", "./_base/sniff"],
 	function(dojo, require, connect, lang, ready, has) {
 	// module:
 	//		dojo/hash
@@ -19688,7 +19688,7 @@ define([
 
 },
 'dojo/Stateful':function(){
-define("dojo/Stateful", ["./_base/kernel", "./_base/declare", "./_base/lang", "./_base/array"], function(dojo, declare, lang, array) {
+define(["./_base/kernel", "./_base/declare", "./_base/lang", "./_base/array"], function(dojo, declare, lang, array) {
 	// module:
 	//		dojo/Stateful
 	// summary:
@@ -25115,7 +25115,7 @@ return dojo.string;
 
 },
 'dojo/cache':function(){
-define("dojo/cache", ["./_base/kernel", "./text"], function(dojo, text){
+define(["./_base/kernel", "./text"], function(dojo, text){
 	// module:
 	//		dojo/cache
 	// summary:
@@ -25127,7 +25127,7 @@ define("dojo/cache", ["./_base/kernel", "./text"], function(dojo, text){
 
 },
 'dojo/text':function(){
-define("dojo/text", ["./_base/kernel", "require", "./has", "./_base/xhr"], function(dojo, require, has, xhr){
+define(["./_base/kernel", "require", "./has", "./_base/xhr"], function(dojo, require, has, xhr){
 	// module:
 	//		dojo/text
 	// summary:

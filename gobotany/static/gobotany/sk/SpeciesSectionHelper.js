@@ -1,11 +1,11 @@
 define([
     'simplekey/results_photo_menu',
+    'gobotany/utils',
     'dojo/hash',
     'dojo/html',
     'dojo/NodeList-fx',
-    'dijit/_base/place',
-    'gobotany/utils'
-], function(results_photo_menu) {
+    'dijit/_base/place'
+], function(results_photo_menu, utils) {
 
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
@@ -141,14 +141,14 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                                 if (ppc.value_type === 'LENGTH') {
                                     var min = character_value[0];
                                     var max = character_value[1];
-                                    var min_mm = gobotany.utils.convert(
+                                    var min_mm = utils.convert(
                                         min, ppc.unit, 'mm');
-                                    var max_mm = gobotany.utils.convert(
+                                    var max_mm = utils.convert(
                                         max, ppc.unit, 'mm');
                                     display_value =
-                                        gobotany.utils.pretty_length(
+                                        utils.pretty_length(
                                         ppc.unit, min_mm, false) + '&#8211;' +
-                                        gobotany.utils.pretty_length(
+                                        utils.pretty_length(
                                         ppc.unit, max_mm);
                                 }
                                 else {

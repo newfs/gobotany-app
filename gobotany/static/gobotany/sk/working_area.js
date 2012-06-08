@@ -2,7 +2,7 @@ define([
     'gobotany/utils',
     'dojo/NodeList-html',
     'dijit/form/HorizontalSlider'
-], function() {
+], function(utils) {
 
 dojo.provide('gobotany.sk.working_area');
 
@@ -139,7 +139,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         values_q.empty().addClass('multiple').removeClass('numeric');
 
         // Apply a custom sort to the filter values.
-        var values = gobotany.utils.clone(f.values);
+        var values = utils.clone(f.values);
         values.sort(_compare_filter_choices);
 
         var choices_div = dojo.create('div', {'class': 'choices'}, values_q[0]);
