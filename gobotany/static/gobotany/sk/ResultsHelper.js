@@ -1,10 +1,9 @@
 // UI code for the Simple Key results/filter page.
-
-dojo.provide('gobotany.sk.ResultsHelper');
-
-dojo.require('gobotany.sk.FilterSectionHelper');
-dojo.require('gobotany.sk.SpeciesSectionHelper');
-dojo.require('gobotany.sk.working_area');
+define([
+    'gobotany/sk/FilterSectionHelper',
+    'gobotany/sk/SpeciesSectionHelper',
+    'gobotany/sk/working_area'
+], function() {
 
 dojo.declare('gobotany.sk.ResultsHelper', null, {
 
@@ -88,4 +87,5 @@ dojo.declare('gobotany.sk.ResultsHelper', null, {
     }
 });
 
-
+return gobotany.sk.ResultsHelper;
+});
