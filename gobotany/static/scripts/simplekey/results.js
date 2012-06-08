@@ -670,11 +670,13 @@ results_page_init: function(args) {
             'util/sidebar',
             'gobotany/sk/ResultsHelper'
         ], function(search_suggest, image_gallery, sidebar, ResultsHelper) {
-            // Explicitly pull in legacy dojo module, don't use globals
-            helper = new ResultsHelper(
-                args.pile_slug, plant_divs_ready);
-            speciessectionhelper = helper.species_section;
-            ResultsHelper_ready.resolve(helper);
+            // Explicitly pull in legacy dojo module, don't use global
+            $(document).ready(function() {
+                helper = new ResultsHelper(
+                    args.pile_slug, plant_divs_ready);
+                speciessectionhelper = helper.species_section;
+                ResultsHelper_ready.resolve(helper);
+            });
         });
     }
 }}});
