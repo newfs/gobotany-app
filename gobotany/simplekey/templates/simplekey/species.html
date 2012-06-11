@@ -316,7 +316,7 @@
                 {% if taxon.variety_notes %}
                 <div class="section">
                     <h5>Notes on Subspecies and Varieties:</h5>
-                    <p>{{ taxon.variety_notes|safe }}</p>
+                    <p>{{ taxon.variety_notes|italicize_plant|safe }}</p>
                 </div>
                 {% endif %}
                 
