@@ -292,11 +292,11 @@
                 {% if synonyms|length > 0 %}
                 <div class="section">
                     <h5>Synonyms:</h5>
-                    <p>
-                        {% for synonym in synonyms %}
-                            {{ synonym.full_name|italicize_plant|safe }}{% if not forloop.last %},{% endif %}
-                        {% endfor %}
-                    </p>
+                    <ul>
+                    {% for synonym in synonyms %}
+                        <li>{{ synonym.full_name|italicize_plant|safe }}</li>
+                    {% endfor %}
+                    </ul>
                 </div>
                 {% endif %}
                 {% endwith %}
