@@ -64,7 +64,7 @@ def italicize_plant(value):
     # Support for sentences is limited to the ones from 'Notes on
     # Subspecies and Varieties.' These end with a New England state
     # abbreviation followed by a period.
-    sentence_regex = re.compile(r'(.*(?:CT|MA|ME|NH|RI|VT)\.)')
+    sentence_regex = re.compile(r'(.*(?:CT|MA|ME|NH|RI|VT|and is rare)\.)')
     sentences = sentence_regex.split(value)
     sentences = [sentence.strip() for sentence in sentences
                  if len(sentence.strip()) > 0]
