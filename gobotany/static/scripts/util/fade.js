@@ -11,22 +11,26 @@ define([
         fade_next_banner_image = function() {
             var FADE_DURATION = 2 * 1000;
             var BANNER_IMAGE_CSS = '#banner > img';
-            // Successively fade in each hidden image.
-            var fade = $(BANNER_IMAGE_CSS + ':hidden:first');
-            if (fade.length > 0) {
-                fade.fadeIn(FADE_DURATION);
-            } else {
-                // Start over: hide all but first and last again, then fade
-                // the last out to the first.
-                var images = $(BANNER_IMAGE_CSS);
-                $(images).each(function(index) {
-                    if ((index !== 0) && (index !== images.length - 1)) {
-                        $(this).css('display', 'none');
-                    }
-                });
-                fade = $(BANNER_IMAGE_CSS + ':visible:last');
-                fade.fadeOut(FADE_DURATION);
+
+            // Simultaneously fade out the currently visible image
+            // and fade in the next image.
+            var images = $(BANNER_IMAGE_CSS);
+            var i, next_image;
+            var visible_image = $(images[0]);
+            for (i = 0; i < images.length; i++) {
+                if ($(images[i]).is(':visible')) {
+                    visible_image = $(images[i]);
+                    break;
+                }
             }
+            if (i < (images.length - 1)) {
+                next_image = $(images[i + 1]);
+            }
+            else {
+                next_image = $(images[0]);
+            }
+            visible_image.fadeOut(FADE_DURATION);
+            next_image.fadeIn(FADE_DURATION);
         };
     return fade_next_banner_image;
     }
