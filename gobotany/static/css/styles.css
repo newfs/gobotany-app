@@ -2640,3 +2640,31 @@ img.char-value-larger {
 	z-index: 20000;  /* ensure installer is atop all other content */
 }
 
+/* Plant List styles */
+#list .content {
+    padding-bottom: 18px;
+}
+#list .content h2 {
+    padding-bottom: 12px;
+}
+#list table {
+    font-size: 11px;
+    margin: 18px 0;
+    width: 100%;
+}
+#list table th {
+    text-align: center;
+}
+#list table th, #list table td {
+    border: 1px solid #ccc;
+    padding: 4px;
+}
+#list table th.group {
+    width: 120px;
+}
+#list table th.subgroup {
+    width: 150px;
+}
+#list table td:first-child {
+    font-size: 13px;
+}

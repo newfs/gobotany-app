@@ -1,0 +1,66 @@
+{% extends "simplekey/_new_base.html" %}
+{% load simplekey_extras %}
+
+{% block title %}Plant List{% endblock %}
+
+{% block body_attributes %}id="list" class="claro app list"{% endblock %}
+
+{% block body_content %}
+    {% include "simplekey/_header.html" %}
+
+    <div class="content">
+        <div class="container">
+                <h2>Species List</h2>
+                <p>(This page will have some filtering capability,
+                either on the client side or server side.)</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scientific Name</th>
+                            <th>Common Name</th>
+                            <th>Family</th>
+                            <th>New England Distribution</th>
+                            <th>North American Native</th>
+                            <th>Wetland Code</th>
+                            <th class="group">Group</th>
+                            <th class="subgroup">Subgroup</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for plant in plants %}
+                        {% with name_parts=plant.scientific_name|lower|split:" " %}
+                        <tr>
+                            <td><a
+                                href="{% url simplekey-species name_parts|at_index:"0" name_parts|at_index:"1" %}">
+                                    {{ plant.scientific_name|italicize_plant|safe }}
+                            </a></td>
+                            <td>{{ plant.common_names__common_name }}</td>
+                            <td>{{ plant.family__name }}</td>
+                            <td>{{ plant.distribution|replace:"|, " }}</td>
+                            <td>
+                            {% if plant.north_american_native == None %}
+                            {% else %}
+                                {% if not plant.north_american_native %}
+                                    No
+                                {% else %}
+                                    {% if plant.north_american_native %}
+                                        Yes
+                                        {% if plant.north_american_introduced %}
+                                            and no (some introduced)
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                            </td>
+                            <td>{{ plant.wetland_indicator_code|default_if_none:"" }}</td>
+                            <td>{{ plant.piles__pilegroup__friendly_title }}</td>
+                            <td>{{ plant.piles__friendly_title }}</td>
+                        </tr>
+                        {% endwith %}
+                        {% endfor %}
+                    </tbody>                    
+                </table>
+            </div>
+            <div class="clearit"></div>
+    </div>
+{% endblock %}

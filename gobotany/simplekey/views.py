@@ -289,6 +289,19 @@ def _images_with_copyright_holders(images):
     return images
 
 
+def _native_to_north_america_status(taxon):
+    native_to_north_america = ''
+    if taxon.north_american_native == True:
+        native_to_north_america = 'Yes'
+        if taxon.north_american_introduced == True:
+            # This is for plants that are native to N. America but are
+            # also native elsewhere or have introduced varieties.
+            native_to_north_america += ' and no (some introduced)'
+    elif taxon.north_american_native == False:
+        native_to_north_america = 'No'
+    return native_to_north_america
+
+
 def species_view(request, genus_slug, specific_name_slug,
                  pilegroup_slug=None, pile_slug=None):
 
@@ -348,15 +361,7 @@ def species_view(request, genus_slug, specific_name_slug,
     if last_plant_id_url:
         last_plant_id_url = urllib2.unquote(last_plant_id_url)
 
-    native_to_north_america = ''
-    if taxon.north_american_native == True:
-        native_to_north_america = 'Yes'
-        if taxon.north_american_introduced == True:
-            # This is for plants that are native to N. America but are
-            # also native elsewhere or have introduced varieties.
-            native_to_north_america += ' and no (some introduced)'
-    elif taxon.north_american_native == False:
-        native_to_north_america = 'No'
+    native_to_north_america = _native_to_north_america_status(taxon)
 
     return render_to_response('simplekey/species.html', {
            'pilegroup': pilegroup,
@@ -378,6 +383,20 @@ def species_view(request, genus_slug, specific_name_slug,
            'in_simple_key': partner_species.simple_key,
            'native_to_north_america': native_to_north_america
            }, context_instance=RequestContext(request))
+
+
+def plant_list_view(request):
+    plants = Taxon.objects.values(
+        'scientific_name', 'common_names__common_name', 'family__name',
+        'distribution', 'north_american_native',
+        'north_american_introduced', 'wetland_indicator_code',
+        'piles__pilegroup__friendly_title',
+        'piles__friendly_title'
+        ).order_by('scientific_name') #[0:10]
+    return render_to_response('simplekey/plant_list.html', {
+        'plants': plants
+        })
+
 
 def genus_view(request, genus_slug):
     genus = get_object_or_404(Genus, slug=genus_slug.lower())
