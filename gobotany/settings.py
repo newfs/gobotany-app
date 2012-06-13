@@ -99,7 +99,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
         "django.core.context_processors.request",
         "django.core.context_processors.media",
         "django.core.context_processors.static",
-        "gobotany.core.context_processors.dojo",
+        "gobotany.core.context_processors.gobotany_specific_context",
 )
 
 APPEND_SLASH = False

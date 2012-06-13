@@ -46,9 +46,7 @@
 
         {% include "simplekey/_script_constants.html" %}
 
-        {% with production='' %}
-
-        {% if not production %}
+        {% if not in_production %}
 
         <!-- DEVELOPMENT FILES -->
         <script src="/static/scripts/dojo_config.js"></script>
@@ -72,18 +70,17 @@
             }
             require.on("error", handleError);
 
-            {% if production %}
+            {% if in_production %}
             require(["/static/build/deploy/gobotany.application.js.uncompressed.js"], function(app) {
             {% endif %}
 
             {% block js_require %}{% endblock %}
 
-            {% if production %}
+            {% if in_production %}
             });
             {% endif %}
         </script>
 
-        {% endwith %}
 		{# Google analytics tracking code #}
 		<script type="text/javascript">
 		  var _gaq = _gaq || [];
