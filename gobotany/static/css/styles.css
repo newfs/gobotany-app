@@ -3505,28 +3505,32 @@ img.char-value-larger {
 }
 
 /* line 2670, ../sass/styles.scss */
-#list table th {
+#list table th, #list table tr.filters {
   background: #b4d57f;
+}
+
+/* line 2673, ../sass/styles.scss */
+#list table th {
   text-align: center;
   vertical-align: bottom;
 }
 
-/* line 2675, ../sass/styles.scss */
+/* line 2677, ../sass/styles.scss */
 #list table th.native {
   width: 110px;
 }
 
-/* line 2678, ../sass/styles.scss */
+/* line 2680, ../sass/styles.scss */
 #list table th.group {
   width: 120px;
 }
 
-/* line 2681, ../sass/styles.scss */
+/* line 2683, ../sass/styles.scss */
 #list table th.subgroup {
   width: 150px;
 }
 
-/* line 2684, ../sass/styles.scss */
+/* line 2686, ../sass/styles.scss */
 #list table td:first-child {
   font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
   font-size: 13px;

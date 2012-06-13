@@ -2667,8 +2667,10 @@ img.char-value-larger {
 #list table th, #list table td {
     padding: 4px;
 }
-#list table th {
+#list table th, #list table tr.filters {
     background: #b4d57f;
+}
+#list table th {
     text-align: center;
     vertical-align: bottom;
 }

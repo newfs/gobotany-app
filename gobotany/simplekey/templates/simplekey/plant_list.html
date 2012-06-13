@@ -5,15 +5,18 @@
 
 {% block body_attributes %}id="list" class="claro app list"{% endblock %}
 
+{% block js_require %}
+    require(['simplekey/species_list']);
+{% endblock %}
+
 {% block body_content %}
     {% include "simplekey/_header.html" %}
 
     <div class="content">
         <div class="container">
                 <h2>Species List</h2>
-                <p>(This page will have some filtering capability,
-                either on the client side or server side.)</p>
-                <table>
+                <p>To filter the list, type or select under a column name.</p>
+                <table id="species">
                     <thead>
                         <tr>
                             <th>Scientific Name</th>
@@ -21,7 +24,7 @@
                             <th>Family</th>
                             <th>New England Distribution</th>
                             <th class="native">North American Native</th>
-                            <th>Wetland Code</th>
+                            <th filter-type="ddl">Wetland Code</th>
                             <th class="group">Group</th>
                             <th class="subgroup">Subgroup</th>
                         </tr>
