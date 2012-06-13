@@ -49,7 +49,7 @@ urlpatterns = patterns(
     # Site pages
     url('^$', views.index_view, name='simplekey-index'),
     url('^advanced/$', views.advanced_view, name='advanced-id-tools'),
-    url('^list/$', views.plant_list_view, name='plant-list'),
+    url('^list/$', views.species_list_view, name='species-list'),
     url('^help/$', views.help_redirect_view, name='simplekey-help'),
     url('^help/start/$', views.help_start_view, name='simplekey-help-start'),
     url('^help/about/$', views.help_about_view, name='simplekey-help-about'),

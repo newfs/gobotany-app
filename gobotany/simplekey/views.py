@@ -385,7 +385,7 @@ def species_view(request, genus_slug, specific_name_slug,
            }, context_instance=RequestContext(request))
 
 
-def plant_list_view(request):
+def species_list_view(request):
     plants = Taxon.objects.values(
         'scientific_name', 'common_names__common_name', 'family__name',
         'distribution', 'north_american_native',
@@ -393,7 +393,7 @@ def plant_list_view(request):
         'piles__pilegroup__friendly_title',
         'piles__friendly_title'
         ).order_by('scientific_name') #[0:10]
-    return render_to_response('simplekey/plant_list.html', {
+    return render_to_response('simplekey/species_list.html', {
         'plants': plants
         })
 
