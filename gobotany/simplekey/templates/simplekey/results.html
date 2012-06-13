@@ -180,10 +180,10 @@
 {% block ember_templates %}{% verbatim %}
 <script type="text/x-handlebars" data-template-name="filter-view">
   <a class="option">
-    <span class="name">{{filter.info.friendly_name}}?</span>
-    <span class="value">{{display_value}}</span>
+    <span class="name">{{view.filter.info.friendly_name}}?</span>
+    <span class="value">{{view.display_value}}</span>
   </a>
-  {{#if filter.value}}
+  {{#if view.filter.value}}
   <a class="clear-filter" {{action "clear"}}>Clear</a>
   {{/if}}
 </script>
