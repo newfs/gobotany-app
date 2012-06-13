@@ -1,3 +1,11 @@
+define([
+    'gobotany/utils',
+    'dojo/NodeList-html',
+    'dijit/form/HorizontalSlider'
+], function(utils) {
+
+dojo.provide('gobotany.sk.working_area');
+
 /*
  * Classes that create and maintain the working area.
  *
@@ -20,12 +28,6 @@
  *
  * on_dismiss(filter) - called when the user dismisses the working area.
  */
-
-dojo.provide('gobotany.sk.working_area');
-
-dojo.require('gobotany.utils');
-dojo.require('dojo.NodeList-html');
-dojo.require('dijit.form.HorizontalSlider');
 
 /**
  * Return the correct working area class for a given filter.
@@ -137,7 +139,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         values_q.empty().addClass('multiple').removeClass('numeric');
 
         // Apply a custom sort to the filter values.
-        var values = gobotany.utils.clone(f.values);
+        var values = utils.clone(f.values);
         values.sort(_compare_filter_choices);
 
         var choices_div = dojo.create('div', {'class': 'choices'}, values_q[0]);
@@ -615,3 +617,5 @@ var _compare_filter_choices = function(a, b) {
 
     return 0; // default value (no sort)
 };
+
+});

@@ -27,7 +27,8 @@ function legacyDojo(mid) {
         'gobotany/sk/guided_search/Manager':1,
         'gobotany/sk/guided_search/SpeciesSectionHelper':1,
         'gobotany/sk/photo':1,
-        'gobotany/sk/results':1,
+        'gobotany/sk/ResultsHelper':1,
+        'gobotany/sk/FilterSectionHelper':1,
         'gobotany/sk/species':1,
         'gobotany/sk/working_area':1
     };

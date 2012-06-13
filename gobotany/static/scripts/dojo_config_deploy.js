@@ -2,17 +2,17 @@
 // This must be loaded before the dojo AMD loader
 dojoConfig = {
     isDebug: false,
-    baseUrl: '/static/scripts',
+    baseUrl: '/static/build/scripts',
     tlmSiblingOfDojo: false,
     async: false,
     locale: 'en-us',
     packages: [
-        { name: 'dojo', location: 'lib/dojo' },
-        { name: 'dojox', location: 'lib/dojox' },
-        { name: 'dijit', location: 'lib/dijit' },
-        { name: 'jquery', location: 'lib/jquery' },
-        { name: 'tools', location: 'lib/tools' },
-        { name: 'gobotany', location: '../gobotany' },
+        { name: 'dojo', location: 'dojo' },
+        { name: 'dojox', location: 'dojox' },
+        { name: 'dijit', location: 'dijit' },
+        { name: 'jquery', location: 'jquery' },
+        { name: 'tools', location: 'tools' },
+        { name: 'gobotany', location: 'gobotany' },
         { name: 'simplekey', location: 'simplekey' },
         { name: 'bridge', location: 'bridge' },
         { name: 'util', location: 'util' }

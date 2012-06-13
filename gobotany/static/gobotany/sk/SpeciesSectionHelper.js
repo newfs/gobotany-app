@@ -1,11 +1,11 @@
-dojo.provide('gobotany.sk.SpeciesSectionHelper');
-
-dojo.require('dojo.hash');
-dojo.require('dojo.html');
-dojo.require('dojo.NodeList-fx');
-dojo.require('gobotany.utils');
-
-var results_photo_menu = dojo.require('simplekey/results_photo_menu');
+define([
+    'simplekey/results_photo_menu',
+    'gobotany/utils',
+    'dojo/hash',
+    'dojo/html',
+    'dojo/NodeList-fx',
+    'dijit/_base/place'
+], function(results_photo_menu, utils) {
 
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
@@ -47,7 +47,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         // Wire up tabs and a link for toggling between photo and list views.
         dojo.query('#results-tabs a').onclick(this, this.toggle_view);
-        global_speciessectionhelper = this;
 
         // Set the initial view for showing the results.
         var hash_object = dojo.queryToObject(dojo.hash());
@@ -142,14 +141,14 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                                 if (ppc.value_type === 'LENGTH') {
                                     var min = character_value[0];
                                     var max = character_value[1];
-                                    var min_mm = gobotany.utils.convert(
+                                    var min_mm = utils.convert(
                                         min, ppc.unit, 'mm');
-                                    var max_mm = gobotany.utils.convert(
+                                    var max_mm = utils.convert(
                                         max, ppc.unit, 'mm');
                                     display_value =
-                                        gobotany.utils.pretty_length(
+                                        utils.pretty_length(
                                         ppc.unit, min_mm, false) + '&#8211;' +
-                                        gobotany.utils.pretty_length(
+                                        utils.pretty_length(
                                         ppc.unit, max_mm);
                                 }
                                 else {
@@ -289,7 +288,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         }
 
         this.set_navigation_to_view(this.current_view);
-        this.display_results();
+        this.display_results(App3.filtered_sorted_taxadata);
     },
 
     get_number_of_rows_to_span: function(items, start) {
@@ -699,3 +698,7 @@ dojo.declare('gobotany.sk.SpeciesCounts', null, {
         this.animation.play();
     }
 });
+
+return gobotany.sk.SpeciesSectionHelper;
+});
+

@@ -13,19 +13,35 @@ define([
     'simplekey/cookie',
     'simplekey/glossarize',
     'simplekey/resources',
-    'simplekey/ResultsPageState'
+    'simplekey/ResultsPageState',
+    'util/activate_search_suggest',
+    'util/activate_image_gallery',
+    'util/sidebar',
+    'gobotany/sk/ResultsHelper'
 ], function(
     document_is_ready, $, Ember, Shadowbox, shadowbox_init, _, utils,
     App3, _Filter, _FilterController, animation, cookie,
-    _glossarize, resources, ResultsPageState
+    _glossarize, resources, ResultsPageState,
+    search_suggest, image_gallery, sidebar, ResultsHelper
 ) {return {
 
 results_page_init: function(args) {
     var pile_slug = args.pile_slug;
-    var helper;  // legacy object; gets set way down at the bottom of this file
 
-    // Dojo code needs globals, so we create some.
-    global_speciessectionhelper = null;
+    /* Legacy dojo components */
+
+    var helper = null;
+
+    $.when(
+        document_is_ready,
+        filtered_sorted_taxadata_ready,
+        taxa_by_sciname_ready
+    ).done(function() {
+        helper = new ResultsHelper(args.pile_slug, plant_divs_ready);
+        speciessectionhelper = helper.species_section;
+        ResultsHelper_ready.resolve(helper);
+    });
+
     Filter = _Filter;
     FilterController = _FilterController;
     glossarize = _glossarize;
@@ -45,8 +61,8 @@ results_page_init: function(args) {
 
         switch_photo_list: function(event) {
             // Tell the old Dojo species section helper to switch views.
-            if (global_speciessectionhelper)
-                global_speciessectionhelper.toggle_view(event);
+            if (speciessectionhelper)
+                speciessectionhelper.toggle_view(event);
         }
     });
 
@@ -61,6 +77,7 @@ results_page_init: function(args) {
     var pile_taxa_ready = $.Deferred();
     var pile_taxadata_ready = resources.pile_species(pile_slug);
     var plant_divs_ready = $.Deferred();
+    var taxa_by_sciname_ready = $.Deferred();
 
     pile_taxadata_ready.done(function(taxadata) {
         pile_taxa_ready.resolve(_.pluck(taxadata, 'id'));
@@ -76,6 +93,7 @@ results_page_init: function(args) {
     pile_taxadata_ready.done(function(taxadata) {
         _.each(taxadata, function(datum) {
             App3.taxa_by_sciname[datum.scientific_name] = datum;
+            taxa_by_sciname_ready.resolve();
         });
     });
 
@@ -662,27 +680,4 @@ results_page_init: function(args) {
     ], function(results_overlay_init, results_photo_menu) {
         results_overlay_init(args);
     });
-
-    if (true) {
-        require([
-            'gobotany/sk/photo',
-            'gobotany/sk/results',
-            'gobotany/sk/SpeciesSectionHelper',
-            'gobotany/sk/working_area',
-            'gobotany/sk/SearchSuggest'
-        ], function() {
-            require([
-                'util/activate_search_suggest',
-                'util/activate_image_gallery',
-                'util/sidebar'
-            ], function() {
-                dojo.require('gobotany.sk.results');
-                dojo.addOnLoad(function() {
-                    helper = gobotany.sk.results.ResultsHelper(
-                        args.pile_slug, plant_divs_ready);
-                    ResultsHelper_ready.resolve(helper);
-                });
-            });
-        });
-    }
 }}});

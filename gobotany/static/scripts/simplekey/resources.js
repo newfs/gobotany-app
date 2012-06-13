@@ -41,7 +41,7 @@ define([
             choose_best: 3,
             species_ids: args.species_ids.join('_'),
             character_group_id: args.character_group_ids,
-            exclude: args.exclude_characters,
+            exclude: args.exclude_characters
         });
     },
         /* Custom hash function, so arguments that vary will always
