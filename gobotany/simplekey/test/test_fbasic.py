@@ -239,7 +239,8 @@ class FilterFunctionalTests(FunctionalTestCase):
         # filter on Rhode Island
 
         self.css1('#state_distribution a.option').click()
-        count = self.css1('[value="Rhode Island"] + .label + .count').text
+        with self.wait(3):
+            count = self.css1('[value="Rhode Island"] + .label + .count').text
         self.assertEqual(count, '(13)')
         self.css1('[value="Rhode Island"]').click()
         self.css1('.apply-btn').click()
@@ -248,7 +249,8 @@ class FilterFunctionalTests(FunctionalTestCase):
         # filter on wetlands
 
         self.css1('#habitat_general a.option').click()
-        count = self.css1('[value="wetlands"] + .label + .count').text
+        with self.wait(3):
+            count = self.css1('[value="wetlands"] + .label + .count').text
         self.assertEqual(count, '(3)')
         self.css1('[value="wetlands"]').click()
         self.css1('.apply-btn').click()
@@ -353,7 +355,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
-        e = self.css1('.plant-list div a div.img-container img')
+        e = self.css1('.plant-list div a div.plant-img-container img')
         assert '-ha-' in e.get_attribute('src')
         self.css1('#results-display #image-types').click()
         self.css1(
@@ -367,7 +369,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
-        e = self.css1('.plant-list div a div.img-container img')
+        e = self.css1('.plant-list div a div.plant-img-container img')
         assert '-ha-' in e.get_attribute('src')   # 'ha' = 'plant form' image
         menu_items = self.css('#results-display #image-types option')
         self.assertTrue(len(menu_items) > 0)
@@ -397,7 +399,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
-        e = self.css1('.plant-list div a div.img-container img')
+        e = self.css1('.plant-list div a div.plant-img-container img')
         self.css1('#results-display #image-types').click()
         self.css1(
             '#results-display #image-types option[value="branches"]').click()
