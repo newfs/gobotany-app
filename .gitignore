@@ -13,6 +13,7 @@
 /gobotany/media/*
 
 # /gobotany/static/
+/gobotany/static/.sass-cache/
 /gobotany/static/dijit
 /gobotany/static/dojo
 /gobotany/static/dojox
