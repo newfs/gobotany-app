@@ -2654,16 +2654,26 @@ img.char-value-larger {
     padding-bottom: 12px;
 }
 #list table {
+    background: #fff;
+    border-collapse: collapse;
+    color: #000;
     font-size: 11px;
     margin: 18px 0;
     width: 100%;
 }
-#list table th {
-    text-align: center;
+#list table tr:hover {
+    background: #f0f8e7;
 }
 #list table th, #list table td {
-    border: 1px solid #ccc;
     padding: 4px;
+}
+#list table th {
+    background: #b4d57f;
+    text-align: center;
+    vertical-align: bottom;
+}
+#list table th.native {
+    width: 110px;
 }
 #list table th.group {
     width: 120px;

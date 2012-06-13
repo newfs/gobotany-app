@@ -3486,33 +3486,47 @@ img.char-value-larger {
 
 /* line 2656, ../sass/styles.scss */
 #list table {
+  background: #fff;
+  border-collapse: collapse;
+  color: #000;
   font-size: 11px;
   margin: 18px 0;
   width: 100%;
 }
 
-/* line 2661, ../sass/styles.scss */
-#list table th {
-  text-align: center;
+/* line 2664, ../sass/styles.scss */
+#list table tr:hover {
+  background: #f0f8e7;
 }
 
-/* line 2664, ../sass/styles.scss */
+/* line 2667, ../sass/styles.scss */
 #list table th, #list table td {
-  border: 1px solid #ccc;
   padding: 4px;
 }
 
-/* line 2668, ../sass/styles.scss */
+/* line 2670, ../sass/styles.scss */
+#list table th {
+  background: #b4d57f;
+  text-align: center;
+  vertical-align: bottom;
+}
+
+/* line 2675, ../sass/styles.scss */
+#list table th.native {
+  width: 110px;
+}
+
+/* line 2678, ../sass/styles.scss */
 #list table th.group {
   width: 120px;
 }
 
-/* line 2671, ../sass/styles.scss */
+/* line 2681, ../sass/styles.scss */
 #list table th.subgroup {
   width: 150px;
 }
 
-/* line 2674, ../sass/styles.scss */
+/* line 2684, ../sass/styles.scss */
 #list table td:first-child {
   font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
   font-size: 13px;
