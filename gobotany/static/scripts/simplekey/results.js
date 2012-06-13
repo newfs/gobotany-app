@@ -125,6 +125,14 @@ results_page_init: function(args) {
             }
         });
 
+        // FIRST we install the family and genus filters on App3, THEN
+        // set their values, because doing it the other way introduces a
+        // race condition where their initial hash-set values do not
+        // appear in their select boxes.
+
+        App3.set('family_filter', fc.filtermap.family);
+        App3.set('genus_filter', fc.filtermap.genus);
+
         fc.filtermap.family.set('value', filters_config.family_value);
         fc.filtermap.genus.set('value', filters_config.genus_value);
 
@@ -133,8 +141,7 @@ results_page_init: function(args) {
         });
 
         App3.set('filter_controller', fc);
-        App3.set('family_filter', fc.filtermap.family);
-        App3.set('genus_filter', fc.filtermap.genus);
+
         filter_controller_is_built.resolve();
     });
 
@@ -344,7 +351,7 @@ results_page_init: function(args) {
      * URL to a cookie. This is to be called when filters or other
      * page elements (image type, tab view) change.
      */
-    var save_page_state = function () {
+    var save_page_state = function() {
         var tab_view = App3.taxa.show_list ? 'list' : 'photos';
 
         var image_type = App3.get('image_type');
