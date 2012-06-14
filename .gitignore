@@ -18,6 +18,10 @@
 /gobotany/static/dojox
 /gobotany/static/util
 
+# Intermediate javascript build files
+# /gobotany/static/build/scripts
+/gobotany/static/build/scripts
+
 # /gobotany/static/js/
 /gobotany/static/js/dijit
 /gobotany/static/js/dojox
