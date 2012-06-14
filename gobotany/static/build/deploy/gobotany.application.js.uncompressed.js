@@ -2809,22 +2809,26 @@ define("util/fade", [
         fade_next_banner_image = function() {
             var FADE_DURATION = 2 * 1000;
             var BANNER_IMAGE_CSS = '#banner > img';
-            // Successively fade in each hidden image.
-            var fade = $(BANNER_IMAGE_CSS + ':hidden:first');
-            if (fade.length > 0) {
-                fade.fadeIn(FADE_DURATION);
-            } else {
-                // Start over: hide all but first and last again, then fade
-                // the last out to the first.
-                var images = $(BANNER_IMAGE_CSS);
-                $(images).each(function(index) {
-                    if ((index !== 0) && (index !== images.length - 1)) {
-                        $(this).css('display', 'none');
-                    }
-                });
-                fade = $(BANNER_IMAGE_CSS + ':visible:last');
-                fade.fadeOut(FADE_DURATION);
+
+            // Simultaneously fade out the currently visible image
+            // and fade in the next image.
+            var images = $(BANNER_IMAGE_CSS);
+            var i, next_image;
+            var visible_image = $(images[0]);
+            for (i = 0; i < images.length; i++) {
+                if ($(images[i]).is(':visible')) {
+                    visible_image = $(images[i]);
+                    break;
+                }
             }
+            if (i < (images.length - 1)) {
+                next_image = $(images[i + 1]);
+            }
+            else {
+                next_image = $(images[0]);
+            }
+            visible_image.fadeOut(FADE_DURATION);
+            next_image.fadeIn(FADE_DURATION);
         };
     return fade_next_banner_image;
     }
@@ -5875,8 +5879,8 @@ function cleanupStars(path) {
 
   Ember.deprecate('Star paths are now treated the same as normal paths', !/(^|[^\.])\*/.test(path));
 
-  return path.replace(/(^|.)\*/, function(match, char){
-    return (char === '.') ? match : (char + '.');
+  return path.replace(/(^|.)\*/, function(match, chr){
+    return (chr === '.') ? match : (chr + '.');
   });
 }
 
@@ -6684,13 +6688,13 @@ Cp.cacheable = function(aFlag) {
       MyApp.outsideService = Ember.Object.create({
         value: function() {
           return OutsideService.getValue();
-        }.property().volatile()
+        }.property().safe_volatile()
       });
 
-  @name Ember.ComputedProperty.volatile
+  @name Ember.ComputedProperty.safe_volatile
   @returns {Ember.ComputedProperty} receiver
 */
-Cp.volatile = function() {
+Cp.safe_volatile = function() {
   return this.cacheable(false);
 };
 
@@ -16651,7 +16655,7 @@ Ember.View = Ember.Object.extend(Ember.Evented,
     } else {
       return parent;
     }
-  }).property('_parentView').volatile(),
+  }).property('_parentView').safe_volatile(),
 
   _parentView: null,
 
@@ -16659,7 +16663,7 @@ Ember.View = Ember.Object.extend(Ember.Evented,
   concreteView: Ember.computed(function() {
     if (!this.isVirtual) { return this; }
     else { return get(this, 'parentView'); }
-  }).property('_parentView').volatile(),
+  }).property('_parentView').safe_volatile(),
 
   /**
     If false, the view will appear hidden in DOM.
@@ -21216,7 +21220,7 @@ Ember._HandlebarsBoundView = Ember._MetamorphView.extend({
     }
 
     return valueNormalizer ? valueNormalizer(result) : result;
-  }).property('path', 'pathRoot', 'valueNormalizerFunc').volatile(),
+  }).property('path', 'pathRoot', 'valueNormalizerFunc').safe_volatile(),
 
   rerenderIfNeeded: function() {
     if (!get(this, 'isDestroyed') && get(this, 'normalizedValue') !== this._lastNormalizedValue) {
@@ -22749,7 +22753,7 @@ Ember.Checkbox = Ember.View.extend({
     } else {
       return get(this, 'checked');
     }
-  }).property('checked').volatile(),
+  }).property('checked').safe_volatile(),
 
   change: function() {
     Ember.run.once(this, this._updateElementValue);
@@ -23068,11 +23072,11 @@ var get = Ember.get, getPath = Ember.getPath;
 Ember.TabPaneView = Ember.View.extend({
   tabsContainer: Ember.computed(function() {
     return this.nearestInstanceOf(Ember.TabContainerView);
-  }).property().volatile(),
+  }).property().safe_volatile(),
 
   isVisible: Ember.computed(function() {
     return get(this, 'viewName') === getPath(this, 'tabsContainer.currentView');
-  }).property('tabsContainer.currentView').volatile()
+  }).property('tabsContainer.currentView').safe_volatile()
 });
 
 })();
@@ -23085,7 +23089,7 @@ var get = Ember.get, setPath = Ember.setPath;
 Ember.TabView = Ember.View.extend({
   tabsContainer: Ember.computed(function() {
     return this.nearestInstanceOf(Ember.TabContainerView);
-  }).property().volatile(),
+  }).property().safe_volatile(),
 
   mouseUp: function() {
     setPath(this, 'tabsContainer.currentView', get(this, 'value'));
@@ -23304,7 +23308,7 @@ Ember.SelectOption = Ember.View.extend({
       // `new Number(4) !== 4`, we use `==` below
       return content == selection;
     }
-  }).property('content', 'parentView.selection').volatile(),
+  }).property('content', 'parentView.selection').safe_volatile(),
 
   labelPathDidChange: Ember.observer(function() {
     var labelPath = getPath(this, 'parentView.optionLabelPath');
@@ -23842,6 +23846,14 @@ results_page_init: function(args) {
             }
         });
 
+        // FIRST we install the family and genus filters on App3, THEN
+        // set their values, because doing it the other way introduces a
+        // race condition where their initial hash-set values do not
+        // appear in their select boxes.
+
+        App3.set('family_filter', fc.filtermap.family);
+        App3.set('genus_filter', fc.filtermap.genus);
+
         fc.filtermap.family.set('value', filters_config.family_value);
         fc.filtermap.genus.set('value', filters_config.genus_value);
 
@@ -23850,8 +23862,7 @@ results_page_init: function(args) {
         });
 
         App3.set('filter_controller', fc);
-        App3.set('family_filter', fc.filtermap.family);
-        App3.set('genus_filter', fc.filtermap.genus);
+
         filter_controller_is_built.resolve();
     });
 
@@ -24061,7 +24072,7 @@ results_page_init: function(args) {
      * URL to a cookie. This is to be called when filters or other
      * page elements (image type, tab view) change.
      */
-    var save_page_state = function () {
+    var save_page_state = function() {
         var tab_view = App3.taxa.show_list ? 'list' : 'photos';
 
         var image_type = App3.get('image_type');
