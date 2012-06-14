@@ -38317,6 +38317,333 @@ require([
     'util/sidebar'
 ]);
 
+},
+'gobotany/sk/species':function(){
+// wrapped by build app
+define(["dojo","dijit","dojox","dojo/require!dojo/cookie,gobotany/sk/photo,gobotany/utils"], function(dojo,dijit,dojox){
+/*
+ * Code for adding behavior to species pages.
+ */
+dojo.provide('gobotany.sk.species');
+
+dojo.require('dojo.cookie');
+
+dojo.require('gobotany.sk.photo');
+dojo.require('gobotany.utils');
+
+dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
+
+    constructor: function() {
+        this.photo_helper = gobotany.sk.photo.PhotoHelper();
+    },
+
+    toggle_character_group: function() {
+        // Set handlers for toggling a character group.
+        // (Uses jQuery for historical reasons.)
+        $('ul.full-description li').toggle(function() {
+            $(this).children('div').show();
+            $(this).children('h5').css('background-image',
+                'url("/static/images/icons/minus.png")');
+            sidebar_set_height();
+            return false;
+        }, function() {
+            $(this).children('div').hide();
+            $(this).children('h5').css('background-image',
+                'url("/static/images/icons/plus.png")');
+            sidebar_set_height();
+            return false;
+        });                
+    },
+
+    toggle_characters_full_list: function() {
+        // Set handlers for toggling the full characteristics list.
+        // (Uses jQuery for historical reasons.)
+        var that = this;
+        $('a.description-control').toggle(function() {
+            $('ul.full-description').show();
+            $(this).text('Hide ' + 
+                $(this).text().substr($(this).text().indexOf(' ')));
+            $(this).css('background-image',
+                'url("/static/images/icons/minus.png")');
+            that.toggle_character_group();
+            sidebar_set_height();
+            return false;
+        }, function() {
+            $('ul.full-description').hide();
+            $(this).text('Show ' + 
+                $(this).text().substr($(this).text().indexOf(' ')));
+            $(this).css('background-image',
+                'url("/static/images/icons/plus.png")');
+            sidebar_set_height();
+            return false;
+        });
+    },
+
+    wire_up_image_links: function() {
+        // Wire up each image link to a Shadowbox popup handler.
+        var IMAGE_LINKS_CSS = '#species-images a';
+        var that = this;
+        dojo.query(IMAGE_LINKS_CSS).forEach(function(link) {
+            dojo.connect(link, 'onclick', this, function(event) {
+                // Prevent the regular link (href) from taking over.
+                event.preventDefault();
+
+                // Open the image.
+                Shadowbox.open({
+                    content: link.href,
+                    player: 'img',
+                    title: link.title,
+                    options: {
+                        onOpen: that.photo_helper.prepare_to_enlarge,
+                        onFinish: that.photo_helper.process_credit
+                    }
+                });
+            });
+        });
+    },
+
+    add_image_frame_handler: function() {
+        // Add a handler to the image frame in order to be able to activate
+        // the Shadowbox popup for the image underneath it. Otherwise the
+        // popup would not be available because the image frame layer
+        // overlays it and blocks events, despite the image being visible.
+
+        var image_frame = dojo.query('.img-gallery .frame')[0];
+        dojo.connect(image_frame, 'onclick', this, function(event) {
+            var POSITION_RELATIVE_TO_DOCUMENT_ROOT = true;
+            var IMAGE_ON_SCREEN_MIN_PX = 200;
+            var IMAGE_ON_SCREEN_MAX_PX = 900;
+            var IMAGE_LINKS_CSS = '.img-container .images .single-img a';
+            var image_links = dojo.query(IMAGE_LINKS_CSS);
+            var i;
+            for (i = 0; i < image_links.length; i++) {
+                var position_info = dojo.position(image_links[i],
+                    POSITION_RELATIVE_TO_DOCUMENT_ROOT);
+                if (position_info.x >= IMAGE_ON_SCREEN_MIN_PX &&
+                    position_info.x <= IMAGE_ON_SCREEN_MAX_PX) {
+
+                    gobotany.utils.click_link(image_links[i]);
+                    break;
+                }
+            }
+        });
+    },
+
+    wire_up_us_map_link: function() {
+        // Because the map is in an <object> element, a transparent div
+        // is needed to make it clickable. Make this div cover the link
+        // that appears below the map, too, for one large clickable area.
+        var transparent_div =
+            dojo.query('#sidebar .section.namap div.trans')[0];
+        dojo.connect(transparent_div, 'onclick', this, function(event) {
+            event.preventDefault();
+            // Open the North America distribution map in a lightbox.
+            var content_element =
+                dojo.query('#sidebar .section.namap div')[0];
+            Shadowbox.open({
+                content: content_element.innerHTML,
+                player: 'html',
+                height: 582,
+                width: 1000
+            });
+        });
+    },
+
+    setup: function() {
+        this.toggle_characters_full_list();
+
+        var selectors = '#sidebar dd, #main p:not(.nogloss), #main dt, ' +
+            '#main dd, #main li, #main th, #main td';
+        glossarize($(selectors));
+
+        // Make image gallery able to show larger images.
+        this.wire_up_image_links();
+        this.add_image_frame_handler();
+
+        // Wire up the enlarge link on the U.S. map.
+        this.wire_up_us_map_link();
+    }
+});
+
+});
+
+},
+'dojo/cookie':function(){
+define("dojo/cookie", ["./_base/kernel", "./regexp"], function(dojo, regexp) {
+	// module:
+	//		dojo/cookie
+	// summary:
+	//		TODOC
+
+
+/*=====
+dojo.__cookieProps = function(){
+	//	expires: Date|String|Number?
+	//		If a number, the number of days from today at which the cookie
+	//		will expire. If a date, the date past which the cookie will expire.
+	//		If expires is in the past, the cookie will be deleted.
+	//		If expires is omitted or is 0, the cookie will expire when the browser closes.
+	//	path: String?
+	//		The path to use for the cookie.
+	//	domain: String?
+	//		The domain to use for the cookie.
+	//	secure: Boolean?
+	//		Whether to only send the cookie on secure connections
+	this.expires = expires;
+	this.path = path;
+	this.domain = domain;
+	this.secure = secure;
+}
+=====*/
+
+
+dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/props){
+	//	summary:
+	//		Get or set a cookie.
+	//	description:
+	// 		If one argument is passed, returns the value of the cookie
+	// 		For two or more arguments, acts as a setter.
+	//	name:
+	//		Name of the cookie
+	//	value:
+	//		Value for the cookie
+	//	props:
+	//		Properties for the cookie
+	//	example:
+	//		set a cookie with the JSON-serialized contents of an object which
+	//		will expire 5 days from now:
+	//	|	dojo.cookie("configObj", dojo.toJson(config), { expires: 5 });
+	//
+	//	example:
+	//		de-serialize a cookie back into a JavaScript object:
+	//	|	var config = dojo.fromJson(dojo.cookie("configObj"));
+	//
+	//	example:
+	//		delete a cookie:
+	//	|	dojo.cookie("configObj", null, {expires: -1});
+	var c = document.cookie, ret;
+	if(arguments.length == 1){
+		var matches = c.match(new RegExp("(?:^|; )" + regexp.escapeString(name) + "=([^;]*)"));
+		ret = matches ? decodeURIComponent(matches[1]) : undefined; 
+	}else{
+		props = props || {};
+// FIXME: expires=0 seems to disappear right away, not on close? (FF3)  Change docs?
+		var exp = props.expires;
+		if(typeof exp == "number"){
+			var d = new Date();
+			d.setTime(d.getTime() + exp*24*60*60*1000);
+			exp = props.expires = d;
+		}
+		if(exp && exp.toUTCString){ props.expires = exp.toUTCString(); }
+
+		value = encodeURIComponent(value);
+		var updatedCookie = name + "=" + value, propName;
+		for(propName in props){
+			updatedCookie += "; " + propName;
+			var propValue = props[propName];
+			if(propValue !== true){ updatedCookie += "=" + propValue; }
+		}
+		document.cookie = updatedCookie;
+	}
+	return ret; // String|undefined
+};
+
+dojo.cookie.isSupported = function(){
+	//	summary:
+	//		Use to determine if the current browser supports cookies or not.
+	//
+	//		Returns true if user allows cookies.
+	//		Returns false if user doesn't allow cookies.
+
+	if(!("cookieEnabled" in navigator)){
+		this("__djCookieTest__", "CookiesAllowed");
+		navigator.cookieEnabled = this("__djCookieTest__") == "CookiesAllowed";
+		if(navigator.cookieEnabled){
+			this("__djCookieTest__", "", {expires: -1});
+		}
+	}
+	return navigator.cookieEnabled;
+};
+
+return dojo.cookie;
+});
+
+},
+'dojo/regexp':function(){
+define("dojo/regexp", ["./_base/kernel", "./_base/lang"], function(dojo, lang) {
+	// module:
+	//		dojo/regexp
+	// summary:
+	//		TODOC
+
+lang.getObject("regexp", true, dojo);
+
+/*=====
+dojo.regexp = {
+	// summary: Regular expressions and Builder resources
+};
+=====*/
+
+dojo.regexp.escapeString = function(/*String*/str, /*String?*/except){
+	//	summary:
+	//		Adds escape sequences for special characters in regular expressions
+	// except:
+	//		a String with special characters to be left unescaped
+
+	return str.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, function(ch){
+		if(except && except.indexOf(ch) != -1){
+			return ch;
+		}
+		return "\\" + ch;
+	}); // String
+};
+
+dojo.regexp.buildGroupRE = function(/*Object|Array*/arr, /*Function*/re, /*Boolean?*/nonCapture){
+	//	summary:
+	//		Builds a regular expression that groups subexpressions
+	//	description:
+	//		A utility function used by some of the RE generators. The
+	//		subexpressions are constructed by the function, re, in the second
+	//		parameter.  re builds one subexpression for each elem in the array
+	//		a, in the first parameter. Returns a string for a regular
+	//		expression that groups all the subexpressions.
+	// arr:
+	//		A single value or an array of values.
+	// re:
+	//		A function. Takes one parameter and converts it to a regular
+	//		expression.
+	// nonCapture:
+	//		If true, uses non-capturing match, otherwise matches are retained
+	//		by regular expression. Defaults to false
+
+	// case 1: a is a single value.
+	if(!(arr instanceof Array)){
+		return re(arr); // String
+	}
+
+	// case 2: a is an array
+	var b = [];
+	for(var i = 0; i < arr.length; i++){
+		// convert each elem to a RE
+		b.push(re(arr[i]));
+	}
+
+	 // join the REs as alternatives in a RE group.
+	return dojo.regexp.group(b.join("|"), nonCapture); // String
+};
+
+dojo.regexp.group = function(/*String*/expression, /*Boolean?*/nonCapture){
+	// summary:
+	//		adds group match to expression
+	// nonCapture:
+	//		If true, uses non-capturing match, otherwise matches are retained
+	//		by regular expression.
+	return "(" + (nonCapture ? "?:":"") + expression + ")"; // String
+};
+
+return dojo.regexp;
+});
+
 }}});
 
 require(["dojo/i18n"], function(i18n){
