@@ -65,11 +65,6 @@
         {# This block is for adding any page-specific JS. #}
         <!-- <script src="/static/scripts/require.js"></script> -->
         <script>
-            function handleError(error) {
-                console.log("Dojo Error [" + error.id + "]: " + error.src);
-            }
-            require.on("error", handleError);
-
             {% if in_production %}
             require(["/static/build/deploy/gobotany.application.js.uncompressed.js"], function(app) {
             {% endif %}
