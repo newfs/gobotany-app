@@ -58,7 +58,7 @@
 
         <!-- PRODUCTION / DEPLOYMENT FILES -->
         <script src="/static/scripts/dojo_config_deploy.js"></script>
-        <script src="/static/build/deploy/dojo.js.uncompressed.js"></script>
+        <script src="/static/build/deploy/dojo.js"></script>
 
         {% endif %}
 
@@ -66,7 +66,7 @@
         <!-- <script src="/static/scripts/require.js"></script> -->
         <script>
             {% if in_production %}
-            require(["/static/build/deploy/gobotany.application.js.uncompressed.js"], function(app) {
+            require(["/static/build/deploy/gobotany.application.js"], function(app) {
             {% endif %}
 
             {% block js_require %}{% endblock %}
