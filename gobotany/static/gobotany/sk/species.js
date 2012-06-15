@@ -91,33 +91,6 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
         });
     },
 
-    add_image_frame_handler: function() {
-        // Add a handler to the image frame in order to be able to activate
-        // the Shadowbox popup for the image underneath it. Otherwise the
-        // popup would not be available because the image frame layer
-        // overlays it and blocks events, despite the image being visible.
-
-        var image_frame = query('.img-gallery .frame')[0];
-        on(image_frame, 'click', lang.hitch(this, function(event) {
-            var POSITION_RELATIVE_TO_DOCUMENT_ROOT = true;
-            var IMAGE_ON_SCREEN_MIN_PX = 200;
-            var IMAGE_ON_SCREEN_MAX_PX = 900;
-            var IMAGE_LINKS_CSS = '.img-container .images .single-img a';
-            var image_links = query(IMAGE_LINKS_CSS);
-            var i;
-            for (i = 0; i < image_links.length; i++) {
-                var position_info = domGeom.position(image_links[i],
-                    POSITION_RELATIVE_TO_DOCUMENT_ROOT);
-                if (position_info.x >= IMAGE_ON_SCREEN_MIN_PX &&
-                    position_info.x <= IMAGE_ON_SCREEN_MAX_PX) {
-
-                    utils.click_link(image_links[i]);
-                    break;
-                }
-            }
-        }));
-    },
-
     wire_up_us_map_link: function() {
         // Because the map is in an <object> element, a transparent div
         // is needed to make it clickable. Make this div cover the link
@@ -147,7 +120,6 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
 
         // Make image gallery able to show larger images.
         this.wire_up_image_links();
-        this.add_image_frame_handler();
 
         // Wire up the enlarge link on the U.S. map.
         this.wire_up_us_map_link();
