@@ -28,6 +28,7 @@ define([
 results_page_init: function(args) {
     var pile_slug = args.pile_slug;
 
+    sidebar.setup();
     /* Legacy dojo components */
 
     var helper = null;

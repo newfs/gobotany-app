@@ -10,7 +10,7 @@ require([
     'bridge/shadowbox',
     'gobotany/sk/photo'
 ], function($, sidebar, mousewheel, Shadowbox, PhotoHelper) {
-
+    sidebar.setup();
     $(document).ready(function() {
 
         // Turn on the scrollable for every gallery.

@@ -30,14 +30,14 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
             $(this).children('h5').css('background-image',
                 'url("/static/images/icons/minus.png")');
             // TODO: Fix when sidebar.js has been updated
-            sidebar_set_height();
+            sidebar.set_height();
             return false;
         }, function() {
             $(this).children('div').hide();
             $(this).children('h5').css('background-image',
                 'url("/static/images/icons/plus.png")');
             // TODO: Fix when sidebar.js has been updated
-            sidebar_set_height();
+            sidebar.set_height();
             return false;
         });                
     },
@@ -54,7 +54,7 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
                 'url("/static/images/icons/minus.png")');
             that.toggle_character_group();
             // TODO: Fix when sidebar.js has been updated
-            sidebar_set_height();
+            sidebar.set_height();
             return false;
         }, function() {
             $('ul.full-description').hide();
@@ -63,7 +63,7 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
             $(this).css('background-image',
                 'url("/static/images/icons/plus.png")');
             // TODO: Fix when sidebar.js has been updated
-            sidebar_set_height();
+            sidebar.set_height();
             return false;
         });
     },
@@ -123,6 +123,7 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
 
         // Wire up the enlarge link on the U.S. map.
         this.wire_up_us_map_link();
+        sidebar.setup()
     }
 });
 });

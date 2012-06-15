@@ -5,7 +5,9 @@
 {% block body_attributes %}id="privacy-policy" class="claro app privacy-policy"{% endblock %}
 
 {% block js_require %}
-    require(['util/sidebar']);
+    require(['util/sidebar'], function() {
+        sidebar.setup();
+    });
 {% endblock %}
 
 {% block body_content %}

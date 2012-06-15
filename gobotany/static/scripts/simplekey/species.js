@@ -17,6 +17,7 @@ define([
 
 ], function(search_suggest, ShadowBox, shadowbox_init, sidebar, _glossarize, 
         activate_scroll) {
+    sidebar.setup();
     glossarize = _glossarize;
     dojo.require('gobotany.sk.species');
     dojo.addOnLoad(function() {

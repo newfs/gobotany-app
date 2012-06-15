@@ -16,7 +16,8 @@ define([
 
         require([
             'util/sidebar'
-        ], function() {
+        ], function(sidebar) {
+            sidebar.setup();
             dojo.require('gobotany.sk.family');
             dojo.addOnLoad(function() {
                 gobotany.sk.family.init(args.family_slug);

@@ -5,7 +5,9 @@
 {% block body_attributes %}id="advanced-id" class="claro app teaching-tools"{% endblock %}
 
 {% block js_require %}
-    require(['util/sidebar']);
+    require(['util/sidebar'], function() {
+        sidebar.setup();
+    });
 {% endblock %}
 
 {% block body_content %}

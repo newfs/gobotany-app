@@ -16,7 +16,8 @@ define([
 
         require([
             'util/sidebar'
-        ], function() {
+        ], function(sidebar) {
+            sidebar.setup();
             dojo.require('gobotany.sk.genus');
             dojo.addOnLoad(function() {
                 gobotany.sk.genus.init(args.genus_slug);
