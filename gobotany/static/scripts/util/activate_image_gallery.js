@@ -9,7 +9,7 @@ require([
     'bridge/jquery.mousewheel',
     'bridge/shadowbox',
     'gobotany/sk/photo'
-], function($, sidebar, mousewheel, Shadowbox, photo) {
+], function($, sidebar, mousewheel, Shadowbox, PhotoHelper) {
 
     $(document).ready(function() {
 
@@ -21,7 +21,7 @@ require([
 
         $('.img-gallery').each(function() {
             var gallery = this;
-            var photo_helper = photo.PhotoHelper();
+            var photo_helper = PhotoHelper();
             $(gallery).children('.frame').click(function() {
                 var container = $(gallery).children('.img-container');
                 var scroll = container.data('scrollable');
