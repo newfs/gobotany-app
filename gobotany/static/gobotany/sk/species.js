@@ -73,7 +73,7 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
         var IMAGE_LINKS_CSS = '#species-images a';
         var that = this;
         query(IMAGE_LINKS_CSS).forEach(function(link) {
-            on(link, 'click', this, function(event) {
+            on(link, 'click', lang.hitch(this, function(event) {
                 // Prevent the regular link (href) from taking over.
                 event.preventDefault();
 
@@ -87,7 +87,7 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
                         onFinish: that.photo_helper.process_credit
                     }
                 });
-            });
+            }));
         });
     },
 
