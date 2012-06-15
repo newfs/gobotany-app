@@ -622,20 +622,28 @@ results_page_init: function(args) {
     $(window).bind('hashchange', function() {
         var current_url = window.location.href;
 
-        var last_plant_id_url = cookie('last_plant_id_url');
-        if (last_plant_id_url === undefined) {
-            last_plant_id_url = '';
+        var last_plant_id_url = cookie('last_plant_id_url');      
+        if (last_plant_id_url === null) {
+            // The cookie request returned null, so cookie support must
+            // be unavailable. Consequently, cannot support the Back button.
+            return;
         }
+        else {
+            if (last_plant_id_url === undefined) {
+                last_plant_id_url = '';
+            }
 
-        // When going forward and applying values, etc., the current URL and
-        // last plant ID URL are always the same. After pressing Back, they
-        // are different.
-        if (current_url !== last_plant_id_url) {
-            // Now reload the current URL, which reloads everything on the
-            // page and sets it up all again. This means a little more going
-            // on that usually seen with an Undo command, but is pretty
-            // quick and allows for robust yet uncomplicated Undo support.
-            window.location.reload();
+            // When going forward and applying values, etc., the current URL
+            // and last plant ID URL are always the same. After pressing
+            // Back, they are different.
+            if (current_url !== last_plant_id_url) {
+                // Now reload the current URL, which reloads the page
+                // and sets everything up all again. This means a little
+                // more going on that might be desired, but it is pretty
+                // quick and allows for robust, uncomplicated Undo support
+                // (no need to maintain history lists in the JS, etc.).
+                window.location.reload();
+            }
         }
     });
 
