@@ -638,10 +638,12 @@ results_page_init: function(args) {
             // Back, they are different.
             if (current_url !== last_plant_id_url) {
                 // Now reload the current URL, which reloads the page
-                // and sets everything up all again. This means a little
-                // more going on that might be desired, but it is pretty
-                // quick and allows for robust, uncomplicated Undo support
-                // (no need to maintain history lists in the JS, etc.).
+                // and sets everything up again. Although it arguably
+                // would be slicker to restore withou a page reload,
+                // reloading is still fairly quick and avoids the code
+                // having to manange history lists. It also makes it
+                // easy to support coming back to a Level 3 page from
+                // a species page and not losing the history stack.
                 window.location.reload();
             }
         }
