@@ -1,9 +1,14 @@
 /*
  * Code for special handling of full plant photos.
  */
-dojo.provide('gobotany.sk.photo');
-
-dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
+define([
+    'dojo/_base/declare',
+    'dojo/query',
+    'dojo/dom-class',
+    'dojo/_base/lang',
+    'util/shadowbox_init'
+], function(declare, query, domClass, lang, shadowbox_init) {
+    return declare('gobotany.sk.photo.PhotoHelper', null, {
 
     constructor: function() {
     },
@@ -12,14 +17,16 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
         // Do a few things before enlarging the photo on the screen.
         // Intended to be called using the Shadowbox onOpen handler.
         
-        var title_element = dojo.query('#sb-title-inner')[0];
+        var title_element = query('#sb-title-inner')[0];
                                                     
         // Temporarily hide the title element.
-        dojo.addClass(title_element, 'hidden');
+        domClass.add(title_element, 'hidden');
 
         // Call a function to do the usual Shadowbox initialization because
         // an existing onOpen handler with this function call is being
         // overridden here.
+        // TODO: Fix this when we correct shadowbox_init.js to not insert
+        // functions in the global namespace
         shadowbox_on_open();
     },
 
@@ -27,7 +34,7 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
         // Format the title text for a better presentation atop the photo.
         // Intended to be called using the Shadowbox onFinish handler.
 
-        var title_element = dojo.query('#sb-title-inner')[0];
+        var title_element = query('#sb-title-inner')[0];
         var title_text = title_element.innerHTML;
 
         // Parse and mark up the title text.
@@ -50,12 +57,12 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
         // italicize the entire plant name portion of the title for now. This
         // will generally be correct for the groups and subgroups pages'
         // galleries, which tend not to show varieties, subspecies, etc.
-        var scientific_name = dojo.query('h2 .scientific');
+        var scientific_name = query('h2 .scientific');
         if (scientific_name.length > 0) {
-            name = dojo.trim(scientific_name[0].innerHTML) + '.';
+            name = lang.trim(scientific_name[0].innerHTML) + '.';
         }
         else if (title_parts[1] !== undefined) {
-            name = '<i>' + dojo.trim(title_parts[1]) + '</i>';
+            name = '<i>' + lang.trim(title_parts[1]) + '</i>';
         }
         if (name.length > 0) {
             title += ': ' + name;
@@ -71,7 +78,8 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
         title_element.innerHTML = html;
 
         // Show the title element again.
-        dojo.removeClass(title_element, 'hidden');
+        domClass.remove(title_element, 'hidden');
     }
 
+});
 });
