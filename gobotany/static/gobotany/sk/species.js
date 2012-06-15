@@ -29,14 +29,12 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
             $(this).children('div').show();
             $(this).children('h5').css('background-image',
                 'url("/static/images/icons/minus.png")');
-            // TODO: Fix when sidebar.js has been updated
             sidebar.set_height();
             return false;
         }, function() {
             $(this).children('div').hide();
             $(this).children('h5').css('background-image',
                 'url("/static/images/icons/plus.png")');
-            // TODO: Fix when sidebar.js has been updated
             sidebar.set_height();
             return false;
         });                
@@ -53,7 +51,6 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
             $(this).css('background-image',
                 'url("/static/images/icons/minus.png")');
             that.toggle_character_group();
-            // TODO: Fix when sidebar.js has been updated
             sidebar.set_height();
             return false;
         }, function() {
@@ -62,7 +59,6 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
                 $(this).text().substr($(this).text().indexOf(' ')));
             $(this).css('background-image',
                 'url("/static/images/icons/plus.png")');
-            // TODO: Fix when sidebar.js has been updated
             sidebar.set_height();
             return false;
         });
