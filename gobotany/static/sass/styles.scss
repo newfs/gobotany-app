@@ -2654,7 +2654,7 @@ img.char-value-larger {
     padding-bottom: 12px;
 }
 #list table {
-    background: #fff;
+    background: #f1fcde;
     border-collapse: collapse;
     color: #000;
     font-size: 11px;
@@ -2662,7 +2662,7 @@ img.char-value-larger {
     width: 100%;
 }
 #list table tr:hover {
-    background: #f0f8e7;
+    background: #e3fabe;
 }
 #list table th, #list table td {
     padding: 4px;
@@ -2674,14 +2674,29 @@ img.char-value-larger {
     text-align: center;
     vertical-align: bottom;
 }
+#list table th.name {
+    width: 17%;
+}
+#list table th.common {
+    width: 16%;
+}
+#list table th.family {
+    width: 14%;
+}
+#list table th.dist {
+    width: 10%;
+}
 #list table th.native {
-    width: 110px;
+    width: 12%;
+}
+#list table th.wetland {
+    width: 5%;
 }
 #list table th.group {
-    width: 120px;
+    width: 12%;
 }
 #list table th.subgroup {
-    width: 150px;
+    width: 14%;
 }
 #list table td:first-child {
     font-family: $headings-font;

@@ -3486,7 +3486,7 @@ img.char-value-larger {
 
 /* line 2656, ../sass/styles.scss */
 #list table {
-  background: #fff;
+  background: #f1fcde;
   border-collapse: collapse;
   color: #000;
   font-size: 11px;
@@ -3496,7 +3496,7 @@ img.char-value-larger {
 
 /* line 2664, ../sass/styles.scss */
 #list table tr:hover {
-  background: #f0f8e7;
+  background: #e3fabe;
 }
 
 /* line 2667, ../sass/styles.scss */
@@ -3516,21 +3516,46 @@ img.char-value-larger {
 }
 
 /* line 2677, ../sass/styles.scss */
-#list table th.native {
-  width: 110px;
+#list table th.name {
+  width: 17%;
 }
 
 /* line 2680, ../sass/styles.scss */
-#list table th.group {
-  width: 120px;
+#list table th.common {
+  width: 16%;
 }
 
 /* line 2683, ../sass/styles.scss */
-#list table th.subgroup {
-  width: 150px;
+#list table th.family {
+  width: 14%;
 }
 
 /* line 2686, ../sass/styles.scss */
+#list table th.dist {
+  width: 10%;
+}
+
+/* line 2689, ../sass/styles.scss */
+#list table th.native {
+  width: 12%;
+}
+
+/* line 2692, ../sass/styles.scss */
+#list table th.wetland {
+  width: 5%;
+}
+
+/* line 2695, ../sass/styles.scss */
+#list table th.group {
+  width: 12%;
+}
+
+/* line 2698, ../sass/styles.scss */
+#list table th.subgroup {
+  width: 14%;
+}
+
+/* line 2701, ../sass/styles.scss */
 #list table td:first-child {
   font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
   font-size: 13px;
