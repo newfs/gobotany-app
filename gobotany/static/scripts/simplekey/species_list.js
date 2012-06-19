@@ -54,9 +54,7 @@ define([
             }
         }
 
-        // For now, turn off saving the filter states in a cookie.
-        // (It might be worth turning back on later, if it can be made
-        // to work well enough with filters specified on the URL.)
+        // Filter the table.
         var options = {
             enableCookies: false,
             filterDelay: 400
