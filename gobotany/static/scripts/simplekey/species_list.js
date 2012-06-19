@@ -58,7 +58,8 @@ define([
         // (It might be worth turning back on later, if it can be made
         // to work well enough with filters specified on the URL.)
         var options = {
-            enableCookies: false
+            enableCookies: false,
+            filterDelay: 400
         };
         $('table#species').tableFilter(options);
 

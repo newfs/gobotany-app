@@ -3495,7 +3495,7 @@ img.char-value-larger {
 }
 
 /* line 2664, ../sass/styles.scss */
-#list table tr:hover {
+#list table tbody tr:hover {
   background: #e3fabe;
 }
 
@@ -3517,12 +3517,12 @@ img.char-value-larger {
 
 /* line 2677, ../sass/styles.scss */
 #list table th.name {
-  width: 17%;
+  width: 16%;
 }
 
 /* line 2680, ../sass/styles.scss */
 #list table th.common {
-  width: 16%;
+  width: 15%;
 }
 
 /* line 2683, ../sass/styles.scss */
@@ -3552,7 +3552,7 @@ img.char-value-larger {
 
 /* line 2698, ../sass/styles.scss */
 #list table th.subgroup {
-  width: 14%;
+  width: 16%;
 }
 
 /* line 2701, ../sass/styles.scss */

@@ -2661,7 +2661,7 @@ img.char-value-larger {
     margin: 18px 0;
     width: 100%;
 }
-#list table tr:hover {
+#list table tbody tr:hover {
     background: #e3fabe;
 }
 #list table th, #list table td {
@@ -2675,10 +2675,10 @@ img.char-value-larger {
     vertical-align: bottom;
 }
 #list table th.name {
-    width: 17%;
+    width: 16%;
 }
 #list table th.common {
-    width: 16%;
+    width: 15%;
 }
 #list table th.family {
     width: 14%;
@@ -2696,7 +2696,7 @@ img.char-value-larger {
     width: 12%;
 }
 #list table th.subgroup {
-    width: 14%;
+    width: 16%;
 }
 #list table td:first-child {
     font-family: $headings-font;
