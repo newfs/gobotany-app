@@ -1,233 +1,173 @@
 {% extends "simplekey/_help.html" %}
 
-{% block pagetitle %}Getting Started With Montshire{% endblock %}
+{% block pagetitle %}Getting Started with the Simple Key at Montshire{% endblock %}
 
-{% block body_id %}getting-started{% endblock %}
-{% block body_class %}getting-started{% endblock %}
+{% block body_attributes %}id="getting-started" class="claro app getting-started"{% endblock %}
 
-{% block content %}
-        <div class="content">
-            <div class="container">
-                <div id="main">
-			        <a class="onward-btn"
-                        href="{% url simplekey %}">Onward to
-                        Simple Key</a>
-			
-			        <h2>Plants at Montshire</h2>
-			
-                    <!-- // Begin List of Questions/Answers // -->
-                    <div class="first question">
-                        <h4>What kinds of plants does Montshire support?</h4>
-                        <p>The Go Botany Simple Key helps you identify
-                        thousands of native and naturalized plant species in 
-                        New England. You can also identify subspecies and
-                        varieties. Many of these plants grow outside of New
-                        England, though, so this key is useful well beyond our
-                        region.</p>
-                    </div><!-- // Closes .question -->
-                    
-                    <div class="second question">
-                        <h4>What should I notice about Montshire plants?</h4>
-                        <ul>
-                            <li>Choose a plant that you can look at closely
-                            enough to answer some questions about its
-                            characteristics. 
-                            <a href="#" class="show">More...</a></li>
-                            <li class="hidden">You may want to collect all or
-                            part of the plant, or take some photos or make
-                            sketches that you can refer to later.</li>
-                            <li class="hidden">Note the plant's location and
-                            the habitat it is growing in.</li>
-                        </ul>
-                    </div><!-- // Closes .question -->
-                        
-                    <div class="third question">
-                        <h4>How do I get started using the Simple Key
-                            at Montshire?</h4>
-                        <a class="screenshot"
-                            href="/static/images/layout/screenshot-3.jpg"
-                            rel="shadowbox">
-                            <img
-                            src="/static/images/layout/screenshot-3-small.jpg"
-                            class="screenshot-thumb"
-                            alt="How to get started: small screenshot">
-                            <img src="/static/images/icons/zoom.png"
-                            alt=""> Click to enlarge</a>
-                        <ul>
-                            <li>Choose the plant group you think your plant is
-                            in. To do this, compare the
-                            features of your plant with the "Key
-                            Characteristics" listed for each plant group and
-                            "Exceptions," which will help you avoid mixing up
-                            groups. <a href="#" class="show">More...</a></li>
-                            <li class="hidden">When you've found the group
-                            your plant belongs to, press "My plant is in this
-                            group."</li>
-                        </ul>
-                        <div class="clearit"></div>
-                    </div><!-- // Closes .question -->
-                        
-                    <div class="fourth question">
-                        <h4>What's a plant group?</h4>
-                        <a class="screenshot"
-                            href="/static/images/layout/screenshot-4.jpg"
-                            rel="shadowbox">
-                            <img 
-                            src="/static/images/layout/screenshot-4-small.jpg"
-                            class="screenshot-thumb"
-                            alt="What's a plant group: small screenshot">
-                            <img src="/static/images/icons/zoom.png"
-                            alt=""> Click to enlarge</a>
-                        <ul>
-                            <li>It's a set of plants that share some common
-                            traits that would cause many people to think of
-                            them as similar. For example, the Aquatic Plant
-                            group contains many species of plants that live in
-                            or near water. <a href="#"
-                                class="show">More...</a></li>
-                            <li class="hidden">We have defined our groups as
-                            handy, contrasting categories that are easy to
-                            tell apart. They are not strict scientific
-                            classifications.</li>
-                            <li class="hidden">A few plant species belong to
-                            more than one group in our system, but most have
-                            been assigned to a single group with the
-                            characteristics that match them best.</li>
-                        </ul>
-                    </div><!-- // Closes .question -->
-                        
-                    <div class="fifth question">
-                        <h4>Once I select a group, what happens next?</h4>
-                        <a class="screenshot"
-                            href="/static/images/layout/screenshot-5.jpg"
-                            rel="shadowbox">
-                            <img
-                            src="/static/images/layout/screenshot-5-small.jpg"
-                            class="screenshot-thumb"
-                            alt="What happens next: small screenshot">
-                            <img src="/static/images/icons/zoom.png"
-                            alt=""> Click to enlarge</a>
-                        <ul>
-                            <li>Next, choose which subgroup your plant belongs
-                            to. For example, if your plant is woody like a
-                            tree, you'll be asked if it is a needle-leaved
-                            plant or a broad-leaved plant.</li>
-                            <li>When you've found the subgroup your plant
-                            belongs to, click "My plant is in this subgroup." 
-                            <a href="#" class="show">More...</a></li>
-                            <li class="hidden">If your plant doesn't fit any
-                            of the subgroups, click the "Go back one level"
-                            button to choose a new group.</li>
-                            <li class="hidden">Once you're familiar with the 
-                            groups and subgroups, use the Plant Map on the
-                            left side of the page to jump directly to the
-                            subgroup your plant is in.</li>
-                        </ul>
-                    </div><!-- // Closes .question -->
-                        
-                    <div class="sixth question">
-                        <h4>I've chosen my plant subgroup. What's next?</h4>
-                        <a class="screenshot"
-                            href="/static/images/layout/screenshot-6.jpg"
-                            rel="shadowbox">
-                            <img
-                            src="/static/images/layout/screenshot-6-small.jpg"
-                            class="screenshot-thumb"
-                            alt="What's next: small screenshot">
-                            <img
-                            src="/static/images/icons/zoom.png"
-                            alt=""> Click to enlarge</a>
-                        <ul>
-                            <li>On the left side of the new page is a list of
-                            questions about your plant. Click on any question,
-                            and a working area will open in the center of the
-                            page, showing the full question, some helpful
-                            hints, and a set of illustrated choices for the
-                            answer. Click on the answer (i.e., the
-                            characteristic) that most closely matches your
-                            plant.</li>
-                            <li>If you can only observe part of a plant, say
-                            the leaves, you can click on that feature in the
-                            section "What type of features can you see on your
-                            plant?" and you'll only be offered questions about
-                            leaves.</li>
-                            <li>Click the "Get More Questions" button and new
-                            questions will appear, sorted in order of their
-                            helpfulness in narrowing down your species.</li>
-                            <li>View a set of thumbnail photographs of all the
-                            possible plants that match your description,
-                            listed in alphabetical order by scientific
-                            name.</li>
-                            <li>Click on a photo to get a pop-up box with more
-                            information about a plant. If you decide that
-                            this is your plant, click on "Get More Info" in
-                            the pop-up box and you'll be taken to the species
-                            full information page.
-                            <a href="#" class="show">More...</a></li>
-                            <li class="hidden">The set of thumbnails gets
-                            smaller as you answer more questions and hone in
-                            on your species by a process of
-                            elimination.</li>
-                        </ul>
-                    </div><!-- // Closes .question -->
-                    
-                    <a href="{% url simplekey %}"
-                        class="onward-btn">Onward to Simple Key</a>
-                    <form>
-                        <label class="got-it">
-                            <input type="checkbox" id="skip-page"> 
-                            <strong>I've got it! Don't show this page every
-                                time I start identifying.</strong>
-                        </label>
-                    </form>
-                </div>
+{% block main_content %}			
+    <h2>Getting Started with the Simple Key at Montshire</h2>
 
-                <div id="sidebar" style="height: 1046px">
-                    <div class="section">
-                        <h5><a>Getting Started with the Simple Key</a></h5>	
-			        </div>
-			        <div class="section">
-                        <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-about %}"{% endifequal %}>About Go-Botany</a></h5>
-			        </div>
-			        <div class="section">
-                        <h5><a class="sidebarlink" {% ifequal
-                                request.path u %}class="current"{% else
-                                %}href="{% url simplekey-help-map %}"{% endifequal %}>Advanced Map to Groups</a></h5>
-			        </div>
-			        <div class="section">
-                        <h5><a class="sidebarlink" {% ifequal request.path u %}class="current"{% else %}href="{% url simplekey-help-glossary0 %}"{% endifequal %}>Glossary</a></h5>
-			        </div>
-			        <div class="section">
-                        <h5><a class="sidebarlink" {% ifequal request.path u %} class="current"{% else %}href="{% url simplekey-help-video %}"{% endifequal %}>Video Help Topics</a></h5>
-                    </div>
-                    
-                    <div class="section">
-                        <h5>Watch Video</h5>
-                        {% if getting_started_youtube_id %}
-                            <a href="http://www.youtube.com/v/{{ getting_started_youtube_id }}"
-                                rel="shadowbox;height=380;width=640;"><img
-                                class="shadow" alt=""
-                                title="How to use the Go Botany Simple
-                                Key"
-                                src="http://img.youtube.com/vi/{{ getting_started_youtube_id }}/hq2.jpg"
-                                style="width: 100%">
-                            </a>
-                            <p>How to use the Go Botany Simple Key</p>
-                        {% else %}
-                            Admin: set the blurb 'getting_started_youtube_id'.
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="clearit"></div>
-            </div>
-        </div>
+    <div class="first question">
+        <h4>What kinds of plants can I identify at Montshire?</h4>
+        <p>The Go Botany Simple Key helps you identify thousands of
+        native and naturalized plant species in New England. You can also
+        identify subspecies and varieties. Many of these plants grow outside
+        of New England, though, so this key is useful well beyond our
+        region.</p>
+    </div>
+    
+    <div class="second question">
+        <h4>What should I notice about my plant?</h4>
+        <ul>
+            <li>Choose a plant that you can look at closely enough to answer
+            some questions about its characteristics.</li> 
+            <li>You may want to collect all or part of the plant, or take
+            some photos or make sketches that you can refer to later.</li>
+            <li>Note the plant's location and the habitat it is growing
+            in.</li>
+        </ul>
+    </div>
+
+    <div class="third question">
+        <h4>How do I get started using the Simple Key at Montshire?</h4>
+        <a class="screenshot"
+            href="/static/images/layout/screenshot-3.jpg"
+            rel="shadowbox">
+            <img
+            src="/static/images/layout/screenshot-3-small.jpg"
+            class="screenshot-thumb"
+            alt="How to get started: small screenshot">
+            <img src="/static/images/icons/zoom.png"
+            alt=""> Click to enlarge</a>
+        <ul>
+            <li>Choose the plant group you think your plant is in.
+            To do this, compare the features of your plant with
+            the "Key Characteristics" listed for each plant group and
+            "Exceptions," which will help you avoid mixing up groups.</li>
+            <li>Please go through the groups in the order that they
+            appear on the page. This will help you pick the right group
+            by eliminating wrong ones first.</li>
+            <li>When you've found the group your plant belongs to, press
+            "My plant is in this group."</li>
+        </ul>
+        <div class="clearit"></div>
+    </div>
+                        
+    <div class="fourth question"> <h4>What's a plant group?</h4> <a
+            class="screenshot"
+            href="/static/images/layout/screenshot-4.jpg"
+            rel="shadowbox"> <img
+            src="/static/images/layout/screenshot-4-small.jpg"
+            class="screenshot-thumb" alt="What's a plant group: small
+            screenshot">
+            <img src="/static/images/icons/zoom.png" alt=""> Click to
+            enlarge</a>
+        <ul>
+            <li>It's a set of plants that share some
+            common traits that would cause many people to think of them
+            as similar. For example, the Aquatic Plant group contains
+            many species of plants that live in or near water.</li>
+            <li>We have defined our groups as handy, contrasting
+            categories that are easy to tell apart. They are not strict
+            scientific classifications.</li>
+            <li>A few plant species belong to more than one group in our
+            system, but most have been assigned to a single group with the
+            characteristics that match them best.</li>
+        </ul>
+    </div>    
+    <div class="fifth question">
+        <h4>Once I select a group, what happens next?</h4>
+        <a class="screenshot"
+            href="/static/images/layout/screenshot-5.jpg"
+            rel="shadowbox">
+            <img
+            src="/static/images/layout/screenshot-5-small.jpg"
+            class="screenshot-thumb"
+            alt="What happens next: small screenshot">
+            <img src="/static/images/icons/zoom.png"
+            alt=""> Click to enlarge</a>
+        <ul>
+            <li>Next, choose which subgroup your plant belongs to. For
+            example, if your plant is woody like a tree, you'll be asked if
+            it is a needle-leaved plant or a broad-leaved plant.</li>
+            <li>Please go through the subgroups in the order that they
+            appear on the page. This will help you pick the right group
+            by eliminating wrong ones first.</li>
+            <li>When you've found the subgroup your plant belongs to, click
+            "My plant is in this subgroup."</li>
+            <li>If your plant doesn't fit any of the subgroups, click the
+            "Go back one level" button to choose a new group.</li>
+            <li>Once you're familiar with the groups and subgroups, use the
+            Plant Map on the left side of the page to jump directly to the
+            subgroup your plant is in.</li>
+        </ul>
+    </div>
+
+    <div class="sixth question">
+        <h4>I've chosen my plant subgroup. What's next?</h4>
+        <a class="screenshot"
+            href="/static/images/layout/screenshot-6.jpg"
+            rel="shadowbox">
+            <img
+            src="/static/images/layout/screenshot-6-small.jpg"
+            class="screenshot-thumb"
+            alt="What's next: small screenshot">
+            <img
+            src="/static/images/icons/zoom.png"
+            alt=""> Click to enlarge</a>
+        <ul>
+            <li>On the left side of the new page is a list of questions to
+            help
+            you narrow your matching species. Pick any question and a box will
+            open in the center of the page. In the box, select the
+            answer that
+            most closely matches your plant and press the Apply Selection
+            button. If you're not sure which selection to make, it's fine to
+            move on without making a selection.</li>
+            <li>Press the Get More Questions button to add a few new
+            questions,
+            added in order of their potential helpfulness in narrowing down
+            your matching species.</li>
+            <li>If you can only observe part of a plant, say the leaves, you
+            can press Get More Questions, then check the "leaves" check box
+            and
+            press the second Get More Questions button, and you'll only get
+            new
+            choices about leaves.</li>
+            <li>View a set of thumbnail photos of all the possible plants
+            that match your selections, listed in alphabetical order by
+            scientific name.</li>
+            <li>Click on a photo to get a pop-up box with more information
+            about a plant. If you decide that this is your plant, or want to
+            read more about it in order to decide, press the Get More Info
+            button to go to the full information page for that species.
+            <li class="hidden">The set of thumbnail photos gets smaller as
+            pick additional questions and answer them, honing in
+            on your plant by a process of elimination.</li>
+            <li class="hidden">To clear an answer you've previously made,
+            click the Clear link for the question in the list at left.</li>
+        </ul>
+    </div>
+
+    <a href="{% url simplekey %}"
+        class="onward-btn">Onward to the Simple Key</a>
 {% endblock %}
 
-{% block js_bottom %}
-    <script>
-        dojo.require('gobotany.sk.GettingStartedHelper');
-
-        var getting_started_helper = gobotany.sk.GettingStartedHelper();
-        getting_started_helper.setup();
-    </script>
+{% block more_sidebar_content %}
+    <div class="section separate">
+        <h5>Watch Video:</h5>
+        {% if getting_started_youtube_id %}
+            <div class="video-topic">
+                <a class="video"
+                    href="http://www.youtube.com/embed/{{ getting_started_youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">
+                    <img class="shadow"
+                        src="http://img.youtube.com/vi/{{ getting_started_youtube_id }}/0.jpg"
+                        alt="">
+                </a>
+            </div>
+            <p>How to use the Simple Key</p>
+        {% else %}
+            Admin: set the blurb 'getting_started_youtube_id'.
+        {% endif %}
+    </div>
 {% endblock %}
