@@ -404,7 +404,7 @@ def _compute_plants_etag(request):
     """
     plants = _get_plants()
     h = hashlib.md5()
-    h.update(str(plants))
+    h.update(str(list(plants)))
     return h.hexdigest()
 
 @etag(_compute_plants_etag)
