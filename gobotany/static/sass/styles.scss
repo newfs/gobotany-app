@@ -3,6 +3,8 @@
  The generated .css is kept in the repository to allow easy deployment.
  */
 $headings-font: "Trebuchet MS", Helvetica, Arial, sans-serif;
+$body-font: Verdana, Geneva, sans-serif;
+$narrower-body-font: Tahoma, "Trebuchet MS", sans-serif;
 
 body, header {
     font-family: $headings-font;
@@ -14,11 +16,11 @@ ol li, ul li {
 }
 .claro {
    	color: #000;
-    font-family: Verdana, Geneva, sans-serif;
+    font-family: $body-font;
 	font-size: 12px;
 }
 .claro .dijit {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-family: $headings-font;
     font-size: 15px;
 }
 /* end Claro fixes */
@@ -150,7 +152,7 @@ footer a {
 }
 
 footer h6 {
-	font-family: Verdana, Geneva, sans-serif;
+	font-family: $body-font;
 	font-size: 11px;
 }
 footer .nsf-logo {
@@ -446,7 +448,7 @@ body.app {
 
 .app p.tip {
     color: #519136;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-family: $headings-font;
     font-size: 18px;
     margin: 12px 0 0;
     padding: 0;
@@ -750,7 +752,7 @@ p.vid {
 }
 .already-know label {
     display: block;
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+    font-family: $headings-font;
     font-size: 12px;
     font-weight: normal;
     margin: 5px 0 3px;
@@ -766,7 +768,7 @@ p.vid {
 }
 #plant-id-3 .show label {
     color: #000;
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+    font-family: $headings-font;
     font-size: 15px;
     font-weight: normal;
 
@@ -954,19 +956,16 @@ a.go-to-species-page:active {
 }
 
 .plant p.plant-name {
-    font-family: Tahoma, "Trebuchet MS", sans-serif; /* Tahoma or Trebuchet
-                                                        because it's narrower
-                                                        than Verdana: less
-                                                        wrapping and fewer
-                                                        names on 4 lines */
+    font-family: $narrower-body-font; /* Tahoma or Trebuchet because it's
+                                         narrower than Verdana: less wrapping
+                                         and fewer names on 4 lines */
     line-height: 14px;
     margin: 7px 0 0 0;
 }
 .plant p.plant-name span.latin {
     display: block;
-    font-family: Verdana, sans-serif; /* Verdana because it's wider than
-                                         Trebuchet: easier to read in
-                                         italics */
+    font-family: $body-font; /* Verdana because it's wider than Trebuchet:
+                                easier to read in italics */
     font-style: italic;
     padding-bottom: 4px;
 }
@@ -1195,7 +1194,7 @@ h5.help {
     margin: 0 0 0 19px;
 }
 #plant-id-3 input.dijitInputInner {
-    font-family: Verdana, sans-serif;
+    font-family: $body-font;
     font-size: 12px;
 }
 
@@ -1237,7 +1236,7 @@ h5.help {
 .choices .row div label {
     cursor: pointer;
     display: inline-block;
-    font-family: Tahoma, "Trebuchet MS", sans-serif;
+    font-family: $narrower-body-font;
     font-size: 12px;
     margin-left: 18px;
     min-width: 70px;
@@ -1419,7 +1418,7 @@ div.working-area .measurement label input {
 
 div.working-area .info {
     float: left;
-    font-family: Tahoma, "Trebuchet MS", sans-serif;
+    font-family: $narrower-body-font;
     font-size: 14px;
 }
 
@@ -1514,7 +1513,7 @@ div.working-area .actions {
     cursor: pointer;
     display: block;
     float: left;
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+    font-family: $headings-font;
     font-size: 18px;
     line-height: 18px;
     margin: 0;
@@ -1571,7 +1570,7 @@ div.working-area .actions {
     border-top: 0;
 }
 .plant-list table .genus, .plant-list table .scientific-name {
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+    font-family: $headings-font;
 }
 .plant-list table .genus {
     color: #1a2e11;
@@ -1620,7 +1619,7 @@ div.working-area .actions {
     border-bottom: 1px solid #ad9f50;
     border-top: 1px solid #ad9f50;
     color: #000;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-family: $headings-font;
     font-size: 24px;
     margin-bottom: 0.5em;
     padding: 0.5em 0;
@@ -1841,7 +1840,7 @@ div.section.namap div.trans {
 #taxon #sb-title-inner span, #plant-id #sb-title-inner span,
 #plant-id-2 #sb-title-inner span, #family #sb-title-inner span,
 #genus #sb-title-inner span {
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+    font-family: $headings-font;
     font-size: 10px;
 }
 #taxon #sb-nav-close, #plant-id #sb-nav-close, #plant-id-2 #sb-nav-close,
@@ -1855,7 +1854,7 @@ div.section.namap div.trans {
     text-decoration: underline;
 }
 #sb-counter {
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+    font-family: $headings-font;
 }
 
 /* Help section: sidebar, heading, list styles */
@@ -2059,7 +2058,7 @@ div.section.namap div.trans {
 #advanced-id #main .dk-landing-section {
 	width: 330px;
 	float: left;
-	font-family: Verdana, sans-serif;
+	font-family: $body-font;
 }
 
 #advanced-id #main .dk-landing-section section {
@@ -2246,7 +2245,7 @@ div.section.namap div.trans {
     vertical-align: middle;
 }
 #search-results-list li a {
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+    font-family: $headings-font;
     font-size: 15px;
     text-decoration: underline;
 }
@@ -2492,7 +2491,7 @@ nav #search-suggest .menu a:hover, #search-suggest .menu li:hover {
     width: 250px;
 }
 #search-suggest input, #search-suggest .menu ul {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-family: $headings-font;
 }
 #search-suggest input:focus {
     outline: none;
