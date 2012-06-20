@@ -2855,8 +2855,15 @@ img.char-value-larger {
         display: block;
         font-family: $headings-font;
         font-size: 14px;
-        padding: 14px 6px;
+        padding: 14px 14px;
+        position: relative;
         text-decoration: none;
+    }
+    footer .navigation > ul:first-of-type li a:after {
+        content: " >";
+        font-weight: bold;
+        position: absolute;
+        right: 14px;
     }
     footer .navigation > ul:first-of-type li a[href] {
         background: #508e31;

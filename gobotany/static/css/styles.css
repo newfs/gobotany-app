@@ -3792,60 +3792,69 @@ img.char-value-larger {
     display: block;
     font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
     font-size: 14px;
-    padding: 14px 6px;
+    padding: 14px 14px;
+    position: relative;
     text-decoration: none;
   }
 
-  /* line 2861, ../sass/styles.scss */
+  /* line 2862, ../sass/styles.scss */
+  footer .navigation > ul:first-of-type li a:after {
+    content: " >";
+    font-weight: bold;
+    position: absolute;
+    right: 14px;
+  }
+
+  /* line 2868, ../sass/styles.scss */
   footer .navigation > ul:first-of-type li a[href] {
     background: #508e31;
     color: #fff;
   }
 
-  /* line 2865, ../sass/styles.scss */
+  /* line 2872, ../sass/styles.scss */
   footer .navigation > h6:nth-of-type(2) {
     margin: 14px 14px 4px 71px;
   }
 
-  /* line 2868, ../sass/styles.scss */
+  /* line 2875, ../sass/styles.scss */
   footer .navigation > h6:nth-of-type(2):after {
     content: ":";
   }
 
-  /* line 2872, ../sass/styles.scss */
+  /* line 2879, ../sass/styles.scss */
   footer .navigation > h6:nth-of-type(2),
   footer .navigation > ul:nth-of-type(2) {
     display: inline-block;
   }
 
-  /* line 2876, ../sass/styles.scss */
+  /* line 2883, ../sass/styles.scss */
   footer .navigation > ul:nth-of-type(2) li {
     margin-right: 14px;
   }
 
-  /* line 2879, ../sass/styles.scss */
+  /* line 2886, ../sass/styles.scss */
   footer .navigation > ul:nth-of-type(2) li:after {
     content: none;
   }
 
-  /* line 2882, ../sass/styles.scss */
+  /* line 2889, ../sass/styles.scss */
   footer .support {
     margin: 14px 0;
     padding: 0;
   }
 
-  /* line 2886, ../sass/styles.scss */
+  /* line 2893, ../sass/styles.scss */
   footer .support img {
     padding-bottom: 6px;
   }
 
-  /* line 2889, ../sass/styles.scss */
+  /* line 2896, ../sass/styles.scss */
   #home #banner {
     margin: 0;
     position: relative;
   }
 
-  /* line 2893, ../sass/styles.scss */
+  /* line 2900, ../sass/styles.scss */
   #home #banner #overlay {
     background: #f7fbe9;
     height: auto;
@@ -3854,23 +3863,23 @@ img.char-value-larger {
     text-align: center;
   }
 
-  /* line 2900, ../sass/styles.scss */
+  /* line 2907, ../sass/styles.scss */
   #home #banner h2 {
     margin: 0;
   }
 
-  /* line 2903, ../sass/styles.scss */
+  /* line 2910, ../sass/styles.scss */
   #home #banner p {
     padding: 0 6px;
   }
 
-  /* line 2906, ../sass/styles.scss */
+  /* line 2913, ../sass/styles.scss */
   #home #banner a#cta {
     background-position: 50% 0;
     margin: 4px 6px;
   }
 
-  /* line 2910, ../sass/styles.scss */
+  /* line 2917, ../sass/styles.scss */
   #home .three-col {
     background: none;
     float: none;
@@ -3880,54 +3889,54 @@ img.char-value-larger {
     width: auto;
   }
 
-  /* line 2918, ../sass/styles.scss */
+  /* line 2925, ../sass/styles.scss */
   #home .three-col a.learn-more {
     margin: 4px 0 0;
   }
 
-  /* line 2921, ../sass/styles.scss */
+  /* line 2928, ../sass/styles.scss */
   #home #potd .details {
     margin: 0;
     position: inherit;
     width: inherit;
   }
 
-  /* line 2926, ../sass/styles.scss */
+  /* line 2933, ../sass/styles.scss */
   #home #potd .details p {
     height: inherit;
     overflow: inherit;
   }
 
-  /* line 2930, ../sass/styles.scss */
+  /* line 2937, ../sass/styles.scss */
   #home #potd .details a {
     position: inherit;
     top: 0;
   }
 
-  /* line 2934, ../sass/styles.scss */
+  /* line 2941, ../sass/styles.scss */
   #home .donate {
     margin: 0;
   }
 
-  /* line 2937, ../sass/styles.scss */
+  /* line 2944, ../sass/styles.scss */
   #home .donate p {
     margin: 8px;
     padding: 0;
   }
 
-  /* line 2941, ../sass/styles.scss */
+  /* line 2948, ../sass/styles.scss */
   #home .donate a {
     float: none;
     margin: 4px 0;
   }
 
-  /* line 2945, ../sass/styles.scss */
+  /* line 2952, ../sass/styles.scss */
   #main, .list-item .details {
     float: none;
     width: inherit;
   }
 
-  /* line 2949, ../sass/styles.scss */
+  /* line 2956, ../sass/styles.scss */
   #plant-id-3 #main {
     float: right;
     margin-left: 230px;
