@@ -13,15 +13,18 @@
 
                 <div class="navigation">
                     <h6>Go Botany</h6>
-                    <p><a href="{% url simplekey %}"
-                          >Simple Key</a> |
-                        <a href="{% url plantshare-placeholder %}">PlantShare</a> |
-                        <a href="{% url advanced-id-tools %}">Advanced ID Tools</a> |
-                        <a href="{% url simplekey-help-about %}">About</a> |
-                        <a href="{% url simplekey-help-glossary0 %}">Glossary</a></p>
+                    <ul>
+                        <li><a {% ifnotequal request.path "/" %}href="{% url simplekey-index %}"{% endifnotequal %}>Home</a></li>
+                        <li><a href="{% url simplekey %}">Simple Key</a></li>
+                        <li><a href="{% url plantshare-placeholder %}">PlantShare</a></li>
+                        <li><a href="{% url advanced-id-tools %}">Advanced ID Tools</a></li>
+                        <li><a href="{% url simplekey-help-about %}">About</a></li>
+                    </ul>
                     <h6>Legal</h6>
-                    <p><a href="{% url privacy-policy %}">Privacy Policy</a> |
-                    <a href="{% url terms-of-use %}">Terms of Use</a></p>
+                    <ul>
+                        <li><a href="{% url privacy-policy %}">Privacy Policy</a></li>
+                        <li><a href="{% url terms-of-use %}">Terms of Use</a></li>
+                    </ul>
                 </div>
 
                 <div class="support">
