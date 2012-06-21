@@ -74,7 +74,7 @@ urlpatterns = patterns(
         views.level3, name='level3'),
     url('^(?P<pilegroup_slug>[^/]*)/(?P<pile_slug>[^/]*)/' \
         '(?P<genus_slug>[^/]*)/(?P<specific_name_slug>[^/]*)/$',
-        views.species_view, name='simplekey-pile-species'),
+        views.species_view),
 
     # Old URLs at which the Simple Key 2nd and 3rd-level pages once lived.
 
