@@ -25,7 +25,7 @@
     {% include "simplekey/_header.html" %}
 
     <div class="content">
-        {% if not in_simple_key %}
+        {% if key != 'simple' %}
             <div class="note">This is a species in our Full Key.
             Complete data are coming soon.</div>
         {% endif %}
@@ -35,23 +35,21 @@
 
                 {# TODO: After implementing Full Key and navigation, #}
                 {# show appropriate breadcrumb links.                #}
-                {% if in_simple_key %}
-                    <div id="breadcrumb">
-                        <p class="nogloss">You are here: 
-                        <a href="{% url simplekey %}">Simple Key</a>
-                        &gt;
-                        <a href="{% url simplekey-pilegroup pilegroup.slug %}"
-                            >{{ pilegroup.friendly_title|lower|capfirst }}</a>
-                        &gt; 
-                        <a href="{% if last_plant_id_url and pile.slug in last_plant_id_url %}{{ last_plant_id_url }}{% else %}{% url simplekey-pile pilegroup.slug pile.slug %}{% endif %}"
-                            >{{ pile.friendly_title|lower|capfirst }}</a>
-                        &gt;
-                        <span>{{ scientific_name|italicize_plant|safe }}
-                           {# If the above is too long, can use scientific_name_short #}
-                        </span></p>
-                    </div>
-                {% endif %}
-                
+                <div id="breadcrumb">
+                    <p class="nogloss">You are here:
+                    <a href="{% url simplekey %}">{{ key|title }} Key</a>
+                    &gt;
+                    <a href="{% url simplekey-pilegroup pilegroup.slug %}"
+                        >{{ pilegroup.friendly_title|lower|capfirst }}</a>
+                    &gt;
+                    <a href="{% if last_plant_id_url and pile.slug in last_plant_id_url %}{{ last_plant_id_url }}/{% else %}{% url level3 key pilegroup.slug pile.slug %}{% endif %}"
+                        >{{ pile.friendly_title|lower|capfirst }}</a>
+                    &gt;
+                    <span>{{ scientific_name|italicize_plant|safe }}
+                       {# If the above is too long, can use scientific_name_short #}
+                    </span></p>
+                </div>
+
                 <h2><span class="scientific">{{ scientific_name|italicize_plant|safe }}</span>
                     <span class="origin">{{ taxon.taxonomic_authority }}</span></h2>
                 {% if taxon.common_names.all %}

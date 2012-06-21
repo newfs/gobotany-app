@@ -81,7 +81,7 @@
                                 {{ item_title }}</a>
                         {% endif %}
                         {% if result.model_name == 'subgroupresultspage' %}
-                            <a href="{% url simplekey-pile result.object.subgroup.pilegroup.slug result.object.subgroup.slug %}">
+                            <a href="{% url level3 'simple' result.object.subgroup.pilegroup.slug result.object.subgroup.slug %}">
                             <img src="/static/images/icons/icon-grid.png"
                                 alt=""
                                 title="Simple Key plant group results page">

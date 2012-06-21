@@ -373,6 +373,7 @@ def species_view(request, genus_slug, specific_name_slug,
            'scientific_name_short': scientific_name_short,
            'taxon': taxon,
            'images': images,
+           'key': 'simple' if partner_species.simple_key else 'full',
            'partner_heading': partner_species.species_page_heading
                if partner_species else None,
            'partner_blurb': partner_species.species_page_blurb
@@ -383,7 +384,6 @@ def species_view(request, genus_slug, specific_name_slug,
            'all_characteristics': characters_by_group,
            'specific_epithet': specific_name_slug,
            'last_plant_id_url': last_plant_id_url,
-           'in_simple_key': partner_species.simple_key,
            'native_to_north_america': native_to_north_america
            }, context_instance=RequestContext(request))
 
