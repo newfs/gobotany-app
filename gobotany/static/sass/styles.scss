@@ -1903,8 +1903,9 @@ div.section.namap div.trans {
     text-decoration: none;
 }
 
-#getting-started h2, #about h2, #advanced-map h2, #glossary h2,
-#plantshare h2, #teaching-tools h2, #video-help-topics h2 {
+#getting-started #main h2, #about #main h2, #advanced-map #main h2,
+#glossary #main h2, #plantshare #main h2, #teaching-tools #main h2,
+#video-help-topics #main h2 {
     margin-bottom: 8px;
 }
 #getting-started h3, #about h3, #advanced-map h3, #glossary h3,
@@ -2745,8 +2746,8 @@ img.char-value-larger {
         width: 320px;
     }
     .top-level header h1 a {
-        background-size: 320px 58px;
-        height: 58px;
+        background-position: -56px -7px;
+        width: 200px;
     }
     #nav {
         left: 40px;
@@ -2773,12 +2774,9 @@ img.char-value-larger {
     #home #banner > img, #sidebar {
         width: 480px;
     }
-    .top-level header {
-        height: 100px;
-    }
     .top-level header h1 a {
-        background-size: 480px 86px;
-        height: 86px;
+        background-position: 0 -7px;
+        width: 260px;
     }
     #nav {
         left: 30px;
@@ -2803,27 +2801,40 @@ img.char-value-larger {
         margin: 0 auto;
         padding: 0;
     }
+    header nav ul {
+        display: none;  /* will use bottom navigation instead */
+    }
     .container {
         padding: 0;
     }
-    .top-level nav {
+    .top-level nav, .app nav {
         background: none;
+    }
+    .top-level header, .app header {
+        height: 72px;
     }
     .top-level header h1 {
         margin: 0;
         width: inherit;
     }
+    .top-level header h1 a, .app header h1 a {
+        height: 56px;
+    }
     .top-level header h2 a, .app header h2 a {
-        background-size: 80px 44px;
+        background-size: 100px 55px;
         float: right;
-        height: 44px;
-        width: 80px;
+        height: 55px;
+        width: 100px;
     }
-    header h2 {
+    .app header h1 {
+        margin: 0;
+        padding: 0;
+    }
+    .app header h1 a {
+        width: 170px;
+    }
+    #main #header h2 {
         float: none;
-    }
-    header nav ul {
-        display: none;  /* will use bottom navigation instead */
     }
     footer, footer div.container {
         height: auto;
