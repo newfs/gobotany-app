@@ -47,14 +47,15 @@ def per_partner_template(request, template_path):
 
 #
 
-def get_simple_url(pilegroup, pile=None):
-    """Return the URL to where `item` lives in the Simple Key navigation."""
+def get_simple_url(key, pilegroup, pile=None):
     if pile is None:
-        return reverse('gobotany.simplekey.views.pilegroup_view',
-                       kwargs={'pilegroup_slug': pilegroup.slug})
+        return reverse('gobotany.simplekey.views.level2',
+                       kwargs={'key': key,
+                               'pilegroup_slug': pilegroup.slug})
     else:
-        return reverse('gobotany.simplekey.views.results_view',
-                       kwargs={'pilegroup_slug': pilegroup.slug,
+        return reverse('gobotany.simplekey.views.level3',
+                       kwargs={'key': key,
+                               'pilegroup_slug': pilegroup.slug,
                                'pile_slug': pile.slug})
 
 
@@ -128,6 +129,7 @@ def _partner_short_name(partner):
 @cache_control(max_age=60 * 60)
 @cache_page(60 * 60)
 def simple_key_view(request):
+    key = 'simple' ## TODO: REMOVE
     partner = which_partner(request)
     short_name = _partner_short_name(partner)
     groups_list_page = GroupsListPage.objects.get()
@@ -138,7 +140,7 @@ def simple_key_view(request):
             models.ContentImage.objects.filter(
                 pilegroupimage__pile_group=pilegroup)
             .select_related('image_type'))
-        pilegroups.append((pilegroup, images, get_simple_url(pilegroup)))
+        pilegroups.append((pilegroup, images, get_simple_url(key, pilegroup)))
 
     return render_to_response('simplekey/simple.html', {
             'partner_site': short_name,
@@ -149,7 +151,7 @@ def simple_key_view(request):
 @vary_on_headers('Host')
 @cache_control(max_age=60 * 60)
 @cache_page(60 * 60)
-def pilegroup_view(request, pilegroup_slug):
+def level2(request, key, pilegroup_slug):
     pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
 
     partner = which_partner(request)
@@ -161,11 +163,12 @@ def pilegroup_view(request, pilegroup_slug):
         images = _images_with_copyright_holders(
             models.ContentImage.objects.filter(pileimage__pile=pile)
             .select_related('image_type'))
-        piles.append((pile, images, get_simple_url(pilegroup, pile)))
+        piles.append((pile, images, get_simple_url(key, pilegroup, pile)))
 
     return render_to_response('simplekey/pilegroup.html', {
             'partner_site': short_name,
             'subgroups_list_page': subgroups_list_page,
+            'key': key,
             'pilegroup': pilegroup,
             'piles': piles
             }, context_instance=RequestContext(request))

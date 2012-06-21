@@ -26,7 +26,7 @@
             <div id="main">
                 <div id="breadcrumb">
                     <p>You are here: <a href="{% url simplekey %}">Simple Key</a>
-                    &gt; <a href="{% url simplekey-pilegroup pilegroup.slug %}"
+                    &gt; <a href="{% url level2 key pilegroup.slug %}"
                         >{{ pilegroup.friendly_title|lower|capfirst }}</a>
                     &gt; <span>{{ pile.friendly_title }}</span></p>
                 </div>

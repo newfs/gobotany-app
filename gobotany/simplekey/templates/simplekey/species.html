@@ -39,7 +39,7 @@
                     <p class="nogloss">You are here:
                     <a href="{% url simplekey %}">{{ key|title }} Key</a>
                     &gt;
-                    <a href="{% url simplekey-pilegroup pilegroup.slug %}"
+                    <a href="{% url level2 key pilegroup.slug %}"
                         >{{ pilegroup.friendly_title|lower|capfirst }}</a>
                     &gt;
                     <a href="{% if last_plant_id_url and pile.slug in last_plant_id_url %}{{ last_plant_id_url }}/{% else %}{% url level3 key pilegroup.slug pile.slug %}{% endif %}"
