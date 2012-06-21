@@ -36,6 +36,11 @@ define([
     };
 
     $(document).ready(function() {
+        // On small screens, skip sidebar resizing entirely.
+        if ($(window).width() <= 600) {
+            return;
+        }
+
         // Set the initial sidebar height.
         sidebar_set_height();
         $('#main img').load(function() {

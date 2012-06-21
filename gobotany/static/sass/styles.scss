@@ -1879,6 +1879,13 @@ div.section.namap div.trans {
     font-family: $headings-font;
 }
 
+#plant-id #sidebar {
+    height: 1639px;
+}
+#taxon #sidebar {
+    height: 1116px;
+}
+
 /* Help section: sidebar, heading, list styles */
 
 #getting-started #sidebar, #about #sidebar {
@@ -2754,13 +2761,16 @@ img.char-value-larger {
     #home #banner + .three-col {
         padding-top: 380px;
     }
+    #sidebar {
+        width: 300px;
+    }
 }
 @media only screen and (min-width: 401px) and (max-width: 600px) {
     body {
         padding-top: 75px;
     }
     body, .container, .top-level header h1 a, #home #banner #overlay,
-    #home #banner > img {
+    #home #banner > img, #sidebar {
         width: 480px;
     }
     .top-level header {
@@ -2782,6 +2792,9 @@ img.char-value-larger {
     }
     #home #banner + .three-col {
         padding-top: 400px;
+    }
+    #sidebar {
+        width: 460px;
     }
 }
 /* These styles are common to both smartphone widths */
@@ -2957,6 +2970,13 @@ img.char-value-larger {
         float: right;
         margin-left: 230px;
         width: 355px;
+    }
+    #sidebar, #getting-started #sidebar, #about #sidebar,
+    #advanced-map #sidebar, #plant-id #sidebar, #glossary #sidebar,
+    #video-help-topics #sidebar, #taxon #sidebar {
+        border-bottom: 1px solid #c3d941;
+        height: auto;
+        margin-left: 10px;
     }
 }
 
