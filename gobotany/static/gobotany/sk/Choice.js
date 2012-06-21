@@ -10,6 +10,7 @@ define([
     'dojo/query',
     'dojo/dom-construct',
     'dojo/NodeList-dom',
+    'dojo/NodeList-html',
     'dojo/on',
     'bridge/jquery',
     'bridge/tooltipsy',
@@ -17,8 +18,8 @@ define([
     'gobotany/utils',
     'simplekey/glossarize',
     'simplekey/App3'
-], function(declare, connect, lang, event, query, domConstruct, nodeListDom, on,
-    $, tooltipsy, _, utils, glossarize, App3) {
+], function(declare, connect, lang, event, query, domConstruct, nodeListDom,
+    nodeListHtml, on, $, tooltipsy, _, utils, glossarize, App3) {
 
 /*
  * Helper functions
