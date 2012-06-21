@@ -1,8 +1,5 @@
 dojo.provide('gobotany.sk.family');
 
-dojo.require('dojox.data.JsonRestStore');
-
-dojo.require('gobotany.sk.glossary');
 dojo.require('gobotany.sk.photo');
 
 gobotany.sk.family.init = function(family_slug) {
@@ -27,11 +24,5 @@ gobotany.sk.family.init = function(family_slug) {
                 }
             });
         });
-    });
-
-    // Make glossary highlights appear where appropriate throughout the page.
-    var glossarizer = gobotany.sk.glossary.Glossarizer();
-    dojo.query('.description').forEach(function(node) {
-        glossarizer.markup(node);
     });
 };

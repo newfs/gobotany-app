@@ -60,20 +60,14 @@
 
 
                 <div id="species-images">
-                    <div class="scrollingHotSpotLeft"></div>
-		            <div class="scrollingHotSpotRight"></div>
-		            <div class="scrollWrapper">
-                        <div class="scrollableArea">
-                            {% for i in images %}
-                                <a href="{{ i.image_medium }}"
-                                    {% if forloop.counter == 1 %}id="startimage"{% endif %}
-                                    title="{% photo_credit i scientific_name %}">
-                                    <img src="{{ i.thumb_large }}"
-                                        alt="{% photo_credit i scientific_name %}">
-                                </a>
-                            {% endfor %}
-			            </div>
-		            </div>
+                    {% for i in images %}
+                        <a href="{{ i.image_medium }}"
+                            {% if forloop.counter == 1 %}id="startimage"{% endif %}
+                            title="{% photo_credit i scientific_name %}">
+                            <img src="{{ i.thumb_large }}"
+                                alt="{% photo_credit i scientific_name %}">
+                        </a>
+                    {% endfor %}
                 </div>
                 <div class="clearit"></div>
 
@@ -155,7 +149,15 @@
                 </ul>
                 
                 <h3>Wetland Plant?</h3>
-                <p>{{ taxon.wetland_status_text }}</p>
+                {% if taxon.wetland_indicator_code %}
+                    <p>
+                        {{ taxon.wetland_indicator_text }}
+                        (Wetland indicator code:
+                        {{ taxon.wetland_indicator_code }})
+                    </p>
+                {% else %}
+                    <p>Not classified</p>
+                {% endif %}
                 
                 <h3>New England Distribution and Conservation Status</h3>
                 <table>
@@ -271,11 +273,7 @@
 
                 <div class="section">
                     <h5>Native to North America?</h5>
-                    {% if taxon.north_american_native %}
-                        Yes.
-                    {% else %}
-                        No.
-                    {% endif %}
+                    <p>{{ native_to_north_america }}</p>
                 </div>
 
                 {% if taxon.lookalikes.all|length > 0 %}
@@ -294,11 +292,11 @@
                 {% if synonyms|length > 0 %}
                 <div class="section">
                     <h5>Synonyms:</h5>
-                    <p>
-                        {% for synonym in synonyms %}
-                            {{ synonym.full_name|italicize_plant|safe }}{% if not forloop.last %},{% endif %}
-                        {% endfor %}
-                    </p>
+                    <ul>
+                    {% for synonym in synonyms %}
+                        <li>{{ synonym.full_name|italicize_plant|safe }}</li>
+                    {% endfor %}
+                    </ul>
                 </div>
                 {% endif %}
                 {% endwith %}
@@ -318,7 +316,7 @@
                 {% if taxon.variety_notes %}
                 <div class="section">
                     <h5>Notes on Subspecies and Varieties:</h5>
-                    <p>{{ taxon.variety_notes|safe }}</p>
+                    <p>{{ taxon.variety_notes|italicize_plant|safe }}</p>
                 </div>
                 {% endif %}
                 

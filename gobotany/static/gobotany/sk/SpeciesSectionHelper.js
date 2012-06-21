@@ -1,45 +1,33 @@
-dojo.provide('gobotany.sk.SpeciesSectionHelper');
-
-dojo.require('dojo.hash');
-dojo.require('dojo.html');
-dojo.require('dojo.NodeList-fx');
-dojo.require('dojox.data.JsonRestStore');
-dojo.require('gobotany.utils');
+define([
+    'simplekey/results_photo_menu',
+    'gobotany/utils',
+    'dojo/hash',
+    'dojo/html',
+    'dojo/NodeList-fx',
+    'dijit/_base/place'
+], function(results_photo_menu, utils) {
 
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
-    plant_preview_characters: null,  // set by results.js during page load
-
-    constructor: function(results_helper) {
+    constructor: function(pile_slug, plant_divs_ready) {
         'use strict';
         // summary:
         //   Manages the species section of the results page
-        // results_helper:
-        //   An instance of gobotany.sk.results.ResultsHelper
 
         this.PHOTOS_VIEW = 'photos';
         this.LIST_VIEW = 'list';
         this.animation = null;
+        this.pile_slug = pile_slug;
         this.plant_list = dojo.query('#main .plant-list')[0];
         this.plant_data = [];
         this.plant_divs = [];
         this.plant_divs_displayed_yet = false;
-        this.query_results = [];  // list of speciecs info objects
-        this.results_helper = results_helper;
-        this.scroll_event_handle = null;
+        this.plant_divs_ready = plant_divs_ready;
         this.current_view = this.PHOTOS_VIEW;
 
-        simplekey_resources.pile_species(this.results_helper.pile_slug).done(
+        simplekey_resources.pile_species(pile_slug).done(
             $.proxy(this, 'create_plant_divs')
         );
-        dojo.subscribe('/filters/query-result', this, 'on_query_result');
-
-        // Call the lazy image loader when the page loads.
-        this.lazy_load_images();
-
-        // Assign other events that will trigger the lazy image loader,
-        // with timers so as not to suffer a quick succession of multiple
-        // event firings.
 
         // No delay for scrolling allows images to load during the pressing
         // and holding of a cursor key.
@@ -60,32 +48,12 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         // Wire up tabs and a link for toggling between photo and list views.
         dojo.query('#results-tabs a').onclick(this, this.toggle_view);
 
-        var view_toggle_link = dojo.query('.list-all a')[0];
-        dojo.connect(view_toggle_link, 'onclick', this, this.toggle_view);
-
         // Set the initial view for showing the results.
         var hash_object = dojo.queryToObject(dojo.hash());
         if (hash_object._view !== undefined) {
             this.current_view = hash_object._view;
             this.set_navigation_to_view(this.current_view);
         }
-    },
-
-    on_query_result: function(message) {
-        'use strict';
-
-        // Unbind the prior scroll event handler
-        if (this.scroll_event_handle)
-            dojo.disconnect(this.scroll_event_handle);
-
-        // Save the results.
-        this.query_results = message.species_list;
-
-        // Display the results.
-        this.display_results();
-
-        // Save the current state of our filters.
-        this.results_helper.save_filter_state();
     },
 
     default_image: function(species) {
@@ -127,7 +95,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         return list;
     },
 
-    connect_plant_preview_popup: function(plant_link, plant, pile_slug) {
+    connect_plant_preview_popup: function(plant_link, plant) {
         'use strict';
 
         dojo.connect(plant_link, 'onclick', this, function(event) {
@@ -143,19 +111,19 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             dojo.html.set(dojo.query('#plant-detail-modal h3')[0], name);
 
             // Call the API to get more information.
-            var taxon_url = API_URL + 'taxon/' + plant.scientific_name + '/';
-            var taxon_store = new dojox.data.JsonRestStore({
-                target: taxon_url});
-            taxon_store.fetch({
-                onComplete: dojo.hitch(this, function(taxon) {
+
+            var d1 = simplekey_resources.taxon_info(plant.scientific_name);
+            var d2 = simplekey_resources.pile(this.pile_slug);
+            $.when(d1, d2).done(
+                $.proxy(function(taxon, pile_info) {
                     // Fill in Facts About.
                     dojo.html.set(dojo.query(
                         '#plant-detail-modal div.details p.facts')[0],
                         taxon.factoid);
 
                     // Fill in Characteristics.
-		            var MAX_CHARACTERS = 6;
-                    var characters = this.plant_preview_characters;
+                    var MAX_CHARACTERS = 6;
+                    var characters = pile_info.plant_preview_characters;
                     var characters_html = '';
                     var characters_displayed = 0;
                     for (var i = 0; i < characters.length; i++) {
@@ -173,14 +141,14 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                                 if (ppc.value_type === 'LENGTH') {
                                     var min = character_value[0];
                                     var max = character_value[1];
-                                    var min_mm = gobotany.utils.convert(
+                                    var min_mm = utils.convert(
                                         min, ppc.unit, 'mm');
-                                    var max_mm = gobotany.utils.convert(
+                                    var max_mm = utils.convert(
                                         max, ppc.unit, 'mm');
                                     display_value =
-                                        gobotany.utils.pretty_length(
+                                        utils.pretty_length(
                                         ppc.unit, min_mm, false) + '&#8211;' +
-                                        gobotany.utils.pretty_length(
+                                        utils.pretty_length(
                                         ppc.unit, max_mm);
                                 }
                                 else {
@@ -266,18 +234,12 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                         options: {onFinish: dojo.hitch(this, function() {
                             var $sb = $('#sb-container');
                             var $children = $sb.find('p, dt, dd, li');
-                            var markup = dojo.hitch(
-                                this.results_helper.filter_section
-                                    .glossarizer, 'markup');
-
                             $sb.find('.img-container').scrollable();
-                            for (var i = 0; i < $children.length; i++) {
-                                markup($children[i]);
-                            }
+                            glossarize($children);
                         })}
                     });
-                }
-            )});
+                }, this)
+            );
         });
     },
 
@@ -288,18 +250,15 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         var CURRENT_TAB_CLASS = 'current';
         var photos_tab = dojo.query('#results-tabs li:first-child a')[0];
         var list_tab = dojo.query('#results-tabs li:last-child a')[0];
-        var view_type = dojo.query('.list-all a span.view-type')[0];
         var photos_show_menu = dojo.query('.show')[0];       
 
         if (view === this.PHOTOS_VIEW) {
             dojo.removeClass(list_tab, CURRENT_TAB_CLASS);
             dojo.addClass(photos_tab, CURRENT_TAB_CLASS);
-            view_type.innerHTML = 'a list of';
             dojo.removeClass(photos_show_menu, HIDDEN_CLASS);
         } else if (view === this.LIST_VIEW) {
             dojo.removeClass(photos_tab, CURRENT_TAB_CLASS);
             dojo.addClass(list_tab, CURRENT_TAB_CLASS);
-            view_type.innerHTML = 'photos for';
             dojo.addClass(photos_show_menu, HIDDEN_CLASS);
         } else {
            console.log('Unknown view name: ' + view);
@@ -318,17 +277,18 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         var CURRENT_TAB_CLASS = 'current';
         var photos_tab = dojo.query('#results-tabs li:first-child a')[0];
         var list_tab = dojo.query('#results-tabs li:last-child a')[0];
-        var view_type = dojo.query('.list-all a span.view-type')[0];
         var photos_show_menu = dojo.query('.show')[0];
 
         if (this.current_view === this.PHOTOS_VIEW) {
+            App3.taxa.set('show_list', true);
             this.current_view = this.LIST_VIEW;
         } else {
+            App3.taxa.set('show_list', false);
             this.current_view = this.PHOTOS_VIEW;
         }
 
         this.set_navigation_to_view(this.current_view);
-        this.display_results();
+        this.display_results(App3.filtered_sorted_taxadata);
     },
 
     get_number_of_rows_to_span: function(items, start) {
@@ -428,11 +388,18 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     },
 
     create_plant_divs: function(species_list) {
+        // Sort the species so the plant divs are created in the correct
+        // initial order for display in the UI, where they are to appear
+        // sorted alphabetically by scientific name and grouped by genus.
+        var sorted_species_list = species_list.sort(function(a, b) {
+            return a.scientific_name < b.scientific_name ? -1 : 1;
+        });
+
         var WIDTH = 160 + 18;
         var HEIGHT = 210 + 4;
 
-        for (var i = 0; i < species_list.length; i++) {
-            var species = species_list[i];
+        for (var i = 0; i < sorted_species_list.length; i++) {
+            var species = sorted_species_list[i];
 
             var plant = dojo.create('div', {'class': 'plant'},
                                     this.plant_list);
@@ -444,7 +411,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             dojo.create('div', {'class': 'frame'}, plant_link);
 
             var image_container = dojo.create('div', {
-                'class': 'img-container'
+                'class': 'plant-img-container'
             }, plant_link);
             var image = dojo.create('img', {'alt': ''}, image_container);
             dojo.attr(image, 'x-plant-id', species.scientific_name);
@@ -467,13 +434,12 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             // Connect a "plant preview" popup. Pass species as
             // context in the connect function, which becomes 'this'
             // to pass along as the variable plant.
-            var pile_slug = this.results_helper.pile_slug;
-            this.connect_plant_preview_popup(plant_link, species, pile_slug);
+            this.connect_plant_preview_popup(plant_link, species);
 
             this.plant_data.push(species);
             this.plant_divs.push(plant);
         }
-        this.display_results();  // now that there are things to display
+        this.plant_divs_ready.resolve();
     },
 
     display_in_photos_view: function(items) {
@@ -574,7 +540,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.animation.play();
     },
 
-    display_results: function() {
+    display_results: function(query_results) {
         'use strict';
 
         if (this.animation !== null) {
@@ -593,23 +559,42 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         // Display the results in the appropriate tab view.
         if (this.current_view === this.LIST_VIEW) {
-            this.display_in_list_view(this.query_results);
-        }
-        else {
-            this.display_in_photos_view(this.query_results);
+            this.display_in_list_view(query_results);
+        } else {
+            this.display_in_photos_view(query_results);
         }
 
         // Show the "See a list" (or "See photos") link.
-        var see_link = dojo.query('.list-all')[0];
-        dojo.removeClass(see_link, 'hidden');
+        var see_link = dojo.query('.list-all').removeClass(see_link, 'hidden');
 
         if (this.current_view === this.PHOTOS_VIEW) {
-            // Signal the "Show:" menu to scrape our data to discover what
-            // kinds of thumbnail images are available.
-            dojo.publish('results_loaded',
-                [{filter_manager: this.results_helper.filter_manager,
-                  query_results: this.query_results}]);
+            this.populate_image_types(query_results);
             this.lazy_load_images();
+        }
+    },
+
+    populate_image_types: function(query_results) {
+        var menu_config = results_photo_menu[this.pile_slug];
+
+        var image_list = _.flatten(_.pluck(query_results, 'images'));
+        var all_image_types = _.uniq(_.pluck(image_list, 'type'));
+        var image_types = _.difference(all_image_types, menu_config['omit']);
+
+        // Add image types to the <select> and set the default value.
+        image_types.sort();
+
+        if (_.isEqual(App3.image_types.get('content'), image_types))
+            // Avoid generating events when nothing has changed.
+            return;
+
+        App3.image_types.set('content', image_types);
+
+        var old = App3.get('image_type');
+        if (image_types.indexOf(old) === -1) {
+            var default_type = menu_config['default'];
+            if (image_types.indexOf(default_type) === -1)
+                default_type = image_types[0];
+            App3.set('image_type', default_type);
         }
     },
 
@@ -694,13 +679,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 dojo.declare('gobotany.sk.SpeciesCounts', null, {
     animation: null,
 
-    constructor: function() {
-        dojo.subscribe('/filters/query-result', this, '_update_counts');
-    },
-
-    _update_counts: function(args) {
-        var count_str = String(args.species_list.length);
-        dojo.query('.species-count').html(count_str);
+    _update_counts: function(species_list) {
+        App3.taxa.set('len', species_list.length);
 
         if (this.animation !== null)
             this.animation.stop();
@@ -718,3 +698,7 @@ dojo.declare('gobotany.sk.SpeciesCounts', null, {
         this.animation.play();
     }
 });
+
+return gobotany.sk.SpeciesSectionHelper;
+});
+

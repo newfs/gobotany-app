@@ -15,7 +15,6 @@ from django.core import management
 management.setup_environ(settings)
 
 from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import default_storage
 from django.db import connection, transaction
 from django.template.defaultfilters import slugify
@@ -202,7 +201,19 @@ class Importer(object):
 
     @transaction.commit_on_success
     def _import_wetland_indicators(self, db, wetland_indicators_csv):
-        return  # This is a stub for a future ember-branch function.
+        log.info('Setting up wetland indicators')
+        wetland_indicator = db.table('core_wetlandindicator')
+
+        for row in open_csv(wetland_indicators_csv):
+            wetland_indicator.get(
+                code = row['code'],
+                ).set(
+                name = row['name'],
+                friendly_description = row['friendly_description'],
+                sequence = int(row['sequence']),
+                )
+
+        wetland_indicator.save()
 
     @transaction.commit_on_success
     def _import_partner_sites(self, db):
@@ -275,40 +286,9 @@ class Importer(object):
 
         habitat.save()
 
-    def _get_wetland_status(self, status_code):
-        '''
-        Return plain language text for a wetland status code.
-        '''
-        status = 'not classified'
-        if status_code == 'FAC' or status_code == 'FAC+' or \
-           status_code == 'FAC-':
-            status = 'Occurs in wetlands or uplands.'
-        elif status_code == 'FACU':
-            status = ('Usually occurs in uplands, but occasionally occurs '
-                      'in wetlands.')
-        elif status_code == 'FACU+':
-            status = 'Occurs most often in uplands; rarely in wetlands.'
-        elif status_code == 'FACU-':
-            status = ('Usually occurs in uplands, but occurs in wetlands '
-                      'more than occasionally.')
-        elif status_code == 'FACW':
-            status = ('Usually occurs in wetlands, but occasionally occurs '
-                      'in non-wetlands.')
-        elif status_code == 'FACW+':
-            status = 'Occurs most often in wetlands; rarely in non-wetlands.'
-        elif status_code == 'FACW-':
-            status = ('Occurs in wetlands but also occurs in uplands more '
-                      'than occasionally.')
-        elif status_code == 'OBL':
-            status = 'Occurs only in wetlands.'
-        elif status_code == 'UPL':
-            status = 'Never occurs in wetlands.'
-        return status
-
 
     def _get_state_status(self, state_code, distribution,
-                          conservation_status_code=None,
-                          is_north_american_native=True, is_invasive=False,
+                          conservation_status_code=None, is_invasive=False,
                           is_prohibited=False):
         status = ['absent']
 
@@ -378,7 +358,6 @@ class Importer(object):
             prohibited = (state in prohibited_states)
             states_status[state] = self._get_state_status(state, distribution,
                 conservation_status_code=conservation_status,
-                is_north_american_native=taxon.north_american_native,
                 is_invasive=invasive, is_prohibited=prohibited)
 
         return states_status
@@ -474,6 +453,15 @@ class Importer(object):
                 log.error('Expected delimiter "%s" not found taxa.csv '
                           'column: %s' % (EXPECTED_DELIMITER, column))
 
+        # Get the list of wetland indicator codes and associated text.
+        # These values will be added to the taxon records as needed.
+        # TODO: Consider making the taxon model just have a foreign key
+        # relation to WetlandIndicator instead of a code and text field,
+        # which requires some knowledge of how to import this with the
+        # current approach of bulk loading and updating tables.
+        wetland_indicators = dict(models.WetlandIndicator.objects.values_list(
+            'code', 'friendly_description'))
+
         # Start import.
         family_map = db.map('core_family', 'slug', 'id')
         genus_map = db.map('core_genus', 'slug', 'id')
@@ -534,6 +522,37 @@ class Importer(object):
                     name=genus_name,
                     )
 
+            # Get the wetland indicator category if present.
+            # Only one wetland indicator per plant is imported because
+            # wetland indicator categories represent non-overlapping,
+            # mutually exclusive probability ranges. If the taxon record
+            # has more than one indicator, the first is used.
+            wetland_code = None
+            wetland_text = None
+            if (row['wetland_status'] != '' and
+                row['wetland_status'].lower() != 'unclassified'):
+                wetland_code = row['wetland_status'].split('|')[0].strip()
+                wetland_text = wetland_indicators[wetland_code]
+
+            # A plant can be marked as both native to North America and
+            # introduced. This is for some native plants that are also
+            # native to places elsewhere in the world, or that have
+            # varieties native to North America as well as varieties native
+            # elsewhere, or that have cultivated varieties that may have
+            # escaped. These are marked both Yes and No in the source data.
+            native_data_value = row['native_to_north_america'].lower()
+            north_american_native = None
+            if len(native_data_value) > 0:
+                if 'yes' in native_data_value:
+                    north_american_native = True
+                else:
+                    north_american_native = False
+            north_american_introduced = None
+            if len(native_data_value) > 0:
+                if 'no' in native_data_value:
+                    north_american_introduced = True
+                else:
+                    north_american_introduced = False
 
             taxon = taxon_table.get(
                 scientific_name=row['scientific__name'],
@@ -544,11 +563,10 @@ class Importer(object):
                 habitat=row['habitat'],
                 habitat_general='',
                 factoid=row['factoid'],
-                wetland_status_code=row['wetland_status'],
-                wetland_status_text=self._get_wetland_status(
-                    row['wetland_status']),
-                north_american_native=(
-                    'yes' in row['native_to_north_america'].lower()),
+                wetland_indicator_code=wetland_code,
+                wetland_indicator_text=wetland_text,
+                north_american_native=north_american_native,
+                north_american_introduced=north_american_introduced,
                 distribution=row['distribution'],
                 invasive_in_states=row['invasive_in_which_states'],
                 sale_prohibited_in_states=row['prohibited_from_sale_states'],
@@ -705,9 +723,6 @@ class Importer(object):
 
         genus_table.save()
 
-    # TODO: can we remove this import function and the model PlantNames?
-    # It claims to be used by MyPlants but is a completely unindexed table.
-
     @transaction.commit_on_success
     def _import_plant_names(self, taxaf):
         print >> self.logfile, 'Setting up plant names in file: %s' % taxaf
@@ -859,27 +874,12 @@ class Importer(object):
 
     @transaction.commit_on_success
     def _import_assign_character_values_to_piles(self, db):
-        """Once all character values (including those for length characters)
-        have been created, ensure they are assigned to their respective
-        pile character-values collections.
+        """Placeholder function.
+
+        We will be able to remove this once the 'ember' branch is merged
+        back into trunk, at which point we can remove the call to this
+        function from the gobotany-deploy/scripts/import-data.sh file.
         """
-        cursor = connection.cursor()
-        cursor.execute("DELETE FROM core_pile_character_values;")
-        for suffix, pile_name in pile_suffixes.items():
-            cursor.execute("""
-
-                INSERT INTO core_pile_character_values
-                  (pile_id, charactervalue_id)
-                  SELECT p.id, cv.id
-                    FROM core_pile AS p,
-                      core_character AS c JOIN
-                      core_charactervalue AS cv
-                        ON (c.id = cv.character_id)
-                    WHERE p.name = %s
-                      AND SUBSTRING(c.short_name FROM '..$') = %s;
-
-                """, (pile_name, suffix))
-        connection.commit()
 
 
     def _create_character_name(self, short_name):
@@ -906,8 +906,16 @@ class Importer(object):
     @transaction.commit_on_success
     def _import_characters(self, db, filename):
         log.info('Loading characters from file: %s', filename)
+
         charactergroup_table = db.table('core_charactergroup')
         character_table = db.table('core_character')
+
+        # Create a pile_map {'_ca': 8, '_nm': 9, ...}
+        pile_map1 = db.map('core_pile', 'slug', 'id')
+        pile_map = dict(('_' + suffix, pile_map1[slugify(name)])
+                        for (suffix, name) in pile_suffixes.iteritems()
+                        if slugify(name) in pile_map1  # for tests.py
+                        )
 
         for row in open_csv(filename):
 
@@ -926,6 +934,9 @@ class Importer(object):
             else:
                 value_type = 'TEXT'
                 unit = ''
+
+            suffix = character_name[-3:]  # '_ca', etc.
+            pile_id = pile_map.get(suffix)
 
             charactergroup = charactergroup_table.get(
                 name=row['character_group'],
@@ -950,6 +961,7 @@ class Importer(object):
                 name=name,
                 friendly_name=friendly_name,
                 character_group_id=charactergroup.name,
+                pile_id=pile_id,
                 value_type=value_type,
                 unit=unit,
                 ease_of_observability=eoo,
@@ -1002,10 +1014,8 @@ class Importer(object):
     @transaction.commit_on_success
     def _import_character_values(self, db, filename):
         log.info('Loading character values from: %s', filename)
-        pile_map = db.map('core_pile', 'name', 'id')
         character_map = db.map('core_character', 'short_name', 'id')
         charactervalue_table = db.table('core_charactervalue')
-        pile_character_values_table = db.table('core_pile_character_values')
 
         for row in open_csv(filename):
 
@@ -1028,7 +1038,6 @@ class Importer(object):
             except KeyError:
                 log.error('Bad character: %r', short_name)
                 continue
-            pile_title = pile_suffixes[pile_suffix]
 
             charactervalue_table.get(
                 character_id=character_id,
@@ -1037,17 +1046,9 @@ class Importer(object):
                 friendly_text=self._clean_up_html(row['friendly_text'])
                 )
 
-            pile_character_values_table.get(
-                pile_id=pile_map[pile_title],
-                charactervalue_id=(character_id, value_str),
-                )
-
         charactervalue_table.save()
         charactervalue_map = db.map(
             'core_charactervalue', ('character_id', 'value_str'), 'id')
-        pile_character_values_table.replace(
-            'charactervalue_id', charactervalue_map)
-        pile_character_values_table.save(delete_old=True)
 
     @transaction.commit_on_success
     def _import_character_value_images(self, db, csvfilename):
@@ -1400,7 +1401,6 @@ class Importer(object):
 
         charactervalue_table = db.table('core_charactervalue')
         taxoncharactervalue_table = db.table('core_taxoncharactervalue')
-        pile_character_values_table = db.table('core_pile_character_values')
 
         for row in open_csv(taxaf):
 
@@ -1455,12 +1455,6 @@ class Importer(object):
                     friendly_text=friendly_text,
                     )
 
-                for pile_id in pile_ids:
-                    pile_character_values_table.get(
-                        pile_id=pile_id,
-                        charactervalue_id=(character_id, value_str),
-                        )
-
                 taxoncharactervalue_table.get(
                     taxon_id=taxon_id,
                     character_value_id=(character_id, value_str),
@@ -1474,9 +1468,6 @@ class Importer(object):
 
         taxoncharactervalue_table.replace('character_value_id', cv_map)
         taxoncharactervalue_table.save()
-
-        pile_character_values_table.replace('charactervalue_id', cv_map)
-        pile_character_values_table.save()
 
 
     def _create_plant_preview_characters(self, pile_name,
@@ -1673,10 +1664,10 @@ class Importer(object):
             text='this is the blurb called getting_started')
         help_page.blurbs.add(blurb)
 
-        VIDEO_INTRO   = '4zwyQiUbJv0'
+        GETTING_STARTED_YOUTUBE_ID = 'hdC0I4FLR7o'
         blurb, created = Blurb.objects.get_or_create(
             name='getting_started_youtube_id',
-            text=VIDEO_INTRO)
+            text=GETTING_STARTED_YOUTUBE_ID)
         help_page.blurbs.add(blurb)
 
         help_page.save()

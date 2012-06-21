@@ -1,96 +1,135 @@
+/*** Go Botany master styles file ***
+ Please edit only the .scss source and use Compass to auto-generate the .css.
+ The generated .css is kept in the repository to allow easy deployment.
+ */
+/* line 9, ../sass/styles.scss */
 body, header {
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
 }
 
 /* Claro fixes: fix some things overridden by the Claro Dijit theme styles */
+/* line 14, ../sass/styles.scss */
 ol li, ul li {
-    line-height: inherit;
+  line-height: inherit;
 }
-.claro {
-   	color: #000;
-    font-family: Verdana, Geneva, sans-serif;
-	font-size: 12px;
-}
-.claro .dijit {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 15px;
-}
-/* end Claro fixes */
 
+/* line 17, ../sass/styles.scss */
+.claro {
+  color: #000;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 12px;
+}
+
+/* line 22, ../sass/styles.scss */
+.claro .dijit {
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+}
+
+/* end Claro fixes */
 /* Global page structure */
+/* line 30, ../sass/styles.scss */
 header, .content, footer {
-    width: 100%;
+  width: 100%;
 }
+
+/* line 33, ../sass/styles.scss */
 .container {
-    width: 960px;
-    padding: 0 10px;
-    margin: 0 auto;
+  width: 960px;
+  padding: 0 10px;
+  margin: 0 auto;
 }
+
+/* line 38, ../sass/styles.scss */
 header h1 a {
-    display: block;
-    text-indent: -9000px;
+  display: block;
+  text-indent: -9000px;
 }
+
+/* line 42, ../sass/styles.scss */
 header h2 {
-    float: right;
+  float: right;
 }
+
+/* line 45, ../sass/styles.scss */
 header h2 a {
-    display: block;
-    text-indent: -9000px;
+  display: block;
+  text-indent: -9000px;
 }
+
+/* line 49, ../sass/styles.scss */
 nav {
-    height: 40px;
-    padding: 0 0 0 29px;
-    background: url(/static/images/layout/nav-toplevel.png) no-repeat;
+  height: 40px;
+  padding: 0 0 0 29px;
+  background: url(/static/images/layout/nav-toplevel.png) no-repeat;
 }
+
+/* line 54, ../sass/styles.scss */
 nav li {
-    display: block;
-    float: left;
-    font-size: 14px;
-    margin: 0 13px 0 0;
-    padding: 0;
+  display: block;
+  float: left;
+  font-size: 14px;
+  margin: 0 13px 0 0;
+  padding: 0;
 }
+
+/* line 61, ../sass/styles.scss */
 nav li.last {
-    margin: 0;
+  margin: 0;
 }
+
+/* line 64, ../sass/styles.scss */
 nav a {
-    color: #fff;
-    display: block;
-    height: 35px;
-    padding: 5px 10px 0;
+  color: #fff;
+  display: block;
+  height: 35px;
+  padding: 5px 10px 0;
 }
+
+/* line 70, ../sass/styles.scss */
 nav a:hover {
-    background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
-    text-decoration: none;
+  background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
+  text-decoration: none;
 }
+
+/* line 74, ../sass/styles.scss */
 nav #search {
-    background: #fff url(/static/images/layout/search-left.png) left center no-repeat;
-    float: right;
-    height: 20px;
-    margin: 4px 4px 0 0;
-    padding: 0 0 0 11px;
+  background: white url(/static/images/layout/search-left.png) left center no-repeat;
+  float: right;
+  height: 20px;
+  margin: 4px 4px 0 0;
+  padding: 0 0 0 11px;
 }
+
+/* line 81, ../sass/styles.scss */
 nav #search input {
-    background: #fff;
-    border: 0;
-    color: #838383;
-    height: 20px;
-    width: 219px;
+  background: #fff;
+  border: 0;
+  color: #838383;
+  height: 20px;
+  width: 219px;
 }
+
+/* line 88, ../sass/styles.scss */
 nav #search button {
-    background: #508e31 url(/static/images/layout/search-btn.png) 0 0 no-repeat;
-    cursor: pointer;
-    display: block;
-    float: right;
-    height: 20px;
-    margin: 0;
-    padding: 0;
-    text-indent: -9000px;
-    width: 43px;
+  background: #508e31 url(/static/images/layout/search-btn.png) 0 0 no-repeat;
+  cursor: pointer;
+  display: block;
+  float: right;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  text-indent: -9000px;
+  width: 43px;
 }
+
+/* line 99, ../sass/styles.scss */
 nav #search button:active {
-    background-position: 0 -20px;
+  background-position: 0 -20px;
 }
+
 /* Active navigation state */
+/* line 109, ../sass/styles.scss */
 #plant-id li.plant-id a,
 #plant-id-2 li.plant-id a,
 #plant-id-3 li.plant-id a,
@@ -98,902 +137,1320 @@ nav #search button:active {
 #advanced-id li.advanced-id a,
 #teaching-tools li.teaching-tools a,
 #about li.about a {
-	background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;	
+  background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
 }
 
+/* line 117, ../sass/styles.scss */
 #plantshare #sidebar a:hover,
 #teaching-tools #sidebar a:hover,
 #advanced-id #sidebar a:hover,
 #privacy-policy #sidebar a:hover,
 #terms-of-use #sidebar a:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 
-#home li.home a, #home li a:hover {
-	background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent;	
+/* line 121, ../sass/styles.scss */
+#home header li.home a, #home header li a:hover {
+  background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent;
 }
 
-footer {
-    height: 124px;
+/* Page footer */
+/* line 127, ../sass/styles.scss */
+footer, footer div.container {
+  height: 124px;
 }
+
+/* line 130, ../sass/styles.scss */
+footer div div {
+  height: 88px;
+}
+
+/* line 133, ../sass/styles.scss */
 footer p {
-	margin: 0 0 10px 0;
-	font-size: 9px;	
+  margin: 0 0 10px 0;
+  font-size: 9px;
 }
-footer div.three-col {
-	width: 305px;
-	height: auto;
-	padding: 18px 0;
-	margin: 0 20px 0 0;
-	background: none;	
+
+/* line 137, ../sass/styles.scss */
+footer .publisher, footer .navigation {
+  background: none;
+  float: left;
+  margin: 0 20px 0 0;
+  padding: 18px 0;
+  width: 305px;
 }
-footer div.three-col.last {
-	padding: 18px 0;	
+
+/* line 144, ../sass/styles.scss */
+footer .navigation {
+  padding-left: 10px;
 }
+
+/* line 147, ../sass/styles.scss */
+footer .support {
+  margin-right: 0;
+  padding: 18px 0;
+}
+
+/* line 151, ../sass/styles.scss */
 footer a {
-	color: #508e31;	
+  color: #000;
 }
 
+/* line 154, ../sass/styles.scss */
+footer a:hover {
+  text-decoration: none;
+}
+
+/* line 157, ../sass/styles.scss */
+footer a[href] {
+  color: #508e31;
+}
+
+/* line 160, ../sass/styles.scss */
+footer a[href]:hover {
+  text-decoration: underline;
+}
+
+/* line 163, ../sass/styles.scss */
+footer ul {
+  font-size: 9px;
+  list-style-type: none;
+}
+
+/* line 167, ../sass/styles.scss */
+footer li {
+  display: inline;
+}
+
+/* line 170, ../sass/styles.scss */
+footer li:after {
+  content: " |";
+}
+
+/* line 173, ../sass/styles.scss */
+footer li:last-child:after {
+  content: none;
+}
+
+/* line 176, ../sass/styles.scss */
 footer h6 {
-	font-family: Verdana, Geneva, sans-serif;
-	font-size: 11px;
-}
-footer .nsf-logo {
-	float: left;
-	margin: 0 10px 0 0;	
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 11px;
 }
 
+/* line 180, ../sass/styles.scss */
+footer .nsf-logo {
+  float: left;
+  margin: 0 10px 0 7px;
+}
 
 /* Global classes */
-
+/* line 188, ../sass/styles.scss */
 .left {
-    float: left;
+  float: left;
 }
 
+/* line 192, ../sass/styles.scss */
 .right {
-    float: right;
+  float: right;
 }
 
+/* line 196, ../sass/styles.scss */
 .hidden {
-    display: none;
+  display: none;
 }
 
+/* line 200, ../sass/styles.scss */
 .clearit {
-    clear: both;
-    float: none !important;
-    width: auto !important;
-    height: auto !important;
-    border: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
+  clear: both;
+  float: none !important;
+  width: auto !important;
+  height: auto !important;
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
+
+/* line 209, ../sass/styles.scss */
 .shadow {
-	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
-	-webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);	
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Page structure for top level pages
  * (Non-app pages: Home, About, FAQ, etc.) */
-
+/* line 218, ../sass/styles.scss */
 body.top-level {
-	background: url(/static/images/layout/body-home.jpg) repeat-x left top #f3f3c3;	
-}
-.top-level header {
-	height: 146px;	
-}
-.top-level header h1 {
-	width: 414px;
-	margin: 0 0 0 67px;	
-}
-.top-level header h1 a {
-	width: 595px;
-	height: 107px;
-	background: url(/static/images/branding/logo-toplevel.png) no-repeat transparent;
+  background: url(/static/images/layout/body-home.jpg) repeat-x left top #f3f3c3;
 }
 
+/* line 221, ../sass/styles.scss */
+.top-level header {
+  height: 146px;
+}
+
+/* line 224, ../sass/styles.scss */
+.top-level header h1 {
+  width: 414px;
+  margin: 0 0 0 67px;
+}
+
+/* line 228, ../sass/styles.scss */
+.top-level header h1 a {
+  width: 595px;
+  height: 107px;
+  background: url(/static/images/branding/logo-toplevel.png) no-repeat transparent;
+}
+
+/* line 234, ../sass/styles.scss */
 .top-level header h2 a {
-	width: 160px;
-	height: 88px;
-	background: url(/static/images/branding/newfs-logo-toplevel.png) no-repeat transparent;	
+  width: 160px;
+  height: 88px;
+  background: url(/static/images/branding/newfs-logo-toplevel.png) no-repeat transparent;
 }
+
+/* line 239, ../sass/styles.scss */
 .top-level nav {
-	padding: 0 0 0 19px;
-	background: url(/static/images/layout/nav-toplevel.png) no-repeat; 	
+  padding: 0 0 0 19px;
+  background: url(/static/images/layout/nav-toplevel.png) no-repeat;
 }
+
+/* line 243, ../sass/styles.scss */
+.top-level nav li {
+  margin-right: 9px;
+}
+
+/* line 246, ../sass/styles.scss */
 .top-level nav li.home {
-	margin: 0 63px 0 0;	
+  margin: 0 63px 0 0;
 }
 
 /* Home page styles */
-
+/* line 252, ../sass/styles.scss */
 body#home {
-	background: url(/static/images/layout/body-home.jpg) repeat-x left top #f3f3c3;	
+  background: url(/static/images/layout/body-home.jpg) repeat-x left top #f3f3c3;
 }
 
+/* line 256, ../sass/styles.scss */
 body#home #top-wrapper {
-	background: url(/static/images/layout/content-home-bg.jpg) center 72px no-repeat transparent;	
+  background: url(/static/images/layout/content-home-bg.jpg) center 72px no-repeat transparent;
 }
+
+/* line 259, ../sass/styles.scss */
 #banner {
-    margin: 10px 0 0;
-    position: absolute;
+  margin: 10px 0 0;
+  position: absolute;
 }
+
+/* line 263, ../sass/styles.scss */
 #banner > img {
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-    display: none;
-    height: 345px;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 960px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+  display: none;
+  height: 345px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 960px;
 }
+
+/* line 272, ../sass/styles.scss */
 #banner img:first-child {
-    display: block;
+  display: block;
 }
+
+/* line 275, ../sass/styles.scss */
 #overlay {
-    background: rgba(255, 255, 255, 0.8);
-    height: 318px;
-    padding: 15px 30px 0;
-    position: absolute;
-    left: 646px;
-    text-align: center;
-    top: 6px;
-    width: 248px;
-    z-index: 100;
+  background: rgba(255, 255, 255, 0.8);
+  height: 318px;
+  padding: 15px 30px 0;
+  position: absolute;
+  left: 646px;
+  text-align: center;
+  top: 6px;
+  width: 248px;
+  z-index: 100;
 }
 
+/* line 287, ../sass/styles.scss */
 #banner h2 {
-	color: #519136;	
-    font-size: 38px;
-    line-height: normal;
-	margin: 0 0 15px 0;
-}
-#banner p {
-	margin: 12px 0 0 0;
-    text-align: left;
-	text-shadow: 0px 1px 1px #fff;	
-}
-#banner a#cta {
-	display: block;
-	height: 41px;
-	margin: 21px 2px 0;
-	background: url(/static/images/layout/get-started-btn-orange.png) 0 0 no-repeat transparent;	
-	text-indent: -9000px;
-}
-#banner a#cta:hover {
-	background-position: 0 -41px;	
-}
-#banner a#cta:active {
-	background-position: 0 -82px;		
-}
-div.three-col {
-	background: url(/static/images/layout/dot.png) right top repeat-y;
-	float: left;
-	height: 230px;
-	margin: 354px 23px 0 0;
-	padding: 8px 23px 0 0;
-	width: 289px;
-}
-div.three-col.last {
-  	background: 0;	
-	margin-right: 0;
-	padding: 8px 0 0 0;
-}
-div.three-col.last a.learn-more {
-	margin: 33px 0 0 0;
+  color: #519136;
+  font-size: 38px;
+  line-height: normal;
+  margin: 0 0 15px 0;
 }
 
+/* line 293, ../sass/styles.scss */
+#banner p {
+  margin: 12px 0 0 0;
+  text-align: left;
+  text-shadow: 0px 1px 1px #fff;
+}
+
+/* line 298, ../sass/styles.scss */
+#banner a#cta {
+  display: block;
+  height: 41px;
+  margin: 21px 2px 0;
+  background: url(/static/images/layout/get-started-btn-orange.png) 0 0 no-repeat transparent;
+  text-indent: -9000px;
+}
+
+/* line 305, ../sass/styles.scss */
+#banner a#cta:hover {
+  background-position: 0 -41px;
+}
+
+/* line 308, ../sass/styles.scss */
+#banner a#cta:active {
+  background-position: 0 -82px;
+}
+
+/* line 311, ../sass/styles.scss */
+div.three-col {
+  background: url(/static/images/layout/dot.png) right top repeat-y;
+  float: left;
+  height: 230px;
+  margin: 354px 23px 0 0;
+  padding: 8px 23px 0 0;
+  width: 289px;
+}
+
+/* line 319, ../sass/styles.scss */
+div.three-col.last {
+  background: 0;
+  margin-right: 0;
+  padding: 8px 0 0 0;
+}
+
+/* line 324, ../sass/styles.scss */
+div.three-col.last a.learn-more {
+  margin: 33px 0 0 0;
+}
+
+/* line 328, ../sass/styles.scss */
 div.three-col h5 {
-	margin: 0 0 3px 0;
-	font-style: italic;	
-	color: #807121;
+  margin: 0 0 3px 0;
+  font-style: italic;
+  color: #807121;
 }
+
+/* line 333, ../sass/styles.scss */
 div.three-col a.learn-more {
-	margin: 13px 0 0 0;	
+  margin: 13px 0 0 0;
 }
+
+/* line 336, ../sass/styles.scss */
 a.learn-more {
-	display: block;
-	width: 111px;
-	height: 32px;
-	background: url(/static/images/layout/learn-more-btn.png) 0 0 no-repeat;
-	text-indent: -9000px;	
+  display: block;
+  width: 111px;
+  height: 32px;
+  background: url(/static/images/layout/learn-more-btn.png) 0 0 no-repeat;
+  text-indent: -9000px;
 }
+
+/* line 343, ../sass/styles.scss */
 a.learn-more:hover {
-	background-position: 0 -32px;	
+  background-position: 0 -32px;
 }
+
+/* line 346, ../sass/styles.scss */
 a.learn-more:active {
-	background-position: 0 -64px;	
+  background-position: 0 -64px;
 }
+
+/* line 349, ../sass/styles.scss */
 a.subscribe {
-    cursor: pointer;
-    display: block;
-    width: 87px;
-    height: 16px;
-    background: url(/static/images/layout/subscribe.png) 0 0 no-repeat;
-    text-indent: -9000px;
+  cursor: pointer;
+  display: block;
+  width: 87px;
+  height: 16px;
+  background: url(/static/images/layout/subscribe.png) 0 0 no-repeat;
+  text-indent: -9000px;
 }
+
+/* line 357, ../sass/styles.scss */
 a.subscribe:hover {
-    background-position: 0 -16px;
+  background-position: 0 -16px;
 }
+
+/* line 360, ../sass/styles.scss */
 a.subscribe:active {
-    background-position: 0 -32px;
+  background-position: 0 -32px;
 }
 
 /* Plant of the Day */
-
+/* line 366, ../sass/styles.scss */
 div#potd {
-	padding: 10px;
-	margin: 15px 0 15px 0;
-	border: 3px solid #fff;
-	background: #c7e2a1;
-	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
-	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  margin: 15px 0;
+  border: 3px solid #fff;
+  background: #c7e2a1;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
 }
+
+/* line 375, ../sass/styles.scss */
 #potd > a {
-    display: block;
-    float: left;
-    height: 131px;
-    margin: 0 15px 0 0;
-    overflow: hidden;
-    width: 270px;
+  display: block;
+  float: left;
+  height: 131px;
+  margin: 5px 5px;
+  overflow: hidden;
+  width: 270px;
 }
+
+/* line 383, ../sass/styles.scss */
 #potd > a img {
-    position: relative;
-    top: -60px;
-	width: 270px;
+  position: relative;
+  top: -60px;
+  width: 270px;
 }
+
+/* line 388, ../sass/styles.scss */
 #potd .details {
-    margin: 0 0 0 285px;
-    position: absolute;
-	width: 640px;
+  margin: 0 0 0 295px;
+  position: absolute;
+  width: 630px;
 }
+
+/* line 393, ../sass/styles.scss */
 #potd h4 span.latin {
-	font-size: 14px;
-	text-transform: uppercase;	
+  font-style: italic;
 }
+
+/* line 396, ../sass/styles.scss */
 #potd h4 span.english {
-	font-size: 12px;
-	font-style: italic;
-	color: #807121;	
+  font-size: 12px;
+  color: #807121;
 }
+
+/* line 400, ../sass/styles.scss */
 #potd a.learn-more {
-    position: absolute;
-    right: 0;
-    top: 102px;
+  position: absolute;
+  top: 102px;
 }
+
+/* line 404, ../sass/styles.scss */
 #potd .details p {
-    height: 79px;
-    overflow: hidden;
+  height: 79px;
+  overflow: hidden;
+}
+
+/* Donate */
+/* line 411, ../sass/styles.scss */
+.donate {
+  padding: 0;
+  margin: 15px 0;
+  border: 3px solid #fff;
+  background: #f1ebae;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* line 420, ../sass/styles.scss */
+.donate p {
+  margin-left: 14px;
+  padding: 14px 0;
+}
+
+/* line 424, ../sass/styles.scss */
+.donate a {
+  background: url(/static/images/layout/donate-btn.png) 0 0 no-repeat transparent;
+  cursor: pointer;
+  display: block;
+  float: right;
+  height: 32px;
+  margin: -5px 14px 0 0;
+  padding: 0;
+  text-indent: -9000px;
+  width: 104px;
+}
+
+/* line 435, ../sass/styles.scss */
+.donate a:hover {
+  background-position: 0 -32px;
+}
+
+/* line 438, ../sass/styles.scss */
+.donate a:active {
+  background-position: 0 -64px;
 }
 
 /* Styles for app pages: all levels of Simple Key, etc. */
-
+/* line 444, ../sass/styles.scss */
 body.app {
-	background: #f0f0c0;
-}
-.app header {
-	height: 120px;
-}
-.app .content {
-	padding: 8px 0 0 0;
-	background: url(/static/images/layout/little-plants.jpg) center bottom no-repeat;
-}
-.app header h1 {
-	width: 443px;
-	padding: 14px 0 0 0;
-	margin: 0 0 0 -15px;	
-}
-.app header h1 a {
-	width: 443px;
-	height: 65px;
-	background: url(/static/images/layout/logo-app.png) no-repeat transparent;
+  background: #f0f0c0;
 }
 
+/* line 447, ../sass/styles.scss */
+.app header {
+  height: 120px;
+}
+
+/* line 450, ../sass/styles.scss */
+.app .content {
+  padding: 8px 0 0 0;
+  background: url(/static/images/layout/little-plants.jpg) center bottom no-repeat;
+}
+
+/* line 454, ../sass/styles.scss */
+.app header h1 {
+  width: 443px;
+  padding: 14px 0 0 0;
+  margin: 0 0 0 -15px;
+}
+
+/* line 459, ../sass/styles.scss */
+.app header h1 a {
+  width: 443px;
+  height: 65px;
+  background: url(/static/images/layout/logo-app.png) no-repeat transparent;
+}
+
+/* line 465, ../sass/styles.scss */
 .app header h2 a {
-	width: 116px;
-	height: 66px;
-	background: url(/static/images/layout/newfs-logo-app.png) no-repeat transparent;	
+  width: 116px;
+  height: 66px;
+  background: url(/static/images/layout/newfs-logo-app.png) no-repeat transparent;
 }
+
+/* line 471, ../sass/styles.scss */
+.app p.tip {
+  color: #519136;
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+/* line 479, ../sass/styles.scss */
 .app nav {
-	padding: 0 0 0 48px;
-	background: url(/static/images/layout/nav-app-green.png) no-repeat; 	
+  padding: 0 0 0 48px;
+  background: url(/static/images/layout/nav-app-green.png) no-repeat;
 }
-.app footer {
-	background: #b4d57f;
+
+/* line 483, ../sass/styles.scss */
+.app footer, .app footer div div {
+  background: #b4d57f;
 }
+
+/* line 486, ../sass/styles.scss */
 #main {
-	float: right;
-	width: 710px;	
+  float: right;
+  width: 710px;
 }
+
+/* line 490, ../sass/styles.scss */
 #sidebar {
-	float: left;
-	width: 228px;
-	padding: 16px 0;
-	border-top: 1px solid #c3d941;	
-	border-right: 1px solid #c3d941;	
-	border-left: 1px solid #c3d941;	
-	background: #fff;
+  float: left;
+  width: 228px;
+  padding: 16px 0;
+  border-top: 1px solid #c3d941;
+  border-right: 1px solid #c3d941;
+  border-left: 1px solid #c3d941;
+  background: #fff;
 }
+
+/* line 499, ../sass/styles.scss */
 #sidebar .section {
-	padding: 0 16px 16px;	
+  padding: 0 16px 16px;
 }
+
+/* line 502, ../sass/styles.scss */
+#sidebar .section.separate {
+  border-top: 1px solid #e2dfcb;
+  padding-top: 16px;
+}
+
+/* line 506, ../sass/styles.scss */
 #sidebar .section.plant-map {
-	padding: 0 25px 16px 16px;
-	background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat;	
+  padding: 0 25px 16px 16px;
+  background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat;
 }
+
+/* line 510, ../sass/styles.scss */
 #sidebar .section.plant-map p {
-	margin: 15px 0 0 0;
+  margin: 15px 0 0 0;
 }
 
 /* Breadcrumb styles */
-
+/* line 516, ../sass/styles.scss */
 #breadcrumb p {
-    color: #807121;
-    line-height: 120%;
-    margin: 0 0 14px;
+  color: #807121;
+  line-height: 120%;
+  margin: 0 0 14px;
 }
-#breadcrumb span {
-    color: #000;
-}    
-    
-.app .content h2 {
-	color: #519136;
-	line-height: 110%;
-}	
 
-.not-my-plant {
-	float: right;
-    padding: 20px 0 0;
-	text-align: center;
+/* line 521, ../sass/styles.scss */
+#breadcrumb span {
+  color: #000;
 }
+
+/* line 525, ../sass/styles.scss */
+.app .content h2 {
+  color: #519136;
+  line-height: 110%;
+}
+
+/* line 530, ../sass/styles.scss */
+.not-my-plant {
+  float: right;
+  padding: 20px 0 0;
+  text-align: center;
+}
+
+/* line 535, ../sass/styles.scss */
 .not-my-plant h6 {
-	color: #606060;
-    padding: 0 0 1px 0;
+  color: #606060;
+  padding: 0 0 1px 0;
 }
 
 /* Plant listing styles */
-
+/* line 542, ../sass/styles.scss */
 .list-item {
-	padding: 20px 0 0 0;	
-	margin: 20px 0 0 0;
-	border-top: 1px solid rgba(128, 113, 33, 0.1);
+  padding: 20px 0 0 0;
+  margin: 20px 0 0 0;
+  border-top: 1px solid rgba(128, 113, 33, 0.1);
 }
+
+/* line 547, ../sass/styles.scss */
 .list-item.last {
-	padding: 20px 0;
-	border-bottom: 1px solid rgba(128, 113, 33, 0.1);	
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(128, 113, 33, 0.1);
 }
+
+/* line 551, ../sass/styles.scss */
 .list-item h3 {
-	margin: 0 0 5px 0;	
-	line-height: 110%;
+  margin: 0 0 5px 0;
+  line-height: 110%;
 }
+
+/* line 555, ../sass/styles.scss */
 .list-item h3 span {
-    color: #807121;
-    display: block;
-	font-size: 12px;
-	font-style: italic;
-    margin-top: 4px;
+  color: #807121;
+  display: block;
+  font-size: 12px;
+  font-style: italic;
+  margin-top: 4px;
 }
+
+/* line 562, ../sass/styles.scss */
 .img-gallery {
-    float: left;
-	margin: 0 10px 0 0;	
-	position: relative;
-	width: 244px;
+  float: left;
+  margin: 0 10px 0 0;
+  position: relative;
+  width: 244px;
 }
+
+/* line 568, ../sass/styles.scss */
 .img-gallery .img-container {
-	height: 239px;
-	overflow: hidden;
-	position: relative;
-	width: 239px;
+  height: 239px;
+  overflow: hidden;
+  position: relative;
+  width: 239px;
 }
+
+/* line 574, ../sass/styles.scss */
 .img-gallery .frame, #taxon #species-images {
-	border: 5px solid rgba(255, 255, 255, 0.8);
-	position: absolute;
-	top: 0;
-	z-index: 100;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-	-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+  border: 5px solid rgba(255, 255, 255, 0.8);
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
+
+/* line 583, ../sass/styles.scss */
 .img-gallery .frame {
-    height: 229px;
-    width: 229px;
+  height: 229px;
+  width: 229px;
 }
+
+/* line 588, ../sass/styles.scss */
 #plant-id .img-gallery .frame, #plant-id-2 .img-gallery .frame,
 #family .frame, #genus .frame {
-    cursor: pointer;
-}
-.img-gallery .images {
-	clear: both;
-	margin: 0;
-	padding: 0;	
-	position: absolute;
-	width: 12000px;
-}
-.img-gallery .images > * {
-  display: block;  /* for example, it might be an <a> instead of an <img> */
-  float: left;     /* this is what makes .scrollable() actually work! */
-}
-.img-gallery .controls {
-	margin: 8px 0 0 0;
-	text-align: center;	
-}
-.controls a {
-	cursor: pointer;
-    display: inline-block;
-	height: 32px;
-	text-indent: -9000px;	
-	width: 32px;
-}
-.controls a.next {
-	background: url(/static/images/icons/next-larger.png) 0 0 no-repeat transparent;	
-}
-.controls a.prev {
-	background: url(/static/images/icons/prev-larger.png) 0 0 no-repeat transparent;	
-}
-.controls a.disabled {
-    cursor: default;
-    opacity: 0.4;
-    filter:Alpha(opacity=40) /* For IE8 and earlier */
-}
-.list-item .details {
-	float: left;	
-	width: 425px;
-}
-#plant-id-3 .list-item .details {
-    width: 610px;
-}
-.list-item p {
-	padding: 0 0 7px 25px;
-}
-.list-item .section-title {
-	display: block;
-	text-transform: uppercase;	
-}
-#plant-details .img-gallery {
-	margin-top: 6px;
+  cursor: pointer;
 }
 
+/* line 591, ../sass/styles.scss */
+.img-gallery .images {
+  clear: both;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  width: 12000px;
+}
+
+/* line 598, ../sass/styles.scss */
+.img-gallery .images > * {
+  display: block;
+  /* for example, it might be an <a> instead of an <img> */
+  float: left;
+  /* this is what makes .scrollable() actually work! */
+}
+
+/* line 602, ../sass/styles.scss */
+.img-gallery .controls {
+  margin: 8px 0 0 0;
+  text-align: center;
+}
+
+/* line 606, ../sass/styles.scss */
+.controls a {
+  cursor: pointer;
+  display: inline-block;
+  height: 32px;
+  text-indent: -9000px;
+  width: 32px;
+}
+
+/* line 613, ../sass/styles.scss */
+.controls a.next {
+  background: url(/static/images/icons/next-larger.png) 0 0 no-repeat transparent;
+}
+
+/* line 616, ../sass/styles.scss */
+.controls a.prev {
+  background: url(/static/images/icons/prev-larger.png) 0 0 no-repeat transparent;
+}
+
+/* line 619, ../sass/styles.scss */
+.controls a.disabled {
+  cursor: default;
+  opacity: 0.4;
+  filter: Alpha(opacity=40);
+}
+
+/* line 624, ../sass/styles.scss */
+.list-item .details {
+  float: left;
+  width: 425px;
+}
+
+/* line 628, ../sass/styles.scss */
+#plant-id-3 .list-item .details {
+  width: 610px;
+}
+
+/* line 631, ../sass/styles.scss */
+.list-item p {
+  padding: 0 0 7px 25px;
+}
+
+/* line 634, ../sass/styles.scss */
+.list-item .section-title {
+  display: block;
+  text-transform: uppercase;
+}
+
+/* line 638, ../sass/styles.scss */
+#plant-details .img-gallery {
+  margin-top: 6px;
+}
+
+/* line 642, ../sass/styles.scss */
 p.key-char {
-	background: url(/static/images/icons/icon1.png) 0 2px no-repeat;	
-	
+  background: url(/static/images/icons/icon1.png) 0 2px no-repeat;
 }
+
+/* line 646, ../sass/styles.scss */
 p.exceptions {
-	background: url(/static/images/icons/icon2.png) 0 2px no-repeat;	
+  background: url(/static/images/icons/icon2.png) 0 2px no-repeat;
 }
+
+/* line 649, ../sass/styles.scss */
 p.vid {
-	padding: 0 0 7px 25px;
-	background: url(/static/images/icons/icon3.png) 0 2px no-repeat;	
-    text-transform: uppercase;
+  padding: 0 0 7px 25px;
+  background: url(/static/images/icons/icon3.png) 0 2px no-repeat;
+  text-transform: uppercase;
 }
+
+/* line 654, ../sass/styles.scss */
 .list-item a.plant-in-group {
-	display: block;
-	width: 212px;
-	height: 31px;
-	margin: 10px 0 0 0;
-	background: url(/static/images/layout/plant-in-group-btn-orange.png) no-repeat 0 0;	
-	text-indent: -9000px;
+  display: block;
+  width: 212px;
+  height: 31px;
+  margin: 10px 0 0 0;
+  background: url(/static/images/layout/plant-in-group-btn-orange.png) no-repeat 0 0;
+  text-indent: -9000px;
 }
+
+/* line 662, ../sass/styles.scss */
 .list-item a.plant-in-group:hover {
-	background-position: 0 -31px;	
+  background-position: 0 -31px;
 }
+
+/* line 665, ../sass/styles.scss */
 .list-item a.plant-in-group:active {
-	background-position: 0 -62px;	
+  background-position: 0 -62px;
 }
+
+/* line 668, ../sass/styles.scss */
 .list-item a.plant-in-subgroup {
-	display: block;
-	width: 233px;
-	height: 32px;
-	margin: 10px 0 0 0;
-	background: url(/static/images/layout/plant-in-subgroup-btn-orange.png) no-repeat 0 0;	
-	text-indent: -9000px;
+  display: block;
+  width: 233px;
+  height: 32px;
+  margin: 10px 0 0 0;
+  background: url(/static/images/layout/plant-in-subgroup-btn-orange.png) no-repeat 0 0;
+  text-indent: -9000px;
 }
+
+/* line 676, ../sass/styles.scss */
 .list-item a.plant-in-subgroup:hover {
-	background-position: 0 -32px;	
+  background-position: 0 -32px;
 }
+
+/* line 679, ../sass/styles.scss */
 .list-item a.plant-in-subgroup:active {
-	background-position: 0 -64px;	
+  background-position: 0 -64px;
 }
 
 /* Sidebar styles */
-
+/* line 685, ../sass/styles.scss */
 #sidebar h5 {
-	margin: 0 0 5px 0;	
+  margin: 0 0 5px 0;
 }
+
+/* line 688, ../sass/styles.scss */
 #sidebar a.get-help-btn {
-    background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent;
-	display: block;
-	height: 32px;
-	margin: 10px 0 20px;
-	text-indent: -9000px;
-    width: 104px;
+  background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent;
+  display: block;
+  height: 32px;
+  margin: 10px 0 20px;
+  text-indent: -9000px;
+  width: 104px;
 }
+
+/* line 696, ../sass/styles.scss */
 #sidebar a.get-help-btn:hover {
-	background-position: 0 -32px;
+  background-position: 0 -32px;
 }
+
+/* line 699, ../sass/styles.scss */
 #sidebar a.get-help-btn:active {
-	background-position: 0 -64px;
+  background-position: 0 -64px;
 }
 
+/* line 703, ../sass/styles.scss */
 #sidebar a.clear-all-btn {
-    background: url(/static/images/layout/clear-all-btn.png) 0 0 no-repeat transparent;
-	display: block;
-	height: 32px;
-	margin: 0 0 0 22px;
-	text-indent: -9000px;
-	width: 104px;
+  background: url(/static/images/layout/clear-all-btn.png) 0 0 no-repeat transparent;
+  display: block;
+  height: 32px;
+  margin: 0 0 0 22px;
+  text-indent: -9000px;
+  width: 104px;
 }
+
+/* line 711, ../sass/styles.scss */
 #sidebar a.clear-all-btn:hover {
-	background-position: 0 -32px;
-    cursor: pointer;
+  background-position: 0 -32px;
+  cursor: pointer;
 }
+
+/* line 715, ../sass/styles.scss */
 #sidebar a.clear-all-btn:active {
-	background-position: 0 -64px;
-    cursor: pointer;
+  background-position: 0 -64px;
+  cursor: pointer;
 }
 
-
+/* line 721, ../sass/styles.scss */
 #sidebar a.view-map-btn {
-	display: block;
-	width: 113px;
-	height: 32px;
-	margin: 10px 0 20px;
-	background: url(/static/images/layout/view-map-btn-orange.png) 0 0 no-repeat transparent;
-	text-indent: -9000px;
+  display: block;
+  width: 113px;
+  height: 32px;
+  margin: 10px 0 20px;
+  background: url(/static/images/layout/view-map-btn-orange.png) 0 0 no-repeat transparent;
+  text-indent: -9000px;
 }
+
+/* line 729, ../sass/styles.scss */
 #sidebar a.view-map-btn:hover {
-	background-position: 0 -32px;
+  background-position: 0 -32px;
 }
+
+/* line 732, ../sass/styles.scss */
 #sidebar a.view-map-btn:active {
-	background-position: 0 -64px;
+  background-position: 0 -64px;
 }
+
+/* line 735, ../sass/styles.scss */
 #sidebar a.sidebarlink:not([href]) {
-    color: #1a2e11;
+  color: #1a2e11;
 }
+
+/* line 738, ../sass/styles.scss */
 #ne-dist-county-map {
-    /* SVG map: WebKit needs height and width set */
-    height: 290px;
-    width: 187px;
+  /* SVG map: WebKit needs height and width set */
+  height: 290px;
+  width: 187px;
 }
+
+/* line 743, ../sass/styles.scss */
 #na-dist-county-map {
-    /* SVG map: WebKit needs height and width set */
-    height: 109px;
-    width: 187px;
+  /* SVG map: WebKit needs height and width set */
+  height: 109px;
+  width: 187px;
 }
+
+/* line 748, ../sass/styles.scss */
 #sb-player #na-dist-county-map {
-    background: #fff;
-    height: 100%;
-    width: 100%;
+  background: #fff;
+  height: 100%;
+  width: 100%;
 }
+
+/* line 753, ../sass/styles.scss */
 #taxon #sb-player.html {
-    background: #fff;
-    overflow: hidden;  /* Get rid of vertical scrollbar in WebKit for
-                          the enlarged North America distribution map. */
-    padding: 0 5px 5px;
+  background: #fff;
+  overflow: hidden;
+  /* Get rid of vertical scrollbar in WebKit for
+     the enlarged North America distribution map. */
+  padding: 0 5px 5px;
 }
 
 /* Level 3 id styles */
-
+/* line 762, ../sass/styles.scss */
 .already-know {
-    float: left;
-    margin: 0 0 40px 0;
-}	
+  float: left;
+  margin: 0 0 40px 0;
+}
+
+/* line 766, ../sass/styles.scss */
 .show-me {
-    float: right;
-    margin: 0 0 15px 0;
-}	
+  float: right;
+  margin: 0 0 15px 0;
+}
+
+/* line 770, ../sass/styles.scss */
 .already-know h6, .already-know label, .show label {
-    color: #807121;
-    font-weight: bold;
-    margin: 0 0 5px 0;
+  color: #807121;
+  font-weight: bold;
+  margin: 0 0 5px 0;
 }
+
+/* line 775, ../sass/styles.scss */
 .already-know label {
-    display: block;
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
-    font-size: 12px;
-    font-weight: normal;
-    margin: 5px 0 3px;
-    vertical-align: middle;
+  display: block;
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  margin: 5px 0 3px;
+  vertical-align: middle;
 }
 
+/* line 784, ../sass/styles.scss */
 #plant-id-3 .show {
-    margin-bottom: 7px;
-    text-align: left;
+  margin-bottom: 7px;
+  text-align: left;
 }
-#plant-id-3 .show label {
-    color: #000;
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    font-weight: normal;
 
+/* line 788, ../sass/styles.scss */
+#plant-id-3 .show div {
+  display: inline;
 }
+
+/* line 791, ../sass/styles.scss */
+#plant-id-3 .show label {
+  color: #000;
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+/* line 798, ../sass/styles.scss */
 #plant-id-3 .show select, #plant-id-3 .already-know select {
-    background: #ebf6df;
-    border: 1px solid #9cc86b;
-    font-size: 15px;
-    padding: 0;
-    -webkit-appearance: menulist;
+  background: #ebf6df;
+  border: 1px solid #9cc86b;
+  font-size: 15px;
+  padding: 0;
+  -webkit-appearance: menulist;
 }
+
+/* line 805, ../sass/styles.scss */
 #plant-id-3 .already-know select {
-    font-size: 13px;
-    width: 143px;
+  font-size: 13px;
+  width: 143px;
 }
+
+/* line 810, ../sass/styles.scss */
 #plant-id-3 .already-know #family_clear,
 #plant-id-3 .already-know #genus_clear {
-    background: #ebf6df;
-    border: 1px solid #9cc86b;
-    font-size: 12px;
-    padding: 2px 6px;
-    -webkit-appearance: button;
+  background: #ebf6df;
+  border: 1px solid #9cc86b;
+  font-size: 12px;
+  padding: 2px 6px;
+  -webkit-appearance: button;
 }
 
+/* line 818, ../sass/styles.scss */
 div#modal, div#plant-detail-modal {
-	display: none;	
+  display: none;
 }
+
+/* line 821, ../sass/styles.scss */
 div.modal-wrap {
-	border: 5px solid rgba(255, 255, 255, 0.5);
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;	
+  border: 5px solid rgba(255, 255, 255, 0.5);
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
 }
+
+/* line 827, ../sass/styles.scss */
 .modal-wrap .inner {
-	background: #fff;
-    padding: 0 0 20px 0;
+  background: #fff;
+  padding: 0 0 20px 0;
 }
+
+/* line 831, ../sass/styles.scss */
 .modal-wrap .inner h4.heading, .modal-wrap .inner h3.heading {
-	margin: 0;
-    padding: 13px 0 0 20px;
+  margin: 0;
+  padding: 13px 0 0 20px;
 }
+
+/* line 835, ../sass/styles.scss */
 .modal-wrap .inner p {
-    font-size: 12px;
-    margin: 0;
-    padding: 4px 20px 0;
+  font-size: 12px;
+  margin: 0;
+  padding: 4px 20px 0;
 }
+
+/* line 840, ../sass/styles.scss */
 .modal-wrap .inner h3.heading {
-	font-style: italic;
-	margin-bottom: 0;
-	margin-left: 265px;
+  font-style: italic;
+  margin-bottom: 0;
+  margin-left: 265px;
 }
+
+/* line 845, ../sass/styles.scss */
 .modal-wrap .inner h3.heading span {
-	color: #807121;
-    font-size: 16px;
-    font-style: normal;	
+  color: #807121;
+  font-size: 16px;
+  font-style: normal;
 }
+
+/* line 850, ../sass/styles.scss */
 .modal-wrap #choices {
-	padding: 10px 20px 0 20px;	
+  padding: 10px 20px 0 20px;
 }
+
+/* line 853, ../sass/styles.scss */
 .modal-wrap #choices li {
-    margin: 0 0 14px;
+  margin: 0 0 14px;
 }
+
+/* line 856, ../sass/styles.scss */
 .modal-wrap #plant-details {
-	padding: 10px 20px 0 20px;	
+  padding: 10px 20px 0 20px;
 }
+
+/* line 859, ../sass/styles.scss */
 .modal-wrap .list-item {
-	border-top: none;
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
+  border-top: none;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
 }
+
+/* line 864, ../sass/styles.scss */
 .modal-wrap .list-item p {
-	padding: 0 0 7px 0;	
+  padding: 0 0 7px 0;
 }
+
+/* line 867, ../sass/styles.scss */
 .modal-wrap .list-item .details {
-	margin: 0 0 0 10px;	
+  margin: 0 0 0 10px;
 }
+
+/* line 870, ../sass/styles.scss */
 .modal-wrap .list-item h4 {
-	color: #807121;	
+  color: #807121;
 }
+
+/* line 873, ../sass/styles.scss */
 a.get-more-info {
-	background: url(/static/images/layout/get-more-info.png) 0 0 no-repeat transparent;
-    display: block;
-	height: 32px;
-	margin: 20px 0 0 0;
-	text-indent: -9000px;
-    width: 163px;
+  background: url(/static/images/layout/get-more-info.png) 0 0 no-repeat transparent;
+  display: block;
+  height: 32px;
+  margin: 20px 0 0 0;
+  text-indent: -9000px;
+  width: 163px;
 }
+
+/* line 881, ../sass/styles.scss */
 a.get-more-info:hover {
-	background-position: 0 -32px;
+  background-position: 0 -32px;
 }
+
+/* line 884, ../sass/styles.scss */
 a.get-more-info:active {
-	background-position: 0 -64px;
+  background-position: 0 -64px;
 }
+
+/* line 887, ../sass/styles.scss */
 a.go-to-species-page {
-	background: url(/static/images/layout/go-to-species-page.png) 0 0 no-repeat transparent;
-    	display: block;
-	height: 31px;
-	margin: 20px 0 0 0;
-	text-indent: -9000px;
-   	width: 212px;
+  background: url(/static/images/layout/go-to-species-page.png) 0 0 no-repeat transparent;
+  display: block;
+  height: 31px;
+  margin: 20px 0 0 0;
+  text-indent: -9000px;
+  width: 212px;
 }
+
+/* line 895, ../sass/styles.scss */
 a.go-to-species-page:hover {
-	background-position: 0 -31px;
+  background-position: 0 -31px;
 }
+
+/* line 898, ../sass/styles.scss */
 a.go-to-species-page:active {
-	background-position: 0 -62px;
+  background-position: 0 -62px;
 }
 
+/* line 902, ../sass/styles.scss */
 .plant-list {
-    position: relative;
+  position: relative;
 }
+
+/* line 905, ../sass/styles.scss */
 .plant-list .plant {
-    display: none;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    border: 1px solid #c3d941;
-    background: #fff;
-    padding: 8px 6px;
-    height: 210px;
-    width: 160px; /* prevent long names from blowing out layout; allow wrap */
-    text-align: center;
+  display: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  border: 1px solid #c3d941;
+  background: #fff;
+  padding: 8px 6px;
+  height: 210px;
+  width: 160px;
+  /* prevent long names from blowing out layout; allow wrap */
+  text-align: center;
 }
+
+/* line 917, ../sass/styles.scss */
 .plant-list .plant.in-results {
-    display: block;
+  display: block;
 }
+
+/* line 920, ../sass/styles.scss */
 .plant-list .plant.genus_join_left {
-    border-left: none;
+  border-left: none;
 }
+
+/* line 923, ../sass/styles.scss */
 .plant-list .plant.genus_join_right {
-    border-right: none;
-    padding-right: 12px;
+  border-right: none;
+  padding-right: 12px;
 }
+
+/* line 927, ../sass/styles.scss */
 .plant-list .plant a {
-    display: block;
-    color: #1a2e11;
+  display: block;
+  color: #1a2e11;
 }
+
+/* line 931, ../sass/styles.scss */
 .plant-list .plant a:hover {
-    color: #508e31;
+  color: #508e31;
 }
+
+/* line 934, ../sass/styles.scss */
 .plant-list .plant .frame {
-    border: 5px solid rgba(255, 255, 255, 0.8);
-    height: 139px;
-    position: absolute;
-    top: 8px;
-    width: 150px;
-    z-index: 100;
+  border: 5px solid rgba(255, 255, 255, 0.8);
+  height: 139px;
+  position: absolute;
+  top: 8px;
+  width: 150px;
+  z-index: 100;
 }
 
-.plant-list .plant .img-container {
-    width: 160px;
-    height: 149px;
-    overflow: hidden;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-    -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-    -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+/* line 943, ../sass/styles.scss */
+.plant-list .plant-img-container {
+  width: 160px;
+  height: 149px;
+  overflow: hidden;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
 
+/* line 952, ../sass/styles.scss */
 .missing-image {
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
-    background: -moz-linear-gradient(center top , #eaf2e2, #d6e6c5) repeat scroll 0 0 transparent;
-    color: #354d1e;
-    height: 149px;
-    position: relative;
-    width: 160px;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5));
+  background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5) repeat scroll 0 0 transparent;
+  color: #354d1e;
+  height: 149px;
+  position: relative;
+  width: 160px;
 }
+
+/* line 960, ../sass/styles.scss */
 .missing-image p {
-    font-size: 12px;
-    height: 40px;
-    left: 50%;
-    line-height: 130%;
-    margin: -20px 0 0 -50px;
-    position: absolute;
-    text-align: center;
-    top: 50%;
-    width: 100px;
+  font-size: 12px;
+  height: 40px;
+  left: 50%;
+  line-height: 130%;
+  margin: -20px 0 0 -50px;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  width: 100px;
 }
+
 /* On hover, no underline on "image not available" placeholder text, but
  * do underline the plant name below the image box. */
+/* line 973, ../sass/styles.scss */
 .plant-list .plant a:hover {
-    text-decoration: none;
-}
-.plant-list .plant a:hover p.plant-name {
-    text-decoration: underline;
+  text-decoration: none;
 }
 
+/* line 976, ../sass/styles.scss */
+.plant-list .plant a:hover p.plant-name {
+  text-decoration: underline;
+}
+
+/* line 980, ../sass/styles.scss */
 .plant p.plant-name {
-    font-family: Tahoma, "Trebuchet MS", sans-serif; /* Tahoma or Trebuchet
-                                                        because it's narrower
-                                                        than Verdana: less
-                                                        wrapping and fewer
-                                                        names on 4 lines */
-    line-height: 14px;
-    margin: 7px 0 0 0;
+  font-family: Tahoma, "Trebuchet MS", sans-serif;
+  /* Tahoma or Trebuchet because it's
+     narrower than Verdana: less wrapping
+     and fewer names on 4 lines */
+  line-height: 14px;
+  margin: 7px 0 0 0;
 }
+
+/* line 987, ../sass/styles.scss */
 .plant p.plant-name span.latin {
-    display: block;
-    font-family: Verdana, sans-serif; /* Verdana because it's wider than
-                                         Trebuchet: easier to read in
-                                         italics */
-    font-style: italic;
-    padding-bottom: 4px;
+  display: block;
+  font-family: Verdana, Geneva, sans-serif;
+  /* Verdana because it's wider than Trebuchet:
+     easier to read in italics */
+  font-style: italic;
+  padding-bottom: 4px;
 }
+
+/* line 994, ../sass/styles.scss */
 p.list-all {
-    clear: left;
-    padding-top: 2em;
+  clear: left;
+  padding-top: 2em;
 }
+
+/* line 998, ../sass/styles.scss */
 p.list-all a {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* Sidebar styles for 3rd level */
-
+/* line 1004, ../sass/styles.scss */
 #sidebar.tinted {
-    background: #fcfdf5;
-}
-#sidebar div.scroll {
-    border-bottom: 1px solid #9cc86b;
-    border-left: 1px solid #519136;
-    border-top: 1px solid #519136;
-    display: block;
-    height: 335px;
-    margin: 0 0 10px 0;
-    overflow: auto;
-    width: 227px;
+  background: #fcfdf5;
 }
 
+/* line 1007, ../sass/styles.scss */
+#sidebar div.scroll {
+  border-bottom: 1px solid #9cc86b;
+  border-left: 1px solid #519136;
+  border-top: 1px solid #519136;
+  display: block;
+  height: 335px;
+  margin: 0 0 10px 0;
+  overflow: auto;
+  width: 227px;
+}
+
+/* line 1018, ../sass/styles.scss */
 #plant-id-3 #sidebar {
-    padding: 0 0 16px 0;
+  padding: 0 0 16px 0;
 }
+
+/* line 1021, ../sass/styles.scss */
 #sidebar .section.instructions {
-    background: #9cc86b;
-    color: #fff;
-    padding: 16px;
+  background: #9cc86b;
+  color: #fff;
+  padding: 16px;
 }
+
+/* line 1026, ../sass/styles.scss */
 #sidebar .section.instructions h5 {
-    line-height: 120%;
-    margin: 0;
+  line-height: 120%;
+  margin: 0;
 }
+
+/* line 1030, ../sass/styles.scss */
 a.get-choices {
-    display: block;
-    width: 171px;
-    height: 32px;
-    margin: 20px 0 0 0;
-    text-indent: -9000px;
-    background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent;
+  display: block;
+  width: 171px;
+  height: 32px;
+  margin: 20px 0 0 0;
+  text-indent: -9000px;
+  background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent;
 }
+
+/* line 1038, ../sass/styles.scss */
 a.get-choices:hover {
-    background-position: 0 -32px;
+  background-position: 0 -32px;
 }
+
+/* line 1041, ../sass/styles.scss */
 a.get-choices:active {
-    background-position: 0 -64px;
+  background-position: 0 -64px;
 }
+
+/* line 1044, ../sass/styles.scss */
 #plant-id-3 #sidebar h6 {
-    margin: 0 0 8px 0;
-    font-weight: bold;
-    color: #807121;
+  margin: 0 0 8px 0;
+  font-weight: bold;
+  color: #807121;
 }
+
+/* line 1049, ../sass/styles.scss */
 ul.option-list li {
-    background: #fff;
-    border-top: 1px solid #c3d941;
-    cursor: pointer;
-    display: block;
-    padding: 12px;
-    margin: 0;
+  background: #fff;
+  border-top: 1px solid #c3d941;
+  cursor: pointer;
+  display: block;
+  padding: 12px;
+  margin: 0;
 }
+
+/* line 1057, ../sass/styles.scss */
 ul.option-list li.last {
-    border-bottom: 1px solid #c3d941;
+  border-bottom: 1px solid #c3d941;
 }
+
+/* line 1060, ../sass/styles.scss */
 ul.option-list li.answered {
-    background: #ffd;
+  background: #ffd;
 }
+
+/* line 1065, ../sass/styles.scss */
 ul.option-list li.active, ul.option-list li:hover,
 ul.option-list li.active span.value,
 ul.option-list li.answered.active {
-    background: #dce890;
-    cursor: pointer;
+  background: #dce890;
+  cursor: pointer;
 }
+
+/* line 1069, ../sass/styles.scss */
 .option-list a.option {
-    color: #1a2e11;
-    text-decoration: none;
+  color: #1a2e11;
+  text-decoration: none;
 }
+
+/* line 1073, ../sass/styles.scss */
 .option-list .option span.name {
-    display: block;
-    margin: 0 0 3px 0;
-    font-weight: bold;
+  display: block;
+  margin: 0 0 3px 0;
+  font-weight: bold;
 }
+
+/* line 1078, ../sass/styles.scss */
 .option-list a.clear-filter {
-    display: none;
-    margin-top: 4px;
-    width: 45px;
+  display: block;
+  margin-top: 4px;
+  width: 45px;
 }
 
 /* For tablets and smartphones, style the scrollbar differently because
@@ -1002,1493 +1459,2487 @@ ul.option-list li.answered.active {
    Instead, just present the thin vertical bar as an indicator that the
    area is scrollable and to provide feedback while swiping to scroll. */
 @media only screen and (max-device-width:1024px) {
-    #sidebar div.scroll .jspVerticalBar {
-        border-left: 0;
-    }
-    #sidebar div.scroll .jspTrack, #sidebar div.scroll .jspArrowUp,
-    #sidebar div.scroll .jspArrowDown {
-        background: none;
-    }
-    #sidebar div.scroll .jspPane {
-        width: 227px !important;
-    }
-    ul.option-list li:hover {
-        background: #fff;   /* No hover color on mobile */
-    }
-    ul.option-list li.active:hover {
-        background: #dce890;   /* Except hover color on the active filter */
-    }
-}
+  /* line 1090, ../sass/styles.scss */
+  #sidebar div.scroll .jspVerticalBar {
+    border-left: 0;
+  }
 
+  /* line 1094, ../sass/styles.scss */
+  #sidebar div.scroll .jspTrack, #sidebar div.scroll .jspArrowUp,
+  #sidebar div.scroll .jspArrowDown {
+    background: none;
+  }
+
+  /* line 1097, ../sass/styles.scss */
+  #sidebar div.scroll .jspPane {
+    width: 227px !important;
+  }
+
+  /* line 1100, ../sass/styles.scss */
+  ul.option-list li:hover {
+    background: #fff;
+    /* No hover color on mobile */
+  }
+
+  /* line 1103, ../sass/styles.scss */
+  ul.option-list li.active:hover {
+    background: #dce890;
+    /* Except hover color on the active filter */
+  }
+}
 /* Styles for results page introductory overlay */
-
+/* line 1110, ../sass/styles.scss */
 #intro-overlay {
-    display: none;
-    z-index: 10000;
-    text-align: center;
-    font-size: 240%;
+  display: none;
+  z-index: 10000;
+  text-align: center;
+  font-size: 240%;
 }
+
+/* line 1116, ../sass/styles.scss */
 #intro-overlay div {
-    position: relative;
-    margin-bottom: 10%;
-    border-radius: 0.5em;
-    -moz-border-radius: 0.5em;
-    box-shadow: 0px 5px 20px rgba(0, 0, 0, 100);
-    -moz-box-shadow: 0px 5px 20px rgba(0, 0, 0, 100);
-    -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 100);
-    background-color: #f0f0c0;
-    padding: 0.5em 1em;
-    color: #fff;
+  position: relative;
+  margin-bottom: 10%;
+  border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+  box-shadow: 0px 5px 20px black;
+  -moz-box-shadow: 0px 5px 20px black;
+  -webkit-box-shadow: 0px 5px 20px black;
+  background-color: #f0f0c0;
+  padding: 0.5em 1em;
+  color: #fff;
 }
+
+/* line 1128, ../sass/styles.scss */
 #intro-overlay .number-of-species {
-    background-color: #508e31;
+  background-color: #508e31;
 }
+
+/* line 1131, ../sass/styles.scss */
 #intro-overlay .number-of-questions {
-    background-color: #508e31;
+  background-color: #508e31;
 }
+
+/* line 1134, ../sass/styles.scss */
 #intro-overlay .continue {
-    background-color: #dc9402;
-    border: 2px solid #dc9402;
-    cursor: pointer;
-    letter-spacing: 3px;
-    text-shadow: 1px 1px 2px #dc9402;
-    text-transform: uppercase;
-    border-radius: 2em;
-    -moz-border-radius: 2em;
-
-    /* Gradient generated using the tool "Ultimate CSS Gradient Generator":
-     * www.colorzilla.com/gradient-editor
-     */
-    background: #dc9302; /* Old browsers */
-    background: -moz-linear-gradient(top,  #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dc9302), color-stop(50%,#f4bc53), color-stop(100%,#dc9302)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* IE10+ */
-    background: linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* W3C */
+  background-color: #dc9402;
+  border: 2px solid #dc9402;
+  cursor: pointer;
+  letter-spacing: 3px;
+  text-shadow: 1px 1px 2px #dc9402;
+  text-transform: uppercase;
+  border-radius: 2em;
+  -moz-border-radius: 2em;
+  /* Gradient generated using the tool "Ultimate CSS Gradient Generator":
+   * www.colorzilla.com/gradient-editor
+   */
+  background: #dc9302;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dc9302), color-stop(50%, #f4bc53), color-stop(100%, #dc9302));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%);
+  /* IE10+ */
+  background: linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%);
+  /* W3C */
 }
 
+/* line 1156, ../sass/styles.scss */
 #intro-overlay h1 {
-    font-size: 140%;
+  font-size: 140%;
 }
 
 /* Arrows */
-
+/* line 1163, ../sass/styles.scss */
 #intro-overlay .number-of-species:before,
-#intro-overlay .number-of-questions:before  {
-    position: absolute;
-    bottom: 1em;
-    border-style: solid;
-    border-width: 1em 2em;
-    width: 0;
-    height: 0;
-    content: '';
+#intro-overlay .number-of-questions:before {
+  position: absolute;
+  bottom: 1em;
+  border-style: solid;
+  border-width: 1em 2em;
+  width: 0;
+  height: 0;
+  content: '';
 }
-#intro-overlay .number-of-species:before  {
-    right: -5em;
-    border-color: transparent;
+
+/* line 1172, ../sass/styles.scss */
+#intro-overlay .number-of-species:before {
+  right: -5em;
+  border-color: transparent;
 }
-#intro-overlay .number-of-questions:before  {
-    left: -4.3em;
-    border-color: transparent #508e31 transparent transparent;
-    top: 0.6em;
+
+/* line 1176, ../sass/styles.scss */
+#intro-overlay .number-of-questions:before {
+  left: -4.3em;
+  border-color: transparent #508e31 transparent transparent;
+  top: 0.6em;
 }
 
 /* Styles for results page */
-
+/* line 1184, ../sass/styles.scss */
 #main h3.species-count-heading {
-    /* Move "18 matching species" to the right of Photos/List tab */
-    position: relative;
-    height: 0px;
+  /* Move "18 matching species" to the right of Photos/List tab */
+  position: relative;
+  height: 0px;
 }
+
+/* line 1189, ../sass/styles.scss */
 #main h3.species-count-heading > span {
-    position: absolute;
-    top: 0px;
-    left: 330px;
+  position: absolute;
+  top: 0px;
+  left: 330px;
 }
 
+/* line 1195, ../sass/styles.scss */
 .get-more {
-    font-size: 11px;
-    line-height: 16px;
-    margin: 0 0 20px;
-    text-align: center;
-}
-.get-more a {
-    cursor: pointer;
-    display: block;
-    font-weight: bold;
-    margin: 18px 0 10px;
-}
-.get-more a.get-choices {
-    margin: 0 auto 4px;
+  font-size: 11px;
+  line-height: 16px;
+  margin: 0 0 20px;
+  text-align: center;
 }
 
+/* line 1201, ../sass/styles.scss */
+.get-more a {
+  cursor: pointer;
+  display: block;
+  font-weight: bold;
+  margin: 18px 0 10px;
+}
+
+/* line 1207, ../sass/styles.scss */
+.get-more a.get-choices {
+  margin: 0 auto 4px;
+}
+
+/* line 1211, ../sass/styles.scss */
 h5.help {
-    padding: 3px 0 0 0;
-    margin: 0 0 0 0;
+  padding: 3px 0 0 0;
+  margin: 0 0 0 0;
 }
+
+/* line 1215, ../sass/styles.scss */
 #plant-id-3 a.get-help-btn {
-    margin: 0 0 0 19px;
+  margin: 0 0 0 19px;
 }
+
+/* line 1218, ../sass/styles.scss */
 #plant-id-3 input.dijitInputInner {
-    font-family: Verdana, sans-serif;
-    font-size: 12px;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 12px;
 }
 
 /* Working Area styles */
-
+/* line 1225, ../sass/styles.scss */
 .working-area {
-    display: none;
-    position: absolute;
-    z-index: 200;
-    background: #fff;
-    border: 1px solid #c3d941;
-    margin-left: -40px;
-    padding: 10px 15px;
-    width: 730px;
+  display: none;
+  position: absolute;
+  z-index: 200;
+  background: #fff;
+  border: 1px solid #c3d941;
+  margin-left: -40px;
+  padding: 10px 15px;
+  width: 730px;
+  -moz-box-shadow: black 1px 1px 5px 0;
+  -webkit-box-shadow: black 1px 1px 5px 0;
+  -o-box-shadow: black 1px 1px 5px 0;
+  box-shadow: black 1px 1px 5px 0;
+}
 
-    -moz-box-shadow: black 1px 1px 5px 0;
-    -webkit-box-shadow: black 1px 1px 5px 0;
-    -o-box-shadow: black 1px 1px 5px 0;
-    box-shadow: black 1px 1px 5px 0;
-}
+/* line 1240, ../sass/styles.scss */
 .working-area img.arrow {
-    display: block;
-    left: -15px;
-    position: absolute;
-    top: 18px;
+  display: block;
+  left: -15px;
+  position: absolute;
+  top: 18px;
 }
+
+/* line 1246, ../sass/styles.scss */
 .choices {
-    border-spacing: 6px 12px;
-    display: table;
+  border-spacing: 6px 12px;
+  display: table;
 }
+
+/* line 1250, ../sass/styles.scss */
 .choices .row {
-    display: table-row;
+  display: table-row;
 }
+
+/* line 1253, ../sass/styles.scss */
 .choices .row div {
-    display: table-cell;
-    margin: 0 0.5em 1em 0;
-    min-height: 50px;
+  display: table-cell;
+  margin: 0 0.5em 1em 0;
+  min-height: 50px;
 }
+
+/* line 1258, ../sass/styles.scss */
 .choices .row div label {
-    cursor: pointer;
-    display: inline-block;
-    font-family: Tahoma, "Trebuchet MS", sans-serif;
-    font-size: 12px;
-    margin-left: 18px;
-    min-width: 70px;
-    vertical-align: top;
-    word-wrap: break-word; /* can break mid-word */
+  cursor: pointer;
+  display: inline-block;
+  font-family: Tahoma, "Trebuchet MS", sans-serif;
+  font-size: 12px;
+  margin-left: 18px;
+  min-width: 70px;
+  vertical-align: top;
+  word-wrap: break-word;
+  /* can break mid-word */
 }
+
+/* line 1268, ../sass/styles.scss */
 .choices .row div input {
-    float: left;
-    margin: 3px 3px 0 -18px;
+  float: left;
+  margin: 3px 3px 0 -18px;
 }
+
+/* line 1272, ../sass/styles.scss */
 .choices .row div.disabled span {
-    color: #aaa;
+  color: #aaa;
 }
+
+/* line 1275, ../sass/styles.scss */
 .choices .row div img {
-    background: #fff;
-    border: 1px solid #ddd;
-    display: inline-block;
-    height: 100px;
+  background: #fff;
+  border: 1px solid #ddd;
+  display: inline-block;
+  height: 80px;
 }
+
+/* line 1281, ../sass/styles.scss */
 .working-area a.close {
-    background: url(/static/images/icons/close.png) no-repeat transparent;
-    display: block;
-    float: right;
-    height: 16px;
-    margin: 5px 0 0 0;
-    width: 16px;
+  background: url(/static/images/icons/close.png) no-repeat transparent;
+  display: block;
+  float: right;
+  height: 16px;
+  margin: 5px 0 0 0;
+  width: 16px;
 }
+
+/* line 1289, ../sass/styles.scss */
 .working-area h4 {
-    color: #000;
-    display: none;
-    line-height: 130%;
-    margin: 6px 0;
-    width: 650px;
+  color: #000;
+  display: none;
+  line-height: 130%;
+  margin: 6px 0;
+  width: 650px;
 }
+
+/* line 1296, ../sass/styles.scss */
 .working-area .intro-message h4 {
-    display: block;
-    font-weight: bold;
+  display: block;
+  font-weight: bold;
 }
+
+/* line 1300, ../sass/styles.scss */
 .working-area .intro-message p {
-    font-size: 14px;
-    margin-bottom: 5px;
+  font-size: 14px;
+  margin-bottom: 5px;
 }
+
+/* line 1304, ../sass/styles.scss */
 .working-area .info {
-    display: none;
+  display: none;
 }
+
+/* line 1307, ../sass/styles.scss */
 .working-area .info .hint p {
-    font-size: 14px;
-    line-height: 140%;
-    margin-bottom: 4px;
+  font-size: 14px;
+  line-height: 140%;
+  margin-bottom: 4px;
 }
+
+/* line 1312, ../sass/styles.scss */
 .working-area .dld {
   float: right;
 }
+
+/* line 1315, ../sass/styles.scss */
 .working-area li {
-    display: block;
-    float: left;
-    margin: 0 8px 15px 0;
-}
-.working-area ul {
-    margin: 15px 0 0 0;
-}
-.working-area li label {
-    display: block;
-    float: left;
-    margin: 0 9px 0 0;
-}
-.working-area li .option-container {
-    float: left;
-    width: auto;
-}
-.working-area li .option-container p {
-    display: inline-block;
-    width: 80px;
-}
-.working-area li img {
-    display: block;
-    border: 1px solid #e1e1dc;
-}
-.working-area .apply-btn {
-    background: url(/static/images/layout/apply-selection.png) no-repeat 0 0 transparent;
-    display: inline-block;
-    height: 41px;
-    margin: 4px 0 0;
-    text-align: left;
-    text-indent: -9000px;
-    width: 244px;
-}
-.working-area .apply-btn:hover {
-    background-position: 0 -41px;
-}
-.working-area .apply-btn:active {
-    background-position: 0 -82px;
-}
-.working-area .apply-btn.disabled {
-    background-position: 0 0;
-    opacity: 0.2;
+  display: block;
+  float: left;
+  margin: 0 8px 15px 0;
 }
 
+/* line 1320, ../sass/styles.scss */
+.working-area ul {
+  margin: 15px 0 0 0;
+}
+
+/* line 1323, ../sass/styles.scss */
+.working-area li label {
+  display: block;
+  float: left;
+  margin: 0 9px 0 0;
+}
+
+/* line 1328, ../sass/styles.scss */
+.working-area li .option-container {
+  float: left;
+  width: auto;
+}
+
+/* line 1332, ../sass/styles.scss */
+.working-area li .option-container p {
+  display: inline-block;
+  width: 80px;
+}
+
+/* line 1336, ../sass/styles.scss */
+.working-area li img {
+  display: block;
+  border: 1px solid #e1e1dc;
+}
+
+/* line 1340, ../sass/styles.scss */
+.working-area .apply-btn {
+  background: url(/static/images/layout/apply-selection.png) no-repeat 0 0 transparent;
+  display: inline-block;
+  height: 41px;
+  margin: 4px 0 0;
+  text-align: left;
+  text-indent: -9000px;
+  width: 244px;
+}
+
+/* line 1349, ../sass/styles.scss */
+.working-area .apply-btn:hover {
+  background-position: 0 -41px;
+}
+
+/* line 1352, ../sass/styles.scss */
+.working-area .apply-btn:active {
+  background-position: 0 -82px;
+}
+
+/* line 1355, ../sass/styles.scss */
+.working-area .apply-btn.disabled {
+  background-position: 0 0;
+  opacity: 0.2;
+}
+
+/* line 1360, ../sass/styles.scss */
 #sidebar .loading {
-    background: url(/static/images/icons/preloaders-dot-net-sm.gif) no-repeat scroll 0 0 transparent;
-    font-weight: bold;
-    margin: 12px;
-    padding: 0 0 0 20px;
+  background: url(/static/images/icons/preloaders-dot-net-sm.gif) no-repeat scroll 0 0 transparent;
+  font-weight: bold;
+  margin: 12px;
+  padding: 0 0 0 20px;
 }
 
 /* Ordinarily this message will have its centering done
  * by JavaScript. See gobotany.sk.results.notify() */
+/* line 1369, ../sass/styles.scss */
 #notification-msg {
-    background-color: #ff0;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    font-size: 1.2em;
-    -moz-border-bottom-left-radius: 15px;
-    -moz-border-bottom-right-radius: 15px;
-    padding: 0.25em 0.75em;
-    z-index: 200;
+  background-color: #ff0;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  font-size: 1.2em;
+  -moz-border-bottom-left-radius: 15px;
+  -moz-border-bottom-right-radius: 15px;
+  padding: 0.25em 0.75em;
+  z-index: 200;
 }
 
+/* line 1380, ../sass/styles.scss */
 div.working-area #simple-slider {
-    margin-top: 60px;
-    margin-bottom: 48px;
+  margin-top: 60px;
+  margin-bottom: 48px;
 }
+
+/* line 1384, ../sass/styles.scss */
 div.working-area #simple-slider .dijitSliderDecoration {
-    background: #fff;
-    border-bottom: 0;
+  background: #fff;
+  border-bottom: 0;
 }
+
+/* line 1388, ../sass/styles.scss */
 div.working-area #simple-slider .count {
-    bottom: 130px;
-    left: 370px;   /* Left position set by JS with slide */
-    position: absolute;
+  bottom: 130px;
+  left: 370px;
+  /* Left position set by JS with slide */
+  position: absolute;
 }
 
 /* Length input */
+/* line 1395, ../sass/styles.scss */
 .choose_length label {
-    margin: 0 10px 0 0;
+  margin: 0 10px 0 0;
 }
+
+/* line 1398, ../sass/styles.scss */
 .choose_length label input {
-    margin: 0 4px 0 0;
+  margin: 0 4px 0 0;
 }
 
 /* Some question/answer working-area styles */
-
+/* line 1404, ../sass/styles.scss */
 div.working-area .close {
-    color: #00e;
-    cursor: pointer;
-    display: inline;
-    float: right;
+  color: #00e;
+  cursor: pointer;
+  display: inline;
+  float: right;
 }
 
+/* line 1411, ../sass/styles.scss */
 div.working-area h3.name {
-    font-size: 1em;
-    font-weight: bold;
-    line-height: 1em;
-    margin: 0 0 0.3em 0;
-    padding: 0;
+  font-size: 1em;
+  font-weight: bold;
+  line-height: 1em;
+  margin: 0 0 0.3em 0;
+  padding: 0;
 }
 
+/* line 1419, ../sass/styles.scss */
 div.working-area .info {
-    width: 100%;
+  width: 100%;
 }
 
+/* line 1423, ../sass/styles.scss */
 div.working-area .values.numeric {
-    border: 0;
-    height: auto;
-    margin-top: 8px;
-    overflow-y: visible;
+  border: 0;
+  height: auto;
+  margin-top: 8px;
+  overflow-y: visible;
 }
 
+/* line 1430, ../sass/styles.scss */
 div.working-area .values .zero {
-    color: #ccc;
+  color: #ccc;
 }
 
+/* line 1434, ../sass/styles.scss */
 div.working-area .measurement {
-    margin: 8px 0;
+  margin: 8px 0;
 }
+
+/* line 1437, ../sass/styles.scss */
 div.working-area .measurement label input {
-    margin: 0 4px 0 8px;
+  margin: 0 4px 0 8px;
 }
 
+/* line 1441, ../sass/styles.scss */
 div.working-area .info {
-    float: left;
-    font-family: Tahoma, "Trebuchet MS", sans-serif;
-    font-size: 14px;
+  float: left;
+  font-family: Tahoma, "Trebuchet MS", sans-serif;
+  font-size: 14px;
 }
 
+/* line 1447, ../sass/styles.scss */
 div.working-area .info .hint {
-    font-size: 12px;
-    margin: 6px 0;
+  font-size: 12px;
+  margin: 6px 0;
 }
 
+/* line 1452, ../sass/styles.scss */
 div.working-area .info .hint p {
-    line-height: 120%;
-    margin-bottom: 0;
+  line-height: 120%;
+  margin-bottom: 0;
 }
 
+/* line 1457, ../sass/styles.scss */
 div.working-area .instructions {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
+/* line 1461, ../sass/styles.scss */
 div.working-area .actions {
-    text-align: center;
+  text-align: center;
 }
 
 /* end Working Area styles */
-
 /* Character/value styles, for plant preview popups, etc. */
+/* line 1468, ../sass/styles.scss */
 .characteristics {
-    margin-bottom: 16px;
+  margin-bottom: 16px;
 }
+
+/* line 1471, ../sass/styles.scss */
 .characteristics dl {
-    border: 1px transparent; /* border forces new row in WebKit when
-                              * char name, but not value, wraps */
-    margin: 6px 0 0;
-    padding: 0;
+  border: 1px transparent;
+  /* border forces new row in WebKit when
+   * char name, but not value, wraps */
+  margin: 6px 0 0;
+  padding: 0;
 }
+
+/* line 1477, ../sass/styles.scss */
 .characteristics dt {
-    clear: left;
-    float: left;
-    line-height: 18px;
-    text-align: right;
-    text-transform: uppercase;
-    width: 200px;
+  clear: left;
+  float: left;
+  line-height: 18px;
+  text-align: right;
+  text-transform: uppercase;
+  width: 200px;
 }
+
+/* line 1485, ../sass/styles.scss */
 .characteristics.full dt {
-    width: 270px;
+  width: 270px;
 }
+
+/* line 1488, ../sass/styles.scss */
 .characteristics dt:after {
-    content: ':';
+  content: ':';
 }
+
+/* line 1491, ../sass/styles.scss */
 .characteristics dd {
-    line-height: 18px;
-    margin-left: 210px;
+  line-height: 18px;
+  margin-left: 210px;
 }
+
+/* line 1495, ../sass/styles.scss */
 .characteristics.full dd {
-    margin-left: 280px;
+  margin-left: 280px;
 }
+
+/* line 1498, ../sass/styles.scss */
 .characteristics dd ul {
-    list-style-type: disc;
-    margin: 0;
-    padding: 0 0 0 1.3em;
-    text-indent: -0.2em;
+  list-style-type: disc;
+  margin: 0;
+  padding: 0 0 0 1.3em;
+  text-indent: -0.2em;
 }
+
+/* line 1504, ../sass/styles.scss */
 .characteristics dd li {
-    margin: 0;
-    padding: 0 0 0.1em;
+  margin: 0;
+  padding: 0 0 0.1em;
 }
+
+/* line 1508, ../sass/styles.scss */
 .characteristics dd ul.compact {
-    margin: 0;
-    padding: 0;
-    text-indent: 0;
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
 }
+
+/* line 1513, ../sass/styles.scss */
 .characteristics dd ul.compact li {
-    display: inline;
+  display: inline;
 }
+
+/* line 1516, ../sass/styles.scss */
 .characteristics dd ul.compact li:not([class='last']):after {
-    content: ', ';
+  content: ', ';
 }
 
 /* Tabs for the different views of results */
-
+/* line 1522, ../sass/styles.scss */
 #results-tabs {
-    border-bottom: 1px solid #c3d941;
-    clear: left;
-    height: 28px;
-    margin: 10px 0;
+  border-bottom: 1px solid #c3d941;
+  clear: left;
+  height: 28px;
+  margin: 10px 0;
 }
 
+/* line 1529, ../sass/styles.scss */
 #results-tabs a {
-    background: #d6e6c5;
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
-    background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5);
-    border: 1px solid #c3d941;
-    color: #354d1e;
-    cursor: pointer;
-    display: block;
-    float: left;
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
-    font-size: 18px;
-    line-height: 18px;
-    margin: 0;
-    padding: 5px 10px 4px;
-    text-align: center;
-    width: 100px;
-    -webkit-border-top-left-radius: 6px;
-    -webkit-border-top-right-radius: 6px;
-    -moz-border-radius-topleft: 6px;
-    -moz-border-radius-topright: 6px;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+  background: #d6e6c5;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5));
+  background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5);
+  border: 1px solid #c3d941;
+  color: #354d1e;
+  cursor: pointer;
+  display: block;
+  float: left;
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 18px;
+  margin: 0;
+  padding: 5px 10px 4px;
+  text-align: center;
+  width: 100px;
+  -webkit-border-top-left-radius: 6px;
+  -webkit-border-top-right-radius: 6px;
+  -moz-border-radius-topleft: 6px;
+  -moz-border-radius-topright: 6px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
 }
+
+/* line 1552, ../sass/styles.scss */
 #results-tabs a:hover {
-    background: #e1f2cd;
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0f8e7), color-stop(100%,#e1f2cd));
-    background: -moz-linear-gradient(center top, #f0f8e7, #e1f2cd);
-    cursor: pointer;
-    text-decoration: none;
+  background: #e1f2cd;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f0f8e7), color-stop(100%, #e1f2cd));
+  background: -moz-linear-gradient(center top, #f0f8e7, #e1f2cd);
+  cursor: pointer;
+  text-decoration: none;
 }
+
+/* line 1559, ../sass/styles.scss */
 #results-tabs li:first-child a {
-    margin-left: 10px;
+  margin-left: 10px;
 }
+
+/* line 1562, ../sass/styles.scss */
 #results-tabs li a.current, results-tabs li a.current:hover {
-    background: #fbfaf5;
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0c0));
-    background: -moz-linear-gradient(center top, #ffffff, #f0f0c0);
-    border-bottom: 0;
-    color: #1a2e11;
-    cursor: default;
-    padding: 5px 10px;
+  background: #fbfaf5;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #f0f0c0));
+  background: -moz-linear-gradient(center top, white, #f0f0c0);
+  border-bottom: 0;
+  color: #1a2e11;
+  cursor: default;
+  padding: 5px 10px;
 }
 
 /* Results list view */
-
+/* line 1574, ../sass/styles.scss */
 .plant-list .wait {
-    background: url(/static/images/icons/preloaders-dot-net-lg.gif) no-repeat scroll center center transparent;
-    height: 350px;
-    margin: auto;
+  background: url(/static/images/icons/preloaders-dot-net-lg.gif) no-repeat scroll center center transparent;
+  height: 350px;
+  margin: auto;
 }
 
+/* line 1580, ../sass/styles.scss */
 .plant-list table {
-    width: 100%;
+  width: 100%;
 }
+
+/* line 1583, ../sass/styles.scss */
 .plant-list table tr {
-    height: 20px;
+  height: 20px;
 }
+
+/* line 1586, ../sass/styles.scss */
 .plant-list table td {
-    border-top: 1px solid #e1e1dc;
-    padding: 10px 0;
-    vertical-align: middle;
+  border-top: 1px solid #e1e1dc;
+  padding: 10px 0;
+  vertical-align: middle;
 }
+
+/* line 1591, ../sass/styles.scss */
 .plant-list table tr.first-visible td {
-    border-top: 0;
+  border-top: 0;
 }
+
+/* line 1594, ../sass/styles.scss */
+.plant-list table .genus, .plant-list table .scientific-name {
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+}
+
+/* line 1597, ../sass/styles.scss */
 .plant-list table .genus {
-    color: #1a2e11;
-    font-size: 18px;
-    font-weight: normal;
-    line-height: 200%;
-    padding: 3px 0 0 0;
-    vertical-align: top;
+  color: #1a2e11;
+  font-size: 18px;
+  font-weight: normal;
+  line-height: 200%;
+  padding: 3px 0 0 0;
+  vertical-align: top;
 }
+
+/* line 1605, ../sass/styles.scss */
 .plant-list table .scientific-name {
-    font-size: 15px;
-    font-weight: normal;
-    line-height: 155%;
-    padding: 10px 0 8px 0;
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 155%;
+  padding: 10px 0 8px 0;
 }
+
+/* line 1611, ../sass/styles.scss */
 .plant-list table .scientific-name img {
-    margin: 0 8px 0 0;
-    padding-bottom: 2px;
-    vertical-align: middle;
+  margin: 0 8px 0 0;
+  padding-bottom: 2px;
+  vertical-align: middle;
 }
+
+/* line 1616, ../sass/styles.scss */
 .plant-list table .details a {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Headings for family, genus, and species pages */
+/* line 1621, ../sass/styles.scss */
 #taxon h2 span.origin {
-	font-size: 14px;
-    line-height: 100%;
+  font-size: 14px;
+  line-height: 100%;
 }
+
+/* line 1625, ../sass/styles.scss */
 #family h3, #genus h3, #taxon h3 {
-    font-size: 30px;
-    color: #807121;
+  font-size: 30px;
+  color: #807121;
 }
+
+/* line 1629, ../sass/styles.scss */
 #taxon h3 {
-    margin-bottom: 12px;
+  margin-bottom: 12px;
 }
 
 /* Taxon (species) page styles */
-
+/* line 1635, ../sass/styles.scss */
 #taxon #main p {
-	margin: 0 0 15px;	
+  margin: 0 0 15px;
 }
 
+/* line 1639, ../sass/styles.scss */
 #taxon .note {
-    background: #c4bd93;
-    border-bottom: 1px solid #ad9f50;
-    border-top: 1px solid #ad9f50;
-    color: #000;
-    font-size: 24px;
-    margin-bottom: 0.5em;
-    padding: 0.5em 0;
-    text-align: center;
-    width: 100%;
+  background: #c4bd93;
+  border-bottom: 1px solid #ad9f50;
+  border-top: 1px solid #ad9f50;
+  color: #000;
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-size: 24px;
+  margin-bottom: 0.5em;
+  padding: 0.5em 0;
+  text-align: center;
+  width: 100%;
 }
 
+/* line 1652, ../sass/styles.scss */
 a.description-control {
-	display: block;
-	padding: 3px 0 3px 25px;
-	margin: 10px 0 12px 0;
-	background: url(/static/images/icons/plus.png) left 50% no-repeat;	
+  display: block;
+  padding: 3px 0 3px 25px;
+  margin: 10px 0 12px 0;
+  background: url(/static/images/icons/plus.png) left 50% no-repeat;
 }
+
+/* line 1658, ../sass/styles.scss */
 ul.full-description {
-	display: none;
-	margin: 0 0 15px 0;
-	border: 1px solid #e1e1dc;	
-	background: #fbfbf8;	
+  display: none;
+  margin: 0 0 15px 0;
+  border: 1px solid #e1e1dc;
+  background: #fbfbf8;
 }
+
+/* line 1664, ../sass/styles.scss */
 ul.full-description > li {
-    clear: left;
-	display: block;
-	padding: 18px;
-	margin: 0 0 0 0;
-	border-bottom: 1px solid #e1e1dc;	
-	cursor: pointer;
+  clear: left;
+  display: block;
+  padding: 18px;
+  margin: 0 0 0 0;
+  border-bottom: 1px solid #e1e1dc;
+  cursor: pointer;
 }
+
+/* line 1672, ../sass/styles.scss */
 ul.full-description > li:last-child {
-	border-bottom: none;	
+  border-bottom: none;
 }
+
+/* line 1675, ../sass/styles.scss */
 ul.full-description > li:hover {
-	background-color: #fff;
+  background-color: #fff;
 }
+
+/* line 1678, ../sass/styles.scss */
 ul.full-description > li h5 {
-	background: url(/static/images/icons/plus.png) left 50% no-repeat;
+  background: url(/static/images/icons/plus.png) left 50% no-repeat;
 }
+
+/* line 1681, ../sass/styles.scss */
 ul.full-description > li div {
-	display: none;
+  display: none;
 }
+
+/* line 1684, ../sass/styles.scss */
 ul.full-description > li h5, ul.full-description > li div {
-    padding-left: 28px;
+  padding-left: 28px;
 }
 
-
+/* line 1689, ../sass/styles.scss */
 #taxon table {
-    border-collapse: collapse;
-    font-size: 12px;
-    margin-top: 8px;
-    width: 690px;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 8px;
+  width: 690px;
 }
+
+/* line 1695, ../sass/styles.scss */
 #taxon th, #taxon td {
-    line-height: 105%;
-    padding: 6px 4px;
+  line-height: 105%;
+  padding: 6px 4px;
 }
+
+/* line 1699, ../sass/styles.scss */
 #taxon th {
-    background: #b4d57f;
-    font-weight: normal;
-    text-transform: uppercase;
+  background: #b4d57f;
+  font-weight: normal;
+  text-transform: uppercase;
 }
+
+/* line 1704, ../sass/styles.scss */
 #taxon td {
-    border: 1px solid #c3d941;
-    border-bottom: 0px;
-    border-top: 0px;
-    text-align: center;
+  border: 1px solid #c3d941;
+  border-bottom: 0px;
+  border-top: 0px;
+  text-align: center;
 }
+
+/* line 1710, ../sass/styles.scss */
 #taxon thead th {
-    border: 1px solid #c3d941;
-    border-right: 1px solid #b4d57f;
-    font-size: 10px;
-    text-align: center;
-    vertical-align: bottom;
+  border: 1px solid #c3d941;
+  border-right: 1px solid #b4d57f;
+  font-size: 10px;
+  text-align: center;
+  vertical-align: bottom;
 }
+
+/* line 1717, ../sass/styles.scss */
 #taxon thead th:last-child {
-    border-right-color: #c3d941;
+  border-right-color: #c3d941;
 }
+
+/* line 1720, ../sass/styles.scss */
 #taxon tbody th, #taxon thead td {
-    background: inherit;
-    border: 0;
-    font-size: 10px;
-    font-weight: bold;
-    padding-right: 8px;
-    text-align: right;
-    width: 103px;
+  background: inherit;
+  border: 0;
+  font-size: 10px;
+  font-weight: bold;
+  padding-right: 8px;
+  text-align: right;
+  width: 103px;
 }
+
+/* line 1729, ../sass/styles.scss */
 #taxon tbody th {
-    padding-left: 0;
-    white-space: nowrap;
+  padding-left: 0;
+  white-space: nowrap;
 }
+
+/* line 1733, ../sass/styles.scss */
 #taxon tbody th.status {
-    font-size: 12px;
-    font-weight: normal;
-    padding-left: 40px;
-    text-align: left;
-    text-transform: none;
+  font-size: 12px;
+  font-weight: normal;
+  padding-left: 40px;
+  text-align: left;
+  text-transform: none;
 }
 
+/* line 1741, ../sass/styles.scss */
 #taxon #sidebar dt, #taxon #sidebar dd {
-    display: inline;
+  display: inline;
 }
 
+/* line 1745, ../sass/styles.scss */
 #taxon #sidebar .lookalikes dt {
-    margin-top: 1em;
-    display: block;
+  margin-top: 1em;
+  display: block;
 }
 
+/* line 1750, ../sass/styles.scss */
 #taxon #sidebar .get-help-btn {
-	margin: 0 0 0 10px;	
+  margin: 0 0 0 10px;
 }
+
+/* line 1753, ../sass/styles.scss */
 a.enlarge {
-	color: #1a2e11;
-	display: block;
-    margin: 0 0 8px 0;
+  color: #1a2e11;
+  display: block;
+  margin: 0 0 8px 0;
 }
+
+/* line 1758, ../sass/styles.scss */
 a.enlarge:hover {
-	text-decoration: none;
+  text-decoration: none;
 }
+
+/* line 1761, ../sass/styles.scss */
 a.enlarge img {
-    vertical-align: middle;
+  vertical-align: middle;
 }
+
+/* line 1764, ../sass/styles.scss */
 div.section.map p {
-    font-size: 9px;
-    margin-bottom: 6px;
+  font-size: 9px;
+  margin-bottom: 6px;
 }
+
+/* line 1768, ../sass/styles.scss */
 div.section.namap {
-    position: relative;
+  position: relative;
 }
+
+/* line 1771, ../sass/styles.scss */
 div.section.namap div.trans {
-    /* Transparent div to make North America map object element clickable */
-    cursor: pointer;
-    background: transparent;
-    height: 133px; /* Cover the map plus the link below it */
-    margin-bottom: 0;
-    padding: 0;
-    position: absolute;
-    top: 45px;
-    width: 196px;
+  /* Transparent div to make North America map object element clickable */
+  cursor: pointer;
+  background: transparent;
+  height: 133px;
+  /* Cover the map plus the link below it */
+  margin-bottom: 0;
+  padding: 0;
+  position: absolute;
+  top: 45px;
+  width: 196px;
 }
 
 /* Larger gallery styles */
-
+/* line 1785, ../sass/styles.scss */
 #taxon .img-gallery {
-	width: 710px;
-	float: none;
-	margin: 0 0 0 0;	
+  width: 710px;
+  float: none;
+  margin: 0 0 0 0;
 }
+
+/* line 1790, ../sass/styles.scss */
 #taxon .img-gallery .img-container {
-	width: 710px;
-	height: 273px;
+  width: 710px;
+  height: 273px;
 }
+
+/* line 1794, ../sass/styles.scss */
 #taxon .img-gallery .frame {
-	width: 700px;
-	height: 239px;	
+  width: 700px;
+  height: 239px;
 }
+
+/* line 1798, ../sass/styles.scss */
 #taxon .img-gallery .images .single-img {
-	position: relative;
-	float: left;	
+  position: relative;
+  float: left;
 }
+
+/* line 1802, ../sass/styles.scss */
 #taxon .img-gallery .images img {
-	float: none;	
+  float: none;
 }
+
+/* line 1805, ../sass/styles.scss */
 #taxon #main .img-gallery p.caption {
-	position: absolute;
-	right: 0;
-	bottom: -22px;
-	margin: 0 0 0 0;
+  position: absolute;
+  right: 0;
+  bottom: -22px;
+  margin: 0 0 0 0;
 }
+
+/* line 1811, ../sass/styles.scss */
 #taxon .controls {
-	position: relative;
+  position: relative;
 }
+
+/* line 1814, ../sass/styles.scss */
 #taxon .controls span {
-	position: relative;
-	top: -22px;	
+  position: relative;
+  top: -22px;
 }
+
+/* line 1818, ../sass/styles.scss */
 #taxon a.more {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* Smooth Div Scroll image area */
+/* line 1823, ../sass/styles.scss */
 #taxon #species-images {
-    height: 239px;
-    margin: 0 0 20px 0;
-    position: relative;
-    width: 700px;
+  height: 239px;
+  margin: 0 0 20px 0;
+  overflow: hidden;
+  position: relative;
+  width: 700px;
 }
-#taxon #species-images div.scrollableArea img {
-    border-right: 5px solid #fff;
-    float: left;
-    margin: 0;
-    padding: 0;
-    position: relative;
+
+/* line 1830, ../sass/styles.scss */
+#taxon #species-images div.scrollableArea a {
+  border-right: 5px solid #fff;
+  float: left;
+  margin: 0;
+  padding: 0;
 }
 
 /* Shadowbox tweaks to allow multiple title lines, for presenting a
  * photo title, photographer credit, and copyright. */
+/* line 1843, ../sass/styles.scss */
 #taxon #sb-title, #taxon #sb-title-inner,
 #plant-id #sb-title, #plant-id #sb-title-inner,
 #plant-id-2 #sb-title, #plant-id-2 #sb-title-inner,
 #family #sb-title, #family #sb-title-inner,
 #genus #sb-title, #genus #sb-title-inner {
-    height: 76px;
-    line-height: 70%;
-    position: relative;
+  height: 76px;
+  line-height: 70%;
+  position: relative;
 }
+
+/* line 1850, ../sass/styles.scss */
 #taxon #sb-title-inner div, #plant-id #sb-title-inner div,
 #plant-id-2 #sb-title-inner div, #family #sb-title-inner div,
 #genus #sb-title-inner div {
-    bottom: 6px;
-    position: absolute;
+  bottom: 6px;
+  position: absolute;
 }
+
+/* line 1856, ../sass/styles.scss */
 #taxon #sb-title-inner h6, #plant-id #sb-title-inner h6,
 #plant-id-2 #sb-title-inner h6, #family #sb-title-inner h6,
 #genus #sb-title-inner h6 {
-    font-size: 16px;
-    line-height: 110%;
-    margin: 0 0 2px;
-    padding: 0;
+  font-size: 16px;
+  line-height: 110%;
+  margin: 0 0 2px;
+  padding: 0;
 }
+
+/* line 1864, ../sass/styles.scss */
 #taxon #sb-title-inner span, #plant-id #sb-title-inner span,
 #plant-id-2 #sb-title-inner span, #family #sb-title-inner span,
 #genus #sb-title-inner span {
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
-    font-size: 10px;
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-size: 10px;
 }
+
+/* line 1869, ../sass/styles.scss */
 #taxon #sb-nav-close, #plant-id #sb-nav-close, #plant-id-2 #sb-nav-close,
 #family #sb-nav-close, #genus #sb-nav-close {
-    top: 56px !important;
+  top: 56px !important;
 }
+
+/* line 1874, ../sass/styles.scss */
 #taxon #sb-title-inner a, #plant-id #sb-title-inner a,
 #plant-id-2 #sb-title-inner a, #family #sb-title-inner a,
 #genus #sb-title-inner a {
-    color: #fff;
-    text-decoration: underline;
+  color: #fff;
+  text-decoration: underline;
 }
+
+/* line 1878, ../sass/styles.scss */
 #sb-counter {
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
 }
 
-/* Help section: sidebar styles */
-
-#getting-started #sidebar, #about #sidebar{
-    height: 1046px;
+/* Help section: sidebar, heading, list styles */
+/* line 1884, ../sass/styles.scss */
+#getting-started #sidebar, #about #sidebar {
+  height: 1046px;
 }
+
+/* line 1887, ../sass/styles.scss */
 #advanced-map #sidebar {
-    height: 746px;
+  height: 746px;
 }
+
+/* line 1890, ../sass/styles.scss */
 #glossary #sidebar, #video-help-topics #sidebar {
-    height: 1420px;
+  height: 1420px;
 }
+
+/* line 1895, ../sass/styles.scss */
 #getting-started #sidebar a:hover, #about #sidebar a:hover,
-#advanced-map #sidebar a:hover, #glossary #sidebar a:hover, 
+#advanced-map #sidebar a:hover, #glossary #sidebar a:hover,
 #video-help-topics #sidebar a:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 
-/*///////////////////////////**
-Getting Started Page Styles
-////////////////////////////*/
-#getting-started #sidebar .section:last-child {
-    margin-top: 48px;
+/* line 1900, ../sass/styles.scss */
+#getting-started h2, #about h2, #advanced-map h2, #glossary h2,
+#plantshare h2, #teaching-tools h2, #video-help-topics h2 {
+  margin-bottom: 8px;
 }
+
+/* line 1904, ../sass/styles.scss */
+#getting-started h3, #about h3, #advanced-map h3, #glossary h3,
+#teaching-tools h3, #video-help-topics h3 {
+  margin: 8px 0;
+}
+
+/* line 1908, ../sass/styles.scss */
+#getting-started #main ul, #about #main ul {
+  list-style-type: disc;
+  line-height: 170%;
+}
+
+/* Getting Started page styles */
+/* line 1915, ../sass/styles.scss */
 #getting-started .question {
-	padding: 18px 0 18px 45px;	
-	border-bottom: 1px solid #e2dfcb;
+  padding: 18px 0 18px 45px;
+  border-bottom: 1px solid #e2dfcb;
 }
+
+/* line 1919, ../sass/styles.scss */
 #getting-started .first.question {
-	margin: 11px 0 0 0;
-	border-top: 1px solid #e2dfcb;
-	background: url(/static/images/icons/1.png) left 18px no-repeat;	
+  margin: 11px 0 0 0;
+  border-top: 1px solid #e2dfcb;
+  background: url(/static/images/icons/1.png) left 18px no-repeat;
 }
+
+/* line 1924, ../sass/styles.scss */
 #getting-started .second.question {
-	background: url(/static/images/icons/2.png) left 18px no-repeat;	
+  background: url(/static/images/icons/2.png) left 18px no-repeat;
 }
+
+/* line 1927, ../sass/styles.scss */
 #getting-started .third.question {
-	background: url(/static/images/icons/3.png) left 18px no-repeat;	
+  background: url(/static/images/icons/3.png) left 18px no-repeat;
 }
+
+/* line 1930, ../sass/styles.scss */
 #getting-started .fourth.question {
-	background: url(/static/images/icons/4.png) left 18px no-repeat;	
+  background: url(/static/images/icons/4.png) left 18px no-repeat;
 }
+
+/* line 1933, ../sass/styles.scss */
 #getting-started .fifth.question {
-	background: url(/static/images/icons/5.png) left 18px no-repeat;	
+  background: url(/static/images/icons/5.png) left 18px no-repeat;
 }
+
+/* line 1936, ../sass/styles.scss */
 #getting-started .sixth.question {
-	margin: 0 0 11px 0;
-	background: url(/static/images/icons/6.png) left 18px no-repeat;	
+  margin: 0 0 11px 0;
+  background: url(/static/images/icons/6.png) left 18px no-repeat;
 }
+
+/* line 1940, ../sass/styles.scss */
 #getting-started a.screenshot {
-	float: right;	
-	margin: 0 0 0 15px;
-	color: #1A2E11;
-	text-align: center;
+  float: right;
+  margin: 0 0 0 15px;
+  color: #1A2E11;
+  text-align: center;
 }
+
+/* line 1946, ../sass/styles.scss */
 #getting-started a.screenshot:hover {
-	text-decoration: none;	
+  text-decoration: none;
 }
+
+/* line 1949, ../sass/styles.scss */
 #getting-started a.screenshot img {
-    margin: 10px 0;
-    vertical-align: middle;
+  margin: 10px 0;
+  vertical-align: middle;
 }
+
+/* line 1953, ../sass/styles.scss */
 #getting-started a.screenshot img.screenshot-thumb {
-    border: 5px solid #fff;
-	display: block;	
-	margin: 0;
-	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
-	-webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);	
+  border: 5px solid #fff;
+  display: block;
+  margin: 0;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
 }
+
+/* line 1961, ../sass/styles.scss */
 #getting-started .question ul {
-	padding: 0 0 0 15px;
-	list-style-type: disc;	
+  padding: 0 0 0 15px;
 }
+
+/* line 1964, ../sass/styles.scss */
 #getting-started a.onward-btn {
-	display: block;
-	float: right;
-	width: 280px;
-	height: 32px;
-	margin: 10px 0 0 0;
-	background: url(/static/images/layout/onward-btn-orange.png) 0 0 no-repeat transparent;
-	text-indent: -9000px;	
+  display: block;
+  float: right;
+  width: 280px;
+  height: 32px;
+  margin: 10px 0 0 0;
+  background: url(/static/images/layout/onward-btn-orange.png) 0 0 no-repeat transparent;
+  text-indent: -9000px;
 }
+
+/* line 1973, ../sass/styles.scss */
 #getting-started a.onward-btn:hover {
-	background-position: 0 -32px;	
+  background-position: 0 -32px;
 }
+
+/* line 1976, ../sass/styles.scss */
 #getting-started a.onward-btn:active {
-	background-position: 0 -64px;	
+  background-position: 0 -64px;
 }
+
+/* line 1979, ../sass/styles.scss */
 #getting-started label.got-it {
-	display: block;
-	float: left;
-	margin: 19px 0 0 0;	
+  display: block;
+  float: left;
+  margin: 19px 0 0 0;
 }
+
+/* line 1984, ../sass/styles.scss */
 #getting-started label.got-it input {
-	margin: 0 5px 0 0;	
+  margin: 0 5px 0 0;
 }
+
+/* line 1987, ../sass/styles.scss */
 #getting-started a.show {
-    cursor: pointer;
+  cursor: pointer;
 }
 
-/*///////////////////////////**
-About Page Styles
-////////////////////////////*/
-
-#main ul.about {
-	list-style-type:disc;
-	margin: 10px 0 30px 15px;
-	line-height: 200%;
-	
-}
-#main ul.aboutlast {
-	list-style-type:disc;
-	margin: 10px 0 60px 15px;
-	line-height: 200%;
-	
+/* About page styles */
+/* line 1993, ../sass/styles.scss */
+#about #main ul {
+  margin: 0 5px 0 15px;
 }
 
-img.margin {
-	float: right;
-	margin: 10px 0 20px 20px;
+/* line 1997, ../sass/styles.scss */
+#about #main img {
+  float: right;
+  margin: 5px 0 20px 20px;
 }
 
-img.margin-bookcover {
-	float: right;
-	margin: 10px 89px 20px 20px;
+/* line 2002, ../sass/styles.scss */
+#about #main img.bookcover {
+  margin-right: 89px;
 }
 
 /* Video Help Topics page styles */
-
+/* line 2008, ../sass/styles.scss */
 .video-row {
-    margin: 20px 0;
+  margin: 20px 0;
 }
+
+/* line 2011, ../sass/styles.scss */
 .video-topic {
-    float: left;
-    margin-right: 16px;
-    width: 220px;
+  float: left;
+  margin-right: 16px;
+  width: 220px;
 }
+
+/* line 2016, ../sass/styles.scss */
 .video-topic img {
-    height: 137px;
-    width: 220px;
+  height: 137px;
+  width: 220px;
 }
+
+/* line 2020, ../sass/styles.scss */
 .video-topic h4 {
-    line-height: 105%;
-    margin-top: 4px;
+  line-height: 105%;
+  margin-top: 4px;
 }
+
+/* line 2024, ../sass/styles.scss */
 .video-topic .missing-image {
-    border: 1px solid #508e31;
-    height: 135px;
-    width: 218px;
+  border: 1px solid #508e31;
+  height: 135px;
+  width: 218px;
 }
+
+/* line 2029, ../sass/styles.scss */
 .video-topic .missing-image p {
-    white-space: nowrap;
-    margin-left: -70px;
-    margin-top: -10px;
+  white-space: nowrap;
+  margin-left: -70px;
+  margin-top: -10px;
+}
+
+/* Video in sidebar of Getting Started page */
+/* line 2037, ../sass/styles.scss */
+#getting-started .video-topic, #getting-started .video-topic img {
+  height: 147px;
+  width: 196px;
+}
+
+/* line 2041, ../sass/styles.scss */
+#getting-started .video-topic {
+  margin-bottom: 4px;
+}
+
+/* line 2044, ../sass/styles.scss */
+#getting-started .video-topic a {
+  cursor: pointer;
 }
 
 /* Legal information page styles */
-
+/* line 2050, ../sass/styles.scss */
 #terms-of-use #main ol.terms {
-    list-style-type: upper-roman;
-	margin: 10px 0 30px 15px;
-	line-height: 200%;
+  list-style-type: upper-roman;
+  margin: 10px 0 30px 15px;
+  line-height: 200%;
 }
 
+/* line 2056, ../sass/styles.scss */
 #terms-of-use ol.terms li {
-    font-weight: bold;
+  font-weight: bold;
 }
 
+/* line 2060, ../sass/styles.scss */
 #terms-of-use ol.terms li p {
-    font-weight: normal;
+  font-weight: normal;
 }
 
+/* line 2064, ../sass/styles.scss */
 #terms-of-use ol.terms ul {
-    list-style-type: disc;
-	margin: 10px 0 30px 15px;
-	line-height: 200%;
+  list-style-type: disc;
+  margin: 10px 0 30px 15px;
+  line-height: 200%;
 }
 
+/* line 2070, ../sass/styles.scss */
 #terms-of-use ol.terms ul li {
-    font-weight: normal;
+  font-weight: normal;
 }
 
 /* Advanced ID Tools Placeholder styles */
-
+/* line 2076, ../sass/styles.scss */
 #advanced-id #main {
-	position: relative;
+  position: relative;
 }
 
+/* line 2080, ../sass/styles.scss */
 #advanced-id #main .dk-landing-section {
-	width: 330px;
-	float: left;
-	font-family: Verdana, sans-serif;
+  width: 330px;
+  float: left;
+  font-family: Verdana, Geneva, sans-serif;
 }
 
+/* line 2086, ../sass/styles.scss */
 #advanced-id #main .dk-landing-section section {
-	margin: 20px 0 0;
+  margin: 20px 0 0;
 }
 
+/* line 2090, ../sass/styles.scss */
 #advanced-id #main .dk-landing-section section p {
-	margin: 10px 0;
+  margin: 10px 0;
 }
 
+/* line 2094, ../sass/styles.scss */
 #advanced-id #main .dk-landing-section section ul {
-	margin: 10px 0;
-	padding: 0 0 0 15px;
-	list-style-type: disc;
+  margin: 10px 0;
+  padding: 0 0 0 15px;
+  list-style-type: disc;
 }
 
+/* line 2100, ../sass/styles.scss */
 #advanced-id #main .dk-landing-section section ul li {
-	margin: 10px 0;	
+  margin: 10px 0;
 }
 
+/* line 2104, ../sass/styles.scss */
 #advanced-id #main .landing-divider {
-	height: 410px;
-	width: 1px;
-	background-color: #b4d57f;
-	position: absolute;
-	top: 10px;
-	left: 350px;
-	
+  height: 410px;
+  width: 1px;
+  background-color: #b4d57f;
+  position: absolute;
+  top: 10px;
+  left: 350px;
 }
 
+/* line 2114, ../sass/styles.scss */
 #advanced-id #main .dichkey-buttons {
-	margin: 0;
+  margin: 0;
 }
 
+/* line 2118, ../sass/styles.scss */
 #advanced-id #main .dichkey-buttons div {
-	width: 50%;
-	float: left;
-	padding: 15px 0 0;
+  width: 50%;
+  float: left;
+  padding: 15px 0 0;
 }
 
 /* buttons */
+/* line 2125, ../sass/styles.scss */
 #advanced-id #main .dichkey-buttons a {
-	margin: 10px auto;
+  margin: 10px auto;
 }
 
+/* line 2129, ../sass/styles.scss */
 #advanced-id #main .dichkey-buttons a.go-fullkey-btn {
-	background: url(/static/images/layout/go-fullkey-btn.png) 0 0 no-repeat transparent;
-	display: block;
-	width: 244px;
-	height: 41px;
-	text-indent: -9999px;
-	margin: 0 auto;
+  background: url(/static/images/layout/go-fullkey-btn.png) 0 0 no-repeat transparent;
+  display: block;
+  width: 244px;
+  height: 41px;
+  text-indent: -9999px;
+  margin: 0 auto;
 }
 
+/* line 2138, ../sass/styles.scss */
 #advanced-id #main .dichkey-buttons a.go-fullkey-btn:hover {
-	background-position: 0 -41px;
+  background-position: 0 -41px;
 }
 
+/* line 2142, ../sass/styles.scss */
 #advanced-id #main .dichkey-buttons a.go-fullkey-btn:active {
-	background-position: 0 -82px;
+  background-position: 0 -82px;
 }
 
 /* using-dich-key buttons */
+/* line 2147, ../sass/styles.scss */
 #advanced-id #main a.go-dichkey-btn {
-	background: url(../images/layout/go-dichkey-btn.png) 0 0 no-repeat transparent;
-	display: block;
-	width: 244px;
-	height: 41px;
-	text-indent: -9999px;
-	margin: 0 auto;
+  background: url(../images/layout/go-dichkey-btn.png) 0 0 no-repeat transparent;
+  display: block;
+  width: 244px;
+  height: 41px;
+  text-indent: -9999px;
+  margin: 0 auto;
 }
 
+/* line 2156, ../sass/styles.scss */
 #advanced-id #main a.go-dichkey-btn-user {
-	margin: 20px auto 0;
-	z-index: 2;
+  margin: 20px auto 0;
+  z-index: 2;
 }
 
+/* line 2161, ../sass/styles.scss */
 #advanced-id #main .dichkey-buttons a.go-dichkey-btn, #main .dichkey-buttons a.go-dichkey-btn:hover, #main .dichkey-buttons a.go-dichkey-btn:active {
-	margin-top: 0;
+  margin-top: 0;
 }
 
+/* line 2165, ../sass/styles.scss */
 #advanced-id #main a.go-dichkey-btn:hover {
-	background-position: 0 -41px;
+  background-position: 0 -41px;
 }
 
+/* line 2169, ../sass/styles.scss */
 #advanced-id #main a.go-dichkey-btn:active {
-	background-position: 0 -82px;
+  background-position: 0 -82px;
 }
 
 /* Glossary styles */
-
 /* Glossary term underline for popup */
+/* line 2176, ../sass/styles.scss */
 .gloss {
-    border-bottom: 1px dashed;
-    cursor: pointer;
+  border-bottom: 1px dashed;
+  cursor: pointer;
 }
+
 /* Glossary tooltip */
+/* line 2181, ../sass/styles.scss */
 .glosstip {
-    position: relative;
-    max-width: 30em;
+  line-height: 140%;
+  position: relative;
+  max-width: 30em;
 }
+
+/* line 2186, ../sass/styles.scss */
 .glosstip img {
-    position: absolute;
-    bottom: 100%;
-    border: 3px solid black;
+  position: absolute;
+  bottom: 100%;
+  border: 3px solid black;
 }
 
+/* line 2192, ../sass/styles.scss */
 #alphabet {
-    height: 33px;
-    margin: 7px 0;
-    padding: 0;
-    width: 712px; /* 2px wider than its parent box so no wrap in Moz */
+  height: 33px;
+  margin: 7px 0;
+  padding: 0;
+  width: 712px;
+  /* 2px wider than its parent box so no wrap in Moz */
 }
 
+/* line 2199, ../sass/styles.scss */
 #alphabet li {
-    border-left: 1px solid #e1e1dc;
-    float: left;
-    font-size: 18px;
-    margin: 0;
-    padding: 0 7px;
+  border-left: 1px solid #e1e1dc;
+  float: left;
+  font-size: 18px;
+  margin: 0;
+  padding: 0 7px;
 }
+
+/* line 2206, ../sass/styles.scss */
 #alphabet li:first-child {
-    border-left: 0;
+  border-left: 0;
 }
+
+/* line 2209, ../sass/styles.scss */
 #alphabet li.current a {
-    color: #000;
+  color: #000;
 }
+
+/* line 2212, ../sass/styles.scss */
 #alphabet li.current a:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
+
+/* line 2215, ../sass/styles.scss */
 #alphabet li.inactive {
-    color: #ccc;
+  color: #ccc;
 }
 
+/* line 2219, ../sass/styles.scss */
 #terms {
-    background-color: #fff;
-    border: 1px solid #e1e1dc;
-    clear: left;
-    margin-bottom: 30px;
-    width: 710px;
-}
-#terms dt, #terms dd {
-    border-top: 1px solid #e1e1dc;
-    min-height: 24px;
-}
-#terms dt {
-    clear: left;
-    float: left;
-    line-height: 25px;
-    padding: 7px 10px 10px 38px;
-    width: 190px;
-}
-#terms dt a {
-    float: left;
-    margin-left: -34px;
-}
-#terms dd {
-    margin-left: 224px;
-    padding: 13px;
-}
-#terms dt:first-child, #terms dt:first-child + dd {
-    border-top: 0;
+  background-color: #fff;
+  border: 1px solid #e1e1dc;
+  clear: left;
+  margin-bottom: 30px;
+  width: 710px;
 }
 
+/* line 2226, ../sass/styles.scss */
+#terms dt, #terms dd {
+  border-top: 1px solid #e1e1dc;
+  min-height: 24px;
+}
+
+/* line 2230, ../sass/styles.scss */
+#terms dt {
+  clear: left;
+  float: left;
+  line-height: 25px;
+  padding: 7px 10px 10px 38px;
+  width: 190px;
+}
+
+/* line 2237, ../sass/styles.scss */
+#terms dt a {
+  float: left;
+  margin-left: -34px;
+}
+
+/* line 2241, ../sass/styles.scss */
+#terms dd {
+  margin-left: 224px;
+  padding: 13px;
+}
+
+/* line 2245, ../sass/styles.scss */
+#terms dt:first-child, #terms dt:first-child + dd {
+  border-top: 0;
+}
 
 /* Search results styles */
-
+/* line 2252, ../sass/styles.scss */
 #search-results-list {
-    border-top: 1px solid #e1e1dc;
-    margin: 15px 0 13px;
-    padding: 6px 0 0;
+  border-top: 1px solid #e1e1dc;
+  margin: 15px 0 13px;
+  padding: 6px 0 0;
 }
+
+/* line 2257, ../sass/styles.scss */
 #search-results-list .highlighted {
-    font-weight: bold;
+  font-weight: bold;
 }
-#search-results-list li {    
-    border-bottom: 1px solid #e1e1dc;
-    padding: 6px 0 10px;
+
+/* line 2260, ../sass/styles.scss */
+#search-results-list li {
+  border-bottom: 1px solid #e1e1dc;
+  padding: 6px 0 10px;
 }
+
+/* line 2264, ../sass/styles.scss */
 #search-results-list li img {
-    float: left;
-    margin: -1px 10px 0;
-    vertical-align: middle;
+  float: left;
+  margin: -1px 10px 0;
+  vertical-align: middle;
 }
+
+/* line 2269, ../sass/styles.scss */
 #search-results-list li a {
-    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    text-decoration: underline;
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  text-decoration: underline;
 }
+
+/* line 2274, ../sass/styles.scss */
 #search-results-list li p {
-    line-height: 140%;
-    margin-left: 44px;
-    margin-top: 2px;
+  line-height: 140%;
+  margin-left: 44px;
+  margin-top: 2px;
 }
+
+/* line 2279, ../sass/styles.scss */
 .search-navigation {
-    text-align: right;
+  text-align: right;
 }
+
+/* line 2282, ../sass/styles.scss */
 .search-navigation p, .search-navigation ul {
-    display: inline;
+  display: inline;
 }
+
+/* line 2285, ../sass/styles.scss */
 .search-navigation li {
-    display: inline;
-    margin: 0 2px;
+  display: inline;
+  margin: 0 2px;
 }
+
+/* line 2289, ../sass/styles.scss */
 .search-navigation a {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Family and Genus pages styles */
-
+/* line 2295, ../sass/styles.scss */
 #family ul.genera, #genus ul.species {
-    font-size: 14px;
+  font-size: 14px;
 }
+
+/* line 2298, ../sass/styles.scss */
 #family .pics, #genus .pics {
-    margin-top: 20px;
+  margin-top: 20px;
 }
+
+/* line 2301, ../sass/styles.scss */
 #family .pics div, #genus .pics div {
-    float: left;
-    margin-right: 20px;
+  float: left;
+  margin-right: 20px;
 }
+
+/* line 2305, ../sass/styles.scss */
 #family .pics p, #genus .pics p {
-    display: inline-block;
-    float: left;
-    font-size: 14px;
+  display: inline-block;
+  float: left;
+  font-size: 14px;
 }
+
+/* line 2310, ../sass/styles.scss */
 #genus p.family {
-    font-size: 14px;
+  font-size: 14px;
 }
+
+/* line 2313, ../sass/styles.scss */
 #family h4, #genus h4 {
-    clear: left;
-    padding-top: 30px;
+  clear: left;
+  padding-top: 30px;
 }
+
+/* line 2317, ../sass/styles.scss */
 #family .family-genera-btn {
-    background: url(/static/images/layout/family-btn.png) no-repeat scroll 0 0 transparent;
-    clear: both;
-    display: block;
-    float: left;
-    height: 32px;
-    margin: 15px 0 0;
-    text-indent: -9000px;
-    width: 280px;
+  background: url(/static/images/layout/family-btn.png) no-repeat scroll 0 0 transparent;
+  clear: both;
+  display: block;
+  float: left;
+  height: 32px;
+  margin: 15px 0 0;
+  text-indent: -9000px;
+  width: 280px;
 }
+
+/* line 2327, ../sass/styles.scss */
 #genus .genus-species-btn {
-    background: url(/static/images/layout/genus-btn.png) no-repeat scroll 0 0 transparent;
-    clear: both;
-    display: block;
-    float: left;
-    height: 32px;
-    margin: 15px 0 0;
-    text-indent: -9000px;
-    width: 280px;
+  background: url(/static/images/layout/genus-btn.png) no-repeat scroll 0 0 transparent;
+  clear: both;
+  display: block;
+  float: left;
+  height: 32px;
+  margin: 15px 0 0;
+  text-indent: -9000px;
+  width: 280px;
 }
+
+/* line 2337, ../sass/styles.scss */
 #family img.zoom, #genus img.zoom {
-    display: inline-block;
-    float: right;
+  display: inline-block;
+  float: right;
 }
 
 /* Advanced Map page styles */
-
-#advanced-map h2 {
-    margin-bottom: 12px;
-}
-#advanced-map #main p {
-    margin: 10px 0 0;
-}
+/* line 2344, ../sass/styles.scss */
 #advanced-map #plant-map-list {
-	margin: 15px 0;	
+  margin: 10px 0;
 }
+
+/* line 2347, ../sass/styles.scss */
 #advanced-map #plant-map-list .plant-group {
-  	cursor: pointer;
-	float: left;
-	margin: 0 10px 10px 0;
-    padding: 14px 0 0 0;
-    width: 110px;
+  cursor: pointer;
+  float: left;
+  margin: 0 10px 10px 0;
+  padding: 14px 0 0 0;
+  width: 110px;
 }
+
+/* line 2354, ../sass/styles.scss */
 #advanced-map #plant-map-list .plant-group.last {
-	margin: 0 0 10px 0;	
+  margin: 0 0 10px 0;
 }
+
+/* line 2357, ../sass/styles.scss */
 #advanced-map #plant-map-list .plant-group.multi-line {
-	padding: 0;	
+  padding: 0;
 }
+
+/* line 2360, ../sass/styles.scss */
 #advanced-map .plant-group h5 {
-	color: #508e31;
-    font-size: 12px;
-  	line-height: 120%;
-    margin: 0 0 0 0;
-	padding: 6px 0 6px 5px;
+  color: #508e31;
+  font-size: 12px;
+  line-height: 120%;
+  margin: 0 0 0 0;
+  padding: 6px 0 6px 5px;
 }
+
+/* line 2368, ../sass/styles.scss */
 #advanced-map .plant-group div.image,
 #advanced-map .plant-subgroup div.image {
-	position: relative;	
+  position: relative;
 }
+
+/* line 2371, ../sass/styles.scss */
 #advanced-map .plant-group .frame {
-	border: 5px solid rgba(255, 255, 255, 0.8);
-	height: 91px;	
-	position: absolute;
-	top: 0;
-	width: 100px;
-	z-index: 100;
+  border: 5px solid rgba(255, 255, 255, 0.8);
+  height: 91px;
+  position: absolute;
+  top: 0;
+  width: 100px;
+  z-index: 100;
 }
+
+/* line 2379, ../sass/styles.scss */
 #advanced-map .plant-group.active .frame {
-	border-color: #1a2e12;
+  border-color: #1a2e12;
 }
+
+/* line 2382, ../sass/styles.scss */
 #advanced-map .plant-group.active h5 {
-	background: #1a2e12;
-	color: #fff;
+  background: #1a2e12;
+  color: #fff;
 }
+
 /* Don't include hover states on smartphones and tablets. */
 @media only screen and (min-device-width:1025px) {
-    #advanced-map .plant-group:hover .frame {
-	    border-color: #1a2e12;
-    }
-    #advanced-map .plant-group:hover h5 {
-	    background: #1a2e12;
-	    color: #fff;
-    }
-    #advanced-map .more-info:hover {
-        color: #508e31;
-        text-decoration: underline;
-    }
+  /* line 2388, ../sass/styles.scss */
+  #advanced-map .plant-group:hover .frame {
+    border-color: #1a2e12;
+  }
+
+  /* line 2391, ../sass/styles.scss */
+  #advanced-map .plant-group:hover h5 {
+    background: #1a2e12;
+    color: #fff;
+  }
+
+  /* line 2395, ../sass/styles.scss */
+  #advanced-map .more-info:hover {
+    color: #508e31;
+    text-decoration: underline;
+  }
 }
+/* line 2400, ../sass/styles.scss */
 #advanced-map .plant-group .img-container {
-	height: 101px;
-	overflow: hidden;
-    width: 110px;
-	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-	-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-}
-#advanced-map #main .plant-group p.more-info {
-	background: url(/static/images/icons/more-info.png) left 4px no-repeat transparent;
-	margin: 5px 0 0 0;
-	padding: 0 0 0 19px;
+  height: 101px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  width: 110px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
 
+/* line 2409, ../sass/styles.scss */
+#advanced-map #plant-map-list p.video {
+  background: url(/static/images/icons/icon3.png) left 4px no-repeat transparent;
+  margin: 2px 0;
+  padding: 3px 0 0 22px;
+}
+
+/* line 2414, ../sass/styles.scss */
+#advanced-map #plant-map-list p.list {
+  background: url(/static/images/icons/icon1.png) left 4px no-repeat transparent;
+  margin: 2px 0 0;
+  padding: 3px 0 0 22px;
+}
+
+/* line 2419, ../sass/styles.scss */
 #advanced-map .plant-subgroup {
-   	cursor: default;
-    float: left;
-   	margin: 0 11px 11px 0;
-	padding: 17px 0 0 0;
-	width: 160px;
+  cursor: default;
+  float: left;
+  height: 264px;
+  margin: 0 11px 11px 0;
+  padding: 17px 0 0 0;
+  width: 160px;
 }
+
+/* line 2427, ../sass/styles.scss */
 #advanced-map .plant-subgroup.last {
-    margin-right: 0;
+  margin-right: 0;
 }
 
+/* line 2431, ../sass/styles.scss */
 #advanced-map .plant-subgroup .frame {
-  	border: 5px solid #1a2e12;
-	height: 129px;	
-	position: absolute;
-	top: 0;
-	width: 150px;
-	z-index: 100;
+  border: 5px solid #1a2e12;
+  height: 129px;
+  position: absolute;
+  top: 0;
+  width: 150px;
+  z-index: 100;
 }
 
+/* line 2440, ../sass/styles.scss */
 #advanced-map .plant-subgroup h5 {
-	background: #1a2e12;
-	color: #fff;
-    font-size: 13px;
-    height: 30px;
-	line-height: 120%;
-	margin: 0 0 0 0;
-	padding: 6px;
+  background: #1a2e12;
+  color: #fff;
+  font-size: 13px;
+  height: 30px;
+  line-height: 120%;
+  margin: 0 0 0 0;
+  padding: 6px;
 }
+
+/* line 2449, ../sass/styles.scss */
 #advanced-map .plant-subgroup .img-container {
-	height: 139px;
-	overflow: hidden;
-	width: 160px;
+  height: 139px;
+  overflow: hidden;
+  width: 160px;
 }
+
+/* line 2454, ../sass/styles.scss */
 #advanced-map #main .plant-subgroup p.more-info {
-	background: url(/static/images/icons/more-info.png) left 4px no-repeat transparent;	
-	margin: 5px 0 0 0;
-	padding: 0 0 0 19px;
+  background: url(/static/images/icons/more-info.png) left 4px no-repeat transparent;
+  margin: 5px 0 0 0;
+  padding: 0 0 0 19px;
 }
+
+/* line 2459, ../sass/styles.scss */
 #advanced-map a.choose-btn {
-	background: url(/static/images/layout/choose-btn.png) 0 0 no-repeat transparent;
-	display: block;
-	height: 32px;
-	margin: 10px 0 5px;
-	text-indent: -9000px;
-	width: 104px;
+  background: url(/static/images/layout/choose-btn.png) 0 0 no-repeat transparent;
+  display: block;
+  height: 32px;
+  margin: 10px 0 5px;
+  text-indent: -9000px;
+  width: 104px;
 }
+
+/* line 2467, ../sass/styles.scss */
 #advanced-map a.choose-btn:hover {
-	background-position: 0 -32px;
+  background-position: 0 -32px;
 }
+
+/* line 2470, ../sass/styles.scss */
 #advanced-map a.choose-btn:active {
-	background-position: 0 -64px;
+  background-position: 0 -64px;
 }
 
 /* Shadowbox close button */
+/* line 2475, ../sass/styles.scss */
 #sb-nav-close {
-    background-position: center;
-    background-repeat: no-repeat;
-    padding: 4px; /* Increase activation area a bit */
-    right: -28px !important; /* Place at top right, but not right at the
-                                corner so as to avoid Flash video z-index
-                                problem */
-    top: 6px !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 4px;
+  /* Increase activation area a bit */
+  right: -28px !important;
+  /* Place at top right, but not right at the
+     corner so as to avoid Flash video z-index
+     problem */
+  top: 6px !important;
 }
 
 /* Search suggest */
+/* line 2486, ../sass/styles.scss */
 nav #search #search-suggest input {
-    color: #000;
-    font-size: 14px;
+  color: #000;
+  font-size: 14px;
 }
 
 /* For now, we need two separate rules to style WebKit and Moz HTML5 
  * placeholder text (cannot combine with comma). */
+/* line 2493, ../sass/styles.scss */
 nav #search #search-suggest input::-webkit-input-placeholder {
-    color: #999;
+  color: #999;
 }
+
+/* line 2496, ../sass/styles.scss */
 nav #search #search-suggest input:-moz-placeholder {
-    color: #999;
+  color: #999;
 }
 
+/* line 2500, ../sass/styles.scss */
 nav #search-suggest .menu li {
-    margin: 0;
-    padding: 3px;
+  margin: 0;
+  padding: 3px;
 }
+
+/* line 2504, ../sass/styles.scss */
 nav #search-suggest .menu a {
-    height: inherit;
-    padding: 0;
+  height: inherit;
+  padding: 0;
 }
+
+/* line 2508, ../sass/styles.scss */
 nav #search-suggest .menu a:hover, #search-suggest .menu li:hover {
-    background: #c4e2ff;
-    color: #000;
+  background: #c4e2ff;
+  color: #000;
 }
+
+/* line 2512, ../sass/styles.scss */
 #search-suggest input, #search-suggest .menu li {
-    width: 250px;
+  width: 250px;
 }
+
+/* line 2515, ../sass/styles.scss */
 #search-suggest input, #search-suggest .menu ul {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
 }
+
+/* line 2518, ../sass/styles.scss */
 #search-suggest input:focus {
-    outline: none;
+  outline: none;
 }
+
+/* line 2521, ../sass/styles.scss */
 #search-suggest .menu ul {
-    font-size: 16px;
+  font-size: 16px;
 }
+
+/* line 2524, ../sass/styles.scss */
 #search-suggest button {
-    font-size: 14px;
+  font-size: 14px;
 }
+
+/* line 2527, ../sass/styles.scss */
 #search-suggest .menu {
-    background: #fff;
-    border: 1px solid #ccc;
-    border-bottom-color: #999;
-    border-right-color: #999;
-    left: 758px; /* JS needed at runtime to set this reliably */
-    margin: 0 auto;
-    position: absolute;
-    text-align: left;
-    top: 105px;
-    width: 256px;
-    z-index: 101;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-bottom-color: #999;
+  border-right-color: #999;
+  left: 758px;
+  /* JS needed at runtime to set this reliably */
+  margin: 0 auto;
+  position: absolute;
+  text-align: left;
+  top: 105px;
+  width: 256px;
+  z-index: 101;
 }
 
+/* line 2541, ../sass/styles.scss */
 #home #search-suggest .menu {
-    top: 133px;
+  top: 133px;
 }
 
+/* line 2545, ../sass/styles.scss */
 #search-suggest .menu li.highlighted {
-    background-color: #abd6ff;
-    color: #000;
+  background-color: #abd6ff;
+  color: #000;
 }
+
+/* line 2549, ../sass/styles.scss */
 #search-suggest .menu a {
-    color: #000;
-    cursor: default;
-    text-decoration: none;
+  color: #000;
+  cursor: default;
+  text-decoration: none;
 }
+
 /* TODO: once _old_base template is gone (after About page is styled),
    combine nav #search-suggest and #search-suggest items above, etc. */
+/* Tooltips for working area images and highlighted glossary terms. */
+/* line 2560, ../sass/styles.scss */
+.tooltipsy {
+  border: 1px solid #080;
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+  -o-border-radius: 0.5em;
+  -ms-border-radius: 0.5em;
+  -khtml-border-radius: 0.5em;
+  border-radius: 0.5em;
+  -moz-box-shadow: 1px 1px 2px #333333;
+  -webkit-box-shadow: 1px 1px 2px #333333;
+  -o-box-shadow: 1px 1px 2px #333333;
+  box-shadow: 1px 1px 2px #333333;
+  background-color: #fff;
+  background: -webkit-linear-gradient(white, #f0f0c0);
+  background: -moz-linear-gradient(white, #f0f0c0);
+  background: -o-linear-gradient(white, #f0f0c0);
+  background: -ms-linear-gradient(white, #f0f0c0);
+  background: linear-gradient(#ffffff, #f0f0c0);
+  padding: 0.5em 0.7em;
+}
 
+/* line 2585, ../sass/styles.scss */
+img.char-value-larger {
+  height: 160px;
+  /* Consistent height for popup character value drawings */
+}
+
+/* Teaching Tools section */
+/* line 2591, ../sass/styles.scss */
+#teaching-tools .new {
+  background: #fff;
+  display: inline-block;
+  font-size: 9px;
+  font-weight: normal;
+  margin: 0;
+  padding: 0 0.25em;
+  text-transform: uppercase;
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
+  -o-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -khtml-border-radius: 0.25em;
+  border-radius: 0.25em;
+}
+
+/* line 2608, ../sass/styles.scss */
+#teaching-tools .meta {
+  font-size: 10px;
+  font-style: italic;
+  margin: 4px 0;
+}
 
 /* Styles for IE 6-9 browser compatibility prompts */
-
+/* line 2616, ../sass/styles.scss */
 #ie-note {
-    background: #fff;
-    border-bottom: 4px solid #508e31;
-    color: #000;
-    font-size: 14px;
-    padding: 11px 0;
-    text-align: center;
-    width: 100%;
+  background: #fff;
+  border-bottom: 4px solid #508e31;
+  color: #000;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  padding: 11px 0;
+  text-align: center;
+  width: 100%;
 }
+
+/* line 2626, ../sass/styles.scss */
 #ie-note p {
-    position: relative;
-    z-index: 2;
+  position: relative;
+  z-index: 2;
 }
+
+/* line 2630, ../sass/styles.scss */
+#ie-note p.dismiss {
+  padding: 3px;
+}
+
+/* line 2633, ../sass/styles.scss */
+#ie-note p.dismiss a {
+  background-color: #3e6bbf;
+  border-bottom: 2px solid #365b99;
+  border-left: 2px solid #85b0f3;
+  border-right: 2px solid #365b99;
+  border-top: 2px solid #85b0f3;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 8px;
+  text-decoration: none;
+  -ms-border-radius: 0.3em;
+  border-radius: 0.3em;
+}
+
+/* line 2648, ../sass/styles.scss */
 #ie-note a {
-    text-decoration: underline;
+  text-decoration: underline;
 }
+
+/* line 2651, ../sass/styles.scss */
 #ie-note img {
-    background-color: #fff;
-    clip: rect(0px,255px,108px,0px);
-    overflow: hidden;
-    position: absolute;
-    top: -16px;
-    z-index: 1;
-    opacity: 0.5;
-    filter:alpha(opacity=50); /* For IE8 and earlier */
+  background-color: #fff;
+  clip: rect(0px, 255px, 78px, 0px);
+  overflow: hidden;
+  position: absolute;
+  top: 41px;
+  z-index: 1;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  /* For IE8 and earlier */
 }
 
+/* line 2662, ../sass/styles.scss */
 .chromeFrameInstallDefaultStyle {
-	border: 4px solid #508e31;
-	border-top: 4px solid #fff;
-	height: 600px; /* not too short: don't allow blue button to scroll away */
-	top: 394px;
-	z-index: 20000;  /* ensure installer is atop all other content */
+  border: 4px solid #508e31;
+  border-top: 4px solid #fff;
+  height: 600px;
+  /* not too short: don't allow blue button to scroll away */
+  top: 419px;
+  z-index: 20000;
+  /* ensure installer is atop all other content */
 }
 
+/* Plant List styles */
+/* line 2671, ../sass/styles.scss */
+#list .content {
+  padding-bottom: 18px;
+}
+
+/* line 2674, ../sass/styles.scss */
+#list .content h2 {
+  padding-bottom: 12px;
+}
+
+/* line 2677, ../sass/styles.scss */
+#list table {
+  background: #f1fcde;
+  border-collapse: collapse;
+  color: #000;
+  font-size: 11px;
+  margin: 18px 0;
+  width: 100%;
+}
+
+/* line 2685, ../sass/styles.scss */
+#list table tbody tr:hover {
+  background: #e3fabe;
+}
+
+/* line 2688, ../sass/styles.scss */
+#list table th, #list table td {
+  padding: 4px;
+}
+
+/* line 2691, ../sass/styles.scss */
+#list table th, #list table tr.filters {
+  background: #b4d57f;
+}
+
+/* line 2694, ../sass/styles.scss */
+#list table th {
+  text-align: center;
+  vertical-align: bottom;
+}
+
+/* line 2698, ../sass/styles.scss */
+#list table th.name {
+  width: 16%;
+}
+
+/* line 2701, ../sass/styles.scss */
+#list table th.common {
+  width: 15%;
+}
+
+/* line 2704, ../sass/styles.scss */
+#list table th.family {
+  width: 14%;
+}
+
+/* line 2707, ../sass/styles.scss */
+#list table th.dist {
+  width: 10%;
+}
+
+/* line 2710, ../sass/styles.scss */
+#list table th.native {
+  width: 12%;
+}
+
+/* line 2713, ../sass/styles.scss */
+#list table th.wetland {
+  width: 5%;
+}
+
+/* line 2716, ../sass/styles.scss */
+#list table th.group {
+  width: 12%;
+}
+
+/* line 2719, ../sass/styles.scss */
+#list table th.subgroup {
+  width: 16%;
+}
+
+/* line 2722, ../sass/styles.scss */
+#list table td:first-child {
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+}
+
+/* Smartphone-size screen styles */
+@media only screen and (max-width: 400px) {
+  /* line 2730, ../sass/styles.scss */
+  body {
+    padding-top: 110px;
+  }
+
+  /* line 2733, ../sass/styles.scss */
+  .top-level header {
+    height: 80px;
+  }
+
+  /* line 2737, ../sass/styles.scss */
+  body, .container, .top-level header h1 a, #home #banner #overlay,
+  #home #banner > img {
+    width: 320px;
+  }
+
+  /* line 2740, ../sass/styles.scss */
+  .top-level header h1 a {
+    background-size: 320px 58px;
+    height: 58px;
+  }
+
+  /* line 2744, ../sass/styles.scss */
+  #nav {
+    left: 40px;
+    width: 310px;
+  }
+
+  /* line 2748, ../sass/styles.scss */
+  #home #banner #overlay {
+    top: 115px;
+  }
+
+  /* line 2751, ../sass/styles.scss */
+  #home #banner > img {
+    height: 115px;
+  }
+
+  /* line 2754, ../sass/styles.scss */
+  #home #banner + .three-col {
+    padding-top: 380px;
+  }
+}
+@media only screen and (min-width: 401px) and (max-width: 600px) {
+  /* line 2759, ../sass/styles.scss */
+  body {
+    padding-top: 75px;
+  }
+
+  /* line 2763, ../sass/styles.scss */
+  body, .container, .top-level header h1 a, #home #banner #overlay,
+  #home #banner > img {
+    width: 480px;
+  }
+
+  /* line 2766, ../sass/styles.scss */
+  .top-level header {
+    height: 100px;
+  }
+
+  /* line 2769, ../sass/styles.scss */
+  .top-level header h1 a {
+    background-size: 480px 86px;
+    height: 86px;
+  }
+
+  /* line 2773, ../sass/styles.scss */
+  #nav {
+    left: 30px;
+    width: 470px;
+  }
+
+  /* line 2777, ../sass/styles.scss */
+  #home #banner #overlay {
+    top: 172px;
+  }
+
+  /* line 2780, ../sass/styles.scss */
+  #home #banner > img {
+    height: 172px;
+  }
+
+  /* line 2783, ../sass/styles.scss */
+  #home #banner + .three-col {
+    padding-top: 400px;
+  }
+}
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) {
+  /* line 2789, ../sass/styles.scss */
+  body {
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  /* line 2793, ../sass/styles.scss */
+  .container {
+    padding: 0;
+  }
+
+  /* line 2796, ../sass/styles.scss */
+  .top-level nav {
+    background: none;
+  }
+
+  /* line 2799, ../sass/styles.scss */
+  .top-level header h1 {
+    margin: 0;
+    width: inherit;
+  }
+
+  /* line 2803, ../sass/styles.scss */
+  .top-level header h2 a, .app header h2 a {
+    background-size: 80px 44px;
+    float: right;
+    height: 44px;
+    width: 80px;
+  }
+
+  /* line 2809, ../sass/styles.scss */
+  header h2 {
+    float: none;
+  }
+
+  /* line 2812, ../sass/styles.scss */
+  header nav ul {
+    display: none;
+    /* will use bottom navigation instead */
+  }
+
+  /* line 2815, ../sass/styles.scss */
+  footer, footer div.container {
+    height: auto;
+  }
+
+  /* line 2818, ../sass/styles.scss */
+  footer {
+    margin: 14px 0 0;
+  }
+
+  /* line 2821, ../sass/styles.scss */
+  footer .container div {
+    width: auto;
+  }
+
+  /* line 2824, ../sass/styles.scss */
+  footer div div {
+    height: auto;
+  }
+
+  /* line 2827, ../sass/styles.scss */
+  footer p {
+    margin: 0;
+  }
+
+  /* line 2830, ../sass/styles.scss */
+  footer a {
+    font-size: 11px;
+  }
+
+  /* line 2833, ../sass/styles.scss */
+  footer .publisher, footer .navigation {
+    float: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* line 2838, ../sass/styles.scss */
+  footer .publisher {
+    margin-bottom: 14px;
+    padding: 0 6px;
+  }
+
+  /* line 2842, ../sass/styles.scss */
+  footer .navigation h6:first-child {
+    display: none;
+  }
+
+  /* line 2845, ../sass/styles.scss */
+  footer .navigation > ul.sections li {
+    display: block;
+    margin: 0 0 1px 0;
+  }
+
+  /* line 2849, ../sass/styles.scss */
+  footer .navigation > ul.sections li:after {
+    content: none;
+  }
+
+  /* line 2852, ../sass/styles.scss */
+  footer .navigation > ul.sections li a {
+    background: #85c446;
+    color: #fff;
+    display: block;
+    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    padding: 14px 14px;
+    position: relative;
+    text-decoration: none;
+  }
+
+  /* line 2862, ../sass/styles.scss */
+  footer .navigation > ul.sections li a:after {
+    content: " >";
+    font-weight: bold;
+    position: absolute;
+    right: 14px;
+  }
+
+  /* line 2868, ../sass/styles.scss */
+  footer .navigation > ul.sections li a[href] {
+    background: #508e31;
+    color: #fff;
+  }
+
+  /* line 2872, ../sass/styles.scss */
+  footer .navigation > h6:nth-of-type(2) {
+    margin: 14px 14px 4px 71px;
+  }
+
+  /* line 2875, ../sass/styles.scss */
+  footer .navigation > h6:nth-of-type(2):after {
+    content: ":";
+  }
+
+  /* line 2879, ../sass/styles.scss */
+  footer .navigation > h6:nth-of-type(2),
+  footer .navigation > ul.legal {
+    display: inline-block;
+  }
+
+  /* line 2883, ../sass/styles.scss */
+  footer .navigation > ul.legal li {
+    margin-right: 14px;
+  }
+
+  /* line 2886, ../sass/styles.scss */
+  footer .navigation > ul.legal li:after {
+    content: none;
+  }
+
+  /* line 2889, ../sass/styles.scss */
+  footer .support {
+    margin: 14px 0;
+    padding: 0;
+  }
+
+  /* line 2893, ../sass/styles.scss */
+  footer .support img {
+    padding-bottom: 6px;
+  }
+
+  /* line 2896, ../sass/styles.scss */
+  #home #banner {
+    margin: 0;
+    position: relative;
+  }
+
+  /* line 2900, ../sass/styles.scss */
+  #home #banner #overlay {
+    background: #f7fbe9;
+    height: auto;
+    left: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  /* line 2907, ../sass/styles.scss */
+  #home #banner h2 {
+    margin: 0;
+  }
+
+  /* line 2910, ../sass/styles.scss */
+  #home #banner p {
+    padding: 0 6px;
+  }
+
+  /* line 2913, ../sass/styles.scss */
+  #home #banner a#cta {
+    background-position: 50% 0;
+    margin: 4px 6px;
+  }
+
+  /* line 2917, ../sass/styles.scss */
+  #home .three-col {
+    background: none;
+    float: none;
+    height: inherit;
+    margin: 14px 0;
+    padding: 0 6px;
+    width: auto;
+  }
+
+  /* line 2925, ../sass/styles.scss */
+  #home .three-col a.learn-more {
+    margin: 4px 0 0;
+  }
+
+  /* line 2928, ../sass/styles.scss */
+  #home #potd .details {
+    margin: 0;
+    position: inherit;
+    width: inherit;
+  }
+
+  /* line 2933, ../sass/styles.scss */
+  #home #potd .details p {
+    height: inherit;
+    overflow: inherit;
+  }
+
+  /* line 2937, ../sass/styles.scss */
+  #home #potd .details a {
+    position: inherit;
+    top: 0;
+  }
+
+  /* line 2941, ../sass/styles.scss */
+  #home .donate {
+    margin: 0;
+  }
+
+  /* line 2944, ../sass/styles.scss */
+  #home .donate p {
+    margin: 8px;
+    padding: 0;
+  }
+
+  /* line 2948, ../sass/styles.scss */
+  #home .donate a {
+    float: none;
+    margin: 4px 0;
+  }
+
+  /* line 2952, ../sass/styles.scss */
+  #main, .list-item .details {
+    float: none;
+    width: inherit;
+  }
+
+  /* line 2956, ../sass/styles.scss */
+  #plant-id-3 #main {
+    float: right;
+    margin-left: 230px;
+    width: 355px;
+  }
+}

@@ -2,9 +2,9 @@
  * Async singletons.
  */
 define([
-    'jquery.tools.min',
-    'underscore-min'
-], function() {
+    'bridge/jquery',
+    'bridge/underscore'
+], function($, _) {
     var module = {};
 
     /*
@@ -36,8 +36,8 @@ define([
     module.pile_characters = _.memoize(function(pile_slug) {
         return module.get('piles/' + pile_slug + '/characters/');
     });
-    module.pile_best_characters = _.memoize(function(args) {
-        return module.get('piles/' + args.pile_slug + '/characters/', {
+    module.more_questions = _.memoize(function(args) {
+        return module.get('piles/' + args.pile_slug + '/questions/', {
             choose_best: 3,
             species_ids: args.species_ids.join('_'),
             character_group_id: args.character_group_ids,
@@ -56,6 +56,11 @@ define([
     module.pile_species = _.memoize(function(pile_slug) {
         return module.get('species/' + pile_slug + '/');
     });
+
+    module.taxon_info = function(scientific_name) { // NOT memoized - save mem
+        save_name = scientific_name.replace(' ', '%20');
+        return module.get('taxon/' + save_name + '/');
+    };
 
     module.character_vector = _.memoize(function(short_name) {
         return module.get('vectors/character/' + short_name + '/');

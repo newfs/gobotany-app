@@ -28,10 +28,14 @@
                             {% endif %}
                         {% endfor %}
                     </div>
+                    <p class="list">
+                        <a href="/list/#group={{ group.friendly_title }}{% if group.friendly_title|lower = 'woody plants' %} not non{% endif %}"
+                            >Species list</a>
+                    </p>
                     {% if group.youtube_id %}
-                    <p class="more-info">
+                    <p class="video">
                         <a class="video"
-                            href="http://www.youtube.com/embed/{{ group.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">View video</a>
+                            href="http://www.youtube.com/embed/{{ group.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">Video</a>
                     </p>
                     {% endif %}
                 </div>
@@ -56,10 +60,14 @@
                         </div>
                         <a class="choose-btn"
                             href="/{{ group.slug }}/{{ subgroup.slug }}/"></a>
+                        <p class="list">
+                            <a href="/list/#subgroup={{ subgroup.friendly_title }}"
+                                >Species list</a>
+                        </p>
                         {% if subgroup.youtube_id %}
-                        <p class="more-info">
+                        <p class="video">
                             <a class="video"
-                                href="http://www.youtube.com/embed/{{ subgroup.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">View video</a>
+                                href="http://www.youtube.com/embed/{{ subgroup.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">Video</a>
                         </p>
                         {% endif %}
                     </div>
@@ -69,7 +77,7 @@
         <div class="clearit"></div>
     </div>
 
-    <h3>About plant groups and subgroups</h3>
+    <h3>About Plant Groups and Subgroups</h3>
 
     <p>The boxes above show how we have grouped over 3,000 New
     England plants into six major categories, which we call

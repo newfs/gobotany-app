@@ -1,13 +1,16 @@
 {% extends "simplekey/_new_base.html" %}
+{% load verbatim %}
 
 {% block title %}{{ subgroup_results_page.title }}{% endblock %}
 
 {% block js_require %}
     original_location_hash = window.location.hash; // for results_overlay.js
-    define('args', [], {
+    var args = {
         pile_slug: '{{ pile.slug }}'
+    };
+    require(['simplekey/results'], function(results) {
+        results.results_page_init(args);
     });
-    require(['simplekey/results']);
 {% endblock %}
 
 {% block body_attributes %}id="plant-id-3" class="claro app"{% endblock %}
@@ -51,8 +54,10 @@
 
                 <h3 class="species-count-heading">
                   <span>
-                    <span class="species-count">Finding</span>
-                    matching species
+                    {% handlebars %}
+                      <span class="species-count">{{App3.taxa.len}}</span>
+                      matching species
+                    {% endhandlebars %}
                   </span>
                 </h3>
 
@@ -69,7 +74,14 @@
                         <img class="icon" alt=""
                             src="/static/images/icons/show-me.png">
                         <label for="image-types">Show photos of:</label>
-                        <select id="image-types"></select>
+                        {% handlebars %}
+                          {{view Ember.Select viewName="select"
+                            elementId="image-types"
+                            contentBinding="App3.image_types"
+                            optionLabelPath="content"
+                            optionValuePath="content"
+                            selectionBinding="App3.image_type"}}
+                        {% endhandlebars %}
                   </form>
                 </div>
                 <div class="clearit"></div>
@@ -78,12 +90,17 @@
                     <div class="wait"></div>
                 </div>
 
-                <p class="list-all hidden"><a>See 
-                    <span class="view-type">a list of</span>
-                    all <span class="species-count">...</span> 
-                    matching species.</a></p>
+                {% handlebars %}
+                {{#view App3.TaxaView tagName="p" class="list-all hidden"}}
+                <a {{action "switch_photo_list"}}>
+                  See {{#if show_list}}photos for{{else}}a list of{{/if}}
+                  all <span class="species-count">{{taxa_count}}</span>
+                  matching species.
+                </a>
+                {{/view}}
+                {% endhandlebars %}
 
-                </div>
+            </div>
 
             <div id="sidebar" class="tinted">
                 <div class="section instructions">
@@ -91,10 +108,8 @@
                         scrollable list:</h5>
                 </div>
                 <div class="scroll">
-                    <div class="loading">Loading questions…</div>
-                    <ul class="option-list" aria-live="polite"
-                    aria-relevant="additions removals">
-                    </ul>
+                  <div class="loading">Loading questions…</div>
+                  <div id="questions-go-here"></div>
                 </div>
 
                 <div class="section">
@@ -109,11 +124,21 @@
                     <div class="already-know">
                         <h6>Already know the family or genus?</h6>
                         <label>Family:</label>
-                        <select id="families"></select>
-                        <button id="family_clear">Clear</button>
+                        {% handlebars %}
+                          {{view Ember.Select viewName="select"
+                            elementId="families"
+                            contentBinding="App3.family_choices"
+                            selectionBinding="App3.family_value"}}
+                          <button id="family_clear">Clear</button>
+                        {% endhandlebars %}
                         <label>Genus:</label>
-                        <select id="genera"></select>
-                        <button id="genus_clear">Clear<button>
+                        {% handlebars %}
+                          {{view Ember.Select viewName="select"
+                            elementId="genera"
+                            contentBinding="App3.genus_choices"
+                            selectionBinding="App3.genus_value"}}
+                          <button id="genus_clear">Clear<button>
+                        {% endhandlebars %}
                     </div>
                 </div>
         
@@ -141,7 +166,7 @@
 
     <div id="intro-overlay">
        <div class="number-of-species">
-            <h1><span class="number">33</span> possible matches</h1>
+            <h1><span class="number">…</span> possible matches</h1>
         </div>
         <div class="number-of-questions">
             <h1>Answer questions here</h1>
@@ -151,3 +176,15 @@
         </div>
     </div>
 {% endblock %}
+
+{% block ember_templates %}{% verbatim %}
+<script type="text/x-handlebars" data-template-name="filter-view">
+  <a class="option">
+    <span class="name">{{view.filter.info.friendly_name}}?</span>
+    <span class="value">{{view.display_value}}</span>
+  </a>
+  {{#if view.filter.value}}
+  <a class="clear-filter" {{action "clear"}}>Clear</a>
+  {{/if}}
+</script>
+{% endverbatim %}{% endblock %}

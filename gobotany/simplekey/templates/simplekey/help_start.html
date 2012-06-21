@@ -1,14 +1,11 @@
 {% extends "simplekey/_help.html" %}
 
-{% block pagetitle %}Getting Started{% endblock %}
+{% block pagetitle %}Getting Started with the Simple Key{% endblock %}
 
 {% block body_attributes %}id="getting-started" class="claro app getting-started"{% endblock %}
 
 {% block main_content %}			
-    <a class="onward-btn"
-        href="{% url simplekey %}">Onward to the Simple Key</a>
-
-    <h2>Getting Started</h2>
+    <h2>Getting Started with the Simple Key</h2>
 
     <div class="first question">
         <h4>What kinds of plants can I identify?</h4>
@@ -47,6 +44,9 @@
             To do this, compare the features of your plant with
             the "Key Characteristics" listed for each plant group and
             "Exceptions," which will help you avoid mixing up groups.</li>
+            <li>Please go through the groups in the order that they
+            appear on the page. This will help you pick the right group
+            by eliminating wrong ones first.</li>
             <li>When you've found the group your plant belongs to, press
             "My plant is in this group."</li>
         </ul>
@@ -90,6 +90,9 @@
             <li>Next, choose which subgroup your plant belongs to. For
             example, if your plant is woody like a tree, you'll be asked if
             it is a needle-leaved plant or a broad-leaved plant.</li>
+            <li>Please go through the subgroups in the order that they
+            appear on the page. This will help you pick the right group
+            by eliminating wrong ones first.</li>
             <li>When you've found the subgroup your plant belongs to, click
             "My plant is in this subgroup."</li>
             <li>If your plant doesn't fit any of the subgroups, click the
@@ -150,22 +153,21 @@
         class="onward-btn">Onward to the Simple Key</a>
 {% endblock %}
 
-{% comment %}
 {% block more_sidebar_content %}
-    <div class="section">
+    <div class="section separate">
         <h5>Watch Video:</h5>
         {% if getting_started_youtube_id %}
-            <a href="http://www.youtube.com/v/{{ getting_started_youtube_id }}&amp;autoplay=1"
-                rel="shadowbox;height=380;width=640;"><img
-                class="shadow" alt=""
-                title="How to use the Go Botany Simple Key"
-                src="http://img.youtube.com/vi/{{ getting_started_youtube_id }}/hq2.jpg"
-                style="width: 100%">
-            </a>
-            <p>How to use the Go Botany Simple Key</p>
+            <div class="video-topic">
+                <a class="video"
+                    href="http://www.youtube.com/embed/{{ getting_started_youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">
+                    <img class="shadow"
+                        src="http://img.youtube.com/vi/{{ getting_started_youtube_id }}/0.jpg"
+                        alt="">
+                </a>
+            </div>
+            <p>How to use the Simple Key</p>
         {% else %}
             Admin: set the blurb 'getting_started_youtube_id'.
         {% endif %}
     </div>
 {% endblock %}
-{% endcomment %}

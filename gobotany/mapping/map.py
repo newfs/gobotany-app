@@ -157,7 +157,6 @@ class PlantDistributionMap(ChloroplethMap):
             'species present', # Covers: "Species present in state and
                                #          not rare"
             ]
-
         label = ''
         status = status.lower()
 

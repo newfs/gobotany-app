@@ -5,6 +5,7 @@ from collections import defaultdict
 from django.conf import settings
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
+from django.shortcuts import render_to_response
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import etag
 from django.views.decorators.vary import vary_on_headers
@@ -16,6 +17,7 @@ from gobotany.core.models import (
     Taxon, TaxonCharacterValue,
     )
 from gobotany.core.partner import which_partner
+from gobotany.core.questions import get_questions
 from gobotany.mapping.map import (NewEnglandPlantDistributionMap,
                                   NorthAmericanPlantDistributionMap,
                                   UnitedStatesPlantDistributionMap)
@@ -182,8 +184,7 @@ def piles_characters(request, pile_slug):
                 exclude_short_names=exclude_short_names,
                 ))
     elif not characters:
-        characters = Character.objects.filter(
-            character_values__pile=pile).distinct()
+        characters = Character.objects.filter(pile=pile)
 
     # Turn the characters into a data structure for JSON.
 
@@ -191,9 +192,31 @@ def piles_characters(request, pile_slug):
         _jsonify_character(c, pile_slug) for c in characters
         ])
 
+def questions(request, pile_slug):
+    """Returns a list of questions for a plant subgroup."""
+    pile = get_object_or_404(Pile, slug=pile_slug)
+    questions = get_questions(request, pile)
+    # Normal: return JSON
+    questions_list = []
+    for question in questions:
+        character = Character.objects.get(short_name=question)
+        questions_list.append(_jsonify_character(character, pile_slug))
+    output = jsonify(questions_list)
+    # Alternate: return HTML for browser testing with Django Debug Toolbar
+    #output = render_to_response('questions_test.html',
+    #                            {'questions': questions})
+    return output
+
 #
 
+_species_cache = {}
+
 def species(request, pile_slug):
+
+    # Pull the result from our hard cache, if available.
+
+    if pile_slug in _species_cache:
+        return _species_cache[pile_slug]
 
     # Efficiently fetch the species that belong to this pile.  (Common
     # name is selected nondeterministically because, frankly, the data
@@ -249,7 +272,11 @@ def species(request, pile_slug):
             images.append(_taxon_image(image))
         result.append(d)
 
-    return jsonify(result)
+    # Hard-cache the result, since our species lists do not currently
+    # change during the day in production.
+
+    _species_cache[pile_slug] = jsonify(result)
+    return _species_cache[pile_slug]
 
 #
 

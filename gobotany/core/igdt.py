@@ -7,7 +7,8 @@ code located at:
 import math
 from collections import defaultdict
 
-from gobotany.core.models import Character, Parameter, TaxonCharacterValue
+from gobotany.core.models import (Character, CharacterValue, Parameter,
+                                  TaxonCharacterValue)
 
 def compute_character_entropies(pile, species_list):
     """Find the most effective characters for narrowing down these species.
@@ -23,7 +24,8 @@ def compute_character_entropies(pile, species_list):
     # rows that match one of these character values with one of the
     # species given in `species_list`.
 
-    cv_list = list(pile.character_values
+    cv_list = list(CharacterValue.objects
+                   .filter(character__pile=pile)
                    .exclude(value_str='NA')
                    .exclude(value_min=0.0, value_max=0.0))
     taxon_character_values = TaxonCharacterValue.objects.filter(

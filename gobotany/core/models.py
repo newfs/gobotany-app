@@ -103,6 +103,7 @@ class Character(models.Model):
     name = models.CharField(max_length=100)
     friendly_name = models.CharField(max_length=100)
     character_group = models.ForeignKey(CharacterGroup)
+    pile = models.ForeignKey('Pile', null=True, related_name='characters')
     ease_of_observability = models.PositiveSmallIntegerField(null=True,
         blank=True, choices=zip(range(1, 6), range(1, 6)))
 
@@ -157,18 +158,6 @@ class CharacterValue(models.Model):
         ...    character=char)
         >>> char_val
         <CharacterValue: trophophyll_form_ly: short and scale-like>
-
-    Now we can associate that character value with a Pile, which
-    effectively associates the character with the Pile as well:
-
-        >>> pile,ignore = Pile.objects.get_or_create(name='Lycophytes')
-        >>> Character.objects.filter(character_values__pile=pile)
-        []
-        >>> pile.character_values.add(char_val)
-        >>> Character.objects.filter(character_values__pile=pile)
-        [<Character: trophophyll_form_ly name="Trophophyll Form" id=...>]
-        >>> CharacterValue.objects.filter(pile=pile)
-        [<CharacterValue: trophophyll_form_ly: short and scale-like>]
 
     The display for the character values change depending on the type
     being used.
@@ -281,11 +270,11 @@ class PileInfo(models.Model):
 
 class Pile(PileInfo):
     """An informal grouping of species distinguished by common characters."""
-    character_values = models.ManyToManyField(CharacterValue)
     species = models.ManyToManyField('Taxon', related_name='+')
     pilegroup = models.ForeignKey('PileGroup', related_name='piles', null=True)
     default_filters = models.ManyToManyField(Character,
-                                             through='DefaultFilter')
+        through='DefaultFilter',
+        related_name='piles_this_is_the_default_for')
     plant_preview_characters = models.ManyToManyField(Character,
         through='PlantPreviewCharacter', related_name='preview_characters')
     sample_species_images = models.ManyToManyField(
@@ -527,6 +516,20 @@ class Lookalike(models.Model):
                             self.lookalike_characteristic)
 
 
+class WetlandIndicator(models.Model):
+    """An indicator category for the wetland status of a plant."""
+    code = models.CharField(max_length=15, unique=True)
+    name = models.CharField(max_length=50)
+    friendly_description = models.CharField(max_length=200)
+    sequence = models.IntegerField()
+
+    class Meta:
+        ordering = ['sequence']
+
+    def __unicode__(self):
+        return '%s (%s)' % (self.code, self.name)
+
+
 class Taxon(models.Model):
     """Despite its general name, this currently represents a single species."""
     # TODO: taxa should probably have a "slug" as well, to prevent us
@@ -544,9 +547,12 @@ class Taxon(models.Model):
     habitat = models.CharField(max_length=300, blank=True)
     habitat_general = models.CharField(max_length=300, blank=True)
     factoid = models.CharField(max_length=1000, blank=True)
-    wetland_status_code = models.CharField(max_length=20, blank=True)
-    wetland_status_text = models.CharField(max_length=150, blank=True)
-    north_american_native = models.BooleanField(default=False)
+    wetland_indicator_code = models.CharField(max_length=15, blank=True,
+                                              null=True)
+    wetland_indicator_text = models.CharField(max_length=200, blank=True,
+                                              null=True)
+    north_american_native = models.NullBooleanField()
+    north_american_introduced = models.NullBooleanField()
     conservation_status_ct = models.CharField(max_length=100)
     conservation_status_me = models.CharField(max_length=100)
     conservation_status_ma = models.CharField(max_length=100)
@@ -706,6 +712,8 @@ class PlantPreviewCharacter(models.Model):
                                 self.pile.name)
 
 
+# This model is used for the MyPlants (now PlantShare) plant name picker.
+# TODO: Add indexes to this table once work resumes on PlantShare.
 class PlantName(models.Model):
     """A lookup table intended for efficient querying of scientific and common
        plant name suggestions.
@@ -713,8 +721,8 @@ class PlantName(models.Model):
        A plant that has multiple common names will have multiple rows in this
        table: one for each common name.
     """
-    scientific_name = models.CharField(max_length=100)
-    common_name = models.CharField(max_length=100)
+    scientific_name = models.CharField(max_length=100) # TODO: add db_index=True
+    common_name = models.CharField(max_length=100) # TODO: add db_index=True
 
     class Meta:
         ordering = ['scientific_name']

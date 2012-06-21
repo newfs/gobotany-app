@@ -1,0 +1,10 @@
+{
+    "name": "jquery",
+    "version": "1.0",
+    "main": null,
+    "dependencies": {
+    },
+    "description": "Convenience wrapper package for jQuery framework and plugins, since none of these are currently AMD-complient modules.  AMD wrappers for these scripts and plugins should be placed in the bridge package.",
+    "homepage": "https://gobotany.newenglandwild.org",
+    "dojoBuild": "jquery.profile.js"
+}

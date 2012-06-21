@@ -10,6 +10,20 @@ admin.autodiscover()
 
 handler500 = 'django.views.defaults.server_error'
 
+def allow_cross_site_access(f):
+    """The Dichotomous Key needs to fetch lists of images for display.
+
+    Someday we might consider restricting the '*' down to a list of the
+    domains where the DK and its test and dev versions are actually
+    running; but for now we allow it to run anywhere.
+
+    """
+    def add_cross_site_header(*args, **kw):
+        httpresponse = f(*args, **kw)
+        httpresponse['Access-Control-Allow-Origin'] = '*'
+        return httpresponse
+    return add_cross_site_header
+
 urlpatterns = patterns(
     '',
 
@@ -18,8 +32,8 @@ urlpatterns = patterns(
     url(r'^taxon/$',
         Resource(handler=handlers.TaxonQueryHandler), name='api-taxon-list'),
     # Suggested eventual replacement URL (plural) for /taxon/ above:
-    url(r'^taxa/(?P<scientific_name>[^/]+)/$',
-        Resource(handler=handlers.TaxonQueryHandler), name='api-taxa'),
+    url(r'^taxa/(?P<scientific_name>[^/]+)/$', allow_cross_site_access(
+            Resource(handler=handlers.TaxonQueryHandler)), name='api-taxa'),
     url(r'^taxa/$',
         Resource(handler=handlers.TaxonQueryHandler), name='api-taxa-list'),
 
@@ -48,7 +62,10 @@ urlpatterns = patterns(
         'gobotany.api.views.piles_characters',
         name='api-character-list'),
 
-    #
+    # Potential replacement for characters/?choose_best=3 that takes the
+    # current filtering state into account
+    url(r'^piles/(?P<pile_slug>[^/]+)/questions/$',
+        'gobotany.api.views.questions', name='api-questions'),
 
     url(r'^piles/(?P<slug>[^/]+)/?$',
         Resource(handler=handlers.PileHandler), name='api-pile'),
@@ -74,12 +91,13 @@ urlpatterns = patterns(
          '-us-distribution-map(\.svg|/)?$',
         views.united_states_distribution_map, name='us-distribution-map'),
 
-    url(r'^families/(?P<family_slug>[^/]+)/$',
-        Resource(handler=handlers.FamilyHandler), name='api-family'),
+    url(r'^families/(?P<family_slug>[^/]+)/$', allow_cross_site_access(
+            Resource(handler=handlers.FamilyHandler)), name='api-family'),
 
-    url(r'^genera/(?P<genus_slug>[^/]+)/$',
-        Resource(handler=handlers.GenusHandler), name='api-genus'),
+    url(r'^genera/(?P<genus_slug>[^/]+)/$', allow_cross_site_access(
+            Resource(handler=handlers.GenusHandler)), name='api-genus'),
 
+    # For PlantShare (MyPlants) plant name picker
     url(r'^plant-names/',
         Resource(handler=handlers.PlantNamesHandler), name='api-plant-names'),
 
@@ -90,22 +108,21 @@ urlpatterns = patterns(
 # assume that the developer does not really intend caching to take
 # place.
 
-def c(view):
-    if 'memcache' in settings.CACHES['default']['BACKEND']:
-        one_hour = 60 * 60
-        turn_on_browser_cache = cache_control(maxage=one_hour)
-        turn_on_memcached = cache_page(one_hour)
-        view = turn_on_browser_cache(view)
-        view = turn_on_memcached(view)
-        return view
-    else:
-        return view
+if 'memcache' in settings.CACHES['default']['BACKEND']:
+    one_hour = 60 * 60
+    browsercache = cache_control(maxage=one_hour)
+    memcache = cache_page(one_hour)
+    both = lambda view: browsercache(memcache(view))
+else:
+    browsercache = lambda view: view
+    memcache = lambda view: view
+    both = lambda view: view
 
 urlpatterns += patterns(
     'gobotany.api.views',
-    url(r'^glossaryblob/$', c(views.glossary_blob)),
-    url(r'^species/([\w-]+)/$', c(views.species)),
-    url(r'^vectors/character/([\w()-]+)/$', c(views.vectors_character)),
-    url(r'^vectors/key/([\w-]+)/$', c(views.vectors_key)),
-    url(r'^vectors/pile/([\w-]+)/$', c(views.vectors_pile)),
+    url(r'^glossaryblob/$', both(views.glossary_blob)),
+    url(r'^species/([\w-]+)/$', browsercache(views.species)),
+    url(r'^vectors/character/([\w()-]+)/$', both(views.vectors_character)),
+    url(r'^vectors/key/([\w-]+)/$', both(views.vectors_key)),
+    url(r'^vectors/pile/([\w-]+)/$', both(views.vectors_pile)),
     )

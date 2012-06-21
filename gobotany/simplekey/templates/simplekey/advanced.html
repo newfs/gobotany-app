@@ -5,7 +5,7 @@
 {% block body_attributes %}id="advanced-id" class="claro app advanced-id"{% endblock %}
 
 {% block js_require %}
-    require(['sidebar']);
+    require(['util/sidebar']);
 {% endblock %}
 
 {% block body_content %}
@@ -49,7 +49,7 @@
                                 plant you are trying to identify. Then  you get
                                 another pair of choices.</li>
                                 <li>As you march down the choices, you
-                                gradually hone in on your plant.</li>
+                                gradually narrow down to your plant.</li>
                                 <li>The questions are technical and specific,
                                 but botanical terms are all defined and
                                 illustrated.</li>
@@ -67,22 +67,8 @@
                     <div class="clearit"></div>
                 </div>
                 <div id="sidebar">
-                    <div class="section">
-                        <h5><a href="{% url simplekey-help-about %}">About Go Botany</a></h5>
-                    </div>
-                    <div class="section">
-                        <h5><a href="{% url simplekey-help-glossary0 %}">Glossary</a></h5>
-                    </div>
-                    <div class="section">
-                        <h5><a href="{% url simplekey-help-video %}">Video Help Topics</a></h5>
-                    </div>
-                    <div class="section">
-                        <h5>
-                            Watch Video<br />
-                            (video coming soon)
-                        </h5>
-                        <p>How to use the Go Botany Plant Identifier</p>
-                    </div>
+                    {# Use SimpleKey until a page-specific design is created #}
+                    {% include "simplekey/_sidebar_items.html" %}
                 </div>
 
                 <div class="clearit"></div>

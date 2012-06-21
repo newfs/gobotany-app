@@ -7,49 +7,76 @@
 {% block main_content %}
     <h2>About Go Botany</h2>
 
-		<h3>Contact Us</h3>
+	<h3>Contact Us</h3>
 		
-			<ul class="about">
-				<li>Would you like to find out more about the project? Report
-					a bug or erroneous data? We'd like to know! Send us an 
-					email at <a href="mailto:gobotany@newenglandwild.org">
-						gobotany@newenglandwild.org</a></li>
-			</ul>
+	<p>Would you like to find out more about the project? Report
+	    a bug or erroneous data? We'd like to know! Send us an 
+		email at <a href="mailto:gobotany@newenglandwild.org">
+		gobotany@newenglandwild.org</a>.</p>
 
-        <h3>Go Botany Toolkit</h3>
+    <h3>Go Botany Toolkit</h3>
         
-        <img class="margin" src="/static/images/layout/about_page_photo1.jpg" alt="" />
+    <img src="/static/images/layout/about_page_photo1.jpg"
+        alt="Two people inspecting and photographing a plant in the woods">
         
-        <ul class="about">
-            <li>Our <a href="{% url simplekey %}">Simple Key</a> is an interactive key to 1,200 species. Answer some 
-            questions and hone in on the plant you want to identify. <a href="{% url simplekey %}">Get Started!</a></li>
-            <li>Using our <a href="{% url advanced-id-tools %}">Advanced Key</a> tools, you can use traditional dichotomous keys to identify genera within families and species within genera, and more than 3,500 species, subspecies and varieties of plants.</li>
-            <li>Learn about the habitats, characteristics, and uses of plants, view photos and maps of its distribution, and much more.</li>
-        </ul>
+    <ul>
+        <li>Our <a href="{% url simplekey %}">Simple Key</a> is an interactive
+        key to 1,200 species. Answer some questions and narrow down to the plant
+        you want to identify. <a href="{% url simplekey %}">Get Started!</a>
+        </li>
+        <li>Using our <a href="{% url advanced-id-tools %}">Advanced Key</a> 
+        tools, you can use traditional dichotomous keys to identify genera 
+        within families and species within genera, and more than 3,500 species,
+        subspecies and varieties of plants.</li>
+        <li>Learn about the habitats, characteristics, and uses of plants, 
+        view photos and maps of its distribution, and much more.</li>
+    </ul>
             
-            
-        <h3 class="about">Resources for Teachers</h3>
+    <h3>Resources for Teachers</h3>
         
-        <img class="margin" src="/static/images/layout/about_page_photo2.jpg" alt="" />
+    <img src="/static/images/layout/about_page_photo2.jpg"
+        alt="An instructor showing a blooming plant to a group of
+        children in the garden">
         
-        <ul class="about">
-            <li>Go Botany is designed for students and informal learners age 15 and older, from beginners to professionals. But educators can incorporate our tools into lessons for all ages! Develop your own curricula, lab modules, and field workshops using Go Botany. </li>
-            <li>New England Wild Flower Society is teaming up with three partners, <a href="http://www.montshire.org" target="_blank">Montshire Museum of Science</a>, <a href="http://peabody.yale.edu" target="_blank">Yale Peabody Museum of Natural History</a>, and the <a href="http://www.chewonki.org" target="_blank">Chewonki Foundation</a> to create customized floras, educational displays, and teaching tools! </li>
-            <li>Share your ideas with other educators using <a href="{% url plantshare-placeholder %}">PlantShare</a> and posting to our <a href="{% url teaching-tools-placeholder %}">Teachers Page</a>.</li>
-            <li>During 2012-2013, New England Wild Flower Society will offer free trainings for educators throughout New England on how to use Go Botany.</li>
-        </ul>
+    <ul>
+        <li>Go Botany is designed for students and informal learners age 15
+        and older, from beginners to professionals. But educators can
+        incorporate our tools into lessons for all ages! Develop your own
+        curricula, lab modules, and field workshops using Go Botany.</li>
+        <li>New England Wild Flower Society is teaming up with three partners,
+        <a href="http://www.montshire.org/"
+            target="_blank">Montshire Museum of Science</a>, <a
+            href="http://peabody.yale.edu/" target="_blank">Yale Peabody 
+            Museum of Natural History</a>, and the 
+        <a href="http://www.chewonki.org/" target="_blank">Chewonki 
+            Foundation</a> to create customized floras, educational displays,
+        and teaching tools!</li>
+        <li>Share your ideas with other educators using 
+        <a href="{% url plantshare-placeholder %}">PlantShare</a> and posting
+        to our <a href="{% url teaching-tools %}">Teachers
+            Page</a>.</li>
+        <li>During 2012-2013, New England Wild Flower Society will offer free 
+        trainings for educators throughout New England on how to use Go
+        Botany.</li>
+    </ul>
             
-        <h3 class="about">A New Flora for New England</h3>
+    <h3>A New Flora for New England</h3>
+    
+    <img class="bookcover" 
+        src="/static/images/layout/about_page_bookcover.jpg" alt="Book
+        cover: Flora Novae Angliae">
         
-        <img class="margin-bookcover" src="/static/images/layout/about_page_bookcover.jpg" alt="" />
+    <ul>
+        <li>Go Botany is a four-year project funded by the 
+        <a href="http://www.nsf.gov/awardsearch/showAward.do?AwardNumber=0840186" 
+            target="_blank">National Science Foundation</a>.</li>
             
-        <ul class="aboutlast">
-                <li>Go Botany is a four-year project funded by the <a href="http://www.nsf.gov/awardsearch/showAward.do?AwardNumber=0840186" target="_blank">National Science Foundation</a>. </li>
-                
-                <li> This web-based project builds on the Flora Novae Angliae
-                by Arthur Haines (available at the <a
-                    href="http://www.newenglandwild.org/store/flora-novae-angliae"
-                    target="_blank">Garden Shop</a>), the first comprehensive scientific reference on the region's plant species to be published in the last 25 years.</li>
-        </ul>
+            <li>This web-based project builds on the Flora Novae Angliae
+            by Arthur Haines (available at the <a
+                href="http://www.newenglandwild.org/store/flora-novae-angliae"
+                target="_blank">Garden Shop</a>), the first
+            comprehensive scientific reference on the region's plant
+            species to be published in the last 25 years.</li>
+    </ul>
 
 {% endblock %}

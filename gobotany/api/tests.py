@@ -152,12 +152,10 @@ def _setup_sample_data(load_images=False):
         character=char_habitat)
     cv_habitat2.save()
 
-    pile1.character_values.add(cv1_1)
-    pile1.character_values.add(cv1_2)
-    pile1.character_values.add(cv2)
-    pile1.character_values.add(cv3)
-    pile1.character_values.add(cv_habitat1)
-    pile1.character_values.add(cv_habitat2)
+    pile1.characters.add(c1)
+    pile1.characters.add(c2)
+    pile1.characters.add(c3)
+    pile1.characters.add(char_habitat)
     pile1.save()
 
     models.TaxonCharacterValue(taxon=foo, character_value=cv1_1).save()
@@ -185,8 +183,7 @@ def _setup_sample_data(load_images=False):
     pile1.plant_preview_characters.members = [ppc1, ppc2]
     pile1.save()
 
-    #names = ['AAA', 'AAB', 'AAC', 'AAD', 'ABA', 'ABB', 'ABC', 'ABD', 'ACA',
-    #         'ACB', 'ACC', 'ACD', 'ADA', 'ADB', 'ADC', 'ADD']
+
     names = [   ('Abies balsamea', 'balsam fir'),
                 ('Abutilon theophrasti', 'velvetleaf Indian-mallow'),
                 ('Acalypha rhomboidea', 'common three-seeded-Mercury'),
@@ -680,10 +677,6 @@ class CharacterValuesTestCase(TestCase):
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
-    def test_get_returns_not_found_when_nonexistent_pile(self):
-        response = self.client.get('/api/piles/nopile/c1/')
-        self.assertEqual(404, response.status_code)
-
     def test_get_returns_not_found_when_nonexistent_character(self):
         response = self.client.get('/api/piles/pile1/nochar/')
         self.assertEqual(404, response.status_code)
@@ -726,6 +719,8 @@ class GenusTestCase(TestCase):
         response = self.client.get('/api/genera/no-genus/')
         self.assertEqual(404, response.status_code)
 
+
+# Tests for PlantShare (MyPlants) plant name picker API call
 
 class PlantNamesTestCase(TestCase):
     MAX_NAMES = 20

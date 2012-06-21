@@ -6,7 +6,6 @@ xlrd
 # Unsure which version satisfied minimum reqs
 PIL
 
-# django-autocomplete - now provided literally
 django-haystack
 django-piston==0.2.2
 django-tinymce
@@ -21,7 +20,6 @@ BeautifulSoup
 pylibmc==1.2.2
 django-pylibmc-sasl==0.2.4
 
-# -e src/django-autocomplete
 # -e src/facebook-python-sdk-322930c
 # -e .
 # --extra-index-url=http://dist.pinaxproject.com/dev/ -e ../myplants

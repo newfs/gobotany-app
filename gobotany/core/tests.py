@@ -9,8 +9,6 @@ from django.db import connection
 from django.forms import ValidationError
 from django.test import TestCase
 
-from StringIO import StringIO
-
 import bulkup
 from gobotany.core import botany, igdt, importer, models
 
@@ -66,15 +64,17 @@ class SampleData(TestCase):
         self.create(models.CharacterGroup, 'dimensions')
 
         self.create(models.Character, 'color', friendly_name='What color?',
-                    character_group=self.appearance, value_type=u'TEXT')
+                    character_group=self.appearance, value_type=u'TEXT',
+                    pile=self.pets)
         self.create(models.Character, 'cuteness',
-                    character_group=self.appearance, value_type=u'TEXT')
+                    character_group=self.appearance, value_type=u'TEXT',
+                    pile=self.pets)
         self.create(models.Character, 'length',
-                    character_group=self.dimensions, value_type=u'LENGTH')
+                    character_group=self.dimensions, value_type=u'LENGTH',
+                    pile=self.pets)
 
         def make_cv(name, **kw):
-            cv = self.create(models.CharacterValue, name, **kw)
-            self.pets.character_values.add(cv)
+            self.create(models.CharacterValue, name, **kw)
 
         make_cv('red', character=self.color)
         make_cv('orange', character=self.color)

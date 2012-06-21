@@ -27,11 +27,19 @@ Habitat: {{ object.get_habitats|join:", " }}
   {% endif %}
 {% endwith %}
 
-North American Native Status:
-{% if object.north_american_native %}
-    native
+Native to North America?
+{% if object.north_american_native == None %}
 {% else %}
-    non-native
+    {% if not object.north_american_native %}
+        No
+    {% else %}
+        {% if object.north_american_native %}
+            Yes
+            {% if object.north_american_introduced %}
+                and no (some introduced)
+            {% endif %}
+        {% endif %}
+    {% endif %}
 {% endif %}
 
 Distribution and Conservation Status:
@@ -42,7 +50,14 @@ Distribution and Conservation Status:
     Rhode Island: {{ object.conservation_status_ri }}
     Vermont: {{ object.conservation_status_vt }}
 
-Wetland Status: {{ object.wetland_status_text }}
+Wetland Plant? 
+{% if object.wetland_indicator_code %}
+    {{ object.wetland_indicator_text }}
+    (Wetland indicator code:
+    {{ object.wetland_indicator_code }})
+{% else %}
+    Not classified
+{% endif %}
 
 All Characteristics:
 {# TODO: may want to add brief characteristics, and group full list by character group, like species page. #}

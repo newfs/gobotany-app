@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import hashlib
 import re
 import string
 import urllib2
@@ -13,7 +14,8 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.utils import simplejson
-from django.views.decorators.cache import cache_control
+from django.views.decorators.cache import cache_control, cache_page
+from django.views.decorators.http import etag
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
@@ -116,10 +118,6 @@ def advanced_view(request):
     return render_to_response('simplekey/advanced.html', {},
             context_instance=RequestContext(request))
 
-def guided_search_view(request):
-    return render_to_response('simplekey/guided_search.html', {
-            }, context_instance=RequestContext(request))
-
 def _partner_short_name(partner):
     short_name = None
     if partner:
@@ -128,6 +126,7 @@ def _partner_short_name(partner):
 
 @vary_on_headers('Host')
 @cache_control(max_age=60 * 60)
+@cache_page(60 * 60)
 def simple_key_view(request):
     partner = which_partner(request)
     short_name = _partner_short_name(partner)
@@ -149,6 +148,7 @@ def simple_key_view(request):
 
 @vary_on_headers('Host')
 @cache_control(max_age=60 * 60)
+@cache_page(60 * 60)
 def pilegroup_view(request, pilegroup_slug):
     pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
 
@@ -291,6 +291,19 @@ def _images_with_copyright_holders(images):
     return images
 
 
+def _native_to_north_america_status(taxon):
+    native_to_north_america = ''
+    if taxon.north_american_native == True:
+        native_to_north_america = 'Yes'
+        if taxon.north_american_introduced == True:
+            # This is for plants that are native to N. America but are
+            # also native elsewhere or have introduced varieties.
+            native_to_north_america += ' and no (some introduced)'
+    elif taxon.north_american_native == False:
+        native_to_north_america = 'No'
+    return native_to_north_america
+
+
 def species_view(request, genus_slug, specific_name_slug,
                  pilegroup_slug=None, pile_slug=None):
 
@@ -350,6 +363,8 @@ def species_view(request, genus_slug, specific_name_slug,
     if last_plant_id_url:
         last_plant_id_url = urllib2.unquote(last_plant_id_url)
 
+    native_to_north_america = _native_to_north_america_status(taxon)
+
     return render_to_response('simplekey/species.html', {
            'pilegroup': pilegroup,
            'pile': pile,
@@ -368,7 +383,36 @@ def species_view(request, genus_slug, specific_name_slug,
            'specific_epithet': specific_name_slug,
            'last_plant_id_url': last_plant_id_url,
            'in_simple_key': partner_species.simple_key,
+           'native_to_north_america': native_to_north_america
            }, context_instance=RequestContext(request))
+
+def _get_plants():
+    plants = Taxon.objects.values(
+        'scientific_name', 'common_names__common_name', 'family__name',
+        'distribution', 'north_american_native',
+        'north_american_introduced', 'wetland_indicator_code',
+        'piles__pilegroup__friendly_title',
+        'piles__friendly_title'
+        ).order_by('scientific_name')
+    return plants
+
+def _compute_plants_etag(request):
+    """Generate an ETag for allowing caching of the species list page.
+    This requires querying for the plants upon every page request but
+    saves much response bandwidth and keeps everything up-to-date
+    automatically.
+    """
+    plants = _get_plants()
+    h = hashlib.md5()
+    h.update(str(list(plants)))
+    return h.hexdigest()
+
+@etag(_compute_plants_etag)
+def species_list_view(request):
+    return render_to_response('simplekey/species_list.html', {
+        'plants': _get_plants()
+        })
+
 
 def genus_view(request, genus_slug):
     genus = get_object_or_404(Genus, slug=genus_slug.lower())
@@ -539,21 +583,6 @@ def help_video_view(request):
            'videos': videos,
            }, context_instance=RequestContext(request))
 
-def video_pilegroup_view(request, pilegroup_slug):
-    pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
-    return render_to_response('simplekey/video.html', {
-            'pilegroup': pilegroup,
-            }, context_instance=RequestContext(request))
-
-def video_pile_view(request, pilegroup_slug, pile_slug):
-    pile = get_object_or_404(Pile, slug=pile_slug)
-    if pile.pilegroup.slug != pilegroup_slug:
-        raise Http404
-    return render_to_response('simplekey/video.html', {
-           'pilegroup': pile.pilegroup,
-           'pile': pile,
-           }, context_instance=RequestContext(request))
-
 def suggest_view(request):
     # Return some search suggestions for the auto-suggest feature.
     MAX_RESULTS = 10
@@ -627,6 +656,12 @@ def checkup_view(request):
             'images_copyright': images_copyright,
             'total_images': total_images,
         }, context_instance=RequestContext(request))
+
+
+def teaching_tools_view(request, template):
+    return render_to_response(template, {
+            }, context_instance=RequestContext(request))
+
 
 # Placeholder views
 # This generic view basically does the same thing as direct_to_template,

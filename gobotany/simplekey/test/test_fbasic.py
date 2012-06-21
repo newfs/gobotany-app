@@ -232,14 +232,15 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Does the page load and show 18 species?
 
-        self.get('/ferns/lycophytes/')
+        prevent_intro_overlay = '#_view=photos'
+        self.get('/ferns/lycophytes/' + prevent_intro_overlay)
         self.wait_on_species(18)
-        self.css1('#intro-overlay .continue').click()
 
         # filter on Rhode Island
 
         self.css1('#state_distribution a.option').click()
-        count = self.css1('[value="Rhode Island"] + .label + .count').text
+        with self.wait(3):
+            count = self.css1('[value="Rhode Island"] + .label + .count').text
         self.assertEqual(count, '(13)')
         self.css1('[value="Rhode Island"]').click()
         self.css1('.apply-btn').click()
@@ -248,7 +249,8 @@ class FilterFunctionalTests(FunctionalTestCase):
         # filter on wetlands
 
         self.css1('#habitat_general a.option').click()
-        count = self.css1('[value="wetlands"] + .label + .count').text
+        with self.wait(3):
+            count = self.css1('[value="wetlands"] + .label + .count').text
         self.assertEqual(count, '(3)')
         self.css1('[value="wetlands"]').click()
         self.css1('.apply-btn').click()
@@ -294,9 +296,9 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Does the page load and show 18 species?
 
-        self.get('/ferns/lycophytes/')
+        prevent_intro_overlay = '#_view=photos'
+        self.get('/ferns/lycophytes/' + prevent_intro_overlay)
         self.wait_on_species(18)
-        self.css1('#intro-overlay .continue').click()
 
         # Do the family and genus dropdowns start by displaying all options?
 
@@ -353,7 +355,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
-        e = self.css1('.plant-list div a div.img-container img')
+        e = self.css1('.plant-list div a div.plant-img-container img')
         assert '-ha-' in e.get_attribute('src')
         self.css1('#results-display #image-types').click()
         self.css1(
@@ -367,7 +369,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
-        e = self.css1('.plant-list div a div.img-container img')
+        e = self.css1('.plant-list div a div.plant-img-container img')
         assert '-ha-' in e.get_attribute('src')   # 'ha' = 'plant form' image
         menu_items = self.css('#results-display #image-types option')
         self.assertTrue(len(menu_items) > 0)
@@ -397,7 +399,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
-        e = self.css1('.plant-list div a div.img-container img')
+        e = self.css1('.plant-list div a div.plant-img-container img')
         self.css1('#results-display #image-types').click()
         self.css1(
             '#results-display #image-types option[value="branches"]').click()
@@ -409,9 +411,9 @@ class FilterFunctionalTests(FunctionalTestCase):
     def test_get_more_filters(self):
         FILTERS_CSS = 'ul.option-list li'
 
-        self.get('/ferns/lycophytes/')
+        prevent_intro_overlay = '#_view=photos'
+        self.get('/ferns/lycophytes/' + prevent_intro_overlay)
         self.wait_on_species(18)
-        self.css1('#intro-overlay .continue').click()
 
         filters = self.css(FILTERS_CSS)
         n = len(filters)
@@ -429,12 +431,15 @@ class FilterFunctionalTests(FunctionalTestCase):
         RANGE_DIV_CSS = '.permitted_ranges'
         INPUT_METRIC_CSS = 'input[name="measure_metric"]'
         INSTRUCTIONS_CSS = '.instructions'
-        FILTER_LINK_CSS = '#plant_height_rn a.option'
+        FILTER_LINK_CSS = '#plant_height_rn'
 
         self.get(
-            '/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn&_visible=plant_height_rn'
+            '/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn'
             )
         self.wait_on_species(499, seconds=21)   # Big subgroup, wait longer
+
+        self.css1(FILTER_LINK_CSS).click()
+        self.wait_on(5, self.css, RANGE_DIV_CSS)
 
         sidebar_value_span = self.css1('#plant_height_rn .value')
         range_div = self.css1(RANGE_DIV_CSS)
@@ -443,7 +448,8 @@ class FilterFunctionalTests(FunctionalTestCase):
         apply_button = self.css1('.apply-btn')
 
         self.assertIn(u' 10 mm – 15000 mm', range_div.text)
-        self.assertEqual('', instructions.text)
+        self.assertEqual('Change the value to narrow your selection to a'
+                         ' new set of matching species.', instructions.text)
 
         # Type in a big number and watch the number of advertised
         # matching species change with each digit.
@@ -536,11 +542,17 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get('/')  # to start fresh and prevent partial reload
         self.get('/non-monocots/remaining-non-monocots/'
                  '#_filters=family,genus,plant_height_rn'
-                 '&_visible=plant_height_rn'
                  '&plant_height_rn=5000')
         unknowns = 32
-        self.wait_on_species(unknowns + 9,
-                             seconds=21)   # Big subgroup, wait longer
+
+        wait = 30  # Big subgroup, wait longer
+        try:
+            self.wait_on_species(unknowns + 9, seconds=wait)
+        except AssertionError:
+            # Give it a second chance - sometimes "499 species" flashes
+            # up briefly before the filtered value kicks in.
+            time.sleep(5.0)
+            self.wait_on_species(unknowns + 9, seconds=wait)
 
         sidebar_value_span = self.css1('#plant_height_rn .value')
         self.assertEqual(sidebar_value_span.text, '5000 mm')
@@ -1435,9 +1447,9 @@ class CharacterValueImagesFunctionalTests(FunctionalTestCase):
 
     def _character_value_images_exist(self, page_url, character_short_name,
                                       character_value_image_ids, seconds=15):
-        self.get(page_url)
-        self.wait_on(seconds, self.css1, '#exposeMask')
-        self.css1('#intro-overlay .continue').click()
+        prevent_intro_overlay = '_view=photos'
+        delimeter = '&' if ('#' in page_url) else '#'
+        self.get(page_url + delimeter + prevent_intro_overlay)
 
         # Click on a question that has character value images.
         self.wait_on(seconds, self.css1, 'li#habitat_general')
@@ -1804,3 +1816,64 @@ class LookalikesFunctionalTests(FunctionalTestCase):
             self.assertTrue(len(notes) > 0)
             for note in notes:
                 self.assertTrue(len(note.text) > 0)
+
+class ResultsPageStateFunctionalTests(FunctionalTestCase):
+
+    # Tests for:
+    # - restoring the results page state from a URL
+    # - saving the results page state to URL and cookie
+    # - "undo" of filtering choices via Back button
+
+    def test_filters_load_with_no_hash(self):
+        page = self.get('/ferns/lycophytes/')
+        self.wait_on(10, self.css1, 'div.plant.in-results')
+        self.css1('#intro-overlay .continue').click()
+        self.assertTrue(page.find_element_by_xpath(
+            '//li/a/span/span[text()="Habitat"]'))  # glossarized: extra span
+        self.assertTrue(page.find_element_by_xpath(
+            '//li/a/span[text()="New England state"]'))
+
+    def test_filters_load_from_url_hash(self):
+        # Although only two filters are specified on the URL hash, the
+        # entire list of default filters will come up in the UI, including
+        # these two hash-specified filters. This is OK now because the
+        # user can no longer delete filters from the UI as they once
+        # could. Actual URLs in the UI consist of the entire list of
+        # default filters followed by any "Get More Choices" filters the
+        # user has loaded.
+        #
+        # Family and genus filters are always present so do not need to
+        # be included in the URL. However, they were present in the URL
+        # previously, so make sure the site still properly ignores them.
+        url = ('/ferns/lycophytes/#_filters=habitat_general,'
+               'state_distribution,family,genus')
+        page = self.get(url)
+        self.wait_on(10, self.css1, 'div.plant.in-results')
+        # When setting up the page from the URL hash, there is no intro 
+        # overlay, so no need to wait for it as usual.
+        self.assertTrue(page.find_element_by_xpath(
+            '//li/a/span/span[text()="Habitat"]'))  # glossarized: extra span
+        self.assertTrue(page.find_element_by_xpath(
+            '//li/a/span[text()="New England state"]'))
+
+    def test_set_family_from_url_hash(self):
+        url = ('/ferns/lycophytes/#_filters=habitat_general,'
+               'state_distribution&family=Isoetaceae')
+        page = self.get(url)
+        self.wait_on(10, self.css1, 'div.plant.in-results')
+        # Verify the species are filtered after waiting a bit.
+        x1 = '//span[@class="species-count" and text()="3"]'
+        x2 = '//select/option[@selected="selected" and @value="Isoetaceae"]'
+        self.wait_on(10, page.find_element_by_xpath, x1)
+        self.wait_on(10, page.find_element_by_xpath, x2)
+
+    def test_set_genus_from_url_hash(self):
+        url = ('/ferns/lycophytes/#_filters=habitat_general,'
+               'state_distribution&genus=Selaginella')
+        page = self.get(url)
+        self.wait_on(10, self.css1, 'div.plant.in-results')
+        # Verify the species are filtered after waiting a bit.
+        x1 = '//span[@class="species-count" and text()="2"]'
+        x2 = '//select/option[@selected="selected" and @value="Selaginella"]'
+        self.wait_on(10, page.find_element_by_xpath, x1)
+        self.wait_on(10, page.find_element_by_xpath, x2)

@@ -75,17 +75,17 @@ class LegendTestCase(TestCase):
             'stroke:%s' % STROKE_COLOR) > -1)
 
     def test_show_items(self):
-        legend_labels_found = ['present', 'rare']
+        legend_labels_found = ['present', 'absent']
         self.legend.show_items(legend_labels_found)
 
         labels = self._get_labels()
         self.assertEqual('present', labels[0])
-        self.assertEqual('rare', labels[1])
+        self.assertEqual('absent', labels[1])
         [self.assertEqual('', label) for label in labels[2:]]
 
         paths = self._get_paths()
         self.assertTrue(paths[0].get_style().find('fill:#78bf47') > -1)
-        self.assertTrue(paths[1].get_style().find('fill:#a7e37d') > -1)
+        self.assertTrue(paths[1].get_style().find('fill:#fff') > -1)
         [self.assertTrue(path.get_style().find('fill:#fff') > -1)
          for path in paths[2:]]
         [self.assertTrue(path.get_style().find('stroke:#000') > -1)
@@ -144,7 +144,7 @@ def create_distribution_records():
             ('Worcester', 'MA', 'Species present and not rare'),
             ('Kent', 'RI', 'Species present in state and native'),
             ('Orange', 'VT', 'Species present and not rare'),
-            ('New London', 'CT', 'Species present in state and native'),
+            ('New London', 'CT', 'Species present in state and present'),
             ('', 'NS', 'Species present in state and native'),
             ('', 'NB', 'Species present in state and native'),
             ('', 'QC', 'Species present in state and native'),
@@ -220,7 +220,7 @@ class PlantDistributionMapTestCase(TestCase):
             'Species present and rare',
             ]
         for status in statuses:
-            self.assertEqual('rare',
+            self.assertEqual('present',
                 self.distribution_map._get_label_for_status(status))
 
     def test_get_label_for_status_introduced(self):
@@ -238,7 +238,7 @@ class PlantDistributionMapTestCase(TestCase):
             'Species noxious',
             ]
         for status in statuses:
-            self.assertEqual('invasive',
+            self.assertEqual('present',
                 self.distribution_map._get_label_for_status(status))
 
     def test_get_label_for_status_historic(self):
@@ -247,7 +247,7 @@ class PlantDistributionMapTestCase(TestCase):
             'Species extinct',
             ]
         for status in statuses:
-            self.assertEqual('present',
+            self.assertEqual('absent',
                 self.distribution_map._get_label_for_status(status))
 
     def test_get_label_for_status_absent(self):
@@ -313,7 +313,7 @@ class PlantDistributionMapTestCase(TestCase):
         SCIENTIFIC_NAME = 'Vaccinium vitis-idaea ssp. minus'
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
-        self._verify_shaded_counties(['present', 'rare', 'absent'])
+        self._verify_shaded_counties(['present', 'absent'])
         labels = [label_node.text for label_node in
             self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
             namespaces=NAMESPACES)]
@@ -359,7 +359,7 @@ class PlantDistributionMapTestCase(TestCase):
         SCIENTIFIC_NAME = 'Vaccinium vitis-idaea'
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
-        self._verify_shaded_counties(['present', 'rare', 'absent'])
+        self._verify_shaded_counties(['present', 'absent'])
         labels = [label_node.text for label_node in
             self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
             namespaces=NAMESPACES)]

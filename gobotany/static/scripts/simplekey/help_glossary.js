@@ -1,20 +1,14 @@
 require([
-    'activate_search_suggest',
-    'shadowbox',
-    'shadowbox_init'
+    'util/activate_search_suggest',
+    'bridge/shadowbox',
+    'util/shadowbox_init',
+    'util/sidebar'
 ]);
 
 require([
-    'dojo_config',
-    '/static/js/dojo/dojo.js',
-    '/static/js/layers/sk.js',
-    'sidebar'
-], function() {
-
-    dojo.require('gobotany.sk.glossary');
-    dojo.addOnLoad(function() {
-        glossary_helper = gobotany.sk.glossary.GlossaryHelper();
-        glossary_helper.setup();
+    'simplekey/glossarize'
+], function(glossarize) {
+    $(document).ready(function() {
+        glossarize($('#terms dd'));
     });
-
 });

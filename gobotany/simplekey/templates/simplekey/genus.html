@@ -15,10 +15,12 @@ Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}
 {% endblock %}
 
 {% block js_require %}
-    define('args', [], {
+    var args = {
         genus_slug: '{{ genus.slug }}'
+    };
+    require(['simplekey/genus'], function(genus_page_init) {
+        genus_page_init(args);
     });
-    require(['simplekey/genus']);
 {% endblock %}
 
 {% block body_attributes %}id="genus" class="claro app genus"{% endblock %}

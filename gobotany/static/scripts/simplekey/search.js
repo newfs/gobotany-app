@@ -1,6 +1,6 @@
 /* Resources that search.html needs. */
 
 require([
-    'activate_search_suggest',
-    'sidebar'
+    'util/activate_search_suggest',
+    'util/sidebar'
 ]);

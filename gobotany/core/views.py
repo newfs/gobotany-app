@@ -1,12 +1,9 @@
-import os
 import time
 from collections import defaultdict
 from operator import attrgetter, itemgetter
-from urllib import urlencode
 
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.views import static 
 
 from gobotany.core import botany, igdt, models
 
@@ -15,31 +12,6 @@ def default_view(request):
     return render_to_response('index.html', {},
                               context_instance=RequestContext(request))
 
-
-def piles_pile_groups(request):
-    return render_to_response('piles_pile_groups.html',
-                              context_instance=RequestContext(request))
-
-def taxon_search(request):
-    kwargs = {}
-    if request.method == 'POST':
-        kwargs['queried'] = True
-        s = kwargs['s'] = request.POST['s'].strip()
-        kwargs['query_results'] = botany.query_species(
-            scientific_name=s)
-
-    return render_to_response('taxon_search.html', kwargs,
-                               context_instance=RequestContext(request))
-
-
-def static_serve(request, path, package=None,
-                 relative_path='', show_indexes=False):
-    document_root = package.__path__[0]
-    if relative_path:
-        document_root = os.path.join(document_root, relative_path)
-
-    return static.serve(request, path, document_root=document_root,
-                        show_indexes=show_indexes)
 
 def canonical_images(request):
     results = []
@@ -50,34 +22,6 @@ def canonical_images(request):
                                 {'results': results},
                                 context_instance=RequestContext(request))
 
-def species_lists(request):
-    biglist = []
-
-    for pilegroup in models.PileGroup.objects.all():
-        biglist.append({
-                'name': 'Pile-Group ' + pilegroup.name,
-                'url': '/taxon/?' + urlencode({'pilegroup': pilegroup.slug}),
-                })
-
-    for pile in models.Pile.objects.all():
-        biglist.append({
-                'name': 'Pile ' + pile.name,
-                'url': '/taxon/?' + urlencode({'pile': pile.slug}),
-                })
-
-    species_names = [ t.scientific_name for t in models.Taxon.objects.all() ]
-    genus_names = sorted(set( name.split()[0] for name in species_names ))
-    for genus_name in genus_names:
-        biglist.append({
-                'name': 'Genus ' + genus_name,
-                'url': '/taxon/?' + urlencode({'genus': genus_name}),
-                })
-
-    return render_to_response('species_lists.html', {
-            'biglist': biglist,
-            })
-
-
 def pile_characters_select(request):
     return render_to_response('pile_characters_select.html', {
             'piles': [ (pile.slug, pile.name) for pile
@@ -85,7 +29,7 @@ def pile_characters_select(request):
             })
 
 
-def pile_characters(request, pile_slug):
+def _pile_characters(request, pile_slug):
     WIDTH = 500
 
     coverage_weight, ease_weight, length_weight = igdt.get_weights()
@@ -315,10 +259,9 @@ def pile_characters(request, pile_slug):
 # wrapper that prints a normal traceback:
 #
 
-_func = pile_characters
 def pile_characters(*args, **kw):
     try:
-        return _func(*args, **kw)
+        return _pile_characters(*args, **kw)
     except Exception:
         from django.http import HttpResponse
         import traceback

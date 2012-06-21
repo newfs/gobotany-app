@@ -2,6 +2,8 @@
         <!--[if lt IE 10]>
         <script type="text/javascript"
             src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+        <script type="text/javascript"
+            src="/static/scripts/util/chrome_frame.js"></script>
         <div id="ie-note">
             <p>Welcome to Go Botany! This site runs best using
             <a href="http://www.mozilla.org/en-US/firefox/">Firefox</a>,
@@ -12,21 +14,32 @@
             To use the site with Internet Explorer, you'll need the
             <strong>Google Chrome Frame plug-in</strong>: a quick-and-easy
             one-time install.</p>
-            <p>After installing it below, please re-start Internet
+            <p>After installing Google Chrome Frame, please re-start Internet
             Explorer.</p>
+            <p class="dismiss"><a 
+                href="javascript:dismiss_gcf_install();"
+                title="Skip installing this time and use the site without Google Chrome Frame">Skip install for now</a></p>
             <img src="/static/images/branding/logo-toplevel.png" alt="">
         </div>
         <script>
-            {# The conditional ensures that this code will only run  #}
-            {# in IE, so we can use the IE-specific attachEvent      #}
-            {# without worry. Set user mode in the URL to install in #}
-            {# single-user, non-admin mode to help ensure success    #}
-            {# so that the user will not have to Enable the plug-in. #}
-	        window.attachEvent("onload", function() {
-	            CFInstall.check({
-                    mode: "inline",
-		            url: "http://www.google.com/chromeframe/?user=true"
+            // If the user asked to hide the GCF install for this
+            // browsing session, do so.
+            var hide_install_cookie = get_cookie('hide_gcf_install');
+            if (hide_install_cookie === 'true') {
+                dismiss_gcf_install();
+            }
+            else {
+                {# The conditional ensures that this code will only run  #}
+                {# in IE, so we can use the IE-specific attachEvent      #}
+                {# without worry. Set user mode in the URL to install in #}
+                {# single-user, non-admin mode to help ensure success    #}
+                {# so that the user will not have to Enable the plug-in. #}
+                window.attachEvent("onload", function() {
+                    CFInstall.check({
+                        mode: "inline",
+                        url: "http://www.google.com/chromeframe/?user=true"
+                    });
                 });
-            });
+            }
         </script>
         <![endif]-->

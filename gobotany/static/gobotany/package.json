@@ -1,0 +1,13 @@
+{
+    "name": "gobotany",
+    "version": "1.0",
+    "main": null,
+    "dependencies": {
+        "dojo": "current",
+        "dijit": "current",
+        "dojox": "current",
+    },
+    "description": "The New England Wild Flower Society's Go Botany site application.",
+    "homepage": "https://gobotany.newenglandwild.org",
+    "dojoBuild": "gobotany.profile.js"
+}

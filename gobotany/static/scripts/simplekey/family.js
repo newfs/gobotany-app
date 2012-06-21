@@ -1,26 +1,28 @@
 define([
-    'args'
-], function(args) {
+    'bridge/jquery',
+    'simplekey/glossarize'
+], function($, glossarize) {
 
-    require([
-        'activate_search_suggest',
-        'shadowbox',
-        'shadowbox_init'
-    ]);
+    var module_function = function(args) {
+        $(document).ready(function() {
+            glossarize($('.description'));
+        });
 
-    require([
-        'order!dojo_config',
-        'order!/static/js/dojo/dojo.js',
-        'sidebar'
-    ], function() {
         require([
-            '/static/js/layers/sk.js'
+            'util/activate_search_suggest',
+            'bridge/shadowbox',
+            'util/shadowbox_init'
+        ]);
+
+        require([
+            'util/sidebar'
         ], function() {
             dojo.require('gobotany.sk.family');
             dojo.addOnLoad(function() {
                 gobotany.sk.family.init(args.family_slug);
             });
         });
-    });
+    };
 
+    return module_function;
 });

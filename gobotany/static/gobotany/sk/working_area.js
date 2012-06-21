@@ -1,3 +1,11 @@
+define([
+    'gobotany/utils',
+    'dojo/NodeList-html',
+    'dijit/form/HorizontalSlider'
+], function(utils) {
+
+dojo.provide('gobotany.sk.working_area');
+
 /*
  * Classes that create and maintain the working area.
  *
@@ -21,11 +29,6 @@
  * on_dismiss(filter) - called when the user dismisses the working area.
  */
 
-dojo.provide('gobotany.sk.working_area');
-
-dojo.require('dojo.NodeList-html');
-dojo.require('dijit.form.HorizontalSlider');
-
 /**
  * Return the correct working area class for a given filter.
  *
@@ -35,7 +38,7 @@ dojo.require('dijit.form.HorizontalSlider');
 gobotany.sk.working_area.select_working_area = function(filter) {
     if (filter.value_type == 'TEXT')
         return gobotany.sk.working_area.Choice;
-    else if (filter.is_length())
+    else if (filter.is_length)
         return gobotany.sk.working_area.Length;
     else
         return gobotany.sk.working_area.Slider;
@@ -51,13 +54,10 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
     div_map: null,  // maps choice value -> <input> element
     close_button_connection: null,  // connection from the close button to us
 
-    /* {div, filter, filter_manager, glossarizer, on_dismiss} */
+    /* {div, filter, on_dismiss} */
     constructor: function(args) {
         this.div = args.div;
         this.filter = args.filter;
-        this.filter_manager = args.filter_manager;
-        this.short_name = args.filter.short_name;
-        this.glossarize = dojo.hitch(args.glossarizer, 'markup');
         this._draw_basics(args.y);
         this._draw_specifics();
         this.on_dismiss = args.on_dismiss;
@@ -100,16 +100,17 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
 
         // Show the question, hint and Apply button.
-        d.query('h4').html(f.question).forEach(this.glossarize);
-        d.query('h4').style({display: 'block'});
-        d.query('.hint').html(p(f.hint)).forEach(this.glossarize);
-        d.query('.info').style({display: 'block'});
+        glossarize($('h4').html(f.info.question));
+        $('h4').css('display', 'block');
+        glossarize($('.hint').html(p(f.info.hint)));
+        $('.info').css('display', 'block');
 
         // Display character drawing, if an image is available.
-        if (f.image_url) {
-            var image_id = this._get_image_id_from_path(f.image_url);
+        if (f.info.image_url) {
+            var image_id = this._get_image_id_from_path(f.info.image_url);
             var dld_html = '<img id="' + image_id +
-                '" src="' + f.image_url + '" alt="character illustration">';
+                '" src="' + f.info.image_url +
+                '" alt="character illustration">';
             d.query('.dld').html(dld_html).style({display: 'block'});
         } else {
             d.query('.dld').html('').style({display: 'none'});
@@ -138,7 +139,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         values_q.empty().addClass('multiple').removeClass('numeric');
 
         // Apply a custom sort to the filter values.
-        var values = gobotany.utils.clone(f.values);
+        var values = utils.clone(f.values);
         values.sort(_compare_filter_choices);
 
         var choices_div = dojo.create('div', {'class': 'choices'}, values_q[0]);
@@ -147,7 +148,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
         // Create a Don't Know radio button item.
         this.div_map = {};
         var item_html = '<div><label><input name="char_name"' +
-            checked(f.selected_value === null) +
+            checked(f.value === null) +
             ' type="radio" value=""> ' + _format_value() + '</label></div>';
         this.div_map[''] = dojo.place(item_html, row_div);
 
@@ -158,7 +159,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
             var v = values[i];
 
             var item_html = '<label><input name="char_name" type="radio"' +
-                checked(f.selected_value === v.choice) +
+                checked(f.value === v.choice) +
                 ' value="' + v.choice + '">';
 
             // Add a drawing image if present.
@@ -187,17 +188,17 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
 
             // Once the item is added, add a tooltip for the drawing.
             if (image_path.length > 0) {
-                var image_html = '<img id="' + image_id + '" src="' +
-                    image_path + '" alt="drawing showing ' +
-                    v.friendly_text + '">';
-                new dijit.Tooltip({
-                    connectId: [image_id],
-                    label: image_html, position: ['after', 'above']
+                var image_html = '<img class="char-value-larger" id="' +
+                    image_id + '" src="' + image_path +
+                    '" alt="drawing showing ' + v.friendly_text + '">';
+                $('#' + image_id).tooltipsy({
+                    alignTo: 'cursor',
+                    content: image_html,
+                    offset: [0, -200]
                 });
             }
 
-            dojo.query('span.label', character_value_div).forEach(
-                this.glossarize);
+            glossarize($('span.label', character_value_div));
         }
 
         // Call a method when radio button is clicked.
@@ -221,7 +222,7 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
 
     _on_choice_change: function(event) {
         var apply_button = dojo.query('.apply-btn', this.div);
-        if (this._current_value() === this.filter.selected_value)
+        if (this._current_value() === this.filter.value)
             apply_button.addClass('disabled');
         else
             apply_button.removeClass('disabled');
@@ -241,13 +242,20 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
        how many species would remain if each of our possible filter
        values were applied. */
     _on_filter_change: function() {
+        var other_taxa = App3.filter_controller.compute(this.filter);
         var div_map = this.div_map;
-        _.map(this.filter_manager.compute_impact(this.filter), function(i) {
-            var div = div_map[i.value.choice];
+
+        _.map(this.filter.values, function(value) {
+
+            // How many taxa would be left if this value were chosen?
+            var num_taxa = _.intersect(value.taxa, other_taxa).length;
+
+            // Draw it accordingly.
+            var div = div_map[value.choice];
             var count_span_q = dojo.query('.count', div);
-            count_span_q.html('(' + i.taxa.length + ')');
+            count_span_q.html('(' + num_taxa + ')');
             var input_field_q = dojo.query('input', div);
-            if (i.taxa.length === 0) {
+            if (num_taxa === 0) {
                 $(div).addClass('disabled');
                 input_field_q.attr('disabled', 'disabled');
             } else {
@@ -272,12 +280,10 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
 
     _apply_filter_value: function() {
         var value = this._current_value();
-        if (value !== null && this.filter.species_matching(value).length == 0)
-            // Refuse to let the number of matching species be driven to zero.
+        if (value !== null && this.filter.taxa_matching(value).length == 0)
+            // Refuse to let the number of matching taxa be driven to zero.
             return;
-        this.filter_manager.set_selected_value(
-            this.filter.character_short_name, value);
-        dojo.publish('/sk/filter/change', [this.filter]);
+        this.filter.set('value', value);
     }
 });
 
@@ -309,26 +315,35 @@ dojo.declare('gobotany.sk.working_area.Slider', [
         this.inherited(arguments);
     },
 
+    _compute_min_and_max: function() {
+        var species_vector = App3.filter_controller.compute(this.filter);
+        var allowed = this.filter.allowed_ranges(species_vector);
+        this.min = allowed[0].min;
+        this.max = allowed[allowed.length - 1].max;
+    },
+
     _draw_specifics: function() {
         // values_list?
+        this._compute_min_and_max();
+
         var filter = this.filter;
-        var num_values = filter.max - filter.min + 1;
+        var num_values = this.max - this.min + 1;
         var startvalue = Math.ceil(num_values / 2);
-        if (filter.selected_value !== null)
-            startvalue = filter.selected_value;
+        if (filter.value !== null)
+            startvalue = filter.get('value');
 
         var values_q = dojo.query('div.working-area .values');
         values_q.addClass('multiple').removeClass('numeric').
             html('<label>Select a number between<br>' +
-                 filter.min + ' and ' +
-                 filter.max + '</label>');
+                 this.min + ' and ' +
+                 this.max + '</label>');
         this.slider_node = dojo.create('div', null, values_q[0]);
         this.simple_slider = new dijit.form.HorizontalSlider({
             id: 'simple-slider',
             name: 'simple-slider',
             value: startvalue,
-            minimum: filter.min,
-            maximum: filter.max,
+            minimum: this.min,
+            maximum: this.max,
             discreteValues: num_values,
             intermediateChanges: true,
             showButtons: false,
@@ -349,9 +364,11 @@ dojo.declare('gobotany.sk.working_area.Slider', [
     _value_changed: function() {
         /* Disable the apply button when we're on either the default
            value or the value that was previous selected */
+        this._compute_min_and_max();
+
         var apply_button = dojo.query('.apply-btn', this.div);
         var slider_value = this._current_value();
-        var filter_value = this.filter.selected_value;
+        var filter_value = this.filter.get('value');
         // Allow type coersion in this comparison, since we're
         // comparing text from the filter to a numerical slider value
         if (slider_value == filter_value)
@@ -370,10 +387,10 @@ dojo.declare('gobotany.sk.working_area.Slider', [
         var slider_bar_width = dojo.style(slider_bar, 'width');
         var max_left_px = MIN_LEFT_PX + slider_bar_width;
         var filter = this.filter;
-        var num_segments = filter.max - filter.min;
+        var num_segments = this.max - this.min;
         var slider_length = max_left_px - MIN_LEFT_PX;
         var pixels_per_value = slider_length / num_segments;
-        var offset = Math.floor((value - filter.min) * pixels_per_value);
+        var offset = Math.floor((value - this.min) * pixels_per_value);
         var label_width_correction = 0;
         if (value >= 10) {
             label_width_correction = -4; /* for 2 digits, pull left a bit */
@@ -387,7 +404,7 @@ dojo.declare('gobotany.sk.working_area.Slider', [
        javascript errors from the parent version of this function, so
        just override it with an empty function. */
     _on_filter_change: function() {
-    },
+    }
 
 });
 
@@ -413,7 +430,7 @@ dojo.declare('gobotany.sk.working_area.Length', [
 
         this._set_unit(this.filter.display_units || 'mm');
         this_unit = this.unit;  // for the use of our inner functions
-        var value = this.filter.selected_value;
+        var value = this.filter.get('value');
         if (value === null)
             value = '';
         else
@@ -466,12 +483,19 @@ dojo.declare('gobotany.sk.working_area.Length', [
             this._measure_changed();
     },
 
+    _parse_value: function(text) {
+        var v = parseFloat(text);
+        if (isNaN(v))
+            return null;
+        return v;
+    },
+
     _current_value: function() {
         var selector = this.is_metric ? '[name="measure_metric"]' :
             '[name="measure_english"]';
         var text = dojo.query(selector, this.div).attr('value')[0];
-        var mm = parseFloat(text) * this.factor;
-        return isNaN(mm) ? null : mm;
+        var v = this._parse_value(text);
+        return (v === null) ? null : v * this.factor;
     },
 
     _set_unit: function(unit) {
@@ -490,11 +514,12 @@ dojo.declare('gobotany.sk.working_area.Length', [
 
     _measure_changed: function() {
         var mm = this._current_value();
-        var vector = this.filter.species_matching(mm);
+        var mm_old = this._parse_value(this.filter.get('value'));
+        var vector = this.filter.taxa_matching(mm);
         vector = _.intersect(vector, this.species_vector);
         var div = dojo.query('.instructions', this.div);
         var apply_button = dojo.query('.apply-btn', this.div);
-        if (parseFloat(this.filter.selected_value) === mm) {
+        if (mm_old === mm) {
             instructions = 'Change the value to narrow your selection to a' +
                 ' new set of matching species.';
             apply_button.addClass('disabled');
@@ -533,8 +558,7 @@ dojo.declare('gobotany.sk.working_area.Length', [
         // adjust our statement about the number of species matched by
         // the value in our input field.
 
-        var species_vector = this.filter_manager.compute_query({
-            without: this.filter});
+        var species_vector = App3.filter_controller.compute(this.filter);
         this.species_vector = species_vector;
         this.permitted_ranges = this.filter.allowed_ranges(species_vector);
         this._redraw_permitted_ranges();
@@ -593,3 +617,5 @@ var _compare_filter_choices = function(a, b) {
 
     return 0; // default value (no sort)
 };
+
+});

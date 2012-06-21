@@ -46,14 +46,34 @@
 
         {% include "simplekey/_script_constants.html" %}
 
-        <script src="/static/scripts/require.js"></script>
+        {% if not in_production %}
+
+        <!-- DEVELOPMENT FILES -->
+        <script src="/static/scripts/dojo_config.js"></script>
+        {# In order to get better error messages during debugging, #}
+        {# change 'dojo.js' to 'dojo.js.uncompressed.js' below.    #}
+        <script src="/static/scripts/lib/dojo/dojo.js.uncompressed.js"></script>
+
+        {% else %}
+
+        <!-- PRODUCTION / DEPLOYMENT FILES -->
+        <script src="/static/scripts/dojo_config_deploy.js"></script>
+        <script src="/static/build/deploy/dojo.js"></script>
+
+        {% endif %}
+
         {# This block is for adding any page-specific JS. #}
+        <!-- <script src="/static/scripts/require.js"></script> -->
         <script>
-            require.config({
-                baseUrl: "/static/scripts",
-                waitSeconds: 180
-            });
+            {% if in_production %}
+            require(["/static/build/deploy/gobotany.application.js"], function(app) {
+            {% endif %}
+
             {% block js_require %}{% endblock %}
+
+            {% if in_production %}
+            });
+            {% endif %}
         </script>
 
 		{# Google analytics tracking code #}
@@ -68,6 +88,7 @@
 		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		  })();
 		</script>
+        {% block ember_templates %}{% endblock %}
     </head>
 
     <body {% block body_attributes %}{% endblock %}>

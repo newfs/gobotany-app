@@ -1,23 +1,16 @@
 require([
-    'activate_image_gallery',
-    'activate_search_suggest',
-    'shadowbox',
-    'shadowbox_init',
-    'activate_video_links'
+    'util/activate_image_gallery',
+    'util/activate_search_suggest',
+    'bridge/shadowbox',
+    'util/shadowbox_init',
+    'util/sidebar',
+    'util/activate_video_links'
 ]);
 
 require([
-    'dojo_config',
-    '/static/js/dojo/dojo.js',
-    '/static/js/layers/sk.js',
-    'sidebar',
-    'simplekey/resources'   // used by Glossarizer
-], function() {
-
-    dojo.require('gobotany.sk.groups');
-    dojo.addOnLoad(function() {
-        var helper = gobotany.sk.groups.GroupsHelper();
-        helper.setup();
+    'simplekey/glossarize'
+], function(glossarize) {
+    $(document).ready(function() {
+        glossarize($('.key-char, .exceptions'));
     });
-
 });

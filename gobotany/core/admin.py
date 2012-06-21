@@ -5,7 +5,6 @@ from django.contrib import admin
 from django.contrib.contenttypes import generic
 from django.template import Context, Template
 from django import forms
-from autocomplete.fields import ModelChoiceField
 from gobotany.core import models
 
 # Inline classes
@@ -26,8 +25,6 @@ class GobotanyAdminBase(admin.ModelAdmin):
 class TaxonCharacterValueForm(forms.ModelForm):
     class Meta:
         model = models.TaxonCharacterValue
-    character_value = ModelChoiceField('character_value')
-    taxon = ModelChoiceField('taxon')
 
 class TaxonCharacterValueAdmin(GobotanyAdminBase):
     model = models.TaxonCharacterValue
@@ -395,7 +392,6 @@ class PileImageInline(admin.StackedInline):
 
 class PileAdmin(PileAdminBase):
     filter_horizontal = ('species',)
-    exclude = ('character_values',)
     inlines = [PileDefaultFiltersInline, ContentImageInline,
                PilePlantPreviewCharactersInline, PileImageInline]
 
@@ -412,14 +408,9 @@ class GlossaryTermAdmin(GobotanyAdminBase):
     list_filter = ('visible',)
 
 
-class CharacterValuePileInline(admin.TabularInline):
-    model = models.Pile.character_values.through
-    extra = 0
-
 class CharacterValueAdmin(GobotanyAdminBase):
     search_fields = ('character__short_name', 'value_str')
     ordering = ('character__short_name',)
-    inlines = [CharacterValuePileInline,]
 
 
 class FamilyAdmin(GobotanyAdminBase):
