@@ -3802,8 +3802,8 @@ img.char-value-larger {
 
   /* line 2862, ../sass/styles.scss */
   footer .publisher {
-    margin-bottom: 14px;
-    padding: 0 6px;
+    margin: 14px 0 0;
+    padding: 12px 8px 20px;
   }
 
   /* line 2866, ../sass/styles.scss */
@@ -3876,22 +3876,23 @@ img.char-value-larger {
 
   /* line 2913, ../sass/styles.scss */
   footer .support {
-    margin: 14px 0;
+    height: 63px;
+    margin: 14px 0 0;
     padding: 0;
   }
 
-  /* line 2917, ../sass/styles.scss */
+  /* line 2918, ../sass/styles.scss */
   footer .support img {
     padding-bottom: 6px;
   }
 
-  /* line 2920, ../sass/styles.scss */
+  /* line 2921, ../sass/styles.scss */
   #home #banner {
     margin: 0;
     position: relative;
   }
 
-  /* line 2924, ../sass/styles.scss */
+  /* line 2925, ../sass/styles.scss */
   #home #banner #overlay {
     background: #f7fbe9;
     height: auto;
@@ -3900,23 +3901,23 @@ img.char-value-larger {
     text-align: center;
   }
 
-  /* line 2931, ../sass/styles.scss */
+  /* line 2932, ../sass/styles.scss */
   #home #banner h2 {
     margin: 0;
   }
 
-  /* line 2934, ../sass/styles.scss */
+  /* line 2935, ../sass/styles.scss */
   #home #banner p {
     padding: 0 6px;
   }
 
-  /* line 2937, ../sass/styles.scss */
+  /* line 2938, ../sass/styles.scss */
   #home #banner a#cta {
     background-position: 50% 0;
     margin: 4px 6px;
   }
 
-  /* line 2941, ../sass/styles.scss */
+  /* line 2942, ../sass/styles.scss */
   #home .three-col {
     background: none;
     float: none;
@@ -3926,61 +3927,61 @@ img.char-value-larger {
     width: auto;
   }
 
-  /* line 2949, ../sass/styles.scss */
+  /* line 2950, ../sass/styles.scss */
   #home .three-col a.learn-more {
     margin: 4px 0 0;
   }
 
-  /* line 2952, ../sass/styles.scss */
+  /* line 2953, ../sass/styles.scss */
   #home #potd .details {
     margin: 0;
     position: inherit;
     width: inherit;
   }
 
-  /* line 2957, ../sass/styles.scss */
+  /* line 2958, ../sass/styles.scss */
   #home #potd .details p {
     height: inherit;
     overflow: inherit;
   }
 
-  /* line 2961, ../sass/styles.scss */
+  /* line 2962, ../sass/styles.scss */
   #home #potd .details a {
     position: inherit;
     top: 0;
   }
 
-  /* line 2965, ../sass/styles.scss */
+  /* line 2966, ../sass/styles.scss */
   #home .donate {
     margin: 0;
   }
 
-  /* line 2968, ../sass/styles.scss */
+  /* line 2969, ../sass/styles.scss */
   #home .donate p {
     margin: 8px;
     padding: 0;
   }
 
-  /* line 2972, ../sass/styles.scss */
+  /* line 2973, ../sass/styles.scss */
   #home .donate a {
     float: none;
     margin: 4px 0;
   }
 
-  /* line 2976, ../sass/styles.scss */
+  /* line 2977, ../sass/styles.scss */
   #main, .list-item .details {
     float: none;
     width: inherit;
   }
 
-  /* line 2980, ../sass/styles.scss */
+  /* line 2981, ../sass/styles.scss */
   #plant-id-3 #main {
     float: right;
     margin-left: 230px;
     width: 355px;
   }
 
-  /* line 2987, ../sass/styles.scss */
+  /* line 2988, ../sass/styles.scss */
   #sidebar, #getting-started #sidebar, #about #sidebar,
   #advanced-map #sidebar, #plant-id #sidebar, #glossary #sidebar,
   #video-help-topics #sidebar, #taxon #sidebar {

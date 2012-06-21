@@ -2860,8 +2860,8 @@ img.char-value-larger {
         padding: 0;
     }
     footer .publisher {
-        margin-bottom: 14px;
-        padding: 0 6px;
+        margin: 14px 0 0;
+        padding: 12px 8px 20px;
     }
     footer .navigation h6:first-child {
         display: none;
@@ -2911,7 +2911,8 @@ img.char-value-larger {
         content: none;
     }
     footer .support {
-        margin: 14px 0;
+        height: 63px;
+        margin: 14px 0 0;
         padding: 0;
     }
     footer .support img {
