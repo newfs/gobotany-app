@@ -73,12 +73,20 @@ results_page_init: function(args) {
     var filter_controller_is_built = $.Deferred();
     var filtered_sorted_taxadata_ready = $.Deferred();
     var image_type_ready = $.Deferred();
-    var key_vector_ready = resources.key_vector('simple');
     var pile_taxa_ready = $.Deferred();
     var pile_taxadata_ready = resources.pile_species(pile_slug);
     var plant_divs_ready = $.Deferred();
     var taxa_by_sciname_ready = $.Deferred();
 
+    if (args.key == 'simple') {
+        var key_vector_ready = resources.key_vector('simple');
+    } else {
+        // The "full" key includes every species in the entire pile
+        var key_vector_ready = $.Deferred();
+        pile_taxa_ready.done(function(species_ids) {
+            key_vector_ready.resolve([{species: species_ids}]);
+        });
+    }
     pile_taxadata_ready.done(function(taxadata) {
         pile_taxa_ready.resolve(_.pluck(taxadata, 'id'));
     });

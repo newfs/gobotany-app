@@ -70,8 +70,10 @@ urlpatterns = patterns(
     url('^simple/$', views.simple_key_view, name='simplekey'),
     url('^simple/(?P<pilegroup_slug>[^/]*)/$',
         views.pilegroup_view, name='simplekey-pilegroup'),
+    url('^(?P<key>simple|full)/(?P<pilegroup_slug>[^/]*)/(?P<pile_slug>[^/]*)/$',
+        views.level3, name='level3'),
     url('^simple/(?P<pilegroup_slug>[^/]*)/(?P<pile_slug>[^/]*)/$',
-        views.results_view, name='simplekey-pile'),
+        views.level3, name='simplekey-pile'),
     url('^(?P<pilegroup_slug>[^/]*)/(?P<pile_slug>[^/]*)/' \
         '(?P<genus_slug>[^/]*)/(?P<specific_name_slug>[^/]*)/$',
         views.species_view, name='simplekey-pile-species'),

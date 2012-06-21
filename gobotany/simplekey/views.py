@@ -170,7 +170,7 @@ def pilegroup_view(request, pilegroup_slug):
             'piles': piles
             }, context_instance=RequestContext(request))
 
-def results_view(request, pilegroup_slug, pile_slug):
+def level3(request, key, pilegroup_slug, pile_slug):
     pile = get_object_or_404(Pile, slug=pile_slug)
     if pile.pilegroup.slug != pilegroup_slug:
         raise Http404
@@ -180,6 +180,7 @@ def results_view(request, pilegroup_slug, pile_slug):
     subgroup_results_page = SubgroupResultsPage.objects.get(subgroup=pile)
 
     return render_to_response('simplekey/results.html', {
+           'key': key,
            'partner_site': short_name,
            'subgroup_results_page': subgroup_results_page,
            'pilegroup': pile.pilegroup,
