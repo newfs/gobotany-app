@@ -2,8 +2,9 @@
 define([
     'gobotany/sk/FilterSectionHelper',
     'gobotany/sk/SpeciesSectionHelper',
+    'gobotany/sk/SpeciesCounts',
     'gobotany/sk/working_area'
-], function() {
+], function(FilterSectionHelper, SpeciesSectionHelper, SpeciesCounts, working_area) {
 
 dojo.declare('gobotany.sk.ResultsHelper', null, {
 
@@ -15,14 +16,12 @@ dojo.declare('gobotany.sk.ResultsHelper', null, {
 
         this.pile_slug = pile_slug;
 
-        this.species_section =
-            new gobotany.sk.SpeciesSectionHelper(pile_slug, plant_divs_ready);
+        this.species_section = 
+            new SpeciesSectionHelper(pile_slug, plant_divs_ready);
 
-        this.species_counts =
-        new gobotany.sk.SpeciesCounts(this);
+        this.species_counts = new SpeciesCounts(this);
 
-        this.filter_section =
-            new gobotany.sk.FilterSectionHelper(this);
+        this.filter_section = new FilterSectionHelper(this);
 
         simplekey_resources.pile(this.pile_slug).done(
             dojo.hitch(this, function(pile_info) {
