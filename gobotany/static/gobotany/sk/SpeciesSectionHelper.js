@@ -7,6 +7,16 @@ define([
     'dijit/_base/place'
 ], function(results_photo_menu, utils) {
 
+var species_url = function(scientific_name) {
+    // path looks like '/simple/woody-plants/woody-angiosperms/'
+    var path = window.location.pathname.split('#')[0];
+
+    // base looks like '/woody-plants/woody-angiosperms/'
+    var base = path.match('^/[^/]+(/[^/]+/[^/]+/)')[1];
+
+    return base + scientific_name.toLowerCase().replace(' ', '/') + '/';
+};
+
 dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
     constructor: function(pile_slug, plant_divs_ready) {
@@ -184,9 +194,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
                     // Wire up the Go To Species Page button.
                     var path = window.location.pathname.split('#')[0];
-                    var url = path +
-                        plant.scientific_name.toLowerCase().replace(' ',
-                        '/') + '/';
+                    var url = species_url(plant.scientific_name);
                     var button = dojo.query(
                         '#plant-detail-modal a.go-to-species-page')[0];
                     dojo.attr(button, 'href', url);
@@ -404,9 +412,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             var plant = dojo.create('div', {'class': 'plant'},
                                     this.plant_list);
 
-            var path = window.location.pathname.split('#')[0];
-            var url = (path + species.scientific_name.toLowerCase()
-                       .replace(' ', '/') + '/');
+            var url = species_url(species.scientific_name);
             var plant_link = dojo.create('a', {'href': url}, plant);
             dojo.create('div', {'class': 'frame'}, plant_link);
 
