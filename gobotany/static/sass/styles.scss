@@ -71,6 +71,9 @@ nav a:hover {
     background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
     text-decoration: none;
 }
+nav > a {
+    display: none;
+}
 nav #search {
     background: #fff url(/static/images/layout/search-left.png) left center no-repeat;
     float: right;
@@ -2738,6 +2741,12 @@ img.char-value-larger {
     body {
         padding-top: 110px;
     }
+    header nav > a {
+        width: 20px;
+    }
+    header nav > a span {
+        display: none;
+    }
     .top-level header {
         height: 80px;
     }
@@ -2774,6 +2783,15 @@ img.char-value-larger {
     #home #banner > img, #sidebar {
         width: 480px;
     }
+    header nav > a {
+        width: 80px;
+    }
+    header nav > a span {
+        font-size: 14px;
+        line-height: 160%;
+        padding-left: 5px;
+        position: absolute;
+    }
     .top-level header h1 a {
         background-position: 0 -7px;
         width: 260px;
@@ -2797,9 +2815,32 @@ img.char-value-larger {
 }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) {
+    $nav-button-color: #437829;
     body {
         margin: 0 auto;
         padding: 0;
+    }
+    header nav > a {
+        background: $nav-button-color;
+        border: 1px solid $nav-button-color;
+        display: inline-block;
+        font-size: 30px;
+        height: 24px;
+        line-height: 68%;
+        margin: 3px 0 0 4px;
+        padding: 0 2px 0 7px;
+        position: relative;
+
+    	-moz-border-radius: 5px;
+	    -webkit-border-radius: 5px;
+	    border-radius: 5px;
+    }
+    header nav > a:hover {
+        background: $nav-button-color;
+    }
+    header nav #search {
+        margin-top: 6px;
+        padding-left: 10px;
     }
     header nav ul {
         display: none;  /* will use bottom navigation instead */
@@ -2808,10 +2849,12 @@ img.char-value-larger {
         padding: 0;
     }
     .top-level nav, .app nav {
-        background: none;
+        background: #508e31;
+        height: 32px;
+        padding: 0;
     }
     .top-level header, .app header {
-        height: 72px;
+        height: 90px;
     }
     .top-level header h1 {
         margin: 0;
@@ -2824,7 +2867,7 @@ img.char-value-larger {
         background-size: 100px 55px;
         float: right;
         height: 55px;
-        width: 100px;
+        width: 101px;
     }
     .app header h1 {
         margin: 0;
