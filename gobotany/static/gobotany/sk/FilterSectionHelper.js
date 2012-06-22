@@ -34,7 +34,7 @@ return declare('gobotany.sk.FilterSectionHelper', null, {
         if (this.working_area !== null)
             this.working_area.dismiss();
 
-        var C = gobotany.sk.working_area.select_working_area(filter);
+        var C = working_area.select_working_area(filter);
 
         this.working_area = C({
             div: $('div.working-area')[0],
