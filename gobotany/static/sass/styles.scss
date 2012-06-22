@@ -2845,8 +2845,8 @@ img.char-value-larger {
         margin-top: 6px;
         padding-left: 10px;
     }
-    header nav ul {
-        display: none;  /* will use bottom navigation instead */
+    header nav > ul {
+        display: none;  /* will use bottom navigation instead of top */
     }
     .container {
         padding: 0;
@@ -2964,6 +2964,9 @@ img.char-value-larger {
     footer .support img {
         padding-bottom: 6px;
     }
+    #home #search-suggest .menu, .app #search-suggest .menu {
+        top: 83px;
+    }
     #home #banner {
         margin: 0;
         position: relative;
@@ -3037,5 +3040,3 @@ img.char-value-larger {
         margin-left: 10px;
     }
 }
-
-

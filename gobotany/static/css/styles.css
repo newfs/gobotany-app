@@ -3768,9 +3768,9 @@ img.char-value-larger {
   }
 
   /* line 2848, ../sass/styles.scss */
-  header nav ul {
+  header nav > ul {
     display: none;
-    /* will use bottom navigation instead */
+    /* will use bottom navigation instead of top */
   }
 
   /* line 2851, ../sass/styles.scss */
@@ -3949,12 +3949,17 @@ img.char-value-larger {
   }
 
   /* line 2967, ../sass/styles.scss */
+  #home #search-suggest .menu, .app #search-suggest .menu {
+    top: 83px;
+  }
+
+  /* line 2970, ../sass/styles.scss */
   #home #banner {
     margin: 0;
     position: relative;
   }
 
-  /* line 2971, ../sass/styles.scss */
+  /* line 2974, ../sass/styles.scss */
   #home #banner #overlay {
     background: #f7fbe9;
     height: auto;
@@ -3963,23 +3968,23 @@ img.char-value-larger {
     text-align: center;
   }
 
-  /* line 2978, ../sass/styles.scss */
+  /* line 2981, ../sass/styles.scss */
   #home #banner h2 {
     margin: 0;
   }
 
-  /* line 2981, ../sass/styles.scss */
+  /* line 2984, ../sass/styles.scss */
   #home #banner p {
     padding: 0 6px;
   }
 
-  /* line 2984, ../sass/styles.scss */
+  /* line 2987, ../sass/styles.scss */
   #home #banner a#cta {
     background-position: 50% 0;
     margin: 4px 6px;
   }
 
-  /* line 2988, ../sass/styles.scss */
+  /* line 2991, ../sass/styles.scss */
   #home .three-col {
     background: none;
     float: none;
@@ -3989,61 +3994,61 @@ img.char-value-larger {
     width: auto;
   }
 
-  /* line 2996, ../sass/styles.scss */
+  /* line 2999, ../sass/styles.scss */
   #home .three-col a.learn-more {
     margin: 4px 0 0;
   }
 
-  /* line 2999, ../sass/styles.scss */
+  /* line 3002, ../sass/styles.scss */
   #home #potd .details {
     margin: 0;
     position: inherit;
     width: inherit;
   }
 
-  /* line 3004, ../sass/styles.scss */
+  /* line 3007, ../sass/styles.scss */
   #home #potd .details p {
     height: inherit;
     overflow: inherit;
   }
 
-  /* line 3008, ../sass/styles.scss */
+  /* line 3011, ../sass/styles.scss */
   #home #potd .details a {
     position: inherit;
     top: 0;
   }
 
-  /* line 3012, ../sass/styles.scss */
+  /* line 3015, ../sass/styles.scss */
   #home .donate {
     margin: 0;
   }
 
-  /* line 3015, ../sass/styles.scss */
+  /* line 3018, ../sass/styles.scss */
   #home .donate p {
     margin: 8px;
     padding: 0;
   }
 
-  /* line 3019, ../sass/styles.scss */
+  /* line 3022, ../sass/styles.scss */
   #home .donate a {
     float: none;
     margin: 4px 0;
   }
 
-  /* line 3023, ../sass/styles.scss */
+  /* line 3026, ../sass/styles.scss */
   #main, .list-item .details {
     float: none;
     width: inherit;
   }
 
-  /* line 3027, ../sass/styles.scss */
+  /* line 3030, ../sass/styles.scss */
   #plant-id-3 #main {
     float: right;
     margin-left: 230px;
     width: 355px;
   }
 
-  /* line 3034, ../sass/styles.scss */
+  /* line 3037, ../sass/styles.scss */
   #sidebar, #getting-started #sidebar, #about #sidebar,
   #advanced-map #sidebar, #plant-id #sidebar, #glossary #sidebar,
   #video-help-topics #sidebar, #taxon #sidebar {
