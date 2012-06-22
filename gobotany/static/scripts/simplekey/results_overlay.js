@@ -4,13 +4,18 @@ define([
     'simplekey/resources'
 ], function(document_is_ready, $, resources) {
 
-    var results_overlay_init = function(pile_slug, key_vector_ready) {
+    var results_overlay_init = function(
+        pile_slug, key_vector_ready, pile_taxa_ready
+    ) {
         $.when(
             document_is_ready,
-            key_vector_ready
-        ).done(function(x, list_of_one_species_vector) {
-            var base_vector = list_of_one_species_vector[0].species;
-            $('.number-of-species .number').html(base_vector.length);
+            key_vector_ready,
+            pile_taxa_ready
+        ).done(function(x, key_vector, pile_taxa_vector) {
+            var k = key_vector[0].species;
+            var j = _.intersect(k, pile_taxa_vector);
+            console.log('yeah, the length is', j.length);
+            $('.number-of-species .number').html(j.length);
         });
 
         $.when(

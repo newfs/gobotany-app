@@ -703,6 +703,6 @@ results_page_init: function(args) {
         'simplekey/results_overlay',
         'simplekey/results_photo_menu'
     ], function(results_overlay_init, results_photo_menu) {
-        results_overlay_init(pile_slug, key_vector_ready);
+        results_overlay_init(pile_slug, key_vector_ready, pile_taxa_ready);
     });
 }}});
