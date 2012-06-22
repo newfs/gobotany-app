@@ -4,11 +4,12 @@ define([
     'simplekey/resources'
 ], function(document_is_ready, $, resources) {
 
-    var module_function = function(args) {
+    var results_overlay_init = function(pile_slug, key_vector_ready) {
         $.when(
             document_is_ready,
-            resources.base_vector({key_name: 'simple', pile_slug: args.pile_slug})
-        ).done(function(x, base_vector) {
+            key_vector_ready
+        ).done(function(x, list_of_one_species_vector) {
+            var base_vector = list_of_one_species_vector[0].species;
             $('.number-of-species .number').html(base_vector.length);
         });
 
@@ -46,5 +47,5 @@ define([
         }});
     };
 
-    return module_function;
+    return results_overlay_init;
 });
