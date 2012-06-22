@@ -226,18 +226,27 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     // HTML in the hidden content area.
                     var content_element =
                         dojo.query('#plant-detail-modal')[0];
-                    Shadowbox.open({
-                        content: content_element.innerHTML,
-                        player: 'html',
-                        height: 520,
-                        width: 935,
-                        options: {onFinish: dojo.hitch(this, function() {
-                            var $sb = $('#sb-container');
-                            var $children = $sb.find('p, dt, dd, li');
-                            $sb.find('.img-container').scrollable();
-                            glossarize($children);
-                        })}
-                    });
+                    // On small screens, skip the popup entirely for now.
+                    if ($(window).width() <= 600) {
+                        window.location.href = url;
+                    }
+                    else {
+                        Shadowbox.open({
+                            content: content_element.innerHTML,
+                            player: 'html',
+                            height: 520,
+                            width: 935,
+                            options: {
+                                handleOversize: 'resize',
+                                onFinish: dojo.hitch(this, function() {
+                                    var $sb = $('#sb-container');
+                                    var $children = $sb.find('p, dt, dd, li');
+                                    $sb.find('.img-container').scrollable();
+                                    glossarize($children);
+                                })
+                            }
+                        });
+                    }
                 }, this)
             );
         });

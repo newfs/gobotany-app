@@ -3023,6 +3023,10 @@ img.char-value-larger {
         float: none;
         margin: 4px 0;
     }
+    #main {
+        float: none;
+        width: inherit;
+    }
     #sidebar, #getting-started #sidebar, #about #sidebar,
     #advanced-map #sidebar, #plant-id #sidebar, #glossary #sidebar,
     #video-help-topics #sidebar, #taxon #sidebar {
@@ -3034,11 +3038,15 @@ img.char-value-larger {
     .list-item a.plant-in-group {
         clear: left;
     }
-    #plant-id #main, #plant-id-2 #main, .list-item .details {
+    .list-item .details {
         float: none;
         width: inherit;
     }
     /* Level 3 */
+    #plant-id-3 #main {
+        float: right;
+        width: 710px;
+    }
     #plant-id-3 .content .container {
         padding: 0;
         width: 960px;
@@ -3052,12 +3060,7 @@ img.char-value-larger {
     #plant-id-3 #main h3.species-count-heading {
         white-space: nowrap;
     }
-    /* Shadowbox */
-    #plant-id-3 .modal-wrap .inner h3.heading {
-        margin-left: 0;
-    }
-    #plant-id-3 .list-item .details {
-        width: auto;
+    #intro-overlay {
+        font-size: 100%;
     }
 }
-
