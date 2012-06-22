@@ -37,7 +37,7 @@
                 {# show appropriate breadcrumb links.                #}
                 <div id="breadcrumb">
                     <p class="nogloss">You are here:
-                    <a href="{% url simplekey %}">{{ key|title }} Key</a>
+                    <a href="{% url level1 key %}">{{ key|title }} Key</a>
                     &gt;
                     <a href="{% url level2 key pilegroup.slug %}"
                         >{{ pilegroup.friendly_title|lower|capfirst }}</a>

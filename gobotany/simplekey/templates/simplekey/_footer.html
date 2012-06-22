@@ -15,7 +15,7 @@
                     <h6>Go Botany</h6>
                     <ul class="sections">
                         <li><a {% ifnotequal request.path "/" %}href="{% url simplekey-index %}"{% endifnotequal %}>Home</a></li>
-                        <li><a href="{% url simplekey %}">Simple Key</a></li>
+                        <li><a href="{% url level1 'simple' %}">Simple Key</a></li>
                         <li><a href="{% url plantshare-placeholder %}">PlantShare</a></li>
                         <li><a href="{% url advanced-id-tools %}">Advanced ID Tools</a></li>
                         <li><a href="{% url simplekey-help-about %}">About</a></li>

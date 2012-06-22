@@ -128,8 +128,7 @@ def _partner_short_name(partner):
 @vary_on_headers('Host')
 @cache_control(max_age=60 * 60)
 @cache_page(60 * 60)
-def simple_key_view(request):
-    key = 'simple' ## TODO: REMOVE
+def level1(request, key):
     partner = which_partner(request)
     short_name = _partner_short_name(partner)
     groups_list_page = GroupsListPage.objects.get()
@@ -145,6 +144,7 @@ def simple_key_view(request):
     return render_to_response('simplekey/simple.html', {
             'partner_site': short_name,
             'groups_list_page': groups_list_page,
+            'key': key,
             'pilegroups': pilegroups
             }, context_instance=RequestContext(request))
 
