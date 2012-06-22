@@ -4035,25 +4035,44 @@ img.char-value-larger {
     margin: 4px 0;
   }
 
-  /* line 3026, ../sass/styles.scss */
-  #main, .list-item .details {
-    float: none;
-    width: inherit;
-  }
-
-  /* line 3030, ../sass/styles.scss */
-  #plant-id-3 #main {
-    float: right;
-    margin-left: 230px;
-    width: 355px;
-  }
-
-  /* line 3037, ../sass/styles.scss */
+  /* line 3028, ../sass/styles.scss */
   #sidebar, #getting-started #sidebar, #about #sidebar,
   #advanced-map #sidebar, #plant-id #sidebar, #glossary #sidebar,
   #video-help-topics #sidebar, #taxon #sidebar {
     border-bottom: 1px solid #c3d941;
     height: auto;
     margin-left: 10px;
+  }
+
+  /* Levels 1 and 2 */
+  /* line 3034, ../sass/styles.scss */
+  .list-item a.plant-in-group {
+    clear: left;
+  }
+
+  /* line 3037, ../sass/styles.scss */
+  #plant-id #main, #plant-id-2 #main, .list-item .details {
+    float: none;
+    width: inherit;
+  }
+
+  /* Level 3 */
+  /* line 3042, ../sass/styles.scss */
+  #plant-id-3 .content .container {
+    padding: 0;
+    width: 960px;
+  }
+
+  /* line 3046, ../sass/styles.scss */
+  #plant-id-3 #sidebar {
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 228px;
+  }
+
+  /* line 3052, ../sass/styles.scss */
+  #plant-id-3 #main h3.species-count-heading {
+    white-space: nowrap;
   }
 }

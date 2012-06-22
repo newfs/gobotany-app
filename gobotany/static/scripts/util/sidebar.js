@@ -4,6 +4,11 @@ define([
 
     // Make the sidebar as tall as it can be.
     sidebar_set_height = function() {
+        // On small screens, skip sidebar resizing entirely.
+        if ($(window).width() <= 600) {
+            return;
+        }
+
         var MINIMUM_HEIGHT = 550;
         var new_height = 0;
 
@@ -36,11 +41,6 @@ define([
     };
 
     $(document).ready(function() {
-        // On small screens, skip sidebar resizing entirely.
-        if ($(window).width() <= 600) {
-            return;
-        }
-
         // Set the initial sidebar height.
         sidebar_set_height();
         $('#main img').load(function() {
