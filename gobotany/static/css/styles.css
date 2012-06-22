@@ -4075,4 +4075,15 @@ img.char-value-larger {
   #plant-id-3 #main h3.species-count-heading {
     white-space: nowrap;
   }
+
+  /* Shadowbox */
+  /* line 3056, ../sass/styles.scss */
+  #plant-id-3 .modal-wrap .inner h3.heading {
+    margin-left: 0;
+  }
+
+  /* line 3059, ../sass/styles.scss */
+  #plant-id-3 .list-item .details {
+    width: auto;
+  }
 }

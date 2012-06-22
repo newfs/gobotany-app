@@ -3052,4 +3052,12 @@ img.char-value-larger {
     #plant-id-3 #main h3.species-count-heading {
         white-space: nowrap;
     }
+    /* Shadowbox */
+    #plant-id-3 .modal-wrap .inner h3.heading {
+        margin-left: 0;
+    }
+    #plant-id-3 .list-item .details {
+        width: auto;
+    }
 }
+
