@@ -1,8 +1,8 @@
 define([
     'bridge/ember',
     'bridge/jquery',
-    'bridge/tooltipsy'
-], function(Ember, $, tooltipsy) {return Ember.Object.extend({
+    'util/tooltip'
+], function(Ember, $, tooltip) {return Ember.Object.extend({
 
     /* The glossarizer takes the glossary blob delivered by the API,
        parses and prepares a regular expression, and then can mark up
@@ -35,7 +35,7 @@ define([
     /* Call "markup" on a node - hopefully one with no elements
        beneath it, but just text - to have its innerHTML scanned for
        glossary terms.  Any terms found are replaced with a <span>
-       to which a Dijit tooltip is then attached. */
+       to which a tooltip is then attached. */
 
     markup: function(node) {
         node.innerHTML = node.innerHTML.replace(
@@ -62,15 +62,10 @@ define([
                 definition = defs[node2.innerHTML];
             }
 
-            $('#' + gloss_id).tooltipsy({
+            $('#' + gloss_id).tooltip({
                 content: '<p class="glosstip">' +
                     (imgsrc ? '<img src="' + imgsrc + '">' : '') +
-                    definition + '</p>',
-                show: function(event, $tooltip) {
-                    if (parseFloat($tooltip.css('left')) < 0)
-                        $tooltip.css('left', '0px');
-                    $tooltip.show();
-                }
+                    definition + '</p>'
             });
         });
     }
