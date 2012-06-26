@@ -29,4 +29,6 @@ family.init = function(family_slug) {
         });
     });
 }
+
+return family;
 });

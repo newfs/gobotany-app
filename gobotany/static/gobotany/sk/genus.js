@@ -32,4 +32,6 @@ genus.init = function(genus_slug) {
         });
     });
 };
+
+return genus;
 });
