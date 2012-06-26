@@ -1,27 +1,18 @@
 define([
     'bridge/jquery',
+    'gobotany/sk/genus',
+    'util/sidebar',
+    'util/activate_search_suggest',
+    'util/shadowbox_init',
     'simplekey/glossarize'
-], function($, glossarize) {
+], function($, genus, sidebar, activate_search_suggest, shadowbox_init,
+    glossarize) {
     
     var module_function = function(args) {
         $(document).ready(function() {
             glossarize($('.description'));
-        });
-
-        require([
-            'util/activate_search_suggest',
-            'bridge/shadowbox',
-            'util/shadowbox_init'
-        ]);
-
-        require([
-            'util/sidebar'
-        ], function(sidebar) {
             sidebar.setup();
-            dojo.require('gobotany.sk.genus');
-            dojo.addOnLoad(function() {
-                gobotany.sk.genus.init(args.genus_slug);
-            });
+            genus.init(args.genus_slug);
         });
     };
 
