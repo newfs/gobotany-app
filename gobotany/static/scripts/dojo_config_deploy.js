@@ -4,7 +4,7 @@ dojoConfig = {
     isDebug: false,
     baseUrl: '/static/build/scripts',
     tlmSiblingOfDojo: false,
-    async: false,
+    async: true,
     locale: 'en-us',
     packages: [
         { name: 'dojo', location: 'dojo' },
@@ -16,9 +16,6 @@ dojoConfig = {
         { name: 'simplekey', location: 'simplekey' },
         { name: 'bridge', location: 'bridge' },
         { name: 'util', location: 'util' }
-    ],
-    // Until we fix the rest of the AMD modules
-    // we need to leave this as true
-    parseOnLoad: true
+    ]
 };
 
