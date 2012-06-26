@@ -125,7 +125,7 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
             // this plant.
             var name = plant.scientific_name + ' <span>' +
                 plant.common_name + '</span>';
-            query('#plant-detail-modal h3')[0].innerHtml = name;
+            query('#plant-detail-modal h3')[0].innerHTML = name;
 
             // Call the API to get more information.
 
@@ -136,7 +136,7 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
                     // Fill in Facts About.
                     query(
                         '#plant-detail-modal div.details p.facts'
-                    )[0].innerHtml = taxon.factoid;
+                    )[0].innerHTML = taxon.factoid;
 
                     // Fill in Characteristics.
                     var MAX_CHARACTERS = 6;
@@ -197,7 +197,7 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
                     }
                     var characters_list = query(
                         '#plant-detail-modal .details .characteristics')[0];
-                    characters_list.innerHtml = characters_html;
+                    characters_list.innerHTML = characters_html;
 
                     // Wire up the Go To Species Page button.
                     var path = window.location.pathname.split('#')[0];
@@ -235,7 +235,7 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
                             images_html += new_image;
                         }
                     }
-                    query('#plant-detail-modal div.images')[0].innerHtml = 
+                    query('#plant-detail-modal div.images')[0].innerHTML = 
                         images_html;
 
                     // Open the Shadowbox modal dialog with a copy of the
