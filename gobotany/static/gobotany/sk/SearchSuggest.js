@@ -227,7 +227,7 @@ define(['dojo/_base/declare',
                         var item = domConstruct.create('li');
                         domConstruct.create('a',
                             {href: url, innerHTML: label}, item);
-                        on(item, 'onclick',
+                        on(item, 'click',
                             lang.hitch(this, this.select_suggestion, item));
                         domConstruct.place(item, this.menu_list);
                     }

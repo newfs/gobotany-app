@@ -115,7 +115,7 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
     connect_plant_preview_popup: function(plant_link, plant) {
         'use strict';
 
-        on(plant_link, 'onclick', lang.hitch(this, function(event) {
+        on(plant_link, 'click', lang.hitch(this, function(event) {
             event.preventDefault();
 
             // A few characters get a "compact" list for multiple values.
