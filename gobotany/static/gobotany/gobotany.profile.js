@@ -22,7 +22,7 @@ function legacyDojo(mid) {
     return mid in {
         'gobotany/sk/guided_search/Filter':1,
         'gobotany/sk/guided_search/Manager':1,
-        'gobotany/sk/guided_search/SpeciesSectionHelper':1,
+        'gobotany/sk/guided_search/SpeciesSectionHelper':1
     };
 }
 
