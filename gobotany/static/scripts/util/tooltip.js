@@ -4,82 +4,108 @@ define([
     // Constructor
     var Tooltip = function (elements, options) {
         this.elements = elements;
-        this.options = options;
+        this.options = $.extend({}, this.defaults, options);
         this.init();
     };
     // Prototype definition
     Tooltip.prototype = {
-
-        log_content: function (element) {
-            console.log('log_content:', this.options.content);
+        defaults: {
+            css_class: 'gb-tooltip'
         },
 
-        show_tooltip: function (element) {
-            console.log('TODO: show tooltip for this element');
+        build_tooltip: function (content) {
+            var element = $('<div class="' + this.options.css_class + '">' +
+                            content + '</div>');
+            return element;
         },
 
-        hide_tooltip: function (element) {
-            console.log('TODO: hide tooltip for this element:',
-                        this.options.content);
+        show_tooltip: function (element, left, top) {
+            // If a tooltip is already showing, skip.
+            if ($('.' + this.options.css_class).length > 0) {
+                return;
+            }
+
+            var tooltip_element = this.build_tooltip(this.options.content);
+            //console.log($('<div>').append(tooltip_element).clone().html());
+            $('body').append(tooltip_element);
+
+            var tooltip_height = $(tooltip_element).height();
+            tooltip_element.css({
+                'left': left,
+                'top': top - tooltip_height - 20
+            });
         },
 
-        toggle_tooltip: function (element) {
-            // This function is called when a tooltip element is
-            // clicked (or tapped) and so the tooltip should either
-            // be shown (if it currently is hidden) or hidden (if
-            // it currently is shown).
-            console.log('TODO: toggle tooltip for this element');
+        hide_tooltip: function () {
+            $('.' + this.options.css_class).remove();
+        },
+
+        toggle_tooltip: function (element, left, top) {
+            if ($('.' + this.options.css_class).length > 0) {
+                this.hide_tooltip();
+            }
+            else {
+                this.show_tooltip(element, left, top);
+            }
         },
 
         init: function () {
             var self = this;
+            var just_moved = false;
             
             this.elements.each(function (index, element) {
                 $(element).bind({
-                    // For point-and-click interface, support hover
+                    // For point-and-click interfaces, activate on hover.
                     'mouseenter.Tooltip': function () {
-                        console.log('mouseenter');
-                        //self.log_content(element);
-                        self.show_tooltip(element);
+                        var offset = $(element).offset();
+                        self.show_tooltip(element, offset.left, offset.top);
                     },
                     'mouseleave.Tooltip': function () {
-                        console.log('mouseleave');
-                        //self.log_content(element);
-                        self.hide_tooltip(element);
+                        self.hide_tooltip();
                     },
-                    // For touch interface, support tap
-                    'click.Tooltip': function () {
-                        console.log('click');
-                        //self.log_content(element);
-                        self.toggle_tooltip(element);
+                    // For touch interfaces, activate on tap.
+                    'touchend.Tooltip': function (event) {
+                        var offset = $(element).offset();
+                        self.toggle_tooltip(element, offset.left, offset.top);
+
+                        // Stop events from propagating onward to the
+                        // document body. Otherwise the code that hides
+                        // the tooltip would always run, and the tooltip
+                        // would not show upon tap because it would be
+                        // immediately hidden.
+                        event.stopPropagation();
+                        // Ensure the tooltip can be dismissed on the
+                        // next touch following a touch with movement.
+                        just_moved = false;
                     }
                 });
-
-                // Bind an event to each of the element's parent
-                // elements that hides the tooltip if clicked or
-                // tapped.
-                // TODO: will want to bind this instead to the parents
-                // of the dynamically-created tooltip div itself, not
-                // the element div to which the tooltip is attached.
-                $(element).parents('div').each(function (parent_index,
-                                                         parent_element) {
-                    $(parent_element).bind({
-                        'click.Tooltip_dismiss': function () {
-                            console.log('click: tooltip dismiss');
-                            self.hide_tooltip(element);
-                        }
-                    });
-                });  // end loop through parents
-
             });   // end loop through elements
-        }
 
-    };
+            // Hide the tooltip upon a tap anywhere.
+            $('body').bind({
+                'touchend.Tooltip_dismiss': function () {
+                    // Only hide the tooltip if the user did not just
+                    // move around when they last touched.
+                    if (just_moved === false) {
+                        self.hide_tooltip();
+                    }
+                    just_moved = false;
+                },
+                // Do not allow the tooltip to be hidden upon a touch event
+                // that involves finger movement, because the user may be
+                // trying to reposition the viewport in order to better
+                // view the tooltip.
+                'touchmove.Tooltip': function () {
+                    just_moved = true;
+                }
+            });
+
+        }   // end init()
+    };   // end prototype definition
 
     // Extend jQuery with tooltip capability.
     $.fn.tooltip = function (options) {
         new Tooltip(this, options);
         return this;
     };
-    
 });

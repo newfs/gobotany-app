@@ -191,10 +191,8 @@ dojo.declare('gobotany.sk.working_area.Choice', null, {
                 var image_html = '<img class="char-value-larger" id="' +
                     image_id + '" src="' + image_path +
                     '" alt="drawing showing ' + v.friendly_text + '">';
-                $('#' + image_id).tooltipsy({
-                    alignTo: 'cursor',
-                    content: image_html,
-                    offset: [0, -200]
+                $('#' + image_id).tooltip({
+                    content: image_html
                 });
             }
 

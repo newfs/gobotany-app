@@ -1275,7 +1275,7 @@ h5.help {
 .choices .row div.disabled span {
     color: #aaa;
 }
-.choices .row div img {
+.choices .row div input + img {
     background: #fff;
     border: 1px solid #ddd;
     display: inline-block;
@@ -2566,36 +2566,10 @@ nav #search-suggest .menu a:hover, #search-suggest .menu li:hover {
    combine nav #search-suggest and #search-suggest items above, etc. */
 
 
-/* Tooltips for working area images and highlighted glossary terms. */
-
-.tooltipsy {
-    border: 1px solid #080;
-
-    -moz-border-radius: 0.5em;
-    -webkit-border-radius: 0.5em;
-    -o-border-radius: 0.5em;
-    -ms-border-radius: 0.5em;
-    -khtml-border-radius: 0.5em;
-    border-radius: 0.5em;
-
-    -moz-box-shadow: 1px 1px 2px #333333;
-    -webkit-box-shadow: 1px 1px 2px #333333;
-    -o-box-shadow: 1px 1px 2px #333333;
-    box-shadow: 1px 1px 2px #333333;
-
-    background-color: #fff;
-    background: -webkit-linear-gradient(#ffffff, #f0f0c0);
-    background: -moz-linear-gradient(#ffffff, #f0f0c0);
-    background: -o-linear-gradient(#ffffff, #f0f0c0);
-    background: -ms-linear-gradient(#ffffff, #f0f0c0);
-    background: linear-gradient(#ffffff, #f0f0c0);
-
-    padding: 0.5em 0.7em;
-}
-
 img.char-value-larger {
-    height: 160px;  /* Consistent height for popup character value drawings */
+    height: 160px !important;  /* Consistent height for popup character value drawings */
 }
+
 
 /* Teaching Tools section */
 
@@ -3063,4 +3037,33 @@ img.char-value-larger {
     #intro-overlay {
         font-size: 150%;
     }
+}
+
+/* Tooltips for working area images and highlighted glossary terms. */
+
+.gb-tooltip {
+    background-color: #fff;
+    background: -webkit-linear-gradient(#ffffff, #f0f0c0);
+    background: -moz-linear-gradient(#ffffff, #f0f0c0);
+    background: -o-linear-gradient(#ffffff, #f0f0c0);
+    background: -ms-linear-gradient(#ffffff, #f0f0c0);
+    background: linear-gradient(#ffffff, #f0f0c0);
+    border: 1px solid #080;
+    max-width: 300px;
+    min-width: 50px;
+    padding: 0.5em 0.7em;
+    position: absolute;
+    z-index: 500;
+
+    -moz-border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+    -o-border-radius: 0.5em;
+    -ms-border-radius: 0.5em;
+    -khtml-border-radius: 0.5em;
+    border-radius: 0.5em;
+
+    -moz-box-shadow: 1px 1px 2px #333333;
+    -webkit-box-shadow: 1px 1px 2px #333333;
+    -o-box-shadow: 1px 1px 2px #333333;
+    box-shadow: 1px 1px 2px #333333;
 }
