@@ -3587,89 +3587,115 @@ img.char-value-larger {
   font-size: 13px;
 }
 
-/* Smartphone-size screen styles */
+/* Tooltips for working area images and highlighted glossary terms. */
+/* line 2714, ../sass/styles.scss */
+.gb-tooltip {
+  background-color: #fff;
+  background: -webkit-linear-gradient(white, #f0f0c0);
+  background: -moz-linear-gradient(white, #f0f0c0);
+  background: -o-linear-gradient(white, #f0f0c0);
+  background: -ms-linear-gradient(white, #f0f0c0);
+  background: linear-gradient(#ffffff, #f0f0c0);
+  border: 1px solid #080;
+  padding: 0.5em 0.7em;
+  position: absolute;
+  width: 300px;
+  z-index: 500;
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+  -o-border-radius: 0.5em;
+  -ms-border-radius: 0.5em;
+  -khtml-border-radius: 0.5em;
+  border-radius: 0.5em;
+  -moz-box-shadow: 1px 1px 2px #333333;
+  -webkit-box-shadow: 1px 1px 2px #333333;
+  -o-box-shadow: 1px 1px 2px #333333;
+  box-shadow: 1px 1px 2px #333333;
+}
+
+/* Smartphone-size screen styles. These should be last. */
 @media only screen and (max-width: 400px) {
-  /* line 2715, ../sass/styles.scss */
+  /* line 2743, ../sass/styles.scss */
   body {
     padding-top: 110px;
   }
 
-  /* line 2718, ../sass/styles.scss */
+  /* line 2746, ../sass/styles.scss */
   header nav > a {
     width: 20px;
   }
 
-  /* line 2721, ../sass/styles.scss */
+  /* line 2749, ../sass/styles.scss */
   header nav > a span {
     display: none;
   }
 
-  /* line 2724, ../sass/styles.scss */
+  /* line 2752, ../sass/styles.scss */
   .top-level header {
     height: 80px;
   }
 
-  /* line 2728, ../sass/styles.scss */
+  /* line 2756, ../sass/styles.scss */
   body, .container, .top-level header h1 a, #home #banner #overlay,
   #home #banner > img {
     width: 320px;
   }
 
-  /* line 2731, ../sass/styles.scss */
+  /* line 2759, ../sass/styles.scss */
   .top-level header h1 a {
     background-position: -56px -7px;
     width: 200px;
   }
 
-  /* line 2735, ../sass/styles.scss */
+  /* line 2763, ../sass/styles.scss */
   #nav {
     left: 40px;
     width: 310px;
   }
 
-  /* line 2739, ../sass/styles.scss */
+  /* line 2767, ../sass/styles.scss */
   #home #banner #overlay {
     top: 115px;
   }
 
-  /* line 2742, ../sass/styles.scss */
+  /* line 2770, ../sass/styles.scss */
   #home #banner > img {
     height: 115px;
   }
 
-  /* line 2745, ../sass/styles.scss */
+  /* line 2773, ../sass/styles.scss */
   #home #banner + .three-col {
     padding-top: 380px;
   }
 
-  /* line 2748, ../sass/styles.scss */
+  /* line 2776, ../sass/styles.scss */
   #sidebar {
     width: 300px;
   }
 }
 @media only screen and (min-width: 401px) and (max-width: 600px) {
-  /* line 2753, ../sass/styles.scss */
+  /* line 2781, ../sass/styles.scss */
   html {
     -webkit-text-size-adjust: none;
   }
 
-  /* line 2756, ../sass/styles.scss */
+  /* line 2784, ../sass/styles.scss */
   body {
     padding-top: 75px;
   }
 
-  /* line 2760, ../sass/styles.scss */
+  /* line 2788, ../sass/styles.scss */
   body, .container, .top-level header h1 a, #home #banner #overlay,
   #home #banner > img, #sidebar {
     width: 480px;
   }
 
-  /* line 2763, ../sass/styles.scss */
+  /* line 2791, ../sass/styles.scss */
   header nav > a {
     width: 80px;
   }
 
-  /* line 2766, ../sass/styles.scss */
+  /* line 2794, ../sass/styles.scss */
   header nav > a span {
     font-size: 14px;
     line-height: 160%;
@@ -3677,47 +3703,47 @@ img.char-value-larger {
     position: absolute;
   }
 
-  /* line 2772, ../sass/styles.scss */
+  /* line 2800, ../sass/styles.scss */
   .top-level header h1 a {
     background-position: 0 -7px;
     width: 260px;
   }
 
-  /* line 2776, ../sass/styles.scss */
+  /* line 2804, ../sass/styles.scss */
   #nav {
     left: 30px;
     width: 470px;
   }
 
-  /* line 2780, ../sass/styles.scss */
+  /* line 2808, ../sass/styles.scss */
   #home #banner #overlay {
     top: 172px;
   }
 
-  /* line 2783, ../sass/styles.scss */
+  /* line 2811, ../sass/styles.scss */
   #home #banner > img {
     height: 172px;
   }
 
-  /* line 2786, ../sass/styles.scss */
+  /* line 2814, ../sass/styles.scss */
   #home #banner + .three-col {
     padding-top: 400px;
   }
 
-  /* line 2789, ../sass/styles.scss */
+  /* line 2817, ../sass/styles.scss */
   #sidebar {
     width: 460px;
   }
 }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) {
-  /* line 2796, ../sass/styles.scss */
+  /* line 2824, ../sass/styles.scss */
   body {
     margin: 0 auto;
     padding: 0;
   }
 
-  /* line 2800, ../sass/styles.scss */
+  /* line 2828, ../sass/styles.scss */
   header nav > a {
     background: #437829;
     border: 1px solid #437829;
@@ -3733,52 +3759,52 @@ img.char-value-larger {
     border-radius: 5px;
   }
 
-  /* line 2815, ../sass/styles.scss */
+  /* line 2843, ../sass/styles.scss */
   header nav > a:hover {
     background: #437829;
   }
 
-  /* line 2818, ../sass/styles.scss */
+  /* line 2846, ../sass/styles.scss */
   header nav #search {
     margin-top: 6px;
     padding-left: 10px;
   }
 
-  /* line 2822, ../sass/styles.scss */
+  /* line 2850, ../sass/styles.scss */
   header nav > ul {
     display: none;
     /* will use bottom navigation instead of top */
   }
 
-  /* line 2825, ../sass/styles.scss */
+  /* line 2853, ../sass/styles.scss */
   .container {
     padding: 0;
   }
 
-  /* line 2828, ../sass/styles.scss */
+  /* line 2856, ../sass/styles.scss */
   .top-level nav, .app nav {
     background: #508e31;
     height: 32px;
     padding: 0;
   }
 
-  /* line 2833, ../sass/styles.scss */
+  /* line 2861, ../sass/styles.scss */
   .top-level header, .app header {
     height: 90px;
   }
 
-  /* line 2836, ../sass/styles.scss */
+  /* line 2864, ../sass/styles.scss */
   .top-level header h1 {
     margin: 0;
     width: inherit;
   }
 
-  /* line 2840, ../sass/styles.scss */
+  /* line 2868, ../sass/styles.scss */
   .top-level header h1 a, .app header h1 a {
     height: 56px;
   }
 
-  /* line 2843, ../sass/styles.scss */
+  /* line 2871, ../sass/styles.scss */
   .top-level header h2 a, .app header h2 a {
     background-size: 100px 55px;
     float: right;
@@ -3786,82 +3812,82 @@ img.char-value-larger {
     width: 101px;
   }
 
-  /* line 2849, ../sass/styles.scss */
+  /* line 2877, ../sass/styles.scss */
   .app header h1 {
     margin: 0;
     padding: 0;
   }
 
-  /* line 2853, ../sass/styles.scss */
+  /* line 2881, ../sass/styles.scss */
   .app header h1 a {
     width: 170px;
   }
 
-  /* line 2856, ../sass/styles.scss */
+  /* line 2884, ../sass/styles.scss */
   #main #header h2 {
     float: none;
   }
 
-  /* line 2859, ../sass/styles.scss */
+  /* line 2887, ../sass/styles.scss */
   footer, footer div.container {
     height: auto;
   }
 
-  /* line 2862, ../sass/styles.scss */
+  /* line 2890, ../sass/styles.scss */
   footer {
     margin: 14px 0 0;
   }
 
-  /* line 2865, ../sass/styles.scss */
+  /* line 2893, ../sass/styles.scss */
   footer .container div {
     width: auto;
   }
 
-  /* line 2868, ../sass/styles.scss */
+  /* line 2896, ../sass/styles.scss */
   footer div div {
     height: auto;
   }
 
-  /* line 2871, ../sass/styles.scss */
+  /* line 2899, ../sass/styles.scss */
   footer p {
     margin: 0;
   }
 
-  /* line 2874, ../sass/styles.scss */
+  /* line 2902, ../sass/styles.scss */
   footer a {
     font-size: 11px;
   }
 
-  /* line 2877, ../sass/styles.scss */
+  /* line 2905, ../sass/styles.scss */
   footer .publisher, footer .navigation {
     float: none;
     margin: 0;
     padding: 0;
   }
 
-  /* line 2882, ../sass/styles.scss */
+  /* line 2910, ../sass/styles.scss */
   footer .publisher {
     margin: 14px 0 0;
     padding: 12px 8px 20px;
   }
 
-  /* line 2886, ../sass/styles.scss */
+  /* line 2914, ../sass/styles.scss */
   footer .navigation h6:first-child {
     display: none;
   }
 
-  /* line 2889, ../sass/styles.scss */
+  /* line 2917, ../sass/styles.scss */
   footer .navigation > ul.sections li {
     display: block;
     margin: 0 0 1px 0;
   }
 
-  /* line 2893, ../sass/styles.scss */
+  /* line 2921, ../sass/styles.scss */
   footer .navigation > ul.sections li:after {
     content: none;
   }
 
-  /* line 2896, ../sass/styles.scss */
+  /* line 2924, ../sass/styles.scss */
   footer .navigation > ul.sections li a {
     background: #85c446;
     color: #fff;
@@ -3873,7 +3899,7 @@ img.char-value-larger {
     text-decoration: none;
   }
 
-  /* line 2906, ../sass/styles.scss */
+  /* line 2934, ../sass/styles.scss */
   footer .navigation > ul.sections li a:after {
     content: " >";
     font-weight: bold;
@@ -3881,62 +3907,62 @@ img.char-value-larger {
     right: 14px;
   }
 
-  /* line 2912, ../sass/styles.scss */
+  /* line 2940, ../sass/styles.scss */
   footer .navigation > ul.sections li a[href] {
     background: #508e31;
     color: #fff;
   }
 
-  /* line 2916, ../sass/styles.scss */
+  /* line 2944, ../sass/styles.scss */
   footer .navigation > h6:nth-of-type(2) {
     margin: 14px 14px 4px 71px;
   }
 
-  /* line 2919, ../sass/styles.scss */
+  /* line 2947, ../sass/styles.scss */
   footer .navigation > h6:nth-of-type(2):after {
     content: ":";
   }
 
-  /* line 2923, ../sass/styles.scss */
+  /* line 2951, ../sass/styles.scss */
   footer .navigation > h6:nth-of-type(2),
   footer .navigation > ul.legal {
     display: inline-block;
   }
 
-  /* line 2927, ../sass/styles.scss */
+  /* line 2955, ../sass/styles.scss */
   footer .navigation > ul.legal li {
     margin-right: 14px;
   }
 
-  /* line 2930, ../sass/styles.scss */
+  /* line 2958, ../sass/styles.scss */
   footer .navigation > ul.legal li:after {
     content: none;
   }
 
-  /* line 2933, ../sass/styles.scss */
+  /* line 2961, ../sass/styles.scss */
   footer .support {
     height: 63px;
     margin: 14px 0 0;
     padding: 0;
   }
 
-  /* line 2938, ../sass/styles.scss */
+  /* line 2966, ../sass/styles.scss */
   footer .support img {
     padding-bottom: 6px;
   }
 
-  /* line 2941, ../sass/styles.scss */
+  /* line 2969, ../sass/styles.scss */
   #home #search-suggest .menu, .app #search-suggest .menu {
     top: 83px;
   }
 
-  /* line 2944, ../sass/styles.scss */
+  /* line 2972, ../sass/styles.scss */
   #home #banner {
     margin: 0;
     position: relative;
   }
 
-  /* line 2948, ../sass/styles.scss */
+  /* line 2976, ../sass/styles.scss */
   #home #banner #overlay {
     background: #f7fbe9;
     height: auto;
@@ -3945,23 +3971,23 @@ img.char-value-larger {
     text-align: center;
   }
 
-  /* line 2955, ../sass/styles.scss */
+  /* line 2983, ../sass/styles.scss */
   #home #banner h2 {
     margin: 0;
   }
 
-  /* line 2958, ../sass/styles.scss */
+  /* line 2986, ../sass/styles.scss */
   #home #banner p {
     padding: 0 6px;
   }
 
-  /* line 2961, ../sass/styles.scss */
+  /* line 2989, ../sass/styles.scss */
   #home #banner a#cta {
     background-position: 50% 0;
     margin: 4px 6px;
   }
 
-  /* line 2965, ../sass/styles.scss */
+  /* line 2993, ../sass/styles.scss */
   #home .three-col {
     background: none;
     float: none;
@@ -3971,54 +3997,54 @@ img.char-value-larger {
     width: auto;
   }
 
-  /* line 2973, ../sass/styles.scss */
+  /* line 3001, ../sass/styles.scss */
   #home .three-col a.learn-more {
     margin: 4px 0 0;
   }
 
-  /* line 2976, ../sass/styles.scss */
+  /* line 3004, ../sass/styles.scss */
   #home #potd .details {
     margin: 0;
     position: inherit;
     width: inherit;
   }
 
-  /* line 2981, ../sass/styles.scss */
+  /* line 3009, ../sass/styles.scss */
   #home #potd .details p {
     height: inherit;
     overflow: inherit;
   }
 
-  /* line 2985, ../sass/styles.scss */
+  /* line 3013, ../sass/styles.scss */
   #home #potd .details a {
     position: inherit;
     top: 0;
   }
 
-  /* line 2989, ../sass/styles.scss */
+  /* line 3017, ../sass/styles.scss */
   #home .donate {
     margin: 0;
   }
 
-  /* line 2992, ../sass/styles.scss */
+  /* line 3020, ../sass/styles.scss */
   #home .donate p {
     margin: 8px;
     padding: 0;
   }
 
-  /* line 2996, ../sass/styles.scss */
+  /* line 3024, ../sass/styles.scss */
   #home .donate a {
     float: none;
     margin: 4px 0;
   }
 
-  /* line 3000, ../sass/styles.scss */
+  /* line 3028, ../sass/styles.scss */
   #main {
     float: none;
     width: inherit;
   }
 
-  /* line 3006, ../sass/styles.scss */
+  /* line 3034, ../sass/styles.scss */
   #sidebar, #getting-started #sidebar, #about #sidebar,
   #advanced-map #sidebar, #plant-id #sidebar, #glossary #sidebar,
   #video-help-topics #sidebar, #taxon #sidebar {
@@ -4028,31 +4054,31 @@ img.char-value-larger {
   }
 
   /* Levels 1 and 2 */
-  /* line 3012, ../sass/styles.scss */
+  /* line 3040, ../sass/styles.scss */
   .list-item a.plant-in-group {
     clear: left;
   }
 
-  /* line 3015, ../sass/styles.scss */
+  /* line 3043, ../sass/styles.scss */
   .list-item .details {
     float: none;
     width: inherit;
   }
 
   /* Level 3 */
-  /* line 3020, ../sass/styles.scss */
+  /* line 3048, ../sass/styles.scss */
   #plant-id-3 #main {
     float: right;
     width: 710px;
   }
 
-  /* line 3024, ../sass/styles.scss */
+  /* line 3052, ../sass/styles.scss */
   #plant-id-3 .content .container {
     padding: 0;
     width: 960px;
   }
 
-  /* line 3028, ../sass/styles.scss */
+  /* line 3056, ../sass/styles.scss */
   #plant-id-3 #sidebar {
     float: left;
     margin: 0;
@@ -4060,39 +4086,27 @@ img.char-value-larger {
     width: 228px;
   }
 
-  /* line 3034, ../sass/styles.scss */
+  /* line 3062, ../sass/styles.scss */
   #plant-id-3 #main h3.species-count-heading {
     white-space: nowrap;
   }
 
-  /* line 3037, ../sass/styles.scss */
+  /* line 3065, ../sass/styles.scss */
   #intro-overlay {
     font-size: 150%;
   }
+
+  /* line 3068, ../sass/styles.scss */
+  #glossary #alphabet {
+    line-height: 250%;
+    width: auto;
+  }
+
+  /* line 3072, ../sass/styles.scss */
+  .gb-tooltip {
+    width: 200px;
+  }
 }
-/* Tooltips for working area images and highlighted glossary terms. */
-/* line 3044, ../sass/styles.scss */
-.gb-tooltip {
-  background-color: #fff;
-  background: -webkit-linear-gradient(white, #f0f0c0);
-  background: -moz-linear-gradient(white, #f0f0c0);
-  background: -o-linear-gradient(white, #f0f0c0);
-  background: -ms-linear-gradient(white, #f0f0c0);
-  background: linear-gradient(#ffffff, #f0f0c0);
-  border: 1px solid #080;
-  max-width: 300px;
-  min-width: 50px;
-  padding: 0.5em 0.7em;
-  position: absolute;
-  z-index: 500;
-  -moz-border-radius: 0.5em;
-  -webkit-border-radius: 0.5em;
-  -o-border-radius: 0.5em;
-  -ms-border-radius: 0.5em;
-  -khtml-border-radius: 0.5em;
-  border-radius: 0.5em;
-  -moz-box-shadow: 1px 1px 2px #333333;
-  -webkit-box-shadow: 1px 1px 2px #333333;
-  -o-box-shadow: 1px 1px 2px #333333;
-  box-shadow: 1px 1px 2px #333333;
-}
+/* End of smartphone-size screen styles. Please do not add styles after
+ * these, otherwise they may not get overridden by the smartphone styles
+ * properly. Instead add any new styles before the smartphone styles. */

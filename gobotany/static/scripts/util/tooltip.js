@@ -10,7 +10,9 @@ define([
     // Prototype definition
     Tooltip.prototype = {
         defaults: {
-            css_class: 'gb-tooltip'
+            css_class: 'gb-tooltip',
+            horizontal_adjust_px: 20,
+            vertical_adjust_px: 20
         },
 
         build_tooltip: function (content) {
@@ -26,13 +28,31 @@ define([
             }
 
             var tooltip_element = this.build_tooltip(this.options.content);
-            //console.log($('<div>').append(tooltip_element).clone().html());
             $('body').append(tooltip_element);
 
+            // If the element that activated the tooltip is far enough
+            // to the right side of the viewport that the tooltip would
+            // not fit in the visible area, make the tooltip appear far
+            // enough to the left to make it fit.
+            var tooltip_width = $(tooltip_element).width();
+            var viewport_width = $(window).width();
+            var scroll_left = $(window).scrollLeft();
+            var visual_left_edge = left - scroll_left;
+            var visual_right_edge = visual_left_edge + tooltip_width;
+            if (visual_right_edge >= viewport_width) {
+                left = viewport_width - tooltip_width - 
+                       this.options.horizontal_adjust_px + scroll_left;
+            }
+            // If the horizontal position would start off the screen to
+            // the left, adjust it to start at the left edge.
+            if (left < scroll_left) {
+                left = scroll_left;
+            }
+    
             var tooltip_height = $(tooltip_element).height();
             tooltip_element.css({
                 'left': left,
-                'top': top - tooltip_height - 20
+                'top': top - tooltip_height - this.options.vertical_adjust_px
             });
         },
 
