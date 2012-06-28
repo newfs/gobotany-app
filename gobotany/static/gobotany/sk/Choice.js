@@ -216,7 +216,8 @@ return declare('gobotany.sk.working_area.Choice', null, {
                     image_id + '" src="' + image_path +
                     '" alt="drawing showing ' + v.friendly_text + '">';
                 $('#' + image_id).tooltip({
-                    content: image_html
+                    content: image_html,
+                    width: 'auto'
                 });
             }
 

@@ -12,7 +12,8 @@ define([
         defaults: {
             css_class: 'gb-tooltip',
             horizontal_adjust_px: 20,
-            vertical_adjust_px: 20
+            vertical_adjust_px: 20,
+            width: null   // use width defined in CSS by default
         },
 
         build_tooltip: function (content) {
@@ -28,6 +29,13 @@ define([
             }
 
             var tooltip_element = this.build_tooltip(this.options.content);
+
+            // If a CSS width value was supplied for the tooltip, use it
+            // to override the external CSS.
+            if (this.options.width !== null) {
+                tooltip_element.css({'width': this.options.width });
+            }
+
             $('body').append(tooltip_element);
 
             // If the element that activated the tooltip is far enough
