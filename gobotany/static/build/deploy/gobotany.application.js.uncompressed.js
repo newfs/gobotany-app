@@ -471,7 +471,7 @@ define("gobotany/sk/SearchSuggest", ['dojo/_base/declare',
                         var item = domConstruct.create('li');
                         domConstruct.create('a',
                             {href: url, innerHTML: label}, item);
-                        on(item, 'onclick',
+                        on(item, 'click',
                             lang.hitch(this, this.select_suggestion, item));
                         domConstruct.place(item, this.menu_list);
                     }
@@ -2842,12 +2842,11 @@ require([
     'bridge/shadowbox',
     'util/shadowbox_init',
     'util/sidebar',
-    'util/activate_video_links'
-]);
-
-require([
+    'util/activate_video_links',
     'simplekey/glossarize'
-], function(glossarize) {
+], function(activate_image_gallery, activate_search_suggest, Shadowbox,
+        shadowbox_init, sidebar, activate_video_links, glossarize) {
+    sidebar.setup();
     $(document).ready(function() {
         glossarize($('.key-char, .exceptions'));
     });
@@ -2866,8 +2865,8 @@ require([
     'bridge/jquery.mousewheel',
     'bridge/shadowbox',
     'gobotany/sk/photo'
-], function($, sidebar, mousewheel, Shadowbox, photo) {
-
+], function($, sidebar, mousewheel, Shadowbox, PhotoHelper) {
+    sidebar.setup();
     $(document).ready(function() {
 
         // Turn on the scrollable for every gallery.
@@ -2878,7 +2877,7 @@ require([
 
         $('.img-gallery').each(function() {
             var gallery = this;
-            var photo_helper = photo.PhotoHelper();
+            var photo_helper = PhotoHelper();
             $(gallery).children('.frame').click(function() {
                 var container = $(gallery).children('.img-container');
                 var scroll = container.data('scrollable');
@@ -2911,9 +2910,14 @@ require([
 define("util/sidebar", [
     'bridge/jquery'
 ], function($) {
-
+return {
     // Make the sidebar as tall as it can be.
-    sidebar_set_height = function() {
+    set_height: function() {
+        // On small screens, skip sidebar resizing entirely.
+        if ($(window).width() <= 600) {
+            return;
+        }
+
         var MINIMUM_HEIGHT = 550;
         var new_height = 0;
 
@@ -2943,16 +2947,20 @@ define("util/sidebar", [
         }
 
         $('div#sidebar').css('height', new_height);
-    };
+    },
 
-    $(document).ready(function() {
-        // Set the initial sidebar height.
-        sidebar_set_height();
-        $('#main img').load(function() {
-            // Each time an image loads, the page gets taller.
-            sidebar_set_height();
+    setup: function() {
+        that = this;
+        $(document).ready(function() {
+            // Set the initial sidebar height.
+            that.set_height();
+            $('#main img').load(function() {
+                // Each time an image loads, the page gets taller.
+                that.set_height();
+            });
         });
-    });
+    }
+}
 });
 
 },
@@ -3037,14 +3045,17 @@ Q.find=(function(){var aP=/((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^[\]]*\]|['"][
 
 },
 'gobotany/sk/photo':function(){
-// wrapped by build app
-define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
 /*
  * Code for special handling of full plant photos.
  */
-dojo.provide('gobotany.sk.photo');
-
-dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
+define("gobotany/sk/photo", [
+    'dojo/_base/declare',
+    'dojo/query',
+    'dojo/dom-class',
+    'dojo/_base/lang',
+    'util/shadowbox_init'
+], function(declare, query, domClass, lang, shadowbox_init) {
+    return declare('gobotany.sk.photo.PhotoHelper', null, {
 
     constructor: function() {
     },
@@ -3053,14 +3064,16 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
         // Do a few things before enlarging the photo on the screen.
         // Intended to be called using the Shadowbox onOpen handler.
         
-        var title_element = dojo.query('#sb-title-inner')[0];
+        var title_element = query('#sb-title-inner')[0];
                                                     
         // Temporarily hide the title element.
-        dojo.addClass(title_element, 'hidden');
+        domClass.add(title_element, 'hidden');
 
         // Call a function to do the usual Shadowbox initialization because
         // an existing onOpen handler with this function call is being
         // overridden here.
+        // TODO: Fix this when we correct shadowbox_init.js to not insert
+        // functions in the global namespace
         shadowbox_on_open();
     },
 
@@ -3068,7 +3081,7 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
         // Format the title text for a better presentation atop the photo.
         // Intended to be called using the Shadowbox onFinish handler.
 
-        var title_element = dojo.query('#sb-title-inner')[0];
+        var title_element = query('#sb-title-inner')[0];
         var title_text = title_element.innerHTML;
 
         // Parse and mark up the title text.
@@ -3091,12 +3104,12 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
         // italicize the entire plant name portion of the title for now. This
         // will generally be correct for the groups and subgroups pages'
         // galleries, which tend not to show varieties, subspecies, etc.
-        var scientific_name = dojo.query('h2 .scientific');
+        var scientific_name = query('h2 .scientific');
         if (scientific_name.length > 0) {
-            name = dojo.trim(scientific_name[0].innerHTML) + '.';
+            name = lang.trim(scientific_name[0].innerHTML) + '.';
         }
         else if (title_parts[1] !== undefined) {
-            name = '<i>' + dojo.trim(title_parts[1]) + '</i>';
+            name = '<i>' + lang.trim(title_parts[1]) + '</i>';
         }
         if (name.length > 0) {
             title += ': ' + name;
@@ -3112,11 +3125,10 @@ dojo.declare('gobotany.sk.photo.PhotoHelper', null, {
         title_element.innerHTML = html;
 
         // Show the title element again.
-        dojo.removeClass(title_element, 'hidden');
+        domClass.remove(title_element, 'hidden');
     }
 
 });
-
 });
 
 },
@@ -23749,6 +23761,7 @@ define("simplekey/results", [
 results_page_init: function(args) {
     var pile_slug = args.pile_slug;
 
+    sidebar.setup();
     /* Legacy dojo components */
 
     var helper = null;
@@ -25331,12 +25344,27 @@ define("simplekey/ResultsPageState", [
 'gobotany/sk/ResultsHelper':function(){
 // UI code for the Simple Key results/filter page.
 define("gobotany/sk/ResultsHelper", [
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/on',
+    'dojo/keys',
+    'dojo/query',
+    'dojo/NodeList-dom',
+    'dojo/dom-attr',
+    'dojo/dom-construct',
+    'dojo/dom-style',
+    'bridge/underscore',
     'gobotany/sk/FilterSectionHelper',
     'gobotany/sk/SpeciesSectionHelper',
-    'gobotany/sk/working_area'
-], function() {
+    'gobotany/sk/SpeciesCounts',
+    'gobotany/sk/working_area',
+    'simplekey/resources',
+    'simplekey/App3'
+], function(declare, lang, on, keys, query, nodeListDom, domAttr, domConstruct,
+    domStyle, _, FilterSectionHelper, SpeciesSectionHelper, SpeciesCounts,
+    working_area, resources, App3) {
 
-dojo.declare('gobotany.sk.ResultsHelper', null, {
+return declare('gobotany.sk.ResultsHelper', null, {
 
     constructor: function(pile_slug, plant_divs_ready) {
         // summary:
@@ -25345,31 +25373,26 @@ dojo.declare('gobotany.sk.ResultsHelper', null, {
         //   Coordinates all of the dynamic logic on the results page.
 
         this.pile_slug = pile_slug;
+        this.species_section = 
+            new SpeciesSectionHelper(pile_slug, plant_divs_ready);
+        this.species_counts = new SpeciesCounts(this);
+        this.filter_section = new FilterSectionHelper(this);
 
-        this.species_section =
-            new gobotany.sk.SpeciesSectionHelper(pile_slug, plant_divs_ready);
-
-        this.species_counts =
-        new gobotany.sk.SpeciesCounts(this);
-
-        this.filter_section =
-            new gobotany.sk.FilterSectionHelper(this);
-
-        simplekey_resources.pile(this.pile_slug).done(
-            dojo.hitch(this, function(pile_info) {
+        resources.pile(this.pile_slug).done(
+            lang.hitch(this, function(pile_info) {
                 this.filter_section._setup_character_groups(
                     pile_info.character_groups);
             }));
 
         // Set up a handler to detect an Esc keypress, which will close
         // the filter working area if it is open.
-        dojo.connect(document.body, 'onkeypress',
-            dojo.hitch(this, this.handle_keys));
+        on(document.body, 'keypress',
+            lang.hitch(this, this.handle_keys));
     },
 
     handle_keys: function(e) {
         switch (e.charOrCode) {
-            case dojo.keys.ESCAPE:
+            case keys.ESCAPE:
                 if (this.filter_section.working_area) {
                     this.filter_section.working_area.dismiss();
                 }
@@ -25384,31 +25407,31 @@ dojo.declare('gobotany.sk.ResultsHelper', null, {
             return;
         }
 
-        var image_tags = dojo.query('div.plant img');
+        var image_tags = query('div.plant img');
         // Replace the image for each plant on the page
         var i;
         for (i = 0; i < image_tags.length; i++) {
             var image_tag = image_tags[i];
 
             // See if the taxon has an image for the new image type.
-            var scientific_name = dojo.attr(image_tag, 'x-plant-id');
+            var scientific_name = domAttr.get(image_tag, 'x-plant-id');
             taxon = App3.taxa_by_sciname[scientific_name];
             var new_image = _.find(taxon.images, function(image) {
                 return image.type === image_type});
 
             if (new_image) {
-                dojo.attr(image_tag, 'x-tmp-src', new_image.thumb_url);
-                dojo.attr(image_tag, 'alt', new_image.title);
+                domAttr.set(image_tag, 'x-tmp-src', new_image.thumb_url);
+                domAttr.set(image_tag, 'alt', new_image.title);
                 // Hide the empty box if it exists and make
                 // sure the image is visible.
-                dojo.query('+ div.missing-image', image_tag).orphan();
-                dojo.style(image_tag, 'display', 'inline');
+                query('+ div.missing-image', image_tag).orphan();
+                domStyle.set(image_tag, 'display', 'inline');
 
-            } else if (dojo.style(image_tag, 'display') !== 'none') {
+            } else if (domStyle.get(image_tag, 'display') !== 'none') {
                 // If there's no matching image display the
                 // empty box and hide the image
-                dojo.style(image_tag, 'display', 'none');
-                dojo.create('div', {
+                domStyle.set(image_tag, 'display', 'none');
+                domConstruct.create('div', {
                     'class': 'missing-image',
                     'innerHTML': '<p>Image not available yet</p>'
                 }, image_tag, 'after');
@@ -25418,30 +25441,34 @@ dojo.declare('gobotany.sk.ResultsHelper', null, {
     }
 });
 
-return gobotany.sk.ResultsHelper;
 });
 
 },
 'gobotany/sk/FilterSectionHelper':function(){
 define("gobotany/sk/FilterSectionHelper", [
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/query',
+    'dojo/dom-construct',
+    'bridge/jquery',
+    'util/sidebar',
     'gobotany/sk/working_area'
-], function() {
-
-dojo.declare('gobotany.sk.FilterSectionHelper', null, {
+], function(declare, lang, query, domConstruct, $, sidebar, working_area) {
+return declare('gobotany.sk.FilterSectionHelper', null, {
     working_area: null,
 
     _setup_character_groups: function(character_groups) {
         console.log('FilterSectionHelper: Updating character groups');
 
-        var character_groups_list = dojo.query('ul.char-groups')[0];
-        dojo.empty(character_groups_list);
+        var character_groups_list = query('ul.char-groups')[0];
+        domConstruct.empty(character_groups_list);
         var i;
         for (i = 0; i < character_groups.length; i++) {
             var character_group = character_groups[i];
-            var item = dojo.create('li', { innerHTML: '<label>' +
+            var item = domConstruct.create('li', { innerHTML: '<label>' +
                 '<input type="checkbox" value="' + character_group.id +
                 '"> ' + character_group.name + '</label>'});
-            dojo.place(item, character_groups_list);
+            domConstruct.place(item, character_groups_list);
         }
     },
 
@@ -25454,16 +25481,16 @@ dojo.declare('gobotany.sk.FilterSectionHelper', null, {
         if (this.working_area !== null)
             this.working_area.dismiss();
 
-        var C = gobotany.sk.working_area.select_working_area(filter);
+        var C = working_area.select_working_area(filter);
 
         this.working_area = C({
             div: $('div.working-area')[0],
             filter: filter,
             y: y,
-            on_dismiss: dojo.hitch(this, 'on_working_area_dismiss')
+            on_dismiss: lang.hitch(this, 'on_working_area_dismiss')
         });
 
-        sidebar_set_height();
+        sidebar.set_height();
     },
 
     /* When the working area is dismissed, we clean up and save state. */
@@ -25475,19 +25502,15 @@ dojo.declare('gobotany.sk.FilterSectionHelper', null, {
         $('.option-list li').removeClass('active');
     }
 });
-
-return gobotany.sk.FilterSectionHelper;
 });
 
 },
 'gobotany/sk/working_area':function(){
 define("gobotany/sk/working_area", [
-    'gobotany/utils',
-    'dojo/NodeList-html',
-    'dijit/form/HorizontalSlider'
-], function(utils) {
-
-dojo.provide('gobotany.sk.working_area');
+    'gobotany/sk/Choice',
+    'gobotany/sk/Slider',
+    'gobotany/sk/Length'
+], function(Choice, Slider, Length) {
 
 /*
  * Classes that create and maintain the working area.
@@ -25518,536 +25541,44 @@ dojo.provide('gobotany.sk.working_area');
  * @param {Filter} filter The filter for which you want a working area.
  * @return {Class} The class that will manage this kind of working area.
  */
-gobotany.sk.working_area.select_working_area = function(filter) {
+var working_area = {};
+working_area.select_working_area = function(filter) {
     if (filter.value_type == 'TEXT')
-        return gobotany.sk.working_area.Choice;
+        return Choice;
     else if (filter.is_length)
-        return gobotany.sk.working_area.Length;
+        return Length;
     else
-        return gobotany.sk.working_area.Slider;
+        return Slider;
 };
 
+return working_area;
+
+});
+
+},
+'gobotany/sk/Choice':function(){
 /*
  * The most basic working-area class, which the other versions of the class
  * inherit from and specialize, is the standard multiple-choice selection.
  */
-
-dojo.declare('gobotany.sk.working_area.Choice', null, {
-
-    div_map: null,  // maps choice value -> <input> element
-    close_button_connection: null,  // connection from the close button to us
-
-    /* {div, filter, on_dismiss} */
-    constructor: function(args) {
-        this.div = args.div;
-        this.filter = args.filter;
-        this._draw_basics(args.y);
-        this._draw_specifics();
-        this.on_dismiss = args.on_dismiss;
-
-        // The set of values we can let the user select can change as
-        // they select and deselect other filters on the page.
-
-        dojo.subscribe('/sk/filter/change', this, '_on_filter_change');
-        this._on_filter_change();
-    },
-
-    /* Events that can be triggered from outside. */
-
-    clear: function() {
-        dojo.query('input', this.div_map['']).attr('checked', true);
-    },
-
-    dismiss: function(event) {
-        if (event) {
-            event.preventDefault();
-        }
-
-        dojo.disconnect(this.close_button_connection);
-        dojo.disconnect(this.apply_button_connection);
-        this.close_button_connection = null;
-        this.apply_button_connection = null;
-
-        $(this.div).hide();
-
-        $('.option-list li').removeClass('active');
-
-        this.on_dismiss(this.filter);
-    },
-
-    /* Draw the working area. */
-
-    _draw_basics: function(y) {
-        var d = dojo.query(this.div);
-        var f = this.filter;
-        var p = function(s) {return s ? '<p>' + s + '</p>' : s}
-
-        // Show the question, hint and Apply button.
-        glossarize($('h4').html(f.info.question));
-        $('h4').css('display', 'block');
-        glossarize($('.hint').html(p(f.info.hint)));
-        $('.info').css('display', 'block');
-
-        // Display character drawing, if an image is available.
-        if (f.info.image_url) {
-            var image_id = this._get_image_id_from_path(f.info.image_url);
-            var dld_html = '<img id="' + image_id +
-                '" src="' + f.info.image_url +
-                '" alt="character illustration">';
-            d.query('.dld').html(dld_html).style({display: 'block'});
-        } else {
-            d.query('.dld').html('').style({display: 'none'});
-        }
-
-        // Use jQuery to show the working area with a slide effect.
-        $(d).css('top', y + 'px').slideDown('fast');
-
-        // Hook up the Close button.
-        var close_button = d.query('.close')[0];
-        this.close_button_connection = dojo.connect(
-            close_button, 'onclick', dojo.hitch(this, 'dismiss'));
-
-        // Hook up the Apply button.
-        var button = dojo.query('.apply-btn', this.div)[0];
-        this.apply_button_connection = dojo.connect(
-            button, 'onclick', dojo.hitch(this, '_apply_button_clicked'));
-    },
-
-    _draw_specifics: function() {
-        var CHOICES_PER_ROW = 5;
-        var checked = function(cond) {return cond ? ' checked' : ''};
-        var f = this.filter;
-
-        var values_q = dojo.query('div.working-area .values');
-        values_q.empty().addClass('multiple').removeClass('numeric');
-
-        // Apply a custom sort to the filter values.
-        var values = utils.clone(f.values);
-        values.sort(_compare_filter_choices);
-
-        var choices_div = dojo.create('div', {'class': 'choices'}, values_q[0]);
-        var row_div = dojo.create('div', {'class': 'row'}, choices_div);
-
-        // Create a Don't Know radio button item.
-        this.div_map = {};
-        var item_html = '<div><label><input name="char_name"' +
-            checked(f.value === null) +
-            ' type="radio" value=""> ' + _format_value() + '</label></div>';
-        this.div_map[''] = dojo.place(item_html, row_div);
-
-        // Create radio button items for each character value.
-        var choices_count = 1;
-
-        for (i = 0; i < values.length; i++) {
-            var v = values[i];
-
-            var item_html = '<label><input name="char_name" type="radio"' +
-                checked(f.value === v.choice) +
-                ' value="' + v.choice + '">';
-
-            // Add a drawing image if present.
-            var image_path = v.image_url;
-            if (image_path.length > 0) {
-                var image_id = this._get_image_id_from_path(image_path);
-                item_html += '<img id="' + image_id +
-                    '" src="' + image_path + '" alt="drawing ' +
-                    'showing ' + v.friendly_text + '"><br>';
-            }
-
-            item_html += ' <span class="label">' + _format_value(v) +
-                '</span> <span class="count">(n)</span>' +
-                '</label>';
-
-            // Start a new row, if necessary, to fit this choice.
-            if (choices_count % CHOICES_PER_ROW === 0)
-                var row_div = dojo.create(
-                    'div', {'class': 'row'}, choices_div);
-
-            choices_count += 1;
-
-            var character_value_div = dojo.create(
-                'div', {'innerHTML': item_html}, row_div);
-            this.div_map[v.choice] = character_value_div;
-
-            // Once the item is added, add a tooltip for the drawing.
-            if (image_path.length > 0) {
-                var image_html = '<img class="char-value-larger" id="' +
-                    image_id + '" src="' + image_path +
-                    '" alt="drawing showing ' + v.friendly_text + '">';
-                $('#' + image_id).tooltipsy({
-                    alignTo: 'cursor',
-                    content: image_html,
-                    offset: [0, -200]
-                });
-            }
-
-            glossarize($('span.label', character_value_div));
-        }
-
-        // Call a method when radio button is clicked.
-        var inputs = values_q.query('input');
-        for (var i = 0; i < inputs.length; i++)
-            dojo.connect(inputs[i], 'onclick',
-                         dojo.hitch(this, '_on_choice_change'));
-
-        // Set up the Apply Selection button.
-        this._on_choice_change();
-    },
-
-    /* How to grab the currently-selected value from the DOM. */
-
-    _current_value: function() {
-        var value = dojo.query('input:checked', this.div).attr('value')[0];
-        return value || null;
-    },
-
-    /* Update whether the "Apply Selection" button is gray or not. */
-
-    _on_choice_change: function(event) {
-        var apply_button = dojo.query('.apply-btn', this.div);
-        if (this._current_value() === this.filter.value)
-            apply_button.addClass('disabled');
-        else
-            apply_button.removeClass('disabled');
-    },
-
-    /* Get a value suitable for use as an image element id from the
-       image filename found in the image path. */
-
-    _get_image_id_from_path: function(image_path) {
-        var last_slash_index = image_path.lastIndexOf('/');
-        var dot_index = image_path.indexOf('.', last_slash_index);
-        var image_id = image_path.substring(last_slash_index + 1, dot_index);
-        return image_id;
-    },
-
-    /* When the set of selected filters changes, we need to recompute
-       how many species would remain if each of our possible filter
-       values were applied. */
-    _on_filter_change: function() {
-        var other_taxa = App3.filter_controller.compute(this.filter);
-        var div_map = this.div_map;
-
-        _.map(this.filter.values, function(value) {
-
-            // How many taxa would be left if this value were chosen?
-            var num_taxa = _.intersect(value.taxa, other_taxa).length;
-
-            // Draw it accordingly.
-            var div = div_map[value.choice];
-            var count_span_q = dojo.query('.count', div);
-            count_span_q.html('(' + num_taxa + ')');
-            var input_field_q = dojo.query('input', div);
-            if (num_taxa === 0) {
-                $(div).addClass('disabled');
-                input_field_q.attr('disabled', 'disabled');
-            } else {
-                $(div).removeClass('disabled');
-                input_field_q.attr('disabled', false); // remove the attribute
-            }
-        });
-    },
-
-    /* When the apply button is pressed, we announce a value change
-       unless it would bring the number of species to zero. */
-
-    _apply_button_clicked: function(event) {
-        dojo.stopEvent(event);
-        var apply_button = $('.apply-btn');
-        if (apply_button.hasClass('disabled'))
-            return;
-        apply_button.removeClass('disabled');
-        this._apply_filter_value();
-        this.dismiss();
-    },
-
-    _apply_filter_value: function() {
-        var value = this._current_value();
-        if (value !== null && this.filter.taxa_matching(value).length == 0)
-            // Refuse to let the number of matching taxa be driven to zero.
-            return;
-        this.filter.set('value', value);
-    }
-});
-
-/*
- * Next comes the slider, for integer numeric fields.
- */
-
-dojo.declare('gobotany.sk.working_area.Slider', [
-    gobotany.sk.working_area.Choice
-], {
-
-    slider_node: null,
-    simple_slider: null,
-
-    /* See the comments on the Choice class, above, to learn about when
-       and how these methods are invoked. */
-
-    clear: function() {
-    },
-
-    dismiss: function() {
-        if(this.simple_slider) {
-            this.simple_slider.destroy();
-        }
-        if(this.slide_node) { 
-            dojo.query(this.slider_node).orphan();
-        }
-        this.simple_slider = this.slider_node = null;
-        this.inherited(arguments);
-    },
-
-    _compute_min_and_max: function() {
-        var species_vector = App3.filter_controller.compute(this.filter);
-        var allowed = this.filter.allowed_ranges(species_vector);
-        this.min = allowed[0].min;
-        this.max = allowed[allowed.length - 1].max;
-    },
-
-    _draw_specifics: function() {
-        // values_list?
-        this._compute_min_and_max();
-
-        var filter = this.filter;
-        var num_values = this.max - this.min + 1;
-        var startvalue = Math.ceil(num_values / 2);
-        if (filter.value !== null)
-            startvalue = filter.get('value');
-
-        var values_q = dojo.query('div.working-area .values');
-        values_q.addClass('multiple').removeClass('numeric').
-            html('<label>Select a number between<br>' +
-                 this.min + ' and ' +
-                 this.max + '</label>');
-        this.slider_node = dojo.create('div', null, values_q[0]);
-        this.simple_slider = new dijit.form.HorizontalSlider({
-            id: 'simple-slider',
-            name: 'simple-slider',
-            value: startvalue,
-            minimum: this.min,
-            maximum: this.max,
-            discreteValues: num_values,
-            intermediateChanges: true,
-            showButtons: false,
-            onChange: dojo.hitch(this, this._value_changed),
-            onMouseUp: dojo.hitch(this, this._value_changed)
-        }, this.slider_node);
-        dojo.create('div', {
-            'class': 'count',
-            'innerHTML': startvalue
-        }, this.simple_slider.containerNode);
-        this._value_changed();
-    },
-
-    _current_value: function() {
-        return dijit.byId('simple-slider').value;
-    },
-
-    _value_changed: function() {
-        /* Disable the apply button when we're on either the default
-           value or the value that was previous selected */
-        this._compute_min_and_max();
-
-        var apply_button = dojo.query('.apply-btn', this.div);
-        var slider_value = this._current_value();
-        var filter_value = this.filter.get('value');
-        // Allow type coersion in this comparison, since we're
-        // comparing text from the filter to a numerical slider value
-        if (slider_value == filter_value)
-            apply_button.addClass('disabled');
-        else
-            apply_button.removeClass('disabled');
-
-        /* Update the count label. */
-        var label = dojo.query('#simple-slider .count');
-        var value = this._current_value();
-        label.html(value + '');
-
-        /* Position the label atop the slider. */
-        var MIN_LEFT_PX = 25;
-        var slider_bar = dojo.query('div.dijitSliderBarContainerH')[0];
-        var slider_bar_width = dojo.style(slider_bar, 'width');
-        var max_left_px = MIN_LEFT_PX + slider_bar_width;
-        var filter = this.filter;
-        var num_segments = this.max - this.min;
-        var slider_length = max_left_px - MIN_LEFT_PX;
-        var pixels_per_value = slider_length / num_segments;
-        var offset = Math.floor((value - this.min) * pixels_per_value);
-        var label_width_correction = 0;
-        if (value >= 10) {
-            label_width_correction = -4; /* for 2 digits, pull left a bit */
-        }
-        var left = offset + MIN_LEFT_PX + label_width_correction;
-        dojo.style(label[0], 'left', left + 'px');
-    },
-
-    /* Sliders only have one filter value, so we don't need to compute
-       number of taxa for each "choice."  We also don't want to get
-       javascript errors from the parent version of this function, so
-       just override it with an empty function. */
-    _on_filter_change: function() {
-    }
-
-});
-
-/*
- * Finally, the text box where users can enter lengths.
- */
-
-dojo.declare('gobotany.sk.working_area.Length', [
-    gobotany.sk.working_area.Choice
-], {
-    permitted_ranges: [],  // [{min: n, max: m}, ...] all measured in mm
-    species_vector: [],
-    unit: 'mm',
-    is_metric: true,
-    factor: 1.0,
-    factormap: {'mm': 1.0, 'cm': 10.0, 'm': 1000.0, 'in': 25.4, 'ft': 304.8},
-
-    clear: function() {
-    },
-
-    _draw_specifics: function() {
-        var v = dojo.query('div.working-area .values');
-
-        this._set_unit(this.filter.display_units || 'mm');
-        this_unit = this.unit;  // for the use of our inner functions
-        var value = this.filter.get('value');
-        if (value === null)
-            value = '';
-        else
-            value = value / this.factor;
-
-        var radio_for = function(unit) {
-            return '<label><input name="units" type="radio" value="' + unit +
-                '"' + (unit === this_unit ? ' checked' : '') +
-                '>' + unit + '</label>';
-        };
-
-        var input_for = function(name, insert_value) {
-            return '<input class="' + name + '" name="' + name +
-                '" type="text"' +
-                (insert_value ? ' value="' + value + '"' : ' disabled') +
-                '>';
-        };
-
-        v.empty().addClass('numeric').removeClass('multiple').html(
-            '<div class="permitted_ranges"></div>' +
-            '<div class="current_length"></div>' +
-
-            '<div class="measurement">' +
-            'Metric length: ' +
-            input_for('measure_metric', this.is_metric) +
-            radio_for('mm') +
-            radio_for('cm') +
-            radio_for('m') +
-            '</div>' +
-
-            '<div class="measurement">' +
-            'English length: ' +
-            input_for('measure_english', ! this.is_metric) +
-            radio_for('in') +
-            radio_for('ft') +
-            '</div>' +
-
-            '<div class="instructions">' +
-            '</div>'
-        );
-        v.query('[name="units"]').connect('onchange', this, '_unit_changed');
-        v.query('[type="text"]').connect('onchange', this, '_measure_changed');
-        v.query('[type="text"]').connect('onkeyup', this, '_key_pressed');
-    },
-
-    _key_pressed: function(event) {
-        if (event.keyCode == 10 || event.keyCode == 13)
-            this._apply_filter_value();
-        else
-            this._measure_changed();
-    },
-
-    _parse_value: function(text) {
-        var v = parseFloat(text);
-        if (isNaN(v))
-            return null;
-        return v;
-    },
-
-    _current_value: function() {
-        var selector = this.is_metric ? '[name="measure_metric"]' :
-            '[name="measure_english"]';
-        var text = dojo.query(selector, this.div).attr('value')[0];
-        var v = this._parse_value(text);
-        return (v === null) ? null : v * this.factor;
-    },
-
-    _set_unit: function(unit) {
-        this.unit = unit;
-        this.factor = this.factormap[this.unit];
-        this.is_metric = /m$/.test(this.unit);
-    },
-
-    _unit_changed: function(event) {
-        this._set_unit(event.target.value);
-        dojo.query('.measure_metric').attr('disabled', ! this.is_metric);
-        dojo.query('.measure_english').attr('disabled', this.is_metric);
-        this._redraw_permitted_ranges();
-        this._measure_changed();
-    },
-
-    _measure_changed: function() {
-        var mm = this._current_value();
-        var mm_old = this._parse_value(this.filter.get('value'));
-        var vector = this.filter.taxa_matching(mm);
-        vector = _.intersect(vector, this.species_vector);
-        var div = dojo.query('.instructions', this.div);
-        var apply_button = dojo.query('.apply-btn', this.div);
-        if (mm_old === mm) {
-            instructions = 'Change the value to narrow your selection to a' +
-                ' new set of matching species.';
-            apply_button.addClass('disabled');
-        } else if (vector.length > 0) {
-            instructions = 'Press “Apply” to narrow your selection to the ' +
-                vector.length + ' matching species.';
-            apply_button.removeClass('disabled');
-        } else {
-            instructions = '';
-            apply_button.addClass('disabled');
-        }
-        div.html(instructions);
-
-        // Stash a hint about how the sidebar should display our value.
-        this.filter.display_units = this.unit;
-    },
-
-    _redraw_permitted_ranges: function() {
-        var p = 'Please enter a measurement in the range ';
-        var truncate = function(value, precision) {
-            var power = Math.pow(10, precision || 0);
-            return String(Math.round(value * power) / power);
-        };
-        for (var i = 0; i < this.permitted_ranges.length; i++) {
-            var pr = this.permitted_ranges[i];
-            if (i) p += ' or ';
-            p += truncate(pr.min / this.factor, 2) + '&nbsp;' + this.unit +
-                '&nbsp;–&nbsp;' +  // en-dash for numeric ranges
-                truncate(pr.max / this.factor, 2) + '&nbsp;' + this.unit;
-        }
-        dojo.query('.permitted_ranges', this.div).html(p);
-    },
-
-    _on_filter_change: function() {
-        // A filter somewhere on the page changed, so we might need to
-        // adjust our statement about the number of species matched by
-        // the value in our input field.
-
-        var species_vector = App3.filter_controller.compute(this.filter);
-        this.species_vector = species_vector;
-        this.permitted_ranges = this.filter.allowed_ranges(species_vector);
-        this._redraw_permitted_ranges();
-        this._measure_changed();
-    }
-});
+define("gobotany/sk/Choice", [
+    'dojo/_base/declare',
+    'dojo/_base/connect',
+    'dojo/_base/lang',
+    'dojo/_base/event',
+    'dojo/query',
+    'dojo/dom-construct',
+    'dojo/NodeList-dom',
+    'dojo/NodeList-html',
+    'dojo/on',
+    'bridge/jquery',
+    'bridge/tooltipsy',
+    'bridge/underscore',
+    'gobotany/utils',
+    'simplekey/glossarize',
+    'simplekey/App3'
+], function(declare, connect, lang, event, query, domConstruct, nodeListDom,
+    nodeListHtml, on, $, tooltipsy, _, utils, glossarize, App3) {
 
 /*
  * Helper functions
@@ -26101,6 +25632,242 @@ var _compare_filter_choices = function(a, b) {
     return 0; // default value (no sort)
 };
 
+return declare('gobotany.sk.working_area.Choice', null, {
+
+    div_map: null,  // maps choice value -> <input> element
+    close_button_signal: null,  // connection from the close button to us
+
+    /* {div, filter, on_dismiss} */
+    constructor: function(args) {
+        this.div = args.div;
+        this.filter = args.filter;
+        this._draw_basics(args.y);
+        this._draw_specifics();
+        this.on_dismiss = args.on_dismiss;
+
+        // The set of values we can let the user select can change as
+        // they select and deselect other filters on the page.
+
+        connect.subscribe('/sk/filter/change', this, '_on_filter_change');
+        this._on_filter_change();
+    },
+
+    /* Events that can be triggered from outside. */
+
+    clear: function() {
+        query('input', this.div_map['']).attr('checked', true);
+    },
+
+    dismiss: function(e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.close_button_signal.remove();
+        this.apply_button_signal.remove();
+        this.close_button_signal = null;
+        this.apply_button_signal = null;
+
+        $(this.div).hide();
+
+        $('.option-list li').removeClass('active');
+
+        this.on_dismiss(this.filter);
+    },
+
+    /* Draw the working area. */
+
+    _draw_basics: function(y) {
+        var d = query(this.div);
+        var f = this.filter;
+        var p = function(s) {return s ? '<p>' + s + '</p>' : s}
+
+        // Show the question, hint and Apply button.
+        glossarize($('h4').html(f.info.question));
+        $('h4').css('display', 'block');
+        glossarize($('.hint').html(p(f.info.hint)));
+        $('.info').css('display', 'block');
+
+        // Display character drawing, if an image is available.
+        if (f.info.image_url) {
+            var image_id = this._get_image_id_from_path(f.info.image_url);
+            var dld_html = '<img id="' + image_id +
+                '" src="' + f.info.image_url +
+                '" alt="character illustration">';
+            d.query('.dld').html(dld_html).style({display: 'block'});
+        } else {
+            d.query('.dld').html('').style({display: 'none'});
+        }
+
+        // Use jQuery to show the working area with a slide effect.
+        $(d).css('top', y + 'px').slideDown('fast');
+
+        // Hook up the Close button.
+        var close_button = d.query('.close')[0];
+        this.close_button_signal = on(
+            close_button, 'click', lang.hitch(this, 'dismiss'));
+
+        // Hook up the Apply button.
+        var button = query('.apply-btn', this.div)[0];
+        this.apply_button_signal = on(
+            button, 'click', lang.hitch(this, '_apply_button_clicked'));
+    },
+
+    _draw_specifics: function() {
+        var CHOICES_PER_ROW = 5;
+        var checked = function(cond) {return cond ? ' checked' : ''};
+        var f = this.filter;
+
+        var values_q = query('div.working-area .values');
+        values_q.empty().addClass('multiple').removeClass('numeric');
+
+        // Apply a custom sort to the filter values.
+        var values = utils.clone(f.values);
+        values.sort(_compare_filter_choices);
+
+        var choices_div = domConstruct.create('div', {'class': 'choices'}, values_q[0]);
+        var row_div = domConstruct.create('div', {'class': 'row'}, choices_div);
+
+        // Create a Don't Know radio button item.
+        this.div_map = {};
+        var item_html = '<div><label><input name="char_name"' +
+            checked(f.value === null) +
+            ' type="radio" value=""> ' + _format_value() + '</label></div>';
+        this.div_map[''] = domConstruct.place(item_html, row_div);
+
+        // Create radio button items for each character value.
+        var choices_count = 1;
+
+        for (i = 0; i < values.length; i++) {
+            var v = values[i];
+
+            var item_html = '<label><input name="char_name" type="radio"' +
+                checked(f.value === v.choice) +
+                ' value="' + v.choice + '">';
+
+            // Add a drawing image if present.
+            var image_path = v.image_url;
+            if (image_path.length > 0) {
+                var image_id = this._get_image_id_from_path(image_path);
+                item_html += '<img id="' + image_id +
+                    '" src="' + image_path + '" alt="drawing ' +
+                    'showing ' + v.friendly_text + '"><br>';
+            }
+
+            item_html += ' <span class="label">' + _format_value(v) +
+                '</span> <span class="count">(n)</span>' +
+                '</label>';
+
+            // Start a new row, if necessary, to fit this choice.
+            if (choices_count % CHOICES_PER_ROW === 0)
+                var row_div = domConstruct.create(
+                    'div', {'class': 'row'}, choices_div);
+
+            choices_count += 1;
+
+            var character_value_div = domConstruct.create(
+                'div', {'innerHTML': item_html}, row_div);
+            this.div_map[v.choice] = character_value_div;
+
+            // Once the item is added, add a tooltip for the drawing.
+            if (image_path.length > 0) {
+                var image_html = '<img class="char-value-larger" id="' +
+                    image_id + '" src="' + image_path +
+                    '" alt="drawing showing ' + v.friendly_text + '">';
+                $('#' + image_id).tooltipsy({
+                    alignTo: 'cursor',
+                    content: image_html,
+                    offset: [0, -200]
+                });
+            }
+
+            glossarize($('span.label', character_value_div));
+        }
+
+        // Call a method when radio button is clicked.
+        var inputs = values_q.query('input');
+        for (var i = 0; i < inputs.length; i++)
+            on(inputs[i], 'click', lang.hitch(this, '_on_choice_change'));
+
+        // Set up the Apply Selection button.
+        this._on_choice_change();
+    },
+
+    /* How to grab the currently-selected value from the DOM. */
+
+    _current_value: function() {
+        var value = query('input:checked', this.div).attr('value')[0];
+        return value || null;
+    },
+
+    /* Update whether the "Apply Selection" button is gray or not. */
+
+    _on_choice_change: function(e) {
+        var apply_button = query('.apply-btn', this.div);
+        if (this._current_value() === this.filter.value)
+            apply_button.addClass('disabled');
+        else
+            apply_button.removeClass('disabled');
+    },
+
+    /* Get a value suitable for use as an image element id from the
+       image filename found in the image path. */
+
+    _get_image_id_from_path: function(image_path) {
+        var last_slash_index = image_path.lastIndexOf('/');
+        var dot_index = image_path.indexOf('.', last_slash_index);
+        var image_id = image_path.substring(last_slash_index + 1, dot_index);
+        return image_id;
+    },
+
+    /* When the set of selected filters changes, we need to recompute
+       how many species would remain if each of our possible filter
+       values were applied. */
+    _on_filter_change: function() {
+        var other_taxa = App3.filter_controller.compute(this.filter);
+        var div_map = this.div_map;
+
+        _.map(this.filter.values, function(value) {
+
+            // How many taxa would be left if this value were chosen?
+            var num_taxa = _.intersect(value.taxa, other_taxa).length;
+
+            // Draw it accordingly.
+            var div = div_map[value.choice];
+            var count_span_q = query('.count', div);
+            count_span_q.html('(' + num_taxa + ')');
+            var input_field_q = query('input', div);
+            if (num_taxa === 0) {
+                $(div).addClass('disabled');
+                input_field_q.attr('disabled', 'disabled');
+            } else {
+                $(div).removeClass('disabled');
+                input_field_q.attr('disabled', false); // remove the attribute
+            }
+        });
+    },
+
+    /* When the apply button is pressed, we announce a value change
+       unless it would bring the number of species to zero. */
+
+    _apply_button_clicked: function(e) {
+        event.stop(e);
+        var apply_button = $('.apply-btn');
+        if (apply_button.hasClass('disabled'))
+            return;
+        apply_button.removeClass('disabled');
+        this._apply_filter_value();
+        this.dismiss();
+    },
+
+    _apply_filter_value: function() {
+        var value = this._current_value();
+        if (value !== null && this.filter.taxa_matching(value).length == 0)
+            // Refuse to let the number of matching taxa be driven to zero.
+            return;
+        this.filter.set('value', value);
+    }
+});
 });
 
 },
@@ -27218,6 +26985,323 @@ define("dojo/_base/url", ["./kernel"], function(dojo) {
 });
 
 },
+'gobotany/sk/Slider':function(){
+/*
+ * Slider, for integer numeric fields.
+ */
+define("gobotany/sk/Slider", [
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/query',
+    'dojo/NodeList-dom',
+    'dojo/NodeList-html',
+    'dojo/dom-construct',
+    'dojo/dom-style',
+    'dijit/registry',
+    'dijit/form/HorizontalSlider',
+    'gobotany/sk/Choice',
+    'simplekey/App3'
+], function(declare, lang, query, nodeListDom, nodeListHtml, domConstruct, 
+    domStyle, registry, HorizontalSlider, Choice, App3) {
+
+return declare('gobotany.sk.working_area.Slider', [
+    Choice
+], {
+
+    slider_node: null,
+    simple_slider: null,
+
+    /* See the comments on the Choice class, above, to learn about when
+       and how these methods are invoked. */
+
+    clear: function() {
+    },
+
+    dismiss: function() {
+        if(this.simple_slider) {
+            this.simple_slider.destroy();
+        }
+        if(this.slide_node) { 
+            query(this.slider_node).orphan();
+        }
+        this.simple_slider = this.slider_node = null;
+        this.inherited(arguments);
+    },
+
+    _compute_min_and_max: function() {
+        var species_vector = App3.filter_controller.compute(this.filter);
+        var allowed = this.filter.allowed_ranges(species_vector);
+        this.min = allowed[0].min;
+        this.max = allowed[allowed.length - 1].max;
+    },
+
+    _draw_specifics: function() {
+        // values_list?
+        this._compute_min_and_max();
+
+        var filter = this.filter;
+        var num_values = this.max - this.min + 1;
+        var startvalue = Math.ceil(num_values / 2);
+        if (filter.value !== null)
+            startvalue = filter.get('value');
+
+        var values_q = query('div.working-area .values');
+        values_q.addClass('multiple').removeClass('numeric').
+            html('<label>Select a number between<br>' +
+                 this.min + ' and ' +
+                 this.max + '</label>');
+        this.slider_node = domConstruct.create('div', null, values_q[0]);
+        this.simple_slider = new HorizontalSlider({
+            id: 'simple-slider',
+            name: 'simple-slider',
+            value: startvalue,
+            minimum: this.min,
+            maximum: this.max,
+            discreteValues: num_values,
+            intermediateChanges: true,
+            showButtons: false,
+            onChange: lang.hitch(this, this._value_changed),
+            onMouseUp: lang.hitch(this, this._value_changed)
+        }, this.slider_node);
+        domConstruct.create('div', {
+            'class': 'count',
+            'innerHTML': startvalue
+        }, this.simple_slider.containerNode);
+        this._value_changed();
+    },
+
+    _current_value: function() {
+        return registry.byId('simple-slider').value;
+    },
+
+    _value_changed: function() {
+        /* Disable the apply button when we're on either the default
+           value or the value that was previous selected */
+        this._compute_min_and_max();
+
+        var apply_button = query('.apply-btn', this.div);
+        var slider_value = this._current_value();
+        var filter_value = this.filter.get('value');
+        // Allow type coersion in this comparison, since we're
+        // comparing text from the filter to a numerical slider value
+        if (slider_value == filter_value)
+            apply_button.addClass('disabled');
+        else
+            apply_button.removeClass('disabled');
+
+        /* Update the count label. */
+        var label = query('#simple-slider .count');
+        var value = this._current_value();
+        label.html(value + '');
+
+        /* Position the label atop the slider. */
+        var MIN_LEFT_PX = 25;
+        var slider_bar = query('div.dijitSliderBarContainerH')[0];
+        var slider_bar_width = domStyle.get(slider_bar, 'width');
+        var max_left_px = MIN_LEFT_PX + slider_bar_width;
+        var filter = this.filter;
+        var num_segments = this.max - this.min;
+        var slider_length = max_left_px - MIN_LEFT_PX;
+        var pixels_per_value = slider_length / num_segments;
+        var offset = Math.floor((value - this.min) * pixels_per_value);
+        var label_width_correction = 0;
+        if (value >= 10) {
+            label_width_correction = -4; /* for 2 digits, pull left a bit */
+        }
+        var left = offset + MIN_LEFT_PX + label_width_correction;
+        domStyle.set(label[0], 'left', left + 'px');
+    },
+
+    /* Sliders only have one filter value, so we don't need to compute
+       number of taxa for each "choice."  We also don't want to get
+       javascript errors from the parent version of this function, so
+       just override it with an empty function. */
+    _on_filter_change: function() {
+    }
+
+});
+
+});
+
+
+},
+'dijit/registry':function(){
+define("dijit/registry", [
+	"dojo/_base/array", // array.forEach array.map
+	"dojo/_base/sniff", // has("ie")
+	"dojo/_base/unload", // unload.addOnWindowUnload
+	"dojo/_base/window", // win.body
+	"."	// dijit._scopeName
+], function(array, has, unload, win, dijit){
+
+	// module:
+	//		dijit/registry
+	// summary:
+	//		Registry of existing widget on page, plus some utility methods.
+	//		Must be accessed through AMD api, ex:
+	//		require(["dijit/registry"], function(registry){ registry.byId("foo"); })
+
+	var _widgetTypeCtr = {}, hash = {};
+
+	var registry =  {
+		// summary:
+		//		A set of widgets indexed by id
+
+		length: 0,
+
+		add: function(/*dijit._Widget*/ widget){
+			// summary:
+			//		Add a widget to the registry. If a duplicate ID is detected, a error is thrown.
+			//
+			// widget: dijit._Widget
+			//		Any dijit._Widget subclass.
+			if(hash[widget.id]){
+				throw new Error("Tried to register widget with id==" + widget.id + " but that id is already registered");
+			}
+			hash[widget.id] = widget;
+			this.length++;
+		},
+
+		remove: function(/*String*/ id){
+			// summary:
+			//		Remove a widget from the registry. Does not destroy the widget; simply
+			//		removes the reference.
+			if(hash[id]){
+				delete hash[id];
+				this.length--;
+			}
+		},
+
+		byId: function(/*String|Widget*/ id){
+			// summary:
+			//		Find a widget by it's id.
+			//		If passed a widget then just returns the widget.
+			return typeof id == "string" ? hash[id] : id;	// dijit._Widget
+		},
+
+		byNode: function(/*DOMNode*/ node){
+			// summary:
+			//		Returns the widget corresponding to the given DOMNode
+			return hash[node.getAttribute("widgetId")]; // dijit._Widget
+		},
+
+		toArray: function(){
+			// summary:
+			//		Convert registry into a true Array
+			//
+			// example:
+			//		Work with the widget .domNodes in a real Array
+			//		|	array.map(dijit.registry.toArray(), function(w){ return w.domNode; });
+
+			var ar = [];
+			for(var id in hash){
+				ar.push(hash[id]);
+			}
+			return ar;	// dijit._Widget[]
+		},
+
+		getUniqueId: function(/*String*/widgetType){
+			// summary:
+			//		Generates a unique id for a given widgetType
+
+			var id;
+			do{
+				id = widgetType + "_" +
+					(widgetType in _widgetTypeCtr ?
+						++_widgetTypeCtr[widgetType] : _widgetTypeCtr[widgetType] = 0);
+			}while(hash[id]);
+			return dijit._scopeName == "dijit" ? id : dijit._scopeName + "_" + id; // String
+		},
+
+		findWidgets: function(/*DomNode*/ root){
+			// summary:
+			//		Search subtree under root returning widgets found.
+			//		Doesn't search for nested widgets (ie, widgets inside other widgets).
+
+			var outAry = [];
+
+			function getChildrenHelper(root){
+				for(var node = root.firstChild; node; node = node.nextSibling){
+					if(node.nodeType == 1){
+						var widgetId = node.getAttribute("widgetId");
+						if(widgetId){
+							var widget = hash[widgetId];
+							if(widget){	// may be null on page w/multiple dojo's loaded
+								outAry.push(widget);
+							}
+						}else{
+							getChildrenHelper(node);
+						}
+					}
+				}
+			}
+
+			getChildrenHelper(root);
+			return outAry;
+		},
+
+		_destroyAll: function(){
+			// summary:
+			//		Code to destroy all widgets and do other cleanup on page unload
+
+			// Clean up focus manager lingering references to widgets and nodes
+			dijit._curFocus = null;
+			dijit._prevFocus = null;
+			dijit._activeStack = [];
+
+			// Destroy all the widgets, top down
+			array.forEach(registry.findWidgets(win.body()), function(widget){
+				// Avoid double destroy of widgets like Menu that are attached to <body>
+				// even though they are logically children of other widgets.
+				if(!widget._destroyed){
+					if(widget.destroyRecursive){
+						widget.destroyRecursive();
+					}else if(widget.destroy){
+						widget.destroy();
+					}
+				}
+			});
+		},
+
+		getEnclosingWidget: function(/*DOMNode*/ node){
+			// summary:
+			//		Returns the widget whose DOM tree contains the specified DOMNode, or null if
+			//		the node is not contained within the DOM tree of any widget
+			while(node){
+				var id = node.getAttribute && node.getAttribute("widgetId");
+				if(id){
+					return hash[id];
+				}
+				node = node.parentNode;
+			}
+			return null;
+		},
+
+		// In case someone needs to access hash.
+		// Actually, this is accessed from WidgetSet back-compatibility code
+		_hash: hash
+	};
+
+	if(has("ie")){
+		// Only run _destroyAll() for IE because we think it's only necessary in that case,
+		// and because it causes problems on FF.  See bug #3531 for details.
+		unload.addOnWindowUnload(function(){
+			registry._destroyAll();
+		});
+	}
+
+	/*=====
+	dijit.registry = {
+		// summary:
+		//		A list of widgets on a page.
+	};
+	=====*/
+	dijit.registry = registry;
+
+	return registry;
+});
+
+},
 'dijit/form/HorizontalSlider':function(){
 require({cache:{
 'url:dijit/form/templates/HorizontalSlider.html':"<table class=\"dijit dijitReset dijitSlider dijitSliderH\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" rules=\"none\" data-dojo-attach-event=\"onkeypress:_onKeyPress,onkeyup:_onKeyUp\"\n\t><tr class=\"dijitReset\"\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t\t><td data-dojo-attach-point=\"topDecoration\" class=\"dijitReset dijitSliderDecoration dijitSliderDecorationT dijitSliderDecorationH\"></td\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t></tr\n\t><tr class=\"dijitReset\"\n\t\t><td class=\"dijitReset dijitSliderButtonContainer dijitSliderButtonContainerH\"\n\t\t\t><div class=\"dijitSliderDecrementIconH\" style=\"display:none\" data-dojo-attach-point=\"decrementButton\"><span class=\"dijitSliderButtonInner\">-</span></div\n\t\t></td\n\t\t><td class=\"dijitReset\"\n\t\t\t><div class=\"dijitSliderBar dijitSliderBumper dijitSliderBumperH dijitSliderLeftBumper\" data-dojo-attach-event=\"press:_onClkDecBumper\"></div\n\t\t></td\n\t\t><td class=\"dijitReset\"\n\t\t\t><input data-dojo-attach-point=\"valueNode\" type=\"hidden\" ${!nameAttrSetting}\n\t\t\t/><div class=\"dijitReset dijitSliderBarContainerH\" role=\"presentation\" data-dojo-attach-point=\"sliderBarContainer\"\n\t\t\t\t><div role=\"presentation\" data-dojo-attach-point=\"progressBar\" class=\"dijitSliderBar dijitSliderBarH dijitSliderProgressBar dijitSliderProgressBarH\" data-dojo-attach-event=\"press:_onBarClick\"\n\t\t\t\t\t><div class=\"dijitSliderMoveable dijitSliderMoveableH\"\n\t\t\t\t\t\t><div data-dojo-attach-point=\"sliderHandle,focusNode\" class=\"dijitSliderImageHandle dijitSliderImageHandleH\" data-dojo-attach-event=\"press:_onHandleClick\" role=\"slider\" valuemin=\"${minimum}\" valuemax=\"${maximum}\"></div\n\t\t\t\t\t></div\n\t\t\t\t></div\n\t\t\t\t><div role=\"presentation\" data-dojo-attach-point=\"remainingBar\" class=\"dijitSliderBar dijitSliderBarH dijitSliderRemainingBar dijitSliderRemainingBarH\" data-dojo-attach-event=\"press:_onBarClick\"></div\n\t\t\t></div\n\t\t></td\n\t\t><td class=\"dijitReset\"\n\t\t\t><div class=\"dijitSliderBar dijitSliderBumper dijitSliderBumperH dijitSliderRightBumper\" data-dojo-attach-event=\"press:_onClkIncBumper\"></div\n\t\t></td\n\t\t><td class=\"dijitReset dijitSliderButtonContainer dijitSliderButtonContainerH\"\n\t\t\t><div class=\"dijitSliderIncrementIconH\" style=\"display:none\" data-dojo-attach-point=\"incrementButton\"><span class=\"dijitSliderButtonInner\">+</span></div\n\t\t></td\n\t></tr\n\t><tr class=\"dijitReset\"\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t\t><td data-dojo-attach-point=\"containerNode,bottomDecoration\" class=\"dijitReset dijitSliderDecoration dijitSliderDecorationB dijitSliderDecorationH\"></td\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t></tr\n></table>\n"}});
@@ -28271,183 +28355,6 @@ dojo.declare("dojo.dnd.Moveable", [Evented], {
 });
 
 return dojo.dnd.Moveable;
-});
-
-},
-'dijit/registry':function(){
-define("dijit/registry", [
-	"dojo/_base/array", // array.forEach array.map
-	"dojo/_base/sniff", // has("ie")
-	"dojo/_base/unload", // unload.addOnWindowUnload
-	"dojo/_base/window", // win.body
-	"."	// dijit._scopeName
-], function(array, has, unload, win, dijit){
-
-	// module:
-	//		dijit/registry
-	// summary:
-	//		Registry of existing widget on page, plus some utility methods.
-	//		Must be accessed through AMD api, ex:
-	//		require(["dijit/registry"], function(registry){ registry.byId("foo"); })
-
-	var _widgetTypeCtr = {}, hash = {};
-
-	var registry =  {
-		// summary:
-		//		A set of widgets indexed by id
-
-		length: 0,
-
-		add: function(/*dijit._Widget*/ widget){
-			// summary:
-			//		Add a widget to the registry. If a duplicate ID is detected, a error is thrown.
-			//
-			// widget: dijit._Widget
-			//		Any dijit._Widget subclass.
-			if(hash[widget.id]){
-				throw new Error("Tried to register widget with id==" + widget.id + " but that id is already registered");
-			}
-			hash[widget.id] = widget;
-			this.length++;
-		},
-
-		remove: function(/*String*/ id){
-			// summary:
-			//		Remove a widget from the registry. Does not destroy the widget; simply
-			//		removes the reference.
-			if(hash[id]){
-				delete hash[id];
-				this.length--;
-			}
-		},
-
-		byId: function(/*String|Widget*/ id){
-			// summary:
-			//		Find a widget by it's id.
-			//		If passed a widget then just returns the widget.
-			return typeof id == "string" ? hash[id] : id;	// dijit._Widget
-		},
-
-		byNode: function(/*DOMNode*/ node){
-			// summary:
-			//		Returns the widget corresponding to the given DOMNode
-			return hash[node.getAttribute("widgetId")]; // dijit._Widget
-		},
-
-		toArray: function(){
-			// summary:
-			//		Convert registry into a true Array
-			//
-			// example:
-			//		Work with the widget .domNodes in a real Array
-			//		|	array.map(dijit.registry.toArray(), function(w){ return w.domNode; });
-
-			var ar = [];
-			for(var id in hash){
-				ar.push(hash[id]);
-			}
-			return ar;	// dijit._Widget[]
-		},
-
-		getUniqueId: function(/*String*/widgetType){
-			// summary:
-			//		Generates a unique id for a given widgetType
-
-			var id;
-			do{
-				id = widgetType + "_" +
-					(widgetType in _widgetTypeCtr ?
-						++_widgetTypeCtr[widgetType] : _widgetTypeCtr[widgetType] = 0);
-			}while(hash[id]);
-			return dijit._scopeName == "dijit" ? id : dijit._scopeName + "_" + id; // String
-		},
-
-		findWidgets: function(/*DomNode*/ root){
-			// summary:
-			//		Search subtree under root returning widgets found.
-			//		Doesn't search for nested widgets (ie, widgets inside other widgets).
-
-			var outAry = [];
-
-			function getChildrenHelper(root){
-				for(var node = root.firstChild; node; node = node.nextSibling){
-					if(node.nodeType == 1){
-						var widgetId = node.getAttribute("widgetId");
-						if(widgetId){
-							var widget = hash[widgetId];
-							if(widget){	// may be null on page w/multiple dojo's loaded
-								outAry.push(widget);
-							}
-						}else{
-							getChildrenHelper(node);
-						}
-					}
-				}
-			}
-
-			getChildrenHelper(root);
-			return outAry;
-		},
-
-		_destroyAll: function(){
-			// summary:
-			//		Code to destroy all widgets and do other cleanup on page unload
-
-			// Clean up focus manager lingering references to widgets and nodes
-			dijit._curFocus = null;
-			dijit._prevFocus = null;
-			dijit._activeStack = [];
-
-			// Destroy all the widgets, top down
-			array.forEach(registry.findWidgets(win.body()), function(widget){
-				// Avoid double destroy of widgets like Menu that are attached to <body>
-				// even though they are logically children of other widgets.
-				if(!widget._destroyed){
-					if(widget.destroyRecursive){
-						widget.destroyRecursive();
-					}else if(widget.destroy){
-						widget.destroy();
-					}
-				}
-			});
-		},
-
-		getEnclosingWidget: function(/*DOMNode*/ node){
-			// summary:
-			//		Returns the widget whose DOM tree contains the specified DOMNode, or null if
-			//		the node is not contained within the DOM tree of any widget
-			while(node){
-				var id = node.getAttribute && node.getAttribute("widgetId");
-				if(id){
-					return hash[id];
-				}
-				node = node.parentNode;
-			}
-			return null;
-		},
-
-		// In case someone needs to access hash.
-		// Actually, this is accessed from WidgetSet back-compatibility code
-		_hash: hash
-	};
-
-	if(has("ie")){
-		// Only run _destroyAll() for IE because we think it's only necessary in that case,
-		// and because it causes problems on FF.  See bug #3531 for details.
-		unload.addOnWindowUnload(function(){
-			registry._destroyAll();
-		});
-	}
-
-	/*=====
-	dijit.registry = {
-		// summary:
-		//		A list of widgets on a page.
-	};
-	=====*/
-	dijit.registry = registry;
-
-	return registry;
 });
 
 },
@@ -32903,17 +32810,207 @@ define("dijit/_Container", [
 
 },
 'url:dijit/form/templates/HorizontalSlider.html':"<table class=\"dijit dijitReset dijitSlider dijitSliderH\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" rules=\"none\" data-dojo-attach-event=\"onkeypress:_onKeyPress,onkeyup:_onKeyUp\"\n\t><tr class=\"dijitReset\"\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t\t><td data-dojo-attach-point=\"topDecoration\" class=\"dijitReset dijitSliderDecoration dijitSliderDecorationT dijitSliderDecorationH\"></td\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t></tr\n\t><tr class=\"dijitReset\"\n\t\t><td class=\"dijitReset dijitSliderButtonContainer dijitSliderButtonContainerH\"\n\t\t\t><div class=\"dijitSliderDecrementIconH\" style=\"display:none\" data-dojo-attach-point=\"decrementButton\"><span class=\"dijitSliderButtonInner\">-</span></div\n\t\t></td\n\t\t><td class=\"dijitReset\"\n\t\t\t><div class=\"dijitSliderBar dijitSliderBumper dijitSliderBumperH dijitSliderLeftBumper\" data-dojo-attach-event=\"press:_onClkDecBumper\"></div\n\t\t></td\n\t\t><td class=\"dijitReset\"\n\t\t\t><input data-dojo-attach-point=\"valueNode\" type=\"hidden\" ${!nameAttrSetting}\n\t\t\t/><div class=\"dijitReset dijitSliderBarContainerH\" role=\"presentation\" data-dojo-attach-point=\"sliderBarContainer\"\n\t\t\t\t><div role=\"presentation\" data-dojo-attach-point=\"progressBar\" class=\"dijitSliderBar dijitSliderBarH dijitSliderProgressBar dijitSliderProgressBarH\" data-dojo-attach-event=\"press:_onBarClick\"\n\t\t\t\t\t><div class=\"dijitSliderMoveable dijitSliderMoveableH\"\n\t\t\t\t\t\t><div data-dojo-attach-point=\"sliderHandle,focusNode\" class=\"dijitSliderImageHandle dijitSliderImageHandleH\" data-dojo-attach-event=\"press:_onHandleClick\" role=\"slider\" valuemin=\"${minimum}\" valuemax=\"${maximum}\"></div\n\t\t\t\t\t></div\n\t\t\t\t></div\n\t\t\t\t><div role=\"presentation\" data-dojo-attach-point=\"remainingBar\" class=\"dijitSliderBar dijitSliderBarH dijitSliderRemainingBar dijitSliderRemainingBarH\" data-dojo-attach-event=\"press:_onBarClick\"></div\n\t\t\t></div\n\t\t></td\n\t\t><td class=\"dijitReset\"\n\t\t\t><div class=\"dijitSliderBar dijitSliderBumper dijitSliderBumperH dijitSliderRightBumper\" data-dojo-attach-event=\"press:_onClkIncBumper\"></div\n\t\t></td\n\t\t><td class=\"dijitReset dijitSliderButtonContainer dijitSliderButtonContainerH\"\n\t\t\t><div class=\"dijitSliderIncrementIconH\" style=\"display:none\" data-dojo-attach-point=\"incrementButton\"><span class=\"dijitSliderButtonInner\">+</span></div\n\t\t></td\n\t></tr\n\t><tr class=\"dijitReset\"\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t\t><td data-dojo-attach-point=\"containerNode,bottomDecoration\" class=\"dijitReset dijitSliderDecoration dijitSliderDecorationB dijitSliderDecorationH\"></td\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t></tr\n></table>\n",
+'gobotany/sk/Length':function(){
+/*
+ * Finally, the text box where users can enter lengths.
+ */
+define("gobotany/sk/Length", [
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/query',
+    'dojo/NodeList-dom',
+    'dojo/NodeList-html',
+    'bridge/underscore',
+    'gobotany/sk/Choice',
+    'simplekey/App3'
+], function(declare, lang, query, nodeListDom, nodeListHtml, _, Choice, App3) {
+
+return declare('gobotany.sk.working_area.Length', [
+    Choice
+], {
+    permitted_ranges: [],  // [{min: n, max: m}, ...] all measured in mm
+    species_vector: [],
+    unit: 'mm',
+    is_metric: true,
+    factor: 1.0,
+    factormap: {'mm': 1.0, 'cm': 10.0, 'm': 1000.0, 'in': 25.4, 'ft': 304.8},
+
+    clear: function() {
+    },
+
+    _draw_specifics: function() {
+        var v = query('div.working-area .values');
+
+        this._set_unit(this.filter.display_units || 'mm');
+        this_unit = this.unit;  // for the use of our inner functions
+        var value = this.filter.get('value');
+        if (value === null)
+            value = '';
+        else
+            value = value / this.factor;
+
+        var radio_for = function(unit) {
+            return '<label><input name="units" type="radio" value="' + unit +
+                '"' + (unit === this_unit ? ' checked' : '') +
+                '>' + unit + '</label>';
+        };
+
+        var input_for = function(name, insert_value) {
+            return '<input class="' + name + '" name="' + name +
+                '" type="text"' +
+                (insert_value ? ' value="' + value + '"' : ' disabled') +
+                '>';
+        };
+
+        v.empty().addClass('numeric').removeClass('multiple').html(
+            '<div class="permitted_ranges"></div>' +
+            '<div class="current_length"></div>' +
+
+            '<div class="measurement">' +
+            'Metric length: ' +
+            input_for('measure_metric', this.is_metric) +
+            radio_for('mm') +
+            radio_for('cm') +
+            radio_for('m') +
+            '</div>' +
+
+            '<div class="measurement">' +
+            'English length: ' +
+            input_for('measure_english', ! this.is_metric) +
+            radio_for('in') +
+            radio_for('ft') +
+            '</div>' +
+
+            '<div class="instructions">' +
+            '</div>'
+        );
+        v.query('[name="units"]').on('change', lang.hitch(this, '_unit_changed'));
+        v.query('[type="text"]').on('change', lang.hitch(this, '_measure_changed'));
+        v.query('[type="text"]').on('keyup', lang.hitch(this, '_key_pressed'));
+    },
+
+    _key_pressed: function(event) {
+        if (event.keyCode == 10 || event.keyCode == 13)
+            this._apply_filter_value();
+        else
+            this._measure_changed();
+    },
+
+    _parse_value: function(text) {
+        var v = parseFloat(text);
+        if (isNaN(v))
+            return null;
+        return v;
+    },
+
+    _current_value: function() {
+        var selector = this.is_metric ? '[name="measure_metric"]' :
+            '[name="measure_english"]';
+        var text = query(selector, this.div).attr('value')[0];
+        var v = this._parse_value(text);
+        return (v === null) ? null : v * this.factor;
+    },
+
+    _set_unit: function(unit) {
+        this.unit = unit;
+        this.factor = this.factormap[this.unit];
+        this.is_metric = /m$/.test(this.unit);
+    },
+
+    _unit_changed: function(event) {
+        this._set_unit(event.target.value);
+        query('.measure_metric').attr('disabled', ! this.is_metric);
+        query('.measure_english').attr('disabled', this.is_metric);
+        this._redraw_permitted_ranges();
+        this._measure_changed();
+    },
+
+    _measure_changed: function() {
+        var mm = this._current_value();
+        var mm_old = this._parse_value(this.filter.get('value'));
+        var vector = this.filter.taxa_matching(mm);
+        vector = _.intersect(vector, this.species_vector);
+        var div = query('.instructions', this.div);
+        var apply_button = query('.apply-btn', this.div);
+        if (mm_old === mm) {
+            instructions = 'Change the value to narrow your selection to a' +
+                ' new set of matching species.';
+            apply_button.addClass('disabled');
+        } else if (vector.length > 0) {
+            instructions = 'Press “Apply” to narrow your selection to the ' +
+                vector.length + ' matching species.';
+            apply_button.removeClass('disabled');
+        } else {
+            instructions = '';
+            apply_button.addClass('disabled');
+        }
+        div.html(instructions);
+
+        // Stash a hint about how the sidebar should display our value.
+        this.filter.display_units = this.unit;
+    },
+
+    _redraw_permitted_ranges: function() {
+        var p = 'Please enter a measurement in the range ';
+        var truncate = function(value, precision) {
+            var power = Math.pow(10, precision || 0);
+            return String(Math.round(value * power) / power);
+        };
+        for (var i = 0; i < this.permitted_ranges.length; i++) {
+            var pr = this.permitted_ranges[i];
+            if (i) p += ' or ';
+            p += truncate(pr.min / this.factor, 2) + '&nbsp;' + this.unit +
+                '&nbsp;–&nbsp;' +  // en-dash for numeric ranges
+                truncate(pr.max / this.factor, 2) + '&nbsp;' + this.unit;
+        }
+        query('.permitted_ranges', this.div).html(p);
+    },
+
+    _on_filter_change: function() {
+        // A filter somewhere on the page changed, so we might need to
+        // adjust our statement about the number of species matched by
+        // the value in our input field.
+
+        var species_vector = App3.filter_controller.compute(this.filter);
+        this.species_vector = species_vector;
+        this.permitted_ranges = this.filter.allowed_ranges(species_vector);
+        this._redraw_permitted_ranges();
+        this._measure_changed();
+    }
+});
+
+});
+
+
+},
 'gobotany/sk/SpeciesSectionHelper':function(){
 define("gobotany/sk/SpeciesSectionHelper", [
-    'simplekey/results_photo_menu',
-    'gobotany/utils',
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/_base/fx',
+    'dojo/query',
+    'dojo/on',
+    'dojo/io-query',
     'dojo/hash',
-    'dojo/html',
+    'dojo/dom-attr',
+    'dojo/dom-class',
+    'dojo/dom-construct',
+    'dojo/NodeList-dom',
+    'dojo/fx',
     'dojo/NodeList-fx',
-    'dijit/_base/place'
-], function(results_photo_menu, utils) {
+    'dojo/window',
+    'simplekey/results_photo_menu',
+    'simplekey/resources',
+    'simplekey/App3',
+    'gobotany/utils',
+    'util/sidebar',
+    'bridge/shadowbox',
+    'bridge/underscore'
+], function(declare, lang, fx, query, on, ioQuery, hash, domAttr, domClass,
+        domConstruct, NodeList_dom, coreFx, NodeList_fx, win, 
+        results_photo_menu, resources, App3, utils, sidebar, Shadowbox, _) {
 
-dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
+return declare('gobotany.sk.SpeciesSectionHelper', null, {
 
     constructor: function(pile_slug, plant_divs_ready) {
         'use strict';
@@ -32924,14 +33021,14 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.LIST_VIEW = 'list';
         this.animation = null;
         this.pile_slug = pile_slug;
-        this.plant_list = dojo.query('#main .plant-list')[0];
+        this.plant_list = query('#main .plant-list')[0];
         this.plant_data = [];
         this.plant_divs = [];
         this.plant_divs_displayed_yet = false;
         this.plant_divs_ready = plant_divs_ready;
         this.current_view = this.PHOTOS_VIEW;
 
-        simplekey_resources.pile_species(pile_slug).done(
+        resources.pile_species(pile_slug).done(
             $.proxy(this, 'create_plant_divs')
         );
 
@@ -32939,23 +33036,23 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         // and holding of a cursor key.
         var SCROLL_WAIT_MS = 0;
         var scroll_timer;
-        dojo.connect(window, 'onscroll', this, function() {
+        on(window, 'scroll', lang.hitch(this, function() {
             clearTimeout(scroll_timer);
             scroll_timer = setTimeout(this.lazy_load_images, SCROLL_WAIT_MS);
-        });
+        }));
 
         var RESIZE_WAIT_MS = 500;
         var resize_timer;
-        dojo.connect(window, 'onresize', this, function() {
+        on(window, 'resize', lang.hitch(this, function() {
             clearTimeout(resize_timer);
             resize_timer = setTimeout(this.lazy_load_images, RESIZE_WAIT_MS);
-        });
+        }));
 
         // Wire up tabs and a link for toggling between photo and list views.
-        dojo.query('#results-tabs a').onclick(this, this.toggle_view);
+        query('#results-tabs a').on('click', lang.hitch(this, this.toggle_view));
 
         // Set the initial view for showing the results.
-        var hash_object = dojo.queryToObject(dojo.hash());
+        var hash_object = ioQuery.queryToObject(hash());
         if (hash_object._view !== undefined) {
             this.current_view = hash_object._view;
             this.set_navigation_to_view(this.current_view);
@@ -33004,7 +33101,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
     connect_plant_preview_popup: function(plant_link, plant) {
         'use strict';
 
-        dojo.connect(plant_link, 'onclick', this, function(event) {
+        on(plant_link, 'click', lang.hitch(this, function(event) {
             event.preventDefault();
 
             // A few characters get a "compact" list for multiple values.
@@ -33014,18 +33111,18 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             // this plant.
             var name = plant.scientific_name + ' <span>' +
                 plant.common_name + '</span>';
-            dojo.html.set(dojo.query('#plant-detail-modal h3')[0], name);
+            query('#plant-detail-modal h3')[0].innerHTML = name;
 
             // Call the API to get more information.
 
-            var d1 = simplekey_resources.taxon_info(plant.scientific_name);
-            var d2 = simplekey_resources.pile(this.pile_slug);
+            var d1 = resources.taxon_info(plant.scientific_name);
+            var d2 = resources.pile(this.pile_slug);
             $.when(d1, d2).done(
                 $.proxy(function(taxon, pile_info) {
                     // Fill in Facts About.
-                    dojo.html.set(dojo.query(
-                        '#plant-detail-modal div.details p.facts')[0],
-                        taxon.factoid);
+                    query(
+                        '#plant-detail-modal div.details p.facts'
+                    )[0].innerHTML = taxon.factoid;
 
                     // Fill in Characteristics.
                     var MAX_CHARACTERS = 6;
@@ -33084,18 +33181,18 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                             }
                         }
                     }
-                    var characters_list = dojo.query(
+                    var characters_list = query(
                         '#plant-detail-modal .details .characteristics')[0];
-                    dojo.html.set(characters_list, characters_html);
+                    characters_list.innerHTML = characters_html;
 
                     // Wire up the Go To Species Page button.
                     var path = window.location.pathname.split('#')[0];
                     var url = path +
                         plant.scientific_name.toLowerCase().replace(' ',
                         '/') + '/';
-                    var button = dojo.query(
+                    var button = query(
                         '#plant-detail-modal a.go-to-species-page')[0];
-                    dojo.attr(button, 'href', url);
+                    domAttr.set(button, 'href', url);
 
                     // Add images.
                     var images_html = '';
@@ -33124,29 +33221,35 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                             images_html += new_image;
                         }
                     }
-                    dojo.html.set(
-                        dojo.query('#plant-detail-modal div.images')[0],
-                        images_html);
+                    query('#plant-detail-modal div.images')[0].innerHTML = 
+                        images_html;
 
                     // Open the Shadowbox modal dialog with a copy of the
                     // HTML in the hidden content area.
-                    var content_element =
-                        dojo.query('#plant-detail-modal')[0];
-                    Shadowbox.open({
-                        content: content_element.innerHTML,
-                        player: 'html',
-                        height: 520,
-                        width: 935,
-                        options: {onFinish: dojo.hitch(this, function() {
-                            var $sb = $('#sb-container');
-                            var $children = $sb.find('p, dt, dd, li');
-                            $sb.find('.img-container').scrollable();
-                            glossarize($children);
-                        })}
-                    });
+                    var content_element = query('#plant-detail-modal')[0];
+                    // On small screens, skip the popup entirely for now.
+                    if ($(window).width() <= 600) {
+                        window.location.href = url;
+                    }
+                    else {
+                        Shadowbox.open({
+                            content: content_element.innerHTML,
+                            player: 'html',
+                            height: 520,
+                            width: 935,
+                            options: {
+                                handleOversize: 'resize',
+                                onFinish: lang.hitch(this, function() {
+                                var $sb = $('#sb-container');
+                                var $children = $sb.find('p, dt, dd, li');
+                                $sb.find('.img-container').scrollable();
+                                glossarize($children);
+                            })}
+                        });
+                    }
                 }, this)
             );
-        });
+        }));
     },
 
     set_navigation_to_view: function(view) {
@@ -33154,18 +33257,18 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         var HIDDEN_CLASS = 'hidden';
         var CURRENT_TAB_CLASS = 'current';
-        var photos_tab = dojo.query('#results-tabs li:first-child a')[0];
-        var list_tab = dojo.query('#results-tabs li:last-child a')[0];
-        var photos_show_menu = dojo.query('.show')[0];       
+        var photos_tab = query('#results-tabs li:first-child a')[0];
+        var list_tab = query('#results-tabs li:last-child a')[0];
+        var photos_show_menu = query('.show')[0];       
 
         if (view === this.PHOTOS_VIEW) {
-            dojo.removeClass(list_tab, CURRENT_TAB_CLASS);
-            dojo.addClass(photos_tab, CURRENT_TAB_CLASS);
-            dojo.removeClass(photos_show_menu, HIDDEN_CLASS);
+            domClass.remove(list_tab, CURRENT_TAB_CLASS);
+            domClass.add(photos_tab, CURRENT_TAB_CLASS);
+            domClass.remove(photos_show_menu, HIDDEN_CLASS);
         } else if (view === this.LIST_VIEW) {
-            dojo.removeClass(photos_tab, CURRENT_TAB_CLASS);
-            dojo.addClass(list_tab, CURRENT_TAB_CLASS);
-            dojo.addClass(photos_show_menu, HIDDEN_CLASS);
+            domClass.remove(photos_tab, CURRENT_TAB_CLASS);
+            domClass.add(list_tab, CURRENT_TAB_CLASS);
+            domClass.add(photos_show_menu, HIDDEN_CLASS);
         } else {
            console.log('Unknown view name: ' + view);
         }
@@ -33181,9 +33284,9 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         var HIDDEN_CLASS = 'hidden';
         var CURRENT_TAB_CLASS = 'current';
-        var photos_tab = dojo.query('#results-tabs li:first-child a')[0];
-        var list_tab = dojo.query('#results-tabs li:last-child a')[0];
-        var photos_show_menu = dojo.query('.show')[0];
+        var photos_tab = query('#results-tabs li:first-child a')[0];
+        var list_tab = query('#results-tabs li:last-child a')[0];
+        var photos_show_menu = query('.show')[0];
 
         if (this.current_view === this.PHOTOS_VIEW) {
             App3.taxa.set('show_list', true);
@@ -33242,8 +33345,8 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
            caption and header row for accessibility. */
         'use strict';
 
-        dojo.query('.plant.in-results').removeClass('in-results');
-        dojo.query('.plant-list table').orphan();
+        query('.plant.in-results').removeClass('in-results');
+        query('.plant-list table').orphan();
 
         var html =
             '<caption class="hidden">List of matching plants</caption>' +
@@ -33279,7 +33382,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             html += '</tr>';
         }
 
-        var table = dojo.create('table', {'innerHTML': html},
+        var table = domConstruct.create('table', {'innerHTML': html},
                                 this.plant_list);
 
         /* Remove any explicit style="height: ..." that might be left
@@ -33287,7 +33390,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
            list format. */
         $('.plant-list').removeAttr('style');
 
-        sidebar_set_height();
+        sidebar.set_height();
 
         Shadowbox.setup('.plant-list table td.scientific-name a', 
                         {title: ''});
@@ -33307,26 +33410,26 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         for (var i = 0; i < sorted_species_list.length; i++) {
             var species = sorted_species_list[i];
 
-            var plant = dojo.create('div', {'class': 'plant'},
+            var plant = domConstruct.create('div', {'class': 'plant'},
                                     this.plant_list);
 
             var path = window.location.pathname.split('#')[0];
             var url = (path + species.scientific_name.toLowerCase()
                        .replace(' ', '/') + '/');
-            var plant_link = dojo.create('a', {'href': url}, plant);
-            dojo.create('div', {'class': 'frame'}, plant_link);
+            var plant_link = domConstruct.create('a', {'href': url}, plant);
+            domConstruct.create('div', {'class': 'frame'}, plant_link);
 
-            var image_container = dojo.create('div', {
+            var image_container = domConstruct.create('div', {
                 'class': 'plant-img-container'
             }, plant_link);
-            var image = dojo.create('img', {'alt': ''}, image_container);
-            dojo.attr(image, 'x-plant-id', species.scientific_name);
+            var image = domConstruct.create('img', {'alt': ''}, image_container);
+            domAttr.set(image, 'x-plant-id', species.scientific_name);
             var thumb_url = this.default_image(species).thumb_url;
             if (thumb_url) { // undefined when no image available
                 // Set the image URL in a dummy attribute, so we can
                 // lazy-load images, switching to the proper
                 // attribute when the image comes into view.
-                dojo.attr(image, 'x-tmp-src', thumb_url);
+                domAttr.set(image, 'x-tmp-src', thumb_url);
             }
 
             var name_html = '<span class="latin">' +
@@ -33334,7 +33437,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             if (species.common_name) {
                 name_html += ' ' + species.common_name;
             }
-            dojo.create('p', {'class': 'plant-name',
+            domConstruct.create('p', {'class': 'plant-name',
                               'innerHTML': name_html}, plant_link);
 
             // Connect a "plant preview" popup. Pass species as
@@ -33354,7 +33457,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
            */
         'use strict';
 
-        dojo.query('.plant-list table').orphan();
+        query('.plant-list table').orphan();
 
         var visible_species = {};
         for (var i = 0; i < items.length; i++)
@@ -33382,15 +33485,15 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                 var desty = HEIGHT * Math.floor(n / SPECIES_PER_ROW);
                 n += 1;
 
-                dojo.removeClass(div, 'genus_alt');
-                dojo.removeClass(div, 'genus_join_left');
-                dojo.removeClass(div, 'genus_join_right');
+                domClass.remove(div, 'genus_alt');
+                domClass.remove(div, 'genus_join_left');
+                domClass.remove(div, 'genus_join_right');
 
-                if (!dojo.hasClass(div, 'in-results')) {
+                if (!domClass.contains(div, 'in-results')) {
                     // bring new species in from the far right
-                    dojo.addClass(div, 'in-results');
+                    domClass.add(div, 'in-results');
                     div.style.top = desty + 'px';
-                    anim_list.push(dojo.animateProperty({
+                    anim_list.push(fx.animateProperty({
                         node: div,
                         properties: {left: {
                             start: 2800,
@@ -33399,22 +33502,22 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                     }));
                 } else {
                     // move the species from its current screen location
-                    anim_list.push(dojo.animateProperty({
+                    anim_list.push(fx.animateProperty({
                         node: div,
                         properties: {left: {end: destx}, top: {end: desty}}
                     }));
                 }
             } else {
-                dojo.removeClass(div, 'in-results');
+                domClass.remove(div, 'in-results');
             }
         }
         var species_section_helper = this;
-        anim_list.push(dojo.animateProperty({
+        anim_list.push(fx.animateProperty({
             node: this.plant_list,
             properties: {height: {end: desty + HEIGHT}},
             onEnd: function() {
                 this.animation = null;
-                sidebar_set_height();
+                sidebar.set_height();
                 species_section_helper.lazy_load_images();
 
                 // Set up genus colors now that everyone has arrived!
@@ -33425,14 +33528,14 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                 for (var n = 0; n < displayed_plants.length; n++) {
                     var div = displayed_divs[n];
                     if (genus_alt)
-                        dojo.addClass(div, 'genus_alt');
+                        domClass.add(div, 'genus_alt');
                     if (n < displayed_plants.length - 1) {
                         var genus = plant.genus;
                         var plant = displayed_plants[n + 1];
                         if (plant.genus === genus) {
                             if (n % SPECIES_PER_ROW != last_species_in_row) {
-                                dojo.addClass(div, 'genus_join_right');
-                                dojo.addClass(displayed_divs[n + 1],
+                                domClass.add(div, 'genus_join_right');
+                                domClass.add(displayed_divs[n + 1],
                                               'genus_join_left');
                             }
                         } else {
@@ -33442,7 +33545,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                 }
             }
         }));
-        this.animation = dojo.fx.combine(anim_list);
+        this.animation = coreFx.combine(anim_list);
         this.animation.play();
     },
 
@@ -33456,12 +33559,12 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         // Show the "Show" drop-down menu for image types, if necessary.
         if (this.current_view === this.PHOTOS_VIEW) {
-            var show_menu = dojo.query('.show')[0];
-            dojo.removeClass(show_menu, 'hidden');
+            var show_menu = query('.show')[0];
+            domClass.remove(show_menu, 'hidden');
         }
 
         // Remove the "wait" spinner.
-        dojo.query('.wait', this.plant_list).orphan();
+        query('.wait', this.plant_list).orphan();
 
         // Display the results in the appropriate tab view.
         if (this.current_view === this.LIST_VIEW) {
@@ -33471,7 +33574,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         }
 
         // Show the "See a list" (or "See photos") link.
-        var see_link = dojo.query('.list-all').removeClass(see_link, 'hidden');
+        var see_link = query('.list-all').removeClass(see_link, 'hidden');
 
         if (this.current_view === this.PHOTOS_VIEW) {
             this.populate_image_types(query_results);
@@ -33516,12 +33619,12 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
         // is not what we need, and passing a saved reference to 'this', as
         // recommended for these situations, did not work.
 
-        var list_view_table_nodes = dojo.query('.plant-list table');
+        var list_view_table_nodes = query('.plant-list table');
         if (list_view_table_nodes.length > 0) {
             return;
         }
 
-        var viewport = dijit.getViewport();
+        var viewport = win.getBox();
         var viewport_height = viewport.h;
         var scroll_top = 0;
         var scroll_left = 0;
@@ -33540,7 +33643,7 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
             scroll_left = document.body.scrollLeft;
         }
 
-        var image_elements = dojo.query('div.plant-list img');
+        var image_elements = query('div.plant-list img');
         var i;
         for (i = 0; i < image_elements.length; i += 1) {
             var element = image_elements[i];
@@ -33567,10 +33670,10 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
                 }
 
                 if (is_element_visible === true) {
-                    var image_url = dojo.attr(element, 'x-tmp-src');
+                    var image_url = domAttr.get(element, 'x-tmp-src');
                     if (image_url !== null) {
                         // Set the attribute that will make the image load.
-                        dojo.attr(element, 'src', image_url);
+                        domAttr.set(element, 'src', image_url);
                     }
                 }
             }
@@ -33579,104 +33682,6 @@ dojo.declare('gobotany.sk.SpeciesSectionHelper', null, {
 
 });
 
-/*
- * Manage everywhere on the page that we maintain a species count.
- */
-dojo.declare('gobotany.sk.SpeciesCounts', null, {
-    animation: null,
-
-    _update_counts: function(species_list) {
-        App3.taxa.set('len', species_list.length);
-
-        if (this.animation !== null)
-            this.animation.stop();
-
-        var span = dojo.query('.species-count-heading > span');
-        this.animation = span.animateProperty({
-            duration: 2000,
-            properties: {
-                backgroundColor: {
-                    start: '#FF0',
-                    end: '#F0F0C0'
-                }
-            }
-        });
-        this.animation.play();
-    }
-});
-
-return gobotany.sk.SpeciesSectionHelper;
-});
-
-
-},
-'simplekey/results_photo_menu':function(){
-/* Configuration for Simple Key results page "Show photos of" menu items. */
-define("simplekey/results_photo_menu", [], function() {
-    var results_photo_menu = {
-        "woody-angiosperms": {
-            "default": "plant form",
-            "omit": ["additional features", "stems"]
-        },
-        "woody-gymnosperms": {
-            "default": "plant form",
-            "omit": []
-        },
-        "non-thalloid-aquatic": {
-            "default": "plant form",
-            "omit": ["additional features", "detail of leaf and/or divisions",
-                     "flowers and fruits", "leaf", "leaves and auricles",
-                     "ligules", "shoots", "sori", "special features",
-                     "spikelets", "spore cones", "spores", "stems and sheaths",
-                     "vegetative leaves"]
-        },
-        "thalloid-aquatic": {
-            "default": "plant form",
-            "omit": []
-        },
-        "carex": {
-            "default": "plant form",
-            "omit": []
-        },
-        "poaceae": {
-            "default": "plant form",
-            "omit": ["flowers and fruits", "stems"]
-        },
-        "remaining-graminoids": {
-            "default": "plant form",
-            "omit": ["leaves", "special features", "stems"]
-        },
-        "orchid-monocots": {
-            "default": "flowers",
-            "omit": []
-        },
-        "non-orchid-monocots": {
-            "default": "flowers",
-            "omit": ["flowers and fruits", "special features", "stems"]
-        },
-        "monilophytes": {
-            "default": "plant form",
-            "omit": ["flowers and fruits", "inflorescences", "stems"]
-        },
-        "lycophytes": {
-            "default": "plant form",
-            "omit": ["flowers and fruits", "inflorescences", "leaves", "stems"]
-        },
-        "equisetaceae": {
-            "default": "plant form",
-            "omit": []
-        },
-        "composites": {
-            "default": "flowers",
-            "omit": []
-        },
-        "remaining-non-monocots": {
-            "default": "flowers",
-            "omit": ["additional features", "bark", "flowers and fruits",
-                     "inflorescences", "special features", "winter buds"]
-        }
-    };
-    return results_photo_menu;
 });
 
 
@@ -33924,231 +33929,6 @@ define("dojo/hash", ["./_base/kernel", "require", "./_base/connect", "./_base/la
 
 	return dojo.hash;
 
-});
-
-},
-'dojo/NodeList-fx':function(){
-define("dojo/NodeList-fx", ["dojo/_base/NodeList", "./_base/lang", "./_base/connect", "./_base/fx", "./fx"], 
-  function(NodeList, lang, connectLib, baseFx, coreFx) {
-	// module:
-	//		dojo/NodeList-fx
-	// summary:
-	//		TODOC
-
-/*=====
-dojo["NodeList-fx"] = {
-	// summary: Adds dojo.fx animation support to dojo.query() by extending the NodeList class
-	//		with additional FX functions.  NodeList is the array-like object used to hold query results.
-};
-
-// doc alias helpers:
-NodeList = dojo.NodeList;
-=====*/
-
-lang.extend(NodeList, {
-	_anim: function(obj, method, args){
-		args = args||{};
-		var a = coreFx.combine(
-			this.map(function(item){
-				var tmpArgs = { node: item };
-				lang.mixin(tmpArgs, args);
-				return obj[method](tmpArgs);
-			})
-		);
-		return args.auto ? a.play() && this : a; // dojo.Animation|dojo.NodeList
-	},
-
-	wipeIn: function(args){
-		// summary:
-		//		wipe in all elements of this NodeList via `dojo.fx.wipeIn`
-		//
-		// args: Object?
-		//		Additional dojo.Animation arguments to mix into this set with the addition of
-		//		an `auto` parameter.
-		//
-		// returns: dojo.Animation|dojo.NodeList
-		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo.NodeList will be returned for further
-		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
-		//
-		// example:
-		//		Fade in all tables with class "blah":
-		//		|	dojo.query("table.blah").wipeIn().play();
-		//
-		// example:
-		//		Utilizing `auto` to get the NodeList back:
-		//		|	dojo.query(".titles").wipeIn({ auto:true }).onclick(someFunction);
-		//
-		return this._anim(coreFx, "wipeIn", args); // dojo.Animation|dojo.NodeList
-	},
-
-	wipeOut: function(args){
-		// summary:
-		//		wipe out all elements of this NodeList via `dojo.fx.wipeOut`
-		//
-		// args: Object?
-		//		Additional dojo.Animation arguments to mix into this set with the addition of
-		//		an `auto` parameter.
-		//
-		// returns: dojo.Animation|dojo.NodeList
-		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo.NodeList will be returned for further
-		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
-		//
-		// example:
-		//		Wipe out all tables with class "blah":
-		//		|	dojo.query("table.blah").wipeOut().play();
-		return this._anim(coreFx, "wipeOut", args); // dojo.Animation|dojo.NodeList
-	},
-
-	slideTo: function(args){
-		// summary:
-		//		slide all elements of the node list to the specified place via `dojo.fx.slideTo`
-		//
-		// args: Object?
-		//		Additional dojo.Animation arguments to mix into this set with the addition of
-		//		an `auto` parameter.
-		//
-		// returns: dojo.Animation|dojo.NodeList
-		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo.NodeList will be returned for further
-		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
-		//
-		// example:
-		//		|	Move all tables with class "blah" to 300/300:
-		//		|	dojo.query("table.blah").slideTo({
-		//		|		left: 40,
-		//		|		top: 50
-		//		|	}).play();
-		return this._anim(coreFx, "slideTo", args); // dojo.Animation|dojo.NodeList
-	},
-
-
-	fadeIn: function(args){
-		// summary:
-		//		fade in all elements of this NodeList via `dojo.fadeIn`
-		//
-		// args: Object?
-		//		Additional dojo.Animation arguments to mix into this set with the addition of
-		//		an `auto` parameter.
-		//
-		// returns: dojo.Animation|dojo.NodeList
-		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo.NodeList will be returned for further
-		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
-		//
-		// example:
-		//		Fade in all tables with class "blah":
-		//		|	dojo.query("table.blah").fadeIn().play();
-		return this._anim(baseFx, "fadeIn", args); // dojo.Animation|dojo.NodeList
-	},
-
-	fadeOut: function(args){
-		// summary:
-		//		fade out all elements of this NodeList via `dojo.fadeOut`
-		//
-		// args: Object?
-		//		Additional dojo.Animation arguments to mix into this set with the addition of
-		//		an `auto` parameter.
-		//
-		// returns: dojo.Animation|dojo.NodeList
-		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo.NodeList will be returned for further
-		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
-		//
-		// example:
-		//		Fade out all elements with class "zork":
-		//		|	dojo.query(".zork").fadeOut().play();
-		// example:
-		//		Fade them on a delay and do something at the end:
-		//		|	var fo = dojo.query(".zork").fadeOut();
-		//		|	dojo.connect(fo, "onEnd", function(){ /*...*/ });
-		//		|	fo.play();
-		// example:
-		//		Using `auto`:
-		//		|	dojo.query("li").fadeOut({ auto:true }).filter(filterFn).forEach(doit);
-		//
-		return this._anim(baseFx, "fadeOut", args); // dojo.Animation|dojo.NodeList
-	},
-
-	animateProperty: function(args){
-		// summary:
-		//		Animate all elements of this NodeList across the properties specified.
-		//		syntax identical to `dojo.animateProperty`
-		//
-		// args: Object?
-		//		Additional dojo.Animation arguments to mix into this set with the addition of
-		//		an `auto` parameter.
-		//
-		// returns: dojo.Animation|dojo.NodeList
-		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo.NodeList will be returned for further
-		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
-		//
-		// example:
-		//	|	dojo.query(".zork").animateProperty({
-		//	|		duration: 500,
-		//	|		properties: {
-		//	|			color:		{ start: "black", end: "white" },
-		//	|			left:		{ end: 300 }
-		//	|		}
-		//	|	}).play();
-		//
-		//	example:
-		//	|	dojo.query(".grue").animateProperty({
-		//	|		auto:true,
-		//	|		properties: {
-		//	|			height:240
-		//	|		}
-		//	|	}).onclick(handler);
-		return this._anim(baseFx, "animateProperty", args); // dojo.Animation|dojo.NodeList
-	},
-
-	anim: function( /*Object*/			properties,
-					/*Integer?*/		duration,
-					/*Function?*/		easing,
-					/*Function?*/		onEnd,
-					/*Integer?*/		delay){
-		// summary:
-		//		Animate one or more CSS properties for all nodes in this list.
-		//		The returned animation object will already be playing when it
-		//		is returned. See the docs for `dojo.anim` for full details.
-		// properties: Object
-		//		the properties to animate. does NOT support the `auto` parameter like other
-		//		NodeList-fx methods.
-		// duration: Integer?
-		//		Optional. The time to run the animations for
-		// easing: Function?
-		//		Optional. The easing function to use.
-		// onEnd: Function?
-		//		A function to be called when the animation ends
-		// delay:
-		//		how long to delay playing the returned animation
-		// example:
-		//		Another way to fade out:
-		//	|	dojo.query(".thinger").anim({ opacity: 0 });
-		// example:
-		//		animate all elements with the "thigner" class to a width of 500
-		//		pixels over half a second
-		//	|	dojo.query(".thinger").anim({ width: 500 }, 700);
-		var canim = coreFx.combine(
-			this.map(function(item){
-				return baseFx.animateProperty({
-					node: item,
-					properties: properties,
-					duration: duration||350,
-					easing: easing
-				});
-			})
-		);
-		if(onEnd){
-			connectLib.connect(canim, "onEnd", onEnd);
-		}
-		return canim.play(delay||0); // dojo.Animation
-	}
-});
-
-return NodeList;
 });
 
 },
@@ -34581,2060 +34361,356 @@ if(!dojo.isAsync){
 });
 
 },
-'dijit/_base/place':function(){
-define("dijit/_base/place", [
-	"dojo/_base/array", // array.forEach
-	"dojo/_base/lang", // lang.isArray
-	"dojo/window", // windowUtils.getBox
-	"../place",
-	".."	// export to dijit namespace
-], function(array, lang, windowUtils, place, dijit){
-
+'dojo/NodeList-fx':function(){
+define("dojo/NodeList-fx", ["dojo/_base/NodeList", "./_base/lang", "./_base/connect", "./_base/fx", "./fx"], 
+  function(NodeList, lang, connectLib, baseFx, coreFx) {
 	// module:
-	//		dijit/_base/place
+	//		dojo/NodeList-fx
 	// summary:
-	//		Back compatibility module, new code should use dijit/place directly instead of using this module.
-
-	dijit.getViewport = function(){
-		// summary:
-		//		Deprecated method to return the dimensions and scroll position of the viewable area of a browser window.
-		//		New code should use windowUtils.getBox()
-
-		return windowUtils.getBox();
-	};
-
-	/*=====
-	dijit.placeOnScreen = function(node, pos, corners, padding){
-		// summary:
-		//		Positions one of the node's corners at specified position
-		//		such that node is fully visible in viewport.
-		//		Deprecated, new code should use dijit.place.at() instead.
-	};
-	=====*/
-	dijit.placeOnScreen = place.at;
-
-	/*=====
-	dijit.placeOnScreenAroundElement = function(node, aroundElement, aroundCorners, layoutNode){
-		// summary:
-		//		Like dijit.placeOnScreenAroundNode(), except it accepts an arbitrary object
-		//		for the "around" argument and finds a proper processor to place a node.
-		//		Deprecated, new code should use dijit.place.around() instead.
-	};
-	====*/
-	dijit.placeOnScreenAroundElement = function(node, aroundNode, aroundCorners, layoutNode){
-		// Convert old style {"BL": "TL", "BR": "TR"} type argument
-		// to style needed by dijit.place code:
-		//		[
-		// 			{aroundCorner: "BL", corner: "TL" },
-		//			{aroundCorner: "BR", corner: "TR" }
-		//		]
-		var positions;
-		if(lang.isArray(aroundCorners)){
-			positions = aroundCorners;
-		}else{
-			positions = [];
-			for(var key in aroundCorners){
-				positions.push({aroundCorner: key, corner: aroundCorners[key]});
-			}
-		}
-
-		return place.around(node, aroundNode, positions, true, layoutNode);
-	};
-
-	/*=====
-	dijit.placeOnScreenAroundNode = function(node, aroundNode, aroundCorners, layoutNode){
-		// summary:
-		//		Position node adjacent or kitty-corner to aroundNode
-		//		such that it's fully visible in viewport.
-		//		Deprecated, new code should use dijit.place.around() instead.
-	};
-	=====*/
-	dijit.placeOnScreenAroundNode = dijit.placeOnScreenAroundElement;
-
-	/*=====
-	dijit.placeOnScreenAroundRectangle = function(node, aroundRect, aroundCorners, layoutNode){
-		// summary:
-		//		Like dijit.placeOnScreenAroundNode(), except that the "around"
-		//		parameter is an arbitrary rectangle on the screen (x, y, width, height)
-		//		instead of a dom node.
-		//		Deprecated, new code should use dijit.place.around() instead.
-	};
-	=====*/
-	dijit.placeOnScreenAroundRectangle = dijit.placeOnScreenAroundElement;
-
-	dijit.getPopupAroundAlignment = function(/*Array*/ position, /*Boolean*/ leftToRight){
-		// summary:
-		//		Deprecated method, unneeded when using dijit/place directly.
-		//		Transforms the passed array of preferred positions into a format suitable for
-		//		passing as the aroundCorners argument to dijit.placeOnScreenAroundElement.
-		//
-		// position: String[]
-		//		This variable controls the position of the drop down.
-		//		It's an array of strings with the following values:
-		//
-		//			* before: places drop down to the left of the target node/widget, or to the right in
-		//			  the case of RTL scripts like Hebrew and Arabic
-		//			* after: places drop down to the right of the target node/widget, or to the left in
-		//			  the case of RTL scripts like Hebrew and Arabic
-		//			* above: drop down goes above target node
-		//			* below: drop down goes below target node
-		//
-		//		The list is positions is tried, in order, until a position is found where the drop down fits
-		//		within the viewport.
-		//
-		// leftToRight: Boolean
-		//		Whether the popup will be displaying in leftToRight mode.
-		//
-		var align = {};
-		array.forEach(position, function(pos){
-			var ltr = leftToRight;
-			switch(pos){
-				case "after":
-					align[leftToRight ? "BR" : "BL"] = leftToRight ? "BL" : "BR";
-					break;
-				case "before":
-					align[leftToRight ? "BL" : "BR"] = leftToRight ? "BR" : "BL";
-					break;
-				case "below-alt":
-					ltr = !ltr;
-					// fall through
-				case "below":
-					// first try to align left borders, next try to align right borders (or reverse for RTL mode)
-					align[ltr ? "BL" : "BR"] = ltr ? "TL" : "TR";
-					align[ltr ? "BR" : "BL"] = ltr ? "TR" : "TL";
-					break;
-				case "above-alt":
-					ltr = !ltr;
-					// fall through
-				case "above":
-				default:
-					// first try to align left borders, next try to align right borders (or reverse for RTL mode)
-					align[ltr ? "TL" : "TR"] = ltr ? "BL" : "BR";
-					align[ltr ? "TR" : "TL"] = ltr ? "BR" : "BL";
-					break;
-			}
-		});
-		return align;
-	};
-
-	return dijit;
-});
-
-},
-'dijit/place':function(){
-define("dijit/place", [
-	"dojo/_base/array", // array.forEach array.map array.some
-	"dojo/dom-geometry", // domGeometry.getMarginBox domGeometry.position
-	"dojo/dom-style", // domStyle.getComputedStyle
-	"dojo/_base/kernel", // kernel.deprecated
-	"dojo/_base/window", // win.body
-	"dojo/window", // winUtils.getBox
-	"."	// dijit (defining dijit.place to match API doc)
-], function(array, domGeometry, domStyle, kernel, win, winUtils, dijit){
-
-	// module:
-	//		dijit/place
-	// summary:
-	//		Code to place a popup relative to another node
-
-
-	function _place(/*DomNode*/ node, choices, layoutNode, aroundNodeCoords){
-		// summary:
-		//		Given a list of spots to put node, put it at the first spot where it fits,
-		//		of if it doesn't fit anywhere then the place with the least overflow
-		// choices: Array
-		//		Array of elements like: {corner: 'TL', pos: {x: 10, y: 20} }
-		//		Above example says to put the top-left corner of the node at (10,20)
-		// layoutNode: Function(node, aroundNodeCorner, nodeCorner, size)
-		//		for things like tooltip, they are displayed differently (and have different dimensions)
-		//		based on their orientation relative to the parent.	 This adjusts the popup based on orientation.
-		//		It also passes in the available size for the popup, which is useful for tooltips to
-		//		tell them that their width is limited to a certain amount.	 layoutNode() may return a value expressing
-		//		how much the popup had to be modified to fit into the available space.	 This is used to determine
-		//		what the best placement is.
-		// aroundNodeCoords: Object
-		//		Size of aroundNode, ex: {w: 200, h: 50}
-
-		// get {x: 10, y: 10, w: 100, h:100} type obj representing position of
-		// viewport over document
-		var view = winUtils.getBox();
-
-		// This won't work if the node is inside a <div style="position: relative">,
-		// so reattach it to win.doc.body.	 (Otherwise, the positioning will be wrong
-		// and also it might get cutoff)
-		if(!node.parentNode || String(node.parentNode.tagName).toLowerCase() != "body"){
-			win.body().appendChild(node);
-		}
-
-		var best = null;
-		array.some(choices, function(choice){
-			var corner = choice.corner;
-			var pos = choice.pos;
-			var overflow = 0;
-
-			// calculate amount of space available given specified position of node
-			var spaceAvailable = {
-				w: {
-					'L': view.l + view.w - pos.x,
-					'R': pos.x - view.l,
-					'M': view.w
-				   }[corner.charAt(1)],
-				h: {
-					'T': view.t + view.h - pos.y,
-					'B': pos.y - view.t,
-					'M': view.h
-				   }[corner.charAt(0)]
-			};
-
-			// configure node to be displayed in given position relative to button
-			// (need to do this in order to get an accurate size for the node, because
-			// a tooltip's size changes based on position, due to triangle)
-			if(layoutNode){
-				var res = layoutNode(node, choice.aroundCorner, corner, spaceAvailable, aroundNodeCoords);
-				overflow = typeof res == "undefined" ? 0 : res;
-			}
-
-			// get node's size
-			var style = node.style;
-			var oldDisplay = style.display;
-			var oldVis = style.visibility;
-			if(style.display == "none"){
-				style.visibility = "hidden";
-				style.display = "";
-			}
-			var mb = domGeometry. getMarginBox(node);
-			style.display = oldDisplay;
-			style.visibility = oldVis;
-
-			// coordinates and size of node with specified corner placed at pos,
-			// and clipped by viewport
-			var
-				startXpos = {
-					'L': pos.x,
-					'R': pos.x - mb.w,
-					'M': Math.max(view.l, Math.min(view.l + view.w, pos.x + (mb.w >> 1)) - mb.w) // M orientation is more flexible
-				}[corner.charAt(1)],
-				startYpos = {
-					'T': pos.y,
-					'B': pos.y - mb.h,
-					'M': Math.max(view.t, Math.min(view.t + view.h, pos.y + (mb.h >> 1)) - mb.h)
-				}[corner.charAt(0)],
-				startX = Math.max(view.l, startXpos),
-				startY = Math.max(view.t, startYpos),
-				endX = Math.min(view.l + view.w, startXpos + mb.w),
-				endY = Math.min(view.t + view.h, startYpos + mb.h),
-				width = endX - startX,
-				height = endY - startY;
-
-			overflow += (mb.w - width) + (mb.h - height);
-
-			if(best == null || overflow < best.overflow){
-				best = {
-					corner: corner,
-					aroundCorner: choice.aroundCorner,
-					x: startX,
-					y: startY,
-					w: width,
-					h: height,
-					overflow: overflow,
-					spaceAvailable: spaceAvailable
-				};
-			}
-
-			return !overflow;
-		});
-
-		// In case the best position is not the last one we checked, need to call
-		// layoutNode() again.
-		if(best.overflow && layoutNode){
-			layoutNode(node, best.aroundCorner, best.corner, best.spaceAvailable, aroundNodeCoords);
-		}
-
-		// And then position the node.  Do this last, after the layoutNode() above
-		// has sized the node, due to browser quirks when the viewport is scrolled
-		// (specifically that a Tooltip will shrink to fit as though the window was
-		// scrolled to the left).
-		//
-		// In RTL mode, set style.right rather than style.left so in the common case,
-		// window resizes move the popup along with the aroundNode.
-		var l = domGeometry.isBodyLtr(),
-			s = node.style;
-		s.top = best.y + "px";
-		s[l ? "left" : "right"] = (l ? best.x : view.w - best.x - best.w) + "px";
-		s[l ? "right" : "left"] = "auto";	// needed for FF or else tooltip goes to far left
-
-		return best;
-	}
-
-	/*=====
-	dijit.place.__Position = function(){
-		// x: Integer
-		//		horizontal coordinate in pixels, relative to document body
-		// y: Integer
-		//		vertical coordinate in pixels, relative to document body
-
-		this.x = x;
-		this.y = y;
-	};
-	=====*/
-
-	/*=====
-	dijit.place.__Rectangle = function(){
-		// x: Integer
-		//		horizontal offset in pixels, relative to document body
-		// y: Integer
-		//		vertical offset in pixels, relative to document body
-		// w: Integer
-		//		width in pixels.   Can also be specified as "width" for backwards-compatibility.
-		// h: Integer
-		//		height in pixels.   Can also be specified as "height" from backwards-compatibility.
-
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
-	};
-	=====*/
-
-	return (dijit.place = {
-		// summary:
-		//		Code to place a DOMNode relative to another DOMNode.
-		//		Load using require(["dijit/place"], function(place){ ... }).
-
-		at: function(node, pos, corners, padding){
-			// summary:
-			//		Positions one of the node's corners at specified position
-			//		such that node is fully visible in viewport.
-			// description:
-			//		NOTE: node is assumed to be absolutely or relatively positioned.
-			// node: DOMNode
-			//		The node to position
-			// pos: dijit.place.__Position
-			//		Object like {x: 10, y: 20}
-			// corners: String[]
-			//		Array of Strings representing order to try corners in, like ["TR", "BL"].
-			//		Possible values are:
-			//			* "BL" - bottom left
-			//			* "BR" - bottom right
-			//			* "TL" - top left
-			//			* "TR" - top right
-			// padding: dijit.place.__Position?
-			//		optional param to set padding, to put some buffer around the element you want to position.
-			// example:
-			//		Try to place node's top right corner at (10,20).
-			//		If that makes node go (partially) off screen, then try placing
-			//		bottom left corner at (10,20).
-			//	|	place(node, {x: 10, y: 20}, ["TR", "BL"])
-			var choices = array.map(corners, function(corner){
-				var c = { corner: corner, pos: {x:pos.x,y:pos.y} };
-				if(padding){
-					c.pos.x += corner.charAt(1) == 'L' ? padding.x : -padding.x;
-					c.pos.y += corner.charAt(0) == 'T' ? padding.y : -padding.y;
-				}
-				return c;
-			});
-
-			return _place(node, choices);
-		},
-
-		around: function(
-			/*DomNode*/		node,
-			/*DomNode || dijit.place.__Rectangle*/ anchor,
-			/*String[]*/	positions,
-			/*Boolean*/		leftToRight,
-			/*Function?*/	layoutNode){
-
-			// summary:
-			//		Position node adjacent or kitty-corner to anchor
-			//		such that it's fully visible in viewport.
-			//
-			// description:
-			//		Place node such that corner of node touches a corner of
-			//		aroundNode, and that node is fully visible.
-			//
-			// anchor:
-			//		Either a DOMNode or a __Rectangle (object with x, y, width, height).
-			//
-			// positions:
-			//		Ordered list of positions to try matching up.
-			//			* before: places drop down to the left of the anchor node/widget, or to the right in the case
-			//				of RTL scripts like Hebrew and Arabic; aligns either the top of the drop down
-			//				with the top of the anchor, or the bottom of the drop down with bottom of the anchor.
-			//			* after: places drop down to the right of the anchor node/widget, or to the left in the case
-			//				of RTL scripts like Hebrew and Arabic; aligns either the top of the drop down
-			//				with the top of the anchor, or the bottom of the drop down with bottom of the anchor.
-			//			* before-centered: centers drop down to the left of the anchor node/widget, or to the right
-			//				 in the case of RTL scripts like Hebrew and Arabic
-			//			* after-centered: centers drop down to the right of the anchor node/widget, or to the left
-			//				 in the case of RTL scripts like Hebrew and Arabic
-			//			* above-centered: drop down is centered above anchor node
-			//			* above: drop down goes above anchor node, left sides aligned
-			//			* above-alt: drop down goes above anchor node, right sides aligned
-			//			* below-centered: drop down is centered above anchor node
-			//			* below: drop down goes below anchor node
-			//			* below-alt: drop down goes below anchor node, right sides aligned
-			//
-			// layoutNode: Function(node, aroundNodeCorner, nodeCorner)
-			//		For things like tooltip, they are displayed differently (and have different dimensions)
-			//		based on their orientation relative to the parent.	 This adjusts the popup based on orientation.
-			//
-			// leftToRight:
-			//		True if widget is LTR, false if widget is RTL.   Affects the behavior of "above" and "below"
-			//		positions slightly.
-			//
-			// example:
-			//	|	placeAroundNode(node, aroundNode, {'BL':'TL', 'TR':'BR'});
-			//		This will try to position node such that node's top-left corner is at the same position
-			//		as the bottom left corner of the aroundNode (ie, put node below
-			//		aroundNode, with left edges aligned).	If that fails it will try to put
-			// 		the bottom-right corner of node where the top right corner of aroundNode is
-			//		(ie, put node above aroundNode, with right edges aligned)
-			//
-
-			// if around is a DOMNode (or DOMNode id), convert to coordinates
-			var aroundNodePos = (typeof anchor == "string" || "offsetWidth" in anchor)
-				? domGeometry.position(anchor, true)
-				: anchor;
-
-			// Adjust anchor positioning for the case that a parent node has overflw hidden, therefore cuasing the anchor not to be completely visible
-			if(anchor.parentNode){
-				var parent = anchor.parentNode;
-				while(parent && parent.nodeType == 1 && parent.nodeName != "BODY"){  //ignoring the body will help performance
-					var parentPos = domGeometry.position(parent, true);
-					var parentStyleOverflow = domStyle.getComputedStyle(parent).overflow;
-					if(parentStyleOverflow == "hidden" || parentStyleOverflow == "auto" || parentStyleOverflow == "scroll"){
-						var bottomYCoord = Math.min(aroundNodePos.y + aroundNodePos.h, parentPos.y + parentPos.h);
-						var rightXCoord = Math.min(aroundNodePos.x + aroundNodePos.w, parentPos.x + parentPos.w);
-						aroundNodePos.x = Math.max(aroundNodePos.x, parentPos.x);
-						aroundNodePos.y = Math.max(aroundNodePos.y, parentPos.y);
-						aroundNodePos.h = bottomYCoord - aroundNodePos.y;
-						aroundNodePos.w = rightXCoord - aroundNodePos.x;
-					}	
-					parent = parent.parentNode;
-				}
-			}			
-
-			var x = aroundNodePos.x,
-				y = aroundNodePos.y,
-				width = "w" in aroundNodePos ? aroundNodePos.w : (aroundNodePos.w = aroundNodePos.width),
-				height = "h" in aroundNodePos ? aroundNodePos.h : (kernel.deprecated("place.around: dijit.place.__Rectangle: { x:"+x+", y:"+y+", height:"+aroundNodePos.height+", width:"+width+" } has been deprecated.  Please use { x:"+x+", y:"+y+", h:"+aroundNodePos.height+", w:"+width+" }", "", "2.0"), aroundNodePos.h = aroundNodePos.height);
-
-			// Convert positions arguments into choices argument for _place()
-			var choices = [];
-			function push(aroundCorner, corner){
-				choices.push({
-					aroundCorner: aroundCorner,
-					corner: corner,
-					pos: {
-						x: {
-							'L': x,
-							'R': x + width,
-							'M': x + (width >> 1)
-						   }[aroundCorner.charAt(1)],
-						y: {
-							'T': y,
-							'B': y + height,
-							'M': y + (height >> 1)
-						   }[aroundCorner.charAt(0)]
-					}
-				})
-			}
-			array.forEach(positions, function(pos){
-				var ltr =  leftToRight;
-				switch(pos){
-					case "above-centered":
-						push("TM", "BM");
-						break;
-					case "below-centered":
-						push("BM", "TM");
-						break;
-					case "after-centered":
-						ltr = !ltr;
-						// fall through
-					case "before-centered":
-						push(ltr ? "ML" : "MR", ltr ? "MR" : "ML");
-						break;
-					case "after":
-						ltr = !ltr;
-						// fall through
-					case "before":
-						push(ltr ? "TL" : "TR", ltr ? "TR" : "TL");
-						push(ltr ? "BL" : "BR", ltr ? "BR" : "BL");
-						break;
-					case "below-alt":
-						ltr = !ltr;
-						// fall through
-					case "below":
-						// first try to align left borders, next try to align right borders (or reverse for RTL mode)
-						push(ltr ? "BL" : "BR", ltr ? "TL" : "TR");
-						push(ltr ? "BR" : "BL", ltr ? "TR" : "TL");
-						break;
-					case "above-alt":
-						ltr = !ltr;
-						// fall through
-					case "above":
-						// first try to align left borders, next try to align right borders (or reverse for RTL mode)
-						push(ltr ? "TL" : "TR", ltr ? "BL" : "BR");
-						push(ltr ? "TR" : "TL", ltr ? "BR" : "BL");
-						break;
-					default:
-						// To assist dijit/_base/place, accept arguments of type {aroundCorner: "BL", corner: "TL"}.
-						// Not meant to be used directly.
-						push(pos.aroundCorner, pos.corner);
-				}
-			});
-
-			var position = _place(node, choices, layoutNode, {w: width, h: height});
-			position.aroundNodePos = aroundNodePos;
-
-			return position;
-		}
-	});
-});
-
-},
-'bridge/jquery.jscrollpane':function(){
-// AMD wrapper for jquery.jscrollpane plugin.
-// This should ensure the AMD loader properly caches jquery
-// and only loads it once, and we can be sure that this plugin
-// has jquery loaded before it attempts to load. This also serves
-// as a thin abstraction layer so we don't have to worry about
-// versioned filenames in our module references.
-define("bridge/jquery.jscrollpane", [
-    'bridge/jquery', 
-    'jquery/jquery.jscrollpane'
-], function($, scrollpane) {
-    var jquery;
-    if($.fn.jScrollPane) {
-        // The plugin is loaded, so return the same
-        // jQuery object again (the global)
-        jquery = $;
-    }
-
-    return jquery;
-});
-
-
-
-},
-'jquery/jquery.jscrollpane':function(){
-// wrapped by build app
-define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
-/*!
- * jScrollPane - v2.0.0beta11 - 2012-04-23
- * http://jscrollpane.kelvinluck.com/
- *
- * Copyright (c) 2010 Kelvin Luck
- * Dual licensed under the MIT and GPL licenses.
- */
-
-// Script: jScrollPane - cross browser customisable scrollbars
-//
-// *Version: 2.0.0beta11, Last updated: 2011-07-04*
-//
-// Project Home - http://jscrollpane.kelvinluck.com/
-// GitHub       - http://github.com/vitch/jScrollPane
-// Source       - http://github.com/vitch/jScrollPane/raw/master/script/jquery.jscrollpane.js
-// (Minified)   - http://github.com/vitch/jScrollPane/raw/master/script/jquery.jscrollpane.min.js
-//
-// About: License
-//
-// Copyright (c) 2011 Kelvin Luck
-// Dual licensed under the MIT or GPL Version 2 licenses.
-// http://jscrollpane.kelvinluck.com/MIT-LICENSE.txt
-// http://jscrollpane.kelvinluck.com/GPL-LICENSE.txt
-//
-// About: Examples
-//
-// All examples and demos are available through the jScrollPane example site at:
-// http://jscrollpane.kelvinluck.com/
-//
-// About: Support and Testing
-//
-// This plugin is tested on the browsers below and has been found to work reliably on them. If you run
-// into a problem on one of the supported browsers then please visit the support section on the jScrollPane
-// website (http://jscrollpane.kelvinluck.com/) for more information on getting support. You are also
-// welcome to fork the project on GitHub if you can contribute a fix for a given issue. 
-//
-// jQuery Versions - tested in 1.4.2+ - reported to work in 1.3.x
-// Browsers Tested - Firefox 3.6.8, Safari 5, Opera 10.6, Chrome 5.0, IE 6, 7, 8
-//
-// About: Release History
-//
-// 2.0.0beta11 - (in progress) 
-// 2.0.0beta10 - (2011-04-17) cleaner required size calculation, improved keyboard support, stickToBottom/Left, other small fixes
-// 2.0.0beta9 - (2011-01-31) new API methods, bug fixes and correct keyboard support for FF/OSX
-// 2.0.0beta8 - (2011-01-29) touchscreen support, improved keyboard support
-// 2.0.0beta7 - (2011-01-23) scroll speed consistent (thanks Aivo Paas)
-// 2.0.0beta6 - (2010-12-07) scrollToElement horizontal support
-// 2.0.0beta5 - (2010-10-18) jQuery 1.4.3 support, various bug fixes
-// 2.0.0beta4 - (2010-09-17) clickOnTrack support, bug fixes
-// 2.0.0beta3 - (2010-08-27) Horizontal mousewheel, mwheelIntent, keyboard support, bug fixes
-// 2.0.0beta2 - (2010-08-21) Bug fixes
-// 2.0.0beta1 - (2010-08-17) Rewrite to follow modern best practices and enable horizontal scrolling, initially hidden
-//							 elements and dynamically sized elements.
-// 1.x - (2006-12-31 - 2010-07-31) Initial version, hosted at googlecode, deprecated
-
-(function($,window,undefined){
-
-	$.fn.jScrollPane = function(settings)
-	{
-		// JScrollPane "class" - public methods are available through $('selector').data('jsp')
-		function JScrollPane(elem, s)
-		{
-			var settings, jsp = this, pane, paneWidth, paneHeight, container, contentWidth, contentHeight,
-				percentInViewH, percentInViewV, isScrollableV, isScrollableH, verticalDrag, dragMaxY,
-				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
-				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
-				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
-				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
-				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
-				originalElement = elem.clone(false, false).empty(),
-				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
-
-			originalPadding = elem.css('paddingTop') + ' ' +
-								elem.css('paddingRight') + ' ' +
-								elem.css('paddingBottom') + ' ' +
-								elem.css('paddingLeft');
-			originalPaddingTotalWidth = (parseInt(elem.css('paddingLeft'), 10) || 0) +
-										(parseInt(elem.css('paddingRight'), 10) || 0);
-
-			function initialise(s)
-			{
-
-				var /*firstChild, lastChild, */isMaintainingPositon, lastContentX, lastContentY,
-						hasContainingSpaceChanged, originalScrollTop, originalScrollLeft,
-						maintainAtBottom = false, maintainAtRight = false;
-
-				settings = s;
-
-				if (pane === undefined) {
-					originalScrollTop = elem.scrollTop();
-					originalScrollLeft = elem.scrollLeft();
-
-					elem.css(
-						{
-							overflow: 'hidden',
-							padding: 0
-						}
-					);
-					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
-					// come back to it later and check once it is unhidden...
-					paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
-					paneHeight = elem.innerHeight();
-
-					elem.width(paneWidth);
-					
-					pane = $('<div class="jspPane" />').css('padding', originalPadding).append(elem.children());
-					container = $('<div class="jspContainer" />')
-						.css({
-							'width': paneWidth + 'px',
-							'height': paneHeight + 'px'
-						}
-					).append(pane).appendTo(elem);
-
-					/*
-					// Move any margins from the first and last children up to the container so they can still
-					// collapse with neighbouring elements as they would before jScrollPane 
-					firstChild = pane.find(':first-child');
-					lastChild = pane.find(':last-child');
-					elem.css(
-						{
-							'margin-top': firstChild.css('margin-top'),
-							'margin-bottom': lastChild.css('margin-bottom')
-						}
-					);
-					firstChild.css('margin-top', 0);
-					lastChild.css('margin-bottom', 0);
-					*/
-				} else {
-					elem.css('width', '');
-
-					maintainAtBottom = settings.stickToBottom && isCloseToBottom();
-					maintainAtRight  = settings.stickToRight  && isCloseToRight();
-
-					hasContainingSpaceChanged = elem.innerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
-
-					if (hasContainingSpaceChanged) {
-						paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
-						paneHeight = elem.innerHeight();
-						container.css({
-							width: paneWidth + 'px',
-							height: paneHeight + 'px'
-						});
-					}
-
-					// If nothing changed since last check...
-					if (!hasContainingSpaceChanged && previousContentWidth == contentWidth && pane.outerHeight() == contentHeight) {
-						elem.width(paneWidth);
-						return;
-					}
-					previousContentWidth = contentWidth;
-					
-					pane.css('width', '');
-					elem.width(paneWidth);
-
-					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
-				}
-
-				pane.css('overflow', 'auto');
-				if (s.contentWidth) {
-					contentWidth = s.contentWidth;
-				} else {
-					contentWidth = pane[0].scrollWidth;
-				}
-				contentHeight = pane[0].scrollHeight;
-				pane.css('overflow', '');
-
-				percentInViewH = contentWidth / paneWidth;
-				percentInViewV = contentHeight / paneHeight;
-				isScrollableV = percentInViewV > 1;
-
-				isScrollableH = percentInViewH > 1;
-
-				//console.log(paneWidth, paneHeight, contentWidth, contentHeight, percentInViewH, percentInViewV, isScrollableH, isScrollableV);
-
-				if (!(isScrollableH || isScrollableV)) {
-					elem.removeClass('jspScrollable');
-					pane.css({
-						top: 0,
-						width: container.width() - originalPaddingTotalWidth
-					});
-					removeMousewheel();
-					removeFocusHandler();
-					removeKeyboardNav();
-					removeClickOnTrack();
-				} else {
-					elem.addClass('jspScrollable');
-
-					isMaintainingPositon = settings.maintainPosition && (verticalDragPosition || horizontalDragPosition);
-					if (isMaintainingPositon) {
-						lastContentX = contentPositionX();
-						lastContentY = contentPositionY();
-					}
-
-					initialiseVerticalScroll();
-					initialiseHorizontalScroll();
-					resizeScrollbars();
-
-					if (isMaintainingPositon) {
-						scrollToX(maintainAtRight  ? (contentWidth  - paneWidth ) : lastContentX, false);
-						scrollToY(maintainAtBottom ? (contentHeight - paneHeight) : lastContentY, false);
-					}
-
-					initFocusHandler();
-					initMousewheel();
-					initTouch();
-					
-					if (settings.enableKeyboardNavigation) {
-						initKeyboardNav();
-					}
-					if (settings.clickOnTrack) {
-						initClickOnTrack();
-					}
-					
-					observeHash();
-					if (settings.hijackInternalLinks) {
-						hijackInternalLinks();
-					}
-				}
-
-				if (settings.autoReinitialise && !reinitialiseInterval) {
-					reinitialiseInterval = setInterval(
-						function()
-						{
-							initialise(settings);
-						},
-						settings.autoReinitialiseDelay
-					);
-				} else if (!settings.autoReinitialise && reinitialiseInterval) {
-					clearInterval(reinitialiseInterval);
-				}
-
-				originalScrollTop && elem.scrollTop(0) && scrollToY(originalScrollTop, false);
-				originalScrollLeft && elem.scrollLeft(0) && scrollToX(originalScrollLeft, false);
-
-				elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
-			}
-
-			function initialiseVerticalScroll()
-			{
-				if (isScrollableV) {
-
-					container.append(
-						$('<div class="jspVerticalBar" />').append(
-							$('<div class="jspCap jspCapTop" />'),
-							$('<div class="jspTrack" />').append(
-								$('<div class="jspDrag" />').append(
-									$('<div class="jspDragTop" />'),
-									$('<div class="jspDragBottom" />')
-								)
-							),
-							$('<div class="jspCap jspCapBottom" />')
-						)
-					);
-
-					verticalBar = container.find('>.jspVerticalBar');
-					verticalTrack = verticalBar.find('>.jspTrack');
-					verticalDrag = verticalTrack.find('>.jspDrag');
-
-					if (settings.showArrows) {
-						arrowUp = $('<a class="jspArrow jspArrowUp" />').bind(
-							'mousedown.jsp', getArrowScroll(0, -1)
-						).bind('click.jsp', nil);
-						arrowDown = $('<a class="jspArrow jspArrowDown" />').bind(
-							'mousedown.jsp', getArrowScroll(0, 1)
-						).bind('click.jsp', nil);
-						if (settings.arrowScrollOnHover) {
-							arrowUp.bind('mouseover.jsp', getArrowScroll(0, -1, arrowUp));
-							arrowDown.bind('mouseover.jsp', getArrowScroll(0, 1, arrowDown));
-						}
-
-						appendArrows(verticalTrack, settings.verticalArrowPositions, arrowUp, arrowDown);
-					}
-
-					verticalTrackHeight = paneHeight;
-					container.find('>.jspVerticalBar>.jspCap:visible,>.jspVerticalBar>.jspArrow').each(
-						function()
-						{
-							verticalTrackHeight -= $(this).outerHeight();
-						}
-					);
-
-
-					verticalDrag.hover(
-						function()
-						{
-							verticalDrag.addClass('jspHover');
-						},
-						function()
-						{
-							verticalDrag.removeClass('jspHover');
-						}
-					).bind(
-						'mousedown.jsp',
-						function(e)
-						{
-							// Stop IE from allowing text selection
-							$('html').bind('dragstart.jsp selectstart.jsp', nil);
-
-							verticalDrag.addClass('jspActive');
-
-							var startY = e.pageY - verticalDrag.position().top;
-
-							$('html').bind(
-								'mousemove.jsp',
-								function(e)
-								{
-									positionDragY(e.pageY - startY, false);
-								}
-							).bind('mouseup.jsp mouseleave.jsp', cancelDrag);
-							return false;
-						}
-					);
-					sizeVerticalScrollbar();
-				}
-			}
-
-			function sizeVerticalScrollbar()
-			{
-				verticalTrack.height(verticalTrackHeight + 'px');
-				verticalDragPosition = 0;
-				scrollbarWidth = settings.verticalGutter + verticalTrack.outerWidth();
-
-				// Make the pane thinner to allow for the vertical scrollbar
-				pane.width(paneWidth - scrollbarWidth - originalPaddingTotalWidth);
-
-				// Add margin to the left of the pane if scrollbars are on that side (to position
-				// the scrollbar on the left or right set it's left or right property in CSS)
-				try {
-					if (verticalBar.position().left === 0) {
-						pane.css('margin-left', scrollbarWidth + 'px');
-					}
-				} catch (err) {
-				}
-			}
-
-			function initialiseHorizontalScroll()
-			{
-				if (isScrollableH) {
-
-					container.append(
-						$('<div class="jspHorizontalBar" />').append(
-							$('<div class="jspCap jspCapLeft" />'),
-							$('<div class="jspTrack" />').append(
-								$('<div class="jspDrag" />').append(
-									$('<div class="jspDragLeft" />'),
-									$('<div class="jspDragRight" />')
-								)
-							),
-							$('<div class="jspCap jspCapRight" />')
-						)
-					);
-
-					horizontalBar = container.find('>.jspHorizontalBar');
-					horizontalTrack = horizontalBar.find('>.jspTrack');
-					horizontalDrag = horizontalTrack.find('>.jspDrag');
-
-					if (settings.showArrows) {
-						arrowLeft = $('<a class="jspArrow jspArrowLeft" />').bind(
-							'mousedown.jsp', getArrowScroll(-1, 0)
-						).bind('click.jsp', nil);
-						arrowRight = $('<a class="jspArrow jspArrowRight" />').bind(
-							'mousedown.jsp', getArrowScroll(1, 0)
-						).bind('click.jsp', nil);
-						if (settings.arrowScrollOnHover) {
-							arrowLeft.bind('mouseover.jsp', getArrowScroll(-1, 0, arrowLeft));
-							arrowRight.bind('mouseover.jsp', getArrowScroll(1, 0, arrowRight));
-						}
-						appendArrows(horizontalTrack, settings.horizontalArrowPositions, arrowLeft, arrowRight);
-					}
-
-					horizontalDrag.hover(
-						function()
-						{
-							horizontalDrag.addClass('jspHover');
-						},
-						function()
-						{
-							horizontalDrag.removeClass('jspHover');
-						}
-					).bind(
-						'mousedown.jsp',
-						function(e)
-						{
-							// Stop IE from allowing text selection
-							$('html').bind('dragstart.jsp selectstart.jsp', nil);
-
-							horizontalDrag.addClass('jspActive');
-
-							var startX = e.pageX - horizontalDrag.position().left;
-
-							$('html').bind(
-								'mousemove.jsp',
-								function(e)
-								{
-									positionDragX(e.pageX - startX, false);
-								}
-							).bind('mouseup.jsp mouseleave.jsp', cancelDrag);
-							return false;
-						}
-					);
-					horizontalTrackWidth = container.innerWidth();
-					sizeHorizontalScrollbar();
-				}
-			}
-
-			function sizeHorizontalScrollbar()
-			{
-				container.find('>.jspHorizontalBar>.jspCap:visible,>.jspHorizontalBar>.jspArrow').each(
-					function()
-					{
-						horizontalTrackWidth -= $(this).outerWidth();
-					}
-				);
-
-				horizontalTrack.width(horizontalTrackWidth + 'px');
-				horizontalDragPosition = 0;
-			}
-
-			function resizeScrollbars()
-			{
-				if (isScrollableH && isScrollableV) {
-					var horizontalTrackHeight = horizontalTrack.outerHeight(),
-						verticalTrackWidth = verticalTrack.outerWidth();
-					verticalTrackHeight -= horizontalTrackHeight;
-					$(horizontalBar).find('>.jspCap:visible,>.jspArrow').each(
-						function()
-						{
-							horizontalTrackWidth += $(this).outerWidth();
-						}
-					);
-					horizontalTrackWidth -= verticalTrackWidth;
-					paneHeight -= verticalTrackWidth;
-					paneWidth -= horizontalTrackHeight;
-					horizontalTrack.parent().append(
-						$('<div class="jspCorner" />').css('width', horizontalTrackHeight + 'px')
-					);
-					sizeVerticalScrollbar();
-					sizeHorizontalScrollbar();
-				}
-				// reflow content
-				if (isScrollableH) {
-					pane.width((container.outerWidth() - originalPaddingTotalWidth) + 'px');
-				}
-				contentHeight = pane.outerHeight();
-				percentInViewV = contentHeight / paneHeight;
-
-				if (isScrollableH) {
-					horizontalDragWidth = Math.ceil(1 / percentInViewH * horizontalTrackWidth);
-					if (horizontalDragWidth > settings.horizontalDragMaxWidth) {
-						horizontalDragWidth = settings.horizontalDragMaxWidth;
-					} else if (horizontalDragWidth < settings.horizontalDragMinWidth) {
-						horizontalDragWidth = settings.horizontalDragMinWidth;
-					}
-					horizontalDrag.width(horizontalDragWidth + 'px');
-					dragMaxX = horizontalTrackWidth - horizontalDragWidth;
-					_positionDragX(horizontalDragPosition); // To update the state for the arrow buttons
-				}
-				if (isScrollableV) {
-					verticalDragHeight = Math.ceil(1 / percentInViewV * verticalTrackHeight);
-					if (verticalDragHeight > settings.verticalDragMaxHeight) {
-						verticalDragHeight = settings.verticalDragMaxHeight;
-					} else if (verticalDragHeight < settings.verticalDragMinHeight) {
-						verticalDragHeight = settings.verticalDragMinHeight;
-					}
-					verticalDrag.height(verticalDragHeight + 'px');
-					dragMaxY = verticalTrackHeight - verticalDragHeight;
-					_positionDragY(verticalDragPosition); // To update the state for the arrow buttons
-				}
-			}
-
-			function appendArrows(ele, p, a1, a2)
-			{
-				var p1 = "before", p2 = "after", aTemp;
-				
-				// Sniff for mac... Is there a better way to determine whether the arrows would naturally appear
-				// at the top or the bottom of the bar?
-				if (p == "os") {
-					p = /Mac/.test(navigator.platform) ? "after" : "split";
-				}
-				if (p == p1) {
-					p2 = p;
-				} else if (p == p2) {
-					p1 = p;
-					aTemp = a1;
-					a1 = a2;
-					a2 = aTemp;
-				}
-
-				ele[p1](a1)[p2](a2);
-			}
-
-			function getArrowScroll(dirX, dirY, ele)
-			{
-				return function()
-				{
-					arrowScroll(dirX, dirY, this, ele);
-					this.blur();
-					return false;
-				};
-			}
-
-			function arrowScroll(dirX, dirY, arrow, ele)
-			{
-				arrow = $(arrow).addClass('jspActive');
-
-				var eve,
-					scrollTimeout,
-					isFirst = true,
-					doScroll = function()
-					{
-						if (dirX !== 0) {
-							jsp.scrollByX(dirX * settings.arrowButtonSpeed);
-						}
-						if (dirY !== 0) {
-							jsp.scrollByY(dirY * settings.arrowButtonSpeed);
-						}
-						scrollTimeout = setTimeout(doScroll, isFirst ? settings.initialDelay : settings.arrowRepeatFreq);
-						isFirst = false;
-					};
-
-				doScroll();
-
-				eve = ele ? 'mouseout.jsp' : 'mouseup.jsp';
-				ele = ele || $('html');
-				ele.bind(
-					eve,
-					function()
-					{
-						arrow.removeClass('jspActive');
-						scrollTimeout && clearTimeout(scrollTimeout);
-						scrollTimeout = null;
-						ele.unbind(eve);
-					}
-				);
-			}
-
-			function initClickOnTrack()
-			{
-				removeClickOnTrack();
-				if (isScrollableV) {
-					verticalTrack.bind(
-						'mousedown.jsp',
-						function(e)
-						{
-							if (e.originalTarget === undefined || e.originalTarget == e.currentTarget) {
-								var clickedTrack = $(this),
-									offset = clickedTrack.offset(),
-									direction = e.pageY - offset.top - verticalDragPosition,
-									scrollTimeout,
-									isFirst = true,
-									doScroll = function()
-									{
-										var offset = clickedTrack.offset(),
-											pos = e.pageY - offset.top - verticalDragHeight / 2,
-											contentDragY = paneHeight * settings.scrollPagePercent,
-											dragY = dragMaxY * contentDragY / (contentHeight - paneHeight);
-										if (direction < 0) {
-											if (verticalDragPosition - dragY > pos) {
-												jsp.scrollByY(-contentDragY);
-											} else {
-												positionDragY(pos);
-											}
-										} else if (direction > 0) {
-											if (verticalDragPosition + dragY < pos) {
-												jsp.scrollByY(contentDragY);
-											} else {
-												positionDragY(pos);
-											}
-										} else {
-											cancelClick();
-											return;
-										}
-										scrollTimeout = setTimeout(doScroll, isFirst ? settings.initialDelay : settings.trackClickRepeatFreq);
-										isFirst = false;
-									},
-									cancelClick = function()
-									{
-										scrollTimeout && clearTimeout(scrollTimeout);
-										scrollTimeout = null;
-										$(document).unbind('mouseup.jsp', cancelClick);
-									};
-								doScroll();
-								$(document).bind('mouseup.jsp', cancelClick);
-								return false;
-							}
-						}
-					);
-				}
-				
-				if (isScrollableH) {
-					horizontalTrack.bind(
-						'mousedown.jsp',
-						function(e)
-						{
-							if (e.originalTarget === undefined || e.originalTarget == e.currentTarget) {
-								var clickedTrack = $(this),
-									offset = clickedTrack.offset(),
-									direction = e.pageX - offset.left - horizontalDragPosition,
-									scrollTimeout,
-									isFirst = true,
-									doScroll = function()
-									{
-										var offset = clickedTrack.offset(),
-											pos = e.pageX - offset.left - horizontalDragWidth / 2,
-											contentDragX = paneWidth * settings.scrollPagePercent,
-											dragX = dragMaxX * contentDragX / (contentWidth - paneWidth);
-										if (direction < 0) {
-											if (horizontalDragPosition - dragX > pos) {
-												jsp.scrollByX(-contentDragX);
-											} else {
-												positionDragX(pos);
-											}
-										} else if (direction > 0) {
-											if (horizontalDragPosition + dragX < pos) {
-												jsp.scrollByX(contentDragX);
-											} else {
-												positionDragX(pos);
-											}
-										} else {
-											cancelClick();
-											return;
-										}
-										scrollTimeout = setTimeout(doScroll, isFirst ? settings.initialDelay : settings.trackClickRepeatFreq);
-										isFirst = false;
-									},
-									cancelClick = function()
-									{
-										scrollTimeout && clearTimeout(scrollTimeout);
-										scrollTimeout = null;
-										$(document).unbind('mouseup.jsp', cancelClick);
-									};
-								doScroll();
-								$(document).bind('mouseup.jsp', cancelClick);
-								return false;
-							}
-						}
-					);
-				}
-			}
-
-			function removeClickOnTrack()
-			{
-				if (horizontalTrack) {
-					horizontalTrack.unbind('mousedown.jsp');
-				}
-				if (verticalTrack) {
-					verticalTrack.unbind('mousedown.jsp');
-				}
-			}
-
-			function cancelDrag()
-			{
-				$('html').unbind('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
-
-				if (verticalDrag) {
-					verticalDrag.removeClass('jspActive');
-				}
-				if (horizontalDrag) {
-					horizontalDrag.removeClass('jspActive');
-				}
-			}
-
-			function positionDragY(destY, animate)
-			{
-				if (!isScrollableV) {
-					return;
-				}
-				if (destY < 0) {
-					destY = 0;
-				} else if (destY > dragMaxY) {
-					destY = dragMaxY;
-				}
-
-				// can't just check if(animate) because false is a valid value that could be passed in...
-				if (animate === undefined) {
-					animate = settings.animateScroll;
-				}
-				if (animate) {
-					jsp.animate(verticalDrag, 'top', destY,	_positionDragY);
-				} else {
-					verticalDrag.css('top', destY);
-					_positionDragY(destY);
-				}
-
-			}
-
-			function _positionDragY(destY)
-			{
-				if (destY === undefined) {
-					destY = verticalDrag.position().top;
-				}
-
-				container.scrollTop(0);
-				verticalDragPosition = destY;
-
-				var isAtTop = verticalDragPosition === 0,
-					isAtBottom = verticalDragPosition == dragMaxY,
-					percentScrolled = destY/ dragMaxY,
-					destTop = -percentScrolled * (contentHeight - paneHeight);
-
-				if (wasAtTop != isAtTop || wasAtBottom != isAtBottom) {
-					wasAtTop = isAtTop;
-					wasAtBottom = isAtBottom;
-					elem.trigger('jsp-arrow-change', [wasAtTop, wasAtBottom, wasAtLeft, wasAtRight]);
-				}
-				
-				updateVerticalArrows(isAtTop, isAtBottom);
-				pane.css('top', destTop);
-				elem.trigger('jsp-scroll-y', [-destTop, isAtTop, isAtBottom]).trigger('scroll');
-			}
-
-			function positionDragX(destX, animate)
-			{
-				if (!isScrollableH) {
-					return;
-				}
-				if (destX < 0) {
-					destX = 0;
-				} else if (destX > dragMaxX) {
-					destX = dragMaxX;
-				}
-
-				if (animate === undefined) {
-					animate = settings.animateScroll;
-				}
-				if (animate) {
-					jsp.animate(horizontalDrag, 'left', destX,	_positionDragX);
-				} else {
-					horizontalDrag.css('left', destX);
-					_positionDragX(destX);
-				}
-			}
-
-			function _positionDragX(destX)
-			{
-				if (destX === undefined) {
-					destX = horizontalDrag.position().left;
-				}
-
-				container.scrollTop(0);
-				horizontalDragPosition = destX;
-
-				var isAtLeft = horizontalDragPosition === 0,
-					isAtRight = horizontalDragPosition == dragMaxX,
-					percentScrolled = destX / dragMaxX,
-					destLeft = -percentScrolled * (contentWidth - paneWidth);
-
-				if (wasAtLeft != isAtLeft || wasAtRight != isAtRight) {
-					wasAtLeft = isAtLeft;
-					wasAtRight = isAtRight;
-					elem.trigger('jsp-arrow-change', [wasAtTop, wasAtBottom, wasAtLeft, wasAtRight]);
-				}
-				
-				updateHorizontalArrows(isAtLeft, isAtRight);
-				pane.css('left', destLeft);
-				elem.trigger('jsp-scroll-x', [-destLeft, isAtLeft, isAtRight]).trigger('scroll');
-			}
-
-			function updateVerticalArrows(isAtTop, isAtBottom)
-			{
-				if (settings.showArrows) {
-					arrowUp[isAtTop ? 'addClass' : 'removeClass']('jspDisabled');
-					arrowDown[isAtBottom ? 'addClass' : 'removeClass']('jspDisabled');
-				}
-			}
-
-			function updateHorizontalArrows(isAtLeft, isAtRight)
-			{
-				if (settings.showArrows) {
-					arrowLeft[isAtLeft ? 'addClass' : 'removeClass']('jspDisabled');
-					arrowRight[isAtRight ? 'addClass' : 'removeClass']('jspDisabled');
-				}
-			}
-
-			function scrollToY(destY, animate)
-			{
-				var percentScrolled = destY / (contentHeight - paneHeight);
-				positionDragY(percentScrolled * dragMaxY, animate);
-			}
-
-			function scrollToX(destX, animate)
-			{
-				var percentScrolled = destX / (contentWidth - paneWidth);
-				positionDragX(percentScrolled * dragMaxX, animate);
-			}
-
-			function scrollToElement(ele, stickToTop, animate)
-			{
-				var e, eleHeight, eleWidth, eleTop = 0, eleLeft = 0, viewportTop, viewportLeft, maxVisibleEleTop, maxVisibleEleLeft, destY, destX;
-
-				// Legal hash values aren't necessarily legal jQuery selectors so we need to catch any
-				// errors from the lookup...
-				try {
-					e = $(ele);
-				} catch (err) {
-					return;
-				}
-				eleHeight = e.outerHeight();
-				eleWidth= e.outerWidth();
-
-				container.scrollTop(0);
-				container.scrollLeft(0);
-				
-				// loop through parents adding the offset top of any elements that are relatively positioned between
-				// the focused element and the jspPane so we can get the true distance from the top
-				// of the focused element to the top of the scrollpane...
-				while (!e.is('.jspPane')) {
-					eleTop += e.position().top;
-					eleLeft += e.position().left;
-					e = e.offsetParent();
-					if (/^body|html$/i.test(e[0].nodeName)) {
-						// we ended up too high in the document structure. Quit!
-						return;
-					}
-				}
-
-				viewportTop = contentPositionY();
-				maxVisibleEleTop = viewportTop + paneHeight;
-				if (eleTop < viewportTop || stickToTop) { // element is above viewport
-					destY = eleTop - settings.verticalGutter;
-				} else if (eleTop + eleHeight > maxVisibleEleTop) { // element is below viewport
-					destY = eleTop - paneHeight + eleHeight + settings.verticalGutter;
-				}
-				if (destY) {
-					scrollToY(destY, animate);
-				}
-				
-				viewportLeft = contentPositionX();
-	            maxVisibleEleLeft = viewportLeft + paneWidth;
-	            if (eleLeft < viewportLeft || stickToTop) { // element is to the left of viewport
-	                destX = eleLeft - settings.horizontalGutter;
-	            } else if (eleLeft + eleWidth > maxVisibleEleLeft) { // element is to the right viewport
-	                destX = eleLeft - paneWidth + eleWidth + settings.horizontalGutter;
-	            }
-	            if (destX) {
-	                scrollToX(destX, animate);
-	            }
-
-			}
-
-			function contentPositionX()
-			{
-				return -pane.position().left;
-			}
-
-			function contentPositionY()
-			{
-				return -pane.position().top;
-			}
-
-			function isCloseToBottom()
-			{
-				var scrollableHeight = contentHeight - paneHeight;
-				return (scrollableHeight > 20) && (scrollableHeight - contentPositionY() < 10);
-			}
-
-			function isCloseToRight()
-			{
-				var scrollableWidth = contentWidth - paneWidth;
-				return (scrollableWidth > 20) && (scrollableWidth - contentPositionX() < 10);
-			}
-
-			function initMousewheel()
-			{
-				container.unbind(mwEvent).bind(
-					mwEvent,
-					function (event, delta, deltaX, deltaY) {
-						var dX = horizontalDragPosition, dY = verticalDragPosition;
-						jsp.scrollBy(deltaX * settings.mouseWheelSpeed, -deltaY * settings.mouseWheelSpeed, false);
-						// return true if there was no movement so rest of screen can scroll
-						return dX == horizontalDragPosition && dY == verticalDragPosition;
-					}
-				);
-			}
-
-			function removeMousewheel()
-			{
-				container.unbind(mwEvent);
-			}
-
-			function nil()
-			{
-				return false;
-			}
-
-			function initFocusHandler()
-			{
-				pane.find(':input,a').unbind('focus.jsp').bind(
-					'focus.jsp',
-					function(e)
-					{
-						scrollToElement(e.target, false);
-					}
-				);
-			}
-
-			function removeFocusHandler()
-			{
-				pane.find(':input,a').unbind('focus.jsp');
-			}
-			
-			function initKeyboardNav()
-			{
-				var keyDown, elementHasScrolled, validParents = [];
-				isScrollableH && validParents.push(horizontalBar[0]);
-				isScrollableV && validParents.push(verticalBar[0]);
-				
-				// IE also focuses elements that don't have tabindex set.
-				pane.focus(
-					function()
-					{
-						elem.focus();
-					}
-				);
-				
-				elem.attr('tabindex', 0)
-					.unbind('keydown.jsp keypress.jsp')
-					.bind(
-						'keydown.jsp',
-						function(e)
-						{
-							if (e.target !== this && !(validParents.length && $(e.target).closest(validParents).length)){
-								return;
-							}
-							var dX = horizontalDragPosition, dY = verticalDragPosition;
-							switch(e.keyCode) {
-								case 40: // down
-								case 38: // up
-								case 34: // page down
-								case 32: // space
-								case 33: // page up
-								case 39: // right
-								case 37: // left
-									keyDown = e.keyCode;
-									keyDownHandler();
-									break;
-								case 35: // end
-									scrollToY(contentHeight - paneHeight);
-									keyDown = null;
-									break;
-								case 36: // home
-									scrollToY(0);
-									keyDown = null;
-									break;
-							}
-
-							elementHasScrolled = e.keyCode == keyDown && dX != horizontalDragPosition || dY != verticalDragPosition;
-							return !elementHasScrolled;
-						}
-					).bind(
-						'keypress.jsp', // For FF/ OSX so that we can cancel the repeat key presses if the JSP scrolls...
-						function(e)
-						{
-							if (e.keyCode == keyDown) {
-								keyDownHandler();
-							}
-							return !elementHasScrolled;
-						}
-					);
-				
-				if (settings.hideFocus) {
-					elem.css('outline', 'none');
-					if ('hideFocus' in container[0]){
-						elem.attr('hideFocus', true);
-					}
-				} else {
-					elem.css('outline', '');
-					if ('hideFocus' in container[0]){
-						elem.attr('hideFocus', false);
-					}
-				}
-				
-				function keyDownHandler()
-				{
-					var dX = horizontalDragPosition, dY = verticalDragPosition;
-					switch(keyDown) {
-						case 40: // down
-							jsp.scrollByY(settings.keyboardSpeed, false);
-							break;
-						case 38: // up
-							jsp.scrollByY(-settings.keyboardSpeed, false);
-							break;
-						case 34: // page down
-						case 32: // space
-							jsp.scrollByY(paneHeight * settings.scrollPagePercent, false);
-							break;
-						case 33: // page up
-							jsp.scrollByY(-paneHeight * settings.scrollPagePercent, false);
-							break;
-						case 39: // right
-							jsp.scrollByX(settings.keyboardSpeed, false);
-							break;
-						case 37: // left
-							jsp.scrollByX(-settings.keyboardSpeed, false);
-							break;
-					}
-
-					elementHasScrolled = dX != horizontalDragPosition || dY != verticalDragPosition;
-					return elementHasScrolled;
-				}
-			}
-			
-			function removeKeyboardNav()
-			{
-				elem.attr('tabindex', '-1')
-					.removeAttr('tabindex')
-					.unbind('keydown.jsp keypress.jsp');
-			}
-
-			function observeHash()
-			{
-				if (location.hash && location.hash.length > 1) {
-					var e,
-						retryInt,
-						hash = escape(location.hash.substr(1)) // hash must be escaped to prevent XSS
-						;
-					try {
-						e = $('#' + hash + ', a[name="' + hash + '"]');
-					} catch (err) {
-						return;
-					}
-
-					if (e.length && pane.find(hash)) {
-						// nasty workaround but it appears to take a little while before the hash has done its thing
-						// to the rendered page so we just wait until the container's scrollTop has been messed up.
-						if (container.scrollTop() === 0) {
-							retryInt = setInterval(
-								function()
-								{
-									if (container.scrollTop() > 0) {
-										scrollToElement(e, true);
-										$(document).scrollTop(container.position().top);
-										clearInterval(retryInt);
-									}
-								},
-								50
-							);
-						} else {
-							scrollToElement(e, true);
-							$(document).scrollTop(container.position().top);
-						}
-					}
-				}
-			}
-
-			function hijackInternalLinks()
-			{
-				// only register the link handler once
-				if ($(document.body).data('jspHijack')) {
-					return;
-				}
-
-				// remember that the handler was bound
-				$(document.body).data('jspHijack', true);
-
-				// use live handler to also capture newly created links
-				$(document.body).delegate('a[href*=#]', 'click', function(event) {
-					// does the link point to the same page?
-					// this also takes care of cases with a <base>-Tag or Links not starting with the hash #
-					// e.g. <a href="index.html#test"> when the current url already is index.html
-					var href = this.href.substr(0, this.href.indexOf('#')),
-						locationHref = location.href,
-						hash,
-						element,
-						container,
-						jsp,
-						scrollTop,
-						elementTop;
-					if (location.href.indexOf('#') !== -1) {
-						locationHref = location.href.substr(0, location.href.indexOf('#'));
-					}
-					if (href !== locationHref) {
-						// the link points to another page
-						return;
-					}
-
-					// check if jScrollPane should handle this click event
-					hash = escape(this.href.substr(this.href.indexOf('#') + 1));
-
-					// find the element on the page
-					element;
-					try {
-						element = $('#' + hash + ', a[name="' + hash + '"]');
-					} catch (e) {
-						// hash is not a valid jQuery identifier
-						return;
-					}
-
-					if (!element.length) {
-						// this link does not point to an element on this page
-						return;
-					}
-
-					container = element.closest('.jspScrollable');
-					jsp = container.data('jsp');
-
-					// jsp might be another jsp instance than the one, that bound this event
-					// remember: this event is only bound once for all instances.
-					jsp.scrollToElement(element, true);
-
-					if (container[0].scrollIntoView) {
-						// also scroll to the top of the container (if it is not visible)
-						scrollTop = $(window).scrollTop();
-						elementTop = element.offset().top;
-						if (elementTop < scrollTop || elementTop > scrollTop + $(window).height()) {
-							container[0].scrollIntoView();
-						}
-					}
-
-					// jsp handled this event, prevent the browser default (scrolling :P)
-					event.preventDefault();
-				});
-			}
-			
-			// Init touch on iPad, iPhone, iPod, Android
-			function initTouch()
-			{
-				var startX,
-					startY,
-					touchStartX,
-					touchStartY,
-					moved,
-					moving = false;
-  
-				container.unbind('touchstart.jsp touchmove.jsp touchend.jsp click.jsp-touchclick').bind(
-					'touchstart.jsp',
-					function(e)
-					{
-						var touch = e.originalEvent.touches[0];
-						startX = contentPositionX();
-						startY = contentPositionY();
-						touchStartX = touch.pageX;
-						touchStartY = touch.pageY;
-						moved = false;
-						moving = true;
-					}
-				).bind(
-					'touchmove.jsp',
-					function(ev)
-					{
-						if(!moving) {
-							return;
-						}
-						
-						var touchPos = ev.originalEvent.touches[0],
-							dX = horizontalDragPosition, dY = verticalDragPosition;
-						
-						jsp.scrollTo(startX + touchStartX - touchPos.pageX, startY + touchStartY - touchPos.pageY);
-						
-						moved = moved || Math.abs(touchStartX - touchPos.pageX) > 5 || Math.abs(touchStartY - touchPos.pageY) > 5;
-						
-						// return true if there was no movement so rest of screen can scroll
-						return dX == horizontalDragPosition && dY == verticalDragPosition;
-					}
-				).bind(
-					'touchend.jsp',
-					function(e)
-					{
-						moving = false;
-						/*if(moved) {
-							return false;
-						}*/
-					}
-				).bind(
-					'click.jsp-touchclick',
-					function(e)
-					{
-						if(moved) {
-							moved = false;
-							return false;
-						}
-					}
-				);
-			}
-			
-			function destroy(){
-				var currentY = contentPositionY(),
-					currentX = contentPositionX();
-				elem.removeClass('jspScrollable').unbind('.jsp');
-				elem.replaceWith(originalElement.append(pane.children()));
-				originalElement.scrollTop(currentY);
-				originalElement.scrollLeft(currentX);
-
-				// clear reinitialize timer if active
-				if (reinitialiseInterval) {
-					clearInterval(reinitialiseInterval);
-				}
-			}
-
-			// Public API
-			$.extend(
-				jsp,
-				{
-					// Reinitialises the scroll pane (if it's internal dimensions have changed since the last time it
-					// was initialised). The settings object which is passed in will override any settings from the
-					// previous time it was initialised - if you don't pass any settings then the ones from the previous
-					// initialisation will be used.
-					reinitialise: function(s)
-					{
-						s = $.extend({}, settings, s);
-						initialise(s);
-					},
-					// Scrolls the specified element (a jQuery object, DOM node or jQuery selector string) into view so
-					// that it can be seen within the viewport. If stickToTop is true then the element will appear at
-					// the top of the viewport, if it is false then the viewport will scroll as little as possible to
-					// show the element. You can also specify if you want animation to occur. If you don't provide this
-					// argument then the animateScroll value from the settings object is used instead.
-					scrollToElement: function(ele, stickToTop, animate)
-					{
-						scrollToElement(ele, stickToTop, animate);
-					},
-					// Scrolls the pane so that the specified co-ordinates within the content are at the top left
-					// of the viewport. animate is optional and if not passed then the value of animateScroll from
-					// the settings object this jScrollPane was initialised with is used.
-					scrollTo: function(destX, destY, animate)
-					{
-						scrollToX(destX, animate);
-						scrollToY(destY, animate);
-					},
-					// Scrolls the pane so that the specified co-ordinate within the content is at the left of the
-					// viewport. animate is optional and if not passed then the value of animateScroll from the settings
-					// object this jScrollPane was initialised with is used.
-					scrollToX: function(destX, animate)
-					{
-						scrollToX(destX, animate);
-					},
-					// Scrolls the pane so that the specified co-ordinate within the content is at the top of the
-					// viewport. animate is optional and if not passed then the value of animateScroll from the settings
-					// object this jScrollPane was initialised with is used.
-					scrollToY: function(destY, animate)
-					{
-						scrollToY(destY, animate);
-					},
-					// Scrolls the pane to the specified percentage of its maximum horizontal scroll position. animate
-					// is optional and if not passed then the value of animateScroll from the settings object this
-					// jScrollPane was initialised with is used.
-					scrollToPercentX: function(destPercentX, animate)
-					{
-						scrollToX(destPercentX * (contentWidth - paneWidth), animate);
-					},
-					// Scrolls the pane to the specified percentage of its maximum vertical scroll position. animate
-					// is optional and if not passed then the value of animateScroll from the settings object this
-					// jScrollPane was initialised with is used.
-					scrollToPercentY: function(destPercentY, animate)
-					{
-						scrollToY(destPercentY * (contentHeight - paneHeight), animate);
-					},
-					// Scrolls the pane by the specified amount of pixels. animate is optional and if not passed then
-					// the value of animateScroll from the settings object this jScrollPane was initialised with is used.
-					scrollBy: function(deltaX, deltaY, animate)
-					{
-						jsp.scrollByX(deltaX, animate);
-						jsp.scrollByY(deltaY, animate);
-					},
-					// Scrolls the pane by the specified amount of pixels. animate is optional and if not passed then
-					// the value of animateScroll from the settings object this jScrollPane was initialised with is used.
-					scrollByX: function(deltaX, animate)
-					{
-						var destX = contentPositionX() + Math[deltaX<0 ? 'floor' : 'ceil'](deltaX),
-							percentScrolled = destX / (contentWidth - paneWidth);
-						positionDragX(percentScrolled * dragMaxX, animate);
-					},
-					// Scrolls the pane by the specified amount of pixels. animate is optional and if not passed then
-					// the value of animateScroll from the settings object this jScrollPane was initialised with is used.
-					scrollByY: function(deltaY, animate)
-					{
-						var destY = contentPositionY() + Math[deltaY<0 ? 'floor' : 'ceil'](deltaY),
-							percentScrolled = destY / (contentHeight - paneHeight);
-						positionDragY(percentScrolled * dragMaxY, animate);
-					},
-					// Positions the horizontal drag at the specified x position (and updates the viewport to reflect
-					// this). animate is optional and if not passed then the value of animateScroll from the settings
-					// object this jScrollPane was initialised with is used.
-					positionDragX: function(x, animate)
-					{
-						positionDragX(x, animate);
-					},
-					// Positions the vertical drag at the specified y position (and updates the viewport to reflect
-					// this). animate is optional and if not passed then the value of animateScroll from the settings
-					// object this jScrollPane was initialised with is used.
-					positionDragY: function(y, animate)
-					{
-						positionDragY(y, animate);
-					},
-					// This method is called when jScrollPane is trying to animate to a new position. You can override
-					// it if you want to provide advanced animation functionality. It is passed the following arguments:
-					//  * ele          - the element whose position is being animated
-					//  * prop         - the property that is being animated
-					//  * value        - the value it's being animated to
-					//  * stepCallback - a function that you must execute each time you update the value of the property
-					// You can use the default implementation (below) as a starting point for your own implementation.
-					animate: function(ele, prop, value, stepCallback)
-					{
-						var params = {};
-						params[prop] = value;
-						ele.animate(
-							params,
-							{
-								'duration'	: settings.animateDuration,
-								'easing'	: settings.animateEase,
-								'queue'		: false,
-								'step'		: stepCallback
-							}
-						);
-					},
-					// Returns the current x position of the viewport with regards to the content pane.
-					getContentPositionX: function()
-					{
-						return contentPositionX();
-					},
-					// Returns the current y position of the viewport with regards to the content pane.
-					getContentPositionY: function()
-					{
-						return contentPositionY();
-					},
-					// Returns the width of the content within the scroll pane.
-					getContentWidth: function()
-					{
-						return contentWidth;
-					},
-					// Returns the height of the content within the scroll pane.
-					getContentHeight: function()
-					{
-						return contentHeight;
-					},
-					// Returns the horizontal position of the viewport within the pane content.
-					getPercentScrolledX: function()
-					{
-						return contentPositionX() / (contentWidth - paneWidth);
-					},
-					// Returns the vertical position of the viewport within the pane content.
-					getPercentScrolledY: function()
-					{
-						return contentPositionY() / (contentHeight - paneHeight);
-					},
-					// Returns whether or not this scrollpane has a horizontal scrollbar.
-					getIsScrollableH: function()
-					{
-						return isScrollableH;
-					},
-					// Returns whether or not this scrollpane has a vertical scrollbar.
-					getIsScrollableV: function()
-					{
-						return isScrollableV;
-					},
-					// Gets a reference to the content pane. It is important that you use this method if you want to
-					// edit the content of your jScrollPane as if you access the element directly then you may have some
-					// problems (as your original element has had additional elements for the scrollbars etc added into
-					// it).
-					getContentPane: function()
-					{
-						return pane;
-					},
-					// Scrolls this jScrollPane down as far as it can currently scroll. If animate isn't passed then the
-					// animateScroll value from settings is used instead.
-					scrollToBottom: function(animate)
-					{
-						positionDragY(dragMaxY, animate);
-					},
-					// Hijacks the links on the page which link to content inside the scrollpane. If you have changed
-					// the content of your page (e.g. via AJAX) and want to make sure any new anchor links to the
-					// contents of your scroll pane will work then call this function.
-					hijackInternalLinks: $.noop,
-					// Removes the jScrollPane and returns the page to the state it was in before jScrollPane was
-					// initialised.
-					destroy: function()
-					{
-							destroy();
-					}
-				}
-			);
-			
-			initialise(s);
-		}
-
-		// Pluginifying code...
-		settings = $.extend({}, $.fn.jScrollPane.defaults, settings);
-		
-		// Apply default speed
-		$.each(['mouseWheelSpeed', 'arrowButtonSpeed', 'trackClickSpeed', 'keyboardSpeed'], function() {
-			settings[this] = settings[this] || settings.speed;
-		});
-
-		return this.each(
-			function()
-			{
-				var elem = $(this), jspApi = elem.data('jsp');
-				if (jspApi) {
-					jspApi.reinitialise(settings);
-				} else {
-					jspApi = new JScrollPane(elem, settings);
-					elem.data('jsp', jspApi);
-				}
-			}
+	//		TODOC
+
+/*=====
+dojo["NodeList-fx"] = {
+	// summary: Adds dojo.fx animation support to dojo.query() by extending the NodeList class
+	//		with additional FX functions.  NodeList is the array-like object used to hold query results.
+};
+
+// doc alias helpers:
+NodeList = dojo.NodeList;
+=====*/
+
+lang.extend(NodeList, {
+	_anim: function(obj, method, args){
+		args = args||{};
+		var a = coreFx.combine(
+			this.map(function(item){
+				var tmpArgs = { node: item };
+				lang.mixin(tmpArgs, args);
+				return obj[method](tmpArgs);
+			})
 		);
-	};
+		return args.auto ? a.play() && this : a; // dojo.Animation|dojo.NodeList
+	},
 
-	$.fn.jScrollPane.defaults = {
-		showArrows					: false,
-		maintainPosition			: true,
-		stickToBottom				: false,
-		stickToRight				: false,
-		clickOnTrack				: true,
-		autoReinitialise			: false,
-		autoReinitialiseDelay		: 500,
-		verticalDragMinHeight		: 0,
-		verticalDragMaxHeight		: 99999,
-		horizontalDragMinWidth		: 0,
-		horizontalDragMaxWidth		: 99999,
-		contentWidth				: undefined,
-		animateScroll				: false,
-		animateDuration				: 300,
-		animateEase					: 'linear',
-		hijackInternalLinks			: false,
-		verticalGutter				: 4,
-		horizontalGutter			: 4,
-		mouseWheelSpeed				: 0,
-		arrowButtonSpeed			: 0,
-		arrowRepeatFreq				: 50,
-		arrowScrollOnHover			: false,
-		trackClickSpeed				: 0,
-		trackClickRepeatFreq		: 70,
-		verticalArrowPositions		: 'split',
-		horizontalArrowPositions	: 'split',
-		enableKeyboardNavigation	: true,
-		hideFocus					: false,
-		keyboardSpeed				: 0,
-		initialDelay                : 300,        // Delay before starting repeating
-		speed						: 30,		// Default speed when others falsey
-		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
-	};
+	wipeIn: function(args){
+		// summary:
+		//		wipe in all elements of this NodeList via `dojo.fx.wipeIn`
+		//
+		// args: Object?
+		//		Additional dojo.Animation arguments to mix into this set with the addition of
+		//		an `auto` parameter.
+		//
+		// returns: dojo.Animation|dojo.NodeList
+		//		A special args member `auto` can be passed to automatically play the animation.
+		//		If args.auto is present, the original dojo.NodeList will be returned for further
+		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
+		//
+		// example:
+		//		Fade in all tables with class "blah":
+		//		|	dojo.query("table.blah").wipeIn().play();
+		//
+		// example:
+		//		Utilizing `auto` to get the NodeList back:
+		//		|	dojo.query(".titles").wipeIn({ auto:true }).onclick(someFunction);
+		//
+		return this._anim(coreFx, "wipeIn", args); // dojo.Animation|dojo.NodeList
+	},
 
-})(jQuery,this);
+	wipeOut: function(args){
+		// summary:
+		//		wipe out all elements of this NodeList via `dojo.fx.wipeOut`
+		//
+		// args: Object?
+		//		Additional dojo.Animation arguments to mix into this set with the addition of
+		//		an `auto` parameter.
+		//
+		// returns: dojo.Animation|dojo.NodeList
+		//		A special args member `auto` can be passed to automatically play the animation.
+		//		If args.auto is present, the original dojo.NodeList will be returned for further
+		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
+		//
+		// example:
+		//		Wipe out all tables with class "blah":
+		//		|	dojo.query("table.blah").wipeOut().play();
+		return this._anim(coreFx, "wipeOut", args); // dojo.Animation|dojo.NodeList
+	},
+
+	slideTo: function(args){
+		// summary:
+		//		slide all elements of the node list to the specified place via `dojo.fx.slideTo`
+		//
+		// args: Object?
+		//		Additional dojo.Animation arguments to mix into this set with the addition of
+		//		an `auto` parameter.
+		//
+		// returns: dojo.Animation|dojo.NodeList
+		//		A special args member `auto` can be passed to automatically play the animation.
+		//		If args.auto is present, the original dojo.NodeList will be returned for further
+		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
+		//
+		// example:
+		//		|	Move all tables with class "blah" to 300/300:
+		//		|	dojo.query("table.blah").slideTo({
+		//		|		left: 40,
+		//		|		top: 50
+		//		|	}).play();
+		return this._anim(coreFx, "slideTo", args); // dojo.Animation|dojo.NodeList
+	},
 
 
+	fadeIn: function(args){
+		// summary:
+		//		fade in all elements of this NodeList via `dojo.fadeIn`
+		//
+		// args: Object?
+		//		Additional dojo.Animation arguments to mix into this set with the addition of
+		//		an `auto` parameter.
+		//
+		// returns: dojo.Animation|dojo.NodeList
+		//		A special args member `auto` can be passed to automatically play the animation.
+		//		If args.auto is present, the original dojo.NodeList will be returned for further
+		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
+		//
+		// example:
+		//		Fade in all tables with class "blah":
+		//		|	dojo.query("table.blah").fadeIn().play();
+		return this._anim(baseFx, "fadeIn", args); // dojo.Animation|dojo.NodeList
+	},
+
+	fadeOut: function(args){
+		// summary:
+		//		fade out all elements of this NodeList via `dojo.fadeOut`
+		//
+		// args: Object?
+		//		Additional dojo.Animation arguments to mix into this set with the addition of
+		//		an `auto` parameter.
+		//
+		// returns: dojo.Animation|dojo.NodeList
+		//		A special args member `auto` can be passed to automatically play the animation.
+		//		If args.auto is present, the original dojo.NodeList will be returned for further
+		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
+		//
+		// example:
+		//		Fade out all elements with class "zork":
+		//		|	dojo.query(".zork").fadeOut().play();
+		// example:
+		//		Fade them on a delay and do something at the end:
+		//		|	var fo = dojo.query(".zork").fadeOut();
+		//		|	dojo.connect(fo, "onEnd", function(){ /*...*/ });
+		//		|	fo.play();
+		// example:
+		//		Using `auto`:
+		//		|	dojo.query("li").fadeOut({ auto:true }).filter(filterFn).forEach(doit);
+		//
+		return this._anim(baseFx, "fadeOut", args); // dojo.Animation|dojo.NodeList
+	},
+
+	animateProperty: function(args){
+		// summary:
+		//		Animate all elements of this NodeList across the properties specified.
+		//		syntax identical to `dojo.animateProperty`
+		//
+		// args: Object?
+		//		Additional dojo.Animation arguments to mix into this set with the addition of
+		//		an `auto` parameter.
+		//
+		// returns: dojo.Animation|dojo.NodeList
+		//		A special args member `auto` can be passed to automatically play the animation.
+		//		If args.auto is present, the original dojo.NodeList will be returned for further
+		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
+		//
+		// example:
+		//	|	dojo.query(".zork").animateProperty({
+		//	|		duration: 500,
+		//	|		properties: {
+		//	|			color:		{ start: "black", end: "white" },
+		//	|			left:		{ end: 300 }
+		//	|		}
+		//	|	}).play();
+		//
+		//	example:
+		//	|	dojo.query(".grue").animateProperty({
+		//	|		auto:true,
+		//	|		properties: {
+		//	|			height:240
+		//	|		}
+		//	|	}).onclick(handler);
+		return this._anim(baseFx, "animateProperty", args); // dojo.Animation|dojo.NodeList
+	},
+
+	anim: function( /*Object*/			properties,
+					/*Integer?*/		duration,
+					/*Function?*/		easing,
+					/*Function?*/		onEnd,
+					/*Integer?*/		delay){
+		// summary:
+		//		Animate one or more CSS properties for all nodes in this list.
+		//		The returned animation object will already be playing when it
+		//		is returned. See the docs for `dojo.anim` for full details.
+		// properties: Object
+		//		the properties to animate. does NOT support the `auto` parameter like other
+		//		NodeList-fx methods.
+		// duration: Integer?
+		//		Optional. The time to run the animations for
+		// easing: Function?
+		//		Optional. The easing function to use.
+		// onEnd: Function?
+		//		A function to be called when the animation ends
+		// delay:
+		//		how long to delay playing the returned animation
+		// example:
+		//		Another way to fade out:
+		//	|	dojo.query(".thinger").anim({ opacity: 0 });
+		// example:
+		//		animate all elements with the "thigner" class to a width of 500
+		//		pixels over half a second
+		//	|	dojo.query(".thinger").anim({ width: 500 }, 700);
+		var canim = coreFx.combine(
+			this.map(function(item){
+				return baseFx.animateProperty({
+					node: item,
+					properties: properties,
+					duration: duration||350,
+					easing: easing
+				});
+			})
+		);
+		if(onEnd){
+			connectLib.connect(canim, "onEnd", onEnd);
+		}
+		return canim.play(delay||0); // dojo.Animation
+	}
+});
+
+return NodeList;
 });
 
 },
-'simplekey/results_overlay':function(){
-define("simplekey/results_overlay", [
-    'util/document_is_ready',
-    'bridge/jquery',
-    'simplekey/resources'
-], function(document_is_ready, $, resources) {
-
-    var module_function = function(args) {
-        $.when(
-            document_is_ready,
-            resources.base_vector({key_name: 'simple', pile_slug: args.pile_slug})
-        ).done(function(x, base_vector) {
-            $('.number-of-species .number').html(base_vector.length);
-        });
-
-        $.when(
-            document_is_ready,
-            resources.pile_characters(args.pile_slug, [])
-        ).done(function(x, clist) {
-            $('.number-of-questions .number').html(clist.length);
-        });
-
-        document_is_ready.done(function() {if (!original_location_hash) {
-
-            $('#intro-overlay').overlay({
-                mask: {
-                    color: $('body').css('background-color'),
-                    loadSpeed: 500,
-                    opacity: 0.5,
-                    top: 0
-                },
-                closeOnClick: true,
-                load: true
-            }).click(function(event) {
-                $('#intro-overlay').data('overlay').close();
-            });
-
-            /* The jQuery Tools Overlay "mask" is actually a jQuery Tools
-             * Expose widget.  For some reason, Expose gives its mask a
-             * style of "position: absolute" which means that once the plant
-             * images are loaded and the page height has increased, the user
-             * can scroll down past the mask.  Therefore we change its
-             * position to "fixed" so that it stays in the viewport.
-             */
-            $('#exposeMask').css('position', 'fixed');
-
-        }});
+'simplekey/results_photo_menu':function(){
+/* Configuration for Simple Key results page "Show photos of" menu items. */
+define("simplekey/results_photo_menu", [], function() {
+    var results_photo_menu = {
+        "woody-angiosperms": {
+            "default": "plant form",
+            "omit": ["additional features", "stems"]
+        },
+        "woody-gymnosperms": {
+            "default": "plant form",
+            "omit": []
+        },
+        "non-thalloid-aquatic": {
+            "default": "plant form",
+            "omit": ["additional features", "detail of leaf and/or divisions",
+                     "flowers and fruits", "leaf", "leaves and auricles",
+                     "ligules", "shoots", "sori", "special features",
+                     "spikelets", "spore cones", "spores", "stems and sheaths",
+                     "vegetative leaves"]
+        },
+        "thalloid-aquatic": {
+            "default": "plant form",
+            "omit": []
+        },
+        "carex": {
+            "default": "plant form",
+            "omit": []
+        },
+        "poaceae": {
+            "default": "plant form",
+            "omit": ["flowers and fruits", "stems"]
+        },
+        "remaining-graminoids": {
+            "default": "plant form",
+            "omit": ["leaves", "special features", "stems"]
+        },
+        "orchid-monocots": {
+            "default": "flowers",
+            "omit": []
+        },
+        "non-orchid-monocots": {
+            "default": "flowers",
+            "omit": ["flowers and fruits", "special features", "stems"]
+        },
+        "monilophytes": {
+            "default": "plant form",
+            "omit": ["flowers and fruits", "inflorescences", "stems"]
+        },
+        "lycophytes": {
+            "default": "plant form",
+            "omit": ["flowers and fruits", "inflorescences", "leaves", "stems"]
+        },
+        "equisetaceae": {
+            "default": "plant form",
+            "omit": []
+        },
+        "composites": {
+            "default": "flowers",
+            "omit": []
+        },
+        "remaining-non-monocots": {
+            "default": "flowers",
+            "omit": ["additional features", "bark", "flowers and fruits",
+                     "inflorescences", "special features", "winter buds"]
+        }
     };
-
-    return module_function;
+    return results_photo_menu;
 });
+
+
+},
+'gobotany/sk/SpeciesCounts':function(){
+/*
+ * Manage everywhere on the page that we maintain a species count.
+ */
+define("gobotany/sk/SpeciesCounts", [
+    'dojo/_base/declare',
+    'dojo/_base/fx',
+    'dojo/NodeList-fx',
+    'dojo/query',
+    'simplekey/App3'
+], function(declare, fx, nodeListFx, query, App3) {
+
+return declare('gobotany.sk.SpeciesCounts', null, {
+    animation: null,
+
+    _update_counts: function(species_list) {
+        App3.taxa.set('len', species_list.length);
+
+        if (this.animation !== null)
+            this.animation.stop();
+
+        var span = query('.species-count-heading > span');
+        this.animation = span.animateProperty({
+            duration: 2000,
+            properties: {
+                backgroundColor: {
+                    start: '#FF0',
+                    end: '#F0F0C0'
+                }
+            }
+        });
+        this.animation.play();
+    }
+});
+});
+
 
 },
 'simplekey/species':function(){
 define("simplekey/species", [
-
+    'bridge/jquery',
     // Basic resources
-
     'util/activate_search_suggest',
-    'bridge/shadowbox',
     'util/shadowbox_init',
-
-    // Page components
-
-    'util/sidebar',
-    'simplekey/glossarize',
-
+    
     // Scrolling
+    'util/activate_smooth_div_scroll',
+    
+    'gobotany/sk/species'
+], function($, search_suggest, shadowbox_init, activate_scroll,
+    SpeciesPageHelper) {
 
-    'util/activate_smooth_div_scroll'
-
-], function(search_suggest, ShadowBox, shadowbox_init, sidebar, _glossarize, 
-        activate_scroll) {
-    glossarize = _glossarize;
-    dojo.require('gobotany.sk.species');
-    dojo.addOnLoad(function() {
-        var helper = gobotany.sk.species.SpeciesPageHelper();
+    $(document).ready(function() {
+        var helper = SpeciesPageHelper();
         helper.setup();
     });
 });
@@ -38063,288 +36139,29 @@ define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
 });
 
 },
-'simplekey/family':function(){
-define("simplekey/family", [
-    'bridge/jquery',
-    'simplekey/glossarize'
-], function($, glossarize) {
-
-    var module_function = function(args) {
-        $(document).ready(function() {
-            glossarize($('.description'));
-        });
-
-        require([
-            'util/activate_search_suggest',
-            'bridge/shadowbox',
-            'util/shadowbox_init'
-        ]);
-
-        require([
-            'util/sidebar'
-        ], function() {
-            dojo.require('gobotany.sk.family');
-            dojo.addOnLoad(function() {
-                gobotany.sk.family.init(args.family_slug);
-            });
-        });
-    };
-
-    return module_function;
-});
-
-},
-'simplekey/genus':function(){
-define("simplekey/genus", [
-    'bridge/jquery',
-    'simplekey/glossarize'
-], function($, glossarize) {
-    
-    var module_function = function(args) {
-        $(document).ready(function() {
-            glossarize($('.description'));
-        });
-
-        require([
-            'util/activate_search_suggest',
-            'bridge/shadowbox',
-            'util/shadowbox_init'
-        ]);
-
-        require([
-            'util/sidebar'
-        ], function() {
-            dojo.require('gobotany.sk.genus');
-            dojo.addOnLoad(function() {
-                gobotany.sk.genus.init(args.genus_slug);
-            });
-        });
-    };
-
-    return module_function;
-});
-
-
-},
-'simplekey/help':function(){
-require([
-    'util/activate_search_suggest',
-    'util/activate_video_links'
-]);
-
-require([
-    'bridge/shadowbox',
-    'util/shadowbox_init',
-    'util/sidebar'
-]);
-
-
-},
-'simplekey/help_glossary':function(){
-require([
-    'util/activate_search_suggest',
-    'bridge/shadowbox',
-    'util/shadowbox_init',
-    'util/sidebar'
-]);
-
-require([
-    'simplekey/glossarize'
-], function(glossarize) {
-    $(document).ready(function() {
-        glossarize($('#terms dd'));
-    });
-});
-
-},
-'simplekey/help_map':function(){
-require([
-    'util/activate_search_suggest',
-    'bridge/shadowbox',
-    'util/shadowbox_init',
-    'util/activate_video_links',
-    'util/sidebar'
-]);
-
-require([
-    'dojo/ready',
-    'gobotany/sk/help'
-], function(ready, MapToGroupsHelper) {
-    return ready(function() {
-        var helper = new MapToGroupsHelper();
-        helper.setup();
-    });
-});
-
-
-},
-'gobotany/sk/help':function(){
-/* Code for adding behavior to the Help pages. */
-
-// Configure this module here until we finish the migration
-define("gobotany/sk/help", ['dojo/_base/declare',
-        'dojo/query',
-        'dojo/dom-geometry',
-        'dojo/_base/array',
-        'dojo/dom-class',
-        'dojo/dom-style',
-        'dojo/_base/connect',
-        'dojo/_base/lang'],
-    function(declare, query, domGeom, array, domClass, domStyle, connect,
-             lang) {
-        return declare('gobotany.sk.help.MapToGroupsHelper', null, {
-            groups: null,
-            subgroup_sets: null,
-
-            constructor: function () {
-                this.groups = query('.plant-group');
-                this.subgroup_sets = query('.subgroups');
-            },
-
-            get_left_margin_for_subgroup_set: function (group_number) {
-                /* Get the left margin for a subgroup set that will attempt
-                   to center the subgroup set below its group to the extent
-                   possible. */
-
-                // Get the first group's horizontal left position, which is
-                // at the left edge of the content area.
-                var first_group_left_x_position =
-                    domGeom.position(this.groups[0]).x;
-
-                // Get the last group's horizontal right position, which is
-                // at the right edge of the content area.
-                var last_group_position =
-                    domGeom.position(this.groups[this.groups.length - 1]);
-                var last_group_right_x_position = last_group_position.x +
-                    last_group_position.w;
-
-                // Get the group's horizontal center position.
-                var group_position =
-                    domGeom.position(this.groups[group_number]);
-                var group_center_x_position = group_position.x +
-                    Math.floor(group_position.w / 2);
-
-                /* Get the width of the subgroup set by tallying the widths
-                   of the subgroups within it. This is necessary because the
-                   subgroups have CSS float applied, so their parent
-                   container's width does not reflect the total width of the
-                   subgroups. */
-                var subgroup_set_width = 0;
-                var subgroup_set = this.subgroup_sets[group_number];
-                array.forEach(query('.plant-subgroup', subgroup_set),
-                    function(subgroup, i) {
-                        var subgroup_width = domGeom.position(subgroup).w;
-                        subgroup_set_width += subgroup_width;
-                    }
-                );
-
-                // Get the maximum left margin allowed for the subgroup set.
-                var EXTRA_PADDING = 22;  // Will subtract to ensure fit
-                var maximum_left_margin = last_group_right_x_position -
-                    first_group_left_x_position - subgroup_set_width -
-                    EXTRA_PADDING;
-
-                // Calculate the left margin based on positions and widths.
-                var left_margin = group_center_x_position -
-                    Math.floor(subgroup_set_width / 2) - 
-                    first_group_left_x_position;
-
-                // If this is the last group, tweak the left margin for
-                // better right alignment.
-                if (group_number === this.groups.length - 1) {
-                    maximum_left_margin += 11;
-                }
-
-                // If the left margin is out of bounds, correct it.
-                if (left_margin < 0) {
-                    left_margin = 0;
-                }
-                else if (left_margin >= maximum_left_margin) {
-                    left_margin = maximum_left_margin;
-                }
-
-                return left_margin;
-            },
-
-            activate_group: function (group_number) {
-                /* Show a group and its set of subgroups. Rely on the order
-                   of the groups and the subgroups as they appear in the
-                   document: for example, the second group in the document
-                   goes with the second subgroup set in the document. */
-
-                var ACTIVE_CLASS = 'active';
-                var HIDDEN_CLASS = 'hidden';
-
-                this.groups.forEach(function(group, i) {
-                    if (i === group_number) {
-                        domClass.add(group, ACTIVE_CLASS);
-                    }
-                    else {
-                        domClass.remove(group, ACTIVE_CLASS);
-                    }
-                });
-
-                var that = this;
-                this.subgroup_sets.forEach(function(subgroup_set, i) {
-                    if (i === group_number) {
-                        // Show the subgroup set.
-                        domClass.remove(subgroup_set, HIDDEN_CLASS);
-                        var left_margin_value =
-                            that.get_left_margin_for_subgroup_set(i);
-                        domStyle.set(subgroup_set, 'marginLeft',
-                            left_margin_value.toString() + 'px');
-                    }
-                    else {
-                        // Hide the subgroup set.
-                        domClass.add(subgroup_set, HIDDEN_CLASS);
-                    }
-                });
-            },
-
-            setup: function () {
-                // Attach click events to groups to show their subgroups.
-                var i;
-                for (i = 0; i < this.groups.length; i += 1) {
-                    var group = this.groups[i];
-                    connect.connect(group, 'onclick',
-                        lang.hitch(this, this.activate_group, i));
-                }
-
-                // Initially activate the first group and its subgroup set.
-                this.activate_group(0);
-            }
-
-        });
-    }
-);
-
-},
-'simplekey/search':function(){
-/* Resources that search.html needs. */
-
-require([
-    'util/activate_search_suggest',
-    'util/sidebar'
-]);
-
-},
 'gobotany/sk/species':function(){
-// wrapped by build app
-define(["dojo","dijit","dojox","dojo/require!dojo/cookie,gobotany/sk/photo,gobotany/utils"], function(dojo,dijit,dojox){
 /*
  * Code for adding behavior to species pages.
  */
-dojo.provide('gobotany.sk.species');
-
-dojo.require('dojo.cookie');
-
-dojo.require('gobotany.sk.photo');
-dojo.require('gobotany.utils');
-
-dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
+define("gobotany/sk/species", [
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/query',
+    'dojo/on',
+    'dojo/cookie',
+    'dojo/dom-geometry',
+    'bridge/jquery',
+    'bridge/shadowbox',
+    'gobotany/sk/photo',
+    'gobotany/utils',
+    'util/sidebar',
+    'simplekey/glossarize'
+], function(declare, lang, query, on, cookie, domGeom, $, Shadowbox,
+    PhotoHelper, utils, sidebar, glossarize) {
+return declare('gobotany.sk.species.SpeciesPageHelper', null, {
 
     constructor: function() {
-        this.photo_helper = gobotany.sk.photo.PhotoHelper();
+        this.photo_helper = PhotoHelper();
     },
 
     toggle_character_group: function() {
@@ -38354,13 +36171,13 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
             $(this).children('div').show();
             $(this).children('h5').css('background-image',
                 'url("/static/images/icons/minus.png")');
-            sidebar_set_height();
+            sidebar.set_height();
             return false;
         }, function() {
             $(this).children('div').hide();
             $(this).children('h5').css('background-image',
                 'url("/static/images/icons/plus.png")');
-            sidebar_set_height();
+            sidebar.set_height();
             return false;
         });                
     },
@@ -38376,7 +36193,7 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
             $(this).css('background-image',
                 'url("/static/images/icons/minus.png")');
             that.toggle_character_group();
-            sidebar_set_height();
+            sidebar.set_height();
             return false;
         }, function() {
             $('ul.full-description').hide();
@@ -38384,7 +36201,7 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
                 $(this).text().substr($(this).text().indexOf(' ')));
             $(this).css('background-image',
                 'url("/static/images/icons/plus.png")');
-            sidebar_set_height();
+            sidebar.set_height();
             return false;
         });
     },
@@ -38393,8 +36210,8 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
         // Wire up each image link to a Shadowbox popup handler.
         var IMAGE_LINKS_CSS = '#species-images a';
         var that = this;
-        dojo.query(IMAGE_LINKS_CSS).forEach(function(link) {
-            dojo.connect(link, 'onclick', this, function(event) {
+        query(IMAGE_LINKS_CSS).forEach(function(link) {
+            on(link, 'click', lang.hitch(this, function(event) {
                 // Prevent the regular link (href) from taking over.
                 event.preventDefault();
 
@@ -38408,34 +36225,7 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
                         onFinish: that.photo_helper.process_credit
                     }
                 });
-            });
-        });
-    },
-
-    add_image_frame_handler: function() {
-        // Add a handler to the image frame in order to be able to activate
-        // the Shadowbox popup for the image underneath it. Otherwise the
-        // popup would not be available because the image frame layer
-        // overlays it and blocks events, despite the image being visible.
-
-        var image_frame = dojo.query('.img-gallery .frame')[0];
-        dojo.connect(image_frame, 'onclick', this, function(event) {
-            var POSITION_RELATIVE_TO_DOCUMENT_ROOT = true;
-            var IMAGE_ON_SCREEN_MIN_PX = 200;
-            var IMAGE_ON_SCREEN_MAX_PX = 900;
-            var IMAGE_LINKS_CSS = '.img-container .images .single-img a';
-            var image_links = dojo.query(IMAGE_LINKS_CSS);
-            var i;
-            for (i = 0; i < image_links.length; i++) {
-                var position_info = dojo.position(image_links[i],
-                    POSITION_RELATIVE_TO_DOCUMENT_ROOT);
-                if (position_info.x >= IMAGE_ON_SCREEN_MIN_PX &&
-                    position_info.x <= IMAGE_ON_SCREEN_MAX_PX) {
-
-                    gobotany.utils.click_link(image_links[i]);
-                    break;
-                }
-            }
+            }));
         });
     },
 
@@ -38444,19 +36234,19 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
         // is needed to make it clickable. Make this div cover the link
         // that appears below the map, too, for one large clickable area.
         var transparent_div =
-            dojo.query('#sidebar .section.namap div.trans')[0];
-        dojo.connect(transparent_div, 'onclick', this, function(event) {
+            query('#sidebar .section.namap div.trans')[0];
+        on(transparent_div, 'click', lang.hitch(this, function(event) {
             event.preventDefault();
             // Open the North America distribution map in a lightbox.
             var content_element =
-                dojo.query('#sidebar .section.namap div')[0];
+                query('#sidebar .section.namap div')[0];
             Shadowbox.open({
                 content: content_element.innerHTML,
                 player: 'html',
                 height: 582,
                 width: 1000
             });
-        });
+        }));
     },
 
     setup: function() {
@@ -38468,13 +36258,12 @@ dojo.declare('gobotany.sk.species.SpeciesPageHelper', null, {
 
         // Make image gallery able to show larger images.
         this.wire_up_image_links();
-        this.add_image_frame_handler();
 
         // Wire up the enlarge link on the U.S. map.
         this.wire_up_us_map_link();
+        sidebar.setup()
     }
 });
-
 });
 
 },
@@ -38652,6 +36441,332 @@ dojo.regexp.group = function(/*String*/expression, /*Boolean?*/nonCapture){
 };
 
 return dojo.regexp;
+});
+
+},
+'simplekey/family':function(){
+define("simplekey/family", [
+    'bridge/jquery',
+    'gobotany/sk/family',
+    'util/sidebar',
+    'util/activate_search_suggest',
+    'util/shadowbox_init',
+    'simplekey/glossarize'
+], function($, family, sidebar, activate_search_suggest, shadowbox_init,
+    glossarize) {
+
+    var module_function = function(args) {
+        $(document).ready(function() {
+            glossarize($('.description'));
+            sidebar.setup();
+            family.init(args.family_slug);
+        });
+    };
+
+    return module_function;
+});
+
+},
+'gobotany/sk/family':function(){
+define("gobotany/sk/family", [
+    'dojo/query',
+    'bridge/jquery',
+    'bridge/shadowbox',
+    'gobotany/sk/photo'
+], function(query, $, Shadowbox, PhotoHelper) {
+var family = {};
+family.init = function(family_slug) {
+    var photo_helper = PhotoHelper();
+    
+    // Wire up each image link to a Shadowbox popup handler.
+    var IMAGE_CSS = '.pics .plant';
+    query(IMAGE_CSS).forEach(function(plant_image_div) {
+        var frame = $(plant_image_div).children('.frame');
+        var link = $(plant_image_div).children('a');
+        var href = $(link).attr('href');
+        var title = $(link).attr('title');
+        $(frame).click(function() {
+            // Open the image.
+            Shadowbox.open({
+                content: href,
+                player: 'img',
+                title: title,
+                options: {
+                    onOpen: photo_helper.prepare_to_enlarge,
+                    onFinish: photo_helper.process_credit
+                }
+            });
+        });
+    });
+}
+
+return family;
+});
+
+},
+'simplekey/genus':function(){
+define("simplekey/genus", [
+    'bridge/jquery',
+    'gobotany/sk/genus',
+    'util/sidebar',
+    'util/activate_search_suggest',
+    'util/shadowbox_init',
+    'simplekey/glossarize'
+], function($, genus, sidebar, activate_search_suggest, shadowbox_init,
+    glossarize) {
+    
+    var module_function = function(args) {
+        $(document).ready(function() {
+            glossarize($('.description'));
+            sidebar.setup();
+            genus.init(args.genus_slug);
+        });
+    };
+
+    return module_function;
+});
+
+
+},
+'gobotany/sk/genus':function(){
+// Global declaration for JSLint (http://www.jslint.com/)
+/*global dojo, dojox, gobotany */
+define("gobotany/sk/genus", [
+    'dojo/query',
+    'bridge/jquery',
+    'bridge/shadowbox',
+    'gobotany/sk/photo'
+], function(query, $, Shadowbox, PhotoHelper) {
+
+var genus = {};
+genus.init = function(genus_slug) {
+    var photo_helper = PhotoHelper();
+    
+    // Wire up each image link to a Shadowbox popup handler.
+    var IMAGE_CSS = '.pics .plant';
+    query(IMAGE_CSS).forEach(function(plant_image_div) {
+        var frame = $(plant_image_div).children('.frame');
+        var link = $(plant_image_div).children('a');
+        var href = $(link).attr('href');
+        var title = $(link).attr('title');
+        $(frame).click(function() {
+            // Open the image.
+            Shadowbox.open({
+                content: href,
+                player: 'img',
+                title: title,
+                options: {
+                    onOpen: photo_helper.prepare_to_enlarge,
+                    onFinish: photo_helper.process_credit
+                }
+            });
+        });
+    });
+};
+
+return genus;
+});
+
+},
+'simplekey/help':function(){
+require([
+    'util/activate_search_suggest',
+    'util/activate_video_links',
+    'bridge/shadowbox',
+    'util/shadowbox_init',
+    'util/sidebar'
+], function(Shadowbox, shadowbox_init, sidebar) {
+    sidebar.setup()
+});
+
+
+},
+'simplekey/help_glossary':function(){
+require([
+    'util/activate_search_suggest',
+    'bridge/shadowbox',
+    'util/shadowbox_init',
+    'util/sidebar',
+    'simplekey/glossarize'
+], function(activate_search_suggest, Shadowbox, shadowbox_init, sidebar, 
+        glossarize) {
+    sidebar.setup();
+    $(document).ready(function() {
+        glossarize($('#terms dd'));
+    });
+});
+
+
+},
+'simplekey/help_map':function(){
+require([
+    'util/activate_search_suggest',
+    'bridge/shadowbox',
+    'util/shadowbox_init',
+    'util/activate_video_links',
+    'util/sidebar',
+    'dojo/ready',
+    'gobotany/sk/help'
+], function(activate_search_suggest, Shadowbox, shadowbox_init, 
+        activate_video_links, sidebar, ready, MapToGroupsHelper) {
+    sidebar.setup()
+    return ready(function() {
+        var helper = new MapToGroupsHelper();
+        helper.setup();
+    });
+});
+
+
+},
+'gobotany/sk/help':function(){
+/* Code for adding behavior to the Help pages. */
+
+// Configure this module here until we finish the migration
+define("gobotany/sk/help", ['dojo/_base/declare',
+        'dojo/query',
+        'dojo/dom-geometry',
+        'dojo/_base/array',
+        'dojo/dom-class',
+        'dojo/dom-style',
+        'dojo/_base/connect',
+        'dojo/_base/lang'],
+    function(declare, query, domGeom, array, domClass, domStyle, connect,
+             lang) {
+        return declare('gobotany.sk.help.MapToGroupsHelper', null, {
+            groups: null,
+            subgroup_sets: null,
+
+            constructor: function () {
+                this.groups = query('.plant-group');
+                this.subgroup_sets = query('.subgroups');
+            },
+
+            get_left_margin_for_subgroup_set: function (group_number) {
+                /* Get the left margin for a subgroup set that will attempt
+                   to center the subgroup set below its group to the extent
+                   possible. */
+
+                // Get the first group's horizontal left position, which is
+                // at the left edge of the content area.
+                var first_group_left_x_position =
+                    domGeom.position(this.groups[0]).x;
+
+                // Get the last group's horizontal right position, which is
+                // at the right edge of the content area.
+                var last_group_position =
+                    domGeom.position(this.groups[this.groups.length - 1]);
+                var last_group_right_x_position = last_group_position.x +
+                    last_group_position.w;
+
+                // Get the group's horizontal center position.
+                var group_position =
+                    domGeom.position(this.groups[group_number]);
+                var group_center_x_position = group_position.x +
+                    Math.floor(group_position.w / 2);
+
+                /* Get the width of the subgroup set by tallying the widths
+                   of the subgroups within it. This is necessary because the
+                   subgroups have CSS float applied, so their parent
+                   container's width does not reflect the total width of the
+                   subgroups. */
+                var subgroup_set_width = 0;
+                var subgroup_set = this.subgroup_sets[group_number];
+                array.forEach(query('.plant-subgroup', subgroup_set),
+                    function(subgroup, i) {
+                        var subgroup_width = domGeom.position(subgroup).w;
+                        subgroup_set_width += subgroup_width;
+                    }
+                );
+
+                // Get the maximum left margin allowed for the subgroup set.
+                var EXTRA_PADDING = 22;  // Will subtract to ensure fit
+                var maximum_left_margin = last_group_right_x_position -
+                    first_group_left_x_position - subgroup_set_width -
+                    EXTRA_PADDING;
+
+                // Calculate the left margin based on positions and widths.
+                var left_margin = group_center_x_position -
+                    Math.floor(subgroup_set_width / 2) - 
+                    first_group_left_x_position;
+
+                // If this is the last group, tweak the left margin for
+                // better right alignment.
+                if (group_number === this.groups.length - 1) {
+                    maximum_left_margin += 11;
+                }
+
+                // If the left margin is out of bounds, correct it.
+                if (left_margin < 0) {
+                    left_margin = 0;
+                }
+                else if (left_margin >= maximum_left_margin) {
+                    left_margin = maximum_left_margin;
+                }
+
+                return left_margin;
+            },
+
+            activate_group: function (group_number) {
+                /* Show a group and its set of subgroups. Rely on the order
+                   of the groups and the subgroups as they appear in the
+                   document: for example, the second group in the document
+                   goes with the second subgroup set in the document. */
+
+                var ACTIVE_CLASS = 'active';
+                var HIDDEN_CLASS = 'hidden';
+
+                this.groups.forEach(function(group, i) {
+                    if (i === group_number) {
+                        domClass.add(group, ACTIVE_CLASS);
+                    }
+                    else {
+                        domClass.remove(group, ACTIVE_CLASS);
+                    }
+                });
+
+                var that = this;
+                this.subgroup_sets.forEach(function(subgroup_set, i) {
+                    if (i === group_number) {
+                        // Show the subgroup set.
+                        domClass.remove(subgroup_set, HIDDEN_CLASS);
+                        var left_margin_value =
+                            that.get_left_margin_for_subgroup_set(i);
+                        domStyle.set(subgroup_set, 'marginLeft',
+                            left_margin_value.toString() + 'px');
+                    }
+                    else {
+                        // Hide the subgroup set.
+                        domClass.add(subgroup_set, HIDDEN_CLASS);
+                    }
+                });
+            },
+
+            setup: function () {
+                // Attach click events to groups to show their subgroups.
+                var i;
+                for (i = 0; i < this.groups.length; i += 1) {
+                    var group = this.groups[i];
+                    connect.connect(group, 'onclick',
+                        lang.hitch(this, this.activate_group, i));
+                }
+
+                // Initially activate the first group and its subgroup set.
+                this.activate_group(0);
+            }
+
+        });
+    }
+);
+
+},
+'simplekey/search':function(){
+/* Resources that search.html needs. */
+
+require([
+    'util/activate_search_suggest',
+    'util/sidebar'
+], function(activate_search_suggest, sidebar) {
+    sidebar.setup()
 });
 
 }}});
