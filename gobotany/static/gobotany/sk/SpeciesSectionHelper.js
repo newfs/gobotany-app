@@ -251,7 +251,9 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
                             player: 'html',
                             height: 520,
                             width: 935,
-                            options: {onFinish: lang.hitch(this, function() {
+                            options: {
+                                handleOversize: 'resize',
+                                onFinish: lang.hitch(this, function() {
                                 var $sb = $('#sb-container');
                                 var $children = $sb.find('p, dt, dd, li');
                                 $sb.find('.img-container').scrollable();
