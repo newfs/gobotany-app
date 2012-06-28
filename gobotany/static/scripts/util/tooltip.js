@@ -89,7 +89,7 @@ define([
                         self.toggle_tooltip(element, offset.left, offset.top);
 
                         // Stop events from propagating onward to the
-                        // document body. Otherwise the code that hides
+                        // document body. Otherwise the code that dismisses
                         // the tooltip would always run, and the tooltip
                         // would not show upon tap because it would be
                         // immediately hidden.
@@ -101,18 +101,18 @@ define([
                 });
             });   // end loop through elements
 
-            // Hide the tooltip upon a tap anywhere.
+            // For touch interfaces, dismiss the tooltip upon a tap anywhere.
             $('body').bind({
                 'touchend.Tooltip_dismiss': function () {
-                    // Only hide the tooltip if the user did not just
+                    // Only dismiss the tooltip if the user did not just
                     // move around when they last touched.
                     if (just_moved === false) {
                         self.hide_tooltip();
                     }
                     just_moved = false;
                 },
-                // Do not allow the tooltip to be hidden upon a touch event
-                // that involves finger movement, because the user may be
+                // Do not dismiss the tooltip upon a touch event that
+                // involves finger movement, because the user may be
                 // trying to reposition the viewport in order to better
                 // view the tooltip.
                 'touchmove.Tooltip': function () {
