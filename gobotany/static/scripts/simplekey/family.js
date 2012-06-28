@@ -1,26 +1,18 @@
 define([
     'bridge/jquery',
+    'gobotany/sk/family',
+    'util/sidebar',
+    'util/activate_search_suggest',
+    'util/shadowbox_init',
     'simplekey/glossarize'
-], function($, glossarize) {
+], function($, family, sidebar, activate_search_suggest, shadowbox_init,
+    glossarize) {
 
     var module_function = function(args) {
         $(document).ready(function() {
             glossarize($('.description'));
-        });
-
-        require([
-            'util/activate_search_suggest',
-            'bridge/shadowbox',
-            'util/shadowbox_init'
-        ]);
-
-        require([
-            'util/sidebar'
-        ], function() {
-            dojo.require('gobotany.sk.family');
-            dojo.addOnLoad(function() {
-                gobotany.sk.family.init(args.family_slug);
-            });
+            sidebar.setup();
+            family.init(args.family_slug);
         });
     };
 

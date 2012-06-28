@@ -1,22 +1,27 @@
 define([
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/query',
+    'dojo/dom-construct',
+    'bridge/jquery',
+    'util/sidebar',
     'gobotany/sk/working_area'
-], function() {
-
-dojo.declare('gobotany.sk.FilterSectionHelper', null, {
+], function(declare, lang, query, domConstruct, $, sidebar, working_area) {
+return declare('gobotany.sk.FilterSectionHelper', null, {
     working_area: null,
 
     _setup_character_groups: function(character_groups) {
         console.log('FilterSectionHelper: Updating character groups');
 
-        var character_groups_list = dojo.query('ul.char-groups')[0];
-        dojo.empty(character_groups_list);
+        var character_groups_list = query('ul.char-groups')[0];
+        domConstruct.empty(character_groups_list);
         var i;
         for (i = 0; i < character_groups.length; i++) {
             var character_group = character_groups[i];
-            var item = dojo.create('li', { innerHTML: '<label>' +
+            var item = domConstruct.create('li', { innerHTML: '<label>' +
                 '<input type="checkbox" value="' + character_group.id +
                 '"> ' + character_group.name + '</label>'});
-            dojo.place(item, character_groups_list);
+            domConstruct.place(item, character_groups_list);
         }
     },
 
@@ -29,16 +34,16 @@ dojo.declare('gobotany.sk.FilterSectionHelper', null, {
         if (this.working_area !== null)
             this.working_area.dismiss();
 
-        var C = gobotany.sk.working_area.select_working_area(filter);
+        var C = working_area.select_working_area(filter);
 
         this.working_area = C({
             div: $('div.working-area')[0],
             filter: filter,
             y: y,
-            on_dismiss: dojo.hitch(this, 'on_working_area_dismiss')
+            on_dismiss: lang.hitch(this, 'on_working_area_dismiss')
         });
 
-        sidebar_set_height();
+        sidebar.set_height();
     },
 
     /* When the working area is dismissed, we clean up and save state. */
@@ -50,6 +55,4 @@ dojo.declare('gobotany.sk.FilterSectionHelper', null, {
         $('.option-list li').removeClass('active');
     }
 });
-
-return gobotany.sk.FilterSectionHelper;
 });

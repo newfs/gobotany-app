@@ -1,16 +1,19 @@
 // Global declaration for JSLint (http://www.jslint.com/)
 /*global dojo, dojox, gobotany */
+define([
+    'dojo/query',
+    'bridge/jquery',
+    'bridge/shadowbox',
+    'gobotany/sk/photo'
+], function(query, $, Shadowbox, PhotoHelper) {
 
-dojo.provide('gobotany.sk.genus');
-
-dojo.require('gobotany.sk.photo');
-
-gobotany.sk.genus.init = function(genus_slug) {
-    var photo_helper = gobotany.sk.photo.PhotoHelper();
+var genus = {};
+genus.init = function(genus_slug) {
+    var photo_helper = PhotoHelper();
     
     // Wire up each image link to a Shadowbox popup handler.
     var IMAGE_CSS = '.pics .plant';
-    dojo.query(IMAGE_CSS).forEach(function(plant_image_div) {
+    query(IMAGE_CSS).forEach(function(plant_image_div) {
         var frame = $(plant_image_div).children('.frame');
         var link = $(plant_image_div).children('a');
         var href = $(link).attr('href');
@@ -29,3 +32,6 @@ gobotany.sk.genus.init = function(genus_slug) {
         });
     });
 };
+
+return genus;
+});

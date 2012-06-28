@@ -5,7 +5,9 @@
 {% block body_attributes %}id="plantshare" class="claro app plantshare"{% endblock %}
 
 {% block js_require %}
-    require(['util/sidebar']);
+    require(['util/sidebar'], function(sidebar) {
+        sidebar.setup();
+    });
 {% endblock %}
 
 {% block body_content %}

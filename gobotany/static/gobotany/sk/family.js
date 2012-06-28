@@ -1,13 +1,16 @@
-dojo.provide('gobotany.sk.family');
-
-dojo.require('gobotany.sk.photo');
-
-gobotany.sk.family.init = function(family_slug) {
-    var photo_helper = gobotany.sk.photo.PhotoHelper();
+define([
+    'dojo/query',
+    'bridge/jquery',
+    'bridge/shadowbox',
+    'gobotany/sk/photo'
+], function(query, $, Shadowbox, PhotoHelper) {
+var family = {};
+family.init = function(family_slug) {
+    var photo_helper = PhotoHelper();
     
     // Wire up each image link to a Shadowbox popup handler.
     var IMAGE_CSS = '.pics .plant';
-    dojo.query(IMAGE_CSS).forEach(function(plant_image_div) {
+    query(IMAGE_CSS).forEach(function(plant_image_div) {
         var frame = $(plant_image_div).children('.frame');
         var link = $(plant_image_div).children('a');
         var href = $(link).attr('href');
@@ -25,4 +28,7 @@ gobotany.sk.family.init = function(family_slug) {
             });
         });
     });
-};
+}
+
+return family;
+});

@@ -20,10 +20,6 @@ function legacyDojo(mid) {
     // Dojo modules which require legacy support - these have not
     // yet been converted to pure AMD syntax
     return mid in {
-        'simplekey/family':1,
-        'simplekey/genus':1,
-        'simplekey/results':1,
-        'simplekey/species':1
     };
 }
 

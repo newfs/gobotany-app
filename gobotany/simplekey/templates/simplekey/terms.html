@@ -5,7 +5,9 @@
 {% block body_attributes %}id="terms-of-use" class="claro app terms-of-use"{% endblock %}
 
 {% block js_require %}
-    require(['util/sidebar']);
+    require(['util/sidebar'], function(sidebar) {
+        sidebar.setup();
+    });
 {% endblock %}
 
 {% block body_content %}

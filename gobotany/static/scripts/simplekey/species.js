@@ -1,26 +1,18 @@
 define([
-
+    'bridge/jquery',
     // Basic resources
-
     'util/activate_search_suggest',
-    'bridge/shadowbox',
     'util/shadowbox_init',
-
-    // Page components
-
-    'util/sidebar',
-    'simplekey/glossarize',
-
+    
     // Scrolling
+    'util/activate_smooth_div_scroll',
+    
+    'gobotany/sk/species'
+], function($, search_suggest, shadowbox_init, activate_scroll,
+    SpeciesPageHelper) {
 
-    'util/activate_smooth_div_scroll'
-
-], function(search_suggest, ShadowBox, shadowbox_init, sidebar, _glossarize, 
-        activate_scroll) {
-    glossarize = _glossarize;
-    dojo.require('gobotany.sk.species');
-    dojo.addOnLoad(function() {
-        var helper = gobotany.sk.species.SpeciesPageHelper();
+    $(document).ready(function() {
+        var helper = SpeciesPageHelper();
         helper.setup();
     });
 });

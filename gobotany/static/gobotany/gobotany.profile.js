@@ -20,17 +20,9 @@ function legacyDojo(mid) {
     // Dojo modules which require legacy support - these have not
     // yet been converted to pure AMD syntax
     return mid in {
-        'gobotany/sk/SpeciesSectionHelper':1,
-        'gobotany/sk/family':1,
-        'gobotany/sk/genus':1,
         'gobotany/sk/guided_search/Filter':1,
         'gobotany/sk/guided_search/Manager':1,
-        'gobotany/sk/guided_search/SpeciesSectionHelper':1,
-        'gobotany/sk/photo':1,
-        'gobotany/sk/ResultsHelper':1,
-        'gobotany/sk/FilterSectionHelper':1,
-        'gobotany/sk/species':1,
-        'gobotany/sk/working_area':1
+        'gobotany/sk/guided_search/SpeciesSectionHelper':1
     };
 }
 
