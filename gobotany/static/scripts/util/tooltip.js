@@ -10,12 +10,13 @@ define([
     // Prototype definition
     Tooltip.prototype = {
         defaults: {
-            css_class: 'gb-tooltip',
             arrow_css_class: 'arrow',
             arrow_edge_margin: 10,
+            css_class: 'gb-tooltip',
+            fade_speed: 'fast',
             horizontal_adjust_px: 20,
+            hover_delay: 400,
             vertical_adjust_px: 24,
-            hover_delay: 500,
             width: null   // use width defined in CSS by default
         },
 
@@ -85,12 +86,15 @@ define([
             }
 
             $('body').append(tooltip_element);
-
             this.position_tooltip(tooltip_element, left, top);
+            $(tooltip_element).fadeIn(this.options.fade_speed);
         },
 
         hide_tooltip: function () {
-            $('.' + this.options.css_class).remove();
+            var tooltip = '.' + this.options.css_class;
+            $(tooltip).fadeOut(this.options.fade_speed, function () {
+                $(tooltip).remove();
+            });
         },
 
         toggle_tooltip: function (element, left, top) {

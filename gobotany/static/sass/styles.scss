@@ -2706,6 +2706,7 @@ img.char-value-larger {
     background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5);
 
     border: 1px solid #c3d941;
+    display: none;   /* initially invisible, fades in */
     padding: 0.5em 0.7em;
     position: absolute;
     width: 300px;
