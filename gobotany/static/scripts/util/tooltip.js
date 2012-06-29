@@ -15,6 +15,7 @@ define([
             arrow_edge_margin: 10,
             horizontal_adjust_px: 20,
             vertical_adjust_px: 24,
+            hover_delay: 500,
             width: null   // use width defined in CSS by default
         },
 
@@ -109,10 +110,23 @@ define([
                 $(element).bind({
                     // For point-and-click interfaces, activate on hover.
                     'mouseenter.Tooltip': function () {
-                        var offset = $(element).offset();
-                        self.show_tooltip(element, offset.left, offset.top);
+                        // Delay the hover a bit to avoid accidental
+                        // activation when moving the cursor quickly by.
+                        this.timeout_id = window.setTimeout(
+                            function (element) {
+                                var offset = $(element).offset();
+                                self.show_tooltip(element, offset.left, 
+                                                  offset.top);
+                            },
+                            self.options.hover_delay, element);
                     },
                     'mouseleave.Tooltip': function () {
+                        // Clear any timeout set for delaying the hover.
+                        if (typeof this.timeout_id === "number") {  
+                            window.clearTimeout(this.timeout_id);  
+                            delete this.timeout_id;  
+                        }
+                        
                         self.hide_tooltip();
                     },
                     // For touch interfaces, activate on tap.
