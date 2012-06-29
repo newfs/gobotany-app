@@ -4129,12 +4129,50 @@ img.char-value-larger {
   }
 
   /* line 3114, ../sass/styles.scss */
+  #glossary header h1 {
+    width: auto;
+  }
+
+  /* line 3117, ../sass/styles.scss */
+  #glossary h2 {
+    margin-left: 4px;
+  }
+
+  /* line 3120, ../sass/styles.scss */
   #glossary #alphabet {
     line-height: 250%;
     width: auto;
   }
 
-  /* line 3118, ../sass/styles.scss */
+  /* line 3124, ../sass/styles.scss */
+  #glossary #alphabet li {
+    border: 0;
+    padding: 1px 10px;
+  }
+
+  /* line 3128, ../sass/styles.scss */
+  #glossary #terms {
+    width: auto;
+  }
+
+  /* line 3131, ../sass/styles.scss */
+  #glossary #terms dt {
+    border-top: 0;
+    clear: none;
+    float: none;
+    font-weight: bold;
+    padding-bottom: 0;
+    width: auto;
+  }
+
+  /* line 3139, ../sass/styles.scss */
+  #glossary #terms dd {
+    border-top: 0;
+    margin: 0;
+    padding: 0 5px 10px 39px;
+  }
+
+  /* line 3144, ../sass/styles.scss */
   .gb-tooltip {
     width: 200px;
   }
