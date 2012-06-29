@@ -4156,6 +4156,11 @@ img.char-value-larger {
   }
 
   /* line 3131, ../sass/styles.scss */
+  #glossary #terms img {
+    padding-left: 2px;
+  }
+
+  /* line 3134, ../sass/styles.scss */
   #glossary #terms dt {
     border-top: 0;
     clear: none;
@@ -4165,14 +4170,14 @@ img.char-value-larger {
     width: auto;
   }
 
-  /* line 3139, ../sass/styles.scss */
+  /* line 3142, ../sass/styles.scss */
   #glossary #terms dd {
     border-top: 0;
     margin: 0;
     padding: 0 5px 10px 39px;
   }
 
-  /* line 3144, ../sass/styles.scss */
+  /* line 3147, ../sass/styles.scss */
   .gb-tooltip {
     width: 200px;
   }

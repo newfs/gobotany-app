@@ -3128,6 +3128,9 @@ $tooltip-arrow-rotation: 225deg;
     #glossary #terms {
         width: auto;
     }
+    #glossary #terms img {
+        padding-left: 2px;
+    }
     #glossary #terms dt {
         border-top: 0;
         clear: none;
