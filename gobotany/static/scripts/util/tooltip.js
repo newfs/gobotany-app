@@ -16,6 +16,7 @@ define([
             fade_speed: 'fast',
             horizontal_adjust_px: 20,
             hover_delay: 400,
+            small_screen_max_width: 600,
             vertical_adjust_px: 24,
             width: null   // use width defined in CSS by default
         },
@@ -87,14 +88,31 @@ define([
 
             $('body').append(tooltip_element);
             this.position_tooltip(tooltip_element, left, top);
-            $(tooltip_element).fadeIn(this.options.fade_speed);
+
+            // In order to work better on iOS, do not use fade there yet.
+            // Mouseenter and mouseleave (hover) events do fire on iOS,
+            // which can interfere with the touchend handlers.
+            if (navigator.userAgent.match(/(iPad|iPod|iPhone)/) === false) {
+                $(tooltip_element).fadeIn(this.options.fade_speed);
+            }
+            else {
+                $(tooltip_element).show();
+            }
         },
 
         hide_tooltip: function () {
             var tooltip = '.' + this.options.css_class;
-            $(tooltip).fadeOut(this.options.fade_speed, function () {
+            // In order to work better on iOS, do not use fade there yet.
+            // Mouseenter and mouseleave (hover) events do fire on iOS,
+            // which can interfere with the touchend handlers.
+            if (navigator.userAgent.match(/(iPad|iPod|iPhone)/) === false) {
+                $(tooltip).fadeOut(this.options.fade_speed, function () {
+                    $(tooltip).remove();
+                });
+            }
+            else {
                 $(tooltip).remove();
-            });
+            }
         },
 
         toggle_tooltip: function (element, left, top) {
@@ -109,24 +127,37 @@ define([
         init: function () {
             var self = this;
             var just_moved = false;
-            
+
             this.elements.each(function (index, element) {
                 $(element).bind({
                     // For point-and-click interfaces, activate on hover.
                     'mouseenter.Tooltip': function () {
-                        // Delay the hover a bit to avoid accidental
-                        // activation when moving the cursor quickly by.
-                        this.timeout_id = window.setTimeout(
-                            function (element) {
-                                var offset = $(element).offset();
-                                self.show_tooltip(element, offset.left, 
-                                                  offset.top);
-                            },
-                            self.options.hover_delay, element);
+                        var offset = $(element).offset();
+                        var is_ios = (navigator.userAgent.match(
+                                      /(iPad|iPod|iPhone)/)) ? true : false;
+                        if (is_ios === false) {
+                            // Delay the hover a bit to avoid accidental
+                            // activation when moving the cursor quickly by.
+                            this.timeout_id = window.setTimeout(
+                                function (element) {
+                                    self.show_tooltip(element, offset.left, 
+                                                      offset.top);
+                                },
+                                self.options.hover_delay, element);
+                        }
+                        else {
+                            // Do not delay on iOS, because iOS does
+                            // detect the hover events mousenter and
+                            // mouseleave as a fallback and it creates
+                            // jumpiness because it conflicts with our
+                            // touchend event handlers below.
+                            self.show_tooltip(element, offset.left,
+                                              offset.top);
+                        }
                     },
                     'mouseleave.Tooltip': function () {
                         // Clear any timeout set for delaying the hover.
-                        if (typeof this.timeout_id === "number") {  
+                        if (typeof this.timeout_id === 'number') {  
                             window.clearTimeout(this.timeout_id);  
                             delete this.timeout_id;  
                         }
