@@ -2188,17 +2188,6 @@ div.section.namap div.trans {
     border-bottom: 1px dashed;
     cursor: pointer;
 }
-/* Glossary tooltip */
-.glosstip {
-    line-height: 140%;
-    position: relative;
-    max-width: 30em;
-}
-.glosstip img {
-    position: absolute;
-    bottom: 100%;
-    border: 3px solid black;
-}
 
 #alphabet {
     height: 33px;
@@ -2712,29 +2701,77 @@ img.char-value-larger {
 /* Tooltips for working area images and highlighted glossary terms. */
 
 .gb-tooltip {
-    background-color: #fff;
-    background: -webkit-linear-gradient(#ffffff, #f0f0c0);
-    background: -moz-linear-gradient(#ffffff, #f0f0c0);
-    background: -o-linear-gradient(#ffffff, #f0f0c0);
-    background: -ms-linear-gradient(#ffffff, #f0f0c0);
-    background: linear-gradient(#ffffff, #f0f0c0);
-    border: 1px solid #080;
+    background: -webkit-gradient(linear, left top, left bottom,
+        color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
+    background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5);
+
+    border: 1px solid #c3d941;
     padding: 0.5em 0.7em;
     position: absolute;
     width: 300px;
     z-index: 500;
 
-    -moz-border-radius: 0.5em;
-    -webkit-border-radius: 0.5em;
-    -o-border-radius: 0.5em;
-    -ms-border-radius: 0.5em;
-    -khtml-border-radius: 0.5em;
-    border-radius: 0.5em;
+    -moz-box-shadow: 1px 1px 2px #333333;
+    -webkit-box-shadow: 1px 1px 2px #333333;
+    -o-box-shadow: 1px 1px 2px #333333;
+    box-shadow: 1px 1px 2px #333333;
+        
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -o-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    border-radius: 2px;
+}
+.gb-tooltip .arrow {
+    background: #d6e6c5;
+
+    border: 1px solid #c3d941;
+
+    border-bottom-color: #d6e6c5;
+    border-right-color: #d6e6c5;
+    bottom: -7px;
+    height: 11px;
+    left: 10px;
+    position: absolute;
+    width: 11px;
+
+    -moz-box-shadow: -1px -1px 1px #333333;
+    -webkit-box-shadow: -1px -1px 1px #333333;
+    -o-box-shadow: -1px -1px 1px #333333;
+    box-shadow: -1px -1px 1px #333333;
+
+    -webkit-transform: rotate(225deg);
+    -moz-transform: rotate(225deg);
+    -o-transform: rotate(225deg);
+    transform: rotate(225deg);
+}
+
+/* Glossary tooltip */
+.glosstip {
+    line-height: 140%;
+    position: relative;
+    max-width: 30em;
+}
+.glosstip img {
+    background: #eaf2e2;
+    border: 1px solid #c3d941;
+    bottom: 110%;
+    padding: 4px;
+    position: absolute;
 
     -moz-box-shadow: 1px 1px 2px #333333;
     -webkit-box-shadow: 1px 1px 2px #333333;
     -o-box-shadow: 1px 1px 2px #333333;
     box-shadow: 1px 1px 2px #333333;
+        
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -o-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    border-radius: 2px;
+
 }
 
 /* Smartphone-size screen styles. These should be last. */

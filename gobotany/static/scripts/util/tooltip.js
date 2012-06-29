@@ -12,13 +12,13 @@ define([
         defaults: {
             css_class: 'gb-tooltip',
             horizontal_adjust_px: 20,
-            vertical_adjust_px: 20,
+            vertical_adjust_px: 24,
             width: null   // use width defined in CSS by default
         },
 
         build_tooltip: function (content) {
             var element = $('<div class="' + this.options.css_class + '">' +
-                            content + '</div>');
+                            content + '<div class="arrow"></div></div>');
             return element;
         },
 
