@@ -11,6 +11,8 @@ define([
     Tooltip.prototype = {
         defaults: {
             css_class: 'gb-tooltip',
+            arrow_css_class: 'arrow',
+            arrow_edge_margin: 10,
             horizontal_adjust_px: 20,
             vertical_adjust_px: 24,
             width: null   // use width defined in CSS by default
@@ -22,21 +24,8 @@ define([
             return element;
         },
 
-        show_tooltip: function (element, left, top) {
-            // If a tooltip is already showing, skip.
-            if ($('.' + this.options.css_class).length > 0) {
-                return;
-            }
-
-            var tooltip_element = this.build_tooltip(this.options.content);
-
-            // If a CSS width value was supplied for the tooltip, use it
-            // to override the external CSS.
-            if (this.options.width !== null) {
-                tooltip_element.css({'width': this.options.width });
-            }
-
-            $('body').append(tooltip_element);
+        position_tooltip: function (tooltip_element, left, top) {
+            var activating_element_position = left;
 
             // If the element that activated the tooltip is far enough
             // to the right side of the viewport that the tooltip would
@@ -57,11 +46,46 @@ define([
                 left = scroll_left;
             }
     
+            // Set the tooltip position.
             var tooltip_height = $(tooltip_element).height();
             tooltip_element.css({
                 'left': left,
                 'top': top - tooltip_height - this.options.vertical_adjust_px
             });
+
+            // Set the arrow position.
+            var arrow_selector = '.' + this.options.css_class + ' .' +
+                                 this.options.arrow_css_class;
+            var arrow_element = $(arrow_selector);
+            var tooltip_left_adjustment = activating_element_position - left;
+            var arrow_position = tooltip_left_adjustment;
+            if (arrow_position <= 0) {
+                arrow_position = this.options.arrow_edge_margin;
+            }
+            if (arrow_position > tooltip_width) {
+                arrow_position = tooltip_width -
+                                 this.options.arrow_edge_margin;
+            }
+            arrow_element.css({'left': arrow_position});
+        },
+
+        show_tooltip: function (element, left, top) {
+            // If a tooltip is already showing, skip.
+            if ($('.' + this.options.css_class).length > 0) {
+                return;
+            }
+
+            var tooltip_element = this.build_tooltip(this.options.content);
+
+            // If a CSS width value was supplied for the tooltip, use it
+            // to override the external CSS.
+            if (this.options.width !== null) {
+                tooltip_element.css({'width': this.options.width });
+            }
+
+            $('body').append(tooltip_element);
+
+            this.position_tooltip(tooltip_element, left, top);
         },
 
         hide_tooltip: function () {
