@@ -5,6 +5,8 @@ define([
     var Tooltip = function (elements, options) {
         this.elements = elements;
         this.options = $.extend({}, this.defaults, options);
+        this.is_touch = navigator.userAgent.match(
+                        /(iPad|iPod|iPhone|Android)/) ? true : false;
         this.init();
     };
     // Prototype definition
@@ -88,31 +90,14 @@ define([
 
             $('body').append(tooltip_element);
             this.position_tooltip(tooltip_element, left, top);
-
-            // In order to work better on iOS, do not use fade there yet.
-            // Mouseenter and mouseleave (hover) events do fire on iOS,
-            // which can interfere with the touchend handlers.
-            if (navigator.userAgent.match(/(iPad|iPod|iPhone)/) === false) {
-                $(tooltip_element).fadeIn(this.options.fade_speed);
-            }
-            else {
-                $(tooltip_element).show();
-            }
+            $(tooltip_element).fadeIn(this.options.fade_speed);
         },
 
         hide_tooltip: function () {
             var tooltip = '.' + this.options.css_class;
-            // In order to work better on iOS, do not use fade there yet.
-            // Mouseenter and mouseleave (hover) events do fire on iOS,
-            // which can interfere with the touchend handlers.
-            if (navigator.userAgent.match(/(iPad|iPod|iPhone)/) === false) {
-                $(tooltip).fadeOut(this.options.fade_speed, function () {
-                    $(tooltip).remove();
-                });
-            }
-            else {
+            $(tooltip).fadeOut(this.options.fade_speed, function () {
                 $(tooltip).remove();
-            }
+            });
         },
 
         toggle_tooltip: function (element, left, top) {
@@ -129,13 +114,31 @@ define([
             var just_moved = false;
 
             this.elements.each(function (index, element) {
-                $(element).bind({
+                if (self.is_touch) {
+                    // For touch interfaces, activate on tap.
+                    $(element).bind({
+                        'touchend.Tooltip': function (event) {
+                            var offset = $(element).offset();
+                            self.toggle_tooltip(element, offset.left,
+                                                offset.top);
+
+                            // Stop events from propagating onward to the
+                            // document body. Otherwise the code that
+                            // dismisses the tooltip would always run, and
+                            // the tooltip would not show upon tap because
+                            // it would immediately be hidden.
+                            event.stopPropagation();
+                            // Ensure the tooltip can be dismissed on the
+                            // next touch following a touch with movement.
+                            just_moved = false;
+                        }
+                    });
+                }
+                else {
                     // For point-and-click interfaces, activate on hover.
-                    'mouseenter.Tooltip': function () {
-                        var offset = $(element).offset();
-                        var is_ios = (navigator.userAgent.match(
-                                      /(iPad|iPod|iPhone)/)) ? true : false;
-                        if (is_ios === false) {
+                    $(element).bind({
+                        'mouseenter.Tooltip': function () {
+                            var offset = $(element).offset();
                             // Delay the hover a bit to avoid accidental
                             // activation when moving the cursor quickly by.
                             this.timeout_id = window.setTimeout(
@@ -144,62 +147,40 @@ define([
                                                       offset.top);
                                 },
                                 self.options.hover_delay, element);
+                        },
+                        'mouseleave.Tooltip': function () {
+                            // Clear any timeout set for delaying the hover.
+                            if (typeof this.timeout_id === 'number') {  
+                                window.clearTimeout(this.timeout_id);  
+                                delete this.timeout_id;  
+                            }
+                            
+                            self.hide_tooltip();
                         }
-                        else {
-                            // Do not delay on iOS, because iOS does
-                            // detect the hover events mousenter and
-                            // mouseleave as a fallback and it creates
-                            // jumpiness because it conflicts with our
-                            // touchend event handlers below.
-                            self.show_tooltip(element, offset.left,
-                                              offset.top);
-                        }
-                    },
-                    'mouseleave.Tooltip': function () {
-                        // Clear any timeout set for delaying the hover.
-                        if (typeof this.timeout_id === 'number') {  
-                            window.clearTimeout(this.timeout_id);  
-                            delete this.timeout_id;  
-                        }
-                        
-                        self.hide_tooltip();
-                    },
-                    // For touch interfaces, activate on tap.
-                    'touchend.Tooltip': function (event) {
-                        var offset = $(element).offset();
-                        self.toggle_tooltip(element, offset.left, offset.top);
-
-                        // Stop events from propagating onward to the
-                        // document body. Otherwise the code that dismisses
-                        // the tooltip would always run, and the tooltip
-                        // would not show upon tap because it would be
-                        // immediately hidden.
-                        event.stopPropagation();
-                        // Ensure the tooltip can be dismissed on the
-                        // next touch following a touch with movement.
-                        just_moved = false;
-                    }
-                });
+                    });
+                }
             });   // end loop through elements
 
             // For touch interfaces, dismiss the tooltip upon a tap anywhere.
-            $('body').bind({
-                'touchend.Tooltip_dismiss': function () {
-                    // Only dismiss the tooltip if the user did not just
-                    // move around when they last touched.
-                    if (just_moved === false) {
-                        self.hide_tooltip();
+            if (self.is_touch) {
+                $('body').bind({
+                    'touchend.Tooltip_dismiss': function () {
+                        // Only dismiss the tooltip if the user did not just
+                        // move around when they last touched.
+                        if (just_moved === false) {
+                            self.hide_tooltip();
+                        }
+                        just_moved = false;
+                    },
+                    // Do not dismiss the tooltip upon a touch event that
+                    // involves finger movement, because the user may be
+                    // trying to reposition the viewport in order to better
+                    // view the tooltip.
+                    'touchmove.Tooltip': function () {
+                        just_moved = true;
                     }
-                    just_moved = false;
-                },
-                // Do not dismiss the tooltip upon a touch event that
-                // involves finger movement, because the user may be
-                // trying to reposition the viewport in order to better
-                // view the tooltip.
-                'touchmove.Tooltip': function () {
-                    just_moved = true;
-                }
-            });
+                });
+            }
 
         }   // end init()
     };   // end prototype definition
