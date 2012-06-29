@@ -2699,23 +2699,30 @@ img.char-value-larger {
 }
 
 /* Tooltips for working area images and highlighted glossary terms. */
+$tooltip-border-color: #c3d941;
+$tooltip-background-top-color: #eaf2e2;
+$tooltip-background-bottom-color: #d6e6c5;
+$tooltip-shadow-color: #333333;
+$tooltip-arrow-rotation: 225deg;
 
 .gb-tooltip {
     background: -webkit-gradient(linear, left top, left bottom,
-        color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
-    background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5);
+        color-stop(0%,$tooltip-background-top-color),
+        color-stop(100%,$tooltip-background-bottom-color));
+    background: -moz-linear-gradient(center top,
+        $tooltip-background-top-color, $tooltip-background-bottom-color);
 
-    border: 1px solid #c3d941;
+    border: 1px solid $tooltip-border-color;
     display: none;   /* initially invisible, fades in */
     padding: 0.5em 0.7em;
     position: absolute;
     width: 300px;
     z-index: 500;
 
-    -moz-box-shadow: 1px 1px 2px #333333;
-    -webkit-box-shadow: 1px 1px 2px #333333;
-    -o-box-shadow: 1px 1px 2px #333333;
-    box-shadow: 1px 1px 2px #333333;
+    -moz-box-shadow: 1px 1px 2px $tooltip-shadow-color;
+    -webkit-box-shadow: 1px 1px 2px $tooltip-shadow-color;
+    -o-box-shadow: 1px 1px 2px $tooltip-shadow-color;
+    box-shadow: 1px 1px 2px $tooltip-shadow-color;
         
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
@@ -2725,27 +2732,28 @@ img.char-value-larger {
     border-radius: 2px;
 }
 .gb-tooltip .arrow {
-    background: #d6e6c5;
+    background: $tooltip-background-bottom-color;
+    border: 1px solid $tooltip-border-color;
 
-    border: 1px solid #c3d941;
-
-    border-bottom-color: #d6e6c5;
-    border-right-color: #d6e6c5;
+    /* rotated borders, same color as bottom of tooltip */
+    border-bottom-color: $tooltip-background-bottom-color;
+    border-right-color: $tooltip-background-bottom-color;
+    
     bottom: -7px;
     height: 11px;
     left: 10px;
     position: absolute;
     width: 11px;
 
-    -moz-box-shadow: -1px -1px 1px #333333;
-    -webkit-box-shadow: -1px -1px 1px #333333;
-    -o-box-shadow: -1px -1px 1px #333333;
-    box-shadow: -1px -1px 1px #333333;
+    -moz-box-shadow: -1px -1px 1px $tooltip-shadow-color;
+    -webkit-box-shadow: -1px -1px 1px $tooltip-shadow-color;
+    -o-box-shadow: -1px -1px 1px $tooltip-shadow-color;
+    box-shadow: -1px -1px 1px $tooltip-shadow-color;
 
-    -webkit-transform: rotate(225deg);
-    -moz-transform: rotate(225deg);
-    -o-transform: rotate(225deg);
-    transform: rotate(225deg);
+    -webkit-transform: rotate($tooltip-arrow-rotation);
+    -moz-transform: rotate($tooltip-arrow-rotation);
+    -o-transform: rotate($tooltip-arrow-rotation);
+    transform: rotate($tooltip-arrow-rotation);
 }
 
 /* Glossary tooltip */
@@ -2755,16 +2763,16 @@ img.char-value-larger {
     max-width: 30em;
 }
 .glosstip img {
-    background: #eaf2e2;
-    border: 1px solid #c3d941;
+    background: $tooltip-background-top-color;
+    border: 1px solid $tooltip-border-color;
     bottom: 110%;
     padding: 4px;
     position: absolute;
 
-    -moz-box-shadow: 1px 1px 2px #333333;
-    -webkit-box-shadow: 1px 1px 2px #333333;
-    -o-box-shadow: 1px 1px 2px #333333;
-    box-shadow: 1px 1px 2px #333333;
+    -moz-box-shadow: 1px 1px 2px $tooltip-shadow-color;
+    -webkit-box-shadow: 1px 1px 2px $tooltip-shadow-color;
+    -o-box-shadow: 1px 1px 2px $tooltip-shadow-color;
+    box-shadow: 1px 1px 2px $tooltip-shadow-color;
         
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
