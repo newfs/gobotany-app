@@ -166,8 +166,9 @@ define([
                 }
             });   // end loop through elements
 
-            // For touch interfaces, dismiss the tooltip upon a tap anywhere.
+            // Make some further adjustments for touch interfaces.
             if (self.is_touch) {
+                // Dismiss the tooltip upon a tap anywhere.
                 $('body').bind({
                     'touchend.Tooltip_dismiss': function () {
                         // Only dismiss the tooltip if the user did not just
@@ -183,6 +184,16 @@ define([
                     // view the tooltip.
                     'touchmove.Tooltip': function () {
                         just_moved = true;
+                    }
+                });
+
+                // Dismiss the tooltip when the device orientation changes
+                // because the tooltip becomes incorrectly positioned.
+                var orientation_event = ('onorientationchange' in window) ?
+                    'orientationchange' : 'resize';
+                $(window).bind({
+                    'orientationchange': function () {
+                        self.hide_tooltip();
                     }
                 });
             }
