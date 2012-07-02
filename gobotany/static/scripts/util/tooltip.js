@@ -75,9 +75,13 @@ define([
         },
 
         show_tooltip: function (element, left, top) {
-            // If a tooltip is already showing, skip.
+            // If a tooltip is already showing, immediately hide it
+            // without a fade effect so the new one can beging fading
+            // in. This for successively tapping on elements that produce
+            // tooltips and having the tooltips immediately appear without
+            // the previous one having to be dismissed first.
             if ($('.' + this.options.css_class).length > 0) {
-                return;
+                this.hide_tooltip(false);
             }
 
             var tooltip_element = this.build_tooltip(this.options.content);
@@ -93,19 +97,20 @@ define([
             $(tooltip_element).fadeIn(this.options.fade_speed);
         },
 
-        hide_tooltip: function () {
-            var tooltip = '.' + this.options.css_class;
-            $(tooltip).fadeOut(this.options.fade_speed, function () {
-                $(tooltip).remove();
-            });
-        },
+        hide_tooltip: function (fade) {
+            var do_fade;
+            if (typeof(fade) === 'undefined') {
+                do_fade = 'true';   // default for optional parameter
+            }
 
-        toggle_tooltip: function (element, left, top) {
-            if ($('.' + this.options.css_class).length > 0) {
-                this.hide_tooltip();
+            var tooltip = '.' + this.options.css_class;
+            if (do_fade) {
+                $(tooltip).fadeOut(this.options.fade_speed, function () {
+                    $(tooltip).remove();
+                });
             }
             else {
-                this.show_tooltip(element, left, top);
+                $(tooltip).remove();
             }
         },
 
@@ -119,8 +124,8 @@ define([
                     $(element).bind({
                         'touchend.Tooltip': function (event) {
                             var offset = $(element).offset();
-                            self.toggle_tooltip(element, offset.left,
-                                                offset.top);
+                            self.show_tooltip(element, offset.left,
+                                              offset.top);
 
                             // Stop events from propagating onward to the
                             // document body. Otherwise the code that
