@@ -1466,6 +1466,7 @@ div.working-area #simple-slider .count {
     position: absolute;
 }
 
+
 div.working-area #slider {
     border: 1px dashed #ccc;
     height: 60px;
@@ -1475,15 +1476,31 @@ div.working-area #slider {
 }
 div.working-area #slider .bar {
     border: 1px solid #666;
-    height: 5px;
+    height: 4px;
+    position: absolute;
+    top: 36px;
     width: 100%;
 }
+$slider-thumb-radius: 16px;
 div.working-area #slider .thumb {
     background: green;
     border: 1px solid green;
     height: 30px;
     position: absolute;
+    top: 25px;
     width: 30px;
+
+    -moz-border-radius: $slider-thumb-radius;
+    -webkit-border-radius: $slider-thumb-radius;
+    -o-border-radius: $slider-thumb-radius;
+    -ms-border-radius: $slider-thumb-radius;
+    -khtml-border-radius: $slider-thumb-radius;
+    border-radius: $slider-thumb-radius;
+}
+div.working-area #slider .label {
+    font-size: 16px;
+    position: absolute;
+    top: 0;
 }
 
 /* end Working Area styles */
