@@ -24,8 +24,10 @@ define([
 
         build_slider: function () {
             var slider = $('<div id="' + this.options.id + '">' +
+                           '<div class="label"></div>' +
                            '<div class="bar"></div>' +
-                           '<div class="thumb"></div></div>');
+                           '<div class="thumb"></div>' +
+                           '</div>');
             console.log('about to append:', slider);
             $(this.container_element).append(slider);
         },
@@ -58,18 +60,32 @@ define([
             console.log('handle_release - is_down:', this.is_down);
         },
 
+        id_selector: function () {
+            return '#' + this.options.id;
+        },
+
+        set_label: function (value) {
+            var label = $(this.container_element).find(this.id_selector() +
+                                                       ' .label')[0];
+            $(label).html(value);
+        },
+
         init: function () {
             var self = this;
+            var id_selector = '#' + this.options.id;
 
             console.log('Slider init(): value:', self.options.value);
 
             self.build_slider();
+            self.set_label(self.options.value);
             
-            var bar = $(this.container_element).find('#slider .bar')[0];
+            var bar = $(this.container_element).find(self.id_selector() +
+                                                     ' .bar')[0];
             this.options.bar_width = $(bar).width();
             console.log('bar_width:', this.options.bar_width);
 
-            var thumb = $(this.container_element).find('#slider .thumb')[0];
+            var thumb = $(this.container_element).find(self.id_selector() +
+                                                       ' .thumb')[0];
             this.options.thumb_width = $(thumb).width();
             console.log('thumb_width:', this.options.thumb_width);
 
@@ -97,6 +113,9 @@ define([
                         event.preventDefault();   // prevent scrolling
                         var original_event = event.originalEvent;
                         self.handle_move(original_event, thumb);
+                    },
+                    'mouseout.Slider': function () {
+                        self.handle_release();
                     }
                 });
 
