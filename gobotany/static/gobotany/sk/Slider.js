@@ -11,10 +11,11 @@ define([
     'dojo/dom-style',
     'dijit/registry',
     'dijit/form/HorizontalSlider',
+    'util/slider',
     'gobotany/sk/Choice',
     'simplekey/App3'
 ], function(declare, lang, query, nodeListDom, nodeListHtml, domConstruct, 
-    domStyle, registry, HorizontalSlider, Choice, App3) {
+    domStyle, registry, HorizontalSlider, slider, Choice, App3) {
 
 return declare('gobotany.sk.working_area.Slider', [
     Choice
@@ -22,6 +23,8 @@ return declare('gobotany.sk.working_area.Slider', [
 
     slider_node: null,
     simple_slider: null,
+    horizontal_slider_node: null,
+    horizontal_slider: null,
 
     /* See the comments on the Choice class, above, to learn about when
        and how these methods are invoked. */
@@ -33,10 +36,13 @@ return declare('gobotany.sk.working_area.Slider', [
         if(this.simple_slider) {
             this.simple_slider.destroy();
         }
+        if (this.horizontal_slider) {
+            this.horiszontal_slider.destroy();
+        }
         if(this.slide_node) { 
             query(this.slider_node).orphan();
         }
-        this.simple_slider = this.slider_node = null;
+        this.simple_slider = this.slider_node = horizontal_slider = null;
         this.inherited(arguments);
     },
 
@@ -79,14 +85,28 @@ return declare('gobotany.sk.working_area.Slider', [
             'class': 'count',
             'innerHTML': startvalue
         }, this.simple_slider.containerNode);
+        //this.horizontal_slider_node = domConstruct.create('div', null,
+        //                                                  values_q[0]);
+        this.slider_container_node = $('.working-area .info .values')[0];
+        this.horizontal_slider = $(this.slider_container_node).slider({
+            id: 'slider',
+            value: startvalue
+        });
+        // TODO: create a div for the count node? Can't that be a part
+        // of the control and not out here?
         this._value_changed();
     },
 
     _current_value: function() {
         return registry.byId('simple-slider').value;
+        // TODO: return something other than this Dijit "registry" value:
+        // probably just query the control for the value?
     },
 
     _value_changed: function() {
+        // TODO: one would think that much of the code here could be
+        // pulled out and placed in the control itself, perhaps
+
         /* Disable the apply button when we're on either the default
            value or the value that was previous selected */
         this._compute_min_and_max();

@@ -1380,20 +1380,6 @@ h5.help {
     z-index: 200;
 }
 
-div.working-area #simple-slider {
-    margin-top: 60px;
-    margin-bottom: 48px;
-}
-div.working-area #simple-slider .dijitSliderDecoration {
-    background: #fff;
-    border-bottom: 0;
-}
-div.working-area #simple-slider .count {
-    bottom: 130px;
-    left: 370px;   /* Left position set by JS with slide */
-    position: absolute;
-}
-
 /* Length input */
 .choose_length label {
     margin: 0 10px 0 0;
@@ -1463,6 +1449,41 @@ div.working-area .instructions {
 
 div.working-area .actions {
     text-align: center;
+}
+
+/* "old" Dijit slider - TODO remove */
+div.working-area #simple-slider {
+    margin-top: 20px;
+    margin-bottom: 0px;
+}
+div.working-area #simple-slider .dijitSliderDecoration {
+    background: #fff;
+    border-bottom: 0;
+}
+div.working-area #simple-slider .count {
+    bottom: 130px;
+    left: 370px;   /* Left position set by JS with slide */
+    position: absolute;
+}
+
+div.working-area #slider {
+    border: 1px dashed #ccc;
+    height: 60px;
+    margin: 10px 0;
+    padding: 20px 0 0 0;
+    position: relative;
+}
+div.working-area #slider .bar {
+    border: 1px solid #666;
+    height: 5px;
+    width: 100%;
+}
+div.working-area #slider .thumb {
+    background: green;
+    border: 1px solid green;
+    height: 30px;
+    position: absolute;
+    width: 30px;
 }
 
 /* end Working Area styles */
