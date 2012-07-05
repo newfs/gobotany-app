@@ -34,24 +34,24 @@ define([
 
         handle_press: function (event) {
             this.is_down = true;
-            console.log('handle_press - is_down:', this.is_down);
+            //console.log('handle_press - is_down:', this.is_down);
             event.stopPropagation();
         },
 
         handle_move: function (event, thumb) {
             var x = event.pageX;
             var client_x = event.clientX;
-            var left = x - this.options.left_offset;
+            var left = x - this.options.left_offset + (this.thumb_width / 2);
             if (this.is_down) {
-                console.log('handle_move - is_down: ' + this.is_down +
-                            ' pageX: ', + x + ' clientX:' + client_x +
-                            ' left: ', left);
+                //console.log('handle_move - is_down: ' + this.is_down);
+                console.log(' pageX: ' + x + ' clientX:' + client_x +
+                            ' left: ' + left);
                 if ((left >= 0) && (left <= this.options.bar_width -
-                                    this.options.thumb_width )) {
+                                    this.options.thumb_width)) {
                     $(thumb).css({'left': left});
                 }
+                event.stopPropagation();
             }
-            event.stopPropagation();
         },
 
         handle_release: function () {
@@ -119,6 +119,9 @@ define([
                 });
 
                 $('body').bind({
+                    'mousemove.Slider': function (event) {
+                        self.handle_move(event, thumb);
+                    },
                     'mouseup.Slider': function () {
                         self.handle_release();
                     }

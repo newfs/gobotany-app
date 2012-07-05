@@ -1454,14 +1454,14 @@ div.working-area .actions {
 /* "old" Dijit slider - TODO remove */
 div.working-area #simple-slider {
     margin-top: 20px;
-    margin-bottom: 0px;
+    margin-bottom: 20px;
 }
 div.working-area #simple-slider .dijitSliderDecoration {
     background: #fff;
     border-bottom: 0;
 }
 div.working-area #simple-slider .count {
-    bottom: 130px;
+    bottom: 155px;
     left: 370px;   /* Left position set by JS with slide */
     position: absolute;
 }
