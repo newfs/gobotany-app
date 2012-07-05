@@ -1454,7 +1454,7 @@ div.working-area .actions {
 /* "old" Dijit slider - TODO remove */
 div.working-area #simple-slider {
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 div.working-area #simple-slider .dijitSliderDecoration {
     background: #fff;
@@ -1494,6 +1494,7 @@ div.working-area #slider .thumb {
     border: 1px solid green;
     height: 30px;
     position: absolute;
+    text-align: center;
     top: 25px;
     width: 30px;
 
@@ -1506,8 +1507,8 @@ div.working-area #slider .thumb {
 }
 div.working-area #slider .label {
     font-size: 16px;
-    position: absolute;
-    top: 0;
+    position: relative;
+    top: -28px;
 }
 div.working-area #slider .bar, div.working-area #slider .bar div,
 div.working-area #slider .label {

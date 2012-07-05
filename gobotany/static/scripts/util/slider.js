@@ -24,10 +24,9 @@ define([
 
         build_slider: function () {
             var slider = $('<div id="' + this.options.id + '">' +
-                           '<div class="label"></div>' +
                            '<div class="bar"><div></div></div>' +
-                           '<div class="thumb"></div>' +
-                           '</div>');
+                           '<div class="thumb"><div class="label"></div>' +
+                           '</div></div>');
             console.log('about to append:', slider);
             $(this.container_element).append(slider);
         },
