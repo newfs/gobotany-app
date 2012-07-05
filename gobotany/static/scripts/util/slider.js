@@ -27,7 +27,7 @@ define([
                            '<div class="bar"><div></div></div>' +
                            '<div class="thumb"><div class="label"></div>' +
                            '</div></div>');
-            console.log('about to append:', slider);
+            //console.log('about to append:', slider);
             $(this.container_element).append(slider);
         },
 
@@ -38,11 +38,11 @@ define([
         },
 
         handle_move: function (event, thumb) {
+            //console.log('handle_move - is_down: ' + this.is_down);
             var x = event.pageX;
             var client_x = event.clientX;
             var left = x - this.options.left_offset - (this.thumb_width / 2);
             if (this.is_down) {
-                //console.log('handle_move - is_down: ' + this.is_down);
                 console.log(' pageX: ' + x + ' clientX:' + client_x +
                             ' left: ' + left);
                 if ((left >= 0) &&
@@ -56,7 +56,7 @@ define([
 
         handle_release: function () {
             this.is_down = false;
-            console.log('handle_release - is_down:', this.is_down);
+            //console.log('handle_release - is_down:', this.is_down);
         },
 
         id_selector: function () {
@@ -74,6 +74,8 @@ define([
             var id_selector = '#' + this.options.id;
 
             console.log('Slider init(): value:', self.options.value);
+            
+            // Build the slider and bind the event handlers.
 
             self.build_slider();
             self.set_label(self.options.value);
@@ -118,7 +120,10 @@ define([
                     }
                 });
 
-                $('body').bind({
+                $(this.container_element).unbind('mousemove.Slider');
+                $(this.container_element).unbind('mouseup.Slider');
+
+                $(this.container_element).bind({
                     'mousemove.Slider': function (event) {
                         self.handle_move(event, thumb);
                     },
@@ -127,7 +132,6 @@ define([
                     }
                 });
             }
-
         }   // end init()
     };   // end prototype definition
 

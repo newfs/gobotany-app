@@ -23,7 +23,8 @@ return declare('gobotany.sk.working_area.Slider', [
 
     slider_node: null,
     simple_slider: null,
-    horizontal_slider_node: null,
+
+    slider_container_node: null,
     horizontal_slider: null,
 
     /* See the comments on the Choice class, above, to learn about when
@@ -36,13 +37,16 @@ return declare('gobotany.sk.working_area.Slider', [
         if(this.simple_slider) {
             this.simple_slider.destroy();
         }
-        if (this.horizontal_slider) {
-            this.horiszontal_slider.destroy();
-        }
         if(this.slide_node) { 
             query(this.slider_node).orphan();
         }
-        this.simple_slider = this.slider_node = horizontal_slider = null;
+        this.simple_slider = this.slider_node = null;
+        
+        if (this.slider_container_node) {
+            $(this.slider_container_node).empty();
+        }
+        this.horizontal_slider = this.slider_container_node = null;
+
         this.inherited(arguments);
     },
 
@@ -85,15 +89,14 @@ return declare('gobotany.sk.working_area.Slider', [
             'class': 'count',
             'innerHTML': startvalue
         }, this.simple_slider.containerNode);
-        //this.horizontal_slider_node = domConstruct.create('div', null,
-        //                                                  values_q[0]);
-        this.slider_container_node = $('.working-area .info .values')[0];
+
+        var values_div = $('.working-area .info .values')[0];
+        this.slider_container_node = $(values_div).append('<div></div>');        
         this.horizontal_slider = $(this.slider_container_node).slider({
             id: 'slider',
             value: startvalue
         });
-        // TODO: create a div for the count node? Can't that be a part
-        // of the control and not out here?
+        
         this._value_changed();
     },
 
