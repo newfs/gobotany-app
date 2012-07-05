@@ -17,7 +17,7 @@ define([
     Slider.prototype = {
         defaults: {
             id: 'gb-slider',
-            left_offset: 295,
+            left_offset: 275,
             orientation: 'horizontal',
             value: null
         },
@@ -25,7 +25,7 @@ define([
         build_slider: function () {
             var slider = $('<div id="' + this.options.id + '">' +
                            '<div class="label"></div>' +
-                           '<div class="bar"></div>' +
+                           '<div class="bar"><div></div></div>' +
                            '<div class="thumb"></div>' +
                            '</div>');
             console.log('about to append:', slider);
@@ -41,13 +41,14 @@ define([
         handle_move: function (event, thumb) {
             var x = event.pageX;
             var client_x = event.clientX;
-            var left = x - this.options.left_offset + (this.thumb_width / 2);
+            var left = x - this.options.left_offset - (this.thumb_width / 2);
             if (this.is_down) {
                 //console.log('handle_move - is_down: ' + this.is_down);
                 console.log(' pageX: ' + x + ' clientX:' + client_x +
                             ' left: ' + left);
-                if ((left >= 0) && (left <= this.options.bar_width -
-                                    this.options.thumb_width)) {
+                if ((left >= 0) &&
+                    (left <= this.bar_width - this.thumb_width)) {
+
                     $(thumb).css({'left': left});
                 }
                 event.stopPropagation();
@@ -80,13 +81,13 @@ define([
             
             var bar = $(this.container_element).find(self.id_selector() +
                                                      ' .bar')[0];
-            this.options.bar_width = $(bar).width();
-            console.log('bar_width:', this.options.bar_width);
+            this.bar_width = $(bar).width();
+            console.log('bar_width:', this.bar_width);
 
             var thumb = $(this.container_element).find(self.id_selector() +
                                                        ' .thumb')[0];
-            this.options.thumb_width = $(thumb).width();
-            console.log('thumb_width:', this.options.thumb_width);
+            this.thumb_width = $(thumb).width();
+            console.log('thumb_width:', this.thumb_width);
 
             if (this.is_touch) {
                 $(thumb).bind({

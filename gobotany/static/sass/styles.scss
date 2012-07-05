@@ -1475,11 +1475,18 @@ div.working-area #slider {
     position: relative;
 }
 div.working-area #slider .bar {
+    padding: 0 4px;
+    position: absolute;
+    top: 38px;
+    width: 100%;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+div.working-area #slider .bar div {
     border: 1px solid #666;
     height: 4px;
-    position: absolute;
-    top: 36px;
-    width: 100%;
 }
 $slider-thumb-radius: 16px;
 div.working-area #slider .thumb {
@@ -1502,12 +1509,16 @@ div.working-area #slider .label {
     position: absolute;
     top: 0;
 }
-div.working-area #slider .bar, div.working-area #slider .label {
+div.working-area #slider .bar, div.working-area #slider .bar div,
+div.working-area #slider .label {
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+div.working-area #slider .bar, div.working-area #slider .thumb {
+    cursor: pointer;
 }
 
 /* end Working Area styles */
