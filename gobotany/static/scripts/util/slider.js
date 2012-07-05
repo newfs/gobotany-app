@@ -32,9 +32,10 @@ define([
             $(this.container_element).append(slider);
         },
 
-        handle_press: function () {
+        handle_press: function (event) {
             this.is_down = true;
             console.log('handle_press - is_down:', this.is_down);
+            event.stopPropagation();
         },
 
         handle_move: function (event, thumb) {
@@ -50,9 +51,7 @@ define([
                     $(thumb).css({'left': left});
                 }
             }
-            //else {
-            //    console.log('handle_move - is_down: ' + this.is_down);
-            //}
+            event.stopPropagation();
         },
 
         handle_release: function () {
@@ -106,15 +105,15 @@ define([
             }
             else {
                 $(thumb).bind({
-                    'mousedown.Slider': function () {
-                        self.handle_press();
+                    'mousedown.Slider': function (event) {
+                        self.handle_press(event);
                     },
                     'mousemove.Slider': function (event) {
                         event.preventDefault();   // prevent scrolling
                         var original_event = event.originalEvent;
                         self.handle_move(original_event, thumb);
                     },
-                    'mouseout.Slider': function () {
+                    'mouseup.Slider': function () {
                         self.handle_release();
                     }
                 });

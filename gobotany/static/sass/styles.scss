@@ -1502,6 +1502,13 @@ div.working-area #slider .label {
     position: absolute;
     top: 0;
 }
+div.working-area #slider .bar, div.working-area #slider .label {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
 /* end Working Area styles */
 
