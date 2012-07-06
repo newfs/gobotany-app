@@ -1,14 +1,6 @@
 define([
-    'dojo/dom',
-    'dojo/dom-construct',
-    'dojo/dom-geometry',
-    'dojo/dom-style',
-    'dojo/dom-class',
-    'dojo/_base/window',
-    'dojo/window',
-    'dojo/_base/fx'
-], function(dom, domConstruct, domGeom, domStyle, domClass, 
-    base_win, win, fx) {
+    'bridge/jquery'
+], function($) {
 
     // This isn't really a Dojo class so we won't bother with using "declare"
     var utils = {
@@ -16,29 +8,27 @@ define([
         // display a notification message at the top of the page
         // that will eventually fade away
         notify: function(txt) {
-            var holder = dom.byId('notification-msg');
-            if (holder === null) {
-                holder = domConstruct.place('<div class="hidden" id="notification-msg"></div>',
-                                    base_win.body());
+            var holder = $('#notification-msg');
+            if (holder.length === 0) {
+                holder = $('<div class="hidden" id="notification-msg"></div>')
+                    .appendTo('body');
             }
 
-            holder.innerHTML = txt;
+            holder.html(txt);
 
-            var wbox = win.getBox();
-            var holderbox = domGeom.position(holder);
+            var win = $(window);
 
-            var left = (wbox.w / 2) - (holderbox.w / 2);
-            var top = wbox.t;
-            domStyle.set(holder,
-                       {position: 'absolute',
+            var left = (win.width() / 2) - (holder.width() / 2);
+            var top = win.scrollTop();
+            holder.css({position: 'absolute',
                         top: top + 'px',
                         left: left + 'px'});
 
-            domClass.remove(holder, 'hidden');
-            fx.fadeIn({node: holder, duration: 1}).play();
+            holder.removeClass('hidden');
+            holder.fadeIn(1000);
 
             setTimeout(function() {
-                fx.fadeOut({node: holder}).play();
+                holder.fadeOut();
             }, 5000);
         },
 
@@ -156,5 +146,8 @@ define([
         }
     };
 
-    return utils;
+    // Allow us to create other modules that might inherit from this one
+    // Currently, this object needs no initialization
+    var instance = Object.create(utils);
+    return instance;
 });
