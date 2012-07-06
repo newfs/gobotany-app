@@ -17,7 +17,9 @@ define([
     Slider.prototype = {
         defaults: {
             id: 'gb-slider',
-            left_offset: 275,
+            left_offset: 0,
+            maximum: 100,
+            minimum: 0,
             orientation: 'horizontal',
             value: null
         },
@@ -27,7 +29,6 @@ define([
                            '<div class="bar"><div></div></div>' +
                            '<div class="thumb"><div class="label"></div>' +
                            '</div></div>');
-            //console.log('about to append:', slider);
             $(this.container_element).append(slider);
         },
 
@@ -73,7 +74,9 @@ define([
             var self = this;
             var id_selector = '#' + this.options.id;
 
-            console.log('Slider init(): value:', self.options.value);
+            console.log('Slider init(): min: ' + this.options.minimum +
+                ' max: ' + this.options.maximum + ' value: ' +
+                self.options.value);
             
             // Build the slider and bind the event handlers.
 

@@ -94,6 +94,9 @@ return declare('gobotany.sk.working_area.Slider', [
         this.slider_container_node = $(values_div).append('<div></div>');        
         this.horizontal_slider = $(this.slider_container_node).slider({
             id: 'slider',
+            left_offset: 275,
+            maximum: this.max,
+            minimum: this.min,
             value: startvalue
         });
         
