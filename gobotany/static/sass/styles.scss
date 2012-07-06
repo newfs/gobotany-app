@@ -1514,6 +1514,7 @@ div.working-area #slider .thumb {
         $slider-background-top-color, $slider-background-bottom-color);
     border: 1px solid $slider-background-bottom-color;
     height: 30px;
+    left: 3px;
     position: absolute;
     text-align: center;
     top: 35px;
@@ -1527,7 +1528,8 @@ div.working-area #slider .thumb {
     border-radius: $slider-thumb-radius;
 
     -moz-box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
-    -webkit-box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
+    -webkit-box-shadow: $slider-thumb-shadow-lengths
+        $slider-thumb-shadow-color;
     -o-box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
     box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
 }

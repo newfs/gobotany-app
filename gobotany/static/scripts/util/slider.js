@@ -8,6 +8,7 @@ define([
         this.is_down = false;
         this.is_touch = navigator.userAgent.match(
                         /(iPad|iPod|iPhone|Android)/) ? true : false;
+        this.bar_left_offset = null;
         this.bar_width = null;
         this.thumb_width = null;
         this.init();
@@ -16,8 +17,8 @@ define([
     // Prototype definition
     Slider.prototype = {
         defaults: {
+            bar_left_offset_adjust: 3,
             id: 'gb-slider',
-            left_offset: 0,
             maximum: 100,
             minimum: 0,
             orientation: 'horizontal',
@@ -43,12 +44,15 @@ define([
             //console.log('handle_move - is_down: ' + this.is_down);
             var x = event.pageX;
             var client_x = event.clientX;
-            var left = x - this.options.left_offset - (this.thumb_width / 2);
+            var left = x - this.bar_left_offset - (this.thumb_width / 2);
             if (this.is_down) {
                 console.log(' pageX: ' + x + ' clientX:' + client_x +
                             ' left: ' + left);
-                if ((left >= 0) &&
-                    (left <= this.bar_width - this.thumb_width)) {
+                // If the place where the user is pressing is within the
+                // bar, position the thumb accordingly. 
+                if ((left >= 0 + this.options.bar_left_offset_adjust) &&
+                    (left <= this.bar_width - this.thumb_width +
+                     this.options.bar_left_offset_adjust)) {
 
                     $(thumb).css({'left': left});
                 }
@@ -86,6 +90,9 @@ define([
             
             var bar = $(this.container_element).find(self.id_selector() +
                                                      ' .bar')[0];
+            var offset = $(bar).offset();
+            this.bar_left_offset = offset.left;
+            console.log('bar_left_offset:', this.bar_left_offset);
             this.bar_width = $(bar).width();
             console.log('bar_width:', this.bar_width);
 
