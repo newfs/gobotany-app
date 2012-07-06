@@ -35,6 +35,7 @@ define([
         handle_press: function (event) {
             this.is_down = true;
             //console.log('handle_press - is_down:', this.is_down);
+            event.preventDefault();   // prevent accidental text selection
             event.stopPropagation();
         },
 
