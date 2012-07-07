@@ -12,6 +12,8 @@ define([
         this.bar_max_left = null;
         this.bar_min_left = null;
         this.bar_width = null;
+        this.number_of_segments = null;
+        this.pixels_per_value = null;
         this.thumb_width = null;
         this.init();
     };
@@ -35,15 +37,29 @@ define([
             $(this.container_element).append(slider);
         },
 
+        position_for_value: function (value) {
+            // Calculate the left position of the slider thumb for a value.
+            var position = Math.floor(value * this.pixels_per_value) +
+                           this.options.bar_left_offset_adjust;
+            return position;
+        },
+
         value_for_position: function (position) {
-            // Return the value corresponding to a given left position of
-            // the slider thumb.
-            var number_of_segments = this.options.maximum -
-                                     this.options.minimum + 1;
+            // Calculate the value corresponding to a given left position
+            // of the slider thumb.
             var thumb_center_position = position + (this.thumb_width / 2);
-            var pixels_per_value = this.bar_width / number_of_segments;
-            var value = Math.floor(thumb_center_position / pixels_per_value);
+            var value = Math.floor(thumb_center_position /
+                                   this.pixels_per_value);
             return value;
+        },
+
+        set_thumb: function (left, thumb) {
+            // If the given left position is within the bar, set the thumb
+            // there and update its label. 
+            if (left >= this.bar_min_left && left <= this.bar_max_left) {
+                $(thumb).css({'left': left});
+                this.set_label(this.value_for_position(left));
+            }
         },
 
         handle_press: function (event) {
@@ -60,12 +76,7 @@ define([
             var left = x - this.bar_left_offset - (this.thumb_width / 2);
             if (this.is_down) {
                 //console.log(' pageX: ' + x + ' left: ' + left);
-                // If the place where the user is pressing is within the
-                // bar, position the thumb there and update its label. 
-                if (left >= this.bar_min_left && left <= this.bar_max_left) {
-                    $(thumb).css({'left': left});
-                    this.set_label(this.value_for_position(left));
-                }
+                this.set_thumb(left, thumb);
                 event.stopPropagation();
             }
         },
@@ -116,6 +127,14 @@ define([
                                 this.options.bar_left_offset_adjust;
             console.log('bar_min_left: ' + this.bar_min_left +
                         ' bar_max_left: ' + this.bar_max_left);
+
+            this.number_of_segments = this.options.maximum -
+                                      this.options.minimum + 1;
+            this.pixels_per_value = this.bar_width / this.number_of_segments;
+
+            var left_position = self.position_for_value(self.options.value);
+            console.log('about to set thumb: left_position:', left_position);
+            self.set_thumb(left_position, thumb);
 
             if (this.is_touch) {
                 $(thumb).bind({
