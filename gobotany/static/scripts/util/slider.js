@@ -28,6 +28,7 @@ define([
             maximum: 100,
             minimum: 0,
             orientation: 'horizontal',
+            thumb_adjust: 15
         },
 
         build_slider: function () {
@@ -55,8 +56,21 @@ define([
         },
 
         set_thumb: function (left, thumb) {
+            // First if necessary, correct the left position in order to
+            // allow pressing on the bar right up to its edges.
+            if (left < this.bar_min_left &&
+                left >= this.bar_min_left - this.options.thumb_adjust) {
+
+                left = this.bar_min_left;
+            }
+            else if (left > this.bar_max_left &&
+                     left <= this.bar_max_left + this.options.thumb_adjust) {
+
+                left = this.bar_max_left;
+            }
+
             // If the given left position is within the bar, set the thumb
-            // there and update its label. 
+            // there and update its label.
             if (left >= this.bar_min_left && left <= this.bar_max_left) {
                 $(thumb).css({'left': left});
                 this.set_label(this.value_for_position(left));
@@ -144,6 +158,16 @@ define([
                         self.handle_release();
                     }
                 });
+
+                $(bar).bind({
+                    'touchstart.Slider.bar': function (event) {
+                        self.handle_press();
+                        self.handle_move(thumb);
+                    },
+                    'touchend.Slider.bar': function () {
+                        self.handle_release();
+                    }
+                });
             }
             else {
                 $(thumb).bind({
@@ -156,6 +180,16 @@ define([
                         self.handle_move(original_event, thumb);
                     },
                     'mouseup.Slider': function () {
+                        self.handle_release();
+                    }
+                });
+
+                $(bar).bind({
+                    'mousedown.Slider.bar': function (event) {
+                        self.handle_press(event);
+                        self.handle_move(event, thumb);
+                    },
+                    'mouseup.Slider.bar': function () {
                         self.handle_release();
                     }
                 });
