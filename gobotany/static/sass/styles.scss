@@ -1223,7 +1223,7 @@ h5.help {
     font-size: 12px;
 }
 
-/* Working Area styles */
+/*** Working Area styles ***/
 
 .working-area {
     display: none;
@@ -1451,22 +1451,7 @@ div.working-area .actions {
     text-align: center;
 }
 
-/* "old" Dijit slider - TODO remove */
-div.working-area #simple-slider {
-    margin-top: 20px;
-    margin-bottom: 40px;
-}
-div.working-area #simple-slider .dijitSliderDecoration {
-    background: #fff;
-    border-bottom: 0;
-}
-div.working-area #simple-slider .count {
-    bottom: 155px;
-    left: 370px;   /* Left position set by JS with slide */
-    position: absolute;
-}
-
-/* Slider styles */
+/* Working Area slider styles */
 $slider-background-top-color: #c1d9a7;
 $slider-background-bottom-color: #ffffff;
 $slider-bar-radius: 4px;
@@ -1476,7 +1461,7 @@ $slider-thumb-shadow-color: #333333;
 
 div.working-area #slider {
     height: 70px;
-    margin: 10px 0;
+    margin: 20px 0 10px;
     padding: 20px 0 0 0;
     position: relative;
 }
@@ -1549,8 +1534,9 @@ div.working-area #slider .label {
 div.working-area #slider .bar, div.working-area #slider .thumb {
     cursor: pointer;
 }
+/* end Working Area slider styles */
 
-/* end Working Area styles */
+/*** end Working Area styles ***/
 
 /* Character/value styles, for plant preview popups, etc. */
 .characteristics {

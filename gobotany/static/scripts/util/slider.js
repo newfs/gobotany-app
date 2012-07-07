@@ -5,7 +5,7 @@ define([
     var Slider = function (container_element, options) {
         this.container_element = container_element;
         this.options = $.extend({}, this.defaults, options);
-        this.is_down = false;
+        this.is_pressed = false;
         this.is_touch = navigator.userAgent.match(
                         /(iPad|iPod|iPhone|Android)/) ? true : false;
         this.bar_left_offset = null;
@@ -15,6 +15,7 @@ define([
         this.number_of_segments = null;
         this.pixels_per_value = null;
         this.thumb_width = null;
+        this.value = null;
         this.init();
     };
 
@@ -23,10 +24,10 @@ define([
         defaults: {
             bar_left_offset_adjust: 3,
             id: 'gb-slider',
+            initial_value: 0,
             maximum: 100,
             minimum: 0,
             orientation: 'horizontal',
-            value: null
         },
 
         build_slider: function () {
@@ -63,27 +64,29 @@ define([
         },
 
         handle_press: function (event) {
-            this.is_down = true;
-            //console.log('handle_press - is_down:', this.is_down);
+            this.is_pressed = true;
             event.preventDefault();   // prevent accidental text selection
             event.stopPropagation();
         },
 
         handle_move: function (event, thumb) {
-            //console.log('handle_move - is_down: ' + this.is_down);
             var x = event.pageX;
             //var client_x = event.clientX;
             var left = x - this.bar_left_offset - (this.thumb_width / 2);
-            if (this.is_down) {
-                //console.log(' pageX: ' + x + ' left: ' + left);
+            if (this.is_pressed) {
                 this.set_thumb(left, thumb);
                 event.stopPropagation();
+
+                if (this.options.on_move &&
+                    typeof(this.options.on_move) === 'function') {
+
+                    this.options.on_move();
+                }
             }
         },
 
         handle_release: function () {
-            this.is_down = false;
-            //console.log('handle_release - is_down:', this.is_down);
+            this.is_pressed = false;
         },
 
         id_selector: function () {
@@ -100,40 +103,31 @@ define([
             var self = this;
             var id_selector = '#' + this.options.id;
 
-            console.log('Slider init(): min: ' + this.options.minimum +
-                ' max: ' + this.options.maximum + ' value: ' +
-                self.options.value);
-            
             // Build the slider and bind the event handlers.
 
             self.build_slider();
-            self.set_label(self.options.value);
+            this.value = this.options.initial_value;
+            self.set_label(this.value);
             
             var bar = $(this.container_element).find(self.id_selector() +
                                                      ' .bar')[0];
             var offset = $(bar).offset();
             this.bar_left_offset = offset.left;
-            console.log('bar_left_offset:', this.bar_left_offset);
             this.bar_width = $(bar).width();
-            console.log('bar_width:', this.bar_width);
 
             var thumb = $(this.container_element).find(self.id_selector() +
                                                        ' .thumb')[0];
             this.thumb_width = $(thumb).width();
-            console.log('thumb_width:', this.thumb_width);
 
             this.bar_min_left = 0 + this.options.bar_left_offset_adjust;
             this.bar_max_left = this.bar_width - this.thumb_width +
                                 this.options.bar_left_offset_adjust;
-            console.log('bar_min_left: ' + this.bar_min_left +
-                        ' bar_max_left: ' + this.bar_max_left);
 
             this.number_of_segments = this.options.maximum -
                                       this.options.minimum + 1;
             this.pixels_per_value = this.bar_width / this.number_of_segments;
 
-            var left_position = self.position_for_value(self.options.value);
-            console.log('about to set thumb: left_position:', left_position);
+            var left_position = self.position_for_value(this.value);
             self.set_thumb(left_position, thumb);
 
             if (this.is_touch) {
@@ -166,10 +160,10 @@ define([
                     }
                 });
 
-                $(this.container_element).unbind('mousemove.Slider');
-                $(this.container_element).unbind('mouseup.Slider');
+                $('body').unbind('mousemove.Slider');
+                $('body').unbind('mouseup.Slider');
 
-                $(this.container_element).bind({
+                $('body').bind({
                     'mousemove.Slider': function (event) {
                         self.handle_move(event, thumb);
                     },

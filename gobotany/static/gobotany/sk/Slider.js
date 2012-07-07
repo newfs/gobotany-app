@@ -9,21 +9,15 @@ define([
     'dojo/NodeList-html',
     'dojo/dom-construct',
     'dojo/dom-style',
-    'dijit/registry',
-    'dijit/form/HorizontalSlider',
     'util/slider',
     'gobotany/sk/Choice',
     'simplekey/App3'
 ], function(declare, lang, query, nodeListDom, nodeListHtml, domConstruct, 
-    domStyle, registry, HorizontalSlider, slider, Choice, App3) {
+    domStyle, slider, Choice, App3) {
 
 return declare('gobotany.sk.working_area.Slider', [
     Choice
 ], {
-
-    slider_node: null,
-    simple_slider: null,
-
     slider_container_node: null,
     horizontal_slider: null,
 
@@ -34,19 +28,10 @@ return declare('gobotany.sk.working_area.Slider', [
     },
 
     dismiss: function() {
-        if(this.simple_slider) {
-            this.simple_slider.destroy();
-        }
-        if(this.slide_node) { 
-            query(this.slider_node).orphan();
-        }
-        this.simple_slider = this.slider_node = null;
-        
         if (this.slider_container_node) {
             $(this.slider_container_node).empty();
         }
         this.horizontal_slider = this.slider_container_node = null;
-
         this.inherited(arguments);
     },
 
@@ -72,46 +57,27 @@ return declare('gobotany.sk.working_area.Slider', [
             html('<label>Select a number between<br>' +
                  this.min + ' and ' +
                  this.max + '</label>');
-        this.slider_node = domConstruct.create('div', null, values_q[0]);
-        this.simple_slider = new HorizontalSlider({
-            id: 'simple-slider',
-            name: 'simple-slider',
-            value: startvalue,
-            minimum: this.min,
-            maximum: this.max,
-            discreteValues: num_values,
-            intermediateChanges: true,
-            showButtons: false,
-            onChange: lang.hitch(this, this._value_changed),
-            onMouseUp: lang.hitch(this, this._value_changed)
-        }, this.slider_node);
-        domConstruct.create('div', {
-            'class': 'count',
-            'innerHTML': startvalue
-        }, this.simple_slider.containerNode);
 
         var values_div = $('.working-area .info .values')[0];
         this.slider_container_node = $(values_div).append('<div></div>');        
         this.horizontal_slider = $(this.slider_container_node).slider({
             id: 'slider',
+            initial_value: startvalue,
             maximum: this.max,
             minimum: this.min,
-            value: startvalue
+            on_move: lang.hitch(this, this._value_changed)
         });
         
         this._value_changed();
     },
 
     _current_value: function() {
-        return registry.byId('simple-slider').value;
-        // TODO: return something other than this Dijit "registry" value:
-        // probably just query the control for the value?
+        var slider_label = $('#slider .label')[0];
+        var value = $(slider_label).html();
+        return value;
     },
 
     _value_changed: function() {
-        // TODO: one would think that much of the code here could be
-        // pulled out and placed in the control itself, perhaps
-
         /* Disable the apply button when we're on either the default
            value or the value that was previous selected */
         this._compute_min_and_max();
@@ -125,28 +91,6 @@ return declare('gobotany.sk.working_area.Slider', [
             apply_button.addClass('disabled');
         else
             apply_button.removeClass('disabled');
-
-        /* Update the count label. */
-        var label = query('#simple-slider .count');
-        var value = this._current_value();
-        label.html(value + '');
-
-        /* Position the label atop the slider. */
-        var MIN_LEFT_PX = 25;
-        var slider_bar = query('div.dijitSliderBarContainerH')[0];
-        var slider_bar_width = domStyle.get(slider_bar, 'width');
-        var max_left_px = MIN_LEFT_PX + slider_bar_width;
-        var filter = this.filter;
-        var num_segments = this.max - this.min;
-        var slider_length = max_left_px - MIN_LEFT_PX;
-        var pixels_per_value = slider_length / num_segments;
-        var offset = Math.floor((value - this.min) * pixels_per_value);
-        var label_width_correction = 0;
-        if (value >= 10) {
-            label_width_correction = -4; /* for 2 digits, pull left a bit */
-        }
-        var left = offset + MIN_LEFT_PX + label_width_correction;
-        domStyle.set(label[0], 'left', left + 'px');
     },
 
     /* Sliders only have one filter value, so we don't need to compute
