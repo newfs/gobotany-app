@@ -64,12 +64,12 @@ define([
             var arrow_element = $(arrow_selector);
             var tooltip_left_adjustment = activating_element_position - left;
             var arrow_position = tooltip_left_adjustment;
-            if (arrow_position <= 0) {
-                arrow_position = this.options.arrow_edge_margin;
-            }
             if (arrow_position > tooltip_width) {
                 arrow_position = tooltip_width -
                                  this.options.arrow_edge_margin;
+            }
+            if (arrow_position <= 0) {
+                arrow_position = this.options.arrow_edge_margin;
             }
             arrow_element.css({'left': arrow_position});
         },
