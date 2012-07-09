@@ -2566,8 +2566,8 @@ function cleanupStars(path) {
 
   Ember.deprecate('Star paths are now treated the same as normal paths', !/(^|[^\.])\*/.test(path));
 
-  return path.replace(/(^|.)\*/, function(match, char){
-    return (char === '.') ? match : (char + '.');
+  return path.replace(/(^|.)\*/, function(match, chr){
+    return (chr === '.') ? match : (chr + '.');
   });
 }
 
@@ -3375,13 +3375,13 @@ Cp.cacheable = function(aFlag) {
       MyApp.outsideService = Ember.Object.create({
         value: function() {
           return OutsideService.getValue();
-        }.property().volatile()
+        }.property().safe_volatile()
       });
 
-  @name Ember.ComputedProperty.volatile
+  @name Ember.ComputedProperty.safe_volatile
   @returns {Ember.ComputedProperty} receiver
 */
-Cp.volatile = function() {
+Cp.safe_volatile = function() {
   return this.cacheable(false);
 };
 
@@ -13342,7 +13342,7 @@ Ember.View = Ember.Object.extend(Ember.Evented,
     } else {
       return parent;
     }
-  }).property('_parentView').volatile(),
+  }).property('_parentView').safe_volatile(),
 
   _parentView: null,
 
@@ -13350,7 +13350,7 @@ Ember.View = Ember.Object.extend(Ember.Evented,
   concreteView: Ember.computed(function() {
     if (!this.isVirtual) { return this; }
     else { return get(this, 'parentView'); }
-  }).property('_parentView').volatile(),
+  }).property('_parentView').safe_volatile(),
 
   /**
     If false, the view will appear hidden in DOM.
@@ -17907,7 +17907,7 @@ Ember._HandlebarsBoundView = Ember._MetamorphView.extend({
     }
 
     return valueNormalizer ? valueNormalizer(result) : result;
-  }).property('path', 'pathRoot', 'valueNormalizerFunc').volatile(),
+  }).property('path', 'pathRoot', 'valueNormalizerFunc').safe_volatile(),
 
   rerenderIfNeeded: function() {
     if (!get(this, 'isDestroyed') && get(this, 'normalizedValue') !== this._lastNormalizedValue) {
@@ -19440,7 +19440,7 @@ Ember.Checkbox = Ember.View.extend({
     } else {
       return get(this, 'checked');
     }
-  }).property('checked').volatile(),
+  }).property('checked').safe_volatile(),
 
   change: function() {
     Ember.run.once(this, this._updateElementValue);
@@ -19759,11 +19759,11 @@ var get = Ember.get, getPath = Ember.getPath;
 Ember.TabPaneView = Ember.View.extend({
   tabsContainer: Ember.computed(function() {
     return this.nearestInstanceOf(Ember.TabContainerView);
-  }).property().volatile(),
+  }).property().safe_volatile(),
 
   isVisible: Ember.computed(function() {
     return get(this, 'viewName') === getPath(this, 'tabsContainer.currentView');
-  }).property('tabsContainer.currentView').volatile()
+  }).property('tabsContainer.currentView').safe_volatile()
 });
 
 })();
@@ -19776,7 +19776,7 @@ var get = Ember.get, setPath = Ember.setPath;
 Ember.TabView = Ember.View.extend({
   tabsContainer: Ember.computed(function() {
     return this.nearestInstanceOf(Ember.TabContainerView);
-  }).property().volatile(),
+  }).property().safe_volatile(),
 
   mouseUp: function() {
     setPath(this, 'tabsContainer.currentView', get(this, 'value'));
@@ -19995,7 +19995,7 @@ Ember.SelectOption = Ember.View.extend({
       // `new Number(4) !== 4`, we use `==` below
       return content == selection;
     }
-  }).property('content', 'parentView.selection').volatile(),
+  }).property('content', 'parentView.selection').safe_volatile(),
 
   labelPathDidChange: Ember.observer(function() {
     var labelPath = getPath(this, 'parentView.optionLabelPath');
