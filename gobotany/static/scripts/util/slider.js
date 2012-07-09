@@ -157,16 +157,9 @@ define([
                         self.handle_release();
                     }
                 });
-
-                $(bar).bind({
-                    'touchstart.Slider.bar': function (event) {
-                        self.handle_press();
-                        self.handle_move(thumb);
-                    },
-                    'touchend.Slider.bar': function () {
-                        self.handle_release();
-                    }
-                });
+                // No need to support tapping on the slider bar to
+                // move the thumb on touch interfaces: iOS does not
+                // support this on its native slider control.
             }
             else {
                 $(thumb).bind({
