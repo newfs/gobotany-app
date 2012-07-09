@@ -7,26 +7,13 @@ $body-font: Verdana, Geneva, sans-serif;
 $narrower-body-font: Tahoma, "Trebuchet MS", sans-serif;
 
 body, header {
-    font-family: $headings-font;
-}
-
-/* Claro fixes: fix some things overridden by the Claro Dijit theme styles */
-ol li, ul li {
-    line-height: inherit;
-}
-.claro {
-   	color: #000;
+    color: #000;
     font-family: $body-font;
-	font-size: 12px;
+    font-size: 12px;
 }
-.claro .dijit {
+header {
     font-family: $headings-font;
-    font-size: 15px;
 }
-/* end Claro fixes */
-
-/* Global page structure */
-
 header, .content, footer {
     width: 100%;
 }
