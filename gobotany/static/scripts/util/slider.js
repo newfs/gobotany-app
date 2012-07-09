@@ -85,7 +85,6 @@ define([
 
         handle_move: function (event, thumb) {
             var x = event.pageX;
-            //var client_x = event.clientX;
             var left = x - this.bar_left_offset - (this.thumb_width / 2);
             if (this.is_pressed) {
                 this.set_thumb(left, thumb);
