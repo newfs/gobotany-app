@@ -24,16 +24,15 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
 
     toggle_character_group: function() {
         // Set handlers for toggling a character group.
-        // (Uses jQuery for historical reasons.)
-        $('ul.full-description li').toggle(function() {
-            $(this).children('div').show();
-            $(this).children('h5').css('background-image',
+        $('ul.full-description li h5').toggle(function() {
+            $(this).siblings('div').show();
+            $(this).css('background-image',
                 'url("/static/images/icons/minus.png")');
             sidebar.set_height();
             return false;
         }, function() {
-            $(this).children('div').hide();
-            $(this).children('h5').css('background-image',
+            $(this).siblings('div').hide();
+            $(this).css('background-image',
                 'url("/static/images/icons/plus.png")');
             sidebar.set_height();
             return false;
@@ -42,7 +41,6 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
 
     toggle_characters_full_list: function() {
         // Set handlers for toggling the full characteristics list.
-        // (Uses jQuery for historical reasons.)
         var that = this;
         $('a.description-control').toggle(function() {
             $('ul.full-description').show();

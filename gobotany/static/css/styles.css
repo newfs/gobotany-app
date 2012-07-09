@@ -2847,22 +2847,22 @@ ul.full-description > li {
   padding: 18px;
   margin: 0 0 0 0;
   border-bottom: 1px solid #e1e1dc;
-  cursor: pointer;
 }
 
-/* line 1741, ../sass/styles.scss */
+/* line 1740, ../sass/styles.scss */
 ul.full-description > li:last-child {
   border-bottom: none;
 }
 
-/* line 1744, ../sass/styles.scss */
+/* line 1743, ../sass/styles.scss */
 ul.full-description > li:hover {
   background-color: #fff;
 }
 
-/* line 1747, ../sass/styles.scss */
+/* line 1746, ../sass/styles.scss */
 ul.full-description > li h5 {
   background: url(/static/images/icons/plus.png) left 50% no-repeat;
+  cursor: pointer;
 }
 
 /* line 1750, ../sass/styles.scss */

@@ -1735,8 +1735,7 @@ ul.full-description > li {
 	display: block;
 	padding: 18px;
 	margin: 0 0 0 0;
-	border-bottom: 1px solid #e1e1dc;	
-	cursor: pointer;
+	border-bottom: 1px solid #e1e1dc;
 }
 ul.full-description > li:last-child {
 	border-bottom: none;	
@@ -1746,6 +1745,7 @@ ul.full-description > li:hover {
 }
 ul.full-description > li h5 {
 	background: url(/static/images/icons/plus.png) left 50% no-repeat;
+    cursor: pointer;
 }
 ul.full-description > li div {
 	display: none;
