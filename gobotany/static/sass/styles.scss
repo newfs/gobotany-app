@@ -6,6 +6,14 @@ $headings-font: "Trebuchet MS", Helvetica, Arial, sans-serif;
 $body-font: Verdana, Geneva, sans-serif;
 $narrower-body-font: Tahoma, "Trebuchet MS", sans-serif;
 
+/* Import SASS "partials" for formerly external and third-party styles.
+ * This is to keep all styles in just one deployed CSS file, styles.css. */
+@import "reset";
+@import "basic";
+@import "shadowbox";
+@import "jquery.jscrollpane";
+@import "smoothDivScroll";
+
 body, header {
     color: #000;
     font-family: $body-font;

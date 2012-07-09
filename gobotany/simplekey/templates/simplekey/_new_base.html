@@ -14,17 +14,9 @@
         {% block more_meta_link %}{% endblock %}
 
         {# CSS goes here. #}
-        {# TODO: Integrate as many CSS files as possible. Ideally #}
-        {# have just styles.css plus any conditional stylesheets. #}
-        <link rel="stylesheet" href="/static/css/reset.css">
-        <link rel="stylesheet" href="/static/css/basic.css">
         <link rel="stylesheet" href="/static/css/styles.css">
-        <link rel="stylesheet" href="/static/css/shadowbox.css">
-        <link rel="stylesheet"
-            href="/static/css/jquery.jscrollpane.css">
-        <link rel="stylesheet" href="/static/css/smoothDivScroll.css">
-        {# These IE styles will only apply if the user views the site #}
-        {# in IE without the required Chrome Frame plug-in.           #}
+        {# These IE styles will only load if the user views the site #}
+        {# in an older IE without the required Chrome Frame plug-in. #}
         <!--[if IE 7]>
             <link rel="stylesheet" href="/static/css/ie7.css">
         <![endif]-->
