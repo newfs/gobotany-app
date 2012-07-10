@@ -2941,6 +2941,12 @@ $tooltip-arrow-rotation: 225deg;
         margin: 0 auto;
         padding: 0;
     }
+    h2 {
+        font-size: 24px;
+    }
+    h3 {
+        font-size: 18px;
+    }
     header nav > a {
         background: $nav-button-color;
         border: 1px solid $nav-button-color;
@@ -3101,10 +3107,14 @@ $tooltip-arrow-rotation: 225deg;
         text-align: center;
     }
     #home #banner h2 {
+        font-size: 28px;
         margin: 0;
     }
     #home #banner p {
         padding: 0 6px;
+    }
+    #home #banner #overlay img {
+        width: 53%;
     }
     #home #banner a#cta {
         background-position: 50% 0;
