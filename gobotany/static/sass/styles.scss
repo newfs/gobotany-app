@@ -161,6 +161,7 @@ footer a[href]:hover {
 footer ul {
     font-size: 9px;
     list-style-type: none;
+    margin-bottom: 12px;
 }
 footer li {
     display: inline;
@@ -174,6 +175,7 @@ footer li:last-child:after {
 footer h6 {
 	font-family: $body-font;
 	font-size: 11px;
+    margin-bottom: 2px;
 }
 footer .nsf-logo {
 	float: left;
@@ -416,8 +418,8 @@ div#potd {
 	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
 }
 .donate p {
-    margin-left: 14px;
-    padding: 14px 0;
+    margin: 14px;
+    position: relative;
 }
 .donate a {
 	background: url(/static/images/layout/donate-btn.png) 0 0 no-repeat transparent;
@@ -425,10 +427,12 @@ div#potd {
     display: block;
     float: right;
 	height: 32px;
-	margin: -5px 14px 0 0;
     padding: 0;
-	text-indent: -9000px;
-	width: 104px;
+	position: absolute;
+    right: 0;
+    text-indent: -9000px;
+	top: -6px;
+    width: 104px;
 }
 .donate a:hover {
 	background-position: 0 -32px;
@@ -3062,10 +3066,14 @@ $tooltip-arrow-rotation: 225deg;
     footer .navigation > h6:nth-of-type(2),
     footer .navigation > ul.legal {
         display: inline-block;
-
+        margin-left: 72px;
+        margin-top: 12px;
+    }
+    footer .navigation > ul.sections + h6 {   /* "Legal:" label */
+        display: none;
     }
     footer .navigation > ul.legal li {
-        margin-right: 14px;
+        margin-right: 32px;
     }
     footer .navigation > ul.legal li:after {
         content: none;
@@ -3136,6 +3144,7 @@ $tooltip-arrow-rotation: 225deg;
     #home .donate a {
         float: none;
         margin: 4px 0;
+        position: static;
     }
     #main {
         float: none;
