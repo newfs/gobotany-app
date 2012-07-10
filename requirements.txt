@@ -31,6 +31,9 @@ boto==2.2.2
 gunicorn
 newrelic
 
+# For our Heroku Scheduler tasks that scan S3
+s3cmd
+
 # For testing.
 coverage
 unittest2
