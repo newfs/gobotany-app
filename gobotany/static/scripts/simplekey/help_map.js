@@ -10,7 +10,7 @@ require([
 
     sidebar.setup()
     $(document).ready(function() {
-        var helper = new MapToGroupsHelper();
+        var helper = MapToGroupsHelper();
         helper.setup();
     });
 });
