@@ -3157,6 +3157,22 @@ $tooltip-arrow-rotation: 225deg;
         height: auto;
         margin-left: 10px;
     }
+    #sidebar .section:first-child {
+        margin-top: 0;
+    }
+    #sidebar .section, #sidebar .section.plant-map {
+        margin-top: 16px;
+        padding-bottom: 0;
+    }
+    #sidebar .section .get-help-btn, #sidebar .section .view-map-btn {
+        margin-bottom: 0;
+    }
+    #plant-id-3 .section + .section {
+        margin-bottom: 16px;
+    }
+    #plant-id-3 #sidebar .scroll + .section {
+        margin: 0 0 32px;
+    }
     /* Levels 1 and 2 */ 
     .list-item a.plant-in-group {
         clear: left;
