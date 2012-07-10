@@ -10,7 +10,6 @@ django-haystack
 django-piston==0.2.2
 django-tinymce
 python-memcached
-setuptools
 
 # The way we use pysolr introduces an extra dependency:
 pysolr
