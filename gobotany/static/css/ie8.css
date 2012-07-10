@@ -3,7 +3,6 @@
  The generated .css is kept in the repository to allow easy deployment.
  */
 /*global styles*/
-/* line 7, ../sass/ie8.scss */
 header {
   height: auto;
 }
@@ -11,12 +10,10 @@ header {
 /*////////////////////////////////*/
 /* Home page */
 /*////////////////////////////////*/
-/* line 14, ../sass/ie8.scss */
 #banner #inner {
   border: 6px solid #fff;
 }
 
-/* line 17, ../sass/ie8.scss */
 #banner #overlay {
   background: url(../images/layout/white80.png) repeat;
 }
@@ -24,12 +21,10 @@ header {
 /*/////////////////////////////*/
 /*Inside App pages*/
 /*////////////////////////////*/
-/* line 24, ../sass/ie8.scss */
 .list-item {
   border-top: 1px solid #eeeddf;
 }
 
-/* line 27, ../sass/ie8.scss */
 .list-item.last {
   border-bottom: 1px solid #eeeddf;
 }
