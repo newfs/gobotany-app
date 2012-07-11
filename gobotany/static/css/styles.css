@@ -1287,7 +1287,7 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   body, .container, .top-level header h1 a, #home #banner #overlay, #home #banner > img { width: 320px; }
   .top-level header h1 a { background-position: -56px -7px; width: 200px; }
   #nav { left: 40px; width: 310px; }
-  #sidebar { width: 304px; }
+  #sidebar { width: 302px; }
   #home #banner #overlay { top: 115px; }
   #home #banner > img { height: 115px; }
   #home #banner + .three-col { padding-top: 375px; }
@@ -1300,7 +1300,7 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   header nav > a span { font-size: 14px; line-height: 160%; padding-left: 5px; position: absolute; }
   .top-level header h1 a { background-position: 0 -7px; width: 260px; }
   #nav { left: 30px; width: 470px; }
-  #sidebar { width: 464px; }
+  #sidebar { width: 462px; }
   #home #banner #overlay { top: 172px; }
   #home #banner > img { height: 172px; }
   #home #banner + .three-col { padding-top: 400px; } }
@@ -1370,7 +1370,8 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #sidebar .section:first-child { margin-top: 0; }
   #sidebar .section, #sidebar .section.plant-map { margin-top: 16px; padding-bottom: 0; }
   #sidebar .section .get-help-btn, #sidebar .section .view-map-btn { margin-bottom: 0; }
-  .app h2, .app p.tip, .app .list-item { margin-left: 8px; margin-right: 8px; }
+  .app #main { margin-bottom: 14px; }
+  .app h2, .app p.tip, .app .list-item, .app #main p { margin-left: 8px; margin-right: 8px; }
   .app p.tip { font-size: 14px; }
   .app .img-gallery { margin-bottom: 10px; }
   .app .list-item .section-title { font-size: 10px; }
