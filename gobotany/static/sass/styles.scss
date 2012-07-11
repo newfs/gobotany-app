@@ -2886,6 +2886,9 @@ $tooltip-arrow-rotation: 225deg;
         left: 40px;
         width: 310px;
     }
+    #sidebar {
+        width: 304px;
+    }
     #home #banner #overlay {
         top: 115px;
     }
@@ -2895,8 +2898,8 @@ $tooltip-arrow-rotation: 225deg;
     #home #banner + .three-col {
         padding-top: 375px;
     }
-    #sidebar {
-        width: 304px;
+    .app .list-item h3 {
+        clear: left;
     }
 }
 /* Landscape-orientation styles */
@@ -2928,6 +2931,9 @@ $tooltip-arrow-rotation: 225deg;
         left: 30px;
         width: 470px;
     }
+    #sidebar {
+        width: 464px;
+    }
     #home #banner #overlay {
         top: 172px;
     }
@@ -2936,9 +2942,6 @@ $tooltip-arrow-rotation: 225deg;
     }
     #home #banner + .three-col {
         padding-top: 400px;
-    }
-    #sidebar {
-        width: 464px;
     }
 }
 /* These styles are common to both smartphone widths */
@@ -3012,6 +3015,7 @@ $tooltip-arrow-rotation: 225deg;
     .app header h1 {
         margin: 0;
         padding: 0;
+        width: auto;
     }
     .app header h1 a {
         width: 170px;
@@ -3119,6 +3123,10 @@ $tooltip-arrow-rotation: 225deg;
         padding: 0;
         text-align: center;
     }
+    #breadcrumb p {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
     #home #banner h2 {
         font-size: 28px;
         margin: 6px 0 0;
@@ -3210,6 +3218,31 @@ $tooltip-arrow-rotation: 225deg;
     }
     #sidebar .section .get-help-btn, #sidebar .section .view-map-btn {
         margin-bottom: 0;
+    }
+    .app h2, .app p.tip, .app .list-item {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    .app p.tip {
+        font-size: 14px;
+    }
+    .app .img-gallery {
+        margin-bottom: 10px;
+    }
+    .app .list-item .section-title {
+        font-size: 10px;
+    }
+    .app .key-char, .app .exceptions, .app .vid {
+        background: none;
+    }
+    .app .list-item p {
+        padding-left: 0;
+    }
+    .app .list-item a.plant-in-group {
+        margin-left: 15px;
+    }
+    .app .not-my-plant {
+        display: none;
     }
     #plant-id-3 .section + .section {
         margin-bottom: 16px;

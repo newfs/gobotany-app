@@ -1287,10 +1287,11 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   body, .container, .top-level header h1 a, #home #banner #overlay, #home #banner > img { width: 320px; }
   .top-level header h1 a { background-position: -56px -7px; width: 200px; }
   #nav { left: 40px; width: 310px; }
+  #sidebar { width: 304px; }
   #home #banner #overlay { top: 115px; }
   #home #banner > img { height: 115px; }
   #home #banner + .three-col { padding-top: 375px; }
-  #sidebar { width: 304px; } }
+  .app .list-item h3 { clear: left; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { html { -webkit-text-size-adjust: none; }
   body { padding-top: 75px; }
@@ -1299,10 +1300,10 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   header nav > a span { font-size: 14px; line-height: 160%; padding-left: 5px; position: absolute; }
   .top-level header h1 a { background-position: 0 -7px; width: 260px; }
   #nav { left: 30px; width: 470px; }
+  #sidebar { width: 464px; }
   #home #banner #overlay { top: 172px; }
   #home #banner > img { height: 172px; }
-  #home #banner + .three-col { padding-top: 400px; }
-  #sidebar { width: 464px; } }
+  #home #banner + .three-col { padding-top: 400px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
   h2 { font-size: 24px; }
@@ -1318,7 +1319,7 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   .top-level header h1 { margin: 0; width: inherit; }
   .top-level header h1 a, .app header h1 a { height: 56px; }
   .top-level header h2 a, .app header h2 a { background-size: 100px 55px; float: right; height: 55px; width: 101px; }
-  .app header h1 { margin: 0; padding: 0; }
+  .app header h1 { margin: 0; padding: 0; width: auto; }
   .app header h1 a { width: 170px; }
   #main #header h2 { float: none; }
   footer, footer div.container { height: auto; }
@@ -1346,6 +1347,7 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #home #search-suggest .menu, .app #search-suggest .menu { top: 83px; }
   #home #banner { margin: 0; position: relative; }
   #home #banner #overlay { background: #f7fbe9; height: auto; left: 0; padding: 0; text-align: center; }
+  #breadcrumb p { margin-left: 8px; margin-right: 8px; }
   #home #banner h2 { font-size: 28px; margin: 6px 0 0; }
   #home #banner p { padding: 0 8px; }
   #home #banner #overlay img { width: 53%; }
@@ -1368,6 +1370,14 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #sidebar .section:first-child { margin-top: 0; }
   #sidebar .section, #sidebar .section.plant-map { margin-top: 16px; padding-bottom: 0; }
   #sidebar .section .get-help-btn, #sidebar .section .view-map-btn { margin-bottom: 0; }
+  .app h2, .app p.tip, .app .list-item { margin-left: 8px; margin-right: 8px; }
+  .app p.tip { font-size: 14px; }
+  .app .img-gallery { margin-bottom: 10px; }
+  .app .list-item .section-title { font-size: 10px; }
+  .app .key-char, .app .exceptions, .app .vid { background: none; }
+  .app .list-item p { padding-left: 0; }
+  .app .list-item a.plant-in-group { margin-left: 15px; }
+  .app .not-my-plant { display: none; }
   #plant-id-3 .section + .section { margin-bottom: 16px; }
   #plant-id-3 #sidebar .scroll + .section { margin: 0 0 32px; }
   /* Levels 1 and 2 */
