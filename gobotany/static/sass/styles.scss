@@ -1,4 +1,4 @@
-/*** Go Botany master styles file ***
+/*! *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
  */
@@ -6,13 +6,15 @@ $headings-font: "Trebuchet MS", Helvetica, Arial, sans-serif;
 $body-font: Verdana, Geneva, sans-serif;
 $narrower-body-font: Tahoma, "Trebuchet MS", sans-serif;
 
-/* Import SASS "partials" for formerly external and third-party styles.
+/* First are SASS "partials" for formerly external and third-party styles.
  * This is to keep all styles in just one deployed CSS file, styles.css. */
 @import "reset";
 @import "basic";
 @import "shadowbox";
 @import "jquery.jscrollpane";
 @import "smoothDivScroll";
+
+/*** Beginning of Go Botany styles from styles.scss ***/
 
 body, header {
     color: #000;
@@ -2319,6 +2321,9 @@ div.section.namap div.trans {
 
 /* Search results styles */
 
+#search-results sidebar {
+    height: 515px;
+}
 #search-results-list {
     border-top: 1px solid #e1e1dc;
     margin: 15px 0 13px;
@@ -3162,7 +3167,7 @@ $tooltip-arrow-rotation: 225deg;
     }
     #sidebar, #getting-started #sidebar, #about #sidebar,
     #advanced-map #sidebar, #plant-id #sidebar, #glossary #sidebar,
-    #video-help-topics #sidebar, #taxon #sidebar {
+    #video-help-topics #sidebar, #taxon #sidebar, #search-results #sidebar {
         border-bottom: 1px solid #c3d941;
         height: auto;
         margin-left: 10px;

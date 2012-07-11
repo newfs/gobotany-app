@@ -1,7 +1,4 @@
-/*
-    This file sets the baseline CSS environment across browser platforms.
-    Do not make style changes to this file.
-*/
+/** "Reset" styles to set the baseline CSS environment across browsers. **/
 
 body, div, dl, dt, dd,
 ul, ol, li, h1, h2, h3,
@@ -72,3 +69,5 @@ q:before, q:after {
 abbr, acronym  {
     border: 0;
 }
+
+/** End "reset" styles **/
