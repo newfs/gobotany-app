@@ -17,55 +17,59 @@
         <div class="content">
             <div class="container">
                 <div id="main">
-                    <div class="dk-landing-section" style="margin: 0 50px 0 0;">
-                        <h4>Advanced Interactive Key to All 3500 New England
-                            Taxa (Coming Soon)</h4>
-                        <section>
-                            <ul>
-                                <li>This key covers all 3500 species,
-                                subspecies, and varieties of native and
-                                naturalized plants in New England.</li>
-                                <li>It works in the same way as our Simple Key
-                                Plant Identifier, asking you to choose the
-                                broad group your plant is in, then offering you
-                                a series of questions based on the
-                                characteristics you are able to observe.</li>
-                                <li>Because there are many types of plants in
-                                this key, you may take a little longer to
-                                identify your plant, but once you do, you can
-                                get lots of information on each taxon.</li>
-                            </ul>
-                        </section>
-                    </div><!-- Closes .dk-landing-section -->
-                    <div class="landing-divider"></div>
-                    <div class="dk-landing-section">
-                        <h4>Dichotomous Key to All 3500 New England Taxa (Coming Soon)</h4>
-                        <section>
-                            <p>If you are an experienced botanist, use our
-                            Dichotomous Key tool!</p>
-                            <ul>
-                                <li>A dichotomous key presents a set of paired
-                                choices that describe various plant
-                                characteristics.</li>
-                                <li>You choose the one that best matches the
-                                plant you are trying to identify. Then  you get
-                                another pair of choices.</li>
-                                <li>As you march down the choices, you
-                                gradually narrow down to your plant.</li>
-                                <li>The questions are technical and specific,
-                                but botanical terms are all defined and
-                                illustrated.</li>
-                            </ul>
-                            <p>The key is based on the <a
-                                href="http://newenglandwild.org/store/flora-novae-angliae"
-                                target="_blank">Flora Novae Angliae</a> (Haines
-                            2011).</p>
-                        </section>
-                    </div><!-- Closes .dk-landing-section -->
-                    <div class="dichkey-buttons">
-                        <div><a href="{% url full-key-placeholder %}" class="go-fullkey-btn">Go To Full Key</a></div>
-                        <div><a href="{% url dich-key-placeholder %}" class="go-dichkey-btn">Go To Dichotomous Key</a></div>
-                    </div><!-- .dichkey-buttons -->
+                    <h2>Advanced ID Tools</h2>
+                    <div>
+                        <div class="dk-landing-section">
+                            <h4>Full Advanced Interactive Key to All
+                                3,500 New England Taxa (Coming Soon)</h4>
+                            <section>
+                                <ul>
+                                    <li>This key covers all 3,500 species,
+                                    subspecies, and varieties of native and
+                                    naturalized plants in New England.</li>
+                                    <li>It works in the same way as our Simple Key
+                                    Plant Identifier, asking you to choose the
+                                    broad group your plant is in, then offering you
+                                    a series of questions based on the
+                                    characteristics you are able to observe.</li>
+                                    <li>Because there are many types of plants in
+                                    this key, you may take a little longer to
+                                    identify your plant, but once you do, you can
+                                    get lots of information on each taxon.</li>
+                                </ul>
+                            </section>
+                            <a href="{% url full-key-placeholder %}"
+                                class="go-fullkey-btn">Go To Full Key</a>
+                        </div>
+                        <div class="landing-divider"></div>
+                        <div class="dk-landing-section">
+                            <h4>Dichotomous Key to All 3,500 New England
+                                Taxa (Coming Soon)</h4>
+                            <section>
+                                <p>If you are an experienced botanist, use our
+                                Dichotomous Key tool!</p>
+                                <ul>
+                                    <li>A dichotomous key presents a set of paired
+                                    choices that describe various plant
+                                    characteristics.</li>
+                                    <li>You choose the one that best matches the
+                                    plant you are trying to identify. Then  you get
+                                    another pair of choices.</li>
+                                    <li>As you march down the choices, you
+                                    gradually narrow down to your plant.</li>
+                                    <li>The questions are technical and specific,
+                                    but botanical terms are all defined and
+                                    illustrated.</li>
+                                </ul>
+                                <p>The key is based on the <a
+                                    href="http://newenglandwild.org/store/flora-novae-angliae"
+                                    target="_blank">Flora Novae Angliae</a> (Haines
+                                2011).</p>
+                            </section>
+                            <a href="{% url dich-key-placeholder %}"
+                                class="go-dichkey-btn">Go To Dichotomous Key</a>
+                        </div>
+                    </div>
                     <div class="clearit"></div>
                 </div>
                 <div id="sidebar">

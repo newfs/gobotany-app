@@ -2160,14 +2160,27 @@ div.section.namap div.trans {
 	position: relative;
 }
 
+#advanced-id #main h2 + div, #advanced-id #main h2 + p {
+    margin-top: 10px;
+}
+#advanced-id #main p {
+    margin-bottom: 10px;
+}
 #advanced-id #main .dk-landing-section {
-	width: 330px;
 	float: left;
 	font-family: $body-font;
+    height: 410px;
+    position: relative;
+	width: 330px;
 }
-
+#advanced-id #main .dk-landing-section:first-child {
+    margin-right: 50px;
+}
+#advanced-id #main .dk-landing-section h4 {
+    line-height: 120%;
+}
 #advanced-id #main .dk-landing-section section {
-	margin: 20px 0 0;
+	margin: 10px 0 0;
 }
 
 #advanced-id #main .dk-landing-section section p {
@@ -2185,72 +2198,35 @@ div.section.namap div.trans {
 }
 
 #advanced-id #main .landing-divider {
-	height: 410px;
-	width: 1px;
 	background-color: #b4d57f;
-	position: absolute;
-	top: 10px;
+	height: 400px;
 	left: 350px;
-	
+	position: absolute;
+	top: 54px;
+	width: 1px;	
 }
 
-#advanced-id #main .dichkey-buttons {
-	margin: 0;
+#advanced-id #main .dk-landing-section > a {
+    bottom: 10px;
+    display: block;
+    height: 41px;
+    margin: 0 0 0 43px;
+    position: absolute;
+    text-indent: -9999px;
+    width: 244px;
 }
-
-#advanced-id #main .dichkey-buttons div {
-	width: 50%;
-	float: left;
-	padding: 15px 0 0;
-}
-
-/* buttons */
-#advanced-id #main .dichkey-buttons a {
-	margin: 10px auto;
-}
-
-#advanced-id #main .dichkey-buttons a.go-fullkey-btn {
-	background: url(/static/images/layout/go-fullkey-btn.png) 0 0 no-repeat transparent;
-	display: block;
-	width: 244px;
-	height: 41px;
-	text-indent: -9999px;
-	margin: 0 auto;
-}
-
-#advanced-id #main .dichkey-buttons a.go-fullkey-btn:hover {
+#advanced-id #main .dk-landing-section > a:hover {
 	background-position: 0 -41px;
 }
-
-#advanced-id #main .dichkey-buttons a.go-fullkey-btn:active {
-	background-position: 0 -82px;
+#advanced-id #main .dk-landing-section > a:active {
+    background-position: 0 -82px;
 }
 
-/* using-dich-key buttons */
+#advanced-id #main a.go-fullkey-btn {
+	background: url(/static/images/layout/go-fullkey-btn.png) 0 0 no-repeat transparent;
+}
 #advanced-id #main a.go-dichkey-btn {
 	background: url(../images/layout/go-dichkey-btn.png) 0 0 no-repeat transparent;
-	display: block;
-	width: 244px;
-	height: 41px;
-	text-indent: -9999px;
-	margin: 0 auto;
-}
-
-#advanced-id #main a.go-dichkey-btn-user {
-	margin: 20px auto 0;
-	z-index: 2;
-}
-
-#advanced-id #main .dichkey-buttons a.go-dichkey-btn, #main .dichkey-buttons a.go-dichkey-btn:hover, #main .dichkey-buttons a.go-dichkey-btn:active {
-	margin-top: 0;
-}
-
-#advanced-id #main a.go-dichkey-btn:hover {
-	background-position: 0 -41px;
-}
-
-#advanced-id #main a.go-dichkey-btn:active {
-	background-position: 0 -82px;
 }
 
 /* Glossary styles */
@@ -3281,6 +3257,26 @@ $tooltip-arrow-rotation: 225deg;
     }
     #intro-overlay {
         font-size: 150%;
+    }
+    #advanced-id #main .dk-landing-section {
+        margin-top: 14px;
+    }
+    #advanced-id #main .dk-landing-section,
+    #advanced-id #main .dk-landing-section:first-child {
+        height: auto;
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+        width: auto;
+    }
+    #advanced-id #main .dk-landing-section:first-child {
+        margin-top: 0;
+    }
+    #advanced-id #main .landing-divider {
+        display: none;
+    }
+    #advanced-id #main .dk-landing-section > a {
+        margin-left: 16px;
+        position: static;
     }
     #glossary header h1 {
         width: auto;
