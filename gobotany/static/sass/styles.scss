@@ -2860,6 +2860,7 @@ $tooltip-arrow-rotation: 225deg;
 
 /* Smartphone-size screen styles. These should be last. */
 
+/* Portrait-orientation styles */
 @media only screen and (max-width: 400px) {
     body {
         padding-top: 110px;
@@ -2892,12 +2893,13 @@ $tooltip-arrow-rotation: 225deg;
         height: 115px;
     }
     #home #banner + .three-col {
-        padding-top: 380px;
+        padding-top: 375px;
     }
     #sidebar {
         width: 304px;
     }
 }
+/* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) {
     html {
         -webkit-text-size-adjust: none;
@@ -2942,6 +2944,9 @@ $tooltip-arrow-rotation: 225deg;
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) {
     $nav-button-color: #437829;
+    $smallscreen-side-margin: 8px;
+    $smallscreen-potd-image-width: 297px;
+
     body {
         margin: 0 auto;
         padding: 0;
@@ -2951,6 +2956,9 @@ $tooltip-arrow-rotation: 225deg;
     }
     h3 {
         font-size: 18px;
+    }
+    h4 {
+        font-size: 16px;
     }
     header nav > a {
         background: $nav-button-color;
@@ -3036,7 +3044,7 @@ $tooltip-arrow-rotation: 225deg;
     }
     footer .publisher {
         margin: 14px 0 0;
-        padding: 12px 8px 20px;
+        padding: 12px $smallscreen-side-margin 20px;
     }
     footer .navigation h6:first-child {
         display: none;
@@ -3113,39 +3121,59 @@ $tooltip-arrow-rotation: 225deg;
     }
     #home #banner h2 {
         font-size: 28px;
-        margin: 0;
+        margin: 6px 0 0;
     }
     #home #banner p {
-        padding: 0 6px;
+        padding: 0 $smallscreen-side-margin;
     }
     #home #banner #overlay img {
         width: 53%;
     }
     #home #banner a#cta {
         background-position: 50% 0;
-        margin: 4px 6px;
+        margin: 6px;
     }
     #home .three-col {
         background: none;
         float: none;
         height: inherit;
         margin: 14px 0;
-        padding: 0 6px;
+        padding: 0;
         width: auto;
     }
+    #home .three-col h3, #home .three-col h5, #home .three-col p,
+    #home .three-col a {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
     #home .three-col a.learn-more {
-        margin: 4px 0 0;
+        margin-top: 6px;
+    }
+    #home #potd {
+        padding: $smallscreen-side-margin;
+    }
+    #home #potd > a {
+        margin: 0;
+        margin-bottom: 4px;
+        margin-right: $smallscreen-side-margin;
+    }
+    #home #potd > a, #home #potd > a img {
+        width: $smallscreen-potd-image-width;
     }
     #home #potd .details {
         margin: 0;
         position: inherit;
         width: inherit;
     }
+    #home #potd .details h4 {
+        line-height: 140%;    
+    }
     #home #potd .details p {
         height: inherit;
         overflow: inherit;
     }
     #home #potd .details a {
+        margin-top: 6px;
         position: inherit;
         top: 0;
     }
@@ -3158,7 +3186,7 @@ $tooltip-arrow-rotation: 225deg;
     }
     #home .donate a {
         float: none;
-        margin: 4px 0;
+        margin: 6px 0;
         position: static;
     }
     #main {
@@ -3170,7 +3198,8 @@ $tooltip-arrow-rotation: 225deg;
     #video-help-topics #sidebar, #taxon #sidebar, #search-results #sidebar {
         border-bottom: 1px solid #c3d941;
         height: auto;
-        margin-left: 8px;
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
     }
     #sidebar .section:first-child {
         margin-top: 0;

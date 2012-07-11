@@ -1279,6 +1279,7 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
 .glosstip img { background: #eaf2e2; border: 1px solid #c3d941; bottom: 110%; padding: 4px; position: absolute; -moz-box-shadow: 1px 1px 2px #333333; -webkit-box-shadow: 1px 1px 2px #333333; -o-box-shadow: 1px 1px 2px #333333; box-shadow: 1px 1px 2px #333333; -moz-border-radius: 2px; -webkit-border-radius: 2px; -o-border-radius: 2px; -ms-border-radius: 2px; -khtml-border-radius: 2px; border-radius: 2px; }
 
 /* Smartphone-size screen styles. These should be last. */
+/* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { body { padding-top: 110px; }
   header nav > a { width: 20px; }
   header nav > a span { display: none; }
@@ -1288,8 +1289,9 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #nav { left: 40px; width: 310px; }
   #home #banner #overlay { top: 115px; }
   #home #banner > img { height: 115px; }
-  #home #banner + .three-col { padding-top: 380px; }
+  #home #banner + .three-col { padding-top: 375px; }
   #sidebar { width: 304px; } }
+/* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { html { -webkit-text-size-adjust: none; }
   body { padding-top: 75px; }
   body, .container, .top-level header h1 a, #home #banner #overlay, #home #banner > img, #sidebar { width: 480px; }
@@ -1305,6 +1307,7 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
   h2 { font-size: 24px; }
   h3 { font-size: 18px; }
+  h4 { font-size: 16px; }
   header nav > a { background: #437829; border: 1px solid #437829; display: inline-block; font-size: 30px; height: 24px; line-height: 68%; margin: 3px 0 0 4px; padding: 0 2px 0 7px; position: relative; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; }
   header nav > a:hover { background: #437829; }
   header nav #search { margin-top: 6px; padding-left: 10px; }
@@ -1343,20 +1346,25 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #home #search-suggest .menu, .app #search-suggest .menu { top: 83px; }
   #home #banner { margin: 0; position: relative; }
   #home #banner #overlay { background: #f7fbe9; height: auto; left: 0; padding: 0; text-align: center; }
-  #home #banner h2 { font-size: 28px; margin: 0; }
-  #home #banner p { padding: 0 6px; }
+  #home #banner h2 { font-size: 28px; margin: 6px 0 0; }
+  #home #banner p { padding: 0 8px; }
   #home #banner #overlay img { width: 53%; }
-  #home #banner a#cta { background-position: 50% 0; margin: 4px 6px; }
-  #home .three-col { background: none; float: none; height: inherit; margin: 14px 0; padding: 0 6px; width: auto; }
-  #home .three-col a.learn-more { margin: 4px 0 0; }
+  #home #banner a#cta { background-position: 50% 0; margin: 6px; }
+  #home .three-col { background: none; float: none; height: inherit; margin: 14px 0; padding: 0; width: auto; }
+  #home .three-col h3, #home .three-col h5, #home .three-col p, #home .three-col a { margin-left: 8px; margin-right: 8px; }
+  #home .three-col a.learn-more { margin-top: 6px; }
+  #home #potd { padding: 8px; }
+  #home #potd > a { margin: 0; margin-bottom: 4px; margin-right: 8px; }
+  #home #potd > a, #home #potd > a img { width: 297px; }
   #home #potd .details { margin: 0; position: inherit; width: inherit; }
+  #home #potd .details h4 { line-height: 140%; }
   #home #potd .details p { height: inherit; overflow: inherit; }
-  #home #potd .details a { position: inherit; top: 0; }
+  #home #potd .details a { margin-top: 6px; position: inherit; top: 0; }
   #home .donate { margin: 0; }
   #home .donate p { margin: 8px; padding: 0; }
-  #home .donate a { float: none; margin: 4px 0; position: static; }
+  #home .donate a { float: none; margin: 6px 0; position: static; }
   #main { float: none; width: inherit; }
-  #sidebar, #getting-started #sidebar, #about #sidebar, #advanced-map #sidebar, #plant-id #sidebar, #glossary #sidebar, #video-help-topics #sidebar, #taxon #sidebar, #search-results #sidebar { border-bottom: 1px solid #c3d941; height: auto; margin-left: 8px; }
+  #sidebar, #getting-started #sidebar, #about #sidebar, #advanced-map #sidebar, #plant-id #sidebar, #glossary #sidebar, #video-help-topics #sidebar, #taxon #sidebar, #search-results #sidebar { border-bottom: 1px solid #c3d941; height: auto; margin-left: 8px; margin-right: 8px; }
   #sidebar .section:first-child { margin-top: 0; }
   #sidebar .section, #sidebar .section.plant-map { margin-top: 16px; padding-bottom: 0; }
   #sidebar .section .get-help-btn, #sidebar .section .view-map-btn { margin-bottom: 0; }
