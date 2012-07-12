@@ -993,9 +993,7 @@ div.section.namap div.trans { /* Transparent div to make North America map objec
 #about #main img.bookcover { margin-right: 89px; }
 
 /* Video Help Topics page styles */
-.video-row { margin: 20px 0; }
-
-.video-topic { float: left; margin-right: 16px; width: 220px; }
+.video-topic { float: left; height: 176px; margin: 10px 16px 10px 0; position: relative; width: 220px; }
 
 .video-topic img { height: 137px; width: 220px; }
 
@@ -1003,7 +1001,7 @@ div.section.namap div.trans { /* Transparent div to make North America map objec
 
 .video-topic .missing-image { border: 1px solid #508e31; height: 135px; width: 218px; }
 
-.video-topic .missing-image p { white-space: nowrap; margin-left: -70px; margin-top: -10px; }
+.video-topic .missing-image p { left: auto; margin: 55px 0; position: absolute; text-align: center; top: auto; white-space: nowrap; width: 100%; }
 
 /* Video in sidebar of Getting Started page */
 #getting-started .video-topic, #getting-started .video-topic img { height: 147px; width: 196px; }
@@ -1402,5 +1400,8 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #glossary #terms img { padding-left: 2px; }
   #glossary #terms dt { border-top: 0; clear: none; float: none; font-weight: bold; padding-bottom: 0; width: auto; }
   #glossary #terms dd { border-top: 0; margin: 0; padding: 0 5px 10px 39px; }
+  #video-help-topics .video-topic { margin-left: 8px; margin-right: 8px; }
+  #video-help-topics .video-topic .missing-image p { margin-left: 0; margin-right: 0; }
+  #video-help-topics #main .clearit { clear: none; }
   .gb-tooltip { width: 200px; } }
 /* End of smartphone-size screen styles. Please do not add styles after these, otherwise they may not get overridden by the smartphone styles properly. Instead add any new styles before the smartphone styles. */

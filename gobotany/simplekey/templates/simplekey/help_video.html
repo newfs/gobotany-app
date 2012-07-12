@@ -9,10 +9,8 @@
     {% for video in videos %}
         {% if forloop.counter0|divisibleby:"3" and forloop.counter0 > 0 %}
             <div class="clearit"></div>
-        </div><!-- end video-row -->
         {% endif %}
         {% if forloop.counter0|divisibleby:"3" %}
-        <div class="video-row">
         {% endif %}
             <div class="video-topic">
                 {% if video.youtube_id %}
@@ -31,6 +29,5 @@
             </div>
     {% endfor %}
     <div class="clearit"></div>
-    </div><!-- end video-row -->
 {% endblock %}
 

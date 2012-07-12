@@ -2091,12 +2091,11 @@ div.section.namap div.trans {
 
 /* Video Help Topics page styles */
 
-.video-row {
-    margin: 20px 0;
-}
 .video-topic {
     float: left;
-    margin-right: 16px;
+    height: 176px;
+    margin: 10px 16px 10px 0;
+    position: relative;
     width: 220px;
 }
 .video-topic img {
@@ -2113,9 +2112,13 @@ div.section.namap div.trans {
     width: 218px;
 }
 .video-topic .missing-image p {
+    left: auto;
+    margin: 55px 0;
+    position: absolute;
+    text-align: center;
+    top: auto;
     white-space: nowrap;
-    margin-left: -70px;
-    margin-top: -10px;
+    width: 100%;
 }
 
 /* Video in sidebar of Getting Started page */
@@ -3323,6 +3326,17 @@ $tooltip-arrow-rotation: 225deg;
         border-top: 0;
         margin: 0;
         padding: 0 5px 10px 39px;
+    }
+    #video-help-topics .video-topic {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    #video-help-topics .video-topic .missing-image p {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    #video-help-topics #main .clearit {
+        clear: none;
     }
     .gb-tooltip {
         width: 200px;
