@@ -2886,6 +2886,9 @@ $tooltip-arrow-rotation: 225deg;
     #about #main img.bookcover {
         width: auto;
     }
+    #glossary #alphabet {
+        height: 99px;
+    }
 }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) {
@@ -2927,6 +2930,9 @@ $tooltip-arrow-rotation: 225deg;
     }
     #home #banner + .three-col {
         padding-top: 400px;
+    }
+    #glossary #alphabet {
+        height: 66px;
     }
 }
 /* These styles are common to both smartphone widths */
@@ -3290,9 +3296,6 @@ $tooltip-arrow-rotation: 225deg;
     }
     #glossary header h1 {
         width: auto;
-    }
-    #glossary h2 {
-        margin-left: 4px;
     }
     #glossary #alphabet {
         line-height: 250%;

@@ -1289,7 +1289,8 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #home #banner + .three-col { padding-top: 375px; }
   .app .list-item h3 { clear: left; }
   #about #main > img { width: 57%; }
-  #about #main img.bookcover { width: auto; } }
+  #about #main img.bookcover { width: auto; }
+  #glossary #alphabet { height: 99px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { html { -webkit-text-size-adjust: none; }
   body { padding-top: 75px; }
@@ -1301,7 +1302,8 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #sidebar { width: 462px; }
   #home #banner #overlay { top: 172px; }
   #home #banner > img { height: 172px; }
-  #home #banner + .three-col { padding-top: 400px; } }
+  #home #banner + .three-col { padding-top: 400px; }
+  #glossary #alphabet { height: 66px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
   h2 { font-size: 24px; }
@@ -1394,7 +1396,6 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #about #main ul { padding-left: 14px; }
   #about #main > img, #about #main img.bookcover { margin-bottom: 8px; margin-left: 8px; margin-right: 8px; }
   #glossary header h1 { width: auto; }
-  #glossary h2 { margin-left: 4px; }
   #glossary #alphabet { line-height: 250%; width: auto; }
   #glossary #alphabet li { border: 0; padding: 1px 10px; }
   #glossary #terms { width: auto; }
