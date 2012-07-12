@@ -1963,8 +1963,11 @@ div.section.namap div.trans {
 
 /* Help section: sidebar, heading, list styles */
 
-#getting-started #sidebar, #about #sidebar {
+#getting-started #sidebar {
     height: 1046px;
+}
+#about #sidebar {
+    height: 950px;
 }
 #advanced-map #sidebar {
     height: 746px;
@@ -2877,6 +2880,12 @@ $tooltip-arrow-rotation: 225deg;
     .app .list-item h3 {
         clear: left;
     }
+    #about #main > img {
+        width: 57%;
+    }
+    #about #main img.bookcover {
+        width: auto;
+    }
 }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) {
@@ -3099,10 +3108,6 @@ $tooltip-arrow-rotation: 225deg;
         padding: 0;
         text-align: center;
     }
-    #breadcrumb p {
-        margin-left: $smallscreen-side-margin;
-        margin-right: $smallscreen-side-margin;
-    }
     #home #banner h2 {
         font-size: 28px;
         margin: 6px 0 0;
@@ -3125,8 +3130,9 @@ $tooltip-arrow-rotation: 225deg;
         padding: 0;
         width: auto;
     }
-    #home .three-col h3, #home .three-col h5, #home .three-col p,
-    #home .three-col a {
+    #breadcrumb p, #home .three-col h3, #home .three-col h5,
+    #home .three-col p, #home .three-col a, .app h2, .app p.tip,
+    .app .list-item, .app #main p, .app #main h3, #about #main ul {
         margin-left: $smallscreen-side-margin;
         margin-right: $smallscreen-side-margin;
     }
@@ -3197,10 +3203,6 @@ $tooltip-arrow-rotation: 225deg;
     }
     .app #main {
         margin-bottom: 14px;
-    }
-    .app h2, .app p.tip, .app .list-item, .app #main p {
-        margin-left: $smallscreen-side-margin;
-        margin-right: $smallscreen-side-margin;
     }
     .app p.tip {
         font-size: 14px;
@@ -3277,6 +3279,14 @@ $tooltip-arrow-rotation: 225deg;
     #advanced-id #main .dk-landing-section > a {
         margin-left: 16px;
         position: static;
+    }
+    #about #main ul {
+        padding-left: 14px;
+    }
+    #about #main > img, #about #main img.bookcover {
+        margin-bottom: $smallscreen-side-margin;
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
     }
     #glossary header h1 {
         width: auto;
