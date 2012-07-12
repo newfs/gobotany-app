@@ -222,8 +222,11 @@ return declare('gobotany.sk.SearchSuggest', null, {
             var i;
             for (i = 0; i < suggestions.length; i += 1) {
                 var suggestion = suggestions[i];
-                var url = SEARCH_URL + '?q=' + 
-                    suggestion.toLowerCase();
+                // Replace any hyphens because the search indexes do not
+                // search on them and no results would be returned.
+                var query_value = suggestion.toLowerCase().replace(/\-/g,
+                                                                   ' ');
+                var url = SEARCH_URL + '?q=' + query_value;
                 var label = this.format_suggestion(suggestion,
                     search_query);
                 var item = domConstruct.create('li');
