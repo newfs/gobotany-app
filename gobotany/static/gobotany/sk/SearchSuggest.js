@@ -222,8 +222,8 @@ return declare('gobotany.sk.SearchSuggest', null, {
             var i;
             for (i = 0; i < suggestions.length; i += 1) {
                 var suggestion = suggestions[i];
-                // Replace any hyphens because the search indexes do not
-                // search on them and no results would be returned.
+                // Replace any hyphens because the current search
+                // configuration does not fully support querying with them.
                 var query_value = suggestion.toLowerCase().replace(/\-/g,
                                                                    ' ');
                 var url = SEARCH_URL + '?q=' + query_value;
