@@ -1,16 +1,15 @@
 define([
-    'dojo/query',
     'bridge/jquery',
     'bridge/shadowbox',
     'gobotany/sk/photo'
-], function(query, $, Shadowbox, PhotoHelper) {
+], function($, Shadowbox, PhotoHelper) {
 var family = {};
 family.init = function(family_slug) {
     var photo_helper = PhotoHelper();
     
     // Wire up each image link to a Shadowbox popup handler.
     var IMAGE_CSS = '.pics .plant';
-    query(IMAGE_CSS).forEach(function(plant_image_div) {
+    $(IMAGE_CSS).each(function(i, plant_image_div) {
         var frame = $(plant_image_div).children('.frame');
         var link = $(plant_image_div).children('a');
         var href = $(link).attr('href');
