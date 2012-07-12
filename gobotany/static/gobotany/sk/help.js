@@ -1,23 +1,16 @@
 /* Code for adding behavior to the Help pages. */
 
-// Configure this module here until we finish the migration
-define(['dojo/_base/declare',
-        'dojo/query',
-        'dojo/dom-geometry',
-        'dojo/_base/array',
-        'dojo/dom-class',
-        'dojo/dom-style',
-        'dojo/_base/connect',
-        'dojo/_base/lang'],
-    function(declare, query, domGeom, array, domClass, domStyle, connect,
-             lang) {
-        return declare('gobotany.sk.help.MapToGroupsHelper', null, {
+define([
+    'bridge/jquery'
+], function($) {
+
+        var MapsToGroupsHelper = {
             groups: null,
             subgroup_sets: null,
 
-            constructor: function () {
-                this.groups = query('.plant-group');
-                this.subgroup_sets = query('.subgroups');
+            init: function () {
+                this.groups = $('.plant-group');
+                this.subgroup_sets = $('.subgroups');
             },
 
             get_left_margin_for_subgroup_set: function (group_number) {
@@ -27,21 +20,18 @@ define(['dojo/_base/declare',
 
                 // Get the first group's horizontal left position, which is
                 // at the left edge of the content area.
-                var first_group_left_x_position =
-                    domGeom.position(this.groups[0]).x;
+                var first_group_left_x_position = this.groups.offset().left;
 
                 // Get the last group's horizontal right position, which is
                 // at the right edge of the content area.
-                var last_group_position =
-                    domGeom.position(this.groups[this.groups.length - 1]);
-                var last_group_right_x_position = last_group_position.x +
-                    last_group_position.w;
+                var last_group = this.groups.last();
+                var last_group_right_x_position = last_group.offset().left +
+                    last_group.width();
 
                 // Get the group's horizontal center position.
-                var group_position =
-                    domGeom.position(this.groups[group_number]);
-                var group_center_x_position = group_position.x +
-                    Math.floor(group_position.w / 2);
+                var group = $(this.groups[group_number]);
+                var group_center_x_position = group.offset().left +
+                    Math.floor(group.width() / 2);
 
                 /* Get the width of the subgroup set by tallying the widths
                    of the subgroups within it. This is necessary because the
@@ -49,13 +39,12 @@ define(['dojo/_base/declare',
                    container's width does not reflect the total width of the
                    subgroups. */
                 var subgroup_set_width = 0;
-                var subgroup_set = this.subgroup_sets[group_number];
-                array.forEach(query('.plant-subgroup', subgroup_set),
-                    function(subgroup, i) {
-                        var subgroup_width = domGeom.position(subgroup).w;
-                        subgroup_set_width += subgroup_width;
-                    }
-                );
+                var subgroup_set = $(this.subgroup_sets[group_number]);
+                subgroup_set
+                    .find('.plant-subgroup')
+                    .each(function(i, subgroup) {
+                        subgroup_set_width += $(subgroup).width();
+                });
 
                 // Get the maximum left margin allowed for the subgroup set.
                 var EXTRA_PADDING = 22;  // Will subtract to ensure fit
@@ -94,30 +83,29 @@ define(['dojo/_base/declare',
                 var ACTIVE_CLASS = 'active';
                 var HIDDEN_CLASS = 'hidden';
 
-                this.groups.forEach(function(group, i) {
+                this.groups.each(function(i, group) {
                     if (i === group_number) {
-                        domClass.add(group, ACTIVE_CLASS);
+                        $(group).addClass(ACTIVE_CLASS);
                     }
                     else {
-                        domClass.remove(group, ACTIVE_CLASS);
+                        $(group).removeClass(ACTIVE_CLASS);
                     }
                 });
 
-                var that = this;
-                this.subgroup_sets.forEach(function(subgroup_set, i) {
+                this.subgroup_sets.each($.proxy(function(i, subgroup_set) {
                     if (i === group_number) {
                         // Show the subgroup set.
-                        domClass.remove(subgroup_set, HIDDEN_CLASS);
+                        $(subgroup_set).removeClass(HIDDEN_CLASS);
                         var left_margin_value =
-                            that.get_left_margin_for_subgroup_set(i);
-                        domStyle.set(subgroup_set, 'marginLeft',
+                            this.get_left_margin_for_subgroup_set(i);
+                        $(subgroup_set).css('marginLeft',
                             left_margin_value.toString() + 'px');
                     }
                     else {
                         // Hide the subgroup set.
-                        domClass.add(subgroup_set, HIDDEN_CLASS);
+                        $(subgroup_set).addClass(HIDDEN_CLASS);
                     }
-                });
+                }, this));
             },
 
             setup: function () {
@@ -125,14 +113,27 @@ define(['dojo/_base/declare',
                 var i;
                 for (i = 0; i < this.groups.length; i += 1) {
                     var group = this.groups[i];
-                    connect.connect(group, 'onclick',
-                        lang.hitch(this, this.activate_group, i));
+                    $(group).bind('click', {groupNumber: i}, $.proxy(function(event) {
+                        this.activate_group(event.data.groupNumber);
+                    }, this));
                 }
 
                 // Initially activate the first group and its subgroup set.
                 this.activate_group(0);
             }
 
-        });
+        }
+
+        // Create a small factory method to return, which will act
+        // as a little instance factory and constructor, so the user
+        // can do as follows:
+        // var obj = MyClassName(something, somethingelse);
+        function factory() {
+            var instance = Object.create(MapsToGroupsHelper)
+            instance.init();
+            return instance;
+        }
+
+        return factory;
     }
 );
