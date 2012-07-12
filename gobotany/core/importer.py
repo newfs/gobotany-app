@@ -303,12 +303,11 @@ class Importer(object):
                     status.append('endangered')
                 elif conservation_status_code == 'T':
                     status.append('threatened')
-                elif conservation_status_code == 'SC' or \
-                     conservation_status_code == 'SC*':
+                elif conservation_status_code in ['SC', 'SC*']:
                     status.append('special concern')
                 elif conservation_status_code == 'H':
                     status.append('historic')
-                elif conservation_status_code == 'C':
+                elif conservation_status_code in ['C', 'WL', 'W', 'Ind']:
                     status.append('rare')
 
                 if is_invasive == True:
