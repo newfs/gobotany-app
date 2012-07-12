@@ -1,7 +1,7 @@
 define([
     'bridge/jquery',
     'bridge/shadowbox',
-    'gobotany/sk/photo'
+    'gobotany/sk/PhotoHelper'
 ], function($, Shadowbox, PhotoHelper) {
 var family = {};
 family.init = function(family_slug) {

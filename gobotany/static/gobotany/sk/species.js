@@ -10,7 +10,7 @@ define([
     'dojo/dom-geometry',
     'bridge/jquery',
     'bridge/shadowbox',
-    'gobotany/sk/photo',
+    'gobotany/sk/PhotoHelper',
     'gobotany/utils',
     'util/sidebar',
     'simplekey/glossarize'

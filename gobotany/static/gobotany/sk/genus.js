@@ -2,7 +2,7 @@
 define([
     'bridge/jquery',
     'bridge/shadowbox',
-    'gobotany/sk/photo'
+    'gobotany/sk/PhotoHelper'
 ], function($, Shadowbox, PhotoHelper) {
 
 var genus = {};
