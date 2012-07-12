@@ -2,23 +2,15 @@
  * Code for adding behavior to species pages.
  */
 define([
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/query',
-    'dojo/on',
-    'dojo/cookie',
-    'dojo/dom-geometry',
     'bridge/jquery',
     'bridge/shadowbox',
     'gobotany/sk/PhotoHelper',
-    'gobotany/utils',
     'util/sidebar',
     'simplekey/glossarize'
-], function(declare, lang, query, on, cookie, domGeom, $, Shadowbox,
-    PhotoHelper, utils, sidebar, glossarize) {
-return declare('gobotany.sk.species.SpeciesPageHelper', null, {
+], function($, Shadowbox, PhotoHelper, sidebar, glossarize) {
+var SpeciesPageHelper = {
 
-    constructor: function() {
+    init: function() {
         this.photo_helper = PhotoHelper();
     },
 
@@ -66,8 +58,8 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
         // Wire up each image link to a Shadowbox popup handler.
         var IMAGE_LINKS_CSS = '#species-images a';
         var that = this;
-        query(IMAGE_LINKS_CSS).forEach(function(link) {
-            on(link, 'click', lang.hitch(this, function(event) {
+        $(IMAGE_LINKS_CSS).each(function(i, link) {
+            $(link).click($.proxy(function(event) {
                 // Prevent the regular link (href) from taking over.
                 event.preventDefault();
 
@@ -81,7 +73,7 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
                         onFinish: that.photo_helper.process_credit
                     }
                 });
-            }));
+            }, this));
         });
     },
 
@@ -90,19 +82,19 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
         // is needed to make it clickable. Make this div cover the link
         // that appears below the map, too, for one large clickable area.
         var transparent_div =
-            query('#sidebar .section.namap div.trans')[0];
-        on(transparent_div, 'click', lang.hitch(this, function(event) {
+            $('#sidebar .section.namap div.trans').first();
+        transparent_div.click($.proxy(function(event) {
             event.preventDefault();
             // Open the North America distribution map in a lightbox.
             var content_element =
-                query('#sidebar .section.namap div')[0];
+                $('#sidebar .section.namap div').first();
             Shadowbox.open({
-                content: content_element.innerHTML,
+                content: content_element.html(),
                 player: 'html',
                 height: 582,
                 width: 1000
             });
-        }));
+        }, this));
     },
 
     setup: function() {
@@ -119,5 +111,18 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
         this.wire_up_us_map_link();
         sidebar.setup()
     }
-});
+}
+
+// Create a small factory method to return, which will act
+// as a little instance factory and constructor, so the user
+// can do as follows:
+// var obj = MyClassName(something, somethingelse);
+function factory() {
+    var instance = Object.create(SpeciesPageHelper)
+    instance.init();
+    return instance;
+}
+
+return factory;
+
 });
