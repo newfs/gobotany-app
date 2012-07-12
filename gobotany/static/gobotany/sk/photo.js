@@ -2,25 +2,23 @@
  * Code for special handling of full plant photos.
  */
 define([
-    'dojo/_base/declare',
-    'dojo/query',
-    'dojo/dom-class',
-    'dojo/_base/lang',
+    'bridge/jquery',
     'util/shadowbox_init'
-], function(declare, query, domClass, lang, shadowbox_init) {
-    return declare('gobotany.sk.photo.PhotoHelper', null, {
+], function($, shadowbox_init) {
 
-    constructor: function() {
+var PhotoHelper = {
+
+    init: function() {
     },
 
     prepare_to_enlarge: function() {
         // Do a few things before enlarging the photo on the screen.
         // Intended to be called using the Shadowbox onOpen handler.
         
-        var title_element = query('#sb-title-inner')[0];
+        var title_element = $('#sb-title-inner').first();
                                                     
         // Temporarily hide the title element.
-        domClass.add(title_element, 'hidden');
+        title_element.addClass('hidden');
 
         // Call a function to do the usual Shadowbox initialization because
         // an existing onOpen handler with this function call is being
@@ -34,8 +32,8 @@ define([
         // Format the title text for a better presentation atop the photo.
         // Intended to be called using the Shadowbox onFinish handler.
 
-        var title_element = query('#sb-title-inner')[0];
-        var title_text = title_element.innerHTML;
+        var title_element = $('#sb-title-inner').first();
+        var title_text = title_element.html();
 
         // Parse and mark up the title text.
 
@@ -57,12 +55,12 @@ define([
         // italicize the entire plant name portion of the title for now. This
         // will generally be correct for the groups and subgroups pages'
         // galleries, which tend not to show varieties, subspecies, etc.
-        var scientific_name = query('h2 .scientific');
+        var scientific_name = $('h2 .scientific');
         if (scientific_name.length > 0) {
-            name = lang.trim(scientific_name[0].innerHTML) + '.';
+            name = $.trim(scientific_name[0].innerHTML) + '.';
         }
         else if (title_parts[1] !== undefined) {
-            name = '<i>' + lang.trim(title_parts[1]) + '</i>';
+            name = '<i>' + $.trim(title_parts[1]) + '</i>';
         }
         if (name.length > 0) {
             title += ': ' + name;
@@ -75,11 +73,24 @@ define([
             html += '<br><span>' + parts[3] + '</span>';
         }
         html += '</div>';
-        title_element.innerHTML = html;
+        title_element.html(html);
 
         // Show the title element again.
-        domClass.remove(title_element, 'hidden');
+        title_element.removeClass('hidden');
     }
 
-});
+}
+
+// Create a small factory method to return, which will act
+// as a little instance factory and constructor, so the user
+// can do as follows:
+// var obj = MyClassName(something, somethingelse);
+function factory() {
+    var instance = Object.create(PhotoHelper)
+    instance.init();
+    return instance;
+}
+
+return factory;
+
 });
