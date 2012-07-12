@@ -4,7 +4,7 @@ require([
     'util/activate_video_links',
     'util/shadowbox_init',
     'util/sidebar',
-    'gobotany/sk/help'
+    'gobotany/sk/MapToGroupsHelper'
 ], function($, activate_search_suggest, activate_video_links, shadowbox_init,
     sidebar, MapToGroupsHelper) {
 
