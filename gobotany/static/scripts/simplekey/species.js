@@ -7,7 +7,7 @@ define([
     // Scrolling
     'util/activate_smooth_div_scroll',
     
-    'gobotany/sk/species'
+    'gobotany/sk/SpeciesPageHelper'
 ], function($, search_suggest, shadowbox_init, activate_scroll,
     SpeciesPageHelper) {
 
