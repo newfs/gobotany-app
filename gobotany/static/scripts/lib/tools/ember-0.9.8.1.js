@@ -1,3 +1,8 @@
+define([
+    'bridge/jquery'
+], function() {
+    // end AMD header
+
 (function() {
 /*global __fail__*/
 
@@ -20147,3 +20152,6 @@ Ember.$(document).ready(
 
 })();
 
+    // AMD footer
+    return Ember;
+});
