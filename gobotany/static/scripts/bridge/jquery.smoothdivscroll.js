@@ -5,11 +5,9 @@
 // as a thin abstraction layer so we don't have to worry about
 // versioned filenames in our module references.
 define([
-    'bridge/jquery', 
-    'bridge/jquery-ui',
-    'bridge/jquery.mousewheel',
+    'bridge/jquery',
     'jquery/jquery.smoothDivScroll-1.2-mod'
-], function($, ui, mousewheel, smoothdivscroll) {
+], function($, smoothdivscroll) {
     var jquery;
     if($.fn.smoothDivScroll) {
         // The plugin is loaded, so return the same

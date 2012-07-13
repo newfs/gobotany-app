@@ -1,3 +1,8 @@
+define([
+    'bridge/jquery'
+], function() {
+    // end AMD header
+
 /*!
  * jQuery Cookie Plugin
  * https://github.com/carhartl/jquery-cookie
@@ -45,3 +50,6 @@
         return null;
     };
 })(jQuery);
+
+    // AMD footer
+});

@@ -1,3 +1,8 @@
+define([
+    'bridge/jquery'
+], function() {
+    // end AMD header
+
 /**!
  * @preserve Color animation jQuery-plugin
  * http://www.bitstorm.org/jquery/color-animation/
@@ -101,3 +106,6 @@
 		return triplet;
 	}
 })(jQuery);
+
+    // AMD footer
+});

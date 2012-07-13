@@ -1,3 +1,8 @@
+define([
+    'bridge/jquery'
+], function() {
+    // end AMD header
+
 /*!
  * jScrollPane - v2.0.0beta11 - 2012-04-23
  * http://jscrollpane.kelvinluck.com/
@@ -1432,3 +1437,5 @@
 
 })(jQuery,this);
 
+    // AMD footer
+});

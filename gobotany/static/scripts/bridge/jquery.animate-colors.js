@@ -5,7 +5,7 @@
 // as a thin abstraction layer so we don't have to worry about
 // versioned filenames in our module references.
 define([
-    'bridge/jquery', 
+    'bridge/jquery',
     'jquery/jquery.animate-colors'
 ], function($, animate) {
     var jquery;

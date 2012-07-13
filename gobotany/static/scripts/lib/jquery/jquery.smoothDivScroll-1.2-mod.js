@@ -1,3 +1,10 @@
+define([
+    'bridge/jquery',
+    'bridge/jquery-ui',
+    'bridge/jquery.mousewheel'
+], function() {
+    // end AMD header
+
 /*
  * jQuery SmoothDivScroll 1.2
  *
@@ -1082,3 +1089,6 @@
 
 	});
 })(jQuery);
+
+    // AMD footer
+});

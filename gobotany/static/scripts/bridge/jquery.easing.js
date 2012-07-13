@@ -5,10 +5,9 @@
 // as a thin abstraction layer so we don't have to worry about
 // versioned filenames in our module references.
 define([
-    'bridge/jquery', 
-    'bridge/jquery-ui',
+    'bridge/jquery',
     'jquery/jquery.easing.1.3'
-], function($, ui, easing) {
+], function($, easing) {
     var jquery;
     if($.easing.def == 'easeOutQuad') {
         // The plugin is loaded, so return the same
@@ -18,4 +17,3 @@ define([
 
     return jquery;
 });
-
