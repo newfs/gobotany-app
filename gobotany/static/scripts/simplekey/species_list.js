@@ -5,8 +5,8 @@ define([
     'util/activate_search_suggest',
 
     // Table filtering
-    
-    'bridge/picnet_table_filter'
+
+    'lib/jquery/picnet.table.filter.min'
 
 ], function(search_suggest) {
 
