@@ -520,15 +520,16 @@ class StateStatusTestCase(TestCase):
                                       conservation_status_code='H')
         self.assertEqual('present, historic', status)
 
-    def test_get_state_status_is_extinct(self):
+    def test_get_state_status_is_extirpated(self):
+        # Extinct status ('X') is mapped to 'extipated.'
         im = importer.Importer()
         status = im._get_state_status('ME', self.DISTRIBUTION,
                                       conservation_status_code='X')
-        self.assertEqual('extinct', status)
-        # Extinct should appear alone even if the plant is marked present.
+        self.assertEqual('extirpated', status)
+        # Extirpated should appear alone even if the plant is marked present.
         status = im._get_state_status('MA', self.DISTRIBUTION,
                                       conservation_status_code='X')
-        self.assertEqual('extinct', status)
+        self.assertEqual('extirpated', status)
 
     def test_get_state_status_is_rare(self):
         im = importer.Importer()

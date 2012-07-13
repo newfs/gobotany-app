@@ -197,7 +197,7 @@
                             <td></td>
                             <td></td>
                         </tr>
-                        {% collect 'endangered' 'threatened' 'special concern' 'historic' 'rare' 'extinct' 'invasive' 'prohibited' as status_values %}
+                        {% collect 'endangered' 'threatened' 'special concern' 'historic' 'rare' 'extirpated' 'invasive' 'prohibited' as status_values %}
                         {% for value in status_values %}
                             <tr>
                                 <th class="status">{{ value|capfirst }}?</th>
