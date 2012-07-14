@@ -1,7 +1,13 @@
 /* Tests for simplekey/ResultsPageState.js */
 
 var requirejs = require('requirejs');
-var ResultsPageState = requirejs('simplekey/ResultsPageState');
+requirejs([
+    'simplekey/ResultsPageState',
+    'bridge/underscore'
+], function(mod1, mod2) {
+    ResultsPageState = mod1;
+    _ = mod2;
+});
 
 var sample_hash = '#_filters=family,genus,habitat_general,' +
     'state_distribution,trophophyll_form_ly,sporophyll_position_ly,' +
