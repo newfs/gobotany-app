@@ -12,11 +12,10 @@ define([
     'bridge/underscore',
     'gobotany/sk/FilterSectionHelper',
     'gobotany/sk/SpeciesSectionHelper',
-    'gobotany/sk/SpeciesCounts',
     'simplekey/resources',
     'simplekey/App3'
 ], function(declare, lang, on, keys, query, nodeListDom, domAttr, domConstruct,
-    domStyle, _, FilterSectionHelper, SpeciesSectionHelper, SpeciesCounts,
+    domStyle, _, FilterSectionHelper, SpeciesSectionHelper,
     resources, App3) {
 
 return declare('gobotany.sk.ResultsHelper', null, {
@@ -28,9 +27,9 @@ return declare('gobotany.sk.ResultsHelper', null, {
         //   Coordinates all of the dynamic logic on the results page.
 
         this.pile_slug = pile_slug;
-        this.species_section = 
+        this.animation = null;
+        this.species_section =
             new SpeciesSectionHelper(pile_slug, plant_divs_ready);
-        this.species_counts = new SpeciesCounts(this);
         this.filter_section = new FilterSectionHelper(this);
 
         resources.pile(this.pile_slug).done(
@@ -93,6 +92,25 @@ return declare('gobotany.sk.ResultsHelper', null, {
             }
         }
         this.species_section.lazy_load_images();
+    },
+
+    update_counts: function(species_list) {
+        App3.taxa.set('len', species_list.length);
+
+        if (this.animation !== null)
+            this.animation.stop();
+
+        var span = query('.species-count-heading > span');
+        this.animation = span.animateProperty({
+            duration: 2000,
+            properties: {
+                backgroundColor: {
+                    start: '#FF0',
+                    end: '#F0F0C0'
+                }
+            }
+        });
+        this.animation.play();
     }
 });
 

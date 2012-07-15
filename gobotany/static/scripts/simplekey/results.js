@@ -678,12 +678,12 @@ results_page_init: function(args) {
         filtered_sorted_taxadata_ready,
         plant_divs_ready
     ).done(function(rh) {
-        rh.species_counts._update_counts(App3.filtered_sorted_taxadata);
+        rh.update_counts(App3.filtered_sorted_taxadata);
         rh.species_section.display_results(App3.filtered_sorted_taxadata);
         rh.load_selected_image_type();
 
         App3.addObserver('filtered_sorted_taxadata', function() {
-            rh.species_counts._update_counts(App3.filtered_sorted_taxadata);
+            rh.update_counts(App3.filtered_sorted_taxadata);
             rh.species_section.display_results(App3.filtered_sorted_taxadata);
         });
 
