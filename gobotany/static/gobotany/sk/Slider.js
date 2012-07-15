@@ -2,7 +2,6 @@
  * Slider, for integer numeric fields.
  */
 define([
-    'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/query',
     'dojo/NodeList-dom',
@@ -12,37 +11,40 @@ define([
     'util/slider',
     'gobotany/sk/Choice',
     'simplekey/App3'
-], function(declare, lang, query, nodeListDom, nodeListHtml, domConstruct, 
+], function(lang, query, nodeListDom, nodeListHtml, domConstruct,
     domStyle, slider, Choice, App3) {
 
-return declare('gobotany.sk.working_area.Slider', [
-    Choice
-], {
-    slider_container_node: null,
-    horizontal_slider: null,
+    var Slider = function() {};
+    Slider.prototype = new Choice();
+
+    Slider.prototype.init = function(args) {
+        this.slider_container_node = null;
+        this.horizontal_slider = null;
+        Choice.prototype.init.call(this, args);
+    };
 
     /* See the comments on the Choice class, above, to learn about when
        and how these methods are invoked. */
 
-    clear: function() {
-    },
+    Slider.clear = function() {
+    };
 
-    dismiss: function() {
+    Slider.dismiss = function() {
         if (this.slider_container_node) {
             $(this.slider_container_node).empty();
         }
         this.horizontal_slider = this.slider_container_node = null;
         this.inherited(arguments);
-    },
+    };
 
-    _compute_min_and_max: function() {
+    Slider._compute_min_and_max = function() {
         var species_vector = App3.filter_controller.compute(this.filter);
         var allowed = this.filter.allowed_ranges(species_vector);
         this.min = allowed[0].min;
         this.max = allowed[allowed.length - 1].max;
-    },
+    };
 
-    _draw_specifics: function() {
+    Slider._draw_specifics = function() {
         // values_list?
         this._compute_min_and_max();
 
@@ -59,7 +61,7 @@ return declare('gobotany.sk.working_area.Slider', [
                  this.max + '</label>');
 
         var values_div = $('.working-area .info .values')[0];
-        this.slider_container_node = $(values_div).append('<div></div>');        
+        this.slider_container_node = $(values_div).append('<div></div>');
         this.horizontal_slider = $(this.slider_container_node).slider({
             id: 'slider',
             initial_value: startvalue,
@@ -67,17 +69,17 @@ return declare('gobotany.sk.working_area.Slider', [
             minimum: this.min,
             on_move: lang.hitch(this, this._value_changed)
         });
-        
-        this._value_changed();
-    },
 
-    _current_value: function() {
+        this._value_changed();
+    };
+
+    Slider._current_value = function() {
         var slider_label = $('#slider .label')[0];
         var value = $(slider_label).html();
         return value;
-    },
+    };
 
-    _value_changed: function() {
+    Slider._value_changed = function() {
         /* Disable the apply button when we're on either the default
            value or the value that was previous selected */
         this._compute_min_and_max();
@@ -91,16 +93,15 @@ return declare('gobotany.sk.working_area.Slider', [
             apply_button.addClass('disabled');
         else
             apply_button.removeClass('disabled');
-    },
+    };
 
     /* Sliders only have one filter value, so we don't need to compute
        number of taxa for each "choice."  We also don't want to get
        javascript errors from the parent version of this function, so
        just override it with an empty function. */
-    _on_filter_change: function() {
-    }
 
+    Slider._on_filter_change = function() {
+    };
+
+    return Slider;
 });
-
-});
-

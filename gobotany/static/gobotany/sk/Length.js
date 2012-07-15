@@ -2,7 +2,6 @@
  * Finally, the text box where users can enter lengths.
  */
 define([
-    'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/query',
     'dojo/NodeList-dom',
@@ -10,22 +9,28 @@ define([
     'bridge/underscore',
     'gobotany/sk/Choice',
     'simplekey/App3'
-], function(declare, lang, query, nodeListDom, nodeListHtml, _, Choice, App3) {
+], function(lang, query, nodeListDom, nodeListHtml, _, Choice, App3) {
 
-return declare('gobotany.sk.working_area.Length', [
-    Choice
-], {
-    permitted_ranges: [],  // [{min: n, max: m}, ...] all measured in mm
-    species_vector: [],
-    unit: 'mm',
-    is_metric: true,
-    factor: 1.0,
-    factormap: {'mm': 1.0, 'cm': 10.0, 'm': 1000.0, 'in': 25.4, 'ft': 304.8},
+    var factormap = {
+        'mm': 1.0, 'cm': 10.0, 'm': 1000.0, 'in': 25.4, 'ft': 304.8
+    };
 
-    clear: function() {
-    },
+    var Length = function() {};
+    Length.prototype = new Choice();
 
-    _draw_specifics: function() {
+    Length.prototype.init = function(args) {
+        this.permitted_ranges = [];  // [{min: n, max: m}, ...] measured in mm
+        this.species_vector = [];
+        this.unit = 'mm';
+        this.is_metric = true;
+        this.factor = 1.0;
+        Choice.prototype.init.call(this, args);
+    };
+
+    Length.prototype.clear = function() {
+    };
+
+    Length.prototype._draw_specifics = function() {
         var v = query('div.working-area .values');
 
         this._set_unit(this.filter.display_units || 'mm');
@@ -74,45 +79,45 @@ return declare('gobotany.sk.working_area.Length', [
         v.query('[name="units"]').on('change', lang.hitch(this, '_unit_changed'));
         v.query('[type="text"]').on('change', lang.hitch(this, '_measure_changed'));
         v.query('[type="text"]').on('keyup', lang.hitch(this, '_key_pressed'));
-    },
+    };
 
-    _key_pressed: function(event) {
+    Length.prototype._key_pressed = function(event) {
         if (event.keyCode == 10 || event.keyCode == 13)
             this._apply_filter_value();
         else
             this._measure_changed();
-    },
+    };
 
-    _parse_value: function(text) {
+    Length.prototype._parse_value = function(text) {
         var v = parseFloat(text);
         if (isNaN(v))
             return null;
         return v;
-    },
+    };
 
-    _current_value: function() {
+    Length.prototype._current_value = function() {
         var selector = this.is_metric ? '[name="measure_metric"]' :
             '[name="measure_english"]';
         var text = query(selector, this.div).attr('value')[0];
         var v = this._parse_value(text);
         return (v === null) ? null : v * this.factor;
-    },
+    };
 
-    _set_unit: function(unit) {
+    Length.prototype._set_unit = function(unit) {
         this.unit = unit;
-        this.factor = this.factormap[this.unit];
+        this.factor = factormap[this.unit];
         this.is_metric = /m$/.test(this.unit);
-    },
+    };
 
-    _unit_changed: function(event) {
+    Length.prototype._unit_changed = function(event) {
         this._set_unit(event.target.value);
         query('.measure_metric').attr('disabled', ! this.is_metric);
         query('.measure_english').attr('disabled', this.is_metric);
         this._redraw_permitted_ranges();
         this._measure_changed();
-    },
+    };
 
-    _measure_changed: function() {
+    Length.prototype._measure_changed = function() {
         var mm = this._current_value();
         var mm_old = this._parse_value(this.filter.get('value'));
         var vector = this.filter.taxa_matching(mm);
@@ -135,9 +140,9 @@ return declare('gobotany.sk.working_area.Length', [
 
         // Stash a hint about how the sidebar should display our value.
         this.filter.display_units = this.unit;
-    },
+    };
 
-    _redraw_permitted_ranges: function() {
+    Length.prototype._redraw_permitted_ranges = function() {
         var p = 'Please enter a measurement in the range ';
         var truncate = function(value, precision) {
             var power = Math.pow(10, precision || 0);
@@ -151,9 +156,9 @@ return declare('gobotany.sk.working_area.Length', [
                 truncate(pr.max / this.factor, 2) + '&nbsp;' + this.unit;
         }
         query('.permitted_ranges', this.div).html(p);
-    },
+    };
 
-    _on_filter_change: function() {
+    Length.prototype._on_filter_change = function() {
         // A filter somewhere on the page changed, so we might need to
         // adjust our statement about the number of species matched by
         // the value in our input field.
@@ -163,8 +168,7 @@ return declare('gobotany.sk.working_area.Length', [
         this.permitted_ranges = this.filter.allowed_ranges(species_vector);
         this._redraw_permitted_ranges();
         this._measure_changed();
-    }
-});
+    };
 
+    return Length;
 });
-

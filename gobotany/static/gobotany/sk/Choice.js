@@ -3,7 +3,6 @@
  * inherit from and specialize, is the standard multiple-choice selection.
  */
 define([
-    'dojo/_base/declare',
     'dojo/_base/connect',
     'dojo/_base/lang',
     'dojo/_base/event',
@@ -13,93 +12,87 @@ define([
     'dojo/NodeList-html',
     'dojo/on',
     'bridge/jquery',
-    'util/tooltip',
     'bridge/underscore',
     'gobotany/utils',
     'simplekey/glossarize',
-    'simplekey/App3'
-], function(declare, connect, lang, event, query, domConstruct, nodeListDom,
-    nodeListHtml, on, $, tooltip, _, utils, glossarize, App3) {
+    'simplekey/App3',
+    'util/tooltip'
+], function(connect, lang, event, query, domConstruct,
+            nodeListDom, nodeListHtml, on,
+            $, _, utils, glossarize, App3, tooltip) {
 
-/*
- * Helper functions
- */
+    /* Generate a human-readable representation of a value. */
 
-/* Generate a human-readable representation of a value.
- */
-var _format_value = function(v) {
-    return v === undefined ? "don't know" :
-        v.friendly_text ? v.friendly_text :
-        v.choice === 'NA' ? "doesn't apply" :
-        v.choice ? v.choice : "don't know";
-};
+    var _format_value = function(v) {
+        return v === undefined ? "don't know" :
+            v.friendly_text ? v.friendly_text :
+            v.choice === 'NA' ? "doesn't apply" :
+            v.choice ? v.choice : "don't know";
+    };
 
-/* Order filter choices for display.
- */
-var _compare_filter_choices = function(a, b) {
+    /* Order filter choices for display. */
 
-    var friendly_text_a = a.friendly_text.toLowerCase();
-    var friendly_text_b = b.friendly_text.toLowerCase();
-    var choice_a = a.choice.toLowerCase();
-    var choice_b = b.choice.toLowerCase();
+    var _compare_filter_choices = function(a, b) {
 
-    // If both are a number or begin with one, sort numerically.
+        var friendly_text_a = a.friendly_text.toLowerCase();
+        var friendly_text_b = b.friendly_text.toLowerCase();
+        var choice_a = a.choice.toLowerCase();
+        var choice_b = b.choice.toLowerCase();
 
-    var int_friendly_text_a = parseInt(friendly_text_a, 10);
-    var int_friendly_text_b = parseInt(friendly_text_b, 10);
-    if (!isNaN(int_friendly_text_a) && !isNaN(int_friendly_text_b)) {
-        return int_friendly_text_a - int_friendly_text_b;
-    }
-    var int_choice_a = parseInt(choice_a, 10);
-    var int_choice_b = parseInt(choice_b, 10);
-    if (!isNaN(int_choice_a) && !isNaN(int_choice_b)) {
-        return int_choice_a - int_choice_b;
-    }
+        // If both are a number or begin with one, sort numerically.
 
-    // Otherwise, sort alphabetically.
+        var int_friendly_text_a = parseInt(friendly_text_a, 10);
+        var int_friendly_text_b = parseInt(friendly_text_b, 10);
+        if (!isNaN(int_friendly_text_a) && !isNaN(int_friendly_text_b)) {
+            return int_friendly_text_a - int_friendly_text_b;
+        }
+        var int_choice_a = parseInt(choice_a, 10);
+        var int_choice_b = parseInt(choice_b, 10);
+        if (!isNaN(int_choice_a) && !isNaN(int_choice_b)) {
+            return int_choice_a - int_choice_b;
+        }
 
-    // Exception: always make Doesn't Apply (NA) last.
-    if (choice_a === 'na') return 1;
-    if (choice_b === 'na') return -1;
+        // Otherwise, sort alphabetically.
 
-    // If friendly text is present, sort using it.
-    if (friendly_text_a < friendly_text_b) return -1;
-    if (friendly_text_a > friendly_text_b) return 1;
+        // Exception: always make Doesn't Apply (NA) last.
+        if (choice_a === 'na') return 1;
+        if (choice_b === 'na') return -1;
 
-    // If there is no friendly text, sort using the choices instead.
-    if (choice_a < choice_b) return -1;
-    if (choice_a > choice_b) return 1;
+        // If friendly text is present, sort using it.
+        if (friendly_text_a < friendly_text_b) return -1;
+        if (friendly_text_a > friendly_text_b) return 1;
 
-    return 0; // default value (no sort)
-};
+        // If there is no friendly text, sort using the choices instead.
+        if (choice_a < choice_b) return -1;
+        if (choice_a > choice_b) return 1;
 
-return declare('gobotany.sk.working_area.Choice', null, {
+        return 0; // default value (no sort)
+    };
 
-    div_map: null,  // maps choice value -> <input> element
-    close_button_signal: null,  // connection from the close button to us
+    /* Choice objects */
 
-    /* {div, filter, on_dismiss} */
-    constructor: function(args) {
+    var Choice = function() {};
+    Choice.prototype = {};
+
+    Choice.prototype.init = function(args) {
+        this.close_button_signal = null;  // connection from the close button
         this.div = args.div;
+        this.div_map = null,   // map choice value -> <input> element
         this.filter = args.filter;
-        this._draw_basics(args.y);
-        this._draw_specifics();
         this.on_dismiss = args.on_dismiss;
 
-        // The set of values we can let the user select can change as
-        // they select and deselect other filters on the page.
-
-        connect.subscribe('/sk/filter/change', this, '_on_filter_change');
+        this._draw_basics(args.y);
+        this._draw_specifics();
         this._on_filter_change();
-    },
+    };
 
     /* Events that can be triggered from outside. */
 
-    clear: function() {
+    Choice.prototype.clear = function() {
         query('input', this.div_map['']).attr('checked', true);
-    },
+    };
 
-    dismiss: function(e) {
+    Choice.prototype.dismiss = function(e) {
         if (e) {
             e.preventDefault();
         }
@@ -114,11 +107,11 @@ return declare('gobotany.sk.working_area.Choice', null, {
         $('.option-list li').removeClass('active');
 
         this.on_dismiss(this.filter);
-    },
+    };
 
     /* Draw the working area. */
 
-    _draw_basics: function(y) {
+    Choice.prototype._draw_basics = function(y) {
         var d = query(this.div);
         var f = this.filter;
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
@@ -152,9 +145,9 @@ return declare('gobotany.sk.working_area.Choice', null, {
         var button = query('.apply-btn', this.div)[0];
         this.apply_button_signal = on(
             button, 'click', lang.hitch(this, '_apply_button_clicked'));
-    },
+    };
 
-    _draw_specifics: function() {
+    Choice.prototype._draw_specifics = function() {
         var CHOICES_PER_ROW = 5;
         var checked = function(cond) {return cond ? ' checked' : ''};
         var f = this.filter;
@@ -166,7 +159,8 @@ return declare('gobotany.sk.working_area.Choice', null, {
         var values = utils.clone(f.values);
         values.sort(_compare_filter_choices);
 
-        var choices_div = domConstruct.create('div', {'class': 'choices'}, values_q[0]);
+        var choices_div = domConstruct.create(
+            'div', {'class': 'choices'}, values_q[0]);
         var row_div = domConstruct.create('div', {'class': 'row'}, choices_div);
 
         // Create a Don't Know radio button item.
@@ -231,39 +225,40 @@ return declare('gobotany.sk.working_area.Choice', null, {
 
         // Set up the Apply Selection button.
         this._on_choice_change();
-    },
+    };
 
     /* How to grab the currently-selected value from the DOM. */
 
-    _current_value: function() {
+    Choice.prototype._current_value = function() {
         var value = query('input:checked', this.div).attr('value')[0];
         return value || null;
-    },
+    };
 
     /* Update whether the "Apply Selection" button is gray or not. */
 
-    _on_choice_change: function(e) {
+    Choice.prototype._on_choice_change = function(e) {
         var apply_button = query('.apply-btn', this.div);
         if (this._current_value() === this.filter.value)
             apply_button.addClass('disabled');
         else
             apply_button.removeClass('disabled');
-    },
+    };
 
     /* Get a value suitable for use as an image element id from the
        image filename found in the image path. */
 
-    _get_image_id_from_path: function(image_path) {
+    Choice.prototype._get_image_id_from_path = function(image_path) {
         var last_slash_index = image_path.lastIndexOf('/');
         var dot_index = image_path.indexOf('.', last_slash_index);
         var image_id = image_path.substring(last_slash_index + 1, dot_index);
         return image_id;
-    },
+    };
 
     /* When the set of selected filters changes, we need to recompute
        how many species would remain if each of our possible filter
        values were applied. */
-    _on_filter_change: function() {
+
+    Choice.prototype._on_filter_change = function() {
         var other_taxa = App3.filter_controller.compute(this.filter);
         var div_map = this.div_map;
 
@@ -285,12 +280,12 @@ return declare('gobotany.sk.working_area.Choice', null, {
                 input_field_q.attr('disabled', false); // remove the attribute
             }
         });
-    },
+    };
 
     /* When the apply button is pressed, we announce a value change
        unless it would bring the number of species to zero. */
 
-    _apply_button_clicked: function(e) {
+    Choice.prototype._apply_button_clicked = function(e) {
         event.stop(e);
         var apply_button = $('.apply-btn');
         if (apply_button.hasClass('disabled'))
@@ -298,14 +293,15 @@ return declare('gobotany.sk.working_area.Choice', null, {
         apply_button.removeClass('disabled');
         this._apply_filter_value();
         this.dismiss();
-    },
+    };
 
-    _apply_filter_value: function() {
+    Choice.prototype._apply_filter_value = function() {
         var value = this._current_value();
         if (value !== null && this.filter.taxa_matching(value).length == 0)
             // Refuse to let the number of matching taxa be driven to zero.
             return;
         this.filter.set('value', value);
-    }
-});
+    };
+
+    return Choice;
 });
