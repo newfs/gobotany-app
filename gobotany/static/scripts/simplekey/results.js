@@ -219,6 +219,8 @@ results_page_init: function(args) {
        div being supplied with information through an instance of this
        convenient FilterView. */
 
+    App3.working_area = null;
+
     App3.FilterView = Ember.View.extend({
         templateName: 'filter-view',
         filterBinding: 'content',  // 'this.filter' makes more readable code
@@ -260,8 +262,8 @@ results_page_init: function(args) {
         }.property('filter.value'),
 
         clear: function(event) {
-            if (helper.filter_section.working_area)
-                helper.filter_section.working_area.dismiss();
+            if (App3.working_area)
+                App3.working_area.dismiss();
             this.filter.set('value', null);
         },
 
@@ -311,8 +313,8 @@ results_page_init: function(args) {
                     // Make sure this is not a reinitialise
                     if (user_is_scrolling)
                         // and that the area is already set up
-                        if (helper.filter_section.working_area)
-                            helper.filter_section.working_area.dismiss();
+                        if (App3.working_area)
+                            App3.working_area.dismiss();
                 })
                 .jScrollPane({
                     maintainPosition: true,
@@ -328,7 +330,7 @@ results_page_init: function(args) {
             // adjusting the scroll pane closes the working area!
 
             setInterval(function() {
-                if (helper.filter_section.working_area === null)
+                if (App3.working_area === null)
                     scroll_pane.data('jsp').reinitialise();
             }, 500);
         });
@@ -337,8 +339,8 @@ results_page_init: function(args) {
     /* All filters can be cleared with a single button click. */
     $.when(filter_controller_is_built, document_is_ready).done(function() {
         $('#sidebar a.clear-all-btn').click(function() {
-            if (helper.filter_section.working_area !== null)
-                helper.filter_section.working_area.dismiss();
+            if (App3.working_area !== null)
+                App3.working_area.dismiss();
             var plains = App3.filter_controller.get('plain_filters');
             _.each(plains, function(filter) {
                 filter.set('value', null);
@@ -550,8 +552,8 @@ results_page_init: function(args) {
 
     $.when(document_is_ready).done(function() {
         $('#sidebar .get-choices').click(function() {
-            if (helper.filter_section.working_area !== null)
-                helper.filter_section.working_area.dismiss();
+            if (App3.working_area !== null)
+                App3.working_area.dismiss();
 
             Shadowbox.open({
                 content: $('#modal').html(),

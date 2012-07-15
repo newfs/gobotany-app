@@ -4,11 +4,12 @@ define([
     'dojo/query',
     'dojo/dom-construct',
     'bridge/jquery',
-    'util/sidebar',
-    'simplekey/working_area'
-], function(declare, lang, query, domConstruct, $, sidebar, working_area) {
+    'simplekey/App3',
+    'simplekey/working_area',
+    'util/sidebar'
+], function(declare, lang, query, domConstruct,
+            $, App3, working_area, sidebar) {
 return declare('gobotany.sk.FilterSectionHelper', null, {
-    working_area: null,
 
     _setup_character_groups: function(character_groups) {
         console.log('FilterSectionHelper: Updating character groups');
@@ -31,29 +32,19 @@ return declare('gobotany.sk.FilterSectionHelper', null, {
     show_filter_working_onload: function(filter, y) {
         // Dismiss old working area, to avoid having an Apply button
         // that is wired up to two different filters!
-        if (this.working_area !== null)
-            this.working_area.dismiss();
+        if (App3.working_area !== null)
+            App3.working_area.dismiss();
 
         var C = working_area.select_working_area(filter);
 
-        this.working_area = new C();
-        this.working_area.init({
+        App3.working_area = new C();
+        App3.working_area.init({
             div: $('div.working-area')[0],
             filter: filter,
-            y: y,
-            on_dismiss: lang.hitch(this, 'on_working_area_dismiss')
+            y: y
         });
 
         sidebar.set_height();
-    },
-
-    /* When the working area is dismissed, we clean up and save state. */
-
-    on_working_area_dismiss: function(filter) {
-        this.working_area = null;
-
-        // Clear selected state in the questions list at left.
-        $('.option-list li').removeClass('active');
     }
 });
 });

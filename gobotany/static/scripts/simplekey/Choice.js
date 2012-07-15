@@ -68,7 +68,6 @@ define([
         this.div = args.div;
         this.div_map = null,   // map choice value -> <input> element
         this.filter = args.filter;
-        this.on_dismiss = args.on_dismiss;
 
         this._draw_basics(args.y);
         this._draw_specifics();
@@ -93,7 +92,7 @@ define([
 
         $('.option-list li').removeClass('active');
 
-        this.on_dismiss(this.filter);
+        App3.working_area = null;
     };
 
     /* Draw the working area. */

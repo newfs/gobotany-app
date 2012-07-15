@@ -47,8 +47,8 @@ return declare('gobotany.sk.ResultsHelper', null, {
     handle_keys: function(e) {
         switch (e.charOrCode) {
             case keys.ESCAPE:
-                if (this.filter_section.working_area) {
-                    this.filter_section.working_area.dismiss();
+                if (App3.working_area) {
+                    App3.working_area.dismiss();
                 }
                 break;
         }
