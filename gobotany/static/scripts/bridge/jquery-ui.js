@@ -5,16 +5,5 @@
 // as a thin abstraction layer so we don't have to worry about
 // versioned filenames in our module references.
 define([
-    'bridge/jquery',
     'jquery/jquery-ui-1.8.16.custom.min'
-], function($, ui) {
-    var jquery;
-    if($.ui) {
-        // The plugin is loaded, so return the same
-        // jQuery object again (the global)
-        jquery = $;
-    }
-
-    return jquery;
-});
-
+], function() {});

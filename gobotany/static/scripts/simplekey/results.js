@@ -1,6 +1,7 @@
 define([
     'util/document_is_ready',
     'bridge/jquery',
+    'bridge/jquery.cookie',
     'bridge/ember',
     'bridge/shadowbox',
     'util/shadowbox_init',
@@ -10,7 +11,6 @@ define([
     'simplekey/Filter',
     'simplekey/FilterController',
     'simplekey/animation',
-    'simplekey/cookie',
     'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState',
@@ -19,8 +19,8 @@ define([
     'util/sidebar',
     'gobotany/sk/ResultsHelper'
 ], function(
-    document_is_ready, $, Ember, Shadowbox, shadowbox_init, _, utils,
-    App3, _Filter, _FilterController, animation, cookie,
+    document_is_ready, $, x, Ember, Shadowbox, shadowbox_init, _, utils,
+    App3, _Filter, _FilterController, animation,
     _glossarize, resources, ResultsPageState,
     search_suggest, image_gallery, sidebar, ResultsHelper
 ) {return {
@@ -405,7 +405,7 @@ results_page_init: function(args) {
             window.location.replace(url);
         }
 
-        cookie('last_plant_id_url', window.location.href, {path: '/'});
+        $.cookie('last_plant_id_url', window.location.href, {path: '/'});
     };
 
     /* Set up observers so that when page elements change, the URL hash
