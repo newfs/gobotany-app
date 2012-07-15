@@ -389,7 +389,14 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get('/ferns/lycophytes/')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
-        self.css1('#results-display #image-types').click()
+        for i in range(4):
+            try:
+                self.css1('#results-display #image-types').click()
+            except Exception:
+                if i == 3:
+                    raise
+            else:
+                break
         menu_items = self.css('#results-display #image-types option')
         self.assertTrue(len(menu_items) > 0)
         for menu_item in menu_items:
