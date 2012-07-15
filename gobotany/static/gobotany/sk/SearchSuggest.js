@@ -4,8 +4,7 @@
 define([
     'bridge/jquery'
 ],
-function(JsonRestStore, query, on, connect, lang, keys,
-         dom, domClass, domGeom, domConstruct, domProp, $, ui) {
+function($) {
 var SearchSuggest = {
     constants: {TIMEOUT_INTERVAL_MS: 200},
     keyCode: {
