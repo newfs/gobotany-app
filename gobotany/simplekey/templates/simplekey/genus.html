@@ -18,8 +18,8 @@ Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}
     var args = {
         genus_slug: '{{ genus.slug }}'
     };
-    require(['simplekey/genus'], function(genus_page_init) {
-        genus_page_init(args);
+    require(['simplekey/genus'], function(genus) {
+        genus.init(args);
     });
 {% endblock %}
 
