@@ -4,7 +4,6 @@
  */
 define([
     'dojo/_base/connect',
-    'dojo/_base/lang',
     'dojo/_base/event',
     'dojo/query',
     'dojo/dom-construct',
@@ -17,7 +16,7 @@ define([
     'simplekey/glossarize',
     'simplekey/App3',
     'util/tooltip'
-], function(connect, lang, event, query, domConstruct,
+], function(connect, event, query, domConstruct,
             nodeListDom, nodeListHtml, on,
             $, _, utils, glossarize, App3, tooltip) {
 
@@ -139,12 +138,12 @@ define([
         // Hook up the Close button.
         var close_button = d.query('.close')[0];
         this.close_button_signal = on(
-            close_button, 'click', lang.hitch(this, 'dismiss'));
+            close_button, 'click', $.proxy(this, 'dismiss'));
 
         // Hook up the Apply button.
         var button = query('.apply-btn', this.div)[0];
         this.apply_button_signal = on(
-            button, 'click', lang.hitch(this, '_apply_button_clicked'));
+            button, 'click', $.proxy(this, '_apply_button_clicked'));
     };
 
     Choice.prototype._draw_specifics = function() {
@@ -221,7 +220,7 @@ define([
         // Call a method when radio button is clicked.
         var inputs = values_q.query('input');
         for (var i = 0; i < inputs.length; i++)
-            on(inputs[i], 'click', lang.hitch(this, '_on_choice_change'));
+            on(inputs[i], 'click', $.proxy(this, '_on_choice_change'));
 
         // Set up the Apply Selection button.
         this._on_choice_change();
