@@ -74,7 +74,6 @@ define([
     Choice.prototype = {};
 
     Choice.prototype.init = function(args) {
-        this.close_button_signal = null;  // connection from the close button
         this.div = args.div;
         this.div_map = null,   // map choice value -> <input> element
         this.filter = args.filter;
@@ -96,10 +95,8 @@ define([
             e.preventDefault();
         }
 
-        this.close_button_signal.remove();
-        this.apply_button_signal.remove();
-        this.close_button_signal = null;
-        this.apply_button_signal = null;
+        $('.close', this.div).unbind();
+        $('.apply-btn', this.div).unbind();
 
         $(this.div).hide();
 
@@ -136,14 +133,12 @@ define([
         $(d).css('top', y + 'px').slideDown('fast');
 
         // Hook up the Close button.
-        var close_button = d.query('.close')[0];
-        this.close_button_signal = on(
-            close_button, 'click', $.proxy(this, 'dismiss'));
+        $('.close', this.div).bind(
+            'click', $.proxy(this, 'dismiss'));
 
         // Hook up the Apply button.
-        var button = query('.apply-btn', this.div)[0];
-        this.apply_button_signal = on(
-            button, 'click', $.proxy(this, '_apply_button_clicked'));
+        $('.apply-btn', this.div).bind(
+            'click', $.proxy(this, '_apply_button_clicked'));
     };
 
     Choice.prototype._draw_specifics = function() {
@@ -285,13 +280,13 @@ define([
        unless it would bring the number of species to zero. */
 
     Choice.prototype._apply_button_clicked = function(e) {
-        event.stop(e);
         var apply_button = $('.apply-btn');
         if (apply_button.hasClass('disabled'))
-            return;
+            return false;
         apply_button.removeClass('disabled');
         this._apply_filter_value();
         this.dismiss();
+        return false;
     };
 
     Choice.prototype._apply_filter_value = function() {
