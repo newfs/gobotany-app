@@ -2,7 +2,6 @@ define([
     'bridge/jquery'
 ], function($) {
 
-    // This isn't really a Dojo class so we won't bother with using "declare"
     var utils = {
         // notify()
         // display a notification message at the top of the page
