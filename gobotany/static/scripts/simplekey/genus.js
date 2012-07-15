@@ -1,12 +1,12 @@
 define([
     'bridge/jquery',
-    'gobotany/sk/PhotoHelper',
     'util/sidebar',
     'util/activate_search_suggest',
     'util/shadowbox_init',
+    'simplekey/PhotoHelper',
     'simplekey/glossarize'
-], function($, PhotoHelper, sidebar, activate_search_suggest, shadowbox_init,
-            glossarize) {
+], function($, sidebar, activate_search_suggest, shadowbox_init,
+            PhotoHelper, glossarize) {
 
     var exports = {};
 

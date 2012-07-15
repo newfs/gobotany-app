@@ -8,7 +8,7 @@ require([
     'util/sidebar',
     'bridge/jquery.mousewheel',
     'bridge/shadowbox',
-    'gobotany/sk/PhotoHelper'
+    'simplekey/PhotoHelper'
 ], function($, sidebar, mousewheel, Shadowbox, PhotoHelper) {
     sidebar.setup();
     $(document).ready(function() {

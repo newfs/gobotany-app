@@ -14,9 +14,9 @@ var PhotoHelper = {
     prepare_to_enlarge: function() {
         // Do a few things before enlarging the photo on the screen.
         // Intended to be called using the Shadowbox onOpen handler.
-        
+
         var title_element = $('#sb-title-inner').first();
-                                                    
+
         // Temporarily hide the title element.
         title_element.addClass('hidden');
 
@@ -41,7 +41,7 @@ var PhotoHelper = {
         var image_title = parts[0];
         var copyright_holder = parts[1];
         var copyright = parts[2];
-        var source = "";
+        var source = '';
         if (parts[3]) {
             source = parts[3];
         }
@@ -69,7 +69,7 @@ var PhotoHelper = {
         var html = '<div><h6>' + title + '</h6><span>' + copyright_holder +
             ' ' + copyright + ' <a href="/legal/terms-of-use/#ip" ' +
             'target="_blank">Terms of Use' + '</a></span>';
-        if (source !== "") {
+        if (source !== '') {
             html += '<br><span>' + parts[3] + '</span>';
         }
         html += '</div>';
@@ -79,14 +79,14 @@ var PhotoHelper = {
         title_element.removeClass('hidden');
     }
 
-}
+};
 
 // Create a small factory method to return, which will act
 // as a little instance factory and constructor, so the user
 // can do as follows:
 // var obj = MyClassName(something, somethingelse);
 function factory() {
-    var instance = Object.create(PhotoHelper)
+    var instance = Object.create(PhotoHelper);
     instance.init();
     return instance;
 }

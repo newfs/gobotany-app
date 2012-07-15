@@ -4,10 +4,10 @@
 define([
     'bridge/jquery',
     'bridge/shadowbox',
-    'gobotany/sk/PhotoHelper',
     'util/sidebar',
+    'simplekey/PhotoHelper',
     'simplekey/glossarize'
-], function($, Shadowbox, PhotoHelper, sidebar, glossarize) {
+], function($, Shadowbox, sidebar, PhotoHelper, glossarize) {
 var SpeciesPageHelper = {
 
     init: function() {
