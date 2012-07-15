@@ -3,20 +3,13 @@
  * inherit from and specialize, is the standard multiple-choice selection.
  */
 define([
-    'dojo/_base/connect',
-    'dojo/_base/event',
-    'dojo/query',
-    'dojo/NodeList-dom',
-    'dojo/NodeList-html',
     'bridge/jquery',
     'bridge/underscore',
     'gobotany/utils',
     'simplekey/glossarize',
     'simplekey/App3',
     'util/tooltip'
-], function(connect, event, query,
-            nodeListDom, nodeListHtml,
-            $, _, utils, glossarize, App3, tooltip) {
+], function($, _, utils, glossarize, App3, tooltip) {
 
     /* Generate a human-readable representation of a value. */
 
@@ -85,7 +78,7 @@ define([
     /* Events that can be triggered from outside. */
 
     Choice.prototype.clear = function() {
-        query('input', this.div_map['']).attr('checked', true);
+        $('input', this.div_map['']).prop('checked', true);
     };
 
     Choice.prototype.dismiss = function(e) {
@@ -106,7 +99,7 @@ define([
     /* Draw the working area. */
 
     Choice.prototype._draw_basics = function(y) {
-        var d = query(this.div);
+        var $div = $(this.div);
         var f = this.filter;
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
 
@@ -122,13 +115,13 @@ define([
             var dld_html = '<img id="' + image_id +
                 '" src="' + f.info.image_url +
                 '" alt="character illustration">';
-            d.query('.dld').html(dld_html).style({display: 'block'});
+            $div.find('.dld').html(dld_html).css({display: 'block'});
         } else {
-            d.query('.dld').html('').style({display: 'none'});
+            $div.find('.dld').html('').css({display: 'none'});
         }
 
-        // Use jQuery to show the working area with a slide effect.
-        $(d).css('top', y + 'px').slideDown('fast');
+        // Show the working area with a slide effect.
+        $div.css('top', y + 'px').slideDown('fast');
 
         // Hook up the Close button.
         $('.close', this.div).bind(
@@ -219,18 +212,18 @@ define([
     /* How to grab the currently-selected value from the DOM. */
 
     Choice.prototype._current_value = function() {
-        var value = query('input:checked', this.div).attr('value')[0];
+        var value = $('input:checked', this.div).attr('value');
         return value || null;
     };
 
     /* Update whether the "Apply Selection" button is gray or not. */
 
     Choice.prototype._on_choice_change = function(e) {
-        var apply_button = query('.apply-btn', this.div);
+        var $apply_button = $('.apply-btn', this.div);
         if (this._current_value() === this.filter.value)
-            apply_button.addClass('disabled');
+            $apply_button.addClass('disabled');
         else
-            apply_button.removeClass('disabled');
+            $apply_button.removeClass('disabled');
     };
 
     /* Get a value suitable for use as an image element id from the
@@ -258,15 +251,15 @@ define([
 
             // Draw it accordingly.
             var div = div_map[value.choice];
-            var count_span_q = query('.count', div);
-            count_span_q.html('(' + num_taxa + ')');
-            var input_field_q = query('input', div);
+            var $count_span = $('.count', div);
+            $count_span.html('(' + num_taxa + ')');
+            var $input_field = $('input', div);
             if (num_taxa === 0) {
                 $(div).addClass('disabled');
-                input_field_q.attr('disabled', 'disabled');
+                $input_field.attr('disabled', 'disabled');
             } else {
                 $(div).removeClass('disabled');
-                input_field_q.attr('disabled', false); // remove the attribute
+                $input_field.attr('disabled', false); // remove the attribute
             }
         });
     };
