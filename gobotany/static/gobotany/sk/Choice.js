@@ -6,7 +6,6 @@ define([
     'dojo/_base/connect',
     'dojo/_base/event',
     'dojo/query',
-    'dojo/dom-construct',
     'dojo/NodeList-dom',
     'dojo/NodeList-html',
     'bridge/jquery',
@@ -15,7 +14,7 @@ define([
     'simplekey/glossarize',
     'simplekey/App3',
     'util/tooltip'
-], function(connect, event, query, domConstruct,
+], function(connect, event, query,
             nodeListDom, nodeListHtml,
             $, _, utils, glossarize, App3, tooltip) {
 
@@ -145,23 +144,23 @@ define([
         var checked = function(cond) {return cond ? ' checked' : ''};
         var f = this.filter;
 
-        var values_q = query('div.working-area .values');
-        values_q.empty().addClass('multiple').removeClass('numeric');
+        var $div = $('div.working-area .values');
+        $div.empty().addClass('multiple').removeClass('numeric');
 
         // Apply a custom sort to the filter values.
         var values = utils.clone(f.values);
         values.sort(_compare_filter_choices);
 
-        var choices_div = domConstruct.create(
-            'div', {'class': 'choices'}, values_q[0]);
-        var row_div = domConstruct.create('div', {'class': 'row'}, choices_div);
+        var $choices = $('<div>', {'class': 'choices'}).appendTo($div);
+        var $row = $('<div>', {'class': 'row'}).appendTo($choices);
 
         // Create a Don't Know radio button item.
-        this.div_map = {};
         var item_html = '<div><label><input name="char_name"' +
             checked(f.value === null) +
             ' type="radio" value=""> ' + _format_value() + '</label></div>';
-        this.div_map[''] = domConstruct.place(item_html, row_div);
+
+        this.div_map = {};
+        this.div_map[''] = $(item_html).appendTo($row)[0];
 
         // Create radio button items for each character value.
         var choices_count = 1;
@@ -169,7 +168,8 @@ define([
         for (i = 0; i < values.length; i++) {
             var v = values[i];
 
-            var item_html = '<label><input name="char_name" type="radio"' +
+            var item_html =
+                '<div><label><input name="char_name" type="radio"' +
                 checked(f.value === v.choice) +
                 ' value="' + v.choice + '">';
 
@@ -184,17 +184,15 @@ define([
 
             item_html += ' <span class="label">' + _format_value(v) +
                 '</span> <span class="count">(n)</span>' +
-                '</label>';
+                '</label></div>';
 
             // Start a new row, if necessary, to fit this choice.
             if (choices_count % CHOICES_PER_ROW === 0)
-                var row_div = domConstruct.create(
-                    'div', {'class': 'row'}, choices_div);
+                var $row = $('<div>', {'class': 'row'}).appendTo($choices);
 
             choices_count += 1;
 
-            var character_value_div = domConstruct.create(
-                'div', {'innerHTML': item_html}, row_div);
+            var character_value_div = $(item_html).appendTo($row)[0];
             this.div_map[v.choice] = character_value_div;
 
             // Once the item is added, add a tooltip for the drawing.
@@ -212,9 +210,7 @@ define([
         }
 
         // Call a method when radio button is clicked.
-        var inputs = values_q.query('input');
-        for (var i = 0; i < inputs.length; i++)
-            $(inputs[i]).bind('click', $.proxy(this, '_on_choice_change'));
+        $div.find('input').bind('click', $.proxy(this, '_on_choice_change'));
 
         // Set up the Apply Selection button.
         this._on_choice_change();
