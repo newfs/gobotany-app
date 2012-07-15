@@ -1,7 +1,7 @@
 define([
-    'gobotany/sk/Choice',
-    'gobotany/sk/Slider',
-    'gobotany/sk/Length'
+    'simplekey/Choice',
+    'simplekey/Slider',
+    'simplekey/Length'
 ], function(Choice, Slider, Length) {return {
 
 /*
