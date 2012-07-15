@@ -14,6 +14,7 @@ define([
     'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState',
+    'simplekey/working_area',
     'util/activate_search_suggest',
     'util/activate_image_gallery',
     'util/sidebar',
@@ -21,7 +22,7 @@ define([
 ], function(
     document_is_ready, $, x, Ember, Shadowbox, shadowbox_init, _, utils,
     App3, _Filter, _FilterController, animation,
-    _glossarize, resources, ResultsPageState,
+    _glossarize, resources, ResultsPageState, working_area,
     search_suggest, image_gallery, sidebar, ResultsHelper
 ) {return {
 
@@ -221,6 +222,24 @@ results_page_init: function(args) {
 
     App3.working_area = null;
 
+    var show_working_area = function(filter, y) {
+        // Dismiss old working area, to avoid having an Apply button
+        // that is wired up to two different filters!
+        if (App3.working_area !== null)
+            App3.working_area.dismiss();
+
+        var C = working_area.select_working_area(filter);
+
+        App3.working_area = new C();
+        App3.working_area.init({
+            div: $('div.working-area')[0],
+            filter: filter,
+            y: y
+        });
+
+        sidebar.set_height();
+    };
+
     App3.FilterView = Ember.View.extend({
         templateName: 'filter-view',
         filterBinding: 'content',  // 'this.filter' makes more readable code
@@ -281,7 +300,7 @@ results_page_init: function(args) {
             var async = resources.character_vector(this.filter.slug);
             $.when(pile_taxa_ready, async).done(function(pile_taxa, values) {
                 filter.install_values({pile_taxa: pile_taxa, values: values});
-                helper.filter_section.show_filter_working_onload(filter, y);
+                show_working_area(filter, y);
             });
         }
     });
