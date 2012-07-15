@@ -4,9 +4,9 @@
 define([
     'bridge/jquery',
     'bridge/underscore',
-    'gobotany/sk/Choice',
-    'simplekey/App3'
-], function($, _, Choice, App3) {
+    'simplekey/App3',
+    'simplekey/Choice'
+], function($, _, App3, Choice) {
 
     var factormap = {
         'mm': 1.0, 'cm': 10.0, 'm': 1000.0, 'in': 25.4, 'ft': 304.8

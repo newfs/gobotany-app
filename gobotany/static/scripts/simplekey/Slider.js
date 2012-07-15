@@ -4,9 +4,9 @@
 define([
     'bridge/jquery',
     'util/slider',
-    'gobotany/sk/Choice',
-    'simplekey/App3'
-], function($, slider, Choice, App3) {
+    'simplekey/App3',
+    'simplekey/Choice'
+], function($, slider, App3, Choice) {
 
     var Slider = function() {};
     Slider.prototype = new Choice();
