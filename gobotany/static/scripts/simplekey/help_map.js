@@ -4,14 +4,13 @@ require([
     'util/activate_video_links',
     'util/shadowbox_init',
     'util/sidebar',
-    'gobotany/sk/MapToGroupsHelper'
+    'simplekey/MapToGroupsHelper'
 ], function($, activate_search_suggest, activate_video_links, shadowbox_init,
     sidebar, MapToGroupsHelper) {
 
-    sidebar.setup()
+    sidebar.setup();
     $(document).ready(function() {
         var helper = MapToGroupsHelper();
         helper.setup();
     });
 });
-
