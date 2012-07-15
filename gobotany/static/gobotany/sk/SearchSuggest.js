@@ -2,52 +2,44 @@
 
 // Configure this module here until we finish the migration
 define([
-    'dojo/_base/declare',
-    'dojox/data/JsonRestStore',
-    'dojo/query',
-    'dojo/on',
-    'dojo/_base/connect',
-    'dojo/_base/lang',
-    'dojo/keys',
-    'dojo/dom',
-    'dojo/dom-class',
-    'dojo/dom-geometry',
-    'dojo/dom-construct',
-    'dojo/dom-prop'
+    'bridge/jquery'
 ],
-function(declare, JsonRestStore, query, on, connect, lang, keys,
-         dom, domClass, domGeom, domConstruct, domProp) {
-return declare('gobotany.sk.SearchSuggest', null, {
+function(JsonRestStore, query, on, connect, lang, keys,
+         dom, domClass, domGeom, domConstruct, domProp, $, ui) {
+var SearchSuggest = {
     constants: {TIMEOUT_INTERVAL_MS: 200},
+    keyCode: {
+        DOWN: 40, 
+        UP: 38,
+        TAB: 9,
+        ESCAPE: 27
+    },
     stored_search_box_value: '',
     search_box: null,
     menu: null,
     menu_list: null,
     result_cache: {}, // for caching results for each search queried
 
-    constructor: function(initial_search_box_value) {
-        if ((initial_search_box_value !== undefined) &&
-            (initial_search_box_value.length)) {
-            // The initial search box value (optional) is a value that
-            // is expected to be in the search box once the page is
-            // initialized. This is to prevent the
-            // has_search_box_changed function from detecting a change
-            // event when the box is initially populated.
-            this.stored_search_box_value = initial_search_box_value;
-        }
+    init: function(initial_search_box_value) {
+        // The initial search box value (optional) is a value that
+        // is expected to be in the search box once the page is
+        // initialized. This is to prevent the
+        // has_search_box_changed function from detecting a change
+        // event when the box is initially populated.
+        this.stored_search_box_value = initial_search_box_value;
 
-        this.search_box = query('#search-suggest input')[0];
-        if (this.search_box === undefined) {
+        this.search_box = $('#search-suggest input').first();
+        if (this.search_box.length == 0) {
             console.error('SearchSuggest.js: Search box not found.');
         }
 
-        this.menu = query('#search-suggest .menu')[0];
-        if (this.menu === undefined) {
+        this.menu = $('#search-suggest .menu').first();
+        if (this.menu.length == 0) {
             console.error('SearchSuggest.js: Menu not found.');
         }
 
-        this.menu_list = query('#search-suggest .menu ul')[0];
-        if (this.menu_list === undefined) {
+        this.menu_list = $('#search-suggest .menu ul').first();
+        if (this.menu_list.length == 0) {
             console.error('SearchSuggest.js: Menu list not found.');
         }
     },
@@ -58,27 +50,16 @@ return declare('gobotany.sk.SearchSuggest', null, {
         this.set_timer();
 
         // Set up keyboard event handlers.
-        connect.connect(this.search_box, 'keypress',
-            lang.hitch(this, this.handle_keys));
+        this.search_box.keyup($.proxy(this.handle_keys, this));
 
         // Adjust the horizontal position of the menu when the browser
         // window is resized.
-        connect.connect(window, 'resize',
-            lang.hitch(this, this.set_horizontal_position));
+        $(window).resize($.proxy(this.set_horizontal_position, this));
     },
 
     get_highlighted_menu_item_index: function() {
-        var found = false;
-        var menu_items = query('li', this.menu);
-        var item_index = -1;
-        var i = 0;
-        while ((found === false) && (i < menu_items.length)) {
-            if (domClass.contains(menu_items[i], 'highlighted')) {
-                found = true;
-                item_index = i;
-            }
-            i += 1;
-        }
+        var item_index = this.menu.find('li.highlighted').index();
+
         return item_index;
     },
 
@@ -93,28 +74,29 @@ return declare('gobotany.sk.SearchSuggest', null, {
     highlight_menu_item: function(item_index) {
         var HIGHLIGHT_CLASS = 'highlighted';
 
-        var menu_item = query('li', this.menu)[item_index];
+        var menu_item = this.menu.find('li').eq(item_index);
 
         if (menu_item !== undefined) {
             // First turn off any already-highlighted item.
             var highlighted_item_index =
                 this.get_highlighted_menu_item_index();
             if (highlighted_item_index >= 0) {
-                var highlighted_item =
-                    query('li', this.menu)[highlighted_item_index];
-                domClass.remove(highlighted_item, HIGHLIGHT_CLASS);
+                this.menu
+                    .find('li')
+                    .eq(highlighted_item_index)
+                    .removeClass(HIGHLIGHT_CLASS);
             }
 
             // Highlight the new item.
-            domClass.add(menu_item, HIGHLIGHT_CLASS);
+            menu_item.addClass(HIGHLIGHT_CLASS);
 
             // Put the menu item text in the search box, but
             // first set the stored value so this won't fire a
             // change event.
             var menu_item_text = unescape(
-                this.get_text_from_item_html(menu_item.innerHTML));
+                this.get_text_from_item_html(menu_item.html()));
             this.stored_search_box_value = menu_item_text;
-            this.search_box.value = menu_item_text;
+            this.search_box.val(menu_item_text);
         }
         else {
             console.log('menu item ' + item_index + ' undefined');
@@ -125,7 +107,7 @@ return declare('gobotany.sk.SearchSuggest', null, {
         var highlighted_item_index = 
             this.get_highlighted_menu_item_index();
         var next_item_index = highlighted_item_index + 1;
-        var num_menu_items = query('li', this.menu).length;
+        var num_menu_items = this.menu.find('li').length;
         if (next_item_index >= num_menu_items) {
             next_item_index = 0;
         }
@@ -136,7 +118,7 @@ return declare('gobotany.sk.SearchSuggest', null, {
         var highlighted_item_index = 
             this.get_highlighted_menu_item_index();
         var previous_item_index = highlighted_item_index - 1;
-        var num_menu_items = query('li', this.menu).length;
+        var num_menu_items = this.menu.find('li').length;
         if (previous_item_index < 0) {
             previous_item_index = num_menu_items - 1;
         }
@@ -144,15 +126,15 @@ return declare('gobotany.sk.SearchSuggest', null, {
     },
 
     handle_keys: function(e) {
-        switch (e.charOrCode) {
-            case keys.DOWN_ARROW:
+        switch (e.which) {
+            case this.keyCode.DOWN:
                 this.highlight_next_menu_item();
                 break;
-            case keys.UP_ARROW:
+            case this.keyCode.UP:
                 this.highlight_previous_menu_item();
                 break;
-            case keys.TAB:
-            case keys.ESCAPE:
+            case this.keyCode.TAB:
+            case this.keyCode.ESCAPE:
                 this.show_menu(false);
                 break;
         }
@@ -161,7 +143,7 @@ return declare('gobotany.sk.SearchSuggest', null, {
     set_timer: function(interval_milliseconds) {
         // Set the timer that calls the change-monitoring function.
         // This repeats indefinitely.
-        setTimeout(lang.hitch(this, this.check_for_change),
+        setTimeout($.proxy(this.check_for_change, this),
             this.constants.TIMEOUT_INTERVAL_MS);
     },
 
@@ -180,9 +162,9 @@ return declare('gobotany.sk.SearchSuggest', null, {
         // See if the current value of the text field differs from
         // what is stored in the instance. Used to decide whether to
         // fetch results.
-        if (this.search_box.value !== this.stored_search_box_value) {
+        if (this.search_box.val() !== this.stored_search_box_value) {
             has_changed = true;
-            this.stored_search_box_value = this.search_box.value;
+            this.stored_search_box_value = this.search_box.val();
         }
 
         return has_changed;
@@ -191,17 +173,17 @@ return declare('gobotany.sk.SearchSuggest', null, {
     set_horizontal_position: function() {
         // Adjust the menu's horizontal position so it lines up with
         // the search box regardless of window width.
-        var box_position = domGeom.position(this.search_box, true);
-        this.menu.style.left = (box_position.x - 3) + 'px';
+        var box_position = this.search_box.offset();
+        this.menu.css('left', (box_position.left - 3) + 'px');
     },
 
     show_menu: function(should_show) {
         var CLASS_NAME = 'hidden';
         if (should_show) {
-            domClass.remove(this.menu, CLASS_NAME);
+            this.menu.removeClass(CLASS_NAME);
         }
         else {
-            domClass.add(this.menu, CLASS_NAME);
+            this.menu.addClass(CLASS_NAME);
         }
         this.set_horizontal_position();
     },
@@ -214,7 +196,7 @@ return declare('gobotany.sk.SearchSuggest', null, {
     },
 
     display_suggestions: function(suggestions, search_query) {
-        domConstruct.empty(this.menu_list);
+        this.menu_list.empty();
 
         if (suggestions.length > 0) {
             this.show_menu(true);
@@ -229,12 +211,15 @@ return declare('gobotany.sk.SearchSuggest', null, {
                 var url = SEARCH_URL + '?q=' + query_value;
                 var label = this.format_suggestion(suggestion,
                     search_query);
-                var item = domConstruct.create('li');
-                domConstruct.create('a',
-                    {href: url, innerHTML: label}, item);
-                on(item, 'click',
-                    lang.hitch(this, this.select_suggestion, item));
-                domConstruct.place(item, this.menu_list);
+                var item = $(document.createElement('li'));
+                var link = $(document.createElement('a'));
+                link.attr('href', url);
+                link.html(label);
+                item.append(link);
+                item.bind('click', {item: item}, $.proxy(function(event) {
+                    this.select_suggestion(event.data.item);
+                }, this));
+                this.menu_list.append(item);
             }
         }
         else {
@@ -247,14 +232,13 @@ return declare('gobotany.sk.SearchSuggest', null, {
     },
 
     get_suggestions: function(search_query) {
-        var store = new JsonRestStore({target: SUGGEST_URL});
-        store.fetch({
-            query: {q: search_query},
-            scope: this,
-            onComplete: function(suggestions) {
-                this.result_cache[search_query] = suggestions;
-                this.display_suggestions(suggestions, search_query);
-            }
+        $.ajax({
+            url: SUGGEST_URL,
+            data: {q: search_query},
+            context: this
+        }).done(function(suggestions) {
+            this.result_cache[search_query] = suggestions;
+            this.display_suggestions(suggestions, search_query);
         });
     },
 
@@ -282,20 +266,32 @@ return declare('gobotany.sk.SearchSuggest', null, {
 
     select_suggestion: function(list_item) {
         // Go to search results for the item selected.
-        var link = query('a', list_item)[0];
+        var link = list_item.find('a').first();
         if (link !== undefined) {
-            var href = domProp.get(link, 'href');
+            var href = link.attr('href');
             if (href !== undefined) {
                 var search_string =
                     unescape(href.substring(href.indexOf('=') + 1));
                 // Store the search string before updating the search
                 // box in order to prevent a change event from firing.
                 this.stored_search_box_value = search_string;
-                this.search_box.value = search_string;
+                this.search_box.val(search_string);
                 this.show_menu(false);
                 window.location.href = href;
             }
         }
     }
-});
+}
+
+// Create a small factory method to return, which will act
+// as a little instance factory and constructor, so the user
+// can do as follows:
+// var obj = MyClassName(something, somethingelse);
+function factory(initial_search_box_value) {
+    var instance = Object.create(SearchSuggest)
+    instance.init(initial_search_box_value);
+    return instance;
+}
+
+return factory;
 });
