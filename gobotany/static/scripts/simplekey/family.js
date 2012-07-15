@@ -8,7 +8,7 @@ define([
 ], function($, PhotoHelper, sidebar, activate_search_suggest,
             shadowbox_init, glossarize) {
 
-    var family = {};
+    var exports = {};
 
     var _setup_page = function(args) {
         glossarize($('.description'));
@@ -38,11 +38,11 @@ define([
         });
     };
 
-    family.init = function(args) {
+    exports.init = function(args) {
         $(document).ready(function() {
             _setup_page(args);
         });
     };
 
-    return family;
+    return exports;
 });

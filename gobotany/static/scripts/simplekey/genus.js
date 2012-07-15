@@ -8,7 +8,7 @@ define([
 ], function($, PhotoHelper, sidebar, activate_search_suggest, shadowbox_init,
             glossarize) {
 
-    var genus = {};
+    var exports = {};
 
     var _setup_page = function() {
         glossarize($('.description'));
@@ -38,11 +38,11 @@ define([
         });
     };
 
-    genus.init = function() {
+    exports.init = function() {
         $(document).ready(function() {
             _setup_page();
         });
     };
 
-    return genus;
+    return exports;
 });
