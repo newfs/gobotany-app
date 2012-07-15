@@ -9,7 +9,6 @@ define([
     'dojo/dom-construct',
     'dojo/NodeList-dom',
     'dojo/NodeList-html',
-    'dojo/on',
     'bridge/jquery',
     'bridge/underscore',
     'gobotany/utils',
@@ -17,7 +16,7 @@ define([
     'simplekey/App3',
     'util/tooltip'
 ], function(connect, event, query, domConstruct,
-            nodeListDom, nodeListHtml, on,
+            nodeListDom, nodeListHtml,
             $, _, utils, glossarize, App3, tooltip) {
 
     /* Generate a human-readable representation of a value. */
@@ -215,7 +214,7 @@ define([
         // Call a method when radio button is clicked.
         var inputs = values_q.query('input');
         for (var i = 0; i < inputs.length; i++)
-            on(inputs[i], 'click', $.proxy(this, '_on_choice_change'));
+            $(inputs[i]).bind('click', $.proxy(this, '_on_choice_change'));
 
         // Set up the Apply Selection button.
         this._on_choice_change();
