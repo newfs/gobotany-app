@@ -623,7 +623,7 @@ results_page_init: function(args) {
     $(window).bind('hashchange', function() {
         var current_url = window.location.href;
 
-        var last_plant_id_url = cookie('last_plant_id_url');      
+        var last_plant_id_url = $.cookie('last_plant_id_url');
         if (last_plant_id_url === null) {
             // The cookie request returned null, so cookie support must
             // be unavailable. Consequently, cannot support the Back button.
