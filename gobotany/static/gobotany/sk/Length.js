@@ -2,14 +2,11 @@
  * Finally, the text box where users can enter lengths.
  */
 define([
-    'dojo/_base/lang',
-    'dojo/query',
-    'dojo/NodeList-dom',
-    'dojo/NodeList-html',
+    'bridge/jquery',
     'bridge/underscore',
     'gobotany/sk/Choice',
     'simplekey/App3'
-], function(lang, query, nodeListDom, nodeListHtml, _, Choice, App3) {
+], function($, _, Choice, App3) {
 
     var factormap = {
         'mm': 1.0, 'cm': 10.0, 'm': 1000.0, 'in': 25.4, 'ft': 304.8
@@ -31,10 +28,10 @@ define([
     };
 
     Length.prototype._draw_specifics = function() {
-        var v = query('div.working-area .values');
+        var $value_div = $('div.working-area .values');
 
         this._set_unit(this.filter.display_units || 'mm');
-        this_unit = this.unit;  // for the use of our inner functions
+        var this_unit = this.unit;  // for the use of our inner functions
         var value = this.filter.get('value');
         if (value === null)
             value = '';
@@ -54,7 +51,7 @@ define([
                 '>';
         };
 
-        v.empty().addClass('numeric').removeClass('multiple').html(
+        $value_div.empty().addClass('numeric').removeClass('multiple').html(
             '<div class="permitted_ranges"></div>' +
             '<div class="current_length"></div>' +
 
@@ -76,9 +73,12 @@ define([
             '<div class="instructions">' +
             '</div>'
         );
-        v.query('[name="units"]').on('change', lang.hitch(this, '_unit_changed'));
-        v.query('[type="text"]').on('change', lang.hitch(this, '_measure_changed'));
-        v.query('[type="text"]').on('keyup', lang.hitch(this, '_key_pressed'));
+        $value_div.find('[name="units"]').bind(
+            'change', $.proxy(this, '_unit_changed'));
+        $value_div.find('[type="text"]').bind(
+            'change', $.proxy(this, '_measure_changed'));
+        $value_div.find('[type="text"]').bind(
+            'keyup', $.proxy(this, '_key_pressed'));
     };
 
     Length.prototype._key_pressed = function(event) {
@@ -98,7 +98,7 @@ define([
     Length.prototype._current_value = function() {
         var selector = this.is_metric ? '[name="measure_metric"]' :
             '[name="measure_english"]';
-        var text = query(selector, this.div).attr('value')[0];
+        var text = $(selector, this.div).attr('value');
         var v = this._parse_value(text);
         return (v === null) ? null : v * this.factor;
     };
@@ -111,8 +111,8 @@ define([
 
     Length.prototype._unit_changed = function(event) {
         this._set_unit(event.target.value);
-        query('.measure_metric').attr('disabled', ! this.is_metric);
-        query('.measure_english').attr('disabled', this.is_metric);
+        $('.measure_metric').prop('disabled', ! this.is_metric);
+        $('.measure_english').prop('disabled', this.is_metric);
         this._redraw_permitted_ranges();
         this._measure_changed();
     };
@@ -122,21 +122,21 @@ define([
         var mm_old = this._parse_value(this.filter.get('value'));
         var vector = this.filter.taxa_matching(mm);
         vector = _.intersect(vector, this.species_vector);
-        var div = query('.instructions', this.div);
-        var apply_button = query('.apply-btn', this.div);
+        var $div = $('.instructions', this.div);
+        var $apply_button = $('.apply-btn', this.div);
         if (mm_old === mm) {
             instructions = 'Change the value to narrow your selection to a' +
                 ' new set of matching species.';
-            apply_button.addClass('disabled');
+            $apply_button.addClass('disabled');
         } else if (vector.length > 0) {
             instructions = 'Press “Apply” to narrow your selection to the ' +
                 vector.length + ' matching species.';
-            apply_button.removeClass('disabled');
+            $apply_button.removeClass('disabled');
         } else {
             instructions = '';
-            apply_button.addClass('disabled');
+            $apply_button.addClass('disabled');
         }
-        div.html(instructions);
+        $div.html(instructions);
 
         // Stash a hint about how the sidebar should display our value.
         this.filter.display_units = this.unit;
@@ -155,7 +155,7 @@ define([
                 '&nbsp;–&nbsp;' +  // en-dash for numeric ranges
                 truncate(pr.max / this.factor, 2) + '&nbsp;' + this.unit;
         }
-        query('.permitted_ranges', this.div).html(p);
+        $('.permitted_ranges', this.div).html(p);
     };
 
     Length.prototype._on_filter_change = function() {
