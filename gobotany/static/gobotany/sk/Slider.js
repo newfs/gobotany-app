@@ -2,17 +2,11 @@
  * Slider, for integer numeric fields.
  */
 define([
-    'dojo/_base/lang',
-    'dojo/query',
-    'dojo/NodeList-dom',
-    'dojo/NodeList-html',
-    'dojo/dom-construct',
-    'dojo/dom-style',
+    'bridge/jquery',
     'util/slider',
     'gobotany/sk/Choice',
     'simplekey/App3'
-], function(lang, query, nodeListDom, nodeListHtml, domConstruct,
-    domStyle, slider, Choice, App3) {
+], function($, slider, Choice, App3) {
 
     var Slider = function() {};
     Slider.prototype = new Choice();
@@ -54,20 +48,21 @@ define([
         if (filter.value !== null)
             startvalue = filter.get('value');
 
-        var values_q = query('div.working-area .values');
-        values_q.addClass('multiple').removeClass('numeric').
+        var $values_div = $('div.working-area .values');
+
+        $values_div.addClass('multiple').removeClass('numeric').
             html('<label>Select a number between<br>' +
                  this.min + ' and ' +
                  this.max + '</label>');
 
-        var values_div = $('.working-area .info .values')[0];
-        this.slider_container_node = $(values_div).append('<div></div>');
+        this.slider_container_node = $values_div.append('<div></div>');
+
         this.horizontal_slider = $(this.slider_container_node).slider({
             id: 'slider',
             initial_value: startvalue,
             maximum: this.max,
             minimum: this.min,
-            on_move: lang.hitch(this, this._value_changed)
+            on_move: $.proxy(this, '_value_changed')
         });
 
         this._value_changed();
@@ -84,15 +79,15 @@ define([
            value or the value that was previous selected */
         this._compute_min_and_max();
 
-        var apply_button = query('.apply-btn', this.div);
+        var $apply_button = $('.apply-btn', this.div);
         var slider_value = this._current_value();
         var filter_value = this.filter.get('value');
         // Allow type coersion in this comparison, since we're
         // comparing text from the filter to a numerical slider value
         if (slider_value == filter_value)
-            apply_button.addClass('disabled');
+            $apply_button.addClass('disabled');
         else
-            apply_button.removeClass('disabled');
+            $apply_button.removeClass('disabled');
     };
 
     /* Sliders only have one filter value, so we don't need to compute
