@@ -5,7 +5,7 @@ define([
     'dojo/dom-construct',
     'bridge/jquery',
     'util/sidebar',
-    'gobotany/sk/working_area'
+    'simplekey/working_area'
 ], function(declare, lang, query, domConstruct, $, sidebar, working_area) {
 return declare('gobotany.sk.FilterSectionHelper', null, {
     working_area: null,

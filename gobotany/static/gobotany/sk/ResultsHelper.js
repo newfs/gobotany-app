@@ -13,12 +13,11 @@ define([
     'gobotany/sk/FilterSectionHelper',
     'gobotany/sk/SpeciesSectionHelper',
     'gobotany/sk/SpeciesCounts',
-    'gobotany/sk/working_area',
     'simplekey/resources',
     'simplekey/App3'
 ], function(declare, lang, on, keys, query, nodeListDom, domAttr, domConstruct,
     domStyle, _, FilterSectionHelper, SpeciesSectionHelper, SpeciesCounts,
-    working_area, resources, App3) {
+    resources, App3) {
 
 return declare('gobotany.sk.ResultsHelper', null, {
 

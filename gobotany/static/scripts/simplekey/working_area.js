@@ -2,7 +2,7 @@ define([
     'gobotany/sk/Choice',
     'gobotany/sk/Slider',
     'gobotany/sk/Length'
-], function(Choice, Slider, Length) {
+], function(Choice, Slider, Length) {return {
 
 /*
  * Classes that create and maintain the working area.
@@ -33,16 +33,13 @@ define([
  * @param {Filter} filter The filter for which you want a working area.
  * @return {Class} The class that will manage this kind of working area.
  */
-var working_area = {};
-working_area.select_working_area = function(filter) {
+select_working_area: function(filter) {
     if (filter.value_type == 'TEXT')
         return Choice;
     else if (filter.is_length)
         return Length;
     else
         return Slider;
-};
+}
 
-return working_area;
-
-});
+}});
