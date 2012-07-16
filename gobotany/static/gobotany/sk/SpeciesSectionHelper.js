@@ -2,7 +2,6 @@ define([
     'dojo/_base/fx',
     'dojo/query',
     'dojo/dom-attr',
-    'dojo/dom-class',
     'dojo/NodeList-dom',
     'dojo/fx',
     'dojo/NodeList-fx',
@@ -14,7 +13,7 @@ define([
     'util/sidebar',
     'bridge/shadowbox',
     'bridge/underscore'
-], function(fx, query, domAttr, domClass,
+], function(fx, query, domAttr,
         NodeList_dom, coreFx, NodeList_fx,
         $, results_photo_menu, resources, App3, utils, sidebar, Shadowbox, _) {
 
@@ -264,16 +263,16 @@ define([
         var CURRENT_TAB_CLASS = 'current';
         var photos_tab = query('#results-tabs li:first-child a')[0];
         var list_tab = query('#results-tabs li:last-child a')[0];
-        var photos_show_menu = query('.show')[0];       
+        var photos_show_menu = query('.show')[0];
 
         if (view === this.PHOTOS_VIEW) {
-            domClass.remove(list_tab, CURRENT_TAB_CLASS);
-            domClass.add(photos_tab, CURRENT_TAB_CLASS);
-            domClass.remove(photos_show_menu, HIDDEN_CLASS);
+            $(list_tab).removeClass(CURRENT_TAB_CLASS);
+            $(photos_tab).addClass(CURRENT_TAB_CLASS);
+            $(photos_show_menu).removeClass(HIDDEN_CLASS);
         } else if (view === this.LIST_VIEW) {
-            domClass.remove(photos_tab, CURRENT_TAB_CLASS);
-            domClass.add(list_tab, CURRENT_TAB_CLASS);
-            domClass.add(photos_show_menu, HIDDEN_CLASS);
+            $(photos_tab).removeClass(CURRENT_TAB_CLASS);
+            $(list_tab).addClass(CURRENT_TAB_CLASS);
+            $(photos_show_menu).addClass(HIDDEN_CLASS);
         } else {
            console.log('Unknown view name: ' + view);
         }
@@ -483,13 +482,13 @@ define([
                 var desty = HEIGHT * Math.floor(n / SPECIES_PER_ROW);
                 n += 1;
 
-                domClass.remove(div, 'genus_alt');
-                domClass.remove(div, 'genus_join_left');
-                domClass.remove(div, 'genus_join_right');
+                $(div).removeClass('genus_alt');
+                $(div).removeClass('genus_join_left');
+                $(div).removeClass('genus_join_right');
 
-                if (!domClass.contains(div, 'in-results')) {
+                if (!$(div).hasClass('in-results')) {
                     // bring new species in from the far right
-                    domClass.add(div, 'in-results');
+                    $(div).addClass('in-results');
                     div.style.top = desty + 'px';
                     anim_list.push(fx.animateProperty({
                         node: div,
@@ -506,7 +505,7 @@ define([
                     }));
                 }
             } else {
-                domClass.remove(div, 'in-results');
+                $(div).removeClass('in-results');
             }
         }
         var species_section_helper = this;
@@ -526,15 +525,15 @@ define([
                 for (var n = 0; n < displayed_plants.length; n++) {
                     var div = displayed_divs[n];
                     if (genus_alt)
-                        domClass.add(div, 'genus_alt');
+                        $(div).addClass('genus_alt');
                     if (n < displayed_plants.length - 1) {
                         var genus = plant.genus;
                         var plant = displayed_plants[n + 1];
                         if (plant.genus === genus) {
                             if (n % SPECIES_PER_ROW != last_species_in_row) {
-                                domClass.add(div, 'genus_join_right');
-                                domClass.add(displayed_divs[n + 1],
-                                              'genus_join_left');
+                                $(div).addClass('genus_join_right');
+                                $(displayed_divs[n + 1]).addClass(
+                                    'genus_join_left');
                             }
                         } else {
                             genus_alt = ! genus_alt;
@@ -557,7 +556,7 @@ define([
         // Show the "Show" drop-down menu for image types, if necessary.
         if (this.current_view === this.PHOTOS_VIEW) {
             var show_menu = query('.show')[0];
-            domClass.remove(show_menu, 'hidden');
+            $(show_menu).removeClass('hidden');
         }
 
         // Remove the "wait" spinner.
