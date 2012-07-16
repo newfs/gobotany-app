@@ -5,22 +5,6 @@ from django.db import models
 from gobotany.core.models import GlossaryTerm, Pile, PileGroup
 
 
-class Blurb(models.Model):
-    name = models.CharField(max_length=50)
-    text = models.TextField(blank=True)
-
-    def __unicode__(self):
-        return u'Blurb "%s"' % (self.name,)
-
-
-def get_blurb(name):
-    blurbs = Blurb.objects.filter(name=name)
-    if blurbs:
-        return blurbs[0].text
-    return ('[Provide text for this by creating a blurb in the Admin'
-            ' interface named %r]' % (name,))
-
-
 # Note: The motivation for creating the following classes was to organize
 # information for various page type in order to build Haystack/Solr
 # search engine indexes for them.
@@ -42,7 +26,6 @@ class HelpPage(models.Model):
     """Outline of the contents of a Help page."""
     title = models.CharField(max_length=100)
     url_path = models.CharField(max_length=100)
-    blurbs = models.ManyToManyField(Blurb)
     videos = models.ManyToManyField(Video)
 
     class Meta:

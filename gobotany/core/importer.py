@@ -21,7 +21,7 @@ from django.template.defaultfilters import slugify
 
 import bulkup
 from gobotany.core import models
-from gobotany.simplekey.models import (Blurb, GroupsListPage, HelpPage,
+from gobotany.simplekey.models import (GroupsListPage, HelpPage,
                                        SearchSuggestion, SubgroupResultsPage,
                                        SubgroupsListPage, Video)
 
@@ -1649,20 +1649,6 @@ class Importer(object):
             title='About Go-Botany', url_path='/help/')
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
-
-        NUM_SECTIONS = 3
-        for i in range(1, NUM_SECTIONS + 1):
-            section = 'section %d' % i
-
-            blurb, created = Blurb.objects.get_or_create(
-                name=section + ' heading',
-                text='this is the ' + section + ' heading text')
-            help_page.blurbs.add(blurb)
-
-            blurb, created = Blurb.objects.get_or_create(
-                name=section + ' content',
-                text='this is the ' + section + ' content')
-            help_page.blurbs.add(blurb)
 
         help_page.save()
 

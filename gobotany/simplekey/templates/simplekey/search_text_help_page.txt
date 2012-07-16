@@ -1,9 +1,5 @@
 {{ object.title }}
 
-{% for blurb in object.blurbs.all %}
-    {{ blurb.text }}
-{% endfor %}
-
 {% for video in object.videos.all %}
     Video: {{ video.title }}.
 {% endfor %}

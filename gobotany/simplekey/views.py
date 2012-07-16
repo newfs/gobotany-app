@@ -29,7 +29,7 @@ from gobotany.core.models import (
 from gobotany.core.partner import which_partner
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import PILEGROUP_ORDER, PILE_ORDER
-from gobotany.simplekey.models import (get_blurb, GroupsListPage,
+from gobotany.simplekey.models import (GroupsListPage,
                                        SearchSuggestion, SubgroupResultsPage,
                                        SubgroupsListPage, Video)
 
@@ -85,8 +85,6 @@ def index_view(request):
         if partner.short_name == 'montshire':
             main_heading = 'Montshire %s' % main_heading
 
-    blurb = get_blurb('getting_started')
-
     home_page_images = HomePageImage.objects.order_by('order')
 
     # Get or generate today's Plant of the Day.
@@ -108,7 +106,6 @@ def index_view(request):
 
     return render_to_response('simplekey/index.html', {
             'main_heading': main_heading,
-            'blurb': blurb,
             'home_page_images': home_page_images,
             'plant_of_the_day': plant_of_the_day_taxon,
             'plant_of_the_day_image': plant_of_the_day_image,
@@ -503,12 +500,6 @@ def help_redirect_view(request):
 
 def help_about_view(request):
     return render_to_response('simplekey/help_about.html', {
-           'section_1_heading_blurb': get_blurb('section_1_heading'),
-           'section_1_content_blurb': get_blurb('section_1_content'),
-           'section_2_heading_blurb': get_blurb('section_2_heading'),
-           'section_2_content_blurb': get_blurb('section_2_content'),
-           'section_3_heading_blurb': get_blurb('section_3_heading'),
-           'section_3_content_blurb': get_blurb('section_3_content'),
            }, context_instance=RequestContext(request))
 
 @vary_on_headers('Host')
