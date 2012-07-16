@@ -1,35 +1,6 @@
-# Basic ignore patterns, probably covered by svn's global ignore
-*.pyc
+# Basic ignore patterns
 *.sw*
 *.DS_Store
 
-# /
-/gobotany.egg-info
-
-# /gobotany/
-/gobotany/media/*
-
-# /gobotany/media/
-/gobotany/media/*
-
-# /gobotany/static/
-/gobotany/static/.sass-cache/
-/gobotany/static/dijit
-/gobotany/static/dojo
-/gobotany/static/dojox
-/gobotany/static/util
-
 # Intermediate javascript build files
-# /gobotany/static/build/scripts
 /gobotany/static/build/scripts
-
-# /gobotany/static/js/
-/gobotany/static/js/dijit
-/gobotany/static/js/dojox
-/gobotany/static/js/dojo
-
-# /gobotany/static/js/layers/
-/gobotany/static/js/layers/*.uncompressed.js
-
-# /gobotany/static/js/layers/nls/
-/gobotany/static/js/layers/nls/*.js
