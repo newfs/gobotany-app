@@ -20,9 +20,8 @@ function legacyDojo(mid) {
     // Dojo modules which require legacy support - these have not
     // yet been converted to pure AMD syntax
     return mid in {
-        'gobotany/sk/guided_search/Filter':1,
-        'gobotany/sk/guided_search/Manager':1,
-        'gobotany/sk/guided_search/SpeciesSectionHelper':1
+        // None; these entries used to look like:
+        // 'gobotany/sk/guided_search/Filter': 1
     };
 }
 
