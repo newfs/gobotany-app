@@ -739,10 +739,10 @@ results_page_init: function(args) {
                 // If there's no matching image display the
                 // empty box and hide the image
                 $img.css('display', 'none');
-                $('<div>', {
+                $img.parent().append($('<div>', {
                     'class': 'missing-image',
-                    'innerHTML': '<p>Image not available yet</p>'
-                }).appendTo($img);
+                    'html': '<p>Image not available yet</p>'
+                }));
             }
         });
     }
