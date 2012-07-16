@@ -26,7 +26,6 @@ return declare('gobotany.sk.ResultsHelper', null, {
         //   Coordinates all of the dynamic logic on the results page.
 
         this.pile_slug = pile_slug;
-        this.animation = null;
         this.species_section =
             new SpeciesSectionHelper(pile_slug, plant_divs_ready);
 
@@ -104,25 +103,6 @@ return declare('gobotany.sk.ResultsHelper', null, {
             }
         }
         this.species_section.lazy_load_images();
-    },
-
-    update_counts: function(species_list) {
-        App3.taxa.set('len', species_list.length);
-
-        if (this.animation !== null)
-            this.animation.stop();
-
-        var span = query('.species-count-heading > span');
-        this.animation = span.animateProperty({
-            duration: 2000,
-            properties: {
-                backgroundColor: {
-                    start: '#FF0',
-                    end: '#F0F0C0'
-                }
-            }
-        });
-        this.animation.play();
     }
 });
 

@@ -671,6 +671,18 @@ results_page_init: function(args) {
         }
     });
 
+    // Several places on the page display how many species there are.
+
+    var update_count_animation = null;
+    var update_counts = function(species_list) {
+        App3.taxa.set('len', species_list.length);
+
+        var $spans = $('.species-count-heading > span');
+        $spans.stop();
+        animation.bright_change($spans, {end_color: '#F0F0C0',
+                                         duration: 2000});
+    };
+
     // Page load cascade - much of which is in the above code or over in
     // our legacy Dojo modules, but all of which would be clearer and
     // easier to think about and manage if it migrated down here.
@@ -699,12 +711,12 @@ results_page_init: function(args) {
         filtered_sorted_taxadata_ready,
         plant_divs_ready
     ).done(function(rh) {
-        rh.update_counts(App3.filtered_sorted_taxadata);
+        update_counts(App3.filtered_sorted_taxadata);
         rh.species_section.display_results(App3.filtered_sorted_taxadata);
         rh.load_selected_image_type();
 
         App3.addObserver('filtered_sorted_taxadata', function() {
-            rh.update_counts(App3.filtered_sorted_taxadata);
+            update_counts(App3.filtered_sorted_taxadata);
             rh.species_section.display_results(App3.filtered_sorted_taxadata);
         });
 
