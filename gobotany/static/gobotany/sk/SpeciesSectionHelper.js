@@ -3,7 +3,6 @@ define([
     'dojo/query',
     'dojo/dom-attr',
     'dojo/dom-class',
-    'dojo/dom-construct',
     'dojo/NodeList-dom',
     'dojo/fx',
     'dojo/NodeList-fx',
@@ -16,7 +15,7 @@ define([
     'bridge/shadowbox',
     'bridge/underscore'
 ], function(fx, query, domAttr, domClass,
-        domConstruct, NodeList_dom, coreFx, NodeList_fx,
+        NodeList_dom, coreFx, NodeList_fx,
         $, results_photo_menu, resources, App3, utils, sidebar, Shadowbox, _) {
 
     var SpeciesSectionHelper = function() {};
@@ -384,8 +383,7 @@ define([
             html += '</tr>';
         }
 
-        var table = domConstruct.create('table', {'innerHTML': html},
-                                this.plant_list);
+        $('<table>', {'html': html}).appendTo(this.plant_list);
 
         /* Remove any explicit style="height: ..." that might be left
            over from image animations, since it will not apply to the
@@ -412,19 +410,18 @@ define([
         for (var i = 0; i < sorted_species_list.length; i++) {
             var species = sorted_species_list[i];
 
-            var plant = domConstruct.create('div', {'class': 'plant'},
-                                    this.plant_list);
+            var plant = $('<div>', {'class': 'plant'}
+                         ).appendTo(this.plant_list)[0];
 
             var path = window.location.pathname.split('#')[0];
             var url = (path + species.scientific_name.toLowerCase()
                        .replace(' ', '/') + '/');
-            var plant_link = domConstruct.create('a', {'href': url}, plant);
-            domConstruct.create('div', {'class': 'frame'}, plant_link);
+            var plant_link = $('<a>', {'href': url}).appendTo(plant);
+            $('<div>', {'class': 'frame'}).appendTo(plant_link);
 
-            var image_container = domConstruct.create('div', {
-                'class': 'plant-img-container'
-            }, plant_link);
-            var image = domConstruct.create('img', {'alt': ''}, image_container);
+            var image_container = $('<div>', {'class': 'plant-img-container'}
+                                   ).appendTo(plant_link);
+            var image = $('<img>', {'alt': ''}).appendTo(image_container)[0];
             domAttr.set(image, 'x-plant-id', species.scientific_name);
             var thumb_url = this.default_image(species).thumb_url;
             if (thumb_url) { // undefined when no image available
@@ -439,8 +436,8 @@ define([
             if (species.common_name) {
                 name_html += ' ' + species.common_name;
             }
-            domConstruct.create('p', {'class': 'plant-name',
-                              'innerHTML': name_html}, plant_link);
+            $('<p>', {'class': 'plant-name', 'html': name_html})
+                .appendTo(plant_link);
 
             // Connect a "plant preview" popup. Pass species as
             // context in the connect function, which becomes 'this'
