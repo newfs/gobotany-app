@@ -1,20 +1,14 @@
 define([
-    'dojo/_base/fx',
-    'dojo/dom-attr',
-    'dojo/NodeList-dom',
-    'dojo/fx',
-    'dojo/NodeList-fx',
     'bridge/jquery',
+    'bridge/shadowbox',
+    'bridge/underscore',
     'simplekey/results_photo_menu',
     'simplekey/resources',
     'simplekey/App3',
     'gobotany/utils',
-    'util/sidebar',
-    'bridge/shadowbox',
-    'bridge/underscore'
-], function(fx, domAttr,
-        NodeList_dom, coreFx, NodeList_fx,
-        $, results_photo_menu, resources, App3, utils, sidebar, Shadowbox, _) {
+    'util/sidebar'
+], function($, Shadowbox, _,
+            results_photo_menu, resources, App3, utils, sidebar) {
 
     var SpeciesSectionHelper = function() {};
     var methods = SpeciesSectionHelper.prototype = {};
@@ -27,7 +21,7 @@ define([
         this.LIST_VIEW = 'list';
         this.animation = null;
         this.pile_slug = pile_slug;
-        this.plant_list = $('#main .plant-list')[0];
+        this.plant_list = $('#main .plant-list');
         this.plant_data = [];
         this.plant_divs = [];
         this.plant_divs_displayed_yet = false;
@@ -66,40 +60,12 @@ define([
     };
 
     methods.default_image = function(species) {
-        var i;
-        for (i = 0; i < species.images.length; i += 1) {
+        for (var i = 0; i < species.images.length; i += 1) {
             var image = species.images[i];
-            if (image.rank === 1 && image.type === 'habit') {
+            if (image.rank === 1 && image.type === 'habit')
                 return image;
-            }
         }
         return {};
-    };
-
-    methods.get_multivalue_list = function(display_value, is_compact) {
-        // Return a HTML list for presenting multiple character values.
-        var list, i;
-
-        if (typeof(display_value) !== 'string') {
-            list = '<ul';
-            if (is_compact) {
-                list += ' class="compact"';
-            }
-            list += '>';
-            for (i = 0; i < display_value.length; i++) {
-                list += '<li';
-                if (i === display_value.length - 1) {
-                    list += ' class="last"';
-                }
-                list += '>' + display_value[i] + '</li>';
-            }
-            list += '</ul>';
-        }
-        else {
-            list = display_value;
-        }
-
-        return list;
     };
 
     methods.connect_plant_preview_popup = function(plant_link, plant) {
@@ -118,10 +84,11 @@ define([
 
             // Call the API to get more information.
 
-            var d1 = resources.taxon_info(plant.scientific_name);
-            var d2 = resources.pile(this.pile_slug);
-            $.when(d1, d2).done(
-                $.proxy(function(taxon, pile_info) {
+            $.when(
+                resources.taxon_info(plant.scientific_name),
+                resources.pile(this.pile_slug)
+            ).done(
+                function(taxon, pile_info) {
                     // Fill in Facts About.
                     $('#plant-detail-modal div.details p.facts')
                         .html(taxon.factoid);
@@ -160,25 +127,24 @@ define([
                                     // For multiple-value characters,
                                     // make a list.
                                     if (typeof(display_value) !== 'string') {
-                                       var is_compact = (COMPACT_EX.test(
+                                        var is_compact = (COMPACT_EX.test(
                                             ppc.character_short_name));
-                                        display_value =
-                                            this.get_multivalue_list(
-                                                display_value, is_compact);
+                                        display_value = _get_multivalue_list(
+                                            display_value, is_compact);
                                     }
                                 }
                             }
 
                             // Only display this character if it has a value
-			                // and if the maximum number of characters for the
+                            // and if the maximum number of characters for the
                             // popup has not been exceeded.
                             if (display_value !== undefined &&
                                 display_value !== '') {
-				                if (characters_displayed < MAX_CHARACTERS) {
+                                if (characters_displayed < MAX_CHARACTERS) {
                                     characters_html += '<dl><dt>' +
                                         ppc.friendly_name + '</dt><dd>' +
                                         display_value + '</dd></dl>';
-				                    characters_displayed += 1;
+                                    characters_displayed += 1;
                                 }
                             }
                         }
@@ -238,16 +204,16 @@ define([
                             width: 935,
                             options: {
                                 handleOversize: 'resize',
-                                onFinish: $.proxy(function() {
+                                onFinish: function() {
                                     var $sb = $('#sb-container');
                                     var $children = $sb.find('p, dt, dd, li');
                                     $sb.find('.img-container').scrollable();
                                     glossarize($children);
-                                }, this)
+                                }
                             }
                         });
                     }
-                }, this)
+                }
             );
         }, this));
     };
@@ -256,18 +222,18 @@ define([
 
         var HIDDEN_CLASS = 'hidden';
         var CURRENT_TAB_CLASS = 'current';
-        var photos_tab = $('#results-tabs li:first-child a')[0];
-        var list_tab = $('#results-tabs li:last-child a')[0];
-        var photos_show_menu = $('.show')[0];
+        var $photos_tab = $('#results-tabs li:first-child a');
+        var $list_tab = $('#results-tabs li:last-child a');
+        var $photos_show_menu = $('.show');
 
         if (view === this.PHOTOS_VIEW) {
-            $(list_tab).removeClass(CURRENT_TAB_CLASS);
-            $(photos_tab).addClass(CURRENT_TAB_CLASS);
-            $(photos_show_menu).removeClass(HIDDEN_CLASS);
+            $list_tab.removeClass(CURRENT_TAB_CLASS);
+            $photos_tab.addClass(CURRENT_TAB_CLASS);
+            $photos_show_menu.removeClass(HIDDEN_CLASS);
         } else if (view === this.LIST_VIEW) {
-            $(photos_tab).removeClass(CURRENT_TAB_CLASS);
-            $(list_tab).addClass(CURRENT_TAB_CLASS);
-            $(photos_show_menu).addClass(HIDDEN_CLASS);
+            $photos_tab.removeClass(CURRENT_TAB_CLASS);
+            $list_tab.addClass(CURRENT_TAB_CLASS);
+            $photos_show_menu.addClass(HIDDEN_CLASS);
         } else {
            console.log('Unknown view name: ' + view);
         }
@@ -275,16 +241,9 @@ define([
 
     methods.toggle_view = function(event) {
 
-        if (event.target.innerHTML.toLowerCase() === this.current_view) {
+        if (event.target.innerHTML.toLowerCase() === this.current_view)
             // If the same tab as the current view was clicked, do nothing.
             return;
-        }
-
-        var HIDDEN_CLASS = 'hidden';
-        var CURRENT_TAB_CLASS = 'current';
-        var photos_tab = $('#results-tabs li:first-child a')[0];
-        var list_tab = $('#results-tabs li:last-child a')[0];
-        var photos_show_menu = $('.show')[0];
 
         if (this.current_view === this.PHOTOS_VIEW) {
             App3.taxa.set('show_list', true);
@@ -319,21 +278,15 @@ define([
     };
 
     methods.get_image = function(item, image_type) {
-        /* From a species JSON record, return the first image encountered
-         * with the specified image type. If no images of that type exist,
-         * return the first image. */
+        /* From a species JSON record, return the first image
+           encountered with the specified image type.  If no images of
+           that type exist, return the first image. */
 
-        var i, image_index;
-
-        image_index = 0;   // Fallback: first image
-        for (i = 0; i < item.images.length; i++) {
-            if (item.images[i].type === image_type) {
-                image_index = i;
-                break;
-            }
-        }
-
-        return item.images[image_index];
+        var images = item.images;
+        for (var i = 0; i < images.length; i++)
+            if (images[i].type == image_type)
+                return images[i];
+        return images[0];
     };
 
     methods.display_in_list_view = function(items) {
@@ -386,7 +339,7 @@ define([
 
         sidebar.set_height();
 
-        Shadowbox.setup('.plant-list table td.scientific-name a', 
+        Shadowbox.setup('.plant-list table td.scientific-name a',
                         {title: ''});
     };
 
@@ -404,25 +357,25 @@ define([
         for (var i = 0; i < sorted_species_list.length; i++) {
             var species = sorted_species_list[i];
 
-            var plant = $('<div>', {'class': 'plant'}
-                         ).appendTo(this.plant_list)[0];
+            var $plant = $('<div>', {'class': 'plant'}
+                          ).appendTo(this.plant_list);
 
             var path = window.location.pathname.split('#')[0];
             var url = (path + species.scientific_name.toLowerCase()
                        .replace(' ', '/') + '/');
-            var plant_link = $('<a>', {'href': url}).appendTo(plant);
+            var plant_link = $('<a>', {'href': url}).appendTo($plant);
             $('<div>', {'class': 'frame'}).appendTo(plant_link);
 
             var image_container = $('<div>', {'class': 'plant-img-container'}
                                    ).appendTo(plant_link);
-            var image = $('<img>', {'alt': ''}).appendTo(image_container)[0];
-            domAttr.set(image, 'x-plant-id', species.scientific_name);
+            var $image = $('<img>', {'alt': ''}).appendTo(image_container);
+            $image.attr('x-plant-id', species.scientific_name);
             var thumb_url = this.default_image(species).thumb_url;
             if (thumb_url) { // undefined when no image available
                 // Set the image URL in a dummy attribute, so we can
                 // lazy-load images, switching to the proper
                 // attribute when the image comes into view.
-                domAttr.set(image, 'x-tmp-src', thumb_url);
+                $image.attr('x-tmp-src', thumb_url);
             }
 
             var name_html = '<span class="latin">' +
@@ -439,15 +392,14 @@ define([
             this.connect_plant_preview_popup(plant_link, species);
 
             this.plant_data.push(species);
-            this.plant_divs.push(plant);
+            this.plant_divs.push($plant);
         }
         this.plant_divs_ready.resolve();
     };
 
     methods.display_in_photos_view = function(items) {
         /* Display plant results as a grid of photo thumbnails with
-           captions.
-           */
+           captions. */
 
         $('.plant-list table').remove();
 
@@ -459,7 +411,6 @@ define([
         var WIDTH = 178;
         var HEIGHT = 232;
 
-        var anim_list = [];
         var displayed_plants = [];
         var displayed_divs = [];
 
@@ -467,47 +418,37 @@ define([
         for (var i = 0; i < this.plant_divs.length; i++) {
 
             var plant = this.plant_data[i];
-            var div = this.plant_divs[i];
+            var $div = this.plant_divs[i];
 
             if (visible_species[plant.id] === 1) {
                 displayed_plants.push(plant);
-                displayed_divs.push(div);
+                displayed_divs.push($div);
 
                 var destx = WIDTH * (n % SPECIES_PER_ROW);
                 var desty = HEIGHT * Math.floor(n / SPECIES_PER_ROW);
                 n += 1;
 
-                $(div).removeClass('genus_alt');
-                $(div).removeClass('genus_join_left');
-                $(div).removeClass('genus_join_right');
+                $div.removeClass('genus_alt');
+                $div.removeClass('genus_join_left');
+                $div.removeClass('genus_join_right');
 
-                if (!$(div).hasClass('in-results')) {
+                if (!$div.hasClass('in-results')) {
                     // bring new species in from the far right
-                    $(div).addClass('in-results');
-                    div.style.top = desty + 'px';
-                    anim_list.push(fx.animateProperty({
-                        node: div,
-                        properties: {left: {
-                            start: 2800,
-                            end: destx
-                        }}
-                    }));
+                    $div.addClass('in-results');
+                    $div.css({left: 2800, top: desty});
+                    $div.animate({left: destx});
                 } else {
                     // move the species from its current screen location
-                    anim_list.push(fx.animateProperty({
-                        node: div,
-                        properties: {left: {end: destx}, top: {end: desty}}
-                    }));
+                    $div.animate({left: destx, top: desty});
                 }
             } else {
-                $(div).removeClass('in-results');
+                $div.removeClass('in-results');
             }
         }
         var species_section_helper = this;
-        anim_list.push(fx.animateProperty({
-            node: this.plant_list,
-            properties: {height: {end: desty + HEIGHT}},
-            onEnd: function() {
+        this.plant_list.animate(
+            {height: desty + HEIGHT},
+            function() {
                 this.animation = null;
                 sidebar.set_height();
                 species_section_helper.lazy_load_images();
@@ -518,16 +459,16 @@ define([
                 var plant = displayed_plants[0];
 
                 for (var n = 0; n < displayed_plants.length; n++) {
-                    var div = displayed_divs[n];
+                    var $div = displayed_divs[n];
                     if (genus_alt)
-                        $(div).addClass('genus_alt');
+                        $div.addClass('genus_alt');
                     if (n < displayed_plants.length - 1) {
                         var genus = plant.genus;
                         var plant = displayed_plants[n + 1];
                         if (plant.genus === genus) {
                             if (n % SPECIES_PER_ROW != last_species_in_row) {
-                                $(div).addClass('genus_join_right');
-                                $(displayed_divs[n + 1]).addClass(
+                                $div.addClass('genus_join_right');
+                                displayed_divs[n + 1].addClass(
                                     'genus_join_left');
                             }
                         } else {
@@ -536,26 +477,27 @@ define([
                     }
                 }
             }
-        }));
-        this.animation = coreFx.combine(anim_list);
-        this.animation.play();
+        );
     };
 
     methods.display_results = function(query_results) {
 
         if (this.animation !== null) {
+            /* TODO: this never runs since this.animation is no longer
+               set to a Dojo animation object; should we learn to cancel
+               the animation now that jQuery is in charge?  Or will it
+               be fine with us interrupting its animation and starting a
+               new one without preparation or explanation? */
             this.animation.stop();
             this.animation = null;
         }
 
         // Show the "Show" drop-down menu for image types, if necessary.
-        if (this.current_view === this.PHOTOS_VIEW) {
-            var show_menu = $('.show')[0];
-            $(show_menu).removeClass('hidden');
-        }
+        if (this.current_view === this.PHOTOS_VIEW)
+            $('.show').removeClass('hidden');
 
         // Remove the "wait" spinner.
-        $('.wait', this.plant_list).remove();
+        this.plant_list.find('.wait').remove();
 
         // Display the results in the appropriate tab view.
         if (this.current_view === this.LIST_VIEW) {
@@ -657,15 +599,37 @@ define([
                 }
 
                 if (is_element_visible === true) {
-                    var image_url = domAttr.get(element, 'x-tmp-src');
-                    if (image_url !== null) {
+                    var image_url = $(element).attr('x-tmp-src');
+                    if (image_url !== null)
                         // Set the attribute that will make the image load.
-                        domAttr.set(element, 'src', image_url);
-                    }
+                        $(element).attr('src', image_url);
                 }
             }
         }
     };
+
+    /* Helper function that does not need "this" state, and so is not
+       made a part of the class. */
+
+    var _get_multivalue_list = function(display_value, is_compact) {
+        // Return a HTML list for presenting multiple character values.
+        if (typeof(display_value) === 'string')
+            return display_value;
+
+        var $ul = $('<ul>');
+        if (is_compact)
+            $ul.addClass('compact');
+
+        var $li = null;
+        _.each(display_value, function(v) {
+            $li = $('<li>', {'html': v}).appendTo($ul);
+        });
+
+        if ($li !== null)
+            $li.addClass('last');
+    };
+
+    // Return
 
     return SpeciesSectionHelper;
 });
