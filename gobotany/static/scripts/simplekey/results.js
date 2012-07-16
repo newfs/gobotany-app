@@ -14,7 +14,7 @@ define([
     'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState',
-    'simplekey/working_area',
+    'simplekey/working_area_module',
     'util/activate_search_suggest',
     'util/activate_image_gallery',
     'util/sidebar',
@@ -22,7 +22,7 @@ define([
 ], function(
     document_is_ready, $, x, Ember, Shadowbox, shadowbox_init, _, utils,
     App3, _Filter, _FilterController, animation,
-    _glossarize, resources, ResultsPageState, working_area,
+    _glossarize, resources, ResultsPageState, working_area_module,
     search_suggest, image_gallery, sidebar, ResultsHelper
 ) {return {
 
@@ -220,18 +220,17 @@ results_page_init: function(args) {
        div being supplied with information through an instance of this
        convenient FilterView. */
 
-    App3.working_area = null;
+    var working_area = null;
 
     var show_working_area = function(filter, y) {
         // Dismiss old working area, to avoid having an Apply button
         // that is wired up to two different filters!
-        if (App3.working_area !== null)
-            App3.working_area.dismiss();
+        dismiss_any_working_area();
 
-        var C = working_area.select_working_area(filter);
+        var C = working_area_module.select_working_area(filter);
 
-        App3.working_area = new C();
-        App3.working_area.init({
+        working_area = new C();
+        working_area.init({
             div: $('div.working-area')[0],
             filter: filter,
             y: y
@@ -240,11 +239,17 @@ results_page_init: function(args) {
         sidebar.set_height();
     };
 
+    var dismiss_any_working_area = function() {
+        if (working_area !== null) {
+            working_area.dismiss();
+            working_area = null;
+        }
+    }
+
     $(document).keydown(function(e) {
         if (event.which === 27) {       // "Esc"
             event.preventDefault();
-            if (App3.working_area)
-                App3.working_area.dismiss();
+            dismiss_any_working_area();
         }
     });
 
@@ -289,8 +294,7 @@ results_page_init: function(args) {
         }.property('filter.value'),
 
         clear: function(event) {
-            if (App3.working_area)
-                App3.working_area.dismiss();
+            dismiss_any_working_area();
             this.filter.set('value', null);
         },
 
@@ -339,9 +343,7 @@ results_page_init: function(args) {
                 .bind('jsp-scroll-y', function(event) {
                     // Make sure this is not a reinitialise
                     if (user_is_scrolling)
-                        // and that the area is already set up
-                        if (App3.working_area)
-                            App3.working_area.dismiss();
+                        dismiss_any_working_area();
                 })
                 .jScrollPane({
                     maintainPosition: true,
@@ -357,7 +359,7 @@ results_page_init: function(args) {
             // adjusting the scroll pane closes the working area!
 
             setInterval(function() {
-                if (App3.working_area === null)
+                if (working_area === null)
                     scroll_pane.data('jsp').reinitialise();
             }, 500);
         });
@@ -366,8 +368,7 @@ results_page_init: function(args) {
     /* All filters can be cleared with a single button click. */
     $.when(filter_controller_is_built, document_is_ready).done(function() {
         $('#sidebar a.clear-all-btn').click(function() {
-            if (App3.working_area !== null)
-                App3.working_area.dismiss();
+            dismiss_any_working_area();
             var plains = App3.filter_controller.get('plain_filters');
             _.each(plains, function(filter) {
                 filter.set('value', null);
@@ -579,8 +580,7 @@ results_page_init: function(args) {
 
     $.when(document_is_ready).done(function() {
         $('#sidebar .get-choices').click(function() {
-            if (App3.working_area !== null)
-                App3.working_area.dismiss();
+            dismiss_any_working_area();
 
             Shadowbox.open({
                 content: $('#modal').html(),

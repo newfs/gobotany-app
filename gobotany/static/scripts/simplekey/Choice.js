@@ -91,8 +91,6 @@ define([
         $(this.div).hide();
 
         $('.option-list li').removeClass('active');
-
-        App3.working_area = null;
     };
 
     /* Draw the working area. */
