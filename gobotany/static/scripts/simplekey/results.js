@@ -240,6 +240,14 @@ results_page_init: function(args) {
         sidebar.set_height();
     };
 
+    $(document).keydown(function(e) {
+        if (event.which === 27) {       // "Esc"
+            event.preventDefault();
+            if (App3.working_area)
+                App3.working_area.dismiss();
+        }
+    });
+
     App3.FilterView = Ember.View.extend({
         templateName: 'filter-view',
         filterBinding: 'content',  // 'this.filter' makes more readable code

@@ -2,8 +2,6 @@
 define([
     'dojo/_base/declare',
     'dojo/_base/lang',
-    'dojo/on',
-    'dojo/keys',
     'dojo/query',
     'dojo/NodeList-dom',
     'dojo/dom-attr',
@@ -13,7 +11,7 @@ define([
     'gobotany/sk/SpeciesSectionHelper',
     'simplekey/resources',
     'simplekey/App3'
-], function(declare, lang, on, keys, query, nodeListDom, domAttr, domConstruct,
+], function(declare, lang, query, nodeListDom, domAttr, domConstruct,
     domStyle, _, SpeciesSectionHelper,
     resources, App3) {
 
@@ -33,11 +31,6 @@ return declare('gobotany.sk.ResultsHelper', null, {
             lang.hitch(this, function(pile_info) {
                 this._setup_character_groups(pile_info.character_groups);
             }));
-
-        // Set up a handler to detect an Esc keypress, which will close
-        // the filter working area if it is open.
-        on(document.body, 'keypress',
-            lang.hitch(this, this.handle_keys));
     },
 
     _setup_character_groups: function(character_groups) {
@@ -53,16 +46,6 @@ return declare('gobotany.sk.ResultsHelper', null, {
                 )
             );
         });
-    },
-
-    handle_keys: function(e) {
-        switch (e.charOrCode) {
-            case keys.ESCAPE:
-                if (App3.working_area) {
-                    App3.working_area.dismiss();
-                }
-                break;
-        }
     },
 
     load_selected_image_type: function(event) {
