@@ -24,9 +24,10 @@ define([
         domConstruct, NodeList_dom, coreFx, NodeList_fx, win, 
         results_photo_menu, resources, App3, utils, sidebar, Shadowbox, _) {
 
-return declare('gobotany.sk.SpeciesSectionHelper', null, {
+    var SpeciesSectionHelper = function() {};
+    var methods = SpeciesSectionHelper.prototype = {};
 
-    constructor: function(pile_slug, plant_divs_ready) {
+    methods.init = function(pile_slug, plant_divs_ready) {
         'use strict';
         // summary:
         //   Manages the species section of the results page
@@ -71,9 +72,9 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
             this.current_view = hash_object._view;
             this.set_navigation_to_view(this.current_view);
         }
-    },
+    };
 
-    default_image: function(species) {
+    methods.default_image = function(species) {
         'use strict';
 
         var i;
@@ -84,35 +85,35 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
             }
         }
         return {};
-    },
+    };
 
-    get_multivalue_list: function(display_value, is_compact) {
+    methods.get_multivalue_list = function(display_value, is_compact) {
         // Return a HTML list for presenting multiple character values.
         var list, i;
-        
+
         if (typeof(display_value) !== 'string') {
             list = '<ul';
             if (is_compact) {
                 list += ' class="compact"';
-            }                
-            list +='>';
+            }
+            list += '>';
             for (i = 0; i < display_value.length; i++) {
                 list += '<li';
                 if (i === display_value.length - 1) {
                     list += ' class="last"';
                 }
-                list +='>' + display_value[i] + '</li>';
+                list += '>' + display_value[i] + '</li>';
             }
             list += '</ul>';
         }
         else {
             list = display_value;
         }
-        
-        return list;
-    },
 
-    connect_plant_preview_popup: function(plant_link, plant) {
+        return list;
+    };
+
+    methods.connect_plant_preview_popup = function(plant_link, plant) {
         'use strict';
 
         on(plant_link, 'click', lang.hitch(this, function(event) {
@@ -264,9 +265,9 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
                 }, this)
             );
         }));
-    },
+    };
 
-    set_navigation_to_view: function(view) {
+    methods.set_navigation_to_view = function(view) {
         'use strict';
 
         var HIDDEN_CLASS = 'hidden';
@@ -286,9 +287,9 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
         } else {
            console.log('Unknown view name: ' + view);
         }
-    },
+    };
 
-    toggle_view: function(event) {
+    methods.toggle_view = function(event) {
         'use strict';
     
         if (event.target.innerHTML.toLowerCase() === this.current_view) {
@@ -312,9 +313,9 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         this.set_navigation_to_view(this.current_view);
         this.display_results(App3.filtered_sorted_taxadata);
-    },
+    };
 
-    get_number_of_rows_to_span: function(items, start) {
+    methods.get_number_of_rows_to_span = function(items, start) {
         /* From a starting point in a list of plant items, return the number
            of rows it takes to get to the next genus (or the end of the
            list). */
@@ -333,9 +334,9 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
         }
 
         return rows;
-    },
+    };
 
-    get_image: function(item, image_type) {
+    methods.get_image = function(item, image_type) {
         /* From a species JSON record, return the first image encountered
          * with the specified image type. If no images of that type exist,
          * return the first image. */
@@ -352,9 +353,9 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
         }
 
         return item.images[image_index];
-    },
+    };
 
-    display_in_list_view: function(items) {
+    methods.display_in_list_view = function(items) {
         /* Display plant results in a list view. Use a table, with hidden
            caption and header row for accessibility. */
         'use strict';
@@ -408,9 +409,9 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         Shadowbox.setup('.plant-list table td.scientific-name a', 
                         {title: ''});
-    },
+    };
 
-    create_plant_divs: function(species_list) {
+    methods.create_plant_divs = function(species_list) {
         // Sort the species so the plant divs are created in the correct
         // initial order for display in the UI, where they are to appear
         // sorted alphabetically by scientific name and grouped by genus.
@@ -463,9 +464,9 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
             this.plant_divs.push(plant);
         }
         this.plant_divs_ready.resolve();
-    },
+    };
 
-    display_in_photos_view: function(items) {
+    methods.display_in_photos_view = function(items) {
         /* Display plant results as a grid of photo thumbnails with
            captions.
            */
@@ -561,9 +562,9 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
         }));
         this.animation = coreFx.combine(anim_list);
         this.animation.play();
-    },
+    };
 
-    display_results: function(query_results) {
+    methods.display_results = function(query_results) {
         'use strict';
 
         if (this.animation !== null) {
@@ -594,9 +595,9 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
             this.populate_image_types(query_results);
             this.lazy_load_images();
         }
-    },
+    };
 
-    populate_image_types: function(query_results) {
+    methods.populate_image_types = function(query_results) {
         var menu_config = results_photo_menu[this.pile_slug];
 
         var image_list = _.flatten(_.pluck(query_results, 'images'));
@@ -619,9 +620,9 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
                 default_type = image_types[0];
             App3.set('image_type', default_type);
         }
-    },
+    };
 
-    lazy_load_images: function() {
+    methods.lazy_load_images = function() {
         'use strict';
 
         // If the current view is the List view, do nothing. This allows
@@ -692,9 +693,7 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
                 }
             }
         }
-    }
+    };
 
+    return SpeciesSectionHelper;
 });
-
-});
-

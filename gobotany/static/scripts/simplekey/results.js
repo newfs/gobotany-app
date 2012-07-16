@@ -40,8 +40,8 @@ results_page_init: function(args) {
         filtered_sorted_taxadata_ready,
         taxa_by_sciname_ready
     ).done(function() {
-        species_section = new SpeciesSectionHelper(
-            pile_slug, plant_divs_ready);
+        species_section = new SpeciesSectionHelper();
+        species_section.init(pile_slug, plant_divs_ready);
         species_section_ready.resolve();
     });
 
