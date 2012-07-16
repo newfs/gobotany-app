@@ -94,6 +94,9 @@ define([
                         .html(taxon.factoid);
 
                     // Fill in Characteristics.
+                    var $characteristics = $(
+                        '#plant-detail-modal .details .characteristics');
+
                     var MAX_CHARACTERS = 6;
                     var characters = pile_info.plant_preview_characters;
                     var characters_html = '';
@@ -138,19 +141,23 @@ define([
                             // Only display this character if it has a value
                             // and if the maximum number of characters for the
                             // popup has not been exceeded.
+
                             if (display_value !== undefined &&
                                 display_value !== '') {
-                                if (characters_displayed < MAX_CHARACTERS) {
-                                    characters_html += '<dl><dt>' +
-                                        ppc.friendly_name + '</dt><dd>' +
-                                        display_value + '</dd></dl>';
-                                    characters_displayed += 1;
-                                }
+
+                                $characteristics.append(
+                                    $('<dl>').append(
+                                        $('<dt>', {html: ppc.friendly_name}),
+                                        $('<dd>').append(display_value)
+                                    )
+                                );
+
+                                characters_displayed += 1;
+                                if (characters_displayed >= MAX_CHARACTERS)
+                                    break;
                             }
                         }
                     }
-                    $('#plant-detail-modal .details .characteristics')
-                        .html(characters_html);
 
                     // Wire up the Go To Species Page button.
                     var path = window.location.pathname.split('#')[0];
@@ -627,6 +634,8 @@ define([
 
         if ($li !== null)
             $li.addClass('last');
+
+        return $ul;
     };
 
     // Return
