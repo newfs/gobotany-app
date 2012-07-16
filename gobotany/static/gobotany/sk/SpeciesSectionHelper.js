@@ -8,7 +8,6 @@ define([
     'dojo/NodeList-dom',
     'dojo/fx',
     'dojo/NodeList-fx',
-    'dojo/window',
     'bridge/jquery',
     'simplekey/results_photo_menu',
     'simplekey/resources',
@@ -18,7 +17,7 @@ define([
     'bridge/shadowbox',
     'bridge/underscore'
 ], function(fx, query, ioQuery, domAttr, domClass,
-        domConstruct, NodeList_dom, coreFx, NodeList_fx, win, 
+        domConstruct, NodeList_dom, coreFx, NodeList_fx,
         $, results_photo_menu, resources, App3, utils, sidebar, Shadowbox, _) {
 
     var SpeciesSectionHelper = function() {};
@@ -624,8 +623,7 @@ define([
             return;
         }
 
-        var viewport = win.getBox();
-        var viewport_height = viewport.h;
+        var viewport_height = $(window).height();
         var scroll_top = 0;
         var scroll_left = 0;
 
