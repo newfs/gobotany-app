@@ -30,41 +30,39 @@ return declare('gobotany.sk.ResultsHelper', null, {
 
     load_selected_image_type: function(event) {
         var image_type = App3.get('image_type');
-        if (!image_type) {
+        if (!image_type)
             // No image types available yet, so skip for now
             return;
-        }
 
-        var image_tags = query('div.plant img');
-        // Replace the image for each plant on the page
-        var i;
-        for (i = 0; i < image_tags.length; i++) {
-            var image_tag = image_tags[i];
+        /* Replace the image for each plant on the page */
+
+        $('div.plant img').each(function(i, img) {
 
             // See if the taxon has an image for the new image type.
-            var scientific_name = domAttr.get(image_tag, 'x-plant-id');
-            taxon = App3.taxa_by_sciname[scientific_name];
+            var $img = $(img);
+            var scientific_name = $img.attr('x-plant-id');
+            var taxon = App3.taxa_by_sciname[scientific_name];
             var new_image = _.find(taxon.images, function(image) {
                 return image.type === image_type});
 
             if (new_image) {
-                domAttr.set(image_tag, 'x-tmp-src', new_image.thumb_url);
-                domAttr.set(image_tag, 'alt', new_image.title);
+                $img.attr('x-tmp-src', new_image.thumb_url);
+                $img.attr('alt', new_image.title);
                 // Hide the empty box if it exists and make
                 // sure the image is visible.
-                query('+ div.missing-image', image_tag).orphan();
-                domStyle.set(image_tag, 'display', 'inline');
+                $img.find('+ div.missing-image').remove();
+                $img.css('display', 'inline');
 
-            } else if (domStyle.get(image_tag, 'display') !== 'none') {
+            } else if ($img.css('display') !== 'none') {
                 // If there's no matching image display the
                 // empty box and hide the image
-                domStyle.set(image_tag, 'display', 'none');
-                domConstruct.create('div', {
+                $img.css('display', 'none');
+                $('<div>', {
                     'class': 'missing-image',
                     'innerHTML': '<p>Image not available yet</p>'
-                }, image_tag, 'after');
+                }).appendTo($img);
             }
-        }
+        });
         this.species_section.lazy_load_images();
     }
 });
