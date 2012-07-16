@@ -1,6 +1,4 @@
 define([
-    'dojo/_base/declare',
-    'dojo/_base/lang',
     'dojo/_base/fx',
     'dojo/query',
     'dojo/on',
@@ -20,7 +18,7 @@ define([
     'util/sidebar',
     'bridge/shadowbox',
     'bridge/underscore'
-], function(declare, lang, fx, query, on, ioQuery, hash, domAttr, domClass,
+], function(fx, query, on, ioQuery, hash, domAttr, domClass,
         domConstruct, NodeList_dom, coreFx, NodeList_fx, win, 
         results_photo_menu, resources, App3, utils, sidebar, Shadowbox, _) {
 
@@ -50,20 +48,20 @@ define([
         // and holding of a cursor key.
         var SCROLL_WAIT_MS = 0;
         var scroll_timer;
-        on(window, 'scroll', lang.hitch(this, function() {
+        on(window, 'scroll', $.proxy(function() {
             clearTimeout(scroll_timer);
             scroll_timer = setTimeout(this.lazy_load_images, SCROLL_WAIT_MS);
-        }));
+        }, this));
 
         var RESIZE_WAIT_MS = 500;
         var resize_timer;
-        on(window, 'resize', lang.hitch(this, function() {
+        on(window, 'resize', $.proxy(function() {
             clearTimeout(resize_timer);
             resize_timer = setTimeout(this.lazy_load_images, RESIZE_WAIT_MS);
-        }));
+        }, this));
 
         // Wire up tabs and a link for toggling between photo and list views.
-        query('#results-tabs a').on('click', lang.hitch(this, this.toggle_view));
+        query('#results-tabs a').on('click', $.proxy(this, 'toggle_view'));
 
         // Set the initial view for showing the results.
         var hash_object = ioQuery.queryToObject(hash());
@@ -112,7 +110,7 @@ define([
 
     methods.connect_plant_preview_popup = function(plant_link, plant) {
 
-        on(plant_link, 'click', lang.hitch(this, function(event) {
+        on(plant_link, 'click', $.proxy(function(event) {
             event.preventDefault();
 
             // A few characters get a "compact" list for multiple values.
@@ -250,17 +248,18 @@ define([
                             width: 935,
                             options: {
                                 handleOversize: 'resize',
-                                onFinish: lang.hitch(this, function() {
-                                var $sb = $('#sb-container');
-                                var $children = $sb.find('p, dt, dd, li');
-                                $sb.find('.img-container').scrollable();
-                                glossarize($children);
-                            })}
+                                onFinish: $.proxy(function() {
+                                    var $sb = $('#sb-container');
+                                    var $children = $sb.find('p, dt, dd, li');
+                                    $sb.find('.img-container').scrollable();
+                                    glossarize($children);
+                                }, this)
+                            }
                         });
                     }
                 }, this)
             );
-        }));
+        }, this));
     };
 
     methods.set_navigation_to_view = function(view) {
