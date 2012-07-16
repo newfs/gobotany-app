@@ -28,7 +28,6 @@ define([
     var methods = SpeciesSectionHelper.prototype = {};
 
     methods.init = function(pile_slug, plant_divs_ready) {
-        'use strict';
         // summary:
         //   Manages the species section of the results page
 
@@ -75,8 +74,6 @@ define([
     };
 
     methods.default_image = function(species) {
-        'use strict';
-
         var i;
         for (i = 0; i < species.images.length; i += 1) {
             var image = species.images[i];
@@ -114,7 +111,6 @@ define([
     };
 
     methods.connect_plant_preview_popup = function(plant_link, plant) {
-        'use strict';
 
         on(plant_link, 'click', lang.hitch(this, function(event) {
             event.preventDefault();
@@ -268,7 +264,6 @@ define([
     };
 
     methods.set_navigation_to_view = function(view) {
-        'use strict';
 
         var HIDDEN_CLASS = 'hidden';
         var CURRENT_TAB_CLASS = 'current';
@@ -290,8 +285,7 @@ define([
     };
 
     methods.toggle_view = function(event) {
-        'use strict';
-    
+
         if (event.target.innerHTML.toLowerCase() === this.current_view) {
             // If the same tab as the current view was clicked, do nothing.
             return;
@@ -319,7 +313,6 @@ define([
         /* From a starting point in a list of plant items, return the number
            of rows it takes to get to the next genus (or the end of the
            list). */
-        'use strict';
 
         var rows = 1;
         var i;
@@ -340,8 +333,7 @@ define([
         /* From a species JSON record, return the first image encountered
          * with the specified image type. If no images of that type exist,
          * return the first image. */
-        'use strict';
-        
+
         var i, image_index;
 
         image_index = 0;   // Fallback: first image
@@ -358,7 +350,6 @@ define([
     methods.display_in_list_view = function(items) {
         /* Display plant results in a list view. Use a table, with hidden
            caption and header row for accessibility. */
-        'use strict';
 
         query('.plant.in-results').removeClass('in-results');
         query('.plant-list table').orphan();
@@ -470,7 +461,6 @@ define([
         /* Display plant results as a grid of photo thumbnails with
            captions.
            */
-        'use strict';
 
         query('.plant-list table').orphan();
 
@@ -565,7 +555,6 @@ define([
     };
 
     methods.display_results = function(query_results) {
-        'use strict';
 
         if (this.animation !== null) {
             this.animation.stop();
@@ -623,8 +612,6 @@ define([
     };
 
     methods.lazy_load_images = function() {
-        'use strict';
-
         // If the current view is the List view, do nothing. This allows
         // event handlers for the photos view to remain in effect without
         // awkwardly removing and adding them when the user toggles views.
