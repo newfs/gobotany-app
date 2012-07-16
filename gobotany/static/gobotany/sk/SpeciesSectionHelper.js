@@ -1,6 +1,5 @@
 define([
     'dojo/_base/fx',
-    'dojo/query',
     'dojo/dom-attr',
     'dojo/NodeList-dom',
     'dojo/fx',
@@ -13,7 +12,7 @@ define([
     'util/sidebar',
     'bridge/shadowbox',
     'bridge/underscore'
-], function(fx, query, domAttr,
+], function(fx, domAttr,
         NodeList_dom, coreFx, NodeList_fx,
         $, results_photo_menu, resources, App3, utils, sidebar, Shadowbox, _) {
 
@@ -28,7 +27,7 @@ define([
         this.LIST_VIEW = 'list';
         this.animation = null;
         this.pile_slug = pile_slug;
-        this.plant_list = query('#main .plant-list')[0];
+        this.plant_list = $('#main .plant-list')[0];
         this.plant_data = [];
         this.plant_divs = [];
         this.plant_divs_displayed_yet = false;
@@ -56,7 +55,7 @@ define([
         }, this));
 
         // Wire up tabs and a link for toggling between photo and list views.
-        query('#results-tabs a').on('click', $.proxy(this, 'toggle_view'));
+        $('#results-tabs a').click($.proxy(this, 'toggle_view'));
 
         // Set the initial view for showing the results.
         view_matches = window.location.hash.match(/_view=[a-z]+/);
@@ -115,7 +114,7 @@ define([
             // this plant.
             var name = plant.scientific_name + ' <span>' +
                 plant.common_name + '</span>';
-            query('#plant-detail-modal h3')[0].innerHTML = name;
+            $('#plant-detail-modal h3').html(name);
 
             // Call the API to get more information.
 
@@ -124,9 +123,8 @@ define([
             $.when(d1, d2).done(
                 $.proxy(function(taxon, pile_info) {
                     // Fill in Facts About.
-                    query(
-                        '#plant-detail-modal div.details p.facts'
-                    )[0].innerHTML = taxon.factoid;
+                    $('#plant-detail-modal div.details p.facts')
+                        .html(taxon.factoid);
 
                     // Fill in Characteristics.
                     var MAX_CHARACTERS = 6;
@@ -185,18 +183,16 @@ define([
                             }
                         }
                     }
-                    var characters_list = query(
-                        '#plant-detail-modal .details .characteristics')[0];
-                    characters_list.innerHTML = characters_html;
+                    $('#plant-detail-modal .details .characteristics')
+                        .html(characters_html);
 
                     // Wire up the Go To Species Page button.
                     var path = window.location.pathname.split('#')[0];
                     var url = path +
                         plant.scientific_name.toLowerCase().replace(' ',
                         '/') + '/';
-                    var button = query(
-                        '#plant-detail-modal a.go-to-species-page')[0];
-                    domAttr.set(button, 'href', url);
+                    $('#plant-detail-modal a.go-to-species-page')
+                        .attr('href', url);
 
                     // Add images.
                     var images_html = '';
@@ -225,12 +221,11 @@ define([
                             images_html += new_image;
                         }
                     }
-                    query('#plant-detail-modal div.images')[0].innerHTML = 
-                        images_html;
+                    $('#plant-detail-modal div.images').html(images_html);
 
                     // Open the Shadowbox modal dialog with a copy of the
                     // HTML in the hidden content area.
-                    var content_element = query('#plant-detail-modal')[0];
+                    var content_element = $('#plant-detail-modal')[0];
                     // On small screens, skip the popup entirely for now.
                     if ($(window).width() <= 600) {
                         window.location.href = url;
@@ -261,9 +256,9 @@ define([
 
         var HIDDEN_CLASS = 'hidden';
         var CURRENT_TAB_CLASS = 'current';
-        var photos_tab = query('#results-tabs li:first-child a')[0];
-        var list_tab = query('#results-tabs li:last-child a')[0];
-        var photos_show_menu = query('.show')[0];
+        var photos_tab = $('#results-tabs li:first-child a')[0];
+        var list_tab = $('#results-tabs li:last-child a')[0];
+        var photos_show_menu = $('.show')[0];
 
         if (view === this.PHOTOS_VIEW) {
             $(list_tab).removeClass(CURRENT_TAB_CLASS);
@@ -287,9 +282,9 @@ define([
 
         var HIDDEN_CLASS = 'hidden';
         var CURRENT_TAB_CLASS = 'current';
-        var photos_tab = query('#results-tabs li:first-child a')[0];
-        var list_tab = query('#results-tabs li:last-child a')[0];
-        var photos_show_menu = query('.show')[0];
+        var photos_tab = $('#results-tabs li:first-child a')[0];
+        var list_tab = $('#results-tabs li:last-child a')[0];
+        var photos_show_menu = $('.show')[0];
 
         if (this.current_view === this.PHOTOS_VIEW) {
             App3.taxa.set('show_list', true);
@@ -345,8 +340,8 @@ define([
         /* Display plant results in a list view. Use a table, with hidden
            caption and header row for accessibility. */
 
-        query('.plant.in-results').removeClass('in-results');
-        query('.plant-list table').orphan();
+        $('.plant.in-results').removeClass('in-results');
+        $('.plant-list table').remove();
 
         var html =
             '<caption class="hidden">List of matching plants</caption>' +
@@ -454,7 +449,7 @@ define([
            captions.
            */
 
-        query('.plant-list table').orphan();
+        $('.plant-list table').remove();
 
         var visible_species = {};
         for (var i = 0; i < items.length; i++)
@@ -555,12 +550,12 @@ define([
 
         // Show the "Show" drop-down menu for image types, if necessary.
         if (this.current_view === this.PHOTOS_VIEW) {
-            var show_menu = query('.show')[0];
+            var show_menu = $('.show')[0];
             $(show_menu).removeClass('hidden');
         }
 
         // Remove the "wait" spinner.
-        query('.wait', this.plant_list).orphan();
+        $('.wait', this.plant_list).remove();
 
         // Display the results in the appropriate tab view.
         if (this.current_view === this.LIST_VIEW) {
@@ -570,7 +565,7 @@ define([
         }
 
         // Show the "See a list" (or "See photos") link.
-        var see_link = query('.list-all').removeClass(see_link, 'hidden');
+        $('.list-all').removeClass('hidden');
 
         if (this.current_view === this.PHOTOS_VIEW) {
             this.populate_image_types(query_results);
@@ -613,10 +608,9 @@ define([
         // is not what we need, and passing a saved reference to 'this', as
         // recommended for these situations, did not work.
 
-        var list_view_table_nodes = query('.plant-list table');
-        if (list_view_table_nodes.length > 0) {
+        var list_view_table_nodes = $('.plant-list table');
+        if (list_view_table_nodes.length > 0)
             return;
-        }
 
         var viewport_height = $(window).height();
         var scroll_top = 0;
@@ -636,7 +630,7 @@ define([
             scroll_left = document.body.scrollLeft;
         }
 
-        var image_elements = query('div.plant-list img');
+        var image_elements = $('div.plant-list img');
         var i;
         for (i = 0; i < image_elements.length; i += 1) {
             var element = image_elements[i];
