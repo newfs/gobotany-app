@@ -10,12 +10,11 @@ define([
     'dojo/dom-construct',
     'dojo/dom-style',
     'bridge/underscore',
-    'gobotany/sk/FilterSectionHelper',
     'gobotany/sk/SpeciesSectionHelper',
     'simplekey/resources',
     'simplekey/App3'
 ], function(declare, lang, on, keys, query, nodeListDom, domAttr, domConstruct,
-    domStyle, _, FilterSectionHelper, SpeciesSectionHelper,
+    domStyle, _, SpeciesSectionHelper,
     resources, App3) {
 
 return declare('gobotany.sk.ResultsHelper', null, {
@@ -30,18 +29,31 @@ return declare('gobotany.sk.ResultsHelper', null, {
         this.animation = null;
         this.species_section =
             new SpeciesSectionHelper(pile_slug, plant_divs_ready);
-        this.filter_section = new FilterSectionHelper(this);
 
         resources.pile(this.pile_slug).done(
             lang.hitch(this, function(pile_info) {
-                this.filter_section._setup_character_groups(
-                    pile_info.character_groups);
+                this._setup_character_groups(pile_info.character_groups);
             }));
 
         // Set up a handler to detect an Esc keypress, which will close
         // the filter working area if it is open.
         on(document.body, 'keypress',
             lang.hitch(this, this.handle_keys));
+    },
+
+    _setup_character_groups: function(character_groups) {
+        var $ul = $('ul.char-groups').empty();
+        _.each(character_groups, function(character_group) {
+            $ul.append(
+                $('<li>').append(
+                    $('<label>').append(
+                        $('<input>', {type: 'checkbox',
+                                      value: character_group.id}),
+                        ' ' + character_group.name
+                    )
+                )
+            );
+        });
     },
 
     handle_keys: function(e) {
