@@ -1,6 +1,6 @@
 require([
     'bridge/jquery',
-    'gobotany/sk/SearchSuggest'
+    'simplekey/SearchSuggest'
 ], function($, SearchSuggest) {
     return $(document).ready(function() {
         var initial_search_box_value = $('#search input').val();
