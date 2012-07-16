@@ -5,11 +5,11 @@
 define([
     'bridge/jquery',
     'bridge/underscore',
-    'gobotany/utils',
-    'simplekey/glossarize',
     'simplekey/App3',
+    'simplekey/glossarize',
+    'simplekey/utils',
     'util/tooltip'
-], function($, _, utils, glossarize, App3, tooltip) {
+], function($, _, App3, glossarize, utils, tooltip) {
 
     /* Generate a human-readable representation of a value. */
 

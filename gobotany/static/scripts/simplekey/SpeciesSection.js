@@ -5,13 +5,13 @@ define([
     'simplekey/results_photo_menu',
     'simplekey/resources',
     'simplekey/App3',
-    'gobotany/utils',
+    'simplekey/utils',
     'util/sidebar'
 ], function($, Shadowbox, _,
             results_photo_menu, resources, App3, utils, sidebar) {
 
-    var SpeciesSectionHelper = function() {};
-    var methods = SpeciesSectionHelper.prototype = {};
+    var SpeciesSection = function() {};
+    var methods = SpeciesSection.prototype = {};
 
     methods.init = function(pile_slug, plant_divs_ready) {
         // summary:
@@ -552,7 +552,7 @@ define([
         // event handlers for the photos view to remain in effect without
         // awkwardly removing and adding them when the user toggles views.
         //
-        // Check the DOM instead of the SpeciesSectionHelper object, because
+        // Check the DOM instead of the SpeciesSection object, because
         // when this function is called via setTimeout, the 'this' context
         // is not what we need, and passing a saved reference to 'this', as
         // recommended for these situations, did not work.
@@ -640,5 +640,5 @@ define([
 
     // Return
 
-    return SpeciesSectionHelper;
+    return SpeciesSection;
 });

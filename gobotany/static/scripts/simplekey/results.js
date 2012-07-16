@@ -6,7 +6,6 @@ define([
     'bridge/shadowbox',
     'util/shadowbox_init',
     'bridge/underscore',
-    'gobotany/utils',
     'simplekey/App3',
     'simplekey/Filter',
     'simplekey/FilterController',
@@ -14,16 +13,17 @@ define([
     'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState',
+    'simplekey/SpeciesSection',
     'simplekey/working_area',
+    'simplekey/utils',
     'util/activate_search_suggest',
     'util/activate_image_gallery',
-    'util/sidebar',
-    'gobotany/sk/SpeciesSectionHelper'
+    'util/sidebar'
 ], function(
-    document_is_ready, $, x, Ember, Shadowbox, shadowbox_init, _, utils,
-    App3, _Filter, _FilterController, animation,
-    _glossarize, resources, ResultsPageState, working_area_module,
-    search_suggest, image_gallery, sidebar, SpeciesSectionHelper
+    document_is_ready, $, x, Ember, Shadowbox, shadowbox_init, _,
+    App3, _Filter, _FilterController, animation, _glossarize, resources,
+    ResultsPageState, SpeciesSection, working_area_module, utils,
+    search_suggest, image_gallery, sidebar
 ) {return {
 
 results_page_init: function(args) {
@@ -40,7 +40,7 @@ results_page_init: function(args) {
         filtered_sorted_taxadata_ready,
         taxa_by_sciname_ready
     ).done(function() {
-        species_section = new SpeciesSectionHelper();
+        species_section = new SpeciesSection();
         species_section.init(pile_slug, plant_divs_ready);
         species_section_ready.resolve();
     });
