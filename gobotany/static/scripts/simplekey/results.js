@@ -708,6 +708,45 @@ results_page_init: function(args) {
                                          duration: 2000});
     };
 
+    /* How we load images into the species area. */
+
+    var load_selected_image_type = function() {
+        var image_type = App3.get('image_type');
+        if (!image_type)
+            // No image types available yet, so skip for now
+            return;
+
+        /* Replace the image for each plant on the page */
+
+        $('div.plant img').each(function(i, img) {
+
+            // See if the taxon has an image for the new image type.
+            var $img = $(img);
+            var scientific_name = $img.attr('x-plant-id');
+            var taxon = App3.taxa_by_sciname[scientific_name];
+            var new_image = _.find(taxon.images, function(image) {
+                return image.type === image_type});
+
+            if (new_image) {
+                $img.attr('x-tmp-src', new_image.thumb_url);
+                $img.attr('alt', new_image.title);
+                // Hide the empty box if it exists and make
+                // sure the image is visible.
+                $img.find('+ div.missing-image').remove();
+                $img.css('display', 'inline');
+
+            } else if ($img.css('display') !== 'none') {
+                // If there's no matching image display the
+                // empty box and hide the image
+                $img.css('display', 'none');
+                $('<div>', {
+                    'class': 'missing-image',
+                    'innerHTML': '<p>Image not available yet</p>'
+                }).appendTo($img);
+            }
+        });
+    }
+
     // Page load cascade - much of which is in the above code or over in
     // our legacy Dojo modules, but all of which would be clearer and
     // easier to think about and manage if it migrated down here.
@@ -738,7 +777,8 @@ results_page_init: function(args) {
     ).done(function(rh) {
         update_counts(App3.filtered_sorted_taxadata);
         rh.species_section.display_results(App3.filtered_sorted_taxadata);
-        rh.load_selected_image_type();
+        load_selected_image_type();
+        rh.species_section.lazy_load_images();
 
         App3.addObserver('filtered_sorted_taxadata', function() {
             update_counts(App3.filtered_sorted_taxadata);
@@ -746,7 +786,8 @@ results_page_init: function(args) {
         });
 
         App3.addObserver('image_type', function() {
-            rh.load_selected_image_type();
+            load_selected_image_type();
+            rh.species_section.lazy_load_images();
         });
     });
 
