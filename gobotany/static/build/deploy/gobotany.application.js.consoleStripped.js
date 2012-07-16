@@ -10,37 +10,24 @@ require([
 
 },
 'util/activate_search_suggest':function(){
-// JQuery is included here for documentation purposes
-// but AMD support is minimal at this point so we're
-// still using the global object
 require([
-    'dojo/ready',
     'bridge/jquery',
-    'simplekey/resources',
-    'gobotany/sk/SearchSuggest'
-], function(ready, $, resources, SearchSuggest) {
-    return ready(function() {
+    'simplekey/SearchSuggest'
+], function($, SearchSuggest) {
+    return $(document).ready(function() {
         var initial_search_box_value = $('#search input').val();
-        var search_suggest = SearchSuggest(initial_search_box_value);
+        var search_suggest = new SearchSuggest();
+        search_suggest.init(initial_search_box_value);
         search_suggest.setup();
     });
 });
 
 },
 'bridge/jquery':function(){
-// Name this module so the AMD loader knows how to cache it properly.
 define("bridge/jquery", [
     'jquery/jquery.tools.min'
 ], function(jquery) {
-    // jQuery loads itself into the global namespace by default, so
-    // to be a bit more AMD-like and return that same global jQuery
-    // object as the value of this AMD wrapper module.
-
-    // If this isn't true, jquery hasn't been loaded globally
-    if(window.$) {
-        jquery = window.$;
-    }
-    return jquery;
+    return jQuery;
 });
 
 },
@@ -91,2706 +78,293 @@ define("dojox/main", ["dojo/_base/kernel"], function(dojo) {
 	return dojo.dojox;
 });
 },
-'simplekey/resources':function(){
-/*
- * Async singletons.
- */
-define("simplekey/resources", [
-    'bridge/jquery',
-    'bridge/underscore'
-], function($, _) {
-    var module = {};
-
-    /*
-     * Return a Deferred for an AJAX request, which always simply
-     * returns the data from the call.  An actual $.ajax() object, by
-     * contrast, returns simple data to .get() but an awkward triple
-     * [data, status, jqXHR] when passed through $.when().
-     */
-    module.get = function(path, data) {
-        var d = $.Deferred();
-        $.ajax({
-            url: API_URL + path, data: data, traditional: true
-        }).done(function(r) {
-            d.resolve(r);
-        });
-        return d;
-    },
-    /*
-     * Our AJAX resources.
-     */
-
-    module.glossaryblob = _.memoize(function() {
-        return module.get('glossaryblob/');
-    });
-
-    module.pile = _.memoize(function(pile_slug) {
-        return module.get('piles/' + pile_slug + '/');
-    });
-    module.pile_characters = _.memoize(function(pile_slug) {
-        return module.get('piles/' + pile_slug + '/characters/');
-    });
-    module.more_questions = _.memoize(function(args) {
-        return module.get('piles/' + args.pile_slug + '/questions/', {
-            choose_best: 3,
-            species_ids: args.species_ids.join('_'),
-            character_group_id: args.character_group_ids,
-            exclude: args.exclude_characters
-        });
-    },
-        /* Custom hash function, so arguments that vary will always
-         * be considered. The default hash function for memoize just
-         * uses the first argument, which may have been the pile_slug. */
-        function(args) {
-            // Make a hash key out of the arguments that can vary.
-            return args.exclude_characters + args.character_group_ids +
-                   args.species_ids;
-        }
-    );
-    module.pile_species = _.memoize(function(pile_slug) {
-        return module.get('species/' + pile_slug + '/');
-    });
-
-    module.taxon_info = function(scientific_name) { // NOT memoized - save mem
-        save_name = scientific_name.replace(' ', '%20');
-        return module.get('taxon/' + save_name + '/');
-    };
-
-    module.character_vector = _.memoize(function(short_name) {
-        return module.get('vectors/character/' + short_name + '/');
-    });
-    module.key_vector = _.memoize(function(key_name) {
-        return module.get('vectors/key/' + key_name + '/');
-    });
-    module.pile_vector = _.memoize(function(pile_slug) {
-        return module.get('vectors/pile/' + pile_slug + '/');
-    });
-
-    /*
-     * Functions that combine data from multiple AJAX requests.
-     */
-    module.base_vector = _.memoize(function(args) {
-        var deferred = $.Deferred();
-        $.when(
-            module.key_vector(args.key_name),
-            module.pile_vector(args.pile_slug)
-        ).done(function(kv, pv) {
-            deferred.resolve(_.intersect(kv[0].species, pv[0].species));
-        });
-        return deferred;
-    });
-
-    simplekey_resources = module;  // global, for code still stuck in Dojo
-    return module;
-});
-
-},
-'bridge/underscore':function(){
-// AMD wrapper for underscore library
-define("bridge/underscore", [
-    'tools/underscore-min'
-], function(underscore) {
-    var module;
-    if(window._) {
-        // The library is loaded, so return the same
-        // underscore object again (the global)
-        module = _;
-    }
-
-    return module;
-});
-
-
-},
-'tools/underscore-min':function(){
-// wrapped by build app
-define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
-// Underscore.js 1.3.1
-// (c) 2009-2012 Jeremy Ashkenas, DocumentCloud Inc.
-// Underscore is freely distributable under the MIT license.
-// Portions of Underscore are inspired or borrowed from Prototype,
-// Oliver Steele's Functional, and John Resig's Micro-Templating.
-// For all details and documentation:
-// http://documentcloud.github.com/underscore
-(function(){function q(a,c,d){if(a===c)return a!==0||1/a==1/c;if(a==null||c==null)return a===c;if(a._chain)a=a._wrapped;if(c._chain)c=c._wrapped;if(a.isEqual&&b.isFunction(a.isEqual))return a.isEqual(c);if(c.isEqual&&b.isFunction(c.isEqual))return c.isEqual(a);var e=l.call(a);if(e!=l.call(c))return false;switch(e){case "[object String]":return a==String(c);case "[object Number]":return a!=+a?c!=+c:a==0?1/a==1/c:a==+c;case "[object Date]":case "[object Boolean]":return+a==+c;case "[object RegExp]":return a.source==
-c.source&&a.global==c.global&&a.multiline==c.multiline&&a.ignoreCase==c.ignoreCase}if(typeof a!="object"||typeof c!="object")return false;for(var f=d.length;f--;)if(d[f]==a)return true;d.push(a);var f=0,g=true;if(e=="[object Array]"){if(f=a.length,g=f==c.length)for(;f--;)if(!(g=f in a==f in c&&q(a[f],c[f],d)))break}else{if("constructor"in a!="constructor"in c||a.constructor!=c.constructor)return false;for(var h in a)if(b.has(a,h)&&(f++,!(g=b.has(c,h)&&q(a[h],c[h],d))))break;if(g){for(h in c)if(b.has(c,
-h)&&!f--)break;g=!f}}d.pop();return g}var r=this,G=r._,n={},k=Array.prototype,o=Object.prototype,i=k.slice,H=k.unshift,l=o.toString,I=o.hasOwnProperty,w=k.forEach,x=k.map,y=k.reduce,z=k.reduceRight,A=k.filter,B=k.every,C=k.some,p=k.indexOf,D=k.lastIndexOf,o=Array.isArray,J=Object.keys,s=Function.prototype.bind,b=function(a){return new m(a)};if(typeof exports!=="undefined"){if(typeof module!=="undefined"&&module.exports)exports=module.exports=b;exports._=b}else r._=b;b.VERSION="1.3.1";var j=b.each=
-b.forEach=function(a,c,d){if(a!=null)if(w&&a.forEach===w)a.forEach(c,d);else if(a.length===+a.length)for(var e=0,f=a.length;e<f;e++){if(e in a&&c.call(d,a[e],e,a)===n)break}else for(e in a)if(b.has(a,e)&&c.call(d,a[e],e,a)===n)break};b.map=b.collect=function(a,c,b){var e=[];if(a==null)return e;if(x&&a.map===x)return a.map(c,b);j(a,function(a,g,h){e[e.length]=c.call(b,a,g,h)});if(a.length===+a.length)e.length=a.length;return e};b.reduce=b.foldl=b.inject=function(a,c,d,e){var f=arguments.length>2;a==
-null&&(a=[]);if(y&&a.reduce===y)return e&&(c=b.bind(c,e)),f?a.reduce(c,d):a.reduce(c);j(a,function(a,b,i){f?d=c.call(e,d,a,b,i):(d=a,f=true)});if(!f)throw new TypeError("Reduce of empty array with no initial value");return d};b.reduceRight=b.foldr=function(a,c,d,e){var f=arguments.length>2;a==null&&(a=[]);if(z&&a.reduceRight===z)return e&&(c=b.bind(c,e)),f?a.reduceRight(c,d):a.reduceRight(c);var g=b.toArray(a).reverse();e&&!f&&(c=b.bind(c,e));return f?b.reduce(g,c,d,e):b.reduce(g,c)};b.find=b.detect=
-function(a,c,b){var e;E(a,function(a,g,h){if(c.call(b,a,g,h))return e=a,true});return e};b.filter=b.select=function(a,c,b){var e=[];if(a==null)return e;if(A&&a.filter===A)return a.filter(c,b);j(a,function(a,g,h){c.call(b,a,g,h)&&(e[e.length]=a)});return e};b.reject=function(a,c,b){var e=[];if(a==null)return e;j(a,function(a,g,h){c.call(b,a,g,h)||(e[e.length]=a)});return e};b.every=b.all=function(a,c,b){var e=true;if(a==null)return e;if(B&&a.every===B)return a.every(c,b);j(a,function(a,g,h){if(!(e=
-e&&c.call(b,a,g,h)))return n});return e};var E=b.some=b.any=function(a,c,d){c||(c=b.identity);var e=false;if(a==null)return e;if(C&&a.some===C)return a.some(c,d);j(a,function(a,b,h){if(e||(e=c.call(d,a,b,h)))return n});return!!e};b.include=b.contains=function(a,c){var b=false;if(a==null)return b;return p&&a.indexOf===p?a.indexOf(c)!=-1:b=E(a,function(a){return a===c})};b.invoke=function(a,c){var d=i.call(arguments,2);return b.map(a,function(a){return(b.isFunction(c)?c||a:a[c]).apply(a,d)})};b.pluck=
-function(a,c){return b.map(a,function(a){return a[c]})};b.max=function(a,c,d){if(!c&&b.isArray(a))return Math.max.apply(Math,a);if(!c&&b.isEmpty(a))return-Infinity;var e={computed:-Infinity};j(a,function(a,b,h){b=c?c.call(d,a,b,h):a;b>=e.computed&&(e={value:a,computed:b})});return e.value};b.min=function(a,c,d){if(!c&&b.isArray(a))return Math.min.apply(Math,a);if(!c&&b.isEmpty(a))return Infinity;var e={computed:Infinity};j(a,function(a,b,h){b=c?c.call(d,a,b,h):a;b<e.computed&&(e={value:a,computed:b})});
-return e.value};b.shuffle=function(a){var b=[],d;j(a,function(a,f){f==0?b[0]=a:(d=Math.floor(Math.random()*(f+1)),b[f]=b[d],b[d]=a)});return b};b.sortBy=function(a,c,d){return b.pluck(b.map(a,function(a,b,g){return{value:a,criteria:c.call(d,a,b,g)}}).sort(function(a,b){var c=a.criteria,d=b.criteria;return c<d?-1:c>d?1:0}),"value")};b.groupBy=function(a,c){var d={},e=b.isFunction(c)?c:function(a){return a[c]};j(a,function(a,b){var c=e(a,b);(d[c]||(d[c]=[])).push(a)});return d};b.sortedIndex=function(a,
-c,d){d||(d=b.identity);for(var e=0,f=a.length;e<f;){var g=e+f>>1;d(a[g])<d(c)?e=g+1:f=g}return e};b.toArray=function(a){return!a?[]:a.toArray?a.toArray():b.isArray(a)?i.call(a):b.isArguments(a)?i.call(a):b.values(a)};b.size=function(a){return b.toArray(a).length};b.first=b.head=function(a,b,d){return b!=null&&!d?i.call(a,0,b):a[0]};b.initial=function(a,b,d){return i.call(a,0,a.length-(b==null||d?1:b))};b.last=function(a,b,d){return b!=null&&!d?i.call(a,Math.max(a.length-b,0)):a[a.length-1]};b.rest=
-b.tail=function(a,b,d){return i.call(a,b==null||d?1:b)};b.compact=function(a){return b.filter(a,function(a){return!!a})};b.flatten=function(a,c){return b.reduce(a,function(a,e){if(b.isArray(e))return a.concat(c?e:b.flatten(e));a[a.length]=e;return a},[])};b.without=function(a){return b.difference(a,i.call(arguments,1))};b.uniq=b.unique=function(a,c,d){var d=d?b.map(a,d):a,e=[];b.reduce(d,function(d,g,h){if(0==h||(c===true?b.last(d)!=g:!b.include(d,g)))d[d.length]=g,e[e.length]=a[h];return d},[]);
-return e};b.union=function(){return b.uniq(b.flatten(arguments,true))};b.intersection=b.intersect=function(a){var c=i.call(arguments,1);return b.filter(b.uniq(a),function(a){return b.every(c,function(c){return b.indexOf(c,a)>=0})})};b.difference=function(a){var c=b.flatten(i.call(arguments,1));return b.filter(a,function(a){return!b.include(c,a)})};b.zip=function(){for(var a=i.call(arguments),c=b.max(b.pluck(a,"length")),d=Array(c),e=0;e<c;e++)d[e]=b.pluck(a,""+e);return d};b.indexOf=function(a,c,
-d){if(a==null)return-1;var e;if(d)return d=b.sortedIndex(a,c),a[d]===c?d:-1;if(p&&a.indexOf===p)return a.indexOf(c);for(d=0,e=a.length;d<e;d++)if(d in a&&a[d]===c)return d;return-1};b.lastIndexOf=function(a,b){if(a==null)return-1;if(D&&a.lastIndexOf===D)return a.lastIndexOf(b);for(var d=a.length;d--;)if(d in a&&a[d]===b)return d;return-1};b.range=function(a,b,d){arguments.length<=1&&(b=a||0,a=0);for(var d=arguments[2]||1,e=Math.max(Math.ceil((b-a)/d),0),f=0,g=Array(e);f<e;)g[f++]=a,a+=d;return g};
-var F=function(){};b.bind=function(a,c){var d,e;if(a.bind===s&&s)return s.apply(a,i.call(arguments,1));if(!b.isFunction(a))throw new TypeError;e=i.call(arguments,2);return d=function(){if(!(this instanceof d))return a.apply(c,e.concat(i.call(arguments)));F.prototype=a.prototype;var b=new F,g=a.apply(b,e.concat(i.call(arguments)));return Object(g)===g?g:b}};b.bindAll=function(a){var c=i.call(arguments,1);c.length==0&&(c=b.functions(a));j(c,function(c){a[c]=b.bind(a[c],a)});return a};b.memoize=function(a,
-c){var d={};c||(c=b.identity);return function(){var e=c.apply(this,arguments);return b.has(d,e)?d[e]:d[e]=a.apply(this,arguments)}};b.delay=function(a,b){var d=i.call(arguments,2);return setTimeout(function(){return a.apply(a,d)},b)};b.defer=function(a){return b.delay.apply(b,[a,1].concat(i.call(arguments,1)))};b.throttle=function(a,c){var d,e,f,g,h,i=b.debounce(function(){h=g=false},c);return function(){d=this;e=arguments;var b;f||(f=setTimeout(function(){f=null;h&&a.apply(d,e);i()},c));g?h=true:
-a.apply(d,e);i();g=true}};b.debounce=function(a,b){var d;return function(){var e=this,f=arguments;clearTimeout(d);d=setTimeout(function(){d=null;a.apply(e,f)},b)}};b.once=function(a){var b=false,d;return function(){if(b)return d;b=true;return d=a.apply(this,arguments)}};b.wrap=function(a,b){return function(){var d=[a].concat(i.call(arguments,0));return b.apply(this,d)}};b.compose=function(){var a=arguments;return function(){for(var b=arguments,d=a.length-1;d>=0;d--)b=[a[d].apply(this,b)];return b[0]}};
-b.after=function(a,b){return a<=0?b():function(){if(--a<1)return b.apply(this,arguments)}};b.keys=J||function(a){if(a!==Object(a))throw new TypeError("Invalid object");var c=[],d;for(d in a)b.has(a,d)&&(c[c.length]=d);return c};b.values=function(a){return b.map(a,b.identity)};b.functions=b.methods=function(a){var c=[],d;for(d in a)b.isFunction(a[d])&&c.push(d);return c.sort()};b.extend=function(a){j(i.call(arguments,1),function(b){for(var d in b)a[d]=b[d]});return a};b.defaults=function(a){j(i.call(arguments,
-1),function(b){for(var d in b)a[d]==null&&(a[d]=b[d])});return a};b.clone=function(a){return!b.isObject(a)?a:b.isArray(a)?a.slice():b.extend({},a)};b.tap=function(a,b){b(a);return a};b.isEqual=function(a,b){return q(a,b,[])};b.isEmpty=function(a){if(b.isArray(a)||b.isString(a))return a.length===0;for(var c in a)if(b.has(a,c))return false;return true};b.isElement=function(a){return!!(a&&a.nodeType==1)};b.isArray=o||function(a){return l.call(a)=="[object Array]"};b.isObject=function(a){return a===Object(a)};
-b.isArguments=function(a){return l.call(a)=="[object Arguments]"};if(!b.isArguments(arguments))b.isArguments=function(a){return!(!a||!b.has(a,"callee"))};b.isFunction=function(a){return l.call(a)=="[object Function]"};b.isString=function(a){return l.call(a)=="[object String]"};b.isNumber=function(a){return l.call(a)=="[object Number]"};b.isNaN=function(a){return a!==a};b.isBoolean=function(a){return a===true||a===false||l.call(a)=="[object Boolean]"};b.isDate=function(a){return l.call(a)=="[object Date]"};
-b.isRegExp=function(a){return l.call(a)=="[object RegExp]"};b.isNull=function(a){return a===null};b.isUndefined=function(a){return a===void 0};b.has=function(a,b){return I.call(a,b)};b.noConflict=function(){r._=G;return this};b.identity=function(a){return a};b.times=function(a,b,d){for(var e=0;e<a;e++)b.call(d,e)};b.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#x27;").replace(/\//g,"&#x2F;")};b.mixin=function(a){j(b.functions(a),
-function(c){K(c,b[c]=a[c])})};var L=0;b.uniqueId=function(a){var b=L++;return a?a+b:b};b.templateSettings={evaluate:/<%([\s\S]+?)%>/g,interpolate:/<%=([\s\S]+?)%>/g,escape:/<%-([\s\S]+?)%>/g};var t=/.^/,u=function(a){return a.replace(/\\\\/g,"\\").replace(/\\'/g,"'")};b.template=function(a,c){var d=b.templateSettings,d="var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('"+a.replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(d.escape||t,function(a,b){return"',_.escape("+
-u(b)+"),'"}).replace(d.interpolate||t,function(a,b){return"',"+u(b)+",'"}).replace(d.evaluate||t,function(a,b){return"');"+u(b).replace(/[\r\n\t]/g," ")+";__p.push('"}).replace(/\r/g,"\\r").replace(/\n/g,"\\n").replace(/\t/g,"\\t")+"');}return __p.join('');",e=new Function("obj","_",d);return c?e(c,b):function(a){return e.call(this,a,b)}};b.chain=function(a){return b(a).chain()};var m=function(a){this._wrapped=a};b.prototype=m.prototype;var v=function(a,c){return c?b(a).chain():a},K=function(a,c){m.prototype[a]=
-function(){var a=i.call(arguments);H.call(a,this._wrapped);return v(c.apply(b,a),this._chain)}};b.mixin(b);j("pop,push,reverse,shift,sort,splice,unshift".split(","),function(a){var b=k[a];m.prototype[a]=function(){var d=this._wrapped;b.apply(d,arguments);var e=d.length;(a=="shift"||a=="splice")&&e===0&&delete d[0];return v(d,this._chain)}});j(["concat","join","slice"],function(a){var b=k[a];m.prototype[a]=function(){return v(b.apply(this._wrapped,arguments),this._chain)}});m.prototype.chain=function(){this._chain=
-true;return this};m.prototype.value=function(){return this._wrapped}}).call(this);
-
-});
-
-},
-'gobotany/sk/SearchSuggest':function(){
+'simplekey/SearchSuggest':function(){
 /* Code for a search suggestions menu on the site-wide search box. */
 
 // Configure this module here until we finish the migration
-define("gobotany/sk/SearchSuggest", ['dojo/_base/declare',
-        'dojox/data/JsonRestStore',
-        'dojo/query',
-        'dojo/on',
-        'dojo/_base/connect',
-        'dojo/_base/lang',
-        'dojo/keys',
-        'dojo/dom',
-        'dojo/dom-class',
-        'dojo/dom-geometry',
-        'dojo/dom-construct',
-        'dojo/dom-prop'],
-    function(declare, JsonRestStore, query, on, connect, lang, keys,
-             dom, domClass, domGeom, domConstruct, domProp) {
-        return declare('gobotany.sk.SearchSuggest', null, {
-            constants: {TIMEOUT_INTERVAL_MS: 200},
-            stored_search_box_value: '',
-            search_box: null,
-            menu: null,
-            menu_list: null,
-            result_cache: {}, // for caching results for each search queried
+define("simplekey/SearchSuggest", [
+    'bridge/jquery'
+], function($) {
 
-            constructor: function(initial_search_box_value) {
-                if ((initial_search_box_value !== undefined) &&
-                    (initial_search_box_value.length)) {
-                    // The initial search box value (optional) is a value that
-                    // is expected to be in the search box once the page is
-                    // initialized. This is to prevent the
-                    // has_search_box_changed function from detecting a change
-                    // event when the box is initially populated.
-                    this.stored_search_box_value = initial_search_box_value;
-                }
+    var TIMEOUT_INTERVAL_MS = 200;
+    var keyCode = {
+        DOWN: 40,
+        UP: 38,
+        TAB: 9,
+        ESCAPE: 27
+    };
 
-                this.search_box = query('#search-suggest input')[0];
-                if (this.search_box === undefined) {
-                    console.error('SearchSuggest.js: Search box not found.');
-                }
+    var SearchSuggest = function() {};
+    SearchSuggest.prototype = {};
 
-                this.menu = query('#search-suggest .menu')[0];
-                if (this.menu === undefined) {
-                    console.error('SearchSuggest.js: Menu not found.');
-                }
+    SearchSuggest.prototype.init = function(initial_search_box_value) {
+        // The initial search box value (optional) is a value that
+        // is expected to be in the search box once the page is
+        // initialized. This is to prevent the
+        // has_search_box_changed function from detecting a change
+        // event when the box is initially populated.
+        this.stored_search_box_value = initial_search_box_value;
 
-                this.menu_list = query('#search-suggest .menu ul')[0];
-                if (this.menu_list === undefined) {
-                    console.error('SearchSuggest.js: Menu list not found.');
-                }
-            },
+        this.search_box = $('#search-suggest input').first();
+        if (this.search_box.length == 0) {
+            console.error('SearchSuggest.js: Search box not found.');
+        }
 
-            setup: function() {
-                // Set up a handler that runs every so often to check for
-                // search box changes.
-                this.set_timer();
+        this.menu = $('#search-suggest .menu').first();
+        if (this.menu.length == 0) {
+            console.error('SearchSuggest.js: Menu not found.');
+        }
 
-                // Set up keyboard event handlers.
-                connect.connect(this.search_box, 'keypress',
-                    lang.hitch(this, this.handle_keys));
+        this.menu_list = $('#search-suggest .menu ul').first();
+        if (this.menu_list.length == 0) {
+            console.error('SearchSuggest.js: Menu list not found.');
+        }
 
-                // Adjust the horizontal position of the menu when the browser
-                // window is resized.
-                connect.connect(window, 'resize',
-                    lang.hitch(this, this.set_horizontal_position));
-            },
+        this.result_cache = {};  // for caching results for each search queried
+    };
 
-            get_highlighted_menu_item_index: function() {
-                var found = false;
-                var menu_items = query('li', this.menu);
-                var item_index = -1;
-                var i = 0;
-                while ((found === false) && (i < menu_items.length)) {
-                    if (domClass.contains(menu_items[i], 'highlighted')) {
-                        found = true;
-                        item_index = i;
-                    }
-                    i += 1;
-                }
-                return item_index;
-            },
+    SearchSuggest.prototype.setup = function() {
+        // Set up a handler that runs every so often to check for
+        // search box changes.
+        this.set_timer();
 
-            get_text_from_item_html: function(item_html) {
-                // Get the text value of a suggestion from its list item HTML.
-                var begin = item_html.indexOf('q=') + 2;
-                var end = item_html.indexOf('">');
-                var text = item_html.slice(begin, end);
-                return text;
-            },
+        // Set up keyboard event handlers.
+        this.search_box.keyup($.proxy(this.handle_keys, this));
 
-            highlight_menu_item: function(item_index) {
-                var HIGHLIGHT_CLASS = 'highlighted';
+        // Adjust the horizontal position of the menu when the browser
+        // window is resized.
+        $(window).resize($.proxy(this.set_horizontal_position, this));
+    };
 
-                var menu_item = query('li', this.menu)[item_index];
+    SearchSuggest.prototype.get_highlighted_menu_item_index = function() {
+        var item_index = this.menu.find('li.highlighted').index();
 
-                if (menu_item !== undefined) {
-                    // First turn off any already-highlighted item.
-                    var highlighted_item_index =
-                        this.get_highlighted_menu_item_index();
-                    if (highlighted_item_index >= 0) {
-                        var highlighted_item =
-                            query('li', this.menu)[highlighted_item_index];
-                        domClass.remove(highlighted_item, HIGHLIGHT_CLASS);
-                    }
+        return item_index;
+    };
 
-                    // Highlight the new item.
-                    domClass.add(menu_item, HIGHLIGHT_CLASS);
+    SearchSuggest.prototype.get_text_from_item_html = function(item_html) {
+        // Get the text value of a suggestion from its list item HTML.
+        var begin = item_html.indexOf('q=') + 2;
+        var end = item_html.indexOf('">');
+        var text = item_html.slice(begin, end);
+        return text;
+    };
 
-                    // Put the menu item text in the search box, but
-                    // first set the stored value so this won't fire a
-                    // change event.
-                    var menu_item_text = unescape(
-                        this.get_text_from_item_html(menu_item.innerHTML));
-                    this.stored_search_box_value = menu_item_text;
-                    this.search_box.value = menu_item_text;
-                }
-                else {
-                    0 && console.log('menu item ' + item_index + ' undefined');
-                }
-            },
+    SearchSuggest.prototype.highlight_menu_item = function(item_index) {
+        var HIGHLIGHT_CLASS = 'highlighted';
 
-            highlight_next_menu_item: function() {
-                var highlighted_item_index = 
-                    this.get_highlighted_menu_item_index();
-                var next_item_index = highlighted_item_index + 1;
-                var num_menu_items = query('li', this.menu).length;
-                if (next_item_index >= num_menu_items) {
-                    next_item_index = 0;
-                }
-                this.highlight_menu_item(next_item_index);
-            },
+        var menu_item = this.menu.find('li').eq(item_index);
 
-            highlight_previous_menu_item: function() {
-                var highlighted_item_index = 
-                    this.get_highlighted_menu_item_index();
-                var previous_item_index = highlighted_item_index - 1;
-                var num_menu_items = query('li', this.menu).length;
-                if (previous_item_index < 0) {
-                    previous_item_index = num_menu_items - 1;
-                }
-                this.highlight_menu_item(previous_item_index);
-            },
-
-            handle_keys: function(e) {
-                switch (e.charOrCode) {
-                    case keys.DOWN_ARROW:
-                        this.highlight_next_menu_item();
-                        break;
-                    case keys.UP_ARROW:
-                        this.highlight_previous_menu_item();
-                        break;
-                    case keys.TAB:
-                    case keys.ESCAPE:
-                        this.show_menu(false);
-                        break;
-                }
-            },
-
-            set_timer: function(interval_milliseconds) {
-                // Set the timer that calls the change-monitoring function.
-                // This repeats indefinitely.
-                setTimeout(lang.hitch(this, this.check_for_change),
-                    this.constants.TIMEOUT_INTERVAL_MS);
-            },
-
-            check_for_change: function() {
-                if (this.has_search_box_changed()) {
-                    this.handle_search_query();
-                }
-
-                // Set the timer again to keep the loop going.
-                this.set_timer();
-            },
-
-            has_search_box_changed: function() {
-                var has_changed = false;
-
-                // See if the current value of the text field differs from
-                // what is stored in the instance. Used to decide whether to
-                // fetch results.
-                if (this.search_box.value !== this.stored_search_box_value) {
-                    has_changed = true;
-                    this.stored_search_box_value = this.search_box.value;
-                }
-
-                return has_changed;
-            },
-
-            set_horizontal_position: function() {
-                // Adjust the menu's horizontal position so it lines up with
-                // the search box regardless of window width.
-                var box_position = domGeom.position(this.search_box, true);
-                this.menu.style.left = (box_position.x - 3) + 'px';
-            },
-
-            show_menu: function(should_show) {
-                var CLASS_NAME = 'hidden';
-                if (should_show) {
-                    domClass.remove(this.menu, CLASS_NAME);
-                }
-                else {
-                    domClass.add(this.menu, CLASS_NAME);
-                }
-                this.set_horizontal_position();
-            },
-
-            format_suggestion: function(suggestion, search_query) {
-                // Format a suggestion for display.
-                return (suggestion = search_query + '<strong>' +
-                    suggestion.substr(search_query.length) +
-                    '</strong>').toLowerCase();
-            },
-
-            display_suggestions: function(suggestions, search_query) {
-                domConstruct.empty(this.menu_list);
-
-                if (suggestions.length > 0) {
-                    this.show_menu(true);
-
-                    var i;
-                    for (i = 0; i < suggestions.length; i += 1) {
-                        var suggestion = suggestions[i];
-                        var url = SEARCH_URL + '?q=' + 
-                            suggestion.toLowerCase();
-                        var label = this.format_suggestion(suggestion,
-                            search_query);
-                        var item = domConstruct.create('li');
-                        domConstruct.create('a',
-                            {href: url, innerHTML: label}, item);
-                        on(item, 'click',
-                            lang.hitch(this, this.select_suggestion, item));
-                        domConstruct.place(item, this.menu_list);
-                    }
-                }
-                else {
-                    this.show_menu(false);
-                }
-            },
-
-            get_cached_suggestions: function(search_query) {
-                return this.result_cache[search_query];
-            },
-
-            get_suggestions: function(search_query) {
-                var store = new JsonRestStore({target: SUGGEST_URL});
-                store.fetch({
-                    query: {q: search_query},
-                    scope: this,
-                    onComplete: function(suggestions) {
-                        this.result_cache[search_query] = suggestions;
-                        this.display_suggestions(suggestions, search_query);
-                    }
-                });
-            },
-
-            handle_search_query: function() {
-                var search_query = this.stored_search_box_value;
-                if (search_query.length > 0) {
-                    // First check the results cache to see if this value had
-                    // been queried previously.
-                    var suggestions = this.get_cached_suggestions(
-                        search_query);
-                    if (suggestions === undefined) {
-                        // Call the server and let the asynchronous response
-                        // update the display.
-                        this.get_suggestions(search_query);
-                    }
-                    else {
-                        this.display_suggestions(suggestions, search_query);
-                    }
-                }
-                else {
-                    // Hide the menu because the search box is empty.
-                    this.show_menu(false);
-                }
-            },
-
-            select_suggestion: function(list_item) {
-                // Go to search results for the item selected.
-                var link = query('a', list_item)[0];
-                if (link !== undefined) {
-                    var href = domProp.get(link, 'href');
-                    if (href !== undefined) {
-                        var search_string =
-                            unescape(href.substring(href.indexOf('=') + 1));
-                        // Store the search string before updating the search
-                        // box in order to prevent a change event from firing.
-                        this.stored_search_box_value = search_string;
-                        this.search_box.value = search_string;
-                        this.show_menu(false);
-                        window.location.href = href;
-                    }
-                }
+        if (menu_item !== undefined) {
+            // First turn off any already-highlighted item.
+            var highlighted_item_index =
+                this.get_highlighted_menu_item_index();
+            if (highlighted_item_index >= 0) {
+                this.menu
+                    .find('li')
+                    .eq(highlighted_item_index)
+                    .removeClass(HIGHLIGHT_CLASS);
             }
+
+            // Highlight the new item.
+            menu_item.addClass(HIGHLIGHT_CLASS);
+
+            // Put the menu item text in the search box, but
+            // first set the stored value so this won't fire a
+            // change event.
+            var menu_item_text = unescape(
+                this.get_text_from_item_html(menu_item.html()));
+            this.stored_search_box_value = menu_item_text;
+            this.search_box.val(menu_item_text);
+        }
+        else {
+            0 && console.log('menu item ' + item_index + ' undefined');
+        }
+    };
+
+    SearchSuggest.prototype.highlight_next_menu_item = function() {
+        var highlighted_item_index = 
+            this.get_highlighted_menu_item_index();
+        var next_item_index = highlighted_item_index + 1;
+        var num_menu_items = this.menu.find('li').length;
+        if (next_item_index >= num_menu_items) {
+            next_item_index = 0;
+        }
+        this.highlight_menu_item(next_item_index);
+    };
+
+    SearchSuggest.prototype.highlight_previous_menu_item = function() {
+        var highlighted_item_index = 
+            this.get_highlighted_menu_item_index();
+        var previous_item_index = highlighted_item_index - 1;
+        var num_menu_items = this.menu.find('li').length;
+        if (previous_item_index < 0) {
+            previous_item_index = num_menu_items - 1;
+        }
+        this.highlight_menu_item(previous_item_index);
+    };
+
+    SearchSuggest.prototype.handle_keys = function(e) {
+        switch (e.which) {
+            case keyCode.DOWN:
+                this.highlight_next_menu_item();
+                break;
+            case keyCode.UP:
+                this.highlight_previous_menu_item();
+                break;
+            case keyCode.TAB:
+            case keyCode.ESCAPE:
+                this.show_menu(false);
+                break;
+        }
+    };
+
+    SearchSuggest.prototype.set_timer = function(interval_milliseconds) {
+        // Set the timer that calls the change-monitoring function.
+        // This repeats indefinitely.
+        setTimeout($.proxy(this.check_for_change, this), TIMEOUT_INTERVAL_MS);
+    };
+
+    SearchSuggest.prototype.check_for_change = function() {
+        if (this.has_search_box_changed()) {
+            this.handle_search_query();
+        }
+
+        // Set the timer again to keep the loop going.
+        this.set_timer();
+    };
+
+    SearchSuggest.prototype.has_search_box_changed = function() {
+        var has_changed = false;
+
+        // See if the current value of the text field differs from
+        // what is stored in the instance. Used to decide whether to
+        // fetch results.
+        if (this.search_box.val() !== this.stored_search_box_value) {
+            has_changed = true;
+            this.stored_search_box_value = this.search_box.val();
+        }
+
+        return has_changed;
+    };
+
+    SearchSuggest.prototype.set_horizontal_position = function() {
+        // Adjust the menu's horizontal position so it lines up with
+        // the search box regardless of window width.
+        var box_position = this.search_box.offset();
+        this.menu.css('left', (box_position.left - 3) + 'px');
+    };
+
+    SearchSuggest.prototype.show_menu = function(should_show) {
+        var CLASS_NAME = 'hidden';
+        if (should_show) {
+            this.menu.removeClass(CLASS_NAME);
+        }
+        else {
+            this.menu.addClass(CLASS_NAME);
+        }
+        this.set_horizontal_position();
+    };
+
+    SearchSuggest.prototype.format_suggestion = function(
+        suggestion, search_query
+    ) {
+        // Format a suggestion for display.
+        return (suggestion = search_query + '<strong>' +
+            suggestion.substr(search_query.length) +
+            '</strong>').toLowerCase();
+    },
+
+    SearchSuggest.prototype.display_suggestions = function(
+        suggestions, search_query
+    ) {
+        this.menu_list.empty();
+
+        if (suggestions.length > 0) {
+            this.show_menu(true);
+
+            var i;
+            for (i = 0; i < suggestions.length; i += 1) {
+                var suggestion = suggestions[i];
+                // Replace any hyphens because the current search
+                // configuration does not fully support querying with them.
+                var query_value = suggestion.toLowerCase().replace(/\-/g,
+                                                                   ' ');
+                var url = SEARCH_URL + '?q=' + query_value;
+                var label = this.format_suggestion(suggestion,
+                    search_query);
+                var item = $(document.createElement('li'));
+                var link = $(document.createElement('a'));
+                link.attr('href', url);
+                link.html(label);
+                item.append(link);
+                item.bind('click', {item: item}, $.proxy(function(event) {
+                    this.select_suggestion(event.data.item);
+                }, this));
+                this.menu_list.append(item);
+            }
+        }
+        else {
+            this.show_menu(false);
+        }
+    };
+
+    SearchSuggest.prototype.get_cached_suggestions = function(search_query) {
+        return this.result_cache[search_query];
+    };
+
+    SearchSuggest.prototype.get_suggestions = function(search_query) {
+        $.ajax({
+            url: SUGGEST_URL,
+            data: {q: search_query},
+            context: this
+        }).done(function(suggestions) {
+            this.result_cache[search_query] = suggestions;
+            this.display_suggestions(suggestions, search_query);
         });
-    }
-);
-
-},
-'dojox/data/JsonRestStore':function(){
-define("dojox/data/JsonRestStore", ["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojox/rpc/Rest", 
-		"dojox/rpc/JsonRest", "dojox/json/schema", "dojox/data/ServiceStore"], 
-  function(lang, declare, connect, rpcRest, rpcJsonRest, jsonSchema, ServiceStore) {
-
-/*=====
-var ServiceStore = dojox.data.ServiceStore;
-=====*/
-
-var JsonRestStore = declare("dojox.data.JsonRestStore", ServiceStore,
-	{
-		constructor: function(options){
-			//summary:
-			//		JsonRestStore is a Dojo Data store interface to JSON HTTP/REST web
-			//		storage services that support read and write through GET, PUT, POST, and DELETE.
-			// options:
-			// 		Keyword arguments
-			//
-			// The *schema* parameter
-			//		This is a schema object for this store. This should be JSON Schema format.
-			//
-			// The *service* parameter
-			// 		This is the service object that is used to retrieve lazy data and save results
-			// 		The function should be directly callable with a single parameter of an object id to be loaded
-			// 		The function should also have the following methods:
-			// 			put(id,value) - puts the value at the given id
-			// 			post(id,value) - posts (appends) the value at the given id
-			// 			delete(id) - deletes the value corresponding to the given id
-			//		Note that it is critical that the service parses responses as JSON.
-			//		If you are using dojox.rpc.Service, the easiest way to make sure this
-			// 		happens is to make the responses have a content type of
-			// 		application/json. If you are creating your own service, make sure you
-			//		use handleAs: "json" with your XHR requests.
-			//
-			// The *target* parameter
-			// 		This is the target URL for this Service store. This may be used in place
-			// 		of a service parameter to connect directly to RESTful URL without
-			// 		using a dojox.rpc.Service object.
-			//
-			// The *idAttribute* parameter
-			//		Defaults to 'id'. The name of the attribute that holds an objects id.
-			//		This can be a preexisting id provided by the server.
-			//		If an ID isn't already provided when an object
-			//		is fetched or added to the store, the autoIdentity system
-			//		will generate an id for it and add it to the index.
-			//
-			// The *syncMode* parameter
-			//		Setting this to true will set the store to using synchronous calls by default.
-			//		Sync calls return their data immediately from the calling function, so
-			//		callbacks are unnecessary
-			//
-			//	description:
-			//		The JsonRestStore will cause all saved modifications to be sent to the server using Rest commands (PUT, POST, or DELETE).
-			// 		When using a Rest store on a public network, it is important to implement proper security measures to
-			//		control access to resources.
-			//		On the server side implementing a REST interface means providing GET, PUT, POST, and DELETE handlers.
-			//		GET - Retrieve an object or array/result set, this can be by id (like /table/1) or with a
-			// 			query (like /table/?name=foo).
-			//		PUT - This should modify a object, the URL will correspond to the id (like /table/1), and the body will
-			// 			provide the modified object
-			//		POST - This should create a new object. The URL will correspond to the target store (like /table/)
-			// 			and the body should be the properties of the new object. The server's response should include a
-			// 			Location header that indicates the id of the newly created object. This id will be used for subsequent
-			// 			PUT and DELETE requests. JsonRestStore also includes a Content-Location header that indicates
-			//			the temporary randomly generated id used by client, and this location is used for subsequent
-			// 			PUT/DELETEs if no Location header is provided by the server or if a modification is sent prior
-			// 			to receiving a response from the server.
-			// 		DELETE - This should delete an object by id.
-			// 		These articles include more detailed information on using the JsonRestStore:
-			//		http://www.sitepen.com/blog/2008/06/13/restful-json-dojo-data/
-			//		http://blog.medryx.org/2008/07/24/jsonreststore-overview/
-			//
-			//	example:
-			// 		A JsonRestStore takes a REST service or a URL and uses it the remote communication for a
-			// 		read/write dojo.data implementation. A JsonRestStore can be created with a simple URL like:
-			// 	|	new JsonRestStore({target:"/MyData/"});
-			//	example:
-			// 		To use a JsonRestStore with a service, you should create a
-			// 		service with a REST transport. This can be configured with an SMD:
-			//	|	{
-			//	|		services: {
-			//	|			jsonRestStore: {
-			//	|				transport: "REST",
-			//	|				envelope: "URL",
-			//	|				target: "store.php",
-			//	|				contentType:"application/json",
-			//	|				parameters: [
-			//	|					{name: "location", type: "string", optional: true}
-			//	|				]
-			//	|			}
-			//	|		}
-			//	|	}
-			// 		The SMD can then be used to create service, and the service can be passed to a JsonRestStore. For example:
-			//	|	var myServices = new dojox.rpc.Service(dojo.moduleUrl("dojox.rpc.tests.resources", "test.smd"));
-			//	|	var jsonStore = new dojox.data.JsonRestStore({service:myServices.jsonRestStore});
-			//	example:
-			//		The JsonRestStore also supports lazy loading. References can be made to objects that have not been loaded.
-			//		For example if a service returned:
-			//	|	{"name":"Example","lazyLoadedObject":{"$ref":"obj2"}}
-			// 		And this object has accessed using the dojo.data API:
-			//	|	var obj = jsonStore.getValue(myObject,"lazyLoadedObject");
-			//		The object would automatically be requested from the server (with an object id of "obj2").
-			//
-
-			connect.connect(rpcRest._index,"onUpdate",this,function(obj,attrName,oldValue,newValue){
-				var prefix = this.service.servicePath;
-				if(!obj.__id){
-					0 && console.log("no id on updated object ", obj);
-				}else if(obj.__id.substring(0,prefix.length) == prefix){
-					this.onSet(obj,attrName,oldValue,newValue);
-				}
-			});
-			this.idAttribute = this.idAttribute || 'id';// no options about it, we have to have identity
-
-			if(typeof options.target == 'string'){
-				options.target = options.target.match(/\/$/) || this.allowNoTrailingSlash ? options.target : (options.target + '/');
-				if(!this.service){
-					this.service = rpcJsonRest.services[options.target] ||
-							rpcRest(options.target, true);
-					// create a default Rest service
-				}
-			}
-
-			rpcJsonRest.registerService(this.service, options.target, this.schema);
-			this.schema = this.service._schema = this.schema || this.service._schema || {};
-			// wrap the service with so it goes through JsonRest manager
-			this.service._store = this;
-			this.service.idAsRef = this.idAsRef;
-			this.schema._idAttr = this.idAttribute;
-			var constructor = rpcJsonRest.getConstructor(this.service);
-			var self = this;
-			this._constructor = function(data){
-				constructor.call(this, data);
-				self.onNew(this);
-			}
-			this._constructor.prototype = constructor.prototype;
-			this._index = rpcRest._index;
-		},
-		
-		// summary:
-		//		Will load any schemas referenced content-type header or in Link headers
-		loadReferencedSchema: true,
-		// summary:
-		//		Treat objects in queries as partially loaded objects
-		idAsRef: false,
-		referenceIntegrity: true,
-		target:"",
-		// summary:
-		// 		Allow no trailing slash on target paths. This is generally discouraged since
-		// 		it creates prevents simple scalar values from being used a relative URLs.
-		// 		Disabled by default.
-		allowNoTrailingSlash: false,
-		//Write API Support
-		newItem: function(data, parentInfo){
-			// summary:
-			//		adds a new item to the store at the specified point.
-			//		Takes two parameters, data, and options.
-			//
-			//	data: /* object */
-			//		The data to be added in as an item.
-			data = new this._constructor(data);
-			if(parentInfo){
-				// get the previous value or any empty array
-				var values = this.getValue(parentInfo.parent,parentInfo.attribute,[]);
-				// set the new value
-				values = values.concat([data]);
-				data.__parent = values;
-				this.setValue(parentInfo.parent, parentInfo.attribute, values);
-			}
-			return data;
-		},
-		deleteItem: function(item){
-			// summary:
-			//		deletes item and any references to that item from the store.
-			//
-			//	item:
-			//		item to delete
-			//
-
-			//	If the desire is to delete only one reference, unsetAttribute or
-			//	setValue is the way to go.
-			var checked = [];
-			var store = dataExtCfg._getStoreForItem(item) || this;
-			if(this.referenceIntegrity){
-				// cleanup all references
-				rpcJsonRest._saveNotNeeded = true;
-				var index = rpcRest._index;
-				var fixReferences = function(parent){
-					var toSplice;
-					// keep track of the checked ones
-					checked.push(parent);
-					// mark it checked so we don't run into circular loops when encountering cycles
-					parent.__checked = 1;
-					for(var i in parent){
-						if(i.substring(0,2) != "__"){
-							var value = parent[i];
-							if(value == item){
-								if(parent != index){ // make sure we are just operating on real objects
-									if(parent instanceof Array){
-										// mark it as needing to be spliced, don't do it now or it will mess up the index into the array
-										(toSplice = toSplice || []).push(i);
-									}else{
-										// property, just delete it.
-										(dataExtCfg._getStoreForItem(parent) || store).unsetAttribute(parent, i);
-									}
-								}
-							}else{
-								if((typeof value == 'object') && value){
-									if(!value.__checked){
-										// recursively search
-										fixReferences(value);
-									}
-									if(typeof value.__checked == 'object' && parent != index){
-										// if it is a modified array, we will replace it
-										(dataExtCfg._getStoreForItem(parent) || store).setValue(parent, i, value.__checked);
-									}
-								}
-							}
-						}
-					}
-					if(toSplice){
-						// we need to splice the deleted item out of these arrays
-						i = toSplice.length;
-						parent = parent.__checked = parent.concat(); // indicates that the array is modified
-						while(i--){
-							parent.splice(toSplice[i], 1);
-						}
-						return parent;
-					}
-					return null;
-				};
-				// start with the index
-				fixReferences(index);
-				rpcJsonRest._saveNotNeeded = false;
-				var i = 0;
-				while(checked[i]){
-					// remove the checked marker
-					delete checked[i++].__checked;
-				}
-			}
-			rpcJsonRest.deleteObject(item);
-
-			store.onDelete(item);
-		},
-		changing: function(item,_deleting){
-			// summary:
-			//		adds an item to the list of dirty items.	This item
-			//		contains a reference to the item itself as well as a
-			//		cloned and trimmed version of old item for use with
-			//		revert.
-			rpcJsonRest.changing(item,_deleting);
-		},
-		cancelChanging : function(object){
-			//	summary:
-			// 		Removes an object from the list of dirty objects
-			//		This will prevent that object from being saved to the server on the next save
-			//	object:
-			//		The item to cancel changes on
-			if(!object.__id){
-				return;
-			}
-			dirtyObjects = dirty=rpcJsonRest.getDirtyObjects();
-			for(var i=0; i<dirtyObjects.length; i++){
-				var dirty = dirtyObjects[i];
-				if(object==dirty.object){
-					dirtyObjects.splice(i, 1);
-					return;
-				}
-			}
-	
-		},
-
-		setValue: function(item, attribute, value){
-			// summary:
-			//		sets 'attribute' on 'item' to 'value'
-
-			var old = item[attribute];
-			var store = item.__id ? dataExtCfg._getStoreForItem(item) : this;
-			if(jsonSchema && store.schema && store.schema.properties){
-				// if we have a schema and schema validator available we will validate the property change
-				jsonSchema.mustBeValid(jsonSchema.checkPropertyChange(value,store.schema.properties[attribute]));
-			}
-			if(attribute == store.idAttribute){
-				throw new Error("Can not change the identity attribute for an item");
-			}
-			store.changing(item);
-			item[attribute]=value;
-			if(value && !value.__parent){
-				value.__parent = item;
-			}
-			store.onSet(item,attribute,old,value);
-		},
-		setValues: function(item, attribute, values){
-			// summary:
-			//	sets 'attribute' on 'item' to 'value' value
-			//	must be an array.
-
-
-			if(!lang.isArray(values)){
-				throw new Error("setValues expects to be passed an Array object as its value");
-			}
-			this.setValue(item,attribute,values);
-		},
-
-		unsetAttribute: function(item, attribute){
-			// summary:
-			//		unsets 'attribute' on 'item'
-
-			this.changing(item);
-			var old = item[attribute];
-			delete item[attribute];
-			this.onSet(item,attribute,old,undefined);
-		},
-		save: function(kwArgs){
-			// summary:
-			//		Saves the dirty data using REST Ajax methods. See dojo.data.api.Write for API.
-			//
-			//	kwArgs.global:
-			//		This will cause the save to commit the dirty data for all
-			// 		JsonRestStores as a single transaction.
-			//
-			//	kwArgs.revertOnError
-			//		This will cause the changes to be reverted if there is an
-			//		error on the save. By default a revert is executed unless
-			//		a value of false is provide for this parameter.
-			//
-			//	kwArgs.incrementalUpdates
-			//		For items that have been updated, if this is enabled, the server will be sent a POST request
-			// 		with a JSON object containing the changed properties. By default this is
-			// 		not enabled, and a PUT is used to deliver an update, and will include a full
-			// 		serialization of all the properties of the item/object.
-			//		If this is true, the POST request body will consist of a JSON object with
-			// 		only the changed properties. The incrementalUpdates parameter may also
-			//		be a function, in which case it will be called with the updated and previous objects
-			//		and an object update representation can be returned.
-			//
-			//	kwArgs.alwaysPostNewItems
-			//		If this is true, new items will always be sent with a POST request. By default
-			//		this is not enabled, and the JsonRestStore will send a POST request if
-			//		the item does not include its identifier (expecting server assigned location/
-			//		identifier), and will send a PUT request if the item does include its identifier
-			//		(the PUT will be sent to the URI corresponding to the provided identifier).
-
-			if(!(kwArgs && kwArgs.global)){
-				(kwArgs = kwArgs || {}).service = this.service;
-			}
-			if("syncMode" in kwArgs ? kwArgs.syncMode : this.syncMode){
-				rpcConfig._sync = true;
-			}
-
-			var actions = rpcJsonRest.commit(kwArgs);
-			this.serverVersion = this._updates && this._updates.length;
-			return actions;
-		},
-
-		revert: function(kwArgs){
-			// summary
-			//		returns any modified data to its original state prior to a save();
-			//
-			//	kwArgs.global:
-			//		This will cause the revert to undo all the changes for all
-			// 		JsonRestStores in a single operation.
-			rpcJsonRest.revert(kwArgs && kwArgs.global && this.service);
-		},
-
-		isDirty: function(item){
-			// summary
-			//		returns true if the item is marked as dirty.
-			return rpcJsonRest.isDirty(item, this);
-		},
-		isItem: function(item, anyStore){
-			//	summary:
-			//		Checks to see if a passed 'item'
-			//		really belongs to this JsonRestStore.
-			//
-			//	item: /* object */
-			//		The value to test for being an item
-			//	anyStore: /* boolean*/
-			//		If true, this will return true if the value is an item for any JsonRestStore,
-			//		not just this instance
-			return item && item.__id && (anyStore || this.service == rpcJsonRest.getServiceAndId(item.__id).service);
-		},
-		_doQuery: function(args){
-			var query= typeof args.queryStr == 'string' ? args.queryStr : args.query;
-			var deferred = rpcJsonRest.query(this.service,query, args);
-			var self = this;
-			if(this.loadReferencedSchema){
-				deferred.addCallback(function(result){
-					var contentType = deferred.ioArgs && deferred.ioArgs.xhr && deferred.ioArgs.xhr.getResponseHeader("Content-Type");
-					var schemaRef = contentType && contentType.match(/definedby\s*=\s*([^;]*)/);
-					if(contentType && !schemaRef){
-						schemaRef = deferred.ioArgs.xhr.getResponseHeader("Link");
-						schemaRef = schemaRef && schemaRef.match(/<([^>]*)>;\s*rel="?definedby"?/);
-					}
-					schemaRef = schemaRef && schemaRef[1];
-					if(schemaRef){
-						var serviceAndId = rpcJsonRest.getServiceAndId((self.target + schemaRef).replace(/^(.*\/)?(\w+:\/\/)|[^\/\.]+\/\.\.\/|^.*\/(\/)/,"$2$3"));
-						var schemaDeferred = rpcJsonRest.byId(serviceAndId.service, serviceAndId.id);
-						schemaDeferred.addCallbacks(function(newSchema){
-							lang.mixin(self.schema, newSchema);
-							return result;
-						}, function(error){
-							console.error(error); // log it, but don't let it cause the main request to fail
-							return result;
-						});
-						return schemaDeferred;
-					}
-					return undefined;//don't change anything, and deal with the stupid post-commit lint complaints
-				});
-			}
-			return deferred;
-		},
-		_processResults: function(results, deferred){
-			// index the results
-			var count = results.length;
-			// if we don't know the length, and it is partial result, we will guess that it is twice as big, that will work for most widgets
-			return {totalCount:deferred.fullLength || (deferred.request.count == count ? (deferred.request.start || 0) + count * 2 : count), items: results};
-		},
-
-		getConstructor: function(){
-			// summary:
-			// 		Gets the constructor for objects from this store
-			return this._constructor;
-		},
-		getIdentity: function(item){
-			var id = item.__clientId || item.__id;
-			if(!id){
-				return id;
-			}
-			var prefix = this.service.servicePath.replace(/[^\/]*$/,'');
-			// support for relative or absolute referencing with ids
-			return id.substring(0,prefix.length) != prefix ?	id : id.substring(prefix.length); // String
-		},
-		fetchItemByIdentity: function(args){
-			var id = args.identity;
-			var store = this;
-			// if it is an absolute id, we want to find the right store to query
-			if(id.toString().match(/^(\w*:)?\//)){
-				var serviceAndId = rpcJsonRest.getServiceAndId(id);
-				store = serviceAndId.service._store;
-				args.identity = serviceAndId.id;
-			}
-			args._prefix = store.service.servicePath.replace(/[^\/]*$/,'');
-			return store.inherited(arguments);
-		},
-		//Notifcation Support
-
-		onSet: function(){},
-		onNew: function(){},
-		onDelete: 	function(){},
-
-		getFeatures: function(){
-			// summary:
-			// 		return the store feature set
-			var features = this.inherited(arguments);
-			features["dojo.data.api.Write"] = true;
-			features["dojo.data.api.Notification"] = true;
-			return features;
-		},
-
-		getParent: function(item){
-			//	summary:
-			//		Returns the parent item (or query) for the given item
-			//	item:
-			//		The item to find the parent of
-
-			return item && item.__parent;
-		}
-
-
-	}
-);
-JsonRestStore.getStore = function(options, Class){
-	//	summary:
-	//		Will retrieve or create a store using the given options (the same options
-	//		that are passed to JsonRestStore constructor. Returns a JsonRestStore instance
-	//	options:
-	//		See the JsonRestStore constructor
-	//	Class:
-	//		Constructor to use (for creating stores from JsonRestStore subclasses).
-	// 		This is optional and defaults to JsonRestStore.
-	if(typeof options.target == 'string'){
-		options.target = options.target.match(/\/$/) || options.allowNoTrailingSlash ?
-				options.target : (options.target + '/');
-		var store = (rpcJsonRest.services[options.target] || {})._store;
-		if(store){
-			return store;
-		}
-	}
-	return new (Class || JsonRestStore)(options);
-};
-
-var dataExtCfg = lang.getObject("dojox.data",true); 
-dataExtCfg._getStoreForItem = function(item){
-	if(item.__id){
-		var serviceAndId = rpcJsonRest.getServiceAndId(item.__id);
-		if(serviceAndId && serviceAndId.service._store){
-			return serviceAndId.service._store;
-		}else{
-			var servicePath = item.__id.toString().match(/.*\//)[0];
-			return new JsonRestStore({target:servicePath});
-		}
-	}
-	return null;
-};
-var jsonRefConfig = lang.getObject("dojox.json.ref", true);
-jsonRefConfig._useRefs = true; // Use referencing when identifiable objects are referenced
-
-return JsonRestStore;
-});
-
-},
-'dojox/rpc/Rest':function(){
-define("dojox/rpc/Rest", ["dojo", "dojox"], function(dojo, dojox) {
-// Note: This doesn't require dojox.rpc.Service, and if you want it you must require it
-// yourself, and you must load it prior to dojox.rpc.Rest.
-
-// summary:
-// 		This provides a HTTP REST service with full range REST verbs include PUT,POST, and DELETE.
-// description:
-// 		A normal GET query is done by using the service directly:
-// 		| var restService = dojox.rpc.Rest("Project");
-// 		| restService("4");
-//		This will do a GET for the URL "/Project/4".
-//		| restService.put("4","new content");
-//		This will do a PUT to the URL "/Project/4" with the content of "new content".
-//		You can also use the SMD service to generate a REST service:
-// 		| var services = dojox.rpc.Service({services: {myRestService: {transport: "REST",...
-// 		| services.myRestService("parameters");
-//
-// 		The modifying methods can be called as sub-methods of the rest service method like:
-//  	| services.myRestService.put("parameters","data to put in resource");
-//  	| services.myRestService.post("parameters","data to post to the resource");
-//  	| services.myRestService['delete']("parameters");
-
-  dojo.getObject("rpc.Rest", true, dojox);
-
-	if(dojox.rpc && dojox.rpc.transportRegistry){
-		// register it as an RPC service if the registry is available
-		dojox.rpc.transportRegistry.register(
-			"REST",
-			function(str){return str == "REST";},
-			{
-				getExecutor : function(func,method,svc){
-					return new dojox.rpc.Rest(
-						method.name,
-						(method.contentType||svc._smd.contentType||"").match(/json|javascript/), // isJson
-						null,
-						function(id, args){
-							var request = svc._getRequest(method,[id]);
-							request.url= request.target + (request.data ? '?'+  request.data : '');
-							if(args && (args.start >= 0 || args.count >= 0)){
-								request.headers = request.headers || {};
-								request.headers.Range = "items=" + (args.start || '0') + '-' +
-									(("count" in args && args.count != Infinity) ?
-										(args.count + (args.start || 0) - 1) : '');
-							}
-							return request;
-						}
-					);
-				}
-			}
-		);
-	}
-	var drr;
-
-	function index(deferred, service, range, id){
-		deferred.addCallback(function(result){
-			if(deferred.ioArgs.xhr && range){
-					// try to record the total number of items from the range header
-					range = deferred.ioArgs.xhr.getResponseHeader("Content-Range");
-					deferred.fullLength = range && (range=range.match(/\/(.*)/)) && parseInt(range[1]);
-			}
-			return result;
-		});
-		return deferred;
-	}
-	drr = dojox.rpc.Rest = function(/*String*/path, /*Boolean?*/isJson, /*Object?*/schema, /*Function?*/getRequest){
-		// summary:
-		//		Creates a REST service using the provided path.
-		var service;
-		// it should be in the form /Table/
-		service = function(id, args){
-			return drr._get(service, id, args);
-		};
-		service.isJson = isJson;
-		service._schema = schema;
-		// cache:
-		//		This is an object that provides indexing service
-		// 		This can be overriden to take advantage of more complex referencing/indexing
-		// 		schemes
-		service.cache = {
-			serialize: isJson ? ((dojox.json && dojox.json.ref) || dojo).toJson : function(result){
-				return result;
-			}
-		};
-		// the default XHR args creator:
-		service._getRequest = getRequest || function(id, args){
-			if(dojo.isObject(id)){
-				id = dojo.objectToQuery(id);
-				id = id ? "?" + id: "";
-			}
-			if(args && args.sort && !args.queryStr){
-				id += (id ? "&" : "?") + "sort("
-				for(var i = 0; i<args.sort.length; i++){
-					var sort = args.sort[i];
-					id += (i > 0 ? "," : "") + (sort.descending ? '-' : '+') + encodeURIComponent(sort.attribute);
-				}
-				id += ")";
-			}
-			var request = {
-				url: path + (id == null ? "" : id),
-				handleAs: isJson ? 'json' : 'text',
-				contentType: isJson ? 'application/json' : 'text/plain',
-				sync: dojox.rpc._sync,
-				headers: {
-					Accept: isJson ? 'application/json,application/javascript' : '*/*'
-				}
-			};
-			if(args && (args.start >= 0 || args.count >= 0)){
-				request.headers.Range = "items=" + (args.start || '0') + '-' +
-					(("count" in args && args.count != Infinity) ?
-						(args.count + (args.start || 0) - 1) : '');
-			}
-			dojox.rpc._sync = false;
-			return request;
-		};
-		// each calls the event handler
-		function makeRest(name){
-			service[name] = function(id,content){
-				return drr._change(name,service,id,content); // the last parameter is to let the OfflineRest know where to store the item
-			};
-		}
-		makeRest('put');
-		makeRest('post');
-		makeRest('delete');
-		// record the REST services for later lookup
-		service.servicePath = path;
-		return service;
-	};
-
-	drr._index={};// the map of all indexed objects that have gone through REST processing
-	drr._timeStamps={};
-	// these do the actual requests
-	drr._change = function(method,service,id,content){
-		// this is called to actually do the put, post, and delete
-		var request = service._getRequest(id);
-		request[method+"Data"] = content;
-		return index(dojo.xhr(method.toUpperCase(),request,true),service);
-	};
-
-	drr._get= function(service,id, args){
-		args = args || {};
-		// this is called to actually do the get
-		return index(dojo.xhrGet(service._getRequest(id, args)), service, (args.start >= 0 || args.count >= 0), id);
-	};
-
-	return dojox.rpc.Rest;
-});
-
-},
-'dojox/rpc/JsonRest':function(){
-define("dojox/rpc/JsonRest", ["dojo", "dojox", "dojox/json/ref", "dojox/rpc/Rest"], function(dojo, dojox) {
-	var dirtyObjects = [];
-	var Rest = dojox.rpc.Rest;
-	var jr;
-	function resolveJson(service, deferred, value, defaultId){
-		var timeStamp = deferred.ioArgs && deferred.ioArgs.xhr && deferred.ioArgs.xhr.getResponseHeader("Last-Modified");
-		if(timeStamp && Rest._timeStamps){
-			Rest._timeStamps[defaultId] = timeStamp;
-		}
-		var hrefProperty = service._schema && service._schema.hrefProperty;
-		if(hrefProperty){
-			dojox.json.ref.refAttribute = hrefProperty;
-		}
-		value = value && dojox.json.ref.resolveJson(value, {
-			defaultId: defaultId,
-			index: Rest._index,
-			timeStamps: timeStamp && Rest._timeStamps,
-			time: timeStamp,
-			idPrefix: service.servicePath.replace(/[^\/]*$/,''),
-			idAttribute: jr.getIdAttribute(service),
-			schemas: jr.schemas,
-			loader:	jr._loader,
-			idAsRef: service.idAsRef,
-			assignAbsoluteIds: true
-		});
-		dojox.json.ref.refAttribute  = "$ref";
-		return value;
-	}
-	jr = dojox.rpc.JsonRest={
-		serviceClass: dojox.rpc.Rest,
-		conflictDateHeader: "If-Unmodified-Since",
-		commit: function(kwArgs){
-			// summary:
-			//		Saves the dirty data using REST Ajax methods
-
-			kwArgs = kwArgs || {};
-			var actions = [];
-			var alreadyRecorded = {};
-			var savingObjects = [];
-			for(var i = 0; i < dirtyObjects.length; i++){
-				var dirty = dirtyObjects[i];
-				var object = dirty.object;
-				var old = dirty.old;
-				var append = false;
-				if(!(kwArgs.service && (object || old) &&
-						(object || old).__id.indexOf(kwArgs.service.servicePath)) && dirty.save){
-					delete object.__isDirty;
-					if(object){
-						if(old){
-							// changed object
-							var pathParts;
-							if((pathParts = object.__id.match(/(.*)#.*/))){ // it is a path reference
-								// this means it is a sub object, we must go to the parent object and save it
-								object = Rest._index[pathParts[1]];
-							}
-							if(!(object.__id in alreadyRecorded)){// if it has already been saved, we don't want to repeat it
-								// record that we are saving
-								alreadyRecorded[object.__id] = object;
-								if(kwArgs.incrementalUpdates
-									&& !pathParts){ // I haven't figured out how we would do incremental updates on sub-objects yet
-									// make an incremental update using a POST
-									var incremental = (typeof kwArgs.incrementalUpdates == 'function' ?
-										kwArgs.incrementalUpdates : function(){
-											incremental = {};
-											for(var j in object){
-												if(object.hasOwnProperty(j)){
-													if(object[j] !== old[j]){
-														incremental[j] = object[j];
-													}
-												}else if(old.hasOwnProperty(j)){
-													// we can't use incremental updates to remove properties
-													return null;
-												}
-											}
-											return incremental;
-										})(object, old);
-								}
-								
-								if(incremental){
-									actions.push({method:"post",target:object, content: incremental});
-								}
-								else{
-									actions.push({method:"put",target:object,content:object});
-								}
-							}
-						}else{
-							// new object
-							var service = jr.getServiceAndId(object.__id).service;
-							var idAttribute = jr.getIdAttribute(service);
-							if((idAttribute in object) && !kwArgs.alwaysPostNewItems){
-								// if the id attribute is specified, then we should know the location
-								actions.push({method:"put",target:object, content:object});
-							}else{
-								actions.push({method:"post",target:{__id:service.servicePath},
-														content:object});
-							}
-						}
-					}else if(old){
-						// deleted object
-						actions.push({method:"delete",target:old});
-					}//else{ this would happen if an object is created and then deleted, don't do anything
-					savingObjects.push(dirty);
-					dirtyObjects.splice(i--,1);
-				}
-			}
-			dojo.connect(kwArgs,"onError",function(){
-				if(kwArgs.revertOnError !== false){
-					var postCommitDirtyObjects = dirtyObjects;
-					dirtyObjects = savingObjects;
-					var numDirty = 0; // make sure this does't do anything if it is called again
-					jr.revert(); // revert if there was an error
-					dirtyObjects = postCommitDirtyObjects;
-				}
-				else{
-					dirtyObjects = dirtyObject.concat(savingObjects);
-				}
-			});
-			jr.sendToServer(actions, kwArgs);
-			return actions;
-		},
-		sendToServer: function(actions, kwArgs){
-			var xhrSendId;
-			var plainXhr = dojo.xhr;
-			var left = actions.length;// this is how many changes are remaining to be received from the server
-			var i, contentLocation;
-			var timeStamp;
-			var conflictDateHeader = this.conflictDateHeader;
-			// add headers for extra information
-			dojo.xhr = function(method,args){
-				// keep the transaction open as we send requests
-				args.headers = args.headers || {};
-				// the last one should commit the transaction
-				args.headers['Transaction'] = actions.length - 1 == i ? "commit" : "open";
-				if(conflictDateHeader && timeStamp){
-					args.headers[conflictDateHeader] = timeStamp;
-				}
-				if(contentLocation){
-					args.headers['Content-ID'] = '<' + contentLocation + '>';
-				}
-				return plainXhr.apply(dojo,arguments);
-			};
-			for(i =0; i < actions.length;i++){ // iterate through the actions to execute
-				var action = actions[i];
-				dojox.rpc.JsonRest._contentId = action.content && action.content.__id; // this is used by OfflineRest
-				var isPost = action.method == 'post';
-				timeStamp = action.method == 'put' && Rest._timeStamps[action.content.__id];
-				if(timeStamp){
-					// update it now
-					Rest._timeStamps[action.content.__id] = (new Date()) + '';
-				}
-				// send the content location to the server
-				contentLocation = isPost && dojox.rpc.JsonRest._contentId;
-				var serviceAndId = jr.getServiceAndId(action.target.__id);
-				var service = serviceAndId.service;
-				var dfd = action.deferred = service[action.method](
-									serviceAndId.id.replace(/#/,''), // if we are using references, we need eliminate #
-									dojox.json.ref.toJson(action.content, false, service.servicePath, true)
-								);
-				(function(object, dfd, service){
-					dfd.addCallback(function(value){
-						try{
-							// Implements id assignment per the HTTP specification
-							var newId = dfd.ioArgs.xhr && dfd.ioArgs.xhr.getResponseHeader("Location");
-							//TODO: match URLs if the servicePath is relative...
-							if(newId){
-								// if the path starts in the middle of an absolute URL for Location, we will use the just the path part
-								var startIndex = newId.match(/(^\w+:\/\/)/) && newId.indexOf(service.servicePath);
-								newId = startIndex > 0 ? newId.substring(startIndex) : (service.servicePath + newId).
-										// now do simple relative URL resolution in case of a relative URL.
-										replace(/^(.*\/)?(\w+:\/\/)|[^\/\.]+\/\.\.\/|^.*\/(\/)/,'$2$3');
-								object.__id = newId;
-								Rest._index[newId] = object;
-							}
-							value = resolveJson(service, dfd, value, object && object.__id);
-						}catch(e){}
-						if(!(--left)){
-							if(kwArgs.onComplete){
-								kwArgs.onComplete.call(kwArgs.scope, actions);
-							}
-						}
-						return value;
-					});
-				})(action.content, dfd, service);
-								
-				dfd.addErrback(function(value){
-					
-					// on an error we want to revert, first we want to separate any changes that were made since the commit
-					left = -1; // first make sure that success isn't called
-					kwArgs.onError.call(kwArgs.scope, value);
-				});
-			}
-			// revert back to the normal XHR handler
-			dojo.xhr = plainXhr;
-			
-		},
-		getDirtyObjects: function(){
-			return dirtyObjects;
-		},
-		revert: function(service){
-			// summary:
-			//		Reverts all the changes made to JSON/REST data
-			for(var i = dirtyObjects.length; i > 0;){
-				i--;
-				var dirty = dirtyObjects[i];
-				var object = dirty.object;
-				var old = dirty.old;
-				var store = dojox.data._getStoreForItem(object || old);
-				
-				if(!(service && (object || old) &&
-					(object || old).__id.indexOf(service.servicePath))){
-					// if we are in the specified store or if this is a global revert
-					if(object && old){
-						// changed
-						for(var j in old){
-							if(old.hasOwnProperty(j) && object[j] !== old[j]){
-								if(store){
-									store.onSet(object, j, object[j], old[j]);
-								}
-								object[j] = old[j];
-							}
-						}
-						for(j in object){
-							if(!old.hasOwnProperty(j)){
-								if(store){
-									store.onSet(object, j, object[j]);
-								}
-								delete object[j];
-							}
-						}
-					}else if(!old){
-						// was an addition, remove it
-						if(store){
-							store.onDelete(object);
-						}
-					}else{
-						// was a deletion, we will add it back
-						if(store){
-							store.onNew(old);
-						}
-					}
-					delete (object || old).__isDirty;
-					dirtyObjects.splice(i, 1);
-				}
-			}
-		},
-		changing: function(object,_deleting){
-			// summary:
-			//		adds an object to the list of dirty objects.  This object
-			//		contains a reference to the object itself as well as a
-			//		cloned and trimmed version of old object for use with
-			//		revert.
-			if(!object.__id){
-				return;
-			}
-			object.__isDirty = true;
-			//if an object is already in the list of dirty objects, don't add it again
-			//or it will overwrite the premodification data set.
-			for(var i=0; i<dirtyObjects.length; i++){
-				var dirty = dirtyObjects[i];
-				if(object==dirty.object){
-					if(_deleting){
-						// we are deleting, no object is an indicator of deletiong
-						dirty.object = false;
-						if(!this._saveNotNeeded){
-							dirty.save = true;
-						}
-					}
-					return;
-				}
-			}
-			var old = object instanceof Array ? [] : {};
-			for(i in object){
-				if(object.hasOwnProperty(i)){
-					old[i] = object[i];
-				}
-			}
-			dirtyObjects.push({object: !_deleting && object, old: old, save: !this._saveNotNeeded});
-		},
-		deleteObject: function(object){
-			// summary:
-			//		deletes an object
-			//	object:
-			//  	object to delete
-			this.changing(object,true);
-		},
-		getConstructor: function(/*Function|String*/service, schema){
-			// summary:
-			// 		Creates or gets a constructor for objects from this service
-			if(typeof service == 'string'){
-				var servicePath = service;
-				service = new dojox.rpc.Rest(service,true);
-				this.registerService(service, servicePath, schema);
-			}
-			if(service._constructor){
-				return service._constructor;
-			}
-			service._constructor = function(data){
-				// summary:
-				//		creates a new object for this table
-				//
-				//	data:
-				//		object to mixed in
-				var self = this;
-				var args = arguments;
-				var properties;
-				var initializeCalled;
-				function addDefaults(schema){
-					if(schema){
-						addDefaults(schema['extends']);
-						properties = schema.properties;
-						for(var i in properties){
-							var propDef = properties[i];
-							if(propDef && (typeof propDef == 'object') && ("default" in propDef)){
-								self[i] = propDef["default"];
-							}
-						}
-					}
-					if(schema && schema.prototype && schema.prototype.initialize){
-						initializeCalled = true;
-						schema.prototype.initialize.apply(self, args);
-					}
-				}
-				addDefaults(service._schema);
-				if(!initializeCalled && data && typeof data == 'object'){
-					dojo.mixin(self,data);
-				}
-				var idAttribute = jr.getIdAttribute(service);
-				Rest._index[this.__id = this.__clientId =
-						service.servicePath + (this[idAttribute] ||
-							Math.random().toString(16).substring(2,14) + '@' + ((dojox.rpc.Client && dojox.rpc.Client.clientId) || "client"))] = this;
-				if(dojox.json.schema && properties){
-					dojox.json.schema.mustBeValid(dojox.json.schema.validate(this, service._schema));
-				}
-				dirtyObjects.push({object:this, save: true});
-			};
-			return dojo.mixin(service._constructor, service._schema, {load:service});
-		},
-		fetch: function(absoluteId){
-			// summary:
-			//		Fetches a resource by an absolute path/id and returns a dojo.Deferred.
-			var serviceAndId = jr.getServiceAndId(absoluteId);
-			return this.byId(serviceAndId.service,serviceAndId.id);
-		},
-		getIdAttribute: function(service){
-			// summary:
-			//		Return the ids attribute used by this service (based on it's schema).
-			//		Defaults to "id", if not other id is defined
-			var schema = service._schema;
-			var idAttr;
-			if(schema){
-				if(!(idAttr = schema._idAttr)){
-					for(var i in schema.properties){
-						if(schema.properties[i].identity || (schema.properties[i].link == "self")){
-							schema._idAttr = idAttr = i;
-						}
-					}
-				}
-			}
-			return idAttr || 'id';
-		},
-		getServiceAndId: function(/*String*/absoluteId){
-			// summary:
-			//		Returns the REST service and the local id for the given absolute id. The result
-			// 		is returned as an object with a service property and an id property
-			//	absoluteId:
-			//		This is the absolute id of the object
-			var serviceName = '';
-			
-			for(var service in jr.services){
-				if((absoluteId.substring(0, service.length) == service) && (service.length >= serviceName.length)){
-					serviceName = service;
-				}
-			}
-			if (serviceName){
-				return {service: jr.services[serviceName], id:absoluteId.substring(serviceName.length)};
-			}
-			var parts = absoluteId.match(/^(.*\/)([^\/]*)$/);
-			return {service: new jr.serviceClass(parts[1], true), id:parts[2]};
-		},
-		services:{},
-		schemas:{},
-		registerService: function(/*Function*/ service, /*String*/ servicePath, /*Object?*/ schema){
-			//	summary:
-			//		Registers a service for as a JsonRest service, mapping it to a path and schema
-			//	service:
-			//		This is the service to register
-			//	servicePath:
-			//		This is the path that is used for all the ids for the objects returned by service
-			//	schema:
-			//		This is a JSON Schema object to associate with objects returned by this service
-			servicePath = service.servicePath = servicePath || service.servicePath;
-			service._schema = jr.schemas[servicePath] = schema || service._schema || {};
-			jr.services[servicePath] = service;
-		},
-		byId: function(service, id){
-			// if caching is allowed, we look in the cache for the result
-			var deferred, result = Rest._index[(service.servicePath || '') + id];
-			if(result && !result._loadObject){// cache hit
-				deferred = new dojo.Deferred();
-				deferred.callback(result);
-				return deferred;
-			}
-			return this.query(service, id);
-		},
-		query: function(service, id, args){
-			var deferred = service(id, args);
-			
-			deferred.addCallback(function(result){
-				if(result.nodeType && result.cloneNode){
-					// return immediately if it is an XML document
-					return result;
-				}
-				return resolveJson(service, deferred, result, typeof id != 'string' || (args && (args.start || args.count)) ? undefined: id);
-			});
-			return deferred;
-		},
-		_loader: function(callback){
-			// load a lazy object
-			var serviceAndId = jr.getServiceAndId(this.__id);
-			var self = this;
-			jr.query(serviceAndId.service, serviceAndId.id).addBoth(function(result){
-				// if they are the same this means an object was loaded, otherwise it
-				// might be a primitive that was loaded or maybe an error
-				if(result == self){
-					// we can clear the flag, so it is a loaded object
-					delete result.$ref;
-					delete result._loadObject;
-				}else{
-					// it is probably a primitive value, we can't change the identity of an object to
-					//	the loaded value, so we will keep it lazy, but define the lazy loader to always
-					//	return the loaded value
-					self._loadObject = function(callback){
-						callback(result);
-					};
-				}
-				callback(result);
-			});
-		},
-		isDirty: function(item, store){
-			// summary
-			//		returns true if the item is marked as dirty or true if there are any dirty items
-			if(!item){
-				if(store){
-					return dojo.some(dirtyObjects, function(dirty){
-						return dojox.data._getStoreForItem(dirty.object || dirty.old) == store;
-					});
-				}
-				return !!dirtyObjects.length;
-			}
-			return item.__isDirty;
-		}
-		
-	};
-
-	return dojox.rpc.JsonRest;
-});
-
-
-},
-'dojox/json/ref':function(){
-define("dojox/json/ref", ["dojo/_base/kernel", "dojox", "dojo/date/stamp", "dojo/_base/array", "dojo/_base/json"], function(dojo, dojox){
-
-dojo.getObject("json", true, dojox);
-
-return dojox.json.ref = {
-	// summary:
-	// 		Adds advanced JSON {de}serialization capabilities to the base json library.
-	// 		This enhances the capabilities of dojo.toJson and dojo.fromJson,
-	// 		adding referencing support, date handling, and other extra format handling.
-	// 		On parsing, references are resolved. When references are made to
-	// 		ids/objects that have been loaded yet, the loader function will be set to
-	// 		_loadObject to denote a lazy loading (not loaded yet) object.
-
-
-	resolveJson: function(/*Object*/ root,/*Object?*/ args){
-		// summary:
-		// 		Indexes and resolves references in the JSON object.
-		// description:
-		// 		A JSON Schema object that can be used to advise the handling of the JSON (defining ids, date properties, urls, etc)
-		//
-		// root:
-		//		The root object of the object graph to be processed
-		// args:
-		//		Object with additional arguments:
-		//
-		// The *index* parameter.
-		//		This is the index object (map) to use to store an index of all the objects.
-		// 		If you are using inter-message referencing, you must provide the same object for each call.
-		// The *defaultId* parameter.
-		//		This is the default id to use for the root object (if it doesn't define it's own id)
-		//	The *idPrefix* parameter.
-		//		This the prefix to use for the ids as they enter the index. This allows multiple tables
-		// 		to use ids (that might otherwise collide) that enter the same global index.
-		// 		idPrefix should be in the form "/Service/".  For example,
-		//		if the idPrefix is "/Table/", and object is encountered {id:"4",...}, this would go in the
-		//		index as "/Table/4".
-		//	The *idAttribute* parameter.
-		//		This indicates what property is the identity property. This defaults to "id"
-		//	The *assignAbsoluteIds* parameter.
-		//		This indicates that the resolveJson should assign absolute ids (__id) as the objects are being parsed.
-		//
-		// The *schemas* parameter
-		//		This provides a map of schemas, from which prototypes can be retrieved
-		// The *loader* parameter
-		//		This is a function that is called added to the reference objects that can't be resolved (lazy objects)
-		// return:
-		//		An object, the result of the processing
-		args = args || {};
-		var idAttribute = args.idAttribute || 'id';
-		var refAttribute = this.refAttribute;
-		var idAsRef = args.idAsRef;
-		var prefix = args.idPrefix || '';
-		var assignAbsoluteIds = args.assignAbsoluteIds;
-		var index = args.index || {}; // create an index if one doesn't exist
-		var timeStamps = args.timeStamps;
-		var ref,reWalk=[];
-		var pathResolveRegex = /^(.*\/)?(\w+:\/\/)|[^\/\.]+\/\.\.\/|^.*\/(\/)/;
-		var addProp = this._addProp;
-		var F = function(){};
-		function walk(it, stop, defaultId, needsPrefix, schema, defaultObject){
-			// this walks the new graph, resolving references and making other changes
-		 	var i, update, val, id = idAttribute in it ? it[idAttribute] : defaultId;
-		 	if(idAttribute in it || ((id !== undefined) && needsPrefix)){
-		 		id = (prefix + id).replace(pathResolveRegex,'$2$3');
-		 	}
-		 	var target = defaultObject || it;
-			if(id !== undefined){ // if there is an id available...
-				if(assignAbsoluteIds){
-					it.__id = id;
-				}
-				if(args.schemas && (!(it instanceof Array)) && // won't try on arrays to do prototypes, plus it messes with queries
-		 					(val = id.match(/^(.+\/)[^\.\[]*$/))){ // if it has a direct table id (no paths)
-		 			schema = args.schemas[val[1]];
-				}
-				// if the id already exists in the system, we should use the existing object, and just
-				// update it... as long as the object is compatible
-				if(index[id] && ((it instanceof Array) == (index[id] instanceof Array))){
-					target = index[id];
-					delete target.$ref; // remove this artifact
-					delete target._loadObject;
-					update = true;
-				}else{
-				 	var proto = schema && schema.prototype; // and if has a prototype
-					if(proto){
-						// if the schema defines a prototype, that needs to be the prototype of the object
-						F.prototype = proto;
-						target = new F();
-					}
-				}
-				index[id] = target; // add the prefix, set _id, and index it
-				if(timeStamps){
-					timeStamps[id] = args.time;
-				}
-			}
-			while(schema){
-				var properties = schema.properties;
-				if(properties){
-					for(i in it){
-						var propertyDefinition = properties[i];
-						if(propertyDefinition && propertyDefinition.format == 'date-time' && typeof it[i] == 'string'){
-							it[i] = dojo.date.stamp.fromISOString(it[i]);
-						}
-					}
-				}
-				schema = schema["extends"];
-			}
-			var length = it.length;
-			for(i in it){
-				if(i==length){
-					break;
-				}
-				if(it.hasOwnProperty(i)){
-					val=it[i];
-					if((typeof val =='object') && val && !(val instanceof Date) && i != '__parent'){
-						ref=val[refAttribute] || (idAsRef && val[idAttribute]);
-						if(!ref || !val.__parent){
-							if(it != reWalk){
-								val.__parent = target;
-							}
-						}
-						if(ref){ // a reference was found
-							// make sure it is a safe reference
-							delete it[i];// remove the property so it doesn't resolve to itself in the case of id.propertyName lazy values
-							var path = ref.toString().replace(/(#)([^\.\[])/,'$1.$2').match(/(^([^\[]*\/)?[^#\.\[]*)#?([\.\[].*)?/); // divide along the path
-							if(index[(prefix + ref).replace(pathResolveRegex,'$2$3')]){
-								ref = index[(prefix + ref).replace(pathResolveRegex,'$2$3')];
-							}else if((ref = (path[1]=='$' || path[1]=='this' || path[1]=='') ? root : index[(prefix + path[1]).replace(pathResolveRegex,'$2$3')])){  // a $ indicates to start with the root, otherwise start with an id
-								// if there is a path, we will iterate through the path references
-								if(path[3]){
-									path[3].replace(/(\[([^\]]+)\])|(\.?([^\.\[]+))/g,function(t,a,b,c,d){
-										ref = ref && ref[b ? b.replace(/[\"\'\\]/,'') : d];
-									});
-								}
-							}
-							if(ref){
-								val = ref;
-							}else{
-								// otherwise, no starting point was found (id not found), if stop is set, it does not exist, we have
-								// unloaded reference, if stop is not set, it may be in a part of the graph not walked yet,
-								// we will wait for the second loop
-								if(!stop){
-									var rewalking;
-									if(!rewalking){
-										reWalk.push(target); // we need to rewalk it to resolve references
-									}
-									rewalking = true; // we only want to add it once
-									val = walk(val, false, val[refAttribute], true, propertyDefinition);
-									// create a lazy loaded object
-									val._loadObject = args.loader;
-								}
-							}
-						}else{
-							if(!stop){ // if we are in stop, that means we are in the second loop, and we only need to check this current one,
-								// further walking may lead down circular loops
-								val = walk(
-									val,
-									reWalk==it,
-									id === undefined ? undefined : addProp(id, i), // the default id to use
-									false,
-									propertyDefinition,
-									// if we have an existing object child, we want to
-									// maintain it's identity, so we pass it as the default object
-									target != it && typeof target[i] == 'object' && target[i]
-								);
-							}
-						}
-					}
-					it[i] = val;
-					if(target!=it && !target.__isDirty){// do updates if we are updating an existing object and it's not dirty
-						var old = target[i];
-						target[i] = val; // only update if it changed
-						if(update && val !== old && // see if it is different
-								!target._loadObject && // no updates if we are just lazy loading
-								!(i.charAt(0) == '_' && i.charAt(1) == '_') && i != "$ref" &&
-								!(val instanceof Date && old instanceof Date && val.getTime() == old.getTime()) && // make sure it isn't an identical date
-								!(typeof val == 'function' && typeof old == 'function' && val.toString() == old.toString()) && // make sure it isn't an indentical function
-								index.onUpdate){
-							index.onUpdate(target,i,old,val); // call the listener for each update
-						}
-					}
-				}
-			}
-	
-			if(update && (idAttribute in it || target instanceof Array)){
-				// this means we are updating with a full representation of the object, we need to remove deleted
-				for(i in target){
-					if(!target.__isDirty && target.hasOwnProperty(i) && !it.hasOwnProperty(i) && !(i.charAt(0) == '_' && i.charAt(1) == '_') && !(target instanceof Array && isNaN(i))){
-						if(index.onUpdate && i != "_loadObject" && i != "_idAttr"){
-							index.onUpdate(target,i,target[i],undefined); // call the listener for each update
-						}
-						delete target[i];
-						while(target instanceof Array && target.length && target[target.length-1] === undefined){
-							// shorten the target if necessary
-							target.length--;
-						}
-					}
-				}
-			}else{
-				if(index.onLoad){
-					index.onLoad(target);
-				}
-			}
-			return target;
-		}
-		if(root && typeof root == 'object'){
-			root = walk(root,false,args.defaultId, true); // do the main walk through
-			walk(reWalk,false); // re walk any parts that were not able to resolve references on the first round
-		}
-		return root;
-	},
-
-
-	fromJson: function(/*String*/ str,/*Object?*/ args){
-	// summary:
-	// 		evaluates the passed string-form of a JSON object.
-	//
-	// str:
-	//		a string literal of a JSON item, for instance:
-	//			'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'
-	// args: See resolveJson
-	//
-	// return:
-	//		An object, the result of the evaluation
-		function ref(target){ // support call styles references as well
-			var refObject = {};
-			refObject[this.refAttribute] = target;
-			return refObject;
-		}
-		try{
-			var root = eval('(' + str + ')'); // do the eval
-		}catch(e){
-			throw new SyntaxError("Invalid JSON string: " + e.message + " parsing: "+ str);
-		}
-		if(root){
-			return this.resolveJson(root, args);
-		}
-		return root;
-	},
-	
-	toJson: function(/*Object*/ it, /*Boolean?*/ prettyPrint, /*Object?*/ idPrefix, /*Object?*/ indexSubObjects){
-		// summary:
-		//		Create a JSON serialization of an object.
-		//		This has support for referencing, including circular references, duplicate references, and out-of-message references
-		// 		id and path-based referencing is supported as well and is based on http://www.json.com/2007/10/19/json-referencing-proposal-and-library/.
-		//
-		// it:
-		//		an object to be serialized.
-		//
-		// prettyPrint:
-		//		if true, we indent objects and arrays to make the output prettier.
-		//		The variable dojo.toJsonIndentStr is used as the indent string
-		//		-- to use something other than the default (tab),
-		//		change that variable before calling dojo.toJson().
-		//
-		// idPrefix: The prefix that has been used for the absolute ids
-		//
-		// return:
-		//		a String representing the serialized version of the passed object.
-		var useRefs = this._useRefs;
-		var addProp = this._addProp;
-		var refAttribute = this.refAttribute;
-		idPrefix = idPrefix || ''; // the id prefix for this context
-		var paths={};
-		var generated = {};
-		function serialize(it,path,_indentStr){
-			if(typeof it == 'object' && it){
-				var value;
-				if(it instanceof Date){ // properly serialize dates
-					return '"' + dojo.date.stamp.toISOString(it,{zulu:true}) + '"';
-				}
-				var id = it.__id;
-				if(id){ // we found an identifiable object, we will just serialize a reference to it... unless it is the root
-					if(path != '#' && ((useRefs && !id.match(/#/)) || paths[id])){
-						var ref = id;
-						if(id.charAt(0)!='#'){
-							if(it.__clientId == id){
-								ref = "cid:" + id;
-							}else if(id.substring(0, idPrefix.length) == idPrefix){ // see if the reference is in the current context
-								// a reference with a prefix matching the current context, the prefix should be removed
-								ref = id.substring(idPrefix.length);
-							}else{
-								// a reference to a different context, assume relative url based referencing
-								ref = id;
-							}
-						}
-						var refObject = {};
-						refObject[refAttribute] = ref;
-						return serialize(refObject,'#');
-					}
-					path = id;
-				}else{
-					it.__id = path; // we will create path ids for other objects in case they are circular
-					generated[path] = it;
-				}
-				paths[path] = it;// save it here so they can be deleted at the end
-				_indentStr = _indentStr || "";
-				var nextIndent = prettyPrint ? _indentStr + dojo.toJsonIndentStr : "";
-				var newLine = prettyPrint ? "\n" : "";
-				var sep = prettyPrint ? " " : "";
-	
-				if(it instanceof Array){
-					var res = dojo.map(it, function(obj,i){
-						var val = serialize(obj, addProp(path, i), nextIndent);
-						if(typeof val != "string"){
-							val = "undefined";
-						}
-						return newLine + nextIndent + val;
-					});
-					return "[" + res.join("," + sep) + newLine + _indentStr + "]";
-				}
-	
-				var output = [];
-				for(var i in it){
-					if(it.hasOwnProperty(i)){
-						var keyStr;
-						if(typeof i == "number"){
-							keyStr = '"' + i + '"';
-						}else if(typeof i == "string" && (i.charAt(0) != '_' || i.charAt(1) != '_')){
-							// we don't serialize our internal properties __id and __clientId
-							keyStr = dojo._escapeString(i);
-						}else{
-							// skip non-string or number keys
-							continue;
-						}
-						var val = serialize(it[i],addProp(path, i),nextIndent);
-						if(typeof val != "string"){
-							// skip non-serializable values
-							continue;
-						}
-						output.push(newLine + nextIndent + keyStr + ":" + sep + val);
-					}
-				}
-				return "{" + output.join("," + sep) + newLine + _indentStr + "}";
-			}else if(typeof it == "function" && dojox.json.ref.serializeFunctions){
-				return it.toString();
-			}
-	
-			return dojo.toJson(it); // use the default serializer for primitives
-		}
-		var json = serialize(it,'#','');
-		if(!indexSubObjects){
-			for(var i in generated)  {// cleanup the temporary path-generated ids
-				delete generated[i].__id;
-			}
-		}
-		return json;
-	},
-	_addProp: function(id, prop){
-		return id + (id.match(/#/) ? id.length == 1 ? '' : '.' : '#') + prop;
-	},
-	//	refAttribute: String
-	//		This indicates what property is the reference property. This acts like the idAttribute
-	// 		except that this is used to indicate the current object is a reference or only partially
-	// 		loaded. This defaults to "$ref".
-	refAttribute: "$ref",
-	_useRefs: false,
-	serializeFunctions: false
-};
-});
-
-},
-'dojo/date/stamp':function(){
-define("dojo/date/stamp", ["../_base/kernel", "../_base/lang", "../_base/array"], function(dojo, lang, array) {
-	// module:
-	//		dojo/date/stamp
-	// summary:
-	//		TODOC
-
-lang.getObject("date.stamp", true, dojo);
-
-// Methods to convert dates to or from a wire (string) format using well-known conventions
-
-dojo.date.stamp.fromISOString = function(/*String*/formattedString, /*Number?*/defaultTime){
-	//	summary:
-	//		Returns a Date object given a string formatted according to a subset of the ISO-8601 standard.
-	//
-	//	description:
-	//		Accepts a string formatted according to a profile of ISO8601 as defined by
-	//		[RFC3339](http://www.ietf.org/rfc/rfc3339.txt), except that partial input is allowed.
-	//		Can also process dates as specified [by the W3C](http://www.w3.org/TR/NOTE-datetime)
-	//		The following combinations are valid:
-	//
-	//			* dates only
-	//			|	* yyyy
-	//			|	* yyyy-MM
-	//			|	* yyyy-MM-dd
-	// 			* times only, with an optional time zone appended
-	//			|	* THH:mm
-	//			|	* THH:mm:ss
-	//			|	* THH:mm:ss.SSS
-	// 			* and "datetimes" which could be any combination of the above
-	//
-	//		timezones may be specified as Z (for UTC) or +/- followed by a time expression HH:mm
-	//		Assumes the local time zone if not specified.  Does not validate.  Improperly formatted
-	//		input may return null.  Arguments which are out of bounds will be handled
-	// 		by the Date constructor (e.g. January 32nd typically gets resolved to February 1st)
-	//		Only years between 100 and 9999 are supported.
-	//
-  	//	formattedString:
-	//		A string such as 2005-06-30T08:05:00-07:00 or 2005-06-30 or T08:05:00
-	//
-	//	defaultTime:
-	//		Used for defaults for fields omitted in the formattedString.
-	//		Uses 1970-01-01T00:00:00.0Z by default.
-
-	if(!dojo.date.stamp._isoRegExp){
-		dojo.date.stamp._isoRegExp =
-//TODO: could be more restrictive and check for 00-59, etc.
-			/^(?:(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?)?(?:T(\d{2}):(\d{2})(?::(\d{2})(.\d+)?)?((?:[+-](\d{2}):(\d{2}))|Z)?)?$/;
-	}
-
-	var match = dojo.date.stamp._isoRegExp.exec(formattedString),
-		result = null;
-
-	if(match){
-		match.shift();
-		if(match[1]){match[1]--;} // Javascript Date months are 0-based
-		if(match[6]){match[6] *= 1000;} // Javascript Date expects fractional seconds as milliseconds
-
-		if(defaultTime){
-			// mix in defaultTime.  Relatively expensive, so use || operators for the fast path of defaultTime === 0
-			defaultTime = new Date(defaultTime);
-			array.forEach(array.map(["FullYear", "Month", "Date", "Hours", "Minutes", "Seconds", "Milliseconds"], function(prop){
-				return defaultTime["get" + prop]();
-			}), function(value, index){
-				match[index] = match[index] || value;
-			});
-		}
-		result = new Date(match[0]||1970, match[1]||0, match[2]||1, match[3]||0, match[4]||0, match[5]||0, match[6]||0); //TODO: UTC defaults
-		if(match[0] < 100){
-			result.setFullYear(match[0] || 1970);
-		}
-
-		var offset = 0,
-			zoneSign = match[7] && match[7].charAt(0);
-		if(zoneSign != 'Z'){
-			offset = ((match[8] || 0) * 60) + (Number(match[9]) || 0);
-			if(zoneSign != '-'){ offset *= -1; }
-		}
-		if(zoneSign){
-			offset -= result.getTimezoneOffset();
-		}
-		if(offset){
-			result.setTime(result.getTime() + offset * 60000);
-		}
-	}
-
-	return result; // Date or null
-};
-
-/*=====
-	dojo.date.stamp.__Options = function(){
-		//	selector: String
-		//		"date" or "time" for partial formatting of the Date object.
-		//		Both date and time will be formatted by default.
-		//	zulu: Boolean
-		//		if true, UTC/GMT is used for a timezone
-		//	milliseconds: Boolean
-		//		if true, output milliseconds
-		this.selector = selector;
-		this.zulu = zulu;
-		this.milliseconds = milliseconds;
-	}
-=====*/
-
-dojo.date.stamp.toISOString = function(/*Date*/dateObject, /*dojo.date.stamp.__Options?*/options){
-	//	summary:
-	//		Format a Date object as a string according a subset of the ISO-8601 standard
-	//
-	//	description:
-	//		When options.selector is omitted, output follows [RFC3339](http://www.ietf.org/rfc/rfc3339.txt)
-	//		The local time zone is included as an offset from GMT, except when selector=='time' (time without a date)
-	//		Does not check bounds.  Only years between 100 and 9999 are supported.
-	//
-	//	dateObject:
-	//		A Date object
-
-	var _ = function(n){ return (n < 10) ? "0" + n : n; };
-	options = options || {};
-	var formattedDate = [],
-		getter = options.zulu ? "getUTC" : "get",
-		date = "";
-	if(options.selector != "time"){
-		var year = dateObject[getter+"FullYear"]();
-		date = ["0000".substr((year+"").length)+year, _(dateObject[getter+"Month"]()+1), _(dateObject[getter+"Date"]())].join('-');
-	}
-	formattedDate.push(date);
-	if(options.selector != "date"){
-		var time = [_(dateObject[getter+"Hours"]()), _(dateObject[getter+"Minutes"]()), _(dateObject[getter+"Seconds"]())].join(':');
-		var millis = dateObject[getter+"Milliseconds"]();
-		if(options.milliseconds){
-			time += "."+ (millis < 100 ? "0" : "") + _(millis);
-		}
-		if(options.zulu){
-			time += "Z";
-		}else if(options.selector != "time"){
-			var timezoneOffset = dateObject.getTimezoneOffset();
-			var absOffset = Math.abs(timezoneOffset);
-			time += (timezoneOffset > 0 ? "-" : "+") +
-				_(Math.floor(absOffset/60)) + ":" + _(absOffset%60);
-		}
-		formattedDate.push(time);
-	}
-	return formattedDate.join('T'); // String
-};
-
-return dojo.date.stamp;
-});
-
-},
-'dojox/json/schema':function(){
-define("dojox/json/schema", ["dojo/_base/kernel", "dojox", "dojo/_base/array"], function(dojo, dojox){
-
-dojo.getObject("json.schema", true, dojox);
-
-
-dojox.json.schema.validate = function(/*Any*/instance,/*Object*/schema){
-	// summary:
-	//  	To use the validator call this with an instance object and an optional schema object.
-	// 		If a schema is provided, it will be used to validate. If the instance object refers to a schema (self-validating),
-	// 		that schema will be used to validate and the schema parameter is not necessary (if both exist,
-	// 		both validations will occur).
-	//	instance:
-	//		The instance value/object to validate
-	// schema:
-	//		The schema to use to validate
-	// description:
-	// 		The validate method will return an object with two properties:
-	// 			valid: A boolean indicating if the instance is valid by the schema
-	// 			errors: An array of validation errors. If there are no errors, then an
-	// 					empty list will be returned. A validation error will have two properties:
-	// 						property: which indicates which property had the error
-	// 						message: which indicates what the error was
-	//
-	return this._validate(instance,schema,false);
-};
-dojox.json.schema.checkPropertyChange = function(/*Any*/value,/*Object*/schema, /*String*/ property){
-	// summary:
-	// 		The checkPropertyChange method will check to see if an value can legally be in property with the given schema
-	// 		This is slightly different than the validate method in that it will fail if the schema is readonly and it will
-	// 		not check for self-validation, it is assumed that the passed in value is already internally valid.
-	// 		The checkPropertyChange method will return the same object type as validate, see JSONSchema.validate for
-	// 		information.
-	//	value:
-	//		The new instance value/object to check
-	// schema:
-	//		The schema to use to validate
-	// return:
-	// 		see dojox.validate.jsonSchema.validate
-	//
-	return this._validate(value,schema, property || "property");
-};
-dojox.json.schema.mustBeValid = function(result){
-	//	summary:
-	//		This checks to ensure that the result is valid and will throw an appropriate error message if it is not
-	// result: the result returned from checkPropertyChange or validate
-	if(!result.valid){
-		throw new TypeError(dojo.map(result.errors,function(error){return "for property " + error.property + ': ' + error.message;}).join(", "));
-	}
-}
-dojox.json.schema._validate = function(/*Any*/instance,/*Object*/schema,/*Boolean*/ _changing){
-	
-	var errors = [];
-		// validate a value against a property definition
-	function checkProp(value, schema, path,i){
-		var l;
-		path += path ? typeof i == 'number' ? '[' + i + ']' : typeof i == 'undefined' ? '' : '.' + i : i;
-		function addError(message){
-			errors.push({property:path,message:message});
-		}
-		
-		if((typeof schema != 'object' || schema instanceof Array) && (path || typeof schema != 'function')){
-			if(typeof schema == 'function'){
-				if(!(Object(value) instanceof schema)){
-					addError("is not an instance of the class/constructor " + schema.name);
-				}
-			}else if(schema){
-				addError("Invalid schema/property definition " + schema);
-			}
-			return null;
-		}
-		if(_changing && schema.readonly){
-			addError("is a readonly field, it can not be changed");
-		}
-		if(schema['extends']){ // if it extends another schema, it must pass that schema as well
-			checkProp(value,schema['extends'],path,i);
-		}
-		// validate a value against a type definition
-		function checkType(type,value){
-			if(type){
-				if(typeof type == 'string' && type != 'any' &&
-						(type == 'null' ? value !== null : typeof value != type) &&
-						!(value instanceof Array && type == 'array') &&
-						!(type == 'integer' && value%1===0)){
-					return [{property:path,message:(typeof value) + " value found, but a " + type + " is required"}];
-				}
-				if(type instanceof Array){
-					var unionErrors=[];
-					for(var j = 0; j < type.length; j++){ // a union type
-						if(!(unionErrors=checkType(type[j],value)).length){
-							break;
-						}
-					}
-					if(unionErrors.length){
-						return unionErrors;
-					}
-				}else if(typeof type == 'object'){
-					var priorErrors = errors;
-					errors = [];
-					checkProp(value,type,path);
-					var theseErrors = errors;
-					errors = priorErrors;
-					return theseErrors;
-				}
-			}
-			return [];
-		}
-		if(value === undefined){
-			if(!schema.optional){
-				addError("is missing and it is not optional");
-			}
-		}else{
-			errors = errors.concat(checkType(schema.type,value));
-			if(schema.disallow && !checkType(schema.disallow,value).length){
-				addError(" disallowed value was matched");
-			}
-			if(value !== null){
-				if(value instanceof Array){
-					if(schema.items){
-						if(schema.items instanceof Array){
-							for(i=0,l=value.length; i<l; i++){
-								errors.concat(checkProp(value[i],schema.items[i],path,i));
-							}
-						}else{
-							for(i=0,l=value.length; i<l; i++){
-								errors.concat(checkProp(value[i],schema.items,path,i));
-							}
-						}
-					}
-					if(schema.minItems && value.length < schema.minItems){
-						addError("There must be a minimum of " + schema.minItems + " in the array");
-					}
-					if(schema.maxItems && value.length > schema.maxItems){
-						addError("There must be a maximum of " + schema.maxItems + " in the array");
-					}
-				}else if(schema.properties){
-					errors.concat(checkObj(value,schema.properties,path,schema.additionalProperties));
-				}
-				if(schema.pattern && typeof value == 'string' && !value.match(schema.pattern)){
-					addError("does not match the regex pattern " + schema.pattern);
-				}
-				if(schema.maxLength && typeof value == 'string' && value.length > schema.maxLength){
-					addError("may only be " + schema.maxLength + " characters long");
-				}
-				if(schema.minLength && typeof value == 'string' && value.length < schema.minLength){
-					addError("must be at least " + schema.minLength + " characters long");
-				}
-				if(typeof schema.minimum !== undefined && typeof value == typeof schema.minimum &&
-						schema.minimum > value){
-					addError("must have a minimum value of " + schema.minimum);
-				}
-				if(typeof schema.maximum !== undefined && typeof value == typeof schema.maximum &&
-						schema.maximum < value){
-					addError("must have a maximum value of " + schema.maximum);
-				}
-				if(schema['enum']){
-					var enumer = schema['enum'];
-					l = enumer.length;
-					var found;
-					for(var j = 0; j < l; j++){
-						if(enumer[j]===value){
-							found=1;
-							break;
-						}
-					}
-					if(!found){
-						addError("does not have a value in the enumeration " + enumer.join(", "));
-					}
-				}
-				if(typeof schema.maxDecimal == 'number' &&
-					(value.toString().match(new RegExp("\\.[0-9]{" + (schema.maxDecimal + 1) + ",}")))){
-					addError("may only have " + schema.maxDecimal + " digits of decimal places");
-				}
-			}
-		}
-		return null;
-	}
-	// validate an object against a schema
-	function checkObj(instance,objTypeDef,path,additionalProp){
-	
-		if(typeof objTypeDef =='object'){
-			if(typeof instance != 'object' || instance instanceof Array){
-				errors.push({property:path,message:"an object is required"});
-			}
-			
-			for(var i in objTypeDef){
-				if(objTypeDef.hasOwnProperty(i) && !(i.charAt(0) == '_' && i.charAt(1) == '_')){
-					var value = instance[i];
-					var propDef = objTypeDef[i];
-					checkProp(value,propDef,path,i);
-				}
-			}
-		}
-		for(i in instance){
-			if(instance.hasOwnProperty(i) && !(i.charAt(0) == '_' && i.charAt(1) == '_') && objTypeDef && !objTypeDef[i] && additionalProp===false){
-				errors.push({property:path,message:(typeof value) + "The property " + i +
-						" is not defined in the schema and the schema does not allow additional properties"});
-			}
-			var requires = objTypeDef && objTypeDef[i] && objTypeDef[i].requires;
-			if(requires && !(requires in instance)){
-				errors.push({property:path,message:"the presence of the property " + i + " requires that " + requires + " also be present"});
-			}
-			value = instance[i];
-			if(objTypeDef && typeof objTypeDef == 'object' && !(i in objTypeDef)){
-				checkProp(value,additionalProp,path,i);
-			}
-			if(!_changing && value && value.$schema){
-				errors = errors.concat(checkProp(value,value.$schema,path,i));
-			}
-		}
-		return errors;
-	}
-	if(schema){
-		checkProp(instance,schema,'',_changing || '');
-	}
-	if(!_changing && instance && instance.$schema){
-		checkProp(instance,instance.$schema,'','');
-	}
-	return {valid:!errors.length,errors:errors};
-};
-
-return dojox.json.schema;
-});
-
-},
-'dojox/data/ServiceStore':function(){
-define("dojox/data/ServiceStore", ["dojo/_base/declare", "dojo/_base/lang", "dojo/_base/array"], 
-  function(declare, lang, array) {
-
-// note that dojox.rpc.Service is not required, you can create your own services
-
-// A ServiceStore is a readonly data store that provides a data.data interface to an RPC service.
-// var myServices = new dojox.rpc.Service(dojo.moduleUrl("dojox.rpc.tests.resources", "test.smd"));
-// var serviceStore = new dojox.data.ServiceStore({service:myServices.ServiceStore});
-//
-// The ServiceStore also supports lazy loading. References can be made to objects that have not been loaded.
-//	For example if a service returned:
-// {"name":"Example","lazyLoadedObject":{"$ref":"obj2"}}
-//
-// And this object has accessed using the dojo.data API:
-// var obj = serviceStore.getValue(myObject,"lazyLoadedObject");
-// The object would automatically be requested from the server (with an object id of "obj2").
-//
-
-return declare("dojox.data.ServiceStore",
-	// ClientFilter is intentionally not required, ServiceStore does not need it, and is more
-	// lightweight without it, but if it is provided, the ServiceStore will use it.
-	lang.getObject("dojox.data.ClientFilter", 0)||null,{
-		service: null,
-		constructor: function(options){
-			//summary:
-			//		ServiceStore constructor, instantiate a new ServiceStore
-			// 		A ServiceStore can be configured from a JSON Schema. Queries are just
-			// 		passed through to the underlying services
-			//
-			// options:
-			// 		Keyword arguments
-			// The *schema* parameter
-			//		This is a schema object for this store. This should be JSON Schema format.
-			//
-			// The *service* parameter
-			// 		This is the service object that is used to retrieve lazy data and save results
-			// 		The function should be directly callable with a single parameter of an object id to be loaded
-			//
-			// The *idAttribute* parameter
-			//		Defaults to 'id'. The name of the attribute that holds an objects id.
-			//		This can be a preexisting id provided by the server.
-			//		If an ID isn't already provided when an object
-			//		is fetched or added to the store, the autoIdentity system
-			//		will generate an id for it and add it to the index.
-			//
-			// The *estimateCountFactor* parameter
-			// 		This parameter is used by the ServiceStore to estimate the total count. When
-			//		paging is indicated in a fetch and the response includes the full number of items
-			//	 	requested by the fetch's count parameter, then the total count will be estimated
-			//		to be estimateCountFactor multiplied by the provided count. If this is 1, then it is assumed that the server
-			//		does not support paging, and the response is the full set of items, where the
-			// 		total count is equal to the numer of items returned. If the server does support
-			//		paging, an estimateCountFactor of 2 is a good value for estimating the total count
-			//		It is also possible to override _processResults if the server can provide an exact
-			// 		total count.
-			//
-			// The *syncMode* parameter
-			//		Setting this to true will set the store to using synchronous calls by default.
-			//		Sync calls return their data immediately from the calling function, so
-			//		callbacks are unnecessary. This will only work with a synchronous capable service.
-			//
-			// description:
-			//		ServiceStore can do client side caching and result set updating if
-			// 		dojox.data.ClientFilter is loaded. Do this add:
-			//	|	dojo.require("dojox.data.ClientFilter")
-			//		prior to loading the ServiceStore (ClientFilter must be loaded before ServiceStore).
-			//		To utilize client side filtering with a subclass, you can break queries into
-			//		client side and server side components by putting client side actions in
-			//		clientFilter property in fetch calls. For example you could override fetch:
-			//	|	fetch: function(args){
-				//	|		// do the sorting and paging on the client side
-	 			//	|		args.clientFilter = {start:args.start, count: args.count, sort: args.sort};
-	 			//	|		// args.query will be passed to the service object for the server side handling
-	 			//	|		return this.inherited(arguments);
-			//	|	}
-			//		When extending this class, if you would like to create lazy objects, you can follow
-			//		the example from dojox.data.tests.stores.ServiceStore:
-			// |	var lazyItem = {
-			// |		_loadObject: function(callback){
-			// |			this.name="loaded";
-			// |			delete this._loadObject;
-			// |			callback(this);
-			// |		}
-			// |	};
-			//setup a byId alias to the api call
-			this.byId=this.fetchItemByIdentity;
-			this._index = {};
-			// if the advanced json parser is enabled, we can pass through object updates as onSet events
-			if(options){
-				lang.mixin(this,options);
-			}
-			// We supply a default idAttribute for parser driven construction, but if no id attribute
-			//	is supplied, it should be null so that auto identification takes place properly
-			this.idAttribute = (options && options.idAttribute) || (this.schema && this.schema._idAttr);
-		},
-		schema: null,
-		idAttribute: "id",
-		labelAttribute: "label",
-		syncMode: false,
-		estimateCountFactor: 1,
-		getSchema: function(){
-			return this.schema;
-		},
-
-		loadLazyValues:true,
-
-		getValue: function(/*Object*/ item, /*String*/property, /*value?*/defaultValue){
-			// summary:
-			//	Gets the value of an item's 'property'
-			//
-			//	item:
-			//		The item to get the value from
-			//	property:
-			//		property to look up value for
-			//	defaultValue:
-			//		the default value
-
-			var value = item[property];
-			return value || // return the plain value since it was found;
-						(property in item ? // a truthy value was not found, see if we actually have it
-							value : // we do, so we can return it
-							item._loadObject ? // property was not found, maybe because the item is not loaded, we will try to load it synchronously so we can get the property
-								(dojox.rpc._sync = true) && arguments.callee.call(this,dojox.data.ServiceStore.prototype.loadItem({item:item}) || {}, property, defaultValue) : // load the item and run getValue again
-								defaultValue);// not in item -> return default value
-		},
-		getValues: function(item, property){
-			// summary:
-			//		Gets the value of an item's 'property' and returns
-			//		it.	If this value is an array it is just returned,
-			//		if not, the value is added to an array and that is returned.
-			//
-			//	item: /* object */
-			//	property: /* string */
-			//		property to look up value for
-
-			var val = this.getValue(item,property);
-			return val instanceof Array ? val : val === undefined ? [] : [val];
-		},
-
-		getAttributes: function(item){
-			// summary:
-			//	Gets the available attributes of an item's 'property' and returns
-			//	it as an array.
-			//
-			//	item: /* object */
-
-			var res = [];
-			for(var i in item){
-				if(item.hasOwnProperty(i) && !(i.charAt(0) == '_' && i.charAt(1) == '_')){
-					res.push(i);
-				}
-			}
-			return res;
-		},
-
-		hasAttribute: function(item,attribute){
-			// summary:
-			//		Checks to see if item has attribute
-			//
-			//	item: /* object */
-			//	attribute: /* string */
-			return attribute in item;
-		},
-
-		containsValue: function(item, attribute, value){
-			// summary:
-			//		Checks to see if 'item' has 'value' at 'attribute'
-			//
-			//	item: /* object */
-			//	attribute: /* string */
-			//	value: /* anything */
-			return array.indexOf(this.getValues(item,attribute),value) > -1;
-		},
-
-
-		isItem: function(item){
-			// summary:
-			//		Checks to see if the argument is an item
-			//
-			//	item: /* object */
-			//	attribute: /* string */
-
-			// we have no way of determining if it belongs, we just have object returned from
-			// 	service queries
-			return (typeof item == 'object') && item && !(item instanceof Date);
-		},
-
-		isItemLoaded: function(item){
-			// summary:
-			//		Checks to see if the item is loaded.
-			//
-			//		item: /* object */
-
-			return item && !item._loadObject;
-		},
-
-		loadItem: function(args){
-			// summary:
-			// 		Loads an item and calls the callback handler. Note, that this will call the callback
-			// 		handler even if the item is loaded. Consequently, you can use loadItem to ensure
-			// 		that an item is loaded is situations when the item may or may not be loaded yet.
-			// 		If you access a value directly through property access, you can use this to load
-			// 		a lazy value as well (doesn't need to be an item).
-			//
-			//	example:
-			//		store.loadItem({
-			//			item: item, // this item may or may not be loaded
-			//			onItem: function(item){
-			// 				// do something with the item
-			//			}
-			//		});
-
-			var item;
-			if(args.item._loadObject){
-				args.item._loadObject(function(result){
-					item = result; // in synchronous mode this can allow loadItem to return the value
-					delete item._loadObject;
-					var func = result instanceof Error ? args.onError : args.onItem;
-					if(func){
-						func.call(args.scope, result);
-					}
-				});
-			}else if(args.onItem){
-				// even if it is already loaded, we will use call the callback, this makes it easier to
-				// use when it is not known if the item is loaded (you can always safely call loadItem).
-				args.onItem.call(args.scope, args.item);
-			}
-			return item;
-		},
-		_currentId : 0,
-		_processResults : function(results, deferred){
-			// this should return an object with the items as an array and the total count of
-			// items (maybe more than currently in the result set).
-			// for example:
-			//	| {totalCount:10, items: [{id:1},{id:2}]}
-
-			// index the results, assigning ids as necessary
-
-			if(results && typeof results == 'object'){
-				var id = results.__id;
-				if(!id){// if it hasn't been assigned yet
-					if(this.idAttribute){
-						// use the defined id if available
-						id = results[this.idAttribute];
-					}else{
-						id = this._currentId++;
-					}
-					if(id !== undefined){
-						var existingObj = this._index[id];
-						if(existingObj){
-							for(var j in existingObj){
-								delete existingObj[j]; // clear it so we can mixin
-							}
-							results = lang.mixin(existingObj,results);
-						}
-						results.__id = id;
-						this._index[id] = results;
-					}
-				}
-				for(var i in results){
-					results[i] = this._processResults(results[i], deferred).items;
-				}
-				var count = results.length;
-			}
-			return {totalCount: deferred.request.count == count ? (deferred.request.start || 0) + count * this.estimateCountFactor : count, items: results};
-		},
-		close: function(request){
-			return request && request.abort && request.abort();
-		},
-		fetch: function(args){
-			// summary:
-			//		See dojo.data.api.Read.fetch
-			//
-			// The *queryOptions.cache* parameter
-			//		If true, indicates that the query result should be cached for future use. This is only available
-			// 		if dojox.data.ClientFilter has been loaded before the ServiceStore
-			//
-			//	The *syncMode* parameter
-			//		Indicates that the call should be fetch synchronously if possible (this is not always possible)
-			//
-			// The *clientFetch* parameter
-			//		This is a fetch keyword argument for explicitly doing client side filtering, querying, and paging
-
-			args = args || {};
-
-			if("syncMode" in args ? args.syncMode : this.syncMode){
-				dojox.rpc._sync = true;
-			}
-			var self = this;
-
-			var scope = args.scope || self;
-			var defResult = this.cachingFetch ? this.cachingFetch(args) : this._doQuery(args);
-			defResult.request = args;
-			defResult.addCallback(function(results){
-				if(args.clientFetch){
-					results = self.clientSideFetch({query:args.clientFetch,sort:args.sort,start:args.start,count:args.count},results);
-				}
-				var resultSet = self._processResults(results, defResult);
-				results = args.results = resultSet.items;
-				if(args.onBegin){
-					args.onBegin.call(scope, resultSet.totalCount, args);
-				}
-				if(args.onItem){
-					for(var i=0; i<results.length;i++){
-						args.onItem.call(scope, results[i], args);
-					}
-				}
-				if(args.onComplete){
-					args.onComplete.call(scope, args.onItem ? null : results, args);
-				}
-				return results;
-			});
-			defResult.addErrback(args.onError && function(err){
-				return args.onError.call(scope, err, args);
-			});
-			args.abort = function(){
-				// abort the request
-				defResult.cancel();
-			};
-			args.store = this;
-			return args;
-		},
-		_doQuery: function(args){
-			var query= typeof args.queryStr == 'string' ? args.queryStr : args.query;
-			return this.service(query);
-		},
-		getFeatures: function(){
-			// summary:
-			// 		return the store feature set
-
-			return {
-				"dojo.data.api.Read": true,
-				"dojo.data.api.Identity": true,
-				"dojo.data.api.Schema": this.schema
-			};
-		},
-
-		getLabel: function(item){
-			// summary
-			//		returns the label for an item. Just gets the "label" attribute.
-			//
-			return this.getValue(item,this.labelAttribute);
-		},
-
-		getLabelAttributes: function(item){
-			// summary:
-			//		returns an array of attributes that are used to create the label of an item
-			return [this.labelAttribute];
-		},
-
-		//Identity API Support
-
-
-		getIdentity: function(item){
-			return item.__id;
-		},
-
-		getIdentityAttributes: function(item){
-			// summary:
-			//		returns the attributes which are used to make up the
-			//		identity of an item.	Basically returns this.idAttribute
-
-			return [this.idAttribute];
-		},
-
-		fetchItemByIdentity: function(args){
-			// summary:
-			//		fetch an item by its identity, by looking in our index of what we have loaded
-			var item = this._index[(args._prefix || '') + args.identity];
-			if(item){
-				// the item exists in the index
-				if(item._loadObject){
-					// we have a handle on the item, but it isn't loaded yet, so we need to load it
-					args.item = item;
-					return this.loadItem(args);
-				}else if(args.onItem){
-					// it's already loaded, so we can immediately callback
-					args.onItem.call(args.scope, item);
-				}
-			}else{
-				// convert the different spellings
-				return this.fetch({
-						query: args.identity,
-						onComplete: args.onItem,
-						onError: args.onError,
-						scope: args.scope
-					}).results;
-			}
-			return item;
-		}
-
-	}
-);
+    };
+
+    SearchSuggest.prototype.handle_search_query = function() {
+        var search_query = this.stored_search_box_value;
+        if (search_query.length > 0) {
+            // First check the results cache to see if this value had
+            // been queried previously.
+            var suggestions = this.get_cached_suggestions(
+                search_query);
+            if (suggestions === undefined) {
+                // Call the server and let the asynchronous response
+                // update the display.
+                this.get_suggestions(search_query);
+            }
+            else {
+                this.display_suggestions(suggestions, search_query);
+            }
+        }
+        else {
+            // Hide the menu because the search box is empty.
+            this.show_menu(false);
+        }
+    };
+
+    SearchSuggest.prototype.select_suggestion = function(list_item) {
+        // Go to search results for the item selected.
+        var link = list_item.find('a').first();
+        if (link !== undefined) {
+            var href = link.attr('href');
+            if (href !== undefined) {
+                var search_string =
+                    unescape(href.substring(href.indexOf('=') + 1));
+                // Store the search string before updating the search
+                // box in order to prevent a change event from firing.
+                this.stored_search_box_value = search_string;
+                this.search_box.val(search_string);
+                this.show_menu(false);
+                window.location.href = href;
+            }
+        }
+    };
+
+    return SearchSuggest;
 });
 
 },
@@ -2863,7 +437,7 @@ require([
     'util/sidebar',
     'bridge/jquery.mousewheel',
     'bridge/shadowbox',
-    'gobotany/sk/photo'
+    'simplekey/PhotoHelper'
 ], function($, sidebar, mousewheel, Shadowbox, PhotoHelper) {
     sidebar.setup();
     $(document).ready(function() {
@@ -2909,9 +483,11 @@ require([
 define("util/sidebar", [
     'bridge/jquery'
 ], function($) {
-return {
+
+    var exports = {};
+
     // Make the sidebar as tall as it can be.
-    set_height: function() {
+    exports.set_height = function() {
         // On small screens, skip sidebar resizing entirely.
         if ($(window).width() <= 600) {
             return;
@@ -2946,49 +522,35 @@ return {
         }
 
         $('div#sidebar').css('height', new_height);
-    },
+    };
 
-    setup: function() {
-        that = this;
+    exports.setup = function() {
         $(document).ready(function() {
             // Set the initial sidebar height.
-            that.set_height();
+            exports.set_height();
             $('#main img').load(function() {
                 // Each time an image loads, the page gets taller.
-                that.set_height();
+                exports.set_height();
             });
         });
-    }
-}
+    };
+
+    return exports;
 });
 
 },
 'bridge/jquery.mousewheel':function(){
-// AMD wrapper for jquery.mousewheel.min plugin.
-// This should ensure the AMD loader properly caches jquery
-// and only loads it once, and we can be sure that this plugin
-// has jquery loaded before it attempts to load. This also serves
-// as a thin abstraction layer so we don't have to worry about
-// versioned filenames in our module references.
 define("bridge/jquery.mousewheel", [
-    'bridge/jquery', 
     'jquery/jquery.mousewheel.min'
-], function($, mousewheel) {
-    var jquery;
-    if($.fn.mousewheel && $.fn.unmousewheel) {
-        // The plugin is loaded, so return the same
-        // jQuery object again (the global)
-        jquery = $;
-    }
-
-    return jquery;
-});
-
+], function() {});
 
 },
 'jquery/jquery.mousewheel.min':function(){
-// wrapped by build app
-define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
+define("jquery/jquery.mousewheel.min", [
+    'bridge/jquery'
+], function() {
+    // end AMD header
+
 /* Copyright (c) 2009 Brandon Aaron (http://brandonaaron.net)
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
@@ -3000,6 +562,8 @@ define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
  * Requires: 1.2.2+
  */
 (function(c){var a=["DOMMouseScroll","mousewheel"];c.event.special.mousewheel={setup:function(){if(this.addEventListener){for(var d=a.length;d;){this.addEventListener(a[--d],b,false)}}else{this.onmousewheel=b}},teardown:function(){if(this.removeEventListener){for(var d=a.length;d;){this.removeEventListener(a[--d],b,false)}}else{this.onmousewheel=null}}};c.fn.extend({mousewheel:function(d){return d?this.bind("mousewheel",d):this.trigger("mousewheel")},unmousewheel:function(d){return this.unbind("mousewheel",d)}});function b(f){var d=[].slice.call(arguments,1),g=0,e=true;f=c.event.fix(f||window.event);f.type="mousewheel";if(f.wheelDelta){g=f.wheelDelta/120}if(f.detail){g=-f.detail/3}d.unshift(f,g);return c.event.handle.apply(this,d)}})(jQuery);
+
+    // AMD footer
 });
 
 },
@@ -3043,30 +607,28 @@ Q.find=(function(){var aP=/((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^[\]]*\]|['"][
 });
 
 },
-'gobotany/sk/photo':function(){
+'simplekey/PhotoHelper':function(){
 /*
  * Code for special handling of full plant photos.
  */
-define("gobotany/sk/photo", [
-    'dojo/_base/declare',
-    'dojo/query',
-    'dojo/dom-class',
-    'dojo/_base/lang',
+define("simplekey/PhotoHelper", [
+    'bridge/jquery',
     'util/shadowbox_init'
-], function(declare, query, domClass, lang, shadowbox_init) {
-    return declare('gobotany.sk.photo.PhotoHelper', null, {
+], function($, shadowbox_init) {
 
-    constructor: function() {
+var PhotoHelper = {
+
+    init: function() {
     },
 
     prepare_to_enlarge: function() {
         // Do a few things before enlarging the photo on the screen.
         // Intended to be called using the Shadowbox onOpen handler.
-        
-        var title_element = query('#sb-title-inner')[0];
-                                                    
+
+        var title_element = $('#sb-title-inner').first();
+
         // Temporarily hide the title element.
-        domClass.add(title_element, 'hidden');
+        title_element.addClass('hidden');
 
         // Call a function to do the usual Shadowbox initialization because
         // an existing onOpen handler with this function call is being
@@ -3080,8 +642,8 @@ define("gobotany/sk/photo", [
         // Format the title text for a better presentation atop the photo.
         // Intended to be called using the Shadowbox onFinish handler.
 
-        var title_element = query('#sb-title-inner')[0];
-        var title_text = title_element.innerHTML;
+        var title_element = $('#sb-title-inner').first();
+        var title_text = title_element.html();
 
         // Parse and mark up the title text.
 
@@ -3089,7 +651,7 @@ define("gobotany/sk/photo", [
         var image_title = parts[0];
         var copyright_holder = parts[1];
         var copyright = parts[2];
-        var source = "";
+        var source = '';
         if (parts[3]) {
             source = parts[3];
         }
@@ -3103,12 +665,12 @@ define("gobotany/sk/photo", [
         // italicize the entire plant name portion of the title for now. This
         // will generally be correct for the groups and subgroups pages'
         // galleries, which tend not to show varieties, subspecies, etc.
-        var scientific_name = query('h2 .scientific');
+        var scientific_name = $('h2 .scientific');
         if (scientific_name.length > 0) {
-            name = lang.trim(scientific_name[0].innerHTML) + '.';
+            name = $.trim(scientific_name[0].innerHTML) + '.';
         }
         else if (title_parts[1] !== undefined) {
-            name = '<i>' + lang.trim(title_parts[1]) + '</i>';
+            name = '<i>' + $.trim(title_parts[1]) + '</i>';
         }
         if (name.length > 0) {
             title += ': ' + name;
@@ -3117,17 +679,30 @@ define("gobotany/sk/photo", [
         var html = '<div><h6>' + title + '</h6><span>' + copyright_holder +
             ' ' + copyright + ' <a href="/legal/terms-of-use/#ip" ' +
             'target="_blank">Terms of Use' + '</a></span>';
-        if (source !== "") {
+        if (source !== '') {
             html += '<br><span>' + parts[3] + '</span>';
         }
         html += '</div>';
-        title_element.innerHTML = html;
+        title_element.html(html);
 
         // Show the title element again.
-        domClass.remove(title_element, 'hidden');
+        title_element.removeClass('hidden');
     }
 
-});
+};
+
+// Create a small factory method to return, which will act
+// as a little instance factory and constructor, so the user
+// can do as follows:
+// var obj = MyClassName(something, somethingelse);
+function factory() {
+    var instance = Object.create(PhotoHelper);
+    instance.init();
+    return instance;
+}
+
+return factory;
+
 });
 
 },
@@ -3235,8 +810,8 @@ define("simplekey/glossarize", [
 define("simplekey/Glossarizer", [
     'bridge/ember',
     'bridge/jquery',
-    'bridge/tooltipsy'
-], function(Ember, $, tooltipsy) {return Ember.Object.extend({
+    'util/tooltip'
+], function(Ember, $, tooltip) {return Ember.Object.extend({
 
     /* The glossarizer takes the glossary blob delivered by the API,
        parses and prepares a regular expression, and then can mark up
@@ -3269,7 +844,7 @@ define("simplekey/Glossarizer", [
     /* Call "markup" on a node - hopefully one with no elements
        beneath it, but just text - to have its innerHTML scanned for
        glossary terms.  Any terms found are replaced with a <span>
-       to which a Dijit tooltip is then attached. */
+       to which a tooltip is then attached. */
 
     markup: function(node) {
         node.innerHTML = node.innerHTML.replace(
@@ -3296,15 +871,10 @@ define("simplekey/Glossarizer", [
                 definition = defs[node2.innerHTML];
             }
 
-            $('#' + gloss_id).tooltipsy({
+            $('#' + gloss_id).tooltip({
                 content: '<p class="glosstip">' +
                     (imgsrc ? '<img src="' + imgsrc + '">' : '') +
-                    definition + '</p>',
-                show: function(event, $tooltip) {
-                    if (parseFloat($tooltip.css('left')) < 0)
-                        $tooltip.css('left', '0px');
-                    $tooltip.show();
-                }
+                    definition + '</p>'
             });
         });
     }
@@ -3313,15 +883,18 @@ define("simplekey/Glossarizer", [
 },
 'bridge/ember':function(){
 define("bridge/ember", [
-    'bridge/jquery',
     'tools/ember-0.9.8.1'
-], function($) {
+], function(Ember) {
     return Ember;
 });
 
 },
 'tools/ember-0.9.8.1':function(){
-define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
+define("tools/ember-0.9.8.1", [
+    'bridge/jquery'
+], function() {
+    // end AMD header
+
 (function() {
 /*global __fail__*/
 
@@ -23471,260 +21044,359 @@ Ember.$(document).ready(
 
 })();
 
+    // AMD footer
+    return Ember;
 });
 
 },
-'bridge/tooltipsy':function(){
-// AMD wrapper for the tooltipsy plugin.
-// This should ensure the AMD loader properly caches jquery
-// and only loads it once, and we can be sure that this plugin
-// has jquery loaded before it attempts to load. This also serves
-// as a thin abstraction layer so we don't have to worry about
-// versioned filenames in our module references.
-define("bridge/tooltipsy", [
-    'bridge/jquery', 
-    'jquery/tooltipsy'
-], function($, tooltipsy) {
-    var jquery;
-    if($.fn.tooltipsy) {
-        // The plugin is loaded, so return the same
-        // jQuery object again (the global)
-        jquery = $;
-    }
-
-    return jquery;
-});
-
-
-},
-'jquery/tooltipsy':function(){
-// wrapped by build app
-define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
-/* tooltipsy by Brian Cray
- * Lincensed under GPL2 - http://www.gnu.org/licenses/gpl-2.0.html
- * Option quick reference:
- * - alignTo: "element" or "cursor" (Defaults to "element")
- * - offset: Tooltipsy distance from element or mouse cursor, dependent on alignTo setting. Set as array [x, y] (Defaults to [0, -1])
- * - content: HTML or text content of tooltip. Defaults to "" (empty string), which pulls content from target element's title attribute
- * - show: function(event, tooltip) to show the tooltip. Defaults to a show(100) effect
- * - hide: function(event, tooltip) to hide the tooltip. Defaults to a fadeOut(100) effect
- * - delay: A delay in milliseconds before showing a tooltip. Set to 0 for no delay. Defaults to 200
- * - css: object containing CSS properties and values. Defaults to {} to use stylesheet for styles
- * - className: DOM class for styling tooltips with CSS. Defaults to "tooltipsy"
- * - showEvent: Set a custom event to bind the show function. Defaults to mouseenter
- * - hideEvent: Set a custom event to bind the show function. Defaults to mouseleave
- * Method quick reference:
- * - $('element').data('tooltipsy').show(): Force the tooltip to show
- * - $('element').data('tooltipsy').hide(): Force the tooltip to hide
- * - $('element').data('tooltipsy').destroy(): Remove tooltip from DOM
- * More information visit http://tooltipsy.com/
- */
-(function($){
-    $.tooltipsy = function (el, options) {
-        this.options = options;
-        this.$el = $(el);
-        this.title = this.$el.attr('title') || '';
-        this.$el.attr('title', '');
-        this.random = parseInt(Math.random()*10000);
-        this.ready = false;
-        this.shown = false;
-        this.width = 0;
-        this.height = 0;
-        this.delaytimer = null;
-
-        this.$el.data("tooltipsy", this);
+'util/tooltip':function(){
+define("util/tooltip", [
+    'bridge/jquery'
+], function($) {
+    // Constructor
+    var Tooltip = function (elements, options) {
+        this.elements = elements;
+        this.options = $.extend({}, this.defaults, options);
+        this.is_touch = navigator.userAgent.match(
+                        /(iPad|iPod|iPhone|Android)/) ? true : false;
         this.init();
     };
+    // Prototype definition
+    Tooltip.prototype = {
+        defaults: {
+            arrow_css_class: 'arrow',
+            arrow_edge_margin: 10,
+            css_class: 'gb-tooltip',
+            fade_speed: 'fast',
+            horizontal_adjust_px: 20,
+            hover_delay: 400,
+            small_screen_max_width: 600,
+            vertical_adjust_px: 24,
+            width: null   // use width defined in CSS by default
+        },
 
-    $.tooltipsy.prototype.init = function () {
-        var base = this;
+        build_tooltip: function (content) {
+            var element = $('<div class="' + this.options.css_class + '">' +
+                            content + '<div class="arrow"></div></div>');
+            return element;
+        },
 
-        base.settings = $.extend({}, base.defaults, base.options);
-        base.settings.delay = parseInt(base.settings.delay);
+        position_tooltip: function (tooltip_element, left, top) {
+            var activating_element_position = left;
 
-        if (typeof base.settings.content === 'function') {
-            base.readify(); 
-        }
-
-        if (base.settings.showEvent === base.settings.hideEvent && base.settings.showEvent === 'click') {
-            base.$el.toggle(function (e) {
-                if (base.settings.showEvent === 'click' && base.$el[0].tagName == 'A') {
-                    e.preventDefault();
-                }
-                if (base.settings.delay > 0) {
-                    base.delaytimer = window.setTimeout(function () {
-                        base.show(e);
-                    }, base.settings.delay);
-                }
-                else {
-                    base.show(e);
-                }
-            }, function (e) {
-                if (base.settings.showEvent === 'click' && base.$el[0].tagName == 'A') {
-                    e.preventDefault();
-                }
-                window.clearTimeout(base.delaytimer);
-                base.delaytimer = null;
-                base.hide(e);
-            });
-        }
-        else {
-            base.$el.bind(base.settings.showEvent, function (e) {
-                if (base.settings.showEvent === 'click' && base.$el[0].tagName == 'A') {
-                    e.preventDefault();
-                }
-                if (base.settings.delay > 0) {
-                    base.delaytimer = window.setTimeout(function () {
-                        base.show(e);
-                    }, base.settings.delay);
-                }
-                else {
-                    base.show(e);
-                }
-            }).bind(base.settings.hideEvent, function (e) {
-                if (base.settings.showEvent === 'click' && base.$el[0].tagName == 'A') {
-                    e.preventDefault();
-                }
-                window.clearTimeout(base.delaytimer);
-                base.delaytimer = null;
-                base.hide(e);
-            });
-        }
-    };
-
-    $.tooltipsy.prototype.show = function (e) {
-        var base = this;
-
-        if (base.ready === false) {
-            base.readify();
-        }
-
-        if (base.shown === false) {
-            if ((function (o) {
-                var s = 0, k;
-                for (k in o) {
-                    if (o.hasOwnProperty(k)) {
-                        s++;
-                    }
-                }
-                return s;
-            })(base.settings.css) > 0) {
-                base.$tip.css(base.settings.css);
+            // If the element that activated the tooltip is far enough
+            // to the right side of the viewport that the tooltip would
+            // not fit in the visible area, make the tooltip appear far
+            // enough to the left to make it fit.
+            var tooltip_width = $(tooltip_element).width();
+            var viewport_width = $(window).width();
+            var scroll_left = $(window).scrollLeft();
+            var visual_left_edge = left - scroll_left;
+            var visual_right_edge = visual_left_edge + tooltip_width;
+            if (visual_right_edge >= viewport_width) {
+                left = viewport_width - tooltip_width - 
+                       this.options.horizontal_adjust_px + scroll_left;
             }
-            base.width = base.$tipsy.outerWidth();
-            base.height = base.$tipsy.outerHeight();
-        }
+            // If the horizontal position would start off the screen to
+            // the left, adjust it to start at the left edge.
+            if (left < scroll_left) {
+                left = scroll_left;
+            }
+    
+            // Set the tooltip position.
+            var tooltip_height = $(tooltip_element).height();
+            tooltip_element.css({
+                'left': left,
+                'top': top - tooltip_height - this.options.vertical_adjust_px
+            });
 
-        if (base.settings.alignTo === 'cursor' && e) {
-            var tip_position = [e.pageX + base.settings.offset[0], e.pageY + base.settings.offset[1]];
-            if(tip_position[0] + base.width > $(window).width()) {
-                var tip_css = {top: tip_position[1] + 'px', right: tip_position[0] + 'px', left: 'auto'};
+            // Set the arrow position.
+            var arrow_selector = '.' + this.options.css_class + ' .' +
+                                 this.options.arrow_css_class;
+            var arrow_element = $(arrow_selector);
+            var tooltip_left_adjustment = activating_element_position - left;
+            var arrow_position = tooltip_left_adjustment;
+            if (arrow_position > tooltip_width) {
+                arrow_position = tooltip_width -
+                                 this.options.arrow_edge_margin;
+            }
+            if (arrow_position <= 0) {
+                arrow_position = this.options.arrow_edge_margin;
+            }
+            arrow_element.css({'left': arrow_position});
+        },
+
+        show_tooltip: function (element, left, top) {
+            // If a tooltip is already showing, immediately hide it
+            // without a fade effect so the new one can beging fading
+            // in. This for successively tapping on elements that produce
+            // tooltips and having the tooltips immediately appear without
+            // the previous one having to be dismissed first.
+            if ($('.' + this.options.css_class).length > 0) {
+                this.hide_tooltip(false);
+            }
+
+            var tooltip_element = this.build_tooltip(this.options.content);
+
+            // If a CSS width value was supplied for the tooltip, use it
+            // to override the external CSS.
+            if (this.options.width !== null) {
+                tooltip_element.css({'width': this.options.width });
+            }
+
+            $('body').append(tooltip_element);
+            this.position_tooltip(tooltip_element, left, top);
+            $(tooltip_element).fadeIn(this.options.fade_speed);
+        },
+
+        hide_tooltip: function (fade) {
+            var do_fade;
+            if (typeof(fade) === 'undefined') {
+                do_fade = 'true';   // default for optional parameter
+            }
+
+            var tooltip = '.' + this.options.css_class;
+            if (do_fade) {
+                $(tooltip).fadeOut(this.options.fade_speed, function () {
+                    $(tooltip).remove();
+                });
             }
             else {
-                var tip_css = {top: tip_position[1] + 'px', left: tip_position[0] + 'px', right: 'auto'};
+                $(tooltip).remove();
             }
-        }
-        else {
-            var tip_position = [
-                (function (pos) {
-                    if (base.settings.offset[0] < 0) {
-                        return pos.left - Math.abs(base.settings.offset[0]) - base.width;
-                    }
-                    else if (base.settings.offset[0] === 0) {
-                        return pos.left - ((base.width - base.$el.outerWidth()) / 2);
-                    }
-                    else {
-                        return pos.left + base.$el.outerWidth() + base.settings.offset[0];
-                    }
-                })(base.offset(base.$el[0])),
-                (function (pos) {
-                    if (base.settings.offset[1] < 0) {
-                        return pos.top - Math.abs(base.settings.offset[1]) - base.height;
-                    }
-                    else if (base.settings.offset[1] === 0) {
-                        return pos.top - ((base.height - base.$el.outerHeight()) / 2);
-                    }
-                    else {
-                        return pos.top + base.$el.outerHeight() + base.settings.offset[1];
-                    }
-                })(base.offset(base.$el[0]))
-            ];
-        }
-        base.$tipsy.css({top: tip_position[1] + 'px', left: tip_position[0] + 'px'});
-        base.settings.show(e, base.$tipsy.stop(true, true));
-    };
-
-    $.tooltipsy.prototype.hide = function (e) {
-        var base = this;
-
-        if (base.ready === false) {
-            return;
-        }
-
-        if (e && e.relatedTarget === base.$tip[0]) {
-            base.$tip.bind('mouseleave', function (e) {
-                if (e.relatedTarget === base.$el[0]) {
-                    return;
-                }
-                base.settings.hide(e, base.$tipsy.stop(true, true));
-            });
-            return;
-        }
-        base.settings.hide(e, base.$tipsy.stop(true, true));
-    };
-
-    $.tooltipsy.prototype.readify = function () {
-        this.ready = true;
-        this.$tipsy = $('<div id="tooltipsy' + this.random + '" style="position:absolute;z-index:2147483647;display:none">').appendTo('body');
-        this.$tip = $('<div class="' + this.settings.className + '">').appendTo(this.$tipsy);
-        this.$tip.data('rootel', this.$el);
-        var e = this.$el;
-        var t = this.$tip;
-        this.$tip.html(this.settings.content != '' ? (typeof this.settings.content == 'string' ? this.settings.content : this.settings.content(e, t)) : this.title);
-    };
-
-    $.tooltipsy.prototype.offset = function (el) {
-        var ol = ot = 0;
-        if (el.offsetParent) {
-            do {
-                if (el.tagName != 'BODY') {
-                    ol += el.offsetLeft - el.scrollLeft;
-                    ot += el.offsetTop - el.scrollTop;
-                }
-            } while (el = el.offsetParent);
-        }
-        return {left : ol, top : ot};
-    };
-
-    $.tooltipsy.prototype.destroy = function () {
-        this.$tipsy.remove();
-        $.removeData(this.$el, 'tooltipsy');
-    };
-
-    $.tooltipsy.prototype.defaults = {
-        alignTo: 'element',
-        offset: [0, -1],
-        content: '',
-        show: function (e, $el) {
-            $el.fadeIn(100);
         },
-        hide: function (e, $el) {
-            $el.fadeOut(100);
-        },
-        css: {},
-        className: 'tooltipsy',
-        delay: 200,
-        showEvent: 'mouseenter',
-        hideEvent: 'mouseleave'
-    };
 
-    $.fn.tooltipsy = function(options) {
-        return this.each(function() {
-            new $.tooltipsy(this, options);
+        init: function () {
+            var self = this;
+            var just_moved = false;
+
+            this.elements.each(function (index, element) {
+                if (self.is_touch) {
+                    // For touch interfaces, activate on tap.
+                    $(element).bind({
+                        'touchend.Tooltip': function (event) {
+                            var offset = $(element).offset();
+                            self.show_tooltip(element, offset.left,
+                                              offset.top);
+
+                            // Stop events from propagating onward to the
+                            // document body. Otherwise the code that
+                            // dismisses the tooltip would always run, and
+                            // the tooltip would not show upon tap because
+                            // it would immediately be hidden.
+                            event.stopPropagation();
+                            // Ensure the tooltip can be dismissed on the
+                            // next touch following a touch with movement.
+                            just_moved = false;
+                        }
+                    });
+                }
+                else {
+                    // For point-and-click interfaces, activate on hover.
+                    $(element).bind({
+                        'mouseenter.Tooltip': function () {
+                            var offset = $(element).offset();
+                            // Delay the hover a bit to avoid accidental
+                            // activation when moving the cursor quickly by.
+                            this.timeout_id = window.setTimeout(
+                                function (element) {
+                                    self.show_tooltip(element, offset.left, 
+                                                      offset.top);
+                                },
+                                self.options.hover_delay, element);
+                        },
+                        'mouseleave.Tooltip': function () {
+                            // Clear any timeout set for delaying the hover.
+                            if (typeof this.timeout_id === 'number') {  
+                                window.clearTimeout(this.timeout_id);  
+                                delete this.timeout_id;  
+                            }
+                            
+                            self.hide_tooltip();
+                        }
+                    });
+                }
+            });   // end loop through elements
+
+            // Make some further adjustments for touch interfaces.
+            if (self.is_touch) {
+                // Dismiss the tooltip upon a tap anywhere.
+                $('body').bind({
+                    'touchend.Tooltip_dismiss': function () {
+                        // Only dismiss the tooltip if the user did not just
+                        // move around when they last touched.
+                        if (just_moved === false) {
+                            self.hide_tooltip();
+                        }
+                        just_moved = false;
+                    },
+                    // Do not dismiss the tooltip upon a touch event that
+                    // involves finger movement, because the user may be
+                    // trying to reposition the viewport in order to better
+                    // view the tooltip.
+                    'touchmove.Tooltip': function () {
+                        just_moved = true;
+                    }
+                });
+
+                // Dismiss the tooltip when the device orientation changes
+                // because the tooltip becomes incorrectly positioned.
+                var orientation_event = ('onorientationchange' in window) ?
+                    'orientationchange' : 'resize';
+                $(window).bind({
+                    'orientationchange': function () {
+                        self.hide_tooltip();
+                    }
+                });
+            }
+
+        }   // end init()
+    };   // end prototype definition
+
+    // Extend jQuery with tooltip capability.
+    $.fn.tooltip = function (options) {
+        new Tooltip(this, options);
+        return this;
+    };
+});
+
+},
+'simplekey/resources':function(){
+/*
+ * Async singletons.
+ */
+define("simplekey/resources", [
+    'bridge/jquery',
+    'bridge/underscore'
+], function($, _) {
+    var module = {};
+
+    /*
+     * Return a Deferred for an AJAX request, which always simply
+     * returns the data from the call.  An actual $.ajax() object, by
+     * contrast, returns simple data to .get() but an awkward triple
+     * [data, status, jqXHR] when passed through $.when().
+     */
+    module.get = function(path, data) {
+        var d = $.Deferred();
+        $.ajax({
+            url: API_URL + path, data: data, traditional: true
+        }).done(function(r) {
+            d.resolve(r);
         });
+        return d;
+    },
+    /*
+     * Our AJAX resources.
+     */
+
+    module.glossaryblob = _.memoize(function() {
+        return module.get('glossaryblob/');
+    });
+
+    module.pile = _.memoize(function(pile_slug) {
+        return module.get('piles/' + pile_slug + '/');
+    });
+    module.pile_characters = _.memoize(function(pile_slug) {
+        return module.get('piles/' + pile_slug + '/characters/');
+    });
+    module.more_questions = _.memoize(function(args) {
+        return module.get('piles/' + args.pile_slug + '/questions/', {
+            choose_best: 3,
+            species_ids: args.species_ids.join('_'),
+            character_group_id: args.character_group_ids,
+            exclude: args.exclude_characters
+        });
+    },
+        /* Custom hash function, so arguments that vary will always
+         * be considered. The default hash function for memoize just
+         * uses the first argument, which may have been the pile_slug. */
+        function(args) {
+            // Make a hash key out of the arguments that can vary.
+            return args.exclude_characters + args.character_group_ids +
+                   args.species_ids;
+        }
+    );
+    module.pile_species = _.memoize(function(pile_slug) {
+        return module.get('species/' + pile_slug + '/');
+    });
+
+    module.taxon_info = function(scientific_name) { // NOT memoized - save mem
+        save_name = scientific_name.replace(' ', '%20');
+        return module.get('taxon/' + save_name + '/');
     };
 
-})(jQuery);
+    module.character_vector = _.memoize(function(short_name) {
+        return module.get('vectors/character/' + short_name + '/');
+    });
+    module.key_vector = _.memoize(function(key_name) {
+        return module.get('vectors/key/' + key_name + '/');
+    });
+    module.pile_vector = _.memoize(function(pile_slug) {
+        return module.get('vectors/pile/' + pile_slug + '/');
+    });
+
+    /*
+     * Functions that combine data from multiple AJAX requests.
+     */
+    module.base_vector = _.memoize(function(args) {
+        var deferred = $.Deferred();
+        $.when(
+            module.key_vector(args.key_name),
+            module.pile_vector(args.pile_slug)
+        ).done(function(kv, pv) {
+            deferred.resolve(_.intersect(kv[0].species, pv[0].species));
+        });
+        return deferred;
+    });
+
+    simplekey_resources = module;  // global, for code still stuck in Dojo
+    return module;
+});
+
+},
+'bridge/underscore':function(){
+define("bridge/underscore", [
+    'tools/underscore-min'
+], function(underscore) {
+    return _;
+});
+
+},
+'tools/underscore-min':function(){
+// wrapped by build app
+define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
+// Underscore.js 1.3.1
+// (c) 2009-2012 Jeremy Ashkenas, DocumentCloud Inc.
+// Underscore is freely distributable under the MIT license.
+// Portions of Underscore are inspired or borrowed from Prototype,
+// Oliver Steele's Functional, and John Resig's Micro-Templating.
+// For all details and documentation:
+// http://documentcloud.github.com/underscore
+(function(){function q(a,c,d){if(a===c)return a!==0||1/a==1/c;if(a==null||c==null)return a===c;if(a._chain)a=a._wrapped;if(c._chain)c=c._wrapped;if(a.isEqual&&b.isFunction(a.isEqual))return a.isEqual(c);if(c.isEqual&&b.isFunction(c.isEqual))return c.isEqual(a);var e=l.call(a);if(e!=l.call(c))return false;switch(e){case "[object String]":return a==String(c);case "[object Number]":return a!=+a?c!=+c:a==0?1/a==1/c:a==+c;case "[object Date]":case "[object Boolean]":return+a==+c;case "[object RegExp]":return a.source==
+c.source&&a.global==c.global&&a.multiline==c.multiline&&a.ignoreCase==c.ignoreCase}if(typeof a!="object"||typeof c!="object")return false;for(var f=d.length;f--;)if(d[f]==a)return true;d.push(a);var f=0,g=true;if(e=="[object Array]"){if(f=a.length,g=f==c.length)for(;f--;)if(!(g=f in a==f in c&&q(a[f],c[f],d)))break}else{if("constructor"in a!="constructor"in c||a.constructor!=c.constructor)return false;for(var h in a)if(b.has(a,h)&&(f++,!(g=b.has(c,h)&&q(a[h],c[h],d))))break;if(g){for(h in c)if(b.has(c,
+h)&&!f--)break;g=!f}}d.pop();return g}var r=this,G=r._,n={},k=Array.prototype,o=Object.prototype,i=k.slice,H=k.unshift,l=o.toString,I=o.hasOwnProperty,w=k.forEach,x=k.map,y=k.reduce,z=k.reduceRight,A=k.filter,B=k.every,C=k.some,p=k.indexOf,D=k.lastIndexOf,o=Array.isArray,J=Object.keys,s=Function.prototype.bind,b=function(a){return new m(a)};if(typeof exports!=="undefined"){if(typeof module!=="undefined"&&module.exports)exports=module.exports=b;exports._=b}else r._=b;b.VERSION="1.3.1";var j=b.each=
+b.forEach=function(a,c,d){if(a!=null)if(w&&a.forEach===w)a.forEach(c,d);else if(a.length===+a.length)for(var e=0,f=a.length;e<f;e++){if(e in a&&c.call(d,a[e],e,a)===n)break}else for(e in a)if(b.has(a,e)&&c.call(d,a[e],e,a)===n)break};b.map=b.collect=function(a,c,b){var e=[];if(a==null)return e;if(x&&a.map===x)return a.map(c,b);j(a,function(a,g,h){e[e.length]=c.call(b,a,g,h)});if(a.length===+a.length)e.length=a.length;return e};b.reduce=b.foldl=b.inject=function(a,c,d,e){var f=arguments.length>2;a==
+null&&(a=[]);if(y&&a.reduce===y)return e&&(c=b.bind(c,e)),f?a.reduce(c,d):a.reduce(c);j(a,function(a,b,i){f?d=c.call(e,d,a,b,i):(d=a,f=true)});if(!f)throw new TypeError("Reduce of empty array with no initial value");return d};b.reduceRight=b.foldr=function(a,c,d,e){var f=arguments.length>2;a==null&&(a=[]);if(z&&a.reduceRight===z)return e&&(c=b.bind(c,e)),f?a.reduceRight(c,d):a.reduceRight(c);var g=b.toArray(a).reverse();e&&!f&&(c=b.bind(c,e));return f?b.reduce(g,c,d,e):b.reduce(g,c)};b.find=b.detect=
+function(a,c,b){var e;E(a,function(a,g,h){if(c.call(b,a,g,h))return e=a,true});return e};b.filter=b.select=function(a,c,b){var e=[];if(a==null)return e;if(A&&a.filter===A)return a.filter(c,b);j(a,function(a,g,h){c.call(b,a,g,h)&&(e[e.length]=a)});return e};b.reject=function(a,c,b){var e=[];if(a==null)return e;j(a,function(a,g,h){c.call(b,a,g,h)||(e[e.length]=a)});return e};b.every=b.all=function(a,c,b){var e=true;if(a==null)return e;if(B&&a.every===B)return a.every(c,b);j(a,function(a,g,h){if(!(e=
+e&&c.call(b,a,g,h)))return n});return e};var E=b.some=b.any=function(a,c,d){c||(c=b.identity);var e=false;if(a==null)return e;if(C&&a.some===C)return a.some(c,d);j(a,function(a,b,h){if(e||(e=c.call(d,a,b,h)))return n});return!!e};b.include=b.contains=function(a,c){var b=false;if(a==null)return b;return p&&a.indexOf===p?a.indexOf(c)!=-1:b=E(a,function(a){return a===c})};b.invoke=function(a,c){var d=i.call(arguments,2);return b.map(a,function(a){return(b.isFunction(c)?c||a:a[c]).apply(a,d)})};b.pluck=
+function(a,c){return b.map(a,function(a){return a[c]})};b.max=function(a,c,d){if(!c&&b.isArray(a))return Math.max.apply(Math,a);if(!c&&b.isEmpty(a))return-Infinity;var e={computed:-Infinity};j(a,function(a,b,h){b=c?c.call(d,a,b,h):a;b>=e.computed&&(e={value:a,computed:b})});return e.value};b.min=function(a,c,d){if(!c&&b.isArray(a))return Math.min.apply(Math,a);if(!c&&b.isEmpty(a))return Infinity;var e={computed:Infinity};j(a,function(a,b,h){b=c?c.call(d,a,b,h):a;b<e.computed&&(e={value:a,computed:b})});
+return e.value};b.shuffle=function(a){var b=[],d;j(a,function(a,f){f==0?b[0]=a:(d=Math.floor(Math.random()*(f+1)),b[f]=b[d],b[d]=a)});return b};b.sortBy=function(a,c,d){return b.pluck(b.map(a,function(a,b,g){return{value:a,criteria:c.call(d,a,b,g)}}).sort(function(a,b){var c=a.criteria,d=b.criteria;return c<d?-1:c>d?1:0}),"value")};b.groupBy=function(a,c){var d={},e=b.isFunction(c)?c:function(a){return a[c]};j(a,function(a,b){var c=e(a,b);(d[c]||(d[c]=[])).push(a)});return d};b.sortedIndex=function(a,
+c,d){d||(d=b.identity);for(var e=0,f=a.length;e<f;){var g=e+f>>1;d(a[g])<d(c)?e=g+1:f=g}return e};b.toArray=function(a){return!a?[]:a.toArray?a.toArray():b.isArray(a)?i.call(a):b.isArguments(a)?i.call(a):b.values(a)};b.size=function(a){return b.toArray(a).length};b.first=b.head=function(a,b,d){return b!=null&&!d?i.call(a,0,b):a[0]};b.initial=function(a,b,d){return i.call(a,0,a.length-(b==null||d?1:b))};b.last=function(a,b,d){return b!=null&&!d?i.call(a,Math.max(a.length-b,0)):a[a.length-1]};b.rest=
+b.tail=function(a,b,d){return i.call(a,b==null||d?1:b)};b.compact=function(a){return b.filter(a,function(a){return!!a})};b.flatten=function(a,c){return b.reduce(a,function(a,e){if(b.isArray(e))return a.concat(c?e:b.flatten(e));a[a.length]=e;return a},[])};b.without=function(a){return b.difference(a,i.call(arguments,1))};b.uniq=b.unique=function(a,c,d){var d=d?b.map(a,d):a,e=[];b.reduce(d,function(d,g,h){if(0==h||(c===true?b.last(d)!=g:!b.include(d,g)))d[d.length]=g,e[e.length]=a[h];return d},[]);
+return e};b.union=function(){return b.uniq(b.flatten(arguments,true))};b.intersection=b.intersect=function(a){var c=i.call(arguments,1);return b.filter(b.uniq(a),function(a){return b.every(c,function(c){return b.indexOf(c,a)>=0})})};b.difference=function(a){var c=b.flatten(i.call(arguments,1));return b.filter(a,function(a){return!b.include(c,a)})};b.zip=function(){for(var a=i.call(arguments),c=b.max(b.pluck(a,"length")),d=Array(c),e=0;e<c;e++)d[e]=b.pluck(a,""+e);return d};b.indexOf=function(a,c,
+d){if(a==null)return-1;var e;if(d)return d=b.sortedIndex(a,c),a[d]===c?d:-1;if(p&&a.indexOf===p)return a.indexOf(c);for(d=0,e=a.length;d<e;d++)if(d in a&&a[d]===c)return d;return-1};b.lastIndexOf=function(a,b){if(a==null)return-1;if(D&&a.lastIndexOf===D)return a.lastIndexOf(b);for(var d=a.length;d--;)if(d in a&&a[d]===b)return d;return-1};b.range=function(a,b,d){arguments.length<=1&&(b=a||0,a=0);for(var d=arguments[2]||1,e=Math.max(Math.ceil((b-a)/d),0),f=0,g=Array(e);f<e;)g[f++]=a,a+=d;return g};
+var F=function(){};b.bind=function(a,c){var d,e;if(a.bind===s&&s)return s.apply(a,i.call(arguments,1));if(!b.isFunction(a))throw new TypeError;e=i.call(arguments,2);return d=function(){if(!(this instanceof d))return a.apply(c,e.concat(i.call(arguments)));F.prototype=a.prototype;var b=new F,g=a.apply(b,e.concat(i.call(arguments)));return Object(g)===g?g:b}};b.bindAll=function(a){var c=i.call(arguments,1);c.length==0&&(c=b.functions(a));j(c,function(c){a[c]=b.bind(a[c],a)});return a};b.memoize=function(a,
+c){var d={};c||(c=b.identity);return function(){var e=c.apply(this,arguments);return b.has(d,e)?d[e]:d[e]=a.apply(this,arguments)}};b.delay=function(a,b){var d=i.call(arguments,2);return setTimeout(function(){return a.apply(a,d)},b)};b.defer=function(a){return b.delay.apply(b,[a,1].concat(i.call(arguments,1)))};b.throttle=function(a,c){var d,e,f,g,h,i=b.debounce(function(){h=g=false},c);return function(){d=this;e=arguments;var b;f||(f=setTimeout(function(){f=null;h&&a.apply(d,e);i()},c));g?h=true:
+a.apply(d,e);i();g=true}};b.debounce=function(a,b){var d;return function(){var e=this,f=arguments;clearTimeout(d);d=setTimeout(function(){d=null;a.apply(e,f)},b)}};b.once=function(a){var b=false,d;return function(){if(b)return d;b=true;return d=a.apply(this,arguments)}};b.wrap=function(a,b){return function(){var d=[a].concat(i.call(arguments,0));return b.apply(this,d)}};b.compose=function(){var a=arguments;return function(){for(var b=arguments,d=a.length-1;d>=0;d--)b=[a[d].apply(this,b)];return b[0]}};
+b.after=function(a,b){return a<=0?b():function(){if(--a<1)return b.apply(this,arguments)}};b.keys=J||function(a){if(a!==Object(a))throw new TypeError("Invalid object");var c=[],d;for(d in a)b.has(a,d)&&(c[c.length]=d);return c};b.values=function(a){return b.map(a,b.identity)};b.functions=b.methods=function(a){var c=[],d;for(d in a)b.isFunction(a[d])&&c.push(d);return c.sort()};b.extend=function(a){j(i.call(arguments,1),function(b){for(var d in b)a[d]=b[d]});return a};b.defaults=function(a){j(i.call(arguments,
+1),function(b){for(var d in b)a[d]==null&&(a[d]=b[d])});return a};b.clone=function(a){return!b.isObject(a)?a:b.isArray(a)?a.slice():b.extend({},a)};b.tap=function(a,b){b(a);return a};b.isEqual=function(a,b){return q(a,b,[])};b.isEmpty=function(a){if(b.isArray(a)||b.isString(a))return a.length===0;for(var c in a)if(b.has(a,c))return false;return true};b.isElement=function(a){return!!(a&&a.nodeType==1)};b.isArray=o||function(a){return l.call(a)=="[object Array]"};b.isObject=function(a){return a===Object(a)};
+b.isArguments=function(a){return l.call(a)=="[object Arguments]"};if(!b.isArguments(arguments))b.isArguments=function(a){return!(!a||!b.has(a,"callee"))};b.isFunction=function(a){return l.call(a)=="[object Function]"};b.isString=function(a){return l.call(a)=="[object String]"};b.isNumber=function(a){return l.call(a)=="[object Number]"};b.isNaN=function(a){return a!==a};b.isBoolean=function(a){return a===true||a===false||l.call(a)=="[object Boolean]"};b.isDate=function(a){return l.call(a)=="[object Date]"};
+b.isRegExp=function(a){return l.call(a)=="[object RegExp]"};b.isNull=function(a){return a===null};b.isUndefined=function(a){return a===void 0};b.has=function(a,b){return I.call(a,b)};b.noConflict=function(){r._=G;return this};b.identity=function(a){return a};b.times=function(a,b,d){for(var e=0;e<a;e++)b.call(d,e)};b.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#x27;").replace(/\//g,"&#x2F;")};b.mixin=function(a){j(b.functions(a),
+function(c){K(c,b[c]=a[c])})};var L=0;b.uniqueId=function(a){var b=L++;return a?a+b:b};b.templateSettings={evaluate:/<%([\s\S]+?)%>/g,interpolate:/<%=([\s\S]+?)%>/g,escape:/<%-([\s\S]+?)%>/g};var t=/.^/,u=function(a){return a.replace(/\\\\/g,"\\").replace(/\\'/g,"'")};b.template=function(a,c){var d=b.templateSettings,d="var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('"+a.replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(d.escape||t,function(a,b){return"',_.escape("+
+u(b)+"),'"}).replace(d.interpolate||t,function(a,b){return"',"+u(b)+",'"}).replace(d.evaluate||t,function(a,b){return"');"+u(b).replace(/[\r\n\t]/g," ")+";__p.push('"}).replace(/\r/g,"\\r").replace(/\n/g,"\\n").replace(/\t/g,"\\t")+"');}return __p.join('');",e=new Function("obj","_",d);return c?e(c,b):function(a){return e.call(this,a,b)}};b.chain=function(a){return b(a).chain()};var m=function(a){this._wrapped=a};b.prototype=m.prototype;var v=function(a,c){return c?b(a).chain():a},K=function(a,c){m.prototype[a]=
+function(){var a=i.call(arguments);H.call(a,this._wrapped);return v(c.apply(b,a),this._chain)}};b.mixin(b);j("pop,push,reverse,shift,sort,splice,unshift".split(","),function(a){var b=k[a];m.prototype[a]=function(){var d=this._wrapped;b.apply(d,arguments);var e=d.length;(a=="shift"||a=="splice")&&e===0&&delete d[0];return v(d,this._chain)}});j(["concat","join","slice"],function(a){var b=k[a];m.prototype[a]=function(){return v(b.apply(this._wrapped,arguments),this._chain)}});m.prototype.chain=function(){this._chain=
+true;return this};m.prototype.value=function(){return this._wrapped}}).call(this);
 
 });
 
@@ -23733,28 +21405,29 @@ define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
 define("simplekey/results", [
     'util/document_is_ready',
     'bridge/jquery',
+    'bridge/jquery.cookie',
     'bridge/ember',
     'bridge/shadowbox',
     'util/shadowbox_init',
     'bridge/underscore',
-    'gobotany/utils',
     'simplekey/App3',
     'simplekey/Filter',
     'simplekey/FilterController',
     'simplekey/animation',
-    'simplekey/cookie',
     'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState',
+    'simplekey/SpeciesSection',
+    'simplekey/working_area',
+    'simplekey/utils',
     'util/activate_search_suggest',
     'util/activate_image_gallery',
-    'util/sidebar',
-    'gobotany/sk/ResultsHelper'
+    'util/sidebar'
 ], function(
-    document_is_ready, $, Ember, Shadowbox, shadowbox_init, _, utils,
-    App3, _Filter, _FilterController, animation, cookie,
-    _glossarize, resources, ResultsPageState,
-    search_suggest, image_gallery, sidebar, ResultsHelper
+    document_is_ready, $, x, Ember, Shadowbox, shadowbox_init, _,
+    App3, _Filter, _FilterController, animation, _glossarize, resources,
+    ResultsPageState, SpeciesSection, working_area_module, utils,
+    search_suggest, image_gallery, sidebar
 ) {return {
 
 results_page_init: function(args) {
@@ -23763,16 +21436,17 @@ results_page_init: function(args) {
     sidebar.setup();
     /* Legacy dojo components */
 
-    var helper = null;
+    var species_section = null;
+    var species_section_ready = $.Deferred();
 
     $.when(
         document_is_ready,
         filtered_sorted_taxadata_ready,
         taxa_by_sciname_ready
     ).done(function() {
-        helper = new ResultsHelper(args.pile_slug, plant_divs_ready);
-        speciessectionhelper = helper.species_section;
-        ResultsHelper_ready.resolve(helper);
+        species_section = new SpeciesSection();
+        species_section.init(pile_slug, plant_divs_ready);
+        species_section_ready.resolve();
     });
 
     Filter = _Filter;
@@ -23794,14 +21468,13 @@ results_page_init: function(args) {
 
         switch_photo_list: function(event) {
             // Tell the old Dojo species section helper to switch views.
-            if (speciessectionhelper)
-                speciessectionhelper.toggle_view(event);
+            if (species_section)
+                species_section.toggle_view(event);
         }
     });
 
     /* Async resources and deferreds. */
 
-    var ResultsHelper_ready = $.Deferred();
     var all_filters_ready = $.Deferred();
     var filter_controller_is_built = $.Deferred();
     var filtered_sorted_taxadata_ready = $.Deferred();
@@ -23827,6 +21500,23 @@ results_page_init: function(args) {
         _.each(taxadata, function(datum) {
             App3.taxa_by_sciname[datum.scientific_name] = datum;
             taxa_by_sciname_ready.resolve();
+        });
+    });
+
+    /* Create a list of character groups from the pile's filters. */
+
+    resources.pile(pile_slug).done(function(pile_info) {
+        var $ul = $('ul.char-groups').empty();
+        _.each(pile_info.character_groups, function(character_group) {
+            $ul.append(
+                $('<li>').append(
+                    $('<label>').append(
+                        $('<input>', {type: 'checkbox',
+                                      value: character_group.id}),
+                        ' ' + character_group.name
+                    )
+                )
+            );
         });
     });
 
@@ -23951,6 +21641,39 @@ results_page_init: function(args) {
        div being supplied with information through an instance of this
        convenient FilterView. */
 
+    var working_area = null;
+
+    var show_working_area = function(filter, y) {
+        // Dismiss old working area, to avoid having an Apply button
+        // that is wired up to two different filters!
+        dismiss_any_working_area();
+
+        var C = working_area_module.select_working_area(filter);
+
+        working_area = new C();
+        working_area.init({
+            div: $('div.working-area')[0],
+            filter: filter,
+            y: y
+        });
+
+        sidebar.set_height();
+    };
+
+    var dismiss_any_working_area = function() {
+        if (working_area !== null) {
+            working_area.dismiss();
+            working_area = null;
+        }
+    }
+
+    $(document).keydown(function(e) {
+        if (event.which === 27) {       // "Esc"
+            event.preventDefault();
+            dismiss_any_working_area();
+        }
+    });
+
     App3.FilterView = Ember.View.extend({
         templateName: 'filter-view',
         filterBinding: 'content',  // 'this.filter' makes more readable code
@@ -23992,8 +21715,7 @@ results_page_init: function(args) {
         }.property('filter.value'),
 
         clear: function(event) {
-            if (helper.filter_section.working_area)
-                helper.filter_section.working_area.dismiss();
+            dismiss_any_working_area();
             this.filter.set('value', null);
         },
 
@@ -24011,7 +21733,7 @@ results_page_init: function(args) {
             var async = resources.character_vector(this.filter.slug);
             $.when(pile_taxa_ready, async).done(function(pile_taxa, values) {
                 filter.install_values({pile_taxa: pile_taxa, values: values});
-                helper.filter_section.show_filter_working_onload(filter, y);
+                show_working_area(filter, y);
             });
         }
     });
@@ -24042,9 +21764,7 @@ results_page_init: function(args) {
                 .bind('jsp-scroll-y', function(event) {
                     // Make sure this is not a reinitialise
                     if (user_is_scrolling)
-                        // and that the area is already set up
-                        if (helper.filter_section.working_area)
-                            helper.filter_section.working_area.dismiss();
+                        dismiss_any_working_area();
                 })
                 .jScrollPane({
                     maintainPosition: true,
@@ -24060,7 +21780,7 @@ results_page_init: function(args) {
             // adjusting the scroll pane closes the working area!
 
             setInterval(function() {
-                if (helper.filter_section.working_area === null)
+                if (working_area === null)
                     scroll_pane.data('jsp').reinitialise();
             }, 500);
         });
@@ -24069,8 +21789,7 @@ results_page_init: function(args) {
     /* All filters can be cleared with a single button click. */
     $.when(filter_controller_is_built, document_is_ready).done(function() {
         $('#sidebar a.clear-all-btn').click(function() {
-            if (helper.filter_section.working_area !== null)
-                helper.filter_section.working_area.dismiss();
+            dismiss_any_working_area();
             var plains = App3.filter_controller.get('plain_filters');
             _.each(plains, function(filter) {
                 filter.set('value', null);
@@ -24137,7 +21856,7 @@ results_page_init: function(args) {
             window.location.replace(url);
         }
 
-        cookie('last_plant_id_url', window.location.href, {path: '/'});
+        $.cookie('last_plant_id_url', window.location.href, {path: '/'});
     };
 
     /* Set up observers so that when page elements change, the URL hash
@@ -24282,8 +22001,7 @@ results_page_init: function(args) {
 
     $.when(document_is_ready).done(function() {
         $('#sidebar .get-choices').click(function() {
-            if (helper.filter_section.working_area !== null)
-                helper.filter_section.working_area.dismiss();
+            dismiss_any_working_area();
 
             Shadowbox.open({
                 content: $('#modal').html(),
@@ -24355,7 +22073,7 @@ results_page_init: function(args) {
     $(window).bind('hashchange', function() {
         var current_url = window.location.href;
 
-        var last_plant_id_url = cookie('last_plant_id_url');      
+        var last_plant_id_url = $.cookie('last_plant_id_url');
         if (last_plant_id_url === null) {
             // The cookie request returned null, so cookie support must
             // be unavailable. Consequently, cannot support the Back button.
@@ -24382,6 +22100,57 @@ results_page_init: function(args) {
         }
     });
 
+    // Several places on the page display how many species there are.
+
+    var update_count_animation = null;
+    var update_counts = function(species_list) {
+        App3.taxa.set('len', species_list.length);
+
+        var $spans = $('.species-count-heading > span');
+        $spans.stop();
+        animation.bright_change($spans, {end_color: '#F0F0C0',
+                                         duration: 2000});
+    };
+
+    /* How we load images into the species area. */
+
+    var load_selected_image_type = function() {
+        var image_type = App3.get('image_type');
+        if (!image_type)
+            // No image types available yet, so skip for now
+            return;
+
+        /* Replace the image for each plant on the page */
+
+        $('div.plant img').each(function(i, img) {
+
+            // See if the taxon has an image for the new image type.
+            var $img = $(img);
+            var scientific_name = $img.attr('x-plant-id');
+            var taxon = App3.taxa_by_sciname[scientific_name];
+            var new_image = _.find(taxon.images, function(image) {
+                return image.type === image_type});
+
+            if (new_image) {
+                $img.attr('x-tmp-src', new_image.thumb_url);
+                $img.attr('alt', new_image.title);
+                // Hide the empty box if it exists and make
+                // sure the image is visible.
+                $img.find('+ div.missing-image').remove();
+                $img.css('display', 'inline');
+
+            } else if ($img.css('display') !== 'none') {
+                // If there's no matching image display the
+                // empty box and hide the image
+                $img.css('display', 'none');
+                $img.parent().append($('<div>', {
+                    'class': 'missing-image',
+                    'html': '<p>Image not available yet</p>'
+                }));
+            }
+        });
+    }
+
     // Page load cascade - much of which is in the above code or over in
     // our legacy Dojo modules, but all of which would be clearer and
     // easier to think about and manage if it migrated down here.
@@ -24406,21 +22175,23 @@ results_page_init: function(args) {
     });
 
     $.when(
-        ResultsHelper_ready,
+        species_section_ready,
         filtered_sorted_taxadata_ready,
         plant_divs_ready
     ).done(function(rh) {
-        rh.species_counts._update_counts(App3.filtered_sorted_taxadata);
-        rh.species_section.display_results(App3.filtered_sorted_taxadata);
-        rh.load_selected_image_type();
+        update_counts(App3.filtered_sorted_taxadata);
+        species_section.display_results(App3.filtered_sorted_taxadata);
+        load_selected_image_type();
+        species_section.lazy_load_images();
 
         App3.addObserver('filtered_sorted_taxadata', function() {
-            rh.species_counts._update_counts(App3.filtered_sorted_taxadata);
-            rh.species_section.display_results(App3.filtered_sorted_taxadata);
+            update_counts(App3.filtered_sorted_taxadata);
+            species_section.display_results(App3.filtered_sorted_taxadata);
         });
 
         App3.addObserver('image_type', function() {
-            rh.load_selected_image_type();
+            load_selected_image_type();
+            species_section.lazy_load_images();
         });
     });
 
@@ -24447,338 +22218,67 @@ define("util/document_is_ready", [
 });
 
 },
-'gobotany/utils':function(){
-define("gobotany/utils", [
-    'dojo/dom',
-    'dojo/dom-construct',
-    'dojo/dom-geometry',
-    'dojo/dom-style',
-    'dojo/dom-class',
-    'dojo/_base/window',
-    'dojo/window',
-    'dojo/_base/fx'
-], function(dom, domConstruct, domGeom, domStyle, domClass, 
-    base_win, win, fx) {
-
-    // This isn't really a Dojo class so we won't bother with using "declare"
-    var utils = {
-        // notify()
-        // display a notification message at the top of the page
-        // that will eventually fade away
-        notify: function(txt) {
-            var holder = dom.byId('notification-msg');
-            if (holder === null) {
-                holder = domConstruct.place('<div class="hidden" id="notification-msg"></div>',
-                                    base_win.body());
-            }
-
-            holder.innerHTML = txt;
-
-            var wbox = win.getBox();
-            var holderbox = domGeom.position(holder);
-
-            var left = (wbox.w / 2) - (holderbox.w / 2);
-            var top = wbox.t;
-            domStyle.set(holder,
-                       {position: 'absolute',
-                        top: top + 'px',
-                        left: left + 'px'});
-
-            domClass.remove(holder, 'hidden');
-            fx.fadeIn({node: holder, duration: 1}).play();
-
-            setTimeout(function() {
-                fx.fadeOut({node: holder}).play();
-            }, 5000);
-        },
-
-        clone: function(obj, updated_args) {
-            var new_obj = (obj instanceof Array) ? [] : {};
-            for (i in obj) {
-                new_obj[i] = obj[i];
-            }
-
-            if (updated_args !== undefined) {
-                for (var x in updated_args)
-                    if (updated_args.hasOwnProperty(x))
-                        new_obj[x] = updated_args[x];
-            }
-
-            return new_obj;
-        },
-
-        pretty_length: function(unit, mmvalue, show_unit) {
-            if (show_unit === undefined) {
-                show_unit = true;
-            }
-            
-            var SPACE = '\u00A0';
-            var mm = parseFloat(mmvalue); /* make sure it is a float */
-            if (isNaN(mm)) {
-                0 && console.log('gobotany.utils.pretty_length: ' + mmvalue +
-                            ' is not a number');
-            }
-            var value = '';
-            if (unit == 'mm') {
-                value = mm.toFixed(2);
-            } else if (unit === 'cm') {
-                value = (mm / 10.0).toFixed(2);
-            } else if (unit === 'm') {
-                value = (mm / 1000.0).toFixed(2);
-            } else {   // assume unit is 'in'
-                unit = 'in';
-                inches = mm / 25.4;
-                feet = Math.floor(inches / 12.0);
-                inches = inches % 12.0;
-                if (feet > 0) {
-                    value += feet + SPACE + 'ft' + SPACE;
-                }
-                var wholein = Math.floor(inches);
-                if (wholein > 0) {
-                    value += wholein;
-                }
-                var fracin = inches % 1.0;
-                var eighths = Math.floor(fracin * 8.0);
-                if (eighths > 0) {
-                    value += ' ⅛¼⅜½⅝¾⅞'[eighths];
-                }
-                if (wholein === 0 && eighths === 0) {
-                    value += '0';
-                }
-            }
-
-            // If .0 or .00 is at the end, omit.
-            if (value.indexOf('.00', value.length - 3) !== -1) {
-                value = value.substring(0, value.length - 3);
-            } else if (value.indexOf('.0', value.length - 2) !== -1) {
-                value = value.substring(0, value.length - 2);
-            } else if (/\d?\.\d+0/.test(value)) {
-                // If 0 is at the end of a decimal, omit. (Ex.: 0.70 --> 0.7)
-                value = value.substring(0, value.length - 1);
-            }
-
-            if (show_unit) {
-                value += SPACE + unit;
-            }
-
-            return value;
-        },
-
-        /* Unit conversion for number values. Limited to current needs. */
-        convert: function(source_value, source_unit, dest_unit) {
-            var source_value = parseFloat(source_value), /* ensure it is a float */
-                dest_value;
-
-            if (isNaN(source_value)) {
-                0 && console.log('gobotany.utils.convert: ' + source_value +
-                            ' is not a number');
-            }
-            if (source_unit === dest_unit) {
-                dest_value = source_value;
-            } else if (source_unit === 'cm' && dest_unit === 'mm') {
-                dest_value = source_value * 10;
-            } else if (source_unit === 'mm' && dest_unit === 'cm') {
-                dest_value = source_value / 10;
-            } else {
-                0 && console.log('gobotany.utils.convert: unknown conversion, returning ' +
-                            'original value');
-                dest_value = source_value;
-            }
-
-            return dest_value;
-        },
-
-        /* Programatically click a link, running its attached event handlers as if a
-           user clicked it.
-
-           Code based on the answer provided by Matthew Crumley at:
-           http://stackoverflow.com/questions/902713/how-do-i-automatically-click-a-link-with-javascript
-         */
-        click_link: function(link) {
-            if (document.createEvent) {
-                var event = document.createEvent('MouseEvents');
-                event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0,
-                    false, false, false, false, 0, null);
-                link.dispatchEvent(event);
-            } else if (link.fireEvent) {
-                link.fireEvent('onclick');
-            }
-        }
-    };
-
-    return utils;
-});
+'bridge/jquery.cookie':function(){
+define("bridge/jquery.cookie", [
+    'jquery/jquery.cookie'
+], function() {});
 
 },
-'dojo/window':function(){
-define("dojo/window", ["./_base/lang", "./_base/sniff", "./_base/window", "./dom", "./dom-geometry", "./dom-style"],
-	function(lang, has, baseWindow, dom, geom, style) {
+'jquery/jquery.cookie':function(){
+define("jquery/jquery.cookie", [
+    'bridge/jquery'
+], function() {
+    // end AMD header
 
-// module:
-//		dojo/window
-// summary:
-//		TODOC
+/*!
+ * jQuery Cookie Plugin
+ * https://github.com/carhartl/jquery-cookie
+ *
+ * Copyright 2011, Klaus Hartl
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.opensource.org/licenses/GPL-2.0
+ */
+(function($) {
+    $.cookie = function(key, value, options) {
 
-var window = lang.getObject("dojo.window", true);
+        // key and at least value given, set cookie...
+        if (arguments.length > 1 && (!/Object/.test(Object.prototype.toString.call(value)) || value === null || value === undefined)) {
+            options = $.extend({}, options);
 
-/*=====
-dojo.window = {
-	// summary:
-	//		TODO
-};
-window = dojo.window;
-=====*/
+            if (value === null || value === undefined) {
+                options.expires = -1;
+            }
 
-window.getBox = function(){
-	// summary:
-	//		Returns the dimensions and scroll position of the viewable area of a browser window
+            if (typeof options.expires === 'number') {
+                var days = options.expires, t = options.expires = new Date();
+                t.setDate(t.getDate() + days);
+            }
 
-	var
-		scrollRoot = (baseWindow.doc.compatMode == 'BackCompat') ? baseWindow.body() : baseWindow.doc.documentElement,
-		// get scroll position
-		scroll = geom.docScroll(), // scrollRoot.scrollTop/Left should work
-		w, h;
+            value = String(value);
 
-	if(has("touch")){ // if(scrollbars not supported)
-		var uiWindow = baseWindow.doc.parentWindow || baseWindow.doc.defaultView;   // use UI window, not dojo.global window. baseWindow.doc.parentWindow probably not needed since it's not defined for webkit
-		// on mobile, scrollRoot.clientHeight <= uiWindow.innerHeight <= scrollRoot.offsetHeight, return uiWindow.innerHeight
-		w = uiWindow.innerWidth || scrollRoot.clientWidth; // || scrollRoot.clientXXX probably never evaluated
-		h = uiWindow.innerHeight || scrollRoot.clientHeight;
-	}else{
-		// on desktops, scrollRoot.clientHeight <= scrollRoot.offsetHeight <= uiWindow.innerHeight, return scrollRoot.clientHeight
-		// uiWindow.innerWidth/Height includes the scrollbar and cannot be used
-		w = scrollRoot.clientWidth;
-		h = scrollRoot.clientHeight;
-	}
-	return {
-		l: scroll.x,
-		t: scroll.y,
-		w: w,
-		h: h
-	};
-};
+            return (document.cookie = [
+                encodeURIComponent(key), '=', options.raw ? value : encodeURIComponent(value),
+                options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+                options.path    ? '; path=' + options.path : '',
+                options.domain  ? '; domain=' + options.domain : '',
+                options.secure  ? '; secure' : ''
+            ].join(''));
+        }
 
-window.get = function(doc){
-	// summary:
-	// 		Get window object associated with document doc
+        // key and possibly options given, get cookie...
+        options = value || {};
+        var decode = options.raw ? function(s) { return s; } : decodeURIComponent;
 
-	// In some IE versions (at least 6.0), document.parentWindow does not return a
-	// reference to the real window object (maybe a copy), so we must fix it as well
-	// We use IE specific execScript to attach the real window reference to
-	// document._parentWindow for later use
-	if(has("ie") && window !== document.parentWindow){
-		/*
-		In IE 6, only the variable "window" can be used to connect events (others
-		may be only copies).
-		*/
-		doc.parentWindow.execScript("document._parentWindow = window;", "Javascript");
-		//to prevent memory leak, unset it after use
-		//another possibility is to add an onUnload handler which seems overkill to me (liucougar)
-		var win = doc._parentWindow;
-		doc._parentWindow = null;
-		return win;	//	Window
-	}
+        var pairs = document.cookie.split('; ');
+        for (var i = 0, pair; pair = pairs[i] && pairs[i].split('='); i++) {
+            if (decode(pair[0]) === key) return decode(pair[1] || ''); // IE saves cookies with empty string as "c; ", e.g. without "=" as opposed to EOMB, thus pair[1] may be undefined
+        }
+        return null;
+    };
+})(jQuery);
 
-	return doc.parentWindow || doc.defaultView;	//	Window
-};
-
-window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
-	// summary:
-	//		Scroll the passed node into view, if it is not already.
-
-	// don't rely on node.scrollIntoView working just because the function is there
-
-	try{ // catch unexpected/unrecreatable errors (#7808) since we can recover using a semi-acceptable native method
-		node = dom.byId(node);
-		var doc = node.ownerDocument || baseWindow.doc,
-			body = doc.body || baseWindow.body(),
-			html = doc.documentElement || body.parentNode,
-			isIE = has("ie"), isWK = has("webkit");
-		// if an untested browser, then use the native method
-		if((!(has("mozilla") || isIE || isWK || has("opera")) || node == body || node == html) && (typeof node.scrollIntoView != "undefined")){
-			node.scrollIntoView(false); // short-circuit to native if possible
-			return;
-		}
-		var backCompat = doc.compatMode == 'BackCompat',
-			clientAreaRoot = (isIE >= 9 && node.ownerDocument.parentWindow.frameElement)
-				? ((html.clientHeight > 0 && html.clientWidth > 0 && (body.clientHeight == 0 || body.clientWidth == 0 || body.clientHeight > html.clientHeight || body.clientWidth > html.clientWidth)) ? html : body)
-				: (backCompat ? body : html),
-			scrollRoot = isWK ? body : clientAreaRoot,
-			rootWidth = clientAreaRoot.clientWidth,
-			rootHeight = clientAreaRoot.clientHeight,
-			rtl = !geom.isBodyLtr(),
-			nodePos = pos || geom.position(node),
-			el = node.parentNode,
-			isFixed = function(el){
-				return ((isIE <= 6 || (isIE && backCompat))? false : (style.get(el, 'position').toLowerCase() == "fixed"));
-			};
-		if(isFixed(node)){ return; } // nothing to do
-
-		while(el){
-			if(el == body){ el = scrollRoot; }
-			var elPos = geom.position(el),
-				fixedPos = isFixed(el);
-
-			if(el == scrollRoot){
-				elPos.w = rootWidth; elPos.h = rootHeight;
-				if(scrollRoot == html && isIE && rtl){ elPos.x += scrollRoot.offsetWidth-elPos.w; } // IE workaround where scrollbar causes negative x
-				if(elPos.x < 0 || !isIE){ elPos.x = 0; } // IE can have values > 0
-				if(elPos.y < 0 || !isIE){ elPos.y = 0; }
-			}else{
-				var pb = geom.getPadBorderExtents(el);
-				elPos.w -= pb.w; elPos.h -= pb.h; elPos.x += pb.l; elPos.y += pb.t;
-				var clientSize = el.clientWidth,
-					scrollBarSize = elPos.w - clientSize;
-				if(clientSize > 0 && scrollBarSize > 0){
-					elPos.w = clientSize;
-					elPos.x += (rtl && (isIE || el.clientLeft > pb.l/*Chrome*/)) ? scrollBarSize : 0;
-				}
-				clientSize = el.clientHeight;
-				scrollBarSize = elPos.h - clientSize;
-				if(clientSize > 0 && scrollBarSize > 0){
-					elPos.h = clientSize;
-				}
-			}
-			if(fixedPos){ // bounded by viewport, not parents
-				if(elPos.y < 0){
-					elPos.h += elPos.y; elPos.y = 0;
-				}
-				if(elPos.x < 0){
-					elPos.w += elPos.x; elPos.x = 0;
-				}
-				if(elPos.y + elPos.h > rootHeight){
-					elPos.h = rootHeight - elPos.y;
-				}
-				if(elPos.x + elPos.w > rootWidth){
-					elPos.w = rootWidth - elPos.x;
-				}
-			}
-			// calculate overflow in all 4 directions
-			var l = nodePos.x - elPos.x, // beyond left: < 0
-				t = nodePos.y - Math.max(elPos.y, 0), // beyond top: < 0
-				r = l + nodePos.w - elPos.w, // beyond right: > 0
-				bot = t + nodePos.h - elPos.h; // beyond bottom: > 0
-			if(r * l > 0){
-				var s = Math[l < 0? "max" : "min"](l, r);
-				if(rtl && ((isIE == 8 && !backCompat) || isIE >= 9)){ s = -s; }
-				nodePos.x += el.scrollLeft;
-				el.scrollLeft += s;
-				nodePos.x -= el.scrollLeft;
-			}
-			if(bot * t > 0){
-				nodePos.y += el.scrollTop;
-				el.scrollTop += Math[t < 0? "max" : "min"](t, bot);
-				nodePos.y -= el.scrollTop;
-			}
-			el = (el != scrollRoot) && !fixedPos && el.parentNode;
-		}
-	}catch(error){
-		console.error('scrollIntoView: ' + error);
-		node.scrollIntoView(false);
-	}
-};
-
-return window;
+    // AMD footer
 });
 
 },
@@ -24964,16 +22464,17 @@ define("simplekey/animation", [
     'bridge/jquery',
     'bridge/jquery.animate-colors'
 ], function($, animate_colors) {
-    var module = {};
+    var exports = {};
 
-    module.bright_change = function($elements, options) {
+    exports.bright_change = function($elements, options) {
         options = options || {};
         var start_color = options.start_color || '#ff0';
         var end_color = options.end_color || '#fff';
+        var duration = options.duration || 3000;
         $elements.css('background-color', start_color);
         $elements.animate({
             backgroundColor: end_color
-        }, 3000, 'linear', function() {
+        }, duration, 'linear', function() {
             // When the animation is done, remove the inline style
             // property containing the background color so it will
             // not interfere with future hover or selection states.
@@ -24984,36 +22485,22 @@ define("simplekey/animation", [
         });
     };
 
-    return module;
+    return exports;
 });
 
 },
 'bridge/jquery.animate-colors':function(){
-// AMD wrapper for jquery.animate-colors plugin.
-// This should ensure the AMD loader properly caches jquery
-// and only loads it once, and we can be sure that this plugin
-// has jquery loaded before it attempts to load. This also serves
-// as a thin abstraction layer so we don't have to worry about
-// versioned filenames in our module references.
 define("bridge/jquery.animate-colors", [
-    'bridge/jquery', 
     'jquery/jquery.animate-colors'
-], function($, animate) {
-    var jquery;
-    if($.fx.step.borderColor) {
-        // The plugin is loaded, so return the same
-        // jQuery object again (the global)
-        jquery = $;
-    }
-
-    return jquery;
-});
-
+], function() {});
 
 },
 'jquery/jquery.animate-colors':function(){
-// wrapped by build app
-define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
+define("jquery/jquery.animate-colors", [
+    'bridge/jquery'
+], function() {
+    // end AMD header
+
 /**!
  * @preserve Color animation jQuery-plugin
  * http://www.bitstorm.org/jquery/color-animation/
@@ -25117,95 +22604,8 @@ define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
 		return triplet;
 	}
 })(jQuery);
-});
 
-},
-'simplekey/cookie':function(){
-define("simplekey/cookie", [
-    'bridge/jquery',
-    'bridge/jquery.cookie'
-], function($, cookie) {
-    var module = $.cookie;
-
-    return module;
-});
-
-
-},
-'bridge/jquery.cookie':function(){
-// AMD wrapper for jquery.cookie plugin.
-// This should ensure the AMD loader properly caches jquery
-// and only loads it once, and we can be sure that this plugin
-// has jquery loaded before it attempts to load. This also serves
-// as a thin abstraction layer so we don't have to worry about
-// versioned filenames in our module references.
-define("bridge/jquery.cookie", [
-    'bridge/jquery', 
-    'jquery/jquery.cookie'
-], function($, cookie) {
-    var jquery;
-    if($.cookie) {
-        // The plugin is loaded, so return the same
-        // jQuery object again (the global)
-        jquery = $;
-    }
-
-    return jquery;
-});
-
-
-},
-'jquery/jquery.cookie':function(){
-// wrapped by build app
-define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
-/*!
- * jQuery Cookie Plugin
- * https://github.com/carhartl/jquery-cookie
- *
- * Copyright 2011, Klaus Hartl
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://www.opensource.org/licenses/mit-license.php
- * http://www.opensource.org/licenses/GPL-2.0
- */
-(function($) {
-    $.cookie = function(key, value, options) {
-
-        // key and at least value given, set cookie...
-        if (arguments.length > 1 && (!/Object/.test(Object.prototype.toString.call(value)) || value === null || value === undefined)) {
-            options = $.extend({}, options);
-
-            if (value === null || value === undefined) {
-                options.expires = -1;
-            }
-
-            if (typeof options.expires === 'number') {
-                var days = options.expires, t = options.expires = new Date();
-                t.setDate(t.getDate() + days);
-            }
-
-            value = String(value);
-
-            return (document.cookie = [
-                encodeURIComponent(key), '=', options.raw ? value : encodeURIComponent(value),
-                options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-                options.path    ? '; path=' + options.path : '',
-                options.domain  ? '; domain=' + options.domain : '',
-                options.secure  ? '; secure' : ''
-            ].join(''));
-        }
-
-        // key and possibly options given, get cookie...
-        options = value || {};
-        var decode = options.raw ? function(s) { return s; } : decodeURIComponent;
-
-        var pairs = document.cookie.split('; ');
-        for (var i = 0, pair; pair = pairs[i] && pairs[i].split('='); i++) {
-            if (decode(pair[0]) === key) return decode(pair[1] || ''); // IE saves cookies with empty string as "c; ", e.g. without "=" as opposed to EOMB, thus pair[1] may be undefined
-        }
-        return null;
-    };
-})(jQuery);
-
+    // AMD footer
 });
 
 },
@@ -25340,7679 +22740,23 @@ define("simplekey/ResultsPageState", [
 })});
 
 },
-'gobotany/sk/ResultsHelper':function(){
-// UI code for the Simple Key results/filter page.
-define("gobotany/sk/ResultsHelper", [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/on',
-    'dojo/keys',
-    'dojo/query',
-    'dojo/NodeList-dom',
-    'dojo/dom-attr',
-    'dojo/dom-construct',
-    'dojo/dom-style',
-    'bridge/underscore',
-    'gobotany/sk/FilterSectionHelper',
-    'gobotany/sk/SpeciesSectionHelper',
-    'gobotany/sk/SpeciesCounts',
-    'gobotany/sk/working_area',
-    'simplekey/resources',
-    'simplekey/App3'
-], function(declare, lang, on, keys, query, nodeListDom, domAttr, domConstruct,
-    domStyle, _, FilterSectionHelper, SpeciesSectionHelper, SpeciesCounts,
-    working_area, resources, App3) {
-
-return declare('gobotany.sk.ResultsHelper', null, {
-
-    constructor: function(pile_slug, plant_divs_ready) {
-        // summary:
-        //   Helper class for managing the sections on the results page.
-        // description:
-        //   Coordinates all of the dynamic logic on the results page.
-
-        this.pile_slug = pile_slug;
-        this.species_section = 
-            new SpeciesSectionHelper(pile_slug, plant_divs_ready);
-        this.species_counts = new SpeciesCounts(this);
-        this.filter_section = new FilterSectionHelper(this);
-
-        resources.pile(this.pile_slug).done(
-            lang.hitch(this, function(pile_info) {
-                this.filter_section._setup_character_groups(
-                    pile_info.character_groups);
-            }));
-
-        // Set up a handler to detect an Esc keypress, which will close
-        // the filter working area if it is open.
-        on(document.body, 'keypress',
-            lang.hitch(this, this.handle_keys));
-    },
-
-    handle_keys: function(e) {
-        switch (e.charOrCode) {
-            case keys.ESCAPE:
-                if (this.filter_section.working_area) {
-                    this.filter_section.working_area.dismiss();
-                }
-                break;
-        }
-    },
-
-    load_selected_image_type: function(event) {
-        var image_type = App3.get('image_type');
-        if (!image_type) {
-            // No image types available yet, so skip for now
-            return;
-        }
-
-        var image_tags = query('div.plant img');
-        // Replace the image for each plant on the page
-        var i;
-        for (i = 0; i < image_tags.length; i++) {
-            var image_tag = image_tags[i];
-
-            // See if the taxon has an image for the new image type.
-            var scientific_name = domAttr.get(image_tag, 'x-plant-id');
-            taxon = App3.taxa_by_sciname[scientific_name];
-            var new_image = _.find(taxon.images, function(image) {
-                return image.type === image_type});
-
-            if (new_image) {
-                domAttr.set(image_tag, 'x-tmp-src', new_image.thumb_url);
-                domAttr.set(image_tag, 'alt', new_image.title);
-                // Hide the empty box if it exists and make
-                // sure the image is visible.
-                query('+ div.missing-image', image_tag).orphan();
-                domStyle.set(image_tag, 'display', 'inline');
-
-            } else if (domStyle.get(image_tag, 'display') !== 'none') {
-                // If there's no matching image display the
-                // empty box and hide the image
-                domStyle.set(image_tag, 'display', 'none');
-                domConstruct.create('div', {
-                    'class': 'missing-image',
-                    'innerHTML': '<p>Image not available yet</p>'
-                }, image_tag, 'after');
-            }
-        }
-        this.species_section.lazy_load_images();
-    }
-});
-
-});
-
-},
-'gobotany/sk/FilterSectionHelper':function(){
-define("gobotany/sk/FilterSectionHelper", [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/query',
-    'dojo/dom-construct',
+'simplekey/SpeciesSection':function(){
+define("simplekey/SpeciesSection", [
     'bridge/jquery',
-    'util/sidebar',
-    'gobotany/sk/working_area'
-], function(declare, lang, query, domConstruct, $, sidebar, working_area) {
-return declare('gobotany.sk.FilterSectionHelper', null, {
-    working_area: null,
-
-    _setup_character_groups: function(character_groups) {
-        0 && console.log('FilterSectionHelper: Updating character groups');
-
-        var character_groups_list = query('ul.char-groups')[0];
-        domConstruct.empty(character_groups_list);
-        var i;
-        for (i = 0; i < character_groups.length; i++) {
-            var character_group = character_groups[i];
-            var item = domConstruct.create('li', { innerHTML: '<label>' +
-                '<input type="checkbox" value="' + character_group.id +
-                '"> ' + character_group.name + '</label>'});
-            domConstruct.place(item, character_groups_list);
-        }
-    },
-
-    /* A filter object has been returned from Ajax!  We can now set up
-       the working area and save the new page state. */
-
-    show_filter_working_onload: function(filter, y) {
-        // Dismiss old working area, to avoid having an Apply button
-        // that is wired up to two different filters!
-        if (this.working_area !== null)
-            this.working_area.dismiss();
-
-        var C = working_area.select_working_area(filter);
-
-        this.working_area = C({
-            div: $('div.working-area')[0],
-            filter: filter,
-            y: y,
-            on_dismiss: lang.hitch(this, 'on_working_area_dismiss')
-        });
-
-        sidebar.set_height();
-    },
-
-    /* When the working area is dismissed, we clean up and save state. */
-
-    on_working_area_dismiss: function(filter) {
-        this.working_area = null;
-
-        // Clear selected state in the questions list at left.
-        $('.option-list li').removeClass('active');
-    }
-});
-});
-
-},
-'gobotany/sk/working_area':function(){
-define("gobotany/sk/working_area", [
-    'gobotany/sk/Choice',
-    'gobotany/sk/Slider',
-    'gobotany/sk/Length'
-], function(Choice, Slider, Length) {
-
-/*
- * Classes that create and maintain the working area.
- *
- * Upon instantiation, a working-area class draws the entire working area
- * for the filter that it has been given, and then un-hides the working
- * area.  Once up and running, it responds to three calls from outside
- * telling it that the outside world has changed.  It is also responsible
- * for handling every click and interaction inside the working area, and
- * for - when appropriate - forwarding the change in the filter state to
- * the outside world.
- *
- * Inputs:
- *
- * clear() - the user has pressed the "x" next to the filter's name in
- *     the sidebar summary, and the filter value should be moved back
- *     to "don't know" if that is not already the value.
- * dismiss() - the filter working area should be dismissed.
- *
- * Outputs:
- *
- * on_dismiss(filter) - called when the user dismisses the working area.
- */
-
-/**
- * Return the correct working area class for a given filter.
- *
- * @param {Filter} filter The filter for which you want a working area.
- * @return {Class} The class that will manage this kind of working area.
- */
-var working_area = {};
-working_area.select_working_area = function(filter) {
-    if (filter.value_type == 'TEXT')
-        return Choice;
-    else if (filter.is_length)
-        return Length;
-    else
-        return Slider;
-};
-
-return working_area;
-
-});
-
-},
-'gobotany/sk/Choice':function(){
-/*
- * The most basic working-area class, which the other versions of the class
- * inherit from and specialize, is the standard multiple-choice selection.
- */
-define("gobotany/sk/Choice", [
-    'dojo/_base/declare',
-    'dojo/_base/connect',
-    'dojo/_base/lang',
-    'dojo/_base/event',
-    'dojo/query',
-    'dojo/dom-construct',
-    'dojo/NodeList-dom',
-    'dojo/NodeList-html',
-    'dojo/on',
-    'bridge/jquery',
-    'bridge/tooltipsy',
+    'bridge/shadowbox',
     'bridge/underscore',
-    'gobotany/utils',
-    'simplekey/glossarize',
-    'simplekey/App3'
-], function(declare, connect, lang, event, query, domConstruct, nodeListDom,
-    nodeListHtml, on, $, tooltipsy, _, utils, glossarize, App3) {
-
-/*
- * Helper functions
- */
-
-/* Generate a human-readable representation of a value.
- */
-var _format_value = function(v) {
-    return v === undefined ? "don't know" :
-        v.friendly_text ? v.friendly_text :
-        v.choice === 'NA' ? "doesn't apply" :
-        v.choice ? v.choice : "don't know";
-};
-
-/* Order filter choices for display.
- */
-var _compare_filter_choices = function(a, b) {
-
-    var friendly_text_a = a.friendly_text.toLowerCase();
-    var friendly_text_b = b.friendly_text.toLowerCase();
-    var choice_a = a.choice.toLowerCase();
-    var choice_b = b.choice.toLowerCase();
-
-    // If both are a number or begin with one, sort numerically.
-
-    var int_friendly_text_a = parseInt(friendly_text_a, 10);
-    var int_friendly_text_b = parseInt(friendly_text_b, 10);
-    if (!isNaN(int_friendly_text_a) && !isNaN(int_friendly_text_b)) {
-        return int_friendly_text_a - int_friendly_text_b;
-    }
-    var int_choice_a = parseInt(choice_a, 10);
-    var int_choice_b = parseInt(choice_b, 10);
-    if (!isNaN(int_choice_a) && !isNaN(int_choice_b)) {
-        return int_choice_a - int_choice_b;
-    }
-
-    // Otherwise, sort alphabetically.
-
-    // Exception: always make Doesn't Apply (NA) last.
-    if (choice_a === 'na') return 1;
-    if (choice_b === 'na') return -1;
-
-    // If friendly text is present, sort using it.
-    if (friendly_text_a < friendly_text_b) return -1;
-    if (friendly_text_a > friendly_text_b) return 1;
-
-    // If there is no friendly text, sort using the choices instead.
-    if (choice_a < choice_b) return -1;
-    if (choice_a > choice_b) return 1;
-
-    return 0; // default value (no sort)
-};
-
-return declare('gobotany.sk.working_area.Choice', null, {
-
-    div_map: null,  // maps choice value -> <input> element
-    close_button_signal: null,  // connection from the close button to us
-
-    /* {div, filter, on_dismiss} */
-    constructor: function(args) {
-        this.div = args.div;
-        this.filter = args.filter;
-        this._draw_basics(args.y);
-        this._draw_specifics();
-        this.on_dismiss = args.on_dismiss;
-
-        // The set of values we can let the user select can change as
-        // they select and deselect other filters on the page.
-
-        connect.subscribe('/sk/filter/change', this, '_on_filter_change');
-        this._on_filter_change();
-    },
-
-    /* Events that can be triggered from outside. */
-
-    clear: function() {
-        query('input', this.div_map['']).attr('checked', true);
-    },
-
-    dismiss: function(e) {
-        if (e) {
-            e.preventDefault();
-        }
-
-        this.close_button_signal.remove();
-        this.apply_button_signal.remove();
-        this.close_button_signal = null;
-        this.apply_button_signal = null;
-
-        $(this.div).hide();
-
-        $('.option-list li').removeClass('active');
-
-        this.on_dismiss(this.filter);
-    },
-
-    /* Draw the working area. */
-
-    _draw_basics: function(y) {
-        var d = query(this.div);
-        var f = this.filter;
-        var p = function(s) {return s ? '<p>' + s + '</p>' : s}
-
-        // Show the question, hint and Apply button.
-        glossarize($('h4').html(f.info.question));
-        $('h4').css('display', 'block');
-        glossarize($('.hint').html(p(f.info.hint)));
-        $('.info').css('display', 'block');
-
-        // Display character drawing, if an image is available.
-        if (f.info.image_url) {
-            var image_id = this._get_image_id_from_path(f.info.image_url);
-            var dld_html = '<img id="' + image_id +
-                '" src="' + f.info.image_url +
-                '" alt="character illustration">';
-            d.query('.dld').html(dld_html).style({display: 'block'});
-        } else {
-            d.query('.dld').html('').style({display: 'none'});
-        }
-
-        // Use jQuery to show the working area with a slide effect.
-        $(d).css('top', y + 'px').slideDown('fast');
-
-        // Hook up the Close button.
-        var close_button = d.query('.close')[0];
-        this.close_button_signal = on(
-            close_button, 'click', lang.hitch(this, 'dismiss'));
-
-        // Hook up the Apply button.
-        var button = query('.apply-btn', this.div)[0];
-        this.apply_button_signal = on(
-            button, 'click', lang.hitch(this, '_apply_button_clicked'));
-    },
-
-    _draw_specifics: function() {
-        var CHOICES_PER_ROW = 5;
-        var checked = function(cond) {return cond ? ' checked' : ''};
-        var f = this.filter;
-
-        var values_q = query('div.working-area .values');
-        values_q.empty().addClass('multiple').removeClass('numeric');
-
-        // Apply a custom sort to the filter values.
-        var values = utils.clone(f.values);
-        values.sort(_compare_filter_choices);
-
-        var choices_div = domConstruct.create('div', {'class': 'choices'}, values_q[0]);
-        var row_div = domConstruct.create('div', {'class': 'row'}, choices_div);
-
-        // Create a Don't Know radio button item.
-        this.div_map = {};
-        var item_html = '<div><label><input name="char_name"' +
-            checked(f.value === null) +
-            ' type="radio" value=""> ' + _format_value() + '</label></div>';
-        this.div_map[''] = domConstruct.place(item_html, row_div);
-
-        // Create radio button items for each character value.
-        var choices_count = 1;
-
-        for (i = 0; i < values.length; i++) {
-            var v = values[i];
-
-            var item_html = '<label><input name="char_name" type="radio"' +
-                checked(f.value === v.choice) +
-                ' value="' + v.choice + '">';
-
-            // Add a drawing image if present.
-            var image_path = v.image_url;
-            if (image_path.length > 0) {
-                var image_id = this._get_image_id_from_path(image_path);
-                item_html += '<img id="' + image_id +
-                    '" src="' + image_path + '" alt="drawing ' +
-                    'showing ' + v.friendly_text + '"><br>';
-            }
-
-            item_html += ' <span class="label">' + _format_value(v) +
-                '</span> <span class="count">(n)</span>' +
-                '</label>';
-
-            // Start a new row, if necessary, to fit this choice.
-            if (choices_count % CHOICES_PER_ROW === 0)
-                var row_div = domConstruct.create(
-                    'div', {'class': 'row'}, choices_div);
-
-            choices_count += 1;
-
-            var character_value_div = domConstruct.create(
-                'div', {'innerHTML': item_html}, row_div);
-            this.div_map[v.choice] = character_value_div;
-
-            // Once the item is added, add a tooltip for the drawing.
-            if (image_path.length > 0) {
-                var image_html = '<img class="char-value-larger" id="' +
-                    image_id + '" src="' + image_path +
-                    '" alt="drawing showing ' + v.friendly_text + '">';
-                $('#' + image_id).tooltipsy({
-                    alignTo: 'cursor',
-                    content: image_html,
-                    offset: [0, -200]
-                });
-            }
-
-            glossarize($('span.label', character_value_div));
-        }
-
-        // Call a method when radio button is clicked.
-        var inputs = values_q.query('input');
-        for (var i = 0; i < inputs.length; i++)
-            on(inputs[i], 'click', lang.hitch(this, '_on_choice_change'));
-
-        // Set up the Apply Selection button.
-        this._on_choice_change();
-    },
-
-    /* How to grab the currently-selected value from the DOM. */
-
-    _current_value: function() {
-        var value = query('input:checked', this.div).attr('value')[0];
-        return value || null;
-    },
-
-    /* Update whether the "Apply Selection" button is gray or not. */
-
-    _on_choice_change: function(e) {
-        var apply_button = query('.apply-btn', this.div);
-        if (this._current_value() === this.filter.value)
-            apply_button.addClass('disabled');
-        else
-            apply_button.removeClass('disabled');
-    },
-
-    /* Get a value suitable for use as an image element id from the
-       image filename found in the image path. */
-
-    _get_image_id_from_path: function(image_path) {
-        var last_slash_index = image_path.lastIndexOf('/');
-        var dot_index = image_path.indexOf('.', last_slash_index);
-        var image_id = image_path.substring(last_slash_index + 1, dot_index);
-        return image_id;
-    },
-
-    /* When the set of selected filters changes, we need to recompute
-       how many species would remain if each of our possible filter
-       values were applied. */
-    _on_filter_change: function() {
-        var other_taxa = App3.filter_controller.compute(this.filter);
-        var div_map = this.div_map;
-
-        _.map(this.filter.values, function(value) {
-
-            // How many taxa would be left if this value were chosen?
-            var num_taxa = _.intersect(value.taxa, other_taxa).length;
-
-            // Draw it accordingly.
-            var div = div_map[value.choice];
-            var count_span_q = query('.count', div);
-            count_span_q.html('(' + num_taxa + ')');
-            var input_field_q = query('input', div);
-            if (num_taxa === 0) {
-                $(div).addClass('disabled');
-                input_field_q.attr('disabled', 'disabled');
-            } else {
-                $(div).removeClass('disabled');
-                input_field_q.attr('disabled', false); // remove the attribute
-            }
-        });
-    },
-
-    /* When the apply button is pressed, we announce a value change
-       unless it would bring the number of species to zero. */
-
-    _apply_button_clicked: function(e) {
-        event.stop(e);
-        var apply_button = $('.apply-btn');
-        if (apply_button.hasClass('disabled'))
-            return;
-        apply_button.removeClass('disabled');
-        this._apply_filter_value();
-        this.dismiss();
-    },
-
-    _apply_filter_value: function() {
-        var value = this._current_value();
-        if (value !== null && this.filter.taxa_matching(value).length == 0)
-            // Refuse to let the number of matching taxa be driven to zero.
-            return;
-        this.filter.set('value', value);
-    }
-});
-});
-
-},
-'dojo/NodeList-html':function(){
-define("dojo/NodeList-html", ["./query", "./_base/lang", "./html"], function(query, lang, html) {
-	// module:
-	//		dojo/NodeList-html
-	// summary:
-	//		TODOC
-
-var NodeList = query.NodeList;
-
-/*=====
-dojo["NodeList-html"] = {
-	// summary: Adds a chainable html method to dojo.query() / Nodelist instances for setting/replacing node content
-};
-
-// doc helper aliases:
-NodeList = dojo.NodeList;
-=====*/
-
-lang.extend(NodeList, {
-	html: function(/* String|DomNode|NodeList? */ content, /* Object? */params){
-		//	summary:
-		//		see `dojo.html.set()`. Set the content of all elements of this NodeList
-		//
-		//	content:
-		//		An html string, node or enumerable list of nodes for insertion into the dom
-		//
-		//	params:
-		//		Optional flags/properties to configure the content-setting. See dojo.html._ContentSetter
-		//
-		//	description:
-		//		Based around `dojo.html.set()`, set the content of the Elements in a
-		//		NodeList to the given content (string/node/nodelist), with optional arguments
-		//		to further tune the set content behavior.
-		//
-		//	example:
-		//	| dojo.query(".thingList").html("<li dojoType='dojo.dnd.Moveable'>1</li><li dojoType='dojo.dnd.Moveable'>2</li><li dojoType='dojo.dnd.Moveable'>3</li>",
-		//	| {
-		//	| 	parseContent: true,
-		//	| 	onBegin: function(){
-		//	| 		this.content = this.content.replace(/([0-9])/g, this.id + ": $1");
-		//	| 		this.inherited("onBegin", arguments);
-		//	| 	}
-		//	| }).removeClass("notdone").addClass("done");
-
-		var dhs = new html._ContentSetter(params || {});
-		this.forEach(function(elm){
-			dhs.node = elm;
-			dhs.set(content);
-			dhs.tearDown();
-		});
-		return this; // dojo.NodeList
-	}
-});
-
-return NodeList;
-});
-
-},
-'dojo/html':function(){
-define("dojo/html", ["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", "./dom", "./dom-construct", "./parser"], function(dojo, lang, darray, declare, dom, domConstruct, parser) {
-	// module:
-	//		dojo/html
-	// summary:
-	//		TODOC
-
-	lang.getObject("html", true, dojo);
-
-	// the parser might be needed..
-
-	// idCounter is incremented with each instantiation to allow asignment of a unique id for tracking, logging purposes
-	var idCounter = 0;
-
-	dojo.html._secureForInnerHtml = function(/*String*/ cont){
-		// summary:
-		//		removes !DOCTYPE and title elements from the html string.
-		//
-		//		khtml is picky about dom faults, you can't attach a style or <title> node as child of body
-		//		must go into head, so we need to cut out those tags
-		//	cont:
-		//		An html string for insertion into the dom
-		//
-		return cont.replace(/(?:\s*<!DOCTYPE\s[^>]+>|<title[^>]*>[\s\S]*?<\/title>)/ig, ""); // String
-	};
-
-/*====
-	dojo.html._emptyNode = function(node){
-		// summary:
-		//		removes all child nodes from the given node
-		//	node: DOMNode
-		//		the parent element
-	};
-=====*/
-	dojo.html._emptyNode = domConstruct.empty;
-
-	dojo.html._setNodeContent = function(/* DomNode */ node, /* String|DomNode|NodeList */ cont){
-		// summary:
-		//		inserts the given content into the given node
-		//	node:
-		//		the parent element
-		//	content:
-		//		the content to be set on the parent element.
-		//		This can be an html string, a node reference or a NodeList, dojo.NodeList, Array or other enumerable list of nodes
-
-		// always empty
-		domConstruct.empty(node);
-
-		if(cont) {
-			if(typeof cont == "string") {
-				cont = domConstruct.toDom(cont, node.ownerDocument);
-			}
-			if(!cont.nodeType && lang.isArrayLike(cont)) {
-				// handle as enumerable, but it may shrink as we enumerate it
-				for(var startlen=cont.length, i=0; i<cont.length; i=startlen==cont.length ? i+1 : 0) {
-					domConstruct.place( cont[i], node, "last");
-				}
-			} else {
-				// pass nodes, documentFragments and unknowns through to dojo.place
-				domConstruct.place(cont, node, "last");
-			}
-		}
-
-		// return DomNode
-		return node;
-	};
-
-	// we wrap up the content-setting operation in a object
-	declare("dojo.html._ContentSetter", null,
-		{
-			// node: DomNode|String
-			//		An node which will be the parent element that we set content into
-			node: "",
-
-			// content: String|DomNode|DomNode[]
-			//		The content to be placed in the node. Can be an HTML string, a node reference, or a enumerable list of nodes
-			content: "",
-
-			// id: String?
-			//		Usually only used internally, and auto-generated with each instance
-			id: "",
-
-			// cleanContent: Boolean
-			//		Should the content be treated as a full html document,
-			//		and the real content stripped of <html>, <body> wrapper before injection
-			cleanContent: false,
-
-			// extractContent: Boolean
-			//		Should the content be treated as a full html document, and the real content stripped of <html>, <body> wrapper before injection
-			extractContent: false,
-
-			// parseContent: Boolean
-			//		Should the node by passed to the parser after the new content is set
-			parseContent: false,
-
-			// parserScope: String
-			//		Flag passed to parser.	Root for attribute names to search for.	  If scopeName is dojo,
-			//		will search for data-dojo-type (or dojoType).  For backwards compatibility
-			//		reasons defaults to dojo._scopeName (which is "dojo" except when
-			//		multi-version support is used, when it will be something like dojo16, dojo20, etc.)
-			parserScope: dojo._scopeName,
-
-			// startup: Boolean
-			//		Start the child widgets after parsing them.	  Only obeyed if parseContent is true.
-			startup: true,
-
-			// lifecyle methods
-			constructor: function(/* Object */params, /* String|DomNode */node){
-				//	summary:
-				//		Provides a configurable, extensible object to wrap the setting on content on a node
-				//		call the set() method to actually set the content..
-
-				// the original params are mixed directly into the instance "this"
-				lang.mixin(this, params || {});
-
-				// give precedence to params.node vs. the node argument
-				// and ensure its a node, not an id string
-				node = this.node = dom.byId( this.node || node );
-
-				if(!this.id){
-					this.id = [
-						"Setter",
-						(node) ? node.id || node.tagName : "",
-						idCounter++
-					].join("_");
-				}
-			},
-			set: function(/* String|DomNode|NodeList? */ cont, /* Object? */ params){
-				// summary:
-				//		front-end to the set-content sequence
-				//	cont:
-				//		An html string, node or enumerable list of nodes for insertion into the dom
-				//		If not provided, the object's content property will be used
-				if(undefined !== cont){
-					this.content = cont;
-				}
-				// in the re-use scenario, set needs to be able to mixin new configuration
-				if(params){
-					this._mixin(params);
-				}
-
-				this.onBegin();
-				this.setContent();
-				this.onEnd();
-
-				return this.node;
-			},
-			setContent: function(){
-				// summary:
-				//		sets the content on the node
-
-				var node = this.node;
-				if(!node) {
-					// can't proceed
-					throw new Error(this.declaredClass + ": setContent given no node");
-				}
-				try{
-					node = dojo.html._setNodeContent(node, this.content);
-				}catch(e){
-					// check if a domfault occurs when we are appending this.errorMessage
-					// like for instance if domNode is a UL and we try append a DIV
-
-					// FIXME: need to allow the user to provide a content error message string
-					var errMess = this.onContentError(e);
-					try{
-						node.innerHTML = errMess;
-					}catch(e){
-						console.error('Fatal ' + this.declaredClass + '.setContent could not change content due to '+e.message, e);
-					}
-				}
-				// always put back the node for the next method
-				this.node = node; // DomNode
-			},
-
-			empty: function() {
-				// summary
-				//	cleanly empty out existing content
-
-				// destroy any widgets from a previous run
-				// NOTE: if you dont want this you'll need to empty
-				// the parseResults array property yourself to avoid bad things happenning
-				if(this.parseResults && this.parseResults.length) {
-					darray.forEach(this.parseResults, function(w) {
-						if(w.destroy){
-							w.destroy();
-						}
-					});
-					delete this.parseResults;
-				}
-				// this is fast, but if you know its already empty or safe, you could
-				// override empty to skip this step
-				dojo.html._emptyNode(this.node);
-			},
-
-			onBegin: function(){
-				// summary
-				//		Called after instantiation, but before set();
-				//		It allows modification of any of the object properties
-				//		- including the node and content provided - before the set operation actually takes place
-				//		This default implementation checks for cleanContent and extractContent flags to
-				//		optionally pre-process html string content
-				var cont = this.content;
-
-				if(lang.isString(cont)){
-					if(this.cleanContent){
-						cont = dojo.html._secureForInnerHtml(cont);
-					}
-
-					if(this.extractContent){
-						var match = cont.match(/<body[^>]*>\s*([\s\S]+)\s*<\/body>/im);
-						if(match){ cont = match[1]; }
-					}
-				}
-
-				// clean out the node and any cruft associated with it - like widgets
-				this.empty();
-
-				this.content = cont;
-				return this.node; /* DomNode */
-			},
-
-			onEnd: function(){
-				// summary
-				//		Called after set(), when the new content has been pushed into the node
-				//		It provides an opportunity for post-processing before handing back the node to the caller
-				//		This default implementation checks a parseContent flag to optionally run the dojo parser over the new content
-				if(this.parseContent){
-					// populates this.parseResults if you need those..
-					this._parse();
-				}
-				return this.node; /* DomNode */
-			},
-
-			tearDown: function(){
-				// summary
-				//		manually reset the Setter instance if its being re-used for example for another set()
-				// description
-				//		tearDown() is not called automatically.
-				//		In normal use, the Setter instance properties are simply allowed to fall out of scope
-				//		but the tearDown method can be called to explicitly reset this instance.
-				delete this.parseResults;
-				delete this.node;
-				delete this.content;
-			},
-
-			onContentError: function(err){
-				return "Error occured setting content: " + err;
-			},
-
-			_mixin: function(params){
-				// mix properties/methods into the instance
-				// TODO: the intention with tearDown is to put the Setter's state
-				// back to that of the original constructor (vs. deleting/resetting everything regardless of ctor params)
-				// so we could do something here to move the original properties aside for later restoration
-				var empty = {}, key;
-				for(key in params){
-					if(key in empty){ continue; }
-					// TODO: here's our opportunity to mask the properties we dont consider configurable/overridable
-					// .. but history shows we'll almost always guess wrong
-					this[key] = params[key];
-				}
-			},
-			_parse: function(){
-				// summary:
-				//		runs the dojo parser over the node contents, storing any results in this.parseResults
-				//		Any errors resulting from parsing are passed to _onError for handling
-
-				var rootNode = this.node;
-				try{
-					// store the results (widgets, whatever) for potential retrieval
-					var inherited = {};
-					darray.forEach(["dir", "lang", "textDir"], function(name){
-						if(this[name]){
-							inherited[name] = this[name];
-						}
-					}, this);
-					this.parseResults = parser.parse({
-						rootNode: rootNode,
-						noStart: !this.startup,
-						inherited: inherited,
-						scope: this.parserScope
-					});
-				}catch(e){
-					this._onError('Content', e, "Error parsing in _ContentSetter#"+this.id);
-				}
-			},
-
-			_onError: function(type, err, consoleText){
-				// summary:
-				//		shows user the string that is returned by on[type]Error
-				//		overide/implement on[type]Error and return your own string to customize
-				var errText = this['on' + type + 'Error'].call(this, err);
-				if(consoleText){
-					console.error(consoleText, err);
-				}else if(errText){ // a empty string won't change current content
-					dojo.html._setNodeContent(this.node, errText, true);
-				}
-			}
-	}); // end dojo.declare()
-
-	dojo.html.set = function(/* DomNode */ node, /* String|DomNode|NodeList */ cont, /* Object? */ params){
-			// summary:
-			//		inserts (replaces) the given content into the given node. dojo.place(cont, node, "only")
-			//		may be a better choice for simple HTML insertion.
-			// description:
-			//		Unless you need to use the params capabilities of this method, you should use
-			//		dojo.place(cont, node, "only"). dojo.place() has more robust support for injecting
-			//		an HTML string into the DOM, but it only handles inserting an HTML string as DOM
-			//		elements, or inserting a DOM node. dojo.place does not handle NodeList insertions
-			//		or the other capabilities as defined by the params object for this method.
-			//	node:
-			//		the parent element that will receive the content
-			//	cont:
-			//		the content to be set on the parent element.
-			//		This can be an html string, a node reference or a NodeList, dojo.NodeList, Array or other enumerable list of nodes
-			//	params:
-			//		Optional flags/properties to configure the content-setting. See dojo.html._ContentSetter
-			//	example:
-			//		A safe string/node/nodelist content replacement/injection with hooks for extension
-			//		Example Usage:
-			//		dojo.html.set(node, "some string");
-			//		dojo.html.set(node, contentNode, {options});
-			//		dojo.html.set(node, myNode.childNodes, {options});
-		if(undefined == cont){
-			0 && console.warn("dojo.html.set: no cont argument provided, using empty string");
-			cont = "";
-		}
-		if(!params){
-			// simple and fast
-			return dojo.html._setNodeContent(node, cont, true);
-		}else{
-			// more options but slower
-			// note the arguments are reversed in order, to match the convention for instantiation via the parser
-			var op = new dojo.html._ContentSetter(lang.mixin(
-					params,
-					{ content: cont, node: node }
-			));
-			return op.set();
-		}
-	};
-
-	return dojo.html;
-});
-
-},
-'dojo/parser':function(){
-define(
-	"dojo/parser", ["./_base/kernel", "./_base/lang", "./_base/array", "./_base/html", "./_base/window", "./_base/url",
-		"./_base/json", "./aspect", "./date/stamp", "./query", "./on", "./ready"],
-	function(dojo, dlang, darray, dhtml, dwindow, _Url, djson, aspect, dates, query, don){
-
-// module:
-//		dojo/parser
-// summary:
-//		The Dom/Widget parsing package
-
-new Date("X"); // workaround for #11279, new Date("") == NaN
-
-var features = {
-	// Feature detection for when node.attributes only lists the attributes specified in the markup
-	// rather than old IE/quirks behavior where it lists every default value too
-	"dom-attributes-explicit": document.createElement("div").attributes.length < 40
-};
-function has(feature){
-	return features[feature];
-}
-
-
-dojo.parser = new function(){
-	// summary:
-	//		The Dom/Widget parsing package
-
-	var _nameMap = {
-		// Map from widget name (ex: "dijit.form.Button") to structure mapping
-		// lowercase version of attribute names to the version in the widget ex:
-		//	{
-		//		label: "label",
-		//		onclick: "onClick"
-		//	}
-	};
-	function getNameMap(proto){
-		// summary:
-		//		Returns map from lowercase name to attribute name in class, ex: {onclick: "onClick"}
-		var map = {};
-		for(var name in proto){
-			if(name.charAt(0)=="_"){ continue; }	// skip internal properties
-			map[name.toLowerCase()] = name;
-		}
-		return map;
-	}
-	// Widgets like BorderContainer add properties to _Widget via dojo.extend().
-	// If BorderContainer is loaded after _Widget's parameter list has been cached,
-	// we need to refresh that parameter list (for _Widget and all widgets that extend _Widget).
-	aspect.after(dlang, "extend", function(){
-		_nameMap = {};
-	}, true);
-
-	// Map from widget name (ex: "dijit.form.Button") to constructor
-	var _ctorMap = {};
-
-	this._functionFromScript = function(script, attrData){
-		// summary:
-		//		Convert a <script type="dojo/method" args="a, b, c"> ... </script>
-		//		into a function
-		// script: DOMNode
-		//		The <script> DOMNode
-		// attrData: String
-		//		For HTML5 compliance, searches for attrData + "args" (typically
-		//		"data-dojo-args") instead of "args"
-		var preamble = "";
-		var suffix = "";
-		var argsStr = (script.getAttribute(attrData + "args") || script.getAttribute("args"));
-		if(argsStr){
-			darray.forEach(argsStr.split(/\s*,\s*/), function(part, idx){
-				preamble += "var "+part+" = arguments["+idx+"]; ";
-			});
-		}
-		var withStr = script.getAttribute("with");
-		if(withStr && withStr.length){
-			darray.forEach(withStr.split(/\s*,\s*/), function(part){
-				preamble += "with("+part+"){";
-				suffix += "}";
-			});
-		}
-		return new Function(preamble+script.innerHTML+suffix);
-	};
-
-	this.instantiate = /*====== dojo.parser.instantiate= ======*/function(nodes, mixin, args){
-		// summary:
-		//		Takes array of nodes, and turns them into class instances and
-		//		potentially calls a startup method to allow them to connect with
-		//		any children.
-		// nodes: Array
-		//		Array of nodes or objects like
-		//	|		{
-		//	|			type: "dijit.form.Button",
-		//	|			node: DOMNode,
-		//	|			scripts: [ ... ],	// array of <script type="dojo/..."> children of node
-		//	|			inherited: { ... }	// settings inherited from ancestors like dir, theme, etc.
-		//	|		}
-		// mixin: Object?
-		//		An object that will be mixed in with each node in the array.
-		//		Values in the mixin will override values in the node, if they
-		//		exist.
-		// args: Object?
-		//		An object used to hold kwArgs for instantiation.
-		//		See parse.args argument for details.
-
-		var thelist = [],
-		mixin = mixin||{};
-		args = args||{};
-
-		// Precompute names of special attributes we are looking for
-		// TODO: for 2.0 default to data-dojo- regardless of scopeName (or maybe scopeName won't exist in 2.0)
-		var dojoType = (args.scope || dojo._scopeName) + "Type",		// typically "dojoType"
-			attrData = "data-" + (args.scope || dojo._scopeName) + "-",// typically "data-dojo-"
-			dataDojoType = attrData + "type",						// typically "data-dojo-type"
-			dataDojoProps = attrData + "props",						// typically "data-dojo-props"
-			dataDojoAttachPoint = attrData + "attach-point",
-			dataDojoAttachEvent = attrData + "attach-event",
-			dataDojoId = attrData + "id";
-
-		// And make hash to quickly check if a given attribute is special, and to map the name to something friendly
-		var specialAttrs = {};
-		darray.forEach([dataDojoProps, dataDojoType, dojoType, dataDojoId, "jsId", dataDojoAttachPoint,
-				dataDojoAttachEvent, "dojoAttachPoint", "dojoAttachEvent", "class", "style"], function(name){
-			specialAttrs[name.toLowerCase()] = name.replace(args.scope, "dojo");
-		});
-
-		darray.forEach(nodes, function(obj){
-			if(!obj){ return; }
-
-			var node = obj.node || obj,
-				type = dojoType in mixin ? mixin[dojoType] : obj.node ? obj.type : (node.getAttribute(dataDojoType) || node.getAttribute(dojoType)),
-				ctor = _ctorMap[type] || (_ctorMap[type] = dlang.getObject(type)),
-				proto = ctor && ctor.prototype;
-			if(!ctor){
-				throw new Error("Could not load class '" + type);
-			}
-
-			// Setup hash to hold parameter settings for this widget.	Start with the parameter
-			// settings inherited from ancestors ("dir" and "lang").
-			// Inherited setting may later be overridden by explicit settings on node itself.
-			var params = {};
-
-			if(args.defaults){
-				// settings for the document itself (or whatever subtree is being parsed)
-				dlang.mixin(params, args.defaults);
-			}
-			if(obj.inherited){
-				// settings from dir=rtl or lang=... on a node above this node
-				dlang.mixin(params, obj.inherited);
-			}
-
-			// Get list of attributes explicitly listed in the markup
-			var attributes;
-			if(has("dom-attributes-explicit")){
-				// Standard path to get list of user specified attributes
-				attributes = node.attributes;
-			}else{
-				// Special path for IE, avoid (sometimes >100) bogus entries in node.attributes
-				var clone = /^input$|^img$/i.test(node.nodeName) ? node : node.cloneNode(false),
-					attrs = clone.outerHTML.replace(/=[^\s"']+|="[^"]*"|='[^']*'/g, "").replace(/^\s*<[a-zA-Z0-9]*/, "").replace(/>.*$/, "");
-
-				attributes = darray.map(attrs.split(/\s+/), function(name){
-					var lcName = name.toLowerCase();
-					return {
-						name: name,
-						// getAttribute() doesn't work for button.value, returns innerHTML of button.
-						// but getAttributeNode().value doesn't work for the form.encType or li.value
-						value: (node.nodeName == "LI" && name == "value") || lcName == "enctype" ?
-								node.getAttribute(lcName) : node.getAttributeNode(lcName).value,
-						specified: true
-					};
-				});
-			}
-
-			// Read in attributes and process them, including data-dojo-props, data-dojo-type,
-			// dojoAttachPoint, etc., as well as normal foo=bar attributes.
-			var i=0, item;
-			while(item = attributes[i++]){
-				if(!item || !item.specified){
-					continue;
-				}
-
-				var name = item.name,
-					lcName = name.toLowerCase(),
-					value = item.value;
-
-				if(lcName in specialAttrs){
-					switch(specialAttrs[lcName]){
-
-					// Data-dojo-props.   Save for later to make sure it overrides direct foo=bar settings
-					case "data-dojo-props":
-						var extra = value;
-						break;
-
-					// data-dojo-id or jsId. TODO: drop jsId in 2.0
-					case "data-dojo-id":
-					case "jsId":
-						var jsname = value;
-						break;
-
-					// For the benefit of _Templated
-					case "data-dojo-attach-point":
-					case "dojoAttachPoint":
-						params.dojoAttachPoint = value;
-						break;
-					case "data-dojo-attach-event":
-					case "dojoAttachEvent":
-						params.dojoAttachEvent = value;
-						break;
-
-					// Special parameter handling needed for IE
-					case "class":
-						params["class"] = node.className;
-						break;
-					case "style":
-						params["style"] = node.style && node.style.cssText;
-						break;
-					}
-				}else{
-					// Normal attribute, ex: value="123"
-
-					// Find attribute in widget corresponding to specified name.
-					// May involve case conversion, ex: onclick --> onClick
-					if(!(name in proto)){
-						var map = (_nameMap[type] || (_nameMap[type] = getNameMap(proto)));
-						name = map[lcName] || name;
-					}
-
-					// Set params[name] to value, doing type conversion
-					if(name in proto){
-						switch(typeof proto[name]){
-						case "string":
-							params[name] = value;
-							break;
-						case "number":
-							params[name] = value.length ? Number(value) : NaN;
-							break;
-						case "boolean":
-							// for checked/disabled value might be "" or "checked".	 interpret as true.
-							params[name] = value.toLowerCase() != "false";
-							break;
-						case "function":
-							if(value === "" || value.search(/[^\w\.]+/i) != -1){
-								// The user has specified some text for a function like "return x+5"
-								params[name] = new Function(value);
-							}else{
-								// The user has specified the name of a function like "myOnClick"
-								// or a single word function "return"
-								params[name] = dlang.getObject(value, false) || new Function(value);
-							}
-							break;
-						default:
-							var pVal = proto[name];
-							params[name] =
-								(pVal && "length" in pVal) ? (value ? value.split(/\s*,\s*/) : []) :	// array
-									(pVal instanceof Date) ?
-										(value == "" ? new Date("") :	// the NaN of dates
-										value == "now" ? new Date() :	// current date
-										dates.fromISOString(value)) :
-								(pVal instanceof dojo._Url) ? (dojo.baseUrl + value) :
-								djson.fromJson(value);
-						}
-					}else{
-						params[name] = value;
-					}
-				}
-			}
-
-			// Mix things found in data-dojo-props into the params, overriding any direct settings
-			if(extra){
-				try{
-					extra = djson.fromJson.call(args.propsThis, "{" + extra + "}");
-					dlang.mixin(params, extra);
-				}catch(e){
-					// give the user a pointer to their invalid parameters. FIXME: can we kill this in production?
-					throw new Error(e.toString() + " in data-dojo-props='" + extra + "'");
-				}
-			}
-
-			// Any parameters specified in "mixin" override everything else.
-			dlang.mixin(params, mixin);
-
-			var scripts = obj.node ? obj.scripts : (ctor && (ctor._noScript || proto._noScript) ? [] :
-						query("> script[type^='dojo/']", node));
-
-			// Process <script type="dojo/*"> script tags
-			// <script type="dojo/method" event="foo"> tags are added to params, and passed to
-			// the widget on instantiation.
-			// <script type="dojo/method"> tags (with no event) are executed after instantiation
-			// <script type="dojo/connect" data-dojo-event="foo"> tags are dojo.connected after instantiation
-			// <script type="dojo/watch" data-dojo-prop="foo"> tags are dojo.watch after instantiation
-			// <script type="dojo/on" data-dojo-event="foo"> tags are dojo.on after instantiation
-			// note: dojo/* script tags cannot exist in self closing widgets, like <input />
-			var connects = [],	// functions to connect after instantiation
-				calls = [],		// functions to call after instantiation
-				watch = [],  //functions to watch after instantiation
-				on = []; //functions to on after instantiation
-
-			if(scripts){
-				for(i=0; i<scripts.length; i++){
-					var script = scripts[i];
-					node.removeChild(script);
-					// FIXME: drop event="" support in 2.0. use data-dojo-event="" instead
-					var event = (script.getAttribute(attrData + "event") || script.getAttribute("event")),
-						prop = script.getAttribute(attrData + "prop"),
-						type = script.getAttribute("type"),
-						nf = this._functionFromScript(script, attrData);
-					if(event){
-						if(type == "dojo/connect"){
-							connects.push({event: event, func: nf});
-						}else if(type == "dojo/on"){
-							on.push({event: event, func: nf});
-						}else{
-							params[event] = nf;
-						}
-					}else if(type == "dojo/watch"){
-						watch.push({prop: prop, func: nf});
-					}else{
-						calls.push(nf);
-					}
-				}
-			}
-
-			// create the instance
-			var markupFactory = ctor.markupFactory || proto.markupFactory;
-			var instance = markupFactory ? markupFactory(params, node, ctor) : new ctor(params, node);
-			thelist.push(instance);
-
-			// map it to the JS namespace if that makes sense
-			if(jsname){
-				dlang.setObject(jsname, instance);
-			}
-
-			// process connections and startup functions
-			for(i=0; i<connects.length; i++){
-				aspect.after(instance, connects[i].event, dojo.hitch(instance, connects[i].func), true);
-			}
-			for(i=0; i<calls.length; i++){
-				calls[i].call(instance);
-			}
-			for(i=0; i<watch.length; i++){
-				instance.watch(watch[i].prop, watch[i].func);
-			}
-			for(i=0; i<on.length; i++){
-				don(instance, on[i].event, on[i].func);
-			}
-		}, this);
-
-		// Call startup on each top level instance if it makes sense (as for
-		// widgets).  Parent widgets will recursively call startup on their
-		// (non-top level) children
-		if(!mixin._started){
-			darray.forEach(thelist, function(instance){
-				if( !args.noStart && instance  &&
-					dlang.isFunction(instance.startup) &&
-					!instance._started
-				){
-					instance.startup();
-				}
-			});
-		}
-		return thelist;
-	};
-
-	this.parse = /*====== dojo.parser.parse= ======*/ function(rootNode, args){
-		// summary:
-		//		Scan the DOM for class instances, and instantiate them.
-		//
-		// description:
-		//		Search specified node (or root node) recursively for class instances,
-		//		and instantiate them. Searches for either data-dojo-type="Class" or
-		//		dojoType="Class" where "Class" is a a fully qualified class name,
-		//		like `dijit.form.Button`
-		//
-		//		Using `data-dojo-type`:
-		//		Attributes using can be mixed into the parameters used to instantiate the
-		//		Class by using a `data-dojo-props` attribute on the node being converted.
-		//		`data-dojo-props` should be a string attribute to be converted from JSON.
-		//
-		//		Using `dojoType`:
-		//		Attributes are read from the original domNode and converted to appropriate
-		//		types by looking up the Class prototype values. This is the default behavior
-		//		from Dojo 1.0 to Dojo 1.5. `dojoType` support is deprecated, and will
-		//		go away in Dojo 2.0.
-		//
-		// rootNode: DomNode?
-		//		A default starting root node from which to start the parsing. Can be
-		//		omitted, defaulting to the entire document. If omitted, the `args`
-		//		object can be passed in this place. If the `args` object has a
-		//		`rootNode` member, that is used.
-		//
-		// args: Object
-		//		a kwArgs object passed along to instantiate()
-		//
-		//			* noStart: Boolean?
-		//				when set will prevent the parser from calling .startup()
-		//				when locating the nodes.
-		//			* rootNode: DomNode?
-		//				identical to the function's `rootNode` argument, though
-		//				allowed to be passed in via this `args object.
-		//			* template: Boolean
-		//				If true, ignores ContentPane's stopParser flag and parses contents inside of
-		//				a ContentPane inside of a template.   This allows dojoAttachPoint on widgets/nodes
-		//				nested inside the ContentPane to work.
-		//			* inherited: Object
-		//				Hash possibly containing dir and lang settings to be applied to
-		//				parsed widgets, unless there's another setting on a sub-node that overrides
-		//			* scope: String
-		//				Root for attribute names to search for.   If scopeName is dojo,
-		//				will search for data-dojo-type (or dojoType).   For backwards compatibility
-		//				reasons defaults to dojo._scopeName (which is "dojo" except when
-		//				multi-version support is used, when it will be something like dojo16, dojo20, etc.)
-		//			* propsThis: Object
-		//				If specified, "this" referenced from data-dojo-props will refer to propsThis.
-		//				Intended for use from the widgets-in-template feature of `dijit._WidgetsInTemplateMixin`
-		//
-		// example:
-		//		Parse all widgets on a page:
-		//	|		dojo.parser.parse();
-		//
-		// example:
-		//		Parse all classes within the node with id="foo"
-		//	|		dojo.parser.parse(dojo.byId('foo'));
-		//
-		// example:
-		//		Parse all classes in a page, but do not call .startup() on any
-		//		child
-		//	|		dojo.parser.parse({ noStart: true })
-		//
-		// example:
-		//		Parse all classes in a node, but do not call .startup()
-		//	|		dojo.parser.parse(someNode, { noStart:true });
-		//	|		// or
-		//	|		dojo.parser.parse({ noStart:true, rootNode: someNode });
-
-		// determine the root node based on the passed arguments.
-		var root;
-		if(!args && rootNode && rootNode.rootNode){
-			args = rootNode;
-			root = args.rootNode;
-		}else{
-			root = rootNode;
-		}
-		root = root ? dhtml.byId(root) : dwindow.body();
-		args = args || {};
-
-		var dojoType = (args.scope || dojo._scopeName) + "Type",		// typically "dojoType"
-			attrData = "data-" + (args.scope || dojo._scopeName) + "-",	// typically "data-dojo-"
-			dataDojoType = attrData + "type",						// typically "data-dojo-type"
-			dataDojoTextDir = attrData + "textdir";					// typically "data-dojo-textdir"
-
-		// List of all nodes on page w/dojoType specified
-		var list = [];
-
-		// Info on DOMNode currently being processed
-		var node = root.firstChild;
-
-		// Info on parent of DOMNode currently being processed
-		//	- inherited: dir, lang, and textDir setting of parent, or inherited by parent
-		//	- parent: pointer to identical structure for my parent (or null if no parent)
-		//	- scripts: if specified, collects <script type="dojo/..."> type nodes from children
-		var inherited = args && args.inherited;
-		if(!inherited){
-			function findAncestorAttr(node, attr){
-				return (node.getAttribute && node.getAttribute(attr)) ||
-					(node !== dwindow.doc && node !== dwindow.doc.documentElement && node.parentNode ? findAncestorAttr(node.parentNode, attr) : null);
-			}
-			inherited = {
-				dir: findAncestorAttr(root, "dir"),
-				lang: findAncestorAttr(root, "lang"),
-				textDir: findAncestorAttr(root, dataDojoTextDir)
-			};
-			for(var key in inherited){
-				if(!inherited[key]){ delete inherited[key]; }
-			}
-		}
-		var parent = {
-			inherited: inherited
-		};
-
-		// For collecting <script type="dojo/..."> type nodes (when null, we don't need to collect)
-		var scripts;
-
-		// when true, only look for <script type="dojo/..."> tags, and don't recurse to children
-		var scriptsOnly;
-
-		function getEffective(parent){
-			// summary:
-			//		Get effective dir, lang, textDir settings for specified obj
-			//		(matching "parent" object structure above), and do caching.
-			//		Take care not to return null entries.
-			if(!parent.inherited){
-				parent.inherited = {};
-				var node = parent.node,
-					grandparent = getEffective(parent.parent);
-				var inherited  = {
-					dir: node.getAttribute("dir") || grandparent.dir,
-					lang: node.getAttribute("lang") || grandparent.lang,
-					textDir: node.getAttribute(dataDojoTextDir) || grandparent.textDir
-				};
-				for(var key in inherited){
-					if(inherited[key]){
-						parent.inherited[key] = inherited[key];
-					}
-				}
-			}
-			return parent.inherited;
-		}
-
-		// DFS on DOM tree, collecting nodes with data-dojo-type specified.
-		while(true){
-			if(!node){
-				// Finished this level, continue to parent's next sibling
-				if(!parent || !parent.node){
-					break;
-				}
-				node = parent.node.nextSibling;
-				scripts = parent.scripts;
-				scriptsOnly = false;
-				parent = parent.parent;
-				continue;
-			}
-
-			if(node.nodeType != 1){
-				// Text or comment node, skip to next sibling
-				node = node.nextSibling;
-				continue;
-			}
-
-			if(scripts && node.nodeName.toLowerCase() == "script"){
-				// Save <script type="dojo/..."> for parent, then continue to next sibling
-				type = node.getAttribute("type");
-				if(type && /^dojo\/\w/i.test(type)){
-					scripts.push(node);
-				}
-				node = node.nextSibling;
-				continue;
-			}
-			if(scriptsOnly){
-				node = node.nextSibling;
-				continue;
-			}
-
-			// Check for data-dojo-type attribute, fallback to backward compatible dojoType
-			var type = node.getAttribute(dataDojoType) || node.getAttribute(dojoType);
-
-			// Short circuit for leaf nodes containing nothing [but text]
-			var firstChild = node.firstChild;
-			if(!type && (!firstChild || (firstChild.nodeType == 3 && !firstChild.nextSibling))){
-				node = node.nextSibling;
-				continue;
-			}
-
-			// Setup data structure to save info on current node for when we return from processing descendant nodes
-			var current = {
-				node: node,
-				scripts: scripts,
-				parent: parent
-			};
-
-			// If dojoType/data-dojo-type specified, add to output array of nodes to instantiate
-			var ctor = type && (_ctorMap[type] || (_ctorMap[type] = dlang.getObject(type))), // note: won't find classes declared via dojo.Declaration
-				childScripts = ctor && !ctor.prototype._noScript ? [] : null; // <script> nodes that are parent's children
-			if(type){
-				list.push({
-					"type": type,
-					node: node,
-					scripts: childScripts,
-					inherited: getEffective(current) // dir & lang settings for current node, explicit or inherited
-				});
-			}
-
-			// Recurse, collecting <script type="dojo/..."> children, and also looking for
-			// descendant nodes with dojoType specified (unless the widget has the stopParser flag).
-			// When finished with children, go to my next sibling.
-			node = firstChild;
-			scripts = childScripts;
-			scriptsOnly = ctor && ctor.prototype.stopParser && !(args && args.template);
-			parent = current;
-
-		}
-
-		// go build the object instances
-		var mixin = args && args.template ? {template: true} : null;
-		return this.instantiate(list, mixin, args); // Array
-	};
-}();
-
-
-//Register the parser callback. It should be the first callback
-//after the a11y test.
-if(dojo.config.parseOnLoad){
-	dojo.ready(100, dojo.parser, "parse");
-}
-
-return dojo.parser;
-});
-
-},
-'dojo/_base/url':function(){
-define("dojo/_base/url", ["./kernel"], function(dojo) {
-	// module:
-	//		dojo/url
-	// summary:
-	//		This module contains dojo._Url
-
-	var
-		ore = new RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?$"),
-		ire = new RegExp("^((([^\\[:]+):)?([^@]+)@)?(\\[([^\\]]+)\\]|([^\\[:]*))(:([0-9]+))?$"),
-		_Url = function(){
-			var n = null,
-				_a = arguments,
-				uri = [_a[0]];
-			// resolve uri components relative to each other
-			for(var i = 1; i<_a.length; i++){
-				if(!_a[i]){ continue; }
-
-				// Safari doesn't support this.constructor so we have to be explicit
-				// FIXME: Tracked (and fixed) in Webkit bug 3537.
-				//		http://bugs.webkit.org/show_bug.cgi?id=3537
-				var relobj = new _Url(_a[i]+""),
-					uriobj = new _Url(uri[0]+"");
-
-				if(
-					relobj.path == "" &&
-					!relobj.scheme &&
-					!relobj.authority &&
-					!relobj.query
-				){
-					if(relobj.fragment != n){
-						uriobj.fragment = relobj.fragment;
-					}
-					relobj = uriobj;
-				}else if(!relobj.scheme){
-					relobj.scheme = uriobj.scheme;
-
-					if(!relobj.authority){
-						relobj.authority = uriobj.authority;
-
-						if(relobj.path.charAt(0) != "/"){
-							var path = uriobj.path.substring(0,
-								uriobj.path.lastIndexOf("/") + 1) + relobj.path;
-
-							var segs = path.split("/");
-							for(var j = 0; j < segs.length; j++){
-								if(segs[j] == "."){
-									// flatten "./" references
-									if(j == segs.length - 1){
-										segs[j] = "";
-									}else{
-										segs.splice(j, 1);
-										j--;
-									}
-								}else if(j > 0 && !(j == 1 && segs[0] == "") &&
-									segs[j] == ".." && segs[j-1] != ".."){
-									// flatten "../" references
-									if(j == (segs.length - 1)){
-										segs.splice(j, 1);
-										segs[j - 1] = "";
-									}else{
-										segs.splice(j - 1, 2);
-										j -= 2;
-									}
-								}
-							}
-							relobj.path = segs.join("/");
-						}
-					}
-				}
-
-				uri = [];
-				if(relobj.scheme){
-					uri.push(relobj.scheme, ":");
-				}
-				if(relobj.authority){
-					uri.push("//", relobj.authority);
-				}
-				uri.push(relobj.path);
-				if(relobj.query){
-					uri.push("?", relobj.query);
-				}
-				if(relobj.fragment){
-					uri.push("#", relobj.fragment);
-				}
-			}
-
-			this.uri = uri.join("");
-
-			// break the uri into its main components
-			var r = this.uri.match(ore);
-
-			this.scheme = r[2] || (r[1] ? "" : n);
-			this.authority = r[4] || (r[3] ? "" : n);
-			this.path = r[5]; // can never be undefined
-			this.query = r[7] || (r[6] ? "" : n);
-			this.fragment	 = r[9] || (r[8] ? "" : n);
-
-			if(this.authority != n){
-				// server based naming authority
-				r = this.authority.match(ire);
-
-				this.user = r[3] || n;
-				this.password = r[4] || n;
-				this.host = r[6] || r[7]; // ipv6 || ipv4
-				this.port = r[9] || n;
-			}
-		};
-	_Url.prototype.toString = function(){ return this.uri; };
-
-	return dojo._Url = _Url;
-});
-
-},
-'gobotany/sk/Slider':function(){
-/*
- * Slider, for integer numeric fields.
- */
-define("gobotany/sk/Slider", [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/query',
-    'dojo/NodeList-dom',
-    'dojo/NodeList-html',
-    'dojo/dom-construct',
-    'dojo/dom-style',
-    'dijit/registry',
-    'dijit/form/HorizontalSlider',
-    'gobotany/sk/Choice',
-    'simplekey/App3'
-], function(declare, lang, query, nodeListDom, nodeListHtml, domConstruct, 
-    domStyle, registry, HorizontalSlider, Choice, App3) {
-
-return declare('gobotany.sk.working_area.Slider', [
-    Choice
-], {
-
-    slider_node: null,
-    simple_slider: null,
-
-    /* See the comments on the Choice class, above, to learn about when
-       and how these methods are invoked. */
-
-    clear: function() {
-    },
-
-    dismiss: function() {
-        if(this.simple_slider) {
-            this.simple_slider.destroy();
-        }
-        if(this.slide_node) { 
-            query(this.slider_node).orphan();
-        }
-        this.simple_slider = this.slider_node = null;
-        this.inherited(arguments);
-    },
-
-    _compute_min_and_max: function() {
-        var species_vector = App3.filter_controller.compute(this.filter);
-        var allowed = this.filter.allowed_ranges(species_vector);
-        this.min = allowed[0].min;
-        this.max = allowed[allowed.length - 1].max;
-    },
-
-    _draw_specifics: function() {
-        // values_list?
-        this._compute_min_and_max();
-
-        var filter = this.filter;
-        var num_values = this.max - this.min + 1;
-        var startvalue = Math.ceil(num_values / 2);
-        if (filter.value !== null)
-            startvalue = filter.get('value');
-
-        var values_q = query('div.working-area .values');
-        values_q.addClass('multiple').removeClass('numeric').
-            html('<label>Select a number between<br>' +
-                 this.min + ' and ' +
-                 this.max + '</label>');
-        this.slider_node = domConstruct.create('div', null, values_q[0]);
-        this.simple_slider = new HorizontalSlider({
-            id: 'simple-slider',
-            name: 'simple-slider',
-            value: startvalue,
-            minimum: this.min,
-            maximum: this.max,
-            discreteValues: num_values,
-            intermediateChanges: true,
-            showButtons: false,
-            onChange: lang.hitch(this, this._value_changed),
-            onMouseUp: lang.hitch(this, this._value_changed)
-        }, this.slider_node);
-        domConstruct.create('div', {
-            'class': 'count',
-            'innerHTML': startvalue
-        }, this.simple_slider.containerNode);
-        this._value_changed();
-    },
-
-    _current_value: function() {
-        return registry.byId('simple-slider').value;
-    },
-
-    _value_changed: function() {
-        /* Disable the apply button when we're on either the default
-           value or the value that was previous selected */
-        this._compute_min_and_max();
-
-        var apply_button = query('.apply-btn', this.div);
-        var slider_value = this._current_value();
-        var filter_value = this.filter.get('value');
-        // Allow type coersion in this comparison, since we're
-        // comparing text from the filter to a numerical slider value
-        if (slider_value == filter_value)
-            apply_button.addClass('disabled');
-        else
-            apply_button.removeClass('disabled');
-
-        /* Update the count label. */
-        var label = query('#simple-slider .count');
-        var value = this._current_value();
-        label.html(value + '');
-
-        /* Position the label atop the slider. */
-        var MIN_LEFT_PX = 25;
-        var slider_bar = query('div.dijitSliderBarContainerH')[0];
-        var slider_bar_width = domStyle.get(slider_bar, 'width');
-        var max_left_px = MIN_LEFT_PX + slider_bar_width;
-        var filter = this.filter;
-        var num_segments = this.max - this.min;
-        var slider_length = max_left_px - MIN_LEFT_PX;
-        var pixels_per_value = slider_length / num_segments;
-        var offset = Math.floor((value - this.min) * pixels_per_value);
-        var label_width_correction = 0;
-        if (value >= 10) {
-            label_width_correction = -4; /* for 2 digits, pull left a bit */
-        }
-        var left = offset + MIN_LEFT_PX + label_width_correction;
-        domStyle.set(label[0], 'left', left + 'px');
-    },
-
-    /* Sliders only have one filter value, so we don't need to compute
-       number of taxa for each "choice."  We also don't want to get
-       javascript errors from the parent version of this function, so
-       just override it with an empty function. */
-    _on_filter_change: function() {
-    }
-
-});
-
-});
-
-
-},
-'dijit/registry':function(){
-define("dijit/registry", [
-	"dojo/_base/array", // array.forEach array.map
-	"dojo/_base/sniff", // has("ie")
-	"dojo/_base/unload", // unload.addOnWindowUnload
-	"dojo/_base/window", // win.body
-	"."	// dijit._scopeName
-], function(array, has, unload, win, dijit){
-
-	// module:
-	//		dijit/registry
-	// summary:
-	//		Registry of existing widget on page, plus some utility methods.
-	//		Must be accessed through AMD api, ex:
-	//		require(["dijit/registry"], function(registry){ registry.byId("foo"); })
-
-	var _widgetTypeCtr = {}, hash = {};
-
-	var registry =  {
-		// summary:
-		//		A set of widgets indexed by id
-
-		length: 0,
-
-		add: function(/*dijit._Widget*/ widget){
-			// summary:
-			//		Add a widget to the registry. If a duplicate ID is detected, a error is thrown.
-			//
-			// widget: dijit._Widget
-			//		Any dijit._Widget subclass.
-			if(hash[widget.id]){
-				throw new Error("Tried to register widget with id==" + widget.id + " but that id is already registered");
-			}
-			hash[widget.id] = widget;
-			this.length++;
-		},
-
-		remove: function(/*String*/ id){
-			// summary:
-			//		Remove a widget from the registry. Does not destroy the widget; simply
-			//		removes the reference.
-			if(hash[id]){
-				delete hash[id];
-				this.length--;
-			}
-		},
-
-		byId: function(/*String|Widget*/ id){
-			// summary:
-			//		Find a widget by it's id.
-			//		If passed a widget then just returns the widget.
-			return typeof id == "string" ? hash[id] : id;	// dijit._Widget
-		},
-
-		byNode: function(/*DOMNode*/ node){
-			// summary:
-			//		Returns the widget corresponding to the given DOMNode
-			return hash[node.getAttribute("widgetId")]; // dijit._Widget
-		},
-
-		toArray: function(){
-			// summary:
-			//		Convert registry into a true Array
-			//
-			// example:
-			//		Work with the widget .domNodes in a real Array
-			//		|	array.map(dijit.registry.toArray(), function(w){ return w.domNode; });
-
-			var ar = [];
-			for(var id in hash){
-				ar.push(hash[id]);
-			}
-			return ar;	// dijit._Widget[]
-		},
-
-		getUniqueId: function(/*String*/widgetType){
-			// summary:
-			//		Generates a unique id for a given widgetType
-
-			var id;
-			do{
-				id = widgetType + "_" +
-					(widgetType in _widgetTypeCtr ?
-						++_widgetTypeCtr[widgetType] : _widgetTypeCtr[widgetType] = 0);
-			}while(hash[id]);
-			return dijit._scopeName == "dijit" ? id : dijit._scopeName + "_" + id; // String
-		},
-
-		findWidgets: function(/*DomNode*/ root){
-			// summary:
-			//		Search subtree under root returning widgets found.
-			//		Doesn't search for nested widgets (ie, widgets inside other widgets).
-
-			var outAry = [];
-
-			function getChildrenHelper(root){
-				for(var node = root.firstChild; node; node = node.nextSibling){
-					if(node.nodeType == 1){
-						var widgetId = node.getAttribute("widgetId");
-						if(widgetId){
-							var widget = hash[widgetId];
-							if(widget){	// may be null on page w/multiple dojo's loaded
-								outAry.push(widget);
-							}
-						}else{
-							getChildrenHelper(node);
-						}
-					}
-				}
-			}
-
-			getChildrenHelper(root);
-			return outAry;
-		},
-
-		_destroyAll: function(){
-			// summary:
-			//		Code to destroy all widgets and do other cleanup on page unload
-
-			// Clean up focus manager lingering references to widgets and nodes
-			dijit._curFocus = null;
-			dijit._prevFocus = null;
-			dijit._activeStack = [];
-
-			// Destroy all the widgets, top down
-			array.forEach(registry.findWidgets(win.body()), function(widget){
-				// Avoid double destroy of widgets like Menu that are attached to <body>
-				// even though they are logically children of other widgets.
-				if(!widget._destroyed){
-					if(widget.destroyRecursive){
-						widget.destroyRecursive();
-					}else if(widget.destroy){
-						widget.destroy();
-					}
-				}
-			});
-		},
-
-		getEnclosingWidget: function(/*DOMNode*/ node){
-			// summary:
-			//		Returns the widget whose DOM tree contains the specified DOMNode, or null if
-			//		the node is not contained within the DOM tree of any widget
-			while(node){
-				var id = node.getAttribute && node.getAttribute("widgetId");
-				if(id){
-					return hash[id];
-				}
-				node = node.parentNode;
-			}
-			return null;
-		},
-
-		// In case someone needs to access hash.
-		// Actually, this is accessed from WidgetSet back-compatibility code
-		_hash: hash
-	};
-
-	if(has("ie")){
-		// Only run _destroyAll() for IE because we think it's only necessary in that case,
-		// and because it causes problems on FF.  See bug #3531 for details.
-		unload.addOnWindowUnload(function(){
-			registry._destroyAll();
-		});
-	}
-
-	/*=====
-	dijit.registry = {
-		// summary:
-		//		A list of widgets on a page.
-	};
-	=====*/
-	dijit.registry = registry;
-
-	return registry;
-});
-
-},
-'dijit/form/HorizontalSlider':function(){
-require({cache:{
-'url:dijit/form/templates/HorizontalSlider.html':"<table class=\"dijit dijitReset dijitSlider dijitSliderH\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" rules=\"none\" data-dojo-attach-event=\"onkeypress:_onKeyPress,onkeyup:_onKeyUp\"\n\t><tr class=\"dijitReset\"\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t\t><td data-dojo-attach-point=\"topDecoration\" class=\"dijitReset dijitSliderDecoration dijitSliderDecorationT dijitSliderDecorationH\"></td\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t></tr\n\t><tr class=\"dijitReset\"\n\t\t><td class=\"dijitReset dijitSliderButtonContainer dijitSliderButtonContainerH\"\n\t\t\t><div class=\"dijitSliderDecrementIconH\" style=\"display:none\" data-dojo-attach-point=\"decrementButton\"><span class=\"dijitSliderButtonInner\">-</span></div\n\t\t></td\n\t\t><td class=\"dijitReset\"\n\t\t\t><div class=\"dijitSliderBar dijitSliderBumper dijitSliderBumperH dijitSliderLeftBumper\" data-dojo-attach-event=\"press:_onClkDecBumper\"></div\n\t\t></td\n\t\t><td class=\"dijitReset\"\n\t\t\t><input data-dojo-attach-point=\"valueNode\" type=\"hidden\" ${!nameAttrSetting}\n\t\t\t/><div class=\"dijitReset dijitSliderBarContainerH\" role=\"presentation\" data-dojo-attach-point=\"sliderBarContainer\"\n\t\t\t\t><div role=\"presentation\" data-dojo-attach-point=\"progressBar\" class=\"dijitSliderBar dijitSliderBarH dijitSliderProgressBar dijitSliderProgressBarH\" data-dojo-attach-event=\"press:_onBarClick\"\n\t\t\t\t\t><div class=\"dijitSliderMoveable dijitSliderMoveableH\"\n\t\t\t\t\t\t><div data-dojo-attach-point=\"sliderHandle,focusNode\" class=\"dijitSliderImageHandle dijitSliderImageHandleH\" data-dojo-attach-event=\"press:_onHandleClick\" role=\"slider\" valuemin=\"${minimum}\" valuemax=\"${maximum}\"></div\n\t\t\t\t\t></div\n\t\t\t\t></div\n\t\t\t\t><div role=\"presentation\" data-dojo-attach-point=\"remainingBar\" class=\"dijitSliderBar dijitSliderBarH dijitSliderRemainingBar dijitSliderRemainingBarH\" data-dojo-attach-event=\"press:_onBarClick\"></div\n\t\t\t></div\n\t\t></td\n\t\t><td class=\"dijitReset\"\n\t\t\t><div class=\"dijitSliderBar dijitSliderBumper dijitSliderBumperH dijitSliderRightBumper\" data-dojo-attach-event=\"press:_onClkIncBumper\"></div\n\t\t></td\n\t\t><td class=\"dijitReset dijitSliderButtonContainer dijitSliderButtonContainerH\"\n\t\t\t><div class=\"dijitSliderIncrementIconH\" style=\"display:none\" data-dojo-attach-point=\"incrementButton\"><span class=\"dijitSliderButtonInner\">+</span></div\n\t\t></td\n\t></tr\n\t><tr class=\"dijitReset\"\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t\t><td data-dojo-attach-point=\"containerNode,bottomDecoration\" class=\"dijitReset dijitSliderDecoration dijitSliderDecorationB dijitSliderDecorationH\"></td\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t></tr\n></table>\n"}});
-define("dijit/form/HorizontalSlider", [
-	"dojo/_base/array", // array.forEach
-	"dojo/_base/declare", // declare
-	"dojo/dnd/move",
-	"dojo/_base/event", // event.stop
-	"dojo/_base/fx", // fx.animateProperty
-	"dojo/dom-geometry", // domGeometry.position
-	"dojo/dom-style", // domStyle.getComputedStyle
-	"dojo/keys", // keys.DOWN_ARROW keys.END keys.HOME keys.LEFT_ARROW keys.PAGE_DOWN keys.PAGE_UP keys.RIGHT_ARROW keys.UP_ARROW
-	"dojo/_base/lang", // lang.hitch
-	"dojo/_base/sniff", // has("ie") has("mozilla")
-	"dojo/dnd/Moveable", // Moveable
-	"dojo/dnd/Mover", // Mover Mover.prototype.destroy.apply
-	"dojo/query", // query
-	"../registry", // registry.findWidgets
-	"../focus",		// focus.focus()
-	"../typematic",
-	"./Button",
-	"./_FormValueWidget",
-	"../_Container",
-	"dojo/text!./templates/HorizontalSlider.html"
-], function(array, declare, move, event, fx, domGeometry, domStyle, keys, lang, has, Moveable, Mover, query,
-			registry, focus, typematic, Button, _FormValueWidget, _Container, template){
-
-/*=====
-	var Button = dijit.form.Button;
-	var _FormValueWidget = dijit.form._FormValueWidget;
-	var _Container = dijit._Container;
-=====*/
-
-// module:
-//		dijit/form/HorizontalSlider
-// summary:
-//		A form widget that allows one to select a value with a horizontally draggable handle
-
-
-var _SliderMover = declare("dijit.form._SliderMover", Mover, {
-	onMouseMove: function(e){
-		var widget = this.widget;
-		var abspos = widget._abspos;
-		if(!abspos){
-			abspos = widget._abspos = domGeometry.position(widget.sliderBarContainer, true);
-			widget._setPixelValue_ = lang.hitch(widget, "_setPixelValue");
-			widget._isReversed_ = widget._isReversed();
-		}
-		var pixelValue = e[widget._mousePixelCoord] - abspos[widget._startingPixelCoord];
-		widget._setPixelValue_(widget._isReversed_ ? (abspos[widget._pixelCount]-pixelValue) : pixelValue, abspos[widget._pixelCount], false);
-	},
-
-	destroy: function(e){
-		Mover.prototype.destroy.apply(this, arguments);
-		var widget = this.widget;
-		widget._abspos = null;
-		widget._setValueAttr(widget.value, true);
-	}
-});
-
-var HorizontalSlider = declare("dijit.form.HorizontalSlider", [_FormValueWidget, _Container], {
-	// summary:
-	//		A form widget that allows one to select a value with a horizontally draggable handle
-
-	templateString: template,
-
-	// Overrides FormValueWidget.value to indicate numeric value
-	value: 0,
-
-	// showButtons: [const] Boolean
-	//		Show increment/decrement buttons at the ends of the slider?
-	showButtons: true,
-
-	// minimum:: [const] Integer
-	//		The minimum value the slider can be set to.
-	minimum: 0,
-
-	// maximum: [const] Integer
-	//		The maximum value the slider can be set to.
-	maximum: 100,
-
-	// discreteValues: Integer
-	//		If specified, indicates that the slider handle has only 'discreteValues' possible positions,
-	//		and that after dragging the handle, it will snap to the nearest possible position.
-	//		Thus, the slider has only 'discreteValues' possible values.
-	//
-	//		For example, if minimum=10, maxiumum=30, and discreteValues=3, then the slider handle has
-	//		three possible positions, representing values 10, 20, or 30.
-	//
-	//		If discreteValues is not specified or if it's value is higher than the number of pixels
-	//		in the slider bar, then the slider handle can be moved freely, and the slider's value will be
-	//		computed/reported based on pixel position (in this case it will likely be fractional,
-	//		such as 123.456789).
-	discreteValues: Infinity,
-
-	// pageIncrement: Integer
-	//		If discreteValues is also specified, this indicates the amount of clicks (ie, snap positions)
-	//		that the slider handle is moved via pageup/pagedown keys.
-	//		If discreteValues is not specified, it indicates the number of pixels.
-	pageIncrement: 2,
-
-	// clickSelect: Boolean
-	//		If clicking the slider bar changes the value or not
-	clickSelect: true,
-
-	// slideDuration: Number
-	//		The time in ms to take to animate the slider handle from 0% to 100%,
-	//		when clicking the slider bar to make the handle move.
-	slideDuration: registry.defaultDuration,
-
-	// Map widget attributes to DOMNode attributes.
-	_setIdAttr: "",		// Override _FormWidget which sends id to focusNode
-
-	baseClass: "dijitSlider",
-
-	// Apply CSS classes to up/down arrows and handle per mouse state
-	cssStateNodes: {
-		incrementButton: "dijitSliderIncrementButton",
-		decrementButton: "dijitSliderDecrementButton",
-		focusNode: "dijitSliderThumb"
-	},
-
-	_mousePixelCoord: "pageX",
-	_pixelCount: "w",
-	_startingPixelCoord: "x",
-	_handleOffsetCoord: "left",
-	_progressPixelSize: "width",
-
-	_onKeyUp: function(/*Event*/ e){
-		if(this.disabled || this.readOnly || e.altKey || e.ctrlKey || e.metaKey){ return; }
-		this._setValueAttr(this.value, true);
-	},
-
-	_onKeyPress: function(/*Event*/ e){
-		if(this.disabled || this.readOnly || e.altKey || e.ctrlKey || e.metaKey){ return; }
-		switch(e.charOrCode){
-			case keys.HOME:
-				this._setValueAttr(this.minimum, false);
-				break;
-			case keys.END:
-				this._setValueAttr(this.maximum, false);
-				break;
-			// this._descending === false: if ascending vertical (min on top)
-			// (this._descending || this.isLeftToRight()): if left-to-right horizontal or descending vertical
-			case ((this._descending || this.isLeftToRight()) ? keys.RIGHT_ARROW : keys.LEFT_ARROW):
-			case (this._descending === false ? keys.DOWN_ARROW : keys.UP_ARROW):
-			case (this._descending === false ? keys.PAGE_DOWN : keys.PAGE_UP):
-				this.increment(e);
-				break;
-			case ((this._descending || this.isLeftToRight()) ? keys.LEFT_ARROW : keys.RIGHT_ARROW):
-			case (this._descending === false ? keys.UP_ARROW : keys.DOWN_ARROW):
-			case (this._descending === false ? keys.PAGE_UP : keys.PAGE_DOWN):
-				this.decrement(e);
-				break;
-			default:
-				return;
-		}
-		event.stop(e);
-	},
-
-	_onHandleClick: function(e){
-		if(this.disabled || this.readOnly){ return; }
-		if(!has("ie")){
-			// make sure you get focus when dragging the handle
-			// (but don't do on IE because it causes a flicker on mouse up (due to blur then focus)
-			focus.focus(this.sliderHandle);
-		}
-		event.stop(e);
-	},
-
-	_isReversed: function(){
-		// summary:
-		//		Returns true if direction is from right to left
-		// tags:
-		//		protected extension
-		return !this.isLeftToRight();
-	},
-
-	_onBarClick: function(e){
-		if(this.disabled || this.readOnly || !this.clickSelect){ return; }
-		focus.focus(this.sliderHandle);
-		event.stop(e);
-		var abspos = domGeometry.position(this.sliderBarContainer, true);
-		var pixelValue = e[this._mousePixelCoord] - abspos[this._startingPixelCoord];
-		this._setPixelValue(this._isReversed() ? (abspos[this._pixelCount] - pixelValue) : pixelValue, abspos[this._pixelCount], true);
-		this._movable.onMouseDown(e);
-	},
-
-	_setPixelValue: function(/*Number*/ pixelValue, /*Number*/ maxPixels, /*Boolean?*/ priorityChange){
-		if(this.disabled || this.readOnly){ return; }
-		var count = this.discreteValues;
-		if(count <= 1 || count == Infinity){ count = maxPixels; }
-		count--;
-		var pixelsPerValue = maxPixels / count;
-		var wholeIncrements = Math.round(pixelValue / pixelsPerValue);
-		this._setValueAttr(Math.max(Math.min((this.maximum-this.minimum)*wholeIncrements/count + this.minimum, this.maximum), this.minimum), priorityChange);
-	},
-
-	_setValueAttr: function(/*Number*/ value, /*Boolean?*/ priorityChange){
-		// summary:
-		//		Hook so set('value', value) works.
-		this._set("value", value);
-		this.valueNode.value = value;
-		this.focusNode.setAttribute("aria-valuenow", value);
-		this.inherited(arguments);
-		var percent = (value - this.minimum) / (this.maximum - this.minimum);
-		var progressBar = (this._descending === false) ? this.remainingBar : this.progressBar;
-		var remainingBar = (this._descending === false) ? this.progressBar : this.remainingBar;
-		if(this._inProgressAnim && this._inProgressAnim.status != "stopped"){
-			this._inProgressAnim.stop(true);
-		}
-		if(priorityChange && this.slideDuration > 0 && progressBar.style[this._progressPixelSize]){
-			// animate the slider
-			var _this = this;
-			var props = {};
-			var start = parseFloat(progressBar.style[this._progressPixelSize]);
-			var duration = this.slideDuration * (percent-start/100);
-			if(duration == 0){ return; }
-			if(duration < 0){ duration = 0 - duration; }
-			props[this._progressPixelSize] = { start: start, end: percent*100, units:"%" };
-			this._inProgressAnim = fx.animateProperty({ node: progressBar, duration: duration,
-				onAnimate: function(v){
-					remainingBar.style[_this._progressPixelSize] = (100 - parseFloat(v[_this._progressPixelSize])) + "%";
-				},
-				onEnd: function(){
-					delete _this._inProgressAnim;
-				},
-				properties: props
-			});
-			this._inProgressAnim.play();
-		}else{
-			progressBar.style[this._progressPixelSize] = (percent*100) + "%";
-			remainingBar.style[this._progressPixelSize] = ((1-percent)*100) + "%";
-		}
-	},
-
-	_bumpValue: function(signedChange, /*Boolean?*/ priorityChange){
-		if(this.disabled || this.readOnly){ return; }
-		var s = domStyle.getComputedStyle(this.sliderBarContainer);
-		var c = domGeometry.getContentBox(this.sliderBarContainer, s);
-		var count = this.discreteValues;
-		if(count <= 1 || count == Infinity){ count = c[this._pixelCount]; }
-		count--;
-		var value = (this.value - this.minimum) * count / (this.maximum - this.minimum) + signedChange;
-		if(value < 0){ value = 0; }
-		if(value > count){ value = count; }
-		value = value * (this.maximum - this.minimum) / count + this.minimum;
-		this._setValueAttr(value, priorityChange);
-	},
-
-	_onClkBumper: function(val){
-		if(this.disabled || this.readOnly || !this.clickSelect){ return; }
-		this._setValueAttr(val, true);
-	},
-
-	_onClkIncBumper: function(){
-		this._onClkBumper(this._descending === false ? this.minimum : this.maximum);
-	},
-
-	_onClkDecBumper: function(){
-		this._onClkBumper(this._descending === false ? this.maximum : this.minimum);
-	},
-
-	decrement: function(/*Event*/ e){
-		// summary:
-		//		Decrement slider
-		// tags:
-		//		private
-		this._bumpValue(e.charOrCode == keys.PAGE_DOWN ? -this.pageIncrement : -1);
-	},
-
-	increment: function(/*Event*/ e){
-		// summary:
-		//		Increment slider
-		// tags:
-		//		private
-		this._bumpValue(e.charOrCode == keys.PAGE_UP ? this.pageIncrement : 1);
-	},
-
-	_mouseWheeled: function(/*Event*/ evt){
-		// summary:
-		//		Event handler for mousewheel where supported
-		event.stop(evt);
-		var janky = !has("mozilla");
-		var scroll = evt[(janky ? "wheelDelta" : "detail")] * (janky ? 1 : -1);
-		this._bumpValue(scroll < 0 ? -1 : 1, true); // negative scroll acts like a decrement
-	},
-
-	startup: function(){
-		if(this._started){ return; }
-
-		array.forEach(this.getChildren(), function(child){
-			if(this[child.container] != this.containerNode){
-				this[child.container].appendChild(child.domNode);
-			}
-		}, this);
-
-		this.inherited(arguments);
-	},
-
-	_typematicCallback: function(/*Number*/ count, /*Object*/ button, /*Event*/ e){
-		if(count == -1){
-			this._setValueAttr(this.value, true);
-		}else{
-			this[(button == (this._descending? this.incrementButton : this.decrementButton)) ? "decrement" : "increment"](e);
-		}
-	},
-
-	buildRendering: function(){
-		this.inherited(arguments);
-		if(this.showButtons){
-			this.incrementButton.style.display="";
-			this.decrementButton.style.display="";
-		}
-
-		// find any associated label element and add to slider focusnode.
-		var label = query('label[for="'+this.id+'"]');
-		if(label.length){
-			label[0].id = (this.id+"_label");
-			this.focusNode.setAttribute("aria-labelledby", label[0].id);
-		}
-
-		this.focusNode.setAttribute("aria-valuemin", this.minimum);
-		this.focusNode.setAttribute("aria-valuemax", this.maximum);
-	},
-
-	postCreate: function(){
-		this.inherited(arguments);
-
-		if(this.showButtons){
-			this._connects.push(typematic.addMouseListener(
-				this.decrementButton, this, "_typematicCallback", 25, 500));
-			this._connects.push(typematic.addMouseListener(
-				this.incrementButton, this, "_typematicCallback", 25, 500));
-		}
-		this.connect(this.domNode, !has("mozilla") ? "onmousewheel" : "DOMMouseScroll", "_mouseWheeled");
-
-		// define a custom constructor for a SliderMover that points back to me
-		var mover = declare(_SliderMover, {
-			widget: this
-		});
-		this._movable = new Moveable(this.sliderHandle, {mover: mover});
-
-		this._layoutHackIE7();
-	},
-
-	destroy: function(){
-		this._movable.destroy();
-		if(this._inProgressAnim && this._inProgressAnim.status != "stopped"){
-			this._inProgressAnim.stop(true);
-		}
-		this._supportingWidgets = registry.findWidgets(this.domNode); // tells destroy about pseudo-child widgets (ruler/labels)
-		this.inherited(arguments);
-	}
-});
-
-HorizontalSlider._Mover = _SliderMover;	// for monkey patching
-
-return HorizontalSlider;
-});
-
-},
-'dojo/dnd/move':function(){
-define("dojo/dnd/move", ["../main", "./Mover", "./Moveable"], function(dojo) {
-	// module:
-	//		dojo/dnd/move
-	// summary:
-	//		TODOC
-
-
-/*=====
-dojo.declare("dojo.dnd.move.__constrainedMoveableArgs", [dojo.dnd.__MoveableArgs], {
-	// constraints: Function
-	//		Calculates a constraint box.
-	//		It is called in a context of the moveable object.
-	constraints: function(){},
-
-	// within: Boolean
-	//		restrict move within boundaries.
-	within: false
-});
-=====*/
-
-dojo.declare("dojo.dnd.move.constrainedMoveable", dojo.dnd.Moveable, {
-	// object attributes (for markup)
-	constraints: function(){},
-	within: false,
-
-	constructor: function(node, params){
-		// summary:
-		//		an object that makes a node moveable
-		// node: Node
-		//		a node (or node's id) to be moved
-		// params: dojo.dnd.move.__constrainedMoveableArgs?
-		//		an optional object with additional parameters;
-		//		the rest is passed to the base class
-		if(!params){ params = {}; }
-		this.constraints = params.constraints;
-		this.within = params.within;
-	},
-	onFirstMove: function(/* dojo.dnd.Mover */ mover){
-		// summary:
-		//		called during the very first move notification;
-		//		can be used to initialize coordinates, can be overwritten.
-		var c = this.constraintBox = this.constraints.call(this, mover);
-		c.r = c.l + c.w;
-		c.b = c.t + c.h;
-		if(this.within){
-			var mb = dojo._getMarginSize(mover.node);
-			c.r -= mb.w;
-			c.b -= mb.h;
-		}
-	},
-	onMove: function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
-		// summary:
-		//		called during every move notification;
-		//		should actually move the node; can be overwritten.
-		var c = this.constraintBox, s = mover.node.style;
-		this.onMoving(mover, leftTop);
-		leftTop.l = leftTop.l < c.l ? c.l : c.r < leftTop.l ? c.r : leftTop.l;
-		leftTop.t = leftTop.t < c.t ? c.t : c.b < leftTop.t ? c.b : leftTop.t;
-		s.left = leftTop.l + "px";
-		s.top  = leftTop.t + "px";
-		this.onMoved(mover, leftTop);
-	}
-});
-
-/*=====
-dojo.declare("dojo.dnd.move.__boxConstrainedMoveableArgs", [dojo.dnd.move.__constrainedMoveableArgs], {
-	// box: Object
-	//		a constraint box
-	box: {}
-});
-=====*/
-
-dojo.declare("dojo.dnd.move.boxConstrainedMoveable", dojo.dnd.move.constrainedMoveable, {
-	// box:
-	//		object attributes (for markup)
-	box: {},
-
-	constructor: function(node, params){
-		// summary:
-		//		an object, which makes a node moveable
-		// node: Node
-		//		a node (or node's id) to be moved
-		// params: dojo.dnd.move.__boxConstrainedMoveableArgs?
-		//		an optional object with parameters
-		var box = params && params.box;
-		this.constraints = function(){ return box; };
-	}
-});
-
-/*=====
-dojo.declare("dojo.dnd.move.__parentConstrainedMoveableArgs", [dojo.dnd.move.__constrainedMoveableArgs], {
-	// area: String
-	//		A parent's area to restrict the move.
-	//		Can be "margin", "border", "padding", or "content".
-	area: ""
-});
-=====*/
-
-dojo.declare("dojo.dnd.move.parentConstrainedMoveable", dojo.dnd.move.constrainedMoveable, {
-	// area:
-	//		object attributes (for markup)
-	area: "content",
-
-	constructor: function(node, params){
-		// summary:
-		//		an object, which makes a node moveable
-		// node: Node
-		//		a node (or node's id) to be moved
-		// params: dojo.dnd.move.__parentConstrainedMoveableArgs?
-		//		an optional object with parameters
-		var area = params && params.area;
-		this.constraints = function(){
-			var n = this.node.parentNode,
-				s = dojo.getComputedStyle(n),
-				mb = dojo._getMarginBox(n, s);
-			if(area == "margin"){
-				return mb;	// Object
-			}
-			var t = dojo._getMarginExtents(n, s);
-			mb.l += t.l, mb.t += t.t, mb.w -= t.w, mb.h -= t.h;
-			if(area == "border"){
-				return mb;	// Object
-			}
-			t = dojo._getBorderExtents(n, s);
-			mb.l += t.l, mb.t += t.t, mb.w -= t.w, mb.h -= t.h;
-			if(area == "padding"){
-				return mb;	// Object
-			}
-			t = dojo._getPadExtents(n, s);
-			mb.l += t.l, mb.t += t.t, mb.w -= t.w, mb.h -= t.h;
-			return mb;	// Object
-		};
-	}
-});
-
-// patching functions one level up for compatibility
-
-dojo.dnd.constrainedMover = dojo.dnd.move.constrainedMover;
-dojo.dnd.boxConstrainedMover = dojo.dnd.move.boxConstrainedMover;
-dojo.dnd.parentConstrainedMover = dojo.dnd.move.parentConstrainedMover;
-
-return dojo.dnd.move;
-});
-
-},
-'dojo/dnd/Mover':function(){
-define("dojo/dnd/Mover", ["../main", "../Evented", "../touch", "./common", "./autoscroll"], function(dojo, Evented, touch) {
-	// module:
-	//		dojo/dnd/Mover
-	// summary:
-	//		TODOC
-
-
-dojo.declare("dojo.dnd.Mover", [Evented], {
-	constructor: function(node, e, host){
-		// summary:
-		//		an object which makes a node follow the mouse, or touch-drag on touch devices.
-		//		Used as a default mover, and as a base class for custom movers.
-		// node: Node
-		//		a node (or node's id) to be moved
-		// e: Event
-		//		a mouse event, which started the move;
-		//		only pageX and pageY properties are used
-		// host: Object?
-		//		object which implements the functionality of the move,
-		//	 	and defines proper events (onMoveStart and onMoveStop)
-		this.node = dojo.byId(node);
-		this.marginBox = {l: e.pageX, t: e.pageY};
-		this.mouseButton = e.button;
-		var h = (this.host = host), d = node.ownerDocument;
-		this.events = [
-			// At the start of a drag, onFirstMove is called, and then the following two
-			// connects are disconnected
-			dojo.connect(d, touch.move, this, "onFirstMove"),
-
-			// These are called continually during the drag
-			dojo.connect(d, touch.move, this, "onMouseMove"),
-
-			// And these are called at the end of the drag
-			dojo.connect(d, touch.release,   this, "onMouseUp"),
-
-			// cancel text selection and text dragging
-			dojo.connect(d, "ondragstart",   dojo.stopEvent),
-			dojo.connect(d.body, "onselectstart", dojo.stopEvent)
-		];
-		// notify that the move has started
-		if(h && h.onMoveStart){
-			h.onMoveStart(this);
-		}
-	},
-	// mouse event processors
-	onMouseMove: function(e){
-		// summary:
-		//		event processor for onmousemove/ontouchmove
-		// e: Event
-		//		mouse/touch event
-		dojo.dnd.autoScroll(e);
-		var m = this.marginBox;
-		this.host.onMove(this, {l: m.l + e.pageX, t: m.t + e.pageY}, e);
-		dojo.stopEvent(e);
-	},
-	onMouseUp: function(e){
-		if(dojo.isWebKit && dojo.isMac && this.mouseButton == 2 ?
-				e.button == 0 : this.mouseButton == e.button){ // TODO Should condition be met for touch devices, too?
-			this.destroy();
-		}
-		dojo.stopEvent(e);
-	},
-	// utilities
-	onFirstMove: function(e){
-		// summary:
-		//		makes the node absolute; it is meant to be called only once.
-		// 		relative and absolutely positioned nodes are assumed to use pixel units
-		var s = this.node.style, l, t, h = this.host;
-		switch(s.position){
-			case "relative":
-			case "absolute":
-				// assume that left and top values are in pixels already
-				l = Math.round(parseFloat(s.left)) || 0;
-				t = Math.round(parseFloat(s.top)) || 0;
-				break;
-			default:
-				s.position = "absolute";	// enforcing the absolute mode
-				var m = dojo.marginBox(this.node);
-				// event.pageX/pageY (which we used to generate the initial
-				// margin box) includes padding and margin set on the body.
-				// However, setting the node's position to absolute and then
-				// doing dojo.marginBox on it *doesn't* take that additional
-				// space into account - so we need to subtract the combined
-				// padding and margin.  We use getComputedStyle and
-				// _getMarginBox/_getContentBox to avoid the extra lookup of
-				// the computed style.
-				var b = dojo.doc.body;
-				var bs = dojo.getComputedStyle(b);
-				var bm = dojo._getMarginBox(b, bs);
-				var bc = dojo._getContentBox(b, bs);
-				l = m.l - (bc.l - bm.l);
-				t = m.t - (bc.t - bm.t);
-				break;
-		}
-		this.marginBox.l = l - this.marginBox.l;
-		this.marginBox.t = t - this.marginBox.t;
-		if(h && h.onFirstMove){
-			h.onFirstMove(this, e);
-		}
-
-		// Disconnect onmousemove and ontouchmove events that call this function
-		dojo.disconnect(this.events.shift());
-	},
-	destroy: function(){
-		// summary:
-		//		stops the move, deletes all references, so the object can be garbage-collected
-		dojo.forEach(this.events, dojo.disconnect);
-		// undo global settings
-		var h = this.host;
-		if(h && h.onMoveStop){
-			h.onMoveStop(this);
-		}
-		// destroy objects
-		this.events = this.node = this.host = null;
-	}
-});
-
-return dojo.dnd.Mover;
-});
-
-},
-'dojo/touch':function(){
-define("dojo/touch", ["./_base/kernel", "./on", "./has", "./mouse"], function(dojo, on, has, mouse){
-// module:
-//		dojo/touch
-
-/*=====
-	dojo.touch = {
-		// summary:
-		//		This module provides unified touch event handlers by exporting
-		//		press, move, release and cancel which can also run well on desktop.
-		//		Based on http://dvcs.w3.org/hg/webevents/raw-file/tip/touchevents.html
-		//
-		// example:
-		//		1. Used with dojo.connect()
-		//		|	dojo.connect(node, dojo.touch.press, function(e){});
-		//		|	dojo.connect(node, dojo.touch.move, function(e){});
-		//		|	dojo.connect(node, dojo.touch.release, function(e){});
-		//		|	dojo.connect(node, dojo.touch.cancel, function(e){});
-		//
-		//		2. Used with dojo.on
-		//		|	define(["dojo/on", "dojo/touch"], function(on, touch){
-		//		|		on(node, touch.press, function(e){});
-		//		|		on(node, touch.move, function(e){});
-		//		|		on(node, touch.release, function(e){});
-		//		|		on(node, touch.cancel, function(e){});
-		//
-		//		3. Used with dojo.touch.* directly
-		//		|	dojo.touch.press(node, function(e){});
-		//		|	dojo.touch.move(node, function(e){});
-		//		|	dojo.touch.release(node, function(e){});
-		//		|	dojo.touch.cancel(node, function(e){});
-		
-		press: function(node, listener){
-			// summary:
-			//		Register a listener to 'touchstart'|'mousedown' for the given node
-			// node: Dom
-			//		Target node to listen to
-			// listener: Function
-			//		Callback function
-			// returns:
-			//		A handle which will be used to remove the listener by handle.remove()
-		},
-		move: function(node, listener){
-			// summary:
-			//		Register a listener to 'touchmove'|'mousemove' for the given node
-			// node: Dom
-			//		Target node to listen to
-			// listener: Function
-			//		Callback function
-			// returns:
-			//		A handle which will be used to remove the listener by handle.remove()
-		},
-		release: function(node, listener){
-			// summary:
-			//		Register a listener to 'touchend'|'mouseup' for the given node
-			// node: Dom
-			//		Target node to listen to
-			// listener: Function
-			//		Callback function
-			// returns:
-			//		A handle which will be used to remove the listener by handle.remove()
-		},
-		cancel: function(node, listener){
-			// summary:
-			//		Register a listener to 'touchcancel'|'mouseleave' for the given node
-			// node: Dom
-			//		Target node to listen to
-			// listener: Function
-			//		Callback function
-			// returns:
-			//		A handle which will be used to remove the listener by handle.remove()
-		}
-	};
-=====*/
-
-	function _handle(/*String - press | move | release | cancel*/type){
-		return function(node, listener){//called by on(), see dojo.on
-			return on(node, type, listener);
-		};
-	}
-	var touch = has("touch");
-	//device neutral events - dojo.touch.press|move|release|cancel
-	dojo.touch = {
-		press: _handle(touch ? "touchstart": "mousedown"),
-		move: _handle(touch ? "touchmove": "mousemove"),
-		release: _handle(touch ? "touchend": "mouseup"),
-		cancel: touch ? _handle("touchcancel") : mouse.leave
-	};
-	return dojo.touch;
-});
-},
-'dojo/dnd/common':function(){
-define("dojo/dnd/common", ["../main"], function(dojo) {
-	// module:
-	//		dojo/dnd/common
-	// summary:
-	//		TODOC
-
-dojo.getObject("dnd", true, dojo);
-
-dojo.dnd.getCopyKeyState = dojo.isCopyKey;
-
-dojo.dnd._uniqueId = 0;
-dojo.dnd.getUniqueId = function(){
-	// summary:
-	//		returns a unique string for use with any DOM element
-	var id;
-	do{
-		id = dojo._scopeName + "Unique" + (++dojo.dnd._uniqueId);
-	}while(dojo.byId(id));
-	return id;
-};
-
-dojo.dnd._empty = {};
-
-dojo.dnd.isFormElement = function(/*Event*/ e){
-	// summary:
-	//		returns true if user clicked on a form element
-	var t = e.target;
-	if(t.nodeType == 3 /*TEXT_NODE*/){
-		t = t.parentNode;
-	}
-	return " button textarea input select option ".indexOf(" " + t.tagName.toLowerCase() + " ") >= 0;	// Boolean
-};
-
-return dojo.dnd;
-});
-
-},
-'dojo/dnd/autoscroll':function(){
-define("dojo/dnd/autoscroll", ["../main", "../window"], function(dojo) {
-	// module:
-	//		dojo/dnd/autoscroll
-	// summary:
-	//		TODOC
-
-dojo.getObject("dnd", true, dojo);
-
-dojo.dnd.getViewport = dojo.window.getBox;
-
-dojo.dnd.V_TRIGGER_AUTOSCROLL = 32;
-dojo.dnd.H_TRIGGER_AUTOSCROLL = 32;
-
-dojo.dnd.V_AUTOSCROLL_VALUE = 16;
-dojo.dnd.H_AUTOSCROLL_VALUE = 16;
-
-dojo.dnd.autoScroll = function(e){
-	// summary:
-	//		a handler for onmousemove event, which scrolls the window, if
-	//		necesary
-	// e: Event
-	//		onmousemove event
-
-	// FIXME: needs more docs!
-	var v = dojo.window.getBox(), dx = 0, dy = 0;
-	if(e.clientX < dojo.dnd.H_TRIGGER_AUTOSCROLL){
-		dx = -dojo.dnd.H_AUTOSCROLL_VALUE;
-	}else if(e.clientX > v.w - dojo.dnd.H_TRIGGER_AUTOSCROLL){
-		dx = dojo.dnd.H_AUTOSCROLL_VALUE;
-	}
-	if(e.clientY < dojo.dnd.V_TRIGGER_AUTOSCROLL){
-		dy = -dojo.dnd.V_AUTOSCROLL_VALUE;
-	}else if(e.clientY > v.h - dojo.dnd.V_TRIGGER_AUTOSCROLL){
-		dy = dojo.dnd.V_AUTOSCROLL_VALUE;
-	}
-	window.scrollBy(dx, dy);
-};
-
-dojo.dnd._validNodes = {"div": 1, "p": 1, "td": 1};
-dojo.dnd._validOverflow = {"auto": 1, "scroll": 1};
-
-dojo.dnd.autoScrollNodes = function(e){
-	// summary:
-	//		a handler for onmousemove event, which scrolls the first avaialble
-	//		Dom element, it falls back to dojo.dnd.autoScroll()
-	// e: Event
-	//		onmousemove event
-
-	// FIXME: needs more docs!
-
-	var b, t, w, h, rx, ry, dx = 0, dy = 0, oldLeft, oldTop;
-
-	for(var n = e.target; n;){
-		if(n.nodeType == 1 && (n.tagName.toLowerCase() in dojo.dnd._validNodes)){
-			var s = dojo.getComputedStyle(n),
-				overflow = (s.overflow.toLowerCase() in dojo.dnd._validOverflow),
-				overflowX = (s.overflowX.toLowerCase() in dojo.dnd._validOverflow),
-				overflowY = (s.overflowY.toLowerCase() in dojo.dnd._validOverflow);
-			if(overflow || overflowX || overflowY){
-				b = dojo._getContentBox(n, s);
-				t = dojo.position(n, true);
-			}
-			// overflow-x
-			if(overflow || overflowX){
-				w = Math.min(dojo.dnd.H_TRIGGER_AUTOSCROLL, b.w / 2);
-				rx = e.pageX - t.x;
-				if(dojo.isWebKit || dojo.isOpera){
-					// FIXME: this code should not be here, it should be taken into account
-					// either by the event fixing code, or the dojo.position()
-					// FIXME: this code doesn't work on Opera 9.5 Beta
-					rx += dojo.body().scrollLeft;
-				}
-				dx = 0;
-				if(rx > 0 && rx < b.w){
-					if(rx < w){
-						dx = -w;
-					}else if(rx > b.w - w){
-						dx = w;
-					}
-					oldLeft = n.scrollLeft;
-					n.scrollLeft = n.scrollLeft + dx;
-				}
-			}
-			// overflow-y
-			if(overflow || overflowY){
-				//0 && console.log(b.l, b.t, t.x, t.y, n.scrollLeft, n.scrollTop);
-				h = Math.min(dojo.dnd.V_TRIGGER_AUTOSCROLL, b.h / 2);
-				ry = e.pageY - t.y;
-				if(dojo.isWebKit || dojo.isOpera){
-					// FIXME: this code should not be here, it should be taken into account
-					// either by the event fixing code, or the dojo.position()
-					// FIXME: this code doesn't work on Opera 9.5 Beta
-					ry += dojo.body().scrollTop;
-				}
-				dy = 0;
-				if(ry > 0 && ry < b.h){
-					if(ry < h){
-						dy = -h;
-					}else if(ry > b.h - h){
-						dy = h;
-					}
-					oldTop = n.scrollTop;
-					n.scrollTop  = n.scrollTop  + dy;
-				}
-			}
-			if(dx || dy){ return; }
-		}
-		try{
-			n = n.parentNode;
-		}catch(x){
-			n = null;
-		}
-	}
-	dojo.dnd.autoScroll(e);
-};
-
-	return dojo.dnd;
-});
-
-},
-'dojo/dnd/Moveable':function(){
-define("dojo/dnd/Moveable", ["../main", "../Evented", "../touch", "./Mover"], function(dojo, Evented, touch) {
-	// module:
-	//		dojo/dnd/Moveable
-	// summary:
-	//		TODOC
-
-
-/*=====
-dojo.declare("dojo.dnd.__MoveableArgs", [], {
-	// handle: Node||String
-	//		A node (or node's id), which is used as a mouse handle.
-	//		If omitted, the node itself is used as a handle.
-	handle: null,
-
-	// delay: Number
-	//		delay move by this number of pixels
-	delay: 0,
-
-	// skip: Boolean
-	//		skip move of form elements
-	skip: false,
-
-	// mover: Object
-	//		a constructor of custom Mover
-	mover: dojo.dnd.Mover
-});
-=====*/
-
-dojo.declare("dojo.dnd.Moveable", [Evented], {
-	// object attributes (for markup)
-	handle: "",
-	delay: 0,
-	skip: false,
-
-	constructor: function(node, params){
-		// summary:
-		//		an object, which makes a node moveable
-		// node: Node
-		//		a node (or node's id) to be moved
-		// params: dojo.dnd.__MoveableArgs?
-		//		optional parameters
-		this.node = dojo.byId(node);
-		if(!params){ params = {}; }
-		this.handle = params.handle ? dojo.byId(params.handle) : null;
-		if(!this.handle){ this.handle = this.node; }
-		this.delay = params.delay > 0 ? params.delay : 0;
-		this.skip  = params.skip;
-		this.mover = params.mover ? params.mover : dojo.dnd.Mover;
-		this.events = [
-			dojo.connect(this.handle, touch.press, this, "onMouseDown"),
-			// cancel text selection and text dragging
-			dojo.connect(this.handle, "ondragstart",   this, "onSelectStart"),
-			dojo.connect(this.handle, "onselectstart", this, "onSelectStart")
-		];
-	},
-
-	// markup methods
-	markupFactory: function(params, node, ctor){
-		return new ctor(node, params);
-	},
-
-	// methods
-	destroy: function(){
-		// summary:
-		//		stops watching for possible move, deletes all references, so the object can be garbage-collected
-		dojo.forEach(this.events, dojo.disconnect);
-		this.events = this.node = this.handle = null;
-	},
-
-	// mouse event processors
-	onMouseDown: function(e){
-		// summary:
-		//		event processor for onmousedown/ontouchstart, creates a Mover for the node
-		// e: Event
-		//		mouse/touch event
-		if(this.skip && dojo.dnd.isFormElement(e)){ return; }
-		if(this.delay){
-			this.events.push(
-				dojo.connect(this.handle, touch.move, this, "onMouseMove"),
-				dojo.connect(this.handle, touch.release, this, "onMouseUp")
-			);
-			this._lastX = e.pageX;
-			this._lastY = e.pageY;
-		}else{
-			this.onDragDetected(e);
-		}
-		dojo.stopEvent(e);
-	},
-	onMouseMove: function(e){
-		// summary:
-		//		event processor for onmousemove/ontouchmove, used only for delayed drags
-		// e: Event
-		//		mouse/touch event
-		if(Math.abs(e.pageX - this._lastX) > this.delay || Math.abs(e.pageY - this._lastY) > this.delay){
-			this.onMouseUp(e);
-			this.onDragDetected(e);
-		}
-		dojo.stopEvent(e);
-	},
-	onMouseUp: function(e){
-		// summary:
-		//		event processor for onmouseup, used only for delayed drags
-		// e: Event
-		//		mouse event
-		for(var i = 0; i < 2; ++i){
-			dojo.disconnect(this.events.pop());
-		}
-		dojo.stopEvent(e);
-	},
-	onSelectStart: function(e){
-		// summary:
-		//		event processor for onselectevent and ondragevent
-		// e: Event
-		//		mouse event
-		if(!this.skip || !dojo.dnd.isFormElement(e)){
-			dojo.stopEvent(e);
-		}
-	},
-
-	// local events
-	onDragDetected: function(/* Event */ e){
-		// summary:
-		//		called when the drag is detected;
-		//		responsible for creation of the mover
-		new this.mover(this.node, e, this);
-	},
-	onMoveStart: function(/* dojo.dnd.Mover */ mover){
-		// summary:
-		//		called before every move operation
-		dojo.publish("/dnd/move/start", [mover]);
-		dojo.addClass(dojo.body(), "dojoMove");
-		dojo.addClass(this.node, "dojoMoveItem");
-	},
-	onMoveStop: function(/* dojo.dnd.Mover */ mover){
-		// summary:
-		//		called after every move operation
-		dojo.publish("/dnd/move/stop", [mover]);
-		dojo.removeClass(dojo.body(), "dojoMove");
-		dojo.removeClass(this.node, "dojoMoveItem");
-	},
-	onFirstMove: function(/* dojo.dnd.Mover */ mover, /* Event */ e){
-		// summary:
-		//		called during the very first move notification;
-		//		can be used to initialize coordinates, can be overwritten.
-
-		// default implementation does nothing
-	},
-	onMove: function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop, /* Event */ e){
-		// summary:
-		//		called during every move notification;
-		//		should actually move the node; can be overwritten.
-		this.onMoving(mover, leftTop);
-		var s = mover.node.style;
-		s.left = leftTop.l + "px";
-		s.top  = leftTop.t + "px";
-		this.onMoved(mover, leftTop);
-	},
-	onMoving: function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
-		// summary:
-		//		called before every incremental move; can be overwritten.
-
-		// default implementation does nothing
-	},
-	onMoved: function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
-		// summary:
-		//		called after every incremental move; can be overwritten.
-
-		// default implementation does nothing
-	}
-});
-
-return dojo.dnd.Moveable;
-});
-
-},
-'dijit/focus':function(){
-define("dijit/focus", [
-	"dojo/aspect",
-	"dojo/_base/declare", // declare
-	"dojo/dom", // domAttr.get dom.isDescendant
-	"dojo/dom-attr", // domAttr.get dom.isDescendant
-	"dojo/dom-construct", // connect to domConstruct.empty, domConstruct.destroy
-	"dojo/Evented",
-	"dojo/_base/lang", // lang.hitch
-	"dojo/on",
-	"dojo/ready",
-	"dojo/_base/sniff", // has("ie")
-	"dojo/Stateful",
-	"dojo/_base/unload", // unload.addOnWindowUnload
-	"dojo/_base/window", // win.body
-	"dojo/window", // winUtils.get
-	"./a11y",	// a11y.isTabNavigable
-	"./registry",	// registry.byId
-	"."		// to set dijit.focus
-], function(aspect, declare, dom, domAttr, domConstruct, Evented, lang, on, ready, has, Stateful, unload, win, winUtils,
-			a11y, registry, dijit){
-
-	// module:
-	//		dijit/focus
-	// summary:
-	//		Returns a singleton that tracks the currently focused node, and which widgets are currently "active".
-
-/*=====
-	dijit.focus = {
-		// summary:
-		//		Tracks the currently focused node, and which widgets are currently "active".
-		//		Access via require(["dijit/focus"], function(focus){ ... }).
-		//
-		//		A widget is considered active if it or a descendant widget has focus,
-		//		or if a non-focusable node of this widget or a descendant was recently clicked.
-		//
-		//		Call focus.watch("curNode", callback) to track the current focused DOMNode,
-		//		or focus.watch("activeStack", callback) to track the currently focused stack of widgets.
-		//
-		//		Call focus.on("widget-blur", func) or focus.on("widget-focus", ...) to monitor when
-		//		when widgets become active/inactive
-		//
-		//		Finally, focus(node) will focus a node, suppressing errors if the node doesn't exist.
-
-		// curNode: DomNode
-		//		Currently focused item on screen
-		curNode: null,
-
-		// activeStack: dijit._Widget[]
-		//		List of currently active widgets (focused widget and it's ancestors)
-		activeStack: [],
-
-		registerIframe: function(iframe){
-			// summary:
-			//		Registers listeners on the specified iframe so that any click
-			//		or focus event on that iframe (or anything in it) is reported
-			//		as a focus/click event on the <iframe> itself.
-			// description:
-			//		Currently only used by editor.
-			// returns:
-			//		Handle with remove() method to deregister.
-		},
-
-		registerWin: function(targetWindow, effectiveNode){
-			// summary:
-			//		Registers listeners on the specified window (either the main
-			//		window or an iframe's window) to detect when the user has clicked somewhere
-			//		or focused somewhere.
-			// description:
-			//		Users should call registerIframe() instead of this method.
-			// targetWindow: Window?
-			//		If specified this is the window associated with the iframe,
-			//		i.e. iframe.contentWindow.
-			// effectiveNode: DOMNode?
-			//		If specified, report any focus events inside targetWindow as
-			//		an event on effectiveNode, rather than on evt.target.
-			// returns:
-			//		Handle with remove() method to deregister.
-		}
-	};
-=====*/
-
-	var FocusManager = declare([Stateful, Evented], {
-		// curNode: DomNode
-		//		Currently focused item on screen
-		curNode: null,
-
-		// activeStack: dijit._Widget[]
-		//		List of currently active widgets (focused widget and it's ancestors)
-		activeStack: [],
-
-		constructor: function(){
-			// Don't leave curNode/prevNode pointing to bogus elements
-			var check = lang.hitch(this, function(node){
-				if(dom.isDescendant(this.curNode, node)){
-					this.set("curNode", null);
-				}
-				if(dom.isDescendant(this.prevNode, node)){
-					this.set("prevNode", null);
-				}
-			});
-			aspect.before(domConstruct, "empty", check);
-			aspect.before(domConstruct, "destroy", check);
-		},
-
-		registerIframe: function(/*DomNode*/ iframe){
-			// summary:
-			//		Registers listeners on the specified iframe so that any click
-			//		or focus event on that iframe (or anything in it) is reported
-			//		as a focus/click event on the <iframe> itself.
-			// description:
-			//		Currently only used by editor.
-			// returns:
-			//		Handle with remove() method to deregister.
-			return this.registerWin(iframe.contentWindow, iframe);
-		},
-
-		registerWin: function(/*Window?*/targetWindow, /*DomNode?*/ effectiveNode){
-			// summary:
-			//		Registers listeners on the specified window (either the main
-			//		window or an iframe's window) to detect when the user has clicked somewhere
-			//		or focused somewhere.
-			// description:
-			//		Users should call registerIframe() instead of this method.
-			// targetWindow:
-			//		If specified this is the window associated with the iframe,
-			//		i.e. iframe.contentWindow.
-			// effectiveNode:
-			//		If specified, report any focus events inside targetWindow as
-			//		an event on effectiveNode, rather than on evt.target.
-			// returns:
-			//		Handle with remove() method to deregister.
-
-			// TODO: make this function private in 2.0; Editor/users should call registerIframe(),
-
-			var _this = this;
-			var mousedownListener = function(evt){
-				_this._justMouseDowned = true;
-				setTimeout(function(){ _this._justMouseDowned = false; }, 0);
-
-				// workaround weird IE bug where the click is on an orphaned node
-				// (first time clicking a Select/DropDownButton inside a TooltipDialog)
-				if(has("ie") && evt && evt.srcElement && evt.srcElement.parentNode == null){
-					return;
-				}
-
-				_this._onTouchNode(effectiveNode || evt.target || evt.srcElement, "mouse");
-			};
-
-			// Listen for blur and focus events on targetWindow's document.
-			// IIRC, I'm using attachEvent() rather than dojo.connect() because focus/blur events don't bubble
-			// through dojo.connect(), and also maybe to catch the focus events early, before onfocus handlers
-			// fire.
-			// Connect to <html> (rather than document) on IE to avoid memory leaks, but document on other browsers because
-			// (at least for FF) the focus event doesn't fire on <html> or <body>.
-			var doc = has("ie") ? targetWindow.document.documentElement : targetWindow.document;
-			if(doc){
-				if(has("ie")){
-					targetWindow.document.body.attachEvent('onmousedown', mousedownListener);
-					var activateListener = function(evt){
-						// IE reports that nodes like <body> have gotten focus, even though they have tabIndex=-1,
-						// ignore those events
-						var tag = evt.srcElement.tagName.toLowerCase();
-						if(tag == "#document" || tag == "body"){ return; }
-
-						// Previous code called _onTouchNode() for any activate event on a non-focusable node.   Can
-						// probably just ignore such an event as it will be handled by onmousedown handler above, but
-						// leaving the code for now.
-						if(a11y.isTabNavigable(evt.srcElement)){
-							_this._onFocusNode(effectiveNode || evt.srcElement);
-						}else{
-							_this._onTouchNode(effectiveNode || evt.srcElement);
-						}
-					};
-					doc.attachEvent('onactivate', activateListener);
-					var deactivateListener =  function(evt){
-						_this._onBlurNode(effectiveNode || evt.srcElement);
-					};
-					doc.attachEvent('ondeactivate', deactivateListener);
-
-					return {
-						remove: function(){
-							targetWindow.document.detachEvent('onmousedown', mousedownListener);
-							doc.detachEvent('onactivate', activateListener);
-							doc.detachEvent('ondeactivate', deactivateListener);
-							doc = null;	// prevent memory leak (apparent circular reference via closure)
-						}
-					};
-				}else{
-					doc.body.addEventListener('mousedown', mousedownListener, true);
-					doc.body.addEventListener('touchstart', mousedownListener, true);
-					var focusListener = function(evt){
-						_this._onFocusNode(effectiveNode || evt.target);
-					};
-					doc.addEventListener('focus', focusListener, true);
-					var blurListener = function(evt){
-						_this._onBlurNode(effectiveNode || evt.target);
-					};
-					doc.addEventListener('blur', blurListener, true);
-
-					return {
-						remove: function(){
-							doc.body.removeEventListener('mousedown', mousedownListener, true);
-							doc.body.removeEventListener('touchstart', mousedownListener, true);
-							doc.removeEventListener('focus', focusListener, true);
-							doc.removeEventListener('blur', blurListener, true);
-							doc = null;	// prevent memory leak (apparent circular reference via closure)
-						}
-					};
-				}
-			}
-		},
-
-		_onBlurNode: function(/*DomNode*/ /*===== node =====*/){
-			// summary:
-			// 		Called when focus leaves a node.
-			//		Usually ignored, _unless_ it *isn't* followed by touching another node,
-			//		which indicates that we tabbed off the last field on the page,
-			//		in which case every widget is marked inactive
-			this.set("prevNode", this.curNode);
-			this.set("curNode", null);
-
-			if(this._justMouseDowned){
-				// the mouse down caused a new widget to be marked as active; this blur event
-				// is coming late, so ignore it.
-				return;
-			}
-
-			// if the blur event isn't followed by a focus event then mark all widgets as inactive.
-			if(this._clearActiveWidgetsTimer){
-				clearTimeout(this._clearActiveWidgetsTimer);
-			}
-			this._clearActiveWidgetsTimer = setTimeout(lang.hitch(this, function(){
-				delete this._clearActiveWidgetsTimer;
-				this._setStack([]);
-				this.prevNode = null;
-			}), 100);
-		},
-
-		_onTouchNode: function(/*DomNode*/ node, /*String*/ by){
-			// summary:
-			//		Callback when node is focused or mouse-downed
-			// node:
-			//		The node that was touched.
-			// by:
-			//		"mouse" if the focus/touch was caused by a mouse down event
-
-			// ignore the recent blurNode event
-			if(this._clearActiveWidgetsTimer){
-				clearTimeout(this._clearActiveWidgetsTimer);
-				delete this._clearActiveWidgetsTimer;
-			}
-
-			// compute stack of active widgets (ex: ComboButton --> Menu --> MenuItem)
-			var newStack=[];
-			try{
-				while(node){
-					var popupParent = domAttr.get(node, "dijitPopupParent");
-					if(popupParent){
-						node=registry.byId(popupParent).domNode;
-					}else if(node.tagName && node.tagName.toLowerCase() == "body"){
-						// is this the root of the document or just the root of an iframe?
-						if(node === win.body()){
-							// node is the root of the main document
-							break;
-						}
-						// otherwise, find the iframe this node refers to (can't access it via parentNode,
-						// need to do this trick instead). window.frameElement is supported in IE/FF/Webkit
-						node=winUtils.get(node.ownerDocument).frameElement;
-					}else{
-						// if this node is the root node of a widget, then add widget id to stack,
-						// except ignore clicks on disabled widgets (actually focusing a disabled widget still works,
-						// to support MenuItem)
-						var id = node.getAttribute && node.getAttribute("widgetId"),
-							widget = id && registry.byId(id);
-						if(widget && !(by == "mouse" && widget.get("disabled"))){
-							newStack.unshift(id);
-						}
-						node=node.parentNode;
-					}
-				}
-			}catch(e){ /* squelch */ }
-
-			this._setStack(newStack, by);
-		},
-
-		_onFocusNode: function(/*DomNode*/ node){
-			// summary:
-			//		Callback when node is focused
-
-			if(!node){
-				return;
-			}
-
-			if(node.nodeType == 9){
-				// Ignore focus events on the document itself.  This is here so that
-				// (for example) clicking the up/down arrows of a spinner
-				// (which don't get focus) won't cause that widget to blur. (FF issue)
-				return;
-			}
-
-			this._onTouchNode(node);
-
-			if(node == this.curNode){ return; }
-			this.set("curNode", node);
-		},
-
-		_setStack: function(/*String[]*/ newStack, /*String*/ by){
-			// summary:
-			//		The stack of active widgets has changed.  Send out appropriate events and records new stack.
-			// newStack:
-			//		array of widget id's, starting from the top (outermost) widget
-			// by:
-			//		"mouse" if the focus/touch was caused by a mouse down event
-
-			var oldStack = this.activeStack;
-			this.set("activeStack", newStack);
-
-			// compare old stack to new stack to see how many elements they have in common
-			for(var nCommon=0; nCommon<Math.min(oldStack.length, newStack.length); nCommon++){
-				if(oldStack[nCommon] != newStack[nCommon]){
-					break;
-				}
-			}
-
-			var widget;
-			// for all elements that have gone out of focus, set focused=false
-			for(var i=oldStack.length-1; i>=nCommon; i--){
-				widget = registry.byId(oldStack[i]);
-				if(widget){
-					widget._hasBeenBlurred = true;		// TODO: used by form widgets, should be moved there
-					widget.set("focused", false);
-					if(widget._focusManager == this){
-						widget._onBlur(by);
-					}
-					this.emit("widget-blur", widget, by);
-				}
-			}
-
-			// for all element that have come into focus, set focused=true
-			for(i=nCommon; i<newStack.length; i++){
-				widget = registry.byId(newStack[i]);
-				if(widget){
-					widget.set("focused", true);
-					if(widget._focusManager == this){
-						widget._onFocus(by);
-					}
-					this.emit("widget-focus", widget, by);
-				}
-			}
-		},
-
-		focus: function(node){
-			// summary:
-			//		Focus the specified node, suppressing errors if they occur
-			if(node){
-				try{ node.focus(); }catch(e){/*quiet*/}
-			}
-		}
-	});
-
-	var singleton = new FocusManager();
-
-	// register top window and all the iframes it contains
-	ready(function(){
-		var handle = singleton.registerWin(win.doc.parentWindow || win.doc.defaultView);
-		if(has("ie")){
-			unload.addOnWindowUnload(function(){
-				handle.remove();
-				handle = null;
-			})
-		}
-	});
-
-	// Setup dijit.focus as a pointer to the singleton but also (for backwards compatibility)
-	// as a function to set focus.
-	dijit.focus = function(node){
-		singleton.focus(node);	// indirection here allows dijit/_base/focus.js to override behavior
-	};
-	for(var attr in singleton){
-		if(!/^_/.test(attr)){
-			dijit.focus[attr] = typeof singleton[attr] == "function" ? lang.hitch(singleton, attr) : singleton[attr];
-		}
-	}
-	singleton.watch(function(attr, oldVal, newVal){
-		dijit.focus[attr] = newVal;
-	});
-
-	return singleton;
-});
-
-},
-'dojo/Stateful':function(){
-define("dojo/Stateful", ["./_base/kernel", "./_base/declare", "./_base/lang", "./_base/array"], function(dojo, declare, lang, array) {
-	// module:
-	//		dojo/Stateful
-	// summary:
-	//		TODOC
-
-return dojo.declare("dojo.Stateful", null, {
-	// summary:
-	//		Base class for objects that provide named properties with optional getter/setter
-	//		control and the ability to watch for property changes
-	// example:
-	//	|	var obj = new dojo.Stateful();
-	//	|	obj.watch("foo", function(){
-	//	|		0 && console.log("foo changed to " + this.get("foo"));
-	//	|	});
-	//	|	obj.set("foo","bar");
-	postscript: function(mixin){
-		if(mixin){
-			lang.mixin(this, mixin);
-		}
-	},
-
-	get: function(/*String*/name){
-		// summary:
-		//		Get a property on a Stateful instance.
-		//	name:
-		//		The property to get.
-		//	returns:
-		//		The property value on this Stateful instance.
-		// description:
-		//		Get a named property on a Stateful object. The property may
-		//		potentially be retrieved via a getter method in subclasses. In the base class
-		// 		this just retrieves the object's property.
-		// 		For example:
-		//	|	stateful = new dojo.Stateful({foo: 3});
-		//	|	stateful.get("foo") // returns 3
-		//	|	stateful.foo // returns 3
-
-		return this[name]; //Any
-	},
-	set: function(/*String*/name, /*Object*/value){
-		// summary:
-		//		Set a property on a Stateful instance
-		//	name:
-		//		The property to set.
-		//	value:
-		//		The value to set in the property.
-		//	returns:
-		//		The function returns this dojo.Stateful instance.
-		// description:
-		//		Sets named properties on a stateful object and notifies any watchers of
-		// 		the property. A programmatic setter may be defined in subclasses.
-		// 		For example:
-		//	|	stateful = new dojo.Stateful();
-		//	|	stateful.watch(function(name, oldValue, value){
-		//	|		// this will be called on the set below
-		//	|	}
-		//	|	stateful.set(foo, 5);
-		//
-		//	set() may also be called with a hash of name/value pairs, ex:
-		//	|	myObj.set({
-		//	|		foo: "Howdy",
-		//	|		bar: 3
-		//	|	})
-		//	This is equivalent to calling set(foo, "Howdy") and set(bar, 3)
-		if(typeof name === "object"){
-			for(var x in name){
-				this.set(x, name[x]);
-			}
-			return this;
-		}
-		var oldValue = this[name];
-		this[name] = value;
-		if(this._watchCallbacks){
-			this._watchCallbacks(name, oldValue, value);
-		}
-		return this; //dojo.Stateful
-	},
-	watch: function(/*String?*/name, /*Function*/callback){
-		// summary:
-		//		Watches a property for changes
-		//	name:
-		//		Indicates the property to watch. This is optional (the callback may be the
-		// 		only parameter), and if omitted, all the properties will be watched
-		// returns:
-		//		An object handle for the watch. The unwatch method of this object
-		// 		can be used to discontinue watching this property:
-		//		|	var watchHandle = obj.watch("foo", callback);
-		//		|	watchHandle.unwatch(); // callback won't be called now
-		//	callback:
-		//		The function to execute when the property changes. This will be called after
-		//		the property has been changed. The callback will be called with the |this|
-		//		set to the instance, the first argument as the name of the property, the
-		// 		second argument as the old value and the third argument as the new value.
-
-		var callbacks = this._watchCallbacks;
-		if(!callbacks){
-			var self = this;
-			callbacks = this._watchCallbacks = function(name, oldValue, value, ignoreCatchall){
-				var notify = function(propertyCallbacks){
-					if(propertyCallbacks){
-                        propertyCallbacks = propertyCallbacks.slice();
-						for(var i = 0, l = propertyCallbacks.length; i < l; i++){
-							try{
-								propertyCallbacks[i].call(self, name, oldValue, value);
-							}catch(e){
-								console.error(e);
-							}
-						}
-					}
-				};
-				notify(callbacks['_' + name]);
-				if(!ignoreCatchall){
-					notify(callbacks["*"]); // the catch-all
-				}
-			}; // we use a function instead of an object so it will be ignored by JSON conversion
-		}
-		if(!callback && typeof name === "function"){
-			callback = name;
-			name = "*";
-		}else{
-			// prepend with dash to prevent name conflicts with function (like "name" property)
-			name = '_' + name;
-		}
-		var propertyCallbacks = callbacks[name];
-		if(typeof propertyCallbacks !== "object"){
-			propertyCallbacks = callbacks[name] = [];
-		}
-		propertyCallbacks.push(callback);
-		return {
-			unwatch: function(){
-				propertyCallbacks.splice(array.indexOf(propertyCallbacks, callback), 1);
-			}
-		}; //Object
-	}
-
-});
-
-});
-
-},
-'dijit/a11y':function(){
-define("dijit/a11y", [
-	"dojo/_base/array", // array.forEach array.map
-	"dojo/_base/config", // defaultDuration
-	"dojo/_base/declare", // declare
-	"dojo/dom",			// dom.byId
-	"dojo/dom-attr", // domAttr.attr domAttr.has
-	"dojo/dom-style", // style.style
-	"dojo/_base/sniff", // has("ie")
-	"./_base/manager",	// manager._isElementShown
-	"."	// for exporting methods to dijit namespace
-], function(array, config, declare, dom, domAttr, domStyle, has, manager, dijit){
-
-	// module:
-	//		dijit/a11y
-	// summary:
-	//		Accessibility utility functions (keyboard, tab stops, etc.)
-
-	var shown = (dijit._isElementShown = function(/*Element*/ elem){
-		var s = domStyle.get(elem);
-		return (s.visibility != "hidden")
-			&& (s.visibility != "collapsed")
-			&& (s.display != "none")
-			&& (domAttr.get(elem, "type") != "hidden");
-	});
-
-	dijit.hasDefaultTabStop = function(/*Element*/ elem){
-		// summary:
-		//		Tests if element is tab-navigable even without an explicit tabIndex setting
-
-		// No explicit tabIndex setting, need to investigate node type
-		switch(elem.nodeName.toLowerCase()){
-			case "a":
-				// An <a> w/out a tabindex is only navigable if it has an href
-				return domAttr.has(elem, "href");
-			case "area":
-			case "button":
-			case "input":
-			case "object":
-			case "select":
-			case "textarea":
-				// These are navigable by default
-				return true;
-			case "iframe":
-				// If it's an editor <iframe> then it's tab navigable.
-				var body;
-				try{
-					// non-IE
-					var contentDocument = elem.contentDocument;
-					if("designMode" in contentDocument && contentDocument.designMode == "on"){
-						return true;
-					}
-					body = contentDocument.body;
-				}catch(e1){
-					// contentWindow.document isn't accessible within IE7/8
-					// if the iframe.src points to a foreign url and this
-					// page contains an element, that could get focus
-					try{
-						body = elem.contentWindow.document.body;
-					}catch(e2){
-						return false;
-					}
-				}
-				return body && (body.contentEditable == 'true' ||
-					(body.firstChild && body.firstChild.contentEditable == 'true'));
-			default:
-				return elem.contentEditable == 'true';
-		}
-	};
-
-	var isTabNavigable = (dijit.isTabNavigable = function(/*Element*/ elem){
-		// summary:
-		//		Tests if an element is tab-navigable
-
-		// TODO: convert (and rename method) to return effective tabIndex; will save time in _getTabNavigable()
-		if(domAttr.get(elem, "disabled")){
-			return false;
-		}else if(domAttr.has(elem, "tabIndex")){
-			// Explicit tab index setting
-			return domAttr.get(elem, "tabIndex") >= 0; // boolean
-		}else{
-			// No explicit tabIndex setting, so depends on node type
-			return dijit.hasDefaultTabStop(elem);
-		}
-	});
-
-	dijit._getTabNavigable = function(/*DOMNode*/ root){
-		// summary:
-		//		Finds descendants of the specified root node.
-		//
-		// description:
-		//		Finds the following descendants of the specified root node:
-		//		* the first tab-navigable element in document order
-		//		  without a tabIndex or with tabIndex="0"
-		//		* the last tab-navigable element in document order
-		//		  without a tabIndex or with tabIndex="0"
-		//		* the first element in document order with the lowest
-		//		  positive tabIndex value
-		//		* the last element in document order with the highest
-		//		  positive tabIndex value
-		var first, last, lowest, lowestTabindex, highest, highestTabindex, radioSelected = {};
-
-		function radioName(node){
-			// If this element is part of a radio button group, return the name for that group.
-			return node && node.tagName.toLowerCase() == "input" &&
-				node.type && node.type.toLowerCase() == "radio" &&
-				node.name && node.name.toLowerCase();
-		}
-
-		var walkTree = function(/*DOMNode*/parent){
-			for(var child = parent.firstChild; child; child = child.nextSibling){
-				// Skip text elements, hidden elements, and also non-HTML elements (those in custom namespaces) in IE,
-				// since show() invokes getAttribute("type"), which crash on VML nodes in IE.
-				if(child.nodeType != 1 || (has("ie") && child.scopeName !== "HTML") || !shown(child)){
-					continue;
-				}
-
-				if(isTabNavigable(child)){
-					var tabindex = domAttr.get(child, "tabIndex");
-					if(!domAttr.has(child, "tabIndex") || tabindex == 0){
-						if(!first){
-							first = child;
-						}
-						last = child;
-					}else if(tabindex > 0){
-						if(!lowest || tabindex < lowestTabindex){
-							lowestTabindex = tabindex;
-							lowest = child;
-						}
-						if(!highest || tabindex >= highestTabindex){
-							highestTabindex = tabindex;
-							highest = child;
-						}
-					}
-					var rn = radioName(child);
-					if(domAttr.get(child, "checked") && rn){
-						radioSelected[rn] = child;
-					}
-				}
-				if(child.nodeName.toUpperCase() != 'SELECT'){
-					walkTree(child);
-				}
-			}
-		};
-		if(shown(root)){
-			walkTree(root);
-		}
-		function rs(node){
-			// substitute checked radio button for unchecked one, if there is a checked one with the same name.
-			return radioSelected[radioName(node)] || node;
-		}
-
-		return { first: rs(first), last: rs(last), lowest: rs(lowest), highest: rs(highest) };
-	};
-	dijit.getFirstInTabbingOrder = function(/*String|DOMNode*/ root){
-		// summary:
-		//		Finds the descendant of the specified root node
-		//		that is first in the tabbing order
-		var elems = dijit._getTabNavigable(dom.byId(root));
-		return elems.lowest ? elems.lowest : elems.first; // DomNode
-	};
-
-	dijit.getLastInTabbingOrder = function(/*String|DOMNode*/ root){
-		// summary:
-		//		Finds the descendant of the specified root node
-		//		that is last in the tabbing order
-		var elems = dijit._getTabNavigable(dom.byId(root));
-		return elems.last ? elems.last : elems.highest; // DomNode
-	};
-
-	return {
-		hasDefaultTabStop: dijit.hasDefaultTabStop,
-		isTabNavigable: dijit.isTabNavigable,
-		_getTabNavigable: dijit._getTabNavigable,
-		getFirstInTabbingOrder: dijit.getFirstInTabbingOrder,
-		getLastInTabbingOrder: dijit.getLastInTabbingOrder
-	};
-});
-
-},
-'dijit/_base/manager':function(){
-define("dijit/_base/manager", [
-	"dojo/_base/array",
-	"dojo/_base/config", // defaultDuration
-	"../registry",
-	".."	// for setting exports to dijit namespace
-], function(array, config, registry, dijit){
-
-	// module:
-	//		dijit/_base/manager
-	// summary:
-	//		Shim to methods on registry, plus a few other declarations.
-	//		New code should access dijit/registry directly when possible.
-
-	/*=====
-	dijit.byId = function(id){
-		// summary:
-		//		Returns a widget by it's id, or if passed a widget, no-op (like dom.byId())
-		// id: String|dijit._Widget
-		return registry.byId(id); // dijit._Widget
-	};
-
-	dijit.getUniqueId = function(widgetType){
-		// summary:
-		//		Generates a unique id for a given widgetType
-		// widgetType: String
-		return registry.getUniqueId(widgetType); // String
-	};
-
-	dijit.findWidgets = function(root){
-		// summary:
-		//		Search subtree under root returning widgets found.
-		//		Doesn't search for nested widgets (ie, widgets inside other widgets).
-		// root: DOMNode
-		return registry.findWidgets(root);
-	};
-
-	dijit._destroyAll = function(){
-		// summary:
-		//		Code to destroy all widgets and do other cleanup on page unload
-
-		return registry._destroyAll();
-	};
-
-	dijit.byNode = function(node){
-		// summary:
-		//		Returns the widget corresponding to the given DOMNode
-		// node: DOMNode
-		return registry.byNode(node); // dijit._Widget
-	};
-
-	dijit.getEnclosingWidget = function(node){
-		// summary:
-		//		Returns the widget whose DOM tree contains the specified DOMNode, or null if
-		//		the node is not contained within the DOM tree of any widget
-		// node: DOMNode
-		return registry.getEnclosingWidget(node);
-	};
-	=====*/
-	array.forEach(["byId", "getUniqueId", "findWidgets", "_destroyAll", "byNode", "getEnclosingWidget"], function(name){
-		dijit[name] = registry[name];
-	});
-
-	/*=====
-	dojo.mixin(dijit, {
-		// defaultDuration: Integer
-		//		The default fx.animation speed (in ms) to use for all Dijit
-		//		transitional fx.animations, unless otherwise specified
-		//		on a per-instance basis. Defaults to 200, overrided by
-		//		`djConfig.defaultDuration`
-		defaultDuration: 200
-	});
-	=====*/
-	dijit.defaultDuration = config["defaultDuration"] || 200;
-
-	return dijit;
-});
-
-},
-'dijit/typematic':function(){
-define("dijit/typematic", [
-	"dojo/_base/array", // array.forEach
-	"dojo/_base/connect", // connect.connect
-	"dojo/_base/event", // event.stop
-	"dojo/_base/kernel", // kernel.deprecated
-	"dojo/_base/lang", // lang.mixin, lang.hitch
-	"dojo/on",
-	"dojo/_base/sniff", // has("ie")
-	"."		// setting dijit.typematic global
-], function(array, connect, event, kernel, lang, on, has, dijit){
-
-// module:
-//		dijit/typematic
-// summary:
-//		These functions are used to repetitively call a user specified callback
-//		method when a specific key or mouse click over a specific DOM node is
-//		held down for a specific amount of time.
-//		Only 1 such event is allowed to occur on the browser page at 1 time.
-
-var typematic = (dijit.typematic = {
-	// summary:
-	//		These functions are used to repetitively call a user specified callback
-	//		method when a specific key or mouse click over a specific DOM node is
-	//		held down for a specific amount of time.
-	//		Only 1 such event is allowed to occur on the browser page at 1 time.
-
-	_fireEventAndReload: function(){
-		this._timer = null;
-		this._callback(++this._count, this._node, this._evt);
-
-		// Schedule next event, timer is at most minDelay (default 10ms) to avoid
-		// browser overload (particularly avoiding starving DOH robot so it never gets to send a mouseup)
-		this._currentTimeout = Math.max(
-			this._currentTimeout < 0 ? this._initialDelay :
-				(this._subsequentDelay > 1 ? this._subsequentDelay : Math.round(this._currentTimeout * this._subsequentDelay)),
-			this._minDelay);
-		this._timer = setTimeout(lang.hitch(this, "_fireEventAndReload"), this._currentTimeout);
-	},
-
-	trigger: function(/*Event*/ evt, /*Object*/ _this, /*DOMNode*/ node, /*Function*/ callback, /*Object*/ obj, /*Number*/ subsequentDelay, /*Number*/ initialDelay, /*Number?*/ minDelay){
-		// summary:
-		//		Start a timed, repeating callback sequence.
-		//		If already started, the function call is ignored.
-		//		This method is not normally called by the user but can be
-		//		when the normal listener code is insufficient.
-		// evt:
-		//		key or mouse event object to pass to the user callback
-		// _this:
-		//		pointer to the user's widget space.
-		// node:
-		//		the DOM node object to pass the the callback function
-		// callback:
-		//		function to call until the sequence is stopped called with 3 parameters:
-		// count:
-		//		integer representing number of repeated calls (0..n) with -1 indicating the iteration has stopped
-		// node:
-		//		the DOM node object passed in
-		// evt:
-		//		key or mouse event object
-		// obj:
-		//		user space object used to uniquely identify each typematic sequence
-		// subsequentDelay (optional):
-		//		if > 1, the number of milliseconds until the 3->n events occur
-		//		or else the fractional time multiplier for the next event's delay, default=0.9
-		// initialDelay (optional):
-		//		the number of milliseconds until the 2nd event occurs, default=500ms
-		// minDelay (optional):
-		//		the maximum delay in milliseconds for event to fire, default=10ms
-		if(obj != this._obj){
-			this.stop();
-			this._initialDelay = initialDelay || 500;
-			this._subsequentDelay = subsequentDelay || 0.90;
-			this._minDelay = minDelay || 10;
-			this._obj = obj;
-			this._evt = evt;
-			this._node = node;
-			this._currentTimeout = -1;
-			this._count = -1;
-			this._callback = lang.hitch(_this, callback);
-			this._fireEventAndReload();
-			this._evt = lang.mixin({faux: true}, evt);
-		}
-	},
-
-	stop: function(){
-		// summary:
-		//		Stop an ongoing timed, repeating callback sequence.
-		if(this._timer){
-			clearTimeout(this._timer);
-			this._timer = null;
-		}
-		if(this._obj){
-			this._callback(-1, this._node, this._evt);
-			this._obj = null;
-		}
-	},
-
-	addKeyListener: function(/*DOMNode*/ node, /*Object*/ keyObject, /*Object*/ _this, /*Function*/ callback, /*Number*/ subsequentDelay, /*Number*/ initialDelay, /*Number?*/ minDelay){
-		// summary:
-		//		Start listening for a specific typematic key.
-		//		See also the trigger method for other parameters.
-		// keyObject:
-		//		an object defining the key to listen for:
-		// 		charOrCode:
-		//			the printable character (string) or keyCode (number) to listen for.
-		// 		keyCode:
-		//			(deprecated - use charOrCode) the keyCode (number) to listen for (implies charCode = 0).
-		// 		charCode:
-		//			(deprecated - use charOrCode) the charCode (number) to listen for.
-		// 		ctrlKey:
-		//			desired ctrl key state to initiate the callback sequence:
-		//			- pressed (true)
-		//			- released (false)
-		//			- either (unspecified)
-		// 		altKey:
-		//			same as ctrlKey but for the alt key
-		// 		shiftKey:
-		//			same as ctrlKey but for the shift key
-		// returns:
-		//		a connection handle
-		if(keyObject.keyCode){
-			keyObject.charOrCode = keyObject.keyCode;
-			kernel.deprecated("keyCode attribute parameter for dijit.typematic.addKeyListener is deprecated. Use charOrCode instead.", "", "2.0");
-		}else if(keyObject.charCode){
-			keyObject.charOrCode = String.fromCharCode(keyObject.charCode);
-			kernel.deprecated("charCode attribute parameter for dijit.typematic.addKeyListener is deprecated. Use charOrCode instead.", "", "2.0");
-		}
-		var handles = [
-			on(node, connect._keypress, lang.hitch(this, function(evt){
-				if(evt.charOrCode == keyObject.charOrCode &&
-				(keyObject.ctrlKey === undefined || keyObject.ctrlKey == evt.ctrlKey) &&
-				(keyObject.altKey === undefined || keyObject.altKey == evt.altKey) &&
-				(keyObject.metaKey === undefined || keyObject.metaKey == (evt.metaKey || false)) && // IE doesn't even set metaKey
-				(keyObject.shiftKey === undefined || keyObject.shiftKey == evt.shiftKey)){
-					event.stop(evt);
-					typematic.trigger(evt, _this, node, callback, keyObject, subsequentDelay, initialDelay, minDelay);
-				}else if(typematic._obj == keyObject){
-					typematic.stop();
-				}
-			})),
-			on(node, "keyup", lang.hitch(this, function(){
-				if(typematic._obj == keyObject){
-					typematic.stop();
-				}
-			}))
-		];
-		return { remove: function(){ array.forEach(handles, function(h){ h.remove(); }); } };
-	},
-
-	addMouseListener: function(/*DOMNode*/ node, /*Object*/ _this, /*Function*/ callback, /*Number*/ subsequentDelay, /*Number*/ initialDelay, /*Number?*/ minDelay){
-		// summary:
-		//		Start listening for a typematic mouse click.
-		//		See the trigger method for other parameters.
-		// returns:
-		//		a connection handle
-		var handles =  [
-			on(node, "mousedown", lang.hitch(this, function(evt){
-				event.stop(evt);
-				typematic.trigger(evt, _this, node, callback, node, subsequentDelay, initialDelay, minDelay);
-			})),
-			on(node, "mouseup", lang.hitch(this, function(evt){
-				if(this._obj){
-					event.stop(evt);
-				}
-				typematic.stop();
-			})),
-			on(node, "mouseout", lang.hitch(this, function(evt){
-				event.stop(evt);
-				typematic.stop();
-			})),
-			on(node, "mousemove", lang.hitch(this, function(evt){
-				evt.preventDefault();
-			})),
-			on(node, "dblclick", lang.hitch(this, function(evt){
-				event.stop(evt);
-				if(has("ie")){
-					typematic.trigger(evt, _this, node, callback, node, subsequentDelay, initialDelay, minDelay);
-					setTimeout(lang.hitch(this, typematic.stop), 50);
-				}
-			}))
-		];
-		return { remove: function(){ array.forEach(handles, function(h){ h.remove(); }); } };
-	},
-
-	addListener: function(/*Node*/ mouseNode, /*Node*/ keyNode, /*Object*/ keyObject, /*Object*/ _this, /*Function*/ callback, /*Number*/ subsequentDelay, /*Number*/ initialDelay, /*Number?*/ minDelay){
-		// summary:
-		//		Start listening for a specific typematic key and mouseclick.
-		//		This is a thin wrapper to addKeyListener and addMouseListener.
-		//		See the addMouseListener and addKeyListener methods for other parameters.
-		// mouseNode:
-		//		the DOM node object to listen on for mouse events.
-		// keyNode:
-		//		the DOM node object to listen on for key events.
-		// returns:
-		//		a connection handle
-		var handles = [
-			this.addKeyListener(keyNode, keyObject, _this, callback, subsequentDelay, initialDelay, minDelay),
-			this.addMouseListener(mouseNode, _this, callback, subsequentDelay, initialDelay, minDelay)
-		];
-		return { remove: function(){ array.forEach(handles, function(h){ h.remove(); }); } };
-	}
-});
-
-return typematic;
-
-});
-
-},
-'dijit/form/Button':function(){
-require({cache:{
-'url:dijit/form/templates/Button.html':"<span class=\"dijit dijitReset dijitInline\" role=\"presentation\"\n\t><span class=\"dijitReset dijitInline dijitButtonNode\"\n\t\tdata-dojo-attach-event=\"ondijitclick:_onClick\" role=\"presentation\"\n\t\t><span class=\"dijitReset dijitStretch dijitButtonContents\"\n\t\t\tdata-dojo-attach-point=\"titleNode,focusNode\"\n\t\t\trole=\"button\" aria-labelledby=\"${id}_label\"\n\t\t\t><span class=\"dijitReset dijitInline dijitIcon\" data-dojo-attach-point=\"iconNode\"></span\n\t\t\t><span class=\"dijitReset dijitToggleButtonIconChar\">&#x25CF;</span\n\t\t\t><span class=\"dijitReset dijitInline dijitButtonText\"\n\t\t\t\tid=\"${id}_label\"\n\t\t\t\tdata-dojo-attach-point=\"containerNode\"\n\t\t\t></span\n\t\t></span\n\t></span\n\t><input ${!nameAttrSetting} type=\"${type}\" value=\"${value}\" class=\"dijitOffScreen\"\n\t\ttabIndex=\"-1\" role=\"presentation\" data-dojo-attach-point=\"valueNode\"\n/></span>\n"}});
-define("dijit/form/Button", [
-	"require",
-	"dojo/_base/declare", // declare
-	"dojo/dom-class", // domClass.toggle
-	"dojo/_base/kernel", // kernel.deprecated
-	"dojo/_base/lang", // lang.trim
-	"dojo/ready",
-	"./_FormWidget",
-	"./_ButtonMixin",
-	"dojo/text!./templates/Button.html"
-], function(require, declare, domClass, kernel, lang, ready, _FormWidget, _ButtonMixin, template){
-
-/*=====
-	var _FormWidget = dijit.form._FormWidget;
-	var _ButtonMixin = dijit.form._ButtonMixin;
-=====*/
-
-// module:
-//		dijit/form/Button
-// summary:
-//		Button widget
-
-// Back compat w/1.6, remove for 2.0
-if(!kernel.isAsync){
-	ready(0, function(){
-		var requires = ["dijit/form/DropDownButton", "dijit/form/ComboButton", "dijit/form/ToggleButton"];
-		require(requires);	// use indirection so modules not rolled into a build
-	});
-}
-
-return declare("dijit.form.Button", [_FormWidget, _ButtonMixin], {
-	// summary:
-	//		Basically the same thing as a normal HTML button, but with special styling.
-	// description:
-	//		Buttons can display a label, an icon, or both.
-	//		A label should always be specified (through innerHTML) or the label
-	//		attribute.  It can be hidden via showLabel=false.
-	// example:
-	// |	<button data-dojo-type="dijit.form.Button" onClick="...">Hello world</button>
-	//
-	// example:
-	// |	var button1 = new dijit.form.Button({label: "hello world", onClick: foo});
-	// |	dojo.body().appendChild(button1.domNode);
-
-	// showLabel: Boolean
-	//		Set this to true to hide the label text and display only the icon.
-	//		(If showLabel=false then iconClass must be specified.)
-	//		Especially useful for toolbars.
-	//		If showLabel=true, the label will become the title (a.k.a. tooltip/hint) of the icon.
-	//
-	//		The exception case is for computers in high-contrast mode, where the label
-	//		will still be displayed, since the icon doesn't appear.
-	showLabel: true,
-
-	// iconClass: String
-	//		Class to apply to DOMNode in button to make it display an icon
-	iconClass: "dijitNoIcon",
-	_setIconClassAttr: { node: "iconNode", type: "class" },
-
-	baseClass: "dijitButton",
-
-	templateString: template,
-
-	// Map widget attributes to DOMNode attributes.
-	_setValueAttr: "valueNode",
-
-	_onClick: function(/*Event*/ e){
-		// summary:
-		//		Internal function to handle click actions
-		var ok = this.inherited(arguments);
-		if(ok){
-			if(this.valueNode){
-				this.valueNode.click();
-				e.preventDefault(); // cancel BUTTON click and continue with hidden INPUT click
-				// leave ok = true so that subclasses can do what they need to do
-			}
-		}
-		return ok;
-	},
-
-	_fillContent: function(/*DomNode*/ source){
-		// Overrides _Templated._fillContent().
-		// If button label is specified as srcNodeRef.innerHTML rather than
-		// this.params.label, handle it here.
-		// TODO: remove the method in 2.0, parser will do it all for me
-		if(source && (!this.params || !("label" in this.params))){
-			var sourceLabel = lang.trim(source.innerHTML);
-			if(sourceLabel){
-				this.label = sourceLabel; // _applyAttributes will be called after buildRendering completes to update the DOM
-			}
-		}
-	},
-
-	_setShowLabelAttr: function(val){
-		if(this.containerNode){
-			domClass.toggle(this.containerNode, "dijitDisplayNone", !val);
-		}
-		this._set("showLabel", val);
-	},
-
-	setLabel: function(/*String*/ content){
-		// summary:
-		//		Deprecated.  Use set('label', ...) instead.
-		kernel.deprecated("dijit.form.Button.setLabel() is deprecated.  Use set('label', ...) instead.", "", "2.0");
-		this.set("label", content);
-	},
-
-	_setLabelAttr: function(/*String*/ content){
-		// summary:
-		//		Hook for set('label', ...) to work.
-		// description:
-		//		Set the label (text) of the button; takes an HTML string.
-		//		If the label is hidden (showLabel=false) then and no title has
-		//		been specified, then label is also set as title attribute of icon.
-		this.inherited(arguments);
-		if(!this.showLabel && !("title" in this.params)){
-			this.titleNode.title = lang.trim(this.containerNode.innerText || this.containerNode.textContent || '');
-		}
-	}
-});
-
-
-});
-
-
-},
-'dijit/form/_FormWidget':function(){
-define("dijit/form/_FormWidget", [
-	"dojo/_base/declare",	// declare
-	"dojo/_base/kernel", // kernel.deprecated
-	"dojo/ready",
-	"../_Widget",
-	"../_CssStateMixin",
-	"../_TemplatedMixin",
-	"./_FormWidgetMixin"
-], function(declare, kernel, ready, _Widget, _CssStateMixin, _TemplatedMixin, _FormWidgetMixin){
-
-/*=====
-var _Widget = dijit._Widget;
-var _TemplatedMixin = dijit._TemplatedMixin;
-var _CssStateMixin = dijit._CssStateMixin;
-var _FormWidgetMixin = dijit.form._FormWidgetMixin;
-=====*/
-
-// module:
-//		dijit/form/_FormWidget
-// summary:
-//		FormWidget
-
-
-// Back compat w/1.6, remove for 2.0
-if(!kernel.isAsync){
-	ready(0, function(){
-		var requires = ["dijit/form/_FormValueWidget"];
-		require(requires);	// use indirection so modules not rolled into a build
-	});
-}
-
-return declare("dijit.form._FormWidget", [_Widget, _TemplatedMixin, _CssStateMixin, _FormWidgetMixin], {
-	// summary:
-	//		Base class for widgets corresponding to native HTML elements such as <checkbox> or <button>,
-	//		which can be children of a <form> node or a `dijit.form.Form` widget.
-	//
-	// description:
-	//		Represents a single HTML element.
-	//		All these widgets should have these attributes just like native HTML input elements.
-	//		You can set them during widget construction or afterwards, via `dijit._Widget.attr`.
-	//
-	//		They also share some common methods.
-
-	setDisabled: function(/*Boolean*/ disabled){
-		// summary:
-		//		Deprecated.  Use set('disabled', ...) instead.
-		kernel.deprecated("setDisabled("+disabled+") is deprecated. Use set('disabled',"+disabled+") instead.", "", "2.0");
-		this.set('disabled', disabled);
-	},
-
-	setValue: function(/*String*/ value){
-		// summary:
-		//		Deprecated.  Use set('value', ...) instead.
-		kernel.deprecated("dijit.form._FormWidget:setValue("+value+") is deprecated.  Use set('value',"+value+") instead.", "", "2.0");
-		this.set('value', value);
-	},
-
-	getValue: function(){
-		// summary:
-		//		Deprecated.  Use get('value') instead.
-		kernel.deprecated(this.declaredClass+"::getValue() is deprecated. Use get('value') instead.", "", "2.0");
-		return this.get('value');
-	},
-
-	postMixInProperties: function(){
-		// Setup name=foo string to be referenced from the template (but only if a name has been specified)
-		// Unfortunately we can't use _setNameAttr to set the name due to IE limitations, see #8484, #8660.
-		// Regarding escaping, see heading "Attribute values" in
-		// http://www.w3.org/TR/REC-html40/appendix/notes.html#h-B.3.2
-		this.nameAttrSetting = this.name ? ('name="' + this.name.replace(/'/g, "&quot;") + '"') : '';
-		this.inherited(arguments);
-	},
-
-	// Override automatic assigning type --> focusNode, it causes exception on IE.
-	// Instead, type must be specified as ${type} in the template, as part of the original DOM
-	_setTypeAttr: null
-});
-
-});
-
-},
-'dijit/_Widget':function(){
-define("dijit/_Widget", [
-	"dojo/aspect",	// aspect.around
-	"dojo/_base/config",	// config.isDebug
-	"dojo/_base/connect",	// connect.connect
-	"dojo/_base/declare", // declare
-	"dojo/_base/kernel", // kernel.deprecated
-	"dojo/_base/lang", // lang.hitch
-	"dojo/query",
-	"dojo/ready",
-	"./registry",	// registry.byNode
-	"./_WidgetBase",
-	"./_OnDijitClickMixin",
-	"./_FocusMixin",
-	"dojo/uacss",		// browser sniffing (included for back-compat; subclasses may be using)
-	"./hccss"		// high contrast mode sniffing (included to set CSS classes on <body>, module ret value unused)
-], function(aspect, config, connect, declare, kernel, lang, query, ready,
-			registry, _WidgetBase, _OnDijitClickMixin, _FocusMixin){
-
-/*=====
-	var _WidgetBase = dijit._WidgetBase;
-	var _OnDijitClickMixin = dijit._OnDijitClickMixin;
-	var _FocusMixin = dijit._FocusMixin;
-=====*/
-
-
-// module:
-//		dijit/_Widget
-// summary:
-//		Old base for widgets.   New widgets should extend _WidgetBase instead
-
-
-function connectToDomNode(){
-	// summary:
-	//		If user connects to a widget method === this function, then they will
-	//		instead actually be connecting the equivalent event on this.domNode
-}
-
-// Trap dojo.connect() calls to connectToDomNode methods, and redirect to _Widget.on()
-function aroundAdvice(originalConnect){
-	return function(obj, event, scope, method){
-		if(obj && typeof event == "string" && obj[event] == connectToDomNode){
-			return obj.on(event.substring(2).toLowerCase(), lang.hitch(scope, method));
-		}
-		return originalConnect.apply(connect, arguments);
-	};
-}
-aspect.around(connect, "connect", aroundAdvice);
-if(kernel.connect){
-	aspect.around(kernel, "connect", aroundAdvice);
-}
-
-var _Widget = declare("dijit._Widget", [_WidgetBase, _OnDijitClickMixin, _FocusMixin], {
-	// summary:
-	//		Base class for all Dijit widgets.
-	//
-	//		Extends _WidgetBase, adding support for:
-	//			- declaratively/programatically specifying widget initialization parameters like
-	//				onMouseMove="foo" that call foo when this.domNode gets a mousemove event
-	//			- ondijitclick
-	//				Support new data-dojo-attach-event="ondijitclick: ..." that is triggered by a mouse click or a SPACE/ENTER keypress
-	//			- focus related functions
-	//				In particular, the onFocus()/onBlur() callbacks.   Driven internally by
-	//				dijit/_base/focus.js.
-	//			- deprecated methods
-	//			- onShow(), onHide(), onClose()
-	//
-	//		Also, by loading code in dijit/_base, turns on:
-	//			- browser sniffing (putting browser id like .dj_ie on <html> node)
-	//			- high contrast mode sniffing (add .dijit_a11y class to <body> if machine is in high contrast mode)
-
-
-	////////////////// DEFERRED CONNECTS ///////////////////
-
-	onClick: connectToDomNode,
-	/*=====
-	onClick: function(event){
-		// summary:
-		//		Connect to this function to receive notifications of mouse click events.
-		// event:
-		//		mouse Event
-		// tags:
-		//		callback
-	},
-	=====*/
-	onDblClick: connectToDomNode,
-	/*=====
-	onDblClick: function(event){
-		// summary:
-		//		Connect to this function to receive notifications of mouse double click events.
-		// event:
-		//		mouse Event
-		// tags:
-		//		callback
-	},
-	=====*/
-	onKeyDown: connectToDomNode,
-	/*=====
-	onKeyDown: function(event){
-		// summary:
-		//		Connect to this function to receive notifications of keys being pressed down.
-		// event:
-		//		key Event
-		// tags:
-		//		callback
-	},
-	=====*/
-	onKeyPress: connectToDomNode,
-	/*=====
-	onKeyPress: function(event){
-		// summary:
-		//		Connect to this function to receive notifications of printable keys being typed.
-		// event:
-		//		key Event
-		// tags:
-		//		callback
-	},
-	=====*/
-	onKeyUp: connectToDomNode,
-	/*=====
-	onKeyUp: function(event){
-		// summary:
-		//		Connect to this function to receive notifications of keys being released.
-		// event:
-		//		key Event
-		// tags:
-		//		callback
-	},
-	=====*/
-	onMouseDown: connectToDomNode,
-	/*=====
-	onMouseDown: function(event){
-		// summary:
-		//		Connect to this function to receive notifications of when the mouse button is pressed down.
-		// event:
-		//		mouse Event
-		// tags:
-		//		callback
-	},
-	=====*/
-	onMouseMove: connectToDomNode,
-	/*=====
-	onMouseMove: function(event){
-		// summary:
-		//		Connect to this function to receive notifications of when the mouse moves over nodes contained within this widget.
-		// event:
-		//		mouse Event
-		// tags:
-		//		callback
-	},
-	=====*/
-	onMouseOut: connectToDomNode,
-	/*=====
-	onMouseOut: function(event){
-		// summary:
-		//		Connect to this function to receive notifications of when the mouse moves off of nodes contained within this widget.
-		// event:
-		//		mouse Event
-		// tags:
-		//		callback
-	},
-	=====*/
-	onMouseOver: connectToDomNode,
-	/*=====
-	onMouseOver: function(event){
-		// summary:
-		//		Connect to this function to receive notifications of when the mouse moves onto nodes contained within this widget.
-		// event:
-		//		mouse Event
-		// tags:
-		//		callback
-	},
-	=====*/
-	onMouseLeave: connectToDomNode,
-	/*=====
-	onMouseLeave: function(event){
-		// summary:
-		//		Connect to this function to receive notifications of when the mouse moves off of this widget.
-		// event:
-		//		mouse Event
-		// tags:
-		//		callback
-	},
-	=====*/
-	onMouseEnter: connectToDomNode,
-	/*=====
-	onMouseEnter: function(event){
-		// summary:
-		//		Connect to this function to receive notifications of when the mouse moves onto this widget.
-		// event:
-		//		mouse Event
-		// tags:
-		//		callback
-	},
-	=====*/
-	onMouseUp: connectToDomNode,
-	/*=====
-	onMouseUp: function(event){
-		// summary:
-		//		Connect to this function to receive notifications of when the mouse button is released.
-		// event:
-		//		mouse Event
-		// tags:
-		//		callback
-	},
-	=====*/
-
-	constructor: function(params){
-		// extract parameters like onMouseMove that should connect directly to this.domNode
-		this._toConnect = {};
-		for(var name in params){
-			if(this[name] === connectToDomNode){
-				this._toConnect[name.replace(/^on/, "").toLowerCase()] = params[name];
-				delete params[name];
-			}
-		}
-	},
-
-	postCreate: function(){
-		this.inherited(arguments);
-
-		// perform connection from this.domNode to user specified handlers (ex: onMouseMove)
-		for(var name in this._toConnect){
-			this.on(name, this._toConnect[name]);
-		}
-		delete this._toConnect;
-	},
-
-	on: function(/*String*/ type, /*Function*/ func){
-		if(this[this._onMap(type)] === connectToDomNode){
-			// Use connect.connect() rather than on() to get handling for "onmouseenter" on non-IE, etc.
-			// Also, need to specify context as "this" rather than the default context of the DOMNode
-			return connect.connect(this.domNode, type.toLowerCase(), this, func);
-		}
-		return this.inherited(arguments);
-	},
-
-	_setFocusedAttr: function(val){
-		// Remove this method in 2.0 (or sooner), just here to set _focused == focused, for back compat
-		// (but since it's a private variable we aren't required to keep supporting it).
-		this._focused = val;
-		this._set("focused", val);
-	},
-
-	////////////////// DEPRECATED METHODS ///////////////////
-
-	setAttribute: function(/*String*/ attr, /*anything*/ value){
-		// summary:
-		//		Deprecated.  Use set() instead.
-		// tags:
-		//		deprecated
-		kernel.deprecated(this.declaredClass+"::setAttribute(attr, value) is deprecated. Use set() instead.", "", "2.0");
-		this.set(attr, value);
-	},
-
-	attr: function(/*String|Object*/name, /*Object?*/value){
-		// summary:
-		//		Set or get properties on a widget instance.
-		//	name:
-		//		The property to get or set. If an object is passed here and not
-		//		a string, its keys are used as names of attributes to be set
-		//		and the value of the object as values to set in the widget.
-		//	value:
-		//		Optional. If provided, attr() operates as a setter. If omitted,
-		//		the current value of the named property is returned.
-		// description:
-		//		This method is deprecated, use get() or set() directly.
-
-		// Print deprecation warning but only once per calling function
-		if(config.isDebug){
-			var alreadyCalledHash = arguments.callee._ach || (arguments.callee._ach = {}),
-				caller = (arguments.callee.caller || "unknown caller").toString();
-			if(!alreadyCalledHash[caller]){
-				kernel.deprecated(this.declaredClass + "::attr() is deprecated. Use get() or set() instead, called from " +
-				caller, "", "2.0");
-				alreadyCalledHash[caller] = true;
-			}
-		}
-
-		var args = arguments.length;
-		if(args >= 2 || typeof name === "object"){ // setter
-			return this.set.apply(this, arguments);
-		}else{ // getter
-			return this.get(name);
-		}
-	},
-
-	getDescendants: function(){
-		// summary:
-		//		Returns all the widgets contained by this, i.e., all widgets underneath this.containerNode.
-		//		This method should generally be avoided as it returns widgets declared in templates, which are
-		//		supposed to be internal/hidden, but it's left here for back-compat reasons.
-
-		kernel.deprecated(this.declaredClass+"::getDescendants() is deprecated. Use getChildren() instead.", "", "2.0");
-		return this.containerNode ? query('[widgetId]', this.containerNode).map(registry.byNode) : []; // dijit._Widget[]
-	},
-
-	////////////////// MISCELLANEOUS METHODS ///////////////////
-
-	_onShow: function(){
-		// summary:
-		//		Internal method called when this widget is made visible.
-		//		See `onShow` for details.
-		this.onShow();
-	},
-
-	onShow: function(){
-		// summary:
-		//		Called when this widget becomes the selected pane in a
-		//		`dijit.layout.TabContainer`, `dijit.layout.StackContainer`,
-		//		`dijit.layout.AccordionContainer`, etc.
-		//
-		//		Also called to indicate display of a `dijit.Dialog`, `dijit.TooltipDialog`, or `dijit.TitlePane`.
-		// tags:
-		//		callback
-	},
-
-	onHide: function(){
-		// summary:
-			//		Called when another widget becomes the selected pane in a
-			//		`dijit.layout.TabContainer`, `dijit.layout.StackContainer`,
-			//		`dijit.layout.AccordionContainer`, etc.
-			//
-			//		Also called to indicate hide of a `dijit.Dialog`, `dijit.TooltipDialog`, or `dijit.TitlePane`.
-			// tags:
-			//		callback
-	},
-
-	onClose: function(){
-		// summary:
-		//		Called when this widget is being displayed as a popup (ex: a Calendar popped
-		//		up from a DateTextBox), and it is hidden.
-		//		This is called from the dijit.popup code, and should not be called directly.
-		//
-		//		Also used as a parameter for children of `dijit.layout.StackContainer` or subclasses.
-		//		Callback if a user tries to close the child.   Child will be closed if this function returns true.
-		// tags:
-		//		extension
-
-		return true;		// Boolean
-	}
-});
-
-// For back-compat, remove in 2.0.
-if(!kernel.isAsync){
-	ready(0, function(){
-		var requires = ["dijit/_base"];
-		require(requires);	// use indirection so modules not rolled into a build
-	});
-}
-return _Widget;
-});
-
-},
-'dijit/_WidgetBase':function(){
-define("dijit/_WidgetBase", [
-	"require",			// require.toUrl
-	"dojo/_base/array", // array.forEach array.map
-	"dojo/aspect",
-	"dojo/_base/config", // config.blankGif
-	"dojo/_base/connect", // connect.connect
-	"dojo/_base/declare", // declare
-	"dojo/dom", // dom.byId
-	"dojo/dom-attr", // domAttr.set domAttr.remove
-	"dojo/dom-class", // domClass.add domClass.replace
-	"dojo/dom-construct", // domConstruct.create domConstruct.destroy domConstruct.place
-	"dojo/dom-geometry",	// isBodyLtr
-	"dojo/dom-style", // domStyle.set, domStyle.get
-	"dojo/_base/kernel",
-	"dojo/_base/lang", // mixin(), isArray(), etc.
-	"dojo/on",
-	"dojo/ready",
-	"dojo/Stateful", // Stateful
-	"dojo/topic",
-	"dojo/_base/window", // win.doc.createTextNode
-	"./registry"	// registry.getUniqueId(), registry.findWidgets()
-], function(require, array, aspect, config, connect, declare,
-			dom, domAttr, domClass, domConstruct, domGeometry, domStyle, kernel,
-			lang, on, ready, Stateful, topic, win, registry){
-
-/*=====
-var Stateful = dojo.Stateful;
-=====*/
-
-// module:
-//		dijit/_WidgetBase
-// summary:
-//		Future base class for all Dijit widgets.
-
-// For back-compat, remove in 2.0.
-if(!kernel.isAsync){
-	ready(0, function(){
-		var requires = ["dijit/_base/manager"];
-		require(requires);	// use indirection so modules not rolled into a build
-	});
-}
-
-// Nested hash listing attributes for each tag, all strings in lowercase.
-// ex: {"div": {"style": true, "tabindex" true}, "form": { ...
-var tagAttrs = {};
-function getAttrs(obj){
-	var ret = {};
-	for(var attr in obj){
-		ret[attr.toLowerCase()] = true;
-	}
-	return ret;
-}
-
-function nonEmptyAttrToDom(attr){
-	// summary:
-	//		Returns a setter function that copies the attribute to this.domNode,
-	//		or removes the attribute from this.domNode, depending on whether the
-	//		value is defined or not.
-	return function(val){
-		domAttr[val ? "set" : "remove"](this.domNode, attr, val);
-		this._set(attr, val);
-	};
-}
-
-return declare("dijit._WidgetBase", Stateful, {
-	// summary:
-	//		Future base class for all Dijit widgets.
-	// description:
-	//		Future base class for all Dijit widgets.
-	//		_Widget extends this class adding support for various features needed by desktop.
-	//
-	//		Provides stubs for widget lifecycle methods for subclasses to extend, like postMixInProperties(), buildRendering(),
-	//		postCreate(), startup(), and destroy(), and also public API methods like set(), get(), and watch().
-	//
-	//		Widgets can provide custom setters/getters for widget attributes, which are called automatically by set(name, value).
-	//		For an attribute XXX, define methods _setXXXAttr() and/or _getXXXAttr().
-	//
-	//		_setXXXAttr can also be a string/hash/array mapping from a widget attribute XXX to the widget's DOMNodes:
-	//
-	//		- DOM node attribute
-	// |		_setFocusAttr: {node: "focusNode", type: "attribute"}
-	// |		_setFocusAttr: "focusNode"	(shorthand)
-	// |		_setFocusAttr: ""		(shorthand, maps to this.domNode)
-	// 		Maps this.focus to this.focusNode.focus, or (last example) this.domNode.focus
-	//
-	//		- DOM node innerHTML
-	//	|		_setTitleAttr: { node: "titleNode", type: "innerHTML" }
-	//		Maps this.title to this.titleNode.innerHTML
-	//
-	//		- DOM node innerText
-	//	|		_setTitleAttr: { node: "titleNode", type: "innerText" }
-	//		Maps this.title to this.titleNode.innerText
-	//
-	//		- DOM node CSS class
-	// |		_setMyClassAttr: { node: "domNode", type: "class" }
-	//		Maps this.myClass to this.domNode.className
-	//
-	//		If the value of _setXXXAttr is an array, then each element in the array matches one of the
-	//		formats of the above list.
-	//
-	//		If the custom setter is null, no action is performed other than saving the new value
-	//		in the widget (in this).
-	//
-	//		If no custom setter is defined for an attribute, then it will be copied
-	//		to this.focusNode (if the widget defines a focusNode), or this.domNode otherwise.
-	//		That's only done though for attributes that match DOMNode attributes (title,
-	//		alt, aria-labelledby, etc.)
-
-	// id: [const] String
-	//		A unique, opaque ID string that can be assigned by users or by the
-	//		system. If the developer passes an ID which is known not to be
-	//		unique, the specified ID is ignored and the system-generated ID is
-	//		used instead.
-	id: "",
-	_setIdAttr: "domNode",	// to copy to this.domNode even for auto-generated id's
-
-	// lang: [const] String
-	//		Rarely used.  Overrides the default Dojo locale used to render this widget,
-	//		as defined by the [HTML LANG](http://www.w3.org/TR/html401/struct/dirlang.html#adef-lang) attribute.
-	//		Value must be among the list of locales specified during by the Dojo bootstrap,
-	//		formatted according to [RFC 3066](http://www.ietf.org/rfc/rfc3066.txt) (like en-us).
-	lang: "",
-	// set on domNode even when there's a focus node.   but don't set lang="", since that's invalid.
-	_setLangAttr: nonEmptyAttrToDom("lang"),
-
-	// dir: [const] String
-	//		Bi-directional support, as defined by the [HTML DIR](http://www.w3.org/TR/html401/struct/dirlang.html#adef-dir)
-	//		attribute. Either left-to-right "ltr" or right-to-left "rtl".  If undefined, widgets renders in page's
-	//		default direction.
-	dir: "",
-	// set on domNode even when there's a focus node.   but don't set dir="", since that's invalid.
-	_setDirAttr: nonEmptyAttrToDom("dir"),	// to set on domNode even when there's a focus node
-
-	// textDir: String
-	//		Bi-directional support,	the main variable which is responsible for the direction of the text.
-	//		The text direction can be different than the GUI direction by using this parameter in creation
-	//		of a widget.
-	// 		Allowed values:
-	//			1. "ltr"
-	//			2. "rtl"
-	//			3. "auto" - contextual the direction of a text defined by first strong letter.
-	//		By default is as the page direction.
-	textDir: "",
-
-	// class: String
-	//		HTML class attribute
-	"class": "",
-	_setClassAttr: { node: "domNode", type: "class" },
-
-	// style: String||Object
-	//		HTML style attributes as cssText string or name/value hash
-	style: "",
-
-	// title: String
-	//		HTML title attribute.
-	//
-	//		For form widgets this specifies a tooltip to display when hovering over
-	//		the widget (just like the native HTML title attribute).
-	//
-	//		For TitlePane or for when this widget is a child of a TabContainer, AccordionContainer,
-	//		etc., it's used to specify the tab label, accordion pane title, etc.
-	title: "",
-
-	// tooltip: String
-	//		When this widget's title attribute is used to for a tab label, accordion pane title, etc.,
-	//		this specifies the tooltip to appear when the mouse is hovered over that text.
-	tooltip: "",
-
-	// baseClass: [protected] String
-	//		Root CSS class of the widget (ex: dijitTextBox), used to construct CSS classes to indicate
-	//		widget state.
-	baseClass: "",
-
-	// srcNodeRef: [readonly] DomNode
-	//		pointer to original DOM node
-	srcNodeRef: null,
-
-	// domNode: [readonly] DomNode
-	//		This is our visible representation of the widget! Other DOM
-	//		Nodes may by assigned to other properties, usually through the
-	//		template system's data-dojo-attach-point syntax, but the domNode
-	//		property is the canonical "top level" node in widget UI.
-	domNode: null,
-
-	// containerNode: [readonly] DomNode
-	//		Designates where children of the source DOM node will be placed.
-	//		"Children" in this case refers to both DOM nodes and widgets.
-	//		For example, for myWidget:
-	//
-	//		|	<div data-dojo-type=myWidget>
-	//		|		<b> here's a plain DOM node
-	//		|		<span data-dojo-type=subWidget>and a widget</span>
-	//		|		<i> and another plain DOM node </i>
-	//		|	</div>
-	//
-	//		containerNode would point to:
-	//
-	//		|		<b> here's a plain DOM node
-	//		|		<span data-dojo-type=subWidget>and a widget</span>
-	//		|		<i> and another plain DOM node </i>
-	//
-	//		In templated widgets, "containerNode" is set via a
-	//		data-dojo-attach-point assignment.
-	//
-	//		containerNode must be defined for any widget that accepts innerHTML
-	//		(like ContentPane or BorderContainer or even Button), and conversely
-	//		is null for widgets that don't, like TextBox.
-	containerNode: null,
-
-/*=====
-	// _started: Boolean
-	//		startup() has completed.
-	_started: false,
-=====*/
-
-	// attributeMap: [protected] Object
-	//		Deprecated.   Instead of attributeMap, widget should have a _setXXXAttr attribute
-	//		for each XXX attribute to be mapped to the DOM.
-	//
-	//		attributeMap sets up a "binding" between attributes (aka properties)
-	//		of the widget and the widget's DOM.
-	//		Changes to widget attributes listed in attributeMap will be
-	//		reflected into the DOM.
-	//
-	//		For example, calling set('title', 'hello')
-	//		on a TitlePane will automatically cause the TitlePane's DOM to update
-	//		with the new title.
-	//
-	//		attributeMap is a hash where the key is an attribute of the widget,
-	//		and the value reflects a binding to a:
-	//
-	//		- DOM node attribute
-	// |		focus: {node: "focusNode", type: "attribute"}
-	// 		Maps this.focus to this.focusNode.focus
-	//
-	//		- DOM node innerHTML
-	//	|		title: { node: "titleNode", type: "innerHTML" }
-	//		Maps this.title to this.titleNode.innerHTML
-	//
-	//		- DOM node innerText
-	//	|		title: { node: "titleNode", type: "innerText" }
-	//		Maps this.title to this.titleNode.innerText
-	//
-	//		- DOM node CSS class
-	// |		myClass: { node: "domNode", type: "class" }
-	//		Maps this.myClass to this.domNode.className
-	//
-	//		If the value is an array, then each element in the array matches one of the
-	//		formats of the above list.
-	//
-	//		There are also some shorthands for backwards compatibility:
-	//		- string --> { node: string, type: "attribute" }, for example:
-	//	|	"focusNode" ---> { node: "focusNode", type: "attribute" }
-	//		- "" --> { node: "domNode", type: "attribute" }
-	attributeMap: {},
-
-	// _blankGif: [protected] String
-	//		Path to a blank 1x1 image.
-	//		Used by <img> nodes in templates that really get their image via CSS background-image.
-	_blankGif: config.blankGif || require.toUrl("dojo/resources/blank.gif"),
-
-	//////////// INITIALIZATION METHODS ///////////////////////////////////////
-
-	postscript: function(/*Object?*/params, /*DomNode|String*/srcNodeRef){
-		// summary:
-		//		Kicks off widget instantiation.  See create() for details.
-		// tags:
-		//		private
-		this.create(params, srcNodeRef);
-	},
-
-	create: function(/*Object?*/params, /*DomNode|String?*/srcNodeRef){
-		// summary:
-		//		Kick off the life-cycle of a widget
-		// params:
-		//		Hash of initialization parameters for widget, including
-		//		scalar values (like title, duration etc.) and functions,
-		//		typically callbacks like onClick.
-		// srcNodeRef:
-		//		If a srcNodeRef (DOM node) is specified:
-		//			- use srcNodeRef.innerHTML as my contents
-		//			- if this is a behavioral widget then apply behavior
-		//			  to that srcNodeRef
-		//			- otherwise, replace srcNodeRef with my generated DOM
-		//			  tree
-		// description:
-		//		Create calls a number of widget methods (postMixInProperties, buildRendering, postCreate,
-		//		etc.), some of which of you'll want to override. See http://dojotoolkit.org/reference-guide/dijit/_WidgetBase.html
-		//		for a discussion of the widget creation lifecycle.
-		//
-		//		Of course, adventurous developers could override create entirely, but this should
-		//		only be done as a last resort.
-		// tags:
-		//		private
-
-		// store pointer to original DOM tree
-		this.srcNodeRef = dom.byId(srcNodeRef);
-
-		// For garbage collection.  An array of listener handles returned by this.connect() / this.subscribe()
-		this._connects = [];
-
-		// For widgets internal to this widget, invisible to calling code
-		this._supportingWidgets = [];
-
-		// this is here for back-compat, remove in 2.0 (but check NodeList-instantiate.html test)
-		if(this.srcNodeRef && (typeof this.srcNodeRef.id == "string")){ this.id = this.srcNodeRef.id; }
-
-		// mix in our passed parameters
-		if(params){
-			this.params = params;
-			lang.mixin(this, params);
-		}
-		this.postMixInProperties();
-
-		// generate an id for the widget if one wasn't specified
-		// (be sure to do this before buildRendering() because that function might
-		// expect the id to be there.)
-		if(!this.id){
-			this.id = registry.getUniqueId(this.declaredClass.replace(/\./g,"_"));
-		}
-		registry.add(this);
-
-		this.buildRendering();
-
-		if(this.domNode){
-			// Copy attributes listed in attributeMap into the [newly created] DOM for the widget.
-			// Also calls custom setters for all attributes with custom setters.
-			this._applyAttributes();
-
-			// If srcNodeRef was specified, then swap out original srcNode for this widget's DOM tree.
-			// For 2.0, move this after postCreate().  postCreate() shouldn't depend on the
-			// widget being attached to the DOM since it isn't when a widget is created programmatically like
-			// new MyWidget({}).   See #11635.
-			var source = this.srcNodeRef;
-			if(source && source.parentNode && this.domNode !== source){
-				source.parentNode.replaceChild(this.domNode, source);
-			}
-		}
-
-		if(this.domNode){
-			// Note: for 2.0 may want to rename widgetId to dojo._scopeName + "_widgetId",
-			// assuming that dojo._scopeName even exists in 2.0
-			this.domNode.setAttribute("widgetId", this.id);
-		}
-		this.postCreate();
-
-		// If srcNodeRef has been processed and removed from the DOM (e.g. TemplatedWidget) then delete it to allow GC.
-		if(this.srcNodeRef && !this.srcNodeRef.parentNode){
-			delete this.srcNodeRef;
-		}
-
-		this._created = true;
-	},
-
-	_applyAttributes: function(){
-		// summary:
-		//		Step during widget creation to copy  widget attributes to the
-		//		DOM according to attributeMap and _setXXXAttr objects, and also to call
-		//		custom _setXXXAttr() methods.
-		//
-		//		Skips over blank/false attribute values, unless they were explicitly specified
-		//		as parameters to the widget, since those are the default anyway,
-		//		and setting tabIndex="" is different than not setting tabIndex at all.
-		//
-		//		For backwards-compatibility reasons attributeMap overrides _setXXXAttr when
-		//		_setXXXAttr is a hash/string/array, but _setXXXAttr as a functions override attributeMap.
-		// tags:
-		//		private
-
-		// Get list of attributes where this.set(name, value) will do something beyond
-		// setting this[name] = value.  Specifically, attributes that have:
-		//		- associated _setXXXAttr() method/hash/string/array
-		//		- entries in attributeMap.
-		var ctor = this.constructor,
-			list = ctor._setterAttrs;
-		if(!list){
-			list = (ctor._setterAttrs = []);
-			for(var attr in this.attributeMap){
-				list.push(attr);
-			}
-
-			var proto = ctor.prototype;
-			for(var fxName in proto){
-				if(fxName in this.attributeMap){ continue; }
-				var setterName = "_set" + fxName.replace(/^[a-z]|-[a-zA-Z]/g, function(c){ return c.charAt(c.length-1).toUpperCase(); }) + "Attr";
-				if(setterName in proto){
-					list.push(fxName);
-				}
-			}
-		}
-
-		// Call this.set() for each attribute that was either specified as parameter to constructor,
-		// or was found above and has a default non-null value.   For correlated attributes like value and displayedValue, the one
-		// specified as a parameter should take precedence, so apply attributes in this.params last.
-		// Particularly important for new DateTextBox({displayedValue: ...}) since DateTextBox's default value is
-		// NaN and thus is not ignored like a default value of "".
-		array.forEach(list, function(attr){
-			if(this.params && attr in this.params){
-				// skip this one, do it below
-			}else if(this[attr]){
-				this.set(attr, this[attr]);
-			}
-		}, this);
-		for(var param in this.params){
-			this.set(param, this[param]);
-		}
-	},
-
-	postMixInProperties: function(){
-		// summary:
-		//		Called after the parameters to the widget have been read-in,
-		//		but before the widget template is instantiated. Especially
-		//		useful to set properties that are referenced in the widget
-		//		template.
-		// tags:
-		//		protected
-	},
-
-	buildRendering: function(){
-		// summary:
-		//		Construct the UI for this widget, setting this.domNode.
-		//		Most widgets will mixin `dijit._TemplatedMixin`, which implements this method.
-		// tags:
-		//		protected
-
-		if(!this.domNode){
-			// Create root node if it wasn't created by _Templated
-			this.domNode = this.srcNodeRef || domConstruct.create('div');
-		}
-
-		// baseClass is a single class name or occasionally a space-separated list of names.
-		// Add those classes to the DOMNode.  If RTL mode then also add with Rtl suffix.
-		// TODO: make baseClass custom setter
-		if(this.baseClass){
-			var classes = this.baseClass.split(" ");
-			if(!this.isLeftToRight()){
-				classes = classes.concat( array.map(classes, function(name){ return name+"Rtl"; }));
-			}
-			domClass.add(this.domNode, classes);
-		}
-	},
-
-	postCreate: function(){
-		// summary:
-		//		Processing after the DOM fragment is created
-		// description:
-		//		Called after the DOM fragment has been created, but not necessarily
-		//		added to the document.  Do not include any operations which rely on
-		//		node dimensions or placement.
-		// tags:
-		//		protected
-	},
-
-	startup: function(){
-		// summary:
-		//		Processing after the DOM fragment is added to the document
-		// description:
-		//		Called after a widget and its children have been created and added to the page,
-		//		and all related widgets have finished their create() cycle, up through postCreate().
-		//		This is useful for composite widgets that need to control or layout sub-widgets.
-		//		Many layout widgets can use this as a wiring phase.
-		if(this._started){ return; }
-		this._started = true;
-		array.forEach(this.getChildren(), function(obj){
-			if(!obj._started && !obj._destroyed && lang.isFunction(obj.startup)){
-				obj.startup();
-				obj._started = true;
-			}
-		});
-	},
-
-	//////////// DESTROY FUNCTIONS ////////////////////////////////
-
-	destroyRecursive: function(/*Boolean?*/ preserveDom){
-		// summary:
-		// 		Destroy this widget and its descendants
-		// description:
-		//		This is the generic "destructor" function that all widget users
-		// 		should call to cleanly discard with a widget. Once a widget is
-		// 		destroyed, it is removed from the manager object.
-		// preserveDom:
-		//		If true, this method will leave the original DOM structure
-		//		alone of descendant Widgets. Note: This will NOT work with
-		//		dijit._Templated widgets.
-
-		this._beingDestroyed = true;
-		this.destroyDescendants(preserveDom);
-		this.destroy(preserveDom);
-	},
-
-	destroy: function(/*Boolean*/ preserveDom){
-		// summary:
-		// 		Destroy this widget, but not its descendants.
-		//		This method will, however, destroy internal widgets such as those used within a template.
-		// preserveDom: Boolean
-		//		If true, this method will leave the original DOM structure alone.
-		//		Note: This will not yet work with _Templated widgets
-
-		this._beingDestroyed = true;
-		this.uninitialize();
-
-		// remove this.connect() and this.subscribe() listeners
-		var c;
-		while(c = this._connects.pop()){
-			c.remove();
-		}
-
-		// destroy widgets created as part of template, etc.
-		var w;
-		while(w = this._supportingWidgets.pop()){
-			if(w.destroyRecursive){
-				w.destroyRecursive();
-			}else if(w.destroy){
-				w.destroy();
-			}
-		}
-
-		this.destroyRendering(preserveDom);
-		registry.remove(this.id);
-		this._destroyed = true;
-	},
-
-	destroyRendering: function(/*Boolean?*/ preserveDom){
-		// summary:
-		//		Destroys the DOM nodes associated with this widget
-		// preserveDom:
-		//		If true, this method will leave the original DOM structure alone
-		//		during tear-down. Note: this will not work with _Templated
-		//		widgets yet.
-		// tags:
-		//		protected
-
-		if(this.bgIframe){
-			this.bgIframe.destroy(preserveDom);
-			delete this.bgIframe;
-		}
-
-		if(this.domNode){
-			if(preserveDom){
-				domAttr.remove(this.domNode, "widgetId");
-			}else{
-				domConstruct.destroy(this.domNode);
-			}
-			delete this.domNode;
-		}
-
-		if(this.srcNodeRef){
-			if(!preserveDom){
-				domConstruct.destroy(this.srcNodeRef);
-			}
-			delete this.srcNodeRef;
-		}
-	},
-
-	destroyDescendants: function(/*Boolean?*/ preserveDom){
-		// summary:
-		//		Recursively destroy the children of this widget and their
-		//		descendants.
-		// preserveDom:
-		//		If true, the preserveDom attribute is passed to all descendant
-		//		widget's .destroy() method. Not for use with _Templated
-		//		widgets.
-
-		// get all direct descendants and destroy them recursively
-		array.forEach(this.getChildren(), function(widget){
-			if(widget.destroyRecursive){
-				widget.destroyRecursive(preserveDom);
-			}
-		});
-	},
-
-	uninitialize: function(){
-		// summary:
-		//		Stub function. Override to implement custom widget tear-down
-		//		behavior.
-		// tags:
-		//		protected
-		return false;
-	},
-
-	////////////////// GET/SET, CUSTOM SETTERS, ETC. ///////////////////
-
-	_setStyleAttr: function(/*String||Object*/ value){
-		// summary:
-		//		Sets the style attribute of the widget according to value,
-		//		which is either a hash like {height: "5px", width: "3px"}
-		//		or a plain string
-		// description:
-		//		Determines which node to set the style on based on style setting
-		//		in attributeMap.
-		// tags:
-		//		protected
-
-		var mapNode = this.domNode;
-
-		// Note: technically we should revert any style setting made in a previous call
-		// to his method, but that's difficult to keep track of.
-
-		if(lang.isObject(value)){
-			domStyle.set(mapNode, value);
-		}else{
-			if(mapNode.style.cssText){
-				mapNode.style.cssText += "; " + value;
-			}else{
-				mapNode.style.cssText = value;
-			}
-		}
-
-		this._set("style", value);
-	},
-
-	_attrToDom: function(/*String*/ attr, /*String*/ value, /*Object?*/ commands){
-		// summary:
-		//		Reflect a widget attribute (title, tabIndex, duration etc.) to
-		//		the widget DOM, as specified by commands parameter.
-		//		If commands isn't specified then it's looked up from attributeMap.
-		//		Note some attributes like "type"
-		//		cannot be processed this way as they are not mutable.
-		//
-		// tags:
-		//		private
-
-		commands = arguments.length >= 3 ? commands : this.attributeMap[attr];
-
-		array.forEach(lang.isArray(commands) ? commands : [commands], function(command){
-
-			// Get target node and what we are doing to that node
-			var mapNode = this[command.node || command || "domNode"];	// DOM node
-			var type = command.type || "attribute";	// class, innerHTML, innerText, or attribute
-
-			switch(type){
-				case "attribute":
-					if(lang.isFunction(value)){ // functions execute in the context of the widget
-						value = lang.hitch(this, value);
-					}
-
-					// Get the name of the DOM node attribute; usually it's the same
-					// as the name of the attribute in the widget (attr), but can be overridden.
-					// Also maps handler names to lowercase, like onSubmit --> onsubmit
-					var attrName = command.attribute ? command.attribute :
-						(/^on[A-Z][a-zA-Z]*$/.test(attr) ? attr.toLowerCase() : attr);
-
-					domAttr.set(mapNode, attrName, value);
-					break;
-				case "innerText":
-					mapNode.innerHTML = "";
-					mapNode.appendChild(win.doc.createTextNode(value));
-					break;
-				case "innerHTML":
-					mapNode.innerHTML = value;
-					break;
-				case "class":
-					domClass.replace(mapNode, value, this[attr]);
-					break;
-			}
-		}, this);
-	},
-
-	get: function(name){
-		// summary:
-		//		Get a property from a widget.
-		//	name:
-		//		The property to get.
-		// description:
-		//		Get a named property from a widget. The property may
-		//		potentially be retrieved via a getter method. If no getter is defined, this
-		// 		just retrieves the object's property.
-		//
-		// 		For example, if the widget has properties `foo` and `bar`
-		//		and a method named `_getFooAttr()`, calling:
-		//		`myWidget.get("foo")` would be equivalent to calling
-		//		`widget._getFooAttr()` and `myWidget.get("bar")`
-		//		would be equivalent to the expression
-		//		`widget.bar2`
-		var names = this._getAttrNames(name);
-		return this[names.g] ? this[names.g]() : this[name];
-	},
-
-	set: function(name, value){
-		// summary:
-		//		Set a property on a widget
-		//	name:
-		//		The property to set.
-		//	value:
-		//		The value to set in the property.
-		// description:
-		//		Sets named properties on a widget which may potentially be handled by a
-		// 		setter in the widget.
-		//
-		// 		For example, if the widget has properties `foo` and `bar`
-		//		and a method named `_setFooAttr()`, calling
-		//		`myWidget.set("foo", "Howdy!")` would be equivalent to calling
-		//		`widget._setFooAttr("Howdy!")` and `myWidget.set("bar", 3)`
-		//		would be equivalent to the statement `widget.bar = 3;`
-		//
-		//		set() may also be called with a hash of name/value pairs, ex:
-		//
-		//	|	myWidget.set({
-		//	|		foo: "Howdy",
-		//	|		bar: 3
-		//	|	});
-		//
-		//	This is equivalent to calling `set(foo, "Howdy")` and `set(bar, 3)`
-
-		if(typeof name === "object"){
-			for(var x in name){
-				this.set(x, name[x]);
-			}
-			return this;
-		}
-		var names = this._getAttrNames(name),
-			setter = this[names.s];
-		if(lang.isFunction(setter)){
-			// use the explicit setter
-			var result = setter.apply(this, Array.prototype.slice.call(arguments, 1));
-		}else{
-			// Mapping from widget attribute to DOMNode attribute/value/etc.
-			// Map according to:
-			//		1. attributeMap setting, if one exists (TODO: attributeMap deprecated, remove in 2.0)
-			//		2. _setFooAttr: {...} type attribute in the widget (if one exists)
-			//		3. apply to focusNode or domNode if standard attribute name, excluding funcs like onClick.
-			// Checks if an attribute is a "standard attribute" by whether the DOMNode JS object has a similar
-			// attribute name (ex: accept-charset attribute matches jsObject.acceptCharset).
-			// Note also that Tree.focusNode() is a function not a DOMNode, so test for that.
-			var defaultNode = this.focusNode && !lang.isFunction(this.focusNode) ? "focusNode" : "domNode",
-				tag = this[defaultNode].tagName,
-				attrsForTag = tagAttrs[tag] || (tagAttrs[tag] = getAttrs(this[defaultNode])),
-				map =	name in this.attributeMap ? this.attributeMap[name] :
-						names.s in this ? this[names.s] :
-						((names.l in attrsForTag && typeof value != "function") ||
-							/^aria-|^data-|^role$/.test(name)) ? defaultNode : null;
-			if(map != null){
-				this._attrToDom(name, value, map);
-			}
-			this._set(name, value);
-		}
-		return result || this;
-	},
-
-	_attrPairNames: {},		// shared between all widgets
-	_getAttrNames: function(name){
-		// summary:
-		//		Helper function for get() and set().
-		//		Caches attribute name values so we don't do the string ops every time.
-		// tags:
-		//		private
-
-		var apn = this._attrPairNames;
-		if(apn[name]){ return apn[name]; }
-		var uc = name.replace(/^[a-z]|-[a-zA-Z]/g, function(c){ return c.charAt(c.length-1).toUpperCase(); });
-		return (apn[name] = {
-			n: name+"Node",
-			s: "_set"+uc+"Attr",	// converts dashes to camel case, ex: accept-charset --> _setAcceptCharsetAttr
-			g: "_get"+uc+"Attr",
-			l: uc.toLowerCase()		// lowercase name w/out dashes, ex: acceptcharset
-		});
-	},
-
-	_set: function(/*String*/ name, /*anything*/ value){
-		// summary:
-		//		Helper function to set new value for specified attribute, and call handlers
-		//		registered with watch() if the value has changed.
-		var oldValue = this[name];
-		this[name] = value;
-		if(this._watchCallbacks && this._created && value !== oldValue){
-			this._watchCallbacks(name, oldValue, value);
-		}
-	},
-
-	on: function(/*String*/ type, /*Function*/ func){
-		// summary:
-		//		Call specified function when event occurs, ex: myWidget.on("click", function(){ ... }).
-		// description:
-		//		Call specified function when event `type` occurs, ex: `myWidget.on("click", function(){ ... })`.
-		//		Note that the function is not run in any particular scope, so if (for example) you want it to run in the
-		//		widget's scope you must do `myWidget.on("click", lang.hitch(myWidget, func))`.
-
-		return aspect.after(this, this._onMap(type), func, true);
-	},
-
-	_onMap: function(/*String*/ type){
-		// summary:
-		//		Maps on() type parameter (ex: "mousemove") to method name (ex: "onMouseMove")
-		var ctor = this.constructor, map = ctor._onMap;
-		if(!map){
-			map = (ctor._onMap = {});
-			for(var attr in ctor.prototype){
-				if(/^on/.test(attr)){
-					map[attr.replace(/^on/, "").toLowerCase()] = attr;
-				}
-			}
-		}
-		return map[type.toLowerCase()];	// String
-	},
-
-	toString: function(){
-		// summary:
-		//		Returns a string that represents the widget
-		// description:
-		//		When a widget is cast to a string, this method will be used to generate the
-		//		output. Currently, it does not implement any sort of reversible
-		//		serialization.
-		return '[Widget ' + this.declaredClass + ', ' + (this.id || 'NO ID') + ']'; // String
-	},
-
-	getChildren: function(){
-		// summary:
-		//		Returns all the widgets contained by this, i.e., all widgets underneath this.containerNode.
-		//		Does not return nested widgets, nor widgets that are part of this widget's template.
-		return this.containerNode ? registry.findWidgets(this.containerNode) : []; // dijit._Widget[]
-	},
-
-	getParent: function(){
-		// summary:
-		//		Returns the parent widget of this widget
-		return registry.getEnclosingWidget(this.domNode.parentNode);
-	},
-
-	connect: function(
-			/*Object|null*/ obj,
-			/*String|Function*/ event,
-			/*String|Function*/ method){
-		// summary:
-		//		Connects specified obj/event to specified method of this object
-		//		and registers for disconnect() on widget destroy.
-		// description:
-		//		Provide widget-specific analog to dojo.connect, except with the
-		//		implicit use of this widget as the target object.
-		//		Events connected with `this.connect` are disconnected upon
-		//		destruction.
-		// returns:
-		//		A handle that can be passed to `disconnect` in order to disconnect before
-		//		the widget is destroyed.
-		// example:
-		//	|	var btn = new dijit.form.Button();
-		//	|	// when foo.bar() is called, call the listener we're going to
-		//	|	// provide in the scope of btn
-		//	|	btn.connect(foo, "bar", function(){
-		//	|		0 && console.debug(this.toString());
-		//	|	});
-		// tags:
-		//		protected
-
-		var handle = connect.connect(obj, event, this, method);
-		this._connects.push(handle);
-		return handle;		// _Widget.Handle
-	},
-
-	disconnect: function(handle){
-		// summary:
-		//		Disconnects handle created by `connect`.
-		//		Also removes handle from this widget's list of connects.
-		// tags:
-		//		protected
-		var i = array.indexOf(this._connects, handle);
-		if(i != -1){
-			handle.remove();
-			this._connects.splice(i, 1);
-		}
-	},
-
-	subscribe: function(t, method){
-		// summary:
-		//		Subscribes to the specified topic and calls the specified method
-		//		of this object and registers for unsubscribe() on widget destroy.
-		// description:
-		//		Provide widget-specific analog to dojo.subscribe, except with the
-		//		implicit use of this widget as the target object.
-		// t: String
-		//		The topic
-		// method: Function
-		//		The callback
-		// example:
-		//	|	var btn = new dijit.form.Button();
-		//	|	// when /my/topic is published, this button changes its label to
-		//	|   // be the parameter of the topic.
-		//	|	btn.subscribe("/my/topic", function(v){
-		//	|		this.set("label", v);
-		//	|	});
-		// tags:
-		//		protected
-		var handle = topic.subscribe(t, lang.hitch(this, method));
-		this._connects.push(handle);
-		return handle;		// _Widget.Handle
-	},
-
-	unsubscribe: function(/*Object*/ handle){
-		// summary:
-		//		Unsubscribes handle created by this.subscribe.
-		//		Also removes handle from this widget's list of subscriptions
-		// tags:
-		//		protected
-		this.disconnect(handle);
-	},
-
-	isLeftToRight: function(){
-		// summary:
-		//		Return this widget's explicit or implicit orientation (true for LTR, false for RTL)
-		// tags:
-		//		protected
-		return this.dir ? (this.dir == "ltr") : domGeometry.isBodyLtr(); //Boolean
-	},
-
-	isFocusable: function(){
-		// summary:
-		//		Return true if this widget can currently be focused
-		//		and false if not
-		return this.focus && (domStyle.get(this.domNode, "display") != "none");
-	},
-
-	placeAt: function(/* String|DomNode|_Widget */reference, /* String?|Int? */position){
-		// summary:
-		//		Place this widget's domNode reference somewhere in the DOM based
-		//		on standard domConstruct.place conventions, or passing a Widget reference that
-		//		contains and addChild member.
-		//
-		// description:
-		//		A convenience function provided in all _Widgets, providing a simple
-		//		shorthand mechanism to put an existing (or newly created) Widget
-		//		somewhere in the dom, and allow chaining.
-		//
-		// reference:
-		//		The String id of a domNode, a domNode reference, or a reference to a Widget possessing
-		//		an addChild method.
-		//
-		// position:
-		//		If passed a string or domNode reference, the position argument
-		//		accepts a string just as domConstruct.place does, one of: "first", "last",
-		//		"before", or "after".
-		//
-		//		If passed a _Widget reference, and that widget reference has an ".addChild" method,
-		//		it will be called passing this widget instance into that method, supplying the optional
-		//		position index passed.
-		//
-		// returns:
-		//		dijit._Widget
-		//		Provides a useful return of the newly created dijit._Widget instance so you
-		//		can "chain" this function by instantiating, placing, then saving the return value
-		//		to a variable.
-		//
-		// example:
-		// | 	// create a Button with no srcNodeRef, and place it in the body:
-		// | 	var button = new dijit.form.Button({ label:"click" }).placeAt(win.body());
-		// | 	// now, 'button' is still the widget reference to the newly created button
-		// | 	button.on("click", function(e){ 0 && console.log('click'); }));
-		//
-		// example:
-		// |	// create a button out of a node with id="src" and append it to id="wrapper":
-		// | 	var button = new dijit.form.Button({},"src").placeAt("wrapper");
-		//
-		// example:
-		// |	// place a new button as the first element of some div
-		// |	var button = new dijit.form.Button({ label:"click" }).placeAt("wrapper","first");
-		//
-		// example:
-		// |	// create a contentpane and add it to a TabContainer
-		// |	var tc = dijit.byId("myTabs");
-		// |	new dijit.layout.ContentPane({ href:"foo.html", title:"Wow!" }).placeAt(tc)
-
-		if(reference.declaredClass && reference.addChild){
-			reference.addChild(this, position);
-		}else{
-			domConstruct.place(this.domNode, reference, position);
-		}
-		return this;
-	},
-
-	getTextDir: function(/*String*/ text,/*String*/ originalDir){
-		// summary:
-		//		Return direction of the text.
-		//		The function overridden in the _BidiSupport module,
-		//		its main purpose is to calculate the direction of the
-		//		text, if was defined by the programmer through textDir.
-		//	tags:
-		//		protected.
-		return originalDir;
-	},
-
-	applyTextDir: function(/*===== element, text =====*/){
-		// summary:
-		//		The function overridden in the _BidiSupport module,
-		//		originally used for setting element.dir according to this.textDir.
-		//		In this case does nothing.
-		// element: DOMNode
-		// text: String
-		// tags:
-		//		protected.
-	}
-});
-
-});
-
-},
-'dijit/_OnDijitClickMixin':function(){
-define("dijit/_OnDijitClickMixin", [
-	"dojo/on",
-	"dojo/_base/array", // array.forEach
-	"dojo/keys", // keys.ENTER keys.SPACE
-	"dojo/_base/declare", // declare
-	"dojo/_base/sniff", // has("ie")
-	"dojo/_base/unload", // unload.addOnWindowUnload
-	"dojo/_base/window" // win.doc.addEventListener win.doc.attachEvent win.doc.detachEvent
-], function(on, array, keys, declare, has, unload, win){
-
-	// module:
-	//		dijit/_OnDijitClickMixin
-	// summary:
-	//		Mixin so you can pass "ondijitclick" to this.connect() method,
-	//		as a way to handle clicks by mouse, or by keyboard (SPACE/ENTER key)
-
-
-	// Keep track of where the last keydown event was, to help avoid generating
-	// spurious ondijitclick events when:
-	// 1. focus is on a <button> or <a>
-	// 2. user presses then releases the ENTER key
-	// 3. onclick handler fires and shifts focus to another node, with an ondijitclick handler
-	// 4. onkeyup event fires, causing the ondijitclick handler to fire
-	var lastKeyDownNode = null;
-	if(has("ie")){
-		(function(){
-			var keydownCallback = function(evt){
-				lastKeyDownNode = evt.srcElement;
-			};
-			win.doc.attachEvent('onkeydown', keydownCallback);
-			unload.addOnWindowUnload(function(){
-				win.doc.detachEvent('onkeydown', keydownCallback);
-			});
-		})();
-	}else{
-		win.doc.addEventListener('keydown', function(evt){
-			lastKeyDownNode = evt.target;
-		}, true);
-	}
-
-	// Custom a11yclick (a.k.a. ondijitclick) event
-	var a11yclick = function(node, listener){
-		if(/input|button/i.test(node.nodeName)){
-			// pass through, the browser already generates click event on SPACE/ENTER key
-			return on(node, "click", listener);
-		}else{
-			// Don't fire the click event unless both the keydown and keyup occur on this node.
-			// Avoids problems where focus shifted to this node or away from the node on keydown,
-			// either causing this node to process a stray keyup event, or causing another node
-			// to get a stray keyup event.
-
-			function clickKey(/*Event*/ e){
-				return (e.keyCode == keys.ENTER || e.keyCode == keys.SPACE) &&
-						!e.ctrlKey && !e.shiftKey && !e.altKey && !e.metaKey;
-			}
-			var handles = [
-				on(node, "keypress", function(e){
-					//0 && console.log(this.id + ": onkeydown, e.target = ", e.target, ", lastKeyDownNode was ", lastKeyDownNode, ", equality is ", (e.target === lastKeyDownNode));
-					if(clickKey(e)){
-						// needed on IE for when focus changes between keydown and keyup - otherwise dropdown menus do not work
-						lastKeyDownNode = e.target;
-
-						// Prevent viewport scrolling on space key in IE<9.
-						// (Reproducible on test_Button.html on any of the first dijit.form.Button examples)
-						// Do this onkeypress rather than onkeydown because onkeydown.preventDefault() will
-						// suppress the onkeypress event, breaking _HasDropDown
-						e.preventDefault();
-					}
-				}),
-
-				on(node, "keyup", function(e){
-					//0 && console.log(this.id + ": onkeyup, e.target = ", e.target, ", lastKeyDownNode was ", lastKeyDownNode, ", equality is ", (e.target === lastKeyDownNode));
-					if(clickKey(e) && e.target == lastKeyDownNode){	// === breaks greasemonkey
-						//need reset here or have problems in FF when focus returns to trigger element after closing popup/alert
-						lastKeyDownNode = null;
-						listener.call(this, e);
-					}
-				}),
-
-				on(node, "click", function(e){
-					// and connect for mouse clicks too (or touch-clicks on mobile)
-					listener.call(this, e);
-				})
-			];
-
-			return {
-				remove: function(){
-					array.forEach(handles, function(h){ h.remove(); });
-				}
-			};
-		}
-	};
-
-	return declare("dijit._OnDijitClickMixin", null, {
-		connect: function(
-				/*Object|null*/ obj,
-				/*String|Function*/ event,
-				/*String|Function*/ method){
-			// summary:
-			//		Connects specified obj/event to specified method of this object
-			//		and registers for disconnect() on widget destroy.
-			// description:
-			//		Provide widget-specific analog to connect.connect, except with the
-			//		implicit use of this widget as the target object.
-			//		This version of connect also provides a special "ondijitclick"
-			//		event which triggers on a click or space or enter keyup.
-			//		Events connected with `this.connect` are disconnected upon
-			//		destruction.
-			// returns:
-			//		A handle that can be passed to `disconnect` in order to disconnect before
-			//		the widget is destroyed.
-			// example:
-			//	|	var btn = new dijit.form.Button();
-			//	|	// when foo.bar() is called, call the listener we're going to
-			//	|	// provide in the scope of btn
-			//	|	btn.connect(foo, "bar", function(){
-			//	|		0 && console.debug(this.toString());
-			//	|	});
-			// tags:
-			//		protected
-
-			return this.inherited(arguments, [obj, event == "ondijitclick" ? a11yclick : event, method]);
-		}
-	});
-});
-
-},
-'dijit/_FocusMixin':function(){
-define("dijit/_FocusMixin", [
-	"./focus",
-	"./_WidgetBase",
-	"dojo/_base/declare", // declare
-	"dojo/_base/lang" // lang.extend
-], function(focus, _WidgetBase, declare, lang){
-
-/*=====
-	var _WidgetBase = dijit._WidgetBase;
-=====*/
-
-	// module:
-	//		dijit/_FocusMixin
-	// summary:
-	//		Mixin to widget to provide _onFocus() and _onBlur() methods that
-	//		fire when a widget or it's descendants get/lose focus
-
-	// We don't know where _FocusMixin will occur in the inheritance chain, but we need the _onFocus()/_onBlur() below
-	// to be last in the inheritance chain, so mixin to _WidgetBase.
-	lang.extend(_WidgetBase, {
-		// focused: [readonly] Boolean
-		//		This widget or a widget it contains has focus, or is "active" because
-		//		it was recently clicked.
-		focused: false,
-
-		onFocus: function(){
-			// summary:
-			//		Called when the widget becomes "active" because
-			//		it or a widget inside of it either has focus, or has recently
-			//		been clicked.
-			// tags:
-			//		callback
-		},
-
-		onBlur: function(){
-			// summary:
-			//		Called when the widget stops being "active" because
-			//		focus moved to something outside of it, or the user
-			//		clicked somewhere outside of it, or the widget was
-			//		hidden.
-			// tags:
-			//		callback
-		},
-
-		_onFocus: function(){
-			// summary:
-			//		This is where widgets do processing for when they are active,
-			//		such as changing CSS classes.  See onFocus() for more details.
-			// tags:
-			//		protected
-			this.onFocus();
-		},
-
-		_onBlur: function(){
-			// summary:
-			//		This is where widgets do processing for when they stop being active,
-			//		such as changing CSS classes.  See onBlur() for more details.
-			// tags:
-			//		protected
-			this.onBlur();
-		}
-	});
-
-	return declare("dijit._FocusMixin", null, {
-		// summary:
-		//		Mixin to widget to provide _onFocus() and _onBlur() methods that
-		//		fire when a widget or it's descendants get/lose focus
-
-		// flag that I want _onFocus()/_onBlur() notifications from focus manager
-		_focusManager: focus
-	});
-
-});
-
-},
-'dojo/uacss':function(){
-define("dojo/uacss", ["./dom-geometry", "./_base/lang", "./ready", "./_base/sniff", "./_base/window"],
-	function(geometry, lang, ready, has, baseWindow){
-	// module:
-	//		dojo/uacss
-	// summary:
-	//		Applies pre-set CSS classes to the top-level HTML node, based on:
-	//			- browser (ex: dj_ie)
-	//			- browser version (ex: dj_ie6)
-	//			- box model (ex: dj_contentBox)
-	//			- text direction (ex: dijitRtl)
-	//
-	//		In addition, browser, browser version, and box model are
-	//		combined with an RTL flag when browser text is RTL. ex: dj_ie-rtl.
-
-	var
-		html = baseWindow.doc.documentElement,
-		ie = has("ie"),
-		opera = has("opera"),
-		maj = Math.floor,
-		ff = has("ff"),
-		boxModel = geometry.boxModel.replace(/-/,''),
-
-		classes = {
-			"dj_ie": ie,
-			"dj_ie6": maj(ie) == 6,
-			"dj_ie7": maj(ie) == 7,
-			"dj_ie8": maj(ie) == 8,
-			"dj_ie9": maj(ie) == 9,
-			"dj_quirks": has("quirks"),
-			"dj_iequirks": ie && has("quirks"),
-
-			// NOTE: Opera not supported by dijit
-			"dj_opera": opera,
-
-			"dj_khtml": has("khtml"),
-
-			"dj_webkit": has("webkit"),
-			"dj_safari": has("safari"),
-			"dj_chrome": has("chrome"),
-
-			"dj_gecko": has("mozilla"),
-			"dj_ff3": maj(ff) == 3
-		}; // no dojo unsupported browsers
-
-	classes["dj_" + boxModel] = true;
-
-	// apply browser, browser version, and box model class names
-	var classStr = "";
-	for(var clz in classes){
-		if(classes[clz]){
-			classStr += clz + " ";
-		}
-	}
-	html.className = lang.trim(html.className + " " + classStr);
-
-	// If RTL mode, then add dj_rtl flag plus repeat existing classes with -rtl extension.
-	// We can't run the code below until the <body> tag has loaded (so we can check for dir=rtl).
-	// priority is 90 to run ahead of parser priority of 100
-	ready(90, function(){
-		if(!geometry.isBodyLtr()){
-			var rtlClassStr = "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl ");
-			html.className = lang.trim(html.className + " " + rtlClassStr + "dj_rtl dijitRtl " + classStr.replace(/ /g, "-rtl "));
-		}
-	});
-	return has;
-});
-
-},
-'dijit/hccss':function(){
-define("dijit/hccss", [
-	"require",			// require.toUrl
-	"dojo/_base/config", // config.blankGif
-	"dojo/dom-class", // domClass.add domConstruct.create domStyle.getComputedStyle
-	"dojo/dom-construct", // domClass.add domConstruct.create domStyle.getComputedStyle
-	"dojo/dom-style", // domClass.add domConstruct.create domStyle.getComputedStyle
-	"dojo/ready", // ready
-	"dojo/_base/sniff", // has("ie") has("mozilla")
-	"dojo/_base/window" // win.body
-], function(require, config, domClass, domConstruct, domStyle, ready, has, win){
-
-	// module:
-	//		dijit/hccss
-	// summary:
-	//		Test if computer is in high contrast mode, and sets dijit_a11y flag on <body> if it is.
-
-	if(has("ie") || has("mozilla")){	// NOTE: checking in Safari messes things up
-		// priority is 90 to run ahead of parser priority of 100
-		ready(90, function(){
-			// summary:
-			//		Detects if we are in high-contrast mode or not
-
-			// create div for testing if high contrast mode is on or images are turned off
-			var div = domConstruct.create("div",{
-				id: "a11yTestNode",
-				style:{
-					cssText:'border: 1px solid;'
-						+ 'border-color:red green;'
-						+ 'position: absolute;'
-						+ 'height: 5px;'
-						+ 'top: -999px;'
-						+ 'background-image: url("' + (config.blankGif || require.toUrl("dojo/resources/blank.gif")) + '");'
-				}
-			}, win.body());
-
-			// test it
-			var cs = domStyle.getComputedStyle(div);
-			if(cs){
-				var bkImg = cs.backgroundImage;
-				var needsA11y = (cs.borderTopColor == cs.borderRightColor) || (bkImg != null && (bkImg == "none" || bkImg == "url(invalid-url:)" ));
-				if(needsA11y){
-					domClass.add(win.body(), "dijit_a11y");
-				}
-				if(has("ie")){
-					div.outerHTML = "";		// prevent mixed-content warning, see http://support.microsoft.com/kb/925014
-				}else{
-					win.body().removeChild(div);
-				}
-			}
-		});
-	}
-});
-
-},
-'dijit/_CssStateMixin':function(){
-define("dijit/_CssStateMixin", [
-	"dojo/touch",
-	"dojo/_base/array", // array.forEach array.map
-	"dojo/_base/declare",	// declare
-	"dojo/dom-class", // domClass.toggle
-	"dojo/_base/lang", // lang.hitch
-	"dojo/_base/window" // win.body
-], function(touch, array, declare, domClass, lang, win){
-
-// module:
-//		dijit/_CssStateMixin
-// summary:
-//		Mixin for widgets to set CSS classes on the widget DOM nodes depending on hover/mouse press/focus
-//		state changes, and also higher-level state changes such becoming disabled or selected.
-
-return declare("dijit._CssStateMixin", [], {
-	// summary:
-	//		Mixin for widgets to set CSS classes on the widget DOM nodes depending on hover/mouse press/focus
-	//		state changes, and also higher-level state changes such becoming disabled or selected.
-	//
-	// description:
-	//		By mixing this class into your widget, and setting the this.baseClass attribute, it will automatically
-	//		maintain CSS classes on the widget root node (this.domNode) depending on hover,
-	//		active, focus, etc. state.   Ex: with a baseClass of dijitButton, it will apply the classes
-	//		dijitButtonHovered and dijitButtonActive, as the user moves the mouse over the widget and clicks it.
-	//
-	//		It also sets CSS like dijitButtonDisabled based on widget semantic state.
-	//
-	//		By setting the cssStateNodes attribute, a widget can also track events on subnodes (like buttons
-	//		within the widget).
-
-	// cssStateNodes: [protected] Object
-	//		List of sub-nodes within the widget that need CSS classes applied on mouse hover/press and focus
-	//.
-	//		Each entry in the hash is a an attachpoint names (like "upArrowButton") mapped to a CSS class names
-	//		(like "dijitUpArrowButton"). Example:
-	//	|		{
-	//	|			"upArrowButton": "dijitUpArrowButton",
-	//	|			"downArrowButton": "dijitDownArrowButton"
-	//	|		}
-	//		The above will set the CSS class dijitUpArrowButton to the this.upArrowButton DOMNode when it
-	//		is hovered, etc.
-	cssStateNodes: {},
-
-	// hovering: [readonly] Boolean
-	//		True if cursor is over this widget
-	hovering: false,
-
-	// active: [readonly] Boolean
-	//		True if mouse was pressed while over this widget, and hasn't been released yet
-	active: false,
-
-	_applyAttributes: function(){
-		// This code would typically be in postCreate(), but putting in _applyAttributes() for
-		// performance: so the class changes happen before DOM is inserted into the document.
-		// Change back to postCreate() in 2.0.  See #11635.
-
-		this.inherited(arguments);
-
-		// Automatically monitor mouse events (essentially :hover and :active) on this.domNode
-		array.forEach(["onmouseenter", "onmouseleave", touch.press], function(e){
-			this.connect(this.domNode, e, "_cssMouseEvent");
-		}, this);
-
-		// Monitoring changes to disabled, readonly, etc. state, and update CSS class of root node
-		array.forEach(["disabled", "readOnly", "checked", "selected", "focused", "state", "hovering", "active"], function(attr){
-			this.watch(attr, lang.hitch(this, "_setStateClass"));
-		}, this);
-
-		// Events on sub nodes within the widget
-		for(var ap in this.cssStateNodes){
-			this._trackMouseState(this[ap], this.cssStateNodes[ap]);
-		}
-		// Set state initially; there's probably no hover/active/focus state but widget might be
-		// disabled/readonly/checked/selected so we want to set CSS classes for those conditions.
-		this._setStateClass();
-	},
-
-	_cssMouseEvent: function(/*Event*/ event){
-		// summary:
-		//	Sets hovering and active properties depending on mouse state,
-		//	which triggers _setStateClass() to set appropriate CSS classes for this.domNode.
-
-		if(!this.disabled){
-			switch(event.type){
-				case "mouseenter":
-				case "mouseover":	// generated on non-IE browsers even though we connected to mouseenter
-					this._set("hovering", true);
-					this._set("active", this._mouseDown);
-					break;
-
-				case "mouseleave":
-				case "mouseout":	// generated on non-IE browsers even though we connected to mouseleave
-					this._set("hovering", false);
-					this._set("active", false);
-					break;
-
-				case "mousedown":
-				case "touchpress":
-					this._set("active", true);
-					this._mouseDown = true;
-					// Set a global event to handle mouseup, so it fires properly
-					// even if the cursor leaves this.domNode before the mouse up event.
-					// Alternately could set active=false on mouseout.
-					var mouseUpConnector = this.connect(win.body(), touch.release, function(){
-						this._mouseDown = false;
-						this._set("active", false);
-						this.disconnect(mouseUpConnector);
-					});
-					break;
-			}
-		}
-	},
-
-	_setStateClass: function(){
-		// summary:
-		//		Update the visual state of the widget by setting the css classes on this.domNode
-		//		(or this.stateNode if defined) by combining this.baseClass with
-		//		various suffixes that represent the current widget state(s).
-		//
-		// description:
-		//		In the case where a widget has multiple
-		//		states, it sets the class based on all possible
-		//	 	combinations.  For example, an invalid form widget that is being hovered
-		//		will be "dijitInput dijitInputInvalid dijitInputHover dijitInputInvalidHover".
-		//
-		//		The widget may have one or more of the following states, determined
-		//		by this.state, this.checked, this.valid, and this.selected:
-		//			- Error - ValidationTextBox sets this.state to "Error" if the current input value is invalid
-		//			- Incomplete - ValidationTextBox sets this.state to "Incomplete" if the current input value is not finished yet
-		//			- Checked - ex: a checkmark or a ToggleButton in a checked state, will have this.checked==true
-		//			- Selected - ex: currently selected tab will have this.selected==true
-		//
-		//		In addition, it may have one or more of the following states,
-		//		based on this.disabled and flags set in _onMouse (this.active, this.hovering) and from focus manager (this.focused):
-		//			- Disabled	- if the widget is disabled
-		//			- Active		- if the mouse (or space/enter key?) is being pressed down
-		//			- Focused		- if the widget has focus
-		//			- Hover		- if the mouse is over the widget
-
-		// Compute new set of classes
-		var newStateClasses = this.baseClass.split(" ");
-
-		function multiply(modifier){
-			newStateClasses = newStateClasses.concat(array.map(newStateClasses, function(c){ return c+modifier; }), "dijit"+modifier);
-		}
-
-		if(!this.isLeftToRight()){
-			// For RTL mode we need to set an addition class like dijitTextBoxRtl.
-			multiply("Rtl");
-		}
-
-		var checkedState = this.checked == "mixed" ? "Mixed" : (this.checked ? "Checked" : "");
-		if(this.checked){
-			multiply(checkedState);
-		}
-		if(this.state){
-			multiply(this.state);
-		}
-		if(this.selected){
-			multiply("Selected");
-		}
-
-		if(this.disabled){
-			multiply("Disabled");
-		}else if(this.readOnly){
-			multiply("ReadOnly");
-		}else{
-			if(this.active){
-				multiply("Active");
-			}else if(this.hovering){
-				multiply("Hover");
-			}
-		}
-
-		if(this.focused){
-			multiply("Focused");
-		}
-
-		// Remove old state classes and add new ones.
-		// For performance concerns we only write into domNode.className once.
-		var tn = this.stateNode || this.domNode,
-			classHash = {};	// set of all classes (state and otherwise) for node
-
-		array.forEach(tn.className.split(" "), function(c){ classHash[c] = true; });
-
-		if("_stateClasses" in this){
-			array.forEach(this._stateClasses, function(c){ delete classHash[c]; });
-		}
-
-		array.forEach(newStateClasses, function(c){ classHash[c] = true; });
-
-		var newClasses = [];
-		for(var c in classHash){
-			newClasses.push(c);
-		}
-		tn.className = newClasses.join(" ");
-
-		this._stateClasses = newStateClasses;
-	},
-
-	_trackMouseState: function(/*DomNode*/ node, /*String*/ clazz){
-		// summary:
-		//		Track mouse/focus events on specified node and set CSS class on that node to indicate
-		//		current state.   Usually not called directly, but via cssStateNodes attribute.
-		// description:
-		//		Given class=foo, will set the following CSS class on the node
-		//			- fooActive: if the user is currently pressing down the mouse button while over the node
-		//			- fooHover: if the user is hovering the mouse over the node, but not pressing down a button
-		//			- fooFocus: if the node is focused
-		//
-		//		Note that it won't set any classes if the widget is disabled.
-		// node: DomNode
-		//		Should be a sub-node of the widget, not the top node (this.domNode), since the top node
-		//		is handled specially and automatically just by mixing in this class.
-		// clazz: String
-		//		CSS class name (ex: dijitSliderUpArrow).
-
-		// Current state of node (initially false)
-		// NB: setting specifically to false because domClass.toggle() needs true boolean as third arg
-		var hovering=false, active=false, focused=false;
-
-		var self = this,
-			cn = lang.hitch(this, "connect", node);
-
-		function setClass(){
-			var disabled = ("disabled" in self && self.disabled) || ("readonly" in self && self.readonly);
-			domClass.toggle(node, clazz+"Hover", hovering && !active && !disabled);
-			domClass.toggle(node, clazz+"Active", active && !disabled);
-			domClass.toggle(node, clazz+"Focused", focused && !disabled);
-		}
-
-		// Mouse
-		cn("onmouseenter", function(){
-			hovering = true;
-			setClass();
-		});
-		cn("onmouseleave", function(){
-			hovering = false;
-			active = false;
-			setClass();
-		});
-		cn(touch.press, function(){
-			active = true;
-			setClass();
-		});
-		cn(touch.release, function(){
-			active = false;
-			setClass();
-		});
-
-		// Focus
-		cn("onfocus", function(){
-			focused = true;
-			setClass();
-		});
-		cn("onblur", function(){
-			focused = false;
-			setClass();
-		});
-
-		// Just in case widget is enabled/disabled while it has focus/hover/active state.
-		// Maybe this is overkill.
-		this.watch("disabled", setClass);
-		this.watch("readOnly", setClass);
-	}
-});
-});
-
-},
-'dijit/_TemplatedMixin':function(){
-define("dijit/_TemplatedMixin", [
-	"dojo/_base/lang", // lang.getObject
-	"dojo/touch",
-	"./_WidgetBase",
-	"dojo/string", // string.substitute string.trim
-	"dojo/cache",	// dojo.cache
-	"dojo/_base/array", // array.forEach
-	"dojo/_base/declare", // declare
-	"dojo/dom-construct", // domConstruct.destroy, domConstruct.toDom
-	"dojo/_base/sniff", // has("ie")
-	"dojo/_base/unload", // unload.addOnWindowUnload
-	"dojo/_base/window" // win.doc
-], function(lang, touch, _WidgetBase, string, cache, array, declare, domConstruct, has, unload, win) {
-
-/*=====
-	var _WidgetBase = dijit._WidgetBase;
-=====*/
-
-	// module:
-	//		dijit/_TemplatedMixin
-	// summary:
-	//		Mixin for widgets that are instantiated from a template
-
-	var _TemplatedMixin = declare("dijit._TemplatedMixin", null, {
-		// summary:
-		//		Mixin for widgets that are instantiated from a template
-
-		// templateString: [protected] String
-		//		A string that represents the widget template.
-		//		Use in conjunction with dojo.cache() to load from a file.
-		templateString: null,
-
-		// templatePath: [protected deprecated] String
-		//		Path to template (HTML file) for this widget relative to dojo.baseUrl.
-		//		Deprecated: use templateString with require([... "dojo/text!..."], ...) instead
-		templatePath: null,
-
-		// skipNodeCache: [protected] Boolean
-		//		If using a cached widget template nodes poses issues for a
-		//		particular widget class, it can set this property to ensure
-		//		that its template is always re-built from a string
-		_skipNodeCache: false,
-
-		// _earlyTemplatedStartup: Boolean
-		//		A fallback to preserve the 1.0 - 1.3 behavior of children in
-		//		templates having their startup called before the parent widget
-		//		fires postCreate. Defaults to 'false', causing child widgets to
-		//		have their .startup() called immediately before a parent widget
-		//		.startup(), but always after the parent .postCreate(). Set to
-		//		'true' to re-enable to previous, arguably broken, behavior.
-		_earlyTemplatedStartup: false,
-
-/*=====
-		// _attachPoints: [private] String[]
-		//		List of widget attribute names associated with data-dojo-attach-point=... in the
-		//		template, ex: ["containerNode", "labelNode"]
- 		_attachPoints: [],
- =====*/
-
-/*=====
-		// _attachEvents: [private] Handle[]
-		//		List of connections associated with data-dojo-attach-event=... in the
-		//		template
- 		_attachEvents: [],
- =====*/
-
-		constructor: function(){
-			this._attachPoints = [];
-			this._attachEvents = [];
-		},
-
-		_stringRepl: function(tmpl){
-			// summary:
-			//		Does substitution of ${foo} type properties in template string
-			// tags:
-			//		private
-			var className = this.declaredClass, _this = this;
-			// Cache contains a string because we need to do property replacement
-			// do the property replacement
-			return string.substitute(tmpl, this, function(value, key){
-				if(key.charAt(0) == '!'){ value = lang.getObject(key.substr(1), false, _this); }
-				if(typeof value == "undefined"){ throw new Error(className+" template:"+key); } // a debugging aide
-				if(value == null){ return ""; }
-
-				// Substitution keys beginning with ! will skip the transform step,
-				// in case a user wishes to insert unescaped markup, e.g. ${!foo}
-				return key.charAt(0) == "!" ? value :
-					// Safer substitution, see heading "Attribute values" in
-					// http://www.w3.org/TR/REC-html40/appendix/notes.html#h-B.3.2
-					value.toString().replace(/"/g,"&quot;"); //TODO: add &amp? use encodeXML method?
-			}, this);
-		},
-
-		buildRendering: function(){
-			// summary:
-			//		Construct the UI for this widget from a template, setting this.domNode.
-			// tags:
-			//		protected
-
-			if(!this.templateString){
-				this.templateString = cache(this.templatePath, {sanitize: true});
-			}
-
-			// Lookup cached version of template, and download to cache if it
-			// isn't there already.  Returns either a DomNode or a string, depending on
-			// whether or not the template contains ${foo} replacement parameters.
-			var cached = _TemplatedMixin.getCachedTemplate(this.templateString, this._skipNodeCache);
-
-			var node;
-			if(lang.isString(cached)){
-				node = domConstruct.toDom(this._stringRepl(cached));
-				if(node.nodeType != 1){
-					// Flag common problems such as templates with multiple top level nodes (nodeType == 11)
-					throw new Error("Invalid template: " + cached);
-				}
-			}else{
-				// if it's a node, all we have to do is clone it
-				node = cached.cloneNode(true);
-			}
-
-			this.domNode = node;
-
-			// Call down to _Widget.buildRendering() to get base classes assigned
-			// TODO: change the baseClass assignment to _setBaseClassAttr
-			this.inherited(arguments);
-
-			// recurse through the node, looking for, and attaching to, our
-			// attachment points and events, which should be defined on the template node.
-			this._attachTemplateNodes(node, function(n,p){ return n.getAttribute(p); });
-
-			this._beforeFillContent();		// hook for _WidgetsInTemplateMixin
-
-			this._fillContent(this.srcNodeRef);
-		},
-
-		_beforeFillContent: function(){
-		},
-
-		_fillContent: function(/*DomNode*/ source){
-			// summary:
-			//		Relocate source contents to templated container node.
-			//		this.containerNode must be able to receive children, or exceptions will be thrown.
-			// tags:
-			//		protected
-			var dest = this.containerNode;
-			if(source && dest){
-				while(source.hasChildNodes()){
-					dest.appendChild(source.firstChild);
-				}
-			}
-		},
-
-		_attachTemplateNodes: function(rootNode, getAttrFunc){
-			// summary:
-			//		Iterate through the template and attach functions and nodes accordingly.
-			//		Alternately, if rootNode is an array of widgets, then will process data-dojo-attach-point
-			//		etc. for those widgets.
-			// description:
-			//		Map widget properties and functions to the handlers specified in
-			//		the dom node and it's descendants. This function iterates over all
-			//		nodes and looks for these properties:
-			//			* dojoAttachPoint/data-dojo-attach-point
-			//			* dojoAttachEvent/data-dojo-attach-event
-			// rootNode: DomNode|Widget[]
-			//		the node to search for properties. All children will be searched.
-			// getAttrFunc: Function
-			//		a function which will be used to obtain property for a given
-			//		DomNode/Widget
-			// tags:
-			//		private
-
-			var nodes = lang.isArray(rootNode) ? rootNode : (rootNode.all || rootNode.getElementsByTagName("*"));
-			var x = lang.isArray(rootNode) ? 0 : -1;
-			for(; x<nodes.length; x++){
-				var baseNode = (x == -1) ? rootNode : nodes[x];
-				if(this.widgetsInTemplate && (getAttrFunc(baseNode, "dojoType") || getAttrFunc(baseNode, "data-dojo-type"))){
-					continue;
-				}
-				// Process data-dojo-attach-point
-				var attachPoint = getAttrFunc(baseNode, "dojoAttachPoint") || getAttrFunc(baseNode, "data-dojo-attach-point");
-				if(attachPoint){
-					var point, points = attachPoint.split(/\s*,\s*/);
-					while((point = points.shift())){
-						if(lang.isArray(this[point])){
-							this[point].push(baseNode);
-						}else{
-							this[point]=baseNode;
-						}
-						this._attachPoints.push(point);
-					}
-				}
-
-				// Process data-dojo-attach-event
-				var attachEvent = getAttrFunc(baseNode, "dojoAttachEvent") || getAttrFunc(baseNode, "data-dojo-attach-event");
-				if(attachEvent){
-					// NOTE: we want to support attributes that have the form
-					// "domEvent: nativeEvent; ..."
-					var event, events = attachEvent.split(/\s*,\s*/);
-					var trim = lang.trim;
-					while((event = events.shift())){
-						if(event){
-							var thisFunc = null;
-							if(event.indexOf(":") != -1){
-								// oh, if only JS had tuple assignment
-								var funcNameArr = event.split(":");
-								event = trim(funcNameArr[0]);
-								thisFunc = trim(funcNameArr[1]);
-							}else{
-								event = trim(event);
-							}
-							if(!thisFunc){
-								thisFunc = event;
-							}
-							// Map "press", "move" and "release" to keys.touch, keys.move, keys.release
-							this._attachEvents.push(this.connect(baseNode, touch[event] || event, thisFunc));
-						}
-					}
-				}
-			}
-		},
-
-		destroyRendering: function(){
-			// Delete all attach points to prevent IE6 memory leaks.
-			array.forEach(this._attachPoints, function(point){
-				delete this[point];
-			}, this);
-			this._attachPoints = [];
-
-			// And same for event handlers
-			array.forEach(this._attachEvents, this.disconnect, this);
-			this._attachEvents = [];
-
-			this.inherited(arguments);
-		}
-	});
-
-	// key is templateString; object is either string or DOM tree
-	_TemplatedMixin._templateCache = {};
-
-	_TemplatedMixin.getCachedTemplate = function(templateString, alwaysUseString){
-		// summary:
-		//		Static method to get a template based on the templatePath or
-		//		templateString key
-		// templateString: String
-		//		The template
-		// alwaysUseString: Boolean
-		//		Don't cache the DOM tree for this template, even if it doesn't have any variables
-		// returns: Mixed
-		//		Either string (if there are ${} variables that need to be replaced) or just
-		//		a DOM tree (if the node can be cloned directly)
-
-		// is it already cached?
-		var tmplts = _TemplatedMixin._templateCache;
-		var key = templateString;
-		var cached = tmplts[key];
-		if(cached){
-			try{
-				// if the cached value is an innerHTML string (no ownerDocument) or a DOM tree created within the current document, then use the current cached value
-				if(!cached.ownerDocument || cached.ownerDocument == win.doc){
-					// string or node of the same document
-					return cached;
-				}
-			}catch(e){ /* squelch */ } // IE can throw an exception if cached.ownerDocument was reloaded
-			domConstruct.destroy(cached);
-		}
-
-		templateString = string.trim(templateString);
-
-		if(alwaysUseString || templateString.match(/\$\{([^\}]+)\}/g)){
-			// there are variables in the template so all we can do is cache the string
-			return (tmplts[key] = templateString); //String
-		}else{
-			// there are no variables in the template so we can cache the DOM tree
-			var node = domConstruct.toDom(templateString);
-			if(node.nodeType != 1){
-				throw new Error("Invalid template: " + templateString);
-			}
-			return (tmplts[key] = node); //Node
-		}
-	};
-
-	if(has("ie")){
-		unload.addOnWindowUnload(function(){
-			var cache = _TemplatedMixin._templateCache;
-			for(var key in cache){
-				var value = cache[key];
-				if(typeof value == "object"){ // value is either a string or a DOM node template
-					domConstruct.destroy(value);
-				}
-				delete cache[key];
-			}
-		});
-	}
-
-	// These arguments can be specified for widgets which are used in templates.
-	// Since any widget can be specified as sub widgets in template, mix it
-	// into the base widget class.  (This is a hack, but it's effective.)
-	lang.extend(_WidgetBase,{
-		dojoAttachEvent: "",
-		dojoAttachPoint: ""
-	});
-
-	return _TemplatedMixin;
-});
-
-},
-'dojo/string':function(){
-define("dojo/string", ["./_base/kernel", "./_base/lang"], function(dojo, lang) {
-	// module:
-	//		dojo/string
-	// summary:
-	//		TODOC
-
-lang.getObject("string", true, dojo);
-
-/*=====
-dojo.string = {
-	// summary: String utilities for Dojo
-};
-=====*/
-
-dojo.string.rep = function(/*String*/str, /*Integer*/num){
-	// summary:
-	//		Efficiently replicate a string `n` times.
-	// str:
-	//		the string to replicate
-	// num:
-	//		number of times to replicate the string
-
-	if(num <= 0 || !str){ return ""; }
-
-	var buf = [];
-	for(;;){
-		if(num & 1){
-			buf.push(str);
-		}
-		if(!(num >>= 1)){ break; }
-		str += str;
-	}
-	return buf.join("");	// String
-};
-
-dojo.string.pad = function(/*String*/text, /*Integer*/size, /*String?*/ch, /*Boolean?*/end){
-	// summary:
-	//		Pad a string to guarantee that it is at least `size` length by
-	//		filling with the character `ch` at either the start or end of the
-	//		string. Pads at the start, by default.
-	// text:
-	//		the string to pad
-	// size:
-	//		length to provide padding
-	// ch:
-	//		character to pad, defaults to '0'
-	// end:
-	//		adds padding at the end if true, otherwise pads at start
-	// example:
-	//	|	// Fill the string to length 10 with "+" characters on the right.  Yields "Dojo++++++".
-	//	|	dojo.string.pad("Dojo", 10, "+", true);
-
-	if(!ch){
-		ch = '0';
-	}
-	var out = String(text),
-		pad = dojo.string.rep(ch, Math.ceil((size - out.length) / ch.length));
-	return end ? out + pad : pad + out;	// String
-};
-
-dojo.string.substitute = function(	/*String*/		template,
-									/*Object|Array*/map,
-									/*Function?*/	transform,
-									/*Object?*/		thisObject){
-	// summary:
-	//		Performs parameterized substitutions on a string. Throws an
-	//		exception if any parameter is unmatched.
-	// template:
-	//		a string with expressions in the form `${key}` to be replaced or
-	//		`${key:format}` which specifies a format function. keys are case-sensitive.
-	// map:
-	//		hash to search for substitutions
-	// transform:
-	//		a function to process all parameters before substitution takes
-	//		place, e.g. mylib.encodeXML
-	// thisObject:
-	//		where to look for optional format function; default to the global
-	//		namespace
-	// example:
-	//		Substitutes two expressions in a string from an Array or Object
-	//	|	// returns "File 'foo.html' is not found in directory '/temp'."
-	//	|	// by providing substitution data in an Array
-	//	|	dojo.string.substitute(
-	//	|		"File '${0}' is not found in directory '${1}'.",
-	//	|		["foo.html","/temp"]
-	//	|	);
-	//	|
-	//	|	// also returns "File 'foo.html' is not found in directory '/temp'."
-	//	|	// but provides substitution data in an Object structure.  Dotted
-	//	|	// notation may be used to traverse the structure.
-	//	|	dojo.string.substitute(
-	//	|		"File '${name}' is not found in directory '${info.dir}'.",
-	//	|		{ name: "foo.html", info: { dir: "/temp" } }
-	//	|	);
-	// example:
-	//		Use a transform function to modify the values:
-	//	|	// returns "file 'foo.html' is not found in directory '/temp'."
-	//	|	dojo.string.substitute(
-	//	|		"${0} is not found in ${1}.",
-	//	|		["foo.html","/temp"],
-	//	|		function(str){
-	//	|			// try to figure out the type
-	//	|			var prefix = (str.charAt(0) == "/") ? "directory": "file";
-	//	|			return prefix + " '" + str + "'";
-	//	|		}
-	//	|	);
-	// example:
-	//		Use a formatter
-	//	|	// returns "thinger -- howdy"
-	//	|	dojo.string.substitute(
-	//	|		"${0:postfix}", ["thinger"], null, {
-	//	|			postfix: function(value, key){
-	//	|				return value + " -- howdy";
-	//	|			}
-	//	|		}
-	//	|	);
-
-	thisObject = thisObject || dojo.global;
-	transform = transform ?
-		lang.hitch(thisObject, transform) : function(v){ return v; };
-
-	return template.replace(/\$\{([^\s\:\}]+)(?:\:([^\s\:\}]+))?\}/g,
-		function(match, key, format){
-			var value = lang.getObject(key, false, map);
-			if(format){
-				value = lang.getObject(format, false, thisObject).call(thisObject, value, key);
-			}
-			return transform(value, key).toString();
-		}); // String
-};
-
-/*=====
-dojo.string.trim = function(str){
-	// summary:
-	//		Trims whitespace from both sides of the string
-	// str: String
-	//		String to be trimmed
-	// returns: String
-	//		Returns the trimmed string
-	// description:
-	//		This version of trim() was taken from [Steven Levithan's blog](http://blog.stevenlevithan.com/archives/faster-trim-javascript).
-	//		The short yet performant version of this function is dojo.trim(),
-	//		which is part of Dojo base.  Uses String.prototype.trim instead, if available.
-	return "";	// String
-}
-=====*/
-
-dojo.string.trim = String.prototype.trim ?
-	lang.trim : // aliasing to the native function
-	function(str){
-		str = str.replace(/^\s+/, '');
-		for(var i = str.length - 1; i >= 0; i--){
-			if(/\S/.test(str.charAt(i))){
-				str = str.substring(0, i + 1);
-				break;
-			}
-		}
-		return str;
-	};
-
-return dojo.string;
-});
-
-},
-'dojo/cache':function(){
-define("dojo/cache", ["./_base/kernel", "./text"], function(dojo, text){
-	// module:
-	//		dojo/cache
-	// summary:
-	//		The module defines dojo.cache by loading dojo/text.
-
-	//dojo.cache is defined in dojo/text
-	return dojo.cache;
-});
-
-},
-'dojo/text':function(){
-define("dojo/text", ["./_base/kernel", "require", "./has", "./_base/xhr"], function(dojo, require, has, xhr){
-	// module:
-	//		dojo/text
-	// summary:
-	//		This module implements the !dojo/text plugin and the dojo.cache API.
-	// description:
-	//		We choose to include our own plugin to leverage functionality already contained in dojo
-	//		and thereby reduce the size of the plugin compared to various foreign loader implementations.
-	//		Also, this allows foreign AMD loaders to be used without their plugins.
-	//
-	//		CAUTION: this module is designed to optionally function synchronously to support the dojo v1.x synchronous
-	//		loader. This feature is outside the scope of the CommonJS plugins specification.
-
-	var getText;
-	if(1){
-		getText= function(url, sync, load){
-			xhr("GET", {url:url, sync:!!sync, load:load});
-		};
-	}else{
-		// TODOC: only works for dojo AMD loader
-		if(require.getText){
-			getText= require.getText;
-		}else{
-			console.error("dojo/text plugin failed to load because loader does not support getText");
-		}
-	}
-
-	var
-		theCache= {},
-
-		strip= function(text){
-			//Strips <?xml ...?> declarations so that external SVG and XML
-			//documents can be added to a document without worry. Also, if the string
-			//is an HTML document, only the part inside the body tag is returned.
-			if(text){
-				text= text.replace(/^\s*<\?xml(\s)+version=[\'\"](\d)*.(\d)*[\'\"](\s)*\?>/im, "");
-				var matches= text.match(/<body[^>]*>\s*([\s\S]+)\s*<\/body>/im);
-				if(matches){
-					text= matches[1];
-				}
-			}else{
-				text = "";
-			}
-			return text;
-		},
-
-		notFound = {},
-
-		pending = {},
-
-		result= {
-			dynamic:
-				// the dojo/text caches it's own resources because of dojo.cache
-				true,
-
-			normalize:function(id, toAbsMid){
-				// id is something like (path may be relative):
-				//
-				//	 "path/to/text.html"
-				//	 "path/to/text.html!strip"
-				var parts= id.split("!"),
-					url= parts[0];
-				return (/^\./.test(url) ? toAbsMid(url) : url) + (parts[1] ? "!" + parts[1] : "");
-			},
-
-			load:function(id, require, load){
-				// id is something like (path is always absolute):
-				//
-				//	 "path/to/text.html"
-				//	 "path/to/text.html!strip"
-				var
-					parts= id.split("!"),
-					stripFlag= parts.length>1,
-					absMid= parts[0],
-					url = require.toUrl(parts[0]),
-					text = notFound,
-					finish = function(text){
-						load(stripFlag ? strip(text) : text);
-					};
-				if(absMid in theCache){
-					text = theCache[absMid];
-				}else if(url in require.cache){
-					text = require.cache[url];
-				}else if(url in theCache){
-					text = theCache[url];
-				}
-				if(text===notFound){
-					if(pending[url]){
-						pending[url].push(finish);
-					}else{
-						var pendingList = pending[url] = [finish];
-						getText(url, !require.async, function(text){
-							theCache[absMid]= theCache[url]= text;
-							for(var i = 0; i<pendingList.length;){
-								pendingList[i++](text);
-							}
-							delete pending[url];
-						});
-					}
-				}else{
-					finish(text);
-				}
-			}
-		};
-
-	dojo.cache= function(/*String||Object*/module, /*String*/url, /*String||Object?*/value){
-		//	 * (string string [value]) => (module, url, value)
-		//	 * (object [value])        => (module, value), url defaults to ""
-		//
-		//	 * if module is an object, then it must be convertable to a string
-		//	 * (module, url) module + (url ? ("/" + url) : "") must be a legal argument to require.toUrl
-		//	 * value may be a string or an object; if an object then may have the properties "value" and/or "sanitize"
-		var key;
-		if(typeof module=="string"){
-			if(/\//.test(module)){
-				// module is a version 1.7+ resolved path
-				key = module;
-				value = url;
-			}else{
-				// module is a version 1.6- argument to dojo.moduleUrl
-				key = require.toUrl(module.replace(/\./g, "/") + (url ? ("/" + url) : ""));
-			}
-		}else{
-			key = module + "";
-			value = url;
-		}
-		var
-			val = (value != undefined && typeof value != "string") ? value.value : value,
-			sanitize = value && value.sanitize;
-
-		if(typeof val == "string"){
-			//We have a string, set cache value
-			theCache[key] = val;
-			return sanitize ? strip(val) : val;
-		}else if(val === null){
-			//Remove cached value
-			delete theCache[key];
-			return null;
-		}else{
-			//Allow cache values to be empty strings. If key property does
-			//not exist, fetch it.
-			if(!(key in theCache)){
-				getText(key, true, function(text){
-					theCache[key]= text;
-				});
-			}
-			return sanitize ? strip(theCache[key]) : theCache[key];
-		}
-	};
-
-	return result;
-
-/*=====
-dojo.cache = function(module, url, value){
-	// summary:
-	//		A getter and setter for storing the string content associated with the
-	//		module and url arguments.
-	// description:
-	//		If module is a string that contains slashes, then it is interpretted as a fully
-	//		resolved path (typically a result returned by require.toUrl), and url should not be
-	//		provided. This is the preferred signature. If module is a string that does not
-	//		contain slashes, then url must also be provided and module and url are used to
-	//		call `dojo.moduleUrl()` to generate a module URL. This signature is deprecated.
-	//		If value is specified, the cache value for the moduleUrl will be set to
-	//		that value. Otherwise, dojo.cache will fetch the moduleUrl and store it
-	//		in its internal cache and return that cached value for the URL. To clear
-	//		a cache value pass null for value. Since XMLHttpRequest (XHR) is used to fetch the
-	//		the URL contents, only modules on the same domain of the page can use this capability.
-	//		The build system can inline the cache values though, to allow for xdomain hosting.
-	// module: String||Object
-	//		If a String with slashes, a fully resolved path; if a String without slashes, the
-	//		module name to use for the base part of the URL, similar to module argument
-	//		to `dojo.moduleUrl`. If an Object, something that has a .toString() method that
-	//		generates a valid path for the cache item. For example, a dojo._Url object.
-	// url: String
-	//		The rest of the path to append to the path derived from the module argument. If
-	//		module is an object, then this second argument should be the "value" argument instead.
-	// value: String||Object?
-	//		If a String, the value to use in the cache for the module/url combination.
-	//		If an Object, it can have two properties: value and sanitize. The value property
-	//		should be the value to use in the cache, and sanitize can be set to true or false,
-	//		to indicate if XML declarations should be removed from the value and if the HTML
-	//		inside a body tag in the value should be extracted as the real value. The value argument
-	//		or the value property on the value argument are usually only used by the build system
-	//		as it inlines cache content.
-	//	example:
-	//		To ask dojo.cache to fetch content and store it in the cache (the dojo["cache"] style
-	//		of call is used to avoid an issue with the build system erroneously trying to intern
-	//		this example. To get the build system to intern your dojo.cache calls, use the
-	//		"dojo.cache" style of call):
-	//		| //If template.html contains "<h1>Hello</h1>" that will be
-	//		| //the value for the text variable.
-	//		| var text = dojo["cache"]("my.module", "template.html");
-	//	example:
-	//		To ask dojo.cache to fetch content and store it in the cache, and sanitize the input
-	//		 (the dojo["cache"] style of call is used to avoid an issue with the build system
-	//		erroneously trying to intern this example. To get the build system to intern your
-	//		dojo.cache calls, use the "dojo.cache" style of call):
-	//		| //If template.html contains "<html><body><h1>Hello</h1></body></html>", the
-	//		| //text variable will contain just "<h1>Hello</h1>".
-	//		| var text = dojo["cache"]("my.module", "template.html", {sanitize: true});
-	//	example:
-	//		Same example as previous, but demostrates how an object can be passed in as
-	//		the first argument, then the value argument can then be the second argument.
-	//		| //If template.html contains "<html><body><h1>Hello</h1></body></html>", the
-	//		| //text variable will contain just "<h1>Hello</h1>".
-	//		| var text = dojo["cache"](new dojo._Url("my/module/template.html"), {sanitize: true});
-	return val; //String
-};
-=====*/
-});
-
-
-},
-'dijit/form/_FormWidgetMixin':function(){
-define("dijit/form/_FormWidgetMixin", [
-	"dojo/_base/array", // array.forEach
-	"dojo/_base/declare", // declare
-	"dojo/dom-attr", // domAttr.set
-	"dojo/dom-style", // domStyle.get
-	"dojo/_base/lang", // lang.hitch lang.isArray
-	"dojo/mouse", // mouse.isLeft
-	"dojo/_base/sniff", // has("webkit")
-	"dojo/_base/window", // win.body
-	"dojo/window", // winUtils.scrollIntoView
-	"../a11y"	// a11y.hasDefaultTabStop
-], function(array, declare, domAttr, domStyle, lang, mouse, has, win, winUtils, a11y){
-
-// module:
-//		dijit/form/_FormWidgetMixin
-// summary:
-//		Mixin for widgets corresponding to native HTML elements such as <checkbox> or <button>,
-//		which can be children of a <form> node or a `dijit.form.Form` widget.
-
-return declare("dijit.form._FormWidgetMixin", null, {
-	// summary:
-	//		Mixin for widgets corresponding to native HTML elements such as <checkbox> or <button>,
-	//		which can be children of a <form> node or a `dijit.form.Form` widget.
-	//
-	// description:
-	//		Represents a single HTML element.
-	//		All these widgets should have these attributes just like native HTML input elements.
-	//		You can set them during widget construction or afterwards, via `dijit._Widget.attr`.
-	//
-	//		They also share some common methods.
-
-	// name: [const] String
-	//		Name used when submitting form; same as "name" attribute or plain HTML elements
-	name: "",
-
-	// alt: String
-	//		Corresponds to the native HTML <input> element's attribute.
-	alt: "",
-
-	// value: String
-	//		Corresponds to the native HTML <input> element's attribute.
-	value: "",
-
-	// type: [const] String
-	//		Corresponds to the native HTML <input> element's attribute.
-	type: "text",
-
-	// tabIndex: Integer
-	//		Order fields are traversed when user hits the tab key
-	tabIndex: "0",
-	_setTabIndexAttr: "focusNode",	// force copy even when tabIndex default value, needed since Button is <span>
-
-	// disabled: Boolean
-	//		Should this widget respond to user input?
-	//		In markup, this is specified as "disabled='disabled'", or just "disabled".
-	disabled: false,
-
-	// intermediateChanges: Boolean
-	//		Fires onChange for each value change or only on demand
-	intermediateChanges: false,
-
-	// scrollOnFocus: Boolean
-	//		On focus, should this widget scroll into view?
-	scrollOnFocus: true,
-
-	// Override _WidgetBase mapping id to this.domNode, needs to be on focusNode so <label> etc.
-	// works with screen reader
-	_setIdAttr: "focusNode",
-
-	postCreate: function(){
-		this.inherited(arguments);
-		this.connect(this.domNode, "onmousedown", "_onMouseDown");
-	},
-
-	_setDisabledAttr: function(/*Boolean*/ value){
-		this._set("disabled", value);
-		domAttr.set(this.focusNode, 'disabled', value);
-		if(this.valueNode){
-			domAttr.set(this.valueNode, 'disabled', value);
-		}
-		this.focusNode.setAttribute("aria-disabled", value);
-
-		if(value){
-			// reset these, because after the domNode is disabled, we can no longer receive
-			// mouse related events, see #4200
-			this._set("hovering", false);
-			this._set("active", false);
-
-			// clear tab stop(s) on this widget's focusable node(s)  (ComboBox has two focusable nodes)
-			var attachPointNames = "tabIndex" in this.attributeMap ? this.attributeMap.tabIndex :
-				("_setTabIndexAttr" in this) ? this._setTabIndexAttr : "focusNode";
-			array.forEach(lang.isArray(attachPointNames) ? attachPointNames : [attachPointNames], function(attachPointName){
-				var node = this[attachPointName];
-				// complex code because tabIndex=-1 on a <div> doesn't work on FF
-				if(has("webkit") || a11y.hasDefaultTabStop(node)){	// see #11064 about webkit bug
-					node.setAttribute('tabIndex', "-1");
-				}else{
-					node.removeAttribute('tabIndex');
-				}
-			}, this);
-		}else{
-			if(this.tabIndex != ""){
-				this.set('tabIndex', this.tabIndex);
-			}
-		}
-	},
-
-	_onFocus: function(e){
-		if(this.scrollOnFocus){
-			winUtils.scrollIntoView(this.domNode);
-		}
-		this.inherited(arguments);
-	},
-
-	isFocusable: function(){
-		// summary:
-		//		Tells if this widget is focusable or not.  Used internally by dijit.
-		// tags:
-		//		protected
-		return !this.disabled && this.focusNode && (domStyle.get(this.domNode, "display") != "none");
-	},
-
-	focus: function(){
-		// summary:
-		//		Put focus on this widget
-		if(!this.disabled && this.focusNode.focus){
-			try{ this.focusNode.focus(); }catch(e){}/*squelch errors from hidden nodes*/
-		}
-	},
-
-	compare: function(/*anything*/ val1, /*anything*/ val2){
-		// summary:
-		//		Compare 2 values (as returned by get('value') for this widget).
-		// tags:
-		//		protected
-		if(typeof val1 == "number" && typeof val2 == "number"){
-			return (isNaN(val1) && isNaN(val2)) ? 0 : val1 - val2;
-		}else if(val1 > val2){
-			return 1;
-		}else if(val1 < val2){
-			return -1;
-		}else{
-			return 0;
-		}
-	},
-
-	onChange: function(/*===== newValue =====*/){
-		// summary:
-		//		Callback when this widget's value is changed.
-		// tags:
-		//		callback
-	},
-
-	// _onChangeActive: [private] Boolean
-	//		Indicates that changes to the value should call onChange() callback.
-	//		This is false during widget initialization, to avoid calling onChange()
-	//		when the initial value is set.
-	_onChangeActive: false,
-
-	_handleOnChange: function(/*anything*/ newValue, /*Boolean?*/ priorityChange){
-		// summary:
-		//		Called when the value of the widget is set.  Calls onChange() if appropriate
-		// newValue:
-		//		the new value
-		// priorityChange:
-		//		For a slider, for example, dragging the slider is priorityChange==false,
-		//		but on mouse up, it's priorityChange==true.  If intermediateChanges==false,
-		//		onChange is only called form priorityChange=true events.
-		// tags:
-		//		private
-		if(this._lastValueReported == undefined && (priorityChange === null || !this._onChangeActive)){
-			// this block executes not for a change, but during initialization,
-			// and is used to store away the original value (or for ToggleButton, the original checked state)
-			this._resetValue = this._lastValueReported = newValue;
-		}
-		this._pendingOnChange = this._pendingOnChange
-			|| (typeof newValue != typeof this._lastValueReported)
-			|| (this.compare(newValue, this._lastValueReported) != 0);
-		if((this.intermediateChanges || priorityChange || priorityChange === undefined) && this._pendingOnChange){
-			this._lastValueReported = newValue;
-			this._pendingOnChange = false;
-			if(this._onChangeActive){
-				if(this._onChangeHandle){
-					clearTimeout(this._onChangeHandle);
-				}
-				// setTimeout allows hidden value processing to run and
-				// also the onChange handler can safely adjust focus, etc
-				this._onChangeHandle = setTimeout(lang.hitch(this,
-					function(){
-						this._onChangeHandle = null;
-						this.onChange(newValue);
-					}), 0); // try to collapse multiple onChange's fired faster than can be processed
-			}
-		}
-	},
-
-	create: function(){
-		// Overrides _Widget.create()
-		this.inherited(arguments);
-		this._onChangeActive = true;
-	},
-
-	destroy: function(){
-		if(this._onChangeHandle){ // destroy called before last onChange has fired
-			clearTimeout(this._onChangeHandle);
-			this.onChange(this._lastValueReported);
-		}
-		this.inherited(arguments);
-	},
-
-	_onMouseDown: function(e){
-		// If user clicks on the button, even if the mouse is released outside of it,
-		// this button should get focus (to mimics native browser buttons).
-		// This is also needed on chrome because otherwise buttons won't get focus at all,
-		// which leads to bizarre focus restore on Dialog close etc.
-		// IE exhibits strange scrolling behavior when focusing a node so only do it when !focused.
-		// FF needs the extra help to make sure the mousedown actually gets to the focusNode
-		if((!this.focused || !has("ie")) && !e.ctrlKey && mouse.isLeft(e) && this.isFocusable()){ // !e.ctrlKey to ignore right-click on mac
-			// Set a global event to handle mouseup, so it fires properly
-			// even if the cursor leaves this.domNode before the mouse up event.
-			var mouseUpConnector = this.connect(win.body(), "onmouseup", function(){
-				if(this.isFocusable()){
-					this.focus();
-				}
-				this.disconnect(mouseUpConnector);
-			});
-		}
-	}
-});
-
-});
-
-},
-'dijit/form/_ButtonMixin':function(){
-define("dijit/form/_ButtonMixin", [
-	"dojo/_base/declare", // declare
-	"dojo/dom", // dom.setSelectable
-	"dojo/_base/event", // event.stop
-	"../registry"		// registry.byNode
-], function(declare, dom, event, registry){
-
-// module:
-//		dijit/form/_ButtonMixin
-// summary:
-//		A mixin to add a thin standard API wrapper to a normal HTML button
-
-return declare("dijit.form._ButtonMixin", null, {
-	// summary:
-	//		A mixin to add a thin standard API wrapper to a normal HTML button
-	// description:
-	//		A label should always be specified (through innerHTML) or the label attribute.
-	//		Attach points:
-	//			focusNode (required): this node receives focus
-	//			valueNode (optional): this node's value gets submitted with FORM elements
-	//			containerNode (optional): this node gets the innerHTML assignment for label
-	// example:
-	// |	<button data-dojo-type="dijit.form.Button" onClick="...">Hello world</button>
-	//
-	// example:
-	// |	var button1 = new dijit.form.Button({label: "hello world", onClick: foo});
-	// |	dojo.body().appendChild(button1.domNode);
-
-	// label: HTML String
-	//		Content to display in button.
-	label: "",
-
-	// type: [const] String
-	//		Type of button (submit, reset, button, checkbox, radio)
-	type: "button",
-
-	_onClick: function(/*Event*/ e){
-		// summary:
-		//		Internal function to handle click actions
-		if(this.disabled){
-			event.stop(e);
-			return false;
-		}
-		var preventDefault = this.onClick(e) === false; // user click actions
-		if(!preventDefault && this.type == "submit" && !(this.valueNode||this.focusNode).form){ // see if a non-form widget needs to be signalled
-			for(var node=this.domNode; node.parentNode; node=node.parentNode){
-				var widget=registry.byNode(node);
-				if(widget && typeof widget._onSubmit == "function"){
-					widget._onSubmit(e);
-					preventDefault = true;
-					break;
-				}
-			}
-		}
-		if(preventDefault){
-			e.preventDefault();
-		}
-		return !preventDefault;
-	},
-
-	postCreate: function(){
-		this.inherited(arguments);
-		dom.setSelectable(this.focusNode, false);
-	},
-
-	onClick: function(/*Event*/ /*===== e =====*/){
-		// summary:
-		//		Callback for when button is clicked.
-		//		If type="submit", return true to perform submit, or false to cancel it.
-		// type:
-		//		callback
-		return true;		// Boolean
-	},
-
-	_setLabelAttr: function(/*String*/ content){
-		// summary:
-		//		Hook for set('label', ...) to work.
-		// description:
-		//		Set the label (text) of the button; takes an HTML string.
-		this._set("label", content);
-		(this.containerNode||this.focusNode).innerHTML = content;
-	}
-});
-
-});
-
-},
-'url:dijit/form/templates/Button.html':"<span class=\"dijit dijitReset dijitInline\" role=\"presentation\"\n\t><span class=\"dijitReset dijitInline dijitButtonNode\"\n\t\tdata-dojo-attach-event=\"ondijitclick:_onClick\" role=\"presentation\"\n\t\t><span class=\"dijitReset dijitStretch dijitButtonContents\"\n\t\t\tdata-dojo-attach-point=\"titleNode,focusNode\"\n\t\t\trole=\"button\" aria-labelledby=\"${id}_label\"\n\t\t\t><span class=\"dijitReset dijitInline dijitIcon\" data-dojo-attach-point=\"iconNode\"></span\n\t\t\t><span class=\"dijitReset dijitToggleButtonIconChar\">&#x25CF;</span\n\t\t\t><span class=\"dijitReset dijitInline dijitButtonText\"\n\t\t\t\tid=\"${id}_label\"\n\t\t\t\tdata-dojo-attach-point=\"containerNode\"\n\t\t\t></span\n\t\t></span\n\t></span\n\t><input ${!nameAttrSetting} type=\"${type}\" value=\"${value}\" class=\"dijitOffScreen\"\n\t\ttabIndex=\"-1\" role=\"presentation\" data-dojo-attach-point=\"valueNode\"\n/></span>\n",
-'dijit/form/_FormValueWidget':function(){
-define("dijit/form/_FormValueWidget", [
-	"dojo/_base/declare", // declare
-	"dojo/_base/sniff", // has("ie")
-	"./_FormWidget",
-	"./_FormValueMixin"
-], function(declare, has, _FormWidget, _FormValueMixin){
-
-/*=====
-var _FormWidget = dijit.form._FormWidget;
-var _FormValueMixin = dijit.form._FormValueMixin;
-=====*/
-
-// module:
-//		dijit/form/_FormValueWidget
-// summary:
-//		FormValueWidget
-
-
-return declare("dijit.form._FormValueWidget", [_FormWidget, _FormValueMixin],
-{
-	// summary:
-	//		Base class for widgets corresponding to native HTML elements such as <input> or <select> that have user changeable values.
-	// description:
-	//		Each _FormValueWidget represents a single input value, and has a (possibly hidden) <input> element,
-	//		to which it serializes it's input value, so that form submission (either normal submission or via FormBind?)
-	//		works as expected.
-
-	// Don't attempt to mixin the 'type', 'name' attributes here programatically -- they must be declared
-	// directly in the template as read by the parser in order to function. IE is known to specifically
-	// require the 'name' attribute at element creation time.  See #8484, #8660.
-
-	_layoutHackIE7: function(){
-		// summary:
-		//		Work around table sizing bugs on IE7 by forcing redraw
-
-		if(has("ie") == 7){ // fix IE7 layout bug when the widget is scrolled out of sight
-			var domNode = this.domNode;
-			var parent = domNode.parentNode;
-			var pingNode = domNode.firstChild || domNode; // target node most unlikely to have a custom filter
-			var origFilter = pingNode.style.filter; // save custom filter, most likely nothing
-			var _this = this;
-			while(parent && parent.clientHeight == 0){ // search for parents that haven't rendered yet
-				(function ping(){
-					var disconnectHandle = _this.connect(parent, "onscroll",
-						function(){
-							_this.disconnect(disconnectHandle); // only call once
-							pingNode.style.filter = (new Date()).getMilliseconds(); // set to anything that's unique
-							setTimeout(function(){ pingNode.style.filter = origFilter }, 0); // restore custom filter, if any
-						}
-					);
-				})();
-				parent = parent.parentNode;
-			}
-		}
-	}
-});
-
-});
-
-},
-'dijit/form/_FormValueMixin':function(){
-define("dijit/form/_FormValueMixin", [
-	"dojo/_base/declare", // declare
-	"dojo/dom-attr", // domAttr.set
-	"dojo/keys", // keys.ESCAPE
-	"dojo/_base/sniff", // has("ie"), has("quirks")
-	"./_FormWidgetMixin"
-], function(declare, domAttr, keys, has, _FormWidgetMixin){
-
-/*=====
-	var _FormWidgetMixin = dijit.form._FormWidgetMixin;
-=====*/
-
-	// module:
-	//		dijit/form/_FormValueMixin
-	// summary:
-	//		Mixin for widgets corresponding to native HTML elements such as <input> or <select> that have user changeable values.
-
-	return declare("dijit.form._FormValueMixin", _FormWidgetMixin, {
-		// summary:
-		//		Mixin for widgets corresponding to native HTML elements such as <input> or <select> that have user changeable values.
-		// description:
-		//		Each _FormValueMixin represents a single input value, and has a (possibly hidden) <input> element,
-		//		to which it serializes it's input value, so that form submission (either normal submission or via FormBind?)
-		//		works as expected.
-
-		// readOnly: Boolean
-		//		Should this widget respond to user input?
-		//		In markup, this is specified as "readOnly".
-		//		Similar to disabled except readOnly form values are submitted.
-		readOnly: false,
-
-		_setReadOnlyAttr: function(/*Boolean*/ value){
-			domAttr.set(this.focusNode, 'readOnly', value);
-			this.focusNode.setAttribute("aria-readonly", value);
-			this._set("readOnly", value);
-		},
-
-		postCreate: function(){
-			this.inherited(arguments);
-
-			if(has("ie")){ // IE won't stop the event with keypress
-				this.connect(this.focusNode || this.domNode, "onkeydown", this._onKeyDown);
-			}
-			// Update our reset value if it hasn't yet been set (because this.set()
-			// is only called when there *is* a value)
-			if(this._resetValue === undefined){
-				this._lastValueReported = this._resetValue = this.value;
-			}
-		},
-
-		_setValueAttr: function(/*anything*/ newValue, /*Boolean?*/ priorityChange){
-			// summary:
-			//		Hook so set('value', value) works.
-			// description:
-			//		Sets the value of the widget.
-			//		If the value has changed, then fire onChange event, unless priorityChange
-			//		is specified as null (or false?)
-			this._handleOnChange(newValue, priorityChange);
-		},
-
-		_handleOnChange: function(/*anything*/ newValue, /*Boolean?*/ priorityChange){
-			// summary:
-			//		Called when the value of the widget has changed.  Saves the new value in this.value,
-			//		and calls onChange() if appropriate.   See _FormWidget._handleOnChange() for details.
-			this._set("value", newValue);
-			this.inherited(arguments);
-		},
-
-		undo: function(){
-			// summary:
-			//		Restore the value to the last value passed to onChange
-			this._setValueAttr(this._lastValueReported, false);
-		},
-
-		reset: function(){
-			// summary:
-			//		Reset the widget's value to what it was at initialization time
-			this._hasBeenBlurred = false;
-			this._setValueAttr(this._resetValue, true);
-		},
-
-		_onKeyDown: function(e){
-			if(e.keyCode == keys.ESCAPE && !(e.ctrlKey || e.altKey || e.metaKey)){
-				var te;
-				if(has("ie") < 9 || (has("ie") && has("quirks"))){
-					e.preventDefault(); // default behavior needs to be stopped here since keypress is too late
-					te = document.createEventObject();
-					te.keyCode = keys.ESCAPE;
-					te.shiftKey = e.shiftKey;
-					e.srcElement.fireEvent('onkeypress', te);
-				}
-			}
-		}
-	});
-});
-
-},
-'dijit/_Container':function(){
-define("dijit/_Container", [
-	"dojo/_base/array", // array.forEach array.indexOf
-	"dojo/_base/declare", // declare
-	"dojo/dom-construct", // domConstruct.place
-	"./registry"	// registry.byNode()
-], function(array, declare, domConstruct, registry){
-
-	// module:
-	//		dijit/_Container
-	// summary:
-	//		Mixin for widgets that contain a set of widget children.
-
-	return declare("dijit._Container", null, {
-		// summary:
-		//		Mixin for widgets that contain a set of widget children.
-		// description:
-		//		Use this mixin for widgets that needs to know about and
-		//		keep track of their widget children. Suitable for widgets like BorderContainer
-		//		and TabContainer which contain (only) a set of child widgets.
-		//
-		//		It's not suitable for widgets like ContentPane
-		//		which contains mixed HTML (plain DOM nodes in addition to widgets),
-		//		and where contained widgets are not necessarily directly below
-		//		this.containerNode.   In that case calls like addChild(node, position)
-		//		wouldn't make sense.
-
-		buildRendering: function(){
-			this.inherited(arguments);
-			if(!this.containerNode){
-				// all widgets with descendants must set containerNode
-	 			this.containerNode = this.domNode;
-			}
-		},
-
-		addChild: function(/*dijit._Widget*/ widget, /*int?*/ insertIndex){
-			// summary:
-			//		Makes the given widget a child of this widget.
-			// description:
-			//		Inserts specified child widget's dom node as a child of this widget's
-			//		container node, and possibly does other processing (such as layout).
-
-			var refNode = this.containerNode;
-			if(insertIndex && typeof insertIndex == "number"){
-				var children = this.getChildren();
-				if(children && children.length >= insertIndex){
-					refNode = children[insertIndex-1].domNode;
-					insertIndex = "after";
-				}
-			}
-			domConstruct.place(widget.domNode, refNode, insertIndex);
-
-			// If I've been started but the child widget hasn't been started,
-			// start it now.  Make sure to do this after widget has been
-			// inserted into the DOM tree, so it can see that it's being controlled by me,
-			// so it doesn't try to size itself.
-			if(this._started && !widget._started){
-				widget.startup();
-			}
-		},
-
-		removeChild: function(/*Widget|int*/ widget){
-			// summary:
-			//		Removes the passed widget instance from this widget but does
-			//		not destroy it.  You can also pass in an integer indicating
-			//		the index within the container to remove
-
-			if(typeof widget == "number"){
-				widget = this.getChildren()[widget];
-			}
-
-			if(widget){
-				var node = widget.domNode;
-				if(node && node.parentNode){
-					node.parentNode.removeChild(node); // detach but don't destroy
-				}
-			}
-		},
-
-		hasChildren: function(){
-			// summary:
-			//		Returns true if widget has children, i.e. if this.containerNode contains something.
-			return this.getChildren().length > 0;	// Boolean
-		},
-
-		_getSiblingOfChild: function(/*dijit._Widget*/ child, /*int*/ dir){
-			// summary:
-			//		Get the next or previous widget sibling of child
-			// dir:
-			//		if 1, get the next sibling
-			//		if -1, get the previous sibling
-			// tags:
-			//      private
-			var node = child.domNode,
-				which = (dir>0 ? "nextSibling" : "previousSibling");
-			do{
-				node = node[which];
-			}while(node && (node.nodeType != 1 || !registry.byNode(node)));
-			return node && registry.byNode(node);	// dijit._Widget
-		},
-
-		getIndexOfChild: function(/*dijit._Widget*/ child){
-			// summary:
-			//		Gets the index of the child in this container or -1 if not found
-			return array.indexOf(this.getChildren(), child);	// int
-		}
-	});
-});
-
-},
-'url:dijit/form/templates/HorizontalSlider.html':"<table class=\"dijit dijitReset dijitSlider dijitSliderH\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" rules=\"none\" data-dojo-attach-event=\"onkeypress:_onKeyPress,onkeyup:_onKeyUp\"\n\t><tr class=\"dijitReset\"\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t\t><td data-dojo-attach-point=\"topDecoration\" class=\"dijitReset dijitSliderDecoration dijitSliderDecorationT dijitSliderDecorationH\"></td\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t></tr\n\t><tr class=\"dijitReset\"\n\t\t><td class=\"dijitReset dijitSliderButtonContainer dijitSliderButtonContainerH\"\n\t\t\t><div class=\"dijitSliderDecrementIconH\" style=\"display:none\" data-dojo-attach-point=\"decrementButton\"><span class=\"dijitSliderButtonInner\">-</span></div\n\t\t></td\n\t\t><td class=\"dijitReset\"\n\t\t\t><div class=\"dijitSliderBar dijitSliderBumper dijitSliderBumperH dijitSliderLeftBumper\" data-dojo-attach-event=\"press:_onClkDecBumper\"></div\n\t\t></td\n\t\t><td class=\"dijitReset\"\n\t\t\t><input data-dojo-attach-point=\"valueNode\" type=\"hidden\" ${!nameAttrSetting}\n\t\t\t/><div class=\"dijitReset dijitSliderBarContainerH\" role=\"presentation\" data-dojo-attach-point=\"sliderBarContainer\"\n\t\t\t\t><div role=\"presentation\" data-dojo-attach-point=\"progressBar\" class=\"dijitSliderBar dijitSliderBarH dijitSliderProgressBar dijitSliderProgressBarH\" data-dojo-attach-event=\"press:_onBarClick\"\n\t\t\t\t\t><div class=\"dijitSliderMoveable dijitSliderMoveableH\"\n\t\t\t\t\t\t><div data-dojo-attach-point=\"sliderHandle,focusNode\" class=\"dijitSliderImageHandle dijitSliderImageHandleH\" data-dojo-attach-event=\"press:_onHandleClick\" role=\"slider\" valuemin=\"${minimum}\" valuemax=\"${maximum}\"></div\n\t\t\t\t\t></div\n\t\t\t\t></div\n\t\t\t\t><div role=\"presentation\" data-dojo-attach-point=\"remainingBar\" class=\"dijitSliderBar dijitSliderBarH dijitSliderRemainingBar dijitSliderRemainingBarH\" data-dojo-attach-event=\"press:_onBarClick\"></div\n\t\t\t></div\n\t\t></td\n\t\t><td class=\"dijitReset\"\n\t\t\t><div class=\"dijitSliderBar dijitSliderBumper dijitSliderBumperH dijitSliderRightBumper\" data-dojo-attach-event=\"press:_onClkIncBumper\"></div\n\t\t></td\n\t\t><td class=\"dijitReset dijitSliderButtonContainer dijitSliderButtonContainerH\"\n\t\t\t><div class=\"dijitSliderIncrementIconH\" style=\"display:none\" data-dojo-attach-point=\"incrementButton\"><span class=\"dijitSliderButtonInner\">+</span></div\n\t\t></td\n\t></tr\n\t><tr class=\"dijitReset\"\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t\t><td data-dojo-attach-point=\"containerNode,bottomDecoration\" class=\"dijitReset dijitSliderDecoration dijitSliderDecorationB dijitSliderDecorationH\"></td\n\t\t><td class=\"dijitReset\" colspan=\"2\"></td\n\t></tr\n></table>\n",
-'gobotany/sk/Length':function(){
-/*
- * Finally, the text box where users can enter lengths.
- */
-define("gobotany/sk/Length", [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/query',
-    'dojo/NodeList-dom',
-    'dojo/NodeList-html',
-    'bridge/underscore',
-    'gobotany/sk/Choice',
-    'simplekey/App3'
-], function(declare, lang, query, nodeListDom, nodeListHtml, _, Choice, App3) {
-
-return declare('gobotany.sk.working_area.Length', [
-    Choice
-], {
-    permitted_ranges: [],  // [{min: n, max: m}, ...] all measured in mm
-    species_vector: [],
-    unit: 'mm',
-    is_metric: true,
-    factor: 1.0,
-    factormap: {'mm': 1.0, 'cm': 10.0, 'm': 1000.0, 'in': 25.4, 'ft': 304.8},
-
-    clear: function() {
-    },
-
-    _draw_specifics: function() {
-        var v = query('div.working-area .values');
-
-        this._set_unit(this.filter.display_units || 'mm');
-        this_unit = this.unit;  // for the use of our inner functions
-        var value = this.filter.get('value');
-        if (value === null)
-            value = '';
-        else
-            value = value / this.factor;
-
-        var radio_for = function(unit) {
-            return '<label><input name="units" type="radio" value="' + unit +
-                '"' + (unit === this_unit ? ' checked' : '') +
-                '>' + unit + '</label>';
-        };
-
-        var input_for = function(name, insert_value) {
-            return '<input class="' + name + '" name="' + name +
-                '" type="text"' +
-                (insert_value ? ' value="' + value + '"' : ' disabled') +
-                '>';
-        };
-
-        v.empty().addClass('numeric').removeClass('multiple').html(
-            '<div class="permitted_ranges"></div>' +
-            '<div class="current_length"></div>' +
-
-            '<div class="measurement">' +
-            'Metric length: ' +
-            input_for('measure_metric', this.is_metric) +
-            radio_for('mm') +
-            radio_for('cm') +
-            radio_for('m') +
-            '</div>' +
-
-            '<div class="measurement">' +
-            'English length: ' +
-            input_for('measure_english', ! this.is_metric) +
-            radio_for('in') +
-            radio_for('ft') +
-            '</div>' +
-
-            '<div class="instructions">' +
-            '</div>'
-        );
-        v.query('[name="units"]').on('change', lang.hitch(this, '_unit_changed'));
-        v.query('[type="text"]').on('change', lang.hitch(this, '_measure_changed'));
-        v.query('[type="text"]').on('keyup', lang.hitch(this, '_key_pressed'));
-    },
-
-    _key_pressed: function(event) {
-        if (event.keyCode == 10 || event.keyCode == 13)
-            this._apply_filter_value();
-        else
-            this._measure_changed();
-    },
-
-    _parse_value: function(text) {
-        var v = parseFloat(text);
-        if (isNaN(v))
-            return null;
-        return v;
-    },
-
-    _current_value: function() {
-        var selector = this.is_metric ? '[name="measure_metric"]' :
-            '[name="measure_english"]';
-        var text = query(selector, this.div).attr('value')[0];
-        var v = this._parse_value(text);
-        return (v === null) ? null : v * this.factor;
-    },
-
-    _set_unit: function(unit) {
-        this.unit = unit;
-        this.factor = this.factormap[this.unit];
-        this.is_metric = /m$/.test(this.unit);
-    },
-
-    _unit_changed: function(event) {
-        this._set_unit(event.target.value);
-        query('.measure_metric').attr('disabled', ! this.is_metric);
-        query('.measure_english').attr('disabled', this.is_metric);
-        this._redraw_permitted_ranges();
-        this._measure_changed();
-    },
-
-    _measure_changed: function() {
-        var mm = this._current_value();
-        var mm_old = this._parse_value(this.filter.get('value'));
-        var vector = this.filter.taxa_matching(mm);
-        vector = _.intersect(vector, this.species_vector);
-        var div = query('.instructions', this.div);
-        var apply_button = query('.apply-btn', this.div);
-        if (mm_old === mm) {
-            instructions = 'Change the value to narrow your selection to a' +
-                ' new set of matching species.';
-            apply_button.addClass('disabled');
-        } else if (vector.length > 0) {
-            instructions = 'Press “Apply” to narrow your selection to the ' +
-                vector.length + ' matching species.';
-            apply_button.removeClass('disabled');
-        } else {
-            instructions = '';
-            apply_button.addClass('disabled');
-        }
-        div.html(instructions);
-
-        // Stash a hint about how the sidebar should display our value.
-        this.filter.display_units = this.unit;
-    },
-
-    _redraw_permitted_ranges: function() {
-        var p = 'Please enter a measurement in the range ';
-        var truncate = function(value, precision) {
-            var power = Math.pow(10, precision || 0);
-            return String(Math.round(value * power) / power);
-        };
-        for (var i = 0; i < this.permitted_ranges.length; i++) {
-            var pr = this.permitted_ranges[i];
-            if (i) p += ' or ';
-            p += truncate(pr.min / this.factor, 2) + '&nbsp;' + this.unit +
-                '&nbsp;–&nbsp;' +  // en-dash for numeric ranges
-                truncate(pr.max / this.factor, 2) + '&nbsp;' + this.unit;
-        }
-        query('.permitted_ranges', this.div).html(p);
-    },
-
-    _on_filter_change: function() {
-        // A filter somewhere on the page changed, so we might need to
-        // adjust our statement about the number of species matched by
-        // the value in our input field.
-
-        var species_vector = App3.filter_controller.compute(this.filter);
-        this.species_vector = species_vector;
-        this.permitted_ranges = this.filter.allowed_ranges(species_vector);
-        this._redraw_permitted_ranges();
-        this._measure_changed();
-    }
-});
-
-});
-
-
-},
-'gobotany/sk/SpeciesSectionHelper':function(){
-define("gobotany/sk/SpeciesSectionHelper", [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/_base/fx',
-    'dojo/query',
-    'dojo/on',
-    'dojo/io-query',
-    'dojo/hash',
-    'dojo/dom-attr',
-    'dojo/dom-class',
-    'dojo/dom-construct',
-    'dojo/NodeList-dom',
-    'dojo/fx',
-    'dojo/NodeList-fx',
-    'dojo/window',
     'simplekey/results_photo_menu',
     'simplekey/resources',
     'simplekey/App3',
-    'gobotany/utils',
-    'util/sidebar',
-    'bridge/shadowbox',
-    'bridge/underscore'
-], function(declare, lang, fx, query, on, ioQuery, hash, domAttr, domClass,
-        domConstruct, NodeList_dom, coreFx, NodeList_fx, win, 
-        results_photo_menu, resources, App3, utils, sidebar, Shadowbox, _) {
+    'simplekey/utils',
+    'util/sidebar'
+], function($, Shadowbox, _,
+            results_photo_menu, resources, App3, utils, sidebar) {
 
-return declare('gobotany.sk.SpeciesSectionHelper', null, {
+    var SpeciesSection = function() {};
+    var methods = SpeciesSection.prototype = {};
 
-    constructor: function(pile_slug, plant_divs_ready) {
-        'use strict';
+    methods.init = function(pile_slug, plant_divs_ready) {
         // summary:
         //   Manages the species section of the results page
 
@@ -33020,7 +22764,7 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
         this.LIST_VIEW = 'list';
         this.animation = null;
         this.pile_slug = pile_slug;
-        this.plant_list = query('#main .plant-list')[0];
+        this.plant_list = $('#main .plant-list');
         this.plant_data = [];
         this.plant_divs = [];
         this.plant_divs_displayed_yet = false;
@@ -33035,72 +22779,41 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
         // and holding of a cursor key.
         var SCROLL_WAIT_MS = 0;
         var scroll_timer;
-        on(window, 'scroll', lang.hitch(this, function() {
+        $(window).scroll($.proxy(function() {
             clearTimeout(scroll_timer);
             scroll_timer = setTimeout(this.lazy_load_images, SCROLL_WAIT_MS);
-        }));
+        }, this));
 
         var RESIZE_WAIT_MS = 500;
         var resize_timer;
-        on(window, 'resize', lang.hitch(this, function() {
+        $(window).resize($.proxy(function() {
             clearTimeout(resize_timer);
             resize_timer = setTimeout(this.lazy_load_images, RESIZE_WAIT_MS);
-        }));
+        }, this));
 
         // Wire up tabs and a link for toggling between photo and list views.
-        query('#results-tabs a').on('click', lang.hitch(this, this.toggle_view));
+        $('#results-tabs a').click($.proxy(this, 'toggle_view'));
 
         // Set the initial view for showing the results.
-        var hash_object = ioQuery.queryToObject(hash());
-        if (hash_object._view !== undefined) {
-            this.current_view = hash_object._view;
+        view_matches = window.location.hash.match(/_view=[a-z]+/);
+        if (view_matches && view_matches.length) {
+            this.current_view = view_matches[0].substring(6);
             this.set_navigation_to_view(this.current_view);
         }
-    },
+    };
 
-    default_image: function(species) {
-        'use strict';
-
-        var i;
-        for (i = 0; i < species.images.length; i += 1) {
+    methods.default_image = function(species) {
+        for (var i = 0; i < species.images.length; i += 1) {
             var image = species.images[i];
-            if (image.rank === 1 && image.type === 'habit') {
+            if (image.rank === 1 && image.type === 'habit')
                 return image;
-            }
         }
         return {};
-    },
+    };
 
-    get_multivalue_list: function(display_value, is_compact) {
-        // Return a HTML list for presenting multiple character values.
-        var list, i;
-        
-        if (typeof(display_value) !== 'string') {
-            list = '<ul';
-            if (is_compact) {
-                list += ' class="compact"';
-            }                
-            list +='>';
-            for (i = 0; i < display_value.length; i++) {
-                list += '<li';
-                if (i === display_value.length - 1) {
-                    list += ' class="last"';
-                }
-                list +='>' + display_value[i] + '</li>';
-            }
-            list += '</ul>';
-        }
-        else {
-            list = display_value;
-        }
-        
-        return list;
-    },
+    methods.connect_plant_preview_popup = function(plant_link, plant) {
 
-    connect_plant_preview_popup: function(plant_link, plant) {
-        'use strict';
-
-        on(plant_link, 'click', lang.hitch(this, function(event) {
+        $(plant_link).click($.proxy(function(event) {
             event.preventDefault();
 
             // A few characters get a "compact" list for multiple values.
@@ -33110,20 +22823,23 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
             // this plant.
             var name = plant.scientific_name + ' <span>' +
                 plant.common_name + '</span>';
-            query('#plant-detail-modal h3')[0].innerHTML = name;
+            $('#plant-detail-modal h3').html(name);
 
             // Call the API to get more information.
 
-            var d1 = resources.taxon_info(plant.scientific_name);
-            var d2 = resources.pile(this.pile_slug);
-            $.when(d1, d2).done(
-                $.proxy(function(taxon, pile_info) {
+            $.when(
+                resources.taxon_info(plant.scientific_name),
+                resources.pile(this.pile_slug)
+            ).done(
+                function(taxon, pile_info) {
                     // Fill in Facts About.
-                    query(
-                        '#plant-detail-modal div.details p.facts'
-                    )[0].innerHTML = taxon.factoid;
+                    $('#plant-detail-modal div.details p.facts')
+                        .html(taxon.factoid);
 
                     // Fill in Characteristics.
+                    var $characteristics = $(
+                        '#plant-detail-modal .details .characteristics');
+
                     var MAX_CHARACTERS = 6;
                     var characters = pile_info.plant_preview_characters;
                     var characters_html = '';
@@ -33157,41 +22873,42 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
                                     // For multiple-value characters,
                                     // make a list.
                                     if (typeof(display_value) !== 'string') {
-                                       var is_compact = (COMPACT_EX.test(
+                                        var is_compact = (COMPACT_EX.test(
                                             ppc.character_short_name));
-                                        display_value =
-                                            this.get_multivalue_list(
-                                                display_value, is_compact);
+                                        display_value = _get_multivalue_list(
+                                            display_value, is_compact);
                                     }
                                 }
                             }
 
                             // Only display this character if it has a value
-			                // and if the maximum number of characters for the
+                            // and if the maximum number of characters for the
                             // popup has not been exceeded.
+
                             if (display_value !== undefined &&
                                 display_value !== '') {
-				                if (characters_displayed < MAX_CHARACTERS) {
-                                    characters_html += '<dl><dt>' +
-                                        ppc.friendly_name + '</dt><dd>' +
-                                        display_value + '</dd></dl>';
-				                    characters_displayed += 1;
-                                }
+
+                                $characteristics.append(
+                                    $('<dl>').append(
+                                        $('<dt>', {html: ppc.friendly_name}),
+                                        $('<dd>').append(display_value)
+                                    )
+                                );
+
+                                characters_displayed += 1;
+                                if (characters_displayed >= MAX_CHARACTERS)
+                                    break;
                             }
                         }
                     }
-                    var characters_list = query(
-                        '#plant-detail-modal .details .characteristics')[0];
-                    characters_list.innerHTML = characters_html;
 
                     // Wire up the Go To Species Page button.
                     var path = window.location.pathname.split('#')[0];
                     var url = path +
                         plant.scientific_name.toLowerCase().replace(' ',
                         '/') + '/';
-                    var button = query(
-                        '#plant-detail-modal a.go-to-species-page')[0];
-                    domAttr.set(button, 'href', url);
+                    $('#plant-detail-modal a.go-to-species-page')
+                        .attr('href', url);
 
                     // Add images.
                     var images_html = '';
@@ -33220,12 +22937,11 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
                             images_html += new_image;
                         }
                     }
-                    query('#plant-detail-modal div.images')[0].innerHTML = 
-                        images_html;
+                    $('#plant-detail-modal div.images').html(images_html);
 
                     // Open the Shadowbox modal dialog with a copy of the
                     // HTML in the hidden content area.
-                    var content_element = query('#plant-detail-modal')[0];
+                    var content_element = $('#plant-detail-modal')[0];
                     // On small screens, skip the popup entirely for now.
                     if ($(window).width() <= 600) {
                         window.location.href = url;
@@ -33238,54 +22954,46 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
                             width: 935,
                             options: {
                                 handleOversize: 'resize',
-                                onFinish: lang.hitch(this, function() {
-                                var $sb = $('#sb-container');
-                                var $children = $sb.find('p, dt, dd, li');
-                                $sb.find('.img-container').scrollable();
-                                glossarize($children);
-                            })}
+                                onFinish: function() {
+                                    var $sb = $('#sb-container');
+                                    var $children = $sb.find('p, dt, dd, li');
+                                    $sb.find('.img-container').scrollable();
+                                    glossarize($children);
+                                }
+                            }
                         });
                     }
-                }, this)
+                }
             );
-        }));
-    },
+        }, this));
+    };
 
-    set_navigation_to_view: function(view) {
-        'use strict';
+    methods.set_navigation_to_view = function(view) {
 
         var HIDDEN_CLASS = 'hidden';
         var CURRENT_TAB_CLASS = 'current';
-        var photos_tab = query('#results-tabs li:first-child a')[0];
-        var list_tab = query('#results-tabs li:last-child a')[0];
-        var photos_show_menu = query('.show')[0];       
+        var $photos_tab = $('#results-tabs li:first-child a');
+        var $list_tab = $('#results-tabs li:last-child a');
+        var $photos_show_menu = $('.show');
 
         if (view === this.PHOTOS_VIEW) {
-            domClass.remove(list_tab, CURRENT_TAB_CLASS);
-            domClass.add(photos_tab, CURRENT_TAB_CLASS);
-            domClass.remove(photos_show_menu, HIDDEN_CLASS);
+            $list_tab.removeClass(CURRENT_TAB_CLASS);
+            $photos_tab.addClass(CURRENT_TAB_CLASS);
+            $photos_show_menu.removeClass(HIDDEN_CLASS);
         } else if (view === this.LIST_VIEW) {
-            domClass.remove(photos_tab, CURRENT_TAB_CLASS);
-            domClass.add(list_tab, CURRENT_TAB_CLASS);
-            domClass.add(photos_show_menu, HIDDEN_CLASS);
+            $photos_tab.removeClass(CURRENT_TAB_CLASS);
+            $list_tab.addClass(CURRENT_TAB_CLASS);
+            $photos_show_menu.addClass(HIDDEN_CLASS);
         } else {
            0 && console.log('Unknown view name: ' + view);
         }
-    },
+    };
 
-    toggle_view: function(event) {
-        'use strict';
-    
-        if (event.target.innerHTML.toLowerCase() === this.current_view) {
+    methods.toggle_view = function(event) {
+
+        if (event.target.innerHTML.toLowerCase() === this.current_view)
             // If the same tab as the current view was clicked, do nothing.
             return;
-        }
-
-        var HIDDEN_CLASS = 'hidden';
-        var CURRENT_TAB_CLASS = 'current';
-        var photos_tab = query('#results-tabs li:first-child a')[0];
-        var list_tab = query('#results-tabs li:last-child a')[0];
-        var photos_show_menu = query('.show')[0];
 
         if (this.current_view === this.PHOTOS_VIEW) {
             App3.taxa.set('show_list', true);
@@ -33297,13 +23005,12 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         this.set_navigation_to_view(this.current_view);
         this.display_results(App3.filtered_sorted_taxadata);
-    },
+    };
 
-    get_number_of_rows_to_span: function(items, start) {
+    methods.get_number_of_rows_to_span = function(items, start) {
         /* From a starting point in a list of plant items, return the number
            of rows it takes to get to the next genus (or the end of the
            list). */
-        'use strict';
 
         var rows = 1;
         var i;
@@ -33318,34 +23025,26 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
         }
 
         return rows;
-    },
+    };
 
-    get_image: function(item, image_type) {
-        /* From a species JSON record, return the first image encountered
-         * with the specified image type. If no images of that type exist,
-         * return the first image. */
-        'use strict';
-        
-        var i, image_index;
+    methods.get_image = function(item, image_type) {
+        /* From a species JSON record, return the first image
+           encountered with the specified image type.  If no images of
+           that type exist, return the first image. */
 
-        image_index = 0;   // Fallback: first image
-        for (i = 0; i < item.images.length; i++) {
-            if (item.images[i].type === image_type) {
-                image_index = i;
-                break;
-            }
-        }
+        var images = item.images;
+        for (var i = 0; i < images.length; i++)
+            if (images[i].type == image_type)
+                return images[i];
+        return images[0];
+    };
 
-        return item.images[image_index];
-    },
-
-    display_in_list_view: function(items) {
+    methods.display_in_list_view = function(items) {
         /* Display plant results in a list view. Use a table, with hidden
            caption and header row for accessibility. */
-        'use strict';
 
-        query('.plant.in-results').removeClass('in-results');
-        query('.plant-list table').orphan();
+        $('.plant.in-results').removeClass('in-results');
+        $('.plant-list table').remove();
 
         var html =
             '<caption class="hidden">List of matching plants</caption>' +
@@ -33381,8 +23080,7 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
             html += '</tr>';
         }
 
-        var table = domConstruct.create('table', {'innerHTML': html},
-                                this.plant_list);
+        $('<table>', {'html': html}).appendTo(this.plant_list);
 
         /* Remove any explicit style="height: ..." that might be left
            over from image animations, since it will not apply to the
@@ -33391,11 +23089,11 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
 
         sidebar.set_height();
 
-        Shadowbox.setup('.plant-list table td.scientific-name a', 
+        Shadowbox.setup('.plant-list table td.scientific-name a',
                         {title: ''});
-    },
+    };
 
-    create_plant_divs: function(species_list) {
+    methods.create_plant_divs = function(species_list) {
         // Sort the species so the plant divs are created in the correct
         // initial order for display in the UI, where they are to appear
         // sorted alphabetically by scientific name and grouped by genus.
@@ -33409,26 +23107,25 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
         for (var i = 0; i < sorted_species_list.length; i++) {
             var species = sorted_species_list[i];
 
-            var plant = domConstruct.create('div', {'class': 'plant'},
-                                    this.plant_list);
+            var $plant = $('<div>', {'class': 'plant'}
+                          ).appendTo(this.plant_list);
 
             var path = window.location.pathname.split('#')[0];
             var url = (path + species.scientific_name.toLowerCase()
                        .replace(' ', '/') + '/');
-            var plant_link = domConstruct.create('a', {'href': url}, plant);
-            domConstruct.create('div', {'class': 'frame'}, plant_link);
+            var plant_link = $('<a>', {'href': url}).appendTo($plant);
+            $('<div>', {'class': 'frame'}).appendTo(plant_link);
 
-            var image_container = domConstruct.create('div', {
-                'class': 'plant-img-container'
-            }, plant_link);
-            var image = domConstruct.create('img', {'alt': ''}, image_container);
-            domAttr.set(image, 'x-plant-id', species.scientific_name);
+            var image_container = $('<div>', {'class': 'plant-img-container'}
+                                   ).appendTo(plant_link);
+            var $image = $('<img>', {'alt': ''}).appendTo(image_container);
+            $image.attr('x-plant-id', species.scientific_name);
             var thumb_url = this.default_image(species).thumb_url;
             if (thumb_url) { // undefined when no image available
                 // Set the image URL in a dummy attribute, so we can
                 // lazy-load images, switching to the proper
                 // attribute when the image comes into view.
-                domAttr.set(image, 'x-tmp-src', thumb_url);
+                $image.attr('x-tmp-src', thumb_url);
             }
 
             var name_html = '<span class="latin">' +
@@ -33436,8 +23133,8 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
             if (species.common_name) {
                 name_html += ' ' + species.common_name;
             }
-            domConstruct.create('p', {'class': 'plant-name',
-                              'innerHTML': name_html}, plant_link);
+            $('<p>', {'class': 'plant-name', 'html': name_html})
+                .appendTo(plant_link);
 
             // Connect a "plant preview" popup. Pass species as
             // context in the connect function, which becomes 'this'
@@ -33445,18 +23142,16 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
             this.connect_plant_preview_popup(plant_link, species);
 
             this.plant_data.push(species);
-            this.plant_divs.push(plant);
+            this.plant_divs.push($plant);
         }
         this.plant_divs_ready.resolve();
-    },
+    };
 
-    display_in_photos_view: function(items) {
+    methods.display_in_photos_view = function(items) {
         /* Display plant results as a grid of photo thumbnails with
-           captions.
-           */
-        'use strict';
+           captions. */
 
-        query('.plant-list table').orphan();
+        $('.plant-list table').remove();
 
         var visible_species = {};
         for (var i = 0; i < items.length; i++)
@@ -33466,7 +23161,6 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
         var WIDTH = 178;
         var HEIGHT = 232;
 
-        var anim_list = [];
         var displayed_plants = [];
         var displayed_divs = [];
 
@@ -33474,47 +23168,37 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
         for (var i = 0; i < this.plant_divs.length; i++) {
 
             var plant = this.plant_data[i];
-            var div = this.plant_divs[i];
+            var $div = this.plant_divs[i];
 
             if (visible_species[plant.id] === 1) {
                 displayed_plants.push(plant);
-                displayed_divs.push(div);
+                displayed_divs.push($div);
 
                 var destx = WIDTH * (n % SPECIES_PER_ROW);
                 var desty = HEIGHT * Math.floor(n / SPECIES_PER_ROW);
                 n += 1;
 
-                domClass.remove(div, 'genus_alt');
-                domClass.remove(div, 'genus_join_left');
-                domClass.remove(div, 'genus_join_right');
+                $div.removeClass('genus_alt');
+                $div.removeClass('genus_join_left');
+                $div.removeClass('genus_join_right');
 
-                if (!domClass.contains(div, 'in-results')) {
+                if (!$div.hasClass('in-results')) {
                     // bring new species in from the far right
-                    domClass.add(div, 'in-results');
-                    div.style.top = desty + 'px';
-                    anim_list.push(fx.animateProperty({
-                        node: div,
-                        properties: {left: {
-                            start: 2800,
-                            end: destx
-                        }}
-                    }));
+                    $div.addClass('in-results');
+                    $div.css({left: 2800, top: desty});
+                    $div.animate({left: destx});
                 } else {
                     // move the species from its current screen location
-                    anim_list.push(fx.animateProperty({
-                        node: div,
-                        properties: {left: {end: destx}, top: {end: desty}}
-                    }));
+                    $div.animate({left: destx, top: desty});
                 }
             } else {
-                domClass.remove(div, 'in-results');
+                $div.removeClass('in-results');
             }
         }
         var species_section_helper = this;
-        anim_list.push(fx.animateProperty({
-            node: this.plant_list,
-            properties: {height: {end: desty + HEIGHT}},
-            onEnd: function() {
+        this.plant_list.animate(
+            {height: desty + HEIGHT},
+            function() {
                 this.animation = null;
                 sidebar.set_height();
                 species_section_helper.lazy_load_images();
@@ -33525,17 +23209,17 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
                 var plant = displayed_plants[0];
 
                 for (var n = 0; n < displayed_plants.length; n++) {
-                    var div = displayed_divs[n];
+                    var $div = displayed_divs[n];
                     if (genus_alt)
-                        domClass.add(div, 'genus_alt');
+                        $div.addClass('genus_alt');
                     if (n < displayed_plants.length - 1) {
                         var genus = plant.genus;
                         var plant = displayed_plants[n + 1];
                         if (plant.genus === genus) {
                             if (n % SPECIES_PER_ROW != last_species_in_row) {
-                                domClass.add(div, 'genus_join_right');
-                                domClass.add(displayed_divs[n + 1],
-                                              'genus_join_left');
+                                $div.addClass('genus_join_right');
+                                displayed_divs[n + 1].addClass(
+                                    'genus_join_left');
                             }
                         } else {
                             genus_alt = ! genus_alt;
@@ -33543,27 +23227,27 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
                     }
                 }
             }
-        }));
-        this.animation = coreFx.combine(anim_list);
-        this.animation.play();
-    },
+        );
+    };
 
-    display_results: function(query_results) {
-        'use strict';
+    methods.display_results = function(query_results) {
 
         if (this.animation !== null) {
+            /* TODO: this never runs since this.animation is no longer
+               set to a Dojo animation object; should we learn to cancel
+               the animation now that jQuery is in charge?  Or will it
+               be fine with us interrupting its animation and starting a
+               new one without preparation or explanation? */
             this.animation.stop();
             this.animation = null;
         }
 
         // Show the "Show" drop-down menu for image types, if necessary.
-        if (this.current_view === this.PHOTOS_VIEW) {
-            var show_menu = query('.show')[0];
-            domClass.remove(show_menu, 'hidden');
-        }
+        if (this.current_view === this.PHOTOS_VIEW)
+            $('.show').removeClass('hidden');
 
         // Remove the "wait" spinner.
-        query('.wait', this.plant_list).orphan();
+        this.plant_list.find('.wait').remove();
 
         // Display the results in the appropriate tab view.
         if (this.current_view === this.LIST_VIEW) {
@@ -33573,15 +23257,15 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
         }
 
         // Show the "See a list" (or "See photos") link.
-        var see_link = query('.list-all').removeClass(see_link, 'hidden');
+        $('.list-all').removeClass('hidden');
 
         if (this.current_view === this.PHOTOS_VIEW) {
             this.populate_image_types(query_results);
             this.lazy_load_images();
         }
-    },
+    };
 
-    populate_image_types: function(query_results) {
+    methods.populate_image_types = function(query_results) {
         var menu_config = results_photo_menu[this.pile_slug];
 
         var image_list = _.flatten(_.pluck(query_results, 'images'));
@@ -33604,27 +23288,23 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
                 default_type = image_types[0];
             App3.set('image_type', default_type);
         }
-    },
+    };
 
-    lazy_load_images: function() {
-        'use strict';
-
+    methods.lazy_load_images = function() {
         // If the current view is the List view, do nothing. This allows
         // event handlers for the photos view to remain in effect without
         // awkwardly removing and adding them when the user toggles views.
         //
-        // Check the DOM instead of the SpeciesSectionHelper object, because
+        // Check the DOM instead of the SpeciesSection object, because
         // when this function is called via setTimeout, the 'this' context
         // is not what we need, and passing a saved reference to 'this', as
         // recommended for these situations, did not work.
 
-        var list_view_table_nodes = query('.plant-list table');
-        if (list_view_table_nodes.length > 0) {
+        var list_view_table_nodes = $('.plant-list table');
+        if (list_view_table_nodes.length > 0)
             return;
-        }
 
-        var viewport = win.getBox();
-        var viewport_height = viewport.h;
+        var viewport_height = $(window).height();
         var scroll_top = 0;
         var scroll_left = 0;
 
@@ -33642,7 +23322,7 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
             scroll_left = document.body.scrollLeft;
         }
 
-        var image_elements = query('div.plant-list img');
+        var image_elements = $('div.plant-list img');
         var i;
         for (i = 0; i < image_elements.length; i += 1) {
             var element = image_elements[i];
@@ -33669,919 +23349,41 @@ return declare('gobotany.sk.SpeciesSectionHelper', null, {
                 }
 
                 if (is_element_visible === true) {
-                    var image_url = domAttr.get(element, 'x-tmp-src');
-                    if (image_url !== null) {
+                    var image_url = $(element).attr('x-tmp-src');
+                    if (image_url !== null)
                         // Set the attribute that will make the image load.
-                        domAttr.set(element, 'src', image_url);
-                    }
+                        $(element).attr('src', image_url);
                 }
             }
         }
-    }
+    };
 
-});
+    /* Helper function that does not need "this" state, and so is not
+       made a part of the class. */
 
-});
+    var _get_multivalue_list = function(display_value, is_compact) {
+        // Return a HTML list for presenting multiple character values.
+        if (typeof(display_value) === 'string')
+            return display_value;
 
+        var $ul = $('<ul>');
+        if (is_compact)
+            $ul.addClass('compact');
 
-},
-'dojo/hash':function(){
-define("dojo/hash", ["./_base/kernel", "require", "./_base/connect", "./_base/lang", "./ready", "./_base/sniff"],
-	function(dojo, require, connect, lang, ready, has) {
-	// module:
-	//		dojo/hash
-	// summary:
-	//		TODOC
+        var $li = null;
+        _.each(display_value, function(v) {
+            $li = $('<li>', {'html': v}).appendTo($ul);
+        });
 
+        if ($li !== null)
+            $li.addClass('last');
 
-//TODOC: where does this go?
-// summary:
-//		Methods for monitoring and updating the hash in the browser URL.
-//
-// example:
-//		dojo.subscribe("/dojo/hashchange", context, callback);
-//
-//		function callback (hashValue){
-//			// do something based on the hash value.
-//		}
+        return $ul;
+    };
 
-	dojo.hash = function(/* String? */ hash, /* Boolean? */ replace){
-		//	summary:
-		//		Gets or sets the hash string.
-		//	description:
-		//		Handles getting and setting of location.hash.
-		//		 - If no arguments are passed, acts as a getter.
-		//		 - If a string is passed, acts as a setter.
-		//	hash:
-		//		the hash is set - #string.
-		//	replace:
-		//		If true, updates the hash value in the current history
-		//		state instead of creating a new history state.
-		//	returns:
-		//		when used as a getter, returns the current hash string.
-		//		when used as a setter, returns the new hash string.
+    // Return
 
-		// getter
-		if(!arguments.length){
-			return _getHash();
-		}
-		// setter
-		if(hash.charAt(0) == "#"){
-			hash = hash.substring(1);
-		}
-		if(replace){
-			_replace(hash);
-		}else{
-			location.href = "#" + hash;
-		}
-		return hash; // String
-	};
-
-	// Global vars
-	var _recentHash, _ieUriMonitor, _connect,
-		_pollFrequency = dojo.config.hashPollFrequency || 100;
-
-	//Internal functions
-	function _getSegment(str, delimiter){
-		var i = str.indexOf(delimiter);
-		return (i >= 0) ? str.substring(i+1) : "";
-	}
-
-	function _getHash(){
-		return _getSegment(location.href, "#");
-	}
-
-	function _dispatchEvent(){
-		connect.publish("/dojo/hashchange", [_getHash()]);
-	}
-
-	function _pollLocation(){
-		if(_getHash() === _recentHash){
-			return;
-		}
-		_recentHash = _getHash();
-		_dispatchEvent();
-	}
-
-	function _replace(hash){
-		if(_ieUriMonitor){
-			if(_ieUriMonitor.isTransitioning()){
-				setTimeout(lang.hitch(null,_replace,hash), _pollFrequency);
-				return;
-			}
-			var href = _ieUriMonitor.iframe.location.href;
-			var index = href.indexOf('?');
-			// main frame will detect and update itself
-			_ieUriMonitor.iframe.location.replace(href.substring(0, index) + "?" + hash);
-			return;
-		}
-		location.replace("#"+hash);
-		!_connect && _pollLocation();
-	}
-
-	function IEUriMonitor(){
-		// summary:
-		//		Determine if the browser's URI has changed or if the user has pressed the
-		//		back or forward button. If so, call _dispatchEvent.
-		//
-		//	description:
-		//		IE doesn't add changes to the URI's hash into the history unless the hash
-		//		value corresponds to an actual named anchor in the document. To get around
-		//		this IE difference, we use a background IFrame to maintain a back-forward
-		//		history, by updating the IFrame's query string to correspond to the
-		//		value of the main browser location's hash value.
-		//
-		//		E.g. if the value of the browser window's location changes to
-		//
-		//		#action=someAction
-		//
-		//		... then we'd update the IFrame's source to:
-		//
-		//		?action=someAction
-		//
-		//		This design leads to a somewhat complex state machine, which is
-		//		described below:
-		//
-		//		s1: Stable state - neither the window's location has changed nor
-		//			has the IFrame's location. Note that this is the 99.9% case, so
-		//			we optimize for it.
-		//			Transitions: s1, s2, s3
-		//		s2: Window's location changed - when a user clicks a hyperlink or
-		//			code programmatically changes the window's URI.
-		//			Transitions: s4
-		//		s3: Iframe's location changed as a result of user pressing back or
-		//			forward - when the user presses back or forward, the location of
-		//			the background's iframe changes to the previous or next value in
-		//			its history.
-		//			Transitions: s1
-		//		s4: IEUriMonitor has programmatically changed the location of the
-		//			background iframe, but it's location hasn't yet changed. In this
-		//			case we do nothing because we need to wait for the iframe's
-		//			location to reflect its actual state.
-		//			Transitions: s4, s5
-		//		s5: IEUriMonitor has programmatically changed the location of the
-		//			background iframe, and the iframe's location has caught up with
-		//			reality. In this case we need to transition to s1.
-		//			Transitions: s1
-		//
-		//		The hashchange event is always dispatched on the transition back to s1.
-		//
-
-		// create and append iframe
-		var ifr = document.createElement("iframe"),
-			IFRAME_ID = "dojo-hash-iframe",
-			ifrSrc = dojo.config.dojoBlankHtmlUrl || require.toUrl("./resources/blank.html");
-
-		if(dojo.config.useXDomain && !dojo.config.dojoBlankHtmlUrl){
-			0 && console.warn("dojo.hash: When using cross-domain Dojo builds,"
-				+ " please save dojo/resources/blank.html to your domain and set djConfig.dojoBlankHtmlUrl"
-				+ " to the path on your domain to blank.html");
-		}
-
-		ifr.id = IFRAME_ID;
-		ifr.src = ifrSrc + "?" + _getHash();
-		ifr.style.display = "none";
-		document.body.appendChild(ifr);
-
-		this.iframe = dojo.global[IFRAME_ID];
-		var recentIframeQuery, transitioning, expectedIFrameQuery, docTitle, ifrOffline,
-			iframeLoc = this.iframe.location;
-
-		function resetState(){
-			_recentHash = _getHash();
-			recentIframeQuery = ifrOffline ? _recentHash : _getSegment(iframeLoc.href, "?");
-			transitioning = false;
-			expectedIFrameQuery = null;
-		}
-
-		this.isTransitioning = function(){
-			return transitioning;
-		};
-
-		this.pollLocation = function(){
-			if(!ifrOffline) {
-				try{
-					//see if we can access the iframe's location without a permission denied error
-					var iframeSearch = _getSegment(iframeLoc.href, "?");
-					//good, the iframe is same origin (no thrown exception)
-					if(document.title != docTitle){ //sync title of main window with title of iframe.
-						docTitle = this.iframe.document.title = document.title;
-					}
-				}catch(e){
-					//permission denied - server cannot be reached.
-					ifrOffline = true;
-					console.error("dojo.hash: Error adding history entry. Server unreachable.");
-				}
-			}
-			var hash = _getHash();
-			if(transitioning && _recentHash === hash){
-				// we're in an iframe transition (s4 or s5)
-				if(ifrOffline || iframeSearch === expectedIFrameQuery){
-					// s5 (iframe caught up to main window or iframe offline), transition back to s1
-					resetState();
-					_dispatchEvent();
-				}else{
-					// s4 (waiting for iframe to catch up to main window)
-					setTimeout(lang.hitch(this,this.pollLocation),0);
-					return;
-				}
-			}else if(_recentHash === hash && (ifrOffline || recentIframeQuery === iframeSearch)){
-				// we're in stable state (s1, iframe query == main window hash), do nothing
-			}else{
-				// the user has initiated a URL change somehow.
-				// sync iframe query <-> main window hash
-				if(_recentHash !== hash){
-					// s2 (main window location changed), set iframe url and transition to s4
-					_recentHash = hash;
-					transitioning = true;
-					expectedIFrameQuery = hash;
-					ifr.src = ifrSrc + "?" + expectedIFrameQuery;
-					ifrOffline = false; //we're updating the iframe src - set offline to false so we can check again on next poll.
-					setTimeout(lang.hitch(this,this.pollLocation),0); //yielded transition to s4 while iframe reloads.
-					return;
-				}else if(!ifrOffline){
-					// s3 (iframe location changed via back/forward button), set main window url and transition to s1.
-					location.href = "#" + iframeLoc.search.substring(1);
-					resetState();
-					_dispatchEvent();
-				}
-			}
-			setTimeout(lang.hitch(this,this.pollLocation), _pollFrequency);
-		};
-		resetState(); // initialize state (transition to s1)
-		setTimeout(lang.hitch(this,this.pollLocation), _pollFrequency);
-	}
-	ready(function(){
-		if("onhashchange" in dojo.global && (!has("ie") || (has("ie") >= 8 && document.compatMode != "BackCompat"))){	//need this IE browser test because "onhashchange" exists in IE8 in IE7 mode
-			_connect = connect.connect(dojo.global,"onhashchange",_dispatchEvent);
-		}else{
-			if(document.addEventListener){ // Non-IE
-				_recentHash = _getHash();
-				setInterval(_pollLocation, _pollFrequency); //Poll the window location for changes
-			}else if(document.attachEvent){ // IE7-
-				//Use hidden iframe in versions of IE that don't have onhashchange event
-				_ieUriMonitor = new IEUriMonitor();
-			}
-			// else non-supported browser, do nothing.
-		}
-	});
-
-	return dojo.hash;
-
-});
-
-},
-'dojo/fx':function(){
-define("dojo/fx", [
-	"./_base/lang",
-	"./Evented",
-	"./_base/kernel",
-	"./_base/array",
-	"./_base/connect",
-	"./_base/fx",
-	"./dom",
-	"./dom-style",
-	"./dom-geometry",
-	"./ready",
-	"require" // for context sensitive loading of Toggler
-], function(lang, Evented, dojo, arrayUtil, connect, baseFx, dom, domStyle, geom, ready, require) {
-
-	// module:
-	//		dojo/fx
-	// summary:
-	//		TODOC
-
-
-	/*=====
-	dojo.fx = {
-		// summary: Effects library on top of Base animations
-	};
-	var coreFx = dojo.fx;
-	=====*/
-	
-// For back-compat, remove in 2.0.
-if(!dojo.isAsync){
-	ready(0, function(){
-		var requires = ["./fx/Toggler"];
-		require(requires);	// use indirection so modules not rolled into a build
-	});
-}
-
-	var coreFx = dojo.fx = {};
-
-	var _baseObj = {
-			_fire: function(evt, args){
-				if(this[evt]){
-					this[evt].apply(this, args||[]);
-				}
-				return this;
-			}
-		};
-
-	var _chain = function(animations){
-		this._index = -1;
-		this._animations = animations||[];
-		this._current = this._onAnimateCtx = this._onEndCtx = null;
-
-		this.duration = 0;
-		arrayUtil.forEach(this._animations, function(a){
-			this.duration += a.duration;
-			if(a.delay){ this.duration += a.delay; }
-		}, this);
-	};
-	_chain.prototype = new Evented();
-	lang.extend(_chain, {
-		_onAnimate: function(){
-			this._fire("onAnimate", arguments);
-		},
-		_onEnd: function(){
-			connect.disconnect(this._onAnimateCtx);
-			connect.disconnect(this._onEndCtx);
-			this._onAnimateCtx = this._onEndCtx = null;
-			if(this._index + 1 == this._animations.length){
-				this._fire("onEnd");
-			}else{
-				// switch animations
-				this._current = this._animations[++this._index];
-				this._onAnimateCtx = connect.connect(this._current, "onAnimate", this, "_onAnimate");
-				this._onEndCtx = connect.connect(this._current, "onEnd", this, "_onEnd");
-				this._current.play(0, true);
-			}
-		},
-		play: function(/*int?*/ delay, /*Boolean?*/ gotoStart){
-			if(!this._current){ this._current = this._animations[this._index = 0]; }
-			if(!gotoStart && this._current.status() == "playing"){ return this; }
-			var beforeBegin = connect.connect(this._current, "beforeBegin", this, function(){
-					this._fire("beforeBegin");
-				}),
-				onBegin = connect.connect(this._current, "onBegin", this, function(arg){
-					this._fire("onBegin", arguments);
-				}),
-				onPlay = connect.connect(this._current, "onPlay", this, function(arg){
-					this._fire("onPlay", arguments);
-					connect.disconnect(beforeBegin);
-					connect.disconnect(onBegin);
-					connect.disconnect(onPlay);
-				});
-			if(this._onAnimateCtx){
-				connect.disconnect(this._onAnimateCtx);
-			}
-			this._onAnimateCtx = connect.connect(this._current, "onAnimate", this, "_onAnimate");
-			if(this._onEndCtx){
-				connect.disconnect(this._onEndCtx);
-			}
-			this._onEndCtx = connect.connect(this._current, "onEnd", this, "_onEnd");
-			this._current.play.apply(this._current, arguments);
-			return this;
-		},
-		pause: function(){
-			if(this._current){
-				var e = connect.connect(this._current, "onPause", this, function(arg){
-						this._fire("onPause", arguments);
-						connect.disconnect(e);
-					});
-				this._current.pause();
-			}
-			return this;
-		},
-		gotoPercent: function(/*Decimal*/percent, /*Boolean?*/ andPlay){
-			this.pause();
-			var offset = this.duration * percent;
-			this._current = null;
-			arrayUtil.some(this._animations, function(a){
-				if(a.duration <= offset){
-					this._current = a;
-					return true;
-				}
-				offset -= a.duration;
-				return false;
-			});
-			if(this._current){
-				this._current.gotoPercent(offset / this._current.duration, andPlay);
-			}
-			return this;
-		},
-		stop: function(/*boolean?*/ gotoEnd){
-			if(this._current){
-				if(gotoEnd){
-					for(; this._index + 1 < this._animations.length; ++this._index){
-						this._animations[this._index].stop(true);
-					}
-					this._current = this._animations[this._index];
-				}
-				var e = connect.connect(this._current, "onStop", this, function(arg){
-						this._fire("onStop", arguments);
-						connect.disconnect(e);
-					});
-				this._current.stop();
-			}
-			return this;
-		},
-		status: function(){
-			return this._current ? this._current.status() : "stopped";
-		},
-		destroy: function(){
-			if(this._onAnimateCtx){ connect.disconnect(this._onAnimateCtx); }
-			if(this._onEndCtx){ connect.disconnect(this._onEndCtx); }
-		}
-	});
-	lang.extend(_chain, _baseObj);
-
-	coreFx.chain = /*===== dojo.fx.chain = =====*/ function(/*dojo.Animation[]*/ animations){
-		// summary:
-		//		Chain a list of `dojo.Animation`s to run in sequence
-		//
-		// description:
-		//		Return a `dojo.Animation` which will play all passed
-		//		`dojo.Animation` instances in sequence, firing its own
-		//		synthesized events simulating a single animation. (eg:
-		//		onEnd of this animation means the end of the chain,
-		//		not the individual animations within)
-		//
-		// example:
-		//	Once `node` is faded out, fade in `otherNode`
-		//	|	dojo.fx.chain([
-		//	|		dojo.fadeIn({ node:node }),
-		//	|		dojo.fadeOut({ node:otherNode })
-		//	|	]).play();
-		//
-		return new _chain(animations); // dojo.Animation
-	};
-
-	var _combine = function(animations){
-		this._animations = animations||[];
-		this._connects = [];
-		this._finished = 0;
-
-		this.duration = 0;
-		arrayUtil.forEach(animations, function(a){
-			var duration = a.duration;
-			if(a.delay){ duration += a.delay; }
-			if(this.duration < duration){ this.duration = duration; }
-			this._connects.push(connect.connect(a, "onEnd", this, "_onEnd"));
-		}, this);
-
-		this._pseudoAnimation = new baseFx.Animation({curve: [0, 1], duration: this.duration});
-		var self = this;
-		arrayUtil.forEach(["beforeBegin", "onBegin", "onPlay", "onAnimate", "onPause", "onStop", "onEnd"],
-			function(evt){
-				self._connects.push(connect.connect(self._pseudoAnimation, evt,
-					function(){ self._fire(evt, arguments); }
-				));
-			}
-		);
-	};
-	lang.extend(_combine, {
-		_doAction: function(action, args){
-			arrayUtil.forEach(this._animations, function(a){
-				a[action].apply(a, args);
-			});
-			return this;
-		},
-		_onEnd: function(){
-			if(++this._finished > this._animations.length){
-				this._fire("onEnd");
-			}
-		},
-		_call: function(action, args){
-			var t = this._pseudoAnimation;
-			t[action].apply(t, args);
-		},
-		play: function(/*int?*/ delay, /*Boolean?*/ gotoStart){
-			this._finished = 0;
-			this._doAction("play", arguments);
-			this._call("play", arguments);
-			return this;
-		},
-		pause: function(){
-			this._doAction("pause", arguments);
-			this._call("pause", arguments);
-			return this;
-		},
-		gotoPercent: function(/*Decimal*/percent, /*Boolean?*/ andPlay){
-			var ms = this.duration * percent;
-			arrayUtil.forEach(this._animations, function(a){
-				a.gotoPercent(a.duration < ms ? 1 : (ms / a.duration), andPlay);
-			});
-			this._call("gotoPercent", arguments);
-			return this;
-		},
-		stop: function(/*boolean?*/ gotoEnd){
-			this._doAction("stop", arguments);
-			this._call("stop", arguments);
-			return this;
-		},
-		status: function(){
-			return this._pseudoAnimation.status();
-		},
-		destroy: function(){
-			arrayUtil.forEach(this._connects, connect.disconnect);
-		}
-	});
-	lang.extend(_combine, _baseObj);
-
-	coreFx.combine = /*===== dojo.fx.combine = =====*/ function(/*dojo.Animation[]*/ animations){
-		// summary:
-		//		Combine a list of `dojo.Animation`s to run in parallel
-		//
-		// description:
-		//		Combine an array of `dojo.Animation`s to run in parallel,
-		//		providing a new `dojo.Animation` instance encompasing each
-		//		animation, firing standard animation events.
-		//
-		// example:
-		//	Fade out `node` while fading in `otherNode` simultaneously
-		//	|	dojo.fx.combine([
-		//	|		dojo.fadeIn({ node:node }),
-		//	|		dojo.fadeOut({ node:otherNode })
-		//	|	]).play();
-		//
-		// example:
-		//	When the longest animation ends, execute a function:
-		//	|	var anim = dojo.fx.combine([
-		//	|		dojo.fadeIn({ node: n, duration:700 }),
-		//	|		dojo.fadeOut({ node: otherNode, duration: 300 })
-		//	|	]);
-		//	|	dojo.connect(anim, "onEnd", function(){
-		//	|		// overall animation is done.
-		//	|	});
-		//	|	anim.play(); // play the animation
-		//
-		return new _combine(animations); // dojo.Animation
-	};
-
-	coreFx.wipeIn = /*===== dojo.fx.wipeIn = =====*/ function(/*Object*/ args){
-		// summary:
-		//		Expand a node to it's natural height.
-		//
-		// description:
-		//		Returns an animation that will expand the
-		//		node defined in 'args' object from it's current height to
-		//		it's natural height (with no scrollbar).
-		//		Node must have no margin/border/padding.
-		//
-		// args: Object
-		//		A hash-map of standard `dojo.Animation` constructor properties
-		//		(such as easing: node: duration: and so on)
-		//
-		// example:
-		//	|	dojo.fx.wipeIn({
-		//	|		node:"someId"
-		//	|	}).play()
-		var node = args.node = dom.byId(args.node), s = node.style, o;
-
-		var anim = baseFx.animateProperty(lang.mixin({
-			properties: {
-				height: {
-					// wrapped in functions so we wait till the last second to query (in case value has changed)
-					start: function(){
-						// start at current [computed] height, but use 1px rather than 0
-						// because 0 causes IE to display the whole panel
-						o = s.overflow;
-						s.overflow = "hidden";
-						if(s.visibility == "hidden" || s.display == "none"){
-							s.height = "1px";
-							s.display = "";
-							s.visibility = "";
-							return 1;
-						}else{
-							var height = domStyle.get(node, "height");
-							return Math.max(height, 1);
-						}
-					},
-					end: function(){
-						return node.scrollHeight;
-					}
-				}
-			}
-		}, args));
-
-		var fini = function(){
-			s.height = "auto";
-			s.overflow = o;
-		};
-		connect.connect(anim, "onStop", fini);
-		connect.connect(anim, "onEnd", fini);
-
-		return anim; // dojo.Animation
-	};
-
-	coreFx.wipeOut = /*===== dojo.fx.wipeOut = =====*/ function(/*Object*/ args){
-		// summary:
-		//		Shrink a node to nothing and hide it.
-		//
-		// description:
-		//		Returns an animation that will shrink node defined in "args"
-		//		from it's current height to 1px, and then hide it.
-		//
-		// args: Object
-		//		A hash-map of standard `dojo.Animation` constructor properties
-		//		(such as easing: node: duration: and so on)
-		//
-		// example:
-		//	|	dojo.fx.wipeOut({ node:"someId" }).play()
-
-		var node = args.node = dom.byId(args.node), s = node.style, o;
-
-		var anim = baseFx.animateProperty(lang.mixin({
-			properties: {
-				height: {
-					end: 1 // 0 causes IE to display the whole panel
-				}
-			}
-		}, args));
-
-		connect.connect(anim, "beforeBegin", function(){
-			o = s.overflow;
-			s.overflow = "hidden";
-			s.display = "";
-		});
-		var fini = function(){
-			s.overflow = o;
-			s.height = "auto";
-			s.display = "none";
-		};
-		connect.connect(anim, "onStop", fini);
-		connect.connect(anim, "onEnd", fini);
-
-		return anim; // dojo.Animation
-	};
-
-	coreFx.slideTo = /*===== dojo.fx.slideTo = =====*/ function(/*Object*/ args){
-		// summary:
-		//		Slide a node to a new top/left position
-		//
-		// description:
-		//		Returns an animation that will slide "node"
-		//		defined in args Object from its current position to
-		//		the position defined by (args.left, args.top).
-		//
-		// args: Object
-		//		A hash-map of standard `dojo.Animation` constructor properties
-		//		(such as easing: node: duration: and so on). Special args members
-		//		are `top` and `left`, which indicate the new position to slide to.
-		//
-		// example:
-		//	|	.slideTo({ node: node, left:"40", top:"50", units:"px" }).play()
-
-		var node = args.node = dom.byId(args.node),
-			top = null, left = null;
-
-		var init = (function(n){
-			return function(){
-				var cs = domStyle.getComputedStyle(n);
-				var pos = cs.position;
-				top = (pos == 'absolute' ? n.offsetTop : parseInt(cs.top) || 0);
-				left = (pos == 'absolute' ? n.offsetLeft : parseInt(cs.left) || 0);
-				if(pos != 'absolute' && pos != 'relative'){
-					var ret = geom.position(n, true);
-					top = ret.y;
-					left = ret.x;
-					n.style.position="absolute";
-					n.style.top=top+"px";
-					n.style.left=left+"px";
-				}
-			};
-		})(node);
-		init();
-
-		var anim = baseFx.animateProperty(lang.mixin({
-			properties: {
-				top: args.top || 0,
-				left: args.left || 0
-			}
-		}, args));
-		connect.connect(anim, "beforeBegin", anim, init);
-
-		return anim; // dojo.Animation
-	};
-
-	return coreFx;
-});
-
-},
-'dojo/NodeList-fx':function(){
-define("dojo/NodeList-fx", ["dojo/_base/NodeList", "./_base/lang", "./_base/connect", "./_base/fx", "./fx"], 
-  function(NodeList, lang, connectLib, baseFx, coreFx) {
-	// module:
-	//		dojo/NodeList-fx
-	// summary:
-	//		TODOC
-
-/*=====
-dojo["NodeList-fx"] = {
-	// summary: Adds dojo.fx animation support to dojo.query() by extending the NodeList class
-	//		with additional FX functions.  NodeList is the array-like object used to hold query results.
-};
-
-// doc alias helpers:
-NodeList = dojo.NodeList;
-=====*/
-
-lang.extend(NodeList, {
-	_anim: function(obj, method, args){
-		args = args||{};
-		var a = coreFx.combine(
-			this.map(function(item){
-				var tmpArgs = { node: item };
-				lang.mixin(tmpArgs, args);
-				return obj[method](tmpArgs);
-			})
-		);
-		return args.auto ? a.play() && this : a; // dojo.Animation|dojo.NodeList
-	},
-
-	wipeIn: function(args){
-		// summary:
-		//		wipe in all elements of this NodeList via `dojo.fx.wipeIn`
-		//
-		// args: Object?
-		//		Additional dojo.Animation arguments to mix into this set with the addition of
-		//		an `auto` parameter.
-		//
-		// returns: dojo.Animation|dojo.NodeList
-		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo.NodeList will be returned for further
-		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
-		//
-		// example:
-		//		Fade in all tables with class "blah":
-		//		|	dojo.query("table.blah").wipeIn().play();
-		//
-		// example:
-		//		Utilizing `auto` to get the NodeList back:
-		//		|	dojo.query(".titles").wipeIn({ auto:true }).onclick(someFunction);
-		//
-		return this._anim(coreFx, "wipeIn", args); // dojo.Animation|dojo.NodeList
-	},
-
-	wipeOut: function(args){
-		// summary:
-		//		wipe out all elements of this NodeList via `dojo.fx.wipeOut`
-		//
-		// args: Object?
-		//		Additional dojo.Animation arguments to mix into this set with the addition of
-		//		an `auto` parameter.
-		//
-		// returns: dojo.Animation|dojo.NodeList
-		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo.NodeList will be returned for further
-		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
-		//
-		// example:
-		//		Wipe out all tables with class "blah":
-		//		|	dojo.query("table.blah").wipeOut().play();
-		return this._anim(coreFx, "wipeOut", args); // dojo.Animation|dojo.NodeList
-	},
-
-	slideTo: function(args){
-		// summary:
-		//		slide all elements of the node list to the specified place via `dojo.fx.slideTo`
-		//
-		// args: Object?
-		//		Additional dojo.Animation arguments to mix into this set with the addition of
-		//		an `auto` parameter.
-		//
-		// returns: dojo.Animation|dojo.NodeList
-		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo.NodeList will be returned for further
-		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
-		//
-		// example:
-		//		|	Move all tables with class "blah" to 300/300:
-		//		|	dojo.query("table.blah").slideTo({
-		//		|		left: 40,
-		//		|		top: 50
-		//		|	}).play();
-		return this._anim(coreFx, "slideTo", args); // dojo.Animation|dojo.NodeList
-	},
-
-
-	fadeIn: function(args){
-		// summary:
-		//		fade in all elements of this NodeList via `dojo.fadeIn`
-		//
-		// args: Object?
-		//		Additional dojo.Animation arguments to mix into this set with the addition of
-		//		an `auto` parameter.
-		//
-		// returns: dojo.Animation|dojo.NodeList
-		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo.NodeList will be returned for further
-		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
-		//
-		// example:
-		//		Fade in all tables with class "blah":
-		//		|	dojo.query("table.blah").fadeIn().play();
-		return this._anim(baseFx, "fadeIn", args); // dojo.Animation|dojo.NodeList
-	},
-
-	fadeOut: function(args){
-		// summary:
-		//		fade out all elements of this NodeList via `dojo.fadeOut`
-		//
-		// args: Object?
-		//		Additional dojo.Animation arguments to mix into this set with the addition of
-		//		an `auto` parameter.
-		//
-		// returns: dojo.Animation|dojo.NodeList
-		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo.NodeList will be returned for further
-		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
-		//
-		// example:
-		//		Fade out all elements with class "zork":
-		//		|	dojo.query(".zork").fadeOut().play();
-		// example:
-		//		Fade them on a delay and do something at the end:
-		//		|	var fo = dojo.query(".zork").fadeOut();
-		//		|	dojo.connect(fo, "onEnd", function(){ /*...*/ });
-		//		|	fo.play();
-		// example:
-		//		Using `auto`:
-		//		|	dojo.query("li").fadeOut({ auto:true }).filter(filterFn).forEach(doit);
-		//
-		return this._anim(baseFx, "fadeOut", args); // dojo.Animation|dojo.NodeList
-	},
-
-	animateProperty: function(args){
-		// summary:
-		//		Animate all elements of this NodeList across the properties specified.
-		//		syntax identical to `dojo.animateProperty`
-		//
-		// args: Object?
-		//		Additional dojo.Animation arguments to mix into this set with the addition of
-		//		an `auto` parameter.
-		//
-		// returns: dojo.Animation|dojo.NodeList
-		//		A special args member `auto` can be passed to automatically play the animation.
-		//		If args.auto is present, the original dojo.NodeList will be returned for further
-		//		chaining. Otherwise the dojo.Animation instance is returned and must be .play()'ed
-		//
-		// example:
-		//	|	dojo.query(".zork").animateProperty({
-		//	|		duration: 500,
-		//	|		properties: {
-		//	|			color:		{ start: "black", end: "white" },
-		//	|			left:		{ end: 300 }
-		//	|		}
-		//	|	}).play();
-		//
-		//	example:
-		//	|	dojo.query(".grue").animateProperty({
-		//	|		auto:true,
-		//	|		properties: {
-		//	|			height:240
-		//	|		}
-		//	|	}).onclick(handler);
-		return this._anim(baseFx, "animateProperty", args); // dojo.Animation|dojo.NodeList
-	},
-
-	anim: function( /*Object*/			properties,
-					/*Integer?*/		duration,
-					/*Function?*/		easing,
-					/*Function?*/		onEnd,
-					/*Integer?*/		delay){
-		// summary:
-		//		Animate one or more CSS properties for all nodes in this list.
-		//		The returned animation object will already be playing when it
-		//		is returned. See the docs for `dojo.anim` for full details.
-		// properties: Object
-		//		the properties to animate. does NOT support the `auto` parameter like other
-		//		NodeList-fx methods.
-		// duration: Integer?
-		//		Optional. The time to run the animations for
-		// easing: Function?
-		//		Optional. The easing function to use.
-		// onEnd: Function?
-		//		A function to be called when the animation ends
-		// delay:
-		//		how long to delay playing the returned animation
-		// example:
-		//		Another way to fade out:
-		//	|	dojo.query(".thinger").anim({ opacity: 0 });
-		// example:
-		//		animate all elements with the "thigner" class to a width of 500
-		//		pixels over half a second
-		//	|	dojo.query(".thinger").anim({ width: 500 }, 700);
-		var canim = coreFx.combine(
-			this.map(function(item){
-				return baseFx.animateProperty({
-					node: item,
-					properties: properties,
-					duration: duration||350,
-					easing: easing
-				});
-			})
-		);
-		if(onEnd){
-			connectLib.connect(canim, "onEnd", onEnd);
-		}
-		return canim.play(delay||0); // dojo.Animation
-	}
-});
-
-return NodeList;
+    return SpeciesSection;
 });
 
 },
@@ -34656,42 +23458,990 @@ define("simplekey/results_photo_menu", [], function() {
 
 
 },
-'gobotany/sk/SpeciesCounts':function(){
-/*
- * Manage everywhere on the page that we maintain a species count.
- */
-define("gobotany/sk/SpeciesCounts", [
-    'dojo/_base/declare',
-    'dojo/_base/fx',
-    'dojo/NodeList-fx',
-    'dojo/query',
-    'simplekey/App3'
-], function(declare, fx, nodeListFx, query, App3) {
+'simplekey/utils':function(){
+define("simplekey/utils", [
+    'bridge/jquery'
+], function($) {
 
-return declare('gobotany.sk.SpeciesCounts', null, {
-    animation: null,
+    var utils = {
+        // notify()
+        // display a notification message at the top of the page
+        // that will eventually fade away
+        notify: function(txt) {
+            var holder = $('#notification-msg');
+            if (holder.length === 0) {
+                holder = $('<div class="hidden" id="notification-msg"></div>')
+                    .appendTo('body');
+            }
 
-    _update_counts: function(species_list) {
-        App3.taxa.set('len', species_list.length);
+            holder.html(txt);
 
-        if (this.animation !== null)
-            this.animation.stop();
+            var win = $(window);
 
-        var span = query('.species-count-heading > span');
-        this.animation = span.animateProperty({
-            duration: 2000,
-            properties: {
-                backgroundColor: {
-                    start: '#FF0',
-                    end: '#F0F0C0'
+            var left = (win.width() / 2) - (holder.width() / 2);
+            var top = win.scrollTop();
+            holder.css({position: 'absolute',
+                        top: top + 'px',
+                        left: left + 'px'});
+
+            holder.removeClass('hidden');
+            holder.fadeIn(1000);
+
+            setTimeout(function() {
+                holder.fadeOut();
+            }, 5000);
+        },
+
+        clone: function(obj, updated_args) {
+            var new_obj = (obj instanceof Array) ? [] : {};
+            for (i in obj) {
+                new_obj[i] = obj[i];
+            }
+
+            if (updated_args !== undefined) {
+                for (var x in updated_args)
+                    if (updated_args.hasOwnProperty(x))
+                        new_obj[x] = updated_args[x];
+            }
+
+            return new_obj;
+        },
+
+        pretty_length: function(unit, mmvalue, show_unit) {
+            if (show_unit === undefined) {
+                show_unit = true;
+            }
+            
+            var SPACE = '\u00A0';
+            var mm = parseFloat(mmvalue); /* make sure it is a float */
+            if (isNaN(mm)) {
+                0 && console.log('gobotany.utils.pretty_length: ' + mmvalue +
+                            ' is not a number');
+            }
+            var value = '';
+            if (unit == 'mm') {
+                value = mm.toFixed(2);
+            } else if (unit === 'cm') {
+                value = (mm / 10.0).toFixed(2);
+            } else if (unit === 'm') {
+                value = (mm / 1000.0).toFixed(2);
+            } else {   // assume unit is 'in'
+                unit = 'in';
+                inches = mm / 25.4;
+                feet = Math.floor(inches / 12.0);
+                inches = inches % 12.0;
+                if (feet > 0) {
+                    value += feet + SPACE + 'ft' + SPACE;
+                }
+                var wholein = Math.floor(inches);
+                if (wholein > 0) {
+                    value += wholein;
+                }
+                var fracin = inches % 1.0;
+                var eighths = Math.floor(fracin * 8.0);
+                if (eighths > 0) {
+                    value += ' ⅛¼⅜½⅝¾⅞'[eighths];
+                }
+                if (wholein === 0 && eighths === 0) {
+                    value += '0';
                 }
             }
-        });
-        this.animation.play();
-    }
-});
+
+            // If .0 or .00 is at the end, omit.
+            if (value.indexOf('.00', value.length - 3) !== -1) {
+                value = value.substring(0, value.length - 3);
+            } else if (value.indexOf('.0', value.length - 2) !== -1) {
+                value = value.substring(0, value.length - 2);
+            } else if (/\d?\.\d+0/.test(value)) {
+                // If 0 is at the end of a decimal, omit. (Ex.: 0.70 --> 0.7)
+                value = value.substring(0, value.length - 1);
+            }
+
+            if (show_unit) {
+                value += SPACE + unit;
+            }
+
+            return value;
+        },
+
+        /* Unit conversion for number values. Limited to current needs. */
+        convert: function(source_value, source_unit, dest_unit) {
+            var source_value = parseFloat(source_value), /* ensure it is a float */
+                dest_value;
+
+            if (isNaN(source_value)) {
+                0 && console.log('gobotany.utils.convert: ' + source_value +
+                            ' is not a number');
+            }
+            if (source_unit === dest_unit) {
+                dest_value = source_value;
+            } else if (source_unit === 'cm' && dest_unit === 'mm') {
+                dest_value = source_value * 10;
+            } else if (source_unit === 'mm' && dest_unit === 'cm') {
+                dest_value = source_value / 10;
+            } else {
+                0 && console.log('gobotany.utils.convert: unknown conversion, returning ' +
+                            'original value');
+                dest_value = source_value;
+            }
+
+            return dest_value;
+        },
+
+        /* Programatically click a link, running its attached event handlers as if a
+           user clicked it.
+
+           Code based on the answer provided by Matthew Crumley at:
+           http://stackoverflow.com/questions/902713/how-do-i-automatically-click-a-link-with-javascript
+         */
+        click_link: function(link) {
+            if (document.createEvent) {
+                var event = document.createEvent('MouseEvents');
+                event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0,
+                    false, false, false, false, 0, null);
+                link.dispatchEvent(event);
+            } else if (link.fireEvent) {
+                link.fireEvent('onclick');
+            }
+        }
+    };
+
+    // Allow us to create other modules that might inherit from this one
+    // Currently, this object needs no initialization
+    var instance = Object.create(utils);
+    return instance;
 });
 
+},
+'simplekey/working_area':function(){
+define("simplekey/working_area", [
+    'simplekey/Choice',
+    'simplekey/Slider',
+    'simplekey/Length'
+], function(Choice, Slider, Length) {return {
+
+/*
+ * Classes that create and maintain the working area.
+ *
+ * Upon instantiation, a working-area class draws the entire working area
+ * for the filter that it has been given, and then un-hides the working
+ * area.  Once up and running, it responds to three calls from outside
+ * telling it that the outside world has changed.  It is also responsible
+ * for handling every click and interaction inside the working area, and
+ * for - when appropriate - forwarding the change in the filter state to
+ * the outside world.
+ *
+ * Inputs:
+ *
+ * clear() - the user has pressed the "x" next to the filter's name in
+ *     the sidebar summary, and the filter value should be moved back
+ *     to "don't know" if that is not already the value.
+ * dismiss() - the filter working area should be dismissed.
+ *
+ * Outputs:
+ *
+ * on_dismiss(filter) - called when the user dismisses the working area.
+ */
+
+/**
+ * Return the correct working area class for a given filter.
+ *
+ * @param {Filter} filter The filter for which you want a working area.
+ * @return {Class} The class that will manage this kind of working area.
+ */
+select_working_area: function(filter) {
+    if (filter.value_type == 'TEXT')
+        return Choice;
+    else if (filter.is_length)
+        return Length;
+    else
+        return Slider;
+}
+
+}});
+
+},
+'simplekey/Choice':function(){
+/*
+ * The most basic working-area class, which the other versions of the class
+ * inherit from and specialize, is the standard multiple-choice selection.
+ */
+define("simplekey/Choice", [
+    'bridge/jquery',
+    'bridge/underscore',
+    'simplekey/App3',
+    'simplekey/glossarize',
+    'simplekey/utils',
+    'util/tooltip'
+], function($, _, App3, glossarize, utils, tooltip) {
+
+    /* Generate a human-readable representation of a value. */
+
+    var _format_value = function(v) {
+        return v === undefined ? "don't know" :
+            v.friendly_text ? v.friendly_text :
+            v.choice === 'NA' ? "doesn't apply" :
+            v.choice ? v.choice : "don't know";
+    };
+
+    /* Order filter choices for display. */
+
+    var _compare_filter_choices = function(a, b) {
+
+        var friendly_text_a = a.friendly_text.toLowerCase();
+        var friendly_text_b = b.friendly_text.toLowerCase();
+        var choice_a = a.choice.toLowerCase();
+        var choice_b = b.choice.toLowerCase();
+
+        // If both are a number or begin with one, sort numerically.
+
+        var int_friendly_text_a = parseInt(friendly_text_a, 10);
+        var int_friendly_text_b = parseInt(friendly_text_b, 10);
+        if (!isNaN(int_friendly_text_a) && !isNaN(int_friendly_text_b)) {
+            return int_friendly_text_a - int_friendly_text_b;
+        }
+        var int_choice_a = parseInt(choice_a, 10);
+        var int_choice_b = parseInt(choice_b, 10);
+        if (!isNaN(int_choice_a) && !isNaN(int_choice_b)) {
+            return int_choice_a - int_choice_b;
+        }
+
+        // Otherwise, sort alphabetically.
+
+        // Exception: always make Doesn't Apply (NA) last.
+        if (choice_a === 'na') return 1;
+        if (choice_b === 'na') return -1;
+
+        // If friendly text is present, sort using it.
+        if (friendly_text_a < friendly_text_b) return -1;
+        if (friendly_text_a > friendly_text_b) return 1;
+
+        // If there is no friendly text, sort using the choices instead.
+        if (choice_a < choice_b) return -1;
+        if (choice_a > choice_b) return 1;
+
+        return 0; // default value (no sort)
+    };
+
+    /* Choice objects */
+
+    var Choice = function() {};
+    Choice.prototype = {};
+
+    Choice.prototype.init = function(args) {
+        this.div = args.div;
+        this.div_map = null,   // map choice value -> <input> element
+        this.filter = args.filter;
+
+        this._draw_basics(args.y);
+        this._draw_specifics();
+        this._on_filter_change();
+    };
+
+    /* Events that can be triggered from outside. */
+
+    Choice.prototype.clear = function() {
+        $('input', this.div_map['']).prop('checked', true);
+    };
+
+    Choice.prototype.dismiss = function(e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        $('.close', this.div).unbind();
+        $('.apply-btn', this.div).unbind();
+
+        $(this.div).hide();
+
+        $('.option-list li').removeClass('active');
+    };
+
+    /* Draw the working area. */
+
+    Choice.prototype._draw_basics = function(y) {
+        var $div = $(this.div);
+        var f = this.filter;
+        var p = function(s) {return s ? '<p>' + s + '</p>' : s}
+
+        // Show the question, hint and Apply button.
+        glossarize($('h4').html(f.info.question));
+        $('h4').css('display', 'block');
+        glossarize($('.hint').html(p(f.info.hint)));
+        $('.info').css('display', 'block');
+
+        // Display character drawing, if an image is available.
+        if (f.info.image_url) {
+            var image_id = this._get_image_id_from_path(f.info.image_url);
+            var dld_html = '<img id="' + image_id +
+                '" src="' + f.info.image_url +
+                '" alt="character illustration">';
+            $div.find('.dld').html(dld_html).css({display: 'block'});
+        } else {
+            $div.find('.dld').html('').css({display: 'none'});
+        }
+
+        // Show the working area with a slide effect.
+        $div.css('top', y + 'px').slideDown('fast');
+
+        // Hook up the Close button.
+        $('.close', this.div).bind(
+            'click', $.proxy(this, 'dismiss'));
+
+        // Hook up the Apply button.
+        $('.apply-btn', this.div).bind(
+            'click', $.proxy(this, '_apply_button_clicked'));
+    };
+
+    Choice.prototype._draw_specifics = function() {
+        var CHOICES_PER_ROW = 5;
+        var checked = function(cond) {return cond ? ' checked' : ''};
+        var f = this.filter;
+
+        var $div = $('div.working-area .values');
+        $div.empty().addClass('multiple').removeClass('numeric');
+
+        // Apply a custom sort to the filter values.
+        var values = utils.clone(f.values);
+        values.sort(_compare_filter_choices);
+
+        var $choices = $('<div>', {'class': 'choices'}).appendTo($div);
+        var $row = $('<div>', {'class': 'row'}).appendTo($choices);
+
+        // Create a Don't Know radio button item.
+        var item_html = '<div><label><input name="char_name"' +
+            checked(f.value === null) +
+            ' type="radio" value=""> ' + _format_value() + '</label></div>';
+
+        this.div_map = {};
+        this.div_map[''] = $(item_html).appendTo($row)[0];
+
+        // Create radio button items for each character value.
+        var choices_count = 1;
+
+        for (i = 0; i < values.length; i++) {
+            var v = values[i];
+
+            var item_html =
+                '<div><label><input name="char_name" type="radio"' +
+                checked(f.value === v.choice) +
+                ' value="' + v.choice + '">';
+
+            // Add a drawing image if present.
+            var image_path = v.image_url;
+            if (image_path.length > 0) {
+                var image_id = this._get_image_id_from_path(image_path);
+                item_html += '<img id="' + image_id +
+                    '" src="' + image_path + '" alt="drawing ' +
+                    'showing ' + v.friendly_text + '"><br>';
+            }
+
+            item_html += ' <span class="label">' + _format_value(v) +
+                '</span> <span class="count">(n)</span>' +
+                '</label></div>';
+
+            // Start a new row, if necessary, to fit this choice.
+            if (choices_count % CHOICES_PER_ROW === 0)
+                var $row = $('<div>', {'class': 'row'}).appendTo($choices);
+
+            choices_count += 1;
+
+            var character_value_div = $(item_html).appendTo($row)[0];
+            this.div_map[v.choice] = character_value_div;
+
+            // Once the item is added, add a tooltip for the drawing.
+            if (image_path.length > 0) {
+                var image_html = '<img class="char-value-larger" id="' +
+                    image_id + '" src="' + image_path +
+                    '" alt="drawing showing ' + v.friendly_text + '">';
+                $('#' + image_id).tooltip({
+                    content: image_html,
+                    width: 'auto'
+                });
+            }
+
+            glossarize($('span.label', character_value_div));
+        }
+
+        // Call a method when radio button is clicked.
+        $div.find('input').bind('click', $.proxy(this, '_on_choice_change'));
+
+        // Set up the Apply Selection button.
+        this._on_choice_change();
+    };
+
+    /* How to grab the currently-selected value from the DOM. */
+
+    Choice.prototype._current_value = function() {
+        var value = $('input:checked', this.div).attr('value');
+        return value || null;
+    };
+
+    /* Update whether the "Apply Selection" button is gray or not. */
+
+    Choice.prototype._on_choice_change = function(e) {
+        var $apply_button = $('.apply-btn', this.div);
+        if (this._current_value() === this.filter.value)
+            $apply_button.addClass('disabled');
+        else
+            $apply_button.removeClass('disabled');
+    };
+
+    /* Get a value suitable for use as an image element id from the
+       image filename found in the image path. */
+
+    Choice.prototype._get_image_id_from_path = function(image_path) {
+        var last_slash_index = image_path.lastIndexOf('/');
+        var dot_index = image_path.indexOf('.', last_slash_index);
+        var image_id = image_path.substring(last_slash_index + 1, dot_index);
+        return image_id;
+    };
+
+    /* When the set of selected filters changes, we need to recompute
+       how many species would remain if each of our possible filter
+       values were applied. */
+
+    Choice.prototype._on_filter_change = function() {
+        var other_taxa = App3.filter_controller.compute(this.filter);
+        var div_map = this.div_map;
+
+        _.map(this.filter.values, function(value) {
+
+            // How many taxa would be left if this value were chosen?
+            var num_taxa = _.intersect(value.taxa, other_taxa).length;
+
+            // Draw it accordingly.
+            var div = div_map[value.choice];
+            var $count_span = $('.count', div);
+            $count_span.html('(' + num_taxa + ')');
+            var $input_field = $('input', div);
+            if (num_taxa === 0) {
+                $(div).addClass('disabled');
+                $input_field.attr('disabled', 'disabled');
+            } else {
+                $(div).removeClass('disabled');
+                $input_field.attr('disabled', false); // remove the attribute
+            }
+        });
+    };
+
+    /* When the apply button is pressed, we announce a value change
+       unless it would bring the number of species to zero. */
+
+    Choice.prototype._apply_button_clicked = function(e) {
+        var apply_button = $('.apply-btn');
+        if (apply_button.hasClass('disabled'))
+            return false;
+        apply_button.removeClass('disabled');
+        this._apply_filter_value();
+        this.dismiss();
+        return false;
+    };
+
+    Choice.prototype._apply_filter_value = function() {
+        var value = this._current_value();
+        if (value !== null && this.filter.taxa_matching(value).length == 0)
+            // Refuse to let the number of matching taxa be driven to zero.
+            return;
+        this.filter.set('value', value);
+    };
+
+    return Choice;
+});
+
+},
+'simplekey/Slider':function(){
+/*
+ * Slider, for integer numeric fields.
+ */
+define("simplekey/Slider", [
+    'bridge/jquery',
+    'util/slider',
+    'simplekey/App3',
+    'simplekey/Choice'
+], function($, slider, App3, Choice) {
+
+    var Slider = function() {};
+    Slider.prototype = new Choice();
+
+    Slider.prototype.init = function(args) {
+        this.slider_container_node = null;
+        this.horizontal_slider = null;
+        Choice.prototype.init.call(this, args);
+    };
+
+    /* See the comments on the Choice class, above, to learn about when
+       and how these methods are invoked. */
+
+    Slider.clear = function() {
+    };
+
+    Slider.dismiss = function() {
+        if (this.slider_container_node) {
+            $(this.slider_container_node).empty();
+        }
+        this.horizontal_slider = this.slider_container_node = null;
+        this.inherited(arguments);
+    };
+
+    Slider._compute_min_and_max = function() {
+        var species_vector = App3.filter_controller.compute(this.filter);
+        var allowed = this.filter.allowed_ranges(species_vector);
+        this.min = allowed[0].min;
+        this.max = allowed[allowed.length - 1].max;
+    };
+
+    Slider._draw_specifics = function() {
+        // values_list?
+        this._compute_min_and_max();
+
+        var filter = this.filter;
+        var num_values = this.max - this.min + 1;
+        var startvalue = Math.ceil(num_values / 2);
+        if (filter.value !== null)
+            startvalue = filter.get('value');
+
+        var $values_div = $('div.working-area .values');
+
+        $values_div.addClass('multiple').removeClass('numeric').
+            html('<label>Select a number between<br>' +
+                 this.min + ' and ' +
+                 this.max + '</label>');
+
+        this.slider_container_node = $values_div.append('<div></div>');
+
+        this.horizontal_slider = $(this.slider_container_node).slider({
+            id: 'slider',
+            initial_value: startvalue,
+            maximum: this.max,
+            minimum: this.min,
+            on_move: $.proxy(this, '_value_changed')
+        });
+
+        this._value_changed();
+    };
+
+    Slider._current_value = function() {
+        var slider_label = $('#slider .label')[0];
+        var value = $(slider_label).html();
+        return value;
+    };
+
+    Slider._value_changed = function() {
+        /* Disable the apply button when we're on either the default
+           value or the value that was previous selected */
+        this._compute_min_and_max();
+
+        var $apply_button = $('.apply-btn', this.div);
+        var slider_value = this._current_value();
+        var filter_value = this.filter.get('value');
+        // Allow type coersion in this comparison, since we're
+        // comparing text from the filter to a numerical slider value
+        if (slider_value == filter_value)
+            $apply_button.addClass('disabled');
+        else
+            $apply_button.removeClass('disabled');
+    };
+
+    /* Sliders only have one filter value, so we don't need to compute
+       number of taxa for each "choice."  We also don't want to get
+       javascript errors from the parent version of this function, so
+       just override it with an empty function. */
+
+    Slider._on_filter_change = function() {
+    };
+
+    return Slider;
+});
+
+},
+'util/slider':function(){
+define("util/slider", [
+    'bridge/jquery'
+], function ($) {
+    // Constructor
+    var Slider = function (container_element, options) {
+        this.container_element = container_element;
+        this.options = $.extend({}, this.defaults, options);
+        this.is_pressed = false;
+        this.is_touch = navigator.userAgent.match(
+                        /(iPad|iPod|iPhone|Android)/) ? true : false;
+        this.bar_left_offset = null;
+        this.bar_max_left = null;
+        this.bar_min_left = null;
+        this.bar_width = null;
+        this.number_of_segments = null;
+        this.pixels_per_value = null;
+        this.thumb_width = null;
+        this.value = null;
+        this.init();
+    };
+
+    // Prototype definition
+    Slider.prototype = {
+        defaults: {
+            bar_left_offset_adjust: 3,
+            id: 'gb-slider',
+            initial_value: 0,
+            maximum: 100,
+            minimum: 0,
+            orientation: 'horizontal',
+            thumb_adjust: 15
+        },
+
+        build_slider: function () {
+            var slider = $('<div id="' + this.options.id + '">' +
+                           '<div class="bar"><div></div></div>' +
+                           '<div class="thumb"><div class="label"></div>' +
+                           '</div></div>');
+            $(this.container_element).append(slider);
+        },
+
+        position_for_value: function (value) {
+            // Calculate the left position of the slider thumb for a value.
+            var position = Math.floor(value * this.pixels_per_value) +
+                           this.options.bar_left_offset_adjust;
+            return position;
+        },
+
+        value_for_position: function (position) {
+            // Calculate the value corresponding to a given left position
+            // of the slider thumb.
+            var thumb_center_position = position + (this.thumb_width / 2);
+            var value = Math.floor(thumb_center_position /
+                                   this.pixels_per_value);
+            return value;
+        },
+
+        set_thumb: function (left, thumb) {
+            // First if necessary, correct the left position in order to
+            // allow pressing on the bar right up to its edges.
+            if (left < this.bar_min_left &&
+                left >= this.bar_min_left - this.options.thumb_adjust) {
+
+                left = this.bar_min_left;
+            }
+            else if (left > this.bar_max_left &&
+                     left <= this.bar_max_left + this.options.thumb_adjust) {
+
+                left = this.bar_max_left;
+            }
+
+            // If the given left position is within the bar, set the thumb
+            // there and update its label.
+            if (left >= this.bar_min_left && left <= this.bar_max_left) {
+                $(thumb).css({'left': left});
+                this.set_label(this.value_for_position(left));
+            }
+        },
+
+        handle_press: function (event) {
+            this.is_pressed = true;
+            event.preventDefault();   // prevent accidental text selection
+            event.stopPropagation();
+        },
+
+        handle_move: function (event, thumb) {
+            var x = event.pageX;
+            var left = x - this.bar_left_offset - (this.thumb_width / 2);
+            if (this.is_pressed) {
+                this.set_thumb(left, thumb);
+                event.stopPropagation();
+
+                if (this.options.on_move &&
+                    typeof(this.options.on_move) === 'function') {
+
+                    this.options.on_move();
+                }
+            }
+        },
+
+        handle_release: function () {
+            this.is_pressed = false;
+        },
+
+        id_selector: function () {
+            return '#' + this.options.id;
+        },
+
+        set_label: function (value) {
+            var label = $(this.container_element).find(this.id_selector() +
+                                                       ' .label')[0];
+            $(label).html(value);
+        },
+
+        init: function () {
+            var self = this;
+            var id_selector = '#' + this.options.id;
+
+            // Build the slider and bind the event handlers.
+
+            self.build_slider();
+            this.value = this.options.initial_value;
+            self.set_label(this.value);
+            
+            var bar = $(this.container_element).find(self.id_selector() +
+                                                     ' .bar')[0];
+            var offset = $(bar).offset();
+            this.bar_left_offset = offset.left;
+            this.bar_width = $(bar).width();
+
+            var thumb = $(this.container_element).find(self.id_selector() +
+                                                       ' .thumb')[0];
+            this.thumb_width = $(thumb).width();
+
+            this.bar_min_left = 0 + this.options.bar_left_offset_adjust;
+            this.bar_max_left = this.bar_width - this.thumb_width +
+                                this.options.bar_left_offset_adjust;
+
+            this.number_of_segments = this.options.maximum -
+                                      this.options.minimum + 1;
+            this.pixels_per_value = this.bar_width / this.number_of_segments;
+
+            var left_position = self.position_for_value(this.value);
+            self.set_thumb(left_position, thumb);
+
+            if (this.is_touch) {
+                $(thumb).bind({
+                    'touchstart.Slider': function () {
+                        self.handle_press();
+                    },
+                    'touchmove.Slider': function (event) {
+                        event.preventDefault();   // prevent scrolling
+                        var original_event = event.originalEvent;
+                        self.handle_move(original_event, thumb);
+                    },
+                    'touchend.Slider': function () {
+                        self.handle_release();
+                    }
+                });
+                // No need to support tapping on the slider bar to
+                // move the thumb on touch interfaces: iOS does not
+                // support this on its native slider control.
+            }
+            else {
+                $(thumb).bind({
+                    'mousedown.Slider': function (event) {
+                        self.handle_press(event);
+                    },
+                    'mousemove.Slider': function (event) {
+                        event.preventDefault();   // prevent scrolling
+                        var original_event = event.originalEvent;
+                        self.handle_move(original_event, thumb);
+                    },
+                    'mouseup.Slider': function () {
+                        self.handle_release();
+                    }
+                });
+
+                $(bar).bind({
+                    'mousedown.Slider.bar': function (event) {
+                        self.handle_press(event);
+                        self.handle_move(event, thumb);
+                    },
+                    'mouseup.Slider.bar': function () {
+                        self.handle_release();
+                    }
+                });
+
+                $('body').unbind('mousemove.Slider');
+                $('body').unbind('mouseup.Slider');
+
+                $('body').bind({
+                    'mousemove.Slider': function (event) {
+                        self.handle_move(event, thumb);
+                    },
+                    'mouseup.Slider': function () {
+                        self.handle_release();
+                    }
+                });
+            }
+        }   // end init()
+    };   // end prototype definition
+
+    // Extend jQuery with slider capability.
+    $.fn.slider = function (options) {
+        new Slider(this, options);
+        return this;
+    };
+});
+
+},
+'simplekey/Length':function(){
+/*
+ * Finally, the text box where users can enter lengths.
+ */
+define("simplekey/Length", [
+    'bridge/jquery',
+    'bridge/underscore',
+    'simplekey/App3',
+    'simplekey/Choice'
+], function($, _, App3, Choice) {
+
+    var factormap = {
+        'mm': 1.0, 'cm': 10.0, 'm': 1000.0, 'in': 25.4, 'ft': 304.8
+    };
+
+    var Length = function() {};
+    Length.prototype = new Choice();
+
+    Length.prototype.init = function(args) {
+        this.permitted_ranges = [];  // [{min: n, max: m}, ...] measured in mm
+        this.species_vector = [];
+        this.unit = 'mm';
+        this.is_metric = true;
+        this.factor = 1.0;
+        Choice.prototype.init.call(this, args);
+    };
+
+    Length.prototype.clear = function() {
+    };
+
+    Length.prototype._draw_specifics = function() {
+        var $value_div = $('div.working-area .values');
+
+        this._set_unit(this.filter.display_units || 'mm');
+        var this_unit = this.unit;  // for the use of our inner functions
+        var value = this.filter.get('value');
+        if (value === null)
+            value = '';
+        else
+            value = value / this.factor;
+
+        var radio_for = function(unit) {
+            return '<label><input name="units" type="radio" value="' + unit +
+                '"' + (unit === this_unit ? ' checked' : '') +
+                '>' + unit + '</label>';
+        };
+
+        var input_for = function(name, insert_value) {
+            return '<input class="' + name + '" name="' + name +
+                '" type="text"' +
+                (insert_value ? ' value="' + value + '"' : ' disabled') +
+                '>';
+        };
+
+        $value_div.empty().addClass('numeric').removeClass('multiple').html(
+            '<div class="permitted_ranges"></div>' +
+            '<div class="current_length"></div>' +
+
+            '<div class="measurement">' +
+            'Metric length: ' +
+            input_for('measure_metric', this.is_metric) +
+            radio_for('mm') +
+            radio_for('cm') +
+            radio_for('m') +
+            '</div>' +
+
+            '<div class="measurement">' +
+            'English length: ' +
+            input_for('measure_english', ! this.is_metric) +
+            radio_for('in') +
+            radio_for('ft') +
+            '</div>' +
+
+            '<div class="instructions">' +
+            '</div>'
+        );
+        $value_div.find('[name="units"]').bind(
+            'change', $.proxy(this, '_unit_changed'));
+        $value_div.find('[type="text"]').bind(
+            'change', $.proxy(this, '_measure_changed'));
+        $value_div.find('[type="text"]').bind(
+            'keyup', $.proxy(this, '_key_pressed'));
+    };
+
+    Length.prototype._key_pressed = function(event) {
+        if (event.keyCode == 10 || event.keyCode == 13)
+            this._apply_filter_value();
+        else
+            this._measure_changed();
+    };
+
+    Length.prototype._parse_value = function(text) {
+        var v = parseFloat(text);
+        if (isNaN(v))
+            return null;
+        return v;
+    };
+
+    Length.prototype._current_value = function() {
+        var selector = this.is_metric ? '[name="measure_metric"]' :
+            '[name="measure_english"]';
+        var text = $(selector, this.div).attr('value');
+        var v = this._parse_value(text);
+        return (v === null) ? null : v * this.factor;
+    };
+
+    Length.prototype._set_unit = function(unit) {
+        this.unit = unit;
+        this.factor = factormap[this.unit];
+        this.is_metric = /m$/.test(this.unit);
+    };
+
+    Length.prototype._unit_changed = function(event) {
+        this._set_unit(event.target.value);
+        $('.measure_metric').prop('disabled', ! this.is_metric);
+        $('.measure_english').prop('disabled', this.is_metric);
+        this._redraw_permitted_ranges();
+        this._measure_changed();
+    };
+
+    Length.prototype._measure_changed = function() {
+        var mm = this._current_value();
+        var mm_old = this._parse_value(this.filter.get('value'));
+        var vector = this.filter.taxa_matching(mm);
+        vector = _.intersect(vector, this.species_vector);
+        var $div = $('.instructions', this.div);
+        var $apply_button = $('.apply-btn', this.div);
+        if (mm_old === mm) {
+            instructions = 'Change the value to narrow your selection to a' +
+                ' new set of matching species.';
+            $apply_button.addClass('disabled');
+        } else if (vector.length > 0) {
+            instructions = 'Press “Apply” to narrow your selection to the ' +
+                vector.length + ' matching species.';
+            $apply_button.removeClass('disabled');
+        } else {
+            instructions = '';
+            $apply_button.addClass('disabled');
+        }
+        $div.html(instructions);
+
+        // Stash a hint about how the sidebar should display our value.
+        this.filter.display_units = this.unit;
+    };
+
+    Length.prototype._redraw_permitted_ranges = function() {
+        var p = 'Please enter a measurement in the range ';
+        var truncate = function(value, precision) {
+            var power = Math.pow(10, precision || 0);
+            return String(Math.round(value * power) / power);
+        };
+        for (var i = 0; i < this.permitted_ranges.length; i++) {
+            var pr = this.permitted_ranges[i];
+            if (i) p += ' or ';
+            p += truncate(pr.min / this.factor, 2) + '&nbsp;' + this.unit +
+                '&nbsp;–&nbsp;' +  // en-dash for numeric ranges
+                truncate(pr.max / this.factor, 2) + '&nbsp;' + this.unit;
+        }
+        $('.permitted_ranges', this.div).html(p);
+    };
+
+    Length.prototype._on_filter_change = function() {
+        // A filter somewhere on the page changed, so we might need to
+        // adjust our statement about the number of species matched by
+        // the value in our input field.
+
+        var species_vector = App3.filter_controller.compute(this.filter);
+        this.species_vector = species_vector;
+        this.permitted_ranges = this.filter.allowed_ranges(species_vector);
+        this._redraw_permitted_ranges();
+        this._measure_changed();
+    };
+
+    return Length;
+});
 
 },
 'simplekey/species':function(){
@@ -34700,11 +24450,11 @@ define("simplekey/species", [
     // Basic resources
     'util/activate_search_suggest',
     'util/shadowbox_init',
-    
+
     // Scrolling
     'util/activate_smooth_div_scroll',
-    
-    'gobotany/sk/species'
+
+    'simplekey/SpeciesPageHelper'
 ], function($, search_suggest, shadowbox_init, activate_scroll,
     SpeciesPageHelper) {
 
@@ -34729,15 +24479,20 @@ require([
 ], function($, ui, easing, smoothDivScroll) {
     $(document).ready(function() {
 
-       // Activate!
+        // Activate!
        
-       $('#species-images').smoothDivScroll({
-           autoScrollingMode: 'onstart', 
-           autoScrollingDirection: 'backandforth', 
-           autoScrollingStep: 1, 
-           autoScrollingInterval: 75,
-           visibleHotSpotBackgrounds: 'always'
-       });
+        $('#species-images').smoothDivScroll({
+            autoScrollingMode: 'onstart', 
+            autoScrollingDirection: 'backandforth', 
+            autoScrollingStep: 1, 
+            autoScrollingInterval: 75,
+            visibleHotSpotBackgrounds: 'always'
+        });
+    
+        // Manually fire the window.load event in order to start
+        // autoscrolling. (It used to work without this before some code
+        // reorganization, so perhaps it can be removed at some point.)
+        $(window).load();
     });
 });
 
@@ -34750,24 +24505,16 @@ require([
 // as a thin abstraction layer so we don't have to worry about
 // versioned filenames in our module references.
 define("bridge/jquery-ui", [
-    'bridge/jquery', 
     'jquery/jquery-ui-1.8.16.custom.min'
-], function($, ui) {
-    var jquery;
-    if($.ui) {
-        // The plugin is loaded, so return the same
-        // jQuery object again (the global)
-        jquery = $;
-    }
-
-    return jquery;
-});
-
+], function() {});
 
 },
 'jquery/jquery-ui-1.8.16.custom.min':function(){
-// wrapped by build app
-define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
+define("jquery/jquery-ui-1.8.16.custom.min", [
+    'bridge/jquery'
+], function() {
+    // end AMD header
+
 /*!
  * jQuery UI Widget 1.8.16
  *
@@ -34784,36 +24531,23 @@ b.extend(true,{},this.options,this._getCreateOptions(),a);var d=this;this.elemen
 "-disabled ui-state-disabled")},widget:function(){return this.element},option:function(a,c){var d=a;if(arguments.length===0)return b.extend({},this.options);if(typeof a==="string"){if(c===j)return this.options[a];d={};d[a]=c}this._setOptions(d);return this},_setOptions:function(a){var c=this;b.each(a,function(d,e){c._setOption(d,e)});return this},_setOption:function(a,c){this.options[a]=c;if(a==="disabled")this.widget()[c?"addClass":"removeClass"](this.widgetBaseClass+"-disabled ui-state-disabled").attr("aria-disabled",
 c);return this},enable:function(){return this._setOption("disabled",false)},disable:function(){return this._setOption("disabled",true)},_trigger:function(a,c,d){var e=this.options[a];c=b.Event(c);c.type=(a===this.widgetEventPrefix?a:this.widgetEventPrefix+a).toLowerCase();d=d||{};if(c.originalEvent){a=b.event.props.length;for(var f;a;){f=b.event.props[--a];c[f]=c.originalEvent[f]}}this.element.trigger(c,d);return!(b.isFunction(e)&&e.call(this.element[0],c,d)===false||c.isDefaultPrevented())}}})(jQuery);
 ;
+
+    // AMD footer
 });
 
 },
 'bridge/jquery.easing':function(){
-// AMD wrapper for jquery.easing plugin.
-// This should ensure the AMD loader properly caches jquery
-// and only loads it once, and we can be sure that this plugin
-// has jquery loaded before it attempts to load. This also serves
-// as a thin abstraction layer so we don't have to worry about
-// versioned filenames in our module references.
 define("bridge/jquery.easing", [
-    'bridge/jquery', 
-    'bridge/jquery-ui',
     'jquery/jquery.easing.1.3'
-], function($, ui, easing) {
-    var jquery;
-    if($.easing.def == 'easeOutQuad') {
-        // The plugin is loaded, so return the same
-        // jQuery object again (the global)
-        jquery = $;
-    }
-
-    return jquery;
-});
-
+], function() {});
 
 },
 'jquery/jquery.easing.1.3':function(){
-// wrapped by build app
-define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
+define("jquery/jquery.easing.1.3", [
+    'bridge/jquery'
+], function() {
+    // end AMD header
+
 /*
  * jQuery Easing v1.3 - http://gsgd.co.uk/sandbox/jquery/easing/
  *
@@ -35019,37 +24753,25 @@ jQuery.extend( jQuery.easing,
  * OF THE POSSIBILITY OF SUCH DAMAGE. 
  *
  */
+
+    // AMD footer
 });
 
 },
 'bridge/jquery.smoothdivscroll':function(){
-// AMD wrapper for jquery.cookie plugin.
-// This should ensure the AMD loader properly caches jquery
-// and only loads it once, and we can be sure that this plugin
-// has jquery loaded before it attempts to load. This also serves
-// as a thin abstraction layer so we don't have to worry about
-// versioned filenames in our module references.
 define("bridge/jquery.smoothdivscroll", [
-    'bridge/jquery', 
-    'bridge/jquery-ui',
-    'bridge/jquery.mousewheel',
     'jquery/jquery.smoothDivScroll-1.2-mod'
-], function($, ui, mousewheel, smoothdivscroll) {
-    var jquery;
-    if($.fn.smoothDivScroll) {
-        // The plugin is loaded, so return the same
-        // jQuery object again (the global)
-        jquery = $;
-    }
-
-    return jquery;
-});
-
+], function() {});
 
 },
 'jquery/jquery.smoothDivScroll-1.2-mod':function(){
-// wrapped by build app
-define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
+define("jquery/jquery.smoothDivScroll-1.2-mod", [
+    'bridge/jquery',
+    'bridge/jquery-ui',
+    'bridge/jquery.mousewheel'
+], function() {
+    // end AMD header
+
 /*
  * jQuery SmoothDivScroll 1.2
  *
@@ -36135,46 +25857,38 @@ define(["dojo","dijit","dojox"], function(dojo,dijit,dojox){
 	});
 })(jQuery);
 
+    // AMD footer
 });
 
 },
-'gobotany/sk/species':function(){
+'simplekey/SpeciesPageHelper':function(){
 /*
  * Code for adding behavior to species pages.
  */
-define("gobotany/sk/species", [
-    'dojo/_base/declare',
-    'dojo/_base/lang',
-    'dojo/query',
-    'dojo/on',
-    'dojo/cookie',
-    'dojo/dom-geometry',
+define("simplekey/SpeciesPageHelper", [
     'bridge/jquery',
     'bridge/shadowbox',
-    'gobotany/sk/photo',
-    'gobotany/utils',
     'util/sidebar',
+    'simplekey/PhotoHelper',
     'simplekey/glossarize'
-], function(declare, lang, query, on, cookie, domGeom, $, Shadowbox,
-    PhotoHelper, utils, sidebar, glossarize) {
-return declare('gobotany.sk.species.SpeciesPageHelper', null, {
+], function($, Shadowbox, sidebar, PhotoHelper, glossarize) {
+var SpeciesPageHelper = {
 
-    constructor: function() {
+    init: function() {
         this.photo_helper = PhotoHelper();
     },
 
     toggle_character_group: function() {
         // Set handlers for toggling a character group.
-        // (Uses jQuery for historical reasons.)
-        $('ul.full-description li').toggle(function() {
-            $(this).children('div').show();
-            $(this).children('h5').css('background-image',
+        $('ul.full-description li h5').toggle(function() {
+            $(this).siblings('div').show();
+            $(this).css('background-image',
                 'url("/static/images/icons/minus.png")');
             sidebar.set_height();
             return false;
         }, function() {
-            $(this).children('div').hide();
-            $(this).children('h5').css('background-image',
+            $(this).siblings('div').hide();
+            $(this).css('background-image',
                 'url("/static/images/icons/plus.png")');
             sidebar.set_height();
             return false;
@@ -36183,7 +25897,6 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
 
     toggle_characters_full_list: function() {
         // Set handlers for toggling the full characteristics list.
-        // (Uses jQuery for historical reasons.)
         var that = this;
         $('a.description-control').toggle(function() {
             $('ul.full-description').show();
@@ -36209,8 +25922,8 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
         // Wire up each image link to a Shadowbox popup handler.
         var IMAGE_LINKS_CSS = '#species-images a';
         var that = this;
-        query(IMAGE_LINKS_CSS).forEach(function(link) {
-            on(link, 'click', lang.hitch(this, function(event) {
+        $(IMAGE_LINKS_CSS).each(function(i, link) {
+            $(link).click($.proxy(function(event) {
                 // Prevent the regular link (href) from taking over.
                 event.preventDefault();
 
@@ -36224,7 +25937,7 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
                         onFinish: that.photo_helper.process_credit
                     }
                 });
-            }));
+            }, this));
         });
     },
 
@@ -36233,19 +25946,19 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
         // is needed to make it clickable. Make this div cover the link
         // that appears below the map, too, for one large clickable area.
         var transparent_div =
-            query('#sidebar .section.namap div.trans')[0];
-        on(transparent_div, 'click', lang.hitch(this, function(event) {
+            $('#sidebar .section.namap div.trans').first();
+        transparent_div.click($.proxy(function(event) {
             event.preventDefault();
             // Open the North America distribution map in a lightbox.
             var content_element =
-                query('#sidebar .section.namap div')[0];
+                $('#sidebar .section.namap div').first();
             Shadowbox.open({
-                content: content_element.innerHTML,
+                content: content_element.html(),
                 player: 'html',
                 height: 582,
                 width: 1000
             });
-        }));
+        }, this));
     },
 
     setup: function() {
@@ -36262,308 +25975,122 @@ return declare('gobotany.sk.species.SpeciesPageHelper', null, {
         this.wire_up_us_map_link();
         sidebar.setup()
     }
-});
-});
-
-},
-'dojo/cookie':function(){
-define("dojo/cookie", ["./_base/kernel", "./regexp"], function(dojo, regexp) {
-	// module:
-	//		dojo/cookie
-	// summary:
-	//		TODOC
-
-
-/*=====
-dojo.__cookieProps = function(){
-	//	expires: Date|String|Number?
-	//		If a number, the number of days from today at which the cookie
-	//		will expire. If a date, the date past which the cookie will expire.
-	//		If expires is in the past, the cookie will be deleted.
-	//		If expires is omitted or is 0, the cookie will expire when the browser closes.
-	//	path: String?
-	//		The path to use for the cookie.
-	//	domain: String?
-	//		The domain to use for the cookie.
-	//	secure: Boolean?
-	//		Whether to only send the cookie on secure connections
-	this.expires = expires;
-	this.path = path;
-	this.domain = domain;
-	this.secure = secure;
 }
-=====*/
 
+// Create a small factory method to return, which will act
+// as a little instance factory and constructor, so the user
+// can do as follows:
+// var obj = MyClassName(something, somethingelse);
+function factory() {
+    var instance = Object.create(SpeciesPageHelper)
+    instance.init();
+    return instance;
+}
 
-dojo.cookie = function(/*String*/name, /*String?*/value, /*dojo.__cookieProps?*/props){
-	//	summary:
-	//		Get or set a cookie.
-	//	description:
-	// 		If one argument is passed, returns the value of the cookie
-	// 		For two or more arguments, acts as a setter.
-	//	name:
-	//		Name of the cookie
-	//	value:
-	//		Value for the cookie
-	//	props:
-	//		Properties for the cookie
-	//	example:
-	//		set a cookie with the JSON-serialized contents of an object which
-	//		will expire 5 days from now:
-	//	|	dojo.cookie("configObj", dojo.toJson(config), { expires: 5 });
-	//
-	//	example:
-	//		de-serialize a cookie back into a JavaScript object:
-	//	|	var config = dojo.fromJson(dojo.cookie("configObj"));
-	//
-	//	example:
-	//		delete a cookie:
-	//	|	dojo.cookie("configObj", null, {expires: -1});
-	var c = document.cookie, ret;
-	if(arguments.length == 1){
-		var matches = c.match(new RegExp("(?:^|; )" + regexp.escapeString(name) + "=([^;]*)"));
-		ret = matches ? decodeURIComponent(matches[1]) : undefined; 
-	}else{
-		props = props || {};
-// FIXME: expires=0 seems to disappear right away, not on close? (FF3)  Change docs?
-		var exp = props.expires;
-		if(typeof exp == "number"){
-			var d = new Date();
-			d.setTime(d.getTime() + exp*24*60*60*1000);
-			exp = props.expires = d;
-		}
-		if(exp && exp.toUTCString){ props.expires = exp.toUTCString(); }
+return factory;
 
-		value = encodeURIComponent(value);
-		var updatedCookie = name + "=" + value, propName;
-		for(propName in props){
-			updatedCookie += "; " + propName;
-			var propValue = props[propName];
-			if(propValue !== true){ updatedCookie += "=" + propValue; }
-		}
-		document.cookie = updatedCookie;
-	}
-	return ret; // String|undefined
-};
-
-dojo.cookie.isSupported = function(){
-	//	summary:
-	//		Use to determine if the current browser supports cookies or not.
-	//
-	//		Returns true if user allows cookies.
-	//		Returns false if user doesn't allow cookies.
-
-	if(!("cookieEnabled" in navigator)){
-		this("__djCookieTest__", "CookiesAllowed");
-		navigator.cookieEnabled = this("__djCookieTest__") == "CookiesAllowed";
-		if(navigator.cookieEnabled){
-			this("__djCookieTest__", "", {expires: -1});
-		}
-	}
-	return navigator.cookieEnabled;
-};
-
-return dojo.cookie;
-});
-
-},
-'dojo/regexp':function(){
-define("dojo/regexp", ["./_base/kernel", "./_base/lang"], function(dojo, lang) {
-	// module:
-	//		dojo/regexp
-	// summary:
-	//		TODOC
-
-lang.getObject("regexp", true, dojo);
-
-/*=====
-dojo.regexp = {
-	// summary: Regular expressions and Builder resources
-};
-=====*/
-
-dojo.regexp.escapeString = function(/*String*/str, /*String?*/except){
-	//	summary:
-	//		Adds escape sequences for special characters in regular expressions
-	// except:
-	//		a String with special characters to be left unescaped
-
-	return str.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, function(ch){
-		if(except && except.indexOf(ch) != -1){
-			return ch;
-		}
-		return "\\" + ch;
-	}); // String
-};
-
-dojo.regexp.buildGroupRE = function(/*Object|Array*/arr, /*Function*/re, /*Boolean?*/nonCapture){
-	//	summary:
-	//		Builds a regular expression that groups subexpressions
-	//	description:
-	//		A utility function used by some of the RE generators. The
-	//		subexpressions are constructed by the function, re, in the second
-	//		parameter.  re builds one subexpression for each elem in the array
-	//		a, in the first parameter. Returns a string for a regular
-	//		expression that groups all the subexpressions.
-	// arr:
-	//		A single value or an array of values.
-	// re:
-	//		A function. Takes one parameter and converts it to a regular
-	//		expression.
-	// nonCapture:
-	//		If true, uses non-capturing match, otherwise matches are retained
-	//		by regular expression. Defaults to false
-
-	// case 1: a is a single value.
-	if(!(arr instanceof Array)){
-		return re(arr); // String
-	}
-
-	// case 2: a is an array
-	var b = [];
-	for(var i = 0; i < arr.length; i++){
-		// convert each elem to a RE
-		b.push(re(arr[i]));
-	}
-
-	 // join the REs as alternatives in a RE group.
-	return dojo.regexp.group(b.join("|"), nonCapture); // String
-};
-
-dojo.regexp.group = function(/*String*/expression, /*Boolean?*/nonCapture){
-	// summary:
-	//		adds group match to expression
-	// nonCapture:
-	//		If true, uses non-capturing match, otherwise matches are retained
-	//		by regular expression.
-	return "(" + (nonCapture ? "?:":"") + expression + ")"; // String
-};
-
-return dojo.regexp;
 });
 
 },
 'simplekey/family':function(){
 define("simplekey/family", [
     'bridge/jquery',
-    'gobotany/sk/family',
     'util/sidebar',
     'util/activate_search_suggest',
     'util/shadowbox_init',
+    'simplekey/PhotoHelper',
     'simplekey/glossarize'
-], function($, family, sidebar, activate_search_suggest, shadowbox_init,
-    glossarize) {
+], function($, sidebar, activate_search_suggest,
+            shadowbox_init, PhotoHelper, glossarize) {
 
-    var module_function = function(args) {
-        $(document).ready(function() {
-            glossarize($('.description'));
-            sidebar.setup();
-            family.init(args.family_slug);
+    var exports = {};
+
+    var _setup_page = function(args) {
+        glossarize($('.description'));
+        sidebar.setup();
+
+        var photo_helper = PhotoHelper();
+
+        // Wire up each image link to a Shadowbox popup handler.
+        var $images = $('.pics .plant');
+        $images.each(function(i, plant_image_div) {
+            var frame = $(plant_image_div).children('.frame');
+            var link = $(plant_image_div).children('a');
+            var href = $(link).attr('href');
+            var title = $(link).attr('title');
+            $(frame).click(function() {
+                // Open the image.
+                Shadowbox.open({
+                    content: href,
+                    player: 'img',
+                    title: title,
+                    options: {
+                        onOpen: photo_helper.prepare_to_enlarge,
+                        onFinish: photo_helper.process_credit
+                    }
+                });
+            });
         });
     };
 
-    return module_function;
-});
-
-},
-'gobotany/sk/family':function(){
-define("gobotany/sk/family", [
-    'dojo/query',
-    'bridge/jquery',
-    'bridge/shadowbox',
-    'gobotany/sk/photo'
-], function(query, $, Shadowbox, PhotoHelper) {
-var family = {};
-family.init = function(family_slug) {
-    var photo_helper = PhotoHelper();
-    
-    // Wire up each image link to a Shadowbox popup handler.
-    var IMAGE_CSS = '.pics .plant';
-    query(IMAGE_CSS).forEach(function(plant_image_div) {
-        var frame = $(plant_image_div).children('.frame');
-        var link = $(plant_image_div).children('a');
-        var href = $(link).attr('href');
-        var title = $(link).attr('title');
-        $(frame).click(function() {
-            // Open the image.
-            Shadowbox.open({
-                content: href,
-                player: 'img',
-                title: title,
-                options: {
-                    onOpen: photo_helper.prepare_to_enlarge,
-                    onFinish: photo_helper.process_credit
-                }
-            });
+    exports.init = function(args) {
+        $(document).ready(function() {
+            _setup_page(args);
         });
-    });
-}
+    };
 
-return family;
+    return exports;
 });
 
 },
 'simplekey/genus':function(){
 define("simplekey/genus", [
     'bridge/jquery',
-    'gobotany/sk/genus',
     'util/sidebar',
     'util/activate_search_suggest',
     'util/shadowbox_init',
+    'simplekey/PhotoHelper',
     'simplekey/glossarize'
-], function($, genus, sidebar, activate_search_suggest, shadowbox_init,
-    glossarize) {
-    
-    var module_function = function(args) {
-        $(document).ready(function() {
-            glossarize($('.description'));
-            sidebar.setup();
-            genus.init(args.genus_slug);
+], function($, sidebar, activate_search_suggest, shadowbox_init,
+            PhotoHelper, glossarize) {
+
+    var exports = {};
+
+    var _setup_page = function() {
+        glossarize($('.description'));
+        sidebar.setup();
+
+        var photo_helper = PhotoHelper();
+
+        // Wire up each image link to a Shadowbox popup handler.
+        var $images = $('.pics .plant');
+        $images.each(function(i, plant_image_div) {
+            var frame = $(plant_image_div).children('.frame');
+            var link = $(plant_image_div).children('a');
+            var href = $(link).attr('href');
+            var title = $(link).attr('title');
+            $(frame).click(function() {
+                // Open the image.
+                Shadowbox.open({
+                    content: href,
+                    player: 'img',
+                    title: title,
+                    options: {
+                        onOpen: photo_helper.prepare_to_enlarge,
+                        onFinish: photo_helper.process_credit
+                    }
+                });
+            });
         });
     };
 
-    return module_function;
-});
-
-
-},
-'gobotany/sk/genus':function(){
-// Global declaration for JSLint (http://www.jslint.com/)
-/*global dojo, dojox, gobotany */
-define("gobotany/sk/genus", [
-    'dojo/query',
-    'bridge/jquery',
-    'bridge/shadowbox',
-    'gobotany/sk/photo'
-], function(query, $, Shadowbox, PhotoHelper) {
-
-var genus = {};
-genus.init = function(genus_slug) {
-    var photo_helper = PhotoHelper();
-    
-    // Wire up each image link to a Shadowbox popup handler.
-    var IMAGE_CSS = '.pics .plant';
-    query(IMAGE_CSS).forEach(function(plant_image_div) {
-        var frame = $(plant_image_div).children('.frame');
-        var link = $(plant_image_div).children('a');
-        var href = $(link).attr('href');
-        var title = $(link).attr('title');
-        $(frame).click(function() {
-            // Open the image.
-            Shadowbox.open({
-                content: href,
-                player: 'img',
-                title: title,
-                options: {
-                    onOpen: photo_helper.prepare_to_enlarge,
-                    onFinish: photo_helper.process_credit
-                }
-            });
+    exports.init = function() {
+        $(document).ready(function() {
+            _setup_page();
         });
-    });
-};
+    };
 
-return genus;
+    return exports;
 });
 
 },
@@ -36599,45 +26126,37 @@ require([
 },
 'simplekey/help_map':function(){
 require([
+    'bridge/jquery',
     'util/activate_search_suggest',
-    'bridge/shadowbox',
-    'util/shadowbox_init',
     'util/activate_video_links',
+    'util/shadowbox_init',
     'util/sidebar',
-    'dojo/ready',
-    'gobotany/sk/help'
-], function(activate_search_suggest, Shadowbox, shadowbox_init, 
-        activate_video_links, sidebar, ready, MapToGroupsHelper) {
-    sidebar.setup()
-    return ready(function() {
-        var helper = new MapToGroupsHelper();
+    'simplekey/MapToGroupsHelper'
+], function($, activate_search_suggest, activate_video_links, shadowbox_init,
+    sidebar, MapToGroupsHelper) {
+
+    sidebar.setup();
+    $(document).ready(function() {
+        var helper = MapToGroupsHelper();
         helper.setup();
     });
 });
 
-
 },
-'gobotany/sk/help':function(){
+'simplekey/MapToGroupsHelper':function(){
 /* Code for adding behavior to the Help pages. */
 
-// Configure this module here until we finish the migration
-define("gobotany/sk/help", ['dojo/_base/declare',
-        'dojo/query',
-        'dojo/dom-geometry',
-        'dojo/_base/array',
-        'dojo/dom-class',
-        'dojo/dom-style',
-        'dojo/_base/connect',
-        'dojo/_base/lang'],
-    function(declare, query, domGeom, array, domClass, domStyle, connect,
-             lang) {
-        return declare('gobotany.sk.help.MapToGroupsHelper', null, {
+define("simplekey/MapToGroupsHelper", [
+    'bridge/jquery'
+], function($) {
+
+        var MapsToGroupsHelper = {
             groups: null,
             subgroup_sets: null,
 
-            constructor: function () {
-                this.groups = query('.plant-group');
-                this.subgroup_sets = query('.subgroups');
+            init: function () {
+                this.groups = $('.plant-group');
+                this.subgroup_sets = $('.subgroups');
             },
 
             get_left_margin_for_subgroup_set: function (group_number) {
@@ -36647,21 +26166,18 @@ define("gobotany/sk/help", ['dojo/_base/declare',
 
                 // Get the first group's horizontal left position, which is
                 // at the left edge of the content area.
-                var first_group_left_x_position =
-                    domGeom.position(this.groups[0]).x;
+                var first_group_left_x_position = this.groups.offset().left;
 
                 // Get the last group's horizontal right position, which is
                 // at the right edge of the content area.
-                var last_group_position =
-                    domGeom.position(this.groups[this.groups.length - 1]);
-                var last_group_right_x_position = last_group_position.x +
-                    last_group_position.w;
+                var last_group = this.groups.last();
+                var last_group_right_x_position = last_group.offset().left +
+                    last_group.width();
 
                 // Get the group's horizontal center position.
-                var group_position =
-                    domGeom.position(this.groups[group_number]);
-                var group_center_x_position = group_position.x +
-                    Math.floor(group_position.w / 2);
+                var group = $(this.groups[group_number]);
+                var group_center_x_position = group.offset().left +
+                    Math.floor(group.width() / 2);
 
                 /* Get the width of the subgroup set by tallying the widths
                    of the subgroups within it. This is necessary because the
@@ -36669,13 +26185,12 @@ define("gobotany/sk/help", ['dojo/_base/declare',
                    container's width does not reflect the total width of the
                    subgroups. */
                 var subgroup_set_width = 0;
-                var subgroup_set = this.subgroup_sets[group_number];
-                array.forEach(query('.plant-subgroup', subgroup_set),
-                    function(subgroup, i) {
-                        var subgroup_width = domGeom.position(subgroup).w;
-                        subgroup_set_width += subgroup_width;
-                    }
-                );
+                var subgroup_set = $(this.subgroup_sets[group_number]);
+                subgroup_set
+                    .find('.plant-subgroup')
+                    .each(function(i, subgroup) {
+                        subgroup_set_width += $(subgroup).width();
+                });
 
                 // Get the maximum left margin allowed for the subgroup set.
                 var EXTRA_PADDING = 22;  // Will subtract to ensure fit
@@ -36714,30 +26229,29 @@ define("gobotany/sk/help", ['dojo/_base/declare',
                 var ACTIVE_CLASS = 'active';
                 var HIDDEN_CLASS = 'hidden';
 
-                this.groups.forEach(function(group, i) {
+                this.groups.each(function(i, group) {
                     if (i === group_number) {
-                        domClass.add(group, ACTIVE_CLASS);
+                        $(group).addClass(ACTIVE_CLASS);
                     }
                     else {
-                        domClass.remove(group, ACTIVE_CLASS);
+                        $(group).removeClass(ACTIVE_CLASS);
                     }
                 });
 
-                var that = this;
-                this.subgroup_sets.forEach(function(subgroup_set, i) {
+                this.subgroup_sets.each($.proxy(function(i, subgroup_set) {
                     if (i === group_number) {
                         // Show the subgroup set.
-                        domClass.remove(subgroup_set, HIDDEN_CLASS);
+                        $(subgroup_set).removeClass(HIDDEN_CLASS);
                         var left_margin_value =
-                            that.get_left_margin_for_subgroup_set(i);
-                        domStyle.set(subgroup_set, 'marginLeft',
+                            this.get_left_margin_for_subgroup_set(i);
+                        $(subgroup_set).css('marginLeft',
                             left_margin_value.toString() + 'px');
                     }
                     else {
                         // Hide the subgroup set.
-                        domClass.add(subgroup_set, HIDDEN_CLASS);
+                        $(subgroup_set).addClass(HIDDEN_CLASS);
                     }
-                });
+                }, this));
             },
 
             setup: function () {
@@ -36745,15 +26259,28 @@ define("gobotany/sk/help", ['dojo/_base/declare',
                 var i;
                 for (i = 0; i < this.groups.length; i += 1) {
                     var group = this.groups[i];
-                    connect.connect(group, 'onclick',
-                        lang.hitch(this, this.activate_group, i));
+                    $(group).bind('click', {groupNumber: i}, $.proxy(function(event) {
+                        this.activate_group(event.data.groupNumber);
+                    }, this));
                 }
 
                 // Initially activate the first group and its subgroup set.
                 this.activate_group(0);
             }
 
-        });
+        };
+
+        // Create a small factory method to return, which will act
+        // as a little instance factory and constructor, so the user
+        // can do as follows:
+        // var obj = MyClassName(something, somethingelse);
+        function factory() {
+            var instance = Object.create(MapsToGroupsHelper);
+            instance.init();
+            return instance;
+        }
+
+        return factory;
     }
 );
 

@@ -8,11 +8,8 @@ dojoConfig = {
     locale: 'en-us',
     packages: [
         { name: 'dojo', location: 'dojo' },
-        { name: 'dojox', location: 'dojox' },
-        { name: 'dijit', location: 'dijit' },
         { name: 'jquery', location: 'jquery' },
         { name: 'tools', location: 'tools' },
-        { name: 'gobotany', location: '../gobotany' },
         { name: 'simplekey', location: 'simplekey' },
         { name: 'bridge', location: 'bridge' },
         { name: 'util', location: 'util' }
