@@ -61,7 +61,7 @@ define([
 
         // Set the initial view for showing the results.
         view_matches = window.location.hash.match(/_view=[a-z]+/);
-        if (view_matches.length) {
+        if (view_matches && view_matches.length) {
             this.current_view = view_matches[0].substring(6);
             this.set_navigation_to_view(this.current_view);
         }
