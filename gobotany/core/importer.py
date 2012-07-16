@@ -241,7 +241,6 @@ class Importer(object):
                 key_characteristics = clean(row['key_characteristics']),
                 name = row['name'].title(),
                 notable_exceptions = clean(row['notable_exceptions']),
-                youtube_id = '',
                 )
 
         pilegroup.save()
@@ -267,7 +266,6 @@ class Importer(object):
                 description = row['description'],
                 key_characteristics = clean(row['key_characteristics']),
                 notable_exceptions = clean(row['notable_exceptions']),
-                youtube_id = '',
                 )
 
         pile.save()
@@ -1614,20 +1612,37 @@ class Importer(object):
     @transaction.commit_on_success
     def _import_videos(self, db, videofilename):
 
-        log.info('Reading CSV to determine which piles/pilegroups have videos')
+        log.info('Reading CSV to import videos and assign to piles/pilegroups')
 
-        cursor = connection.cursor()
-        cursor.execute("UPDATE core_pilegroup SET youtube_id = ''")
-        cursor.execute("UPDATE core_pile SET youtube_id = ''")
+        # First clear any existing video associations.
+        for pile_group in models.PileGroup.objects.all():
+            if pile_group.video:
+                pile_group.video = None
+        for pile in models.Pile.objects.all():
+            if pile.video:
+                pile.video = None
 
+        # Create and associate video records from the CSV file.
         for row in open_csv(videofilename):
-            try:
-                p = models.PileGroup.objects.get(name=row['pile-or-subpile'])
-            except models.PileGroup.DoesNotExist:
-                p = models.Pile.objects.get(name=row['pile-or-subpile'])
+            v, created = Video.objects.get_or_create(
+                         title=row['title'], youtube_id=row['youtube-id'])
+            print >> self.logfile, u'    Video: %s %s' % (v.title,
+                                                          v.youtube_id)
 
-            p.youtube_id = row['youtube-id']
-            p.save()
+            if row['pile-or-subpile']:
+                try:
+                    p = models.PileGroup.objects.get(name=row['pile-or-subpile'])
+                    print >> self.logfile, \
+                        u'    Pile group: %s - YouTube video id: %s' % \
+                        (p.name, v.youtube_id)
+                except models.PileGroup.DoesNotExist:
+                    p = models.Pile.objects.get(name=row['pile-or-subpile'])
+                    print >> self.logfile, \
+                        u'      Pile: %s - YouTube video id: %s' % \
+                        (p.name, v.youtube_id)
+
+                p.video = v
+                p.save()
 
     def _create_about_gobotany_page(self):
         help_page, created = HelpPage.objects.get_or_create(
@@ -1658,16 +1673,9 @@ class Importer(object):
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
 
-        blurb, created = Blurb.objects.get_or_create(
-            name='getting_started',
-            text='this is the blurb called getting_started')
-        help_page.blurbs.add(blurb)
-
-        GETTING_STARTED_YOUTUBE_ID = 'hdC0I4FLR7o'
-        blurb, created = Blurb.objects.get_or_create(
-            name='getting_started_youtube_id',
-            text=GETTING_STARTED_YOUTUBE_ID)
-        help_page.blurbs.add(blurb)
+        video = Video.objects.get(title='Getting Started')
+        if video:
+            help_page.videos.add(video)
 
         help_page.save()
 
@@ -1683,27 +1691,13 @@ class Importer(object):
         # via fixture after the importer finishes, so it's not available here.
         pile_groups = models.PileGroup.objects.all()
         for pile_group in pile_groups:
-            if len(pile_group.youtube_id) > 0:
-                print >> self.logfile, \
-                    u'    Pile group: %s - YouTube video id: %s' % \
-                    (pile_group.name, pile_group.youtube_id)
-                video, created = Video.objects.get_or_create(
-                    title=pile_group.name,
-                    youtube_id=pile_group.youtube_id)
-                if video:
-                    videos.append(video)
-                    order = order + 1
+            if pile_group.video:
+                videos.append(pile_group.video)
+                order = order + 1
             for pile in pile_group.piles.all():
-                if len(pile.youtube_id) > 0:
-                    print >> self.logfile, \
-                        u'      Pile: %s - YouTube video id: %s' % \
-                        (pile.name, pile.youtube_id)
-                    video, created = Video.objects.get_or_create(
-                        title=pile.name,
-                        youtube_id=pile.youtube_id)
-                    if video:
-                        videos.append(video)
-                        order = order + 1
+                if pile.video:
+                    videos.append(pile.video)
+                    order = order + 1
         return videos
 
 
@@ -1730,10 +1724,8 @@ class Importer(object):
             print >> self.logfile, u'  New Help page: ', help_page
 
         # Add Getting Started video.
-        TEMP_VIDEO_ID = 'LQ-jv8g1YVI'
         order = 1
-        video, created = Video.objects.get_or_create(
-            title='Getting Started', youtube_id=TEMP_VIDEO_ID)
+        video = Video.objects.get(title='Getting Started')
         if video:
             help_page.videos.add(video)
 

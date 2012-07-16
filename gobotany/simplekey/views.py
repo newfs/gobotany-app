@@ -31,7 +31,7 @@ from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import PILEGROUP_ORDER, PILE_ORDER
 from gobotany.simplekey.models import (get_blurb, GroupsListPage,
                                        SearchSuggestion, SubgroupResultsPage,
-                                       SubgroupsListPage)
+                                       SubgroupsListPage, Video)
 
 # Character short names common to all piles (but no suffix)
 COMMON_CHARACTERS = ['habitat', 'habitat_general', 'state_distribution']
@@ -514,13 +514,12 @@ def help_about_view(request):
 @vary_on_headers('Host')
 def help_start_view(request):
     youtube_id = ''
-    youtube_id_blurb = get_blurb('getting_started_youtube_id')
-    if not youtube_id_blurb.startswith('[Provide text'):
-        # We have an actual YouTube id defined in the database.
-        youtube_id = youtube_id_blurb
+    getting_started_video = Video.objects.get(title='Getting Started')
+    if getting_started_video:
+        youtube_id = getting_started_video.youtube_id
+
     return render_to_response(
         per_partner_template(request, 'simplekey/help_start.html'), {
-            'getting_started_blurb': get_blurb('getting_started'),
             'getting_started_youtube_id': youtube_id,
             }, context_instance=RequestContext(request))
 
@@ -555,24 +554,33 @@ def help_glossary_redirect_view(request):
 
 def _get_pilegroup_dict(pilegroup_name):
     pilegroup = PileGroup.objects.get(name=pilegroup_name)
+    youtube_id = ''
+    if pilegroup.video:
+        youtube_id = pilegroup.video.youtube_id
     return {
         'title': pilegroup.friendly_title,
-        'youtube_id': pilegroup.youtube_id
+        'youtube_id': youtube_id
     }
 
 def _get_pile_dict(pile_name):
     pile = Pile.objects.get(name=pile_name)
+    youtube_id = ''
+    if pile.video:
+        youtube_id = pile.video.youtube_id
     return {
         'title': pile.friendly_title,
-        'youtube_id': pile.youtube_id
+        'youtube_id': youtube_id
     }
 
 def help_video_view(request):
     # The Getting Started video is first, followed by videos for the pile
     # groups and piles in the order that they are presented in the stepwise
     # pages at the beginning of plant identification.
-    videos = [{'title': 'Getting Started',
-               'youtube_id': get_blurb('getting_started_youtube_id')}]
+    videos = []
+    getting_started_video = Video.objects.get(title='Getting Started')
+    if getting_started_video:
+        videos.append({'title': getting_started_video.title,
+                       'youtube_id': getting_started_video.youtube_id});
 
     for pilegroup in ordered_pilegroups():
         videos.append(_get_pilegroup_dict(pilegroup.name))

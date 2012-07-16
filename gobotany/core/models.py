@@ -244,7 +244,7 @@ class PileInfo(models.Model):
     friendly_title = models.CharField(max_length=100, blank=True)
     description = models.CharField(max_length=2500, blank=True)
     images = generic.GenericRelation('ContentImage')
-    youtube_id = models.CharField(max_length=20, blank=True)
+    video = models.ForeignKey('simplekey.Video', null=True)
     key_characteristics = tinymce_models.HTMLField(blank=True)
     notable_exceptions = models.TextField(blank=True)
 
