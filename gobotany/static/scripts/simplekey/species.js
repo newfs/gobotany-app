@@ -3,11 +3,11 @@ define([
     // Basic resources
     'util/activate_search_suggest',
     'util/shadowbox_init',
-    
+
     // Scrolling
     'util/activate_smooth_div_scroll',
-    
-    'gobotany/sk/SpeciesPageHelper'
+
+    'simplekey/SpeciesPageHelper'
 ], function($, search_suggest, shadowbox_init, activate_scroll,
     SpeciesPageHelper) {
 
