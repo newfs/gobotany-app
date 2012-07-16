@@ -1,7 +1,6 @@
 define([
     'dojo/_base/fx',
     'dojo/query',
-    'dojo/io-query',
     'dojo/dom-attr',
     'dojo/dom-class',
     'dojo/dom-construct',
@@ -16,7 +15,7 @@ define([
     'util/sidebar',
     'bridge/shadowbox',
     'bridge/underscore'
-], function(fx, query, ioQuery, domAttr, domClass,
+], function(fx, query, domAttr, domClass,
         domConstruct, NodeList_dom, coreFx, NodeList_fx,
         $, results_photo_menu, resources, App3, utils, sidebar, Shadowbox, _) {
 
@@ -62,9 +61,9 @@ define([
         query('#results-tabs a').on('click', $.proxy(this, 'toggle_view'));
 
         // Set the initial view for showing the results.
-        var hash_object = ioQuery.queryToObject(window.location.hash);
-        if (hash_object._view !== undefined) {
-            this.current_view = hash_object._view;
+        view_matches = window.location.hash.match(/_view=[a-z]+/);
+        if (view_matches.length) {
+            this.current_view = view_matches[0].substring(6);
             this.set_navigation_to_view(this.current_view);
         }
     };
