@@ -1,7 +1,6 @@
 define([
     'dojo/_base/fx',
     'dojo/query',
-    'dojo/on',
     'dojo/io-query',
     'dojo/hash',
     'dojo/dom-attr',
@@ -11,6 +10,7 @@ define([
     'dojo/fx',
     'dojo/NodeList-fx',
     'dojo/window',
+    'bridge/jquery',
     'simplekey/results_photo_menu',
     'simplekey/resources',
     'simplekey/App3',
@@ -18,9 +18,9 @@ define([
     'util/sidebar',
     'bridge/shadowbox',
     'bridge/underscore'
-], function(fx, query, on, ioQuery, hash, domAttr, domClass,
+], function(fx, query, ioQuery, hash, domAttr, domClass,
         domConstruct, NodeList_dom, coreFx, NodeList_fx, win, 
-        results_photo_menu, resources, App3, utils, sidebar, Shadowbox, _) {
+        $, results_photo_menu, resources, App3, utils, sidebar, Shadowbox, _) {
 
     var SpeciesSectionHelper = function() {};
     var methods = SpeciesSectionHelper.prototype = {};
@@ -48,14 +48,14 @@ define([
         // and holding of a cursor key.
         var SCROLL_WAIT_MS = 0;
         var scroll_timer;
-        on(window, 'scroll', $.proxy(function() {
+        $(window).scroll($.proxy(function() {
             clearTimeout(scroll_timer);
             scroll_timer = setTimeout(this.lazy_load_images, SCROLL_WAIT_MS);
         }, this));
 
         var RESIZE_WAIT_MS = 500;
         var resize_timer;
-        on(window, 'resize', $.proxy(function() {
+        $(window).resize($.proxy(function() {
             clearTimeout(resize_timer);
             resize_timer = setTimeout(this.lazy_load_images, RESIZE_WAIT_MS);
         }, this));
@@ -110,7 +110,7 @@ define([
 
     methods.connect_plant_preview_popup = function(plant_link, plant) {
 
-        on(plant_link, 'click', $.proxy(function(event) {
+        $(plant_link).click($.proxy(function(event) {
             event.preventDefault();
 
             // A few characters get a "compact" list for multiple values.
