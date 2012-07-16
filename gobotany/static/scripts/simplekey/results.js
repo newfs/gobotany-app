@@ -18,12 +18,12 @@ define([
     'util/activate_search_suggest',
     'util/activate_image_gallery',
     'util/sidebar',
-    'gobotany/sk/ResultsHelper'
+    'gobotany/sk/SpeciesSectionHelper'
 ], function(
     document_is_ready, $, x, Ember, Shadowbox, shadowbox_init, _, utils,
     App3, _Filter, _FilterController, animation,
     _glossarize, resources, ResultsPageState, working_area_module,
-    search_suggest, image_gallery, sidebar, ResultsHelper
+    search_suggest, image_gallery, sidebar, SpeciesSectionHelper
 ) {return {
 
 results_page_init: function(args) {
@@ -32,16 +32,17 @@ results_page_init: function(args) {
     sidebar.setup();
     /* Legacy dojo components */
 
-    var helper = null;
+    var species_section = null;
+    var species_section_ready = $.Deferred();
 
     $.when(
         document_is_ready,
         filtered_sorted_taxadata_ready,
         taxa_by_sciname_ready
     ).done(function() {
-        helper = new ResultsHelper(args.pile_slug, plant_divs_ready);
-        speciessectionhelper = helper.species_section;
-        ResultsHelper_ready.resolve(helper);
+        species_section = new SpeciesSectionHelper(
+            pile_slug, plant_divs_ready);
+        species_section_ready.resolve();
     });
 
     Filter = _Filter;
@@ -63,14 +64,13 @@ results_page_init: function(args) {
 
         switch_photo_list: function(event) {
             // Tell the old Dojo species section helper to switch views.
-            if (speciessectionhelper)
-                speciessectionhelper.toggle_view(event);
+            if (species_section)
+                species_section.toggle_view(event);
         }
     });
 
     /* Async resources and deferreds. */
 
-    var ResultsHelper_ready = $.Deferred();
     var all_filters_ready = $.Deferred();
     var filter_controller_is_built = $.Deferred();
     var filtered_sorted_taxadata_ready = $.Deferred();
@@ -771,23 +771,23 @@ results_page_init: function(args) {
     });
 
     $.when(
-        ResultsHelper_ready,
+        species_section_ready,
         filtered_sorted_taxadata_ready,
         plant_divs_ready
     ).done(function(rh) {
         update_counts(App3.filtered_sorted_taxadata);
-        rh.species_section.display_results(App3.filtered_sorted_taxadata);
+        species_section.display_results(App3.filtered_sorted_taxadata);
         load_selected_image_type();
-        rh.species_section.lazy_load_images();
+        species_section.lazy_load_images();
 
         App3.addObserver('filtered_sorted_taxadata', function() {
             update_counts(App3.filtered_sorted_taxadata);
-            rh.species_section.display_results(App3.filtered_sorted_taxadata);
+            species_section.display_results(App3.filtered_sorted_taxadata);
         });
 
         App3.addObserver('image_type', function() {
             load_selected_image_type();
-            rh.species_section.lazy_load_images();
+            species_section.lazy_load_images();
         });
     });
 
