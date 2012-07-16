@@ -26,26 +26,6 @@ return declare('gobotany.sk.ResultsHelper', null, {
         this.pile_slug = pile_slug;
         this.species_section =
             new SpeciesSectionHelper(pile_slug, plant_divs_ready);
-
-        resources.pile(this.pile_slug).done(
-            lang.hitch(this, function(pile_info) {
-                this._setup_character_groups(pile_info.character_groups);
-            }));
-    },
-
-    _setup_character_groups: function(character_groups) {
-        var $ul = $('ul.char-groups').empty();
-        _.each(character_groups, function(character_group) {
-            $ul.append(
-                $('<li>').append(
-                    $('<label>').append(
-                        $('<input>', {type: 'checkbox',
-                                      value: character_group.id}),
-                        ' ' + character_group.name
-                    )
-                )
-            );
-        });
     },
 
     load_selected_image_type: function(event) {

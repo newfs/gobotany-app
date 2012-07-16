@@ -14,7 +14,7 @@ define([
     'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState',
-    'simplekey/working_area_module',
+    'simplekey/working_area',
     'util/activate_search_suggest',
     'util/activate_image_gallery',
     'util/sidebar',
@@ -96,6 +96,23 @@ results_page_init: function(args) {
         _.each(taxadata, function(datum) {
             App3.taxa_by_sciname[datum.scientific_name] = datum;
             taxa_by_sciname_ready.resolve();
+        });
+    });
+
+    /* Create a list of character groups from the pile's filters. */
+
+    resources.pile(pile_slug).done(function(pile_info) {
+        var $ul = $('ul.char-groups').empty();
+        _.each(pile_info.character_groups, function(character_group) {
+            $ul.append(
+                $('<li>').append(
+                    $('<label>').append(
+                        $('<input>', {type: 'checkbox',
+                                      value: character_group.id}),
+                        ' ' + character_group.name
+                    )
+                )
+            );
         });
     });
 
