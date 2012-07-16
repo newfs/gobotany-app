@@ -3,23 +3,20 @@
 // Configure this module here until we finish the migration
 define([
     'bridge/jquery'
-],
-function($) {
-var SearchSuggest = {
-    constants: {TIMEOUT_INTERVAL_MS: 200},
-    keyCode: {
-        DOWN: 40, 
+], function($) {
+
+    var TIMEOUT_INTERVAL_MS = 200;
+    var keyCode = {
+        DOWN: 40,
         UP: 38,
         TAB: 9,
         ESCAPE: 27
-    },
-    stored_search_box_value: '',
-    search_box: null,
-    menu: null,
-    menu_list: null,
-    result_cache: {}, // for caching results for each search queried
+    };
 
-    init: function(initial_search_box_value) {
+    var SearchSuggest = function() {};
+    SearchSuggest.prototype = {};
+
+    SearchSuggest.prototype.init = function(initial_search_box_value) {
         // The initial search box value (optional) is a value that
         // is expected to be in the search box once the page is
         // initialized. This is to prevent the
@@ -41,9 +38,11 @@ var SearchSuggest = {
         if (this.menu_list.length == 0) {
             console.error('SearchSuggest.js: Menu list not found.');
         }
-    },
 
-    setup: function() {
+        this.result_cache = {};  // for caching results for each search queried
+    };
+
+    SearchSuggest.prototype.setup = function() {
         // Set up a handler that runs every so often to check for
         // search box changes.
         this.set_timer();
@@ -54,23 +53,23 @@ var SearchSuggest = {
         // Adjust the horizontal position of the menu when the browser
         // window is resized.
         $(window).resize($.proxy(this.set_horizontal_position, this));
-    },
+    };
 
-    get_highlighted_menu_item_index: function() {
+    SearchSuggest.prototype.get_highlighted_menu_item_index = function() {
         var item_index = this.menu.find('li.highlighted').index();
 
         return item_index;
-    },
+    };
 
-    get_text_from_item_html: function(item_html) {
+    SearchSuggest.prototype.get_text_from_item_html = function(item_html) {
         // Get the text value of a suggestion from its list item HTML.
         var begin = item_html.indexOf('q=') + 2;
         var end = item_html.indexOf('">');
         var text = item_html.slice(begin, end);
         return text;
-    },
+    };
 
-    highlight_menu_item: function(item_index) {
+    SearchSuggest.prototype.highlight_menu_item = function(item_index) {
         var HIGHLIGHT_CLASS = 'highlighted';
 
         var menu_item = this.menu.find('li').eq(item_index);
@@ -100,9 +99,9 @@ var SearchSuggest = {
         else {
             console.log('menu item ' + item_index + ' undefined');
         }
-    },
+    };
 
-    highlight_next_menu_item: function() {
+    SearchSuggest.prototype.highlight_next_menu_item = function() {
         var highlighted_item_index = 
             this.get_highlighted_menu_item_index();
         var next_item_index = highlighted_item_index + 1;
@@ -111,9 +110,9 @@ var SearchSuggest = {
             next_item_index = 0;
         }
         this.highlight_menu_item(next_item_index);
-    },
+    };
 
-    highlight_previous_menu_item: function() {
+    SearchSuggest.prototype.highlight_previous_menu_item = function() {
         var highlighted_item_index = 
             this.get_highlighted_menu_item_index();
         var previous_item_index = highlighted_item_index - 1;
@@ -122,40 +121,39 @@ var SearchSuggest = {
             previous_item_index = num_menu_items - 1;
         }
         this.highlight_menu_item(previous_item_index);
-    },
+    };
 
-    handle_keys: function(e) {
+    SearchSuggest.prototype.handle_keys = function(e) {
         switch (e.which) {
-            case this.keyCode.DOWN:
+            case keyCode.DOWN:
                 this.highlight_next_menu_item();
                 break;
-            case this.keyCode.UP:
+            case keyCode.UP:
                 this.highlight_previous_menu_item();
                 break;
-            case this.keyCode.TAB:
-            case this.keyCode.ESCAPE:
+            case keyCode.TAB:
+            case keyCode.ESCAPE:
                 this.show_menu(false);
                 break;
         }
-    },
+    };
 
-    set_timer: function(interval_milliseconds) {
+    SearchSuggest.prototype.set_timer = function(interval_milliseconds) {
         // Set the timer that calls the change-monitoring function.
         // This repeats indefinitely.
-        setTimeout($.proxy(this.check_for_change, this),
-            this.constants.TIMEOUT_INTERVAL_MS);
-    },
+        setTimeout($.proxy(this.check_for_change, this), TIMEOUT_INTERVAL_MS);
+    };
 
-    check_for_change: function() {
+    SearchSuggest.prototype.check_for_change = function() {
         if (this.has_search_box_changed()) {
             this.handle_search_query();
         }
 
         // Set the timer again to keep the loop going.
         this.set_timer();
-    },
+    };
 
-    has_search_box_changed: function() {
+    SearchSuggest.prototype.has_search_box_changed = function() {
         var has_changed = false;
 
         // See if the current value of the text field differs from
@@ -167,16 +165,16 @@ var SearchSuggest = {
         }
 
         return has_changed;
-    },
+    };
 
-    set_horizontal_position: function() {
+    SearchSuggest.prototype.set_horizontal_position = function() {
         // Adjust the menu's horizontal position so it lines up with
         // the search box regardless of window width.
         var box_position = this.search_box.offset();
         this.menu.css('left', (box_position.left - 3) + 'px');
-    },
+    };
 
-    show_menu: function(should_show) {
+    SearchSuggest.prototype.show_menu = function(should_show) {
         var CLASS_NAME = 'hidden';
         if (should_show) {
             this.menu.removeClass(CLASS_NAME);
@@ -185,16 +183,20 @@ var SearchSuggest = {
             this.menu.addClass(CLASS_NAME);
         }
         this.set_horizontal_position();
-    },
+    };
 
-    format_suggestion: function(suggestion, search_query) {
+    SearchSuggest.prototype.format_suggestion = function(
+        suggestion, search_query
+    ) {
         // Format a suggestion for display.
         return (suggestion = search_query + '<strong>' +
             suggestion.substr(search_query.length) +
             '</strong>').toLowerCase();
     },
 
-    display_suggestions: function(suggestions, search_query) {
+    SearchSuggest.prototype.display_suggestions = function(
+        suggestions, search_query
+    ) {
         this.menu_list.empty();
 
         if (suggestions.length > 0) {
@@ -224,13 +226,13 @@ var SearchSuggest = {
         else {
             this.show_menu(false);
         }
-    },
+    };
 
-    get_cached_suggestions: function(search_query) {
+    SearchSuggest.prototype.get_cached_suggestions = function(search_query) {
         return this.result_cache[search_query];
-    },
+    };
 
-    get_suggestions: function(search_query) {
+    SearchSuggest.prototype.get_suggestions = function(search_query) {
         $.ajax({
             url: SUGGEST_URL,
             data: {q: search_query},
@@ -239,9 +241,9 @@ var SearchSuggest = {
             this.result_cache[search_query] = suggestions;
             this.display_suggestions(suggestions, search_query);
         });
-    },
+    };
 
-    handle_search_query: function() {
+    SearchSuggest.prototype.handle_search_query = function() {
         var search_query = this.stored_search_box_value;
         if (search_query.length > 0) {
             // First check the results cache to see if this value had
@@ -261,9 +263,9 @@ var SearchSuggest = {
             // Hide the menu because the search box is empty.
             this.show_menu(false);
         }
-    },
+    };
 
-    select_suggestion: function(list_item) {
+    SearchSuggest.prototype.select_suggestion = function(list_item) {
         // Go to search results for the item selected.
         var link = list_item.find('a').first();
         if (link !== undefined) {
@@ -279,18 +281,7 @@ var SearchSuggest = {
                 window.location.href = href;
             }
         }
-    }
-}
+    };
 
-// Create a small factory method to return, which will act
-// as a little instance factory and constructor, so the user
-// can do as follows:
-// var obj = MyClassName(something, somethingelse);
-function factory(initial_search_box_value) {
-    var instance = Object.create(SearchSuggest)
-    instance.init(initial_search_box_value);
-    return instance;
-}
-
-return factory;
+    return SearchSuggest;
 });
