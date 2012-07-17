@@ -2334,9 +2334,10 @@ div.section.namap div.trans {
     margin-top: 2px;
 }
 .search-navigation {
-    text-align: right;
+    font-size: 14px;
+    text-align: center;
 }
-.search-navigation p, .search-navigation ul {
+.search-navigation ul {
     display: inline;
 }
 .search-navigation li {
@@ -3212,6 +3213,39 @@ $tooltip-arrow-rotation: 225deg;
     }
     #sidebar .section.separate p {
         clear: left;
+    }
+    #search-results #search-results-list {
+        border-top: 0;
+        margin: 10px 0;
+        padding: 0;
+    }
+    #search-results #search-results-list li {
+        border-bottom: 0;
+        padding: 4px 0;
+    }
+    #search-results #search-results-list li a {
+        font-size: 14px;
+    }
+    #search-results #search-results-list li img {
+        margin: -1px 5px 0;
+    }
+    #search-results #search-results-list li p {
+        font-size: 11px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    #search-results .search-navigation {
+        font-size: 18px;
+        line-height: 200%;
+        text-align: center;
+    }
+    #search-results #search-results-list li,
+    #search-results .search-navigation {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    #search-results .search-navigation li {
+        padding: 0 6px;
     }
     .app #main {
         margin-bottom: 14px;
