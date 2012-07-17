@@ -1097,7 +1097,7 @@ div.section.namap div.trans { /* Transparent div to make North America map objec
 
 #search-results-list li p { line-height: 140%; margin-left: 44px; margin-top: 2px; }
 
-.search-navigation { font-size: 14px; text-align: center; }
+.search-navigation { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 15px; text-align: center; }
 
 .search-navigation ul { display: inline; }
 
