@@ -3,7 +3,7 @@
 {% load search_highlight %}
 {% load simplekey_extras %}
 
-{% block title %}“{{ query }}” search{% endblock %}
+{% block title %}{{ query }}: Search{% endblock %}
 
 {% block js_require %}
     require(['simplekey/search']);
@@ -28,7 +28,7 @@
                     {% else %}
                         No
                     {% endif %}
-                    Result{% if paginator.count != 1 %}s{% endif %}
+                    result{% if paginator.count != 1 %}s{% endif %}
                     for
                     <strong>{{ query }}</strong>
                 </h2>
@@ -98,7 +98,6 @@
                     <p>Please adjust your search and try again.</p>
                 {% else %}
                     <div class="search-navigation">
-                        <p>Page:</p>
                         <ul>
                         {% if page.has_previous %}
                             <li><a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">Previous</a></li>

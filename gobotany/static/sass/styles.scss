@@ -2334,9 +2334,11 @@ div.section.namap div.trans {
     margin-top: 2px;
 }
 .search-navigation {
-    text-align: right;
+    font-family: $headings-font;
+    font-size: 15px;
+    text-align: center;
 }
-.search-navigation p, .search-navigation ul {
+.search-navigation ul {
     display: inline;
 }
 .search-navigation li {
@@ -3210,6 +3212,42 @@ $tooltip-arrow-rotation: 225deg;
     #sidebar .section .get-help-btn, #sidebar .section .view-map-btn {
         margin-bottom: 0;
     }
+    #sidebar .section.separate p {
+        clear: left;
+    }
+    #search-results #search-results-list {
+        border-top: 0;
+        margin: 10px 0;
+        padding: 0;
+    }
+    #search-results #search-results-list li {
+        border-bottom: 0;
+        padding: 4px 0;
+    }
+    #search-results #search-results-list li a {
+        font-size: 14px;
+    }
+    #search-results #search-results-list li img {
+        margin: -1px 5px 0;
+    }
+    #search-results #search-results-list li p {
+        font-size: 11px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    #search-results .search-navigation {
+        font-size: 18px;
+        line-height: 200%;
+        text-align: center;
+    }
+    #search-results #search-results-list li,
+    #search-results .search-navigation {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    #search-results .search-navigation li {
+        padding: 0 6px;
+    }
     .app #main {
         margin-bottom: 14px;
     }
@@ -3296,6 +3334,26 @@ $tooltip-arrow-rotation: 225deg;
         margin-bottom: $smallscreen-side-margin;
         margin-left: $smallscreen-side-margin;
         margin-right: $smallscreen-side-margin;
+    }
+    #getting-started .question, #getting-started .first.question,
+    #getting-started .sixth.question {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+        padding: 12px 0 12px 40px;
+    }
+    #getting-started .question h4 {
+        line-height: 130%;
+        margin: 2px 0 4px;
+    }
+    #getting-started .question p {
+        margin: 0;
+    }
+    #getting-started a.screenshot img.screenshot-thumb {
+        margin: 10px 0 0;
+    }
+    #getting-started a.onward-btn {
+        float: none;
+        margin: 0 auto 20px;
     }
     #glossary header h1 {
         width: auto;

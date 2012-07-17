@@ -1097,9 +1097,9 @@ div.section.namap div.trans { /* Transparent div to make North America map objec
 
 #search-results-list li p { line-height: 140%; margin-left: 44px; margin-top: 2px; }
 
-.search-navigation { text-align: right; }
+.search-navigation { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 15px; text-align: center; }
 
-.search-navigation p, .search-navigation ul { display: inline; }
+.search-navigation ul { display: inline; }
 
 .search-navigation li { display: inline; margin: 0 2px; }
 
@@ -1367,6 +1367,15 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #sidebar .section:first-child { margin-top: 0; }
   #sidebar .section, #sidebar .section.plant-map { margin-top: 16px; padding-bottom: 0; }
   #sidebar .section .get-help-btn, #sidebar .section .view-map-btn { margin-bottom: 0; }
+  #sidebar .section.separate p { clear: left; }
+  #search-results #search-results-list { border-top: 0; margin: 10px 0; padding: 0; }
+  #search-results #search-results-list li { border-bottom: 0; padding: 4px 0; }
+  #search-results #search-results-list li a { font-size: 14px; }
+  #search-results #search-results-list li img { margin: -1px 5px 0; }
+  #search-results #search-results-list li p { font-size: 11px; margin-left: 0; margin-right: 0; }
+  #search-results .search-navigation { font-size: 18px; line-height: 200%; text-align: center; }
+  #search-results #search-results-list li, #search-results .search-navigation { margin-left: 8px; margin-right: 8px; }
+  #search-results .search-navigation li { padding: 0 6px; }
   .app #main { margin-bottom: 14px; }
   .app p.tip { font-size: 14px; }
   .app .img-gallery { margin-bottom: 10px; }
@@ -1393,6 +1402,11 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #advanced-id #main .dk-landing-section > a { margin-left: 16px; position: static; }
   #about #main ul { padding-left: 14px; }
   #about #main > img, #about #main img.bookcover { margin-bottom: 8px; margin-left: 8px; margin-right: 8px; }
+  #getting-started .question, #getting-started .first.question, #getting-started .sixth.question { margin-left: 8px; margin-right: 8px; padding: 12px 0 12px 40px; }
+  #getting-started .question h4 { line-height: 130%; margin: 2px 0 4px; }
+  #getting-started .question p { margin: 0; }
+  #getting-started a.screenshot img.screenshot-thumb { margin: 10px 0 0; }
+  #getting-started a.onward-btn { float: none; margin: 0 auto 20px; }
   #glossary header h1 { width: auto; }
   #glossary #alphabet { line-height: 250%; width: auto; }
   #glossary #alphabet li { border: 0; padding: 1px 10px; }

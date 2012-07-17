@@ -1,6 +1,10 @@
 # Basic ignore patterns
+*.pyc
 *.sw*
 *.DS_Store
+
+# SASS
+/gobotany/static/.sass-cache/
 
 # Intermediate javascript build files
 /gobotany/static/build/scripts

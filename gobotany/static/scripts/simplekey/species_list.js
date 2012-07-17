@@ -6,7 +6,7 @@ define([
 
     // Table filtering
 
-    'lib/jquery/picnet.table.filter.min'
+    'jquery/picnet.table.filter.min'
 
 ], function(search_suggest) {
 
