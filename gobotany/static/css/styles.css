@@ -1402,7 +1402,9 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #advanced-id #main .dk-landing-section > a { margin-left: 16px; position: static; }
   #about #main ul { padding-left: 14px; }
   #about #main > img, #about #main img.bookcover { margin-bottom: 8px; margin-left: 8px; margin-right: 8px; }
-  #getting-started .question, #getting-started .first.question, #getting-started .sixth.question { margin-left: 8px; margin-right: 8px; }
+  #getting-started .question, #getting-started .first.question, #getting-started .sixth.question { margin-left: 8px; margin-right: 8px; padding: 12px 0 12px 40px; }
+  #getting-started .question h4 { line-height: 130%; margin: 2px 0 4px; }
+  #getting-started .question p { margin: 0; }
   #getting-started a.screenshot img.screenshot-thumb { margin: 10px 0 0; }
   #getting-started a.onward-btn { float: none; margin: 0 auto 20px; }
   #glossary header h1 { width: auto; }

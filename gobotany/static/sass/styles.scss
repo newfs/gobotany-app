@@ -3339,6 +3339,14 @@ $tooltip-arrow-rotation: 225deg;
     #getting-started .sixth.question {
         margin-left: $smallscreen-side-margin;
         margin-right: $smallscreen-side-margin;
+        padding: 12px 0 12px 40px;
+    }
+    #getting-started .question h4 {
+        line-height: 130%;
+        margin: 2px 0 4px;
+    }
+    #getting-started .question p {
+        margin: 0;
     }
     #getting-started a.screenshot img.screenshot-thumb {
         margin: 10px 0 0;
