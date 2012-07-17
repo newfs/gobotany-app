@@ -8,8 +8,8 @@ require([
 ], function($, activate_search_suggest, activate_video_links, shadowbox_init,
     sidebar, MapToGroupsHelper) {
 
-    sidebar.setup();
     $(document).ready(function() {
+        sidebar.setup();
         var helper = MapToGroupsHelper();
         helper.setup();
     });
