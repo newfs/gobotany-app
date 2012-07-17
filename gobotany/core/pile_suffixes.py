@@ -1,0 +1,16 @@
+pile_suffixes = {
+    'ca': u'Carex',
+    'co': u'Composites',
+    'eq': u'Equisetaceae',
+    'ly': u'Lycophytes',
+    'mo': u'Monilophytes',
+    'nm': u'Non-Orchid Monocots',
+    'ap': u'Non-Thalloid Aquatic',
+    'om': u'Orchid Monocots',
+    'po': u'Poaceae',
+    'rg': u'Remaining Graminoids',
+    'rn': u'Remaining Non-Monocots',
+    'ta': u'Thalloid Aquatic',
+    'wa': u'Woody Angiosperms',
+    'wg': u'Woody Gymnosperms',
+    }

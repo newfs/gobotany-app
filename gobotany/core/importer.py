@@ -21,9 +21,11 @@ from django.template.defaultfilters import slugify
 
 import bulkup
 from gobotany.core import models
+from gobotany.core.pile_suffixes import pile_suffixes
 from gobotany.simplekey.models import (GroupsListPage, HelpPage,
                                        SearchSuggestion, SubgroupResultsPage,
                                        SubgroupsListPage, Video)
+from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 
 DEBUG=False
 log = logging.getLogger('gobotany.import')
@@ -77,23 +79,6 @@ class CSVReader(object):
             r = csv.reader(f, dialect=csv.excel, delimiter=',')
             for row in r:
                 yield [c.decode('Windows-1252') for c in row]
-
-pile_suffixes = {
-    'ca': u'Carex',
-    'co': u'Composites',
-    'eq': u'Equisetaceae',
-    'ly': u'Lycophytes',
-    'mo': u'Monilophytes',
-    'nm': u'Non-Orchid Monocots',
-    'ap': u'Non-Thalloid Aquatic',
-    'om': u'Orchid Monocots',
-    'po': u'Poaceae',
-    'rg': u'Remaining Graminoids',
-    'rn': u'Remaining Non-Monocots',
-    'ta': u'Thalloid Aquatic',
-    'wa': u'Woody Angiosperms',
-    'wg': u'Woody Gymnosperms',
-    }
 
 state_names = {
     'ct': u'Connecticut',
@@ -1632,11 +1617,17 @@ class Importer(object):
             if row['pile-or-subpile']:
                 try:
                     p = models.PileGroup.objects.get(name=row['pile-or-subpile'])
+                    if not v.title:
+                        v.title = p.name
+                        v.save()
                     print >> self.logfile, \
                         u'    Pile group: %s - YouTube video id: %s' % \
                         (p.name, v.youtube_id)
                 except models.PileGroup.DoesNotExist:
                     p = models.Pile.objects.get(name=row['pile-or-subpile'])
+                    if not v.title:
+                        v.title = p.name
+                        v.save()
                     print >> self.logfile, \
                         u'      Pile: %s - YouTube video id: %s' % \
                         (p.name, v.youtube_id)
@@ -1666,24 +1657,14 @@ class Importer(object):
         help_page.save()
 
 
-    def _get_pile_and_group_videos(self, starting_order):
+    def _get_pile_and_group_videos(self):
         videos = []
-        order = starting_order
-
-        # Note: Would rather have created pile and pile group videos in the
-        # order in which they are presented to the user on the initial pages
-        # of the Simple Key (as done in the help_collections view and
-        # template). But, the data for the initial pages is currently loaded
-        # via fixture after the importer finishes, so it's not available here.
-        pile_groups = models.PileGroup.objects.all()
-        for pile_group in pile_groups:
-            if pile_group.video:
-                videos.append(pile_group.video)
-                order = order + 1
-            for pile in pile_group.piles.all():
-                if pile.video:
+        for pilegroup in ordered_pilegroups():
+            if pilegroup.video and len(pilegroup.video.youtube_id) > 0:
+                videos.append(pilegroup.video)
+            for pile in ordered_piles(pilegroup):
+                if pile.video and len(pile.video.youtube_id) > 0:
                     videos.append(pile.video)
-                    order = order + 1
         return videos
 
 
@@ -1695,8 +1676,7 @@ class Importer(object):
             print >> self.logfile, u'  New Help page: ', help_page
 
         # Add videos associated with each pile group and pile.
-        starting_order = 1
-        videos = self._get_pile_and_group_videos(starting_order)
+        videos = self._get_pile_and_group_videos()
         for video in videos:
             help_page.videos.add(video)
 
@@ -1710,14 +1690,12 @@ class Importer(object):
             print >> self.logfile, u'  New Help page: ', help_page
 
         # Add Getting Started video.
-        order = 1
         video = Video.objects.get(title='Getting Started')
         if video:
             help_page.videos.add(video)
 
         # Add pile group and pile videos.
-        starting_order = order + 1
-        videos = self._get_pile_and_group_videos(starting_order)
+        videos = self._get_pile_and_group_videos()
         for video in videos:
             help_page.videos.add(video)
 

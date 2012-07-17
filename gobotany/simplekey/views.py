@@ -20,15 +20,15 @@ from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
 from gobotany.core import models
-from gobotany.core.importer import pile_suffixes
 from gobotany.core.models import (
     CharacterGroup, CharacterValue, CopyrightHolder, Family, Genus,
     GlossaryTerm, Habitat, HomePageImage, Pile, PileGroup,
     PlantPreviewCharacter, Taxon
     )
 from gobotany.core.partner import which_partner
+from gobotany.core.pile_suffixes import pile_suffixes
 from gobotany.plantoftheday.models import PlantOfTheDay
-from gobotany.simplekey.groups_order import PILEGROUP_ORDER, PILE_ORDER
+from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 from gobotany.simplekey.models import (GroupsListPage,
                                        SearchSuggestion, SubgroupResultsPage,
                                        SubgroupsListPage, Video)
@@ -56,19 +56,6 @@ def get_simple_url(pilegroup, pile=None):
         return reverse('gobotany.simplekey.views.results_view',
                        kwargs={'pilegroup_slug': pilegroup.slug,
                                'pile_slug': pile.slug})
-
-
-def ordered_pilegroups():
-    """Return all pile groups in display order."""
-    return sorted(PileGroup.objects.all(),
-                  key=lambda pg: PILEGROUP_ORDER[pg.slug])
-
-
-def ordered_piles(pilegroup):
-    """Return all piles for a pile group in display order."""
-    return sorted(pilegroup.piles.all(),
-                  key=lambda p: PILE_ORDER[p.slug])
-
 
 def index_view(request):
     """View for the main page of the Go Botany site.
@@ -543,23 +530,12 @@ def help_glossary_view(request, letter):
 def help_glossary_redirect_view(request):
     return redirect('simplekey-help-glossary', letter='a')
 
-def _get_pilegroup_dict(pilegroup_name):
-    pilegroup = PileGroup.objects.get(name=pilegroup_name)
+def _get_video_dict(title, video):
     youtube_id = ''
-    if pilegroup.video:
-        youtube_id = pilegroup.video.youtube_id
+    if video:
+        youtube_id = video.youtube_id
     return {
-        'title': pilegroup.friendly_title,
-        'youtube_id': youtube_id
-    }
-
-def _get_pile_dict(pile_name):
-    pile = Pile.objects.get(name=pile_name)
-    youtube_id = ''
-    if pile.video:
-        youtube_id = pile.video.youtube_id
-    return {
-        'title': pile.friendly_title,
+        'title': title,
         'youtube_id': youtube_id
     }
 
@@ -574,9 +550,9 @@ def help_video_view(request):
                        'youtube_id': getting_started_video.youtube_id});
 
     for pilegroup in ordered_pilegroups():
-        videos.append(_get_pilegroup_dict(pilegroup.name))
+        videos.append(_get_video_dict(pilegroup.name, pilegroup.video))
         for pile in ordered_piles(pilegroup):
-            videos.append(_get_pile_dict(pile.name))
+            videos.append(_get_video_dict(pile.name, pile.video))
 
     return render_to_response('simplekey/help_video.html', {
            'videos': videos,
