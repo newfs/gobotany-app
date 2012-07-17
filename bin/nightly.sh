@@ -2,6 +2,6 @@
 
 set -e
 
-source $(dirname "$0")/s3imagescan.sh
-source $(dirname "$0")/s3thumbnail.sh
-source $(dirname "$0")/s3imageload.sh
+$(dirname "$0")/s3imagescan.sh
+$(dirname "$0")/s3thumbnail.sh
+$(dirname "$0")/s3imageload.sh
