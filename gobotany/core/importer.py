@@ -1668,10 +1668,9 @@ class Importer(object):
         return videos
 
 
-    def _create_understanding_plant_collections_page(self):
+    def _create_advanced_map_page(self):
         help_page, created = HelpPage.objects.get_or_create(
-            title='Understanding Plant Collections',
-            url_path='/help/collections/')
+            title='Advanced Map To Groups', url_path='/help/map/')
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
 
@@ -1743,7 +1742,7 @@ class Importer(object):
         # and ideally also by the page templates.
         self._create_about_gobotany_page()
         self._create_getting_started_page()
-        self._create_understanding_plant_collections_page()
+        self._create_advanced_map_page()
         self._create_video_help_topics_page()
         self._create_glossary_pages()
 
