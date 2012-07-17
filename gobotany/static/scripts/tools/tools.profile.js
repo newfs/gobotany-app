@@ -1,15 +1,15 @@
 function copyOnly(mid) {
     return mid in {
-        // There are no modules right now in gobotany that are copy-only. If
-        // you have some, though, just add them here like this: 
-        // 'app/module': 1
+        // These are non-AMD complient modules, but they don't have legacy
+        // Dojo in them so just mark them as copy-only, no need to modify them
     };
 }
 
 function nonAMD(mid) {
-    // For the Tools package, none of the scripts are currently AMD-complient modules,
-    // so flag every module in the package as non-AMD.
-    return true;
+    // Modules which are not AMD modules and the build system needs to wrap
+    // Currently, all tools modules have been manually wrapped
+    return mid in {
+    };
 }
 
 function legacyDojo(mid) {
