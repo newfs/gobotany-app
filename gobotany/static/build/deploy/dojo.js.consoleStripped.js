@@ -1802,14 +1802,6 @@
 					 name:"dojo"
 				},
 				{
-					 location:"../dojox",
-					 name:"dojox"
-				},
-				{
-					 location:"../dijit",
-					 name:"dijit"
-				},
-				{
 					 location:"../jquery",
 					 name:"jquery"
 				},

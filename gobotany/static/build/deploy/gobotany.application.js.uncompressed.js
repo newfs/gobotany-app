@@ -56,29 +56,6 @@ t[h]}if(f.isEmptyObject(t)){var u=s.handle;u&&(u.elem=null),delete s.events,dele
 });
 
 },
-'dijit/main':function(){
-define("dijit/main", [
-	"dojo/_base/kernel"
-], function(dojo){
-	// module:
-	//		dijit
-	// summary:
-	//		The dijit package main module
-
-	return dojo.dijit;
-});
-
-},
-'dojox/main':function(){
-define("dojox/main", ["dojo/_base/kernel"], function(dojo) {
-	// module:
-	//		dojox/main
-	// summary:
-	//		The dojox package main module; dojox package is somewhat unusual in that the main module currently just provides an empty object.
-
-	return dojo.dojox;
-});
-},
 'simplekey/SearchSuggest':function(){
 /* Code for a search suggestions menu on the site-wide search box. */
 
