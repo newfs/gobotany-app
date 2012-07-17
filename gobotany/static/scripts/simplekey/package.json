@@ -3,7 +3,6 @@
     "version": "1.0",
     "main": null,
     "dependencies": {
-        "dojo": "current"
     },
     "description": "The New England Wildflower Society's Gobotany application Simplekey feature.",
     "homepage": "https://gobotany.newenglandwild.org",
