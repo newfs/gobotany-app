@@ -1367,6 +1367,7 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #sidebar .section:first-child { margin-top: 0; }
   #sidebar .section, #sidebar .section.plant-map { margin-top: 16px; padding-bottom: 0; }
   #sidebar .section .get-help-btn, #sidebar .section .view-map-btn { margin-bottom: 0; }
+  #sidebar .section.separate p { clear: left; }
   .app #main { margin-bottom: 14px; }
   .app p.tip { font-size: 14px; }
   .app .img-gallery { margin-bottom: 10px; }
@@ -1393,6 +1394,9 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #advanced-id #main .dk-landing-section > a { margin-left: 16px; position: static; }
   #about #main ul { padding-left: 14px; }
   #about #main > img, #about #main img.bookcover { margin-bottom: 8px; margin-left: 8px; margin-right: 8px; }
+  #getting-started .question, #getting-started .first.question, #getting-started .sixth.question { margin-left: 8px; margin-right: 8px; }
+  #getting-started a.screenshot img.screenshot-thumb { margin: 10px 0 0; }
+  #getting-started a.onward-btn { float: none; margin: 0 auto 20px; }
   #glossary header h1 { width: auto; }
   #glossary #alphabet { line-height: 250%; width: auto; }
   #glossary #alphabet li { border: 0; padding: 1px 10px; }
