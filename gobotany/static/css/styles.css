@@ -942,9 +942,9 @@ div.section.namap div.trans { /* Transparent div to make North America map objec
 
 #getting-started #sidebar a:hover, #about #sidebar a:hover, #advanced-map #sidebar a:hover, #glossary #sidebar a:hover, #video-help-topics #sidebar a:hover { text-decoration: none; }
 
-#getting-started #main h2, #about #main h2, #advanced-map #main h2, #glossary #main h2, #plantshare #main h2, #teaching-tools #main h2, #video-help-topics #main h2 { margin-bottom: 8px; }
+#getting-started #main h2, #about #main h2, #advanced-map #main h2, #glossary #main h2, #plantshare #main h2, #teaching-tools #main h2, #video-help-topics #main h2, #privacy-policy #main h2, #terms-of-use #main h2 { margin-bottom: 8px; }
 
-#getting-started h3, #about h3, #advanced-map h3, #glossary h3, #teaching-tools h3, #video-help-topics h3 { margin: 8px 0; }
+#getting-started h3, #about h3, #advanced-map h3, #glossary h3, #teaching-tools h3, #video-help-topics h3, #privacy-policy h3, #terms-of-use h3 { margin: 8px 0; }
 
 #getting-started #main ul, #about #main ul { list-style-type: disc; line-height: 170%; }
 
@@ -1011,15 +1011,19 @@ div.section.namap div.trans { /* Transparent div to make North America map objec
 #getting-started .video-topic a { cursor: pointer; }
 
 /* Legal information page styles */
-#terms-of-use #main ol.terms { list-style-type: upper-roman; margin: 10px 0 30px 15px; line-height: 200%; }
+#privacy-policy #main p, #terms-of-use #main p { margin-bottom: 8px; }
 
-#terms-of-use ol.terms li { font-weight: bold; }
+#terms-of-use h3 { display: inline-block; }
 
-#terms-of-use ol.terms li p { font-weight: normal; }
+#terms-of-use h4 { margin: 8px 0; }
 
-#terms-of-use ol.terms ul { list-style-type: disc; margin: 10px 0 30px 15px; line-height: 200%; }
+#terms-of-use ol.terms { font-size: 24px; list-style-position: inside; list-style-type: upper-roman; }
 
-#terms-of-use ol.terms ul li { font-weight: normal; }
+#terms-of-use ol.terms li { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; }
+
+#terms-of-use ol.terms li p, #terms-of-use ol.terms ul li { font-family: Verdana, Geneva, sans-serif; font-size: 12px; }
+
+#terms-of-use ol.terms ul { line-height: 18px; list-style-type: disc; margin: 10px 16px; }
 
 /* Advanced ID Tools Placeholder styles */
 #advanced-id #main { position: relative; }
@@ -1417,5 +1421,7 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #video-help-topics .video-topic { margin-left: 8px; margin-right: 8px; }
   #video-help-topics .video-topic .missing-image p { margin-left: 0; margin-right: 0; }
   #video-help-topics #main .clearit { clear: none; }
+  #terms-of-use ol.terms { font-size: 18px; margin-left: 8px; margin-right: 8px; }
+  #terms-of-use ol.terms h3, #terms-of-use ol.terms h4, #terms-of-use ol.terms p, #terms-of-use ol.terms ul li { margin-left: 0; margin-right: 0; }
   .gb-tooltip { width: 200px; } }
 /* End of smartphone-size screen styles. Please do not add styles after these, otherwise they may not get overridden by the smartphone styles properly. Instead add any new styles before the smartphone styles. */

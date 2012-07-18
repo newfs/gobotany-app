@@ -1983,11 +1983,13 @@ div.section.namap div.trans {
 
 #getting-started #main h2, #about #main h2, #advanced-map #main h2,
 #glossary #main h2, #plantshare #main h2, #teaching-tools #main h2,
-#video-help-topics #main h2 {
+#video-help-topics #main h2, #privacy-policy #main h2,
+#terms-of-use #main h2 {
     margin-bottom: 8px;
 }
 #getting-started h3, #about h3, #advanced-map h3, #glossary h3,
-#teaching-tools h3, #video-help-topics h3 {
+#teaching-tools h3, #video-help-topics h3, #privacy-policy h3,
+#terms-of-use h3 {
     margin: 8px 0;
 }
 
@@ -2136,28 +2138,36 @@ div.section.namap div.trans {
 
 /* Legal information page styles */
 
-#terms-of-use #main ol.terms {
+#privacy-policy #main p, #terms-of-use #main p {
+    margin-bottom: 8px;
+}
+
+#terms-of-use h3 {
+    display: inline-block;
+}
+#terms-of-use h4 {
+    margin: 8px 0;
+}
+
+#terms-of-use ol.terms {
+    font-size: 24px;
+    list-style-position: inside;
     list-style-type: upper-roman;
-	margin: 10px 0 30px 15px;
-	line-height: 200%;
 }
 
 #terms-of-use ol.terms li {
-    font-weight: bold;
+    font-family: $headings-font;
 }
 
-#terms-of-use ol.terms li p {
-    font-weight: normal;
+#terms-of-use ol.terms li p, #terms-of-use ol.terms ul li {
+    font-family: $body-font;
+    font-size: 12px;
 }
 
 #terms-of-use ol.terms ul {
+    line-height: 18px;
     list-style-type: disc;
-	margin: 10px 0 30px 15px;
-	line-height: 200%;
-}
-
-#terms-of-use ol.terms ul li {
-    font-weight: normal;
+    margin: 10px 16px;
 }
 
 /* Advanced ID Tools Placeholder styles */
@@ -3395,6 +3405,16 @@ $tooltip-arrow-rotation: 225deg;
     }
     #video-help-topics #main .clearit {
         clear: none;
+    }
+    #terms-of-use ol.terms {
+        font-size: 18px;
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    #terms-of-use ol.terms h3, #terms-of-use ol.terms h4,
+    #terms-of-use ol.terms p, #terms-of-use ol.terms ul li {
+        margin-left: 0;
+        margin-right: 0;
     }
     .gb-tooltip {
         width: 200px;
