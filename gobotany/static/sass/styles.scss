@@ -2409,6 +2409,7 @@ div.section.namap div.trans {
 }
 
 /* Advanced Map page styles */
+$advanced-map-frame-border: 5px solid rgba(255, 255, 255, 0.8);
 
 #advanced-map h3 {
     clear: left;
@@ -2418,14 +2419,14 @@ div.section.namap div.trans {
 	margin: 10px 0;	
 }
 #advanced-map #group-section {
-    height: 220px;
+    height: 200px;
 }
 #advanced-map #plant-map-list .plant-group {
   	cursor: pointer;
 	float: left;
     height: 185px;
 	margin: 0 10px 10px 0;
-    padding: 0;
+    padding: 2px 0 0;
     position: relative;
     width: 110px;
 }
@@ -2444,13 +2445,13 @@ div.section.namap div.trans {
 }
 #advanced-map .plant-group div.image {
     position: absolute;
-    top: 38px;
+    top: 40px;
 }
 #advanced-map .plant-subgroup div.image {
 	position: relative;	
 }
 #advanced-map .plant-group .frame {
-	border: 5px solid rgba(255, 255, 255, 0.8);
+	border: $advanced-map-frame-border;
 	height: 91px;	
 	position: absolute;
 	top: 0;
@@ -2464,19 +2465,12 @@ div.section.namap div.trans {
 	background: #1a2e12;
 	color: #fff;
 }
-/* Don't include hover states on smartphones and tablets. */
-@media only screen and (min-device-width:1025px) {
-    #advanced-map .plant-group:hover .frame {
-	    border-color: #1a2e12;
-    }
-    #advanced-map .plant-group:hover h5 {
-	    background: #1a2e12;
-	    color: #fff;
-    }
-    #advanced-map .more-info:hover {
-        color: #508e31;
-        text-decoration: underline;
-    }
+#advanced-map .plant-group:hover .frame {
+    border-color: #1a2e12;
+}
+#advanced-map .plant-group:hover h5 {
+    background: #1a2e12;
+    color: #fff;
 }
 #advanced-map .plant-group .img-container {
 	height: 101px;
@@ -3387,6 +3381,13 @@ $tooltip-arrow-rotation: 225deg;
         margin-left: $smallscreen-side-margin;
         margin-right: $smallscreen-side-margin;
         margin-top: 0;
+    }
+    #advanced-map .plant-group:hover .frame {
+	    border: $advanced-map-frame-border;
+    }
+    #advanced-map .plant-group:hover h5 {
+	    background: inherit;
+	    color: #508e31;
     }
     #glossary header h1 {
         width: auto;
