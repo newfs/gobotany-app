@@ -1,10 +1,11 @@
-/* Code for adding behavior to the Help pages. */
+/* Code for adding behavior to the Advanced Map to Groups page. */
 
 define([
     'bridge/jquery'
 ], function($) {
 
         var MapsToGroupsHelper = {
+            MAX_SMALL_SCREEN_WIDTH: 600,
             groups: null,
             subgroup_sets: null,
 
@@ -96,10 +97,16 @@ define([
                     if (i === group_number) {
                         // Show the subgroup set.
                         $(subgroup_set).removeClass(HIDDEN_CLASS);
-                        var left_margin_value =
-                            this.get_left_margin_for_subgroup_set(i);
-                        $(subgroup_set).css('marginLeft',
-                            left_margin_value.toString() + 'px');
+
+                        // If not viewing on a small screen, adjust the
+                        // left margins so the subgroups align beneath
+                        // the groups.
+                        if ($(window).width() > this.MAX_SMALL_SCREEN_WIDTH) {
+                            var left_margin_value =
+                                this.get_left_margin_for_subgroup_set(i);
+                            $(subgroup_set).css('marginLeft',
+                                left_margin_value.toString() + 'px');
+                        }
                     }
                     else {
                         // Hide the subgroup set.
@@ -113,9 +120,19 @@ define([
                 var i;
                 for (i = 0; i < this.groups.length; i += 1) {
                     var group = this.groups[i];
-                    $(group).bind('click', {groupNumber: i}, $.proxy(function(event) {
-                        this.activate_group(event.data.groupNumber);
-                    }, this));
+                    $(group).bind('click', {groupNumber: i},
+                        $.proxy(function(event) {
+                            this.activate_group(event.data.groupNumber);
+
+                            // On small screens: upon selecting a group,
+                            // scroll the subgroups into view.
+                            if ($(window).width() <=
+                                this.MAX_SMALL_SCREEN_WIDTH) {
+
+                                var subgroups = $('#subgroup-section').get(0);
+                                subgroups.scrollIntoView();
+                            }
+                        }, this));
                 }
 
                 // Initially activate the first group and its subgroup set.

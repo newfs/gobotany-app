@@ -15,8 +15,9 @@
     <h3>For a shortcut through the plant groups, you can start here.</h3>
 
     <div id="plant-map-list">
+        <div id="group-section">
         {% for group, subgroups in pilegroups %}
-            <div class="plant-group{% if forloop.first %} first{% else %}{% if forloop.last %} last{% endif %}{% endif %}{% if group.friendly_title|length > 18 %} multi-line{% endif %}">
+            <div class="plant-group{% if forloop.first %} first{% else %}{% if forloop.last %} last{% endif %}{% endif %}">
                 <h5>{{ group.friendly_title|lower|capfirst }}</h5>
                 <div class="image">
                     <div class="frame"></div>
@@ -41,7 +42,8 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="clearit"></div>
+        </div>
+        <div id="subgroup-section">
         {% for group, subgroups in pilegroups %}
             <div class="subgroups hidden">
                 {% for subgroup in subgroups %}
@@ -74,7 +76,7 @@
                 {% endfor %}
             </div>
         {% endfor %}
-        <div class="clearit"></div>
+        </div>
     </div>
 
     <h3>About Plant Groups and Subgroups</h3>

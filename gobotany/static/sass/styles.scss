@@ -2410,30 +2410,42 @@ div.section.namap div.trans {
 
 /* Advanced Map page styles */
 
+#advanced-map h3 {
+    clear: left;
+}
+
 #advanced-map #plant-map-list {
 	margin: 10px 0;	
+}
+#advanced-map #group-section {
+    height: 220px;
 }
 #advanced-map #plant-map-list .plant-group {
   	cursor: pointer;
 	float: left;
+    height: 185px;
 	margin: 0 10px 10px 0;
-    padding: 14px 0 0 0;
+    padding: 0;
+    position: relative;
     width: 110px;
 }
 #advanced-map #plant-map-list .plant-group.last {
 	margin: 0 0 10px 0;	
 }
-#advanced-map #plant-map-list .plant-group.multi-line {
-	padding: 0;	
-}
 #advanced-map .plant-group h5 {
+    bottom: 146px;
 	color: #508e31;
     font-size: 12px;
   	line-height: 120%;
     margin: 0 0 0 0;
 	padding: 6px 0 6px 5px;
+    position: absolute;
+    width: 105px;
 }
-#advanced-map .plant-group div.image,
+#advanced-map .plant-group div.image {
+    position: absolute;
+    top: 38px;
+}
 #advanced-map .plant-subgroup div.image {
 	position: relative;	
 }
@@ -2901,6 +2913,9 @@ $tooltip-arrow-rotation: 225deg;
     #about #main img.bookcover {
         width: auto;
     }
+    #advanced-map #group-section {
+        height: 600px;
+    }
     #glossary #alphabet {
         height: 99px;
     }
@@ -2945,6 +2960,9 @@ $tooltip-arrow-rotation: 225deg;
     }
     #home #banner + .three-col {
         padding-top: 400px;
+    }
+    #advanced-map #group-section {
+        height: 400px;
     }
     #glossary #alphabet {
         height: 66px;
@@ -3364,6 +3382,11 @@ $tooltip-arrow-rotation: 225deg;
     #getting-started a.onward-btn {
         float: none;
         margin: 0 auto 20px;
+    }
+    #advanced-map #plant-map-list {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+        margin-top: 0;
     }
     #glossary header h1 {
         width: auto;

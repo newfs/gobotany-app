@@ -1129,17 +1129,21 @@ div.section.namap div.trans { /* Transparent div to make North America map objec
 #family img.zoom, #genus img.zoom { display: inline-block; float: right; }
 
 /* Advanced Map page styles */
+#advanced-map h3 { clear: left; }
+
 #advanced-map #plant-map-list { margin: 10px 0; }
 
-#advanced-map #plant-map-list .plant-group { cursor: pointer; float: left; margin: 0 10px 10px 0; padding: 14px 0 0 0; width: 110px; }
+#advanced-map #group-section { height: 220px; }
+
+#advanced-map #plant-map-list .plant-group { cursor: pointer; float: left; height: 185px; margin: 0 10px 10px 0; padding: 0; position: relative; width: 110px; }
 
 #advanced-map #plant-map-list .plant-group.last { margin: 0 0 10px 0; }
 
-#advanced-map #plant-map-list .plant-group.multi-line { padding: 0; }
+#advanced-map .plant-group h5 { bottom: 146px; color: #508e31; font-size: 12px; line-height: 120%; margin: 0 0 0 0; padding: 6px 0 6px 5px; position: absolute; width: 105px; }
 
-#advanced-map .plant-group h5 { color: #508e31; font-size: 12px; line-height: 120%; margin: 0 0 0 0; padding: 6px 0 6px 5px; }
+#advanced-map .plant-group div.image { position: absolute; top: 38px; }
 
-#advanced-map .plant-group div.image, #advanced-map .plant-subgroup div.image { position: relative; }
+#advanced-map .plant-subgroup div.image { position: relative; }
 
 #advanced-map .plant-group .frame { border: 5px solid rgba(255, 255, 255, 0.8); height: 91px; position: absolute; top: 0; width: 100px; z-index: 100; }
 
@@ -1292,6 +1296,7 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   .app .list-item h3 { clear: left; }
   #about #main > img { width: 57%; }
   #about #main img.bookcover { width: auto; }
+  #advanced-map #group-section { height: 600px; }
   #glossary #alphabet { height: 99px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { html { -webkit-text-size-adjust: none; }
@@ -1305,6 +1310,7 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #home #banner #overlay { top: 172px; }
   #home #banner > img { height: 172px; }
   #home #banner + .three-col { padding-top: 400px; }
+  #advanced-map #group-section { height: 400px; }
   #glossary #alphabet { height: 66px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
@@ -1411,6 +1417,7 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #getting-started .question p { margin: 0; }
   #getting-started a.screenshot img.screenshot-thumb { margin: 10px 0 0; }
   #getting-started a.onward-btn { float: none; margin: 0 auto 20px; }
+  #advanced-map #plant-map-list { margin-left: 8px; margin-right: 8px; margin-top: 0; }
   #glossary header h1 { width: auto; }
   #glossary #alphabet { line-height: 250%; width: auto; }
   #glossary #alphabet li { border: 0; padding: 1px 10px; }
