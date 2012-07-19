@@ -1085,30 +1085,6 @@ ul.option-list li.answered.active {
     width: 45px;
 }
 
-/* For tablets and smartphones, style the scrollbar differently because
-   our regular scrollbar is not the expected way to scroll there, and
-   has problems besides (arrows too small, vertical bar not draggable).
-   Instead, just present the thin vertical bar as an indicator that the
-   area is scrollable and to provide feedback while swiping to scroll. */
-@media only screen and (max-device-width:1024px) {
-    #sidebar div.scroll .jspVerticalBar {
-        border-left: 0;
-    }
-    #sidebar div.scroll .jspTrack, #sidebar div.scroll .jspArrowUp,
-    #sidebar div.scroll .jspArrowDown {
-        background: none;
-    }
-    #sidebar div.scroll .jspPane {
-        width: 227px !important;
-    }
-    ul.option-list li:hover {
-        background: #fff;   /* No hover color on mobile */
-    }
-    ul.option-list li.active:hover {
-        background: #dce890;   /* Except hover color on the active filter */
-    }
-}
-
 /* Styles for results page introductory overlay */
 
 #intro-overlay {
@@ -3382,13 +3358,6 @@ $tooltip-arrow-rotation: 225deg;
         margin-right: $smallscreen-side-margin;
         margin-top: 0;
     }
-    #advanced-map .plant-group:hover .frame {
-	    border: $advanced-map-frame-border;
-    }
-    #advanced-map .plant-group:hover h5 {
-	    background: inherit;
-	    color: #508e31;
-    }
     #glossary header h1 {
         width: auto;
     }
@@ -3444,6 +3413,40 @@ $tooltip-arrow-rotation: 225deg;
         width: 200px;
     }
 }
-/* End of smartphone-size screen styles. Please do not add styles after
- * these, otherwise they may not get overridden by the smartphone styles
- * properly. Instead add any new styles before the smartphone styles. */
+/* These styles apply to smartphones and tablets */
+@media only screen and (max-width: 1024px) {
+
+    /* Disable hover states on Advanced Map to Groups page. */
+    #advanced-map .plant-group:hover .frame {
+	    border: $advanced-map-frame-border;
+    }
+    #advanced-map .plant-group:hover h5 {
+	    background: inherit;
+	    color: #508e31;
+    }
+
+    /* Style the Level 3 page's questions list scrollbar differently because
+     * a regular scrollbar is not the expected way to scroll there, and
+     * has problems besides (arrows too small, vertical bar not draggable).
+     * Instead, just present the thin vertical bar as an indicator that the
+     * area is scrollable and to provide feedback while swiping to scroll. */
+    #sidebar div.scroll .jspVerticalBar {
+        border-left: 0;
+    }
+    #sidebar div.scroll .jspTrack, #sidebar div.scroll .jspArrowUp,
+    #sidebar div.scroll .jspArrowDown {
+        background: none;
+    }
+    #sidebar div.scroll .jspPane {
+        width: 227px !important;
+    }
+    ul.option-list li:hover {
+        background: #fff;   /* No hover color */
+    }
+    ul.option-list li.active:hover {
+        background: #dce890;   /* Except hover color on the active filter */
+    }
+}
+/* End of smartphone/tablet screen styles. Please do not add regular styles
+ * after these, or they may not get overridden by these styles properly.
+ * Instead add new regular styles before the smartphone/tablet styles. */

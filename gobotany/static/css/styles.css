@@ -619,12 +619,6 @@ ul.option-list li.active, ul.option-list li:hover, ul.option-list li.active span
 
 .option-list a.clear-filter { display: block; margin-top: 4px; width: 45px; }
 
-/* For tablets and smartphones, style the scrollbar differently because our regular scrollbar is not the expected way to scroll there, and has problems besides (arrows too small, vertical bar not draggable). Instead, just present the thin vertical bar as an indicator that the area is scrollable and to provide feedback while swiping to scroll. */
-@media only screen and (max-device-width:1024px) { #sidebar div.scroll .jspVerticalBar { border-left: 0; }
-  #sidebar div.scroll .jspTrack, #sidebar div.scroll .jspArrowUp, #sidebar div.scroll .jspArrowDown { background: none; }
-  #sidebar div.scroll .jspPane { width: 227px !important; }
-  ul.option-list li:hover { background: #fff; /* No hover color on mobile */ }
-  ul.option-list li.active:hover { background: #dce890; /* Except hover color on the active filter */ } }
 /* Styles for results page introductory overlay */
 #intro-overlay { display: none; z-index: 10000; text-align: center; font-size: 240%; }
 
@@ -1418,8 +1412,6 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #getting-started a.screenshot img.screenshot-thumb { margin: 10px 0 0; }
   #getting-started a.onward-btn { float: none; margin: 0 auto 20px; }
   #advanced-map #plant-map-list { margin-left: 8px; margin-right: 8px; margin-top: 0; }
-  #advanced-map .plant-group:hover .frame { border: 5px solid rgba(255, 255, 255, 0.8); }
-  #advanced-map .plant-group:hover h5 { background: inherit; color: #508e31; }
   #glossary header h1 { width: auto; }
   #glossary #alphabet { line-height: 250%; width: auto; }
   #glossary #alphabet li { border: 0; padding: 1px 10px; }
@@ -1433,4 +1425,14 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #terms-of-use ol.terms { font-size: 18px; margin-left: 8px; margin-right: 8px; }
   #terms-of-use ol.terms h3, #terms-of-use ol.terms h4, #terms-of-use ol.terms p, #terms-of-use ol.terms ul li { margin-left: 0; margin-right: 0; }
   .gb-tooltip { width: 200px; } }
-/* End of smartphone-size screen styles. Please do not add styles after these, otherwise they may not get overridden by the smartphone styles properly. Instead add any new styles before the smartphone styles. */
+/* These styles apply to smartphones and tablets */
+@media only screen and (max-width: 1024px) { /* Disable hover states on Advanced Map to Groups page. */
+  #advanced-map .plant-group:hover .frame { border: 5px solid rgba(255, 255, 255, 0.8); }
+  #advanced-map .plant-group:hover h5 { background: inherit; color: #508e31; }
+  /* Style the Level 3 page's questions list scrollbar differently because a regular scrollbar is not the expected way to scroll there, and has problems besides (arrows too small, vertical bar not draggable). Instead, just present the thin vertical bar as an indicator that the area is scrollable and to provide feedback while swiping to scroll. */
+  #sidebar div.scroll .jspVerticalBar { border-left: 0; }
+  #sidebar div.scroll .jspTrack, #sidebar div.scroll .jspArrowUp, #sidebar div.scroll .jspArrowDown { background: none; }
+  #sidebar div.scroll .jspPane { width: 227px !important; }
+  ul.option-list li:hover { background: #fff; /* No hover color */ }
+  ul.option-list li.active:hover { background: #dce890; /* Except hover color on the active filter */ } }
+/* End of smartphone/tablet screen styles. Please do not add regular styles after these, or they may not get overridden by these styles properly. Instead add new regular styles before the smartphone/tablet styles. */
