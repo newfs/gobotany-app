@@ -1401,7 +1401,7 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #plant-id-3 #main h3.species-count-heading { white-space: nowrap; }
   #plant-id-3 .section + .section { margin-bottom: 16px; }
   #plant-id-3 #sidebar .scroll + .section { margin: 0 0 32px; }
-  #taxon h3 { font-size: 18px; }
+  #taxon h3, #taxon .note { font-size: 18px; }
   #taxon #main > .characteristics dl { margin-left: 8px; margin-right: 8px; }
   #taxon ul.full-description > li div { padding-left: 0; }
   #taxon .characteristics dl dt { clear: none; float: none; text-align: left; width: auto; }
