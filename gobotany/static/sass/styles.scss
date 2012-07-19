@@ -2883,6 +2883,9 @@ $tooltip-arrow-rotation: 225deg;
     #about #main img.bookcover {
         width: auto;
     }
+    #taxon #species-images {
+        width: 310px;
+    }
     #advanced-map #group-section {
         height: 600px;
     }
@@ -2930,6 +2933,9 @@ $tooltip-arrow-rotation: 225deg;
     }
     #home #banner + .three-col {
         padding-top: 400px;
+    }
+    #taxon #species-images {
+        width: 470px;
     }
     #advanced-map #group-section {
         height: 400px;
@@ -3139,11 +3145,15 @@ $tooltip-arrow-rotation: 225deg;
         padding: 0;
         width: auto;
     }
-    #breadcrumb p, #home .three-col h3, #home .three-col h5,
+    #main #breadcrumb p, #home .three-col h3, #home .three-col h5,
     #home .three-col p, #home .three-col a, .app h2, .app p.tip,
-    .app .list-item, .app #main p, .app #main h3, #about #main ul {
+    .app .list-item, .app #main p, .app #main h3, #about #main ul,
+    #taxon #main p {
         margin-left: $smallscreen-side-margin;
         margin-right: $smallscreen-side-margin;
+    }
+    #main #breadcrumb p {
+        line-height: 160%;
     }
     #home .three-col a.learn-more {
         margin-top: 6px;
@@ -3270,12 +3280,6 @@ $tooltip-arrow-rotation: 225deg;
     .app .not-my-plant {
         display: none;
     }
-    #plant-id-3 .section + .section {
-        margin-bottom: 16px;
-    }
-    #plant-id-3 #sidebar .scroll + .section {
-        margin: 0 0 32px;
-    }
     /* Levels 1 and 2 */ 
     .list-item a.plant-in-group {
         clear: left;
@@ -3301,6 +3305,60 @@ $tooltip-arrow-rotation: 225deg;
     }
     #plant-id-3 #main h3.species-count-heading {
         white-space: nowrap;
+    }
+    #plant-id-3 .section + .section {
+        margin-bottom: 16px;
+    }
+    #plant-id-3 #sidebar .scroll + .section {
+        margin: 0 0 32px;
+    }
+
+    #taxon h3 {
+        font-size: 18px;
+    }
+    #taxon #main > .characteristics dl {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    #taxon ul.full-description > li div {
+        padding-left: 0;
+    }
+    #taxon .characteristics dl dt {
+        clear: none;
+        float: none;
+        text-align: left;
+        width: auto;
+    }
+    #taxon .characteristics dl dd {
+        margin-left: auto;
+        padding-left: 28px;
+    }
+    #taxon .description-control {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    #taxon #ne-status {   /* Horiz. scroll for status table if too wide */
+        overflow-x: auto;
+        width: 100%;
+    }
+    #taxon table {
+        margin-left: 2px;
+        margin-top: 0;
+        width: 99%;
+    }
+    #taxon th {
+        text-transform: none;
+    }
+    #taxon td, #taxon tbody th.status {
+        font-size: 10px;
+    }
+    #taxon tbody th.status {
+        padding-left: 0;
+        text-align: right;
+    }
+    #taxon tbody th, #taxon thead td {
+        white-space: normal;
+        width: auto;
     }
     #intro-overlay {
         font-size: 150%;
