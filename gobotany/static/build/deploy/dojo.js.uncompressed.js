@@ -1837,7 +1837,7 @@
 		]
 });require({cache:{
 'dojo/main':function(){
-define("dojo/main", [
+define([
 	"./_base/kernel",
 	"./has",
 	"require",
@@ -2195,7 +2195,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 
 },
 'dojo/has':function(){
-define(["require"], function(require) {
+define("dojo/has", ["require"], function(require) {
 	// module:
 	//		dojo/has
 	// summary:
@@ -3799,7 +3799,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 
 },
 'dojo/ready':function(){
-define(["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], function(dojo, has, require, domReady, lang) {
+define("dojo/ready", ["./_base/kernel", "./has", "require", "./domReady", "./_base/lang"], function(dojo, has, require, domReady, lang) {
 	// module:
 	//		dojo/ready
 	// summary:
@@ -8342,7 +8342,7 @@ return dojo;
 
 },
 'dojo/json':function(){
-define("dojo/json", ["./has"], function(has){
+define(["./has"], function(has){
 	"use strict";
 	var hasJSON = typeof JSON != "undefined";
 	has.add("json-parse", hasJSON); // all the parsers work fine
@@ -9651,7 +9651,7 @@ define("dojo/dom-prop", ["exports", "./_base/kernel", "./_base/sniff", "./_base/
 
 },
 'dojo/dom-construct':function(){
-define(["exports", "./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-attr", "./on"],
+define("dojo/dom-construct", ["exports", "./_base/kernel", "./_base/sniff", "./_base/window", "./dom", "./dom-attr", "./on"],
 		function(exports, dojo, has, win, dom, attr, on){
 	// module:
 	//		dojo/dom-construct
@@ -10030,7 +10030,7 @@ define(["exports", "./_base/kernel", "./_base/sniff", "./_base/window", "./dom",
 
 },
 'dojo/dom-class':function(){
-define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
+define("dojo/dom-class", ["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 	// module:
 	//		dojo/dom-class
 	// summary:
@@ -10456,7 +10456,7 @@ var NodeList = query.NodeList;
 
 },
 'dojo/query':function(){
-define(["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/lang", "./selector/_loader", "./selector/_loader!default"],
+define("dojo/query", ["./_base/kernel", "./has", "./dom", "./on", "./_base/array", "./_base/lang", "./selector/_loader", "./selector/_loader!default"],
 	function(dojo, has, dom, on, array, lang, loader, defaultEngine){
 "use strict";
 
@@ -12703,7 +12703,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 
 },
 'dojo/NodeList-dom':function(){
-define(["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-class", "./dom-construct", "./dom-geometry", "./dom-attr", "./dom-style"], function(dojo, query, array, lang, domCls, domCtr, domGeom, domAttr, domStyle){
+define("dojo/NodeList-dom", ["./_base/kernel", "./query", "./_base/array", "./_base/lang", "./dom-class", "./dom-construct", "./dom-geometry", "./dom-attr", "./dom-style"], function(dojo, query, array, lang, domCls, domCtr, domGeom, domAttr, domStyle){
 	/*===== var NodeList = dojo.NodeList; =====*/
 	var magicGuard = function(a){
 		// summary:
