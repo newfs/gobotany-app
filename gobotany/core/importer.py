@@ -164,12 +164,14 @@ class Importer(object):
         return short_name
 
     def _import_constants(self, db, characters_csv):
+        """Invoke all imports not requiring input or I/O"""
         self._import_plant_preview_characters(characters_csv)
         self._import_help()
         self._import_simple_key_pages()
         self._import_search_suggestions()
 
     def _import_copyright_holders(self, db, copyright_holders_csv):
+        """Load copyright holders from a CSV file"""
         log.info('Setting up copyright holders')
         copyright_holder = db.table('core_copyrightholder')
 
@@ -185,6 +187,7 @@ class Importer(object):
         copyright_holder.save()
 
     def _import_wetland_indicators(self, db, wetland_indicators_csv):
+        """Load wetland indicators from a CSV file"""
         log.info('Setting up wetland indicators')
         wetland_indicator = db.table('core_wetlandindicator')
 
@@ -200,6 +203,7 @@ class Importer(object):
         wetland_indicator.save()
 
     def _import_partner_sites(self, db):
+        """Create 'gobotany' and 'montshire' partner site objects"""
         log.info('Setting up partner sites')
         partnersite = db.table('core_partnersite')
 
@@ -209,6 +213,7 @@ class Importer(object):
         partnersite.save()
 
     def _import_pile_groups(self, db, pilegroupf):
+        """Load pile groups from a CSV file"""
         log.info('Setting up pile groups')
         pilegroup = db.table('core_pilegroup')
         clean = self._clean_up_html
@@ -228,6 +233,7 @@ class Importer(object):
         pilegroup.save()
 
     def _import_piles(self, db, pilef):
+        """Load piles from a CSV file"""
         log.info('Setting up piles')
         pilegroup_map = db.map('core_pilegroup', 'slug', 'id')
         pile = db.table('core_pile')
@@ -252,6 +258,7 @@ class Importer(object):
         pile.save()
 
     def _import_habitats(self, db, habitatsf):
+        """Load habitat list from a CSV file"""
         log.info('Setting up habitats')
         habitat = db.table('core_habitat')
 
@@ -387,6 +394,7 @@ class Importer(object):
         return ' '.join(name).encode('utf-8')
 
     def _import_taxa(self, db, taxaf):
+        """Load species list from a CSV file"""
         log.info('Loading taxa from file: %s', taxaf)
 
         COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
@@ -626,6 +634,7 @@ class Importer(object):
         synonym_table.save(delete_old=True)
 
     def _import_families(self, db, family_file):
+        """Load botanic families from a CSV file"""
         log.info('Loading families from file: %s', family_file)
 
         family_table = db.table('core_family')
@@ -655,6 +664,7 @@ class Importer(object):
         family_table.save()
 
     def _import_genera(self, db, genera_file):
+        """Load genus data from a CSV file"""
         log.info('Loading genera from file: %s', genera_file)
 
         genus_table = db.table('core_genus')
@@ -698,6 +708,7 @@ class Importer(object):
         genus_table.save()
 
     def _import_plant_names(self, taxaf):
+        """Load plant common names from a CSV file"""
         print >> self.logfile, 'Setting up plant names in file: %s' % taxaf
         COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
         iterator = iter(CSVReader(taxaf).read())
@@ -723,6 +734,7 @@ class Importer(object):
                 print >> self.logfile, u'  Added plant name:', pn
 
     def _import_taxon_character_values(self, db, *filenames):
+        """Load taxon character values from CSV files"""
 
         # Create a pile_map {'_ca': 8, '_nm': 9, ...}
         pile_map1 = db.map('core_pile', 'slug', 'id')
@@ -866,6 +878,7 @@ class Importer(object):
         return friendly_name
 
     def _import_characters(self, db, filename):
+        """Load characters from a CSV file"""
         log.info('Loading characters from file: %s', filename)
 
         charactergroup_table = db.table('core_charactergroup')
@@ -936,6 +949,7 @@ class Importer(object):
         character_table.save()
 
     def _import_character_images(self, db, csvfilename):
+        """Load character images from a CSV file (queries S3)"""
         log.info('Fetching list of S3 character images')
         field = models.Character._meta.get_field('image')
         directories, image_names = default_storage.listdir(field.upload_to)
@@ -972,6 +986,7 @@ class Importer(object):
         return html
 
     def _import_character_values(self, db, filename):
+        """Load character values from a CSV file"""
         log.info('Loading character values from: %s', filename)
         character_map = db.map('core_character', 'short_name', 'id')
         charactervalue_table = db.table('core_charactervalue')
@@ -1010,6 +1025,8 @@ class Importer(object):
             'core_charactervalue', ('character_id', 'value_str'), 'id')
 
     def _import_character_value_images(self, db, csvfilename):
+        """Load character value images from a CSV (queries S3)"""
+
         log.info('Fetching list of S3 character value images')
         field = models.Character._meta.get_field('image')
         directories, image_names = default_storage.listdir(field.upload_to)
@@ -1051,6 +1068,7 @@ class Importer(object):
         log.info('Done loading %d character-value images' % count)
 
     def _import_glossary(self, db, filename):
+        """Load glossary terms from a CSV file"""
         log.info('Loading glossary from file: %s', filename)
         glossaryterm_table = db.table('core_glossaryterm')
 
@@ -1074,6 +1092,8 @@ class Importer(object):
         glossaryterm_table.save()
 
     def _import_glossary_images(self, db, csvfilename):
+        """Load glossary images from a CSV file (uses S3)"""
+
         log.info('Scanning glossary images on S3')
         field = models.GlossaryTerm._meta.get_field('image')
         directories, image_names = default_storage.listdir(field.upload_to)
@@ -1100,7 +1120,7 @@ class Importer(object):
         log.info('Saved %d glossary images to table' % count)
 
     def _import_taxon_images(self, db):
-        """Scan S3 for taxon images, and load their paths into the database."""
+        """Load the ls-taxon-images.gz list from S3"""
 
         # Retrieve the tables and mappings we need.
 
@@ -1253,9 +1273,7 @@ class Importer(object):
         log.info('Imported %d taxon images', count)
 
     def _import_home_page_images(self, db):
-        """Import default home page images and put image files in the
-        specified directory.
-        """
+        """Load home page image URLs from S3"""
         log.info('Emptying the old home page image list')
         for home_page_image in models.HomePageImage.objects.all():
             home_page_image.delete()
@@ -1304,6 +1322,7 @@ class Importer(object):
 
 
     def _import_places(self, db, taxaf):
+        """Load habitat and state data from a taxa CSV file"""
         log.info('Setting up place characters and values')
 
         # Create a character group for "place" characters.
@@ -1452,6 +1471,7 @@ class Importer(object):
             print >> self.logfile, message
 
     def _import_plant_preview_characters(self, characters_csv):
+        """Load plant preview characters from a CSV file"""
         print >> self.logfile, ('Setting up plant preview characters')
 
         # For now, plant preview characters should initially be set to
@@ -1473,6 +1493,7 @@ class Importer(object):
         #     'sporophyll_orientation_ly'], 'montshire')
 
     def _import_lookalikes(self, db, filename):
+        """Load look-alike plants from a CSV file"""
         log.info('Loading look-alike plants from file: %s', filename)
         lookalike_table = db.table('core_lookalike')
         taxon_map = db.map('core_taxon', 'scientific_name', 'id')
@@ -1504,6 +1525,7 @@ class Importer(object):
 
 
     def _import_distributions(self, distributionsf):
+        """Load BONAP distribution data from a CSV file"""
         print >> self.logfile, 'Importing distribution data (BONAP)'
 
         db = bulkup.Database(connection)
@@ -1564,7 +1586,7 @@ class Importer(object):
             distribution_row.set(status=distribution_status)
 
     def _import_videos(self, db, videofilename):
-
+        """Load pile and pile group video URLs from a CSV file"""
         log.info('Reading CSV to import videos and assign to piles/pilegroups')
 
         # First clear any existing video associations.
@@ -1704,6 +1726,7 @@ class Importer(object):
 
 
     def _import_help(self):
+        """Create various help pages in the database"""
         print >> self.logfile, 'Setting up help pages and content'
 
         # Create Help page model records to be used for search engine indexing
@@ -1759,6 +1782,7 @@ class Importer(object):
 
 
     def _import_simple_key_pages(self):
+        """Create various Simple Key pages in the database"""
         print >> self.logfile, 'Setting up Simple Key pages'
 
         # Create Simple Key page model records to be used for search
@@ -1770,6 +1794,7 @@ class Importer(object):
 
 
     def _import_search_suggestions(self):
+        """Set up the search-suggestions table"""
         print >> self.logfile, 'Setting up search suggestions'
 
         db = bulkup.Database(connection)
@@ -1815,6 +1840,7 @@ class Importer(object):
 # partner species list Excel spreadsheet.
 
 def import_partner_species(partner_short_name, excel_path):
+    """Load a partner species list from an Excel file"""
     book = xlrd.open_workbook(excel_path)
     sheet = book.sheet_by_index(0)
 
