@@ -1,4 +1,5 @@
 import argparse
+import boto
 import csv
 import gzip
 import inspect
@@ -1834,10 +1835,7 @@ class Importer(object):
             if created:
                 print >> self.logfile, u'  New SearchSuggestion:', suggestion
 
-
-
-# Import (well, for right now, just print out diagnoses about!) a
-# partner species list Excel spreadsheet.
+# Import a partner species list Excel spreadsheet.
 
 def import_partner_species(partner_short_name, excel_path):
     """Load a partner species list from an Excel file"""
@@ -1874,6 +1872,43 @@ def import_partner_species(partner_short_name, excel_path):
             print 'Adding', species.scientific_name
             models.PartnerSpecies(species=species, partner=partner).save()
 
+def ziplist():
+    directories, filenames = default_storage.listdir('/data/')
+    for filename in sorted(filenames):
+        if filename:
+            print filename
+
+def zipimport(name):
+    """Does a full database load from CSV files in a zip file or directory.
+
+    If you name a zip file that does not seem to exist on the local
+    filesystem, then an attempt is made to download it from the NEWFS
+    "data" directory on Amazon S3.  A missing CSV file in the directory
+    or zip file generates a warning, but the import will still try to
+    proceed without it; you can therefore run the command on an empty
+    directory to see the list of zip files that are needed for a
+    complete import.  Use the separate "ziplist" command if you need to
+    review which zip files are available on S3.
+
+    """
+    if name is None:
+        print 'Searching S3 for the most recent data zip file'
+        directories, filenames = default_storage.listdir('/data/')
+        name = sorted([ f for f in filenames if f.endswith('.zip') ])[-1]
+        if os.path.exists(name):
+            print 'Most recent data zip file is:'
+            print
+            print '   ', name
+            print
+            print 'Using copy already present on filesystem'
+        else:
+            print 'Downloading', name
+            with open(name, 'w') as dst:
+                with default_storage.open('/data/' + name) as src:
+                    shutil.copyfileobj(src, dst)
+            print 'Done'
+    # TODO: actual import
+
 # Utilities.
 
 def delete_files_in(dirname):
@@ -1895,7 +1930,7 @@ def _extract_scientific_name(name):
 
 def takes_db_arg(callable):
     spec = inspect.getargspec(callable)
-    if spec.args[0] == 'self':
+    if spec.args[0:1] == ['self']:
         del spec.args[0]
     return spec.args[0:1] == ['db']
 
@@ -1945,7 +1980,18 @@ def main():
     sub.add_argument('partner', help='nickname of a partner organization')
     sub.add_argument('filename', help='name of the file to load')
 
-    #import pdb;pdb.set_trace()
+    sub = subs.add_parser(
+        'ziplist', help='List the zip files stored on S3')
+    sub.set_defaults(function=ziplist)
+
+    sub = subs.add_parser(
+        'zipimport', help='Full import from a zip file or directory',
+        description=zipimport.__doc__)
+    sub.set_defaults(function=zipimport)
+    sub.add_argument(
+        'filename', nargs='?',
+        help='S3 zipfile, or local zipfile or directory; omit to use latest',
+        )
 
     args = parser.parse_args()
 
