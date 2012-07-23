@@ -1529,16 +1529,18 @@ class Importer(object):
         """Load BONAP distribution data from a CSV file"""
         print >> self.logfile, 'Importing distribution data (BONAP)'
 
+        DEFAULT_STATUS_COLUMN_NAME = 'status'
+        ADJUSTED_STATUS_COLUMN_NAME = 'edited data'
+
         db = bulkup.Database(connection)
         distribution = db.table('core_distribution')
 
         # If adjusted status data are present, import from the
         # appropriate column.
-        ADJUSTED_COLUMN_NAME = 'BDS adjustments (based on AH comments)'
-        status_column_name = 'status'
+        status_column_name = DEFAULT_STATUS_COLUMN_NAME
         for row in open_csv(distributionsf):
-            if row.has_key(ADJUSTED_COLUMN_NAME.lower()):
-                status_column_name = ADJUSTED_COLUMN_NAME.lower()
+            if row.has_key(ADJUSTED_STATUS_COLUMN_NAME.lower()):
+                status_column_name = ADJUSTED_STATUS_COLUMN_NAME.lower()
             break   # Now that the correct status column name is known
 
         for row in open_csv(distributionsf):
@@ -1550,7 +1552,9 @@ class Importer(object):
                 status=row[status_column_name],
                 )
 
-            self._apply_subspecies_status(row, distribution)
+            # TODO: Fix subspecies status for adjusted New England data.
+            if status_column_name == DEFAULT_STATUS_COLUMN_NAME:
+                self._apply_subspecies_status(row, distribution)
 
         distribution.save()
 
