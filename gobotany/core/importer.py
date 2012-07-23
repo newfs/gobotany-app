@@ -844,15 +844,6 @@ class Importer(object):
         tcv_table.save()
 
 
-    def _import_assign_character_values_to_piles(self, db):
-        """Placeholder function.
-
-        We will be able to remove this once the 'ember' branch is merged
-        back into trunk, at which point we can remove the call to this
-        function from the gobotany-deploy/scripts/import-data.sh file.
-        """
-
-
     def _create_character_name(self, short_name):
         """Create a character name from the short name."""
         name = short_name
