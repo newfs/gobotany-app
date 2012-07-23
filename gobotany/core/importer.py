@@ -1,10 +1,11 @@
+import argparse
 import csv
 import gzip
+import inspect
 import logging
 import os
 import re
 import shutil
-import sys
 import xlrd
 from collections import defaultdict
 from operator import attrgetter
@@ -168,7 +169,6 @@ class Importer(object):
         self._import_simple_key_pages()
         self._import_search_suggestions()
 
-    @transaction.commit_on_success
     def _import_copyright_holders(self, db, copyright_holders_csv):
         log.info('Setting up copyright holders')
         copyright_holder = db.table('core_copyrightholder')
@@ -184,7 +184,6 @@ class Importer(object):
 
         copyright_holder.save()
 
-    @transaction.commit_on_success
     def _import_wetland_indicators(self, db, wetland_indicators_csv):
         log.info('Setting up wetland indicators')
         wetland_indicator = db.table('core_wetlandindicator')
@@ -200,7 +199,6 @@ class Importer(object):
 
         wetland_indicator.save()
 
-    @transaction.commit_on_success
     def _import_partner_sites(self, db):
         log.info('Setting up partner sites')
         partnersite = db.table('core_partnersite')
@@ -210,7 +208,6 @@ class Importer(object):
 
         partnersite.save()
 
-    @transaction.commit_on_success
     def _import_pile_groups(self, db, pilegroupf):
         log.info('Setting up pile groups')
         pilegroup = db.table('core_pilegroup')
@@ -230,7 +227,6 @@ class Importer(object):
 
         pilegroup.save()
 
-    @transaction.commit_on_success
     def _import_piles(self, db, pilef):
         log.info('Setting up piles')
         pilegroup_map = db.map('core_pilegroup', 'slug', 'id')
@@ -255,7 +251,6 @@ class Importer(object):
 
         pile.save()
 
-    @transaction.commit_on_success
     def _import_habitats(self, db, habitatsf):
         log.info('Setting up habitats')
         habitat = db.table('core_habitat')
@@ -391,7 +386,6 @@ class Importer(object):
                     break
         return ' '.join(name).encode('utf-8')
 
-    @transaction.commit_on_success
     def _import_taxa(self, db, taxaf):
         log.info('Loading taxa from file: %s', taxaf)
 
@@ -631,7 +625,6 @@ class Importer(object):
         synonym_table.replace('taxon_id', taxon_map)
         synonym_table.save(delete_old=True)
 
-    @transaction.commit_on_success
     def _import_families(self, db, family_file):
         log.info('Loading families from file: %s', family_file)
 
@@ -661,7 +654,6 @@ class Importer(object):
 
         family_table.save()
 
-    @transaction.commit_on_success
     def _import_genera(self, db, genera_file):
         log.info('Loading genera from file: %s', genera_file)
 
@@ -705,7 +697,6 @@ class Importer(object):
 
         genus_table.save()
 
-    @transaction.commit_on_success
     def _import_plant_names(self, taxaf):
         print >> self.logfile, 'Setting up plant names in file: %s' % taxaf
         COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
@@ -731,7 +722,6 @@ class Importer(object):
                     scientific_name=scientific_name)
                 print >> self.logfile, u'  Added plant name:', pn
 
-    @transaction.commit_on_success
     def _import_taxon_character_values(self, db, *filenames):
 
         # Create a pile_map {'_ca': 8, '_nm': 9, ...}
@@ -854,7 +844,6 @@ class Importer(object):
         tcv_table.save()
 
 
-    @transaction.commit_on_success
     def _import_assign_character_values_to_piles(self, db):
         """Placeholder function.
 
@@ -885,7 +874,6 @@ class Importer(object):
             friendly_name = self._create_character_name(short_name)
         return friendly_name
 
-    @transaction.commit_on_success
     def _import_characters(self, db, filename):
         log.info('Loading characters from file: %s', filename)
 
@@ -956,7 +944,6 @@ class Importer(object):
         character_table.replace('character_group_id', charactergroup_map)
         character_table.save()
 
-    @transaction.commit_on_success
     def _import_character_images(self, db, csvfilename):
         log.info('Fetching list of S3 character images')
         field = models.Character._meta.get_field('image')
@@ -993,7 +980,6 @@ class Importer(object):
 
         return html
 
-    @transaction.commit_on_success
     def _import_character_values(self, db, filename):
         log.info('Loading character values from: %s', filename)
         character_map = db.map('core_character', 'short_name', 'id')
@@ -1032,7 +1018,6 @@ class Importer(object):
         charactervalue_map = db.map(
             'core_charactervalue', ('character_id', 'value_str'), 'id')
 
-    @transaction.commit_on_success
     def _import_character_value_images(self, db, csvfilename):
         log.info('Fetching list of S3 character value images')
         field = models.Character._meta.get_field('image')
@@ -1074,7 +1059,6 @@ class Importer(object):
 
         log.info('Done loading %d character-value images' % count)
 
-    @transaction.commit_on_success
     def _import_glossary(self, db, filename):
         log.info('Loading glossary from file: %s', filename)
         glossaryterm_table = db.table('core_glossaryterm')
@@ -1098,7 +1082,6 @@ class Importer(object):
 
         glossaryterm_table.save()
 
-    @transaction.commit_on_success
     def _import_glossary_images(self, db, csvfilename):
         log.info('Scanning glossary images on S3')
         field = models.GlossaryTerm._meta.get_field('image')
@@ -1125,7 +1108,6 @@ class Importer(object):
 
         log.info('Saved %d glossary images to table' % count)
 
-    @transaction.commit_on_success
     def _import_taxon_images(self, db):
         """Scan S3 for taxon images, and load their paths into the database."""
 
@@ -1330,7 +1312,6 @@ class Importer(object):
         return friendly_name and friendly_name.lower()
 
 
-    @transaction.commit_on_success
     def _import_places(self, db, taxaf):
         log.info('Setting up place characters and values')
 
@@ -1479,7 +1460,6 @@ class Importer(object):
                 message = 'Error: did not create %s' % message
             print >> self.logfile, message
 
-    @transaction.commit_on_success
     def _import_plant_preview_characters(self, characters_csv):
         print >> self.logfile, ('Setting up plant preview characters')
 
@@ -1501,7 +1481,6 @@ class Importer(object):
         #    ['trophophyll_form_ly', 'upright_shoot_form_ly',
         #     'sporophyll_orientation_ly'], 'montshire')
 
-    @transaction.commit_on_success
     def _import_lookalikes(self, db, filename):
         log.info('Loading look-alike plants from file: %s', filename)
         lookalike_table = db.table('core_lookalike')
@@ -1533,7 +1512,6 @@ class Importer(object):
         lookalike_table.save()
 
 
-    @transaction.commit_on_success
     def _import_distributions(self, distributionsf):
         print >> self.logfile, 'Importing distribution data (BONAP)'
 
@@ -1594,7 +1572,6 @@ class Importer(object):
             #)
             distribution_row.set(status=distribution_status)
 
-    @transaction.commit_on_success
     def _import_videos(self, db, videofilename):
 
         log.info('Reading CSV to import videos and assign to piles/pilegroups')
@@ -1801,7 +1778,6 @@ class Importer(object):
         self._create_plant_subgroup_results_pages()
 
 
-    @transaction.commit_on_success
     def _import_search_suggestions(self):
         print >> self.logfile, 'Setting up search suggestions'
 
@@ -1847,7 +1823,6 @@ class Importer(object):
 # Import (well, for right now, just print out diagnoses about!) a
 # partner species list Excel spreadsheet.
 
-@transaction.commit_on_success
 def import_partner_species(partner_short_name, excel_path):
     book = xlrd.open_workbook(excel_path)
     sheet = book.sheet_by_index(0)
@@ -1901,34 +1876,77 @@ def _extract_scientific_name(name):
 
 # Parse the command line.
 
+def takes_db_arg(callable):
+    spec = inspect.getargspec(callable)
+    if spec.args[0] == 'self':
+        del spec.args[0]
+    return spec.args[0:1] == ['db']
+
+def takes_single_filename(callable):
+    spec = inspect.getargspec(callable)
+    if spec.args[0:1] == ['self']:
+        del spec.args[0]
+    if spec.args[0:1] == ['db']:
+        del spec.args[0]
+    return len(spec.args) == 1
+
+def takes_many_filenames(callable):
+    spec = inspect.getargspec(callable)
+    if spec.args[0:1] == ['self']:
+        del spec.args[0]
+    if spec.args[0:1] == ['db']:
+        del spec.args[0]
+    return spec.varargs
+
+def add_subcommand(subs, name, function):
+    sub = subs.add_parser(name, help=function.__doc__)
+    sub.set_defaults(function=function)
+    if takes_single_filename(function):
+        sub.add_argument('filename', help='name of the file to load')
+    elif takes_many_filenames(function):
+        sub.add_argument('filenames', help='one or more files to load',
+                         nargs='*')
+
 def main():
     start_logging()
     importer = Importer()
-    name = sys.argv[1].replace('-', '_')  # like 'partner_sites'
-    method = getattr(importer, '_import_' + name, None)
-    modern = name in (
-        'partner_sites', 'pile_groups', 'piles', 'habitats', 'families',
-        'genera', 'taxa', 'characters', 'character_values', 'glossary',
-        'lookalikes', 'constants', 'places', 'taxon_character_values',
-        'character_images', 'character_value_images', 'glossary_images',
-        'videos', 'home_page_images', 'taxon_images',
-        'assign_character_values_to_piles', 'copyright_holders',
-        'wetland_indicators',
-        )  # keep old commands working for now!
-    if modern and method is not None:
-        db = bulkup.Database(connection)
-        filenames = sys.argv[2:]
-        method(db, *filenames)
-        return
 
-    # Incredibly lame option parsing, since we can't rely on real option
-    # parsing
-    if sys.argv[1] == 'partner':
-        import_partner_species(*sys.argv[2:])
-    elif sys.argv[1] == 'distributions':
-        importer._import_distributions(sys.argv[2])
-    else:
-        log.error('command not recognized: %r', sys.argv[1])
+    parser = argparse.ArgumentParser(
+        description='Import one or more data files into the Go Botany database'
+        )
+    subs = parser.add_subparsers()
+    subs.metavar = 'subcommand'
+
+    for name in dir(importer):
+        if not name.startswith('_import_'):
+            continue
+        method = getattr(importer, name)
+        add_subcommand(subs, name[8:].replace('_', '-'), method)
+
+    sub = subs.add_parser('partner', help=import_partner_species.__doc__)
+    sub.set_defaults(function=import_partner_species)
+    sub.add_argument('partner', help='nickname of a partner organization')
+    sub.add_argument('filename', help='name of the file to load')
+
+    #import pdb;pdb.set_trace()
+
+    args = parser.parse_args()
+
+    function = args.function
+    function_args = []
+
+    if takes_db_arg(function):
+        db = bulkup.Database(connection)
+        function_args.append(db)
+    if hasattr(args, 'partner'):
+        function_args.append(args.partner)
+    if hasattr(args, 'filename'):
+        function_args.append(args.filename)
+    if hasattr(args, 'filenames'):
+        function_args.extend(args.filenames)
+
+    wrapped_function = transaction.commit_on_success(function)
+    wrapped_function(*function_args)
 
 if __name__ == '__main__':
     main()
