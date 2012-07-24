@@ -89,19 +89,22 @@ state_names = {
 # when a species has differing status per subspecies
 # or variety.  Higher values will override lower.
 status_precedence = {
-    'Species noxious' : 13,
-    'Species present in state and exotic' : 12,
-    'Species exotic and present' : 11,
-    'Species waif' : 10,
-    'Species present in state and native' : 9,
-    'Species present and not rare' : 8,
-    'Species native, but adventive in state' : 7,
-    'Species present and rare' : 6,
-    'Species extirpated (historic)' : 5,
-    'Species extinct' : 4,
-    'Species not present in state' : 3,
-    'Species eradicated' : 2,
-    'Questionable Presence (cross-hatched)' : 1,
+    'Species noxious' : 16,
+    'present, non-native' : 15,   # New England data value
+    'Species present in state and exotic' : 14,
+    'Species exotic and present' : 13,
+    'Species waif' : 12,
+    'present, native' : 11,   # New England data value
+    'Species present in state and native' : 10,
+    'Species present and not rare' : 9,
+    'Species native, but adventive in state' : 8,
+    'Species present and rare' : 7,
+    'Species extirpated (historic)' : 6,
+    'Species extinct' : 5,
+    'Species not present in state' : 4,
+    'Species eradicated' : 3,
+    'Questionable Presence (cross-hatched)' : 2,
+    'absent' : 1,   # New England data value
     '' : 0,
 }
 
@@ -1546,17 +1549,17 @@ class Importer(object):
                 status=row[status_column_name],
                 )
 
-            # TODO: Fix subspecies status for adjusted New England data.
-            if status_column_name == DEFAULT_STATUS_COLUMN_NAME:
-                self._apply_subspecies_status(row, distribution)
+            self._apply_subspecies_status(row, distribution,
+                                          status_column_name)
 
         distribution.save()
 
-    def _apply_subspecies_status(self, row, distribution):
-        distribution_status = row['status']
-        full_name = row['scientific_name']
-        state = row['state']
-        county = row['county']
+    def _apply_subspecies_status(self, csv_row, distribution,
+                                 csv_status_column_name):
+        distribution_status = csv_row[csv_status_column_name]
+        full_name = csv_row['scientific_name']
+        state = csv_row['state']
+        county = csv_row['county']
 
         scientific_name = _extract_scientific_name(full_name)
         if scientific_name == full_name:
@@ -1570,7 +1573,12 @@ class Importer(object):
             state=state,
             county=county,
             )
+
+        # Get the current status from the distribution table row. Here
+        # the field name is part of the model and does not vary, unlike
+        # the source CSV data column names.
         current_status = distribution_row.get('status') or ''
+
         if status_precedence[distribution_status] > status_precedence[current_status]:
             # Interesting information, but there's SO much output it's annoying normally.
             #log.info(
