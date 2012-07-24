@@ -6,6 +6,5 @@ requirejs.config({
         'simplekey': 'simplekey',
         'bridge': 'bridge',
         'util': 'util'
-    },
-
+    }
 });
