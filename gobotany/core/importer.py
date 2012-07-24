@@ -1,5 +1,4 @@
 import argparse
-import boto
 import csv
 import gzip
 import inspect
@@ -13,6 +12,7 @@ from operator import attrgetter
 
 # The GoBotany settings have to be imported before most of Django.
 from gobotany import settings
+from gobotany.core import rebuild
 from django.core import management
 management.setup_environ(settings)
 
@@ -164,14 +164,14 @@ class Importer(object):
         short_name = short_name.replace('_max', '')
         return short_name
 
-    def _import_constants(self, db, characters_csv):
+    def import_constants(self, db, characters_csv):
         """Invoke all imports not requiring input or I/O"""
         self._import_plant_preview_characters(characters_csv)
         self._import_help()
         self._import_simple_key_pages()
         self._import_search_suggestions()
 
-    def _import_copyright_holders(self, db, copyright_holders_csv):
+    def import_copyright_holders(self, db, copyright_holders_csv):
         """Load copyright holders from a CSV file"""
         log.info('Setting up copyright holders')
         copyright_holder = db.table('core_copyrightholder')
@@ -187,7 +187,7 @@ class Importer(object):
 
         copyright_holder.save()
 
-    def _import_wetland_indicators(self, db, wetland_indicators_csv):
+    def import_wetland_indicators(self, db, wetland_indicators_csv):
         """Load wetland indicators from a CSV file"""
         log.info('Setting up wetland indicators')
         wetland_indicator = db.table('core_wetlandindicator')
@@ -203,7 +203,7 @@ class Importer(object):
 
         wetland_indicator.save()
 
-    def _import_partner_sites(self, db):
+    def import_partner_sites(self, db):
         """Create 'gobotany' and 'montshire' partner site objects"""
         log.info('Setting up partner sites')
         partnersite = db.table('core_partnersite')
@@ -213,7 +213,7 @@ class Importer(object):
 
         partnersite.save()
 
-    def _import_pile_groups(self, db, pilegroupf):
+    def import_pile_groups(self, db, pilegroupf):
         """Load pile groups from a CSV file"""
         log.info('Setting up pile groups')
         pilegroup = db.table('core_pilegroup')
@@ -233,7 +233,7 @@ class Importer(object):
 
         pilegroup.save()
 
-    def _import_piles(self, db, pilef):
+    def import_piles(self, db, pilef):
         """Load piles from a CSV file"""
         log.info('Setting up piles')
         pilegroup_map = db.map('core_pilegroup', 'slug', 'id')
@@ -258,7 +258,7 @@ class Importer(object):
 
         pile.save()
 
-    def _import_habitats(self, db, habitatsf):
+    def import_habitats(self, db, habitatsf):
         """Load habitat list from a CSV file"""
         log.info('Setting up habitats')
         habitat = db.table('core_habitat')
@@ -394,7 +394,7 @@ class Importer(object):
                     break
         return ' '.join(name).encode('utf-8')
 
-    def _import_taxa(self, db, taxaf):
+    def import_taxa(self, db, taxaf):
         """Load species list from a CSV file"""
         log.info('Loading taxa from file: %s', taxaf)
 
@@ -634,7 +634,7 @@ class Importer(object):
         synonym_table.replace('taxon_id', taxon_map)
         synonym_table.save(delete_old=True)
 
-    def _import_families(self, db, family_file):
+    def import_families(self, db, family_file):
         """Load botanic families from a CSV file"""
         log.info('Loading families from file: %s', family_file)
 
@@ -664,7 +664,7 @@ class Importer(object):
 
         family_table.save()
 
-    def _import_genera(self, db, genera_file):
+    def import_genera(self, db, genera_file):
         """Load genus data from a CSV file"""
         log.info('Loading genera from file: %s', genera_file)
 
@@ -708,7 +708,7 @@ class Importer(object):
 
         genus_table.save()
 
-    def _import_plant_names(self, taxaf):
+    def import_plant_names(self, taxaf):
         """Load plant common names from a CSV file"""
         print >> self.logfile, 'Setting up plant names in file: %s' % taxaf
         COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
@@ -734,7 +734,7 @@ class Importer(object):
                     scientific_name=scientific_name)
                 print >> self.logfile, u'  Added plant name:', pn
 
-    def _import_taxon_character_values(self, db, *filenames):
+    def import_taxon_character_values(self, db, *filenames):
         """Load taxon character values from CSV files"""
 
         # Create a pile_map {'_ca': 8, '_nm': 9, ...}
@@ -878,7 +878,7 @@ class Importer(object):
             friendly_name = self._create_character_name(short_name)
         return friendly_name
 
-    def _import_characters(self, db, filename):
+    def import_characters(self, db, filename):
         """Load characters from a CSV file"""
         log.info('Loading characters from file: %s', filename)
 
@@ -949,7 +949,7 @@ class Importer(object):
         character_table.replace('character_group_id', charactergroup_map)
         character_table.save()
 
-    def _import_character_images(self, db, csvfilename):
+    def import_character_images(self, db, csvfilename):
         """Load character images from a CSV file (queries S3)"""
         log.info('Fetching list of S3 character images')
         field = models.Character._meta.get_field('image')
@@ -986,7 +986,7 @@ class Importer(object):
 
         return html
 
-    def _import_character_values(self, db, filename):
+    def import_character_values(self, db, filename):
         """Load character values from a CSV file"""
         log.info('Loading character values from: %s', filename)
         character_map = db.map('core_character', 'short_name', 'id')
@@ -1025,7 +1025,7 @@ class Importer(object):
         charactervalue_map = db.map(
             'core_charactervalue', ('character_id', 'value_str'), 'id')
 
-    def _import_character_value_images(self, db, csvfilename):
+    def import_character_value_images(self, db, csvfilename):
         """Load character value images from a CSV (queries S3)"""
 
         log.info('Fetching list of S3 character value images')
@@ -1068,7 +1068,7 @@ class Importer(object):
 
         log.info('Done loading %d character-value images' % count)
 
-    def _import_glossary(self, db, filename):
+    def import_glossary(self, db, filename):
         """Load glossary terms from a CSV file"""
         log.info('Loading glossary from file: %s', filename)
         glossaryterm_table = db.table('core_glossaryterm')
@@ -1092,7 +1092,7 @@ class Importer(object):
 
         glossaryterm_table.save()
 
-    def _import_glossary_images(self, db, csvfilename):
+    def import_glossary_images(self, db, csvfilename):
         """Load glossary images from a CSV file (uses S3)"""
 
         log.info('Scanning glossary images on S3')
@@ -1120,7 +1120,7 @@ class Importer(object):
 
         log.info('Saved %d glossary images to table' % count)
 
-    def _import_taxon_images(self, db):
+    def import_taxon_images(self, db):
         """Load the ls-taxon-images.gz list from S3"""
 
         # Retrieve the tables and mappings we need.
@@ -1273,7 +1273,7 @@ class Importer(object):
 
         log.info('Imported %d taxon images', count)
 
-    def _import_home_page_images(self, db):
+    def import_home_page_images(self, db):
         """Load home page image URLs from S3"""
         log.info('Emptying the old home page image list')
         for home_page_image in models.HomePageImage.objects.all():
@@ -1322,7 +1322,7 @@ class Importer(object):
         return friendly_name and friendly_name.lower()
 
 
-    def _import_places(self, db, taxaf):
+    def import_places(self, db, taxaf):
         """Load habitat and state data from a taxa CSV file"""
         log.info('Setting up place characters and values')
 
@@ -1471,7 +1471,7 @@ class Importer(object):
                 message = 'Error: did not create %s' % message
             print >> self.logfile, message
 
-    def _import_plant_preview_characters(self, characters_csv):
+    def import_plant_preview_characters(self, characters_csv):
         """Load plant preview characters from a CSV file"""
         print >> self.logfile, ('Setting up plant preview characters')
 
@@ -1493,7 +1493,7 @@ class Importer(object):
         #    ['trophophyll_form_ly', 'upright_shoot_form_ly',
         #     'sporophyll_orientation_ly'], 'montshire')
 
-    def _import_lookalikes(self, db, filename):
+    def import_lookalikes(self, db, filename):
         """Load look-alike plants from a CSV file"""
         log.info('Loading look-alike plants from file: %s', filename)
         lookalike_table = db.table('core_lookalike')
@@ -1525,7 +1525,7 @@ class Importer(object):
         lookalike_table.save()
 
 
-    def _import_distributions(self, distributionsf):
+    def import_distributions(self, distributionsf):
         """Load BONAP distribution data from a CSV file"""
         print >> self.logfile, 'Importing distribution data (BONAP)'
 
@@ -1590,7 +1590,7 @@ class Importer(object):
             #)
             distribution_row.set(status=distribution_status)
 
-    def _import_videos(self, db, videofilename):
+    def import_videos(self, db, videofilename):
         """Load pile and pile group video URLs from a CSV file"""
         log.info('Reading CSV to import videos and assign to piles/pilegroups')
 
@@ -1730,7 +1730,7 @@ class Importer(object):
         multi.save()
 
 
-    def _import_help(self):
+    def import_help(self):
         """Create various help pages in the database"""
         print >> self.logfile, 'Setting up help pages and content'
 
@@ -1786,7 +1786,7 @@ class Importer(object):
                      u'  New Subgroup Results page: ', subgroup_results_page
 
 
-    def _import_simple_key_pages(self):
+    def import_simple_key_pages(self):
         """Create various Simple Key pages in the database"""
         print >> self.logfile, 'Setting up Simple Key pages'
 
@@ -1798,7 +1798,7 @@ class Importer(object):
         self._create_plant_subgroup_results_pages()
 
 
-    def _import_search_suggestions(self):
+    def import_search_suggestions(self):
         """Set up the search-suggestions table"""
         print >> self.logfile, 'Setting up search suggestions'
 
@@ -1876,6 +1876,79 @@ def import_partner_species(partner_short_name, excel_path):
             print 'Adding', species.scientific_name
             models.PartnerSpecies(species=species, partner=partner).save()
 
+# Routines for doing full import.
+
+full_import_steps = (
+    (Importer.import_partner_sites,),
+    (Importer.import_pile_groups, 'data/pile_group_info.csv'),
+    (Importer.import_piles, 'data/pile_info.csv'),
+    (Importer.import_habitats, 'data/habitats.csv'),
+    (Importer.import_families, 'data/families.csv'),
+    (Importer.import_genera, 'data/genera.csv'),
+    (Importer.import_wetland_indicators, 'data/wetland-indicators.csv'),
+    (Importer.import_taxa, 'data/taxa.csv'),
+    (Importer.import_characters, 'data/characters.csv'),
+    (Importer.import_character_values, 'data/character-values.csv'),
+    (Importer.import_glossary, 'data/glossary.csv'),
+    (Importer.import_lookalikes, 'data/lookalikes-raw.csv'),
+    (Importer.import_places, 'data/taxa.csv'),
+    (Importer.import_videos, 'data/videos.csv'),
+    (Importer.import_constants, 'data/characters.csv'),
+    (Importer.import_copyright_holders, 'data/copyright-holders.csv'),
+
+    (Importer.import_distributions,
+     'data/New-England-tracheophyte-county-level-nativity.csv'),
+    (Importer.import_distributions, 'data/bonap-north-america.csv'),
+
+    (Importer.import_taxon_character_values,
+     'data/pile_angiosperms_1.csv',
+     'data/pile_angiosperms_1a.csv',
+     'data/pile_angiosperms_2.csv',
+     'data/pile_angiosperms_3.csv',
+     'data/pile_carex_1.csv',
+     'data/pile_carex_2.csv',
+     'data/pile_composites_1.csv',
+     'data/pile_composites_2.csv',
+     'data/pile_composites_3.csv',
+     'data/pile_composites_4.csv',
+     'data/pile_composites_5.csv',
+     'data/pile_equisetaceae.csv',
+     'data/pile_gymnosperms_1.csv',
+     'data/pile_gymnosperms_2.csv',
+     'data/pile_lycophytes.csv',
+     'data/pile_monilophytes.csv',
+     'data/pile_non_orchid_monocots_1.csv',
+     'data/pile_non_orchid_monocots_2.csv',
+     'data/pile_non_orchid_monocots_3.csv',
+     'data/pile_non_thalloid_aquatics_1a.csv',
+     'data/pile_non_thalloid_aquatics_1b.csv',
+     'data/pile_non_thalloid_aquatics_2.csv',
+     'data/pile_orchid_monocots.csv',
+     'data/pile_poaceae_1.csv',
+     'data/pile_poaceae_1a.csv',
+     'data/pile_poaceae_2.csv',
+     'data/pile_remaining_graminoids_1a.csv',
+     'data/pile_remaining_graminoids_1b.csv',
+     'data/pile_remaining_non_monocots_1.csv',
+     'data/pile_remaining_non_monocots_2.csv',
+     'data/pile_remaining_non_monocots_2a.csv',
+     'data/pile_remaining_non_monocots_2b.csv',
+     'data/pile_remaining_non_monocots_3.csv',
+     'data/pile_remaining_non_monocots_3a.csv',
+     'data/pile_remaining_non_monocots_3b.csv',
+     'data/pile_remaining_non_monocots_4.csv',
+     'data/pile_remaining_non_monocots_5.csv',
+     'data/pile_remaining_non_monocots_6.csv',
+     'data/pile_remaining_non_monocots_7.csv',
+     'data/pile_remaining_non_monocots_8.csv',
+     'data/pile_thalloid_aquatics.csv',
+     ),
+
+    (import_partner_species, 'montshire', 'data/montshire-species-list.xls'),
+    (rebuild.rebuild_default_filters, 'data/characters.csv'),
+    (rebuild.rebuild_plant_of_the_day, 'SIMPLEKEY'),
+    )
+
 def ziplist():
     directories, filenames = default_storage.listdir('/data/')
     for filename in sorted(filenames):
@@ -1911,6 +1984,20 @@ def zipimport(name):
                 with default_storage.open('/data/' + name) as src:
                     shutil.copyfileobj(src, dst)
             print 'Done'
+
+    importer = Importer()
+
+    for step in full_import_steps:
+        function = step[0]
+        args = []
+        if takes_self_arg(function):
+            args.append(importer)
+        args.extend(step[1:])
+        print
+        print 'Preparing to call', function
+        print 'Arguments', args
+        print
+
     # TODO: actual import
 
 # Utilities.
@@ -1931,6 +2018,10 @@ def _extract_scientific_name(name):
         return name[:name.find('ssp.')].strip()
 
 # Parse the command line.
+
+def takes_self_arg(callable):
+    spec = inspect.getargspec(callable)
+    return spec.args[0:1] == ['self']
 
 def takes_db_arg(callable):
     spec = inspect.getargspec(callable)

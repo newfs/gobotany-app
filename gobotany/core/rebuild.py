@@ -9,7 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from gobotany import settings
 management.setup_environ(settings)
-from gobotany.core import igdt, importer, models
+from gobotany.core import igdt, models
 from gobotany.plantoftheday.models import PlantOfTheDay
 
 class CSVReader(object):
@@ -85,6 +85,9 @@ def rebuild_default_filters(characters_csv):
 
         # Look for default filters specified in the CSV data. If not found,
         # add some next 'best' filters instead.
+
+        from gobotany.core import importer # here to avoid import loop
+
         default_filter_characters = importer.get_default_filters_from_csv(
             pile.name, characters_csv)
         if len(default_filter_characters) > 0:
