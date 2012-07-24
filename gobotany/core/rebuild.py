@@ -89,7 +89,7 @@ def rebuild_default_filters(characters_csv):
         from gobotany.core import importer # here to avoid import loop
 
         default_filter_characters = importer.get_default_filters_from_csv(
-            pile.name, characters_csv)
+            pile.name, importer.PlainFile(characters_csv))
         if len(default_filter_characters) > 0:
             print "  Inserting new default filters from CSV data:"
             for n, character in enumerate(default_filter_characters):

@@ -49,13 +49,7 @@ def start_logging():
     console.setFormatter(formatter)
     logging.getLogger('').addHandler(console)
 
-def open_universal_newline(filename):
-    """ Open a file for reading in universal newline mode in order to
-    handle newlines in files saved on Mac OS.
-    """
-    return open(filename, 'rU')
-
-def open_csv(filename, lower=True):
+def open_csv(data_file, lower=True):
     """Our CSVs are produced on Windows and sometimes re-saved from a Mac.
 
     This means we have to be careful about both their encoding and the
@@ -65,24 +59,22 @@ def open_csv(filename, lower=True):
 
     """
     w = 'Windows-1252'
-    with open_universal_newline(filename) as f:
-        r = csv.reader(f)
-        names = [ name.decode(w) for name in r.next() ]
-        if lower:
-            names = [ name.lower() for name in names ]
-        for row in r:
-            yield dict(zip(names, (s.decode(w) for s in row)))
+    r = csv.reader(data_file.open())
+    names = [ name.decode(w) for name in r.next() ]
+    if lower:
+        names = [ name.lower() for name in names ]
+    for row in r:
+        yield dict(zip(names, (s.decode(w) for s in row)))
 
 class CSVReader(object):
 
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self, data_file):
+        self.data_file = data_file
 
     def read(self):
-        with open_universal_newline(self.filename) as f:
-            r = csv.reader(f, dialect=csv.excel, delimiter=',')
-            for row in r:
-                yield [c.decode('Windows-1252') for c in row]
+        r = csv.reader(self.data_file.open(), dialect=csv.excel, delimiter=',')
+        for row in r:
+            yield [c.decode('Windows-1252') for c in row]
 
 state_names = {
     'ct': u'Connecticut',
@@ -168,10 +160,10 @@ class Importer(object):
 
     def import_constants(self, db, characters_csv):
         """Invoke all imports not requiring input or I/O"""
-        self._import_plant_preview_characters(characters_csv)
-        self._import_help()
-        self._import_simple_key_pages()
-        self._import_search_suggestions()
+        self.import_plant_preview_characters(characters_csv)
+        self.import_help()
+        self.import_simple_key_pages()
+        self.import_search_suggestions()
 
     def import_copyright_holders(self, db, copyright_holders_csv):
         """Load copyright holders from a CSV file"""
@@ -1607,7 +1599,10 @@ class Importer(object):
         # Create and associate video records from the CSV file.
         for row in open_csv(videofilename):
             v, created = Video.objects.get_or_create(
-                         title=row['title'], youtube_id=row['youtube-id'])
+                         # TODO: remove fallback when Sid updates tar file
+                         title=row.get('title', 'Untitled'),
+                         youtube_id=row['youtube-id'],
+                         )
             print >> self.logfile, u'    Video: %s %s' % (v.title,
                                                           v.youtube_id)
 
@@ -1843,9 +1838,9 @@ class Importer(object):
 
 # Import a partner species list Excel spreadsheet.
 
-def import_partner_species(partner_short_name, excel_path):
+def import_partner_species(partner_short_name, excel_file):
     """Load a partner species list from an Excel file"""
-    book = xlrd.open_workbook(excel_path)
+    book = xlrd.open_workbook(file_contents=excel_file.open('r').read())
     sheet = book.sheet_by_index(0)
 
     partner = models.PartnerSite.objects.get(short_name=partner_short_name)
@@ -1887,19 +1882,20 @@ full_import_steps = (
     (Importer.import_habitats, 'habitats.csv'),
     (Importer.import_families, 'families.csv'),
     (Importer.import_genera, 'genera.csv'),
-    (Importer.import_wetland_indicators, 'wetland-indicators.csv'),
+    (Importer.import_wetland_indicators, 'wetland_indicators.csv'),
     (Importer.import_taxa, 'taxa.csv'),
     (Importer.import_characters, 'characters.csv'),
-    (Importer.import_character_values, 'character-values.csv'),
+    (Importer.import_character_values, 'character_values.csv'),
     (Importer.import_glossary, 'glossary.csv'),
     (Importer.import_lookalikes, 'lookalikes-raw.csv'),
     (Importer.import_places, 'taxa.csv'),
     (Importer.import_videos, 'videos.csv'),
     (Importer.import_constants, 'characters.csv'),
-    (Importer.import_copyright_holders, 'copyright-holders.csv'),
+    (Importer.import_copyright_holders, 'copyright_holders.csv'),
 
     (Importer.import_distributions,
-     'New-England-tracheophyte-county-level-nativity.csv'),
+     'bonap-new-england-adjusted.csv'),  # TODO: swap name when Sid re-zips
+    # 'New-England-tracheophyte-county-level-nativity.csv'),
     (Importer.import_distributions, 'bonap-north-america.csv'),
 
     (Importer.import_taxon_character_values,
@@ -1951,6 +1947,56 @@ full_import_steps = (
     (rebuild.rebuild_plant_of_the_day, '!SIMPLEKEY'),
     )
 
+class PlainFile(object):
+    """Plain file, behind the same uniform interface as ZipMember."""
+
+    def __init__(self, path):
+        self.path = path
+        self.openfiles = []
+        with open(path, 'rU'):  # verify it opens without error
+            pass
+
+    def __str__(self):
+        return self.path
+
+    def open(self, mode='rU'):
+        f = open(self.path, mode)
+        self.openfiles.append(f)
+        return f
+
+    def close(self):
+        for f in self.openfiles:
+            f.close()
+
+class ZipMember(object):
+    """Member of a zip file archive that can be repeatedly opened.
+
+    Zipfile members do not support seek() or rewind(), which causes a
+    problem for several of our import routines because they open their
+    target file twice.  So we always pass them an instance of this class
+    instead, which our CSV iterator routines are prepared to open with
+    the method below.
+
+    """
+    def __init__(self, zipfileobj, name):
+        self.zipfileobj = zipfileobj
+        self.name = name
+        self.openfiles = []
+        with zipfileobj.open(name, 'rU'):  # raise not-found KeyError eagerly
+            pass
+
+    def __str__(self):
+        return self.name
+
+    def open(self):
+        f = self.zipfileobj.open(self.name, 'rU')
+        self.openfiles.append(f)
+        return f
+
+    def close(self):
+        for f in self.openfiles:
+            f.close()
+
 def ziplist():
     directories, filenames = default_storage.listdir('/data/')
     for filename in sorted(filenames):
@@ -2001,27 +2047,36 @@ def zipimport(name):
         print >>sys.stderr, 'No such file or directory:', name
         sys.exit(1)
 
-    importer = Importer()
+    importer_self = Importer()
 
     for step in full_import_steps:
         function = step[0]
         args = []
         if takes_self_arg(function):
-            args.append(importer)
+            args.append(importer_self)
+        if takes_db_arg(function):
+            db = bulkup.Database(connection)  # fresh instance for each import!
+            args.append(db)
         filenames = step[1:]
         try:
             args.extend(
-                fn[1:] if fn.startswith('!') else z.open('csv/' + fn, 'rU')
+                fn[1:] if fn.startswith('!') else ZipMember(z, 'csv/' + fn)
                 for fn in filenames
                 )
-        except KeyError as e:
+        except KeyError as e:  # ZipMember cannot find the archive member
             log.info('Canceling import step: %s', str(e))
+            sys.exit(3)  # TODO: change this to "continue"
         print
-        print 'Preparing to call', function
-        print 'Arguments', args
+        print 'Calling', function.__name__ + '()'
         print
 
-    # TODO: actual import
+        wrapped_function = transaction.commit_on_success(function)
+        try:
+            wrapped_function(*args)
+        finally:
+            for arg in args:
+                if hasattr(arg, 'close'):
+                    arg.close()
 
 # Utilities.
 
@@ -2087,11 +2142,13 @@ def main():
     subs = parser.add_subparsers()
     subs.metavar = 'subcommand'
 
+    prefix = 'import_'
+
     for name in dir(importer):
-        if not name.startswith('import_'):
+        if not name.startswith(prefix):
             continue
         method = getattr(importer, name)
-        add_subcommand(subs, name[7:].replace('_', '-'), method)
+        add_subcommand(subs, name[len(prefix):].replace('_', '-'), method)
 
     sub = subs.add_parser('partner', help=import_partner_species.__doc__)
     sub.set_defaults(function=import_partner_species)
@@ -2122,9 +2179,9 @@ def main():
     if hasattr(args, 'partner'):
         function_args.append(args.partner)
     if hasattr(args, 'filename'):
-        function_args.append(args.filename)
+        function_args.append(PlainFile(args.filename))
     if hasattr(args, 'filenames'):
-        function_args.extend(args.filenames)
+        function_args.extend(PlainFile(f) for f in args.filenames)
 
     wrapped_function = transaction.commit_on_success(function)
     wrapped_function(*function_args)
