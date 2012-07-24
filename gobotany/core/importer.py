@@ -2091,7 +2091,7 @@ def main():
         if not name.startswith('import_'):
             continue
         method = getattr(importer, name)
-        add_subcommand(subs, name[8:].replace('_', '-'), method)
+        add_subcommand(subs, name[7:].replace('_', '-'), method)
 
     sub = subs.add_parser('partner', help=import_partner_species.__doc__)
     sub.set_defaults(function=import_partner_species)
