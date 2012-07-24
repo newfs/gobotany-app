@@ -39,8 +39,8 @@ class Legend(object):
     # Some of the items are currently no longer shown on the maps, due
     # to simpler and more accurate data in use. These items are left
     # here in case it is desired to make the maps more elaborate again.
-    ITEMS = [('present, native', '#78bf47'),
-             ('present, non-native', '#fa9691'),
+    ITEMS = [('native', '#78bf47'),
+             ('non-native', '#fa9691'),
              ('absent', '#fff'),
              #('rare', '#a7e37d'),       # Currently not shown on the maps.
              #('invasive', '#f00'),      # Currently not shown on the maps.
@@ -188,12 +188,12 @@ class PlantDistributionMap(ChloroplethMap):
         if label == '':
             for indicator in NON_NATIVE_PRESENCE_INDICATORS:
                 if indicator in status:
-                    label = 'present, non-native'
+                    label = 'non-native'
                     break
             if label == '':
                 for indicator in NATIVE_PRESENCE_INDICATORS:
                     if indicator in status:
-                        label = 'present, native'
+                        label = 'native'
                         break
 
         return label

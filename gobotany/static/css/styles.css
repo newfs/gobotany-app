@@ -482,7 +482,7 @@ p.vid { padding: 0 0 7px 25px; background: url(/static/images/icons/icon3.png) 0
 
 #sidebar a.sidebarlink:not([href]) { color: #1a2e11; }
 
-#ne-dist-county-map { /* SVG map: WebKit needs height and width set */ height: 305px; width: 187px; }
+#ne-dist-county-map { /* SVG map: WebKit needs height and width set */ height: 293px; width: 187px; }
 
 #na-dist-county-map { /* SVG map: WebKit needs height and width set */ height: 109px; width: 187px; }
 

@@ -43,7 +43,7 @@ class LegendTestCase(TestCase):
         self.legend = Legend(self.dist_map.svg_map, maximum_items=5)
 
     def test_set_item_label(self):
-        LABEL = 'present'
+        LABEL = 'native'
         label_node = self.legend.svg_map.xpath('svg:text',
             namespaces=NAMESPACES)[0]
         self.legend._set_item_label(label_node, LABEL)
@@ -62,11 +62,11 @@ class LegendTestCase(TestCase):
         SLOT = 1
         FILL_COLOR = '#ff0'
         STROKE_COLOR = '#ccc'
-        LABEL = 'present'
+        LABEL = 'native'
         self.legend._set_item(SLOT, FILL_COLOR, STROKE_COLOR, LABEL)
 
         labels = self._get_labels()
-        self.assertEqual('present', labels[0])
+        self.assertEqual('native', labels[0])
 
         paths = self._get_paths()
         self.assertTrue(paths[0].get_style().find(
@@ -75,11 +75,11 @@ class LegendTestCase(TestCase):
             'stroke:%s' % STROKE_COLOR) > -1)
 
     def test_show_items(self):
-        legend_labels_found = ['present', 'absent']
+        legend_labels_found = ['native', 'absent']
         self.legend.show_items(legend_labels_found)
 
         labels = self._get_labels()
-        self.assertEqual('present', labels[0])
+        self.assertEqual('native', labels[0])
         self.assertEqual('absent', labels[1])
         [self.assertEqual('', label) for label in labels[2:]]
 
@@ -212,7 +212,7 @@ class PlantDistributionMapTestCase(TestCase):
             'Species native, but adventive in state',
             ]
         for status in statuses:
-            self.assertEqual('present',
+            self.assertEqual('native',
                 self.distribution_map._get_label_for_status(status))
 
     def test_get_label_for_status_rare(self):
@@ -220,7 +220,7 @@ class PlantDistributionMapTestCase(TestCase):
             'Species present and rare',
             ]
         for status in statuses:
-            self.assertEqual('present',
+            self.assertEqual('native',
                 self.distribution_map._get_label_for_status(status))
 
     def test_get_label_for_status_introduced(self):
@@ -230,7 +230,7 @@ class PlantDistributionMapTestCase(TestCase):
             'Species waif',
             ]
         for status in statuses:
-            self.assertEqual('present',
+            self.assertEqual('non-native',
                 self.distribution_map._get_label_for_status(status))
 
     def test_get_label_for_status_invasive(self):
@@ -238,7 +238,7 @@ class PlantDistributionMapTestCase(TestCase):
             'Species noxious',
             ]
         for status in statuses:
-            self.assertEqual('present',
+            self.assertEqual('non-native',
                 self.distribution_map._get_label_for_status(status))
 
     def test_get_label_for_status_historic(self):
@@ -294,7 +294,7 @@ class PlantDistributionMapTestCase(TestCase):
             style = path.get_style()
             status = None
             if style.find('fill:#78bf47') > -1:
-                status = 'present'
+                status = 'native'
             elif style.find('fill:#fff') > -1:
                 status = 'absent'
             if status and status not in statuses_verified:
@@ -313,11 +313,11 @@ class PlantDistributionMapTestCase(TestCase):
         SCIENTIFIC_NAME = 'Vaccinium vitis-idaea ssp. minus'
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
-        self._verify_shaded_counties(['present', 'absent'])
+        self._verify_shaded_counties(['native', 'absent'])
         labels = [label_node.text for label_node in
             self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
             namespaces=NAMESPACES)]
-        self.assertEqual('present', labels[0])
+        self.assertEqual('native', labels[0])
         self.assertEqual('absent', labels[1])
         [self.assertEqual('', label) for label in labels[2:]]
 
@@ -363,7 +363,7 @@ class PlantDistributionMapTestCase(TestCase):
         labels = [label_node.text for label_node in
             self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
             namespaces=NAMESPACES)]
-        self.assertEqual(['present', 'absent', '', '', ''], labels)
+        self.assertEqual(['native', 'absent', '', '', ''], labels)
         self.assertEqual('%s: New England Distribution Map' % SCIENTIFIC_NAME,
                          self.distribution_map.get_title())
 
@@ -412,24 +412,24 @@ class NorthAmericanPlantDistributionMapTestCase(TestCase):
         # Currently, data for North America are only available at the
         # state, province, and territory level.
         EXPECTED_SHADED_AREAS = {
-            'CT': COLORS['present'],
-            'MA': COLORS['present'],
-            'ME': COLORS['present'],
-            'NH': COLORS['present'],
-            'NJ': COLORS['present'],
-            'NY': COLORS['present'],
-            'PA': COLORS['present'],
-            'NC': COLORS['present'],
-            'RI': COLORS['present'],
-            'VT': COLORS['present'],
-            'NS': COLORS['present'],
-            'NB': COLORS['present'],
-            'QC': COLORS['present'],
-            'ON': COLORS['present'],
-            'MB': COLORS['present'],
-            'SK': COLORS['present'],
-            'AB': COLORS['present'],
-            'BC': COLORS['present'],
+            'CT': COLORS['native'],
+            'MA': COLORS['native'],
+            'ME': COLORS['native'],
+            'NH': COLORS['native'],
+            'NJ': COLORS['native'],
+            'NY': COLORS['native'],
+            'PA': COLORS['native'],
+            'NC': COLORS['native'],
+            'RI': COLORS['native'],
+            'VT': COLORS['native'],
+            'NS': COLORS['native'],
+            'NB': COLORS['native'],
+            'QC': COLORS['native'],
+            'ON': COLORS['native'],
+            'MB': COLORS['native'],
+            'SK': COLORS['native'],
+            'AB': COLORS['native'],
+            'BC': COLORS['native'],
             }
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         records = (self.distribution_map._get_distribution_records(
