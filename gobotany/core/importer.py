@@ -1577,7 +1577,7 @@ class Importer(object):
         # Get the current status from the distribution table row. Here
         # the field name is part of the model and does not vary, unlike
         # the source CSV data column names.
-        current_status = distribution_row.get('status') or ''
+        current_status = distribution_row.__dict__.get('status') or ''
 
         if status_precedence[distribution_status] > status_precedence[current_status]:
             # Interesting information, but there's SO much output it's annoying normally.
