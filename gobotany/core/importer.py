@@ -2088,7 +2088,7 @@ def main():
     subs.metavar = 'subcommand'
 
     for name in dir(importer):
-        if not name.startswith('_import_'):
+        if not name.startswith('import_'):
             continue
         method = getattr(importer, name)
         add_subcommand(subs, name[8:].replace('_', '-'), method)
