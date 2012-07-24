@@ -6,14 +6,14 @@ xlrd
 # Unsure which version satisfied minimum reqs
 PIL
 
-django-haystack
+django-haystack==1.2.7
 django-piston==0.2.2
 django-tinymce
 python-memcached
 
 # The way we use pysolr introduces an extra dependency:
-pysolr
-BeautifulSoup
+pysolr==2.0.15
+BeautifulSoup==3.2.1
 
 # For memcached on Heroku we need a caching back-end that does authentication:
 pylibmc==1.2.2
