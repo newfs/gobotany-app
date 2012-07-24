@@ -2098,10 +2098,12 @@ def delete_files_in(dirname):
 def _extract_scientific_name(name):
     if not ('var.' in name or 'ssp.' in name):
         return name
-    if 'var.' in name:
-        return name[:name.find('var.')].strip()
+    # Because some plants names have both subspecies and variety--in
+    # that order--check for subspecies first in order to extract correctly.
     if 'ssp.' in name:
         return name[:name.find('ssp.')].strip()
+    if 'var.' in name:
+        return name[:name.find('var.')].strip()
 
 # Parse the command line.
 
