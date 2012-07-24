@@ -6,7 +6,9 @@ import logging
 import os
 import re
 import shutil
+import sys
 import xlrd
+import zipfile
 from collections import defaultdict
 from operator import attrgetter
 
@@ -1880,73 +1882,73 @@ def import_partner_species(partner_short_name, excel_path):
 
 full_import_steps = (
     (Importer.import_partner_sites,),
-    (Importer.import_pile_groups, 'data/pile_group_info.csv'),
-    (Importer.import_piles, 'data/pile_info.csv'),
-    (Importer.import_habitats, 'data/habitats.csv'),
-    (Importer.import_families, 'data/families.csv'),
-    (Importer.import_genera, 'data/genera.csv'),
-    (Importer.import_wetland_indicators, 'data/wetland-indicators.csv'),
-    (Importer.import_taxa, 'data/taxa.csv'),
-    (Importer.import_characters, 'data/characters.csv'),
-    (Importer.import_character_values, 'data/character-values.csv'),
-    (Importer.import_glossary, 'data/glossary.csv'),
-    (Importer.import_lookalikes, 'data/lookalikes-raw.csv'),
-    (Importer.import_places, 'data/taxa.csv'),
-    (Importer.import_videos, 'data/videos.csv'),
-    (Importer.import_constants, 'data/characters.csv'),
-    (Importer.import_copyright_holders, 'data/copyright-holders.csv'),
+    (Importer.import_pile_groups, 'pile_group_info.csv'),
+    (Importer.import_piles, 'pile_info.csv'),
+    (Importer.import_habitats, 'habitats.csv'),
+    (Importer.import_families, 'families.csv'),
+    (Importer.import_genera, 'genera.csv'),
+    (Importer.import_wetland_indicators, 'wetland-indicators.csv'),
+    (Importer.import_taxa, 'taxa.csv'),
+    (Importer.import_characters, 'characters.csv'),
+    (Importer.import_character_values, 'character-values.csv'),
+    (Importer.import_glossary, 'glossary.csv'),
+    (Importer.import_lookalikes, 'lookalikes-raw.csv'),
+    (Importer.import_places, 'taxa.csv'),
+    (Importer.import_videos, 'videos.csv'),
+    (Importer.import_constants, 'characters.csv'),
+    (Importer.import_copyright_holders, 'copyright-holders.csv'),
 
     (Importer.import_distributions,
-     'data/New-England-tracheophyte-county-level-nativity.csv'),
-    (Importer.import_distributions, 'data/bonap-north-america.csv'),
+     'New-England-tracheophyte-county-level-nativity.csv'),
+    (Importer.import_distributions, 'bonap-north-america.csv'),
 
     (Importer.import_taxon_character_values,
-     'data/pile_angiosperms_1.csv',
-     'data/pile_angiosperms_1a.csv',
-     'data/pile_angiosperms_2.csv',
-     'data/pile_angiosperms_3.csv',
-     'data/pile_carex_1.csv',
-     'data/pile_carex_2.csv',
-     'data/pile_composites_1.csv',
-     'data/pile_composites_2.csv',
-     'data/pile_composites_3.csv',
-     'data/pile_composites_4.csv',
-     'data/pile_composites_5.csv',
-     'data/pile_equisetaceae.csv',
-     'data/pile_gymnosperms_1.csv',
-     'data/pile_gymnosperms_2.csv',
-     'data/pile_lycophytes.csv',
-     'data/pile_monilophytes.csv',
-     'data/pile_non_orchid_monocots_1.csv',
-     'data/pile_non_orchid_monocots_2.csv',
-     'data/pile_non_orchid_monocots_3.csv',
-     'data/pile_non_thalloid_aquatics_1a.csv',
-     'data/pile_non_thalloid_aquatics_1b.csv',
-     'data/pile_non_thalloid_aquatics_2.csv',
-     'data/pile_orchid_monocots.csv',
-     'data/pile_poaceae_1.csv',
-     'data/pile_poaceae_1a.csv',
-     'data/pile_poaceae_2.csv',
-     'data/pile_remaining_graminoids_1a.csv',
-     'data/pile_remaining_graminoids_1b.csv',
-     'data/pile_remaining_non_monocots_1.csv',
-     'data/pile_remaining_non_monocots_2.csv',
-     'data/pile_remaining_non_monocots_2a.csv',
-     'data/pile_remaining_non_monocots_2b.csv',
-     'data/pile_remaining_non_monocots_3.csv',
-     'data/pile_remaining_non_monocots_3a.csv',
-     'data/pile_remaining_non_monocots_3b.csv',
-     'data/pile_remaining_non_monocots_4.csv',
-     'data/pile_remaining_non_monocots_5.csv',
-     'data/pile_remaining_non_monocots_6.csv',
-     'data/pile_remaining_non_monocots_7.csv',
-     'data/pile_remaining_non_monocots_8.csv',
-     'data/pile_thalloid_aquatics.csv',
+     'pile_angiosperms_1.csv',
+     'pile_angiosperms_1a.csv',
+     'pile_angiosperms_2.csv',
+     'pile_angiosperms_3.csv',
+     'pile_carex_1.csv',
+     'pile_carex_2.csv',
+     'pile_composites_1.csv',
+     'pile_composites_2.csv',
+     'pile_composites_3.csv',
+     'pile_composites_4.csv',
+     'pile_composites_5.csv',
+     'pile_equisetaceae.csv',
+     'pile_gymnosperms_1.csv',
+     'pile_gymnosperms_2.csv',
+     'pile_lycophytes.csv',
+     'pile_monilophytes.csv',
+     'pile_non_orchid_monocots_1.csv',
+     'pile_non_orchid_monocots_2.csv',
+     'pile_non_orchid_monocots_3.csv',
+     'pile_non_thalloid_aquatics_1a.csv',
+     'pile_non_thalloid_aquatics_1b.csv',
+     'pile_non_thalloid_aquatics_2.csv',
+     'pile_orchid_monocots.csv',
+     'pile_poaceae_1.csv',
+     'pile_poaceae_1a.csv',
+     'pile_poaceae_2.csv',
+     'pile_remaining_graminoids_1a.csv',
+     'pile_remaining_graminoids_1b.csv',
+     'pile_remaining_non_monocots_1.csv',
+     'pile_remaining_non_monocots_2.csv',
+     'pile_remaining_non_monocots_2a.csv',
+     'pile_remaining_non_monocots_2b.csv',
+     'pile_remaining_non_monocots_3.csv',
+     'pile_remaining_non_monocots_3a.csv',
+     'pile_remaining_non_monocots_3b.csv',
+     'pile_remaining_non_monocots_4.csv',
+     'pile_remaining_non_monocots_5.csv',
+     'pile_remaining_non_monocots_6.csv',
+     'pile_remaining_non_monocots_7.csv',
+     'pile_remaining_non_monocots_8.csv',
+     'pile_thalloid_aquatics.csv',
      ),
 
-    (import_partner_species, 'montshire', 'data/montshire-species-list.xls'),
-    (rebuild.rebuild_default_filters, 'data/characters.csv'),
-    (rebuild.rebuild_plant_of_the_day, 'SIMPLEKEY'),
+    (import_partner_species, '!montshire', 'montshire-species-list.xls'),
+    (rebuild.rebuild_default_filters, 'characters.csv'),
+    (rebuild.rebuild_plant_of_the_day, '!SIMPLEKEY'),
     )
 
 def ziplist():
@@ -1969,21 +1971,35 @@ def zipimport(name):
 
     """
     if name is None:
-        print 'Searching S3 for the most recent data zip file'
+        print 'Searching S3 for the most recent data zip file ...'
         directories, filenames = default_storage.listdir('/data/')
         name = sorted([ f for f in filenames if f.endswith('.zip') ])[-1]
+        print 'Most recent data zip file is:'
+        print
+        print '   ', name
+        print
         if os.path.exists(name):
-            print 'Most recent data zip file is:'
-            print
-            print '   ', name
-            print
             print 'Using copy already present on filesystem'
         else:
-            print 'Downloading', name
+            print 'Downloading', name, '...'
             with open(name, 'w') as dst:
                 with default_storage.open('/data/' + name) as src:
                     shutil.copyfileobj(src, dst)
             print 'Done'
+
+    if os.path.isdir(name):
+        print 'TODO: import from directory'
+        sys.exit(3)
+    elif os.path.isfile(name):
+        try:
+            z = zipfile.ZipFile(name)
+        except Exception as e:
+            print >>sys.stderr, 'Error:', e
+            sys.exit(1)
+        log.info('Doing full import from zip file: %s', name)
+    else:
+        print >>sys.stderr, 'No such file or directory:', name
+        sys.exit(1)
 
     importer = Importer()
 
@@ -1992,7 +2008,14 @@ def zipimport(name):
         args = []
         if takes_self_arg(function):
             args.append(importer)
-        args.extend(step[1:])
+        filenames = step[1:]
+        try:
+            args.extend(
+                fn[1:] if fn.startswith('!') else z.open('csv/' + fn, 'rU')
+                for fn in filenames
+                )
+        except KeyError as e:
+            log.info('Canceling import step: %s', str(e))
         print
         print 'Preparing to call', function
         print 'Arguments', args
