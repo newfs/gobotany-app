@@ -707,7 +707,7 @@ class SearchFunctionalTests(FunctionalTestCase):
         self.get('/search/?q=abcd')
         heading = self.css('#main h2')
         self.assertTrue(len(heading))
-        self.assertEqual('No Results for abcd', heading[0].text)
+        self.assertEqual('No results for abcd', heading[0].text)
         message = self.css('#main p')
         self.assertTrue(len(message))
         self.assertEqual('Please adjust your search and try again.',
@@ -718,7 +718,7 @@ class SearchFunctionalTests(FunctionalTestCase):
         self.get('/search/?q=%s' % query)   # query that returns 1 result
         heading = self.css('#main h2')
         self.assertTrue(len(heading))
-        self.assertTrue(heading[0].text.startswith('1 Result for'))
+        self.assertTrue(heading[0].text.startswith('1 result for'))
 
     def test_search_results_page_heading_starts_with_page_number(self):
         self.get('/search/?q=monocot&page=2')
