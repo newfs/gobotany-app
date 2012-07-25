@@ -3,6 +3,9 @@
 *.sw*
 *.DS_Store
 
+# Egg info directory from install.sh
+/gobotany.egg-info/
+
 # SASS
 /gobotany/static/.sass-cache/
 
