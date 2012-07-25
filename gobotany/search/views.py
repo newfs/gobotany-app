@@ -24,7 +24,7 @@ class GoBotanySearchView(SearchView):
         wildcard). Solr can be made to do partial word searches, but
         a quick fix was desired instead.
         """
-        results = filter(None, self.form.search())
+        results = self.form.search()
 
         if len(results) == 0:
             # Query words come back "cleaned" from get_query().
@@ -34,7 +34,7 @@ class GoBotanySearchView(SearchView):
                 for end_index in reversed(range(1, len(query_words))):
                     new_query = ' '.join(query_words[0:end_index])
                     self.form.cleaned_data['q'] = new_query
-                    results = filter(None, self.form.search())
+                    results = self.form.search()
                     if len(results) > 0:
                         # Found results for one of the words.
                         # Set our SearchView's query to the altered
