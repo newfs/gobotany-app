@@ -57,6 +57,14 @@ def rebuild_default_filters(characters_csv):
     """Rebuild default filters for every pile, using CSV data where
        available or choosing 'best' characters otherwise.
     """
+    from gobotany.core import importer # here to avoid import loop
+
+    # Since we do not know whether we have been called directly with
+    # "-m" or whether we have been called from .importer as part of a
+    # big full import:
+    if isinstance(characters_csv, basestring):
+        characters_csv = importer.PlainFile('.', characters_csv)
+
     for pile in models.Pile.objects.all():
         print "Pile", pile.name
 
@@ -86,10 +94,8 @@ def rebuild_default_filters(characters_csv):
         # Look for default filters specified in the CSV data. If not found,
         # add some next 'best' filters instead.
 
-        from gobotany.core import importer # here to avoid import loop
-
         default_filter_characters = importer.get_default_filters_from_csv(
-            pile.name, importer.PlainFile(characters_csv))
+            pile.name, characters_csv)
         if len(default_filter_characters) > 0:
             print "  Inserting new default filters from CSV data:"
             for n, character in enumerate(default_filter_characters):

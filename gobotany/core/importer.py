@@ -10,6 +10,7 @@ import sys
 import xlrd
 import zipfile
 from collections import defaultdict
+from functools import partial
 from operator import attrgetter
 
 # The GoBotany settings have to be imported before most of Django.
@@ -1902,8 +1903,7 @@ full_import_steps = (
     (Importer.import_copyright_holders, 'copyright_holders.csv'),
 
     (Importer.import_distributions,
-     'bonap-new-england-adjusted.csv'),  # TODO: swap name when Sid re-zips
-    # 'New-England-tracheophyte-county-level-nativity.csv'),
+     'New-England-tracheophyte-county-level-nativity.csv'),
     (Importer.import_distributions, 'bonap-north-america.csv'),
 
     (Importer.import_taxon_character_values,
@@ -1946,7 +1946,7 @@ full_import_steps = (
      'pile_remaining_non_monocots_5.csv',
      'pile_remaining_non_monocots_6.csv',
      'pile_remaining_non_monocots_7.csv',
-     'pile_remaining_non_monocots_8.csv',
+     'Pile_remaining_non_monocots_8.csv',
      'pile_thalloid_aquatics.csv',
      ),
 
@@ -1955,26 +1955,39 @@ full_import_steps = (
     (rebuild.rebuild_plant_of_the_day, '!SIMPLEKEY'),
     )
 
+
+class CannotOpen(Exception):
+    """An import file cannot be opened."""
+
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return 'Cannot open import file: %s' % (self.name,)
+
+
 class PlainFile(object):
     """Plain file, behind the same uniform interface as ZipMember."""
 
-    def __init__(self, path):
-        self.path = path
+    def __init__(self, directory, name):
+        self.path = os.path.join(directory, name)
         self.openfiles = []
-        with open(path, 'rU'):  # verify it opens without error
-            pass
 
     def __str__(self):
         return self.path
 
     def open(self, mode='rU'):
-        f = open(self.path, mode)
+        try:
+            f = open(self.path, mode)
+        except IOError:
+            raise CannotOpen(self.path)
         self.openfiles.append(f)
         return f
 
     def close(self):
         for f in self.openfiles:
             f.close()
+
 
 class ZipMember(object):
     """Member of a zip file archive that can be repeatedly opened.
@@ -1988,16 +2001,17 @@ class ZipMember(object):
     """
     def __init__(self, zipfileobj, name):
         self.zipfileobj = zipfileobj
-        self.name = name
+        self.name = 'csv/' + name
         self.openfiles = []
-        with zipfileobj.open(name, 'rU'):  # raise not-found KeyError eagerly
-            pass
 
     def __str__(self):
         return self.name
 
-    def open(self):
-        f = self.zipfileobj.open(self.name, 'rU')
+    def open(self, mode='rU'):
+        try:
+            f = self.zipfileobj.open(self.name, mode)
+        except KeyError:
+            raise CannotOpen(self.name)
         self.openfiles.append(f)
         return f
 
@@ -2005,23 +2019,25 @@ class ZipMember(object):
         for f in self.openfiles:
             f.close()
 
+
 def ziplist():
     directories, filenames = default_storage.listdir('/data/')
     for filename in sorted(filenames):
         if filename:
             print filename
 
+
 def zipimport(name):
     """Does a full database load from CSV files in a zip file or directory.
 
-    If you name a zip file that does not seem to exist on the local
-    filesystem, then an attempt is made to download it from the NEWFS
-    "data" directory on Amazon S3.  A missing CSV file in the directory
-    or zip file generates a warning, but the import will still try to
-    proceed without it; you can therefore run the command on an empty
-    directory to see the list of zip files that are needed for a
-    complete import.  Use the separate "ziplist" command if you need to
-    review which zip files are available on S3.
+    If you do not specify a filename or directory name, then an attempt
+    is made to download the latest data zip file from the NEWFS "data"
+    directory on Amazon S3.  A missing CSV file in the directory or zip
+    file you are processing will generate a warning, but the import will
+    still try to proceed without it; you can therefore run the command
+    on an empty directory to see the list of zip files that are needed
+    for a complete import.  Use the separate "ziplist" command if you
+    need to review which zip files are available on S3.
 
     """
     if name is None:
@@ -2042,14 +2058,14 @@ def zipimport(name):
             print 'Done'
 
     if os.path.isdir(name):
-        print 'TODO: import from directory'
-        sys.exit(3)
+        fileopener = partial(PlainFile, name)
     elif os.path.isfile(name):
         try:
-            z = zipfile.ZipFile(name)
+            zipfileobj = zipfile.ZipFile(name)
         except Exception as e:
             print >>sys.stderr, 'Error:', e
             sys.exit(1)
+        fileopener = partial(ZipMember, zipfileobj)
         log.info('Doing full import from zip file: %s', name)
     else:
         print >>sys.stderr, 'No such file or directory:', name
@@ -2066,14 +2082,10 @@ def zipimport(name):
             db = bulkup.Database(connection)  # fresh instance for each import!
             args.append(db)
         filenames = step[1:]
-        try:
-            args.extend(
-                fn[1:] if fn.startswith('!') else ZipMember(z, 'csv/' + fn)
-                for fn in filenames
-                )
-        except KeyError as e:  # ZipMember cannot find the archive member
-            log.info('Canceling import step: %s', str(e))
-            sys.exit(3)  # TODO: change this to "continue"
+        args.extend(
+            fn[1:] if fn.startswith('!') else fileopener(fn)
+            for fn in filenames
+            )
         print
         print 'Calling', function.__name__ + '()'
         print
@@ -2081,6 +2093,9 @@ def zipimport(name):
         wrapped_function = transaction.commit_on_success(function)
         try:
             wrapped_function(*args)
+        except CannotOpen as e:
+            log.info('Canceling import step: %s', str(e))
+            continue
         finally:
             for arg in args:
                 if hasattr(arg, 'close'):
@@ -2174,8 +2189,9 @@ def main():
         description=zipimport.__doc__)
     sub.set_defaults(function=zipimport)
     sub.add_argument(
-        'filename', nargs='?',
-        help='S3 zipfile, or local zipfile or directory; omit to use latest',
+        'file_or_directory', nargs='?',
+        help='S3 zipfile, local zipfile, or directory; omit this argument'
+        ' to force the latest zipfile to be downloaded from S3',
         )
 
     args = parser.parse_args()
@@ -2188,10 +2204,12 @@ def main():
         function_args.append(db)
     if hasattr(args, 'partner'):
         function_args.append(args.partner)
+    if hasattr(args, 'file_or_directory'):
+        function_args.append(args.file_or_directory)
     if hasattr(args, 'filename'):
-        function_args.append(PlainFile(args.filename))
+        function_args.append(PlainFile('.', args.filename))
     if hasattr(args, 'filenames'):
-        function_args.extend(PlainFile(f) for f in args.filenames)
+        function_args.extend(PlainFile('.', f) for f in args.filenames)
 
     wrapped_function = transaction.commit_on_success(function)
     wrapped_function(*function_args)
