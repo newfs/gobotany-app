@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from gobotany.simplekey.models import Video, HelpPage
+from gobotany.core.models import Video
+from gobotany.simplekey.models import HelpPage
 
 class VideosInline(admin.TabularInline):
     model = HelpPage.videos.through

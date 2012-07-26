@@ -29,7 +29,7 @@ from gobotany.core import models
 from gobotany.core.pile_suffixes import pile_suffixes
 from gobotany.simplekey.models import (GroupsListPage, HelpPage,
                                        SearchSuggestion, SubgroupResultsPage,
-                                       SubgroupsListPage, Video)
+                                       SubgroupsListPage)
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 
 DEBUG=False
@@ -1607,7 +1607,7 @@ class Importer(object):
 
         # Create and associate video records from the CSV file.
         for row in open_csv(videofilename):
-            v, created = Video.objects.get_or_create(
+            v, created = models.Video.objects.get_or_create(
                          # TODO: remove fallback when Sid updates tar file
                          title=row.get('title', 'Untitled'),
                          youtube_id=row['youtube-id'],
@@ -1651,7 +1651,7 @@ class Importer(object):
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
 
-        video = Video.objects.get(title='Getting Started')
+        video = models.Video.objects.get(title='Getting Started')
         if video:
             help_page.videos.add(video)
 
@@ -1690,7 +1690,7 @@ class Importer(object):
             print >> self.logfile, u'  New Help page: ', help_page
 
         # Add Getting Started video.
-        video = Video.objects.get(title='Getting Started')
+        video = models.Video.objects.get(title='Getting Started')
         if video:
             help_page.videos.add(video)
 

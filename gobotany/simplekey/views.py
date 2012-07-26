@@ -23,7 +23,7 @@ from gobotany.core import models
 from gobotany.core.models import (
     CharacterGroup, CharacterValue, CopyrightHolder, Family, Genus,
     GlossaryTerm, Habitat, HomePageImage, Pile, PileGroup,
-    PlantPreviewCharacter, Taxon
+    PlantPreviewCharacter, Taxon, Video
     )
 from gobotany.core.partner import which_partner
 from gobotany.core.pile_suffixes import pile_suffixes
@@ -31,7 +31,7 @@ from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 from gobotany.simplekey.models import (GroupsListPage,
                                        SearchSuggestion, SubgroupResultsPage,
-                                       SubgroupsListPage, Video)
+                                       SubgroupsListPage)
 
 # Character short names common to all piles (but no suffix)
 COMMON_CHARACTERS = ['habitat', 'habitat_general', 'state_distribution']

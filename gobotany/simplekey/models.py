@@ -9,24 +9,12 @@ from gobotany.core.models import GlossaryTerm, Pile, PileGroup
 # information for various page type in order to build Haystack/Solr
 # search engine indexes for them.
 
-class Video(models.Model):
-    """Information on YouTube videos used for help on the site."""
-    title = models.CharField(max_length=100)
-    youtube_id = models.CharField(max_length=20)
-    # May want to fetch additional metadata from YouTube and store it.
-    # Can retrieve Atom XML with a GET request, e.g.,
-    # http://gdata.youtube.com/feeds/api/videos/LQ-jv8g1YVI?v=2
-    # See docs: http://bit.ly/c1vHUz
-
-    def __unicode__(self):
-        return u'%s: %s' % (self.title, self.youtube_id)
-
 
 class HelpPage(models.Model):
     """Outline of the contents of a Help page."""
     title = models.CharField(max_length=100)
     url_path = models.CharField(max_length=100)
-    videos = models.ManyToManyField(Video)
+    videos = models.ManyToManyField('core.Video')
 
     class Meta:
         verbose_name_plural = 'help pages'
