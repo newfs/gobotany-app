@@ -1140,7 +1140,7 @@ class Importer(object):
         image_categories_csv = os.path.join(data_dir, 'image_categories.csv')
 
         taxon_image_types = {}
-        for row in open_csv(image_categories_csv):
+        for row in open_csv(PlainFile(image_categories_csv)):
             # lower() is important because case is often mismatched
             # between the official name of a pile and its name here
             key = (row['pile'].lower(), row['code'])
