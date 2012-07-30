@@ -6,7 +6,7 @@ from gobotany.core.models import GlossaryTerm, Pile, PileGroup
 
 
 # Note: The motivation for creating the following classes was to organize
-# information for various page type in order to build Haystack/Solr
+# information for various page types in order to build Haystack/Solr
 # search engine indexes for them.
 
 
@@ -14,6 +14,7 @@ class HelpPage(models.Model):
     """Outline of the contents of a Help page."""
     title = models.CharField(max_length=100)
     url_path = models.CharField(max_length=100)
+    search_text = models.TextField()
     videos = models.ManyToManyField('core.Video')
 
     class Meta:

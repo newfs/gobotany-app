@@ -9,6 +9,7 @@ import shutil
 import sys
 import xlrd
 import zipfile
+from BeautifulSoup import BeautifulSoup
 from collections import defaultdict
 from functools import partial
 from operator import attrgetter
@@ -1636,11 +1637,53 @@ class Importer(object):
                 p.video = v
                 p.save()
 
+
+    def _get_text_from_template(self, template_file_path):
+        """Get the plain text from a template file. This is for returning
+        text content for indexing by our search engine where most of the
+        content is the template and marked up with HTML.
+        """
+        template_tags_pattern = re.compile('{[%#{].*?[%#}]}')
+        attributes_pattern = re.compile('[a-z]+="[a-z \-]+"')
+        require_pattern = re.compile('require\(.*\);')
+
+        core_dir = os.path.dirname(os.path.abspath(__file__))
+        gobotany_dir = os.path.dirname(core_dir)
+        gobotany_app_dir = os.path.dirname(gobotany_dir)
+        template_dir = os.path.join(gobotany_app_dir,
+            'gobotany/simplekey/templates/')
+
+        template_file = os.path.join(template_dir, template_file_path);
+
+        f = open(template_file, 'r')
+        lines = []
+        for line in f:
+            lines.append(line.strip())
+        f.close()
+
+        html = ' '.join(lines)
+        soup = BeautifulSoup(html)
+        texts = soup.findAll(text=True)
+        text = ''.join(texts)
+
+        # Get rid of some extra template bits.
+        text = template_tags_pattern.sub('', text)
+        text = attributes_pattern.sub('', text)
+        text = require_pattern.sub('', text)
+
+        return text
+
+
     def _create_about_gobotany_page(self):
         help_page, created = HelpPage.objects.get_or_create(
-            title='About Go-Botany', url_path='/help/')
+            title='About Go Botany', url_path='/help/')
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
+
+        text = self._get_text_from_template('simplekey/help_about.html')
+        print >> self.logfile, (u'    Add search text: %d characters' %
+                                len(text))
+        help_page.search_text = text
 
         help_page.save()
 
@@ -1650,6 +1693,12 @@ class Importer(object):
             title='Getting Started', url_path='/help/start/')
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
+
+        text = self._get_text_from_template('simplekey/help_start.html')
+        print >> self.logfile, (u'    Add search text: %d characters' %
+                                len(text))
+        help_page.search_text = text
+
 
         video = models.Video.objects.get(title='Getting Started')
         if video:
@@ -1674,6 +1723,11 @@ class Importer(object):
             title='Advanced Map To Groups', url_path='/help/map/')
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
+
+        text = self._get_text_from_template('simplekey/help_map.html')
+        print >> self.logfile, (u'    Add search text: %d characters' %
+                                len(text))
+        help_page.search_text = text
 
         # Add videos associated with each pile group and pile.
         videos = self._get_pile_and_group_videos()
