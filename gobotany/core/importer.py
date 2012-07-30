@@ -1676,7 +1676,7 @@ class Importer(object):
 
     def _create_about_gobotany_page(self):
         help_page, created = HelpPage.objects.get_or_create(
-            title='About Go Botany', url_path='/help/')
+            title='About Go Botany', url_path='/help/about/')
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
 
