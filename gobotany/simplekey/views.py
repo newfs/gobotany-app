@@ -558,6 +558,10 @@ def help_video_view(request):
            'videos': videos,
            }, context_instance=RequestContext(request))
 
+def help_contrib_view(request):
+    return render_to_response('simplekey/help_contrib.html', {
+           }, context_instance=RequestContext(request))
+
 def suggest_view(request):
     # Return some search suggestions for the auto-suggest feature.
     MAX_RESULTS = 10

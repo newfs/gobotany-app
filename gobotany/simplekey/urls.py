@@ -59,6 +59,7 @@ urlpatterns = patterns(
     url('^help/glossary/$', views.help_glossary_redirect_view,
         name='simplekey-help-glossary0'),
     url('^help/video/$', views.help_video_view, name='simplekey-help-video'),
+    url('^help/contributors/$', views.help_contrib_view, name='simplekey-help-contrib'),
     url('^families/(?P<family_slug>[^/]*)/$',
         views.family_view, name='simplekey-family'),
     url('^genera/(?P<genus_slug>[^/]*)/$',
