@@ -22,6 +22,7 @@ management.setup_environ(settings)
 
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.storage import default_storage
+from django.core.urlresolvers import reverse
 from django.db import connection, transaction
 from django.template.defaultfilters import slugify
 
@@ -1675,8 +1676,9 @@ class Importer(object):
 
 
     def _create_about_gobotany_page(self):
+        url_path = reverse('simplekey-help-about')
         help_page, created = HelpPage.objects.get_or_create(
-            title='About Go Botany', url_path='/help/about/')
+            title='About Go Botany', url_path=url_path)
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
 
@@ -1689,8 +1691,9 @@ class Importer(object):
 
 
     def _create_getting_started_page(self):
+        url_path = reverse('simplekey-help-start')
         help_page, created = HelpPage.objects.get_or_create(
-            title='Getting Started', url_path='/help/start/')
+            title='Getting Started', url_path=url_path)
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
 
@@ -1719,8 +1722,9 @@ class Importer(object):
 
 
     def _create_advanced_map_page(self):
+        url_path = reverse('simplekey-help-map')
         help_page, created = HelpPage.objects.get_or_create(
-            title='Advanced Map To Groups', url_path='/help/map/')
+            title='Advanced Map To Groups', url_path=url_path)
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
 
@@ -1738,8 +1742,9 @@ class Importer(object):
 
 
     def _create_video_help_topics_page(self):
+        url_path = reverse('simplekey-help-video')
         help_page, created = HelpPage.objects.get_or_create(
-            title='Video Help Topics', url_path='/help/video/')
+            title='Video Help Topics', url_path=url_path)
         if created:
             print >> self.logfile, u'  New Help page: ', help_page
 
@@ -1767,11 +1772,12 @@ class Importer(object):
 
         ghp_table = db.table('simplekey_glossaryhelppage')
         for letter in letters:
+            url_path = reverse('simplekey-help-glossary', args=[letter])
             ghp_table.get(
                 letter=letter,
                 ).set(
                 title='Glossary: ' + letter.upper(),
-                url_path='/help/glossary/' + letter + '/',
+                url_path=url_path,
                 )
         ghp_table.save()
 
