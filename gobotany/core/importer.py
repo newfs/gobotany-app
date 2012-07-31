@@ -1780,6 +1780,11 @@ class Importer(object):
             title='Privacy Policy', url_path=url_path)
         if created:
             log.info('  New Help page: ', help_page)
+
+        text = self._get_text_from_template('simplekey/privacy.html')
+        log.info('    Add search text: %d characters' % len(text))
+        help_page.search_text = text
+
         help_page.save()
 
 
@@ -1789,6 +1794,11 @@ class Importer(object):
             title='Terms of Use', url_path=url_path)
         if created:
             log.info('  New Help page: ', help_page)
+
+        text = self._get_text_from_template('simplekey/terms.html')
+        log.info('    Add search text: %d characters' % len(text))
+        help_page.search_text = text
+
         help_page.save()
 
 
