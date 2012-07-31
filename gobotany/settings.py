@@ -66,6 +66,7 @@ if 'DATABASE_URL' in os.environ:
 INSTALLED_APPS = [
     'gobotany.api',
     'gobotany.core',
+    'gobotany.dkey',
     'gobotany.mapping',
     'gobotany.plantoftheday',
     'gobotany.search',
