@@ -1796,6 +1796,24 @@ class Importer(object):
         multi.save()
 
 
+    def _create_privacy_policy_page(self):
+        url_path = reverse('privacy-policy')
+        help_page, created = HelpPage.objects.get_or_create(
+            title='Privacy Policy', url_path=url_path)
+        if created:
+            print >> self.logfile, u'  New Help page: ', help_page
+        help_page.save()
+
+
+    def _create_terms_of_use_page(self):
+        url_path = reverse('terms-of-use')
+        help_page, created = HelpPage.objects.get_or_create(
+            title='Terms of Use', url_path=url_path)
+        if created:
+            print >> self.logfile, u'  New Help page: ', help_page
+        help_page.save()
+
+
     def import_help(self):
         """Create various help pages in the database"""
         print >> self.logfile, 'Setting up help pages and content'
@@ -1807,6 +1825,9 @@ class Importer(object):
         self._create_advanced_map_page()
         self._create_video_help_topics_page()
         self._create_glossary_pages()
+
+        self._create_privacy_policy_page()
+        self._create_terms_of_use_page()
 
 
     def _create_plant_groups_list_page(self):
