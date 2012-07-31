@@ -1661,7 +1661,7 @@ class Importer(object):
         help_page, created = HelpPage.objects.get_or_create(
             title='About Go Botany', url_path=url_path)
         if created:
-            log.info('  New Help page: ', help_page)
+            log.info('  New Help page: %s' % help_page)
 
         text = self._get_text_from_template('simplekey/help_about.html')
         log.info('    Add search text: %d characters' % len(text))
@@ -1675,7 +1675,7 @@ class Importer(object):
         help_page, created = HelpPage.objects.get_or_create(
             title='Getting Started', url_path=url_path)
         if created:
-            log.info('  New Help page: ', help_page)
+            log.info('  New Help page: %s' % help_page)
 
         text = self._get_text_from_template('simplekey/help_start.html')
         log.info('    Add search text: %d characters' % len(text))
@@ -1705,7 +1705,7 @@ class Importer(object):
         help_page, created = HelpPage.objects.get_or_create(
             title='Advanced Map To Groups', url_path=url_path)
         if created:
-            log.info('  New Help page: ', help_page)
+            log.info('  New Help page: %s' % help_page)
 
         text = self._get_text_from_template('simplekey/help_map.html')
         log.info('    Add search text: %d characters' % len(text))
@@ -1724,7 +1724,7 @@ class Importer(object):
         help_page, created = HelpPage.objects.get_or_create(
             title='Video Help Topics', url_path=url_path)
         if created:
-            log.info('  New Help page: ', help_page)
+            log.info('  New Help page: %s' % help_page)
 
         # Add Getting Started video.
         video = models.Video.objects.get(title='Getting Started')
@@ -1779,7 +1779,7 @@ class Importer(object):
         help_page, created = HelpPage.objects.get_or_create(
             title='Privacy Policy', url_path=url_path)
         if created:
-            log.info('  New Help page: ', help_page)
+            log.info('  New Help page: %s' % help_page)
 
         text = self._get_text_from_template('simplekey/privacy.html')
         log.info('    Add search text: %d characters' % len(text))
@@ -1793,7 +1793,7 @@ class Importer(object):
         help_page, created = HelpPage.objects.get_or_create(
             title='Terms of Use', url_path=url_path)
         if created:
-            log.info('  New Help page: ', help_page)
+            log.info('  New Help page: %s' % help_page)
 
         text = self._get_text_from_template('simplekey/terms.html')
         log.info('    Add search text: %d characters' % len(text))
@@ -1823,7 +1823,7 @@ class Importer(object):
             title='Simple Key for Plant Identification',
             main_heading='Which group best describes your plant?')
         if created:
-            log.info('  New Groups List page: ', groups_list_page)
+            log.info('  New Groups List page: %s' % groups_list_page)
         # Add plant groups.
         groups = models.PileGroup.objects.all()
         for group in groups:
@@ -1841,7 +1841,7 @@ class Importer(object):
                     main_heading='Is your plant in one of these subgroups?',
                     group=group)   # Subgroups can be accessed via group
         if created:
-            log.info('  New Subgroups List page: ', subgroups_list_page)
+            log.info('  New Subgroups List page: %s' % subgroups_list_page)
 
 
     def _create_plant_subgroup_results_pages(self):
@@ -1855,7 +1855,8 @@ class Importer(object):
                     main_heading=subgroup.friendly_title,
                     subgroup=subgroup)   # Taxa can be accessed via subgroup
         if created:
-            log.info('  New Subgroup Results page: ', subgroup_results_page)
+            log.info('  New Subgroup Results page: %s' %
+                     subgroup_results_page)
 
 
     def import_simple_key_pages(self):
@@ -1909,7 +1910,7 @@ class Importer(object):
             s, created = SearchSuggestion.objects.get_or_create(
                 term=suggestion)
             if created:
-                log.info('  New SearchSuggestion:', suggestion)
+                log.info('  New SearchSuggestion: %s' % suggestion)
 
 # Import a partner species list Excel spreadsheet.
 
