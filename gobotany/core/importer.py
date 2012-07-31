@@ -143,19 +143,7 @@ def get_default_filters_from_csv(pile_name, characters_csv):
     return default_filter_characters
 
 
-class FakeLogfile(object):
-    """Since many statements below still do an ugly print >> self.logfile."""
-
-    def write(self, s):
-        s = s.strip()
-        if s:
-            log.info(s)
-
-
 class Importer(object):
-
-    def __init__(self):
-        self.logfile = FakeLogfile()
 
     def character_short_name(self, raw_character_name):
         """Return a short name for a character, to be used in the database."""
@@ -710,7 +698,7 @@ class Importer(object):
 
     def import_plant_names(self, taxaf):
         """Load plant common names from a CSV file"""
-        print >> self.logfile, 'Setting up plant names in file: %s' % taxaf
+        log.info('Setting up plant names in file: %s' % taxaf)
         COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
         iterator = iter(CSVReader(taxaf).read())
         colnames = [x.lower() for x in iterator.next()]
@@ -727,12 +715,12 @@ class Importer(object):
                     pn, created = models.PlantName.objects.get_or_create( \
                         scientific_name=scientific_name,
                         common_name=common_name)
-                    print >> self.logfile, u'  Added plant name:', pn
+                    log.info('  Added plant name:', pn)
             # If there were no common names for this plant, add the plant now.
             if num_common_names == 0:
                 pn, created = models.PlantName.objects.get_or_create( \
                     scientific_name=scientific_name)
-                print >> self.logfile, u'  Added plant name:', pn
+                log.info('  Added plant name:', pn)
 
     def import_taxon_character_values(self, db, *filenames):
         """Load taxon character values from CSV files"""
@@ -1170,8 +1158,6 @@ class Importer(object):
             image_path = line.split(' s3://newfs/')[1].strip()
             dirname, filename = image_path.rsplit('/', 1)
 
-            # print >> self.logfile, 'INFO: current image, ', filename
-
             if '.' not in filename:
                 log.error('  file lacks an extension: %s', filename)
                 continue
@@ -1301,8 +1287,7 @@ class Importer(object):
            the app completely silently.
         """
         if text.find(unexpected_delimiter) > -1:
-            print >> self.logfile, u'  Error: unexpected delimiter:', \
-                unexpected_delimiter
+            log.info('  Error: unexpected delimiter:', unexpected_delimiter)
             return True
         else:
             return False
@@ -1317,8 +1302,7 @@ class Importer(object):
             habitat = models.Habitat.objects.get(name__iexact=habitat_name)
             friendly_name = habitat.friendly_name
         except models.Habitat.DoesNotExist:
-            print >> self.logfile, u'  Error: habitat does not exist:', \
-                habitat_name
+            log.info('  Error: habitat does not exist:', habitat_name)
         return friendly_name and friendly_name.lower()
 
 
@@ -1469,11 +1453,11 @@ class Importer(object):
                 message = 'Created %s' % message
             else:
                 message = 'Error: did not create %s' % message
-            print >> self.logfile, message
+            log.info(message)
 
     def import_plant_preview_characters(self, characters_csv):
         """Load plant preview characters from a CSV file"""
-        print >> self.logfile, ('Setting up plant preview characters')
+        log.info('Setting up plant preview characters')
 
         # For now, plant preview characters should initially be set to
         # the same characters as are used for the default filters.
@@ -1527,7 +1511,7 @@ class Importer(object):
 
     def import_distributions(self, distributionsf):
         """Load BONAP distribution data from a CSV file"""
-        print >> self.logfile, 'Importing distribution data (BONAP)'
+        log.info('Importing distribution data (BONAP)')
 
         DEFAULT_STATUS_COLUMN_NAME = 'status'
         ADJUSTED_STATUS_COLUMN_NAME = 'edited data'
@@ -1614,8 +1598,7 @@ class Importer(object):
                          title=row.get('title', 'Untitled'),
                          youtube_id=row['youtube-id'],
                          )
-            print >> self.logfile, u'    Video: %s %s' % (v.title,
-                                                          v.youtube_id)
+            log.info('    Video: %s %s' % (v.title, v.youtube_id))
 
             if row['pile-or-subpile']:
                 try:
@@ -1623,17 +1606,15 @@ class Importer(object):
                     if not v.title:
                         v.title = p.name
                         v.save()
-                    print >> self.logfile, \
-                        u'    Pile group: %s - YouTube video id: %s' % \
-                        (p.name, v.youtube_id)
+                    log.info('    Pile group: %s - YouTube video id: %s' %
+                             (p.name, v.youtube_id))
                 except models.PileGroup.DoesNotExist:
                     p = models.Pile.objects.get(name=row['pile-or-subpile'])
                     if not v.title:
                         v.title = p.name
                         v.save()
-                    print >> self.logfile, \
-                        u'      Pile: %s - YouTube video id: %s' % \
-                        (p.name, v.youtube_id)
+                    log.info('      Pile: %s - YouTube video id: %s' %
+                             (p.name, v.youtube_id))
 
                 p.video = v
                 p.save()
@@ -1680,11 +1661,10 @@ class Importer(object):
         help_page, created = HelpPage.objects.get_or_create(
             title='About Go Botany', url_path=url_path)
         if created:
-            print >> self.logfile, u'  New Help page: ', help_page
+            log.info('  New Help page: ', help_page)
 
         text = self._get_text_from_template('simplekey/help_about.html')
-        print >> self.logfile, (u'    Add search text: %d characters' %
-                                len(text))
+        log.info('    Add search text: %d characters' % len(text))
         help_page.search_text = text
 
         help_page.save()
@@ -1695,11 +1675,10 @@ class Importer(object):
         help_page, created = HelpPage.objects.get_or_create(
             title='Getting Started', url_path=url_path)
         if created:
-            print >> self.logfile, u'  New Help page: ', help_page
+            log.info('  New Help page: ', help_page)
 
         text = self._get_text_from_template('simplekey/help_start.html')
-        print >> self.logfile, (u'    Add search text: %d characters' %
-                                len(text))
+        log.info('    Add search text: %d characters' % len(text))
         help_page.search_text = text
 
 
@@ -1726,11 +1705,10 @@ class Importer(object):
         help_page, created = HelpPage.objects.get_or_create(
             title='Advanced Map To Groups', url_path=url_path)
         if created:
-            print >> self.logfile, u'  New Help page: ', help_page
+            log.info('  New Help page: ', help_page)
 
         text = self._get_text_from_template('simplekey/help_map.html')
-        print >> self.logfile, (u'    Add search text: %d characters' %
-                                len(text))
+        log.info('    Add search text: %d characters' % len(text))
         help_page.search_text = text
 
         # Add videos associated with each pile group and pile.
@@ -1746,7 +1724,7 @@ class Importer(object):
         help_page, created = HelpPage.objects.get_or_create(
             title='Video Help Topics', url_path=url_path)
         if created:
-            print >> self.logfile, u'  New Help page: ', help_page
+            log.info('  New Help page: ', help_page)
 
         # Add Getting Started video.
         video = models.Video.objects.get(title='Getting Started')
@@ -1801,7 +1779,7 @@ class Importer(object):
         help_page, created = HelpPage.objects.get_or_create(
             title='Privacy Policy', url_path=url_path)
         if created:
-            print >> self.logfile, u'  New Help page: ', help_page
+            log.info('  New Help page: ', help_page)
         help_page.save()
 
 
@@ -1810,13 +1788,13 @@ class Importer(object):
         help_page, created = HelpPage.objects.get_or_create(
             title='Terms of Use', url_path=url_path)
         if created:
-            print >> self.logfile, u'  New Help page: ', help_page
+            log.info('  New Help page: ', help_page)
         help_page.save()
 
 
     def import_help(self):
         """Create various help pages in the database"""
-        print >> self.logfile, 'Setting up help pages and content'
+        log.info('Setting up help pages and content')
 
         # Create Help page model records to be used for search engine indexing
         # and ideally also by the page templates.
@@ -1835,8 +1813,7 @@ class Importer(object):
             title='Simple Key for Plant Identification',
             main_heading='Which group best describes your plant?')
         if created:
-            print >> self.logfile, \
-                     u'  New Groups List page: ', groups_list_page
+            log.info('  New Groups List page: ', groups_list_page)
         # Add plant groups.
         groups = models.PileGroup.objects.all()
         for group in groups:
@@ -1854,8 +1831,7 @@ class Importer(object):
                     main_heading='Is your plant in one of these subgroups?',
                     group=group)   # Subgroups can be accessed via group
         if created:
-            print >> self.logfile, \
-                     u'  New Subgroups List page: ', subgroups_list_page
+            log.info('  New Subgroups List page: ', subgroups_list_page)
 
 
     def _create_plant_subgroup_results_pages(self):
@@ -1869,13 +1845,12 @@ class Importer(object):
                     main_heading=subgroup.friendly_title,
                     subgroup=subgroup)   # Taxa can be accessed via subgroup
         if created:
-            print >> self.logfile, \
-                     u'  New Subgroup Results page: ', subgroup_results_page
+            log.info('  New Subgroup Results page: ', subgroup_results_page)
 
 
     def import_simple_key_pages(self):
         """Create various Simple Key pages in the database"""
-        print >> self.logfile, 'Setting up Simple Key pages'
+        log.info('Setting up Simple Key pages')
 
         # Create Simple Key page model records to be used for search
         # engine indexing and also to supply some basic information to
@@ -1887,7 +1862,7 @@ class Importer(object):
 
     def import_search_suggestions(self):
         """Set up the search-suggestions table"""
-        print >> self.logfile, 'Setting up search suggestions'
+        log.info('Setting up search suggestions')
 
         db = bulkup.Database(connection)
         terms = set()
@@ -1924,7 +1899,7 @@ class Importer(object):
             s, created = SearchSuggestion.objects.get_or_create(
                 term=suggestion)
             if created:
-                print >> self.logfile, u'  New SearchSuggestion:', suggestion
+                log.info('  New SearchSuggestion:', suggestion)
 
 # Import a partner species list Excel spreadsheet.
 
