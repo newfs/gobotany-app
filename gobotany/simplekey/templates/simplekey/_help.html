@@ -35,6 +35,10 @@
                     {% url simplekey-help-video as u %}
                     <h5><a class="sidebarlink" {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Video Help Topics</a></h5>
                 </div>
+                <div class="section">
+                    {% url simplekey-help-contrib as u %}
+                    <h5><a class="sidebarlink" {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Contributors</a></h5>
+                </div>
                 {% block more_sidebar_content %}{% endblock %}
             </div>
             <div class="clearit"></div>
