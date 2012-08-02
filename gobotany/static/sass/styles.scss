@@ -2285,7 +2285,10 @@ div.section.namap div.trans {
 #terms dt:first-child, #terms dt:first-child + dd {
     border-top: 0;
 }
-
+#terms img {
+    padding-left: 4px;
+    padding-top: 1px;
+}
 
 /* Search results styles */
 

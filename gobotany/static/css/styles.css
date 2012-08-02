@@ -216,7 +216,7 @@ nav #search button { background: #508e31 url(/static/images/layout/search-btn.pn
 nav #search button:active { background-position: 0 -20px; }
 
 /* Active navigation state */
-#plant-id li.plant-id a, #plant-id-2 li.plant-id a, #plant-id-3 li.plant-id a, #plantshare li.plantshare a, #advanced-id li.advanced-id a, #teaching-tools li.teaching-tools a, #about li.about a, #getting-started li.about a, #advanced-map li.about a, #glossary li.about a, #video-help-topics li.about a, #contrib li.about a { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; }
+#plant-id li.plant-id a, #plant-id-2 li.plant-id a, #plant-id-3 li.plant-id a, #plantshare li.plantshare a, #advanced-id li.advanced-id a, #teaching-tools li.teaching-tools a, #about li.about a { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; }
 
 #plantshare #sidebar a:hover, #teaching-tools #sidebar a:hover, #advanced-id #sidebar a:hover, #privacy-policy #sidebar a:hover, #terms-of-use #sidebar a:hover { text-decoration: none; }
 
@@ -928,17 +928,17 @@ div.section.namap div.trans { /* Transparent div to make North America map objec
 /* Help section: sidebar, heading, list styles */
 #getting-started #sidebar { height: 1046px; }
 
-#about #sidebar, #contrib #sidebar { height: 950px; }
+#about #sidebar { height: 950px; }
 
 #advanced-map #sidebar { height: 746px; }
 
 #glossary #sidebar, #video-help-topics #sidebar { height: 1420px; }
 
-#getting-started #sidebar a:hover, #about #sidebar a:hover, #advanced-map #sidebar a:hover, #glossary #sidebar a:hover, #video-help-topics #sidebar a:hover, #contrib #sidebar a:hover { text-decoration: none; }
+#getting-started #sidebar a:hover, #about #sidebar a:hover, #advanced-map #sidebar a:hover, #glossary #sidebar a:hover, #video-help-topics #sidebar a:hover { text-decoration: none; }
 
-#getting-started #main h2, #about #main h2, #advanced-map #main h2, #glossary #main h2, #plantshare #main h2, #teaching-tools #main h2, #video-help-topics #main h2, #contrib #main h2, #privacy-policy #main h2, #terms-of-use #main h2 { margin-bottom: 8px; }
+#getting-started #main h2, #about #main h2, #advanced-map #main h2, #glossary #main h2, #plantshare #main h2, #teaching-tools #main h2, #video-help-topics #main h2, #privacy-policy #main h2, #terms-of-use #main h2 { margin-bottom: 8px; }
 
-#getting-started h3, #about h3, #advanced-map h3, #glossary h3, #teaching-tools h3, #video-help-topics h3, #contrib h3, #privacy-policy h3, #terms-of-use h3 { margin: 8px 0; }
+#getting-started h3, #about h3, #advanced-map h3, #glossary h3, #teaching-tools h3, #video-help-topics h3, #privacy-policy h3, #terms-of-use h3 { margin: 8px 0; }
 
 #getting-started #main ul, #about #main ul { list-style-type: disc; line-height: 170%; }
 
@@ -1079,6 +1079,8 @@ div.section.namap div.trans { /* Transparent div to make North America map objec
 #terms dd { margin-left: 224px; padding: 13px; }
 
 #terms dt:first-child, #terms dt:first-child + dd { border-top: 0; }
+
+#terms img { padding-left: 4px; padding-top: 1px; }
 
 /* Search results styles */
 #search-results sidebar { height: 515px; }
