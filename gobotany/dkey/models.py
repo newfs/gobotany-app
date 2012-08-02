@@ -3,7 +3,7 @@
 from django.db import models
 
 class Couplet(models.Model):
-    title = models.TextField(db_index=True)
+    title = models.TextField(db_index=True, null=True)
     chapter_name = models.TextField()
     rank = models.TextField()
     text = models.TextField()

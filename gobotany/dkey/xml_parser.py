@@ -3,7 +3,45 @@
 import logging
 import re
 from lxml import etree
-from dkey.model import Couplet, couplet_entitled, couplet_make
+
+from gobotany import settings
+from django.core import management
+management.setup_environ(settings)
+
+from django.db import transaction
+from gobotany.dkey.models import Couplet, Lead
+
+# Couplet creation shortcuts, that work because during the import we
+# never let Couplet objects that we have created expire out of memory.
+
+_couplets_by_title = {}
+
+def couplet_make(title=None):
+    c = None
+    if title is not None:
+        c = _couplets_by_title.get(title)
+    if c is None:
+        c = Couplet()
+        c.title = title
+        c.save()  # assign id before telling the Lead about it
+        if title is not None:
+            _couplets_by_title[title] = c
+    return c
+
+def couplet_entitled(title):
+    return _couplets_by_title[title]
+
+def new_lead(parent_couplet, result_couplet=None):
+    lead = Lead()
+    lead.parent_couplet = parent_couplet
+    if result_couplet is not None:
+        lead.result_couplet = result_couplet
+    if not hasattr(parent_couplet, 'leadlist'):
+        parent_couplet.leadlist = []
+    parent_couplet.leadlist.append(lead)  # for our own temporary reference
+    return lead
+
+# The import logic itself.
 
 log = logging.getLogger('dkey')
 
@@ -191,7 +229,7 @@ def parse(filename):
 
     # Find families and genera.
 
-    couplets = Couplet.all_couplets
+    info.couplets = couplets = _couplets_by_title.values()
     info.families = sorted(c.title for c in couplets if c.rank == 'family')
     info.genera = sorted(c.title for c in couplets if c.rank == 'genus')
 
@@ -247,7 +285,7 @@ def parse_chapter(xchapter):
             log.info('  * %s', name)
             couplet = couplet_entitled(name)
             couplet.rank = 'species'
-            couplet.texts.append(extract_html(child, skip=0))
+            couplet.text += extract_html(child, skip=0)
             i += 1
             while i < len(children) and (is_discourse(children[i])
                 or is_lead(children[i]) and not is_species(children[i])):
@@ -257,7 +295,7 @@ def parse_chapter(xchapter):
                 # ) or children[i].tag in level_tags  #ack! really?
                 #):
                 log.info('    species descriptive <%s>', children[i].tag)
-                couplet.texts.append(extract_html(children[i]))
+                couplet.text += extract_html(children[i])
                 i += 1
             continue
 
@@ -309,7 +347,7 @@ def parse_chapter(xchapter):
 
         if rank == 'genus' and children[i].tag == 'text_indent_02':
             name = children[i][0].text.strip()
-            couplet.new_lead().set_result(Couplet(name))
+            new_lead(couplet, couplet_make(name))
             # we do NOT advance `i` so the species will be processed next
             species_comes_next = True
             continue
@@ -319,14 +357,14 @@ def parse_chapter(xchapter):
 
         while is_discourse(children[i]):
             log.info('    descriptive <%s>', children[i].tag)
-            couplet.texts.append(extract_html(children[i]))
+            couplet.text += extract_html(children[i])
             i += 1
 
         # Special case another style of genus with only one species.
 
         if rank == 'genus' and genus_name in ('Convolvulus', 'Rhodotypos'):
             name = children[i].find('bold_italic').text.strip()
-            couplet.new_lead().set_result(Couplet(name))
+            new_lead(couplet, couplet_make(name))
             # we do NOT advance `i` so the species will be processed next
             species_comes_next = True
             continue
@@ -340,17 +378,17 @@ def parse_chapter(xchapter):
         elif couplet.rank == 'family' and children[i].tag == 'head_2':
             # the family has only one genus
             next_heading = children[i].text.strip()
-            couplet.new_lead().set_result(Couplet(next_heading))
+            new_lead(couplet, couplet_make(next_heading))
             # we do NOT advance `i` so the heading will be processed next
         elif couplet.rank in ('tribe', 'subgroup') \
                 and re_1_species.search(children[i].text):
             name = trailing_taxon_name(genus_name, children[i])
-            couplet.new_lead().set_result(Couplet(name))
+            new_lead(couplet, couplet_make(name))
             i += 1
         elif couplet.rank == 'genus' and children[i].tag == \
                 'text_no_indent_no_leader':
             name = leading_species_name(children[i])
-            couplet.new_lead().set_result(Couplet(name))
+            new_lead(couplet, couplet_make(name))
             # we do NOT advance `i` so the species will be processed next
 
         elif children[i].tag == 'head_4':
@@ -359,9 +397,9 @@ def parse_chapter(xchapter):
                 title = ' '.join((most_recent_taxon,
                                   children[i].text.strip().lower()))
                 log.info(' ** %s', title)
-                c2 = Couplet(title)
+                c2 = couplet_make(title)
                 c2.rank = 'subkey'
-                couplet.new_lead().set_result(c2)
+                new_lead(couplet, c2)
                 i = parse_section(prefix, c2, children, i + 1)
         else:
             log.error('not sure what to do with <%s>' % children[i].tag)
@@ -439,12 +477,12 @@ def parse_section(prefix, parent, children, i):
                 while newlen > len(couplet_stack) + 1:
                     # fake a correct stack by duplicating the top stack entry
                     couplet_stack.append(couplet_stack[-1])
-            couplet_stack.append(Couplet())
-            couplet_stack[-2].leads[-1].set_result(couplet_stack[-1])
+            couplet_stack.append(couplet_make())
+            couplet_stack[-2].leadlist[-1].result_couplet = couplet_stack[-1]
 
         assert len(couplet_stack) == newlen, (len(couplet_stack), newlen)
 
-        lead = couplet_stack[-1].new_lead()
+        lead = new_lead(couplet_stack[-1])
         lead.letter = xchild[0].text.strip()  # like '1a.'
         log.info('     %s <%s>', lead.letter, xchild.tag)
         endskip = 0
@@ -455,12 +493,12 @@ def parse_section(prefix, parent, children, i):
             if parent.rank == 'family' or parent.rank == 'genus':
                 # 'Group 1' -> 'Asteraceae Group 1'
                 group_name = parent.title + ' ' + group_name
-            lead.set_result(couplet_make(group_name))
+            lead.result_couplet = couplet_make(group_name)
 
         x = xchild.find('trailing_genus_designation')
         if x is not None:
             taxon_name = x.text.strip()
-            lead.set_result(couplet_make(taxon_name))
+            lead.result_couplet = couplet_make(taxon_name)
 
         if not (xchild[-1].text or '').strip() and xchild[-1].tag in (
             'italic', 'lead_number_letter', 'lead_number_letter_inner',
@@ -469,7 +507,7 @@ def parse_section(prefix, parent, children, i):
 
         if xchild[-1].tag == 'bold_italic' and xchild[-1].text.strip():
             taxon_name = trailing_taxon_name(prefix, xchild)
-            lead.set_result(couplet_make(taxon_name))
+            lead.result_couplet = couplet_make(taxon_name)
             endskip = 1
 
         lead.text = extract_html(xchild, skip=1, endskip=endskip)
@@ -527,3 +565,28 @@ def fix_typo4(children, i):
         return
     log.error('repairing duplicate "%s"' % children[i][0].text.strip())
     children[i][0].text = children[i][0].text.replace('a', 'b')
+
+# Support command-line invocation.
+
+if __name__ == '__main__':
+    import argparse
+    import logging
+
+    logging.basicConfig(filename='log.dkey', level=logging.DEBUG)
+
+    parser = argparse.ArgumentParser(
+        description='Import the Flora Nova Angliae XML into the database',
+        )
+    parser.add_argument('filename', help='name of the file to load',
+                        nargs='?', default='110330_fone_test_05.xml')
+    args = parser.parse_args()
+
+    info = parse(args.filename)
+
+    # First, all couplets need ids.
+
+    for couplet in info.couplets:
+        couplet.save()
+        for lead in getattr(couplet, 'leadlist', ()):
+            lead.save()
+    #transaction.commit_on_success(parse)(args.filename)
