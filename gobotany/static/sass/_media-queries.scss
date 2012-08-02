@@ -1,0 +1,679 @@
+/* Begin media queries styles.
+ *
+ * So far there are three sections for smartphones (two fixed-width layouts
+ * to cover portrait and landscape orientations, with a section common to
+ * both orientations) and some additional styles for tablets. Using
+ * fixed-width layouts allows some pages to have a wider central content
+ * area for now. */
+
+/* Portrait-orientation styles */
+@media only screen and (max-width: 400px) {
+    body {
+        padding-top: 110px;
+    }
+    header nav > a {
+        width: 20px;
+    }
+    header nav > a span {
+        display: none;
+    }
+    .top-level header {
+        height: 80px;
+    }
+    body, .container, .top-level header h1 a, #home #banner #overlay,
+    #home #banner > img {
+        width: 320px;
+    }
+    .top-level header h1 a {
+        background-position: -56px -7px;
+        width: 200px;
+    }
+    #nav {
+        left: 40px;
+        width: 310px;
+    }
+    #sidebar {
+        width: 302px;
+    }
+    #home #banner #overlay {
+        top: 115px;
+    }
+    #home #banner > img {
+        height: 115px;
+    }
+    #home #banner + .three-col {
+        padding-top: 375px;
+    }
+    .app .list-item h3 {
+        clear: left;
+    }
+    #about #main > img {
+        width: 57%;
+    }
+    #about #main img.bookcover {
+        width: auto;
+    }
+    #taxon #species-images {
+        width: 310px;
+    }
+    #advanced-map #group-section {
+        height: 600px;
+    }
+    #glossary #alphabet {
+        height: 99px;
+    }
+}
+/* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) {
+    html {
+        -webkit-text-size-adjust: none;
+    }
+    body {
+        padding-top: 75px;
+    }
+    body, .container, .top-level header h1 a, #home #banner #overlay,
+    #home #banner > img, #sidebar {
+        width: 480px;
+    }
+    header nav > a {
+        width: 80px;
+    }
+    header nav > a span {
+        font-size: 14px;
+        line-height: 160%;
+        padding-left: 5px;
+        position: absolute;
+    }
+    .top-level header h1 a {
+        background-position: 0 -7px;
+        width: 260px;
+    }
+    #nav {
+        left: 30px;
+        width: 470px;
+    }
+    #sidebar {
+        width: 462px;
+    }
+    #home #banner #overlay {
+        top: 172px;
+    }
+    #home #banner > img {
+        height: 172px;
+    }
+    #home #banner + .three-col {
+        padding-top: 400px;
+    }
+    #taxon #species-images {
+        width: 470px;
+    }
+    #advanced-map #group-section {
+        height: 400px;
+    }
+    #glossary #alphabet {
+        height: 66px;
+    }
+}
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) {
+    $nav-button-color: #437829;
+    $smallscreen-side-margin: 8px;
+    $smallscreen-potd-image-width: 297px;
+
+    body {
+        margin: 0 auto;
+        padding: 0;
+    }
+    h2 {
+        font-size: 24px;
+    }
+    h3 {
+        font-size: 18px;
+    }
+    h4 {
+        font-size: 16px;
+    }
+    header nav > a {
+        background: $nav-button-color;
+        border: 1px solid $nav-button-color;
+        display: inline-block;
+        font-size: 30px;
+        height: 24px;
+        line-height: 68%;
+        margin: 3px 0 0 4px;
+        padding: 0 2px 0 7px;
+        position: relative;
+
+    	-moz-border-radius: 5px;
+	    -webkit-border-radius: 5px;
+	    border-radius: 5px;
+    }
+    header nav > a:hover {
+        background: $nav-button-color;
+    }
+    header nav #search {
+        margin-top: 6px;
+        padding-left: 10px;
+    }
+    header nav > ul {
+        display: none;  /* will use bottom navigation instead of top */
+    }
+    .container {
+        padding: 0;
+    }
+    .top-level nav, .app nav {
+        background: #508e31;
+        height: 32px;
+        padding: 0;
+    }
+    .top-level header, .app header {
+        height: 90px;
+    }
+    .top-level header h1 {
+        margin: 0;
+        width: inherit;
+    }
+    .top-level header h1 a, .app header h1 a {
+        height: 56px;
+    }
+    .top-level header h2 a, .app header h2 a {
+        background-size: 100px 55px;
+        float: right;
+        height: 55px;
+        width: 101px;
+    }
+    .app header h1 {
+        margin: 0;
+        padding: 0;
+        width: auto;
+    }
+    .app header h1 a {
+        width: 170px;
+    }
+    #main #header h2 {
+        float: none;
+    }
+    footer, footer div.container {
+        height: auto;
+    }
+    footer {
+        margin: 14px 0 0;
+    }
+    footer .container div {
+        width: auto;
+    }
+    footer div div {
+        height: auto;
+    }
+    footer p {
+        margin: 0;
+    }
+    footer a {
+        font-size: 11px;
+    }
+    footer .publisher, footer .navigation {
+        float: none;
+        margin: 0;
+        padding: 0;
+    }
+    footer .publisher {
+        margin: 14px 0 0;
+        padding: 12px $smallscreen-side-margin 20px;
+    }
+    footer .navigation h6:first-child {
+        display: none;
+    }
+    footer .navigation > ul.sections li {
+        display: block;
+        margin: 0 0 1px 0;
+    }
+    footer .navigation > ul.sections li:after {
+        content: none;
+    }
+    footer .navigation > ul.sections li a {
+        background: #85c446;
+        color: #fff;
+        display: block;
+        font-family: $headings-font;
+        font-size: 14px;
+        padding: 14px 14px;
+        position: relative;
+        text-decoration: none;
+    }
+    footer .navigation > ul.sections li a:after {
+        content: " >";
+        font-weight: bold;
+        position: absolute;
+        right: 14px;
+    }
+    footer .navigation > ul.sections li a[href] {
+        background: #508e31;
+        color: #fff;
+    }
+    footer .navigation > h6:nth-of-type(2) {
+        margin: 14px 14px 4px 71px;
+    }
+    footer .navigation > h6:nth-of-type(2):after {
+        content: ":";
+    }
+    footer .navigation > h6:nth-of-type(2),
+    footer .navigation > ul.legal {
+        display: inline-block;
+        margin-left: 72px;
+        margin-top: 12px;
+    }
+    footer .navigation > ul.sections + h6 {   /* "Legal:" label */
+        display: none;
+    }
+    footer .navigation > ul.legal li {
+        margin-right: 32px;
+    }
+    footer .navigation > ul.legal li:after {
+        content: none;
+    }
+    footer .support {
+        height: 63px;
+        margin: 14px 0 0;
+        padding: 0;
+    }
+    footer .support img {
+        padding-bottom: 6px;
+    }
+    #home #search-suggest .menu, .app #search-suggest .menu {
+        top: 83px;
+    }
+    #home #banner {
+        margin: 0;
+        position: relative;
+    }
+    #home #banner #overlay {
+        background: #f7fbe9;
+        height: auto;
+        left: 0;
+        padding: 0;
+        text-align: center;
+    }
+    #home #banner h2 {
+        font-size: 28px;
+        margin: 6px 0 0;
+    }
+    #home #banner p {
+        padding: 0 $smallscreen-side-margin;
+    }
+    #home #banner #overlay img {
+        width: 53%;
+    }
+    #home #banner a#cta {
+        background-position: 50% 0;
+        margin: 6px;
+    }
+    #home .three-col {
+        background: none;
+        float: none;
+        height: inherit;
+        margin: 14px 0;
+        padding: 0;
+        width: auto;
+    }
+    #main #breadcrumb p, #home .three-col h3, #home .three-col h5,
+    #home .three-col p, #home .three-col a, .app h2, .app p.tip,
+    .app .list-item, .app #main p, .app #main h3, #about #main ul,
+    #taxon #main p {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    #main #breadcrumb p {
+        line-height: 160%;
+    }
+    #home .three-col a.learn-more {
+        margin-top: 6px;
+    }
+    #home #potd {
+        padding: $smallscreen-side-margin;
+    }
+    #home #potd > a {
+        margin: 0;
+        margin-bottom: 4px;
+        margin-right: $smallscreen-side-margin;
+    }
+    #home #potd > a, #home #potd > a img {
+        width: $smallscreen-potd-image-width;
+    }
+    #home #potd .details {
+        margin: 0;
+        position: inherit;
+        width: inherit;
+    }
+    #home #potd .details h4 {
+        line-height: 140%;    
+    }
+    #home #potd .details p {
+        height: inherit;
+        overflow: inherit;
+    }
+    #home #potd .details a {
+        margin-top: 6px;
+        position: inherit;
+        top: 0;
+    }
+    #home .donate {
+        margin: 0;
+    }
+    #home .donate p {
+        margin: 8px;
+        padding: 0;
+    }
+    #home .donate a {
+        float: none;
+        margin: 6px 0;
+        position: static;
+    }
+    #main {
+        float: none;
+        width: inherit;
+    }
+    #sidebar, #getting-started #sidebar, #about #sidebar,
+    #advanced-map #sidebar, #plant-id #sidebar, #glossary #sidebar,
+    #video-help-topics #sidebar, #taxon #sidebar, #search-results #sidebar {
+        border-bottom: 1px solid #c3d941;
+        height: auto;
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    #sidebar .section:first-child {
+        margin-top: 0;
+    }
+    #sidebar .section, #sidebar .section.plant-map {
+        margin-top: 16px;
+        padding-bottom: 0;
+    }
+    #sidebar .section .get-help-btn, #sidebar .section .view-map-btn {
+        margin-bottom: 0;
+    }
+    #sidebar .section.separate p {
+        clear: left;
+    }
+    #search-results #search-results-list {
+        border-top: 0;
+        margin: 10px 0;
+        padding: 0;
+    }
+    #search-results #search-results-list li {
+        border-bottom: 0;
+        padding: 4px 0;
+    }
+    #search-results #search-results-list li a {
+        font-size: 14px;
+    }
+    #search-results #search-results-list li img {
+        margin: -1px 5px 0;
+    }
+    #search-results #search-results-list li p {
+        font-size: 11px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    #search-results .search-navigation {
+        font-size: 18px;
+        line-height: 200%;
+        text-align: center;
+    }
+    #search-results #search-results-list li,
+    #search-results .search-navigation {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    #search-results .search-navigation li {
+        padding: 0 6px;
+    }
+    .app #main {
+        margin-bottom: 14px;
+    }
+    .app p.tip {
+        font-size: 14px;
+    }
+    .app .img-gallery {
+        margin-bottom: 10px;
+    }
+    .app .list-item .section-title {
+        font-size: 10px;
+    }
+    .app .key-char, .app .exceptions, .app .vid {
+        background: none;
+    }
+    .app .list-item p {
+        padding-left: 0;
+    }
+    .app .list-item a.plant-in-group {
+        margin-left: 15px;
+    }
+    .app .not-my-plant {
+        display: none;
+    }
+    /* Levels 1 and 2 */ 
+    .list-item a.plant-in-group {
+        clear: left;
+    }
+    .list-item .details {
+        float: none;
+        width: inherit;
+    }
+    /* Level 3 */
+    #plant-id-3 #main {
+        float: right;
+        width: 710px;
+    }
+    #plant-id-3 .content .container {
+        padding: 0;
+        width: 960px;
+    }
+    #plant-id-3 #sidebar {
+        float: left;
+        margin: 0;
+        padding: 0;
+        width: 228px;
+    }
+    #plant-id-3 #main h3.species-count-heading {
+        white-space: nowrap;
+    }
+    #plant-id-3 .section + .section {
+        margin-bottom: 16px;
+    }
+    #plant-id-3 #sidebar .scroll + .section {
+        margin: 0 0 32px;
+    }
+
+    #taxon h3, #taxon .note {
+        font-size: 18px;
+    }
+    #taxon #main > .characteristics dl {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    #taxon ul.full-description > li div {
+        padding-left: 0;
+    }
+    #taxon .characteristics dl dt {
+        clear: none;
+        float: none;
+        text-align: left;
+        width: auto;
+    }
+    #taxon .characteristics dl dd {
+        margin-left: auto;
+        padding-left: 28px;
+    }
+    #taxon .description-control {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    #taxon #ne-status {   /* Horiz. scroll for status table if too wide */
+        overflow-x: auto;
+        width: 100%;
+    }
+    #taxon table {
+        margin-left: 2px;
+        margin-top: 0;
+        width: 99%;
+    }
+    #taxon th {
+        text-transform: none;
+    }
+    #taxon td, #taxon tbody th.status {
+        font-size: 10px;
+    }
+    #taxon tbody th.status {
+        padding-left: 0;
+        text-align: right;
+    }
+    #taxon tbody th, #taxon thead td {
+        white-space: normal;
+        width: auto;
+    }
+    #intro-overlay {
+        font-size: 150%;
+    }
+    #advanced-id #main .dk-landing-section {
+        margin-top: 14px;
+    }
+    #advanced-id #main .dk-landing-section,
+    #advanced-id #main .dk-landing-section:first-child {
+        height: auto;
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+        width: auto;
+    }
+    #advanced-id #main .dk-landing-section:first-child {
+        margin-top: 0;
+    }
+    #advanced-id #main .landing-divider {
+        display: none;
+    }
+    #advanced-id #main .dk-landing-section > a {
+        margin-left: 16px;
+        position: static;
+    }
+    #about #main ul {
+        padding-left: 14px;
+    }
+    #about #main > img, #about #main img.bookcover {
+        margin-bottom: $smallscreen-side-margin;
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    #getting-started .question, #getting-started .first.question,
+    #getting-started .sixth.question {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+        padding: 12px 0 12px 40px;
+    }
+    #getting-started .question h4 {
+        line-height: 130%;
+        margin: 2px 0 4px;
+    }
+    #getting-started .question p {
+        margin: 0;
+    }
+    #getting-started a.screenshot img.screenshot-thumb {
+        margin: 10px 0 0;
+    }
+    #getting-started a.onward-btn {
+        float: none;
+        margin: 0 auto 20px;
+    }
+    #advanced-map #plant-map-list {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+        margin-top: 0;
+    }
+    #glossary header h1 {
+        width: auto;
+    }
+    #glossary #alphabet {
+        line-height: 250%;
+        width: auto;
+    }
+    #glossary #alphabet li {
+        border: 0;
+        padding: 1px 10px;
+    }
+    #glossary #terms {
+        width: auto;
+    }
+    #glossary #terms img {
+        padding-left: 2px;
+    }
+    #glossary #terms dt {
+        border-top: 0;
+        clear: none;
+        float: none;
+        font-weight: bold;
+        padding-bottom: 0;
+        width: auto;
+    }
+    #glossary #terms dd {
+        border-top: 0;
+        margin: 0;
+        padding: 0 5px 10px 39px;
+    }
+    #video-help-topics .video-topic {
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    #video-help-topics .video-topic .missing-image p {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    #video-help-topics #main .clearit {
+        clear: none;
+    }
+    #terms-of-use ol.terms {
+        font-size: 18px;
+        margin-left: $smallscreen-side-margin;
+        margin-right: $smallscreen-side-margin;
+    }
+    #terms-of-use ol.terms h3, #terms-of-use ol.terms h4,
+    #terms-of-use ol.terms p, #terms-of-use ol.terms ul li {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .gb-tooltip {
+        width: 200px;
+    }
+}
+/* These styles apply to smartphones and tablets */
+@media only screen and (max-width: 1024px) {
+
+    /* Disable hover states on Advanced Map to Groups page. */
+    #advanced-map .plant-group:hover .frame {
+	    border: $advanced-map-frame-border;
+    }
+    #advanced-map .plant-group:hover h5 {
+	    background: inherit;
+	    color: #508e31;
+    }
+
+    /* Style the Level 3 page's questions list scrollbar differently because
+     * a regular scrollbar is not the expected way to scroll there, and
+     * has problems besides (arrows too small, vertical bar not draggable).
+     * Instead, just present the thin vertical bar as an indicator that the
+     * area is scrollable and to provide feedback while swiping to scroll. */
+    #sidebar div.scroll .jspVerticalBar {
+        border-left: 0;
+    }
+    #sidebar div.scroll .jspTrack, #sidebar div.scroll .jspArrowUp,
+    #sidebar div.scroll .jspArrowDown {
+        background: none;
+    }
+    #sidebar div.scroll .jspPane {
+        width: 227px !important;
+    }
+    ul.option-list li:hover {
+        background: #fff;   /* No hover color */
+    }
+    ul.option-list li.active:hover {
+        background: #dce890;   /* Except hover color on the active filter */
+    }
+}
+
+/* End media queries styles */

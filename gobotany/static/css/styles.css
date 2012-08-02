@@ -2,7 +2,7 @@
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
  */
-/* First are SASS "partials" for formerly external and third-party styles. This is to keep all styles in just one deployed CSS file, styles.css. */
+/* First are SASS "partials" for formerly external and third-party styles. This is to keep all styles in just one deployed CSS file, styles.css. A final partial, media-queries, is imported at the bottom of this file. */
 /** "Reset" styles to set the baseline CSS environment across browsers. **/
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td { margin: 0; padding: 0; }
 
@@ -1276,7 +1276,8 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
 
 .glosstip img { background: #eaf2e2; border: 1px solid #c3d941; bottom: 110%; padding: 4px; position: absolute; -moz-box-shadow: 1px 1px 2px #333333; -webkit-box-shadow: 1px 1px 2px #333333; -o-box-shadow: 1px 1px 2px #333333; box-shadow: 1px 1px 2px #333333; -moz-border-radius: 2px; -webkit-border-radius: 2px; -o-border-radius: 2px; -ms-border-radius: 2px; -khtml-border-radius: 2px; border-radius: 2px; }
 
-/* Smartphone-size screen styles. These should be last. */
+/* Include media queries for smartphones and tablets. These should be last. */
+/* Begin media queries styles.  So far there are three sections for smartphones (two fixed-width layouts to cover portrait and landscape orientations, with a section common to both orientations) and some additional styles for tablets. Using fixed-width layouts allows some pages to have a wider central content area for now. */
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { body { padding-top: 110px; }
   header nav > a { width: 20px; }
@@ -1452,4 +1453,5 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #sidebar div.scroll .jspPane { width: 227px !important; }
   ul.option-list li:hover { background: #fff; /* No hover color */ }
   ul.option-list li.active:hover { background: #dce890; /* Except hover color on the active filter */ } }
-/* End of smartphone/tablet screen styles. Please do not add regular styles after these, or they may not get overridden by these styles properly. Instead add new regular styles before the smartphone/tablet styles. */
+/* End media queries styles */
+/* Please do not add new regular styles after the media queries, or they may not get overridden properly. Instead, add them before the media queries. */
