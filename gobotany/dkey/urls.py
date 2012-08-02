@@ -3,6 +3,6 @@ from gobotany.dkey import views
 
 urlpatterns = patterns(
     '',
-    url('^([-A-Za-z]+)/$', views.couplet),
+    url('^(?P<couplet_slug>[-A-Za-z]+)/$', views.couplet, name='couplet'),
     url('^$', views.index, name='dkey'),
     )

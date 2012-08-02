@@ -8,6 +8,9 @@ class Couplet(models.Model):
     rank = models.TextField()
     text = models.TextField()
 
+    def __unicode__(self):
+        return self.title or 'untitled'
+
 class Lead(models.Model):
     letter = models.TextField()
     text = models.TextField()

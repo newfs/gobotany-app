@@ -1,169 +1,152 @@
-{% extends "base.html" %}
+{% extends "simplekey/_new_base.html" %}
+{% load dkey_filters %}
 
-# macro Title(couplet)
-  # if couplet.rank == 'family'
-    Family {{ couplet.title }}
-  # elif couplet.rank == 'genus' or couplet.rank == 'species'
-    <i>{{ couplet.title }}</i>
-  # elif couplet.title
-    {{ couplet.title }}
-  # else
-    {{ couplet.number }}
-  # endif
-# endmacro
-
-{% block title %}{{ Title(couplet).strip() }}{% endblock %}
+{% block title %}{{ couplet|ctitle|strip }}{% endblock %}
 {% block script_name %}couplet{% endblock %}
 {% block body_attributes %}
     data-couplet-rank="{{ couplet.rank }}"
     data-couplet-title="{{ couplet.title }}"
 {% endblock %}
-{% block content %}
+{% block body_content %}
 
-# set title = Title(couplet).strip()
+{% with title=couplet|ctitle|strip %}
 
 <div class="offer-help-aside">
   <span>Want help getting started?</span>
   <a href="/help/">Get Help</a>
-  # if title == 'Key to the Families'
+  {% if title == 'Key to the Families' %}
     <br><select class="jumpbox">
       <option>Jump to a family…</option>
-      # for family in families:
+      {% for family in families %}
       <option>{{ family }}</option>
-      # endfor
+      {% endfor %}
     </select><br><select class="jumpbox">
       <option>Jump to a genus…</option>
-      # for genus in genera:
+      {% for genus in genera %}
       <option>{{ genus }}</option>
-      # endfor
+      {% endfor %}
     </select>
-  # endif
+  {% endif %}
 </div>
 
-# if title == 'Key to the Families'
+{% if title == 'Key to the Families' %}
   <h1>Dichotomous Key to Families</h1>
-# else
-  <h1>{{ Title(couplet).strip() }}</h1>
-# endif
+{% else %}
+  <h1>{{ couplet|ctitle|strip }}</h1>
+{% endif %}
 
 <p class="backlinks">
-  # for ancestor in couplet.ancestors
-    # if ancestor.title
-      <a href="{{ urlof(ancestor) }}">
-        # if loop.index == 1
-          « Back to the {{ Title(ancestor)|trim|replace(' ', '\u00a0') }}
-        # else
-          « {{ Title(ancestor)|trim|replace(' ', '\u00a0') }}
-        # endif
+  {% for ancestor in couplet.ancestors %}
+    {% if ancestor.title %}
+      <a href="{% url couplet ancestor|cslug %}">
+        {% if loop.index == 1 %}
+          « Back to the {{ ancestor|ctitle|strip|replace:' :\u00a0' }}
+        {% else %}
+          « {{ ancestor|ctitle|strip|replace:' :\u00a0' }}
+        {% endif %}
       </a>
-    # endif
-  # endfor
-  # if title == 'Key to the Families'
+    {% endif %}
+  {% endfor %}
+  {% if title == 'Key to the Families' %}
     <a href="/Groups/">See the family groups as a list »</a>
-  # endif
-  # if title == 'List of Family Groups'
+  {% endif %}
+  {% if title == 'List of Family Groups' %}
     <a href="/Families/">« Return to the dichotomous key</a>
-  # endif
+  {% endif %}
 </p>
 
-# if len(couplet.leads) == 1
-  # set lead = couplet.leads[0]
-  <p>This {{ couplet.rank }} contains exactly one {{ lead.result.rank }},
-    {{ Title(lead.result).strip() }}.</p>
-  # set couplet = lead.result
-# endif
-# if len(couplet.leads) == 1
-  # set lead = couplet.leads[0]
-  <p>This {{ couplet.rank }} contains exactly one {{ lead.result.rank }},
-    {{ Title(lead.result).strip() }}.</p>
-  # set couplet = lead.result
-# endif
+{% if proxy.has_only_one_lead == 1 %}
+  <p>This {{ proxy.couplet.rank }} contains
+    exactly one {{ proxy.first_lead.result.rank }},
+    {{ proxy.first_lead.result|ctitle|strip }}.</p>
+  {{ proxy.step }}
+{% endif %}
+{% if proxy.has_only_one_lead == 1 %}
+  <p>This {{ couplet.rank }} contains
+    exactly one {{ couplet.first_lead.result.rank }},
+    {{ couplet.first_lead.result|ctitle|strip }}.</p>
+  {{ proxy.step }}
+{% endif %}
 
-# for text in couplet.texts
-  <p>{{ figurize(text) }}</p>
-# endfor
+{{ proxy.couplet.text|figurize }}
 
-# if couplet.leads
+{% if proxy.couplet.leads %}
 
 <ul class="couplets couplet">
-  # for lead in couplet.leads recursive
-    # set result = lead.result
-    # set goto = (result.title[14:]
-                  if result.title and result.title.startswith('go to couplet ')
-                  else None)
+  {% for lead, result, goto, ranks_beneath, names_beneath in proxy.leads %}
     <li>
       <div class="lead">
         <div class="button-block">
-          # set ranks_beneath, names_beneath = result.taxa_beneath
-          # if names_beneath:
+          {% if names_beneath %}
             <a class="what-lies-beneath" href=""
-               data-taxa="{{ names_beneath|join(',') }}">
-              # if len(names_beneath) > 1
+               data-taxa="{{ names_beneath|join:',' }}">
+              {% if names_beneath|length > 1 %}
                 See list of {{ names_beneath|length }}
-                {{ pluralize(ranks_beneath)|join(' and ') }}
-              # else
+                {{ ranks_beneath|pluralize|join:' and ' }}
+              {% else %}
                 See one {{ ranks_beneath|first }}
-              # endif
-              {% if lead.letter -%}
-                in {{ lead.letter.strip('.') }}
-              {%- endif -%}
+              {% endif %}
+              {% if lead.letter %}
+                in {{ lead.letter|strip:'.' }}
+              {% endif %}
             </a>
           <br>
-          # endif
+          {% endif %}
           <a class="button"
-          # if result.rank == 'group'
-             href="{{ urlof(lead.result) }}">{{ result.title.upper() }}
-          # elif result.rank == 'subkey'
-             href="{{ urlof(lead.result) }}">VISIT KEY
-          # elif result.rank == 'family'
-             href="{{ urlof(lead.result) }}">{{ result.title }}
-          # elif (result.rank == 'subgroup' and
-                  result.nearest_ancestor_rank == 'family')
-             href="{{ urlof(lead.result) }}"
-               >{{ result.title.replace('Group ', '') }}
-          # elif result.rank == 'genus'
-             href="{{ urlof(lead.result) }}"><i>{{ result.title }}</i>
-          # elif (result.rank == 'subgroup' and
-                  result.nearest_ancestor_rank == 'genus')
-             href="{{ urlof(lead.result) }}"
-               ><i>{{ result.title.replace('Group ', '') }}</i>
-          # elif result.rank == 'tribe'
-             href="{{ urlof(lead.result) }}"
-               >{{ result.title.split()[-1] }}
-          # elif result.rank == 'species'
-             href="{{ urlof(lead.result) }}"
-               ><i>{{ abbr(result.title) }}</i>
-          # elif goto
+          {% if result.rank == 'group' %}
+             href="{% url couplet lead.result|cslug %}">{{ result.title|upper }}
+          {% elif result.rank == 'subkey' %}
+             href="{% url couplet lead.result|cslug %}">VISIT KEY
+          {% elif result.rank == 'family' %}
+             href="{% url couplet lead.result|cslug %}">{{ result.title }}
+          {% elif result.rank == 'subgroup' and
+                  result.nearest_ancestor_rank == 'family' %}
+             href="{% url couplet lead.result|cslug %}"
+               >{{ result.title|replace:'Group :' }}
+          {% elif result.rank == 'genus' %}
+             href="{% url couplet lead.result|cslug %}"><i>{{ result.title }}</i>
+          {% elif result.rank == 'subgroup' and
+                  result.nearest_ancestor_rank == 'genus' %}
+             href="{% url couplet lead.result|cslug %}"
+               ><i>{{ result.title|replace:'Group :' }}</i>
+          {% elif result.rank == 'tribe' %}
+             href="{% url couplet lead.result|cslug %}"
+               >{{ result.title|lastword }}
+          {% elif result.rank == 'species' %}
+             href="{% url couplet lead.result|cslug %}"
+               ><i>{{ result.title|abbr }}</i>
+          {% elif goto %}
              href="#c{{ goto }}">JUMP TO {{ goto }}
-          # else
+          {% else %}
              href="#c{{ result.number }}">{{ result.number }} ↴
-          # endif
+          {% endif %}
           </a>
         </div>
-        # if not result
+        {% if not result %}
           <span class="warn">[Error: lead.result is None]</span>
-        # elif lead.letter
+        {% elif lead.letter %}
           <span class="letter">{{ lead.letter }}</span>
-          {{ figurize(lead.text) }}
-        # elif result.rank == 'subkey'
+          {{ lead.text|figurize }}
+        {% elif result.rank == 'subkey' %}
           <b>Option {{ loop.index }}.</b> {{ result.title }}
-        # endif
+        {% endif %}
       </div>
-      # if result and not result.rank and not goto
+      {% if result and not result.rank and not goto %}
         <ul id="c{{ result.number }}" class="couplet">
-          {{ loop(lead.result.leads) }}
+          { loop(lead.result.leads) } TODO: recurse
         </ul>
-      # endif
+      {% endif %}
     </li>
-  # endfor
+  {% endfor %}
 </ul>
 
-# if not couplet.is_lone
+{% if not couplet.is_lone %}
   <p><a class="show-all-button" href="#all">Show All Couplets</a></p>
-# endif
+{% endif %}
 
-# endif
+{% endif %}
 
 <div class="taxon-images"></div>
 
+{% endwith %}
 {% endblock %}
