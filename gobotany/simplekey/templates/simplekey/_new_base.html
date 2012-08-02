@@ -60,6 +60,7 @@
             require(["/static/build/deploy/gobotany.application.js"], function(app) {
             {% endif %}
 
+            require(['util/activate_search_suggest']);
             {% block js_require %}{% endblock %}
 
             {% if in_production %}

@@ -1,12 +1,10 @@
 define([
     'bridge/jquery',
     'util/sidebar',
-    'util/activate_search_suggest',
     'util/shadowbox_init',
     'simplekey/PhotoHelper',
     'simplekey/glossarize'
-], function($, sidebar, activate_search_suggest,
-            shadowbox_init, PhotoHelper, glossarize) {
+], function($, sidebar, shadowbox_init, PhotoHelper, glossarize) {
 
     var exports = {};
 

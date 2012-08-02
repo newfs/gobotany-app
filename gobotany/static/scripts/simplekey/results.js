@@ -16,14 +16,13 @@ define([
     'simplekey/SpeciesSection',
     'simplekey/working_area',
     'simplekey/utils',
-    'util/activate_search_suggest',
     'util/activate_image_gallery',
     'util/sidebar'
 ], function(
     document_is_ready, $, x, Ember, Shadowbox, shadowbox_init, _,
     App3, _Filter, _FilterController, animation, _glossarize, resources,
     ResultsPageState, SpeciesSection, working_area_module, utils,
-    search_suggest, image_gallery, sidebar
+    image_gallery, sidebar
 ) {return {
 
 results_page_init: function(args) {

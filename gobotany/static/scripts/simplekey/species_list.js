@@ -1,14 +1,10 @@
 define([
 
-    // Basic resources
-
-    'util/activate_search_suggest',
-
     // Table filtering
 
     'jquery/picnet.table.filter.min'
 
-], function(search_suggest) {
+], function() {
 
     $(document).ready(function() {
         var COLUMNS = {
