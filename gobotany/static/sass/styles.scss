@@ -105,15 +105,22 @@ nav #search button:active {
 #plant-id-2 li.plant-id a,
 #plant-id-3 li.plant-id a,
 #plantshare li.plantshare a,
-#advanced-id li.advanced-id a,
+#full-key li.full-key a,
+#dich-key li.dich-key a,
 #teaching-tools li.teaching-tools a,
-#about li.about a {
+#about li.about a,
+#getting-started li.about a,
+#advanced-map li.about a,
+#glossary li.about a,
+#video-help-topics li.about a,
+#contrib li.about a {
 	background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;	
 }
 
 #plantshare #sidebar a:hover,
 #teaching-tools #sidebar a:hover,
-#advanced-id #sidebar a:hover,
+#full-key #sidebar a:hover,
+#dich-key #sidebar a:hover,
 #privacy-policy #sidebar a:hover,
 #terms-of-use #sidebar a:hover {
     text-decoration: none;
@@ -1943,7 +1950,8 @@ div.section.namap div.trans {
 #getting-started #sidebar {
     height: 1046px;
 }
-#about #sidebar {
+#about #sidebar,
+#contrib #sidebar {
     height: 950px;
 }
 #advanced-map #sidebar {
@@ -1954,19 +1962,19 @@ div.section.namap div.trans {
 }
 #getting-started #sidebar a:hover, #about #sidebar a:hover,
 #advanced-map #sidebar a:hover, #glossary #sidebar a:hover, 
-#video-help-topics #sidebar a:hover {
+#video-help-topics #sidebar a:hover, #contrib #sidebar a:hover {
     text-decoration: none;
 }
 
 #getting-started #main h2, #about #main h2, #advanced-map #main h2,
 #glossary #main h2, #plantshare #main h2, #teaching-tools #main h2,
-#video-help-topics #main h2, #privacy-policy #main h2,
-#terms-of-use #main h2 {
+#video-help-topics #main h2, #contrib #main h2,
+#privacy-policy #main h2, #terms-of-use #main h2 {
     margin-bottom: 8px;
 }
 #getting-started h3, #about h3, #advanced-map h3, #glossary h3,
-#teaching-tools h3, #video-help-topics h3, #privacy-policy h3,
-#terms-of-use h3 {
+#teaching-tools h3, #video-help-topics h3, #contrib h3,
+#privacy-policy h3, #terms-of-use h3 {
     margin: 8px 0;
 }
 
@@ -2149,13 +2157,20 @@ div.section.namap div.trans {
 
 /* Advanced ID Tools Placeholder styles */
 
+#full-key #main,
+#dich-key #main,
 #advanced-id #main {
 	position: relative;
 }
 
+#full-key #main h2 + div, #full-key #main h2 + p,
+#dich-key #main h2 + div, #dich-key #main h2 + p,
 #advanced-id #main h2 + div, #advanced-id #main h2 + p {
     margin-top: 10px;
 }
+
+#full-key #main p,
+#dich-key #main p,
 #advanced-id #main p {
     margin-bottom: 10px;
 }
