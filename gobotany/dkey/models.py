@@ -11,7 +11,7 @@ class Couplet(models.Model):
 class Lead(models.Model):
     letter = models.TextField()
     text = models.TextField()
-    from_couplet = models.ForeignKey(
-        'Couplet', db_index=True, related_name='leads_from')
-    to_couplet = models.ForeignKey(
+    parent_couplet = models.ForeignKey(
+        'Couplet', db_index=True, related_name='leads')
+    result_couplet = models.ForeignKey(
         'Couplet', db_index=True, related_name='leads_to')
