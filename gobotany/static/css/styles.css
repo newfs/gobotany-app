@@ -197,7 +197,7 @@ header h2 a { display: block; text-indent: -9000px; }
 
 nav { height: 40px; padding: 0 0 0 29px; background: url(/static/images/layout/nav-toplevel.png) no-repeat; }
 
-nav li { display: block; float: left; font-size: 14px; margin: 0 13px 0 0; padding: 0; }
+nav li { display: block; float: left; font-size: 14px; margin: 0 10px 0 0; padding: 0; }
 
 nav li.last { margin: 0; }
 
@@ -216,9 +216,9 @@ nav #search button { background: #508e31 url(/static/images/layout/search-btn.pn
 nav #search button:active { background-position: 0 -20px; }
 
 /* Active navigation state */
-#plant-id li.plant-id a, #plant-id-2 li.plant-id a, #plant-id-3 li.plant-id a, #plantshare li.plantshare a, #advanced-id li.advanced-id a, #teaching-tools li.teaching-tools a, #about li.about a { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; }
+#plant-id li.plant-id a, #plant-id-2 li.plant-id a, #plant-id-3 li.plant-id a, #plantshare li.plantshare a, #full-key li.full-key a, #dich-key li.dich-key a, #teaching-tools li.teaching-tools a, #about li.about a, #getting-started li.about a, #advanced-map li.about a, #glossary li.about a, #video-help-topics li.about a, #contrib li.about a { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; }
 
-#plantshare #sidebar a:hover, #teaching-tools #sidebar a:hover, #advanced-id #sidebar a:hover, #privacy-policy #sidebar a:hover, #terms-of-use #sidebar a:hover { text-decoration: none; }
+#plantshare #sidebar a:hover, #teaching-tools #sidebar a:hover, #full-key #sidebar a:hover, #dich-key #sidebar a:hover, #privacy-policy #sidebar a:hover, #terms-of-use #sidebar a:hover { text-decoration: none; }
 
 #home header li.home a, #home header li a:hover { background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent; }
 
@@ -1020,11 +1020,11 @@ div.section.namap div.trans { /* Transparent div to make North America map objec
 #terms-of-use ol.terms ul { line-height: 18px; list-style-type: disc; margin: 10px 16px; }
 
 /* Advanced ID Tools Placeholder styles */
-#advanced-id #main { position: relative; }
+#full-key #main, #dich-key #main, #advanced-id #main { position: relative; }
 
-#advanced-id #main h2 + div, #advanced-id #main h2 + p { margin-top: 10px; }
+#full-key #main h2 + div, #full-key #main h2 + p, #dich-key #main h2 + div, #dich-key #main h2 + p, #advanced-id #main h2 + div, #advanced-id #main h2 + p { margin-top: 10px; }
 
-#advanced-id #main p { margin-bottom: 10px; }
+#full-key #main p, #dich-key #main p, #advanced-id #main p { margin-bottom: 10px; }
 
 #advanced-id #main .dk-landing-section { float: left; font-family: Verdana, Geneva, sans-serif; height: 410px; position: relative; width: 330px; }
 

@@ -1,53 +1,27 @@
-/*** Go Botany IE7 styles file ***
- Please edit only the .scss source and use Compass to auto-generate the .css.
- The generated .css is kept in the repository to allow easy deployment.
- */
+/*** Go Botany IE7 styles file *** Please edit only the .scss source and use Compass to auto-generate the .css. The generated .css is kept in the repository to allow easy deployment. */
 /**Global Styles**/
-nav #search {
-  width: 237px;
-}
+nav #search { width: 237px; }
 
-nav #search input {
-  float: right;
-}
+nav #search input { float: right; }
 
 /*////////////////////////////////*/
 /* Home page */
 /*////////////////////////////////*/
-#banner #inner {
-  border: 6px solid #fff;
-}
+#banner #inner { border: 6px solid #fff; }
 
-#banner #overlay {
-  background: url(../images/layout/white80.png) repeat;
-}
+#banner #overlay { background: url(../images/layout/white80.png) repeat; }
 
 /*/////////////////////////////*/
 /*Inside App pages*/
 /*////////////////////////////*/
-.list-item {
-  border-top: 1px solid #eeeddf;
-}
+.list-item { border-top: 1px solid #eeeddf; }
 
-.list-item.last {
-  border-bottom: 1px solid #eeeddf;
-}
+.list-item.last { border-bottom: 1px solid #eeeddf; }
 
-.img-gallery .controls {
-  margin: 12px 0 0 75px;
-  text-align: center;
-}
+.img-gallery .controls { margin: 12px 0 0 75px; text-align: center; }
 
-.controls a {
-  display: block;
-  float: left;
-}
+.controls a { display: block; float: left; }
 
-.controls a.next {
-  margin: 0 0 0 2px;
-  background: url(../images/icons/next.png) 0 0 no-repeat transparent;
-}
+.controls a.next { margin: 0 0 0 2px; background: url(../images/icons/next.png) 0 0 no-repeat transparent; }
 
-.controls a.prev {
-  background: url(../images/icons/prev.png) 0 0 no-repeat transparent;
-}
+.controls a.prev { background: url(../images/icons/prev.png) 0 0 no-repeat transparent; }
