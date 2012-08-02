@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="/stylesheets/dkey.css">
+# if devmode
+  <script data-main="/scripts/dkey" src="/scripts/require.js"></script>
+# else
+  <script src="/scripts/dkey.min.js"></script>
+# endif
+</head>
+<body {% block body_attributes %}{% endblock %}>
+<img class="logo" src="/images/logo.png">
+<div class="nav">
+  <a href="">Home</a>
+  <a href="">Plant identifier</a>
+  <a href="" class="nav-active">Advanced ID Tools</a>
+  <a href="">Teaching Tools</a>
+  <a href="">About</a>
+</div>
+{% block content %}{% endblock %}
+</body>
+</html>
