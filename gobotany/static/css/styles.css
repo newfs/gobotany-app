@@ -201,7 +201,7 @@ nav li { display: block; float: left; font-size: 14px; margin: 0 10px 0 0; paddi
 
 nav li.last { margin: 0; }
 
-nav a { color: #fff; display: block; height: 35px; padding: 5px 10px 0; }
+nav a { color: #fff; display: block; height: 35px; padding: 5px 8px 0; }
 
 nav a:hover { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 
@@ -928,17 +928,17 @@ div.section.namap div.trans { /* Transparent div to make North America map objec
 /* Help section: sidebar, heading, list styles */
 #getting-started #sidebar { height: 1046px; }
 
-#about #sidebar { height: 950px; }
+#about #sidebar, #contrib #sidebar { height: 950px; }
 
 #advanced-map #sidebar { height: 746px; }
 
 #glossary #sidebar, #video-help-topics #sidebar { height: 1420px; }
 
-#getting-started #sidebar a:hover, #about #sidebar a:hover, #advanced-map #sidebar a:hover, #glossary #sidebar a:hover, #video-help-topics #sidebar a:hover { text-decoration: none; }
+#getting-started #sidebar a:hover, #about #sidebar a:hover, #advanced-map #sidebar a:hover, #glossary #sidebar a:hover, #video-help-topics #sidebar a:hover, #contrib #sidebar a:hover { text-decoration: none; }
 
-#getting-started #main h2, #about #main h2, #advanced-map #main h2, #glossary #main h2, #plantshare #main h2, #teaching-tools #main h2, #video-help-topics #main h2, #privacy-policy #main h2, #terms-of-use #main h2 { margin-bottom: 8px; }
+#getting-started #main h2, #about #main h2, #advanced-map #main h2, #glossary #main h2, #plantshare #main h2, #teaching-tools #main h2, #video-help-topics #main h2, #contrib #main h2, #privacy-policy #main h2, #terms-of-use #main h2 { margin-bottom: 8px; }
 
-#getting-started h3, #about h3, #advanced-map h3, #glossary h3, #teaching-tools h3, #video-help-topics h3, #privacy-policy h3, #terms-of-use h3 { margin: 8px 0; }
+#getting-started h3, #about h3, #advanced-map h3, #glossary h3, #teaching-tools h3, #video-help-topics h3, #contrib h3, #privacy-policy h3, #terms-of-use h3 { margin: 8px 0; }
 
 #getting-started #main ul, #about #main ul { list-style-type: disc; line-height: 170%; }
 
