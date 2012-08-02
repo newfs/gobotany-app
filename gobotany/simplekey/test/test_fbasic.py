@@ -1031,6 +1031,39 @@ class SearchFunctionalTests(FunctionalTestCase):
             result_links, 'Ferns',
             'Clubmosses and relatives, plus quillworts'))
 
+    #####
+    # Dichotomous Key search results tests
+    #####
+
+    # TODO: uncomment and enhance upon adding dkey pages to search
+
+#    def test_search_results_contain_dichotomous_key_main_page(self):
+#        self.get('/search/?q=dichotomous')
+#        result_links = self._result_links()
+#        self.assertTrue(len(result_links) > 0)
+#        self.assertTrue(self._is_page_found(result_links, 'Dichotomous Key'))
+
+#    def test_search_results_contain_dichotomous_key_group_pages(self):
+#        self.get('/search/?q=group%201')
+#        result_links = self._result_links()
+#        self.assertTrue(len(result_links) > 0)
+#        self.assertTrue(self._is_page_found(result_links,
+#                                            'Group 1: Dichotomous Key'))
+
+#    def test_search_results_contain_dichotomous_key_family_pages(self):
+#        self.get('/search/?q=lycopodiaceae')
+#        result_links = self._result_links()
+#        self.assertTrue(len(result_links) > 0)
+#        self.assertTrue(self._is_page_found(
+#            result_links, 'Family Lycopodiaceae: Dichotomous Key'))
+
+#    def test_search_results_contain_dichotomous_key_genus_pages(self):
+#        self.get('/search/?q=pseudolycopodiella')
+#        result_links = self._result_links()
+#        self.assertTrue(len(result_links) > 0)
+#        self.assertTrue(self._is_page_found(
+#            result_links, 'Pseudolycopodiella: Dichotomous Key'))
+
 
 class SearchSuggestionsFunctionalTests(FunctionalTestCase):
     SEARCH_INPUT_CSS = '#search input'
