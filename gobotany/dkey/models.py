@@ -9,7 +9,7 @@ class Couplet(models.Model):
     text = models.TextField()
 
     def __unicode__(self):
-        return self.title or 'untitled'
+        return u'{}:{}'.format(self.id, self.title or 'untitled')
 
 class Lead(models.Model):
     letter = models.TextField()
@@ -18,3 +18,9 @@ class Lead(models.Model):
         'Couplet', db_index=True, related_name='leads')
     result_couplet = models.ForeignKey(
         'Couplet', db_index=True, related_name='leads_to')
+
+    def __unicode__(self):
+        return u'{}:{}.{}->{}'.format(
+            self.id, self.letter,
+            self.parent_couplet_id, self.result_couplet_id,
+            )

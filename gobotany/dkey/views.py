@@ -1,6 +1,10 @@
 from django.shortcuts import get_object_or_404, render_to_response
 from gobotany.dkey.models import Couplet
 
+def lead_key(lead):
+    """Return an appropriate sort key for the given lead."""
+    return lead.letter
+
 class Proxy(object):
     def __init__(self, couplet):
         self.couplet = couplet
@@ -17,7 +21,7 @@ class Proxy(object):
 
     def leads(self):
         sequence = []
-        for lead in self.couplet.leads.all():
+        for lead in sorted(self.couplet.leads.all(), key=lead_key):
             result = lead.result_couplet
             if result.title and result.title.startswith('go to couplet '):
                 goto = result.title[14:]
@@ -25,7 +29,12 @@ class Proxy(object):
                 goto = None
             ranks_beneath = set()
             names_beneath = set()
-            couplets = [lead2.result_couplet for lead2 in result.leads.all()]
+            leads2 = sorted(result.leads.all(), key=lead_key)
+            if leads2:
+                number = leads2[0].letter[:-2]  # turn '12b.' into '12'
+            else:
+                number = 'NO NUMBER'
+            couplets = [lead2.result_couplet for lead2 in leads2]
             already = set()
 
             while couplets:
@@ -40,7 +49,7 @@ class Proxy(object):
                         if result2.id not in already:
                             couplets.append(result2)
 
-            sequence.append((lead, result, goto,
+            sequence.append((lead, result, number, goto,
                              sorted(ranks_beneath), sorted(names_beneath)))
 
         return sequence

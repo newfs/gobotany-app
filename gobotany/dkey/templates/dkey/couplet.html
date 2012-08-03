@@ -73,7 +73,7 @@
 {% if proxy.couplet.leads %}
 
 <ul class="couplets couplet">
-  {% for lead, result, goto, ranks_beneath, names_beneath in proxy.leads %}
+  {% for lead, result, number, goto, ranks_beneath, names_beneath in proxy.leads %}
     <li>
       <div class="lead">
         <div class="button-block">
@@ -118,7 +118,7 @@
           {% elif goto %}
              href="#c{{ goto }}">JUMP TO {{ goto }}
           {% else %}
-             href="#c{{ result.number }}">{{ result.number }} ↴
+             href="#c{{ number }}">{{ number }} ↴
           {% endif %}
           </a>
         </div>
@@ -132,7 +132,7 @@
         {% endif %}
       </div>
       {% if result and not result.rank and not goto %}
-        <ul id="c{{ result.number }}" class="couplet">
+        <ul id="c{{ number }}" class="couplet">
           { loop(lead.result.leads) } TODO: recurse
         </ul>
       {% endif %}

@@ -14,6 +14,7 @@ from gobotany.dkey.models import Couplet, Lead
 # Couplet creation shortcuts, that work because during the import we
 # never let Couplet objects that we have created expire out of memory.
 
+_couplet_list = []
 _couplets_by_title = {}
 
 def couplet_make(title=None):
@@ -23,7 +24,9 @@ def couplet_make(title=None):
     if c is None:
         c = Couplet()
         c.title = title
+        c.leadlist = []  # temporary reference
         c.save()  # assign id before telling the Lead about it
+        _couplet_list.append(c)
         if title is not None:
             _couplets_by_title[title] = c
     return c
@@ -36,9 +39,7 @@ def new_lead(parent_couplet, result_couplet=None):
     lead.parent_couplet = parent_couplet
     if result_couplet is not None:
         lead.result_couplet = result_couplet
-    if not hasattr(parent_couplet, 'leadlist'):
-        parent_couplet.leadlist = []
-    parent_couplet.leadlist.append(lead)  # for our own temporary reference
+    parent_couplet.leadlist.append(lead)  # temporary reference
     return lead
 
 # The import logic itself.
@@ -229,7 +230,7 @@ def parse(filename):
 
     # Find families and genera.
 
-    info.couplets = couplets = _couplets_by_title.values()
+    info.couplets = couplets = _couplet_list
     info.families = sorted(c.title for c in couplets if c.rank == 'family')
     info.genera = sorted(c.title for c in couplets if c.rank == 'genus')
 
@@ -483,7 +484,7 @@ def parse_section(prefix, parent, children, i):
         assert len(couplet_stack) == newlen, (len(couplet_stack), newlen)
 
         lead = new_lead(couplet_stack[-1])
-        lead.letter = xchild[0].text.strip()  # like '1a.'
+        lead.letter = xchild[0].text.strip().strip('.')  # like '1a'
         log.info('     %s <%s>', lead.letter, xchild.tag)
         endskip = 0
 
@@ -568,11 +569,19 @@ def fix_typo4(children, i):
 
 # Support command-line invocation.
 
+def do_parse(filename):
+    info = parse(filename)
+    for couplet in info.couplets:
+        couplet.save()
+        for lead in couplet.leadlist:
+            lead.save()
+
 if __name__ == '__main__':
     import argparse
     import logging
 
     logging.basicConfig(filename='log.dkey', level=logging.DEBUG)
+    logging.getLogger('django').level = logging.INFO
 
     parser = argparse.ArgumentParser(
         description='Import the Flora Nova Angliae XML into the database',
@@ -581,12 +590,4 @@ if __name__ == '__main__':
                         nargs='?', default='110330_fone_test_05.xml')
     args = parser.parse_args()
 
-    info = parse(args.filename)
-
-    # First, all couplets need ids.
-
-    for couplet in info.couplets:
-        couplet.save()
-        for lead in getattr(couplet, 'leadlist', ()):
-            lead.save()
-    #transaction.commit_on_success(parse)(args.filename)
+    transaction.commit_on_success(do_parse)(args.filename)
