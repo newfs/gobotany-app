@@ -1373,7 +1373,7 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #home .donate p { margin: 8px; padding: 0; }
   #home .donate a { float: none; margin: 6px 0; position: static; }
   #main { float: none; width: inherit; }
-  #sidebar, #getting-started #sidebar, #about #sidebar, #advanced-map #sidebar, #plant-id #sidebar, #glossary #sidebar, #video-help-topics #sidebar, #taxon #sidebar, #search-results #sidebar { border-bottom: 1px solid #c3d941; height: auto; margin-left: 8px; margin-right: 8px; }
+  #sidebar, #getting-started #sidebar, #about #sidebar, #advanced-map #sidebar, #plant-id #sidebar, #glossary #sidebar, #video-help-topics #sidebar, #taxon #sidebar, #search-results #sidebar, #contrib #sidebar { border-bottom: 1px solid #c3d941; height: auto; margin-left: 8px; margin-right: 8px; }
   #sidebar .section:first-child { margin-top: 0; }
   #sidebar .section, #sidebar .section.plant-map { margin-top: 16px; padding-bottom: 0; }
   #sidebar .section .get-help-btn, #sidebar .section .view-map-btn { margin-bottom: 0; }
