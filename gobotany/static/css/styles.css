@@ -245,7 +245,7 @@ footer a[href]:hover { text-decoration: underline; }
 
 footer ul { font-size: 9px; list-style-type: none; margin-bottom: 12px; }
 
-footer li { display: inline; }
+footer li { display: inline; line-height: 14px; }
 
 footer li:after { content: " |"; }
 
