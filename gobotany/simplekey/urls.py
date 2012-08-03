@@ -27,9 +27,10 @@ urlpatterns = patterns(
         {'template' : 'simplekey/dich_key_placeholder.html'},
         name='dich-key-placeholder'),
 
-    url('^teaching-tools/$', views.teaching_tools_view, 
-        {'template' : 'simplekey/teaching_tools.html'},
-        name='teaching-tools'),
+    url('^teaching/$', views.teaching_view,
+        {'template': 'simplekey/teaching.html'}, name='teaching'),
+    url('^teaching-tools/$', views.teaching_redirect,
+        name='teaching-redirect'),   # redirect old URL
 
     # Legal notification pages
     url('^legal/$', views.legal_redirect_view, name='legal'),
