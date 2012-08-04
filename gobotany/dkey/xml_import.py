@@ -2,6 +2,7 @@
 
 import logging
 import re
+from collections import deque
 from lxml import etree
 
 from gobotany import settings
@@ -577,6 +578,22 @@ def transitive_closure(couplet):
 
 def do_parse(filename):
     info = parse(filename)
+
+    # Figure out the ancestors of each page.
+
+    pages = deque([ info.get_or_create_page('Key to the Families') ])
+
+    while pages:
+        page = pages.popleft()
+        comma = ',' if page.breadcrumb_ids else ''
+        breadcrumb_ids = page.breadcrumb_ids + comma + str(page.id)
+        for lead in page.leadlist:
+            if lead.goto_page:
+                lead.goto_page.breadcrumb_ids = breadcrumb_ids
+                pages.append(lead.goto_page)
+
+    # Save the changes that have been made to pages and leads since
+    # their initial creation.
 
     for page in info.pages.values():
         ids = (lead.id for lead in page.leadlist)

@@ -5,9 +5,10 @@ from django.db import models
 class Page(models.Model):
     chapter = models.TextField()
     title = models.TextField(db_index=True, null=True)
-    rank = models.TextField()
+    rank = models.TextField(db_index=True)
     text = models.TextField()
-    lead_ids = models.TextField()  # comma-separated like '1,2,3,4,5'
+    breadcrumb_ids = models.TextField()  # comma-separated like '1,2,3,4,5'
+    lead_ids = models.TextField()        # comma-separated like '1,2,3,4,5'
 
     def __unicode__(self):
         return u'{}:{}'.format(self.id, self.title or 'untitled')
