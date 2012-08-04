@@ -602,6 +602,14 @@ def do_parse(filename):
         for lead in page.leadlist:
             lead.save()
 
+    # Save figure captions.
+
+    for n, caption in sorted(info.captions.items()):
+        f = models.Figure()
+        f.number = n
+        f.caption = caption
+        f.save()
+
 if __name__ == '__main__':
     import argparse
     import logging

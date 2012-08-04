@@ -22,3 +22,7 @@ class Lead(models.Model):
 
     def __unicode__(self):
         return u'{}:{}.{}'.format(self.id, self.letter, self.target)
+
+class Figure(models.Model):
+    number = models.IntegerField(primary_key=True)
+    caption = models.TextField()
