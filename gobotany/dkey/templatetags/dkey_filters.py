@@ -4,6 +4,8 @@
 
 import re
 from django import template
+from django.utils.safestring import mark_safe
+from gobotany.dkey import models
 
 register = template.Library()
 
@@ -15,20 +17,27 @@ def abbr(s):
     genus, rest = s.split(None, 1)
     return u'%s. %s' % (genus[0], rest)
 
+def breadcrumbs(page):
+    if not page.breadcrumb_ids:
+        return []
+    ids = [ int(n) for n in page.breadcrumb_ids.split(',') ]
+    pages = models.Page.objects.filter(id__in=ids)
+    return sorted(pages, key=lambda page: len(page.breadcrumb_ids))
+
 def cslug(couplet):
     if not couplet:
         return 'Family-Carex'
     return couplet.title.replace(u' ', u'-')
 
-def ctitle(couplet):
-    if couplet.rank == 'family':
-        return u'Family {}'.format(couplet.title)
-    elif couplet.rank == 'genus' or couplet.rank == 'species':
-        return u'<i>{}</i>'.format(couplet.title)
-    elif couplet.title:
-        return couplet.title
+def display_title(page):
+    if page.rank == 'family':
+        return u'Family {}'.format(page.title)
+    elif page.rank == 'genus' or page.rank == 'species':
+        return mark_safe(u'<i>{}</i>'.format(page.title))
+    elif page.title:
+        return page.title
     else:
-        return unicode(couplet.number)
+        return unicode(page.number)
 
 re_floating_figure = re.compile(ur'<FIG-(\d+)>')  # see parser.py
 re_figure_mention = re.compile(ur'\[Fig(s?)\. ([\d, ]+)\]')
@@ -68,21 +77,26 @@ def figurize(text):
 def lastword(text):
     return text.split()[-1]
 
-def length(thing):
-    return len(thing)
+def nobr(text):
+    return text.replace(u' ', u'\u00a0')
 
 def replace(text, arg):
     a, b = arg.split(':', 1)
     return text.replace(a, b)
 
+def slug(page, chars=None):
+    return page.title.replace(u' ', u'-')
+
 def strip(text, chars=None):
     return text.strip(chars)
 
 register.filter('abbr', abbr)
+register.filter('breadcrumbs', breadcrumbs)
 register.filter('cslug', cslug)
-register.filter('ctitle', ctitle)
+register.filter('display_title', display_title)
 register.filter('figurize', figurize)
 register.filter('lastword', lastword)
-register.filter('length', length)
+register.filter('nobr', nobr)
 register.filter('replace', replace)
+register.filter('slug', slug)
 register.filter('strip', strip)

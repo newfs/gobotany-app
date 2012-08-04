@@ -1,16 +1,19 @@
 from django.shortcuts import get_object_or_404, render_to_response
-from gobotany.dkey.models import Couplet
+from gobotany.dkey import models
 
 def lead_key(lead):
     """Return an appropriate sort key for the given lead."""
     return lead.letter
 
-class Proxy(object):
-    def __init__(self, couplet):
-        self.couplet = couplet
+class OldProxy(object):
+    def __init__(self, page):
+        ids = [ int(n) for n in page.lead_ids.split(',') ]
+        self.page = page
+        self.leads = models.Lead.objects.filter(pk__in=ids).all()
 
     def has_only_one_lead(self):
-        return len(self.couplet.leads) == 1
+        return 0
+        return len(self.leads) == 1
 
     def first_lead(self):
         return self.leads[0]
@@ -54,13 +57,40 @@ class Proxy(object):
 
         return sequence
 
+class _Proxy(object):
+    def __init__(self, page):
+        self.set_page(page)
+
+    def next(self):
+        self.set_page(self.leads[0].goto_page)
+
+    def set_page(self, page):
+        self.page = page
+        if page.lead_ids:
+            lead_ids = [ int(n) for n in page.lead_ids.split(u',') ]
+        else:
+            lead_ids = []
+        self.leads = models.Lead.objects.filter(pk__in=lead_ids).all()
+
+def get_families():
+    pages = models.Page.objects.filter(rank='family')
+    return sorted(page.title for page in pages)
+
+def get_genera():
+    pages = models.Page.objects.filter(rank='genus')
+    return sorted(page.title for page in pages)
+
 def index(request):
     return render_to_response('dkey/index.html')
 
-def couplet(request, couplet_slug):
-    title = couplet_slug.replace('-', ' ')
-    couplet = get_object_or_404(Couplet, title=title)
-    return render_to_response('dkey/couplet.html', {
-            'couplet': couplet,
-            'proxy': Proxy(couplet),
+def page(request, slug):
+    title = slug.replace(u'-', u' ')
+    page = get_object_or_404(models.Page, title=title)
+    proxy = _Proxy(page)
+    return render_to_response('dkey/page.html', {
+            'families': get_families,
+            'genera': get_genera,
+            'leads': (lambda: proxy.leads),
+            'next_page': (lambda: proxy.next() or proxy.page),
+            'page': (lambda: proxy.page),
             })

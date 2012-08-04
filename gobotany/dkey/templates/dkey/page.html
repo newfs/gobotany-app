@@ -1,15 +1,15 @@
 {% extends "simplekey/_new_base.html" %}
 {% load dkey_filters %}
 
-{% block title %}{{ couplet|ctitle|strip }}{% endblock %}
-{% block script_name %}couplet{% endblock %}
+{% block title %}{{ page.title }}{% endblock %}
+{% block script_name %}dkey{% endblock %}
 {% block body_attributes %}
-    data-couplet-rank="{{ couplet.rank }}"
-    data-couplet-title="{{ couplet.title }}"
+    data-couplet-rank="{{ page.rank }}"
+    data-couplet-title="{{ page.title }}"
 {% endblock %}
 {% block body_content %}
 
-{% with title=couplet|ctitle|strip %}
+{% with title=page|display_title %}
 
 <div class="offer-help-aside">
   <span>Want help getting started?</span>
@@ -32,20 +32,18 @@
 {% if title == 'Key to the Families' %}
   <h1>Dichotomous Key to Families</h1>
 {% else %}
-  <h1>{{ couplet|ctitle|strip }}</h1>
+  <h1>{{ title }}</h1>
 {% endif %}
 
 <p class="backlinks">
-  {% for ancestor in couplet.ancestors %}
-    {% if ancestor.title %}
-      <a href="{% url couplet ancestor|cslug %}">
-        {% if loop.index == 1 %}
-          « Back to the {{ ancestor|ctitle|strip|replace:' :\u00a0' }}
-        {% else %}
-          « {{ ancestor|ctitle|strip|replace:' :\u00a0' }}
-        {% endif %}
-      </a>
-    {% endif %}
+  {% for ancestor in page|breadcrumbs %}
+    <a href="{% url dkey_page ancestor|slug %}">
+      {% if loop.index == 1 %}
+        « Back to the {{ ancestor|display_title|nobr }}
+      {% else %}
+        « {{ ancestor|display_title|nobr }}
+      {% endif %}
+    </a>
   {% endfor %}
   {% if title == 'Key to the Families' %}
     <a href="/Groups/">See the family groups as a list »</a>
@@ -55,20 +53,20 @@
   {% endif %}
 </p>
 
-{% if proxy.has_only_one_lead == 1 %}
-  <p>This {{ proxy.couplet.rank }} contains
-    exactly one {{ proxy.first_lead.result.rank }},
-    {{ proxy.first_lead.result|ctitle|strip }}.</p>
-  {{ proxy.step }}
+{% if leads|length == 1 %}
+  <p>This {{ page.rank }} contains
+    exactly one {{ next_page.rank }},
+    {{ page|display_title }}.</p>
 {% endif %}
-{% if proxy.has_only_one_lead == 1 %}
-  <p>This {{ couplet.rank }} contains
-    exactly one {{ couplet.first_lead.result.rank }},
-    {{ couplet.first_lead.result|ctitle|strip }}.</p>
-  {{ proxy.step }}
+{% if leads|length == 1 %}
+  <p>This {{ page.rank }} contains
+    exactly one {{ next_page.rank }},
+    {{ page|display_title }}.</p>
 {% endif %}
 
-{{ proxy.couplet.text|figurize }}
+{{ page.text|figurize|safe }}
+
+{% comment %}
 
 {% if proxy.couplet.leads %}
 
@@ -148,5 +146,6 @@
 
 <div class="taxon-images"></div>
 
+{% endcomment %}
 {% endwith %}
 {% endblock %}
