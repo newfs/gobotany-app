@@ -14,37 +14,36 @@ from gobotany.dkey import models
 # Couplet creation shortcuts, that work because during the import we
 # never let Couplet objects that we have created expire out of memory.
 
-_couplet_list = []
-_couplets_by_title = {}
+class Info(object):
+    """Objects created to represent Flora Novae Angliae."""
 
-def couplet_make(title='', goto=None):
-    c = None
-    if title.startswith('go to couplet '):
-        goto = int(title.split()[-1])
-        title = ''
-    if title:
-        c = _couplets_by_title.get(title)
-    if c is None:
-        c = models.Couplet()
-        c.title = title
-        c.goto = goto
-        c.leadlist = []  # temporary reference
-        c.save()  # assign id before telling the Lead about it
-        _couplet_list.append(c)
-        if title is not None:
-            _couplets_by_title[title] = c
-    return c
+    def __init__(self):
+        self.pages = {}
 
-def couplet_entitled(title):
-    return _couplets_by_title[title]
+    def get_or_create_page(self, title):
+        page = self.pages.get(title)
+        if page is not None:
+            return page
+        page = models.Page()
+        page.title = title
+        page.leadlist = []  # temporary list, thrown away when we save to db
+        page.save()
+        self.pages[title] = page
+        return page
 
-def new_lead(parent_couplet, result_couplet=None):
-    lead = models.Lead()
-    lead.parent_couplet = parent_couplet
-    if result_couplet is not None:
-        lead.result_couplet = result_couplet
-    parent_couplet.leadlist.append(lead)  # temporary reference
-    return lead
+    def get_page(self, title):
+        return self.pages[title]
+
+    def create_lead(self, page, parent=None, goto_page=None, goto_num=None):
+        lead = models.Lead()
+        lead.parent = parent
+        if isinstance(goto_page, basestring):
+            goto_page = self.get_or_create_page(goto_page)
+        lead.goto_page = goto_page
+        lead.goto_num = goto_num
+        lead.save()
+        page.leadlist.append(lead)
+        return lead
 
 # The import logic itself.
 
@@ -200,9 +199,6 @@ def remove_empty_elements(x):
 # The main parser functions.  Which do not actually do any parsing; they
 # really just iterate over what ElementTree returns to them.
 
-class Info(object):
-    """Information that we gleaned from reading Flora Novae Angliae."""
-
 def parse(filename):
     f = open(filename)
     try:
@@ -221,7 +217,7 @@ def parse(filename):
 
     xchapters = root.findall('.//chapter')
     for xchapter in xchapters:
-        parse_chapter(xchapter)
+        parse_chapter(xchapter, info)
 
     # Find the figure captions.
 
@@ -232,24 +228,18 @@ def parse(filename):
         assert xcaption[0].text == u'Fig.\u2009%03d\u2002' % n
         info.captions[n] = extract_html(xcaption, skip=1)
 
-    # Find families and genera.
-
-    info.couplets = couplets = _couplet_list
-    info.families = sorted(c.title for c in couplets if c.rank == 'family')
-    info.genera = sorted(c.title for c in couplets if c.rank == 'genus')
-
     # All done.
 
     return info
 
 # The big chapter parser.
 
-def parse_chapter(xchapter):
+def parse_chapter(xchapter, info):
     most_recent_taxon = None  # used to label Groups more specifically
     genus_name = None  # used to expand abbreviated genus names
     species_comes_next = False  # when we know it's a species, darn it
-    children = list(xchapter)
-    xtitle = children[0]
+    xchildren = list(xchapter)
+    xtitle = xchildren[0]
     assert xtitle.tag == 'chapter_title', repr(xtitle.tag)
     title = xtitle.text.strip()
     log.info('* %s', title)
@@ -259,22 +249,23 @@ def parse_chapter(xchapter):
     # we can skip on down to the section-processing logic below.
 
     if title == u'Key to the Families':
-        couplet = couplet_make(title)
-        i = parse_section(None, couplet, children, 1)
+        page = info.get_or_create_page(title)
+        page.rank = 'top'
+        i = parse_section(info, page, None, xchildren, 1)
     else:
         i = 1
 
     # As long as there are sections remaining, process them.
 
-    while i < len(children):
-        child = children[i]
+    while i < len(xchildren):
+        child = xchildren[i]
         tag = child.tag
 
         if species_comes_next or is_species(child):
 
             # It's a species!
 
-            fix_typo3(children, i)
+            fix_typo3(xchildren, i)
 
             if species_comes_next:
                 name = child.find('bold_italic').text.strip()
@@ -288,19 +279,19 @@ def parse_chapter(xchapter):
                 i += 1
                 continue
             log.info('  * %s', name)
-            couplet = couplet_entitled(name)
-            couplet.rank = 'species'
-            couplet.text += extract_html(child, skip=0)
+            page = info.get_or_create_page(name)
+            page.rank = 'species'
+            page.text += extract_html(child, skip=0)
             i += 1
-            while i < len(children) and (is_discourse(children[i])
-                or is_lead(children[i]) and not is_species(children[i])):
-                # (children[i].tag in (
+            while i < len(xchildren) and (is_discourse(xchildren[i])
+                or is_lead(xchildren[i]) and not is_species(xchildren[i])):
+                # (xchildren[i].tag in (
                 # 'text_no_indent_description',
                 # 'text_no_indent_no_leader',
-                # ) or children[i].tag in level_tags  #ack! really?
+                # ) or xchildren[i].tag in level_tags  #ack! really?
                 #):
-                log.info('    species descriptive <%s>', children[i].tag)
-                couplet.text += extract_html(children[i])
+                log.info('    species descriptive <%s>', xchildren[i].tag)
+                page.text += extract_html(xchildren[i])
                 i += 1
             continue
 
@@ -343,71 +334,71 @@ def parse_chapter(xchapter):
             log.error('truncating chapter, unrecognized tag: %s', tag)
             break
 
-        couplet = couplet_entitled(heading)
-        couplet.rank = rank
-        couplet.chapter = title
+        page = info.get_or_create_page(heading)
+        page.rank = rank
+        page.chapter = title
         i += 1
 
         # Special case a genus with only one species. (Epimedium)
 
-        if rank == 'genus' and children[i].tag == 'text_indent_02':
-            name = children[i][0].text.strip()
-            new_lead(couplet, couplet_make(name))
+        if rank == 'genus' and xchildren[i].tag == 'text_indent_02':
+            name = xchildren[i][0].text.strip()
+            info.create_lead(page, goto_page=name)
             # we do NOT advance `i` so the species will be processed next
             species_comes_next = True
             continue
 
         # Then we grab the following paragraphs as part of this
-        # couplet's description.
+        # page's description.
 
-        while is_discourse(children[i]):
-            log.info('    descriptive <%s>', children[i].tag)
-            couplet.text += extract_html(children[i])
+        while is_discourse(xchildren[i]):
+            log.info('    descriptive <%s>', xchildren[i].tag)
+            page.text += extract_html(xchildren[i])
             i += 1
 
         # Special case another style of genus with only one species.
 
         if rank == 'genus' and genus_name in ('Convolvulus', 'Rhodotypos'):
-            name = children[i].find('bold_italic').text.strip()
-            new_lead(couplet, couplet_make(name))
+            name = xchildren[i].find('bold_italic').text.strip()
+            info.create_lead(page, goto_page=name)
             # we do NOT advance `i` so the species will be processed next
             species_comes_next = True
             continue
 
         # Assume that we must be looking at a heading.
 
-        if i >= len(children):
+        if i >= len(xchildren):
             pass
-        elif children[i].tag in level_tags:
-            i = parse_section(prefix, couplet, children, i)
-        elif couplet.rank == 'family' and children[i].tag == 'head_2':
+        elif xchildren[i].tag in level_tags:
+            i = parse_section(info, page, prefix, xchildren, i)
+        elif page.rank == 'family' and xchildren[i].tag == 'head_2':
             # the family has only one genus
-            next_heading = children[i].text.strip()
-            new_lead(couplet, couplet_make(next_heading))
+            next_heading = xchildren[i].text.strip()
+            info.create_lead(page, goto_page=next_heading)
             # we do NOT advance `i` so the heading will be processed next
-        elif couplet.rank in ('tribe', 'subgroup') \
-                and re_1_species.search(children[i].text):
-            name = trailing_taxon_name(genus_name, children[i])
-            new_lead(couplet, couplet_make(name))
+        elif page.rank in ('tribe', 'subgroup') \
+                and re_1_species.search(xchildren[i].text):
+            name = trailing_taxon_name(genus_name, xchildren[i])
+            info.create_lead(page, goto_page=name)
             i += 1
-        elif couplet.rank == 'genus' and children[i].tag == \
+        elif page.rank == 'genus' and xchildren[i].tag == \
                 'text_no_indent_no_leader':
-            name = leading_species_name(children[i])
-            new_lead(couplet, couplet_make(name))
+            name = leading_species_name(xchildren[i])
+            info.create_lead(page, goto_page=name)
             # we do NOT advance `i` so the species will be processed next
 
-        elif children[i].tag == 'head_4':
+        elif xchildren[i].tag == 'head_4':
             # alternate keys, like 'Key for carpellate reproductive material'
-            while i < len(children) and children[i].tag == 'head_4':
+            while i < len(xchildren) and xchildren[i].tag == 'head_4':
                 title = ' '.join((most_recent_taxon,
-                                  children[i].text.strip().lower()))
+                                  xchildren[i].text.strip().lower()))
                 log.info(' ** %s', title)
-                c2 = couplet_make(title)
-                c2.rank = 'subkey'
-                new_lead(couplet, c2)
-                i = parse_section(prefix, c2, children, i + 1)
+                sub_page = info.get_or_create_page(title)
+                sub_page.rank = 'subkey'
+                info.create_lead(page, goto_page=sub_page)
+                i = parse_section(info, sub_page, prefix, xchildren, i + 1)
         else:
-            log.error('not sure what to do with <%s>' % children[i].tag)
+            log.error('not sure what to do with <%s>' % xchildren[i].tag)
 
 
 def leading_species_name(x):
@@ -440,27 +431,27 @@ def trailing_taxon_name(prefix, x):
     log.info('       -> %s', name)
     return name
 
-def parse_section(prefix, parent, children, i):
-    couplet_stack = [ parent ]
+def parse_section(info, page, prefix, xchildren, i):
+    lead_stack = [ None ]
 
     log.info('    start of section')
 
-    if i < len(children) and children[i].tag == 'text_indent_02':
+    if i < len(xchildren) and xchildren[i].tag == 'text_indent_02':
         # TODO: have this snarf in the paragraphs to make the genus page
         # bugger
         #
-        # species_name = children[i][0].text.strip()
+        # species_name = xchildren[i][0].text.strip()
         # parent.add_lead(Lead(result=Couplet.get(species_name)))
         return i + 1
 
-    while i < len(children):
+    while i < len(xchildren):
 
-        fix_typo1(children, i)
-        fix_empty_italic(children, i)
-        fix_typo2(children, i)
-        fix_typo4(children, i)
+        fix_typo1(xchildren, i)
+        fix_empty_italic(xchildren, i)
+        fix_typo2(xchildren, i)
+        fix_typo4(xchildren, i)
 
-        xchild = children[i]
+        xchild = xchildren[i]
 
         if is_empty(xchild):  # ignore empty elements
             log.warn('empty <%s>', xchild.tag)
@@ -473,37 +464,35 @@ def parse_section(prefix, parent, children, i):
 
         digits = ''.join( c for c in xchild[0].text if c.isdigit() )
         newlen = int(digits)
-        if newlen < len(couplet_stack):
-            del couplet_stack[newlen:]
-        elif newlen > len(couplet_stack):
-            if newlen > len(couplet_stack) + 1:
-                # log.warn('<%s> immediately followed by <%s>',
-                #          children[i-1].tag, children[i].tag)
-                while newlen > len(couplet_stack) + 1:
-                    # fake a correct stack by duplicating the top stack entry
-                    couplet_stack.append(couplet_stack[-1])
-            couplet_stack.append(couplet_make())
-            couplet_stack[-2].leadlist[-1].result_couplet = couplet_stack[-1]
+        if newlen < len(lead_stack):
+            del lead_stack[newlen:]
+        elif newlen > len(lead_stack):
+            lead_stack.extend([ lead_stack[-1] ] * (newlen - len(lead_stack)))
 
-        assert len(couplet_stack) == newlen, (len(couplet_stack), newlen)
+        assert len(lead_stack) == newlen, (len(lead_stack), newlen)
 
-        lead = new_lead(couplet_stack[-1])
+        lead = info.create_lead(page, parent=lead_stack[-1])
         lead.letter = xchild[0].text.strip().strip('.')  # like '1a'
+        lead_stack.append(lead)
+
         log.info('     %s <%s>', lead.letter, xchild.tag)
         endskip = 0
 
         x = xchild.find('trailing_group_designation')
         if x is not None:
             group_name = x.text.strip()
-            if parent.rank == 'family' or parent.rank == 'genus':
+            if page.rank == 'family' or page.rank == 'genus':
                 # 'Group 1' -> 'Asteraceae Group 1'
-                group_name = parent.title + ' ' + group_name
-            lead.result_couplet = couplet_make(group_name)
+                group_name = page.title + ' ' + group_name
+            lead.goto_page = info.get_or_create_page(group_name)
 
         x = xchild.find('trailing_genus_designation')
         if x is not None:
             taxon_name = x.text.strip()
-            lead.result_couplet = couplet_make(taxon_name)
+            if taxon_name.startswith('go to couplet '):
+                lead.goto_num = int(taxon_name.split()[-1])
+            else:
+                lead.goto_page = info.get_or_create_page(taxon_name)
 
         if not (xchild[-1].text or '').strip() and xchild[-1].tag in (
             'italic', 'lead_number_letter', 'lead_number_letter_inner',
@@ -512,7 +501,7 @@ def parse_section(prefix, parent, children, i):
 
         if xchild[-1].tag == 'bold_italic' and xchild[-1].text.strip():
             taxon_name = trailing_taxon_name(prefix, xchild)
-            lead.result_couplet = couplet_make(taxon_name)
+            lead.goto_page = info.get_or_create_page(taxon_name)
             endskip = 1
 
         lead.text = extract_html(xchild, skip=1, endskip=endskip)
@@ -523,26 +512,26 @@ def parse_section(prefix, parent, children, i):
 
 # Special cases that will hopefully get cleaned up.
 
-def fix_typo1(children, i):
-    if len(children) < i + 2:
+def fix_typo1(xchildren, i):
+    if len(xchildren) < i + 2:
         return
-    ci = children[i]
-    cj = children[i+1]
+    ci = xchildren[i]
+    cj = xchildren[i+1]
     if (ci.tag == cj.tag == 'text_indent_08'
         and cj.text.strip() == '(in part)'):
         log.error('fixing special typo #1')
         ci[0].tail += cj.text
         while len(cj):
             ci.append(cj[0])
-        del children[i+1]
+        del xchildren[i+1]
 
-def fix_empty_italic(children, i):
-    x = children[i]
+def fix_empty_italic(xchildren, i):
+    x = xchildren[i]
     if len(x) and x[-1].tag == 'italic' and not (x[-1].text or '').strip():
         del x[-1]
 
-def fix_typo2(children, i):
-    x = children[i]
+def fix_typo2(xchildren, i):
+    x = xchildren[i]
     if (x.tag.startswith('text_indent') and len(x) > 1
         and (x[-2].tag == 'bold_ex' or x[-1].tag == 'bold_ex')):
         log.error('repairing split "ex"')
@@ -554,22 +543,22 @@ def fix_typo2(children, i):
             x[-1].text = x[-2].text + x[-1].text
             del x[-2]
 
-def fix_typo3(children, i):
-    x = children[i]
+def fix_typo3(xchildren, i):
+    x = xchildren[i]
     if (len(x) > 3 and x[1].text == 'Fraxinus' and x[2].text == 'ex'
         and x[3].text == 'celsior'):
         del x[3]
         del x[2]
         x[1].text = 'Fraxinus excelsior'
 
-def fix_typo4(children, i):
-    if i < 4 or len(children[i]) == 0 or len(children[i-3]) == 0:
+def fix_typo4(xchildren, i):
+    if i < 4 or len(xchildren[i]) == 0 or len(xchildren[i-3]) == 0:
         return
-    if ((children[i][0].text or '').strip() !=
-        (children[i-3][0].text or '').strip()):
+    if ((xchildren[i][0].text or '').strip() !=
+        (xchildren[i-3][0].text or '').strip()):
         return
-    log.error('repairing duplicate "%s"' % children[i][0].text.strip())
-    children[i][0].text = children[i][0].text.replace('a', 'b')
+    log.error('repairing duplicate "%s"' % xchildren[i][0].text.strip())
+    xchildren[i][0].text = xchildren[i][0].text.replace('a', 'b')
 
 # For figuring out which couplets belong together on a page.
 
@@ -589,18 +578,12 @@ def transitive_closure(couplet):
 def do_parse(filename):
     info = parse(filename)
 
-    for couplet in info.couplets:
-        couplet.save()
-        for lead in couplet.leadlist:
-            lead.save()
-
-    for couplet in info.couplets:
-        if not couplet.title: # untitled couplets go on an ancestor's page
-            continue
-        page = models.Page()
-        page.title = couplet.title
-        page.couplet_ids = transitive_closure(couplet)
+    for page in info.pages.values():
+        ids = (lead.id for lead in page.leadlist)
+        page.lead_ids = ','.join(str(i) for i in sorted(ids))
         page.save()
+        for lead in page.leadlist:
+            lead.save()
 
 if __name__ == '__main__':
     import argparse
