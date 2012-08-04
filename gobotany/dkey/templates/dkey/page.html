@@ -66,6 +66,18 @@
 
 {{ page.text|figurize|safe }}
 
+{% if leads %}
+  <ul class="couplets couplet">
+  {% for item in lead_hierarchy %}
+    {% if item.0 %}
+      {{ item|safe }}
+    {% else %}
+      ITEM {{ item }}
+    {% endif %}
+  {% endfor %}
+  </ul>
+{% endif %}
+
 {% comment %}
 
 {% if proxy.couplet.leads %}

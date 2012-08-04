@@ -1,3 +1,6 @@
+from itertools import groupby
+from operator import attrgetter
+
 from django.shortcuts import get_object_or_404, render_to_response
 from gobotany.dkey import models
 
@@ -72,6 +75,29 @@ class _Proxy(object):
             lead_ids = []
         self.leads = models.Lead.objects.filter(pk__in=lead_ids).all()
 
+    def lead_hierarchy(self):
+        if not self.leads:
+            return
+        leads = reversed(self.leads)  # since pop() pulls from the end
+        get_parent_id = attrgetter('parent_id')
+        child_leads = {
+            key: list(group) for key, group in groupby(leads, get_parent_id)
+            }
+        stack = []
+        for child in child_leads[None]:
+            stack += ['</li>', child, '<li>']
+        while stack:
+            item = stack.pop()
+            yield item
+            if isinstance(item, basestring):
+                continue
+            children = child_leads.get(item.id)
+            if children:
+                stack += ['</ul>']
+                for child in children:
+                    stack += ['</li>', child, '<li>']
+                stack += ['<ul>']
+
 def get_families():
     pages = models.Page.objects.filter(rank='family')
     return sorted(page.title for page in pages)
@@ -91,6 +117,7 @@ def page(request, slug):
             'families': get_families,
             'genera': get_genera,
             'leads': (lambda: proxy.leads),
+            'lead_hierarchy': (lambda: proxy.lead_hierarchy()),
             'next_page': (lambda: proxy.next() or proxy.page),
             'page': (lambda: proxy.page),
             })

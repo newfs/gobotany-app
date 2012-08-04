@@ -21,7 +21,8 @@ class Lead(models.Model):
     goto_num = models.IntegerField(null=True)
 
     def __unicode__(self):
-        return u'{}:{}.{}'.format(self.id, self.letter, self.target)
+        return u'{}:{}.{}'.format(self.id, self.letter, self.goto_page_id
+                                  or self.goto_num or '')
 
 class Figure(models.Model):
     number = models.IntegerField(primary_key=True)
