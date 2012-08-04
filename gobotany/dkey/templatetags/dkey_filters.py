@@ -43,7 +43,8 @@ re_floating_figure = re.compile(ur'<FIG-(\d+)>')  # see parser.py
 re_figure_mention = re.compile(ur'\[Fig(s?)\. ([\d, ]+)\]')
 
 def render_floating_figure(match):
-    number = match.group(1)
+    number = int(match.group(1))
+    figure = models.Figure.objects.get(number=number)
     return (
         u'<span class="figure">'
         u'<a class="figure-link" href="/figures/figure-%s.png">'
@@ -52,7 +53,7 @@ def render_floating_figure(match):
         u'<span class="number">Fig. %s.</span>'
         u'%s'
         u'</span>'
-        ) % (number, number, number, 'TODO: PUT CAPTION HERE')
+        ) % (number, number, number, figure.caption)
 # caption used to be grabbed from: info.captions[int(number)])
 
 def render_figure_mention(match):
