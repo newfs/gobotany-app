@@ -17,13 +17,17 @@ from gobotany.dkey import models
 _couplet_list = []
 _couplets_by_title = {}
 
-def couplet_make(title=''):
+def couplet_make(title='', goto=None):
     c = None
+    if title.startswith('go to couplet '):
+        goto = int(title.split()[-1])
+        title = ''
     if title:
         c = _couplets_by_title.get(title)
     if c is None:
         c = models.Couplet()
         c.title = title
+        c.goto = goto
         c.leadlist = []  # temporary reference
         c.save()  # assign id before telling the Lead about it
         _couplet_list.append(c)
@@ -574,9 +578,7 @@ def transitive_closure(couplet):
     ids = set((couplet.id,))
     while stack:
         couplet = stack.pop()
-        if couplet.rank:
-            continue
-        if couplet.title and not couplet.title.startswith('go to '):
+        if couplet.title:  # titled couplets get their own page
             continue
         ids.add(couplet.id)
         stack.extend(lead.result_couplet for lead in couplet.leadlist)
@@ -594,8 +596,6 @@ def do_parse(filename):
 
     for couplet in info.couplets:
         if not couplet.title: # untitled couplets go on an ancestor's page
-            continue
-        if couplet.title.startswith('go to couplet '): # handled specially
             continue
         page = models.Page()
         page.title = couplet.title

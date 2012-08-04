@@ -3,8 +3,9 @@
 from django.db import models
 
 class Couplet(models.Model):
-    title = models.TextField(db_index=True, null=True)
-    chapter_name = models.TextField()
+    title = models.TextField(db_index=True)
+    #chapter_name = models.TextField()
+    goto = models.IntegerField(null=True)
     rank = models.TextField()
     text = models.TextField()
 
