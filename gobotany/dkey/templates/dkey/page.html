@@ -101,24 +101,24 @@
           {% elif lead.goto_num %}
             href="#c{{ lead.goto_num }}">JUMP TO {{ lead.goto_num }}
           {% else %}
-            {% with page=lead.goto_page %}
-            href="{% url dkey_page page|slug %}"
-            {% if page.rank == 'group' %}
-              >{{ page.title|upper }}
-            {% elif page.rank == 'subkey' %}
+            {% with p=lead.goto_page %}
+            href="{% url dkey_page p|slug %}"
+            {% if p.rank == 'group' %}
+              >{{ p.title|upper }}
+            {% elif p.rank == 'subkey' %}
               >VISIT KEY
-            {% elif page.rank == 'family' %}
-              >{{ page.title }}
-            {% elif page.rank == 'subgroup' and page.nearest_ancestor_rank == 'family' %}
-              >{{ page.title|replace:'Group :' }}
-            {% elif page.rank == 'genus' %}
-              ><i>{{ page.title }}</i>
-            {% elif page.rank == 'subgroup' and page.nearest_ancestor_rank == 'genus' %}
-              ><i>{{ page.title|replace:'Group :' }}</i>
-            {% elif page.rank == 'tribe' %}
-              >{{ page.title|lastword }}
-            {% elif page.rank == 'species' %}
-              ><i>{{ page.title|abbr }}</i>
+            {% elif p.rank == 'family' %}
+              >{{ p.title }}
+            {% elif p.rank == 'subgroup' and page.rank == 'family' %}
+              >{{ p.title|replace:'Group :' }}
+            {% elif p.rank == 'genus' %}
+              ><i>{{ p.title }}</i>
+            {% elif p.rank == 'subgroup' and page.rank == 'genus' %}
+              ><i>{{ p.title|replace:'Group :' }}</i>
+            {% elif p.rank == 'tribe' %}
+              >{{ p.title|lastword }}
+            {% elif p.rank == 'species' %}
+              ><i>{{ p.title|abbr }}</i>
             {% else %}
               >MALFUNCTION
             {% endif %}
