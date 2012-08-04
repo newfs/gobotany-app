@@ -78,8 +78,9 @@ class _Proxy(object):
     def lead_hierarchy(self):
         if not self.leads:
             return
-        leads = reversed(self.leads)  # since pop() pulls from the end
         get_parent_id = attrgetter('parent_id')
+        leads = sorted(self.leads, key=get_parent_id)  # groupby needs sort
+        leads = reversed(leads)  # since stack.pop() pulls from the end
         child_leads = {
             key: list(group) for key, group in groupby(leads, get_parent_id)
             }
