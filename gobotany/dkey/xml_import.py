@@ -9,7 +9,7 @@ from django.core import management
 management.setup_environ(settings)
 
 from django.db import transaction
-from gobotany.dkey.models import Couplet, Lead
+from gobotany.dkey import models
 
 # Couplet creation shortcuts, that work because during the import we
 # never let Couplet objects that we have created expire out of memory.
@@ -17,12 +17,12 @@ from gobotany.dkey.models import Couplet, Lead
 _couplet_list = []
 _couplets_by_title = {}
 
-def couplet_make(title=None):
+def couplet_make(title=''):
     c = None
-    if title is not None:
+    if title:
         c = _couplets_by_title.get(title)
     if c is None:
-        c = Couplet()
+        c = models.Couplet()
         c.title = title
         c.leadlist = []  # temporary reference
         c.save()  # assign id before telling the Lead about it
@@ -35,7 +35,7 @@ def couplet_entitled(title):
     return _couplets_by_title[title]
 
 def new_lead(parent_couplet, result_couplet=None):
-    lead = Lead()
+    lead = models.Lead()
     lead.parent_couplet = parent_couplet
     if result_couplet is not None:
         lead.result_couplet = result_couplet
@@ -567,14 +567,40 @@ def fix_typo4(children, i):
     log.error('repairing duplicate "%s"' % children[i][0].text.strip())
     children[i][0].text = children[i][0].text.replace('a', 'b')
 
+# For figuring out which couplets belong together on a page.
+
+def transitive_closure(couplet):
+    stack = list(lead.result_couplet for lead in couplet.leadlist)
+    ids = set((couplet.id,))
+    while stack:
+        couplet = stack.pop()
+        if couplet.rank:
+            continue
+        if couplet.title and not couplet.title.startswith('go to '):
+            continue
+        ids.add(couplet.id)
+        stack.extend(lead.result_couplet for lead in couplet.leadlist)
+    return ids
+
 # Support command-line invocation.
 
 def do_parse(filename):
     info = parse(filename)
+
     for couplet in info.couplets:
         couplet.save()
         for lead in couplet.leadlist:
             lead.save()
+
+    for couplet in info.couplets:
+        if not couplet.title: # untitled couplets go on an ancestor's page
+            continue
+        if couplet.title.startswith('go to couplet '): # handled specially
+            continue
+        page = models.Page()
+        page.title = couplet.title
+        page.couplet_ids = transitive_closure(couplet)
+        page.save()
 
 if __name__ == '__main__':
     import argparse

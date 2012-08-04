@@ -17,10 +17,12 @@ class Lead(models.Model):
     parent_couplet = models.ForeignKey(
         'Couplet', db_index=True, related_name='leads')
     result_couplet = models.ForeignKey(
-        'Couplet', db_index=True, related_name='leads_to')
+        'Couplet', db_index=True, related_name='leads_here')
 
     def __unicode__(self):
-        return u'{}:{}.{}->{}'.format(
-            self.id, self.letter,
-            self.parent_couplet_id, self.result_couplet_id,
-            )
+        return u'{}:{}.{}->{}'.format(self.id, self.letter,
+            self.parent_couplet_id, self.result_couplet_id)
+
+class Page(models.Model):
+    title = models.TextField(db_index=True, null=True)
+    couplet_ids = models.TextField()  # comma-separated like '1,2,3,4,5'
