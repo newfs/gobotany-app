@@ -71,9 +71,10 @@ class _Proxy(object):
         self.page = page
         if page.lead_ids:
             lead_ids = [ int(n) for n in page.lead_ids.split(u',') ]
+            self.leads = (models.Lead.objects.filter(pk__in=lead_ids)
+                          .select_related('goto_page').all())
         else:
-            lead_ids = []
-        self.leads = models.Lead.objects.filter(pk__in=lead_ids).all()
+            self.leads = []
 
     def lead_hierarchy(self):
         if not self.leads:
@@ -89,15 +90,20 @@ class _Proxy(object):
             stack += ['</li>', child, '<li>']
         while stack:
             item = stack.pop()
-            yield item
             if isinstance(item, basestring):
+                yield item
                 continue
-            children = child_leads.get(item.id)
-            if children:
+            leads = child_leads.get(item.id)
+            if leads:
+                item.nextnum = leads[0].letter.strip('ab')
+            yield item
+            if leads:
                 stack += ['</ul>']
-                for child in children:
-                    stack += ['</li>', child, '<li>']
-                stack += ['<ul>']
+                for lead in leads:
+                    stack += ['</li>', lead, '<li>']
+                id = ' id="c{}"'.format(item.nextnum) if item.nextnum else ''
+                ul = '<ul class="couplet"{}>'.format(id)
+                stack += [ul]  # TODO: needs id for linking
 
 def get_families():
     pages = models.Page.objects.filter(rank='family')

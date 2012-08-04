@@ -3,6 +3,9 @@
 
 {% block title %}{{ page.title }}{% endblock %}
 {% block script_name %}dkey{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="/static/css/dkey.css">
+{% endblock %}
 {% block body_attributes %}
     data-couplet-rank="{{ page.rank }}"
     data-couplet-title="{{ page.title }}"
@@ -68,23 +71,12 @@
 
 {% if leads %}
   <ul class="couplets couplet">
-  {% for item in lead_hierarchy %}
-    {% if item.0 %}
-      {{ item|safe }}
+  {% for lead in lead_hierarchy %}
+    {% if lead.0 %}
+      {% with literal_string=lead %}
+        {{ literal_string|safe }}
+      {% endwith %}
     {% else %}
-      ITEM {{ item }}
-    {% endif %}
-  {% endfor %}
-  </ul>
-{% endif %}
-
-{% comment %}
-
-{% if proxy.couplet.leads %}
-
-<ul class="couplets couplet">
-  {% for lead, result, number, goto, ranks_beneath, names_beneath in proxy.leads %}
-    <li>
       <div class="lead">
         <div class="button-block">
           {% if names_beneath %}
@@ -103,54 +95,53 @@
           <br>
           {% endif %}
           <a class="button"
-          {% if result.rank == 'group' %}
-             href="{% url couplet lead.result|cslug %}">{{ result.title|upper }}
-          {% elif result.rank == 'subkey' %}
-             href="{% url couplet lead.result|cslug %}">VISIT KEY
-          {% elif result.rank == 'family' %}
-             href="{% url couplet lead.result|cslug %}">{{ result.title }}
-          {% elif result.rank == 'subgroup' and
-                  result.nearest_ancestor_rank == 'family' %}
-             href="{% url couplet lead.result|cslug %}"
-               >{{ result.title|replace:'Group :' }}
-          {% elif result.rank == 'genus' %}
-             href="{% url couplet lead.result|cslug %}"><i>{{ result.title }}</i>
-          {% elif result.rank == 'subgroup' and
-                  result.nearest_ancestor_rank == 'genus' %}
-             href="{% url couplet lead.result|cslug %}"
-               ><i>{{ result.title|replace:'Group :' }}</i>
-          {% elif result.rank == 'tribe' %}
-             href="{% url couplet lead.result|cslug %}"
-               >{{ result.title|lastword }}
-          {% elif result.rank == 'species' %}
-             href="{% url couplet lead.result|cslug %}"
-               ><i>{{ result.title|abbr }}</i>
-          {% elif goto %}
-             href="#c{{ goto }}">JUMP TO {{ goto }}
+          {% spaceless %}
+          {% if lead.nextnum %}
+            href="#c{{ lead.nextnum }}">{{ lead.nextnum }} ↴
+          {% elif lead.goto_num %}
+            href="#c{{ lead.goto_num }}">JUMP TO {{ lead.goto_num }}
           {% else %}
-             href="#c{{ number }}">{{ number }} ↴
+            {% with page=lead.goto_page %}
+            href="{% url dkey_page page|slug %}"
+            {% if page.rank == 'group' %}
+              >{{ page.title|upper }}
+            {% elif page.rank == 'subkey' %}
+              >VISIT KEY
+            {% elif page.rank == 'family' %}
+              >{{ page.title }}
+            {% elif page.rank == 'subgroup' and page.nearest_ancestor_rank == 'family' %}
+              >{{ page.title|replace:'Group :' }}
+            {% elif page.rank == 'genus' %}
+              ><i>{{ page.title }}</i>
+            {% elif page.rank == 'subgroup' and page.nearest_ancestor_rank == 'genus' %}
+              ><i>{{ page.title|replace:'Group :' }}</i>
+            {% elif page.rank == 'tribe' %}
+              >{{ page.title|lastword }}
+            {% elif page.rank == 'species' %}
+              ><i>{{ page.title|abbr }}</i>
+            {% else %}
+              >MALFUNCTION
+            {% endif %}
+            {% endwith %}
           {% endif %}
           </a>
+          {% endspaceless %}
         </div>
-        {% if not result %}
-          <span class="warn">[Error: lead.result is None]</span>
-        {% elif lead.letter %}
+        {% if lead.letter %}
           <span class="letter">{{ lead.letter }}</span>
-          {{ lead.text|figurize }}
-        {% elif result.rank == 'subkey' %}
-          <b>Option {{ loop.index }}.</b> {{ result.title }}
+          {{ lead.text|figurize|safe }}
+        {% elif lead.rank == 'subkey' %}
+          <b>Option {{ loop.index }}.</b> {{ lead.title }}
         {% endif %}
       </div>
-      {% if result and not result.rank and not goto %}
-        <ul id="c{{ number }}" class="couplet">
-          { loop(lead.result.leads) } TODO: recurse
-        </ul>
-      {% endif %}
-    </li>
+    {% endif %}
   {% endfor %}
-</ul>
+  </ul>
+{% endif %}
 
-{% if not couplet.is_lone %}
+{% comment %}
+
+{% if leads|length > 1 %}
   <p><a class="show-all-button" href="#all">Show All Couplets</a></p>
 {% endif %}
 

@@ -81,6 +81,9 @@ def norm(u):
 re_number = re.compile('\d+')
 re_genus_letter = re.compile(ur'\b([A-Z]\.)(<[^>]+>|)[ \n]+')
 
+def p(text):
+    return u'<p>{}</p>'.format(text)
+
 def extract_html(x, skip=0, endskip=0):
     """Convert the xml children of `x` to html, skipping `skip` children."""
     s = x[skip-1].tail if skip else x.text
@@ -282,7 +285,7 @@ def parse_chapter(xchapter, info):
             log.info('  * %s', name)
             page = info.get_or_create_page(name)
             page.rank = 'species'
-            page.text += extract_html(child, skip=0)
+            page.text += p(extract_html(child, skip=0))
             i += 1
             while i < len(xchildren) and (is_discourse(xchildren[i])
                 or is_lead(xchildren[i]) and not is_species(xchildren[i])):
@@ -292,7 +295,7 @@ def parse_chapter(xchapter, info):
                 # ) or xchildren[i].tag in level_tags  #ack! really?
                 #):
                 log.info('    species descriptive <%s>', xchildren[i].tag)
-                page.text += extract_html(xchildren[i])
+                page.text += p(extract_html(xchildren[i]))
                 i += 1
             continue
 
@@ -354,7 +357,7 @@ def parse_chapter(xchapter, info):
 
         while is_discourse(xchildren[i]):
             log.info('    descriptive <%s>', xchildren[i].tag)
-            page.text += extract_html(xchildren[i])
+            page.text += p(extract_html(xchildren[i]))
             i += 1
 
         # Special case another style of genus with only one species.
@@ -505,7 +508,7 @@ def parse_section(info, page, prefix, xchildren, i):
             lead.goto_page = info.get_or_create_page(taxon_name)
             endskip = 1
 
-        lead.text = extract_html(xchild, skip=1, endskip=endskip)
+        lead.text += extract_html(xchild, skip=1, endskip=endskip)
 
         i += 1
 
