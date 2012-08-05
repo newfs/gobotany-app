@@ -134,20 +134,22 @@ def get_genera():
 def family_groups(request):
     """Fake quite a few things to create a bare list of groups."""
 
-    page = models.Page.objects.filter(title=u'Key to the Families')[0]
+    page = models.Page()
     page.title = 'List of Family Groups'
     proxy = _Proxy(page)
-    proxy.leads = [ lead for lead in proxy.leads
-                    if lead.goto_page and lead.goto_page.rank == u'group' ]
-    for lead in proxy.leads:
-        groupnum = lead.goto_page.title.split()[-1]
-        lead.letter = 'Group {}'.format(groupnum)
-        lead.text = group_texts[int(groupnum)]
-        lead.parent = None
+    for group in models.Page.objects.filter(rank=u'group').all():
+        lead = models.Lead()
+        lead.id = int(group.title.split()[-1])
+        lead.letter = 'Group {}'.format(lead.id)
+        lead.text = group_texts[lead.id]
+        lead.goto_page = group
+        proxy.leads.append(lead)
+    proxy.leads.sort(key=attrgetter('id'))
+
     return render_to_response('dkey/page.html', {
-            'leads': (lambda: proxy.leads),
-            'lead_hierarchy': (lambda: proxy.lead_hierarchy()),
-            'page': (lambda: proxy.page),
+            'leads': proxy.leads,
+            'lead_hierarchy': proxy.lead_hierarchy(),
+            'page': page,
             })
 
 def page(request, slug=u'Key-to-the-Families'):
