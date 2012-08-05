@@ -11,6 +11,14 @@ define([
 
     var gobotany_host = 'quiet-wind-6510.herokuapp.com';
 
+    // Rewrite couplet IDs so that #-links will no longer match.
+
+    $('.couplet').each(function(i, ul) {
+        var id = $(ul).attr('id');
+        if (id)
+            $(ul).attr('id', 'c' + id);  // make 'c2' into 'cc2'
+    });
+
     // Visiting particular couplets.
 
     var focus_on_one_couplet = function(new_hash, is_initial) {
@@ -33,7 +41,7 @@ define([
             var $couplet = null;
             var leads_to_show = $all_leads.toArray();
         } else {
-            var $couplet = $(new_hash ? '#' + new_hash : '.couplets');
+            var $couplet = $(new_hash ? '#c' + new_hash : '.couplets');
             var $parent_leads = $couplet.parents('li').children('.lead');
 
             $couplet.addClass('active');
@@ -178,7 +186,7 @@ define([
         console.log($(':selected', event.delegateTarget));
         var jumpto = $(':selected', event.delegateTarget).html();
         if (jumpto && ! jumpto.match(/^Jump/)) {
-            window.location = '/' + jumpto + '/';
+            window.location = '/dkey/' + jumpto + '/';
         }
     });
 })});

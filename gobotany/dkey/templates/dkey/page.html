@@ -140,18 +140,14 @@
     {% endif %}
   {% endfor %}
   </ul>
-{% endif %}
 
-{% comment %}
-
-{% if leads|length > 1 %}
-  <p><a class="show-all-button" href="#all">Show All Couplets</a></p>
-{% endif %}
+  {% if leads|length > 1 %}
+    <p><a class="show-all-button" href="#all">Show All Couplets</a></p>
+  {% endif %}
 
 {% endif %}
 
 <div class="taxon-images"></div>
 
-{% endcomment %}
 {% endwith %}
 {% endblock %}
