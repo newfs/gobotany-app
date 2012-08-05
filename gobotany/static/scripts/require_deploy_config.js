@@ -1,4 +1,3 @@
 requirejs.config({
-    baseUrl: '/static/build/deploy',
+    baseUrl: '/static/build/deploy'
 });
-
