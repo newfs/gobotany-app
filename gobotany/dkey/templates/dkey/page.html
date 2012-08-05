@@ -6,6 +6,9 @@
 {% block css %}
   <link rel="stylesheet" href="/static/css/dkey.css">
 {% endblock %}
+{% block js_require %}
+  require(['dkey/dkey']);
+{% endblock %}
 {% block body_attributes %}
     data-couplet-rank="{{ page.rank }}"
     data-couplet-title="{{ page.title }}"
