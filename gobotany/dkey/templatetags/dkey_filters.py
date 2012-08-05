@@ -9,13 +9,16 @@ from gobotany.dkey import models
 
 register = template.Library()
 
-def abbr(s):
-    """Abbreviate 'Huperzia appressa' to 'H. appressa'."""
-    parts = s.split(None, 1)
-    if len(parts) < 2:
-        return s
-    genus, rest = s.split(None, 1)
-    return u'%s. %s' % (genus[0], rest)
+def abbreviate_title(s):
+    """Make 'Acer rubrum' 'A. rubrum' and remove 'Group' from group titles."""
+    if u'Group ' in s:
+        return s.replace(u'Group ', u'')
+    else:
+        parts = s.split(None, 1)
+        if len(parts) < 2:
+            return s
+        genus, rest = s.split(None, 1)
+        return u'%s. %s' % (genus[0], rest)
 
 def breadcrumbs(page):
     if not page.breadcrumb_ids:
@@ -23,11 +26,6 @@ def breadcrumbs(page):
     ids = [ int(n) for n in page.breadcrumb_ids.split(',') ]
     pages = models.Page.objects.filter(id__in=ids)
     return sorted(pages, key=lambda page: len(page.breadcrumb_ids))
-
-def cslug(couplet):
-    if not couplet:
-        return 'Family-Carex'
-    return couplet.title.replace(u' ', u'-')
 
 def display_title(page):
     if page.rank == 'family':
@@ -80,23 +78,13 @@ def nobr(text):
     new = text.replace(u' ', u'\u00a0')
     return mark_safe(new) if isinstance(text, SafeUnicode) else new
 
-def replace(text, arg):
-    a, b = arg.split(':', 1)
-    return text.replace(a, b)
-
 def slug(page, chars=None):
     return page.title.replace(u' ', u'-')
 
-def strip(text, chars=None):
-    return text.strip(chars)
-
-register.filter('abbr', abbr)
+register.filter('abbreviate_title', abbreviate_title)
 register.filter('breadcrumbs', breadcrumbs)
-register.filter('cslug', cslug)
 register.filter('display_title', display_title)
 register.filter('figurize', figurize)
 register.filter('lastword', lastword)
 register.filter('nobr', nobr)
-register.filter('replace', replace)
 register.filter('slug', slug)
-register.filter('strip', strip)

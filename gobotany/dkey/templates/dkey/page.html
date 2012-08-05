@@ -89,7 +89,7 @@
                 See one {{ ranks_beneath|first }}
               {% endif %}
               {% if lead.letter %}
-                in {{ lead.letter|strip:'.' }}
+                in {{ lead.letter }}
               {% endif %}
             </a>
           <br>
@@ -110,15 +110,15 @@
             {% elif p.rank == 'family' %}
               >{{ p.title }}
             {% elif p.rank == 'subgroup' and page.rank == 'family' %}
-              >{{ p.title|replace:'Group :' }}
+              >{{ p.title|abbreviate_title }}
             {% elif p.rank == 'genus' %}
               ><i>{{ p.title }}</i>
             {% elif p.rank == 'subgroup' and page.rank == 'genus' %}
-              ><i>{{ p.title|replace:'Group :' }}</i>
+              ><i>{{ p.title|abbreviate_title }}</i>
             {% elif p.rank == 'tribe' %}
               >{{ p.title|lastword }}
             {% elif p.rank == 'species' %}
-              ><i>{{ p.title|abbr }}</i>
+              ><i>{{ p.title|abbreviate_title }}</i>
             {% else %}
               >MALFUNCTION
             {% endif %}
