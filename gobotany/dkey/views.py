@@ -60,6 +60,22 @@ class OldProxy(object):
 
         return sequence
 
+group_texts = {
+    1: 'Lycophytes, Monilophytes',
+    2: 'Gymnosperms',
+    3: 'Monocots',
+    4: 'Woody angiosperms with opposite or whorled leaves',
+    5: 'Woody angiosperms with alternate leaves',
+    6: 'Herbaceous angiosperms with inferior ovaries',
+    7: 'Herbaceous angiosperms with superior ovaries and zygomorphic flowers',
+    8: 'Herbaceous angiosperms with superior ovaries, actinomorphic flowers,'
+       ' and 2 or more distinct carpels',
+    9: 'Herbaceous angiosperms with superior ovaries, actinomorphic flowers,'
+       ' connate petals, and a solitary carpel or 2 or more connate carpels',
+    10:'Herbaceous angiosperms with superior ovaries, actinomorphic flowers,'
+       ' distinct petals or the petals lacking, and 2 or more connate carpels',
+    }
+
 class _Proxy(object):
     def __init__(self, page):
         self.set_page(page)
@@ -113,10 +129,28 @@ def get_genera():
     pages = models.Page.objects.filter(rank='genus')
     return sorted(page.title for page in pages)
 
-def index(request):
-    return render_to_response('dkey/index.html')
+# Views
 
-def page(request, slug):
+def family_groups(request):
+    """Fake quite a few things to create a bare list of groups."""
+
+    page = models.Page.objects.filter(title=u'Key to the Families')[0]
+    page.title = 'List of Family Groups'
+    proxy = _Proxy(page)
+    proxy.leads = [ lead for lead in proxy.leads
+                    if lead.goto_page and lead.goto_page.rank == u'group' ]
+    for lead in proxy.leads:
+        groupnum = lead.goto_page.title.split()[-1]
+        lead.letter = 'Group {}'.format(groupnum)
+        lead.text = group_texts[int(groupnum)]
+        lead.parent = None
+    return render_to_response('dkey/page.html', {
+            'leads': (lambda: proxy.leads),
+            'lead_hierarchy': (lambda: proxy.lead_hierarchy()),
+            'page': (lambda: proxy.page),
+            })
+
+def page(request, slug=u'Key-to-the-Families'):
     title = slug.replace(u'-', u' ')
     page = get_object_or_404(models.Page, title=title)
     proxy = _Proxy(page)

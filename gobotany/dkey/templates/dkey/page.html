@@ -40,19 +40,19 @@
 
 <p class="backlinks">
   {% for ancestor in page|breadcrumbs %}
-    <a href="{% url dkey_page ancestor|slug %}">
-      {% if loop.index == 1 %}
-        « Back to the {{ ancestor|display_title|nobr }}
+    {% with atitle=ancestor|display_title|nobr %}
+      {% if forloop.counter0 == 0 %}
+        <a href="{% url dkey %}">« Back to the {{ atitle }}</a>
       {% else %}
-        « {{ ancestor|display_title|nobr }}
+        <a href="{% url dkey_page ancestor|slug %}">« {{ atitle }}</a>
       {% endif %}
-    </a>
+    {% endwith %}
   {% endfor %}
   {% if title == 'Key to the Families' %}
-    <a href="/Groups/">See the family groups as a list »</a>
+    <a href="{% url dkey_family_groups %}">See the family groups as a list »</a>
   {% endif %}
   {% if title == 'List of Family Groups' %}
-    <a href="/Families/">« Return to the dichotomous key</a>
+    <a href="{% url dkey %}">« Return to the dichotomous key</a>
   {% endif %}
 </p>
 
@@ -128,10 +128,10 @@
           {% endspaceless %}
         </div>
         {% if lead.letter %}
-          <span class="letter">{{ lead.letter }}</span>
+          <span class="letter">{{ lead.letter }}.</span>
           {{ lead.text|figurize|safe }}
-        {% elif lead.rank == 'subkey' %}
-          <b>Option {{ loop.index }}.</b> {{ lead.title }}
+        {% elif lead.goto_page.rank == 'subkey' %}
+          {{ lead.goto_page.title }}
         {% endif %}
       </div>
     {% endif %}

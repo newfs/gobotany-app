@@ -4,7 +4,7 @@
 
 import re
 from django import template
-from django.utils.safestring import mark_safe
+from django.utils.safestring import SafeUnicode, mark_safe
 from gobotany.dkey import models
 
 register = template.Library()
@@ -34,10 +34,8 @@ def display_title(page):
         return u'Family {}'.format(page.title)
     elif page.rank == 'genus' or page.rank == 'species':
         return mark_safe(u'<i>{}</i>'.format(page.title))
-    elif page.title:
-        return page.title
     else:
-        return unicode(page.number)
+        return page.title
 
 re_floating_figure = re.compile(ur'<FIG-(\d+)>')  # see parser.py
 re_figure_mention = re.compile(ur'\[Fig(s?)\. ([\d, ]+)\]')
@@ -79,7 +77,8 @@ def lastword(text):
     return text.split()[-1]
 
 def nobr(text):
-    return text.replace(u' ', u'\u00a0')
+    new = text.replace(u' ', u'\u00a0')
+    return mark_safe(new) if isinstance(text, SafeUnicode) else new
 
 def replace(text, arg):
     a, b = arg.split(':', 1)
