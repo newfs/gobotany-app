@@ -5,10 +5,21 @@ from django.db import models
 from gobotany.core.models import GlossaryTerm, Pile, PileGroup
 
 
-# Note: The motivation for creating the following classes was to organize
-# information for various page types in order to build Haystack/Solr
-# search engine indexes for them.
+class SearchSuggestion(models.Model):
+    """An index of terms for auto-suggesting searches."""
+    term = models.CharField(max_length=150, unique=True, db_index=True)
 
+    def __unicode__(self):
+        return u'%s' % self.term
+
+    def save(self, *args, **kw):
+        """Store all search suggestion terms in lower case."""
+        self.term = self.term.lower()
+        super(SearchSuggestion, self).save(*args, **kw)
+
+
+# The "Page" classes are for organizing information for various page types
+# in order to build Haystack/Solr search engine indexes for them.
 
 class HelpPage(models.Model):
     """Outline of the contents of a Help page."""
@@ -146,17 +157,3 @@ class SubgroupResultsPage(models.Model):
             [self.subgroup.friendly_name, self.subgroup.friendly_title])
 
         return suggestions
-
-
-class SearchSuggestion(models.Model):
-    """An index of terms for auto-suggesting searches."""
-    term = models.CharField(max_length=150, unique=True, db_index=True)
-
-    def __unicode__(self):
-        return u'%s' % self.term
-
-    def save(self, *args, **kw):
-        """Store all search suggestion terms in lower case."""
-        self.term = self.term.lower()
-        super(SearchSuggestion, self).save(*args, **kw)
-
