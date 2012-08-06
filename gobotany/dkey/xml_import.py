@@ -2,7 +2,6 @@
 
 import logging
 import re
-from collections import deque
 from lxml import etree
 
 from gobotany import settings
@@ -20,6 +19,7 @@ class Info(object):
 
     def __init__(self):
         self.pages = {}
+        self.leads = []
 
     def get_or_create_page(self, title):
         page = self.pages.get(title)
@@ -27,7 +27,6 @@ class Info(object):
             return page
         page = models.Page()
         page.title = title
-        page.leadlist = []  # temporary list, thrown away when we save to db
         page.save()
         self.pages[title] = page
         return page
@@ -37,13 +36,14 @@ class Info(object):
 
     def create_lead(self, page, parent=None, goto_page=None, goto_num=None):
         lead = models.Lead()
+        lead.page = page
         lead.parent = parent
         if isinstance(goto_page, basestring):
             goto_page = self.get_or_create_page(goto_page)
         lead.goto_page = goto_page
         lead.goto_num = goto_num
         lead.save()
-        page.leadlist.append(lead)
+        self.leads.append(lead)
         return lead
 
 # The import logic itself.
@@ -564,46 +564,18 @@ def fix_typo4(xchildren, i):
     log.error('repairing duplicate "%s"' % xchildren[i][0].text.strip())
     xchildren[i][0].text = xchildren[i][0].text.replace('a', 'b')
 
-# For figuring out which couplets belong together on a page.
-
-def transitive_closure(couplet):
-    stack = list(lead.result_couplet for lead in couplet.leadlist)
-    ids = set((couplet.id,))
-    while stack:
-        couplet = stack.pop()
-        if couplet.title:  # titled couplets get their own page
-            continue
-        ids.add(couplet.id)
-        stack.extend(lead.result_couplet for lead in couplet.leadlist)
-    return ids
-
 # Support command-line invocation.
 
 def do_parse(filename):
     info = parse(filename)
 
-    # Figure out the ancestors of each page.
-
-    pages = deque([ info.get_or_create_page('Key to the Families') ])
-
-    while pages:
-        page = pages.popleft()
-        comma = ',' if page.breadcrumb_ids else ''
-        breadcrumb_ids = page.breadcrumb_ids + comma + str(page.id)
-        for lead in page.leadlist:
-            if lead.goto_page:
-                lead.goto_page.breadcrumb_ids = breadcrumb_ids
-                pages.append(lead.goto_page)
-
     # Save the changes that have been made to pages and leads since
     # their initial creation.
 
     for page in info.pages.values():
-        ids = (lead.id for lead in page.leadlist)
-        page.lead_ids = ','.join(str(i) for i in sorted(ids))
         page.save()
-        for lead in page.leadlist:
-            lead.save()
+    for lead in info.leads:
+        lead.save()
 
     # Save figure captions.
 

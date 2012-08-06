@@ -3,21 +3,21 @@
 from django.db import models
 
 class Page(models.Model):
-    chapter = models.TextField()
-    title = models.TextField(db_index=True, null=True)
+    chapter = models.TextField(blank=True)
+    title = models.TextField(unique=True)
     rank = models.TextField(db_index=True)
-    text = models.TextField()
-    breadcrumb_ids = models.TextField()  # comma-separated like '1,2,3,4,5'
-    lead_ids = models.TextField()        # comma-separated like '1,2,3,4,5'
+    text = models.TextField(blank=True)
+    ancestors = models.ManyToManyField('Page', related_name='descendants')
 
     def __unicode__(self):
-        return u'{}:{}'.format(self.id, self.title or 'untitled')
+        return self.title
 
 class Lead(models.Model):
+    page = models.ForeignKey('Page', related_name='leads')
+    parent = models.ForeignKey('Lead', related_name='children', null=True)
     letter = models.TextField()
     text = models.TextField()
-    parent = models.ForeignKey('Lead', related_name='children', null=True)
-    goto_page = models.ForeignKey('Page', null=True)
+    goto_page = models.ForeignKey('Page', related_name='leadins', null=True)
     goto_num = models.IntegerField(null=True)
 
     def __unicode__(self):

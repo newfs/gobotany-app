@@ -21,11 +21,7 @@ def abbreviate_title(s):
         return u'%s. %s' % (genus[0], rest)
 
 def breadcrumbs(page):
-    if not page.breadcrumb_ids:
-        return []
-    ids = [ int(n) for n in page.breadcrumb_ids.split(',') ]
-    pages = models.Page.objects.filter(id__in=ids)
-    return sorted(pages, key=lambda page: len(page.breadcrumb_ids))
+    return reversed(page.ancestors.all())
 
 def display_title(page):
     if page.rank == 'family':

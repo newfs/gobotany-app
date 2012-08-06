@@ -29,12 +29,8 @@ class _Proxy(object):
 
     def set_page(self, page):
         self.page = page
-        if page.lead_ids:
-            lead_ids = [ int(n) for n in page.lead_ids.split(u',') ]
-            self.leads = (models.Lead.objects.filter(pk__in=lead_ids)
-                          .select_related('goto_page').all())
-        else:
-            self.leads = []
+        self.leads = (models.Lead.objects.filter(page=page)
+                      .select_related('goto_page').all())
 
     def lead_hierarchy(self):
         if not self.leads:
