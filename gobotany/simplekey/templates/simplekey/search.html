@@ -56,13 +56,13 @@
                                 {{ item_title|italicize_plant|safe }}
                             </a>
                         {% endif %}
-                        {% if result.model_name == 'helppage' %}
+                        {% if result.model_name == 'plainpage' %}
                             <a href="{{ url_base }}{{ result.object.url_path }}"><img
                                 src="/static/images/icons/icon-help.png"
                                 alt="" title="Help page">
                                 {{ item_title }}</a>
                         {% endif %}
-                        {% if result.model_name == 'glossaryhelppage' %}
+                        {% if result.model_name == 'glossarypage' %}
                             <a href="{{ url_base }}{{ result.object.url_path }}"><img
                                 src="/static/images/icons/icon-glossary.png"
                                 alt="" title="Glossary page">

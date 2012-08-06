@@ -3,7 +3,7 @@ from haystack import site
 
 from gobotany.core.models import Taxon, Family, Genus
 
-from gobotany.simplekey.models import (HelpPage, GlossaryHelpPage,
+from gobotany.simplekey.models import (PlainPage, GlossaryPage,
                                        GroupsListPage, SubgroupResultsPage,
                                        SubgroupsListPage)
 
@@ -74,21 +74,21 @@ class GenusIndex(indexes.SearchIndex):
         template_name='simplekey/search_text_genus.txt')
 
 
-class HelpPageIndex(indexes.SearchIndex):
+class PlainPageIndex(indexes.SearchIndex):
     title = indexes.CharField(model_attr='title')
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='simplekey/search_text_help_page.txt')
+        template_name='simplekey/search_text_plain_page.txt')
 
 
-class GlossaryHelpPageIndex(indexes.SearchIndex):
+class GlossaryPageIndex(indexes.SearchIndex):
     title = indexes.CharField(model_attr='title')
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='simplekey/search_text_glossary_help_page.txt')
+        template_name='simplekey/search_text_glossary_page.txt')
 
     def prepare(self, obj):
-        data = super(GlossaryHelpPageIndex, self).prepare(obj)
+        data = super(GlossaryPageIndex, self).prepare(obj)
         # Boost glossary pages 200% to help ensure they come first when
         # searching on glossary terms.
         data['boost'] = 2.0
@@ -126,8 +126,8 @@ class SubgroupResultsPageIndex(indexes.SearchIndex):
 site.register(Taxon, TaxonIndex)
 site.register(Family, FamilyIndex)
 site.register(Genus, GenusIndex)
-site.register(HelpPage, HelpPageIndex)
-site.register(GlossaryHelpPage, GlossaryHelpPageIndex)
+site.register(PlainPage, PlainPageIndex)
+site.register(GlossaryPage, GlossaryPageIndex)
 site.register(GroupsListPage, GroupsListPageIndex)
 site.register(SubgroupsListPage, SubgroupsListPageIndex)
 site.register(SubgroupResultsPage, SubgroupResultsPageIndex)

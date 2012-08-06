@@ -21,24 +21,26 @@ class SearchSuggestion(models.Model):
 # The "Page" classes are for organizing information for various page types
 # in order to build Haystack/Solr search engine indexes for them.
 
-class HelpPage(models.Model):
-    """Outline of the contents of a Help page."""
+class PlainPage(models.Model):
+    """Outline of the contents of a plain, miscellaneous page. Examples of
+    these include the non-glossary 'About' pages, the Teaching page, etc.
+    """
     title = models.CharField(max_length=100)
     url_path = models.CharField(max_length=100)
     search_text = models.TextField()
     videos = models.ManyToManyField('core.Video')
 
     class Meta:
-        verbose_name_plural = 'help pages'
+        verbose_name_plural = 'plain pages'
 
     def __unicode__(self):
         return u'%s' % self.title
 
 
-class GlossaryHelpPage(models.Model):
-    """A Help page that lists glossary terms for a letter (or number).
+class GlossaryPage(models.Model):
+    """A page that lists glossary terms for a letter (or number).
 
-       (Do not inherit from HelpPage here, in order to keep records separate
+       (Do not inherit from PlainPage here, in order to keep records separate
        for search engine indexing.)
     """
     title = models.CharField(max_length=100)
@@ -47,7 +49,7 @@ class GlossaryHelpPage(models.Model):
     terms = models.ManyToManyField(GlossaryTerm)
 
     class Meta:
-        verbose_name_plural = 'glossary help pages'
+        verbose_name_plural = 'glossary pages'
 
     def __unicode__(self):
         return u'%s' % self.title

@@ -29,7 +29,7 @@ from django.template.defaultfilters import slugify
 import bulkup
 from gobotany.core import models
 from gobotany.core.pile_suffixes import pile_suffixes
-from gobotany.simplekey.models import (GroupsListPage, HelpPage,
+from gobotany.simplekey.models import (GroupsListPage, PlainPage,
                                        SearchSuggestion, SubgroupResultsPage,
                                        SubgroupsListPage)
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
@@ -155,7 +155,7 @@ class Importer(object):
     def import_constants(self, db, characters_csv):
         """Invoke all imports not requiring input or I/O"""
         self.import_plant_preview_characters(characters_csv)
-        self.import_help()
+        self.import_plain_pages()
         self.import_simple_key_pages()
         self.import_search_suggestions()
 
@@ -1656,37 +1656,36 @@ class Importer(object):
         return text
 
 
-    def _create_about_gobotany_page(self):
-        url_path = reverse('simplekey-help-about')
-        help_page, created = HelpPage.objects.get_or_create(
-            title='About Go Botany', url_path=url_path)
+    def _create_plain_page(self, url_name, page_title, template_path=None):
+        url_path = reverse(url_name)
+        plain_page, created = PlainPage.objects.get_or_create(
+            title=page_title, url_path=url_path)
         if created:
-            log.info('  New Help page: %s' % help_page)
+            log.info('  New PlainPage: %s' % plain_page)
 
-        text = self._get_text_from_template('simplekey/help_about.html')
-        log.info('    Add search text: %d characters' % len(text))
-        help_page.search_text = text
+        if template_path:
+            text = self._get_text_from_template(template_path)
+            log.info('    Add search text: %d characters' % len(text))
+            plain_page.search_text = text
+            plain_page.save()
 
-        help_page.save()
+        return plain_page
+
+
+    def _create_about_gobotany_page(self):
+        self._create_plain_page('simplekey-help-about',
+                                'About Go Botany',
+                                'simplekey/help_about.html')
 
 
     def _create_getting_started_page(self):
-        url_path = reverse('simplekey-help-start')
-        help_page, created = HelpPage.objects.get_or_create(
-            title='Getting Started', url_path=url_path)
-        if created:
-            log.info('  New Help page: %s' % help_page)
-
-        text = self._get_text_from_template('simplekey/help_start.html')
-        log.info('    Add search text: %d characters' % len(text))
-        help_page.search_text = text
-
-
+        plain_page = self._create_plain_page('simplekey-help-start',
+                                             'Getting Started',
+                                             'simplekey/help_start.html')
         video = models.Video.objects.get(title='Getting Started')
         if video:
-            help_page.videos.add(video)
-
-        help_page.save()
+            plain_page.videos.add(video)
+            plain_page.save()
 
 
     def _get_pile_and_group_videos(self):
@@ -1701,42 +1700,30 @@ class Importer(object):
 
 
     def _create_advanced_map_page(self):
-        url_path = reverse('simplekey-help-map')
-        help_page, created = HelpPage.objects.get_or_create(
-            title='Advanced Map To Groups', url_path=url_path)
-        if created:
-            log.info('  New Help page: %s' % help_page)
-
-        text = self._get_text_from_template('simplekey/help_map.html')
-        log.info('    Add search text: %d characters' % len(text))
-        help_page.search_text = text
-
+        plain_page = self._create_plain_page('simplekey-help-map',
+                                             'Advanced Map to Groups',
+                                             'simplekey/help_map.html')
         # Add videos associated with each pile group and pile.
         videos = self._get_pile_and_group_videos()
         for video in videos:
-            help_page.videos.add(video)
-
-        help_page.save()
+            plain_page.videos.add(video)
+        plain_page.save()
 
 
     def _create_video_help_topics_page(self):
-        url_path = reverse('simplekey-help-video')
-        help_page, created = HelpPage.objects.get_or_create(
-            title='Video Help Topics', url_path=url_path)
-        if created:
-            log.info('  New Help page: %s' % help_page)
-
+        plain_page = self._create_plain_page('simplekey-help-video',
+                                             'Video Help Topics')
         # Add Getting Started video.
         video = models.Video.objects.get(title='Getting Started')
         if video:
-            help_page.videos.add(video)
+            plain_page.videos.add(video)
 
         # Add pile group and pile videos.
         videos = self._get_pile_and_group_videos()
         for video in videos:
-            help_page.videos.add(video)
+            plain_page.videos.add(video)
 
-        help_page.save()
+        plain_page.save()
 
 
     def _create_glossary_pages(self):
@@ -1748,7 +1735,7 @@ class Importer(object):
         # Make sure a glossary page is registered for each letter for
         # which at least one glossary term exists.
 
-        ghp_table = db.table('simplekey_glossaryhelppage')
+        ghp_table = db.table('simplekey_glossarypage')
         for letter in letters:
             url_path = reverse('simplekey-help-glossary', args=[letter])
             ghp_table.get(
@@ -1761,52 +1748,38 @@ class Importer(object):
 
         # Add every term to its appropriate glossary page.
 
-        ghp_ids = db.map('simplekey_glossaryhelppage', 'letter', 'id')
+        ghp_ids = db.map('simplekey_glossarypage', 'letter', 'id')
         term_ids = db.map('core_glossaryterm', 'term', 'id')
 
-        multi = db.table('simplekey_glossaryhelppage_terms')
+        multi = db.table('simplekey_glossarypage_terms')
         for term in terms:
             letter = term[0].lower()
             multi.get(
-                glossaryhelppage_id=ghp_ids[letter],
+                glossarypage_id=ghp_ids[letter],
                 glossaryterm_id=term_ids[term],
                 )
         multi.save()
 
 
+    def _create_teaching_page(self):
+        self._create_plain_page('teaching', 'Teaching',
+                                'simplekey/teaching.html')
+
+
     def _create_privacy_policy_page(self):
-        url_path = reverse('privacy-policy')
-        help_page, created = HelpPage.objects.get_or_create(
-            title='Privacy Policy', url_path=url_path)
-        if created:
-            log.info('  New Help page: %s' % help_page)
-
-        text = self._get_text_from_template('simplekey/privacy.html')
-        log.info('    Add search text: %d characters' % len(text))
-        help_page.search_text = text
-
-        help_page.save()
-
+        self._create_plain_page('privacy-policy', 'Privacy Policy',
+                                'simplekey/privacy.html')
 
     def _create_terms_of_use_page(self):
-        url_path = reverse('terms-of-use')
-        help_page, created = HelpPage.objects.get_or_create(
-            title='Terms of Use', url_path=url_path)
-        if created:
-            log.info('  New Help page: %s' % help_page)
-
-        text = self._get_text_from_template('simplekey/terms.html')
-        log.info('    Add search text: %d characters' % len(text))
-        help_page.search_text = text
-
-        help_page.save()
+        self._create_plain_page('terms-of-use', 'Terms of Use',
+                                'simplekey/terms.html')
 
 
-    def import_help(self):
-        """Create various help pages in the database"""
-        log.info('Setting up help pages and content')
+    def import_plain_pages(self):
+        """Create various plain pages in the database"""
+        log.info('Setting up plain pages (about, glossary, etc.)')
 
-        # Create Help page model records to be used for search engine indexing
+        # Create page model records to be used for search engine indexing
         # and ideally also by the page templates.
         self._create_about_gobotany_page()
         self._create_getting_started_page()
@@ -1814,6 +1787,7 @@ class Importer(object):
         self._create_video_help_topics_page()
         self._create_glossary_pages()
 
+        self._create_teaching_page()
         self._create_privacy_policy_page()
         self._create_terms_of_use_page()
 
