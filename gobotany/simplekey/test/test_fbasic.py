@@ -1065,6 +1065,54 @@ class SearchFunctionalTests(FunctionalTestCase):
 #            result_links, 'Pseudolycopodiella: Dichotomous Key'))
 
 
+    # Test searching miscellaneous pages around the site (about, etc.)
+
+    def test_search_results_contain_about_page(self):
+        self.get('/search/?q=flora')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links, 'About Go Botany'))
+
+    def test_search_results_contain_getting_started_page(self):
+        self.get('/search/?q=get%20started')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links,
+            'Getting Started with the Simple Key'))
+
+    def test_search_results_contain_advanced_map_page(self):
+        self.get('/search/?q=advanced%20map')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links,
+            'Advanced Map to Groups'))
+
+    def test_search_results_contain_video_help_topics_page(self):
+        self.get('/search/?q=video%20help')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links,
+            'Video Help Topics'))
+
+    def test_search_results_contain_privacy_policy_page(self):
+        self.get('/search/?q=privacy')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links, 'Privacy Policy'))
+
+    def test_search_results_contain_terms_of_use_page(self):
+        self.get('/search/?q=terms')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links, 'Terms of Use'))
+
+    def test_search_results_contain_teaching_page(self):
+        self.get('/search/?q=teaching')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links, 'Teaching'))
+
+
 class SearchSuggestionsFunctionalTests(FunctionalTestCase):
     SEARCH_INPUT_CSS = '#search input'
     SEARCH_MENU_CSS = '#search .menu:not(.hidden)'
