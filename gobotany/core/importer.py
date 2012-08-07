@@ -1680,8 +1680,8 @@ class Importer(object):
 
     def _create_getting_started_page(self):
         plain_page = self._create_plain_page('simplekey-help-start',
-                                             'Getting Started',
-                                             'simplekey/help_start.html')
+            'Getting Started with the Simple Key',
+            'simplekey/help_start.html')
         video = models.Video.objects.get(title='Getting Started')
         if video:
             plain_page.videos.add(video)
