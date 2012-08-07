@@ -9,6 +9,13 @@ from gobotany.dkey import models
 
 register = template.Library()
 
+plurals = {
+    'family': 'families',
+    'genus': 'genera',
+    'species': 'species',
+    'tribe': 'tribes',
+    }
+
 def abbreviate_title(s):
     """Make 'Acer rubrum' 'A. rubrum' and remove 'Group' from group titles."""
     if u'Group ' in s:
@@ -21,7 +28,7 @@ def abbreviate_title(s):
         return u'%s. %s' % (genus[0], rest)
 
 def breadcrumbs(page):
-    return reversed(page.ancestors.all())
+    return page.breadcrumb_cache.order_by('id')
 
 def display_title(page):
     if page.rank == 'family':
@@ -77,6 +84,9 @@ def nobr(text):
 def slug(page, chars=None):
     return page.title.replace(u' ', u'-')
 
+def taxon_plural(s):
+    return plurals[s]
+
 register.filter('abbreviate_title', abbreviate_title)
 register.filter('breadcrumbs', breadcrumbs)
 register.filter('display_title', display_title)
@@ -84,3 +94,4 @@ register.filter('figurize', figurize)
 register.filter('lastword', lastword)
 register.filter('nobr', nobr)
 register.filter('slug', slug)
+register.filter('taxon_plural', taxon_plural)

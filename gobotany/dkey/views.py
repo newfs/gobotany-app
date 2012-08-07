@@ -33,11 +33,14 @@ class _Proxy(object):
                       .select_related('goto_page').all())
 
     def lead_hierarchy(self):
-        if not self.leads:
+        leads = list(self.leads)
+        if not leads:
             return
         get_parent_id = attrgetter('parent_id')
-        leads = sorted(self.leads, key=get_parent_id)  # groupby needs sort
+        leads.sort(key=models.Lead.sort_key)  # put 1a before 1b, etc
+        leads.sort(key=get_parent_id)         # group them by parent
         leads = reversed(leads)  # since stack.pop() pulls from the end
+
         child_leads = {
             key: list(group) for key, group in groupby(leads, get_parent_id)
             }
@@ -49,15 +52,19 @@ class _Proxy(object):
             if isinstance(item, basestring):
                 yield item
                 continue
-            leads = child_leads.get(item.id)
+            lead = item
+            if lead.taxa_cache:
+                lead.taxa_rank, lead.taxa_list = lead.taxa_cache.split(':')
+                lead.taxa_count = lead.taxa_list.count(',') + 1
+            leads = child_leads.get(lead.id)
             if leads:
-                item.nextnum = leads[0].letter.strip('ab')
-            yield item
+                lead.nextnum = leads[0].letter.strip('ab')
+            yield lead
             if leads:
                 stack += ['</ul>']
-                for lead in leads:
-                    stack += ['</li>', lead, '<li>']
-                id = ' id="c{}"'.format(item.nextnum) if item.nextnum else ''
+                for lead2 in leads:
+                    stack += ['</li>', lead2, '<li>']
+                id = ' id="c{}"'.format(lead.nextnum) if lead.nextnum else ''
                 ul = '<ul class="couplet"{}>'.format(id)
                 stack += [ul]  # TODO: needs id for linking
 

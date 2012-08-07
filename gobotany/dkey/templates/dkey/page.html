@@ -82,15 +82,11 @@
     {% else %}
       <div class="lead">
         <div class="button-block">
-          {% if names_beneath %}
+          {% if lead.taxa_cache and lead.taxa_count > 1 %}
             <a class="what-lies-beneath" href=""
-               data-taxa="{{ names_beneath|join:',' }}">
-              {% if names_beneath|length > 1 %}
-                See list of {{ names_beneath|length }}
-                {{ ranks_beneath|pluralize|join:' and ' }}
-              {% else %}
-                See one {{ ranks_beneath|first }}
-              {% endif %}
+               data-taxa="{{ lead.taxa_list }}">
+              See list of {{ lead.taxa_count }}
+              {{ lead.taxa_rank|taxon_plural }}
               {% if lead.letter %}
                 in {{ lead.letter }}
               {% endif %}
