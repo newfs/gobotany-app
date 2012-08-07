@@ -82,10 +82,10 @@
     {% else %}
       <div class="lead">
         <div class="button-block">
-          {% if lead.taxa_cache and lead.taxa_count > 1 %}
+          {% if lead.taxa_rank and lead.taxa_set|length > 1 %}
             <a class="what-lies-beneath" href=""
                data-taxa="{{ lead.taxa_list }}">
-              See list of {{ lead.taxa_count }}
+              See list of {{ lead.taxa_set|length }}
               {{ lead.taxa_rank|taxon_plural }}
               {% if lead.letter %}
                 in {{ lead.letter }}

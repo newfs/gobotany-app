@@ -20,6 +20,19 @@ group_texts = {
        ' distinct petals or the petals lacking, and 2 or more connate carpels',
     }
 
+def fill_in_taxa(child_leads, lead):
+    if lead.taxa_cache:
+        lead.taxa_rank, lead.taxa_list = lead.taxa_cache.split(':')
+        lead.taxa_set = set(lead.taxa_list.split(','))
+    else:
+        children = child_leads[lead.id]
+        lead.taxa_set = set()
+        for child in children:
+            fill_in_taxa(child_leads, child)
+            lead.taxa_set.update(child.taxa_set)
+        lead.taxa_rank = children[0].taxa_rank
+        lead.taxa_list = ','.join(sorted(lead.taxa_set))
+
 class _Proxy(object):
     def __init__(self, page):
         self.set_page(page)
@@ -36,14 +49,23 @@ class _Proxy(object):
         leads = list(self.leads)
         if not leads:
             return
+
+        # Sort and group all leads.
+
         get_parent_id = attrgetter('parent_id')
         leads.sort(key=models.Lead.sort_key)  # put 1a before 1b, etc
-        leads.sort(key=get_parent_id)         # group them by parent
         leads = reversed(leads)  # since stack.pop() pulls from the end
-
         child_leads = {
             key: list(group) for key, group in groupby(leads, get_parent_id)
             }
+
+        # Fill in taxa lists for non-leaf leads.
+
+        for lead in child_leads[None]:
+            fill_in_taxa(child_leads, lead)
+
+        # Expand the leads into a full <ul> hierarchy.
+
         stack = []
         for child in child_leads[None]:
             stack += ['</li>', child, '<li>']
@@ -53,9 +75,6 @@ class _Proxy(object):
                 yield item
                 continue
             lead = item
-            if lead.taxa_cache:
-                lead.taxa_rank, lead.taxa_list = lead.taxa_cache.split(':')
-                lead.taxa_count = lead.taxa_list.count(',') + 1
             leads = child_leads.get(lead.id)
             if leads:
                 lead.nextnum = leads[0].letter.strip('ab')
