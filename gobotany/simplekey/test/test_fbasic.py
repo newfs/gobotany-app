@@ -1136,7 +1136,12 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
         search_input = self.css1(self.SEARCH_INPUT_CSS)
         search_input.click()
         search_input.clear()
-        search_input.send_keys(suggestion)
+
+        # Enter all but the last letter of the suggestion because we
+        # exclude exact matches from the suggestions list. For example,
+        # by excluding the last letter, we can check that typing 'dogwoo'
+        # returns 'dogwood' as a suggestion.
+        search_input.send_keys(suggestion[:-1])
 
         suggestion_exists = False
         menu = None
@@ -1267,7 +1272,10 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
                          sorted(SUGGESTIONS))
 
     def test_simple_key_ferns_suggestions_exist(self):
-        SUGGESTIONS = ['ferns', 'horsetails', 'quillworts', 'lycopods']
+        SUGGESTIONS = ['ferns', 'horsetails', 'quillworts']
+        # The suggestion 'lycopods' is in the database, but happens to not
+        # come up due many other suggestions that begin with 'lycopod',
+        # so excluding here.
         self.assertEqual(self._suggestions_found(SUGGESTIONS),
                          sorted(SUGGESTIONS))
 
