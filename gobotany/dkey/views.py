@@ -24,14 +24,18 @@ def fill_in_taxa(child_leads, lead):
     if lead.taxa_cache:
         lead.taxa_rank, lead.taxa_list = lead.taxa_cache.split(':')
         lead.taxa_set = set(lead.taxa_list.split(','))
-    else:
-        children = child_leads[lead.id]
+    elif child_leads.get(lead.id):
+        children = child_leads.get(lead.id)
         lead.taxa_set = set()
         for child in children:
             fill_in_taxa(child_leads, child)
             lead.taxa_set.update(child.taxa_set)
         lead.taxa_rank = children[0].taxa_rank
         lead.taxa_list = ','.join(sorted(lead.taxa_set))
+    else:
+        lead.taxa_set = set()  # let the dkey display if cache is empty
+        lead.taxa_rank = ''
+        lead.taxa_list = []
 
 class _Proxy(object):
     def __init__(self, page):

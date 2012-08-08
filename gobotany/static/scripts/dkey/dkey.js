@@ -91,6 +91,8 @@ define([
     var $popup = $('<div>').appendTo($shadow).addClass('popup');
 
     $('.what-lies-beneath').on('click', function(event) {
+        if ($(event.delegateTarget).attr('href') != '.')
+            return;
         event.preventDefault();
         var $target = $(event.delegateTarget);
         var title = $target.html();

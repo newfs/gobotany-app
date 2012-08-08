@@ -80,16 +80,22 @@
         {{ literal_string|safe }}
       {% endwith %}
     {% else %}
+      {% with p=lead.goto_page %}
       <div class="lead">
         <div class="button-block">
           {% if lead.taxa_rank and lead.taxa_set|length > 1 %}
-            <a class="what-lies-beneath" href=""
+            <a class="what-lies-beneath" href="."
                data-taxa="{{ lead.taxa_list }}">
               See list of {{ lead.taxa_set|length }}
               {{ lead.taxa_rank|taxon_plural }}
               {% if lead.letter %}
                 in {{ lead.letter }}
               {% endif %}
+            </a>
+          <br>
+          {% elif lead.taxa_rank and lead.taxa_set|length == 1 %}
+            <a class="what-lies-beneath" href="{% url dkey_page p|slug %}">
+              Choose this {{ lead.taxa_rank }}
             </a>
           <br>
           {% endif %}
@@ -100,7 +106,6 @@
           {% elif lead.goto_num %}
             href="#c{{ lead.goto_num }}">JUMP TO {{ lead.goto_num }}
           {% else %}
-            {% with p=lead.goto_page %}
             href="{% url dkey_page p|slug %}"
             {% if p.rank == 'group' %}
               >{{ p.title|upper }}
@@ -121,7 +126,6 @@
             {% else %}
               >MALFUNCTION
             {% endif %}
-            {% endwith %}
           {% endif %}
           </a>
           {% endspaceless %}
@@ -133,6 +137,7 @@
           {{ lead.goto_page.title }}
         {% endif %}
       </div>
+      {% endwith %}
     {% endif %}
   {% endfor %}
   </ul>
