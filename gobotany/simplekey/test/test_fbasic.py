@@ -1362,6 +1362,22 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
         self.assertEqual(self._suggestions_found(SUGGESTIONS),
                          sorted(SUGGESTIONS))
 
+    # Test for the 'generic' portion of common names, i.e, 'dogwood'
+    # from a common name like 'silky dogwood'
+
+    def test_generic_common_name_suggestions_exist(self):
+        SUGGESTIONS = ['ground-cedar', 'spleenwort', 'spruce', 'juniper',
+                       'bellwort', 'dogwood', 'american-aster', 'thistle',
+                       'phlox', 'barren-strawberry']
+        self.assertEqual(self._suggestions_found(SUGGESTIONS),
+                         sorted(SUGGESTIONS))
+
+    # TODO: add tests to verify the following improvements made:
+    # - an exact matching suggestion for the query is excluded
+    # - first we try matching suggestions that start with the query, but
+    #   if not a lot of those are found, we then add suggestions that
+    #   match anywhere in the string
+
 
 class FamilyFunctionalTests(FunctionalTestCase):
 
