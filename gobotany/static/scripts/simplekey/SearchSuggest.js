@@ -189,9 +189,8 @@ define([
         suggestion, search_query
     ) {
         // Format a suggestion for display.
-        return (suggestion = search_query + '<strong>' +
-            suggestion.substr(search_query.length) +
-            '</strong>').toLowerCase();
+        return suggestion.replace(new RegExp(search_query, 'i'),
+                                  '<span>$&</span>').toLowerCase();
     },
 
     SearchSuggest.prototype.display_suggestions = function(

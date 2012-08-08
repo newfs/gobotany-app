@@ -2573,8 +2573,12 @@ nav #search #search-suggest input:-moz-placeholder {
 }
 
 nav #search-suggest .menu li {
+    font-weight: bold;
     margin: 0;
     padding: 3px;
+}
+nav #search-suggest .menu span {
+    font-weight: normal;
 }
 nav #search-suggest .menu a {
     height: inherit;

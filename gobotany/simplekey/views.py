@@ -568,6 +568,9 @@ def suggest_view(request):
     query = request.GET.get('q', '').lower()
     suggestions = []
     if query != '':
+        # First look for suggestions that match at the start of the
+        # query string.
+
         # This query is case-sensitive for better speed than using a
         # case-insensitive query. The database field is also case-
         # sensitive, so it is important that all SearchSuggestion
@@ -581,6 +584,19 @@ def suggest_view(request):
         # the desired number of results.
         suggestions = list(sorted(set([suggestion.lower()
             for suggestion in suggestions])))[:MAX_RESULTS]
+
+        # If fewer than the maximum number of suggestions were found,
+        # try finding some additional ones that match anywhere in the
+        # query string.
+        remaining_slots = MAX_RESULTS - len(suggestions)
+        if remaining_slots > 0:
+            more_suggestions = list(SearchSuggestion.objects.filter(
+                term__contains=query).exclude(term__startswith=query).
+                order_by('term').values_list('term', flat=True)
+                [:MAX_RESULTS * 2])
+            more_suggestions = list(sorted(set([suggestion.lower()
+                for suggestion in  more_suggestions])))[:remaining_slots]
+            suggestions.extend(more_suggestions)
 
     return HttpResponse(simplejson.dumps(suggestions),
                         mimetype='application/json')
