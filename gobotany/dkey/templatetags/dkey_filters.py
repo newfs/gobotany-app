@@ -3,11 +3,12 @@
 """Compute the display title of a Couplet."""
 
 import re
-from django import template
+from django.template import Context, Library
+from django.template.loader import get_template
 from django.utils.safestring import SafeUnicode, mark_safe
 from gobotany.dkey import models
 
-register = template.Library()
+register = Library()
 
 plurals = {
     'family': 'families',
@@ -38,36 +39,23 @@ def display_title(page):
     else:
         return page.title
 
+def figure_url(figure):
+    return 'http://newfs.s3.amazonaws.com/dkey-figures/figure-{}.png'.format(
+        figure.number)
+
 re_floating_figure = re.compile(ur'<FIG-(\d+)>')  # see parser.py
-re_figure_mention = re.compile(ur'\[Fig(s?)\. ([\d, ]+)\]')
+re_figure_mention = re.compile(ur'\[Figs?\. ([\d, ]+)\]')
 
 def render_floating_figure(match):
     number = int(match.group(1))
     figure = models.Figure.objects.get(number=number)
-    return (
-        u'<span class="figure">'
-        u'<a class="figure-link" href="/figures/figure-%s.png">'
-        u'<img src="/figures/figure-%s.png">'
-        u'</a>'
-        u'<span class="number">Fig. %s.</span>'
-        u'%s'
-        u'</span>'
-        ) % (number, number, number, figure.caption)
-# caption used to be grabbed from: info.captions[int(number)])
+    return get_template('dkey/figure.html').render(Context({'figure': figure}))
 
 def render_figure_mention(match):
-    ess = match.group(1)
-    numbers = [ number.strip() for number in match.group(2).split(',') ]
-    return (
-        u'[Fig%s. '
-        + u', '.join([
-                u'<a class="figure-link" href="/figures/figure-%s.png">'
-                u'%s'
-                u'</a>'
-                % (number, number) for number in numbers
-                ])
-        + u']'
-        ) % (ess,) #number, number, number, captions[int(number)])
+    numbers = [ int(number) for number in match.group(1).split(',') ]
+    figures = list(models.Figure.objects.filter(number__in=numbers))
+    context = Context({'figures': figures})
+    return get_template('dkey/figure_mention.html').render(context)
 
 def figurize(text):
     text = re_floating_figure.sub(render_floating_figure, text)
@@ -90,6 +78,7 @@ def taxon_plural(s):
 register.filter('abbreviate_title', abbreviate_title)
 register.filter('breadcrumbs', breadcrumbs)
 register.filter('display_title', display_title)
+register.filter('figure_url', figure_url)
 register.filter('figurize', figurize)
 register.filter('lastword', lastword)
 register.filter('nobr', nobr)
