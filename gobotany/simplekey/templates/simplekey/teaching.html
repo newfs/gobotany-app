@@ -5,8 +5,12 @@
 {% block body_attributes %}id="teaching-tools" class="app teaching-tools"{% endblock %}
 
 {% block js_require %}
-    require(['util/sidebar'], function(sidebar) {
+    require(['util/sidebar', 'util/mailto'], function (sidebar, mailto) {
         sidebar.setup();
+
+        $(document).ready(function () {
+            mailto.make_link('.email');
+        });
     });
 {% endblock %}
 
@@ -30,8 +34,8 @@
                     share resources for teaching botany. We&#8217;ll post the
                     curricula, modules, field workshops you have developed
                     using Go Botany here. Send your great ideas to
-                    <a href="mailto:gobotany@newenglandwild.org">
-                        gobotany@newenglandwild.org</a>. Thank you!</p>
+                    <a class="email">gobotany [at] newenglandwild [dot] org</a>.
+                    Thank you!</p>
 
                     <h3>Tools</h3>
 
