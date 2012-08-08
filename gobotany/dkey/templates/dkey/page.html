@@ -105,6 +105,9 @@
             href="#c{{ lead.nextnum }}">{{ lead.nextnum }} ↴
           {% elif lead.goto_num %}
             href="#c{{ lead.goto_num }}">JUMP TO {{ lead.goto_num }}
+          {% elif p.rank == 'species' %}
+            href="{% url simplekey-species p.title|genus_slug p.title|species_slug %}#dkey"
+              ><i>{{ p.title|abbreviate_title }}</i>
           {% else %}
             href="{% url dkey_page p|slug %}"
             {% if p.rank == 'group' %}
@@ -121,8 +124,6 @@
               ><i>{{ p.title|abbreviate_title }}</i>
             {% elif p.rank == 'tribe' %}
               >{{ p.title|lastword }}
-            {% elif p.rank == 'species' %}
-              ><i>{{ p.title|abbreviate_title }}</i>
             {% else %}
               >MALFUNCTION
             {% endif %}

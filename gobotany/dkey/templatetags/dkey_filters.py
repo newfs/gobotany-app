@@ -43,6 +43,9 @@ def figure_url(figure):
     return 'http://newfs.s3.amazonaws.com/dkey-figures/figure-{}.png'.format(
         figure.number)
 
+def genus_slug(page_title):
+    return page_title.split()[0].lower()
+
 re_floating_figure = re.compile(ur'<FIG-(\d+)>')  # see parser.py
 re_figure_mention = re.compile(ur'\[Figs?\. ([\d, ]+)\]')
 
@@ -72,6 +75,9 @@ def nobr(text):
 def slug(page, chars=None):
     return page.title.replace(u' ', u'-')
 
+def species_slug(page_title):
+    return page_title.split()[1].lower()
+
 def taxon_plural(s):
     return plurals[s]
 
@@ -80,7 +86,9 @@ register.filter('breadcrumbs', breadcrumbs)
 register.filter('display_title', display_title)
 register.filter('figure_url', figure_url)
 register.filter('figurize', figurize)
+register.filter('genus_slug', genus_slug)
 register.filter('lastword', lastword)
 register.filter('nobr', nobr)
 register.filter('slug', slug)
+register.filter('species_slug', species_slug)
 register.filter('taxon_plural', taxon_plural)
