@@ -187,6 +187,8 @@ header { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; }
 
 header, .content, footer { width: 100%; }
 
+a.email:not([href]) { color: #000; text-decoration: none; }
+
 .container { width: 960px; padding: 0 10px; margin: 0 auto; }
 
 header h1 a { display: block; text-indent: -9000px; }

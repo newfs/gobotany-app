@@ -28,6 +28,10 @@ header {
 header, .content, footer {
     width: 100%;
 }
+a.email:not([href]) {
+    color: #000;
+    text-decoration: none;
+}
 .container {
     width: 960px;
     padding: 0 10px;
