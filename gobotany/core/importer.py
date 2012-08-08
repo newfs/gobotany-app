@@ -1878,6 +1878,14 @@ class Importer(object):
         subgroups = SubgroupResultsPage.objects.all()
         for subgroup in subgroups:
             suggestions.extend(subgroup.search_suggestions())
+
+        # Add extra search suggestions for the "generic" portion
+        # of common names, for example, "dogwood" from "silky dogwood."
+        for name in models.CommonName.objects.all():
+            parts = name.common_name.split(' ')
+            if len(parts) > 1:
+                suggestions.append(parts[-1])
+
         suggestions = list(set(suggestions))   # remove duplicates
         for suggestion in suggestions:
             suggestion = suggestion.lower()
@@ -1885,6 +1893,7 @@ class Importer(object):
                 term=suggestion)
             if created:
                 log.info('  New SearchSuggestion: %s' % suggestion)
+
 
 # Import a partner species list Excel spreadsheet.
 
