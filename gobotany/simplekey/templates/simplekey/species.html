@@ -38,7 +38,7 @@
                 {% if key == 'dichotomous' %}
                     <div id="breadcrumb">
                         <p class="nogloss">
-                        {% include "dkey/breadcrumbs.html" with page=dkey_page %}
+                        {% include "dkey/_breadcrumbs.html" with page=dkey_page %}
                         </p>
                     </div>
                 {% elif in_simple_key %}
@@ -64,6 +64,11 @@
                     <h3>{% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</h3>
                 {% endif %}
 
+                {% if key == 'dichotomous' %}
+                    <div class="dkey_text">
+                        {% include "dkey/_page_text.html" with page=dkey_page %}
+                    </div>
+                {% endif %}
 
                 <div id="species-images">
                     {% for i in images %}

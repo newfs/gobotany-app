@@ -149,9 +149,9 @@ textarea { overflow: auto; /* 1 */ vertical-align: top; /* 2 */ }
 table { border-collapse: collapse; border-spacing: 0; }
 
 /* Definitions */
-.orange-button, .offer-help-aside a, ul.couplets a.button, a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -ms-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.083em; }
-.orange-button:hover, .offer-help-aside a:hover, ul.couplets a.button:hover, a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -ms-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
-.orange-button.disabled, .offer-help-aside a.disabled, ul.couplets a.disabled.button, a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -ms-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
+.orange-button, .offer-help-aside a, ul.couplets a.button, a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
+.orange-button:hover, .offer-help-aside a:hover, ul.couplets a.button:hover, a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
+.orange-button.disabled, .offer-help-aside a.disabled, ul.couplets a.disabled.button, a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
 
 /* Styles */
 * { box-sizing: border-box; }
@@ -166,7 +166,7 @@ img.logo { display: block; position: absolute; top: 0; left: 0; max-width: 100%;
 
 div.nav { margin-top: 65px; margin-left: 46px; color: #fff; font-size: 87.5%; }
 @media (max-width: 450px) { div.nav { margin-top: 14%; margin-left: 11%; /* as image shrinks, reposition nav */ } }
-div.nav a { position: relative; /* to position the active icon image */ display: block; float: left; margin-bottom: 13px; /* room for the active icon */ background-color: #508E31; padding: 0.429em 1em; white-space: nowrap; text-decoration: none; color: #fff; }
+div.nav a { position: relative; /* to position the active icon image */ display: block; float: left; margin-bottom: 13px; /* room for the active icon */ background-color: #508E31; padding: 0.42857em 1em; white-space: nowrap; text-decoration: none; color: #fff; }
 div.nav :first-child { -webkit-border-radius: 1em 0 0 1em; -moz-border-radius: 1em 0 0 1em; -ms-border-radius: 1em 0 0 1em; -o-border-radius: 1em 0 0 1em; border-radius: 1em 0 0 1em; }
 div.nav :last-child { -webkit-border-radius: 0 1em 1em 0; -moz-border-radius: 0 1em 1em 0; -ms-border-radius: 0 1em 1em 0; -o-border-radius: 0 1em 1em 0; border-radius: 0 1em 1em 0; }
 div.nav:after { content: ' '; display: block; height: 1px; clear: both; }
@@ -187,7 +187,7 @@ p .figure a { display: block; margin-bottom: 0.5em; border-bottom: 1px solid bla
 p .figure img { width: 16em; /* force thumbnails to a consistent width */ }
 p .figure .number { font-weight: bold; margin-right: 0.5em; }
 
-p.backlinks { margin-top: 0.571em; margin-bottom: 0.643em; font-size: 87.5%; }
+p.backlinks { margin-top: 0.57143em; margin-bottom: 0.64286em; font-size: 87.5%; }
 p.backlinks a { text-decoration: none; margin-right: 0.5em; color: #519136; font-family: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif; }
 p.backlinks a:hover { text-decoration: underline; }
 
@@ -198,9 +198,9 @@ ul.couplets .lead { /* green box */ margin: 0em 0em 1em 0em; border: 2px solid #
 ul.couplets .lead:after { /* "clear" the float for the button */ display: block; content: " "; height: 0px; clear: both; }
 ul.couplets .letter { /* "1a." or "12b." or whatever */ font-weight: bold; padding-right: 0.5em; }
 ul.couplets .button-block { /* contains what-lies-beneath and button */ float: right; margin: 0em 0em 0.4em 1.2em; text-align: right; }
-ul.couplets a.what-lies-beneath { /* message that sits above the button */ display: inline-block; text-decoration: none; color: #35661c; font-family: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif; font-size: 71.429%; text-transform: uppercase; }
+ul.couplets a.what-lies-beneath { /* message that sits above the button */ display: inline-block; text-decoration: none; color: #35661c; font-family: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif; font-size: 71.42857%; text-transform: uppercase; }
 ul.couplets a.what-lies-beneath:hover { text-decoration: underline; }
-ul.couplets a.button { /* big orange button */ display: inline-block; font-size: 85.714%; }
+ul.couplets a.button { /* big orange button */ display: inline-block; font-size: 85.71429%; }
 ul.couplets a[href^="#"] { /* links to couplets on the same page */ font-weight: normal; font-style: italic; }
 ul.couplets a.figure-link { /* clickable figure numbers: [Fig. 3] */ color: #35661c; }
 

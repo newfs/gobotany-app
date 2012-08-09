@@ -42,7 +42,7 @@
 {% endif %}
 
 <p class="backlinks">
-  {% include "dkey/breadcrumbs.html" %}
+  {% include "dkey/_breadcrumbs.html" %}
   {% if title == 'Key to the Families' %}
     <a href="{% url dkey_family_groups %}">See the family groups as a list »</a>
   {% endif %}
@@ -62,7 +62,7 @@
     {{ page|display_title }}.</p>
 {% endif %}
 
-{{ page.text|figurize|safe }}
+{% include "dkey/_page_text.html" %}
 
 {% if leads %}
   <ul class="couplets couplet">
