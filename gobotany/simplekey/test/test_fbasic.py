@@ -1175,16 +1175,16 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
 
         return suggestion_items
 
-    def _suggestion_exists(self, query, compare_exact=False):
+    def _suggestion_exists(self, query):
         # Report whether a given query string has the potential to appear
         # in the suggestions menu.
-        suggestions = self._get_suggestions(query, compare_exact)
+        suggestions = self._get_suggestions(query, compare_exact=False)
         suggestion_exists = False
         for suggestion in suggestions:
             if suggestion == query:
                 suggestion_exists = True
                 break
-        if not suggestion_exists and not compare_exact:
+        if not suggestion_exists:
             print 'Search suggestion does not exist: ', query
 
         return suggestion_exists
@@ -1384,11 +1384,11 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
     # full string typed will not appear
 
     def test_exact_matches_are_excluded(self):
+        queries = ['dogwood', 'viburnum']
         self.get('/')
-        self.assertFalse(self._suggestion_exists('dogwood',
-                                                 compare_exact=True))
-        self.assertFalse(self._suggestion_exists('viburnum',
-                                                 compare_exact=True))
+        for query in queries:
+            suggestions = self._get_suggestions(query)
+            self.assertFalse(query in suggestions)
 
     def test_suggestions_can_also_match_anywhere_in_string(self):
         # Verify that although we first try matching suggestions that
