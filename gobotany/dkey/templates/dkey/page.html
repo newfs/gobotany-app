@@ -42,15 +42,7 @@
 {% endif %}
 
 <p class="backlinks">
-  {% for ancestor in page|breadcrumbs %}
-    {% with atitle=ancestor|display_title|nobr %}
-      {% if forloop.counter0 == 0 %}
-        <a href="{% url dkey %}">« Back to the {{ atitle }}</a>
-      {% else %}
-        <a href="{% url dkey_page ancestor|slug %}">« {{ atitle }}</a>
-      {% endif %}
-    {% endwith %}
-  {% endfor %}
+  {% include "dkey/breadcrumbs.html" %}
   {% if title == 'Key to the Families' %}
     <a href="{% url dkey_family_groups %}">See the family groups as a list »</a>
   {% endif %}
@@ -106,7 +98,7 @@
           {% elif lead.goto_num %}
             href="#c{{ lead.goto_num }}">JUMP TO {{ lead.goto_num }}
           {% elif p.rank == 'species' %}
-            href="{% url simplekey-species p.title|genus_slug p.title|species_slug %}#dkey"
+            href="{% url simplekey-species p.title|genus_slug p.title|species_slug %}?key=dichotomous"
               ><i>{{ p.title|abbreviate_title }}</i>
           {% else %}
             href="{% url dkey_page p|slug %}"

@@ -27,6 +27,7 @@ from gobotany.core.models import (
     )
 from gobotany.core.partner import which_partner
 from gobotany.core.pile_suffixes import pile_suffixes
+from gobotany.dkey import models as dkey_models
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 from gobotany.simplekey.models import (GroupsListPage,
@@ -316,6 +317,13 @@ def species_view(request, genus_slug, specific_name_slug,
         if rows:
             partner_species = rows[0]
 
+    key = request.GET.get('key')
+    if key == 'dichotomous':
+        dkey_page = dkey_models.Page.objects.get(title=scientific_name)
+    else:
+        dkey_page = None
+        key = ''  # prevent illegal value from reaching template
+
     species_images = botany.species_images(taxon)
     images = _images_with_copyright_holders(species_images)
 
@@ -355,6 +363,8 @@ def species_view(request, genus_slug, specific_name_slug,
            'scientific_name': scientific_name,
            'scientific_name_short': scientific_name_short,
            'taxon': taxon,
+           'key': key,
+           'dkey_page': dkey_page,
            'images': images,
            'partner_heading': partner_species.species_page_heading
                if partner_species else None,

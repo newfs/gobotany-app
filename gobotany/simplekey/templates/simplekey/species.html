@@ -35,7 +35,13 @@
 
                 {# TODO: After implementing Full Key and navigation, #}
                 {# show appropriate breadcrumb links.                #}
-                {% if in_simple_key %}
+                {% if key == 'dichotomous' %}
+                    <div id="breadcrumb">
+                        <p class="nogloss">
+                        {% include "dkey/breadcrumbs.html" with page=dkey_page %}
+                        </p>
+                    </div>
+                {% elif in_simple_key %}
                     <div id="breadcrumb">
                         <p class="nogloss">You are here: 
                         <a href="{% url simplekey %}">Simple Key</a>
