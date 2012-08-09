@@ -163,7 +163,6 @@ def rebuild_sample_pile_group_images(pilegroup_csv):
                 continue
             print '      filename:', filename,
             found = False
-            message = ''
             for image_instance in image_list:
                 if image_instance.image.name.find(filename) > -1:
                     sample_species_image = models.PileGroupImage(
@@ -214,11 +213,9 @@ def rebuild_sample_pile_images(pile_csv):
             if not filename.lower().endswith('.jpg'):
                 continue
             print '      filename:', filename,
-            found = False
             message = '- not found'
             for image_instance in image_list:
                 if image_instance.image.name.find(filename) > -1:
-                    found = True
                     sample_species_image = models.PileImage(
                         content_image=image_instance, pile=p)
                     sample_species_image.save()
