@@ -1108,6 +1108,39 @@ class Importer(object):
 
         log.info('Saved %d glossary images to table' % count)
 
+    def _get_species_for_image_filename(self, filename):
+        """Parse an image filename and return the species to which it
+        pertains, with some relevant image information.
+        """
+        pattern = re.compile(r'(-[a-z]{2}-)')
+        parts = pattern.split(filename)
+        name = parts[0].split('-')
+        image_type = parts[1][1:3]
+        photographer = parts[2].split('-')[0]
+        genus = name[0]
+        specific_epithet = name[1]
+
+        # If there are three parts to the name, assume a hyphenated
+        # specific epithet like Liatris novae-angliae, as seen
+        # much of the time in the data. Sometimes this will be
+        # incorrect (when it represents a subspecific or varietal
+        # epithet), but the calling routine can try looking up the
+        # taxon a second time omitting the portion after the hyphen.
+        if len(name) == 3:
+            specific_epithet = '-'.join([specific_epithet, name[2]])
+
+        # When there are more than three parts to the name, it is
+        # a "comparison" image containing two species names. In that
+        # case we are only concerned with the first one, because
+        # there exists a second, identical image with the two plant
+        # names reversed for the other plant's species page.
+
+        species = {'genus': genus,
+                   'species': specific_epithet,
+                   'image_type': image_type,
+                   'photographer': photographer}
+        return species
+
     def import_taxon_images(self, db):
         """Load the ls-taxon-images.gz list from S3"""
 
@@ -1154,48 +1187,37 @@ class Importer(object):
         already_seen = set()
 
         for line in ls:
-
             image_path = line.split(' s3://newfs/')[1].strip()
             dirname, filename = image_path.rsplit('/', 1)
-
             if '.' not in filename:
                 log.error('  file lacks an extension: %s', filename)
                 continue
-
             if filename.count('.') > 1:
                 log.error('  filename has multiple periods: %s', filename)
                 continue
-
             if filename.count('_') > 0:
                 log.error('  filename has underscores: %s', filename)
                 continue
-
             name, ext = filename.split('.')
             if ext.lower() not in ('jpg', 'gif', 'png', 'tif'):
                 log.error('  file lacks image extension: %s', filename)
                 continue
 
-            pieces = name.split('-')
-            genus = pieces[0]
-            species = pieces[1]
+            # With an acceptable-looking image filename, parse it to find
+            # the species.
 
-            # Skip subspecies and variety, if provided, and skip
-            # ahead to the type field, that always has length 2.
-
-            type_field = 2
-            while len(pieces[type_field]) != 2:
-                type_field += 1
-
-            _type = pieces[type_field]
-            photographer = pieces[type_field + 1]
+            species = self._get_species_for_image_filename(name)
 
             # Find the Taxon corresponding to this species.
 
-            scientific_name = ' '.join((genus, species)).capitalize()
+            scientific_name = ' '.join((species['genus'],
+                                        species['species'])).capitalize()
             taxon_id = taxon_ids.get(scientific_name)
-
             if taxon_id is None:
-                scientific_name = scientific_name + '-' + pieces[2]
+                # Try again, dropping any hyphenated part in the
+                # specific epithet, which may have been interpreted
+                # incorrectly when parsing the filename.
+                scientific_name = scientific_name.rsplit('-', 1)[0]
                 taxon_id = taxon_ids.get(scientific_name)
 
                 if taxon_id is None:
@@ -1203,16 +1225,15 @@ class Importer(object):
                     continue
 
             # Get the image type, now that we know what pile the
-            # species belongs in (PROBLEM: it could be in several;
-            # will email Sid about this).  For why we use lower(),
-            # see the comment above.
+            # species belongs in.
 
             for pile_id in taxonpile_map[taxon_id]:
-                key = (pile_names[pile_id].lower(), _type)
+                key = (pile_names[pile_id].lower(), species['image_type'])
                 if key in taxon_image_types:
                     break
             else:
-                log.error('  unknown image type %r: %s', _type, filename)
+                log.error('  unknown image type %r: %s',
+                          species['image_type'], filename)
                 continue
 
             # Fetch or create a row representing this image type.
@@ -1237,7 +1258,7 @@ class Importer(object):
                 image = image_path,
                 ).set(
                 alt = '%s: %s' % (scientific_name, image_type_name),
-                creator = photographer,
+                creator = species['photographer'],
                 description = '',
                 image_type_id = image_type_name,  # replaced with id later
                 rank = rank,
