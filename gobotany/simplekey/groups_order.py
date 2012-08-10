@@ -1,4 +1,4 @@
-from gobotany.core.models import Pile, PileGroup
+from gobotany.core.models import PileGroup
 
 # Group and subgroup slugs in their proper display order for the Simple Key.
 
