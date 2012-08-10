@@ -1118,20 +1118,27 @@ class Importer(object):
         image_type = parts[1][1:3]
         photographer = parts[2].split('-')[0]
         genus = name[0]
-        specific_epithet = name[1]
 
-        # If there are three parts to the name, assume a hyphenated
-        # specific epithet like Liatris novae-angliae, as seen
-        # much of the time in the data. Sometimes this will be
-        # incorrect (when it represents a subspecific or varietal
-        # epithet), but the calling routine can try looking up the
-        # taxon a second time omitting the portion after the hyphen.
-        if len(name) == 3:
+        # Support the use of underscores in filenames to indicate
+        # hyphenated specific epithets. This is seen in the image files
+        # but only for a few thus far, so a second strategy is described
+        # below for handling the rest.
+        specific_epithet = name[1].replace('_', '-')
+
+        # If there are three or four parts to the name, assume a hyphenated
+        # specific epithet like Liatris novae-angliae, as seen much of
+        # of the time in the data. Sometimes this will be incorrect,
+        # such as when it represents a subspecific or varietal epithet,
+        # or in the case of some "comparison" images, and the taxon will
+        # not be found when looked up. But, the calling routine can try
+        # looking up the taxon a second time omitting the portion after
+        # the hyphen, which should finally find the taxon.
+        if len(name) in [3, 4]:
             specific_epithet = '-'.join([specific_epithet, name[2]])
 
-        # When there are more than three parts to the name, it is
+        # When there are many parts to the name (4+), it is likely
         # a "comparison" image containing two species names. In that
-        # case we are only concerned with the first one, because
+        # case we are only concerned with the first name, because
         # there exists a second, identical image with the two plant
         # names reversed for the other plant's species page.
 
@@ -1194,9 +1201,6 @@ class Importer(object):
                 continue
             if filename.count('.') > 1:
                 log.error('  filename has multiple periods: %s', filename)
-                continue
-            if filename.count('_') > 0:
-                log.error('  filename has underscores: %s', filename)
                 continue
             name, ext = filename.split('.')
             if ext.lower() not in ('jpg', 'gif', 'png', 'tif'):
