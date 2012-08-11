@@ -40,6 +40,7 @@ else:
 # to actually grab the port.)
 
 IN_PRODUCTION = 'PORT' in os.environ
+DEBUG = not IN_PRODUCTION  # TODO: turn DEBUG on for staging, per issue #199
 
 #
 
@@ -80,14 +81,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.staticfiles',
 
-    #'debug_toolbar',
+    ] + (['debug_toolbar'] if DEBUG else []) + [
 
     'haystack',
     'tinymce',
     ]
 MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+
+    ) + (('debug_toolbar.middleware.DebugToolbarMiddleware',)
+         if DEBUG else ()) + (
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -106,7 +110,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 APPEND_SLASH = False
 SMART_APPEND_SLASH = True
 ROOT_URLCONF = 'gobotany.urls'
-DEBUG = True
 INTERNAL_IPS = ('127.0.0.1',)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [('', os.path.join(THIS_DIRECTORY, 'static'))]
