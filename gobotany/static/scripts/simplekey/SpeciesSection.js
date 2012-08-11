@@ -6,9 +6,10 @@ define([
     'simplekey/resources',
     'simplekey/App3',
     'simplekey/utils',
+    'util/lazy_images',
     'util/sidebar'
 ], function($, Shadowbox, _,
-            results_photo_menu, resources, App3, utils, sidebar) {
+            results_photo_menu, resources, App3, utils, lazy_images, sidebar) {
 
     var SpeciesSection = function() {};
     var methods = SpeciesSection.prototype = {};
@@ -31,22 +32,6 @@ define([
         resources.pile_species(pile_slug).done(
             $.proxy(this, 'create_plant_divs')
         );
-
-        // No delay for scrolling allows images to load during the pressing
-        // and holding of a cursor key.
-        var SCROLL_WAIT_MS = 0;
-        var scroll_timer;
-        $(window).scroll($.proxy(function() {
-            clearTimeout(scroll_timer);
-            scroll_timer = setTimeout(this.lazy_load_images, SCROLL_WAIT_MS);
-        }, this));
-
-        var RESIZE_WAIT_MS = 500;
-        var resize_timer;
-        $(window).resize($.proxy(function() {
-            clearTimeout(resize_timer);
-            resize_timer = setTimeout(this.lazy_load_images, RESIZE_WAIT_MS);
-        }, this));
 
         // Wire up tabs and a link for toggling between photo and list views.
         $('#results-tabs a').click($.proxy(this, 'toggle_view'));
@@ -378,12 +363,8 @@ define([
             var $image = $('<img>', {'alt': ''}).appendTo(image_container);
             $image.attr('x-plant-id', species.scientific_name);
             var thumb_url = this.default_image(species).thumb_url;
-            if (thumb_url) { // undefined when no image available
-                // Set the image URL in a dummy attribute, so we can
-                // lazy-load images, switching to the proper
-                // attribute when the image comes into view.
-                $image.attr('x-tmp-src', thumb_url);
-            }
+            if (thumb_url)  // undefined when no image available
+                $image.attr('data-lazy-img-src', thumb_url);  // lazy_images
 
             var name_html = '<span class="latin">' +
                 species.scientific_name + '</span>';
@@ -458,7 +439,7 @@ define([
             function() {
                 this.animation = null;
                 sidebar.set_height();
-                species_section_helper.lazy_load_images();
+                lazy_images.load();
 
                 // Set up genus colors now that everyone has arrived!
                 var last_species_in_row = SPECIES_PER_ROW - 1;
@@ -518,7 +499,7 @@ define([
 
         if (this.current_view === this.PHOTOS_VIEW) {
             this.populate_image_types(query_results);
-            this.lazy_load_images();
+            lazy_images.load();
         }
     };
 
@@ -544,74 +525,6 @@ define([
             if (image_types.indexOf(default_type) === -1)
                 default_type = image_types[0];
             App3.set('image_type', default_type);
-        }
-    };
-
-    methods.lazy_load_images = function() {
-        // If the current view is the List view, do nothing. This allows
-        // event handlers for the photos view to remain in effect without
-        // awkwardly removing and adding them when the user toggles views.
-        //
-        // Check the DOM instead of the SpeciesSection object, because
-        // when this function is called via setTimeout, the 'this' context
-        // is not what we need, and passing a saved reference to 'this', as
-        // recommended for these situations, did not work.
-
-        var list_view_table_nodes = $('.plant-list table');
-        if (list_view_table_nodes.length > 0)
-            return;
-
-        var viewport_height = $(window).height();
-        var scroll_top = 0;
-        var scroll_left = 0;
-
-        if (window.pageYOffset || window.pageXOffset) {
-            scroll_top = window.pageYOffset;
-            scroll_left = window.pageXOffset;
-        }
-        else if (document.documentElement &&
-                 document.documentElement.scrollTop) {
-            scroll_top = document.documentElement.scrollTop;
-            scroll_left = document.documentElement.scrollLeft;
-        }
-        else if (document.body) {
-            scroll_top = document.body.scrollTop;
-            scroll_left = document.body.scrollLeft;
-        }
-
-        var image_elements = $('div.plant-list img');
-        var i;
-        for (i = 0; i < image_elements.length; i += 1) {
-            var element = image_elements[i];
-
-            if (element.style.display !== 'none') {
-
-                var current_element = element;
-                var total_offset_left = current_element.offsetLeft;
-                var total_offset_top = current_element.offsetTop;
-
-                while (current_element.offsetParent !== null) {
-                    current_element = current_element.offsetParent;
-                    total_offset_left += current_element.offsetLeft;
-                    total_offset_top += current_element.offsetTop;
-                }
-
-                var is_element_visible = false;
-                // Only worry about top/bottom scroll visibility, not also
-                // left/right scroll visibility.
-                if (total_offset_top > (scroll_top - element.height) &&
-                    total_offset_top < (viewport_height + scroll_top)) {
-
-                    is_element_visible = true;
-                }
-
-                if (is_element_visible === true) {
-                    var image_url = $(element).attr('x-tmp-src');
-                    if (image_url !== null)
-                        // Set the attribute that will make the image load.
-                        $(element).attr('src', image_url);
-                }
-            }
         }
     };
 

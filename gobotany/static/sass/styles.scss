@@ -975,6 +975,9 @@ a.go-to-species-page:active {
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
     -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
     -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+    img {
+        height: 149px;  /* so lazy_images knows when <img> is on screen */
+    }
 }
 
 .missing-image {

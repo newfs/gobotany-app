@@ -17,12 +17,13 @@ define([
     'simplekey/working_area',
     'simplekey/utils',
     'util/activate_image_gallery',
+    'util/lazy_images',
     'util/sidebar'
 ], function(
     document_is_ready, $, x, Ember, Shadowbox, shadowbox_init, _,
     App3, _Filter, _FilterController, animation, _glossarize, resources,
     ResultsPageState, SpeciesSection, working_area_module, utils,
-    image_gallery, sidebar
+    image_gallery, lazy_images, sidebar
 ) {return {
 
 results_page_init: function(args) {
@@ -727,7 +728,7 @@ results_page_init: function(args) {
                 return image.type === image_type});
 
             if (new_image) {
-                $img.attr('x-tmp-src', new_image.thumb_url);
+                $img.attr('data-lazy-img-src', new_image.thumb_url);
                 $img.attr('alt', new_image.title);
                 // Hide the empty box if it exists and make
                 // sure the image is visible.
@@ -749,6 +750,8 @@ results_page_init: function(args) {
     // Page load cascade - much of which is in the above code or over in
     // our legacy Dojo modules, but all of which would be clearer and
     // easier to think about and manage if it migrated down here.
+
+    lazy_images.start();
 
     var compute_filtered_sorted_taxadata = function() {
         var taxa = App3.filter_controller.taxa;
@@ -777,7 +780,7 @@ results_page_init: function(args) {
         update_counts(App3.filtered_sorted_taxadata);
         species_section.display_results(App3.filtered_sorted_taxadata);
         load_selected_image_type();
-        species_section.lazy_load_images();
+        lazy_images.load();
 
         App3.addObserver('filtered_sorted_taxadata', function() {
             update_counts(App3.filtered_sorted_taxadata);
@@ -786,7 +789,7 @@ results_page_init: function(args) {
 
         App3.addObserver('image_type', function() {
             load_selected_image_type();
-            species_section.lazy_load_images();
+            lazy_images.load();
         });
     });
 
