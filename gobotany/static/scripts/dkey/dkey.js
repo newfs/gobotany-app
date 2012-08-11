@@ -1,11 +1,16 @@
 define([
     'bridge/jquery',
     'bridge/jquery.mousewheel',
-    'util/Hash'
-], function($, ignore, Hash) {$(document).ready(function() {
+    'util/Hash',
+    'util/lazy_images'
+], function($, ignore, Hash, lazy_images) {$(document).ready(function() {
 
     var couplet_rank = $('body').attr('data-couplet-rank');
     var couplet_title = $('body').attr('data-couplet-title');
+
+    // Enable lazy image loading.
+
+    lazy_images.start();
 
     // Where to direct RPC requests for lists of images.
 
@@ -176,8 +181,11 @@ define([
         $.getJSON(url, function(data) {
             var $div = $('.taxon-images');
             $.each(data.images, function(i, info) {
-                $('<img>').attr('src', info.thumb_url).appendTo($div);
+                $('<img>')
+                    .attr('data-lazy-img-src', info.thumb_url)
+                    .appendTo($div);
             });
+            lazy_images.load();
         });
     }
 
