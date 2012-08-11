@@ -3,5 +3,5 @@
 require([
     'util/sidebar'
 ], function(sidebar) {
-    sidebar.setup()
+    sidebar.setup();
 });

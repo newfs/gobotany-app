@@ -109,16 +109,16 @@ var SpeciesPageHelper = {
 
         // Wire up the enlarge link on the U.S. map.
         this.wire_up_us_map_link();
-        sidebar.setup()
+        sidebar.setup();
     }
-}
+};
 
 // Create a small factory method to return, which will act
 // as a little instance factory and constructor, so the user
 // can do as follows:
 // var obj = MyClassName(something, somethingelse);
 function factory() {
-    var instance = Object.create(SpeciesPageHelper)
+    var instance = Object.create(SpeciesPageHelper);
     instance.init();
     return instance;
 }
