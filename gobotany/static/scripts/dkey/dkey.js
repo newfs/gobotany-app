@@ -1,9 +1,10 @@
 define([
     'bridge/jquery',
     'bridge/jquery.mousewheel',
+    'bridge/underscore',
     'util/Hash',
     'util/lazy_images'
-], function($, ignore, Hash, lazy_images) {$(document).ready(function() {
+], function($, ignore, _, Hash, lazy_images) {$(document).ready(function() {
 
     var couplet_rank = $('body').attr('data-couplet-rank');
     var couplet_title = $('body').attr('data-couplet-title');
@@ -107,7 +108,7 @@ define([
         $popup.empty();
         $('<h2>').html(title).appendTo($popup);
         $.each(taxa, function(i, name) {
-            var url = '/' + name.replace(' ', '-') + '/';
+            var url = '/dkey/' + name.replace(' ', '-') + '/';
             $('<div>').append(
                 $('<a>').attr('href', url).append($(tag).html(name))
             ).appendTo($popup);
@@ -166,6 +167,15 @@ define([
 
     /* Load images for the user to enjoy. */
 
+    var set_image_type = function() {
+        var type = $('.image-type-selector select').val();
+        $('.taxon-images img').each(function(i, img) {
+            var show = $(img).attr('data-image-type') == type;
+            $(img).css('display', show ? 'inline' : 'none');
+        });
+        lazy_images.load();
+    };
+
     if (couplet_rank == 'family') {
         var family = couplet_title.split(/ /).pop().toLowerCase();
         var urlpath = '/api/families/' + family + '/';
@@ -179,13 +189,30 @@ define([
     if (urlpath) {
         var url = 'http://' + gobotany_host + urlpath;
         $.getJSON(url, function(data) {
+            var types = [];
             var $div = $('.taxon-images');
             $.each(data.images, function(i, info) {
+                types.push(info.type);
                 $('<img>')
+                    .attr('data-image-type', info.type)
                     .attr('data-lazy-img-src', info.thumb_url)
+                    .css('display', 'none')
                     .appendTo($div);
             });
-            lazy_images.load();
+            types = _.uniq(types);
+            types.sort();
+
+            var $selector = $('.image-type-selector');
+            var $select = $selector.find('select');
+            $.each(types, function(i, type) {
+                var option = $('<option>').attr('value', type).html(type);
+                if (type == 'plant form') option.attr('selected', 'selected');
+                $select.append(option);
+            });
+            $selector.css('display', 'block');
+
+            set_image_type();
+            $select.on('change', set_image_type);
         });
     }
 

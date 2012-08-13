@@ -210,6 +210,8 @@ ul.active > li > .lead, ul:target > li > .lead { background-color: #b4d57f; bord
 
 a.show-all-button { display: inline-block; font-size: 75%; font-weight: normal; }
 
+.image-type-selector { display: none; /* once images are loaded, our JS will un-hide */ }
+
 div.taxon-images { margin-left: 0.75em; text-align: center; }
 div.taxon-images img { margin: 0 1em 1em 0; border: 4px solid black; width: 160px; height: 149px; }
 
