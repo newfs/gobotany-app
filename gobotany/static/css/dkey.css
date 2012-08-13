@@ -213,7 +213,10 @@ a.show-all-button { display: inline-block; font-size: 75%; font-weight: normal; 
 .image-type-selector { display: none; /* once images are loaded, our JS will un-hide */ }
 
 div.taxon-images { margin-left: 0.75em; text-align: center; }
-div.taxon-images img { margin: 0 1em 1em 0; border: 4px solid black; width: 160px; height: 149px; }
+div.taxon-images figure { margin: 0 1em 1em 0; width: 160px; }
+div.taxon-images img { display: block; margin-bottom: 0.4em; border: 4px solid black; width: 160px; height: 149px; }
+div.taxon-images a { font-size: 75%; text-decoration: none; }
+div.taxon-images a:hover { text-decoration: underline; }
 
 div.shadow { /* shadow that hides the whole page */ display: none; position: fixed; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.45); text-align: center; }
 

@@ -25,6 +25,19 @@ define([
             $(ul).attr('id', 'c' + id);  // make 'c2' into 'cc2'
     });
 
+    /* Canonical way of forming a URL to a taxon. */
+
+    var $taxon_anchor = function(name) {
+        if (name.indexOf(' ') != -1) {
+            var url = '/species/' + name.replace(' ', '/').toLowerCase() +
+                '/?key=dichotomous';
+            return $('<a/>', {'href': url}).append($('<i/>', {'html': name}));
+        } else {
+            var url = '/dkey/' + name + '/';
+            return $('<a/>', {'href': url, 'html': name});
+        }
+    };
+
     // Visiting particular couplets.
 
     var focus_on_one_couplet = function(new_hash, is_initial) {
@@ -103,15 +116,11 @@ define([
         var $target = $(event.delegateTarget);
         var title = $target.html();
         var taxa = $target.attr('data-taxa').split(',');
-        var tag = title.match(/species|genera/) ? '<i>' : '<span>';
         taxa.sort();
         $popup.empty();
-        $('<h2>').html(title).appendTo($popup);
+        $('<h2/>').html(title).appendTo($popup);
         $.each(taxa, function(i, name) {
-            var url = '/dkey/' + name.replace(' ', '-') + '/';
-            $('<div>').append(
-                $('<a>').attr('href', url).append($(tag).html(name))
-            ).appendTo($popup);
+            $('<div/>').append($taxon_anchor(name)).appendTo($popup);
         });
         display_popup();
     });
@@ -169,9 +178,9 @@ define([
 
     var set_image_type = function() {
         var type = $('.image-type-selector select').val();
-        $('.taxon-images img').each(function(i, img) {
-            var show = $(img).attr('data-image-type') == type;
-            $(img).css('display', show ? 'inline' : 'none');
+        $('.taxon-images figure').each(function(i, figure) {
+            var show = $(figure).attr('data-image-type') == type;
+            $(figure).css('display', show ? 'inline-block' : 'none');
         });
         lazy_images.load();
     };
@@ -193,11 +202,14 @@ define([
             var $div = $('.taxon-images');
             $.each(data.images, function(i, info) {
                 types.push(info.type);
-                $('<img>')
-                    .attr('data-image-type', info.type)
-                    .attr('data-lazy-img-src', info.thumb_url)
-                    .css('display', 'none')
-                    .appendTo($div);
+                var species = info.title.split(':')[0];
+                $('<figure/>', {
+                    'data-image-type': info.type,
+                    'css': {'display': 'none'}
+                }).append(
+                    $('<img/>').attr('data-lazy-img-src', info.thumb_url),
+                    $taxon_anchor(species)
+                ).appendTo($div);
             });
             types = _.uniq(types);
             types.sort();
@@ -219,8 +231,6 @@ define([
     /* Front page selectboxes for jumping to families and genera. */
 
     $('.jumpbox').on('change', function(event) {
-        console.log(event);
-        console.log($(':selected', event.delegateTarget));
         var jumpto = $(':selected', event.delegateTarget).html();
         if (jumpto && ! jumpto.match(/^Jump/)) {
             window.location = '/dkey/' + jumpto + '/';
