@@ -390,7 +390,7 @@ body.app { background: #f0f0c0; }
 #sidebar .section.plant-map p { margin: 15px 0 0 0; }
 
 /* Breadcrumb styles */
-#breadcrumb p { color: #807121; line-height: 120%; margin: 0 0 14px; }
+#breadcrumb p { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 120%; margin: 0 0 14px; }
 
 #breadcrumb span { color: #000; }
 
@@ -401,8 +401,8 @@ body.app { background: #f0f0c0; }
 .not-my-plant h6 { color: #606060; padding: 0 0 1px 0; }
 
 /* Dkey content inlined into the species page */
-.dkey_text { margin-top: 1.5em; margin-bottom: 1.8em; font-size: 133.33333%; }
-.dkey_text p { line-height: 114.28571%; }
+.dkey_text { margin-top: 1.5em; margin-bottom: 1.8em; font-size: 133.333%; }
+.dkey_text p { line-height: 114.286%; }
 
 /* Plant listing styles */
 .list-item { padding: 20px 0 0 0; margin: 20px 0 0 0; border-top: 1px solid rgba(128, 113, 33, 0.1); }
