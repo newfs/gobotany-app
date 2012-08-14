@@ -6,9 +6,7 @@
         <meta name="viewport" content="width=device-width,
         initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        {# For IE, activate Google Chrome Frame for version 9 or lower #}
-        {# TODO: emit HTTP header instead so we can deliver valid HTML #}
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE9">
+        {# No meta tag for Google Chrome Frame: use middleware HTTP header #}
 
         <link rel="shortcut icon" href="/static/images/branding/favicon.png">
 

@@ -98,6 +98,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'gobotany.middleware.SmartAppendSlashMiddleware',
+    'gobotany.middleware.ChromeFrameMiddleware',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
         "django.contrib.auth.context_processors.auth",

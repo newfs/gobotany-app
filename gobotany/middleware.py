@@ -47,3 +47,13 @@ def _resolves(url):
         return True
     except http.Http404:
         return False
+
+
+class ChromeFrameMiddleware(object):
+    """ For supporting the Google Chrome Frame plugin used for Internet
+    Explorer, emit a HTTP response header rather than using a meta tag
+    in the HTML. This is to allow for HTML that passes validation.
+    """
+    def process_response(self, request, response):
+        response['X-UA-Compatible'] = 'IE=Edge,chrome=IE9'
+        return response
