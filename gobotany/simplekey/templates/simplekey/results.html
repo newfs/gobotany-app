@@ -91,8 +91,9 @@
                 </div>
 
                 {% verbatim %}
-                <script type="text/x-handlebars"
-                        data-template-name="list-toggle-view">
+                <script type="text/x-power-handlebars"
+                        data-template-name="list-toggle-view"
+                        data-tag-name="p" data-class-names="list-all">
                   <a {{action "switch_photo_list"}}>
                     See
                     {{#if view.show_list}}photos for{{else}}a list of{{/if}}
