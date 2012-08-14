@@ -37,7 +37,6 @@ define([
         view_matches = window.location.hash.match(/_view=[a-z]+/);
         if (view_matches && view_matches.length) {
             this.current_view = view_matches[0].substring(6);
-            this.set_navigation_to_view(this.current_view);
         }
     };
 
@@ -207,21 +206,6 @@ define([
         }, this));
     };
 
-    methods.set_navigation_to_view = function(view) {
-
-        var HIDDEN_CLASS = 'hidden';
-        var CURRENT_TAB_CLASS = 'current';
-        var $photos_show_menu = $('.show');
-
-        if (view === this.PHOTOS_VIEW) {
-            $photos_show_menu.removeClass(HIDDEN_CLASS);
-        } else if (view === this.LIST_VIEW) {
-            $photos_show_menu.addClass(HIDDEN_CLASS);
-        } else {
-           console.log('Unknown view name: ' + view);
-        }
-    };
-
     methods.toggle_view = function() {
 
         if (this.current_view === this.PHOTOS_VIEW) {
@@ -234,7 +218,6 @@ define([
             this.current_view = this.PHOTOS_VIEW;
         }
 
-        this.set_navigation_to_view(this.current_view);
         this.display_results(App3.filtered_sorted_taxadata);
     };
 

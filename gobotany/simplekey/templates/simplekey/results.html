@@ -74,19 +74,20 @@
                 <div class="clearit"></div>
 
                 <div class="show hidden">
-                    <form id="results-display">
+                  {% handlebars %}
+                    <form id="results-display"
+                          {{bindAttr class="App3.show_list:hidden"}}>
                         <img class="icon" alt=""
                             src="/static/images/icons/show-me.png">
                         <label for="image-types">Show photos of:</label>
-                        {% handlebars %}
                           {{view Ember.Select viewName="select"
                             elementId="image-types"
                             contentBinding="App3.image_types"
                             optionLabelPath="content"
                             optionValuePath="content"
                             selectionBinding="App3.image_type"}}
-                        {% endhandlebars %}
-                  </form>
+                    </form>
+                  {% endhandlebars %}
                 </div>
                 <div class="clearit"></div>
 
