@@ -33,9 +33,6 @@ define([
             $.proxy(this, 'create_plant_divs')
         );
 
-        // Wire up tabs and a link for toggling between photo and list views.
-        $('#results-tabs a').click($.proxy(this, 'toggle_view'));
-
         // Set the initial view for showing the results.
         view_matches = window.location.hash.match(/_view=[a-z]+/);
         if (view_matches && view_matches.length) {
@@ -214,17 +211,11 @@ define([
 
         var HIDDEN_CLASS = 'hidden';
         var CURRENT_TAB_CLASS = 'current';
-        var $photos_tab = $('#results-tabs li:first-child a');
-        var $list_tab = $('#results-tabs li:last-child a');
         var $photos_show_menu = $('.show');
 
         if (view === this.PHOTOS_VIEW) {
-            $list_tab.removeClass(CURRENT_TAB_CLASS);
-            $photos_tab.addClass(CURRENT_TAB_CLASS);
             $photos_show_menu.removeClass(HIDDEN_CLASS);
         } else if (view === this.LIST_VIEW) {
-            $photos_tab.removeClass(CURRENT_TAB_CLASS);
-            $list_tab.addClass(CURRENT_TAB_CLASS);
             $photos_show_menu.addClass(HIDDEN_CLASS);
         } else {
            console.log('Unknown view name: ' + view);
@@ -235,11 +226,11 @@ define([
 
         if (this.current_view === this.PHOTOS_VIEW) {
             App3.set('show_list', true);
-            App3.set('show_photos', false);
+            App3.set('show_grid', false);
             this.current_view = this.LIST_VIEW;
         } else {
             App3.set('show_list', false);
-            App3.set('show_photos', true);
+            App3.set('show_grid', true);
             this.current_view = this.PHOTOS_VIEW;
         }
 
