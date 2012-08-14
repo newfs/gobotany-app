@@ -273,9 +273,31 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 
 /* Definitions */
 /* Site-wide styles */
-body { font-family: Verdana, Geneva, sans-serif; }
+body { background: #f0f0c0; color: black; font-family: Verdana, Geneva, sans-serif; font-size: 12px; padding: 0 8px; }
 
-h1, h2, h3, h4, h5, h6 { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; }
+a { color: #508e31; text-decoration: none; }
+
+a:not([href]) { color: black; }
+
+a:hover { text-decoration: underline; }
+
+h1, h2, h3, h4, h5, h6 { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-weight: normal; }
+
+h1 { color: #519136; font-size: 35px; }
+
+h2 { font-size: 24px; }
+
+h3 { font-size: 18px; }
+
+h4 { font-size: 14px; }
+
+h5, h6 { font-size: 12px; }
+
+h6 { font-weight: italic; }
+
+ul li { margin: 0 0 5px 0; }
+
+img.icon { margin: 0 3px 0 0; vertical-align: -2px; }
 
 /* Imports for per-feature/app styles */
 /* (add here) */

@@ -1,0 +1,37 @@
+    <header>
+        <div class="container">
+            <p><a href="http://www.newenglandwild.org/">New
+                England Wild Flower Society</a></p>
+            <p><a 
+                {% ifnotequal request.path "/" %}href="/"{% endifnotequal %}>Go
+                Botany: Discover thousands of New England plants</a></p>
+            <nav>
+                <a href="javascript:document.getElementById('footer-nav').scrollIntoView();">+<span>sections</span></a>
+                <ul>
+                    <li class="home">
+                        <a {% ifnotequal request.path "/" %}href="{% url simplekey-index %}"{% endifnotequal %}>Home</a>
+                    </li>
+                    <li class="plant-id">
+                        <a href="{% url simplekey %}">Simple Key</a>
+                    </li>
+                    <li class="plantshare"><a href="{% url plantshare-placeholder %}">PlantShare</a></li>
+                    <li class="full-key">
+                        <a href="{% url full-key-placeholder %}">Full Key</a>
+                    </li>
+                    <li class="dich-key">
+                        <a href="{% url dich-key-placeholder %}">Dichotomous Key</a>
+                    </li>
+                    <li class="teaching-tools"><a href="{% url teaching %}">Teaching</a></li>
+                    <li class="about last"><a href="{% url simplekey-help-about %}">About</a></li>
+                </ul>
+                <div id="search">
+                    <form id="search-suggest" action="/search/" autocomplete="off">
+                        <input type="text" name="q" placeholder="Search..."
+                            value="{{ request.GET.q }}">
+                        <button>Search</button>
+                        <div class="menu hidden"></div>
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </header>

@@ -39,7 +39,7 @@
             src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
-        {#% include "simplekey/_script_constants.html" %#}
+        {% include "gobotany/_script_constants.html" %}
 
         {% if not in_production %}
 
@@ -87,14 +87,14 @@
 
     <body {% block body_attributes %}{% endblock %}>
 
-        {#% include "simplekey/_chrome_frame.html" %#}
+        {% include "gobotany/_chrome_frame.html" %}
 
-        {# Note: So far, header has to be added per-page, since the  #}
-        {# home page puts the header in a special container div that #}
-        {# other pages do not use. (Maybe this can be eliminated?)   #}
+        {# TODO: allow header to be overridden for home page: different #}
+        {# nav treatment, different heading levels #}
+        {% include "gobotany/_header.html" %}
 
         {% block body_content %}{% endblock %}
 
-        {#% include "simplekey/_footer.html" %#}
+        {% include "gobotany/_footer.html" %}
     </body>
 </html>
