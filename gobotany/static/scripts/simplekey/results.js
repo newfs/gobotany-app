@@ -336,41 +336,11 @@ results_page_init: function(args) {
         });
         App3.filters_view.appendTo('#questions-go-here');
 
-        var TEMPLATES = {};
-
-        Ember.PowerView = Ember.View.extend({
-            templates: TEMPLATES,
-            tagName: function() {
-                var t = this.get('template');
-                this.set('classNames', this.get('classNames') + t.classNames);
-                return t.tagName;
-            }.property().cacheable(),
-            classNames: []
-        });
-
-        var bootstrap_power_templates = function() {
-            // Based on Ember.Handlebars.bootstrap()
-            Ember.$('script[type="text/x-power-handlebars"]').each(function() {
-                var script = Ember.$(this);
-                var name = script.attr('data-template-name');
-                if (!name) return;
-                var template = Ember.Handlebars.compile(script.html());
-
-                var cn = script.attr('data-class-names');
-                template.tagName = script.attr('data-tag-name') || 'div';
-                template.classNames = cn ? cn.split(/ +/) : [];
-
-                TEMPLATES[name] = template;
-                script.remove();
-            });
-        };
-
-        Ember.$(document).ready(function() {
-            bootstrap_power_templates();
-        });
-
-        App3.list_toggle_view = Ember.PowerView.create({
+        App3.list_toggle_view = Ember.View.create({
             templateName: 'list-toggle-view',
+            tagName: 'p',
+            classNames: ['list-all'],
+
             show_listBinding: 'App3.taxa.show_list',
             taxa_countBinding: 'App3.taxa.len',
 
