@@ -49,9 +49,11 @@ results_page_init: function(args) {
     FilterController = _FilterController;
     glossarize = _glossarize;
 
+    App3.set('show_grid', true);
+    App3.set('show_list', false);
+
     App3.taxa = Ember.Object.create({
-        len: 'Loading',   // placeholder until we have an integer to display
-        show_list: false  // whether to show list or grid
+        len: 'Loading'   // placeholder until we have an integer to display
     });
 
     App3.image_types = Ember.ArrayProxy.create({
@@ -341,7 +343,6 @@ results_page_init: function(args) {
             tagName: 'p',
             classNames: ['list-all'],
 
-            show_listBinding: 'App3.taxa.show_list',
             taxa_countBinding: 'App3.taxa.len',
 
             switch_photo_list: function(event) {
@@ -405,7 +406,7 @@ results_page_init: function(args) {
      * page elements (image type, tab view) change.
      */
     var save_page_state = function() {
-        var tab_view = App3.taxa.show_list ? 'list' : 'photos';
+        var tab_view = App3.show_list ? 'list' : 'photos';
 
         var image_type = App3.get('image_type');
         if (!image_type) {
@@ -472,7 +473,7 @@ results_page_init: function(args) {
         App3.addObserver('image_type', function() {
             save_page_state();
         });
-        App3.addObserver('taxa.show_list', function() {
+        App3.addObserver('show_list', function() {
             save_page_state();
         });
     });
@@ -572,7 +573,7 @@ results_page_init: function(args) {
             // Set the tab view specified on the hash.
             var tab_view = results_page_state.tab_view();
             var is_list_view = (tab_view === 'list') ? true : false;
-            App3.taxa.set('show_list', is_list_view);
+            App3.set('show_list', is_list_view);
         });
     } else {
         // With no hash on the URL, load the default filters for this

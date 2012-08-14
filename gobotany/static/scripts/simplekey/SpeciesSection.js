@@ -238,10 +238,12 @@ define([
             return;
 
         if (this.current_view === this.PHOTOS_VIEW) {
-            App3.taxa.set('show_list', true);
+            App3.set('show_list', true);
+            App3.set('show_photos', false);
             this.current_view = this.LIST_VIEW;
         } else {
-            App3.taxa.set('show_list', false);
+            App3.set('show_list', false);
+            App3.set('show_photos', true);
             this.current_view = this.PHOTOS_VIEW;
         }
 

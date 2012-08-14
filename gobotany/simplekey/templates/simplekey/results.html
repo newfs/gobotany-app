@@ -93,7 +93,7 @@
                 {% handlebars 'list-toggle-view' %}
                   <a {{action "switch_photo_list"}}>
                     See
-                    {{#if view.show_list}}photos for{{else}}a list of{{/if}}
+                    {{#if App3.show_list}}photos for{{else}}a list of{{/if}}
                     all
                     <span class="species-count">{{view.taxa_count}}</span>
                     matching species.
