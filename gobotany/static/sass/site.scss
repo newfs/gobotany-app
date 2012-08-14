@@ -1,0 +1,44 @@
+/*! *** Go Botany master styles file ***
+ Please edit only the .scss source and use Compass to auto-generate the .css.
+ The generated .css is kept in the repository to allow easy deployment.
+ */
+
+/* First are some SASS "partials" for external and third-party styles.
+ * The goal is to keep all styles in just one deployed CSS file, site.css.
+ * Later on in this file, other partials are imported for styles
+ * specific to a site feature.
+ * A final partial, site-media-queries, is imported last in this file. */
+
+/* Imports for browser baseline, tools */
+@import "_normalize";
+
+/* Imports for third-party controls */
+@import "jquery.jscrollpane";
+@import "shadowbox";
+@import "smoothDivScroll";
+
+/* Definitions */
+
+$headings-font: "Trebuchet MS", Helvetica, Arial, sans-serif;
+$body-font: Verdana, Geneva, sans-serif;
+$narrower-body-font: Tahoma, "Trebuchet MS", sans-serif;
+
+/* Site-wide styles */
+
+body {
+    font-family: $body-font;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: $headings-font;
+}
+
+/* Imports for per-feature/app styles */
+/* (add here) */
+
+
+/* Include media queries for smartphones and tablets. These should be last. */
+
+@import "site-media-queries";
+
+/* Please do not add new regular styles after the media queries, or they may
+ * not get overridden properly. Instead, add them before the media queries. */

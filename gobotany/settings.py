@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'gobotany.plantoftheday',
     'gobotany.search',
     'gobotany.simplekey',
+    'gobotany.site',
     'piston',
 
     'django.contrib.admin',
