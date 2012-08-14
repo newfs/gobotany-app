@@ -326,7 +326,11 @@ results_page_init: function(args) {
        this CollectionView, which is careful to use the 'plain_filters'
        attribute that omits the family and genus filters. */
 
-    $.when(document_is_ready, filter_controller_is_built).done(function() {
+    $.when(
+        document_is_ready,
+        filter_controller_is_built,
+        species_section_ready
+    ).done(function() {
         App3.filters_view = Ember.CollectionView.create({
             tagName: 'ul',
             classNames: ['option-list'],
@@ -335,18 +339,30 @@ results_page_init: function(args) {
         });
         App3.filters_view.appendTo('#questions-go-here');
 
-        App3.list_toggle_view = Ember.View.create({
-            templateName: 'list-toggle-view',
+        App3.species_view_tabs = Ember.View.create({
+            templateName: 'species-view-tabs',
+            tagName: 'ul',
+            choose_grid_view: function() {
+                if (species_section.current_view != species_section.PHOTOS_VIEW)
+                    species_section.toggle_view();
+            },
+            choose_list_view: function() {
+                if (species_section.current_view != species_section.LIST_VIEW)
+                    species_section.toggle_view();
+            }
+        });
+        App3.species_view_tabs.appendTo('#results-tabs');
+
+        App3.species_view_toggle = Ember.View.create({
+            templateName: 'species-view-toggle',
             tagName: 'p',
             classNames: ['list-all'],
 
-            switch_photo_list: function(event) {
-                // Tell the old Dojo species section helper to switch views.
-                if (species_section)
-                    species_section.toggle_view(event);
+            switch_species_view: function() {
+                species_section.toggle_view();
             }
         });
-        App3.list_toggle_view.appendTo('#main');
+        App3.species_view_toggle.appendTo('#main');
     });
 
     /* Because filters would otherwise constantly change the height of

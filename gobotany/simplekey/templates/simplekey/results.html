@@ -63,11 +63,13 @@
                 </h3>
 
                 <div id="results-tabs">
-                    <ul>
-                        <li><a class="current">Photos</a></li>
-                        <li><a>List</a></li>
-                    </ul>
+                  {% handlebars 'species-view-tabs' %}
+                    <li><a class="current"
+                           {{action choose_grid_view}}>Photos</a></li>
+                    <li><a {{action choose_list_view}}>List</a></li>
+                  {% endhandlebars %}
                 </div>
+
                 <div class="clearit"></div>
 
                 <div class="show hidden">
@@ -91,8 +93,8 @@
                     <div class="wait"></div>
                 </div>
 
-                {% handlebars 'list-toggle-view' %}
-                  <a {{action "switch_photo_list"}}>
+                {% handlebars 'species-view-toggle' %}
+                  <a {{action "switch_species_view"}}>
                     See
                     {{#if App3.show_list}}photos for{{else}}a list of{{/if}}
                     all

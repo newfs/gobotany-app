@@ -231,11 +231,7 @@ define([
         }
     };
 
-    methods.toggle_view = function(event) {
-
-        if (event.target.innerHTML.toLowerCase() === this.current_view)
-            // If the same tab as the current view was clicked, do nothing.
-            return;
+    methods.toggle_view = function() {
 
         if (this.current_view === this.PHOTOS_VIEW) {
             App3.set('show_list', true);
