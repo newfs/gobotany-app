@@ -23,14 +23,65 @@ $headings-font: "Trebuchet MS", Helvetica, Arial, sans-serif;
 $body-font: Verdana, Geneva, sans-serif;
 $narrower-body-font: Tahoma, "Trebuchet MS", sans-serif;
 
+$link-green: #508e31;
+$heading-green: #519136;
+
+$text-color: #000;
+
+$base-font-size: 12px;
+
+$minimum-side-padding: 8px;
+
 /* Site-wide styles */
 
 body {
+    background: #f0f0c0;
+    color: $text-color;
     font-family: $body-font;
+    font-size: $base-font-size;
+    padding: 0 $minimum-side-padding;
+}
+a {
+    color: $link-green;
+    text-decoration: none;
+}
+a:not([href]) {
+    color: $text-color;
+}
+a:hover {
+    text-decoration: underline;
 }
 h1, h2, h3, h4, h5, h6 {
     font-family: $headings-font;
+    font-weight: normal;
 }
+h1 {
+    color: $heading-green;
+	font-size: 35px;
+}
+h2 {
+	font-size: 24px;	
+}
+h3 {
+	font-size: 18px;	
+}
+h4 {
+	font-size: 14px;	
+}
+h5, h6 {
+	font-size: $base-font-size;	
+}
+h6 {
+    font-weight: italic;
+}
+ul li {
+	margin: 0 0 5px 0;
+}
+img.icon {
+	margin: 0 3px 0 0;
+	vertical-align: -2px;	
+}
+	
 
 /* Imports for per-feature/app styles */
 /* (add here) */
