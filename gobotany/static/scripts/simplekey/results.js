@@ -51,10 +51,7 @@ results_page_init: function(args) {
 
     App3.set('show_grid', true);
     App3.set('show_list', false);
-
-    App3.taxa = Ember.Object.create({
-        len: 'Loading'   // placeholder until we have an integer to display
-    });
+    App3.set('matching_species_count', 'Loading');
 
     App3.image_types = Ember.ArrayProxy.create({
         content: []
@@ -342,8 +339,6 @@ results_page_init: function(args) {
             templateName: 'list-toggle-view',
             tagName: 'p',
             classNames: ['list-all'],
-
-            taxa_countBinding: 'App3.taxa.len',
 
             switch_photo_list: function(event) {
                 // Tell the old Dojo species section helper to switch views.
@@ -706,7 +701,7 @@ results_page_init: function(args) {
 
     var update_count_animation = null;
     var update_counts = function(species_list) {
-        App3.taxa.set('len', species_list.length);
+        App3.set('matching_species_count', species_list.length);
 
         var $spans = $('.species-count-heading > span');
         $spans.stop();

@@ -55,7 +55,8 @@
                 <h3 class="species-count-heading">
                   <span>
                     {% handlebars %}
-                      <span class="species-count">{{App3.taxa.len}}</span>
+                      <span class="species-count"
+                            >{{App3.matching_species_count}}</span>
                       matching species
                     {% endhandlebars %}
                   </span>
@@ -95,7 +96,8 @@
                     See
                     {{#if App3.show_list}}photos for{{else}}a list of{{/if}}
                     all
-                    <span class="species-count">{{view.taxa_count}}</span>
+                    <span class="species-count"
+                          >{{App3.matching_species_count}}</span>
                     matching species.
                   </a>
                 {% endhandlebars %}
