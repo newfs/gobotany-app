@@ -58,17 +58,6 @@ results_page_init: function(args) {
         content: []
     });
 
-    App3.TaxaView = Ember.View.extend({
-        show_listBinding: 'App3.taxa.show_list',
-        taxa_countBinding: 'App3.taxa.len',
-
-        switch_photo_list: function(event) {
-            // Tell the old Dojo species section helper to switch views.
-            if (species_section)
-                species_section.toggle_view(event);
-        }
-    });
-
     /* Async resources and deferreds. */
 
     var all_filters_ready = $.Deferred();
@@ -346,6 +335,22 @@ results_page_init: function(args) {
             itemViewClass: App3.FilterView
         });
         App3.filters_view.appendTo('#questions-go-here');
+
+        App3.list_toggle_view = Ember.View.create({
+            templateName: 'list-toggle-view',
+            tagName: 'p',
+            classNames: ['list-all'],
+
+            show_listBinding: 'App3.taxa.show_list',
+            taxa_countBinding: 'App3.taxa.len',
+
+            switch_photo_list: function(event) {
+                // Tell the old Dojo species section helper to switch views.
+                if (species_section)
+                    species_section.toggle_view(event);
+            }
+        });
+        App3.list_toggle_view.appendTo('#main');
     });
 
     /* Because filters would otherwise constantly change the height of

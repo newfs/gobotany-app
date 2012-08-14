@@ -90,15 +90,18 @@
                     <div class="wait"></div>
                 </div>
 
-                {% handlebars %}
-                {{#view App3.TaxaView tagName="p" class="list-all hidden"}}
-                <a {{action "switch_photo_list"}}>
-                  See {{#if view.show_list}}photos for{{else}}a list of{{/if}}
-                  all <span class="species-count">{{view.taxa_count}}</span>
-                  matching species.
-                </a>
-                {{/view}}
-                {% endhandlebars %}
+                {% verbatim %}
+                <script type="text/x-handlebars"
+                        data-template-name="list-toggle-view">
+                  <a {{action "switch_photo_list"}}>
+                    See
+                    {{#if view.show_list}}photos for{{else}}a list of{{/if}}
+                    all
+                    <span class="species-count">{{view.taxa_count}}</span>
+                    matching species.
+                  </a>
+                </script>
+                {% endverbatim %}
 
             </div>
 
