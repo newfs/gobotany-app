@@ -90,9 +90,7 @@
                     <div class="wait"></div>
                 </div>
 
-                {% verbatim %}
-                <script type="text/x-handlebars"
-                        data-template-name="list-toggle-view">
+                {% handlebars 'list-toggle-view' %}
                   <a {{action "switch_photo_list"}}>
                     See
                     {{#if view.show_list}}photos for{{else}}a list of{{/if}}
@@ -100,8 +98,7 @@
                     <span class="species-count">{{view.taxa_count}}</span>
                     matching species.
                   </a>
-                </script>
-                {% endverbatim %}
+                {% endhandlebars %}
 
             </div>
 
@@ -180,8 +177,8 @@
     </div>
 {% endblock %}
 
-{% block ember_templates %}{% verbatim %}
-<script type="text/x-handlebars" data-template-name="filter-view">
+{% block ember_templates %}
+{% handlebars 'filter-view' %}
   <a class="option">
     <span class="name">{{view.filter.info.friendly_name}}?</span>
     <span class="value">{{view.display_value}}</span>
@@ -189,5 +186,5 @@
   {{#if view.filter.value}}
   <a class="clear-filter" {{action "clear"}}>Clear</a>
   {{/if}}
-</script>
-{% endverbatim %}{% endblock %}
+{% endhandlebars %}
+{% endblock %}
