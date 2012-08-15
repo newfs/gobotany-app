@@ -140,12 +140,10 @@ results_page_init: function(args) {
         App3.set('family_filter', fc.filtermap.family);
         App3.set('genus_filter', fc.filtermap.genus);
 
-        fc.filtermap.family.set('value', filters_config.family_value);
-        fc.filtermap.genus.set('value', filters_config.genus_value);
+        fc.filtermap.family.set('value', filters_config.family_name);
+        fc.filtermap.genus.set('value', filters_config.genus_name);
 
-        _.each(filters_config.other_filters, function(filter) {
-            fc.add(filter);
-        });
+        _.each(filters_config.other_filters, $.proxy(fc.add, fc));
 
         App3.set('filter_controller', fc);
 
@@ -202,7 +200,7 @@ results_page_init: function(args) {
                 return App3.family_filter.get('value') || '';
             else
                 App3.family_filter.set('value', new_value || null);
-        }.property('App3.family_filter.value'),
+        }.property('family_filter.value'),
 
         genus_value: function(key, new_value) {
             if (! App3.genus_filter)
@@ -211,7 +209,7 @@ results_page_init: function(args) {
                 return App3.genus_filter.get('value') || '';
             else
                 App3.genus_filter.set('value', new_value || null);
-        }.property('App3.genus_filter.value')
+        }.property('genus_filter.value')
     });
 
     $('#family_clear').live('click', function(event) {
@@ -551,8 +549,8 @@ results_page_init: function(args) {
 
             var filter_readys = [];
             var filters_config = {
-                family_value: filter_values['family'] || null,
-                genus_value: filter_values['genus'] || null,
+                family_name: filter_values['family'] || null,
+                genus_name: filter_values['genus'] || null,
                 other_filters: []
             };
 
@@ -603,8 +601,8 @@ results_page_init: function(args) {
 
         resources.pile(pile_slug).done(function(pile_info) {
             var filters_config = {
-                family_value: null,
-                genus_value: null,
+                family_name: null,
+                genus_name: null,
                 other_filters: []
             };
             _.each(pile_info.default_filters, function(filter_info) {
