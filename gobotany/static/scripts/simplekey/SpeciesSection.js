@@ -18,14 +18,10 @@ define([
         // summary:
         //   Manages the species section of the results page
 
-        this.PHOTOS_VIEW = 'photos';
-        this.LIST_VIEW = 'list';
-        this.animation = null;
         this.pile_slug = pile_slug;
         this.plant_list = $('#main .plant-list');
         this.plant_data = [];
         this.plant_divs = [];
-        this.plant_divs_displayed_yet = false;
         this.plant_divs_ready = plant_divs_ready;
 
         resources.pile_species(pile_slug).done(
@@ -335,7 +331,7 @@ define([
         this.plant_divs_ready.resolve();
     };
 
-    methods.display_in_photos_view = function(items) {
+    methods.display_in_grid_view = function(items) {
         /* Display plant results as a grid of photo thumbnails with
            captions. */
 
@@ -387,7 +383,6 @@ define([
         this.plant_list.animate(
             {height: desty + HEIGHT},
             function() {
-                this.animation = null;
                 sidebar.set_height();
                 lazy_images.load();
 
@@ -422,33 +417,20 @@ define([
 
         query_results = App3.filtered_sorted_taxadata;
 
-        if (this.animation !== null) {
-            /* TODO: this never runs since this.animation is no longer
-               set to a Dojo animation object; should we learn to cancel
-               the animation now that jQuery is in charge?  Or will it
-               be fine with us interrupting its animation and starting a
-               new one without preparation or explanation? */
-            this.animation.stop();
-            this.animation = null;
-        }
-
         // Remove the "wait" spinner.
         this.plant_list.find('.wait').remove();
 
         // Display the results in the appropriate tab view.
-        if (App3.show_list) {
+        if (App3.show_list)
             this.display_in_list_view(query_results);
-        } else {
-            this.display_in_photos_view(query_results);
+        else if (App3.show_grid) {
+            this.display_in_grid_view(query_results);
+            this.populate_image_types(query_results);
+            lazy_images.load();
         }
 
         // Show the "See a list" (or "See photos") link.
         $('.list-all').removeClass('hidden');
-
-        if (App3.show_grid) {
-            this.populate_image_types(query_results);
-            lazy_images.load();
-        }
     };
 
     methods.populate_image_types = function(query_results) {

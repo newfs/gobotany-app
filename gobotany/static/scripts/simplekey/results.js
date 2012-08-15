@@ -2,6 +2,7 @@ define([
     'util/document_is_ready',
     'bridge/jquery',
     'bridge/jquery.cookie',
+    'bridge/jquery.jscrollpane',
     'bridge/ember',
     'bridge/shadowbox',
     'util/shadowbox_init',
@@ -13,6 +14,7 @@ define([
     'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState',
+    'simplekey/results_overlay',
     'simplekey/SpeciesSection',
     'simplekey/working_area',
     'simplekey/utils',
@@ -20,16 +22,17 @@ define([
     'util/lazy_images',
     'util/sidebar'
 ], function(
-    document_is_ready, $, x, Ember, Shadowbox, shadowbox_init, _,
+    document_is_ready, $, x, x, Ember, Shadowbox, shadowbox_init, _,
     App3, _Filter, _FilterController, animation, _glossarize, resources,
-    ResultsPageState, SpeciesSection, working_area_module, utils,
-    image_gallery, lazy_images, sidebar
+    ResultsPageState, results_overlay_init, SpeciesSection,
+    working_area_module, utils, image_gallery, lazy_images, sidebar
 ) {return {
 
 results_page_init: function(args) {
     var pile_slug = args.pile_slug;
 
     sidebar.setup();
+
     /* Legacy dojo components */
 
     var species_section = null;
@@ -76,6 +79,10 @@ results_page_init: function(args) {
     App3.addObserver('image_type', function() {
         image_type_ready.resolve();
     });
+
+    /* Get the overlay started. */
+
+    results_overlay_init(args);
 
     /* Various parts of the page need random access to taxa. */
 
@@ -379,32 +386,30 @@ results_page_init: function(args) {
     var scroll_pane = null;
     var user_is_scrolling = true;
 
-    require(['bridge/jquery.jscrollpane'], function() {
-        $.when(document_is_ready).done(function() {
-            scroll_pane = $('.scroll')
-                .bind('jsp-scroll-y', function(event) {
-                    // Make sure this is not a reinitialise
-                    if (user_is_scrolling)
-                        dismiss_any_working_area();
-                })
-                .jScrollPane({
-                    maintainPosition: true,
-                    stickToBottom: true,
-                    verticalGutter: 0,
-                    showArrows: true
-                });
+    $.when(document_is_ready).done(function() {
+        scroll_pane = $('.scroll')
+            .bind('jsp-scroll-y', function(event) {
+                // Make sure this is not a reinitialise
+                if (user_is_scrolling)
+                    dismiss_any_working_area();
+            })
+            .jScrollPane({
+                maintainPosition: true,
+                stickToBottom: true,
+                verticalGutter: 0,
+                showArrows: true
+            });
 
-            // Re-initialise the scroll pain regularly because new
-            // filters will get drawn and because existing filters will
-            // change their height as values get set and cleared.  It
-            // can only resize when the working area is gone, however;
-            // adjusting the scroll pane closes the working area!
+        // Re-initialise the scroll pain regularly because new
+        // filters will get drawn and because existing filters will
+        // change their height as values get set and cleared.  It
+        // can only resize when the working area is gone, however;
+        // adjusting the scroll pane closes the working area!
 
-            setInterval(function() {
-                if (working_area === null)
-                    scroll_pane.data('jsp').reinitialise();
-            }, 500);
-        });
+        setInterval(function() {
+            if (working_area === null)
+                scroll_pane.data('jsp').reinitialise();
+        }, 500);
     });
 
     /* All filters can be cleared with a single button click. */
@@ -773,9 +778,7 @@ results_page_init: function(args) {
         });
     }
 
-    // Page load cascade - much of which is in the above code or over in
-    // our legacy Dojo modules, but all of which would be clearer and
-    // easier to think about and manage if it migrated down here.
+    // Final pieces of page load cascade.
 
     lazy_images.start();
 
@@ -817,12 +820,5 @@ results_page_init: function(args) {
             load_selected_image_type();
             lazy_images.load();
         });
-    });
-
-    require([
-        'simplekey/results_overlay',
-        'simplekey/results_photo_menu'
-    ], function(results_overlay_init, results_photo_menu) {
-        results_overlay_init(args);
     });
 }}});
