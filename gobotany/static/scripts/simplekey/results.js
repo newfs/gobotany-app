@@ -342,13 +342,18 @@ results_page_init: function(args) {
         App3.species_view_tabs = Ember.View.create({
             templateName: 'species-view-tabs',
             tagName: 'ul',
+
             choose_grid_view: function() {
-                if (species_section.current_view != species_section.PHOTOS_VIEW)
-                    species_section.toggle_view();
+                if (App3.show_grid) return;
+                App3.set('show_grid', true);
+                App3.set('show_list', false);
+                species_section.display_results();
             },
             choose_list_view: function() {
-                if (species_section.current_view != species_section.LIST_VIEW)
-                    species_section.toggle_view();
+                if (App3.show_list) return;
+                App3.set('show_list', true);
+                App3.set('show_grid', false);
+                species_section.display_results();
             }
         });
         App3.species_view_tabs.appendTo('#results-tabs');
@@ -359,7 +364,10 @@ results_page_init: function(args) {
             classNames: ['list-all'],
 
             switch_species_view: function() {
-                species_section.toggle_view();
+                if (App3.show_grid)
+                    App3.species_view_tabs.choose_list_view();
+                else
+                    App3.species_view_tabs.choose_grid_view();
             }
         });
         App3.species_view_toggle.appendTo('#main');
@@ -584,6 +592,7 @@ results_page_init: function(args) {
             // Set the tab view specified on the hash.
             var tab_view = results_page_state.tab_view();
             var is_list_view = (tab_view === 'list') ? true : false;
+            App3.set('show_grid', ! is_list_view);
             App3.set('show_list', is_list_view);
         });
     } else {

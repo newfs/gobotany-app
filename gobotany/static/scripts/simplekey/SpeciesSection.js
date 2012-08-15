@@ -27,17 +27,10 @@ define([
         this.plant_divs = [];
         this.plant_divs_displayed_yet = false;
         this.plant_divs_ready = plant_divs_ready;
-        this.current_view = this.PHOTOS_VIEW;
 
         resources.pile_species(pile_slug).done(
             $.proxy(this, 'create_plant_divs')
         );
-
-        // Set the initial view for showing the results.
-        view_matches = window.location.hash.match(/_view=[a-z]+/);
-        if (view_matches && view_matches.length) {
-            this.current_view = view_matches[0].substring(6);
-        }
     };
 
     methods.default_image = function(species) {
@@ -204,21 +197,6 @@ define([
                 }
             );
         }, this));
-    };
-
-    methods.toggle_view = function() {
-
-        if (this.current_view === this.PHOTOS_VIEW) {
-            App3.set('show_list', true);
-            App3.set('show_grid', false);
-            this.current_view = this.LIST_VIEW;
-        } else {
-            App3.set('show_list', false);
-            App3.set('show_grid', true);
-            this.current_view = this.PHOTOS_VIEW;
-        }
-
-        this.display_results(App3.filtered_sorted_taxadata);
     };
 
     methods.get_number_of_rows_to_span = function(items, start) {
@@ -440,7 +418,9 @@ define([
         );
     };
 
-    methods.display_results = function(query_results) {
+    methods.display_results = function() {
+
+        query_results = App3.filtered_sorted_taxadata;
 
         if (this.animation !== null) {
             /* TODO: this never runs since this.animation is no longer
@@ -452,15 +432,11 @@ define([
             this.animation = null;
         }
 
-        // Show the "Show" drop-down menu for image types, if necessary.
-        if (this.current_view === this.PHOTOS_VIEW)
-            $('.show').removeClass('hidden');
-
         // Remove the "wait" spinner.
         this.plant_list.find('.wait').remove();
 
         // Display the results in the appropriate tab view.
-        if (this.current_view === this.LIST_VIEW) {
+        if (App3.show_list) {
             this.display_in_list_view(query_results);
         } else {
             this.display_in_photos_view(query_results);
@@ -469,7 +445,7 @@ define([
         // Show the "See a list" (or "See photos") link.
         $('.list-all').removeClass('hidden');
 
-        if (this.current_view === this.PHOTOS_VIEW) {
+        if (App3.show_grid) {
             this.populate_image_types(query_results);
             lazy_images.load();
         }
