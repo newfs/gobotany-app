@@ -23,7 +23,7 @@ define([
     'util/sidebar'
 ], function(
     document_is_ready, $, x, x, Ember, Shadowbox, shadowbox_init, _,
-    App3, _Filter, _FilterController, animation, _glossarize, resources,
+    App3, Filter, FilterController, animation, glossarize, resources,
     ResultsPageState, results_overlay_init, SpeciesSection,
     working_area_module, utils, image_gallery, lazy_images, sidebar
 ) {return {
@@ -33,9 +33,7 @@ results_page_init: function(args) {
 
     sidebar.setup();
 
-    /* Legacy dojo components */
-
-    var species_section = null;
+    var species_section = new SpeciesSection();
     var species_section_ready = $.Deferred();
 
     $.when(
@@ -43,14 +41,9 @@ results_page_init: function(args) {
         filtered_sorted_taxadata_ready,
         taxa_by_sciname_ready
     ).done(function() {
-        species_section = new SpeciesSection();
         species_section.init(pile_slug, plant_divs_ready);
         species_section_ready.resolve();
     });
-
-    Filter = _Filter;
-    FilterController = _FilterController;
-    glossarize = _glossarize;
 
     App3.set('show_grid', true);
     App3.set('show_list', false);
@@ -506,7 +499,10 @@ results_page_init: function(args) {
 
     var use_hash = (window.location.hash !== '') ? true : false;
     if (use_hash) {
-        // Restore the state of the page from a URL hash.
+        /* Restore the state of the page from a URL hash.  This leads to
+           a bit of complexity, since, for example, we will have to do a
+           separate async fetch of every filter that the user was busy
+           using when the hash that we are restoring got saved. */
 
         var results_page_state = ResultsPageState.create({
             'hash': window.location.hash
@@ -601,8 +597,9 @@ results_page_init: function(args) {
             App3.set('show_list', is_list_view);
         });
     } else {
-        // With no hash on the URL, load the default filters for this
-        // plant subgroup for a "fresh" load of the page.
+        /* When the URL contains no hash, we get to load the default
+           filters in a single fetch by grabbing the pile resources, so
+           all_filters_ready depends upon only a single async request. */
 
         resources.pile(pile_slug).done(function(pile_info) {
             var filters_config = {
