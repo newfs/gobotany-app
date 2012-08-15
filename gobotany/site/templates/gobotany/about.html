@@ -2,6 +2,10 @@
 
 {% block title %}About Go Botany{% endblock %}
 
+{% block js_require %}
+    require(['site/about']);
+{% endblock %}
+
 {% block body_attributes %}id="about" class="app about"{% endblock %}
 
 {% block body_content %}
@@ -24,7 +28,7 @@
                 
             <ul>
                 <li>Our <a href="{% url simplekey %}">Simple Key</a> is an interactive
-                key to 1,200 species. Answer some questions and narrow down to the plant
+                key to 1,200 species. Answer some questions to narrow down to the plant
                 you want to identify. <a href="{% url simplekey %}">Get Started!</a>
                 </li>
                 <li>Using our <a href="{% url advanced-id-tools %}">Advanced Key</a> 
@@ -58,7 +62,7 @@
                 <a href="{% url plantshare-placeholder %}">PlantShare</a> and posting
                 to our <a href="{% url teaching %}">Teaching</a> page.</li>
                 <li>During 2012-2013, New England Wild Flower Society will offer free 
-                trainings for educators throughout New England on how to use Go
+                training for educators throughout New England on how to use Go
                 Botany.</li>
             </ul>
                     
@@ -78,7 +82,7 @@
                         href="http://www.newenglandwild.org/store/flora-novae-angliae"
                         target="_blank">Garden Shop</a>), the first
                     comprehensive scientific reference on the region's plant
-                    species to be published in the last 25 years.</li>
+                    species published in the last 25 years.</li>
             </ul>
         </div>
 

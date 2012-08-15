@@ -25,12 +25,15 @@ $narrower-body-font: Tahoma, "Trebuchet MS", sans-serif;
 
 $link-green: #508e31;
 $heading-green: #519136;
+$border-green: #c3d941;
 
 $text-color: #000;
+$footer-background-color: #b4d57f;
 
 $base-font-size: 12px;
+$nav-font-size: 14px;
 
-$minimum-side-padding: 8px;
+$text-line-height: 170%;
 
 /* Site-wide styles */
 
@@ -39,7 +42,6 @@ body {
     color: $text-color;
     font-family: $body-font;
     font-size: $base-font-size;
-    padding: 0 $minimum-side-padding;
 }
 a {
     color: $link-green;
@@ -54,13 +56,19 @@ a:hover {
 h1, h2, h3, h4, h5, h6 {
     font-family: $headings-font;
     font-weight: normal;
+    line-height: 155%;
+    margin: 0;
+    padding: 0;
 }
 h1 {
     color: $heading-green;
 	font-size: 35px;
+    line-height: 110%;
+    margin-bottom: 8px;
 }
 h2 {
-	font-size: 24px;	
+	font-size: 24px;
+    margin: 8px 0;
 }
 h3 {
 	font-size: 18px;	
@@ -74,14 +82,275 @@ h5, h6 {
 h6 {
     font-weight: italic;
 }
+p, ul {
+    line-height: $text-line-height;
+    margin: 0;
+    padding: 0;
+}
 ul li {
-	margin: 0 0 5px 0;
+    margin: 0 0 5px 0;
 }
 img.icon {
 	margin: 0 3px 0 0;
 	vertical-align: -2px;	
 }
-	
+
+@mixin offscreen {
+    display: block;
+    text-indent: -9000px;
+}
+
+@mixin container-div {
+    .container {
+        margin: 0 auto;
+        padding: 0 10px;
+        width: 960px;
+    }
+}
+
+/* Header */
+
+header {
+    height: 120px;
+    @include container-div;
+
+    p {
+        margin: 0;
+    }
+    .go-botany {
+        float: left;
+        margin: 0 0 0 -15px;
+        padding: 14px 0 0 0;
+        width: 443px;
+        
+        a {
+            background: url(/static/images/layout/logo-app.png) no-repeat transparent;
+            height: 65px;
+            width: 443px;
+            @include offscreen;
+        }
+    }            
+
+    .newfs {
+        float: right;
+
+        a {
+            background: url(/static/images/layout/newfs-logo-app.png) no-repeat transparent;
+            height: 66px;
+            width: 116px;
+            @include offscreen;
+        }
+    }
+
+    nav {
+        background: url(/static/images/layout/nav-app-green.png) no-repeat;
+        background-position: 0px 79px;
+        font-family: $headings-font;
+        height: 120px;
+        padding: 0 0 0 48px;
+        
+        a {
+            color: #fff;
+            display: block;
+            height: 35px;
+            padding: 5px 8px 0;
+        }
+        > a {
+            display: none;  /* Omit the 'sections' link by default */
+        }
+        ul {
+            clear: both;
+        }
+        li {
+            display: block;
+            float: left;
+            font-size: $nav-font-size;
+            line-height: normal;
+            margin: 0 10px 0 0;
+            padding: 0;
+        }
+        li.about, li a:hover {
+            background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
+            text-decoration: none;
+        }
+
+        #search {
+            background: #fff url(/static/images/layout/search-left.png) left center no-repeat;
+            float: right;
+            height: 20px;
+            margin: 4px 4px 0 0;
+            padding: 0 0 0 11px;
+
+            form {
+                display: block;
+                margin: 0;
+                padding: 0;
+                width: 262px;
+            }
+            input {
+                background: #fff;
+                border: 0;
+                float: left;
+                font-family: $headings-font;
+                font-size: $nav-font-size;
+                height: 20px;
+                margin: 0;
+                padding: 0;
+                width: 219px;
+            }                
+            input:focus {
+                outline: none;
+            }
+
+            button {
+                background: #508e31 url(/static/images/layout/search-btn.png) 0 0 no-repeat;
+                border: none;
+                cursor: pointer;
+                float: right;
+                height: 20px;
+                margin: 0;
+                outline: none;
+                padding: 0;
+                width: 43px;
+                @include offscreen;
+            }
+        }
+        #search-suggest .menu {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-bottom-color: #999;
+            border-right-color: #999;
+            font-family: $headings-font;
+            margin: 0 auto;
+            position: absolute;
+            text-align: left;
+            top: 105px;
+            width: 256px;
+            z-index: 101;
+            
+            li {
+                clear: left;
+                display: block;
+                float: left;
+                font-weight: bold;
+                margin: 0;
+                padding: 3px;
+            }
+            a {
+                color: $text-color;
+                cursor: default;
+                height: inherit;
+                padding: 0;
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+/* Main content and sidebar */
+
+.content {
+    padding: 8px 0 0;
+    @include container-div;
+    
+    #main {
+        background: url(/static/images/layout/sidebar-bg.png) repeat-y;
+        float: right;
+        padding-bottom: 24px;
+        padding-left: 250px;
+        width: 710px;
+    }
+    #sidebar {
+        border-top: 1px solid $border-green;
+        float: left;
+        height: 100%;
+        margin-right: -230px;
+        padding: 16px 0;
+        width: 230px;
+
+        .section {
+            padding: 0 17px 16px;
+
+            h4 {
+                margin: 0 0 5px 0;
+            }
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+    }
+}
+
+/* Footer */
+
+footer {
+    background: $footer-background-color;
+    clear: both;
+    height: 128px;
+    position: relative;
+    width: 100%;
+    @include container-div;
+
+    > img {
+        left: 50%;
+        margin-left: -543px;
+        position: absolute;
+        top: -47px;
+    }
+    .publisher, .navigation {
+        float: left;
+        margin: 0 20px 0 0;
+        padding: 18px 0;
+        width: 305px;
+    }
+    h6 {
+        font-family: $body-font;
+        font-size: 11px;
+    }
+    p {
+        font-size: 9px;
+        margin: 0 0 10px 0;
+    }
+    ul {
+        font-size: 9px;
+        list-style-type: none;
+        margin-bottom: 12px;
+    }
+    li {
+        display: inline;
+        line-height: 14px;
+    }
+    li::after {
+        content: " |";
+    }
+    li:last-child::after {
+        content: none;
+    }
+    .nsf-logo {
+        float: left;
+        margin: 0 10px 0 7px;
+    }
+    .support {
+        margin-right: 0;
+        padding: 18px 0;
+    }    
+}
+
+/* About */
+
+#about #main {
+    img {
+        float: right;
+        margin: 5px 0 20px 20px;
+    }
+    img.bookcover {
+       margin-right: 89px;
+    }
+    ul {
+        margin: 0 5px 0 18px;
+    }
+}
 
 /* Imports for per-feature/app styles */
 /* (add here) */

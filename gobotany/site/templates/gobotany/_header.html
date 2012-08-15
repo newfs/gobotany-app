@@ -1,10 +1,10 @@
     <header>
         <div class="container">
-            <p><a href="http://www.newenglandwild.org/">New
-                England Wild Flower Society</a></p>
-            <p><a 
-                {% ifnotequal request.path "/" %}href="/"{% endifnotequal %}>Go
+            <p class="go-botany"><a 
+            {% ifnotequal request.path "/" %}href="/"{% endifnotequal %}>Go
                 Botany: Discover thousands of New England plants</a></p>
+            <p class="newfs"><a href="http://www.newenglandwild.org/">New
+                England Wild Flower Society</a></p>
             <nav>
                 <a href="javascript:document.getElementById('footer-nav').scrollIntoView();">+<span>sections</span></a>
                 <ul>
@@ -22,14 +22,16 @@
                         <a href="{% url dich-key-placeholder %}">Dichotomous Key</a>
                     </li>
                     <li class="teaching-tools"><a href="{% url teaching %}">Teaching</a></li>
-                    <li class="about last"><a href="{% url simplekey-help-about %}">About</a></li>
+                    <li class="about"><a href="{% url simplekey-help-about %}">About</a></li>
                 </ul>
                 <div id="search">
                     <form id="search-suggest" action="/search/" autocomplete="off">
                         <input type="text" name="q" placeholder="Search..."
                             value="{{ request.GET.q }}">
                         <button>Search</button>
-                        <div class="menu hidden"></div>
+                        <div class="menu hidden">
+                            <ul></ul>{# TODO: eliminate empty list #}
+                        </div>
                     </form>
                 </div>
             </nav>
