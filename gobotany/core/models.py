@@ -448,6 +448,9 @@ class Family(models.Model):
     def __unicode__(self):
         return self.name
 
+    @property
+    def slug(self):
+        return self.name.lower()
 
 class Genus(models.Model):
     """A biological genus."""
@@ -465,6 +468,9 @@ class Genus(models.Model):
     def __unicode__(self):
         return self.name
 
+    @property
+    def slug(self):
+        return self.name.lower()
 
 class Synonym(models.Model):
     """Other (generally previous) scientific names for species."""

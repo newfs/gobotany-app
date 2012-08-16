@@ -273,9 +273,9 @@ class PlantOfTheDayManagerTestCase(TestCase):
         plant_for_today = PlantOfTheDay.get_by_date.for_day(date.today(),
                                                             PARTNER)
         self.assertTrue(plant_for_today)
-        specific_epithet = plant_for_today.scientific_name.split(' ')[1]
-        self.assertTrue(len(specific_epithet) > 0)
-        self.assertTrue(specific_epithet not in SEEN_SPECIES)
+        epithet = plant_for_today.scientific_name.split(' ')[1]
+        self.assertTrue(len(epithet) > 0)
+        self.assertTrue(epithet not in SEEN_SPECIES)
         self.assertEqual(date.today(), plant_for_today.last_seen)
 
     def test_manager_returns_plant_seen_longest_ago_for_today(self):
@@ -298,9 +298,9 @@ class PlantOfTheDayManagerTestCase(TestCase):
         plant_for_today = PlantOfTheDay.get_by_date.for_day(date.today(),
                                                             PARTNER)
         self.assertTrue(plant_for_today)
-        specific_epithet = plant_for_today.scientific_name.split(' ')[1]
-        self.assertTrue(len(specific_epithet) > 0)
-        self.assertEqual(specific_epithet, plants[len(plants) - 1])
+        epithet = plant_for_today.scientific_name.split(' ')[1]
+        self.assertTrue(len(epithet) > 0)
+        self.assertEqual(epithet, plants[len(plants) - 1])
         self.assertEqual(date.today(), plant_for_today.last_seen)
 
     def test_manager_excludes_plant_for_nonexistent_taxon(self):
@@ -342,9 +342,9 @@ class PlantOfTheDayManagerTestCase(TestCase):
         plant_for_today = PlantOfTheDay.get_by_date.for_day(date.today(),
                                                             PARTNER)
         self.assertTrue(plant_for_today)
-        specific_epithet = plant_for_today.scientific_name.split(' ')[1]
-        self.assertTrue(len(specific_epithet) > 0)
-        self.assertEqual(specific_epithet, seen_plants[len(seen_plants) - 1])
+        epithet = plant_for_today.scientific_name.split(' ')[1]
+        self.assertTrue(len(epithet) > 0)
+        self.assertEqual(epithet, seen_plants[len(seen_plants) - 1])
         self.assertEqual(date.today(), plant_for_today.last_seen)
 
         # Verify that the old, incorrect plant has now been excluded,

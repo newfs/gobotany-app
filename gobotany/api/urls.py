@@ -81,13 +81,13 @@ urlpatterns = patterns(
         Resource(handler=handlers.PileGroupHandler), name='api-pilegroup'),
 
     # Plant distribution maps
-    url(r'^maps/(?P<genus>[^/-]+)-(?P<specific_epithet>[^/]+)'
+    url(r'^maps/(?P<genus>[^/-]+)-(?P<epithet>[^/]+)'
          '-ne-distribution-map(\.svg|/)?$',
         views.new_england_distribution_map, name='ne-distribution-map'),
-    url(r'^maps/(?P<genus>[^/-]+)-(?P<specific_epithet>[^/]+)'
+    url(r'^maps/(?P<genus>[^/-]+)-(?P<epithet>[^/]+)'
          '-na-distribution-map(\.svg|/)?$',
         views.north_american_distribution_map, name='na-distribution-map'),
-    url(r'^maps/(?P<genus>[^/-]+)-(?P<specific_epithet>[^/]+)'
+    url(r'^maps/(?P<genus>[^/-]+)-(?P<epithet>[^/]+)'
          '-us-distribution-map(\.svg|/)?$',
         views.united_states_distribution_map, name='us-distribution-map'),
 

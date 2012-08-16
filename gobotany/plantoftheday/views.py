@@ -60,7 +60,7 @@ def _get_plants_of_the_day(max_number_plants, partner_name):
             plant['common_names'] = taxon.common_names.all()
             plant['facts'] = taxon.factoid
             plant['url'] = reverse('simplekey-species',
-                                   args=[taxon.genus.name, taxon.epithet])
+                                   args=[taxon.genus.slug, taxon.epithet])
 
             image = None
             species_images = botany.species_images(taxon)

@@ -318,13 +318,13 @@
 
                 <div class="section">
                     <h5>Family:</h5>
-                    <p><a href="{% url simplekey-family taxon.family.name %}"
+                    <p><a href="{% url simplekey-family taxon.family.slug %}"
                         >{{ taxon.family }}</a></p>
                 </div>
 
                 <div class="section">
                     <h5>Genus:</h5>
-                    <p><em><a href="{% url simplekey-genus taxon.genus.name %}"
+                    <p><em><a href="{% url simplekey-genus taxon.genus.slug %}"
                         >{{ taxon.genus }}</a></em></p>
                 </div>
 

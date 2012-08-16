@@ -352,7 +352,7 @@ class Importer(object):
         name = []
         words = full_plant_name.split(' ')
         if len(words) > 1:
-            # Start with the generic name and specific epithet.
+            # Start with the generic name and epithet.
             name.append(words[0])
             name.append(words[1].strip(','))
 
@@ -1111,7 +1111,7 @@ class Importer(object):
         # hyphenated specific epithets. This is seen in the image files
         # but only for a few thus far, so a second strategy is described
         # below for handling the rest.
-        specific_epithet = name[1].replace('_', '-')
+        epithet = name[1].replace('_', '-')
 
         # If there are three or four parts to the name, assume a hyphenated
         # specific epithet like Liatris novae-angliae, as seen much of
@@ -1122,7 +1122,7 @@ class Importer(object):
         # looking up the taxon a second time omitting the portion after
         # the hyphen, which should finally find the taxon.
         if len(name) in [3, 4]:
-            specific_epithet = '-'.join([specific_epithet, name[2]])
+            epithet = '-'.join([epithet, name[2]])
 
         # When there are many parts to the name (4+), it is likely
         # a "comparison" image containing two species names. In that
@@ -1131,7 +1131,7 @@ class Importer(object):
         # names reversed for the other plant's species page.
 
         species = {'genus': genus,
-                   'species': specific_epithet,
+                   'species': epithet,
                    'image_type': image_type,
                    'photographer': photographer}
         return species

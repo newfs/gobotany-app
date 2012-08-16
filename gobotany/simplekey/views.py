@@ -296,26 +296,16 @@ def _native_to_north_america_status(taxon):
     return native_to_north_america
 
 
-def species_view(request, genus_slug, specific_name_slug):
+def species_view(request, genus_slug, epithet):
 
     COMPACT_MULTIVALUE_CHARACTERS = ['Habitat', 'New England state',
                                      'Specific Habitat']
 
-    # Insist on correct botanic capitalization: think of the children!
-
     genus_name = genus_slug.capitalize()
-    specific_name = specific_name_slug.lower()
-    if genus_slug != genus_name or specific_name_slug != specific_name:
-        url = reverse('simplekey-species', args=(genus_name, specific_name))
-        url = add_query_string(request, url)
-        return redirect(url, permanent=True)
-
-    # Proceed.
-
-    scientific_name = '%s %s' % (genus_name, specific_name)
-    scientific_name_short = '%s. %s' % (scientific_name[0],
-                                        specific_name_slug)
+    scientific_name = '%s %s' % (genus_name, epithet)
     taxon = get_object_or_404(Taxon, scientific_name=scientific_name)
+
+    scientific_name_short = '%s. %s' % (scientific_name[0], epithet)
 
     pile_slug = request.GET.get('pile')
     if pile_slug:
@@ -390,23 +380,22 @@ def species_view(request, genus_slug, specific_name_slug):
            'compact_multivalue_characters': COMPACT_MULTIVALUE_CHARACTERS,
            'brief_characteristics': preview_characters,
            'all_characteristics': characters_by_group,
-           'specific_epithet': specific_name_slug,
+           'epithet': epithet,
            'last_plant_id_url': last_plant_id_url,
-           'in_simple_key': partner_species.simple_key,
+           'in_simple_key': partner_species and partner_species.simple_key,
            'native_to_north_america': native_to_north_america
            }, context_instance=RequestContext(request))
 
-def species_redirect(request, pilegroup_slug, pile_slug, genus_slug,
-                     specific_name_slug):
+def species_redirect(request, pilegroup_slug, pile_slug, genus_slug, epithet):
 
     genus_name = genus_slug.capitalize()
-    scientific_name = '%s %s' % (genus_name, specific_name_slug)
+    scientific_name = '%s %s' % (genus_name, epithet)
     get_object_or_404(Taxon, scientific_name=scientific_name)
     pile = get_object_or_404(Pile, slug=pile_slug)
     if pile.pilegroup.slug != pilegroup_slug:
         raise Http404
-    return redirect('/species/{}/{}?pile={}'.format(
-            genus_name, specific_name_slug, pile_slug), permanent=True)
+    return redirect('/species/{}/{}/?pile={}'.format(
+            genus_slug, epithet, pile_slug), permanent=True)
 
 def _get_plants():
     plants = Taxon.objects.values(
@@ -438,16 +427,7 @@ def species_list_view(request):
 
 def genus_view(request, genus_slug):
 
-    # Redirect to proper capitalization.
-
     genus_name = genus_slug.capitalize()
-    if genus_slug != genus_name:
-        url = reverse('simplekey-genus', args=(genus_name,))
-        url = add_query_string(request, url)
-        return redirect(url, permanent=True)
-
-    # Grab the object.
-
     genus = get_object_or_404(Genus, name=genus_name)
 
     # If it is decided that common names will not be required, change the
@@ -486,16 +466,7 @@ def genus_redirect_view(request, genus_slug):
 
 def family_view(request, family_slug):
 
-    # Redirect to proper capitalization.
-
     family_name = family_slug.capitalize()
-    if family_slug != family_name:
-        url = reverse('simplekey-family', args=(family_name,))
-        url = add_query_string(request, url)
-        return redirect(url, permanent=True)
-
-    # Grab the object.
-
     family = get_object_or_404(Family, name=family_name)
 
     # If it is decided that common names will not be required, change the
