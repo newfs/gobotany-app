@@ -289,8 +289,7 @@ def _native_to_north_america_status(taxon):
     return native_to_north_america
 
 
-def species_view(request, genus_slug, specific_name_slug,
-                 pilegroup_slug=None, pile_slug=None):
+def species_view(request, genus_slug, specific_name_slug):
 
     COMPACT_MULTIVALUE_CHARACTERS = ['Habitat', 'New England state',
                                      'Specific Habitat']
@@ -300,17 +299,12 @@ def species_view(request, genus_slug, specific_name_slug,
                                         specific_name_slug)
     taxon = get_object_or_404(Taxon, scientific_name=scientific_name)
 
-    if pile_slug and pilegroup_slug:
+    pile_slug = request.GET.get('pile')
+    if pile_slug:
         pile = get_object_or_404(Pile, slug=pile_slug)
-        if pile.pilegroup.slug != pilegroup_slug:
-            raise Http404
     else:
-        pile_slug = request.GET.get('pile')
-        if pile_slug:
-            pile = get_object_or_404(Pile, slug=pile_slug)
-        else:
-            # Just get the first pile from the species
-            pile = taxon.piles.all()[0]
+        # Randomly grab the first pile from the species
+        pile = taxon.piles.all()[0]
     pilegroup = pile.pilegroup
 
     partner = which_partner(request)
