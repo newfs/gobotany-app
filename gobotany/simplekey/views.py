@@ -437,6 +437,17 @@ def species_list_view(request):
 
 
 def genus_view(request, genus_slug):
+
+    # Redirect to proper capitalization.
+
+    genus_name = genus_slug.capitalize()
+    if genus_slug != genus_name:
+        url = reverse('simplekey-genus', args=(genus_name,))
+        url = add_query_string(request, url)
+        return redirect(url, permanent=True)
+
+    # Grab the object.
+
     genus = get_object_or_404(Genus, slug=genus_slug.lower())
 
     # If it is decided that common names will not be required, change the
@@ -474,7 +485,18 @@ def genus_redirect_view(request, genus_slug):
 
 
 def family_view(request, family_slug):
-    family = get_object_or_404(Family, slug=family_slug.lower())
+
+    # Redirect to proper capitalization.
+
+    family_name = family_slug.capitalize()
+    if family_slug != family_name:
+        url = reverse('simplekey-family', args=(family_name,))
+        url = add_query_string(request, url)
+        return redirect(url, permanent=True)
+
+    # Grab the object.
+
+    family = get_object_or_404(Family, name=family_name)
 
     # If it is decided that common names will not be required, change the
     # default below to None so the template will omit the name if missing.
