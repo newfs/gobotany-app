@@ -131,12 +131,8 @@ define([
                     }
 
                     // Wire up the Go To Species Page button.
-                    var path = window.location.pathname.split('#')[0];
-                    var url = path +
-                        plant.scientific_name.toLowerCase().replace(' ',
-                        '/') + '/';
                     $('#plant-detail-modal a.go-to-species-page')
-                        .attr('href', url);
+                        .attr('href', plant.url);
 
                     // Add images.
                     var images_html = '';
@@ -172,7 +168,7 @@ define([
                     var content_element = $('#plant-detail-modal')[0];
                     // On small screens, skip the popup entirely for now.
                     if ($(window).width() <= 600) {
-                        window.location.href = url;
+                        window.location.href = plant.url;
                     }
                     else {
                         Shadowbox.open({
@@ -247,25 +243,25 @@ define([
             else {
                 html += '<tr class="first-visible">';
             }
-            if (i === 0 || (items[i].genus !== items[i - 1].genus)) {
+            var plant = items[i];
+            if (i === 0 || (plant.genus !== items[i - 1].genus)) {
                 var rowspan = this.get_number_of_rows_to_span(items, i);
                 html += '<td class="genus" rowspan="' + String(rowspan) +
-                    '">Genus: ' + items[i].genus + '</td>';
+                    '">Genus: ' + plant.genus + '</td>';
             }
             html += '<td class="scientific-name">';
-            var image = this.get_image(items[i], 'habit');
+            var image = this.get_image(plant, 'habit');
             if (image !== undefined) {
                 html += '<a href="' + image.large_thumb_url + '" ' +
                         'title="Photo">' +
                         '<img src="/static/images/icons/icon-camera.png" ' +
                         'alt=""></a>';
             }
-            html += items[i].scientific_name + '</td>';
-            html += '<td class="common-name">' + items[i].common_name +
+            html += plant.scientific_name + '</td>';
+            html += '<td class="common-name">' + plant.common_name +
                 '</td>';
             html += '<td class="details"><a href="' +
-                items[i].scientific_name.toLowerCase().replace(' ', '/') +
-                '/">Details</a></td>';
+                plant.url + '/">Details</a></td>';
             html += '</tr>';
         }
 
