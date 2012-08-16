@@ -305,8 +305,12 @@ def species_view(request, genus_slug, specific_name_slug,
         if pile.pilegroup.slug != pilegroup_slug:
             raise Http404
     else:
-        # Get the first pile from the species
-        pile = taxon.piles.all()[0]
+        pile_slug = request.GET.get('pile')
+        if pile_slug:
+            pile = get_object_or_404(Pile, slug=pile_slug)
+        else:
+            # Just get the first pile from the species
+            pile = taxon.piles.all()[0]
     pilegroup = pile.pilegroup
 
     partner = which_partner(request)
