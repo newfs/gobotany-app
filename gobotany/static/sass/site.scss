@@ -90,9 +90,8 @@ p, ul {
 ul li {
     margin: 0 0 5px 0;
 }
-img.icon {
-	margin: 0 3px 0 0;
-	vertical-align: -2px;	
+.hidden {
+    display: none;
 }
 
 @mixin offscreen {
@@ -235,6 +234,10 @@ header {
                 font-weight: bold;
                 margin: 0;
                 padding: 3px;
+                width: 250px;
+            }
+            li.highlighted {
+                background-color: #abd6ff;
             }
             a {
                 color: $text-color;
@@ -242,6 +245,12 @@ header {
                 height: inherit;
                 padding: 0;
                 text-decoration: none;
+            }
+            a:hover, li:hover {
+                background: #c4e2ff;
+            }
+            span {
+                font-weight: normal;
             }
         }
     }

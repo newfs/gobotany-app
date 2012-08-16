@@ -299,7 +299,7 @@ p, ul { line-height: 170%; margin: 0; padding: 0; }
 
 ul li { margin: 0 0 5px 0; }
 
-img.icon { margin: 0 3px 0 0; vertical-align: -2px; }
+.hidden { display: none; }
 
 /* Header */
 header { height: 120px; }
@@ -321,8 +321,11 @@ header nav #search input { background: #fff; border: 0; float: left; font-family
 header nav #search input:focus { outline: none; }
 header nav #search button { background: #508e31 url(/static/images/layout/search-btn.png) 0 0 no-repeat; border: none; cursor: pointer; float: right; height: 20px; margin: 0; outline: none; padding: 0; width: 43px; display: block; text-indent: -9000px; }
 header nav #search-suggest .menu { background: #fff; border: 1px solid #ccc; border-bottom-color: #999; border-right-color: #999; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; margin: 0 auto; position: absolute; text-align: left; top: 105px; width: 256px; z-index: 101; }
-header nav #search-suggest .menu li { clear: left; display: block; float: left; font-weight: bold; margin: 0; padding: 3px; }
+header nav #search-suggest .menu li { clear: left; display: block; float: left; font-weight: bold; margin: 0; padding: 3px; width: 250px; }
+header nav #search-suggest .menu li.highlighted { background-color: #abd6ff; }
 header nav #search-suggest .menu a { color: black; cursor: default; height: inherit; padding: 0; text-decoration: none; }
+header nav #search-suggest .menu a:hover, header nav #search-suggest .menu li:hover { background: #c4e2ff; }
+header nav #search-suggest .menu span { font-weight: normal; }
 
 /* Main content and sidebar */
 .content { padding: 8px 0 0; }
