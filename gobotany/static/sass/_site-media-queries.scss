@@ -1,0 +1,295 @@
+/* Begin media queries styles.
+ *
+ * So far there are three sections for smartphones (two fixed-width layouts
+ * to cover portrait and landscape orientations, with a section common to
+ * both orientations) and some additional styles for tablets. Using
+ * fixed-width layouts allows some pages to have a wider central content
+ * area for now. */
+
+/* Portrait-orientation styles */
+@media only screen and (max-width: 400px) {
+    body {
+        padding-top: 110px;
+    }
+    header nav > a {
+        width: 20px;
+
+        span {
+            display: none;
+        }
+    }
+    body, header .container, .content .container, footer .container {
+        width: 320px;
+    }
+    .top-level header p.go-botany a {
+        background-position: -56px -7px;
+        width: 200px;
+    }
+    #nav {
+        left: 40px;
+        width: 310px;
+    }
+    .content #main {
+        width: 304px;
+    }
+    .content #sidebar {
+        float: none;
+        width: 302px;
+    }
+    #about #main {
+        > img {
+            width: 57%;
+        }
+        img.bookcover {
+            width: auto;
+        }
+    }
+}
+/* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) {
+    html {
+        -webkit-text-size-adjust: none;
+    }
+    body {
+        padding-top: 75px;
+    }
+    body, header .container, .content .container, footer .container {
+        width: 480px;
+    }
+    header nav > a {
+        width: 80px;
+    
+        span {
+            font-size: 14px;
+            line-height: 160%;
+            
+            padding-left: 5px;
+            position: absolute;
+        }
+    }
+    .top-level header p.go-botany a {
+        background-position: 0 -7px;
+        width: 260px;
+    }
+    .content #main {
+        width: 464px;
+    }
+    .content #sidebar {
+        width: 462px;
+    }
+}
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) {
+    $nav-button-color: #437829;
+    $smallscreen-side-margin: 8px;
+    $smallscreen-potd-image-width: 297px;
+
+    body {
+        margin: 0 auto;
+        padding: 0;
+    }
+    h1 {
+        font-size: 24px;
+    }
+    h2 {
+        font-size: 18px;
+    }
+    h3 {
+        font-size: 16px;
+    }
+    header {
+        height: 90px;
+
+        nav {
+            background: #508e31;
+            clear: left;
+            height: 32px;
+            padding: 0;
+
+            > a {
+                background: $nav-button-color;
+                border: 1px solid $nav-button-color;
+                display: inline-block;
+                font-size: 30px;
+                height: 24px;
+                line-height: 68%;
+                margin: 3px 0 0 4px;
+                padding: 0 2px 0 7px;
+                position: relative;
+                @include border-radius(5px);
+            }
+            > a:hover {
+                background: $nav-button-color;
+            }
+            #search {
+                margin-top: 6px;
+                padding-left: 10px;
+            }
+            > ul {
+                display: none;  /* will use bottom navigation instead of top */
+            }
+            #search-suggest .menu {
+                top: 83px;
+            }
+        }
+        p.go-botany {
+            margin: 0;
+            padding: 0;
+            width: auto;
+
+            a {
+                height: 56px;
+                width: 170px;
+            }
+        }
+        p.newfs a {
+            background-size: 100px 55px;
+            float: right;
+            height: 55px;
+            width: 101px;
+        }
+        .container {
+            padding: 0;
+        }
+    }
+    footer {
+        height: auto;
+        margin: 14px 0 0;
+
+        > img {
+            display: none;
+        }
+        .container {
+            height: auto;
+            padding: 0;
+        }
+        .container div {
+            width: auto;
+        }
+        div div {
+            height: auto;
+        }
+        p {
+            margin: 0;
+        }
+        a {
+            font-size: 11px;
+        }
+        .publisher, .navigation {
+            float: none;
+            margin: 0;
+            padding: 0;
+        }
+        .publisher {
+            margin: 14px 0 0;
+            padding: 12px $smallscreen-side-margin 20px;
+        }
+        .navigation {
+            h6:first-child {
+                display: none;
+            }
+            > ul.sections {
+                li {
+                    display: block;
+                    margin: 0 0 1px 0;
+                }
+                li:after {
+                    content: none;
+                }
+                li a {
+                    background: #85c446;
+                    color: #fff;
+                    display: block;
+                    font-family: $headings-font;
+                    font-size: 14px;
+                    padding: 14px 14px;
+                    position: relative;
+                    text-decoration: none;
+                }
+                li a:after {
+                    content: " >";
+                    font-weight: bold;
+                    position: absolute;
+                    right: 14px;
+                }
+                li a[href] {
+                    background: #508e31;
+                    color: #fff;
+                }
+                + h6 {   /* "Legal:" label */
+                    display: none;
+                }
+            }
+            > h6:nth-of-type(2) {
+                margin: 14px 14px 4px 71px;
+            }
+            > h6:nth-of-type(2):after {
+                content: ":";
+            }
+            > h6:nth-of-type(2), > ul.legal {
+                display: inline-block;
+                margin-left: 72px;
+                margin-top: 12px;
+            }
+            .legal {
+                li {
+                    margin-right: 32px;
+                }
+                li:after {
+                    content: none;
+                }
+            }
+        }
+        .support {
+            height: 63px;
+            margin: 14px 0 0;
+            padding: 0;
+            
+            img {
+                padding-bottom: 6px;
+            }
+        }
+    }
+    .content {
+        .container {
+            padding: 0;
+        }
+        #main {
+            background: none;
+            float: none;
+            margin-left: $smallscreen-side-margin;
+            margin-right: $smallscreen-side-margin;
+            padding-bottom: 14px;
+            padding-left: 0;
+        }
+        #sidebar {
+            background: #fff;
+            border: 1px solid $border-green;
+            height: auto;
+            margin-bottom: 14px;
+            margin-left: $smallscreen-side-margin;
+            margin-right: $smallscreen-side-margin;
+
+            .section {
+                margin-top: 16px;
+                padding-bottom: 0;
+            }
+            .section:first-child {
+                margin-top: 0;
+            }
+        }
+    }
+    #about #main {
+        ul {
+            margin-left: $smallscreen-side-margin;
+            padding-left: 6px;
+        }
+        > img, img.bookcover {
+            margin-bottom: $smallscreen-side-margin;
+            margin-left: $smallscreen-side-margin;
+            margin-right: 0;
+        }
+    }
+}
+
+/* End media queries styles */
