@@ -39,6 +39,13 @@ COMMON_CHARACTERS = ['habitat', 'habitat_general', 'state_distribution']
 
 #
 
+def add_query_string(request, url):
+    full = request.get_full_path()
+    i = full.find('?')
+    return url if (i == -1) else url + full[i:]
+
+#
+
 def per_partner_template(request, template_path):
     partner = which_partner(request)
     if partner and partner.short_name != 'gobotany':
@@ -294,6 +301,17 @@ def species_view(request, genus_slug, specific_name_slug):
     COMPACT_MULTIVALUE_CHARACTERS = ['Habitat', 'New England state',
                                      'Specific Habitat']
 
+    # Insist on correct botanic capitalization: think of the children!
+
+    genus_name = genus_slug.capitalize()
+    specific_name = specific_name_slug.lower()
+    if genus_slug != genus_name or specific_name_slug != specific_name:
+        url = reverse('simplekey-species', args=(genus_name, specific_name))
+        url = add_query_string(request, url)
+        return redirect(url, permanent=True)
+
+    # Proceed.
+
     scientific_name = '%s %s' % (genus_slug.capitalize(), specific_name_slug)
     scientific_name_short = '%s. %s' % (scientific_name[0],
                                         specific_name_slug)
@@ -387,7 +405,7 @@ def species_redirect(request, pilegroup_slug, pile_slug, genus_slug,
     if pile.pilegroup.slug != pilegroup_slug:
         raise Http404
     return redirect('/species/{}/{}?pile={}'.format(
-            genus_slug, specific_name_slug, pile_slug))
+            genus_slug, specific_name_slug, pile_slug), permanent=True)
 
 def _get_plants():
     plants = Taxon.objects.values(
@@ -625,8 +643,7 @@ def sitemap_view(request):
     plant_names = Taxon.objects.values_list('scientific_name', flat=True)
     families = Family.objects.values_list('name', flat=True)
     genera = Genus.objects.values_list('name', flat=True)
-    urls = ['http://%s/species/%s/' % (host,
-                                       plant_name.lower().replace(' ', '/'))
+    urls = ['http://%s/species/%s/' % (host, plant_name.replace(' ', '/'))
             for plant_name in plant_names]
     urls.extend(['http://%s/families/%s/' % (host, family_name.lower())
                  for family_name in families])
