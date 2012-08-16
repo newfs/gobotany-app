@@ -668,9 +668,9 @@ def sitemap_view(request):
     genera = Genus.objects.values_list('name', flat=True)
     urls = ['http://%s/species/%s/' % (host, plant_name.replace(' ', '/'))
             for plant_name in plant_names]
-    urls.extend(['http://%s/families/%s/' % (host, family_name.lower())
+    urls.extend(['http://%s/families/%s/' % (host, family_name)
                  for family_name in families])
-    urls.extend(['http://%s/genera/%s/' % (host, genus_name.lower())
+    urls.extend(['http://%s/genera/%s/' % (host, genus_name)
                  for genus_name in genera])
     return render_to_response('simplekey/sitemap.txt', {
            'urls': urls,
