@@ -2,14 +2,15 @@ define([
     'bridge/jquery',
     'bridge/shadowbox',
     'bridge/underscore',
-    'simplekey/results_photo_menu',
-    'simplekey/resources',
     'simplekey/App3',
+    'simplekey/glossarize',
+    'simplekey/resources',
+    'simplekey/results_photo_menu',
     'simplekey/utils',
     'util/lazy_images',
     'util/sidebar'
-], function($, Shadowbox, _,
-            results_photo_menu, resources, App3, utils, lazy_images, sidebar) {
+], function($, Shadowbox, _, App3, glossarize, resources,
+            results_photo_menu, utils, lazy_images, sidebar) {
 
     var SpeciesSection = function() {};
     var methods = SpeciesSection.prototype = {};
@@ -298,10 +299,7 @@ define([
             var $plant = $('<div>', {'class': 'plant'}
                           ).appendTo(this.plant_list);
 
-            var path = window.location.pathname.split('#')[0];
-            var url = (path + species.scientific_name.toLowerCase()
-                       .replace(' ', '/') + '/');
-            var plant_link = $('<a>', {'href': url}).appendTo($plant);
+            var plant_link = $('<a>', {'href': species.url}).appendTo($plant);
             $('<div>', {'class': 'frame'}).appendTo(plant_link);
 
             var image_container = $('<div>', {'class': 'plant-img-container'}

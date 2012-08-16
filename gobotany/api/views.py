@@ -1,11 +1,12 @@
 import hashlib
 import json
 from collections import defaultdict
+from urllib import urlencode
 
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
-from django.shortcuts import render_to_response
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import etag
 from django.views.decorators.vary import vary_on_headers
@@ -49,7 +50,10 @@ def _taxon_image(image):
         }
     return json
 
-def _simple_taxon(taxon):
+def _simple_taxon(taxon, pile_slug):
+    genus_name, specific_name = taxon.scientific_name.split(None, 1)
+    url = reverse('simplekey-species', args=(genus_name, specific_name))
+    url += '?' + urlencode({'pile_slug': pile_slug})
     return {
         'id': taxon.id,
         'scientific_name': taxon.scientific_name,
@@ -57,6 +61,7 @@ def _simple_taxon(taxon):
         'genus': taxon.scientific_name.split()[0],  # faster than .genus.name
         'family': taxon.family_name,
         'taxonomic_authority': taxon.taxonomic_authority,
+        'url': url,
         }
 
 # API views.
@@ -265,7 +270,7 @@ def species(request, pile_slug):
     result = []
     while species_list:
         species = species_list.pop()  # pop() to free memory as we go
-        d = _simple_taxon(species)
+        d = _simple_taxon(species, pile_slug)
         d['images'] = images = []
         image_list = image_dict.pop(species.id, ())
         for image in image_list:
