@@ -399,7 +399,8 @@ def species_view(request, genus_slug, specific_name_slug):
 def species_redirect(request, pilegroup_slug, pile_slug, genus_slug,
                      specific_name_slug):
 
-    scientific_name = '%s %s' % (genus_slug.capitalize(), specific_name_slug)
+    genus_slug = genus_slug.capitalize()
+    scientific_name = '%s %s' % (genus_slug, specific_name_slug)
     get_object_or_404(Taxon, scientific_name=scientific_name)
     pile = get_object_or_404(Pile, slug=pile_slug)
     if pile.pilegroup.slug != pilegroup_slug:
