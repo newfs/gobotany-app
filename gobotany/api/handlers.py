@@ -309,9 +309,9 @@ class CharacterValuesHandler(BaseHandler):
 class FamilyHandler(BaseHandler):
     methods_allowed = ('GET',)
 
-    def read(self, request, family_slug):
+    def read(self, request, family_name):
         try:
-            family = models.Family.objects.get(slug=family_slug)
+            family = models.Family.objects.get(name=family_name)
         except (models.Family.DoesNotExist):
             return rc.NOT_FOUND
 
@@ -325,7 +325,6 @@ class FamilyHandler(BaseHandler):
         drawings = family.images.all() # TODO: filter image_type 'example drawing'
 
         return {'name': family.name,
-                'slug': family.slug,
                 'images': images,
                 'drawings': drawings}
 
@@ -333,9 +332,9 @@ class FamilyHandler(BaseHandler):
 class GenusHandler(BaseHandler):
     methods_allowed = ('GET',)
 
-    def read(self, request, genus_slug):
+    def read(self, request, genus_name):
         try:
-            genus = models.Genus.objects.get(slug=genus_slug)
+            genus = models.Genus.objects.get(name=genus_name)
         except (models.Genus.DoesNotExist):
             return rc.NOT_FOUND
 
@@ -349,7 +348,6 @@ class GenusHandler(BaseHandler):
         drawings = genus.images.all() # TODO: filter image_type 'example drawing'
 
         return {'name': genus.name,
-                'slug': genus.slug,
                 'images': images,
                 'drawings': drawings}
 

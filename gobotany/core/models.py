@@ -435,7 +435,6 @@ class HomePageImage(models.Model):
 class Family(models.Model):
     """A biological family."""
     name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(max_length=100, unique=True)
     common_name = models.CharField(max_length=100)
     description = models.TextField(verbose_name=u'description',
                                    blank=True)
@@ -449,17 +448,10 @@ class Family(models.Model):
     def __unicode__(self):
         return self.name
 
-    def save(self, *args, **kw):
-        """Set the slug if it isn't already set"""
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super(Family, self).save(*args, **kw)
-
 
 class Genus(models.Model):
     """A biological genus."""
     name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(max_length=100, unique=True)
     common_name = models.CharField(max_length=100)
     description = models.TextField(verbose_name=u'description', blank=True)
     family = models.ForeignKey(Family, related_name='genera')
@@ -472,12 +464,6 @@ class Genus(models.Model):
 
     def __unicode__(self):
         return self.name
-
-    def save(self, *args, **kw):
-        """Set the slug if it isn't already set"""
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super(Genus, self).save(*args, **kw)
 
 
 class Synonym(models.Model):

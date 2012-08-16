@@ -436,16 +436,13 @@ class Importer(object):
             'code', 'friendly_description'))
 
         # Start import.
-        family_map = db.map('core_family', 'slug', 'id')
-        genus_map = db.map('core_genus', 'slug', 'id')
+        family_map = db.map('core_family', 'name', 'id')
+        genus_map = db.map('core_genus', 'name', 'id')
 
         for row in open_csv(taxaf):
 
-            family_slug = slugify(row['family'])
-
+            family_name = row['family']
             genus_name = row['scientific__name'].split()[0]
-            genus_slug = slugify(genus_name)
-
 
             # Create a Taxon.
             taxon_proxy_id = row['scientific__name']
@@ -461,38 +458,34 @@ class Importer(object):
 
             # Add a simple check for data consistency
             try:
-                family_id = family_map[family_slug]
+                family_id = family_map[family_name]
             except KeyError:
                 # For now we're going to create a "placeholder" family for any
                 # family missing from the data file, so that we can avoid
                 # import problems while the data files are still being
                 # completed.
-                log.warn('Missing family name: %r [Slug: %r]', row['family'],
-                        family_slug)
+                log.warn('Missing family name: %r', family_name)
                 family_table.get(
-                    slug=family_slug,
+                    name=family_name,
                     ).set(
                     common_name='',
                     description='',
-                    name=row['family'],
                     )
 
             try:
-                genus_id = genus_map[genus_slug]
+                genus_id = genus_map[genus_name]
             except KeyError:
                 # For now we're going to create a "placeholder" family for any
                 # family missing from the data file, so that we can avoid
                 # import problems while the data files are still being
                 # completed.
-                log.warn('Missing genus name: %r [Slug: %r]', genus_name,
-                        genus_slug)
+                log.warn('Missing genus name: %r', genus_name)
                 genus_table.get(
-                    slug=genus_slug,
+                    name=genus_name,
                     ).set(
                     common_name='',
                     description='',
-                    family_id=family_slug,
-                    name=genus_name,
+                    family_id=family_name,
                     )
 
             # Get the wetland indicator category if present.
@@ -530,8 +523,8 @@ class Importer(object):
             taxon = taxon_table.get(
                 scientific_name=row['scientific__name'],
                 ).set(
-                family_id=family_slug,
-                genus_id=genus_slug,
+                family_id=family_name,
+                genus_id=genus_name,
                 taxonomic_authority=row['taxonomic_authority'],
                 habitat=row['habitat'],
                 habitat_general='',
@@ -567,9 +560,8 @@ class Importer(object):
 
             if row['pile']:
                 for pile_name in re.split(r'[,;|]', row['pile']):
-                    pile_slug = slugify(pile_name.strip())
                     pile_species_table.get(
-                        pile_id=pile_map[pile_slug],
+                        pile_id=pile_map[pile_name],
                         taxon_id=taxon_proxy_id,
                         )
 
@@ -605,10 +597,10 @@ class Importer(object):
 
         # Write out the tables.
         family_table.save()
-        family_map = db.map('core_family', 'slug', 'id')
+        family_map = db.map('core_family', 'name', 'id')
         genus_table.replace('family_id', family_map)
         genus_table.save()
-        genus_map = db.map('core_genus', 'slug', 'id')
+        genus_map = db.map('core_genus', 'name', 'id')
         taxon_table.replace('family_id', family_map)
         taxon_table.replace('genus_id', genus_map)
         taxon_table.save()
@@ -641,13 +633,12 @@ class Importer(object):
         # Start import.
 
         for row in open_csv(family_file):
-            family_slug = slugify(row['family'])
+            family_name = row['family']
             family_table.get(
-                slug=family_slug,
+                name=family_name,
                 ).set(
                 common_name=row['family_common_name'],
                 description=row['description_revised'],
-                name=row['family'],
                 )
 
         family_table.save()
@@ -668,30 +659,27 @@ class Importer(object):
             if column not in colnames:
                 log.error('Required column missing from genera.csv: %s', column)
 
-        family_map = db.map('core_family', 'slug', 'id')
+        family_map = db.map('core_family', 'name', 'id')
 
         # Start import.
 
         for row in open_csv(genera_file):
-            family_slug = slugify(row['family'])
+            family_name = row['family']
 
             # Add a simple check for data consistency
             try:
-                family_id = family_map[family_slug]
+                family_id = family_map[family_name]
             except KeyError:
-                log.error('Bad family name: %r [Slug: %r]', row['family'],
-                        family_slug)
+                log.error('Bad family name: %r', family_name)
                 continue
 
             genus_name = row['genus']
-            genus_slug = slugify(genus_name)
             genus_table.get(
-                slug=genus_slug,
+                name=genus_name,
                 ).set(
                 common_name=row['genus_common_name'],
                 description=row['description_revised'],
                 family_id=family_id,
-                name=genus_name,
                 )
 
         genus_table.save()

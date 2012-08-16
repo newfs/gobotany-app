@@ -312,7 +312,7 @@ def species_view(request, genus_slug, specific_name_slug):
 
     # Proceed.
 
-    scientific_name = '%s %s' % (genus_slug.capitalize(), specific_name_slug)
+    scientific_name = '%s %s' % (genus_name, specific_name)
     scientific_name_short = '%s. %s' % (scientific_name[0],
                                         specific_name_slug)
     taxon = get_object_or_404(Taxon, scientific_name=scientific_name)
@@ -399,14 +399,14 @@ def species_view(request, genus_slug, specific_name_slug):
 def species_redirect(request, pilegroup_slug, pile_slug, genus_slug,
                      specific_name_slug):
 
-    genus_slug = genus_slug.capitalize()
-    scientific_name = '%s %s' % (genus_slug, specific_name_slug)
+    genus_name = genus_slug.capitalize()
+    scientific_name = '%s %s' % (genus_name, specific_name_slug)
     get_object_or_404(Taxon, scientific_name=scientific_name)
     pile = get_object_or_404(Pile, slug=pile_slug)
     if pile.pilegroup.slug != pilegroup_slug:
         raise Http404
     return redirect('/species/{}/{}?pile={}'.format(
-            genus_slug, specific_name_slug, pile_slug), permanent=True)
+            genus_name, specific_name_slug, pile_slug), permanent=True)
 
 def _get_plants():
     plants = Taxon.objects.values(
@@ -448,7 +448,7 @@ def genus_view(request, genus_slug):
 
     # Grab the object.
 
-    genus = get_object_or_404(Genus, slug=genus_slug.lower())
+    genus = get_object_or_404(Genus, name=genus_name)
 
     # If it is decided that common names will not be required, change the
     # default below to None so the template will omit the name if missing.

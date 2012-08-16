@@ -91,10 +91,10 @@ urlpatterns = patterns(
          '-us-distribution-map(\.svg|/)?$',
         views.united_states_distribution_map, name='us-distribution-map'),
 
-    url(r'^families/(?P<family_slug>[^/]+)/$', allow_cross_site_access(
+    url(r'^families/(?P<family_name>[^/]+)/$', allow_cross_site_access(
             Resource(handler=handlers.FamilyHandler)), name='api-family'),
 
-    url(r'^genera/(?P<genus_slug>[^/]+)/$', allow_cross_site_access(
+    url(r'^genera/(?P<genus_name>[^/]+)/$', allow_cross_site_access(
             Resource(handler=handlers.GenusHandler)), name='api-genus'),
 
     # For PlantShare (MyPlants) plant name picker
