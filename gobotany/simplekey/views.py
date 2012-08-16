@@ -333,16 +333,12 @@ def species_view(request, genus_slug, epithet):
     species_images = botany.species_images(taxon)
     images = _images_with_copyright_holders(species_images)
 
-    habitats = []
     if taxon.habitat:
         habitat_names = taxon.habitat.split('| ')
-        for name in habitat_names:
-            try:
-                habitat = Habitat.objects.get(name__iexact=name)
-                habitats.append(habitat.friendly_name)
-            except Habitat.DoesNotExist:
-                continue
+        habitats = list(Habitat.objects.filter(name__in=habitat_names))
         habitats.sort()
+    else:
+        habitats = []
 
     character_ids = taxon.character_values.values_list(
                     'character', flat=True).distinct()
