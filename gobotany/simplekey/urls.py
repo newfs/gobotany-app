@@ -75,5 +75,5 @@ urlpatterns = patterns(
         views.results_view, name='simplekey-pile'),
     url('^(?P<pilegroup_slug>[^/]*)/(?P<pile_slug>[^/]*)/' \
         '(?P<genus_slug>[^/]*)/(?P<specific_name_slug>[^/]*)/$',
-        views.species_view, name='simplekey-pile-species'),
+        views.species_redirect),
     )
