@@ -527,6 +527,16 @@ results_page_init: function(args) {
 
         }
 
+        /* Also immediately set the tab view specified on the hash. */
+
+        var tab_view = results_page_state.tab_view();
+        var is_list_view = (tab_view === 'list') ? true : false;
+        App3.set('show_grid', ! is_list_view);
+        App3.set('show_list', is_list_view);
+
+        /* But our remaining actions will take time, and have to wait
+           until we have retrieved some information about this pile. */
+
         $.when(
             resources.pile(pile_slug),
             resources.pile_characters(pile_slug)
@@ -588,11 +598,6 @@ results_page_init: function(args) {
                 all_filters_ready.resolve(filters_config);
             });
 
-            // Set the tab view specified on the hash.
-            var tab_view = results_page_state.tab_view();
-            var is_list_view = (tab_view === 'list') ? true : false;
-            App3.set('show_grid', ! is_list_view);
-            App3.set('show_list', is_list_view);
         });
     } else {
         /* When the URL contains no hash, we get to load the default
