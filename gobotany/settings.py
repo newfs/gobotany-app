@@ -91,7 +91,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
 
     ) + (('debug_toolbar.middleware.DebugToolbarMiddleware',)
-         if 0 and DEBUG else ()) + (
+         if DEBUG else ()) + (
 
     'django.middleware.common.CommonMiddleware',
     'django.middleware.locale.LocaleMiddleware',

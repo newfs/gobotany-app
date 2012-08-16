@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import patterns, url
+from django.views.generic.simple import redirect_to
 
 from haystack.forms import HighlightedSearchForm
 
@@ -61,19 +62,31 @@ urlpatterns = patterns(
         name='simplekey-help-glossary0'),
     url('^help/video/$', views.help_video_view, name='simplekey-help-video'),
     url('^help/contributors/$', views.help_contrib_view, name='simplekey-help-contrib'),
-    url('^families/(?P<family_slug>[a-z]+)/$',
+    url('^family/(?P<family_slug>[a-z]+)/$',
         views.family_view, name='simplekey-family'),
-    url('^genera/(?P<genus_slug>[a-z]+)/$',
+    url('^genus/(?P<genus_slug>[a-z]+)/$',
         views.genus_view, name='simplekey-genus'),
     url('^species/(?P<genus_slug>[a-z]+)/(?P<epithet>[-a-z]+)/$',
         views.species_view, name='simplekey-species'),
-    url('^species/(?P<genus_slug>[a-z]+)/$', views.genus_redirect_view),
+    url('^species/(?P<genus_slug>[a-z]+)/$',
+        redirect_to, {'url': '/genus/%(genus_slug)s/'}),
     url('^simple/$', views.simple_key_view, name='simplekey'),
+
+    # Legacy redirections.
+
+    (r'^families/(?P<family_slug>[a-z]+)/$',
+     redirect_to, {'url': '/family/%(family_slug)s/'}),
+    (r'^genera/(?P<genus_slug>[a-z]+)/$',
+     redirect_to, {'url': '/genus/%(genus_slug)s/'}),
+
+    (r'^(?P<pilegroup_slug>[-a-z]+)/(?P<pile_slug>[-a-z]+)/'
+     r'(?P<genus_slug>[a-z]+)/(?P<epithet>[-a-z]+)/$', redirect_to,
+     {'url': '/species/%(genus_slug)s/%(epithet)s/?pile=%(pile_slug)s'}),
+
+    # If these were under /simplekey/ they would not have to go last.
+
     url('^(?P<pilegroup_slug>[^/]*)/$',
         views.pilegroup_view, name='simplekey-pilegroup'),
     url('^(?P<pilegroup_slug>[^/]*)/(?P<pile_slug>[^/]*)/$',
         views.results_view, name='simplekey-pile'),
-    url('^(?P<pilegroup_slug>[-a-z]+)/(?P<pile_slug>[-a-z]+)/' \
-        '(?P<genus_slug>[a-z]+)/(?P<epithet>[-a-z]+)/$',
-        views.species_redirect),
     )

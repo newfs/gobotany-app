@@ -386,16 +386,6 @@ def species_view(request, genus_slug, epithet):
            'native_to_north_america': native_to_north_america
            }, context_instance=RequestContext(request))
 
-def species_redirect(request, pilegroup_slug, pile_slug, genus_slug, epithet):
-
-    genus_name = genus_slug.capitalize()
-    scientific_name = '%s %s' % (genus_name, epithet)
-    get_object_or_404(Taxon, scientific_name=scientific_name)
-    pile = get_object_or_404(Pile, slug=pile_slug)
-    if pile.pilegroup.slug != pilegroup_slug:
-        raise Http404
-    return redirect('/species/{}/{}/?pile={}'.format(
-            genus_slug, epithet, pile_slug), permanent=True)
 
 def _get_plants():
     plants = Taxon.objects.values(
@@ -459,9 +449,6 @@ def genus_view(request, genus_slug):
            'pilegroup': pilegroup,
            'pile': pile,
            }, context_instance=RequestContext(request))
-
-def genus_redirect_view(request, genus_slug):
-    return redirect('simplekey-genus', genus_slug=genus_slug)
 
 
 def family_view(request, family_slug):

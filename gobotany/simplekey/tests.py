@@ -163,23 +163,31 @@ class URLs(TestCase):
         t('/woody-plants/Woody-Angiosperms/', 404)
         t('/woody-plants/woody-angiosperms/', 200)
 
-        t('/families/Unknown/', 404)
-        t('/families/Sapindaceae/', 404)
-        t('/families/sapindaceae/', 200)
+        t('/family/Unknown/', 404)
+        t('/family/Sapindaceae/', 404)
+        t('/family/sapindaceae/', 200)
 
-        t('/genera/Unknown/', 404)
-        t('/genera/Acer/', 404)
-        t('/genera/acer/', 200)
+        t('/genus/Unknown/', 404)
+        t('/genus/Acer/', 404)
+        t('/genus/acer/', 200)
 
         t('/species/Unknown/', 404)
         t('/species/Acer/', 404)
-        t('/species/acer/', 302, '/genera/acer/')
+        t('/species/acer/', 301, '/genus/acer/')
 
         t('/species/Unknown/unknown/', 404)
         t('/species/Acer/rubrum/', 404)
         t('/species/acer/rubrum/', 200)
 
         # Legacy URLs.
+
+        t('/families/Unknown/', 404)
+        t('/families/Sapindaceae/', 404)
+        t('/families/sapindaceae/', 301, '/family/sapindaceae/')
+
+        t('/genera/Unknown/', 404)
+        t('/genera/Acer/', 404)
+        t('/genera/acer/', 301, '/genus/acer/')
 
         t('/woody-plants/woody-angiosperms/acer/rubrum/',
           301, '/species/acer/rubrum/?pile=woody-angiosperms')
