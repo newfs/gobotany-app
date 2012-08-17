@@ -2,11 +2,10 @@
 import hashlib
 import re
 import string
-import urllib2
 
 from datetime import date
 from itertools import groupby
-from operator import attrgetter, itemgetter
+from operator import itemgetter
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
@@ -21,12 +20,11 @@ from django.views.decorators.vary import vary_on_headers
 from gobotany.core import botany
 from gobotany.core import models
 from gobotany.core.models import (
-    CharacterGroup, CharacterValue, CopyrightHolder, Family, Genus,
+    CopyrightHolder, Family, Genus,
     GlossaryTerm, Habitat, HomePageImage, Pile, PileGroup,
     PlantPreviewCharacter, Taxon, Video
     )
 from gobotany.core.partner import which_partner
-from gobotany.core.pile_suffixes import pile_suffixes
 from gobotany.dkey import models as dkey_models
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
@@ -210,50 +208,6 @@ def _format_character_value(character_value):
         return ''
 
 
-def _get_characters(taxon, character_groups, pile, partner):
-    """Get all characteristics for a plant, organized by character group."""
-
-    pile_suffix_dict = dict((v.lower(), k.lower())
-                            for (k, v) in pile_suffixes.iteritems())
-
-    # Ensure the query is ordered so the character values can
-    # successfully be grouped.
-    q = (CharacterValue.objects.filter(taxon_character_values__taxon=taxon)
-                               .order_by('character'))
-
-    # Get the set of preview characteristics and sort order
-    plant_preview_characters = dict([
-        (ppc.character_id, ppc.order)
-        for ppc in PlantPreviewCharacter.objects.filter(
-            pile=pile, partner_site=partner)
-        ])
-
-    # Screen out any character values that do not belong to this pile.
-    pile_suffix = '_%s' % pile_suffix_dict[pile.name.lower()]
-    q = [cv for cv in q if (cv.character.short_name.endswith(pile_suffix) or
-         cv.character.short_name in COMMON_CHARACTERS)]
-
-    # Combine multiple values that belong to a single character.
-    cgetter = attrgetter('character')
-    cvgroups = groupby(q, key=cgetter)
-    characters = ({
-        'group': character.character_group.name,
-        'name': character.friendly_name,
-        'values': sorted(_format_character_value(cv) for cv in values),
-        'in_preview': character.id in plant_preview_characters,
-        'preview_order': plant_preview_characters.get(character.id, -1),
-        } for character, values in cvgroups)
-
-    # Group the characters by character-group.
-    ggetter = itemgetter('group')
-    cgroups = groupby(sorted(characters, key=ggetter), key=ggetter)
-    groups = ({
-        'name': name,
-        'characters': sorted(members, key=itemgetter('name')),
-        } for name, members in cgroups)
-    return sorted(groups, key=itemgetter('name'))
-
-
 def _images_with_copyright_holders(images):
     # Reduce a live query object to a list to only run it once.
     if not isinstance(images, list):
@@ -312,7 +266,7 @@ def species_view(request, genus_slug, epithet):
         pile = get_object_or_404(Pile, slug=pile_slug)
     else:
         # Randomly grab the first pile from the species
-        pile = taxon.piles.all()[0]
+        pile = taxon.piles.order_by('id')[0]
     pilegroup = pile.pilegroup
 
     partner = which_partner(request)
@@ -340,18 +294,60 @@ def species_view(request, genus_slug, epithet):
     else:
         habitats = []
 
-    character_ids = taxon.character_values.values_list(
-                    'character', flat=True).distinct()
-    character_groups = CharacterGroup.objects.filter(
-                       character__in=character_ids).distinct()
-    characters_by_group = _get_characters(taxon, character_groups, pile,
-                                          partner)
-    preview_characters = sorted([
+    # Get the set of preview characteristics.
+
+    plant_preview_characters = {
+        ppc.character_id: ppc.order for ppc in
+        PlantPreviewCharacter.objects.filter(pile=pile, partner_site=partner)
+        }
+
+    # Select ALL character values for this taxon.
+
+    character_values = list(taxon.character_values .select_related(
+            'character', 'character__character_group'))
+
+    # Throw away values for characters that are not part of this pile.
+
+    pile_ids = (None, pile.id)  # things like Habitat have pile_id = None
+    character_values = [ v for v in character_values
+                         if v.character.pile_id in pile_ids ]
+
+    # Create a tree of character groups, characters, and values.
+
+    get_group_name = lambda v: v.character.character_group.name
+    get_character_name = lambda v: v.character.friendly_name
+
+    character_values.sort(key=get_character_name)
+    character_values.sort(key=get_group_name)
+
+    all_characteristics = []
+    for group_name, seq1 in groupby(character_values, get_group_name):
+        characters = []
+
+        for character_name, seq2 in groupby(seq1, get_character_name):
+            seq2 = list(seq2)
+            character = seq2[0].character  # arbitrary; all look the same
+            characters.append({
+                'group': character.character_group.name,
+                'name': character.friendly_name,
+                'values': sorted(_format_character_value(v) for v in seq2),
+                'in_preview': character.id in plant_preview_characters,
+                'preview_order': plant_preview_characters.get(character.id, -1),
+                })
+
+        all_characteristics.append({
+            'name': group_name,
+            'characters': characters
+            })
+
+    # Pick out the few preview characters for separate display.
+
+    preview_characters = sorted((
         character
-            for group in characters_by_group
-                for character in group['characters']
-                    if character['in_preview']
-        ], key=itemgetter('preview_order'))
+        for group in all_characteristics
+        for character in group['characters']
+        if character['in_preview']
+        ), key=itemgetter('preview_order'))
 
     native_to_north_america = _native_to_north_america_status(taxon)
 
@@ -371,7 +367,7 @@ def species_view(request, genus_slug, epithet):
            'habitats': habitats,
            'compact_multivalue_characters': COMPACT_MULTIVALUE_CHARACTERS,
            'brief_characteristics': preview_characters,
-           'all_characteristics': characters_by_group,
+           'all_characteristics': all_characteristics,
            'epithet': epithet,
            'in_simple_key': partner_species and partner_species.simple_key,
            'native_to_north_america': native_to_north_america
