@@ -115,6 +115,16 @@ ul li {
 
 /* Header */
 
+@mixin highlight-global-nav {
+    background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
+    text-decoration: none;
+}
+
+body {
+    .about {
+        @include highlight-global-nav;
+    }
+}
 header {
     height: 120px;
     @include container-div;
@@ -142,7 +152,6 @@ header {
             @include offscreen;
         }
     }
-
     nav {
         background: url(/static/images/layout/nav-app-green.png) no-repeat;
         background-position: 0px 79px;
@@ -168,9 +177,8 @@ header {
             line-height: normal;
             margin: 0 10px 0 0;
             padding: 0;
-            .about, a:hover {
-                background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
-                text-decoration: none;
+            a:hover {
+                @include highlight-global-nav;
             }
         }
         #search {
@@ -357,7 +365,7 @@ footer {
     }
 }
 
-/* Getting Started page */
+/* Getting Started */
 
 #getting-started {
     h2 {
@@ -447,6 +455,16 @@ footer {
     }
 }
 
+/* Contributors */
+
+#contributors #main {
+    ul {
+        list-style-type: none;
+    }
+    li {
+        margin: 0;
+    }
+}
 
 /* Imports for per-feature/app styles */
 /* (add here) */

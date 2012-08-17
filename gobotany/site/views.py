@@ -27,3 +27,6 @@ def getting_started_view(request):
             'getting_started_youtube_id': youtube_id,
             }, context_instance=RequestContext(request))
 
+def contributors_view(request):
+    return render_to_response('gobotany/contributors.html', {
+       }, context_instance=RequestContext(request))

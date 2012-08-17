@@ -24,6 +24,6 @@
                 Topics</a></h4>
     </div>
     <div class="section">
-        {% url simplekey-help-contrib as u %}
+        {% url site-contributors as u %}
         <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Contributors</a></h4>
     </div>

@@ -1,0 +1,64 @@
+{% extends "gobotany/_page_full_sidebar.html" %}
+
+{% block title %}Contributors{% endblock %}
+
+{% block js_require %}
+    require(['site/about']);
+{% endblock %}
+
+{% block body_attributes %}id="contributors" class="about"{% endblock %}
+
+{% block main_content %}
+    <h1>Contributors</h1>
+
+    <h2>Project Oversight and Management</h2>
+		
+    <ul>
+        <li>Bill Brumback</li>
+        <li>Elizabeth Farnsworth</li>
+        <li>Arthur Haines</li>
+    </ul>
+
+    <h2>Botanical Data Management</h2>
+		
+    <ul>
+        <li>Elizabeth Farnsworth</li>
+        <li>Marybeth Hanley</li>
+        <li>Sid Koul</li>
+        <li>William Moorhead</li>
+        <li>Tristrum Seidler</li>
+    </ul>
+
+    <h2>Image Management</h2>
+		
+    <ul>
+        <li>Arieh Tal</li>
+        <li>Tom Warhol</li>
+        <li>Jill Weber</li>
+    </ul>
+
+    <h2>Design and Development</h2>
+		
+    <ul>
+        <li>Matt Belge</li>
+        <li>Rocky Burt</li>
+        <li>Emily Dunkle</li>
+        <li>John Galada</li>
+        <li>Sally Kleinfeldt</li>
+        <li>Sid Koul</li>
+        <li>Alec Mitchell</li>
+        <li>Brandon Rhodes</li>
+        <li>JR Rickerson</li>
+    </ul>
+
+    <h2>Illustration</h2>
+		
+    <ul>
+        <li>Elizabeth Farnsworth</li>
+        <li>Gordon Morrison</li>
+    </ul>
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "gobotany/_about_navigation.html" %}
+{% endblock %}

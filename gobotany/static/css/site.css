@@ -304,6 +304,8 @@ ul li { margin: 0 0 5px 0; }
 .hidden { display: none; }
 
 /* Header */
+body .about { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
+
 header { height: 120px; }
 header .container { margin: 0 auto; padding: 0 10px; width: 960px; }
 header p { margin: 0; }
@@ -316,7 +318,7 @@ header nav a { color: #fff; display: block; height: 35px; padding: 5px 8px 0; }
 header nav > a { display: none; /* Omit the 'sections' link by default */ }
 header nav ul { clear: both; }
 header nav li { display: block; float: left; font-size: 14px; line-height: normal; margin: 0 10px 0 0; padding: 0; }
-header nav li .about, header nav li a:hover { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
+header nav li a:hover { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 header nav #search { background: white url(/static/images/layout/search-left.png) left center no-repeat; float: right; height: 20px; margin: 4px 4px 0 0; padding: 0 0 0 11px; }
 header nav #search form { display: block; margin: 0; padding: 0; width: 262px; }
 header nav #search input { background: #fff; border: 0; float: left; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; height: 20px; margin: 0; padding: 0; width: 219px; }
@@ -358,7 +360,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
 #about #main img .bookcover { margin-right: 89px; }
 #about #main ul { margin: 0 5px 0 18px; }
 
-/* Getting Started page */
+/* Getting Started */
 #getting-started h2 { margin-top: 0; padding-top: 0; }
 #getting-started .question { padding: 18px 0 18px 45px; background-position: left 22px; background-repeat: no-repeat; border-bottom: 1px solid #e2dfcb; }
 #getting-started .question ul { padding: 0 0 0 15px; }
@@ -378,6 +380,10 @@ footer .support { margin-right: 0; padding: 18px 0; }
 #getting-started .video-topic { height: 147px; margin-bottom: 4px; width: 196px; }
 #getting-started .video-topic img { height: 147px; width: 196px; }
 #getting-started .video-topic a { cursor: pointer; }
+
+/* Contributors */
+#contributors #main ul { list-style-type: none; }
+#contributors #main li { margin: 0; }
 
 /* Imports for per-feature/app styles */
 /* (add here) */
