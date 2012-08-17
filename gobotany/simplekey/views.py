@@ -261,8 +261,8 @@ def _images_with_copyright_holders(images):
 
     # Get the copyright holders for this set of images.
     codes = set(image.creator for image in images)
-    chdict = dict((ch.coded_name, ch) for ch in CopyrightHolder.objects.filter(
-            coded_name__in=codes))
+    chdict = {ch.coded_name: ch for ch
+              in CopyrightHolder.objects.filter(coded_name__in=codes)}
 
     for image in images:
 
