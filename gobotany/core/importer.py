@@ -560,8 +560,9 @@ class Importer(object):
 
             if row['pile']:
                 for pile_name in re.split(r'[,;|]', row['pile']):
+                    pile_slug = pile_name.strip().lower().replace(' ', '-')
                     pile_species_table.get(
-                        pile_id=pile_map[pile_name],
+                        pile_id=pile_map[pile_slug],
                         taxon_id=taxon_proxy_id,
                         )
 
