@@ -291,17 +291,19 @@
                     <p>{{ native_to_north_america }}</p>
                 </div>
 
-                {% if taxon.lookalikes.all|length > 0 %}
+                {% with lookalikes=taxon.lookalikes.all %}
+                {% if lookalikes|length > 0 %}
                 <div class="section lookalikes">
                     <h5>Sometimes Confused With:</h5>
                     <dl>
-                    {% for lookalike in taxon.lookalikes.all %}
+                    {% for lookalike in lookalikes %}
                     <dt><a href="/species/{{ lookalike.lookalike_scientific_name|lower|replace:' ,/' }}/"><em>{{ lookalike.lookalike_scientific_name }}</em></a>:</dt>
                         <dd>{{ lookalike.lookalike_characteristic }}</dd>
                     {% endfor %}
                     </dl>
                 </div>
                 {% endif %}
+                {% endwith %}
 
                 {% with taxon.synonyms.all as synonyms %}
                 {% if synonyms|length > 0 %}
