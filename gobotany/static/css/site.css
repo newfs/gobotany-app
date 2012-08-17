@@ -281,6 +281,8 @@ a:not([href]) { color: black; }
 
 a:hover { text-decoration: underline; }
 
+*|*:-moz-any-link:active, *|*:-moz-any-link:focus { border: 0; outline: 0; }
+
 h1, h2, h3, h4, h5, h6 { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-weight: normal; line-height: 155%; margin: 0; padding: 0; }
 
 h1 { color: #519136; font-size: 35px; line-height: 110%; margin-bottom: 8px; }
@@ -334,6 +336,7 @@ header nav #search-suggest .menu span { font-weight: normal; }
 .content #sidebar { border-top: 1px solid #c3d941; float: left; height: 100%; margin-right: -230px; padding: 16px 0; width: 230px; }
 .content #sidebar .section { padding: 0 17px 16px; }
 .content #sidebar .section h4 { margin: 0 0 5px 0; }
+.content #sidebar .section.separate { border-top: 1px solid #e2dfcb; padding-top: 16px; }
 .content #sidebar a:hover { text-decoration: none; }
 
 /* Footer */
@@ -372,6 +375,9 @@ footer .support { margin-right: 0; padding: 18px 0; }
 #getting-started a.onward-btn { cursor: pointer; display: block; float: right; width: 280px; height: 32px; margin: 10px 0; background: url(/static/images/layout/onward-btn-orange.png) 0 0 no-repeat transparent; text-indent: -9000px; }
 #getting-started a.onward-btn:hover { background-position: 0 -32px; }
 #getting-started a.onward-btn:active { background-position: 0 -64px; }
+#getting-started .video-topic { height: 147px; margin-bottom: 4px; width: 196px; }
+#getting-started .video-topic img { height: 147px; width: 196px; }
+#getting-started .video-topic a { cursor: pointer; }
 
 /* Imports for per-feature/app styles */
 /* (add here) */

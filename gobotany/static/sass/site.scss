@@ -55,6 +55,10 @@ a:not([href]) {
 a:hover {
     text-decoration: underline;
 }
+*|*:-moz-any-link:active, *|*:-moz-any-link:focus {
+    border: 0;
+    outline: 0;
+}
 h1, h2, h3, h4, h5, h6 {
     font-family: $headings-font;
     font-weight: normal;
@@ -273,6 +277,10 @@ header {
             h4 {
                 margin: 0 0 5px 0;
             }
+            &.separate {
+                border-top: 1px solid #e2dfcb;
+                padding-top: 16px;
+            }
         }
         a:hover {
             text-decoration: none;
@@ -421,6 +429,20 @@ footer {
             &:active {
                 background-position: 0 -64px;
             }
+        }
+    }
+    $video-height: 147px;
+    $video-width: 196px;
+    .video-topic {
+        height: $video-height;
+        margin-bottom: 4px;
+        width: $video-width;
+        img {
+            height: $video-height;
+            width: $video-width;
+        }
+        a {
+            cursor: pointer;
         }
     }
 }

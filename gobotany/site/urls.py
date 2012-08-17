@@ -5,6 +5,5 @@ from gobotany.site import views
 urlpatterns = patterns(
     '',
     url(r'^about/', views.about_view, name='site-about'),
-    url(r'^getting-started/', views.getting_started_view,
-        name='site-getting-started'),
+    url(r'^start/', views.getting_started_view, name='site-getting-started'),
     )

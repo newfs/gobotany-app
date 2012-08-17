@@ -1,0 +1,14 @@
+{% extends "gobotany/_base.html" %}
+
+{% block body_content %}
+<div class="content">
+    <div class="container">
+        <div id="main"> 
+            {% block main_content %}{% endblock %}
+        </div>
+        <div id="sidebar">
+            {% block sidebar_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,32 +1,29 @@
-        <div id="sidebar">
-            {# TODO: change url vars below once moved over to site app #}
-            <div class="section">
-                {% url site-about as u %}
-                <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>About Go
-                        Botany</a></h4>
-            </div>
-            <div class="section">
-                {% url site-getting-started as u %}
-                <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Getting
-                        Started with the Simple Key</a></h4>
-            </div>
-            <div class="section">
-                {% url simplekey-help-map as u %}
-                <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Advanced Map
-                        to Groups</a></h4>
-            </div>
-            <div class="section">
-                {% url simplekey-help-glossary0 as u %}
-                <h4><a {% if not u in request.path %}href="{{ u }}"{% endif %}>Glossary</a></h4>
-            </div>
-            <div class="section">
-                {% url simplekey-help-video as u %}
-                <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Video Help
-                        Topics</a></h4>
-            </div>
-            <div class="section">
-                {% url simplekey-help-contrib as u %}
-                <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Contributors</a></h4>
-            </div>
-            {% block more_sidebar_content %}{% endblock %}
-        </div>
+    {# TODO: change url vars below once moved over to site app #}
+    <div class="section">
+        {% url site-about as u %}
+        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>About Go
+                Botany</a></h4>
+    </div>
+    <div class="section">
+        {% url site-getting-started as u %}
+        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Getting
+                Started with the Simple Key</a></h4>
+    </div>
+    <div class="section">
+        {% url simplekey-help-map as u %}
+        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Advanced Map
+                to Groups</a></h4>
+    </div>
+    <div class="section">
+        {% url simplekey-help-glossary0 as u %}
+        <h4><a {% if not u in request.path %}href="{{ u }}"{% endif %}>Glossary</a></h4>
+    </div>
+    <div class="section">
+        {% url simplekey-help-video as u %}
+        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Video Help
+                Topics</a></h4>
+    </div>
+    <div class="section">
+        {% url simplekey-help-contrib as u %}
+        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Contributors</a></h4>
+    </div>
