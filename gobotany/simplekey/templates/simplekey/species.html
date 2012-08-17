@@ -2,7 +2,7 @@
 {% load simplekey_extras %}
 
 {% block title %}{{ scientific_name }} 
-({% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}){% endblock %}
+({% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}){% endblock %}
 
 {% block body_attributes %}id="taxon" class="app taxon"{% endblock %}
 
@@ -60,8 +60,8 @@
                 
                 <h2><span class="scientific">{{ scientific_name|italicize_plant|safe }}</span>
                     <span class="origin">{{ taxon.taxonomic_authority }}</span></h2>
-                {% if taxon.common_names.all %}
-                    <h3>{% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</h3>
+                {% if common_names %}
+                    <h3>{% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</h3>
                 {% endif %}
 
                 {% if key == 'dichotomous' %}

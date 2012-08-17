@@ -303,7 +303,7 @@ def species_view(request, genus_slug, epithet):
 
     # Select ALL character values for this taxon.
 
-    character_values = list(taxon.character_values .select_related(
+    character_values = list(taxon.character_values.select_related(
             'character', 'character__character_group'))
 
     # Throw away values for characters that are not part of this pile.
@@ -358,6 +358,7 @@ def species_view(request, genus_slug, epithet):
            'scientific_name_short': scientific_name_short,
            'taxon': taxon,
            'key': key,
+           'common_names': taxon.common_names.all(),
            'dkey_page': dkey_page,
            'images': images,
            'partner_heading': partner_species.species_page_heading
