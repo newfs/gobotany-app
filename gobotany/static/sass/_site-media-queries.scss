@@ -6,6 +6,15 @@
  * fixed-width layouts allows some pages to have a wider central content
  * area for now. */
 
+$nav-button-color: #437829;
+$smallscreen-margin: 8px;
+$smallscreen-potd-image-width: 297px;
+
+@mixin smallscreen-side-margins {
+    margin-left: $smallscreen-margin;
+    margin-right: $smallscreen-margin;
+}
+
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) {
     body {
@@ -13,7 +22,6 @@
     }
     header nav > a {
         width: 20px;
-
         span {
             display: none;
         }
@@ -29,12 +37,14 @@
         left: 40px;
         width: 310px;
     }
-    .content #main {
-        width: 304px;
-    }
-    .content #sidebar {
-        float: none;
-        width: 302px;
+    .content {
+        #main {
+            width: 304px;
+        }
+        #sidebar {
+            float: none;
+            width: 302px;
+        }
     }
     #about #main {
         > img {
@@ -58,7 +68,6 @@
     }
     header nav > a {
         width: 80px;
-    
         span {
             font-size: 14px;
             line-height: 160%;
@@ -71,19 +80,17 @@
         background-position: 0 -7px;
         width: 260px;
     }
-    .content #main {
-        width: 464px;
-    }
-    .content #sidebar {
-        width: 462px;
+    .content {
+        #main {
+            width: 464px;
+        }
+        #sidebar {
+            width: 462px;
+        }
     }
 }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) {
-    $nav-button-color: #437829;
-    $smallscreen-side-margin: 8px;
-    $smallscreen-potd-image-width: 297px;
-
     body {
         margin: 0 auto;
         padding: 0;
@@ -99,13 +106,11 @@
     }
     header {
         height: 90px;
-
         nav {
             background: #508e31;
             clear: left;
             height: 32px;
             padding: 0;
-
             > a {
                 background: $nav-button-color;
                 border: 1px solid $nav-button-color;
@@ -136,7 +141,6 @@
             margin: 0;
             padding: 0;
             width: auto;
-
             a {
                 height: 56px;
                 width: 170px;
@@ -155,7 +159,6 @@
     footer {
         height: auto;
         margin: 14px 0 0;
-
         > img {
             display: none;
         }
@@ -182,7 +185,7 @@
         }
         .publisher {
             margin: 14px 0 0;
-            padding: 12px $smallscreen-side-margin 20px;
+            padding: 12px $smallscreen-margin 20px;
         }
         .navigation {
             h6:first-child {
@@ -192,29 +195,29 @@
                 li {
                     display: block;
                     margin: 0 0 1px 0;
-                }
-                li:after {
-                    content: none;
-                }
-                li a {
-                    background: #85c446;
-                    color: #fff;
-                    display: block;
-                    font-family: $headings-font;
-                    font-size: 14px;
-                    padding: 14px 14px;
-                    position: relative;
-                    text-decoration: none;
-                }
-                li a:after {
-                    content: " >";
-                    font-weight: bold;
-                    position: absolute;
-                    right: 14px;
-                }
-                li a[href] {
-                    background: #508e31;
-                    color: #fff;
+                    &:after {
+                        content: none;
+                    }
+                    a {
+                        background: #85c446;
+                        color: #fff;
+                        display: block;
+                        font-family: $headings-font;
+                        font-size: 14px;
+                        padding: 14px 14px;
+                        position: relative;
+                        text-decoration: none;
+                        &:after {
+                            content: " >";
+                            font-weight: bold;
+                            position: absolute;
+                            right: 14px;
+                        }
+                        &[href] {
+                            background: #508e31;
+                            color: #fff;
+                        }
+                    }
                 }
                 + h6 {   /* "Legal:" label */
                     display: none;
@@ -222,9 +225,9 @@
             }
             > h6:nth-of-type(2) {
                 margin: 14px 14px 4px 71px;
-            }
-            > h6:nth-of-type(2):after {
-                content: ":";
+                &:after {
+                    content: ":";
+                }
             }
             > h6:nth-of-type(2), > ul.legal {
                 display: inline-block;
@@ -244,7 +247,6 @@
             height: 63px;
             margin: 14px 0 0;
             padding: 0;
-            
             img {
                 padding-bottom: 6px;
             }
@@ -257,19 +259,16 @@
         #main {
             background: none;
             float: none;
-            margin-left: $smallscreen-side-margin;
-            margin-right: $smallscreen-side-margin;
             padding-bottom: 14px;
             padding-left: 0;
+            @include smallscreen-side-margins;
         }
         #sidebar {
             background: #fff;
             border: 1px solid $border-green;
             height: auto;
             margin-bottom: 14px;
-            margin-left: $smallscreen-side-margin;
-            margin-right: $smallscreen-side-margin;
-
+            @include smallscreen-side-margins;
             .section {
                 margin-top: 16px;
                 padding-bottom: 0;
@@ -281,13 +280,35 @@
     }
     #about #main {
         ul {
-            margin-left: $smallscreen-side-margin;
+            margin-left: $smallscreen-margin;
             padding-left: 6px;
         }
         > img, img.bookcover {
-            margin-bottom: $smallscreen-side-margin;
-            margin-left: $smallscreen-side-margin;
+            margin-bottom: $smallscreen-margin;
+            margin-left: $smallscreen-margin;
             margin-right: 0;
+        }
+    }
+    #getting-started {
+        .question {
+            padding: 16px 0 18px 38px;
+            h2 {
+                line-height: 130%;
+                margin: 2px 0 4px;
+            }
+            p {
+                margin: 0;
+            }
+        }
+        a {
+            &.screenshot
+                img.screenshot-thumb {
+                    margin: 10px 0 0;
+            }
+            &.onward-btn {
+                float: none;
+                margin: 0 auto 20px;
+            }
         }
     }
 }

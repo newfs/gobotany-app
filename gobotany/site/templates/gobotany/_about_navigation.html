@@ -6,7 +6,7 @@
                         Botany</a></h4>
             </div>
             <div class="section">
-                {% url simplekey-help-start as u %}
+                {% url site-getting-started as u %}
                 <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Getting
                         Started with the Simple Key</a></h4>
             </div>

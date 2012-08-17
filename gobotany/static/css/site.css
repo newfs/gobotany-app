@@ -314,7 +314,7 @@ header nav a { color: #fff; display: block; height: 35px; padding: 5px 8px 0; }
 header nav > a { display: none; /* Omit the 'sections' link by default */ }
 header nav ul { clear: both; }
 header nav li { display: block; float: left; font-size: 14px; line-height: normal; margin: 0 10px 0 0; padding: 0; }
-header nav li.about, header nav li a:hover { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
+header nav li .about, header nav li a:hover { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 header nav #search { background: white url(/static/images/layout/search-left.png) left center no-repeat; float: right; height: 20px; margin: 4px 4px 0 0; padding: 0 0 0 11px; }
 header nav #search form { display: block; margin: 0; padding: 0; width: 262px; }
 header nav #search input { background: #fff; border: 0; float: left; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; height: 20px; margin: 0; padding: 0; width: 219px; }
@@ -352,8 +352,26 @@ footer .support { margin-right: 0; padding: 18px 0; }
 
 /* About */
 #about #main img { float: right; margin: 5px 0 20px 20px; }
-#about #main img.bookcover { margin-right: 89px; }
+#about #main img .bookcover { margin-right: 89px; }
 #about #main ul { margin: 0 5px 0 18px; }
+
+/* Getting Started page */
+#getting-started h2 { margin-top: 0; padding-top: 0; }
+#getting-started .question { padding: 18px 0 18px 45px; background-position: left 22px; background-repeat: no-repeat; border-bottom: 1px solid #e2dfcb; }
+#getting-started .question ul { padding: 0 0 0 15px; }
+#getting-started .first.question { margin: 11px 0 0 0; border-top: 1px solid #e2dfcb; background-image: url(/static/images/icons/1.png); }
+#getting-started .second.question { background-image: url(/static/images/icons/2.png); }
+#getting-started .third.question { background-image: url(/static/images/icons/3.png); }
+#getting-started .fourth.question { background-image: url(/static/images/icons/4.png); }
+#getting-started .fifth.question { background-image: url(/static/images/icons/5.png); }
+#getting-started .sixth.question { margin: 0 0 11px 0; background-image: url(/static/images/icons/6.png); }
+#getting-started a.screenshot { float: right; margin: 0 0 0 15px; color: #1a2e11; text-align: center; }
+#getting-started a.screenshot:hover { text-decoration: none; }
+#getting-started a.screenshot img { margin: 10px 0; vertical-align: middle; }
+#getting-started a.screenshot img.screenshot-thumb { border: 5px solid #fff; display: block; margin: 0; -webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3); -moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3); box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3); }
+#getting-started a.onward-btn { cursor: pointer; display: block; float: right; width: 280px; height: 32px; margin: 10px 0; background: url(/static/images/layout/onward-btn-orange.png) 0 0 no-repeat transparent; text-indent: -9000px; }
+#getting-started a.onward-btn:hover { background-position: 0 -32px; }
+#getting-started a.onward-btn:active { background-position: 0 -64px; }
 
 /* Imports for per-feature/app styles */
 /* (add here) */
@@ -419,11 +437,16 @@ footer .support { margin-right: 0; padding: 18px 0; }
   footer .support { height: 63px; margin: 14px 0 0; padding: 0; }
   footer .support img { padding-bottom: 6px; }
   .content .container { padding: 0; }
-  .content #main { background: none; float: none; margin-left: 8px; margin-right: 8px; padding-bottom: 14px; padding-left: 0; }
+  .content #main { background: none; float: none; padding-bottom: 14px; padding-left: 0; margin-left: 8px; margin-right: 8px; }
   .content #sidebar { background: #fff; border: 1px solid #c3d941; height: auto; margin-bottom: 14px; margin-left: 8px; margin-right: 8px; }
   .content #sidebar .section { margin-top: 16px; padding-bottom: 0; }
   .content #sidebar .section:first-child { margin-top: 0; }
   #about #main ul { margin-left: 8px; padding-left: 6px; }
-  #about #main > img, #about #main img.bookcover { margin-bottom: 8px; margin-left: 8px; margin-right: 0; } }
+  #about #main > img, #about #main img.bookcover { margin-bottom: 8px; margin-left: 8px; margin-right: 0; }
+  #getting-started .question { padding: 16px 0 18px 38px; }
+  #getting-started .question h2 { line-height: 130%; margin: 2px 0 4px; }
+  #getting-started .question p { margin: 0; }
+  #getting-started a.screenshot img.screenshot-thumb { margin: 10px 0 0; }
+  #getting-started a.onward-btn { float: none; margin: 0 auto 20px; } }
 /* End media queries styles */
 /* Please do not add new regular styles after the media queries, or they may not get overridden properly. Instead, add them before the media queries. */

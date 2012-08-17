@@ -12,6 +12,7 @@
 /* Imports for browser baseline, tools */
 @import "_normalize";
 @import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
 
 /* Imports for third-party controls */
 @import "jquery.jscrollpane";
@@ -113,7 +114,6 @@ ul li {
 header {
     height: 120px;
     @include container-div;
-
     p {
         margin: 0;
     }
@@ -122,18 +122,15 @@ header {
         margin: 0 0 0 -15px;
         padding: 14px 0 0 0;
         width: 443px;
-        
         a {
             background: url(/static/images/layout/logo-app.png) no-repeat transparent;
             height: 65px;
             width: 443px;
             @include offscreen;
         }
-    }            
-
+    }
     .newfs {
         float: right;
-
         a {
             background: url(/static/images/layout/newfs-logo-app.png) no-repeat transparent;
             height: 66px;
@@ -148,7 +145,6 @@ header {
         font-family: $headings-font;
         height: 120px;
         padding: 0 0 0 48px;
-        
         a {
             color: #fff;
             display: block;
@@ -168,19 +164,17 @@ header {
             line-height: normal;
             margin: 0 10px 0 0;
             padding: 0;
+            .about, a:hover {
+                background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
+                text-decoration: none;
+            }
         }
-        li.about, li a:hover {
-            background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
-            text-decoration: none;
-        }
-
         #search {
             background: #fff url(/static/images/layout/search-left.png) left center no-repeat;
             float: right;
             height: 20px;
             margin: 4px 4px 0 0;
             padding: 0 0 0 11px;
-
             form {
                 display: block;
                 margin: 0;
@@ -197,11 +191,10 @@ header {
                 margin: 0;
                 padding: 0;
                 width: 219px;
+                &:focus {
+                    outline: none;
+                }
             }                
-            input:focus {
-                outline: none;
-            }
-
             button {
                 background: #508e31 url(/static/images/layout/search-btn.png) 0 0 no-repeat;
                 border: none;
@@ -227,7 +220,6 @@ header {
             top: 105px;
             width: 256px;
             z-index: 101;
-            
             li {
                 clear: left;
                 display: block;
@@ -236,9 +228,9 @@ header {
                 margin: 0;
                 padding: 3px;
                 width: 250px;
-            }
-            li.highlighted {
-                background-color: #abd6ff;
+                &.highlighted {
+                    background-color: #abd6ff;
+                }
             }
             a {
                 color: $text-color;
@@ -262,7 +254,6 @@ header {
 .content {
     padding: 8px 0 0;
     @include container-div;
-    
     #main {
         background: url(/static/images/layout/sidebar-bg.png) repeat-y;
         float: right;
@@ -277,15 +268,12 @@ header {
         margin-right: -230px;
         padding: 16px 0;
         width: 230px;
-
         .section {
             padding: 0 17px 16px;
-
             h4 {
                 margin: 0 0 5px 0;
             }
         }
-
         a:hover {
             text-decoration: none;
         }
@@ -301,7 +289,6 @@ footer {
     position: relative;
     width: 100%;
     @include container-div;
-
     > img {
         left: 50%;
         margin-left: -543px;
@@ -330,12 +317,12 @@ footer {
     li {
         display: inline;
         line-height: 14px;
-    }
-    li::after {
-        content: " |";
-    }
-    li:last-child::after {
-        content: none;
+        &::after {
+            content: " |";
+        }
+        &:last-child::after {
+            content: none;
+        }
     }
     .nsf-logo {
         float: left;
@@ -353,14 +340,91 @@ footer {
     img {
         float: right;
         margin: 5px 0 20px 20px;
-    }
-    img.bookcover {
-       margin-right: 89px;
+        .bookcover {
+            margin-right: 89px;
+        }
     }
     ul {
         margin: 0 5px 0 18px;
     }
 }
+
+/* Getting Started page */
+
+#getting-started {
+    h2 {
+        margin-top: 0;
+        padding-top: 0;
+    }
+    .question {
+        padding: 18px 0 18px 45px;	
+        background-position: left 22px;
+        background-repeat: no-repeat;
+        border-bottom: 1px solid #e2dfcb;
+        ul {
+            padding: 0 0 0 15px;
+        }
+    }
+    .first.question {
+        margin: 11px 0 0 0;
+        border-top: 1px solid #e2dfcb;
+        background-image: url(/static/images/icons/1.png);	
+    }
+    .second.question {
+        background-image: url(/static/images/icons/2.png);	
+    }
+    .third.question {
+        background-image: url(/static/images/icons/3.png);	
+    }
+    .fourth.question {
+        background-image: url(/static/images/icons/4.png);	
+    }
+    .fifth.question {
+        background-image: url(/static/images/icons/5.png);	
+    }
+    .sixth.question {
+        margin: 0 0 11px 0;
+        background-image: url(/static/images/icons/6.png);	
+    }
+    a {
+        &.screenshot {
+            float: right;	
+            margin: 0 0 0 15px;
+            color: #1a2e11;
+            text-align: center;
+            &:hover {
+                text-decoration: none;	
+            }
+            img {
+                margin: 10px 0;
+                vertical-align: middle;
+                &.screenshot-thumb {
+                    border: 5px solid #fff;
+                    display: block;	
+                    margin: 0;
+                    @include single-box-shadow(rgba(0, 0, 0, 0.3), 0px, 1px, 4px);
+                }
+            }
+        }
+        &.onward-btn {
+            cursor: pointer;
+            display: block;
+            float: right;
+            width: 280px;
+            height: 32px;
+            margin: 10px 0;
+            background: url(/static/images/layout/onward-btn-orange.png) 0 0 no-repeat transparent;
+            text-indent: -9000px;
+            &:hover {
+                background-position: 0 -32px;
+            }
+            &:active {
+                background-position: 0 -64px;
+            }
+        }
+    }
+}
+
 
 /* Imports for per-feature/app styles */
 /* (add here) */
