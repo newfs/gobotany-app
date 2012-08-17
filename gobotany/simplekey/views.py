@@ -353,10 +353,6 @@ def species_view(request, genus_slug, epithet):
                     if character['in_preview']
         ], key=itemgetter('preview_order'))
 
-    last_plant_id_url = request.COOKIES.get('last_plant_id_url', None)
-    if last_plant_id_url:
-        last_plant_id_url = urllib2.unquote(last_plant_id_url)
-
     native_to_north_america = _native_to_north_america_status(taxon)
 
     return render_to_response('simplekey/species.html', {
@@ -377,7 +373,6 @@ def species_view(request, genus_slug, epithet):
            'brief_characteristics': preview_characters,
            'all_characteristics': characters_by_group,
            'epithet': epithet,
-           'last_plant_id_url': last_plant_id_url,
            'in_simple_key': partner_species and partner_species.simple_key,
            'native_to_north_america': native_to_north_america
            }, context_instance=RequestContext(request))
