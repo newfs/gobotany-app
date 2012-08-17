@@ -238,19 +238,19 @@
                     {% include "simplekey/_map_attribution.html" %}
                     <!--[if !IE]>-->
                     <object
-                        data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-ne-distribution-map.svg"
+                        data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
                         type="image/svg+xml"
                         title="distribution map for {{ scientific_name }}"
                         id="ne-dist-county-map"> <!--<![endif]-->
                     <!--[if lt IE 9]>
                     <object
-                        src="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-ne-distribution-map.svg"
+                        src="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
                         classid="image/svg+xml"
                         title="distribution map for {{ scientific_name }}"
                         id="ne-dist-county-map"> <![endif]-->
                     <!--[if gte IE 9]>
                     <object
-                        data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-ne-distribution-map.svg"
+                        data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
                         type="image/svg+xml"
                         title="distribution map for {{ scientific_name }}"
                         id="ne-dist-county-map"> <![endif]-->
@@ -262,19 +262,19 @@
                     {% include "simplekey/_map_attribution.html" %}
                     <div>
                         <object
-                            data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-na-distribution-map.svg"
+                            data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
                             type="image/svg+xml"
                             title="distribution map for {{ scientific_name }}"
                             id="na-dist-county-map"> <!--<![endif]-->
                         <!--[if lt IE 9]>
                         <object
-                            src="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-na-distribution-map.svg"
+                            src="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
                             classid="image/svg+xml"
                             title="distribution map for {{ scientific_name }}"
                             id="na-dist-county-map"> <![endif]-->
                         <!--[if gte IE 9]>
                         <object
-                            data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-na-distribution-map.svg"
+                            data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
                             type="image/svg+xml"
                             title="distribution map for {{ scientific_name }}"
                             id="na-dist-county-map"> <![endif]-->
