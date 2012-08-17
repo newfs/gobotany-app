@@ -211,7 +211,7 @@ def _format_character_value(character_value):
 def _images_with_copyright_holders(images):
     # Reduce a live query object to a list to only run it once.
     if not isinstance(images, list):
-        images = images.all()
+        images = images.select_related('image_type').all()
 
     # Get the copyright holders for this set of images.
     codes = set(image.creator for image in images)
@@ -219,20 +219,20 @@ def _images_with_copyright_holders(images):
               in CopyrightHolder.objects.filter(coded_name__in=codes)}
 
     for image in images:
+        # Grab each image's "scientific name" - or whatever string is
+        # preceded by a ":" at the start of its alt text!
+
+        image.scientific_name = (image.alt or '').split(':', 1)[0]
 
         # Associate each image with its copyright holder, adding the
         # copyright holder information as extra attributes.
 
         copyright_holder = chdict.get(image.creator)
-        if copyright_holder:
-            image.copyright_holder_name = copyright_holder.expanded_name
-            image.copyright = copyright_holder.copyright
-            image.source = copyright_holder.source
-
-        # Grab each image's "scientific name" - or whatever string is
-        # preceded by a ":" at the start of its alt text!
-
-        image.scientific_name = (image.alt or '').split(':', 1)[0]
+        if not copyright_holder:
+            continue
+        image.copyright_holder_name = copyright_holder.expanded_name
+        image.copyright = copyright_holder.copyright
+        image.source = copyright_holder.source
 
     return images
 
@@ -358,7 +358,7 @@ def species_view(request, genus_slug, epithet):
            'scientific_name_short': scientific_name_short,
            'taxon': taxon,
            'key': key,
-           'common_names': taxon.common_names.all(),
+           'common_names': taxon.common_names.all(),  # view uses this 3 times
            'dkey_page': dkey_page,
            'images': images,
            'partner_heading': partner_species.species_page_heading
