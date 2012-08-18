@@ -1,0 +1,36 @@
+{% extends "gobotany/_page_full_sidebar.html" %}
+
+{% block title %}Video Help Topics{% endblock %}
+
+{% block js_require %}
+    require(['site/about']);
+{% endblock %}
+
+{% block body_attributes %}id="video" class="about"{% endblock %}
+
+{% block main_content %}
+    <h1>Video Help Topics</h1>
+    {% for video in videos %}
+        {% if forloop.counter0|divisibleby:"3" %}
+        {% endif %}
+            <div class="video-topic">
+                {% if video.youtube_id %}
+                    <a class="video"
+                        href="http://www.youtube.com/embed/{{ video.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">
+                        <img class="shadow"
+                            src="http://img.youtube.com/vi/{{ video.youtube_id }}/0.jpg"
+                            alt="">
+                    </a>
+                {% else %}
+                    <div class="missing-image">
+                      <p>Video not available yet</p>
+                    </div>
+                {% endif %}
+                <p>{{ video.title }}</p>
+            </div>
+    {% endfor %}
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "gobotany/_about_navigation.html" %}
+{% endblock %}

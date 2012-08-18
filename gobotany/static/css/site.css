@@ -153,6 +153,7 @@ textarea { overflow: auto; /* 1 */ vertical-align: top; /* 2 */ }
 /* Remove most spacing between table cells */
 table { border-collapse: collapse; border-spacing: 0; }
 
+/* for gradient, etc. */
 /* Imports for third-party controls */
 /* CSS Styles that are needed by jScrollPane for it to operate correctly.  Include this stylesheet in your site or copy and paste the styles below into your stylesheet - jScrollPane may not operate correctly without them. */
 .jspContainer { overflow: hidden; position: relative; }
@@ -303,6 +304,8 @@ ul li { margin: 0 0 5px 0; }
 
 .hidden { display: none; }
 
+.missing-image { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -webkit-linear-gradient(top center, #eaf2e2, #d6e6c5); background: -moz-linear-gradient(top center, #eaf2e2, #d6e6c5); background: -o-linear-gradient(top center, #eaf2e2, #d6e6c5); background: linear-gradient(top center, #eaf2e2, #d6e6c5); color: #354d1e; height: 149px; position: relative; width: 160px; }
+
 /* Header */
 body .about { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 
@@ -381,6 +384,13 @@ footer .support { margin-right: 0; padding: 18px 0; }
 #getting-started .video-topic img { height: 147px; width: 196px; }
 #getting-started .video-topic a { cursor: pointer; }
 
+/* Video Help Topics */
+#video .video-topic { float: left; height: 176px; margin: 10px 16px 10px 0; position: relative; width: 220px; }
+#video .video-topic img { height: 137px; width: 220px; }
+#video .video-topic > p { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 18px; line-height: 105%; margin-top: 4px; }
+#video .video-topic .missing-image { border: 1px solid #508e31; height: 135px; width: 218px; }
+#video .video-topic .missing-image p { left: auto; margin: 55px 0; position: absolute; text-align: center; top: auto; white-space: nowrap; width: 100%; }
+
 /* Contributors */
 #contributors #main ul { list-style-type: none; }
 #contributors #main li { margin: 0; }
@@ -450,7 +460,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
   footer .support img { padding-bottom: 6px; }
   .content .container { padding: 0; }
   .content #main { background: none; float: none; padding-bottom: 14px; padding-left: 0; margin-left: 8px; margin-right: 8px; }
-  .content #sidebar { background: #fff; border: 1px solid #c3d941; height: auto; margin-bottom: 14px; margin-left: 8px; margin-right: 8px; }
+  .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; margin-bottom: 14px; margin-left: 8px; margin-right: 8px; }
   .content #sidebar .section { margin-top: 16px; padding-bottom: 0; }
   .content #sidebar .section:first-child { margin-top: 0; }
   #about #main ul { margin-left: 8px; padding-left: 6px; }
@@ -459,6 +469,9 @@ footer .support { margin-right: 0; padding: 18px 0; }
   #getting-started .question h2 { line-height: 130%; margin: 2px 0 4px; }
   #getting-started .question p { margin: 0; }
   #getting-started a.screenshot img.screenshot-thumb { margin: 10px 0 0; }
-  #getting-started a.onward-btn { float: none; margin: 0 auto 20px; } }
+  #getting-started a.onward-btn { float: none; margin: 0 auto 20px; }
+  #video .video-topic { margin-right: 12px; }
+  #video .video-topic > p { font-size: 16px; }
+  #video .missing-image p { margin-left: 0; margin-right: 0; } }
 /* End media queries styles */
 /* Please do not add new regular styles after the media queries, or they may not get overridden properly. Instead, add them before the media queries. */

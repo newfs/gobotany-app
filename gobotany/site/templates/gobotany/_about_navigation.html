@@ -19,7 +19,7 @@
         <h4><a {% if not u in request.path %}href="{{ u }}"{% endif %}>Glossary</a></h4>
     </div>
     <div class="section">
-        {% url simplekey-help-video as u %}
+        {% url site-video as u %}
         <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Video Help
                 Topics</a></h4>
     </div>

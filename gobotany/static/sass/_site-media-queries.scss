@@ -266,6 +266,7 @@ $smallscreen-potd-image-width: 297px;
         #sidebar {
             background: #fff;
             border: 1px solid $border-green;
+            clear: left;
             height: auto;
             margin-bottom: 14px;
             @include smallscreen-side-margins;
@@ -309,6 +310,18 @@ $smallscreen-potd-image-width: 297px;
                 float: none;
                 margin: 0 auto 20px;
             }
+        }
+    }
+    #video {
+        .video-topic {
+            margin-right: 12px;
+            > p {
+                font-size: 16px;
+            }
+        }
+        .missing-image p {
+            margin-left: 0;
+            margin-right: 0;
         }
     }
 }

@@ -13,6 +13,7 @@
 @import "_normalize";
 @import "compass/css3/border-radius";
 @import "compass/css3/box-shadow";
+@import "compass/css3/images";   /* for gradient, etc. */
 
 /* Imports for third-party controls */
 @import "jquery.jscrollpane";
@@ -98,6 +99,13 @@ ul li {
 }
 .hidden {
     display: none;
+}
+.missing-image {
+    @include background(linear-gradient(top center, #eaf2e2, #d6e6c5));
+    color: #354d1e;
+    height: 149px;
+    position: relative;
+    width: 160px;
 }
 
 @mixin offscreen {
@@ -451,6 +459,42 @@ footer {
         }
         a {
             cursor: pointer;
+        }
+    }
+}
+
+/* Video Help Topics */
+
+#video {
+    .video-topic {
+        float: left;
+        height: 176px;
+        margin: 10px 16px 10px 0;
+        position: relative;
+        width: 220px;
+        img {
+            height: 137px;
+            width: 220px;
+        }
+        > p {
+            font-family: $headings-font;
+            font-size: 18px;
+            line-height: 105%;
+            margin-top: 4px;
+        }
+        .missing-image {
+            border: 1px solid #508e31;
+            height: 135px;
+            width: 218px;
+            p {
+                left: auto;
+                margin: 55px 0;
+                position: absolute;
+                text-align: center;
+                top: auto;
+                white-space: nowrap;
+                width: 100%;
+            }
         }
     }
 }
