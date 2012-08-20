@@ -54,6 +54,9 @@ $smallscreen-potd-image-width: 297px;
             width: auto;
         }
     }
+    #advanced-map #group-section {
+        height: 600px;
+    }
     #glossary #alphabet {
         height: 99px;
     }
@@ -91,6 +94,9 @@ $smallscreen-potd-image-width: 297px;
             width: 462px;
         }
     }
+    #advanced-map #group-section {
+        height: 400px;
+    }
     #glossary #alphabet {
         height: 66px;
     }
@@ -113,7 +119,7 @@ $smallscreen-potd-image-width: 297px;
     header {
         height: 90px;
         nav {
-            background: #508e31;
+            background: $link-green;
             clear: left;
             height: 32px;
             padding: 0;
@@ -220,7 +226,7 @@ $smallscreen-potd-image-width: 297px;
                             right: 14px;
                         }
                         &[href] {
-                            background: #508e31;
+                            background: $link-green;
                             color: #fff;
                         }
                     }
@@ -322,6 +328,11 @@ $smallscreen-potd-image-width: 297px;
             }
         }
     }
+    #advanced-map #plant-map-list {
+        margin-left: $smallscreen-margin;
+        margin-right: $smallscreen-margin;
+        margin-top: 0;
+    }
     #glossary {
         #alphabet {
             line-height: 250%;
@@ -362,6 +373,18 @@ $smallscreen-potd-image-width: 297px;
             margin-left: 0;
             margin-right: 0;
         }
+    }
+}
+/* These styles apply to smartphones and tablets */
+@media only screen and (max-width: 1024px) {
+
+    /* Disable hover states on Advanced Map to Groups page. */
+    #advanced-map .plant-group:hover .frame {
+	    border: $advanced-map-frame-border;
+    }
+    #advanced-map .plant-group:hover h3 {
+	    background: inherit;
+	    color: $link-green;
     }
 }
 

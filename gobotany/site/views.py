@@ -31,6 +31,14 @@ def getting_started_view(request):
             'getting_started_youtube_id': youtube_id,
             }, context_instance=RequestContext(request))
 
+def advanced_map_view(request):
+    pilegroups = [(pilegroup, ordered_piles(pilegroup))
+                  for pilegroup in ordered_pilegroups()]
+
+    return render_to_response('gobotany/advanced_map.html', {
+            'pilegroups': pilegroups
+            }, context_instance=RequestContext(request))
+
 def glossary_view(request, letter):
     glossary = GlossaryTerm.objects.filter(visible=True).extra(
         select={'lower_term': 'lower(term)'}).order_by('lower_term')

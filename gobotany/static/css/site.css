@@ -391,6 +391,33 @@ footer .support { margin-right: 0; padding: 18px 0; }
 #getting-started .video-topic img { height: 147px; width: 196px; }
 #getting-started .video-topic a { cursor: pointer; }
 
+/* Advanced Map to Groups */
+#advanced-map h2 { clear: left; }
+#advanced-map #plant-map-list { margin: 10px 0; }
+#advanced-map #group-section { height: 200px; }
+#advanced-map .plant-group { cursor: pointer; float: left; height: 185px; margin: 0 10px 10px 0; padding: 2px 0 0; position: relative; width: 110px; }
+#advanced-map .plant-group.last { margin: 0 0 10px 0; }
+#advanced-map .plant-group:hover .frame { border-color: #1a2e12; }
+#advanced-map .plant-group:hover h3 { background: #1a2e12; color: #fff; }
+#advanced-map .plant-group.active h3 { background: #1a2e12; color: #fff; }
+#advanced-map .plant-group.active .frame { border-color: #1a2e12; }
+#advanced-map .plant-group h3 { bottom: 146px; color: #508e31; font-size: 12px; line-height: 120%; margin: 0 0 0 0; padding: 6px 0 6px 5px; position: absolute; width: 105px; }
+#advanced-map .plant-group .image { position: absolute; top: 40px; }
+#advanced-map .plant-group .frame { border: 5px solid rgba(255, 255, 255, 0.8); height: 91px; position: absolute; top: 0; width: 100px; z-index: 100; }
+#advanced-map .plant-group .img-container { height: 101px; margin-bottom: 6px; overflow: hidden; width: 110px; -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.6); box-shadow: 0 0 4px rgba(0, 0, 0, 0.6); }
+#advanced-map .plant-subgroup { cursor: default; float: left; height: 264px; margin: 0 11px 11px 0; padding: 17px 0 0 0; width: 160px; }
+#advanced-map .plant-subgroup.last { margin-right: 0; }
+#advanced-map .plant-subgroup .image { position: relative; }
+#advanced-map .plant-subgroup .frame { border: 5px solid #1a2e12; height: 129px; position: absolute; top: 0; width: 150px; z-index: 100; }
+#advanced-map .plant-subgroup h3 { background: #1a2e12; color: #fff; font-size: 13px; height: 30px; line-height: 120%; margin: 0 0 0 0; padding: 6px; }
+#advanced-map .plant-subgroup .img-container { height: 139px; overflow: hidden; width: 160px; }
+#advanced-map .plant-subgroup .more-info { background: url(/static/images/icons/more-info.png) left 4px no-repeat transparent; margin: 5px 0 0 0; padding: 0 0 0 19px; }
+#advanced-map p.video { background: url(/static/images/icons/icon3.png) left 4px no-repeat transparent; margin: 2px 0; padding: 3px 0 0 22px; }
+#advanced-map p.list { background: url(/static/images/icons/icon1.png) left 4px no-repeat transparent; margin: 2px 0 0; padding: 3px 0 0 22px; }
+#advanced-map .choose-btn { background: url(/static/images/layout/choose-btn.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 5px; text-indent: -9000px; width: 104px; }
+#advanced-map .choose-btn:hover { background-position: 0 -32px; }
+#advanced-map .choose-btn:active { background-position: 0 -64px; }
+
 /* Glossary */
 /* Glossary term underline for popup */
 .gloss { border-bottom: 1px dashed; cursor: pointer; }
@@ -439,6 +466,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
   .content #sidebar { float: none; width: 302px; }
   #about #main > img { width: 57%; }
   #about #main img.bookcover { width: auto; }
+  #advanced-map #group-section { height: 600px; }
   #glossary #alphabet { height: 99px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { html { -webkit-text-size-adjust: none; }
@@ -449,6 +477,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
   .top-level header p.go-botany a { background-position: 0 -7px; width: 260px; }
   .content #main { width: 464px; }
   .content #sidebar { width: 462px; }
+  #advanced-map #group-section { height: 400px; }
   #glossary #alphabet { height: 66px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
@@ -502,6 +531,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
   #getting-started .question p { margin: 0; }
   #getting-started a.screenshot img.screenshot-thumb { margin: 10px 0 0; }
   #getting-started a.onward-btn { float: none; margin: 0 auto 20px; }
+  #advanced-map #plant-map-list { margin-left: 8px; margin-right: 8px; margin-top: 0; }
   #glossary #alphabet { line-height: 250%; width: auto; }
   #glossary #alphabet li { border: 0; padding: 1px 10px; }
   #glossary #terms { width: auto; }
@@ -511,5 +541,9 @@ footer .support { margin-right: 0; padding: 18px 0; }
   #video .video-topic { margin-right: 12px; }
   #video .video-topic > p { font-size: 16px; }
   #video .missing-image p { margin-left: 0; margin-right: 0; } }
+/* These styles apply to smartphones and tablets */
+@media only screen and (max-width: 1024px) { /* Disable hover states on Advanced Map to Groups page. */
+  #advanced-map .plant-group:hover .frame { border: 5px solid rgba(255, 255, 255, 0.8); }
+  #advanced-map .plant-group:hover h3 { background: inherit; color: #508e31; } }
 /* End media queries styles */
 /* Please do not add new regular styles after the media queries, or they may not get overridden properly. Instead, add them before the media queries. */

@@ -223,7 +223,7 @@ header {
                 }
             }                
             button {
-                background: #508e31 url(/static/images/layout/search-btn.png) 0 0 no-repeat;
+                background: $link-green url(/static/images/layout/search-btn.png) 0 0 no-repeat;
                 border: none;
                 cursor: pointer;
                 float: right;
@@ -510,6 +510,148 @@ footer {
     }
 }
 
+/* Advanced Map to Groups */
+
+$advanced-map-frame-border: 5px solid rgba(255, 255, 255, 0.8);
+$advanced-map-active-color: #1a2e12;
+$image-box-shadow-color: rgba(0, 0, 0, 0.6);
+
+#advanced-map {
+    h2 {
+        clear: left;
+    }
+    #plant-map-list {
+	    margin: 10px 0;
+    }
+    #group-section {
+        height: 200px;
+    }
+    .plant-group {
+        cursor: pointer;
+        float: left;
+        height: 185px;
+        margin: 0 10px 10px 0;
+        padding: 2px 0 0;
+        position: relative;
+        width: 110px;
+        &.last {
+	        margin: 0 0 10px 0;	
+        }
+        &:hover {
+            .frame {
+                border-color: $advanced-map-active-color;
+            }
+            h3 {
+                background: $advanced-map-active-color;
+                color: #fff;
+            }
+        }
+        &.active {
+            h3 {
+                background: $advanced-map-active-color;
+	            color: #fff;
+            }
+            .frame {
+                border-color: $advanced-map-active-color;
+            }
+        }
+        h3 {
+            bottom: 146px;
+            color: $link-green;
+            font-size: 12px;
+            line-height: 120%;
+            margin: 0 0 0 0;
+            padding: 6px 0 6px 5px;
+            position: absolute;
+            width: 105px;
+        }
+        .image {
+            position: absolute;
+            top: 40px;
+        }
+        .frame {
+            border: $advanced-map-frame-border;
+            height: 91px;	
+            position: absolute;
+            top: 0;
+            width: 100px;
+            z-index: 100;
+        }
+        .img-container {
+            height: 101px;
+            margin-bottom: 6px;
+            overflow: hidden;
+            width: 110px;
+            @include single-box-shadow($image-box-shadow-color, 0, 0, 4px);
+        }
+    }
+    .plant-subgroup {
+        cursor: default;
+        float: left;
+        height: 264px;
+        margin: 0 11px 11px 0;
+        padding: 17px 0 0 0;
+        width: 160px;
+        &.last {
+            margin-right: 0;
+        }
+        .image {
+	        position: relative;	
+        }
+        .frame {
+            border: 5px solid #1a2e12;
+            height: 129px;	
+            position: absolute;
+            top: 0;
+            width: 150px;
+            z-index: 100;
+        }
+        h3 {
+            background: #1a2e12;
+	        color: #fff;
+            font-size: 13px;
+            height: 30px;
+	        line-height: 120%;
+	        margin: 0 0 0 0;
+	        padding: 6px;
+        }
+        .img-container {
+        	height: 139px;
+	        overflow: hidden;
+	        width: 160px;
+        }
+        .more-info {
+	        background: url(/static/images/icons/more-info.png) left 4px no-repeat transparent;	
+	        margin: 5px 0 0 0;
+	        padding: 0 0 0 19px;
+        }
+    }
+    p.video {
+    	background: url(/static/images/icons/icon3.png) left 4px no-repeat transparent;
+	    margin: 2px 0;
+	    padding: 3px 0 0 22px;
+    }
+    p.list {
+	    background: url(/static/images/icons/icon1.png) left 4px no-repeat transparent;
+	    margin: 2px 0 0;
+	    padding: 3px 0 0 22px;
+    }
+    .choose-btn {
+        background: url(/static/images/layout/choose-btn.png) 0 0 no-repeat transparent;
+        display: block;
+        height: 32px;
+        margin: 10px 0 5px;
+        text-indent: -9000px;
+        width: 104px;
+        &:hover {
+	        background-position: 0 -32px;
+        }
+        &:active {
+	        background-position: 0 -64px;
+        }
+    }
+}
+
 /* Glossary */
 
 /* Glossary term underline for popup */
@@ -616,7 +758,7 @@ footer {
             margin-top: 4px;
         }
         .missing-image {
-            border: 1px solid #508e31;
+            border: 1px solid $link-green;
             height: 135px;
             width: 218px;
             p {
