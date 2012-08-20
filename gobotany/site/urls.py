@@ -4,6 +4,9 @@ from gobotany.site import views
 
 urlpatterns = patterns(
     '',
+
+    url(r'^$', views.home_view, name='site-home'),
+
     url(r'^about/$', views.about_view, name='site-about'),
     url(r'^start/$', views.getting_started_view, name='site-getting-started'),
     url(r'^map/$', views.advanced_map_view, name='site-advanced-map'),

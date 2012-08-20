@@ -89,12 +89,12 @@
 
         {% include "gobotany/_chrome_frame.html" %}
 
-        {# TODO: allow header to be overridden for home page: different #}
-        {# nav treatment, different heading levels #}
-        {% include "gobotany/_header.html" %}
+        <div id="all">
+            {% block header %}{% endblock %}
 
-        {% block body_content %}{% endblock %}
+            {% block body_content %}{% endblock %}
 
-        {% include "gobotany/_footer.html" %}
+            {% block footer %}{% endblock %}
+        </div>
     </body>
 </html>

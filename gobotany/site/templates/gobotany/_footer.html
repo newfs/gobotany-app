@@ -14,7 +14,8 @@
                 <div class="navigation">
                     <h6>Go Botany</h6>
                     <ul id="footer-nav" class="sections">
-                        <li><a {% ifnotequal request.path "/" %}href="{% url simplekey-index %}"{% endifnotequal %}>Home</a></li>
+                        {% url site-home as u %}
+                        <li><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Home</a></li>
                         <li><a href="{% url simplekey %}">Simple Key</a></li>
                         <li><a href="{% url plantshare-placeholder %}">PlantShare</a></li>
                         <li><a href="{% url full-key-placeholder %}">Full Key</a></li>
