@@ -54,6 +54,9 @@ $smallscreen-potd-image-width: 297px;
             width: auto;
         }
     }
+    #glossary #alphabet {
+        height: 99px;
+    }
 }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) {
@@ -87,6 +90,9 @@ $smallscreen-potd-image-width: 297px;
         #sidebar {
             width: 462px;
         }
+    }
+    #glossary #alphabet {
+        height: 66px;
     }
 }
 /* These styles are common to both smartphone widths */
@@ -259,6 +265,7 @@ $smallscreen-potd-image-width: 297px;
         #main {
             background: none;
             float: none;
+            min-height: inherit;
             padding-bottom: 14px;
             padding-left: 0;
             @include smallscreen-side-margins;
@@ -278,6 +285,9 @@ $smallscreen-potd-image-width: 297px;
                 margin-top: 0;
             }
         }
+    }
+    .gb-tooltip {
+        width: 200px;
     }
     #about #main {
         ul {
@@ -309,6 +319,35 @@ $smallscreen-potd-image-width: 297px;
             &.onward-btn {
                 float: none;
                 margin: 0 auto 20px;
+            }
+        }
+    }
+    #glossary {
+        #alphabet {
+            line-height: 250%;
+            width: auto;
+            li {
+                border: 0;
+                padding: 1px 10px;
+            }
+        }
+        #terms {
+            width: auto;
+            img {
+                padding-left: 2px;
+            }
+            dt {
+                border-top: 0;
+                clear: none;
+                float: none;
+                font-weight: bold;
+                padding-bottom: 0;
+                width: auto;
+            }
+            dd {
+                border-top: 0;
+                margin: 0;
+                padding: 0 5px 10px 39px;
             }
         }
     }

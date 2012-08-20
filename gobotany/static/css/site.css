@@ -438,7 +438,8 @@ footer .support { margin-right: 0; padding: 18px 0; }
   .content #main { width: 304px; }
   .content #sidebar { float: none; width: 302px; }
   #about #main > img { width: 57%; }
-  #about #main img.bookcover { width: auto; } }
+  #about #main img.bookcover { width: auto; }
+  #glossary #alphabet { height: 99px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { html { -webkit-text-size-adjust: none; }
   body { padding-top: 75px; }
@@ -447,7 +448,8 @@ footer .support { margin-right: 0; padding: 18px 0; }
   header nav > a span { font-size: 14px; line-height: 160%; padding-left: 5px; position: absolute; }
   .top-level header p.go-botany a { background-position: 0 -7px; width: 260px; }
   .content #main { width: 464px; }
-  .content #sidebar { width: 462px; } }
+  .content #sidebar { width: 462px; }
+  #glossary #alphabet { height: 66px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
   h1 { font-size: 24px; }
@@ -488,10 +490,11 @@ footer .support { margin-right: 0; padding: 18px 0; }
   footer .support { height: 63px; margin: 14px 0 0; padding: 0; }
   footer .support img { padding-bottom: 6px; }
   .content .container { padding: 0; }
-  .content #main { background: none; float: none; padding-bottom: 14px; padding-left: 0; margin-left: 8px; margin-right: 8px; }
+  .content #main { background: none; float: none; min-height: inherit; padding-bottom: 14px; padding-left: 0; margin-left: 8px; margin-right: 8px; }
   .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; margin-bottom: 14px; margin-left: 8px; margin-right: 8px; }
   .content #sidebar .section { margin-top: 16px; padding-bottom: 0; }
   .content #sidebar .section:first-child { margin-top: 0; }
+  .gb-tooltip { width: 200px; }
   #about #main ul { margin-left: 8px; padding-left: 6px; }
   #about #main > img, #about #main img.bookcover { margin-bottom: 8px; margin-left: 8px; margin-right: 0; }
   #getting-started .question { padding: 16px 0 18px 38px; }
@@ -499,6 +502,12 @@ footer .support { margin-right: 0; padding: 18px 0; }
   #getting-started .question p { margin: 0; }
   #getting-started a.screenshot img.screenshot-thumb { margin: 10px 0 0; }
   #getting-started a.onward-btn { float: none; margin: 0 auto 20px; }
+  #glossary #alphabet { line-height: 250%; width: auto; }
+  #glossary #alphabet li { border: 0; padding: 1px 10px; }
+  #glossary #terms { width: auto; }
+  #glossary #terms img { padding-left: 2px; }
+  #glossary #terms dt { border-top: 0; clear: none; float: none; font-weight: bold; padding-bottom: 0; width: auto; }
+  #glossary #terms dd { border-top: 0; margin: 0; padding: 0 5px 10px 39px; }
   #video .video-topic { margin-right: 12px; }
   #video .video-topic > p { font-size: 16px; }
   #video .missing-image p { margin-left: 0; margin-right: 0; } }
