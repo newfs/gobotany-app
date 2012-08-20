@@ -17,14 +17,6 @@
         {% block css %}
         <link rel="stylesheet" href="/static/css/site.css">
         {% endblock %}
-        {# These IE styles will only load if the user views the site #}
-        {# in an older IE without the required Chrome Frame plug-in. #}
-        <!--[if IE 7]>
-            <link rel="stylesheet" href="/static/css/ie7.css">
-        <![endif]-->
-        <!--[if IE 8]>
-            <link rel="stylesheet" href="/static/css/ie8.css">
-        <![endif]-->
 
         {# JS goes here. #}
 
@@ -32,7 +24,7 @@
         {# such as SVGWeb. #}
         {% block js_top %}{% endblock %}
 
-        {# This HTML5 fix for IE 6-8 will only apply if the user views #}
+        {# This HTML5 fix for old IE will only apply if the user views #}
         {# the site in IE without the required Chrome Frame plug-in.   #}
         <!--[if lt IE 9]>
         <script
