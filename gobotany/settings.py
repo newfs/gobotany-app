@@ -109,6 +109,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
         "gobotany.core.context_processors.gobotany_specific_context",
 )
 
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+}
 APPEND_SLASH = False
 SMART_APPEND_SLASH = True
 ROOT_URLCONF = 'gobotany.urls'

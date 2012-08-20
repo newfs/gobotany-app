@@ -15,7 +15,7 @@
                 to Groups</a></h4>
     </div>
     <div class="section">
-        {% url simplekey-help-glossary0 as u %}
+        {% url site-glossary-main as u %}
         <h4><a {% if not u in request.path %}href="{{ u }}"{% endif %}>Glossary</a></h4>
     </div>
     <div class="section">

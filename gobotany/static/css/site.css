@@ -337,7 +337,7 @@ header nav #search-suggest .menu span { font-weight: normal; }
 /* Main content and sidebar */
 .content { padding: 8px 0 0; }
 .content .container { margin: 0 auto; padding: 0 10px; width: 960px; }
-.content #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; float: right; padding-bottom: 24px; padding-left: 250px; width: 710px; }
+.content #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; float: right; min-height: 500px; padding-bottom: 24px; padding-left: 250px; width: 710px; }
 .content #sidebar { border-top: 1px solid #c3d941; float: left; height: 100%; margin-right: -230px; padding: 16px 0; width: 230px; }
 .content #sidebar .section { padding: 0 17px 16px; }
 .content #sidebar .section h4 { margin: 0 0 5px 0; }
@@ -357,6 +357,13 @@ footer li::after { content: " |"; }
 footer li:last-child::after { content: none; }
 footer .nsf-logo { float: left; margin: 0 10px 0 7px; }
 footer .support { margin-right: 0; padding: 18px 0; }
+
+/* Tooltips for working area images and highlighted glossary terms. */
+.gb-tooltip { border: 1px solid #c3d941; display: none; /* initially invisible, fades in */ padding: 0.5em 0.7em; position: absolute; width: 300px; z-index: 1000; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -webkit-linear-gradient(top center, #eaf2e2, #d6e6c5); background: -moz-linear-gradient(top center, #eaf2e2, #d6e6c5); background: -o-linear-gradient(top center, #eaf2e2, #d6e6c5); background: linear-gradient(top center, #eaf2e2, #d6e6c5); -webkit-box-shadow: 0px 1px 4px #333333; -moz-box-shadow: 0px 1px 4px #333333; box-shadow: 0px 1px 4px #333333; -webkit-border-radius: 2px; -moz-border-radius: 2px; -ms-border-radius: 2px; -o-border-radius: 2px; border-radius: 2px; }
+.gb-tooltip .arrow { background: #d6e6c5; border: 1px solid #c3d941; /* rotated borders, same color as bottom of tooltip */ border-bottom-color: #d6e6c5; border-right-color: #d6e6c5; bottom: -7px; height: 11px; left: 10px; position: absolute; width: 11px; -webkit-box-shadow: -1px -1px 1px #333333; -moz-box-shadow: -1px -1px 1px #333333; box-shadow: -1px -1px 1px #333333; -webkit-transform: rotate(225deg); -moz-transform: rotate(225deg); -ms-transform: rotate(225deg); -o-transform: rotate(225deg); transform: rotate(225deg); }
+
+/* Shadowbox close button */
+#sb-nav-close { background-position: center; background-repeat: no-repeat; padding: 4px; /* Increase activation area a bit */ right: -28px !important; /* Place at top right, but not exactly at the corner so as to avoid Flash video z-index problem */ top: 6px !important; }
 
 /* About */
 #about #main img { float: right; margin: 5px 0 20px 20px; }
@@ -383,6 +390,28 @@ footer .support { margin-right: 0; padding: 18px 0; }
 #getting-started .video-topic { height: 147px; margin-bottom: 4px; width: 196px; }
 #getting-started .video-topic img { height: 147px; width: 196px; }
 #getting-started .video-topic a { cursor: pointer; }
+
+/* Glossary */
+/* Glossary term underline for popup */
+.gloss { border-bottom: 1px dashed; cursor: pointer; }
+
+#glossary #alphabet { height: 33px; list-style-type: none; margin: 7px 0; padding: 0; width: 712px; /* 2px wider than its parent box so no wrap in Moz */ }
+#glossary #alphabet li { border-left: 1px solid #e1e1dc; float: left; font-size: 18px; margin: 0; padding: 0 7px; }
+#glossary #alphabet li:first-child { border-left: 0; }
+#glossary #alphabet li.inactive { color: #ccc; }
+#glossary #alphabet li .current a { color: #000; }
+#glossary #alphabet li .current a:hover { text-decoration: none; }
+#glossary #terms { background-color: #fff; border: 1px solid #e1e1dc; clear: left; margin: 0 0 24px 0; width: 710px; }
+#glossary #terms dt, #glossary #terms dd { border-top: 1px solid #e1e1dc; min-height: 24px; }
+#glossary #terms dt { clear: left; float: left; line-height: 25px; padding: 7px 10px 10px 38px; width: 190px; }
+#glossary #terms dt:first-child, #glossary #terms dt:first-child + dd { border-top: 0; }
+#glossary #terms dt a { float: left; margin-left: -34px; }
+#glossary #terms dd { margin-left: 224px; padding: 13px; }
+#glossary #terms img { padding-left: 4px; padding-top: 1px; }
+
+/* Glossary tooltip */
+.glosstip { line-height: 140%; position: relative; max-width: 30em; }
+.glosstip img { background: #eaf2e2; border: 1px solid #c3d941; bottom: 110%; padding: 4px; position: absolute; -webkit-box-shadow: 1px 1px 2px #333333; -moz-box-shadow: 1px 1px 2px #333333; box-shadow: 1px 1px 2px #333333; -webkit-border-radius: 2px; -moz-border-radius: 2px; -ms-border-radius: 2px; -o-border-radius: 2px; border-radius: 2px; }
 
 /* Video Help Topics */
 #video .video-topic { float: left; height: 176px; margin: 10px 16px 10px 0; position: relative; width: 220px; }

@@ -14,6 +14,7 @@
 @import "compass/css3/border-radius";
 @import "compass/css3/box-shadow";
 @import "compass/css3/images";   /* for gradient, etc. */
+@import "compass/css3/transform";
 
 /* Imports for third-party controls */
 @import "jquery.jscrollpane";
@@ -37,6 +38,12 @@ $base-font-size: 12px;
 $nav-font-size: 14px;
 
 $text-line-height: 170%;
+
+$tooltip-border-color: #c3d941;
+$tooltip-background-top-color: #eaf2e2;
+$tooltip-background-bottom-color: #d6e6c5;
+$tooltip-shadow-color: #333333;
+$tooltip-arrow-rotation: 225deg;
 
 /* Site-wide styles */
 
@@ -277,6 +284,7 @@ header {
     #main {
         background: url(/static/images/layout/sidebar-bg.png) repeat-y;
         float: right;
+        min-height: 500px;
         padding-bottom: 24px;
         padding-left: 250px;
         width: 710px;
@@ -356,6 +364,45 @@ footer {
         margin-right: 0;
         padding: 18px 0;
     }    
+}
+
+/* Tooltips for working area images and highlighted glossary terms. */
+.gb-tooltip {
+    border: 1px solid $tooltip-border-color;
+    display: none;   /* initially invisible, fades in */
+    padding: 0.5em 0.7em;
+    position: absolute;
+    width: 300px;
+    z-index: 1000;
+    @include background(linear-gradient(top center,
+        $tooltip-background-top-color, $tooltip-background-bottom-color));
+    @include single-box-shadow($tooltip-shadow-color, 0px, 1px, 4px);
+    @include border-radius(2px);
+    .arrow {
+        background: $tooltip-background-bottom-color;
+        border: 1px solid $tooltip-border-color;
+        /* rotated borders, same color as bottom of tooltip */
+        border-bottom-color: $tooltip-background-bottom-color;
+        border-right-color: $tooltip-background-bottom-color;
+        bottom: -7px;
+        height: 11px;
+        left: 10px;
+        position: absolute;
+        width: 11px;
+        @include single-box-shadow($tooltip-shadow-color, -1px, -1px, 1px);
+        @include rotate($tooltip-arrow-rotation);
+    }
+}
+
+/* Shadowbox close button */
+#sb-nav-close {
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 4px; /* Increase activation area a bit */
+    right: -28px !important; /* Place at top right, but not exactly at the
+                                corner so as to avoid Flash video z-index
+                                problem */
+    top: 6px !important;
 }
 
 /* About */
@@ -460,6 +507,92 @@ footer {
         a {
             cursor: pointer;
         }
+    }
+}
+
+/* Glossary */
+
+/* Glossary term underline for popup */
+.gloss {
+    border-bottom: 1px dashed;
+    cursor: pointer;
+}
+
+#glossary {
+    #alphabet {
+        height: 33px;
+        list-style-type: none;
+        margin: 7px 0;
+        padding: 0;
+        width: 712px; /* 2px wider than its parent box so no wrap in Moz */
+        li {
+            border-left: 1px solid #e1e1dc;
+            float: left;
+            font-size: 18px;
+            margin: 0;
+            padding: 0 7px;
+            &:first-child {
+                border-left: 0;
+            }
+            &.inactive {
+                color: #ccc;
+            }
+            .current a {
+                color: #000;
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+    #terms {
+        background-color: #fff;
+        border: 1px solid #e1e1dc;
+        clear: left;
+        margin: 0 0 24px 0;
+        width: 710px;
+        dt, dd {
+            border-top: 1px solid #e1e1dc;
+            min-height: 24px;
+        }
+        dt {
+            clear: left;
+            float: left;
+            line-height: 25px;
+            padding: 7px 10px 10px 38px;
+            width: 190px;
+            &:first-child, &:first-child + dd {
+                border-top: 0;
+            }
+            a {
+                float: left;
+                margin-left: -34px;
+            }
+        }
+        dd {
+            margin-left: 224px;
+            padding: 13px;
+        }
+        img {
+            padding-left: 4px;
+            padding-top: 1px;
+        }
+    }
+}
+
+/* Glossary tooltip */
+.glosstip {
+    line-height: 140%;
+    position: relative;
+    max-width: 30em;
+    img {
+        background: $tooltip-background-top-color;
+        border: 1px solid $tooltip-border-color;
+        bottom: 110%;
+        padding: 4px;
+        position: absolute;
+        @include single-box-shadow($tooltip-shadow-color, 1px, 1px, 2px);
+        @include border-radius(2px);
     }
 }
 

@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render_to_response
+import string
+
+from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.vary import vary_on_headers
 
-from gobotany.core.models import Video
+from gobotany.core.models import GlossaryTerm, Video
 from gobotany.core.partner import which_partner
 
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
@@ -28,6 +30,27 @@ def getting_started_view(request):
         per_partner_template(request, 'getting_started.html'), {
             'getting_started_youtube_id': youtube_id,
             }, context_instance=RequestContext(request))
+
+def glossary_view(request, letter):
+    glossary = GlossaryTerm.objects.filter(visible=True).extra(
+        select={'lower_term': 'lower(term)'}).order_by('lower_term')
+
+    terms = glossary.values_list('lower_term', flat=True)
+    letters_in_glossary = [term[0] for term in terms]
+
+    # Skip any glossary terms that start with a number, and filter to the
+    # desired letter.
+    glossary = glossary.filter(term__gte='a', term__startswith=letter)
+
+    return render_to_response('gobotany/glossary.html', {
+            'this_letter': letter,
+            'letters': string.ascii_lowercase,
+            'letters_in_glossary': letters_in_glossary,
+            'glossary': glossary,
+            }, context_instance=RequestContext(request))
+
+def glossary_main_view(request):
+    return redirect('site-glossary', letter='a')
 
 def _get_video_dict(title, video):
     youtube_id = ''
