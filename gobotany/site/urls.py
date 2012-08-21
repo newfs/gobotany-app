@@ -9,6 +9,9 @@ urlpatterns = patterns(
     # Home page
     url(r'^$', views.home_view, name='site-home'),
 
+    # Teaching page
+    url('^teaching/$', views.teaching_view, name='site-teaching'),
+
     # About section
     url(r'^about/$', views.about_view, name='site-about'),
     url(r'^start/$', views.getting_started_view, name='site-getting-started'),
@@ -21,6 +24,7 @@ urlpatterns = patterns(
         name='site-contributors'),
 
     # Redirects for old URLs
+    url('^teaching-tools/$', redirect_to, {'url': '/teaching'}),
     url(r'^help/about/$', redirect_to, {'url': '/about/'}),
     url(r'^help/start/$', redirect_to, {'url': '/start/'}),
     url('^help/map/$', redirect_to, {'url': '/map/'}),

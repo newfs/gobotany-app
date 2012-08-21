@@ -19,6 +19,8 @@ def per_partner_template(request, template_path):
     partner = which_partner(request)
     return '{0}/{1}'.format(partner.short_name, template_path)
 
+# Home page
+
 def home_view(request):
     """View for the home page of the Go Botany site."""
 
@@ -46,6 +48,14 @@ def home_view(request):
             'plant_of_the_day': plant_of_the_day_taxon,
             'plant_of_the_day_image': plant_of_the_day_image,
             }, context_instance=RequestContext(request))
+
+# Teaching page
+
+def teaching_view(request):
+    return render_to_response('gobotany/teaching.html', {
+            }, context_instance=RequestContext(request))
+
+# About section
 
 def about_view(request):
     return render_to_response('gobotany/about.html', {

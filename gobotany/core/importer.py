@@ -1776,8 +1776,8 @@ class Importer(object):
 
 
     def _create_teaching_page(self):
-        self._create_plain_page('teaching', 'Teaching',
-                                'simplekey/teaching.html')
+        self._create_plain_page('site-teaching', 'Teaching',
+                                'gobotany/teaching.html')
 
 
     def _create_privacy_policy_page(self):

@@ -306,6 +306,10 @@ ul li { margin: 0 0 5px 0; }
 
 .missing-image { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -webkit-linear-gradient(top center, #eaf2e2, #d6e6c5); background: -moz-linear-gradient(top center, #eaf2e2, #d6e6c5); background: -o-linear-gradient(top center, #eaf2e2, #d6e6c5); background: linear-gradient(top center, #eaf2e2, #d6e6c5); color: #354d1e; height: 149px; position: relative; width: 160px; }
 
+p.new { background: #fff; display: inline-block; font-size: 9px; font-weight: normal; margin: 0; padding: 0 0.25em; text-transform: uppercase; -webkit-border-radius: 0.25em; -moz-border-radius: 0.25em; -ms-border-radius: 0.25em; -o-border-radius: 0.25em; border-radius: 0.25em; }
+
+p.meta { font-size: 10px; font-style: italic; margin: 4px 0; }
+
 /* Header */
 body#home li.home { background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent; text-decoration: none; }
 body.about li.about { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }

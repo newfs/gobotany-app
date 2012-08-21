@@ -537,14 +537,6 @@ def checkup_view(request):
         }, context_instance=RequestContext(request))
 
 
-def teaching_view(request, template):
-    return render_to_response(template, {
-            }, context_instance=RequestContext(request))
-
-def teaching_redirect(request):
-    return redirect('teaching')
-
-
 # Placeholder views
 # This generic view basically does the same thing as direct_to_template,
 # but I wanted to be more explicit so placeholders would be obvious when it

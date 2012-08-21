@@ -139,6 +139,21 @@ ul li {
     position: relative;
     width: 160px;
 }
+p.new {
+    background: #fff;
+    display: inline-block;
+    font-size: 9px;
+    font-weight: normal;
+    margin: 0;
+    padding: 0 0.25em;
+    text-transform: uppercase;
+    @include border-radius(0.25em);
+}
+p.meta {
+    font-size: 10px;
+    font-style: italic;
+    margin: 4px 0;
+}
 
 /* Header */
 
