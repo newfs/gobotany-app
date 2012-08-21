@@ -334,7 +334,6 @@ def species_view(request, genus_slug, epithet):
            'brief_characteristics': preview_characters,
            'all_characteristics': all_characteristics,
            'epithet': epithet,
-           'last_plant_id_url': last_plant_id_url,
            'native_to_north_america': native_to_north_america
            }, context_instance=RequestContext(request))
 
