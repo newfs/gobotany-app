@@ -384,9 +384,9 @@ footer .support { margin-right: 0; padding: 18px 0; }
 #home #banner img:first-child { display: block; }
 #home #banner h2 { color: #519136; font-size: 38px; line-height: normal; margin: 0 0 15px 0; }
 #home #banner p { margin: 12px 0 0 0; text-align: left; text-shadow: 0px 1px 1px #fff; }
-#home #banner a#cta { height: 41px; margin: 21px 2px 0; background: url(/static/images/layout/get-started-btn-orange.png) 0 0 no-repeat transparent; display: block; text-indent: -9000px; }
-#home #banner a#cta:hover { background-position: 0 -41px; }
-#home #banner a#cta:active { background-position: 0 -82px; }
+#home #banner #cta { height: 41px; margin: 21px 2px 0; background: url(/static/images/layout/get-started-btn-orange.png) 0 0 no-repeat transparent; display: block; text-indent: -9000px; }
+#home #banner #cta:hover { background-position: 0 -41px; }
+#home #banner #cta:active { background-position: 0 -82px; }
 #home #overlay { background: rgba(255, 255, 255, 0.8); height: 318px; padding: 15px 30px 0; position: absolute; left: 646px; text-align: center; top: 6px; width: 248px; z-index: 100; }
 #home .three-col { background: url(/static/images/layout/dot.png) right top repeat-y; float: left; height: 240px; margin: 354px 23px 5px 0; padding: 8px 23px 0 0; width: 289px; }
 #home .three-col.last { background: 0; margin-right: 0; padding: 8px 0 0 0; }
@@ -510,10 +510,13 @@ footer .support { margin-right: 0; padding: 18px 0; }
   header nav > a { width: 20px; }
   header nav > a span { display: none; }
   body, header .container, .content .container, footer .container { width: 320px; }
-  .top-level header p.go-botany a { background-position: -56px -7px; width: 200px; }
   #nav { left: 40px; width: 310px; }
   .content #main { width: 304px; }
   .content #sidebar { float: none; width: 302px; }
+  #home #banner #overlay { top: 115px; width: 320px; }
+  #home #banner > img { height: 115px; width: 320px; }
+  #home #banner + .three-col { padding-top: 375px; }
+  #home #potd { height: 350px; }
   #about #main > img { width: 57%; }
   #about #main img.bookcover { width: auto; }
   #advanced-map #group-section { height: 600px; }
@@ -524,9 +527,12 @@ footer .support { margin-right: 0; padding: 18px 0; }
   body, header .container, .content .container, footer .container { width: 480px; }
   header nav > a { width: 80px; }
   header nav > a span { font-size: 14px; line-height: 160%; padding-left: 5px; position: absolute; }
-  .top-level header p.go-botany a { background-position: 0 -7px; width: 260px; }
   .content #main { width: 464px; }
   .content #sidebar { width: 462px; }
+  #home #banner #overlay { top: 172px; width: 480px; }
+  #home #banner > img { height: 172px; width: 480px; }
+  #home #banner + .three-col { padding-top: 400px; }
+  #home #potd { height: 260px; }
   #advanced-map #group-section { height: 400px; }
   #glossary #alphabet { height: 66px; } }
 /* These styles are common to both smartphone widths */
@@ -574,6 +580,35 @@ footer .support { margin-right: 0; padding: 18px 0; }
   .content #sidebar .section { margin-top: 16px; padding-bottom: 0; }
   .content #sidebar .section:first-child { margin-top: 0; }
   .gb-tooltip { width: 200px; }
+  #home .content { margin-top: 0; padding-top: 0; }
+  #home header h1 { background-position: -56px -7px; height: 56px; margin-left: 0; width: 200px; }
+  #home header nav { background: #508e31; height: 32px; padding-left: 0; }
+  #home header nav > a:hover { text-decoration: none; }
+  #home header .newfs a { background-size: 100px 55px; float: right; height: 55px; width: 101px; }
+  #home #banner { margin: 0; position: relative; }
+  #home #banner #overlay { background: #f7fbe9; height: auto; left: 0; padding: 0; text-align: center; }
+  #home #banner #overlay h2 { font-size: 28px; margin: 6px 0 0; }
+  #home #banner #overlay p { padding: 0 8px; }
+  #home #banner #overlay img { width: 53%; }
+  #home #banner #cta { background-position: 50% 0; margin: 6px; }
+  #home #banner #cta:hover { background-position: 50% -41px; }
+  #home #banner #cta:active { background-position: 50% -82px; }
+  #home .three-col { background: none; float: none; height: inherit; margin: 14px 0; padding: 0; width: auto; }
+  #home .three-col h3, #home .three-col h4, #home .three-col p { margin-left: 8px; margin-right: 8px; }
+  #home .three-col h3 { font-size: 18px; }
+  #home .three-col h4 { font-size: 14px; }
+  #home .three-col a.learn-more, #home .three-col.last a.learn-more { margin-top: 6px; margin-left: 8px; margin-right: 8px; }
+  #home #breadcrumb p { line-height: 160%; }
+  #home #potd { padding: 8px; }
+  #home #potd > a { margin: 0; margin-bottom: 4px; margin-right: 8px; }
+  #home #potd > a, #home #potd > a img { width: 297px; }
+  #home #potd .details { margin: 0; position: inherit; width: inherit; }
+  #home #potd .details h4 { line-height: 140%; }
+  #home #potd .details p { height: inherit; overflow: inherit; }
+  #home #potd .details a { margin-top: 6px; position: inherit; top: 0; }
+  #home .donate { margin: 0; }
+  #home .donate p { margin: 8px; padding: 0; }
+  #home .donate a { float: none; margin: 6px 0; position: static; }
   #about #main ul { margin-left: 8px; padding-left: 6px; }
   #about #main > img, #about #main img.bookcover { margin-bottom: 8px; margin-left: 8px; margin-right: 0; }
   #getting-started .question { padding: 16px 0 18px 38px; }

@@ -6,6 +6,9 @@
  * fixed-width layouts allows some pages to have a wider central content
  * area for now. */
 
+$smallscreen-portrait-width: 320px;
+$smallscreen-landscape-width: 480px;
+
 $nav-button-color: #437829;
 $smallscreen-margin: 8px;
 $smallscreen-potd-image-width: 297px;
@@ -27,11 +30,7 @@ $smallscreen-potd-image-width: 297px;
         }
     }
     body, header .container, .content .container, footer .container {
-        width: 320px;
-    }
-    .top-level header p.go-botany a {
-        background-position: -56px -7px;
-        width: 200px;
+        width: $smallscreen-portrait-width;
     }
     #nav {
         left: 40px;
@@ -44,6 +43,24 @@ $smallscreen-potd-image-width: 297px;
         #sidebar {
             float: none;
             width: 302px;
+        }
+    }
+    #home {
+        #banner {
+            #overlay {
+                top: 115px;
+                width: $smallscreen-portrait-width;
+            }
+            > img {
+                height: 115px;
+                width: $smallscreen-portrait-width;
+            }
+            + .three-col {
+                padding-top: 375px;
+            }
+        }
+        #potd {
+            height: 350px;
         }
     }
     #about #main {
@@ -70,7 +87,7 @@ $smallscreen-potd-image-width: 297px;
         padding-top: 75px;
     }
     body, header .container, .content .container, footer .container {
-        width: 480px;
+        width: $smallscreen-landscape-width;
     }
     header nav > a {
         width: 80px;
@@ -82,10 +99,6 @@ $smallscreen-potd-image-width: 297px;
             position: absolute;
         }
     }
-    .top-level header p.go-botany a {
-        background-position: 0 -7px;
-        width: 260px;
-    }
     .content {
         #main {
             width: 464px;
@@ -93,6 +106,24 @@ $smallscreen-potd-image-width: 297px;
         #sidebar {
             width: 462px;
         }
+    }
+    #home {
+        #banner {
+            #overlay {
+                top: 172px;
+                width: $smallscreen-landscape-width;
+            }
+            > img {
+                height: 172px;
+                width: $smallscreen-landscape-width;
+            }
+            + .three-col {
+                padding-top: 400px;
+            }
+        }
+        #potd {
+            height: 260px;
+        }        
     }
     #advanced-map #group-section {
         height: 400px;
@@ -294,6 +325,129 @@ $smallscreen-potd-image-width: 297px;
     }
     .gb-tooltip {
         width: 200px;
+    }
+    #home {
+        .content {
+            margin-top: 0;
+            padding-top: 0;
+        }
+        header {
+            h1 {
+                background-position: -56px -7px;
+                height: 56px;
+                margin-left: 0;
+                width: 200px;
+            }
+            nav {
+                background: #508e31;
+                height: 32px;
+                padding-left: 0;
+                > a:hover {
+                    text-decoration: none;
+                }
+            }
+            .newfs a {
+                background-size: 100px 55px;
+                float: right;
+                height: 55px;
+                width: 101px;
+            }
+        }
+        #banner {
+            margin: 0;
+            position: relative;
+            #overlay {
+                background: #f7fbe9;
+                height: auto;
+                left: 0;
+                padding: 0;
+                text-align: center;
+                h2 {
+                    font-size: 28px;
+                    margin: 6px 0 0;
+                }
+                p {
+                    padding: 0 $smallscreen-margin;
+                }
+                img {
+                    width: 53%;
+                }
+            }
+            #cta {
+                background-position: 50% 0;
+                margin: 6px;
+                &:hover {
+                    background-position: 50% -41px;	
+                }
+                &:active {
+                    background-position: 50% -82px;		
+                }
+            }
+        }
+        .three-col {
+            background: none;
+            float: none;
+            height: inherit;
+            margin: 14px 0;
+            padding: 0;
+            width: auto;
+            h3, h4, p {
+                @include smallscreen-side-margins;
+            }
+            h3 {
+                font-size: 18px;
+            }
+            h4 {
+                font-size: 14px;
+            }
+            a.learn-more, &.last a.learn-more {
+                margin-top: 6px;
+                @include smallscreen-side-margins;
+            }
+        }
+        #breadcrumb p {
+            line-height: 160%;
+        }
+        #potd {
+            padding: $smallscreen-margin;
+            > a {
+                margin: 0;
+                margin-bottom: 4px;
+                margin-right: $smallscreen-margin;
+            }
+            > a, > a img {
+                width: $smallscreen-potd-image-width;
+            }
+            .details {
+                margin: 0;
+                position: inherit;
+                width: inherit;
+                h4 {
+                    line-height: 140%;    
+                }
+                p {
+                    height: inherit;
+                    overflow: inherit;
+                }
+                a {
+                    margin-top: 6px;
+                    position: inherit;
+                    top: 0;
+                }
+            }
+        }
+        .donate {
+            margin: 0;
+            p {
+                margin: 8px;
+                padding: 0;
+            }
+            a {
+                float: none;
+                margin: 6px 0;
+                position: static;
+            }
+        }
     }
     #about #main {
         ul {
