@@ -367,6 +367,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
 /* Shadowbox close button */
 #sb-nav-close { background-position: center; background-repeat: no-repeat; padding: 4px; /* Increase activation area a bit */ right: -28px !important; /* Place at top right, but not exactly at the corner so as to avoid Flash video z-index problem */ top: 6px !important; }
 
+/* Imports for various pages, sections, features, etc. Each of these can contain their own media queries. */
 /* Home */
 #home { background: url(/static/images/layout/body-home.jpg) repeat-x left top #f3f3c3; }
 #home #all { background: url(/static/images/layout/content-home-bg.jpg) center 72px no-repeat transparent; }
@@ -415,6 +416,48 @@ footer .support { margin-right: 0; padding: 18px 0; }
 #home footer { background: none; }
 #home footer > img { display: none; }
 
+/* Begin media queries styles for Home page */
+/* Portrait-orientation styles */
+@media only screen and (max-width: 400px) { #home #banner #overlay { top: 115px; width: 320px; }
+  #home #banner > img { height: 115px; width: 320px; }
+  #home #banner + .three-col { padding-top: 375px; }
+  #home #potd { height: 350px; } }
+/* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) { #home #banner #overlay { top: 172px; width: 480px; }
+  #home #banner > img { height: 172px; width: 480px; }
+  #home #banner + .three-col { padding-top: 400px; }
+  #home #potd { height: 260px; } }
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) { #home .content { margin-top: 0; padding-top: 0; }
+  #home header h1 { background-position: -56px -7px; height: 56px; margin-left: 0; width: 200px; }
+  #home header nav { background: #508e31; height: 32px; padding-left: 0; }
+  #home header nav > a:hover { text-decoration: none; }
+  #home header .newfs a { background-size: 100px 55px; float: right; height: 55px; width: 101px; }
+  #home #banner { margin: 0; position: relative; }
+  #home #banner #overlay { background: #f7fbe9; height: auto; left: 0; padding: 0; text-align: center; }
+  #home #banner #overlay h2 { font-size: 28px; margin: 6px 0 0; }
+  #home #banner #overlay p { padding: 0 8px; }
+  #home #banner #overlay img { width: 53%; }
+  #home #banner #cta { background-position: 50% 0; margin: 6px; }
+  #home #banner #cta:hover { background-position: 50% -41px; }
+  #home #banner #cta:active { background-position: 50% -82px; }
+  #home .three-col { background: none; float: none; height: inherit; margin: 14px 0; padding: 0; width: auto; }
+  #home .three-col h3, #home .three-col h4, #home .three-col p { margin-left: 8px; margin-right: 8px; }
+  #home .three-col h3 { font-size: 18px; }
+  #home .three-col h4 { font-size: 14px; }
+  #home .three-col a.learn-more, #home .three-col.last a.learn-more { margin-top: 6px; margin-left: 8px; margin-right: 8px; }
+  #home #breadcrumb p { line-height: 160%; }
+  #home #potd { padding: 8px; }
+  #home #potd > a { margin: 0; margin-bottom: 4px; margin-right: 8px; }
+  #home #potd > a, #home #potd > a img { width: 297px; }
+  #home #potd .details { margin: 0; position: inherit; width: inherit; }
+  #home #potd .details h4 { line-height: 140%; }
+  #home #potd .details p { height: inherit; overflow: inherit; }
+  #home #potd .details a { margin-top: 6px; position: inherit; top: 0; }
+  #home .donate { margin: 0; }
+  #home .donate p { margin: 8px; padding: 0; }
+  #home .donate a { float: none; margin: 6px 0; position: static; } }
+/* End media queries styles for the Home page */
 /* About */
 #about #main img { float: right; margin: 5px 0 20px 20px; }
 #about #main img .bookcover { margin-right: 89px; }
@@ -501,10 +544,40 @@ footer .support { margin-right: 0; padding: 18px 0; }
 #contributors #main ul { list-style-type: none; }
 #contributors #main li { margin: 0; }
 
-/* Imports for per-feature/app styles */
-/* (add here) */
-/* Include media queries for smartphones and tablets. These should be last. */
-/* Begin media queries styles.  So far there are three sections for smartphones (two fixed-width layouts to cover portrait and landscape orientations, with a section common to both orientations) and some additional styles for tablets. Using fixed-width layouts allows some pages to have a wider central content area for now. */
+/* Begin media queries styles for the About section. */
+/* Portrait-orientation styles */
+@media only screen and (max-width: 400px) { #about #main > img { width: 57%; }
+  #about #main img.bookcover { width: auto; }
+  #advanced-map #group-section { height: 600px; }
+  #glossary #alphabet { height: 99px; } }
+/* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) { #advanced-map #group-section { height: 400px; }
+  #glossary #alphabet { height: 66px; } }
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) { #about #main ul { margin-left: 8px; padding-left: 6px; }
+  #about #main > img, #about #main img.bookcover { margin-bottom: 8px; margin-left: 8px; margin-right: 0; }
+  #getting-started .question { padding: 16px 0 18px 38px; }
+  #getting-started .question h2 { line-height: 130%; margin: 2px 0 4px; }
+  #getting-started .question p { margin: 0; }
+  #getting-started a.screenshot img.screenshot-thumb { margin: 10px 0 0; }
+  #getting-started a.onward-btn { float: none; margin: 0 auto 20px; }
+  #advanced-map #plant-map-list { margin-left: 8px; margin-right: 8px; margin-top: 0; }
+  #glossary #alphabet { line-height: 250%; width: auto; }
+  #glossary #alphabet li { border: 0; padding: 1px 10px; }
+  #glossary #terms { width: auto; }
+  #glossary #terms img { padding-left: 2px; }
+  #glossary #terms dt { border-top: 0; clear: none; float: none; font-weight: bold; padding-bottom: 0; width: auto; }
+  #glossary #terms dd { border-top: 0; margin: 0; padding: 0 5px 10px 39px; }
+  #video .video-topic { margin-right: 12px; }
+  #video .video-topic > p { font-size: 16px; }
+  #video .missing-image p { margin-left: 0; margin-right: 0; } }
+/* These styles apply to smartphones and tablets */
+@media only screen and (max-width: 1024px) { /* Disable hover states on Advanced Map to Groups page. */
+  #advanced-map .plant-group:hover .frame { border: 5px solid rgba(255, 255, 255, 0.8); }
+  #advanced-map .plant-group:hover h3 { background: inherit; color: #508e31; } }
+/* End media queries styles for the About section */
+/* Finally, include global media queries for smartphones and tablets. These should be last. */
+/* Begin global media queries styles.  So far there are three sections for smartphones (two fixed-width layouts to cover portrait and landscape orientations, with a section common to both orientations) and some additional styles for tablets. Using fixed-width layouts allows some pages to have a wider central content area for now. Various SASS "partials" (_home.scss, _about.scss, etc.) have their own media queries arranged like the ones below. Think of those as modular extensions to these. */
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { body { padding-top: 110px; }
   header nav > a { width: 20px; }
@@ -512,15 +585,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
   body, header .container, .content .container, footer .container { width: 320px; }
   #nav { left: 40px; width: 310px; }
   .content #main { width: 304px; }
-  .content #sidebar { float: none; width: 302px; }
-  #home #banner #overlay { top: 115px; width: 320px; }
-  #home #banner > img { height: 115px; width: 320px; }
-  #home #banner + .three-col { padding-top: 375px; }
-  #home #potd { height: 350px; }
-  #about #main > img { width: 57%; }
-  #about #main img.bookcover { width: auto; }
-  #advanced-map #group-section { height: 600px; }
-  #glossary #alphabet { height: 99px; } }
+  .content #sidebar { float: none; width: 302px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { html { -webkit-text-size-adjust: none; }
   body { padding-top: 75px; }
@@ -528,13 +593,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
   header nav > a { width: 80px; }
   header nav > a span { font-size: 14px; line-height: 160%; padding-left: 5px; position: absolute; }
   .content #main { width: 464px; }
-  .content #sidebar { width: 462px; }
-  #home #banner #overlay { top: 172px; width: 480px; }
-  #home #banner > img { height: 172px; width: 480px; }
-  #home #banner + .three-col { padding-top: 400px; }
-  #home #potd { height: 260px; }
-  #advanced-map #group-section { height: 400px; }
-  #glossary #alphabet { height: 66px; } }
+  .content #sidebar { width: 462px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
   h1 { font-size: 24px; }
@@ -579,56 +638,8 @@ footer .support { margin-right: 0; padding: 18px 0; }
   .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; margin-bottom: 14px; margin-left: 8px; margin-right: 8px; }
   .content #sidebar .section { margin-top: 16px; padding-bottom: 0; }
   .content #sidebar .section:first-child { margin-top: 0; }
-  .gb-tooltip { width: 200px; }
-  #home .content { margin-top: 0; padding-top: 0; }
-  #home header h1 { background-position: -56px -7px; height: 56px; margin-left: 0; width: 200px; }
-  #home header nav { background: #508e31; height: 32px; padding-left: 0; }
-  #home header nav > a:hover { text-decoration: none; }
-  #home header .newfs a { background-size: 100px 55px; float: right; height: 55px; width: 101px; }
-  #home #banner { margin: 0; position: relative; }
-  #home #banner #overlay { background: #f7fbe9; height: auto; left: 0; padding: 0; text-align: center; }
-  #home #banner #overlay h2 { font-size: 28px; margin: 6px 0 0; }
-  #home #banner #overlay p { padding: 0 8px; }
-  #home #banner #overlay img { width: 53%; }
-  #home #banner #cta { background-position: 50% 0; margin: 6px; }
-  #home #banner #cta:hover { background-position: 50% -41px; }
-  #home #banner #cta:active { background-position: 50% -82px; }
-  #home .three-col { background: none; float: none; height: inherit; margin: 14px 0; padding: 0; width: auto; }
-  #home .three-col h3, #home .three-col h4, #home .three-col p { margin-left: 8px; margin-right: 8px; }
-  #home .three-col h3 { font-size: 18px; }
-  #home .three-col h4 { font-size: 14px; }
-  #home .three-col a.learn-more, #home .three-col.last a.learn-more { margin-top: 6px; margin-left: 8px; margin-right: 8px; }
-  #home #breadcrumb p { line-height: 160%; }
-  #home #potd { padding: 8px; }
-  #home #potd > a { margin: 0; margin-bottom: 4px; margin-right: 8px; }
-  #home #potd > a, #home #potd > a img { width: 297px; }
-  #home #potd .details { margin: 0; position: inherit; width: inherit; }
-  #home #potd .details h4 { line-height: 140%; }
-  #home #potd .details p { height: inherit; overflow: inherit; }
-  #home #potd .details a { margin-top: 6px; position: inherit; top: 0; }
-  #home .donate { margin: 0; }
-  #home .donate p { margin: 8px; padding: 0; }
-  #home .donate a { float: none; margin: 6px 0; position: static; }
-  #about #main ul { margin-left: 8px; padding-left: 6px; }
-  #about #main > img, #about #main img.bookcover { margin-bottom: 8px; margin-left: 8px; margin-right: 0; }
-  #getting-started .question { padding: 16px 0 18px 38px; }
-  #getting-started .question h2 { line-height: 130%; margin: 2px 0 4px; }
-  #getting-started .question p { margin: 0; }
-  #getting-started a.screenshot img.screenshot-thumb { margin: 10px 0 0; }
-  #getting-started a.onward-btn { float: none; margin: 0 auto 20px; }
-  #advanced-map #plant-map-list { margin-left: 8px; margin-right: 8px; margin-top: 0; }
-  #glossary #alphabet { line-height: 250%; width: auto; }
-  #glossary #alphabet li { border: 0; padding: 1px 10px; }
-  #glossary #terms { width: auto; }
-  #glossary #terms img { padding-left: 2px; }
-  #glossary #terms dt { border-top: 0; clear: none; float: none; font-weight: bold; padding-bottom: 0; width: auto; }
-  #glossary #terms dd { border-top: 0; margin: 0; padding: 0 5px 10px 39px; }
-  #video .video-topic { margin-right: 12px; }
-  #video .video-topic > p { font-size: 16px; }
-  #video .missing-image p { margin-left: 0; margin-right: 0; } }
+  .gb-tooltip { width: 200px; } }
 /* These styles apply to smartphones and tablets */
-@media only screen and (max-width: 1024px) { /* Disable hover states on Advanced Map to Groups page. */
-  #advanced-map .plant-group:hover .frame { border: 5px solid rgba(255, 255, 255, 0.8); }
-  #advanced-map .plant-group:hover h3 { background: inherit; color: #508e31; } }
-/* End media queries styles */
+@media only screen and (max-width: 1024px) { /* Currently there are no global styles here in this category, but there are some elsewhere for various parts of the site. */ }
+/* End global media queries styles */
 /* Please do not add new regular styles after the media queries, or they may not get overridden properly. Instead, add them before the media queries. */

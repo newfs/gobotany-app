@@ -1,22 +1,13 @@
-/* Begin media queries styles.
+/* Begin global media queries styles.
  *
  * So far there are three sections for smartphones (two fixed-width layouts
  * to cover portrait and landscape orientations, with a section common to
  * both orientations) and some additional styles for tablets. Using
  * fixed-width layouts allows some pages to have a wider central content
- * area for now. */
-
-$smallscreen-portrait-width: 320px;
-$smallscreen-landscape-width: 480px;
-
-$nav-button-color: #437829;
-$smallscreen-margin: 8px;
-$smallscreen-potd-image-width: 297px;
-
-@mixin smallscreen-side-margins {
-    margin-left: $smallscreen-margin;
-    margin-right: $smallscreen-margin;
-}
+ * area for now.
+ * Various SASS "partials" (_home.scss, _about.scss, etc.) have their
+ * own media queries arranged like the ones below. Think of those as
+ * modular extensions to these. */
 
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) {
@@ -44,38 +35,6 @@ $smallscreen-potd-image-width: 297px;
             float: none;
             width: 302px;
         }
-    }
-    #home {
-        #banner {
-            #overlay {
-                top: 115px;
-                width: $smallscreen-portrait-width;
-            }
-            > img {
-                height: 115px;
-                width: $smallscreen-portrait-width;
-            }
-            + .three-col {
-                padding-top: 375px;
-            }
-        }
-        #potd {
-            height: 350px;
-        }
-    }
-    #about #main {
-        > img {
-            width: 57%;
-        }
-        img.bookcover {
-            width: auto;
-        }
-    }
-    #advanced-map #group-section {
-        height: 600px;
-    }
-    #glossary #alphabet {
-        height: 99px;
     }
 }
 /* Landscape-orientation styles */
@@ -106,30 +65,6 @@ $smallscreen-potd-image-width: 297px;
         #sidebar {
             width: 462px;
         }
-    }
-    #home {
-        #banner {
-            #overlay {
-                top: 172px;
-                width: $smallscreen-landscape-width;
-            }
-            > img {
-                height: 172px;
-                width: $smallscreen-landscape-width;
-            }
-            + .three-col {
-                padding-top: 400px;
-            }
-        }
-        #potd {
-            height: 260px;
-        }        
-    }
-    #advanced-map #group-section {
-        height: 400px;
-    }
-    #glossary #alphabet {
-        height: 66px;
     }
 }
 /* These styles are common to both smartphone widths */
@@ -326,220 +261,11 @@ $smallscreen-potd-image-width: 297px;
     .gb-tooltip {
         width: 200px;
     }
-    #home {
-        .content {
-            margin-top: 0;
-            padding-top: 0;
-        }
-        header {
-            h1 {
-                background-position: -56px -7px;
-                height: 56px;
-                margin-left: 0;
-                width: 200px;
-            }
-            nav {
-                background: #508e31;
-                height: 32px;
-                padding-left: 0;
-                > a:hover {
-                    text-decoration: none;
-                }
-            }
-            .newfs a {
-                background-size: 100px 55px;
-                float: right;
-                height: 55px;
-                width: 101px;
-            }
-        }
-        #banner {
-            margin: 0;
-            position: relative;
-            #overlay {
-                background: #f7fbe9;
-                height: auto;
-                left: 0;
-                padding: 0;
-                text-align: center;
-                h2 {
-                    font-size: 28px;
-                    margin: 6px 0 0;
-                }
-                p {
-                    padding: 0 $smallscreen-margin;
-                }
-                img {
-                    width: 53%;
-                }
-            }
-            #cta {
-                background-position: 50% 0;
-                margin: 6px;
-                &:hover {
-                    background-position: 50% -41px;	
-                }
-                &:active {
-                    background-position: 50% -82px;		
-                }
-            }
-        }
-        .three-col {
-            background: none;
-            float: none;
-            height: inherit;
-            margin: 14px 0;
-            padding: 0;
-            width: auto;
-            h3, h4, p {
-                @include smallscreen-side-margins;
-            }
-            h3 {
-                font-size: 18px;
-            }
-            h4 {
-                font-size: 14px;
-            }
-            a.learn-more, &.last a.learn-more {
-                margin-top: 6px;
-                @include smallscreen-side-margins;
-            }
-        }
-        #breadcrumb p {
-            line-height: 160%;
-        }
-        #potd {
-            padding: $smallscreen-margin;
-            > a {
-                margin: 0;
-                margin-bottom: 4px;
-                margin-right: $smallscreen-margin;
-            }
-            > a, > a img {
-                width: $smallscreen-potd-image-width;
-            }
-            .details {
-                margin: 0;
-                position: inherit;
-                width: inherit;
-                h4 {
-                    line-height: 140%;    
-                }
-                p {
-                    height: inherit;
-                    overflow: inherit;
-                }
-                a {
-                    margin-top: 6px;
-                    position: inherit;
-                    top: 0;
-                }
-            }
-        }
-        .donate {
-            margin: 0;
-            p {
-                margin: 8px;
-                padding: 0;
-            }
-            a {
-                float: none;
-                margin: 6px 0;
-                position: static;
-            }
-        }
-    }
-    #about #main {
-        ul {
-            margin-left: $smallscreen-margin;
-            padding-left: 6px;
-        }
-        > img, img.bookcover {
-            margin-bottom: $smallscreen-margin;
-            margin-left: $smallscreen-margin;
-            margin-right: 0;
-        }
-    }
-    #getting-started {
-        .question {
-            padding: 16px 0 18px 38px;
-            h2 {
-                line-height: 130%;
-                margin: 2px 0 4px;
-            }
-            p {
-                margin: 0;
-            }
-        }
-        a {
-            &.screenshot
-                img.screenshot-thumb {
-                    margin: 10px 0 0;
-            }
-            &.onward-btn {
-                float: none;
-                margin: 0 auto 20px;
-            }
-        }
-    }
-    #advanced-map #plant-map-list {
-        margin-left: $smallscreen-margin;
-        margin-right: $smallscreen-margin;
-        margin-top: 0;
-    }
-    #glossary {
-        #alphabet {
-            line-height: 250%;
-            width: auto;
-            li {
-                border: 0;
-                padding: 1px 10px;
-            }
-        }
-        #terms {
-            width: auto;
-            img {
-                padding-left: 2px;
-            }
-            dt {
-                border-top: 0;
-                clear: none;
-                float: none;
-                font-weight: bold;
-                padding-bottom: 0;
-                width: auto;
-            }
-            dd {
-                border-top: 0;
-                margin: 0;
-                padding: 0 5px 10px 39px;
-            }
-        }
-    }
-    #video {
-        .video-topic {
-            margin-right: 12px;
-            > p {
-                font-size: 16px;
-            }
-        }
-        .missing-image p {
-            margin-left: 0;
-            margin-right: 0;
-        }
-    }
 }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) {
-
-    /* Disable hover states on Advanced Map to Groups page. */
-    #advanced-map .plant-group:hover .frame {
-	    border: $advanced-map-frame-border;
-    }
-    #advanced-map .plant-group:hover h3 {
-	    background: inherit;
-	    color: $link-green;
-    }
+    /* Currently there are no global styles here in this category, but
+     * there are some elsewhere for various parts of the site. */
 }
 
-/* End media queries styles */
+/* End global media queries styles */
