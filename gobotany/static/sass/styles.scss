@@ -1,4 +1,4 @@
-/*** Go Botany master styles file ***
+/*! *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
  */
@@ -6,29 +6,31 @@ $headings-font: "Trebuchet MS", Helvetica, Arial, sans-serif;
 $body-font: Verdana, Geneva, sans-serif;
 $narrower-body-font: Tahoma, "Trebuchet MS", sans-serif;
 
+/* First are SASS "partials" for formerly external and third-party styles.
+ * This is to keep all styles in just one deployed CSS file, styles.css.
+ * A final partial, media-queries, is imported at the bottom of this file. */
+@import "reset";
+@import "basic";
+@import "shadowbox";
+@import "jquery.jscrollpane";
+@import "smoothDivScroll";
+
+/*** Beginning of Go Botany styles from styles.scss ***/
+
 body, header {
-    font-family: $headings-font;
-}
-
-/* Claro fixes: fix some things overridden by the Claro Dijit theme styles */
-ol li, ul li {
-    line-height: inherit;
-}
-.claro {
-   	color: #000;
+    color: #000;
     font-family: $body-font;
-	font-size: 12px;
+    font-size: 12px;
 }
-.claro .dijit {
+header {
     font-family: $headings-font;
-    font-size: 15px;
 }
-/* end Claro fixes */
-
-/* Global page structure */
-
 header, .content, footer {
     width: 100%;
+}
+a.email:not([href]) {
+    color: #000;
+    text-decoration: none;
 }
 .container {
     width: 960px;
@@ -55,7 +57,7 @@ nav li {
     display: block;
     float: left;
     font-size: 14px;
-    margin: 0 13px 0 0;
+    margin: 0 10px 0 0;
     padding: 0;
 }
 nav li.last {
@@ -65,11 +67,14 @@ nav a {
     color: #fff;
     display: block;
     height: 35px;
-    padding: 5px 10px 0;
+    padding: 5px 8px 0;
 }
 nav a:hover {
     background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
     text-decoration: none;
+}
+nav > a {
+    display: none;
 }
 nav #search {
     background: #fff url(/static/images/layout/search-left.png) left center no-repeat;
@@ -104,15 +109,22 @@ nav #search button:active {
 #plant-id-2 li.plant-id a,
 #plant-id-3 li.plant-id a,
 #plantshare li.plantshare a,
-#advanced-id li.advanced-id a,
+#full-key li.full-key a,
+#dich-key li.dich-key a,
 #teaching-tools li.teaching-tools a,
-#about li.about a {
+#about li.about a,
+#getting-started li.about a,
+#advanced-map li.about a,
+#glossary li.about a,
+#video-help-topics li.about a,
+#contrib li.about a {
 	background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;	
 }
 
 #plantshare #sidebar a:hover,
 #teaching-tools #sidebar a:hover,
-#advanced-id #sidebar a:hover,
+#full-key #sidebar a:hover,
+#dich-key #sidebar a:hover,
 #privacy-policy #sidebar a:hover,
 #terms-of-use #sidebar a:hover {
     text-decoration: none;
@@ -125,7 +137,7 @@ nav #search button:active {
 /* Page footer */
 
 footer, footer div.container {
-    height: 124px;
+    height: 128px;
 }
 footer div div {
     height: 88px;
@@ -163,9 +175,11 @@ footer a[href]:hover {
 footer ul {
     font-size: 9px;
     list-style-type: none;
+    margin-bottom: 12px;
 }
 footer li {
     display: inline;
+    line-height: 14px;
 }
 footer li:after {
     content: " |";
@@ -176,6 +190,7 @@ footer li:last-child:after {
 footer h6 {
 	font-family: $body-font;
 	font-size: 11px;
+    margin-bottom: 2px;
 }
 footer .nsf-logo {
 	float: left;
@@ -418,8 +433,8 @@ div#potd {
 	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
 }
 .donate p {
-    margin-left: 14px;
-    padding: 14px 0;
+    margin: 14px;
+    position: relative;
 }
 .donate a {
 	background: url(/static/images/layout/donate-btn.png) 0 0 no-repeat transparent;
@@ -427,10 +442,12 @@ div#potd {
     display: block;
     float: right;
 	height: 32px;
-	margin: -5px 14px 0 0;
     padding: 0;
-	text-indent: -9000px;
-	width: 104px;
+	position: absolute;
+    right: 0;
+    text-indent: -9000px;
+	top: -6px;
+    width: 104px;
 }
 .donate a:hover {
 	background-position: 0 -32px;
@@ -515,6 +532,8 @@ body.app {
 
 #breadcrumb p {
     color: #807121;
+    font-family: $headings-font;
+    font-size: 14px;
     line-height: 120%;
     margin: 0 0 14px;
 }
@@ -535,6 +554,17 @@ body.app {
 .not-my-plant h6 {
 	color: #606060;
     padding: 0 0 1px 0;
+}
+
+/* Dkey content inlined into the species page */
+
+.dkey_text {
+    margin-top: 1.5em;
+    margin-bottom: 1.8em;
+    font-size: (16px / 12px) * 100%;
+    p {
+        line-height: (16px / 14px) * 100%;
+    }
 }
 
 /* Plant listing styles */
@@ -737,7 +767,7 @@ p.vid {
 }
 #ne-dist-county-map {
     /* SVG map: WebKit needs height and width set */
-    height: 290px;
+    height: 293px;
     width: 187px;
 }
 #na-dist-county-map {
@@ -947,6 +977,9 @@ a.go-to-species-page:active {
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
     -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
     -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+    img {
+        height: 149px;  /* so lazy_images knows when <img> is on screen */
+    }
 }
 
 .missing-image {
@@ -1081,30 +1114,6 @@ ul.option-list li.answered.active {
     width: 45px;
 }
 
-/* For tablets and smartphones, style the scrollbar differently because
-   our regular scrollbar is not the expected way to scroll there, and
-   has problems besides (arrows too small, vertical bar not draggable).
-   Instead, just present the thin vertical bar as an indicator that the
-   area is scrollable and to provide feedback while swiping to scroll. */
-@media only screen and (max-device-width:1024px) {
-    #sidebar div.scroll .jspVerticalBar {
-        border-left: 0;
-    }
-    #sidebar div.scroll .jspTrack, #sidebar div.scroll .jspArrowUp,
-    #sidebar div.scroll .jspArrowDown {
-        background: none;
-    }
-    #sidebar div.scroll .jspPane {
-        width: 227px !important;
-    }
-    ul.option-list li:hover {
-        background: #fff;   /* No hover color on mobile */
-    }
-    ul.option-list li.active:hover {
-        background: #dce890;   /* Except hover color on the active filter */
-    }
-}
-
 /* Styles for results page introductory overlay */
 
 #intro-overlay {
@@ -1220,7 +1229,7 @@ h5.help {
     font-size: 12px;
 }
 
-/* Working Area styles */
+/*** Working Area styles ***/
 
 .working-area {
     display: none;
@@ -1272,7 +1281,7 @@ h5.help {
 .choices .row div.disabled span {
     color: #aaa;
 }
-.choices .row div img {
+.choices .row div input + img {
     background: #fff;
     border: 1px solid #ddd;
     display: inline-block;
@@ -1377,20 +1386,6 @@ h5.help {
     z-index: 200;
 }
 
-div.working-area #simple-slider {
-    margin-top: 60px;
-    margin-bottom: 48px;
-}
-div.working-area #simple-slider .dijitSliderDecoration {
-    background: #fff;
-    border-bottom: 0;
-}
-div.working-area #simple-slider .count {
-    bottom: 130px;
-    left: 370px;   /* Left position set by JS with slide */
-    position: absolute;
-}
-
 /* Length input */
 .choose_length label {
     margin: 0 10px 0 0;
@@ -1462,7 +1457,92 @@ div.working-area .actions {
     text-align: center;
 }
 
-/* end Working Area styles */
+/* Working Area slider styles */
+$slider-background-top-color: #c1d9a7;
+$slider-background-bottom-color: #ffffff;
+$slider-bar-radius: 4px;
+$slider-thumb-radius: 16px;
+$slider-thumb-shadow-lengths: 0 1px 6px 1px;
+$slider-thumb-shadow-color: #333333;
+
+div.working-area #slider {
+    height: 70px;
+    margin: 20px 0 10px;
+    padding: 20px 0 0 0;
+    position: relative;
+}
+div.working-area #slider .bar {
+    padding: 0 4px;
+    position: absolute;
+    top: 47px;
+    width: 100%;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+div.working-area #slider .bar div {
+    background: -webkit-gradient(linear, left top, left bottom,
+        color-stop(0%, $slider-background-top-color),
+        color-stop(100%, $slider-background-bottom-color));
+    background: -moz-linear-gradient(center top,
+        $slider-background-top-color, $slider-background-bottom-color);
+    border: 1px solid $slider-background-top-color;
+    height: 8px;
+
+    -moz-border-radius: $slider-bar-radius;
+    -webkit-border-radius: $slider-bar-radius;
+    -o-border-radius: $slider-bar-radius;
+    -ms-border-radius: $slider-bar-radius;
+    -khtml-border-radius: $slider-bar-radius;
+    border-radius: $slider-bar-radius;
+}
+div.working-area #slider .thumb {
+    background: -webkit-gradient(linear, left top, left bottom,
+        color-stop(0%, $slider-background-top-color),
+        color-stop(100%, $slider-background-bottom-color));
+    background: -moz-linear-gradient(center top,
+        $slider-background-top-color, $slider-background-bottom-color);
+    border: 1px solid $slider-background-bottom-color;
+    height: 30px;
+    left: 3px;
+    position: absolute;
+    text-align: center;
+    top: 35px;
+    width: 30px;
+
+    -moz-border-radius: $slider-thumb-radius;
+    -webkit-border-radius: $slider-thumb-radius;
+    -o-border-radius: $slider-thumb-radius;
+    -ms-border-radius: $slider-thumb-radius;
+    -khtml-border-radius: $slider-thumb-radius;
+    border-radius: $slider-thumb-radius;
+
+    -moz-box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
+    -webkit-box-shadow: $slider-thumb-shadow-lengths
+        $slider-thumb-shadow-color;
+    -o-box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
+    box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
+}
+div.working-area #slider .label {
+    font-size: 16px;
+    position: relative;
+    top: -36px;
+}
+div.working-area #slider .bar, div.working-area #slider .bar div,
+div.working-area #slider .label {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+div.working-area #slider .bar, div.working-area #slider .thumb {
+    cursor: pointer;
+}
+/* end Working Area slider styles */
+
+/*** end Working Area styles ***/
 
 /* Character/value styles, for plant preview popups, etc. */
 .characteristics {
@@ -1666,8 +1746,7 @@ ul.full-description > li {
 	display: block;
 	padding: 18px;
 	margin: 0 0 0 0;
-	border-bottom: 1px solid #e1e1dc;	
-	cursor: pointer;
+	border-bottom: 1px solid #e1e1dc;
 }
 ul.full-description > li:last-child {
 	border-bottom: none;	
@@ -1677,6 +1756,7 @@ ul.full-description > li:hover {
 }
 ul.full-description > li h5 {
 	background: url(/static/images/icons/plus.png) left 50% no-repeat;
+    cursor: pointer;
 }
 ul.full-description > li div {
 	display: none;
@@ -1888,8 +1968,12 @@ div.section.namap div.trans {
 
 /* Help section: sidebar, heading, list styles */
 
-#getting-started #sidebar, #about #sidebar {
+#getting-started #sidebar {
     height: 1046px;
+}
+#about #sidebar,
+#contrib #sidebar {
+    height: 950px;
 }
 #advanced-map #sidebar {
     height: 746px;
@@ -1899,16 +1983,19 @@ div.section.namap div.trans {
 }
 #getting-started #sidebar a:hover, #about #sidebar a:hover,
 #advanced-map #sidebar a:hover, #glossary #sidebar a:hover, 
-#video-help-topics #sidebar a:hover {
+#video-help-topics #sidebar a:hover, #contrib #sidebar a:hover {
     text-decoration: none;
 }
 
-#getting-started h2, #about h2, #advanced-map h2, #glossary h2,
-#plantshare h2, #teaching-tools h2, #video-help-topics h2 {
+#getting-started #main h2, #about #main h2, #advanced-map #main h2,
+#glossary #main h2, #plantshare #main h2, #teaching-tools #main h2,
+#video-help-topics #main h2, #contrib #main h2,
+#privacy-policy #main h2, #terms-of-use #main h2 {
     margin-bottom: 8px;
 }
 #getting-started h3, #about h3, #advanced-map h3, #glossary h3,
-#teaching-tools h3, #video-help-topics h3 {
+#teaching-tools h3, #video-help-topics h3, #contrib h3,
+#privacy-policy h3, #terms-of-use h3 {
     margin: 8px 0;
 }
 
@@ -2012,12 +2099,11 @@ div.section.namap div.trans {
 
 /* Video Help Topics page styles */
 
-.video-row {
-    margin: 20px 0;
-}
 .video-topic {
     float: left;
-    margin-right: 16px;
+    height: 176px;
+    margin: 10px 16px 10px 0;
+    position: relative;
     width: 220px;
 }
 .video-topic img {
@@ -2034,9 +2120,13 @@ div.section.namap div.trans {
     width: 218px;
 }
 .video-topic .missing-image p {
+    left: auto;
+    margin: 55px 0;
+    position: absolute;
+    text-align: center;
+    top: auto;
     white-space: nowrap;
-    margin-left: -70px;
-    margin-top: -10px;
+    width: 100%;
 }
 
 /* Video in sidebar of Getting Started page */
@@ -2054,44 +2144,72 @@ div.section.namap div.trans {
 
 /* Legal information page styles */
 
-#terms-of-use #main ol.terms {
+#privacy-policy #main p, #terms-of-use #main p {
+    margin-bottom: 8px;
+}
+
+#terms-of-use h3 {
+    display: inline-block;
+}
+#terms-of-use h4 {
+    margin: 8px 0;
+}
+
+#terms-of-use ol.terms {
+    font-size: 24px;
+    list-style-position: inside;
     list-style-type: upper-roman;
-	margin: 10px 0 30px 15px;
-	line-height: 200%;
 }
 
 #terms-of-use ol.terms li {
-    font-weight: bold;
+    font-family: $headings-font;
 }
 
-#terms-of-use ol.terms li p {
-    font-weight: normal;
+#terms-of-use ol.terms li p, #terms-of-use ol.terms ul li {
+    font-family: $body-font;
+    font-size: 12px;
 }
 
 #terms-of-use ol.terms ul {
+    line-height: 18px;
     list-style-type: disc;
-	margin: 10px 0 30px 15px;
-	line-height: 200%;
-}
-
-#terms-of-use ol.terms ul li {
-    font-weight: normal;
+    margin: 10px 16px;
 }
 
 /* Advanced ID Tools Placeholder styles */
 
+#full-key #main,
+#dich-key #main,
 #advanced-id #main {
 	position: relative;
 }
 
-#advanced-id #main .dk-landing-section {
-	width: 330px;
-	float: left;
-	font-family: $body-font;
+#full-key #main h2 + div, #full-key #main h2 + p,
+#dich-key #main h2 + div, #dich-key #main h2 + p,
+#advanced-id #main h2 + div, #advanced-id #main h2 + p {
+    margin-top: 10px;
 }
 
+#full-key #main p,
+#dich-key #main p,
+#advanced-id #main p {
+    margin-bottom: 10px;
+}
+#advanced-id #main .dk-landing-section {
+	float: left;
+	font-family: $body-font;
+    height: 410px;
+    position: relative;
+	width: 330px;
+}
+#advanced-id #main .dk-landing-section:first-child {
+    margin-right: 50px;
+}
+#advanced-id #main .dk-landing-section h4 {
+    line-height: 120%;
+}
 #advanced-id #main .dk-landing-section section {
-	margin: 20px 0 0;
+	margin: 10px 0 0;
 }
 
 #advanced-id #main .dk-landing-section section p {
@@ -2109,72 +2227,35 @@ div.section.namap div.trans {
 }
 
 #advanced-id #main .landing-divider {
-	height: 410px;
-	width: 1px;
 	background-color: #b4d57f;
-	position: absolute;
-	top: 10px;
+	height: 400px;
 	left: 350px;
-	
+	position: absolute;
+	top: 54px;
+	width: 1px;	
 }
 
-#advanced-id #main .dichkey-buttons {
-	margin: 0;
+#advanced-id #main .dk-landing-section > a {
+    bottom: 10px;
+    display: block;
+    height: 41px;
+    margin: 0 0 0 43px;
+    position: absolute;
+    text-indent: -9999px;
+    width: 244px;
 }
-
-#advanced-id #main .dichkey-buttons div {
-	width: 50%;
-	float: left;
-	padding: 15px 0 0;
-}
-
-/* buttons */
-#advanced-id #main .dichkey-buttons a {
-	margin: 10px auto;
-}
-
-#advanced-id #main .dichkey-buttons a.go-fullkey-btn {
-	background: url(/static/images/layout/go-fullkey-btn.png) 0 0 no-repeat transparent;
-	display: block;
-	width: 244px;
-	height: 41px;
-	text-indent: -9999px;
-	margin: 0 auto;
-}
-
-#advanced-id #main .dichkey-buttons a.go-fullkey-btn:hover {
+#advanced-id #main .dk-landing-section > a:hover {
 	background-position: 0 -41px;
 }
-
-#advanced-id #main .dichkey-buttons a.go-fullkey-btn:active {
-	background-position: 0 -82px;
+#advanced-id #main .dk-landing-section > a:active {
+    background-position: 0 -82px;
 }
 
-/* using-dich-key buttons */
+#advanced-id #main a.go-fullkey-btn {
+	background: url(/static/images/layout/go-fullkey-btn.png) 0 0 no-repeat transparent;
+}
 #advanced-id #main a.go-dichkey-btn {
 	background: url(../images/layout/go-dichkey-btn.png) 0 0 no-repeat transparent;
-	display: block;
-	width: 244px;
-	height: 41px;
-	text-indent: -9999px;
-	margin: 0 auto;
-}
-
-#advanced-id #main a.go-dichkey-btn-user {
-	margin: 20px auto 0;
-	z-index: 2;
-}
-
-#advanced-id #main .dichkey-buttons a.go-dichkey-btn, #main .dichkey-buttons a.go-dichkey-btn:hover, #main .dichkey-buttons a.go-dichkey-btn:active {
-	margin-top: 0;
-}
-
-#advanced-id #main a.go-dichkey-btn:hover {
-	background-position: 0 -41px;
-}
-
-#advanced-id #main a.go-dichkey-btn:active {
-	background-position: 0 -82px;
 }
 
 /* Glossary styles */
@@ -2183,17 +2264,6 @@ div.section.namap div.trans {
 .gloss {
     border-bottom: 1px dashed;
     cursor: pointer;
-}
-/* Glossary tooltip */
-.glosstip {
-    line-height: 140%;
-    position: relative;
-    max-width: 30em;
-}
-.glosstip img {
-    position: absolute;
-    bottom: 100%;
-    border: 3px solid black;
 }
 
 #alphabet {
@@ -2252,10 +2322,16 @@ div.section.namap div.trans {
 #terms dt:first-child, #terms dt:first-child + dd {
     border-top: 0;
 }
-
+#terms img {
+    padding-left: 4px;
+    padding-top: 1px;
+}
 
 /* Search results styles */
 
+#search-results sidebar {
+    height: 515px;
+}
 #search-results-list {
     border-top: 1px solid #e1e1dc;
     margin: 15px 0 13px;
@@ -2284,9 +2360,11 @@ div.section.namap div.trans {
     margin-top: 2px;
 }
 .search-navigation {
-    text-align: right;
+    font-family: $headings-font;
+    font-size: 15px;
+    text-align: center;
 }
-.search-navigation p, .search-navigation ul {
+.search-navigation ul {
     display: inline;
 }
 .search-navigation li {
@@ -2347,36 +2425,49 @@ div.section.namap div.trans {
 }
 
 /* Advanced Map page styles */
+$advanced-map-frame-border: 5px solid rgba(255, 255, 255, 0.8);
+
+#advanced-map h3 {
+    clear: left;
+}
 
 #advanced-map #plant-map-list {
 	margin: 10px 0;	
 }
+#advanced-map #group-section {
+    height: 200px;
+}
 #advanced-map #plant-map-list .plant-group {
   	cursor: pointer;
 	float: left;
+    height: 185px;
 	margin: 0 10px 10px 0;
-    padding: 14px 0 0 0;
+    padding: 2px 0 0;
+    position: relative;
     width: 110px;
 }
 #advanced-map #plant-map-list .plant-group.last {
 	margin: 0 0 10px 0;	
 }
-#advanced-map #plant-map-list .plant-group.multi-line {
-	padding: 0;	
-}
 #advanced-map .plant-group h5 {
+    bottom: 146px;
 	color: #508e31;
     font-size: 12px;
   	line-height: 120%;
     margin: 0 0 0 0;
 	padding: 6px 0 6px 5px;
+    position: absolute;
+    width: 105px;
 }
-#advanced-map .plant-group div.image,
+#advanced-map .plant-group div.image {
+    position: absolute;
+    top: 40px;
+}
 #advanced-map .plant-subgroup div.image {
 	position: relative;	
 }
 #advanced-map .plant-group .frame {
-	border: 5px solid rgba(255, 255, 255, 0.8);
+	border: $advanced-map-frame-border;
 	height: 91px;	
 	position: absolute;
 	top: 0;
@@ -2390,19 +2481,12 @@ div.section.namap div.trans {
 	background: #1a2e12;
 	color: #fff;
 }
-/* Don't include hover states on smartphones and tablets. */
-@media only screen and (min-device-width:1025px) {
-    #advanced-map .plant-group:hover .frame {
-	    border-color: #1a2e12;
-    }
-    #advanced-map .plant-group:hover h5 {
-	    background: #1a2e12;
-	    color: #fff;
-    }
-    #advanced-map .more-info:hover {
-        color: #508e31;
-        text-decoration: underline;
-    }
+#advanced-map .plant-group:hover .frame {
+    border-color: #1a2e12;
+}
+#advanced-map .plant-group:hover h5 {
+    background: #1a2e12;
+    color: #fff;
 }
 #advanced-map .plant-group .img-container {
 	height: 101px;
@@ -2505,8 +2589,12 @@ nav #search #search-suggest input:-moz-placeholder {
 }
 
 nav #search-suggest .menu li {
+    font-weight: bold;
     margin: 0;
     padding: 3px;
+}
+nav #search-suggest .menu span {
+    font-weight: normal;
 }
 nav #search-suggest .menu a {
     height: inherit;
@@ -2562,36 +2650,10 @@ nav #search-suggest .menu a:hover, #search-suggest .menu li:hover {
    combine nav #search-suggest and #search-suggest items above, etc. */
 
 
-/* Tooltips for working area images and highlighted glossary terms. */
-
-.tooltipsy {
-    border: 1px solid #080;
-
-    -moz-border-radius: 0.5em;
-    -webkit-border-radius: 0.5em;
-    -o-border-radius: 0.5em;
-    -ms-border-radius: 0.5em;
-    -khtml-border-radius: 0.5em;
-    border-radius: 0.5em;
-
-    -moz-box-shadow: 1px 1px 2px #333333;
-    -webkit-box-shadow: 1px 1px 2px #333333;
-    -o-box-shadow: 1px 1px 2px #333333;
-    box-shadow: 1px 1px 2px #333333;
-
-    background-color: #fff;
-    background: -webkit-linear-gradient(#ffffff, #f0f0c0);
-    background: -moz-linear-gradient(#ffffff, #f0f0c0);
-    background: -o-linear-gradient(#ffffff, #f0f0c0);
-    background: -ms-linear-gradient(#ffffff, #f0f0c0);
-    background: linear-gradient(#ffffff, #f0f0c0);
-
-    padding: 0.5em 0.7em;
-}
-
 img.char-value-larger {
-    height: 160px;  /* Consistent height for popup character value drawings */
+    height: 160px !important;  /* Consistent height for popup character value drawings */
 }
+
 
 /* Teaching Tools section */
 
@@ -2731,253 +2793,95 @@ img.char-value-larger {
     font-size: 13px;
 }
 
-/* Smartphone-size screen styles */
+/* Tooltips for working area images and highlighted glossary terms. */
+$tooltip-border-color: #c3d941;
+$tooltip-background-top-color: #eaf2e2;
+$tooltip-background-bottom-color: #d6e6c5;
+$tooltip-shadow-color: #333333;
+$tooltip-arrow-rotation: 225deg;
 
-@media only screen and (max-width: 400px) {
-    body {
-        padding-top: 110px;
-    }
-    .top-level header {
-        height: 80px;
-    }
-    body, .container, .top-level header h1 a, #home #banner #overlay,
-    #home #banner > img {
-        width: 320px;
-    }
-    .top-level header h1 a {
-        background-size: 320px 58px;
-        height: 58px;
-    }
-    #nav {
-        left: 40px;
-        width: 310px;
-    }
-    #home #banner #overlay {
-        top: 115px;
-    }
-    #home #banner > img {
-        height: 115px;
-    }
-    #home #banner + .three-col {
-        padding-top: 380px;
-    }
-    #sidebar {
-        width: 300px;
-    }
-}
-@media only screen and (min-width: 401px) and (max-width: 600px) {
-    body {
-        padding-top: 75px;
-    }
-    body, .container, .top-level header h1 a, #home #banner #overlay,
-    #home #banner > img, #sidebar {
-        width: 480px;
-    }
-    .top-level header {
-        height: 100px;
-    }
-    .top-level header h1 a {
-        background-size: 480px 86px;
-        height: 86px;
-    }
-    #nav {
-        left: 30px;
-        width: 470px;
-    }
-    #home #banner #overlay {
-        top: 172px;
-    }
-    #home #banner > img {
-        height: 172px;
-    }
-    #home #banner + .three-col {
-        padding-top: 400px;
-    }
-    #sidebar {
-        width: 460px;
-    }
-}
-/* These styles are common to both smartphone widths */
-@media only screen and (max-width: 600px) {
-    body {
-        margin: 0 auto;
-        padding: 0;
-    }
-    .container {
-        padding: 0;
-    }
-    .top-level nav {
-        background: none;
-    }
-    .top-level header h1 {
-        margin: 0;
-        width: inherit;
-    }
-    .top-level header h2 a, .app header h2 a {
-        background-size: 80px 44px;
-        float: right;
-        height: 44px;
-        width: 80px;
-    }
-    header h2 {
-        float: none;
-    }
-    header nav ul {
-        display: none;  /* will use bottom navigation instead */
-    }
-    footer, footer div.container {
-        height: auto;
-    }
-    footer {
-        margin: 14px 0 0;
-    }
-    footer .container div {
-        width: auto;
-    }
-    footer div div {
-        height: auto;
-    }
-    footer p {
-        margin: 0;
-    }
-    footer a {
-        font-size: 11px;
-    }
-    footer .publisher, footer .navigation {
-        float: none;
-        margin: 0;
-        padding: 0;
-    }
-    footer .publisher {
-        margin-bottom: 14px;
-        padding: 0 6px;
-    }
-    footer .navigation h6:first-child {
-        display: none;
-    }
-    footer .navigation > ul.sections li {
-        display: block;
-        margin: 0 0 1px 0;
-    }
-    footer .navigation > ul.sections li:after {
-        content: none;
-    }
-    footer .navigation > ul.sections li a {
-        background: #85c446;
-        color: #fff;
-        display: block;
-        font-family: $headings-font;
-        font-size: 14px;
-        padding: 14px 14px;
-        position: relative;
-        text-decoration: none;
-    }
-    footer .navigation > ul.sections li a:after {
-        content: " >";
-        font-weight: bold;
-        position: absolute;
-        right: 14px;
-    }
-    footer .navigation > ul.sections li a[href] {
-        background: #508e31;
-        color: #fff;
-    }
-    footer .navigation > h6:nth-of-type(2) {
-        margin: 14px 14px 4px 71px;
-    }
-    footer .navigation > h6:nth-of-type(2):after {
-        content: ":";
-    }
-    footer .navigation > h6:nth-of-type(2),
-    footer .navigation > ul.legal {
-        display: inline-block;
+.gb-tooltip {
+    background: -webkit-gradient(linear, left top, left bottom,
+        color-stop(0%,$tooltip-background-top-color),
+        color-stop(100%,$tooltip-background-bottom-color));
+    background: -moz-linear-gradient(center top,
+        $tooltip-background-top-color, $tooltip-background-bottom-color);
 
-    }
-    footer .navigation > ul.legal li {
-        margin-right: 14px;
-    }
-    footer .navigation > ul.legal li:after {
-        content: none;
-    }
-    footer .support {
-        margin: 14px 0;
-        padding: 0;
-    }
-    footer .support img {
-        padding-bottom: 6px;
-    }
-    #home #banner {
-        margin: 0;
-        position: relative;
-    }
-    #home #banner #overlay {
-        background: #f7fbe9;
-        height: auto;
-        left: 0;
-        padding: 0;
-        text-align: center;
-    }
-    #home #banner h2 {
-        margin: 0;
-    }
-    #home #banner p {
-        padding: 0 6px;
-    }
-    #home #banner a#cta {
-        background-position: 50% 0;
-        margin: 4px 6px;
-    }
-    #home .three-col {
-        background: none;
-        float: none;
-        height: inherit;
-        margin: 14px 0;
-        padding: 0 6px;
-        width: auto;
-    }
-    #home .three-col a.learn-more {
-        margin: 4px 0 0;
-    }
-    #home #potd .details {
-        margin: 0;
-        position: inherit;
-        width: inherit;
-    }
-    #home #potd .details p {
-        height: inherit;
-        overflow: inherit;
-    }
-    #home #potd .details a {
-        position: inherit;
-        top: 0;
-    }
-    #home .donate {
-        margin: 0;
-    }
-    #home .donate p {
-        margin: 8px;
-        padding: 0;
-    }
-    #home .donate a {
-        float: none;
-        margin: 4px 0;
-    }
-    #main, .list-item .details {
-        float: none;
-        width: inherit;
-    }
-    #plant-id-3 #main {
-        float: right;
-        margin-left: 230px;
-        width: 355px;
-    }
-    #sidebar, #getting-started #sidebar, #about #sidebar,
-    #advanced-map #sidebar, #plant-id #sidebar, #glossary #sidebar,
-    #video-help-topics #sidebar, #taxon #sidebar {
-        border-bottom: 1px solid #c3d941;
-        height: auto;
-        margin-left: 10px;
-    }
+    border: 1px solid $tooltip-border-color;
+    display: none;   /* initially invisible, fades in */
+    padding: 0.5em 0.7em;
+    position: absolute;
+    width: 300px;
+    z-index: 1000;
+
+    -moz-box-shadow: 1px 1px 2px $tooltip-shadow-color;
+    -webkit-box-shadow: 1px 1px 2px $tooltip-shadow-color;
+    -o-box-shadow: 1px 1px 2px $tooltip-shadow-color;
+    box-shadow: 1px 1px 2px $tooltip-shadow-color;
+        
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -o-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    border-radius: 2px;
+}
+.gb-tooltip .arrow {
+    background: $tooltip-background-bottom-color;
+    border: 1px solid $tooltip-border-color;
+
+    /* rotated borders, same color as bottom of tooltip */
+    border-bottom-color: $tooltip-background-bottom-color;
+    border-right-color: $tooltip-background-bottom-color;
+    
+    bottom: -7px;
+    height: 11px;
+    left: 10px;
+    position: absolute;
+    width: 11px;
+
+    -moz-box-shadow: -1px -1px 1px $tooltip-shadow-color;
+    -webkit-box-shadow: -1px -1px 1px $tooltip-shadow-color;
+    -o-box-shadow: -1px -1px 1px $tooltip-shadow-color;
+    box-shadow: -1px -1px 1px $tooltip-shadow-color;
+
+    -webkit-transform: rotate($tooltip-arrow-rotation);
+    -moz-transform: rotate($tooltip-arrow-rotation);
+    -o-transform: rotate($tooltip-arrow-rotation);
+    transform: rotate($tooltip-arrow-rotation);
+}
+
+/* Glossary tooltip */
+.glosstip {
+    line-height: 140%;
+    position: relative;
+    max-width: 30em;
+}
+.glosstip img {
+    background: $tooltip-background-top-color;
+    border: 1px solid $tooltip-border-color;
+    bottom: 110%;
+    padding: 4px;
+    position: absolute;
+
+    -moz-box-shadow: 1px 1px 2px $tooltip-shadow-color;
+    -webkit-box-shadow: 1px 1px 2px $tooltip-shadow-color;
+    -o-box-shadow: 1px 1px 2px $tooltip-shadow-color;
+    box-shadow: 1px 1px 2px $tooltip-shadow-color;
+        
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -o-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    border-radius: 2px;
+
 }
 
 
+/* Include media queries for smartphones and tablets. These should be last. */
+
+@import "media-queries";
+
+/* Please do not add new regular styles after the media queries, or they may
+ * not get overridden properly. Instead, add them before the media queries. */

@@ -6,6 +6,7 @@
                 {% ifnotequal request.path "/" %}href="/"{% endifnotequal %}>Go
                 Botany: Discover thousands of New England plants</a></h1>
             <nav>
+            <a href="javascript:document.getElementById('footer-nav').scrollIntoView();">+<span>sections</span></a>
                 <div id="search">
                     <form id="search-suggest" action="/search/" autocomplete="off">
                         <button>Search</button>
@@ -19,17 +20,20 @@
                 </div>
                 <ul>
                     <li class="home">
-                        <a {% ifnotequal request.path "/" %}href="{% url simplekey-index %}"{% endifnotequal %}>Home</a>
+                        <a {% ifnotequal request.path "/" %}href="{% url site-home %}"{% endifnotequal %}>Home</a>
                     </li>
                     <li class="plant-id">
                         <a href="{% url level1 'simple' %}">Simple Key</a>
                     </li>
                     <li class="plantshare"><a href="{% url plantshare-placeholder %}">PlantShare</a></li>
-                    <li class="advanced-id">
-                        <a href="{% url advanced-id-tools %}">Advanced ID Tools</a>
+                    <li class="full-key">
+                        <a href="{% url full-key-placeholder %}">Full Key</a>
                     </li>
-                    <li class="teaching-tools"><a href="{% url teaching-tools %}">Teaching Tools</a></li>
-                    <li class="about last"><a href="{% url simplekey-help-about %}">About</a></li>
+                    <li class="dich-key">
+                        <a href="{% url dich-key-placeholder %}">Dichotomous Key</a>
+                    </li>
+                    <li class="teaching-tools"><a href="{% url site-teaching %}">Teaching</a></li>
+                    <li class="about last"><a href="{% url site-about %}">About</a></li>
                 </ul>
                 <div class="clearit"></div>
             </nav>

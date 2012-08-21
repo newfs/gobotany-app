@@ -2,10 +2,16 @@
 
 {% block title %}Terms of Use{% endblock %}
 
-{% block body_attributes %}id="terms-of-use" class="claro app terms-of-use"{% endblock %}
+{% block body_attributes %}id="terms-of-use" class="app terms-of-use"{% endblock %}
 
 {% block js_require %}
-    require(['util/sidebar']);
+    require(['util/sidebar', 'util/mailto'], function (sidebar, mailto) {
+        sidebar.setup();
+
+        $(document).ready(function () {
+            mailto.make_link('.email');
+        });
+    });
 {% endblock %}
 
 {% block body_content %}
@@ -15,10 +21,10 @@
         <div class="content">
             <div class="container">
                 <div id="main">
-                    <h2>Legal Information</h2>
-                    <h3>Terms of Use</h3>
+                    <h2>Terms of Use</h2>
                     <ol class="terms">
-                      <li id="acceptance">Acceptance of Terms<br />
+                        <li id="acceptance">
+                        <h3>Acceptance of Terms</h3>
                         <p>THESE TERMS AND CONDITIONS OF SERVICE (the "Terms")
                         are a legal and binding agreement between you and <a
                         href="http://newenglandwild.org">New England Wild
@@ -39,15 +45,14 @@
                         the Site after such changes indicates your acceptance
                         of the Terms as modified. It is your responsibility to
                         review the Terms regularly.</p>
-                        <br />
                         <p>Your use of the Site is at your risk. If you are
                         dissatisfied with any of the materials contained in the
                         Site, with the quality of service or Content, or with
                         these Terms, your sole and exclusive remedy is to
                         discontinue accessing and using the Site.</p>
-                        <br />
                       </li>
-                      <li id="specific">Specific Terms<br />
+                      <li id="specific">
+                        <h3>Specific Terms</h3>
                         <p>Any use of the Go Botany application, including use of the application through a third-party product that accesses Go Botany, is bound by terms of this agreement plus the following specific terms:</p>
                         <ul>
                             <li>You expressly understand and agree New England
@@ -87,7 +92,8 @@
                                 >{{ site_url }}</a>.</li>
                         </ul>
                       </li>
-                      <li id="ip">Intellectual Property Issues<br />
+                      <li id="ip">
+                        <h3>Intellectual Property Issues</h3>
                         <p>The Site is owned by New England Wild Flower
                         Society.  All of the content featured or displayed on
                         the Site, including, but not limited to, still images,
@@ -96,7 +102,6 @@
                         combinations, and computer programs, including
                         web-based programs ("Content") is owned or licensed by
                         New England Wild Flower Society.</p>
-                        <br />
                         <p>Pursuant to the copyright and trademark laws of the
                         United States, you agree:</p>
                         <ul>
@@ -111,10 +116,9 @@
                           without specific written authorization from New
                           England Wild Flower Society or the designated
                           copyright holder (i.e., photographers who own
-                          copyright on their own images). Contact Debbi
-                          Edelstein (<a
-                              href="mailto:dedelstein@newenglandwild.org"
-                              >dedelstein [at] newenglandwild.org</a>) to
+                          copyright on their own images). Contact the Go Botany
+                          Team (<a class="email">gobotany [at]
+                          newenglandwild [dot] org</a>) to
                           inquire about commercial uses.</li>
                           <li>To maintain any and all copyright or other
                           proprietary notices embedded in or attached to any
@@ -128,15 +132,18 @@
                           materials. Such license shall include the right to
                           exploit any proprietary rights in the posting or
                           submission.</li>
+						  <li>LINKING DIRECTLY TO GO BOTANY IMAGES IS A VIOLATION
+						  OF THE TERMS OF USE.</li>
                         </ul>
                       </li>
-                      <li id="liability">Liability<br />
+                      <li id="liability">
+                        <h3>Liability</h3>
                         <p>The Site and all material and information posted on
                         it is provided to you "as is" without any warranties.
                         You agree that you must evaluate and bear all risks
                         associated with use of the Site, including those risks
                         associated with reliance on the accuracy, thoroughness,
-                        or utility of any Content.</p><br />
+                        or utility of any Content.</p>
 
                         <p>You acknowledge that due to the immediate nature of
                         this medium, New England Wild Flower Society does not
@@ -146,7 +153,7 @@
                         England Wild Flower Society will review user postings
                         from time to time and will take steps to remove
                         inappropriate postings that come to its
-                        attention.</p><br />
+                        attention.</p>
 
                         <p>The Site may provide, or third parties may provide,
                         links to other sites or resources. Because New England
@@ -162,9 +169,10 @@
                         alleged to be caused in connection with use of or
                         reliance on any such linked content, goods or services
                         available on or through any such linked site or
-                        resource.</p><br />
+                        resource.</p>
                       </li>
-                      <li>User Conduct<br />
+                      <li>
+                        <h3>User Conduct</h3>
                         <p>All users shall use the Site for lawful purposes
                         only. You agree not to post or transmit through the
                         Site any material that is unlawful, threatening,
@@ -175,7 +183,7 @@
                         the site any material or text which constitutes
                         advertising or solicitation with respect to any product
                         or service, unless expressly authorized in writing by
-                        New England Wild Flower Society to do so.</p><br />
+                        New England Wild Flower Society to do so.</p>
 
                         <p>Conduct by any user that, in the sole opinion of New
                         England Wild Flower Society, constitutes over use or
@@ -186,7 +194,7 @@
                         user for any reason, including, without limitation, a
                         reasonable belief that the user in question has
                         violated these Terms or any of the copyright or
-                        trademark laws of the United States.</p><br />
+                        trademark laws of the United States.</p>
 
                         <p>CAUTION: ANY ATTEMPT BY ANY PERSON TO DELIBERATELY
                         DAMAGE THE SITE IS A VIOLATION OF CRIMINAL AND CIVIL
@@ -194,12 +202,13 @@
                         FLOWER SOCIETY RESERVES THE RIGHT TO SEEK DAMAGES AND
                         OTHER REMEDIES (INCLUDING BUT NOT LIMITED TO INJUNCTIVE
                         RELIEF) FROM ANY SUCH PERSON TO THE FULLEST EXTENT
-                        PERMITTED BY LAW.</p><br />
+                        PERMITTED BY LAW.</p>
 
                         <p>You agree to assume full and sole responsibility for
-                        any postings you make to the Site.</p><br />
+                        any postings you make to the Site.</p>
                       </li>
-                      <li id="indemnification">Indemnification<br />
+                      <li id="indemnification">
+                        <h3>Indemnification</h3>
                         <p>You agree to indemnify, defend, and hold harmless
                         New England Wild Flower Society; its affiliates and
                         partners; and their respective officers, directors,
@@ -213,9 +222,10 @@
                         matter subject to indemnification by you, in which
                         event you will fully cooperate with the New England
                         Wild Flower Society in asserting and available
-                        defenses.</p><br />
+                        defenses.</p>
                       </li>
-                      <li id="privacy">Privacy<br />
+                      <li id="privacy">
+                        <h3>Privacy</h3>
                         <p>Go Botany is designed to gather and disseminate 
                         information about plant distribution and abundance 
                         across the six states of New England, USA, and 
@@ -223,8 +233,7 @@
                         governs the use of personal information from the site 
                         and you agree to be bound to this policy as a user of 
                         the Site.</p>
-                        <br />
-                        <strong>Submitted Information</strong>
+                        <h4>Submitted Information</h4>
                         <p>Personal Information is voluntarily supplied by you 
                         when you register and submit data to the <a 
                         href="{% url plantshare-placeholder %}">PlantShare</a> sector 
@@ -236,7 +245,6 @@
                         understanding of the PlantShare participants and Go Botany 
                         visitors and to determine how best to improve the web site 
                         for Go Botany users.</p>
-                        <br />
                         <p>You are able to view your personal observations (plant 
                         sightings, postings, and questions to the Botanist) and 
                         those of others (if they have made them available to you, 
@@ -244,7 +252,6 @@
                         your observations of species and their locations plus an 
                         supporting information you provide, may be available to 
                         other PlantShare users.</p>
-                        <br />
                         <p>Plant observations are the most important pieces of 
                         information that we collect. Details of a plant sighting 
                         and its associated location (species, numbers, etc.) are 
@@ -253,21 +260,18 @@
                         sighting to the Site.  Only information pertaining to 
                         plant observations is available to your selected users; 
                         no personal contact information is ever made public.</p>
-                        <br />
                         <p>Cookies are pieces of data that we store on your 
                         computer to tie your information to the PlantShare 
                         program. Cookies allow you to store your login 
                         information, so that you will not be required to log 
                         in each time you visit the PlantShare web site.</p>
-                        <br />
                         <p>Internet browsers allow you to determine whether 
                         or not to accept cookies (check under the preferences 
                         or options in the browser menu). If you decide not to 
                         accept cookies, you can still use the PlantShare site, 
                         but you will need to re-enter login information each 
                         time you visit.</p>
-                        <br />
-                        <strong>Sensitive Species</strong>
+                        <h4>Sensitive Species</h4>
                         <p>If you submit an unusual observation or a sighting of a 
                         plant known to be listed as Endangered, Threatened, 
                         Special Concern, Historic or Invasive in a New England 
@@ -275,8 +279,7 @@
                         confirm your sighting.  Your email address and contact 
                         information will not be sold or distributed outside New 
                         England Wild Flower Society.</p>
-                        <br />
-                        <strong>Your practices in obtaining sightings</strong>
+                        <h4>Your Practices in Obtaining Sightings</h4>
                         <p>As a conservation organization, New England Wild Flower 
                         Society seeks to limit disturbance to plants, especially 
                         those that are rare or occur on private property. Please 
@@ -287,8 +290,7 @@
                         landowner permissions have been obtained and that posting 
                         of locational and other data has been approved by the 
                         landowner.</p>
-                        <br />
-                        <strong>Changes to This Privacy Policy</strong>
+                        <h4>Changes to this Privacy Policy</h4>
                         <p>We may occasionally update or amend New England Wild 
                         Flower Society’s Privacy Statement. If we make changes, 
                         we will post the changes here.</p>

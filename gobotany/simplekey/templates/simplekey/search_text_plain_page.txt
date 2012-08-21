@@ -1,0 +1,7 @@
+{{ object.title }}
+
+{{ object.search_text }}
+
+{% for video in object.videos.all %}
+    Video: {{ video.title }}.
+{% endfor %}

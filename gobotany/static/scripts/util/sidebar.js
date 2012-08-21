@@ -2,8 +2,15 @@ define([
     'bridge/jquery'
 ], function($) {
 
+    var exports = {};
+
     // Make the sidebar as tall as it can be.
-    sidebar_set_height = function() {
+    exports.set_height = function() {
+        // On small screens, skip sidebar resizing entirely.
+        if ($(window).width() <= 600) {
+            return;
+        }
+
         var MINIMUM_HEIGHT = 550;
         var new_height = 0;
 
@@ -35,17 +42,16 @@ define([
         $('div#sidebar').css('height', new_height);
     };
 
-    $(document).ready(function() {
-        // On small screens, skip sidebar resizing entirely.
-        if ($(window).width() <= 600) {
-            return;
-        }
-
-        // Set the initial sidebar height.
-        sidebar_set_height();
-        $('#main img').load(function() {
-            // Each time an image loads, the page gets taller.
-            sidebar_set_height();
+    exports.setup = function() {
+        $(document).ready(function() {
+            // Set the initial sidebar height.
+            exports.set_height();
+            $('#main img').load(function() {
+                // Each time an image loads, the page gets taller.
+                exports.set_height();
+            });
         });
-    });
+    };
+
+    return exports;
 });

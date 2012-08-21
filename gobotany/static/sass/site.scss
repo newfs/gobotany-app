@@ -1,0 +1,463 @@
+/*! *** Go Botany master styles file ***
+ Please edit only the .scss source and use Compass to auto-generate the .css.
+ The generated .css is kept in the repository to allow easy deployment.
+ */
+
+/* First are some SASS "partials" for external and third-party styles.
+ * The goal is to keep all styles in just one deployed CSS file, site.css.
+ * Later on in this file, other partials are imported for styles
+ * specific to a site feature.
+ * A final partial, site-media-queries, is imported last in this file. */
+
+/* Imports for browser baseline, tools */
+@import "_normalize";
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+@import "compass/css3/images";   /* for gradient, etc. */
+@import "compass/css3/transform";
+
+/* Imports for third-party controls */
+@import "jquery.jscrollpane";
+@import "shadowbox";
+@import "smoothDivScroll";
+
+/* Definitions */
+
+$headings-font: "Trebuchet MS", Helvetica, Arial, sans-serif;
+$body-font: Verdana, Geneva, sans-serif;
+$narrower-body-font: Tahoma, "Trebuchet MS", sans-serif;
+
+$link-green: #508e31;
+$heading-green: #519136;
+$border-green: #c3d941;
+
+$text-color: #000;
+$footer-background-color: #b4d57f;
+
+$base-font-size: 12px;
+$nav-font-size: 14px;
+
+$text-line-height: 170%;
+
+$tooltip-border-color: #c3d941;
+$tooltip-background-top-color: #eaf2e2;
+$tooltip-background-bottom-color: #d6e6c5;
+$tooltip-shadow-color: #333333;
+$tooltip-arrow-rotation: 225deg;
+
+$smallscreen-portrait-width: 320px;
+$smallscreen-landscape-width: 480px;
+
+$nav-button-color: #437829;
+$smallscreen-margin: 8px;
+$smallscreen-potd-image-width: 297px;
+
+@mixin offscreen {
+    display: block;
+    text-indent: -9000px;
+}
+
+@mixin container-div {
+    .container {
+        margin: 0 auto;
+        padding: 0 10px;
+        width: 960px;
+    }
+}
+
+@mixin smallscreen-side-margins {
+    margin-left: $smallscreen-margin;
+    margin-right: $smallscreen-margin;
+}
+
+/* Site-wide styles */
+
+body {
+    background: #f0f0c0;
+    color: $text-color;
+    font-family: $body-font;
+    font-size: $base-font-size;
+}
+a {
+    color: $link-green;
+    text-decoration: none;
+}
+a:not([href]) {
+    color: $text-color;
+}
+a:hover {
+    text-decoration: underline;
+}
+*|*:-moz-any-link:active, *|*:-moz-any-link:focus {
+    border: 0;
+    outline: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: $headings-font;
+    font-weight: normal;
+    line-height: 155%;
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    color: $heading-green;
+	font-size: 35px;
+    line-height: 110%;
+    margin-bottom: 8px;
+}
+h2 {
+	font-size: 24px;
+    margin: 8px 0;
+}
+h3 {
+	font-size: 18px;	
+}
+h4 {
+	font-size: 14px;	
+}
+h5, h6 {
+	font-size: $base-font-size;	
+}
+h6 {
+    font-weight: italic;
+}
+p, ul {
+    line-height: $text-line-height;
+    margin: 0;
+    padding: 0;
+}
+ul li {
+    margin: 0 0 5px 0;
+}
+.hidden {
+    display: none;
+}
+.missing-image {
+    @include background(linear-gradient(top center, #eaf2e2, #d6e6c5));
+    color: #354d1e;
+    height: 149px;
+    position: relative;
+    width: 160px;
+}
+p.new {
+    background: #fff;
+    display: inline-block;
+    font-size: 9px;
+    font-weight: normal;
+    margin: 0;
+    padding: 0 0.25em;
+    text-transform: uppercase;
+    @include border-radius(0.25em);
+}
+p.meta {
+    font-size: 10px;
+    font-style: italic;
+    margin: 4px 0;
+}
+
+/* Header */
+
+@mixin highlight-global-nav {
+    background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
+    text-decoration: none;
+}
+
+@mixin highlight-global-nav-home {
+    background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent;
+    text-decoration: none;
+}
+
+body {
+    &#home {
+        li.home {
+            @include highlight-global-nav-home;
+        }
+    }
+    &.about {
+        li.about {
+            @include highlight-global-nav;
+        }
+    }
+}
+
+header {
+    height: 120px;
+    @include container-div;
+    p {
+        margin: 0;
+    }
+    .go-botany {
+        float: left;
+        margin: 0 0 0 -15px;
+        padding: 14px 0 0 0;
+        width: 443px;
+        a {
+            background: url(/static/images/layout/logo-app.png) no-repeat transparent;
+            height: 65px;
+            width: 443px;
+            @include offscreen;
+        }
+    }
+    .newfs {
+        float: right;
+        a {
+            background: url(/static/images/layout/newfs-logo-app.png) no-repeat transparent;
+            height: 66px;
+            width: 116px;
+            @include offscreen;
+        }
+    }
+    nav {
+        background: url(/static/images/layout/nav-app-green.png) no-repeat;
+        background-position: 0px 79px;
+        font-family: $headings-font;
+        height: 120px;
+        padding: 0 0 0 48px;
+        a {
+            color: #fff;
+            display: block;
+            height: 35px;
+            padding: 5px 8px 0;
+        }
+        > a {
+            display: none;  /* Omit the 'sections' link by default */
+        }
+        ul {
+            clear: both;
+        }
+        li {
+            display: block;
+            float: left;
+            font-size: $nav-font-size;
+            line-height: normal;
+            margin: 0 10px 0 0;
+            padding: 0;
+            a:hover {
+                @include highlight-global-nav;
+            }
+        }
+        #search {
+            background: #fff url(/static/images/layout/search-left.png) left center no-repeat;
+            float: right;
+            height: 20px;
+            margin: 4px 4px 0 0;
+            padding: 0 0 0 11px;
+            form {
+                display: block;
+                margin: 0;
+                padding: 0;
+                width: 262px;
+            }
+            input {
+                background: #fff;
+                border: 0;
+                float: left;
+                font-family: $headings-font;
+                font-size: $nav-font-size;
+                height: 20px;
+                margin: 0;
+                padding: 0;
+                width: 219px;
+                &:focus {
+                    outline: none;
+                }
+            }                
+            button {
+                background: $link-green url(/static/images/layout/search-btn.png) 0 0 no-repeat;
+                border: none;
+                cursor: pointer;
+                float: right;
+                height: 20px;
+                margin: 0;
+                outline: none;
+                padding: 0;
+                width: 43px;
+                @include offscreen;
+            }
+        }
+        #search-suggest .menu {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-bottom-color: #999;
+            border-right-color: #999;
+            font-family: $headings-font;
+            margin: 0 auto;
+            position: absolute;
+            text-align: left;
+            top: 105px;
+            width: 256px;
+            z-index: 101;
+            li {
+                clear: left;
+                display: block;
+                float: left;
+                font-weight: bold;
+                margin: 0;
+                padding: 3px;
+                width: 250px;
+                &.highlighted {
+                    background-color: #abd6ff;
+                }
+            }
+            a {
+                color: $text-color;
+                cursor: default;
+                height: inherit;
+                padding: 0;
+                text-decoration: none;
+            }
+            a:hover, li:hover {
+                background: #c4e2ff;
+            }
+            span {
+                font-weight: normal;
+            }
+        }
+    }
+}
+
+/* Main content and sidebar */
+
+.content {
+    padding: 8px 0 0;
+    @include container-div;
+    #main {
+        background: url(/static/images/layout/sidebar-bg.png) repeat-y;
+        float: right;
+        min-height: 500px;
+        padding-bottom: 24px;
+        padding-left: 250px;
+        width: 710px;
+    }
+    #sidebar {
+        border-top: 1px solid $border-green;
+        float: left;
+        height: 100%;
+        margin-right: -230px;
+        padding: 16px 0;
+        width: 230px;
+        .section {
+            padding: 0 17px 16px;
+            h4 {
+                margin: 0 0 5px 0;
+            }
+            &.separate {
+                border-top: 1px solid #e2dfcb;
+                padding-top: 16px;
+            }
+        }
+        a:hover {
+            text-decoration: none;
+        }
+    }
+}
+
+/* Footer */
+
+footer {
+    background: $footer-background-color;
+    clear: both;
+    height: 128px;
+    position: relative;
+    width: 100%;
+    @include container-div;
+    > img {
+        left: 50%;
+        margin-left: -543px;
+        position: absolute;
+        top: -47px;
+    }
+    .publisher, .navigation {
+        float: left;
+        margin: 0 20px 0 0;
+        padding: 18px 0;
+        width: 305px;
+    }
+    .navigation {
+        padding-left: 10px;
+    }
+    h6 {
+        font-family: $body-font;
+        font-size: 11px;
+    }
+    p {
+        font-size: 9px;
+        margin: 0 0 10px 0;
+    }
+    ul {
+        font-size: 9px;
+        list-style-type: none;
+        margin-bottom: 12px;
+    }
+    li {
+        display: inline;
+        line-height: 14px;
+        &::after {
+            content: " |";
+        }
+        &:last-child::after {
+            content: none;
+        }
+    }
+    .nsf-logo {
+        float: left;
+        margin: 0 10px 0 7px;
+    }
+    .support {
+        margin-right: 0;
+        padding: 18px 0;
+    }    
+}
+
+/* Tooltips for working area images and highlighted glossary terms. */
+.gb-tooltip {
+    border: 1px solid $tooltip-border-color;
+    display: none;   /* initially invisible, fades in */
+    padding: 0.5em 0.7em;
+    position: absolute;
+    width: 300px;
+    z-index: 1000;
+    @include background(linear-gradient(top center,
+        $tooltip-background-top-color, $tooltip-background-bottom-color));
+    @include single-box-shadow($tooltip-shadow-color, 0px, 1px, 4px);
+    @include border-radius(2px);
+    .arrow {
+        background: $tooltip-background-bottom-color;
+        border: 1px solid $tooltip-border-color;
+        /* rotated borders, same color as bottom of tooltip */
+        border-bottom-color: $tooltip-background-bottom-color;
+        border-right-color: $tooltip-background-bottom-color;
+        bottom: -7px;
+        height: 11px;
+        left: 10px;
+        position: absolute;
+        width: 11px;
+        @include single-box-shadow($tooltip-shadow-color, -1px, -1px, 1px);
+        @include rotate($tooltip-arrow-rotation);
+    }
+}
+
+/* Shadowbox close button */
+#sb-nav-close {
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 4px; /* Increase activation area a bit */
+    right: -28px !important; /* Place at top right, but not exactly at the
+                                corner so as to avoid Flash video z-index
+                                problem */
+    top: 6px !important;
+}
+
+/* Imports for various pages, sections, features, etc. Each of these
+ * can contain their own media queries. */
+
+@import "home";
+@import "about";
+
+/* Finally, include global media queries for smartphones and tablets. These
+ * should be last. */
+
+@import "site-media-queries";
+
+/* Please do not add new regular styles after the media queries, or they may
+ * not get overridden properly. Instead, add them before the media queries. */

@@ -1,0 +1,44 @@
+    <header>
+        <div class="container">
+            {% if page = "home" %}
+                <h1>Go Botany: Discover thousands of New England plants</h1>
+            {% else %}
+                <p class="go-botany"><a 
+                {% ifnotequal request.path "/" %}href="/"{% endifnotequal %}>Go
+                    Botany: Discover thousands of New England plants</a></p>
+            {% endif %}
+            <p class="newfs"><a href="http://www.newenglandwild.org/">New
+                England Wild Flower Society</a></p>
+            <nav>
+                <a href="javascript:document.getElementById('footer-nav').scrollIntoView();">+<span>sections</span></a>
+                <ul>
+                    <li class="home">
+                        {% url site-home as u %}
+                        <a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Home</a>
+                    </li>
+                    <li class="plant-id">
+                        <a href="{% url level1 'simple' %}">Simple Key</a>
+                    </li>
+                    <li class="plantshare"><a href="{% url plantshare-placeholder %}">PlantShare</a></li>
+                    <li class="full-key">
+                        <a href="{% url full-key-placeholder %}">Full Key</a>
+                    </li>
+                    <li class="dich-key">
+                        <a href="{% url dich-key-placeholder %}">Dichotomous Key</a>
+                    </li>
+                    <li class="teaching-tools"><a href="{% url site-teaching %}">Teaching</a></li>
+                    <li class="about"><a href="{% url site-about %}">About</a></li>
+                </ul>
+                <div id="search">
+                    <form id="search-suggest" action="/search/" autocomplete="off">
+                        <input type="text" name="q" placeholder="Search..."
+                            value="{{ request.GET.q }}">
+                        <button>Search</button>
+                        <div class="menu hidden">
+                            <ul></ul>
+                        </div>
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </header>

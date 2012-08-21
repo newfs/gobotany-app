@@ -39,13 +39,13 @@ class Legend(object):
     # Some of the items are currently no longer shown on the maps, due
     # to simpler and more accurate data in use. These items are left
     # here in case it is desired to make the maps more elaborate again.
-    ITEMS = [('present', '#78bf47'),
-             ('native', '#78bf47'),     # Currently not shown on the maps.
-             ('rare', '#a7e37d'),       # Currently not shown on the maps.
-             ('introduced', '#fa9691'), # Currently not shown on the maps.
-             ('invasive', '#f00'),      # Currently not shown on the maps.
-             ('historic', '#ccc'),      # Currently not shown on the maps.
-             ('absent', '#fff')]
+    ITEMS = [('native', '#78bf47'),
+             ('non-native', '#fa9691'),
+             ('absent', '#fff'),
+             #('rare', '#a7e37d'),       # Currently not shown on the maps.
+             #('invasive', '#f00'),      # Currently not shown on the maps.
+             #('historic', '#ccc'),      # Currently not shown on the maps.
+             ]
     COLORS = dict(ITEMS)  # Color lookup for labels, ex.: COLORS['rare'].
                           # This does not preserve the order of items.
 
@@ -157,6 +157,23 @@ class PlantDistributionMap(ChloroplethMap):
             'species present', # Covers: "Species present in state and
                                #          not rare"
             ]
+
+        NON_NATIVE_PRESENCE_INDICATORS = [
+            'present, non-native',   # From adjusted New England data
+            'exotic',    # Covers: "Species present in state and exotic"
+                         #     and "Species exotic and present"
+            'waif',      # Covers: "Species waif"
+            'noxious',   # Covers: "Species noxious"
+            ]
+
+        NATIVE_PRESENCE_INDICATORS = [
+            'present, native',   # From adjusted New England data
+            'and rare',  # Covers: "Species present and rare"
+            'native',    # Covers: "Species present in state and native"
+            'species present', # Covers: "Species present in state and
+                               #          not rare"
+            ]
+
         label = ''
         status = status.lower()
 
@@ -169,10 +186,15 @@ class PlantDistributionMap(ChloroplethMap):
         # If an absence indicator did not set a label, look through the
         # presence indicators.
         if label == '':
-            for indicator in PRESENCE_INDICATORS:
+            for indicator in NON_NATIVE_PRESENCE_INDICATORS:
                 if indicator in status:
-                    label = 'present'
+                    label = 'non-native'
                     break
+            if label == '':
+                for indicator in NATIVE_PRESENCE_INDICATORS:
+                    if indicator in status:
+                        label = 'native'
+                        break
 
         return label
 

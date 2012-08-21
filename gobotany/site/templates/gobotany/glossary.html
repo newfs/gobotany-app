@@ -1,0 +1,49 @@
+{% extends "gobotany/_page_full_sidebar.html" %}
+
+{% block title %}Glossary: {{ this_letter|upper }}{% endblock %}
+
+{% block js_top %}
+    <script>
+        API_URL = '{% url api-base %}';
+    </script>
+{% endblock %}
+
+{% block js_require %}
+    require(['site/glossary']);
+{% endblock %}
+
+{% block body_attributes %}id="glossary" class="about"{% endblock %}
+
+{% block main_content %}
+    <h1>Glossary: {{ this_letter|upper }}</h1>
+    <ul id="alphabet">
+        {% for letter in letters %}
+            {% if letter = this_letter %}
+                <li class="current"><a>{{ letter|upper }}</a></li>
+            {% else %}
+                {% if letter in letters_in_glossary %}
+                    <li><a href="{% url site-glossary letter %}">{{ letter|upper }}</a></li>
+                {% else %}
+                    <li class="inactive">{{ letter|upper }}</li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <dl id="terms">
+        {% for term in glossary %}
+            <dt>
+                {% if term.image %}
+                    <a rel="shadowbox" href="{{ term.image.url }}">
+                        <img alt="{{ term.term }}" 
+                        src="/static/images/icons/icon-camera.png"></a>
+                {% endif %}
+                {{ term.term }}
+            </dt>
+            <dd>{{ term.lay_definition|capfirst }}{% if not term.lay_definition|make_list|last == '.' %}.{% endif %}</dd>
+        {% endfor %}
+    </dl>
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "gobotany/_about_navigation.html" %}
+{% endblock %}

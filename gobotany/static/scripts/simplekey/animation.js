@@ -2,16 +2,17 @@ define([
     'bridge/jquery',
     'bridge/jquery.animate-colors'
 ], function($, animate_colors) {
-    var module = {};
+    var exports = {};
 
-    module.bright_change = function($elements, options) {
+    exports.bright_change = function($elements, options) {
         options = options || {};
         var start_color = options.start_color || '#ff0';
         var end_color = options.end_color || '#fff';
+        var duration = options.duration || 3000;
         $elements.css('background-color', start_color);
         $elements.animate({
             backgroundColor: end_color
-        }, 3000, 'linear', function() {
+        }, duration, 'linear', function() {
             // When the animation is done, remove the inline style
             // property containing the background color so it will
             // not interfere with future hover or selection states.
@@ -22,5 +23,5 @@ define([
         });
     };
 
-    return module;
+    return exports;
 });

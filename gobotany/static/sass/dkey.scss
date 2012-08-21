@@ -1,0 +1,364 @@
+/* =====================================================================
+   New England Wildflower Society: Dichotomous Key
+   ===================================================================== */
+
+@import "_normalize";
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+@import "compass/css3/images";
+@import "compass/typography/links/hover-link";
+
+/* Definitions */
+
+$logo_width: 450px;
+
+$body_bg: #f0f0c0;
+$text_gray: #606060;
+$text_green: #519136;
+$text_dark_green: #35661C;
+$inactive_bg: #d9dbb1;
+$active_border: #7abe58;
+$active_bg: #b4d57f;
+
+$orange1: #dc9402;
+$orange2: #e29b0b;
+$orange3: #e39d0e;
+$orange4: #f0b448;
+$orange5: #f6be59;
+
+$list_popup_border: #acac90;
+
+$trebuchet: "Trebuchet MS", Trebuchet, Arial, Helvetica, sans-serif;
+
+$orange_gradient: linear-gradient(
+    top, $orange1 0%, $orange4 40%, $orange1 100%);
+
+$bright_orange_gradient: linear-gradient(
+    top, $orange2 0%, $orange5 32%, $orange5 50%, $orange3 100%);
+
+$disabled_orange_gradient: linear-gradient(
+    top, mix($body_bg, $orange2, 75%) 0%, mix($body_bg, $orange5, 75%) 32%,
+    mix($body_bg, $orange5, 75%) 50%, mix($body_bg, $orange3, 75%) 100%);
+
+.orange-button {
+    min-width: 10em;
+    @include border-radius(1em);
+    @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
+    border: 1px solid $orange1;
+    @include background($orange_gradient);
+    padding: 0.3em 0.5em;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-family: $trebuchet;
+    font-weight: bold;
+    line-height: 1.5em;
+    letter-spacing: (1em / 12);
+    &:hover {
+        @include background($bright_orange_gradient);
+    }
+    &.disabled {
+        border-color: mix($body_bg, $orange2, 75%);
+        @include background($disabled_orange_gradient);
+    }
+}
+
+/* Styles */
+
+* { box-sizing: border-box }  /* Paul Irish */
+
+body {
+    background-color: $body_bg;
+    margin: 0 auto;
+    max-width: 960px;           /* width of Fresh Tilled design */
+}
+
+$logo_width: 450px;
+$logo_height: 93px;
+
+img.logo {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 100%;
+}
+.nav-active {                   /* icon appearing below nav entries */
+    &:after {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        bottom: -12px;          /* aligns bottom edge correctly */
+        height: 18px;
+        width: 100%;
+        background: url('/images/nav-active-icon.png') no-repeat center top;
+    }
+}
+
+$nav_vpadding: ((28px - 16px) / 2 / 14px * 1em);
+
+div.nav {
+    margin-top: $logo_height - 28px;
+    margin-left: 46px;
+    @media (max-width: $logo_width) {
+        margin-top: 14%;
+        margin-left: 11%;       /* as image shrinks, reposition nav */
+    }
+    color: #fff;
+    font-size: (14px / 16px) * 100%;
+    a {
+        position: relative;     /* to position the active icon image */
+        display: block;
+        float: left;
+        margin-bottom: 13px;    /* room for the active icon */
+        background-color: #508E31;
+        padding: ((28px - 16px) / 2 / 14px * 1em) 1em;
+        white-space: nowrap;
+        text-decoration: none;
+        color: #fff;
+        &:hover {
+            @extend .nav-active;
+        }
+    }
+    :first-child {
+        @include border-radius(1em 0 0 1em);
+    }
+    :last-child {
+        @include border-radius(0 1em 1em 0);
+    }
+    &:after {
+        content: ' ';
+        display: block;
+        height: 1px;
+        clear: both;
+    }
+}
+
+.offer-help-aside {
+    float: right;
+    @media (max-width: 560px) {
+        float: none;
+        text-align: center;
+    }
+    margin: 1em 1em 0.5em 1em;
+    text-align: right;
+    color: $text_gray;
+    span {
+        font-size: (12px / 16px) * 100%;
+    }
+    a {
+        display: inline-block;
+        margin: 0.8em 1em;
+        @extend .orange-button;
+        font-weight: normal;
+        font-size: (12px / 16px) * 100%;
+        text-transform: uppercase;
+    }
+    select {
+        margin: 0.25em 1.0em;
+        @media (min-width: 500px) {
+            font-size: (12px / 16px) * 100%;
+        }
+    }
+}
+
+h1 {
+    margin: 1em*(14px/35px) 1em*(14px/35px) 0;
+    color: $text_green;
+    font-family: $trebuchet;
+    font-size: (35px / 16px) * 100%;
+    font-weight: normal;
+}
+
+p {
+    margin: 1em;
+    max-width: 48em * (14px / 16px);
+    .figure {
+        clear: right;
+        float: right;
+        margin-left: 1em;
+        margin-bottom: 1em;
+        width: 16em;
+        font-size: 100% * 12px/16px;
+        @media (max-width: 560px) {
+            float: none;
+            display: block;
+            margin: 1em auto;
+        }
+        a {
+            display: block;
+            margin-bottom: 0.5em;
+            border-bottom: 1px solid black;
+            padding-bottom: 0.5em;
+        }
+        img {
+            width: 16em;        /* force thumbnails to a consistent width */
+        }
+        .number {
+            font-weight: bold;
+            margin-right: 0.5em;
+        }
+    }
+}
+
+p.backlinks {
+    margin-top: 1em*(8px/14px);
+    margin-bottom: 1em*(9px/14px);
+    font-size: (14px / 16px) * 100%;
+    a {
+        @include hover-link;
+        margin-right: 0.5em;
+        color: $text_green;
+        font-family: $trebuchet;
+    }
+}
+
+ul.couplets {
+    clear: both;
+    margin: 0em;
+    max-width: 48em;
+    padding: 1em 1em 0 1em;
+    font-size: (14px / 16px) * 100%;
+    line-height: 1.5em;
+    ul {                        /* a couplet */
+        margin: 0em;
+        padding-bottom: 0em;    /* override browser default */
+        padding-left: 2%;       /* indent of each level of couplet */
+    }
+    li {                        /* holds a lead and any <ul> beneath it */
+        display: block;
+        position: relative;
+    }
+    .lead {                     /* green box */
+        margin: 0em 0em 1em 0em;
+        border: 2px solid $inactive_bg;
+        @include border-radius(1em);
+        padding: 1em 1em 1em 1.5em;
+        background-color: $inactive_bg;
+    }
+    .lead:after {               /* "clear" the float for the button */
+        display: block;
+        content: " ";
+        height: 0px;
+        clear: both;
+    }
+    .letter {                   /* "1a." or "12b." or whatever */
+        font-weight: bold;
+        padding-right: 0.5em;
+    }
+    .button-block {             /* contains what-lies-beneath and button */
+        float: right;
+        margin: 0em 0em 0.4em 1.2em;
+        text-align: right;
+    }
+    a.what-lies-beneath {       /* message that sits above the button */
+        display: inline-block;
+        @include hover-link;
+        color: $text_dark_green;
+        font-family: $trebuchet;
+        font-size: (10px / 14px) * 100%;
+        text-transform: uppercase;
+    }
+    a.button {                  /* big orange button */
+        @extend .orange-button;
+        display: inline-block;
+        font-size: (12px / 14px) * 100%;
+    }
+    a[href^="#"] {              /* links to couplets on the same page */
+        font-weight: normal;
+        font-style: italic;
+    }
+    a.figure-link {             /* clickable figure numbers: [Fig. 3] */
+        color: $text_dark_green;
+    }
+}
+ul.couplets .chosen {
+    border-color: $active_border;
+}
+ul.active > li > .lead,
+ul:target > li > .lead {
+    background-color: $active_bg;
+    border-color: $active_border;
+}
+a.show-all-button {
+    @extend .orange-button;
+    display: inline-block;
+    font-size: (12px / 16px) * 100%;
+    font-weight: normal;
+}
+.image-type-selector {
+    display: none;  /* once images are loaded, our JS will un-hide */
+}
+div.taxon-images {
+    margin-left: 1em*12px/16px;
+    text-align: center;
+    figure {
+        margin: 0 1em 1em 0;
+        width: 160px;
+    }
+    img {
+        display: block;
+        margin-bottom: 0.4em;
+        border: 4px solid black;
+        width: 160px;
+        height: 149px;
+    }
+    a {
+        font-size: 12px / 16px * 100%;
+        text-decoration: none;
+        &:hover { text-decoration: underline; }
+    }
+}
+
+div.shadow {                    /* shadow that hides the whole page */
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0, 0.45);
+    text-align: center;
+}
+div.popup {                     /* for displaying quick lists of taxa */
+    display: inline-block;
+    margin: 5% auto;
+    max-height: 90%;
+    overflow-y: auto;
+    overflow-x: hidden;         /* otherwise scrolling can leak to page */
+    border: 0.5em solid $list_popup_border;
+    @include border-radius(1em);
+    background-color: lighten($body_bg, 5);
+    padding: 1em 2em;
+    text-align: left;
+    font-size: (14px / 16px) * 100%;
+    line-height: 1.25em;
+    h2 {                        /* "See list of 14 species in 1b" */
+        border-bottom: 1px solid $text_green;
+        padding-bottom: 0.5em;
+        color: $text_green;
+        font-family: $trebuchet;
+        font-weight: normal;
+
+        /* For tall lists a scrollbar appears, and tends to make the last word
+           of the title wrap unattractively. */
+        white-space: nowrap;
+    }
+    a {
+        @include hover-link;
+        color: #000;
+        &:hover {
+            color: $text_dark_green;
+        }
+    }
+}
+
+/* Text styles. */
+
+.distribution-character {       /* printed book uses a box */
+    margin: 0 0.25em;
+    border: 1px solid black;
+    padding: 0 0.25em;
+    font-size: 1em*14px/16px;
+}

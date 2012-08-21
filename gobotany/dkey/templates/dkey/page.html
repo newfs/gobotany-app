@@ -1,0 +1,152 @@
+{% extends "simplekey/_new_base.html" %}
+{% load dkey_filters %}
+
+{% block title %}{{ page.title }}{% endblock %}
+{% block script_name %}dkey{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="/static/css/dkey.css">
+{% endblock %}
+{% block js_require %}
+  require(['dkey/dkey']);
+{% endblock %}
+{% block body_attributes %}
+    data-couplet-rank="{{ page.rank }}"
+    data-couplet-title="{{ page.title }}"
+{% endblock %}
+{% block body_content %}
+
+{% with title=page|display_title %}
+
+<div class="offer-help-aside">
+  <span>Want help getting started?</span>
+  <a href="/help/">Get Help</a>
+  {% if title == 'Key to the Families' %}
+    <br><select class="jumpbox">
+      <option>Jump to a family…</option>
+      {% for family in families %}
+      <option>{{ family }}</option>
+      {% endfor %}
+    </select><br><select class="jumpbox">
+      <option>Jump to a genus…</option>
+      {% for genus in genera %}
+      <option>{{ genus }}</option>
+      {% endfor %}
+    </select>
+  {% endif %}
+</div>
+
+{% if title == 'Key to the Families' %}
+  <h1>Dichotomous Key to Families</h1>
+{% else %}
+  <h1>{{ title }}</h1>
+{% endif %}
+
+<p class="backlinks">
+  {% include "dkey/_breadcrumbs.html" %}
+  {% if title == 'Key to the Families' %}
+    <a href="{% url dkey_family_groups %}">See the family groups as a list »</a>
+  {% endif %}
+  {% if title == 'List of Family Groups' %}
+    <a href="{% url dkey %}">« Return to the dichotomous key</a>
+  {% endif %}
+</p>
+
+{% if leads|length == 1 %}
+  <p>This {{ page.rank }} contains
+    exactly one {{ next_page.rank }},
+    {{ page|display_title }}.</p>
+{% endif %}
+{% if leads|length == 1 %}
+  <p>This {{ page.rank }} contains
+    exactly one {{ next_page.rank }},
+    {{ page|display_title }}.</p>
+{% endif %}
+
+{% include "dkey/_page_text.html" %}
+
+{% if leads %}
+  <ul class="couplets couplet">
+  {% for lead in lead_hierarchy %}
+    {% if lead.0 %}
+      {% with literal_string=lead %}
+        {{ literal_string|safe }}
+      {% endwith %}
+    {% else %}
+      {% with p=lead.goto_page %}
+      <div class="lead">
+        <div class="button-block">
+          {% if lead.taxa_rank and lead.taxa_set|length > 1 %}
+            <a class="what-lies-beneath" href="."
+               data-taxa="{{ lead.taxa_list }}">
+              See list of {{ lead.taxa_set|length }}
+              {{ lead.taxa_rank|taxon_plural }}
+              {% if lead.letter %}
+                in {{ lead.letter }}
+              {% endif %}
+            </a>
+          <br>
+          {% elif lead.taxa_rank and lead.taxa_set|length == 1 %}
+            <a class="what-lies-beneath" href="{% url dkey_page p|slug %}">
+              Choose this {{ lead.taxa_rank }}
+            </a>
+          <br>
+          {% endif %}
+          <a class="button"
+          {% spaceless %}
+          {% if lead.nextnum %}
+            href="#c{{ lead.nextnum }}">{{ lead.nextnum }} ↴
+          {% elif lead.goto_num %}
+            href="#c{{ lead.goto_num }}">JUMP TO {{ lead.goto_num }}
+          {% elif p.rank == 'species' %}
+            href="{% url simplekey-species p.title|genus_slug p.title|species_slug %}?key=dichotomous"
+              ><i>{{ p.title|abbreviate_title }}</i>
+          {% else %}
+            href="{% url dkey_page p|slug %}"
+            {% if p.rank == 'group' %}
+              >{{ p.title|upper }}
+            {% elif p.rank == 'subkey' %}
+              >VISIT KEY
+            {% elif p.rank == 'family' %}
+              >{{ p.title }}
+            {% elif p.rank == 'subgroup' and page.rank == 'family' %}
+              >{{ p.title|abbreviate_title }}
+            {% elif p.rank == 'genus' %}
+              ><i>{{ p.title }}</i>
+            {% elif p.rank == 'subgroup' and page.rank == 'genus' %}
+              ><i>{{ p.title|abbreviate_title }}</i>
+            {% elif p.rank == 'tribe' %}
+              >{{ p.title|lastword }}
+            {% else %}
+              >MALFUNCTION
+            {% endif %}
+          {% endif %}
+          </a>
+          {% endspaceless %}
+        </div>
+        {% if lead.letter %}
+          <span class="letter">{{ lead.letter }}.</span>
+          {{ lead.text|figurize|safe }}
+        {% elif lead.goto_page.rank == 'subkey' %}
+          {{ lead.goto_page.title }}
+        {% endif %}
+      </div>
+      {% endwith %}
+    {% endif %}
+  {% endfor %}
+  </ul>
+
+  {% if leads|length > 1 %}
+    <p><a class="show-all-button" href="#all">Show All Couplets</a></p>
+  {% endif %}
+
+{% endif %}
+
+<p class="image-type-selector">
+  <img src="/static/images/icons/show-me.png">
+   Show photos of: <select></select>
+</p>
+
+<div class="taxon-images"></div>
+
+{% endwith %}
+{% endblock %}

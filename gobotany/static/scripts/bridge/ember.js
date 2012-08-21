@@ -1,6 +1,5 @@
 define([
-    'bridge/jquery',
-    'tools/ember-0.9.8.1'
-], function($) {
+    'lib/ember-1.0.pre'
+], function(Ember) {
     return Ember;
 });

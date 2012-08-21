@@ -1,36 +1,22 @@
-{# New base page template: will eventually replace _base.html. #}
 <!DOCTYPE html>
 <html>
     <head>
         <title>{% block title %}{% endblock %}{% block title_suffix %}: Go Botany{% endblock %}</title>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width; initial-scale=1.0">
-        {# For IE, activate Google Chrome Frame for version 9 or lower #}
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE9">
+        <meta name="viewport" content="width=device-width,
+        initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        {# No meta tag for Google Chrome Frame: use middleware HTTP header #}
+
         <link rel="shortcut icon" href="/static/images/branding/favicon.png">
     
         {# This block is for any additional meta or link elements. #}
         {% block more_meta_link %}{% endblock %}
 
         {# CSS goes here. #}
-        {% include "_claro_css.html" %}
-        {# TODO: Integrate as many CSS files as possible. Ideally #}
-        {# have just styles.css plus any conditional stylesheets. #}
-        <link rel="stylesheet" href="/static/css/reset.css">
-        <link rel="stylesheet" href="/static/css/basic.css">
+        {% block css %}
         <link rel="stylesheet" href="/static/css/styles.css">
-        <link rel="stylesheet" href="/static/css/shadowbox.css">
-        <link rel="stylesheet"
-            href="/static/css/jquery.jscrollpane.css">
-        <link rel="stylesheet" href="/static/css/smoothDivScroll.css">
-        {# These IE styles will only apply if the user views the site #}
-        {# in IE without the required Chrome Frame plug-in.           #}
-        <!--[if IE 7]>
-            <link rel="stylesheet" href="/static/css/ie7.css">
-        <![endif]-->
-        <!--[if IE 8]>
-            <link rel="stylesheet" href="/static/css/ie8.css">
-        <![endif]-->
+        {% endblock %}
 
         {# JS goes here. #}
 
@@ -50,16 +36,14 @@
         {% if not in_production %}
 
         <!-- DEVELOPMENT FILES -->
-        <script src="/static/scripts/dojo_config.js"></script>
-        {# In order to get better error messages during debugging, #}
-        {# change 'dojo.js' to 'dojo.js.uncompressed.js' below.    #}
-        <script src="/static/scripts/lib/dojo/dojo.js.uncompressed.js"></script>
+        <script src="/static/scripts/requirejs/require.uncompressed.js"></script>
+        <script src="/static/scripts/require_config.js"></script>
 
         {% else %}
 
         <!-- PRODUCTION / DEPLOYMENT FILES -->
-        <script src="/static/scripts/dojo_config_deploy.js"></script>
-        <script src="/static/build/deploy/dojo.js"></script>
+        <script src="/static/scripts/requirejs/require.js"></script>
+        <script src="/static/scripts/require_deploy_config.js"></script>
 
         {% endif %}
 
@@ -70,6 +54,7 @@
             require(["/static/build/deploy/gobotany.application.js"], function(app) {
             {% endif %}
 
+            require(['util/activate_search_suggest']);
             {% block js_require %}{% endblock %}
 
             {% if in_production %}

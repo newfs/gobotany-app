@@ -1,0 +1,271 @@
+/* Begin global media queries styles.
+ *
+ * So far there are three sections for smartphones (two fixed-width layouts
+ * to cover portrait and landscape orientations, with a section common to
+ * both orientations) and some additional styles for tablets. Using
+ * fixed-width layouts allows some pages to have a wider central content
+ * area for now.
+ * Various SASS "partials" (_home.scss, _about.scss, etc.) have their
+ * own media queries arranged like the ones below. Think of those as
+ * modular extensions to these. */
+
+/* Portrait-orientation styles */
+@media only screen and (max-width: 400px) {
+    body {
+        padding-top: 110px;
+    }
+    header nav > a {
+        width: 20px;
+        span {
+            display: none;
+        }
+    }
+    body, header .container, .content .container, footer .container {
+        width: $smallscreen-portrait-width;
+    }
+    #nav {
+        left: 40px;
+        width: 310px;
+    }
+    .content {
+        #main {
+            width: 304px;
+        }
+        #sidebar {
+            float: none;
+            width: 302px;
+        }
+    }
+}
+/* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) {
+    html {
+        -webkit-text-size-adjust: none;
+    }
+    body {
+        padding-top: 75px;
+    }
+    body, header .container, .content .container, footer .container {
+        width: $smallscreen-landscape-width;
+    }
+    header nav > a {
+        width: 80px;
+        span {
+            font-size: 14px;
+            line-height: 160%;
+            
+            padding-left: 5px;
+            position: absolute;
+        }
+    }
+    .content {
+        #main {
+            width: 464px;
+        }
+        #sidebar {
+            width: 462px;
+        }
+    }
+}
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) {
+    body {
+        margin: 0 auto;
+        padding: 0;
+    }
+    h1 {
+        font-size: 24px;
+    }
+    h2 {
+        font-size: 18px;
+    }
+    h3 {
+        font-size: 16px;
+    }
+    header {
+        height: 90px;
+        nav {
+            background: $link-green;
+            clear: left;
+            height: 32px;
+            padding: 0;
+            > a {
+                background: $nav-button-color;
+                border: 1px solid $nav-button-color;
+                display: inline-block;
+                font-size: 30px;
+                height: 24px;
+                line-height: 68%;
+                margin: 3px 0 0 4px;
+                padding: 0 2px 0 7px;
+                position: relative;
+                @include border-radius(5px);
+            }
+            > a:hover {
+                background: $nav-button-color;
+            }
+            #search {
+                margin-top: 6px;
+                padding-left: 10px;
+            }
+            > ul {
+                display: none;  /* will use bottom navigation instead of top */
+            }
+            #search-suggest .menu {
+                top: 83px;
+            }
+        }
+        p.go-botany {
+            margin: 0;
+            padding: 0;
+            width: auto;
+            a {
+                height: 56px;
+                width: 170px;
+            }
+        }
+        p.newfs a {
+            background-size: 100px 55px;
+            float: right;
+            height: 55px;
+            width: 101px;
+        }
+        .container {
+            padding: 0;
+        }
+    }
+    footer {
+        height: auto;
+        margin: 14px 0 0;
+        > img {
+            display: none;
+        }
+        .container {
+            height: auto;
+            padding: 0;
+        }
+        .container div {
+            width: auto;
+        }
+        div div {
+            height: auto;
+        }
+        p {
+            margin: 0;
+        }
+        a {
+            font-size: 11px;
+        }
+        .publisher, .navigation {
+            float: none;
+            margin: 0;
+            padding: 0;
+        }
+        .publisher {
+            margin: 14px 0 0;
+            padding: 12px $smallscreen-margin 20px;
+        }
+        .navigation {
+            h6:first-child {
+                display: none;
+            }
+            > ul.sections {
+                li {
+                    display: block;
+                    margin: 0 0 1px 0;
+                    &:after {
+                        content: none;
+                    }
+                    a {
+                        background: #85c446;
+                        color: #fff;
+                        display: block;
+                        font-family: $headings-font;
+                        font-size: 14px;
+                        padding: 14px 14px;
+                        position: relative;
+                        text-decoration: none;
+                        &:after {
+                            content: " >";
+                            font-weight: bold;
+                            position: absolute;
+                            right: 14px;
+                        }
+                        &[href] {
+                            background: $link-green;
+                            color: #fff;
+                        }
+                    }
+                }
+                + h6 {   /* "Legal:" label */
+                    display: none;
+                }
+            }
+            > h6:nth-of-type(2) {
+                margin: 14px 14px 4px 71px;
+                &:after {
+                    content: ":";
+                }
+            }
+            > h6:nth-of-type(2), > ul.legal {
+                display: inline-block;
+                margin-left: 72px;
+                margin-top: 12px;
+            }
+            .legal {
+                li {
+                    margin-right: 32px;
+                }
+                li:after {
+                    content: none;
+                }
+            }
+        }
+        .support {
+            height: 63px;
+            margin: 14px 0 0;
+            padding: 0;
+            img {
+                padding-bottom: 6px;
+            }
+        }
+    }
+    .content {
+        .container {
+            padding: 0;
+        }
+        #main {
+            background: none;
+            float: none;
+            min-height: inherit;
+            padding-bottom: 14px;
+            padding-left: 0;
+            @include smallscreen-side-margins;
+        }
+        #sidebar {
+            background: #fff;
+            border: 1px solid $border-green;
+            clear: left;
+            height: auto;
+            margin-bottom: 14px;
+            @include smallscreen-side-margins;
+            .section {
+                margin-top: 16px;
+                padding-bottom: 0;
+            }
+            .section:first-child {
+                margin-top: 0;
+            }
+        }
+    }
+    .gb-tooltip {
+        width: 200px;
+    }
+}
+/* These styles apply to smartphones and tablets */
+@media only screen and (max-width: 1024px) {
+    /* Currently there are no global styles here in this category, but
+     * there are some elsewhere for various parts of the site. */
+}
+
+/* End global media queries styles */

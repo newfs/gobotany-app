@@ -186,7 +186,7 @@ class Batch(object):
         args = self.args
         self.text = ''
         self.args = []
-        db_module = self.table.database.connection.__class__.__module__
+        db_module = self.table.database.connection.settings_dict['ENGINE']
         db_type = db_module.split('.')[3]
 
         if text:

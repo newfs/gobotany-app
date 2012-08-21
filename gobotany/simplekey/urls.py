@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import patterns, url
+from django.views.generic.simple import redirect_to
 
 from haystack.forms import HighlightedSearchForm
 
@@ -27,10 +28,6 @@ urlpatterns = patterns(
         {'template' : 'simplekey/dich_key_placeholder.html'},
         name='dich-key-placeholder'),
 
-    url('^teaching-tools/$', views.teaching_tools_view, 
-        {'template' : 'simplekey/teaching_tools.html'},
-        name='teaching-tools'),
-
     # Legal notification pages
     url('^legal/$', views.legal_redirect_view, name='legal'),
     url('^legal/privacy-policy/$', views.privacy_policy_view, name='privacy-policy'),
@@ -47,34 +44,32 @@ urlpatterns = patterns(
     url('^checkup/$', views.checkup_view, name='checkup'),
 
     # Site pages
-    url('^$', views.index_view, name='simplekey-index'),
     url('^advanced/$', views.advanced_view, name='advanced-id-tools'),
     url('^list/$', views.species_list_view, name='species-list'),
-    url('^help/$', views.help_redirect_view, name='simplekey-help'),
-    url('^help/start/$', views.help_start_view, name='simplekey-help-start'),
-    url('^help/about/$', views.help_about_view, name='simplekey-help-about'),
-    url('^help/map/$', views.help_map_view, name='simplekey-help-map'),
-    url('^help/glossary/(?P<letter>[1a-z])/$', views.help_glossary_view,
-        name='simplekey-help-glossary'),
-    url('^help/glossary/$', views.help_glossary_redirect_view,
-        name='simplekey-help-glossary0'),
-    url('^help/video/$', views.help_video_view, name='simplekey-help-video'),
-    url('^families/(?P<family_slug>[^/]*)/$',
+    url('^family/(?P<family_slug>[a-z]+)/$',
         views.family_view, name='simplekey-family'),
-    url('^genera/(?P<genus_slug>[^/]*)/$',
+    url('^genus/(?P<genus_slug>[a-z]+)/$',
         views.genus_view, name='simplekey-genus'),
-    url('^species/(?P<genus_slug>[^/]*)/(?P<specific_name_slug>[^/]*)/$',
+    url('^species/(?P<genus_slug>[a-z]+)/(?P<epithet>[-a-z]+)/$',
         views.species_view, name='simplekey-species'),
-    url('^species/(?P<genus_slug>[^/]*)/$',
-        views.genus_redirect_view, name='simplekey-genus-redirect'),
+    url('^species/(?P<genus_slug>[a-z]+)/$',
+        redirect_to, {'url': '/genus/%(genus_slug)s/'}),
     url('^(?P<key>simple|full)/$', views.level1, name='level1'),
     url('^(?P<key>simple|full)/(?P<pilegroup_slug>[^/]*)/$',
         views.level2, name='level2'),
     url('^(?P<key>simple|full)/(?P<pilegroup_slug>[^/]*)/(?P<pile_slug>[^/]*)/$',
         views.level3, name='level3'),
-    url('^(?P<pilegroup_slug>[^/]*)/(?P<pile_slug>[^/]*)/' \
-        '(?P<genus_slug>[^/]*)/(?P<specific_name_slug>[^/]*)/$',
-        views.species_view),
+
+    # Legacy redirections.
+
+    (r'^families/(?P<family_slug>[a-z]+)/$',
+     redirect_to, {'url': '/family/%(family_slug)s/'}),
+    (r'^genera/(?P<genus_slug>[a-z]+)/$',
+     redirect_to, {'url': '/genus/%(genus_slug)s/'}),
+
+    (r'^(?P<pilegroup_slug>[-a-z]+)/(?P<pile_slug>[-a-z]+)/'
+     r'(?P<genus_slug>[a-z]+)/(?P<epithet>[-a-z]+)/$', redirect_to,
+     {'url': '/species/%(genus_slug)s/%(epithet)s/?pile=%(pile_slug)s'}),
 
     # Old URLs at which the Simple Key 2nd and 3rd-level pages once lived.
 

@@ -1,28 +1,46 @@
 define([
     'bridge/jquery',
+    'util/sidebar',
+    'util/shadowbox_init',
+    'simplekey/PhotoHelper',
     'simplekey/glossarize'
-], function($, glossarize) {
+], function($, sidebar, shadowbox_init, PhotoHelper, glossarize) {
 
-    var module_function = function(args) {
-        $(document).ready(function() {
-            glossarize($('.description'));
-        });
+    var exports = {};
 
-        require([
-            'util/activate_search_suggest',
-            'bridge/shadowbox',
-            'util/shadowbox_init'
-        ]);
+    var _setup_page = function(args) {
+        glossarize($('.description'));
+        sidebar.setup();
 
-        require([
-            'util/sidebar'
-        ], function() {
-            dojo.require('gobotany.sk.family');
-            dojo.addOnLoad(function() {
-                gobotany.sk.family.init(args.family_slug);
+        var photo_helper = PhotoHelper();
+
+        // Wire up each image link to a Shadowbox popup handler.
+        var $images = $('.pics .plant');
+        $images.each(function(i, plant_image_div) {
+            var frame = $(plant_image_div).children('.frame');
+            var link = $(plant_image_div).children('a');
+            var href = $(link).attr('href');
+            var title = $(link).attr('title');
+            $(frame).click(function() {
+                // Open the image.
+                Shadowbox.open({
+                    content: href,
+                    player: 'img',
+                    title: title,
+                    options: {
+                        onOpen: photo_helper.prepare_to_enlarge,
+                        onFinish: photo_helper.process_credit
+                    }
+                });
             });
         });
     };
 
-    return module_function;
+    exports.init = function(args) {
+        $(document).ready(function() {
+            _setup_page(args);
+        });
+    };
+
+    return exports;
 });

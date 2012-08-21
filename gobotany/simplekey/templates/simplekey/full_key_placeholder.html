@@ -2,10 +2,12 @@
 
 {% block title %}Full Key{% endblock %}
 
-{% block body_attributes %}id="advanced-id" class="claro app teaching-tools"{% endblock %}
+{% block body_attributes %}id="full-key" class="app teaching-tools"{% endblock %}
 
 {% block js_require %}
-    require(['util/sidebar']);
+    require(['util/sidebar'], function(sidebar) {
+        sidebar.setup();
+    });
 {% endblock %}
 
 {% block body_content %}
@@ -15,20 +17,20 @@
         <div class="content">
             <div class="container">
                 <div id="main">
-                    <h2>Go Botany Full Key</h2>
-                    <p>This key will cover all 3500 species, subspecies, and
+                    <h2>Full Key</h2>
+                    <p>This key will cover all 3,500 species, subspecies, and
                     varieties of native and naturalized plants in New
-                    England.</p><br />
+                    England.</p>
                     <p>It works in the same way as our Simple Key Plant
                     Identifier, asking you to choose the broad group your plant
                     is in, then offering you a series of questions based on the
                     characteristics you are able to observe.  Because there are
                     many types of plants in this key, you may take a little
                     longer to identify your plant, but once you do, you can get
-                    lots of information on each taxon.</p><br />
+                    lots of information on each taxon.</p>
                     <p>We are completing data input for all these taxa, and the
                     Full Key will be available in Fall 2012. Check back
-                    soon!</p><br />
+                    soon!</p>
                 </div>
                 <div id="sidebar">
                     {# Use SimpleKey until a page-specific design is created #}

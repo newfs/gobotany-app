@@ -1,0 +1,401 @@
+/* Home */
+
+#home {
+    background: url(/static/images/layout/body-home.jpg) repeat-x left top #f3f3c3;
+    #all {
+        background: url(/static/images/layout/content-home-bg.jpg) center 72px no-repeat transparent;
+    }
+    header {
+        h1 {
+            background: url(/static/images/branding/logo-toplevel.png) no-repeat transparent;
+            float: left;
+            margin: 0 0 0 67px;
+            height: 107px;
+            width: 595px;
+            @include offscreen;
+        }
+        .newfs a {
+            background: url(/static/images/branding/newfs-logo-toplevel.png) no-repeat transparent;
+            height: 88px;
+            width: 160px;
+        }
+        nav {
+            background: url(/static/images/layout/nav-toplevel.png) center 107px no-repeat;
+            height: 160px;
+            padding: 0 0 0 19px;
+            li {
+                margin-right: 9px;
+                &.home {
+                    margin: 0 63px 0 0;
+                    a {
+                        color: #fff;
+                    }
+                }
+                a:hover {
+                    @include highlight-global-nav-home;
+                }
+            }
+        }
+        #search-suggest .menu {
+            top: 133px;
+        }
+    }
+    .content {
+        clear: left;
+        margin-top: 18px;
+    }
+    #banner {
+        margin: 10px 0 0;
+        position: absolute;
+        > img {
+            display: none;
+            height: 345px;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 960px;
+            @include single-box-shadow(rgba(0, 0, 0, 0.6), 0px, 0px, 4px);
+        }
+        img:first-child {
+            display: block;
+        }
+        h2 {
+            color: #519136;	
+            font-size: 38px;
+            line-height: normal;
+            margin: 0 0 15px 0;
+        }
+        p {
+            margin: 12px 0 0 0;
+            text-align: left;
+            text-shadow: 0px 1px 1px #fff;	
+        }
+        #cta {
+            height: 41px;
+            margin: 21px 2px 0;
+            background: url(/static/images/layout/get-started-btn-orange.png) 0 0 no-repeat transparent;	
+            @include offscreen;
+            &:hover {
+                background-position: 0 -41px;	
+            }
+            &:active {
+                background-position: 0 -82px;		
+            }
+        }
+    }
+    #overlay {
+        background: rgba(255, 255, 255, 0.8);
+        height: 318px;
+        padding: 15px 30px 0;
+        position: absolute;
+        left: 646px;
+        text-align: center;
+        top: 6px;
+        width: 248px;
+        z-index: 100;
+    }
+    .three-col {
+        background: url(/static/images/layout/dot.png) right top repeat-y;
+        float: left;
+        height: 240px;
+        margin: 354px 23px 5px 0;
+        padding: 8px 23px 0 0;
+        width: 289px;
+        &.last {
+            background: 0;	
+            margin-right: 0;
+            padding: 8px 0 0 0;
+            a.learn-more {
+                margin: 33px 0 0 0;
+            }
+        }
+        h3 {
+            font-size: 24px;
+        }
+        h4 {
+            margin: 0 0 3px 0;
+            font-style: italic;	
+            color: #807121;
+        }
+        a.learn-more {
+            margin: 13px 0 0 0;	
+        }
+    }
+    a {
+        &.learn-more {
+            background: url(/static/images/layout/learn-more-btn.png) 0 0 no-repeat;
+            height: 32px;
+            width: 111px;
+            @include offscreen;
+            &:hover {
+                background-position: 0 -32px;	
+            }
+            &:active {
+                background-position: 0 -64px;	
+            }
+        }
+        &.subscribe {
+            background: url(/static/images/layout/subscribe.png) 0 0 no-repeat;
+            cursor: pointer;
+            height: 16px;
+            width: 87px;
+            @include offscreen;
+            &:hover {
+                background-position: 0 -16px;
+            }
+            &:active {
+                background-position: 0 -32px;
+            }
+        }
+    }
+    #potd {   /* Plant of the Day */
+        background: #c7e2a1;
+        border: 3px solid #fff;
+        clear: left;
+        height: 140px;
+        margin: 15px 0;
+        padding: 10px;
+        @include single-box-shadow(rgba(0, 0, 0, 0.3), 0px, 0px, 4px);
+        > a {
+            display: block;
+            float: left;
+            height: 131px;
+            margin: 5px 5px;
+            overflow: hidden;
+            width: 270px;
+            img {
+                position: relative;
+                top: -60px;
+                width: 270px;
+            }
+        }
+        .details {
+            margin: 0 0 0 295px;
+            position: absolute;
+            width: 630px;
+            h3 span {
+                &.latin {
+                    font-style: italic;
+                }
+                &.english {
+                    font-size: 12px;
+                    color: #807121;
+                }
+            }
+            p {
+                height: 72px;
+                overflow: hidden;
+            }
+        }
+    }
+    .donate {
+        padding: 0;
+        margin: 15px 0;
+        border: 3px solid #fff;
+        background: #f1ebae;
+        @include single-box-shadow(rgba(0, 0, 0, 0.3), 0px, 0px, 4px);
+        p {
+            margin: 14px;
+            position: relative;
+        }
+        a {
+            background: url(/static/images/layout/donate-btn.png) 0 0 no-repeat transparent;
+            cursor: pointer;
+            display: block;
+            float: right;
+            height: 32px;
+            padding: 0;
+            position: absolute;
+            right: 0;
+            text-indent: -9000px;
+            top: -6px;
+            width: 104px;
+            &:hover {
+	            background-position: 0 -32px;
+            }
+            &:active {
+	            background-position: 0 -64px;
+            }
+        }
+    }
+    footer {
+        background: none;
+        > img {
+            display: none;
+        }
+    }   
+}
+
+/* Begin media queries styles for Home page */
+
+/* Portrait-orientation styles */
+@media only screen and (max-width: 400px) {
+    #home {
+        #banner {
+            #overlay {
+                top: 115px;
+                width: $smallscreen-portrait-width;
+            }
+            > img {
+                height: 115px;
+                width: $smallscreen-portrait-width;
+            }
+            + .three-col {
+                padding-top: 375px;
+            }
+        }
+        #potd {
+            height: 350px;
+        }
+    }
+}
+/* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) {
+    #home {
+        #banner {
+            #overlay {
+                top: 172px;
+                width: $smallscreen-landscape-width;
+            }
+            > img {
+                height: 172px;
+                width: $smallscreen-landscape-width;
+            }
+            + .three-col {
+                padding-top: 400px;
+            }
+        }
+        #potd {
+            height: 260px;
+        }        
+    }
+}
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) {
+    #home {
+        .content {
+            margin-top: 0;
+            padding-top: 0;
+        }
+        header {
+            h1 {
+                background-position: -56px -7px;
+                height: 56px;
+                margin-left: 0;
+                width: 200px;
+            }
+            nav {
+                background: #508e31;
+                height: 32px;
+                padding-left: 0;
+                > a:hover {
+                    text-decoration: none;
+                }
+            }
+            .newfs a {
+                background-size: 100px 55px;
+                float: right;
+                height: 55px;
+                width: 101px;
+            }
+        }
+        #banner {
+            margin: 0;
+            position: relative;
+            #overlay {
+                background: #f7fbe9;
+                height: auto;
+                left: 0;
+                padding: 0;
+                text-align: center;
+                h2 {
+                    font-size: 28px;
+                    margin: 6px 0 0;
+                }
+                p {
+                    padding: 0 $smallscreen-margin;
+                }
+                img {
+                    width: 53%;
+                }
+            }
+            #cta {
+                background-position: 50% 0;
+                margin: 6px;
+                &:hover {
+                    background-position: 50% -41px;	
+                }
+                &:active {
+                    background-position: 50% -82px;		
+                }
+            }
+        }
+        .three-col {
+            background: none;
+            float: none;
+            height: inherit;
+            margin: 14px 0;
+            padding: 0;
+            width: auto;
+            h3, h4, p {
+                @include smallscreen-side-margins;
+            }
+            h3 {
+                font-size: 18px;
+            }
+            h4 {
+                font-size: 14px;
+            }
+            a.learn-more, &.last a.learn-more {
+                margin-top: 6px;
+                @include smallscreen-side-margins;
+            }
+        }
+        #breadcrumb p {
+            line-height: 160%;
+        }
+        #potd {
+            padding: $smallscreen-margin;
+            > a {
+                margin: 0;
+                margin-bottom: 4px;
+                margin-right: $smallscreen-margin;
+            }
+            > a, > a img {
+                width: $smallscreen-potd-image-width;
+            }
+            .details {
+                margin: 0;
+                position: inherit;
+                width: inherit;
+                h4 {
+                    line-height: 140%;    
+                }
+                p {
+                    height: inherit;
+                    overflow: inherit;
+                }
+                a {
+                    margin-top: 6px;
+                    position: inherit;
+                    top: 0;
+                }
+            }
+        }
+        .donate {
+            margin: 0;
+            p {
+                margin: 8px;
+                padding: 0;
+            }
+            a {
+                float: none;
+                margin: 6px 0;
+                position: static;
+            }
+        }
+    }
+}
+
+/* End media queries styles for the Home page */
+

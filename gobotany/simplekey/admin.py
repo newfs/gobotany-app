@@ -1,19 +1,15 @@
 from django.contrib import admin
 
-from gobotany.simplekey.models import Blurb, Video, HelpPage
-
-class BlurbsInline(admin.StackedInline):
-    model = HelpPage.blurbs.through
-    extra = 0
+from gobotany.core.models import Video
+from gobotany.simplekey.models import PlainPage
 
 class VideosInline(admin.TabularInline):
-    model = HelpPage.videos.through
+    model = PlainPage.videos.through
     extra = 0
 
-class HelpPageAdmin(admin.ModelAdmin):
-    exclude = ('blurbs', 'videos')
-    inlines = (BlurbsInline, VideosInline,)
+class PlainPageAdmin(admin.ModelAdmin):
+    exclude = ('videos',)
+    inlines = (VideosInline,)
 
-admin.site.register(Blurb)
-admin.site.register(HelpPage, HelpPageAdmin)
+admin.site.register(PlainPage, PlainPageAdmin)
 admin.site.register(Video)

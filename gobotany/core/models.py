@@ -244,7 +244,7 @@ class PileInfo(models.Model):
     friendly_title = models.CharField(max_length=100, blank=True)
     description = models.CharField(max_length=2500, blank=True)
     images = generic.GenericRelation('ContentImage')
-    youtube_id = models.CharField(max_length=20, blank=True)
+    video = models.ForeignKey('Video', null=True)
     key_characteristics = tinymce_models.HTMLField(blank=True)
     notable_exceptions = models.TextField(blank=True)
 
@@ -435,7 +435,6 @@ class HomePageImage(models.Model):
 class Family(models.Model):
     """A biological family."""
     name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(max_length=100, unique=True)
     common_name = models.CharField(max_length=100)
     description = models.TextField(verbose_name=u'description',
                                    blank=True)
@@ -449,17 +448,13 @@ class Family(models.Model):
     def __unicode__(self):
         return self.name
 
-    def save(self, *args, **kw):
-        """Set the slug if it isn't already set"""
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super(Family, self).save(*args, **kw)
-
+    @property
+    def slug(self):
+        return self.name.lower()
 
 class Genus(models.Model):
     """A biological genus."""
     name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(max_length=100, unique=True)
     common_name = models.CharField(max_length=100)
     description = models.TextField(verbose_name=u'description', blank=True)
     family = models.ForeignKey(Family, related_name='genera')
@@ -473,12 +468,9 @@ class Genus(models.Model):
     def __unicode__(self):
         return self.name
 
-    def save(self, *args, **kw):
-        """Set the slug if it isn't already set"""
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super(Genus, self).save(*args, **kw)
-
+    @property
+    def slug(self):
+        return self.name.lower()
 
 class Synonym(models.Model):
     """Other (generally previous) scientific names for species."""
@@ -770,3 +762,16 @@ class CopyrightHolder(models.Model):
         if self.source:
             unicode_string += u' Source: %s' % self.source
         return unicode_string
+
+
+class Video(models.Model):
+    """Information on YouTube videos used for help."""
+    title = models.CharField(max_length=100)
+    youtube_id = models.CharField(max_length=20)
+    # May want to fetch additional metadata from YouTube and store it.
+    # Can retrieve Atom XML with a GET request, e.g.,
+    # http://gdata.youtube.com/feeds/api/videos/LQ-jv8g1YVI?v=2
+    # See docs: http://bit.ly/c1vHUz
+
+    def __unicode__(self):
+        return u'%s: %s' % (self.title, self.youtube_id)

@@ -18,12 +18,12 @@ Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}
     var args = {
         genus_slug: '{{ genus.slug }}'
     };
-    require(['simplekey/genus'], function(genus_page_init) {
-        genus_page_init(args);
+    require(['simplekey/genus'], function(genus) {
+        genus.init(args);
     });
 {% endblock %}
 
-{% block body_attributes %}id="genus" class="claro app genus"{% endblock %}
+{% block body_attributes %}id="genus" class="app genus"{% endblock %}
 
 {% block body_content %}
     {% include "simplekey/_header.html" %}
@@ -67,7 +67,7 @@ Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}
                 <h4>This Genus&#8217;s Species:</h4>
                 <ul class="species">
                 {% for species in genus.taxa.all %}
-                    <li><i><a href="{% url simplekey-species species.genus.slug species.epithet %}"
+                    <li><i><a href="{% url simplekey-species genus.slug species.epithet %}"
                     >{{ species.scientific_name }}</a></i></li>
                 {% endfor %}
                 </ul>

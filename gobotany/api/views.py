@@ -1,11 +1,12 @@
 import hashlib
 import json
 from collections import defaultdict
+from urllib import urlencode
 
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
-from django.shortcuts import render_to_response
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import etag
 from django.views.decorators.vary import vary_on_headers
@@ -49,7 +50,10 @@ def _taxon_image(image):
         }
     return json
 
-def _simple_taxon(taxon):
+def _simple_taxon(taxon, pile_slug):
+    genus_name, epithet = taxon.scientific_name.lower().split(None, 1)
+    url = reverse('simplekey-species', args=(genus_name, epithet))
+    url += '?' + urlencode({'pile': pile_slug})
     return {
         'id': taxon.id,
         'scientific_name': taxon.scientific_name,
@@ -57,6 +61,7 @@ def _simple_taxon(taxon):
         'genus': taxon.scientific_name.split()[0],  # faster than .genus.name
         'family': taxon.family_name,
         'taxonomic_authority': taxon.taxonomic_authority,
+        'url': url,
         }
 
 # API views.
@@ -265,7 +270,7 @@ def species(request, pile_slug):
     result = []
     while species_list:
         species = species_list.pop()  # pop() to free memory as we go
-        d = _simple_taxon(species)
+        d = _simple_taxon(species, pile_slug)
         d['images'] = images = []
         image_list = image_dict.pop(species.id, ())
         for image in image_list:
@@ -320,45 +325,42 @@ def vectors_pile(request, slug):
 
 # Plant distribution maps
 
-def _shade_map(distribution_map,  genus, specific_epithet):
-    scientific_name = ' '.join([genus.title(), specific_epithet.lower()])
+def _shade_map(distribution_map,  genus, epithet):
+    scientific_name = ' '.join([genus.title(), epithet.lower()])
     distribution_map.set_plant(scientific_name)
     return distribution_map.shade()
 
-def _compute_map_etag(request, distribution_map, genus, specific_epithet):
+def _compute_map_etag(request, distribution_map, genus, epithet):
     """Generate an ETag for allowing caching of maps. This requires
     shading the map upon every request, but saves much bandwidth.
     """
-    shaded_map = _shade_map(distribution_map, genus, specific_epithet)
+    shaded_map = _shade_map(distribution_map, genus, epithet)
     h = hashlib.md5()
     h.update(shaded_map.tostring())
     return h.hexdigest()
 
 @etag(_compute_map_etag)
-def _distribution_map(request, distribution_map, genus, specific_epithet):
-    shaded_map = _shade_map(distribution_map, genus, specific_epithet)
+def _distribution_map(request, distribution_map, genus, epithet):
+    shaded_map = _shade_map(distribution_map, genus, epithet)
     return HttpResponse(shaded_map.tostring(), mimetype='image/svg+xml')
 
-def new_england_distribution_map(request, genus, specific_epithet):
+def new_england_distribution_map(request, genus, epithet):
     """Return a vector map of New England showing county-level
     distribution data for a plant.
     """
     distribution_map = NewEnglandPlantDistributionMap()
-    return _distribution_map(request, distribution_map, genus,
-                             specific_epithet)
+    return _distribution_map(request, distribution_map, genus, epithet)
 
-def united_states_distribution_map(request, genus, specific_epithet):
+def united_states_distribution_map(request, genus, epithet):
     """Return a vector map of the United States showing county-level
     distribution data for a plant.
     """
     distribution_map = UnitedStatesPlantDistributionMap()
-    return _distribution_map(request, distribution_map, genus,
-                             specific_epithet)
+    return _distribution_map(request, distribution_map, genus, epithet)
 
-def north_american_distribution_map(request, genus, specific_epithet):
+def north_american_distribution_map(request, genus, epithet):
     """Return a vector map of North America showing county-level
     distribution data for a plant.
     """
     distribution_map = NorthAmericanPlantDistributionMap()
-    return _distribution_map(request, distribution_map, genus,
-                             specific_epithet)
+    return _distribution_map(request, distribution_map, genus, epithet)

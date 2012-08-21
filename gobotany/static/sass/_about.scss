@@ -1,0 +1,504 @@
+/* About */
+
+$advanced-map-frame-border: 5px solid rgba(255, 255, 255, 0.8);
+$advanced-map-active-color: #1a2e12;
+$image-box-shadow-color: rgba(0, 0, 0, 0.6);
+
+#about #main {
+    img {
+        float: right;
+        margin: 5px 0 20px 20px;
+        .bookcover {
+            margin-right: 89px;
+        }
+    }
+    ul {
+        margin: 0 5px 0 18px;
+    }
+}
+
+/* Getting Started */
+
+#getting-started {
+    h2 {
+        margin-top: 0;
+        padding-top: 0;
+    }
+    .question {
+        padding: 18px 0 18px 45px;	
+        background-position: left 22px;
+        background-repeat: no-repeat;
+        border-bottom: 1px solid #e2dfcb;
+        ul {
+            padding: 0 0 0 15px;
+        }
+    }
+    .first.question {
+        margin: 11px 0 0 0;
+        border-top: 1px solid #e2dfcb;
+        background-image: url(/static/images/icons/1.png);	
+    }
+    .second.question {
+        background-image: url(/static/images/icons/2.png);	
+    }
+    .third.question {
+        background-image: url(/static/images/icons/3.png);	
+    }
+    .fourth.question {
+        background-image: url(/static/images/icons/4.png);	
+    }
+    .fifth.question {
+        background-image: url(/static/images/icons/5.png);	
+    }
+    .sixth.question {
+        margin: 0 0 11px 0;
+        background-image: url(/static/images/icons/6.png);	
+    }
+    a {
+        &.screenshot {
+            float: right;	
+            margin: 0 0 0 15px;
+            color: #1a2e11;
+            text-align: center;
+            &:hover {
+                text-decoration: none;	
+            }
+            img {
+                margin: 10px 0;
+                vertical-align: middle;
+                &.screenshot-thumb {
+                    border: 5px solid #fff;
+                    display: block;	
+                    margin: 0;
+                    @include single-box-shadow(rgba(0, 0, 0, 0.3), 0px, 1px, 4px);
+                }
+            }
+        }
+        &.onward-btn {
+            cursor: pointer;
+            display: block;
+            float: right;
+            width: 280px;
+            height: 32px;
+            margin: 10px 0;
+            background: url(/static/images/layout/onward-btn-orange.png) 0 0 no-repeat transparent;
+            text-indent: -9000px;
+            &:hover {
+                background-position: 0 -32px;
+            }
+            &:active {
+                background-position: 0 -64px;
+            }
+        }
+    }
+    $video-height: 147px;
+    $video-width: 196px;
+    .video-topic {
+        height: $video-height;
+        margin-bottom: 4px;
+        width: $video-width;
+        img {
+            height: $video-height;
+            width: $video-width;
+        }
+        a {
+            cursor: pointer;
+        }
+    }
+}
+
+/* Advanced Map to Groups */
+
+#advanced-map {
+    h2 {
+        clear: left;
+    }
+    #plant-map-list {
+	    margin: 10px 0;
+    }
+    #group-section {
+        height: 200px;
+    }
+    .plant-group {
+        cursor: pointer;
+        float: left;
+        height: 185px;
+        margin: 0 10px 10px 0;
+        padding: 2px 0 0;
+        position: relative;
+        width: 110px;
+        &.last {
+	        margin: 0 0 10px 0;	
+        }
+        &:hover {
+            .frame {
+                border-color: $advanced-map-active-color;
+            }
+            h3 {
+                background: $advanced-map-active-color;
+                color: #fff;
+            }
+        }
+        &.active {
+            h3 {
+                background: $advanced-map-active-color;
+	            color: #fff;
+            }
+            .frame {
+                border-color: $advanced-map-active-color;
+            }
+        }
+        h3 {
+            bottom: 146px;
+            color: $link-green;
+            font-size: 12px;
+            line-height: 120%;
+            margin: 0 0 0 0;
+            padding: 6px 0 6px 5px;
+            position: absolute;
+            width: 105px;
+        }
+        .image {
+            position: absolute;
+            top: 40px;
+        }
+        .frame {
+            border: $advanced-map-frame-border;
+            height: 91px;	
+            position: absolute;
+            top: 0;
+            width: 100px;
+            z-index: 100;
+        }
+        .img-container {
+            height: 101px;
+            margin-bottom: 6px;
+            overflow: hidden;
+            width: 110px;
+            @include single-box-shadow($image-box-shadow-color, 0, 0, 4px);
+        }
+    }
+    .plant-subgroup {
+        cursor: default;
+        float: left;
+        height: 264px;
+        margin: 0 11px 11px 0;
+        padding: 17px 0 0 0;
+        width: 160px;
+        &.last {
+            margin-right: 0;
+        }
+        .image {
+	        position: relative;	
+        }
+        .frame {
+            border: 5px solid #1a2e12;
+            height: 129px;	
+            position: absolute;
+            top: 0;
+            width: 150px;
+            z-index: 100;
+        }
+        h3 {
+            background: #1a2e12;
+	        color: #fff;
+            font-size: 13px;
+            height: 30px;
+	        line-height: 120%;
+	        margin: 0 0 0 0;
+	        padding: 6px;
+        }
+        .img-container {
+        	height: 139px;
+	        overflow: hidden;
+	        width: 160px;
+        }
+        .more-info {
+	        background: url(/static/images/icons/more-info.png) left 4px no-repeat transparent;	
+	        margin: 5px 0 0 0;
+	        padding: 0 0 0 19px;
+        }
+    }
+    p.video {
+    	background: url(/static/images/icons/icon3.png) left 4px no-repeat transparent;
+	    margin: 2px 0;
+	    padding: 3px 0 0 22px;
+    }
+    p.list {
+	    background: url(/static/images/icons/icon1.png) left 4px no-repeat transparent;
+	    margin: 2px 0 0;
+	    padding: 3px 0 0 22px;
+    }
+    .choose-btn {
+        background: url(/static/images/layout/choose-btn.png) 0 0 no-repeat transparent;
+        display: block;
+        height: 32px;
+        margin: 10px 0 5px;
+        text-indent: -9000px;
+        width: 104px;
+        &:hover {
+	        background-position: 0 -32px;
+        }
+        &:active {
+	        background-position: 0 -64px;
+        }
+    }
+}
+
+/* Glossary */
+
+/* Glossary term underline for popup */
+.gloss {
+    border-bottom: 1px dashed;
+    cursor: pointer;
+}
+
+#glossary {
+    #alphabet {
+        height: 33px;
+        list-style-type: none;
+        margin: 7px 0;
+        padding: 0;
+        width: 712px; /* 2px wider than its parent box so no wrap in Moz */
+        li {
+            border-left: 1px solid #e1e1dc;
+            float: left;
+            font-size: 18px;
+            margin: 0;
+            padding: 0 7px;
+            &:first-child {
+                border-left: 0;
+            }
+            &.inactive {
+                color: #ccc;
+            }
+            .current a {
+                color: #000;
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+    #terms {
+        background-color: #fff;
+        border: 1px solid #e1e1dc;
+        clear: left;
+        margin: 0 0 24px 0;
+        width: 710px;
+        dt, dd {
+            border-top: 1px solid #e1e1dc;
+            min-height: 24px;
+        }
+        dt {
+            clear: left;
+            float: left;
+            line-height: 25px;
+            padding: 7px 10px 10px 38px;
+            width: 190px;
+            &:first-child, &:first-child + dd {
+                border-top: 0;
+            }
+            a {
+                float: left;
+                margin-left: -34px;
+            }
+        }
+        dd {
+            margin-left: 224px;
+            padding: 13px;
+        }
+        img {
+            padding-left: 4px;
+            padding-top: 1px;
+        }
+    }
+}
+
+/* Glossary tooltip */
+.glosstip {
+    line-height: 140%;
+    position: relative;
+    max-width: 30em;
+    img {
+        background: $tooltip-background-top-color;
+        border: 1px solid $tooltip-border-color;
+        bottom: 110%;
+        padding: 4px;
+        position: absolute;
+        @include single-box-shadow($tooltip-shadow-color, 1px, 1px, 2px);
+        @include border-radius(2px);
+    }
+}
+
+/* Video Help Topics */
+
+#video {
+    .video-topic {
+        float: left;
+        height: 176px;
+        margin: 10px 16px 10px 0;
+        position: relative;
+        width: 220px;
+        img {
+            height: 137px;
+            width: 220px;
+        }
+        > p {
+            font-family: $headings-font;
+            font-size: 18px;
+            line-height: 105%;
+            margin-top: 4px;
+        }
+        .missing-image {
+            border: 1px solid $link-green;
+            height: 135px;
+            width: 218px;
+            p {
+                left: auto;
+                margin: 55px 0;
+                position: absolute;
+                text-align: center;
+                top: auto;
+                white-space: nowrap;
+                width: 100%;
+            }
+        }
+    }
+}
+
+/* Contributors */
+
+#contributors #main {
+    ul {
+        list-style-type: none;
+    }
+    li {
+        margin: 0;
+    }
+}
+
+/* Begin media queries styles for the About section. */
+
+/* Portrait-orientation styles */
+@media only screen and (max-width: 400px) {
+    #about #main {
+        > img {
+            width: 57%;
+        }
+        img.bookcover {
+            width: auto;
+        }
+    }
+    #advanced-map #group-section {
+        height: 600px;
+    }
+    #glossary #alphabet {
+        height: 99px;
+    }
+}
+/* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) {
+    #advanced-map #group-section {
+        height: 400px;
+    }
+    #glossary #alphabet {
+        height: 66px;
+    }
+}
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) {
+    #about #main {
+        ul {
+            margin-left: $smallscreen-margin;
+            padding-left: 6px;
+        }
+        > img, img.bookcover {
+            margin-bottom: $smallscreen-margin;
+            margin-left: $smallscreen-margin;
+            margin-right: 0;
+        }
+    }
+    #getting-started {
+        .question {
+            padding: 16px 0 18px 38px;
+            h2 {
+                line-height: 130%;
+                margin: 2px 0 4px;
+            }
+            p {
+                margin: 0;
+            }
+        }
+        a {
+            &.screenshot
+                img.screenshot-thumb {
+                    margin: 10px 0 0;
+            }
+            &.onward-btn {
+                float: none;
+                margin: 0 auto 20px;
+            }
+        }
+    }
+    #advanced-map #plant-map-list {
+        margin-left: $smallscreen-margin;
+        margin-right: $smallscreen-margin;
+        margin-top: 0;
+    }
+    #glossary {
+        #alphabet {
+            line-height: 250%;
+            width: auto;
+            li {
+                border: 0;
+                padding: 1px 10px;
+            }
+        }
+        #terms {
+            width: auto;
+            img {
+                padding-left: 2px;
+            }
+            dt {
+                border-top: 0;
+                clear: none;
+                float: none;
+                font-weight: bold;
+                padding-bottom: 0;
+                width: auto;
+            }
+            dd {
+                border-top: 0;
+                margin: 0;
+                padding: 0 5px 10px 39px;
+            }
+        }
+    }
+    #video {
+        .video-topic {
+            margin-right: 12px;
+            > p {
+                font-size: 16px;
+            }
+        }
+        .missing-image p {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+}
+/* These styles apply to smartphones and tablets */
+@media only screen and (max-width: 1024px) {
+
+    /* Disable hover states on Advanced Map to Groups page. */
+    #advanced-map .plant-group:hover .frame {
+	    border: $advanced-map-frame-border;
+    }
+    #advanced-map .plant-group:hover h3 {
+	    background: inherit;
+	    color: $link-green;
+    }
+}
+
+/* End media queries styles for the About section */

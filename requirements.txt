@@ -1,4 +1,4 @@
-django==1.3
+django==1.4
 lxml
 psycopg2>=2.3
 supervisor==3.0a12
@@ -6,15 +6,14 @@ xlrd
 # Unsure which version satisfied minimum reqs
 PIL
 
-django-haystack
+django-haystack==1.2.7
 django-piston==0.2.2
 django-tinymce
 python-memcached
-setuptools
 
 # The way we use pysolr introduces an extra dependency:
-pysolr
-BeautifulSoup
+pysolr==2.0.15
+BeautifulSoup==3.2.1
 
 # For memcached on Heroku we need a caching back-end that does authentication:
 pylibmc==1.2.2
@@ -31,6 +30,9 @@ boto==2.2.2
 # For deployment to Heroku.
 gunicorn
 newrelic
+
+# For our Heroku Scheduler tasks that scan S3
+s3cmd
 
 # For testing.
 coverage

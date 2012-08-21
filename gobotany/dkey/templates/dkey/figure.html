@@ -1,0 +1,8 @@
+{% load dkey_filters %}
+<span class="figure">
+  <a class="figure-link" href="{{ figure|figure_url }}">
+    <img src="{{ figure|figure_url }}">
+  </a>
+  <span class="number">Fig. {{ figure.number }}.</span>
+  {{ figure.caption|safe }}
+</span>

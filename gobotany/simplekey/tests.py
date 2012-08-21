@@ -3,6 +3,8 @@ import json
 from django.test import TestCase
 from django.test.client import Client
 
+from gobotany import core
+from gobotany import simplekey
 from gobotany.core.models import Character, CharacterValue, Pile, PileGroup
 
 from gobotany.simplekey.models import (GroupsListPage,
@@ -112,6 +114,83 @@ def create_simple_key_pages():
             subgroup=subgroup)
         subgroup_results_page.save()
 
+
+def save(instance):
+    instance.save()
+    return instance
+
+# The tests.
+
+class URLs(TestCase):
+    def test(self):
+
+        # Set up a minimal database.
+
+        m = core.models
+
+        pg = save(m.PileGroup(slug=u'woody-plants', name=u'Woody Plants'))
+        p = save(m.Pile(slug=u'woody-angiosperms', name=u'Woody Angiosperms',
+                        pilegroup=pg))
+        f = save(m.Family(name=u'Sapindaceae'))
+        g = save(m.Genus(name=u'Acer', family=f))
+        t = save(m.Taxon(scientific_name=u'Acer rubrum', family=f, genus=g))
+        t.piles.add(p)
+
+        m = simplekey.models
+
+        save(m.GroupsListPage(title=u''))
+        save(m.SubgroupsListPage(title=u'', group=pg))
+        save(m.SubgroupResultsPage(title=u'', subgroup=p))
+
+        c = Client()
+
+        def t(url, status, redirect=None):
+            response = c.get(url)
+            self.assertEqual((url, response.status_code), (url, status))
+            if redirect:
+                self.assertRedirects(response, redirect, status_code=status)
+
+        # Verify the operation of all standard URLs.
+
+        t('/Simple/', 404)
+        t('/simple/', 200)
+
+        t('/Unknown/', 404)
+        t('/Woody-Plants/', 404)
+        t('/woody-plants/', 200)
+
+        t('/woody-plants/Unknown/', 404)
+        t('/woody-plants/Woody-Angiosperms/', 404)
+        t('/woody-plants/woody-angiosperms/', 200)
+
+        t('/family/Unknown/', 404)
+        t('/family/Sapindaceae/', 404)
+        t('/family/sapindaceae/', 200)
+
+        t('/genus/Unknown/', 404)
+        t('/genus/Acer/', 404)
+        t('/genus/acer/', 200)
+
+        t('/species/Unknown/', 404)
+        t('/species/Acer/', 404)
+        t('/species/acer/', 301, '/genus/acer/')
+
+        t('/species/Unknown/unknown/', 404)
+        t('/species/Acer/rubrum/', 404)
+        t('/species/acer/rubrum/', 200)
+
+        # Legacy URLs.
+
+        t('/families/Unknown/', 404)
+        t('/families/Sapindaceae/', 404)
+        t('/families/sapindaceae/', 301, '/family/sapindaceae/')
+
+        t('/genera/Unknown/', 404)
+        t('/genera/Acer/', 404)
+        t('/genera/acer/', 301, '/genus/acer/')
+
+        t('/woody-plants/woody-angiosperms/acer/rubrum/',
+          301, '/species/acer/rubrum/?pile=woody-angiosperms')
 
 class SimpleTests(TestCase):
 

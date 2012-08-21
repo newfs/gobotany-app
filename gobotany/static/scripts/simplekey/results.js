@@ -1,74 +1,60 @@
 define([
     'util/document_is_ready',
     'bridge/jquery',
+    'bridge/jquery.cookie',
+    'bridge/jquery.jscrollpane',
     'bridge/ember',
     'bridge/shadowbox',
     'util/shadowbox_init',
     'bridge/underscore',
-    'gobotany/utils',
     'simplekey/App3',
     'simplekey/Filter',
     'simplekey/FilterController',
     'simplekey/animation',
-    'simplekey/cookie',
     'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState',
-    'util/activate_search_suggest',
+    'simplekey/results_overlay',
+    'simplekey/SpeciesSection',
+    'simplekey/working_area',
+    'simplekey/utils',
     'util/activate_image_gallery',
-    'util/sidebar',
-    'gobotany/sk/ResultsHelper'
+    'util/lazy_images',
+    'util/sidebar'
 ], function(
-    document_is_ready, $, Ember, Shadowbox, shadowbox_init, _, utils,
-    App3, _Filter, _FilterController, animation, cookie,
-    _glossarize, resources, ResultsPageState,
-    search_suggest, image_gallery, sidebar, ResultsHelper
+    document_is_ready, $, x, x, Ember, Shadowbox, shadowbox_init, _,
+    App3, Filter, FilterController, animation, glossarize, resources,
+    ResultsPageState, results_overlay_init, SpeciesSection,
+    working_area_module, utils, image_gallery, lazy_images, sidebar
 ) {return {
 
 results_page_init: function(args) {
     var pile_slug = args.pile_slug;
 
-    /* Legacy dojo components */
+    sidebar.setup();
 
-    var helper = null;
+    var species_section = new SpeciesSection();
+    var species_section_ready = $.Deferred();
 
     $.when(
         document_is_ready,
         filtered_sorted_taxadata_ready,
         taxa_by_sciname_ready
     ).done(function() {
-        helper = new ResultsHelper(args.pile_slug, plant_divs_ready);
-        speciessectionhelper = helper.species_section;
-        ResultsHelper_ready.resolve(helper);
+        species_section.init(pile_slug, plant_divs_ready);
+        species_section_ready.resolve();
     });
 
-    Filter = _Filter;
-    FilterController = _FilterController;
-    glossarize = _glossarize;
-
-    App3.taxa = Ember.Object.create({
-        len: 'Loading',   // placeholder until we have an integer to display
-        show_list: false  // whether to show list or grid
-    });
+    App3.set('show_grid', true);
+    App3.set('show_list', false);
+    App3.set('matching_species_count', 'Loading');
 
     App3.image_types = Ember.ArrayProxy.create({
         content: []
     });
 
-    App3.TaxaView = Ember.View.extend({
-        show_listBinding: 'App3.taxa.show_list',
-        taxa_countBinding: 'App3.taxa.len',
-
-        switch_photo_list: function(event) {
-            // Tell the old Dojo species section helper to switch views.
-            if (speciessectionhelper)
-                speciessectionhelper.toggle_view(event);
-        }
-    });
-
     /* Async resources and deferreds. */
 
-    var ResultsHelper_ready = $.Deferred();
     var all_filters_ready = $.Deferred();
     var filter_controller_is_built = $.Deferred();
     var filtered_sorted_taxadata_ready = $.Deferred();
@@ -95,6 +81,10 @@ results_page_init: function(args) {
         image_type_ready.resolve();
     });
 
+    /* Get the overlay started. */
+
+    results_overlay_init(pile_slug, key_vector_ready, pile_taxa_ready);
+
     /* Various parts of the page need random access to taxa. */
 
     App3.taxa_by_sciname = {};
@@ -102,6 +92,23 @@ results_page_init: function(args) {
         _.each(taxadata, function(datum) {
             App3.taxa_by_sciname[datum.scientific_name] = datum;
             taxa_by_sciname_ready.resolve();
+        });
+    });
+
+    /* Create a list of character groups from the pile's filters. */
+
+    resources.pile(pile_slug).done(function(pile_info) {
+        var $ul = $('ul.char-groups').empty();
+        _.each(pile_info.character_groups, function(character_group) {
+            $ul.append(
+                $('<li>').append(
+                    $('<label>').append(
+                        $('<input>', {type: 'checkbox',
+                                      value: character_group.id}),
+                        ' ' + character_group.name
+                    )
+                )
+            );
         });
     });
 
@@ -141,12 +148,10 @@ results_page_init: function(args) {
         App3.set('family_filter', fc.filtermap.family);
         App3.set('genus_filter', fc.filtermap.genus);
 
-        fc.filtermap.family.set('value', filters_config.family_value);
-        fc.filtermap.genus.set('value', filters_config.genus_value);
+        fc.filtermap.family.set('value', filters_config.family_name);
+        fc.filtermap.genus.set('value', filters_config.genus_name);
 
-        _.each(filters_config.other_filters, function(filter) {
-            fc.add(filter);
-        });
+        _.each(filters_config.other_filters, $.proxy(fc.add, fc));
 
         App3.set('filter_controller', fc);
 
@@ -203,7 +208,7 @@ results_page_init: function(args) {
                 return App3.family_filter.get('value') || '';
             else
                 App3.family_filter.set('value', new_value || null);
-        }.property('App3.family_filter.value'),
+        }.property('family_filter.value'),
 
         genus_value: function(key, new_value) {
             if (! App3.genus_filter)
@@ -212,7 +217,7 @@ results_page_init: function(args) {
                 return App3.genus_filter.get('value') || '';
             else
                 App3.genus_filter.set('value', new_value || null);
-        }.property('App3.genus_filter.value')
+        }.property('genus_filter.value')
     });
 
     $('#family_clear').live('click', function(event) {
@@ -225,6 +230,39 @@ results_page_init: function(args) {
     /* Other filters appear along the left sidebar, with each filter's
        div being supplied with information through an instance of this
        convenient FilterView. */
+
+    var working_area = null;
+
+    var show_working_area = function(filter, y) {
+        // Dismiss old working area, to avoid having an Apply button
+        // that is wired up to two different filters!
+        dismiss_any_working_area();
+
+        var C = working_area_module.select_working_area(filter);
+
+        working_area = new C();
+        working_area.init({
+            div: $('div.working-area')[0],
+            filter: filter,
+            y: y
+        });
+
+        sidebar.set_height();
+    };
+
+    var dismiss_any_working_area = function() {
+        if (working_area !== null) {
+            working_area.dismiss();
+            working_area = null;
+        }
+    }
+
+    $(document).keydown(function(e) {
+        if (event.which === 27) {       // "Esc"
+            event.preventDefault();
+            dismiss_any_working_area();
+        }
+    });
 
     App3.FilterView = Ember.View.extend({
         templateName: 'filter-view',
@@ -267,8 +305,7 @@ results_page_init: function(args) {
         }.property('filter.value'),
 
         clear: function(event) {
-            if (helper.filter_section.working_area)
-                helper.filter_section.working_area.dismiss();
+            dismiss_any_working_area();
             this.filter.set('value', null);
         },
 
@@ -286,7 +323,7 @@ results_page_init: function(args) {
             var async = resources.character_vector(this.filter.slug);
             $.when(pile_taxa_ready, async).done(function(pile_taxa, values) {
                 filter.install_values({pile_taxa: pile_taxa, values: values});
-                helper.filter_section.show_filter_working_onload(filter, y);
+                show_working_area(filter, y);
             });
         }
     });
@@ -295,7 +332,11 @@ results_page_init: function(args) {
        this CollectionView, which is careful to use the 'plain_filters'
        attribute that omits the family and genus filters. */
 
-    $.when(document_is_ready, filter_controller_is_built).done(function() {
+    $.when(
+        document_is_ready,
+        filter_controller_is_built,
+        species_section_ready
+    ).done(function() {
         App3.filters_view = Ember.CollectionView.create({
             tagName: 'ul',
             classNames: ['option-list'],
@@ -303,6 +344,39 @@ results_page_init: function(args) {
             itemViewClass: App3.FilterView
         });
         App3.filters_view.appendTo('#questions-go-here');
+
+        App3.species_view_tabs = Ember.View.create({
+            templateName: 'species-view-tabs',
+            tagName: 'ul',
+
+            choose_grid_view: function() {
+                if (App3.show_grid) return;
+                App3.set('show_grid', true);
+                App3.set('show_list', false);
+                species_section.display_results();
+            },
+            choose_list_view: function() {
+                if (App3.show_list) return;
+                App3.set('show_list', true);
+                App3.set('show_grid', false);
+                species_section.display_results();
+            }
+        });
+        App3.species_view_tabs.appendTo('#results-tabs');
+
+        App3.species_view_toggle = Ember.View.create({
+            templateName: 'species-view-toggle',
+            tagName: 'p',
+            classNames: ['list-all'],
+
+            switch_species_view: function() {
+                if (App3.show_grid)
+                    App3.species_view_tabs.choose_list_view();
+                else
+                    App3.species_view_tabs.choose_grid_view();
+            }
+        });
+        App3.species_view_toggle.appendTo('#main');
     });
 
     /* Because filters would otherwise constantly change the height of
@@ -311,41 +385,36 @@ results_page_init: function(args) {
     var scroll_pane = null;
     var user_is_scrolling = true;
 
-    require(['bridge/jquery.jscrollpane'], function() {
-        $.when(document_is_ready).done(function() {
-            scroll_pane = $('.scroll')
-                .bind('jsp-scroll-y', function(event) {
-                    // Make sure this is not a reinitialise
-                    if (user_is_scrolling)
-                        // and that the area is already set up
-                        if (helper.filter_section.working_area)
-                            helper.filter_section.working_area.dismiss();
-                })
-                .jScrollPane({
-                    maintainPosition: true,
-                    stickToBottom: true,
-                    verticalGutter: 0,
-                    showArrows: true
-                });
+    $.when(document_is_ready).done(function() {
+        scroll_pane = $('.scroll')
+            .bind('jsp-scroll-y', function(event) {
+                // Make sure this is not a reinitialise
+                if (user_is_scrolling)
+                    dismiss_any_working_area();
+            })
+            .jScrollPane({
+                maintainPosition: true,
+                stickToBottom: true,
+                verticalGutter: 0,
+                showArrows: true
+            });
 
-            // Re-initialise the scroll pain regularly because new
-            // filters will get drawn and because existing filters will
-            // change their height as values get set and cleared.  It
-            // can only resize when the working area is gone, however;
-            // adjusting the scroll pane closes the working area!
+        // Re-initialise the scroll pain regularly because new
+        // filters will get drawn and because existing filters will
+        // change their height as values get set and cleared.  It
+        // can only resize when the working area is gone, however;
+        // adjusting the scroll pane closes the working area!
 
-            setInterval(function() {
-                if (helper.filter_section.working_area === null)
-                    scroll_pane.data('jsp').reinitialise();
-            }, 500);
-        });
+        setInterval(function() {
+            if (working_area === null)
+                scroll_pane.data('jsp').reinitialise();
+        }, 500);
     });
 
     /* All filters can be cleared with a single button click. */
     $.when(filter_controller_is_built, document_is_ready).done(function() {
         $('#sidebar a.clear-all-btn').click(function() {
-            if (helper.filter_section.working_area !== null)
-                helper.filter_section.working_area.dismiss();
+            dismiss_any_working_area();
             var plains = App3.filter_controller.get('plain_filters');
             _.each(plains, function(filter) {
                 filter.set('value', null);
@@ -360,7 +429,7 @@ results_page_init: function(args) {
      * page elements (image type, tab view) change.
      */
     var save_page_state = function() {
-        var tab_view = App3.taxa.show_list ? 'list' : 'photos';
+        var tab_view = App3.show_list ? 'list' : 'photos';
 
         var image_type = App3.get('image_type');
         if (!image_type) {
@@ -412,7 +481,7 @@ results_page_init: function(args) {
             window.location.replace(url);
         }
 
-        cookie('last_plant_id_url', window.location.href, {path: '/'});
+        $.cookie('last_plant_id_url', window.location.href, {path: '/'});
     };
 
     /* Set up observers so that when page elements change, the URL hash
@@ -427,7 +496,7 @@ results_page_init: function(args) {
         App3.addObserver('image_type', function() {
             save_page_state();
         });
-        App3.addObserver('taxa.show_list', function() {
+        App3.addObserver('show_list', function() {
             save_page_state();
         });
     });
@@ -436,7 +505,10 @@ results_page_init: function(args) {
 
     var use_hash = (window.location.hash !== '') ? true : false;
     if (use_hash) {
-        // Restore the state of the page from a URL hash.
+        /* Restore the state of the page from a URL hash.  This leads to
+           a bit of complexity, since, for example, we will have to do a
+           separate async fetch of every filter that the user was busy
+           using when the hash that we are restoring got saved. */
 
         var results_page_state = ResultsPageState.create({
             'hash': window.location.hash
@@ -463,6 +535,16 @@ results_page_init: function(args) {
 
         }
 
+        /* Also immediately set the tab view specified on the hash. */
+
+        var tab_view = results_page_state.tab_view();
+        var is_list_view = (tab_view === 'list') ? true : false;
+        App3.set('show_grid', ! is_list_view);
+        App3.set('show_list', is_list_view);
+
+        /* But our remaining actions will take time, and have to wait
+           until we have retrieved some information about this pile. */
+
         $.when(
             resources.pile(pile_slug),
             resources.pile_characters(pile_slug)
@@ -485,8 +567,8 @@ results_page_init: function(args) {
 
             var filter_readys = [];
             var filters_config = {
-                family_value: filter_values['family'] || null,
-                genus_value: filter_values['genus'] || null,
+                family_name: filter_values['family'] || null,
+                genus_name: filter_values['genus'] || null,
                 other_filters: []
             };
 
@@ -524,19 +606,16 @@ results_page_init: function(args) {
                 all_filters_ready.resolve(filters_config);
             });
 
-            // Set the tab view specified on the hash.
-            var tab_view = results_page_state.tab_view();
-            var is_list_view = (tab_view === 'list') ? true : false;
-            App3.taxa.set('show_list', is_list_view);
         });
     } else {
-        // With no hash on the URL, load the default filters for this
-        // plant subgroup for a "fresh" load of the page.
+        /* When the URL contains no hash, we get to load the default
+           filters in a single fetch by grabbing the pile resources, so
+           all_filters_ready depends upon only a single async request. */
 
         resources.pile(pile_slug).done(function(pile_info) {
             var filters_config = {
-                family_value: null,
-                genus_value: null,
+                family_name: null,
+                genus_name: null,
                 other_filters: []
             };
             _.each(pile_info.default_filters, function(filter_info) {
@@ -557,8 +636,7 @@ results_page_init: function(args) {
 
     $.when(document_is_ready).done(function() {
         $('#sidebar .get-choices').click(function() {
-            if (helper.filter_section.working_area !== null)
-                helper.filter_section.working_area.dismiss();
+            dismiss_any_working_area();
 
             Shadowbox.open({
                 content: $('#modal').html(),
@@ -630,7 +708,7 @@ results_page_init: function(args) {
     $(window).bind('hashchange', function() {
         var current_url = window.location.href;
 
-        var last_plant_id_url = cookie('last_plant_id_url');      
+        var last_plant_id_url = $.cookie('last_plant_id_url');
         if (last_plant_id_url === null) {
             // The cookie request returned null, so cookie support must
             // be unavailable. Consequently, cannot support the Back button.
@@ -657,9 +735,60 @@ results_page_init: function(args) {
         }
     });
 
-    // Page load cascade - much of which is in the above code or over in
-    // our legacy Dojo modules, but all of which would be clearer and
-    // easier to think about and manage if it migrated down here.
+    // Several places on the page display how many species there are.
+
+    var update_count_animation = null;
+    var update_counts = function(species_list) {
+        App3.set('matching_species_count', species_list.length);
+
+        var $spans = $('.species-count-heading > span');
+        $spans.stop();
+        animation.bright_change($spans, {end_color: '#F0F0C0',
+                                         duration: 2000});
+    };
+
+    /* How we load images into the species area. */
+
+    var load_selected_image_type = function() {
+        var image_type = App3.get('image_type');
+        if (!image_type)
+            // No image types available yet, so skip for now
+            return;
+
+        /* Replace the image for each plant on the page */
+
+        $('div.plant img').each(function(i, img) {
+
+            // See if the taxon has an image for the new image type.
+            var $img = $(img);
+            var scientific_name = $img.attr('x-plant-id');
+            var taxon = App3.taxa_by_sciname[scientific_name];
+            var new_image = _.find(taxon.images, function(image) {
+                return image.type === image_type});
+
+            if (new_image) {
+                $img.attr('data-lazy-img-src', new_image.thumb_url);
+                $img.attr('alt', new_image.title);
+                // Hide the empty box if it exists and make
+                // sure the image is visible.
+                $img.find('+ div.missing-image').remove();
+                $img.css('display', 'inline');
+
+            } else if ($img.css('display') !== 'none') {
+                // If there's no matching image display the
+                // empty box and hide the image
+                $img.css('display', 'none');
+                $img.parent().append($('<div>', {
+                    'class': 'missing-image',
+                    'html': '<p>Image not available yet</p>'
+                }));
+            }
+        });
+    }
+
+    // Final pieces of page load cascade.
+
+    lazy_images.start();
 
     var compute_filtered_sorted_taxadata = function() {
         var taxa = App3.filter_controller.taxa;
@@ -681,28 +810,23 @@ results_page_init: function(args) {
     });
 
     $.when(
-        ResultsHelper_ready,
+        species_section_ready,
         filtered_sorted_taxadata_ready,
         plant_divs_ready
     ).done(function(rh) {
-        rh.species_counts._update_counts(App3.filtered_sorted_taxadata);
-        rh.species_section.display_results(App3.filtered_sorted_taxadata);
-        rh.load_selected_image_type();
+        update_counts(App3.filtered_sorted_taxadata);
+        species_section.display_results(App3.filtered_sorted_taxadata);
+        load_selected_image_type();
+        lazy_images.load();
 
         App3.addObserver('filtered_sorted_taxadata', function() {
-            rh.species_counts._update_counts(App3.filtered_sorted_taxadata);
-            rh.species_section.display_results(App3.filtered_sorted_taxadata);
+            update_counts(App3.filtered_sorted_taxadata);
+            species_section.display_results(App3.filtered_sorted_taxadata);
         });
 
         App3.addObserver('image_type', function() {
-            rh.load_selected_image_type();
+            load_selected_image_type();
+            lazy_images.load();
         });
-    });
-
-    require([
-        'simplekey/results_overlay',
-        'simplekey/results_photo_menu'
-    ], function(results_overlay_init, results_photo_menu) {
-        results_overlay_init(pile_slug, key_vector_ready, pile_taxa_ready);
     });
 }}});

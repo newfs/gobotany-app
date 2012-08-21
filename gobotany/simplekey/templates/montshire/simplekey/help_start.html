@@ -2,7 +2,7 @@
 
 {% block pagetitle %}Getting Started with the Simple Key at Montshire{% endblock %}
 
-{% block body_attributes %}id="getting-started" class="claro app getting-started"{% endblock %}
+{% block body_attributes %}id="getting-started" class="app getting-started"{% endblock %}
 
 {% block main_content %}			
     <h2>Getting Started with the Simple Key at Montshire</h2>
@@ -156,18 +156,14 @@
 {% block more_sidebar_content %}
     <div class="section separate">
         <h5>Watch Video:</h5>
-        {% if getting_started_youtube_id %}
-            <div class="video-topic">
-                <a class="video"
-                    href="http://www.youtube.com/embed/{{ getting_started_youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">
-                    <img class="shadow"
-                        src="http://img.youtube.com/vi/{{ getting_started_youtube_id }}/0.jpg"
-                        alt="">
-                </a>
-            </div>
-            <p>How to use the Simple Key</p>
-        {% else %}
-            Admin: set the blurb 'getting_started_youtube_id'.
-        {% endif %}
+        <div class="video-topic">
+            <a class="video"
+                href="http://www.youtube.com/embed/{{ getting_started_youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">
+                <img class="shadow"
+                    src="http://img.youtube.com/vi/{{ getting_started_youtube_id }}/0.jpg"
+                    alt="">
+            </a>
+        </div>
+        <p>How to use the Simple Key</p>
     </div>
 {% endblock %}

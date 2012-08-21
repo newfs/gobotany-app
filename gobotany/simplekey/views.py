@@ -2,11 +2,10 @@
 import hashlib
 import re
 import string
-import urllib2
 
 from datetime import date
 from itertools import groupby
-from operator import attrgetter, itemgetter
+from operator import itemgetter
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
@@ -20,21 +19,28 @@ from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
 from gobotany.core import models
-from gobotany.core.importer import pile_suffixes
 from gobotany.core.models import (
-    CharacterGroup, CharacterValue, CopyrightHolder, Family, Genus,
+    CopyrightHolder, Family, Genus,
     GlossaryTerm, Habitat, HomePageImage, Pile, PileGroup,
-    PlantPreviewCharacter, Taxon
+    PlantPreviewCharacter, Taxon, Video
     )
 from gobotany.core.partner import which_partner
+from gobotany.dkey import models as dkey_models
 from gobotany.plantoftheday.models import PlantOfTheDay
-from gobotany.simplekey.groups_order import PILEGROUP_ORDER, PILE_ORDER
-from gobotany.simplekey.models import (get_blurb, GroupsListPage,
+from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
+from gobotany.simplekey.models import (GroupsListPage,
                                        SearchSuggestion, SubgroupResultsPage,
                                        SubgroupsListPage)
 
 # Character short names common to all piles (but no suffix)
 COMMON_CHARACTERS = ['habitat', 'habitat_general', 'state_distribution']
+
+#
+
+def add_query_string(request, url):
+    full = request.get_full_path()
+    i = full.find('?')
+    return url if (i == -1) else url + full[i:]
 
 #
 
@@ -57,63 +63,6 @@ def get_simple_url(key, pilegroup, pile=None):
                        kwargs={'key': key,
                                'pilegroup_slug': pilegroup.slug,
                                'pile_slug': pile.slug})
-
-
-def ordered_pilegroups():
-    """Return all pile groups in display order."""
-    return sorted(PileGroup.objects.all(),
-                  key=lambda pg: PILEGROUP_ORDER[pg.slug])
-
-
-def ordered_piles(pilegroup):
-    """Return all piles for a pile group in display order."""
-    return sorted(pilegroup.piles.all(),
-                  key=lambda p: PILE_ORDER[p.slug])
-
-
-def index_view(request):
-    """View for the main page of the Go Botany site.
-
-    Note: The "main heading" variable was used to demo early
-    capabilities for partner sites before the visual design was
-    implemented. Currently the value of this variable does not get
-    displayed on the page, but the code is left in place pending our
-    eventual earnest customizations for specific partner sites.
-    """
-    main_heading = 'Simple Key: Getting Started'
-    partner = which_partner(request)
-    if partner:
-        if partner.short_name == 'montshire':
-            main_heading = 'Montshire %s' % main_heading
-
-    blurb = get_blurb('getting_started')
-
-    home_page_images = HomePageImage.objects.order_by('order')
-
-    # Get or generate today's Plant of the Day.
-    plant_of_the_day = PlantOfTheDay.get_by_date.for_day(
-        date.today(), partner.short_name)
-    # Get the Taxon record of the Plant of the Day.
-    plant_of_the_day_taxon = None
-    try:
-        plant_of_the_day_taxon = Taxon.objects.get(
-            scientific_name=plant_of_the_day.scientific_name)
-    except ObjectDoesNotExist:
-        pass
-
-    plant_of_the_day_image = None
-    species_images = botany.species_images(plant_of_the_day_taxon)
-    if species_images:
-        plant_of_the_day_image = botany.species_images(
-            plant_of_the_day_taxon)[0]
-
-    return render_to_response('simplekey/index.html', {
-            'main_heading': main_heading,
-            'blurb': blurb,
-            'home_page_images': home_page_images,
-            'plant_of_the_day': plant_of_the_day_taxon,
-            'plant_of_the_day_image': plant_of_the_day_image,
-            }, context_instance=RequestContext(request))
 
 def advanced_view(request):
     return render_to_response('simplekey/advanced.html', {},
@@ -222,75 +171,31 @@ def _format_character_value(character_value):
         return ''
 
 
-def _get_characters(taxon, character_groups, pile, partner):
-    """Get all characteristics for a plant, organized by character group."""
-
-    pile_suffix_dict = dict((v.lower(), k.lower())
-                            for (k, v) in pile_suffixes.iteritems())
-
-    # Ensure the query is ordered so the character values can
-    # successfully be grouped.
-    q = (CharacterValue.objects.filter(taxon_character_values__taxon=taxon)
-                               .order_by('character'))
-
-    # Get the set of preview characteristics and sort order
-    plant_preview_characters = dict([
-        (ppc.character_id, ppc.order)
-        for ppc in PlantPreviewCharacter.objects.filter(
-            pile=pile, partner_site=partner)
-        ])
-
-    # Screen out any character values that do not belong to this pile.
-    pile_suffix = '_%s' % pile_suffix_dict[pile.name.lower()]
-    q = [cv for cv in q if (cv.character.short_name.endswith(pile_suffix) or
-         cv.character.short_name in COMMON_CHARACTERS)]
-
-    # Combine multiple values that belong to a single character.
-    cgetter = attrgetter('character')
-    cvgroups = groupby(q, key=cgetter)
-    characters = ({
-        'group': character.character_group.name,
-        'name': character.friendly_name,
-        'values': sorted(_format_character_value(cv) for cv in values),
-        'in_preview': character.id in plant_preview_characters,
-        'preview_order': plant_preview_characters.get(character.id, -1),
-        } for character, values in cvgroups)
-
-    # Group the characters by character-group.
-    ggetter = itemgetter('group')
-    cgroups = groupby(sorted(characters, key=ggetter), key=ggetter)
-    groups = ({
-        'name': name,
-        'characters': sorted(members, key=itemgetter('name')),
-        } for name, members in cgroups)
-    return sorted(groups, key=itemgetter('name'))
-
-
 def _images_with_copyright_holders(images):
     # Reduce a live query object to a list to only run it once.
     if not isinstance(images, list):
-        images = images.all()
+        images = images.select_related('image_type').all()
 
     # Get the copyright holders for this set of images.
     codes = set(image.creator for image in images)
-    chdict = dict((ch.coded_name, ch) for ch in CopyrightHolder.objects.filter(
-            coded_name__in=codes))
+    chdict = {ch.coded_name: ch for ch
+              in CopyrightHolder.objects.filter(coded_name__in=codes)}
 
     for image in images:
+        # Grab each image's "scientific name" - or whatever string is
+        # preceded by a ":" at the start of its alt text!
+
+        image.scientific_name = (image.alt or '').split(':', 1)[0]
 
         # Associate each image with its copyright holder, adding the
         # copyright holder information as extra attributes.
 
         copyright_holder = chdict.get(image.creator)
-        if copyright_holder:
-            image.copyright_holder_name = copyright_holder.expanded_name
-            image.copyright = copyright_holder.copyright
-            image.source = copyright_holder.source
-
-        # Grab each image's "scientific name" - or whatever string is
-        # preceded by a ":" at the start of its alt text!
-
-        image.scientific_name = (image.alt or '').split(':', 1)[0]
+        if not copyright_holder:
+            continue
+        image.copyright_holder_name = copyright_holder.expanded_name
+        image.copyright = copyright_holder.copyright
+        image.source = copyright_holder.source
 
     return images
 
@@ -308,24 +213,23 @@ def _native_to_north_america_status(taxon):
     return native_to_north_america
 
 
-def species_view(request, genus_slug, specific_name_slug,
-                 pilegroup_slug=None, pile_slug=None):
+def species_view(request, genus_slug, epithet):
 
     COMPACT_MULTIVALUE_CHARACTERS = ['Habitat', 'New England state',
                                      'Specific Habitat']
 
-    scientific_name = '%s %s' % (genus_slug.capitalize(), specific_name_slug)
-    scientific_name_short = '%s. %s' % (scientific_name[0],
-                                        specific_name_slug)
+    genus_name = genus_slug.capitalize()
+    scientific_name = '%s %s' % (genus_name, epithet)
     taxon = get_object_or_404(Taxon, scientific_name=scientific_name)
 
-    if pile_slug and pilegroup_slug:
+    scientific_name_short = '%s. %s' % (scientific_name[0], epithet)
+
+    pile_slug = request.GET.get('pile')
+    if pile_slug:
         pile = get_object_or_404(Pile, slug=pile_slug)
-        if pile.pilegroup.slug != pilegroup_slug:
-            raise Http404
     else:
-        # Get the first pile from the species
-        pile = taxon.piles.all()[0]
+        # Randomly grab the first pile from the species
+        pile = taxon.piles.order_by('id')[0]
     pilegroup = pile.pilegroup
 
     partner = which_partner(request)
@@ -336,36 +240,77 @@ def species_view(request, genus_slug, specific_name_slug,
         if rows:
             partner_species = rows[0]
 
+    key = request.GET.get('key')
+    if key == 'dichotomous':
+        dkey_page = dkey_models.Page.objects.get(title=scientific_name)
+    else:
+        dkey_page = None
+        key = ''  # prevent illegal value from reaching template
+
     species_images = botany.species_images(taxon)
     images = _images_with_copyright_holders(species_images)
 
-    habitats = []
     if taxon.habitat:
         habitat_names = taxon.habitat.split('| ')
-        for name in habitat_names:
-            try:
-                habitat = Habitat.objects.get(name__iexact=name)
-                habitats.append(habitat.friendly_name)
-            except Habitat.DoesNotExist:
-                continue
+        habitats = list(Habitat.objects.filter(name__in=habitat_names))
         habitats.sort()
+    else:
+        habitats = []
 
-    character_ids = taxon.character_values.values_list(
-                    'character', flat=True).distinct()
-    character_groups = CharacterGroup.objects.filter(
-                       character__in=character_ids).distinct()
-    characters_by_group = _get_characters(taxon, character_groups, pile,
-                                          partner)
-    preview_characters = sorted([
+    # Get the set of preview characteristics.
+
+    plant_preview_characters = {
+        ppc.character_id: ppc.order for ppc in
+        PlantPreviewCharacter.objects.filter(pile=pile, partner_site=partner)
+        }
+
+    # Select ALL character values for this taxon.
+
+    character_values = list(taxon.character_values.select_related(
+            'character', 'character__character_group'))
+
+    # Throw away values for characters that are not part of this pile.
+
+    pile_ids = (None, pile.id)  # things like Habitat have pile_id = None
+    character_values = [ v for v in character_values
+                         if v.character.pile_id in pile_ids ]
+
+    # Create a tree of character groups, characters, and values.
+
+    get_group_name = lambda v: v.character.character_group.name
+    get_character_name = lambda v: v.character.friendly_name
+
+    character_values.sort(key=get_character_name)
+    character_values.sort(key=get_group_name)
+
+    all_characteristics = []
+    for group_name, seq1 in groupby(character_values, get_group_name):
+        characters = []
+
+        for character_name, seq2 in groupby(seq1, get_character_name):
+            seq2 = list(seq2)
+            character = seq2[0].character  # arbitrary; all look the same
+            characters.append({
+                'group': character.character_group.name,
+                'name': character.friendly_name,
+                'values': sorted(_format_character_value(v) for v in seq2),
+                'in_preview': character.id in plant_preview_characters,
+                'preview_order': plant_preview_characters.get(character.id, -1),
+                })
+
+        all_characteristics.append({
+            'name': group_name,
+            'characters': characters
+            })
+
+    # Pick out the few preview characters for separate display.
+
+    preview_characters = sorted((
         character
-            for group in characters_by_group
-                for character in group['characters']
-                    if character['in_preview']
-        ], key=itemgetter('preview_order'))
-
-    last_plant_id_url = request.COOKIES.get('last_plant_id_url', None)
-    if last_plant_id_url:
-        last_plant_id_url = urllib2.unquote(last_plant_id_url)
+        for group in all_characteristics
+        for character in group['characters']
+        if character['in_preview']
+        ), key=itemgetter('preview_order'))
 
     native_to_north_america = _native_to_north_america_status(taxon)
 
@@ -375,6 +320,9 @@ def species_view(request, genus_slug, specific_name_slug,
            'scientific_name': scientific_name,
            'scientific_name_short': scientific_name_short,
            'taxon': taxon,
+           'key': key,
+           'common_names': taxon.common_names.all(),  # view uses this 3 times
+           'dkey_page': dkey_page,
            'images': images,
            'key': 'simple' if partner_species.simple_key else 'full',
            'partner_heading': partner_species.species_page_heading
@@ -384,11 +332,12 @@ def species_view(request, genus_slug, specific_name_slug,
            'habitats': habitats,
            'compact_multivalue_characters': COMPACT_MULTIVALUE_CHARACTERS,
            'brief_characteristics': preview_characters,
-           'all_characteristics': characters_by_group,
-           'specific_epithet': specific_name_slug,
+           'all_characteristics': all_characteristics,
+           'epithet': epithet,
            'last_plant_id_url': last_plant_id_url,
            'native_to_north_america': native_to_north_america
            }, context_instance=RequestContext(request))
+
 
 def _get_plants():
     plants = Taxon.objects.values(
@@ -419,7 +368,9 @@ def species_list_view(request):
 
 
 def genus_view(request, genus_slug):
-    genus = get_object_or_404(Genus, slug=genus_slug.lower())
+
+    genus_name = genus_slug.capitalize()
+    genus = get_object_or_404(Genus, name=genus_name)
 
     # If it is decided that common names will not be required, change the
     # default below to None so the template will omit the name if missing.
@@ -451,12 +402,11 @@ def genus_view(request, genus_slug):
            'pile': pile,
            }, context_instance=RequestContext(request))
 
-def genus_redirect_view(request, genus_slug):
-    return redirect('simplekey-genus', genus_slug=genus_slug)
-
 
 def family_view(request, family_slug):
-    family = get_object_or_404(Family, slug=family_slug.lower())
+
+    family_name = family_slug.capitalize()
+    family = get_object_or_404(Family, name=family_name)
 
     # If it is decided that common names will not be required, change the
     # default below to None so the template will omit the name if missing.
@@ -502,110 +452,41 @@ def terms_of_use_view(request):
             { 'site_url' : site_url },
             context_instance=RequestContext(request))
 
-def help_redirect_view(request):
-    return redirect('simplekey-help-start')
-
-def help_about_view(request):
-    return render_to_response('simplekey/help_about.html', {
-           'section_1_heading_blurb': get_blurb('section_1_heading'),
-           'section_1_content_blurb': get_blurb('section_1_content'),
-           'section_2_heading_blurb': get_blurb('section_2_heading'),
-           'section_2_content_blurb': get_blurb('section_2_content'),
-           'section_3_heading_blurb': get_blurb('section_3_heading'),
-           'section_3_content_blurb': get_blurb('section_3_content'),
-           }, context_instance=RequestContext(request))
-
-@vary_on_headers('Host')
-def help_start_view(request):
-    youtube_id = ''
-    youtube_id_blurb = get_blurb('getting_started_youtube_id')
-    if not youtube_id_blurb.startswith('[Provide text'):
-        # We have an actual YouTube id defined in the database.
-        youtube_id = youtube_id_blurb
-    return render_to_response(
-        per_partner_template(request, 'simplekey/help_start.html'), {
-            'getting_started_blurb': get_blurb('getting_started'),
-            'getting_started_youtube_id': youtube_id,
-            }, context_instance=RequestContext(request))
-
-def help_map_view(request):
-    pilegroups = [(pilegroup, ordered_piles(pilegroup))
-                  for pilegroup in ordered_pilegroups()]
-
-    return render_to_response('simplekey/help_map.html', {
-            'pilegroups': pilegroups
-            }, context_instance=RequestContext(request))
-
-def help_glossary_view(request, letter):
-    glossary = GlossaryTerm.objects.filter(visible=True).extra(
-        select={'lower_term': 'lower(term)'}).order_by('lower_term')
-
-    terms = glossary.values_list('lower_term', flat=True)
-    letters_in_glossary = [term[0] for term in terms]
-
-    # Skip any glossary terms that start with a number, and filter to the
-    # desired letter.
-    glossary = glossary.filter(term__gte='a', term__startswith=letter)
-
-    return render_to_response('simplekey/help_glossary.html', {
-            'this_letter': letter,
-            'letters': string.ascii_lowercase,
-            'letters_in_glossary': letters_in_glossary,
-            'glossary': glossary,
-            }, context_instance=RequestContext(request))
-
-def help_glossary_redirect_view(request):
-    return redirect('simplekey-help-glossary', letter='a')
-
-def _get_pilegroup_dict(pilegroup_name):
-    pilegroup = PileGroup.objects.get(name=pilegroup_name)
-    return {
-        'title': pilegroup.friendly_title,
-        'youtube_id': pilegroup.youtube_id
-    }
-
-def _get_pile_dict(pile_name):
-    pile = Pile.objects.get(name=pile_name)
-    return {
-        'title': pile.friendly_title,
-        'youtube_id': pile.youtube_id
-    }
-
-def help_video_view(request):
-    # The Getting Started video is first, followed by videos for the pile
-    # groups and piles in the order that they are presented in the stepwise
-    # pages at the beginning of plant identification.
-    videos = [{'title': 'Getting Started',
-               'youtube_id': get_blurb('getting_started_youtube_id')}]
-
-    for pilegroup in ordered_pilegroups():
-        videos.append(_get_pilegroup_dict(pilegroup.name))
-        for pile in ordered_piles(pilegroup):
-            videos.append(_get_pile_dict(pile.name))
-
-    return render_to_response('simplekey/help_video.html', {
-           'videos': videos,
-           }, context_instance=RequestContext(request))
-
 def suggest_view(request):
     # Return some search suggestions for the auto-suggest feature.
     MAX_RESULTS = 10
     query = request.GET.get('q', '').lower()
     suggestions = []
     if query != '':
+        # First look for suggestions that match at the start of the
+        # query string.
+
         # This query is case-sensitive for better speed than using a
         # case-insensitive query. The database field is also case-
         # sensitive, so it is important that all SearchSuggestion
         # records be lowercased before import to ensure that they
         # can be reached.
         suggestions = list(SearchSuggestion.objects.filter(
-            term__startswith=query).order_by('term').values_list('term',
-            flat=True)[:MAX_RESULTS * 2])   # Fetch extra in case of
-                                            # case-sensitive duplicates
+            term__startswith=query).exclude(term=query).
+            order_by('term').values_list('term', flat=True)
+            [:MAX_RESULTS * 2])   # Fetch extra to handle case-sensitive dups
         # Remove any duplicates due to case-sensitivity and pare down to
         # the desired number of results.
         suggestions = list(sorted(set([suggestion.lower()
             for suggestion in suggestions])))[:MAX_RESULTS]
+
+        # If fewer than the maximum number of suggestions were found,
+        # try finding some additional ones that match anywhere in the
+        # query string.
+        remaining_slots = MAX_RESULTS - len(suggestions)
+        if remaining_slots > 0:
+            more_suggestions = list(SearchSuggestion.objects.filter(
+                term__contains=query).exclude(term__startswith=query).
+                order_by('term').values_list('term', flat=True)
+                [:MAX_RESULTS * 2])
+            more_suggestions = list(sorted(set([suggestion.lower()
+                for suggestion in  more_suggestions])))[:remaining_slots]
+            suggestions.extend(more_suggestions)
 
     return HttpResponse(simplejson.dumps(suggestions),
                         mimetype='application/json')
@@ -615,12 +496,11 @@ def sitemap_view(request):
     plant_names = Taxon.objects.values_list('scientific_name', flat=True)
     families = Family.objects.values_list('name', flat=True)
     genera = Genus.objects.values_list('name', flat=True)
-    urls = ['http://%s/species/%s/' % (host,
-                                       plant_name.lower().replace(' ', '/'))
+    urls = ['http://%s/species/%s/' % (host, plant_name.replace(' ', '/'))
             for plant_name in plant_names]
-    urls.extend(['http://%s/families/%s/' % (host, family_name.lower())
+    urls.extend(['http://%s/families/%s/' % (host, family_name)
                  for family_name in families])
-    urls.extend(['http://%s/genera/%s/' % (host, genus_name.lower())
+    urls.extend(['http://%s/genera/%s/' % (host, genus_name)
                  for genus_name in genera])
     return render_to_response('simplekey/sitemap.txt', {
            'urls': urls,
@@ -660,11 +540,6 @@ def checkup_view(request):
             'images_copyright': images_copyright,
             'total_images': total_images,
         }, context_instance=RequestContext(request))
-
-
-def teaching_tools_view(request, template):
-    return render_to_response(template, {
-            }, context_instance=RequestContext(request))
 
 
 # Placeholder views

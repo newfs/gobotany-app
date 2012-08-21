@@ -2,9 +2,9 @@
 {% load simplekey_extras %}
 
 {% block title %}{{ scientific_name }} 
-({% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}){% endblock %}
+({% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}){% endblock %}
 
-{% block body_attributes %}id="taxon" class="claro app taxon"{% endblock %}
+{% block body_attributes %}id="taxon" class="app taxon"{% endblock %}
 
 {% block js_top %}
     {# SVGWeb script: must be first of all JS, must have data-path. #}
@@ -35,27 +35,40 @@
 
                 {# TODO: After implementing Full Key and navigation, #}
                 {# show appropriate breadcrumb links.                #}
-                <div id="breadcrumb">
-                    <p class="nogloss">You are here:
-                    <a href="{% url level1 key %}">{{ key|title }} Key</a>
-                    &gt;
-                    <a href="{% url level2 key pilegroup.slug %}"
-                        >{{ pilegroup.friendly_title|lower|capfirst }}</a>
-                    &gt;
-                    <a href="{% if last_plant_id_url and pile.slug in last_plant_id_url %}{{ last_plant_id_url }}/{% else %}{% url level3 key pilegroup.slug pile.slug %}{% endif %}"
-                        >{{ pile.friendly_title|lower|capfirst }}</a>
-                    &gt;
-                    <span>{{ scientific_name|italicize_plant|safe }}
-                       {# If the above is too long, can use scientific_name_short #}
-                    </span></p>
-                </div>
-
+                {% if key == 'dichotomous' %}
+                    <div id="breadcrumb">
+                        <p class="nogloss">
+                        {% include "dkey/_breadcrumbs.html" with page=dkey_page %}
+                        </p>
+                    </div>
+                {% else %}
+                    <div id="breadcrumb">
+                        <p class="nogloss">You are here: 
+                        <a href="{% url level1 key %}">{{ key|title }} Key</a>
+                        &gt;
+                        <a href="{% url level2 key pilegroup.slug %}"
+                            >{{ pilegroup.friendly_title|lower|capfirst }}</a>
+                        &gt; 
+                        <a href="{% if last_plant_id_url and pile.slug in last_plant_id_url %}{{ last_plant_id_url }}/{% else %}{% url level3 key pilegroup.slug pile.slug %}{% endif %}"
+                            >{{ pile.friendly_title|lower|capfirst }}</a>
+                        &gt;
+                        <span>{{ scientific_name|italicize_plant|safe }}
+                           {# If the above is too long, can use scientific_name_short #}
+                        </span></p>
+                    </div>
+                {% endif %}
+                
                 <h2><span class="scientific">{{ scientific_name|italicize_plant|safe }}</span>
                     <span class="origin">{{ taxon.taxonomic_authority }}</span></h2>
-                {% if taxon.common_names.all %}
-                    <h3>{% for common_name in taxon.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</h3>
+                {% if common_names %}
+                    <h3>{% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</h3>
                 {% endif %}
 
+                {% if key == 'dichotomous' %}
+                    <div class="dkey_text">
+                        {% include "dkey/_page_text.html" with page=dkey_page %}
+                    </div>
+                {% endif %}
 
                 <div id="species-images">
                     {% for i in images %}
@@ -158,6 +171,9 @@
                 {% endif %}
                 
                 <h3>New England Distribution and Conservation Status</h3>
+                <p>Exact status definitions can vary from state to
+                state. For precise details, please check with your state.</p>
+                <div id="ne-status">
                 <table>
                     <thead>
                         <tr>
@@ -195,7 +211,7 @@
                             <td></td>
                             <td></td>
                         </tr>
-                        {% collect 'endangered' 'threatened' 'special concern' 'historic' 'rare' 'extinct' 'invasive' 'prohibited' as status_values %}
+                        {% collect 'endangered' 'threatened' 'special concern' 'historic' 'rare' 'extirpated' 'invasive' 'prohibited' as status_values %}
                         {% for value in status_values %}
                             <tr>
                                 <th class="status">{{ value|capfirst }}?</th>
@@ -212,6 +228,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                </div>
 
             </div>
 
@@ -221,19 +238,19 @@
                     {% include "simplekey/_map_attribution.html" %}
                     <!--[if !IE]>-->
                     <object
-                        data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-ne-distribution-map.svg"
+                        data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
                         type="image/svg+xml"
                         title="distribution map for {{ scientific_name }}"
                         id="ne-dist-county-map"> <!--<![endif]-->
                     <!--[if lt IE 9]>
                     <object
-                        src="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-ne-distribution-map.svg"
+                        src="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
                         classid="image/svg+xml"
                         title="distribution map for {{ scientific_name }}"
                         id="ne-dist-county-map"> <![endif]-->
                     <!--[if gte IE 9]>
                     <object
-                        data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-ne-distribution-map.svg"
+                        data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
                         type="image/svg+xml"
                         title="distribution map for {{ scientific_name }}"
                         id="ne-dist-county-map"> <![endif]-->
@@ -245,19 +262,19 @@
                     {% include "simplekey/_map_attribution.html" %}
                     <div>
                         <object
-                            data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-na-distribution-map.svg"
+                            data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
                             type="image/svg+xml"
                             title="distribution map for {{ scientific_name }}"
                             id="na-dist-county-map"> <!--<![endif]-->
                         <!--[if lt IE 9]>
                         <object
-                            src="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-na-distribution-map.svg"
+                            src="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
                             classid="image/svg+xml"
                             title="distribution map for {{ scientific_name }}"
                             id="na-dist-county-map"> <![endif]-->
                         <!--[if gte IE 9]>
                         <object
-                            data="/api/maps/{{taxon.genus|lower}}-{{specific_epithet}}-na-distribution-map.svg"
+                            data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
                             type="image/svg+xml"
                             title="distribution map for {{ scientific_name }}"
                             id="na-dist-county-map"> <![endif]-->
@@ -266,7 +283,7 @@
                     <div class="trans"></div>
                     <a class="enlarge" href="#">
                         <img src="/static/images/icons/zoom.png" alt="">
-                        Click to enlarge</a>
+                        Enlarge</a>
                 </div>
 
                 <div class="section">
@@ -274,17 +291,19 @@
                     <p>{{ native_to_north_america }}</p>
                 </div>
 
-                {% if taxon.lookalikes.all|length > 0 %}
+                {% with lookalikes=taxon.lookalikes.all %}
+                {% if lookalikes|length > 0 %}
                 <div class="section lookalikes">
                     <h5>Sometimes Confused With:</h5>
                     <dl>
-                    {% for lookalike in taxon.lookalikes.all %}
+                    {% for lookalike in lookalikes %}
                     <dt><a href="/species/{{ lookalike.lookalike_scientific_name|lower|replace:' ,/' }}/"><em>{{ lookalike.lookalike_scientific_name }}</em></a>:</dt>
                         <dd>{{ lookalike.lookalike_characteristic }}</dd>
                     {% endfor %}
                     </dl>
                 </div>
                 {% endif %}
+                {% endwith %}
 
                 {% with taxon.synonyms.all as synonyms %}
                 {% if synonyms|length > 0 %}
@@ -320,7 +339,7 @@
                 
                 <div class="section">
 				    <h5 class="left help">Need Help?</h5>
-                    <a href="{% url simplekey-help-start %}"
+                    <a href="{% url site-getting-started %}"
                         class="get-help-btn left">Get Help</a>
 				    <div class="clearit"></div>
 			    </div>

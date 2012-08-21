@@ -40,6 +40,7 @@ else:
 # to actually grab the port.)
 
 IN_PRODUCTION = 'PORT' in os.environ
+DEBUG = not IN_PRODUCTION  # TODO: turn DEBUG on for staging, per issue #199
 
 #
 
@@ -66,10 +67,12 @@ if 'DATABASE_URL' in os.environ:
 INSTALLED_APPS = [
     'gobotany.api',
     'gobotany.core',
+    'gobotany.dkey',
     'gobotany.mapping',
     'gobotany.plantoftheday',
     'gobotany.search',
     'gobotany.simplekey',
+    'gobotany.site',
     'piston',
 
     'django.contrib.admin',
@@ -79,19 +82,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.staticfiles',
 
-    # 'debug_toolbar',
+    ] + (['debug_toolbar'] if DEBUG else []) + [
 
     'haystack',
     'tinymce',
     ]
 MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
-    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
+
+    ) + (('debug_toolbar.middleware.DebugToolbarMiddleware',)
+         if DEBUG else ()) + (
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'gobotany.middleware.SmartAppendSlashMiddleware',
+    'gobotany.middleware.ChromeFrameMiddleware',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
         "django.contrib.auth.context_processors.auth",
@@ -102,10 +109,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
         "gobotany.core.context_processors.gobotany_specific_context",
 )
 
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+}
 APPEND_SLASH = False
 SMART_APPEND_SLASH = True
 ROOT_URLCONF = 'gobotany.urls'
-DEBUG = True
 INTERNAL_IPS = ('127.0.0.1',)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [('', os.path.join(THIS_DIRECTORY, 'static'))]

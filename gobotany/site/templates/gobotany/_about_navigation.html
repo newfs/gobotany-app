@@ -1,0 +1,28 @@
+    <div class="section">
+        {% url site-about as u %}
+        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>About Go
+                Botany</a></h4>
+    </div>
+    <div class="section">
+        {% url site-getting-started as u %}
+        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Getting
+                Started with the Simple Key</a></h4>
+    </div>
+    <div class="section">
+        {% url site-advanced-map as u %}
+        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Advanced Map
+                to Groups</a></h4>
+    </div>
+    <div class="section">
+        {% url site-glossary-main as u %}
+        <h4><a {% if not u in request.path %}href="{{ u }}"{% endif %}>Glossary</a></h4>
+    </div>
+    <div class="section">
+        {% url site-video as u %}
+        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Video Help
+                Topics</a></h4>
+    </div>
+    <div class="section">
+        {% url site-contributors as u %}
+        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Contributors</a></h4>
+    </div>

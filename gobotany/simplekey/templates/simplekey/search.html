@@ -3,14 +3,14 @@
 {% load search_highlight %}
 {% load simplekey_extras %}
 
-{% block title %}“{{ query }}” search{% endblock %}
+{% block title %}{{ query }}: Search{% endblock %}
 
 {% block js_require %}
     require(['simplekey/search']);
 {% endblock %}
 
 {% block body_attributes %}
-    id="search-results" class="claro app search-results"
+    id="search-results" class="app search-results"
 {% endblock %}
 
 {% block body_content %}
@@ -28,7 +28,7 @@
                     {% else %}
                         No
                     {% endif %}
-                    Result{% if paginator.count != 1 %}s{% endif %}
+                    result{% if paginator.count != 1 %}s{% endif %}
                     for
                     <strong>{{ query }}</strong>
                 </h2>
@@ -56,13 +56,13 @@
                                 {{ item_title|italicize_plant|safe }}
                             </a>
                         {% endif %}
-                        {% if result.model_name == 'helppage' %}
+                        {% if result.model_name == 'plainpage' %}
                             <a href="{{ url_base }}{{ result.object.url_path }}"><img
                                 src="/static/images/icons/icon-help.png"
                                 alt="" title="Help page">
                                 {{ item_title }}</a>
                         {% endif %}
-                        {% if result.model_name == 'glossaryhelppage' %}
+                        {% if result.model_name == 'glossarypage' %}
                             <a href="{{ url_base }}{{ result.object.url_path }}"><img
                                 src="/static/images/icons/icon-glossary.png"
                                 alt="" title="Glossary page">
@@ -75,7 +75,7 @@
                                 {{ item_title }}</a>
                         {% endif %}
                         {% if result.model_name == 'subgroupslistpage' %}
-                            <a href="{% url level2 'simple' result.object.group.slug %}">
+                            <a href="{% url level2 'simple' result.object.group.name %}">
                             <img src="/static/images/icons/icon-groups-list.png"
                                 alt="" title="Simple Key plant subgroups page">
                                 {{ item_title }}</a>
@@ -98,7 +98,6 @@
                     <p>Please adjust your search and try again.</p>
                 {% else %}
                     <div class="search-navigation">
-                        <p>Page:</p>
                         <ul>
                         {% if page.has_previous %}
                             <li><a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">Previous</a></li>
@@ -125,7 +124,7 @@
                 {% endif %}
             </div>
 
-            <div id="sidebar" style="height: 515px;">
+            <div id="sidebar">
                 {% include "simplekey/_sidebar_items.html" %}
             </div>
             <div class="clearit"></div>

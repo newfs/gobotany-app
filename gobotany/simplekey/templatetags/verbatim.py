@@ -48,7 +48,15 @@ def verbatim(parser, token):
 
 @register.tag
 def handlebars(parser, token):
-    text = ['<script type="text/x-handlebars">']
+    args = token.split_contents()
+    if len(args) > 2:
+        raise template.TemplateSyntaxError(
+            "%r tag requires zero or one arguments" % args[0])
+    if len(args) == 2:
+        attr = ' data-template-name={}'.format(args[1])
+    else:
+        attr = ''
+    text = ['<script type="text/x-handlebars"{}>'.format(attr)]
     while 1:
         token = parser.tokens.pop(0)
         if token.contents == 'endhandlebars':

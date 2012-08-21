@@ -13,15 +13,6 @@ def default_view(request):
                               context_instance=RequestContext(request))
 
 
-def canonical_images(request):
-    results = []
-    if request.method == 'POST':
-        s = request.POST['s'].strip()
-        results = botany.species_images(s, max_rank=1)
-    return render_to_response('canonical_images.html', 
-                                {'results': results},
-                                context_instance=RequestContext(request))
-
 def pile_characters_select(request):
     return render_to_response('pile_characters_select.html', {
             'piles': [ (pile.slug, pile.name) for pile
