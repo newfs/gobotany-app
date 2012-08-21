@@ -15,7 +15,7 @@ urlpatterns = patterns(
     url(r'^dkey/', include('gobotany.dkey.urls')),
     url(r'^plantoftheday/', include('gobotany.plantoftheday.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
-    url(r'^site/', include('gobotany.site.urls')), # temp. URL for site app
+    url(r'^', include('gobotany.site.urls')),
     url(r'^', include('gobotany.simplekey.urls')),
     )
 

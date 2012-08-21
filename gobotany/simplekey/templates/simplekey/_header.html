@@ -20,7 +20,7 @@
                 </div>
                 <ul>
                     <li class="home">
-                        <a {% ifnotequal request.path "/" %}href="{% url simplekey-index %}"{% endifnotequal %}>Home</a>
+                        <a {% ifnotequal request.path "/" %}href="{% url site-home %}"{% endifnotequal %}>Home</a>
                     </li>
                     <li class="plant-id">
                         <a href="{% url simplekey %}">Simple Key</a>
@@ -33,7 +33,7 @@
                         <a href="{% url dich-key-placeholder %}">Dichotomous Key</a>
                     </li>
                     <li class="teaching-tools"><a href="{% url teaching %}">Teaching</a></li>
-                    <li class="about last"><a href="{% url simplekey-help-about %}">About</a></li>
+                    <li class="about last"><a href="{% url site-about %}">About</a></li>
                 </ul>
                 <div class="clearit"></div>
             </nav>
