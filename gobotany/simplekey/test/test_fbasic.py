@@ -90,7 +90,7 @@ class FunctionalTestCase(unittest2.TestCase):
         try:
             yield
         finally:
-           url self.driver.implicitly_wait(0)
+           self.driver.implicitly_wait(0)
 
     def wait_on(self, timeout, function, *args, **kw):
         t0 = t1 = time.time()
