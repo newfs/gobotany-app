@@ -33,6 +33,14 @@ def is_displayed(element):
     except StaleElementReferenceException:
         return False
 
+def hide_django_debug_toolbar(self):
+    # Dismiss the Django Debug toolbar if it is visible.
+    toolbar = self.css1('#djDebugToolbar')
+    if is_displayed(toolbar):
+        hide_toolbar_button = self.css1('#djHideToolBarButton')
+        if (hide_toolbar_button):
+            hide_toolbar_button.click()
+
 class FunctionalTestCase(unittest2.TestCase):
 
     @classmethod
@@ -1131,12 +1139,7 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
     # TODO: test that the menu appears on other pages besides Home
 
     def _get_suggestions(self, query, compare_exact=True):
-        # Dismiss the Django Debug toolbar if it is visible.
-        toolbar = self.css1('#djDebugToolbar')
-        if is_displayed(toolbar):
-            hide_toolbar_button = self.css1('#djHideToolBarButton')
-            if (hide_toolbar_button):
-                hide_toolbar_button.click()
+        hide_django_debug_toolbar(self)
 
         search_input = self.css1(self.SEARCH_INPUT_CSS)
         search_input.click()
@@ -1748,6 +1751,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         seconds = 16   # Long max. time to handle big plant subgroups
         subgroup_page_url = '/%s/%s/' % (self.GROUPS[subgroup], subgroup)
         page = self.get(subgroup_page_url)
+        hide_django_debug_toolbar(self)
         self.wait_on(10, self.css1, 'div.plant.in-results')
         #self.wait_on(seconds, self.css1, '#exposeMask')
         self.css1('#intro-overlay .continue').click()
@@ -1758,6 +1762,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     # characters appear to be formatted as expected.
     def _preview_popups_have_characters(self, subgroup):
         page = self._get_subgroup_page(subgroup)
+        hide_django_debug_toolbar(self)
         species = self.SPECIES[subgroup]
         for s in species:
             species_link = page.find_element_by_partial_link_text(s)
@@ -1773,6 +1778,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     def _preview_popup_has_characters(self, subgroup, species,
                                       expected_name, expected_values):
         page = self._get_subgroup_page(subgroup)
+        hide_django_debug_toolbar(self)
         species_link = page.find_element_by_partial_link_text(species)
         time.sleep(1)   # Wait a bit for animation to finish
         species_link.click()
@@ -1930,6 +1936,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
                    'Sagittaria cuneata', 'Utricularia intermedia']
         for s in species:
             self.get('/species/%s/' % s.replace(' ', '/').lower())
+            hide_django_debug_toolbar(self)
             list_items = self.css('.characteristics dt')
             character_names = []
             for list_item in list_items:
