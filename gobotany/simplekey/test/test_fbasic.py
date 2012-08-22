@@ -1131,6 +1131,13 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
     # TODO: test that the menu appears on other pages besides Home
 
     def _get_suggestions(self, query, compare_exact=True):
+        # Dismiss the Django Debug toolbar if it is visible.
+        toolbar = self.css1('#djDebugToolbar')
+        if is_displayed(toolbar):
+            hide_toolbar_button = self.css1('#djHideToolBarButton')
+            if (hide_toolbar_button):
+                hide_toolbar_button.click()
+
         search_input = self.css1(self.SEARCH_INPUT_CSS)
         search_input.click()
         search_input.clear()
@@ -1371,7 +1378,6 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
     # Test for the 'generic' portion of common names, i.e, 'dogwood'
     # from a common name like 'silky dogwood'
 
-    @unittest2.skip('TODO: John, is this broken, or did data change?')
     def test_generic_common_name_suggestions_exist(self):
         SUGGESTIONS = ['ground-cedar', 'spleenwort', 'spruce', 'juniper',
                        'bellwort', 'dogwood', 'american-aster', 'thistle',
@@ -1389,7 +1395,6 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
             suggestions = self._get_suggestions(query)
             self.assertFalse(query in suggestions)
 
-    @unittest2.skip('TODO: John should look at this')
     def test_suggestions_can_also_match_anywhere_in_string(self):
         # Verify that although we first try matching suggestions that
         # start with the query, if not a lot of those are found we then
