@@ -1,0 +1,52 @@
+/* Styles for legal notification pages */
+.legal #main {
+    h3 {
+        margin: 8px 0;
+    }
+    p {
+        + p, + ul {
+            margin-top: 8px;
+        }
+    }
+    ol.terms {
+        font-family: $headings-font;
+        font-size: 24px;
+        list-style-type: upper-roman;
+        margin-top: 0;
+        ul {
+            list-style-type: disc;
+        }
+        li {
+            p, li {
+                font-family: $body-font;
+                font-size: 12px;
+            }
+            li {
+                line-height: 20px;
+            }
+        }
+    }
+}
+
+/* Begin media queries styles for the legal notification pages. */
+
+/* Portrait-orientation styles */
+@media only screen and (max-width: 400px) {
+}
+/* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) {
+}
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) {
+}
+/* These styles apply to smartphones and tablets */
+@media only screen and (max-width: 1024px) {
+    .legal #main {
+        ol.terms {
+            font-size: 18px;
+            padding-left: 32px;
+        }
+    }
+}
+
+/* End media queries styles for the legal notification pages */
