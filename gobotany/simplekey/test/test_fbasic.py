@@ -639,7 +639,7 @@ class GlossaryFunctionalTests(FunctionalTestCase):
     def test_glossary_g_page_link_is_correct(self):
         d = self.get('/glossary/a/')
         e = d.find_element_by_link_text('G')
-        self.assertTrue(e.get_attribute('href').endswith('/help/glossary/g/'))
+        self.assertTrue(e.get_attribute('href').endswith('/glossary/g/'))
 
 
 class SearchFunctionalTests(FunctionalTestCase):
