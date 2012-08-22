@@ -1,25 +1,23 @@
-{% extends "simplekey/_new_base.html" %}
+{% extends "gobotany/_page_no_sidebar.html" %}
 {% load dkey_filters %}
 
 {% block title %}{{ page.title }}{% endblock %}
 {% block script_name %}dkey{% endblock %}
-{% block css %}
-  <link rel="stylesheet" href="/static/css/dkey.css">
-{% endblock %}
 {% block js_require %}
   require(['dkey/dkey']);
 {% endblock %}
 {% block body_attributes %}
+    id="dkey"
     data-couplet-rank="{{ page.rank }}"
     data-couplet-title="{{ page.title }}"
 {% endblock %}
-{% block body_content %}
+{% block main_content %}
 
 {% with title=page|display_title %}
 
 <div class="offer-help-aside">
   <span>Want help getting started?</span>
-  <a href="/help/">Get Help</a>
+  <a href="#">Get Help</a>
   {% if title == 'Key to the Families' %}
     <br><select class="jumpbox">
       <option>Jump to a family…</option>

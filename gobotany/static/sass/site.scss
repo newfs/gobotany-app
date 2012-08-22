@@ -15,6 +15,7 @@
 @import "compass/css3/box-shadow";
 @import "compass/css3/images";   /* for gradient, etc. */
 @import "compass/css3/transform";
+@import "compass/typography/links/hover-link";
 
 /* Imports for third-party controls */
 @import "jquery.jscrollpane";
@@ -329,6 +330,13 @@ header {
         padding-left: 250px;
         width: 710px;
     }
+    .container.no-sidebar #main {
+        background: none;
+        float: none;
+        min-height: none;
+        padding-left: 0;
+        width: auto;
+    }
     #sidebar {
         border-top: 1px solid $border-green;
         float: left;
@@ -452,6 +460,7 @@ footer {
  * can contain their own media queries. */
 
 @import "home";
+@import "dkey";
 @import "about";
 @import "legal";
 
