@@ -843,12 +843,11 @@ class SearchFunctionalTests(FunctionalTestCase):
             self.assertTrue(len(result_links))
             self.assertEqual('Family: %s' % family, result_links[0].text)
 
-    @unittest2.skip('TODO: can John fix?')
     def test_search_results_page_genus_returns_first_result(self):
         genera = ['Claytonia (spring-beauty)',
                   'Echinochloa (barnyard grass)',
                   'Koeleria (Koeler\'s grass)',
-                  'Panicum (warty panicgrass)',
+                  'Panicum (panicgrass)',
                   'Saponaria (soapwort)',
                   'Verbascum (mullein)']
         for genus in genera:
