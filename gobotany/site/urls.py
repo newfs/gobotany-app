@@ -24,7 +24,7 @@ urlpatterns = patterns(
         name='site-contributors'),
 
     # Redirects for old URLs
-    url('^teaching-tools/$', redirect_to, {'url': '/teaching'}),
+    url('^teaching-tools/$', redirect_to, {'url': '/teaching/'}),
     url(r'^help/about/$', redirect_to, {'url': '/about/'}),
     url(r'^help/start/$', redirect_to, {'url': '/start/'}),
     url('^help/map/$', redirect_to, {'url': '/map/'}),
