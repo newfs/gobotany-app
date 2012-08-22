@@ -1,23 +1,11 @@
-{% extends "simplekey/_new_base.html" %}
+{% extends "gobotany/_page_full_sidebar.html" %}
 
 {% block title %}Privacy Policy{% endblock %}
 
-{% block body_attributes %}id="privacy-policy" class="app privacy-policy"{% endblock %}
+{% block body_attributes %}id="privacy-policy" class="legal"{% endblock %}
 
-{% block js_require %}
-    require(['util/sidebar'], function(sidebar) {
-        sidebar.setup();
-    });
-{% endblock %}
-
-{% block body_content %}
-    <div id="top-wrapper">
-        {% include "simplekey/_header.html" %}
-
-        <div class="content">
-            <div class="container">
-                <div id="main">
-                    <h2>Privacy Policy</h2>
+{% block main_content %}
+                    <h1>Privacy Policy</h1>
                     <p>Go Botany is designed to gather and disseminate 
                     information about plant distribution and abundance 
                     across the six states of New England, USA, and 
@@ -25,7 +13,7 @@
                     governs the use of personal information from the site 
                     and you agree to be bound to this policy as a user of 
                     the Site.</p>
-                    <h3>Submitted Information</h3>
+                    <h2>Submitted Information</h2>
                     <p>Personal Information is voluntarily supplied by you 
                     when you register and submit data to the <a 
                     href="{% url plantshare-placeholder %}">PlantShare</a> sector 
@@ -63,7 +51,7 @@
                     accept cookies, you can still use the PlantShare site, 
                     but you will need to re-enter login information each 
                     time you visit.</p>
-                    <h3>Sensitive Species</h3>
+                    <h2>Sensitive Species</h2>
                     <p>If you submit an unusual observation or a sighting of a 
                     plant known to be listed as Endangered, Threatened, 
                     Special Concern, Historic or Invasive in a New England 
@@ -71,7 +59,7 @@
                     confirm your sighting.  Your email address and contact 
                     information will not be sold or distributed outside New 
                     England Wild Flower Society.</p>
-                    <h3>Your Practices in Obtaining Sightings</h3>
+                    <h2>Your Practices in Obtaining Sightings</h2>
                     <p>As a conservation organization, New England Wild Flower 
                     Society seeks to limit disturbance to plants, especially 
                     those that are rare or occur on private property. Please 
@@ -82,24 +70,12 @@
                     landowner permissions have been obtained and that posting 
                     of locational and other data has been approved by the 
                     landowner.</p>
-                    <h3>Changes to this Privacy Policy</h3>
+                    <h2>Changes to this Privacy Policy</h2>
                     <p>We may occasionally update or amend New England Wild 
                     Flower Society’s Privacy Statement. If we make changes, 
                     we will post the changes here.</p>
-                </div>
-                <div id="sidebar">
-                    <div class="section">
-                        {% url privacy-policy as u %}
-                        <h5><a class="sidebarlink" {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Privacy Policy</a></h5>
-                    </div>
-                    <div class="section">
-                        {% url terms-of-use as u %}
-                        <h5><a class="sidebarlink" {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Terms of Use</a></h5>
-                    </div>
-                    {% block more_sidebar_content %}{% endblock %}
-                </div>
+{% endblock %}
 
-                <div class="clearit"></div>
-            </div>
-        </div>
+{% block sidebar_content %}
+    {% include "gobotany/_legal_navigation.html" %}
 {% endblock %}

@@ -448,6 +448,36 @@ footer {
     top: 6px !important;
 }
 
+/* Styles for legal notification pages */
+.legal #main {
+    h3 {
+        margin: 8px 0;
+    }
+    p {
+        + p, + ul {
+            margin-top: 8px;
+        }
+    }
+    ol.terms {
+        font-family: $headings-font;
+        font-size: 24px;
+        list-style-type: upper-roman;
+        margin-top: 0;
+        ul {
+            list-style-type: disc;
+        }
+        li {
+            p, li {
+                font-family: $body-font;
+                font-size: 12px;
+            }
+            li {
+                line-height: 20px;
+            }
+        }
+    }
+}
+
 /* Imports for various pages, sections, features, etc. Each of these
  * can contain their own media queries. */
 

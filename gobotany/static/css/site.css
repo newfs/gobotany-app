@@ -371,6 +371,14 @@ footer .support { margin-right: 0; padding: 18px 0; }
 /* Shadowbox close button */
 #sb-nav-close { background-position: center; background-repeat: no-repeat; padding: 4px; /* Increase activation area a bit */ right: -28px !important; /* Place at top right, but not exactly at the corner so as to avoid Flash video z-index problem */ top: 6px !important; }
 
+/* Styles for legal notification pages */
+.legal #main h3 { margin: 8px 0; }
+.legal #main p + p, .legal #main p + ul { margin-top: 8px; }
+.legal #main ol.terms { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 24px; list-style-type: upper-roman; margin-top: 0; }
+.legal #main ol.terms ul { list-style-type: disc; }
+.legal #main ol.terms li p, .legal #main ol.terms li li { font-family: Verdana, Geneva, sans-serif; font-size: 12px; }
+.legal #main ol.terms li li { line-height: 20px; }
+
 /* Imports for various pages, sections, features, etc. Each of these can contain their own media queries. */
 /* Home */
 #home { background: url(/static/images/layout/body-home.jpg) repeat-x left top #f3f3c3; }

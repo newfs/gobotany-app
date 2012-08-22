@@ -23,6 +23,10 @@ urlpatterns = patterns(
     url(r'^contributors/$', views.contributors_view,
         name='site-contributors'),
 
+    # Legal notification pages
+    url('^privacy/$', views.privacy_view, name='site-privacy'),
+    url('^terms-of-use/$', views.terms_of_use_view, name='site-terms-of-use'),
+
     # Redirects for old URLs
     url('^teaching-tools/$', redirect_to, {'url': '/teaching/'}),
     url(r'^help/about/$', redirect_to, {'url': '/about/'}),
@@ -33,5 +37,6 @@ urlpatterns = patterns(
     url('^help/glossary/$', redirect_to, {'url': '/glossary/'}),
     url('^help/video/$', redirect_to, {'url': '/video/'}),
     url('^help/contributors/$', redirect_to, {'url': '/contributors/'}),
-
+    url('^legal/privacy-policy/$', redirect_to, {'url': '/privacy/'}),
+    url('^legal/terms-of-use/$', redirect_to, {'url': '/terms/'}),
     )

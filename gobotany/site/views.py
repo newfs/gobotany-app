@@ -5,6 +5,7 @@ import string
 from datetime import date
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.vary import vary_on_headers
@@ -134,3 +135,16 @@ def video_view(request):
 def contributors_view(request):
     return render_to_response('gobotany/contributors.html', {
        }, context_instance=RequestContext(request))
+
+# Legal notification pages
+
+def privacy_view(request):
+    return render_to_response('gobotany/privacy.html',
+            context_instance=RequestContext(request))
+
+def terms_of_use_view(request):
+    site_url = request.build_absolute_uri(reverse('site-home'))
+    return render_to_response('gobotany/terms.html', {
+            'site_url': site_url,
+            }, context_instance=RequestContext(request))
+

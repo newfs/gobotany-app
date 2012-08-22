@@ -1,0 +1,8 @@
+    <div class="section">
+        {% url site-privacy as u %}
+        <h4><a class="sidebarlink" {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Privacy Policy</a></h4>
+    </div>
+    <div class="section">
+        {% url site-terms-of-use as u %}
+        <h4><a class="sidebarlink" {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Terms of Use</a></h4>
+    </div>

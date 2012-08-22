@@ -1781,12 +1781,12 @@ class Importer(object):
 
 
     def _create_privacy_policy_page(self):
-        self._create_plain_page('privacy-policy', 'Privacy Policy',
-                                'simplekey/templates/simplekey/privacy.html')
+        self._create_plain_page('site-privacy', 'Privacy Policy',
+                                'site/templates/gobotany/privacy.html')
 
     def _create_terms_of_use_page(self):
-        self._create_plain_page('terms-of-use', 'Terms of Use',
-                                'simplekey/templates/simplekey/terms.html')
+        self._create_plain_page('site-terms-of-use', 'Terms of Use',
+                                'site/templates/gobotany/terms.html')
 
 
     def import_plain_pages(self):
