@@ -1646,10 +1646,9 @@ class Importer(object):
         core_dir = os.path.dirname(os.path.abspath(__file__))
         gobotany_dir = os.path.dirname(core_dir)
         gobotany_app_dir = os.path.dirname(gobotany_dir)
-        template_dir = os.path.join(gobotany_app_dir,
-            'gobotany/site/templates/')
+        project_dir = os.path.join(gobotany_app_dir, 'gobotany')
 
-        template_file = os.path.join(template_dir, template_file_path);
+        template_file = os.path.join(project_dir, template_file_path);
 
         f = open(template_file, 'r')
         lines = []
@@ -1689,13 +1688,13 @@ class Importer(object):
     def _create_about_gobotany_page(self):
         self._create_plain_page('site-about',
                                 'About Go Botany',
-                                'gobotany/about.html')
+                                'site/templates/gobotany/about.html')
 
 
     def _create_getting_started_page(self):
         plain_page = self._create_plain_page('site-getting-started',
             'Getting Started with the Simple Key',
-            'simplekey/help_start.html')
+            'site/templates/gobotany/getting_started.html')
         video = models.Video.objects.get(title='Getting Started')
         if video:
             plain_page.videos.add(video)
@@ -1714,9 +1713,10 @@ class Importer(object):
 
 
     def _create_advanced_map_page(self):
-        plain_page = self._create_plain_page('site-advanced-map',
-                                             'Advanced Map to Groups',
-                                             'gobotany/advanced_map.html')
+        plain_page = self._create_plain_page(
+            'site-advanced-map',
+            'Advanced Map to Groups',
+            'site/templates/gobotany/advanced_map.html')
         # Add videos associated with each pile group and pile.
         videos = self._get_pile_and_group_videos()
         for video in videos:
@@ -1777,16 +1777,16 @@ class Importer(object):
 
     def _create_teaching_page(self):
         self._create_plain_page('site-teaching', 'Teaching',
-                                'gobotany/teaching.html')
+                                'site/templates/gobotany/teaching.html')
 
 
     def _create_privacy_policy_page(self):
         self._create_plain_page('privacy-policy', 'Privacy Policy',
-                                'simplekey/privacy.html')
+                                'simplekey/templates/simplekey/privacy.html')
 
     def _create_terms_of_use_page(self):
         self._create_plain_page('terms-of-use', 'Terms of Use',
-                                'simplekey/terms.html')
+                                'simplekey/templates/simplekey/terms.html')
 
 
     def import_plain_pages(self):
