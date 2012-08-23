@@ -143,9 +143,9 @@
         .container {
             height: auto;
             padding: 0;
-        }
-        .container div {
-            width: auto;
+             div {
+                width: auto;
+            }
         }
         div div {
             height: auto;
@@ -233,6 +233,13 @@
     .content {
         .container {
             padding: 0;
+            &.free-sidebar #sidebar .section {
+                padding-bottom: $sidebar-box-vertical-padding;
+            }
+            #sidebar {
+                background: none;
+                border: 0;
+            }
         }
         #main {
             background: none;
@@ -241,6 +248,16 @@
             padding-bottom: 14px;
             padding-left: 0;
             @include smallscreen-side-margins;
+            .smallscreen-anchor-nav {
+                display: block;
+                padding: 8px 0 16px;
+                a {
+                    font-family: $headings-font;
+                    font-size: 14px;
+                    padding: 8px 0;
+                    text-decoration: underline;
+                }
+            }
         }
         #sidebar {
             background: #fff;
@@ -250,7 +267,7 @@
             margin-bottom: 14px;
             @include smallscreen-side-margins;
             .section {
-                margin-top: 16px;
+                margin-top: sidebar-box-vertical-padding;
                 padding-bottom: 0;
             }
             .section:first-child {

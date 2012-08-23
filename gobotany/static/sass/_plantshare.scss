@@ -1,7 +1,52 @@
 /* PlantShare */
 
 body.plantshare {
-
+    #sidebar {
+        #login.box {
+            $section-padding: 16px;
+            background: $login-box-background-color;
+            border: 1px solid $link-green;
+            padding: 0;
+            h4 {
+                font-size: 20px;
+                padding: $section-padding $section-padding 10px;
+            }
+            form {
+                padding: 0 $section-padding $section-padding;
+                label {
+                    display: block;
+                    font-size: 10px;
+                    margin-bottom: 4px;
+                    text-transform: uppercase;
+                }
+                input {
+                    border: 1px solid $link-green;
+                    font-family: $body-font;
+                    height: 16px;
+                    margin-bottom: 10px;
+                    padding: 5px;
+                    width: 95%;
+                    &.button.login {
+                        background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -169px -231px;
+                        border: 0;
+                        height: 32px;
+                        width: 99px;
+                        @include offscreen;
+                        &:hover {
+                            background-position: -169px -265px;
+                        }
+                        &:active {
+                            background-position: -169px -299px;
+                        }
+                    }
+                }
+            }
+            div {
+                border-top: 1px solid $link-green;
+                padding: $section-padding;
+            }
+        }
+    }
 }
 
 /* Begin media queries styles for PlantShare. */

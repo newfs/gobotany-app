@@ -345,12 +345,16 @@ header nav #search-suggest .menu span { font-weight: normal; }
 .content { padding: 8px 0 0; }
 .content .container { margin: 0 auto; padding: 0 10px; width: 960px; }
 .content #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; float: right; min-height: 500px; padding-bottom: 24px; padding-left: 250px; width: 710px; }
+.content #main .smallscreen-anchor-nav { display: none; }
+.content .container.free-sidebar #main { background: none; }
+.content .container.free-sidebar #sidebar { border-top: 0; height: auto; padding: 0; }
 .content .container.no-sidebar #main { background: none; float: none; min-height: none; padding-left: 0; width: auto; }
 .content #sidebar { border-top: 1px solid #c3d941; float: left; height: 100%; margin-right: -230px; padding: 16px 0; width: 230px; }
 .content #sidebar .section { padding: 0 17px 16px; }
 .content #sidebar .section h4 { margin: 0 0 5px 0; }
 .content #sidebar .section.separate { border-top: 1px solid #e2dfcb; padding-top: 16px; }
 .content #sidebar a:hover { text-decoration: none; }
+.content #sidebar .box { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 16px 0 0; }
 
 /* Footer */
 footer { background: #b4d57f; clear: both; height: 128px; position: relative; width: 100%; }
@@ -466,6 +470,16 @@ footer .support { margin-right: 0; padding: 18px 0; }
   #home .donate a { float: none; margin: 6px 0; position: static; } }
 /* End media queries styles for the Home page */
 /* PlantShare */
+body.plantshare #sidebar #login.box { background: #d3eaad; border: 1px solid #508e31; padding: 0; }
+body.plantshare #sidebar #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
+body.plantshare #sidebar #login.box form { padding: 0 16px 16px; }
+body.plantshare #sidebar #login.box form label { display: block; font-size: 10px; margin-bottom: 4px; text-transform: uppercase; }
+body.plantshare #sidebar #login.box form input { border: 1px solid #508e31; font-family: Verdana, Geneva, sans-serif; height: 16px; margin-bottom: 10px; padding: 5px; width: 95%; }
+body.plantshare #sidebar #login.box form input.button.login { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -169px -231px; border: 0; height: 32px; width: 99px; display: block; text-indent: -9000px; }
+body.plantshare #sidebar #login.box form input.button.login:hover { background-position: -169px -265px; }
+body.plantshare #sidebar #login.box form input.button.login:active { background-position: -169px -299px; }
+body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding: 16px; }
+
 /* Begin media queries styles for PlantShare. */
 /* Portrait-orientation styles */
 /* Landscape-orientation styles */
@@ -722,9 +736,13 @@ footer .support { margin-right: 0; padding: 18px 0; }
   footer .support { height: 63px; margin: 14px 0 0; padding: 0; }
   footer .support img { padding-bottom: 6px; }
   .content .container { padding: 0; }
+  .content .container.free-sidebar #sidebar .section { padding-bottom: 16px; }
+  .content .container #sidebar { background: none; border: 0; }
   .content #main { background: none; float: none; min-height: inherit; padding-bottom: 14px; padding-left: 0; margin-left: 8px; margin-right: 8px; }
+  .content #main .smallscreen-anchor-nav { display: block; padding: 8px 0 16px; }
+  .content #main .smallscreen-anchor-nav a { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; padding: 8px 0; text-decoration: underline; }
   .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; margin-bottom: 14px; margin-left: 8px; margin-right: 8px; }
-  .content #sidebar .section { margin-top: 16px; padding-bottom: 0; }
+  .content #sidebar .section { margin-top: sidebar-box-vertical-padding; padding-bottom: 0; }
   .content #sidebar .section:first-child { margin-top: 0; }
   .gb-tooltip { width: 200px; } }
 /* These styles apply to smartphones and tablets */

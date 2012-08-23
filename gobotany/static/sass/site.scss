@@ -34,11 +34,14 @@ $border-green: #c3d941;
 
 $text-color: #000;
 $footer-background-color: #b4d57f;
+$login-box-background-color: #d3eaad;
 
 $base-font-size: 12px;
 $nav-font-size: 14px;
 
 $text-line-height: 170%;
+
+$sidebar-box-vertical-padding: 16px;
 
 $tooltip-border-color: #c3d941;
 $tooltip-background-top-color: #eaf2e2;
@@ -340,20 +343,35 @@ header {
         padding-bottom: 24px;
         padding-left: 250px;
         width: 710px;
+        .smallscreen-anchor-nav {
+            display: none;
+        }
     }
-    .container.no-sidebar #main {
-        background: none;
-        float: none;
-        min-height: none;
-        padding-left: 0;
-        width: auto;
+    .container {
+        &.free-sidebar {
+            #main {
+                background: none;
+            }
+            #sidebar {
+                border-top: 0;
+                height: auto;
+                padding: 0;
+            }
+        }
+        &.no-sidebar #main {
+            background: none;
+            float: none;
+            min-height: none;
+            padding-left: 0;
+            width: auto;
+        }
     }
     #sidebar {
         border-top: 1px solid $border-green;
         float: left;
         height: 100%;
         margin-right: -230px;
-        padding: 16px 0;
+        padding: $sidebar-box-vertical-padding 0;
         width: 230px;
         .section {
             padding: 0 17px 16px;
@@ -362,11 +380,17 @@ header {
             }
             &.separate {
                 border-top: 1px solid #e2dfcb;
-                padding-top: 16px;
+                padding-top: $sidebar-box-vertical-padding;
             }
         }
         a:hover {
             text-decoration: none;
+        }
+        .box {
+            background: #fff;
+            border: 1px solid $border-green;
+            margin-bottom: $sidebar-box-vertical-padding;
+            padding: $sidebar-box-vertical-padding 0 0;
         }
     }
 }

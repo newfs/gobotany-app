@@ -1,4 +1,23 @@
+<div class="box">
     <div class="section">
         {% url ps-main as u %}
         <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>PlantShare</a></h4>
     </div>
+</div>
+
+<div id="login" class="box">
+    <h4>Log In</h4>
+    <form action="post">
+        <label for="username">Username</label>
+        <input id="username" type="text">
+        <label for="password">Password</label>
+        <input id="password" type="password">
+        <input type="submit" class="button login">
+    </form>
+    <div>
+        <a href="#">
+            <img src="/static/images/icons/facebook-signup.png"
+            alt="Sign in with Facebook">
+        </a>
+    </div>
+</div>

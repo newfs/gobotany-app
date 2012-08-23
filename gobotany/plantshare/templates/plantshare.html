@@ -1,4 +1,4 @@
-{% extends "gobotany/_page_full_sidebar.html" %}
+{% extends "gobotany/_page_free_sidebar.html" %}
 
 {% block title %}PlantShare{% endblock %}
 
@@ -7,9 +7,13 @@
 {% block main_content %}
 <h1>PlantShare</h1>
 
+<div class="smallscreen-anchor-nav">
+    <a href="#login">Log In</a>
+</div>
+
 <p>Hello, world!</p>
 {% endblock %}
 
 {% block sidebar_content %}
-
+    {% include "_plantshare_navigation.html" %}
 {% endblock %}
