@@ -311,8 +311,10 @@ p.new { background: #fff; display: inline-block; font-size: 9px; font-weight: no
 p.meta { font-size: 10px; font-style: italic; margin: 4px 0; }
 
 /* Header */
-body#home li.home { background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent; text-decoration: none; }
-body.about li.about { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
+body#home nav li.home { background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent; text-decoration: none; }
+body.about nav li.about { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
+body.plantshare nav li.plantshare { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
+body.teaching nav li.teaching { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 
 header { height: 120px; }
 header .container { margin: 0 auto; padding: 0 10px; width: 960px; }
@@ -463,6 +465,13 @@ footer .support { margin-right: 0; padding: 18px 0; }
   #home .donate p { margin: 8px; padding: 0; }
   #home .donate a { float: none; margin: 6px 0; position: static; } }
 /* End media queries styles for the Home page */
+/* PlantShare */
+/* Begin media queries styles for PlantShare. */
+/* Portrait-orientation styles */
+/* Landscape-orientation styles */
+/* These styles are common to both smartphone widths */
+/* These styles apply to smartphones and tablets */
+/* End media queries styles for PlantShare */
 /* Dichotomous Key */
 /* Definitions */
 .orange-button, #dkey #main .offer-help-aside a, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }

@@ -71,6 +71,17 @@ $smallscreen-potd-image-width: 297px;
     margin-right: $smallscreen-margin;
 }
 
+@mixin highlight-global-nav {
+    background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
+    text-decoration: none;
+}
+
+@mixin highlight-global-nav-home {
+    background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent;
+    text-decoration: none;
+}
+
+
 /* Site-wide styles */
 
 body {
@@ -158,24 +169,24 @@ p.meta {
 
 /* Header */
 
-@mixin highlight-global-nav {
-    background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
-    text-decoration: none;
-}
-
-@mixin highlight-global-nav-home {
-    background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent;
-    text-decoration: none;
-}
-
 body {
     &#home {
-        li.home {
+        nav li.home {
             @include highlight-global-nav-home;
         }
     }
     &.about {
-        li.about {
+        nav li.about {
+            @include highlight-global-nav;
+        }
+    }
+    &.plantshare {
+        nav li.plantshare {
+            @include highlight-global-nav;
+        }
+    }
+    &.teaching {
+        nav li.teaching {
             @include highlight-global-nav;
         }
     }
@@ -460,6 +471,7 @@ footer {
  * can contain their own media queries. */
 
 @import "home";
+@import "plantshare";
 @import "dkey";
 @import "about";
 @import "legal";
