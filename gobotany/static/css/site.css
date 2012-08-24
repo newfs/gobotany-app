@@ -470,6 +470,11 @@ footer .support { margin-right: 0; padding: 18px 0; }
   #home .donate a { float: none; margin: 6px 0; position: static; } }
 /* End media queries styles for the Home page */
 /* PlantShare */
+body.plantshare .join { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px 16px; width: 475px; }
+body.plantshare .join ul { line-height: 18px; list-style-position: inside; margin: 10px 0 0 24px; }
+body.plantshare .join a { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0 -3px; height: 41px; margin: 12px auto 0; width: 244px; display: block; text-indent: -9000px; }
+body.plantshare .join a:hover { background-position: 0 -88px; }
+body.plantshare .join a:active { background-position: 0 -46px; }
 body.plantshare #sidebar #login.box { background: #d3eaad; border: 1px solid #508e31; padding: 0; }
 body.plantshare #sidebar #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
 body.plantshare #sidebar #login.box form { padding: 0 16px 16px; }
@@ -484,6 +489,8 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
 /* Portrait-orientation styles */
 /* Landscape-orientation styles */
 /* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) { body.plantshare .join { width: auto; }
+  body.plantshare .join ul { margin-left: 0; } }
 /* These styles apply to smartphones and tablets */
 /* End media queries styles for PlantShare */
 /* Dichotomous Key */
