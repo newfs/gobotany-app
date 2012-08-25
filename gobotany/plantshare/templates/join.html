@@ -1,0 +1,47 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+
+{% block title %}Join PlantShare{% endblock %}
+
+{% block body_attributes %}id="join" class="plantshare"{% endblock %}
+
+{% block main_content %}
+<h1>Join PlantShare</h1>
+
+<p>Share your passion for the green world of New England plants. By signing
+up, you will have your own home page complete with your plant discoveries,
+maps, checklists, and much more!</p>
+
+<form action="post">
+    <label for="first-name">First Name</label>
+    <input id="first-name" type="text">
+
+    <label for="last-name">Last Name</label>
+    <input id="last-name" type="text">
+
+    <label for="email">Email Address</label>
+    <input id="email" type="text">
+
+    <label for="login-name">Login Name</label>
+    <input id="login-name" type="text">
+
+    <label for="screen-name">Screen Name</label>
+    <input id="screen-name" type="text">
+
+    <label for="postal-code">ZIP Code (optional)</label>
+    <input id="postal-code" type="text">
+
+    <label for="password">Password</label>
+    <input id="password" type="password">
+
+    <label for="confirm-password">Confirm Password</label>
+    <input id="confirm-password" type="password">
+
+    <input type="submit" class="button" value="Sign Me Up">
+</form>
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}
+

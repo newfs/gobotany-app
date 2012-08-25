@@ -3,8 +3,13 @@
         {% url ps-main as u %}
         <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>PlantShare</a></h4>
     </div>
+    <div class="section">
+        {% url ps-join as u %}
+        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Join PlantShare</a></h4>
+    </div>
 </div>
 
+{% if show_login %}
 <div id="login" class="box">
     <h4>Log In</h4>
     <form action="post">
@@ -12,7 +17,7 @@
         <input id="username" type="text">
         <label for="password">Password</label>
         <input id="password" type="password">
-        <input type="submit" class="button login">
+        <input type="submit" class="button" value="Login">
     </form>
     <div>
         <a href="#">
@@ -21,3 +26,4 @@
         </a>
     </div>
 </div>
+{% endif %}

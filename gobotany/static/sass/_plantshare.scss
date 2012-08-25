@@ -3,7 +3,23 @@
 $section-padding: 16px;
 
 body.plantshare {
-    .join {
+    .content form {
+        padding: $section-padding 0;
+        label {
+            display: block;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        input {
+            border: 1px solid $border-green;
+            font-family: $body-font;
+            height: 16px;
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 350px;
+        }
+    }
+    &#plantshare .join {
         background-color: #fff;
         border: 1px solid $border-green;
         padding: 4px $section-padding $section-padding;
@@ -27,7 +43,25 @@ body.plantshare {
             }            
         }
     }
-
+    &#join #main {
+        form input {
+            width: 350px;
+            &.button {
+                background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -359px;
+                border: 0;
+                height: 41px;
+                margin-top: 12px;
+                width: 244px;
+                @include offscreen;
+                &:hover {
+                    background-position: -1px -402px;
+                }
+                &:active {
+                    background-position: -1px -444px;
+                }
+            }
+        }
+    }
     #sidebar {
         #login.box {
             background: $login-box-background-color;
@@ -40,19 +74,12 @@ body.plantshare {
             form {
                 padding: 0 $section-padding $section-padding;
                 label {
-                    display: block;
                     font-size: 10px;
-                    margin-bottom: 4px;
-                    text-transform: uppercase;
                 }
                 input {
-                    border: 1px solid $link-green;
-                    font-family: $body-font;
-                    height: 16px;
-                    margin-bottom: 10px;
-                    padding: 5px;
+                    border-color: $link-green;
                     width: 95%;
-                    &.button.login {
+                    &.button {
                         background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -169px -231px;
                         border: 0;
                         height: 32px;
@@ -86,10 +113,15 @@ body.plantshare {
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) {
     body.plantshare {
-        .join {
+        &#plantshare .join {
             width: auto;
             ul {
                 margin-left: 0;
+            }
+        }
+        &#join {
+            #main form input {
+                width: 290px;
             }
         }
     }
