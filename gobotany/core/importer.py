@@ -1627,7 +1627,7 @@ class Importer(object):
                         p = models.Pile.objects.get(name=row['pile-or-subpile'])
                     except models.Pile.DoesNotExist:
                         log.info('      UNKNOWN: %s - YouTube video id: %s' %
-                                 (p.name, v.youtube_id))
+                                 (row['pile-or-subpile'], v.youtube_id))
                         continue
                     if not v.title:
                         v.title = p.name
