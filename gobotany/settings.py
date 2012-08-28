@@ -90,6 +90,8 @@ INSTALLED_APPS = [
 
     'haystack',
     'tinymce',
+    'facebook_connect',
+    'registration',
     ]
 MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
@@ -128,6 +130,22 @@ HAYSTACK_SEARCH_ENGINE = 'solr'
 HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 HAYSTACK_SOLR_TIMEOUT = 20  # Longer than default timeout; added for indexing
+
+# For django-facebook-connect
+FACEBOOK_LOGIN_REDIRECT = '/ps'
+FACEBOOK_SCOPE='email' 
+if DEBUG:
+# Debug App, on Brandon's account with localhost URL
+    FACEBOOK_APP_ID='190505394309270' 
+    FACEBOOK_APP_SECRET='eb2dccd2ac2d77dac45a9ee137313d6b' 
+else:
+# Production App, on NEWFS account with production URL
+    FACEBOOK_APP_ID='174715039247745' 
+    FACEBOOK_APP_SECRET='54f36f2204399f84f127178c8322b5ee' 
+
+# For django-registration
+ACCOUNT_ACTIVATION_DAYS = 7
+
 
 # For when we are running on Heroku:
 if 'WEBSOLR_URL' in os.environ:
