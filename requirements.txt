@@ -31,6 +31,9 @@ django-registration==0.8
 django-storages==1.1.4
 boto==2.2.2
 
+# For database migrations
+South==0.7.6
+
 # For deployment to Heroku.
 gunicorn
 newrelic

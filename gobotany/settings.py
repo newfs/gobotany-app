@@ -92,6 +92,7 @@ INSTALLED_APPS = [
     'tinymce',
     'facebook_connect',
     'registration',
+    'south',
     ]
 MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
