@@ -1629,6 +1629,9 @@ class Importer(object):
                         v.save()
                     log.info('      Pile: %s - YouTube video id: %s' %
                              (p.name, v.youtube_id))
+                except models.Pile.DoesNotExist:
+                    log.info('      UNKNOWN: %s - YouTube video id: %s' %
+                             (p.name, v.youtube_id))
 
                 p.video = v
                 p.save()
