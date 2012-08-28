@@ -1623,14 +1623,15 @@ class Importer(object):
                     log.info('    Pile group: %s - YouTube video id: %s' %
                              (p.name, v.youtube_id))
                 except models.PileGroup.DoesNotExist:
-                    p = models.Pile.objects.get(name=row['pile-or-subpile'])
+                    try:
+                        p = models.Pile.objects.get(name=row['pile-or-subpile'])
+                    except models.Pile.DoesNotExist:
+                        log.info('      UNKNOWN: %s - YouTube video id: %s' %
+                                 (p.name, v.youtube_id))
                     if not v.title:
                         v.title = p.name
                         v.save()
                     log.info('      Pile: %s - YouTube video id: %s' %
-                             (p.name, v.youtube_id))
-                except models.Pile.DoesNotExist:
-                    log.info('      UNKNOWN: %s - YouTube video id: %s' %
                              (p.name, v.youtube_id))
 
                 p.video = v
