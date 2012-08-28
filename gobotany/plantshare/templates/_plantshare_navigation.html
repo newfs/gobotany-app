@@ -1,3 +1,4 @@
+{% load facebook_connect %}
 <div class="box">
     <div class="section">
         {% url ps-main as u %}
@@ -21,9 +22,9 @@
     </form>
     <div>
         <a href="#">
-            <img src="/static/images/icons/facebook-signup.png"
-            alt="Sign in with Facebook">
+            {% facebook_button %}
         </a>
     </div>
 </div>
+{% facebook_script %}
 {% endif %}
