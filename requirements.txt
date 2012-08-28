@@ -23,6 +23,10 @@ django-pylibmc-sasl==0.2.4
 # -e .
 # --extra-index-url=http://dist.pinaxproject.com/dev/ -e ../myplants
 
+# For login and registration
+django-facebook-connect==1.0.1
+django-registration==0.8
+
 # For storing images on S3.
 django-storages==1.1.4
 boto==2.2.2
