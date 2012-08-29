@@ -120,7 +120,6 @@ INTERNAL_IPS = ('127.0.0.1',)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [('', os.path.join(THIS_DIRECTORY, 'static'))]
 SESSION_COOKIE_AGE = 2 * 24 * 60 * 60  # two days
-DEBUG_DOJO = bool(int(os.environ.get('DEBUG_DOJO', False)))
 HAYSTACK_SITECONF = 'gobotany.simplekey.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'solr'
 HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
