@@ -37,10 +37,12 @@ else:
 # variable, which should always be set on Heroku, and which a developer
 # can set locally to test "production" behaviors.  (We do not actually
 # do anything with the value, since our Procfile makes it gunicorn's job
-# to actually grab the port.)
+# to actually grab the port.)  Note that DEBUG itself can be turned on
+# with an explicit environment variable even if we are "in production"
+# on Heroku, in case we need Django tracebacks to solve a problem.
 
 IN_PRODUCTION = 'PORT' in os.environ
-DEBUG = not IN_PRODUCTION  # TODO: turn DEBUG on for staging, per issue #199
+DEBUG = 'DEBUG' in os.environ or not IN_PRODUCTION
 
 #
 
