@@ -1608,8 +1608,7 @@ class Importer(object):
         # Create and associate video records from the CSV file.
         for row in open_csv(videofilename):
             v, created = models.Video.objects.get_or_create(
-                         # TODO: remove fallback when Sid updates tar file
-                         title=row.get('title', 'Untitled'),
+                         title=row.get('pile-or-subpile'),
                          youtube_id=row['youtube-id'],
                          )
             log.info('    Video: %s %s' % (v.title, v.youtube_id))
