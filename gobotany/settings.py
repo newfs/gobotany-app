@@ -42,6 +42,7 @@ else:
 # on Heroku, in case we need Django tracebacks to solve a problem.
 
 IN_PRODUCTION = 'PORT' in os.environ
+USE_DEBUG_TOOLBAR = not IN_PRODUCTION
 DEBUG = 'DEBUG' in os.environ or not IN_PRODUCTION
 
 #
@@ -85,7 +86,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.staticfiles',
 
-    ] + (['debug_toolbar'] if DEBUG else []) + [
+    ] + (['debug_toolbar'] if USE_DEBUG_TOOLBAR else []) + [
 
     'haystack',
     'tinymce',
@@ -94,7 +95,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
 
     ) + (('debug_toolbar.middleware.DebugToolbarMiddleware',)
-         if DEBUG else ()) + (
+         if USE_DEBUG_TOOLBAR else ()) + (
 
     'django.middleware.common.CommonMiddleware',
     'django.middleware.locale.LocaleMiddleware',
