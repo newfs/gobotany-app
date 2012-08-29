@@ -20,4 +20,10 @@ urlpatterns = patterns(
     url(r'^', include('gobotany.simplekey.urls')),
     )
 
+# Always use staticfiles, even in production for now
+
+from django.conf import settings
+DEBUG = settings.DEBUG
+settings.DEBUG = True
 urlpatterns += staticfiles_urlpatterns()
+settings.DEBUG = DEBUG
