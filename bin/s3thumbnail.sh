@@ -5,23 +5,28 @@ set -e
 # usage: rebuild-thumbnails [limiting-pattern]
 #
 # For example, "rebuild-thumbnails '/[A-D]'" will rebuild the images for
-# families starting with the letters A through D.
+# families starting with the letters A through D.  If no limiting
+# pattern is specified then "." is used, which matches all files.
 
 # Note that $base lacks its trailing slash so that we can add image
 # dimensions to the directory name later!
 
-source $(dirname "$0")/s3-init.sh
-cd /tmp
-
 pattern="${1:-.}"
 base="s3://newfs/taxon-images"
 base_length="${#base}"
-alreadys="$(tempfile -p newfs)"
 
-s3cmd ls "${base}/" | while read type family_url
+num_left_alone=0
+num_rebuilt=0
+num_created=0
+
+while read -r type family_url
 do
-    if [ "$type" != "DIR" ]; then continue; fi
-    if ! echo "${family_url}" | grep -q "${pattern}"; then continue; fi
+    if [ "$type" != "DIR" ]
+    then continue
+    fi
+    if ! echo "${family_url}" | grep -q "${pattern}"
+    then continue
+    fi
 
     # $family_url now looks like s3://newfs/taxon-images/Vitaceae/
 
@@ -29,27 +34,44 @@ do
     echo $family_url
     echo
 
-    s3cmd ls "${family_url/taxon-images/taxon-images-239x239}" > "$alreadys"
+    THUMBS="$(s3cmd ls ${family_url/taxon-images/taxon-images-239x239})"
 
-    s3cmd ls "$family_url" | while read date time size url
+    while read -r image_date image_time image_size image_url
     do
-        # Like "/Acanthaceae/justicia-americana-fl-dhess.jpg":
-        family_and_image="${url:$base_length+1}"
+        if [ "$image_date" == "DIR" -o "${image_url: -1}" == "/" ]  # directory
+        then continue
+        fi
 
-        if grep -q "$family_and_image"'$' "$alreadys"
+        if [ "${image_url}" != "${image_url%Thumbs.db}" ]  # Mac thumbnail db
         then
+            s3cmd del "${image_url}"
+            continue
+        fi
+
+        # Make a string like "/Acanthaceae/justicia-americana-fl-dhess.jpg":
+        family_and_image="${image_url:$base_length+1}"
+
+        read thumb_date thumb_time thumb_size thumb_url < <(
+            echo "$THUMBS" | grep "$family_and_image"'$')
+
+        if [ -z "$thumb_date" ]
+        then
+            echo "$family_and_image - never thumbnailed - CREATING"
+            num_created=$(( $num_created + 1 ))
+        elif
+            [[ "$thumb_date" < "$image_date" ||
+               "$thumb_date" = "$image_date" &&
+               "$thumb_time" < "$image_time" ]]
+        then
+            echo "$family_and_image - stale thumbnail - REBUILDING"
+            num_rebuilt=$(( $num_rebuilt + 1 ))
+        else
             echo "$family_and_image - already thumbnailed"
+            num_left_alone=$(( $num_left_alone + 1 ))
             continue
         fi
 
-        echo $family_and_image - CREATING THUMBNAILS
-
-        if [ "$date" == "DIR" ]; then continue; fi
-        if [ "$url" != "${url%Thumbs.db}" ]; then
-            s3cmd del "$url"
-            continue
-        fi
-        s3cmd get --force "$url" image-$$.jpg
+        s3cmd get --force "${image_url}" image-$$.jpg
 
         convert image-$$.jpg \
             -thumbnail 160x149^ -gravity center -extent 160x149 -unsharp 0x.5 \
@@ -75,7 +97,9 @@ do
         s3cmd put -P --add-header="Cache-Control: max-age=28800, public" \
             image-$$d.jpg "${base}-1000s1000/${family_and_image}"
 
-    done
-done
+    done < <(s3cmd ls "${family_url}")
 
-rm -f "$alreadys"
+done < <(s3cmd ls "${base}/")
+
+echo "Thumbnailing done! $num_created created, $num_rebuilt rebuilt, and \
+$num_left_alone simply left alone."
