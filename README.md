@@ -3,22 +3,21 @@
 Installing Go Botany on Heroku
 ==============================
 
-Start by checking out the "gobotany-app" repository on your machine::
+Start by checking out this "gobotany-app" repository on your machine::
 
     git clone git@github.com:newfs/gobotany-app.git
     cd gobotany-app
 
 Follow steps 1–3 at `http://devcenter.heroku.com/articles/quickstart`_
-so that you can run the ``heroku`` command, then create a new app on
-Heroku to host Go Botany and add all of the add-ons that the application
-will need::
+so that you can run the ``heroku`` command, then use the following
+command to create and provision a new app on Heroku::
 
     heroku create
-    git push heroku master
     heroku addons:add heroku-postgresql:basic
     heroku addons:add memcache:5mb
     heroku addons:add websolr:cobalt
     heroku pg:wait
+    git push heroku master
 
 Once the Postgres database is up and running, note its color (like "RED"
 or "SILVER"), and promote it to being the "main database" for the app:
