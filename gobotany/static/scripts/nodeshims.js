@@ -1,6 +1,6 @@
 var requirejs = require('requirejs');
 requirejs.config({
-    baseUrl: 'scripts',
+    baseUrl: '.',
     nodeRequire: require
 });
 
