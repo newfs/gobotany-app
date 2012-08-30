@@ -2,7 +2,7 @@ define([
     'bridge/jquery',
     'bridge/jquery.mousewheel',
     'bridge/underscore',
-    'util/Hash',
+    'lib/Hash',
     'util/lazy_images'
 ], function($, ignore, _, Hash, lazy_images) {$(document).ready(function() {
 
