@@ -1,3 +1,3 @@
 define([
-    'jquery/jquery.jscrollpane'
+    'lib/jquery.jscrollpane'
 ], function() {});

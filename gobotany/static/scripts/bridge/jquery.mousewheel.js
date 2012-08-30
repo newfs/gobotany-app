@@ -1,3 +1,3 @@
 define([
-    'jquery/jquery.mousewheel.min'
+    'lib/jquery.mousewheel.min'
 ], function() {});

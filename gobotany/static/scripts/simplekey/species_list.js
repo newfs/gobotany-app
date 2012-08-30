@@ -2,7 +2,7 @@ define([
 
     // Table filtering
 
-    'jquery/picnet.table.filter.min'
+    'lib/picnet.table.filter.min'
 
 ], function() {
 

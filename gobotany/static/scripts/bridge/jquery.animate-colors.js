@@ -1,3 +1,3 @@
 define([
-    'jquery/jquery.animate-colors'
+    'lib/jquery.animate-colors'
 ], function() {});

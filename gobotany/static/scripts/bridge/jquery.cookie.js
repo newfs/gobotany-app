@@ -1,3 +1,3 @@
 define([
-    'jquery/jquery.cookie'
+    'lib/jquery.cookie'
 ], function() {});
