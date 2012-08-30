@@ -146,7 +146,11 @@ else:
 
 # For django-registration
 ACCOUNT_ACTIVATION_DAYS = 7
-
+if DEBUG:
+    # To test with this, start a local test email server as follows:
+    # python -m smtpd -n -c DebuggingServer localhost:1025
+    EMAIL_HOST='localhost'
+    EMAIL_PORT=1025
 
 # For when we are running on Heroku:
 if 'WEBSOLR_URL' in os.environ:
