@@ -22,7 +22,7 @@ define([
     'util/lazy_images',
     'util/sidebar'
 ], function(
-    document_is_ready, $, x, x, Ember, Shadowbox, shadowbox_init, _,
+    document_is_ready, $, x1, x2, Ember, Shadowbox, shadowbox_init, _,
     App3, Filter, FilterController, animation, glossarize, resources,
     ResultsPageState, results_overlay_init, SpeciesSection,
     working_area_module, utils, image_gallery, lazy_images, sidebar
