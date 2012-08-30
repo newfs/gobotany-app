@@ -1,6 +1,6 @@
 // AMD wrapper for Shadowbox script
 define([
-    'tools/shadowbox' 
+    'lib/shadowbox'
 ], function(shadowbox) {
     var module;
     if(window.Shadowbox) {
