@@ -1081,7 +1081,7 @@ class Importer(object):
         glossaryterm_table.save()
 
     def import_glossary_images(self, db, data_source_name):
-        """Load glossary images from a CSV file (uses S3)"""
+        """Load glossary images from 'glossary.csv'"""
 
         fileopener = get_data_fileopener(data_source_name)
         csvfile = fileopener('glossary.csv')
@@ -1091,7 +1091,11 @@ class Importer(object):
         directories, image_names = default_storage.listdir(field.upload_to)
 
         log.info('Saving glossary images to table')
+
+        glossaryterm_table = db.table('core_glossaryterm')
+        existing_terms = db.map('core_glossaryterm', 'term')
         count = 0
+
         for row in open_csv(csvfile):
 
             if not row['definition'] or row['definition'] == row['term']:
@@ -1104,14 +1108,18 @@ class Importer(object):
                 log.error('  Unknown image: %s' % image_name)
                 continue
 
-            try:
-                term = models.GlossaryTerm.objects.get(term=row['term'])
-            except models.GlossaryTerm.DoesNotExist:
+            if row['term'] not in existing_terms:
                 log.error('  Unknown term: %s' % row['term'])
                 continue
-            term.image = field.upload_to + '/' + image_name
-            term.save()
+
+            glossaryterm_table.get(
+                term=row['term'],
+                ).set(
+                image=field.upload_to + '/' + image_name,
+                )
             count += 1
+
+        glossaryterm_table.save()
 
         log.info('Saved %d glossary images to table' % count)
 
