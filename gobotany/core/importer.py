@@ -940,8 +940,13 @@ class Importer(object):
         character_table = db.table('core_character')
         existing_short_names = db.map('core_character', 'short_name')
 
+        # Prepare to wipe out all existing image paths that do not get
+        # restored during the following loop.
+
         for short_name in existing_short_names:
             character_table.get(short_name=short_name).set(image=None)
+
+        # Process the CSV file.
 
         count = 0
         for row in open_csv(csvfile):
@@ -1029,6 +1034,23 @@ class Importer(object):
         character_map = db.map('core_character', 'short_name', 'id')
         charactervalue_table = db.table('core_charactervalue')
 
+        # Prepare to wipe out all existing image paths that do not get
+        # restored during the following loop.
+
+        existing_charactervalues = db.map('core_charactervalue',
+                                          ('character_id', 'value_str'))
+
+        for character_id, value_str in existing_charactervalues:
+            if not value_str:
+                continue
+            charactervalue_table.get(
+                character_id=character_id, value_str=value_str
+                ).set(
+                image=None
+                )
+
+        # Process the CSV file.
+
         count = 0
         for row in open_csv(csvfile):
 
@@ -1056,9 +1078,15 @@ class Importer(object):
                 log.warn('character does not exist: %r', short_name)
                 continue
 
+            value_str = row['character_value']
+            if (character_id, value_str) not in existing_charactervalues:
+                log.warn('character value does not exist: %r / %r',
+                         short_name, value_str)
+                continue
+
             charactervalue_table.get(
                 character_id=character_id,
-                value_str=row['character_value'],
+                value_str=value_str,
                 ).set(
                 image=field.upload_to + '/' + image_name,
                 )

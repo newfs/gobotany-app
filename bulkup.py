@@ -12,7 +12,11 @@ class Database(object):
     def map(self, name, key, value=None):
         """Return a dict mapping column `key` to `value` from table `name`."""
         c = self.connection.cursor()
-        if value is None:
+        if value is None and isinstance(key, tuple):
+            keylist = ', '.join(key)
+            c.execute('SELECT {0} FROM {1}'.format(keylist, name))
+            return set(tuple(row) for row in c.fetchall())
+        elif value is None:
             c.execute('SELECT {0} FROM {1}'.format(key, name))
             return set(row[0] for row in c.fetchall())
         elif isinstance(key, tuple):
