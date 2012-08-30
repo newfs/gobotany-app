@@ -937,25 +937,32 @@ class Importer(object):
         directories, image_names = default_storage.listdir(field.upload_to)
 
         log.info('Saving character image paths to database')
+        character_table = db.table('core_character')
+        existing_short_names = db.map('core_character', 'short_name')
+
+        for short_name in existing_short_names:
+            character_table.get(short_name=short_name).set(image=None)
+
         count = 0
         for row in open_csv(csvfile):
+
             image_name = row['image_name']
             if not image_name:
                 continue
-            short_name = self.character_short_name(row['character'])
-            try:
-                character = models.Character.objects.get(short_name=short_name)
-            except models.Character.DoesNotExist:
-                log.error('  Missing character: %s' % short_name)
-                continue
             if image_name not in image_names:
                 log.error('  Missing character image: %s' % image_name)
-                character.image = None
-                character.save()
                 continue
-            character.image = field.upload_to + '/' + image_name
-            character.save()
+
+            short_name = self.character_short_name(row['character'])
+            if short_name not in existing_short_names:
+                log.error('  Missing character: %s' % short_name)
+                continue
+
+            path = field.upload_to + '/' + image_name
+            character_table.get(short_name=short_name).set(image=path)
             count += 1
+
+        character_table.save()
 
         log.info('Done loading %d character images' % count)
 
