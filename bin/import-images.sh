@@ -19,7 +19,7 @@ python -m gobotany.core.rebuild sample_pile_images
 # of several folders (a slow operation to begin with), and that then use
 # the Django ORM to actually create database rows.
 
-# python -m gobotany.core.importer character-images data/characters.csv
-# python -m gobotany.core.importer character-value-images data/character_values.csv
-# python -m gobotany.core.importer glossary-images data/glossary.csv
+python -m gobotany.core.importer character-images
+python -m gobotany.core.importer character-value-images
+python -m gobotany.core.importer glossary-images
 python -m gobotany.core.importer home-page-images

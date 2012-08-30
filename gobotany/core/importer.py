@@ -926,20 +926,28 @@ class Importer(object):
         character_table.replace('character_group_id', charactergroup_map)
         character_table.save()
 
-    def import_character_images(self, db, csvfilename):
+    def import_character_images(self, db, data_source_name):
         """Load character images from a CSV file (queries S3)"""
+
+        fileopener = get_data_fileopener(data_source_name)
+        csvfile = fileopener('characters.csv')
+
         log.info('Fetching list of S3 character images')
         field = models.Character._meta.get_field('image')
         directories, image_names = default_storage.listdir(field.upload_to)
 
         log.info('Saving character image paths to database')
         count = 0
-        for row in open_csv(csvfilename):
+        for row in open_csv(csvfile):
             image_name = row['image_name']
             if not image_name:
                 continue
             short_name = self.character_short_name(row['character'])
-            character = models.Character.objects.get(short_name=short_name)
+            try:
+                character = models.Character.objects.get(short_name=short_name)
+            except models.Character.DoesNotExist:
+                log.error('  Missing character: %s' % short_name)
+                continue
             if image_name not in image_names:
                 log.error('  Missing character image: %s' % image_name)
                 character.image = None
@@ -1002,8 +1010,11 @@ class Importer(object):
         charactervalue_map = db.map(
             'core_charactervalue', ('character_id', 'value_str'), 'id')
 
-    def import_character_value_images(self, db, csvfilename):
+    def import_character_value_images(self, db, data_source_name):
         """Load character value images from a CSV (queries S3)"""
+
+        fileopener = get_data_fileopener(data_source_name)
+        csvfile = fileopener('character_values.csv')
 
         log.info('Fetching list of S3 character value images')
         field = models.Character._meta.get_field('image')
@@ -1013,7 +1024,7 @@ class Importer(object):
         character_map = db.map('core_character', 'short_name', 'id')
 
         count = 0
-        for row in open_csv(csvfilename):
+        for row in open_csv(csvfile):
             image_name = row['image_name']
             if not image_name:
                 continue
@@ -1069,8 +1080,11 @@ class Importer(object):
 
         glossaryterm_table.save()
 
-    def import_glossary_images(self, db, csvfilename):
+    def import_glossary_images(self, db, data_source_name):
         """Load glossary images from a CSV file (uses S3)"""
+
+        fileopener = get_data_fileopener(data_source_name)
+        csvfile = fileopener('glossary.csv')
 
         log.info('Scanning glossary images on S3')
         field = models.GlossaryTerm._meta.get_field('image')
@@ -1078,7 +1092,7 @@ class Importer(object):
 
         log.info('Saving glossary images to table')
         count = 0
-        for row in open_csv(csvfilename):
+        for row in open_csv(csvfile):
 
             if not row['definition'] or row['definition'] == row['term']:
                 continue
@@ -1090,7 +1104,11 @@ class Importer(object):
                 log.error('  Unknown image: %s' % image_name)
                 continue
 
-            term = models.GlossaryTerm.objects.get(term=row['term'])
+            try:
+                term = models.GlossaryTerm.objects.get(term=row['term'])
+            except models.GlossaryTerm.DoesNotExist:
+                log.error('  Unknown term: %s' % row['term'])
+                continue
             term.image = field.upload_to + '/' + image_name
             term.save()
             count += 1
@@ -2226,13 +2244,21 @@ def takes_db_arg(callable):
         del spec.args[0]
     return spec.args[0:1] == ['db']
 
+def takes_data_source(callable):
+    spec = inspect.getargspec(callable)
+    if spec.args[0:1] == ['self']:
+        del spec.args[0]
+    if spec.args[0:1] == ['db']:
+        del spec.args[0]
+    return spec.args == ['data_source_name']
+
 def takes_single_filename(callable):
     spec = inspect.getargspec(callable)
     if spec.args[0:1] == ['self']:
         del spec.args[0]
     if spec.args[0:1] == ['db']:
         del spec.args[0]
-    return len(spec.args) == 1
+    return spec.args == ['filename']
 
 def takes_many_filenames(callable):
     spec = inspect.getargspec(callable)
@@ -2245,7 +2271,10 @@ def takes_many_filenames(callable):
 def add_subcommand(subs, name, function):
     sub = subs.add_parser(name, help=function.__doc__)
     sub.set_defaults(function=function)
-    if takes_single_filename(function):
+    if takes_data_source(function):
+        sub.add_argument('data_source', nargs='?',
+                         help='S3 zipfile, local zipfile, or local directory')
+    elif takes_single_filename(function):
         sub.add_argument('filename', help='name of the file to load')
     elif takes_many_filenames(function):
         sub.add_argument('filenames', help='one or more files to load',
@@ -2300,6 +2329,8 @@ def main():
         function_args.append(args.partner)
     if hasattr(args, 'file_or_directory'):
         function_args.append(args.file_or_directory)
+    if hasattr(args, 'data_source'):
+        function_args.append(args.data_source)
     if hasattr(args, 'filename'):
         function_args.append(PlainFile('.', args.filename))
     if hasattr(args, 'filenames'):
