@@ -14,7 +14,6 @@ define([
         ).done(function(x, key_vector, pile_taxa_vector) {
             var k = key_vector[0].species;
             var j = _.intersect(k, pile_taxa_vector);
-            console.log('yeah, the length is', j.length);
             $('.number-of-species .number').html(j.length);
         });
 
