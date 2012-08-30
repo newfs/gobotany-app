@@ -1022,12 +1022,18 @@ class Importer(object):
 
         log.info('Saving character-value image paths to database')
         character_map = db.map('core_character', 'short_name', 'id')
+        charactervalue_table = db.table('core_charactervalue')
 
         count = 0
         for row in open_csv(csvfile):
+
             image_name = row['image_name']
             if not image_name:
                 continue
+            if image_name not in image_names:
+                log.error('character value image missing: %s' % image_name)
+                continue
+
             character_name = row['character']
             if character_name == 'family':
                 continue
@@ -1038,21 +1044,22 @@ class Importer(object):
             if not pile_suffix in pile_suffixes:
                 log.warn('character has bad pile suffix: %r', character_name)
                 continue
+
             short_name = self.character_short_name(character_name)
             character_id = character_map.get(short_name)
             if character_id is None:
                 log.warn('character does not exist: %r', short_name)
                 continue
-            cv = models.CharacterValue.objects.get(
-                character=character_id,
+
+            charactervalue_table.get(
+                character_id=character_id,
                 value_str=row['character_value'],
+                ).set(
+                image=field.upload_to + '/' + image_name,
                 )
-            if image_name not in image_names:
-                log.error('character value image missing: %s' % image_name)
-                continue
-            cv.image = field.upload_to + '/' + image_name
-            cv.save()
             count += 1
+
+        charactervalue_table.save()
 
         log.info('Done loading %d character-value images' % count)
 
