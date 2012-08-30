@@ -1299,12 +1299,12 @@ class Importer(object):
         log.info('Loading home page images')
         field = models.HomePageImage._meta._name_map['image'][0]
         directories, image_names = default_storage.listdir(field.upload_to)
-        image_names = [ name for name in image_names if name ]
+        image_paths = [ field.upload_to + '/' + name
+                        for name in image_names if name ]
 
-        for name in image_names:
-            log.info('  Adding image: %s' % name)
-            models.HomePageImage.objects.get_or_create(
-                image=field.upload_to + '/' + name)
+        for path in image_paths:
+            log.info('  Adding image: %s' % path)
+            models.HomePageImage.objects.get_or_create(image=path)
 
         log.info('Loaded %d home page images' % len(image_names))
 
