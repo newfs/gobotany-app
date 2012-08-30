@@ -423,10 +423,9 @@ class ContentImage(models.Model):
 class HomePageImage(models.Model):
     """An image that appears on the home page, cycled among others."""
     image = models.ImageField(upload_to='home-page-images')
-    order = models.IntegerField()
 
     class Meta:
-        ordering = ['order']
+        ordering = ['image']  # users prefix filenames with "01_", "02_", etc
 
     def __unicode__(self):
         return '%d: %s' % (self.order, self.image.name)

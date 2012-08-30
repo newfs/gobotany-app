@@ -1294,25 +1294,19 @@ class Importer(object):
     def import_home_page_images(self, db):
         """Load home page image URLs from S3"""
         log.info('Emptying the old home page image list')
-        for home_page_image in models.HomePageImage.objects.all():
-            home_page_image.delete()
+        models.HomePageImage.objects.all().delete()
 
         log.info('Loading home page images')
         field = models.HomePageImage._meta._name_map['image'][0]
         directories, image_names = default_storage.listdir(field.upload_to)
+        image_names = [ name for name in image_names if name ]
 
-        # The images happen to look pretty good in reverse-alphabetical order.
-        image_names.reverse()
-        order = 1
         for name in image_names:
             log.info('  Adding image: %s' % name)
-            hpi, created = models.HomePageImage.objects.get_or_create(
-                image=field.upload_to + '/' + name,
-                order=order)
-            hpi.save()
-            order += 1
+            models.HomePageImage.objects.get_or_create(
+                image=field.upload_to + '/' + name)
 
-        log.info('Loaded %d home page images' % (order - 1))
+        log.info('Loaded %d home page images' % len(image_names))
 
     def _has_unexpected_delimiter(self, text, unexpected_delimiter):
         """Check for an unexpected delimiter to help guard against breaking

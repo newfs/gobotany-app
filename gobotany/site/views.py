@@ -25,7 +25,7 @@ def per_partner_template(request, template_path):
 def home_view(request):
     """View for the home page of the Go Botany site."""
 
-    home_page_images = HomePageImage.objects.order_by('order')
+    home_page_images = HomePageImage.objects.all()
     # Get or generate today's Plant of the Day.
     partner = which_partner(request)
     plant_of_the_day = PlantOfTheDay.get_by_date.for_day(
