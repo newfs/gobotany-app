@@ -7,6 +7,13 @@ try:
 except ImportError:
     pass
 
+try:
+    import debug_toolbar
+except:
+    DEBUG_TOOLBAR_AVAILABLE = False
+else:
+    DEBUG_TOOLBAR_AVAILABLE = True
+
 THIS_DIRECTORY = os.path.dirname(__file__)
 gettext = lambda s: s
 
@@ -42,7 +49,7 @@ else:
 # on Heroku, in case we need Django tracebacks to solve a problem.
 
 IN_PRODUCTION = 'PORT' in os.environ
-USE_DEBUG_TOOLBAR = not IN_PRODUCTION
+USE_DEBUG_TOOLBAR = not IN_PRODUCTION and DEBUG_TOOLBAR_AVAILABLE
 DEBUG = 'DEBUG' in os.environ or not IN_PRODUCTION
 
 #
