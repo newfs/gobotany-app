@@ -8,6 +8,3 @@
 
 # SASS
 /gobotany/static/sass/.sass-cache/
-
-# Intermediate javascript build files
-/gobotany/static/build/scripts
