@@ -12,7 +12,8 @@ python -m gobotany.core.importer taxon-images
 # Now that the taxon images are loaded, we can rebuild various "sample"
 # image collections that are subsets of our taxon image set.
 
-# ./bin/rebuild-sample-pile-images.sh
+python -m gobotany.core.rebuild sample_pile_group_images
+python -m gobotany.core.rebuild sample_pile_images
 
 # Slow image-import routines, that actually ask S3 to list the contents
 # of several folders (a slow operation to begin with), and that then use

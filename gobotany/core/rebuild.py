@@ -14,13 +14,13 @@ from gobotany.plantoftheday.models import PlantOfTheDay
 
 class CSVReader(object):
 
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self, data_file):
+        self.data_file = data_file
 
     def read(self):
         # Open in universal newline mode in order to deal with newlines in
         # CSV files saved on Mac OS.
-        with open(self.filename, 'rU') as f:
+        with self.data_file.open('rU') as f:
             r = csv.reader(f, dialect=csv.excel, delimiter=',')
             for row in r:
                 yield [c.decode('Windows-1252') for c in row]
@@ -129,8 +129,12 @@ def _extend_image_list(image_list, pile):
     return image_list
 
 
-def rebuild_sample_pile_group_images(pilegroup_csv):
+def rebuild_sample_pile_group_images(name=None):
     """Assign sample species images to each pile group."""
+
+    from gobotany.core import importer  # here to avoid import loop
+    fileopener = importer.get_data_fileopener(name)
+    pilegroup_csv = fileopener('pile_group_info.csv')
 
     print 'Rebuild sample pile group images:'
     _remove_sample_species_images(models.PileGroup)
@@ -180,8 +184,12 @@ def rebuild_sample_pile_group_images(pilegroup_csv):
                 print '- not found'
 
 
-def rebuild_sample_pile_images(pile_csv):
+def rebuild_sample_pile_images(name=None):
     """Assign sample species images to each pile."""
+
+    from gobotany.core import importer  # here to avoid import loop
+    fileopener = importer.get_data_fileopener(name)
+    pile_csv = fileopener('pile_info.csv')
 
     print 'Rebuild sample pile images:'
     _remove_sample_species_images(models.Pile)

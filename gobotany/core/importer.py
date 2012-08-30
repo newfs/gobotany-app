@@ -2095,17 +2095,26 @@ def ziplist():
             print filename
 
 
-def zipimport(name):
-    """Does a full database load from CSV files in a zip file or directory.
+def get_data_fileopener(name):
+    """Return a ``fileopener()`` function for opening import data files.
 
-    If you do not specify a filename or directory name, then an attempt
-    is made to download the latest data zip file from the NEWFS "data"
-    directory on Amazon S3.  A missing CSV file in the directory or zip
-    file you are processing will generate a warning, but the import will
-    still try to proceed without it; you can therefore run the command
-    on an empty directory to see the list of zip files that are needed
-    for a complete import.  Use the separate "ziplist" command if you
-    need to review which zip files are available on S3.
+    The ``fileopener()`` function that this is returned by this routine
+    takes one argument: the filename that you would like to open, like
+    ``'genera.csv'``.  It returns an open file that you can read from.
+    The ``name`` argument to this routine can have three values:
+
+    ``None``
+        The latest Go Botany data zipfile is downloaded from Amazon S3
+        and its contents are searched for the files requested.
+
+    *file-name.zip*
+        A zipfile on the local filesystem can be named explicitly, in
+        which case data files will be searched for inside of it.
+
+    *directory-name*
+        Instead of pulling from a compressed zip file, you can pull
+        directly from data files sitting uncompressed on your file
+        system by simply naming the directory.
 
     """
     if name is None:
@@ -2134,11 +2143,28 @@ def zipimport(name):
             print >>sys.stderr, 'Error:', e
             sys.exit(1)
         fileopener = partial(ZipMember, zipfileobj)
-        log.info('Doing full import from zip file: %s', name)
+        log.info('Data will be imported from zip file: %s', name)
     else:
         print >>sys.stderr, 'No such file or directory:', name
         sys.exit(1)
 
+    return fileopener
+
+
+def zipimport(name):
+    """Does a full database load from CSV files in a zip file or directory.
+
+    If you do not specify a filename or directory name, then an attempt
+    is made to download the latest data zip file from the NEWFS "data"
+    directory on Amazon S3.  A missing CSV file in the directory or zip
+    file you are processing will generate a warning, but the import will
+    still try to proceed without it; you can therefore run the command
+    on an empty directory to see the list of zip files that are needed
+    for a complete import.  Use the separate "ziplist" command if you
+    need to review which zip files are available on S3.
+
+    """
+    fileopener = get_data_fileopener(name)
     importer_self = Importer()
 
     for step in full_import_steps:
