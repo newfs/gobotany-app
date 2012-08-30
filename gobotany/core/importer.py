@@ -1007,8 +1007,6 @@ class Importer(object):
                 )
 
         charactervalue_table.save()
-        charactervalue_map = db.map(
-            'core_charactervalue', ('character_id', 'value_str'), 'id')
 
     def import_character_value_images(self, db, data_source_name):
         """Load character value images from a CSV (queries S3)"""
