@@ -19,7 +19,7 @@ define([
 
         $.when(
             document_is_ready,
-            resources.pile_characters(args.pile_slug, [])
+            resources.pile_characters(pile_slug, [])
         ).done(function(x, clist) {
             $('.number-of-questions .number').html(clist.length);
         });
