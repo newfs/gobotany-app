@@ -43,7 +43,8 @@ body.plantshare {
             }            
         }
     }
-    &#join #main {
+    &#join #main, 
+    &#register #main {
         form input {
             width: 350px;
             &.button {
