@@ -1,7 +1,6 @@
 django==1.4
 lxml
 psycopg2>=2.3
-supervisor==3.0a12
 xlrd
 # Unsure which version satisfied minimum reqs
 PIL
