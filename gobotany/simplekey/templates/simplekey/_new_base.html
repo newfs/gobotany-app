@@ -42,24 +42,13 @@
         {% else %}
 
         <!-- PRODUCTION / DEPLOYMENT FILES -->
-        <script src="/static/scripts/requirejs/require.js"></script>
-        <script src="/static/scripts/require_deploy_config.js"></script>
+        <script src="/static/js/gobotany.application.js"></script>
 
         {% endif %}
 
-        {# This block is for adding any page-specific JS. #}
-        <!-- <script src="/static/scripts/require.js"></script> -->
         <script>
-            {% if in_production %}
-            require(["/static/js/gobotany.application.js"], function(app) {
-            {% endif %}
-
             require(['util/activate_search_suggest']);
             {% block js_require %}{% endblock %}
-
-            {% if in_production %}
-            });
-            {% endif %}
         </script>
 
 		{# Google analytics tracking code #}
