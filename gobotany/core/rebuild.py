@@ -4,11 +4,14 @@ import csv
 import sys
 import time
 
-from django.core import management
-from django.core.exceptions import ObjectDoesNotExist
-
+# The GoBotany settings have to be imported before most of Django.
 from gobotany import settings
+from django.core import management
 management.setup_environ(settings)
+
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
+
 from gobotany.core import igdt, models
 from gobotany.plantoftheday.models import PlantOfTheDay
 
@@ -302,7 +305,8 @@ if __name__ == '__main__':
     function_name = 'rebuild_' + thing
     if function_name in globals():
         function = globals()[function_name]
-        function(*sys.argv[2:])
+        wrapped_function = transaction.commit_on_success(function)
+        wrapped_function(*sys.argv[2:])
     else:
         print >>sys.stderr, "Error: rebuild target %r unknown" % thing
         exit(2)
