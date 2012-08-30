@@ -7,7 +7,7 @@
 /gobotany.egg-info/
 
 # SASS
-/gobotany/static/.sass-cache/
+/gobotany/static/sass/.sass-cache/
 
 # Intermediate javascript build files
 /gobotany/static/build/scripts
