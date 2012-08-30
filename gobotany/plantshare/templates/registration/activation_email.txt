@@ -1,0 +1,5 @@
+Thank you for registering for your PlantShare membership!
+To complete your registration, please activate your account by visiting the following link:
+http://{{site.domain}}{% url registration_activate activation_key %} 
+
+You must activate using this link within 7 days, or you will need to re-register for a new membership.

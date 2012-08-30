@@ -1,0 +1,18 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+
+{% block title %}Activation Complete{% endblock %}
+
+{% block body_attributes %}id="activation_complete" class="plantshare"{% endblock %}
+
+{% block main_content %}
+<h1>Activation Complete</h1>
+
+<p>Congratulations!</p>
+<p>Your PlantShare membership is now active. Feel free to <a href="{% url ps-main %}">Log In</a> and 
+begin sharing!</p>
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}
+
