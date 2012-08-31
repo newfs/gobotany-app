@@ -39,6 +39,7 @@ created.  To set up the database, run these commands:
     heroku run django-admin.py syncdb --noinput
     heroku run python -m gobotany.core.importer zipimport
     heroku run bin/import-images.sh
+    heroku run bin/import-dkey.sh
 
 Prepare Solr by visiting the Heroku web site, navigating to your app's
 configuration, selecting the addon "Websolr", then choosing the section
