@@ -106,7 +106,7 @@ define([
 
     /* Clicking on "See list of 7 genera in 1b" should display them. */
 
-    var $shadow = $('<div>').appendTo('body').addClass('shadow');
+    var $shadow = $('<div>').appendTo('#main').addClass('shadow');
     var $popup = $('<div>').appendTo($shadow).addClass('popup');
 
     $('.what-lies-beneath').on('click', function(event) {
