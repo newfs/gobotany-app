@@ -1,4 +1,3 @@
-.. -*-rst-*-
 
 Installing Go Botany on Heroku
 ==============================
@@ -10,7 +9,7 @@ Start by checking out this "gobotany-app" repository on your machine::
 
 Follow steps 1–3 at `http://devcenter.heroku.com/articles/quickstart`_
 so that you can run the ``heroku`` command, then use the following
-command to create and provision a new app on Heroku::
+command to create and provision a new app on Heroku:
 
     heroku create
     heroku addons:add heroku-postgresql:basic
@@ -25,7 +24,7 @@ or "SILVER"), and promote it to being the "main database" for the app:
     heroku pg:promote <color>
 
 Add three configuration variables to your Heroku app, so that Go Botany
-will be able to scan its S3 image repository::
+will be able to scan its S3 image repository:
 
     heroku config:add AWS_ACCESS_KEY_ID=...
     heroku config:add AWS_SECRET_ACCESS_KEY=...
@@ -34,7 +33,7 @@ will be able to scan its S3 image repository::
 The application will now be up and running.  You can find its URL with
 the ``heroku apps:info`` command.  When you visit, you will see an
 exception, because the database tables that it needs have not yet been
-created.  To set up the database, run these commands::
+created.  To set up the database, run these commands:
 
     heroku config:add DJANGO_SETTINGS_MODULE=gobotany.settings
     heroku run django-admin.py syncdb --noinput
@@ -47,6 +46,6 @@ configuration, selecting the addon "Websolr", then choosing the section
 file ``solr/schema.xml`` from your gobotany-deploy checkout.  Once the
 schema is installed (give it a few minutes to make sure the change has
 the chance to propagate to WebSolr's servers), you can build the Solr
-index and thereby activate the Go Botany site's search field::
+index and thereby activate the Go Botany site's search field:
 
     heroku run django-admin.py rebuild_index --noinput
