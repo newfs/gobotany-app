@@ -9,6 +9,7 @@ from gobotany import settings
 from django.core import management
 management.setup_environ(settings)
 
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 
@@ -117,9 +118,9 @@ def _remove_sample_species_images(pile_or_group_model):
     print '  Removing old images:'
     for pile in pile_or_group_model.objects.all():
         print '    %s ' % pile.name
-        old_images = pile.sample_species_images.all()
-        if len(old_images):
-            print '      removing %d old images' % len(old_images)
+        image_count = pile.sample_species_images.count()
+        if image_count:
+            print '      removing %d old images' % image_count
             pile.sample_species_images.clear()
         else:
             print '      none'
@@ -136,55 +137,51 @@ def rebuild_sample_pile_group_images(name=None):
     """Assign sample species images to each pile group."""
 
     from gobotany.core import importer  # here to avoid import loop
+
     fileopener = importer.get_data_fileopener(name)
     pilegroup_csv = fileopener('pile_group_info.csv')
 
-    print 'Rebuild sample pile group images:'
+    print 'Removing old sample pile-group images:'
     _remove_sample_species_images(models.PileGroup)
 
-    print '  Adding images from CSV data:'
-    iterator = iter(CSVReader(pilegroup_csv).read())
-    colnames = [c.lower() for c in iterator.next()]
-    for cols in iterator:
-        row = dict(zip(colnames, cols))
+    print '  Scanning species images'
+    taxontype = ContentType.objects.get_for_model(models.Taxon)
+    imagedict = { image.image.name.rsplit('/')[-1]: image for image in
+                  models.ContentImage.objects.filter(content_type=taxontype) }
+
+    print '  Adding pile-group images from CSV data:'
+    for row in importer.open_csv(pilegroup_csv):
+
         # Skip junk rows.
         if row['name'].lower() in ['all', 'unused']:
             continue
 
-        # Build a list of all species images in the pile group.
-        image_list = []
         pile_group = models.PileGroup.objects.get(name=row['name'])
         print '    PileGroup:', pile_group.name
-        # Extend the image list with the list of all species images for
-        # all piles in the group.
-        for pile in pile_group.piles.all():
-            _extend_image_list(image_list, pile)
 
         # Go through the image filenames specified in the CSV data and
-        # look for them in the image list. If found, add them to the
+        # look for them in the image dict.  If found, add them to the
         # pile group as sample species images.
+
         image_filenames = row['image_filenames'].split(';')
         for filename in image_filenames:
-            # Skip malformed filenames.
-            if not filename.lower().endswith('.jpg'):
-                continue
+
             print '      filename:', filename,
-            found = False
-            for image_instance in image_list:
-                if image_instance.image.name.find(filename) > -1:
-                    sample_species_image = models.PileGroupImage(
-                        content_image=image_instance,
-                        pile_group=pile_group)
-                    sample_species_image.save()
-                    # Set an ordering field, editable in the Admin.
-                    sample_species_image.order = sample_species_image.id
-                    sample_species_image.save()
-                    found = True
-                    break
-            if found:
-                print '- found, added to pile group'
-            else:
-                print '- not found'
+
+            # Skip unknown filenames.
+            image = imagedict.get(filename, None)
+            if image is None:
+                print '- UNKNOWN'
+                continue
+
+            pgimage = models.PileGroupImage(
+                content_image=image, pile_group=pile_group)
+
+            # Set an ordering field, editable in the Admin.
+            pgimage.order = image.id
+            pgimage.save()
+
+            print '- found'
 
 
 def rebuild_sample_pile_images(name=None):
