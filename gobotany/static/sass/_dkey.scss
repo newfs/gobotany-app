@@ -219,6 +219,7 @@ $disabled_orange_gradient: linear-gradient(
     div.shadow {                    /* shadow that hides the whole page */
         display: none;
         position: fixed;
+        z-index: 1000;
         top: 0;
         left: 0;
         height: 100%;
