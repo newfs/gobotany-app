@@ -46,7 +46,9 @@ class TaxonIndex(indexes.SearchIndex):
         template_name='simplekey/search_text_species.txt')
 
     def index_queryset(self):
-        return Taxon.objects.filter()
+        return (super(TaxonIndex, self).index_queryset()
+                .select_related('family')
+                .prefetch_related('common_names', 'lookalikes', 'synonyms'))
 
     def prepare(self, obj):
         data = super(TaxonIndex, self).prepare(obj)
