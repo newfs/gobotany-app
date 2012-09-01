@@ -28,17 +28,20 @@ class CollectNode(template.Node):
         return ''
 
 
+@register.filter
 @stringfilter
 def split(value, arg):
     '''Split a string into a list on the given character.'''
     return value.split(arg)
 
 
+@register.filter
 def at_index(value, arg):
     '''Return the list item at the specified index.'''
     return value[int(arg)]
 
 
+@register.filter
 @stringfilter
 def replace(value, arg):
     '''Replace the first supplied character with the second.'''
@@ -53,6 +56,7 @@ def _italicize_word(word):
     else:
         return word
 
+@register.filter
 @stringfilter
 def italicize_plant(value):
     """Italicize the latin parts of a plant scientific name.
@@ -131,6 +135,8 @@ def italicize_plant(value):
     return ' '.join(new_sentences)
 
 
+@register.filter
+@stringfilter
 def repeat(value, arg):
     """Repeat a phrase N times.
 
@@ -148,14 +154,6 @@ def repeat(value, arg):
 
 # Inclusion tag for formatting a combined title/credit/copyright string
 # for use with a photo.
+@register.inclusion_tag('simplekey/_photo_credit.html')
 def photo_credit(image, image_name):
     return {'image': image, 'image_name': image_name}
-
-register.filter('split', split)
-register.filter('at_index', at_index)
-register.filter('replace', replace)
-register.filter('italicize_plant', italicize_plant)
-register.filter('repeat', repeat)
-
-register.inclusion_tag( \
-    'simplekey/_photo_credit.html')(photo_credit)
