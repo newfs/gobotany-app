@@ -12,11 +12,7 @@
 {# Index the glossary terms many more times to boost ranking. This will #}
 {# be hidden from the user because it is inside double-dash markers. #}
 {% for term in all_terms %}
-    {% with term.term as the_term %}
-        {% for i in 200|get_range %}
-            {{ the_term }}
-        {% endfor %}
-    {% endwith %}
+    {{ term.term|repeat:200 }}
 {% endfor %}
 --
 {% endwith %}
