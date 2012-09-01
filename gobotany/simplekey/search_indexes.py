@@ -122,6 +122,11 @@ class SubgroupResultsPageIndex(indexes.SearchIndex):
         document=True, use_template=True,
         template_name = 'simplekey/search_text_subgroup_results_page.txt')
 
+    def index_queryset(self):
+        return (super(SubgroupResultsPageIndex, self).index_queryset()
+                .select_related('subgroup__pilegroup')
+                .prefetch_related('subgroup__species__common_names'))
+
 
 site.register(Taxon, TaxonIndex)
 site.register(Family, FamilyIndex)
