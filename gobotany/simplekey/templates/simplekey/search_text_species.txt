@@ -106,13 +106,3 @@ Classification:
     Notes on Subspecies and Varieties:
     {{ object.variety_notes|safe }}
 {% endif %}
-
---
-{# Index the scientific name and any common names many more times to #}
-{# boost ranking. This will be hidden from the user because it is    #}
-{# inside double-dash markers. #}
-
-{% for common_name in object.common_names.all %}
-    {{ common_name.common_name|repeat:600 }}
-{% endfor %}
---
