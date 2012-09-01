@@ -115,6 +115,10 @@ class SubgroupsListPageIndex(indexes.SearchIndex):
         document=True, use_template=True,
         template_name = 'simplekey/search_text_subgroups_list_page.txt')
 
+    def index_queryset(self):
+        return (super(SubgroupsListPageIndex, self).index_queryset()
+                .select_related('group'))
+
 
 class SubgroupResultsPageIndex(indexes.SearchIndex):
     title = indexes.CharField(model_attr='title')
