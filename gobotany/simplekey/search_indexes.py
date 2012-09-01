@@ -59,7 +59,7 @@ class BaseIndex(indexes.SearchIndex):
 
 
 class TaxonIndex(BaseIndex):
-    scientific_name = indexes.CharField(model_attr='scientific_name')
+    name = indexes.CharField(model_attr='scientific_name')
     title = indexes.CharField(use_template=True,
         template_name='simplekey/search_title_species.txt')
     text = indexes.CharField(

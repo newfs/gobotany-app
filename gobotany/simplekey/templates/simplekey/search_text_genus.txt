@@ -14,10 +14,3 @@ This Genus's Species:
 {% endfor %}
 
 Key To This Genus's Species
-
---
-{# Index the genus scientific name many more times to boost ranking. This #}
-{# will be hidden from the user because it is inside double-dash markers. #}
-
-{{ object.name|repeat:100 }}
---

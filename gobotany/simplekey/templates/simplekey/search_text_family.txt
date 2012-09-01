@@ -12,10 +12,3 @@ This Family's Genera:
 {% endfor %}
 
 Key To This Family's Genera
-
---
-{# Index the family scientific name many more times to boost ranking. This #}
-{# will be hidden from the user because it is inside double-dash markers. #}
-
-{{ object.name|repeat:100 }}
---

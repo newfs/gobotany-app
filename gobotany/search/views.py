@@ -1,3 +1,5 @@
+"""The magic behind our search page."""
+
 from haystack.views import SearchView
 
 class GoBotanySearchView(SearchView):
@@ -13,7 +15,11 @@ class GoBotanySearchView(SearchView):
         wildcard). Solr can be made to do partial word searches, but
         a quick fix was desired instead.
         """
+        # Start by doing exactly what the base class does.
+
         results = self.form.search()
+
+        # Fall back to less specific searches.
 
         if len(results) == 0:
             # Query words come back "cleaned" from get_query().
@@ -32,4 +38,21 @@ class GoBotanySearchView(SearchView):
                         self.query = self.get_query()
                         break
 
+        # Privilege any result whose name is exactly what the user was
+        # searching for, so that a search for "Acer" or "acer" returns
+        # the Genus Acer first and foremost.
+
+        canonical = ' '.join(self.request.GET['q'].split()).lower()
+
+        results = list(results)
+        firsts = []
+        seconds = []
+
+        for result in results:
+            if result.name and result.name.lower() == canonical:
+                firsts.append(result)
+            else:
+                seconds.append(result)
+
+        results = firsts + seconds
         return results
