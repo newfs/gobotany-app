@@ -12,5 +12,10 @@ You are here: Simple Key > {{ object.subgroup.pilegroup.friendly_title }} >
 {% for plant in object.subgroup.species.all %}
     {{ plant.scientific_name }}.
     {{ plant.common_names.all.0 }}.
+
+--
+{# In case the user remembers seeing "woody angiosperms" in the URL. #}
+{{ object.subgroup.slug }}
+--
 {% endfor %}
 

@@ -18,3 +18,8 @@ You are here: Simple Key > {{ object.group.friendly_title }}
     Exceptions:
     {{ subgroup.notable_exceptions|striptags|safe }}
 {% endfor %}
+
+--
+{# In case the user remembers seeing "woody plants" in the URL. #}
+{{ object.group.slug }}
+--
