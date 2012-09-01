@@ -2,14 +2,16 @@
 
 {{ object.title }}
 
-{% for term in object.terms.all %}
+{% with all_terms=object.terms.all %}
+
+{% for term in all_terms %}
     {{ term.term }}: {{ term.lay_definition|capfirst }}{% if not term.lay_definition|make_list|last == '.' %}.{% endif %}
 {% endfor %}
 
 --
 {# Index the glossary terms many more times to boost ranking. This will #}
 {# be hidden from the user because it is inside double-dash markers. #}
-{% for term in object.terms.all %}
+{% for term in all_terms %}
     {% with term.term as the_term %}
         {% for i in 200|get_range %}
             {{ the_term }}
@@ -17,3 +19,4 @@
     {% endwith %}
 {% endfor %}
 --
+{% endwith %}
