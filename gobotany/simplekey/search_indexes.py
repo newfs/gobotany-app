@@ -64,6 +64,10 @@ class FamilyIndex(indexes.SearchIndex):
         document=True, use_template=True,
         template_name='simplekey/search_text_family.txt')
 
+    def index_queryset(self):
+        return (super(FamilyIndex, self).index_queryset()
+                .prefetch_related('genera'))
+
 
 class GenusIndex(indexes.SearchIndex):
     name = indexes.CharField(model_attr='name')
