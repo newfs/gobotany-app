@@ -23,7 +23,7 @@
                 <h2>
                     {% if paginator.count > 0 %}
                         {% if page.number > 1 %}
-                            Page {{ page.number }} of 
+                            Page {{ page.number }} of
                         {% endif %}
                         {{ paginator.count|intcomma }}
                     {% else %}
@@ -34,58 +34,50 @@
                     <strong>{{ query }}</strong>
                 </h2>
 
-                <ul id="search-results-list">    
+                <ul id="search-results-list">
                 {% for result in page.object_list %}
                     <li>
-                        {% search_highlight result.title with query as item_title excerpt 'False' %}
                         <a href="{{ result.url }}">
                         {% if result.model_name == 'taxon' %}
                             <img
                                 src="/static/images/icons/icon-leaf.png"
                                 alt="" title="Species page">
-                            {{ item_title|italicize_plant|safe }}
                         {% endif %}
                         {% if result.model_name == 'family' %}
                             <img
                                 src="/static/images/icons/icon-family.png"
                                 alt="" title="Family page">
-                                {{ item_title }}
                         {% endif %}
                         {% if result.model_name == 'genus' %}
                             <img
                                 src="/static/images/icons/icon-genus.png"
                                 alt="" title="Genus page">
-                                {{ item_title|italicize_plant|safe }}
                         {% endif %}
                         {% if result.model_name == 'plainpage' %}
                             <img
                                 src="/static/images/icons/icon-help.png"
                                 alt="" title="Help page">
-                                {{ item_title }}
                         {% endif %}
                         {% if result.model_name == 'glossarypage' %}
                             <img
                                 src="/static/images/icons/icon-glossary.png"
                                 alt="" title="Glossary page">
-                                {{ item_title }}
                         {% endif %}
                         {% if result.model_name == 'groupslistpage' %}
                             <img
                                 src="/static/images/icons/icon-groups-list.png"
                                 alt="" title="Simple Key plant groups page">
-                                {{ item_title }}
                         {% endif %}
                         {% if result.model_name == 'subgroupslistpage' %}
                             <img src="/static/images/icons/icon-groups-list.png"
                                 alt="" title="Simple Key plant subgroups page">
-                                {{ item_title }}
                         {% endif %}
                         {% if result.model_name == 'subgroupresultspage' %}
                             <img src="/static/images/icons/icon-grid.png"
                                 alt=""
                                 title="Simple Key plant group results page">
-                                {{ item_title }}
                         {% endif %}
+                        {{ result.title|quick_highlight:query|safe }}
                         </a>
                         <p>
                         {% search_highlight result.text with query as result_excerpt ignore_between '\n--\n' %}{{ result_excerpt }}

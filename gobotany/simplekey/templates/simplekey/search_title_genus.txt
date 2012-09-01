@@ -1,3 +1,3 @@
 {% spaceless %}
-Genus: {{ object.name }}{% if object.common_name %} ({{ object.common_name }}){% endif %}
+Genus: <i>{{ object.name }}</i>{% if object.common_name %} ({{ object.common_name }}){% endif %}
 {% endspaceless %}

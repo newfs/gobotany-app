@@ -1,3 +1,4 @@
+import re
 from django import template
 from django.utils.safestring import mark_safe
 
@@ -147,3 +148,41 @@ def search_highlight(parser, token):
             kwargs['ignore_between'] = arg_bits.next()
 
     return ExtendedHighlightNode(text_block, query, var_name, **kwargs)
+
+
+element_re = re.compile('(<[^>]*>)')
+
+@register.filter
+def quick_highlight(text, query):
+    """Quick highlighter, for situations where complexity causes trouble.
+
+    The `text` is expected to be HTML, and we are careful not to attempt
+    any highlighting withing elements.
+
+    """
+    def embolden(match):
+        return u'<b>{}</b>'.format(match.group(0))
+
+    # Without a query, there are no words to highlight.
+
+    words = query.split()
+    if not words:
+        return text
+
+    # Otherwise, we prepare to highlight any query word that we happen
+    # to find within the text.
+
+    escaped_words = (re.escape(word) for word in words)
+    word_match = u'|'.join(ur'\b{}\b'.format(word) for word in escaped_words)
+    words_re = re.compile(word_match, flags=re.I)
+
+    # We step across the even-numbered elements in our list, to only
+    # highlight within non-element stretches of text.
+
+    words_and_elements = element_re.split(text)
+
+    for i in range(0, len(words_and_elements), 2):
+        subtext = words_and_elements[i]
+        words_and_elements[i] = words_re.sub(embolden, subtext)
+
+    return ''.join(words_and_elements)
