@@ -324,7 +324,9 @@ def species_view(request, genus_slug, epithet):
            'common_names': taxon.common_names.all(),  # view uses this 3 times
            'dkey_page': dkey_page,
            'images': images,
-           'key': 'simple' if partner_species.simple_key else 'full',
+           'key': 'simple'
+               if partner_species and partner_species.simple_key
+               else 'full',
            'partner_heading': partner_species.species_page_heading
                if partner_species else None,
            'partner_blurb': partner_species.species_page_blurb
@@ -542,10 +544,10 @@ def placeholder_view(request, template):
 
 def redirect_pilegroup_to_simple(request, pilegroup_slug):
     get_object_or_404(PileGroup, slug=pilegroup_slug)
-    return redirect('/simple' + request.path)
+    return redirect('/simple' + request.path, permanent=True)
 
 def redirect_pile_to_simple(request, pilegroup_slug, pile_slug):
     pile = get_object_or_404(Pile, slug=pile_slug)
     if pile.pilegroup.slug != pilegroup_slug:
         raise Http404
-    return redirect('/simple' + request.path)
+    return redirect('/simple' + request.path, permanent=True)

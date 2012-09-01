@@ -155,13 +155,24 @@ class URLs(TestCase):
         t('/Simple/', 404)
         t('/simple/', 200)
 
-        t('/Unknown/', 404)
-        t('/Woody-Plants/', 404)
-        t('/woody-plants/', 200)
+        t('/Full/', 404)
+        t('/full/', 200)
 
-        t('/woody-plants/Unknown/', 404)
-        t('/woody-plants/Woody-Angiosperms/', 404)
-        t('/woody-plants/woody-angiosperms/', 200)
+        t('/simple/Unknown/', 404)
+        t('/simple/Woody-Plants/', 404)
+        t('/simple/woody-plants/', 200)
+
+        t('/simple/woody-plants/Unknown/', 404)
+        t('/simple/woody-plants/Woody-Angiosperms/', 404)
+        t('/simple/woody-plants/woody-angiosperms/', 200)
+
+        t('/full/Unknown/', 404)
+        t('/full/Woody-Plants/', 404)
+        t('/full/woody-plants/', 200)
+
+        t('/full/woody-plants/Unknown/', 404)
+        t('/full/woody-plants/Woody-Angiosperms/', 404)
+        t('/full/woody-plants/woody-angiosperms/', 200)
 
         t('/family/Unknown/', 404)
         t('/family/Sapindaceae/', 404)
@@ -180,6 +191,15 @@ class URLs(TestCase):
         t('/species/acer/rubrum/', 200)
 
         # Legacy URLs.
+
+        t('/Unknown/', 404)
+        t('/Woody-Plants/', 404)
+        t('/woody-plants/', 301, '/simple/woody-plants/')
+
+        t('/woody-plants/Unknown/', 404)
+        t('/woody-plants/Woody-Angiosperms/', 404)
+        t('/woody-plants/woody-angiosperms/', 301,
+          '/simple/woody-plants/woody-angiosperms/')
 
         t('/families/Unknown/', 404)
         t('/families/Sapindaceae/', 404)
