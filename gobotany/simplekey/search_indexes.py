@@ -73,6 +73,11 @@ class GenusIndex(indexes.SearchIndex):
         document=True, use_template=True,
         template_name='simplekey/search_text_genus.txt')
 
+    def index_queryset(self):
+        return (super(GenusIndex, self).index_queryset()
+                .select_related('family')
+                .prefetch_related('taxa'))
+
 
 class PlainPageIndex(indexes.SearchIndex):
     title = indexes.CharField(model_attr='title')
