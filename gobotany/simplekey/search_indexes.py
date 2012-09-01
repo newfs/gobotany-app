@@ -48,8 +48,12 @@ class TaxonIndex(indexes.SearchIndex):
     def index_queryset(self):
         return (super(TaxonIndex, self).index_queryset()
                 .select_related('family')
-                .prefetch_related('common_names', 'lookalikes', 'piles',
-                                  'synonyms'))
+                .prefetch_related(
+                    'character_values__character',
+                    'common_names',
+                    'lookalikes',
+                    'piles__pilegroup',
+                    'synonyms'))
 
     def prepare(self, obj):
         data = super(TaxonIndex, self).prepare(obj)

@@ -576,9 +576,6 @@ class Taxon(models.Model):
         # convenience for forming URLs
         return self.scientific_name.split(' ', 1)[1].lower()
 
-    def get_character_values_with_characters(self):
-        return self.character_values.select_related('character')
-
     def get_default_image(self):
         try:
             return self.images.get(rank=1, image_type__name='habit')

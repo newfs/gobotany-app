@@ -61,7 +61,7 @@ Wetland Plant?
 
 All Characteristics:
 {# TODO: may want to add brief characteristics, and group full list by character group, like species page. #}
-{% for character_value in object.get_character_values_with_characters.all %}
+{% for character_value in object.character_values.all %}
   {% with character_value.character as character %}
     {{ character.friendly_name }}:
     {% if character.value_type == 'TEXT' %}
