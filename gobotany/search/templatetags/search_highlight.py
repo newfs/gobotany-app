@@ -46,12 +46,21 @@ class ExtendedHighlightNode(HighlightNode):
         if self.ignore_between is not None:
             kwargs['ignore_between'] = self.ignore_between.resolve(context)
 
+        # Remove quotation marks from inside the query, since the text
+        # we are highlighting will lack them; otherwise, a query like
+        # 'q="acer"' will get no highlighting in its results.  This is
+        # also necessary if quoted phrases, such as 'q="blue flower"',
+        # are to receive useful search summaries.
+
+        query = query.replace('"', ' ')
+
         # The parent class allows for a custom highlighter class to be
         # pulled in. Here instead, just the ExtendedHighlighter class
         # that goes with this template tag code is used, so as to leave
         # alone the default Haystack custom highlighter class setting,
         # and because the ability to override the highlighter class is
         # not yet needed here.
+
         highlighter = ExtendedHighlighter(query, **kwargs)
         highlighted_text = highlighter.highlight(text_block)
         context[self.var_name] = mark_safe(highlighted_text)
