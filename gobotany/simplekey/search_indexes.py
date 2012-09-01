@@ -37,7 +37,28 @@ class CharacterCharField(indexes.CharField):
         return None
 
 
-class TaxonIndex(indexes.SearchIndex):
+class BaseIndex(indexes.SearchIndex):
+    """A document that already knows its URL, so searches render faster."""
+
+    url = indexes.CharField(use_template=True,
+                            template_name='simplekey/search_url.txt')
+
+    def read_queryset(self):
+        """Bypass `index_queryset()` when we just need to read a model.
+
+        The `SearchIndex` method `read_queryset()` is simply a fallback
+        to the `index_queryset()` method.  But since we tend to festoon
+        our index query-sets with all sorts of pre-loading that makes
+        indexing faster, we need to prevent `read_queryset()` from
+        falling back so that its reads remain simple.
+
+        """
+        # Copied from base class index_queryset():
+
+        return self.model._default_manager.all()
+
+
+class TaxonIndex(BaseIndex):
     scientific_name = indexes.CharField(model_attr='scientific_name')
     title = indexes.CharField(use_template=True,
         template_name='simplekey/search_title_species.txt')
@@ -63,7 +84,7 @@ class TaxonIndex(indexes.SearchIndex):
         return data
 
 
-class FamilyIndex(indexes.SearchIndex):
+class FamilyIndex(BaseIndex):
     name = indexes.CharField(model_attr='name')
     title = indexes.CharField(use_template=True,
         template_name='simplekey/search_title_family.txt')
@@ -76,7 +97,7 @@ class FamilyIndex(indexes.SearchIndex):
                 .prefetch_related('genera'))
 
 
-class GenusIndex(indexes.SearchIndex):
+class GenusIndex(BaseIndex):
     name = indexes.CharField(model_attr='name')
     title = indexes.CharField(use_template=True,
         template_name='simplekey/search_title_genus.txt')
@@ -90,14 +111,14 @@ class GenusIndex(indexes.SearchIndex):
                 .prefetch_related('taxa'))
 
 
-class PlainPageIndex(indexes.SearchIndex):
+class PlainPageIndex(BaseIndex):
     title = indexes.CharField(model_attr='title')
     text = indexes.CharField(
         document=True, use_template=True,
         template_name='simplekey/search_text_plain_page.txt')
 
 
-class GlossaryPageIndex(indexes.SearchIndex):
+class GlossaryPageIndex(BaseIndex):
     title = indexes.CharField(model_attr='title')
     text = indexes.CharField(
         document=True, use_template=True,
@@ -111,7 +132,7 @@ class GlossaryPageIndex(indexes.SearchIndex):
         return data
 
 
-class GroupsListPageIndex(indexes.SearchIndex):
+class GroupsListPageIndex(BaseIndex):
     title = indexes.CharField(model_attr='title')
     text = indexes.CharField(
         document=True, use_template=True,
@@ -125,7 +146,7 @@ class GroupsListPageIndex(indexes.SearchIndex):
         return data
 
 
-class SubgroupsListPageIndex(indexes.SearchIndex):
+class SubgroupsListPageIndex(BaseIndex):
     title = indexes.CharField(model_attr='title')
     text = indexes.CharField(
         document=True, use_template=True,
@@ -136,7 +157,7 @@ class SubgroupsListPageIndex(indexes.SearchIndex):
                 .select_related('group'))
 
 
-class SubgroupResultsPageIndex(indexes.SearchIndex):
+class SubgroupResultsPageIndex(BaseIndex):
     title = indexes.CharField(model_attr='title')
     text = indexes.CharField(
         document=True, use_template=True,

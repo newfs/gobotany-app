@@ -3,7 +3,6 @@
 from django import template
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
-from haystack.models import SearchResult
 
 from gobotany.core import models
 from gobotany.simplekey import models as simple_models
@@ -13,10 +12,6 @@ register = template.Library()
 @register.filter
 def url(obj):
     """Return the canonical URL in Go Botany for the given object."""
-
-    if isinstance(obj, SearchResult):
-        # Resolve the actual object represented by a search result.
-        obj = obj.object
 
     # Core models.
 

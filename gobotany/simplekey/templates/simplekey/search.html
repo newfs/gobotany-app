@@ -38,7 +38,7 @@
                 {% for result in page.object_list %}
                     <li>
                         {% search_highlight result.title with query as item_title excerpt 'False' %}
-                        <a href="{{ result|url }}">
+                        <a href="{{ result.url }}">
                         {% if result.model_name == 'taxon' %}
                             <img
                                 src="/static/images/icons/icon-leaf.png"

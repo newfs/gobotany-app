@@ -1,0 +1,1 @@
+{% load gobotany_tags %}{{ object|url }}
