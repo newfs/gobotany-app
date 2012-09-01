@@ -591,9 +591,6 @@ class Taxon(models.Model):
     def get_piles(self):
         return [pile.name for pile in self.piles.all()]
 
-    def get_piles_with_pilegroups(self):
-        return self.piles.select_related('pilegroup')
-
     def partners(self):
         return PartnerSite.objects.filter(species=self)
 

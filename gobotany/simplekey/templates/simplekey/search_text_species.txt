@@ -5,7 +5,7 @@
 {% for common_name in object.common_names.all %}{% if not forloop.first %}, {% endif %}
               {{ common_name }}{% endfor %}.
 
-{% for pile in object.get_piles_with_pilegroups %}
+{% for pile in object.piles.all %}
     {{ pile.pilegroup.name }} {{ pile.name }}
 {% endfor %}
 
