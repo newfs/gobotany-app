@@ -38,56 +38,55 @@
                 {% for result in page.object_list %}
                     <li>
                         {% search_highlight result.title with query as item_title excerpt 'False' %}
+                        <a href="{{ result|url }}">
                         {% if result.model_name == 'taxon' %}
-                            <a href="{{ result|url }}"><img
+                            <img
                                 src="/static/images/icons/icon-leaf.png"
                                 alt="" title="Species page">
-                            {{ item_title|italicize_plant|safe }}</a>
+                            {{ item_title|italicize_plant|safe }}
                         {% endif %}
                         {% if result.model_name == 'family' %}
-                            <a href="{{ url_base }}/families/{{ result.name|lower }}/"><img
+                            <img
                                 src="/static/images/icons/icon-family.png"
                                 alt="" title="Family page">
-                                {{ item_title }}</a>
+                                {{ item_title }}
                         {% endif %}
                         {% if result.model_name == 'genus' %}
-                            <a href="{{ url_base }}/genera/{{ result.name|lower }}/"><img
+                            <img
                                 src="/static/images/icons/icon-genus.png"
                                 alt="" title="Genus page">
                                 {{ item_title|italicize_plant|safe }}
-                            </a>
                         {% endif %}
                         {% if result.model_name == 'plainpage' %}
-                            <a href="{{ url_base }}{{ result.object.url_path }}"><img
+                            <img
                                 src="/static/images/icons/icon-help.png"
                                 alt="" title="Help page">
-                                {{ item_title }}</a>
+                                {{ item_title }}
                         {% endif %}
                         {% if result.model_name == 'glossarypage' %}
-                            <a href="{{ url_base }}{{ result.object.url_path }}"><img
+                            <img
                                 src="/static/images/icons/icon-glossary.png"
                                 alt="" title="Glossary page">
-                                {{ item_title }}</a>
+                                {{ item_title }}
                         {% endif %}
                         {% if result.model_name == 'groupslistpage' %}
-                            <a href="{% url level1 'simple' %}"><img
+                            <img
                                 src="/static/images/icons/icon-groups-list.png"
                                 alt="" title="Simple Key plant groups page">
-                                {{ item_title }}</a>
+                                {{ item_title }}
                         {% endif %}
                         {% if result.model_name == 'subgroupslistpage' %}
-                            <a href="{% url level2 'simple' result.object.group.name %}">
                             <img src="/static/images/icons/icon-groups-list.png"
                                 alt="" title="Simple Key plant subgroups page">
-                                {{ item_title }}</a>
+                                {{ item_title }}
                         {% endif %}
                         {% if result.model_name == 'subgroupresultspage' %}
-                            <a href="{% url level3 'simple' result.object.subgroup.pilegroup.slug result.object.subgroup.slug %}">
                             <img src="/static/images/icons/icon-grid.png"
                                 alt=""
                                 title="Simple Key plant group results page">
-                                {{ item_title }}</a>
+                                {{ item_title }}
                         {% endif %}
+                        </a>
                         <p>
                         {% search_highlight result.text with query as result_excerpt ignore_between '\n--\n' %}{{ result_excerpt }}
                         </p>
