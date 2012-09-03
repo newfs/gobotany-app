@@ -41,12 +41,16 @@ created.  To set up the database, run these commands:
     heroku run bin/import-images.sh
     heroku run bin/import-dkey.sh
 
-Prepare Solr by visiting the Heroku web site, navigating to your app's
-configuration, selecting the addon "Websolr", then choosing the section
-"Advanced Configuration", finally and pasting in the contents of the
-file ``solr/schema.xml`` from your gobotany-deploy checkout.  Once the
-schema is installed (give it a few minutes to make sure the change has
-the chance to propagate to WebSolr's servers), you can build the Solr
-index and thereby activate the Go Botany site's search field:
+Prepare Solr by first generating your Solr schema:
+
+    ./run-django.sh build_solr_schema > schema.xml
+
+Once this file exists, you can visit the Heroku web site, navigate to
+your app's configuration, select the addon "Websolr", choose the section
+"Advanced Configuration", and paste in the contents of ``schema.xml``
+that you just created.  Once the schema is installed (give it a few
+minutes to make sure the change has the chance to propagate to WebSolr's
+servers), you can build the Solr index and thereby activate the Go
+Botany site's search field:
 
     heroku run django-admin.py rebuild_index --noinput
