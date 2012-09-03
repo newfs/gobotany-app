@@ -2,7 +2,7 @@
 Installing Go Botany on Heroku
 ==============================
 
-Start by checking out this "gobotany-app" repository on your machine::
+Start by checking out this "gobotany-app" repository on your machine:
 
     git clone git@github.com:newfs/gobotany-app.git
     cd gobotany-app
