@@ -26,7 +26,8 @@ def url(obj):
         return reverse('simplekey-genus', args=(obj.name.lower(),))
 
     if isinstance(obj, models.GlossaryTerm):
-        return reverse('site-glossary', args=(obj.term[0].lower(),))
+        url = reverse('site-glossary', args=(obj.term[0].lower(),))
+        return url + '#term-' + slugify(obj.term)
 
     # Pages.
 
