@@ -1,0 +1,1 @@
+Glossary Term: <i>{{ object.term }}</i>

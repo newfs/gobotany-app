@@ -25,6 +25,9 @@ def url(obj):
     if isinstance(obj, models.Genus):
         return reverse('simplekey-genus', args=(obj.name.lower(),))
 
+    if isinstance(obj, models.GlossaryTerm):
+        return reverse('site-glossary', args=(obj.term[0].lower(),))
+
     # Pages.
 
     if isinstance(obj, simple_models.GlossaryPage):

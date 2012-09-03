@@ -1,0 +1,3 @@
+{% load simplekey_extras %}
+
+{{ object.term }}: {{ object.lay_definition|capfirst }}{% if not object.lay_definition|make_list|last == '.' %}.{% endif %}
