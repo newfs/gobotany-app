@@ -20,10 +20,3 @@ You are here: Simple Key
     Exceptions:
     {{ group.notable_exceptions|striptags|safe }}
 {% endfor %}
-
---
-{# Index the group friendly name many more times to boost ranking. This   #}
-{# will be hidden from the user because it is inside double-dash markers. #}
-
-{{ object.group.friendly_name|repeat:200 }}
---

@@ -140,9 +140,9 @@ class GroupsListPageIndex(BaseIndex):
 
     def prepare(self, obj):
         data = super(GroupsListPageIndex, self).prepare(obj)
-        # Boost 200% to help ensure high ranking when searching on
-        # parts of group friendly names, such as "trees."
-        data['boost'] = 2.0
+        # Boost helps ensure high ranking when searching on parts of
+        # group friendly-names, such as "trees."
+        data['boost'] = 8.0
         return data
 
 
