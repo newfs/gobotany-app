@@ -4,7 +4,9 @@ $section-padding: 16px;
 
 body.plantshare {
     .content form {
-        padding: $section-padding 0;
+        p {
+            margin: 0;
+        }
         label {
             display: block;
             margin-bottom: 4px;
@@ -19,7 +21,7 @@ body.plantshare {
             width: 350px;
         }
     }
-    &#plantshare .join {
+    &#plantshare .sign-up {
         background-color: #fff;
         border: 1px solid $border-green;
         padding: 4px $section-padding $section-padding;
@@ -43,8 +45,7 @@ body.plantshare {
             }            
         }
     }
-    &#join #main, 
-    &#register #main {
+    &#sign-up #main {
         form input {
             width: 350px;
             &.button {
@@ -120,7 +121,7 @@ body.plantshare {
                 margin-left: 0;
             }
         }
-        &#join {
+        &#sign-up {
             #main form input {
                 width: 290px;
             }

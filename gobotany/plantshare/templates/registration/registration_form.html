@@ -1,14 +1,18 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
 
-{% block title %}Register for PlantShare{% endblock %}
+{% block title %}Sign Up for PlantShare{% endblock %}
 
-{% block body_attributes %}id="register" class="plantshare"{% endblock %}
+{% block body_attributes %}id="sign-up" class="plantshare"{% endblock %}
 
 {% block main_content %}
-<h1>Register for PlantShare</h1>
+<h1>Sign Up for PlantShare</h1>
 
-<p>Begin your registration by inputting your information below.  You will be
-sent an email to confirm your email address and activate your account.</p>
+<p>Share your passion for the green world of New England plants. By signing
+up, you will have your own home page complete with your plant discoveries,
+maps, checklists, and much more!</p>
+
+<p>Start by entering your information below. You will receive an email message
+with a link to activate your account.</p>
 
 <form method="post" action=".">
     {{ form.as_p }}

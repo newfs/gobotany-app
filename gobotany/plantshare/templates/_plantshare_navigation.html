@@ -5,8 +5,8 @@
         <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>PlantShare</a></h4>
     </div>
     <div class="section">
-        {% url ps-join as u %}
-        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Join PlantShare</a></h4>
+        {% url registration_register as u %}
+        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Sign Up for PlantShare</a></h4>
     </div>
 </div>
 
