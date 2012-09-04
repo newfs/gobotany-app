@@ -136,9 +136,14 @@ h5, h6 {
 h6 {
     font-weight: italic;
 }
-p, ul {
+p {
     line-height: $text-line-height;
     margin: 1em 0;
+    padding: 0;
+}
+ul {
+    line-height: $text-line-height;
+    margin: 0;
     padding: 0;
 }
 ul li {
@@ -400,7 +405,7 @@ header {
 footer {
     background: $footer-background-color;
     clear: both;
-    height: 128px;
+    height: 138px;
     position: relative;
     width: 100%;
     @include container-div;

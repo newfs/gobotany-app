@@ -298,7 +298,9 @@ h5, h6 { font-size: 12px; }
 
 h6 { font-weight: italic; }
 
-p, ul { line-height: 170%; margin: 1em 0; padding: 0; }
+p { line-height: 170%; margin: 1em 0; padding: 0; }
+
+ul { line-height: 170%; margin: 0; padding: 0; }
 
 ul li { margin: 0 0 5px 0; }
 
@@ -357,7 +359,7 @@ header nav #search-suggest .menu span { font-weight: normal; }
 .content #sidebar .box { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 16px 0 0; }
 
 /* Footer */
-footer { background: #b4d57f; clear: both; height: 128px; position: relative; width: 100%; }
+footer { background: #b4d57f; clear: both; height: 138px; position: relative; width: 100%; }
 footer .container { margin: 0 auto; padding: 0 10px; width: 960px; }
 footer > img { left: 50%; margin-left: -543px; position: absolute; top: -47px; }
 footer .publisher, footer .navigation { float: left; margin: 0 20px 0 0; padding: 18px 0; width: 305px; }
