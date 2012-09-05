@@ -449,7 +449,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get(
             '/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn'
             )
-        self.wait_on_species(499, seconds=21)   # Big subgroup, wait longer
+        self.wait_on_species(500, seconds=21)   # Big subgroup, wait longer
 
         self.css1(FILTER_LINK_CSS).click()
         self.wait_on(5, self.css, RANGE_DIV_CSS)
