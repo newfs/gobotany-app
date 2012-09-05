@@ -1317,6 +1317,9 @@ h5.help {
 .working-area .character-drawing {
   float: right;
 }
+.working-area .character-drawing img {
+    max-height: 200px;
+}
 .working-area li {
     display: block;
     float: left;

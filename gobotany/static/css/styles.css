@@ -694,6 +694,8 @@ h5.help { padding: 3px 0 0 0; margin: 0 0 0 0; }
 
 .working-area .character-drawing { float: right; }
 
+.working-area .character-drawing img { max-height: 200px; }
+
 .working-area li { display: block; float: left; margin: 0 8px 15px 0; }
 
 .working-area ul { margin: 15px 0 0 0; }
