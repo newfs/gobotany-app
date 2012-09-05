@@ -501,17 +501,15 @@ p.vid { padding: 0 0 7px 25px; background: url(/static/images/icons/icon3.png) 0
 
 .show-me { float: right; margin: 0 0 15px 0; }
 
-.already-know h6, .already-know label, .show label { color: #807121; font-weight: bold; margin: 0 0 5px 0; }
+.already-know h6, .already-know label, #results-display label { color: #807121; font-weight: bold; margin: 0 0 5px 0; }
 
 .already-know label { display: block; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; margin: 5px 0 3px; vertical-align: middle; }
 
-#plant-id-3 .show { margin-bottom: 7px; text-align: left; }
+#plant-id-3 #results-display { display: inline; }
 
-#plant-id-3 .show div { display: inline; }
+#plant-id-3 #results-display label { color: #000; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; }
 
-#plant-id-3 .show label { color: #000; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; }
-
-#plant-id-3 .show select, #plant-id-3 .already-know select { background: #ebf6df; border: 1px solid #9cc86b; font-size: 15px; padding: 0; -webkit-appearance: menulist; }
+#plant-id-3 #results-display select, #plant-id-3 .already-know select { background: #ebf6df; border: 1px solid #9cc86b; font-size: 15px; padding: 0; -webkit-appearance: menulist; }
 
 #plant-id-3 .already-know select { font-size: 13px; width: 143px; }
 
@@ -557,7 +555,7 @@ a.go-to-species-page:hover { background-position: 0 -31px; }
 
 a.go-to-species-page:active { background-position: 0 -62px; }
 
-.plant-list { position: relative; }
+.plant-list { margin-top: 8px; position: relative; }
 
 .plant-list .plant { display: none; position: absolute; top: 0px; left: 0px; border: 1px solid #c3d941; background: #fff; padding: 8px 6px; height: 210px; width: 160px; /* prevent long names from blowing out layout; allow wrap */ text-align: center; }
 

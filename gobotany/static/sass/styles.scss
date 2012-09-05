@@ -797,7 +797,7 @@ p.vid {
     float: right;
     margin: 0 0 15px 0;
 }	
-.already-know h6, .already-know label, .show label {
+.already-know h6, .already-know label, #results-display label {
     color: #807121;
     font-weight: bold;
     margin: 0 0 5px 0;
@@ -811,21 +811,16 @@ p.vid {
     vertical-align: middle;
 }
 
-#plant-id-3 .show {
-    margin-bottom: 7px;
-    text-align: left;
-}
-#plant-id-3 .show div {
+#plant-id-3 #results-display {
     display: inline;
 }
-#plant-id-3 .show label {
+#plant-id-3 #results-display label {
     color: #000;
     font-family: $headings-font;
     font-size: 15px;
     font-weight: normal;
-
 }
-#plant-id-3 .show select, #plant-id-3 .already-know select {
+#plant-id-3 #results-display select, #plant-id-3 .already-know select {
     background: #ebf6df;
     border: 1px solid #9cc86b;
     font-size: 15px;
@@ -930,6 +925,7 @@ a.go-to-species-page:active {
 }
 
 .plant-list {
+    margin-top: 8px;
     position: relative;
 }
 .plant-list .plant {
