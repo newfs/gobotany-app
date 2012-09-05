@@ -109,12 +109,13 @@ define([
         // Display character drawing, if an image is available.
         if (f.info.image_url) {
             var image_id = this._get_image_id_from_path(f.info.image_url);
-            var dld_html = '<img id="' + image_id +
+            var character_drawing_html = '<img id="' + image_id +
                 '" src="' + f.info.image_url +
                 '" alt="character illustration">';
-            $div.find('.dld').html(dld_html).css({display: 'block'});
+            $div.find('.character-drawing').html(character_drawing_html).css(
+                {display: 'block'});
         } else {
-            $div.find('.dld').html('').css({display: 'none'});
+            $div.find('.character-drawing').html('').css({display: 'none'});
         }
 
         // Show the working area with a slide effect.
