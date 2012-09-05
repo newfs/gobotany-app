@@ -8,3 +8,11 @@
 
 # SASS
 /gobotany/static/sass/.sass-cache/
+
+# Log files
+import.log
+log.dkey
+
+# Data files
+110330_fone_test_05.xml
+gobotany-csv-exports-*.zip
