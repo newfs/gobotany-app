@@ -236,10 +236,6 @@
             &.free-sidebar #sidebar .section {
                 padding-bottom: $sidebar-box-vertical-padding;
             }
-            #sidebar {
-                background: none;
-                border: 0;
-            }
         }
         #main {
             background: none;
@@ -267,7 +263,7 @@
             margin-bottom: 14px;
             @include smallscreen-side-margins;
             .section {
-                margin-top: sidebar-box-vertical-padding;
+                margin-top: $sidebar-box-vertical-padding;
                 padding-bottom: 0;
             }
             .section:first-child {

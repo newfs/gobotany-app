@@ -754,12 +754,11 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
   footer .support img { padding-bottom: 6px; }
   .content .container { padding: 0; }
   .content .container.free-sidebar #sidebar .section { padding-bottom: 16px; }
-  .content .container #sidebar { background: none; border: 0; }
   .content #main { background: none; float: none; min-height: inherit; padding-bottom: 14px; padding-left: 0; margin-left: 8px; margin-right: 8px; }
   .content #main .smallscreen-anchor-nav { display: block; padding: 8px 0 16px; }
   .content #main .smallscreen-anchor-nav a { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; padding: 8px 0; text-decoration: underline; }
   .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; margin-bottom: 14px; margin-left: 8px; margin-right: 8px; }
-  .content #sidebar .section { margin-top: sidebar-box-vertical-padding; padding-bottom: 0; }
+  .content #sidebar .section { margin-top: 16px; padding-bottom: 0; }
   .content #sidebar .section:first-child { margin-top: 0; }
   .gb-tooltip { width: 200px; } }
 /* These styles apply to smartphones and tablets */
