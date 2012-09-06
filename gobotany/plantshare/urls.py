@@ -11,5 +11,5 @@ urlpatterns = patterns(
     # Facebook login
     url(r'^facebook_connect/', include('facebook_connect.urls')),
     # Normal registration login
-    url(r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^accounts/', include('gobotany.plantshare.backends.default.urls')),
     )
