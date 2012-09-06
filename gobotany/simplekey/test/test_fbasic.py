@@ -487,7 +487,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Submitting when there are no matching species does nothing.
 
-        unknowns = 25
+        unknowns = 26
 
         apply_button.click()  # should do nothing
         self.assertEqual(sidebar_value_span.text, '')
