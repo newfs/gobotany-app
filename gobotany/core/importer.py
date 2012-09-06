@@ -1804,41 +1804,6 @@ class Importer(object):
         plain_page.save()
 
 
-    def _create_glossary_pages(self):
-        db = bulkup.Database(connection)
-
-        terms = db.map('core_glossaryterm', 'term')
-        letters = set(t[0].lower() for t in terms if t[0].isalpha())
-
-        # Make sure a glossary page is registered for each letter for
-        # which at least one glossary term exists.
-
-        ghp_table = db.table('simplekey_glossarypage')
-        for letter in letters:
-            url_path = reverse('site-glossary', args=[letter])
-            ghp_table.get(
-                letter=letter,
-                ).set(
-                title='Glossary: ' + letter.upper(),
-                url_path=url_path,
-                )
-        ghp_table.save()
-
-        # Add every term to its appropriate glossary page.
-
-        ghp_ids = db.map('simplekey_glossarypage', 'letter', 'id')
-        term_ids = db.map('core_glossaryterm', 'term', 'id')
-
-        multi = db.table('simplekey_glossarypage_terms')
-        for term in terms:
-            letter = term[0].lower()
-            multi.get(
-                glossarypage_id=ghp_ids[letter],
-                glossaryterm_id=term_ids[term],
-                )
-        multi.save()
-
-
     def _create_teaching_page(self):
         self._create_plain_page('site-teaching', 'Teaching',
                                 'site/templates/gobotany/teaching.html')
@@ -1863,7 +1828,6 @@ class Importer(object):
         self._create_getting_started_page()
         self._create_advanced_map_page()
         self._create_video_help_topics_page()
-        self._create_glossary_pages()
 
         self._create_teaching_page()
         self._create_privacy_policy_page()
