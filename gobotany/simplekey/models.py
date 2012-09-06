@@ -37,24 +37,6 @@ class PlainPage(models.Model):
         return u'%s' % self.title
 
 
-class GlossaryPage(models.Model):
-    """A page that lists glossary terms for a letter (or number).
-
-       (Do not inherit from PlainPage here, in order to keep records separate
-       for search engine indexing.)
-    """
-    title = models.CharField(max_length=100)
-    url_path = models.CharField(max_length=100)
-    letter = models.CharField(max_length=1)
-    terms = models.ManyToManyField(GlossaryTerm)
-
-    class Meta:
-        verbose_name_plural = 'glossary pages'
-
-    def __unicode__(self):
-        return u'%s' % self.title
-
-
 def _get_search_suggestions(input_list):
     """Return search suggestions for a Simple Key page. Attempt to
     reasonably extract parts of a list of input strings for inclusion

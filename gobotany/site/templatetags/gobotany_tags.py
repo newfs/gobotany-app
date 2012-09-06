@@ -31,9 +31,6 @@ def url(obj):
 
     # Pages.
 
-    if isinstance(obj, simple_models.GlossaryPage):
-        return obj.url_path
-
     if isinstance(obj, simple_models.GroupsListPage):
         return reverse('level1', args=('simple',))
 
