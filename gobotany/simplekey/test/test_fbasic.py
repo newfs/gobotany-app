@@ -407,10 +407,9 @@ class FilterFunctionalTests(FunctionalTestCase):
         for menu_item in menu_items:
             self.assertTrue(menu_item.text not in OMITTED_ITEMS)
 
-    @unittest2.skip("Skip til we find a new place to look for missing images")
     def test_missing_image_has_placeholder_text(self):
-        self.get('/ferns/lycophytes/')
-        self.wait_on_species(18)
+        self.get('/aquatic-plants/non-thalloid-aquatic/')
+        self.wait_on_species(52)
         self.css1('#intro-overlay .continue').click()
         e = self.css1('.plant-list div a div.plant-img-container img')
         self.css1('#results-display #image-types').click()
@@ -1074,7 +1073,7 @@ class SearchFunctionalTests(FunctionalTestCase):
     # Test searching miscellaneous pages around the site (about, etc.)
 
     def test_search_results_contain_about_page(self):
-        self.get('/search/?q=flora')
+        self.get('/search/?q=flora%20novae%20angliae')
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_page_found(result_links, 'About Go Botany'))
