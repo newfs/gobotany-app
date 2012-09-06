@@ -141,23 +141,31 @@ HAYSTACK_SOLR_TIMEOUT = 20  # Longer than default timeout; added for indexing
 
 # For django-facebook-connect
 FACEBOOK_LOGIN_REDIRECT = '/ps'
-FACEBOOK_SCOPE='email' 
+FACEBOOK_SCOPE = 'email' 
 if DEBUG:
 # Debug App, on Brandon's account with localhost URL
-    FACEBOOK_APP_ID='190505394309270' 
-    FACEBOOK_APP_SECRET='eb2dccd2ac2d77dac45a9ee137313d6b' 
+    FACEBOOK_APP_ID = '190505394309270' 
+    FACEBOOK_APP_SECRET = 'eb2dccd2ac2d77dac45a9ee137313d6b' 
 else:
 # Production App, on NEWFS account with production URL
-    FACEBOOK_APP_ID='174715039247745' 
-    FACEBOOK_APP_SECRET='54f36f2204399f84f127178c8322b5ee' 
+    FACEBOOK_APP_ID = '174715039247745' 
+    FACEBOOK_APP_SECRET = '54f36f2204399f84f127178c8322b5ee' 
 
 # For django-registration
 ACCOUNT_ACTIVATION_DAYS = 7
 if DEBUG:
     # To test with this, start a local test email server as follows:
     # python -m smtpd -n -c DebuggingServer localhost:1025
-    EMAIL_HOST='localhost'
-    EMAIL_PORT=1025
+    EMAIL_HOST = 'localhost'
+    EMAIL_PORT = 1025
+else:
+    # SendGrid Heroku add-on configuration
+    EMAIL_HOST = 'smtp.sendgrid.net'
+    EMAIL_PORT = 587
+    EMAIL_HOST_USER = os.environ['SENDGRID_USERNAME']
+    EMAIL_HOST_PASSWORD = os.environ['SENDGRID_PASSWORD']
+    USE_TLS = True
+    DEFAULT_FROM_EMAIL = 'no-reply@newenglandwild.org'
 
 # For when we are running on Heroku:
 if 'WEBSOLR_URL' in os.environ:
