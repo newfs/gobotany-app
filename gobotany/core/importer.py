@@ -2074,7 +2074,7 @@ full_import_steps = (
      'pile_remaining_non_monocots_5.csv',
      'pile_remaining_non_monocots_6.csv',
      'pile_remaining_non_monocots_7.csv',
-     'Pile_remaining_non_monocots_8.csv',
+     'pile_remaining_non_monocots_8.csv',
      'pile_thalloid_aquatics.csv',
      ),
 
