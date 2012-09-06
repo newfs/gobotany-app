@@ -870,7 +870,7 @@ class SearchFunctionalTests(FunctionalTestCase):
             self.get('/search/?q=%s' % term.lower())
             result_links = self._result_links()
             self.assertTrue(len(result_links))
-            self.assertEqual('Glossary: %s' % term[0].upper(),
+            self.assertEqual('Glossary: %s: %s' % (term[0].upper(), term),
                              result_links[0].text)
 
     # TODO: Add tests for plant groups and subgroups once they are

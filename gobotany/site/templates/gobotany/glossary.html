@@ -33,13 +33,13 @@
         {% for term in glossary %}
             <dt>
                 {% if term.image %}
-                    <a name="term-{{ term.term|slugify }}" rel="shadowbox"
+                    <a name="{{ term.term|slugify }}" rel="shadowbox"
                        href="{{ term.image.url }}">
                         <img alt="{{ term.term }}"
                              src="/static/images/icons/icon-camera.png">
                     </a>
                 {% else %}
-                    <a name="term-{{ term.term|slugify }}"></a>
+                    <a name="{{ term.term|slugify }}"></a>
                 {% endif %}
                 {{ term.term }}
             </dt>

@@ -27,7 +27,7 @@ def url(obj):
 
     if isinstance(obj, models.GlossaryTerm):
         url = reverse('site-glossary', args=(obj.term[0].lower(),))
-        return url + '#term-' + slugify(obj.term)
+        return url + '#' + slugify(obj.term)
 
     # Pages.
 
