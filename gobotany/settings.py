@@ -108,6 +108,7 @@ MIDDLEWARE_CLASSES = (
     ) + (('debug_toolbar.middleware.DebugToolbarMiddleware',)
          if USE_DEBUG_TOOLBAR else ()) + (
 
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
