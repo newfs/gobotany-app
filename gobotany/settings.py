@@ -176,9 +176,9 @@ if DEBUG:
     RECAPTCHA_PRIVATE_KEY = '6LeJLNYSAAAAADu-quzYmZnGcuBTzq66JMobfQ_Q'
     RECAPTCHA_USE_SSL = True
 else:
-    # For production use
-    RECAPTCHA_PUBLIC_KEY = ''
-    RECAPTCHA_PRIVATE_KEY = ''
+    # For production use, using domain "newenglandwild.org"
+    RECAPTCHA_PUBLIC_KEY = '6LfxLtYSAAAAAOOqRrPQONhKLIOb7sA1jrZHSSz0'
+    RECAPTCHA_PRIVATE_KEY = '6LfxLtYSAAAAAP4aYyUyfIsZbEysDxzZmG-DH4J0'
     RECAPTCHA_USE_SSL = True
 
 # For when we are running on Heroku:
