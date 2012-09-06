@@ -556,7 +556,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get('/non-monocots/remaining-non-monocots/'
                  '#_filters=family,genus,plant_height_rn'
                  '&plant_height_rn=5000')
-        unknowns = 26
+        unknowns = 27
 
         wait = 30  # Big subgroup, wait longer
         try:
