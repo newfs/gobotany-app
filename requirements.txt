@@ -23,6 +23,7 @@ django-pylibmc-sasl==0.2.4
 # For login and registration
 git+https://github.com/noamsu/django-facebook-connect#egg=django-facebook-connect
 django-registration==0.8
+django-recaptcha==0.0.4
 
 # For storing images on S3.
 django-storages==1.1.4

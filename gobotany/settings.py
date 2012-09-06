@@ -100,6 +100,7 @@ INSTALLED_APPS = [
     'facebook_connect',
     'registration',
     'south',
+    'captcha',
     ]
 MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
@@ -166,6 +167,18 @@ else:
     EMAIL_HOST_PASSWORD = os.environ['SENDGRID_PASSWORD']
     USE_TLS = True
     DEFAULT_FROM_EMAIL = 'no-reply@newenglandwild.org'
+
+# For django-recaptcha
+if DEBUG:
+    # From JR's personal test account, works for domain "localhost"
+    RECAPTCHA_PUBLIC_KEY = '6LeJLNYSAAAAADqd4q3EmAEmjcm0fETife_lmHEe'
+    RECAPTCHA_PRIVATE_KEY = '6LeJLNYSAAAAADu-quzYmZnGcuBTzq66JMobfQ_Q'
+    RECAPTCHA_USE_SSL = True
+else:
+    # For production use
+    RECAPTCHA_PUBLIC_KEY = ''
+    RECAPTCHA_PRIVATE_KEY = ''
+    RECAPTCHA_USE_SSL = True
 
 # For when we are running on Heroku:
 if 'WEBSOLR_URL' in os.environ:
