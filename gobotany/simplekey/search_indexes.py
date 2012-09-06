@@ -128,8 +128,8 @@ class GlossaryTermIndex(BaseIndex):
 
     def prepare(self, obj):
         data = super(GlossaryTermIndex, self).prepare(obj)
-        # Boost glossary terms to help them come first.
-        data['boost'] = 10.0
+        # Boost glossary results to raise their ranking.
+        data['boost'] = 3.0
         return data
 
 
