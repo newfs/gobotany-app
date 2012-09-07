@@ -54,3 +54,25 @@ servers), you can build the Solr index and thereby activate the Go
 Botany site's search field:
 
     heroku run django-admin.py rebuild_index --noinput
+
+
+Testing and adjusting the search feature
+========================================
+
+The Go Botany search feature uses Haystack and Solr.
+
+The functional tests in the test class SearchFunctionalTests aim to
+ensure various aspects of the search feature including desired ranking.
+
+Ranking relies mostly on Haystack document boost, as seen in several
+places in our `search_indexes.py`. For more fine-grained control where
+boost is not enough, some hidden repeated keywords are added to search
+indexes, such as in the `search_text_species.txt` template.
+
+To adjust ranking: cycle through running the functional tests, adjusting
+the boosts in `search_indexes.py`, and, if necessary, adjusting the
+hidden-keyword sections at the end of `search_*.txt` templates. The Solr
+Admin full interface, which allows examining details including ranking
+scores, may also be helpful:
+
+    http://localhost:8983/solr/admin/form.jsp
