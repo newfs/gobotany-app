@@ -126,12 +126,6 @@ class GlossaryTermIndex(BaseIndex):
         document=True, use_template=True,
         template_name='simplekey/search_text_glossary_term.txt')
 
-    def prepare(self, obj):
-        data = super(GlossaryTermIndex, self).prepare(obj)
-        # Boost glossary results to raise their ranking.
-        data['boost'] = 3.0
-        return data
-
 
 class GroupsListPageIndex(BaseIndex):
     title = indexes.CharField(model_attr='title')
