@@ -106,3 +106,16 @@ Classification:
     Notes on Subspecies and Varieties:
     {{ object.variety_notes|safe }}
 {% endif %}
+
+--
+{% comment %}
+Add some repeat common-name keywords in order to boost ranking. This is
+done only because doing the usual document "boost" will not achieve the
+desired result: making a search on a common name always return its species
+page first. A field boost does not help either. These keywords will not
+appear in the result excerpt due to the enclosing double-dash markers.
+{% endcomment %}
+{% for common_name in object.common_names.all %}
+    {{ common_name.common_name|repeat:25 }}
+{% endfor %}
+--
