@@ -65,8 +65,7 @@ Running the automated tests
 
 #### Python ####
 
-    gobotany-deploy $ ./run-django.sh test api core mapping plantoftheday
-    search simplekey
+    gobotany-deploy $ ./run-django.sh test api core mapping plantoftheday search simplekey
 
 #### JavaScript ####
 
@@ -87,8 +86,7 @@ class, or a single test:
 
     gobotany-deploy $ ./scripts/run-functional-tests.sh BasicFunctionalTests
 
-    gobotany-deploy $ ./scripts/run-functional-tests.sh
-    BasicFunctionalTests.test_home_page
+    gobotany-deploy $ ./scripts/run-functional-tests.sh BasicFunctionalTests.test_home_page
 
 
 Testing and adjusting the search feature
