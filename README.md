@@ -58,6 +58,39 @@ Botany site's search field:
     heroku run django-admin.py rebuild_index --noinput
 
 
+Running the automated tests
+---------------------------
+
+### Unit tests ###
+
+#### Python ####
+
+    gobotany-deploy $ ./run-django.sh test api core mapping plantoftheday
+    search simplekey
+
+#### JavaScript ####
+
+    gobotany-deploy $ ./mocha.sh
+
+### Functional tests ###
+
+Detailed notes are in:
+    
+    gobotany-app/gobotany/simplekey/test/README-SELENIUM.txt
+    
+A script is also available for convenience:
+
+    gobotany-deploy $ ./scripts/run-functional-tests.sh
+
+You can pass a parameter in the accustomed way to run all tests in a test
+class, or a single test:
+
+    gobotany-deploy $ ./scripts/run-functional-tests.sh BasicFunctionalTests
+
+    gobotany-deploy $ ./scripts/run-functional-tests.sh
+    BasicFunctionalTests.test_home_page
+
+
 Testing and adjusting the search feature
 ----------------------------------------
 
