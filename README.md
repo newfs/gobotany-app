@@ -1,6 +1,8 @@
+Go Botany
+=========
 
 Installing Go Botany on Heroku
-==============================
+------------------------------
 
 Start by checking out this "gobotany-app" repository on your machine:
 
@@ -57,7 +59,7 @@ Botany site's search field:
 
 
 Testing and adjusting the search feature
-========================================
+----------------------------------------
 
 The Go Botany search feature uses Haystack and Solr.
 
