@@ -729,7 +729,7 @@ class SearchFunctionalTests(FunctionalTestCase):
         self.get('/search/?q=monocot&page=2')
         heading = self.css('#main h2')
         self.assertTrue(len(heading))
-        self.assertTrue(heading[0].text.startswith('Page 2 of'))
+        self.assertTrue(heading[0].text.startswith('Page 2: '))
 
     def test_search_results_page_previous_link_is_present(self):
         d = self.get('/search/?q=monocot&page=2')

@@ -23,7 +23,7 @@
                 <h2>
                     {% if paginator.count > 0 %}
                         {% if page.number > 1 %}
-                            Page {{ page.number }} of
+                            Page {{ page.number }}:
                         {% endif %}
                         {{ paginator.count|intcomma }}
                     {% else %}
