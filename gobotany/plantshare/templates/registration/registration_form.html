@@ -15,6 +15,7 @@ maps, checklists, and much more!</p>
 with a link to activate your account.</p>
 
 <form method="post" action=".">
+    {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" class="button" value="Register" />
 </form>
