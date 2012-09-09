@@ -1,6 +1,8 @@
 """Tests for the Simple Key application."""
 
+import re
 from gobotany.libtest import FunctionalCase
+from selenium.common.exceptions import NoSuchElementException
 
 class SearchTests(FunctionalCase):
 
@@ -517,3 +519,53 @@ class GenusTests(FunctionalCase):
         self.get('/genus/dendrolycopodium/')
         species = self.css('#main .species li')
         self.assertTrue(len(species))
+
+
+class SpeciesTests(FunctionalCase):
+
+    def _photos_have_expected_caption_format(self, species_page_url):
+        # For a species page, make sure the plant photos have the expected
+        # format for title/alt text that gets formatted on the fly atop 
+        # each photo when it is viewed large. The text should contain a
+        # title, image type, contributor, copyright holder. It can also
+        # optionally have a "source" note at the end.
+        REGEX_PATTERN = '.*: .*\. ~ By .*\. ~ Copyright .*\s+.( ~ .\s+)?'
+        self.get(species_page_url)
+        links = self.css('#species-images a')
+        self.assertTrue(len(links))
+        for link in links:
+            title = link.get_attribute('title')
+            self.assertTrue(re.match(REGEX_PATTERN, title))
+        images = self.css('#species-images a img')
+        self.assertTrue(len(images))
+        for image in images:
+            alt_text = image.get_attribute('alt')
+            self.assertTrue(re.match(REGEX_PATTERN, alt_text))
+
+    def test_species_page_photos_have_title_credit_copyright(self):
+        species_page_url = '/species/dendrolycopodium/dendroideum/'
+        self._photos_have_expected_caption_format(species_page_url)
+
+    def test_species_page_photos_have_title_credit_copyright_source(self):
+        # Some images on this page have "sources" specified for them.
+        species_page_url = ('/species/gymnocarpium/dryopteris/')
+        self._photos_have_expected_caption_format(species_page_url)
+
+    def test_simple_key_species_page_has_breadcrumb(self):
+        self.get('/species/adiantum/pedatum/')
+        self.assertTrue(self.css1('#breadcrumb'))
+
+    def test_non_simple_key_species_page_omits_breadcrumb(self):
+        # Breadcrumb should be omitted until Full Key is implemented.
+        self.get('/species/adiantum/aleuticum/')
+        breadcrumb = None
+        try:
+            breadcrumb = self.css1('#breadcrumb')
+        except NoSuchElementException:
+            self.assertEqual(breadcrumb, None)
+            pass
+
+    def test_non_simple_key_species_page_has_note_about_data(self):
+        # Temporarily, non-Simple-Key pages show a data disclaimer.
+        self.get('/species/adiantum/aleuticum/')
+        self.assertTrue(self.css1('.content .note'))

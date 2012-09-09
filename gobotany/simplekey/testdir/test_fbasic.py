@@ -928,37 +928,6 @@ class SpeciesFunctionalTests(FunctionalTestCase):
             alt_text = image.get_attribute('alt')
             self.assertTrue(re.match(REGEX_PATTERN, alt_text))
 
-    def test_species_page_photos_have_title_credit_copyright(self):
-        species_page_url = '/ferns/lycophytes/dendrolycopodium/dendroideum/'
-        self._photos_have_expected_caption_format(species_page_url)
-
-    def test_species_page_photos_have_title_credit_copyright_source(self):
-        # Some images on this page have "sources" specified for them.
-        species_page_url = ('/species/gymnocarpium/dryopteris/')
-        self._photos_have_expected_caption_format(species_page_url)
-
-    def test_simple_key_species_page_has_breadcrumb(self):
-        VALID_URLS_FOR_SPECIES = ['/ferns/monilophytes/adiantum/pedatum/',
-                                  '/species/adiantum/pedatum/']
-        for url in VALID_URLS_FOR_SPECIES:
-            self.get(url)
-            self.assertTrue(self.css1('#breadcrumb'))
-
-    def test_non_simple_key_species_page_omits_breadcrumb(self):
-        # Breadcrumb should be omitted until Full Key is implemented.
-        self.get('/species/adiantum/aleuticum/')
-        breadcrumb = None
-        try:
-            breadcrumb = self.css1('#breadcrumb')
-        except NoSuchElementException:
-            self.assertEqual(breadcrumb, None)
-            pass
-
-    def test_non_simple_key_species_page_has_note_about_data(self):
-        # Temporarily, non-Simple-Key pages show a data disclaimer.
-        self.get('/species/adiantum/aleuticum/')
-        self.assertTrue(self.css1('.content .note'))
-
 
 class CharacterValueImagesFunctionalTests(FunctionalTestCase):
 

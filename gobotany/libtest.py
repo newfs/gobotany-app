@@ -10,6 +10,7 @@ from django.test.client import Client
 from lxml import etree
 from lxml.cssselect import CSSSelector
 from psycopg2 import OperationalError
+from selenium.common.exceptions import NoSuchElementException
 from warnings import warn
 
 
@@ -102,7 +103,11 @@ class FunctionalCase(TestCase):
         return [ FakeDriverElement(element) for element in lxml_elements ]
 
     def css1(self, selector):
-        return CSSSelector(selector)(self.tree)[0]
+        elist = CSSSelector(selector)(self.tree)
+        if not elist:
+            raise NoSuchElementException(
+                'cannot find element matching %r' % (selector,))
+        return FakeDriverElement(elist[0])
 
     def link_saying(self, text):
         links = anchor_selector(self.tree)
