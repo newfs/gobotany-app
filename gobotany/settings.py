@@ -17,26 +17,29 @@ else:
 THIS_DIRECTORY = os.path.dirname(__file__)
 gettext = lambda s: s
 
+# We define these database specifications as constants, so that we can
+# retrieve whichever one we need from our test suites.
+
+REAL_DATABASE = {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'gobotany',
+    'HOST': '',
+    'USER': '',
+    'PASSWORD': '',
+    }
+
+TEST_DATABASE = {
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': ':memory:',
+    'HOST': '',
+    'USER': '',
+    'PASSWORD': '',
+    }
+
 if 'test' in sys.argv:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': ':memory:',
-            'HOST': '',
-            'USER': '',
-            'PASSWORD': '',
-        }
-    }
+    DATABASES = {'default': TEST_DATABASE}
 else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'gobotany',
-            'HOST': '',
-            'USER': '',
-            'PASSWORD': '',
-        }
-    }
+    DATABASES = {'default': REAL_DATABASE}
 
 # Are we running in production, where we are free to cache things and in
 # general to do things that would annoy a developer making quick changes
