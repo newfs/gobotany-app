@@ -569,3 +569,29 @@ class SpeciesTests(FunctionalCase):
         # Temporarily, non-Simple-Key pages show a data disclaimer.
         self.get('/species/adiantum/aleuticum/')
         self.assertTrue(self.css1('.content .note'))
+
+
+class LookalikesFunctionalTests(FunctionalCase):
+
+    def test_lookalikes_are_in_search_indexes_for_many_pages(self):
+        self.get('/search/?q=sometimes+confused+with')
+        page_links = self.css('.search-navigation li')
+        self.assertTrue(len(page_links) > 10)   # more than 100 results
+
+    def test_species_pages_have_lookalikes(self):
+        # Verify a sampling of the species expected to have lookalikes.
+        SPECIES = ['Huperzia appressa', 'Lonicera dioica', 'Actaea rubra',
+                   'Digitalis purpurea', 'Brachyelytrum aristosum']
+        for s in SPECIES:
+            url = '/species/%s/' % s.replace(' ', '/').lower()
+            self.get(url)
+            heading = self.css('#sidebar .lookalikes h5')
+            self.assertTrue(heading)
+            lookalikes = self.css('#sidebar .lookalikes dt')
+            self.assertTrue(len(lookalikes) > 0)
+            for lookalike in lookalikes:
+                self.assertTrue(len(lookalike.text) > 0)
+            notes = self.css('#sidebar .lookalikes dd')
+            self.assertTrue(len(notes) > 0)
+            for note in notes:
+                self.assertTrue(len(note.text) > 0)
