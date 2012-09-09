@@ -15,7 +15,17 @@ Client  # we keep this symbol around so clients can import it easily
 
 
 class FunctionalCase(TestCase):
+    """Support functional tests against a fully-populated database.
 
+    Tests under the control of this class do not run against the empty
+    test database that Django sets up and that, per our settings.py,
+    runs inside of a sqlite3 in-memory database.  Instead, they run
+    against the real database on the developer's machine (or the real
+    database in production, if that is where someone invokes these
+    tests!) but inside of transactions so that everything is rolled back
+    to normal after each test runs.
+
+    """
     @classmethod
     def setUpClass(cls):
         """Functional tests need a fully-imported database.
