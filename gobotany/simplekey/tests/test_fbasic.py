@@ -14,7 +14,6 @@ Two environmental variables control the behavior of these tests.
   Defaults to `localhost` if not set.
 
 """
-import datetime
 import os
 import re
 import time
@@ -130,42 +129,11 @@ class BasicFunctionalTests(FunctionalTestCase):
     # Tests
 
     def test_home_page_shows_one_banner_image(self):
-        d = self.get('/')
+        self.get('/')
         images = self.css('#banner > img')
         # All but the first of the images should be hidden. The css()
         # function returns only visible elements, so expect just one.
         self.assertEqual(len(images), 1)
-
-
-class PlantOfTheDayFunctionalTests(FunctionalTestCase):
-
-    def test_home_page_has_plant_of_the_day(self):
-        d = self.get('/')
-        potd_heading = self.css('#potd .details h3')
-        assert potd_heading[0]
-        assert potd_heading[0].text.startswith('Plant of the Day')
-
-    def test_plant_of_the_day_has_linked_image(self):
-        d = self.get('/')
-        linked_image = self.css('#potd a img')
-        assert linked_image
-
-    def test_plant_of_the_day_has_description_excerpt(self):
-        d = self.get('/')
-        description = self.css('#potd .details p')
-        assert description
-
-    def test_plant_of_the_day_has_learn_more_button(self):
-        d = self.get('/')
-        learn_more_button = self.css('#potd .details a.learn-more')
-        assert learn_more_button
-
-    def test_plant_of_the_day_feed_exists(self):
-        f1 = self.get('/plantoftheday/')
-        assert f1
-        f2 = self.get('/plantoftheday/atom.xml')
-        assert f2
-        assert f1 == f2
 
 
 class FilterFunctionalTests(FunctionalTestCase):

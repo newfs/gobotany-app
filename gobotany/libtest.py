@@ -13,9 +13,6 @@ from psycopg2 import OperationalError
 from warnings import warn
 
 
-Client  # we keep this symbol around so clients can import it easily
-
-
 class FunctionalCase(TestCase):
     """Support functional tests against a fully-populated database.
 
@@ -87,11 +84,18 @@ class FunctionalCase(TestCase):
             transaction.rollback(using=db)
             transaction.leave_transaction_management(using=db)
 
+    # Helpers to make writing tests more fun.  Note that these are
+    # designed for basic symmetry with out Selenium-powered tests, so
+    # that our two flavors of functional test do not look entirely
+    # different!
 
-class CSS(object):
-    def __init__(self, request):
+    def get(self, url):
+        self.response = Client().get(url)
         parser = etree.HTMLParser()
-        self.tree = etree.fromstring(request.content, parser)
+        self.tree = etree.fromstring(self.response.content, parser)
 
-    def __call__(self, selector):
+    def css(self, selector):
         return CSSSelector(selector)(self.tree)
+
+    def css1(self, selector):
+        return CSSSelector(selector)(self.tree)[0]

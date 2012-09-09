@@ -10,6 +10,7 @@ from django.test import TestCase
 from gobotany.core.models import (Family, Genus, PartnerSite, PartnerSpecies,
                                   Taxon)
 from gobotany.core.rebuild import rebuild_plant_of_the_day
+from gobotany.libtest import FunctionalCase
 from gobotany.plantoftheday.models import PlantOfTheDay
 
 # Test data
@@ -354,3 +355,32 @@ class PlantOfTheDayManagerTestCase(TestCase):
         self.assertTrue(excluded_plant)
         self.assertEqual(False, excluded_plant.include)
         self.assertEqual(None, excluded_plant.last_seen)
+
+
+class FunctionalTests(FunctionalCase):
+
+    def test_home_page_has_plant_of_the_day(self):
+        self.get('/')
+        potd_heading = self.css1('#potd .details h3')
+        self.assertTrue(potd_heading.text.startswith('Plant of the Day'))
+
+    def test_plant_of_the_day_has_linked_image(self):
+        self.get('/')
+        self.css1('#potd a img')
+
+    def test_plant_of_the_day_has_description_excerpt(self):
+        self.get('/')
+        self.css1('#potd .details p')
+
+    def test_plant_of_the_day_has_learn_more_button(self):
+        self.get('/')
+        self.css1('#potd .details a.learn-more')
+
+    def test_plant_of_the_day_feed_exists(self):
+        self.get('/plantoftheday/')
+        c1 = self.response.content
+
+        self.get('/plantoftheday/atom.xml')
+        c2 = self.response.content
+
+        self.assertEqual(c1, c2)
