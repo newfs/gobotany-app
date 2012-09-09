@@ -129,58 +129,12 @@ class BasicFunctionalTests(FunctionalTestCase):
 
     # Tests
 
-    def test_home_page(self):
-        d = self.get('/')
-        self.assertEqual(
-            d.title, u'Go Botany: New England Wild Flower Society')
-        e = d.find_element_by_link_text('Get Started')
-        self.assertTrue(e.get_attribute('href').endswith('/simple/'))
-
     def test_home_page_shows_one_banner_image(self):
         d = self.get('/')
         images = self.css('#banner > img')
         # All but the first of the images should be hidden. The css()
         # function returns only visible elements, so expect just one.
         self.assertEqual(len(images), 1)
-
-    def test_groups_page(self):
-        d = self.get('/simple/')
-        h3 = self.css('h3')
-        self.assertEqual(len(h3), 6)
-        assert h3[0].text.startswith('Woody plants')
-        assert h3[1].text.startswith('Aquatic plants')
-        assert h3[2].text.startswith('Grass-like plants')
-        assert h3[3].text.startswith('Orchids and related plants')
-        assert h3[4].text.startswith('Ferns')
-        assert h3[5].text.startswith('All other flowering non-woody plants')
-
-        # Do group links get constructed correctly?
-        e = d.find_element_by_link_text('My plant is in this group')
-        self.assertTrue(e.get_attribute('href').endswith('/woody-plants/'))
-
-    def test_subgroups_page(self):
-        d = self.get('/ferns/')
-        q = self.css('h3')
-        self.assertEqual(len(q), 3)
-        assert q[0].text.startswith('True ferns and moonworts')
-        assert q[1].text.startswith(
-            'Clubmosses and relatives, plus quillworts')
-        assert q[2].text.startswith('Horsetails and scouring-rushes')
-        q = d.find_elements_by_link_text('My plant is in this subgroup')
-        self.assertTrue(q[0].get_attribute('href').endswith(
-            '/ferns/monilophytes/'))
-        self.assertTrue(q[1].get_attribute('href').endswith(
-            '/ferns/lycophytes/'))
-        self.assertTrue(q[2].get_attribute('href').endswith(
-            '/ferns/equisetaceae/'))
-
-    def test_copyright_contains_current_year(self):
-        # If this test fails, perhaps the template containing the
-        # copyright years needs to be updated.
-        d = self.get('/')
-        copyright = self.css('footer .copyright')[0]
-        current_year = str(datetime.datetime.now().year)
-        self.assertTrue(copyright.text.find(current_year) > -1)
 
 
 class PlantOfTheDayFunctionalTests(FunctionalTestCase):

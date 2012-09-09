@@ -7,6 +7,8 @@ from django.test.testcases import (
     disable_transaction_methods, restore_transaction_methods,
     )
 from django.test.client import Client
+from lxml import etree
+from lxml.cssselect import CSSSelector
 from psycopg2 import OperationalError
 from warnings import warn
 
@@ -84,3 +86,12 @@ class FunctionalCase(TestCase):
         for db in databases:
             transaction.rollback(using=db)
             transaction.leave_transaction_management(using=db)
+
+
+class CSS(object):
+    def __init__(self, request):
+        parser = etree.HTMLParser()
+        self.tree = etree.fromstring(request.content, parser)
+
+    def __call__(self, selector):
+        return CSSSelector(selector)(self.tree)
