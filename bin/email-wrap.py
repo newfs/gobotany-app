@@ -24,8 +24,14 @@ import sys
 
 if __name__ == '__main__':
     mail_to = os.environ.get('MAIL_TO', None)
+    username = os.environ.get('SENDGRID_USERNAME', None)
+    password = os.environ.get('SENDGRID_PASSWORD', None)
+
     if mail_to is None or not mail_to.strip():
         print >>sys.stderr, 'Error: set MAIL_TO before calling email-wrap.py'
+
+    if not username or not password:
+        print >>sys.stderr, 'Error: need "heroku addons:add sendgrid:starter"'
 
     p = subprocess.Popen(
         sys.argv[1:],
@@ -45,7 +51,6 @@ if __name__ == '__main__':
 
     server = smtplib.SMTP('smtp.sendgrid.net', 587, 'heroku.com')
     # server.set_debuglevel(1)
-    server.login(os.environ['SENDGRID_USERNAME'],
-                 os.environ['SENDGRID_PASSWORD'])
+    server.login(username, password)
     server.sendmail(fromaddr, toaddrs, message)
     server.quit()
