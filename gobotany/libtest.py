@@ -13,6 +13,8 @@ from psycopg2 import OperationalError
 from warnings import warn
 
 
+anchor_selector = CSSSelector('a')
+
 class FunctionalCase(TestCase):
     """Support functional tests against a fully-populated database.
 
@@ -99,3 +101,21 @@ class FunctionalCase(TestCase):
 
     def css1(self, selector):
         return CSSSelector(selector)(self.tree)[0]
+
+    def link_saying(self, text):
+        links = anchor_selector(self.tree)
+        for link in links:
+            if link.text == text:
+                return link
+        raise ValueError('Cannot find a link whose text is %r' % (text,))
+
+    def links_saying(self, text):
+        links = anchor_selector(self.tree)
+        return [ link for link in links if link.text == text ]
+
+    def text(self, element):
+        return ' '.join(
+            word
+            for text in element.xpath('.//text()')
+            for word in text.split()
+            )

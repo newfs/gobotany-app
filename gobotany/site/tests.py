@@ -3,7 +3,7 @@
 from datetime import datetime
 from gobotany.libtest import FunctionalCase
 
-class FunctionalTests(FunctionalCase):
+class HomeTests(FunctionalCase):
 
     def test_home_page(self):
         self.get('/')
@@ -50,3 +50,45 @@ class FunctionalTests(FunctionalCase):
         copyright = self.css1('footer .copyright')
         current_year = str(datetime.now().year)
         self.assertIn(current_year, copyright.text)
+
+
+class GlossaryTests(FunctionalCase):
+
+    def test_start_links_to_glossary(self):
+        self.get('/start/')
+        e = self.link_saying('Glossary')
+        self.assertTrue(e.get('href').endswith('/glossary/'))
+
+    def test_glossary_a_page_contains_a_terms(self):
+        self.get('/glossary/a/')
+        xterms = self.css('#terms dt')
+        self.assertEqual(self.text(xterms[0])[0], 'a')
+        self.assertEqual(self.text(xterms[-1])[0], 'a')
+
+    def test_glossary_g_page_contains_g_terms(self):
+        self.get('/glossary/g/')
+        xterms = self.css('#terms dt')
+        self.assertEqual(self.text(xterms[0])[0], 'g')
+        self.assertEqual(self.text(xterms[-1])[0], 'g')
+
+    def test_glossary_z_page_contains_z_terms(self):
+        self.get('/glossary/z/')
+        xterms = self.css('#terms dt')
+        self.assertEqual(self.text(xterms[0])[0], 'z')
+        self.assertEqual(self.text(xterms[-1])[0], 'z')
+
+    def test_glossary_g_page_does_not_link_to_itself(self):
+         self.get('/glossary/g/')
+         e = self.link_saying('G')
+         self.assertEqual(e.get('href'), None)
+
+    def test_glossary_g_page_link_to_other_letters(self):
+        self.get('/glossary/g/')
+        for letter in 'ABCVWZ':  # 'X' and 'Y' currently have no terms
+            e = self.links_saying(letter)
+            self.assertTrue(len(e))
+
+    def test_glossary_g_page_link_is_correct(self):
+        self.get('/glossary/a/')
+        e = self.link_saying('G')
+        self.assertTrue(e.get('href').endswith('/glossary/g/'))
