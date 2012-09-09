@@ -828,14 +828,6 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
 
 class FamilyFunctionalTests(FunctionalTestCase):
 
-    def test_family_page(self):
-        self.get('/families/lycopodiaceae/')
-        heading = self.css('#main h2')
-        self.assertTrue(len(heading))
-        self.assertTrue(heading[0].text == 'Family: Lycopodiaceae')
-        common_name = self.css('#main h3')
-        self.assertTrue(len(common_name))
-
     def test_family_page_has_glossarized_description(self):
         self.get('/families/lycopodiaceae/')
         description = self.css('#main p.description')
@@ -845,16 +837,6 @@ class FamilyFunctionalTests(FunctionalTestCase):
         self.wait_on(5, self.css1, GLOSSARY_ITEMS_CSS)
         glossary_items = self.css(GLOSSARY_ITEMS_CSS)
         self.assertTrue(len(glossary_items))
-
-    def test_family_page_has_example_images(self):
-        self.get('/families/lycopodiaceae/')
-        example_images = self.css('#main .pics a img')
-        self.assertTrue(len(example_images))
-
-    def test_family_page_has_list_of_genera(self):
-        self.get('/families/lycopodiaceae/')
-        genera = self.css('#main .genera li')
-        self.assertTrue(len(genera))
 
     @unittest2.skip("Skip because this button is temporarily removed")
     def test_family_page_has_link_to_key(self):

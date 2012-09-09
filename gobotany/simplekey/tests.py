@@ -470,3 +470,23 @@ class SearchTests(FunctionalCase):
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_page_found(result_links, 'Teaching'))
+
+class FamilyTests(FunctionalCase):
+
+    def test_family_page(self):
+        self.get('/family/lycopodiaceae/')
+        heading = self.css('#main h2')
+        self.assertTrue(len(heading))
+        self.assertTrue(heading[0].text == 'Family: Lycopodiaceae')
+        common_name = self.css('#main h3')
+        self.assertTrue(len(common_name))
+
+    def test_family_page_has_example_images(self):
+        self.get('/family/lycopodiaceae/')
+        example_images = self.css('#main .pics a img')
+        self.assertTrue(len(example_images))
+
+    def test_family_page_has_list_of_genera(self):
+        self.get('/family/lycopodiaceae/')
+        genera = self.css('#main .genera li')
+        self.assertTrue(len(genera))
