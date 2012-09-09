@@ -490,3 +490,30 @@ class FamilyTests(FunctionalCase):
         self.get('/family/lycopodiaceae/')
         genera = self.css('#main .genera li')
         self.assertTrue(len(genera))
+
+
+class GenusTests(FunctionalCase):
+
+    def test_genus_page(self):
+        self.get('/genus/dendrolycopodium/')
+        heading = self.css('#main h2')
+        self.assertTrue(len(heading))
+        self.assertTrue(heading[0].text == 'Genus: Dendrolycopodium')
+        common_name = self.css('#main h3')
+        self.assertTrue(len(common_name))
+        self.assertTrue(common_name[0].text == 'tree-clubmoss')
+
+    def test_genus_page_has_example_images(self):
+        self.get('/genus/dendrolycopodium/')
+        example_images = self.css('#main .pics a img')
+        self.assertTrue(len(example_images))
+
+    def test_genus_page_has_family_link(self):
+        self.get('/genus/dendrolycopodium/')
+        family_link = self.css('#main p.family a')
+        self.assertTrue(len(family_link))
+
+    def test_genus_page_has_list_of_species(self):
+        self.get('/genus/dendrolycopodium/')
+        species = self.css('#main .species li')
+        self.assertTrue(len(species))
