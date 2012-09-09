@@ -95,9 +95,11 @@ class FunctionalCase(TestCase):
         self.response = Client().get(url)
         parser = etree.HTMLParser()
         self.tree = etree.fromstring(self.response.content, parser)
+        return FakeDriverElement(self.tree)
 
     def css(self, selector):
-        return CSSSelector(selector)(self.tree)
+        lxml_elements = CSSSelector(selector)(self.tree)
+        return [ FakeDriverElement(element) for element in lxml_elements ]
 
     def css1(self, selector):
         return CSSSelector(selector)(self.tree)[0]
@@ -119,3 +121,33 @@ class FunctionalCase(TestCase):
             for text in element.xpath('.//text()')
             for word in text.split()
             )
+
+
+class FakeDriverElement(object):
+    """Make an lxml Element act like a WebDriver element instead.
+
+    Thanks to this class, we do not have to rewrite our tests every time
+    we switch a particular test from being done in pure Django to being
+    done in Selenium with a real browser.
+
+    """
+    def __init__(self, lxml_element):
+        self.e = lxml_element
+
+    def find_elements_by_css_selector(self, selector):
+        css = CSSSelector(selector)
+        return [ FakeDriverElement(e) for e in css(self.e) ]
+
+    def find_element_by_link_text(self, text):
+        links = anchor_selector(self.e)
+        for link in links:
+            if link.text == text:
+                return FakeDriverElement(link)
+        raise ValueError('Cannot find a link whose text is %r' % (text,))
+
+    def get_attribute(self, name):
+        return self.e.get(name)
+
+    @property
+    def text(self):
+        return u' '.join(self.e.xpath('string()').split())
