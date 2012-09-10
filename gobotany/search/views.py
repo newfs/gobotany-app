@@ -1,5 +1,6 @@
 """The magic behind our search page."""
 
+import re
 from haystack.views import SearchView
 
 class GoBotanySearchView(SearchView):
@@ -17,11 +18,11 @@ class GoBotanySearchView(SearchView):
         """
         # Start by doing exactly what the base class does.
 
-        results = self.form.search()
+        queryset = self.form.search()
 
         # Fall back to less specific searches.
 
-        if len(results) == 0:
+        if len(queryset) == 0:
             # Query words come back "cleaned" from get_query().
             query_words = self.get_query().split(' ')
             if len(query_words) > 1:
@@ -29,8 +30,8 @@ class GoBotanySearchView(SearchView):
                 for end_index in reversed(range(1, len(query_words))):
                     new_query = ' '.join(query_words[0:end_index])
                     self.form.cleaned_data['q'] = new_query
-                    results = self.form.search()
-                    if len(results) > 0:
+                    queryset = self.form.search()
+                    if len(queryset) > 0:
                         # Found results for one of the words.
                         # Set our SearchView's query to the altered
                         # query, so the user can see the shortened
@@ -42,17 +43,8 @@ class GoBotanySearchView(SearchView):
         # searching for, so that a search for "Acer" or "acer" returns
         # the Genus Acer first and foremost.
 
-        canonical = ' '.join(self.request.GET['q'].split()).lower()
+        words = re.findall(r'\w+', self.request.GET['q'])
+        name = ' '.join(words).lower()
+        queryset = queryset.filter_or(name__exact=name)
 
-        results = list(results)
-        firsts = []
-        seconds = []
-
-        for result in results:
-            if result.name and result.name.lower() == canonical:
-                firsts.append(result)
-            else:
-                seconds.append(result)
-
-        results = firsts + seconds
-        return results
+        return queryset
