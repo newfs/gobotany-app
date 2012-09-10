@@ -81,18 +81,18 @@ gobotany-deploy $ ./run-django.sh test site
 
 Detailed notes are in:
     
-    gobotany-app/gobotany/simplekey/test/README-SELENIUM.txt
+    gobotany-app/gobotany/simplekey/testdir/README-SELENIUM.txt
     
 A script is also available for convenience:
 
-    gobotany-deploy $ ./scripts/run-functional-tests.sh
+    gobotany-deploy $ ./scripts/run-browser-tests.sh
 
 You can pass a parameter in the accustomed way to run all tests in a test
 class, or a single test:
 
-    gobotany-deploy $ ./scripts/run-functional-tests.sh BasicFunctionalTests
+    gobotany-deploy $ ./scripts/run-browser-tests.sh FilterFunctionalTests
 
-    gobotany-deploy $ ./scripts/run-functional-tests.sh BasicFunctionalTests.test_home_page
+    gobotany-deploy $ ./scripts/run-browser-tests.sh FilterFunctionalTests.test_multiple_choice_filters
 
 
 Testing and adjusting the search feature
@@ -100,8 +100,8 @@ Testing and adjusting the search feature
 
 The Go Botany search feature uses Haystack and Solr.
 
-The functional tests in the test class SearchFunctionalTests aim to
-ensure aspects of the search feature including desired ranking.
+Our unit and functional tests aim to ensure various aspects of the search
+feature including desired ranking.
 
 Ranking relies mostly on Haystack document boost, as seen in several
 places in our `search_indexes.py`. For more fine-grained control where
