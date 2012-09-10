@@ -61,21 +61,15 @@ Botany site's search field:
 Running the automated tests
 ---------------------------
 
-### Unit tests ###
-
 #### Python ####
 
-    gobotany-deploy $ ./run-django.sh test api core mapping plantoftheday search simplekey
+These are a mix of unit tests and functional tests: 
+
+    gobotany-deploy $ ./run-django.sh test api core mapping plantoftheday plantshare search simplekey site
 
 #### JavaScript ####
 
     gobotany-deploy $ ./mocha.sh
-
-### Functional tests ###
-
-#### Python ####
-
-gobotany-deploy $ ./run-django.sh test site
 
 #### Selenium ####
 
