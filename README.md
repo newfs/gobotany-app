@@ -73,6 +73,12 @@ Running the automated tests
 
 ### Functional tests ###
 
+#### Python ####
+
+gobotany-deploy $ ./run-django.sh test site
+
+#### Selenium ####
+
 Detailed notes are in:
     
     gobotany-app/gobotany/simplekey/test/README-SELENIUM.txt
