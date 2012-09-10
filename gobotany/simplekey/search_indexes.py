@@ -59,12 +59,19 @@ class BaseIndex(indexes.SearchIndex):
 
 
 class TaxonIndex(BaseIndex):
+    # Index
+
     name = indexes.CharField(model_attr='scientific_name')
-    title = indexes.CharField(use_template=True,
-        template_name='simplekey/search_title_species.txt')
     text = indexes.CharField(
         document=True, use_template=True,
         template_name='simplekey/search_text_species.txt')
+
+    # Display
+
+    title = indexes.CharField(use_template=True,
+        template_name='simplekey/search_title_species.txt')
+
+    # Customization
 
     def index_queryset(self):
         return (super(TaxonIndex, self).index_queryset()
@@ -85,12 +92,19 @@ class TaxonIndex(BaseIndex):
 
 
 class FamilyIndex(BaseIndex):
+    # Index
+
     name = indexes.CharField(model_attr='name')
-    title = indexes.CharField(use_template=True,
-        template_name='simplekey/search_title_family.txt')
     text = indexes.CharField(
         document=True, use_template=True,
         template_name='simplekey/search_text_family.txt')
+
+    # Display
+
+    title = indexes.CharField(use_template=True,
+        template_name='simplekey/search_title_family.txt')
+
+    # Customization
 
     def index_queryset(self):
         return (super(FamilyIndex, self).index_queryset()
@@ -98,12 +112,19 @@ class FamilyIndex(BaseIndex):
 
 
 class GenusIndex(BaseIndex):
+    # Index
+
     name = indexes.CharField(model_attr='name')
-    title = indexes.CharField(use_template=True,
-        template_name='simplekey/search_title_genus.txt')
     text = indexes.CharField(
         document=True, use_template=True,
         template_name='simplekey/search_text_genus.txt')
+
+    # Display
+
+    title = indexes.CharField(use_template=True,
+        template_name='simplekey/search_title_genus.txt')
+
+    # Customization
 
     def index_queryset(self):
         return (super(GenusIndex, self).index_queryset()
@@ -112,26 +133,43 @@ class GenusIndex(BaseIndex):
 
 
 class PlainPageIndex(BaseIndex):
-    title = indexes.CharField(model_attr='title')
+    # Index
+
     text = indexes.CharField(
         document=True, use_template=True,
         template_name='simplekey/search_text_plain_page.txt')
 
+    # Display
+
+    title = indexes.CharField(model_attr='title')
+
 
 class GlossaryTermIndex(BaseIndex):
+    # Index
+
     name = indexes.CharField(model_attr='term')
-    title = indexes.CharField(use_template=True,
-        template_name='simplekey/search_title_glossary_term.txt')
     text = indexes.CharField(
         document=True, use_template=True,
         template_name='simplekey/search_text_glossary_term.txt')
 
+    # Display
+
+    title = indexes.CharField(use_template=True,
+        template_name='simplekey/search_title_glossary_term.txt')
+
 
 class GroupsListPageIndex(BaseIndex):
-    title = indexes.CharField(model_attr='title')
+    # Index
+
     text = indexes.CharField(
         document=True, use_template=True,
         template_name = 'simplekey/search_text_groups_list_page.txt')
+
+    # Display
+
+    title = indexes.CharField(model_attr='title')
+
+    # Customization
 
     def prepare(self, obj):
         data = super(GroupsListPageIndex, self).prepare(obj)
@@ -142,10 +180,17 @@ class GroupsListPageIndex(BaseIndex):
 
 
 class SubgroupsListPageIndex(BaseIndex):
-    title = indexes.CharField(model_attr='title')
+    # Index
+
     text = indexes.CharField(
         document=True, use_template=True,
         template_name = 'simplekey/search_text_subgroups_list_page.txt')
+
+    # Display
+
+    title = indexes.CharField(model_attr='title')
+
+    # Customization
 
     def index_queryset(self):
         return (super(SubgroupsListPageIndex, self).index_queryset()
@@ -153,10 +198,17 @@ class SubgroupsListPageIndex(BaseIndex):
 
 
 class SubgroupResultsPageIndex(BaseIndex):
-    title = indexes.CharField(model_attr='title')
+    # Index
+
     text = indexes.CharField(
         document=True, use_template=True,
         template_name = 'simplekey/search_text_subgroup_results_page.txt')
+
+    # Display
+
+    title = indexes.CharField(model_attr='title')
+
+    # Customization
 
     def index_queryset(self):
         return (super(SubgroupResultsPageIndex, self).index_queryset()
