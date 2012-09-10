@@ -1,20 +1,10 @@
 from django.conf.urls.defaults import patterns, url
 from django.views.generic.simple import redirect_to
 
-from haystack.forms import HighlightedSearchForm
-
-from gobotany.search.views import GoBotanySearchView
 from gobotany.simplekey import views
 
 urlpatterns = patterns(
     '',
-
-    # Search results page.
-    url(r'^search/$', GoBotanySearchView(
-            template='simplekey/search.html',
-            form_class=HighlightedSearchForm,
-            ),
-        name='search'),
 
     # Temporary placeholder pages, to eventually be replaced with new 
     # features / apps rather than flat views
