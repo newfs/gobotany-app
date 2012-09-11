@@ -4,10 +4,16 @@
         {% url ps-main as u %}
         <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>PlantShare</a></h4>
     </div>
+    {% if user.is_authenticated %}
+    <div class="section">
+        <h4><a href="{% url auth_logout %}">Log Out</a></h4>
+    </div>
+    {% else %}
     <div class="section">
         {% url registration_register as u %}
         <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Sign Up for PlantShare</a></h4>
     </div>
+    {% endif %}
 </div>
 
 {% if not user.is_authenticated %}
