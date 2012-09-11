@@ -10,12 +10,7 @@
     </div>
 </div>
 
-{% if user.is_authenticated %}
-<div id="login" class="box">
-    <h4>Hello, {{ user.first_name|default:user.username }}</h4>
-    <a href="{% url auth_logout %}" class="button">Log Out</a>
-</div>
-{% else %}
+{% if not user.is_authenticated %}
 <div id="login" class="box">
     <h4>Log In</h4>
     <form method="post" action="{% url auth_login %}">
