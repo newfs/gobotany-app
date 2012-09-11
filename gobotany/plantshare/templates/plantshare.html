@@ -11,7 +11,13 @@
     <a href="#login">Log In</a>
 </div>
 
-<div class="sign-up">
+{% if user.is_authenticated %}
+<div class="profile box">
+    <h2>My Profile</h2>
+    <p>Hello, {{ user.first_name|default:user.username }}</p>
+</div>
+{% else %}
+<div class="sign-up box">
     <h2>Sign up for PlantShare!</h2>
     <p>As a member of PlantShare, you will be able to:<p>
     <ul>
@@ -23,6 +29,7 @@
     </li>
     <a href="accounts/register/">Get Started</a>
 </div>
+{% endif %}
 
 {% endblock %}
 
