@@ -7,10 +7,6 @@
 {% block main_content %}
 <h1>PlantShare</h1>
 
-<div class="smallscreen-anchor-nav">
-    <a href="#login">Log In</a>
-</div>
-
 {% if user.is_authenticated %}
 <div class="profile box">
     <h2>My Profile</h2>
@@ -26,6 +22,10 @@
     </table>
 </div>
 {% else %}
+<div class="smallscreen-anchor-nav">
+    <a href="#login">Log In</a>
+</div>
+
 <div class="sign-up-call box">
     <h2>Sign up for PlantShare!</h2>
     <p>As a member of PlantShare, you will be able to:<p>
