@@ -169,6 +169,10 @@ body.plantshare {
                 padding-left: $section-padding;
                 padding-right: $section-padding;
             }
+            > table {
+                margin-left: $section-padding;
+                width: 90%;
+            }
         }
         .content #sidebar {
             background: none;

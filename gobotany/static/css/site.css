@@ -513,6 +513,7 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body.plantshare #main .box { padding: 0; }
   body.plantshare #main .box > * { padding-left: 16px; padding-right: 16px; }
+  body.plantshare #main .box > table { margin-left: 16px; width: 90%; }
   body.plantshare .content #sidebar { background: none; border: 0; }
   body.plantshare#plantshare .sign-up { width: auto; }
   body.plantshare#plantshare .sign-up ul { margin-left: 0; }
