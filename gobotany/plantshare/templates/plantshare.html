@@ -14,7 +14,16 @@
 {% if user.is_authenticated %}
 <div class="profile box">
     <h2>My Profile</h2>
-    <p>Hello, {{ user.first_name|default:user.username }}</p>
+    <div>
+        <img src="/static/images/icons/avatar-default.png" alt="">
+        <h3>{{ user.first_name|default:user.username }}</h3>
+    </div>
+    <table>
+        <tr><th>Total Species</th><td>None</td></tr>
+        <tr><th>Total Locations</th><td>None</td></tr>
+        <tr><th>Checklists</th><td>None</td></tr>
+        <tr><th>Groups</th><td>None</td></tr>
+    </table>
 </div>
 {% else %}
 <div class="sign-up box">

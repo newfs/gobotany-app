@@ -25,6 +25,21 @@ body.plantshare {
         background-color: #fff;
         border: 1px solid $border-green;
         padding: 4px $section-padding;
+        table {
+            margin: $section-padding 0 12px;
+            width: 100%;
+            tr:nth-child(odd) {
+                background-color: $light-green;
+            }
+            th, td {
+                padding: 6px 8px;
+            }
+            th {
+                font-weight: normal;
+                text-align: left;
+                width: 33%;
+            }
+        }
     }
     .sign-up {
         width: 475px;
@@ -49,6 +64,24 @@ body.plantshare {
     }
     .profile {
         width: 471px;
+        h2 {
+            float: left;
+        }
+        h3 {
+            font-size: 18px;
+        }
+        div {
+            clear: left;
+            height: 84px;
+        }
+        img {
+            display: block;
+            float: left;
+            margin-right: $section-padding;
+        }
+        table {
+            clear: left;
+        }
     }
     &#sign-up #main {
         form input {

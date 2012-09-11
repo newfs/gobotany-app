@@ -476,12 +476,21 @@ body.plantshare .content form p { margin: 0; }
 body.plantshare .content form label { display: block; margin-bottom: 4px; text-transform: uppercase; }
 body.plantshare .content form input { border: 1px solid #c3d941; font-family: Verdana, Geneva, sans-serif; height: 16px; margin-bottom: 10px; padding: 5px; width: 350px; }
 body.plantshare .box { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px; }
+body.plantshare .box table { margin: 16px 0 12px; width: 100%; }
+body.plantshare .box table tr:nth-child(odd) { background-color: #e1f0d1; }
+body.plantshare .box table th, body.plantshare .box table td { padding: 6px 8px; }
+body.plantshare .box table th { font-weight: normal; text-align: left; width: 33%; }
 body.plantshare .sign-up { width: 475px; }
 body.plantshare .sign-up ul { line-height: 18px; list-style-position: inside; margin: 10px 0 0 24px; }
 body.plantshare .sign-up a { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0 -3px; height: 41px; margin: 12px auto; width: 244px; display: block; text-indent: -9000px; }
 body.plantshare .sign-up a:hover { background-position: 0 -88px; }
 body.plantshare .sign-up a:active { background-position: 0 -46px; }
 body.plantshare .profile { width: 471px; }
+body.plantshare .profile h2 { float: left; }
+body.plantshare .profile h3 { font-size: 18px; }
+body.plantshare .profile div { clear: left; height: 84px; }
+body.plantshare .profile img { display: block; float: left; margin-right: 16px; }
+body.plantshare .profile table { clear: left; }
 body.plantshare#sign-up #main form input { width: 350px; }
 body.plantshare#sign-up #main form input.button { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -359px; border: 0; height: 41px; margin-top: 12px; width: 244px; display: block; text-indent: -9000px; }
 body.plantshare#sign-up #main form input.button:hover { background-position: -1px -402px; }
