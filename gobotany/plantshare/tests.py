@@ -22,6 +22,10 @@ class PlantShareTests(FunctionalCase):
         h1 = self.css1('h1').text
         self.assertEqual(h1, 'PlantShare')
 
+    def test_main_page_has_signup_nav_link(self):
+        self._get_plantshare(self.MAIN_URL)
+        self.assertIsNotNone(self.link_saying('Sign Up for PlantShare'))
+
     def test_main_page_has_signup_call_to_action(self):
         self._get_plantshare(self.MAIN_URL)
         self.assertTrue(self.css1('.sign-up'))
@@ -43,3 +47,7 @@ class PlantShareTests(FunctionalCase):
         self._get_plantshare(self.SIGNUP_FORM_URL)
         h1 = self.css1('h1').text
         self.assertEqual(h1, 'Sign Up for PlantShare')
+
+    def test_signup_page_has_plantshare_nav_link(self):
+        self._get_plantshare(self.SIGNUP_FORM_URL)
+        self.assertIsNotNone(self.link_saying('PlantShare'))
