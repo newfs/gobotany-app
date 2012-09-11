@@ -351,7 +351,7 @@ header nav #search-suggest .menu span { font-weight: normal; }
 .content .container.free-sidebar #main { background: none; }
 .content .container.free-sidebar #sidebar { border-top: 0; height: auto; padding: 0; }
 .content .container.no-sidebar #main { background: none; float: none; min-height: none; padding-left: 0; width: auto; }
-.content #sidebar { border-top: 1px solid #c3d941; float: left; height: 100%; margin-right: -230px; padding: 16px 0; width: 230px; }
+.content #sidebar { border-top: 1px solid #c3d941; float: left; height: 100%; margin-right: -230px; padding: 16px 0 0; width: 230px; }
 .content #sidebar .section { padding: 0 17px 16px; }
 .content #sidebar .section h4 { margin: 0 0 5px 0; }
 .content #sidebar .section.separate { border-top: 1px solid #e2dfcb; padding-top: 16px; }
@@ -475,16 +475,18 @@ footer .support { margin-right: 0; padding: 18px 0; }
 body.plantshare .content form p { margin: 0; }
 body.plantshare .content form label { display: block; margin-bottom: 4px; text-transform: uppercase; }
 body.plantshare .content form input { border: 1px solid #c3d941; font-family: Verdana, Geneva, sans-serif; height: 16px; margin-bottom: 10px; padding: 5px; width: 350px; }
-body.plantshare#plantshare .sign-up { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px 16px; width: 475px; }
-body.plantshare#plantshare .sign-up ul { line-height: 18px; list-style-position: inside; margin: 10px 0 0 24px; }
-body.plantshare#plantshare .sign-up a { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0 -3px; height: 41px; margin: 12px auto 0; width: 244px; display: block; text-indent: -9000px; }
-body.plantshare#plantshare .sign-up a:hover { background-position: 0 -88px; }
-body.plantshare#plantshare .sign-up a:active { background-position: 0 -46px; }
+body.plantshare .box { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px; }
+body.plantshare .sign-up { width: 475px; }
+body.plantshare .sign-up ul { line-height: 18px; list-style-position: inside; margin: 10px 0 0 24px; }
+body.plantshare .sign-up a { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0 -3px; height: 41px; margin: 12px auto; width: 244px; display: block; text-indent: -9000px; }
+body.plantshare .sign-up a:hover { background-position: 0 -88px; }
+body.plantshare .sign-up a:active { background-position: 0 -46px; }
+body.plantshare .profile { width: 471px; }
 body.plantshare#sign-up #main form input { width: 350px; }
 body.plantshare#sign-up #main form input.button { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -359px; border: 0; height: 41px; margin-top: 12px; width: 244px; display: block; text-indent: -9000px; }
 body.plantshare#sign-up #main form input.button:hover { background-position: -1px -402px; }
 body.plantshare#sign-up #main form input.button:active { background-position: -1px -444px; }
-body.plantshare #sidebar #login.box { background: #d3eaad; border: 1px solid #508e31; padding: 0; }
+body.plantshare #sidebar #login.box { background-color: #d3eaad; border-color: #508e31; padding: 0; }
 body.plantshare #sidebar #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
 body.plantshare #sidebar #login.box form { padding: 0 16px 16px; }
 body.plantshare #sidebar #login.box form label { font-size: 10px; }
@@ -496,10 +498,15 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
 
 /* Begin media queries styles for PlantShare. */
 /* Portrait-orientation styles */
+@media only screen and (max-width: 400px) { body.plantshare .box { width: 302px; } }
 /* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) { body.plantshare .box { width: 462px; } }
 /* These styles are common to both smartphone widths */
-@media only screen and (max-width: 600px) { body.plantshare#plantshare .join { width: auto; }
-  body.plantshare#plantshare .join ul { margin-left: 0; }
+@media only screen and (max-width: 600px) { body.plantshare #main .box { padding: 0; }
+  body.plantshare #main .box > * { padding-left: 16px; padding-right: 16px; }
+  body.plantshare .content #sidebar { background: none; border: 0; }
+  body.plantshare#plantshare .sign-up { width: auto; }
+  body.plantshare#plantshare .sign-up ul { margin-left: 0; }
   body.plantshare#sign-up #main form input { width: 290px; } }
 /* These styles apply to smartphones and tablets */
 /* End media queries styles for PlantShare */
@@ -752,14 +759,14 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
   footer .navigation .legal li:after { content: none; }
   footer .support { height: 63px; margin: 14px 0 0; padding: 0; }
   footer .support img { padding-bottom: 6px; }
-  .content .container { padding: 0; }
-  .content .container.free-sidebar #sidebar .section { padding-bottom: 16px; }
+  .content .container { padding: 0; /*&.free-sidebar #sidebar .section { padding-bottom: $sidebar-box-vertical-padding;
+}*/ }
   .content #main { background: none; float: none; min-height: inherit; padding-bottom: 14px; padding-left: 0; margin-left: 8px; margin-right: 8px; }
   .content #main .smallscreen-anchor-nav { display: block; padding: 8px 0 16px; }
   .content #main .smallscreen-anchor-nav a { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; padding: 8px 0; text-decoration: underline; }
-  .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; margin-bottom: 14px; margin-left: 8px; margin-right: 8px; }
-  .content #sidebar .section { margin-top: 16px; padding-bottom: 0; }
-  .content #sidebar .section:first-child { margin-top: 0; }
+  .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; /*margin-bottom: 14px;*/ margin-left: 8px; margin-right: 8px; /*.section:first-child { margin-top: 0;
+}*/ }
+  .content #sidebar .section { /*margin-top: $sidebar-box-vertical-padding;*/ padding-bottom: 16px; }
   .gb-tooltip { width: 200px; } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { /* Currently there are no global styles here in this category, but there are some elsewhere for various parts of the site. */ }

@@ -21,10 +21,12 @@ body.plantshare {
             width: 350px;
         }
     }
-    &#plantshare .sign-up {
+    .box {
         background-color: #fff;
         border: 1px solid $border-green;
-        padding: 4px $section-padding $section-padding;
+        padding: 4px $section-padding;
+    }
+    .sign-up {
         width: 475px;
         ul {
             line-height: 18px;
@@ -34,7 +36,7 @@ body.plantshare {
         a {
             background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0 -3px;
             height: 41px;
-            margin: 12px auto 0;
+            margin: 12px auto;
             width: 244px;
             @include offscreen;
             &:hover {
@@ -44,6 +46,9 @@ body.plantshare {
                 background-position: 0 -46px;
             }            
         }
+    }
+    .profile {
+        width: 471px;
     }
     &#sign-up #main {
         form input {
@@ -66,8 +71,8 @@ body.plantshare {
     }
     #sidebar {
         #login.box {
-            background: $login-box-background-color;
-            border: 1px solid $link-green;
+            background-color: $login-box-background-color;
+            border-color: $link-green;
             padding: 0;
             h4 {
                 font-size: 20px;
@@ -108,14 +113,35 @@ body.plantshare {
 
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) {
+    body.plantshare {
+        .box {
+            width: $smallscreen-portrait-box-width;
+        }
+    }
 }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) {
+    body.plantshare {
+        .box {
+            width: $smallscreen-landscape-box-width;
+        }
+    }
 }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) {
     body.plantshare {
-        &#plantshare .join {
+        #main .box {
+            padding: 0;
+            > * {
+                padding-left: $section-padding;
+                padding-right: $section-padding;
+            }
+        }
+        .content #sidebar {
+            background: none;
+            border: 0;
+        }
+        &#plantshare .sign-up {
             width: auto;
             ul {
                 margin-left: 0;

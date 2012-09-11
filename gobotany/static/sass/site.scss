@@ -54,7 +54,10 @@ $smallscreen-landscape-width: 480px;
 
 $nav-button-color: #437829;
 $smallscreen-margin: 8px;
+
 $smallscreen-potd-image-width: 297px;
+$smallscreen-portrait-box-width: 302px;
+$smallscreen-landscape-box-width: 462px;
 
 @mixin offscreen {
     display: block;
@@ -376,7 +379,7 @@ header {
         float: left;
         height: 100%;
         margin-right: -230px;
-        padding: $sidebar-box-vertical-padding 0;
+        padding: $sidebar-box-vertical-padding 0 0;
         width: 230px;
         .section {
             padding: 0 17px 16px;
