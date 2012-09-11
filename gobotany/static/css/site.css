@@ -480,11 +480,11 @@ body.plantshare .box table { margin: 16px 0 12px; width: 100%; }
 body.plantshare .box table tr:nth-child(odd) { background-color: #e1f0d1; }
 body.plantshare .box table th, body.plantshare .box table td { padding: 6px 8px; }
 body.plantshare .box table th { font-weight: normal; text-align: left; width: 33%; }
-body.plantshare .sign-up { width: 475px; }
-body.plantshare .sign-up ul { line-height: 18px; list-style-position: inside; margin: 10px 0 0 24px; }
-body.plantshare .sign-up a { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0 -3px; height: 41px; margin: 12px auto; width: 244px; display: block; text-indent: -9000px; }
-body.plantshare .sign-up a:hover { background-position: 0 -88px; }
-body.plantshare .sign-up a:active { background-position: 0 -46px; }
+body.plantshare .sign-up-call { width: 475px; }
+body.plantshare .sign-up-call ul { line-height: 18px; list-style-position: inside; margin: 10px 0 0 24px; }
+body.plantshare .sign-up-call a { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0 -3px; height: 41px; margin: 12px auto; width: 244px; display: block; text-indent: -9000px; }
+body.plantshare .sign-up-call a:hover { background-position: 0 -88px; }
+body.plantshare .sign-up-call a:active { background-position: 0 -46px; }
 body.plantshare .profile { width: 471px; }
 body.plantshare .profile h2 { float: left; }
 body.plantshare .profile h3 { font-size: 18px; }
@@ -515,8 +515,8 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
   body.plantshare #main .box > * { padding-left: 16px; padding-right: 16px; }
   body.plantshare #main .box > table { margin-left: 16px; width: 90%; }
   body.plantshare .content #sidebar { background: none; border: 0; }
-  body.plantshare#plantshare .sign-up { width: auto; }
-  body.plantshare#plantshare .sign-up ul { margin-left: 0; }
+  body.plantshare#plantshare .sign-up-call { width: auto; }
+  body.plantshare#plantshare .sign-up-call ul { margin-left: 0; }
   body.plantshare#sign-up #main form input { width: 290px; } }
 /* These styles apply to smartphones and tablets */
 /* End media queries styles for PlantShare */
