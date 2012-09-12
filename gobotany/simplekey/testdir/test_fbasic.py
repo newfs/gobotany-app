@@ -34,11 +34,13 @@ def is_displayed(element):
 
 def hide_django_debug_toolbar(self):
     # Dismiss the Django Debug toolbar if it is visible.
-    toolbar = self.css1('#djDebugToolbar')
-    if is_displayed(toolbar):
-        hide_toolbar_button = self.css1('#djHideToolBarButton')
-        if (hide_toolbar_button):
-            hide_toolbar_button.click()
+    try:
+        toolbar = self.css1('#djDebugToolbar')
+    except NoSuchElementException:
+        pass
+    else:
+        if is_displayed(toolbar):
+            self.css1('#djHideToolBarButton').click()
 
 class FunctionalTestCase(unittest2.TestCase):
 
