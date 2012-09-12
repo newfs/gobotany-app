@@ -1,0 +1,10 @@
+                    <ul id="footer-nav" class="sections">
+                        {% url site-home as u %}
+                        <li><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Home</a></li>
+                        <li><a href="{% url level1 'simple' %}">Simple Key</a></li>
+                        <li><a href="{% url plantshare-placeholder %}">PlantShare</a></li>
+                        <li><a href="{% url full-key-placeholder %}">Full Key</a></li>
+                        <li><a href="{% url dich-key-placeholder %}">Dichotomous Key</a></li>
+                        <li><a href="{% url site-teaching %}">Teaching</a></li>
+                        <li><a href="{% url site-about %}">About</a></li>
+                    </ul>

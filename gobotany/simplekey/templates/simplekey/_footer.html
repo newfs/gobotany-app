@@ -13,15 +13,7 @@
 
                 <div class="navigation">
                     <h6>Go Botany</h6>
-                    <ul id="footer-nav" class="sections">
-                        <li><a {% ifnotequal request.path "/" %}href="{% url site-home %}"{% endifnotequal %}>Home</a></li>
-                        <li><a href="{% url level1 'simple' %}">Simple Key</a></li>
-                        <li><a href="{% url plantshare-placeholder %}">PlantShare</a></li>
-                        <li><a href="{% url full-key-placeholder %}">Full Key</a></li>
-                        <li><a href="{% url dich-key-placeholder %}">Dichotomous Key</a></li>
-                        <li><a href="{% url site-teaching %}">Teaching</a></li>
-                        <li><a href="{% url site-about %}">About</a></li>
-                    </ul>
+                    {% include "gobotany/_primary_navigation_bottom.html" %}
                     <h6>Legal</h6>
                     <ul class="legal">
                         <li><a href="{% url site-privacy %}">Privacy Policy</a></li>
