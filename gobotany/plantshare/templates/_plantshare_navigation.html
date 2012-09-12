@@ -6,6 +6,10 @@
     </div>
     {% if user.is_authenticated %}
     <div class="section">
+        {% url ps-profile as u %}
+        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>My Profile</a></h4>
+    </div>
+    <div class="section">
         <h4><a href="{% url auth_logout %}">Log Out</a></h4>
     </div>
     {% else %}
