@@ -104,6 +104,9 @@ a {
 a:not([href]) {
     color: $text-color;
 }
+header nav a:not([href]) {
+    color: #fff;
+}
 a:hover {
     text-decoration: underline;
 }

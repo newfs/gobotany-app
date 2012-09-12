@@ -34,5 +34,6 @@
                     </li>
                 {% endif %}
                 <li class="teaching"><a href="{% url site-teaching %}">Teaching</a></li>
-                <li class="about"><a href="{% url site-about %}">About</a></li>
+                {% url site-about as u %}
+                <li class="about"><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>About</a></li>
             </ul>

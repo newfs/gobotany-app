@@ -280,6 +280,8 @@ a { color: #508e31; text-decoration: none; }
 
 a:not([href]) { color: black; }
 
+header nav a:not([href]) { color: #fff; }
+
 a:hover { text-decoration: underline; }
 
 *|*:-moz-any-link:active, *|*:-moz-any-link:focus { border: 0; outline: 0; }
