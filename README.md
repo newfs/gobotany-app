@@ -61,15 +61,29 @@ Botany site's search field:
 Running the automated tests
 ---------------------------
 
+To run all the tests:
+
+    gobotany-deploy $ ./test-all.sh
+
 #### Python ####
 
-These are a mix of unit tests and functional tests: 
+These are a mix of unit tests and functional tests for the Django apps: 
 
-    gobotany-deploy $ ./run-django.sh test api core mapping plantoftheday plantshare search simplekey site
+    gobotany-deploy $ ./test-python.sh
+
+To run the tests for a subset of the Django apps, add the app names:
+
+    gobotany-deploy $ ./test-python.sh api core
 
 #### JavaScript ####
 
-    gobotany-deploy $ ./mocha.sh
+    gobotany-deploy $ ./test-js.sh
+
+This script passes its arguments to the Mocha command-line program,
+so for example if you want to run a subset of the tests, you can pass
+the test class name:
+
+    gobotany-deploy $ ./test-js.sh test/Filter.js
 
 #### Selenium ####
 
@@ -79,14 +93,14 @@ Detailed notes are in:
     
 A script is also available for convenience:
 
-    gobotany-deploy $ ./scripts/run-browser-tests.sh
+    gobotany-deploy $ ./test-browser.sh
 
 You can pass a parameter in the accustomed way to run all tests in a test
 class, or a single test:
 
-    gobotany-deploy $ ./scripts/run-browser-tests.sh FilterFunctionalTests
+    gobotany-deploy $ ./test-browser.sh FilterFunctionalTests
 
-    gobotany-deploy $ ./scripts/run-browser-tests.sh FilterFunctionalTests.test_multiple_choice_filters
+    gobotany-deploy $ ./test-browser.sh FilterFunctionalTests.test_multiple_choice_filters
 
 
 Testing and adjusting the search feature
