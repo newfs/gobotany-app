@@ -1,10 +1,18 @@
-                    <ul id="footer-nav" class="sections">
-                        {% url site-home as u %}
-                        <li><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Home</a></li>
-                        <li><a href="{% url level1 'simple' %}">Simple Key</a></li>
+                <ul id="footer-nav" class="sections">
+                    {% url site-home as u %}
+                    <li><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Home</a></li>
+                    <li><a href="{% url level1 'simple' %}">Simple Key</a></li>
+                    {% if debug %}
+                        {# Development navigation, linking to all as if released #}
+                        <li><a href="{% url ps-main %}">PlantShare</a></li>
+                        <li><a href="{% url level1 'full' %}">Full Key</a></li>
+                        <li><a href="{% url dkey %}">Dichotomous Key</a></li>
+                    {% else %}
+                        {# Production navigation, with some features unreleased yet #}
                         <li><a href="{% url plantshare-placeholder %}">PlantShare</a></li>
                         <li><a href="{% url full-key-placeholder %}">Full Key</a></li>
                         <li><a href="{% url dich-key-placeholder %}">Dichotomous Key</a></li>
-                        <li><a href="{% url site-teaching %}">Teaching</a></li>
-                        <li><a href="{% url site-about %}">About</a></li>
-                    </ul>
+                    {% endif %}
+                    <li><a href="{% url site-teaching %}">Teaching</a></li>
+                    <li><a href="{% url site-about %}">About</a></li>
+                </ul>

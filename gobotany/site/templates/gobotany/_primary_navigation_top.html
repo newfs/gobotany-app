@@ -1,15 +1,30 @@
-                <ul>
-                    <li class="home">
-                        {% url site-home as u %}
-                        <a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Home</a>
-                    </li>
-                    <li class="plant-id">
-                        <a href="{% url level1 'simple' %}">Simple Key</a>
-                    </li>
+            <ul>
+                <li class="home">
+                    {% url site-home as u %}
+                    <a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Home</a>
+                </li>
+                <li class="plant-id">
+                    <a href="{% url level1 'simple' %}">Simple Key</a>
+                </li>
+                {% if debug %}
+                    {# Development navigation, linking to all as if released #}
                     <li class="plantshare">
                         {% url ps-main as u %}
-                        {% url plantshare-placeholder as u2 %}
-                        <a {% ifnotequal request.path u %}href="{% url plantshare-placeholder %}"{% else %}{% ifnotequal request.path u2 %}href="{% url plantshare-placeholder %}"{% endifnotequal %}{% endifnotequal %}>PlantShare</a>
+                        <a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>PlantShare</a>
+                    </li>
+                    <li class="full-key">
+                        {% url level1 'full' as u %}
+                        <a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Full Key</a>
+                    </li>
+                    <li class="dich-key">
+                        {% url dkey as u %}
+                        <a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Dichotomous Key</a>
+                    </li>
+                {% else %}
+                    {# Production navigation, with some features unreleased yet #}
+                    <li class="plantshare">
+                        {% url plantshare-placeholder as u %}
+                        <a {% ifnotequal request.path u %}href="{% url plantshare-placeholder %}"{% endifnotequal %}>PlantShare</a>
                     </li>
                     <li class="full-key">
                         <a href="{% url full-key-placeholder %}">Full Key</a>
@@ -17,6 +32,7 @@
                     <li class="dich-key">
                         <a href="{% url dich-key-placeholder %}">Dichotomous Key</a>
                     </li>
-                    <li class="teaching"><a href="{% url site-teaching %}">Teaching</a></li>
-                    <li class="about"><a href="{% url site-about %}">About</a></li>
-                </ul>
+                {% endif %}
+                <li class="teaching"><a href="{% url site-teaching %}">Teaching</a></li>
+                <li class="about"><a href="{% url site-about %}">About</a></li>
+            </ul>
