@@ -487,6 +487,7 @@ body.plantshare .sign-up-call a:hover { background-position: 0 -88px; }
 body.plantshare .sign-up-call a:active { background-position: 0 -46px; }
 body.plantshare .profile { width: 471px; }
 body.plantshare .profile h2 { float: left; }
+body.plantshare .profile a.edit { display: block; float: right; padding-top: 12px; }
 body.plantshare .profile h3 { font-size: 18px; }
 body.plantshare .profile div { clear: left; height: 84px; }
 body.plantshare .profile img { display: block; float: left; margin-right: 16px; }

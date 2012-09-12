@@ -10,6 +10,7 @@
 {% if user.is_authenticated %}
 <div class="profile box">
     <h2>My Profile</h2>
+    <a href="{% url ps-profile %}" class="edit">Edit Profile</a>
     <div>
         <img src="/static/images/icons/avatar-default.png" alt="">
         <h3>{{ user.first_name|default:user.username }}</h3>
