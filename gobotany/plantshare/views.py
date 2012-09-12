@@ -4,3 +4,7 @@ from django.template import RequestContext
 def plantshare_view(request):
     return render_to_response('plantshare.html', {
            }, context_instance=RequestContext(request))
+
+def profile_view(request):
+    return render_to_response('profile.html', {
+           }, context_instance=RequestContext(request))

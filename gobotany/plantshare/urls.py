@@ -12,4 +12,7 @@ urlpatterns = patterns(
     url(r'^facebook_connect/', include('facebook_connect.urls')),
     # Normal registration login
     url(r'^accounts/', include('gobotany.plantshare.backends.default.urls')),
+
+    # My Profile page
+    url(r'^profile/', views.profile_view, name='ps-profile'),
     )

@@ -51,3 +51,17 @@ class PlantShareTests(FunctionalCase):
     def test_signup_page_has_plantshare_nav_link(self):
         self._get_plantshare(self.SIGNUP_FORM_URL)
         self.assertIsNotNone(self.link_saying('PlantShare'))
+
+    # My Profile page
+
+    MY_PROFILE_URL = '/profile/'
+
+    def test_profile_page_title(self):
+        self._get_plantshare(self.MY_PROFILE_URL)
+        title = self.css1('title').text
+        self.assertEqual(title, 'My Profile: PlantShare: Go Botany')
+
+    def test_profile_page_main_heading(self):
+        self._get_plantshare(self.MY_PROFILE_URL)
+        h1 = self.css1('h1').text
+        self.assertEqual(h1, 'My Profile')
