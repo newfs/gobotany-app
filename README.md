@@ -79,9 +79,7 @@ To run the tests for a subset of the Django apps, add the app names:
 
     gobotany-deploy $ ./test-js.sh
 
-This script passes its arguments to the Mocha command-line program,
-so for example if you want to run a subset of the tests, you can pass
-the test class name:
+If you want to run a subset of the tests, add the test class name:
 
     gobotany-deploy $ ./test-js.sh test/Filter.js
 
