@@ -8,7 +8,7 @@ class PlantShareTests(FunctionalCase):
         PLANTSHARE_BASE = '/ps'
         self.get(PLANTSHARE_BASE + url_path)
 
-    # Main page
+    # PlantShare main page
 
     MAIN_URL = '/'
 
@@ -28,13 +28,13 @@ class PlantShareTests(FunctionalCase):
 
     def test_main_page_has_signup_call_to_action(self):
         self._get_plantshare(self.MAIN_URL)
-        self.assertTrue(self.css1('.sign-up'))
+        self.assertTrue(self.css1('.sign-up-call'))
 
     def test_main_page_has_login_form(self):
         self._get_plantshare(self.MAIN_URL)
         self.assertTrue(self.css1('#login.box'))
 
-    # Sign Up form page
+    # Sign Up for PlantShare page
 
     SIGNUP_FORM_URL = '/accounts/register/'
 
