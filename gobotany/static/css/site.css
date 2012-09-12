@@ -496,6 +496,8 @@ body.plantshare#sign-up #main form input { width: 350px; }
 body.plantshare#sign-up #main form input.button { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -359px; border: 0; height: 41px; margin-top: 12px; width: 244px; display: block; text-indent: -9000px; }
 body.plantshare#sign-up #main form input.button:hover { background-position: -1px -402px; }
 body.plantshare#sign-up #main form input.button:active { background-position: -1px -444px; }
+body.plantshare#profile .info.box img { display: block; float: left; padding: 16px 16px 0 0; }
+body.plantshare#profile .info.box table { width: 85%; }
 body.plantshare #sidebar #login.box { background-color: #d3eaad; border-color: #508e31; padding: 0; }
 body.plantshare #sidebar #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
 body.plantshare #sidebar #login.box form { padding: 0 16px 16px; }
@@ -518,6 +520,7 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
   body.plantshare .content #sidebar { background: none; border: 0; }
   body.plantshare#plantshare .sign-up-call { width: auto; }
   body.plantshare#plantshare .sign-up-call ul { margin-left: 0; }
+  body.plantshare#profile .info.box img { padding: 16px; }
   body.plantshare#sign-up #main form input { width: 290px; } }
 /* These styles apply to smartphones and tablets */
 /* End media queries styles for PlantShare */

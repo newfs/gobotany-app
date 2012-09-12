@@ -107,6 +107,18 @@ body.plantshare {
             }
         }
     }
+    &#profile {
+        .info.box {
+            img {
+                display: block;
+                float: left;
+                padding: $section-padding $section-padding 0 0;
+            }
+            table {
+                width: 85%;
+            }
+        }
+    }
     #sidebar {
         #login.box {
             background-color: $login-box-background-color;
@@ -187,6 +199,11 @@ body.plantshare {
             width: auto;
             ul {
                 margin-left: 0;
+            }
+        }
+        &#profile .info.box {
+            img {
+                padding: $section-padding;
             }
         }
         &#sign-up {
