@@ -11,28 +11,7 @@
                 England Wild Flower Society</a></p>
             <nav>
                 <a href="javascript:document.getElementById('footer-nav').scrollIntoView();">+<span>sections</span></a>
-                <ul>
-                    <li class="home">
-                        {% url site-home as u %}
-                        <a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Home</a>
-                    </li>
-                    <li class="plant-id">
-                        <a href="{% url level1 'simple' %}">Simple Key</a>
-                    </li>
-                    <li class="plantshare">
-                        {% url ps-main as u %}
-                        {% url plantshare-placeholder as u2 %}
-                        <a {% ifnotequal request.path u %}href="{% url plantshare-placeholder %}"{% else %}{% ifnotequal request.path u2 %}href="{% url plantshare-placeholder %}"{% endifnotequal %}{% endifnotequal %}>PlantShare</a>
-                    </li>
-                    <li class="full-key">
-                        <a href="{% url full-key-placeholder %}">Full Key</a>
-                    </li>
-                    <li class="dich-key">
-                        <a href="{% url dich-key-placeholder %}">Dichotomous Key</a>
-                    </li>
-                    <li class="teaching"><a href="{% url site-teaching %}">Teaching</a></li>
-                    <li class="about"><a href="{% url site-about %}">About</a></li>
-                </ul>
+                {% include "gobotany/_primary_navigation_top.html" %}
                 <div id="search">
                     <form id="search-suggest" action="/search/" autocomplete="off">
                         <input type="text" name="q" placeholder="Search..."

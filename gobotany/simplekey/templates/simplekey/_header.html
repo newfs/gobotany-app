@@ -18,23 +18,7 @@
                         <div class="clearit"></div>
                     </form>
                 </div>
-                <ul>
-                    <li class="home">
-                        <a {% ifnotequal request.path "/" %}href="{% url site-home %}"{% endifnotequal %}>Home</a>
-                    </li>
-                    <li class="plant-id">
-                        <a href="{% url level1 'simple' %}">Simple Key</a>
-                    </li>
-                    <li class="plantshare"><a href="{% url plantshare-placeholder %}">PlantShare</a></li>
-                    <li class="full-key">
-                        <a href="{% url full-key-placeholder %}">Full Key</a>
-                    </li>
-                    <li class="dich-key">
-                        <a href="{% url dich-key-placeholder %}">Dichotomous Key</a>
-                    </li>
-                    <li class="teaching-tools"><a href="{% url site-teaching %}">Teaching</a></li>
-                    <li class="about last"><a href="{% url site-about %}">About</a></li>
-                </ul>
+                {% include "gobotany/_primary_navigation_top.html" %}
                 <div class="clearit"></div>
             </nav>
             <div class="clearit"></div>
