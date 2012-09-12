@@ -67,7 +67,8 @@ To run all the tests:
 
 #### Python ####
 
-These are a mix of unit tests and functional tests for the Django apps: 
+These are a mix of unit tests and functional tests. To run the tests for
+all of our Django apps:
 
     gobotany-deploy $ ./test-python.sh
 
@@ -84,12 +85,9 @@ If you want to run a subset of the tests, add the test class name:
     gobotany-deploy $ ./test-js.sh test/Filter.js
 
 #### Selenium ####
-
-Detailed notes are in:
-    
-    gobotany-app/gobotany/simplekey/testdir/README-SELENIUM.txt
-    
-A script is also available for convenience:
+   
+These tests are intended to cover things that cannot be tested without a
+browser and JavaScript. To run them:
 
     gobotany-deploy $ ./test-browser.sh
 
@@ -99,6 +97,10 @@ class, or a single test:
     gobotany-deploy $ ./test-browser.sh FilterFunctionalTests
 
     gobotany-deploy $ ./test-browser.sh FilterFunctionalTests.test_multiple_choice_filters
+
+Detailed notes are in:
+    
+    gobotany-app/gobotany/simplekey/testdir/README-SELENIUM.txt
 
 
 Testing and adjusting the search feature
