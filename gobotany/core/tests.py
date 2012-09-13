@@ -12,6 +12,12 @@ from django.test import TestCase
 import bulkup
 from gobotany.core import botany, igdt, importer, models
 
+# Set up a logging handler to avoid getting a "no handlers could be found
+# for logger" error during importer tests, but quiet down the messages.
+import logging
+logging.basicConfig(level=logging.CRITICAL) # To see messages, raise level
+
+
 def testdata(s):
     """Return the path to a test data file relative to this directory."""
     return os.path.join(os.path.dirname(__file__), 'testdata', s)
@@ -412,7 +418,8 @@ class ImportTestCase(TestCase):
 
     def test_import_characters(self):
         im = importer.Importer()
-        im._import_characters(self.db, testdata('characters.csv'))
+        im.import_characters(self.db,
+            importer.PlainFile('.', testdata('characters.csv')))
         f = open(testdata('characters.csv'))
         content = f.read()
         f.close()
@@ -422,10 +429,15 @@ class ImportTestCase(TestCase):
 
     def test_import_taxons(self):
         im = importer.Importer()
-        im._import_partner_sites(self.db)
-        im._import_pile_groups(self.db, testdata('pile_group_info.csv'))
-        im._import_piles(self.db, testdata('pile_info.csv'))
-        im._import_taxa(self.db, testdata('taxa.csv'))
+        im.import_partner_sites(self.db)
+        im.import_pile_groups(self.db,
+            importer.PlainFile('.', testdata('pile_group_info.csv')))
+        im.import_piles(self.db,
+            importer.PlainFile('.', testdata('pile_info.csv')))
+        im.import_wetland_indicators(self.db,
+            importer.PlainFile('.', testdata('wetland_indicators.csv')))
+        im.import_taxa(self.db,
+            importer.PlainFile('.', testdata('taxa.csv')))
         self.assertEquals(len(models.Taxon.objects.all()), 3522)
 
     def test_clean_up_html_non_breaking_spaces(self):
