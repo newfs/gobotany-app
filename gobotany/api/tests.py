@@ -545,7 +545,7 @@ class CharacterValuesTestCase(TestCase):
         self.assertEqual(404, response.status_code)
 
 
-class FamilyTestCase(TestCase):
+class FamiliesTestCase(TestCase):
     def setUp(self):
         _setup_sample_data()
         self.client = Client()
@@ -564,7 +564,7 @@ class FamilyTestCase(TestCase):
         self.assertEqual(404, response.status_code)
 
 
-class GenusTestCase(TestCase):
+class GeneraTestCase(TestCase):
     def setUp(self):
         _setup_sample_data()
         self.client = Client()
