@@ -2,6 +2,7 @@ import json
 import math
 import os
 import re
+import shutil
 
 from django.test import TestCase
 from django.test.client import Client
@@ -214,6 +215,16 @@ def _setup_sample_data(load_images=False):
         n = models.PlantName(scientific_name=name[0], common_name=name[1])
         n.save()
 
+def _remove_content_images_dir():
+    """Remove a content_images directory if it exists. This directory
+    gets created when setting up the test data with the load_images=True,
+    whereupon the setup code saves some ImageField objects. This function
+    can be called from the tearDown method of a test class for cleanup.
+    """
+    content_images_path = os.path.join(os.getcwd(), 'content_images')
+    if os.path.isdir(content_images_path):
+        shutil.rmtree(content_images_path)
+
 
 class TaxaListTestCase(TestCase):
     def setUp(self):
@@ -336,6 +347,9 @@ class TaxonImageTestCase(TestCase):
     def setUp(self):
         _setup_sample_data(load_images=True)
         self.client = Client()
+
+    def tearDown(self):
+        _remove_content_images_dir()
 
     def test_get_returns_ok(self):
         response = self.client.get('/api/taxon-image/?species=Fooium%20barula')
