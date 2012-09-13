@@ -215,23 +215,6 @@ def _setup_sample_data(load_images=False):
         n.save()
 
 
-# This is currently the "demo" page.  Its URL and view is actually specified
-# in the core/ app.  TODO: consider moving the page elsewhere, and having a
-# service "start" URI here.
-class StartTestCase(TestCase):
-    def setUp(self):
-        _setup_sample_data()
-        self.client = Client()
-
-    def test_get_returns_ok(self):
-        response = self.client.get('/core/')
-        self.assertEqual(200, response.status_code)
-
-    def test_get_returns_html(self):
-        response = self.client.get('/core/')
-        self.assertEqual('text/html; charset=utf-8', response['Content-Type'])
-
-
 class TaxonListTestCase(TestCase):
     def setUp(self):
         _setup_sample_data()

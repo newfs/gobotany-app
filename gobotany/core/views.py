@@ -2,15 +2,9 @@ import time
 from collections import defaultdict
 from operator import attrgetter, itemgetter
 
-from django.template import RequestContext
 from django.shortcuts import render_to_response
 
 from gobotany.core import igdt, models
-
-
-def default_view(request):
-    return render_to_response('index.html', {},
-                              context_instance=RequestContext(request))
 
 
 def pile_characters_select(request):
