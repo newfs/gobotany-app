@@ -59,7 +59,7 @@ define([
 
     module.taxon_info = function(scientific_name) { // NOT memoized - save mem
         save_name = scientific_name.replace(' ', '%20');
-        return module.get('taxon/' + save_name + '/');
+        return module.get('taxa/' + save_name + '/');
     };
 
     module.character_vector = _.memoize(function(short_name) {

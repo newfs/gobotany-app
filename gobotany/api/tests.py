@@ -215,42 +215,6 @@ def _setup_sample_data(load_images=False):
         n.save()
 
 
-class TaxonListTestCase(TestCase):
-    def setUp(self):
-        _setup_sample_data()
-        self.client = Client()
-
-    def test_get_returns_ok(self):
-        response = self.client.get('/api/taxon/')
-        self.assertEqual(200, response.status_code)
-
-    def test_get_returns_json(self):
-        response = self.client.get('/api/taxon/')
-        self.assertEqual('application/json; charset=utf-8',
-                         response['Content-Type'])
-
-    # TODO: change URI from /taxon/ to /taxa/.
-
-    def test_get_with_char_param_returns_ok(self):
-        response = self.client.get('/api/taxon/?c1=cv1_1')
-        self.assertEqual(200, response.status_code)
-
-    def test_get_with_char_param_returns_not_found_if_no_char(self):
-        response = self.client.get('/api/taxon/?none=cv1_1')
-        self.assertEqual(404, response.status_code)
-
-    def test_get_with_char_param_returns_ok_if_bad_char_value(self):
-        response = self.client.get('/api/taxon/?c1=badvalue')
-        self.assertEqual(200, response.status_code)
-
-    def test_get_with_char_param_returns_no_items_if_bad_char_value(self):
-        response = self.client.get('/api/taxon/?c1=badvalue')
-        expected = {u'items': [],
-                    u'identifier': u'scientific_name',
-                    u'label': u'scientific_name'}
-        self.assertEqual(expected, json.loads(response.content))
-
-
 class TaxaListTestCase(TestCase):
     def setUp(self):
         _setup_sample_data()
@@ -283,68 +247,6 @@ class TaxaListTestCase(TestCase):
                     u'identifier': u'scientific_name',
                     u'label': u'scientific_name'}
         self.assertEqual(expected, json.loads(response.content))
-
-
-class TaxonTestCase(TestCase):
-    def setUp(self):
-        _setup_sample_data()
-        self.client = Client()
-
-    def test_get_returns_ok(self):
-        response = self.client.get('/api/taxon/Fooium%20barula/')
-        self.assertEqual(200, response.status_code)
-
-    def test_get_returns_json(self):
-        response = self.client.get('/api/taxon/Fooium%20barula/')
-        self.assertEqual('application/json; charset=utf-8',
-                         response['Content-Type'])
-
-    # TODO: change URI from /api/taxon/ to /api/taxa/.
-
-    def test_get_returns_not_found_when_nonexistent_species(self):
-        response = self.client.get('/api/taxon/Not%20here/')
-        self.assertEqual(404, response.status_code)
-
-    # TODO: For the following tests:
-    # Verify we intend to allow supplying a character-value query when the
-    # species is known.  The code allows it (because it handles more than
-    # one context) but it might not have been intended here.
-
-    def test_get_with_char_param_returns_ok(self):
-        response = self.client.get('/api/taxon/Fooium%20fooia/?c1=cv1_1')
-        self.assertEqual(200, response.status_code)
-
-    def test_get_with_char_param_returns_not_found_if_no_species(self):
-        response = self.client.get('/api/taxon/Not%20here/?c1=cv1_1')
-        self.assertEqual(404, response.status_code)
-
-    def test_get_with_char_param_returns_not_found_if_no_char(self):
-        response = self.client.get('/api/taxon/Fooium%20fooia/?none=cv1_1')
-        self.assertEqual(404, response.status_code)
-
-    def test_get_with_char_param_returns_ok_if_bad_char_value(self):
-        response = self.client.get('/api/taxon/Fooium%20fooia/?c1=badvalue')
-        self.assertEqual(200, response.status_code)
-
-    def test_get_with_char_param_returns_no_item_if_bad_char_value(self):
-        response = self.client.get('/api/taxon/Fooium%20fooia/?c1=badvalue')
-        self.assertEqual('{}', response.content)
-
-    def test_get_response_contains_habitat(self):
-        response = self.client.get('/api/taxon/Fooium%20barula/')
-        json_object = json.loads(response.content)
-        self.assertTrue(json_object['habitat'])
-
-    def test_get_response_habitat_has_multiple_values(self):
-        response = self.client.get('/api/taxon/Fooium%20barula/')
-        json_object = json.loads(response.content)
-        self.assertEqual(2, len(json_object['habitat'])) # Expect 2 habitats.
-
-    def test_get_response_most_characters_have_single_values(self):
-        response = self.client.get('/api/taxon/Fooium%20barula/')
-        json_object = json.loads(response.content)
-        self.assertEqual('cv1_2', json_object['c1'])
-        self.assertEqual('cv2', json_object['c2'])
 
 
 class TaxaTestCase(TestCase):
@@ -390,31 +292,21 @@ class TaxaTestCase(TestCase):
         response = self.client.get('/api/taxa/Fooium%20fooia/?c1=badvalue')
         self.assertEqual('{}', response.content)
 
+    def test_get_response_contains_habitat(self):
+        response = self.client.get('/api/taxa/Fooium%20barula/')
+        json_object = json.loads(response.content)
+        self.assertTrue(json_object['habitat'])
 
-class TaxonCountTestCase(TestCase):
-    def setUp(self):
-        _setup_sample_data()
-        self.client = Client()
+    def test_get_response_habitat_has_multiple_values(self):
+        response = self.client.get('/api/taxa/Fooium%20barula/')
+        json_object = json.loads(response.content)
+        self.assertEqual(2, len(json_object['habitat'])) # Expect 2 habitats.
 
-    def test_get_returns_ok(self):
-        response = self.client.get('/api/taxon-count/')
-        self.assertEqual(200, response.status_code)
-
-    def test_get_returns_json(self):
-        response = self.client.get('/api/taxon-count/')
-        self.assertEqual('application/json; charset=utf-8',
-                         response['Content-Type'])
-
-    # TODO: change URI from /api/taxon-count/ to /api/taxa-count/.
-    # (This is started in the code.)
-
-    def test_get_with_character_value_param_returns_ok(self):
-        response = self.client.get('/api/taxon-count/?c1=cv1_1')
-        self.assertEqual(200, response.status_code)
-
-    def test_get_with_char_value_param_returns_not_found_if_no_char(self):
-        response = self.client.get('/api/taxon-count/?none=cv1_1')
-        self.assertEqual(404, response.status_code)
+    def test_get_response_most_characters_have_single_values(self):
+        response = self.client.get('/api/taxa/Fooium%20barula/')
+        json_object = json.loads(response.content)
+        self.assertEqual('cv1_2', json_object['c1'])
+        self.assertEqual('cv2', json_object['c2'])
 
 
 class TaxaCountTestCase(TestCase):
