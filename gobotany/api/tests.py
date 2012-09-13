@@ -550,8 +550,12 @@ class FamiliesTestCase(TestCase):
         _setup_sample_data()
         self.client = Client()
 
-    def test_get_returns_ok(self):
+    def test_get_lowercase_returns_ok(self):
         response = self.client.get('/api/families/fooaceae/')
+        self.assertEqual(200, response.status_code)
+
+    def test_get_titlecase_returns_ok(self):
+        response = self.client.get('/api/families/Fooaceae/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
@@ -569,8 +573,12 @@ class GeneraTestCase(TestCase):
         _setup_sample_data()
         self.client = Client()
 
-    def test_get_returns_ok(self):
+    def test_get_lowercase_returns_ok(self):
         response = self.client.get('/api/genera/fooium/')
+        self.assertEqual(200, response.status_code)
+
+    def test_get_titlecase_returns_ok(self):
+        response = self.client.get('/api/genera/Fooium/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
