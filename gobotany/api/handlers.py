@@ -311,7 +311,7 @@ class FamilyHandler(BaseHandler):
 
     def read(self, request, family_name):
         try:
-            family = models.Family.objects.get(name=family_name)
+            family = models.Family.objects.get(name__iexact=family_name)
         except (models.Family.DoesNotExist):
             return rc.NOT_FOUND
 
@@ -334,7 +334,7 @@ class GenusHandler(BaseHandler):
 
     def read(self, request, genus_name):
         try:
-            genus = models.Genus.objects.get(name=genus_name)
+            genus = models.Genus.objects.get(name__iexact=genus_name)
         except (models.Genus.DoesNotExist):
             return rc.NOT_FOUND
 
