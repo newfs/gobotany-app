@@ -5,7 +5,7 @@ from operator import attrgetter, itemgetter
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 
-from gobotany.core import botany, igdt, models
+from gobotany.core import igdt, models
 
 
 def default_view(request):
