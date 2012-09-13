@@ -216,13 +216,14 @@ def _setup_sample_data(load_images=False):
         n.save()
 
 def _remove_content_images_dir():
-    """Remove a content_images directory if it exists. This directory
+    """Remove a temporary content_images directory if it exists. This
     gets created when setting up the test data with the load_images=True,
     whereupon the setup code saves some ImageField objects. This function
     can be called from the tearDown method of a test class for cleanup.
     """
     content_images_path = os.path.join(os.getcwd(), 'content_images')
-    if os.path.isdir(content_images_path):
+    if (os.path.isdir(content_images_path) and
+        content_images_path.find('gobotany-deploy') > -1):
         shutil.rmtree(content_images_path)
 
 
