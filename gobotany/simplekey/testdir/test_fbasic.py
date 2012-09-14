@@ -1198,9 +1198,9 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     def test_plant_preview_popups_have_expected_values(self):
         values = [
             ('non-thalloid-aquatic', 'Elatine minima',
-             'LEAF BLADE LENGTH', ['0.7–5 cm']),
+             'LEAF BLADE LENGTH', ['0.7–5 mm']),
             ('non-thalloid-aquatic', 'Brasenia schreberi',
-             'LEAF BLADE LENGTH', ['35–135 cm']),
+             'LEAF BLADE LENGTH', ['35–135 mm']),
             ('carex', 'Carex aquatilis',
              'LEAF BLADE WIDTH', ['2.5–8 mm']),
             ('non-thalloid-aquatic', 'Elatine minima',
