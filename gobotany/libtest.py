@@ -153,6 +153,9 @@ class FakeDriverElement(object):
     def get_attribute(self, name):
         return self.e.get(name)
 
+    def xpath(self, expression):
+        return self.e.xpath(expression)
+
     @property
     def text(self):
         return u' '.join(self.e.xpath('string()').split())
