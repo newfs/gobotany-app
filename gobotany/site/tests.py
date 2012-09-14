@@ -12,7 +12,7 @@ class HomeTests(FunctionalCase):
         self.assertEqual(title, 'Go Botany: New England Wild Flower Society')
 
         get_started = self.css1('#cta')
-        self.assertEqual(get_started.get('href'), '/simple/')
+        self.assertEqual(get_started.get_attribute('href'), '/simple/')
         self.assertEqual(get_started.text, 'Get Started')
 
     def test_groups_page(self):
@@ -31,7 +31,7 @@ class HomeTests(FunctionalCase):
 
         e = self.css1('.plant-in-group')
         self.assertEqual('My plant is in this group', e.text)
-        self.assertEqual(e.get('href'), '/simple/woody-plants/')
+        self.assertEqual(e.get_attribute('href'), '/simple/woody-plants/')
 
     def test_subgroups_page(self):
         self.get('/simple/ferns/')
@@ -41,9 +41,12 @@ class HomeTests(FunctionalCase):
         assert q[1].text.startswith('Clubmosses and relatives, plus quillworts')
         assert q[2].text.startswith('Horsetails and scouring-rushes')
         q = self.css('.plant-in-subgroup')
-        self.assertTrue(q[0].get('href').endswith('/ferns/monilophytes/'))
-        self.assertTrue(q[1].get('href').endswith('/ferns/lycophytes/'))
-        self.assertTrue(q[2].get('href').endswith('/ferns/equisetaceae/'))
+        self.assertTrue(
+            q[0].get_attribute('href').endswith('/ferns/monilophytes/'))
+        self.assertTrue(
+            q[1].get_attribute('href').endswith('/ferns/lycophytes/'))
+        self.assertTrue(
+            q[2].get_attribute('href').endswith('/ferns/equisetaceae/'))
 
     def test_copyright_contains_current_year(self):
         self.get('/')
