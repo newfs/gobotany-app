@@ -117,6 +117,9 @@
             font-style: italic;	
             color: #807121;
         }
+        p {
+            margin: 0 inherit;
+        }
         a.learn-more {
             margin: 13px 0 0 0;	
         }
@@ -184,6 +187,7 @@
             }
             p {
                 height: 72px;
+                margin: 0;
                 overflow: hidden;
             }
         }
@@ -346,6 +350,9 @@
             h4 {
                 font-size: 14px;
             }
+            p {
+                margin-top: 0;
+            }
             a.learn-more, &.last a.learn-more {
                 margin-top: 6px;
                 @include smallscreen-side-margins;
@@ -368,6 +375,9 @@
                 margin: 0;
                 position: inherit;
                 width: inherit;
+                h3 {
+                    line-height: 120%;
+                }
                 h4 {
                     line-height: 140%;    
                 }
@@ -376,7 +386,7 @@
                     overflow: inherit;
                 }
                 a {
-                    margin-top: 6px;
+                    margin-top: 4px;
                     position: inherit;
                     top: 0;
                 }

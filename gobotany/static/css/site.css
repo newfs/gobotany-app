@@ -409,6 +409,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
 #home .three-col.last a.learn-more { margin: 33px 0 0 0; }
 #home .three-col h3 { font-size: 24px; }
 #home .three-col h4 { margin: 0 0 3px 0; font-style: italic; color: #807121; }
+#home .three-col p { margin: 0 inherit; }
 #home .three-col a.learn-more { margin: 13px 0 0 0; }
 #home a.learn-more { background: url(/static/images/layout/learn-more-btn.png) 0 0 no-repeat; height: 32px; width: 111px; display: block; text-indent: -9000px; }
 #home a.learn-more:hover { background-position: 0 -32px; }
@@ -422,7 +423,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
 #home #potd .details { margin: 0 0 0 295px; position: absolute; width: 630px; }
 #home #potd .details h3 span.latin { font-style: italic; }
 #home #potd .details h3 span.english { font-size: 12px; color: #807121; }
-#home #potd .details p { height: 72px; overflow: hidden; }
+#home #potd .details p { height: 72px; margin: 0; overflow: hidden; }
 #home .donate { padding: 0; margin: 15px 0; border: 3px solid #fff; background: #f1ebae; -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); }
 #home .donate p { margin: 14px; position: relative; }
 #home .donate a { background: url(/static/images/layout/donate-btn.png) 0 0 no-repeat transparent; cursor: pointer; display: block; float: right; height: 32px; padding: 0; position: absolute; right: 0; text-indent: -9000px; top: -6px; width: 104px; }
@@ -460,15 +461,17 @@ footer .support { margin-right: 0; padding: 18px 0; }
   #home .three-col h3, #home .three-col h4, #home .three-col p { margin-left: 8px; margin-right: 8px; }
   #home .three-col h3 { font-size: 18px; }
   #home .three-col h4 { font-size: 14px; }
+  #home .three-col p { margin-top: 0; }
   #home .three-col a.learn-more, #home .three-col.last a.learn-more { margin-top: 6px; margin-left: 8px; margin-right: 8px; }
   #home #breadcrumb p { line-height: 160%; }
   #home #potd { padding: 8px; }
   #home #potd > a { margin: 0; margin-bottom: 4px; margin-right: 8px; }
   #home #potd > a, #home #potd > a img { width: 297px; }
   #home #potd .details { margin: 0; position: inherit; width: inherit; }
+  #home #potd .details h3 { line-height: 120%; }
   #home #potd .details h4 { line-height: 140%; }
   #home #potd .details p { height: inherit; overflow: inherit; }
-  #home #potd .details a { margin-top: 6px; position: inherit; top: 0; }
+  #home #potd .details a { margin-top: 4px; position: inherit; top: 0; }
   #home .donate { margin: 0; }
   #home .donate p { margin: 8px; padding: 0; }
   #home .donate a { float: none; margin: 6px 0; position: static; } }
