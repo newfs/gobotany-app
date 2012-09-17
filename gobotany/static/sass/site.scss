@@ -454,6 +454,14 @@ footer {
             content: none;
         }
     }
+    a {
+        &:hover {
+            text-decoration: none;
+        }
+        &[href]:hover {
+            text-decoration: underline;
+        }
+    }
     .nsf-logo {
         float: left;
         margin: 0 10px 0 7px;

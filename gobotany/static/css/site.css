@@ -372,6 +372,8 @@ footer ul { font-size: 9px; list-style-type: none; margin-bottom: 12px; }
 footer li { display: inline; line-height: 14px; }
 footer li::after { content: " |"; }
 footer li:last-child::after { content: none; }
+footer a:hover { text-decoration: none; }
+footer a[href]:hover { text-decoration: underline; }
 footer .nsf-logo { float: left; margin: 0 10px 0 7px; }
 footer .support { margin-right: 0; padding: 18px 0; }
 
