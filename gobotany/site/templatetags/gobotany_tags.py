@@ -74,15 +74,12 @@ class NavigationItemNode(template.Node):
 
     def render(self, context):
         try:
-            print 'named_url:', self.named_url
             if not self.extra_path_item:
                 url_path = reverse(self.named_url)
             else:
                 url_path = reverse(self.named_url,
                                    args=(self.extra_path_item,))
-            print 'url path:', url_path
             request = context['request']
-            print 'request.path:', request.path
             href = ''
             if url_path != request.path:
                 href='href="%s"' % url_path
