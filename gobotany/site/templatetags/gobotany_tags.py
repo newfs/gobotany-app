@@ -1,5 +1,7 @@
 """Site-wide template tags and filters."""
 
+import os
+
 from django import template
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
@@ -47,3 +49,44 @@ def url(obj):
         return reverse('level2', args=('simple', slug))
 
     raise ValueError(u'cannot construct canonical URL for %r' % (obj))
+
+
+@register.tag
+def nav_item(parser, token):
+    """Return a navigation item, hyperlinked if appropriate."""
+    token_parts = token.split_contents()
+    print 'token_parts:', token_parts
+    label = token_parts[1]
+    named_url = token_parts[2]
+    extra_path_item = None
+    if len(token_parts) > 3:
+        extra_path_item = token_parts[3]
+    return NavigationItemNode(label, named_url,
+                              extra_path_item=extra_path_item)
+
+class NavigationItemNode(template.Node):
+    def __init__(self, label, named_url, extra_path_item=None):
+        self.label = label[1:-1]
+        self.named_url = named_url
+        self.extra_path_item = None
+        if extra_path_item:
+            self.extra_path_item = extra_path_item[1:-1]
+
+    def render(self, context):
+        try:
+            print 'named_url:', self.named_url
+            if not self.extra_path_item:
+                url_path = reverse(self.named_url)
+            else:
+                url_path = reverse(self.named_url,
+                                   args=(self.extra_path_item,))
+            print 'url path:', url_path
+            request = context['request']
+            print 'request.path:', request.path
+            href = ''
+            if url_path != request.path:
+                href='href="%s"' % url_path
+            html = '<a %s>%s</a>' % (href, self.label)
+            return html
+        except template.VariableDoesNotExist:
+            return ''

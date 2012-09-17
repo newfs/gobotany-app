@@ -1,3 +1,4 @@
+{% load gobotany_tags %}
         <footer>
             <img src="/static/images/layout/little-plants.png" alt="">
             <div class="container">
@@ -16,8 +17,8 @@
                     {% include "gobotany/_primary_navigation_bottom.html" %}
                     <h6>Legal</h6>
                     <ul class="legal">
-                        <li><a href="{% url site-privacy %}">Privacy Policy</a></li>
-                        <li><a href="{% url site-terms-of-use %}">Terms of Use</a></li>
+                        <li>{% nav_item 'Privacy Policy' site-privacy %}</li>
+                        <li>{% nav_item 'Terms of Use' site-terms-of-use %}</li>
                     </ul>
                 </div>
                 <div class="support">
