@@ -335,11 +335,14 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get('/aquatic-plants/non-thalloid-aquatic/')
         self.wait_on_species(52)
         self.css1('#intro-overlay .continue').click()
-        e = self.css1('.plant-list div a div.plant-img-container img')
-        self.css1('#results-display #image-types').click()
         self.css1(
-            '#results-display #image-types option[value="branches"]').click()
-        assert '-br-' in e.get_attribute('src')
+            '#results-display #image-types option[value="flowers"]').click()
+        # Verify that an image is present for the first visible plant.
+        e = self.css1(
+            '.plant-list .plant img[alt="Alisma subcordatum: flowers 1"]')
+        assert '-fl-' in e.get_attribute('src')
+        # Verify that there are, in fact, some plants in this subgroup
+        # which do not yet have images for this image type.
         missing_images = self.css('.plant-list .plant .missing-image p')
         assert len(missing_images) > 0
         self.assertEqual('Image not available yet', missing_images[0].text)
