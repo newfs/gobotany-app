@@ -5,6 +5,7 @@ xlrd
 # Unsure which version satisfied minimum reqs
 PIL
 
+django-debug-toolbar
 django-haystack==1.2.7
 django-piston==0.2.2
 django-tinymce
