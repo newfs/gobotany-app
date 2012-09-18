@@ -1,5 +1,7 @@
 """Tests of whether our basic site layout is present."""
 
+import unittest
+
 from datetime import datetime
 from gobotany.libtest import FunctionalCase
 
@@ -53,6 +55,90 @@ class HomeTests(FunctionalCase):
         copyright = self.css1('footer .copyright')
         current_year = str(datetime.now().year)
         self.assertIn(current_year, copyright.text)
+
+
+class NavigationTests(FunctionalCase):
+
+    def _get_anchor(self, path, label, parent_css_selector):
+        self.get(path)
+        e = self.css1(parent_css_selector)
+        a = self.link_saying(label, e)
+        return a
+
+    def test_footer_home_item_is_linked(self):
+        a = self._get_anchor('/about/', 'Home', 'footer')
+        self.assertTrue(a.get('href'))
+
+    def test_footer_home_item_is_unlinked(self):
+        a = self._get_anchor('/', 'Home', 'footer')
+        self.assertFalse(a.get('href'))
+
+    def test_footer_simple_key_item_is_linked(self):
+        a = self._get_anchor('/about/', 'Simple Key', 'footer')
+        self.assertTrue(a.get('href'))
+
+    def test_footer_simple_key_item_is_unlinked(self):
+        a = self._get_anchor('/simple/', 'Simple Key', 'footer')
+        self.assertFalse(a.get('href'))
+
+    def test_footer_plantshare_item_is_linked(self):
+        a = self._get_anchor('/about/', 'PlantShare', 'footer')
+        self.assertTrue(a.get('href'))
+
+    @unittest.skip('Skip until release, because tests unaware of DEBUG')
+    def test_footer_plantshare_item_is_unlinked(self):
+        a = self._get_anchor('/ps/', 'PlantShare', 'footer')
+        self.assertFalse(a.get('href'))
+
+    def test_footer_full_key_item_is_linked(self):
+        a = self._get_anchor('/about/', 'Full Key', 'footer')
+        self.assertTrue(a.get('href'))
+
+    @unittest.skip('Skip until release, because tests unaware of DEBUG')
+    def test_footer_full_key_item_is_unlinked(self):
+        a = self._get_anchor('/full/', 'Full Key', 'footer')
+        self.assertFalse(a.get('href'))
+
+    def test_footer_dichotomous_key_item_is_linked(self):
+        a = self._get_anchor('/about/', 'Dichotomous Key', 'footer')
+        self.assertTrue(a.get('href'))
+
+    @unittest.skip('Skip until release, because tests unaware of DEBUG')
+    def test_footer_dichotomous_key_item_is_unlinked(self):
+        a = self._get_anchor('/simple/', 'Dichotomous Key', 'footer')
+        self.assertFalse(a.get('href'))
+
+    def test_footer_teaching_item_is_linked(self):
+        a = self._get_anchor('/about/', 'Teaching', 'footer')
+        self.assertTrue(a.get('href'))
+
+    def test_footer_teaching_item_is_unlinked(self):
+        a = self._get_anchor('/teaching/', 'Teaching', 'footer')
+        self.assertFalse(a.get('href'))
+
+    def test_footer_about_item_is_linked(self):
+        a = self._get_anchor('/', 'About', 'footer')
+        self.assertTrue(a.get('href'))
+
+    def test_footer_about_item_is_unlinked(self):
+        a = self._get_anchor('/about/', 'About', 'footer')
+        self.assertFalse(a.get('href'))
+
+    def test_footer_privacy_policy_item_is_linked(self):
+        a = self._get_anchor('/about/', 'Privacy Policy', 'footer')
+        self.assertTrue(a.get('href'))
+
+    def test_footer_privacy_policy_item_is_unlinked(self):
+        a = self._get_anchor('/privacy/', 'Privacy Policy', 'footer')
+        self.assertFalse(a.get('href'))
+
+    def test_footer_terms_of_use_item_is_linked(self):
+        a = self._get_anchor('/about/', 'Terms of Use', 'footer')
+        self.assertTrue(a.get('href'))
+
+    def test_footer_terms_of_use_item_is_unlinked(self):
+        a = self._get_anchor('/terms-of-use/', 'Terms of Use', 'footer')
+        self.assertFalse(a.get('href'))
 
 
 class GlossaryTests(FunctionalCase):
