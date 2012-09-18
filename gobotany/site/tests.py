@@ -126,6 +126,46 @@ class NavigationTests(FunctionalCase):
         a = self._get_anchor('/about/', 'About', 'header')
         self.assertFalse(a.get('href'))
 
+    # Main headings of top pages in each section and a few within
+    # (Style: these should match their navigation-item labels closely.)
+
+    def test_main_heading_simple_key(self):
+        self.get('/simple/')
+        self.assertEqual(self.css1('#main h2').text,  # will become h1 soon
+                         'Simple Key')
+
+    def test_main_heading_simple_key_subgroups_list(self):
+        self.get('/simple/woody-plants/')
+        self.assertEqual(self.css1('#main h2').text,  # will become h1 soon
+                         'Woody plants')
+
+    def test_main_heading_plantshare(self):
+        self.get('/ps/')
+        self.assertEqual(self.css1('h1').text, 'PlantShare')
+
+    def test_main_heading_full_key(self):
+        self.get('/full/')
+        self.assertEqual(self.css1('#main h2').text,  # will become h1 soon
+                         'Full Key')
+
+    def test_main_heading_full_key_subgroups_list(self):
+        self.get('/full/ferns/')
+        self.assertEqual(self.css1('#main h2').text,  # will become h1 soon
+                         'Ferns')
+
+    @unittest.skip('Skip for now: page returns error')
+    def test_main_heading_dichotomous_key(self):
+        self.get('/dkey/')
+        self.assertEqual(self.css1('h1').text, 'Dichotomous Key')
+
+    def test_main_heading_teaching(self):
+        self.get('/teaching/')
+        self.assertEqual(self.css1('h1').text, 'Teaching')
+
+    def test_main_heading_about(self):
+        self.get('/about/')
+        self.assertEqual(self.css1('h1').text, 'About Go Botany')
+
     # Footer navigation items: linked, unlinked
 
     def test_footer_home_item_is_linked(self):
