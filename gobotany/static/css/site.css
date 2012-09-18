@@ -773,8 +773,8 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
   footer .navigation > ul.sections li { display: block; margin: 0 0 1px 0; }
   footer .navigation > ul.sections li:after { content: none; }
   footer .navigation > ul.sections li a { background: #85c446; color: #fff; display: block; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
-  footer .navigation > ul.sections li a:after { content: " >"; font-weight: bold; position: absolute; right: 14px; }
   footer .navigation > ul.sections li a[href] { background: #508e31; color: #fff; }
+  footer .navigation > ul.sections li a[href]:after { content: " >"; font-weight: bold; position: absolute; right: 14px; }
   footer .navigation > ul.sections + h6 { /* "Legal:" label */ display: none; }
   footer .navigation > h6:nth-of-type(2) { margin: 14px 14px 4px 71px; }
   footer .navigation > h6:nth-of-type(2):after { content: ":"; }
