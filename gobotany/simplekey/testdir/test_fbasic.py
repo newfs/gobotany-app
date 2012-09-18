@@ -138,6 +138,79 @@ class BasicFunctionalTests(FunctionalTestCase):
         self.assertEqual(len(images), 1)
 
 
+class NavigationFunctionalTests(FunctionalTestCase):
+
+    # Header navigation items: current section highlight
+
+    def _is_nav_item_highlighted(self, page_path, css_selector):
+        self.get(page_path)
+        li = self.css1(css_selector)
+        image = li.value_of_css_property('background-image')
+        valid = re.compile(r'^url\(.*active-nav.*png\)$')
+        return True if valid.match(str(image)) else False
+
+    def test_header_home_item_highlighted(self):
+        self.assertTrue(self._is_nav_item_highlighted('/', 'header li.home'))
+
+    def test_header_simple_key_item_highlighted(self):
+        self.assertTrue(self._is_nav_item_highlighted(
+            '/simple/',
+            'header li.simple a')   # remove 'a' upon moving to 'site' app
+            )
+
+    def test_header_simple_key_item_highlighted_within_section(self):
+        self.assertTrue(self._is_nav_item_highlighted(
+            '/simple/woody-plants/',
+            'header li.simple a')   # remove 'a' upon moving to 'site' app
+            )
+
+    def test_header_plantshare_item_highlighted(self):
+        self.assertTrue(
+            self._is_nav_item_highlighted('/ps/', 'header li.plantshare'))
+
+    def test_header_plantshare_item_highlighted_within_section(self):
+        self.assertTrue(
+            self._is_nav_item_highlighted('/ps/accounts/register/',
+                                          'header li.plantshare'))
+
+    def test_header_full_key_item_highlighted(self):
+        self.assertTrue(self._is_nav_item_highlighted(
+            '/full/',
+            'header li.full a')   # remove 'a' upon moving to 'site' app
+            )
+
+    def test_header_full_key_item_highlighted_within_section(self):
+        self.assertTrue(self._is_nav_item_highlighted(
+            '/full/woody-plants/',
+            'header li.full a')   # remove 'a' upon moving to 'site' app
+            )
+
+    @unittest2.skip('Skip for now: page returns error')
+    def test_header_dkey_item_highlighted(self):
+        self.assertTrue(
+            self._is_nav_item_highlighted('/dkey/', 'header li.dkey'))
+
+    @unittest2.skip('Skip for now: page returns error')
+    def test_header_dkey_item_highlighted_within_section(self):
+        self.assertTrue(
+            self._is_nav_item_highlighted('/dkey/Key-to-the-Families/',
+                                          'header li.dkey'))
+
+    def test_header_teaching_item_highlighted(self):
+        self.assertTrue(
+            self._is_nav_item_highlighted('/teaching/',
+                                          'header li.teaching'))
+
+    def test_header_about_item_highlighted(self):
+        self.assertTrue(
+            self._is_nav_item_highlighted('/about/', 'header li.about'))
+
+    def test_header_about_item_highlighted_within_section(self):
+        self.assertTrue(
+            self._is_nav_item_highlighted('/start/', 'header li.about'))
+
+
+
 class FilterFunctionalTests(FunctionalTestCase):
 
     def wait_on_species(self, expected_count, seconds=5):

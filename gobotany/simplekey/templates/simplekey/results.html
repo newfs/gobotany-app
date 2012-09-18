@@ -14,7 +14,7 @@
     });
 {% endblock %}
 
-{% block body_attributes %}id="plant-id-3" class="app"{% endblock %}
+{% block body_attributes %}id="plant-id-3" class="app {{ key|title|lower }}"{% endblock %}
 
 {% block body_content %}
     {% include "simplekey/_header.html" %}

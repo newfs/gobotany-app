@@ -190,8 +190,8 @@ body {
             @include highlight-global-nav-home;
         }
     }
-    &.about {
-        nav li.about {
+    &.simple {
+        nav li.simple {
             @include highlight-global-nav;
         }
     }
@@ -200,8 +200,23 @@ body {
             @include highlight-global-nav;
         }
     }
+    &.full {
+        nav li.full {
+            @include highlight-global-nav;
+        }
+    }
+    &.dkey {
+        nav li.dkey {
+            @include highlight-global-nav;
+        }
+    }
     &.teaching {
         nav li.teaching {
+            @include highlight-global-nav;
+        }
+    }
+    &.about {
+        nav li.about {
             @include highlight-global-nav;
         }
     }

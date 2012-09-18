@@ -65,7 +65,7 @@ class NavigationTests(FunctionalCase):
         a = self.link_saying(label, e)
         return a
 
-    # Header navigation items
+    # Header navigation items: linked, unlinked
 
     def test_header_home_item_is_linked(self):
         a = self._get_anchor('/about/', 'Home', 'header')
@@ -126,7 +126,7 @@ class NavigationTests(FunctionalCase):
         a = self._get_anchor('/about/', 'About', 'header')
         self.assertFalse(a.get('href'))
 
-    # Footer navigation items
+    # Footer navigation items: linked, unlinked
 
     def test_footer_home_item_is_linked(self):
         a = self._get_anchor('/about/', 'Home', 'footer')

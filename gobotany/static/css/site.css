@@ -316,9 +316,12 @@ p.meta { font-size: 10px; font-style: italic; margin: 4px 0; }
 
 /* Header */
 body#home nav li.home { background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent; text-decoration: none; }
-body.about nav li.about { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
+body.simple nav li.simple { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 body.plantshare nav li.plantshare { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
+body.full nav li.full { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
+body.dkey nav li.dkey { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 body.teaching nav li.teaching { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
+body.about nav li.about { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 
 header { height: 120px; }
 header .container { margin: 0 auto; padding: 0 10px; width: 960px; }

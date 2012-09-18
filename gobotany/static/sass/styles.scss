@@ -105,19 +105,14 @@ nav #search button:active {
     background-position: 0 -20px;
 }
 /* Active navigation state */
-#plant-id li.plant-id a,
-#plant-id-2 li.plant-id a,
-#plant-id-3 li.plant-id a,
+#plant-id.simple li.simple a,
+#plant-id-2.simple li.simple a,
+#plant-id-3.simple li.simple a,
 #plantshare li.plantshare a,
-#full-key li.full-key a,
-#dich-key li.dich-key a,
-#teaching-tools li.teaching-tools a,
-#about li.about a,
-#getting-started li.about a,
-#advanced-map li.about a,
-#glossary li.about a,
-#video-help-topics li.about a,
-#contrib li.about a {
+#plant-id.full li.full a,
+#plant-id-2.full li.full a,
+#plant-id-3.full li.full a,
+#dkey li.dkey a {
 	background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;	
 }
 

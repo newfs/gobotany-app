@@ -3,7 +3,7 @@
 
 {% block title %}{{ subgroups_list_page.title }}{% endblock %}
 
-{% block body_attributes %}id="plant-id-2" class="app"{% endblock %}
+{% block body_attributes %}id="plant-id-2" class="app {{ key|title|lower }}"{% endblock %}
 
 {% block js_top %}
     {# TODO: eventually move elsewhere #}
