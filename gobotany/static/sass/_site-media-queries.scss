@@ -72,6 +72,41 @@
     body {
         margin: 0 auto;
         padding: 0;
+        &#home {
+            footer .navigation ul.sections li.home a {
+                background-color: $smallscreen-current-section-color;
+            }
+        }
+        &.simple {
+            footer .navigation ul.sections li.simple a {
+                background-color: $smallscreen-current-section-color;
+            }
+        }
+        &.plantshare {
+            footer .navigation ul.sections li.plantshare a {
+                background-color: $smallscreen-current-section-color;
+            }
+        }
+        &.full {
+            footer .navigation ul.sections li.full a {
+                background-color: $smallscreen-current-section-color;
+            }
+        }
+        &.dkey {
+            footer .navigation ul.sections li.dkey a {
+                background-color: $smallscreen-current-section-color;
+            }
+        }
+        &.teaching {
+            footer .navigation ul.sections li.teaching a {
+                background-color: $smallscreen-current-section-color;
+            }
+        }
+        &.about {
+            footer .navigation ul.sections li.about a {
+                background-color: $smallscreen-current-section-color;
+            }
+        }
     }
     h1 {
         font-size: 24px;
@@ -177,7 +212,7 @@
                         content: none;
                     }
                     a {
-                        background: #85c446;
+                        background: $link-green;
                         color: #fff;
                         display: block;
                         font-family: $headings-font;
@@ -186,7 +221,6 @@
                         position: relative;
                         text-decoration: none;
                         &[href] {
-                            background: $link-green;
                             color: #fff;
                             &:after {
                                 content: " >";
