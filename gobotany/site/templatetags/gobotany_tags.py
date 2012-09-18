@@ -55,7 +55,6 @@ def url(obj):
 def nav_item(parser, token):
     """Return a navigation item, hyperlinked if appropriate."""
     token_parts = token.split_contents()
-    print 'token_parts:', token_parts
     label = token_parts[1]
     named_url = token_parts[2]
     extra_path_item = None
@@ -73,12 +72,11 @@ class NavigationItemNode(template.Node):
             self.extra_path_item = extra_path_item[1:-1]
 
     def render(self, context):
+        args = ()
+        if self.extra_path_item:
+            args = (self.extra_path_item,)
         try:
-            if not self.extra_path_item:
-                url_path = reverse(self.named_url)
-            else:
-                url_path = reverse(self.named_url,
-                                   args=(self.extra_path_item,))
+            url_path = reverse(self.named_url, args=args)
             request = context['request']
             href = ''
             if url_path != request.path:
