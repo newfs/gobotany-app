@@ -1,39 +1,18 @@
+{% load gobotany_tags %}
             <ul>
-                <li class="home">
-                    {% url site-home as u %}
-                    <a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Home</a>
-                </li>
-                <li class="plant-id">
-                    <a href="{% url level1 'simple' %}">Simple Key</a>
-                </li>
+                <li class="home">{% nav_item 'Home' site-home %}</li>
+                <li class="plant-id">{% nav_item 'Simple Key' level1 'simple' %}</li>
                 {% if debug %}
                     {# Development navigation, linking to all as if released #}
-                    <li class="plantshare">
-                        {% url ps-main as u %}
-                        <a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>PlantShare</a>
-                    </li>
-                    <li class="full-key">
-                        {% url level1 'full' as u %}
-                        <a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Full Key</a>
-                    </li>
-                    <li class="dich-key">
-                        {% url dkey as u %}
-                        <a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Dichotomous Key</a>
-                    </li>
+                    <li class="plantshare">{% nav_item 'PlantShare' ps-main %}</li>
+                    <li class="full-key">{% nav_item 'Full Key' level1 'full' %}</li>
+                    <li class="dich-key">{% nav_item 'Dichotomous Key' dkey %}</li>
                 {% else %}
                     {# Production navigation, with some features unreleased yet #}
-                    <li class="plantshare">
-                        {% url plantshare-placeholder as u %}
-                        <a {% ifnotequal request.path u %}href="{% url plantshare-placeholder %}"{% endifnotequal %}>PlantShare</a>
-                    </li>
-                    <li class="full-key">
-                        <a href="{% url full-key-placeholder %}">Full Key</a>
-                    </li>
-                    <li class="dich-key">
-                        <a href="{% url dich-key-placeholder %}">Dichotomous Key</a>
-                    </li>
+                    <li class="plantshare">{% nav_item 'PlantShare' plantshare-placeholder %}</li>
+                    <li class="full-key">{% nav_item 'Full Key' full-key-placeholder %}</li>
+                    <li class="dich-key">{% nav_item 'Dichotomous Key' dich-key-placeholder %}</li>
                 {% endif %}
-                <li class="teaching"><a href="{% url site-teaching %}">Teaching</a></li>
-                {% url site-about as u %}
-                <li class="about"><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>About</a></li>
+                <li class="teaching">{% nav_item 'Teaching' site-teaching %}</li>
+                <li class="about">{% nav_item 'About' site-about %}</li>
             </ul>
