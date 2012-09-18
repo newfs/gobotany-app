@@ -371,7 +371,9 @@ body.app { background: #f0f0c0; }
 
 .app header h2 a { width: 116px; height: 66px; background: url(/static/images/layout/newfs-logo-app.png) no-repeat transparent; }
 
-.app p.tip { color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 18px; margin: 12px 0 0; padding: 0; }
+.app p.question, .app p.tip { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 24px; margin: 12px 0 0; padding: 0; }
+
+.app p.tip { color: #519136; font-size: 18px; margin: 8px 0 0; padding: 0; }
 
 .app nav { padding: 0 0 0 48px; background: url(/static/images/layout/nav-app-green.png) no-repeat; }
 

@@ -480,11 +480,16 @@ body.app {
 	background: url(/static/images/layout/newfs-logo-app.png) no-repeat transparent;	
 }
 
+.app p.question, .app p.tip {
+    font-family: $headings-font;
+    font-size: 24px;
+    margin: 12px 0 0;
+    padding: 0;
+}
 .app p.tip {
     color: #519136;
-    font-family: $headings-font;
     font-size: 18px;
-    margin: 12px 0 0;
+    margin: 8px 0 0;
     padding: 0;
 }
 
