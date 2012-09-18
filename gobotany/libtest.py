@@ -109,8 +109,11 @@ class FunctionalCase(TestCase):
                 'cannot find element matching %r' % (selector,))
         return FakeDriverElement(elist[0])
 
-    def link_saying(self, text):
-        links = anchor_selector(self.tree)
+    def link_saying(self, text, start_element=None):
+        if start_element:
+            links = anchor_selector(start_element.e)
+        else:
+            links = anchor_selector(self.tree)
         for link in links:
             if link.text == text:
                 return link
