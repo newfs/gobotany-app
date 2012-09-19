@@ -2,7 +2,7 @@
                 <ul id="footer-nav" class="sections">
                     <li class="home">{% nav_item 'Home' site-home %}</li>
                     <li class="simple">{% nav_item 'Simple Key' level1 'simple' %}</li>
-                    {% if debug %}
+                    {% if dev_features %}
                         {# Development navigation, linking to all as if released #}
                         <li class="plantshare">{% nav_item 'PlantShare' ps-main %}</li>
                         <li class="full">{% nav_item 'Full Key' level1 'full' %}</li>

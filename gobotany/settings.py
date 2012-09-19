@@ -55,6 +55,15 @@ IN_PRODUCTION = 'PORT' in os.environ
 USE_DEBUG_TOOLBAR = not IN_PRODUCTION and DEBUG_TOOLBAR_AVAILABLE
 DEBUG = 'DEBUG' in os.environ or not IN_PRODUCTION
 
+# This setting is for showing features that are still being developed.
+# Normally it will be True in local dev environments, and False in
+# production. For Heroku dev environments, it can be set to True by
+# setting the $DEV_FEATURES environment variable to True, thus allowing
+# testing of unreleased things such as the future navigation links.
+DEV_FEATURES = DEBUG
+if 'DEV_FEATURES' in os.environ:
+    DEV_FEATURES = (os.environ['DEV_FEATURES'] == True)
+
 #
 
 if 'DATABASE_URL' in os.environ:
@@ -121,7 +130,6 @@ MIDDLEWARE_CLASSES = (
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
         "django.contrib.auth.context_processors.auth",
-        "django.core.context_processors.debug",
         "django.core.context_processors.i18n",
         "django.core.context_processors.request",
         "django.core.context_processors.media",
