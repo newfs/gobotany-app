@@ -60,7 +60,7 @@ DEBUG = 'DEBUG' in os.environ or not IN_PRODUCTION
 # production. For Heroku dev environments, it can be set to True by
 # setting the $DEV_FEATURES environment variable to True, thus allowing
 # testing of unreleased things such as the future navigation links.
-DEV_FEATURES = DEBUG
+DEV_FEATURES = not IN_PRODUCTION
 if 'DEV_FEATURES' in os.environ:
     DEV_FEATURES = (os.environ['DEV_FEATURES'] == 'True')
 
