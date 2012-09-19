@@ -657,7 +657,7 @@ body.app {
 	width: 425px;
 }
 #plant-id-3 .list-item .details {
-    width: 610px;
+    width: 630px;
 }
 .list-item p {
 	padding: 0 0 7px 25px;
@@ -667,7 +667,7 @@ body.app {
 	text-transform: uppercase;	
 }
 #plant-details .img-gallery {
-	margin-top: 6px;
+	margin: 6px 0 0 0;
 }
 
 p.key-char {
@@ -866,7 +866,7 @@ div.modal-wrap {
 .modal-wrap .inner h3.heading {
 	font-style: italic;
 	margin-bottom: 0;
-	margin-left: 265px;
+	margin-left: 245px;
 }
 .modal-wrap .inner h3.heading span {
 	color: #807121;
@@ -880,7 +880,7 @@ div.modal-wrap {
     margin: 0 0 14px;
 }
 .modal-wrap #plant-details {
-	padding: 10px 20px 0 20px;	
+	padding: 10px 10px 0;	
 }
 .modal-wrap .list-item {
 	border-top: none;

@@ -441,13 +441,13 @@ body.app { background: #f0f0c0; }
 
 .list-item .details { float: left; width: 425px; }
 
-#plant-id-3 .list-item .details { width: 610px; }
+#plant-id-3 .list-item .details { width: 630px; }
 
 .list-item p { padding: 0 0 7px 25px; }
 
 .list-item .section-title { display: block; text-transform: uppercase; }
 
-#plant-details .img-gallery { margin-top: 6px; }
+#plant-details .img-gallery { margin: 6px 0 0 0; }
 
 p.key-char { background: url(/static/images/icons/icon1.png) 0 2px no-repeat; }
 
@@ -527,7 +527,7 @@ div.modal-wrap { border: 5px solid rgba(255, 255, 255, 0.5); -moz-border-radius:
 
 .modal-wrap .inner p { font-size: 12px; margin: 0; padding: 4px 20px 0; }
 
-.modal-wrap .inner h3.heading { font-style: italic; margin-bottom: 0; margin-left: 265px; }
+.modal-wrap .inner h3.heading { font-style: italic; margin-bottom: 0; margin-left: 245px; }
 
 .modal-wrap .inner h3.heading span { color: #807121; font-size: 16px; font-style: normal; }
 
@@ -535,7 +535,7 @@ div.modal-wrap { border: 5px solid rgba(255, 255, 255, 0.5); -moz-border-radius:
 
 .modal-wrap #choices li { margin: 0 0 14px; }
 
-.modal-wrap #plant-details { padding: 10px 20px 0 20px; }
+.modal-wrap #plant-details { padding: 10px 10px 0; }
 
 .modal-wrap .list-item { border-top: none; margin: 0 0 0 0; padding: 0 0 0 0; }
 
