@@ -67,6 +67,7 @@ define([
                     // Fill in Characteristics.
                     var $characteristics = $(
                         '#plant-detail-modal .details .characteristics');
+                    $characteristics.empty();
 
                     var MAX_CHARACTERS = 6;
                     var characters = pile_info.plant_preview_characters;
