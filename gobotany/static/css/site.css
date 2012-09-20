@@ -658,7 +658,7 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
 #glossary #alphabet li .current a:hover { text-decoration: none; }
 #glossary #terms { background-color: #fff; border: 1px solid #e1e1dc; clear: left; margin: 0 0 24px 0; width: 710px; }
 #glossary #terms dt, #glossary #terms dd { border-top: 1px solid #e1e1dc; min-height: 24px; }
-#glossary #terms dt { clear: left; float: left; line-height: 25px; padding: 7px 10px 10px 38px; width: 190px; }
+#glossary #terms dt { clear: left; float: left; line-height: 27px; padding: 7px 10px 0 38px; width: 190px; }
 #glossary #terms dt:first-child, #glossary #terms dt:first-child + dd { border-top: 0; }
 #glossary #terms dt a { float: left; margin-left: -34px; }
 #glossary #terms dd { margin-left: 224px; padding: 13px; }
