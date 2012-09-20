@@ -92,8 +92,10 @@ class FunctionalCase(TestCase):
     # that our two flavors of functional test do not look entirely
     # different!
 
-    def get(self, url):
-        self.response = Client().get(url)
+    def get(self, url, client=None):
+        if not client:
+            client = Client()
+        self.response = client.get(url)
         parser = etree.HTMLParser()
         self.tree = etree.fromstring(self.response.content, parser)
         return FakeDriverElement(self.tree)
