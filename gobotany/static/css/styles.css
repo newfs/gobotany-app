@@ -392,7 +392,7 @@ body.app { background: #f0f0c0; }
 #sidebar .section.plant-map p { margin: 15px 0 0 0; }
 
 /* Breadcrumb styles */
-#breadcrumb p { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 120%; margin: 0 0 14px; }
+#breadcrumb p { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 160%; margin: 0 0 14px; }
 
 #breadcrumb span { color: #000; }
 
@@ -1373,7 +1373,6 @@ img.char-value-larger { height: 160px !important; /* Consistent height for popup
   #home #banner a#cta { background-position: 50% 0; margin: 6px; }
   #home .three-col { background: none; float: none; height: inherit; margin: 14px 0; padding: 0; width: auto; }
   #main #breadcrumb p, #home .three-col h3, #home .three-col h5, #home .three-col p, #home .three-col a, .app h2, .app p.tip, .app .list-item, .app #main p, .app #main h3, .app #main h4, #about #main ul, #taxon #main p { margin-left: 8px; margin-right: 8px; }
-  #main #breadcrumb p { line-height: 160%; }
   #home .three-col a.learn-more { margin-top: 6px; }
   #home #potd { padding: 8px; }
   #home #potd > a { margin: 0; margin-bottom: 4px; margin-right: 8px; }
