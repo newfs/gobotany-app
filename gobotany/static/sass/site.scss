@@ -527,6 +527,26 @@ footer {
     top: 6px !important;
 }
 
+/* Form error messages */
+
+.errorlist {
+    color: #f00;
+    font-family: $headings-font;
+    font-size: 14px;
+    line-height: 14px;
+    list-style-type: none;
+    li {
+        &:before {
+            content: "× ";
+            font-size: 22px;
+            font-weight: bold;
+            margin: 0 0 0 -20px; 
+            padding: 0;
+            vertical-align: text-top;
+        }
+    }
+}
+
 /* Imports for various pages, sections, features, etc. Each of these
  * can contain their own media queries. */
 

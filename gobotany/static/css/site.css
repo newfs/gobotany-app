@@ -387,6 +387,10 @@ footer .support { margin-right: 0; padding: 18px 0; }
 /* Shadowbox close button */
 #sb-nav-close { background-position: center; background-repeat: no-repeat; padding: 4px; /* Increase activation area a bit */ right: -28px !important; /* Place at top right, but not exactly at the corner so as to avoid Flash video z-index problem */ top: 6px !important; }
 
+/* Form error messages */
+.errorlist { color: #f00; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 14px; list-style-type: none; }
+.errorlist li:before { content: "× "; font-size: 22px; font-weight: bold; margin: 0 0 0 -20px; padding: 0; vertical-align: text-top; }
+
 /* Imports for various pages, sections, features, etc. Each of these can contain their own media queries. */
 /* Home */
 #home { background: url(/static/images/layout/body-home.jpg) repeat-x left top #f3f3c3; }
