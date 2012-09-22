@@ -1,4 +1,4 @@
-Thank you for registering for your PlantShare membership!
+Thank you for registering for your PlantShare membership on the Go Botany site!
 To complete your registration, please activate your account by visiting the following link:
 http://{{site.domain}}{% url registration_activate activation_key %} 
 
