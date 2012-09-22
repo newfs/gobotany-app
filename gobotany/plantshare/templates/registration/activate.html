@@ -1,17 +1,16 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
 
-{% block title %}Activation Key Expired{% endblock %}
+{% block title %}Activation Link Expired{% endblock %}
 
 {% block body_attributes %}id="activation_expired" class="plantshare"{% endblock %}
 
 {% block main_content %}
-<h1>Activation Key Expired</h1>
+<h1>Activation Link Expired</h1>
 
-<p>We're sorry, but it looks like your activation key has expired.
+<p>We're sorry, but it looks like your activation link has expired.
 Unfortunately your membership cannot be activated at this time.  If it has
-been more than 7 days since you signed up, please go to our 
-<a href="{% url register %}">registration page</a>
-and sign up again.</p>
+been more than 7 days since you signed up, please 
+<a href="{% url register %}">sign up</a> again.</p>
 {% endblock %}
 
 {% block sidebar_content %}
