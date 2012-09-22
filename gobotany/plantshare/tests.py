@@ -140,6 +140,11 @@ class PlantShareTests(FunctionalCase):
         self._get_plantshare(self.SIGNUP_FORM_URL)
         self.assertIsNotNone(self.link_saying('PlantShare'))
 
+    def test_signup_page_has_minimal_navigation(self):
+        self._get_plantshare(self.SIGNUP_FORM_URL)
+        navigation_items = self.css('#sidebar .section')
+        self.assertEqual(len(navigation_items), 1)
+
     # My Profile page
 
     MY_PROFILE_URL = '/profile/'
