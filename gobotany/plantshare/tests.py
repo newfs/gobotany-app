@@ -180,6 +180,29 @@ class PlantShareTests(FunctionalCase):
         navigation_items = self.css('#sidebar .section')
         self.assertEqual(len(navigation_items), 1)
 
+    # Activation Complete page
+
+    ACTIVATION_COMPLETE_URL = '/accounts/activate/complete/'
+
+    def test_registration_complete_page_title(self):
+        self._get_plantshare(self.ACTIVATION_COMPLETE_URL)
+        title = self.css1('title').text
+        self.assertEqual(title, 'Activation Complete: Go Botany')
+
+    def test_activation_complete_page_main_heading(self):
+        self._get_plantshare(self.ACTIVATION_COMPLETE_URL)
+        heading = self.css1('h1').text
+        self.assertEqual(heading, 'Activation Complete')
+
+    def test_activation_complete_page_has_plantshare_nav_link(self):
+        self._get_plantshare(self.ACTIVATION_COMPLETE_URL)
+        self.assertIsNotNone(self.link_saying('PlantShare'))
+
+    def test_activation_complete_page_has_minimal_navigation(self):
+        self._get_plantshare(self.ACTIVATION_COMPLETE_URL)
+        navigation_items = self.css('#sidebar .section')
+        self.assertEqual(len(navigation_items), 1)
+
     # My Profile page
 
     MY_PROFILE_URL = '/profile/'
