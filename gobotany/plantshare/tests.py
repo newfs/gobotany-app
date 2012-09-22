@@ -38,8 +38,8 @@ class PlantShareTests(FunctionalCase):
 
     def test_main_page_main_heading(self):
         self._get_plantshare(self.MAIN_URL)
-        h1 = self.css1('h1').text
-        self.assertEqual(h1, 'PlantShare')
+        heading = self.css1('h1').text
+        self.assertEqual(heading, 'PlantShare')
 
     # PlantShare main page: logged out
 
@@ -134,8 +134,8 @@ class PlantShareTests(FunctionalCase):
 
     def test_signup_page_main_heading(self):
         self._get_plantshare(self.SIGNUP_FORM_URL)
-        h1 = self.css1('h1').text
-        self.assertEqual(h1, 'Sign Up for PlantShare')
+        heading = self.css1('h1').text
+        self.assertEqual(heading, 'Sign Up for PlantShare')
 
     def test_signup_page_has_plantshare_nav_link(self):
         self._get_plantshare(self.SIGNUP_FORM_URL)
@@ -157,6 +157,29 @@ class PlantShareTests(FunctionalCase):
         self.assertTrue(
             response.content.find('Incorrect, please try again.') > -1)
 
+    # Registration Complete page (next step: activate from email)
+
+    REG_COMPLETE_URL = '/accounts/register/complete/'
+
+    def test_registration_complete_page_title(self):
+        self._get_plantshare(self.REG_COMPLETE_URL)
+        title = self.css1('title').text
+        self.assertEqual(title, 'Registration Complete: Go Botany')
+
+    def test_registration_complete_page_main_heading(self):
+        self._get_plantshare(self.REG_COMPLETE_URL)
+        heading = self.css1('h1').text
+        self.assertEqual(heading, 'Registration Complete')
+
+    def test_registration_complete_page_has_plantshare_nav_link(self):
+        self._get_plantshare(self.REG_COMPLETE_URL)
+        self.assertIsNotNone(self.link_saying('PlantShare'))
+
+    def test_registration_complete_page_has_minimal_navigation(self):
+        self._get_plantshare(self.REG_COMPLETE_URL)
+        navigation_items = self.css('#sidebar .section')
+        self.assertEqual(len(navigation_items), 1)
+
     # My Profile page
 
     MY_PROFILE_URL = '/profile/'
@@ -168,5 +191,5 @@ class PlantShareTests(FunctionalCase):
 
     def test_profile_page_main_heading(self):
         self._get_plantshare(self.MY_PROFILE_URL)
-        h1 = self.css1('h1').text
-        self.assertEqual(h1, 'My Profile')
+        heading = self.css1('h1').text
+        self.assertEqual(heading, 'My Profile')
