@@ -9,6 +9,8 @@ from gobotany.libtest import FunctionalCase
 
 class PlantShareTests(FunctionalCase):
 
+    PLANTSHARE_BASE = '/ps'
+
     TEST_USERNAME = 'test'
     TEST_EMAIL = 'test@test.com'
     TEST_PASSWORD = 'testpass'
@@ -23,8 +25,7 @@ class PlantShareTests(FunctionalCase):
             client = Client()
             client.login(username=self.TEST_USERNAME,
                          password=self.TEST_PASSWORD)
-        PLANTSHARE_BASE = '/ps'
-        self.get(PLANTSHARE_BASE + url_path, client=client)
+        self.get(self.PLANTSHARE_BASE + url_path, client=client)
 
     # PlantShare main page
 
@@ -144,6 +145,17 @@ class PlantShareTests(FunctionalCase):
         self._get_plantshare(self.SIGNUP_FORM_URL)
         navigation_items = self.css('#sidebar .section')
         self.assertEqual(len(navigation_items), 1)
+
+    def test_sign_up_with_incorrect_captcha_response(self):
+        form_submit_url = self.PLANTSHARE_BASE + self.SIGNUP_FORM_URL
+        client = Client()
+        response = client.post(form_submit_url, {'username': 'test2',
+            'email': 'test2@test2.net', 'password1': 'testpass2',
+            'password2': 'testpass2',
+            'recaptcha_response_field': 'spam eggs'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(
+            response.content.find('Incorrect, please try again.') > -1)
 
     # My Profile page
 
