@@ -19,13 +19,16 @@ class PlantShareTests(FunctionalCase):
         self.user = User.objects.create_user(
             self.TEST_USERNAME, self.TEST_EMAIL, self.TEST_PASSWORD)
 
-    def _get_plantshare(self, url_path, log_in=False):
+    def _get_plantshare(self, url_path, log_in=False, username=TEST_USERNAME,
+                        password=TEST_PASSWORD):
+        url = self.PLANTSHARE_BASE + url_path
         client = None
         if log_in:
             client = Client()
-            client.login(username=self.TEST_USERNAME,
-                         password=self.TEST_PASSWORD)
-        self.get(self.PLANTSHARE_BASE + url_path, client=client)
+            success = client.login(username=username, password=password)
+            if not success:
+                url = None
+        self.get(url, client=client)
 
     # PlantShare main page
 
@@ -145,6 +148,11 @@ class PlantShareTests(FunctionalCase):
         self._get_plantshare(self.LOGIN_ERROR_URL)
         navigation_items = self.css('#sidebar .section')
         self.assertEqual(len(navigation_items), 1)
+
+    def test_login_error_occurs_upon_bad_login(self):
+        self.assertIsNone(self._get_plantshare(self.MAIN_URL, log_in=True,
+                                               username='nobody',
+                                               password='nothing'))
 
     # Log Out confirmation page
 
