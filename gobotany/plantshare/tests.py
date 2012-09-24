@@ -41,7 +41,7 @@ class PlantShareTests(FunctionalCase):
         heading = self.css1('h1').text
         self.assertEqual(heading, 'PlantShare')
 
-    # PlantShare main page: logged out
+    # PlantShare main page: when user is logged out
 
     def test_main_page_logged_out_has_signup_nav_link(self):
         self._get_plantshare(self.MAIN_URL)
@@ -82,7 +82,7 @@ class PlantShareTests(FunctionalCase):
             pass
         self.assertIsNone(link)
 
-    # PlantShare main page: logged in
+    # PlantShare main page: when user is logged in
 
     def test_main_page_logged_in_has_profile_box(self):
         self._get_plantshare(self.MAIN_URL, log_in=True)
@@ -122,6 +122,29 @@ class PlantShareTests(FunctionalCase):
         except NoSuchElementException:
             pass
         self.assertIsNone(form)
+
+    # Log Out confirmation page
+
+    LOG_OUT_URL = '/accounts/logout/'
+
+    def test_log_out_page_title(self):
+        self._get_plantshare(self.LOG_OUT_URL)
+        title = self.css1('title').text
+        self.assertEqual(title, 'Logged Out: Go Botany')
+
+    def test_log_out_page_main_heading(self):
+        self._get_plantshare(self.LOG_OUT_URL)
+        heading = self.css1('h1').text
+        self.assertEqual(heading, 'Logged Out')
+
+    def test_log_out_page_has_plantshare_nav_link(self):
+        self._get_plantshare(self.LOG_OUT_URL)
+        self.assertIsNotNone(self.link_saying('PlantShare'))
+
+    def test_log_out_page_has_minimal_navigation(self):
+        self._get_plantshare(self.LOG_OUT_URL)
+        navigation_items = self.css('#sidebar .section')
+        self.assertEqual(len(navigation_items), 1)
 
     # Sign Up for PlantShare page
 
