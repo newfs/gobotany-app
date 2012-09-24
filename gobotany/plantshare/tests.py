@@ -123,6 +123,29 @@ class PlantShareTests(FunctionalCase):
             pass
         self.assertIsNone(form)
 
+    # Login Error page
+
+    LOGIN_ERROR_URL = '/accounts/login/'
+
+    def test_login_error_page_title(self):
+        self._get_plantshare(self.LOGIN_ERROR_URL)
+        title = self.css1('title').text
+        self.assertEqual(title, 'Log In: Go Botany')
+
+    def test_login_error_page_main_heading(self):
+        self._get_plantshare(self.LOGIN_ERROR_URL)
+        heading = self.css1('h1').text
+        self.assertEqual(heading, 'Log In')
+
+    def test_login_error_page_has_plantshare_nav_link(self):
+        self._get_plantshare(self.LOGIN_ERROR_URL)
+        self.assertIsNotNone(self.link_saying('PlantShare'))
+
+    def test_login_error_page_has_minimal_navigation(self):
+        self._get_plantshare(self.LOGIN_ERROR_URL)
+        navigation_items = self.css('#sidebar .section')
+        self.assertEqual(len(navigation_items), 1)
+
     # Log Out confirmation page
 
     LOG_OUT_URL = '/accounts/logout/'
