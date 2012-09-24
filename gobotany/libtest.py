@@ -93,6 +93,8 @@ class FunctionalCase(TestCase):
     # different!
 
     def get(self, url, client=None):
+        if not url:
+            return None   # To allow passing an empty URL for a None response
         if not client:
             client = Client()
         self.response = client.get(url)
