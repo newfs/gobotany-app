@@ -389,7 +389,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
 
 /* Form error messages */
 .errorlist { color: #f00; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 14px; list-style-type: none; }
-.errorlist li:before { content: "× "; font-size: 22px; font-weight: bold; margin: 0 0 0 -20px; padding: 0; vertical-align: text-top; }
+.errorlist li:before { content: "× "; font-size: 22px; font-weight: bold; margin: 0 0 20px; padding: 0; vertical-align: text-top; }
 
 /* Imports for various pages, sections, features, etc. Each of these can contain their own media queries. */
 /* Home */
@@ -494,6 +494,12 @@ body.plantshare .box table { margin: 16px 0 12px; width: 100%; }
 body.plantshare .box table tr:nth-child(odd) { background-color: #e1f0d1; }
 body.plantshare .box table th, body.plantshare .box table td { padding: 6px 8px; }
 body.plantshare .box table th { font-weight: normal; text-align: left; width: 33%; }
+body.plantshare form.login { padding: 0 16px 16px; }
+body.plantshare form.login label { font-size: 10px; }
+body.plantshare form.login input { border-color: #508e31; max-width: 300px; width: 95%; }
+body.plantshare form.login input.button { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -169px -231px; border: 0; height: 32px; width: 99px; display: block; text-indent: -9000px; }
+body.plantshare form.login input.button:hover { background-position: -169px -265px; }
+body.plantshare form.login input.button:active { background-position: -169px -299px; }
 body.plantshare .sign-up-call { width: 475px; }
 body.plantshare .sign-up-call ul { line-height: 18px; list-style-position: inside; margin: 10px 0 0 24px; }
 body.plantshare .sign-up-call a { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0 -3px; height: 41px; margin: 12px auto; width: 244px; display: block; text-indent: -9000px; }
@@ -510,16 +516,14 @@ body.plantshare#sign-up #main form input { width: 350px; }
 body.plantshare#sign-up #main form input.button { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -359px; border: 0; height: 41px; margin-top: 12px; width: 244px; display: block; text-indent: -9000px; }
 body.plantshare#sign-up #main form input.button:hover { background-position: -1px -402px; }
 body.plantshare#sign-up #main form input.button:active { background-position: -1px -444px; }
+body.plantshare#login-error ul.errorlist { padding: 16px 0; }
+body.plantshare#login-error form.login { padding-left: 0; }
+body.plantshare#login-error form.login label { font-size: 12px; }
+body.plantshare#login-error form.login input { border-color: #c3d941; }
 body.plantshare#profile .info.box img { display: block; float: left; padding: 16px 16px 0 0; }
 body.plantshare#profile .info.box table { width: 85%; }
 body.plantshare #sidebar #login.box { background-color: #d3eaad; border-color: #508e31; padding: 0; }
 body.plantshare #sidebar #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
-body.plantshare #sidebar #login.box form { padding: 0 16px 16px; }
-body.plantshare #sidebar #login.box form label { font-size: 10px; }
-body.plantshare #sidebar #login.box form input { border-color: #508e31; width: 95%; }
-body.plantshare #sidebar #login.box form input.button { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -169px -231px; border: 0; height: 32px; width: 99px; display: block; text-indent: -9000px; }
-body.plantshare #sidebar #login.box form input.button:hover { background-position: -169px -265px; }
-body.plantshare #sidebar #login.box form input.button:active { background-position: -169px -299px; }
 body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding: 16px; }
 
 /* Begin media queries styles for PlantShare. */

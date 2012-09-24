@@ -41,6 +41,30 @@ body.plantshare {
             }
         }
     }
+    form.login {
+        padding: 0 $section-padding $section-padding;
+        label {
+            font-size: 10px;
+        }
+        input {
+            border-color: $link-green;
+            max-width: 300px;
+            width: 95%;
+            &.button {
+                background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -169px -231px;
+                border: 0;
+                height: 32px;
+                width: 99px;
+                @include offscreen;
+                &:hover {
+                    background-position: -169px -265px;
+                }
+                &:active {
+                    background-position: -169px -299px;
+                }
+            }
+        }
+    }
     .sign-up-call {
         width: 475px;
         ul {
@@ -107,6 +131,20 @@ body.plantshare {
             }
         }
     }
+    &#login-error {
+        ul.errorlist {
+            padding: $section-padding 0;
+        }
+        form.login {
+            padding-left: 0;
+            label {
+                font-size: 12px;
+            }
+            input {
+                border-color: $border-green;
+            }
+        }
+    }
     &#profile {
         .info.box {
             img {
@@ -127,29 +165,6 @@ body.plantshare {
             h4 {
                 font-size: 20px;
                 padding: $section-padding $section-padding 10px;
-            }
-            form {
-                padding: 0 $section-padding $section-padding;
-                label {
-                    font-size: 10px;
-                }
-                input {
-                    border-color: $link-green;
-                    width: 95%;
-                    &.button {
-                        background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -169px -231px;
-                        border: 0;
-                        height: 32px;
-                        width: 99px;
-                        @include offscreen;
-                        &:hover {
-                            background-position: -169px -265px;
-                        }
-                        &:active {
-                            background-position: -169px -299px;
-                        }
-                    }
-                }
             }
             div {
                 border-top: 1px solid $link-green;

@@ -23,21 +23,7 @@
 {% if not user.is_authenticated %}
 <div id="login" class="box">
     <h4>Log In</h4>
-    <form method="post" action="{% url auth_login %}">
-        {% csrf_token %}
-        {% comment %} 
-        Conform to Django auth's AuthenticationForm fields for now, until we create
-        a nice template tag or widget for this, so it can appear on every page.
-        Otherwise, we'd have to manually create an AuthenticationForm in every single
-        view or create a context processor for it.
-        {% endcomment %}
-        <label for="id_username">Username</label>
-        <input id="id_username" type="text" name="username" maxlength="30" />
-        <label for="id_password">Password</label>
-        <input type="password" name="password" id="id_password" />
-        <input type="submit" class="button" value="Login">
-        <input type="hidden" name="next" value="{% url ps-main %}" />
-    </form>
+    {% include "_login_form.html" %}
     <div>
         <a href="#">
             {% facebook_button %}

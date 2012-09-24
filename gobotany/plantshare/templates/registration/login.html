@@ -1,0 +1,28 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+
+{% comment %}
+Currently this page is just meant to give the user an error message if
+their login attempt fails and to let them try again. The normal starting
+point for logging in is the main PlantShare page, not here.
+{% endcomment %}
+
+{% block title %}Log In{% endblock %}
+
+{% block body_attributes %}id="login-error" class="plantshare"{% endblock %}
+
+{% block main_content %}
+<h1>Log In</h1>
+
+<ul class="errorlist">
+    <li>Please try logging in again.</li>
+</ul>
+
+{% include "_login_form.html" %}
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_minimal_navigation.html" %}
+{% endblock %}
+
+

@@ -54,8 +54,9 @@ $smallscreen-portrait-width: 320px;
 $smallscreen-landscape-width: 480px;
 
 $nav-button-color: #437829;
-$smallscreen-margin: 8px;
+$error-icon-offset: -20px;
 
+$smallscreen-margin: 8px;
 $smallscreen-potd-image-width: 297px;
 $smallscreen-portrait-box-width: 302px;
 $smallscreen-landscape-box-width: 462px;
@@ -540,7 +541,7 @@ footer {
             content: "× ";
             font-size: 22px;
             font-weight: bold;
-            margin: 0 0 0 -20px; 
+            margin: 0 0 0 -$error-icon-offset; 
             padding: 0;
             vertical-align: text-top;
         }
