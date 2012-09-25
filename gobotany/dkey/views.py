@@ -2,6 +2,7 @@ from itertools import groupby
 from operator import attrgetter
 
 from django.shortcuts import get_object_or_404, render_to_response
+from django.template import RequestContext
 from gobotany.dkey import models
 
 group_texts = {
@@ -133,4 +134,4 @@ def page(request, slug=u'Key-to-the-Families'):
             'lead_hierarchy': (lambda: proxy.lead_hierarchy()),
             'next_page': (lambda: proxy.next() or proxy.page),
             'page': (lambda: proxy.page),
-            })
+            }, context_instance=RequestContext(request))
