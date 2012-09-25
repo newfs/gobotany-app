@@ -95,11 +95,18 @@ class FunctionalCase(TestCase):
     def get(self, url, client=None):
         if not url:
             return None   # To allow passing an empty URL for a None response
-        if not client:
+        if client is None:
             client = Client()
         self.response = client.get(url)
-        parser = etree.HTMLParser()
-        self.tree = etree.fromstring(self.response.content, parser)
+        if self.response.status_code == 200:
+            parser = etree.HTMLParser()
+            self.tree = etree.fromstring(self.response.content, parser)
+        elif self.response.status_code == 302:
+            redirect_url = self.response['Location']
+            self.get(redirect_url, client=client)
+        else:
+            raise Exception(('An unexpected HTTP status code (%d) was '
+                             'returned.') % self.response.status_code)
         return FakeDriverElement(self.tree)
 
     def css(self, selector):
