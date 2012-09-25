@@ -301,3 +301,21 @@ class PlantShareTests(FunctionalCase):
         self._get_plantshare(self.MY_PROFILE_URL)
         heading = self.css1('h1').text
         self.assertEqual(heading, 'My Profile')
+
+    def test_profile_page_has_plantshare_nav_item(self):
+        self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
+        self.assertIsNotNone(self.link_saying('PlantShare'))
+
+    def test_profile_page_has_post_a_sighting_nav_item(self):
+        self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
+        self.assertIsNotNone(self.link_saying('Post a Sighting'))
+
+    def test_profile_page_has_my_profile_nav_item(self):
+        self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
+        self.assertIsNotNone(self.link_saying('My Profile'))
+
+    def test_my_profile_page_has_full_navigation(self):
+        self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
+        navigation_items = self.css('#sidebar .section')
+        self.assertGreater(len(navigation_items), 1)
+
