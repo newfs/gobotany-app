@@ -29,9 +29,11 @@ if __name__ == '__main__':
 
     if mail_to is None or not mail_to.strip():
         print >>sys.stderr, 'Error: set MAIL_TO before calling email-wrap.py'
+        exit(1)
 
     if not username or not password:
         print >>sys.stderr, 'Error: need "heroku addons:add sendgrid:starter"'
+        exit(1)
 
     p = subprocess.Popen(
         sys.argv[1:],
