@@ -91,15 +91,15 @@ class PlantShareTests(FunctionalCase):
         self._get_plantshare(self.MAIN_URL, log_in=True)
         self.assertTrue(self.css1('.profile.box'))
 
-    def test_main_page_logged_in_has_profile_nav_link(self):
+    def test_main_page_logged_in_has_profile_nav_item(self):
         self._get_plantshare(self.MAIN_URL, log_in=True)
         self.assertIsNotNone(self.link_saying('My Profile'))
 
-    def test_main_page_logged_in_has_logout_link(self):
+    def test_main_page_logged_in_has_logout_nav_item(self):
         self._get_plantshare(self.MAIN_URL, log_in=True)
         self.assertIsNotNone(self.link_saying('Log Out'))
 
-    def test_main_page_logged_in_omits_signup_nav_link(self):
+    def test_main_page_logged_in_omits_signup_nav_item(self):
         self._get_plantshare(self.MAIN_URL, log_in=True)
         link = None
         try:
@@ -168,7 +168,7 @@ class PlantShareTests(FunctionalCase):
         heading = self.css1('h1').text
         self.assertEqual(heading, 'Logged Out')
 
-    def test_log_out_page_has_plantshare_nav_link(self):
+    def test_log_out_page_has_plantshare_nav_item(self):
         self._get_plantshare(self.LOG_OUT_URL)
         self.assertIsNotNone(self.link_saying('PlantShare'))
 
@@ -191,7 +191,7 @@ class PlantShareTests(FunctionalCase):
         heading = self.css1('h1').text
         self.assertEqual(heading, 'Sign Up for PlantShare')
 
-    def test_signup_page_has_plantshare_nav_link(self):
+    def test_signup_page_has_plantshare_nav_item(self):
         self._get_plantshare(self.SIGNUP_FORM_URL)
         self.assertIsNotNone(self.link_saying('PlantShare'))
 
@@ -225,7 +225,7 @@ class PlantShareTests(FunctionalCase):
         heading = self.css1('h1').text
         self.assertEqual(heading, 'Registration Complete')
 
-    def test_registration_complete_page_has_plantshare_nav_link(self):
+    def test_registration_complete_page_has_plantshare_nav_item(self):
         self._get_plantshare(self.REG_COMPLETE_URL)
         self.assertIsNotNone(self.link_saying('PlantShare'))
 
@@ -248,7 +248,7 @@ class PlantShareTests(FunctionalCase):
         heading = self.css1('h1').text
         self.assertEqual(heading, 'Activation Complete')
 
-    def test_activation_complete_page_has_plantshare_nav_link(self):
+    def test_activation_complete_page_has_plantshare_nav_item(self):
         self._get_plantshare(self.ACTIVATION_COMPLETE_URL)
         self.assertIsNotNone(self.link_saying('PlantShare'))
 
@@ -271,15 +271,15 @@ class PlantShareTests(FunctionalCase):
         heading = self.css1('h1').text
         self.assertEqual(heading, 'Post a Sighting')
 
-    def test_new_sighting_form_page_has_plantshare_nav_link(self):
+    def test_new_sighting_form_page_has_plantshare_nav_item(self):
         self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
         self.assertIsNotNone(self.link_saying('PlantShare'))
 
-    def test_new_sighting_form_page_has_post_a_sighting_nav_link(self):
+    def test_new_sighting_form_page_has_post_a_sighting_nav_item(self):
         self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
         self.assertIsNotNone(self.link_saying('Post a Sighting'))
 
-    def test_new_sighting_form_page_has_my_profile_nav_link(self):
+    def test_new_sighting_form_page_has_my_profile_nav_item(self):
         self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
         self.assertIsNotNone(self.link_saying('My Profile'))
 
