@@ -1,8 +1,5 @@
 """Tests of whether our basic site layout is present."""
 
-import unittest
-
-from datetime import datetime
 from gobotany.libtest import FunctionalCase
 
 class HomeTests(FunctionalCase):
