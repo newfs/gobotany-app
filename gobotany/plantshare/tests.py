@@ -296,6 +296,11 @@ class PlantShareTests(FunctionalCase):
 
     MY_PROFILE_URL = '/profile/'
 
+    def test_profile_page_requires_login(self):
+        self._get_plantshare(self.MY_PROFILE_URL, log_in=False)
+        heading = self.css1('h1').text
+        self.assertEqual(heading, 'Log In')
+
     def test_profile_page_title(self):
         self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
         title = self.css1('title').text
