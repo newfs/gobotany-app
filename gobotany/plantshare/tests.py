@@ -237,7 +237,6 @@ class PlantShareTests(FunctionalCase):
     # Activation Complete page
 
     ACTIVATION_COMPLETE_URL = '/accounts/activate/complete/'
-
     def test_registration_complete_page_title(self):
         self._get_plantshare(self.ACTIVATION_COMPLETE_URL)
         title = self.css1('title').text
@@ -260,6 +259,11 @@ class PlantShareTests(FunctionalCase):
     # Post a (new) Sighting form page
 
     NEW_SIGHTING_URL = '/sightings/new/'
+
+    def test_new_sighting_form_page_requires_login(self):
+        self._get_plantshare(self.NEW_SIGHTING_URL, log_in=False)
+        heading = self.css1('h1').text
+        self.assertEqual(heading, 'Log In')
 
     def test_new_sighting_form_page_title(self):
         self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
@@ -293,12 +297,12 @@ class PlantShareTests(FunctionalCase):
     MY_PROFILE_URL = '/profile/'
 
     def test_profile_page_title(self):
-        self._get_plantshare(self.MY_PROFILE_URL)
+        self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
         title = self.css1('title').text
         self.assertEqual(title, 'My Profile: PlantShare: Go Botany')
 
     def test_profile_page_main_heading(self):
-        self._get_plantshare(self.MY_PROFILE_URL)
+        self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
         heading = self.css1('h1').text
         self.assertEqual(heading, 'My Profile')
 

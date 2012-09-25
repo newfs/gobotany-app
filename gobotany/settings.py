@@ -154,7 +154,7 @@ HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 HAYSTACK_SOLR_TIMEOUT = 20  # Longer than default timeout; added for indexing
 
 # For django-facebook-connect
-FACEBOOK_LOGIN_REDIRECT = '/ps'
+FACEBOOK_LOGIN_REDIRECT = '/ps'     # TODO: /ps/ --> /plantshare/ at release
 FACEBOOK_SCOPE = 'email' 
 if DEBUG:
 # Debug App, on Brandon's account with localhost URL
@@ -167,6 +167,7 @@ else:
 
 # For django-registration
 ACCOUNT_ACTIVATION_DAYS = 7
+LOGIN_URL = '/ps/accounts/login/'   # TODO: /ps/ --> /plantshare/ at release
 if DEBUG:
     # To test with this, start a local test email server as follows:
     # python -m smtpd -n -c DebuggingServer localhost:1025
