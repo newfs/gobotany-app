@@ -6,6 +6,10 @@
     </div>
     {% if user.is_authenticated %}
     <div class="section">
+        {% url ps-new-sighting as u %}
+        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Post a Sighting</a></h4>
+    </div>
+    <div class="section">
         {% url ps-profile as u %}
         <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>My Profile</a></h4>
     </div>

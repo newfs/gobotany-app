@@ -257,6 +257,20 @@ class PlantShareTests(FunctionalCase):
         navigation_items = self.css('#sidebar .section')
         self.assertEqual(len(navigation_items), 1)
 
+    # Post a (new) Sighting form page
+
+    NEW_SIGHTING_URL = '/sightings/new/'
+
+    def test_new_sighting_form_page_title(self):
+        self._get_plantshare(self.NEW_SIGHTING_URL)
+        title = self.css1('title').text
+        self.assertEqual(title, 'Post a Sighting: PlantShare: Go Botany')
+
+    def test_new_sighting_form_page_main_heading(self):
+        self._get_plantshare(self.NEW_SIGHTING_URL)
+        heading = self.css1('h1').text
+        self.assertEqual(heading, 'Post a Sighting')
+
     # My Profile page
 
     MY_PROFILE_URL = '/profile/'
