@@ -1,6 +1,6 @@
+{% load gobotany_tags %}
 <div class="box">
     <div class="section">
-        {% url ps-main as u %}
-        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>PlantShare</a></h4>
+        <h4>{% nav_item 'PlantShare' ps-main %}</h4>
     </div>
 </div>
