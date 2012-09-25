@@ -262,14 +262,31 @@ class PlantShareTests(FunctionalCase):
     NEW_SIGHTING_URL = '/sightings/new/'
 
     def test_new_sighting_form_page_title(self):
-        self._get_plantshare(self.NEW_SIGHTING_URL)
+        self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
         title = self.css1('title').text
         self.assertEqual(title, 'Post a Sighting: PlantShare: Go Botany')
 
     def test_new_sighting_form_page_main_heading(self):
-        self._get_plantshare(self.NEW_SIGHTING_URL)
+        self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
         heading = self.css1('h1').text
         self.assertEqual(heading, 'Post a Sighting')
+
+    def test_new_sighting_form_page_has_plantshare_nav_link(self):
+        self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
+        self.assertIsNotNone(self.link_saying('PlantShare'))
+
+    def test_new_sighting_form_page_has_post_a_sighting_nav_link(self):
+        self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
+        self.assertIsNotNone(self.link_saying('Post a Sighting'))
+
+    def test_new_sighting_form_page_has_my_profile_nav_link(self):
+        self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
+        self.assertIsNotNone(self.link_saying('My Profile'))
+
+    def test_new_sighting_form_page_has_full_navigation(self):
+        self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
+        navigation_items = self.css('#sidebar .section')
+        self.assertGreater(len(navigation_items), 1)
 
     # My Profile page
 
