@@ -168,10 +168,6 @@ $disabled_orange_gradient: linear-gradient(
             display: inline-block;
             font-size:  $base-font-size;
         }
-        a[href^="#"] {              /* links to couplets on the same page */
-            font-weight: normal;
-            font-style: italic;
-        }
         a.figure-link {             /* clickable figure numbers: [Fig. 3] */
             color: $text_dark_green;
         }
