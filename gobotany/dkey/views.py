@@ -7,19 +7,19 @@ from django.template import RequestContext
 from gobotany.dkey import models
 
 group_texts = {
-    1: 'Lycophytes, Monilophytes',
-    2: 'Gymnosperms',
-    3: 'Monocots',
-    4: 'Woody angiosperms with opposite or whorled leaves',
-    5: 'Woody angiosperms with alternate leaves',
-    6: 'Herbaceous angiosperms with inferior ovaries',
-    7: 'Herbaceous angiosperms with superior ovaries and zygomorphic flowers',
-    8: 'Herbaceous angiosperms with superior ovaries, actinomorphic flowers,'
-       ' and 2 or more distinct carpels',
-    9: 'Herbaceous angiosperms with superior ovaries, actinomorphic flowers,'
-       ' connate petals, and a solitary carpel or 2 or more connate carpels',
-    10:'Herbaceous angiosperms with superior ovaries, actinomorphic flowers,'
-       ' distinct petals or the petals lacking, and 2 or more connate carpels',
+    1: u'Lycophytes, Monilophytes',
+    2: u'Gymnosperms',
+    3: u'Monocots',
+    4: u'Woody angiosperms with opposite or whorled leaves',
+    5: u'Woody angiosperms with alternate leaves',
+    6: u'Herbaceous angiosperms with inferior ovaries',
+    7: u'Herbaceous angiosperms with superior ovaries and zygomorphic flowers',
+    8: u'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
+       u'and 2 or more distinct carpels',
+    9: u'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
+       u'connate petals, and a solitary carpel or 2 or more connate carpels',
+    10:u'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
+       u'distinct petals or the petals lacking, and 2 or more connate carpels',
     }
 
 group_texts_sorted = sorted(key_value for key_value in group_texts.items())
@@ -111,33 +111,38 @@ def get_genera():
 
 # Views
 
-class FakePage(models.Page):
-    @property
-    def breadcrumb_cache(self):
-        return models.Page.objects.none()
-
 def family_groups(request):
     """Fake quite a few things to create a bare list of groups."""
 
-    page = FakePage()
+    page = models.Page.objects.get(title='Key to the Families')
     page.title = 'List of Family Groups'
     proxy = _Proxy(page)
-    proxy.leads = []
-    for i, group in enumerate(models.Page.objects.filter(rank=u'group')):
-        lead = models.Lead()
-        lead.id = int(group.title.split()[-1])
-        lead.letter = str(lead.id)
-        lead.text = group_texts[lead.id]
-        lead.goto_page = group
-        proxy.leads.append(lead)
-    proxy.leads.sort(key=attrgetter('id'))
+
+    leads = []
+    lead_hierarchy = []
+
+    for lead in proxy.lead_hierarchy():
+        if not isinstance(lead, models.Lead):
+            continue
+
+        if not lead.goto_page:
+            continue
+
+        group_number = int(lead.goto_page.title.split()[1])
+        lead.text = group_texts[group_number]
+
+        leads.append(lead)
+
+        lead_hierarchy.append('<li>')
+        lead_hierarchy.append(lead)
+        lead_hierarchy.append('</li>')
 
     return render_to_response('dkey/page.html', {
             'groups': get_groups,
             'families': get_families,
             'genera': get_genera,
             'leads': proxy.leads,
-            'lead_hierarchy': proxy.lead_hierarchy(),
+            'lead_hierarchy': lead_hierarchy,
             'page': page,
             }, context_instance=RequestContext(request))
 
