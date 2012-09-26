@@ -56,7 +56,7 @@ $disabled_orange_gradient: linear-gradient(
 /* Styles */
 
 #dkey #main {
-    
+
     .offer-help-aside {
         float: right;
         margin: 1em 1em 0.5em 1em;
@@ -75,9 +75,7 @@ $disabled_orange_gradient: linear-gradient(
         }
         select {
             margin: 0.25em 1.0em;
-            @media (min-width: 500px) {
-                font-size: $base-font-size;
-            }
+            font-size: 1em * 16px / 12px;
         }
     }
 

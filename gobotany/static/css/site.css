@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -553,8 +554,7 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
 #dkey #main .offer-help-aside { float: right; margin: 1em 1em 0.5em 1em; text-align: right; color: #606060; }
 #dkey #main .offer-help-aside span { font-size: 12px; }
 #dkey #main .offer-help-aside a { display: inline-block; margin: 0.8em 1em; font-weight: normal; font-size: 12px; text-transform: uppercase; }
-#dkey #main .offer-help-aside select { margin: 0.25em 1.0em; }
-@media (min-width: 500px) { #dkey #main .offer-help-aside select { font-size: 12px; } }
+#dkey #main .offer-help-aside select { margin: 0.25em 1.0em; font-size: 1.33333em; }
 #dkey #main p { margin: 1em 0; max-width: 42em; }
 #dkey #main p .figure { clear: right; float: right; margin-left: 1em; margin-bottom: 1em; width: 16em; font-size: 75%; }
 #dkey #main p .figure a { display: block; margin-bottom: 0.5em; border-bottom: 1px solid black; padding-bottom: 0.5em; }
