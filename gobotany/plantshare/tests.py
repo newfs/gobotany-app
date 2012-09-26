@@ -239,7 +239,7 @@ class PlantShareTests(FunctionalCase):
     # Activation Complete page
 
     ACTIVATION_COMPLETE_URL = '/accounts/activate/complete/'
-    def test_registration_complete_page_title(self):
+    def test_activation_complete_page_title(self):
         self.assertEqual(self._page_title(self.ACTIVATION_COMPLETE_URL),
                          'Activation Complete: Go Botany')
 
