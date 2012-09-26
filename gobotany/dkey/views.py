@@ -1,6 +1,7 @@
 from itertools import groupby
 from operator import attrgetter
 
+from django.http import Http404
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from gobotany.dkey import models
@@ -129,8 +130,11 @@ def family_groups(request):
             'page': page,
             }, context_instance=RequestContext(request))
 
-def page(request, slug=u'Key-to-the-Families'):
-    title = slug.replace(u'-', u' ')
+def page(request, slug=u'key-to-the-families'):
+    if slug != slug.lower():
+        raise Http404
+    title = slug.replace(u'-', u' ').capitalize().replace(
+        ' families', ' Families').replace(' group ', ' Group ')
     page = get_object_or_404(models.Page, title=title)
     proxy = _Proxy(page)
     return render_to_response('dkey/page.html', {

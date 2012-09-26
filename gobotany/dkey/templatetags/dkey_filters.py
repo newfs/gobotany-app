@@ -73,7 +73,7 @@ def nobr(text):
     return mark_safe(new) if isinstance(text, SafeUnicode) else new
 
 def slug(page, chars=None):
-    return page.title.replace(u' ', u'-')
+    return page.title.lower().replace(u' ', u'-')
 
 def species_slug(page_title):
     return page_title.split()[1].lower()

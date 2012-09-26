@@ -8,16 +8,16 @@ class HomeTests(FunctionalCase):
         self.get('/dkey/')
 
     def test_family_groups(self):
-        self.get('/dkey/Family-Groups/')
+        self.get('/dkey/family-groups/')
 
     def test_group_1(self):
-        self.get('/dkey/Group-1/')
+        self.get('/dkey/group-1/')
 
     def test_family(self):
-        self.get('/dkey/Equisetaceae/')
+        self.get('/dkey/equisetaceae/')
 
     def test_genus(self):
-        self.get('/dkey/Equisetum/')
+        self.get('/dkey/equisetum/')
 
     def test_species(self):
-        self.get('/dkey/Equisetum-hyemale/')
+        self.get('/dkey/equisetum-hyemale/')

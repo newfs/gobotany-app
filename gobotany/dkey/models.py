@@ -29,7 +29,7 @@ class Lead(models.Model):
         """Turn '12a' into (12, 'a') but '12' into simply (12,).
 
         All real leads from the database have a number and letter like
-        '12a', but the artificial leads on the /Family-Groups/ page have
+        '12a', but the artificial leads on the /family-groups/ page have
         simple integers as strings like '12'.
 
         """
