@@ -117,7 +117,7 @@ def family_groups(request):
     for i, group in enumerate(models.Page.objects.filter(rank=u'group')):
         lead = models.Lead()
         lead.id = int(group.title.split()[-1])
-        lead.letter = unicode(i + 1)
+        lead.letter = str(lead.id)
         lead.text = group_texts[lead.id]
         lead.goto_page = group
         proxy.leads.append(lead)
