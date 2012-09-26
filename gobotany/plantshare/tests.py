@@ -21,15 +21,15 @@ class PlantShareTests(FunctionalCase):
         self.user = User.objects.create_user(
             self.TEST_USERNAME, self.TEST_EMAIL, self.TEST_PASSWORD)
 
-    def _get_plantshare(self, url_path, log_in=False, username=TEST_USERNAME,
-                        password=TEST_PASSWORD):
+    def _get_plantshare(self, url_path, kwargs=None, log_in=False,
+                        username=TEST_USERNAME, password=TEST_PASSWORD):
         """Get a PlantShare page."""
         url = self.PLANTSHARE_BASE + url_path
         client = None
         if log_in:
             client = Client()
             client.login(username=username, password=password)
-        self.get(url, client=client)
+        self.get(url, kwargs=kwargs, client=client)
 
     # Test helpers
 
@@ -164,6 +164,11 @@ class PlantShareTests(FunctionalCase):
         self._get_plantshare(self.MY_PROFILE_URL)   # A page requiring login
         message = self.css1('h1 + p').text
         self.assertEqual(message, 'Please log in to continue.')
+
+    def test_login_page_error_message_when_request_param_next_present(self):
+        self._get_plantshare(self.LOG_IN_URL, kwargs={'next': '/ps/profile/'})
+        message = self.css1('.errorlist li').text
+        self.assertEqual(message, 'Please try logging in again.')
 
     def test_login_page_occurs_upon_bad_login(self):
         self._get_plantshare(self.MY_PROFILE_URL, log_in=True,

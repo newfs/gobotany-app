@@ -92,10 +92,10 @@ class FunctionalCase(TestCase):
     # that our two flavors of functional test do not look entirely
     # different!
 
-    def get(self, url, client=None):
+    def get(self, url, kwargs=None, client=None):
         if client is None:
             client = Client()
-        self.response = client.get(url)
+        self.response = client.get(url, kwargs=kwargs)
         if self.response.status_code == 200:
             content = self.response.content
             if content.startswith('<?xml'):
