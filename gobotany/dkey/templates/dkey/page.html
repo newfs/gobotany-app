@@ -21,12 +21,17 @@
   <a href="#">Get Help</a>
   {% if title == 'Key to the Families' %}
     <br><select class="jumpbox">
-      <option>Jump to a family…</option>
+      <option value="instructions">Jump to a group…</option>
+      {% for group in groups %}
+      <option>{{ group }}</option>
+      {% endfor %}
+    </select><br><select class="jumpbox">
+      <option value="instructions">Jump to a family…</option>
       {% for family in families %}
       <option>{{ family }}</option>
       {% endfor %}
     </select><br><select class="jumpbox">
-      <option>Jump to a genus…</option>
+      <option value="instructions">Jump to a genus…</option>
       {% for genus in genera %}
       <option>{{ genus }}</option>
       {% endfor %}

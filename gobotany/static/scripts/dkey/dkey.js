@@ -228,11 +228,18 @@ define([
         });
     }
 
-    /* Front page selectboxes for jumping to families and genera. */
+    /* Front "Dichotomous Key to Families" page selectboxes for jumping
+       to groups, families, and genera. */
+
+    var reset_select = function(element) {
+        $(element).val('instructions');
+    };
 
     $('.jumpbox').on('change', function(event) {
-        var jumpto = $(':selected', event.delegateTarget).html();
-        if (jumpto && ! jumpto.match(/^Jump/)) {
+        var text = $(':selected', event.delegateTarget).html();
+        var jumpto = text.toLowerCase().replace(' ', '-');
+        reset_select(event.delegateTarget);
+        if (jumpto && ! jumpto.match(/^jump/)) {
             window.location = '/dkey/' + jumpto + '/';
         }
     });

@@ -93,6 +93,10 @@ class _Proxy(object):
                 ul = '<ul class="couplet"{}>'.format(id)
                 stack += [ul]  # TODO: needs id for linking
 
+def get_groups():
+    pages = models.Page.objects.filter(rank='group')
+    return sorted(page.title for page in pages)
+
 def get_families():
     pages = models.Page.objects.filter(rank='family')
     return sorted(page.title for page in pages)
@@ -138,6 +142,7 @@ def page(request, slug=u'key-to-the-families'):
     page = get_object_or_404(models.Page, title=title)
     proxy = _Proxy(page)
     return render_to_response('dkey/page.html', {
+            'groups': get_groups,
             'families': get_families,
             'genera': get_genera,
             'leads': (lambda: proxy.leads),
