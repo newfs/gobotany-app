@@ -93,10 +93,11 @@ define([
 
         /* Enable or disable the "show all" button. */
 
+        var button = $('.show-all-button');
         if (new_hash === 'all') {
-            $('.show-all-button').addClass('disabled').removeAttr('href');
+            button.html('Show First Couplet').attr('href', '#');
         } else {
-            $('.show-all-button').removeClass('disabled').attr('href', '#all');
+            button.html('Show All Couplets').attr('href', '#all');
         }
     }
 
