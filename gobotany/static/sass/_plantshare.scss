@@ -131,7 +131,13 @@ body.plantshare {
             }
         }
     }
-    &#login-error {
+    &#log-in {
+        h1 + p {
+            font-family: $headings-font;
+            font-size: 14px;
+            margin: 0;
+            padding: $section-padding 0;
+        }
         ul.errorlist {
             padding: $section-padding 0;
         }

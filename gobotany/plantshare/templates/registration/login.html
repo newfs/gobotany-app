@@ -8,14 +8,18 @@ point for logging in is the main PlantShare page, not here.
 
 {% block title %}Log In: PlantShare{% endblock %}
 
-{% block body_attributes %}id="login-error" class="plantshare"{% endblock %}
+{% block body_attributes %}id="log-in" class="plantshare"{% endblock %}
 
 {% block main_content %}
 <h1>Log In</h1>
 
-<ul class="errorlist">
-    <li>Please try logging in again.</li>
-</ul>
+{% if request.GET.next %}
+    <p>Please log in to continue.</p>
+{% else %}
+    <ul class="errorlist">
+        <li>Please try logging in again.</li>
+    </ul>
+{% endif %}
 
 {% include "_login_form.html" %}
 

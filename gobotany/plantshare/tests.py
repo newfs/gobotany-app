@@ -28,9 +28,7 @@ class PlantShareTests(FunctionalCase):
         client = None
         if log_in:
             client = Client()
-            success = client.login(username=username, password=password)
-            if not success:
-                url = None
+            client.login(username=username, password=password)
         self.get(url, client=client)
 
     # Test helpers
@@ -140,30 +138,38 @@ class PlantShareTests(FunctionalCase):
             pass
         self.assertIsNone(form)
 
-    # Login Error page
+    # Log In page: used only for login errors or when users attempt to
+    # visit a URL that requires login. The usual place to log in is the
+    # form in the sidebthe PlantShare main page.
 
-    LOGIN_ERROR_URL = '/accounts/login/'
+    LOG_IN_URL = '/accounts/login/'
 
-    def test_login_error_page_title(self):
-        self.assertEqual(self._page_title(self.LOGIN_ERROR_URL),
+    def test_login_page_title(self):
+        self.assertEqual(self._page_title(self.LOG_IN_URL),
                          'Log In: PlantShare: Go Botany')
 
-    def test_login_error_page_main_heading(self):
-        self.assertEqual(self._page_heading(self.LOGIN_ERROR_URL), 'Log In')
+    def test_login_page_main_heading(self):
+        self.assertEqual(self._page_heading(self.LOG_IN_URL), 'Log In')
 
-    def test_login_error_page_has_plantshare_nav_link(self):
-        self._get_plantshare(self.LOGIN_ERROR_URL)
+    def test_login_page_has_plantshare_nav_link(self):
+        self._get_plantshare(self.LOG_IN_URL)
         self.assertIsNotNone(self.link_saying('PlantShare'))
 
-    def test_login_error_page_has_minimal_navigation(self):
-        self._get_plantshare(self.LOGIN_ERROR_URL)
+    def test_login_page_has_minimal_navigation(self):
+        self._get_plantshare(self.LOG_IN_URL)
         navigation_items = self.css('#sidebar .section')
         self.assertEqual(len(navigation_items), 1)
 
-    def test_login_error_occurs_upon_bad_login(self):
-        self.assertIsNone(self._get_plantshare(self.MAIN_URL, log_in=True,
-                                               username='nobody',
-                                               password='nothing'))
+    def test_login_page_has_message_requesting_login_to_continue(self):
+        self._get_plantshare(self.MY_PROFILE_URL)   # A page requiring login
+        message = self.css1('h1 + p').text
+        self.assertEqual(message, 'Please log in to continue.')
+
+    def test_login_page_occurs_upon_bad_login(self):
+        self._get_plantshare(self.MY_PROFILE_URL, log_in=True,
+                             username='nobody', password='nothing')
+        heading = self.css1('h1').text
+        self.assertEqual(heading, 'Log In')
 
     # Log Out confirmation page
 
