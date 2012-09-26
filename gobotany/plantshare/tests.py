@@ -146,7 +146,7 @@ class PlantShareTests(FunctionalCase):
 
     def test_login_error_page_title(self):
         self.assertEqual(self._page_title(self.LOGIN_ERROR_URL),
-                         'Log In: Go Botany')
+                         'Log In: PlantShare: Go Botany')
 
     def test_login_error_page_main_heading(self):
         self.assertEqual(self._page_heading(self.LOGIN_ERROR_URL), 'Log In')
@@ -171,7 +171,7 @@ class PlantShareTests(FunctionalCase):
 
     def test_log_out_page_title(self):
         self.assertEqual(self._page_title(self.LOG_OUT_URL),
-                         'Logged Out: Go Botany')
+                         'Logged Out: PlantShare: Go Botany')
 
     def test_log_out_page_main_heading(self):
         self.assertEqual(self._page_heading(self.LOG_OUT_URL), 'Logged Out')
@@ -224,7 +224,7 @@ class PlantShareTests(FunctionalCase):
 
     def test_registration_complete_page_title(self):
         self.assertEqual(self._page_title(self.REG_COMPLETE_URL),
-                         'Registration Complete: Go Botany')
+                         'Registration Complete: PlantShare: Go Botany')
 
     def test_registration_complete_page_main_heading(self):
         self.assertEqual(self._page_heading(self.REG_COMPLETE_URL),
@@ -244,7 +244,7 @@ class PlantShareTests(FunctionalCase):
     ACTIVATION_COMPLETE_URL = '/accounts/activate/complete/'
     def test_activation_complete_page_title(self):
         self.assertEqual(self._page_title(self.ACTIVATION_COMPLETE_URL),
-                         'Activation Complete: Go Botany')
+                         'Activation Complete: PlantShare: Go Botany')
 
     def test_activation_complete_page_main_heading(self):
         self.assertEqual(self._page_heading(self.ACTIVATION_COMPLETE_URL),
@@ -328,4 +328,3 @@ class PlantShareTests(FunctionalCase):
         self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
         navigation_items = self.css('#sidebar .section')
         self.assertGreater(len(navigation_items), 1)
-
