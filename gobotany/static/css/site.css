@@ -566,7 +566,7 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
 #dkey #main ul.couplets { clear: both; margin: 0em; max-width: 48em; padding: 1em 1em 0 0; font-size: 12px; line-height: 1.5em; }
 #dkey #main ul.couplets ul { /* a couplet */ margin: 0em; padding-bottom: 0em; /* override browser default */ padding-left: 2%; /* indent of each level of couplet */ }
 #dkey #main ul.couplets li { /* holds a lead and any <ul> beneath it */ display: block; position: relative; }
-#dkey #main ul.couplets .lead { /* green box */ margin: 0em 0em 1em 0em; border: 2px solid #d9dbb1; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; padding: 1em 1em 1em 1.5em; background-color: #d9dbb1; }
+#dkey #main ul.couplets .lead { /* green box */ margin: 0em 0em 1em 0em; border: 6px solid #d9dbb1; -webkit-border-radius: 1.5em; -moz-border-radius: 1.5em; -ms-border-radius: 1.5em; -o-border-radius: 1.5em; border-radius: 1.5em; padding: 1em 1em 1em 1.5em; background-color: #d9dbb1; }
 #dkey #main ul.couplets .lead:after { /* "clear" the float for the button */ display: block; content: " "; height: 0px; clear: both; }
 #dkey #main ul.couplets .letter { /* "1a." or "12b." or whatever */ font-weight: bold; padding-right: 0.5em; }
 #dkey #main ul.couplets .button-block { /* contains what-lies-beneath and button */ float: right; margin: 0em 0em 0.4em 1.2em; text-align: right; }
@@ -575,7 +575,7 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
 #dkey #main ul.couplets a.button { /* big orange button */ display: inline-block; font-size: 12px; }
 #dkey #main ul.couplets a.figure-link { /* clickable figure numbers: [Fig. 3] */ color: #35661c; }
 #dkey #main ul.couplets .chosen { border-color: #7abe58; }
-#dkey #main ul.active > li > .lead, #dkey #main ul:target > li > .lead { background-color: #b4d57f; border-color: #7abe58; }
+#dkey #main ul.active > li > .lead, #dkey #main ul:target > li > .lead { background-color: #b4d57f; border-color: #b4d57f; }
 #dkey #main a.show-all-button { display: inline-block; font-size: 12px; font-weight: normal; }
 #dkey #main .image-type-selector { display: none; /* once images are loaded, our JS will un-hide */ }
 #dkey #main div.taxon-images { margin-left: 0.75em; text-align: center; }

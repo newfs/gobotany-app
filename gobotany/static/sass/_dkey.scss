@@ -135,8 +135,8 @@ $disabled_orange_gradient: linear-gradient(
         }
         .lead {                     /* green box */
             margin: 0em 0em 1em 0em;
-            border: 2px solid $inactive_bg;
-            @include border-radius(1em);
+            border: 6px solid $inactive_bg;
+            @include border-radius(1.5em);
             padding: 1em 1em 1em 1.5em;
             background-color: $inactive_bg;
         }
@@ -178,7 +178,7 @@ $disabled_orange_gradient: linear-gradient(
     ul.active > li > .lead,
     ul:target > li > .lead {
         background-color: $active_bg;
-        border-color: $active_border;
+        border-color: $active_bg;
     }
     a.show-all-button {
         @extend .orange-button;
