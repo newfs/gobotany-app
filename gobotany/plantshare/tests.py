@@ -21,6 +21,7 @@ class PlantShareTests(FunctionalCase):
 
     def _get_plantshare(self, url_path, log_in=False, username=TEST_USERNAME,
                         password=TEST_PASSWORD):
+        """Get a PlantShare page."""
         url = self.PLANTSHARE_BASE + url_path
         client = None
         if log_in:
@@ -30,19 +31,30 @@ class PlantShareTests(FunctionalCase):
                 url = None
         self.get(url, client=client)
 
+    # Test helpers
+
+    def _page_title(self, url_path, log_in=False):
+        """Return the HTML title for a page."""
+        self._get_plantshare(url_path, log_in=log_in)
+        return self.css1('title').text
+
+    def _page_heading(self, url_path, log_in=False):
+        """Return the main (h1) heading for a page."""
+        self._get_plantshare(url_path, log_in=log_in)
+        return self.css1('h1').text
+
+    ### TESTS ###
+
     # PlantShare main page
 
     MAIN_URL = '/'
 
     def test_main_page_title(self):
-        self._get_plantshare(self.MAIN_URL)
-        title = self.css1('title').text
-        self.assertEqual(title, 'PlantShare: Go Botany')
+        self.assertEqual(self._page_title(self.MAIN_URL),
+                         'PlantShare: Go Botany')
 
     def test_main_page_main_heading(self):
-        self._get_plantshare(self.MAIN_URL)
-        heading = self.css1('h1').text
-        self.assertEqual(heading, 'PlantShare')
+        self.assertEqual(self._page_heading(self.MAIN_URL), 'PlantShare')
 
     # PlantShare main page: when user is logged out
 
@@ -131,14 +143,11 @@ class PlantShareTests(FunctionalCase):
     LOGIN_ERROR_URL = '/accounts/login/'
 
     def test_login_error_page_title(self):
-        self._get_plantshare(self.LOGIN_ERROR_URL)
-        title = self.css1('title').text
-        self.assertEqual(title, 'Log In: Go Botany')
+        self.assertEqual(self._page_title(self.LOGIN_ERROR_URL),
+                         'Log In: Go Botany')
 
     def test_login_error_page_main_heading(self):
-        self._get_plantshare(self.LOGIN_ERROR_URL)
-        heading = self.css1('h1').text
-        self.assertEqual(heading, 'Log In')
+        self.assertEqual(self._page_heading(self.LOGIN_ERROR_URL), 'Log In')
 
     def test_login_error_page_has_plantshare_nav_link(self):
         self._get_plantshare(self.LOGIN_ERROR_URL)
@@ -159,14 +168,11 @@ class PlantShareTests(FunctionalCase):
     LOG_OUT_URL = '/accounts/logout/'
 
     def test_log_out_page_title(self):
-        self._get_plantshare(self.LOG_OUT_URL)
-        title = self.css1('title').text
-        self.assertEqual(title, 'Logged Out: Go Botany')
+        self.assertEqual(self._page_title(self.LOG_OUT_URL),
+                         'Logged Out: Go Botany')
 
     def test_log_out_page_main_heading(self):
-        self._get_plantshare(self.LOG_OUT_URL)
-        heading = self.css1('h1').text
-        self.assertEqual(heading, 'Logged Out')
+        self.assertEqual(self._page_heading(self.LOG_OUT_URL), 'Logged Out')
 
     def test_log_out_page_has_plantshare_nav_item(self):
         self._get_plantshare(self.LOG_OUT_URL)
@@ -182,14 +188,12 @@ class PlantShareTests(FunctionalCase):
     SIGNUP_FORM_URL = '/accounts/register/'
 
     def test_signup_page_title(self):
-        self._get_plantshare(self.SIGNUP_FORM_URL)
-        title = self.css1('title').text
-        self.assertEqual(title, 'Sign Up for PlantShare: Go Botany')
+        self.assertEqual(self._page_title(self.SIGNUP_FORM_URL),
+                         'Sign Up for PlantShare: Go Botany')
 
     def test_signup_page_main_heading(self):
-        self._get_plantshare(self.SIGNUP_FORM_URL)
-        heading = self.css1('h1').text
-        self.assertEqual(heading, 'Sign Up for PlantShare')
+        self.assertEqual(self._page_heading(self.SIGNUP_FORM_URL),
+                         'Sign Up for PlantShare')
 
     def test_signup_page_has_plantshare_nav_item(self):
         self._get_plantshare(self.SIGNUP_FORM_URL)
@@ -216,14 +220,12 @@ class PlantShareTests(FunctionalCase):
     REG_COMPLETE_URL = '/accounts/register/complete/'
 
     def test_registration_complete_page_title(self):
-        self._get_plantshare(self.REG_COMPLETE_URL)
-        title = self.css1('title').text
-        self.assertEqual(title, 'Registration Complete: Go Botany')
+        self.assertEqual(self._page_title(self.REG_COMPLETE_URL),
+                         'Registration Complete: Go Botany')
 
     def test_registration_complete_page_main_heading(self):
-        self._get_plantshare(self.REG_COMPLETE_URL)
-        heading = self.css1('h1').text
-        self.assertEqual(heading, 'Registration Complete')
+        self.assertEqual(self._page_heading(self.REG_COMPLETE_URL),
+                                            'Registration Complete')
 
     def test_registration_complete_page_has_plantshare_nav_item(self):
         self._get_plantshare(self.REG_COMPLETE_URL)
@@ -238,14 +240,12 @@ class PlantShareTests(FunctionalCase):
 
     ACTIVATION_COMPLETE_URL = '/accounts/activate/complete/'
     def test_registration_complete_page_title(self):
-        self._get_plantshare(self.ACTIVATION_COMPLETE_URL)
-        title = self.css1('title').text
-        self.assertEqual(title, 'Activation Complete: Go Botany')
+        self.assertEqual(self._page_title(self.ACTIVATION_COMPLETE_URL),
+                         'Activation Complete: Go Botany')
 
     def test_activation_complete_page_main_heading(self):
-        self._get_plantshare(self.ACTIVATION_COMPLETE_URL)
-        heading = self.css1('h1').text
-        self.assertEqual(heading, 'Activation Complete')
+        self.assertEqual(self._page_heading(self.ACTIVATION_COMPLETE_URL),
+                         'Activation Complete')
 
     def test_activation_complete_page_has_plantshare_nav_item(self):
         self._get_plantshare(self.ACTIVATION_COMPLETE_URL)
@@ -266,14 +266,13 @@ class PlantShareTests(FunctionalCase):
         self.assertEqual(heading, 'Log In')
 
     def test_new_sighting_form_page_title(self):
-        self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
-        title = self.css1('title').text
-        self.assertEqual(title, 'Post a Sighting: PlantShare: Go Botany')
+        self.assertEqual(self._page_title(
+            self.NEW_SIGHTING_URL, log_in=True),
+            'Post a Sighting: PlantShare: Go Botany')
 
     def test_new_sighting_form_page_main_heading(self):
-        self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
-        heading = self.css1('h1').text
-        self.assertEqual(heading, 'Post a Sighting')
+        self.assertEqual(self._page_heading(self.NEW_SIGHTING_URL,
+                                            log_in=True), 'Post a Sighting')
 
     def test_new_sighting_form_page_has_plantshare_nav_item(self):
         self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
@@ -302,14 +301,13 @@ class PlantShareTests(FunctionalCase):
         self.assertEqual(heading, 'Log In')
 
     def test_profile_page_title(self):
-        self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
-        title = self.css1('title').text
-        self.assertEqual(title, 'My Profile: PlantShare: Go Botany')
+        self.assertEqual(self._page_title(
+            self.MY_PROFILE_URL, log_in=True),
+            'My Profile: PlantShare: Go Botany')
 
     def test_profile_page_main_heading(self):
-        self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
-        heading = self.css1('h1').text
-        self.assertEqual(heading, 'My Profile')
+        self.assertEqual(self._page_heading(self.MY_PROFILE_URL,
+                                            log_in=True), 'My Profile')
 
     def test_profile_page_has_plantshare_nav_item(self):
         self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
