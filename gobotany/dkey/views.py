@@ -102,16 +102,22 @@ def get_genera():
 
 # Views
 
+class FakePage(models.Page):
+    @property
+    def breadcrumb_cache(self):
+        return models.Page.objects.none()
+
 def family_groups(request):
     """Fake quite a few things to create a bare list of groups."""
 
-    page = models.Page()
+    page = FakePage()
     page.title = 'List of Family Groups'
     proxy = _Proxy(page)
-    for group in models.Page.objects.filter(rank=u'group').all():
+    proxy.leads = []
+    for i, group in enumerate(models.Page.objects.filter(rank=u'group')):
         lead = models.Lead()
         lead.id = int(group.title.split()[-1])
-        lead.letter = 'Group {}'.format(lead.id)
+        lead.letter = unicode(i + 1)
         lead.text = group_texts[lead.id]
         lead.goto_page = group
         proxy.leads.append(lead)
@@ -121,7 +127,7 @@ def family_groups(request):
             'leads': proxy.leads,
             'lead_hierarchy': proxy.lead_hierarchy(),
             'page': page,
-            })
+            }, context_instance=RequestContext(request))
 
 def page(request, slug=u'Key-to-the-Families'):
     title = slug.replace(u'-', u' ')

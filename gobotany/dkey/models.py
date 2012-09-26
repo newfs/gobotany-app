@@ -26,8 +26,17 @@ class Lead(models.Model):
                                   or self.goto_num or '')
 
     def sort_key(self):
-        """Turn '12a' into (12, 'a')."""
-        return int(self.letter[:-1]), self.letter[-1]
+        """Turn '12a' into (12, 'a') but '12' into simply (12,).
+
+        All real leads from the database have a number and letter like
+        '12a', but the artificial leads on the /Family-Groups/ page have
+        simple integers as strings like '12'.
+
+        """
+        if self.letter[-1].isdigit():
+            return int(self.letter),
+        else:
+            return int(self.letter[:-1]), self.letter[-1]
 
 class Figure(models.Model):
     number = models.IntegerField(primary_key=True)
