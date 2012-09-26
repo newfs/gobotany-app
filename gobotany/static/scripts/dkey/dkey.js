@@ -3,21 +3,28 @@ define([
     'bridge/jquery.mousewheel',
     'bridge/underscore',
     'lib/Hash',
+    'simplekey/glossarize',
     'util/lazy_images'
-], function($, ignore, _, Hash, lazy_images) {$(document).ready(function() {
+], function(
+    $, ignore, _, Hash, glossarize, lazy_images
+) {$(document).ready(function() {
 
     var couplet_rank = $('body').attr('data-couplet-rank');
     var couplet_title = $('body').attr('data-couplet-title');
 
-    // Enable lazy image loading.
+    /* Enable lazy image loading. */
 
     lazy_images.start();
 
-    // Where to direct RPC requests for lists of images.
+    /* Glossarize lead texts. */
+
+    glossarize($('.couplets .lead'));
+
+    /* Where to direct RPC requests for lists of images. */
 
     var gobotany_host = 'quiet-wind-6510.herokuapp.com';
 
-    // Rewrite couplet IDs so that #-links will no longer match.
+    /* Rewrite couplet IDs so that #-links will no longer match. */
 
     $('.couplet').each(function(i, ul) {
         var id = $(ul).attr('id');
@@ -38,7 +45,7 @@ define([
         }
     };
 
-    // Visiting particular couplets.
+    /* Visiting particular couplets. */
 
     var focus_on_one_couplet = function(new_hash, is_initial) {
 

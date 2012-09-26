@@ -182,6 +182,13 @@ $disabled_orange_gradient: linear-gradient(
         background-color: $active_bg;
         border-color: $active_bg;
     }
+
+    .gloss {
+        border-bottom: none;  /* normally glossary terms are "underlined" */
+        color: $text_dark_green;
+        cursor: pointer;
+    }
+
     a.show-all-button {
         @extend .orange-button;
         display: inline-block;
