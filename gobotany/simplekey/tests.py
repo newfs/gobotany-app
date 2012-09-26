@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Tests for the Simple Key application."""
 
 import re
@@ -53,7 +54,38 @@ class GenusTests(FunctionalCase):
         self.assertTrue(len(species))
 
 
-class SpeciesTests(FunctionalCase):
+class SpeciesPageTests(FunctionalCase):
+
+    def crumb(self, n):
+        return self.text(self.css('#breadcrumb a')[n])
+
+    def test_simplekey_species_breadcrumbs(self):
+        self.get('/species/dendrolycopodium/dendroideum/?pile=lycophytes')
+        self.assertEqual(self.crumb(0), u'Simple Key')
+        self.assertEqual(self.crumb(1), u'Ferns')
+        self.assertEqual(self.crumb(2),
+                         u'Clubmosses and relatives, plus quillworts')
+
+    def test_simplekey_species_dichotomous_breadcrumbs(self):
+        self.get('/species/dendrolycopodium/dendroideum/?key=dichotomous')
+        self.assertEqual(self.crumb(0), u'« Back to the Key to the Families')
+        self.assertEqual(self.crumb(1), u'« Group 1')
+        self.assertEqual(self.crumb(2), u'« Family Lycopodiaceae')
+
+    def test_fullkey_species_breadcrumbs(self):
+        self.get('/species/diphasiastrum/complanatum/?pile=lycophytes')
+        self.assertEqual(self.crumb(0), u'Full Key')
+        self.assertEqual(self.crumb(1), u'Ferns')
+        self.assertEqual(self.crumb(2),
+                         u'Clubmosses and relatives, plus quillworts')
+
+    def test_fullkey_species_dichotomous_breadcrumbs(self):
+        self.get('/species/diphasiastrum/complanatum/?key=dichotomous')
+        self.assertEqual(self.crumb(0), u'« Back to the Key to the Families')
+        self.assertEqual(self.crumb(1), u'« Group 1')
+        self.assertEqual(self.crumb(2), u'« Family Lycopodiaceae')
+
+    #
 
     def _photos_have_expected_caption_format(self, species_page_url):
         # For a species page, make sure the plant photos have the expected

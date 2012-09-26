@@ -249,7 +249,10 @@ def species_view(request, genus_slug, epithet):
         dkey_page = dkey_models.Page.objects.get(title=scientific_name)
     else:
         dkey_page = None
-        key = ''  # prevent illegal value from reaching template
+        if partner_species and partner_species.simple_key:
+            key = 'simple'
+        else:
+            key = 'full'
 
     species_images = botany.species_images(taxon)
     images = _images_with_copyright_holders(species_images)
@@ -328,9 +331,6 @@ def species_view(request, genus_slug, epithet):
            'common_names': taxon.common_names.all(),  # view uses this 3 times
            'dkey_page': dkey_page,
            'images': images,
-           'key': 'simple'
-               if partner_species and partner_species.simple_key
-               else 'full',
            'partner_heading': partner_species.species_page_heading
                if partner_species else None,
            'partner_blurb': partner_species.species_page_blurb
