@@ -19,24 +19,22 @@
 <div class="offer-help-aside">
   <span>Want help getting started?</span>
   <a href="#">Get Help</a>
-  {% if title == 'Key to the Families' %}
-    <br><select class="jumpbox">
-      <option value="instructions">Jump to a group…</option>
-      {% for group in groups %}
+  <br><select class="jumpbox">
+    <option value="instructions">Jump to a group…</option>
+    {% for group in groups %}
       <option>{{ group }}</option>
-      {% endfor %}
-    </select><br><select class="jumpbox">
-      <option value="instructions">Jump to a family…</option>
-      {% for family in families %}
+    {% endfor %}
+  </select><br><select class="jumpbox">
+    <option value="instructions">Jump to a family…</option>
+    {% for family in families %}
       <option>{{ family }}</option>
-      {% endfor %}
-    </select><br><select class="jumpbox">
-      <option value="instructions">Jump to a genus…</option>
+    {% endfor %}
+  </select><br><select class="jumpbox">
+    <option value="instructions">Jump to a genus…</option>
       {% for genus in genera %}
-      <option>{{ genus }}</option>
-      {% endfor %}
-    </select>
-  {% endif %}
+    <option>{{ genus }}</option>
+    {% endfor %}
+  </select>
 </div>
 
 {% if title == 'Key to the Families' %}
