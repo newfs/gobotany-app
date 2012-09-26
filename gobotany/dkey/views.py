@@ -133,6 +133,9 @@ def family_groups(request):
     proxy.leads.sort(key=attrgetter('id'))
 
     return render_to_response('dkey/page.html', {
+            'groups': get_groups,
+            'families': get_families,
+            'genera': get_genera,
             'leads': proxy.leads,
             'lead_hierarchy': proxy.lead_hierarchy(),
             'page': page,
