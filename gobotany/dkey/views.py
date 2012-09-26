@@ -129,6 +129,7 @@ def family_groups(request):
             continue
 
         group_number = int(lead.goto_page.title.split()[1])
+        lead.letter = str(group_number)
         lead.text = group_texts[group_number]
 
         leads.append(lead)
