@@ -573,7 +573,7 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
 #dkey #main ul.couplets a.what-lies-beneath { /* message that sits above the button */ display: inline-block; text-decoration: none; color: #35661c; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 12px; text-transform: uppercase; }
 #dkey #main ul.couplets a.what-lies-beneath:hover { text-decoration: underline; }
 #dkey #main ul.couplets a.button { /* big orange button */ display: inline-block; font-size: 12px; }
-#dkey #main ul.couplets a.figure-link { /* clickable figure numbers: [Fig. 3] */ color: #35661c; }
+#dkey #main ul.couplets a.figure-link { /* clickable figure numbers: [Fig. 3] */ color: #35661c; text-decoration: underline; font-weight: bold; }
 #dkey #main ul.couplets .chosen { border-color: #7abe58; }
 #dkey #main ul.active > li > .lead, #dkey #main ul:target > li > .lead { background-color: #b4d57f; border-color: #b4d57f; }
 #dkey #main a.show-all-button { display: inline-block; font-size: 12px; font-weight: normal; }

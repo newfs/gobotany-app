@@ -170,6 +170,8 @@ $disabled_orange_gradient: linear-gradient(
         }
         a.figure-link {             /* clickable figure numbers: [Fig. 3] */
             color: $text_dark_green;
+            text-decoration: underline;
+            font-weight: bold;
         }
     }
     ul.couplets .chosen {
