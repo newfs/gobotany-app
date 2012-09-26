@@ -22,6 +22,8 @@ group_texts = {
        ' distinct petals or the petals lacking, and 2 or more connate carpels',
     }
 
+group_texts_sorted = sorted(key_value for key_value in group_texts.items())
+
 def fill_in_taxa(child_leads, lead):
     if lead.taxa_cache:
         lead.taxa_rank, lead.taxa_list = lead.taxa_cache.split(':')
@@ -94,8 +96,10 @@ class _Proxy(object):
                 stack += [ul]  # TODO: needs id for linking
 
 def get_groups():
-    pages = models.Page.objects.filter(rank='group')
-    return sorted(page.title for page in pages)
+    groups = []
+    for number, text in group_texts_sorted:
+        groups.append({'name': 'Group %d' % number, 'text': text})
+    return groups
 
 def get_families():
     pages = models.Page.objects.filter(rank='family')

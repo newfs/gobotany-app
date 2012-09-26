@@ -22,7 +22,7 @@
   <br><select class="jumpbox">
     <option value="instructions">Jump to a group…</option>
     {% for group in groups %}
-      <option>{{ group }}</option>
+      <option title="{{ group.text }}">{{ group.name }}</option>
     {% endfor %}
   </select><br><select class="jumpbox">
     <option value="instructions">Jump to a family…</option>
