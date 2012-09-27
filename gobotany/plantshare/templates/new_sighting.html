@@ -7,7 +7,18 @@
 {% block main_content %}
 <h1>Post a Sighting</h1>
 
-<p>Here the user will be able to record a new sighting.</p>
+<div>
+    <p><strong>Spotted a plant and want to share it with others? Here's where
+        to start!</strong></p>
+    <p><em>Rare Plant Sightings: As a matter of policy, sightings of rare 
+    plants will not be posted to any other PlantShare members. However,
+    we welcome you to send these postings to us. We will use this
+    information for our scientific studies. Postings will be
+    confidential.</em></p>
+    <p>* = Required</p>
+</div>
+
+{% include "_sighting_form.html" %}
 
 {% endblock %}
 

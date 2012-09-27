@@ -1,0 +1,30 @@
+    <form method="post" action="{% url ps-sightings %}">
+        {% csrf_token %}
+
+        <label for="identification">Identification of plant *</label>
+        <input id="identification" type="text" name="identification"
+        maxlength="120" placeholder="scientific or common name">
+
+        <label for="title">Title for this sighting *</label>
+        <input id="title" type="text" name="title" maxlength="120">
+
+        <label for="notes">Description or comments</label>
+        <textarea id="notes"></textarea>
+
+        <fieldset>
+            <legend>Location *</legend>
+
+            <label for="location">Location</label>
+            <input id="location" type="text" name="location" maxlength="255"
+                placeholder="city, state OR postal code OR latitude, longitude">
+
+            <label for="location_notes">Notes</label>
+            <textarea id="location_notes"
+                placeholder="optional notes about plant location, such
+                as End of road, near oak tree"></textarea>
+        </fieldset>
+
+        <input type="submit" class="post-sighting-btn inactive"
+        alt="Post a Sighting">
+
+    </form>

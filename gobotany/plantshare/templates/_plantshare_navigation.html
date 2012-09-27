@@ -6,6 +6,9 @@
     </div>
     {% if user.is_authenticated %}
     <div class="section">
+        <h4>{% nav_item 'Sightings' ps-sightings %}</h4>
+    </div>
+    <div class="section">
         <h4>{% nav_item 'Post a Sighting' ps-new-sighting %}</h4>
     </div>
     <div class="section">

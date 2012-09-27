@@ -13,9 +13,12 @@ urlpatterns = patterns(
     # Normal registration login
     url(r'^accounts/', include('gobotany.plantshare.backends.default.urls')),
 
+    # Sightings
+    url(r'^sightings/$', views.sightings_view, name='ps-sightings'),
+
     # Post a (new) Sighting form
-    url(r'^sightings/new/', views.new_sighting_view, name='ps-new-sighting'),
+    url(r'^sightings/new/$', views.new_sighting_view, name='ps-new-sighting'),
 
     # My Profile page
-    url(r'^profile/', views.profile_view, name='ps-profile'),
+    url(r'^profile/$', views.profile_view, name='ps-profile'),
     )

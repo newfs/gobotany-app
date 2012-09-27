@@ -6,6 +6,10 @@ def plantshare_view(request):
     return render_to_response('plantshare.html', {
            }, context_instance=RequestContext(request))
 
+def sightings_view(request):
+    return render_to_response('sightings.html', {
+           }, context_instance=RequestContext(request))
+
 @login_required
 def new_sighting_view(request):
     return render_to_response('new_sighting.html', {
