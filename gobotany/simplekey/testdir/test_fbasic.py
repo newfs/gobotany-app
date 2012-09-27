@@ -25,23 +25,6 @@ from selenium.common.exceptions import (
     )
 from selenium.webdriver.common.keys import Keys
 
-def is_displayed(element):
-    """Return whether an element is visible on the page."""
-    try:
-        return element.is_displayed()
-    except StaleElementReferenceException:
-        return False
-
-def hide_django_debug_toolbar(self):
-    # Dismiss the Django Debug toolbar if it is visible.
-    try:
-        toolbar = self.css1('#djDebugToolbar')
-    except NoSuchElementException:
-        pass
-    else:
-        if is_displayed(toolbar):
-            self.css1('#djHideToolBarButton').click()
-
 class FunctionalTestCase(unittest2.TestCase):
 
     @classmethod
@@ -78,7 +61,7 @@ class FunctionalTestCase(unittest2.TestCase):
 
     def css(self, *args, **kw):
         elements = self.driver.find_elements_by_css_selector(*args, **kw)
-        return [ e for e in elements if is_displayed(e) ]
+        return [ e for e in elements if self.is_displayed(e) ]
 
     def url(self, path):
         """Compute and return a site URL."""
@@ -125,6 +108,23 @@ class FunctionalTestCase(unittest2.TestCase):
         raise RuntimeError(
             'after %s seconds there are still %s elements that match %r'
             % (timeout, len(elements), selector))
+
+    def is_displayed(self, element):
+        """Return whether an element is visible on the page."""
+        try:
+            return element.is_displayed()
+        except StaleElementReferenceException:
+            return False
+
+    def hide_django_debug_toolbar(self):
+        # Dismiss the Django Debug toolbar if it is visible.
+        try:
+            toolbar = self.css1('#djDebugToolbar')
+        except NoSuchElementException:
+            pass
+        else:
+            if self.is_displayed(toolbar):
+                self.css1('#djHideToolBarButton').click()
 
 class BasicFunctionalTests(FunctionalTestCase):
 
@@ -627,7 +627,7 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
     # TODO: test that the menu appears on other pages besides Home
 
     def _get_suggestions(self, query, compare_exact=True):
-        hide_django_debug_toolbar(self)
+        self.hide_django_debug_toolbar()
 
         search_input = self.css1(self.SEARCH_INPUT_CSS)
         search_input.click()
@@ -1166,7 +1166,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         seconds = 16   # Long max. time to handle big plant subgroups
         subgroup_page_url = '/%s/%s/' % (self.GROUPS[subgroup], subgroup)
         page = self.get(subgroup_page_url)
-        hide_django_debug_toolbar(self)
+        self.hide_django_debug_toolbar()
         self.wait_on(10, self.css1, 'div.plant.in-results')
         #self.wait_on(seconds, self.css1, '#exposeMask')
         self.css1('#intro-overlay .continue').click()
@@ -1177,7 +1177,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     # characters appear to be formatted as expected.
     def _preview_popups_have_characters(self, subgroup):
         page = self._get_subgroup_page(subgroup)
-        hide_django_debug_toolbar(self)
+        self.hide_django_debug_toolbar()
         species = self.SPECIES[subgroup]
         for s in species:
             species_link = page.find_element_by_partial_link_text(s)
@@ -1193,7 +1193,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     def _preview_popup_has_characters(self, subgroup, species,
                                       expected_name, expected_values):
         page = self._get_subgroup_page(subgroup)
-        hide_django_debug_toolbar(self)
+        self.hide_django_debug_toolbar()
         species_link = page.find_element_by_partial_link_text(species)
         time.sleep(1)   # Wait a bit for animation to finish
         species_link.click()
@@ -1351,7 +1351,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
                    'Sagittaria cuneata', 'Utricularia intermedia']
         for s in species:
             self.get('/species/%s/' % s.replace(' ', '/').lower())
-            hide_django_debug_toolbar(self)
+            self.hide_django_debug_toolbar()
             list_items = self.css('.characteristics dt')
             character_names = []
             for list_item in list_items:
