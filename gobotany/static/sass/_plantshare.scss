@@ -1,6 +1,14 @@
 /* PlantShare */
 
+$form-field-padding: 5px;
+$form-field-width: 350px;
 $section-padding: 16px;
+
+@mixin form-field-base {
+    border: 1px solid $border-green;
+    padding: $form-field-padding;
+    width: $form-field-width;
+}
 
 body.plantshare {
     .content form {
@@ -8,17 +16,23 @@ body.plantshare {
             margin: 0;
         }
         label {
-            display: block;
+            display: inline-block;
             margin-bottom: 4px;
             text-transform: uppercase;
+            width: $form-field-width;
         }
         input {
-            border: 1px solid $border-green;
             font-family: $body-font;
             height: 16px;
             margin-bottom: 10px;
-            padding: 5px;
-            width: 350px;
+            @include form-field-base;
+        }
+        textarea {
+            height: 72px;
+            @include form-field-base;
+        }
+        fieldset {
+            width: $form-field-width + 184px;
         }
     }
     .box {
@@ -163,7 +177,16 @@ body.plantshare {
                 text-transform: none;
             }
             fieldset {
-                margin: $section-padding 0;
+                border: 0;
+                margin: 0 0 $section-padding;
+                padding: 0;
+                legend {
+                    @include offscreen;
+                }
+            }
+            img {
+                float: right;
+                padding-top: 19px;
             }
             .post-sighting-btn {
                 background: transparent url(/static/images/layout/plantshare2-btn.png) no-repeat -372px -634px;

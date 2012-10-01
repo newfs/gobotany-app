@@ -487,8 +487,10 @@ footer .support { margin-right: 0; padding: 18px 0; }
 /* End media queries styles for the Home page */
 /* PlantShare */
 body.plantshare .content form p { margin: 0; }
-body.plantshare .content form label { display: block; margin-bottom: 4px; text-transform: uppercase; }
-body.plantshare .content form input { border: 1px solid #c3d941; font-family: Verdana, Geneva, sans-serif; height: 16px; margin-bottom: 10px; padding: 5px; width: 350px; }
+body.plantshare .content form label { display: inline-block; margin-bottom: 4px; text-transform: uppercase; width: 350px; }
+body.plantshare .content form input { font-family: Verdana, Geneva, sans-serif; height: 16px; margin-bottom: 10px; border: 1px solid #c3d941; padding: 5px; width: 350px; }
+body.plantshare .content form textarea { height: 72px; border: 1px solid #c3d941; padding: 5px; width: 350px; }
+body.plantshare .content form fieldset { width: 534px; }
 body.plantshare .box { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px; }
 body.plantshare .box table { margin: 16px 0 12px; width: 100%; }
 body.plantshare .box table tr:nth-child(odd) { background-color: #e1f0d1; }
@@ -523,7 +525,9 @@ body.plantshare#log-in form.login label { font-size: 12px; }
 body.plantshare#log-in form.login input { border-color: #c3d941; }
 body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; }
 body.plantshare#new-sighting form label { text-transform: none; }
-body.plantshare#new-sighting form fieldset { margin: 16px 0; }
+body.plantshare#new-sighting form fieldset { border: 0; margin: 0 0 16px; padding: 0; }
+body.plantshare#new-sighting form fieldset legend { display: block; text-indent: -9000px; }
+body.plantshare#new-sighting form img { float: right; padding-top: 19px; }
 body.plantshare#new-sighting form .post-sighting-btn { background: transparent url(/static/images/layout/plantshare2-btn.png) no-repeat -372px -634px; border: 0 none; display: block; width: 157px; height: 32px; text-indent: -9999px; }
 body.plantshare#new-sighting form .post-sighting-btn.inactive { background-position: -372px -599px; }
 body.plantshare#profile .info.box img { display: block; float: left; padding: 16px 16px 0 0; }

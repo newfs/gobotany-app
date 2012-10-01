@@ -3,28 +3,35 @@
 
         <label for="identification">Identification of plant *</label>
         <input id="identification" type="text" name="identification"
-        maxlength="120" placeholder="scientific or common name">
+        maxlength="120" placeholder="scientific or common name"
+        autofocus required autocomplete="off">
 
         <label for="title">Title for this sighting *</label>
-        <input id="title" type="text" name="title" maxlength="120">
+        <input id="title" type="text" name="title" maxlength="120"
+        required>
 
         <label for="notes">Description or comments</label>
         <textarea id="notes"></textarea>
 
         <fieldset>
-            <legend>Location *</legend>
+            <legend>Location</legend>
 
-            <label for="location">Location</label>
+            <label for="location">Location *</label>
+            <img
+            src="http://open.mapquestapi.com/staticmap/v4/getplacemap?location=43.1220,-70.482313&size=150,140&type=map&zoom=5&imagetype=png&showicon=green-1">
             <input id="location" type="text" name="location" maxlength="255"
-                placeholder="city, state OR postal code OR latitude, longitude">
+            placeholder="city, state OR postal code OR latitude, longitude"
+            required pattern="(^([-\w\s]*\w)([, ]+)([-\w\s]*\w)$)|(^([a-zA-Z0-9][0-9][a-zA-Z0-9] ?[0-9][a-zA-Z0-9][0-9]?)(-\d{4})?$)|(^(-?(\d{1,3}.?\d{1,6}? ?[nNsS]?))([, ]+)(-?(\d{1,3}.?\d{1,6}? ?[wWeE]?))$)"
+            title="city, state OR postal code OR latitude, longitude">
 
-            <label for="location_notes">Notes</label>
+            <label for="location_notes">Notes on location</label>
             <textarea id="location_notes"
-                placeholder="optional notes about plant location, such
-                as End of road, near oak tree"></textarea>
+                placeholder="optional notes about plant location such as: end of road, near oak tree"></textarea>
+
         </fieldset>
 
-        <input type="submit" class="post-sighting-btn inactive"
-        alt="Post a Sighting">
+        <input type="submit" class="post-sighting-btn" alt="Post a
+        Sighting">
+        <!--inactive-->
 
     </form>
