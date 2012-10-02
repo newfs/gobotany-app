@@ -1,37 +1,33 @@
-    <form method="post" action="{% url ps-sightings %}">
         {% csrf_token %}
 
-        <label for="identification">Identification of plant *</label>
-        <input id="identification" type="text" name="identification"
-        maxlength="120" placeholder="scientific or common name"
-        autofocus required autocomplete="off">
+        {{ form.non_field_errors }}
 
-        <label for="title">Title for this sighting *</label>
-        <input id="title" type="text" name="title" maxlength="120"
-        required>
+        {{ form.identification_errors }}
+        <label for="id_identification">Identification of plant *</label>
+        {{ form.identification }}
 
-        <label for="notes">Description or comments</label>
-        <textarea id="notes"></textarea>
+        {{ form.title_errors }}
+        <label for="id_title">Title for this sighting *</label>
+        {{ form.title }}
+
+        {{ form.notes_errors }}
+        <label for="id_notes">Description or comments</label>
+        {{ form.notes }}
 
         <fieldset>
             <legend>Location</legend>
 
-            <label for="location">Location *</label>
+            {{ form.location_errors }}
+            <label for="id_location">Location *</label>
             <img
             src="http://open.mapquestapi.com/staticmap/v4/getplacemap?location=43.1220,-70.482313&size=150,140&type=map&zoom=5&imagetype=png&showicon=green-1">
-            <input id="location" type="text" name="location" maxlength="255"
-            placeholder="city, state OR postal code OR latitude, longitude"
-            required pattern="(^([-\w\s]*\w)([, ]+)([-\w\s]*\w)$)|(^([a-zA-Z0-9][0-9][a-zA-Z0-9] ?[0-9][a-zA-Z0-9][0-9]?)(-\d{4})?$)|(^(-?(\d{1,3}.?\d{1,6}? ?[nNsS]?))([, ]+)(-?(\d{1,3}.?\d{1,6}? ?[wWeE]?))$)"
-            title="city, state OR postal code OR latitude, longitude">
+            {{ form.location }}
 
-            <label for="location_notes">Notes on location</label>
-            <textarea id="location_notes"
-                placeholder="optional notes about plant location such as: end of road, near oak tree"></textarea>
+            {{ form.location_notes_errors }}
+            <label for="id_location_notes">Notes on location</label>
+            {{ form.location_notes }}
 
         </fieldset>
 
-        <input type="submit" class="post-sighting-btn" alt="Post a
-        Sighting">
-        <!--inactive-->
-
-    </form>
+        <input type="submit" class="post-sighting-btn"
+            alt="Post a Sighting">{# add class 'inactive' for disabled look #}

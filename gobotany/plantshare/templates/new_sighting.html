@@ -18,7 +18,9 @@
     <p>* = Required</p>
 </div>
 
-{% include "_sighting_form.html" %}
+<form method="post" action="{% url ps-new-sighting %}">
+    {% include "_sighting_form.html" %}
+</form>
 
 {% endblock %}
 
