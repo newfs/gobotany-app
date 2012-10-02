@@ -1,7 +1,7 @@
 {% extends "simplekey/_new_base.html" %}
 {% load simplekey_extras %}
 
-{% block title %}{{ groups_list_page.title }}{% endblock %}
+{% block title %}{{ key|title }} Key for Plant Identification{% endblock %}
 
 {% block body_attributes %}id="plant-id" class="app {{ key|title|lower }}"{% endblock %}
 
