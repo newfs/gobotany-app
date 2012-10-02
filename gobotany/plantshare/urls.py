@@ -18,6 +18,8 @@ urlpatterns = patterns(
 
     # Post a (new) Sighting form
     url(r'^sightings/new/$', views.new_sighting_view, name='ps-new-sighting'),
+    url(r'^sightings/new/done/$', views.new_sighting_done_view,
+        name='ps-new-sighting-done'),
 
     # My Profile page
     url(r'^profile/$', views.profile_view, name='ps-profile'),
