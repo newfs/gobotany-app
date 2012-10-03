@@ -487,7 +487,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
 /* End media queries styles for the Home page */
 /* PlantShare */
 body.plantshare .content form p { margin: 0; }
-body.plantshare .content form label { display: inline-block; margin-bottom: 4px; text-transform: uppercase; width: 350px; }
+body.plantshare .content form label { display: block; margin-bottom: 4px; text-transform: uppercase; width: 350px; }
 body.plantshare .content form input { font-family: Verdana, Geneva, sans-serif; height: 16px; margin-bottom: 10px; border: 1px solid #c3d941; padding: 5px; width: 350px; }
 body.plantshare .content form textarea { height: 72px; border: 1px solid #c3d941; padding: 5px; width: 350px; }
 body.plantshare .box { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px; }
