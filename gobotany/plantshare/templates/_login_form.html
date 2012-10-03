@@ -11,6 +11,6 @@
         <label for="id_password">Password</label>
         <input type="password" name="password" id="id_password" />
         <input type="submit" class="button" value="Login">
-        <input type="hidden" name="next" value="{% url ps-main %}" />
+        <input type="hidden" name="next" value="{{ next }}" />
     </form>
 
