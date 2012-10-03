@@ -28,6 +28,7 @@ body.plantshare {
             @include form-field-base;
         }
         textarea {
+            font-family: $body-font;
             height: 72px;
             @include form-field-base;
         }
