@@ -31,9 +31,6 @@ body.plantshare {
             height: 72px;
             @include form-field-base;
         }
-        fieldset {
-            width: $form-field-width + 184px;
-        }
     }
     .box {
         background-color: #fff;
@@ -182,13 +179,14 @@ body.plantshare {
                 border: 0;
                 margin: 0 0 $section-padding;
                 padding: 0;
+                width: $form-field-width + 184px;
                 legend {
                     @include offscreen;
                 }
             }
             img {
+                border: 1px solid $border-green;
                 float: right;
-                padding-top: 19px;
             }
             .post-sighting-btn {
                 background: transparent url(/static/images/layout/plantshare2-btn.png) no-repeat -372px -634px;
@@ -240,6 +238,11 @@ body.plantshare {
         .box {
             width: $smallscreen-portrait-box-width;
         }
+        .content form {
+            label, input, textarea {
+                width: $smallscreen-portrait-box-width - 10px;
+            }
+        }
     }
 }
 /* Landscape-orientation styles */
@@ -272,6 +275,18 @@ body.plantshare {
             width: auto;
             ul {
                 margin-left: 0;
+            }
+        }
+        &.sighting form {
+            fieldset {
+                width: auto;
+            }
+            .location {
+                img {
+                    display: block;
+                    float: none;
+                    margin-bottom: 10px;
+                }
             }
         }
         &#profile .info.box {

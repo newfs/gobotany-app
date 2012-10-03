@@ -19,9 +19,11 @@
 
             {{ form.location_errors }}
             <label for="id_location">Location *</label>
-            <img
-            src="http://open.mapquestapi.com/staticmap/v4/getplacemap?location=43.1220,-70.482313&size=150,140&type=map&zoom=5&imagetype=png&showicon=green-1">
-            {{ form.location }}
+            <div class="location">
+                {{ form.location }}
+                <img
+                src="http://open.mapquestapi.com/staticmap/v4/getplacemap?location=43.1220,-70.482313&size=150,139&type=map&zoom=5&imagetype=png&showicon=green-1">
+            </div>
 
             {{ form.location_notes_errors }}
             <label for="id_location_notes">Notes on location</label>
