@@ -2332,16 +2332,17 @@ div.section.namap div.trans {
 #search-results sidebar {
     height: 515px;
 }
+#search-results #main h2 + p {
+    margin-top: 12px;
+}
 #search-results-list {
-    border-top: 1px solid #e1e1dc;
-    margin: 15px 0 13px;
+    margin: 6px 0 13px;
     padding: 6px 0 0;
 }
 #search-results-list .highlighted {
     font-weight: bold;
 }
 #search-results-list li {    
-    border-bottom: 1px solid #e1e1dc;
     padding: 6px 0 10px;
 }
 #search-results-list li img {

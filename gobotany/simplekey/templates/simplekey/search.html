@@ -34,61 +34,61 @@
                     <strong>{{ query }}</strong>
                 </h2>
 
-                <ul id="search-results-list">
-                {% for result in page.object_list %}
-                    <li>
-                        <a href="{{ result.url }}">
-                        {% if result.model_name == 'taxon' %}
-                            <img
-                                src="/static/images/icons/icon-leaf.png"
-                                alt="" title="Species page">
-                        {% endif %}
-                        {% if result.model_name == 'family' %}
-                            <img
-                                src="/static/images/icons/icon-family.png"
-                                alt="" title="Family page">
-                        {% endif %}
-                        {% if result.model_name == 'genus' %}
-                            <img
-                                src="/static/images/icons/icon-genus.png"
-                                alt="" title="Genus page">
-                        {% endif %}
-                        {% if result.model_name == 'plainpage' %}
-                            <img
-                                src="/static/images/icons/icon-help.png"
-                                alt="" title="Help page">
-                        {% endif %}
-                        {% if result.model_name == 'glossaryterm' %}
-                            <img
-                                src="/static/images/icons/icon-glossary.png"
-                                alt="" title="Glossary page">
-                        {% endif %}
-                        {% if result.model_name == 'groupslistpage' %}
-                            <img
-                                src="/static/images/icons/icon-groups-list.png"
-                                alt="" title="Simple Key plant groups page">
-                        {% endif %}
-                        {% if result.model_name == 'subgroupslistpage' %}
-                            <img src="/static/images/icons/icon-groups-list.png"
-                                alt="" title="Simple Key plant subgroups page">
-                        {% endif %}
-                        {% if result.model_name == 'subgroupresultspage' %}
-                            <img src="/static/images/icons/icon-grid.png"
-                                alt=""
-                                title="Simple Key plant group results page">
-                        {% endif %}
-                        {{ result.title|quick_highlight:query|safe }}
-                        </a>
-                        <p>
-                        {% search_highlight result.text with query as result_excerpt ignore_between '\n--\n' %}{{ result_excerpt }}
-                        </p>
-                    </li>
-                {% endfor %}
-                </ul>
-
                 {% if page.object_list|length == 0 %}
                     <p>Please adjust your search and try again.</p>
                 {% else %}
+                    <ul id="search-results-list">
+                    {% for result in page.object_list %}
+                        <li>
+                            <a href="{{ result.url }}">
+                            {% if result.model_name == 'taxon' %}
+                                <img
+                                    src="/static/images/icons/icon-leaf.png"
+                                    alt="" title="Species page">
+                            {% endif %}
+                            {% if result.model_name == 'family' %}
+                                <img
+                                    src="/static/images/icons/icon-family.png"
+                                    alt="" title="Family page">
+                            {% endif %}
+                            {% if result.model_name == 'genus' %}
+                                <img
+                                    src="/static/images/icons/icon-genus.png"
+                                    alt="" title="Genus page">
+                            {% endif %}
+                            {% if result.model_name == 'plainpage' %}
+                                <img
+                                    src="/static/images/icons/icon-help.png"
+                                    alt="" title="Help page">
+                            {% endif %}
+                            {% if result.model_name == 'glossaryterm' %}
+                                <img
+                                    src="/static/images/icons/icon-glossary.png"
+                                    alt="" title="Glossary page">
+                            {% endif %}
+                            {% if result.model_name == 'groupslistpage' %}
+                                <img
+                                    src="/static/images/icons/icon-groups-list.png"
+                                    alt="" title="Simple Key plant groups page">
+                            {% endif %}
+                            {% if result.model_name == 'subgroupslistpage' %}
+                                <img src="/static/images/icons/icon-groups-list.png"
+                                    alt="" title="Simple Key plant subgroups page">
+                            {% endif %}
+                            {% if result.model_name == 'subgroupresultspage' %}
+                                <img src="/static/images/icons/icon-grid.png"
+                                    alt=""
+                                    title="Simple Key plant group results page">
+                            {% endif %}
+                            {{ result.title|quick_highlight:query|safe }}
+                            </a>
+                            <p>
+                            {% search_highlight result.text with query as result_excerpt ignore_between '\n--\n' %}{{ result_excerpt }}
+                            </p>
+                        </li>
+                    {% endfor %}
+                    </ul>
+
                     <div class="search-navigation">
                         <ul>
                         {% if page.has_previous %}
