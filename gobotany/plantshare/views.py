@@ -27,6 +27,7 @@ def sightings_view(request):
         form = NewSightingForm(request.POST)
         if form.is_valid():
             # TODO: process the data in form.cleaned_data
+            #print 'form.cleaned_data:', form.cleaned_data
             return HttpResponseRedirect(reverse('ps-new-sighting-done')) # ?
         else:
             # Present the new-sighting form again for input correction.

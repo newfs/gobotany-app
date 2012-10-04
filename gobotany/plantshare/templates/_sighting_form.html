@@ -2,22 +2,22 @@
 
         {{ form.non_field_errors }}
 
-        {{ form.identification_errors }}
+        {{ form.identification.errors }}
         <label for="id_identification">Identification of plant *</label>
         {{ form.identification }}
 
-        {{ form.title_errors }}
+        {{ form.title.errors }}
         <label for="id_title">Title for this sighting *</label>
         {{ form.title }}
 
-        {{ form.notes_errors }}
+        {{ form.notes.errors }}
         <label for="id_notes">Description or comments</label>
         {{ form.notes }}
 
         <fieldset>
             <legend>Location</legend>
 
-            {{ form.location_errors }}
+            {{ form.location.errors }}
             <label for="id_location">Location *</label>
             <div class="location">
                 {{ form.location }}
@@ -25,7 +25,7 @@
                 src="http://open.mapquestapi.com/staticmap/v4/getplacemap?location=43.1220,-70.482313&size=150,139&type=map&zoom=5&imagetype=png&showicon=green-1">
             </div>
 
-            {{ form.location_notes_errors }}
+            {{ form.location_notes.errors }}
             <label for="id_location_notes">Notes on location</label>
             {{ form.location_notes }}
 
