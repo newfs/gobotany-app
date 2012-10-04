@@ -26,3 +26,20 @@ class Sighting(models.Model):
 
     class Meta:
         ordering = ['-created']
+
+    @property
+    def location(self):
+        location = self.address
+        if self.latitude and self.longitude:
+            location = '%f, %f' % (self.latitude, self.longitude)
+        return location
+
+    def __unicode__(self):
+        sighting_id = ''
+        if self.id:
+            sighting_id = ' %d' % self.id
+        created_at = ''
+        if self.created:
+            created_at = ', %s' % self.created
+        return 'Sighting%s: %s at %s (user %d%s)' % (sighting_id,
+            self.identification, self.location, self.user.id, created_at)

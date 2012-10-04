@@ -5,6 +5,7 @@ from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 
 from gobotany.plantshare.forms import NewSightingForm
+from gobotany.plantshare.models import Sighting
 
 def _new_sighting_form_page(request, form):
     """Give a new-sighting form, either blank or with as-yet-invalid data."""
@@ -28,6 +29,29 @@ def sightings_view(request):
         if form.is_valid():
             # TODO: process the data in form.cleaned_data
             #print 'form.cleaned_data:', form.cleaned_data
+
+            identification = form.cleaned_data['identification']
+            title = form.cleaned_data['title']
+            notes = form.cleaned_data['notes']
+
+            # TODO: Parse location data into address (city, state or postal
+            # code) or latitude/longitude.
+            # For now, just store location in address field
+            address = form.cleaned_data['location']
+            #latitude = 0.0
+            #longitude = 0.0
+
+            location_notes = form.cleaned_data['location_notes']
+
+            sighting = Sighting(user=request.user,
+                                identification=identification, title=title,
+                                notes=notes, address=address,
+                                #latitude=latitude, longitude=longitude,
+                                location_notes=location_notes)
+            sighting.save()
+            #print 'saved:', sighting
+
+            # TODO: include ID of new sighting with redirect
             return HttpResponseRedirect(reverse('ps-new-sighting-done')) # ?
         else:
             # Present the new-sighting form again for input correction.
