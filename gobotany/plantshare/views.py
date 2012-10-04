@@ -27,18 +27,11 @@ def sightings_view(request):
         # TODO: require login for just this HTTP verb.
         form = NewSightingForm(request.POST)
         if form.is_valid():
-            # TODO: process the data in form.cleaned_data
-            #print 'form.cleaned_data:', form.cleaned_data
-
             identification = form.cleaned_data['identification']
             title = form.cleaned_data['title']
             notes = form.cleaned_data['notes']
-
-            # TODO: Parse location data into address (city, state or postal
-            # code) or latitude/longitude.
             location = form.cleaned_data['location']
             location_notes = form.cleaned_data['location_notes']
-
             sighting = Sighting(user=request.user,
                                 identification=identification, title=title,
                                 notes=notes, location=location,

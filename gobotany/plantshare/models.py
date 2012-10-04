@@ -42,3 +42,30 @@ class Sighting(models.Model):
             created_at = ', %s' % self.created
         return 'Sighting%s: %s at %s (user %d%s)' % (sighting_id,
             self.identification, self.location, self.user.id, created_at)
+
+    def _parse_location(self):
+        """Parse the location field and fill the appropriate detail fields."""
+        location = self.location.strip()
+        if location:
+            if location.find(',') > -1:
+                # Location is either city/state or latitude/longitude.
+                if location[0].isalpha():
+                    # City, state
+                    city, state = [x.strip() for x in location.split(',')]
+                    self.city = city
+                    self.state = state
+                else:
+                    # Latitude, longitude
+                    # TODO: parse more advanced lat/long formats
+                    latitude, longitude = [x.strip()
+                                           for x in location.split(',')]
+                    self.latitude = latitude
+                    self.longitude = longitude
+            elif (len(location) <= 10 and
+                  location[1].isdigit()):  # 2nd char in US/Can. postal codes
+                # Postal code
+                self.postal_code = location.strip()
+
+    def save(self, *args, **kwargs):
+        self._parse_location()
+        super(Sighting, self).save(*args, **kwargs)

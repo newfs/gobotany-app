@@ -3,11 +3,14 @@
 import unittest
 
 from django.contrib.auth.models import User
+from django.test import TestCase
 from django.test.client import Client
 
 from selenium.common.exceptions import NoSuchElementException
 
 from gobotany.libtest import FunctionalCase
+
+from gobotany.plantshare.models import Sighting
 
 class PlantShareTests(FunctionalCase):
 
@@ -369,3 +372,60 @@ class PlantShareTests(FunctionalCase):
         self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
         navigation_items = self.css('#sidebar .section')
         self.assertGreater(len(navigation_items), 1)
+
+
+class SightingModelTests(TestCase):
+
+    def test_sighting_save_parses_location_city_state(self):
+        sighting = Sighting(user_id=1, location='Framingham, MA')
+        sighting.save()
+        self.assertEqual(sighting.city, 'Framingham')
+        self.assertEqual(sighting.state, 'MA')
+
+    def test_sighting_save_parses_location_zip_code(self):
+        sighting = Sighting(user_id=1, location='01701')
+        sighting.save()
+        self.assertEqual(sighting.postal_code, '01701')
+
+    def test_sighting_save_parses_location_zip_plus_four(self):
+        sighting = Sighting(user_id=1, location='01701-2699')
+        sighting.save()
+        self.assertEqual(sighting.postal_code, '01701-2699')
+
+    def test_sighting_save_parses_location_canadian_postal_code(self):
+        sighting = Sighting(user_id=1, location='E7B 1A3')
+        sighting.save()
+        self.assertEqual(sighting.postal_code, 'E7B 1A3')
+
+    def test_sighting_save_parses_location_latitude_longitude_numeric(self):
+        sighting = Sighting(user_id=1, location='41.2342, -76.2928')
+        sighting.save()
+        self.assertEqual(sighting.latitude, '41.2342')
+        self.assertEqual(sighting.longitude, '-76.2928')
+
+    def test_sighting_save_parses_location_ignores_garbage_letters(self):
+        sighting = Sighting(user_id=1, location='enutharocegusahosecsahkm')
+        sighting.save()
+        self.assertEqual(sighting.city, '')
+        self.assertEqual(sighting.state, '')
+        self.assertEqual(sighting.postal_code, '')
+        self.assertIsNone(sighting.latitude)
+        self.assertIsNone(sighting.longitude)
+
+    def test_sighting_save_parses_location_ignores_garbage_numbers(self):
+        sighting = Sighting(user_id=1, location='12873498712983749182')
+        sighting.save()
+        self.assertEqual(sighting.city, '')
+        self.assertEqual(sighting.state, '')
+        self.assertEqual(sighting.postal_code, '')
+        self.assertIsNone(sighting.latitude)
+        self.assertIsNone(sighting.longitude)
+
+    def test_sighting_save_parses_location_ignores_garbage_mixed(self):
+        sighting = Sighting(user_id=1, location='aoeua87aoe349a8712b8qjk37a')
+        sighting.save()
+        self.assertEqual(sighting.city, '')
+        self.assertEqual(sighting.state, '')
+        self.assertEqual(sighting.postal_code, '')
+        self.assertIsNone(sighting.latitude)
+        self.assertIsNone(sighting.longitude)
