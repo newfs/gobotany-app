@@ -539,7 +539,7 @@ body.plantshare#profile .info-section .info.box table, body.plantshare#profile .
 body.plantshare#profile .info-section .info.box table td, body.plantshare#profile .location-section .info.box table td { padding: 5px 10px; }
 body.plantshare#profile .info-section .info.box table td.first, body.plantshare#profile .location-section .info.box table td.first { line-height: 170%; padding-left: 15px; vertical-align: baseline; width: 25%; }
 body.plantshare#profile .info-section .info.box table p, body.plantshare#profile .location-section .info.box table p { margin: 0; padding: 0; }
-body.plantshare#profile .info-section .info.box table .display .group-list, body.plantshare#profile .location-section .info.box table .display .group-list { float: left; }
+body.plantshare#profile .info-section .info.box table .display .group-list, body.plantshare#profile .info-section .info.box table .display .coords-list, body.plantshare#profile .location-section .info.box table .display .group-list, body.plantshare#profile .location-section .info.box table .display .coords-list { float: left; }
 body.plantshare#profile .info-section .info.box table .display .edit-link, body.plantshare#profile .location-section .info.box table .display .edit-link { float: right; }
 body.plantshare#profile .info-section .info.box table .display ul, body.plantshare#profile .location-section .info.box table .display ul { list-style: none; }
 body.plantshare#profile .info-section .info.box table .edit, body.plantshare#profile .location-section .info.box table .edit { display: none; }
