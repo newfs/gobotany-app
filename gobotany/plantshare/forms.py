@@ -2,6 +2,8 @@ import re
 
 from django import forms
 
+from models import UserProfile
+
 class NewSightingForm(forms.Form):
 
     def _location_validation_message():
@@ -54,3 +56,10 @@ class NewSightingForm(forms.Form):
                            'end of road, near oak tree'),
         })
     )
+
+
+class UserProfileForm(forms.ModelForm): 
+    class Meta:
+        model = UserProfile
+        fields = ('sharing_visibility', 'display_name', 'saying',)
+

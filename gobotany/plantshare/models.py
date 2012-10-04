@@ -1,13 +1,37 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+SHARING_CHOICES = (
+    ('PRIVATE', 'Only PlantShare staff and myself'),
+    ('GROUPS', 'My Groups'),
+    ('PUBLIC', 'Public - All'),
+)
+
 class UserProfile(models.Model):
+    
     user = models.OneToOneField(User)
 
     display_name = models.CharField(max_length=60, unique=True, blank=True)
     zipcode = models.CharField(max_length=5, blank=True)
     security_question = models.CharField(max_length=100, blank=True)
     security_answer = models.CharField(max_length=100, blank=True)
+
+    # User's profile preferences
+    sharing_visibility = models.CharField(blank=False, max_length=7,
+        choices=SHARING_CHOICES, default=SHARING_CHOICES[0])
+    saying = models.CharField(max_length=100, blank=True)
+
+
+class SharingGroup(models.Model):
+    name = models.CharField(max_length=100)
+    members = models.ManyToManyField(UserProfile, through='SharingGroupMember',
+        related_name='groups')
+
+
+class SharingGroupMember(models.Model):
+    member = models.ForeignKey(UserProfile)
+    group = models.ForeignKey(SharingGroup)
+    is_owner = models.BooleanField(default=False)
 
 
 class Sighting(models.Model):
