@@ -13,7 +13,7 @@ class UserProfile(models.Model):
 class Sighting(models.Model):
     user = models.ForeignKey(User)
 
-    date = models.DateField(blank=False)
+    created = models.DateTimeField(blank=False, auto_now_add=True)
     identification = models.CharField(max_length=120, blank=True)
     title = models.CharField(max_length=120, blank=True)
     notes = models.TextField(blank=True)
@@ -23,3 +23,6 @@ class Sighting(models.Model):
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
     location_notes = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ['-created']
