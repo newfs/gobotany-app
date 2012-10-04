@@ -529,12 +529,13 @@ body.plantshare.sighting form fieldset legend { display: block; text-indent: -90
 body.plantshare.sighting form img { border: 1px solid #c3d941; float: right; }
 body.plantshare.sighting form .post-sighting-btn { background: transparent url(/static/images/layout/plantshare2-btn.png) no-repeat -372px -634px; border: 0 none; display: block; width: 157px; height: 32px; text-indent: -9999px; }
 body.plantshare.sighting form .post-sighting-btn.inactive { background-position: -372px -599px; }
-body.plantshare#profile .info-section, body.plantshare#profile .location-section { margin: 20px 0; min-height: 140px; }
-body.plantshare#profile .info-section .info.box, body.plantshare#profile .location-section .info.box { margin: 20px 0; padding: 10px 15px 20px; }
+body.plantshare#profile .info-section, body.plantshare#profile .location-section { min-height: 140px; }
+body.plantshare#profile .info-section .info.box, body.plantshare#profile .location-section .info.box { min-height: 160px; padding: 0 0 5px 0; }
 body.plantshare#profile .info-section .info.box .avatar, body.plantshare#profile .location-section .info.box .avatar { margin-right: 15px; padding: 0; float: left; width: 170px; }
 body.plantshare#profile .info-section .info.box .avatar img, body.plantshare#profile .location-section .info.box .avatar img { border: 0; }
 body.plantshare#profile .info-section .info.box .avatar p, body.plantshare#profile .location-section .info.box .avatar p { text-align: center; margin: 0; }
-body.plantshare#profile .info-section .info.box table, body.plantshare#profile .location-section .info.box table { margin: 0; padding: 0; width: 70%; }
+body.plantshare#profile .info-section .info.box .map-thumbnail, body.plantshare#profile .location-section .info.box .map-thumbnail { float: left; margin: 0 15px 0 0; padding: 0; }
+body.plantshare#profile .info-section .info.box table, body.plantshare#profile .location-section .info.box table { margin: 10px 0 0 0; padding: 0; width: 70%; }
 body.plantshare#profile .info-section .info.box table td, body.plantshare#profile .location-section .info.box table td { padding: 5px 10px; }
 body.plantshare#profile .info-section .info.box table td.first, body.plantshare#profile .location-section .info.box table td.first { line-height: 170%; padding-left: 15px; vertical-align: baseline; width: 25%; }
 body.plantshare#profile .info-section .info.box table p, body.plantshare#profile .location-section .info.box table p { margin: 0; padding: 0; }
@@ -542,6 +543,9 @@ body.plantshare#profile .info-section .info.box table .display .group-list, body
 body.plantshare#profile .info-section .info.box table .display .edit-link, body.plantshare#profile .location-section .info.box table .display .edit-link { float: right; }
 body.plantshare#profile .info-section .info.box table .display ul, body.plantshare#profile .location-section .info.box table .display ul { list-style: none; }
 body.plantshare#profile .info-section .info.box table .edit, body.plantshare#profile .location-section .info.box table .edit { display: none; }
+body.plantshare#profile .info-section { margin: 20px 0; }
+body.plantshare#profile .info-section .info.box { margin: 20px 0; padding: 10px 15px 20px; }
+body.plantshare#profile .info-section .info.box table { margin: 0; }
 body.plantshare #sidebar #login.box { background-color: #d3eaad; border-color: #508e31; padding: 0; }
 body.plantshare #sidebar #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
 body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding: 16px; }

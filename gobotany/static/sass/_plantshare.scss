@@ -204,12 +204,10 @@ body.plantshare {
     }
     &#profile {
         .info-section, .location-section {
-            margin: 20px 0;
             min-height: 140px;
             .info.box {
-                margin: 20px 0;
-                padding: 10px 15px 20px;
-
+                min-height: 160px;
+                padding: 0 0 5px 0;
                 .avatar {
                     margin-right: 15px;
                     padding: 0;
@@ -224,8 +222,13 @@ body.plantshare {
                         margin: 0;
                     }
                 }
+                .map-thumbnail {
+                    float: left;
+                    margin: 0 15px 0 0;
+                    padding: 0;
+                }
                 table {
-                    margin: 0;
+                    margin: 10px 0 0 0;
                     padding: 0;
                     width: 70%;
 
@@ -260,6 +263,18 @@ body.plantshare {
                     .edit {
                         display: none;
                     }
+                }
+            }
+        }
+    }
+    &#profile {
+        .info-section {
+            margin: 20px 0;
+            .info.box {
+                margin: 20px 0;
+                padding: 10px 15px 20px;
+                table {
+                    margin: 0;
                 }
             }
         }
