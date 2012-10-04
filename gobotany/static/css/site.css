@@ -529,8 +529,19 @@ body.plantshare.sighting form fieldset legend { display: block; text-indent: -90
 body.plantshare.sighting form img { border: 1px solid #c3d941; float: right; }
 body.plantshare.sighting form .post-sighting-btn { background: transparent url(/static/images/layout/plantshare2-btn.png) no-repeat -372px -634px; border: 0 none; display: block; width: 157px; height: 32px; text-indent: -9999px; }
 body.plantshare.sighting form .post-sighting-btn.inactive { background-position: -372px -599px; }
-body.plantshare#profile .info.box img { display: block; float: left; padding: 16px 16px 0 0; }
-body.plantshare#profile .info.box table { width: 85%; }
+body.plantshare#profile .info-section, body.plantshare#profile .location-section { margin: 20px 0; min-height: 140px; }
+body.plantshare#profile .info-section .info.box, body.plantshare#profile .location-section .info.box { margin: 20px 0; padding: 10px 15px 20px; }
+body.plantshare#profile .info-section .info.box .avatar, body.plantshare#profile .location-section .info.box .avatar { margin-right: 15px; padding: 0; float: left; width: 170px; }
+body.plantshare#profile .info-section .info.box .avatar img, body.plantshare#profile .location-section .info.box .avatar img { border: 0; }
+body.plantshare#profile .info-section .info.box .avatar p, body.plantshare#profile .location-section .info.box .avatar p { text-align: center; margin: 0; }
+body.plantshare#profile .info-section .info.box table, body.plantshare#profile .location-section .info.box table { margin: 0; padding: 0; width: 70%; }
+body.plantshare#profile .info-section .info.box table td, body.plantshare#profile .location-section .info.box table td { padding: 5px 10px; }
+body.plantshare#profile .info-section .info.box table td.first, body.plantshare#profile .location-section .info.box table td.first { line-height: 170%; padding-left: 15px; vertical-align: baseline; width: 25%; }
+body.plantshare#profile .info-section .info.box table p, body.plantshare#profile .location-section .info.box table p { margin: 0; padding: 0; }
+body.plantshare#profile .info-section .info.box table .display .group-list, body.plantshare#profile .location-section .info.box table .display .group-list { float: left; }
+body.plantshare#profile .info-section .info.box table .display .edit-link, body.plantshare#profile .location-section .info.box table .display .edit-link { float: right; }
+body.plantshare#profile .info-section .info.box table .display ul, body.plantshare#profile .location-section .info.box table .display ul { list-style: none; }
+body.plantshare#profile .info-section .info.box table .edit, body.plantshare#profile .location-section .info.box table .edit { display: none; }
 body.plantshare #sidebar #login.box { background-color: #d3eaad; border-color: #508e31; padding: 0; }
 body.plantshare #sidebar #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
 body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding: 16px; }
@@ -556,7 +567,7 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
 /* End media queries styles for PlantShare */
 /* Dichotomous Key */
 /* Definitions */
-.orange-button, #dkey #main .offer-help-aside a, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
+.orange-button, #dkey #main .offer-help-aside a, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.083em; }
 .orange-button:hover, #dkey #main .offer-help-aside a:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
 .orange-button.disabled, #dkey #main .offer-help-aside a.disabled, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
 
@@ -565,13 +576,13 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
 #dkey #main .offer-help-aside { float: right; margin: 1em 1em 0.5em 1em; text-align: right; color: #606060; }
 #dkey #main .offer-help-aside span { font-size: 12px; }
 #dkey #main .offer-help-aside a { display: inline-block; margin: 0.8em 1em; font-weight: normal; font-size: 12px; text-transform: uppercase; }
-#dkey #main .offer-help-aside select { margin: 0.25em 1.0em; font-size: 1.33333em; }
+#dkey #main .offer-help-aside select { margin: 0.25em 1.0em; font-size: 1.333em; }
 #dkey #main p { margin: 1em 0; max-width: 42em; }
 #dkey #main p .figure { clear: right; float: right; margin-left: 1em; margin-bottom: 1em; width: 16em; font-size: 75%; }
 #dkey #main p .figure a { display: block; margin-bottom: 0.5em; border-bottom: 1px solid black; padding-bottom: 0.5em; }
 #dkey #main p .figure img { width: 16em; /* force thumbnails to a consistent width */ }
 #dkey #main p .figure .number { font-weight: bold; margin-right: 0.5em; }
-#dkey #main p.backlinks { margin-top: 0.57143em; margin-bottom: 0.64286em; font-size: 14px; }
+#dkey #main p.backlinks { margin-top: 0.571em; margin-bottom: 0.643em; font-size: 14px; }
 #dkey #main p.backlinks a { text-decoration: none; margin-right: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; }
 #dkey #main p.backlinks a:hover { text-decoration: underline; }
 #dkey #main ul.couplets { clear: both; margin: 0em; max-width: 48em; padding: 1em 1em 0 0; font-size: 12px; line-height: 1.5em; }

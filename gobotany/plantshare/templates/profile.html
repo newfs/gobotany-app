@@ -9,15 +9,120 @@
 
 <h2>My Info</h2>
 
-<div class="info box">
-    <img src="/static/images/icons/avatar-default.png" alt="">
-    <table>
-        <tr><th>Total Species</th><td>None</td></tr>
-        <tr><th>Total Locations</th><td>None</td></tr>
-        <tr><th>Checklists</th><td>None</td></tr>
-        <tr><th>Groups</th><td>None</td></tr>
-    </table>
-</div>
+<section class="info-section">
+    <div class="info box">
+        <div class="avatar">
+            <img src="/static/images/icons/avatar-scary-placeholder.png" alt="">
+            <p>
+                <a href="#">Upload Photo</a>
+            </p>
+        </div>
+        <table>
+            <tbody>
+                <tr>
+                    <td class="first">Visibility:</td>
+                    <td>
+                        <div class="display">
+                            <p>Only Plantshare Staff and Myself <a href="#" class="edit-link">Edit</a></p>
+                        </div>
+                        <div class="edit">
+                            {# Replace this with real form output #}
+                            <form name="edit-visibility-form">
+                                <p>Form goes here.</p>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="first">Screen Name:</td>
+                    <td>
+                        <div class="display">
+                            <p>SomeScreenNameGuy <a href="#" class="edit-link">Edit</a></p>
+                        </div>
+                        <div class="edit">
+                            {# Replace this with real form output #}
+                            <form name="edit-screenname-form">
+                                <p>Form goes here.</p>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="first">Saying:</td>
+                    <td>
+                        <div class="display">
+                            <p>"Some short saying." <a href="#" class="edit-link">Edit</a></p>
+                        </div>
+                        <div class="edit">
+                            {# Replace this with real form output #}
+                            <form name="edit-saying-form">
+                                <p>Form goes here.</p>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="first">Groups:</td>
+                    <td>
+                        <div class="display">
+                            <ul class="group-list">
+                                <li>First Group</li>
+                                <li>Sample Group B</li>
+                                <li>Hiker's Club</li>
+                            </ul>
+                            <a href="#" class="edit-link">Go To My Groups</a></p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<h2>My Location</h2>
+
+<section class="location-section">
+    <div class="info box">
+        <img src="/static/images/icons/my-location-placeholder.png" alt="">
+        <table>
+            <tbody>
+                <tr>
+                    <td>Visibility:</td>
+                    <td>
+                        <div class="display">
+                            <p>Specific Groups - 6 Selected <a href="#" class="edit-link">Edit</a></p>
+                        </div>
+                        <div class="edit">
+                            {# Replace this with real form output #}
+                            <form name="edit-visibility-form">
+                                <p>Form goes here.</p>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Location:</td>
+                    <td>
+                        <div class="display">
+                            <ul>
+                                <li>Lowell, MA</li>
+                                <li>Latitude: 41.2482082147523582034</li>
+                                <li>Longitude: -45.2348724-8057312340</li>
+                            <ul>
+                            <a href="#" class="edit-link">Edit</a></p>
+                        </div>
+                        <div class="edit">
+                            {# Replace this with real form output #}
+                            <form name="edit-location-form">
+                                <p>Form goes here.</p>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
 
 {% endblock %}
 

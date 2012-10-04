@@ -203,14 +203,64 @@ body.plantshare {
         }
     }
     &#profile {
-        .info.box {
-            img {
-                display: block;
-                float: left;
-                padding: $section-padding $section-padding 0 0;
-            }
-            table {
-                width: 85%;
+        .info-section, .location-section {
+            margin: 20px 0;
+            min-height: 140px;
+            .info.box {
+                margin: 20px 0;
+                padding: 10px 15px 20px;
+
+                .avatar {
+                    margin-right: 15px;
+                    padding: 0;
+                    float: left;
+                    width: 170px;
+
+                    img {
+                        border: 0;
+                    }
+                    p {
+                        text-align: center;
+                        margin: 0;
+                    }
+                }
+                table {
+                    margin: 0;
+                    padding: 0;
+                    width: 70%;
+
+                    td {
+                        padding: 5px 10px;
+                    }
+
+                    td.first {
+                        line-height: 170%;
+                        padding-left: 15px;
+                        vertical-align: baseline;
+                        width: 25%;
+                    }
+
+                    p {
+                        margin: 0;
+                        padding: 0;
+                    }
+
+                    .display {
+                        .group-list {
+                            float: left;
+                        }
+                        .edit-link {
+                            float: right;
+                        }
+                        ul {
+                            list-style: none;
+                        }
+                    }
+
+                    .edit {
+                        display: none;
+                    }
+                }
             }
         }
     }
