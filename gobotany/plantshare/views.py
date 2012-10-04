@@ -36,17 +36,12 @@ def sightings_view(request):
 
             # TODO: Parse location data into address (city, state or postal
             # code) or latitude/longitude.
-            # For now, just store location in address field
-            address = form.cleaned_data['location']
-            #latitude = 0.0
-            #longitude = 0.0
-
+            location = form.cleaned_data['location']
             location_notes = form.cleaned_data['location_notes']
 
             sighting = Sighting(user=request.user,
                                 identification=identification, title=title,
-                                notes=notes, address=address,
-                                #latitude=latitude, longitude=longitude,
+                                notes=notes, location=location,
                                 location_notes=location_notes)
             sighting.save()
             #print 'saved:', sighting

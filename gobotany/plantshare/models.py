@@ -18,21 +18,20 @@ class Sighting(models.Model):
     title = models.CharField(max_length=120, blank=True)
     notes = models.TextField(blank=True)
 
-    # Location: either address (to be geocoded) or latitude/longitude
-    address = models.CharField(max_length=255, blank=True)
+    # Location information is stored as the user entered it, although
+    # it is parsed into detail pieces which are also stored.
+    location = models.CharField(max_length=255, blank=False)
+    location_notes = models.TextField(blank=True)
+
+    # Location details are parsed or derived from the user input.
+    city = models.CharField(max_length=120, blank=True)
+    state = models.CharField(max_length=60, blank=True)
+    postal_code = models.CharField(max_length=12, blank=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
-    location_notes = models.TextField(blank=True)
 
     class Meta:
         ordering = ['-created']
-
-    @property
-    def location(self):
-        location = self.address
-        if self.latitude and self.longitude:
-            location = '%f, %f' % (self.latitude, self.longitude)
-        return location
 
     def __unicode__(self):
         sighting_id = ''
