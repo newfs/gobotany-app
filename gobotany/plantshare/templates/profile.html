@@ -10,6 +10,7 @@
 <h2>My Info</h2>
 
 <section class="info-section">
+  <form name="edit-profile-form">
     <div class="info box">
         <div class="avatar">
             <img src="/static/images/icons/avatar-scary-placeholder.png" alt="">
@@ -27,9 +28,7 @@
                         </div>
                         <div class="edit">
                             {# Replace this with real form output #}
-                            <form name="edit-visibility-form">
-                                <p>Form goes here.</p>
-                            </form>
+                            <p>Form goes here.</p>
                         </div>
                     </td>
                 </tr>
@@ -41,9 +40,7 @@
                         </div>
                         <div class="edit">
                             {# Replace this with real form output #}
-                            <form name="edit-screenname-form">
-                                <p>Form goes here.</p>
-                            </form>
+                            <p>Form goes here.</p>
                         </div>
                     </td>
                 </tr>
@@ -55,9 +52,7 @@
                         </div>
                         <div class="edit">
                             {# Replace this with real form output #}
-                            <form name="edit-saying-form">
-                                <p>Form goes here.</p>
-                            </form>
+                            <p>Form goes here.</p>
                         </div>
                     </td>
                 </tr>
@@ -77,11 +72,13 @@
             </tbody>
         </table>
     </div>
+  </form>
 </section>
 
 <h2>My Location</h2>
 
 <section class="location-section">
+  <form name="edit-location-form">
     <div class="info box">
         <img class="map-thumbnail" src="/static/images/icons/my-location-placeholder.png" alt="">
         <table>
@@ -94,9 +91,7 @@
                         </div>
                         <div class="edit">
                             {# Replace this with real form output #}
-                            <form name="edit-visibility-form">
-                                <p>Form goes here.</p>
-                            </form>
+                            <p>Form goes here.</p>
                         </div>
                     </td>
                 </tr>
@@ -113,17 +108,19 @@
                         </div>
                         <div class="edit">
                             {# Replace this with real form output #}
-                            <form name="edit-location-form">
-                                <p>Form goes here.</p>
-                            </form>
+                            <p>Form goes here.</p>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
+  </form>
 </section>
 
+<script type="text/javascript">
+    require(['plantshare/myprofile']);
+</script>
 {% endblock %}
 
 {% block sidebar_content %}
