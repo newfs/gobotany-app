@@ -8,7 +8,7 @@ SHARING_CHOICES = (
 )
 
 class UserProfile(models.Model):
-    
+
     user = models.OneToOneField(User)
 
     display_name = models.CharField(max_length=60, unique=True, blank=True)
@@ -18,7 +18,7 @@ class UserProfile(models.Model):
 
     # User's profile preferences
     sharing_visibility = models.CharField(blank=False, max_length=7,
-        choices=SHARING_CHOICES, default=SHARING_CHOICES[0])
+        choices=SHARING_CHOICES, default=SHARING_CHOICES[0][0])
     saying = models.CharField(max_length=100, blank=True)
 
 
