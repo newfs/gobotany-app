@@ -12,16 +12,18 @@ class LocationField(forms.RegexField):
         '(-?(\d{1,3}.?\d{1,6}? ?[wWeE]?))$)'
     )
     widget = forms.TextInput({'placeholder': VALIDATION_MESSAGE,
-                              'pattern': VALIDATION_PATTERN,
-                              'required': 'required'})
+                              'pattern': VALIDATION_PATTERN})
     default_error_messages = {
         'invalid': 'Enter %s.' % VALIDATION_MESSAGE
     }
 
-    def __init__(self, max_length=120, min_length=None, *args, **kwargs):
-        super(LocationField, self).__init__(max_length, min_length, *args,
-                                            **kwargs)
+    def __init__(self, required=True, max_length=120, min_length=None, *args,
+                 **kwargs):
+        super(LocationField, self).__init__(required, max_length, min_length,
+                                            *args, **kwargs)
         self._set_regex(LocationField.VALIDATION_PATTERN)
+        if required:
+            self.widget.attrs['required'] = 'required'
 
 
 class NewSightingForm(forms.Form):
