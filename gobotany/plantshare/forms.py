@@ -28,18 +28,6 @@ class LocationField(forms.RegexField):
 
 class NewSightingForm(forms.Form):
 
-    def _location_validation_message():
-        return 'city, state OR postal code OR latitude, longitude'
-
-    def _location_validation_pattern():
-        return (
-                '(^([-\w\s]*\w)([, ]+)([-\w\s]*\w)$)|'
-                '(^([a-zA-Z0-9][0-9][a-zA-Z0-9] '
-                '?[0-9][a-zA-Z0-9][0-9]?)(-\d{4})?$)|'
-                '(^(-?(\d{1,3}.?\d{1,6}? ?[nNsS]?))([, ]+)'
-                '(-?(\d{1,3}.?\d{1,6}? ?[wWeE]?))$)'
-        )
-
     identification = forms.CharField(
         max_length=120,
         widget=forms.TextInput({
