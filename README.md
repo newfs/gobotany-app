@@ -45,7 +45,7 @@ created.  To set up the database, run these commands:
 
 Prepare Solr by first generating your Solr schema:
 
-    ./run-django.sh build_solr_schema > schema.xml
+    heroku run django-admin.py build_solr_schema > schema.xml
 
 Once this file exists, you can visit the Heroku web site, navigate to
 your app's configuration, select the addon "Websolr", choose the section
