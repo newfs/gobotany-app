@@ -41,8 +41,8 @@ def sightings_view(request):
             sighting.save()
             #print 'saved:', sighting
 
-            # TODO: include ID of new sighting with redirect
-            return HttpResponseRedirect(reverse('ps-new-sighting-done')) # ?
+            done_url = reverse('ps-new-sighting-done') + '?s=%d' % sighting.id
+            return HttpResponseRedirect(done_url)
         else:
             # Present the new-sighting form again for input correction.
             return _new_sighting_form_page(request, form)
@@ -53,6 +53,13 @@ def sightings_view(request):
     else:
         # For an unsupported HTTP method, return a Bad Request response.
         return HttpResponse(status=400)
+
+def sighting_view(request, sighting_id):
+    """View for an individual sighting."""
+    sighting = Sighting.objects.get(id=sighting_id)
+    return render_to_response('sighting.html', {
+               'sighting': sighting,
+           }, context_instance=RequestContext(request))
 
 @login_required
 def new_sighting_view(request):

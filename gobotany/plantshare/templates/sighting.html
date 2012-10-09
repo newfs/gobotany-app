@@ -1,0 +1,25 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+
+{% block title %}Sighting: {{ sighting.title }}: PlantShare{% endblock %}
+
+{% block body_attributes %}id="sighting" class="plantshare sighting"{% endblock %}
+
+{% block main_content %}
+<h1>Sighting: {{ sighting.title }}</h1>
+
+<p>Posted {{ sighting.created }} by user {{ sighting.user }}</p>
+
+<p>Identification: {{ sighting.identification }}</p>
+
+<p>Description or commments: {{ sighting.notes }}</p>
+
+<p>Location: {{ sighting.location }}</p>
+
+<p>Location notes: {{ sighting.location_notes }}</p>
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}
+

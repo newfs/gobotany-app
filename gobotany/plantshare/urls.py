@@ -15,6 +15,8 @@ urlpatterns = patterns(
 
     # Sightings
     url(r'^sightings/$', views.sightings_view, name='ps-sightings'),
+    url(r'^sightings/(?P<sighting_id>[0-9]+)/$', views.sighting_view,
+        name='ps-sighting'),
 
     # Post a (new) Sighting form
     url(r'^sightings/new/$', views.new_sighting_view, name='ps-new-sighting'),
