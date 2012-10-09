@@ -5,7 +5,7 @@ from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 
 from gobotany.plantshare.forms import NewSightingForm
-from gobotany.plantshare.models import Sighting
+from gobotany.plantshare.models import Location, Sighting
 
 def _new_sighting_form_page(request, form):
     """Give a new-sighting form, either blank or with as-yet-invalid data."""
@@ -27,10 +27,12 @@ def sightings_view(request):
         # TODO: require login for just this HTTP verb.
         form = NewSightingForm(request.POST)
         if form.is_valid():
+            location = Location(user_input=form.cleaned_data['location'])
+            location.save()
+
             identification = form.cleaned_data['identification']
             title = form.cleaned_data['title']
             notes = form.cleaned_data['notes']
-            location = form.cleaned_data['location']
             location_notes = form.cleaned_data['location_notes']
             sighting = Sighting(user=request.user,
                                 identification=identification, title=title,

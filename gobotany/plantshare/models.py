@@ -7,6 +7,51 @@ SHARING_CHOICES = (
     ('PUBLIC', 'Public - All'),
 )
 
+class Location(models.Model):
+    """A location as specified by a user in one of several valid ways."""
+
+    # Location information is stored as the user entered it, although
+    # it is parsed into detail pieces which are also stored.
+    user_input = models.CharField(max_length=255, blank=False)
+
+    # Location details are parsed from the user input or otherwise derived.
+    city = models.CharField(max_length=120, null=True, blank=True)
+    state = models.CharField(max_length=60, null=True, blank=True)
+    postal_code = models.CharField(max_length=12, null=True, blank=True)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+
+    def __unicode__(self):
+        return self.user_input
+
+    def _parse_user_input(self):
+        """Parse the raw input and fill the appropriate detail fields."""
+        user_input = self.user_input.strip()
+        if user_input:
+            if user_input.find(',') > -1:
+                # Location is either city/state or latitude/longitude.
+                if user_input[0].isalpha():
+                    # City, state
+                    city, state = [x.strip() for x in user_input.split(',')]
+                    self.city = city
+                    self.state = state
+                else:
+                    # Latitude, longitude
+                    # TODO: parse more advanced lat/long formats
+                    latitude, longitude = [x.strip()
+                                           for x in user_input.split(',')]
+                    self.latitude = latitude
+                    self.longitude = longitude
+            elif (len(user_input) <= 10 and
+                  user_input[1].isdigit()): # 2nd char in US/Can. postal codes
+                # Postal code
+                self.postal_code = user_input.strip()
+
+    def save(self, *args, **kwargs):
+        self._parse_user_input()
+        super(Location, self).save(*args, **kwargs)
+
+
 class UserProfile(models.Model):
 
     user = models.OneToOneField(User)
@@ -39,20 +84,11 @@ class Sighting(models.Model):
 
     created = models.DateTimeField(blank=False, auto_now_add=True)
     identification = models.CharField(max_length=120, blank=True)
-    title = models.CharField(max_length=120, blank=True)
+    title = models.CharField(max_length=120, blank=False)
     notes = models.TextField(blank=True)
 
-    # Location information is stored as the user entered it, although
-    # it is parsed into detail pieces which are also stored.
-    location = models.CharField(max_length=255, blank=False)
+    location = models.ForeignKey(Location, null=True)
     location_notes = models.TextField(blank=True)
-
-    # Location details are parsed or derived from the user input.
-    city = models.CharField(max_length=120, blank=True)
-    state = models.CharField(max_length=60, blank=True)
-    postal_code = models.CharField(max_length=12, blank=True)
-    latitude = models.FloatField(null=True, blank=True)
-    longitude = models.FloatField(null=True, blank=True)
 
     class Meta:
         ordering = ['-created']
@@ -66,30 +102,3 @@ class Sighting(models.Model):
             created_at = ', %s' % self.created
         return 'Sighting%s: %s at %s (user %d%s)' % (sighting_id,
             self.identification, self.location, self.user.id, created_at)
-
-    def _parse_location(self):
-        """Parse the location field and fill the appropriate detail fields."""
-        location = self.location.strip()
-        if location:
-            if location.find(',') > -1:
-                # Location is either city/state or latitude/longitude.
-                if location[0].isalpha():
-                    # City, state
-                    city, state = [x.strip() for x in location.split(',')]
-                    self.city = city
-                    self.state = state
-                else:
-                    # Latitude, longitude
-                    # TODO: parse more advanced lat/long formats
-                    latitude, longitude = [x.strip()
-                                           for x in location.split(',')]
-                    self.latitude = latitude
-                    self.longitude = longitude
-            elif (len(location) <= 10 and
-                  location[1].isdigit()):  # 2nd char in US/Can. postal codes
-                # Postal code
-                self.postal_code = location.strip()
-
-    def save(self, *args, **kwargs):
-        self._parse_location()
-        super(Sighting, self).save(*args, **kwargs)
