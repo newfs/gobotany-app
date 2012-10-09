@@ -3,6 +3,27 @@ from django import forms
 
 from models import UserProfile
 
+class LocationField(forms.RegexField):
+    VALIDATION_MESSAGE = 'city, state OR postal code OR latitude, longitude'
+    VALIDATION_PATTERN = (
+        '(^([-\w\s]*\w)([, ]+)([-\w\s]*\w)$)|'
+        '(^([a-zA-Z0-9][0-9][a-zA-Z0-9] ?[0-9][a-zA-Z0-9][0-9]?)(-\d{4})?$)|'
+        '(^(-?(\d{1,3}.?\d{1,6}? ?[nNsS]?))([, ]+)'
+        '(-?(\d{1,3}.?\d{1,6}? ?[wWeE]?))$)'
+    )
+    widget = forms.TextInput({'placeholder': VALIDATION_MESSAGE,
+                              'pattern': VALIDATION_PATTERN,
+                              'required': 'required'})
+    default_error_messages = {
+        'invalid': 'Enter %s.' % VALIDATION_MESSAGE
+    }
+
+    def __init__(self, max_length=120, min_length=None, *args, **kwargs):
+        super(LocationField, self).__init__(max_length, min_length, *args,
+                                            **kwargs)
+        self._set_regex(LocationField.VALIDATION_PATTERN)
+
+
 class NewSightingForm(forms.Form):
 
     def _location_validation_message():
@@ -36,18 +57,7 @@ class NewSightingForm(forms.Form):
         required=False,
         widget=forms.Textarea(),
     )
-    location = forms.RegexField(
-        error_messages={
-            'invalid': 'Enter %s.' % _location_validation_message()
-        },
-        max_length=120,
-        regex=_location_validation_pattern(),
-        widget=forms.TextInput({
-            'placeholder': _location_validation_message(),
-            'pattern': _location_validation_pattern(),
-            'required': 'required',
-        })
-    )
+    location = LocationField()
     location_notes = forms.CharField(
         required=False,
         widget=forms.Textarea({
