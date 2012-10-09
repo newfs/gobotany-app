@@ -183,7 +183,12 @@ else:
     DEFAULT_FROM_EMAIL = 'no-reply@newenglandwild.org'
 
 # For django-recaptcha
-if DEBUG:
+if DEV_FEATURES:
+    # works for "gobotany-dev.herokuapp.com"
+    RECAPTCHA_PUBLIC_KEY = '6LdIhdcSAAAAABUslngIi3s5nJ1CvaVxsEEvJAdu'
+    RECAPTCHA_PRIVATE_KEY = '6LdIhdcSAAAAAAjMG8ZvahSyCSZDmFrOFMQ-g8Bs'
+    RECAPTCHA_USE_SSL = True
+elif DEBUG:
     # From JR's personal test account, works for domain "localhost"
     RECAPTCHA_PUBLIC_KEY = '6LeJLNYSAAAAADqd4q3EmAEmjcm0fETife_lmHEe'
     RECAPTCHA_PRIVATE_KEY = '6LeJLNYSAAAAADu-quzYmZnGcuBTzq66JMobfQ_Q'
