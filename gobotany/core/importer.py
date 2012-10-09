@@ -1804,6 +1804,12 @@ class Importer(object):
         plain_page.save()
 
 
+    def _create_contributors_page(self):
+        self._create_plain_page('site-contributors',
+                                'Contributors',
+                                'site/templates/gobotany/contributors.html')
+
+
     def _create_teaching_page(self):
         self._create_plain_page('site-teaching', 'Teaching',
                                 'site/templates/gobotany/teaching.html')
@@ -1828,6 +1834,7 @@ class Importer(object):
         self._create_getting_started_page()
         self._create_advanced_map_page()
         self._create_video_help_topics_page()
+        self._create_contributors_page()
 
         self._create_teaching_page()
         self._create_privacy_policy_page()
