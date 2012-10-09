@@ -48,7 +48,9 @@ def sightings_view(request):
             return _new_sighting_form_page(request, form)
     elif request.method == 'GET':
         # Return a representation of the collection of sightings.
+        sightings = Sighting.objects.all()[:20]  # some latest sightings
         return render_to_response('sightings.html', {
+                'sightings': sightings,
                }, context_instance=RequestContext(request))
     else:
         # For an unsupported HTTP method, return a Bad Request response.
