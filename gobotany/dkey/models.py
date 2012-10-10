@@ -25,6 +25,10 @@ class Lead(models.Model):
         return u'{}:{}.{}'.format(self.id, self.letter, self.goto_page_id
                                   or self.goto_num or '')
 
+    @property
+    def number(self):
+        return self.letter.strip('ab')
+
     def sort_key(self):
         """Turn '12a' into (12, 'a') but '12' into simply (12,).
 

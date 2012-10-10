@@ -54,46 +54,48 @@ class _Proxy(object):
                       .select_related('goto_page').all())
 
     def lead_hierarchy(self):
-        leads = list(self.leads)
+        leads = sorted(self.leads, key=models.Lead.sort_key)
         if not leads:
             return
 
-        # Sort and group all leads.
+        # Sort and group the leads.
 
         get_parent_id = attrgetter('parent_id')
-        leads.sort(key=models.Lead.sort_key)  # put 1a before 1b, etc
-        leads = reversed(leads)  # since stack.pop() pulls from the end
         child_leads = {
-            key: list(group) for key, group in groupby(leads, get_parent_id)
+            parent_id: list(group) for parent_id, group
+            in groupby(leads, get_parent_id)
             }
 
         # Fill in taxa lists for non-leaf leads.
 
-        for lead in child_leads[None]:
+        for lead in reversed(leads):
             fill_in_taxa(child_leads, lead)
 
-        # Expand the leads into a full <ul> hierarchy.
+        # Yield the tree of leads.
 
-        stack = []
-        for child in child_leads[None]:
-            stack += ['</li>', child, '<li>']
-        while stack:
-            item = stack.pop()
-            if isinstance(item, basestring):
-                yield item
-                continue
-            lead = item
-            leads = child_leads.get(lead.id)
-            if leads:
-                lead.nextnum = leads[0].letter.strip('ab')
+        lead_depths = {None: 0}
+        depth = 0
+
+        for lead in leads:
+            children = child_leads.get(lead.id)
+            lead.nextnum = children[0].number if children else ''
+
+            new_depth = lead_depths[lead.parent_id] + 1
+            lead_depths[lead.id] = new_depth
+            if depth < new_depth:
+                id = ' id="c{}"'.format(lead.number)
+                yield '<ul class="couplet"{}>'.format(id)
+                depth += 1
+            while depth > new_depth:
+                yield '</ul>'
+                depth -= 1
+            yield '<li>'
             yield lead
-            if leads:
-                stack += ['</ul>']
-                for lead2 in leads:
-                    stack += ['</li>', lead2, '<li>']
-                id = ' id="c{}"'.format(lead.nextnum) if lead.nextnum else ''
-                ul = '<ul class="couplet"{}>'.format(id)
-                stack += [ul]  # TODO: needs id for linking
+            yield '</li>'
+
+        while depth:
+            yield '</ul>'
+            depth -= 1
 
 def get_groups():
     groups = []
