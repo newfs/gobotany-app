@@ -67,7 +67,7 @@ define([
             var $couplet = null;
             var leads_to_show = $all_leads.toArray();
         } else {
-            var $couplet = $(new_hash ? '#c' + new_hash : '.couplets');
+            var $couplet = $(new_hash ? '#c' + new_hash : '#cc1');
             var $parent_leads = $couplet.parents('li').children('.lead');
 
             $couplet.addClass('active');
