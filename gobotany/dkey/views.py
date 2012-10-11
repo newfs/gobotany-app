@@ -50,52 +50,32 @@ class _Proxy(object):
 
     def set_page(self, page):
         self.page = page
-        self.leads = (models.Lead.objects.filter(page=page)
-                      .select_related('goto_page').all())
+        self.leads = sorted(models.Lead.objects.filter(page=page)
+                            .select_related('goto_page').all(),
+                            key=models.Lead.sort_key)
 
-    def lead_hierarchy(self):
-        leads = sorted(self.leads, key=models.Lead.sort_key)
-        if not leads:
-            return
-
-        # Sort and group the leads.
-
-        get_parent_id = attrgetter('parent_id')
-        child_leads = {
+        self.child_leads = {
             parent_id: list(group) for parent_id, group
-            in groupby(leads, get_parent_id)
+            in groupby(self.leads, attrgetter('parent_id'))
             }
 
-        # Fill in taxa lists for non-leaf leads.
-
-        for lead in reversed(leads):
-            fill_in_taxa(child_leads, lead)
-
-        # Yield the tree of leads.
-
-        lead_depths = {None: 0}
-        depth = 0
-
-        for lead in leads:
-            children = child_leads.get(lead.id)
+        for lead in reversed(self.leads):
+            children = self.child_leads.get(lead.id)
             lead.nextnum = children[0].number if children else ''
+            fill_in_taxa(self.child_leads, lead)
 
-            new_depth = lead_depths[lead.parent_id] + 1
-            lead_depths[lead.id] = new_depth
-            if depth < new_depth:
-                id = ' id="c{}"'.format(lead.number)
-                yield '<ul class="couplet"{}>'.format(id)
-                depth += 1
-            while depth > new_depth:
-                yield '</ul>'
-                depth -= 1
-            yield '<li>'
-            yield lead
-            yield '</li>'
+        self.lead_hierarchy = []
+        self.build_lead_hierarchy(self.child_leads[None], self.lead_hierarchy)
 
-        while depth:
-            yield '</ul>'
-            depth -= 1
+    def build_lead_hierarchy(self, leads, items):
+        for lead in leads:
+            items.extend(['<li>', lead, '</li>'])
+            children = self.child_leads.get(lead.id)
+            if children:
+                couplet_number = ' id="c{}"'.format(children[0].number())
+                items.append('<ul class="couplet"{}>'.format(couplet_number))
+                self.build_lead_hierarchy(children, items)
+                items.append('</ul>')
 
 def get_groups():
     groups = []
@@ -161,7 +141,7 @@ def page(request, slug=u'key-to-the-families'):
             'families': get_families,
             'genera': get_genera,
             'leads': (lambda: proxy.leads),
-            'lead_hierarchy': (lambda: proxy.lead_hierarchy()),
+            'lead_hierarchy': (lambda: proxy.lead_hierarchy),
             'next_page': (lambda: proxy.next() or proxy.page),
             'page': (lambda: proxy.page),
             }, context_instance=RequestContext(request))
