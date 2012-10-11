@@ -32,25 +32,36 @@ define([
         this.regexp = new RegExp(re, 'gi');
     },
 
-    /* Call "markup" on a node - hopefully one with no elements
-       beneath it, but just text - to have its innerHTML scanned for
-       glossary terms.  Any terms found are replaced with a <span>
-       to which a tooltip is then attached. */
+    /* Call "markup" on a node - hopefully one with no elements beneath
+       it, but just text - to have its text scanned for glossary terms.
+       Any terms found are replaced with a <span> to which a tooltip is
+       then attached. */
 
     markup: function(node) {
-        node.innerHTML = node.innerHTML.replace(
-            this.regexp, '<span class="gloss">$1$2</span>'
-        );
+
+        /* Place any glossary terms in the node inside spans. */
+
         var self = this;
+        var TEXT_NODE = 3;
+
+        $(node).contents().each(function() {
+            if (this.nodeType === TEXT_NODE)
+                $(this).replaceWith(_.escape(this.textContent).replace(
+                    self.regexp, '<span class="gloss">$1$2</span>'));
+        });
+
+        /* Attach the new spans to tooltips. */
+
         var defs = this.glossaryblob.definitions;
         var images = this.glossaryblob.images;
-        $('.gloss', node).each(function(i, node2) {
+
+        $('.gloss', node).each(function(i, span) {
             self.n++;
             var gloss_id = 'gloss' + self.n;
-            var term = node2.innerHTML.toLowerCase();
+            var term = span.innerHTML.toLowerCase();
             var imgsrc = images[term];
-            node2.id = gloss_id;
-            
+            span.id = gloss_id;
+
             var definition = defs[term];
             if (definition === undefined) {
                 // If the definition was not found, try looking it up
@@ -59,10 +70,10 @@ define([
                 // indicator code FACW). Converting the term to lower case
                 // is still desirable as the default because it allows
                 // markup of terms that appear in mixed case on the pages.
-                definition = defs[node2.innerHTML];
+                definition = defs[span.innerHTML];
             }
 
-            $('#' + gloss_id).tooltip({
+            $(span).tooltip({
                 content: '<p class="glosstip">' +
                     (imgsrc ? '<img src="' + imgsrc + '">' : '') +
                     definition + '</p>'
