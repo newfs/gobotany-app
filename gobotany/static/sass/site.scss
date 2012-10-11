@@ -548,6 +548,24 @@ footer {
     }
 }
 
+/* Text input with suggestions */
+
+input.suggest {
+    &+div {
+        background: #fff;
+        border: 1px solid #999;
+        position: absolute;
+        li {
+            list-style-type: none;
+            padding: 0 2px;
+            &.selected {
+                background-color: #666;
+                color: #fff;
+            }
+        }
+    }
+}
+
 /* Imports for various pages, sections, features, etc. Each of these
  * can contain their own media queries. */
 

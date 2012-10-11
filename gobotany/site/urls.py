@@ -39,4 +39,7 @@ urlpatterns = patterns(
     url('^help/contributors/$', redirect_to, {'url': '/contributors/'}),
     url('^legal/privacy-policy/$', redirect_to, {'url': '/privacy/'}),
     url('^legal/terms-of-use/$', redirect_to, {'url': '/terms/'}),
+
+    # Temporary, for testing
+    url('^suggest-test/$', views.suggest_test_view, name='site-suggest-test'),
     )
