@@ -36,7 +36,9 @@ class Lead(models.Model):
         simple integers as strings like '12'.
 
         """
-        if self.letter[-1].isdigit():
+        if not self.letter:
+            return 0,
+        elif self.letter[-1].isdigit():
             return int(self.letter),
         else:
             return int(self.letter[:-1]), self.letter[-1]
