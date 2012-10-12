@@ -113,16 +113,6 @@ define([
             }
         });
 
-        /* Scroll to the target couplet; this animate() call has to
-           follow the slideUp() and slideDown() calls above, to make the
-           scrolling land at the right place. */
-
-        if (!is_initial && $couplet !== null) {
-            $('html, body').animate({
-                scrollTop: $couplet.offset().top
-            }, duration);
-        }
-
         /* Enable or disable the "show all" button. */
 
         var button = $('.show-all-button');
