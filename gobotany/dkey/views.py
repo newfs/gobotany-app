@@ -65,6 +65,9 @@ class _Proxy(object):
             fill_in_taxa(self.child_leads, lead)
 
         self.lead_hierarchy = []
+        if not self.child_leads:
+            return
+
         self.build_lead_hierarchy(self.child_leads[None], self.lead_hierarchy)
 
     def build_lead_hierarchy(self, leads, items):
