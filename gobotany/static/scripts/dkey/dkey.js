@@ -106,8 +106,7 @@ define([
         $all_buttons = $all_leads.find('.button');
 
         $all_couplets.removeClass('active');
-        $all_leads.removeClass('chosen');
-        $all_leads.removeClass('go-back');
+        $all_leads.removeClass('chosen go-back original-choice alt-choice');
         $all_buttons.each(function() {
             $(this).text($(this).attr('original-text'));
         });
@@ -129,6 +128,22 @@ define([
             $active.addClass('active');
             $parent_leads.addClass('chosen');
             $parent_leads.find('.button').text(go_back_text);
+        }
+
+        /* Apply special classes to the leads of a couplet to which the
+           user has returned through a "Go back" button. */
+
+        if (active_id !== bottom_id) {
+            var $lead_a = $active_leads.eq(0);
+            var $lead_b = $active_leads.eq(1);
+            var $li_a = $lead_a.closest('li');
+            if ($.contains($li_a[0], $bottom[0])) {
+                $lead_a.addClass('original-choice');
+                $lead_b.addClass('alt-choice');
+            } else {
+                $lead_a.addClass('alt-choice');
+                $lead_b.addClass('original-choice');
+            }
         }
 
         /* Visit every lead and make it appear or disappear. */
