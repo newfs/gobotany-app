@@ -59,6 +59,10 @@ define([
 
     /* Visiting particular couplets. */
 
+    $('.lead .button').each(function() {
+        $(this).attr('original-text', $(this).text());
+    });
+
     var focus_on_one_couplet = function(new_hash, is_initial) {
 
         var duration = is_initial ? 0 : 200;
@@ -69,9 +73,14 @@ define([
 
         $all_couplets = $('.couplet');
         $all_leads = $('.lead');
+        $all_buttons = $all_leads.find('.button');
 
         $all_couplets.removeClass('active');
         $all_leads.removeClass('chosen');
+        $all_leads.removeClass('go-back');
+        $all_buttons.each(function() {
+            $(this).text($(this).attr('original-text'));
+        });
 
         /* The hash determines what we display. */
 
@@ -85,10 +94,12 @@ define([
             $couplet.addClass('active');
             $parent_leads.addClass('chosen');
 
-            var active_leads = $couplet.children('li').children('.lead');
-            var ancestor_leads = $couplet.parents('li').children('.lead');
-            var leads_to_show = active_leads.toArray().concat(
-                ancestor_leads.toArray());
+            var $active_leads = $couplet.children('li').children('.lead');
+            var $ancestor_leads = $couplet.parents('li').children('.lead');
+            var leads_to_show = $active_leads.toArray().concat(
+                $ancestor_leads.toArray());
+
+            $ancestor_leads.find('.button').text('GO BACK');
         }
 
         /* Visit every lead and make it appear or disappear. */
