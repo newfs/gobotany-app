@@ -37,15 +37,24 @@ define([
 
     /* Canonical way of forming a URL to a taxon. */
 
+    var is_species = function(name) {
+        return name.indexOf(' ') != -1;
+    };
+
+    var taxon_url = function(name) {
+        var name = name.toLowerCase();
+        if (is_species(name))
+            return '/species/' + name.replace(' ', '/') + '/?key=dichotomous';
+        else
+            return '/dkey/' + name.toLowerCase() + '/';
+    };
+
     var $taxon_anchor = function(name) {
-        if (name.indexOf(' ') != -1) {
-            var url = '/species/' + name.replace(' ', '/').toLowerCase() +
-                '/?key=dichotomous';
-            return $('<a/>', {'href': url}).append($('<i/>', {'html': name}));
-        } else {
-            var url = '/dkey/' + name.toLowerCase() + '/';
-            return $('<a/>', {'href': url, 'html': name});
-        }
+        var url = taxon_url(name);
+        if (is_species(name))
+            return $('<a/>', {'href': url}).append($('<i/>', {'text': name}));
+        else
+            return $('<a/>', {'href': url, 'text': name});
     };
 
     /* Visiting particular couplets. */
@@ -248,10 +257,9 @@ define([
 
     $('.jumpbox').on('change', function(event) {
         var text = $(':selected', event.delegateTarget).html();
-        var jumpto = text.toLowerCase().replace(' ', '-');
         reset_select(event.delegateTarget);
-        if (jumpto && ! jumpto.match(/^jump/)) {
-            window.location = '/dkey/' + jumpto + '/';
+        if (text && ! text.match(/^jump/)) {
+            window.location = taxon_url(text);
         }
     });
 })});
