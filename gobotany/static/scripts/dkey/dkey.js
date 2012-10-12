@@ -60,6 +60,8 @@ define([
     /* Visiting particular couplets. */
 
     var go_back_text = 'GO BACK';
+    var active_id = 'c1';
+    var bottom_id = 'c1';
 
     $('.lead .button').each(function() {
         $(this).attr('original-text', $(this).text());
@@ -80,13 +82,15 @@ define([
            currently-visible hierarchy, and is also the current couplet
            highlighted for choosing. */
 
-        var comma_at = new_hash.indexOf(',');
-        if (comma_at === -1) {
-            var active_id = new_hash;
-            var bottom_id = new_hash;
-        } else {
-            var active_id = new_hash.substring(0, comma_at);
-            var bottom_id = new_hash.substring(comma_at + 1);
+        if (new_hash) {
+            var comma_at = new_hash.indexOf(',');
+            if (comma_at === -1) {
+                active_id = new_hash;
+                bottom_id = new_hash;
+            } else {
+                active_id = new_hash.substring(0, comma_at);
+                bottom_id = new_hash.substring(comma_at + 1);
+            }
         }
 
         /* First, reset all state. */
@@ -105,21 +109,20 @@ define([
         /* The hash determines what we display. */
 
         if (active_id === 'all') {
-            var $couplet = null;
             var leads_to_show = $all_leads.toArray();
         } else {
-            var $couplet = $(active_id ? '#c' + active_id : '.couplets');
-            var $parent_leads = $couplet.parents('li').children('.lead');
-
-            $couplet.addClass('active');
-            $parent_leads.addClass('chosen');
-
-            var $active_leads = $couplet.children('li').children('.lead');
-            var $ancestor_leads = $couplet.parents('li').children('.lead');
+            var $active = $('#c' + active_id);
+            var $bottom = $('#c' + bottom_id);
+            var $active_leads = $active.children('li').children('.lead');
+            var $bottom_leads = $bottom.children('li').children('.lead');
+            var $parent_leads = $active.parents('li').children('.lead');
+            var $ancestor_leads = $bottom.parents('li').children('.lead');
             var leads_to_show = $active_leads.toArray().concat(
-                $ancestor_leads.toArray());
+                $bottom_leads.toArray(), $ancestor_leads.toArray());
 
-            $ancestor_leads.find('.button').text(go_back_text);
+            $active.addClass('active');
+            $parent_leads.addClass('chosen');
+            $parent_leads.find('.button').text(go_back_text);
         }
 
         /* Visit every lead and make it appear or disappear. */
@@ -145,8 +148,9 @@ define([
 
     $('.lead .button').on('click', function() {
         if ($(this).text() === go_back_text) {
-            var id = $(this).closest('.couplet').attr('id');
-            Hash.go(id ? id.replace('cc', 'c') : '');
+            var raw_active_id = $(this).closest('.couplet').attr('id');
+            var new_active_id = raw_active_id.replace('cc', 'c');
+            Hash.go(new_active_id + ',' + bottom_id);
             return false;
         }
     });
