@@ -85,8 +85,10 @@ define([
             $couplet.addClass('active');
             $parent_leads.addClass('chosen');
 
-            var leads_to_show = $couplet.parents('.couplet').andSelf()
-                .children('li').children('.lead').toArray();
+            var active_leads = $couplet.children('li').children('.lead');
+            var ancestor_leads = $couplet.parents('li').children('.lead');
+            var leads_to_show = active_leads.toArray().concat(
+                ancestor_leads.toArray());
         }
 
         /* Visit every lead and make it appear or disappear. */
