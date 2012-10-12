@@ -65,11 +65,29 @@ define([
         $(this).attr('original-text', $(this).text());
     });
 
-    var focus_on_one_couplet = function(new_hash, is_initial) {
+    var transition_to_hash = function(new_hash, is_initial) {
 
         var duration = is_initial ? 0 : 200;
         if (!is_initial)
             $('.couplet:animated').stop();
+
+        /* Parse the hash: "c2,c3" means that we are focused on
+           answering Couplet 2 but that we got there by clicking "GO
+           BACK" when Couplet 3 was highlighted, so Couplet 3 should
+           also be expanded and visible but without being highlighted in
+           green. If the hash is simply a single couplet ID, like "c3",
+           then that single couplet is both the "bottom" of the
+           currently-visible hierarchy, and is also the current couplet
+           highlighted for choosing. */
+
+        var comma_at = new_hash.indexOf(',');
+        if (comma_at === -1) {
+            var active_id = new_hash;
+            var bottom_id = new_hash;
+        } else {
+            var active_id = new_hash.substring(0, comma_at);
+            var bottom_id = new_hash.substring(comma_at + 1);
+        }
 
         /* First, reset all state. */
 
@@ -86,11 +104,11 @@ define([
 
         /* The hash determines what we display. */
 
-        if (new_hash === 'all') {
+        if (active_id === 'all') {
             var $couplet = null;
             var leads_to_show = $all_leads.toArray();
         } else {
-            var $couplet = $(new_hash ? '#c' + new_hash : '.couplets');
+            var $couplet = $(active_id ? '#c' + active_id : '.couplets');
             var $parent_leads = $couplet.parents('li').children('.lead');
 
             $couplet.addClass('active');
@@ -118,7 +136,7 @@ define([
         /* Enable or disable the "show all" button. */
 
         var button = $('.show-all-button');
-        if (new_hash === 'all') {
+        if (active_id === 'all') {
             button.html('Show First Couplet').attr('href', '#');
         } else {
             button.html('Show All Couplets').attr('href', '#all');
@@ -135,7 +153,7 @@ define([
 
     /* Connect the couplet logic to our hash. */
 
-    Hash.init(focus_on_one_couplet);
+    Hash.init(transition_to_hash);
 
     /* Clicking on "See list of 7 genera in 1b" should display them. */
 
