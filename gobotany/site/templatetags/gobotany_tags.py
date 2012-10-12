@@ -1,7 +1,5 @@
 """Site-wide template tags and filters."""
 
-import os
-
 from django import template
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
