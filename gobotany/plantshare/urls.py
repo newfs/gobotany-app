@@ -25,4 +25,7 @@ urlpatterns = patterns(
 
     # My Profile page
     url(r'^profile/$', views.profile_view, name='ps-profile'),
+
+    # AJAX urls
+    url(r'^api/edit-profile$', views.ajax_profile_edit, name='ps-ajax-profile-edit'),
     )

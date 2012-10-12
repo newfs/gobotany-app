@@ -3,9 +3,10 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
+from django.utils import simplejson
 
-from gobotany.plantshare.forms import NewSightingForm
-from gobotany.plantshare.models import Location, Sighting
+from gobotany.plantshare.forms import NewSightingForm, UserProfileForm
+from gobotany.plantshare.models import Location, Sighting, UserProfile
 
 def _new_sighting_form_page(request, form):
     """Give a new-sighting form, either blank or with as-yet-invalid data."""
@@ -78,5 +79,36 @@ def new_sighting_done_view(request):
 @login_required
 def profile_view(request):
     """View for the logged-in user's profile."""
-    return render_to_response('profile.html', {
-           }, context_instance=RequestContext(request))
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        profile = None
+
+    profile_form = UserProfileForm(instance=profile)
+
+    context = {
+        'profile_form': profile_form
+    }
+    return render_to_response('profile.html', context,
+            context_instance=RequestContext(request))
+
+# AJAX API
+def ajax_profile_edit(request):
+    """ Ajax form submission of profile form """
+    if not request.user.is_authenticated():
+        return HttpResponse(simplejson.dumps({'error': True}), mimetype='application/json')
+
+    if request.method == 'POST':
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+        except UserProfile.DoesNotExist:
+            profile = None
+        profile_form = UserProfileForm(request.POST, instance=profile)
+        if profile:
+            profile_form.save()
+        else:
+            profile = profile_form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+
+    return HttpResponse(simplejson.dumps({'success': True}), mimetype='application/json')
