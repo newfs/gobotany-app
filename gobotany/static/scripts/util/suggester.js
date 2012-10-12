@@ -13,7 +13,8 @@ define([
             UP: 38,
             TAB: 9,
             ESCAPE: 27,
-            ENTER: 13
+            ENTER: 13,
+            SHIFT: 16
         };
         this.SELECTED_CLASS = 'selected';
 
@@ -43,11 +44,6 @@ define([
         this.set_menu_position();
         $(window).resize($.proxy(this.set_menu_position, this));
 
-        // Prevent automatically submitting the form upon pressing Enter
-        // for this form, now that it contains an input box with
-        // suggestions. This should be OK, at least in most cases.
-        this.$form.submit($.proxy(this.prevent_submit_on_menu_enter, this));
-
         // Set up keyboard event handlers.
         this.$input_box.keyup($.proxy(this.handle_keys_up, this));
         this.$input_box.keydown($.proxy(this.handle_keys_down, this));
@@ -61,16 +57,21 @@ define([
         this.$menu.click(function (event) {
             event.stopPropagation();
         });
+
+        // If there is a an empty required field in the form, a validation
+        // error shows immediately upon pressing the Enter key (unlike
+        // with an HTML5 datalist). This preveted the input box text
+        // from updating with the user's selected menu item. In order
+        // to overcome this, update the box with the currently selected
+        // value as soon as focus leaves the input box.
+        this.$input_box.blur($.proxy(this.enter_current_item, this));
+
+        // Hide the menu on focus, such as when tabbing to the field.
+        this.$input_box.focus($.proxy(this.hide_menu, this));
     };
 
-    Suggester.prototype.prevent_submit_on_menu_enter = function (e) {
-        // If the menu is visible, prevent the form from submitting 
-        // automatically upon pressing the Enter key in order to make
-        // these input boxes behave like HTML5 datalists (and
-        // combo-boxes elsewhere).
-        if (this.$menu.is(':visible')) {
-            e.preventDefault();
-        }
+    Suggester.prototype.hide_menu = function () {
+        this.$menu.hide();
     };
 
     Suggester.prototype.set_menu_position = function () {
@@ -92,10 +93,13 @@ define([
             case this.KEY_CODE.ESCAPE:
                 this.$menu.hide();
                 break;
-            case this.KEY_CODE.ENTER:
-                this.enter_current_item();
+            case this.KEY_CODE.TAB:
                 this.$menu.hide();
                 break;
+            case this.KEY_CODE.ENTER:
+                break;   // Handle only on keydown instead
+            case this.KEY_CODE_SHIFT:
+                break;   // Prevent menu from appearing when tabbing back
             default:
                 this.handle_input_value();
                 break;
@@ -103,8 +107,23 @@ define([
     };
 
     Suggester.prototype.handle_keys_down = function (e) {
+        // Some things need to be handled on keydown in order to make
+        // them work properly.
         switch (e.which) {
             case this.KEY_CODE.TAB:
+                this.$menu.hide();
+                break;
+            case this.KEY_CODE.ENTER:
+                // If the menu is visible, prevent the validation and
+                // form submit that is normally triggered. This is so
+                // the form does not normally submit automatically with
+                // an input field with suggestions, matching how HTML5
+                // datalists behave.
+                if (this.$menu.is(':visible')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                this.enter_current_item();
                 this.$menu.hide();
                 break;
         }
@@ -241,12 +260,15 @@ define([
         }
     };
 
-    Suggester.prototype.enter_current_item = function (e) {
+    Suggester.prototype.enter_current_item = function () {
         // Enter the currently selected (highlighted) menu item into
         // the input box.
         var selected_index = this.get_selected_index();
-        var selected_value = this.$menu.find('li').eq(selected_index).text();
-        this.fill_box(selected_value);
+        if (selected_index > -1) {
+            var selected_value =
+                this.$menu.find('li').eq(selected_index).text();
+            this.fill_box(selected_value);
+        }
     };
 
     // Return the constructor function.

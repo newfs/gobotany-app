@@ -33,6 +33,8 @@ class NewSightingForm(forms.Form):
         widget=forms.TextInput({
             'autocomplete': 'off',
             'autofocus': 'autofocus',
+            'class': 'suggest',
+            'data-suggest-url': '/suggest/?q=%s',
             'placeholder': 'scientific or common name',
             'required': 'required',
         })
