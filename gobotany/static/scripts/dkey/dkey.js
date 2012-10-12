@@ -37,16 +37,22 @@ define([
 
     /* Canonical way of forming a URL to a taxon. */
 
+    var is_group = function(name) {
+        return name.toLowerCase().indexOf('group') === 0;
+    };
+
     var is_species = function(name) {
-        return name.indexOf(' ') != -1;
+        return (!is_group(name)) && (name.indexOf(' ') !== -1);
     };
 
     var taxon_url = function(name) {
         var name = name.toLowerCase();
-        if (is_species(name))
+        if (is_group(name))
+            return '/dkey/' + name.replace(' ', '-') + '/';
+        else if (is_species(name))
             return '/species/' + name.replace(' ', '/') + '/?key=dichotomous';
         else
-            return '/dkey/' + name.toLowerCase() + '/';
+            return '/dkey/' + name + '/';
     };
 
     var $taxon_anchor = function(name) {
