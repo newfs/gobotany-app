@@ -40,7 +40,7 @@ define([
                 '/?key=dichotomous';
             return $('<a/>', {'href': url}).append($('<i/>', {'html': name}));
         } else {
-            var url = '/dkey/' + name + '/';
+            var url = '/dkey/' + name.toLowerCase() + '/';
             return $('<a/>', {'href': url, 'html': name});
         }
     };
