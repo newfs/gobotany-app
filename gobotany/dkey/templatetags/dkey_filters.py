@@ -39,6 +39,14 @@ def display_title(page):
     else:
         return page.title
 
+@register.filter
+def dkey_url(name):
+    name = name.lower()
+    if ' ' in name:
+        return '/species/' + name.replace(' ', '/') + '/?key=dichotomous';
+    else:
+        return '/dkey/' + name + '/';
+
 def figure_url(figure):
     return 'http://newfs.s3.amazonaws.com/dkey-figures/figure-{}.png'.format(
         figure.number)
