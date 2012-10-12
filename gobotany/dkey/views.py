@@ -72,13 +72,15 @@ class _Proxy(object):
 
     def build_lead_hierarchy(self, leads, items):
         for lead in leads:
-            items.extend(['<li>', lead, '</li>'])
+            items.append('<li>')
+            items.append(lead)
             children = self.child_leads.get(lead.id)
             if children:
                 couplet_number = ' id="c{}"'.format(children[0].number())
                 items.append('<ul class="couplet"{}>'.format(couplet_number))
                 self.build_lead_hierarchy(children, items)
                 items.append('</ul>')
+            items.append('</li>')
 
 def get_groups():
     groups = []
