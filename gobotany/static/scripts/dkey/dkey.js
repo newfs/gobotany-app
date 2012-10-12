@@ -59,6 +59,8 @@ define([
 
     /* Visiting particular couplets. */
 
+    var go_back_text = 'GO BACK';
+
     $('.lead .button').each(function() {
         $(this).attr('original-text', $(this).text());
     });
@@ -99,7 +101,7 @@ define([
             var leads_to_show = $active_leads.toArray().concat(
                 $ancestor_leads.toArray());
 
-            $ancestor_leads.find('.button').text('GO BACK');
+            $ancestor_leads.find('.button').text(go_back_text);
         }
 
         /* Visit every lead and make it appear or disappear. */
@@ -122,6 +124,14 @@ define([
             button.html('Show All Couplets').attr('href', '#all');
         }
     }
+
+    $('.lead .button').on('click', function() {
+        if ($(this).text() === go_back_text) {
+            var id = $(this).closest('.couplet').attr('id');
+            Hash.go(id ? id.replace('cc', 'c') : '');
+            return false;
+        }
+    });
 
     /* Connect the couplet logic to our hash. */
 
