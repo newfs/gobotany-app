@@ -10,7 +10,8 @@
 <h2>My Info</h2>
 
 <section class="info-section">
-  <form name="edit-profile-form">
+<form name="edit-profile-form" class="ajax-partial" method="POST" action="{% url ps-ajax-profile-edit %}">
+    {% csrf_token %}
     <div class="info box">
         <div class="avatar">
             <img src="/static/images/icons/avatar-scary-placeholder.png" alt="">
@@ -24,11 +25,16 @@
                     <td class="first">Visibility:</td>
                     <td>
                         <div class="display">
-                            <p>Only Plantshare Staff and Myself <a href="#" class="edit-link">Edit</a></p>
+                            <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
                         </div>
                         <div class="edit">
-                            {# Replace this with real form output #}
-                            <p>Form goes here.</p>
+                            <div class="ajax-field">
+                                {{ profile_form.sharing_visibility }}
+                            </div>
+                            <div class="field-controls">
+                              <input type="button" class="field-save" value="Save" />
+                              <a href="#" class="field-reset">Cancel</a>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -36,11 +42,16 @@
                     <td class="first">Screen Name:</td>
                     <td>
                         <div class="display">
-                            <p>SomeScreenNameGuy <a href="#" class="edit-link">Edit</a></p>
+                            <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
                         </div>
                         <div class="edit">
-                            {# Replace this with real form output #}
-                            <p>Form goes here.</p>
+                            <div class="ajax-field">
+                                {{ profile_form.display_name }}
+                            </div>
+                            <div class="field-controls">
+                              <input type="button" class="field-save" value="Save" />
+                              <a href="#" class="field-reset">Cancel</a>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -48,11 +59,16 @@
                     <td class="first">Saying:</td>
                     <td>
                         <div class="display">
-                            <p>"Some short saying." <a href="#" class="edit-link">Edit</a></p>
+                            <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
                         </div>
                         <div class="edit">
-                            {# Replace this with real form output #}
-                            <p>Form goes here.</p>
+                            <div class="ajax-field">
+                                {{ profile_form.saying }}
+                            </div>
+                            <div class="field-controls">
+                              <input type="button" class="field-save" value="Save" />
+                              <a href="#" class="field-reset">Cancel</a>
+                            </div>
                         </div>
                     </td>
                 </tr>
