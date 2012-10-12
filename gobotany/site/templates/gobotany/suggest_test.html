@@ -22,7 +22,7 @@
             require(['util/suggester_init']);
         </script>
     </head>
-    <body>
+    <body class="plantshare">
         <h1>Input Suggest Test</h1>
 
         <p>This is a test page for a reusable component that allows text
@@ -53,48 +53,64 @@
 
         <h3>PlantShare Plant Name</h3>
 
-        <form action="/ps/sightings/" method="post">
-            {% csrf_token %}
-            <input type="text" autocomplete="off"
-                name="identification"
-                id="id_identification"
-                placeholder="scientific or common name"
-                class="suggest"
-                data-suggest-url="/suggest/?q=%s">
-            <input type="text" name="title" id="id_title"
-                autocomplete="off"
-                placeholder="title (datalist test)" list="titles">
-            <datalist id="titles">
-                <option>Title1</option>
-                <option>Title2</option>
-                <option>Title3</option>
-            </datalist>
-            <button type="submit">Post Sighting</button>
-        </form>
+        <div class="content">
+            <form action="/ps/sightings/" method="post">
+                {% csrf_token %}
+                <input type="text" autocomplete="off"
+                    name="identification"
+                    id="id_identification"
+                    placeholder="scientific or common name"
+                    class="suggest"
+                    data-suggest-url="/suggest/?q=%s">
+                <input type="text" name="title" id="id_title"
+                    autocomplete="off"
+                    placeholder="title (datalist test)" list="titles">
+                <datalist id="titles">
+                    <option>Title1</option>
+                    <option>Title2</option>
+                    <option>Title3</option>
+                </datalist>
+                <button type="submit">Post Sighting</button>
+            </form>
+        </div>
 
         <h4>Variation with initial value</h4>
 
-        <form action="/ps/sightings/" method="post">
-            {% csrf_token %}
-            <input type="text" autocomplete="off"
-                name="identification"
-                id="id_identification2"
-                value="acer pensylvanicum"
-                placeholder="scientific or common name"
-                class="suggest"
-                data-suggest-url="/suggest/?q=%s">
-            <input type="text" name="title" id="id_title2"
-                    autocomplete="off"
-                    placeholder="title (datalist test)" list="titles2">
-            <datalist id="titles2">
-                <option>Title1</option>
-                <option>Title2</option>
-                <option>Title3</option>
-            </datalist>
-            <button type="submit">Post Sighting</button>
-        </form>
+        <div class="content">
+            <form action="/ps/sightings/" method="post">
+                {% csrf_token %}
+                <input type="text" autocomplete="off"
+                    name="identification"
+                    id="id_identification2"
+                    value="acer pensylvanicum"
+                    placeholder="scientific or common name"
+                    class="suggest"
+                    data-suggest-url="/suggest/?q=%s">
+                <input type="text" name="title" id="id_title2"
+                        autocomplete="off"
+                        placeholder="title (datalist test)" list="titles2">
+                <datalist id="titles2">
+                    <option>Title1</option>
+                    <option>Title2</option>
+                    <option>Title3</option>
+                </datalist>
+                <button type="submit">Post Sighting</button>
+            </form>
+        </div>
 
         <h3>Go Botany Site Search</h3>
+
+        <form action="/search/" method="get">
+            <input type="text" autocomplete="off"
+                name="q"
+                id="search-box"
+                placeholder="Search..."
+                class="suggest"
+                data-suggest-url="/suggest/?q=%s">
+            <button type="submit">Search</button>
+        </form>
+
+        <h4>Variation with only default styling</h4>
 
         <form action="/search/" method="get">
             <input type="text" autocomplete="off"

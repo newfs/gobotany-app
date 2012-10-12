@@ -394,7 +394,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
 /* Text input with suggestions */
 input.suggest + div { background: #fff; border: 1px solid #999; position: absolute; }
 input.suggest + div li { list-style-type: none; padding: 0 2px; }
-input.suggest + div li.selected { background-color: #666; color: #fff; }
+input.suggest + div li.selected, input.suggest + div li:hover { background-color: #666; color: #fff; }
 
 /* Imports for various pages, sections, features, etc. Each of these can contain their own media queries. */
 /* Home */

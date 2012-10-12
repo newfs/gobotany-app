@@ -11,6 +11,7 @@ define([
         this.KEY_CODE = {
             DOWN: 40,
             UP: 38,
+            TAB: 9,
             ESCAPE: 27,
             ENTER: 13
         };
@@ -35,11 +36,10 @@ define([
         this.$menu_list = this.$menu.children('ul').eq(0);
 
         // Set the width of the menu to match that of the box.
-        this.$menu.css('width', this.$input_box.width() + 4);
+        this.$menu.css('width', this.$input_box.outerWidth(true) - 2);
 
         // Position the menu under the box, and adjust the position when
         // the browser window is resized.
-        this.$input_box_position = this.$input_box.position();
         this.set_menu_position();
         $(window).resize($.proxy(this.set_menu_position, this));
 
@@ -49,16 +49,20 @@ define([
         this.$form.submit($.proxy(this.prevent_submit_on_menu_enter, this));
 
         // Set up keyboard event handlers.
-        this.$input_box.keyup($.proxy(this.handle_keys, this));
+        this.$input_box.keyup($.proxy(this.handle_keys_up, this));
+        this.$input_box.keydown($.proxy(this.handle_keys_down, this));
 
-        // Hide the menu when the focus goes away from the input box.
-        this.$input_box.blur($.proxy(this.hide_menu, this));
+        // Hide the menu upon clicking outside the input box.
+        $(document).click($.proxy(
+            function () {
+                this.$menu.hide();
+            }, this)
+        );
+        this.$menu.click(function (event) {
+            event.stopPropagation();
+        });
     };
 
-    Suggester.prototype.hide_menu = function () {
-        this.$menu.hide();
-    };
-    
     Suggester.prototype.prevent_submit_on_menu_enter = function (e) {
         // If the menu is visible, prevent the form from submitting 
         // automatically upon pressing the Enter key in order to make
@@ -67,21 +71,17 @@ define([
         if (this.$menu.is(':visible')) {
             e.preventDefault();
         }
-    }
+    };
 
     Suggester.prototype.set_menu_position = function () {
         // Position the menu under the box.
-
-        // TODO: correct this when browser has scrollbars: think we need to
-        // take offset into account.
-
-        this.$menu.css('left', this.$input_box_position.left);
-
-        // TODO: et the top based on the box height
-        this.$menu.css('top', this.$input_box_position.top + 20);
+        var $input_box_offset = this.$input_box.offset();
+        this.$menu.css('left', $input_box_offset.left);
+        this.$menu.css('top',
+                       $input_box_offset.top + this.$input_box.outerHeight());
     };
 
-    Suggester.prototype.handle_keys = function (e) {
+    Suggester.prototype.handle_keys_up = function (e) {
         switch (e.which) {
             case this.KEY_CODE.DOWN:
                 this.select_next_menu_item();
@@ -98,6 +98,14 @@ define([
                 break;
             default:
                 this.handle_input_value();
+                break;
+        }
+    };
+
+    Suggester.prototype.handle_keys_down = function (e) {
+        switch (e.which) {
+            case this.KEY_CODE.TAB:
+                this.$menu.hide();
                 break;
         }
     };
@@ -140,7 +148,7 @@ define([
         // Format a suggestion for display.
         return suggestion.replace(new RegExp(input_value, 'i'),
                                   '<span>$&</span>').toLowerCase();
-    },
+    };
 
     Suggester.prototype.display_suggestions = function (suggestions,
                                                         input_value) {
@@ -161,6 +169,13 @@ define([
                 var label = this.format_suggestion(suggestion, input_value);
                 var $item = $(document.createElement('li'));
                 $item.append(label);
+
+                // Bind an event to activate the item with a click or tap.
+                $item.click($.proxy(function (e) {
+                    var selected_value = e.target.innerText;
+                    this.fill_box(selected_value);
+                }, this));
+                
                 this.$menu_list.append($item);
             }
         }
@@ -169,31 +184,31 @@ define([
         }
     };
 
-    Suggester.prototype.get_selected_index = function ($menu) {
-        return $menu.find('li.' + this.SELECTED_CLASS).index();
+    Suggester.prototype.get_selected_index = function () {
+        return this.$menu.find('li.' + this.SELECTED_CLASS).index();
     };
 
     Suggester.prototype.select_menu_item = function (item_index) {
-        var menu_item = this.$menu.find('li').eq(item_index);
+        var $menu_item = this.$menu.find('li').eq(item_index);
 
-        if (menu_item !== undefined) {
+        if ($menu_item !== undefined) {
             // First un-select any already-selected item.
-            var selected_index = this.get_selected_index(this.$menu);
+            var selected_index = this.get_selected_index();
             if (selected_index >= 0) {
                 var $selected_item = this.$menu.find('li').eq(selected_index);
                 $selected_item.removeClass(this.SELECTED_CLASS);
             }
 
             // Select the new item.
-            menu_item.addClass(this.SELECTED_CLASS);
+            $menu_item.addClass(this.SELECTED_CLASS);
         }
         else {
-            console.log('menu item ' + item_index + ' undefined');
+            console.log('$menu item ' + item_index + ' undefined');
         }
     };
 
     Suggester.prototype.select_next_menu_item = function () {
-        var selected_index = this.get_selected_index(this.$menu);
+        var selected_index = this.get_selected_index();
         var next_item_index = selected_index + 1;
         var num_menu_items = this.$menu.find('li').length;
         if (next_item_index >= num_menu_items) {
@@ -203,7 +218,7 @@ define([
     };
 
     Suggester.prototype.select_previous_menu_item = function () {
-        var selected_index = this.get_selected_index(this.$menu);
+        var selected_index = this.get_selected_index();
         var previous_item_index = selected_index - 1;
         var num_menu_items = this.$menu.find('li').length;
         if (previous_item_index < 0) {
@@ -212,12 +227,8 @@ define([
         this.select_menu_item(previous_item_index);
     };
 
-    Suggester.prototype.enter_current_item = function (e) {
-        // Enter the currently selected (highlighted) menu item into
-        // the input box.
-        var selected_index = this.get_selected_index(this.$menu);
-        var selected_value = this.$menu.find('li').eq(selected_index).text();
-        this.$input_box.val(selected_value);
+    Suggester.prototype.fill_box = function (value) {
+        this.$input_box.val(value);
         this.$menu.hide();
 
         // If there is only one non-hidden form element in the form,
@@ -228,6 +239,14 @@ define([
         if ($non_hidden_form_elements.length === 1) {
             this.$form.submit();
         }
+    };
+
+    Suggester.prototype.enter_current_item = function (e) {
+        // Enter the currently selected (highlighted) menu item into
+        // the input box.
+        var selected_index = this.get_selected_index();
+        var selected_value = this.$menu.find('li').eq(selected_index).text();
+        this.fill_box(selected_value);
     };
 
     // Return the constructor function.
