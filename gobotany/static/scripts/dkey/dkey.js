@@ -24,7 +24,10 @@ define([
 
     var gobotany_host = 'quiet-wind-6510.herokuapp.com';
 
-    /* Rewrite couplet IDs so that #-links will no longer match. */
+    /* Rewrite couplet IDs so that #-links will no longer match; this
+       prevents a change to the URL hash from making the browser think
+       that it should visit a different part of the page without letting
+       us animate the transition. */
 
     $('.couplet').each(function(i, ul) {
         var id = $(ul).attr('id');
