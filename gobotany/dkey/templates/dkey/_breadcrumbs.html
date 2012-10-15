@@ -1,6 +1,6 @@
 {% load dkey_filters %}
 {% for ancestor in page|breadcrumbs %}
-  {% with atitle=ancestor|display_title|nobr %}
+  {% with atitle=ancestor|breadcrumb_title|nobr %}
     {% if forloop.counter0 == 0 %}
       <a href="{% url dkey %}">« Back to the {{ atitle }}</a>
     {% else %}

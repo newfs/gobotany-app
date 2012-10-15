@@ -7,6 +7,7 @@ from django.template import Context, Library
 from django.template.loader import get_template
 from django.utils.safestring import SafeUnicode, mark_safe
 from gobotany.dkey import models
+from gobotany.dkey.views import group_texts
 
 register = Library()
 
@@ -32,6 +33,14 @@ def abbreviate_title(s):
 @register.filter
 def breadcrumbs(page):
     return page.breadcrumb_cache.order_by('id')
+
+@register.filter
+def breadcrumb_title(page):
+    if page.rank == 'group':
+        number = int(page.title.split()[-1])  # 'Group 4' -> 4
+        return u'{}: {}'.format(display_title(page), group_texts[number])
+    else:
+        return display_title(page)
 
 @register.filter
 def display_title(page):
