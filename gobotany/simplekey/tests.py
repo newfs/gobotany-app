@@ -97,7 +97,7 @@ class SpeciesPageTests(FunctionalCase):
     def test_simplekey_species_dichotomous_breadcrumbs(self):
         self.get('/species/dendrolycopodium/dendroideum/?key=dichotomous')
         self.assertEqual(self.crumb(0), u'« Back to the Key to the Families')
-        self.assertEqual(self.crumb(1), u'« Group 1')
+        self.assertEqual(self.crumb(1), u'« Group 1: Lycophytes, Monilophytes')
         self.assertEqual(self.crumb(2), u'« Family Lycopodiaceae')
 
     def test_fullkey_species_breadcrumbs(self):
@@ -110,7 +110,7 @@ class SpeciesPageTests(FunctionalCase):
     def test_fullkey_species_dichotomous_breadcrumbs(self):
         self.get('/species/diphasiastrum/complanatum/?key=dichotomous')
         self.assertEqual(self.crumb(0), u'« Back to the Key to the Families')
-        self.assertEqual(self.crumb(1), u'« Group 1')
+        self.assertEqual(self.crumb(1), u'« Group 1: Lycophytes, Monilophytes')
         self.assertEqual(self.crumb(2), u'« Family Lycopodiaceae')
 
     #
