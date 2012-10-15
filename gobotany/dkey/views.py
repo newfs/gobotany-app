@@ -108,7 +108,7 @@ def family_groups(request):
     leads = []
     lead_hierarchy = []
 
-    for lead in proxy.lead_hierarchy():
+    for lead in proxy.lead_hierarchy:
         if not isinstance(lead, models.Lead):
             continue
 
