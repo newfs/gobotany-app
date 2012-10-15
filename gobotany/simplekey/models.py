@@ -2,7 +2,7 @@ import re
 
 from django.db import models
 
-from gobotany.core.models import GlossaryTerm, Pile, PileGroup
+from gobotany.core.models import Pile, PileGroup
 
 
 class SearchSuggestion(models.Model):
