@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -598,6 +599,9 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
 #dkey #main ul.couplets ul { /* a couplet */ margin: 0em; padding-bottom: 0em; /* override browser default */ padding-left: 2%; /* indent of each level of couplet */ }
 #dkey #main ul.couplets li { /* holds a lead and any <ul> beneath it */ display: block; position: relative; }
 #dkey #main ul.couplets .lead { /* green box */ margin: 0em 0em 1em 0em; border: 6px solid #d9dbb1; -webkit-border-radius: 1.5em; -moz-border-radius: 1.5em; -ms-border-radius: 1.5em; -o-border-radius: 1.5em; border-radius: 1.5em; padding: 1em 1em 1em 1.5em; background-color: #d9dbb1; }
+#dkey #main ul.couplets .lead.original-choice:before, #dkey #main ul.couplets .lead.alt-choice:before { display: block; position: absolute; right: -118px; height: 45px; width: 110px; content: " "; }
+#dkey #main ul.couplets .lead.original-choice:before { background: url(/static/images/layout/original-choice.png); }
+#dkey #main ul.couplets .lead.alt-choice:before { background: url(/static/images/layout/alternate-choice.png); }
 #dkey #main ul.couplets .lead:after { /* "clear" the float for the button */ display: block; content: " "; height: 0px; clear: both; }
 #dkey #main ul.couplets .letter { /* "1a." or "12b." or whatever */ font-weight: bold; padding-right: 0.5em; }
 #dkey #main ul.couplets .button-block { /* contains what-lies-beneath and button */ float: right; margin: 0em 0em 0.4em 1.2em; text-align: right; }

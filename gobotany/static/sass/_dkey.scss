@@ -139,6 +139,21 @@ $disabled_orange_gradient: linear-gradient(
             @include border-radius(1.5em);
             padding: 1em 1em 1em 1.5em;
             background-color: $inactive_bg;
+
+            &.original-choice:before, &.alt-choice:before {
+                display: block;
+                position: absolute;
+                right: -118px;
+                height: 45px;
+                width: 110px;
+                content: " ";
+            }
+            &.original-choice:before {
+                background: url(/static/images/layout/original-choice.png);
+            }
+            &.alt-choice:before {
+                background: url(/static/images/layout/alternate-choice.png);
+            }
         }
         .lead:after {               /* "clear" the float for the button */
             display: block;
