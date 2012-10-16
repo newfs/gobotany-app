@@ -116,6 +116,6 @@ page first. A field boost does not help either. These keywords will not
 appear in the result excerpt due to the enclosing double-dash markers.
 {% endcomment %}
 {% for common_name in object.common_names.all %}
-    {{ common_name.common_name|repeat:30 }}
+    {{ common_name.common_name|repeat:32 }}
 {% endfor %}
 --
