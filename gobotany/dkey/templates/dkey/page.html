@@ -18,18 +18,30 @@
 
 <div class="offer-help-aside">
   <span>Want help getting started?</span>
-  <a href="#">Get Help</a>
-  <br><select class="jumpbox">
-    <option value="instructions">Jump to a group…</option>
-    {% for group in groups %}
-      <option title="{{ group.text }}">{{ group.name }}</option>
-    {% endfor %}
-  </select><br><select class="jumpbox">
+  <a href="#" class="button">Get Help</a>
+  <br>
+  <div class="groupbox">
+    <select>
+      <option value="instructions">Jump to a group…</option>
+    </select>
+    <ul>
+      {% for group in groups %}
+        <li>
+          <a href="{{ group.name|dkey_url }}">
+            <b>{{ group.name }}</b>{{ group.text }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <select class="jumpbox">
     <option value="instructions">Jump to a family…</option>
     {% for family in families %}
       <option>{{ family }}</option>
     {% endfor %}
-  </select><br><select class="jumpbox">
+  </select>
+  <br>
+  <select class="jumpbox">
     <option value="instructions">Jump to a genus…</option>
       {% for genus in genera %}
     <option>{{ genus }}</option>

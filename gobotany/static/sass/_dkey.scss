@@ -65,7 +65,7 @@ $disabled_orange_gradient: linear-gradient(
         span {
             font-size: $base-font-size;
         }
-        a {
+        a.button {
             display: inline-block;
             margin: 0.8em 1em;
             @extend .orange-button;
@@ -77,6 +77,38 @@ $disabled_orange_gradient: linear-gradient(
             margin: 0.25em 1.0em;
             font-size: 1em * 16px / 12px;
         }
+    }
+
+    .groupbox {
+        position: relative;
+        ul {
+            display: none;
+            position: absolute;
+            z-index: 100;
+            right: 10px;
+            background-color: white;
+            text-align: left;
+        }
+        li {
+            display: block;
+            margin: 0;
+            border-width: 1px 1px 0px 1px;
+            border-style: solid;
+            border-color: #bbc6b6;
+        }
+        li:last-child {
+            border-bottom-width: 1px;
+        }
+        a {
+            display: block;
+            padding: 1em;
+            color: black;
+            &:hover {
+                background-color: #d3e7b4;
+                text-decoration: none;
+            }
+        }
+        b { display: block; }
     }
 
     p {
