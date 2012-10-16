@@ -2,6 +2,23 @@
 
 from django.db import models
 
+# Here are the possible dkey page ranks. Note that a "subgroup" can
+# stand either between a family and a genus, or between a very large
+# genus and a tribe. The top of the hierarchy is always:
+#
+# top -> group -> family
+#
+# There are two ways that a family can bottom out in genera:
+#
+# family -> genus
+# family -> subgroup -> genus
+#
+# Then there are three different ways that genera reach their species:
+#
+# genus -> species
+# genus -> subkey -> species
+# genus -> subgroup -> tribe -> species
+
 class Page(models.Model):
     chapter = models.TextField(blank=True)
     title = models.TextField(unique=True)
