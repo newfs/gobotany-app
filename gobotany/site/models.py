@@ -13,9 +13,3 @@ class PlantNameSuggestion(models.Model):
 
     def __unicode__(self):
         return u'%s' % self.name
-
-    def save(self, *args, **kw):
-        """Store all plant name suggestions in lower case."""
-        self.name = self.name.lower()
-        super(PlantNameSuggestion, self).save(*args, **kw)
-

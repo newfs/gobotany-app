@@ -378,18 +378,11 @@ def plant_name_suggestions(request):
         # First look for suggestions that match at the start of the
         # query string.
 
-        # This query is case-sensitive for better speed than using a
-        # case-insensitive query. The database field is also case-
-        # sensitive, so it is important that all suggestion strings
-        # be lowercased upon import to ensure that they can be reached.
+        # This query is case-insensitive to return names as they appear
+        # in the database regardless of the case of the query string.
         suggestions = list(PlantNameSuggestion.objects.filter(
-            name__startswith=query).exclude(name=query).
-            order_by('name').values_list('name', flat=True)
-            [:MAX_RESULTS * 2])   # Fetch extra to handle case-sensitive dups
-        # Remove any duplicates due to case-sensitivity and pare down to
-        # the desired number of results.
-        suggestions = list(sorted(set([suggestion.lower()
-            for suggestion in suggestions])))[:MAX_RESULTS]
+            name__istartswith=query).exclude(name=query).
+            order_by('name').values_list('name', flat=True)[:MAX_RESULTS])
 
     # TODO: incorporate the rest of the logic that is used for search
     # suggestions, after moving that view function here.
