@@ -89,10 +89,6 @@ urlpatterns = patterns(
     url(r'^genera/(?P<genus_name>[^/]+)/$', allow_cross_site_access(
             Resource(handler=handlers.GenusHandler)), name='api-genus'),
 
-    # For PlantShare plant name picker
-    url(r'^plant-name-suggestions/', views.plant_name_suggestions,
-        name='api-plant-name-suggestions'),
-
     url(r'^$', 'nonexistent', name='api-base'),  # helps compute the base URL
     )
 

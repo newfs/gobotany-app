@@ -1,9 +1,61 @@
-"""Tests of whether our basic site layout is present."""
-
+import json
+import math
+import re
 import unittest
 
 from datetime import datetime
+
+from django.test import TestCase
+from django.test.client import Client
+
 from gobotany.libtest import FunctionalCase
+from gobotany.site import models as site_models
+
+def _setup_sample_data():
+    names = [   ('Abies balsamea', 'balsam fir'),
+                ('Abutilon theophrasti', 'velvetleaf Indian-mallow'),
+                ('Acalypha rhomboidea', 'common three-seeded-Mercury'),
+                ('Acer negundo', 'ash-leaved maple'),
+                ('Acer pensylvanicum', 'striped maple'),
+                ('Acer platanoides', 'Norway maple'),
+                ('Acer rubrum', 'red maple'),
+                ('Acer saccharinum', 'silver maple'),
+                ('Acer saccharum', 'sugar maple'),
+                ('Acer spicatum', 'mountain maple'),
+                ('Mimulus ringens', 'Allegheny monkey-flower'),
+                ('Adlumia fungosa', 'Allegheny-vine'),
+                ('Erythronium americanum', 'American trout-lily'),
+                ('Echinochloa muricata', 'American barnyard grass'),
+                ('Ammophila breviligulata', 'American beach grass'),
+                ('Fagus grandifolia', 'American beech'),
+                ('Celastrus scandens', 'American bittersweet'),
+                ('Staphylea trifolia', 'American bladdernut'),
+                ('Sparganium americanum', 'American bur-reed'),
+                ('Erechtites hieraciifolius', 'American burnweed'),
+                ('Amelanchier arborea', 'downy shadbush'),
+                ('Amelanchier bartramiana', 'mountain shadbush'),
+                ('Amelanchier canadensis', 'eastern shadbush'),
+                ('Amelanchier laevis', 'smooth shadbush'),
+                ('Amelanchier spicata', 'dwarf shadbush'),
+                ('Castanea dentata', 'American chestnut'),
+                ('Heracleum maximum', 'American cow-parsnip'),
+                ('Viola labradorica', 'American dog violet'),
+                ('Ulmus americana', 'American elm'),
+                ('Veratrum viride', 'American false hellebore'),
+                ('Hedeoma pulegioides', 'American false pennyroyal'),
+                ('Cerastium strictum', 'American field chickweed'),
+                ('Achillea millefolium', 'common yarrow'),
+                ('Acorus americanus', 'several-veined sweetflag'),
+                ('Acorus calamus', 'single-veined sweetflag'),
+                ('Actaea pachypoda', 'white baneberry'),
+                ('Actaea rubra', ''),
+            ]
+    for name in names:
+        s = site_models.PlantNameSuggestion(name=name[0])
+        s.save()
+        s = site_models.PlantNameSuggestion(name=name[1])
+        s.save()
+
 
 class HomeTests(FunctionalCase):
 
@@ -284,3 +336,49 @@ class GlossaryTests(FunctionalCase):
         self.get('/glossary/a/')
         e = self.link_saying('G')
         self.assertTrue(e.get('href').endswith('/glossary/g/'))
+
+
+# Tests for PlantShare plant name picker API call
+
+class PlantNameSuggestionsTestCase(TestCase):
+    MAX_NAMES = 20
+
+    def setUp(self):
+        _setup_sample_data()
+        self.client = Client()
+
+    def half_max_names(self):
+        return int(math.floor(self.MAX_NAMES / 2))
+
+    def test_get_returns_ok(self):
+        response = self.client.get('/plant-name-suggestions/')
+        self.assertEqual(200, response.status_code)
+
+    def test_get_returns_json(self):
+        response = self.client.get('/plant-name-suggestions/')
+        self.assertEqual('application/json; charset=utf-8',
+                         response['Content-Type'])
+
+    def test_get_returns_names_in_expected_format(self):
+        response = self.client.get('/plant-name-suggestions/?q=a')
+        names = json.loads(response.content)
+        for name in names:
+            self.assertTrue(re.match(r'^[A-Za-z \-]*( \([A-Za-z \-]*\))?$',
+                            name), 'Name "%s" not in expected format' % name)
+
+    def test_get_returns_names_matching_at_beginning_of_string(self):
+        EXPECTED_NAMES = [
+            u'Amelanchier arborea',
+            u'Amelanchier bartramiana',
+            u'Amelanchier canadensis',
+            u'Amelanchier laevis',
+            u'Amelanchier spicata',
+            u'American barnyard grass',
+            u'American beach grass',
+            u'American beech',
+            u'American bittersweet',
+            u'American bladdernut',
+            ]
+        response = self.client.get('/plant-name-suggestions/?q=ame')
+        names = json.loads(response.content)
+        self.assertEqual(names, EXPECTED_NAMES)

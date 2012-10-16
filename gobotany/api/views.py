@@ -22,7 +22,6 @@ from gobotany.core.questions import get_questions
 from gobotany.mapping.map import (NewEnglandPlantDistributionMap,
                                   NorthAmericanPlantDistributionMap,
                                   UnitedStatesPlantDistributionMap)
-from gobotany.site.models import PlantNameSuggestion
 
 
 def jsonify(value, headers=None):
@@ -366,27 +365,3 @@ def north_american_distribution_map(request, genus, epithet):
     """
     distribution_map = NorthAmericanPlantDistributionMap()
     return _distribution_map(request, distribution_map, genus, epithet)
-
-
-def plant_name_suggestions(request):
-    """Return some suggestions for plant name input."""
-    MAX_RESULTS = 10
-    query = request.GET.get('q', '').lower()
-
-    suggestions = []
-    if query != '':
-        # First look for suggestions that match at the start of the
-        # query string.
-
-        # This query is case-insensitive to return names as they appear
-        # in the database regardless of the case of the query string.
-        suggestions = list(PlantNameSuggestion.objects.filter(
-            name__istartswith=query).exclude(name=query).
-            order_by('name').values_list('name', flat=True)[:MAX_RESULTS])
-
-    # TODO: incorporate the rest of the logic that is used for search
-    # suggestions, after moving that view function here.
-
-    return HttpResponse(json.dumps(suggestions),
-                        mimetype='application/json; charset=utf-8')
-

@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import json
 import string
 
 from datetime import date
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.vary import vary_on_headers
@@ -15,6 +17,7 @@ from gobotany.core.models import GlossaryTerm, HomePageImage, Taxon, Video
 from gobotany.core.partner import which_partner
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
+from gobotany.site.models import PlantNameSuggestion
 
 def per_partner_template(request, template_path):
     partner = which_partner(request)
@@ -147,6 +150,30 @@ def terms_of_use_view(request):
     return render_to_response('gobotany/terms.html', {
             'site_url': site_url,
             }, context_instance=RequestContext(request))
+
+# Plant name suggestions API call
+
+def plant_name_suggestions_view(request):
+    """Return some suggestions for plant name input."""
+    MAX_RESULTS = 10
+    query = request.GET.get('q', '').lower()
+
+    suggestions = []
+    if query != '':
+        # First look for suggestions that match at the start of the
+        # query string.
+
+        # This query is case-insensitive to return names as they appear
+        # in the database regardless of the case of the query string.
+        suggestions = list(PlantNameSuggestion.objects.filter(
+            name__istartswith=query).exclude(name=query).
+            order_by('name').values_list('name', flat=True)[:MAX_RESULTS])
+
+    # TODO: incorporate the rest of the logic that is used for search
+    # suggestions, after moving that view function here.
+
+    return HttpResponse(json.dumps(suggestions),
+                        mimetype='application/json; charset=utf-8')
 
 
 # Input suggest test page

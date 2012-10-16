@@ -1,7 +1,5 @@
 import json
-import math
 import os
-import re
 import shutil
 
 from django.test import TestCase
@@ -12,7 +10,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.files import File
 
 from gobotany.core import models
-from gobotany.site import models as site_models
 
 # Suggested approach for testing RESTful API:
 #
@@ -172,51 +169,6 @@ def _setup_sample_data(load_images=False):
     pile1.default_filters.members = [df1, df2]
     pile1.plant_preview_characters.members = [ppc1, ppc2]
     pile1.save()
-
-
-    names = [   ('Abies balsamea', 'balsam fir'),
-                ('Abutilon theophrasti', 'velvetleaf Indian-mallow'),
-                ('Acalypha rhomboidea', 'common three-seeded-Mercury'),
-                ('Acer negundo', 'ash-leaved maple'),
-                ('Acer pensylvanicum', 'striped maple'),
-                ('Acer platanoides', 'Norway maple'),
-                ('Acer rubrum', 'red maple'),
-                ('Acer saccharinum', 'silver maple'),
-                ('Acer saccharum', 'sugar maple'),
-                ('Acer spicatum', 'mountain maple'),
-                ('Mimulus ringens', 'Allegheny monkey-flower'),
-                ('Adlumia fungosa', 'Allegheny-vine'),
-                ('Erythronium americanum', 'American trout-lily'),
-                ('Echinochloa muricata', 'American barnyard grass'),
-                ('Ammophila breviligulata', 'American beach grass'),
-                ('Fagus grandifolia', 'American beech'),
-                ('Celastrus scandens', 'American bittersweet'),
-                ('Staphylea trifolia', 'American bladdernut'),
-                ('Sparganium americanum', 'American bur-reed'),
-                ('Erechtites hieraciifolius', 'American burnweed'),
-                ('Amelanchier arborea', 'downy shadbush'),
-                ('Amelanchier bartramiana', 'mountain shadbush'),
-                ('Amelanchier canadensis', 'eastern shadbush'),
-                ('Amelanchier laevis', 'smooth shadbush'),
-                ('Amelanchier spicata', 'dwarf shadbush'),
-                ('Castanea dentata', 'American chestnut'),
-                ('Heracleum maximum', 'American cow-parsnip'),
-                ('Viola labradorica', 'American dog violet'),
-                ('Ulmus americana', 'American elm'),
-                ('Veratrum viride', 'American false hellebore'),
-                ('Hedeoma pulegioides', 'American false pennyroyal'),
-                ('Cerastium strictum', 'American field chickweed'),
-                ('Achillea millefolium', 'common yarrow'),
-                ('Acorus americanus', 'several-veined sweetflag'),
-                ('Acorus calamus', 'single-veined sweetflag'),
-                ('Actaea pachypoda', 'white baneberry'),
-                ('Actaea rubra', ''),
-            ]
-    for name in names:
-        s = site_models.PlantNameSuggestion(name=name[0])
-        s.save()
-        s = site_models.PlantNameSuggestion(name=name[1])
-        s.save()
 
 def _remove_content_images_dir():
     """Remove a temporary content_images directory if it exists. This
@@ -607,49 +559,3 @@ class GeneraTestCase(TestCase):
     def test_get_returns_not_found_when_nonexistent_genus(self):
         response = self.client.get('/api/genera/no-genus/')
         self.assertEqual(404, response.status_code)
-
-
-# Tests for PlantShare plant name picker API call
-
-class PlantNameSuggestionsTestCase(TestCase):
-    MAX_NAMES = 20
-
-    def setUp(self):
-        _setup_sample_data()
-        self.client = Client()
-
-    def half_max_names(self):
-        return int(math.floor(self.MAX_NAMES / 2))
-
-    def test_get_returns_ok(self):
-        response = self.client.get('/api/plant-name-suggestions/')
-        self.assertEqual(200, response.status_code)
-
-    def test_get_returns_json(self):
-        response = self.client.get('/api/plant-name-suggestions/')
-        self.assertEqual('application/json; charset=utf-8',
-                         response['Content-Type'])
-
-    def test_get_returns_names_in_expected_format(self):
-        response = self.client.get('/api/plant-name-suggestions/?q=a')
-        names = json.loads(response.content)
-        for name in names:
-            self.assertTrue(re.match(r'^[A-Za-z \-]*( \([A-Za-z \-]*\))?$',
-                            name), 'Name "%s" not in expected format' % name)
-
-    def test_get_returns_names_matching_at_beginning_of_string(self):
-        EXPECTED_NAMES = [
-            u'amelanchier arborea',
-            u'amelanchier bartramiana',
-            u'amelanchier canadensis',
-            u'amelanchier laevis',
-            u'amelanchier spicata',
-            u'american barnyard grass',
-            u'american beach grass',
-            u'american beech',
-            u'american bittersweet',
-            u'american bladdernut',
-            ]
-        response = self.client.get('/api/plant-name-suggestions/?q=ame')
-        names = json.loads(response.content)
-        self.assertEqual(names, EXPECTED_NAMES)
