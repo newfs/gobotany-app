@@ -311,6 +311,12 @@ define([
         $(element).val('instructions');
     };
 
+    $('.groupbox select').on('mousedown', function(event) {
+        // Instead of letting the real select box drop down, show the <ul>.
+        $('.groupbox ul').toggle();
+        return false;
+    });
+
     $('.jumpbox').on('change', function(event) {
         var text = $(':selected', event.delegateTarget).html();
         reset_select(event.delegateTarget);

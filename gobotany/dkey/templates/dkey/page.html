@@ -18,18 +18,30 @@
 
 <div class="offer-help-aside">
   <span>Want help getting started?</span>
-  <a href="#">Get Help</a>
-  <br><select class="jumpbox">
-    <option value="instructions">Jump to a group…</option>
-    {% for group in groups %}
-      <option title="{{ group.text }}">{{ group.name }}</option>
-    {% endfor %}
-  </select><br><select class="jumpbox">
+  <a href="#" class="button">Get Help</a>
+  <br>
+  <div class="groupbox">
+    <select>
+      <option value="instructions">Jump to a group…</option>
+    </select>
+    <ul>
+      {% for group in groups %}
+        <li>
+          <a href="{{ group.name|dkey_url }}">
+            <b>{{ group.name }}</b>{{ group.text }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <select class="jumpbox">
     <option value="instructions">Jump to a family…</option>
     {% for family in families %}
       <option>{{ family }}</option>
     {% endfor %}
-  </select><br><select class="jumpbox">
+  </select>
+  <br>
+  <select class="jumpbox">
     <option value="instructions">Jump to a genus…</option>
       {% for genus in genera %}
     <option>{{ genus }}</option>
@@ -45,9 +57,6 @@
 
 <p class="backlinks">
   {% include "dkey/_breadcrumbs.html" %}
-  {% if title == 'Key to the Families' %}
-    <a href="{% url dkey_family_groups %}">See the family groups as a list »</a>
-  {% endif %}
   {% if title == 'List of Family Groups' %}
     <a href="{% url dkey %}">« Return to the dichotomous key</a>
   {% endif %}
@@ -77,7 +86,12 @@
       {% with p=lead.goto_page %}
       <div class="lead">
         <div class="button-block">
-          {% if lead.taxa_rank and lead.taxa_set|length > 1 %}
+          {% if lead.taxa_rank and lead.taxa_rank == p.rank and lead.taxa_set|length == 1 %}
+            <a class="what-lies-beneath" href="{{ p.title|dkey_url }}">
+              Choose this {{ lead.taxa_rank }}
+            </a>
+          <br>
+          {% elif lead.taxa_rank %}
             <a class="what-lies-beneath" href="."
                data-taxa="{{ lead.taxa_list }}">
               See list of {{ lead.taxa_set|length }}
@@ -85,11 +99,6 @@
               {% if lead.letter %}
                 in {{ lead.letter }}
               {% endif %}
-            </a>
-          <br>
-          {% elif lead.taxa_rank and lead.taxa_set|length == 1 %}
-            <a class="what-lies-beneath" href="{{ p.title|dkey_url }}">
-              Choose this {{ lead.taxa_rank }}
             </a>
           <br>
           {% endif %}
