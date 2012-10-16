@@ -590,7 +590,7 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
 #dkey #main .groupbox ul { display: none; position: absolute; z-index: 100; right: 10px; background-color: white; text-align: left; }
 #dkey #main .groupbox li { display: block; margin: 0; border-width: 1px 1px 0px 1px; border-style: solid; border-color: #bbc6b6; }
 #dkey #main .groupbox li:last-child { border-bottom-width: 1px; }
-#dkey #main .groupbox a { display: block; padding: 1em; color: black; }
+#dkey #main .groupbox a { display: block; padding: 1em; color: black; line-height: 1.25em; }
 #dkey #main .groupbox a:hover { background-color: #d3e7b4; text-decoration: none; }
 #dkey #main .groupbox b { display: block; }
 #dkey #main p { margin: 1em 0; max-width: 42em; }
