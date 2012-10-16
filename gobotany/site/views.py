@@ -107,6 +107,10 @@ def glossary_main_view(request):
     return redirect('site-glossary', letter='a')
 
 def _get_video_dict(title, video):
+    """Return a dictionary with a video title and the YouTube ID. This
+    is to handle plant group and subgroup videos which are still missing
+    from the database: at least their titles will appear on the page.
+    """
     youtube_id = ''
     if video:
         youtube_id = video.youtube_id
@@ -126,9 +130,10 @@ def video_view(request):
                        'youtube_id': getting_started_video.youtube_id});
 
     for pilegroup in ordered_pilegroups():
-        videos.append(_get_video_dict(pilegroup.name, pilegroup.video))
+        videos.append(_get_video_dict(pilegroup.friendly_title,
+                                      pilegroup.video))
         for pile in ordered_piles(pilegroup):
-            videos.append(_get_video_dict(pile.name, pile.video))
+            videos.append(_get_video_dict(pile.friendly_title, pile.video))
 
     return render_to_response('gobotany/video.html', {
            'videos': videos,

@@ -1674,26 +1674,29 @@ class Importer(object):
                          )
             log.info('    Video: %s %s' % (v.title, v.youtube_id))
 
+            # For plant group (pile group) and subgroup (pile) videos,
+            # assign proper titles, then associate with the pile group
+            # or pile.
             if row['pile-or-subpile']:
                 try:
-                    p = models.PileGroup.objects.get(name=row['pile-or-subpile'])
-                    if not v.title:
-                        v.title = p.name
-                        v.save()
+                    p = models.PileGroup.objects.get(
+                        name=row['pile-or-subpile'])
+                    v.title = p.friendly_title
+                    v.save()
                     log.info('    Pile group: %s - YouTube video id: %s' %
-                             (p.name, v.youtube_id))
+                             (v.title, v.youtube_id))
                 except models.PileGroup.DoesNotExist:
                     try:
-                        p = models.Pile.objects.get(name=row['pile-or-subpile'])
+                        p = models.Pile.objects.get(
+                            name=row['pile-or-subpile'])
                     except models.Pile.DoesNotExist:
                         log.info('      UNKNOWN: %s - YouTube video id: %s' %
                                  (row['pile-or-subpile'], v.youtube_id))
                         continue
-                    if not v.title:
-                        v.title = p.name
-                        v.save()
+                    v.title = p.friendly_title
+                    v.save()
                     log.info('      Pile: %s - YouTube video id: %s' %
-                             (p.name, v.youtube_id))
+                             (v.title, v.youtube_id))
 
                 p.video = v
                 p.save()
