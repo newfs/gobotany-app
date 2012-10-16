@@ -103,6 +103,8 @@ def page(request, slug=u'key-to-the-families'):
         raise Http404
     title = slug.replace(u'-', u' ').capitalize().replace(
         ' families', ' Families').replace(' group ', ' Group ')
+    if title.startswith('Tribe '):
+        title = title.title()
     page = get_object_or_404(models.Page, title=title)
     proxy = _Proxy(page)
     return render_to_response('dkey/page.html', {
