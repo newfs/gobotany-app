@@ -96,43 +96,7 @@ def get_genera():
     pages = models.Page.objects.filter(rank='genus')
     return sorted(page.title for page in pages)
 
-# Views
-
-def family_groups(request):
-    """Fake quite a few things to create a bare list of groups."""
-
-    page = models.Page.objects.get(title='Key to the Families')
-    page.title = 'List of Family Groups'
-    proxy = _Proxy(page)
-
-    leads = []
-    lead_hierarchy = []
-
-    for lead in proxy.lead_hierarchy:
-        if not isinstance(lead, models.Lead):
-            continue
-
-        if not lead.goto_page:
-            continue
-
-        group_number = int(lead.goto_page.title.split()[1])
-        lead.letter = str(group_number)
-        lead.text = group_texts[group_number]
-
-        leads.append(lead)
-
-        lead_hierarchy.append('<li>')
-        lead_hierarchy.append(lead)
-        lead_hierarchy.append('</li>')
-
-    return render_to_response('dkey/page.html', {
-            'groups': get_groups,
-            'families': get_families,
-            'genera': get_genera,
-            'leads': proxy.leads,
-            'lead_hierarchy': lead_hierarchy,
-            'page': page,
-            }, context_instance=RequestContext(request))
+# Our view.
 
 def page(request, slug=u'key-to-the-families'):
     if slug != slug.lower():

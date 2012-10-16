@@ -7,9 +7,6 @@ class HomeTests(FunctionalCase):
     def test_home_page(self):
         self.get('/dkey/')
 
-    def test_family_groups(self):
-        self.get('/dkey/family-groups/')
-
     def test_group_1(self):
         self.get('/dkey/group-1/')
 
