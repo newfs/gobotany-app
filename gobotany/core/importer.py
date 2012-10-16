@@ -33,6 +33,7 @@ from gobotany.simplekey.models import (GroupsListPage, PlainPage,
                                        SearchSuggestion, SubgroupResultsPage,
                                        SubgroupsListPage)
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
+from gobotany.site.models import PlantNameSuggestion
 
 DEBUG=False
 log = logging.getLogger('gobotany.import')
@@ -685,31 +686,31 @@ class Importer(object):
 
         genus_table.save()
 
-    def import_plant_names(self, taxaf):
-        """Load plant common names from a CSV file"""
-        log.info('Setting up plant names in file: %s' % taxaf)
+    def import_plant_name_suggestions(self, taxaf):
+        """Load plant name suggestions from nams in a CSV file"""
+        log.info('Setting up plant name suggestions in file: %s' % taxaf)
         COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
         iterator = iter(CSVReader(taxaf).read())
         colnames = [x.lower() for x in iterator.next()]
 
         for cols in iterator:
             row = dict(zip(colnames, cols))
-
+            # Add the scientific name.
             scientific_name = row['scientific__name']
-            num_common_names = 0
+            s, created = PlantNameSuggestion.objects.get_or_create(
+                name=scientific_name)
+            if created:
+                log.info('  Added PlantNameSuggestion: %s' % s)
+            # Add common names.
             for common_name_field in COMMON_NAME_FIELDS:
                 common_name = row[common_name_field]
                 if len(common_name) > 0:
-                    num_common_names += 1
-                    pn, created = models.PlantName.objects.get_or_create( \
-                        scientific_name=scientific_name,
-                        common_name=common_name)
-                    log.info('  Added plant name:', pn)
-            # If there were no common names for this plant, add the plant now.
-            if num_common_names == 0:
-                pn, created = models.PlantName.objects.get_or_create( \
-                    scientific_name=scientific_name)
-                log.info('  Added plant name:', pn)
+                    s, created = PlantNameSuggestion.objects.get_or_create(
+                        name=common_name)
+                    if created:
+                        log.info('  Added PlantNameSuggestion: %s' % s)
+            # TODO: Add scientific name synonyms?
+
 
     def import_taxon_character_values(self, db, *filenames):
         """Load taxon character values from CSV files"""
@@ -2000,6 +2001,7 @@ full_import_steps = (
     (Importer.import_videos, 'videos.csv'),
     (Importer.import_constants, 'characters.csv'),
     (Importer.import_copyright_holders, 'copyright_holders.csv'),
+    (Importer.import_plant_name_suggestions, 'taxa.csv'),
 
     (Importer.import_distributions,
      'New-England-tracheophyte-county-level-nativity.csv'),

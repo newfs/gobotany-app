@@ -12,6 +12,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.files import File
 
 from gobotany.core import models
+from gobotany.site import models as site_models
 
 # Suggested approach for testing RESTful API:
 #
@@ -185,7 +186,7 @@ def _setup_sample_data(load_images=False):
                 ('Acer spicatum', 'mountain maple'),
                 ('Mimulus ringens', 'Allegheny monkey-flower'),
                 ('Adlumia fungosa', 'Allegheny-vine'),
-                ('Erythronium americanum', 'Amerian trout-lily'),
+                ('Erythronium americanum', 'American trout-lily'),
                 ('Echinochloa muricata', 'American barnyard grass'),
                 ('Ammophila breviligulata', 'American beach grass'),
                 ('Fagus grandifolia', 'American beech'),
@@ -212,8 +213,10 @@ def _setup_sample_data(load_images=False):
                 ('Actaea rubra', ''),
             ]
     for name in names:
-        n = models.PlantName(scientific_name=name[0], common_name=name[1])
-        n.save()
+        s = site_models.PlantNameSuggestion(name=name[0])
+        s.save()
+        s = site_models.PlantNameSuggestion(name=name[1])
+        s.save()
 
 def _remove_content_images_dir():
     """Remove a temporary content_images directory if it exists. This
@@ -606,9 +609,9 @@ class GeneraTestCase(TestCase):
         self.assertEqual(404, response.status_code)
 
 
-# Tests for PlantShare (MyPlants) plant name picker API call
+# Tests for PlantShare plant name picker API call
 
-class PlantNamesTestCase(TestCase):
+class PlantNameSuggestionsTestCase(TestCase):
     MAX_NAMES = 20
 
     def setUp(self):
@@ -619,54 +622,34 @@ class PlantNamesTestCase(TestCase):
         return int(math.floor(self.MAX_NAMES / 2))
 
     def test_get_returns_ok(self):
-        response = self.client.get('/api/plant-names/')
+        response = self.client.get('/api/plant-name-suggestions/')
         self.assertEqual(200, response.status_code)
 
     def test_get_returns_json(self):
-        response = self.client.get('/api/plant-names/')
+        response = self.client.get('/api/plant-name-suggestions/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
-    def test_get_returns_scientific_and_common_name_matches(self):
-        response = self.client.get('/api/plant-names/?q=a')
-        response_json = json.loads(response.content)
-        self.assertTrue(len(response_json.get('scientific')) > 0)
-        self.assertTrue(len(response_json.get('common')) > 0)
-
     def test_get_returns_names_in_expected_format(self):
-        response = self.client.get('/api/plant-names/?q=a')
-        response_json = json.loads(response.content)
-        all_names = response_json.get('scientific') + \
-                    response_json.get('common')
-        for name in all_names:
+        response = self.client.get('/api/plant-name-suggestions/?q=a')
+        names = json.loads(response.content)
+        for name in names:
             self.assertTrue(re.match(r'^[A-Za-z \-]*( \([A-Za-z \-]*\))?$',
                             name), 'Name "%s" not in expected format' % name)
 
-    def test_get_returns_equal_number_scientific_and_common(self):
-        response = self.client.get('/api/plant-names/?q=a')
-        response_json = json.loads(response.content)
-        num_scientific_names = len(response_json.get('scientific'))
-        num_common_names = len(response_json.get('common'))
-        self.assertEqual(num_scientific_names, num_common_names)
-        self.assertEqual(self.half_max_names(), num_scientific_names)
-        self.assertEqual(self.half_max_names(), num_common_names)
-
-    def test_get_returns_more_scientific_than_common(self):
-        response = self.client.get('/api/plant-names/?q=ac')
-        response_json = json.loads(response.content)
-        num_scientific_names = len(response_json.get('scientific'))
-        num_common_names = len(response_json.get('common'))
-        self.assertTrue(num_scientific_names > num_common_names,
-            '%d scientific names, %d common names' % (num_scientific_names,
-                                                      num_common_names))
-        self.assertTrue(num_scientific_names > self.half_max_names())
-
-    def test_get_returns_more_common_than_scientific(self):
-        response = self.client.get('/api/plant-names/?q=ame')
-        response_json = json.loads(response.content)
-        num_scientific_names = len(response_json.get('scientific'))
-        num_common_names = len(response_json.get('common'))
-        self.assertTrue(num_common_names > num_scientific_names,
-            '%d scientific names, %d common names' % (num_scientific_names,
-                                                      num_common_names))
-        self.assertTrue(num_common_names > self.half_max_names())
+    def test_get_returns_names_matching_at_beginning_of_string(self):
+        EXPECTED_NAMES = [
+            u'amelanchier arborea',
+            u'amelanchier bartramiana',
+            u'amelanchier canadensis',
+            u'amelanchier laevis',
+            u'amelanchier spicata',
+            u'american barnyard grass',
+            u'american beach grass',
+            u'american beech',
+            u'american bittersweet',
+            u'american bladdernut',
+            ]
+        response = self.client.get('/api/plant-name-suggestions/?q=ame')
+        names = json.loads(response.content)
+        self.assertEqual(names, EXPECTED_NAMES)

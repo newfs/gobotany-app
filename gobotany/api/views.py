@@ -22,6 +22,8 @@ from gobotany.core.questions import get_questions
 from gobotany.mapping.map import (NewEnglandPlantDistributionMap,
                                   NorthAmericanPlantDistributionMap,
                                   UnitedStatesPlantDistributionMap)
+from gobotany.site.models import PlantNameSuggestion
+
 
 def jsonify(value, headers=None):
     """Convert the value into a JSON HTTP response."""
@@ -364,3 +366,34 @@ def north_american_distribution_map(request, genus, epithet):
     """
     distribution_map = NorthAmericanPlantDistributionMap()
     return _distribution_map(request, distribution_map, genus, epithet)
+
+
+def plant_name_suggestions(request):
+    """Return some suggestions for plant name input."""
+    MAX_RESULTS = 10
+    query = request.GET.get('q', '').lower()
+
+    suggestions = []
+    if query != '':
+        # First look for suggestions that match at the start of the
+        # query string.
+
+        # This query is case-sensitive for better speed than using a
+        # case-insensitive query. The database field is also case-
+        # sensitive, so it is important that all suggestion strings
+        # be lowercased upon import to ensure that they can be reached.
+        suggestions = list(PlantNameSuggestion.objects.filter(
+            name__startswith=query).exclude(name=query).
+            order_by('name').values_list('name', flat=True)
+            [:MAX_RESULTS * 2])   # Fetch extra to handle case-sensitive dups
+        # Remove any duplicates due to case-sensitivity and pare down to
+        # the desired number of results.
+        suggestions = list(sorted(set([suggestion.lower()
+            for suggestion in suggestions])))[:MAX_RESULTS]
+
+    # TODO: incorporate the rest of the logic that is used for search
+    # suggestions, after moving that view function here.
+
+    return HttpResponse(json.dumps(suggestions),
+                        mimetype='application/json; charset=utf-8')
+

@@ -1,8 +1,3 @@
-import math
-
-from django.http import HttpResponse
-from django.utils import simplejson
-
 from operator import itemgetter
 
 from piston.handler import BaseHandler
@@ -350,44 +345,3 @@ class GenusHandler(BaseHandler):
         return {'name': genus.name,
                 'images': images,
                 'drawings': drawings}
-
-
-# For PlantShare (MyPlants) plant name picker API call
-class PlantNamesHandler(BaseHandler):
-    methods_allowed = ('GET',)
-
-    """Return scientific and common name matches for a string."""
-    def read(self, request):
-        MAX_NAMES = 20   # Max. total names, both sci. and common
-        query = request.GET.get('q', '')
-        names = []
-        if query != '':
-            scientific_names = list(models.PlantName.objects.filter(
-                scientific_name__istartswith=query)[:MAX_NAMES])
-            common_names = list(models.PlantName.objects.filter(
-                common_name__istartswith=query).order_by(
-                'common_name')[:MAX_NAMES])
-
-            # Balance the lists if necessary so that the total returned
-            # is as close to the maximum as possible.
-            half_max = int(math.floor(MAX_NAMES / 2))
-            if len(scientific_names) >= half_max and \
-               len(common_names) >= half_max:
-                # Return half scientific and half common names.
-                scientific_names = scientific_names[:half_max]
-                common_names = common_names[:half_max]
-            elif len(scientific_names) >= half_max and \
-                 len(common_names) < half_max:
-                 # Return more sci. names because common names are fewer.
-                 scientific_names = scientific_names[:(MAX_NAMES - len(
-                    common_names))]
-            elif len(scientific_names) < half_max and \
-                 len(common_names) >= half_max:
-                 # Return more common names because sci. names are fewer.
-                 common_names = common_names[:(MAX_NAMES - len(
-                    scientific_names))]
-
-            names = {'scientific': [unicode(n) for n in scientific_names],
-                     'common': [unicode(n) for n in common_names]}
-        return HttpResponse(simplejson.dumps(names),
-            mimetype='application/json; charset=utf-8')
