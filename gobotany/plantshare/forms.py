@@ -34,7 +34,7 @@ class NewSightingForm(forms.Form):
             'autocomplete': 'off',
             'autofocus': 'autofocus',
             'class': 'suggest',
-            'data-suggest-url': '/suggest/?q=%s',
+            'data-suggest-url': '/api/plant-name-suggestions/?q=%s',
             'placeholder': 'scientific or common name',
             'required': 'required',
         })
