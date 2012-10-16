@@ -86,7 +86,12 @@
       {% with p=lead.goto_page %}
       <div class="lead">
         <div class="button-block">
-          {% if lead.taxa_rank and lead.taxa_set|length > 1 %}
+          {% if lead.taxa_rank and lead.taxa_rank == p.rank and lead.taxa_set|length == 1 %}
+            <a class="what-lies-beneath" href="{{ p.title|dkey_url }}">
+              Choose this {{ lead.taxa_rank }}
+            </a>
+          <br>
+          {% elif lead.taxa_rank %}
             <a class="what-lies-beneath" href="."
                data-taxa="{{ lead.taxa_list }}">
               See list of {{ lead.taxa_set|length }}
@@ -94,11 +99,6 @@
               {% if lead.letter %}
                 in {{ lead.letter }}
               {% endif %}
-            </a>
-          <br>
-          {% elif lead.taxa_rank and lead.taxa_set|length == 1 %}
-            <a class="what-lies-beneath" href="{{ p.title|dkey_url }}">
-              Choose this {{ lead.taxa_rank }}
             </a>
           <br>
           {% endif %}
