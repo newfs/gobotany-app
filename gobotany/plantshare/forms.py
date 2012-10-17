@@ -49,7 +49,7 @@ class NewSightingForm(forms.Form):
         # Set up the widget in __init__, so we can get the correct AJAX URL
         # for plant name suggestions by use of 'reverse'. Without using
         # __init__, an error occurs. Using reverse_lazy alone does not work.
-        # `http://stackoverflow.com/questions/7430502/
+        # http://stackoverflow.com/questions/7430502/
     )
     title = forms.CharField(
         max_length=120,
