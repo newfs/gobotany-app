@@ -247,10 +247,12 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 
 /* Glossary */
 
-/* Glossary term underline for popup */
 .gloss {
-    border-bottom: 1px dashed;
+    color: $link-green;
     cursor: pointer;
+}
+.gloss:hover {
+    border-bottom: 1px dashed;
 }
 
 #glossary {

@@ -1062,8 +1062,9 @@ div.section.namap div.trans { /* Transparent div to make North America map objec
 #advanced-id #main a.go-dichkey-btn { background: url(../images/layout/go-dichkey-btn.png) 0 0 no-repeat transparent; }
 
 /* Glossary styles */
-/* Glossary term underline for popup */
-.gloss { border-bottom: 1px dashed; cursor: pointer; }
+.gloss { color: #508e31; cursor: pointer; }
+
+.gloss:hover { border-bottom: 1px dashed; }
 
 #alphabet { height: 33px; margin: 7px 0; padding: 0; width: 712px; /* 2px wider than its parent box so no wrap in Moz */ }
 

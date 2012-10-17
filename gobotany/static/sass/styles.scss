@@ -2260,10 +2260,12 @@ div.section.namap div.trans {
 
 /* Glossary styles */
 
-/* Glossary term underline for popup */
 .gloss {
-    border-bottom: 1px dashed;
+    color:  #508e31;
     cursor: pointer;
+}
+.gloss:hover {
+    border-bottom: 1px dashed;
 }
 
 #alphabet {
