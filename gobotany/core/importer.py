@@ -30,10 +30,10 @@ import bulkup
 from gobotany.core import models
 from gobotany.core.pile_suffixes import pile_suffixes
 from gobotany.simplekey.models import (GroupsListPage, PlainPage,
-                                       SearchSuggestion, SubgroupResultsPage,
+                                       SubgroupResultsPage,
                                        SubgroupsListPage)
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
-from gobotany.site.models import PlantNameSuggestion
+from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
 
 DEBUG=False
 log = logging.getLogger('gobotany.import')
@@ -687,34 +687,19 @@ class Importer(object):
         genus_table.save()
 
     def import_plant_name_suggestions(self, taxaf):
-        """Load plant name suggestions from nams in a CSV file"""
-        log.info('Setting up plant name suggestions in file: %s' % taxaf)
-        COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
-        iterator = iter(CSVReader(taxaf).read())
-        colnames = [x.lower() for x in iterator.next()]
+        log.info('Setting up plant name suggestions')
 
-        # Add scientific and common names for each plant.
-        for cols in iterator:
-            row = dict(zip(colnames, cols))
-            scientific_name = row['scientific__name']
-            s, created = PlantNameSuggestion.objects.get_or_create(
-                name=scientific_name)
-            if created:
-                log.info('  Added PlantNameSuggestion: %s' % s)
-            for common_name_field in COMMON_NAME_FIELDS:
-                common_name = row[common_name_field]
-                if len(common_name) > 0:
-                    s, created = PlantNameSuggestion.objects.get_or_create(
-                        name=common_name)
-                    if created:
-                        log.info('  Added PlantNameSuggestion: %s' % s)
+        db = bulkup.Database(connection)
+        names = set()
 
-        # Add scientific name synonyms (already imported).
-        for synonym in models.Synonym.objects.all():
-            s, created = PlantNameSuggestion.objects.get_or_create(
-                name=synonym.scientific_name)
-            if created:
-                log.info('  Added PlantNameSuggestion: %s' % s)
+        names.update(db.map('core_taxon', 'scientific_name'))
+        names.update(db.map('core_commonname', 'common_name'))
+        names.update(db.map('core_synonym', 'scientific_name'))
+
+        table = db.table('site_plantnamesuggestion')
+        for name in names:
+            table.get(name=name)
+        table.save()
 
 
     def import_taxon_character_values(self, db, *filenames):
@@ -1921,7 +1906,7 @@ class Importer(object):
         terms.update(db.map('core_glossaryterm', 'term'))
         terms.update(db.map('core_character', 'friendly_name'))
 
-        table = db.table('simplekey_searchsuggestion')
+        table = db.table('site_searchsuggestion')
         for term in terms:
             term = term.lower()
             table.get(term=term)

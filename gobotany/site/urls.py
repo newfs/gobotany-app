@@ -28,6 +28,8 @@ urlpatterns = patterns(
     url('^terms-of-use/$', views.terms_of_use_view, name='site-terms-of-use'),
 
     # API calls for input suggestions (for search, PlantShare, etc.)
+    url(r'^search-suggestions/', views.search_suggestions_view,
+        name='site-search-suggestions'),
     url(r'^plant-name-suggestions/', views.plant_name_suggestions_view,
         name='site-plant-name-suggestions'),
 

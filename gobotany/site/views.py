@@ -17,7 +17,7 @@ from gobotany.core.models import GlossaryTerm, HomePageImage, Taxon, Video
 from gobotany.core.partner import which_partner
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
-from gobotany.site.models import PlantNameSuggestion
+from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
 
 def per_partner_template(request, template_path):
     partner = which_partner(request)
@@ -155,6 +155,47 @@ def terms_of_use_view(request):
     return render_to_response('gobotany/terms.html', {
             'site_url': site_url,
             }, context_instance=RequestContext(request))
+
+# API calls for input suggestions (search, plant names, etc.)
+
+def search_suggestions_view(request):
+    """Return some search suggestions for search."""
+    MAX_RESULTS = 10
+    query = request.GET.get('q', '').lower()
+    suggestions = []
+    if query != '':
+        # First look for suggestions that match at the start of the
+        # query string.
+
+        # This query is case-sensitive for better speed than using a
+        # case-insensitive query. The database field is also case-
+        # sensitive, so it is important that all SearchSuggestion
+        # records be lowercased before import to ensure that they
+        # can be reached.
+        suggestions = list(SearchSuggestion.objects.filter(
+            term__startswith=query).exclude(term=query).
+            order_by('term').values_list('term', flat=True)
+            [:MAX_RESULTS * 2])   # Fetch extra to handle case-sensitive dups
+        # Remove any duplicates due to case-sensitivity and pare down to
+        # the desired number of results.
+        suggestions = list(sorted(set([suggestion.lower()
+            for suggestion in suggestions])))[:MAX_RESULTS]
+
+        # If fewer than the maximum number of suggestions were found,
+        # try finding some additional ones that match anywhere in the
+        # query string.
+        remaining_slots = MAX_RESULTS - len(suggestions)
+        if remaining_slots > 0:
+            more_suggestions = list(SearchSuggestion.objects.filter(
+                term__contains=query).exclude(term__startswith=query).
+                order_by('term').values_list('term', flat=True)
+                [:MAX_RESULTS * 2])
+            more_suggestions = list(sorted(set([suggestion.lower()
+                for suggestion in  more_suggestions])))[:remaining_slots]
+            suggestions.extend(more_suggestions)
+
+    return HttpResponse(json.dumps(suggestions),
+                        mimetype='application/json; charset=utf-8')
 
 # Plant name suggestions API call
 

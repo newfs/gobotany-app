@@ -18,9 +18,6 @@ urlpatterns = patterns(
         {'template' : 'simplekey/dich_key_placeholder.html'},
         name='dich-key-placeholder'),
 
-    # Auto-suggestions for search
-    url('^suggest/$', views.suggest_view, name='simplekey-search-suggest'),
-
     # Sitemap and robots.txt files for search engines
     url('^sitemap.txt$', views.sitemap_view, name='sitemap'),
     url('^robots.txt$', views.robots_view, name='robots'),
