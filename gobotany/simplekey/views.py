@@ -369,7 +369,7 @@ def _compute_plants_etag(request):
 def species_list_view(request):
     return render_to_response('simplekey/species_list.html', {
         'plants': _get_plants()
-        })
+        }, context_instance=RequestContext(request))
 
 
 def genus_view(request, genus_slug):
