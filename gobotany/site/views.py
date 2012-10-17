@@ -174,8 +174,16 @@ def plant_name_suggestions_view(request):
             name__istartswith=query).exclude(name=query).
             order_by('name').values_list('name', flat=True)[:MAX_RESULTS])
 
-    # TODO: incorporate the rest of the logic that is used for search
-    # suggestions, after moving that view function here.
+        # If fewer than the maximum number of suggestions were found,
+        # try finding some additional ones that match anywhere in the
+        # query string.
+        remaining_slots = MAX_RESULTS - len(suggestions)
+        if remaining_slots > 0:
+            more_suggestions = list(PlantNameSuggestion.objects.filter(
+                name__icontains=query).exclude(name__istartswith=query).
+                order_by('name').values_list('name', flat=True)[:MAX_RESULTS])
+            more_suggestions = list(more_suggestions)[:remaining_slots]
+            suggestions.extend(more_suggestions)
 
     return HttpResponse(json.dumps(suggestions),
                         mimetype='application/json; charset=utf-8')
