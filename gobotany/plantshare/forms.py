@@ -1,7 +1,11 @@
 
 from django import forms
+from django.core.urlresolvers import reverse_lazy
 
 from models import UserProfile
+
+def plant_name_suggestions_url():
+    return reverse_lazy('site-plant-name-suggestions') + '?q=%s'
 
 class LocationField(forms.RegexField):
     VALIDATION_MESSAGE = 'city, state OR postal code OR latitude, longitude'
@@ -27,17 +31,25 @@ class LocationField(forms.RegexField):
 
 
 class NewSightingForm(forms.Form):
-
-    identification = forms.CharField(
-        max_length=120,
-        widget=forms.TextInput({
+    def __init__(self, *args, **kwargs):
+        super(NewSightingForm, self).__init__(*args, **kwargs)
+        # Set up a widget here instead of in its regular declaration in
+        # order to work around an error regarding a 'reverse' URL.
+        self.fields['identification'].widget=forms.TextInput({
             'autocomplete': 'off',
             'autofocus': 'autofocus',
             'class': 'suggest',
-            'data-suggest-url': '/plant-name-suggestions/?q=%s',
+            'data-suggest-url': plant_name_suggestions_url(),
             'placeholder': 'scientific or common name',
             'required': 'required',
         })
+
+    identification = forms.CharField(
+        max_length=120,
+        # Set up the widget in __init__, so we can get the correct AJAX URL
+        # for plant name suggestions by use of 'reverse'. Without using
+        # __init__, an error occurs. Using reverse_lazy alone does not work.
+        # `http://stackoverflow.com/questions/7430502/
     )
     title = forms.CharField(
         max_length=120,
