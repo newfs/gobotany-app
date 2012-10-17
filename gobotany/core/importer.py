@@ -693,15 +693,14 @@ class Importer(object):
         iterator = iter(CSVReader(taxaf).read())
         colnames = [x.lower() for x in iterator.next()]
 
+        # Add scientific and common names for each plant.
         for cols in iterator:
             row = dict(zip(colnames, cols))
-            # Add the scientific name.
             scientific_name = row['scientific__name']
             s, created = PlantNameSuggestion.objects.get_or_create(
                 name=scientific_name)
             if created:
                 log.info('  Added PlantNameSuggestion: %s' % s)
-            # Add common names.
             for common_name_field in COMMON_NAME_FIELDS:
                 common_name = row[common_name_field]
                 if len(common_name) > 0:
@@ -709,7 +708,13 @@ class Importer(object):
                         name=common_name)
                     if created:
                         log.info('  Added PlantNameSuggestion: %s' % s)
-            # TODO: Add scientific name synonyms?
+
+        # Add scientific name synonyms (already imported).
+        for synonym in models.Synonym.objects.all():
+            s, created = PlantNameSuggestion.objects.get_or_create(
+                name=synonym.scientific_name)
+            if created:
+                log.info('  Added PlantNameSuggestion: %s' % s)
 
 
     def import_taxon_character_values(self, db, *filenames):
