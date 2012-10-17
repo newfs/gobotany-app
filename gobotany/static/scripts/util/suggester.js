@@ -189,6 +189,19 @@ define([
                 var $item = $(document.createElement('li'));
                 $item.append(label);
 
+                // Handle hovering over the item in a way that truly
+                // selects the item rather than using a CSS hover. This
+                // is to avoid two items appearing selected at the same
+                // time upon traversing the menu first by one input
+                // method, then another (such as keyboard, then mouse).
+                $item.mouseenter($.proxy(function (e) {
+                    this.clear_menu_selection();
+                    $(e.target).addClass(this.SELECTED_CLASS);
+                }, this));
+                $item.mouseleave($.proxy(function (e) {
+                    $(e.target).removeClass(this.SELECTED_CLASS);
+                }, this));
+
                 // Bind an event to activate the item with a click or tap.
                 $item.click($.proxy(function (e) {
                     var selected_value = e.target.innerText;
