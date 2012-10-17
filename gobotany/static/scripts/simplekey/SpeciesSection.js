@@ -262,7 +262,7 @@ define([
             html += '<td class="common-name">' + plant.common_name +
                 '</td>';
             html += '<td class="details"><a href="' +
-                plant.url + '/">Details</a></td>';
+                plant.url + '">Details</a></td>';
             html += '</tr>';
         }
 
