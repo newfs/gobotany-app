@@ -61,7 +61,7 @@
                     id="id_identification"
                     placeholder="scientific or common name"
                     class="suggest"
-                    data-suggest-url="/suggest/?q=%s">
+                    data-suggest-url="{% url site-plant-name-suggestions %}?q=%s">
                 <input type="text" name="title" id="id_title"
                     autocomplete="off"
                     placeholder="title (datalist test)" list="titles">
@@ -85,7 +85,7 @@
                     value="acer pensylvanicum"
                     placeholder="scientific or common name"
                     class="suggest"
-                    data-suggest-url="/suggest/?q=%s">
+                    data-suggest-url="{% url site-plant-name-suggestions %}?q=%s">
                 <input type="text" name="title" id="id_title2"
                         autocomplete="off"
                         placeholder="title (datalist test)" list="titles2">
@@ -107,7 +107,7 @@
                 id="search-box"
                 placeholder="Search..."
                 class="suggest"
-                data-suggest-url="/suggest/?q=%s">
+                data-suggest-url="{% url site-search-suggestions %}?q=%s">
             <button type="submit">Search</button>
         </form>
 
@@ -119,7 +119,7 @@
                 id="search-box"
                 placeholder="Search..."
                 class="suggest"
-                data-suggest-url="/suggest/?q=%s">
+                data-suggest-url="{% url site-search-suggestions %}?q=%s">
             <button type="submit">Search</button>
         </form>
 
