@@ -166,7 +166,7 @@ define([
                                                       input_value) {
         // Format a suggestion for display.
         return suggestion.replace(new RegExp(input_value, 'i'),
-                                  '<span>$&</span>').toLowerCase();
+                                  '<span>$&</span>');
     };
 
     Suggester.prototype.display_suggestions = function (suggestions,
