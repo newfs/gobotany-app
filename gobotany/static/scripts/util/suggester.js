@@ -207,43 +207,51 @@ define([
         return this.$menu.find('li.' + this.SELECTED_CLASS).index();
     };
 
+    Suggester.prototype.clear_menu_selection = function () {
+        // Un-select any already-selected item.
+        this.$menu.find('li').removeClass(this.SELECTED_CLASS);
+    };
+
     Suggester.prototype.select_menu_item = function (item_index) {
-        var $menu_item = this.$menu.find('li').eq(item_index);
-
-        if ($menu_item !== undefined) {
-            // First un-select any already-selected item.
-            var selected_index = this.get_selected_index();
-            if (selected_index >= 0) {
-                var $selected_item = this.$menu.find('li').eq(selected_index);
-                $selected_item.removeClass(this.SELECTED_CLASS);
+        this.clear_menu_selection();
+        if (item_index >= 0) {
+            var $menu_item = this.$menu.find('li').eq(item_index);
+            if ($menu_item !== undefined) {
+                $menu_item.addClass(this.SELECTED_CLASS);
             }
-
-            // Select the new item.
-            $menu_item.addClass(this.SELECTED_CLASS);
-        }
-        else {
-            console.log('$menu item ' + item_index + ' undefined');
         }
     };
 
     Suggester.prototype.select_next_menu_item = function () {
-        var selected_index = this.get_selected_index();
-        var next_item_index = selected_index + 1;
-        var num_menu_items = this.$menu.find('li').length;
-        if (next_item_index >= num_menu_items) {
-            next_item_index = 0;
+        if (this.$menu.is(':visible')) {
+            var selected_index = this.get_selected_index();
+            var next_item_index = selected_index + 1;
+            var num_menu_items = this.$menu.find('li').length;
+            if (next_item_index > num_menu_items) {
+                // Upon scrolling off the bottom of the list, the next Down
+                // keypress should select no item, leaving a slot in the
+                // sequence for the input box. Then on the next Down keypress,
+                // the first item should be selected.
+                next_item_index = -1;
+            }
+            this.select_menu_item(next_item_index);
         }
-        this.select_menu_item(next_item_index);
     };
 
     Suggester.prototype.select_previous_menu_item = function () {
-        var selected_index = this.get_selected_index();
-        var previous_item_index = selected_index - 1;
-        var num_menu_items = this.$menu.find('li').length;
-        if (previous_item_index < 0) {
-            previous_item_index = num_menu_items - 1;
+        if (this.$menu.is(':visible')) {
+            var selected_index = this.get_selected_index();
+            var previous_item_index = selected_index - 1;
+            var num_menu_items = this.$menu.find('li').length;
+            if (selected_index <= -1) {
+                // Upon scrolling off the top of the list, the next Up
+                // keypress should select no item, leaving a slot in the
+                // sequence for the input box. Then on the next Up keypress,
+                // the last list item should be selected.
+                previous_item_index = num_menu_items - 1;
+            }
+            this.select_menu_item(previous_item_index);
         }
-        this.select_menu_item(previous_item_index);
     };
 
     Suggester.prototype.fill_box = function (value) {
