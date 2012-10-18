@@ -557,7 +557,8 @@ input.suggest {
         position: absolute;
         li {
             list-style-type: none;
-            padding: 0 2px;
+            margin: 0;
+            padding: 2px;
             &.selected {
                 background-color: #666;
                 color: #fff;
