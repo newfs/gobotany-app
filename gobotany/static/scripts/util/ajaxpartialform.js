@@ -61,8 +61,7 @@ define([
                     });
 
                 });
-            },
-
+            }
         };
 
         $.fn.ajaxpartialform = function(method) {
