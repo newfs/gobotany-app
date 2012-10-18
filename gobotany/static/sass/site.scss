@@ -59,6 +59,7 @@ $error-icon-offset: -20px;
 $smallscreen-margin: 8px;
 $smallscreen-potd-image-width: 297px;
 $smallscreen-portrait-box-width: 302px;
+$smallscreen-portrait-form-el-width: $smallscreen-portrait-box-width - 10px;
 $smallscreen-landscape-box-width: 462px;
 $smallscreen-current-section-color: #85c446;
 
@@ -571,6 +572,7 @@ input.suggest {
  * can contain their own media queries. */
 
 @import "home";
+@import "mapping";
 @import "plantshare";
 @import "dkey";
 @import "about";

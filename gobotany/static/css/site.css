@@ -490,11 +490,14 @@ input.suggest + div li.selected { background-color: #666; color: #fff; }
   #home .donate p { margin: 8px; padding: 0; }
   #home .donate a { float: none; margin: 6px 0; position: static; } }
 /* End media queries styles for the Home page */
+/* Styles for maps */
+.location-map { border: 1px solid #c3d941; }
+
 /* PlantShare */
 body.plantshare .content form p { margin: 0; }
 body.plantshare .content form label { display: block; margin-bottom: 4px; text-transform: uppercase; width: 350px; }
 body.plantshare .content form input { font-family: Verdana, Geneva, sans-serif; height: 16px; margin-bottom: 10px; border: 1px solid #c3d941; padding: 5px; width: 350px; }
-body.plantshare .content form textarea { font-family: Verdana, Geneva, sans-serif; height: 72px; border: 1px solid #c3d941; padding: 5px; width: 350px; }
+body.plantshare .content form textarea { font-family: Verdana, Geneva, sans-serif; height: 82px; border: 1px solid #c3d941; padding: 5px; width: 350px; }
 body.plantshare .box { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px; }
 body.plantshare .box table { margin: 16px 0 12px; width: 100%; }
 body.plantshare .box table tr:nth-child(odd) { background-color: #e1f0d1; }
@@ -529,9 +532,9 @@ body.plantshare#log-in form.login label { font-size: 12px; }
 body.plantshare#log-in form.login input { border-color: #c3d941; }
 body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; }
 body.plantshare.sighting form label { text-transform: none; }
-body.plantshare.sighting form fieldset { border: 0; margin: 0 0 16px; padding: 0; width: 534px; }
+body.plantshare.sighting form fieldset { border: 0; margin: 0 0 16px; padding: 0; width: 684px; }
 body.plantshare.sighting form fieldset legend { display: block; text-indent: -9000px; }
-body.plantshare.sighting form img { border: 1px solid #c3d941; float: right; }
+body.plantshare.sighting form .location-map { float: right; }
 body.plantshare.sighting form .post-sighting-btn { background: transparent url(/static/images/layout/plantshare2-btn.png) no-repeat -372px -634px; border: 0 none; display: block; width: 157px; height: 32px; text-indent: -9999px; }
 body.plantshare.sighting form .post-sighting-btn.inactive { background-position: -372px -599px; }
 body.plantshare#profile .info-section, body.plantshare#profile .location-section { min-height: 140px; }

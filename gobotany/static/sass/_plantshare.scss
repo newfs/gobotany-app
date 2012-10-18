@@ -29,7 +29,7 @@ body.plantshare {
         }
         textarea {
             font-family: $body-font;
-            height: 72px;
+            height: 82px;
             @include form-field-base;
         }
     }
@@ -180,13 +180,12 @@ body.plantshare {
                 border: 0;
                 margin: 0 0 $section-padding;
                 padding: 0;
-                width: $form-field-width + 184px;
+                width: $form-field-width + 334px;
                 legend {
                     @include offscreen;
                 }
             }
-            img {
-                border: 1px solid $border-green;
+            .location-map {
                 float: right;
             }
             .post-sighting-btn {
@@ -306,7 +305,7 @@ body.plantshare {
         }
         .content form {
             label, input, textarea {
-                width: $smallscreen-portrait-box-width - 10px;
+                width: $smallscreen-portrait-form-el-width;
             }
         }
     }

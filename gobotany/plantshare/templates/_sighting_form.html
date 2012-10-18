@@ -21,8 +21,7 @@
             <label for="id_location">Location *</label>
             <div class="location">
                 {{ form.location }}
-                <img
-                src="http://open.mapquestapi.com/staticmap/v4/getplacemap?location=43.1220,-70.482313&size=150,139&type=map&zoom=5&imagetype=png&showicon=green-1">
+                {% include "_location_map.html" with location="Framingham, MA" height="150" width="302" zoom="6" %}
             </div>
 
             {{ form.location_notes.errors }}
