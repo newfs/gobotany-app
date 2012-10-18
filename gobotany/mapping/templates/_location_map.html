@@ -6,6 +6,6 @@ requires lat./long. coordinates instead of a flexible location parameter.
 (Also, the choice of map provider is not necessarily permanent, as map
 services are still being evaluated.)
 {% endcomment %}
-<img class="location-map" 
+<img id="{{ id }}" class="location-map" 
     src="http://open.mapquestapi.com/staticmap/v4/getplacemap?location={{ location }}&size={{ width }},{{ height }}&type=map&zoom={{ zoom }}&imagetype=jpeg&showicon=green-1"
     alt="Map: {{ location }}">

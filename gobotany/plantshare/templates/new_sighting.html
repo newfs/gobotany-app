@@ -2,6 +2,10 @@
 
 {% block title %}Post a Sighting: PlantShare{% endblock %}
 
+{% block js_require %}
+    require(['util/location_field_init']);
+{% endblock %}
+
 {% block body_attributes %}id="new-sighting" class="plantshare sighting"{% endblock %}
 
 {% block main_content %}

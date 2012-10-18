@@ -15,7 +15,8 @@ class LocationField(forms.RegexField):
         '(^(-?(\d{1,3}.?\d{1,6}? ?[nNsS]?))([, ]+)'
         '(-?(\d{1,3}.?\d{1,6}? ?[wWeE]?))$)'
     )
-    widget = forms.TextInput({'placeholder': VALIDATION_MESSAGE,
+    widget = forms.TextInput({'class': 'location',
+                              'placeholder': VALIDATION_MESSAGE,
                               'pattern': VALIDATION_PATTERN})
     default_error_messages = {
         'invalid': 'Enter %s.' % VALIDATION_MESSAGE

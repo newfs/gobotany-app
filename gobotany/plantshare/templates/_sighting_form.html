@@ -21,7 +21,7 @@
             <label for="id_location">Location *</label>
             <div class="location">
                 {{ form.location }}
-                {% include "_location_map.html" with location="Framingham, MA" height="150" width="302" zoom="6" %}
+                {% include "_location_map.html" with location="Framingham, MA" height="150" width="302" zoom="7" id="id_location_map" %}
             </div>
 
             {{ form.location_notes.errors }}
