@@ -7,7 +7,6 @@ from django.template import Context, Library
 from django.template.loader import get_template
 from django.utils.safestring import SafeUnicode, mark_safe
 from gobotany.dkey import models
-from gobotany.dkey.views import group_texts
 
 register = Library()
 
@@ -16,6 +15,26 @@ plurals = {
     'genus': 'genera',
     'species': 'species',
     'tribe': 'tribes',
+    }
+
+short_group_texts = {
+
+    # These are briefer than the equivalent texts in gobotany.dkey.views
+    # so that the breadcrumb navigation does not become overly verbose.
+
+    1: u'Lycophytes, Monilophytes',
+    2: u'Gymnosperms',
+    3: u'Monocots',
+    4: u'Woody angiosperms with opposite or whorled leaves',
+    5: u'Woody angiosperms with alternate leaves',
+    6: u'Herbaceous angiosperms with inferior ovaries',
+    7: u'Herbaceous angiosperms with superior ovaries and zygomorphic flowers',
+    8: u'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
+       u'and 2 or more distinct carpels',
+    9: u'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
+       u'connate petals, and a solitary carpel or 2 or more connate carpels',
+    10:u'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
+       u'distinct petals or the petals lacking, and 2 or more connate carpels',
     }
 
 @register.filter
@@ -38,7 +57,7 @@ def breadcrumbs(page):
 def breadcrumb_title(page):
     if page.rank == 'group':
         number = int(page.title.split()[-1])  # 'Group 4' -> 4
-        return u'{}: {}'.format(display_title(page), group_texts[number])
+        return u'{}: {}'.format(display_title(page), short_group_texts[number])
     else:
         return display_title(page)
 
