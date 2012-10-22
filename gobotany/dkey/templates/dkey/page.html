@@ -104,13 +104,15 @@
           {% endif %}
           <a class="button"
           {% spaceless %}
-          {% if lead.nextnum %}
-            href="#c{{ lead.nextnum }}">CHOOSE THIS LEAD
+          {% if lead.child_couplet_number %}
+            href="#c{{ lead.child_couplet_number }}">CHOOSE THIS LEAD
           {% elif lead.goto_num %}
             href="#c{{ lead.goto_num }}">JUMP TO {{ lead.goto_num }}
           {% elif p.rank == 'species' %}
             href="{% url simplekey-species p.title|genus_slug p.title|species_slug %}?key=dichotomous"
               ><i>{{ p.title|abbreviate_title }}</i>
+          {% elif not p %}
+            >—
           {% else %}
             href="{% url dkey_page p|slug %}"
             {% if p.rank == 'group' %}

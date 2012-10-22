@@ -1,6 +1,3 @@
-from itertools import groupby
-from operator import attrgetter
-
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
@@ -24,23 +21,6 @@ group_texts = {
 
 group_texts_sorted = sorted(key_value for key_value in group_texts.items())
 
-def fill_in_taxa(child_leads, lead):
-    if lead.taxa_cache:
-        lead.taxa_rank, lead.taxa_list = lead.taxa_cache.split(':')
-        lead.taxa_set = set(lead.taxa_list.split(','))
-    elif child_leads.get(lead.id):
-        children = child_leads.get(lead.id)
-        lead.taxa_set = set()
-        for child in children:
-            fill_in_taxa(child_leads, child)
-            lead.taxa_set.update(child.taxa_set)
-        lead.taxa_rank = children[0].taxa_rank
-        lead.taxa_list = ','.join(sorted(lead.taxa_set))
-    else:
-        lead.taxa_set = set()  # let the dkey display if cache is empty
-        lead.taxa_rank = ''
-        lead.taxa_list = []
-
 class _Proxy(object):
     def __init__(self, page):
         self.set_page(page)
@@ -49,36 +29,44 @@ class _Proxy(object):
         self.set_page(self.leads[0].goto_page)
 
     def set_page(self, page):
+        q = models.Lead.objects.filter(page=page).select_related('goto_page')
+        self.leads = list(sorted(q, key=models.Lead.sort_key))
         self.page = page
-        self.leads = sorted(models.Lead.objects.filter(page=page)
-                            .select_related('goto_page').all(),
-                            key=models.Lead.sort_key)
 
-        self.child_leads = {
-            parent_id: list(group) for parent_id, group
-            in groupby(self.leads, attrgetter('parent_id'))
-            }
+        idmap = {lead.id: lead for lead in self.leads}
+        tops = []
+
+        for lead in self.leads:
+            lead.childlist = []
+            if lead.parent_id:
+                parent = idmap[lead.parent_id]
+                parent.childlist.append(lead)
+                parent.child_couplet_number = lead.number()
+            else:
+                tops.append(lead)
 
         for lead in reversed(self.leads):
-            children = self.child_leads.get(lead.id)
-            lead.nextnum = children[0].number if children else ''
-            fill_in_taxa(self.child_leads, lead)
+            if lead.taxa_cache:
+                lead.taxa_rank, lead.taxa_list = lead.taxa_cache.split(':')
+                lead.taxa_set = set(lead.taxa_list.split(','))
+            else:
+                lead.taxa_set = set()
+                for child in lead.childlist:
+                    lead.taxa_rank = child.taxa_rank
+                    lead.taxa_set.update(child.taxa_set)
+                lead.taxa_list = ','.join(sorted(lead.taxa_set))
 
         self.lead_hierarchy = []
-        if not self.child_leads:
-            return
-
-        self.build_lead_hierarchy(self.child_leads[None], self.lead_hierarchy)
+        self.build_lead_hierarchy(tops, self.lead_hierarchy)
 
     def build_lead_hierarchy(self, leads, items):
         for lead in leads:
             items.append('<li>')
             items.append(lead)
-            children = self.child_leads.get(lead.id)
-            if children:
-                couplet_number = ' id="c{}"'.format(children[0].number())
-                items.append('<ul class="couplet"{}>'.format(couplet_number))
-                self.build_lead_hierarchy(children, items)
+            if lead.childlist:
+                items.append('<ul id="c{}" class="couplet">'.format(
+                        lead.child_couplet_number))
+                self.build_lead_hierarchy(lead.childlist, items)
                 items.append('</ul>')
             items.append('</li>')
 
