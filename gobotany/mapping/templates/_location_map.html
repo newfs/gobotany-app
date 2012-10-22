@@ -1,11 +1,3 @@
-{% comment %}
-This 'include' template so far uses one of MapQuest's static map services:
-one that allows the use of single-line addresses to get a map. More advanced
-map options will require using their somewhat more elaborate service that
-requires lat./long. coordinates instead of a flexible location parameter.
-(Also, the choice of map provider is not necessarily permanent, as map
-services are still being evaluated.)
-{% endcomment %}
 <img id="{{ id }}" class="location-map" 
     src="http://maps.googleapis.com/maps/api/staticmap?center={{ location }}&amp;size={{ width }}x{{ height }}&amp;zoom={{ zoom }}&amp;markers=size:mid%7Ccolor:0xe1f0d1%7Clabel:1%7C{{ location }}&amp;sensor=false"
     alt="Map: {{ location }}">
