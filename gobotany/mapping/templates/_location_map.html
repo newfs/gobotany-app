@@ -7,5 +7,5 @@ requires lat./long. coordinates instead of a flexible location parameter.
 services are still being evaluated.)
 {% endcomment %}
 <img id="{{ id }}" class="location-map" 
-    src="http://open.mapquestapi.com/staticmap/v4/getplacemap?location={{ location }}&size={{ width }},{{ height }}&type=map&zoom={{ zoom }}&imagetype=jpeg&showicon=green-1"
+    src="http://maps.googleapis.com/maps/api/staticmap?center={{ location }}&amp;size={{ width }}x{{ height }}&amp;zoom={{ zoom }}&amp;markers=size:mid%7Ccolor:0xe1f0d1%7Clabel:1%7C{{ location }}&amp;sensor=false"
     alt="Map: {{ location }}">
