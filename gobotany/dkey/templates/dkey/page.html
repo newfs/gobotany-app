@@ -74,10 +74,10 @@
 {% endif %}
 
 {% if taxa_beneath|length > 1 %}
-  <p><a href="." class="what-lies-beneath" data-taxa="{{ taxa_beneath|json }}">
+  <a href="." class="what-lies-beneath" data-taxa="{{ taxa_beneath|json }}">
     See list of {{ taxa_beneath|length }} {{ rank_beneath|taxon_plural }}
     in this {{ page.rank }}
-  </a></p>
+  </a>
 {% endif %}
 
 {% include "dkey/_page_text.html" %}

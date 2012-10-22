@@ -150,6 +150,19 @@ $disabled_orange_gradient: linear-gradient(
         }
     }
 
+    a.what-lies-beneath {       /* "See list of 7 species in 1a" */
+        @include hover-link;
+        color: $text_dark_green;
+        font-family: $headings-font;
+        font-size:  $base-font-size;
+        text-transform: uppercase;
+    }
+    > a.what-lies-beneath {
+        display: block;
+        max-width: 47.5em;
+        text-align: right;
+    }
+
     ul.couplets {
         clear: both;
         margin: 0em;
@@ -205,11 +218,7 @@ $disabled_orange_gradient: linear-gradient(
         }
         a.what-lies-beneath {       /* message that sits above the button */
             display: inline-block;
-            @include hover-link;
-            color: $text_dark_green;
-            font-family: $headings-font;
-            font-size:  $base-font-size;
-            text-transform: uppercase;
+            /* other styles inherited from a.what-lies-beneath rule above */
         }
         a.button {                  /* big orange button */
             @extend .orange-button;

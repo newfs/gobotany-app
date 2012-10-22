@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -604,6 +605,9 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
 #dkey #main p.backlinks { margin-top: 0.57143em; margin-bottom: 0.64286em; font-size: 14px; }
 #dkey #main p.backlinks a { text-decoration: none; margin-right: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; }
 #dkey #main p.backlinks a:hover { text-decoration: underline; }
+#dkey #main a.what-lies-beneath { /* "See list of 7 species in 1a" */ text-decoration: none; color: #35661c; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 12px; text-transform: uppercase; }
+#dkey #main a.what-lies-beneath:hover { text-decoration: underline; }
+#dkey #main > a.what-lies-beneath { display: block; max-width: 47.5em; text-align: right; }
 #dkey #main ul.couplets { clear: both; margin: 0em; max-width: 48em; padding: 1em 1em 0 0; font-size: 12px; line-height: 1.5em; }
 #dkey #main ul.couplets ul { /* a couplet */ margin: 0em; padding-bottom: 0em; /* override browser default */ padding-left: 2%; /* indent of each level of couplet */ }
 #dkey #main ul.couplets li { /* holds a lead and any <ul> beneath it */ display: block; position: relative; }
@@ -614,8 +618,7 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
 #dkey #main ul.couplets .lead:after { /* "clear" the float for the button */ display: block; content: " "; height: 0px; clear: both; }
 #dkey #main ul.couplets .letter { /* "1a." or "12b." or whatever */ font-weight: bold; padding-right: 0.5em; }
 #dkey #main ul.couplets .button-block { /* contains what-lies-beneath and button */ float: right; margin: 0em 0em 0.4em 1.2em; text-align: right; }
-#dkey #main ul.couplets a.what-lies-beneath { /* message that sits above the button */ display: inline-block; text-decoration: none; color: #35661c; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 12px; text-transform: uppercase; }
-#dkey #main ul.couplets a.what-lies-beneath:hover { text-decoration: underline; }
+#dkey #main ul.couplets a.what-lies-beneath { /* message that sits above the button */ display: inline-block; /* other styles inherited from a.what-lies-beneath rule above */ }
 #dkey #main ul.couplets a.button { /* big orange button */ display: inline-block; font-size: 12px; }
 #dkey #main ul.couplets a.figure-link { /* clickable figure numbers: [Fig. 3] */ color: #35661c; text-decoration: underline; font-weight: bold; }
 #dkey #main ul.couplets .chosen { border-color: #7abe58; }
