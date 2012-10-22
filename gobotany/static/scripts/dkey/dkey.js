@@ -88,15 +88,16 @@ define([
            currently-visible hierarchy, and is also the current couplet
            highlighted for choosing. */
 
-        if (new_hash) {
-            var comma_at = new_hash.indexOf(',');
-            if (comma_at === -1) {
-                active_id = new_hash;
-                bottom_id = new_hash;
-            } else {
-                active_id = new_hash.substring(0, comma_at);
-                bottom_id = new_hash.substring(comma_at + 1);
-            }
+        if (!new_hash)
+            new_hash = 'c1';
+
+        var comma_at = new_hash.indexOf(',');
+        if (comma_at === -1) {
+            active_id = new_hash;
+            bottom_id = new_hash;
+        } else {
+            active_id = new_hash.substring(0, comma_at);
+            bottom_id = new_hash.substring(comma_at + 1);
         }
 
         /* First, reset all state. */
