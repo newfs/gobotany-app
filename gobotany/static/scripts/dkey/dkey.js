@@ -191,7 +191,7 @@ define([
         event.preventDefault();
         var $target = $(event.delegateTarget);
         var title = $target.html();
-        var taxa = $target.attr('data-taxa').split(',');
+        var taxa = $.parseJSON($target.attr('data-taxa'));
         taxa.sort();
         $popup.empty();
         $('<h2/>').html(title).appendTo($popup);

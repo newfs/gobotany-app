@@ -2,6 +2,7 @@
 
 """Compute the display title of a Couplet."""
 
+import json as json_module
 import re
 from django.template import Context, Library
 from django.template.loader import get_template
@@ -108,6 +109,12 @@ def figurize(text):
     text = re_floating_figure.sub(render_floating_figure, text)
     text = re_figure_mention.sub(render_figure_mention, text)
     return text
+
+@register.filter
+def json(anything):
+    if isinstance(anything, set):
+        anything = list(anything)
+    return json_module.dumps(anything)
 
 @register.filter
 def lastword(text):

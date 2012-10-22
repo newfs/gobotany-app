@@ -47,14 +47,16 @@ class _Proxy(object):
 
         for lead in reversed(self.leads):
             if lead.taxa_cache:
-                lead.taxa_rank, lead.taxa_list = lead.taxa_cache.split(':')
-                lead.taxa_set = set(lead.taxa_list.split(','))
+                lead.rank_beneath, commalist = lead.taxa_cache.split(':')
+                lead.taxa_beneath = set(commalist.split(','))
             else:
-                lead.taxa_set = set()
+                lead.taxa_beneath = set()
                 for child in lead.childlist:
-                    lead.taxa_rank = child.taxa_rank
-                    lead.taxa_set.update(child.taxa_set)
-                lead.taxa_list = ','.join(sorted(lead.taxa_set))
+                    lead.rank_beneath = child.rank_beneath
+                    lead.taxa_beneath.update(child.taxa_beneath)
+
+        self.rank_beneath = tops[0].rank_beneath if tops else ''
+        self.taxa_beneath = set().union(*(lead.taxa_beneath for lead in tops))
 
         self.lead_hierarchy = []
         self.build_lead_hierarchy(tops, self.lead_hierarchy)
@@ -99,8 +101,12 @@ def page(request, slug=u'key-to-the-families'):
             'groups': get_groups,
             'families': get_families,
             'genera': get_genera,
+
             'leads': (lambda: proxy.leads),
             'lead_hierarchy': (lambda: proxy.lead_hierarchy),
-            'next_page': (lambda: proxy.next() or proxy.page),
             'page': (lambda: proxy.page),
+            'rank_beneath': (lambda: proxy.rank_beneath),
+            'taxa_beneath': (lambda: proxy.taxa_beneath),
+
+            'next_page': (lambda: proxy.next() or proxy.page),
             }, context_instance=RequestContext(request))

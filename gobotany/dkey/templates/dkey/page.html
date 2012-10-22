@@ -73,6 +73,13 @@
     {{ page|display_title }}.</p>
 {% endif %}
 
+{% if taxa_beneath|length > 1 %}
+  <p><a href="." class="what-lies-beneath" data-taxa="{{ taxa_beneath|json }}">
+    See list of {{ taxa_beneath|length }} {{ rank_beneath|taxon_plural }}
+    in this {{ page.rank }}
+  </a></p>
+{% endif %}
+
 {% include "dkey/_page_text.html" %}
 
 {% if leads %}
@@ -86,16 +93,16 @@
       {% with p=lead.goto_page %}
       <div class="lead">
         <div class="button-block">
-          {% if lead.taxa_rank and lead.taxa_rank == p.rank and lead.taxa_set|length == 1 %}
+          {% if lead.taxa_beneath and lead.rank_beneath == p.rank and lead.taxa_beneath|length == 1 %}
             <a class="what-lies-beneath" href="{{ p.title|dkey_url }}">
-              Choose this {{ lead.taxa_rank }}
+              Choose this {{ lead.rank_beneath }}
             </a>
           <br>
-          {% elif lead.taxa_rank %}
+          {% elif lead.rank_beneath %}
             <a class="what-lies-beneath" href="."
-               data-taxa="{{ lead.taxa_list }}">
-              See list of {{ lead.taxa_set|length }}
-              {{ lead.taxa_rank|taxon_plural }}
+               data-taxa="{{ lead.taxa_beneath|json }}">
+              See list of {{ lead.taxa_beneath|length }}
+              {{ lead.rank_beneath|taxon_plural }}
               {% if lead.letter %}
                 in {{ lead.letter }}
               {% endif %}
