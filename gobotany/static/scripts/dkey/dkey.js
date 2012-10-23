@@ -307,10 +307,15 @@ define([
         $(element).val('instructions');
     };
 
-    $('.groupbox select').on('mousedown', function(event) {
-        // Instead of letting the real select box drop down, show the <ul>.
-        $('.groupbox ul').toggle();
-        return false;
+    $('.groupbox select').on('mousedown keydown', function(event) {
+        // Instead of letting the real select box drop down, toggle the <ul>.
+        if (event.which == 9) {
+            $('.groupbox ul').hide();
+            return true;  // Let the Tab keystroke take us to the next field.
+        } else {
+            $('.groupbox ul').toggle();
+            return false;
+        }
     });
 
     $('.jumpbox').on('change', function(event) {
