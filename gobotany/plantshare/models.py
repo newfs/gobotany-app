@@ -130,6 +130,6 @@ class ScreenedImage(models.Model):
     image_type = models.CharField(blank=True, max_length=10,
             choices=IMAGE_TYPES)
 
-    screened = models.DateTimeField(blank=True)
+    screened = models.DateTimeField(null=True)
     screened_by = models.ForeignKey(User, null=True, related_name='images_approved')
     is_approved = models.BooleanField(default=False)
