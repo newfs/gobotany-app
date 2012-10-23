@@ -814,7 +814,7 @@ body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding
   header { height: 90px; }
   header nav { background: #508e31; clear: left; height: 32px; padding: 0; }
   header nav > a { background: #437829; border: 1px solid #437829; display: inline-block; font-size: 30px; height: 24px; line-height: 68%; margin: 3px 0 0 4px; padding: 0 2px 0 7px; position: relative; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
-  header nav > a:hover { background: #437829; }
+  header nav > a:hover { background: #437829; text-decoration: none; }
   header nav #search { margin-top: 6px; padding-left: 10px; }
   header nav > ul { display: none; /* will use bottom navigation instead of top */ }
   header nav #search-suggest .menu { top: 83px; }
