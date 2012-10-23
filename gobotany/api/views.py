@@ -217,13 +217,15 @@ def questions(request, pile_slug):
 # Higher-order taxa.
 
 def family(request, family_slug):
-    family = Family.objects.get(name=family_slug.capitalize())
+    family = get_object_or_404(Family, name=family_slug.capitalize())
 
     images = []
     taxa = Taxon.objects.filter(family=family)
     for taxon in taxa:
         images = images + [_taxon_image(i) for i in
                            taxon.images.select_related('image_type').all()]
+        if len(images) > 150:  # TODO: have botanists choose "best" images
+            break
 
     drawings = family.images.all() # TODO: filter image_type 'example drawing'
 
@@ -234,13 +236,15 @@ def family(request, family_slug):
         })
 
 def genus(request, genus_slug):
-    genus = Genus.objects.get(name=genus_slug.capitalize())
+    genus = get_object_or_404(Genus, name=genus_slug.capitalize())
 
     images = []
     taxa = Taxon.objects.filter(genus=genus)
     for taxon in taxa:
         images = images + [_taxon_image(i) for i in
                            taxon.images.select_related('image_type').all()]
+        if len(images) > 150:  # TODO: have botanists choose "best" images
+            break
 
     drawings = genus.images.all() # TODO: filter image_type 'example drawing'
 
