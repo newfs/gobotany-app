@@ -83,12 +83,6 @@ urlpatterns = patterns(
          '-us-distribution-map(\.svg|/)?$',
         views.united_states_distribution_map, name='us-distribution-map'),
 
-    url(r'^families/(?P<family_name>[^/]+)/$', allow_cross_site_access(
-            Resource(handler=handlers.FamilyHandler)), name='api-family'),
-
-    url(r'^genera/(?P<genus_name>[^/]+)/$', allow_cross_site_access(
-            Resource(handler=handlers.GenusHandler)), name='api-genus'),
-
     url(r'^$', 'nonexistent', name='api-base'),  # helps compute the base URL
     )
 
@@ -109,6 +103,8 @@ else:
 urlpatterns += patterns(
     'gobotany.api.views',
     url(r'^glossaryblob/$', both(views.glossary_blob)),
+    url(r'^families/([\w]+)/$', both(views.family)),
+    url(r'^genera/([\w]+)/$', both(views.genus)),
     url(r'^species/([\w-]+)/$', browsercache(views.species)),
     url(r'^vectors/character/([\w()-]+)/$', both(views.vectors_character)),
     url(r'^vectors/key/([\w-]+)/$', both(views.vectors_key)),

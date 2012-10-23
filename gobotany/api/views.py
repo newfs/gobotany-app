@@ -15,7 +15,7 @@ from gobotany.core import igdt
 from gobotany.core.models import (
     Character, ContentImage,
     GlossaryTerm, PartnerSpecies, Pile,
-    Taxon, TaxonCharacterValue,
+    Family, Genus, Taxon, TaxonCharacterValue,
     )
 from gobotany.core.partner import which_partner
 from gobotany.core.questions import get_questions
@@ -42,7 +42,8 @@ def _taxon_image(image):
         return
     json = {
         'url': image.image.url,
-        'type': image.image_type_name,
+        'type': image.image_type_name if hasattr(image, 'image_type_name')
+                else image.image_type.name,
         'rank': image.rank,
         'title': image.alt,
         'description': image.description,
@@ -213,7 +214,43 @@ def questions(request, pile_slug):
     #                            {'questions': questions})
     return output
 
-#
+# Higher-order taxa.
+
+def family(request, family_slug):
+    family = Family.objects.get(name=family_slug.capitalize())
+
+    images = []
+    taxa = Taxon.objects.filter(family=family)
+    for taxon in taxa:
+        images = images + [_taxon_image(i) for i in
+                           taxon.images.select_related('image_type').all()]
+
+    drawings = family.images.all() # TODO: filter image_type 'example drawing'
+
+    return jsonify({
+        'name': family.name,
+        'images': images,
+        'drawings': list(drawings),
+        })
+
+def genus(request, genus_slug):
+    genus = Genus.objects.get(name=genus_slug.capitalize())
+
+    images = []
+    taxa = Taxon.objects.filter(genus=genus)
+    for taxon in taxa:
+        images = images + [_taxon_image(i) for i in
+                           taxon.images.select_related('image_type').all()]
+
+    drawings = genus.images.all() # TODO: filter image_type 'example drawing'
+
+    return jsonify({
+        'name': genus.name,
+        'images': images,
+        'drawings': list(drawings),
+        })
+
+# Lower-order taxa.
 
 _species_cache = {}
 
