@@ -1,0 +1,11 @@
+{% load facebook_connect %}
+<div id="login" class="box">
+    <h4>Log In</h4>
+    {% include "_login_form.html" %}
+    <div>
+        <a href="#">
+            {% facebook_button %}
+        </a>
+    </div>
+</div>
+{% facebook_script %}

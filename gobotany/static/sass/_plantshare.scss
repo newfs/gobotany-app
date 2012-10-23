@@ -2,6 +2,7 @@
 
 $form-field-padding: 5px;
 $form-field-width: 350px;
+$plantshare-main-column-width: 475px;
 $section-padding: 16px;
 
 @mixin form-field-base {
@@ -78,7 +79,7 @@ body.plantshare {
         }
     }
     .sign-up-call {
-        width: 475px;
+        width: $plantshare-main-column-width;
         ul {
             line-height: 18px;
             list-style-position: inside;
@@ -278,19 +279,22 @@ body.plantshare {
             }
         }
     }
-    #sidebar {
-        #login.box {
-            background-color: $login-box-background-color;
-            border-color: $link-green;
-            padding: 0;
-            h4 {
-                font-size: 20px;
-                padding: $section-padding $section-padding 10px;
-            }
-            div {
-                border-top: 1px solid $link-green;
-                padding: $section-padding;
-            }
+
+    #login.box {
+        background-color: $login-box-background-color;
+        border-color: $link-green;
+        max-width: $plantshare-main-column-width;
+        padding: 0;
+        h4 {
+            font-size: 20px;
+            padding: $section-padding $section-padding 10px;
+        }
+        div {
+            border-top: 1px solid $link-green;
+            padding: $section-padding;
+        }
+        input[type='text'], input[type='password'] {
+            width: 95%;
         }
     }
 }

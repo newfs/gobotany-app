@@ -18,7 +18,10 @@ def _new_sighting_form_page(request, form):
 
 def plantshare_view(request):
     """View for the main PlantShare page."""
+    prior_signup_detected = request.COOKIES.get('registration_complete',
+                                                False)
     return render_to_response('plantshare.html', {
+               'prior_signup_detected': prior_signup_detected
            }, context_instance=RequestContext(request))
 
 def sightings_view(request):

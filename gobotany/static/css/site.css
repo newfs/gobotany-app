@@ -558,9 +558,10 @@ body.plantshare#profile .info-section .info.box table .edit, body.plantshare#pro
 body.plantshare#profile .info-section { margin: 20px 0; }
 body.plantshare#profile .info-section .info.box { margin: 20px 0; padding: 10px 15px 20px; }
 body.plantshare#profile .info-section .info.box table { margin: 0; }
-body.plantshare #sidebar #login.box { background-color: #d3eaad; border-color: #508e31; padding: 0; }
-body.plantshare #sidebar #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
-body.plantshare #sidebar #login.box div { border-top: 1px solid #508e31; padding: 16px; }
+body.plantshare #login.box { background-color: #d3eaad; border-color: #508e31; max-width: 475px; padding: 0; }
+body.plantshare #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
+body.plantshare #login.box div { border-top: 1px solid #508e31; padding: 16px; }
+body.plantshare #login.box input[type='text'], body.plantshare #login.box input[type='password'] { width: 95%; }
 
 /* Begin media queries styles for PlantShare. */
 /* Portrait-orientation styles */

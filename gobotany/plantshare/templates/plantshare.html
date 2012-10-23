@@ -23,22 +23,26 @@
     </table>
 </div>
 {% else %}
-<div class="smallscreen-anchor-nav">
-    <a href="#login">Log In</a>
-</div>
+    {% if prior_signup_detected %}
+        {% include "_login_box.html" %}
+    {% else %}
+        <div class="smallscreen-anchor-nav">
+            <a href="#login">Log In</a>
+        </div>
 
-<div class="sign-up-call box">
-    <h2>Sign up for PlantShare!</h2>
-    <p>As a member of PlantShare, you will be able to:<p>
-    <ul>
-        <li>Upload photos of plants to share with others</li>
-        <li>Create checklists of plants you want to keep track of</li>
-        <li>Publish the location of the plants you have seen on your own map</i>
-        <li>Ask one of our expert botanists questions</li>
-        <li>Share your thoughts and musings with others</li>
-    </li>
-    <a href="{% url registration_register %}">Get Started</a>
-</div>
+        <div class="sign-up-call box">
+            <h2>Sign up for PlantShare!</h2>
+            <p>As a member of PlantShare, you will be able to:<p>
+            <ul>
+                <li>Upload photos of plants to share with others</li>
+                <li>Create checklists of plants you want to keep track of</li>
+                <li>Publish the location of the plants you have seen on your own map</i>
+                <li>Ask one of our expert botanists questions</li>
+                <li>Share your thoughts and musings with others</li>
+            </li>
+            <a href="{% url registration_register %}">Get Started</a>
+        </div>
+    {% endif %}
 {% endif %}
 
 {% endblock %}
