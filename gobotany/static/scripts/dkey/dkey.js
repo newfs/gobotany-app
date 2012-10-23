@@ -313,6 +313,7 @@ define([
             $('.groupbox ul').hide();
             return true;  // Let the Tab keystroke take us to the next field.
         } else {
+            $('.groupbox select').focus();
             $('.groupbox ul').toggle();
             return false;
         }
