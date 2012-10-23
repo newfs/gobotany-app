@@ -10,13 +10,25 @@
 <h2>My Info</h2>
 
 <section class="info-section">
-<form name="edit-profile-form" class="ajax-partial" method="POST" action="{% url ps-ajax-profile-edit %}">
+<div class="image-modal">
+    <a href="#" class="close">close</a>
+    <img src="/static/images/icons/no-image.png" alt="avatar image">
+    <h4>Upload Image</h4>
+    <form id="upload-avatar-form" method="POST" 
+        action="{% url ps-ajax-image-upload %}">
+        {% csrf_token %}
+        {{ avatar_form.image }}
+        <div style="display: none;">{{ avatar_form.image_type }}</div>
+        <input type="submit" id="upload-photo-submit" class="save-btn">
+    </form>
+</div>
+<form id="edit-profile-form" class="ajax-partial" method="POST" action="{% url ps-ajax-profile-edit %}">
     {% csrf_token %}
     <div class="info box">
         <div class="avatar">
-            <img src="/static/images/icons/avatar-scary-placeholder.png" alt="">
+            <img id="avatar-image" src="/static/images/icons/avatar-scary-placeholder.png" alt="">
             <p>
-                <a href="#">Upload Photo</a>
+                <a id="upload-link" href="#">Upload Photo</a>
             </p>
         </div>
         <table>
