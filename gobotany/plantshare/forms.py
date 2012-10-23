@@ -2,7 +2,7 @@
 from django import forms
 from django.core.urlresolvers import reverse_lazy
 
-from models import UserProfile
+from models import UserProfile, ScreenedImage
 
 def plant_name_suggestions_url():
     return reverse_lazy('site-plant-name-suggestions') + '?q=%s'
@@ -77,3 +77,7 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('sharing_visibility', 'display_name', 'saying',)
 
+class ScreenedImageForm(forms.ModelForm):
+    class Meta:
+        model = ScreenedImage
+        fields = ('image', 'image_type')
