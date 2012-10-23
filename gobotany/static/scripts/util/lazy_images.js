@@ -28,10 +28,8 @@ define([
         var view_top = $(window).scrollTop();
         var view_bottom = view_top + $(window).height();
 
-        $('img[data-lazy-img-src]').each(function(i, img) {
+        $('img[data-lazy-img-src]:visible').each(function(i, img) {
             var $img = $(img);
-
-            if (!$img.is(':visible')) return;
 
             var img_top = $img.offset().top;
             if (img_top > view_bottom) return;
