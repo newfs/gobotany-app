@@ -1,10 +1,20 @@
+import os
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.files.storage import FileSystemStorage
+
+from storages.backends.s3boto import S3BotoStorage
 
 SHARING_CHOICES = (
     ('PRIVATE', 'Only PlantShare staff and myself'),
     ('GROUPS', 'My Groups'),
     ('PUBLIC', 'Public - All'),
+)
+
+IMAGE_TYPES = (
+    ('AVATAR', 'User Avatar'),
+    ('SIGHTING', 'Sighting Photo'),
 )
 
 class Location(models.Model):
@@ -102,3 +112,24 @@ class Sighting(models.Model):
             created_at = ', %s' % self.created
         return 'Sighting%s: %s at %s (user %d%s)' % (sighting_id,
             self.identification, self.location, self.user.id, created_at)
+
+
+if settings.DEBUG:
+    # Local, debug upload
+    upload_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'upload_images'))
+else:
+    # Direct upload to S3
+    upload_storage = S3BotoStorage(location='/upload_images')
+
+class ScreenedImage(models.Model):
+    image = models.ImageField(upload_to='.', storage=upload_storage)
+
+    uploaded = models.DateTimeField(blank=False, auto_now_add=True)
+    uploaded_by = models.ForeignKey(User, null=False, related_name='images_uploaded')
+
+    image_type = models.CharField(blank=True, max_length=10,
+            choices=IMAGE_TYPES)
+
+    screened = models.DateTimeField(blank=True)
+    screened_by = models.ForeignKey(User, null=True, related_name='images_approved')
+    is_approved = models.BooleanField(default=False)
