@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Maps Test</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,
+            initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,
+            user-scalable=no">
+        <link rel="stylesheet" href="/static/css/site.css">
+        <style>
+            body {
+                padding: 2em 4em;
+            }
+            h3, h4 {
+                padding: 0.5em 0;
+            }
+        </style>
+
+        <script src="/static/scripts/lib/require.js"></script>
+        <script src="/static/scripts/require_config.js"></script>
+        <script>
+            require(['util/map_init']);
+        </script>        
+    </head>
+    <body class="plantshare">
+        <h1>Maps Test</h1>
+
+        <p>This is a page for testing map APIs and controls.</p>
+
+        <h2>MapQuest static location map</h2>
+
+        <img
+        src="http://open.mapquestapi.com/staticmap/v4/getplacemap?location=Framingham,%20MA&amp;size=302,150&amp;type=map&amp;zoom=7&amp;imagetype=jpeg&amp;showicon=green-1"
+        alt="Map: Framingham, MA" class="location-map">
+
+        <h2>Google static location map</h2>
+
+        <img
+        src="http://maps.googleapis.com/maps/api/staticmap?center=Framingham,%20MA&amp;size=302x150&amp;zoom=7&amp;&markers=size:mid%7Ccolor:0xe1f0d1%7Clabel:1%7CFramingham,%20MA&amp;sensor=false"
+        alt="Map: Framingham, MA" class="location-map">
+
+        <h3>Maptype: terrain</h3>
+
+        <img
+        src="http://maps.googleapis.com/maps/api/staticmap?center=Framingham,%20MA&amp;size=302x150&amp;zoom=7&amp;&markers=size:mid%7Ccolor:0xe1f0d1%7Clabel:1%7CFramingham,%20MA&amp;sensor=false&amp;maptype=terrain" alt="Map: Framingham, MA"
+        class="location-map">
+
+        <h2>Google map (using JavaScript API)</h2>
+
+        <div id="map-new-england" style="width: 360px; height: 480px"
+            class="location-map"></div>
+
+    </body>
+</html>

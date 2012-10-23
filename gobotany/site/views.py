@@ -230,6 +230,12 @@ def plant_name_suggestions_view(request):
                         mimetype='application/json; charset=utf-8')
 
 
+# Maps test page
+
+def maps_test_view(request):
+    return render_to_response('gobotany/maps_test.html', {
+           }, context_instance=RequestContext(request))
+
 # Input suggest test page
 
 def suggest_test_view(request):
