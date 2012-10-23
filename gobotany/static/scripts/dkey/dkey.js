@@ -20,10 +20,6 @@ define([
 
     glossarize($('.couplets .lead'));
 
-    /* Where to direct RPC requests for lists of images. */
-
-    var gobotany_host = 'quiet-wind-6510.herokuapp.com';
-
     /* Rewrite couplet IDs so that #-links will no longer match; this
        prevents a change to the URL hash from making the browser think
        that it should visit a different part of the page without letting
@@ -264,16 +260,15 @@ define([
 
     if (couplet_rank == 'family') {
         var family = couplet_title.split(/ /).pop().toLowerCase();
-        var urlpath = '/api/families/' + family + '/';
+        var url = '/api/families/' + family + '/';
     } else if (couplet_rank == 'genus') {
         var genus = couplet_title.split(/ /).pop().toLowerCase();
-        var urlpath = '/api/genera/' + genus + '/';
+        var url = '/api/genera/' + genus + '/';
     } else if (couplet_rank == 'species') {
         var name = couplet_title.replace(' ', '%20');
-        var urlpath = '/api/taxa/' + name + '/';
+        var url = '/api/taxa/' + name + '/';
     }
-    if (urlpath) {
-        var url = 'http://' + gobotany_host + urlpath;
+    if (url) {
         $.getJSON(url, function(data) {
             var types = [];
             var $div = $('.taxon-images');

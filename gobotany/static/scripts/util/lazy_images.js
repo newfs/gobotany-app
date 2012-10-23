@@ -29,8 +29,9 @@ define([
         var view_bottom = view_top + $(window).height();
 
         $('img[data-lazy-img-src]').each(function(i, img) {
-            if (img.style.display === 'none') return;
-            $img = $(img);
+            var $img = $(img);
+
+            if (!$img.is(':visible')) return;
 
             var img_top = $img.offset().top;
             if (img_top > view_bottom) return;
