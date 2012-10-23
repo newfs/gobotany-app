@@ -541,7 +541,7 @@ body.plantshare.sighting form fieldset legend { display: block; text-indent: -90
 body.plantshare.sighting form .location-map { float: right; }
 body.plantshare.sighting form .post-sighting-btn { background: transparent url(/static/images/layout/plantshare2-btn.png) no-repeat -372px -634px; border: 0 none; display: block; width: 157px; height: 32px; text-indent: -9999px; }
 body.plantshare.sighting form .post-sighting-btn.inactive { background-position: -372px -599px; }
-body.plantshare#profile .info-section, body.plantshare#profile .location-section { min-height: 140px; }
+body.plantshare#profile .info-section, body.plantshare#profile .location-section { min-height: 140px; position: relative; }
 body.plantshare#profile .info-section .info.box, body.plantshare#profile .location-section .info.box { min-height: 160px; padding: 0 0 5px 0; }
 body.plantshare#profile .info-section .info.box .avatar, body.plantshare#profile .location-section .info.box .avatar { margin-right: 15px; padding: 0; float: left; width: 170px; }
 body.plantshare#profile .info-section .info.box .avatar img, body.plantshare#profile .location-section .info.box .avatar img { border: 0; }
@@ -555,6 +555,14 @@ body.plantshare#profile .info-section .info.box table .display .group-list, body
 body.plantshare#profile .info-section .info.box table .display .edit-link, body.plantshare#profile .location-section .info.box table .display .edit-link { float: right; }
 body.plantshare#profile .info-section .info.box table .display ul, body.plantshare#profile .location-section .info.box table .display ul { list-style: none; }
 body.plantshare#profile .info-section .info.box table .edit, body.plantshare#profile .location-section .info.box table .edit { display: none; }
+body.plantshare#profile .info-section .image-modal, body.plantshare#profile .location-section .image-modal { background-color: white; border: 5px solid #ACAC90; display: none; padding: 15px; position: absolute; width: 400px; height: 120px; top: 35px; left: 20px; z-index: 10; }
+body.plantshare#profile .info-section .image-modal img, body.plantshare#profile .location-section .image-modal img { float: left; margin: 0 20px 10px 0; }
+body.plantshare#profile .info-section .image-modal a.close, body.plantshare#profile .location-section .image-modal a.close { background: transparent url(/static/images/icons/close.png) no-repeat; display: block; height: 16px; position: absolute; top: 15px; right: 15px; width: 16px; text-indent: -9999px; }
+body.plantshare#profile .info-section .image-modal h4, body.plantshare#profile .location-section .image-modal h4 { margin: 0 0 15px; font-size: 18px; }
+body.plantshare#profile .info-section .image-modal form, body.plantshare#profile .location-section .image-modal form { float: right; margin: 15px 0; width: 290px; }
+body.plantshare#profile .info-section .image-modal input, body.plantshare#profile .location-section .image-modal input { border: 0 none !important; box-shadow: inset 0 0 0 white !important; }
+body.plantshare#profile .info-section .image-modal input#id_image, body.plantshare#profile .location-section .image-modal input#id_image { clear: both; display: block; margin: 0 0 10px; }
+body.plantshare#profile .info-section .image-modal .save-btn, body.plantshare#profile .location-section .image-modal .save-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px; width: 99px !important; height: 32px; font-size: 0; -moz-box-shadow: 0 !important; border: 0 none !important; display: block; text-indent: -9999px; }
 body.plantshare#profile .info-section { margin: 20px 0; }
 body.plantshare#profile .info-section .info.box { margin: 20px 0; padding: 10px 15px 20px; }
 body.plantshare#profile .info-section .info.box table { margin: 0; }
@@ -584,7 +592,7 @@ body.plantshare #login.box input[type='text'], body.plantshare #login.box input[
 /* End media queries styles for PlantShare */
 /* Dichotomous Key */
 /* Definitions */
-.orange-button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
+.orange-button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.083em; }
 .orange-button:hover, #dkey #main .offer-help-aside a.button:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
 .orange-button.disabled, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
 
@@ -593,7 +601,7 @@ body.plantshare #login.box input[type='text'], body.plantshare #login.box input[
 #dkey #main .offer-help-aside { float: right; margin: 1em 1em 0.5em 1em; text-align: right; color: #606060; }
 #dkey #main .offer-help-aside span { font-size: 12px; }
 #dkey #main .offer-help-aside a.button { display: inline-block; margin: 0.8em 1em; font-weight: normal; font-size: 12px; text-transform: uppercase; }
-#dkey #main .offer-help-aside select { margin: 0.25em 1.0em; font-size: 1.33333em; }
+#dkey #main .offer-help-aside select { margin: 0.25em 1.0em; font-size: 1.333em; }
 #dkey #main .groupbox { position: relative; }
 #dkey #main .groupbox ul { display: none; position: absolute; z-index: 100; right: 10px; background-color: white; text-align: left; }
 #dkey #main .groupbox li { display: block; margin: 0; border-width: 1px 1px 0px 1px; border-style: solid; border-color: #bbc6b6; }
@@ -606,7 +614,7 @@ body.plantshare #login.box input[type='text'], body.plantshare #login.box input[
 #dkey #main p .figure a { display: block; margin-bottom: 0.5em; border-bottom: 1px solid black; padding-bottom: 0.5em; }
 #dkey #main p .figure img { width: 16em; /* force thumbnails to a consistent width */ }
 #dkey #main p .figure .number { font-weight: bold; margin-right: 0.5em; }
-#dkey #main p.backlinks { margin-top: 0.57143em; margin-bottom: 0.64286em; font-size: 14px; }
+#dkey #main p.backlinks { margin-top: 0.571em; margin-bottom: 0.643em; font-size: 14px; }
 #dkey #main p.backlinks a { text-decoration: none; margin-right: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; }
 #dkey #main p.backlinks a:hover { text-decoration: underline; }
 #dkey #main a.what-lies-beneath { /* "See list of 7 species in 1a" */ text-decoration: none; color: #35661c; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 12px; text-transform: uppercase; }
