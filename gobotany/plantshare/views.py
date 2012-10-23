@@ -5,7 +5,7 @@ from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.utils import simplejson
 
-from gobotany.plantshare.forms import NewSightingForm, UserProfileForm
+from gobotany.plantshare.forms import NewSightingForm, UserProfileForm, ScreenedImageForm
 from gobotany.plantshare.models import Location, Sighting, UserProfile
 
 def _new_sighting_form_page(request, form):
@@ -88,9 +88,13 @@ def profile_view(request):
         profile = None
 
     profile_form = UserProfileForm(instance=profile)
+    avatar_form = ScreenedImageForm(initial={
+        'image_type': 'AVATAR'
+    })
 
     context = {
-        'profile_form': profile_form
+        'profile_form': profile_form,
+        'avatar_form': avatar_form,
     }
     return render_to_response('profile.html', context,
             context_instance=RequestContext(request))
@@ -113,5 +117,25 @@ def ajax_profile_edit(request):
             profile = profile_form.save(commit=False)
             profile.user = request.user
             profile.save()
+
+    return HttpResponse(simplejson.dumps({'success': True}), mimetype='application/json')
+
+def ajax_image_upload(request):
+    """ Ajax form submission of image upload form """
+    if not request.user.is_authenticated():
+        return HttpResponse(simplejson.dumps({
+            'error': True,
+            'info': 'Authentication error'
+        }), mimetype='application/json')
+
+    if request.method == 'POST':
+        form = ScreenedImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            print 'Form is valid'
+            new_image = form.save(commit=False)
+            new_image.uploaded_by = request.user
+            new_image.save()
+        else:
+            print 'Form is invalid'
 
     return HttpResponse(simplejson.dumps({'success': True}), mimetype='application/json')
