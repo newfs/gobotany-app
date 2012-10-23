@@ -494,7 +494,7 @@ footer {
 .gb-tooltip {
     border: 1px solid $tooltip-border-color;
     display: none;   /* initially invisible, fades in */
-    padding: 0.5em 0.7em;
+    padding: 8px;
     position: absolute;
     width: 300px;
     z-index: 1000;
@@ -515,6 +515,24 @@ footer {
         width: 11px;
         @include single-box-shadow($tooltip-shadow-color, -1px, -1px, 1px);
         @include rotate($tooltip-arrow-rotation);
+    }
+}
+
+/* Glossary tooltip */
+.glosstip {
+    line-height: 16px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    max-width: 30em;
+    img {
+        background: $tooltip-background-top-color;
+        border: 1px solid $tooltip-border-color;
+        bottom: 110%;
+        padding: 4px;
+        position: absolute;
+        @include single-box-shadow($tooltip-shadow-color, 1px, 1px, 2px);
+        @include border-radius(2px);
     }
 }
 

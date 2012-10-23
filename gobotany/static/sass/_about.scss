@@ -317,22 +317,6 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
     }
 }
 
-/* Glossary tooltip */
-.glosstip {
-    line-height: 140%;
-    position: relative;
-    max-width: 30em;
-    img {
-        background: $tooltip-background-top-color;
-        border: 1px solid $tooltip-border-color;
-        bottom: 110%;
-        padding: 4px;
-        position: absolute;
-        @include single-box-shadow($tooltip-shadow-color, 1px, 1px, 2px);
-        @include border-radius(2px);
-    }
-}
-
 /* Video Help Topics */
 
 #video {
