@@ -27,28 +27,24 @@
 
         <p>This is a page for testing map APIs and controls.</p>
 
-        <h2>MapQuest static location map</h2>
-
-        <img
-        src="http://open.mapquestapi.com/staticmap/v4/getplacemap?location=Framingham,%20MA&amp;size=302,150&amp;type=map&amp;zoom=7&amp;imagetype=jpeg&amp;showicon=green-1"
-        alt="Map: Framingham, MA" class="location-map">
-
         <h2>Google static location map</h2>
 
-        <img
-        src="http://maps.googleapis.com/maps/api/staticmap?center=Framingham,%20MA&amp;size=302x150&amp;zoom=7&amp;&markers=size:mid%7Ccolor:0xe1f0d1%7Clabel:1%7CFramingham,%20MA&amp;sensor=false"
-        alt="Map: Framingham, MA" class="location-map">
+        {% include "_location_map.html" with location="Framingham, MA" height="150" width="302" zoom="7" id="id_location_map" %}
 
-        <h3>Maptype: terrain</h3>
+        <h2>Google maps (using JavaScript API)</h2>
 
-        <img
-        src="http://maps.googleapis.com/maps/api/staticmap?center=Framingham,%20MA&amp;size=302x150&amp;zoom=7&amp;&markers=size:mid%7Ccolor:0xe1f0d1%7Clabel:1%7CFramingham,%20MA&amp;sensor=false&amp;maptype=terrain" alt="Map: Framingham, MA"
-        class="location-map">
-
-        <h2>Google map (using JavaScript API)</h2>
+        <h3>Basic map centered on New England</h3>
 
         <div id="map-new-england" style="width: 360px; height: 480px"
             class="location-map"></div>
+
+        <h3>Sightings map (mini) for PlantShare main page</h3>
+
+        TODO
+
+        <h3>Sightings map for Sightings Locator page</h3>
+
+        TODO
 
     </body>
 </html>
