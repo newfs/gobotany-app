@@ -41,7 +41,8 @@ define([
                 // Update map URL.
                 var current_map_url = this.$location_map.attr('src');
                 var new_map_url = current_map_url.replace(
-                    current_map_location, location_input_value);
+                    new RegExp(current_map_location, 'g'),
+                    location_input_value);
                 this.$location_map.attr('src', new_map_url);
 
                 // Update map image alt text.
