@@ -64,6 +64,39 @@ define([
 
         syncFields();
 
+        $('#upload-link').click(function() {
+            imageModal = $('.image-modal');
+            imageModal.show();
+            return false;
+        });
+
+        $('#upload-avatar-form input[type="file"]').change(function() {
+            var reader = new FileReader();
+            var $avatar_image = $('.image-modal img');
+
+            reader.onload = function(e) {
+                $avatar_image.attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(this.files[0]);
+        });
+
+        $('.image-modal .close').click(function() {
+            $('.image-modal').hide();
+            return false;
+        });
+
+        $('#upload-photo-submit').click(function() {
+            $('#upload-avatar-form').ajaxSubmit(function(json) {
+                if(json.success) {
+                    console.log('Successfully uploaded avatar');
+                } else {
+                    console.log('Error: ' + json.info);
+                }
+            });
+            $('.image-modal').hide();
+            return false;
+        });
     });
 
 });
