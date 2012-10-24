@@ -239,6 +239,16 @@ define([
 
     /* Clicking on a figure should pop it up without leaving the page. */
 
+    $('.figure-link').each(function() {
+        $(this).tooltip({
+            content: $('<p>', {class: 'glosstip'}).append(
+                $('<img>', {src: $(this).attr('href'), height: 240}),
+                $('<b>', {text: 'Figure ' + $(this).html() + '. '}),
+                '(Click to view larger)'
+            )
+        });
+    });
+
     $('.figure-link').on('click', function(event) {
         event.preventDefault();
         var $target = $(event.delegateTarget);
