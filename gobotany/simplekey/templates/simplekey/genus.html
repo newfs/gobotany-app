@@ -61,7 +61,7 @@ Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}
 
                 <h4>Family</h4>
                 <p class="family">
-                    <a href="{% url simplekey-family genus.family.slug %}"
+                    <a href="{% url taxa-family genus.family.slug %}"
                     >{{ genus.family.name }}{% if genus.family.common_name %} ({{ genus.family.common_name|cut:"The "|lower }}){% endif %}</a></p>
 
                 <h4>This Genus&#8217;s Species:</h4>

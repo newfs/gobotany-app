@@ -407,42 +407,6 @@ def genus_view(request, genus_slug):
            }, context_instance=RequestContext(request))
 
 
-def family_view(request, family_slug):
-
-    family_name = family_slug.capitalize()
-    family = get_object_or_404(Family, name=family_name)
-
-    # If it is decided that common names will not be required, change the
-    # default below to None so the template will omit the name if missing.
-    DEFAULT_COMMON_NAME = 'common name here'
-    common_name = family.common_name or DEFAULT_COMMON_NAME
-
-    family_drawings = (family.images.filter(
-                       image_type__name='example drawing'))
-    if not family_drawings:
-        # No example drawings for this family were specified. Including
-        # drawings here was planned early on but not finished for the
-        # initial release. In the meantime, the first two species
-        # images from the family are shown.
-        species = family.taxa.all()
-        for s in species:
-            species_images = botany.species_images(s)
-            if len(species_images) > 1:
-                family_drawings = species_images[0:2]
-                break
-    family_drawings = _images_with_copyright_holders(family_drawings)
-
-    pile = family.taxa.all()[0].piles.all()[0]
-    pilegroup = pile.pilegroup
-
-    return render_to_response('simplekey/family.html', {
-           'family': family,
-           'common_name': common_name,
-           'family_drawings': family_drawings,
-           'pilegroup': pilegroup,
-           'pile': pile,
-           }, context_instance=RequestContext(request))
-
 def sitemap_view(request):
     host = request.get_host()
     plant_names = Taxon.objects.values_list('scientific_name', flat=True)

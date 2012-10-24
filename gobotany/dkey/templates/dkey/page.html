@@ -52,7 +52,7 @@
 {% if title == 'Key to the Families' %}
   <h1>Dichotomous Key to Families</h1>
 {% elif page.rank == 'family' %}
-  <h1><a href="{% url simplekey-family page.title|lastword|slugify %}"
+  <h1><a href="{% url taxa-family page.title|lastword|slugify %}"
          >{{ title }}</a></h1>
 {% elif page.rank == 'genus' %}
   <h1><a href="{% url simplekey-genus page.title|slugify %}"

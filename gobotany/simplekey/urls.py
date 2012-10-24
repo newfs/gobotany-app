@@ -28,8 +28,6 @@ urlpatterns = patterns(
     # Site pages
     url('^advanced/$', views.advanced_view, name='advanced-id-tools'),
     url('^list/$', views.species_list_view, name='species-list'),
-    url('^family/(?P<family_slug>[a-z]+)/$',
-        views.family_view, name='simplekey-family'),
     url('^genus/(?P<genus_slug>[a-z]+)/$',
         views.genus_view, name='simplekey-genus'),
     url('^species/(?P<genus_slug>[a-z]+)/(?P<epithet>[-a-z]+)/$',
@@ -44,8 +42,6 @@ urlpatterns = patterns(
 
     # Legacy redirections.
 
-    (r'^families/(?P<family_slug>[a-z]+)/$',
-     redirect_to, {'url': '/family/%(family_slug)s/'}),
     (r'^genera/(?P<genus_slug>[a-z]+)/$',
      redirect_to, {'url': '/genus/%(genus_slug)s/'}),
 

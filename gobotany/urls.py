@@ -18,6 +18,7 @@ urlpatterns = patterns(
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^', include('gobotany.search.urls')),
     url(r'^', include('gobotany.site.urls')),
+    url(r'^', include('gobotany.taxa.urls')),
     url(r'^', include('gobotany.simplekey.urls')),
     )
 

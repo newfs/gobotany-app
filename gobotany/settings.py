@@ -96,6 +96,7 @@ INSTALLED_APPS = [
     'gobotany.search',
     'gobotany.simplekey',
     'gobotany.site',
+    'gobotany.taxa',
     'piston',
 
     'django.contrib.admin',
