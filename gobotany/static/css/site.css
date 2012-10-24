@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -592,7 +593,7 @@ body.plantshare #login.box input[type='text'], body.plantshare #login.box input[
 /* End media queries styles for PlantShare */
 /* Dichotomous Key */
 /* Definitions */
-.orange-button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.083em; }
+.orange-button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
 .orange-button:hover, #dkey #main .offer-help-aside a.button:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
 .orange-button.disabled, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
 
@@ -601,7 +602,7 @@ body.plantshare #login.box input[type='text'], body.plantshare #login.box input[
 #dkey #main .offer-help-aside { float: right; margin: 1em 1em 0.5em 1em; text-align: right; color: #606060; }
 #dkey #main .offer-help-aside span { font-size: 12px; }
 #dkey #main .offer-help-aside a.button { display: inline-block; margin: 0.8em 1em; font-weight: normal; font-size: 12px; text-transform: uppercase; }
-#dkey #main .offer-help-aside select { margin: 0.25em 1.0em; font-size: 1.333em; }
+#dkey #main .offer-help-aside select { margin: 0.25em 1.0em; font-size: 1.33333em; }
 #dkey #main .groupbox { position: relative; }
 #dkey #main .groupbox ul { display: none; position: absolute; z-index: 100; right: 10px; background-color: white; text-align: left; }
 #dkey #main .groupbox li { display: block; margin: 0; border-width: 1px 1px 0px 1px; border-style: solid; border-color: #bbc6b6; }
@@ -614,13 +615,13 @@ body.plantshare #login.box input[type='text'], body.plantshare #login.box input[
 #dkey #main p .figure a { display: block; margin-bottom: 0.5em; border-bottom: 1px solid black; padding-bottom: 0.5em; }
 #dkey #main p .figure img { width: 16em; /* force thumbnails to a consistent width */ }
 #dkey #main p .figure .number { font-weight: bold; margin-right: 0.5em; }
-#dkey #main p.backlinks { margin-top: 0.571em; margin-bottom: 0.643em; font-size: 14px; }
+#dkey #main p.backlinks { margin-top: 0.57143em; margin-bottom: 0.64286em; font-size: 14px; }
 #dkey #main p.backlinks a { text-decoration: none; margin-right: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; }
 #dkey #main p.backlinks a:hover { text-decoration: underline; }
 #dkey #main a.what-lies-beneath { /* "See list of 7 species in 1a" */ text-decoration: none; color: #35661c; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 12px; text-transform: uppercase; }
 #dkey #main a.what-lies-beneath:hover { text-decoration: underline; }
 #dkey #main > a.what-lies-beneath { display: block; max-width: 47.5em; text-align: right; }
-#dkey #main ul.couplets { clear: both; margin: 0em; max-width: 48em; padding: 1em 1em 0 0; font-size: 12px; line-height: 1.5em; }
+#dkey #main ul.couplets { margin: 0em; max-width: 48em; padding: 1em 1em 0 0; font-size: 12px; line-height: 1.5em; }
 #dkey #main ul.couplets ul { /* a couplet */ margin: 0em; padding-bottom: 0em; /* override browser default */ padding-left: 2%; /* indent of each level of couplet */ }
 #dkey #main ul.couplets li { /* holds a lead and any <ul> beneath it */ display: block; position: relative; }
 #dkey #main ul.couplets .lead { /* green box */ margin: 0em 0em 1em 0em; border: 6px solid #d9dbb1; -webkit-border-radius: 1.5em; -moz-border-radius: 1.5em; -ms-border-radius: 1.5em; -o-border-radius: 1.5em; border-radius: 1.5em; padding: 1em 1em 1em 1.5em; background-color: #d9dbb1; }
