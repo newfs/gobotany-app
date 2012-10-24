@@ -239,11 +239,19 @@ def family(request, family_slug):
 def genus(request, genus_slug):
     genus = get_object_or_404(Genus, name=genus_slug.capitalize())
 
-    taxa_ids = [taxon.id for taxon in genus.taxa.all()]
-    taxon_type = ContentType.objects.get_for_model(Taxon)
+    ttype = ContentType.objects.get_for_model(Taxon)
+    ids = { taxon.id for taxon in genus.taxa.all() }
 
-    images = [ _taxon_image(image) for image in ContentImage.objects.filter(
-            content_type=taxon_type, object_id__in=taxa_ids)[:150] ]
+    # Since the import code only creates a single rank=1 image for each
+    # (taxa + image_type) combination, we can filter on rank=1 and know
+    # that we are getting at most one image of each species regardless
+    # of the image_type that the user selects to view.
+
+    images = [
+        _taxon_image(image) for image in ContentImage.objects
+            .select_related('image_type')
+            .filter(content_type=ttype, object_id__in=ids, rank=1)
+        ]
 
     drawings = genus.images.all() # TODO: filter image_type 'example drawing'
 
