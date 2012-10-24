@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -360,8 +359,16 @@ header nav #search-suggest .menu span { font-weight: normal; }
 .content #sidebar { border-top: 1px solid #c3d941; float: left; height: 100%; margin-right: -230px; padding: 16px 0 0; width: 230px; }
 .content #sidebar .section { padding: 0 17px 16px; }
 .content #sidebar .section h4 { margin: 0 0 5px 0; }
+.content #sidebar .section h4 + p { margin-top: 0; }
 .content #sidebar .section.separate { border-top: 1px solid #e2dfcb; padding-top: 16px; }
+.content #sidebar .section.plant-map { background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat; padding: 0 25px 16px 16px; }
 .content #sidebar a:hover { text-decoration: none; }
+.content #sidebar a.get-help-btn { background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 20px; text-indent: -9000px; width: 104px; }
+.content #sidebar a.get-help-btn:hover { background-position: 0 -32px; }
+.content #sidebar a.get-help-btn:active { background-position: 0 -64px; }
+.content #sidebar a.view-map-btn { background: url(/static/images/layout/view-map-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 20px; text-indent: -9000px; width: 113px; }
+.content #sidebar a.view-map-btn:hover { background-position: 0 -32px; }
+.content #sidebar a.view-map-btn:active { background-position: 0 -64px; }
 .content #sidebar .box { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 16px 0 0; }
 
 /* Footer */
@@ -381,7 +388,12 @@ footer a[href]:hover { text-decoration: underline; }
 footer .nsf-logo { float: left; margin: 0 10px 0 7px; }
 footer .support { margin-right: 0; padding: 18px 0; }
 
-/* Tooltips for working area images and highlighted glossary terms. */
+/* Images (gallery with previous/next buttons, or single) */
+.img-gallery { float: left; margin: 0 10px 0 0; position: relative; width: 244px; }
+.img-gallery .img-container { height: 239px; overflow: hidden; position: relative; width: 239px; }
+.img-gallery .frame { border: 5px solid rgba(255, 255, 255, 0.8); height: 229px; position: absolute; top: 0; width: 229px; z-index: 100; box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); }
+
+/* Tooltips for working area images and highlighted glossary terms */
 .gb-tooltip { border: 1px solid #c3d941; display: none; /* initially invisible, fades in */ padding: 8px; position: absolute; width: 300px; z-index: 1000; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -webkit-linear-gradient(top center, #eaf2e2, #d6e6c5); background: -moz-linear-gradient(top center, #eaf2e2, #d6e6c5); background: -o-linear-gradient(top center, #eaf2e2, #d6e6c5); background: linear-gradient(top center, #eaf2e2, #d6e6c5); -webkit-box-shadow: 0px 1px 4px #333333; -moz-box-shadow: 0px 1px 4px #333333; box-shadow: 0px 1px 4px #333333; -webkit-border-radius: 2px; -moz-border-radius: 2px; -ms-border-radius: 2px; -o-border-radius: 2px; border-radius: 2px; }
 .gb-tooltip .arrow { background: #d6e6c5; border: 1px solid #c3d941; /* rotated borders, same color as bottom of tooltip */ border-bottom-color: #d6e6c5; border-right-color: #d6e6c5; bottom: -7px; height: 11px; left: 10px; position: absolute; width: 11px; -webkit-box-shadow: -1px -1px 1px #333333; -moz-box-shadow: -1px -1px 1px #333333; box-shadow: -1px -1px 1px #333333; -webkit-transform: rotate(225deg); -moz-transform: rotate(225deg); -ms-transform: rotate(225deg); -o-transform: rotate(225deg); transform: rotate(225deg); }
 
@@ -502,8 +514,10 @@ input.suggest + div li.selected { background-color: #666; color: #fff; }
 
 /* Styles for taxa (family, genus, species) pages */
 body.taxa { /* Override Shadowbox styles to allow multiple title lines for showing a photo title, photographer credit, and copyright. */ /* For family and genus pages */ }
-body.taxa h3 { color: #807121; font-size: 30px; }
-body.taxa h4 { clear: left; padding-top: 30px; }
+body.taxa #main h3 { color: #807121; font-size: 30px; line-height: 90%; }
+body.taxa #main h4 { clear: left; font-size: 18px; padding-top: 30px; }
+body.taxa #main ol, body.taxa #main ul { line-height: inherit; list-style: none; }
+body.taxa #main li { margin: 0 0 5px 0; }
 body.taxa .frame { cursor: pointer; }
 body.taxa #sb-title, body.taxa #sb-title-inner { height: 76px; line-height: 70%; position: relative; }
 body.taxa #sb-title-inner div { bottom: 6px; position: absolute; }
@@ -515,54 +529,54 @@ body.taxa .pics { margin-top: 20px; }
 body.taxa .pics div { float: left; margin-right: 20px; }
 body.taxa .pics p { display: inline-block; float: left; font-size: 14px; }
 body.taxa img.zoom { display: inline-block; float: right; }
-body.taxa #family ul.genera { font-size: 14px; }
-body.taxa #family .family-genera-btn { background: url(/static/images/layout/family-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
-body.taxa #genus ul.species { font-size: 14px; }
-body.taxa #genus p.family { font-size: 14px; }
-body.taxa #genus .genus-species-btn { background: url(/static/images/layout/genus-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
-body.taxa #species { /* Larger gallery styles */ /* TODO: resolve the two following sections */ /* Smooth Div Scroll image area */ }
-body.taxa #species h1 span.origin { font-size: 14px; line-height: 100%; }
-body.taxa #species h3 { color: #807121; font-size: 30px; margin-bottom: 12px; }
-body.taxa #species #sb-player.html { background: #fff; overflow: hidden; /* Get rid of vertical scrollbar in WebKit on enlarged North America distribution map. */ padding: 0 5px 5px; }
-body.taxa #species #main p { margin: 0 0 15px; }
-body.taxa #species .note { background: #c4bd93; border-bottom: 1px solid #ad9f50; border-top: 1px solid #ad9f50; color: #000; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 24px; margin-bottom: 0.5em; padding: 0.5em 0; text-align: center; width: 100%; }
-body.taxa #species a.description-control { background: url(/static/images/icons/plus.png) left 50% no-repeat; display: block; margin: 10px 0 12px 0; padding: 3px 0 3px 25px; }
-body.taxa #species ul.full-description { background: #fbfbf8; border: 1px solid #e1e1dc; display: none; margin: 0 0 15px 0; }
-body.taxa #species ul.full-description > li { border-bottom: 1px solid #e1e1dc; clear: left; display: block; padding: 18px; margin: 0 0 0 0; }
-body.taxa #species ul.full-description > li:last-child { border-bottom: none; }
-body.taxa #species ul.full-description > li:hover { background-color: #fff; }
-body.taxa #species ul.full-description > li h5 { background: url(/static/images/icons/plus.png) left 50% no-repeat; cursor: pointer; padding-left: 28px; }
-body.taxa #species ul.full-description > li div { display: none; padding-left: 28px; }
-body.taxa #species table { border-collapse: collapse; font-size: 12px; margin-bottom: 14px; margin-top: 8px; width: 690px; }
-body.taxa #species table th, body.taxa #species table td { line-height: 105%; padding: 6px 4px; }
-body.taxa #species table th { background: #b4d57f; font-weight: normal; text-transform: uppercase; }
-body.taxa #species table td { border: 1px solid #c3d941; border-bottom: 0px; border-top: 0px; text-align: center; }
-body.taxa #species table thead th { border: 1px solid #c3d941; border-right: 1px solid #b4d57f; font-size: 10px; text-align: center; vertical-align: bottom; }
-body.taxa #species table thead th:last-child { border-right-color: #c3d941; }
-body.taxa #species table tbody th, body.taxa #species table thead td { background: inherit; border: 0; font-size: 10px; font-weight: bold; padding-right: 8px; text-align: right; width: 103px; }
-body.taxa #species table tbody th { padding-left: 0; white-space: nowrap; }
-body.taxa #species table tbody th.status { font-size: 12px; font-weight: normal; padding-left: 40px; text-align: left; text-transform: none; }
-body.taxa #species #sidebar dt, body.taxa #species #sidebar dd { display: inline; }
-body.taxa #species #sidebar .lookalikes dt { margin-top: 1em; display: block; }
-body.taxa #species #sidebar .get-help-btn { margin: 0 0 0 10px; }
-body.taxa #species a.enlarge { color: #1a2e11; display: block; margin: 0 0 8px 0; }
-body.taxa #species a.enlarge:hover { text-decoration: none; }
-body.taxa #species a.enlarge img { vertical-align: middle; }
-body.taxa #species div.section.map p { font-size: 9px; margin-bottom: 6px; }
-body.taxa #species div.section.namap { position: relative; }
-body.taxa #species div.section.namap div.trans { /* Transparent div to make North America map object element clickable */ cursor: pointer; background: transparent; height: 133px; /* Cover the map plus the link below it */ margin-bottom: 0; padding: 0; position: absolute; top: 45px; width: 196px; }
-body.taxa #species .img-gallery { float: none; margin: 0 0 0 0; width: 710px; }
-body.taxa #species .img-gallery .img-container { height: 273px; width: 710px; }
-body.taxa #species .img-gallery .frame { height: 239px; width: 700px; }
-body.taxa #species .img-gallery .images .single-img { float: left; position: relative; }
-body.taxa #species .img-gallery .images img { float: none; }
-body.taxa #species .img-gallery p.caption { bottom: -22px; margin: 0 0 0 0; position: absolute; right: 0; }
-body.taxa #species .controls { position: relative; }
-body.taxa #species .controls span { position: relative; top: -22px; }
-body.taxa #species a.more { cursor: pointer; }
-body.taxa #species #species-images { border: 5px solid rgba(255, 255, 255, 0.8); position: absolute; top: 0; z-index: 100; box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); }
-body.taxa #species #species-images { height: 239px; margin: 0 0 20px 0; overflow: hidden; position: relative; width: 700px; }
-body.taxa #species #species-images div.scrollableArea a { border-right: 5px solid #fff; float: left; margin: 0; padding: 0; }
+body.taxa#family ul.genera { font-size: 14px; }
+body.taxa#family .family-genera-btn { background: url(/static/images/layout/family-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
+body.taxa#genus ul.species { font-size: 14px; }
+body.taxa#genus p.family { font-size: 14px; margin: 0; }
+body.taxa#genus .genus-species-btn { background: url(/static/images/layout/genus-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
+body.taxa#species { /* Larger gallery styles */ /* TODO: resolve the two following sections */ /* Smooth Div Scroll image area */ }
+body.taxa#species h1 span.origin { font-size: 14px; line-height: 100%; }
+body.taxa#species h3 { color: #807121; font-size: 30px; margin-bottom: 12px; }
+body.taxa#species #sb-player.html { background: #fff; overflow: hidden; /* Get rid of vertical scrollbar in WebKit on enlarged North America distribution map. */ padding: 0 5px 5px; }
+body.taxa#species #main p { margin: 0 0 15px; }
+body.taxa#species .note { background: #c4bd93; border-bottom: 1px solid #ad9f50; border-top: 1px solid #ad9f50; color: #000; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 24px; margin-bottom: 0.5em; padding: 0.5em 0; text-align: center; width: 100%; }
+body.taxa#species a.description-control { background: url(/static/images/icons/plus.png) left 50% no-repeat; display: block; margin: 10px 0 12px 0; padding: 3px 0 3px 25px; }
+body.taxa#species ul.full-description { background: #fbfbf8; border: 1px solid #e1e1dc; display: none; margin: 0 0 15px 0; }
+body.taxa#species ul.full-description > li { border-bottom: 1px solid #e1e1dc; clear: left; display: block; padding: 18px; margin: 0 0 0 0; }
+body.taxa#species ul.full-description > li:last-child { border-bottom: none; }
+body.taxa#species ul.full-description > li:hover { background-color: #fff; }
+body.taxa#species ul.full-description > li h5 { background: url(/static/images/icons/plus.png) left 50% no-repeat; cursor: pointer; padding-left: 28px; }
+body.taxa#species ul.full-description > li div { display: none; padding-left: 28px; }
+body.taxa#species table { border-collapse: collapse; font-size: 12px; margin-bottom: 14px; margin-top: 8px; width: 690px; }
+body.taxa#species table th, body.taxa#species table td { line-height: 105%; padding: 6px 4px; }
+body.taxa#species table th { background: #b4d57f; font-weight: normal; text-transform: uppercase; }
+body.taxa#species table td { border: 1px solid #c3d941; border-bottom: 0px; border-top: 0px; text-align: center; }
+body.taxa#species table thead th { border: 1px solid #c3d941; border-right: 1px solid #b4d57f; font-size: 10px; text-align: center; vertical-align: bottom; }
+body.taxa#species table thead th:last-child { border-right-color: #c3d941; }
+body.taxa#species table tbody th, body.taxa#species table thead td { background: inherit; border: 0; font-size: 10px; font-weight: bold; padding-right: 8px; text-align: right; width: 103px; }
+body.taxa#species table tbody th { padding-left: 0; white-space: nowrap; }
+body.taxa#species table tbody th.status { font-size: 12px; font-weight: normal; padding-left: 40px; text-align: left; text-transform: none; }
+body.taxa#species #sidebar dt, body.taxa#species #sidebar dd { display: inline; }
+body.taxa#species #sidebar .lookalikes dt { margin-top: 1em; display: block; }
+body.taxa#species #sidebar .get-help-btn { margin: 0 0 0 10px; }
+body.taxa#species a.enlarge { color: #1a2e11; display: block; margin: 0 0 8px 0; }
+body.taxa#species a.enlarge:hover { text-decoration: none; }
+body.taxa#species a.enlarge img { vertical-align: middle; }
+body.taxa#species div.section.map p { font-size: 9px; margin-bottom: 6px; }
+body.taxa#species div.section.namap { position: relative; }
+body.taxa#species div.section.namap div.trans { /* Transparent div to make North America map object element clickable */ cursor: pointer; background: transparent; height: 133px; /* Cover the map plus the link below it */ margin-bottom: 0; padding: 0; position: absolute; top: 45px; width: 196px; }
+body.taxa#species .img-gallery { float: none; margin: 0 0 0 0; width: 710px; }
+body.taxa#species .img-gallery .img-container { height: 273px; width: 710px; }
+body.taxa#species .img-gallery .frame { height: 239px; width: 700px; }
+body.taxa#species .img-gallery .images .single-img { float: left; position: relative; }
+body.taxa#species .img-gallery .images img { float: none; }
+body.taxa#species .img-gallery p.caption { bottom: -22px; margin: 0 0 0 0; position: absolute; right: 0; }
+body.taxa#species .controls { position: relative; }
+body.taxa#species .controls span { position: relative; top: -22px; }
+body.taxa#species a.more { cursor: pointer; }
+body.taxa#species #species-images { border: 5px solid rgba(255, 255, 255, 0.8); position: absolute; top: 0; z-index: 100; box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); }
+body.taxa#species #species-images { height: 239px; margin: 0 0 20px 0; overflow: hidden; position: relative; width: 700px; }
+body.taxa#species #species-images div.scrollableArea a { border-right: 5px solid #fff; float: left; margin: 0; padding: 0; }
 
 /* PlantShare */
 body.plantshare .content form p { margin: 0; }

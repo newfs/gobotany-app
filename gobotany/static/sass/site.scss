@@ -408,13 +408,49 @@ header {
             h4 {
                 margin: 0 0 5px 0;
             }
+            h4 + p {
+                margin-top: 0;
+            }
             &.separate {
                 border-top: 1px solid #e2dfcb;
                 padding-top: $sidebar-box-vertical-padding;
             }
+            &.plant-map {
+                background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat;	                padding: 0 25px 16px 16px;
+            }
         }
-        a:hover {
-            text-decoration: none;
+        a {
+            &:hover {
+                text-decoration: none;
+            }
+            &.get-help-btn {
+                background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent;
+	            display: block;
+	            height: 32px;
+	            margin: 10px 0 20px;
+	            text-indent: -9000px;
+                width: 104px;
+                &:hover {
+	                background-position: 0 -32px;
+                }
+                &:active {
+	                background-position: 0 -64px;
+                }
+            }
+            &.view-map-btn {
+	            background: url(/static/images/layout/view-map-btn-orange.png) 0 0 no-repeat transparent;
+	            display: block;
+	            height: 32px;
+	            margin: 10px 0 20px;
+	            text-indent: -9000px;
+	            width: 113px;
+                &:hover {
+	                background-position: 0 -32px;
+                }
+                &:active {
+	                background-position: 0 -64px;
+                }
+            }
         }
         .box {
             background: #fff;
@@ -490,7 +526,32 @@ footer {
     }    
 }
 
-/* Tooltips for working area images and highlighted glossary terms. */
+/* Images (gallery with previous/next buttons, or single) */
+.img-gallery {
+    float: left;
+	margin: 0 10px 0 0;	
+	position: relative;
+	width: 244px;
+    .img-container {
+	    height: 239px;
+	    overflow: hidden;
+	    position: relative;
+	    width: 239px;
+    }
+    .frame {
+	    border: 5px solid rgba(255, 255, 255, 0.8);
+        height: 229px;
+        position: absolute;
+	    top: 0;
+        width: 229px;
+	    z-index: 100;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+	    -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+	    -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+    }
+}
+
+/* Tooltips for working area images and highlighted glossary terms */
 .gb-tooltip {
     border: 1px solid $tooltip-border-color;
     display: none;   /* initially invisible, fades in */
