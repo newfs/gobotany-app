@@ -132,8 +132,6 @@ def level3(request, key, pilegroup_slug, pile_slug):
            }, context_instance=RequestContext(request))
 
 
-<<<<<<< HEAD
-=======
 def _format_character_value(character_value):
     """Render a character value for display."""
     if character_value:
@@ -332,7 +330,6 @@ def species_view(request, genus_slug, epithet):
            }, context_instance=RequestContext(request))
 
 
->>>>>>> bc7ba33c0faa30fdc5543ce62b51682690b89797
 def _get_plants():
     plants = Taxon.objects.values(
         'scientific_name', 'common_names__common_name', 'family__name',
