@@ -64,6 +64,7 @@
                 {% endif %}
 
                 {% if key == 'dichotomous' %}
+                    <h3 id="dkey">Information from Flora Novae Angliae</h3>
                     <div>
                       {{ dkey_page.text|discard_floating_figures|render_figure_links|safe }}
                     </div>
@@ -235,7 +236,7 @@
                 NOTE: This is to stay commented out until the release of
                 the Dichotomous Key.
                 {% ifnotequal key 'dichotomous' %}
-                    <h3 id="dkey">Dichotomous Key Details</h3>
+                    <h3 id="dkey">Information from Flora Novae Angliae</h3>
                     <div>
                       {{ dkey_page.text|discard_floating_figures|render_figure_links|safe }}
                     </div>
