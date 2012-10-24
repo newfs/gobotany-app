@@ -536,7 +536,10 @@ footer {
     }
 }
 
-/* Shadowbox close button */
+/* Shadowbox overrides */
+#sb-counter {
+    font-family: $headings-font;
+}
 #sb-nav-close {
     background-position: center;
     background-repeat: no-repeat;
@@ -591,6 +594,7 @@ input.suggest {
 
 @import "home";
 @import "mapping";
+@import "taxa";
 @import "plantshare";
 @import "dkey";
 @import "about";

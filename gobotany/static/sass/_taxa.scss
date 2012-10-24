@@ -1,0 +1,79 @@
+/* Styles for taxa (family, genus, species) pages */
+
+body.taxa {
+    h3 {
+        color: #807121;
+        font-size: 30px;
+    }
+    h4 {
+        clear: left;
+        padding-top: 30px;
+    }
+    .frame {
+        cursor: pointer;
+    }
+    /* Override Shadowbox styles to allow multiple title lines for
+     * showing a photo title, photographer credit, and copyright. */
+    #sb-title, #sb-title-inner {
+        height: 76px;
+        line-height: 70%;
+        position: relative;
+    }
+    #sb-title-inner {
+        div {
+            bottom: 6px;
+            position: absolute;
+        }
+        h6 {
+            font-size: 16px;
+            line-height: 110%;
+            margin: 0 0 2px;
+            padding: 0;
+        }
+        span {
+            font-family: $headings-font;
+            font-size: 10px;
+        }
+        a {
+            color: #fff;
+            text-decoration: underline;
+        }
+    }
+    #sb-nav-close {
+        top: 56px !important;
+    }
+
+    /* For family and genus pages */
+    .pics {
+        margin-top: 20px;
+        div {
+            float: left;
+            margin-right: 20px;
+        }
+        p {
+            display: inline-block;
+            float: left;
+            font-size: 14px;
+        }
+    }
+    img.zoom {
+        display: inline-block;
+        float: right;
+    }
+
+    #family {
+        ul.genera {
+            font-size: 14px;
+        }
+        .family-genera-btn {
+            background: url(/static/images/layout/family-btn.png) no-repeat scroll 0 0 transparent;
+            clear: both;
+            display: block;
+            float: left;
+            height: 32px;
+            margin: 15px 0 0;
+            text-indent: -9000px;
+            width: 280px;
+        }
+    }
+}

@@ -1,4 +1,4 @@
-{% extends "simplekey/_new_base.html" %}
+{% extends "gobotany/_page_full_sidebar.html" %}
 {% load simplekey_extras %}
 
 {% block title %}
@@ -22,15 +22,10 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
     });
 {% endblock %}
 
-{% block body_attributes %}id="family" class="app family"{% endblock %}
+{% block body_attributes %}id="family" class="taxa"{% endblock %}
 
-{% block body_content %}
-    {% include "simplekey/_header.html" %}
-
-    <div class="content">
-        <div class="container">
-            <div id="main">
-                <h2>Family: {{ family.name }}</h2>
+{% block main_content %}
+                <h1>Family: {{ family.name }}</h1>
                 {% if common_name %}
                     <h3>{{ common_name|cut:"The "|lower }}</h3>
                 {% endif %}
@@ -65,12 +60,8 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
                     >{{ genus.name }}</a></i></li>
                 {% endfor %}
                 </ul>
+{% endblock %}
 
-            </div>
-            <div id="sidebar" style="height: 634px;">
-                {% include "simplekey/_sidebar_items.html" %}
-            </div>
-            <div class="clearit"></div>
-        </div>
-    </div>
+{% block sidebar_content %}
+    {% include "simplekey/_sidebar_items.html" %}
 {% endblock %}
