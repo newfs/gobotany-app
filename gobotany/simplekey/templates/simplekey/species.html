@@ -63,7 +63,7 @@
                 {% endif %}
 
                 {% if key == 'dichotomous' %}
-                    <div class="dkey_text">
+                    <div>
                         {% include "dkey/_page_text.html" with page=dkey_page %}
                     </div>
                 {% endif %}
@@ -227,6 +227,19 @@
                     </tbody>
                 </table>
                 </div>
+
+                {% comment %}
+                When viewed from places other than the D. Key, display the
+                D. Key information at the bottom of the page.
+                NOTE: This is to stay commented out until the release of
+                the Dichotomous Key.
+                {% ifnotequal key 'dichotomous' %}
+                    <h3 id="dkey">Dichotomous Key Details</h3>
+                    <div>
+                        {% include "dkey/_page_text.html" with page=dkey_page %}
+                    </div>
+                {% endifnotequal %}
+                {% endcomment %}
 
             </div>
 

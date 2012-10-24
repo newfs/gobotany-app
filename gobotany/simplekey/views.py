@@ -245,14 +245,13 @@ def species_view(request, genus_slug, epithet):
             partner_species = rows[0]
 
     key = request.GET.get('key')
-    if key == 'dichotomous':
-        dkey_page = dkey_models.Page.objects.get(title=scientific_name)
-    else:
-        dkey_page = None
+    dkey_page = dkey_models.Page.objects.get(title=scientific_name)
+    if key != 'dichotomous':
         if partner_species and partner_species.simple_key:
             key = 'simple'
         else:
             key = 'full'
+    print '*** key:', key
 
     species_images = botany.species_images(taxon)
     images = _images_with_copyright_holders(species_images)

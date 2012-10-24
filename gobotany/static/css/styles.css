@@ -853,7 +853,7 @@ ul.full-description > li div { display: none; }
 
 ul.full-description > li h5, ul.full-description > li div { padding-left: 28px; }
 
-#taxon table { border-collapse: collapse; font-size: 12px; margin-top: 8px; width: 690px; }
+#taxon table { border-collapse: collapse; font-size: 12px; margin-bottom: 14px; margin-top: 8px; width: 690px; }
 
 #taxon th, #taxon td { line-height: 105%; padding: 6px 4px; }
 
