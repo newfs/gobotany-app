@@ -4,6 +4,7 @@ from collections import defaultdict
 from urllib import urlencode
 
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
@@ -238,13 +239,11 @@ def family(request, family_slug):
 def genus(request, genus_slug):
     genus = get_object_or_404(Genus, name=genus_slug.capitalize())
 
-    images = []
-    taxa = Taxon.objects.filter(genus=genus)
-    for taxon in taxa:
-        images = images + [_taxon_image(i) for i in
-                           taxon.images.select_related('image_type').all()]
-        if len(images) > 150:  # TODO: have botanists choose "best" images
-            break
+    taxa_ids = [taxon.id for taxon in genus.taxa.all()]
+    taxon_type = ContentType.objects.get_for_model(Taxon)
+
+    images = [ _taxon_image(image) for image in ContentImage.objects.filter(
+            content_type=taxon_type, object_id__in=taxa_ids)[:150] ]
 
     drawings = genus.images.all() # TODO: filter image_type 'example drawing'
 
