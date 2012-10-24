@@ -54,7 +54,7 @@ def _taxon_image(image):
 
 def _simple_taxon(taxon, pile_slug):
     genus_name, epithet = taxon.scientific_name.lower().split(None, 1)
-    url = reverse('simplekey-species', args=(genus_name, epithet))
+    url = reverse('taxa-species', args=(genus_name, epithet))
     url += '?' + urlencode({'pile': pile_slug})
     return {
         'id': taxon.id,

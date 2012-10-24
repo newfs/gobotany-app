@@ -59,7 +59,7 @@ def _get_plants_of_the_day(max_number_plants, partner_name):
                 scientific_name=plant_record.scientific_name)
             plant['common_names'] = taxon.common_names.all()
             plant['facts'] = taxon.factoid
-            plant['url'] = reverse('simplekey-species',
+            plant['url'] = reverse('taxa-species',
                                    args=[taxon.genus.slug, taxon.epithet])
 
             image = None

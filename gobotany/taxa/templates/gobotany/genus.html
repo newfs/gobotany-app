@@ -62,7 +62,7 @@ Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}
                 <h4>This Genus&#8217;s Species:</h4>
                 <ul class="species">
                 {% for species in genus.taxa.all %}
-                    <li><i><a href="{% url simplekey-species genus.slug species.epithet %}"
+                    <li><i><a href="{% url taxa-species genus.slug species.epithet %}"
                     >{{ species.scientific_name }}</a></i></li>
                 {% endfor %}
                 </ul>

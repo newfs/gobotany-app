@@ -10,6 +10,12 @@ urlpatterns = patterns(
         views.family_view, name='taxa-family'),
     url('^genus/(?P<genus_slug>[a-z]+)/$',
         views.genus_view, name='taxa-genus'),
+    url('^species/(?P<genus_slug>[a-z]+)/(?P<epithet>[-a-z]+)/$',
+        views.species_view, name='taxa-species'),
+
+    # Support "hackable" URL
+    url('^species/(?P<genus_slug>[a-z]+)/$',
+        redirect_to, {'url': '/genus/%(genus_slug)s/'}),
 
     # Redirections for old URLs
 

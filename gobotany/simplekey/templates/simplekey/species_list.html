@@ -34,7 +34,7 @@
                         {% with name_parts=plant.scientific_name|lower|split:" " %}
                         <tr>
                             <td><a
-                                href="{% url simplekey-species name_parts|at_index:"0" name_parts|at_index:"1" %}">
+                                href="{% url taxa-species name_parts|at_index:"0" name_parts|at_index:"1" %}">
                                     {{ plant.scientific_name|italicize_plant|safe }}
                             </a></td>
                             <td>{{ plant.common_names__common_name }}</td>

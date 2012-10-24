@@ -17,13 +17,13 @@ def url(obj):
 
     if isinstance(obj, models.Taxon):
         genus_slug = obj.genus_name().lower()
-        return reverse('simplekey-species', args=(genus_slug, obj.epithet))
+        return reverse('taxa-species', args=(genus_slug, obj.epithet))
 
     if isinstance(obj, models.Family):
-        return reverse('simplekey-family', args=(obj.name.lower(),))
+        return reverse('taxa-family', args=(obj.name.lower(),))
 
     if isinstance(obj, models.Genus):
-        return reverse('simplekey-genus', args=(obj.name.lower(),))
+        return reverse('taxa-genus', args=(obj.name.lower(),))
 
     if isinstance(obj, models.GlossaryTerm):
         url = reverse('site-glossary', args=(obj.term[0].lower(),))

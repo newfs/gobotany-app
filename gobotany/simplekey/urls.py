@@ -28,10 +28,6 @@ urlpatterns = patterns(
     # Site pages
     url('^advanced/$', views.advanced_view, name='advanced-id-tools'),
     url('^list/$', views.species_list_view, name='species-list'),
-    url('^species/(?P<genus_slug>[a-z]+)/(?P<epithet>[-a-z]+)/$',
-        views.species_view, name='simplekey-species'),
-    url('^species/(?P<genus_slug>[a-z]+)/$',
-        redirect_to, {'url': '/genus/%(genus_slug)s/'}),
     url('^(?P<key>simple|full)/$', views.level1, name='level1'),
     url('^(?P<key>simple|full)/(?P<pilegroup_slug>[^/]*)/$',
         views.level2, name='level2'),
