@@ -194,7 +194,6 @@ def species_view(request, genus_slug, epithet):
             key = 'simple'
         else:
             key = 'full'
-    print '*** key:', key
 
     species_images = botany.species_images(taxon)
     images = _images_with_copyright_holders(species_images)

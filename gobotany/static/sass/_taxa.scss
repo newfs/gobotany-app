@@ -107,23 +107,36 @@ body.taxa {
         }
     }
     &#species {
-        h1 span.origin {
-	        font-size: 14px;
-            line-height: 100%;
+        #main {
+            h1 span.origin {
+                font-size: 14px;
+                line-height: 100%;
+            }
+            h3 {
+                color: #807121;
+                font-size: 30px;
+                line-height: 155%;
+                margin-bottom: 12px;
+            }
+            h5 {
+                font-size: 14px;
+            }
+            p {
+                margin: 0 0 15px;
+            }
         }
-        h3 {
-            color: #807121;
-            font-size: 30px;
-            margin-bottom: 12px;
-        }
-        #sb-player.html {
-            background: #fff;
-            overflow: hidden;  /* Get rid of vertical scrollbar in WebKit on
-                                  enlarged North America distribution map. */
-            padding: 0 5px 5px;
-        }
-        #main p {
-            margin: 0 0 15px;
+        #sb-player {
+            &.html {
+                background: #fff;
+                overflow: hidden;  /* Get rid of vertical scrollbar in WebKit
+                                    * on enlarged N. America dist. map. */
+                padding: 0 5px 5px;
+            }
+            #na-dist-county-map {
+                background: #fff;
+                height: 100%;
+                width: 100%;
+            }
         }
         .note {
             background: #c4bd93;
@@ -272,6 +285,16 @@ body.taxa {
                     top: 45px;
                     width: 196px;
                 }
+            }
+            #ne-dist-county-map {
+                /* SVG map: WebKit needs height and width set */
+                height: 293px;
+                width: 187px;
+            }
+            #na-dist-county-map {
+                /* SVG map: WebKit needs height and width set */
+                height: 109px;
+                width: 187px;
             }
         }
         /* Larger gallery styles */
