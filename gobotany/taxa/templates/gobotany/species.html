@@ -1,10 +1,10 @@
-{% extends "simplekey/_new_base.html" %}
+{% extends "gobotany/_page_full_sidebar.html" %}
 {% load simplekey_extras %}
 
 {% block title %}{{ scientific_name }} 
 ({% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}){% endblock %}
 
-{% block body_attributes %}id="taxon" class="app taxon"{% endblock %}
+{% block body_attributes %}id="species" class="taxa"{% endblock %}
 
 {% block js_top %}
     {# SVGWeb script: must be first of all JS, must have data-path. #}
@@ -21,17 +21,11 @@
     require(['simplekey/species']);
 {% endblock %}
 
-{% block body_content %}
-    {% include "simplekey/_header.html" %}
-
-    <div class="content">
-        {% if key == 'full' %}
-            <div class="note">This is a species in our Full Key.
-            Complete data are coming soon.</div>
-        {% endif %}
-
-        <div class="container">
-            <div id="main">
+{% block main_content %}
+                {% if key == 'full' %}
+                    <div class="note">This is a species in our Full Key.
+                    Complete data are coming soon.</div>
+                {% endif %}
 
                 {% if key == 'dichotomous' %}
                     <div id="breadcrumb">
@@ -56,8 +50,8 @@
                     </div>
                 {% endif %}
                 
-                <h2><span class="scientific">{{ scientific_name|italicize_plant|safe }}</span>
-                    <span class="origin">{{ taxon.taxonomic_authority }}</span></h2>
+                <h1><span class="scientific">{{ scientific_name|italicize_plant|safe }}</span>
+                    <span class="origin">{{ taxon.taxonomic_authority }}</span></h1>
                 {% if common_names %}
                     <h3>{% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</h3>
                 {% endif %}
@@ -240,13 +234,12 @@
                     </div>
                 {% endifnotequal %}
                 {% endcomment %}
+{% endblock %}
 
-            </div>
-
-            <div id="sidebar">
+{% block sidebar_content %}
                 <div class="section map">
                     <h5>New England Distribution</h5>
-                    {% include "simplekey/_map_attribution.html" %}
+                    {% include "taxa/_map_attribution.html" %}
                     <!--[if !IE]>-->
                     <object
                         data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
@@ -270,7 +263,7 @@
 
                 <div class="section map namap">
                     <h5>North America Distribution</h5>
-                    {% include "simplekey/_map_attribution.html" %}
+                    {% include "taxa/_map_attribution.html" %}
                     <div>
                         <object
                             data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
@@ -352,11 +345,6 @@
 				    <h5 class="left help">Need Help?</h5>
                     <a href="{% url site-getting-started %}"
                         class="get-help-btn left">Get Help</a>
-				    <div class="clearit"></div>
 			    </div>
-            </div>
-            
-            <div class="clearit"></div>
-        </div>
-    </div>
+            </div>           
 {% endblock %}
