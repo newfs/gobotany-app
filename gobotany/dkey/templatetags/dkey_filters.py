@@ -89,7 +89,7 @@ def genus_slug(page_title):
     return page_title.split()[0].lower()
 
 re_floating_figure = re.compile(ur'<FIG-(\d+)>')  # see parser.py
-re_figure_mention = re.compile(ur'\[Figs?\. ([\d, ]+)\]')
+re_figure_link = re.compile(ur'\[Figs?\. ([\d, ]+)\]')
 
 @register.filter
 def render_floating_figure(match):
@@ -98,16 +98,25 @@ def render_floating_figure(match):
     return get_template('dkey/figure.html').render(Context({'figure': figure}))
 
 @register.filter
-def render_figure_mention(match):
+def render_figure_link(match):
     numbers = [ int(number) for number in match.group(1).split(',') ]
     figures = list(models.Figure.objects.filter(number__in=numbers))
     context = Context({'figures': figures})
-    return get_template('dkey/figure_mention.html').render(context)
+    return get_template('dkey/figure_link.html').render(context)
 
 @register.filter
-def figurize(text):
+def render_floating_figures(text):
     text = re_floating_figure.sub(render_floating_figure, text)
-    text = re_figure_mention.sub(render_figure_mention, text)
+    return text
+
+@register.filter
+def discard_floating_figures(text):
+    text = re_floating_figure.sub('', text)
+    return text
+
+@register.filter
+def render_figure_links(text):
+    text = re_figure_link.sub(render_figure_link, text)
     return text
 
 @register.filter

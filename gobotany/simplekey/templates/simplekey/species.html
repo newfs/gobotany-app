@@ -1,4 +1,5 @@
 {% extends "simplekey/_new_base.html" %}
+{% load dkey_filters %}
 {% load simplekey_extras %}
 
 {% block title %}{{ scientific_name }} 
@@ -64,7 +65,7 @@
 
                 {% if key == 'dichotomous' %}
                     <div>
-                        {% include "dkey/_page_text.html" with page=dkey_page %}
+                      {{ dkey_page.text|discard_floating_figures|render_figure_links|safe }}
                     </div>
                 {% endif %}
 
@@ -236,7 +237,7 @@
                 {% ifnotequal key 'dichotomous' %}
                     <h3 id="dkey">Dichotomous Key Details</h3>
                     <div>
-                        {% include "dkey/_page_text.html" with page=dkey_page %}
+                      {{ dkey_page.text|discard_floating_figures|render_figure_links|safe }}
                     </div>
                 {% endifnotequal %}
                 {% endcomment %}
