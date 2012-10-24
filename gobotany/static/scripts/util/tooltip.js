@@ -210,4 +210,9 @@ define([
         new Tooltip(this, options);
         return this;
     };
+
+    // Return.
+    var exports = {};
+    exports.Tooltip = Tooltip;
+    return exports;
 });
