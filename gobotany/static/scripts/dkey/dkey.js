@@ -244,7 +244,8 @@ define([
             content: $('<p>', {class: 'glosstip'}).append(
                 $('<img>', {src: $(this).attr('href'), height: 240}),
                 $('<b>', {text: 'Figure ' + $(this).html() + '. '}),
-                '(Click to view larger)'
+                $(this).attr('data-caption'),
+                '<br>(Click to view larger image)'
             )
         });
     });
