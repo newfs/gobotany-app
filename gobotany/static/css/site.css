@@ -516,6 +516,9 @@ body.taxa .pics p { display: inline-block; float: left; font-size: 14px; }
 body.taxa img.zoom { display: inline-block; float: right; }
 body.taxa #family ul.genera { font-size: 14px; }
 body.taxa #family .family-genera-btn { background: url(/static/images/layout/family-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
+body.taxa #genus ul.species { font-size: 14px; }
+body.taxa #genus p.family { font-size: 14px; }
+body.taxa #genus .genus-species-btn { background: url(/static/images/layout/genus-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
 
 /* PlantShare */
 body.plantshare .content form p { margin: 0; }

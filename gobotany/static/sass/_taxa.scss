@@ -76,4 +76,23 @@ body.taxa {
             width: 280px;
         }
     }
+    #genus {
+        ul.species {
+            font-size: 14px;
+        }
+        p.family {
+        font-size: 14px;
+        }
+        .genus-species-btn {
+            background: url(/static/images/layout/genus-btn.png) no-repeat scroll 0 0 transparent;
+            clear: both;
+            display: block;
+            float: left;
+            height: 32px;
+            margin: 15px 0 0;
+            text-indent: -9000px;
+            width: 280px;
+        }
+    }
+
 }
