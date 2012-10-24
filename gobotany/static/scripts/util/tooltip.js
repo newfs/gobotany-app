@@ -23,9 +23,13 @@ define([
             width: null   // use width defined in CSS by default
         },
 
-        build_tooltip: function (content) {
-            var element = $('<div class="' + this.options.css_class + '">' +
-                            content + '<div class="arrow"></div></div>');
+        build_tooltip: function(content) {
+            var element = $('<div>', {class: this.options.css_class});
+            if (typeof content === 'string')
+                element.html(content);
+            else
+                element.append(content);
+            element.append($('<div class="arrow">'));
             return element;
         },
 
@@ -206,4 +210,9 @@ define([
         new Tooltip(this, options);
         return this;
     };
+
+    // Return.
+    var exports = {};
+    exports.Tooltip = Tooltip;
+    return exports;
 });

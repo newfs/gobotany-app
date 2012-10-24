@@ -1,4 +1,9 @@
+<<<<<<< HEAD:gobotany/taxa/templates/gobotany/species.html
 {% extends "gobotany/_page_full_sidebar.html" %}
+=======
+{% extends "simplekey/_new_base.html" %}
+{% load dkey_filters %}
+>>>>>>> bc7ba33c0faa30fdc5543ce62b51682690b89797:gobotany/simplekey/templates/simplekey/species.html
 {% load simplekey_extras %}
 
 {% block title %}{{ scientific_name }} 
@@ -57,8 +62,9 @@
                 {% endif %}
 
                 {% if key == 'dichotomous' %}
+                    <h3 id="dkey">Information from Flora Novae Angliae</h3>
                     <div>
-                        {% include "dkey/_page_text.html" with page=dkey_page %}
+                      {{ dkey_page.text|discard_floating_figures|render_figure_links|safe }}
                     </div>
                 {% endif %}
 
@@ -228,9 +234,9 @@
                 NOTE: This is to stay commented out until the release of
                 the Dichotomous Key.
                 {% ifnotequal key 'dichotomous' %}
-                    <h3 id="dkey">Dichotomous Key Details</h3>
+                    <h3 id="dkey">Information from Flora Novae Angliae</h3>
                     <div>
-                        {% include "dkey/_page_text.html" with page=dkey_page %}
+                      {{ dkey_page.text|discard_floating_figures|render_figure_links|safe }}
                     </div>
                 {% endifnotequal %}
                 {% endcomment %}

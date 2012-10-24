@@ -86,7 +86,7 @@
   </a>
 {% endif %}
 
-{% include "dkey/_page_text.html" %}
+{{ page.text|render_floating_figures|render_figure_links|safe }}
 
 {% if leads %}
   <ul class="couplets couplet" id="c1">
@@ -151,7 +151,7 @@
         </div>
         {% if lead.letter %}
           <span class="letter">{{ lead.letter }}.</span>
-          {{ lead.text|figurize|safe }}
+          {{ lead.text|render_figure_links|safe }}
         {% elif lead.goto_page.rank == 'subkey' %}
           {{ lead.goto_page.title }}
         {% endif %}

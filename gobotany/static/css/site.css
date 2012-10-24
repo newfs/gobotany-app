@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -686,7 +687,7 @@ body.plantshare #login.box input[type='text'], body.plantshare #login.box input[
 #dkey #main a.what-lies-beneath { /* "See list of 7 species in 1a" */ text-decoration: none; color: #35661c; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 12px; text-transform: uppercase; }
 #dkey #main a.what-lies-beneath:hover { text-decoration: underline; }
 #dkey #main > a.what-lies-beneath { display: block; max-width: 47.5em; text-align: right; }
-#dkey #main ul.couplets { clear: both; margin: 0em; max-width: 48em; padding: 1em 1em 0 0; font-size: 12px; line-height: 1.5em; }
+#dkey #main ul.couplets { margin: 0em; max-width: 48em; padding: 1em 1em 0 0; font-size: 12px; line-height: 1.5em; }
 #dkey #main ul.couplets ul { /* a couplet */ margin: 0em; padding-bottom: 0em; /* override browser default */ padding-left: 2%; /* indent of each level of couplet */ }
 #dkey #main ul.couplets li { /* holds a lead and any <ul> beneath it */ display: block; position: relative; }
 #dkey #main ul.couplets .lead { /* green box */ margin: 0em 0em 1em 0em; border: 6px solid #d9dbb1; -webkit-border-radius: 1.5em; -moz-border-radius: 1.5em; -ms-border-radius: 1.5em; -o-border-radius: 1.5em; border-radius: 1.5em; padding: 1em 1em 1em 1.5em; background-color: #d9dbb1; }
