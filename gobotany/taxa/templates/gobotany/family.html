@@ -56,7 +56,7 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
                 <h4>This Family&#8217;s Genera:</h4>
                 <ul class="genera">
                 {% for genus in family.genera.all %}
-                    <li><i><a href="{% url simplekey-genus genus.slug %}"
+                    <li><i><a href="{% url taxa-genus genus.slug %}"
                     >{{ genus.name }}</a></i></li>
                 {% endfor %}
                 </ul>

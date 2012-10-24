@@ -370,43 +370,6 @@ def species_list_view(request):
         'plants': _get_plants()
         }, context_instance=RequestContext(request))
 
-
-def genus_view(request, genus_slug):
-
-    genus_name = genus_slug.capitalize()
-    genus = get_object_or_404(Genus, name=genus_name)
-
-    # If it is decided that common names will not be required, change the
-    # default below to None so the template will omit the name if missing.
-    DEFAULT_COMMON_NAME = 'common name here'
-    common_name = genus.common_name or DEFAULT_COMMON_NAME
-
-    genus_drawings = genus.images.filter(image_type__name='example drawing')
-    if not genus_drawings:
-        # No example drawings for this genus were specified. Including
-        # drawings here was planned early on but not finished for the
-        # initial release. In the meantime, the first two species
-        # images from the genus are shown.
-        species = genus.taxa.all()
-        for s in species:
-            species_images = botany.species_images(s)
-            if len(species_images) > 1:
-                genus_drawings = species_images[0:2]
-                break
-    genus_drawings = _images_with_copyright_holders(genus_drawings)
-
-    pile = genus.taxa.all()[0].piles.all()[0]
-    pilegroup = pile.pilegroup
-
-    return render_to_response('simplekey/genus.html', {
-           'genus': genus,
-           'common_name': common_name,
-           'genus_drawings': genus_drawings,
-           'pilegroup': pilegroup,
-           'pile': pile,
-           }, context_instance=RequestContext(request))
-
-
 def sitemap_view(request):
     host = request.get_host()
     plant_names = Taxon.objects.values_list('scientific_name', flat=True)

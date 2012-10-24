@@ -8,9 +8,14 @@ urlpatterns = patterns(
 
     url('^family/(?P<family_slug>[a-z]+)/$',
         views.family_view, name='taxa-family'),
+    url('^genus/(?P<genus_slug>[a-z]+)/$',
+        views.genus_view, name='taxa-genus'),
 
-    # Redirections for old URLs:
+    # Redirections for old URLs
+
     (r'^families/(?P<family_slug>[a-z]+)/$',
      redirect_to, {'url': '/family/%(family_slug)s/'}),
+    (r'^genera/(?P<genus_slug>[a-z]+)/$',
+     redirect_to, {'url': '/genus/%(genus_slug)s/'}),
 
     )
