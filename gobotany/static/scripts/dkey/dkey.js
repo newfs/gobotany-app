@@ -4,9 +4,10 @@ define([
     'bridge/underscore',
     'lib/Hash',
     'simplekey/glossarize',
-    'util/lazy_images'
+    'util/lazy_images',
+    'util/tooltip'
 ], function(
-    $, ignore, _, Hash, glossarize, lazy_images
+    $, ignore, _, Hash, glossarize, lazy_images, tooltip_js
 ) {$(document).ready(function() {
 
     var couplet_rank = $('body').attr('data-couplet-rank');
@@ -240,7 +241,9 @@ define([
     /* Clicking on a figure should pop it up without leaving the page. */
 
     $('.figure-link').each(function() {
-        $(this).tooltip({
+        var $figure_link = $(this);
+
+        var tooltip = new tooltip_js.Tooltip($figure_link, {
             content: $('<p>', {class: 'glosstip'}).append(
                 $('<img>', {src: $(this).attr('href'), height: 240}),
                 $('<b>', {text: 'Figure ' + $(this).html() + '. '}),
@@ -248,14 +251,19 @@ define([
                 '<br>(Click to view larger image)'
             )
         });
-    });
 
-    $('.figure-link').on('click', function(event) {
-        event.preventDefault();
-        var $target = $(event.delegateTarget);
-        $popup.empty();
-        $('<img>').attr('src', $target.attr('href')).appendTo($popup);
-        display_popup();
+        $figure_link.on('click', function(event) {
+            event.preventDefault();
+            var $target = $(event.delegateTarget);
+            if ($figure_link[0].timeout_id) {
+                clearTimeout($figure_link[0].timeout_id);
+                delete $figure_link[0].timeout_id;
+            }
+            tooltip.hide_tooltip();
+            $popup.empty();
+            $('<img>').attr('src', $target.attr('href')).appendTo($popup);
+            display_popup();
+        });
     });
 
     /* Load images for the user to enjoy. */
