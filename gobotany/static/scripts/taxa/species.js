@@ -6,7 +6,7 @@ define([
     // Scrolling
     'util/activate_smooth_div_scroll',
 
-    'simplekey/SpeciesPageHelper'
+    'taxa/SpeciesPageHelper'
 ], function($, shadowbox_init, activate_scroll, SpeciesPageHelper) {
 
     $(document).ready(function() {
