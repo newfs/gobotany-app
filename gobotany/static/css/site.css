@@ -376,7 +376,7 @@ header nav #search-suggest .menu span { font-weight: normal; }
 /* Footer */
 footer { background: #b4d57f; clear: both; height: 140px; position: relative; width: 100%; }
 footer .container { margin: 0 auto; padding: 0 10px; width: 960px; }
-footer > img { left: 50%; margin-left: -543px; position: absolute; top: -47px; }
+footer > img { left: 50%; margin-left: -543px; position: absolute; top: -47px; z-index: -1; }
 footer .publisher, footer .navigation { float: left; margin: 0 20px 0 0; padding: 18px 0; width: 305px; }
 footer .navigation { padding-left: 10px; }
 footer h6 { font-family: Verdana, Geneva, sans-serif; font-size: 11px; }
