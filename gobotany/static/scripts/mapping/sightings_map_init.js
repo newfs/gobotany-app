@@ -1,6 +1,6 @@
 define([
     'bridge/jquery',
-    'util/google_maps'
+    'mapping/google_maps'
 ], function ($, google_maps) {
 
     function make_map(latitude, longitude, id, marker_title) {
