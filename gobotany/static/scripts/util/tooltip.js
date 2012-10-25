@@ -24,7 +24,7 @@ define([
         },
 
         build_tooltip: function (content) {
-            var element = $('<div>', {class: this.options.css_class});
+            var element = $('<div>', {'class': this.options.css_class});
             if (typeof content === 'string') {
                 element.html(content);
             }

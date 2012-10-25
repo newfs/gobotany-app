@@ -244,7 +244,7 @@ define([
         var $figure_link = $(this);
 
         var tooltip = new tooltip_js.Tooltip($figure_link, {
-            content: $('<p>', {class: 'glosstip'}).append(
+            content: $('<p>', {'class': 'glosstip'}).append(
                 $('<img>', {src: $(this).attr('href'), height: 240}),
                 $('<b>', {text: 'Figure ' + $(this).html() + '. '}),
                 $(this).attr('data-caption'),
