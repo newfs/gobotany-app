@@ -17,7 +17,7 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
     var args = {
         family_slug: '{{ family.slug }}'
     };
-    require(['simplekey/family'], function(family) {
+    require(['taxa/family'], function(family) {
         family.init(args);
     });
 {% endblock %}

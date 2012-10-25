@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block js_require %}
-    require(['simplekey/species']);
+    require(['taxa/species']);
 {% endblock %}
 
 {% block top_content %}
@@ -56,7 +56,7 @@
                 <h1><span class="scientific">{{ scientific_name|italicize_plant|safe }}</span>
                     <span class="origin">{{ taxon.taxonomic_authority }}</span></h1>
                 {% if common_names %}
-                    <h3>{% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</h3>
+                    <p class="common">{% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</p>
                 {% endif %}
 
                 {% if key == 'dichotomous' %}

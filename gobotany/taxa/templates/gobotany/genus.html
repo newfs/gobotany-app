@@ -18,7 +18,7 @@ Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}
     var args = {
         genus_slug: '{{ genus.slug }}'
     };
-    require(['simplekey/genus'], function(genus) {
+    require(['taxa/genus'], function(genus) {
         genus.init(args);
     });
 {% endblock %}

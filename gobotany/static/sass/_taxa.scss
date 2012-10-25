@@ -120,6 +120,13 @@ body.taxa {
             }
             p {
                 margin: 0 0 15px;
+                &.common {
+                    color: #807121;
+                    font-family: $headings-font;
+                    font-size: 30px;
+                    line-height: 155%;
+                    margin-bottom: 12px;
+                }
             }
         }
         #sb-player {
