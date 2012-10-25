@@ -557,7 +557,6 @@ body.taxa#genus .genus-species-btn { background: url(/static/images/layout/genus
 body.taxa#species { /* Larger gallery styles */ /* TODO: resolve the two following sections */ /* Smooth Div Scroll image area */ }
 body.taxa#species #main h1 { margin-bottom: 0; }
 body.taxa#species #main h1 span.origin { font-size: 14px; line-height: 100%; }
-body.taxa#species #main h3 { color: #807121; font-size: 30px; line-height: 155%; margin-bottom: 12px; }
 body.taxa#species #main h5 { font-size: 14px; }
 body.taxa#species #main p { margin: 0 0 15px; }
 body.taxa#species #sb-player.html { background: #fff; overflow: hidden; /* Get rid of vertical scrollbar in WebKit on enlarged N. America dist. map. */ padding: 0 5px 5px; }
