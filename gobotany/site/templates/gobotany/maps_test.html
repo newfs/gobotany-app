@@ -45,20 +45,17 @@
 
         <h3>Basic map centered on New England</h3>
 
-        <div id="map-new-england" style="width: 360px; height: 480px"
-            class="location-map"></div>
-
-        {# New England map centered on Rumford, NH via template tag #}
-        {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" height="480px" width="360px" zoom="6" id="new-england-map" %}
+        {# New England map centered on Rumford, Maine via template tag #}
+        {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="480px" width="360px" zoom="6" id="new-england-map" %}
 
         <h3>Sightings map (mini) for PlantShare main page</h3>
 
         {# Sightings map (mini) via template tag #}
-        {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" height="297px" width="479px" zoom="6" id="mini-sightings-map" %}
+        {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="297px" width="479px" zoom="6" id="mini-sightings-map" %}
 
         <h3>Sightings map for Sightings Locator page</h3>
 
         {# Sightings map via template tag #}
-        {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" height="524px" width="710px" zoom="6" id="sightings-map" %}
+        {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="524px" width="710px" zoom="6" id="sightings-map" %}
     </body>
 </html>
