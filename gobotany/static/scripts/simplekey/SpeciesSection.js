@@ -132,8 +132,14 @@ define([
                     }
 
                     // Wire up the Go To Species Page button.
+                    var key = (window.location.href.indexOf('/full/') > -1) ?
+                              'full' : 'simple';
+                    var species_page_url = plant.url;
+                    if (key === 'full') {
+                        species_page_url += '&key=full';
+                    }
                     $('#plant-detail-modal a.go-to-species-page')
-                        .attr('href', plant.url);
+                        .attr('href', species_page_url);
 
                     // Add images.
                     var images_html = '';

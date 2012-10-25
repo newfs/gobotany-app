@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block top_content %}
-    {% if key == 'full' %}
+    {% if not species_in_simple_key %}
         <div class="note">This is a species in our Full Key.
         Complete data are coming soon.</div>
     {% endif %}

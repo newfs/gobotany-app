@@ -187,13 +187,14 @@ def species_view(request, genus_slug, epithet):
         if rows:
             partner_species = rows[0]
 
-    key = request.GET.get('key')
     dkey_page = dkey_models.Page.objects.get(title=scientific_name)
-    if key != 'dichotomous':
-        if partner_species and partner_species.simple_key:
-            key = 'simple'
-        else:
-            key = 'full'
+
+    species_in_simple_key = (partner_species and partner_species.simple_key)
+    key = request.GET.get('key')
+    if species_in_simple_key:
+        key = 'simple'
+    else:
+        key = 'full'
 
     species_images = botany.species_images(taxon)
     images = _images_with_copyright_holders(species_images)
@@ -269,6 +270,7 @@ def species_view(request, genus_slug, epithet):
            'scientific_name_short': scientific_name_short,
            'taxon': taxon,
            'key': key,
+           'species_in_simple_key': species_in_simple_key,
            'common_names': taxon.common_names.all(),  # view uses this 3 times
            'dkey_page': dkey_page,
            'images': images,
