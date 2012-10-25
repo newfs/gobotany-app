@@ -2,8 +2,7 @@
  *
  * The expected HTML id of the map is that of the input field with
  * "_map" appended to it.
- *
- * */
+ */
 
 define([
     'bridge/jquery'
@@ -21,8 +20,6 @@ define([
     LocationField.prototype.setup = function () {
         // If there is a map for this location input field, update the map
         // when focus shifts away from the field.
-        // (TODO: decide whether to also call this on some other events, such
-        // as pressing Enter, automatically on change after a delay, etc.)
         if (this.$location_map !== undefined) {
             this.$input_box.blur($.proxy(this.update_map, this));
         }
