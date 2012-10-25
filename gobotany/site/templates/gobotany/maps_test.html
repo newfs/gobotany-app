@@ -25,13 +25,23 @@
     <body class="plantshare">
         <h1>Maps Test</h1>
 
-        <p>This is a page for testing map APIs and controls.</p>
+        <p>This is a page for testing map APIs and controls. It is also
+        for working out default coordinate centers and zoom levels
+        for PlantShare maps.</p>
 
         <h2>Google static location map</h2>
+
+        <p>Small, quick, and simple. Returns a static image. No
+        JavaScript to load. Allows passing a location either as an
+        address or as lat./long. coordinates.</p>
 
         {% include "_location_map.html" with location="Framingham, MA" height_px="150" width_px="302" zoom="7" id="id_location_map" %}
 
         <h2>Google maps (using JavaScript API)</h2>
+
+        <p>Fully dynamic and capable maps. Requires JavaScript API
+        library to be loaded. Only allows instatiation with lat./long.
+        coordinates, not flexible addresses.</p>
 
         <h3>Basic map centered on New England</h3>
 
@@ -50,6 +60,5 @@
 
         {# Sightings map via template tag #}
         {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" height="524px" width="710px" zoom="6" id="sightings-map" %}
-
     </body>
 </html>
