@@ -8,7 +8,7 @@ from django.template import RequestContext
 
 from gobotany.core import botany
 from gobotany.core.models import (
-    CopyrightHolder, Family, Genus, Habitat, PartnerSpecies,
+    CopyrightHolder, Family, Genus, Habitat, PartnerSpecies, Pile,
     PlantPreviewCharacter, Taxon
     )
 from gobotany.core.partner import which_partner
