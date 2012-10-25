@@ -1,6 +1,6 @@
 define([
     'bridge/jquery'
-], function($) {
+], function ($) {
     // Constructor
     var Tooltip = function (elements, options) {
         this.elements = elements;
@@ -23,12 +23,14 @@ define([
             width: null   // use width defined in CSS by default
         },
 
-        build_tooltip: function(content) {
+        build_tooltip: function (content) {
             var element = $('<div>', {class: this.options.css_class});
-            if (typeof content === 'string')
+            if (typeof content === 'string') {
                 element.html(content);
-            else
+            }
+            else {
                 element.append(content);
+            }
             element.append($('<div class="arrow">'));
             return element;
         },
