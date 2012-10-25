@@ -530,7 +530,16 @@ input.suggest + div li.selected { background-color: #666; color: #fff; }
   #home .donate a { float: none; margin: 6px 0; position: static; } }
 /* End media queries styles for the Home page */
 /* Styles for maps */
-.location-map { border: 1px solid #c3d941; }
+/* Location and sightings maps */
+.map { border: 1px solid #c3d941; }
+
+/* Plant distribution maps */
+.section.map { border: none; }
+.section.map p { font-size: 9px; margin-bottom: 6px; }
+.section.namap { position: relative; }
+.section.namap div.trans { /* Transparent div to make North America map clickable */ cursor: pointer; background: transparent; height: 133px; /* Cover the map plus the link below it */ margin-bottom: 0; padding: 0; position: absolute; top: 45px; width: 196px; }
+.section #ne-dist-county-map { /* SVG map: WebKit needs height and width set */ height: 293px; width: 187px; }
+.section #na-dist-county-map { /* SVG map: WebKit needs height and width set */ height: 109px; width: 187px; }
 
 /* Styles for taxa (family, genus, species) pages */
 body.taxa { /* Override Shadowbox styles to allow multiple title lines for showing a photo title, photographer credit, and copyright. */ /* For family and genus pages */ }
@@ -585,11 +594,6 @@ body.taxa#species #sidebar .get-help-btn { margin: 0 0 0 10px; }
 body.taxa#species a.enlarge { color: #1a2e11; display: block; margin: 0 0 8px 0; }
 body.taxa#species a.enlarge:hover { text-decoration: none; }
 body.taxa#species a.enlarge img { vertical-align: middle; }
-body.taxa#species div.section.map p { font-size: 9px; margin-bottom: 6px; }
-body.taxa#species div.section.namap { position: relative; }
-body.taxa#species div.section.namap div.trans { /* Transparent div to make North America map object element clickable */ cursor: pointer; background: transparent; height: 133px; /* Cover the map plus the link below it */ margin-bottom: 0; padding: 0; position: absolute; top: 45px; width: 196px; }
-body.taxa#species div.section #ne-dist-county-map { /* SVG map: WebKit needs height and width set */ height: 293px; width: 187px; }
-body.taxa#species div.section #na-dist-county-map { /* SVG map: WebKit needs height and width set */ height: 109px; width: 187px; }
 body.taxa#species .img-gallery { float: none; margin: 0 0 0 0; width: 710px; }
 body.taxa#species .img-gallery .img-container { height: 273px; width: 710px; }
 body.taxa#species .img-gallery .frame { height: 239px; width: 700px; }
