@@ -362,6 +362,8 @@ header nav #search-suggest .menu span { font-weight: normal; }
 .content #sidebar .section h4 + p { margin-top: 0; }
 .content #sidebar .section.separate { border-top: 1px solid #e2dfcb; padding-top: 16px; }
 .content #sidebar .section.plant-map { background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat; padding: 0 25px 16px 16px; }
+.content #sidebar .section .left { float: left; }
+.content #sidebar .section p { margin: 0; }
 .content #sidebar a:hover { text-decoration: none; }
 .content #sidebar a.get-help-btn { background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 20px; text-indent: -9000px; width: 104px; }
 .content #sidebar a.get-help-btn:hover { background-position: 0 -32px; }
@@ -553,6 +555,7 @@ body.taxa#genus ul.species { font-size: 14px; }
 body.taxa#genus p.family { font-size: 14px; margin: 0; }
 body.taxa#genus .genus-species-btn { background: url(/static/images/layout/genus-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
 body.taxa#species { /* Larger gallery styles */ /* TODO: resolve the two following sections */ /* Smooth Div Scroll image area */ }
+body.taxa#species #main h1 { margin-bottom: 0; }
 body.taxa#species #main h1 span.origin { font-size: 14px; line-height: 100%; }
 body.taxa#species #main h3 { color: #807121; font-size: 30px; line-height: 155%; margin-bottom: 12px; }
 body.taxa#species #main h5 { font-size: 14px; }

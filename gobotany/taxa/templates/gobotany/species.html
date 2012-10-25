@@ -22,12 +22,14 @@
     require(['simplekey/species']);
 {% endblock %}
 
-{% block main_content %}
-                {% if key == 'full' %}
-                    <div class="note">This is a species in our Full Key.
-                    Complete data are coming soon.</div>
-                {% endif %}
+{% block top_content %}
+    {% if key == 'full' %}
+        <div class="note">This is a species in our Full Key.
+        Complete data are coming soon.</div>
+    {% endif %}
+{% endblock %}
 
+{% block main_content %}
                 {% if key == 'dichotomous' %}
                     <div id="breadcrumb">
                         <p class="nogloss">
@@ -58,10 +60,9 @@
                 {% endif %}
 
                 {% if key == 'dichotomous' %}
-                    <h3 id="dkey">Information from Flora Novae Angliae</h3>
-                    <div>
-                      {{ dkey_page.text|discard_floating_figures|render_figure_links|safe }}
-                    </div>
+                    {% include "gobotany/_info_from_flora.html" %}
+
+                    <h2>Images</h2>
                 {% endif %}
 
                 <div id="species-images">
@@ -77,11 +78,11 @@
                 <div class="clearit"></div>
 
                 {% if partner_heading or partner_blurb %}
-                  <h3>{{ partner_heading }}</h3>
+                  <h2>{{ partner_heading }}</h2>
                   <p>{{ partner_blurb }} </p>
                 {% endif %}
 
-                <h3>Facts About</h3>
+                <h2>Facts About</h2>
                 <p>
                     {% if taxon.factoid|length > 0 %}
                         {{ taxon.factoid }}
@@ -90,7 +91,7 @@
                     {% endif %}
                 </p>
                 
-                <h3>Habitat</h3>
+                <h2>Habitat</h2>
                 <p>
                     {% if habitats|length > 0 %}
                         {{ habitats|join:", "|lower|capfirst }}
@@ -99,7 +100,7 @@
                     {% endif %}
                 </p>
                 
-                <h3>Characteristics</h3>
+                <h2>Characteristics</h2>
                 <div class="characteristics">
                     {% if brief_characteristics %}
                         {% for character in brief_characteristics %}
@@ -153,7 +154,7 @@
                     {% endfor %}
                 </ul>
                 
-                <h3>Wetland Plant?</h3>
+                <h2>Wetland Plant?</h2>
                 {% if taxon.wetland_indicator_code %}
                     <p>
                         {{ taxon.wetland_indicator_text }}
@@ -164,7 +165,7 @@
                     <p>Not classified</p>
                 {% endif %}
                 
-                <h3>New England Distribution and Conservation Status</h3>
+                <h2>New England Distribution and Conservation Status</h2>
                 <p>Exact status definitions can vary from state to
                 state. For precise details, please check with your state.</p>
                 <div id="ne-status">
@@ -230,10 +231,7 @@
                 NOTE: This is to stay commented out until the release of
                 the Dichotomous Key.
                 {% ifnotequal key 'dichotomous' %}
-                    <h3 id="dkey">Information from Flora Novae Angliae</h3>
-                    <div>
-                      {{ dkey_page.text|discard_floating_figures|render_figure_links|safe }}
-                    </div>
+                    {% include "gobotany/_info_from_flora.html" %}
                 {% endifnotequal %}
                 {% endcomment %}
 {% endblock %}

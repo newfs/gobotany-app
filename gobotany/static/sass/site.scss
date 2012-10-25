@@ -418,6 +418,12 @@ header {
             &.plant-map {
                 background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat;	                padding: 0 25px 16px 16px;
             }
+            .left {
+                float: left;
+            }
+            p {
+                margin: 0;
+            }
         }
         a {
             &:hover {
