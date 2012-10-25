@@ -19,6 +19,7 @@ from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 from gobotany.simplekey.models import (GroupsListPage,
                                        SubgroupResultsPage,
                                        SubgroupsListPage)
+from gobotany.taxa.views import _images_with_copyright_holders
 
 # Character short names common to all piles (but no suffix)
 COMMON_CHARACTERS = ['habitat', 'habitat_general', 'state_distribution']
