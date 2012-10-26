@@ -74,7 +74,7 @@ define([
         $(this).attr('original-text', $(this).text());
     });
 
-    /* The Big Function run when our URL hash changes. */
+    /* The Big Function that gets run when our URL hash changes. */
 
     var transition_to_hash = function(new_hash, is_initial) {
 
@@ -169,6 +169,10 @@ define([
         } else {
             button.html('Show All Couplets').attr('href', '#all');
         }
+
+        /* Restrict the set of images to taxa beneath this couplet. */
+
+        show_appropriate_images();
     }
 
     $('.lead .button').on('click', function() {
@@ -179,10 +183,6 @@ define([
             return false;
         }
     });
-
-    /* Connect the couplet logic to our hash. */
-
-    Hash.init(transition_to_hash);
 
     /* Clicking on "See list of 7 genera in 1b" should display them. */
 
@@ -337,12 +337,16 @@ define([
 
     var show_appropriate_images = function() {
         var selected_type = $('.image-type-selector select').val();
-        var $lead = $('#c' + active_id).parent().children('.lead');
+        var $lead = $('#c' + active_id).parent().children('div.lead');
         if ($lead.length == 0) {
-            var re = /./;
+            var $wlb = $('#main > .what-lies-beneath');
         } else {
-            var re = /./;
+            var $wlb = $lead.find('.what-lies-beneath');
         }
+        var taxa = $.parseJSON($wlb.attr('data-taxa'));
+        var etaxa = _.map(taxa, glossarizer.escape);
+        var re = '^(' + etaxa.join('|') + ')\\b';
+        console.log(re);
         _.each(imageinfo_array, function(imageinfo) {
             var is_taxa_match = imageinfo.species.match(re);
             var is_type_match = imageinfo.type == selected_type;
@@ -400,4 +404,8 @@ define([
             window.location = taxon_url(text);
         }
     });
+
+    /* Connect the couplet logic to our hash. */
+
+    Hash.init(transition_to_hash);
 })});
