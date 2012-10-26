@@ -355,9 +355,31 @@ define([
     /* Front "Dichotomous Key to Families" page selectboxes for jumping
        to groups, families, and genera. */
 
+    var family_jumpbox = $('.jumpbox')[0];
+    var genus_jumpbox = $('.jumpbox')[1];
+
     var reset_select = function(element) {
         $(element).val('instructions');
     };
+
+    $.getJSON('/api/hierarchy/', function(data) {
+        var hierarchy = data.hierarchy;
+        var family_names = _.pluck(hierarchy, 'family_name');
+        var genus_names = _.flatten(_.pluck(hierarchy, 'genus_names'));
+
+        family_names.sort();
+        genus_names.sort();
+
+        _.each(family_names, function(name) {
+            $('<option>', {text: name}).appendTo(family_jumpbox);
+        });
+        _.each(genus_names, function(name) {
+            $('<option>', {text: name}).appendTo(genus_jumpbox);
+        });
+
+        $(family_jumpbox).removeAttr('disabled');
+        $(genus_jumpbox).removeAttr('disabled');
+    });
 
     $('.groupbox select').on('mousedown keydown', function(event) {
         // Instead of letting the real select box drop down, toggle the <ul>.

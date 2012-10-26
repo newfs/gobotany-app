@@ -78,14 +78,6 @@ def get_groups():
         groups.append({'name': 'Group %d' % number, 'text': text})
     return groups
 
-def get_families():
-    pages = models.Page.objects.filter(rank='family')
-    return sorted(page.title for page in pages)
-
-def get_genera():
-    pages = models.Page.objects.filter(rank='genus')
-    return sorted(page.title for page in pages)
-
 # Our view.
 
 def page(request, slug=u'key-to-the-families'):
@@ -99,8 +91,6 @@ def page(request, slug=u'key-to-the-families'):
     proxy = _Proxy(page)
     return render_to_response('dkey/page.html', {
             'groups': get_groups,
-            'families': get_families,
-            'genera': get_genera,
 
             'leads': (lambda: proxy.leads),
             'lead_hierarchy': (lambda: proxy.lead_hierarchy),

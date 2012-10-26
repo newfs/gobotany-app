@@ -34,18 +34,12 @@
       {% endfor %}
     </ul>
   </div>
-  <select class="jumpbox">
+  <select class="jumpbox" disabled="disabled">
     <option value="instructions">Jump to a family…</option>
-    {% for family in families %}
-      <option>{{ family }}</option>
-    {% endfor %}
   </select>
   <br>
-  <select class="jumpbox">
+  <select class="jumpbox" disabled="disabled">
     <option value="instructions">Jump to a genus…</option>
-      {% for genus in genera %}
-    <option>{{ genus }}</option>
-    {% endfor %}
   </select>
 </div>
 
