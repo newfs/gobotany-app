@@ -268,15 +268,6 @@ define([
 
     /* Load images for the user to enjoy. */
 
-    var set_image_type = function() {
-        var type = $('.image-type-selector select').val();
-        $('.taxon-images figure').each(function(i, figure) {
-            var show = $(figure).attr('data-image-type') == type;
-            $(figure).css('display', show ? 'inline-block' : 'none');
-        });
-        lazy_images.load();
-    };
-
     if (couplet_rank == 'family') {
         var family = couplet_title.split(/ /).pop().toLowerCase();
         var url = '/api/families/' + family + '/';
@@ -286,6 +277,8 @@ define([
     } else if (couplet_rank == 'species') {
         var name = couplet_title.replace(' ', '%20');
         var url = '/api/taxa/' + name + '/';
+    } else {
+        var url = '';  // other taxonomic levels do not get images
     }
     if (url) {
         $.getJSON(url, function(data) {
@@ -314,10 +307,25 @@ define([
             });
             $selector.css('display', 'block');
 
-            set_image_type();
-            $select.on('change', set_image_type);
+            $select.on('change', show_appropriate_images);
+            show_appropriate_images();
         });
     }
+
+    /* "Appropriate" images are those that (a) match the currently
+       selected "image type" and (b) belong to a species that lies
+       beneath the currently active couplet. */
+
+    var show_appropriate_images = function() {
+        var type_name = $('.image-type-selector select').val();
+        $('.taxon-images figure').each(function() {
+            var is_species_match = true;
+            var is_type_match = $(this).attr('data-image-type') == type_name;
+            var show = is_species_match && is_type_match;
+            $(figure).css('display', show ? 'inline-block' : 'none');
+        });
+        lazy_images.load();
+    };
 
     /* Front "Dichotomous Key to Families" page selectboxes for jumping
        to groups, families, and genera. */
