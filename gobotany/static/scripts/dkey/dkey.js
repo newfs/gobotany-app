@@ -3,11 +3,11 @@ define([
     'bridge/jquery.mousewheel',
     'bridge/underscore',
     'lib/Hash',
-    'simplekey/glossarize',
+    'util/glossarizer',
     'util/lazy_images',
     'util/tooltip'
 ], function(
-    $, ignore, _, Hash, glossarize, lazy_images, tooltip_js
+    $, ignore, _, Hash, glossarizer, lazy_images, tooltip_js
 ) {$(document).ready(function() {
 
     var couplet_rank = $('body').attr('data-couplet-rank');
@@ -19,7 +19,7 @@ define([
 
     /* Glossarize lead texts. */
 
-    glossarize($('.couplets .lead'));
+    glossarizer.glossarize($('.couplets .lead'));
 
     /* Rewrite couplet IDs so that #-links will no longer match; this
        prevents a change to the URL hash from making the browser think

@@ -1,10 +1,9 @@
 require([
     'bridge/shadowbox',
-    'util/shadowbox_init',
-    'simplekey/glossarize'
-], function(Shadowbox, shadowbox_init, glossarize) {
+    'util/glossarizer',
+    'util/shadowbox_init'
+], function(Shadowbox, glossarizer, shadowbox_init) {
     $(document).ready(function() {
-        glossarize($('#terms dd'));
+        glossarizer.glossarize($('#terms dd'));
     });
 });
-

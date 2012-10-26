@@ -4,11 +4,11 @@ require([
     'util/shadowbox_init',
     'util/sidebar',
     'util/activate_video_links',
-    'simplekey/glossarize'
+    'util/glossarizer'
 ], function(activate_image_gallery, Shadowbox, shadowbox_init, sidebar,
-            activate_video_links, glossarize) {
+            activate_video_links, glossarizer) {
     sidebar.setup();
     $(document).ready(function() {
-        glossarize($('.key-char, .exceptions'));
+        glossarizer.glossarize($('.key-char, .exceptions'));
     });
 });

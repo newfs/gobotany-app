@@ -4,10 +4,10 @@
 define([
     'bridge/jquery',
     'bridge/shadowbox',
-    'util/sidebar',
     'simplekey/PhotoHelper',
-    'simplekey/glossarize'
-], function($, Shadowbox, sidebar, PhotoHelper, glossarize) {
+    'util/glossarizer',
+    'util/sidebar'
+], function($, Shadowbox, PhotoHelper, glossarizer, sidebar) {
 var SpeciesPageHelper = {
 
     init: function() {
@@ -41,7 +41,7 @@ var SpeciesPageHelper = {
                 'url("/static/images/icons/plus.png")');
             sidebar.set_height();
             return false;
-        });                
+        });
     },
 
     toggle_characters_full_list: function() {
@@ -121,7 +121,7 @@ var SpeciesPageHelper = {
         // Link glossary terms.
         var selectors = '#sidebar dd, #main p:not(.nogloss), #main dt, ' +
             '#main dd, #main li, #main th, #main td';
-        glossarize($(selectors));
+        glossarizer.glossarize($(selectors));
 
         // Make image gallery able to show larger images.
         this.wire_up_image_links();

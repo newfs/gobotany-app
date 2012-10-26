@@ -1,15 +1,15 @@
 define([
     'bridge/jquery',
-    'util/sidebar',
-    'util/shadowbox_init',
     'simplekey/PhotoHelper',
-    'simplekey/glossarize'
-], function($, sidebar, shadowbox_init, PhotoHelper, glossarize) {
+    'util/glossarizer',
+    'util/shadowbox_init',
+    'util/sidebar'
+], function($, PhotoHelper, glossarizer, shadowbox_init, sidebar) {
 
     var exports = {};
 
     var _setup_page = function(args) {
-        glossarize($('.description'));
+        glossarizer.glossarize($('.description'));
         sidebar.setup();
 
         var photo_helper = PhotoHelper();

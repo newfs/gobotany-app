@@ -11,7 +11,6 @@ define([
     'simplekey/Filter',
     'simplekey/FilterController',
     'simplekey/animation',
-    'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/ResultsPageState',
     'simplekey/results_overlay',
@@ -19,13 +18,14 @@ define([
     'simplekey/working_area',
     'simplekey/utils',
     'util/activate_image_gallery',
+    'util/glossarizer',
     'util/lazy_images',
     'util/sidebar'
 ], function(
     document_is_ready, $, x1, x2, Ember, Shadowbox, shadowbox_init, _,
-    App3, Filter, FilterController, animation, glossarize, resources,
-    ResultsPageState, results_overlay_init, SpeciesSection,
-    working_area_module, utils, image_gallery, lazy_images, sidebar
+    App3, Filter, FilterController, animation, resources, ResultsPageState,
+    results_overlay_init, SpeciesSection, working_area_module, utils,
+    image_gallery, glossarizer, lazy_images, sidebar
 ) {return {
 
 results_page_init: function(args) {
@@ -275,7 +275,7 @@ results_page_init: function(args) {
 
         didInsertElement: function() {
             var id = this.get('elementId');
-            glossarize($('#' + id + ' span.name'));
+            glossarizer.glossarize($('#' + id + ' span.name'));
         },
 
         answered: function() {

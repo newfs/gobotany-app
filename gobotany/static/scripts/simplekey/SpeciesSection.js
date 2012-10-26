@@ -3,16 +3,17 @@ define([
     'bridge/shadowbox',
     'bridge/underscore',
     'simplekey/App3',
-    'simplekey/glossarize',
     'simplekey/resources',
     'simplekey/results_photo_menu',
     'simplekey/utils',
+    'util/glossarizer',
     'util/lazy_images',
     'util/sidebar'
-], function($, Shadowbox, _, App3, glossarize, resources,
-            results_photo_menu, utils, lazy_images, sidebar) {
+], function($, Shadowbox, _, App3, resources, results_photo_menu, utils,
+            glossarizer, lazy_images, sidebar) {
 
     var SpeciesSection = function() {};
+    var glossarize = glossarizer.glossarize;
     var methods = SpeciesSection.prototype = {};
 
     methods.init = function(pile_slug, plant_divs_ready) {

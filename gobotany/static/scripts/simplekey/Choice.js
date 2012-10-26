@@ -6,10 +6,12 @@ define([
     'bridge/jquery',
     'bridge/underscore',
     'simplekey/App3',
-    'simplekey/glossarize',
     'simplekey/utils',
+    'util/glossarizer',
     'util/tooltip'
-], function($, _, App3, glossarize, utils, tooltip) {
+], function($, _, App3, utils, glossarizer, tooltip) {
+
+    var glossarize = glossarizer.glossarize;
 
     /* Generate a human-readable representation of a value. */
 

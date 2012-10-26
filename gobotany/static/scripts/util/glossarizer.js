@@ -1,32 +1,38 @@
 define([
-    'bridge/ember',
     'bridge/jquery',
+    'simplekey/resources',
     'util/tooltip'
-], function(Ember, $, tooltip) {return Ember.Object.extend({
+], function($, resources, tooltip) {
 
-    /* The glossarizer takes the glossary blob delivered by the API,
+    var exports = {};
+
+    /* Escape a string for literal use in a regular expression. */
+
+    exports.escape = function(str) {
+        // http://stackoverflow.com/questions/3446170/
+        return str.replace(/[-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+    };
+
+    /* The glossarizer takes a glossary blob as delivered by the API,
        parses and prepares a regular expression, and then can mark up
        glossary terms inside of text so that they turn into tooltipped
        terms. */
 
-    _escape: function(str) {
-        // http://stackoverflow.com/questions/3446170/
-        return str.replace(/[-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
-    },
-
-    init: function() {
-        // this.glossaryblob must be provided in create()
+    exports.Glossarizer = function(glossaryblob) {
+        this.glossaryblob = glossaryblob;
         this.n = 0;
+
         var terms = [];
-        var defs = this.glossaryblob.definitions;
+        var defs = glossaryblob.definitions;
         for (term in defs)
             if (_.has(defs, term))
-                terms.push(this._escape(term));
+                terms.push(exports.escape(term));
 
         /* For incredible speed, we pre-build a regular expression of
            all glossary terms.  This has the advantage of always selecting
            the longest possible glossary term if several words together
            could be a glossary term! */
+
         var re = '\\b(' + terms.join('|') +
             ')([\\+\\-]|\\b)'; // Allow + or - at end: wetland indicator codes
         this.regexp = new RegExp(re, 'gi');
@@ -37,7 +43,7 @@ define([
        Any terms found are replaced with a <span> to which a tooltip is
        then attached. */
 
-    markup: function(node) {
+    exports.Glossarizer.prototype.markup = function(node) {
 
         /* Place any glossary terms in the node inside spans. */
 
@@ -79,5 +85,30 @@ define([
                     definition + '</p>'
             });
         });
-    }
-})});
+    };
+
+    /* Convenience routine that glossarizes elements as soon as the
+       glossary blob has arrived from the API. */
+
+    var glossarizer = null;
+    var kickoff = $.Deferred();
+    var ready = $.Deferred();
+
+    kickoff.done(function() {
+        resources.glossaryblob().done(function(blob) {
+            glossarizer = new exports.Glossarizer(blob);
+            ready.resolve();
+        });
+    });
+
+    exports.glossarize = function($nodes) {
+        kickoff.resolve();
+        ready.done(function() {
+            $nodes.each(function(i, node) {
+                glossarizer.markup(node);
+            });
+        });
+    };
+
+    return exports;
+});
