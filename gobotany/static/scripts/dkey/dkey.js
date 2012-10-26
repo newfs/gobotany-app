@@ -66,9 +66,15 @@ define([
     var active_id = 'c1';
     var bottom_id = 'c1';
 
+    /* Save the original text of each orange button, since we will have
+       to rewrite some of them to say "Go back" as the user descends
+       down the hierarchy. */
+
     $('.lead .button').each(function() {
         $(this).attr('original-text', $(this).text());
     });
+
+    /* The Big Function run when our URL hash changes. */
 
     var transition_to_hash = function(new_hash, is_initial) {
 
@@ -268,6 +274,8 @@ define([
 
     /* Load images for the user to enjoy. */
 
+    var imageinfo_array = [];
+
     if (couplet_rank == 'family') {
         var family = couplet_title.split(/ /).pop().toLowerCase();
         var url = '/api/families/' + family + '/';
@@ -280,37 +288,45 @@ define([
     } else {
         var url = '';  // other taxonomic levels do not get images
     }
+
     if (url) {
-        $.getJSON(url, function(data) {
-            var types = [];
-            var $div = $('.taxon-images');
-            $.each(data.images, function(i, info) {
-                types.push(info.type);
-                var species = info.title.split(':')[0];
-                $('<figure/>', {
-                    'data-image-type': info.type,
-                    'css': {'display': 'none'}
-                }).append(
-                    $('<img/>').attr('data-lazy-img-src', info.thumb_url),
-                    $taxon_anchor(species)
-                ).appendTo($div);
-            });
-            types = _.uniq(types);
-            types.sort();
-
-            var $selector = $('.image-type-selector');
-            var $select = $selector.find('select');
-            $.each(types, function(i, type) {
-                var option = $('<option>').attr('value', type).html(type);
-                if (type == 'plant form') option.attr('selected', 'selected');
-                $select.append(option);
-            });
-            $selector.css('display', 'block');
-
-            $select.on('change', show_appropriate_images);
-            show_appropriate_images();
-        });
+        $.getJSON(url, function(data) {install_images(data);});
     }
+
+    var install_images = function(data) {
+
+        /* First, build the sample_images data structure that contains
+           one record for every image. */
+
+        var $div = $('.taxon-images');
+
+        imageinfo_array = _.map(data.images, function(datum) {
+            var species = datum.title.split(':')[0];
+            var imageinfo = {
+                type: datum.type,
+                figure: $('<figure/>').append(
+                    $('<img/>').attr('data-lazy-img-src', datum.thumb_url),
+                    $taxon_anchor(species)
+                ).appendTo($div)
+            };
+            return imageinfo;
+        });
+
+        var types = _.uniq(_.pluck(imageinfo_array, 'type'));
+        types.sort();
+
+        var $selector = $('.image-type-selector');
+        var $select = $selector.find('select');
+        $.each(types, function(i, type) {
+            var option = $('<option>').attr('value', type).html(type);
+            if (type == 'plant form') option.attr('selected', 'selected');
+            $select.append(option);
+        });
+        $selector.css('display', 'block');
+
+        $select.on('change', show_appropriate_images);
+        show_appropriate_images();
+    };
 
     /* "Appropriate" images are those that (a) match the currently
        selected "image type" and (b) belong to a species that lies
@@ -318,11 +334,17 @@ define([
 
     var show_appropriate_images = function() {
         var type_name = $('.image-type-selector select').val();
-        $('.taxon-images figure').each(function() {
-            var is_species_match = true;
-            var is_type_match = $(this).attr('data-image-type') == type_name;
+        var $lead = $('#c' + active_id).parent().children('.lead');
+        if ($lead.length == 0) {
+            var re = /./;
+        } else {
+            var re = /./;
+        }
+        _.each(imageinfo_array, function(imageinfo) {
+            var is_species_match = $(this);
+            var is_type_match = imageinfo.type == type_name;
             var show = is_species_match && is_type_match;
-            $(figure).css('display', show ? 'inline-block' : 'none');
+            $(imageinfo.figure).css('display', show ? 'inline-block' : 'none');
         });
         lazy_images.load();
     };
