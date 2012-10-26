@@ -111,6 +111,18 @@ def glossary_blob(request):
 
 #
 
+def hierarchy(request):
+    genera = Genus.objects.select_related('family').order_by('family')
+    hdict = defaultdict(list)
+    for genus in genera:
+        hdict[genus.family.name].append(genus.name)
+    return jsonify({
+        'hierarchy': [{'family_name': key, 'genus_names': value}
+                      for key, value in hdict.items()],
+        })
+
+#
+
 def _get_characters(short_names):
     """Return a list of characters with `short_names`, in that order."""
     cl = Character.objects.filter(short_name__in=short_names)
