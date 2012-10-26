@@ -38,7 +38,7 @@ class FamilyTests(FunctionalCase):
 
     def test_family_page(self):
         self.get('/family/lycopodiaceae/')
-        heading = self.css('#main h2')
+        heading = self.css('#main h1')
         self.assertTrue(len(heading))
         self.assertTrue(heading[0].text == 'Family: Lycopodiaceae')
         common_name = self.css('#main h3')
@@ -59,7 +59,7 @@ class GenusTests(FunctionalCase):
 
     def test_genus_page(self):
         self.get('/genus/dendrolycopodium/')
-        heading = self.css('#main h2')
+        heading = self.css('#main h1')
         self.assertTrue(len(heading))
         self.assertTrue(heading[0].text == 'Genus: Dendrolycopodium')
         common_name = self.css('#main h3')
@@ -177,7 +177,7 @@ class LookalikesFunctionalTests(FunctionalCase):
         for s in SPECIES:
             url = '/species/%s/' % s.replace(' ', '/').lower()
             self.get(url)
-            heading = self.css('#sidebar .lookalikes h5')
+            heading = self.css('#sidebar .lookalikes h4')
             self.assertTrue(heading)
             lookalikes = self.css('#sidebar .lookalikes dt')
             self.assertTrue(len(lookalikes) > 0)
