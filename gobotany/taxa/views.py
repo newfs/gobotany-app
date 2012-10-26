@@ -191,10 +191,11 @@ def species_view(request, genus_slug, epithet):
 
     species_in_simple_key = (partner_species and partner_species.simple_key)
     key = request.GET.get('key')
-    if species_in_simple_key:
-        key = 'simple'
-    else:
-        key = 'full'
+    if not key:
+        if species_in_simple_key:
+            key = 'simple'
+        else:
+            key = 'full'
 
     species_images = botany.species_images(taxon)
     images = _images_with_copyright_holders(species_images)
