@@ -303,7 +303,7 @@ define([
         imageinfo_array = _.map(data.images, function(datum) {
             var species_name = datum.title.split(':')[0];
             var imageinfo = {
-                figure_element: $('<figure/>')
+                $figure: $('<figure/>')
                     .append(
                         $('<img/>').attr('data-lazy-img-src', datum.thumb_url),
                         $taxon_anchor(species_name)
@@ -336,7 +336,7 @@ define([
        beneath the currently active couplet. */
 
     var show_appropriate_images = function() {
-        var type_name = $('.image-type-selector select').val();
+        var selected_type = $('.image-type-selector select').val();
         var $lead = $('#c' + active_id).parent().children('.lead');
         if ($lead.length == 0) {
             var re = /./;
@@ -344,11 +344,10 @@ define([
             var re = /./;
         }
         _.each(imageinfo_array, function(imageinfo) {
-            var is_species_match = $(this);
-            var is_type_match = imageinfo.type == type_name;
-            var show = is_species_match && is_type_match;
-            $(imageinfo.figure_element)
-                .css('display', show ? 'inline-block' : 'none');
+            var is_taxa_match = imageinfo.species.match(re);
+            var is_type_match = imageinfo.type == selected_type;
+            var show = is_taxa_match && is_type_match;
+            imageinfo.$figure.css('display', show ? 'inline-block' : 'none');
         });
         lazy_images.load();
     };
