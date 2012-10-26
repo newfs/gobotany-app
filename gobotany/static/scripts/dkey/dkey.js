@@ -301,13 +301,16 @@ define([
         var $div = $('.taxon-images');
 
         imageinfo_array = _.map(data.images, function(datum) {
-            var species = datum.title.split(':')[0];
+            var species_name = datum.title.split(':')[0];
             var imageinfo = {
-                type: datum.type,
-                figure: $('<figure/>').append(
-                    $('<img/>').attr('data-lazy-img-src', datum.thumb_url),
-                    $taxon_anchor(species)
-                ).appendTo($div)
+                figure_element: $('<figure/>')
+                    .append(
+                        $('<img/>').attr('data-lazy-img-src', datum.thumb_url),
+                        $taxon_anchor(species_name)
+                    ).appendTo($div),
+                genus: species_name.split(/ /)[0],
+                species: species_name,
+                type: datum.type
             };
             return imageinfo;
         });
@@ -344,7 +347,8 @@ define([
             var is_species_match = $(this);
             var is_type_match = imageinfo.type == type_name;
             var show = is_species_match && is_type_match;
-            $(imageinfo.figure).css('display', show ? 'inline-block' : 'none');
+            $(imageinfo.figure_element)
+                .css('display', show ? 'inline-block' : 'none');
         });
         lazy_images.load();
     };
