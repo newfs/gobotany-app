@@ -14,6 +14,19 @@ var SpeciesPageHelper = {
         this.photo_helper = PhotoHelper();
     },
 
+    set_active_main_navigation: function() {
+        // Set the active main navigation based on the breadcrumb links.
+        var key = 'dkey';
+        var breadcrumb_text = $('#breadcrumb p').text();
+        if (breadcrumb_text.indexOf('Simple Key') > -1) {
+            key = 'simple';
+        }
+        else if (breadcrumb_text.indexOf('Full Key') > -1) {
+            key = 'full';
+        }
+        $('body').addClass(key);
+    },
+
     toggle_character_group: function() {
         // Set handlers for toggling a character group.
         $('ul.full-description li h5').toggle(function() {
@@ -98,8 +111,14 @@ var SpeciesPageHelper = {
     },
 
     setup: function() {
+        // Set the active main navigation state depending on which key
+        // is shown in the breadcrumb trail.
+        this.set_active_main_navigation();
+
+        // Set the handlers for toggling the character sections.       
         this.toggle_characters_full_list();
 
+        // Link glossary terms.
         var selectors = '#sidebar dd, #main p:not(.nogloss), #main dt, ' +
             '#main dd, #main li, #main th, #main td';
         glossarize($(selectors));
