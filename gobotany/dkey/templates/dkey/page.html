@@ -136,7 +136,7 @@
             {% elif p.rank == 'subgroup' and page.rank == 'genus' %}
               ><i>{{ p.title|abbreviate_title }}</i>
             {% elif p.rank == 'tribe' %}
-              >{{ p.title|lastword }}
+              >{{ p.title }}
             {% else %}
               >MALFUNCTION
             {% endif %}
