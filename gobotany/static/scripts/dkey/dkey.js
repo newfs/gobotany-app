@@ -275,22 +275,24 @@ define([
     /* Load images for the user to enjoy. */
 
     var imageinfo_array = [];
+    var key_rank = $('.couplets').attr('data-key-rank');
+    var key_title = $('.couplets').attr('data-key-title');
 
-    if (couplet_rank == 'family') {
-        var family = couplet_title.split(/ /).pop().toLowerCase();
-        var url = '/api/families/' + family + '/';
-    } else if (couplet_rank == 'genus') {
-        var genus = couplet_title.split(/ /).pop().toLowerCase();
-        var url = '/api/genera/' + genus + '/';
-    } else if (couplet_rank == 'species') {
-        var name = couplet_title.replace(' ', '%20');
-        var url = '/api/taxa/' + name + '/';
+    if (key_rank == 'family') {
+        var family = key_title.split(/ /).pop().toLowerCase();
+        var images_url = '/api/families/' + family + '/';
+    } else if (key_rank == 'genus') {
+        var genus = key_title.split(/ /).pop().toLowerCase();
+        var images_url = '/api/genera/' + genus + '/';
+    } else if (key_rank == 'species') {
+        var name = key_title.replace(' ', '%20');
+        var images_url = '/api/taxa/' + name + '/';
     } else {
-        var url = '';  // other taxonomic levels do not get images
+        var images_url = '';  // other taxonomic levels do not get images
     }
 
-    if (url) {
-        $.getJSON(url, function(data) {install_images(data);});
+    if (images_url) {
+        $.getJSON(images_url, function(data) {install_images(data);});
     }
 
     var install_images = function(data) {
@@ -346,7 +348,7 @@ define([
         var taxa = $.parseJSON($wlb.attr('data-taxa'));
         var etaxa = _.map(taxa, glossarizer.escape);
         var re = '^(' + etaxa.join('|') + ')\\b';
-        console.log(re);
+
         _.each(imageinfo_array, function(imageinfo) {
             var is_taxa_match = imageinfo.species.match(re);
             var is_type_match = imageinfo.type == selected_type;
