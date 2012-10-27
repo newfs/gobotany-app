@@ -231,9 +231,18 @@ def questions(request, pile_slug):
 
 def family(request, family_slug):
     family = get_object_or_404(Family, name=family_slug.capitalize())
-
     ttype = ContentType.objects.get_for_model(Taxon)
-    ids = { taxon.id for taxon in family.taxa.all() }
+
+    # Keep only one taxon per genus as its representative image.
+
+    taxa = list(family.taxa.order_by('scientific_name'))
+
+    one_taxa_per_genus = [taxa[0]]
+    for i in range(1, len(taxa)):
+        if taxa[i - 1].genus_id != taxa[i].genus_id:
+            one_taxa_per_genus.append(taxa[i])
+
+    ids = { taxon.id for taxon in one_taxa_per_genus }
 
     # Since the import code only creates a single rank=1 image for each
     # (taxa + image_type) combination, we can filter on rank=1 and know
