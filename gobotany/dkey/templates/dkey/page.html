@@ -61,13 +61,13 @@
 </p>
 
 {% if leads|length == 1 %}
-  <p>This {{ page.rank }} contains
-    exactly one {{ next_page.rank }},
+  <p data-rank="{{ page.rank }}" data-title="{{ page.title }}">This
+    {{ page.rank }} contains exactly one {{ next_page.rank }},
     {{ page|display_title }}.</p>
 {% endif %}
 {% if leads|length == 1 %}
-  <p>This {{ page.rank }} contains
-    exactly one {{ next_page.rank }},
+  <p data-rank="{{ page.rank }}" data-title="{{ page.title }}">This
+    {{ page.rank }} contains exactly one {{ next_page.rank }},
     {{ page|display_title }}.</p>
 {% endif %}
 
@@ -82,7 +82,7 @@
 
 {% if leads %}
   <ul class="couplets couplet" id="c1"
-      data-key-rank="{{ page.rank }}" data-key-title="{{ page.title }}">
+      data-rank="{{ page.rank }}" data-title="{{ page.title }}">
   {% for lead in lead_hierarchy %}
     {% if lead.0 %}
       {% with literal_string=lead %}
