@@ -10,9 +10,6 @@ define([
     $, ignore, _, Hash, glossarizer, lazy_images, tooltip_js
 ) {$(document).ready(function() {
 
-    var couplet_rank = $('body').attr('data-couplet-rank');
-    var couplet_title = $('body').attr('data-couplet-title');
-
     /* Enable lazy image loading. */
 
     lazy_images.start();
