@@ -232,13 +232,19 @@ def questions(request, pile_slug):
 def family(request, family_slug):
     family = get_object_or_404(Family, name=family_slug.capitalize())
 
-    images = []
-    taxa = Taxon.objects.filter(family=family)
-    for taxon in taxa:
-        images = images + [_taxon_image(i) for i in
-                           taxon.images.select_related('image_type').all()]
-        if len(images) > 150:  # TODO: have botanists choose "best" images
-            break
+    ttype = ContentType.objects.get_for_model(Taxon)
+    ids = { taxon.id for taxon in family.taxa.all() }
+
+    # Since the import code only creates a single rank=1 image for each
+    # (taxa + image_type) combination, we can filter on rank=1 and know
+    # that we are getting at most one image of each species regardless
+    # of the image_type that the user selects to view.
+
+    images = [
+        _taxon_image(image) for image in ContentImage.objects
+            .select_related('image_type')
+            .filter(content_type=ttype, object_id__in=ids, rank=1)
+        ]
 
     drawings = family.images.all() # TODO: filter image_type 'example drawing'
 
