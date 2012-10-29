@@ -5,9 +5,8 @@ define([
     'bridge/jquery',
     'bridge/shadowbox',
     'simplekey/PhotoHelper',
-    'util/glossarizer',
-    'util/sidebar'
-], function($, Shadowbox, PhotoHelper, glossarizer, sidebar) {
+    'util/glossarizer'
+], function($, Shadowbox, PhotoHelper, glossarizer) {
 var SpeciesPageHelper = {
 
     init: function() {
@@ -29,17 +28,17 @@ var SpeciesPageHelper = {
 
     toggle_character_group: function() {
         // Set handlers for toggling a character group.
-        $('ul.full-description li h5').toggle(function() {
-            $(this).siblings('div').show();
-            $(this).css('background-image',
+        $('ul.full-description li').toggle(function() {
+            var $heading = $(this).find('h5').eq(0);
+            $heading.siblings('div').show();
+            $heading.css('background-image',
                 'url("/static/images/icons/minus.png")');
-            sidebar.set_height();
             return false;
         }, function() {
-            $(this).siblings('div').hide();
-            $(this).css('background-image',
+            var $heading = $(this).find('h5').eq(0);
+            $heading.siblings('div').hide();
+            $heading.css('background-image',
                 'url("/static/images/icons/plus.png")');
-            sidebar.set_height();
             return false;
         });
     },
@@ -54,7 +53,6 @@ var SpeciesPageHelper = {
             $(this).css('background-image',
                 'url("/static/images/icons/minus.png")');
             that.toggle_character_group();
-            sidebar.set_height();
             return false;
         }, function() {
             $('ul.full-description').hide();
@@ -62,7 +60,6 @@ var SpeciesPageHelper = {
                 $(this).text().substr($(this).text().indexOf(' ')));
             $(this).css('background-image',
                 'url("/static/images/icons/plus.png")');
-            sidebar.set_height();
             return false;
         });
     },
@@ -128,7 +125,6 @@ var SpeciesPageHelper = {
 
         // Wire up the enlarge link on the U.S. map.
         this.wire_up_us_map_link();
-        sidebar.setup();
     }
 };
 
