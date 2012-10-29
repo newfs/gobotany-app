@@ -21,7 +21,12 @@ urlpatterns = patterns(
 
     (r'^families/(?P<family_slug>[a-z]+)/$',
      redirect_to, {'url': '/family/%(family_slug)s/'}),
+
     (r'^genera/(?P<genus_slug>[a-z]+)/$',
      redirect_to, {'url': '/genus/%(genus_slug)s/'}),
+
+    (r'^(?P<pilegroup_slug>[-a-z]+)/(?P<pile_slug>[-a-z]+)/'
+     r'(?P<genus_slug>[a-z]+)/(?P<epithet>[-a-z]+)/$', redirect_to,
+     {'url': '/species/%(genus_slug)s/%(epithet)s/?pile=%(pile_slug)s'}),
 
     )

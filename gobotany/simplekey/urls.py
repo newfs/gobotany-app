@@ -34,12 +34,6 @@ urlpatterns = patterns(
     url('^(?P<key>simple|full)/(?P<pilegroup_slug>[^/]*)/(?P<pile_slug>[^/]*)/$',
         views.level3, name='level3'),
 
-    # Legacy redirections.
-
-    (r'^(?P<pilegroup_slug>[-a-z]+)/(?P<pile_slug>[-a-z]+)/'
-     r'(?P<genus_slug>[a-z]+)/(?P<epithet>[-a-z]+)/$', redirect_to,
-     {'url': '/species/%(genus_slug)s/%(epithet)s/?pile=%(pile_slug)s'}),
-
     # Old URLs at which the Simple Key 2nd and 3rd-level pages once lived.
 
     url('^(?P<pilegroup_slug>[^/]*)/$',
