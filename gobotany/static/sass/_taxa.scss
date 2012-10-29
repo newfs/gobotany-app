@@ -1,5 +1,13 @@
 /* Styles for taxa (family, genus, species) pages */
 
+@mixin taxa-list {
+    font-size: 14px;
+    list-style: none;
+    li {
+        margin: 0 0 5px 0;
+    }
+}
+
 body.taxa {
     #main {
         h3 {
@@ -14,10 +22,6 @@ body.taxa {
         }
         ol, ul {
             line-height: inherit;
-            list-style: none;
-        }
-        li {
-            margin: 0 0 5px 0;
         }
     }
     .frame {
@@ -74,7 +78,7 @@ body.taxa {
 
     &#family {
         ul.genera {
-            font-size: 14px;
+            @include taxa-list;
         }
         .family-genera-btn {
             background: url(/static/images/layout/family-btn.png) no-repeat scroll 0 0 transparent;
@@ -89,7 +93,7 @@ body.taxa {
     }
     &#genus {
         ul.species {
-            font-size: 14px;
+            @include taxa-list;
         }
         p.family {
             font-size: 14px;
@@ -251,12 +255,21 @@ body.taxa {
             dt, dd {
                 display: inline;
             }
-            .lookalikes dt {
-                margin-top: 1em;
-                display: block;
+            .lookalikes {
+                dt {
+                    margin-top: 1em;
+                    display: block;
+                }
+                dd {
+                    margin-left: 0;
+                }
             }
             .get-help-btn {
                 margin: 0 0 0 10px;
+            }
+            li {
+                line-height: 16px;
+                list-style-type: none;
             }
         }
         a.enlarge {

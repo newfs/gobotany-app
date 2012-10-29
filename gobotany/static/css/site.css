@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -546,8 +545,7 @@ input.suggest + div li.selected { background-color: #666; color: #fff; }
 body.taxa { /* Override Shadowbox styles to allow multiple title lines for showing a photo title, photographer credit, and copyright. */ /* For family and genus pages */ }
 body.taxa #main h3 { color: #807121; font-size: 30px; line-height: 90%; }
 body.taxa #main h4 { clear: left; font-size: 18px; padding-top: 30px; }
-body.taxa #main ol, body.taxa #main ul { line-height: inherit; list-style: none; }
-body.taxa #main li { margin: 0 0 5px 0; }
+body.taxa #main ol, body.taxa #main ul { line-height: inherit; }
 body.taxa .frame { cursor: pointer; }
 body.taxa #sb-title, body.taxa #sb-title-inner { height: 76px; line-height: 70%; position: relative; }
 body.taxa #sb-title-inner div { bottom: 6px; position: absolute; }
@@ -559,9 +557,11 @@ body.taxa .pics { margin-top: 20px; }
 body.taxa .pics div { float: left; margin-right: 20px; }
 body.taxa .pics p { display: inline-block; float: left; font-size: 14px; }
 body.taxa img.zoom { display: inline-block; float: right; }
-body.taxa#family ul.genera { font-size: 14px; }
+body.taxa#family ul.genera { font-size: 14px; list-style: none; }
+body.taxa#family ul.genera li { margin: 0 0 5px 0; }
 body.taxa#family .family-genera-btn { background: url(/static/images/layout/family-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
-body.taxa#genus ul.species { font-size: 14px; }
+body.taxa#genus ul.species { font-size: 14px; list-style: none; }
+body.taxa#genus ul.species li { margin: 0 0 5px 0; }
 body.taxa#genus p.family { font-size: 14px; margin: 0; }
 body.taxa#genus .genus-species-btn { background: url(/static/images/layout/genus-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
 body.taxa#species { /* Larger gallery styles */ /* TODO: resolve the two following sections */ /* Smooth Div Scroll image area */ }
@@ -591,7 +591,9 @@ body.taxa#species table tbody th { padding-left: 0; white-space: nowrap; }
 body.taxa#species table tbody th.status { font-size: 12px; font-weight: normal; padding-left: 40px; text-align: left; text-transform: none; }
 body.taxa#species #sidebar dt, body.taxa#species #sidebar dd { display: inline; }
 body.taxa#species #sidebar .lookalikes dt { margin-top: 1em; display: block; }
+body.taxa#species #sidebar .lookalikes dd { margin-left: 0; }
 body.taxa#species #sidebar .get-help-btn { margin: 0 0 0 10px; }
+body.taxa#species #sidebar li { line-height: 16px; list-style-type: none; }
 body.taxa#species a.enlarge { color: #1a2e11; display: block; margin: 0 0 8px 0; }
 body.taxa#species a.enlarge:hover { text-decoration: none; }
 body.taxa#species a.enlarge img { vertical-align: middle; }
