@@ -26,6 +26,9 @@ urlpatterns = patterns(
     # My Profile page
     url(r'^profile/$', views.profile_view, name='ps-profile'),
 
+    # Staff-Only area urls
+    url(r'^staff/images$', views.screen_images, name='ps-screen-images'),
+
     # AJAX urls
     url(r'^api/edit-profile$', views.ajax_profile_edit,
         name='ps-ajax-profile-edit'),

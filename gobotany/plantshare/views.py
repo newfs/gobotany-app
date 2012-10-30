@@ -1,12 +1,12 @@
-from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.utils import simplejson
 
 from gobotany.plantshare.forms import NewSightingForm, UserProfileForm, ScreenedImageForm
-from gobotany.plantshare.models import Location, Sighting, UserProfile
+from gobotany.plantshare.models import Location, Sighting, UserProfile, ScreenedImage
 from gobotany.plantshare.testdata import sightings_data
 
 def _new_sighting_form_page(request, form):
@@ -98,6 +98,17 @@ def profile_view(request):
         'avatar_form': avatar_form,
     }
     return render_to_response('profile.html', context,
+            context_instance=RequestContext(request))
+
+@login_required
+@user_passes_test(lambda u: u.is_staff, login_url=reverse_lazy('ps-main'))
+def screen_images(request):
+    unscreened_images = ScreenedImage.objects.filter(screened=None)
+
+    context = {
+        'unscreened_images': unscreened_images,
+    }
+    return render_to_response('staff/screen_images.html', context,
             context_instance=RequestContext(request))
 
 # AJAX API
