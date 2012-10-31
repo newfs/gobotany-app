@@ -9,6 +9,7 @@ django-debug-toolbar
 django-haystack==1.2.7
 django-piston==0.2.2
 django-tinymce
+django-imagekit==2.0.2
 python-memcached
 
 # The way we use pysolr introduces an extra dependency:
