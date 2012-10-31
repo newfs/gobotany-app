@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -752,7 +753,7 @@ body.plantshare #login.box input[type='text'], body.plantshare #login.box input[
 #dkey #main a.show-all-button { display: inline-block; font-size: 12px; font-weight: normal; }
 #dkey #main .image-type-selector { display: none; /* once images are loaded, our JS will un-hide */ }
 #dkey #main div.taxon-images { margin-left: 0.75em; text-align: center; }
-#dkey #main div.taxon-images figure { margin: 0 1em 1em 0; width: 160px; vertical-align: top; }
+#dkey #main div.taxon-images figure { display: inline-block; margin: 0 1em 1em 0; width: 160px; vertical-align: top; }
 #dkey #main div.taxon-images img { display: block; margin-bottom: 0.4em; border: 4px solid black; width: 160px; height: 149px; }
 #dkey #main div.taxon-images a { font-size: 12px; text-decoration: none; }
 #dkey #main div.taxon-images a:hover { text-decoration: underline; }

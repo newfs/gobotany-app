@@ -288,9 +288,9 @@ define([
         var images_url = '';  // other taxonomic levels do not get images
     }
 
-    if (images_url) {
-        $.getJSON(images_url, function(data) {install_images(data);});
-    }
+    // if (images_url) {
+    //     $.getJSON(images_url, function(data) {install_images(data);});
+    // }
 
     var install_images = function(data) {
 
@@ -306,7 +306,7 @@ define([
                     .append(
                         $('<img/>').attr('data-lazy-img-src', datum.thumb_url),
                         $taxon_anchor(species_name)
-                    ).appendTo($div),
+                    ), //.appendTo($div),
                 genus: species_name.split(/ /)[0],
                 species: species_name,
                 type: datum.type
@@ -330,6 +330,31 @@ define([
         show_appropriate_images();
     };
 
+    /* Build a list of the taxa images included on the page. */
+
+    var imageinfo_array = _.map($('.taxon-images figure'), function(figure) {
+        var $figure = $(figure);
+        return {
+            $figure: $figure,
+            title: $figure.text().trim(),
+            type: $figure.attr('data-type')
+        };
+    });
+
+    /* Set up the image type <select> box and show the images. */
+
+    var types = _.uniq(_.pluck(imageinfo_array, 'type'));
+    types.sort();
+
+    var $selector = $('.image-type-selector');
+    var $select = $selector.find('select');
+    $.each(types, function(i, type) {
+        var option = $('<option>').attr('value', type).html(type);
+        if (type == 'plant form') option.attr('selected', 'selected');
+        $select.append(option);
+    });
+    $selector.css('display', 'block');
+
     /* "Appropriate" images are those that (a) match the currently
        selected "image type" and (b) belong to a species that lies
        beneath the currently active couplet. */
@@ -347,13 +372,16 @@ define([
         var re = '^(' + etaxa.join('|') + ')\\b';
 
         _.each(imageinfo_array, function(imageinfo) {
-            var is_taxa_match = imageinfo.species.match(re);
+            var is_taxa_match = imageinfo.title.match(re);
             var is_type_match = imageinfo.type == selected_type;
             var show = is_taxa_match && is_type_match;
             imageinfo.$figure.css('display', show ? 'inline-block' : 'none');
         });
         lazy_images.load();
     };
+
+    $select.on('change', show_appropriate_images);
+    show_appropriate_images();
 
     /* Front "Dichotomous Key to Families" page selectboxes for jumping
        to groups, families, and genera. */
