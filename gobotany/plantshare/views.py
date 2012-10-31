@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.utils import simplejson
+from django.forms.models import modelformset_factory
 
 from gobotany.plantshare.forms import NewSightingForm, UserProfileForm, ScreenedImageForm
 from gobotany.plantshare.models import Location, Sighting, UserProfile, ScreenedImage
@@ -103,10 +104,14 @@ def profile_view(request):
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url=reverse_lazy('ps-main'))
 def screen_images(request):
+    ScreeningFormSet = modelformset_factory(ScreenedImage, extra=0, 
+            exclude=('screened', 'screened_by',))
     unscreened_images = ScreenedImage.objects.filter(screened=None)
 
+    formset = ScreeningFormSet(queryset=unscreened_images)
+
     context = {
-        'unscreened_images': unscreened_images,
+        'screening_formset': formset,
     }
     return render_to_response('staff/screen_images.html', context,
             context_instance=RequestContext(request))

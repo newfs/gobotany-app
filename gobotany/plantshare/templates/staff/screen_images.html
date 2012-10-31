@@ -7,13 +7,34 @@
 {% block main_content %}
 <h1>Screen Image Uploads</h1>
 
-<div class="profile box">
+<div class="box">
     <h2>Image Screening</h2>
     <p>Images uploaded by Plantshare users must be screened before they will
     appear publically or be shared with other users.  Please select images
     which do not contain inappropriate or copyrighted material, and choose
     "Approve" to approve the images for public display.</p>
 </div>
+
+<form>
+    <table>
+      <tr>
+        <th>Approved</th>
+        <th>Image</th>
+        <th>Type</th>
+        <th>Uploaded By</th>
+        <th>Uploaded Date</th>
+      </tr>
+    {% for form in screening_formset %}
+      <tr>
+        <td>{{ form.is_approved }}</td>
+        <td><img src="{{ form.instance.image.url }}" /></td>
+        <td>{{ form.instance.get_image_type_display }}</td>
+        <td>{{ form.instance.uploaded_by.get_full_name }}</td>
+        <td>{{ form.instance.uploaded }}</td>
+      </tr>
+    {% endfor %}
+    </table>
+</form>
 
 {% endblock %}
 
