@@ -269,67 +269,6 @@ define([
         });
     });
 
-    /* Load images for the user to enjoy. */
-
-    var imageinfo_array = [];
-    var key_rank = $('.couplets').attr('data-key-rank');
-    var key_title = $('.couplets').attr('data-key-title');
-
-    if (key_rank == 'family') {
-        var family = key_title.split(/ /).pop().toLowerCase();
-        var images_url = '/api/families/' + family + '/';
-    } else if (key_rank == 'genus') {
-        var genus = key_title.split(/ /).pop().toLowerCase();
-        var images_url = '/api/genera/' + genus + '/';
-    } else if (key_rank == 'species') {
-        var name = key_title.replace(' ', '%20');
-        var images_url = '/api/taxa/' + name + '/';
-    } else {
-        var images_url = '';  // other taxonomic levels do not get images
-    }
-
-    // if (images_url) {
-    //     $.getJSON(images_url, function(data) {install_images(data);});
-    // }
-
-    var install_images = function(data) {
-
-        /* First, build the sample_images data structure that contains
-           one record for every image. */
-
-        var $div = $('.taxon-images');
-
-        imageinfo_array = _.map(data.images, function(datum) {
-            var species_name = datum.title.split(':')[0];
-            var imageinfo = {
-                $figure: $('<figure/>')
-                    .append(
-                        $('<img/>').attr('data-lazy-img-src', datum.thumb_url),
-                        $taxon_anchor(species_name)
-                    ), //.appendTo($div),
-                genus: species_name.split(/ /)[0],
-                species: species_name,
-                type: datum.type
-            };
-            return imageinfo;
-        });
-
-        var types = _.uniq(_.pluck(imageinfo_array, 'type'));
-        types.sort();
-
-        var $selector = $('.image-type-selector');
-        var $select = $selector.find('select');
-        $.each(types, function(i, type) {
-            var option = $('<option>').attr('value', type).html(type);
-            if (type == 'plant form') option.attr('selected', 'selected');
-            $select.append(option);
-        });
-        $selector.css('display', 'block');
-
-        $select.on('change', show_appropriate_images);
-        show_appropriate_images();
-    };
-
     /* Build a list of the taxa images included on the page. */
 
     var imageinfo_array = _.map($('.taxon-images figure'), function(figure) {
