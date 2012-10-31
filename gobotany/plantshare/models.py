@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 
 from storages.backends.s3boto import S3BotoStorage
+from imagekit.models import ProcessedImageField, ImageSpecField
+from imagekit.processors.resize import ResizeToFit
 
 SHARING_CHOICES = (
     ('PRIVATE', 'Only PlantShare staff and myself'),
@@ -124,8 +126,17 @@ else:
     upload_storage = S3BotoStorage(location='/upload_images',
             base_url=urlparse.urljoin(settings.MEDIA_URL, 'upload_images/'))
 
+def rename_image_by_type(instance, filename):
+    return '{0}.png'.format('_'.join([instance.image_type.lower(),
+        instance.uploaded_by.username]))
+
+
 class ScreenedImage(models.Model):
-    image = models.ImageField(upload_to='.', storage=upload_storage)
+    image = ProcessedImageField(upload_to=rename_image_by_type, 
+                storage=upload_storage, format='PNG', 
+                processors=[ResizeToFit(500, 500)])
+    thumb = ImageSpecField(image_field='image', storage=upload_storage, format='PNG',
+                processors=[ResizeToFit(128, 128, upscale=True)]) 
 
     uploaded = models.DateTimeField(blank=False, auto_now_add=True)
     uploaded_by = models.ForeignKey(User, null=False, related_name='images_uploaded')

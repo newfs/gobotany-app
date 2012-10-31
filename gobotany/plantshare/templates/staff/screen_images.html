@@ -27,10 +27,10 @@
     {% for form in screening_formset %}
       <tr>
         <td>{{ form.is_approved }}</td>
-        <td><img src="{{ form.instance.image.url }}" /></td>
+        <td><img src="{{ form.instance.thumb.url }}" /></td>
         <td>{{ form.instance.get_image_type_display }}</td>
         <td>{{ form.instance.uploaded_by.get_full_name }}</td>
-        <td>{{ form.instance.uploaded }}</td>
+        <td>{{ form.instance.uploaded|date:"m/d/Y" }}</td>
       </tr>
     {% endfor %}
     </table>
