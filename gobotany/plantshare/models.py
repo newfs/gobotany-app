@@ -1,4 +1,5 @@
 import os
+import urlparse
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -116,10 +117,12 @@ class Sighting(models.Model):
 
 if settings.DEBUG:
     # Local, debug upload
-    upload_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'upload_images'))
+    upload_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'upload_images'),
+            base_url=urlparse.urljoin(settings.MEDIA_URL, 'upload_images/'))
 else:
     # Direct upload to S3
-    upload_storage = S3BotoStorage(location='/upload_images')
+    upload_storage = S3BotoStorage(location='/upload_images',
+            base_url=urlparse.urljoin(settings.MEDIA_URL, 'upload_images/'))
 
 class ScreenedImage(models.Model):
     image = models.ImageField(upload_to='.', storage=upload_storage)
