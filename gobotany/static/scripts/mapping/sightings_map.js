@@ -39,6 +39,15 @@ define([
         this.add_marker(this.latitude, this.longitude, this.center_title);
     };
 
+    SightingsMap.prototype.show_plant = function (plant_name) {
+        // Get sightings data from the server and show them on the map.
+        $.ajax({
+            url: '/ps/api/sightings/?plant=' + plant_name   // TODO: URL base
+        }).done(function (json) {
+            console.log('json:', json);
+        });
+    };
+
     // Return the constructor function.
     return SightingsMap;
 });

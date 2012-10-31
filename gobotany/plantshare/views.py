@@ -7,6 +7,7 @@ from django.utils import simplejson
 
 from gobotany.plantshare.forms import NewSightingForm, UserProfileForm, ScreenedImageForm
 from gobotany.plantshare.models import Location, Sighting, UserProfile
+from gobotany.plantshare.testdata import sightings_data
 
 def _new_sighting_form_page(request, form):
     """Give a new-sighting form, either blank or with as-yet-invalid data."""
@@ -139,3 +140,11 @@ def ajax_image_upload(request):
             print 'Form is invalid'
 
     return HttpResponse(simplejson.dumps({'success': True}), mimetype='application/json')
+
+def ajax_sightings(request):
+    """Return sightings data for a plant."""
+    # TODO: replace dummy data with real query results
+    plant_name = request.GET.get('plant')
+    sightings = sightings_data[plant_name]
+    return HttpResponse(simplejson.dumps(sightings),
+                        mimetype='application/json')

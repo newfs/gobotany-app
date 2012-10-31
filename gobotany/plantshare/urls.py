@@ -27,6 +27,9 @@ urlpatterns = patterns(
     url(r'^profile/$', views.profile_view, name='ps-profile'),
 
     # AJAX urls
-    url(r'^api/edit-profile$', views.ajax_profile_edit, name='ps-ajax-profile-edit'),
-    url(r'^api/image-upload$', views.ajax_image_upload, name='ps-ajax-image-upload'),
+    url(r'^api/edit-profile$', views.ajax_profile_edit,
+        name='ps-ajax-profile-edit'),
+    url(r'^api/image-upload$', views.ajax_image_upload,
+        name='ps-ajax-image-upload'),
+    url(r'^api/sightings/$', views.ajax_sightings, name='ps-ajax-sightings'),
     )
