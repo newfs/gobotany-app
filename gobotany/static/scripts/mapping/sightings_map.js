@@ -13,6 +13,7 @@ define([
         this.longitude = this.$map_div.attr('data-longitude');
         this.center_title = this.$map_div.attr('data-center-title');
         this.map = null;
+        this.info_window = null;
     };
 
     SightingsMap.prototype.setup = function () {
@@ -23,6 +24,10 @@ define([
             mapTypeId: google_maps.MapTypeId.ROADMAP
         };
         this.map = new google_maps.Map(this.$map_div.get(0), map_options);
+        var info_window_options = {
+            maxWidth: 300
+        };
+        this.info_window = new google_maps.InfoWindow(info_window_options);
     };
 
     SightingsMap.prototype.add_marker = function (latitude, longitude,
@@ -32,6 +37,12 @@ define([
             position: lat_long,
             map: this.map,
             title: title
+        });
+        var html = title;
+        var info_window = this.info_window;
+        google_maps.event.addListener(marker, 'click', function () {
+            info_window.setContent(html);
+            info_window.open(this.map, marker);
         });
     };
 
@@ -45,7 +56,7 @@ define([
             url: '/ps/api/sightings/?plant=' + plant_name,   // TODO: URL base
             context: this
         }).done(function (json) {
-            for (var i in json.sightings) {
+            for (var i = 0; i <= json.sightings.length; i++) {
                 var sighting = json.sightings[i];
                 var location = sighting.location;
                 if (location === undefined) {
