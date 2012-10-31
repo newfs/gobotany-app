@@ -11,8 +11,11 @@
             body {
                 padding: 2em 4em;
             }
+            h2 {
+                margin-top: 0.5em;
+            }
             h3, h4 {
-                padding: 0.5em 0;
+                padding: 1em 0 0;
             }
         </style>
 
@@ -45,15 +48,21 @@
 
         <h3>Basic map centered on New England</h3>
 
+        <p>Rumford, Maine</p>
+
         {# New England map centered on Rumford, Maine via template tag #}
         {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="480px" width="360px" zoom="6" id="new-england-map" %}
 
         <h3>Sightings map (mini) for PlantShare main page</h3>
 
+        <p>Acer saccharum</p>
+
         {# Sightings map (mini) via template tag #}
         {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="297px" width="479px" zoom="6" id="mini-sightings-map" %}
 
         <h3>Sightings map for Sightings Locator page</h3>
+
+        <p>Nymhphaea odorata</p>
 
         {# Sightings map via template tag #}
         {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="524px" width="710px" zoom="6" id="sightings-map" %}

@@ -147,4 +147,4 @@ def ajax_sightings(request):
     plant_name = request.GET.get('plant')
     sightings = sightings_data[plant_name]
     return HttpResponse(simplejson.dumps(sightings),
-                        mimetype='application/json')
+                        mimetype='application/json; charset=utf-8')

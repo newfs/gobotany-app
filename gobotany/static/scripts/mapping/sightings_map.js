@@ -42,9 +42,18 @@ define([
     SightingsMap.prototype.show_plant = function (plant_name) {
         // Get sightings data from the server and show them on the map.
         $.ajax({
-            url: '/ps/api/sightings/?plant=' + plant_name   // TODO: URL base
+            url: '/ps/api/sightings/?plant=' + plant_name,   // TODO: URL base
+            context: this
         }).done(function (json) {
-            console.log('json:', json);
+            for (var i in json.sightings) {
+                var sighting = json.sightings[i];
+                var location = sighting.location;
+                if (location === undefined) {
+                    location = sighting.latitude + ', ' + sighting.longitude;
+                }
+                this.add_marker(sighting.latitude, sighting.longitude,
+                                location);
+            }
         });
     };
 
