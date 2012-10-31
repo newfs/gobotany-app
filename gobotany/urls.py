@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls.defaults import include, patterns, url
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -22,6 +23,13 @@ urlpatterns = patterns(
     url(r'^', include('gobotany.simplekey.urls')),
     )
 
+# Serve uploaded media files as static files in development
+if settings.DEBUG:
+    urlpatterns += patterns('',
+            url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+                'document_root': settings.MEDIA_ROOT,
+            }),
+       )
 # For now, always have staticfiles turned on, even in production.
 
 class FakeSettings():
