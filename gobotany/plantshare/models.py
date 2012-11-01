@@ -124,7 +124,7 @@ if settings.DEBUG:
 else:
     # Direct upload to S3
     upload_storage = S3BotoStorage(location='/upload_images',
-            base_url=urlparse.urljoin(settings.MEDIA_URL, 'upload_images/'))
+            bucket='upload_images')
 
 def rename_image_by_type(instance, filename):
     return '{0}.png'.format('_'.join([instance.image_type.lower(),
