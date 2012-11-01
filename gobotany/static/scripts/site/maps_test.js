@@ -21,14 +21,12 @@ define([
         var mini_sightings_map_div = $('#mini-sightings-map');
         var mini_sightings_map = new SightingsMap(mini_sightings_map_div);
         mini_sightings_map.setup();
-        //mini_sightings_map.mark_center();
         mini_sightings_map.show_plant('Acer saccharum');
 
         // Set up map for Sightings Locator.
         var sightings_map_div = $('#sightings-map');
         var sightings_map = new SightingsMap(sightings_map_div);
         sightings_map.setup();
-        //sightings_map.mark_center();
         sightings_map.show_plant('Nymphaea odorata');
     });
 });
