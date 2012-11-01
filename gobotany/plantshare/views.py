@@ -105,7 +105,7 @@ def profile_view(request):
 @user_passes_test(lambda u: u.is_staff, login_url=reverse_lazy('ps-main'))
 def screen_images(request):
     ScreeningFormSet = modelformset_factory(ScreenedImage, extra=0, 
-            exclude=('screened', 'screened_by',))
+            fields=('is_approved',))
     unscreened_images = ScreenedImage.objects.filter(screened=None)
 
     formset = ScreeningFormSet(queryset=unscreened_images)
