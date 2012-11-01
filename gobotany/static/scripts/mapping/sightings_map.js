@@ -31,14 +31,24 @@ define([
     };
 
     SightingsMap.prototype.add_marker = function (latitude, longitude,
-                                                  title) {
+                                                  title, created, photos) {
         var lat_long = new google_maps.LatLng(latitude, longitude);
         var marker = new google.maps.Marker({
             position: lat_long,
             map: this.map,
             title: title
         });
-        var html = title;
+        var html = '<div class="info-window"><p>' + title;
+        if (created !== undefined) {
+            html += ' (' + created + ')';
+        }
+        html += '</p>';
+        if (photos !== undefined) {
+            var photo_url = photos[0];
+            html += ' <img src="' + photo_url +
+                '" style="height: 75px; width: 80px">';
+        }
+        html += '</div>';
         var info_window = this.info_window;
         google_maps.event.addListener(marker, 'click', function () {
             info_window.setContent(html);
@@ -63,7 +73,7 @@ define([
                     location = sighting.latitude + ', ' + sighting.longitude;
                 }
                 this.add_marker(sighting.latitude, sighting.longitude,
-                                location);
+                                location, sighting.created, sighting.photos);
             }
         });
     };

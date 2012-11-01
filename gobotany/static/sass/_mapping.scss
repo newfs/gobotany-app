@@ -4,6 +4,11 @@
 .map {
     border: 1px solid $border-green;
 }
+.info-window {
+    p {
+        margin-top: 0;
+    }
+}
 
 /* Plant distribution maps */
 .section {

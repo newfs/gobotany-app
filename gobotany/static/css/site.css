@@ -534,6 +534,8 @@ input.suggest + div li.selected { background-color: #666; color: #fff; }
 /* Location and sightings maps */
 .map { border: 1px solid #c3d941; }
 
+.info-window p { margin-top: 0; }
+
 /* Plant distribution maps */
 .section.map { border: none; }
 .section.map p { font-size: 9px; margin-bottom: 6px; }
