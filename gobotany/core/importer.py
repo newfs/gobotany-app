@@ -1571,12 +1571,11 @@ class Importer(object):
                 parts = [item for tup in parts for item in tup]   # flatten
 
             for lookalike, how_to_tell in zip(parts[0::2], parts[1::2]):
-                how_to_tell = how_to_tell.strip()
                 lookalike_table.get(
                     taxon_id=taxon_map[row['scientific__name']],
                     lookalike_scientific_name=lookalike.strip(),
                     ).set(
-                    lookalike_characteristic=how_to_tell,
+                    lookalike_characteristic=how_to_tell.strip(),
                     )
 
         lookalike_table.save()
