@@ -159,3 +159,18 @@ class LookalikesTests(FunctionalCase):
             self.assertTrue(len(notes) > 0)
             for note in notes:
                 self.assertTrue(len(note.text) > 0)
+
+    def test_lookalikes_with_notes(self):
+        self.get('/species/abies/balsamea/')
+        lookalike = self.css('#sidebar .lookalikes dt')[0].text
+        notes = self.css('#sidebar .lookalikes dd')[0].text
+        self.assertTrue(lookalike.find(':') > -1);
+        self.assertTrue(len(notes) > 0)
+        self.assertTrue(notes.find('winter buds not resinous,') > -1)
+
+    def test_lookalikes_without_notes(self):
+        self.get('/species/abies/concolor/')
+        lookalike = self.css('#sidebar .lookalikes dt')[0].text
+        notes = self.css('#sidebar .lookalikes dd')[0].text
+        self.assertTrue(lookalike.find(':') == -1);
+        self.assertTrue(len(notes) == 0)

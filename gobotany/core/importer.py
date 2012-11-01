@@ -1560,15 +1560,23 @@ class Importer(object):
             # Clean up Windows dash characters.
             tips = row['lookalike_tips'].replace(u'\u2013', '-')
 
-            parts = re.split('(\w+ \w+):', tips)   # Split on plant name
-            parts = parts[1:]   # Strip the first item, which is empty
+            if tips.find(':') > 1:
+                parts = re.split('(\w+ \w+):', tips)   # Split on plant name
+                parts = parts[1:]   # Strip the first item, which is empty
+            else:
+                # Handle entries that do not yet have explanatory text.
+                # In this case, multiple plants are allowed if separated
+                # by a semicolon.
+                parts = [(plant, '') for plant in tips.split(';')]
+                parts = [item for tup in parts for item in tup]   # flatten
 
             for lookalike, how_to_tell in zip(parts[0::2], parts[1::2]):
+                how_to_tell = how_to_tell.strip()
                 lookalike_table.get(
                     taxon_id=taxon_map[row['scientific__name']],
                     lookalike_scientific_name=lookalike.strip(),
                     ).set(
-                    lookalike_characteristic=how_to_tell.strip(),
+                    lookalike_characteristic=how_to_tell,
                     )
 
         lookalike_table.save()

@@ -301,7 +301,7 @@
                     <h4>Sometimes Confused With:</h4>
                     <dl>
                     {% for lookalike in lookalikes %}
-                    <dt><a href="/species/{{ lookalike.lookalike_scientific_name|lower|replace:' ,/' }}/"><em>{{ lookalike.lookalike_scientific_name }}</em></a>:</dt>
+                        <dt><a href="/species/{{ lookalike.lookalike_scientific_name|lower|replace:' ,/' }}/"><em>{{ lookalike.lookalike_scientific_name }}</em></a>{% if lookalike.lookalike_characteristic %}:{% endif %}</dt>
                         <dd>{{ lookalike.lookalike_characteristic }}</dd>
                     {% endfor %}
                     </dl>
