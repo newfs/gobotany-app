@@ -360,6 +360,55 @@ body.plantshare {
             width: 95%;
         }
     }
+
+    &#screen-images {
+        table.unscreened {
+            margin: 20px 0;
+            padding: 0;
+            table-layout: fixed;
+            overflow: hidden;
+            width: 100%;
+            text-align: center;
+
+            tr.header {
+                height: 20px;
+                th {
+                    padding-bottom: 10px;
+                }
+            }
+            tr {
+                height: 128px;
+                vertical-align: top;
+            }
+
+            th.approval, td.approval {
+                width: 150px;
+                overflow: hidden;
+
+                input {
+                    width: 50px;
+                }
+            }
+            th.thumb, td.thumb {
+                width: 138px;
+            }
+
+        }
+
+        div.form-control {
+            margin: 0 30px;
+        }
+        .save-btn {
+            background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px;
+            width: 99px !important;
+            height: 32px;
+            font-size: 0;
+            -moz-box-shadow: 0 !important;
+            border: 0 none !important;
+            display: block;
+            text-indent: -9999px;
+        }
+    }
 }
 
 /* Begin media queries styles for PlantShare. */

@@ -1,8 +1,8 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
 
-{% block title %}PlantShare{% endblock %}
+{% block title %}Screen Image Uploads: PlantShare{% endblock %}
 
-{% block body_attributes %}id="plantshare" class="plantshare"{% endblock %}
+{% block body_attributes %}id="screen-images" class="plantshare screen-images"{% endblock %}
 
 {% block main_content %}
 <h1>Screen Image Uploads</h1>
@@ -11,17 +11,18 @@
     <h2>Image Screening</h2>
     <p>Images uploaded by Plantshare users must be screened before they will
     appear publically or be shared with other users.  Please select images
-    which do not contain inappropriate or copyrighted material, and choose
-    "Approve" to approve the images for public display.</p>
+    which do not contain inappropriate or copyrighted material, and check
+    "Approve" to approve the images for public display. Images left unchecked
+    will be rejected as inappropriate.</p>
 </div>
 
 <form method="POST" action="">
     {% csrf_token %}
     {{ screening_formset.management_form }}
-    <table>
-      <tr>
-        <th>Approved</th>
-        <th>Image</th>
+    <table class="unscreened">
+      <tr class="header">
+        <th class="approval">Approved</th>
+        <th class="thumb">Image</th>
         <th>Type</th>
         <th>Uploaded By</th>
         <th>Uploaded Date</th>
@@ -29,8 +30,8 @@
     {% for form in screening_formset %}
       {{ form.id }}
       <tr>
-        <td>{{ form.is_approved }}</td>
-        <td><img src="{{ form.instance.thumb.url }}" /></td>
+        <td class="approval">{{ form.is_approved }}</td>
+        <td class="thumb"><img src="{{ form.instance.thumb.url }}" /></td>
         <td>{{ form.instance.get_image_type_display }}</td>
         <td>{{ form.instance.uploaded_by.get_full_name }}</td>
         <td>{{ form.instance.uploaded|date:"m/d/Y" }}</td>
@@ -38,11 +39,8 @@
     {% empty %}
       <tr><td colspan=5>There are currently no unscreened images</td></tr>
     {% endfor %}
-      <tr>
-        <td colspan="2"><input type="submit" value="Submit" /></td>
-        <td colspan="3">&nbsp;</td>
-      </tr>
     </table>
+    <div class="form-control"><input type="submit" value="Save" class="save-btn" /></div>
 </form>
 
 {% endblock %}
