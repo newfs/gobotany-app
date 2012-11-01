@@ -15,7 +15,9 @@
     "Approve" to approve the images for public display.</p>
 </div>
 
-<form>
+<form method="POST" action="">
+    {% csrf_token %}
+    {{ screening_formset.management_form }}
     <table>
       <tr>
         <th>Approved</th>
@@ -25,6 +27,7 @@
         <th>Uploaded Date</th>
       </tr>
     {% for form in screening_formset %}
+      {{ form.id }}
       <tr>
         <td>{{ form.is_approved }}</td>
         <td><img src="{{ form.instance.thumb.url }}" /></td>
@@ -32,7 +35,13 @@
         <td>{{ form.instance.uploaded_by.get_full_name }}</td>
         <td>{{ form.instance.uploaded|date:"m/d/Y" }}</td>
       </tr>
+    {% empty %}
+      <tr><td colspan=5>There are currently no unscreened images</td></tr>
     {% endfor %}
+      <tr>
+        <td colspan="2"><input type="submit" value="Submit" /></td>
+        <td colspan="3">&nbsp;</td>
+      </tr>
     </table>
 </form>
 
