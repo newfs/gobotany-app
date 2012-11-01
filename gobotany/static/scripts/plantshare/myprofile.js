@@ -71,6 +71,8 @@ define([
         });
 
         $('#upload-avatar-form input[type="file"]').change(function() {
+            /* Diable client-side image preview for now */
+            /*
             var reader = new FileReader();
             var $avatar_image = $('.image-modal img');
 
@@ -79,6 +81,7 @@ define([
             }
 
             reader.readAsDataURL(this.files[0]);
+            */
         });
 
         $('.image-modal .close').click(function() {
