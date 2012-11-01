@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
@@ -106,8 +107,16 @@ def profile_view(request):
 def screen_images(request):
     ScreeningFormSet = modelformset_factory(ScreenedImage, extra=0, 
             fields=('is_approved',))
-    unscreened_images = ScreenedImage.objects.filter(screened=None)
+    if request.method == 'POST':
+        formset = ScreeningFormSet(request.POST)
+        screened_images = formset.save(commit=False)
+        for image in screened_images:
+            image.screened = datetime.now()
+            image.screened_by = request.user
 
+        formset.save()
+
+    unscreened_images = ScreenedImage.objects.filter(screened=None)
     formset = ScreeningFormSet(queryset=unscreened_images)
 
     context = {
