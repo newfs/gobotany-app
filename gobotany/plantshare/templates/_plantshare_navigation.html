@@ -16,6 +16,14 @@
     <div class="section">
         <h4>{% nav_item 'Log Out' auth_logout %}</h4>
     </div>
+    {% if user.is_staff %}
+    <div class="section">
+        <h3>Staff Only</h3>
+    </div>
+    <div class="section">
+        <h4>{% nav_item 'Screen Image Uploads' ps-screen-images %}</h4>
+    </div>
+    {% endif %}
     {% else %}
     <div class="section">
         <h4>{% nav_item 'Sign Up for PlantShare' registration_register %}</h4>
