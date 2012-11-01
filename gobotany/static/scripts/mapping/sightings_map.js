@@ -25,27 +25,35 @@ define([
         };
         this.map = new google_maps.Map(this.$map_div.get(0), map_options);
         var info_window_options = {
-            maxWidth: 300
+            //maxWidth: 300
         };
         this.info_window = new google_maps.InfoWindow(info_window_options);
     };
 
     SightingsMap.prototype.add_marker = function (latitude, longitude,
-                                                  title, created, photos) {
+                                                  title, user, created,
+                                                  photos, sighting_id) {
         var lat_long = new google_maps.LatLng(latitude, longitude);
         var marker = new google.maps.Marker({
             position: lat_long,
             map: this.map,
             title: title
         });
-        var html = '<div class="info-window"><p>' + title;
-        if (created !== undefined) {
-            html += ' (' + created + ')';
+        var html = '<div class="info-window"><h5>' + title + '</h5>';
+        if (user !== undefined) {
+            html += '<p>by ' + user;
+            if (created !== undefined) {
+                html += ' on ' + created;
+            }
+            html += '</p>';
         }
-        html += '</p>';
         if (photos !== undefined) {
             var photo_url = photos[0];
             html += ' <img src="' + photo_url + '">';
+        }
+        if (sighting_id !== undefined) {
+            html += '<p><a href="/ps/sightings/' + sighting_id +
+                    '/">more</a></p>';
         }
         html += '</div>';
         var info_window = this.info_window;
@@ -72,7 +80,8 @@ define([
                     location = sighting.latitude + ', ' + sighting.longitude;
                 }
                 this.add_marker(sighting.latitude, sighting.longitude,
-                                location, sighting.created, sighting.photos);
+                                location, sighting.user, sighting.created,
+                                sighting.photos, sighting.id);
             }
         });
     };

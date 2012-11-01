@@ -533,7 +533,9 @@ input.suggest + div li.selected { background-color: #666; color: #fff; }
 /* Location and sightings maps */
 .map { border: 1px solid #c3d941; }
 
+.info-window h5 { font-size: 14px; }
 .info-window p { margin-top: 0; }
+.info-window img { float: left; margin-right: 10px; }
 
 #mini-sightings-map .info-window img { height: 75px; width: 80px; }
 

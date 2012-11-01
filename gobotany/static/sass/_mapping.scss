@@ -5,8 +5,15 @@
     border: 1px solid $border-green;
 }
 .info-window {
+    h5 {
+        font-size: 14px;
+    }
     p {
         margin-top: 0;
+    }
+    img {
+        float: left;
+        margin-right: 10px;
     }
 }
 #mini-sightings-map .info-window {
