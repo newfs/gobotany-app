@@ -1,37 +1,57 @@
 # -*- coding: utf-8 -*-
-"""Tests for the Simple and Full Keys."""
+"""Tests for the taxa (family, genus, and species) pages."""
 
 import re
 from gobotany.libtest import FunctionalCase
 from selenium.common.exceptions import NoSuchElementException
 
 
-class SimpleKeyTests(FunctionalCase):
+class FamilyTests(FunctionalCase):
 
-    def test_simple_first_level_page_title(self):
-        self.get('/simple/')
-        title = self.css1('title').text
-        self.assertEqual(title,
-            'Simple Key for Plant Identification: Go Botany')
+    def test_family_page(self):
+        self.get('/family/lycopodiaceae/')
+        heading = self.css('#main h1')
+        self.assertTrue(len(heading))
+        self.assertTrue(heading[0].text == 'Family: Lycopodiaceae')
+        common_name = self.css('#main h3')
+        self.assertTrue(len(common_name))
 
-    def test_simple_first_level_page_main_heading(self):
-        self.get('/simple/')
-        heading = self.css1('#main h2').text
-        self.assertEqual(heading, 'Simple Key')
+    def test_family_page_has_example_images(self):
+        self.get('/family/lycopodiaceae/')
+        example_images = self.css('#main .pics a img')
+        self.assertTrue(len(example_images))
+
+    def test_family_page_has_list_of_genera(self):
+        self.get('/family/lycopodiaceae/')
+        genera = self.css('#main .genera li')
+        self.assertTrue(len(genera))
 
 
-class FullKeyTests(FunctionalCase):
+class GenusTests(FunctionalCase):
 
-    def test_full_first_level_page_title(self):
-        self.get('/full/')
-        title = self.css1('title').text
-        self.assertEqual(title,
-            'Full Key for Plant Identification: Go Botany')
+    def test_genus_page(self):
+        self.get('/genus/dendrolycopodium/')
+        heading = self.css('#main h1')
+        self.assertTrue(len(heading))
+        self.assertTrue(heading[0].text == 'Genus: Dendrolycopodium')
+        common_name = self.css('#main h3')
+        self.assertTrue(len(common_name))
+        self.assertTrue(common_name[0].text == 'tree-clubmoss')
 
-    def test_full_first_level_page_main_heading(self):
-        self.get('/full/')
-        heading = self.css1('#main h2').text
-        self.assertEqual(heading, 'Full Key')
+    def test_genus_page_has_example_images(self):
+        self.get('/genus/dendrolycopodium/')
+        example_images = self.css('#main .pics a img')
+        self.assertTrue(len(example_images))
+
+    def test_genus_page_has_family_link(self):
+        self.get('/genus/dendrolycopodium/')
+        family_link = self.css('#main p.family a')
+        self.assertTrue(len(family_link))
+
+    def test_genus_page_has_list_of_species(self):
+        self.get('/genus/dendrolycopodium/')
+        species = self.css('#main .species li')
+        self.assertTrue(len(species))
 
 
 class SpeciesPageTests(FunctionalCase):
@@ -112,3 +132,30 @@ class SpeciesPageTests(FunctionalCase):
     def test_non_simple_key_species_page_has_note_about_data(self):
         # Temporarily, non-Simple-Key pages show a data disclaimer.
         self.get('/species/adiantum/aleuticum/')
+        self.assertTrue(self.css1('.content .note'))
+
+
+class LookalikesTests(FunctionalCase):
+
+    def test_lookalikes_are_in_search_indexes_for_many_pages(self):
+        self.get('/search/?q=sometimes+confused+with')
+        page_links = self.css('.search-navigation li')
+        self.assertTrue(len(page_links) > 10)   # more than 100 results
+
+    def test_species_pages_have_lookalikes(self):
+        # Verify a sampling of the species expected to have lookalikes.
+        SPECIES = ['Huperzia appressa', 'Lonicera dioica', 'Actaea rubra',
+                   'Digitalis purpurea', 'Brachyelytrum aristosum']
+        for s in SPECIES:
+            url = '/species/%s/' % s.replace(' ', '/').lower()
+            self.get(url)
+            heading = self.css('#sidebar .lookalikes h4')
+            self.assertTrue(heading)
+            lookalikes = self.css('#sidebar .lookalikes dt')
+            self.assertTrue(len(lookalikes) > 0)
+            for lookalike in lookalikes:
+                self.assertTrue(len(lookalike.text) > 0)
+            notes = self.css('#sidebar .lookalikes dd')
+            self.assertTrue(len(notes) > 0)
+            for note in notes:
+                self.assertTrue(len(note.text) > 0)
