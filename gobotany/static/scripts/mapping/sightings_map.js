@@ -45,8 +45,7 @@ define([
         html += '</p>';
         if (photos !== undefined) {
             var photo_url = photos[0];
-            html += ' <img src="' + photo_url +
-                '" style="height: 75px; width: 80px">';
+            html += ' <img src="' + photo_url + '">';
         }
         html += '</div>';
         var info_window = this.info_window;
