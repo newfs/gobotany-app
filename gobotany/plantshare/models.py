@@ -79,6 +79,11 @@ class UserProfile(models.Model):
         choices=SHARING_CHOICES, default=SHARING_CHOICES[0][0])
     saying = models.CharField(max_length=100, blank=True)
 
+    # User's location preferences
+    location_visibility = models.CharField(blank=False, max_length=7,
+        choices=SHARING_CHOICES, default=SHARING_CHOICES[0][0])
+    location = models.ForeignKey(Location, null=True)
+
 
 class SharingGroup(models.Model):
     name = models.CharField(max_length=100)
