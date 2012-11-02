@@ -75,7 +75,11 @@ class NewSightingForm(forms.Form):
 class UserProfileForm(forms.ModelForm): 
     class Meta:
         model = UserProfile
-        fields = ('sharing_visibility', 'display_name', 'saying',)
+        fields = ('sharing_visibility', 'display_name', 'saying', 
+            'location_visibility', 'location',)
+        widgets = {
+            'location': LocationField()
+        }
 
 class ScreenedImageForm(forms.ModelForm):
     class Meta:
