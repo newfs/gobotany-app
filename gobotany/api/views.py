@@ -251,8 +251,6 @@ def dkey_images(request, slug):
     if rank is None:
         return []
 
-    print rank, taxa_names
-
     taxa = None
     ctype = ContentType.objects.get_for_model(Taxon)
 
@@ -291,8 +289,10 @@ def dkey_images(request, slug):
 
     image_map = {
         (image.object_id, image.image_type.name): image.thumb_small()
-        for image in ContentImage.objects.filter(
-            content_type=ctype, object_id__in=taxon_ids, rank=1)}
+        for image in ContentImage.objects
+            .filter(content_type=ctype, object_id__in=taxon_ids, rank=1)
+            .select_related('image_type')
+        }
 
     image_types = sorted(set(key[1] for key in image_map))
     image_lists = []
@@ -320,9 +320,6 @@ def dkey_images(request, slug):
             })
 
     image_lists.sort(key=itemgetter('title'))
-
-    # from pprint import pprint
-    # pprint(image_lists)
 
     return jsonify({
             'image_types': image_types,
