@@ -19,6 +19,11 @@ from django.db import models
 # genus -> subkey -> species
 # genus -> subgroup -> tribe -> species
 
+def slug_to_title(slug):
+    """The canonical transform between a URL slug and a dkey Page title."""
+    return slug.replace(u'-', u' ').capitalize().replace(
+        ' families', ' Families').replace(' group ', ' Group ')
+
 class Page(models.Model):
     chapter = models.TextField(blank=True)
     title = models.TextField(unique=True)
