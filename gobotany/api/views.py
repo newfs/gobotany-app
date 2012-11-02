@@ -1,17 +1,20 @@
 import hashlib
 import json
 from collections import defaultdict
+from operator import itemgetter
 from urllib import urlencode
 
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
+from django.db import connection
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import etag
 from django.views.decorators.vary import vary_on_headers
 
+import gobotany.dkey.models as dkey_models
 from gobotany.core import igdt
 from gobotany.core.models import (
     Character, ContentImage,
@@ -226,6 +229,105 @@ def questions(request, pile_slug):
     #output = render_to_response('questions_test.html',
     #                            {'questions': questions})
     return output
+
+# The images that should be displayed on a particular dkey page.
+
+def dkey_images(request, slug):
+
+    # Whether a dkey page displays groups of families, genera, or taxa,
+    # we need to pull exactly one species to stand as the representative
+    # for each taxon, and then grab all of the rank=1 content images for
+    # those species.
+
+    title = dkey_models.slug_to_title(slug)
+    page = get_object_or_404(dkey_models.Page, title=title)
+
+    rank = None
+    taxa_names = []
+    for lead in page.leads.all():
+        if lead.taxa_cache:
+            rank, comma_list = lead.taxa_cache.split(':')
+            taxa_names.extend(comma_list.split(','))
+    if rank is None:
+        return []
+
+    print rank, taxa_names
+
+    taxa = None
+    ctype = ContentType.objects.get_for_model(Taxon)
+
+    if rank == u'family':
+
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT f.name,
+              (SELECT id FROM core_taxon WHERE family_id = f.id LIMIT 1)
+              FROM core_family f
+              WHERE f.name IN %s""", (tuple(taxa_names),))
+        family_map = { taxon_id: family_name
+                       for family_name, taxon_id in cursor.fetchall() }
+        taxon_ids = family_map.keys()
+
+    elif rank == u'genus':
+
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT
+              (SELECT id FROM core_taxon WHERE genus_id = g.id LIMIT 1)
+              FROM core_genus g
+              WHERE g.name IN %s""", (tuple(taxa_names),))
+        taxon_ids = [ id for (id,) in cursor.fetchall() ]
+
+    elif rank == u'species':
+
+        taxa = Taxon.objects.filter(scientific_name__in=taxa_names)
+        taxon_ids = [ taxon.id for taxon in taxa ]
+
+    else:
+        return {}
+
+    if taxa is None:
+        taxa = Taxon.objects.filter(id__in=taxon_ids)
+
+    image_map = {
+        (image.object_id, image.image_type.name): image.thumb_small()
+        for image in ContentImage.objects.filter(
+            content_type=ctype, object_id__in=taxon_ids, rank=1)}
+
+    image_types = sorted(set(key[1] for key in image_map))
+    image_lists = []
+
+    for taxon in taxa:
+
+        if rank == u'family':
+            title = u'{}<br><i>({})</i>'.format(
+                family_map[taxon.id], taxon.scientific_name)
+        else:
+            title = u'<i>{}</i>'.format(taxon.scientific_name)
+
+        imagelist = []
+        for image_type in image_types:
+            image = image_map.get((taxon.id, image_type))
+            if image is not None:
+                imagelist.append({
+                    'image_type': image_type,
+                    'image_url': image_map.get((taxon.id, image_type)),
+                    })
+
+        image_lists.append({
+            'title': title,
+            'imagelist': imagelist,
+            })
+
+    image_lists.sort(key=itemgetter('title'))
+
+    # from pprint import pprint
+    # pprint(image_lists)
+
+    return jsonify({
+            'image_types': image_types,
+            'image_lists': image_lists,
+            })
 
 # Higher-order taxa.
 
