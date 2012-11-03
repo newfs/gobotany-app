@@ -88,7 +88,10 @@ def genus_slug(page_title):
     return page_title.split()[0].lower()
 
 re_floating_figure = re.compile(ur'<FIG-(\d+)>')  # see parser.py
-re_figure_link = re.compile(ur'\[Figs?\. ([\d, ]+)\s*\]')
+
+# The [RL] is because Figure 834 has two pieces, Right and Left,
+# designated with references like "[Fig. 834, L]".
+re_figure_link = re.compile(ur'\[Figs?\. ([\d, ]+)(, [RL])?\s*\]')
 
 @register.filter
 def render_floating_figure(match):
@@ -100,7 +103,7 @@ def render_floating_figure(match):
 def render_figure_link(match):
     numbers = [ int(number) for number in match.group(1).split(',') ]
     figures = list(models.Figure.objects.filter(number__in=numbers))
-    context = Context({'figures': figures})
+    context = Context({'figures': figures, 'suffix': match.group(2) or ''})
     return get_template('dkey/figure_link.html').render(context)
 
 @register.filter

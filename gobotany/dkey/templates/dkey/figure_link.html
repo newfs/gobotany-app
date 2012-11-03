@@ -2,4 +2,4 @@
 [Fig{% if figures|length > 1 %}s{% endif %}. {% for figure in figures %}<a
 class="figure-link" href="{{ figure|figure_url }}"
 data-caption="{{ figure.caption }}">{{ figure.number }}</a
->{% if forloop.last %}]{% else %},{% endif %}{% endfor %}
+>{% if forloop.last %}{{ suffix }}]{% else %},{% endif %}{% endfor %}
