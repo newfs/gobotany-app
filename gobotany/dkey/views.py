@@ -3,7 +3,7 @@ from django.db import connection
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
-from gobotany.core.models import Family, Genus, Taxon, ContentImage
+from gobotany.core.models import Taxon, ContentImage
 from gobotany.dkey import models
 
 group_texts = {
