@@ -225,15 +225,9 @@
                 </table>
                 </div>
 
-                {% comment %}
-                When viewed from places other than the D. Key, display the
-                D. Key information at the bottom of the page.
-                NOTE: This is to stay commented out until the release of
-                the Dichotomous Key.
-                {% ifnotequal key 'dichotomous' %}
-                    {% include "gobotany/_info_from_flora.html" %}
-                {% endifnotequal %}
-                {% endcomment %}
+                {% if key != 'dichotomous' %}
+                  {% include "gobotany/_info_from_flora.html" %}
+                {% endif %}
 {% endblock %}
 
 {% block sidebar_content %}
