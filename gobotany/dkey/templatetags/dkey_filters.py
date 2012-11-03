@@ -88,7 +88,7 @@ def genus_slug(page_title):
     return page_title.split()[0].lower()
 
 re_floating_figure = re.compile(ur'<FIG-(\d+)>')  # see parser.py
-re_figure_link = re.compile(ur'\[Figs?\. ([\d, ]+)\]')
+re_figure_link = re.compile(ur'\[Figs?\. ([\d, ]+)\s*\]')
 
 @register.filter
 def render_floating_figure(match):
