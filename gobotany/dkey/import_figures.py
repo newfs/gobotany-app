@@ -7,6 +7,8 @@ import re
 import zipfile
 from StringIO import StringIO
 
+MAX_WIDTH = MAX_HEIGHT = 640
+
 def figure_number(name):
     if '/maps/' in name:
         return None
@@ -36,8 +38,8 @@ def main():
         image = Image.open(sio)
         number = figure_number(name)
         path = 'dkey-figures/figure-{}.png'.format(number)
+        image.thumbnail((MAX_WIDTH, MAX_HEIGHT), Image.ANTIALIAS)
         image.save(path)
-
 
 if __name__ == '__main__':
     main()
