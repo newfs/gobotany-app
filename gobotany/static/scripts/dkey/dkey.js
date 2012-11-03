@@ -269,58 +269,81 @@ define([
         });
     });
 
-    /* Build a list of the taxa images included on the page. */
+    /* Download and display images, narrowing the taxa images to match
+       the currently selected lead, and letting the user select the
+       image type from a <select> box. */
 
-    var imageinfo_array = _.map($('.taxon-images figure'), function(figure) {
-        var $figure = $(figure);
-        return {
-            $figure: $figure,
-            title: $figure.text().trim(),
-            type: $figure.attr('data-type')
-        };
-    });
+    var title = $('[data-title]').eq(-1).attr('data-title');
+    var slug = title.replace(/ /g, '-').toLowerCase();
+    var images_url = API_URL + 'dkey-images/' + slug + '/';
+    var plants = null;
 
-    /* Set up the image type <select> box and show the images. */
+    var install_image_types = function(image_types) {
+        var $selector = $('.image-type-selector').css('display', 'block');
+        var $select = $selector.find('select');
+        $.each(image_types, function(i, image_type) {
+            var $option = $('<option>', {value: image_type, html: image_type});
+            if (image_type == 'plant form')
+                $option.attr('selected', 'selected');
+            $select.append($option);
+        });
+        $select.on('change', show_appropriate_images);
+    };
 
-    var types = _.uniq(_.pluck(imageinfo_array, 'type'));
-    types.sort();
+    var install_image_lists = function(image_lists) {
+        var $grid = $('.plant-grid');
+        plants = _.map(image_lists, function(item) {
+            return {
+                $div: $('<div>', {'class': 'plant'}).appendTo($grid).append(
+                    $('<div>', {'class': 'plant-img-container'}),
+                    $('<p>', {html: item.title})
+                ),
+                image_list: item.image_list,
+                name: item.name,
+                title: item.title
+            };
+        });
+        show_appropriate_images();
+    };
 
-    var $selector = $('.image-type-selector');
-    var $select = $selector.find('select');
-    $.each(types, function(i, type) {
-        var option = $('<option>').attr('value', type).html(type);
-        if (type == 'plant form') option.attr('selected', 'selected');
-        $select.append(option);
-    });
-    $selector.css('display', 'block');
-
-    /* "Appropriate" images are those that (a) match the currently
-       selected "image type" and (b) belong to a species that lies
-       beneath the currently active couplet. */
-
-    var show_appropriate_images = function() {
-        var selected_type = $('.image-type-selector select').val();
+    var taxa_beneath_current_lead = function() {
         var $lead = $('#c' + active_id).parent().children('div.lead');
         if ($lead.length == 0) {
             var $wlb = $('#main > .what-lies-beneath');
         } else {
             var $wlb = $lead.find('.what-lies-beneath');
         }
-        var taxa = $.parseJSON($wlb.attr('data-taxa'));
-        var etaxa = _.map(taxa, glossarizer.escape);
-        var re = '^(' + etaxa.join('|') + ')\\b';
+        var current_taxa = $.parseJSON($wlb.attr('data-taxa'));
+        return current_taxa;
+    }
 
-        _.each(imageinfo_array, function(imageinfo) {
-            var is_taxa_match = imageinfo.title.match(re);
-            var is_type_match = imageinfo.type == selected_type;
-            var show = is_taxa_match && is_type_match;
-            imageinfo.$figure.css('display', show ? 'inline-block' : 'none');
+    var show_appropriate_images = function() {
+        var image_type = $('.image-type-selector select').val();
+        var current_taxa = taxa_beneath_current_lead();
+        _.each(plants, function(plant) {
+            var omit = ! _.contains(current_taxa, plant.name);
+            plant.$div.toggleClass('omit', omit);
+            if (omit)
+                return;
+            var matching_image = _.find(plant.image_list, function(image) {
+                return image_type == image.image_type;
+            });
+            if (matching_image) {
+                var content = $('<img>', {
+                    'data-lazy-img-src': matching_image.image_url
+                });
+            } else {
+                var content = '<div class="missing-image">';
+            }
+            plant.$div.find('.plant-img-container').html(content);
         });
         lazy_images.load();
     };
 
-    $select.on('change', show_appropriate_images);
-    show_appropriate_images();
+    $.getJSON(images_url, function(data) {
+        install_image_types(data.image_types);
+        install_image_lists(data.image_lists);
+    });
 
     /* Front "Dichotomous Key to Families" page selectboxes for jumping
        to groups, families, and genera. */

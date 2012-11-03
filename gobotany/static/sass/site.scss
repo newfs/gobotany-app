@@ -572,6 +572,88 @@ footer {
     }
 }
 
+/* Plant image grids. Currently used on the dkey. May someday be used on
+   the Level 3 page if it is moved over to site.scss too. Copied from
+   the relevant part of styles.scss and included here, instead of in the
+   _dkey.scss file, because image grids are a site-wide pattern. */
+
+.plant-grid {
+    .plant {
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+        border: 1px solid #c3d941;
+        width: 160px; /* prevent long names from ruining layout */
+        height: 210px;
+        background: #fff;
+        padding: 8px 6px;
+        text-align: center;
+
+        &.omit {
+            display: none;
+        }
+    }
+    a {
+        display: block;
+        color: #1a2e11;
+        &:hover { color: #508e31; }
+    }
+    .plant:before {
+        position: absolute;
+        top: 8px;
+        left: 6px;
+        z-index: 100;
+        width: 150px;
+        height: 139px;
+        top: 8px;
+        border: 5px solid rgba(255, 255, 255, 0.8);
+        content: ' ';
+    }
+    .plant-img-container {
+        width: 160px;
+        height: 149px;
+        overflow: hidden;
+        @include single-box-shadow(rgba(0, 0, 0, 0.6), 0px, 0px, 4px);
+        img {
+            height: 149px;  /* so lazy_images knows when <img> is on screen */
+        }
+    }
+    p {
+        margin: 7px 0 0 0;
+        font-family: $narrower-body-font;
+        /* Tahoma or Trebuchet because it's narrower than Verdana:
+           less wrapping and fewer names on 4 lines */
+        line-height: 14px;
+    }
+    i {
+        display: block;
+        padding-bottom: 4px;
+        font-family: $body-font;
+        /* Verdana, wider than Trebuchet: easier to read in italics */
+        font-style: italic;
+    }
+    .missing-image {
+        position: relative;
+        @include background(linear-gradient(left top, #eaf2e2, #d6e6c5));
+        width: 160px;
+        height: 149px;
+        color: #354d1e;
+        &:after {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -20px 0 0 -50px;
+            width: 100px;
+            height: 40px;
+            font-size: 12px;
+            line-height: 130%;
+            text-align: center;
+            content: 'Image not available yet';
+        }
+    }
+}
+
 /* Tooltips for working area images and highlighted glossary terms */
 .gb-tooltip {
     border: 1px solid $tooltip-border-color;

@@ -300,23 +300,28 @@ def dkey_images(request, slug):
     for taxon in taxa:
 
         if rank == u'family':
-            title = u'{}<br><i>({})</i>'.format(
-                family_map[taxon.id], taxon.scientific_name)
+            name = family_map[taxon.id]
+            title = u'{}<br><i>({})</i>'.format(name, taxon.scientific_name)
         else:
+            if rank == u'genus':
+                name = taxon.genus_name()
+            else:
+                name = taxon.scientific_name
             title = u'<i>{}</i>'.format(taxon.scientific_name)
 
-        imagelist = []
+        image_list = []
         for image_type in image_types:
             image = image_map.get((taxon.id, image_type))
             if image is not None:
-                imagelist.append({
+                image_list.append({
                     'image_type': image_type,
                     'image_url': image_map.get((taxon.id, image_type)),
                     })
 
         image_lists.append({
+            'name': name,
             'title': title,
-            'imagelist': imagelist,
+            'image_list': image_list,
             })
 
     image_lists.sort(key=itemgetter('title'))

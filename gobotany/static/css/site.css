@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -399,6 +400,19 @@ footer .support { margin-right: 0; padding: 18px 0; }
 .img-gallery .img-container { height: 239px; overflow: hidden; position: relative; width: 239px; }
 .img-gallery .frame { border: 5px solid rgba(255, 255, 255, 0.8); height: 229px; position: absolute; top: 0; width: 229px; z-index: 100; box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); }
 
+/* Plant image grids. Currently used on the dkey. May someday be used on the Level 3 page if it is moved over to site.scss too. Copied from the relevant part of styles.scss and included here, instead of in the _dkey.scss file, because image grids are a site-wide pattern. */
+.plant-grid .plant { display: inline-block; vertical-align: top; position: relative; border: 1px solid #c3d941; width: 160px; /* prevent long names from ruining layout */ height: 210px; background: #fff; padding: 8px 6px; text-align: center; }
+.plant-grid .plant.omit { display: none; }
+.plant-grid a { display: block; color: #1a2e11; }
+.plant-grid a:hover { color: #508e31; }
+.plant-grid .plant:before { position: absolute; top: 8px; left: 6px; z-index: 100; width: 150px; height: 139px; top: 8px; border: 5px solid rgba(255, 255, 255, 0.8); content: ' '; }
+.plant-grid .plant-img-container { width: 160px; height: 149px; overflow: hidden; -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); }
+.plant-grid .plant-img-container img { height: 149px; /* so lazy_images knows when <img> is on screen */ }
+.plant-grid p { margin: 7px 0 0 0; font-family: Tahoma, "Trebuchet MS", sans-serif; /* Tahoma or Trebuchet because it's narrower than Verdana: less wrapping and fewer names on 4 lines */ line-height: 14px; }
+.plant-grid i { display: block; padding-bottom: 4px; font-family: Verdana, Geneva, sans-serif; /* Verdana, wider than Trebuchet: easier to read in italics */ font-style: italic; }
+.plant-grid .missing-image { position: relative; background: -webkit-gradient(linear, 0% 0%, 100% 100%, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -webkit-linear-gradient(left top, #eaf2e2, #d6e6c5); background: -moz-linear-gradient(left top, #eaf2e2, #d6e6c5); background: -o-linear-gradient(left top, #eaf2e2, #d6e6c5); background: linear-gradient(left top, #eaf2e2, #d6e6c5); width: 160px; height: 149px; color: #354d1e; }
+.plant-grid .missing-image:after { display: block; position: absolute; top: 50%; left: 50%; margin: -20px 0 0 -50px; width: 100px; height: 40px; font-size: 12px; line-height: 130%; text-align: center; content: 'Image not available yet'; }
+
 /* Tooltips for working area images and highlighted glossary terms */
 .gb-tooltip { border: 1px solid #c3d941; display: none; /* initially invisible, fades in */ padding: 8px; position: absolute; width: 300px; z-index: 1000; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -webkit-linear-gradient(top center, #eaf2e2, #d6e6c5); background: -moz-linear-gradient(top center, #eaf2e2, #d6e6c5); background: -o-linear-gradient(top center, #eaf2e2, #d6e6c5); background: linear-gradient(top center, #eaf2e2, #d6e6c5); -webkit-box-shadow: 0px 1px 4px #333333; -moz-box-shadow: 0px 1px 4px #333333; box-shadow: 0px 1px 4px #333333; -webkit-border-radius: 2px; -moz-border-radius: 2px; -ms-border-radius: 2px; -o-border-radius: 2px; border-radius: 2px; }
 .gb-tooltip .arrow { background: #d6e6c5; border: 1px solid #c3d941; /* rotated borders, same color as bottom of tooltip */ border-bottom-color: #d6e6c5; border-right-color: #d6e6c5; bottom: -7px; height: 11px; left: 10px; position: absolute; width: 11px; -webkit-box-shadow: -1px -1px 1px #333333; -moz-box-shadow: -1px -1px 1px #333333; box-shadow: -1px -1px 1px #333333; -webkit-transform: rotate(225deg); -moz-transform: rotate(225deg); -ms-transform: rotate(225deg); -o-transform: rotate(225deg); transform: rotate(225deg); }
@@ -720,7 +734,7 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
 /* End media queries styles for PlantShare */
 /* Dichotomous Key */
 /* Definitions */
-.orange-button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.083em; }
+.orange-button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
 .orange-button:hover, #dkey #main .offer-help-aside a.button:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
 .orange-button.disabled, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
 
@@ -729,7 +743,7 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
 #dkey #main .offer-help-aside { float: right; margin: 1em 1em 0.5em 1em; text-align: right; color: #606060; }
 #dkey #main .offer-help-aside span { font-size: 12px; }
 #dkey #main .offer-help-aside a.button { display: inline-block; margin: 0.8em 1em; font-weight: normal; font-size: 12px; text-transform: uppercase; }
-#dkey #main .offer-help-aside select { margin: 0.25em 1.0em; font-size: 1.333em; }
+#dkey #main .offer-help-aside select { margin: 0.25em 1.0em; font-size: 1.33333em; }
 #dkey #main .groupbox { position: relative; }
 #dkey #main .groupbox ul { display: none; position: absolute; z-index: 100; right: 10px; background-color: white; text-align: left; }
 #dkey #main .groupbox li { display: block; margin: 0; border-width: 1px 1px 0px 1px; border-style: solid; border-color: #bbc6b6; }
@@ -742,7 +756,7 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
 #dkey #main p .figure a { display: block; margin-bottom: 0.5em; border-bottom: 1px solid black; padding-bottom: 0.5em; }
 #dkey #main p .figure img { width: 16em; /* force thumbnails to a consistent width */ }
 #dkey #main p .figure .number { font-weight: bold; margin-right: 0.5em; }
-#dkey #main p.backlinks { margin-top: 0.571em; margin-bottom: 0.643em; font-size: 14px; }
+#dkey #main p.backlinks { margin-top: 0.57143em; margin-bottom: 0.64286em; font-size: 14px; }
 #dkey #main p.backlinks a { text-decoration: none; margin-right: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; }
 #dkey #main p.backlinks a:hover { text-decoration: underline; }
 #dkey #main a.what-lies-beneath { /* "See list of 7 species in 1a" */ text-decoration: none; color: #35661c; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 12px; text-transform: uppercase; }

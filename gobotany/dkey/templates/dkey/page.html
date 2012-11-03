@@ -165,13 +165,7 @@
    Show photos of: <select></select>
 </p>
 
-<div class="taxon-images">
-  {% for title, image in image_collection %}
-    <figure data-type="{{ image.image_type }}">
-      <img data-lazy-img-src="{{ image.thumb_small }}">
-      {{ title|safe }}
-    </figure>
-  {% endfor %}
+<div class="plant-grid">
 </div>
 
 {% endwith %}
