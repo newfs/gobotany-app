@@ -55,14 +55,6 @@ def breadcrumbs(page):
     return page.breadcrumb_cache.order_by('id')
 
 @register.filter
-def breadcrumb_title(page):
-    if page.rank == 'group':
-        number = int(page.title.split()[-1])  # 'Group 4' -> 4
-        return u'{}: {}'.format(display_title(page), short_group_texts[number])
-    else:
-        return display_title(page)
-
-@register.filter
 def display_title(page):
     if page.rank == 'family':
         return u'Family {}'.format(page.title)
@@ -78,6 +70,13 @@ def dkey_url(name):
         return '/species/' + name.replace(' ', '/') + '/?key=dichotomous';
     else:
         return '/dkey/' + name.replace(' ', '-') + '/';
+
+@register.filter
+def expand_group_title(title):
+    if not title.startswith('Group '):
+        return title
+    number = int(title[6:])
+    return u'{}: {}'.format(title, short_group_texts[number])
 
 @register.filter
 def figure_url(figure):

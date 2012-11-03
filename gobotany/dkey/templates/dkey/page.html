@@ -12,7 +12,7 @@
 {% endblock %}
 {% block main_content %}
 
-{% with title=page|display_title %}
+{% with title=page|display_title|expand_group_title %}
 
 <div class="offer-help-aside">
   <span>Want help getting started?</span>

@@ -1,12 +1,13 @@
 {% load dkey_filters %}
 {% for ancestor in page|breadcrumbs %}
-  {% with atitle=ancestor|breadcrumb_title %}
+  {% with atitle=ancestor|display_title %}
     {% if forloop.counter0 == 0 %}
       You are here: <a href="{% url dkey %}">Dichotomous Key</a>
     {% else %}
       &gt; <a data-rank="{{ ancestor.rank }}" data-title="{{ ancestor.title }}"
-              href="{% url dkey_page ancestor|slug %}">{{ atitle }}</a>
+              href="{% url dkey_page ancestor|slug %}"
+              >{{ atitle|expand_group_title }}</a>
     {% endif %}
   {% endwith %}
 {% endfor %}
-&gt; <span>{{ page.title }}</span>
+&gt; <span>{{ page.title|expand_group_title }}</span>
