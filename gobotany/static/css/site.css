@@ -395,6 +395,10 @@ footer .support { margin-right: 0; padding: 18px 0; }
 #breadcrumb { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 160%; margin: 0 0 14px; }
 #breadcrumb span { color: #000; }
 
+/* Wait spinners */
+.wait-spinner { background: url(/static/images/icons/preloaders-dot-net-lg.gif) no-repeat scroll center center transparent; height: 350px; margin: auto; /* Wait spinner's children are hidden until the parent is unspinnered. */ }
+.wait-spinner * { display: none; }
+
 /* Images (gallery with previous/next buttons, or single) */
 .img-gallery { float: left; margin: 0 10px 0 0; position: relative; width: 244px; }
 .img-gallery .img-container { height: 239px; overflow: hidden; position: relative; width: 239px; }

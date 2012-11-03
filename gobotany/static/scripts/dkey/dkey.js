@@ -10,6 +10,10 @@ define([
     $, ignore, _, Hash, glossarizer, lazy_images, tooltip_js
 ) {$(document).ready(function() {
 
+    /* Remove spinner that is hiding couplets until we can arrange them. */
+
+    $('.wait-spinner').removeClass('wait-spinner');
+
     /* Enable lazy image loading. */
 
     lazy_images.start();

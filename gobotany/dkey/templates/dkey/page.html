@@ -173,4 +173,10 @@
 </div>
 
 {% endwith %}
+<script>
+  /* While jQuery and JS are loading, hide couplets with a spinner.
+     If JS is turned off, then couplets all display without a spinner. */
+  document.getElementById('c1').className += ' wait-spinner';
+</script>
+<div class="wait"></div>
 {% endblock %}

@@ -545,6 +545,16 @@ footer {
     }
 }
 
+/* Wait spinners */
+.wait-spinner {
+    background: url(/static/images/icons/preloaders-dot-net-lg.gif)
+        no-repeat scroll center center transparent;
+    height: 350px;
+    margin: auto;
+    /* Wait spinner's children are hidden until the parent is unspinnered. */
+    * { display: none; }
+}
+
 /* Images (gallery with previous/next buttons, or single) */
 .img-gallery {
     float: left;
