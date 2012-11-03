@@ -535,13 +535,11 @@ footer {
 
 /* Breadcrumb trails */
 #breadcrumb {
-    p {
-        color: #807121;
-        font-family: $headings-font;
-        font-size: 14px;
-        line-height: 160%;
-        margin: 0 0 14px;
-    }
+    color: #807121;
+    font-family: $headings-font;
+    font-size: 14px;
+    line-height: 160%;
+    margin: 0 0 14px;
     span {
         color: #000;
     }

@@ -2,10 +2,11 @@
 {% for ancestor in page|breadcrumbs %}
   {% with atitle=ancestor|breadcrumb_title %}
     {% if forloop.counter0 == 0 %}
-      <a href="{% url dkey %}">« Back to the {{ atitle }}</a>
+      You are here: <a href="{% url dkey %}">Dichotomous Key</a>
     {% else %}
-      <a data-rank="{{ ancestor.rank }}" data-title="{{ ancestor.title }}"
-         href="{% url dkey_page ancestor|slug %}">« {{ atitle }}</a>
+      &gt; <a data-rank="{{ ancestor.rank }}" data-title="{{ ancestor.title }}"
+              href="{% url dkey_page ancestor|slug %}">{{ atitle }}</a>
     {% endif %}
   {% endwith %}
 {% endfor %}
+&gt; <span>{{ page.title }}</span>

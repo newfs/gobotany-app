@@ -53,7 +53,7 @@
   <h1>{{ title }}</h1>
 {% endif %}
 
-<p class="backlinks">
+<p id="breadcrumb">
   {% include "dkey/_breadcrumbs.html" %}
   {% if title == 'List of Family Groups' %}
     <a href="{% url dkey %}">« Return to the dichotomous key</a>

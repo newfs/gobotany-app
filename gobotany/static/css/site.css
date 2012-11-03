@@ -392,7 +392,7 @@ footer .nsf-logo { float: left; margin: 0 10px 0 7px; }
 footer .support { margin-right: 0; padding: 18px 0; }
 
 /* Breadcrumb trails */
-#breadcrumb p { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 160%; margin: 0 0 14px; }
+#breadcrumb { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 160%; margin: 0 0 14px; }
 #breadcrumb span { color: #000; }
 
 /* Images (gallery with previous/next buttons, or single) */
