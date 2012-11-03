@@ -779,7 +779,7 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
 #dkey #main ul.active > li > .lead, #dkey #main ul:target > li > .lead { background-color: #b4d57f; border-color: #b4d57f; }
 #dkey #main .gloss { border-bottom: none; /* normally glossary terms are "underlined" */ color: #35661c; cursor: pointer; }
 #dkey #main a.show-all-button { display: inline-block; font-size: 12px; font-weight: normal; }
-#dkey #main .image-type-selector { display: none; /* once images are loaded, our JS will un-hide */ }
+#dkey #main .image-type-selector { display: none; /* once images are loaded, our JS will un-hide */ max-width: none; }
 #dkey #main div.taxon-images { margin-left: 0.75em; text-align: center; }
 #dkey #main div.taxon-images figure { display: inline-block; margin: 0 1em 1em 0; width: 160px; vertical-align: top; }
 #dkey #main div.taxon-images img { display: block; margin-bottom: 0.4em; border: 4px solid black; width: 160px; height: 149px; }

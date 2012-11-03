@@ -253,6 +253,7 @@ $disabled_orange_gradient: linear-gradient(
     }
     .image-type-selector {
         display: none;  /* once images are loaded, our JS will un-hide */
+        max-width: none;
     }
     div.taxon-images {
         margin-left: 1em*12px/16px;
