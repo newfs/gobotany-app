@@ -337,7 +337,7 @@ define([
             }
             plant.$div.find('.plant-img-container').html(content);
         });
-        lazy_images.load();
+        window.setTimeout(function() {lazy_images.load()}, 10);
     };
 
     $.getJSON(images_url, function(data) {
