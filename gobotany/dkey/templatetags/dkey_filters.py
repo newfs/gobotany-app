@@ -90,7 +90,8 @@ def genus_slug(page_title):
 re_floating_figure = re.compile(ur'<FIG-(\d+)>')  # see parser.py
 
 # The [RL] is because Figure 834 has two pieces, Right and Left,
-# designated with references like "[Fig. 834, L]".
+# designated with references like "[Fig. 834, L]". The "\s*" catches
+# some malformed figure references like "[Fig. 940 \n]".
 re_figure_link = re.compile(ur'\[Figs?\. ([\d, ]+)(, [RL])?\s*\]')
 
 @register.filter
