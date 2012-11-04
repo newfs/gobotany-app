@@ -1,5 +1,11 @@
-"""Command-line utility to import figure images from zip file."""
+"""Command-line utility to import figure images from zip file.
 
+After building the images, you can install them with:
+
+s3cmd sync -P --add-header="Cache-Control: max-age=28800, public" \
+  dkey-figures s3://newfs/
+
+"""
 import Image
 import argparse
 import os
