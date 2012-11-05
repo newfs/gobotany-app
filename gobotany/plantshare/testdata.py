@@ -85,7 +85,7 @@ sightings_data = {
                 "id": 502,
                 "latitude": 42.659829,
                 "longitude": -73.781339,
-                "_comment": "no location field defined (Albany, NY)",
+                "location": "",
                 "user": "Harry Stevenson",
                 "created": "Sep. 23, 2012",
                 "photos": [
@@ -156,7 +156,7 @@ sightings_data = {
                 "id": 450,
                 "latitude": 41.053,
                 "longitude": -73.539,
-                "_comment": "no location field defined (Stamford, CT)",
+                "location": "",
                 "user": "Danielle Williams",
                 "created": "Oct. 26, 2012",
                 "photos": [

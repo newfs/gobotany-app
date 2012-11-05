@@ -30,35 +30,47 @@ define([
         this.info_window = new google_maps.InfoWindow(info_window_options);
     };
 
-    SightingsMap.prototype.add_marker = function (latitude, longitude,
-                                                  title, user, created,
-                                                  photos, sighting_id) {
+    SightingsMap.prototype.get_sighting_location = function (sighting) {
+        var location = sighting.location;
+        if (location === undefined || location.length === 0) {
+            location = sighting.latitude + ', ' + sighting.longitude;
+        }
+        return location;
+    }
+
+    SightingsMap.prototype.build_info_window_html = function (sighting) {
+        var title = this.get_sighting_location(sighting);
+        var html = '<div class="info-window"><h5>' + title + '</h5>';
+        if (sighting.user !== undefined) {
+            html += '<p>by ' + sighting.user;
+            if (sighting.created !== undefined) {
+                html += ' on ' + sighting.created;
+            }
+            html += '</p>';
+        }
+        if (sighting.photos !== undefined) {
+            var photo_url = sighting.photos[0];
+            html += ' <img src="' + photo_url + '">';
+        }
+        if (sighting.id !== undefined) {
+            html += '<p><a href="/ps/sightings/' + sighting.id +
+                    '/">more</a></p>';
+        }
+        html += '</div>';
+        return html;
+    };
+
+    SightingsMap.prototype.add_marker = function (latitude, longitude, title,
+                                                  info_window_html) {
         var lat_long = new google_maps.LatLng(latitude, longitude);
         var marker = new google.maps.Marker({
             position: lat_long,
             map: this.map,
             title: title
         });
-        var html = '<div class="info-window"><h5>' + title + '</h5>';
-        if (user !== undefined) {
-            html += '<p>by ' + user;
-            if (created !== undefined) {
-                html += ' on ' + created;
-            }
-            html += '</p>';
-        }
-        if (photos !== undefined) {
-            var photo_url = photos[0];
-            html += ' <img src="' + photo_url + '">';
-        }
-        if (sighting_id !== undefined) {
-            html += '<p><a href="/ps/sightings/' + sighting_id +
-                    '/">more</a></p>';
-        }
-        html += '</div>';
         var info_window = this.info_window;
         google_maps.event.addListener(marker, 'click', function () {
-            info_window.setContent(html);
+            info_window.setContent(info_window_html);
             info_window.open(this.map, marker);
         });
     };
@@ -73,15 +85,12 @@ define([
             url: '/ps/api/sightings/?plant=' + plant_name,   // TODO: URL base
             context: this
         }).done(function (json) {
-            for (var i = 0; i <= json.sightings.length; i++) {
+            for (var i = 0; i < json.sightings.length; i++) {
                 var sighting = json.sightings[i];
-                var location = sighting.location;
-                if (location === undefined) {
-                    location = sighting.latitude + ', ' + sighting.longitude;
-                }
+                var title = this.get_sighting_location(sighting);
+                var info_window_html = this.build_info_window_html(sighting);
                 this.add_marker(sighting.latitude, sighting.longitude,
-                                location, sighting.user, sighting.created,
-                                sighting.photos, sighting.id);
+                                title, info_window_html);
             }
         });
     };
