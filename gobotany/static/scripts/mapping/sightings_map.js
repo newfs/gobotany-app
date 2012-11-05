@@ -7,6 +7,8 @@ define([
 
     // Constructor
     function SightingsMap(map_div) {
+        this.MAX_INFO_DESC_LENGTH = 80;
+
         this.$map_div = $(map_div);
         this.map_id = this.$map_div.attr('id');
         this.latitude = this.$map_div.attr('data-latitude');
@@ -25,7 +27,7 @@ define([
         };
         this.map = new google_maps.Map(this.$map_div.get(0), map_options);
         var info_window_options = {
-            //maxWidth: 300
+            maxWidth: 300
         };
         this.info_window = new google_maps.InfoWindow(info_window_options);
     };
@@ -52,11 +54,22 @@ define([
             var photo_url = sighting.photos[0];
             html += ' <img src="' + photo_url + '">';
         }
-        if (sighting.id !== undefined) {
-            html += '<p><a href="/ps/sightings/' + sighting.id +
-                    '/">more</a></p>';
+        html += '<p>';
+        if (sighting.description !== undefined &&
+            sighting.description.length > 0) {
+        
+            var description = sighting.description.substr(0,
+                this.MAX_INFO_DESC_LENGTH);
+            if (sighting.description.length > this.MAX_INFO_DESC_LENGTH) {
+                description += '... ';
+            }
+            html += description;
         }
-        html += '</div>';
+        if (sighting.id !== undefined) {
+            html += '<a href="/ps/sightings/' + sighting.id +
+                    '/">more</a>';
+        }
+        html += '</p></div>';
         return html;
     };
 

@@ -11,6 +11,7 @@ sightings_data = {
                 "location": "Rumford, ME",
                 "user": "bobsmith293",
                 "created": "Oct. 31, 2012",
+                "description": "I identified this tree as sugar maple but was not completely sure if that was correct or if it was maybe a Norway maple instead.",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Sapindaceae/acer-saccharum-ha-atal-a.jpg"
                 ]
@@ -22,6 +23,7 @@ sightings_data = {
                 "location": "Framingham, Mass.",
                 "user": "Susan Kratz",
                 "created": "Oct. 29, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Sapindaceae/acer-saccharum-ba-atal.jpg"
                 ]
@@ -33,6 +35,7 @@ sightings_data = {
                 "location": "Fredericton, NB",
                 "user": "Harry Stevenson",
                 "created": "Oct. 24, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Sapindaceae/acer-saccharum-fl-ahaines-a.jpg"
                 ]
@@ -55,6 +58,7 @@ sightings_data = {
                 "location": "Pittsfield, NH",
                 "user": "Shozo Tanaka",
                 "created": "Oct. 15, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Sapindaceae/acer-saccharum-fl-apratt.jpg"
                 ]
@@ -66,6 +70,7 @@ sightings_data = {
                 "location": "Salmon Brook, CT",
                 "user": "Susan Kratz",
                 "created": "Oct. 14, 2012",
+                "description": "Lovely tree with fall color just starting",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Sapindaceae/acer-saccharum-fl-dcameron-a.jpg"
                 ]
@@ -88,6 +93,7 @@ sightings_data = {
                 "location": "",
                 "user": "Harry Stevenson",
                 "created": "Sep. 23, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Sapindaceae/acer-saccharum-fr-sbaskauf.jpg"
                 ]
@@ -99,6 +105,7 @@ sightings_data = {
                 "location": "Yarmouth, Nova Scotia",
                 "user": "Susan Kratz",
                 "created": "Sep. 18, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Sapindaceae/acer-saccharum-ha-fbramley-a.jpg"
                 ]
@@ -110,6 +117,7 @@ sightings_data = {
                 "location": "Falmouth, MA",
                 "user": "Danielle Williams",
                 "created": "Sep. 14, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Sapindaceae/acer-saccharum-ha-fbramley-c.jpg"
                 ]
@@ -121,6 +129,7 @@ sightings_data = {
                 "location": "Chester, VT",
                 "user": "bobsmith293",
                 "created": "Sep. 12, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Sapindaceae/acer-saccharum-le-ahaines.jpg"
                 ]
@@ -137,6 +146,7 @@ sightings_data = {
                 "location": "Rumford, ME",
                 "user": "bobsmith293",
                 "created": "Oct. 30, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Nymphaeaceae/nymphaea-odorata-ff-dkausen.jpg"
                 ]
@@ -148,6 +158,7 @@ sightings_data = {
                 "location": "New London, Connecticut",
                 "created": "Oct. 27, 2012",
                 "user": "Susan Kratz",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Nymphaeaceae/nymphaea-odorata-ff-dcameron-b.jpg"
                 ]
@@ -159,6 +170,7 @@ sightings_data = {
                 "location": "",
                 "user": "Danielle Williams",
                 "created": "Oct. 26, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Nymphaeaceae/nymphaea-odorata-ff-ahaines.jpg"
                 ]
@@ -170,6 +182,7 @@ sightings_data = {
                 "location": "Darien, CT",
                 "user": "Shozo Tanaka",
                 "created": "Oct. 24, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Nymphaeaceae/nymphaea-odorata-ff-ddentzer.jpg"
                 ]
@@ -181,6 +194,7 @@ sightings_data = {
                 "location": "West Warwick, NH",
                 "user": "Harry Stevenson",
                 "created": "Oct. 17, 2012",
+                "description": "The water lilies are still flowering here well into October.",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Nymphaeaceae/nymphaea-odorata-ha-dcameron-a.jpg"
                 ]
@@ -192,6 +206,7 @@ sightings_data = {
                 "location": "Guilford, ME",
                 "user": "bobsmith293",
                 "created": "Oct. 13, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Nymphaeaceae/nymphaea-odorata-in-cevans.jpg"
                 ]
@@ -203,6 +218,7 @@ sightings_data = {
                 "location": "Longmeadow, MA",
                 "user": "bobsmith293",
                 "created": "Oct. 10, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Nymphaeaceae/nymphaea-odorata-le-lnewcomb.jpg"
                 ]
@@ -214,6 +230,7 @@ sightings_data = {
                 "location": "Machias, Maine",
                 "user": "bobsmith293",
                 "created": "Oct. 1, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Nymphaeaceae/nymphaea-odorata-sf-glienau.jpg"
                 ]
@@ -225,6 +242,7 @@ sightings_data = {
                 "location": "Rutland, VT",
                 "user": "Harry Stevenson",
                 "created": "Sep. 19, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Nymphaeaceae/nymphaea-odorata-st-dcameron-c.jpg"
                 ]
@@ -236,6 +254,7 @@ sightings_data = {
                 "location": "Rockingham County, NH",
                 "user": "Susan Kratz",
                 "created": "Sep. 13, 2012",
+                "description": "I am pretty sure this is Nymphaea odorata. Most of the flowers are white but a couple of them are a light pink.",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Sapindaceae/acer-saccharum-fl-dcameron-b.jpg"
                 ]
@@ -247,6 +266,7 @@ sightings_data = {
                 "location": "Lac-Mégantic, QC",
                 "user": "bobsmith293",
                 "created": "Sep. 4, 2012",
+                "description": "",
                 "photos": [
                     "http://newfs.s3.amazonaws.com/taxon-images-160x149/Nymphaeaceae/nymphaea-odorata-ff-dcameron-b.jpg"
                 ]
