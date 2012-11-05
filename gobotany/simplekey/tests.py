@@ -112,3 +112,6 @@ class SpeciesPageTests(FunctionalCase):
     def test_non_simple_key_species_page_has_note_about_data(self):
         # Temporarily, non-Simple-Key pages show a data disclaimer.
         self.get('/species/adiantum/aleuticum/')
+        note = self.css('.content .note')[0].text
+        self.assertEqual(note, ('Data collection in progress. Complete data '
+                                'are coming soon.'))
