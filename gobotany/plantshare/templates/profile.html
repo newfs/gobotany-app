@@ -9,142 +9,153 @@
 
 <h2>My Info</h2>
 
-<section class="info-section">
-<div class="image-modal">
-    <a href="#" class="close">close</a>
-    <img src="/static/images/icons/no-image.png" alt="avatar image">
-    <h4>Upload Image</h4>
-    <form id="upload-avatar-form" method="POST" 
-        action="{% url ps-ajax-image-upload %}">
-        {% csrf_token %}
-        {{ avatar_form.image }}
-        <div style="display: none;">{{ avatar_form.image_type }}</div>
-        <input type="submit" id="upload-photo-submit" class="save-btn">
-    </form>
+<div class="section-container">
+  <div class="image-modal">
+      <a href="#" class="close">close</a>
+      <img src="/static/images/icons/no-image.png" alt="avatar image">
+      <h4>Upload Image</h4>
+      <form id="upload-avatar-form" method="POST" 
+          action="{% url ps-ajax-image-upload %}">
+          {% csrf_token %}
+          {{ avatar_form.image }}
+          <div style="display: none;">{{ avatar_form.image_type }}</div>
+          <input type="submit" id="upload-photo-submit" class="save-btn">
+      </form>
+  </div>
+
+  <form id="edit-profile-form" class="ajax-partial" method="POST" action="{% url ps-ajax-profile-edit %}">
+    <section class="info-section">
+      {% csrf_token %}
+      <div class="info box">
+          <div class="avatar">
+              <img id="avatar-image" src="/static/images/icons/avatar-scary-placeholder.png" alt="">
+              <p>
+                  <a id="upload-link" href="#">Upload Photo</a>
+              </p>
+          </div>
+          <table>
+              <tbody>
+                  <tr>
+                      <td class="first">Visibility:</td>
+                      <td>
+                          <div class="display">
+                              <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
+                          </div>
+                          <div class="edit">
+                              <div class="ajax-field">
+                                  {{ profile_form.sharing_visibility }}
+                              </div>
+                              <div class="field-controls">
+                                <input type="button" class="field-save save-btn" value="Save" />
+                                <a href="#" class="field-reset">Cancel</a>
+                              </div>
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="first">Screen Name:</td>
+                      <td>
+                          <div class="display">
+                              <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
+                          </div>
+                          <div class="edit">
+                              <div class="ajax-field">
+                                  {{ profile_form.display_name }}
+                              </div>
+                              <div class="field-controls">
+                                <input type="button" class="field-save save-btn" value="Save" />
+                                <a href="#" class="field-reset">Cancel</a>
+                              </div>
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="first">Saying:</td>
+                      <td>
+                          <div class="display">
+                              <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
+                          </div>
+                          <div class="edit">
+                              <div class="ajax-field">
+                                  {{ profile_form.saying }}
+                              </div>
+                              <div class="field-controls">
+                                <input type="button" class="field-save save-btn" value="Save" />
+                                <a href="#" class="field-reset">Cancel</a>
+                              </div>
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="first">Groups:</td>
+                      <td>
+                          <div class="display">
+                              <ul class="group-list">
+                                  <li>First Group</li>
+                                  <li>Sample Group B</li>
+                                  <li>Hiker's Club</li>
+                              </ul>
+                              <a href="#" class="edit-link">Go To My Groups</a></p>
+                          </div>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+    </section>
+  
+    <h2>My Location</h2>
+  
+    <section class="location-section">
+      <div class="info box">
+          <img class="map-thumbnail" src="/static/images/icons/my-location-placeholder.png" alt="">
+          <table>
+              <tbody>
+                  <tr>
+                      <td class="first">Visibility:</td>
+                      <td>
+                          <div class="display">
+                              <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
+                          </div>
+                          <div class="edit">
+                              <div class="ajax-field">
+                                  {{ profile_form.location_visibility }}
+                              </div>
+                              <div class="field-controls">
+                                <input type="button" class="field-save save-btn" value="Save" />
+                                <a href="#" class="field-reset">Cancel</a>
+                              </div>
+                          </div>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="first">Location:</td>
+                      <td>
+                          <div class="display">
+                              <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
+                              <ul class="coords-list">
+                                  <li>Lowell, MA</li>
+                                  <li>Latitude: 41.2482082147523582034</li>
+                                  <li>Longitude: -45.2348724-8057312340</li>
+                              </ul>
+                          </div>
+                          <div class="edit">
+                              <div class="ajax-field">
+                                  {{ profile_form.location }}
+                              </div>
+                              <div class="field-controls">
+                                <input type="button" class="field-save save-btn" value="Save" />
+                                <a href="#" class="field-reset">Cancel</a>
+                              </div>
+                          </div>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+    </section>
+  </form>
 </div>
-<form id="edit-profile-form" class="ajax-partial" method="POST" action="{% url ps-ajax-profile-edit %}">
-    {% csrf_token %}
-    <div class="info box">
-        <div class="avatar">
-            <img id="avatar-image" src="/static/images/icons/avatar-scary-placeholder.png" alt="">
-            <p>
-                <a id="upload-link" href="#">Upload Photo</a>
-            </p>
-        </div>
-        <table>
-            <tbody>
-                <tr>
-                    <td class="first">Visibility:</td>
-                    <td>
-                        <div class="display">
-                            <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
-                        </div>
-                        <div class="edit">
-                            <div class="ajax-field">
-                                {{ profile_form.sharing_visibility }}
-                            </div>
-                            <div class="field-controls">
-                              <input type="button" class="field-save" value="Save" />
-                              <a href="#" class="field-reset">Cancel</a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="first">Screen Name:</td>
-                    <td>
-                        <div class="display">
-                            <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
-                        </div>
-                        <div class="edit">
-                            <div class="ajax-field">
-                                {{ profile_form.display_name }}
-                            </div>
-                            <div class="field-controls">
-                              <input type="button" class="field-save" value="Save" />
-                              <a href="#" class="field-reset">Cancel</a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="first">Saying:</td>
-                    <td>
-                        <div class="display">
-                            <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
-                        </div>
-                        <div class="edit">
-                            <div class="ajax-field">
-                                {{ profile_form.saying }}
-                            </div>
-                            <div class="field-controls">
-                              <input type="button" class="field-save" value="Save" />
-                              <a href="#" class="field-reset">Cancel</a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="first">Groups:</td>
-                    <td>
-                        <div class="display">
-                            <ul class="group-list">
-                                <li>First Group</li>
-                                <li>Sample Group B</li>
-                                <li>Hiker's Club</li>
-                            </ul>
-                            <a href="#" class="edit-link">Go To My Groups</a></p>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-  </form>
-</section>
-
-<h2>My Location</h2>
-
-<section class="location-section">
-  <form name="edit-location-form">
-    <div class="info box">
-        <img class="map-thumbnail" src="/static/images/icons/my-location-placeholder.png" alt="">
-        <table>
-            <tbody>
-                <tr>
-                    <td class="first">Visibility:</td>
-                    <td>
-                        <div class="display">
-                            <p>Specific Groups - 6 Selected <a href="#" class="edit-link">Edit</a></p>
-                        </div>
-                        <div class="edit">
-                            {# Replace this with real form output #}
-                            <p>Form goes here.</p>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="first">Location:</td>
-                    <td>
-                        <div class="display">
-                            <ul class="coords-list">
-                                <li>Lowell, MA</li>
-                                <li>Latitude: 41.2482082147523582034</li>
-                                <li>Longitude: -45.2348724-8057312340</li>
-                            </ul>
-                            <a href="#" class="edit-link">Edit</a></p>
-                        </div>
-                        <div class="edit">
-                            {# Replace this with real form output #}
-                            <p>Form goes here.</p>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-  </form>
-</section>
 
 <script type="text/javascript">
     require(['plantshare/myprofile']);
