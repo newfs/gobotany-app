@@ -396,3 +396,10 @@ class SitemapTestCase(TestCase):
     def test_sitemap_returns_ok(self):
         response = self.client.get('/sitemap.txt')
         self.assertEqual(200, response.status_code)
+
+
+class SpeciesListTestCase(TestCase):
+
+    def test_species_list_returns_ok(self):
+        response = self.client.get('/list/')
+        self.assertEqual(200, response.status_code)
