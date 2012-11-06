@@ -59,18 +59,20 @@ class SpeciesPageTests(FunctionalCase):
     def crumb(self, n):
         return self.text(self.css('#breadcrumb a')[n])
 
+    def test_simple_key_species_page_has_breadcrumb(self):
+        self.get('/species/adiantum/pedatum/')
+        self.assertTrue(self.css1('#breadcrumb'))
+
+    # Test breadcrumb trails for a species included in the Simple Key, and
+    # a species not included in the Simple Key. These should have
+    # breadcrumbs for the Simple and Full Keys, respectively.  
+
     def test_simplekey_species_breadcrumbs(self):
         self.get('/species/dendrolycopodium/dendroideum/?pile=lycophytes')
         self.assertEqual(self.crumb(0), u'Simple Key')
         self.assertEqual(self.crumb(1), u'Ferns')
         self.assertEqual(self.crumb(2),
                          u'Clubmosses and relatives, plus quillworts')
-
-    def test_simplekey_species_dichotomous_breadcrumbs(self):
-        self.get('/species/dendrolycopodium/dendroideum/?key=dichotomous')
-        self.assertEqual(self.crumb(0), u'« Back to the Key to the Families')
-        self.assertEqual(self.crumb(1), u'« Group 1: Lycophytes, Monilophytes')
-        self.assertEqual(self.crumb(2), u'« Family Lycopodiaceae')
 
     def test_fullkey_species_breadcrumbs(self):
         self.get('/species/diphasiastrum/complanatum/?pile=lycophytes')
@@ -79,13 +81,22 @@ class SpeciesPageTests(FunctionalCase):
         self.assertEqual(self.crumb(2),
                          u'Clubmosses and relatives, plus quillworts')
 
+    # Test breadcrumb trails for the same species, but coming from the
+    # Dichotomous Key. Both should have Dichotomous Key breadcrumbs.
+
+    def test_simplekey_species_dichotomous_breadcrumbs(self):
+        self.get('/species/dendrolycopodium/dendroideum/?key=dichotomous')
+        self.assertEqual(self.crumb(0), u'Dichotomous Key')
+        self.assertEqual(self.crumb(1), u'Group 1: Lycophytes, Monilophytes')
+        self.assertEqual(self.crumb(2), u'Family Lycopodiaceae')
+
     def test_fullkey_species_dichotomous_breadcrumbs(self):
         self.get('/species/diphasiastrum/complanatum/?key=dichotomous')
-        self.assertEqual(self.crumb(0), u'« Back to the Key to the Families')
-        self.assertEqual(self.crumb(1), u'« Group 1: Lycophytes, Monilophytes')
-        self.assertEqual(self.crumb(2), u'« Family Lycopodiaceae')
+        self.assertEqual(self.crumb(0), u'Dichotomous Key')
+        self.assertEqual(self.crumb(1), u'Group 1: Lycophytes, Monilophytes')
+        self.assertEqual(self.crumb(2), u'Family Lycopodiaceae')
 
-    #
+    # Test photo titles and credits.
 
     def _photos_have_expected_caption_format(self, species_page_url):
         # For a species page, make sure the plant photos have the expected
@@ -115,22 +126,9 @@ class SpeciesPageTests(FunctionalCase):
         species_page_url = ('/species/gymnocarpium/dryopteris/')
         self._photos_have_expected_caption_format(species_page_url)
 
-    def test_simple_key_species_page_has_breadcrumb(self):
-        self.get('/species/adiantum/pedatum/')
-        self.assertTrue(self.css1('#breadcrumb'))
-
-    def test_non_simple_key_species_page_omits_breadcrumb(self):
-        # Breadcrumb should be omitted until Full Key is implemented.
-        self.get('/species/adiantum/aleuticum/')
-        breadcrumb = None
-        try:
-            breadcrumb = self.css1('#breadcrumb')
-        except NoSuchElementException:
-            self.assertEqual(breadcrumb, None)
-            pass
+    # Temporarily, non-Simple-Key pages show a data disclaimer.
 
     def test_non_simple_key_species_page_has_note_about_data(self):
-        # Temporarily, non-Simple-Key pages show a data disclaimer.
         self.get('/species/adiantum/aleuticum/')
         note = self.css('.content .note')[0].text
         self.assertEqual(note, ('Data collection in progress. Complete data '
