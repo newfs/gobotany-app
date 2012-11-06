@@ -6,18 +6,6 @@ from gobotany.simplekey import views
 urlpatterns = patterns(
     '',
 
-    # Temporary placeholder pages, to eventually be replaced with new 
-    # features / apps rather than flat views
-    url('^plantshare/$', views.placeholder_view, 
-        {'template' : 'simplekey/plantshare_placeholder.html'},
-        name='plantshare-placeholder'),
-    url('^advanced/full-key/$', views.placeholder_view, 
-        {'template' : 'simplekey/full_key_placeholder.html'},
-        name='full-key-placeholder'),
-    url('^advanced/dich-key/$', views.placeholder_view, 
-        {'template' : 'simplekey/dich_key_placeholder.html'},
-        name='dich-key-placeholder'),
-
     # Sitemap and robots.txt files for search engines
     url('^sitemap.txt$', views.sitemap_view, name='sitemap'),
     url('^robots.txt$', views.robots_view, name='robots'),
@@ -26,7 +14,6 @@ urlpatterns = patterns(
     url('^checkup/$', views.checkup_view, name='checkup'),
 
     # Site pages
-    url('^advanced/$', views.advanced_view, name='advanced-id-tools'),
     url('^list/$', views.species_list_view, name='species-list'),
     url('^(?P<key>simple|full)/$', views.level1, name='level1'),
     url('^(?P<key>simple|full)/(?P<pilegroup_slug>[^/]*)/$',

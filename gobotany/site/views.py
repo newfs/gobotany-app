@@ -241,3 +241,13 @@ def maps_test_view(request):
 def suggest_test_view(request):
     return render_to_response('gobotany/suggest_test.html', {
            }, context_instance=RequestContext(request))
+
+
+# Placeholder views
+# This generic view basically does the same thing as direct_to_template,
+# but I wanted to be more explicit so placeholders would be obvious when it
+# was time to replace them (e.g. delete this view and any placeholder not yet
+# replaced will become an error).
+def placeholder_view(request, template):
+    return render_to_response(template, {
+            }, context_instance=RequestContext(request))

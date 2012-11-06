@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -452,6 +451,21 @@ footer .support { margin-right: 0; padding: 18px 0; }
 input.suggest + div { background: #fff; border: 1px solid #999; position: absolute; }
 input.suggest + div li { list-style-type: none; margin: 0; padding: 2px; }
 input.suggest + div li.selected { background-color: #666; color: #fff; }
+
+/* "Advanced ID Tools" placeholder page (delete after tools release) */
+#advanced-id #main .dk-landing-section { float: left; font-family: Verdana, Geneva, sans-serif; height: 410px; position: relative; width: 330px; }
+#advanced-id #main .dk-landing-section:first-child { margin-right: 50px; }
+#advanced-id #main .dk-landing-section h2 { font-size: 18px; line-height: 20px; }
+#advanced-id #main .dk-landing-section section { margin: 10px 0 0; }
+#advanced-id #main .dk-landing-section section p { margin: 10px 0; }
+#advanced-id #main .dk-landing-section section ul { line-height: 16px; list-style-type: disc; margin: 10px 0; padding: 0 0 0 15px; }
+#advanced-id #main .dk-landing-section section ul li { margin: 10px 0; }
+#advanced-id #main .dk-landing-section > a { bottom: 10px; display: block; height: 41px; margin: 0 0 0 43px; position: absolute; text-indent: -9999px; width: 244px; }
+#advanced-id #main .dk-landing-section > a:hover { background-position: 0 -41px; }
+#advanced-id #main .dk-landing-section > a:active { background-position: 0 -82px; }
+#advanced-id #main .landing-divider { background-color: #b4d57f; height: 400px; left: 660px; position: absolute; top: 180px; width: 1px; }
+#advanced-id #main a.go-fullkey-btn { background: url(/static/images/layout/go-fullkey-btn.png) 0 0 no-repeat transparent; }
+#advanced-id #main a.go-dichkey-btn { background: url(/static/images/layout/go-dichkey-btn.png) 0 0 no-repeat transparent; }
 
 /* Imports for various pages, sections, features, etc. Each of these can contain their own media queries. */
 /* Home */

@@ -27,11 +27,26 @@ urlpatterns = patterns(
     url('^privacy/$', views.privacy_view, name='site-privacy'),
     url('^terms-of-use/$', views.terms_of_use_view, name='site-terms-of-use'),
 
-    # API calls for input suggestions (for search, PlantShare, etc.)
+    # API calls for input suggestions
     url(r'^search-suggestions/', views.search_suggestions_view,
         name='site-search-suggestions'),
     url(r'^plant-name-suggestions/', views.plant_name_suggestions_view,
         name='site-plant-name-suggestions'),
+
+    # Temporary placeholder pages for unreleased features
+    url('^plantshare/$', views.placeholder_view,
+        {'template': 'gobotany/plantshare_placeholder.html'},
+        name='plantshare-placeholder'),   # TODO: Use this URL at release
+    # TODO: redirect these URLs at release
+    url('^advanced/$', views.placeholder_view,
+        {'template': 'gobotany/advanced.html'},
+        name='advanced-id-tools'),
+    url('^advanced/full-key/$', views.placeholder_view,
+        {'template': 'gobotany/full_key_placeholder.html'},
+        name='full-key-placeholder'),
+    url('^advanced/dich-key/$', views.placeholder_view,
+        {'template': 'gobotany/dich_key_placeholder.html'},
+        name='dich-key-placeholder'),
 
     # Redirects for old URLs
     url('^teaching-tools/$', redirect_to, {'url': '/teaching/'}),

@@ -1,27 +1,15 @@
-{% extends "simplekey/_new_base.html" %}
+{% extends "gobotany/_page_full_sidebar.html" %}
 
 {% block title %}Advanced ID Tools{% endblock %}
 
-{% block body_attributes %}id="advanced-id" class="app advanced-id"{% endblock %}
+{% block body_attributes %}id="advanced-id" class="placeholder"{% endblock %}
 
-{% block js_require %}
-    require(['util/sidebar'], function(sidebar){
-        sidebar.setup();
-    });
-{% endblock %}
-
-{% block body_content %}
-    <div id="top-wrapper">
-        {% include "simplekey/_header.html" %}
-
-        <div class="content">
-            <div class="container">
-                <div id="main">
-                    <h2>Advanced ID Tools</h2>
+{% block main_content %}
+                    <h1>Advanced ID Tools</h1>
                     <div>
                         <div class="dk-landing-section">
-                            <h4>Full Advanced Interactive Key to All
-                                3,500 New England Taxa (Coming Soon)</h4>
+                            <h2>Full Advanced Interactive Key to All
+                                3,500 New England Taxa (Coming Soon)</h2>
                             <section>
                                 <ul>
                                     <li>This key covers all 3,500 species,
@@ -43,8 +31,8 @@
                         </div>
                         <div class="landing-divider"></div>
                         <div class="dk-landing-section">
-                            <h4>Dichotomous Key to All 3,500 New England
-                                Taxa (Coming Soon)</h4>
+                            <h2>Dichotomous Key to All 3,500 New England
+                                Taxa (Coming Soon)</h2>
                             <section>
                                 <p>If you are an experienced botanist, use our
                                 Dichotomous Key tool!</p>
@@ -70,14 +58,8 @@
                                 class="go-dichkey-btn">Go To Dichotomous Key</a>
                         </div>
                     </div>
-                    <div class="clearit"></div>
-                </div>
-                <div id="sidebar">
-                    {# Use SimpleKey until a page-specific design is created #}
-                    {% include "simplekey/_sidebar_items.html" %}
-                </div>
+{% endblock %}
 
-                <div class="clearit"></div>
-            </div>
-        </div>
+{% block sidebar_content %}
+    {% include "gobotany/_sidebar_items.html" %}
 {% endblock %}

@@ -53,9 +53,6 @@ def get_simple_url(key, pilegroup, pile=None):
                                'pilegroup_slug': pilegroup.slug,
                                'pile_slug': pile.slug})
 
-def advanced_view(request):
-    return render_to_response('simplekey/advanced.html', {},
-            context_instance=RequestContext(request))
 
 def _partner_short_name(partner):
     short_name = None
@@ -210,15 +207,6 @@ def checkup_view(request):
             'total_images': total_images,
         }, context_instance=RequestContext(request))
 
-
-# Placeholder views
-# This generic view basically does the same thing as direct_to_template,
-# but I wanted to be more explicit so placeholders would be obvious when it
-# was time to replace them (e.g. delete this view and any placeholder not yet
-# replaced will become an error).
-def placeholder_view(request, template):
-    return render_to_response(template, {
-            }, context_instance=RequestContext(request))
 
 # We have moved the 2nd and 3rd level Simple Key pages beneath /simple/
 # so we need these redirections in place for a while.
