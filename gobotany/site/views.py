@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+import re
 import string
 
 from datetime import date
@@ -13,8 +14,9 @@ from django.template import RequestContext
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
-from gobotany.core.models import (Family, Genus, GlossaryTerm, HomePageImage,
-                                  Taxon, Video)
+from gobotany.core.models import (ContentImage, CopyrightHolder, Family,
+                                  Genus, GlossaryTerm, HomePageImage, Taxon,
+                                  Video)
 from gobotany.core.partner import which_partner
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
@@ -276,3 +278,33 @@ def robots_view(request):
                               context_instance=RequestContext(request),
                               mimetype='text/plain')
 
+
+def checkup_view(request):
+
+    # Do some checks that can be presented on an unlinked page to be
+    # verified either manually or by an automated functional test.
+
+    # Check the number of images that have valid copyright holders.
+    total_images = ContentImage.objects.count()
+    copyright_holders = CopyrightHolder.objects.values_list('coded_name',
+                                                            flat=True)
+    images_without_copyright = []
+    images = ContentImage.objects.all()
+    for image in images:
+        image_url = image.image.url
+        copyright_holder = image_url.split('.')[-2]
+        if re.search('-[a-z0-9]?$', copyright_holder):
+            copyright_holder = copyright_holder[:-2]
+        copyright_holder = copyright_holder.split('-')[-1]
+        if copyright_holder not in copyright_holders:
+            images_without_copyright.append(image_url)
+            # To see which images do not have valid copyright holders,
+            # temporarily enable this statement:
+            #print 'Copyright holder %s not found: %s' % (copyright_holder,
+            #                                             image_url)
+    images_copyright = total_images - len(images_without_copyright)
+
+    return render_to_response('gobotany/checkup.html', {
+            'images_copyright': images_copyright,
+            'total_images': total_images,
+        }, context_instance=RequestContext(request))

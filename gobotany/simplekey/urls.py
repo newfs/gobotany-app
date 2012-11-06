@@ -5,9 +5,6 @@ from gobotany.simplekey import views
 urlpatterns = patterns(
     '',
 
-    # Unlinked page for some checks that can be verified via functional test
-    url('^checkup/$', views.checkup_view, name='checkup'),
-
     # Site pages
     url('^list/$', views.species_list_view, name='species-list'),
     url('^(?P<key>simple|full)/$', views.level1, name='level1'),

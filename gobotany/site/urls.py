@@ -37,6 +37,9 @@ urlpatterns = patterns(
     url(r'^plant-name-suggestions/', views.plant_name_suggestions_view,
         name='site-plant-name-suggestions'),
 
+    # Unlinked page for some checks that can be verified via functional test
+    url('^checkup/$', views.checkup_view, name='checkup'),
+
     # Temporary placeholder pages for unreleased features
     url('^plantshare/$', views.placeholder_view,
         {'template': 'gobotany/plantshare_placeholder.html'},

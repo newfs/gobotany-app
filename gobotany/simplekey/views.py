@@ -10,10 +10,7 @@ from django.views.decorators.cache import cache_control, cache_page
 from django.views.decorators.http import etag
 from django.views.decorators.vary import vary_on_headers
 
-from gobotany.core import models
-from gobotany.core.models import (
-        CopyrightHolder, Pile, PileGroup, Taxon
-    )
+from gobotany.core.models import (ContentImage, Pile, PileGroup, Taxon)
 from gobotany.core.partner import which_partner
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 from gobotany.simplekey.models import (GroupsListPage,
@@ -71,7 +68,7 @@ def level1(request, key):
     pilegroups = []
     for pilegroup in ordered_pilegroups():
         images = _images_with_copyright_holders(
-            models.ContentImage.objects.filter(
+            ContentImage.objects.filter(
                 pilegroupimage__pile_group=pilegroup)
             .select_related('image_type'))
         pilegroups.append((pilegroup, images, get_simple_url(key, pilegroup)))
@@ -96,7 +93,7 @@ def level2(request, key, pilegroup_slug):
     piles = []
     for pile in ordered_piles(pilegroup):
         images = _images_with_copyright_holders(
-            models.ContentImage.objects.filter(pileimage__pile=pile)
+            ContentImage.objects.filter(pileimage__pile=pile)
             .select_related('image_type'))
         piles.append((pile, images, get_simple_url(key, pilegroup, pile)))
 
@@ -155,36 +152,6 @@ def _compute_plants_etag(request):
 def species_list_view(request):
     return render_to_response('simplekey/species_list.html', {
         'plants': _get_plants()
-        }, context_instance=RequestContext(request))
-
-def checkup_view(request):
-
-    # Do some checks that can be presented on an unlinked page to be
-    # verified either manually or by an automated functional test.
-
-    # Check the number of images that have valid copyright holders.
-    total_images = models.ContentImage.objects.count()
-    copyright_holders = CopyrightHolder.objects.values_list('coded_name',
-                                                            flat=True)
-    images_without_copyright = []
-    images = models.ContentImage.objects.all()
-    for image in images:
-        image_url = image.image.url
-        copyright_holder = image_url.split('.')[-2]
-        if re.search('-[a-z0-9]?$', copyright_holder):
-            copyright_holder = copyright_holder[:-2]
-        copyright_holder = copyright_holder.split('-')[-1]
-        if copyright_holder not in copyright_holders:
-            images_without_copyright.append(image_url)
-            # To see which images do not have valid copyright holders,
-            # temporarily enable this statement:
-            #print 'Copyright holder %s not found: %s' % (copyright_holder,
-            #                                             image_url)
-    images_copyright = total_images - len(images_without_copyright)
-
-    return render_to_response('simplekey/checkup.html', {
-            'images_copyright': images_copyright,
-            'total_images': total_images,
         }, context_instance=RequestContext(request))
 
 
