@@ -1,20 +1,17 @@
-{% extends "simplekey/_new_base.html" %}
+{% extends "gobotany/_page_no_sidebar.html" %}
+{% load gobotany_tags %}
 {% load simplekey_extras %}
 
 {% block title %}Species List{% endblock %}
 
-{% block body_attributes %}id="list" class="app list"{% endblock %}
+{% block body_attributes %}id="list"{% endblock %}
 
 {% block js_require %}
-    require(['simplekey/species_list']);
+    require(['site/species_list']);
 {% endblock %}
 
-{% block body_content %}
-    {% include "simplekey/_header.html" %}
-
-    <div class="content">
-        <div class="container">
-                <h2>Species List</h2>
+{% block main_content %}
+                <h1>Species List</h1>
                 <p>To filter the list, type in the box under any column name.</p>
                 <table id="species">
                     <thead>
@@ -34,7 +31,7 @@
                         {% with name_parts=plant.scientific_name|lower|split:" " %}
                         <tr>
                             <td><a
-                                href="{% url taxa-species name_parts|at_index:"0" name_parts|at_index:"1" %}">
+                                href="{% url taxa-species name_parts.0 name_parts.1 %}">
                                     {{ plant.scientific_name|italicize_plant|safe }}
                             </a></td>
                             <td>{{ plant.common_names__common_name }}</td>
@@ -63,7 +60,4 @@
                         {% endfor %}
                     </tbody>                    
                 </table>
-            </div>
-            <div class="clearit"></div>
-    </div>
 {% endblock %}

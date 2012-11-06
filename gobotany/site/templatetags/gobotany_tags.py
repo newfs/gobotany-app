@@ -2,7 +2,7 @@
 
 from django import template
 from django.core.urlresolvers import reverse
-from django.template.defaultfilters import slugify
+from django.template.defaultfilters import slugify, stringfilter
 
 from gobotany.core import models
 from gobotany.simplekey import models as simple_models
@@ -47,6 +47,13 @@ def url(obj):
         return reverse('level2', args=('simple', slug))
 
     raise ValueError(u'cannot construct canonical URL for %r' % (obj))
+
+
+@register.filter
+@stringfilter
+def split(value, arg):
+    '''Split a string into a list on the given character.'''
+    return value.split(arg)
 
 
 @register.tag

@@ -27,6 +27,9 @@ urlpatterns = patterns(
     url(r'^contributors/$', views.contributors_view,
         name='site-contributors'),
 
+    # "Species List" page, linked to from the About | Advanced Map page
+    url('^list/$', views.species_list_view, name='species-list'),
+
     # Legal notification pages
     url('^privacy/$', views.privacy_view, name='site-privacy'),
     url('^terms-of-use/$', views.terms_of_use_view, name='site-terms-of-use'),

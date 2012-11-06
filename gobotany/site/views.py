@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import hashlib
 import json
 import re
 import string
@@ -11,6 +12,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
+from django.views.decorators.http import etag
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
@@ -307,4 +309,32 @@ def checkup_view(request):
     return render_to_response('gobotany/checkup.html', {
             'images_copyright': images_copyright,
             'total_images': total_images,
+        }, context_instance=RequestContext(request))
+
+
+def _get_plants():
+    plants = Taxon.objects.values(
+        'scientific_name', 'common_names__common_name', 'family__name',
+        'distribution', 'north_american_native',
+        'north_american_introduced', 'wetland_indicator_code',
+        'piles__pilegroup__friendly_title',
+        'piles__friendly_title'
+        ).order_by('scientific_name')
+    return plants
+
+def _compute_plants_etag(request):
+    """Generate an ETag for allowing caching of the species list page.
+    This requires querying for the plants upon every page request but
+    saves much response bandwidth and keeps everything up-to-date
+    automatically.
+    """
+    plants = _get_plants()
+    h = hashlib.md5()
+    h.update(str(list(plants)))
+    return h.hexdigest()
+
+@etag(_compute_plants_etag)
+def species_list_view(request):
+    return render_to_response('gobotany/species_list.html', {
+        'plants': _get_plants()
         }, context_instance=RequestContext(request))

@@ -903,6 +903,24 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
 #contributors #main ul { list-style-type: none; }
 #contributors #main li { margin: 0; }
 
+/* Species List */
+#list .content { padding-bottom: 18px; }
+#list .content h1 { padding-bottom: 12px; }
+#list .content table { background: #f1fcde; border-collapse: collapse; color: #000; font-size: 11px; margin: 18px 0; width: 100%; }
+#list .content table tbody tr:hover { background: #e3fabe; }
+#list .content table th, #list .content table td { padding: 4px; }
+#list .content table th, #list .content table tr.filters { background: #b4d57f; font-weight: normal; }
+#list .content table th { text-align: center; vertical-align: bottom; }
+#list .content table th.name { width: 16%; }
+#list .content table th.common { width: 15%; }
+#list .content table th.family { width: 14%; }
+#list .content table th.dist { width: 10%; }
+#list .content table th.native { width: 12%; }
+#list .content table th.wetland { width: 5%; }
+#list .content table th.group { width: 12%; }
+#list .content table th.subgroup { width: 16%; }
+#list .content table td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 13px; }
+
 /* Begin media queries styles for the About section. */
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { #about #main > img { width: 57%; }

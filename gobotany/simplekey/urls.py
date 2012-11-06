@@ -5,8 +5,8 @@ from gobotany.simplekey import views
 urlpatterns = patterns(
     '',
 
-    # Site pages
-    url('^list/$', views.species_list_view, name='species-list'),
+    # Levels 1 (groups), 2 (subgroups), and 3 (filterable results) pages
+
     url('^(?P<key>simple|full)/$', views.level1, name='level1'),
     url('^(?P<key>simple|full)/(?P<pilegroup_slug>[^/]*)/$',
         views.level2, name='level2'),

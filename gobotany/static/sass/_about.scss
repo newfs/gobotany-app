@@ -364,6 +364,68 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
     }
 }
 
+/* Species List */
+
+#list {
+    .content {
+        padding-bottom: 18px;
+        h1 {
+            padding-bottom: 12px;
+        }
+        table {
+            background: #f1fcde;
+            border-collapse: collapse;
+            color: #000;
+            font-size: 11px;
+            margin: 18px 0;
+            width: 100%;
+            tbody tr:hover {
+                background: #e3fabe;
+            }
+            th, td {
+                padding: 4px;
+            }
+            th, tr.filters {
+                background: #b4d57f;
+                font-weight: normal;
+            }
+            th {
+                text-align: center;
+                vertical-align: bottom;
+                &.name {
+                    width: 16%;
+                }
+                &.common {
+                    width: 15%;
+                }
+                &.family {
+                    width: 14%;
+                }
+                &.dist {
+                    width: 10%;
+                }
+                &.native {
+                    width: 12%;
+                }
+                &.wetland {
+                    width: 5%;
+                }
+                &.group {
+                    width: 12%;
+                }
+                &.subgroup {
+                    width: 16%;
+                }                
+            }
+            td:first-child {
+                font-family: $headings-font;
+                font-size: 13px;
+            }
+        }
+    }
+}
+
+
 /* Begin media queries styles for the About section. */
 
 /* Portrait-orientation styles */
