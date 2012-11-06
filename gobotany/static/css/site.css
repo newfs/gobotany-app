@@ -875,7 +875,6 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
 
 /* Glossary */
 .gloss { color: #508e31; cursor: pointer; }
-
 .gloss:hover { border-bottom: 1px dashed; }
 
 #glossary #alphabet { height: 33px; list-style-type: none; margin: 7px 0; padding: 0; width: 712px; /* 2px wider than its parent box so no wrap in Moz */ }
