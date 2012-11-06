@@ -12,7 +12,7 @@ from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import models
 from gobotany.core.models import (
-        CopyrightHolder, Family, Genus, Pile, PileGroup, Taxon
+        CopyrightHolder, Pile, PileGroup, Taxon
     )
 from gobotany.core.partner import which_partner
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
@@ -156,26 +156,6 @@ def species_list_view(request):
     return render_to_response('simplekey/species_list.html', {
         'plants': _get_plants()
         }, context_instance=RequestContext(request))
-
-def sitemap_view(request):
-    host = request.get_host()
-    plant_names = Taxon.objects.values_list('scientific_name', flat=True)
-    families = Family.objects.values_list('name', flat=True)
-    genera = Genus.objects.values_list('name', flat=True)
-    urls = ['http://%s/species/%s/' % (host, plant_name.replace(' ', '/'))
-            for plant_name in plant_names]
-    urls.extend(['http://%s/families/%s/' % (host, family_name)
-                 for family_name in families])
-    urls.extend(['http://%s/genera/%s/' % (host, genus_name)
-                 for genus_name in genera])
-    return render_to_response('simplekey/sitemap.txt', {
-           'urls': urls,
-           }, mimetype='text/plain; charset=utf-8')
-
-def robots_view(request):
-    return render_to_response('simplekey/robots.txt', {},
-                              context_instance=RequestContext(request),
-                              mimetype='text/plain')
 
 def checkup_view(request):
 

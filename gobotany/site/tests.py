@@ -382,3 +382,17 @@ class PlantNameSuggestionsTestCase(TestCase):
         response = self.client.get('/plant-name-suggestions/?q=ame')
         names = json.loads(response.content)
         self.assertEqual(names, EXPECTED_NAMES)
+
+
+class RobotsTestCase(TestCase):
+
+    def test_robots_returns_ok(self):
+        response = self.client.get('/robots.txt')
+        self.assertEqual(200, response.status_code)
+
+
+class SitemapTestCase(TestCase):
+
+    def test_sitemap_returns_ok(self):
+        response = self.client.get('/sitemap.txt')
+        self.assertEqual(200, response.status_code)

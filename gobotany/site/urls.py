@@ -9,6 +9,10 @@ urlpatterns = patterns(
     # Home page
     url(r'^$', views.home_view, name='site-home'),
 
+    # Sitemap and robots.txt files for search engines
+    url('^sitemap.txt$', views.sitemap_view, name='sitemap'),
+    url('^robots.txt$', views.robots_view, name='robots'),
+
     # Teaching page
     url('^teaching/$', views.teaching_view, name='site-teaching'),
 

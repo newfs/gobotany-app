@@ -6,10 +6,6 @@ from gobotany.simplekey import views
 urlpatterns = patterns(
     '',
 
-    # Sitemap and robots.txt files for search engines
-    url('^sitemap.txt$', views.sitemap_view, name='sitemap'),
-    url('^robots.txt$', views.robots_view, name='robots'),
-
     # Unlinked page for some checks that can be verified via functional test
     url('^checkup/$', views.checkup_view, name='checkup'),
 
