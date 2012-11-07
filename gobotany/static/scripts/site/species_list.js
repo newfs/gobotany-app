@@ -22,6 +22,8 @@ define([
         var is_initialized = false;
         var filters_to_set_up = {};
 
+        $('body').addClass('about'); // Place under 'About' main nav for now
+
         function setup() {
             var filter_selector = SELECTOR_BASE + '0',
                 key;
