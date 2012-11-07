@@ -1,9 +1,9 @@
-{% extends "simplekey/_new_base.html" %}
+{% extends "gobotany/_page_full_sidebar.html" %}
 {% load simplekey_extras %}
 
 {% block title %}{{ subgroups_list_page.title }}{% endblock %}
 
-{% block body_attributes %}id="plant-id-2" class="app {{ key|title|lower }}"{% endblock %}
+{% block body_attributes %}class="skey groups-subgroups {{ key|title|lower }}"{% endblock %}
 
 {% block js_top %}
     {# TODO: eventually move elsewhere #}
@@ -14,24 +14,17 @@
     require(['simplekey/simple']);
 {% endblock %}
 
-{% block body_content %}
-    {% include "simplekey/_header.html" %}
-
-    <div class="content">
-        <div class="container">
-            <div id="main">
+{% block main_content %}
                 <div id="breadcrumb">
                     <p>You are here:
                     <a href="{% url level1 key %}">{{ key|title }} Key</a>
                     &gt; <span>{{ pilegroup.friendly_title|lower|capfirst }}</span></p>
                 </div>
                 
-                <h2>{{ pilegroup.friendly_title|lower|capfirst }}</h2>
+                <h1>{{ pilegroup.friendly_title|lower|capfirst }}</h1>
 
                 <p class="question">{{ subgroups_list_page.main_heading }}</p>
                 <p class="tip">Please go through the subgroups in order.</p>
-
-                <div class="clearit"></div>
 
                 {% for pile, pile_images, pile_url in piles %}
                     <div class="list-item{% if forloop.last %} last{% endif %}">
@@ -79,15 +72,17 @@
                             {# Mockup for Issue #254 #}
                             {% if key == 'full' and forloop.counter > 1 %}
                                 {% if forloop.counter == 2 %}
-                                    <h3>Other herbaceous, flowering
-                                        plants with alternate leaves <span></span></h3>
+                                    <h2>Other herbaceous, flowering
+                                        plants with alternate leaves
+                                    </h2>
                                 {% else %}
-                                    <h3>Other herbaceous, flowering
+                                    <h2>Other herbaceous, flowering
                                         plants with opposite, whorled or
-                                        no leaves <span></span></h3>
+                                        no leaves</h2>
                                 {% endif %}
                             {% else %}
-                                <h3>{{ pile.friendly_title|lower|capfirst }} <span>{{ pile.friendly_name|capfirst }}</span></h3>
+                                <h2>{{ pile.friendly_title|lower|capfirst }}</h2>
+                                <p>{{ pile.friendly_name|capfirst }}</p>
                             {% endif %}
 
                             <p class="key-char">
@@ -124,20 +119,12 @@
                             {% endif %}
                             <a class="plant-in-subgroup" href="{{ pile_url }}">My plant is in this subgroup</a>
                         </div>
-                        <div class="clearit"></div>
                     </div>
                 {% endfor %}
 
                 {% include "simplekey/_plant_not_in_subgroup.html" %}
+{% endblock %}
 
-            </div>
-
-            <div id="sidebar">
-                {% include "simplekey/_sidebar_items.html" %}
-            </div>
-
-            <div class="clearit"></div>
-
-        </div>
-    </div>
+{% block sidebar_content %}
+    {% include "gobotany/_sidebar_items.html" %}
 {% endblock %}

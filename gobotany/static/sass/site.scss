@@ -91,6 +91,39 @@ $smallscreen-current-section-color: #85c446;
     text-decoration: none;
 }
 
+@mixin shadowbox-photo-titles-credits {
+    /* Override Shadowbox styles to allow multiple title lines for
+     * showing a photo title, photographer credit, and copyright. */
+    #sb-title, #sb-title-inner {
+        height: 76px;
+        line-height: 70%;
+        position: relative;
+    }
+    #sb-title-inner {
+        div {
+            bottom: 6px;
+            position: absolute;
+        }
+        h6 {
+            font-size: 16px;
+            line-height: 110%;
+            margin: 0 0 2px;
+            padding: 0;
+        }
+        span {
+            font-family: $headings-font;
+            font-size: 10px;
+        }
+        a {
+            color: #fff;
+            text-decoration: underline;
+        }
+    }
+    #sb-nav-close {
+        top: 56px !important;
+    }
+}
+
 
 /* Site-wide styles */
 
@@ -416,7 +449,8 @@ header {
                 padding-top: $sidebar-box-vertical-padding;
             }
             &.plant-map {
-                background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat;	                padding: 0 25px 16px 16px;
+                background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat;
+                padding: 0 25px 16px 16px;
             }
             .left {
                 float: left;
@@ -577,6 +611,39 @@ footer {
         box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 	    -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 	    -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+    }
+    .images {
+        clear: both;
+        margin: 0;
+        padding: 0;	
+        position: absolute;
+        width: 12000px;
+        > * {
+            display: block;  /* For example, might be <a> instead of <img>. */
+            float: left;     /* This is what makes scrolling actually work. */
+        }
+    }
+    .controls {
+	    margin: 8px 0 12px 0;
+	    text-align: center;	
+        a {
+            cursor: pointer;
+            display: inline-block;
+            height: 32px;
+            text-indent: -9000px;	
+            width: 32px;
+            &.next {
+	            background: url(/static/images/icons/next-larger.png) 0 0 no-repeat transparent;	
+            }
+            &.prev {
+	            background: url(/static/images/icons/prev-larger.png) 0 0 no-repeat transparent;	
+            }
+            &.disabled {
+                cursor: default;
+                opacity: 0.4;
+                filter:Alpha(opacity=40) /* For IE8 and earlier */
+            }
+        }
     }
 }
 
@@ -885,6 +952,7 @@ input.suggest {
 @import "home";
 @import "mapping";
 @import "taxa";
+@import "simplekey";
 @import "plantshare";
 @import "dkey";
 @import "about";

@@ -402,6 +402,13 @@ footer .support { margin-right: 0; padding: 18px 0; }
 .img-gallery { float: left; margin: 0 10px 0 0; position: relative; width: 244px; }
 .img-gallery .img-container { height: 239px; overflow: hidden; position: relative; width: 239px; }
 .img-gallery .frame { border: 5px solid rgba(255, 255, 255, 0.8); height: 229px; position: absolute; top: 0; width: 229px; z-index: 100; box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); }
+.img-gallery .images { clear: both; margin: 0; padding: 0; position: absolute; width: 12000px; }
+.img-gallery .images > * { display: block; /* For example, might be <a> instead of <img>. */ float: left; /* This is what makes scrolling actually work. */ }
+.img-gallery .controls { margin: 8px 0 12px 0; text-align: center; }
+.img-gallery .controls a { cursor: pointer; display: inline-block; height: 32px; text-indent: -9000px; width: 32px; }
+.img-gallery .controls a.next { background: url(/static/images/icons/next-larger.png) 0 0 no-repeat transparent; }
+.img-gallery .controls a.prev { background: url(/static/images/icons/prev-larger.png) 0 0 no-repeat transparent; }
+.img-gallery .controls a.disabled { cursor: default; opacity: 0.4; filter: Alpha(opacity=40); }
 
 /* Plant image grids. Currently used on the dkey. May someday be used on the Level 3 page if it is moved over to site.scss too. Copied from the relevant part of styles.scss and included here, instead of in the _dkey.scss file, because image grids are a site-wide pattern. */
 .plant-grid .plant { display: inline-block; vertical-align: top; position: relative; border: 1px solid #c3d941; width: 160px; /* prevent long names from ruining layout */ height: 210px; background: #fff; padding: 8px 6px; text-align: center; }
@@ -648,6 +655,49 @@ body.taxa#species #species-images { border: 5px solid rgba(255, 255, 255, 0.8); 
 body.taxa#species #species-images { height: 239px; margin: 0 0 20px 0; overflow: hidden; position: relative; width: 700px; }
 body.taxa#species #species-images div.scrollableArea a { border-right: 5px solid #fff; float: left; margin: 0; padding: 0; }
 
+/* Simple and Full Keys (simplekey Django app) */
+body.skey.groups-subgroups { /* Override Shadowbox styles to allow multiple title lines for showing a photo title, photographer credit, and copyright. */ }
+body.skey.groups-subgroups .img-gallery .frame { cursor: pointer; }
+body.skey.groups-subgroups #sb-title, body.skey.groups-subgroups #sb-title-inner { height: 76px; line-height: 70%; position: relative; }
+body.skey.groups-subgroups #sb-title-inner div { bottom: 6px; position: absolute; }
+body.skey.groups-subgroups #sb-title-inner h6 { font-size: 16px; line-height: 110%; margin: 0 0 2px; padding: 0; }
+body.skey.groups-subgroups #sb-title-inner span { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 10px; }
+body.skey.groups-subgroups #sb-title-inner a { color: #fff; text-decoration: underline; }
+body.skey.groups-subgroups #sb-nav-close { top: 56px !important; }
+body.skey.groups-subgroups p.question, body.skey.groups-subgroups p.tip { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 24px; margin: 12px 0 0; padding: 0; }
+body.skey.groups-subgroups p.tip { color: #519136; font-size: 18px; margin: 8px 0 0; padding: 0; }
+body.skey.groups-subgroups .list-item { border-top: 1px solid rgba(128, 113, 33, 0.1); clear: left; margin: 20px 0 0 0; padding: 20px 0 0 0; }
+body.skey.groups-subgroups .list-item.last { border-bottom: 1px solid rgba(128, 113, 33, 0.1); padding: 20px 0; }
+body.skey.groups-subgroups .list-item .details { float: left; width: 425px; }
+body.skey.groups-subgroups .list-item h2 { line-height: 110%; margin: 0 0 5px 0; }
+body.skey.groups-subgroups .list-item h2 + p { color: #807121; display: block; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 12px; font-style: italic; margin: 7px 0 1px; padding-left: 0; }
+body.skey.groups-subgroups .list-item p { margin: 0; padding: 0 0 7px 25px; }
+body.skey.groups-subgroups .list-item p.key-char { background: url(/static/images/icons/icon1.png) 0 2px no-repeat; }
+body.skey.groups-subgroups .list-item p.exceptions { background: url(/static/images/icons/icon2.png) 0 2px no-repeat; }
+body.skey.groups-subgroups .list-item p.vid { background: url(/static/images/icons/icon3.png) 0 2px no-repeat; }
+body.skey.groups-subgroups .list-item .section-title { display: block; text-transform: uppercase; }
+body.skey.groups-subgroups .list-item a.plant-in-group { margin: 10px 0 0 0; background: url(/static/images/layout/plant-in-group-btn-orange.png) no-repeat 0 0; height: 31px; width: 212px; display: block; text-indent: -9000px; }
+body.skey.groups-subgroups .list-item a.plant-in-group:hover { background-position: 0 -31px; }
+body.skey.groups-subgroups .list-item a.plant-in-group:active { background-position: 0 -62px; }
+body.skey.groups-subgroups .list-item a.plant-in-subgroup { background: url(/static/images/layout/plant-in-subgroup-btn-orange.png) no-repeat 0 0; height: 32px; margin: 10px 0 0 0; width: 233px; display: block; text-indent: -9000px; }
+body.skey.groups-subgroups .list-item a.plant-in-subgroup:hover { background-position: 0 -32px; }
+body.skey.groups-subgroups .list-item a.plant-in-subgroup:active { background-position: 0 -64px; }
+
+/* Begin media queries styles for Simple and Full Keys. */
+/* Portrait-orientation styles */
+@media only screen and (max-width: 400px) { body.skey.groups-subgroups .list-item h2 { clear: left; } }
+/* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) { /* styles here */ }
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) { body.skey.groups-subgroups p.question { font-size: 18px; }
+  body.skey.groups-subgroups p.tip { font-size: 14px; }
+  body.skey.groups-subgroups .list-item .details { float: none; width: inherit; }
+  body.skey.groups-subgroups .list-item .details a { clear: left; }
+  body.skey.groups-subgroups .list-item .details .section-title { font-size: 10px; }
+  body.skey.groups-subgroups .not-my-plant { display: none; } }
+/* These styles apply to smartphones and tablets */
+@media only screen and (max-width: 1024px) { /* styles here */ }
+/* End media queries styles for Simple and Full Keys */
 /* PlantShare */
 body.plantshare .content form p { margin: 0; }
 body.plantshare .content form label { display: block; margin-bottom: 4px; text-transform: uppercase; width: 350px; }

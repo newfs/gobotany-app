@@ -27,36 +27,8 @@ body.taxa {
     .frame {
         cursor: pointer;
     }
-    /* Override Shadowbox styles to allow multiple title lines for
-     * showing a photo title, photographer credit, and copyright. */
-    #sb-title, #sb-title-inner {
-        height: 76px;
-        line-height: 70%;
-        position: relative;
-    }
-    #sb-title-inner {
-        div {
-            bottom: 6px;
-            position: absolute;
-        }
-        h6 {
-            font-size: 16px;
-            line-height: 110%;
-            margin: 0 0 2px;
-            padding: 0;
-        }
-        span {
-            font-family: $headings-font;
-            font-size: 10px;
-        }
-        a {
-            color: #fff;
-            text-decoration: underline;
-        }
-    }
-    #sb-nav-close {
-        top: 56px !important;
-    }
+
+    @include shadowbox-photo-titles-credits;
 
     /* For family and genus pages */
     .pics {

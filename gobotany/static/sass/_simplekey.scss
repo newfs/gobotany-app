@@ -1,0 +1,154 @@
+/* Simple and Full Keys (simplekey Django app) */
+
+body.skey {
+    &.groups-subgroups {
+        .img-gallery .frame {
+            cursor: pointer;
+        }
+
+        @include shadowbox-photo-titles-credits;
+
+        p {
+            &.question, &.tip {
+                font-family: $headings-font;
+                font-size: 24px;
+                margin: 12px 0 0;
+                padding: 0;
+            }
+            &.tip {
+                color: #519136;
+                font-size: 18px;
+                margin: 8px 0 0;
+                padding: 0;
+            }
+        }
+
+        .list-item {
+            border-top: 1px solid rgba(128, 113, 33, 0.1);
+            clear: left;
+            margin: 20px 0 0 0;
+            padding: 20px 0 0 0;
+            &.last {
+                border-bottom: 1px solid rgba(128, 113, 33, 0.1);	
+                padding: 20px 0;
+            }
+            .details {
+                float: left;
+                width: 425px;
+            }
+            h2 {
+                line-height: 110%;
+                margin: 0 0 5px 0;	
+                + p {
+                    color: #807121;
+                    display: block;
+                    font-family: $headings-font;
+                    font-size: 12px;
+                    font-style: italic;
+                    margin: 7px 0 1px;
+                    padding-left: 0;
+                }
+            }
+            p {
+                margin: 0;
+	            padding: 0 0 7px 25px;
+                &.key-char {
+                    background: url(/static/images/icons/icon1.png) 0 2px no-repeat;
+                }
+                &.exceptions {
+                	background: url(/static/images/icons/icon2.png) 0 2px no-repeat;
+                }
+                &.vid {
+                	background: url(/static/images/icons/icon3.png) 0 2px no-repeat;
+                }
+            }
+            .section-title {
+        	    display: block;
+	            text-transform: uppercase;
+            }
+            a {
+                &.plant-in-group {
+                    margin: 10px 0 0 0;
+                    background: url(/static/images/layout/plant-in-group-btn-orange.png) no-repeat 0 0;	
+                    height: 31px;
+                    width: 212px;
+                    @include offscreen;
+                    &:hover {
+	                    background-position: 0 -31px;	
+                    }
+                    &:active {
+	                    background-position: 0 -62px;	
+                    }
+                }
+                &.plant-in-subgroup {
+                    background: url(/static/images/layout/plant-in-subgroup-btn-orange.png) no-repeat 0 0;	
+                    height: 32px;
+                    margin: 10px 0 0 0;
+                    width: 233px;
+                    @include offscreen;
+                    &:hover {
+	                    background-position: 0 -32px;	
+                    }
+                    &:active {
+	                    background-position: 0 -64px;	
+                    }
+                }
+            }
+        }
+    }
+
+    &.results {
+
+    }
+}
+
+/* Begin media queries styles for Simple and Full Keys. */
+
+/* Portrait-orientation styles */
+@media only screen and (max-width: 400px) {
+    body.skey {
+        &.groups-subgroups {
+            .list-item h2 {
+                clear: left;
+            }
+        }
+    }
+}
+/* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) {
+    /* styles here */
+}
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) {
+    body.skey {
+        &.groups-subgroups {
+            p {
+                &.question {
+                    font-size: 18px;
+                }
+                &.tip {
+                    font-size: 14px;
+                }
+            }
+            .list-item .details {
+                float: none;
+                width: inherit;
+                a {
+                    clear: left;
+                }
+                .section-title {
+                    font-size: 10px;
+                }
+            }
+            .not-my-plant {
+                display: none;
+            }
+        }
+    }
+}
+/* These styles apply to smartphones and tablets */
+@media only screen and (max-width: 1024px) {
+    /* styles here */
+}
+
+/* End media queries styles for Simple and Full Keys */
