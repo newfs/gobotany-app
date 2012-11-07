@@ -667,7 +667,6 @@ body.skey.groups-subgroups #sb-nav-close { top: 56px !important; }
 body.skey.groups-subgroups p.question, body.skey.groups-subgroups p.tip { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 24px; margin: 12px 0 0; padding: 0; }
 body.skey.groups-subgroups p.tip { color: #519136; font-size: 18px; margin: 8px 0 0; padding: 0; }
 body.skey.groups-subgroups .list-item { border-top: 1px solid rgba(128, 113, 33, 0.1); clear: left; margin: 20px 0 0 0; padding: 20px 0 0 0; }
-body.skey.groups-subgroups .list-item.last { border-bottom: 1px solid rgba(128, 113, 33, 0.1); padding: 20px 0; }
 body.skey.groups-subgroups .list-item .details { float: left; width: 425px; }
 body.skey.groups-subgroups .list-item h2 { line-height: 110%; margin: 0 0 5px 0; }
 body.skey.groups-subgroups .list-item h2 + p { color: #807121; display: block; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 12px; font-style: italic; margin: 7px 0 1px; padding-left: 0; }
@@ -676,12 +675,16 @@ body.skey.groups-subgroups .list-item p.key-char { background: url(/static/image
 body.skey.groups-subgroups .list-item p.exceptions { background: url(/static/images/icons/icon2.png) 0 2px no-repeat; }
 body.skey.groups-subgroups .list-item p.vid { background: url(/static/images/icons/icon3.png) 0 2px no-repeat; }
 body.skey.groups-subgroups .list-item .section-title { display: block; text-transform: uppercase; }
-body.skey.groups-subgroups .list-item a.plant-in-group { margin: 10px 0 0 0; background: url(/static/images/layout/plant-in-group-btn-orange.png) no-repeat 0 0; height: 31px; width: 212px; display: block; text-indent: -9000px; }
+body.skey.groups-subgroups .list-item a { margin: 10px 0 14px; }
+body.skey.groups-subgroups .list-item a.plant-in-group { background: url(/static/images/layout/plant-in-group-btn-orange.png) no-repeat 0 0; height: 31px; width: 212px; display: block; text-indent: -9000px; }
 body.skey.groups-subgroups .list-item a.plant-in-group:hover { background-position: 0 -31px; }
 body.skey.groups-subgroups .list-item a.plant-in-group:active { background-position: 0 -62px; }
-body.skey.groups-subgroups .list-item a.plant-in-subgroup { background: url(/static/images/layout/plant-in-subgroup-btn-orange.png) no-repeat 0 0; height: 32px; margin: 10px 0 0 0; width: 233px; display: block; text-indent: -9000px; }
+body.skey.groups-subgroups .list-item a.plant-in-subgroup { background: url(/static/images/layout/plant-in-subgroup-btn-orange.png) no-repeat 0 0; height: 32px; width: 233px; display: block; text-indent: -9000px; }
 body.skey.groups-subgroups .list-item a.plant-in-subgroup:hover { background-position: 0 -32px; }
 body.skey.groups-subgroups .list-item a.plant-in-subgroup:active { background-position: 0 -64px; }
+body.skey.groups-subgroups .not-my-plant { clear: left; float: right; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; padding: 20px 0 0; text-align: center; }
+body.skey.groups-subgroups .not-my-plant p { margin: 0; padding: 0; }
+body.skey.groups-subgroups .not-my-plant p + p { font-family: Verdana, Geneva, sans-serif; }
 
 /* Begin media queries styles for Simple and Full Keys. */
 /* Portrait-orientation styles */

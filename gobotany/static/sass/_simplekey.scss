@@ -28,10 +28,6 @@ body.skey {
             clear: left;
             margin: 20px 0 0 0;
             padding: 20px 0 0 0;
-            &.last {
-                border-bottom: 1px solid rgba(128, 113, 33, 0.1);	
-                padding: 20px 0;
-            }
             .details {
                 float: left;
                 width: 425px;
@@ -67,8 +63,8 @@ body.skey {
 	            text-transform: uppercase;
             }
             a {
+                margin: 10px 0 14px;
                 &.plant-in-group {
-                    margin: 10px 0 0 0;
                     background: url(/static/images/layout/plant-in-group-btn-orange.png) no-repeat 0 0;	
                     height: 31px;
                     width: 212px;
@@ -83,7 +79,6 @@ body.skey {
                 &.plant-in-subgroup {
                     background: url(/static/images/layout/plant-in-subgroup-btn-orange.png) no-repeat 0 0;	
                     height: 32px;
-                    margin: 10px 0 0 0;
                     width: 233px;
                     @include offscreen;
                     &:hover {
@@ -92,6 +87,20 @@ body.skey {
                     &:active {
 	                    background-position: 0 -64px;	
                     }
+                }
+            }
+        }
+        .not-my-plant {
+            clear: left;
+            float: right;
+            font-family: $headings-font;
+            padding: 20px 0 0;
+            text-align: center;
+            p {
+                margin: 0;
+                padding: 0;
+                + p {
+                    font-family: $body-font;
                 }
             }
         }

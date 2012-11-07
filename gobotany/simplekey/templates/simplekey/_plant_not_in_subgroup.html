@@ -1,11 +1,13 @@
                     <div class="not-my-plant">
-                        <h6>My plant isn't in
+                        <p>My plant isn't in
                             {% if piles|length > 1 %}
                                 these subgroups.
                             {% else %}
                                 this subgroup.
                             {% endif %}
-                        </h6>
-                        <a class="back-level"
-                            href="{% url level1 key %}">&laquo; Take me back a level.</a>
+                        </p>
+                        <p>
+                            <a class="back-level"
+                                href="{% url level1 key %}">&laquo; Take me back a level.</a>
+                        </p>
                     </div>
