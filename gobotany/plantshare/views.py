@@ -135,6 +135,10 @@ def screen_images(request):
         for image in screened_images:
             image.screened = datetime.now()
             image.screened_by = request.user
+            if image.image_type == 'AVATAR' and image.is_approved:
+                profile = UserProfile.objects.get(user=image.uploaded_by)
+                profile.avatar = image
+                profile.save()
 
         formset.save()
 
