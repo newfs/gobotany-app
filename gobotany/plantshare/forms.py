@@ -2,10 +2,23 @@
 from django import forms
 from django.core.urlresolvers import reverse_lazy
 
-from models import UserProfile, ScreenedImage
+from models import UserProfile, ScreenedImage, Location
 
 def plant_name_suggestions_url():
     return reverse_lazy('site-plant-name-suggestions') + '?q=%s'
+
+class LocationTextInput(forms.TextInput):
+    """ Renders a location field so that a previously saved location
+    appears as the user input text, rather than the ForeignKey value. """
+    def render(self, name, value, attrs=None):
+        if value:
+            location = Location.objects.get(pk=value)
+            if location:
+                value = location.user_input
+            else:
+                value = None
+        return super(LocationTextInput, self).render(name, value, attrs)
+
 
 class LocationField(forms.RegexField):
     VALIDATION_MESSAGE = 'city, state OR postal code OR latitude, longitude'
@@ -15,7 +28,7 @@ class LocationField(forms.RegexField):
         '(^(-?(\d{1,3}.?\d{1,6}? ?[nNsS]?))([, ]+)'
         '(-?(\d{1,3}.?\d{1,6}? ?[wWeE]?))$)'
     )
-    widget = forms.TextInput({'class': 'location',
+    widget = LocationTextInput({'class': 'location',
                               'placeholder': VALIDATION_MESSAGE,
                               'pattern': VALIDATION_PATTERN})
     default_error_messages = {
@@ -79,6 +92,18 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('sharing_visibility', 'display_name', 'saying', 
             'location_visibility', 'location',)
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        self.fields['location'].required = False
+
+    def clean_location(self):
+        if not 'location' in self.cleaned_data:
+            return None
+        user_text = self.cleaned_data['location']
+        location, created = Location.objects.get_or_create(user_input=user_text)
+
+        return location
 
 
 class ScreenedImageForm(forms.ModelForm):
