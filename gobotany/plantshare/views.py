@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
@@ -129,7 +130,10 @@ def screen_images(request):
 def ajax_profile_edit(request):
     """ Ajax form submission of profile form """
     if not request.user.is_authenticated():
-        return HttpResponse(simplejson.dumps({'error': True}), mimetype='application/json')
+        return HttpResponse(simplejson.dumps({
+            'error': True,
+            'info': 'User is not authenticated.'
+        }), mimetype='application/json')
 
     if request.method == 'POST':
         try:
@@ -137,12 +141,17 @@ def ajax_profile_edit(request):
         except UserProfile.DoesNotExist:
             profile = None
         profile_form = UserProfileForm(request.POST, instance=profile)
-        if profile:
-            profile_form.save()
-        else:
+        if profile_form.is_valid():
             profile = profile_form.save(commit=False)
-            profile.user = request.user
+            if not profile.user:
+                profile.user = request.user
             profile.save()
+            profile_form.save_m2m()
+        else:
+            return HttpResponse(simplejson.dumps({
+                'error': True,
+                'info': 'Form Validation error:\n{0}'.format(profile_form.errors.as_text())
+            }), mimetype='application/json')
 
     return HttpResponse(simplejson.dumps({'success': True}), mimetype='application/json')
 
@@ -157,12 +166,9 @@ def ajax_image_upload(request):
     if request.method == 'POST':
         form = ScreenedImageForm(request.POST, request.FILES)
         if form.is_valid():
-            print 'Form is valid'
             new_image = form.save(commit=False)
             new_image.uploaded_by = request.user
             new_image.save()
-        else:
-            print 'Form is invalid'
 
     return HttpResponse(simplejson.dumps({'success': True}), mimetype='application/json')
 
