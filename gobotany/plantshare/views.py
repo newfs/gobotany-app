@@ -161,10 +161,7 @@ def ajax_profile_edit(request):
         }), mimetype='application/json')
 
     if request.method == 'POST':
-        try:
-            profile = UserProfile.objects.get(user=request.user)
-        except UserProfile.DoesNotExist:
-            profile = None
+        profile, created = UserProfile.objects.get_or_create(user=request.user)
         profile_form = UserProfileForm(request.POST, instance=profile)
         if profile_form.is_valid():
             profile = profile_form.save(commit=False)
