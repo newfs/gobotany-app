@@ -1,6 +1,9 @@
 /* Simple and Full Keys (simplekey Django app) */
 
 body.skey {
+
+    /* Styles for groups and subgroups (Levels 1 and 2) pages */
+
     &.groups-subgroups {
         .img-gallery .frame {
             cursor: pointer;
@@ -104,12 +107,785 @@ body.skey {
                 }
             }
         }
+    } /* end &.groups-subgroups */
+
+
+    /* Styles for results (Level 3) page */
+
+    @mixin results-select {
+        background: #ebf6df;
+        border: 1px solid #9cc86b;
+        font-family: $headings-font;
+        padding: 0;
+        -webkit-appearance: menulist;
     }
 
     &.results {
+        .already-know {
+            float: left;
+            margin: 0 0 40px 0;
+            h6 {
+                color: #807121;
+                font-weight: bold;
+                margin: 0 0 5px 0;
+            }
+            label {
+                color: #807121;
+                display: block;
+                font-family: $headings-font;
+                font-size: 12px;
+                font-weight: normal;
+                margin: 5px 0 3px;
+                vertical-align: middle;
+            }
+            select {
+                font-size: 13px;
+                @include results-select;
+                width: 143px;
+            }
+            button {
+                background: #ebf6df;
+                border: 1px solid #9cc86b;
+                font: -webkit-control;
+                padding: 2px 6px;
+                -webkit-appearance: button;
+            }
+        } /* end .already-know */
 
-    }
+        .show-me {
+            float: right;
+            margin: 0 0 15px 0;
+        }
+        #results-display {
+            display: inline;
+            label {
+                color: #000;
+                font-family: $headings-font;
+                font-size: 15px;
+                font-weight: normal;
+            }
+            select {
+                font-size: 15px;
+                @include results-select;
+            }
+        }
+        #modal, #plant-detail-modal {
+            display: none;
+        }
+        .modal-wrap {
+            border: 5px solid rgba(255, 255, 255, 0.5);
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            border-radius: 5px;
+            .inner {
+                background: #fff;
+                padding: 0 0 20px 0;
+                h4.heading, h3.heading {
+                    margin: 0;
+                    padding: 13px 0 0 20px;
+                }
+                h3.heading {
+                    font-style: italic;
+                    margin-bottom: 0;
+                    margin-left: 245px;
+                    span {
+                        color: #807121;
+                        font-size: 16px;
+                        font-style: normal;
+                    }
+                }
+                p {
+                    font-size: 12px;
+                    margin: 0;
+                    padding: 4px 20px 0;
+                }
+            }
+            #choices {
+	            padding: 10px 20px 0 20px;
+                li {
+                    margin: 0 0 14px;
+                }
+            }
+            #plant-details {
+            	padding: 10px 10px 0;
+            }
+            .list-item {
+                border-top: none;
+                margin: 0 0 0 0;
+                padding: 0 0 0 0;
+                h4 {
+                    color: #807121;
+                }
+                p {
+                	padding: 0 0 7px 0;
+                }
+                .details {
+                	margin: 0 0 0 10px;
+                }
+            }
+        } /* end .modal-wrap */
+
+        a {
+            .get-more-info {
+                background: url(/static/images/layout/get-more-info.png) 0 0 no-repeat transparent;
+                height: 32px;
+                margin: 20px 0 0 0;
+                width: 163px;
+                @include offscreen;
+                &:hover {
+                	background-position: 0 -32px;
+                }
+                &:active {
+                	background-position: 0 -64px;
+                }
+            }
+            .go-to-species-page {
+                background: url(/static/images/layout/go-to-species-page.png) 0 0 no-repeat transparent;
+                height: 31px;
+                margin: 20px 0 0 0;
+                width: 212px;
+                @include offscreen;
+                &:hover {
+                    background-position: 0 -31px;
+                }
+                &:active {
+                    background-position: 0 -62px;
+                }
+            }
+        } /* end a */
+
+        .plant-list {
+            margin-top: 8px;
+            position: relative;
+            .plant {
+                background: #fff;
+                border: 1px solid #c3d941;
+                display: none;
+                height: 210px;
+                left: 0px;
+                padding: 8px 6px;
+                position: absolute;
+                text-align: center;
+                top: 0px;
+                width: 160px; /* prevent long names from blowing out layout; allow wrap */
+                &.in-results {
+                    display: block;
+                }
+                &.genus_join_left {
+                    border-left: none;
+                }
+                &.genus_join_right {
+                    border-right: none;
+                    padding-right: 12px;
+                }
+                a {
+                    color: #1a2e11;
+                    display: block;
+                    &:hover {
+                        color: #508e31;
+                        text-decoration: none;
+                        p.plant-name {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+                .frame {
+                    border: 5px solid rgba(255, 255, 255, 0.8);
+                    height: 139px;
+                    position: absolute;
+                    top: 8px;
+                    width: 150px;
+                    z-index: 100;
+                }
+                p.plant-name {
+                    font-family: $narrower-body-font; /* Tahoma or Trebuchet because it's
+                                                         narrower than Verdana: less wrapping
+                                                         and fewer names on 4 lines */
+                    line-height: 14px;
+                    margin: 7px 0 0 0;
+                    span.latin {
+                        display: block;
+                        font-family: $body-font; /* Verdana because it's wider than Trebuchet:
+                                                    easier to read in italics */
+                        font-style: italic;
+                        padding-bottom: 4px;
+                    }
+                }
+            } /* end .plant */
+
+            .plant-img-container {
+                height: 149px;
+                overflow: hidden;
+                width: 160px;
+                box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+                -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+                -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+                img {
+                    height: 149px;  /* so lazy_images knows when <img> is on screen */
+                }
+            }
+        } /* end .plant-list */
+
+        .missing-image {
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
+            background: -moz-linear-gradient(center top , #eaf2e2, #d6e6c5) repeat scroll 0 0 transparent;
+            color: #354d1e;
+            height: 149px;
+            position: relative;
+            width: 160px;
+            p {
+                font-size: 12px;
+                height: 40px;
+                left: 50%;
+                line-height: 130%;
+                margin: -20px 0 0 -50px;
+                position: absolute;
+                text-align: center;
+                top: 50%;
+                width: 100px;
+            }
+        }
+        p.list-all {
+            clear: left;
+            padding-top: 2em;
+            a {
+                cursor: pointer;
+            }
+        }
+        #sidebar {
+            background-color: #fcfdf5;
+            min-height: 800px;
+            padding: 0 0 16px 0;
+            &.tinted {
+                background: #fcfdf5;
+            }
+            div.scroll {
+                border-bottom: 1px solid #9cc86b;
+                border-left: 1px solid #519136;
+                border-top: 1px solid #519136;
+                display: block;
+                height: 335px;
+                margin: 0 0 10px 0;
+                overflow: auto;
+                width: 227px;
+            }
+            .section.instructions {
+                background: #9cc86b;
+                color: #fff;
+                padding: 16px;
+                h5 {
+                    line-height: 120%;
+                    margin: 0;
+                }
+            }
+            a.get-choices {
+                background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent;
+                display: block;
+                height: 32px;
+                margin: 20px 0 0 0;
+                text-indent: -9000px;
+                width: 171px;
+                &:hover {
+                    background-position: 0 -32px;
+                }
+                &:active {
+                    background-position: 0 -64px;
+                }
+            }
+            h6 {
+                color: #807121;
+                font-weight: bold;
+                margin: 0 0 8px 0;
+            }
+            .option-list {
+                 li {
+                    background: #fff;
+                    border-top: 1px solid #c3d941;
+                    cursor: pointer;
+                    display: block;
+                    margin: 0;
+                    padding: 12px;
+                    &.last {
+                        border-bottom: 1px solid #c3d941;
+                    }
+                    &.answered {
+                        background: #ffd;
+                    }
+                    &.active, &:hover, &.active span.value,
+                    &.answered.active {
+                        background: #dce890;
+                        cursor: pointer;
+                    }
+                }
+                .option {
+                    color: #1a2e11;
+                    text-decoration: none;
+                    span.name {
+                        display: block;
+                        font-weight: bold;
+                        margin: 0 0 3px 0;
+                    }
+                }
+                .clear-filter {
+                    display: block;
+                    margin-top: 4px;
+                    width: 45px;
+                }
+            } /* end .option-list */
+
+            .loading {
+                background: url(/static/images/icons/preloaders-dot-net-sm.gif) no-repeat scroll 0 0 transparent;
+                font-weight: bold;
+                margin: 12px;
+                padding: 0 0 0 20px;
+            }
+        } /* end #sidebar */
+
+        #intro-overlay {   /* for introductory overlay */
+            display: none;
+            font-family: $headings-font;
+            font-size: 40px;
+            text-align: center;
+            z-index: 1000;
+            div {
+                background-color: #f0f0c0;
+                color: #fff;
+                margin-bottom: 10%;
+                padding: 0.5em 1em;
+                position: relative;
+                box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
+                -moz-box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
+                -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
+                border-radius: 0.5em;
+                -moz-border-radius: 0.5em;
+            }
+            .number-of-species, .number-of-questions {
+                background-color: #508e31;
+            }
+            .continue {
+                background-color: #dc9402;
+                border: 2px solid #dc9402;
+                cursor: pointer;
+                letter-spacing: 3px;
+                text-shadow: 1px 1px 2px #dc9402;
+                text-transform: uppercase;
+                border-radius: 2em;
+                -moz-border-radius: 2em;
+
+                /* Gradient generated using the tool "Ultimate CSS Gradient Generator":
+                 * www.colorzilla.com/gradient-editor
+                 */
+                background: #dc9302; /* Old browsers */
+                background: -moz-linear-gradient(top,  #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dc9302), color-stop(50%,#f4bc53), color-stop(100%,#dc9302)); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* Chrome10+,Safari5.1+ */
+                background: -o-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* Opera 11.10+ */
+                background: -ms-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* IE10+ */
+                background: linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* W3C */
+            }
+            h1 {
+                font-size: 140%;
+            }
+            /* Arrows */
+            .number-of-species:before, .number-of-questions:before {
+                border-style: solid;
+                border-width: 1em 2em;
+                bottom: 1em;
+                content: '';
+                height: 0;
+                position: absolute;
+                width: 0;
+            }
+            .number-of-species:before {
+                border-color: transparent;
+                right: -5em;
+            }
+            .number-of-questions:before {
+                border-color: transparent #508e31 transparent transparent;
+                left: -4.3em;
+                top: 0.6em;
+            }
+        } /* end #intro-overlay */
+
+        h3.species-count-heading {
+            /* Move "18 matching species" to the right of Photos/List tab */
+            font-size: 24px;
+            line-height: 90%;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            > span {
+                left: 330px;
+                position: absolute;
+                top: 0px;
+            }
+        }
+        .get-more {
+            font-size: 11px;
+            line-height: 16px;
+            margin: 0 0 20px;
+            text-align: center;
+            a {
+                cursor: pointer;
+                display: block;
+                font-weight: bold;
+                margin: 18px 0 10px;
+                &.get-choices {
+                    margin: 0 auto 4px;
+                }
+            }
+        }
+        h5.help {
+            margin: 0 0 0 0;
+            padding: 3px 0 0 0;
+        }
+        a.get-help-btn {
+            margin: 0 0 0 19px;
+        }
+
+        #results-tabs {
+            border-bottom: 1px solid #c3d941;
+            clear: left;
+            height: 28px;
+            margin: 10px 0;
+            a {
+                background: #d6e6c5;
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
+                background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5);
+                border: 1px solid #c3d941;
+                color: #354d1e;
+                cursor: pointer;
+                display: block;
+                float: left;
+                font-family: $headings-font;
+                font-size: 18px;
+                line-height: 18px;
+                margin: 0;
+                padding: 5px 10px 4px;
+                text-align: center;
+                width: 100px;
+                -webkit-border-top-left-radius: 6px;
+                -webkit-border-top-right-radius: 6px;
+                -moz-border-radius-topleft: 6px;
+                -moz-border-radius-topright: 6px;
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+                &:hover {
+                    background: #e1f2cd;
+                    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0f8e7), color-stop(100%,#e1f2cd));
+                    background: -moz-linear-gradient(center top, #f0f8e7, #e1f2cd);
+                    cursor: pointer;
+                    text-decoration: none;
+                }
+            }
+            li {
+                list-style-type: none;
+                &:first-child a {
+                    margin-left: 10px;
+                }
+                a.current, a.current:hover {
+                    background: #fbfaf5;
+                    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0c0));
+                    background: -moz-linear-gradient(center top, #ffffff, #f0f0c0);
+                    border-bottom: 0;
+                    color: #1a2e11;
+                    cursor: default;
+                    padding: 5px 10px;
+                }
+            }
+        } /* end #results-tabs */
+        
+        /* Ordinarily this message will have its centering done
+         * by JavaScript. See gobotany.sk.results.notify() */
+        #notification-msg {
+            background-color: #ff0;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            font-size: 1.2em;
+            -moz-border-bottom-left-radius: 15px;
+            -moz-border-bottom-right-radius: 15px;
+            padding: 0.25em 0.75em;
+            z-index: 200;
+        }
+
+        /* Working Area styles */
+        .working-area {
+            background: #fff;
+            border: 1px solid #c3d941;
+            display: none;
+            margin-left: -40px;
+            padding: 10px 15px;
+            position: absolute;
+            width: 730px;
+            z-index: 200;
+            -moz-box-shadow: black 1px 1px 5px 0;
+            -webkit-box-shadow: black 1px 1px 5px 0;
+            -o-box-shadow: black 1px 1px 5px 0;
+            box-shadow: black 1px 1px 5px 0;
+            img.arrow {
+                display: block;
+                left: -15px;
+                position: absolute;
+                top: 18px;
+            }
+            .choices {
+                border-spacing: 6px 12px;
+                display: table;
+                .row {
+                    display: table-row;
+                    div {
+                        display: table-cell;
+                        margin: 0 0.5em 1em 0;
+                        min-height: 50px;
+                        &.disabled span {
+                            color: #aaa;
+                        }
+                        label {
+                            cursor: pointer;
+                            display: inline-block;
+                            font-family: $narrower-body-font;
+                            font-size: 12px;
+                            margin-left: 18px;
+                            min-width: 70px;
+                            vertical-align: top;
+                            word-wrap: break-word; /* can break mid-word */
+                        }
+                        input {
+                            float: left;
+                            margin: 3px 3px 0 -18px;
+                            + img {
+                                background: #fff;
+                                border: 1px solid #ddd;
+                                display: inline-block;
+                                height: 80px;
+                            }
+                        }
+                    }
+                }
+            } /* end .choices */
+            
+            a.close {
+                background: url(/static/images/icons/close.png) no-repeat transparent;
+                display: block;
+                float: right;
+                height: 16px;
+                margin: 5px 0 0 0;
+                width: 16px;
+            }
+            h4 {
+                color: #000;
+                display: none;
+                line-height: 130%;
+                margin: 6px 0;
+                width: 650px;
+            }
+            .intro-message {
+                h4 {
+                    display: block;
+                    font-weight: bold;
+                }
+                p {
+                    font-size: 14px;
+                    margin-bottom: 5px;
+                }
+            }
+            .info {
+                display: none;
+                float: left;
+                font-family: $narrower-body-font;
+                font-size: 14px;
+                width: 100%;
+                .hint {
+                    font-size: 12px;
+                    margin: 6px 0;
+                    p {
+                        font-size: 14px;
+                        line-height: 120%;
+                        margin-bottom: 0;
+                    }
+                }
+            }
+            .character-drawing {
+                float: right;
+                img {
+                    max-height: 200px;
+                }
+            }
+            ul {
+                margin: 15px 0 0 0;
+                li {
+                    display: block;
+                    float: left;
+                    margin: 0 8px 15px 0;
+                    label {
+                        display: block;
+                        float: left;
+                        margin: 0 9px 0 0;
+                    }
+                    img {
+                        border: 1px solid #e1e1dc;
+                        display: block;
+                    }
+                    .option-container {
+                        float: left;
+                        width: auto;
+                        p {
+                            display: inline-block;
+                            width: 80px;
+                        }
+                    }
+                }
+            } /* end ul */
+
+            .apply-btn {
+                background: url(/static/images/layout/apply-selection.png) no-repeat 0 0 transparent;
+                display: inline-block;
+                height: 41px;
+                margin: 4px 0 0;
+                text-align: left;
+                text-indent: -9000px;
+                width: 244px;
+                &.disabled {
+                    background-position: 0 0;
+                    opacity: 0.2;
+                }
+                &:hover {
+                    background-position: 0 -41px;
+                }
+                &:active {
+                    background-position: 0 -82px;
+                }
+            }
+            .choose_length label {   /* Length input */
+                margin: 0 10px 0 0;
+                input {
+                    margin: 0 4px 0 0;
+                }
+            }
+            .close {
+                color: #00e;
+                cursor: pointer;
+                display: inline;
+                float: right;
+            }
+            h3.name {
+                font-size: 1em;
+                font-weight: bold;
+                line-height: 1em;
+                margin: 0 0 0.3em 0;
+                padding: 0;
+            }
+            .values {
+                &.numeric {
+                    border: 0;
+                    height: auto;
+                    margin-top: 8px;
+                    overflow-y: visible;
+                }
+                .zero {
+                    color: #ccc;
+                }
+            }
+            .measurement {
+                margin: 8px 0;
+                label input {
+                    margin: 0 4px 0 8px;
+                }
+            }
+            .instructions {
+                margin-bottom: 8px;
+            }
+            .actions {
+                text-align: center;
+            }
+
+            /* Working Area slider styles */
+
+            $slider-background-top-color: #c1d9a7;
+            $slider-background-bottom-color: #ffffff;
+            $slider-bar-radius: 4px;
+            $slider-thumb-radius: 16px;
+            $slider-thumb-shadow-lengths: 0 1px 6px 1px;
+            $slider-thumb-shadow-color: #333333;
+
+            @mixin unselectable {
+                -moz-user-select: -moz-none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            div.working-area #slider {
+                height: 70px;
+                margin: 20px 0 10px;
+                padding: 20px 0 0 0;
+                position: relative;
+                .bar {
+                    cursor: pointer;
+                    padding: 0 4px;
+                    position: absolute;
+                    top: 47px;
+                    width: 100%;
+                    -moz-box-sizing: border-box;
+                    -webkit-box-sizing: border-box;
+                    box-sizing: border-box;
+                    @include unselectable;
+                    div {
+                        background: -webkit-gradient(linear, left top, left bottom,
+                            color-stop(0%, $slider-background-top-color),
+                            color-stop(100%, $slider-background-bottom-color));
+                        background: -moz-linear-gradient(center top,
+                            $slider-background-top-color, $slider-background-bottom-color);
+                        border: 1px solid $slider-background-top-color;
+                        height: 8px;
+                        -moz-border-radius: $slider-bar-radius;
+                        -webkit-border-radius: $slider-bar-radius;
+                        -o-border-radius: $slider-bar-radius;
+                        -ms-border-radius: $slider-bar-radius;
+                        -khtml-border-radius: $slider-bar-radius;
+                        border-radius: $slider-bar-radius;
+                        @include unselectable;
+                    }
+                }
+                .thumb {
+                    background: -webkit-gradient(linear, left top, left bottom,
+                        color-stop(0%, $slider-background-top-color),
+                        color-stop(100%, $slider-background-bottom-color));
+                    background: -moz-linear-gradient(center top,
+                        $slider-background-top-color, $slider-background-bottom-color);
+                    border: 1px solid $slider-background-bottom-color;
+                    cursor: pointer;
+                    height: 30px;
+                    left: 3px;
+                    position: absolute;
+                    text-align: center;
+                    top: 35px;
+                    width: 30px;
+                    -moz-border-radius: $slider-thumb-radius;
+                    -webkit-border-radius: $slider-thumb-radius;
+                    -o-border-radius: $slider-thumb-radius;
+                    -ms-border-radius: $slider-thumb-radius;
+                    -khtml-border-radius: $slider-thumb-radius;
+                    border-radius: $slider-thumb-radius;
+                    -moz-box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
+                    -webkit-box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
+                    -o-box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
+                    box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
+                }
+                .label {
+                    font-size: 16px;
+                    position: relative;
+                    top: -36px;
+                    @include unselectable;
+                }
+            } /* end #slider */
+
+        } /* end .working-area */
+
+    } /* end &.results */
 }
+
 
 /* Begin media queries styles for Simple and Full Keys. */
 

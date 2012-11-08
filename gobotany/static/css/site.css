@@ -392,6 +392,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
 
 /* Breadcrumb trails */
 #breadcrumb { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 160%; margin: 0 0 14px; }
+#breadcrumb p { margin: 0; }
 #breadcrumb span { color: #000; }
 
 /* Wait spinners */
@@ -656,6 +657,7 @@ body.taxa#species #species-images { height: 239px; margin: 0 0 20px 0; overflow:
 body.taxa#species #species-images div.scrollableArea a { border-right: 5px solid #fff; float: left; margin: 0; padding: 0; }
 
 /* Simple and Full Keys (simplekey Django app) */
+body.skey { /* Styles for groups and subgroups (Levels 1 and 2) pages */ /* end &.groups-subgroups */ /* Styles for results (Level 3) page */ /* end &.results */ }
 body.skey.groups-subgroups { /* Override Shadowbox styles to allow multiple title lines for showing a photo title, photographer credit, and copyright. */ }
 body.skey.groups-subgroups .img-gallery .frame { cursor: pointer; }
 body.skey.groups-subgroups #sb-title, body.skey.groups-subgroups #sb-title-inner { height: 76px; line-height: 70%; position: relative; }
@@ -685,6 +687,135 @@ body.skey.groups-subgroups .list-item a.plant-in-subgroup:active { background-po
 body.skey.groups-subgroups .not-my-plant { clear: left; float: right; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; padding: 20px 0 0; text-align: center; }
 body.skey.groups-subgroups .not-my-plant p { margin: 0; padding: 0; }
 body.skey.groups-subgroups .not-my-plant p + p { font-family: Verdana, Geneva, sans-serif; }
+body.skey.results { /* end .already-know */ /* end .modal-wrap */ /* end a */ /* end .plant-list */ /* end #sidebar */ /* end #intro-overlay */ /* end #results-tabs */ /* Ordinarily this message will have its centering done by JavaScript. See gobotany.sk.results.notify() */ /* Working Area styles */ /* end .working-area */ }
+body.skey.results .already-know { float: left; margin: 0 0 40px 0; }
+body.skey.results .already-know h6 { color: #807121; font-weight: bold; margin: 0 0 5px 0; }
+body.skey.results .already-know label { color: #807121; display: block; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; margin: 5px 0 3px; vertical-align: middle; }
+body.skey.results .already-know select { font-size: 13px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; padding: 0; -webkit-appearance: menulist; width: 143px; }
+body.skey.results .already-know button { background: #ebf6df; border: 1px solid #9cc86b; font: -webkit-control; padding: 2px 6px; -webkit-appearance: button; }
+body.skey.results .show-me { float: right; margin: 0 0 15px 0; }
+body.skey.results #results-display { display: inline; }
+body.skey.results #results-display label { color: #000; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; }
+body.skey.results #results-display select { font-size: 15px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; padding: 0; -webkit-appearance: menulist; }
+body.skey.results #modal, body.skey.results #plant-detail-modal { display: none; }
+body.skey.results .modal-wrap { border: 5px solid rgba(255, 255, 255, 0.5); -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; }
+body.skey.results .modal-wrap .inner { background: #fff; padding: 0 0 20px 0; }
+body.skey.results .modal-wrap .inner h4.heading, body.skey.results .modal-wrap .inner h3.heading { margin: 0; padding: 13px 0 0 20px; }
+body.skey.results .modal-wrap .inner h3.heading { font-style: italic; margin-bottom: 0; margin-left: 245px; }
+body.skey.results .modal-wrap .inner h3.heading span { color: #807121; font-size: 16px; font-style: normal; }
+body.skey.results .modal-wrap .inner p { font-size: 12px; margin: 0; padding: 4px 20px 0; }
+body.skey.results .modal-wrap #choices { padding: 10px 20px 0 20px; }
+body.skey.results .modal-wrap #choices li { margin: 0 0 14px; }
+body.skey.results .modal-wrap #plant-details { padding: 10px 10px 0; }
+body.skey.results .modal-wrap .list-item { border-top: none; margin: 0 0 0 0; padding: 0 0 0 0; }
+body.skey.results .modal-wrap .list-item h4 { color: #807121; }
+body.skey.results .modal-wrap .list-item p { padding: 0 0 7px 0; }
+body.skey.results .modal-wrap .list-item .details { margin: 0 0 0 10px; }
+body.skey.results a .get-more-info { background: url(/static/images/layout/get-more-info.png) 0 0 no-repeat transparent; height: 32px; margin: 20px 0 0 0; width: 163px; display: block; text-indent: -9000px; }
+body.skey.results a .get-more-info:hover { background-position: 0 -32px; }
+body.skey.results a .get-more-info:active { background-position: 0 -64px; }
+body.skey.results a .go-to-species-page { background: url(/static/images/layout/go-to-species-page.png) 0 0 no-repeat transparent; height: 31px; margin: 20px 0 0 0; width: 212px; display: block; text-indent: -9000px; }
+body.skey.results a .go-to-species-page:hover { background-position: 0 -31px; }
+body.skey.results a .go-to-species-page:active { background-position: 0 -62px; }
+body.skey.results .plant-list { margin-top: 8px; position: relative; /* end .plant */ }
+body.skey.results .plant-list .plant { background: #fff; border: 1px solid #c3d941; display: none; height: 210px; left: 0px; padding: 8px 6px; position: absolute; text-align: center; top: 0px; width: 160px; /* prevent long names from blowing out layout; allow wrap */ }
+body.skey.results .plant-list .plant.in-results { display: block; }
+body.skey.results .plant-list .plant.genus_join_left { border-left: none; }
+body.skey.results .plant-list .plant.genus_join_right { border-right: none; padding-right: 12px; }
+body.skey.results .plant-list .plant a { color: #1a2e11; display: block; }
+body.skey.results .plant-list .plant a:hover { color: #508e31; text-decoration: none; }
+body.skey.results .plant-list .plant a:hover p.plant-name { text-decoration: underline; }
+body.skey.results .plant-list .plant .frame { border: 5px solid rgba(255, 255, 255, 0.8); height: 139px; position: absolute; top: 8px; width: 150px; z-index: 100; }
+body.skey.results .plant-list .plant p.plant-name { font-family: Tahoma, "Trebuchet MS", sans-serif; /* Tahoma or Trebuchet because it's narrower than Verdana: less wrapping and fewer names on 4 lines */ line-height: 14px; margin: 7px 0 0 0; }
+body.skey.results .plant-list .plant p.plant-name span.latin { display: block; font-family: Verdana, Geneva, sans-serif; /* Verdana because it's wider than Trebuchet: easier to read in italics */ font-style: italic; padding-bottom: 4px; }
+body.skey.results .plant-list .plant-img-container { height: 149px; overflow: hidden; width: 160px; box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); }
+body.skey.results .plant-list .plant-img-container img { height: 149px; /* so lazy_images knows when <img> is on screen */ }
+body.skey.results .missing-image { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5) repeat scroll 0 0 transparent; color: #354d1e; height: 149px; position: relative; width: 160px; }
+body.skey.results .missing-image p { font-size: 12px; height: 40px; left: 50%; line-height: 130%; margin: -20px 0 0 -50px; position: absolute; text-align: center; top: 50%; width: 100px; }
+body.skey.results p.list-all { clear: left; padding-top: 2em; }
+body.skey.results p.list-all a { cursor: pointer; }
+body.skey.results #sidebar { background-color: #fcfdf5; min-height: 800px; padding: 0 0 16px 0; /* end .option-list */ }
+body.skey.results #sidebar.tinted { background: #fcfdf5; }
+body.skey.results #sidebar div.scroll { border-bottom: 1px solid #9cc86b; border-left: 1px solid #519136; border-top: 1px solid #519136; display: block; height: 335px; margin: 0 0 10px 0; overflow: auto; width: 227px; }
+body.skey.results #sidebar .section.instructions { background: #9cc86b; color: #fff; padding: 16px; }
+body.skey.results #sidebar .section.instructions h5 { line-height: 120%; margin: 0; }
+body.skey.results #sidebar a.get-choices { background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 20px 0 0 0; text-indent: -9000px; width: 171px; }
+body.skey.results #sidebar a.get-choices:hover { background-position: 0 -32px; }
+body.skey.results #sidebar a.get-choices:active { background-position: 0 -64px; }
+body.skey.results #sidebar h6 { color: #807121; font-weight: bold; margin: 0 0 8px 0; }
+body.skey.results #sidebar .option-list li { background: #fff; border-top: 1px solid #c3d941; cursor: pointer; display: block; margin: 0; padding: 12px; }
+body.skey.results #sidebar .option-list li.last { border-bottom: 1px solid #c3d941; }
+body.skey.results #sidebar .option-list li.answered { background: #ffd; }
+body.skey.results #sidebar .option-list li.active, body.skey.results #sidebar .option-list li:hover, body.skey.results #sidebar .option-list li.active span.value, body.skey.results #sidebar .option-list li.answered.active { background: #dce890; cursor: pointer; }
+body.skey.results #sidebar .option-list .option { color: #1a2e11; text-decoration: none; }
+body.skey.results #sidebar .option-list .option span.name { display: block; font-weight: bold; margin: 0 0 3px 0; }
+body.skey.results #sidebar .option-list .clear-filter { display: block; margin-top: 4px; width: 45px; }
+body.skey.results #sidebar .loading { background: url(/static/images/icons/preloaders-dot-net-sm.gif) no-repeat scroll 0 0 transparent; font-weight: bold; margin: 12px; padding: 0 0 0 20px; }
+body.skey.results #intro-overlay { /* for introductory overlay */ display: none; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 40px; text-align: center; z-index: 1000; /* Arrows */ }
+body.skey.results #intro-overlay div { background-color: #f0f0c0; color: #fff; margin-bottom: 10%; padding: 0.5em 1em; position: relative; box-shadow: 0px 5px 20px black; -moz-box-shadow: 0px 5px 20px black; -webkit-box-shadow: 0px 5px 20px black; border-radius: 0.5em; -moz-border-radius: 0.5em; }
+body.skey.results #intro-overlay .number-of-species, body.skey.results #intro-overlay .number-of-questions { background-color: #508e31; }
+body.skey.results #intro-overlay .continue { background-color: #dc9402; border: 2px solid #dc9402; cursor: pointer; letter-spacing: 3px; text-shadow: 1px 1px 2px #dc9402; text-transform: uppercase; border-radius: 2em; -moz-border-radius: 2em; /* Gradient generated using the tool "Ultimate CSS Gradient Generator": www.colorzilla.com/gradient-editor */ background: #dc9302; /* Old browsers */ background: -moz-linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* FF3.6+ */ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dc9302), color-stop(50%, #f4bc53), color-stop(100%, #dc9302)); /* Chrome,Safari4+ */ background: -webkit-linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* Chrome10+,Safari5.1+ */ background: -o-linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* Opera 11.10+ */ background: -ms-linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* IE10+ */ background: linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* W3C */ }
+body.skey.results #intro-overlay h1 { font-size: 140%; }
+body.skey.results #intro-overlay .number-of-species:before, body.skey.results #intro-overlay .number-of-questions:before { border-style: solid; border-width: 1em 2em; bottom: 1em; content: ''; height: 0; position: absolute; width: 0; }
+body.skey.results #intro-overlay .number-of-species:before { border-color: transparent; right: -5em; }
+body.skey.results #intro-overlay .number-of-questions:before { border-color: transparent #508e31 transparent transparent; left: -4.3em; top: 0.6em; }
+body.skey.results h3.species-count-heading { /* Move "18 matching species" to the right of Photos/List tab */ font-size: 24px; line-height: 90%; margin: 0; padding: 0; position: relative; }
+body.skey.results h3.species-count-heading > span { left: 330px; position: absolute; top: 0px; }
+body.skey.results .get-more { font-size: 11px; line-height: 16px; margin: 0 0 20px; text-align: center; }
+body.skey.results .get-more a { cursor: pointer; display: block; font-weight: bold; margin: 18px 0 10px; }
+body.skey.results .get-more a.get-choices { margin: 0 auto 4px; }
+body.skey.results h5.help { margin: 0 0 0 0; padding: 3px 0 0 0; }
+body.skey.results a.get-help-btn { margin: 0 0 0 19px; }
+body.skey.results #results-tabs { border-bottom: 1px solid #c3d941; clear: left; height: 28px; margin: 10px 0; }
+body.skey.results #results-tabs a { background: #d6e6c5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5); border: 1px solid #c3d941; color: #354d1e; cursor: pointer; display: block; float: left; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 18px; line-height: 18px; margin: 0; padding: 5px 10px 4px; text-align: center; width: 100px; -webkit-border-top-left-radius: 6px; -webkit-border-top-right-radius: 6px; -moz-border-radius-topleft: 6px; -moz-border-radius-topright: 6px; border-top-left-radius: 6px; border-top-right-radius: 6px; }
+body.skey.results #results-tabs a:hover { background: #e1f2cd; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f0f8e7), color-stop(100%, #e1f2cd)); background: -moz-linear-gradient(center top, #f0f8e7, #e1f2cd); cursor: pointer; text-decoration: none; }
+body.skey.results #results-tabs li { list-style-type: none; }
+body.skey.results #results-tabs li:first-child a { margin-left: 10px; }
+body.skey.results #results-tabs li a.current, body.skey.results #results-tabs li a.current:hover { background: #fbfaf5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #f0f0c0)); background: -moz-linear-gradient(center top, white, #f0f0c0); border-bottom: 0; color: #1a2e11; cursor: default; padding: 5px 10px; }
+body.skey.results #notification-msg { background-color: #ff0; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; font-size: 1.2em; -moz-border-bottom-left-radius: 15px; -moz-border-bottom-right-radius: 15px; padding: 0.25em 0.75em; z-index: 200; }
+body.skey.results .working-area { background: #fff; border: 1px solid #c3d941; display: none; margin-left: -40px; padding: 10px 15px; position: absolute; width: 730px; z-index: 200; -moz-box-shadow: black 1px 1px 5px 0; -webkit-box-shadow: black 1px 1px 5px 0; -o-box-shadow: black 1px 1px 5px 0; box-shadow: black 1px 1px 5px 0; /* end .choices */ /* end ul */ /* Working Area slider styles */ /* end #slider */ }
+body.skey.results .working-area img.arrow { display: block; left: -15px; position: absolute; top: 18px; }
+body.skey.results .working-area .choices { border-spacing: 6px 12px; display: table; }
+body.skey.results .working-area .choices .row { display: table-row; }
+body.skey.results .working-area .choices .row div { display: table-cell; margin: 0 0.5em 1em 0; min-height: 50px; }
+body.skey.results .working-area .choices .row div.disabled span { color: #aaa; }
+body.skey.results .working-area .choices .row div label { cursor: pointer; display: inline-block; font-family: Tahoma, "Trebuchet MS", sans-serif; font-size: 12px; margin-left: 18px; min-width: 70px; vertical-align: top; word-wrap: break-word; /* can break mid-word */ }
+body.skey.results .working-area .choices .row div input { float: left; margin: 3px 3px 0 -18px; }
+body.skey.results .working-area .choices .row div input + img { background: #fff; border: 1px solid #ddd; display: inline-block; height: 80px; }
+body.skey.results .working-area a.close { background: url(/static/images/icons/close.png) no-repeat transparent; display: block; float: right; height: 16px; margin: 5px 0 0 0; width: 16px; }
+body.skey.results .working-area h4 { color: #000; display: none; line-height: 130%; margin: 6px 0; width: 650px; }
+body.skey.results .working-area .intro-message h4 { display: block; font-weight: bold; }
+body.skey.results .working-area .intro-message p { font-size: 14px; margin-bottom: 5px; }
+body.skey.results .working-area .info { display: none; float: left; font-family: Tahoma, "Trebuchet MS", sans-serif; font-size: 14px; width: 100%; }
+body.skey.results .working-area .info .hint { font-size: 12px; margin: 6px 0; }
+body.skey.results .working-area .info .hint p { font-size: 14px; line-height: 120%; margin-bottom: 0; }
+body.skey.results .working-area .character-drawing { float: right; }
+body.skey.results .working-area .character-drawing img { max-height: 200px; }
+body.skey.results .working-area ul { margin: 15px 0 0 0; }
+body.skey.results .working-area ul li { display: block; float: left; margin: 0 8px 15px 0; }
+body.skey.results .working-area ul li label { display: block; float: left; margin: 0 9px 0 0; }
+body.skey.results .working-area ul li img { border: 1px solid #e1e1dc; display: block; }
+body.skey.results .working-area ul li .option-container { float: left; width: auto; }
+body.skey.results .working-area ul li .option-container p { display: inline-block; width: 80px; }
+body.skey.results .working-area .apply-btn { background: url(/static/images/layout/apply-selection.png) no-repeat 0 0 transparent; display: inline-block; height: 41px; margin: 4px 0 0; text-align: left; text-indent: -9000px; width: 244px; }
+body.skey.results .working-area .apply-btn.disabled { background-position: 0 0; opacity: 0.2; }
+body.skey.results .working-area .apply-btn:hover { background-position: 0 -41px; }
+body.skey.results .working-area .apply-btn:active { background-position: 0 -82px; }
+body.skey.results .working-area .choose_length label { /* Length input */ margin: 0 10px 0 0; }
+body.skey.results .working-area .choose_length label input { margin: 0 4px 0 0; }
+body.skey.results .working-area .close { color: #00e; cursor: pointer; display: inline; float: right; }
+body.skey.results .working-area h3.name { font-size: 1em; font-weight: bold; line-height: 1em; margin: 0 0 0.3em 0; padding: 0; }
+body.skey.results .working-area .values.numeric { border: 0; height: auto; margin-top: 8px; overflow-y: visible; }
+body.skey.results .working-area .values .zero { color: #ccc; }
+body.skey.results .working-area .measurement { margin: 8px 0; }
+body.skey.results .working-area .measurement label input { margin: 0 4px 0 8px; }
+body.skey.results .working-area .instructions { margin-bottom: 8px; }
+body.skey.results .working-area .actions { text-align: center; }
+body.skey.results .working-area div.working-area #slider { height: 70px; margin: 20px 0 10px; padding: 20px 0 0 0; position: relative; }
+body.skey.results .working-area div.working-area #slider .bar { cursor: pointer; padding: 0 4px; position: absolute; top: 47px; width: 100%; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+body.skey.results .working-area div.working-area #slider .bar div { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c1d9a7), color-stop(100%, white)); background: -moz-linear-gradient(center top, #c1d9a7, white); border: 1px solid #c1d9a7; height: 8px; -moz-border-radius: 4px; -webkit-border-radius: 4px; -o-border-radius: 4px; -ms-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+body.skey.results .working-area div.working-area #slider .thumb { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c1d9a7), color-stop(100%, white)); background: -moz-linear-gradient(center top, #c1d9a7, white); border: 1px solid white; cursor: pointer; height: 30px; left: 3px; position: absolute; text-align: center; top: 35px; width: 30px; -moz-border-radius: 16px; -webkit-border-radius: 16px; -o-border-radius: 16px; -ms-border-radius: 16px; -khtml-border-radius: 16px; border-radius: 16px; -moz-box-shadow: 0 1px 6px 1px #333333; -webkit-box-shadow: 0 1px 6px 1px #333333; -o-box-shadow: 0 1px 6px 1px #333333; box-shadow: 0 1px 6px 1px #333333; }
+body.skey.results .working-area div.working-area #slider .label { font-size: 16px; position: relative; top: -36px; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
 
 /* Begin media queries styles for Simple and Full Keys. */
 /* Portrait-orientation styles */

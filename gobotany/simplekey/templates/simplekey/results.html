@@ -1,4 +1,4 @@
-{% extends "simplekey/_new_base.html" %}
+{% extends "gobotany/_page_full_sidebar.html" %}
 {% load verbatim %}
 
 {% block title %}{{ subgroup_results_page.title }}{% endblock %}
@@ -9,21 +9,16 @@
         key: '{{ key }}',
         pile_slug: '{{ pile.slug }}'
     };
-    require(['simplekey/results'], function(results) {
+    require(['simplekey/results'], function (results) {
         results.results_page_init(args);
     });
 {% endblock %}
 
-{% block body_attributes %}id="plant-id-3" class="app {{ key|title|lower }}"{% endblock %}
+{% block body_attributes %}class="skey results {{ key|title|lower }}"{% endblock %}
 
-{% block body_content %}
-    {% include "simplekey/_header.html" %}
-
+{% block main_content %}
     {% include "simplekey/_results_modal_dialogs.html" %}
 
-    <div class="content">
-        <div class="container">
-            <div id="main">
                 <div id="breadcrumb">
                     <p>You are here:
                       <a href="{% url level1 key %}">{{ key|title }} Key</a>
@@ -32,7 +27,7 @@
                     &gt; <span>{{ pile.friendly_title }}</span></p>
                 </div>
 
-                <h2>{{ subgroup_results_page.main_heading|lower|capfirst }}</h2>
+                <h1>{{ subgroup_results_page.main_heading|lower|capfirst }}</h1>
                 
                 <div class="working-area" aria-live="polite" 
                     aria-relevant="additions removals">
@@ -108,9 +103,35 @@
                   </a>
                 {% endhandlebars %}
 
-            </div>
+    {# TODO: eventually move elsewhere #}
+    {% include "simplekey/_partner_site_js.html" %}
 
-            <div id="sidebar" class="tinted">
+    <div id="intro-overlay">
+       <div class="number-of-species">
+            <span class="number">…</span> possible matches
+        </div>
+        <div class="number-of-questions">
+            Answer questions here
+        </div>
+        <div class="continue">
+            Continue
+        </div>
+    </div>
+{% endblock %}
+
+{% block ember_templates %}
+{% handlebars 'filter-view' %}
+  <a class="option">
+    <span class="name">{{view.filter.info.friendly_name}}?</span>
+    <span class="value">{{view.display_value}}</span>
+  </a>
+  {{#if view.filter.value}}
+  <a class="clear-filter" {{action "clear"}}>Clear</a>
+  {{/if}}
+{% endhandlebars %}
+{% endblock %}
+
+{% block sidebar_content %}
                 <div class="section instructions">
                     <h5>Pick a question from this
                         scrollable list:</h5>
@@ -162,37 +183,4 @@
                         class="get-help-btn left">Get Help</a>
                     <div class="clearit"></div>
                 </div>
-                
-            </div>
-
-            <div class="clearit"></div>
-        </div>
-    </div>
-
-    {# TODO: eventually move elsewhere #}
-    {% include "simplekey/_partner_site_js.html" %}
-
-    <div id="intro-overlay">
-       <div class="number-of-species">
-            <h1><span class="number">…</span> possible matches</h1>
-        </div>
-        <div class="number-of-questions">
-            <h1>Answer questions here</h1>
-        </div>
-        <div class="continue">
-            <h1>Continue</h1>
-        </div>
-    </div>
-{% endblock %}
-
-{% block ember_templates %}
-{% handlebars 'filter-view' %}
-  <a class="option">
-    <span class="name">{{view.filter.info.friendly_name}}?</span>
-    <span class="value">{{view.display_value}}</span>
-  </a>
-  {{#if view.filter.value}}
-  <a class="clear-filter" {{action "clear"}}>Clear</a>
-  {{/if}}
-{% endhandlebars %}
 {% endblock %}
