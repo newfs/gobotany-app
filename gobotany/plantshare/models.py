@@ -84,7 +84,7 @@ class UserProfile(models.Model):
         choices=SHARING_CHOICES, default=SHARING_CHOICES[0][0])
     location = models.ForeignKey(Location, null=True, blank=True)
 
-    avatar = models.ForeignKey('ScreenedImage', null=True)
+    avatar = models.ForeignKey('ScreenedImage', null=True, blank=True)
 
 
 class SharingGroup(models.Model):
@@ -109,8 +109,6 @@ class Sighting(models.Model):
 
     location = models.ForeignKey(Location, null=True)
     location_notes = models.TextField(blank=True)
-
-    photo = models.ForeignKey('ScreenedImage', null=True)
 
     class Meta:
         ordering = ['-created']

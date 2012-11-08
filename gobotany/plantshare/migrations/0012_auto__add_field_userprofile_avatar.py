@@ -8,21 +8,13 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Sighting.photo'
-        db.add_column('plantshare_sighting', 'photo',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['plantshare.ScreenedImage'], null=True),
-                      keep_default=False)
-
         # Adding field 'UserProfile.avatar'
         db.add_column('plantshare_userprofile', 'avatar',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['plantshare.ScreenedImage'], null=True),
+                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['plantshare.ScreenedImage'], null=True, blank=True),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting field 'Sighting.photo'
-        db.delete_column('plantshare_sighting', 'photo_id')
-
         # Deleting field 'UserProfile.avatar'
         db.delete_column('plantshare_userprofile', 'avatar_id')
 
@@ -106,13 +98,12 @@ class Migration(SchemaMigration):
             'location': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['plantshare.Location']", 'null': 'True'}),
             'location_notes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'notes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'photo': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['plantshare.ScreenedImage']", 'null': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '120'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         },
         'plantshare.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
-            'avatar': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['plantshare.ScreenedImage']", 'null': 'True'}),
+            'avatar': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['plantshare.ScreenedImage']", 'null': 'True', 'blank': 'True'}),
             'display_name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '60', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'location': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['plantshare.Location']", 'null': 'True', 'blank': 'True'}),
