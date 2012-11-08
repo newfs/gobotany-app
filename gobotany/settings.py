@@ -164,9 +164,14 @@ if DEBUG:
     FACEBOOK_APP_ID = '190505394309270' 
     FACEBOOK_APP_SECRET = 'eb2dccd2ac2d77dac45a9ee137313d6b' 
 else:
-# Production App, on NEWFS account with production URL
-    FACEBOOK_APP_ID = '174715039247745' 
-    FACEBOOK_APP_SECRET = '54f36f2204399f84f127178c8322b5ee' 
+    if DEV_FEATURES:
+        # Development environment on Heroku
+        FACEBOOK_APP_ID = '108116052685637' 
+        FACEBOOK_APP_SECRET = '352b24b5916839582685030753b9fda0' 
+    else:
+        # Production App, on NEWFS account with production URL
+        FACEBOOK_APP_ID = '174715039247745' 
+        FACEBOOK_APP_SECRET = '54f36f2204399f84f127178c8322b5ee' 
 
 # For django-registration
 ACCOUNT_ACTIVATION_DAYS = 7
