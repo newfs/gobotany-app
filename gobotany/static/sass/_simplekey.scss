@@ -140,8 +140,9 @@ body.skey {
             }
             select {
                 font-size: 13px;
-                @include results-select;
+                height: 21px;
                 width: 143px;
+                @include results-select;
             }
             button {
                 background: #ebf6df;
@@ -168,6 +169,10 @@ body.skey {
                 font-size: 15px;
                 @include results-select;
             }
+            img.icon {
+                margin: 0 3px 0 0;
+                vertical-align: -1px;
+            }    
         }
         #modal, #plant-detail-modal {
             display: none;
@@ -324,6 +329,49 @@ body.skey {
                     height: 149px;  /* so lazy_images knows when <img> is on screen */
                 }
             }
+            .wait {
+                background: url(/static/images/icons/preloaders-dot-net-lg.gif) no-repeat scroll center center transparent;
+                height: 350px;
+                margin: auto;
+            }
+
+            /* List view styles */
+            table {
+                width: 100%;
+                tr {
+                    height: 20px;
+                    &.first-visible td {
+                        border-top: 0;
+                    }
+                }
+                td {
+                    border-top: 1px solid #e1e1dc;
+                    padding: 10px 0;
+                    vertical-align: middle;
+                }
+                .genus, .scientific-name {
+                    font-family: $headings-font;
+                }
+                .genus {
+                    color: #1a2e11;
+                    font-size: 18px;
+                    font-weight: normal;
+                    line-height: 200%;
+                    padding: 3px 0 0 0;
+                    vertical-align: top;
+                }
+                .scientific-name {
+                    font-size: 15px;
+                    font-weight: normal;
+                    line-height: 155%;
+                    padding: 10px 0 8px 0;
+                    img {
+                        margin: 0 8px 0 0;
+                        padding-bottom: 2px;
+                        vertical-align: middle;
+                    }
+                }
+            } /* end table */
         } /* end .plant-list */
 
         .missing-image {
@@ -374,6 +422,7 @@ body.skey {
                 color: #fff;
                 padding: 16px;
                 h5 {
+                    font-size: 14px;
                     line-height: 120%;
                     margin: 0;
                 }
