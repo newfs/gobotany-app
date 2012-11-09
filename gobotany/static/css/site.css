@@ -769,7 +769,7 @@ body.skey.results #sidebar .option-list li.answered { background: #ffd; }
 body.skey.results #sidebar .option-list li.active, body.skey.results #sidebar .option-list li:hover, body.skey.results #sidebar .option-list li.active span.value, body.skey.results #sidebar .option-list li.answered.active { background: #dce890; cursor: pointer; }
 body.skey.results #sidebar .option-list .option { color: #1a2e11; text-decoration: none; }
 body.skey.results #sidebar .option-list .option span.name { display: block; font-weight: bold; margin: 0 0 3px 0; }
-body.skey.results #sidebar .option-list .clear-filter { display: block; margin-top: 4px; width: 45px; }
+body.skey.results #sidebar .option-list .clear-filter { color: #508e31; display: block; margin-top: 4px; width: 45px; }
 body.skey.results #sidebar .loading { background: url(/static/images/icons/preloaders-dot-net-sm.gif) no-repeat scroll 0 0 transparent; font-weight: bold; margin: 12px; padding: 0 0 0 20px; }
 body.skey.results a.get-choices { background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 4px 10px; text-indent: -9000px; width: 171px; }
 body.skey.results a.get-choices:hover { background-position: 0 -32px; }
