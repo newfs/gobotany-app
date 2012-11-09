@@ -8,7 +8,7 @@ urlpatterns = patterns(
 
     # Search results page.
     url(r'^search/$', GoBotanySearchView(
-            template='simplekey/search.html',
+            template='search.html',
             form_class=HighlightedSearchForm,
             ),
         name='search'),

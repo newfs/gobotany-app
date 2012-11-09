@@ -1,4 +1,4 @@
-{% extends "simplekey/_new_base.html" %}
+{% extends "gobotany/_page_full_sidebar.html" %}
 {% load gobotany_tags %}
 {% load humanize %}
 {% load search_highlight %}
@@ -10,17 +10,10 @@
     require(['simplekey/search']);
 {% endblock %}
 
-{% block body_attributes %}
-    id="search-results" class="app search-results"
-{% endblock %}
+{% block body_attributes %}class="search-results"{% endblock %}
 
-{% block body_content %}
-    {% include "simplekey/_header.html" %}
-
-    <div class="content">
-        <div class="container">
-            <div id="main">
-                <h2>
+{% block main_content %}
+                <h1>
                     {% if paginator.count > 0 %}
                         {% if page.number > 1 %}
                             Page {{ page.number }}:
@@ -32,7 +25,7 @@
                     result{% if paginator.count != 1 %}s{% endif %}
                     for
                     <strong>{{ query }}</strong>
-                </h2>
+                </h1>
 
                 {% if page.object_list|length == 0 %}
                     <p>Please adjust your search and try again.</p>
@@ -114,12 +107,8 @@
                         </ul>
                     </div>
                 {% endif %}
-            </div>
+{% endblock %}
 
-            <div id="sidebar">
-                {% include "simplekey/_sidebar_items.html" %}
-            </div>
-            <div class="clearit"></div>
-        </div>
-    </div>
+{% block sidebar_content %}
+    {% include "gobotany/_sidebar_items.html" %}
 {% endblock %}

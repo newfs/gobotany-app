@@ -1,0 +1,73 @@
+/* Search results */
+
+body.search-results {
+    h1 + p {
+        margin-top: 12px;
+    }
+    #search-results-list {
+        margin: 6px 0 13px;
+        padding: 6px 0 0;
+        .highlighted {
+            font-weight: bold;
+        }
+        li {
+            list-style-type: none;
+            margin: 0 0 2px;
+            padding: 2px 0;
+            img {
+                float: left;
+                margin: -1px 10px 0;
+                vertical-align: middle;
+            }
+            a {
+                font-family: $headings-font;
+                font-size: 15px;
+                text-decoration: underline;
+            }
+            p {
+                line-height: 140%;
+                margin-left: 44px;
+                margin-top: 2px;
+            }
+        }
+    }
+    .search-navigation {
+        font-family: $headings-font;
+        font-size: 15px;
+        text-align: center;
+        ul {
+            display: inline;
+        }
+        li {
+            display: inline;
+            margin: 0 2px;
+        }
+        a {
+            text-decoration: underline;
+        }
+    }
+}
+
+/* Begin media queries styles for Search results. */
+
+/* Portrait-orientation styles */
+@media only screen and (max-width: 400px) {
+}
+/* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) {
+}
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) {
+    body.search-results {
+        .search-navigation {
+            font-size: 18px;
+            line-height: 200%;
+            text-align: center;
+        }
+    }
+}
+/* These styles apply to smartphones and tablets */
+@media only screen and (max-width: 1024px) {
+}
+
+/* End media queries styles for Search results */
