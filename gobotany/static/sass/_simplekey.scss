@@ -189,7 +189,11 @@ body.skey {
                     margin: 0;
                     padding: 13px 0 0 20px;
                 }
+                h4.heading {
+                    font-size: 18px;
+                }
                 h3.heading {
+                    font-size: 24px;
                     font-style: italic;
                     margin-bottom: 0;
                     margin-left: 245px;
@@ -207,6 +211,9 @@ body.skey {
             }
             #choices {
 	            padding: 10px 20px 0 20px;
+                ul {
+                    list-style-type: none;
+                }
                 li {
                     margin: 0 0 14px;
                 }
@@ -225,39 +232,40 @@ body.skey {
                 	padding: 0 0 7px 0;
                 }
                 .details {
+                    float: left;
                 	margin: 0 0 0 10px;
+                    width: 610px;
                 }
             }
+            a {
+                &.get-more-info {
+                    background: url(/static/images/layout/get-more-info.png) 0 0 no-repeat transparent;
+                    height: 32px;
+                    margin: 20px 0 0 0;
+                    width: 163px;
+                    @include offscreen;
+                    &:hover {
+                        background-position: 0 -32px;
+                    }
+                    &:active {
+                        background-position: 0 -64px;
+                    }
+                }
+                .go-to-species-page {
+                    background: url(/static/images/layout/go-to-species-page.png) 0 0 no-repeat transparent;
+                    height: 31px;
+                    margin: 20px 0 0 0;
+                    width: 212px;
+                    @include offscreen;
+                    &:hover {
+                        background-position: 0 -31px;
+                    }
+                    &:active {
+                        background-position: 0 -62px;
+                    }
+                }
+            } /* end a */
         } /* end .modal-wrap */
-
-        a {
-            .get-more-info {
-                background: url(/static/images/layout/get-more-info.png) 0 0 no-repeat transparent;
-                height: 32px;
-                margin: 20px 0 0 0;
-                width: 163px;
-                @include offscreen;
-                &:hover {
-                	background-position: 0 -32px;
-                }
-                &:active {
-                	background-position: 0 -64px;
-                }
-            }
-            .go-to-species-page {
-                background: url(/static/images/layout/go-to-species-page.png) 0 0 no-repeat transparent;
-                height: 31px;
-                margin: 20px 0 0 0;
-                width: 212px;
-                @include offscreen;
-                &:hover {
-                    background-position: 0 -31px;
-                }
-                &:active {
-                    background-position: 0 -62px;
-                }
-            }
-        } /* end a */
 
         .plant-list {
             margin-top: 8px;
@@ -444,19 +452,33 @@ body.skey {
                         }
                     }
                 }
-            }
-            a.get-choices {
-                background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent;
-                display: block;
-                height: 32px;
-                margin: 10px 0 4px 10px;
-                text-indent: -9000px;
-                width: 171px;
-                &:hover {
-                    background-position: 0 -32px;
+                a.get-help-btn {
+                    background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent;
+                    height: 32px;
+                    margin: 10px 0 0 20px;
+                    width: 104px;
+                    @include offscreen;
+                    &:hover {
+	                    background-position: 0 -32px;
+                    }
+                    &:active {
+	                    background-position: 0 -64px;
+                    }
                 }
-                &:active {
-                    background-position: 0 -64px;
+                a.clear-all-btn {
+                    background: url(/static/images/layout/clear-all-btn.png) 0 0 no-repeat transparent;
+                    height: 32px;
+                    margin: 0 0 0 22px;
+                    width: 104px;
+                    @include offscreen;
+                    &:hover {
+	                    background-position: 0 -32px;
+                        cursor: pointer;
+                    }
+                    &:active {
+	                    background-position: 0 -64px;
+                        cursor: pointer;
+                    }
                 }
             }
             h6 {
@@ -508,6 +530,21 @@ body.skey {
             }
         } /* end #sidebar */
 
+        a.get-choices {
+            background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent;
+            display: block;
+            height: 32px;
+            margin: 10px 0 4px 10px;
+            text-indent: -9000px;
+            width: 171px;
+            &:hover {
+                background-position: 0 -32px;
+            }
+            &:active {
+                background-position: 0 -64px;
+            }
+        }
+
         #intro-overlay {   /* for introductory overlay */
             display: none;
             font-family: $headings-font;
@@ -518,13 +555,13 @@ body.skey {
                 background-color: #f0f0c0;
                 color: #fff;
                 margin-bottom: 10%;
-                padding: 0.5em 1em;
+                padding: 0.6em 0.8em;
                 position: relative;
                 box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
                 -moz-box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
                 -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
-                border-radius: 0.5em;
-                -moz-border-radius: 0.5em;
+                border-radius: 0.25em;
+                -moz-border-radius: 0.25em;
             }
             .number-of-species, .number-of-questions {
                 background-color: #508e31;
@@ -556,8 +593,8 @@ body.skey {
             /* Arrows */
             .number-of-species:before, .number-of-questions:before {
                 border-style: solid;
-                border-width: 1em 2em;
-                bottom: 1em;
+                border-width: 0.9em 1.8em;
+                bottom: 0.8em;
                 content: '';
                 height: 0;
                 position: absolute;
@@ -569,8 +606,8 @@ body.skey {
             }
             .number-of-questions:before {
                 border-color: transparent #508e31 transparent transparent;
-                left: -4.3em;
-                top: 0.6em;
+                left: -3.9em;
+                top: 0.4em;
             }
         } /* end #intro-overlay */
 
@@ -588,11 +625,12 @@ body.skey {
             }
         }
         h5.help {
+            font-size: 14px;
             margin: 0 0 0 0;
             padding: 3px 0 0 0;
-        }
-        a.get-help-btn {
-            margin: 0 0 0 19px;
+            &.last {
+                margin-top: 12px;
+            }
         }
 
         #results-tabs {

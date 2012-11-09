@@ -195,6 +195,15 @@ ul li {
 .hidden {
     display: none;
 }
+.clearit {
+    border: none !important;
+    clear: both;
+    float: none !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+}
 .missing-image {
     @include background(linear-gradient(top center, #eaf2e2, #d6e6c5));
     color: #354d1e;
