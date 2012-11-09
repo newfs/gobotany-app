@@ -67,7 +67,7 @@ class SearchTests(FunctionalCase):
 
     def test_search_results_page_returns_no_results(self):
         self.get('/search/?q=abcd')
-        heading = self.css('#main h2')
+        heading = self.css('h1')
         self.assertTrue(len(heading))
         self.assertEqual('No results for abcd', heading[0].text)
         message = self.css('#main p')
@@ -78,13 +78,13 @@ class SearchTests(FunctionalCase):
     def test_search_results_page_has_singular_heading(self):
         query = '%22simple+key+for+plant+identification%22'   # in quotes
         self.get('/search/?q=%s' % query)   # query that returns 1 result
-        heading = self.css('#main h2')
+        heading = self.css('h1')
         self.assertTrue(len(heading))
         self.assertTrue(heading[0].text.startswith('1 result for'))
 
     def test_search_results_page_heading_starts_with_page_number(self):
         self.get('/search/?q=monocot&page=2')
-        heading = self.css('#main h2')
+        heading = self.css('h1')
         self.assertTrue(len(heading))
         self.assertTrue(heading[0].text.startswith('Page 2: '))
 
@@ -98,7 +98,7 @@ class SearchTests(FunctionalCase):
 
     def test_search_results_page_heading_number_has_thousands_comma(self):
         self.get('/search/?q=monocot')  # query that returns > 1,000 results
-        heading = self.css('#main h2')
+        heading = self.css('h1')
         self.assertTrue(len(heading))
         results_count = heading[0].text.split(' ')[0]
         self.assertTrue(results_count.find(',') > -1)
