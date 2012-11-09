@@ -743,13 +743,16 @@ body.skey.results .plant-list table .scientific-name img { margin: 0 8px 0 0; pa
 body.skey.results .missing-image { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5) repeat scroll 0 0 transparent; color: #354d1e; height: 149px; position: relative; width: 160px; }
 body.skey.results .missing-image p { font-size: 12px; height: 40px; left: 50%; line-height: 130%; margin: -20px 0 0 -50px; position: absolute; text-align: center; top: 50%; width: 100px; }
 body.skey.results p.list-all { clear: left; padding-top: 2em; }
-body.skey.results p.list-all a { cursor: pointer; }
+body.skey.results p.list-all a { color: #508e31; cursor: pointer; }
 body.skey.results #sidebar { background-color: #fcfdf5; min-height: 800px; padding: 0 0 16px 0; /* end .option-list */ }
 body.skey.results #sidebar.tinted { background: #fcfdf5; }
 body.skey.results #sidebar div.scroll { border-bottom: 1px solid #9cc86b; border-left: 1px solid #519136; border-top: 1px solid #519136; display: block; height: 335px; margin: 0 0 10px 0; overflow: auto; width: 227px; }
 body.skey.results #sidebar .section.instructions { background: #9cc86b; color: #fff; padding: 16px; }
 body.skey.results #sidebar .section.instructions h5 { font-size: 14px; line-height: 120%; margin: 0; }
-body.skey.results #sidebar a.get-choices { background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 20px 0 0 0; text-indent: -9000px; width: 171px; }
+body.skey.results #sidebar .section p.get-more { font-size: 11px; line-height: 16px; margin: 0 0 20px; text-align: center; }
+body.skey.results #sidebar .section p.get-more a { cursor: pointer; display: block; font-weight: bold; margin: 18px 0 10px; }
+body.skey.results #sidebar .section p.get-more a.get-choices { margin: 0 auto 4px; }
+body.skey.results #sidebar a.get-choices { background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 4px 10px; text-indent: -9000px; width: 171px; }
 body.skey.results #sidebar a.get-choices:hover { background-position: 0 -32px; }
 body.skey.results #sidebar a.get-choices:active { background-position: 0 -64px; }
 body.skey.results #sidebar h6 { color: #807121; font-weight: bold; margin: 0 0 8px 0; }
@@ -771,9 +774,6 @@ body.skey.results #intro-overlay .number-of-species:before { border-color: trans
 body.skey.results #intro-overlay .number-of-questions:before { border-color: transparent #508e31 transparent transparent; left: -4.3em; top: 0.6em; }
 body.skey.results h3.species-count-heading { /* Move "18 matching species" to the right of Photos/List tab */ font-size: 24px; line-height: 90%; margin: 0; padding: 0; position: relative; }
 body.skey.results h3.species-count-heading > span { left: 330px; position: absolute; top: 0px; }
-body.skey.results .get-more { font-size: 11px; line-height: 16px; margin: 0 0 20px; text-align: center; }
-body.skey.results .get-more a { cursor: pointer; display: block; font-weight: bold; margin: 18px 0 10px; }
-body.skey.results .get-more a.get-choices { margin: 0 auto 4px; }
 body.skey.results h5.help { margin: 0 0 0 0; padding: 3px 0 0 0; }
 body.skey.results a.get-help-btn { margin: 0 0 0 19px; }
 body.skey.results #results-tabs { border-bottom: 1px solid #c3d941; clear: left; height: 28px; margin: 10px 0; }
@@ -826,6 +826,7 @@ body.skey.results .working-area div.working-area #slider .bar { cursor: pointer;
 body.skey.results .working-area div.working-area #slider .bar div { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c1d9a7), color-stop(100%, white)); background: -moz-linear-gradient(center top, #c1d9a7, white); border: 1px solid #c1d9a7; height: 8px; -moz-border-radius: 4px; -webkit-border-radius: 4px; -o-border-radius: 4px; -ms-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
 body.skey.results .working-area div.working-area #slider .thumb { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c1d9a7), color-stop(100%, white)); background: -moz-linear-gradient(center top, #c1d9a7, white); border: 1px solid white; cursor: pointer; height: 30px; left: 3px; position: absolute; text-align: center; top: 35px; width: 30px; -moz-border-radius: 16px; -webkit-border-radius: 16px; -o-border-radius: 16px; -ms-border-radius: 16px; -khtml-border-radius: 16px; border-radius: 16px; -moz-box-shadow: 0 1px 6px 1px #333333; -webkit-box-shadow: 0 1px 6px 1px #333333; -o-box-shadow: 0 1px 6px 1px #333333; box-shadow: 0 1px 6px 1px #333333; }
 body.skey.results .working-area div.working-area #slider .label { font-size: 16px; position: relative; top: -36px; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+body.skey.results img.char-value-larger { height: 160px !important; /* Consistent height for popup character value drawings */ }
 
 /* Begin media queries styles for Simple and Full Keys. */
 /* Portrait-orientation styles */

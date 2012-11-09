@@ -397,6 +397,7 @@ body.skey {
             clear: left;
             padding-top: 2em;
             a {
+                color: $link-green;
                 cursor: pointer;
             }
         }
@@ -417,21 +418,38 @@ body.skey {
                 overflow: auto;
                 width: 227px;
             }
-            .section.instructions {
-                background: #9cc86b;
-                color: #fff;
-                padding: 16px;
-                h5 {
-                    font-size: 14px;
-                    line-height: 120%;
-                    margin: 0;
+            .section {
+                &.instructions {
+                    background: #9cc86b;
+                    color: #fff;
+                    padding: 16px;
+                    h5 {
+                        font-size: 14px;
+                        line-height: 120%;
+                        margin: 0;
+                    }
+                }
+                p.get-more {
+                    font-size: 11px;
+                    line-height: 16px;
+                    margin: 0 0 20px;
+                    text-align: center;
+                    a {
+                        cursor: pointer;
+                        display: block;
+                        font-weight: bold;
+                        margin: 18px 0 10px;
+                        &.get-choices {
+                            margin: 0 auto 4px;
+                        }
+                    }
                 }
             }
             a.get-choices {
                 background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent;
                 display: block;
                 height: 32px;
-                margin: 20px 0 0 0;
+                margin: 10px 0 4px 10px;
                 text-indent: -9000px;
                 width: 171px;
                 &:hover {
@@ -567,21 +585,6 @@ body.skey {
                 left: 330px;
                 position: absolute;
                 top: 0px;
-            }
-        }
-        .get-more {
-            font-size: 11px;
-            line-height: 16px;
-            margin: 0 0 20px;
-            text-align: center;
-            a {
-                cursor: pointer;
-                display: block;
-                font-weight: bold;
-                margin: 18px 0 10px;
-                &.get-choices {
-                    margin: 0 auto 4px;
-                }
             }
         }
         h5.help {
@@ -931,6 +934,10 @@ body.skey {
             } /* end #slider */
 
         } /* end .working-area */
+
+        img.char-value-larger {
+            height: 160px !important;  /* Consistent height for popup character value drawings */
+        }
 
     } /* end &.results */
 }
