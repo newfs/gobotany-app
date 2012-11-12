@@ -463,6 +463,9 @@ input.suggest + div { background: #fff; border: 1px solid #999; position: absolu
 input.suggest + div li { list-style-type: none; margin: 0; padding: 2px; }
 input.suggest + div li.selected { background-color: #666; color: #fff; }
 
+/* Teaching page */
+body.teaching #main li { list-style-type: none; }
+
 /* "Advanced ID Tools" placeholder page (delete after tools release) */
 #advanced-id #main .dk-landing-section { float: left; font-family: Verdana, Geneva, sans-serif; height: 410px; position: relative; width: 330px; }
 #advanced-id #main .dk-landing-section:first-child { margin-right: 50px; }

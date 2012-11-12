@@ -898,6 +898,12 @@ input.suggest {
     }
 }
 
+/* Teaching page */
+
+body.teaching #main li {
+    list-style-type: none;
+}
+
 /* "Advanced ID Tools" placeholder page (delete after tools release) */
 
 #advanced-id #main {
