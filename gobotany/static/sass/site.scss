@@ -225,6 +225,9 @@ p.meta {
     font-size: 10px;
     font-style: italic;
     margin: 4px 0;
+    + p {
+        margin-top: 2px;
+    }
 }
 
 /* Header */

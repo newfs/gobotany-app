@@ -1,4 +1,0 @@
-    <div class="section">
-        {% url site-teaching as u %}
-        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Teaching</a></h4>
-    </div>

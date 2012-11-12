@@ -301,6 +301,48 @@ class GlossaryTests(FunctionalCase):
         self.assertTrue(e.get('href').endswith('/glossary/g/'))
 
 
+class TeachingTestCase(FunctionalCase):
+    TEACHING_URL_PATH = '/teaching/'
+
+    def _h2_headings(self):
+        return [heading.text for heading in self.css('h2')]
+
+    def _sidebar_headings(self):
+        return [heading.text for heading in self.css('#sidebar h4')]
+
+    def test_teaching_page_returns_ok(self):
+        client = Client()
+        response = client.get(self.TEACHING_URL_PATH)
+        self.assertEqual(200, response.status_code)
+
+    def test_teaching_page_title(self):
+        self.get(self.TEACHING_URL_PATH)
+        title = self.css1('title').text
+        self.assertEqual(title, 'Teaching: Go Botany')
+
+    def test_teaching_page_main_heading(self):
+        self.get(self.TEACHING_URL_PATH)
+        heading = self.css1('h1').text
+        self.assertEqual(heading, 'Teaching')
+
+    def test_teaching_page_has_share_section(self):
+        self.get(self.TEACHING_URL_PATH)
+        self.assertTrue('Share Your Ideas' in self._h2_headings())
+
+    def test_teaching_page_has_teaching_tools_section(self):
+        self.get(self.TEACHING_URL_PATH)
+        self.assertTrue('Teaching Tools' in self._h2_headings())
+
+    def test_teaching_page_has_help_sidebar_item(self):
+        self.get(self.TEACHING_URL_PATH)
+        self.assertTrue('Want help getting started?' in
+                        self._sidebar_headings())
+
+    def test_teaching_page_has_advanced_map_sidebar_item(self):
+        self.get(self.TEACHING_URL_PATH)
+        self.assertTrue('Shortcut to Groups' in
+                        self._sidebar_headings())
+
 # Tests for PlantShare plant name picker API call
 
 class PlantNameSuggestionsTestCase(TestCase):

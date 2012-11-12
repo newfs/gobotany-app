@@ -315,6 +315,7 @@ ul li { margin: 0 0 5px 0; }
 p.new { background: #fff; display: inline-block; font-size: 9px; font-weight: normal; margin: 0; padding: 0 0.25em; text-transform: uppercase; -webkit-border-radius: 0.25em; -moz-border-radius: 0.25em; -ms-border-radius: 0.25em; -o-border-radius: 0.25em; border-radius: 0.25em; }
 
 p.meta { font-size: 10px; font-style: italic; margin: 4px 0; }
+p.meta + p { margin-top: 2px; }
 
 /* Header */
 body#home nav li.home { background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent; text-decoration: none; }
