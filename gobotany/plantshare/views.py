@@ -18,6 +18,9 @@ def _new_sighting_form_page(request, form):
                'form': form,
            }, context_instance=RequestContext(request))
 
+def _user_name(user):
+    return user.get_full_name() or user.username
+
 # Views
 
 def plantshare_view(request):
@@ -56,7 +59,16 @@ def sightings_view(request):
             return _new_sighting_form_page(request, form)
     elif request.method == 'GET':
         # Return a representation of the collection of sightings.
-        sightings = Sighting.objects.all()[:20]  # some latest sightings
+        sightings = []
+        for sighting in Sighting.objects.all()[:10]:
+            sightings.append({
+                'id': sighting.id,
+                'identification': sighting.identification,
+                'location': sighting.location,
+                'user': _user_name(sighting.user),
+                'created': sighting.created.strftime("%A, %B %e"),
+            })
+
         return render_to_response('sightings.html', {
                 'sightings': sightings,
                }, context_instance=RequestContext(request))
@@ -211,7 +223,7 @@ def ajax_sightings(request):
                     identification__iexact=plant_name)[:MAX_TO_RETURN]
     sightings_json = []
     for sighting in sightings:
-        name = sighting.user.get_full_name() or sighting.user.username
+        name = _user_name(sighting.user)
 
         photos = []
         # For now, assign one random dummy photo per sighting.

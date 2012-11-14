@@ -857,6 +857,7 @@ body.skey.results img.char-value-larger { height: 160px !important; /* Consisten
 @media only screen and (max-width: 1024px) { /* styles here */ }
 /* End media queries styles for Simple and Full Keys */
 /* PlantShare */
+body.plantshare .content li { list-style-type: none; }
 body.plantshare .content form p { margin: 0; }
 body.plantshare .content form label { display: block; margin-bottom: 4px; text-transform: uppercase; width: 350px; }
 body.plantshare .content form input { font-family: Verdana, Geneva, sans-serif; height: 16px; margin-bottom: 10px; border: 1px solid #c3d941; padding: 5px; width: 350px; }

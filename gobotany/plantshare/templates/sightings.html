@@ -8,12 +8,15 @@
 <h1>Sightings</h1>
 
 <h2>Latest</h2>
+<ul>
 {% for sighting in sightings %}
-<p><a href="{% url ps-sighting sighting.id %}">Sighting: {{ sighting.title }}</a>
- ({{ sighting.identification }} at {{ sighting.location }}, posted by
- {{ sighting.user }} on {{ sighting.created }})
-</p>
+    <li><a
+        href="{% url ps-sighting sighting.id %}">{{ sighting.identification }}
+        at {{ sighting.location }}</a>, posted by {{ sighting.user }}
+        on {{ sighting.created }}
+    </li>
 {% endfor %}
+</ul>
 
 {% endblock %}
 

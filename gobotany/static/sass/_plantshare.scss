@@ -12,26 +12,31 @@ $section-padding: 16px;
 }
 
 body.plantshare {
-    .content form {
-        p {
-            margin: 0;
+    .content {
+        li {
+            list-style-type: none;
         }
-        label {
-            display: block;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            width: $form-field-width;
-        }
-        input {
-            font-family: $body-font;
-            height: 16px;
-            margin-bottom: 10px;
-            @include form-field-base;
-        }
-        textarea {
-            font-family: $body-font;
-            height: 82px;
-            @include form-field-base;
+        form {
+            p {
+                margin: 0;
+            }
+            label {
+                display: block;
+                margin-bottom: 4px;
+                text-transform: uppercase;
+                width: $form-field-width;
+            }
+            input {
+                font-family: $body-font;
+                height: 16px;
+                margin-bottom: 10px;
+                @include form-field-base;
+            }
+            textarea {
+                font-family: $body-font;
+                height: 82px;
+                @include form-field-base;
+            }
         }
     }
     .box {
