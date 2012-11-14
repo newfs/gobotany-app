@@ -1,6 +1,7 @@
 from datetime import datetime
+from random import randint
+
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
@@ -10,7 +11,6 @@ from django.forms.models import modelformset_factory
 
 from gobotany.plantshare.forms import NewSightingForm, UserProfileForm, ScreenedImageForm
 from gobotany.plantshare.models import Location, Sighting, UserProfile, ScreenedImage
-from gobotany.plantshare.testdata import sightings_data
 
 def _new_sighting_form_page(request, form):
     """Give a new-sighting form, either blank or with as-yet-invalid data."""
@@ -174,8 +174,69 @@ def ajax_image_upload(request):
 
 def ajax_sightings(request):
     """Return sightings data for a plant."""
-    # TODO: replace dummy data with real query results
+
+    MAX_TO_RETURN = 100
+
+    # TODO: replace dummy photos with actual ones
+    DUMMY_PHOTOS = {
+        'Acer saccharum': [
+            'Sapindaceae/acer-saccharum-ha-atal-a.jpg',
+            'Sapindaceae/acer-saccharum-ba-atal.jpg',
+            'Sapindaceae/acer-saccharum-fl-ahaines-a.jpg',
+            'Sapindaceae/acer-saccharum-fl-ahaines-b.jpg',
+            'Sapindaceae/acer-saccharum-fl-apratt.jpg',
+            'Sapindaceae/acer-saccharum-fl-dcameron-a.jpg',
+            'Sapindaceae/acer-saccharum-fl-dcameron-b.jpg',
+            'Sapindaceae/acer-saccharum-fr-sbaskauf.jpg',
+            'Sapindaceae/acer-saccharum-ha-fbramley-a.jpg',
+            'Sapindaceae/acer-saccharum-ha-fbramley-c.jpg',
+            'Sapindaceae/acer-saccharum-le-ahaines.jpg'
+        ],
+        'Nymphaea odorata': [
+            'Nymphaeaceae/nymphaea-odorata-ff-dkausen.jpg',
+            'Nymphaeaceae/nymphaea-odorata-ff-dcameron-b.jpg',
+            'Nymphaeaceae/nymphaea-odorata-ff-ahaines.jpg',
+            'Nymphaeaceae/nymphaea-odorata-ff-ddentzer.jpg',
+            'Nymphaeaceae/nymphaea-odorata-ha-dcameron-a.jpg',
+            'Nymphaeaceae/nymphaea-odorata-in-cevans.jpg',
+            'Nymphaeaceae/nymphaea-odorata-le-lnewcomb.jpg',
+            'Nymphaeaceae/nymphaea-odorata-sf-glienau.jpg',
+            'Nymphaeaceae/nymphaea-odorata-st-dcameron-c.jpg'
+        ],
+    }
+
     plant_name = request.GET.get('plant')
-    sightings = sightings_data[plant_name]
-    return HttpResponse(simplejson.dumps(sightings),
+
+    sightings = Sighting.objects.select_related('location', 'user').filter(
+                    identification__iexact=plant_name)[:MAX_TO_RETURN]
+    sightings_json = []
+    for sighting in sightings:
+        name = sighting.user.get_full_name() or sighting.user.username
+
+        photos = []
+        # For now, assign one random dummy photo per sighting.
+        if DUMMY_PHOTOS.has_key(plant_name):
+            num_photos = len(DUMMY_PHOTOS[plant_name])
+            photo_index = randint(0, num_photos - 1)
+            photos.append(
+                'http://newfs.s3.amazonaws.com/taxon-images-160x149/%s' % \
+                    DUMMY_PHOTOS[plant_name][photo_index])
+
+        sightings_json.append({
+            'id': sighting.id,
+            'created': unicode(sighting.created.strftime("%A, %B %e, %Y")),
+            'location': sighting.location.user_input,
+            'latitude': sighting.location.latitude,
+            'longitude': sighting.location.longitude,
+            'user': name,
+            'description': sighting.notes,
+            'photos': photos,
+        })
+
+    json = {
+        'scientific_name': plant_name,
+        'sightings': sightings_json
+    }
+
+    return HttpResponse(simplejson.dumps(json),
                         mimetype='application/json; charset=utf-8')
