@@ -1,0 +1,684 @@
+[
+    {
+        "pk": 1,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "wellfleet",
+            "user_input": "wellfleet, ma",
+            "longitude": null,
+            "state": "ma",
+            "postal_code": null,
+            "latitude": null
+        }
+    },
+    {
+        "pk": 2,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "concord",
+            "user_input": "concord, NH",
+            "longitude": null,
+            "state": "NH",
+            "postal_code": null,
+            "latitude": null
+        }
+    },
+    {
+        "pk": 3,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Rumford",
+            "user_input": "Rumford, ME",
+            "longitude": -70.56609,
+            "state": "ME",
+            "postal_code": null,
+            "latitude": 44.53599
+        }
+    },
+    {
+        "pk": 4,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Framingham",
+            "user_input": "Framingham, Mass.",
+            "longitude": -71.416,
+            "state": "Mass.",
+            "postal_code": null,
+            "latitude": 42.279
+        }
+    },
+    {
+        "pk": 5,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Fredericton",
+            "user_input": "Fredericton, NB",
+            "longitude": -66.6918,
+            "state": "NB",
+            "postal_code": null,
+            "latitude": 45.8577
+        }
+    },
+    {
+        "pk": 6,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Burlington",
+            "user_input": "Burlington, VT",
+            "longitude": -73.22,
+            "state": "VT",
+            "postal_code": null,
+            "latitude": 44.48
+        }
+    },
+    {
+        "pk": 7,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Pittsfield",
+            "user_input": "Pittsfield, NH",
+            "longitude": -71.327187,
+            "state": "NH",
+            "postal_code": null,
+            "latitude": 43.306240 
+        }
+    },
+    {
+        "pk": 8,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Salmon Brook",
+            "user_input": "Salmon Brook, CT",
+            "longitude": -72.796198,
+            "state": "CT",
+            "postal_code": null,
+            "latitude": 41.957846
+        }
+    },
+    {
+        "pk": 9,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "New York",
+            "user_input": "New York, New York",
+            "longitude": -73.917927,
+            "state": "New York",
+            "postal_code": null,
+            "latitude": 40.704234
+        }
+    },
+    {
+        "pk": 10,
+        "model": "plantshare.location",
+        "fields": {
+            "city": null,
+            "user_input": "42.659829, -73.781339",
+            "longitude": -73.781339,
+            "state": null,
+            "postal_code": null,
+            "latitude": 42.659829
+        }
+    },
+    {
+        "pk": 11,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Yarmouth",
+            "user_input": "Yarmouth, Nova Scotia",
+            "longitude": -66.05,
+            "state": "Nova Scotia",
+            "postal_code": null,
+            "latitude": 43.50
+        }
+    },
+    {
+        "pk": 11,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Falmouth",
+            "user_input": "Falmouth, MA",
+            "longitude": -70.604842,
+            "state": "MA",
+            "postal_code": null,
+            "latitude": 41.548504
+        }
+    },
+    {
+        "pk": 12,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Chester",
+            "user_input": "Chester, VT",
+            "longitude": 72.591665,
+            "state": "VT",
+            "postal_code": null,
+            "latitude": 43.265372
+        }
+    },
+    {
+        "pk": 13,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Rumford",
+            "user_input": "Rumford, ME",
+            "longitude": -70.56609,
+            "state": "ME",
+            "postal_code": null,
+            "latitude": 44.53599
+        }
+    },
+    {
+        "pk": 14,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "New London",
+            "user_input": "New London, Connecticut",
+            "longitude": -72.1,
+            "state": "Connecticut",
+            "postal_code": null,
+            "latitude": 41.355
+        }
+    },
+    {
+        "pk": 15,
+        "model": "plantshare.location",
+        "fields": {
+            "city": null,
+            "user_input": "41.053, -73.539",
+            "longitude": -73.539,
+            "state": null,
+            "postal_code": null,
+            "latitude": 41.053
+        }
+    },
+    {
+        "pk": 16,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Darien",
+            "user_input": "Darien, CT",
+            "longitude": -73.482945,
+            "state": "CT",
+            "postal_code": null,
+            "latitude": 41.075663 
+        }
+    },
+    {
+        "pk": 17,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "West Warwick",
+            "user_input": "West Warwick, NH",
+            "longitude": -71.518579,
+            "state": "NH",
+            "postal_code": null,
+            "latitude": 41.703750
+        }
+    },
+    {
+        "pk": 18,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Guilford",
+            "user_input": "Guilford, ME",
+            "longitude": 69.388721,
+            "state": "ME",
+            "postal_code": null,
+            "latitude": 45.169966
+        }
+    },
+    {
+        "pk": 19,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Longmeadow",
+            "user_input": "Longmeadow, MA",
+            "longitude": -72.571208,
+            "state": "MA",
+            "postal_code": null,
+            "latitude": 42.050395
+        }
+    },
+    {
+        "pk": 20,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Machias",
+            "user_input": "Machias, ME",
+            "longitude": -67.460834,
+            "state": "ME",
+            "postal_code": null,
+            "latitude": 44.713404
+        }
+    },
+    {
+        "pk": 21,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Rutland",
+            "user_input": "Rutland, VT",
+            "longitude": -72.974076,
+            "state": "VT",
+            "postal_code": null,
+            "latitude": 43.607666
+        }
+    },
+    {
+        "pk": 22,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Rockingham County",
+            "user_input": "Rockingham County, NH",
+            "longitude": -70.80977,
+            "state": "NH",
+            "postal_code": null,
+            "latitude": 42.92315
+        }
+    },
+    {
+        "pk": 23,
+        "model": "plantshare.location",
+        "fields": {
+            "city": "Lac-Mégantic",
+            "user_input": "Lac-Mégantic, QC",
+            "longitude": -70.8823,
+            "state": "QC",
+            "postal_code": null,
+            "latitude": 45.5834
+        }
+    },
+    {
+        "pk": 230,
+        "model": "auth.user",
+        "fields": {
+            "username": "john4",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-11-13T05:36:10.639",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$PQejVA8HjBU4$ARmUrxXHMURachnsLErJ2Q0b5h6MYWgy6jSJt45gfH8=",
+            "email": "jg344@fastmail.net",
+            "date_joined": "2012-11-05T09:58:26.002"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "auth.user",
+        "fields": {
+            "username": "bobsmith293",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-11-13T05:36:10.639",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$PQejVA8HjBU4$ARmUrxXHMURachnsLErJ2Q0b5h6MYWgy6jSJt45gfH8=",
+            "email": "a@a.com",
+            "date_joined": "2012-11-05T09:58:26.002"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "auth.user",
+        "fields": {
+            "username": "skratz",
+            "first_name": "Susan",
+            "last_name": "Kratz",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-11-13T05:36:10.639",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$PQejVA8HjBU4$ARmUrxXHMURachnsLErJ2Q0b5h6MYWgy6jSJt45gfH8=",
+            "email": "a@a.com",
+            "date_joined": "2012-11-05T09:58:26.002"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "auth.user",
+        "fields": {
+            "username": "dwilliams",
+            "first_name": "Danielle",
+            "last_name": "Williams",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-11-13T05:36:10.639",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$PQejVA8HjBU4$ARmUrxXHMURachnsLErJ2Q0b5h6MYWgy6jSJt45gfH8=",
+            "email": "a@a.com",
+            "date_joined": "2012-11-05T09:58:26.002"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "auth.user",
+        "fields": {
+            "username": "shozot302",
+            "first_name": "Shozo",
+            "last_name": "Tanaka",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-11-13T05:36:10.639",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$PQejVA8HjBU4$ARmUrxXHMURachnsLErJ2Q0b5h6MYWgy6jSJt45gfH8=",
+            "email": "a@a.com",
+            "date_joined": "2012-11-05T09:58:26.002"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "auth.user",
+        "fields": {
+            "username": "hstevenson",
+            "first_name": "Harry",
+            "last_name": "Stevenson",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-11-13T05:36:10.639",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$PQejVA8HjBU4$ARmUrxXHMURachnsLErJ2Q0b5h6MYWgy6jSJt45gfH8=",
+            "email": "a@a.com",
+            "date_joined": "2012-11-05T09:58:26.002"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Maple in the woods",
+            "location_notes": "",
+            "notes": "I identified this tree as sugar maple but was not completely sure if that was correct or if it was maybe a Norway maple instead.",
+            "created": "2012-10-31T14:42:13.370",
+            "identification": "Acer saccharum",
+            "location": 3,
+            "user": 2
+        }
+    },
+    {
+        "pk": 2,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Maple tree",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-10-29T14:42:23.370",
+            "identification": "Acer saccharum",
+            "location": 4,
+            "user": 3
+        }
+    },
+    {
+        "pk": 3,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Sugar maple",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-10-24T12:42:13.370",
+            "identification": "Acer saccharum",
+            "location": 5,
+            "user": 6
+        }
+    },
+    {
+        "pk": 4,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Maple",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-10-22T14:42:13.370",
+            "identification": "Acer saccharum",
+            "location": 6,
+            "user": 4
+        }
+    },
+    {
+        "pk": 5,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Sugar Maple",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-10-15T10:42:13.370",
+            "identification": "Acer saccharum",
+            "location": 7,
+            "user": 5
+        }
+    },
+    {
+        "pk": 6,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Sugar maple tree",
+            "location_notes": "",
+            "notes": "Lovely tree with fall color just starting",
+            "created": "2012-10-14T14:40:13.370",
+            "identification": "Acer saccharum",
+            "location": 8,
+            "user": 3
+        }
+    },
+    {
+        "pk": 7,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-10-01T14:42:13.370",
+            "identification": "Acer saccharum",
+            "location": 9,
+            "user": 2
+        }
+    },
+    {
+        "pk": 8,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Maple",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-09-23T14:42:13.370",
+            "identification": "Acer saccharum",
+            "location": 10,
+            "user": 6
+        }
+    },
+    {
+        "pk": 9,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Acer saccharum, sugar maple",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-09-18T14:42:13.370",
+            "identification": "Acer saccharum",
+            "location": 11,
+            "user": 3
+        }
+    },
+    {
+        "pk": 10,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Maple tree",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-09-14T14:42:13.370",
+            "identification": "Acer saccharum",
+            "location": 11,
+            "user": 4
+        }
+    },
+    {
+        "pk": 11,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Sugar maple",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-09-12T14:42:13.370",
+            "identification": "Acer saccharum",
+            "location": 12,
+            "user": 2
+        }
+    },
+    {
+        "pk": 12,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Water lily",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-10-30T14:42:13.370",
+            "identification": "Nymphaea odorata",
+            "location": 13,
+            "user": 2
+        }
+    },
+    {
+        "pk": 13,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Water lilies",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-10-27T14:42:13.370",
+            "identification": "Nymphaea odorata",
+            "location": 14,
+            "user": 3
+        }
+    },
+    {
+        "pk": 14,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Water lily",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-10-26T14:42:13.370",
+            "identification": "Nymphaea odorata",
+            "location": 15,
+            "user": 4
+        }
+    },
+    {
+        "pk": 15,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Water lilies",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-10-24T14:42:13.370",
+            "identification": "Nymphaea odorata",
+            "location": 16,
+            "user": 5
+        }
+    },
+    {
+        "pk": 16,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Water lily",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-10-17T14:42:13.370",
+            "identification": "West Warwick, NH",
+            "location": 17,
+            "user": 6
+        }
+    },
+    {
+        "pk": 17,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Water Lilies",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-10-13T14:42:13.370",
+            "identification": "Nymphaea odorata",
+            "location": 18,
+            "user": 2
+        }
+    },
+    {
+        "pk": 18,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Water Lily",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-10-10T14:42:13.370",
+            "identification": "Nymphaea odorata",
+            "location": 19,
+            "user": 2
+        }
+    },
+    {
+        "pk": 19,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Water lilies",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-10-01T14:42:13.370",
+            "identification": "Nymphaea odorata",
+            "location": 20,
+            "user": 2
+        }
+    },
+    {
+        "pk": 20,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Water lily",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-09-19T14:42:13.370",
+            "identification": "Nymphaea odorata",
+            "location": 21,
+            "user": 6
+        }
+    },
+    {
+        "pk": 21,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Water Lilies",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-09-13T14:42:13.370",
+            "identification": "Nymphaea odorata",
+            "location": 22,
+            "user": 3
+        }
+    },
+    {
+        "pk": 22,
+        "model": "plantshare.sighting",
+        "fields": {
+            "title": "Water lilies",
+            "location_notes": "",
+            "notes": "",
+            "created": "2012-09-04T14:42:13.370",
+            "identification": "Nymphaea odorata",
+            "location": 23,
+            "user": 2
+        }
+    }
+]
