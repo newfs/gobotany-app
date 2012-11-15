@@ -1,3 +1,5 @@
+{% load mapping_tags %}
+
         {% csrf_token %}
 
         {{ form.non_field_errors }}
@@ -21,7 +23,7 @@
             <label for="id_location">Location *</label>
             <div class="location">
                 {{ form.location }}
-                {% include "_location_map.html" with location="Framingham, MA" height_px="150" width_px="302" zoom="7" id="id_location_map" %}
+                {% location_map location="Framingham, MA" height_px="150" width_px="302" zoom="7" id="id_location_map" %}
             </div>
 
             {{ form.location_notes.errors }}

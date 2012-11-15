@@ -1,3 +1,4 @@
+{% load mapping_tags %}
 <!doctype html>
 <html>
     <head>
@@ -38,7 +39,14 @@
         JavaScript to load. Allows passing a location either as an
         address or as lat./long. coordinates.</p>
 
+        <p>A basic template-include with parameters works, but does not
+        allow context variables to be passed, such as location, etc.</p>
+
         {% include "_location_map.html" with location="Framingham, MA" height_px="150" width_px="302" zoom="7" id="id_location_map" %}
+
+        <p>An inclusion tag works similarly but does allow passing context variables.</p>
+
+        {% location_map location="Framingham, MA" height_px="150" width_px="302" zoom="7" id="id_location_map_2" %}
 
         <h2>Google maps (using JavaScript API)</h2>
 

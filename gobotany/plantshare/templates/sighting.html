@@ -1,4 +1,5 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
+{% load mapping_tags %}
 
 {% block title %}Sighting: {{ sighting.title }}: PlantShare{% endblock %}
 
@@ -7,6 +8,8 @@
 
 {% block main_content %}
 <h1>Sighting: {{ sighting.identification }} at {{ sighting.location }}</h1>
+
+{% location_map location=sighting.location height_px="150" width_px="302" zoom="7" id="id_location_map" %}
 
 <p>Posted {{ sighting.created }} by {{ sighting.user }}</p>
 

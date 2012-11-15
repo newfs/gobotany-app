@@ -178,6 +178,9 @@ body.plantshare {
         }
     }
     &.sighting {
+        .map {
+            float: right;
+        }
         form {
             label {
                 text-transform: none;
@@ -190,9 +193,6 @@ body.plantshare {
                 legend {
                     @include offscreen;
                 }
-            }
-            .map {
-                float: right;
             }
             .post-sighting-btn {
                 background: transparent url(/static/images/layout/plantshare2-btn.png) no-repeat -372px -634px;
