@@ -78,7 +78,16 @@ def sightings_view(request):
 
 def sighting_view(request, sighting_id):
     """View for an individual sighting."""
-    sighting = Sighting.objects.get(id=sighting_id)
+    s = Sighting.objects.get(id=sighting_id)
+    sighting = {
+        'id': s.id,
+        'identification': s.identification,
+        'notes': s.notes,
+        'location': s.location,
+        'location_notes': s.location_notes,
+        'user': _user_name(s.user),
+        'created': s.created
+    }
     return render_to_response('sighting.html', {
                'sighting': sighting,
            }, context_instance=RequestContext(request))

@@ -2,20 +2,23 @@
 
 {% block title %}Sighting: {{ sighting.title }}: PlantShare{% endblock %}
 
-{% block body_attributes %}id="sighting" class="plantshare sighting"{% endblock %}
+{% block body_attributes %}id="sighting"
+    class="plantshare sighting"{% endblock %}
 
 {% block main_content %}
-<h1>Sighting: {{ sighting.title }}</h1>
+<h1>Sighting: {{ sighting.identification }} at {{ sighting.location }}</h1>
 
-<p>Posted {{ sighting.created }} by user {{ sighting.user }}</p>
+<p>Posted {{ sighting.created }} by {{ sighting.user }}</p>
 
-<p>Identification: {{ sighting.identification }}</p>
+{% if sighting.notes %}
+    <p>Description or comments: {{ sighting.notes }}</p>
+{% endif %}
 
-<p>Description or commments: {{ sighting.notes }}</p>
+{% if sighting.location_notes %}
+    <p>Location notes: {{ sighting.location_notes }}</p>
+{% endif %}
 
-<p>Location: {{ sighting.location }}</p>
-
-<p>Location notes: {{ sighting.location_notes }}</p>
+{# TODO: show sighting images #}
 
 {% endblock %}
 
