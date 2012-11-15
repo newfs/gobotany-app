@@ -46,7 +46,9 @@
 
         <p>An inclusion tag works similarly but does allow passing context variables.</p>
 
-        {% location_map location="Framingham, MA" height_px="150" width_px="302" zoom="7" id="id_location_map_2" %}
+        {% with "Framingham, MA" as sighting_location %}
+            {% location_map location=sighting_location height_px="150" width_px="302" zoom="7" id="id_location_map_2" %}
+        {% endwith %}
 
         <h2>Google maps (using JavaScript API)</h2>
 
