@@ -29,6 +29,7 @@ def main():
     directory_count = 0
     image_count = 0
     error_count = 0
+    bad_header_count = 0
 
     hostname = 'newfs.s3.amazonaws.com'
     ip = socket.gethostbyname(hostname)
@@ -56,6 +57,13 @@ def main():
         if response.status_code != expected_code:
             print 'Error: {} -> {}'.format(url, response.status_code)
             error_count += 1
+            continue
+
+        cc = response.headers.get('cache-control')
+        if not url.endswith('/') and cc != 'max-age=28800, public':
+            print 'Error: {} cache-control = {!r}'.format(url, cc)
+            bad_header_count += 1
+            continue
 
     elapsed = time.time() - t0
     per_second = (directory_count + image_count) / elapsed
@@ -64,6 +72,7 @@ def main():
     print 'Scanned {} images'.format(image_count)
     print 'Scanned {:.2} resources per second'.format(per_second)
     print 'Found {} errors'.format(error_count)
+    print 'Found {} bad headers'.format(bad_header_count)
 
 if __name__ == '__main__':
     main()
