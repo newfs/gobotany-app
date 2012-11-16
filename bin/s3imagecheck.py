@@ -9,14 +9,23 @@ allow themselves to be downloaded.
 
 """
 import gzip
+import os
 import re
-import requests
 import socket
 import time
+from StringIO import StringIO
+
+import boto
+import requests
 
 url_pattern = re.compile(r'/taxon-images/[A-Z]')
 
 def main():
+
+    conn = boto.connect_s3()
+    bucket = conn.get_bucket('newfs')
+    ls_taxon_images_gz = bucket.get_key('ls-taxon-images.gz').read()
+
     directory_count = 0
     image_count = 0
     error_count = 0
@@ -25,8 +34,8 @@ def main():
     ip = socket.gethostbyname(hostname)
     session = requests.Session()
 
-    g = gzip.GzipFile('ls-taxon-images.gz')
     t0 = time.time()
+    g = gzip.GzipFile(fileobj=StringIO(ls_taxon_images_gz))
     for line in g:
         if image_count > 100:
             break
