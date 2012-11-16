@@ -245,15 +245,18 @@ body.taxa {
                 list-style-type: none;
             }
         }
-        a.enlarge {
-	        color: #1a2e11;
-	        display: block;
-            margin: 0 0 8px 0;
-            &:hover {
-	            text-decoration: none;
-            }
-            img {
-                vertical-align: middle;
+        a {
+            margin-left: 0;
+            &.enlarge {
+                color: #1a2e11;
+                display: block;
+                margin: 0 0 8px 0;
+                &:hover {
+                    text-decoration: none;
+                }
+                img {
+                    vertical-align: middle;
+                }
             }
         }
         /* Larger gallery styles */

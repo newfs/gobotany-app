@@ -655,6 +655,7 @@ body.taxa#species #sidebar .lookalikes dt { margin-top: 1em; display: block; }
 body.taxa#species #sidebar .lookalikes dd { margin-left: 0; }
 body.taxa#species #sidebar .get-help-btn { margin: 0 0 0 10px; }
 body.taxa#species #sidebar li { line-height: 16px; list-style-type: none; }
+body.taxa#species a { margin-left: 0; }
 body.taxa#species a.enlarge { color: #1a2e11; display: block; margin: 0 0 8px 0; }
 body.taxa#species a.enlarge:hover { text-decoration: none; }
 body.taxa#species a.enlarge img { vertical-align: middle; }
@@ -779,7 +780,7 @@ body.skey.results #sidebar .option-list li { background: #fff; border-top: 1px s
 body.skey.results #sidebar .option-list li.last { border-bottom: 1px solid #c3d941; }
 body.skey.results #sidebar .option-list li.answered { background: #ffd; }
 body.skey.results #sidebar .option-list li.active, body.skey.results #sidebar .option-list li:hover, body.skey.results #sidebar .option-list li.active span.value, body.skey.results #sidebar .option-list li.answered.active { background: #dce890; cursor: pointer; }
-body.skey.results #sidebar .option-list .option { color: #1a2e11; text-decoration: none; }
+body.skey.results #sidebar .option-list .option { color: #1a2e11; margin-left: 0; text-decoration: none; }
 body.skey.results #sidebar .option-list .option span.name { display: block; font-weight: bold; margin: 0 0 3px 0; }
 body.skey.results #sidebar .option-list .clear-filter { color: #508e31; display: block; margin-top: 4px; width: 45px; }
 body.skey.results #sidebar .loading { background: url(/static/images/icons/preloaders-dot-net-sm.gif) no-repeat scroll 0 0 transparent; font-weight: bold; margin: 12px; padding: 0 0 0 20px; }
@@ -943,6 +944,7 @@ body.plantshare#profile .info-section .info.box table { margin: 0; }
 body.plantshare #login.box { background-color: #d3eaad; border-color: #508e31; max-width: 475px; padding: 0; }
 body.plantshare #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
 body.plantshare #login.box div { border-top: 1px solid #508e31; padding: 16px; }
+body.plantshare #login.box div a { margin-left: 0; }
 body.plantshare #login.box input[type='text'], body.plantshare #login.box input[type='password'] { width: 95%; }
 body.plantshare#screen-images table.unscreened { margin: 20px 0; padding: 0; table-layout: fixed; overflow: hidden; width: 100%; text-align: center; }
 body.plantshare#screen-images table.unscreened tr.header { height: 20px; }

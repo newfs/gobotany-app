@@ -381,6 +381,9 @@ body.plantshare {
         div {
             border-top: 1px solid $link-green;
             padding: $section-padding;
+            a {
+                margin-left: 0;
+            }
         }
         input[type='text'], input[type='password'] {
             width: 95%;
