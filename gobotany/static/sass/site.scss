@@ -91,6 +91,13 @@ $smallscreen-current-section-color: #85c446;
     text-decoration: none;
 }
 
+@mixin highlight-section-nav {
+    color: #000;
+	content: "\25b8";
+	margin-left: -15px;
+	padding-right: 7px;
+}
+
 @mixin shadowbox-photo-titles-credits {
     /* Override Shadowbox styles to allow multiple title lines for
      * showing a photo title, photographer credit, and copyright. */
@@ -230,8 +237,10 @@ p.meta {
     }
 }
 
-/* Header */
 
+/* Navigation highlighting */
+
+/* Global navigation (header) */
 body {
     &#home {
         nav li.home {
@@ -269,6 +278,26 @@ body {
         }
     }
 }
+
+/* Section navigation (sidebar, only in some sections) */
+body {
+    /* Place "you are here" marker next to a non-linked item. This is
+     * the top level of each sub-section. */
+    &.about, &.plantshare {
+        #sidebar h4 a:not([href])::before {
+            @include highlight-section-nav;
+        }
+    }
+    /* Handle pages beneath subsections. */
+    /* TODO .plantshare.sighting h4 a[text='Sightings']::before or something? */
+    &.plantshare {
+        &#sighting #sidebar .sightings a::before {
+            @include highlight-section-nav;
+        }
+    }
+}
+
+/* Header */
 
 header {
     height: 120px;
@@ -472,8 +501,13 @@ header {
             }
         }
         a {
+            display: inline-block;
+            margin-left: 10px;
             &:hover {
                 text-decoration: none;
+            }
+            &.video {
+                margin-left: 0;
             }
             &.get-help-btn {
                 background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent;

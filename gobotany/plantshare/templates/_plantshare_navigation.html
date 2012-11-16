@@ -1,31 +1,29 @@
 {% load gobotany_tags %}
 <div class="box">
-    <div class="section">
-        <h4>{% nav_item 'PlantShare' ps-main %}</h4>
-    </div>
+    {% include "_plantshare_home_nav_item.html" %}
     {% if user.is_authenticated %}
-    <div class="section">
+    <div class="section sightings">
         <h4>{% nav_item 'Sightings' ps-sightings %}</h4>
     </div>
-    <div class="section">
+    <div class="section post-sighting">
         <h4>{% nav_item 'Post a Sighting' ps-new-sighting %}</h4>
     </div>
-    <div class="section">
+    <div class="section profile">
         <h4>{% nav_item 'My Profile' ps-profile %}</h4>
     </div>
-    <div class="section">
+    <div class="section logout">
         <h4>{% nav_item 'Log Out' auth_logout %}</h4>
     </div>
     {% if user.is_staff %}
     <div class="section">
         <h3>Staff Only</h3>
     </div>
-    <div class="section">
+    <div class="section screen-images">
         <h4>{% nav_item 'Screen Image Uploads' ps-screen-images %}</h4>
     </div>
     {% endif %}
     {% else %}
-    <div class="section">
+    <div class="section signup">
         <h4>{% nav_item 'Sign Up for PlantShare' registration_register %}</h4>
     </div>
     {% endif %}
