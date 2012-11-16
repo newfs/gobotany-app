@@ -213,7 +213,7 @@ class PlantShareTests(FunctionalCase):
     def test_signup_page_has_minimal_navigation(self):
         self._get_plantshare(self.SIGNUP_FORM_URL)
         navigation_items = self.css('#sidebar .section')
-        self.assertEqual(len(navigation_items), 1)
+        self.assertEqual(len(navigation_items), 2)   # includes Signup item
 
     @unittest.skip('Skip for now: test requires reaching a server on the Web')
     def test_sign_up_with_incorrect_captcha_response(self):

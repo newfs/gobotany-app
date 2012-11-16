@@ -289,9 +289,8 @@ body {
         }
     }
     /* Handle pages beneath subsections. */
-    /* TODO .plantshare.sighting h4 a[text='Sightings']::before or something? */
     &.plantshare {
-        &#sighting #sidebar .sightings a::before {
+        &#sighting #sidebar .sightings a::before{
             @include highlight-section-nav;
         }
     }

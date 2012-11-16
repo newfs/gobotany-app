@@ -328,7 +328,7 @@ body.teaching nav li.teaching { background: url(/static/images/layout/active-nav
 body.about nav li.about { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 
 /* Section navigation (sidebar, only in some sections) */
-body { /* Place "you are here" marker next to a non-linked item. This is the top level of each sub-section. */ /* Handle pages beneath subsections. */ /* TODO .plantshare.sighting h4 a[text='Sightings']::before or something? */ }
+body { /* Place "you are here" marker next to a non-linked item. This is the top level of each sub-section. */ /* Handle pages beneath subsections. */ }
 body.about #sidebar h4 a:not([href])::before, body.plantshare #sidebar h4 a:not([href])::before { color: #000; content: "\25b8"; margin-left: -15px; padding-right: 7px; }
 body.plantshare#sighting #sidebar .sightings a::before { color: #000; content: "\25b8"; margin-left: -15px; padding-right: 7px; }
 
