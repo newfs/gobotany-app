@@ -30,6 +30,7 @@ django-recaptcha==0.0.4
 # For storing images on S3.
 django-storages==1.1.4
 boto==2.2.2
+requests
 
 # For database migrations
 South==0.7.6
