@@ -52,9 +52,12 @@ def main():
         if url.endswith('/'):
             directory_count += 1
             expected_code = 403
-        else:
+        elif url.endswith('.jpg'):
             image_count += 1
             expected_code = 200
+        else:
+            print 'Warning: unrecognized {}'.format(url)
+            continue
 
         response = session.head(url, headers=headers)
         if response.status_code != expected_code:
