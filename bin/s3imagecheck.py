@@ -5,7 +5,8 @@
 Determine whether our S3 images listed in ls-taxon-images.gz all have
 the correct permissions when accessed publicly: no directories should
 allow themselves to be listed, while all images and thumbnails should
-allow themselves to be downloaded.
+allow themselves to be downloaded.  An attempt is made to fix images
+with bad permissions.
 
 """
 import gzip
@@ -18,6 +19,7 @@ from StringIO import StringIO
 import boto
 import requests
 
+CACHE_CONTROL = 'max-age=28800, public'
 url_pattern = re.compile(r'/taxon-images/[A-Z]')
 
 def main():
@@ -38,11 +40,14 @@ def main():
     t0 = time.time()
     g = gzip.GzipFile(fileobj=StringIO(ls_taxon_images_gz))
     for line in g:
+        if image_count > 100:
+            break  # limit running time, for debugging
         fields = line.split()
         url = fields[3]
         if not url_pattern.search(url):
             continue
-        url = url.replace('s3://newfs/', 'http://{}/'.format(ip))
+        path = url.replace('s3://newfs', '')
+        url = 'http://{}{}'.format(ip, path)
         headers = {'Host': hostname}
         if url.endswith('/'):
             directory_count += 1
@@ -55,10 +60,18 @@ def main():
         if response.status_code != expected_code:
             print 'Error: {} -> {}'.format(url, response.status_code)
             error_count += 1
+            if response.status_code == 200:
+                print '       Making resource private'
+                key = bucket.get_key(path)
+                key.set_acl('private')
+            elif response.status_code == 403:
+                print '       Making resource public'
+                key = bucket.get_key(path)
+                key.make_public(headers={'cache-control': CACHE_CONTROL})
             continue
 
         cc = response.headers.get('cache-control')
-        if not url.endswith('/') and cc != 'max-age=28800, public':
+        if not url.endswith('/') and cc != CACHE_CONTROL:
             print 'Error: {} cache-control = {!r}'.format(url, cc)
             bad_header_count += 1
             continue
@@ -68,7 +81,7 @@ def main():
 
     print 'Scanned {} directories'.format(directory_count)
     print 'Scanned {} images'.format(image_count)
-    print 'Scanned {:.2} resources per second'.format(per_second)
+    print 'Scanned {:.2f} resources per second'.format(per_second)
     print 'Found {} errors'.format(error_count)
     print 'Found {} bad headers'.format(bad_header_count)
 
