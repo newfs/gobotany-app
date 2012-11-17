@@ -40,8 +40,8 @@ def main():
     t0 = time.time()
     g = gzip.GzipFile(fileobj=StringIO(ls_taxon_images_gz))
     for line in g:
-        if image_count > 100:
-            break  # limit running time, for debugging
+        # if image_count > 100:
+        #     break  # limit running time, for debugging
         fields = line.split()
         url = fields[3]
         if not url_pattern.search(url):
