@@ -355,7 +355,7 @@ body.plantshare {
                 }
             }
         }
-    }
+    } /* end .info-section, .location-section */
     &#profile {
         .info-section {
             margin: 20px 0;
@@ -387,6 +387,48 @@ body.plantshare {
         }
         input[type='text'], input[type='password'] {
             width: 95%;
+        }
+    }
+
+    #sightings-locator {
+        margin-top: 20px;
+        .box {
+            font-size: 11px;
+            height: 297px;
+            padding: 0 10px;
+            div {
+                float: left;
+                width: 200px;
+                h3 {
+                    font-size: 14px;
+                    padding-top: 5px;
+                }
+                input {
+                    margin: 5px 0 10px;
+                    width: 180px;
+                }
+                h4 {
+                    font-family: $body-font;
+                    font-size: 12px;
+                    font-weight: bold;
+                    line-height: 14px;
+                    margin: 10px 0 6px;
+                }
+                p {
+                    line-height: 14px;
+                    margin: 0;
+                    padding: 0;
+                    &.full-link {
+                        margin-top: 12px;
+                    }
+                }
+            }
+            .map {
+                border-bottom: 0;
+                border-right: 0;
+                border-top: 0;
+                float: right;
+            }
         }
     }
 

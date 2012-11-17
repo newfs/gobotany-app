@@ -1,4 +1,5 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
+{% load mapping_tags %}
 
 {% block title %}PlantShare{% endblock %}
 
@@ -44,6 +45,31 @@
         </div>
     {% endif %}
 {% endif %}
+
+<div id="sightings-locator">
+    <h2>Sightings Locator</h2>
+    <div class="box">
+        <div>
+            <h3>Show recent plant sightings for</h3>
+
+            <input type="text">
+
+            <h4>How to Use</h4>
+            <p>Enter a plant name and we'll show the map where it's been seen
+            recently.</p>
+            
+            <h4>Don't see a plant you think should be there?</h4>
+            <p>You will see all recent sightings that others have marked for
+            public view or for a PlantShare group that you belong
+            to.</p>
+            <p>Rare and endangered plants will not be displayed.</p>
+        
+            <p class="full-link"><a href="#">View full page »</a></p>
+        </div>
+
+        {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="297px" width="479px" zoom="6" id="mini-sightings-map" %}
+    </div>
+</div>
 
 {% endblock %}
 
