@@ -187,7 +187,8 @@ def species_view(request, genus_slug, epithet):
         if rows:
             partner_species = rows[0]
 
-    dkey_page = dkey_models.Page.objects.get(title=scientific_name)
+    dkey_pages = dkey_models.Page.objects.filter(title=scientific_name)
+    dkey_page = dkey_pages[0] if dkey_pages else None
 
     species_in_simple_key = (partner_species and partner_species.simple_key)
     key = request.GET.get('key')
