@@ -8,7 +8,7 @@ from gobotany import settings
 from django.core import management
 management.setup_environ(settings)
 
-from django.db import transaction
+from django.db import connection, transaction
 from gobotany.dkey import models
 
 # Couplet creation shortcuts, that work because during the import we
@@ -567,6 +567,20 @@ def fix_typo4(xchildren, i):
 # Support command-line invocation.
 
 def do_parse(filename):
+    # Start with empty dkey tables (this is safe, because we are inside
+    # of a transaction, and because the rest of the database holds no
+    # foreign keys to dkey tables; instead, family, genus, and species
+    # names are looked up literally when relating normal database
+    # objects to the dkey).
+
+    cursor = connection.cursor()
+    cursor.execute('DELETE FROM dkey_figure')
+    cursor.execute('DELETE FROM dkey_lead')
+    cursor.execute('DELETE FROM dkey_page_breadcrumb_cache')
+    cursor.execute('DELETE FROM dkey_page')
+
+    # The actual parsing.
+
     info = parse(filename)
 
     # Save the changes that have been made to pages and leads since
