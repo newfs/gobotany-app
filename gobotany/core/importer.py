@@ -1211,10 +1211,7 @@ class Importer(object):
         # that we recognize the type of every image we import.
 
         core_dir = os.path.dirname(os.path.abspath(__file__))
-        gobotany_dir = os.path.dirname(core_dir)
-        gobotany_app_dir = os.path.dirname(gobotany_dir)
-        data_dir = os.path.join(gobotany_app_dir, 'data')
-        image_categories_csv = os.path.join(data_dir, 'image_categories.csv')
+        image_categories_csv = os.path.join(core_dir, 'image_categories.csv')
 
         taxon_image_types = {}
         for row in open_csv(PlainFile('.', image_categories_csv)):
