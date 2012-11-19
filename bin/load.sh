@@ -6,10 +6,13 @@ admin () {
     django-admin.py "$@" --settings gobotany.settings
 }
 
+HERE=$(dirname "$0")
+
 set -e
 admin syncdb --noinput
 admin migrate
 python -m gobotany.core.importer zipimport
-$(dirname "$0")/import-images.sh
-$(dirname "$0")/import-dkey.sh
+$HERE/import-images.sh
+$HERE/import-dkey.sh
 admin rebuild_index --noinput
+$HERE/test.sh
