@@ -1,48 +1,5 @@
-django==1.4
-lxml
-psycopg2>=2.3
-xlrd
-# Unsure which version satisfied minimum reqs
-PIL
+# The Go Botany dependencies are listed in setup.py, as is proper for a
+# Python package, so that developers can use tools like "tox" to create
+# local sandboxes in which to run the application.
 
-django-debug-toolbar
-django-haystack==1.2.7
-django-piston==0.2.2
-django-tinymce
-django-imagekit==2.0.2
-python-memcached
-
-# The way we use pysolr introduces an extra dependency:
-pysolr==2.0.15
-BeautifulSoup==3.2.1
-
-# For memcached on Heroku we need a caching back-end that does authentication:
-pylibmc==1.2.2
-django-pylibmc-sasl==0.2.4
-
-# -e .
-
-# For login and registration
-git+https://github.com/noamsu/django-facebook-connect#egg=django-facebook-connect
-django-registration==0.8
-django-recaptcha==0.0.4
-
-# For storing images on S3.
-django-storages==1.1.4
-boto==2.2.2
-requests
-
-# For database migrations
-South==0.7.6
-
-# For deployment to Heroku.
-gunicorn
-newrelic
-
-# For our Heroku Scheduler tasks that scan S3
-s3cmd
-
-# For testing.
-coverage
-unittest2
-selenium
+-e .

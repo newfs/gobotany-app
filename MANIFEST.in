@@ -1,0 +1,5 @@
+include tox.ini
+recursive-include gobotany *.html
+recursive-include gobotany/static *.*
+recursive-include gobotany/core image_categories.csv
+recursive-include gobotany/core/testdata *.*

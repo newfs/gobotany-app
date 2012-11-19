@@ -3,8 +3,11 @@
 *.sw*
 *.DS_Store
 
-# Egg info directory from install.sh
+# Tox
+/.tox/
+/build/
 /gobotany.egg-info/
+MANIFEST
 
 # SASS
 /gobotany/static/sass/.sass-cache/
