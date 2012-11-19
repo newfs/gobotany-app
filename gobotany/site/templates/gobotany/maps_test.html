@@ -18,13 +18,28 @@
             h3, h4 {
                 padding: 1em 0 0;
             }
+            #overlay-test {
+                background: #fff;
+                border: 2px solid #666;
+                display: none;
+                padding: 0 20px 12px;
+                width: 350px;
+                -webkit-border-radius: 5px;
+                -webkit-box-shadow: 0 0 20px #666;
+            }
         </style>
 
         <script src="/static/scripts/lib/require.js"></script>
         <script src="/static/scripts/require_config.js"></script>
         <script>
-            require(['site/maps_test']);
-        </script>        
+            require(['site/maps_test'], function (MapsTest) {
+                var maps_test = new MapsTest();
+                $('#overlay-test-link').click(function () {
+                    maps_test.show_overlay();
+                    return false;
+                });
+            });
+        </script>
     </head>
     <body class="plantshare">
         <h1>Maps Test</h1>
@@ -32,6 +47,9 @@
         <p>This is a page for testing map APIs and controls. It is also
         for working out default coordinate centers and zoom levels
         for PlantShare maps.</p>
+
+        <p><b>Overlay test:</b> <a id="overlay-test-link"
+            href="#">Show overlay</a></p>
 
         <h2>Google static location map</h2>
 
@@ -76,5 +94,11 @@
 
         {# Sightings map via template tag #}
         {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="524px" width="710px" zoom="6" id="sightings-map" %}
+    
+        <div id="overlay-test">
+            <h3>This is a test of the overlay function</h3>
+            <p>This is for testing in order to help fix the mask on the
+            results intro overlay.</p>
+        </div>
     </body>
 </html>
