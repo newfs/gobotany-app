@@ -732,9 +732,9 @@ body.skey.results .modal-wrap .list-item .details { float: left; margin: 0 0 0 1
 body.skey.results .modal-wrap a.get-more-info { background: url(/static/images/layout/get-more-info.png) 0 0 no-repeat transparent; height: 32px; margin: 20px 0 0 0; width: 163px; display: block; text-indent: -9000px; }
 body.skey.results .modal-wrap a.get-more-info:hover { background-position: 0 -32px; }
 body.skey.results .modal-wrap a.get-more-info:active { background-position: 0 -64px; }
-body.skey.results .modal-wrap a .go-to-species-page { background: url(/static/images/layout/go-to-species-page.png) 0 0 no-repeat transparent; height: 31px; margin: 20px 0 0 0; width: 212px; display: block; text-indent: -9000px; }
-body.skey.results .modal-wrap a .go-to-species-page:hover { background-position: 0 -31px; }
-body.skey.results .modal-wrap a .go-to-species-page:active { background-position: 0 -62px; }
+body.skey.results .modal-wrap a.go-to-species-page { background: url(/static/images/layout/go-to-species-page.png) 0 0 no-repeat transparent; height: 31px; margin: 20px 0 0 0; width: 212px; display: block; text-indent: -9000px; }
+body.skey.results .modal-wrap a.go-to-species-page:hover { background-position: 0 -31px; }
+body.skey.results .modal-wrap a.go-to-species-page:active { background-position: 0 -62px; }
 body.skey.results .plant-list { margin-top: 8px; position: relative; /* end .plant */ /* List view styles */ /* end table */ }
 body.skey.results .plant-list .plant { background: #fff; border: 1px solid #c3d941; display: none; height: 210px; left: 0px; padding: 8px 6px; position: absolute; text-align: center; top: 0px; width: 160px; /* prevent long names from blowing out layout; allow wrap */ }
 body.skey.results .plant-list .plant.in-results { display: block; }
