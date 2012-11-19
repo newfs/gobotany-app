@@ -1,7 +1,5 @@
 var requirejs = require('requirejs');
-requirejs(['simplekey/FilterController'], function(mod) {
-    FilterController = mod;
-});
+var FilterController = requirejs('simplekey/FilterController');
 
 var sample_filtercontroller = function() {
     var data = require('../testdata/taxa.js');
