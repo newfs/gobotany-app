@@ -518,6 +518,7 @@ body.skey {
                 .clear-filter {
                     color: $link-green;
                     display: block;
+                    margin-left: 0;
                     margin-top: 4px;
                     width: 45px;
                 }
@@ -766,6 +767,7 @@ body.skey {
             h4 {
                 color: #000;
                 display: none;
+                font-size: 18px;
                 line-height: 130%;
                 margin: 6px 0;
                 width: 650px;
@@ -792,7 +794,7 @@ body.skey {
                     p {
                         font-size: 14px;
                         line-height: 120%;
-                        margin-bottom: 0;
+                        margin: 0;
                     }
                 }
             }
@@ -907,7 +909,7 @@ body.skey {
                 user-select: none;
             }
 
-            div.working-area #slider {
+            #slider {
                 height: 70px;
                 margin: 20px 0 10px;
                 padding: 20px 0 0 0;

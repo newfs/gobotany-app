@@ -782,7 +782,7 @@ body.skey.results #sidebar .option-list li.answered { background: #ffd; }
 body.skey.results #sidebar .option-list li.active, body.skey.results #sidebar .option-list li:hover, body.skey.results #sidebar .option-list li.active span.value, body.skey.results #sidebar .option-list li.answered.active { background: #dce890; cursor: pointer; }
 body.skey.results #sidebar .option-list .option { color: #1a2e11; margin-left: 0; text-decoration: none; }
 body.skey.results #sidebar .option-list .option span.name { display: block; font-weight: bold; margin: 0 0 3px 0; }
-body.skey.results #sidebar .option-list .clear-filter { color: #508e31; display: block; margin-top: 4px; width: 45px; }
+body.skey.results #sidebar .option-list .clear-filter { color: #508e31; display: block; margin-left: 0; margin-top: 4px; width: 45px; }
 body.skey.results #sidebar .loading { background: url(/static/images/icons/preloaders-dot-net-sm.gif) no-repeat scroll 0 0 transparent; font-weight: bold; margin: 12px; padding: 0 0 0 20px; }
 body.skey.results a.get-choices { background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 4px 10px; text-indent: -9000px; width: 171px; }
 body.skey.results a.get-choices:hover { background-position: 0 -32px; }
@@ -816,12 +816,12 @@ body.skey.results .working-area .choices .row div label { cursor: pointer; displ
 body.skey.results .working-area .choices .row div input { float: left; margin: 3px 3px 0 -18px; }
 body.skey.results .working-area .choices .row div input + img { background: #fff; border: 1px solid #ddd; display: inline-block; height: 80px; }
 body.skey.results .working-area a.close { background: url(/static/images/icons/close.png) no-repeat transparent; display: block; float: right; height: 16px; margin: 5px 0 0 0; width: 16px; }
-body.skey.results .working-area h4 { color: #000; display: none; line-height: 130%; margin: 6px 0; width: 650px; }
+body.skey.results .working-area h4 { color: #000; display: none; font-size: 18px; line-height: 130%; margin: 6px 0; width: 650px; }
 body.skey.results .working-area .intro-message h4 { display: block; font-weight: bold; }
 body.skey.results .working-area .intro-message p { font-size: 14px; margin-bottom: 5px; }
 body.skey.results .working-area .info { display: none; float: left; font-family: Tahoma, "Trebuchet MS", sans-serif; font-size: 14px; width: 100%; }
 body.skey.results .working-area .info .hint { font-size: 12px; margin: 6px 0; }
-body.skey.results .working-area .info .hint p { font-size: 14px; line-height: 120%; margin-bottom: 0; }
+body.skey.results .working-area .info .hint p { font-size: 14px; line-height: 120%; margin: 0; }
 body.skey.results .working-area .character-drawing { float: right; }
 body.skey.results .working-area .character-drawing img { max-height: 200px; }
 body.skey.results .working-area ul { margin: 15px 0 0 0; }
@@ -844,11 +844,11 @@ body.skey.results .working-area .measurement { margin: 8px 0; }
 body.skey.results .working-area .measurement label input { margin: 0 4px 0 8px; }
 body.skey.results .working-area .instructions { margin-bottom: 8px; }
 body.skey.results .working-area .actions { text-align: center; }
-body.skey.results .working-area div.working-area #slider { height: 70px; margin: 20px 0 10px; padding: 20px 0 0 0; position: relative; }
-body.skey.results .working-area div.working-area #slider .bar { cursor: pointer; padding: 0 4px; position: absolute; top: 47px; width: 100%; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
-body.skey.results .working-area div.working-area #slider .bar div { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c1d9a7), color-stop(100%, white)); background: -moz-linear-gradient(center top, #c1d9a7, white); border: 1px solid #c1d9a7; height: 8px; -moz-border-radius: 4px; -webkit-border-radius: 4px; -o-border-radius: 4px; -ms-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
-body.skey.results .working-area div.working-area #slider .thumb { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c1d9a7), color-stop(100%, white)); background: -moz-linear-gradient(center top, #c1d9a7, white); border: 1px solid white; cursor: pointer; height: 30px; left: 3px; position: absolute; text-align: center; top: 35px; width: 30px; -moz-border-radius: 16px; -webkit-border-radius: 16px; -o-border-radius: 16px; -ms-border-radius: 16px; -khtml-border-radius: 16px; border-radius: 16px; -moz-box-shadow: 0 1px 6px 1px #333333; -webkit-box-shadow: 0 1px 6px 1px #333333; -o-box-shadow: 0 1px 6px 1px #333333; box-shadow: 0 1px 6px 1px #333333; }
-body.skey.results .working-area div.working-area #slider .label { font-size: 16px; position: relative; top: -36px; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+body.skey.results .working-area #slider { height: 70px; margin: 20px 0 10px; padding: 20px 0 0 0; position: relative; }
+body.skey.results .working-area #slider .bar { cursor: pointer; padding: 0 4px; position: absolute; top: 47px; width: 100%; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+body.skey.results .working-area #slider .bar div { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c1d9a7), color-stop(100%, white)); background: -moz-linear-gradient(center top, #c1d9a7, white); border: 1px solid #c1d9a7; height: 8px; -moz-border-radius: 4px; -webkit-border-radius: 4px; -o-border-radius: 4px; -ms-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+body.skey.results .working-area #slider .thumb { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c1d9a7), color-stop(100%, white)); background: -moz-linear-gradient(center top, #c1d9a7, white); border: 1px solid white; cursor: pointer; height: 30px; left: 3px; position: absolute; text-align: center; top: 35px; width: 30px; -moz-border-radius: 16px; -webkit-border-radius: 16px; -o-border-radius: 16px; -ms-border-radius: 16px; -khtml-border-radius: 16px; border-radius: 16px; -moz-box-shadow: 0 1px 6px 1px #333333; -webkit-box-shadow: 0 1px 6px 1px #333333; -o-box-shadow: 0 1px 6px 1px #333333; box-shadow: 0 1px 6px 1px #333333; }
+body.skey.results .working-area #slider .label { font-size: 16px; position: relative; top: -36px; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
 body.skey.results img.char-value-larger { height: 160px !important; /* Consistent height for popup character value drawings */ }
 
 /* Begin media queries styles for Simple and Full Keys. */
