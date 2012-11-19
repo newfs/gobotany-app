@@ -9,6 +9,9 @@
 /gobotany.egg-info/
 MANIFEST
 
+# Dev tools
+/dev/node/
+
 # SASS
 /gobotany/static/sass/.sass-cache/
 
