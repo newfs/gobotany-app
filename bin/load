@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """Run the right commands to build the Go Botany database from scratch."""
 
+import ConfigParser
 import sys
 import subprocess
 
@@ -44,7 +45,10 @@ def solr():
     admin('rebuild_index --noinput')
 
 def test():
-    run('./bin/test.sh')
+    config = ConfigParser.RawConfigParser()
+    config.read('tox.ini')
+    cmdline = config.get('testenv', 'commands')
+    run(cmdline)
 
 ACTIONS = schema, csv, images, dkey, solr, test
 
