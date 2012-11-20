@@ -14,7 +14,24 @@ def csv():
     run('python -m gobotany.core.importer zipimport')
 
 def images():
-    run('./bin/import-images.sh')
+    run('python -m gobotany.core.importer taxon-images')
+
+    # Now that the taxon images are loaded, we can rebuild various
+    # "sample" image collections that are subsets of the full image
+    # collection.
+
+    run('python -m gobotany.core.rebuild sample_pile_group_images')
+    run('python -m gobotany.core.rebuild sample_pile_images')
+
+    # Finally come some slow image-import routines, that actually ask S3
+    # to list the contents of several folders (a slow operation to begin
+    # with), and that then use the Django ORM to actually create
+    # database rows.
+
+    run('python -m gobotany.core.importer character-images')
+    run('python -m gobotany.core.importer character-value-images')
+    run('python -m gobotany.core.importer glossary-images')
+    run('python -m gobotany.core.importer home-page-images')
 
 def dkey():
     run('./bin/import-dkey.sh')
