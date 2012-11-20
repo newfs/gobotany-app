@@ -11,4 +11,4 @@ else
     echo '$READ_ONLY is set - skipping S3 scanning and thumbnailing'
     echo
 fi
-$(dirname "$0")/s3imageload.sh
+$(dirname "$0")/load images
