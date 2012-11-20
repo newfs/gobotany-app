@@ -953,7 +953,7 @@ body.plantshare #login.box div { border-top: 1px solid #508e31; padding: 16px; }
 body.plantshare #login.box div a { margin-left: 0; }
 body.plantshare #login.box input[type='text'], body.plantshare #login.box input[type='password'] { width: 95%; }
 body.plantshare #sightings-locator { margin-top: 20px; }
-body.plantshare #sightings-locator .box { font-size: 11px; height: 297px; padding: 0 10px; }
+body.plantshare #sightings-locator .box { font-size: 11px; height: 297px; padding: 0 0 0 10px; }
 body.plantshare #sightings-locator .box form { float: left; padding: 0; width: 200px; }
 body.plantshare #sightings-locator .box form h3 { font-size: 14px; padding-top: 5px; }
 body.plantshare #sightings-locator .box form input { border: 0 none; float: left; height: 22px; margin: 5px 0; padding: 0 6px; }
