@@ -16,6 +16,7 @@ define([
             e.preventDefault();   // prevent form submit
 
             console.log('TODO: call the server for sightings data');
+            mini_sightings_map.show_plant('Acer saccharum');
         });
 
     });
