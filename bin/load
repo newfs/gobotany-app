@@ -34,7 +34,11 @@ def images():
     run('python -m gobotany.core.importer home-page-images')
 
 def dkey():
-    run('./bin/import-dkey.sh')
+    run('bin/s3-init.sh')
+    run('s3cmd get --skip-existing --no-progress '
+        's3://newfs/data-dkey/110330_fone_test_05.xml')
+    run('python -m gobotany.dkey.xml_import')
+    run('python -m gobotany.dkey.sync')
 
 def solr():
     admin('rebuild_index --noinput')
