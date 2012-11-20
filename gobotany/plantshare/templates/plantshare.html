@@ -3,6 +3,10 @@
 
 {% block title %}PlantShare{% endblock %}
 
+{% block js_require %}
+    require(['util/suggester_init', 'plantshare/plantshare']);
+{% endblock %}
+
 {% block body_attributes %}id="plantshare" class="plantshare"{% endblock %}
 
 {% block main_content %}
@@ -49,10 +53,17 @@
 <div id="sightings-locator">
     <h2>Sightings Locator</h2>
     <div class="box">
-        <div>
+        <form>
             <h3>Show recent plant sightings for</h3>
 
-            <input type="text">
+            {% csrf_token %}
+            <input type="text" autocomplete="off"
+                name="plant-name"
+                id="plant-name"
+                placeholder="scientific or common name"
+                class="suggest"
+                data-suggest-url="{% url site-plant-name-suggestions %}?q=%s">
+            <input type="submit" value="Go">
 
             <h4>How to Use</h4>
             <p>Enter a plant name and we'll show the map where it's been seen
@@ -65,9 +76,9 @@
             <p>Rare and endangered plants will not be displayed.</p>
         
             <p class="full-link"><a href="#">View full page »</a></p>
-        </div>
+        </form>
 
-        {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="297px" width="479px" zoom="6" id="mini-sightings-map" %}
+        {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="297px" width="486px" zoom="6" id="mini-sightings-map" %}
     </div>
 </div>
 
