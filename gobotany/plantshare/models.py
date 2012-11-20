@@ -84,6 +84,8 @@ class UserProfile(models.Model):
         choices=SHARING_CHOICES, default=SHARING_CHOICES[0][0])
     location = models.ForeignKey(Location, null=True, blank=True)
 
+    avatar = models.ForeignKey('ScreenedImage', null=True, blank=True)
+
 
 class SharingGroup(models.Model):
     name = models.CharField(max_length=100)
