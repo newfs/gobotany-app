@@ -184,9 +184,9 @@ table { border-collapse: collapse; border-spacing: 0; }
 
 .jspVerticalBar .jspArrow:focus { outline: none; }
 
-.jspArrowUp { background: url(../images/icons/arrow-up.jpg) no-repeat 0 0; }
+.jspArrowUp { background: url(/static/images/icons/arrow-up.jpg) no-repeat 0 0; }
 
-.jspArrowDown { background: url(../images/icons/arrow-down.jpg) no-repeat left bottom; }
+.jspArrowDown { background: url(/static/images/icons/arrow-down.jpg) no-repeat left bottom; }
 
 .jspCorner { background: #eeeef4; float: left; height: 100%; }
 
@@ -374,7 +374,7 @@ header nav #search-suggest .menu span { font-weight: normal; }
 .content #sidebar .section.plant-map { background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat; padding: 0 25px 16px 16px; }
 .content #sidebar .section .left { float: left; }
 .content #sidebar .section p { margin: 0; }
-.content #sidebar a { display: inline-block; margin-left: 10px; }
+.content #sidebar a:not(.jspArrow) { display: inline-block; margin-left: 10px; }
 .content #sidebar a:hover { text-decoration: none; }
 .content #sidebar a.video { margin-left: 0; }
 .content #sidebar a.get-help-btn { background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 20px; text-indent: -9000px; width: 104px; }
@@ -763,7 +763,7 @@ body.skey.results p.list-all { clear: left; padding-top: 2em; }
 body.skey.results p.list-all a { color: #508e31; cursor: pointer; }
 body.skey.results #sidebar { background-color: #fcfdf5; min-height: 800px; padding: 0 0 16px 0; /* end .option-list */ }
 body.skey.results #sidebar.tinted { background: #fcfdf5; }
-body.skey.results #sidebar div.scroll { border-bottom: 1px solid #9cc86b; border-left: 1px solid #519136; border-top: 1px solid #519136; display: block; height: 335px; margin: 0 0 10px 0; overflow: auto; width: 227px; }
+body.skey.results #sidebar .scroll { border-bottom: 1px solid #9cc86b; border-left: 1px solid #519136; border-top: 1px solid #519136; display: block; height: 335px; margin: 0 0 10px 0; overflow: auto; width: 229px; }
 body.skey.results #sidebar .section.instructions { background: #9cc86b; color: #fff; padding: 16px; }
 body.skey.results #sidebar .section.instructions h5 { font-size: 14px; line-height: 120%; margin: 0; }
 body.skey.results #sidebar .section p.get-more { font-size: 11px; line-height: 16px; margin: 0 0 20px; text-align: center; }
@@ -776,7 +776,7 @@ body.skey.results #sidebar .section a.clear-all-btn { background: url(/static/im
 body.skey.results #sidebar .section a.clear-all-btn:hover { background-position: 0 -32px; cursor: pointer; }
 body.skey.results #sidebar .section a.clear-all-btn:active { background-position: 0 -64px; cursor: pointer; }
 body.skey.results #sidebar h6 { color: #807121; font-weight: bold; margin: 0 0 8px 0; }
-body.skey.results #sidebar .option-list li { background: #fff; border-top: 1px solid #c3d941; cursor: pointer; display: block; margin: 0; padding: 12px; }
+body.skey.results #sidebar .option-list li { background: #fff; border-top: 1px solid #c3d941; cursor: pointer; display: block; line-height: normal; margin: 0; padding: 12px; }
 body.skey.results #sidebar .option-list li.last { border-bottom: 1px solid #c3d941; }
 body.skey.results #sidebar .option-list li.answered { background: #ffd; }
 body.skey.results #sidebar .option-list li.active, body.skey.results #sidebar .option-list li:hover, body.skey.results #sidebar .option-list li.active span.value, body.skey.results #sidebar .option-list li.answered.active { background: #dce890; cursor: pointer; }
@@ -807,7 +807,7 @@ body.skey.results #results-tabs li:first-child a { margin-left: 10px; }
 body.skey.results #results-tabs li a.current, body.skey.results #results-tabs li a.current:hover { background: #fbfaf5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #f0f0c0)); background: -moz-linear-gradient(center top, white, #f0f0c0); border-bottom: 0; color: #1a2e11; cursor: default; padding: 5px 10px; }
 body.skey.results #notification-msg { background-color: #ff0; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; font-size: 1.2em; -moz-border-bottom-left-radius: 15px; -moz-border-bottom-right-radius: 15px; padding: 0.25em 0.75em; z-index: 200; }
 body.skey.results .working-area { background: #fff; border: 1px solid #c3d941; display: none; margin-left: -40px; padding: 10px 15px; position: absolute; width: 730px; z-index: 200; -moz-box-shadow: black 1px 1px 5px 0; -webkit-box-shadow: black 1px 1px 5px 0; -o-box-shadow: black 1px 1px 5px 0; box-shadow: black 1px 1px 5px 0; /* end .choices */ /* end ul */ /* Working Area slider styles */ /* end #slider */ }
-body.skey.results .working-area img.arrow { display: block; left: -15px; position: absolute; top: 18px; }
+body.skey.results .working-area img.arrow { display: block; left: -15px; position: absolute; top: 16px; }
 body.skey.results .working-area .choices { border-spacing: 6px 12px; display: table; }
 body.skey.results .working-area .choices .row { display: table-row; }
 body.skey.results .working-area .choices .row div { display: table-cell; margin: 0 0.5em 1em 0; min-height: 50px; }
@@ -864,7 +864,12 @@ body.skey.results img.char-value-larger { height: 160px !important; /* Consisten
   body.skey.groups-subgroups .list-item .details .section-title { font-size: 10px; }
   body.skey.groups-subgroups .not-my-plant { display: none; } }
 /* These styles apply to smartphones and tablets */
-@media only screen and (max-width: 1024px) { /* styles here */ }
+@media only screen and (max-width: 1024px) { body.skey.results { /* Style the Level 3 page's questions list scrollbar differently because a regular scrollbar is not the expected way to scroll there, and has problems besides (arrows too small, vertical  bar not draggable). Instead, just present the thin vertical bar as an indicator that the area is scrollable and to provide feedback while swiping to scroll. */ }
+  body.skey.results #sidebar .scroll .jspVerticalBar { border-left: 0; }
+  body.skey.results #sidebar .scroll .jspTrack, body.skey.results #sidebar .scroll .jspArrowUp, body.skey.results #sidebar .scroll .jspArrowDown { background: none; }
+  body.skey.results #sidebar .scroll .jspPane { width: 227px !important; }
+  body.skey.results ul.option-list li:hover { background: #fff; /* No hover color */ }
+  body.skey.results ul.option-list li.active:hover { background: #dce890; /* Except active-filter hover color */ } }
 /* End media queries styles for Simple and Full Keys */
 /* PlantShare */
 body.plantshare { /* end .info-section, .location-section */ }

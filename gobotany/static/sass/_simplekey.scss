@@ -415,7 +415,7 @@ body.skey {
             &.tinted {
                 background: #fcfdf5;
             }
-            div.scroll {
+            .scroll {
                 border-bottom: 1px solid #9cc86b;
                 border-left: 1px solid #519136;
                 border-top: 1px solid #519136;
@@ -423,7 +423,7 @@ body.skey {
                 height: 335px;
                 margin: 0 0 10px 0;
                 overflow: auto;
-                width: 227px;
+                width: 229px;
             }
             .section {
                 &.instructions {
@@ -491,6 +491,7 @@ body.skey {
                     border-top: 1px solid #c3d941;
                     cursor: pointer;
                     display: block;
+                    line-height: normal;
                     margin: 0;
                     padding: 12px;
                     &.last {
@@ -718,7 +719,7 @@ body.skey {
                 display: block;
                 left: -15px;
                 position: absolute;
-                top: 18px;
+                top: 16px;
             }
             .choices {
                 border-spacing: 6px 12px;
@@ -1030,7 +1031,32 @@ body.skey {
 }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) {
-    /* styles here */
+    body.skey {
+        &.results {
+            /* Style the Level 3 page's questions list scrollbar differently
+             * because a regular scrollbar is not the expected way to scroll
+             * there, and has problems besides (arrows too small, vertical 
+             * bar not draggable). Instead, just present the thin vertical
+             * bar as an indicator that the area is scrollable and to provide
+             * feedback while swiping to scroll. */
+            #sidebar .scroll .jspVerticalBar {
+                border-left: 0;
+            }
+            #sidebar .scroll .jspTrack, #sidebar .scroll .jspArrowUp,
+            #sidebar .scroll .jspArrowDown {
+                background: none;
+            }
+            #sidebar .scroll .jspPane {
+                width: 227px !important;
+            }
+            ul.option-list li:hover {
+                background: #fff;   /* No hover color */
+            }
+            ul.option-list li.active:hover {
+                background: #dce890;   /* Except active-filter hover color */
+            }
+        }
+    }
 }
 
 /* End media queries styles for Simple and Full Keys */
