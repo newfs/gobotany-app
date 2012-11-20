@@ -25,6 +25,21 @@
     {% include "_sighting_form.html" %}
 </form>
 
+<div class="modal-container">
+  <div class="image-modal">
+      <a href="#" class="close">close</a>
+      <img src="/static/images/icons/no-image.png" alt="photo image">
+      <h4>Upload Image</h4>
+      <form id="upload-photo-form" method="POST" 
+          action="{% url ps-ajax-image-upload %}">
+          {% csrf_token %}
+          {{ photo_image_form.image }}
+          <div style="display: none;">{{ photo_image_form.image_type }}</div>
+          <input type="submit" id="upload-photo-submit" class="save-btn">
+      </form>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block sidebar_content %}
