@@ -22,6 +22,7 @@ log.dkey
 # Data files
 110330_fone_test_05.xml
 gobotany-csv-exports-*.zip
+/csv/
 
 # Media directory created during API tests
 /gobotany/media/
