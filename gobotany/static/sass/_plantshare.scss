@@ -171,11 +171,11 @@ body.plantshare {
         }
     }
 
-    #sightings-locator {   /* full-size sightings locator */
+    #sightings-locator {
         h3 {
             font-size: 14px;
         }
-        #sightings-map {
+        #sightings-map {   /* map for full-size sightings locator only */
             clear: left;
             margin-top: 36px;
         }

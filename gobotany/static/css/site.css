@@ -468,9 +468,10 @@ footer .support { margin-right: 0; padding: 18px 0; }
 .errorlist li:before { content: "× "; font-size: 22px; font-weight: bold; margin: 0 0 20px; padding: 0; vertical-align: text-top; }
 
 /* Text input with suggestions */
-input.suggest + div { background: #fff; border: 1px solid #999; position: absolute; z-index: 100; }
-input.suggest + div li { list-style-type: none; margin: 0; padding: 2px; }
+input.suggest + div { background: #fff; border: 1px solid #999; font-weight: bold; position: absolute; z-index: 100; }
+input.suggest + div li { font-weight: bold; list-style-type: none; margin: 0; padding: 2px; }
 input.suggest + div li.selected { background-color: #666; color: #fff; }
+input.suggest + div li span { font-weight: normal; }
 
 /* Teaching page */
 body.teaching #main li { list-style-type: none; }
@@ -910,9 +911,9 @@ body.plantshare#log-in ul.errorlist { padding: 16px 0; }
 body.plantshare#log-in form.login { padding-left: 0; }
 body.plantshare#log-in form.login label { font-size: 12px; }
 body.plantshare#log-in form.login input { border-color: #c3d941; }
-body.plantshare #sightings-locator { /* full-size sightings locator */ /* end .mini */ }
+body.plantshare #sightings-locator { /* end .mini */ }
 body.plantshare #sightings-locator h3 { font-size: 14px; }
-body.plantshare #sightings-locator #sightings-map { clear: left; margin-top: 36px; }
+body.plantshare #sightings-locator #sightings-map { /* map for full-size sightings locator only */ clear: left; margin-top: 36px; }
 body.plantshare #sightings-locator input { border: 0 none; float: left; height: 22px; margin: 5px 0; padding: 0 2px 0 12px; }
 body.plantshare #sightings-locator input[type='text'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0px -334px; font-size: 11px; width: 160px; }
 body.plantshare #sightings-locator input[type='submit'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -483px -334px; font-size: 0; text-indent: -9999px; width: 30px; }

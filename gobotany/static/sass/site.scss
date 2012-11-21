@@ -923,12 +923,16 @@ input.suggest {
         position: absolute;
         z-index: 100;
         li {
+            font-weight: bold;
             list-style-type: none;
             margin: 0;
             padding: 2px;
             &.selected {
                 background-color: #666;
                 color: #fff;
+            }
+            span {
+                font-weight: normal;
             }
         }
     }
