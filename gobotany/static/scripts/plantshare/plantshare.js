@@ -13,10 +13,10 @@ define([
         mini_sightings_map.setup();
 
         $('#sightings-locator.mini form').submit(function (e) {
-            e.preventDefault();   // prevent form submit
-
             console.log('TODO: call the server for sightings data');
             mini_sightings_map.show_plant('Acer saccharum');
+
+            e.preventDefault();   // because using AJAX, prevent form submit
         });
 
     });

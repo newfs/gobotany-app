@@ -103,6 +103,7 @@
 
         <p>Some input boxes that have curved corners far to the
         left of their rectangular input area. For these, offer an option
+        (data-align-menu-inside-input="true")
         that aligns the left edge of the menu with the padded inside
         left of the rectangular input box.</p>
 
@@ -137,7 +138,8 @@
                 id="search-box"
                 placeholder="Search..."
                 class="suggest"
-                data-suggest-url="{% url site-search-suggestions %}?q=%s">
+                data-suggest-url="{% url site-search-suggestions %}?q=%s"
+                data-submit-on-select="true">
             <button type="submit">Search</button>
         </form>
 
@@ -149,7 +151,8 @@
                 id="search-box"
                 placeholder="Search..."
                 class="suggest"
-                data-suggest-url="{% url site-search-suggestions %}?q=%s">
+                data-suggest-url="{% url site-search-suggestions %}?q=%s"
+                data-submit-on-select="true">
             <button type="submit">Search</button>
         </form>
 
@@ -158,9 +161,10 @@
         <p>HTML5 datalists, upon selecting a value with
         the Enter key or with a mouse click or tap, put the value in the
         input box and do not submit the form, even if there is only one
-        field. This component will behave similarly, except that if there
-        is only one non-hidden form field in a form, the form will submit
-        automatically. This should help ease support for single-input-box
+        field. This component will behave similarly, except that if the
+        option to submit upon selection is set in the HTML,
+        (data-submit-on-select="true"), the form will submit
+        automatically. This is to support single-input-box
         forms like the one used for search, where such auto-submit behavior
         is desirable and expected.</p>
 

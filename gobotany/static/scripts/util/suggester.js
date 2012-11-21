@@ -20,6 +20,7 @@ define([
 
         this.$input_box = $(input_box);
         this.suggestions_url = this.$input_box.attr('data-suggest-url');
+        this.submit_on_select = this.$input_box.attr('data-submit-on-select');
         this.align_menu_inside_input =
             this.$input_box.attr('data-align-menu-inside-input');
         this.cached_suggestions = {};
@@ -287,12 +288,10 @@ define([
         this.$input_box.val(value);
         this.$menu.hide();
 
-        // If there is only one non-hidden form element in the form,
-        // submit the form. This is to support use for things like
-        // single search boxes that should submit right away.
-        var $non_hidden_form_elements = this.$form.find(
-            'input:not([type=hidden]), select, textarea');
-        if ($non_hidden_form_elements.length === 1) {
+        // If the option to submit the form upon item selection is set,
+        // submit the form. This is to support things like single search
+        // boxes that should submit right away.
+        if (this.submit_on_select === "true") {
             this.$form.submit();
         }
     };
