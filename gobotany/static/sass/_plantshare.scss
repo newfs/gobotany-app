@@ -175,10 +175,6 @@ body.plantshare {
         h3 {
             font-size: 14px;
         }
-        #sightings-map {   /* map for full-size sightings locator only */
-            clear: left;
-            margin-top: 36px;
-        }
         input {
             border: 0 none;
             float: left;
@@ -202,6 +198,10 @@ body.plantshare {
             & + div {
                 font-size: $mini-input-font-size;
             }
+        }
+        .map {
+            clear: left;
+            margin-top: 36px;
         }
         &.mini {
             margin-top: 20px;
@@ -235,10 +235,12 @@ body.plantshare {
                     }
                 }
                 .map {
+                    clear: none;
                     border-bottom: 0;
                     border-right: 0;
                     border-top: 0;
                     float: right;
+                    margin-top: 0;
                 }
             }
         } /* end .mini */
