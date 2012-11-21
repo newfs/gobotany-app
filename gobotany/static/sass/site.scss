@@ -917,10 +917,11 @@ footer {
 /* Text input with suggestions */
 
 input.suggest {
-    &+div {
+    & + div {
         background: #fff;
         border: 1px solid #999;
         position: absolute;
+        z-index: 100;
         li {
             list-style-type: none;
             margin: 0;
