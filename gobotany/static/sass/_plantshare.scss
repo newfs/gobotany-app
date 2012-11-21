@@ -169,12 +169,80 @@ body.plantshare {
             }
         }
     }
+    &#plantshare {
+        #mini-locator {
+            margin-top: 20px;
+            .box {
+                font-size: 11px;
+                height: 297px;
+                padding: 0 0 0 10px;
+                form {
+                    float: left;
+                    padding: 0;
+                    width: 200px;
+                    h3 {
+                        font-size: 14px;
+                        padding-top: 5px;
+                    }
+                    input {
+                        border: 0 none;
+                        float: left;
+                        height: 22px;
+                        margin: 5px 0;
+                        padding: 0 6px;
+                        &[type='text'] {
+                            background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -246px -31px;
+                            width: 156px;
+                        }
+                        &[type='submit'] {
+                            background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -414px -31px;
+                            font-size: 0;
+                            text-indent: -9999px;
+                            width: 26px;
+                        }
+                        &:focus {
+                            outline: 0 none;
+                        }
+                    }
+                    h4 {
+                        clear: left;
+                        font-family: $body-font;
+                        font-size: 12px;
+                        font-weight: bold;
+                        line-height: 14px;
+                        margin: 6px 0;
+                        padding-top: 8px;
+                    }
+                    p {
+                        line-height: 14px;
+                        margin: 0;
+                        padding: 0;
+                        &.full-link {
+                            margin-top: 10px;
+                        }
+                    }
+                }
+                .map {
+                    border-bottom: 0;
+                    border-right: 0;
+                    border-top: 0;
+                    float: right;
+                }
+            }
+        } /* end #mini-locator */
+    }
     &#new-sighting {
         h1 + div {
             background: #fff;
             border: 1px solid $border-green;
             margin-bottom: $section-padding;
             padding: 5px $section-padding;
+        }
+    }
+    &#sightings {
+        #main ul {
+            line-height: normal;
+            margin-bottom: 12px;
         }
     }
     &.sighting {
@@ -387,67 +455,6 @@ body.plantshare {
         }
         input[type='text'], input[type='password'] {
             width: 95%;
-        }
-    }
-
-    #sightings-locator {
-        margin-top: 20px;
-        .box {
-            font-size: 11px;
-            height: 297px;
-            padding: 0 0 0 10px;
-            form {
-                float: left;
-                padding: 0;
-                width: 200px;
-                h3 {
-                    font-size: 14px;
-                    padding-top: 5px;
-                }
-                input {
-                    border: 0 none;
-                    float: left;
-                    height: 22px;
-                    margin: 5px 0;
-                    padding: 0 6px;
-                    &[type='text'] {
-                        background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -246px -31px;
-                        width: 156px;
-                    }
-                    &[type='submit'] {
-                        background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -414px -31px;
-                        font-size: 0;
-                        text-indent: -9999px;
-                        width: 26px;
-                    }
-                    &:focus {
-                        outline: 0 none;
-                    }
-                }
-                h4 {
-                    clear: left;
-                    font-family: $body-font;
-                    font-size: 12px;
-                    font-weight: bold;
-                    line-height: 14px;
-                    margin: 6px 0;
-                    padding-top: 8px;
-                }
-                p {
-                    line-height: 14px;
-                    margin: 0;
-                    padding: 0;
-                    &.full-link {
-                        margin-top: 10px;
-                    }
-                }
-            }
-            .map {
-                border-bottom: 0;
-                border-right: 0;
-                border-top: 0;
-                float: right;
-            }
         }
     }
 

@@ -50,7 +50,7 @@
     {% endif %}
 {% endif %}
 
-<div id="sightings-locator">
+<div id="mini-locator">
     <h2>Sightings Locator</h2>
     <div class="box">
         <form>
@@ -75,7 +75,7 @@
             to.</p>
             <p>Rare and endangered plants will not be displayed.</p>
         
-            <p class="full-link"><a href="#">View full page »</a></p>
+            <p class="full-link"><a href="{% url ps-sightings %}">View full page »</a></p>
         </form>
 
         {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="297px" width="486px" zoom="6" id="mini-sightings-map" %}
