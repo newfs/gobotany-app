@@ -4,6 +4,7 @@ $form-field-padding: 5px;
 $form-field-width: 350px;
 $plantshare-main-column-width: 475px;
 $section-padding: 16px;
+$mini-input-font-size: 11px;
 
 @mixin form-field-base {
     border: 1px solid $border-green;
@@ -170,11 +171,11 @@ body.plantshare {
         }
     }
 
-    #sightings-locator {
+    #sightings-locator {   /* full-size sightings locator */
         h3 {
             font-size: 14px;
         }
-        #sightings-map {   /* for map on the full-size locator */
+        #sightings-map {
             clear: left;
             margin-top: 36px;
         }
@@ -183,32 +184,35 @@ body.plantshare {
             float: left;
             height: 22px;
             margin: 5px 0;
-            padding: 0 6px;
+            padding: 0 2px 0 12px;
             &[type='text'] {
-                background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -246px -31px;
-                font-size: 11px;
-                width: 156px;
+                background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -0px -334px;
+                font-size: $mini-input-font-size;
+                width: 160px;
             }
             &[type='submit'] {
-                background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -414px -31px;
+                background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -483px -334px;
                 font-size: 0;
                 text-indent: -9999px;
-                width: 26px;
+                width: 30px;
             }
             &:focus {
                 outline: 0 none;
+            }
+            & + div {
+                font-size: $mini-input-font-size;
             }
         }
         &.mini {
             margin-top: 20px;
             .box {
-                font-size: 11px;
+                font-size: $mini-input-font-size;
                 height: 297px;
                 padding: 0 0 0 10px;
                 form {
                     float: left;
                     padding: 0;
-                    width: 200px;
+                    width: 205px;
                     h3 {
                         padding-top: 5px;
                     }

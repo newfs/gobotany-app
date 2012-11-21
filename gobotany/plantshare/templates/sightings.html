@@ -32,7 +32,8 @@
         id="plant-name"
         placeholder="scientific or common name"
         class="suggest"
-        data-suggest-url="{% url site-plant-name-suggestions %}?q=%s">
+        data-suggest-url="{% url site-plant-name-suggestions %}?q=%s"
+        data-align-menu-inside-input="true">
     <input type="submit" value="Go">
 
     {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="524px" width="710px" zoom="6" id="sightings-map" %}

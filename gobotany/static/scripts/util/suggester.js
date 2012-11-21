@@ -20,6 +20,8 @@ define([
 
         this.$input_box = $(input_box);
         this.suggestions_url = this.$input_box.attr('data-suggest-url');
+        this.align_menu_inside_input =
+            this.$input_box.attr('data-align-menu-inside-input');
         this.cached_suggestions = {};
     };
 
@@ -37,7 +39,13 @@ define([
         this.$menu_list = this.$menu.children('ul').eq(0);
 
         // Set the width of the menu to match that of the box.
-        this.$menu.css('width', this.$input_box.outerWidth(true) - 2);
+        var menu_width = this.$input_box.outerWidth(true) - 2;
+        if (this.align_menu_inside_input === "true") {
+            // If the option to align the menu to the left edge of the
+            // padded input box is set, then make the menu narrower too.
+            menu_width -= parseInt(this.$input_box.css('padding-right'));
+        }
+        this.$menu.css('width', menu_width);
 
         // Position the menu under the box, and adjust the position when
         // the browser window is resized.
@@ -77,7 +85,15 @@ define([
     Suggester.prototype.set_menu_position = function () {
         // Position the menu under the box.
         var $input_box_offset = this.$input_box.offset();
-        this.$menu.css('left', $input_box_offset.left);
+        var input_box_left_padding = 0;
+        if (this.align_menu_inside_input === "true") {
+            // If the option to align the menu to the inside of a padded
+            // input box is set, adjust the left edge position.
+            input_box_left_padding +=
+                parseInt(this.$input_box.css('padding-left')) - 3;
+        }
+        this.$menu.css('left',
+                       $input_box_offset.left + input_box_left_padding);
         this.$menu.css('top',
                        $input_box_offset.top + this.$input_box.outerHeight());
     };

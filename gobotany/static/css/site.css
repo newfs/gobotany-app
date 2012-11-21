@@ -910,16 +910,17 @@ body.plantshare#log-in ul.errorlist { padding: 16px 0; }
 body.plantshare#log-in form.login { padding-left: 0; }
 body.plantshare#log-in form.login label { font-size: 12px; }
 body.plantshare#log-in form.login input { border-color: #c3d941; }
-body.plantshare #sightings-locator { /* end .mini */ }
+body.plantshare #sightings-locator { /* full-size sightings locator */ /* end .mini */ }
 body.plantshare #sightings-locator h3 { font-size: 14px; }
-body.plantshare #sightings-locator #sightings-map { /* for map on the full-size locator */ clear: left; margin-top: 36px; }
-body.plantshare #sightings-locator input { border: 0 none; float: left; height: 22px; margin: 5px 0; padding: 0 6px; }
-body.plantshare #sightings-locator input[type='text'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -246px -31px; font-size: 11px; width: 156px; }
-body.plantshare #sightings-locator input[type='submit'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -414px -31px; font-size: 0; text-indent: -9999px; width: 26px; }
+body.plantshare #sightings-locator #sightings-map { clear: left; margin-top: 36px; }
+body.plantshare #sightings-locator input { border: 0 none; float: left; height: 22px; margin: 5px 0; padding: 0 2px 0 12px; }
+body.plantshare #sightings-locator input[type='text'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0px -334px; font-size: 11px; width: 160px; }
+body.plantshare #sightings-locator input[type='submit'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -483px -334px; font-size: 0; text-indent: -9999px; width: 30px; }
 body.plantshare #sightings-locator input:focus { outline: 0 none; }
+body.plantshare #sightings-locator input + div { font-size: 11px; }
 body.plantshare #sightings-locator.mini { margin-top: 20px; }
 body.plantshare #sightings-locator.mini .box { font-size: 11px; height: 297px; padding: 0 0 0 10px; }
-body.plantshare #sightings-locator.mini .box form { float: left; padding: 0; width: 200px; }
+body.plantshare #sightings-locator.mini .box form { float: left; padding: 0; width: 205px; }
 body.plantshare #sightings-locator.mini .box form h3 { padding-top: 5px; }
 body.plantshare #sightings-locator.mini .box form h4 { clear: left; font-family: Verdana, Geneva, sans-serif; font-size: 12px; font-weight: bold; line-height: 14px; margin: 6px 0; padding-top: 8px; }
 body.plantshare #sightings-locator.mini .box form p { line-height: 14px; margin: 0; padding: 0; }

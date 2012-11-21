@@ -99,6 +99,37 @@
             </form>
         </div>
 
+        <h4>Variation with different alignment option</h4>
+
+        <p>Some input boxes that have curved corners far to the
+        left of their rectangular input area. For these, offer an option
+        that aligns the left edge of the menu with the padded inside
+        left of the rectangular input box.</p>
+
+
+        <div class="content">
+            <form action="/ps/sightings/" method="post">
+                {% csrf_token %}
+                <input type="text" autocomplete="off"
+                    name="identification"
+                    id="id_identification3"
+                    placeholder="scientific or common name"
+                    class="suggest"
+                    data-suggest-url="{% url site-plant-name-suggestions %}?q=%s"
+                    data-align-menu-inside-input="true"
+                    style="padding-left: 10px; padding-right: 10px;">
+                <input type="text" name="title" id="id_title"
+                    autocomplete="off"
+                    placeholder="title (datalist test)" list="titles">
+                <datalist id="titles">
+                    <option>Title1</option>
+                    <option>Title2</option>
+                    <option>Title3</option>
+                </datalist>
+                <button type="submit">Post Sighting</button>
+            </form>
+        </div>
+
         <h3>Go Botany Site Search</h3>
 
         <form action="/search/" method="get">
