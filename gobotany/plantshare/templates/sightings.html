@@ -12,7 +12,7 @@
 <h1>Sightings</h1>
 
 <h2>Latest</h2>
-<ul>
+<ul class="sightings-list">
 {% for sighting in sightings %}
     <li><a
         href="{% url ps-sighting sighting.id %}">{{ sighting.identification }}

@@ -468,7 +468,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
 .errorlist li:before { content: "× "; font-size: 22px; font-weight: bold; margin: 0 0 20px; padding: 0; vertical-align: text-top; }
 
 /* Text input with suggestions */
-input.suggest + div { background: #fff; border: 1px solid #999; font-weight: bold; position: absolute; z-index: 100; }
+input.suggest + div { background: #fff; border: 1px solid #999; position: absolute; z-index: 100; }
 input.suggest + div li { font-weight: bold; list-style-type: none; margin: 0; padding: 2px; }
 input.suggest + div li.selected { background-color: #666; color: #fff; }
 input.suggest + div li span { font-weight: normal; }
@@ -928,7 +928,7 @@ body.plantshare #sightings-locator.mini .box form p { line-height: 14px; margin:
 body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px; }
 body.plantshare #sightings-locator.mini .box .map { border-bottom: 0; border-right: 0; border-top: 0; float: right; }
 body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; }
-body.plantshare#sightings #main ul { line-height: normal; margin-bottom: 12px; }
+body.plantshare#sightings .sightings-list { line-height: normal; margin-bottom: 12px; }
 body.plantshare.sighting .map { float: right; }
 body.plantshare.sighting form label { text-transform: none; }
 body.plantshare.sighting form fieldset { border: 0; margin: 0 0 16px; padding: 0; width: 684px; }
