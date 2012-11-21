@@ -169,8 +169,33 @@ body.plantshare {
             }
         }
     }
-    &#plantshare {
-        #mini-locator {
+
+    #sightings-locator {
+        h3 {
+            font-size: 14px;
+        }
+        input {
+            border: 0 none;
+            float: left;
+            height: 22px;
+            margin: 5px 0;
+            padding: 0 6px;
+            &[type='text'] {
+                background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -246px -31px;
+                font-size: 11px;
+                width: 156px;
+            }
+            &[type='submit'] {
+                background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -414px -31px;
+                font-size: 0;
+                text-indent: -9999px;
+                width: 26px;
+            }
+            &:focus {
+                outline: 0 none;
+            }
+        }
+        &.mini {
             margin-top: 20px;
             .box {
                 font-size: 11px;
@@ -181,28 +206,7 @@ body.plantshare {
                     padding: 0;
                     width: 200px;
                     h3 {
-                        font-size: 14px;
                         padding-top: 5px;
-                    }
-                    input {
-                        border: 0 none;
-                        float: left;
-                        height: 22px;
-                        margin: 5px 0;
-                        padding: 0 6px;
-                        &[type='text'] {
-                            background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -246px -31px;
-                            width: 156px;
-                        }
-                        &[type='submit'] {
-                            background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -414px -31px;
-                            font-size: 0;
-                            text-indent: -9999px;
-                            width: 26px;
-                        }
-                        &:focus {
-                            outline: 0 none;
-                        }
                     }
                     h4 {
                         clear: left;
@@ -229,7 +233,10 @@ body.plantshare {
                     float: right;
                 }
             }
-        } /* end #mini-locator */
+        } /* end .mini */
+    } /* end #sightings-locator */
+
+    &#plantshare {
     }
     &#new-sighting {
         h1 + div {

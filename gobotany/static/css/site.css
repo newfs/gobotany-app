@@ -872,7 +872,7 @@ body.skey.results img.char-value-larger { height: 160px !important; /* Consisten
   body.skey.results ul.option-list li.active:hover { background: #dce890; /* Except active-filter hover color */ } }
 /* End media queries styles for Simple and Full Keys */
 /* PlantShare */
-body.plantshare { /* end .info-section, .location-section */ }
+body.plantshare { /* end #sightings-locator */ /* end .info-section, .location-section */ }
 body.plantshare .content li { list-style-type: none; }
 body.plantshare .content form p { margin: 0; }
 body.plantshare .content form label { display: block; margin-bottom: 4px; text-transform: uppercase; width: 350px; }
@@ -910,19 +910,20 @@ body.plantshare#log-in ul.errorlist { padding: 16px 0; }
 body.plantshare#log-in form.login { padding-left: 0; }
 body.plantshare#log-in form.login label { font-size: 12px; }
 body.plantshare#log-in form.login input { border-color: #c3d941; }
-body.plantshare#plantshare { /* end #mini-locator */ }
-body.plantshare#plantshare #mini-locator { margin-top: 20px; }
-body.plantshare#plantshare #mini-locator .box { font-size: 11px; height: 297px; padding: 0 0 0 10px; }
-body.plantshare#plantshare #mini-locator .box form { float: left; padding: 0; width: 200px; }
-body.plantshare#plantshare #mini-locator .box form h3 { font-size: 14px; padding-top: 5px; }
-body.plantshare#plantshare #mini-locator .box form input { border: 0 none; float: left; height: 22px; margin: 5px 0; padding: 0 6px; }
-body.plantshare#plantshare #mini-locator .box form input[type='text'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -246px -31px; width: 156px; }
-body.plantshare#plantshare #mini-locator .box form input[type='submit'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -414px -31px; font-size: 0; text-indent: -9999px; width: 26px; }
-body.plantshare#plantshare #mini-locator .box form input:focus { outline: 0 none; }
-body.plantshare#plantshare #mini-locator .box form h4 { clear: left; font-family: Verdana, Geneva, sans-serif; font-size: 12px; font-weight: bold; line-height: 14px; margin: 6px 0; padding-top: 8px; }
-body.plantshare#plantshare #mini-locator .box form p { line-height: 14px; margin: 0; padding: 0; }
-body.plantshare#plantshare #mini-locator .box form p.full-link { margin-top: 10px; }
-body.plantshare#plantshare #mini-locator .box .map { border-bottom: 0; border-right: 0; border-top: 0; float: right; }
+body.plantshare #sightings-locator { /* end .mini */ }
+body.plantshare #sightings-locator h3 { font-size: 14px; }
+body.plantshare #sightings-locator input { border: 0 none; float: left; height: 22px; margin: 5px 0; padding: 0 6px; }
+body.plantshare #sightings-locator input[type='text'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -246px -31px; font-size: 11px; width: 156px; }
+body.plantshare #sightings-locator input[type='submit'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -414px -31px; font-size: 0; text-indent: -9999px; width: 26px; }
+body.plantshare #sightings-locator input:focus { outline: 0 none; }
+body.plantshare #sightings-locator.mini { margin-top: 20px; }
+body.plantshare #sightings-locator.mini .box { font-size: 11px; height: 297px; padding: 0 0 0 10px; }
+body.plantshare #sightings-locator.mini .box form { float: left; padding: 0; width: 200px; }
+body.plantshare #sightings-locator.mini .box form h3 { padding-top: 5px; }
+body.plantshare #sightings-locator.mini .box form h4 { clear: left; font-family: Verdana, Geneva, sans-serif; font-size: 12px; font-weight: bold; line-height: 14px; margin: 6px 0; padding-top: 8px; }
+body.plantshare #sightings-locator.mini .box form p { line-height: 14px; margin: 0; padding: 0; }
+body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px; }
+body.plantshare #sightings-locator.mini .box .map { border-bottom: 0; border-right: 0; border-top: 0; float: right; }
 body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; }
 body.plantshare#sightings #main ul { line-height: normal; margin-bottom: 12px; }
 body.plantshare.sighting .map { float: right; }
