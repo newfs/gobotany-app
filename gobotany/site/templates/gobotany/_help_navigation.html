@@ -1,4 +1,7 @@
     <div class="section">
+        <h4>Help</h4>
+    </div>
+    <div class="section">
         {% url site-about as u %}
         <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>About Go
                 Botany</a></h4>

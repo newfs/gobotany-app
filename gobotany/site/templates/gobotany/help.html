@@ -1,0 +1,48 @@
+{% extends "gobotany/_page_full_sidebar.html" %}
+
+{% block title %}Help{% endblock %}
+
+{% block js_require %}
+    require(['site/about']);
+{% endblock %}
+
+{% block body_attributes %}id="help" class="about"{% endblock %}
+
+{% block main_content %}
+    <h1>Help</h1>
+
+    <p>Here is an overview of help resources for the plant
+    identification keys and other sections of the Go Botany site.</p>
+
+    <h2>For the Simple Key</h2>
+
+    <ul>
+        <li>Getting Started with the Simple Key</li>
+        <li>Video Help Topics</li>
+        <li>Advanced Map to Groups</li>
+    </ul>
+
+    <h2>For the Full Key</h2>
+    
+    <p>Because the Full Key works like the Simple Key only with
+    more plants, please see the Simple Key help above.</p>
+		
+    <h2>For the Dichotomous Key</h2>
+	
+    <p>Help will be posted soon.</p>
+		
+    <h2>For PlantShare</h2>
+    
+    <p>Help will be posted soon.</p>
+
+    <h2>Overall</h2>
+	
+    <p>You may find the <a href="{% url site-glossary 'a' %}">Glossary</a> of
+    botanical terms with images helpful.</p>
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "gobotany/_help_navigation.html" %}
+{% endblock %}
+
