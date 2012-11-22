@@ -13,13 +13,13 @@
                 Topics</a></h4>
     </div>
     <div class="section">
-        {% url site-glossary-main as u %}
-        <h4><a {% if not u in request.path %}href="{{ u }}"{% endif %}>Glossary</a></h4>
-    </div>
-    <div class="section">
         {% url site-advanced-map as u %}
         <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Advanced Map
                 to Groups</a></h4>
+    </div>
+    <div class="section">
+        {% url site-glossary-main as u %}
+        <h4><a {% if not u in request.path %}href="{{ u }}"{% endif %}>Glossary</a></h4>
     </div>
     <div class="section">
         {% url site-about as u %}
