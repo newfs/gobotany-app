@@ -16,7 +16,8 @@ urlpatterns = patterns(
     # Teaching page
     url('^teaching/$', views.teaching_view, name='site-teaching'),
 
-    # About section
+    # Help section
+    url(r'^help/$', views.help_view, name='site-help'),
     url(r'^about/$', views.about_view, name='site-about'),
     url(r'^start/$', views.getting_started_view, name='site-getting-started'),
     url(r'^map/$', views.advanced_map_view, name='site-advanced-map'),

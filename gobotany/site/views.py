@@ -64,7 +64,11 @@ def teaching_view(request):
     return render_to_response('gobotany/teaching.html', {
             }, context_instance=RequestContext(request))
 
-# About section
+# Help section
+
+def help_view(request):
+    return render_to_response('gobotany/help.html', {
+           }, context_instance=RequestContext(request))
 
 def about_view(request):
     return render_to_response('gobotany/about.html', {
