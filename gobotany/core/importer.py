@@ -33,7 +33,7 @@ from gobotany.simplekey.models import (GroupsListPage, PlainPage,
                                        SubgroupResultsPage,
                                        SubgroupsListPage)
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
-from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
+from gobotany.site.models import SearchSuggestion
 
 DEBUG=False
 log = logging.getLogger('gobotany.import')
@@ -696,6 +696,7 @@ class Importer(object):
         names.update(db.map('core_commonname', 'common_name'))
         names.update(db.map('core_synonym', 'scientific_name'))
 
+        # Populate records for model PlantNameSuggestion
         table = db.table('site_plantnamesuggestion')
         for name in names:
             table.get(name=name)
@@ -1910,6 +1911,7 @@ class Importer(object):
         terms.update(db.map('core_glossaryterm', 'term'))
         terms.update(db.map('core_character', 'friendly_name'))
 
+        # Populate records for model SearchSuggestion
         table = db.table('site_searchsuggestion')
         for term in terms:
             term = term.lower()
