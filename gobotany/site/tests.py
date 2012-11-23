@@ -333,7 +333,7 @@ class GlossaryTests(FunctionalCase):
         self.assertTrue(e.get('href').endswith('/glossary/g/'))
 
 
-class TeachingTestCase(FunctionalCase):
+class TeachingTests(FunctionalCase):
     TEACHING_URL_PATH = '/teaching/'
 
     def _h2_headings(self):
@@ -367,7 +367,7 @@ class TeachingTestCase(FunctionalCase):
 
 # Tests for PlantShare plant name picker API call
 
-class PlantNameSuggestionsTestCase(TestCase):
+class PlantNameSuggestionsTests(TestCase):
     MAX_NAMES = 20
 
     def setUp(self):
@@ -411,21 +411,21 @@ class PlantNameSuggestionsTestCase(TestCase):
         self.assertEqual(names, EXPECTED_NAMES)
 
 
-class RobotsTestCase(TestCase):
+class RobotsTests(TestCase):
 
     def test_robots_returns_ok(self):
         response = self.client.get('/robots.txt')
         self.assertEqual(200, response.status_code)
 
 
-class SitemapTestCase(TestCase):
+class SitemapTests(TestCase):
 
     def test_sitemap_returns_ok(self):
         response = self.client.get('/sitemap.txt')
         self.assertEqual(200, response.status_code)
 
 
-class SpeciesListTestCase(TestCase):
+class SpeciesListTests(TestCase):
 
     def test_species_list_returns_ok(self):
         response = self.client.get('/list/')
