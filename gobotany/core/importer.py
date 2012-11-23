@@ -1748,6 +1748,12 @@ class Importer(object):
         return plain_page
 
 
+    def _create_help_page(self):
+        self._create_plain_page('site-help',
+                                'Help',
+                                'site/templates/gobotany/help.html')
+
+
     def _create_about_gobotany_page(self):
         self._create_plain_page('site-about',
                                 'About Go Botany',
@@ -1824,11 +1830,12 @@ class Importer(object):
 
 
     def import_plain_pages(self):
-        """Create various plain pages in the database"""
-        log.info('Setting up plain pages (about, glossary, etc.)')
+        """Create various plain pages in the database for search"""
+        log.info('Setting up plain pages (help, about, glossary, etc.)')
 
         # Create page model records to be used for search engine indexing
         # and ideally also by the page templates.
+        self._create_help_page()
         self._create_about_gobotany_page()
         self._create_getting_started_page()
         self._create_advanced_map_page()
