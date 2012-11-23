@@ -293,7 +293,7 @@ class NavigationTests(FunctionalCase):
 
 class GlossaryTests(FunctionalCase):
 
-    def test_start_links_to_glossary(self):
+    def test_getting_started_has_link_to_glossary(self):
         self.get('/start/')
         e = self.link_saying('Glossary')
         self.assertTrue(e.get('href').endswith('/glossary/a/'))
@@ -364,6 +364,129 @@ class TeachingTests(FunctionalCase):
     def test_teaching_page_has_teaching_tools_section(self):
         self.get(self.TEACHING_URL_PATH)
         self.assertTrue('Teaching Tools' in self._h2_headings())
+
+
+class HelpTests(FunctionalCase):
+
+    PATHS = {
+        'HELP': '/help/',
+        'START': '/start/',
+        'VIDEO': '/video/',
+        'MAP': '/map/',
+        'GLOSSARY': '/glossary/',
+        'ABOUT': '/about/',
+        'CONTRIBUTORS': '/contributors/'
+    }
+
+    # Help page
+
+    def test_help_page_returns_ok(self):
+        client = Client()
+        self.assertEqual(client.get(self.PATHS['HELP']).status_code, 200)
+
+    def test_help_page_title(self):
+        self.get(self.PATHS['HELP'])
+        self.assertEqual(self.css1('title').text, 'Help: Go Botany')
+
+    def test_help_page_main_heading(self):
+        self.get(self.PATHS['HELP'])
+        self.assertEqual(self.css1('h1').text, 'Help')
+
+    # Getting Started with the Simple Key page
+
+    def test_getting_started_simple_key_page_returns_ok(self):
+        client = Client()
+        self.assertEqual(client.get(self.PATHS['START']).status_code, 200)
+
+    def test_getting_started_simple_key_page_title(self):
+        self.get(self.PATHS['START'])
+        self.assertEqual(self.css1('title').text,
+            'Getting Started with the Simple Key: Help: Go Botany')
+
+    def test_getting_started_simple_key_page_main_heading(self):
+        self.get(self.PATHS['START'])
+        self.assertEqual(self.css1('h1').text,
+                         'Getting Started with the Simple Key')
+
+    # Video Help Topics page
+
+    def test_video_help_topics_page_returns_ok(self):
+        client = Client()
+        self.assertEqual(client.get(self.PATHS['VIDEO']).status_code, 200)
+
+    def test_video_help_topics_page_title(self):
+        self.get(self.PATHS['VIDEO'])
+        self.assertEqual(self.css1('title').text,
+                         'Video Help Topics: Help: Go Botany')
+
+    def test_video_help_topics_page_main_heading(self):
+        self.get(self.PATHS['VIDEO'])
+        self.assertEqual(self.css1('h1').text, 'Video Help Topics')
+
+    # Advanced Map to Groups page
+
+    def test_advanced_map_to_groups_page_returns_ok(self):
+        client = Client()
+        self.assertEqual(client.get(self.PATHS['MAP']).status_code, 200)
+
+    def test_advanced_map_to_groups_page_title(self):
+        self.get(self.PATHS['MAP'])
+        self.assertEqual(self.css1('title').text,
+                         'Advanced Map to Groups: Help: Go Botany')
+
+    def test_advanced_map_to_groups_page_main_heading(self):
+        self.get(self.PATHS['MAP'])
+        self.assertEqual(self.css1('h1').text, 'Advanced Map to Groups')
+
+    # Glossary first ("A") page. More glossary tests in GlossaryTests class
+
+    def test_glossary_redirects_to_first_page(self):
+        glossary_path =  self.PATHS['GLOSSARY']
+        client = Client()
+        response = client.get(glossary_path)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response['Location'].endswith(glossary_path + 'a/'))
+
+    def test_glossary_first_page_title(self):
+        self.get(self.PATHS['GLOSSARY'])
+        self.assertEqual(self.css1('title').text,
+                         'Glossary: A: Help: Go Botany')
+
+    def test_glossary_first_page_main_heading(self):
+        self.get(self.PATHS['GLOSSARY'])
+        self.assertEqual(self.css1('h1').text, 'Glossary: A')
+
+    # About Go Botany page
+
+    def test_about_go_botany_page_returns_ok(self):
+        client = Client()
+        self.assertEqual(client.get(self.PATHS['ABOUT']).status_code, 200)
+
+    def test_about_go_botany_page_title(self):
+        self.get(self.PATHS['ABOUT'])
+        self.assertEqual(self.css1('title').text,
+                         'About Go Botany: Help: Go Botany')
+
+    def test_about_go_botany_page_main_heading(self):
+        self.get(self.PATHS['ABOUT'])
+        self.assertEqual(self.css1('h1').text, 'About Go Botany')
+
+    # Contributors page
+
+    def test_contributors_page_returns_ok(self):
+        client = Client()
+        self.assertEqual(client.get(self.PATHS['CONTRIBUTORS']).status_code,
+                         200)
+
+    def test_contributors_page_title(self):
+        self.get(self.PATHS['CONTRIBUTORS'])
+        self.assertEqual(self.css1('title').text,
+                         'Contributors: Help: Go Botany')
+
+    def test_about_go_botany_page_main_heading(self):
+        self.get(self.PATHS['CONTRIBUTORS'])
+        self.assertEqual(self.css1('h1').text, 'Contributors')
+
 
 # Tests for PlantShare plant name picker API call
 
