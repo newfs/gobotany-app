@@ -325,11 +325,11 @@ body.plantshare nav li.plantshare { background: url(/static/images/layout/active
 body.full nav li.full { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 body.dkey nav li.dkey { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 body.teaching nav li.teaching { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
-body.about nav li.about { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
+body.help nav li.help { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 
 /* Section navigation (sidebar, only in some sections) */
 body { /* Place "you are here" marker next to a non-linked item. This is the top level of each sub-section. */ /* Handle pages beneath subsections. */ }
-body.about #sidebar h4 a:not([href])::before, body.plantshare #sidebar h4 a:not([href])::before { color: #000; content: "\25b8"; margin-left: -15px; padding-right: 7px; }
+body.help #sidebar h4 a:not([href])::before, body.plantshare #sidebar h4 a:not([href])::before { color: #000; content: "\25b8"; margin-left: -15px; padding-right: 7px; }
 body.plantshare#sighting #sidebar .sightings a::before { color: #000; content: "\25b8"; margin-left: -15px; padding-right: 7px; }
 
 /* Header */
@@ -344,7 +344,7 @@ header nav { background: url(/static/images/layout/nav-app-green.png) no-repeat;
 header nav a { color: #fff; display: block; height: 35px; padding: 5px 8px 0; }
 header nav > a { display: none; /* Omit the 'sections' link by default */ }
 header nav ul { clear: both; }
-header nav li { display: block; float: left; font-size: 14px; line-height: normal; margin: 0 10px 0 0; padding: 0; }
+header nav li { display: block; float: left; font-size: 14px; line-height: normal; margin: 0 12px 0 0; padding: 0; }
 header nav li a:hover { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 header nav #search { background: white url(/static/images/layout/search-left.png) left center no-repeat; float: right; height: 20px; margin: 4px 4px 0 0; padding: 0 0 0 11px; }
 header nav #search form { display: block; margin: 0; padding: 0; width: 262px; }
@@ -1089,10 +1089,11 @@ body.search-results .search-navigation a { text-decoration: underline; }
 @media only screen and (max-width: 600px) { body.search-results .search-navigation { font-size: 18px; line-height: 200%; text-align: center; } }
 /* These styles apply to smartphones and tablets */
 /* End media queries styles for Search results */
-/* About */
+/* Help */
 #help #main ul { padding: 0 0 0 16px; }
 #help #main ul li { margin: 0 0 5px 0; }
 
+/* About */
 #about #main img { float: right; margin: 5px 0 20px 20px; }
 #about #main img .bookcover { margin-right: 89px; }
 #about #main ul { margin: 0 5px 0 18px; }
@@ -1240,7 +1241,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
 @media only screen and (max-width: 1024px) { .legal #main ol.terms { font-size: 18px; padding-left: 32px; } }
 /* End media queries styles for the legal notification pages */
 /* Finally, include global media queries for smartphones and tablets. These should be last. */
-/* Begin global media queries styles.  So far there are three sections for smartphones (two fixed-width layouts to cover portrait and landscape orientations, with a section common to both orientations) and some additional styles for tablets. Using fixed-width layouts allows some pages to have a wider central content area for now. Various SASS "partials" (_home.scss, _about.scss, etc.) have their own media queries arranged like the ones below. Think of those as modular extensions to these. */
+/* Begin global media queries styles.  So far there are three sections for smartphones (two fixed-width layouts to cover portrait and landscape orientations, with a section common to both orientations) and some additional styles for tablets. Using fixed-width layouts allows some pages to have a wider central content area for now. Various SASS "partials" (_home.scss, _help.scss, etc.) have their own media queries arranged like the ones below. Think of those as modular extensions to these. */
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { body { padding-top: 110px; }
   header nav > a { width: 20px; }
@@ -1265,7 +1266,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
   body.full footer .navigation ul.sections li.full a { background-color: #85c446; }
   body.dkey footer .navigation ul.sections li.dkey a { background-color: #85c446; }
   body.teaching footer .navigation ul.sections li.teaching a { background-color: #85c446; }
-  body.about footer .navigation ul.sections li.about a { background-color: #85c446; }
+  body.help footer .navigation ul.sections li.help a { background-color: #85c446; }
   h1 { font-size: 24px; }
   h2 { font-size: 18px; }
   h3 { font-size: 16px; }

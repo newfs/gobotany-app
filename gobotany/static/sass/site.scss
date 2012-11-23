@@ -272,8 +272,8 @@ body {
             @include highlight-global-nav;
         }
     }
-    &.about {
-        nav li.about {
+    &.help {
+        nav li.help {
             @include highlight-global-nav;
         }
     }
@@ -283,7 +283,7 @@ body {
 body {
     /* Place "you are here" marker next to a non-linked item. This is
      * the top level of each sub-section. */
-    &.about, &.plantshare {
+    &.help, &.plantshare {
         #sidebar h4 a:not([href])::before {
             @include highlight-section-nav;
         }
@@ -348,7 +348,7 @@ header {
             float: left;
             font-size: $nav-font-size;
             line-height: normal;
-            margin: 0 10px 0 0;
+            margin: 0 12px 0 0;
             padding: 0;
             a:hover {
                 @include highlight-global-nav;
@@ -1017,7 +1017,7 @@ body.teaching #main li {
 @import "plantshare";
 @import "dkey";
 @import "search";
-@import "about";
+@import "help";
 @import "legal";
 
 /* Finally, include global media queries for smartphones and tablets. These

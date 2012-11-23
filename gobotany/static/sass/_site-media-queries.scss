@@ -5,7 +5,7 @@
  * both orientations) and some additional styles for tablets. Using
  * fixed-width layouts allows some pages to have a wider central content
  * area for now.
- * Various SASS "partials" (_home.scss, _about.scss, etc.) have their
+ * Various SASS "partials" (_home.scss, _help.scss, etc.) have their
  * own media queries arranged like the ones below. Think of those as
  * modular extensions to these. */
 
@@ -102,8 +102,8 @@
                 background-color: $smallscreen-current-section-color;
             }
         }
-        &.about {
-            footer .navigation ul.sections li.about a {
+        &.help {
+            footer .navigation ul.sections li.help a {
                 background-color: $smallscreen-current-section-color;
             }
         }
