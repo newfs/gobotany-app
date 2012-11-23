@@ -288,9 +288,16 @@ body {
             @include highlight-section-nav;
         }
     }
-    /* Handle pages beneath subsections. */
+    /* Handle pages beneath subsections so they will have a "you are
+     * here" marker. Each of these must be set up individually where
+     * needed. */
+    &.help {
+        &#glossary #sidebar .glossary a::before {
+            @include highlight-section-nav;
+        }
+    }
     &.plantshare {
-        &#sighting #sidebar .sightings a::before{
+        &#sighting #sidebar .sightings a::before {
             @include highlight-section-nav;
         }
     }

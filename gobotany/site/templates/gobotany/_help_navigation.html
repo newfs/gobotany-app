@@ -1,32 +1,22 @@
-    <div class="section">
-        {% url site-help as u %}
-        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Help</a></h4>
+ {% load gobotany_tags %}
+    <div class="section help">
+        <h4>{% nav_item 'Help' site-help %}</h4>
     </div>
-    <div class="section">
-        {% url site-getting-started as u %}
-        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Getting
-                Started with the Simple Key</a></h4>
+    <div class="section getting-started">
+        <h4>{% nav_item 'Getting Started with the Simple Key' site-getting-started %}</h4>
     </div>
-    <div class="section">
-        {% url site-video as u %}
-        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Video Help
-                Topics</a></h4>
+    <div class="section video">
+        <h4>{% nav_item 'Video Help Topics' site-video %}</h4>
     </div>
-    <div class="section">
-        {% url site-advanced-map as u %}
-        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Advanced Map
-                to Groups</a></h4>
+    <div class="section advanced-map">
+        <h4>{% nav_item 'Advanced Map to Groups' site-advanced-map %}</h4>
     </div>
-    <div class="section">
-        {% url site-glossary-main as u %}
-        <h4><a {% if not u in request.path %}href="{{ u }}"{% endif %}>Glossary</a></h4>
+    <div class="section glossary">
+        <h4>{% nav_item 'Glossary' site-glossary 'a' %}</h4>
     </div>
-    <div class="section">
-        {% url site-about as u %}
-        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>About Go
-                Botany</a></h4>
+    <div class="section about">
+        <h4>{% nav_item 'About Go Botany' site-about %}</h4>
     </div>
-    <div class="section">
-        {% url site-contributors as u %}
-        <h4><a {% ifnotequal request.path u %}href="{{ u }}"{% endifnotequal %}>Contributors</a></h4>
+    <div class="section contributors">
+        <h4>{% nav_item 'Contributors' site-contributors %}</h4>
     </div>
