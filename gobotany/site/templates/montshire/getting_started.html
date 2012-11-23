@@ -1,17 +1,14 @@
-{% extends "gobotany/_base.html" %}
+{% extends "gobotany/_page_full_sidebar.html" %}
 
-{% block title %}Getting Started with the Simple Key at Montshire{% endblock %}
+{% block title %}Getting Started with the Simple Key at Montshire: Help{% endblock %}
 
 {% block js_require %}
-    require(['site/about']);
+    require(['site/help']);
 {% endblock %}
 
-{% block body_attributes %}id="getting-started" class="app getting-started"{% endblock %}
+{% block body_attributes %}id="getting-started" class="help"{% endblock %}
 
-{% block body_content %}
-<div class="content">
-    <div class="container">
-        <div id="main"> 
+{% block main_content %}
             <h1>Getting Started with the Simple Key at Montshire</h1>
 
             <div class="first question">
@@ -158,14 +155,10 @@
 
             <a href="{% url level1 'simple' %}"
                 class="onward-btn">Onward to the Simple Key</a>
-        </div>
-
-        {% include "gobotany/_about_navigation.html" %}
-    </div>
-</div>
 {% endblock %}
 
-{% block more_sidebar_content %}
+{% block sidebar_content %}
+    {% include "gobotany/_help_navigation.html" %}
     <div class="section separate">
         <h4>Watch Video:</h4>
         <div class="video-topic">
