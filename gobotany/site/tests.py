@@ -78,71 +78,85 @@ class HomeTests(FunctionalCase):
 
 class NavigationTests(FunctionalCase):
 
-    def _get_anchor(self, path, label, parent_css_selector):
-        self.get(path)
-        e = self.css1(parent_css_selector)
-        a = self.link_saying(label, e)
+    def _get_anchor(self, on_page='', anchor_label='', within=''):
+        self.get(on_page)
+        e = self.css1(within)
+        a = self.link_saying(anchor_label, e)
         return a
 
     # Header navigation items: linked, unlinked
 
     def test_header_home_item_is_linked(self):
-        a = self._get_anchor('/about/', 'Home', 'header')
+        a = self._get_anchor(on_page='/help/', anchor_label='Home',
+                             within='header')
         self.assertTrue(a.get('href'))
 
     def test_header_home_item_is_unlinked(self):
-        a = self._get_anchor('/', 'Home', 'header')
+        a = self._get_anchor(on_page='/', anchor_label='Home',
+                             within='header')
         self.assertFalse(a.get('href'))
 
     def test_header_simple_key_item_is_linked(self):
-        a = self._get_anchor('/about/', 'Simple Key', 'header')
+        a = self._get_anchor(on_page='/help/', anchor_label='Simple Key',
+                             within='header')
         self.assertTrue(a.get('href'))
 
     def test_header_simple_key_item_is_unlinked(self):
-        a = self._get_anchor('/simple/', 'Simple Key', 'header')
+        a = self._get_anchor(on_page='/simple/', anchor_label='Simple Key',
+                             within='header')
         self.assertFalse(a.get('href'))
 
     def test_header_plantshare_item_is_linked(self):
-        a = self._get_anchor('/about/', 'PlantShare', 'header')
+        a = self._get_anchor(on_page='/help/', anchor_label='PlantShare',
+                             within='header')
         self.assertTrue(a.get('href'))
 
     @unittest.skip('Skip until release, because tests unaware of DEBUG')
     def test_header_plantshare_item_is_unlinked(self):
-        a = self._get_anchor('/ps/', 'PlantShare', 'header')
+        a = self._get_anchor(on_page='/plantshare/',
+                             anchok_label='PlantShare', within='header')
         self.assertFalse(a.get('href'))
 
     def test_header_full_key_item_is_linked(self):
-        a = self._get_anchor('/about/', 'Full Key', 'header')
+        a = self._get_anchor(on_page='/help/', anchor_label='Full Key',
+                             within='header')
         self.assertTrue(a.get('href'))
 
     @unittest.skip('Skip until release, because tests unaware of DEBUG')
     def test_header_full_key_item_is_unlinked(self):
-        a = self._get_anchor('/full/', 'Full Key', 'header')
+        a = self._get_anchor(on_page='/full/', anchor_label='Full Key',
+                             within='header')
         self.assertFalse(a.get('href'))
 
     def test_header_dichotomous_key_item_is_linked(self):
-        a = self._get_anchor('/about/', 'Dichotomous Key', 'header')
+        a = self._get_anchor(on_page='/help/', anchor_label='Dichotomous Key',
+                             within='header')
         self.assertTrue(a.get('href'))
 
     @unittest.skip('Skip until release, because tests unaware of DEBUG')
     def test_header_dichotomous_key_item_is_unlinked(self):
-        a = self._get_anchor('/simple/', 'Dichotomous Key', 'header')
+        a = self._get_anchor(on_page='/simple/',
+                             anchor_label='Dichotomous Key', within='header')
         self.assertFalse(a.get('href'))
 
     def test_header_teaching_item_is_linked(self):
-        a = self._get_anchor('/about/', 'Teaching', 'header')
+        a = self._get_anchor(on_page='/help/', anchor_label='Teaching',
+                             within='header')
         self.assertTrue(a.get('href'))
 
     def test_header_teaching_item_is_unlinked(self):
-        a = self._get_anchor('/teaching/', 'Teaching', 'header')
+        a = self._get_anchor(on_page='/teaching/', anchor_label='Teaching',
+                             within='header')
         self.assertFalse(a.get('href'))
 
-    def test_header_about_item_is_linked(self):
-        a = self._get_anchor('/', 'About', 'header')
+    def test_header_help_item_is_linked(self):
+        a = self._get_anchor(on_page='/', anchor_label='Help',
+                             within='header')
         self.assertTrue(a.get('href'))
 
-    def test_header_about_item_is_unlinked(self):
-        a = self._get_anchor('/about/', 'About', 'header')
+    def test_header_help_item_is_unlinked(self):
+        a = self._get_anchor(on_page='/help/', anchor_label='Help',
+                             within='header')
         self.assertFalse(a.get('href'))
 
     # Main headings of top pages in each section and a few within
@@ -177,85 +191,103 @@ class NavigationTests(FunctionalCase):
         self.get('/teaching/')
         self.assertEqual(self.css1('h1').text, 'Teaching')
 
-    def test_main_heading_about(self):
-        self.get('/about/')
-        self.assertEqual(self.css1('h1').text, 'About Go Botany')
+    def test_main_heading_help(self):
+        self.get('/help/')
+        self.assertEqual(self.css1('h1').text, 'Help')
 
     # Footer navigation items: linked, unlinked
 
     def test_footer_home_item_is_linked(self):
-        a = self._get_anchor('/about/', 'Home', 'footer')
+        a = self._get_anchor(on_page='/help/', anchor_label='Home',
+                             within='footer')
         self.assertTrue(a.get('href'))
 
     def test_footer_home_item_is_unlinked(self):
-        a = self._get_anchor('/', 'Home', 'footer')
+        a = self._get_anchor(on_page='/', anchor_label='Home',
+                             within='footer')
         self.assertFalse(a.get('href'))
 
     def test_footer_simple_key_item_is_linked(self):
-        a = self._get_anchor('/about/', 'Simple Key', 'footer')
+        a = self._get_anchor(on_page='/help/', anchor_label='Simple Key',
+                             within='footer')
         self.assertTrue(a.get('href'))
 
     def test_footer_simple_key_item_is_unlinked(self):
-        a = self._get_anchor('/simple/', 'Simple Key', 'footer')
+        a = self._get_anchor(on_page='/simple/', anchor_label='Simple Key',
+                             within='footer')
         self.assertFalse(a.get('href'))
 
     def test_footer_plantshare_item_is_linked(self):
-        a = self._get_anchor('/about/', 'PlantShare', 'footer')
+        a = self._get_anchor(on_page='/help/', anchor_label='PlantShare',
+                             within='footer')
         self.assertTrue(a.get('href'))
 
     @unittest.skip('Skip until release, because tests unaware of DEBUG')
     def test_footer_plantshare_item_is_unlinked(self):
-        a = self._get_anchor('/ps/', 'PlantShare', 'footer')
+        a = self._get_anchor(on_page='/plantshare/',
+                             anchor_label='PlantShare', within='footer')
         self.assertFalse(a.get('href'))
 
     def test_footer_full_key_item_is_linked(self):
-        a = self._get_anchor('/about/', 'Full Key', 'footer')
+        a = self._get_anchor(on_page='/help/', anchor_label='Full Key',
+                             within='footer')
         self.assertTrue(a.get('href'))
 
     @unittest.skip('Skip until release, because tests unaware of DEBUG')
     def test_footer_full_key_item_is_unlinked(self):
-        a = self._get_anchor('/full/', 'Full Key', 'footer')
+        a = self._get_anchor(on_page='/full/', anchor_label='Full Key',
+                             within='footer')
         self.assertFalse(a.get('href'))
 
     def test_footer_dichotomous_key_item_is_linked(self):
-        a = self._get_anchor('/about/', 'Dichotomous Key', 'footer')
+        a = self._get_anchor(on_page='/help/', anchor_label='Dichotomous Key',
+                             within='footer')
         self.assertTrue(a.get('href'))
 
     @unittest.skip('Skip until release, because tests unaware of DEBUG')
     def test_footer_dichotomous_key_item_is_unlinked(self):
-        a = self._get_anchor('/simple/', 'Dichotomous Key', 'footer')
+        a = self._get_anchor(on_page='/simple/',
+                             anchor_label='Dichotomous Key', within='footer')
         self.assertFalse(a.get('href'))
 
     def test_footer_teaching_item_is_linked(self):
-        a = self._get_anchor('/about/', 'Teaching', 'footer')
+        a = self._get_anchor(on_page='/help/', anchor_label='Teaching',
+                             within='footer')
         self.assertTrue(a.get('href'))
 
     def test_footer_teaching_item_is_unlinked(self):
-        a = self._get_anchor('/teaching/', 'Teaching', 'footer')
+        a = self._get_anchor(on_page='/teaching/', anchor_label='Teaching',
+                             within='footer')
         self.assertFalse(a.get('href'))
 
-    def test_footer_about_item_is_linked(self):
-        a = self._get_anchor('/', 'About', 'footer')
+    def test_footer_help_item_is_linked(self):
+        a = self._get_anchor(on_page='/', anchor_label='Help',
+                             within='footer')
         self.assertTrue(a.get('href'))
 
-    def test_footer_about_item_is_unlinked(self):
-        a = self._get_anchor('/about/', 'About', 'footer')
+    def test_footer_help_item_is_unlinked(self):
+        a = self._get_anchor(on_page='/help/', anchor_label='Help',
+                             within='footer')
         self.assertFalse(a.get('href'))
 
     def test_footer_privacy_policy_item_is_linked(self):
-        a = self._get_anchor('/about/', 'Privacy Policy', 'footer')
+        a = self._get_anchor(on_page='/help/', anchor_label='Privacy Policy',
+                             within='footer')
         self.assertTrue(a.get('href'))
 
     def test_footer_privacy_policy_item_is_unlinked(self):
-        a = self._get_anchor('/privacy/', 'Privacy Policy', 'footer')
+        a = self._get_anchor(on_page='/privacy/',
+                             anchor_label='Privacy Policy', within='footer')
         self.assertFalse(a.get('href'))
 
     def test_footer_terms_of_use_item_is_linked(self):
-        a = self._get_anchor('/about/', 'Terms of Use', 'footer')
+        a = self._get_anchor(on_page='/help/', anchor_label='Terms of Use',
+                             within='footer')
         self.assertTrue(a.get('href'))
 
     def test_footer_terms_of_use_item_is_unlinked(self):
-        a = self._get_anchor('/terms-of-use/', 'Terms of Use', 'footer')
+        a = self._get_anchor(on_page='/terms-of-use/',
+                             anchor_label='Terms of Use', within='footer')
         self.assertFalse(a.get('href'))
 
 
@@ -264,7 +296,7 @@ class GlossaryTests(FunctionalCase):
     def test_start_links_to_glossary(self):
         self.get('/start/')
         e = self.link_saying('Glossary')
-        self.assertTrue(e.get('href').endswith('/glossary/'))
+        self.assertTrue(e.get('href').endswith('/glossary/a/'))
 
     def test_glossary_a_page_contains_a_terms(self):
         self.get('/glossary/a/')
@@ -332,16 +364,6 @@ class TeachingTestCase(FunctionalCase):
     def test_teaching_page_has_teaching_tools_section(self):
         self.get(self.TEACHING_URL_PATH)
         self.assertTrue('Teaching Tools' in self._h2_headings())
-
-    def test_teaching_page_has_help_sidebar_item(self):
-        self.get(self.TEACHING_URL_PATH)
-        self.assertTrue('Want help getting started?' in
-                        self._sidebar_headings())
-
-    def test_teaching_page_has_advanced_map_sidebar_item(self):
-        self.get(self.TEACHING_URL_PATH)
-        self.assertTrue('Shortcut to Groups' in
-                        self._sidebar_headings())
 
 # Tests for PlantShare plant name picker API call
 
