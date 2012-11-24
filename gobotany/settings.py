@@ -3,11 +3,6 @@ import os
 import sys
 
 try:
-    from postgis_paths import GDAL_LIBRARY_PATH, GEOS_LIBRARY_PATH
-except ImportError:
-    pass
-
-try:
     import debug_toolbar
 except:
     DEBUG_TOOLBAR_AVAILABLE = False
