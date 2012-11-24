@@ -29,9 +29,8 @@ from django.template.defaultfilters import slugify
 import bulkup
 from gobotany.core import models
 from gobotany.core.pile_suffixes import pile_suffixes
-from gobotany.simplekey.models import (GroupsListPage, PlainPage,
-                                       SubgroupResultsPage,
-                                       SubgroupsListPage)
+from gobotany.search.models import (GroupsListPage, PlainPage,
+                                    SubgroupResultsPage, SubgroupsListPage)
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 from gobotany.site.models import SearchSuggestion
 

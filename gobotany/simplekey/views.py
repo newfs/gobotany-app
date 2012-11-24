@@ -9,10 +9,10 @@ from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core.models import ContentImage, Pile, PileGroup
 from gobotany.core.partner import which_partner
+from gobotany.search.models import (GroupsListPage,
+                                    SubgroupResultsPage,
+                                    SubgroupsListPage)
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
-from gobotany.simplekey.models import (GroupsListPage,
-                                       SubgroupResultsPage,
-                                       SubgroupsListPage)
 from gobotany.taxa.views import _images_with_copyright_holders
 
 # Character short names common to all piles (but no suffix)

@@ -3,9 +3,9 @@ from haystack import site
 
 from gobotany.core.models import Taxon, Family, Genus, GlossaryTerm
 
-from gobotany.simplekey.models import (PlainPage,
-                                       GroupsListPage, SubgroupResultsPage,
-                                       SubgroupsListPage)
+from gobotany.search.models import (PlainPage,
+                                    GroupsListPage, SubgroupResultsPage,
+                                    SubgroupsListPage)
 
 class CharacterCharField(indexes.CharField):
     '''A CharField that understands how to get the character value
@@ -41,7 +41,7 @@ class BaseIndex(indexes.SearchIndex):
     """A document that already knows its URL, so searches render faster."""
 
     url = indexes.CharField(use_template=True,
-                            template_name='simplekey/search_url.txt')
+                            template_name='search_url.txt')
 
     def read_queryset(self):
         """Bypass `index_queryset()` when we just need to read a model.
@@ -64,12 +64,12 @@ class TaxonIndex(BaseIndex):
     name = indexes.CharField(model_attr='scientific_name')
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='simplekey/search_text_species.txt')
+        template_name='search_text_species.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='simplekey/search_title_species.txt')
+        template_name='search_title_species.txt')
 
     # Customization
 
@@ -97,12 +97,12 @@ class FamilyIndex(BaseIndex):
     name = indexes.CharField(model_attr='name')
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='simplekey/search_text_family.txt')
+        template_name='search_text_family.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='simplekey/search_title_family.txt')
+        template_name='search_title_family.txt')
 
     # Customization
 
@@ -117,12 +117,12 @@ class GenusIndex(BaseIndex):
     name = indexes.CharField(model_attr='name')
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='simplekey/search_text_genus.txt')
+        template_name='search_text_genus.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='simplekey/search_title_genus.txt')
+        template_name='search_title_genus.txt')
 
     # Customization
 
@@ -137,7 +137,7 @@ class PlainPageIndex(BaseIndex):
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='simplekey/search_text_plain_page.txt')
+        template_name='search_text_plain_page.txt')
 
     # Display
 
@@ -150,12 +150,12 @@ class GlossaryTermIndex(BaseIndex):
     name = indexes.CharField(model_attr='term')
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='simplekey/search_text_glossary_term.txt')
+        template_name='search_text_glossary_term.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='simplekey/search_title_glossary_term.txt')
+        template_name='search_title_glossary_term.txt')
 
 
 class GroupsListPageIndex(BaseIndex):
@@ -163,7 +163,7 @@ class GroupsListPageIndex(BaseIndex):
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name = 'simplekey/search_text_groups_list_page.txt')
+        template_name = 'search_text_groups_list_page.txt')
 
     # Display
 
@@ -184,7 +184,7 @@ class SubgroupsListPageIndex(BaseIndex):
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name = 'simplekey/search_text_subgroups_list_page.txt')
+        template_name = 'search_text_subgroups_list_page.txt')
 
     # Display
 
@@ -202,7 +202,7 @@ class SubgroupResultsPageIndex(BaseIndex):
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name = 'simplekey/search_text_subgroup_results_page.txt')
+        template_name = 'search_text_subgroup_results_page.txt')
 
     # Display
 

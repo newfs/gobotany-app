@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from gobotany.core.models import Video
-from gobotany.simplekey.models import PlainPage
+from gobotany.search.models import PlainPage
 
 class VideosInline(admin.TabularInline):
     model = PlainPage.videos.through

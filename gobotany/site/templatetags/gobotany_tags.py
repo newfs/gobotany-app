@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify, stringfilter
 
 from gobotany.core import models
-from gobotany.simplekey import models as simple_models
+from gobotany.search import models as search_models
 
 register = template.Library()
 
@@ -31,18 +31,18 @@ def url(obj):
 
     # Pages.
 
-    if isinstance(obj, simple_models.GroupsListPage):
+    if isinstance(obj, search_models.GroupsListPage):
         return reverse('level1', args=('simple',))
 
-    if isinstance(obj, simple_models.PlainPage):
+    if isinstance(obj, search_models.PlainPage):
         return obj.url_path
 
-    if isinstance(obj, simple_models.SubgroupResultsPage):
+    if isinstance(obj, search_models.SubgroupResultsPage):
         slug1 = obj.subgroup.pilegroup.slug
         slug2 = obj.subgroup.slug
         return reverse('level3', args=('simple', slug1, slug2))
 
-    if isinstance(obj, simple_models.SubgroupsListPage):
+    if isinstance(obj, search_models.SubgroupsListPage):
         slug = slugify(obj.title.split(':')[0])
         return reverse('level2', args=('simple', slug))
 
