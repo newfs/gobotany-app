@@ -1,8 +1,9 @@
 define([
     'bridge/jquery',
+    'bridge/underscore',
     'simplekey/resources',
     'util/tooltip'
-], function($, resources, tooltip) {
+], function($, _, resources, tooltip) {
 
     var exports = {};
 
@@ -12,6 +13,10 @@ define([
         // http://stackoverflow.com/questions/3446170/
         return str.replace(/[-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
     };
+
+    /* Special terms we want to avoid escaping. */
+
+    var avoid_terms = ['Fern.'];
 
     /* The glossarizer takes a glossary blob as delivered by the API,
        parses and prepares a regular expression, and then can mark up
@@ -23,19 +28,40 @@ define([
         this.n = 0;
 
         var terms = [];
-        var defs = glossaryblob.definitions;
-        for (term in defs)
-            if (_.has(defs, term))
-                terms.push(exports.escape(term));
+
+        /* Build a list of escaped regular expressions for each term. */
+
+        _.each(avoid_terms, function(term) {
+            terms.push(exports.escape(term));
+        });
+
+        _.each(glossaryblob.definitions, function(definition, term) {
+            var eterm = exports.escape(term);
+
+            /* Lower-case terms can also start with an upper-case letter. */
+
+            if (/^[a-z]/.test(eterm)) {
+                var e0 = '[' + eterm[0] + eterm[0].toUpperCase() + ']';
+                var rest = eterm.slice(1);
+                eterm = e0 + rest;
+            }
+
+            /* Terms that end with a letter should end at a word boundary. */
+
+            if (/\w$/.test(eterm)) {
+                eterm = eterm + '\\b';
+            }
+
+            terms.push(eterm);
+        });
 
         /* For incredible speed, we pre-build a regular expression of
            all glossary terms.  This has the advantage of always selecting
            the longest possible glossary term if several words together
            could be a glossary term! */
 
-        var re = '\\b(' + terms.join('|') +
-            ')([\\+\\-]|\\b)'; // Allow + or - at end: wetland indicator codes
-        this.regexp = new RegExp(re, 'gi');
+        var re = '\\b(' + terms.join('|') + ')';
+        this.regexp = new RegExp(re, 'g');
     },
 
     /* Call "markup" on a node - hopefully one with no elements beneath
@@ -50,10 +76,19 @@ define([
         var self = this;
         var TEXT_NODE = 3;
 
+        var replacer = function(match, term) {
+            if (_.contains(avoid_terms, term))
+                return match;
+            else
+                return '<span class="gloss">' + match + '</span>';
+        };
+
         $(node).contents().each(function() {
-            if (this.nodeType === TEXT_NODE)
-                $(this).replaceWith(_.escape(this.textContent).replace(
-                    self.regexp, '<span class="gloss">$1$2</span>'));
+            if (this.nodeType !== TEXT_NODE)
+                return;
+            $(this).replaceWith(
+                _.escape(this.textContent).replace(self.regexp, replacer)
+            );
         });
 
         /* Attach the new spans to tooltips. */
