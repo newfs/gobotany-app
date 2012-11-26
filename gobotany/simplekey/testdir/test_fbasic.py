@@ -17,7 +17,7 @@ Two environmental variables control the behavior of these tests.
 import os
 import re
 import time
-import unittest2
+import unittest
 from contextlib import contextmanager
 from selenium import webdriver
 from selenium.common.exceptions import (
@@ -25,7 +25,7 @@ from selenium.common.exceptions import (
     )
 from selenium.webdriver.common.keys import Keys
 
-class FunctionalTestCase(unittest2.TestCase):
+class FunctionalTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -185,12 +185,12 @@ class NavigationFunctionalTests(FunctionalTestCase):
             'header li.full a')   # remove 'a' upon moving to 'site' app
             )
 
-    @unittest2.skip('Skip for now: page returns error')
+    @unittest.skip('Skip for now: page returns error')
     def test_header_dkey_item_highlighted(self):
         self.assertTrue(
             self._is_nav_item_highlighted('/dkey/', 'header li.dkey'))
 
-    @unittest2.skip('Skip for now: page returns error')
+    @unittest.skip('Skip for now: page returns error')
     def test_header_dkey_item_highlighted_within_section(self):
         self.assertTrue(
             self._is_nav_item_highlighted('/dkey/Key-to-the-Families/',
@@ -916,7 +916,7 @@ class FamilyFunctionalTests(FunctionalTestCase):
         glossary_items = self.css(GLOSSARY_ITEMS_CSS)
         self.assertTrue(len(glossary_items))
 
-    @unittest2.skip("Skip because this button is temporarily removed")
+    @unittest.skip("Skip because this button is temporarily removed")
     def test_family_page_has_link_to_key(self):
         self.get('/families/lycopodiaceae/')
         key_link = self.css('#main a.family-genera-btn')
@@ -937,7 +937,7 @@ class GenusFunctionalTests(FunctionalTestCase):
         glossary_items = self.css(GLOSSARY_ITEMS_CSS)
         self.assertTrue(len(glossary_items))
 
-    @unittest2.skip("Skip because this button is temporarily removed")
+    @unittest.skip("Skip because this button is temporarily removed")
     def test_genus_page_has_link_to_key(self):
         self.get('/genera/dendrolycopodium/')
         key_link = self.css('#main a.genus-species-btn')

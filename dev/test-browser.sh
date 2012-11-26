@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Run the functional tests that require a Web browser.
+#
+# Usage: test-browser.sh {TestClassName}{.test_function_name)
+#
+# To run a subset of the tests, pass a dot-separated name parameter.
+#
+# Examples:
+# test-browser.sh
+# test-browser.sh SearchFunctionalTests
+# test-browser.sh SearchFunctionalTests.test_search_results_page
+
+set -e
+
+set +x
+subset=""
+if [ -n "$1" ]; then
+    subset=".$1"
+fi
+
+set -x
+python -m unittest "gobotany.simplekey.testdir.test_fbasic${subset}"
+
+killall chromedriver   # clean up any leftover test processes
