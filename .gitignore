@@ -20,6 +20,7 @@
 # Log files
 import.log
 log.dkey
+chromedriver.log
 
 # Data files
 110330_fone_test_05.xml
