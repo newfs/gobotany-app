@@ -60,12 +60,7 @@
   {% endif %}
 </p>
 
-{% if leads|length == 1 %}
-  <p data-rank="{{ page.rank }}" data-title="{{ page.title }}">This
-    {{ page.rank }} contains exactly one {{ next_page.rank }},
-    {{ page|display_title }}.</p>
-{% endif %}
-{% if leads|length == 1 %}
+{% if page.rank != 'genus' and leads|length == 1 %}
   <p data-rank="{{ page.rank }}" data-title="{{ page.title }}">This
     {{ page.rank }} contains exactly one {{ next_page.rank }},
     {{ page|display_title }}.</p>
@@ -147,6 +142,8 @@
           {{ lead.text|render_figure_links|safe }}
         {% elif lead.goto_page.rank == 'subkey' %}
           {{ lead.goto_page.title }}
+        {% elif leads|length == 1 %}
+          This {{ page.rank }} contains exactly one {{ next_page.rank }}.
         {% endif %}
       </div>
       {% endwith %}
