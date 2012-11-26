@@ -232,6 +232,18 @@ def questions(request, pile_slug):
 
 # The images that should be displayed on a particular dkey page.
 
+extra_image_types = {
+    u'Group 2': 'fruits',
+    u'Group 3': 'inflorescences',
+    u'Group 4': 'bark',
+    u'Group 5': 'bark',
+    u'Group 6': 'flowers',
+    u'Group 7': 'flowers',
+    u'Group 8': 'flowers',
+    u'Group 9': 'flowers',
+    u'Group 10': 'flowers',
+    }
+
 def dkey_images(request, slug):
 
     # Whether a dkey page displays groups of families, genera, or taxa,
@@ -252,9 +264,17 @@ def dkey_images(request, slug):
         return []
 
     taxa = None
+    image_types_allowed = None
     ctype = ContentType.objects.get_for_model(Taxon)
 
     if rank == u'family':
+
+        # See https://github.com/newfs/gobotany-app/issues/302 for the
+        # reasoning behind our image-type limit here.
+
+        image_types_allowed = ['leaves', 'plant form']
+        if title in extra_image_types:
+            image_types_allowed.append(extra_image_types[title])
 
         cursor = connection.cursor()
         cursor.execute("""
@@ -287,11 +307,17 @@ def dkey_images(request, slug):
     if taxa is None:
         taxa = Taxon.objects.filter(id__in=taxon_ids)
 
+    query = (ContentImage.objects
+             .filter(content_type=ctype, object_id__in=taxon_ids, rank=1)
+             .select_related('image_type')
+             )
+
+    if image_types_allowed is not None:
+        query = query.filter(image_type__name__in=image_types_allowed)
+
     image_map = {
         (image.object_id, image.image_type.name): image.thumb_small()
-        for image in ContentImage.objects
-            .filter(content_type=ctype, object_id__in=taxon_ids, rank=1)
-            .select_related('image_type')
+        for image in query
         }
 
     image_types = sorted(set(key[1] for key in image_map))
