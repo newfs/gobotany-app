@@ -4,7 +4,7 @@ set -e
 cd $(dirname "${BASH_SOURCE[0]}")
 DEV="$PWD"
 
-VERSION=v0.8.2
+VERSION=v0.8.14
 
 if [ ! -f ./node/bin/node ]
 then
