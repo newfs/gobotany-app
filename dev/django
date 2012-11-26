@@ -1,6 +1,7 @@
 #!/bin/bash
 
 DEV=$(dirname "$0")
+APP=$(dirname "$DEV")
 DJANGO_ADMIN=$DEV/../.tox/py27/bin/django-admin.py
 
 if [ ! -x $DJANGO_ADMIN ]
@@ -10,4 +11,5 @@ then
 fi
 
 export DJANGO_SETTINGS_MODULE=gobotany.settings
+export PYTHONPATH=$APP
 exec $DJANGO_ADMIN "$@"
