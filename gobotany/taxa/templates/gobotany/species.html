@@ -61,12 +61,6 @@
                     <p class="common nogloss">{% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</p>
                 {% endif %}
 
-                {% if key == 'dichotomous' %}
-                    {% include "gobotany/_info_from_flora.html" %}
-
-                    <h2>Images</h2>
-                {% endif %}
-
                 <div id="species-images">
                     {% for i in images %}
                         <a href="{{ i.image_medium }}"
@@ -227,9 +221,7 @@
                 </table>
                 </div>
 
-                {% if key != 'dichotomous' %}
-                  {% include "gobotany/_info_from_flora.html" %}
-                {% endif %}
+                {% include "gobotany/_info_from_flora.html" %}
 {% endblock %}
 
 {% block sidebar_content %}
