@@ -1,6 +1,43 @@
 Go Botany
 =========
 
+Running Go Botany on your workstation
+-------------------------------------
+
+Start by checking out this “gobotany-app” repository on your machine,
+then running the “tox” Python testing tool:
+
+    git clone git@github.com:newfs/gobotany-app.git
+    cd gobotany-app
+    tox
+
+This will create a virtual environment (peek inside of `.tox` to see it)
+where the Go Botany dependencies are all installed. You can then get the
+application running with three commands:
+
+    dev/start-solr
+    dev/load
+    dev/django runserver
+
+At this point you are done installing and should be able to test and
+develop the application!
+
+Should you ever want a Python prompt that has access to Go Botany's
+dependencies, you can run:
+
+    source dev/activate
+
+If you want to rebuild our minified JavaScript in preparation for a
+deploy to production, run:
+
+    dev/jsbuild
+
+Our various tests can be run with three commands:
+
+    tox
+    dev/test-browser
+    dev/test-js
+
 Installing Go Botany on Heroku
 ------------------------------
 
