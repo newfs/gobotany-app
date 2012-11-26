@@ -48,7 +48,8 @@ define([
         if (is_group(name))
             return '/dkey/' + name.replace(' ', '-') + '/';
         else if (is_species(name))
-            return '/species/' + name.replace(' ', '/') + '/?key=dichotomous';
+            return '/species/' + name.replace(' ', '/') +
+                '/?key=dichotomous#dkey';
         else
             return '/dkey/' + name + '/';
     };

@@ -115,7 +115,7 @@
           {% elif lead.goto_num %}
             href="#c{{ lead.goto_num }}">JUMP TO {{ lead.goto_num }}
           {% elif p.rank == 'species' %}
-            href="{% url taxa-species p.title|genus_slug p.title|species_slug %}?key=dichotomous"
+            href="{% url taxa-species p.title|genus_slug p.title|species_slug %}?key=dichotomous#dkey"
               ><i>{{ p.title|abbreviate_title }}</i>
           {% elif not p %}
             >—
