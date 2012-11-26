@@ -1,0 +1,11 @@
+--- apache-solr-3.6.1/example/solr/conf/solrconfig.xml.orig	2012-07-24 15:06:04.912402810 -0400
++++ apache-solr-3.6.1/example/solr/conf/solrconfig.xml	2012-07-24 15:06:10.088428474 -0400
+@@ -139,7 +139,7 @@
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <indexConfig>
+     <!-- maxFieldLength specifies max number of *tokens* indexed per field. Default: 10000 -->
+-    <!-- <maxFieldLength>10000</maxFieldLength>  -->
++    <maxFieldLength>1000000000</maxFieldLength>
+     <!-- Maximum time to wait for a write lock (ms) for an IndexWriter. Default: 1000 -->
+     <!-- <writeLockTimeout>1000</writeLockTimeout>  -->
+ 

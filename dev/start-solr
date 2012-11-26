@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Start Solr running as a background process on the local machine,
+# possibly after downloading it to a nearby directory.
+
+set -e
+
+DEV=$(dirname "${BASH_SOURCE[0]}")
+cd $DEV
+
+EXAMPLE=usr/apache-solr-3.6.1/example
+
+if [ ! -d $EXAMPLE ]
+then
+    cd usr
+    curl -OL http://www.apache.org/dist/lucene/solr/3.6.1/apache-solr-3.6.1.tgz
+    tar xzf apache-solr-3.6.1.tgz
+    patch -p0 < patch-solrconfig
+    cd ..
+fi
+
+echo 'Installing Solr XML schema'
+
+./django build_solr_schema > $EXAMPLE/solr/conf/schema.xml
+
+echo 'Running Solr in the background'
+
+cd $EXAMPLE
+rm -f nohup.out
+nohup java -jar start.jar "$@" &

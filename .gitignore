@@ -5,12 +5,11 @@
 
 # Tox
 /.tox/
-/build/
-/gobotany.egg-info/
-MANIFEST
+/MANIFEST
 
 # Dev tools
 /dev/node/
+/dev/usr/apache-solr-3.6.1*
 
 # SASS
 /gobotany/static/sass/.sass-cache/
@@ -22,7 +21,6 @@ log.dkey
 # Data files
 110330_fone_test_05.xml
 gobotany-csv-exports-*.zip
-/csv/
 
 # Media directory created during API tests
 /gobotany/media/
