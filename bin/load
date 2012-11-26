@@ -105,7 +105,12 @@ def main():
     for action in actions:
         print '==== Running {} ===='.format(action.__name__)
         print
-        action()
+        try:
+            action()
+        except subprocess.CalledProcessError as e:
+            # Assume that the command has already reported its failure
+            # to the screen, so all we need to do is exit.
+            sys.exit(e.returncode)
         print
     print 'Done'
     print
