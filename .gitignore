@@ -1,5 +1,6 @@
 # Basic ignore patterns
 *.pyc
+*.egg-info/
 *.sw*
 *.DS_Store
 
