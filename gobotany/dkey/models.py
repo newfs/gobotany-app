@@ -31,6 +31,9 @@ class Page(models.Model):
     text = models.TextField(blank=True)
     breadcrumb_cache = models.ManyToManyField('Page', related_name='ignore+')
 
+    class Meta:
+        verbose_name = 'dichotomous key page'
+
     def __unicode__(self):
         return self.title
 

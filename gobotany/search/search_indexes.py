@@ -1,6 +1,8 @@
 from haystack import indexes
 from haystack import site
 
+import gobotany.dkey.models as dkey_models
+
 from gobotany.core.models import Taxon, Family, Genus, GlossaryTerm
 
 from gobotany.search.models import (PlainPage,
@@ -216,6 +218,22 @@ class SubgroupResultsPageIndex(BaseIndex):
                 .prefetch_related('subgroup__species__common_names'))
 
 
+class DichotomousKeyPageIndex(BaseIndex):
+    # Index
+
+    text = indexes.CharField(
+        document=True, use_template=True,
+        template_name='search_text_dichotomous_key_page.txt')
+
+    # Display
+
+    title = indexes.CharField(use_template=True,
+        template_name='search_title_dichotomous_key_page.txt')
+
+    # Customization
+    # TODO
+
+
 site.register(Taxon, TaxonIndex)
 site.register(Family, FamilyIndex)
 site.register(Genus, GenusIndex)
@@ -224,3 +242,4 @@ site.register(PlainPage, PlainPageIndex)
 site.register(GroupsListPage, GroupsListPageIndex)
 site.register(SubgroupsListPage, SubgroupsListPageIndex)
 site.register(SubgroupResultsPage, SubgroupResultsPageIndex)
+site.register(dkey_models.Page, DichotomousKeyPageIndex)

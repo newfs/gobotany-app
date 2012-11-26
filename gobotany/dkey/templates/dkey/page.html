@@ -1,7 +1,7 @@
 {% extends "gobotany/_page_no_sidebar.html" %}
 {% load dkey_filters %}
 
-{% block title %}{{ page.title }}{% endblock %}
+{% block title %}{% if title == 'Key to the Families' %}Dichotomous {% endif %}{{ page.title }}{% endblock %}
 {% block script_name %}dkey{% endblock %}
 {% block js_require %}
   require(['dkey/dkey']);

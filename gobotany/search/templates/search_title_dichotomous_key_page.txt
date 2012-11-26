@@ -1,0 +1,4 @@
+{# The page title for display purposes in our search results #}
+{% spaceless %}
+{% if object.title == 'Key to the Families' %}Dichotomous Key to the Families{% else %}{{ object.title }}: Dichotomous Key{% endif %}
+{% endspaceless %}

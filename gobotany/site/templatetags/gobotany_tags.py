@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify, stringfilter
 
 from gobotany.core import models
+from gobotany.dkey import models as dkey_models
 from gobotany.search import models as search_models
 
 register = template.Library()
@@ -45,6 +46,10 @@ def url(obj):
     if isinstance(obj, search_models.SubgroupsListPage):
         slug = slugify(obj.title.split(':')[0])
         return reverse('level2', args=('simple', slug))
+
+    if isinstance(obj, dkey_models.Page):
+        slug = slugify(obj.title)
+        return reverse('dkey_page', args=(slug,))
 
     raise ValueError(u'cannot construct canonical URL for %r' % (obj))
 

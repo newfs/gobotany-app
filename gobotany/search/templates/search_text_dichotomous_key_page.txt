@@ -1,0 +1,9 @@
+{# Page title (HTML title element) #}
+{% if object.title == 'Key to the Families' %}Dichotomous Key to the Families{% else %}{{ object.title }}: Dichotomous Key{% endif %}.
+
+{# TODO: breadcrumbs #}
+
+{# Main heading #}
+{% if object.title == 'Key to the Families' %}Dichotomous {% endif %}{{ object.title }}
+
+{# # TODO: text #}

@@ -73,6 +73,10 @@
                                     alt=""
                                     title="Simple Key plant group results page">
                             {% endif %}
+                            {% if result.model_name == 'page' %}
+                                <img src="/static/images/icons/icon-groups-list.png"
+                                    alt="" title="Dichotomous Key page">
+                            {% endif %}
                             {{ result.title|quick_highlight:query|safe }}
                             </a>
                             <p>

@@ -9,7 +9,7 @@ from gobotany.core.models import Pile, PileGroup
 
 class PlainPage(models.Model):
     """Outline of the contents of a plain, miscellaneous page. Examples of
-    these include the non-glossary 'About' pages, the Teaching page, etc.
+    these include the non-glossary 'Help' pages, the Teaching page, etc.
     """
     title = models.CharField(max_length=100)
     url_path = models.CharField(max_length=100)
