@@ -8,7 +8,19 @@ import subprocess
 # Actions that the user can perform; default is to do them all.
 
 def schema():
-    admin('syncdb --noinput')
+    try:
+        admin('syncdb --noinput')
+    except subprocess.CalledProcessError:
+        print >>sys.stderr, ("""
+
+        Cannot run Django's initial "syncdb" command on your database.
+        If you are a developer running this script locally, have you
+        created a database with the following command?
+
+        $ createdb -E UTF8 gobotany
+
+""")
+        sys.exit(1)
     admin('migrate')
 
 def csv():
