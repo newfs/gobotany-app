@@ -2,6 +2,7 @@
 """Run the right commands to build the Go Botany database from scratch."""
 
 import ConfigParser
+import os
 import sys
 import subprocess
 
@@ -47,7 +48,7 @@ def images():
     run('python -m gobotany.core.importer home-page-images')
 
 def dkey():
-    run('bin/s3-init.sh')
+    run('../bin/s3-init.sh')
     run('s3cmd get --skip-existing --no-progress '
         's3://newfs/data-dkey/110330_fone_test_05.xml')
     run('python -m gobotany.dkey.xml_import')
@@ -58,7 +59,7 @@ def solr():
 
 def test():
     config = ConfigParser.RawConfigParser()
-    config.read('tox.ini')
+    config.read('../tox.ini')
     cmdline = config.get('testenv', 'commands')
     run(cmdline)
 
@@ -85,6 +86,13 @@ def run(cmdline):
 # Main.
 
 def main():
+    # Move to the project /dev/ directory so that Python is never
+    # tempted to import raw modules from the current directory.
+
+    bindir = os.path.dirname(__file__)
+    devdir = os.path.join(os.path.dirname(bindir), 'dev')
+    os.chdir(devdir)
+
     args = sys.argv[1:]
 
     if not args:
