@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+cd $(dirname "${BASH_SOURCE[0]}")
+cd ..
+
+if [ ! -d .tox/custom ]
+then
+    mkdir -p .tox
+    python2.7 dev/virtualenv.py --distribute --unzip-setuptools \
+        --system-site-packages .tox/custom
+
+    rm distribute-*.tar.gz
+    rm dev/virtualenv.pyc
+
+    .tox/custom/bin/pip install tox
+fi
+
+exec .tox/custom/bin/tox "$@"
