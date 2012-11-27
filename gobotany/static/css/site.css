@@ -936,6 +936,7 @@ body.plantshare.sighting form fieldset legend { display: block; text-indent: -90
 body.plantshare.sighting form .post-sighting-btn { background: transparent url(/static/images/layout/plantshare2-btn.png) no-repeat -372px -634px; border: 0 none; display: block; width: 157px; height: 32px; text-indent: -9999px; }
 body.plantshare.sighting form .post-sighting-btn.inactive { background-position: -372px -599px; }
 body.plantshare.sighting .modal-container { position: relative; }
+body.plantshare.sighting .modal-container .save-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px; width: 99px !important; height: 32px; font-size: 0; -moz-box-shadow: 0 !important; border: 0 none !important; display: block; text-indent: -9999px; }
 body.plantshare.sighting .modal-container .image-modal { background-color: white; border: 5px solid #ACAC90; display: none; padding: 15px; position: absolute; width: 400px; height: 120px; top: 35px; left: 20px; z-index: 10; }
 body.plantshare.sighting .modal-container .image-modal img { float: left; margin: 0 20px 10px 0; }
 body.plantshare.sighting .modal-container .image-modal a.close { background: transparent url(/static/images/icons/close.png) no-repeat; display: block; height: 16px; position: absolute; top: 15px; right: 15px; width: 16px; text-indent: -9999px; }

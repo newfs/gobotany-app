@@ -294,6 +294,16 @@ body.plantshare {
         .modal-container {
             position: relative;
 
+            .save-btn {
+                background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px;
+                width: 99px !important;
+                height: 32px;
+                font-size: 0;
+                -moz-box-shadow: 0 !important;
+                border: 0 none !important;
+                display: block;
+                text-indent: -9999px;
+            }
             .image-modal {
                 background-color: white;
                 border: 5px solid #ACAC90;
