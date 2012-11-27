@@ -41,7 +41,7 @@ requirements = [
 
     # Login and registration
 
-    'django-facebook-connect',
+    'django-facebook-connect>=1.0.2',
     'django-recaptcha==0.0.4',
     'django-registration==0.8',
 
@@ -59,8 +59,8 @@ requirements = [
     ]
 
 dependency_links = [
-    'git+https://github.com/noamsu/django-facebook-connect'
-    + '#egg=django-facebook-connect',
+    'git+https://github.com/jrrickerson/django-facebook-connect'
+    + '#egg=django-facebook-connect-1.0.2',
     ]
 
 packages = find_packages()
