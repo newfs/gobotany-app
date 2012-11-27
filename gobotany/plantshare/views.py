@@ -189,6 +189,9 @@ def ajax_image_upload(request):
             'info': 'Authentication error'
         }), mimetype='application/json')
 
+    response = {
+        'success': True
+    }
     if request.method == 'POST':
         form = ScreenedImageForm(request.POST, request.FILES)
         if form.is_valid():
@@ -196,7 +199,13 @@ def ajax_image_upload(request):
             new_image.uploaded_by = request.user
             new_image.save()
 
-    return HttpResponse(simplejson.dumps({'success': True}), mimetype='application/json')
+            response.update({
+                'id': new_image.pk,
+                'thumb': new_image.thumb.url,
+            })
+
+
+    return HttpResponse(simplejson.dumps(response), mimetype='application/json')
 
 def ajax_sightings(request):
     """Return sightings data for a plant."""
