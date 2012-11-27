@@ -45,10 +45,6 @@ class SearchTests(FunctionalCase):
                 break
         return has_icon
 
-    def test_search_results_page_has_species_results(self):
-        self.get('/search/?q=sapindaceae')
-        self.assertTrue(self._has_icon('leaf'))
-
     def test_search_results_page_has_family_results(self):
         self.get('/search/?q=sapindaceae')
         self.assertTrue(self._has_icon('family'))
@@ -427,6 +423,15 @@ class SearchTests(FunctionalCase):
         self.assertTrue(self._is_page_found(
             result_links, 'Pseudolycopodiella: Dichotomous Key'))
 
+    def test_search_results_contain_dichotomous_key_breadcrumbs(self):
+        self.get('/search/?q=liliaceae')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertEqual(result_links[1].text, 'Liliaceae: Dichotomous Key')
+        result_excerpts = self.css('#search-results-list li p')
+        self.assertTrue(result_excerpts[1].text.find(
+            ('You are here: Dichotomous Key > '
+             'Group 3: Monocots > Liliaceae')) > -1);
 
     # Test searching miscellaneous pages around the site (about, etc.)
 

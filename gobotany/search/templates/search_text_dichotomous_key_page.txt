@@ -1,8 +1,22 @@
+{% load dkey_filters %}
 {% load simplekey_extras %}
 
 {% if object.title == 'Key to the Families' %}Dichotomous Key to the Families{% else %}{{ object.title }}: Dichotomous Key{% endif %}.
 
-{# TODO: breadcrumbs #}
+{# Breadcrumbs #}
+You are here:
+{% for ancestor in object|breadcrumbs %}
+    {% if forloop.counter0 == 0 %}
+        Dichotomous Key
+    {% else %}
+        &gt; {{ ancestor|display_title|expand_group_title }}
+    {% endif %}
+{% endfor %}
+{% if object.title == 'Key to the Families' %}
+    Dichotomous Key.
+{% else %}
+    &gt; {{ object.title|expand_group_title }}.
+{% endif %}
 
 {# Main heading #}
 {% if object.title == 'Key to the Families' %}Dichotomous {% endif %}{{ object.title }}
@@ -10,9 +24,10 @@
 {# # TODO: text #}
 
 
+{# Ensure the main page comes first for the search: dichotomous key #}
 {% if object.title == 'Key to the Families' %}
 --
-{# For the main page, ensure it comes first for the search: dichotomous key #}
+{# add repeats for the index, hidden from the user #}
 {{ 'Dichotomous Key'|repeat:20 }}
 --
 {% endif %}
