@@ -133,9 +133,10 @@ class BasicFunctionalTests(FunctionalTestCase):
     def test_home_page_shows_one_banner_image(self):
         self.get('/')
         images = self.css('#banner > img')
-        # All but the first of the images should be hidden. The css()
-        # function returns only visible elements, so expect just one.
-        self.assertEqual(len(images), 1)
+        # All but one or two (if a fade transition is ongoing) of the
+        # front-page images should be hidden; the css() function we just
+        # called returns only visible elements.
+        self.assertIn(len(images), (1, 2))
 
 
 class NavigationFunctionalTests(FunctionalTestCase):
@@ -154,15 +155,11 @@ class NavigationFunctionalTests(FunctionalTestCase):
 
     def test_header_simple_key_item_highlighted(self):
         self.assertTrue(self._is_nav_item_highlighted(
-            '/simple/',
-            'header li.simple a')   # remove 'a' upon moving to 'site' app
-            )
+            '/simple/', 'header li.simple'))
 
     def test_header_simple_key_item_highlighted_within_section(self):
         self.assertTrue(self._is_nav_item_highlighted(
-            '/simple/woody-plants/',
-            'header li.simple a')   # remove 'a' upon moving to 'site' app
-            )
+            '/simple/woody-plants/', 'header li.simple'))
 
     def test_header_plantshare_item_highlighted(self):
         self.assertTrue(
@@ -175,15 +172,11 @@ class NavigationFunctionalTests(FunctionalTestCase):
 
     def test_header_full_key_item_highlighted(self):
         self.assertTrue(self._is_nav_item_highlighted(
-            '/full/',
-            'header li.full a')   # remove 'a' upon moving to 'site' app
-            )
+            '/full/', 'header li.full'))
 
     def test_header_full_key_item_highlighted_within_section(self):
         self.assertTrue(self._is_nav_item_highlighted(
-            '/full/woody-plants/',
-            'header li.full a')   # remove 'a' upon moving to 'site' app
-            )
+            '/full/woody-plants/', 'header li.full'))
 
     @unittest.skip('Skip for now: page returns error')
     def test_header_dkey_item_highlighted(self):
@@ -203,11 +196,11 @@ class NavigationFunctionalTests(FunctionalTestCase):
 
     def test_header_about_item_highlighted(self):
         self.assertTrue(
-            self._is_nav_item_highlighted('/about/', 'header li.about'))
+            self._is_nav_item_highlighted('/about/', 'header li.help'))
 
     def test_header_about_item_highlighted_within_section(self):
         self.assertTrue(
-            self._is_nav_item_highlighted('/start/', 'header li.about'))
+            self._is_nav_item_highlighted('/start/', 'header li.help'))
 
 
 
@@ -448,7 +441,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get(
             '/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn'
             )
-        self.wait_on_species(500, seconds=21)   # Big subgroup, wait longer
+        self.wait_on_species(502, seconds=21)   # Big subgroup, wait longer
 
         self.css1(FILTER_LINK_CSS).click()
         self.wait_on(5, self.css, RANGE_DIV_CSS)
@@ -473,7 +466,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertIn('to the 41 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '100'
-        self.assertIn('to the 220 matching species', instructions.text)
+        self.assertIn('to the 230 matching species', instructions.text)
 
         measure_input.send_keys('0')  # '1000'
         self.assertIn('to the 191 matching species', instructions.text)
@@ -486,7 +479,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Submitting when there are no matching species does nothing.
 
-        unknowns = 26
+        unknowns = 17
 
         apply_button.click()  # should do nothing
         self.assertEqual(sidebar_value_span.text, '')
@@ -555,7 +548,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get('/non-monocots/remaining-non-monocots/'
                  '#_filters=family,genus,plant_height_rn'
                  '&plant_height_rn=5000')
-        unknowns = 27
+        unknowns = 18
 
         wait = 30  # Big subgroup, wait longer
         try:
