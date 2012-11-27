@@ -24,10 +24,6 @@
     <p>* = Required</p>
 </div>
 
-<form method="post" action="{% url ps-sightings %}">
-    {% include "_sighting_form.html" %}
-</form>
-
 <div class="modal-container">
   <div class="image-modal">
       <a href="#" class="close">close</a>
@@ -42,6 +38,10 @@
       </form>
   </div>
 </div>
+
+<form method="post" action="{% url ps-sightings %}">
+    {% include "_sighting_form.html" %}
+</form>
 
 {% endblock %}
 
