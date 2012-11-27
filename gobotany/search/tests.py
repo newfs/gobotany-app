@@ -154,9 +154,11 @@ class SearchTests(FunctionalCase):
         for excerpt in result_document_excerpts:
             # Rhexia should not appear right at the beginning after an
             # ellipsis, i.e., the excerpt should start with something
-            # like '...Genus: Rhexia' rather than '...Rhexia'.
-            self.assertTrue(excerpt.text.find('...Rhexia') == -1)
-            self.assertTrue(excerpt.text.find('Rhexia') > 3)
+            # like '...Genus: Rhexia' rather than '...Rhexia'. This
+            # means that our custom highlighter is adding some context
+            # before the highlighted word as expected.
+            if excerpt.text.startswith('...'):
+                self.assertTrue(excerpt.text.find('...Rhexia') == -1)
 
     # Tests for search ranking.
 
