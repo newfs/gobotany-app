@@ -784,12 +784,12 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
     # Tests for each of the Simple Key plant subgroups
 
     def test_simple_key_angiosperms_suggestions_exist(self):
-        SUGGESTIONS = ['woody broad-leaved plants']
+        SUGGESTIONS = ['broad-leaved woody plants']
         self.assertEqual(self._suggestions_found(SUGGESTIONS),
                          sorted(SUGGESTIONS))
 
     def test_simple_key_gymnosperms_suggestions_exist(self):
-        SUGGESTIONS = ['woody needle-leaved plants']
+        SUGGESTIONS = ['needle-leaved woody plants']
         self.assertEqual(self._suggestions_found(SUGGESTIONS),
                          sorted(SUGGESTIONS))
 
@@ -1139,12 +1139,14 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         'remaining-graminoids': ['Bolboschoenus fluviatilis',
                                  'Juncus tenuis'],
         'orchid-monocots': ['Arethusa bulbosa', 'Isotria verticillata'],
-        'non-orchid-monocots': ['Acorus americanus', 'Hypoxis hirsuta'],
+        'non-orchid-monocots': ['Hypoxis hirsuta', 'Iris versicolor'],
         'monilophytes': ['Athyrium angustum', 'Cystopteris tenuis'],
         'lycophytes': ['Dendrolycopodium dendroideum', 'Isoetes echinospora'],
         'equisetaceae': ['Equisetum arvense', 'Equisetum palustre'],
         'composites': ['Achillea millefolium', 'Packera obovata'],
-        'remaining-non-monocots': ['Abutilon theophrasti', 'Nelumbo lutea']
+        'remaining-non-monocots': ['Abutilon theophrasti', 'Nelumbo lutea'],
+        # Why does 'Acorus americanus', once in non-orchid-monocots but now
+        # in remaining-non-monocots, only have 2 attributes?
         }
 
     # Plant subgroups pages tests: the "plant preview" popups should
@@ -1386,10 +1388,12 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
                'state_distribution,family,genus')
         page = self.get(url)
         self.wait_on(10, self.css1, 'div.plant.in-results')
-        # When setting up the page from the URL hash, there is no intro 
-        # overlay, so no need to wait for it as usual.
-        self.assertTrue(page.find_element_by_xpath(
-            '//li/a/span/span[text()="Habitat"]'))  # glossarized: extra span
+        # When setting up the page from the URL hash, there is no intro
+        # overlay, so no need to wait for it as usual. But we do have to
+        # wait on glossarization, so:
+        self.wait_on(10, page.find_element_by_xpath, # glossarized; extra span:
+                     '//li/a/span/span[text()="Habitat"]')
+        # Then it is safe to:
         self.assertTrue(page.find_element_by_xpath(
             '//li/a/span[text()="New England state"]'))
 
