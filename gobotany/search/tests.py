@@ -433,6 +433,16 @@ class SearchTests(FunctionalCase):
             ('You are here: Dichotomous Key > '
              'Group 3: Monocots > Liliaceae')) > -1);
 
+    def test_search_results_contain_dichotomous_key_page_text(self):
+        self.get('/search/?q=cystopteris%20difficult%20stunted')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertEqual(result_links[0].text, 'Cystopteris: Dichotomous Key')
+        result_excerpts = self.css('#search-results-list li p')
+        self.assertTrue(result_excerpts[0].text.find(
+            ('Cystopteris is a difficult genus due to hybridization')) > -1);
+
+
     # Test searching miscellaneous pages around the site (about, etc.)
 
     def test_search_results_contain_about_page(self):

@@ -19,9 +19,12 @@ You are here:
 {% endif %}
 
 {# Main heading #}
-{% if object.title == 'Key to the Families' %}Dichotomous {% endif %}{{ object.title }}
+{% if object.title == 'Key to the Families' %}Dichotomous {% endif %}{{ object.title }}.
 
-{# # TODO: text #}
+{# Text #}
+{{ object.text|striptags }}
+
+{# TODO: leads (reverse order?) #}
 
 
 {# Ensure the main page comes first for the search: dichotomous key #}
