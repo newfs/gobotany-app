@@ -16,10 +16,16 @@ define([
             return false;
         });
 
+        function addNewThumb(id, url) {
+            $('.thumb-gallery').prepend('<img class="thumb" src="' + url + '" />');
+        }
+
         $('#upload-photo-submit').click(function() {
             $('#upload-photo-form').ajaxSubmit(function(json) {
                 if(json.success) {
                     console.log('Successfully uploaded sighting photo.');
+                    console.log('New Photo [id=' + json.id + ', thumb=' + json.thumb + ']');
+                    addNewThumb(json.id, json.thumb);
                 } else {
                     console.log('Error: ' + json.info);
                 }
