@@ -17,7 +17,7 @@ class PlainPage(models.Model):
     videos = models.ManyToManyField('core.Video')
 
     class Meta:
-        verbose_name_plural = 'plain pages'
+        verbose_name = 'plain page'
 
     def __unicode__(self):
         return u'%s' % self.title
@@ -73,7 +73,6 @@ class GroupsListPage(models.Model):
 
     class Meta:
         verbose_name = 'groups list page'
-        verbose_name_plural = 'groups list pages'
 
     def __unicode__(self):
         return u'%s' % self.title
@@ -94,7 +93,6 @@ class SubgroupsListPage(models.Model):
 
     class Meta:
         verbose_name = 'subgroups list page'
-        verbose_name_plural = 'subgroups list pages'
 
     def __unicode__(self):
         return u'%s' % self.title
@@ -116,7 +114,6 @@ class SubgroupResultsPage(models.Model):
 
     class Meta:
         verbose_name = 'subgroup results page'
-        verbose_name_plural = 'subgroup results pages'
 
     def __unicode__(self):
         return u'%s' % self.title
