@@ -25,8 +25,8 @@ You are here:
 {{ object.text|striptags }}
 
 {# Leads text #}
-{% if object.leads|length == 1 %}
-    This {{ object.rank }} contains exactly one {{ object.leads.0.goto_page.rank }}.
+{% if object.leads.count == 1 %}
+    This {{ object.rank }} contains exactly one {{ object.leads.all.0.goto_page.rank }}.
 {% else %}
     {% for lead in object.sorted_leads %}
         {{ lead.letter }}. {{ lead.text|striptags }}

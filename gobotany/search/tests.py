@@ -474,6 +474,14 @@ class SearchTests(FunctionalCase):
         self.assertTrue(result_excerpts[0].text.find(
             '1b. Rachises, costae, and') > -1);
 
+    def test_search_results_contain_dichotomous_key_single_lead_text(self):
+        self.get('/search/?q=genus%20exactly%20one%20species')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        result_excerpts = self.css('#search-results-list li p')
+        self.assertTrue(result_excerpts[0].text.find(
+            'This genus contains exactly one species.') > -1);
+
 
     # Test searching miscellaneous pages around the site (about, etc.)
 
