@@ -21,16 +21,29 @@ You are here:
 {# Main heading #}
 {% if object.title == 'Key to the Families' %}Dichotomous {% endif %}{{ object.title }}.
 
-{# Text #}
+{# Page text #}
 {{ object.text|striptags }}
 
-{# TODO: leads (reverse order?) #}
+{# Leads text #}
+{% if object.leads|length == 1 %}
+    This {{ object.rank }} contains exactly one {{ object.leads.0.goto_page.rank }}.
+{% else %}
+    {% for lead in object.sorted_leads %}
+        {{ lead.letter }}. {{ lead.text|striptags }}
+    {% endfor %}
+{% endif %}
+
 
 
 {# Ensure the main page comes first for the search: dichotomous key #}
 {% if object.title == 'Key to the Families' %}
 --
-{# add repeats for the index, hidden from the user #}
-{{ 'Dichotomous Key'|repeat:20 }}
+    {# add repeats for the index, hidden from the user #}
+    {{ 'Dichotomous Key'|repeat:40 }}
+--
+{% else %}
+--
+    {# add repeats for the index, hidden from the user #}
+    {{ object.title|repeat:30 }}
 --
 {% endif %}

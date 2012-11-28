@@ -198,6 +198,13 @@ class SubgroupsListPageIndex(BaseIndex):
         return (super(SubgroupsListPageIndex, self).index_queryset()
                 .select_related('group'))
 
+    def prepare(self, obj):
+        data = super(SubgroupsListPageIndex, self).prepare(obj)
+        # Boost helps ensure high ranking when searching on parts of
+        # subgroup friendly-names, such as "trees."
+        data['boost'] = 4.0
+        return data
+
 
 class SubgroupResultsPageIndex(BaseIndex):
     # Index
@@ -231,7 +238,12 @@ class DichotomousKeyPageIndex(BaseIndex):
         template_name='search_title_dichotomous_key_page.txt')
 
     # Customization
-    # TODO
+    def prepare(self, obj):
+        data = super(DichotomousKeyPageIndex, self).prepare(obj)
+        # Boost to help ensure high ranking when searching on family or
+        # genus names.
+        data['boost'] = 2.0
+        return data
 
 
 site.register(Taxon, TaxonIndex)

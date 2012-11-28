@@ -37,6 +37,10 @@ class Page(models.Model):
     def __unicode__(self):
         return self.title
 
+    @property
+    def sorted_leads(self):
+        return self.leads.order_by('id')
+
 class Lead(models.Model):
     page = models.ForeignKey('Page', related_name='leads')
     parent = models.ForeignKey('Lead', related_name='children', null=True)

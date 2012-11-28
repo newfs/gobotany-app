@@ -272,6 +272,30 @@ class SearchTests(FunctionalCase):
         return self._is_page_found(
             result_links, '%s: %s: Simple Key' % (subgroup_name, group_name))
 
+    # Search on the word key
+
+    def test_search_results_has_simple_key_main_page(self):
+        self.get('/search/?q=key')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links))
+        self.assertTrue(self._is_page_found(result_links,
+            'Simple Key for Plant Identification'))
+
+    # TODO: enable when Full Key is added to the search feature
+    #def test_search_results_has_full_key_main_page(self):
+    #    self.get('/search/?q=key')
+    #    result_links = self._result_links()
+    #    self.assertTrue(len(result_links))
+    #    self.assertTrue(self._is_page_found(result_links,
+    #        'Full Key for Plant Identification'))
+
+    def test_search_results_has_dichotomous_key_main_page(self):
+        self.get('/search/?q=key')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links))
+        self.assertTrue(self._is_page_found(result_links,
+            'Dichotomous Key to the Families'))
+
     # Search on site feature name "Simple Key"
 
     def test_search_results_have_simple_key_pages(self):
@@ -282,10 +306,10 @@ class SearchTests(FunctionalCase):
         for link in result_links:
             if link.text.find('Simple Key') > -1:
                 results_with_simple_key_in_title.append(link)
-        # There should be at least three pages with Simple Key in the
-        # title: the initial groups list page, any of the subgroups list
-        # pages, and any of the subgroup results pages.
-        self.assertTrue(len(results_with_simple_key_in_title) > 2)
+        # There should be at least two pages with Simple Key in the
+        # title: any of the initial groups list page, the subgroups list
+        # pages, and the subgroup results pages.
+        self.assertTrue(len(results_with_simple_key_in_title) > 1)
 
 
     # Search on main heading of plant group or subgroup pages
@@ -410,11 +434,11 @@ class SearchTests(FunctionalCase):
                                             'Group 1: Dichotomous Key'))
 
     def test_search_results_contain_dichotomous_key_family_pages(self):
-        self.get('/search/?q=lycopodiaceae')
+        self.get('/search/?q=cornaceae')
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_page_found(
-            result_links, 'Lycopodiaceae: Dichotomous Key'))
+            result_links, 'Cornaceae: Dichotomous Key'))
 
     def test_search_results_contain_dichotomous_key_genus_pages(self):
         self.get('/search/?q=pseudolycopodiella')
@@ -427,11 +451,10 @@ class SearchTests(FunctionalCase):
         self.get('/search/?q=liliaceae')
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
-        self.assertEqual(result_links[1].text, 'Liliaceae: Dichotomous Key')
+        self.assertEqual(result_links[2].text, 'Tricyrtis: Dichotomous Key')
         result_excerpts = self.css('#search-results-list li p')
-        self.assertTrue(result_excerpts[1].text.find(
-            ('You are here: Dichotomous Key > '
-             'Group 3: Monocots > Liliaceae')) > -1);
+        self.assertTrue(result_excerpts[2].text.find(
+            '> Family Liliaceae > Tricyrtis') > -1);
 
     def test_search_results_contain_dichotomous_key_page_text(self):
         self.get('/search/?q=cystopteris%20difficult%20stunted')
@@ -440,7 +463,16 @@ class SearchTests(FunctionalCase):
         self.assertEqual(result_links[0].text, 'Cystopteris: Dichotomous Key')
         result_excerpts = self.css('#search-results-list li p')
         self.assertTrue(result_excerpts[0].text.find(
-            ('Cystopteris is a difficult genus due to hybridization')) > -1);
+            'Cystopteris is a difficult genus due to hybridization') > -1);
+
+    def test_search_results_contain_dichotomous_key_leads_text(self):
+        self.get('/search/?q=rachises%20costae%20indusia')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertEqual(result_links[0].text, 'Cystopteris: Dichotomous Key')
+        result_excerpts = self.css('#search-results-list li p')
+        self.assertTrue(result_excerpts[0].text.find(
+            '1b. Rachises, costae, and') > -1);
 
 
     # Test searching miscellaneous pages around the site (about, etc.)
