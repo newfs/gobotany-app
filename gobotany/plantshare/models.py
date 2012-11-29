@@ -110,6 +110,8 @@ class Sighting(models.Model):
     location = models.ForeignKey(Location, null=True)
     location_notes = models.TextField(blank=True)
 
+    photos = models.ManyToManyField('ScreenedImage', null=True, blank=True)
+
     class Meta:
         ordering = ['-created']
 
@@ -122,6 +124,12 @@ class Sighting(models.Model):
             created_at = ', %s' % self.created
         return 'Sighting%s: %s at %s (user %d%s)' % (sighting_id,
             self.identification, self.location, self.user.id, created_at)
+
+    def approved_photos(self):
+        ''' Return only photos which have been screened and approved.
+        Use this method for any view where someone other than the owner
+        will see these photos.'''
+        return self.photos.filter(is_approved=True)
 
 
 if settings.DEBUG:
