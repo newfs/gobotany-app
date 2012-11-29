@@ -1,5 +1,7 @@
 {% load dkey_filters %}
 {# The page title for display purposes in our search results #}
 {% spaceless %}
-{% if object.title == 'Key to the Families' %}Dichotomous Key to Families{% else %}{{ object.title|expand_group_title }}: Dichotomous Key{% endif %}
+{% with object.title|expand_group_title as expanded_title %}
+{% if object.title == 'Key to the Families' %}Dichotomous Key to Families{% else %}{% if object.rank == 'genus' or object.rank == 'species' %}<i>{{ expanded_title }}</i>{% else %}{{ expanded_title }}{% endif %}: Dichotomous Key{% endif %}
+{% endwith %}
 {% endspaceless %}
