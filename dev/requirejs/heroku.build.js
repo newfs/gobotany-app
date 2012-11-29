@@ -22,6 +22,7 @@
                 'plantshare/sightings_locator',
                 'plantshare/sightings',
                 'plantshare/sign_up',
+                'plantshare/new_sighting',
                 'simplekey/simple',
                 'simplekey/results',
                 'taxa/species',
