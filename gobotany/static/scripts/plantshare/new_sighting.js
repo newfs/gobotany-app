@@ -16,8 +16,15 @@ define([
             return false;
         });
 
-        function addNewThumb(id, url) {
+        function addNewThumb(url) {
             $('.thumb-gallery').prepend('<img class="thumb" src="' + url + '" />');
+        }
+
+        function attachSightingPhoto(newPhotoId) {
+            $('.template-photo').clone().removeClass('template-photo').attr({
+                    'name': 'sightings_photos',
+                    'value': newPhotoId
+                }).appendTo('#sighting-photos');
         }
 
         $('#upload-photo-submit').click(function() {
@@ -25,7 +32,8 @@ define([
                 if(json.success) {
                     console.log('Successfully uploaded sighting photo.');
                     console.log('New Photo [id=' + json.id + ', thumb=' + json.thumb + ']');
-                    addNewThumb(json.id, json.thumb);
+                    addNewThumb(json.thumb);
+                    attachSightingPhoto(json.id);
                 } else {
                     console.log('Error: ' + json.info);
                 }
