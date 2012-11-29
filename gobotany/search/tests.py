@@ -482,11 +482,19 @@ class SearchTests(FunctionalCase):
         self.assertTrue(result_excerpts[0].text.find(
             'This genus contains exactly one species.') > -1);
 
+    def test_search_results_contain_species_page_info_from_flora(self):
+        self.get('/search/?q=understories%20cool%20woods')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        result_excerpts = self.css('#search-results-list li p')
+        self.assertTrue(result_excerpts[0].text.find(
+            '...the understories of cool woods.') > -1);
+
 
     # Test searching miscellaneous pages around the site (about, etc.)
 
     def test_search_results_contain_about_page(self):
-        self.get('/search/?q=flora%20novae%20angliae')
+        self.get('/search/?q=report%20bug')
         result_links = self._result_links()
         self.assertTrue(len(result_links))
         self.assertTrue(self._is_page_found(result_links, 'About Go Botany'))

@@ -1,3 +1,4 @@
+{% load search_tags %}
 {% load simplekey_extras %}
 
 {{ object.scientific_name }} {{ object.taxonomic_authority }}.
@@ -77,6 +78,9 @@ All Characteristics:
     {% endif %}
   {% endwith %}
 {% endfor %}
+
+{# Information from Flora Novae Angliae, if available #}
+{% search_text_info_from_flora scientific_name=object.scientific_name %}
 
 {# Distribution by County: TODO: perhaps add a text equivalent if it'd help to search by county. #}
 

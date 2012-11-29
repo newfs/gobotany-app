@@ -1,0 +1,6 @@
+{% load dkey_filters %}
+
+{% if dkey_page %}
+    Information from Dichotomous Key of Flora Novae Angliae: 
+    {{ dkey_page.text|discard_floating_figures|striptags }}
+{% endif %}
