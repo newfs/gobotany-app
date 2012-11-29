@@ -20,11 +20,11 @@
     {% include "simplekey/_results_modal_dialogs.html" %}
 
                 <div id="breadcrumb">
-                    <p>You are here:
+                    You are here:
                       <a href="{% url level1 key %}">{{ key|title }} Key</a>
                     &gt; <a href="{% url level2 key pilegroup.slug %}"
                         >{{ pilegroup.friendly_title|lower|capfirst }}</a>
-                    &gt; <span>{{ pile.friendly_title }}</span></p>
+                    &gt; <span>{{ pile.friendly_title }}</span>
                 </div>
 
                 <h1>{{ subgroup_results_page.main_heading|lower|capfirst }}</h1>

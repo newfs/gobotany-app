@@ -112,6 +112,10 @@ $disabled_orange_gradient: linear-gradient(
         b { display: block; }
     }
 
+    h1 {
+        margin-bottom: 14px;
+    }
+
     p {
         margin: 1em 0;
         max-width: 48em * (14px / 16px);

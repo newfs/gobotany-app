@@ -41,6 +41,15 @@
   </select>
 </div>
 
+{% if title != 'Key to the Families' %}
+  <div id="breadcrumb">
+    {% include "dkey/_breadcrumbs.html" %}
+    {% if title == 'List of Family Groups' %}
+      <a href="{% url dkey %}">« Return to the dichotomous key</a>
+    {% endif %}
+  </div>
+{% endif %}
+
 {% if title == 'Key to the Families' %}
   <h1>Dichotomous Key to Families</h1>
 {% elif page.rank == 'family' %}
@@ -52,13 +61,6 @@
 {% else %}
   <h1>{{ title }}</h1>
 {% endif %}
-
-<p id="breadcrumb">
-  {% include "dkey/_breadcrumbs.html" %}
-  {% if title == 'List of Family Groups' %}
-    <a href="{% url dkey %}">« Return to the dichotomous key</a>
-  {% endif %}
-</p>
 
 {% if page.rank != 'genus' and leads|length == 1 %}
   <p data-rank="{{ page.rank }}" data-title="{{ page.title }}">This

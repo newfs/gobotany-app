@@ -405,7 +405,6 @@ footer .support { margin-right: 0; padding: 18px 0; }
 
 /* Breadcrumb trails */
 #breadcrumb { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 160%; margin: 0 0 14px; }
-#breadcrumb p { margin: 0; }
 #breadcrumb span { color: #000; }
 
 /* Wait spinners */
@@ -1019,6 +1018,7 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
 #dkey #main .groupbox a { display: block; padding: 1em; color: black; line-height: 1.25em; }
 #dkey #main .groupbox a:hover { background-color: #d3e7b4; text-decoration: none; }
 #dkey #main .groupbox b { display: block; }
+#dkey #main h1 { margin-bottom: 14px; }
 #dkey #main p { margin: 1em 0; max-width: 42em; }
 #dkey #main p .figure { clear: right; float: right; margin-left: 1em; margin-bottom: 1em; width: 16em; font-size: 75%; }
 #dkey #main p .figure a { display: block; margin-bottom: 0.5em; border-bottom: 1px solid black; padding-bottom: 0.5em; }
