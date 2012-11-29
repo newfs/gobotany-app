@@ -294,7 +294,7 @@ class SearchTests(FunctionalCase):
         result_links = self._result_links()
         self.assertTrue(len(result_links))
         self.assertTrue(self._is_page_found(result_links,
-            'Dichotomous Key to the Families'))
+            'Dichotomous Key to Families'))
 
     # Search on site feature name "Simple Key"
 
@@ -424,7 +424,7 @@ class SearchTests(FunctionalCase):
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_page_found(
-            result_links, 'Dichotomous Key to the Families'))
+            result_links, 'Dichotomous Key to Families'))
 
     def test_search_results_contain_dichotomous_key_group_pages(self):
         self.get('/search/?q=group%201')

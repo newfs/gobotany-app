@@ -1,7 +1,7 @@
 {% load dkey_filters %}
 {% load simplekey_extras %}
 
-{% if object.title == 'Key to the Families' %}Dichotomous Key to the Families{% else %}{{ object.title }}: Dichotomous Key{% endif %}.
+{% if object.title == 'Key to the Families' %}Dichotomous Key to Families{% else %}{{ object.title|expand_group_title }}: Dichotomous Key{% endif %}.
 
 {# Breadcrumbs #}
 You are here:
@@ -19,7 +19,7 @@ You are here:
 {% endif %}
 
 {# Main heading #}
-{% if object.title == 'Key to the Families' %}Dichotomous {% endif %}{{ object.title }}.
+{% if object.title == 'Key to the Families' %}Dichotomous Key to Families{% else %}{{ object.title|expand_group_title }}{% endif %}.
 
 {# Page text #}
 {{ object.text|striptags }}
@@ -44,6 +44,6 @@ You are here:
 {% else %}
 --
     {# add repeats for the index, hidden from the user #}
-    {{ object.title|repeat:30 }}
+    {{ object.title|expand_group_title|repeat:30 }}
 --
 {% endif %}
