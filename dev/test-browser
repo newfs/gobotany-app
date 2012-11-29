@@ -21,6 +21,6 @@ if [ -n "$1" ]; then
 fi
 
 set -x
-python -m unittest -f "gobotany.simplekey.testdir.test_fbasic${subset}"
+python -m unittest "gobotany.simplekey.testdir.test_fbasic${subset}"
 
 killall chromedriver   # clean up any leftover test processes
