@@ -1084,9 +1084,9 @@ body.search-results h1 + p { margin-top: 12px; }
 body.search-results #search-results-list { margin: 6px 0 13px; padding: 6px 0 0; }
 body.search-results #search-results-list .highlighted { font-weight: bold; }
 body.search-results #search-results-list li { list-style-type: none; margin: 0 0 2px; padding: 2px 0; }
-body.search-results #search-results-list li img { float: left; margin: -1px 10px 0; vertical-align: middle; }
+body.search-results #search-results-list li img { float: left; margin: -1px 10px 0 0; vertical-align: middle; }
 body.search-results #search-results-list li a { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 15px; text-decoration: underline; }
-body.search-results #search-results-list li p { line-height: 140%; margin-left: 44px; margin-top: 2px; }
+body.search-results #search-results-list li p { line-height: 140%; margin-left: 34px; margin-top: 2px; }
 body.search-results .search-navigation { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 15px; text-align: center; }
 body.search-results .search-navigation ul { display: inline; }
 body.search-results .search-navigation li { display: inline; margin: 0 2px; }
