@@ -14,12 +14,13 @@ from gobotany.plantshare.models import Location, Sighting, UserProfile, Screened
 
 def _new_sighting_form_page(request, form):
     """Give a new-sighting form, either blank or with as-yet-invalid data."""
-    photo_image_form = ScreenedImageForm(initial={
+    upload_photo_form = ScreenedImageForm(initial={
         'image_type': 'SIGHTING'
     })
+
     return render(request, 'new_sighting.html', {
                'form': form,
-               'photo_image_form': photo_image_form,
+               'upload_photo_form': upload_photo_form,
            }, context_instance=RequestContext(request))
 
 def _user_name(user):

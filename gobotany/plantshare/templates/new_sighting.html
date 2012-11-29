@@ -32,8 +32,8 @@
       <form id="upload-photo-form" method="POST" 
           action="{% url ps-ajax-image-upload %}">
           {% csrf_token %}
-          {{ photo_image_form.image }}
-          <div style="display: none;">{{ photo_image_form.image_type }}</div>
+          {{ upload_photo_form.image }}
+          <div style="display: none;">{{ upload_photo_form.image_type }}</div>
           <input type="submit" id="upload-photo-submit" class="save-btn">
       </form>
   </div>
