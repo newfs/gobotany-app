@@ -238,6 +238,11 @@ class DichotomousKeyPageIndex(BaseIndex):
         template_name='search_title_dichotomous_key_page.txt')
 
     # Customization
+
+    def index_queryset(self):
+        return (super(DichotomousKeyPageIndex, self).index_queryset()
+                .prefetch_related('breadcrumb_cache', 'leads'))
+
     def prepare(self, obj):
         data = super(DichotomousKeyPageIndex, self).prepare(obj)
         # Boost to help ensure high ranking when searching on family or
