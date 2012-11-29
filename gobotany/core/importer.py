@@ -1934,6 +1934,9 @@ class Importer(object):
         for subgroup in subgroups:
             suggestions.extend(subgroup.search_suggestions())
 
+        # Add a search suggestion for the Dichotomous Key.
+        suggestions.append('dichotomous key')
+
         # Add extra search suggestions for the "generic" portion
         # of common names, for example, "dogwood" from "silky dogwood."
         for name in models.CommonName.objects.all():
