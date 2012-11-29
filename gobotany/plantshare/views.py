@@ -54,8 +54,15 @@ def sightings_view(request):
                                 identification=identification, title=title,
                                 notes=notes, location=location,
                                 location_notes=location_notes)
+
             sighting.save()
+
             #print 'saved:', sighting
+            photo_ids = request.POST.getlist('sightings_photos')
+            #print 'Got sightings photos: ', sighting_photos
+            photos = ScreenedImage.objects.filter(id__in=photo_ids)
+            sighting.photos.add(*photos)
+            sighting.save()
 
             done_url = reverse('ps-new-sighting-done') + '?s=%d' % sighting.id
             return HttpResponseRedirect(done_url)
