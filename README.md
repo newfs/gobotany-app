@@ -60,9 +60,10 @@ If you want to do a fresh import of all data, first run:
     createdb -E UTF8 gobotany
 
 If you are working on the Importer (gobotany/core/importer.py), be sure
-to run dev/tox before trying to run bin/load, the script that executes the
-importer code. Running dev/tox first is necessary to actually package up
-and execute the version of importer.py that includes your local changes.
+to run dev/tox again each time before trying to run bin/load, the script
+that executes the importer code. Running dev/tox is necessary to actually
+package up and execute the version of importer.py that includes your local
+changes.
 
 You may need to have the virtual environment activated (source
 dev/activate) before you are able to successfully run bin/load.
