@@ -269,8 +269,10 @@ def dkey_images(request, slug):
 
     if rank == u'family':
 
-        # See https://github.com/newfs/gobotany-app/issues/302 for the
-        # reasoning behind our image-type limit here.
+        # See https://github.com/newfs/gobotany-app/issues/302
+        # and https://github.com/newfs/gobotany-app/issues/304
+
+        group_number = title.split()[-1] if page.rank == u'group' else u''
 
         image_types_allowed = ['leaves', 'plant form']
         if title in extra_image_types:
@@ -278,12 +280,23 @@ def dkey_images(request, slug):
 
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT f.name,
+            SELECT f.name, t.id,
               (SELECT id FROM core_taxon WHERE family_id = f.id LIMIT 1)
               FROM core_family f
-              WHERE f.name IN %s""", (tuple(taxa_names),))
-        family_map = { taxon_id: family_name
-                       for family_name, taxon_id in cursor.fetchall() }
+              LEFT JOIN dkey_illustrativespecies i
+                ON (i.group_number = %s AND f.name = i.family_name)
+              LEFT JOIN core_taxon t
+                ON (i.species_name = t.scientific_name)
+              WHERE f.name IN %s""", (group_number, tuple(taxa_names),))
+
+        rows = cursor.fetchall()
+        family_map = {}
+        for family_name, illustrative_taxon_id, random_taxon_id in rows:
+            taxon_id = illustrative_taxon_id
+            if taxon_id is None:
+                taxon_id = random_taxon_id
+            family_map[taxon_id] = family_name
+
         taxon_ids = family_map.keys()
 
     elif rank == u'genus':
