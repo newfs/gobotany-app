@@ -16,7 +16,7 @@ where the Go Botany dependencies are all installed. You can then get the
 application running with three commands:
 
     dev/start-solr
-    dev/load
+    bin/load
     dev/django runserver
 
 At this point you are done installing and should be able to test and
