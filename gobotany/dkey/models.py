@@ -75,3 +75,8 @@ class Lead(models.Model):
 class Figure(models.Model):
     number = models.IntegerField(primary_key=True)
     caption = models.TextField()
+
+class IllustrativeSpecies(models.Model):
+    group_number = models.IntegerField()
+    family_name = models.TextField(db_index=True)
+    species_name = models.TextField()
