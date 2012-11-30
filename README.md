@@ -9,7 +9,7 @@ then running the “tox” Python testing tool:
 
     git clone git@github.com:newfs/gobotany-app.git
     cd gobotany-app
-    tox
+    dev/tox
 
 This will create a virtual environment (peek inside of `.tox` to see it)
 where the Go Botany dependencies are all installed. You can then get the
@@ -34,7 +34,7 @@ deploy to production, run:
 
 Our various tests can be run with three commands:
 
-    tox
+    dev/tox
     dev/test-browser
     dev/test-js
 
