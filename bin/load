@@ -52,6 +52,7 @@ def dkey():
     run('s3cmd get --skip-existing --no-progress '
         's3://newfs/data-dkey/110330_fone_test_05.xml')
     run('python -m gobotany.dkey.xml_import')
+    run('python -m gobotany.dkey.cleanup')
     run('python -m gobotany.dkey.sync')
 
 def solr():
