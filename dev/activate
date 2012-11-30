@@ -7,15 +7,5 @@
 # main directory of "gobotany-app":
 
 DEV=$(dirname "$0")
-BIN=$DEV/../.tox/py27/bin
-
-if [ ! -x $BIN ]
-then
-    echo Cannot find directory $BIN
-    echo Error: you need to run "tox" in the "gobotany-app" directory >&2
-    return 1
-fi
-
-source $BIN/activate
-
+$DEV/utils/require-setup && source $DEV/venv/bin/activate
 export DJANGO_SETTINGS_MODULE=gobotany.settings

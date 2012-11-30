@@ -4,15 +4,12 @@
 *.sw*
 *.DS_Store
 
-# Tox
-/.tox/
-/MANIFEST
-
 # Dev tools
 /dev/node/
 /dev/nohup.out
 /dev/requirejs/build/
 /dev/usr/apache-solr-3.6.1*
+/dev/venv/
 
 # SASS
 /gobotany/static/sass/.sass-cache/

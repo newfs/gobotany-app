@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+cd $(dirname ${BASH_SOURCE[0]})
+cd ..
+if [ ! -d venv ]
+then
+    echo
+    echo Error: please run dev/setup to create your virtual environment
+    echo
+    exit 1
+fi

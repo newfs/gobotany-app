@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+DEV=$(dirname ${BASH_SOURCE[0]})
+$DEV/django test \
+    api core dkey mapping plantoftheday plantshare search simplekey site taxa

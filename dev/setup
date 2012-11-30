@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+# Set up a virtual environment with Go Botany inside.
+
+cd $(dirname ${BASH_SOURCE[0]})
+
+./utils/check-dependencies
+
+rm -rf ./venv
+
+python2.7 virtualenv.py --distribute --unzip-setuptools \
+    --system-site-packages ./venv
+
+./venv/bin/pip install -e ..
+./venv/bin/pip install coverage
+./venv/bin/pip install selenium

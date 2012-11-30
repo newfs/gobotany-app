@@ -1,17 +1,5 @@
-import os
-import subprocess
-import sys
 from distutils.core import setup
 from setuptools import find_packages
-
-if 'TOX' in os.environ:
-    # Be kind to the poor developer: when this is being run locally on a
-    # developer machine using "tox", only proceed with a full install
-    # attempt if the necessary system-wide requirements are in place.
-    try:
-        subprocess.check_call(['bash', 'dev/check-dependencies'])
-    except subprocess.CalledProcessError:
-        sys.exit(2)
 
 requirements = [
     'django==1.4',

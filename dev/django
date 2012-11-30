@@ -1,15 +1,8 @@
 #!/bin/bash
 
-DEV=$(dirname "$0")
-APP=$(dirname "$DEV")
-DJANGO_ADMIN=$DEV/../.tox/py27/bin/django-admin.py
+set -e
 
-if [ ! -x $DJANGO_ADMIN ]
-then
-        echo Error: you need to run "tox" in the "gobotany-app" directory >&2
-        exit 1
-fi
-
-export DJANGO_SETTINGS_MODULE=gobotany.settings
-export PYTHONPATH=$APP
-exec $DJANGO_ADMIN "$@"
+DEV=$(dirname ${BASH_SOURCE[0]})
+$DEV/utils/require-setup
+source $DEV/activate
+exec django-admin.py "$@"

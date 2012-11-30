@@ -4,7 +4,7 @@ set -e
 cd $(dirname "${BASH_SOURCE[0]}")
 DEV="$PWD"
 
-source ./install-node
+source ./utils/install-node
 
 cd ../gobotany/static/scripts
 

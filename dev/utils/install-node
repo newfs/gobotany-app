@@ -1,8 +1,11 @@
 #!/bin/bash
 
 set -e
-cd $(dirname "${BASH_SOURCE[0]}")
-DEV="$PWD"
+if [ "$(dirname $PWD)" != "dev" ]
+then
+    echo Please cd to the ./dev directory before running dev/utils/install-node
+    exit 2
+fi
 
 VERSION=v0.8.14
 
