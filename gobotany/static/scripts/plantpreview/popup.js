@@ -15,11 +15,11 @@ define([
     var glossarize = glossarizer.glossarize;
     var exports = {};
 
-    exports.connect = function($anchor, scientific_name) {
+    exports.connect = function($anchor, scientific_name, pile_slug) {
         $anchor.click(function(event) {
             if ($(window).width() <= 600)
                 return;  // follow the link directly to the species page
-            _open_popup($anchor, scientific_name);
+            _open_popup($anchor, scientific_name, pile_slug);
             return false;
         });
     };

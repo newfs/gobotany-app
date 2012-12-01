@@ -715,7 +715,7 @@ body.skey.results .show-me { float: right; margin: 0 0 15px 0; }
 body.skey.results #results-display label { color: #000; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; }
 body.skey.results #results-display select { font-size: 15px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; padding: 0; -webkit-appearance: menulist; }
 body.skey.results #results-display img.icon { margin: 0 3px 0 0; vertical-align: -1px; }
-body.skey.results #modal, body.skey.results #plant-detail-modal { display: none; }
+body.skey.results #modal { display: none; }
 body.skey.results .plant-list { margin-top: 8px; position: relative; /* end .plant */ /* List view styles */ /* end table */ }
 body.skey.results .plant-list .plant { background: #fff; border: 1px solid #c3d941; display: none; height: 210px; left: 0px; padding: 8px 6px; position: absolute; text-align: center; top: 0px; width: 160px; /* prevent long names from blowing out layout; allow wrap */ }
 body.skey.results .plant-list .plant.in-results { display: block; }

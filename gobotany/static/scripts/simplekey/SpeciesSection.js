@@ -2,6 +2,7 @@ define([
     'bridge/jquery',
     'bridge/shadowbox',
     'bridge/underscore',
+    'plantpreview/popup',
     'simplekey/App3',
     'simplekey/resources',
     'simplekey/results_photo_menu',
@@ -9,7 +10,8 @@ define([
     'util/glossarizer',
     'util/lazy_images',
     'util/sidebar'
-], function($, Shadowbox, _, App3, resources, results_photo_menu, utils,
+], function($, Shadowbox, _, plantpreview_popup,
+            App3, resources, results_photo_menu, utils,
             glossarizer, lazy_images, sidebar) {
 
     var SpeciesSection = function() {};
@@ -38,166 +40,6 @@ define([
                 return image;
         }
         return {};
-    };
-
-    methods.connect_plant_preview_popup = function(plant_link, plant) {
-
-        $(plant_link).click($.proxy(function(event) {
-            event.preventDefault();
-
-            // A few characters get a "compact" list for multiple values.
-            var COMPACT_EX = /^habitat|habitat_general|state_distribution$/;
-
-            // Populate the hidden content area with information about
-            // this plant.
-            var name = plant.scientific_name + ' <span>' +
-                plant.common_name + '</span>';
-            $('#plant-detail-modal h3').html(name);
-
-            // Call the API to get more information.
-
-            $.when(
-                resources.taxon_info(plant.scientific_name),
-                resources.pile(this.pile_slug)
-            ).done(
-                function(taxon, pile_info) {
-                    // Fill in Facts About.
-                    $('#plant-detail-modal div.details p.facts')
-                        .html(taxon.factoid);
-
-                    // Fill in Characteristics.
-                    var $characteristics = $(
-                        '#plant-detail-modal .details .characteristics');
-                    $characteristics.empty();
-
-                    var MAX_CHARACTERS = 6;
-                    var characters = pile_info.plant_preview_characters;
-                    var characters_html = '';
-                    var characters_displayed = 0;
-                    for (var i = 0; i < characters.length; i++) {
-                        var ppc = characters[i];
-
-                        if (ppc.partner_site === gobotany_sk_partner_site) {
-
-                            var display_value = '';
-                            var character_value =
-                                taxon[ppc.character_short_name];
-                            if (character_value !== undefined &&
-                                character_value !== null) {
-
-                                display_value = character_value;
-                                if (ppc.value_type === 'LENGTH') {
-                                    var min = character_value[0];
-                                    var max = character_value[1];
-                                    var min_mm = utils.convert(
-                                        min, ppc.unit, 'mm');
-                                    var max_mm = utils.convert(
-                                        max, ppc.unit, 'mm');
-                                    display_value =
-                                        utils.pretty_length(
-                                        ppc.unit, min_mm, false) + '&#8211;' +
-                                        utils.pretty_length(
-                                        ppc.unit, max_mm);
-                                }
-                                else {
-                                    // For multiple-value characters,
-                                    // make a list.
-                                    if (typeof(display_value) !== 'string') {
-                                        var is_compact = (COMPACT_EX.test(
-                                            ppc.character_short_name));
-                                        display_value = _get_multivalue_list(
-                                            display_value, is_compact);
-                                    }
-                                }
-                            }
-
-                            // Only display this character if it has a value
-                            // and if the maximum number of characters for the
-                            // popup has not been exceeded.
-
-                            if (display_value !== undefined &&
-                                display_value !== '') {
-
-                                $characteristics.append(
-                                    $('<dl>').append(
-                                        $('<dt>', {html: ppc.friendly_name}),
-                                        $('<dd>').append(display_value)
-                                    )
-                                );
-
-                                characters_displayed += 1;
-                                if (characters_displayed >= MAX_CHARACTERS)
-                                    break;
-                            }
-                        }
-                    }
-
-                    // Wire up the Go To Species Page button.
-                    var key = (window.location.href.indexOf('/full/') > -1) ?
-                              'full' : 'simple';
-                    var species_page_url = plant.url;
-                    if (key === 'full') {
-                        species_page_url += '&key=full';
-                    }
-                    $('#plant-detail-modal a.go-to-species-page')
-                        .attr('href', species_page_url);
-
-                    // Add images.
-                    var images_html = '';
-                    var clicked_image = $('img', plant_link).attr('src');
-
-                    if (clicked_image !== undefined)
-                        clicked_image = clicked_image.substr(
-                            clicked_image.lastIndexOf('/') + 1);
-
-                    var is_missing_image = $('div.missing-image', plant_link
-                                            ).length ? true : false;
-                    for (i = 0; i < taxon.images.length; i++) {
-                        var taxon_image = taxon.images[i];
-                        var new_image = '<img src="' +
-                            taxon_image.large_thumb_url + '" alt="' +
-                            taxon_image.title + '">';
-                        var taxon_image = taxon_image.large_thumb_url;
-                        taxon_image = taxon_image.substr(
-                            taxon_image.lastIndexOf('/') + 1);
-                        if (clicked_image === taxon_image &&
-                            !is_missing_image) {
-                            // Since this is the same image as was
-                            // clicked, show it first.
-                            images_html = new_image + images_html;
-                        } else {
-                            images_html += new_image;
-                        }
-                    }
-                    $('#plant-detail-modal div.images').html(images_html);
-
-                    // Open the Shadowbox modal dialog with a copy of the
-                    // HTML in the hidden content area.
-                    var content_element = $('#plant-detail-modal')[0];
-                    // On small screens, skip the popup entirely for now.
-                    if ($(window).width() <= 600) {
-                        window.location.href = plant.url;
-                    }
-                    else {
-                        Shadowbox.open({
-                            content: content_element.innerHTML,
-                            player: 'html',
-                            height: 520,
-                            width: 935,
-                            options: {
-                                handleOversize: 'resize',
-                                onFinish: function() {
-                                    var $sb = $('#sb-container');
-                                    var $children = $sb.find('p, dt, dd, li');
-                                    $sb.find('.img-container').scrollable();
-                                    glossarize($children);
-                                }
-                            }
-                        });
-                    }
-                }
-            );
-        }, this));
     };
 
     methods.get_number_of_rows_to_span = function(items, start) {
@@ -322,10 +164,8 @@ define([
             $('<p>', {'class': 'plant-name', 'html': name_html})
                 .appendTo(plant_link);
 
-            // Connect a "plant preview" popup. Pass species as
-            // context in the connect function, which becomes 'this'
-            // to pass along as the variable plant.
-            this.connect_plant_preview_popup(plant_link, species);
+            plantpreview_popup.connect(
+                plant_link, species.scientific_name, this.pile_slug);
 
             this.plant_data.push(species);
             this.plant_divs.push($plant);
@@ -458,29 +298,6 @@ define([
                 default_type = image_types[0];
             App3.set('image_type', default_type);
         }
-    };
-
-    /* Helper function that does not need "this" state, and so is not
-       made a part of the class. */
-
-    var _get_multivalue_list = function(display_value, is_compact) {
-        // Return a HTML list for presenting multiple character values.
-        if (typeof(display_value) === 'string')
-            return display_value;
-
-        var $ul = $('<ul>');
-        if (is_compact)
-            $ul.addClass('compact');
-
-        var $li = null;
-        _.each(display_value, function(v) {
-            $li = $('<li>', {'html': v}).appendTo($ul);
-        });
-
-        if ($li !== null)
-            $li.addClass('last');
-
-        return $ul;
     };
 
     // Return
