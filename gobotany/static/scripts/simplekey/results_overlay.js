@@ -1,8 +1,9 @@
 define([
-    'util/document_is_ready',
     'bridge/jquery',
-    'simplekey/resources'
-], function(document_is_ready, $, resources) {
+    'bridge/underscore',
+    'simplekey/resources',
+    'util/document_is_ready'
+], function($, _, resources, document_is_ready) {
 
     var results_overlay_init = function(
         pile_slug, key_vector_ready, pile_taxa_ready
@@ -13,7 +14,7 @@ define([
             pile_taxa_ready
         ).done(function(x, key_vector, pile_taxa_vector) {
             var k = key_vector[0].species;
-            var j = _.intersect(k, pile_taxa_vector);
+            var j = _.intersection(k, pile_taxa_vector);
             $('.number-of-species .number').html(j.length);
         });
 

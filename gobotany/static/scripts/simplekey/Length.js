@@ -121,7 +121,7 @@ define([
         var mm = this._current_value();
         var mm_old = this._parse_value(this.filter.get('value'));
         var vector = this.filter.taxa_matching(mm);
-        vector = _.intersect(vector, this.species_vector);
+        vector = _.intersection(vector, this.species_vector);
         var $div = $('.instructions', this.div);
         var $apply_button = $('.apply-btn', this.div);
         if (mm_old === mm) {

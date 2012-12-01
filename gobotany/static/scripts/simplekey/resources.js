@@ -81,7 +81,7 @@ define([
             module.key_vector(args.key_name),
             module.pile_vector(args.pile_slug)
         ).done(function(kv, pv) {
-            deferred.resolve(_.intersect(kv[0].species, pv[0].species));
+            deferred.resolve(_.intersection(kv[0].species, pv[0].species));
         });
         return deferred;
     });

@@ -170,7 +170,7 @@ results_page_init: function(args) {
     var choices_that_leave_more_than_zero_taxa = function(filter) {
         var other_taxa = App3.filter_controller.compute(filter);
         var keepers = _.filter(filter.values, function(value) {
-            return _.intersect(value.taxa, other_taxa).length;
+            return _.intersection(value.taxa, other_taxa).length;
         });
         var choices = _.pluck(keepers, 'choice');
         choices.sort();

@@ -22,7 +22,7 @@ define([
     install_values: function(args) {
         var values = _.filter(args.values, function(value) {
             // Throw out values that had no taxa in this pile.
-            value.taxa = _.intersect(value.taxa, args.pile_taxa);
+            value.taxa = _.intersection(value.taxa, args.pile_taxa);
             return value.taxa.length;
         });
         var alltaxa = [];
@@ -79,7 +79,7 @@ define([
             if (vmin === 0 && vmax === 0)
                 return;  // ignore "NA" values
 
-            if (_.intersect(taxa, value.taxa).length == 0)
+            if (_.intersection(taxa, value.taxa).length == 0)
                 return;  // ignore values that apply to none of these species
 
             // First we skip any ranges lying entirely to the left of this one.

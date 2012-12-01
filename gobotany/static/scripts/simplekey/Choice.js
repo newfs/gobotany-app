@@ -247,7 +247,7 @@ define([
         _.map(this.filter.values, function(value) {
 
             // How many taxa would be left if this value were chosen?
-            var num_taxa = _.intersect(value.taxa, other_taxa).length;
+            var num_taxa = _.intersection(value.taxa, other_taxa).length;
 
             // Draw it accordingly.
             var div = div_map[value.choice];

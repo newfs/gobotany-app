@@ -38,7 +38,7 @@ define([
         this.forEach(function(f) {
             if (f !== skip_filter && f.value !== null && f.value != '') {
                 var matches = f.taxa_matching().concat(f.valueless_taxa);
-                taxa = _.intersect(taxa, matches);
+                taxa = _.intersection(taxa, matches);
             }
         });
         return _.sortBy(taxa, this.numsort);
