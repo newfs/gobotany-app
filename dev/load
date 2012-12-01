@@ -2,6 +2,14 @@
 
 set -e
 
+if [ -z "$AWS_ACCESS_KEY_ID" -o -z "$AWS_SECRET_ACCESS_KEY" ] ;then
+    echo >&2
+    echo "Error: Database reload requires privileged access to Amazon AWS" >&2
+    echo "       Please set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY" >&2
+    echo >&2
+    exit 1
+fi
+
 DEV=$(dirname ${BASH_SOURCE[0]})
 $DEV/utils/require-setup
 source $DEV/activate
