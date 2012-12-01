@@ -8,6 +8,8 @@ define([
     'util/shadowbox_init'
 ], function(Handlebars, $, _, resources, utils, glossarizer, Shadowbox) {
 
+    // A few characters get a "compact" list for multiple values.
+    var COMPACT_EX = /^habitat|habitat_general|state_distribution$/;
     var MAX_CHARACTERS = 6;
 
     var glossarize = glossarizer.glossarize;
@@ -23,9 +25,6 @@ define([
     };
 
     var _open_popup = function($anchor, scientific_name, pile_slug) {
-
-        // A few characters get a "compact" list for multiple values.
-        var COMPACT_EX = /^habitat|habitat_general|state_distribution$/;
 
         /* Call the API to get more information about the plant. */
 
@@ -55,7 +54,7 @@ define([
             });
             $.when.apply($, pile_fetches).done(function() {
                 var arrays = _.pluck(arguments, 'plant_preview_characters');
-                var characters = _.flatten(arrays);
+                var characters = _.map(_.flatten(arrays), _.clone);
                 _remove_duplicate_characters(characters);
                 characters_ready.resolve(characters);
             });
@@ -65,96 +64,41 @@ define([
             plant_info_ready,
             characters_ready
         ).done(function(plant, characters) {
+            _finally_open_popup($anchor, plant, characters);
+        });
+    };
 
-            // // Fill in Characteristics.
-            // var $characteristics = $(
-            //     '#plant-detail-modal .details .characteristics');
-            // $characteristics.empty();
+    var _finally_open_popup = function($anchor, plant, characters) {
 
-            // var characters_html = '';
-            // var characters_displayed = 0;
-            // for (var i = 0; i < characters.length; i++) {
-            //     var ppc = characters[i];
+        characters = _.chain(characters)
+            .filter(_filter_character, {plant: plant})
+            .first(MAX_CHARACTERS)
+            .value();
 
-            //     if (ppc.partner_site === gobotany_sk_partner_site) {
+        _put_clicked_image_first(plant, $anchor);
 
-            //         var display_value = '';
-            //         var character_value =
-            //             taxon[ppc.character_short_name];
-            //         if (character_value !== undefined &&
-            //             character_value !== null) {
+        var source = $('#plantpreview-popup-template').html().trim();
+        var template = Handlebars.compile(source);
+        var popup_html = template({
+            characters: characters,
+            plant: plant,
+            plant_url: $anchor.attr('href')
+        });
 
-            //             display_value = character_value;
-            //             if (ppc.value_type === 'LENGTH') {
-            //                 var min = character_value[0];
-            //                 var max = character_value[1];
-            //                 var min_mm = utils.convert(
-            //                     min, ppc.unit, 'mm');
-            //                 var max_mm = utils.convert(
-            //                     max, ppc.unit, 'mm');
-            //                 display_value =
-            //                     utils.pretty_length(
-            //                         ppc.unit, min_mm, false) + '&#8211;' +
-            //                     utils.pretty_length(
-            //                         ppc.unit, max_mm);
-            //             }
-            //             else {
-            //                 // For multiple-value characters,
-            //                 // make a list.
-            //                 if (typeof(display_value) !== 'string') {
-            //                     var is_compact = (COMPACT_EX.test(
-            //                         ppc.character_short_name));
-            //                     display_value = _get_multivalue_list(
-            //                         display_value, is_compact);
-            //                 }
-            //             }
-            //         }
-
-            //         // Only display this character if it has a value
-            //         // and if the maximum number of characters for the
-            //         // popup has not been exceeded.
-
-            //         if (display_value !== undefined &&
-            //             display_value !== '') {
-
-            //             $characteristics.append(
-            //                 $('<dl>').append(
-            //                     $('<dt>', {html: ppc.friendly_name}),
-            //                     $('<dd>').append(display_value)
-            //                 )
-            //             );
-
-            //             characters_displayed += 1;
-            //             if (characters_displayed >= MAX_CHARACTERS)
-            //                 break;
-            //         }
-            //     }
-            // }
-
-            _put_clicked_image_first(plant, $anchor);
-
-            var source = $('#plantpreview-popup-template').html().trim();
-            var template = Handlebars.compile(source);
-            var popup_html = template({
-                plant: plant,
-                plant_url: $anchor.attr('href')
-            });
-
-            Shadowbox.open({
-                content: popup_html,
-                player: 'html',
-                height: 520,
-                width: 935,
-                options: {
-                    handleOversize: 'resize',
-                    onFinish: function() {
-                        var $sb = $('#sb-container');
-                        var $children = $sb.find('p, dt, dd, li');
-                        $sb.find('.img-container').scrollable();
-                        glossarize($children);
-                    }
+        Shadowbox.open({
+            content: popup_html,
+            player: 'html',
+            height: 520,
+            width: 935,
+            options: {
+                handleOversize: 'resize',
+                onFinish: function() {
+                    var $sb = $('#sb-container');
+                    var $children = $sb.find('p, dt, dd, li');
+                    $sb.find('.img-container').scrollable();
+                    glossarize($children);
                 }
-            });
+            }
         });
     };
 
@@ -172,25 +116,38 @@ define([
         }
     };
 
-    var _get_multivalue_list = function(display_value, is_compact) {
+    var _filter_character = function(character) {
+        /* Decide whether to display this character; if so, mark up the
+           character with how we should display its value. */
 
-        // Return a HTML list for presenting multiple character values.
-        if (typeof(display_value) === 'string')
-            return display_value;
+        var plant = this.plant;
+        if (character.partner_site != gobotany_sk_partner_site)
+            return false;
 
-        var $ul = $('<ul>');
-        if (is_compact)
-            $ul.addClass('compact');
+        var short_name = character.character_short_name
+        var value = plant[short_name];
+        if (typeof value === 'undefined' || !value)
+            return false;
 
-        var $li = null;
-        _.each(display_value, function(v) {
-            $li = $('<li>', {'html': v}).appendTo($ul);
-        });
+        if (character.value_type === 'LENGTH') {
+            var unit = character.unit;
+            var min = value[0];
+            var max = value[1];
+            var min_mm = utils.convert(min, unit, 'mm');
+            var max_mm = utils.convert(max, unit, 'mm');
+            value = (
+                utils.pretty_length(unit, min_mm, false) + '&#8211;' +
+                    utils.pretty_length(unit, max_mm)
+            );
+        }
 
-        if ($li !== null)
-            $li.addClass('last');
+        if (!value)
+            return false;
 
-        return $ul;
+        character.display_value = value;
+        character.is_sequence = (typeof(value) !== 'string');
+        character.is_compact = COMPACT_EX.test(short_name);
+        return true;
     };
 
     var _put_clicked_image_first = function(plant, $anchor) {

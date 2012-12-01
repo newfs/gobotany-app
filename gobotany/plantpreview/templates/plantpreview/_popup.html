@@ -25,6 +25,22 @@
           <div class="details">
             <p class="facts">{{{plant.factoid}}}</p>
 	    <div class="characteristics">
+              {{#each characters}}
+              <dl>
+                <dt>{{friendly_name}}</dt>
+                <dd>
+                  {{#if is_sequence}}
+                    <ul {{#if is_compact}}class="compact"{{/if}}>
+                      {{#each display_value}}
+                      <li>{{this}}</li>
+                      {{/each}}
+                    </ul>
+                  {{else}}
+                    {{{display_value}}}
+                  {{/if}}
+                </dd>
+              </dl>
+              {{/each}}
             </div>
 	    <a class="go-to-species-page" href="{{plant_url}}"></a>
 	  </div>

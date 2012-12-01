@@ -877,8 +877,11 @@ footer {
                 text-indent: 0;
                 li {
                     display: inline;
-                    &:not([class='last']):after {
+                    &:after {
                         content: ', ';
+                    }
+                    &:last-child:after {
+                        content: none;
                     }
                 }
             }

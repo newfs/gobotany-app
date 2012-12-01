@@ -4,6 +4,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from gobotany.core.models import Taxon, ContentImage
+from gobotany.core.partner import partner_short_name
 from gobotany.dkey import models
 
 group_texts = {
@@ -150,6 +151,7 @@ def page(request, slug=u'key-to-the-families'):
     page = get_object_or_404(models.Page, title=title)
     proxy = _Proxy(page)
     return render_to_response('dkey/page.html', {
+            'partner_site': partner_short_name(request),
             'groups': get_groups,
 
             'leads': (lambda: proxy.leads),
