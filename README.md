@@ -58,6 +58,7 @@ Our various tests can be run with three commands:
     dev/test-js
     dev/test-python
 
+
 Additional notes on workstation use
 -----------------------------------
 
@@ -68,6 +69,7 @@ Before working, ensure you have your AWS credentials set in your
 environment variables, which is often accomplished by sourcing a shell
 script that the developer keeps outside the repository.  This is needed
 to ensure that PlantShare image importing will work.
+
 
 Installing Go Botany on Heroku
 ------------------------------
@@ -129,47 +131,24 @@ Botany site's search field:
 Running the automated tests
 ---------------------------
 
-TODO: update this section
+To run our Python tests you can either:
 
-To run all the tests:
+    dev/test-python             # to run all tests
+    dev/test-python api site    # to hand-pick Django apps to test
 
-    gobotany-deploy $ ./test-all.sh
+To run our JavaScript tests, run:
 
-#### Python ####
+    dev/test-js                 # to run all tests
+    dev/test-js test/Filter.js  # to select which modules to test
 
-These are a mix of unit tests and functional tests. To run the tests for
-all of our Django apps:
+Our selenium-powered browser tests are intended to cover things that
+cannot be tested without a browser and JavaScript.  To run them:
 
-    gobotany-deploy $ ./test-python.sh
+    dev/test-browser                           # to run all tests
+    dev/test-browser.sh FilterFunctionalTests  # select which tests
 
-To run the tests for a subset of the Django apps, add the app names:
+Detailed notes about testing under selenium can be found in:
 
-    gobotany-deploy $ ./test-python.sh api core
-
-#### JavaScript ####
-
-    gobotany-deploy $ ./test-js.sh
-
-If you want to run a subset of the tests, add the test class name:
-
-    gobotany-deploy $ ./test-js.sh test/Filter.js
-
-#### Selenium ####
-   
-These tests are intended to cover things that cannot be tested without a
-browser and JavaScript. To run them:
-
-    gobotany-deploy $ ./test-browser.sh
-
-You can pass a parameter in the accustomed way to run all tests in a test
-class, or a single test:
-
-    gobotany-deploy $ ./test-browser.sh FilterFunctionalTests
-
-    gobotany-deploy $ ./test-browser.sh FilterFunctionalTests.test_multiple_choice_filters
-
-Detailed notes are in:
-    
     gobotany-app/gobotany/simplekey/testdir/README-SELENIUM.txt
 
 

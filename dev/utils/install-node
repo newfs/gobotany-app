@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-if [ "$(dirname $PWD)" != "dev" ]
+if [ "$(basename $PWD)" != "dev" ]
 then
     echo Please cd to the ./dev directory before running dev/utils/install-node
     exit 2

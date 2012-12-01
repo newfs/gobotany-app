@@ -1,6 +1,13 @@
 #!/bin/bash
 
 set -e
+
+if [ -z "$*" ]
+then
+    APPS="api core dkey mapping plantoftheday plantshare search simplekey site taxa"
+else
+    APPS="$@"
+fi
+
 DEV=$(dirname ${BASH_SOURCE[0]})
-$DEV/django test \
-    api core dkey mapping plantoftheday plantshare search simplekey site taxa
+$DEV/django test $APPS
