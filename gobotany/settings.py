@@ -235,6 +235,11 @@ else:
     AWS_QUERYSTRING_AUTH = False
     AWS_S3_SECURE_URLS = False
 
+IS_AWS_AUTHENTICATED = 'test' not in sys.argv and (
+    AWS_ACCESS_KEY_ID != 'readonly' and
+    AWS_SECRET_ACCESS_KEY != 'readonly'
+    )
+
 # Enable gunicorn sub-command if gunicorn is available.
 
 try:

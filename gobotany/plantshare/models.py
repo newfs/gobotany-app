@@ -3,7 +3,7 @@ import urlparse
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.files.storage import FileSystemStorage
+from django.core.files.storage import Storage, FileSystemStorage
 
 from storages.backends.s3boto import S3BotoStorage
 from imagekit.models import ProcessedImageField, ImageSpecField
@@ -131,15 +131,17 @@ class Sighting(models.Model):
         will see these photos.'''
         return self.photos.filter(is_approved=True)
 
-
 if settings.DEBUG:
     # Local, debug upload
     upload_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'upload_images'),
             base_url=urlparse.urljoin(settings.MEDIA_URL, 'upload_images/'))
+elif settings.IS_AWS_AUTHENTICATED:
+    # Direct upload to S3
+    Upload_Storage = S3BotoStorage(location='/upload_images',
+            bucket='newfs')
 else:
     # Direct upload to S3
-    upload_storage = S3BotoStorage(location='/upload_images',
-            bucket='newfs')
+    upload_storage = Storage()
 
 def rename_image_by_type(instance, filename):
     return '{0}.png'.format('_'.join([instance.image_type.lower(),

@@ -58,41 +58,16 @@ Our various tests can be run with three commands:
     dev/test-js
     dev/test-python
 
-
 Additional notes on workstation use
 -----------------------------------
-
-TODO: update this section
 
 Here are some things you may run into when working with the above on
 your workstation.
 
 Before working, ensure you have your AWS credentials set in your
-environment variables, which is usually accomplished by sourcing a shell
-script kept outside the repository. This is needed to ensure tests will
-pass and image importing will work.
-
-When running dev/tox for the first time, especially if the database does not
-exist yet, many test failures will occur. This is expected. The tests
-should eventually all pass after the bin/load step is run.
-
-If you want to do a fresh import of all data, first run:
-
-    dropdb gobotany
-    createdb -E UTF8 gobotany
-
-If you are working on the Importer (gobotany/core/importer.py), be sure
-to run dev/tox again each time before trying to run bin/load, the script
-that executes the importer code. Running dev/tox is necessary to actually
-package up and execute the version of importer.py that includes your local
-changes.
-
-You may need to have the virtual environment activated (source
-dev/activate) before you are able to successfully run bin/load.
-Otherwise, bin/load may give an error that it could not import the
-gobotany.settings module to run syncdb. It is unclear yet whether this
-is always so or only happens under certain conditions. 
-
+environment variables, which is often accomplished by sourcing a shell
+script that the developer keeps outside the repository.  This is needed
+to ensure that PlantShare image importing will work.
 
 Installing Go Botany on Heroku
 ------------------------------
