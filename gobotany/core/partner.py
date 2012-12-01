@@ -12,3 +12,9 @@ def which_partner(request):
     elif len(matches):
         return matches[0]
     return None
+
+def partner_short_name(request):
+    partner = which_partner(request)
+    if partner is None:
+        return None
+    return partner.short_name

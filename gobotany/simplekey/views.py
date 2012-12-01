@@ -8,7 +8,7 @@ from django.views.decorators.cache import cache_control, cache_page
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core.models import ContentImage, Pile, PileGroup
-from gobotany.core.partner import which_partner
+from gobotany.core.partner import which_partner, partner_short_name
 from gobotany.search.models import (GroupsListPage,
                                     SubgroupResultsPage,
                                     SubgroupsListPage)
@@ -48,18 +48,11 @@ def get_simple_url(key, pilegroup, pile=None):
                                'pile_slug': pile.slug})
 
 
-def _partner_short_name(partner):
-    short_name = None
-    if partner:
-        short_name = partner.short_name
-    return short_name
-
 @vary_on_headers('Host')
 @cache_control(max_age=60 * 60)
 @cache_page(60 * 60)
 def level1(request, key):
-    partner = which_partner(request)
-    short_name = _partner_short_name(partner)
+    short_name = partner_short_name(request)
     groups_list_page = GroupsListPage.objects.get()
 
     pilegroups = []
@@ -83,8 +76,7 @@ def level1(request, key):
 def level2(request, key, pilegroup_slug):
     pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
 
-    partner = which_partner(request)
-    short_name = _partner_short_name(partner)
+    short_name = partner_short_name(request)
     subgroups_list_page = SubgroupsListPage.objects.get(group=pilegroup)
 
     piles = []
@@ -111,8 +103,7 @@ def level3(request, key, pilegroup_slug, pile_slug):
     if pile.pilegroup.slug != pilegroup_slug:
         raise Http404
 
-    partner = which_partner(request)
-    short_name = _partner_short_name(partner)
+    short_name = partner_short_name(request)
     subgroup_results_page = SubgroupResultsPage.objects.get(subgroup=pile)
 
     return render_to_response('simplekey/results.html', {
