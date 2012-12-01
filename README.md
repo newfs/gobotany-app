@@ -18,11 +18,6 @@ text index server with:
 
     dev/start-solr
 
-Finally, activate the virtual environment so that Python run from your
-shell has access to the Go Botany application and its dependencies:
-
-    source dev/activate
-
 At this point the application should at least run, even though most
 pages will give errors if your database is not set up yet.  To start the
 application, simply run:
@@ -41,10 +36,16 @@ already sitting in your way; in that case, ignore the error):
 
     dropdb gobotany
     createdb -E UTF8 gobotany
-    bin/load
+    dev/load
 
 At this point you are done installing and should be able to test and
 develop the application!
+
+If you ever need to activate the virtual environment so that Python
+prompts or scripts run from your shell have access to the Go Botany
+application and its dependencies, then enter:
+
+    source dev/activate
 
 If you want to rebuild our minified JavaScript in preparation for a
 deploy to production, run:

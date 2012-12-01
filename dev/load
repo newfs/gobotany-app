@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+DEV=$(dirname ${BASH_SOURCE[0]})
+$DEV/utils/require-setup
+source $DEV/activate
+exec $DEV/../bin/load "$@"
