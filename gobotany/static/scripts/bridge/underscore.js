@@ -1,5 +1,5 @@
 define([
-    'lib/underscore-min'
+    'lib/underscore'
 ], function(underscore) {
     return _;
 });
