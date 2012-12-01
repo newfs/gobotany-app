@@ -4,28 +4,47 @@ Go Botany
 Running Go Botany on your workstation
 -------------------------------------
 
-Start by checking out this “gobotany-app” repository on your machine,
-then running the “tox” Python testing tool:
+First, check out the repository and run `dev/setup` to install the
+application and its dependencies in a Python virtual environment (that
+lives inside of `dev/venv` in case you ever need to access it):
 
     git clone git@github.com:newfs/gobotany-app.git
     cd gobotany-app
-    dev/tox
+    dev/setup
 
-This will create a virtual environment (peek inside of `.tox` to see it)
-where the Go Botany dependencies are all installed. You can then get the
-application running with three commands:
+Next, make sure that you can access your local PostgreSQL server, which
+you can confirm with a quick `psql -l`, and then start up a Solr full
+text index server with:
 
     dev/start-solr
-    bin/load
+
+Finally, activate the virtual environment so that Python run from your
+shell has access to the Go Botany application and its dependencies:
+
+    source dev/activate
+
+At this point the application should at least run, even though most
+pages will give errors if your database is not set up yet.  To start the
+application, simply run:
+
     dev/django runserver
+
+You should then be able to visit the application at:
+
+    http://localhost:8000/
+
+If you are starting fresh and have no database set up yet, or want to
+start over because some tables have changed or Sid had released a new
+CSV file, then you can rebuild the database with these commands (the
+first one will give an error if you do not have a `gobotany` database
+already sitting in your way; in that case, ignore the error):
+
+    dropdb gobotany
+    createdb -E UTF8 gobotany
+    bin/load
 
 At this point you are done installing and should be able to test and
 develop the application!
-
-Should you ever want a Python prompt that has access to Go Botany's
-dependencies, you can run:
-
-    source dev/activate
 
 If you want to rebuild our minified JavaScript in preparation for a
 deploy to production, run:
@@ -34,13 +53,15 @@ deploy to production, run:
 
 Our various tests can be run with three commands:
 
-    dev/tox
     dev/test-browser
     dev/test-js
+    dev/test-python
 
 
 Additional notes on workstation use
 -----------------------------------
+
+TODO: update this section
 
 Here are some things you may run into when working with the above on
 your workstation.
@@ -131,6 +152,8 @@ Botany site's search field:
 
 Running the automated tests
 ---------------------------
+
+TODO: update this section
 
 To run all the tests:
 
