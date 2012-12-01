@@ -40,8 +40,9 @@ def _simple_taxon(taxon):
 
 def _taxon_with_chars(taxon):
     res = _simple_taxon(taxon)
-    piles = taxon.get_piles()
-    res['piles'] = piles
+    piles = taxon.piles.all()
+    res['piles'] = [pile.name for pile in piles]
+    res['pile_slugs'] = [pile.slug for pile in piles]
     for cv in taxon.character_values.all():
         name = cv.character.short_name
         # Any character might have multiple values. For any that do,

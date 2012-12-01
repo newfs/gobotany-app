@@ -238,9 +238,6 @@ class ModelTests(SampleData):
 
     # Test some other miscellaneous methods.
 
-    def test_Taxon_get_piles(self):
-        self.assertEqual(self.cat.get_piles(), [u'Carnivores', u'Pets'])
-
     def test_Pile_get_default_image(self):
         pile = models.ContentType.objects.get(name='pile')
 

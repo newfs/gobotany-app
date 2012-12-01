@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     'gobotany.dkey',
     'gobotany.mapping',
     'gobotany.plantoftheday',
+    'gobotany.plantpreview',
     'gobotany.plantshare',
     'gobotany.search',
     'gobotany.simplekey',

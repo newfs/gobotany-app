@@ -32,4 +32,9 @@ define([
             onOpen: shadowbox_on_open
         });
     });
+
+    /* Return Shadowbox as a convenience, so users do not have to import
+       both Shadowbox and shadowbox_init themselves. */
+
+    return Shadowbox;
 });

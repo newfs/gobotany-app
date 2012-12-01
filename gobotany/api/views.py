@@ -359,6 +359,7 @@ def dkey_images(request, slug):
 
         image_lists.append({
             'name': name,
+            'scientific_name': taxon.scientific_name,
             'title': title,
             'image_list': image_list,
             })

@@ -44,7 +44,7 @@ def verbatim(parser, token):
             text.append('%}')
     return VerbatimNode(''.join(text))
 
-# Our own variation.
+# Our own variations.
 
 @register.tag
 def handlebars(parser, token):
@@ -60,6 +60,30 @@ def handlebars(parser, token):
     while 1:
         token = parser.tokens.pop(0)
         if token.contents == 'endhandlebars':
+            break
+        if token.token_type == template.TOKEN_VAR:
+            text.append('{{')
+        elif token.token_type == template.TOKEN_BLOCK:
+            text.append('{%')
+        text.append(token.contents)
+        if token.token_type == template.TOKEN_VAR:
+            text.append('}}')
+        elif token.token_type == template.TOKEN_BLOCK:
+            text.append('%}')
+    text.append('</script>')
+    return VerbatimNode(''.join(text))
+
+@register.tag
+def handlebars_template(parser, token):
+    args = token.split_contents()
+    if len(args) != 2:
+        raise template.TemplateSyntaxError(
+            "%r tag requires an id as its argument" % args[0])
+    id = args[1]
+    text = ['<script id={} type="text/x-handlebars-template">'.format(id)]
+    while 1:
+        token = parser.tokens.pop(0)
+        if token.contents == 'endhandlebars_template':
             break
         if token.token_type == template.TOKEN_VAR:
             text.append('{{')

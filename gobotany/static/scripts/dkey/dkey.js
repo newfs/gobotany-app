@@ -3,11 +3,13 @@ define([
     'bridge/jquery.mousewheel',
     'bridge/underscore',
     'lib/Hash',
+    'plantpreview/popup',
     'util/glossarizer',
     'util/lazy_images',
     'util/tooltip'
 ], function(
-    $, ignore, _, Hash, glossarizer, lazy_images, tooltip_js
+    $, ignore, _, Hash, plantpreview_popup,
+    glossarizer, lazy_images, tooltip_js
 ) {$(document).ready(function() {
 
     /* Remove spinner that is hiding couplets until we can arrange them. */
@@ -298,11 +300,17 @@ define([
     var install_image_lists = function(image_lists) {
         var $grid = $('.plant-grid');
         plants = _.map(image_lists, function(item) {
-            return {
-                $div: $('<div>', {'class': 'plant'}).appendTo($grid).append(
+            var $anchor =
+                $('<a>', {
+                    'class': 'plant',
+                    'href': taxon_url(item.scientific_name)
+                }).append(
                     $('<div>', {'class': 'plant-img-container'}),
                     $('<p>', {html: item.title})
-                ),
+                ).appendTo($grid);
+            plantpreview_popup.connect($anchor, item.scientific_name);
+            return {
+                $div: $anchor,
                 image_list: item.image_list,
                 name: item.name,
                 title: item.title
