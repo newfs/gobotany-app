@@ -155,19 +155,8 @@ HAYSTACK_SOLR_TIMEOUT = 20  # Longer than default timeout; added for indexing
 # For django-facebook-connect
 FACEBOOK_LOGIN_REDIRECT = '/ps'     # TODO: /ps/ --> /plantshare/ at release
 FACEBOOK_SCOPE = 'email' 
-if DEBUG:
-# Debug App, on Brandon's account with localhost URL
-    FACEBOOK_APP_ID = '190505394309270' 
-    FACEBOOK_APP_SECRET = 'eb2dccd2ac2d77dac45a9ee137313d6b' 
-else:
-    if DEV_FEATURES:
-        # Development environment on Heroku
-        FACEBOOK_APP_ID = '108116052685637' 
-        FACEBOOK_APP_SECRET = '352b24b5916839582685030753b9fda0' 
-    else:
-        # Production App, on NEWFS account with production URL
-        FACEBOOK_APP_ID = '174715039247745' 
-        FACEBOOK_APP_SECRET = '54f36f2204399f84f127178c8322b5ee' 
+FACEBOOK_APP_ID = environ.get('FACEBOOK_APP_ID', '')
+FACEBOOK_APP_SECRET = environ.get('FACEBOOK_APP_SECRET', '')
 
 # For django-registration
 ACCOUNT_ACTIVATION_DAYS = 7
