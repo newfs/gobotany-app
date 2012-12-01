@@ -12,8 +12,9 @@
 	    <div class="frame"></div>
 	    <div class="img-container">
 	      <div class="images">
-                <img alt="">
-                <img alt="">
+                {{#each plant.images}}
+                <img src="{{large_thumb_url}}" alt="{{title}}">
+                {{/each}}
 	      </div>
 	    </div>
 	    <div class="controls">

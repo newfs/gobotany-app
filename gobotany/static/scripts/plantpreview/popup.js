@@ -8,6 +8,8 @@ define([
     'util/shadowbox_init'
 ], function(Handlebars, $, _, resources, utils, glossarizer, Shadowbox) {
 
+    var MAX_CHARACTERS = 6;
+
     var glossarize = glossarizer.glossarize;
     var exports = {};
 
@@ -69,7 +71,6 @@ define([
             //     '#plant-detail-modal .details .characteristics');
             // $characteristics.empty();
 
-            // var MAX_CHARACTERS = 6;
             // var characters_html = '';
             // var characters_displayed = 0;
             // for (var i = 0; i < characters.length; i++) {
@@ -130,43 +131,14 @@ define([
             //     }
             // }
 
-            // // Add images.
-            // var images_html = '';
-            // var clicked_image = $('img', plant_link).attr('src');
-
-            // if (clicked_image !== undefined)
-            //     clicked_image = clicked_image.substr(
-            //         clicked_image.lastIndexOf('/') + 1);
-
-            // var is_missing_image = $('div.missing-image', plant_link
-            //                         ).length ? true : false;
-            // for (i = 0; i < taxon.images.length; i++) {
-            //     var taxon_image = taxon.images[i];
-            //     var new_image = '<img src="' +
-            //         taxon_image.large_thumb_url + '" alt="' +
-            //         taxon_image.title + '">';
-            //     var taxon_image = taxon_image.large_thumb_url;
-            //     taxon_image = taxon_image.substr(
-            //         taxon_image.lastIndexOf('/') + 1);
-            //     if (clicked_image === taxon_image &&
-            //         !is_missing_image) {
-            //         // Since this is the same image as was
-            //         // clicked, show it first.
-            //         images_html = new_image + images_html;
-            //     } else {
-            //         images_html += new_image;
-            //     }
-            // }
-            // $('#plant-detail-modal div.images').html(images_html);
-
-            var context = {
-                plant: plant,
-                plant_url: $anchor.attr('href')
-            };
+            _put_clicked_image_first(plant, $anchor);
 
             var source = $('#plantpreview-popup-template').html().trim();
             var template = Handlebars.compile(source);
-            var popup_html = template(context);
+            var popup_html = template({
+                plant: plant,
+                plant_url: $anchor.attr('href')
+            });
 
             Shadowbox.open({
                 content: popup_html,
@@ -219,6 +191,19 @@ define([
             $li.addClass('last');
 
         return $ul;
+    };
+
+    var _put_clicked_image_first = function(plant, $anchor) {
+        var clicked_image_url = $anchor.find('img').attr('src');
+        if (typeof clicked_image_url === 'undefined')
+            return;
+        var basename = function(url) {
+            return url.match(/[^\/]*$/)[0]
+        };
+        var name = basename(clicked_image_url);
+        plant.images.sort(function(image) {
+            return basename(image.url) == name ? 0 : 1;
+        });
     };
 
     return exports;
