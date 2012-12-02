@@ -561,6 +561,17 @@ def _compute_map_etag(request, distribution_map, genus, epithet):
 
 @etag(_compute_map_etag)
 def _distribution_map(request, distribution_map, genus, epithet):
+
+    # BONAP gives one species a different name than FNA; as a temporary
+    # measure, we rename the species here.  A more permament solution
+    # (whether a data fix, or a table to drive renaming) will be
+    # discussed here:
+    #
+    # https://github.com/newfs/gobotany-app/issues/277
+
+    if (genus, epithet) == ('berberis', 'aquifolium'):
+        genus, epithet = 'mahonia', 'aquifolium'
+
     shaded_map = _shade_map(distribution_map, genus, epithet)
     return HttpResponse(shaded_map.tostring(), mimetype='image/svg+xml')
 
