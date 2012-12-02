@@ -155,7 +155,7 @@ results_page_init: function(args) {
 
         App3.set('filter_controller', fc);
 
-        filter_controller_is_built.resolve();
+        filter_controller_is_built.resolve(fc);
     });
 
     $.when(filter_controller_is_built, document_is_ready).done(function() {
@@ -646,18 +646,42 @@ results_page_init: function(args) {
                     fadeDuration: 0.1,
                     onFinish: function() {
                         // Re-check any check boxes that were set last time.
-                        $('#sb-container input').each(function(i, input) {
+                        $container = $('#sb-container');
+                        $inputs = $container.find('input');
+                        $inputs.each(function(i, input) {
                             var value = $(input).val();
                             var check = (_.indexOf(checked_groups, value) != -1);
                             $(input).prop('checked', check);
                         });
-                        $('#sb-container a.get-choices')
+                        _disable_exhausted_groups($inputs);
+                        $container.find('a.get-choices')
                             .addClass('get-choices-ready');  // for tests
                     }
                 }
             });
         });
     });
+
+    var _disable_exhausted_groups = function($inputs) {
+        $.when(
+            filter_controller_is_built,
+            resources.pile_characters(pile_slug)
+        ).done(function(controller, character_list) {
+            var displayed_slugs = _.chain(controller.filtermap)
+                .values().pluck('slug').value();
+            $inputs.each(function(i, input) {
+                var character_group_name = $(input).parent().text().trim();
+                var numleft = _.filter(character_list, function(character) {
+                    return character.character_group === character_group_name
+                        && ! _.contains(displayed_slugs, character.short_name);
+                }).length;
+                if (numleft === 0)
+                    $(input).prop('disabled', true).attr('checked', false);
+                else
+                    $(input).prop('disabled', false);
+            });
+        });
+    };
 
     $('#sb-container a.get-choices').live('click', function() {
         checked_groups = [];  // reset array in enclosing scope
