@@ -138,24 +138,30 @@ def _format_character_value(character_value):
                     character_value.value_str or u'')
         else:
             NUM_FORMAT = u'%.9g'
-            if character.unit not in (None, '', 'NA'):
-                minstr = ('Anything' if character_value.value_min is None
-                          else NUM_FORMAT % character_value.value_min)
-                maxstr = ('Anything' if character_value.value_max is None
-                          else NUM_FORMAT % character_value.value_max)
-                if minstr == maxstr:
-                    return u'%s %s' % (minstr, character.unit)
-                else:
-                    return u'%s–%s %s' % (minstr, maxstr, character.unit)
+            vmin = character_value.value_min
+            vmax = character_value.value_max
+
+            if vmin is not None:
+                vmin = NUM_FORMAT % vmin
+            if vmax is not None:
+                vmax = NUM_FORMAT % vmax
+
+            if vmin is None and vmax is None:
+                return u'anything'
+            elif vmin is None:
+                text = u'Up to {}'.format(vmax)
+            elif vmax is None:
+                text = u'At least {}'.format(vmin)
+            elif vmin == vmax:
+                text = vmin
             else:
-                minstr = ('?' if character_value.value_min is None
-                          else NUM_FORMAT % character_value.value_min)
-                maxstr = ('?' if character_value.value_max is None
-                          else NUM_FORMAT % character_value.value_max)
-                if minstr == maxstr:
-                    return u'%s' % (minstr)
-                else:
-                    return u'%s–%s' % (minstr, maxstr)
+                text = u'%s–%s' % (vmin, vmax)
+
+            if character.unit in (None, u'', u'NA'):
+                return text
+            else:
+                return u'{} {}'.format(text, character.unit)
+
     else:
         return ''
 
