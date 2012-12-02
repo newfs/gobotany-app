@@ -155,8 +155,8 @@ HAYSTACK_SOLR_TIMEOUT = 20  # Longer than default timeout; added for indexing
 # For django-facebook-connect
 FACEBOOK_LOGIN_REDIRECT = '/ps'     # TODO: /ps/ --> /plantshare/ at release
 FACEBOOK_SCOPE = 'email' 
-FACEBOOK_APP_ID = environ.get('FACEBOOK_APP_ID', '')
-FACEBOOK_APP_SECRET = environ.get('FACEBOOK_APP_SECRET', '')
+FACEBOOK_APP_ID = os.environ.get('FACEBOOK_APP_ID', '')
+FACEBOOK_APP_SECRET = os.environ.get('FACEBOOK_APP_SECRET', '')
 
 # For django-registration
 ACCOUNT_ACTIVATION_DAYS = 7
