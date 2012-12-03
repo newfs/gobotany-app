@@ -87,7 +87,7 @@ def level2(request, key, pilegroup_slug):
         piles.append((pile, images, get_simple_url(key, pilegroup, pile)))
 
     # For Issue #254, Full Key, mock up a possible solution
-    if key.lower() == 'full':
+    if key.lower() == 'full' and pile.slug == 'remaining-non-monocots':
         piles.append(piles[1])  # Duplicate the last pile
 
     return render_to_response('simplekey/pilegroup.html', {

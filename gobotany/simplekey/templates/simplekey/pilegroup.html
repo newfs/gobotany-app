@@ -33,7 +33,7 @@
                             <div class="img-container">
                                 <div class="images">
                                     {# Mockup for Issue #254 #}
-                                    {% if key == 'full' and forloop.counter == 3 %}
+                                    {% if key == 'full' and pile.slug == 'remaining-non-monocots' and forloop.counter == 3 %}
                                         {# Start with the second image (basal leaves) #}
                                         {% for content_image in pile_images|slice:"1:" %}
                                             {% with content_image as i %}
@@ -70,7 +70,7 @@
                         </div>
                         <div class="details">
                             {# Mockup for Issue #254 #}
-                            {% if key == 'full' and forloop.counter > 1 %}
+                            {% if key == 'full' and pile.slug == 'remaining-non-monocots' and forloop.counter > 1 %}
                                 {% if forloop.counter == 2 %}
                                     <h2>Other herbaceous, flowering
                                         plants with alternate leaves
@@ -80,6 +80,7 @@
                                         plants with opposite, whorled or
                                         no leaves</h2>
                                 {% endif %}
+                                <p></p>{# Mockup for Issue #254: no 'friendly_name' for now #}
                             {% else %}
                                 <h2>{{ pile.friendly_title|lower|capfirst }}</h2>
                                 <p>{{ pile.friendly_name|capfirst }}</p>
@@ -88,7 +89,7 @@
                             <p class="key-char">
                                 <span class="section-title">Key Characteristics</span>
                                 {# Mockup for Issue #254 #}
-                                {% if key == 'full' and forloop.counter > 1 %}
+                                {% if key == 'full' and pile.slug == 'remaining-non-monocots' and forloop.counter > 1 %}
                                     {% if forloop.counter == 2 %}
                                         Alternate leaves (leaves joining the stem at different levels, not opposite each other or multiple leaves at a single node). This is a very diverse group of plants, but are generally not woody, grass-like, or aquatic, and do not have the composite flower heads of the aster family plants. Be sure to look at the arrangement of leaves in the lower half of the flowering stem.
                                     {% else %}
@@ -101,7 +102,7 @@
                             <p class="exceptions">
                                 <span class="section-title">Exceptions</span>
                                 {# Mockup for Issue #254 #}
-                                {% if key == 'full' and forloop.counter > 1 %}
+                                {% if key == 'full' and pile.slug == 'remaining-non-monocots' and forloop.counter > 1 %}
                                     {% if forloop.counter == 2 %}
                                         Leaf arrangement can vary from the bottom to top of the stem, or in young vs. older plants, so look at the leaves on the flowering stem of several plants, if possible. Some crowded leaves may look opposite or whorled, but look closely to see whether there is actually space between them on the stem. Some species have narrow leaves where it’s hard to see the veins (monocots have generally parallel veins), so look for other features such as petal number, presence of leaf teeth, etc.
                                     {% else %}
