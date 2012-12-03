@@ -32,6 +32,7 @@ $link-green: #508e31;
 $heading-green: #519136;
 $border-green: #c3d941;
 $light-green: #e1f0d1;
+$green-yellow: #ccdf53;
 
 $text-color: #000;
 $footer-background-color: #b4d57f;
@@ -219,13 +220,13 @@ ul li {
     width: 160px;
 }
 p.new {
-    background: #fff;
+    background: $green-yellow;
+    color: #000;
     display: inline-block;
-    font-size: 9px;
+    font-size: 12px;
     font-weight: normal;
     margin: 0;
     padding: 0 0.25em;
-    text-transform: uppercase;
     @include border-radius(0.25em);
 }
 p.meta {
