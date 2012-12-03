@@ -137,7 +137,7 @@ if settings.DEBUG:
             base_url=urlparse.urljoin(settings.MEDIA_URL, 'upload_images/'))
 elif settings.IS_AWS_AUTHENTICATED:
     # Direct upload to S3
-    Upload_Storage = S3BotoStorage(location='/upload_images',
+    upload_storage = S3BotoStorage(location='/upload_images',
             bucket='newfs')
 else:
     # Direct upload to S3
