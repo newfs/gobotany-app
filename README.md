@@ -28,6 +28,11 @@ You should then be able to visit the application at:
 
     http://localhost:8000/
 
+Before importing data into your database, ensure you have your AWS
+credentials set in your environment variables, which is often accomplished
+by sourcing a shell script kept outside the repository. This is needed to
+ensure that image importing will work.
+
 If you are starting fresh and have no database set up yet, or want to
 start over because some tables have changed or Sid had released a new
 CSV file, then you can rebuild the database with these commands (the
@@ -57,18 +62,6 @@ Our various tests can be run with three commands:
     dev/test-browser
     dev/test-js
     dev/test-python
-
-
-Additional notes on workstation use
------------------------------------
-
-Here are some things you may run into when working with the above on
-your workstation.
-
-Before working, ensure you have your AWS credentials set in your
-environment variables, which is often accomplished by sourcing a shell
-script that the developer keeps outside the repository.  This is needed
-to ensure that PlantShare image importing will work.
 
 
 Installing Go Botany on Heroku
