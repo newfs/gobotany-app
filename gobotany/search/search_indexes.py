@@ -241,6 +241,7 @@ class DichotomousKeyPageIndex(BaseIndex):
 
     def index_queryset(self):
         return (super(DichotomousKeyPageIndex, self).index_queryset()
+                .exclude(rank='species')
                 .prefetch_related('breadcrumb_cache', 'leads'))
 
     def prepare(self, obj):

@@ -179,7 +179,7 @@ class SearchTests(FunctionalCase):
             ('Ligustrum obtusifolium', 'border privet'),
             ('Matteuccia struthiopteris', 'fiddlehead fern, ostrich fern'),
             ('Nardus stricta', 'doormat grass'),
-            ('Quercus rubra', 'northern red oak'),
+            ('Quercus bicolor', 'swamp white oak'),
             ('Rhus copallinum', 'winged sumac')
         ]
         for scientific_name, common_names in plants:
