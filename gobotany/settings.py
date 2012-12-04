@@ -161,19 +161,16 @@ FACEBOOK_APP_SECRET = os.environ.get('FACEBOOK_APP_SECRET', '')
 # For django-registration
 ACCOUNT_ACTIVATION_DAYS = 7
 LOGIN_URL = '/ps/accounts/login/'   # TODO: /ps/ --> /plantshare/ at release
-if DEBUG:
-    # To test with this, start a local test email server as follows:
-    # python -m smtpd -n -c DebuggingServer localhost:1025
-    EMAIL_HOST = 'localhost'
-    EMAIL_PORT = 1025
-else:
-    # SendGrid Heroku add-on configuration
-    EMAIL_HOST = 'smtp.sendgrid.net'
-    EMAIL_PORT = 587
-    EMAIL_HOST_USER = os.environ['SENDGRID_USERNAME']
-    EMAIL_HOST_PASSWORD = os.environ['SENDGRID_PASSWORD']
+# To test with this, start a local test email server as follows:
+# python -m smtpd -n -c DebuggingServer localhost:1025
+EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
+EMAIL_PORT = os.environ.get('EMAIL_PORT', '')
+DEFAULT_FROM_EMAIL = 'no-reply@newenglandwild.org'
+# SendGrid Heroku add-on configuration
+EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', '')
+EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', '')
+if EMAIL_HOST_USER:
     USE_TLS = True
-    DEFAULT_FROM_EMAIL = 'no-reply@newenglandwild.org'
 
 # For django-recaptcha
 if DEV_FEATURES:
