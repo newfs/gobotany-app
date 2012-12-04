@@ -6,6 +6,11 @@
 # sitting in the "dev" directory or (as should be more usual) out in the
 # main directory of "gobotany-app":
 
-DEV=$(dirname "$0")
+THIS="${BASH_SOURCE[0]}"
+if [ -z "$THIS" ]
+then
+    THIS="$0"
+fi
+DEV=$(dirname "$THIS")
 $DEV/utils/require-setup && source $DEV/venv/bin/activate
 export DJANGO_SETTINGS_MODULE=gobotany.settings
