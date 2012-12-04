@@ -51,7 +51,7 @@ Distribution and Conservation Status:
     Rhode Island: {{ object.conservation_status_ri }}
     Vermont: {{ object.conservation_status_vt }}
 
-Wetland Plant? 
+Wetland Status: 
 {% if object.wetland_indicator_code %}
     {{ object.wetland_indicator_text }}
     (Wetland indicator code:
