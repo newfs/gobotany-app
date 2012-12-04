@@ -20,6 +20,11 @@ IMAGE_TYPES = (
     ('SIGHTING', 'Sighting Photo'),
 )
 
+DEFAULT_AVATAR_URL = urlparse.urljoin(settings.STATIC_URL, 'images', 'icons',
+    'avatar_scary_placeholder.png')
+DEFAULT_AVATAR_THUMB = urlparse.urljoin(settings.STATIC_URL, 'images', 'icons',
+    'avatar_scary_placeholder.png')
+
 class Location(models.Model):
     """A location as specified by a user in one of several valid ways."""
 
@@ -85,6 +90,44 @@ class UserProfile(models.Model):
     location = models.ForeignKey(Location, null=True, blank=True)
 
     avatar = models.ForeignKey('ScreenedImage', null=True, blank=True)
+
+    def private_avatar_image(self):
+        ''' Convenience method that will return the user's latest uploaded avatar,
+        whether or not it has been approved by staff.  This should ONLY appear to
+        the user himself. '''
+        latest_avatars = ScreenedImage.objects.filter(
+                uploaded_by=self.user).order_by('-uploaded')
+        if len(latest_avatars) > 0:
+            this_avatar = latest_avatars[0]
+            avatar_info = {
+                'url': this_avatar.image.url,
+                'thumb_url': this_avatar.thumb.url,
+            }
+        else:
+            avatar_info = {
+                'url': DEFAULT_AVATAR_URL,
+                'thumb_url': DEFAULT_AVATAR_THUMB,
+            }
+
+        return avatar_info
+    
+    def public_avatar_image(self):
+        ''' Convenience method that will return the user's current avatar. This will
+        display only a pre-screened, approved avatar, or the default "empty" avatar
+        if the user has no approved avatar.  This should be used in any views
+        displayed to anyone other than this user.'''
+        if self.avatar:
+            avatar_info = {
+                'url': self.avatar.image.url,
+                'thumb_url': self.avatar.thumb.url,
+            }
+        else:
+            avatar_info = {
+                'url': DEFAULT_AVATAR_URL,
+                'thumb_url': DEFAULT_AVATAR_THUMB,
+            }
+
+        return avatar_info
 
 
 class SharingGroup(models.Model):
