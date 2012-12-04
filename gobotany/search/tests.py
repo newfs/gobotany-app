@@ -448,13 +448,14 @@ class SearchTests(FunctionalCase):
             result_links, 'Pseudolycopodiella: Dichotomous Key'))
 
     def test_search_results_contain_dichotomous_key_breadcrumbs(self):
-        self.get('/search/?q=liliaceae')
+        self.get('/search/?q=liliaceae%20dichotomous')
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
-        self.assertEqual(result_links[2].text, 'Tricyrtis: Dichotomous Key')
+        self.assertEqual(result_links[0].text, 'Liliaceae: Dichotomous Key')
         result_excerpts = self.css('#search-results-list li p')
-        self.assertTrue(result_excerpts[2].text.find(
-            '> Family Liliaceae > Tricyrtis') > -1);
+        self.assertTrue(result_excerpts[0].text.find(
+            'You are here: Dichotomous Key > Group 3: Monocots > Liliaceae')
+            > -1);
 
     def test_search_results_contain_dichotomous_key_page_text(self):
         self.get('/search/?q=cystopteris%20difficult%20stunted')

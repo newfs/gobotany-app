@@ -247,7 +247,7 @@ class DichotomousKeyPageIndex(BaseIndex):
         data = super(DichotomousKeyPageIndex, self).prepare(obj)
         # Boost to help ensure high ranking when searching on family or
         # genus names.
-        data['boost'] = 2.0
+        data['boost'] = 1.2
         return data
 
 
