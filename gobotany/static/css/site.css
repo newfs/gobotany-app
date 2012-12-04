@@ -695,13 +695,13 @@ body.skey.groups-subgroups .list-item p.key-char { background: url(/static/image
 body.skey.groups-subgroups .list-item p.exceptions { background: url(/static/images/icons/icon2.png) 0 2px no-repeat; }
 body.skey.groups-subgroups .list-item p.vid { background: url(/static/images/icons/icon3.png) 0 2px no-repeat; }
 body.skey.groups-subgroups .list-item .section-title { display: block; text-transform: uppercase; }
-body.skey.groups-subgroups .list-item a { margin: 10px 0 14px; }
-body.skey.groups-subgroups .list-item a.plant-in-group { background: url(/static/images/layout/plant-in-group-btn-orange.png) no-repeat 0 0; height: 31px; width: 212px; display: block; text-indent: -9000px; }
-body.skey.groups-subgroups .list-item a.plant-in-group:hover { background-position: 0 -31px; }
-body.skey.groups-subgroups .list-item a.plant-in-group:active { background-position: 0 -62px; }
-body.skey.groups-subgroups .list-item a.plant-in-subgroup { background: url(/static/images/layout/plant-in-subgroup-btn-orange.png) no-repeat 0 0; height: 32px; width: 233px; display: block; text-indent: -9000px; }
-body.skey.groups-subgroups .list-item a.plant-in-subgroup:hover { background-position: 0 -32px; }
-body.skey.groups-subgroups .list-item a.plant-in-subgroup:active { background-position: 0 -64px; }
+body.skey.groups-subgroups .list-item .details a { margin: 10px 0 14px; }
+body.skey.groups-subgroups .list-item .details a.plant-in-group { background: url(/static/images/layout/plant-in-group-btn-orange.png) no-repeat 0 0; height: 31px; width: 212px; display: block; text-indent: -9000px; }
+body.skey.groups-subgroups .list-item .details a.plant-in-group:hover { background-position: 0 -31px; }
+body.skey.groups-subgroups .list-item .details a.plant-in-group:active { background-position: 0 -62px; }
+body.skey.groups-subgroups .list-item .details a.plant-in-subgroup { background: url(/static/images/layout/plant-in-subgroup-btn-orange.png) no-repeat 0 0; height: 32px; width: 233px; display: block; text-indent: -9000px; }
+body.skey.groups-subgroups .list-item .details a.plant-in-subgroup:hover { background-position: 0 -32px; }
+body.skey.groups-subgroups .list-item .details a.plant-in-subgroup:active { background-position: 0 -64px; }
 body.skey.groups-subgroups .not-my-plant { clear: left; float: right; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; padding: 20px 0 0; text-align: center; }
 body.skey.groups-subgroups .not-my-plant p { margin: 0; padding: 0; }
 body.skey.groups-subgroups .not-my-plant p + p { font-family: Verdana, Geneva, sans-serif; }
