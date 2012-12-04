@@ -9,11 +9,12 @@ require([
     'bridge/jquery.easing',
     'bridge/jquery.smoothdivscroll'
 ], function($, ui, easing, smoothDivScroll) {
-    $(document).ready(function() {
+    $(document).ready(function () {
 
-        // Activate!
+        var $images = $('#species-images');
        
-        $('#species-images').smoothDivScroll({
+        // Activate.
+        $images.smoothDivScroll({
             autoScrollingMode: 'onstart', 
             autoScrollingDirection: 'backandforth', 
             autoScrollingStep: 1, 
@@ -21,9 +22,14 @@ require([
             visibleHotSpotBackgrounds: 'always'
         });
     
-        // Manually fire the window.load event in order to start
-        // autoscrolling. (It used to work without this before some code
-        // reorganization, so perhaps it can be removed at some point.)
+        // Stop autoscrolling upon viewing an image.
+        $images.bind('click', function () {
+            $images.smoothDivScroll('stopAutoScrolling');
+        });
+        
+        // Fire the window.load event in order to start autoscrolling.
+        // (It used to work without this in an older version, so perhaps
+        // this can be removed at some point.)
         $(window).load();
     });
 });
