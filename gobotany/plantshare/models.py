@@ -20,10 +20,10 @@ IMAGE_TYPES = (
     ('SIGHTING', 'Sighting Photo'),
 )
 
-DEFAULT_AVATAR_URL = urlparse.urljoin(settings.STATIC_URL, 'images', 'icons',
-    'avatar_scary_placeholder.png')
-DEFAULT_AVATAR_THUMB = urlparse.urljoin(settings.STATIC_URL, 'images', 'icons',
-    'avatar_scary_placeholder.png')
+DEFAULT_AVATAR_URL = urlparse.urljoin(settings.STATIC_URL,
+    'images/icons/avatar_scary_placeholder.png')
+DEFAULT_AVATAR_THUMB = urlparse.urljoin(settings.STATIC_URL,
+    'images/icons/avatar_scary_placeholder.png')
 
 class Location(models.Model):
     """A location as specified by a user in one of several valid ways."""
