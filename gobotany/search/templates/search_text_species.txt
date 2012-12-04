@@ -3,62 +3,24 @@
 
 {{ object.scientific_name }} {{ object.taxonomic_authority }}.
 
-{% for common_name in object.common_names.all %}{% if not forloop.first %}, {% endif %}
-              {{ common_name }}{% endfor %}.
+{% for common_name in object.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}.
 
 {% for pile in object.piles.all %}
     {{ pile.pilegroup.name }} {{ pile.name }}
 {% endfor %}
 
-Description: {{ object.description }}.
+Facts About:
+{% if object.factoid|length > 0 %}
+    {{ object.factoid }}
+{% else %}
+    N/A
+{% endif %}
 
 Habitat: {{ object.get_habitats|join:", " }}
 
 {# At this point the species page has a Characteristics section. This is #}
 {# just an excerpt of the All Characteristics section further down the   #}
 {# page, so there is probably not a need to repeat it here.              #}
-
-{% with object.lookalikes.all as all_lookalikes %}
-  {% if all_lookalikes|length > 0 %}
-    Sometimes Confused With:
-    {% for lookalike in all_lookalikes %}
-        {{ lookalike.lookalike_characteristic }}:
-        {{ lookalike.lookalike_scientific_name }}
-    {% endfor %}
-  {% endif %}
-{% endwith %}
-
-Native to North America?
-{% if object.north_american_native == None %}
-{% else %}
-    {% if not object.north_american_native %}
-        No
-    {% else %}
-        {% if object.north_american_native %}
-            Yes
-            {% if object.north_american_introduced %}
-                and no (some introduced)
-            {% endif %}
-        {% endif %}
-    {% endif %}
-{% endif %}
-
-Distribution and Conservation Status:
-    Connecticut: {{ object.conservation_status_ct }}
-    Maine: {{ object.conservation_status_me }}
-    Massachusetts: {{ object.conservation_status_ma }}
-    New Hampshire: {{ object.conservation_status_nh }}
-    Rhode Island: {{ object.conservation_status_ri }}
-    Vermont: {{ object.conservation_status_vt }}
-
-Wetland Status: 
-{% if object.wetland_indicator_code %}
-    {{ object.wetland_indicator_text }}
-    (Wetland indicator code:
-    {{ object.wetland_indicator_code }})
-{% else %}
-    Not classified
-{% endif %}
 
 All Characteristics:
 {# TODO: may want to add brief characteristics, and group full list by character group, like species page. #}
@@ -79,32 +41,67 @@ All Characteristics:
   {% endwith %}
 {% endfor %}
 
+Wetland Status: 
+{% if object.wetland_indicator_code %}
+    {{ object.wetland_indicator_text }}
+    (Wetland indicator code:
+    {{ object.wetland_indicator_code }})
+{% else %}
+    Not classified
+{% endif %}
+
+Distribution and Conservation Status:
+    Connecticut: {{ object.conservation_status_ct }}
+    Maine: {{ object.conservation_status_me }}
+    Massachusetts: {{ object.conservation_status_ma }}
+    New Hampshire: {{ object.conservation_status_nh }}
+    Rhode Island: {{ object.conservation_status_ri }}
+    Vermont: {{ object.conservation_status_vt }}
+
 {# Information from Flora Novae Angliae, if available #}
 {% search_text_info_from_flora scientific_name=object.scientific_name %}
 
+{# Next comes information in the sidebar. #}
+
 {# Distribution by County: TODO: perhaps add a text equivalent if it'd help to search by county. #}
 
-Folklore & History:
-{% if object.factoid|length > 0 %}
-    {{ object.factoid }}
+Native to North America?
+{% if object.north_american_native == None %}
 {% else %}
-    N/A
+    {% if not object.north_american_native %}
+        No
+    {% else %}
+        {% if object.north_american_native %}
+            Yes
+            {% if object.north_american_introduced %}
+                and no (some introduced)
+            {% endif %}
+        {% endif %}
+    {% endif %}
 {% endif %}
 
-Classification:
-    Family: {{ object.family.name }}
-    Genus: {{ object.genus_name }}
-    Species: {{ object.scientific_name }}
-    Full name: {{ object.scientific_name }} {{ object.taxonomic_authority }}
+{% with object.lookalikes.all as all_lookalikes %}
+    {% if all_lookalikes|length > 0 %}
+        Sometimes Confused With:
+        {% for lookalike in all_lookalikes %}
+            {{ lookalike.lookalike_characteristic }}:
+            {{ lookalike.lookalike_scientific_name }}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
 {% with object.synonyms.all as all_synonyms %}
-  {% if all_synonyms|length > 0 %}
-    Also Known As:
-    {% for synonym in all_synonyms %}
-        {{ synonym.scientific_name }}{% if not forloop.last %},{% endif %}
-    {% endfor %}
-  {% endif %}
+    {% if all_synonyms|length > 0 %}
+        Synonyms:
+        {% for synonym in all_synonyms %}
+            {{ synonym.scientific_name }}{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    {% endif %}
 {% endwith %}
+
+Family: {{ object.family.name }}
+
+Genus: {{ object.genus_name }}
 
 {% if object.variety_notes %}
     Notes on Subspecies and Varieties:
