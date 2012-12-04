@@ -1,0 +1,14 @@
+# Convenience script for setting up local development environment configuration.
+#
+# Because we can't publish private keys for various components we use,
+# this script references a script that is assumed to be one directory above
+# the root of our source control repository. To make use of this script, simply
+# place the privately distributed script file in the parent directory of the 
+# repo, or set up your environment manually (by adding the keys to your 
+# $HOME/.bash_rc, for instance).
+#
+# Source this file to set up your environment once the private script is in 
+# place.
+
+DEV=$(dirname ${BASH_SOURCE[0]})
+source $DEV/../../gobotany_env
