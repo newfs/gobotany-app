@@ -10,5 +10,10 @@
 # Source this file to set up your environment once the private script is in 
 # place.
 
-DEV=$(dirname ${BASH_SOURCE[0]})
+THIS="${BASH_SOURCE[0]}"
+if [ -z "$THIS" ]
+then
+    THIS="$0"
+fi
+DEV=$(dirname "$THIS")
 source $DEV/../../gobotany_env
