@@ -237,12 +237,18 @@ body.taxa {
                     margin-left: 0;
                 }
             }
+            .help {
+                line-height: 28px;
+            }
             .get-help-btn {
                 margin: 0 0 0 10px;
             }
             li {
                 line-height: 16px;
                 list-style-type: none;
+            }
+            a {
+                margin-left: 0;
             }
         }
         a {
@@ -257,6 +263,9 @@ body.taxa {
                 img {
                     vertical-align: middle;
                 }
+            }
+            &.more {
+                cursor: pointer;
             }
         }
         /* Larger gallery styles */
@@ -294,9 +303,6 @@ body.taxa {
 	            position: relative;
 	            top: -22px;	
             }
-        }
-        a.more {
-            cursor: pointer;
         }
         /* TODO: resolve the two following sections */
         #species-images {

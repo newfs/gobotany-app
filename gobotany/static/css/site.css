@@ -655,12 +655,15 @@ body.taxa#species table tbody th.status { font-size: 12px; font-weight: normal; 
 body.taxa#species #sidebar dt, body.taxa#species #sidebar dd { display: inline; }
 body.taxa#species #sidebar .lookalikes dt { margin-top: 1em; display: block; }
 body.taxa#species #sidebar .lookalikes dd { margin-left: 0; }
+body.taxa#species #sidebar .help { line-height: 28px; }
 body.taxa#species #sidebar .get-help-btn { margin: 0 0 0 10px; }
 body.taxa#species #sidebar li { line-height: 16px; list-style-type: none; }
+body.taxa#species #sidebar a { margin-left: 0; }
 body.taxa#species a { margin-left: 0; }
 body.taxa#species a.enlarge { color: #1a2e11; display: block; margin: 0 0 8px 0; }
 body.taxa#species a.enlarge:hover { text-decoration: none; }
 body.taxa#species a.enlarge img { vertical-align: middle; }
+body.taxa#species a.more { cursor: pointer; }
 body.taxa#species .img-gallery { float: none; margin: 0 0 0 0; width: 710px; }
 body.taxa#species .img-gallery .img-container { height: 273px; width: 710px; }
 body.taxa#species .img-gallery .frame { height: 239px; width: 700px; }
@@ -669,7 +672,6 @@ body.taxa#species .img-gallery .images img { float: none; }
 body.taxa#species .img-gallery p.caption { bottom: -22px; margin: 0 0 0 0; position: absolute; right: 0; }
 body.taxa#species .controls { position: relative; }
 body.taxa#species .controls span { position: relative; top: -22px; }
-body.taxa#species a.more { cursor: pointer; }
 body.taxa#species #species-images { border: 5px solid rgba(255, 255, 255, 0.8); position: absolute; top: 0; z-index: 100; box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); }
 body.taxa#species #species-images { height: 239px; margin: 0 0 20px 0; overflow: hidden; position: relative; width: 700px; }
 body.taxa#species #species-images div.scrollableArea a { border-right: 5px solid #fff; float: left; margin: 0; padding: 0; }
