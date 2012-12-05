@@ -274,7 +274,7 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 
 /* Definitions */
 /* Site-wide styles */
-body { background: #f0f0c0; color: black; font-family: Verdana, Geneva, sans-serif; font-size: 12px; }
+body { background: #f0f0c0; color: black; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; }
 
 a { color: #508e31; text-decoration: none; }
 
@@ -286,7 +286,7 @@ a:hover { text-decoration: underline; }
 
 *|*:-moz-any-link:active, *|*:-moz-any-link:focus { border: 0; outline: 0; }
 
-h1, h2, h3, h4, h5, h6 { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-weight: normal; line-height: 155%; margin: 0; padding: 0; }
+h1, h2, h3, h4, h5, h6 { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; line-height: 155%; margin: 0; padding: 0; }
 
 h1 { color: #519136; font-size: 35px; line-height: 110%; margin-bottom: 8px; }
 
@@ -341,7 +341,7 @@ header .go-botany { float: left; margin: 0 0 0 -15px; padding: 14px 0 0 0; width
 header .go-botany a { background: url(/static/images/layout/logo-app.png) no-repeat transparent; height: 65px; width: 443px; display: block; text-indent: -9000px; }
 header .newfs { float: right; }
 header .newfs a { background: url(/static/images/layout/newfs-logo-app.png) no-repeat transparent; height: 66px; width: 116px; display: block; text-indent: -9000px; }
-header nav { background: url(/static/images/layout/nav-app-green.png) no-repeat; background-position: 0px 79px; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; height: 120px; padding: 0 0 0 48px; }
+header nav { background: url(/static/images/layout/nav-app-green.png) no-repeat; background-position: 0px 79px; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; height: 120px; padding: 0 0 0 48px; }
 header nav a { color: #fff; display: block; height: 35px; padding: 5px 8px 0; }
 header nav > a { display: none; /* Omit the 'sections' link by default */ }
 header nav ul { clear: both; }
@@ -349,10 +349,10 @@ header nav li { display: block; float: left; font-size: 14px; line-height: norma
 header nav li a:hover { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 header nav #search { background: white url(/static/images/layout/search-left.png) left center no-repeat; float: right; height: 20px; margin: 4px 4px 0 0; padding: 0 0 0 11px; }
 header nav #search form { display: block; margin: 0; padding: 0; width: 262px; }
-header nav #search input { background: #fff; border: 0; float: left; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; height: 20px; margin: 0; padding: 0; width: 219px; }
+header nav #search input { background: #fff; border: 0; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; height: 20px; margin: 0; padding: 0; width: 219px; }
 header nav #search input:focus { outline: none; }
 header nav #search button { background: #508e31 url(/static/images/layout/search-btn.png) 0 0 no-repeat; border: none; cursor: pointer; float: right; height: 20px; margin: 0; outline: none; padding: 0; width: 43px; display: block; text-indent: -9000px; }
-header nav #search-suggest .menu { background: #fff; border: 1px solid #ccc; border-bottom-color: #999; border-right-color: #999; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; margin: 0 auto; position: absolute; text-align: left; top: 105px; width: 256px; z-index: 101; }
+header nav #search-suggest .menu { background: #fff; border: 1px solid #ccc; border-bottom-color: #999; border-right-color: #999; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; margin: 0 auto; position: absolute; text-align: left; top: 105px; width: 256px; z-index: 101; }
 header nav #search-suggest .menu li { clear: left; display: block; float: left; font-weight: bold; margin: 0; padding: 3px; width: 250px; }
 header nav #search-suggest .menu li.highlighted { background-color: #abd6ff; }
 header nav #search-suggest .menu a { color: black; cursor: default; height: inherit; padding: 0; text-decoration: none; }
@@ -392,7 +392,7 @@ footer .container { margin: 0 auto; padding: 0 10px; width: 960px; }
 footer > img { left: 50%; margin-left: -543px; position: absolute; top: -47px; z-index: -1; }
 footer .publisher, footer .navigation { float: left; margin: 0 20px 0 0; padding: 18px 0; width: 305px; }
 footer .navigation { padding-left: 10px; }
-footer h6 { font-family: Verdana, Geneva, sans-serif; font-size: 11px; }
+footer h6 { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 11px; }
 footer p { font-size: 9px; margin: 0 0 10px 0; }
 footer ul { font-size: 9px; list-style-type: none; margin-bottom: 12px; }
 footer li { display: inline; line-height: 14px; }
@@ -404,7 +404,7 @@ footer .nsf-logo { float: left; margin: 0 10px 0 7px; }
 footer .support { margin-right: 0; padding: 18px 0; }
 
 /* Breadcrumb trails */
-#breadcrumb { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 160%; margin: 0 0 14px; }
+#breadcrumb { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; line-height: 160%; margin: 0 0 14px; }
 #breadcrumb span { color: #000; }
 
 /* Wait spinners */
@@ -431,8 +431,8 @@ footer .support { margin-right: 0; padding: 18px 0; }
 .plant-grid .plant:before { position: absolute; top: 8px; left: 6px; z-index: 100; width: 150px; height: 139px; top: 8px; border: 5px solid rgba(255, 255, 255, 0.8); content: ' '; }
 .plant-grid .plant-img-container { width: 160px; height: 149px; overflow: hidden; -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); }
 .plant-grid .plant-img-container img { height: 149px; /* so lazy_images knows when <img> is on screen */ }
-.plant-grid p { margin: 7px 0 0 0; font-family: Tahoma, "Trebuchet MS", sans-serif; /* Tahoma or Trebuchet because it's narrower than Verdana: less wrapping and fewer names on 4 lines */ line-height: 14px; }
-.plant-grid i { display: block; padding-bottom: 4px; font-family: Verdana, Geneva, sans-serif; /* Verdana, wider than Trebuchet: easier to read in italics */ font-style: italic; }
+.plant-grid p { margin: 7px 0 0 0; font-family: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif; /* Tahoma or Trebuchet because it's narrower than Verdana: less wrapping and fewer names on 4 lines */ line-height: 14px; }
+.plant-grid i { display: block; padding-bottom: 4px; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; /* Verdana, wider than Trebuchet: easier to read in italics */ font-style: italic; }
 .plant-grid .missing-image { position: relative; background: -webkit-gradient(linear, 0% 0%, 100% 100%, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -webkit-linear-gradient(left top, #eaf2e2, #d6e6c5); background: -moz-linear-gradient(left top, #eaf2e2, #d6e6c5); background: -o-linear-gradient(left top, #eaf2e2, #d6e6c5); background: linear-gradient(left top, #eaf2e2, #d6e6c5); width: 160px; height: 149px; color: #354d1e; }
 .plant-grid .missing-image:after { display: block; position: absolute; top: 50%; left: 50%; margin: -20px 0 0 -50px; width: 100px; height: 40px; font-size: 12px; line-height: 130%; text-align: center; content: 'Image not available yet'; }
 
@@ -445,7 +445,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
 .glosstip img { background: #eaf2e2; border: 1px solid #c3d941; bottom: 110%; padding: 4px; position: absolute; -webkit-box-shadow: 1px 1px 2px #333333; -moz-box-shadow: 1px 1px 2px #333333; box-shadow: 1px 1px 2px #333333; -webkit-border-radius: 2px; -moz-border-radius: 2px; -ms-border-radius: 2px; -o-border-radius: 2px; border-radius: 2px; }
 
 /* Shadowbox overrides */
-#sb-counter { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; }
+#sb-counter { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; }
 
 #sb-nav-close { background-position: center; background-repeat: no-repeat; padding: 4px; /* Increase activation area a bit */ right: -28px !important; /* Place at top right, but not exactly at the corner so as to avoid Flash video z-index problem */ top: 6px !important; }
 
@@ -465,7 +465,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
 .characteristics.full dd { margin-left: 280px; }
 
 /* Form error messages */
-.errorlist { color: #f00; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 14px; list-style-type: none; }
+.errorlist { color: #f00; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; line-height: 14px; list-style-type: none; }
 .errorlist li:before { content: "× "; font-size: 22px; font-weight: bold; margin: 0 0 20px; padding: 0; vertical-align: text-top; }
 
 /* Text input with suggestions */
@@ -478,7 +478,7 @@ input.suggest + div li span { font-weight: normal; }
 body.teaching #main li { list-style-type: none; }
 
 /* "Advanced ID Tools" placeholder page (delete after tools release) */
-#advanced-id #main .dk-landing-section { float: left; font-family: Verdana, Geneva, sans-serif; height: 410px; position: relative; width: 330px; }
+#advanced-id #main .dk-landing-section { float: left; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; height: 410px; position: relative; width: 330px; }
 #advanced-id #main .dk-landing-section:first-child { margin-right: 50px; }
 #advanced-id #main .dk-landing-section h2 { font-size: 18px; line-height: 20px; }
 #advanced-id #main .dk-landing-section section { margin: 10px 0 0; }
@@ -613,7 +613,7 @@ body.taxa .frame { cursor: pointer; }
 body.taxa #sb-title, body.taxa #sb-title-inner { height: 76px; line-height: 70%; position: relative; }
 body.taxa #sb-title-inner div { bottom: 6px; position: absolute; }
 body.taxa #sb-title-inner h6 { font-size: 16px; line-height: 110%; margin: 0 0 2px; padding: 0; }
-body.taxa #sb-title-inner span { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 10px; }
+body.taxa #sb-title-inner span { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; }
 body.taxa #sb-title-inner a { color: #fff; text-decoration: underline; }
 body.taxa #sb-nav-close { top: 56px !important; }
 body.taxa .visit-dkey { margin: 2em 0 0; font-size: 14px; font-weight: normal; }
@@ -633,10 +633,10 @@ body.taxa#species #main h1 { margin-bottom: 0; }
 body.taxa#species #main h1 span.origin { font-size: 14px; line-height: 100%; }
 body.taxa#species #main h5 { font-size: 14px; }
 body.taxa#species #main p { margin: 0 0 15px; }
-body.taxa#species #main p.common { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 30px; line-height: 155%; margin-bottom: 12px; }
+body.taxa#species #main p.common { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 30px; line-height: 155%; margin-bottom: 12px; }
 body.taxa#species #sb-player.html { background: #fff; overflow: hidden; /* Get rid of vertical scrollbar in WebKit on enlarged N. America dist. map. */ padding: 0 5px 5px; }
 body.taxa#species #sb-player #na-dist-county-map { background: #fff; height: 100%; width: 100%; }
-body.taxa#species .note { background: #c4bd93; border-bottom: 1px solid #ad9f50; border-top: 1px solid #ad9f50; color: #000; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 24px; margin-bottom: 0.5em; padding: 0.5em 0; text-align: center; width: 100%; }
+body.taxa#species .note { background: #c4bd93; border-bottom: 1px solid #ad9f50; border-top: 1px solid #ad9f50; color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin-bottom: 0.5em; padding: 0.5em 0; text-align: center; width: 100%; }
 body.taxa#species a.description-control { background: url(/static/images/icons/plus.png) left 50% no-repeat; display: block; margin: 10px 0 12px 0; padding: 3px 0 3px 25px; }
 body.taxa#species ul.full-description { background: #fbfbf8; border: 1px solid #e1e1dc; display: none; margin: 0 0 15px 0; }
 body.taxa#species ul.full-description > li { border-bottom: 1px solid #e1e1dc; clear: left; cursor: pointer; display: block; padding: 18px; margin: 0 0 0 0; }
@@ -684,15 +684,15 @@ body.skey.groups-subgroups .img-gallery .frame { cursor: pointer; }
 body.skey.groups-subgroups #sb-title, body.skey.groups-subgroups #sb-title-inner { height: 76px; line-height: 70%; position: relative; }
 body.skey.groups-subgroups #sb-title-inner div { bottom: 6px; position: absolute; }
 body.skey.groups-subgroups #sb-title-inner h6 { font-size: 16px; line-height: 110%; margin: 0 0 2px; padding: 0; }
-body.skey.groups-subgroups #sb-title-inner span { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 10px; }
+body.skey.groups-subgroups #sb-title-inner span { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; }
 body.skey.groups-subgroups #sb-title-inner a { color: #fff; text-decoration: underline; }
 body.skey.groups-subgroups #sb-nav-close { top: 56px !important; }
-body.skey.groups-subgroups p.question, body.skey.groups-subgroups p.tip { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 24px; margin: 12px 0 0; padding: 0; }
+body.skey.groups-subgroups p.question, body.skey.groups-subgroups p.tip { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin: 12px 0 0; padding: 0; }
 body.skey.groups-subgroups p.tip { color: #519136; font-size: 18px; margin: 8px 0 0; padding: 0; }
 body.skey.groups-subgroups .list-item { border-top: 1px solid rgba(128, 113, 33, 0.1); clear: left; margin: 20px 0 0 0; padding: 20px 0 0 0; }
 body.skey.groups-subgroups .list-item .details { float: left; width: 425px; }
 body.skey.groups-subgroups .list-item h2 { line-height: 110%; margin: 0 0 5px 0; }
-body.skey.groups-subgroups .list-item h2 + p { color: #807121; display: block; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 12px; font-style: italic; margin: 7px 0 1px; padding-left: 0; }
+body.skey.groups-subgroups .list-item h2 + p { color: #807121; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; font-style: italic; margin: 7px 0 1px; padding-left: 0; }
 body.skey.groups-subgroups .list-item p { margin: 0; padding: 0 0 7px 25px; }
 body.skey.groups-subgroups .list-item p.key-char { background: url(/static/images/icons/icon1.png) 0 2px no-repeat; }
 body.skey.groups-subgroups .list-item p.exceptions { background: url(/static/images/icons/icon2.png) 0 2px no-repeat; }
@@ -705,18 +705,18 @@ body.skey.groups-subgroups .list-item .details a.plant-in-group:active { backgro
 body.skey.groups-subgroups .list-item .details a.plant-in-subgroup { background: url(/static/images/layout/plant-in-subgroup-btn-orange.png) no-repeat 0 0; height: 32px; width: 233px; display: block; text-indent: -9000px; }
 body.skey.groups-subgroups .list-item .details a.plant-in-subgroup:hover { background-position: 0 -32px; }
 body.skey.groups-subgroups .list-item .details a.plant-in-subgroup:active { background-position: 0 -64px; }
-body.skey.groups-subgroups .not-my-plant { clear: left; float: right; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; padding: 20px 0 0; text-align: center; }
+body.skey.groups-subgroups .not-my-plant { clear: left; float: right; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 20px 0 0; text-align: center; }
 body.skey.groups-subgroups .not-my-plant p { margin: 0; padding: 0; }
-body.skey.groups-subgroups .not-my-plant p + p { font-family: Verdana, Geneva, sans-serif; }
+body.skey.groups-subgroups .not-my-plant p + p { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; }
 body.skey.results { /* end .already-know */ /* end .plant-list */ /* end #sidebar */ /* end #intro-overlay */ /* end #results-tabs */ /* Ordinarily this message will have its centering done by JavaScript. See gobotany.sk.results.notify() */ /* Working Area styles */ /* end .working-area */ }
 body.skey.results .already-know { float: left; margin: 0 0 40px 0; }
 body.skey.results .already-know h6 { color: #807121; font-weight: bold; margin: 0 0 5px 0; }
-body.skey.results .already-know label { color: #807121; display: block; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; margin: 5px 0 3px; vertical-align: middle; }
-body.skey.results .already-know select { font-size: 13px; height: 21px; width: 143px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; padding: 0; -webkit-appearance: menulist; }
+body.skey.results .already-know label { color: #807121; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; font-weight: normal; margin: 5px 0 3px; vertical-align: middle; }
+body.skey.results .already-know select { font-size: 13px; height: 21px; width: 143px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 0; -webkit-appearance: menulist; }
 body.skey.results .already-know button { background: #ebf6df; border: 1px solid #9cc86b; font: -webkit-control; padding: 2px 6px; -webkit-appearance: button; }
 body.skey.results .show-me { float: right; margin: 0 0 15px 0; }
-body.skey.results #results-display label { color: #000; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 15px; font-weight: normal; }
-body.skey.results #results-display select { font-size: 15px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; padding: 0; -webkit-appearance: menulist; }
+body.skey.results #results-display label { color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 15px; font-weight: normal; }
+body.skey.results #results-display select { font-size: 15px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 0; -webkit-appearance: menulist; }
 body.skey.results #results-display img.icon { margin: 0 3px 0 0; vertical-align: -1px; }
 body.skey.results #modal { display: none; }
 body.skey.results .plant-list { margin-top: 8px; position: relative; /* end .plant */ /* List view styles */ /* end table */ }
@@ -728,8 +728,8 @@ body.skey.results .plant-list .plant a { color: #1a2e11; display: block; }
 body.skey.results .plant-list .plant a:hover { color: #508e31; text-decoration: none; }
 body.skey.results .plant-list .plant a:hover p.plant-name { text-decoration: underline; }
 body.skey.results .plant-list .plant .frame { border: 5px solid rgba(255, 255, 255, 0.8); height: 139px; position: absolute; top: 8px; width: 150px; z-index: 100; }
-body.skey.results .plant-list .plant p.plant-name { font-family: Tahoma, "Trebuchet MS", sans-serif; /* Tahoma or Trebuchet because it's narrower than Verdana: less wrapping and fewer names on 4 lines */ line-height: 14px; margin: 7px 0 0 0; }
-body.skey.results .plant-list .plant p.plant-name span.latin { display: block; font-family: Verdana, Geneva, sans-serif; /* Verdana because it's wider than Trebuchet: easier to read in italics */ font-style: italic; padding-bottom: 4px; }
+body.skey.results .plant-list .plant p.plant-name { font-family: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif; /* Tahoma or Trebuchet because it's narrower than Verdana: less wrapping and fewer names on 4 lines */ line-height: 14px; margin: 7px 0 0 0; }
+body.skey.results .plant-list .plant p.plant-name span.latin { display: block; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; /* Verdana because it's wider than Trebuchet: easier to read in italics */ font-style: italic; padding-bottom: 4px; }
 body.skey.results .plant-list .plant-img-container { height: 149px; overflow: hidden; width: 160px; box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); }
 body.skey.results .plant-list .plant-img-container img { height: 149px; /* so lazy_images knows when <img> is on screen */ }
 body.skey.results .plant-list .wait { background: url(/static/images/icons/preloaders-dot-net-lg.gif) no-repeat scroll center center transparent; height: 350px; margin: auto; }
@@ -737,7 +737,7 @@ body.skey.results .plant-list table { width: 100%; }
 body.skey.results .plant-list table tr { height: 20px; }
 body.skey.results .plant-list table tr.first-visible td { border-top: 0; }
 body.skey.results .plant-list table td { border-top: 1px solid #e1e1dc; padding: 10px 0; vertical-align: middle; }
-body.skey.results .plant-list table .genus, body.skey.results .plant-list table .scientific-name { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; }
+body.skey.results .plant-list table .genus, body.skey.results .plant-list table .scientific-name { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; }
 body.skey.results .plant-list table .genus { color: #1a2e11; font-size: 18px; font-weight: normal; line-height: 200%; padding: 3px 0 0 0; vertical-align: top; }
 body.skey.results .plant-list table .scientific-name { font-size: 15px; font-weight: normal; line-height: 155%; padding: 10px 0 8px 0; }
 body.skey.results .plant-list table .scientific-name img { margin: 0 8px 0 0; padding-bottom: 2px; vertical-align: middle; }
@@ -771,7 +771,7 @@ body.skey.results #sidebar .loading { background: url(/static/images/icons/prelo
 body.skey.results a.get-choices { background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 4px 10px; text-indent: -9000px; width: 171px; }
 body.skey.results a.get-choices:hover { background-position: 0 -32px; }
 body.skey.results a.get-choices:active { background-position: 0 -64px; }
-body.skey.results #intro-overlay { /* for introductory overlay */ display: none; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 40px; text-align: center; z-index: 1000; /* Arrows */ }
+body.skey.results #intro-overlay { /* for introductory overlay */ display: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 40px; text-align: center; z-index: 1000; /* Arrows */ }
 body.skey.results #intro-overlay div { background-color: #f0f0c0; color: #fff; margin-bottom: 10%; padding: 0.6em 0.8em; position: relative; box-shadow: 0px 5px 20px black; -moz-box-shadow: 0px 5px 20px black; -webkit-box-shadow: 0px 5px 20px black; border-radius: 0.25em; -moz-border-radius: 0.25em; }
 body.skey.results #intro-overlay .number-of-species, body.skey.results #intro-overlay .number-of-questions { background-color: #508e31; }
 body.skey.results #intro-overlay .continue { background-color: #dc9402; border: 2px solid #dc9402; cursor: pointer; letter-spacing: 3px; text-shadow: 1px 1px 2px #dc9402; text-transform: uppercase; border-radius: 2em; -moz-border-radius: 2em; /* Gradient generated using the tool "Ultimate CSS Gradient Generator": www.colorzilla.com/gradient-editor */ background: #dc9302; /* Old browsers */ background: -moz-linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* FF3.6+ */ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dc9302), color-stop(50%, #f4bc53), color-stop(100%, #dc9302)); /* Chrome,Safari4+ */ background: -webkit-linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* Chrome10+,Safari5.1+ */ background: -o-linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* Opera 11.10+ */ background: -ms-linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* IE10+ */ background: linear-gradient(top, #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* W3C */ }
@@ -784,7 +784,7 @@ body.skey.results h3.species-count-heading > span { left: 330px; position: absol
 body.skey.results h5.help { font-size: 14px; margin: 0 0 0 0; padding: 3px 0 0 0; }
 body.skey.results h5.help.last { margin-top: 12px; }
 body.skey.results #results-tabs { border-bottom: 1px solid #c3d941; clear: left; height: 28px; margin: 10px 0; }
-body.skey.results #results-tabs a { background: #d6e6c5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5); border: 1px solid #c3d941; color: #354d1e; cursor: pointer; display: block; float: left; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 18px; line-height: 18px; margin: 0; padding: 5px 10px 4px; text-align: center; width: 100px; -webkit-border-top-left-radius: 6px; -webkit-border-top-right-radius: 6px; -moz-border-radius-topleft: 6px; -moz-border-radius-topright: 6px; border-top-left-radius: 6px; border-top-right-radius: 6px; }
+body.skey.results #results-tabs a { background: #d6e6c5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5); border: 1px solid #c3d941; color: #354d1e; cursor: pointer; display: block; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 18px; line-height: 18px; margin: 0; padding: 5px 10px 4px; text-align: center; width: 100px; -webkit-border-top-left-radius: 6px; -webkit-border-top-right-radius: 6px; -moz-border-radius-topleft: 6px; -moz-border-radius-topright: 6px; border-top-left-radius: 6px; border-top-right-radius: 6px; }
 body.skey.results #results-tabs a:hover { background: #e1f2cd; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f0f8e7), color-stop(100%, #e1f2cd)); background: -moz-linear-gradient(center top, #f0f8e7, #e1f2cd); cursor: pointer; text-decoration: none; }
 body.skey.results #results-tabs li { list-style-type: none; }
 body.skey.results #results-tabs li:first-child a { margin-left: 10px; }
@@ -796,14 +796,14 @@ body.skey.results .working-area .choices { border-spacing: 6px 12px; display: ta
 body.skey.results .working-area .choices .row { display: table-row; }
 body.skey.results .working-area .choices .row div { display: table-cell; margin: 0 0.5em 1em 0; min-height: 50px; }
 body.skey.results .working-area .choices .row div.disabled span { color: #aaa; }
-body.skey.results .working-area .choices .row div label { cursor: pointer; display: inline-block; font-family: Tahoma, "Trebuchet MS", sans-serif; font-size: 12px; margin-left: 18px; min-width: 70px; vertical-align: top; word-wrap: break-word; /* can break mid-word */ }
+body.skey.results .working-area .choices .row div label { cursor: pointer; display: inline-block; font-family: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif; font-size: 12px; margin-left: 18px; min-width: 70px; vertical-align: top; word-wrap: break-word; /* can break mid-word */ }
 body.skey.results .working-area .choices .row div input { float: left; margin: 3px 3px 0 -18px; }
 body.skey.results .working-area .choices .row div input + img { background: #fff; border: 1px solid #ddd; display: inline-block; height: 80px; }
 body.skey.results .working-area a.close { background: url(/static/images/icons/close.png) no-repeat transparent; display: block; float: right; height: 16px; margin: 5px 0 0 0; width: 16px; }
 body.skey.results .working-area h4 { color: #000; display: none; font-size: 18px; line-height: 130%; margin: 6px 0; width: 650px; }
 body.skey.results .working-area .intro-message h4 { display: block; font-weight: bold; }
 body.skey.results .working-area .intro-message p { font-size: 14px; margin-bottom: 5px; }
-body.skey.results .working-area .info { display: none; float: left; font-family: Tahoma, "Trebuchet MS", sans-serif; font-size: 14px; width: 100%; }
+body.skey.results .working-area .info { display: none; float: left; font-family: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif; font-size: 14px; width: 100%; }
 body.skey.results .working-area .info .hint { font-size: 12px; margin: 6px 0; }
 body.skey.results .working-area .info .hint p { font-size: 14px; line-height: 120%; margin: 0; }
 body.skey.results .working-area .character-drawing { float: right; }
@@ -860,8 +860,8 @@ body.plantshare { /* end #sightings-locator */ /* end .info-section, .location-s
 body.plantshare .content li { list-style-type: none; }
 body.plantshare .content form p { margin: 0; }
 body.plantshare .content form label { display: block; margin-bottom: 4px; text-transform: uppercase; width: 350px; }
-body.plantshare .content form input { font-family: Verdana, Geneva, sans-serif; height: 16px; margin-bottom: 10px; border: 1px solid #c3d941; padding: 5px; width: 350px; }
-body.plantshare .content form textarea { font-family: Verdana, Geneva, sans-serif; height: 82px; border: 1px solid #c3d941; padding: 5px; width: 350px; }
+body.plantshare .content form input { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; height: 16px; margin-bottom: 10px; border: 1px solid #c3d941; padding: 5px; width: 350px; }
+body.plantshare .content form textarea { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; height: 82px; border: 1px solid #c3d941; padding: 5px; width: 350px; }
 body.plantshare .box { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px; }
 body.plantshare .box table { margin: 16px 0 12px; width: 100%; }
 body.plantshare .box table tr:nth-child(odd) { background-color: #e1f0d1; }
@@ -889,7 +889,7 @@ body.plantshare#sign-up #main form input { width: 350px; }
 body.plantshare#sign-up #main form input.button { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -359px; border: 0; height: 41px; margin-top: 12px; width: 244px; display: block; text-indent: -9000px; }
 body.plantshare#sign-up #main form input.button:hover { background-position: -1px -402px; }
 body.plantshare#sign-up #main form input.button:active { background-position: -1px -444px; }
-body.plantshare#log-in h1 + p { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; margin: 0; padding: 16px 0; }
+body.plantshare#log-in h1 + p { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; margin: 0; padding: 16px 0; }
 body.plantshare#log-in ul.errorlist { padding: 16px 0; }
 body.plantshare#log-in form.login { padding-left: 0; }
 body.plantshare#log-in form.login label { font-size: 12px; }
@@ -906,7 +906,7 @@ body.plantshare #sightings-locator.mini { margin-top: 20px; }
 body.plantshare #sightings-locator.mini .box { font-size: 11px; height: 297px; padding: 0 0 0 10px; }
 body.plantshare #sightings-locator.mini .box form { float: left; padding: 0; width: 205px; }
 body.plantshare #sightings-locator.mini .box form h3 { padding-top: 5px; }
-body.plantshare #sightings-locator.mini .box form h4 { clear: left; font-family: Verdana, Geneva, sans-serif; font-size: 12px; font-weight: bold; line-height: 14px; margin: 6px 0; padding-top: 8px; }
+body.plantshare #sightings-locator.mini .box form h4 { clear: left; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; font-weight: bold; line-height: 14px; margin: 6px 0; padding-top: 8px; }
 body.plantshare #sightings-locator.mini .box form p { line-height: 14px; margin: 0; padding: 0; }
 body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px; }
 body.plantshare #sightings-locator.mini .box .map { clear: none; border-bottom: 0; border-right: 0; border-top: 0; float: right; margin-top: 0; }
@@ -993,7 +993,7 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
 /* End media queries styles for PlantShare */
 /* Dichotomous Key */
 /* Definitions */
-.orange-button, body.taxa .visit-dkey a, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
+.orange-button, body.taxa .visit-dkey a, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
 .orange-button:hover, body.taxa .visit-dkey a:hover, #dkey #main .offer-help-aside a.button:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
 .orange-button.disabled, body.taxa .visit-dkey a.disabled, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
 
@@ -1017,9 +1017,9 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
 #dkey #main p .figure img { width: 16em; /* force thumbnails to a consistent width */ }
 #dkey #main p .figure .number { font-weight: bold; margin-right: 0.5em; }
 #dkey #main p.backlinks { margin-top: 0.57143em; margin-bottom: 0.64286em; font-size: 14px; }
-#dkey #main p.backlinks a { text-decoration: none; margin-right: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; }
+#dkey #main p.backlinks a { text-decoration: none; margin-right: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; }
 #dkey #main p.backlinks a:hover { text-decoration: underline; }
-#dkey #main a.what-lies-beneath { /* "See list of 7 species in 1a" */ text-decoration: none; color: #35661c; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 12px; text-transform: uppercase; }
+#dkey #main a.what-lies-beneath { /* "See list of 7 species in 1a" */ text-decoration: none; color: #35661c; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; text-transform: uppercase; }
 #dkey #main a.what-lies-beneath:hover { text-decoration: underline; }
 #dkey #main > a.what-lies-beneath { display: block; max-width: 47.5em; text-align: right; }
 #dkey #main ul.couplets { margin: 0em; max-width: 48em; padding: 1em 1em 0 0; font-size: 12px; line-height: 1.5em; }
@@ -1047,7 +1047,7 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
 #dkey #main div.taxon-images a:hover { text-decoration: underline; }
 #dkey #main div.shadow { /* shadow that hides the whole page */ display: none; position: fixed; z-index: 1000; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.45); text-align: center; }
 #dkey #main div.popup { /* for displaying quick lists of taxa */ display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; background-color: #f5f5d5; padding: 1em 2em; text-align: left; font-size: 12px; line-height: 1.25em; }
-#dkey #main div.popup h2 { /* "See list of 14 species in 1b" */ border-bottom: 1px solid #519136; padding-bottom: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-weight: normal; /* For tall lists a scrollbar appears, and tends to make the last word of the title wrap unattractively. */ white-space: nowrap; }
+#dkey #main div.popup h2 { /* "See list of 14 species in 1b" */ border-bottom: 1px solid #519136; padding-bottom: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; /* For tall lists a scrollbar appears, and tends to make the last word of the title wrap unattractively. */ white-space: nowrap; }
 #dkey #main div.popup a { text-decoration: none; color: #000; }
 #dkey #main div.popup a:hover { text-decoration: underline; }
 #dkey #main div.popup a:hover { color: #35661c; }
@@ -1068,9 +1068,9 @@ body.search-results #search-results-list { margin: 6px 0 13px; padding: 6px 0 0;
 body.search-results #search-results-list .highlighted { font-weight: bold; }
 body.search-results #search-results-list li { list-style-type: none; margin: 0 0 2px; padding: 2px 0; }
 body.search-results #search-results-list li img { float: left; margin: -1px 10px 0 0; vertical-align: middle; }
-body.search-results #search-results-list li a { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 15px; text-decoration: underline; }
+body.search-results #search-results-list li a { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 15px; text-decoration: underline; }
 body.search-results #search-results-list li p { line-height: 140%; margin-left: 34px; margin-top: 2px; }
-body.search-results .search-navigation { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 15px; text-align: center; }
+body.search-results .search-navigation { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 15px; text-align: center; }
 body.search-results .search-navigation ul { display: inline; }
 body.search-results .search-navigation li { display: inline; margin: 0 2px; }
 body.search-results .search-navigation a { text-decoration: underline; }
@@ -1160,7 +1160,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
 /* Video Help Topics */
 #video .video-topic { float: left; height: 176px; margin: 10px 16px 10px 0; position: relative; width: 220px; }
 #video .video-topic img { height: 137px; width: 220px; }
-#video .video-topic > p { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 18px; line-height: 105%; margin-top: 4px; }
+#video .video-topic > p { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 18px; line-height: 105%; margin-top: 4px; }
 #video .video-topic .missing-image { border: 1px solid #508e31; height: 135px; width: 218px; }
 #video .video-topic .missing-image p { left: auto; margin: 55px 0; position: absolute; text-align: center; top: auto; white-space: nowrap; width: 100%; }
 
@@ -1184,7 +1184,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
 #list .content table th.wetland { width: 5%; }
 #list .content table th.group { width: 12%; }
 #list .content table th.subgroup { width: 16%; }
-#list .content table td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 13px; }
+#list .content table td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 13px; }
 
 /* Begin media queries styles for the About section. */
 /* Portrait-orientation styles */
@@ -1221,9 +1221,9 @@ body.search-results .search-navigation a { text-decoration: underline; }
 /* Styles for legal notification pages */
 .legal #main h3 { margin: 8px 0; }
 .legal #main p + p, .legal #main p + ul { margin-top: 8px; }
-.legal #main ol.terms { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 24px; list-style-type: upper-roman; margin-top: 0; }
+.legal #main ol.terms { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; list-style-type: upper-roman; margin-top: 0; }
 .legal #main ol.terms ul { list-style-type: disc; }
-.legal #main ol.terms li p, .legal #main ol.terms li li { font-family: Verdana, Geneva, sans-serif; font-size: 12px; }
+.legal #main ol.terms li p, .legal #main ol.terms li li { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; }
 .legal #main ol.terms li li { line-height: 20px; }
 
 /* Begin media queries styles for the legal notification pages. */
@@ -1309,7 +1309,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
   footer .navigation h6:first-child { display: none; }
   footer .navigation > ul.sections li { display: block; margin: 0 0 1px 0; }
   footer .navigation > ul.sections li:after { content: none; }
-  footer .navigation > ul.sections li a { background: #508e31; color: #fff; display: block; font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
+  footer .navigation > ul.sections li a { background: #508e31; color: #fff; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
   footer .navigation > ul.sections li a[href] { color: #fff; }
   footer .navigation > ul.sections li a[href]:after { content: " >"; font-weight: bold; position: absolute; right: 14px; }
   footer .navigation > ul.sections + h6 { /* "Legal:" label */ display: none; }
@@ -1324,7 +1324,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
 }*/ }
   .content #main { background: none; float: none; min-height: inherit; padding-bottom: 14px; padding-left: 0; margin-left: 8px; margin-right: 8px; }
   .content #main .smallscreen-anchor-nav { display: block; padding: 8px 0 16px; }
-  .content #main .smallscreen-anchor-nav a { font-family: "Trebuchet MS", Helvetica, Arial, sans-serif; font-size: 14px; padding: 8px 0; text-decoration: underline; }
+  .content #main .smallscreen-anchor-nav a { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; padding: 8px 0; text-decoration: underline; }
   .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; /*margin-bottom: 14px;*/ margin-left: 8px; margin-right: 8px; /*.section:first-child { margin-top: 0;
 }*/ }
   .content #sidebar .section { /*margin-top: $sidebar-box-vertical-padding;*/ padding-bottom: 16px; }
