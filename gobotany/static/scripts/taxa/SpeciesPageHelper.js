@@ -4,7 +4,7 @@
 define([
     'bridge/jquery',
     'bridge/shadowbox',
-    'simplekey/PhotoHelper',
+    'util/PhotoHelper',
     'util/glossarizer'
 ], function($, Shadowbox, PhotoHelper, glossarizer) {
 var SpeciesPageHelper = {

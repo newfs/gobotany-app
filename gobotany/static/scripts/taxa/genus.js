@@ -1,6 +1,6 @@
 define([
     'bridge/jquery',
-    'simplekey/PhotoHelper',
+    'util/PhotoHelper',
     'util/glossarizer',
     'util/shadowbox_init',
     'util/sidebar'

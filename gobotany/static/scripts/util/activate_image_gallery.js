@@ -8,7 +8,7 @@ require([
     'util/sidebar',
     'bridge/jquery.mousewheel',
     'bridge/shadowbox',
-    'simplekey/PhotoHelper'
+    'util/PhotoHelper'
 ], function($, sidebar, mousewheel, Shadowbox, PhotoHelper) {
     sidebar.setup();
     $(document).ready(function() {
