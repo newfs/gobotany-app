@@ -46,7 +46,7 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
                                     title="{% photo_credit drawing drawing.content_object.scientific_name %}">
                                     <img class="map"
                                         src="{{ drawing.thumb_large }}"
-                                        alt="{% photo_credit drawing drawing.content_object.scientific_name %}"></a>
+                                        alt="{% photo_credit drawing drawing.content_object.scientific_name %}">
                                 </a>
                             </div>
                         </div>
@@ -60,6 +60,12 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
                     >{{ genus.name }}</a></i></li>
                 {% endfor %}
                 </ul>
+
+                <p class="visit-dkey">
+                  Visit this family in the
+                  <a href="{% url dkey_page family.name.lower %}"
+                     >Dichotomous Key</a>
+                </p>
 {% endblock %}
 
 {% block sidebar_content %}
