@@ -39,8 +39,17 @@ var PhotoHelper = {
 
         var parts = title_text.split(' ~ ');
         var image_title = parts[0];
-        var copyright_holder = parts[1];
-        var copyright = parts[2];
+        
+        var copyright_holder = 'Copyrighted image.';
+        if (parts[1]) {
+            copyright_holder = parts[1];
+        }
+        
+        var copyright = 'Copyright information coming soon.';
+        if (parts[2] && $.trim(parts[2]).length > 0) {
+            copyright = parts[2];
+        }
+        
         var source = '';
         if (parts[3]) {
             source = parts[3];
