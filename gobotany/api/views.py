@@ -233,18 +233,21 @@ def questions(request, pile_slug):
 # The images that should be displayed on a particular dkey page.
 
 extra_image_types = {
-    u'Group 2': 'fruits',
-    u'Group 3': 'inflorescences',
-    u'Group 4': 'bark',
-    u'Group 5': 'bark',
-    u'Group 6': 'flowers',
-    u'Group 7': 'flowers',
-    u'Group 8': 'flowers',
-    u'Group 9': 'flowers',
-    u'Group 10': 'flowers',
+    u'Group 2': ('fruits',),
+    u'Group 3': ('inflorescences',),
+    u'Group 4': ('bark',),
+    u'Group 5': ('bark',),
+    u'Group 6': ('flowers',),
+    u'Group 7': ('flowers',),
+    u'Group 8': ('flowers',),
+    u'Group 9': ('flowers',),
+    u'Group 10': ('flowers',),
     }
 
 def dkey_images(request, slug):
+
+    if slug == 'key-to-the-families':
+        return jsonify({})
 
     # Whether a dkey page displays groups of families, genera, or taxa,
     # we need to pull exactly one species to stand as the representative
@@ -254,6 +257,7 @@ def dkey_images(request, slug):
     title = dkey_models.slug_to_title(slug)
     page = get_object_or_404(dkey_models.Page, title=title)
 
+    taxa = None
     rank = None
     taxa_names = []
     for lead in page.leads.all():
@@ -261,11 +265,19 @@ def dkey_images(request, slug):
             rank, comma_list = lead.taxa_cache.split(':')
             taxa_names.extend(comma_list.split(','))
     if rank is None:
-        return []
+        return jsonify({})
 
-    taxa = None
-    image_types_allowed = None
-    ctype = ContentType.objects.get_for_model(Taxon)
+    group_title = None
+
+    if page.rank == 'group':
+        group_title = page.title
+    else:
+        for ancestor in page.breadcrumb_cache.all():
+            if ancestor.rank == 'group':
+                group_title = ancestor.title
+
+    image_types_allowed = ['leaves', 'plant form']
+    image_types_allowed.extend(extra_image_types.get(group_title, ()))
 
     if rank == u'family':
 
@@ -273,10 +285,6 @@ def dkey_images(request, slug):
         # and https://github.com/newfs/gobotany-app/issues/304
 
         group_number = title.split()[-1] if page.rank == u'group' else u''
-
-        image_types_allowed = ['leaves', 'plant form']
-        if title in extra_image_types:
-            image_types_allowed.append(extra_image_types[title])
 
         cursor = connection.cursor()
         cursor.execute("""
@@ -315,18 +323,17 @@ def dkey_images(request, slug):
         taxon_ids = [ taxon.id for taxon in taxa ]
 
     else:
-        return {}
+        return jsonify({})
 
     if taxa is None:
         taxa = Taxon.objects.filter(id__in=taxon_ids)
 
+    ctype = ContentType.objects.get_for_model(Taxon)
     query = (ContentImage.objects
              .filter(content_type=ctype, object_id__in=taxon_ids, rank=1)
+             .filter(image_type__name__in=image_types_allowed)
              .select_related('image_type')
              )
-
-    if image_types_allowed is not None:
-        query = query.filter(image_type__name__in=image_types_allowed)
 
     image_map = {
         (image.object_id, image.image_type.name): image.thumb_small()
