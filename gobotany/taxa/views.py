@@ -3,6 +3,7 @@
 from itertools import groupby
 from operator import itemgetter
 
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 
@@ -196,6 +197,11 @@ def species_view(request, genus_slug, epithet):
     dkey_pages = dkey_models.Page.objects.filter(title=scientific_name)
     dkey_page = dkey_pages[0] if dkey_pages else None
 
+    dkey_hybrids = (dkey_models.Hybrid.objects
+                    .filter(Q(scientific_name1=scientific_name) |
+                            Q(scientific_name2=scientific_name))
+                    .order_by('number1', 'number2'))
+
     species_in_simple_key = (partner_species and partner_species.simple_key)
     key = request.GET.get('key')
     if not key:
@@ -280,6 +286,7 @@ def species_view(request, genus_slug, epithet):
            'key': key,
            'species_in_simple_key': species_in_simple_key,
            'common_names': taxon.common_names.all(),  # view uses this 3 times
+           'dkey_hybrids': dkey_hybrids,
            'dkey_page': dkey_page,
            'images': images,
            'partner_heading': partner_species.species_page_heading

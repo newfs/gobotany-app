@@ -25,6 +25,8 @@ def slug_to_title(slug):
         ' families', ' Families').replace(' group ', ' Group ')
 
 class Page(models.Model):
+    """A page of the dichotomous key, that can have several leads on it."""
+
     chapter = models.TextField(blank=True)
     title = models.TextField(unique=True)
     rank = models.TextField(db_index=True)
@@ -42,6 +44,8 @@ class Page(models.Model):
         return self.leads.order_by('id')
 
 class Lead(models.Model):
+    """A text description that leads you down one path in the dkey."""
+
     page = models.ForeignKey('Page', related_name='leads')
     parent = models.ForeignKey('Lead', related_name='children', null=True)
     letter = models.TextField()
@@ -71,6 +75,15 @@ class Lead(models.Model):
             return int(self.letter),
         else:
             return int(self.letter[:-1]), self.letter[-1]
+
+class Hybrid(models.Model):
+    """A paragraph describing a hybrid species."""
+
+    number1 = models.IntegerField()
+    number2 = models.IntegerField()
+    scientific_name1 = models.TextField(db_index=True)
+    scientific_name2 = models.TextField(db_index=True)
+    text = models.TextField(blank=True)
 
 class Figure(models.Model):
     number = models.IntegerField(primary_key=True)

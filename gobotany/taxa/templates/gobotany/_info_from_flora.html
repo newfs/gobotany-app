@@ -3,5 +3,25 @@
     <h2 id="dkey">Information from Dichotomous Key of Flora Novae Angliae</h2>
     <div>
       {{ dkey_page.text|discard_floating_figures|render_figure_links|safe }}
+      {% for hybrid in dkey_hybrids %}
+        <p>
+          <b>{{ hybrid.number1 }}×{{ hybrid.number2 }}.
+            {% if dkey_page.title = hybrid.scientific_name1 %}
+              <i>{{ hybrid.scientific_name1 }}</i>
+            {% else %}
+              <a href="{{ hybrid.scientific_name1|dkey_url }}"
+                 ><i>{{ hybrid.scientific_name1 }}</i></a>
+            {% endif %}
+            ×
+            {% if dkey_page.title = hybrid.scientific_name2 %}
+              <i>{{ hybrid.scientific_name2 }}</i>
+            {% else %}
+              <a href="{{ hybrid.scientific_name2|dkey_url }}"
+                 ><i>{{ hybrid.scientific_name2 }}</i></a>
+            {% endif %}
+            →</b>
+          {{ hybrid.text|discard_floating_figures|render_figure_links|safe }}
+        </p>
+      {% endfor %}
     </div>
   {% endif %}
