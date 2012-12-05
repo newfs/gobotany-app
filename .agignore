@@ -1,3 +1,5 @@
 dev
 gobotany.application.js
+shadowbox.js
 *.csv
+*.svg
