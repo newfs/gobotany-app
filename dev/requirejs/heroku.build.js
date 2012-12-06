@@ -16,6 +16,8 @@
                 'lib/require',
 
                 'dkey/dkey',
+                'mapping/google_maps',
+                'mapping/sightings_map',
                 'plantshare/myprofile',
                 'plantshare/plantshare',
                 'plantshare/registration_complete',
