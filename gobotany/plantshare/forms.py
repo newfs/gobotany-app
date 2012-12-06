@@ -1,4 +1,4 @@
-
+import logging as log
 from django import forms
 from django.core.urlresolvers import reverse_lazy
 
@@ -104,6 +104,14 @@ class UserProfileForm(forms.ModelForm):
         location, created = Location.objects.get_or_create(user_input=user_text)
 
         return location
+
+    def avatar(self):
+        if self.instance.pk:
+            avatar_info = self.instance.private_avatar_image()
+        else:
+            avatar_info = UserProfile.default_avatar_image()
+
+        return avatar_info
 
 
 class ScreenedImageForm(forms.ModelForm):
