@@ -1015,6 +1015,61 @@ body.teaching #main li {
     }
 }
 
+/* For IE 6-9 browser compatibility prompts */
+
+#ie-note {
+    background: #fff;
+    border-bottom: 4px solid #508e31;
+    color: #000;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    padding: 11px 0;
+    text-align: center;
+    p {
+        position: relative;
+        z-index: 2;
+        &.dismiss {
+            padding: 3px;
+            a {
+                background-color: #3e6bbf;
+                border-bottom: 2px solid #365b99;
+                border-left: 2px solid #85b0f3;
+                border-right: 2px solid #365b99;
+                border-top: 2px solid #85b0f3;
+                color: white;
+                font-size: 12px;
+                font-weight: bold;
+                padding: 2px 8px;
+                text-decoration: none;
+
+                -ms-border-radius: 0.3em;
+                border-radius: 0.3em;
+            }
+        }
+    }
+    a {
+        text-decoration: underline;
+    }
+    img {
+        background-color: #fff;
+        clip: rect(0px,255px,78px,0px);
+        overflow: hidden;
+        position: absolute;
+        top: 41px;
+        z-index: 1;
+        opacity: 0.5;
+        filter:alpha(opacity=50); /* For IE8 and earlier */
+    }
+}
+.chromeFrameInstallDefaultStyle {
+    border: 4px solid #508e31;
+    border-top: 4px solid #fff;
+    height: 600px; /* not too short: don't allow blue button to scroll away */
+    top: 419px;
+    z-index: 20000;  /* ensure installer is atop all other content */
+}
+
+
 /* Imports for various pages, sections, features, etc. Each of these
  * can contain their own media queries. */
 
