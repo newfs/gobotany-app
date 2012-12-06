@@ -9,6 +9,9 @@ import csv
 from django.db import connection, transaction
 from gobotany.dkey import models
 
+class Dummy():
+    pass
+
 def main():
     """Parse and act upon command-line arguments."""
 
@@ -17,14 +20,15 @@ def main():
         'csvpath', help='path to dkey_illustrative_species.csv')
 
     args = parser.parse_args()
-    import_illustrative_species(args.csvpath)
+    csvfile = Dummy()
+    csvfile.open = lambda: open(args.csvpath)
+    import_illustrative_species(csvfile)
 
 @transaction.commit_on_success
-def import_illustrative_species(csvpath):
+def import_illustrative_species(csvfile):
     """Read a CSV file full of illustrative species."""
 
-    with open(csvpath) as f:
-        records = list(csv.DictReader(f))
+    records = list(csv.DictReader(csvfile.open()))
 
     cursor = connection.cursor()
     cursor.execute('DELETE FROM dkey_illustrativespecies')

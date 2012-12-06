@@ -27,6 +27,7 @@ from django.db import connection, transaction
 from django.template.defaultfilters import slugify
 
 import bulkup
+import gobotany.dkey.import_csv
 from gobotany.core import models
 from gobotany.core.pile_suffixes import pile_suffixes
 from gobotany.search.models import (GroupsListPage, PlainPage,
@@ -2062,6 +2063,9 @@ full_import_steps = (
     (import_partner_species, '!montshire', 'montshire-species-list.xls'),
     (rebuild.rebuild_default_filters, 'characters.csv'),
     (rebuild.rebuild_plant_of_the_day, '!SIMPLEKEY'),
+
+    (gobotany.dkey.import_csv.import_illustrative_species,
+     'dkey_illustrative_species.csv'),
     )
 
 
