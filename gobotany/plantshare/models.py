@@ -21,9 +21,9 @@ IMAGE_TYPES = (
 )
 
 DEFAULT_AVATAR_URL = urlparse.urljoin(settings.STATIC_URL,
-    'images/icons/avatar_scary_placeholder.png')
+    'images/icons/avatar-scary-placeholder.png')
 DEFAULT_AVATAR_THUMB = urlparse.urljoin(settings.STATIC_URL,
-    'images/icons/avatar_scary_placeholder.png')
+    'images/icons/avatar-scary-placeholder.png')
 
 class Location(models.Model):
     """A location as specified by a user in one of several valid ways."""
@@ -91,6 +91,13 @@ class UserProfile(models.Model):
 
     avatar = models.ForeignKey('ScreenedImage', null=True, blank=True)
 
+    @classmethod
+    def default_avatar_image(cls):
+        return {
+            'url': DEFAULT_AVATAR_URL,
+            'thumb_url': DEFAULT_AVATAR_THUMB,
+        }
+
     def private_avatar_image(self):
         ''' Convenience method that will return the user's latest uploaded avatar,
         whether or not it has been approved by staff.  This should ONLY appear to
@@ -104,10 +111,7 @@ class UserProfile(models.Model):
                 'thumb_url': this_avatar.thumb.url,
             }
         else:
-            avatar_info = {
-                'url': DEFAULT_AVATAR_URL,
-                'thumb_url': DEFAULT_AVATAR_THUMB,
-            }
+            avatar_info = self.__class__.default_avatar_image()
 
         return avatar_info
     
@@ -122,10 +126,7 @@ class UserProfile(models.Model):
                 'thumb_url': self.avatar.thumb.url,
             }
         else:
-            avatar_info = {
-                'url': DEFAULT_AVATAR_URL,
-                'thumb_url': DEFAULT_AVATAR_THUMB,
-            }
+            avatar_info = self.__class__.default_avatar_image()
 
         return avatar_info
 
