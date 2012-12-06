@@ -23,6 +23,13 @@ body.taxa {
         ol, ul {
             line-height: inherit;
         }
+        p.common {
+            color: #807121;
+            font-family: $headings-font;
+            font-size: 30px;
+            line-height: 155%;
+            margin-bottom: 12px;
+        }
     }
     .frame {
         cursor: pointer;
@@ -105,13 +112,6 @@ body.taxa {
             }
             p {
                 margin: 0 0 15px;
-                &.common {
-                    color: #807121;
-                    font-family: $headings-font;
-                    font-size: 30px;
-                    line-height: 155%;
-                    margin-bottom: 12px;
-                }
             }
         }
         #sb-player {
@@ -339,3 +339,110 @@ body.taxa {
         }
     }
 }
+
+
+/* Begin media queries styles for taxa pages. */
+
+$mini-table-font-size: 10px;
+
+/* Portrait-orientation styles */
+@media only screen and (max-width: 400px) {
+    body.taxa {
+        &#species {
+            #species-images {
+                width: 292px;
+            }
+            #sidebar {
+                padding-bottom: 30px;
+            }
+        }
+    }
+}
+/* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) {
+    body.taxa {
+        &#species {
+            #species-images {
+                width: 452px;
+            }
+            #sidebar {
+                margin-bottom: 14px;
+                padding-bottom: 14px;
+            }
+        }
+    }
+}
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) {
+    body.taxa {
+        #main {
+            padding-bottom: 8px;
+            p.common {
+                font-size: 20px;
+            }
+        }
+        &#species {
+            #main p {
+                margin-bottom: 10px;
+            }
+            .note {
+                font-size: 18px;
+            }
+            ul.full-description > li div {
+                padding-left: 0;
+            }
+            .characteristics {
+                &.full {
+                    margin-bottom: 0;
+                }
+                dl {
+                    dt {
+                        clear: none;
+                        float: none;
+                        text-align: left;
+                        width: auto;
+                    }
+                    dd {
+                        margin-left: auto;
+                        padding-left: 28px;
+                    }
+                }
+            }
+            #ne-status {   /* Horiz. scroll for status table if too wide */
+                overflow-x: auto;
+                width: 100%;
+                table {
+                    margin-left: 2px;
+                    margin-top: 0;
+                    width: 99%;
+                    th {
+                        text-transform: none;
+                    }
+                    td {
+                        font-size: $mini-table-font-size;
+                    }
+                    thead {
+                        td {
+                            white-space: normal;
+                            width: auto;
+                        }
+                    }
+                    tbody {
+                        th.status {
+                            font-size: $mini-table-font-size;
+                            padding-left: 0;
+                            text-align: right;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}
+/* These styles apply to smartphones and tablets */
+@media only screen and (max-width: 1024px) {
+    /* styles here */
+}
+
+/* End media queries styles for taxa pages */

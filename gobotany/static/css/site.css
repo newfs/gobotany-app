@@ -619,6 +619,7 @@ body.taxa { /* Override Shadowbox styles to allow multiple title lines for showi
 body.taxa #main h3 { color: #807121; font-size: 30px; line-height: 90%; }
 body.taxa #main h4 { clear: left; font-size: 18px; padding-top: 30px; }
 body.taxa #main ol, body.taxa #main ul { line-height: inherit; }
+body.taxa #main p.common { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 30px; line-height: 155%; margin-bottom: 12px; }
 body.taxa .frame { cursor: pointer; }
 body.taxa #sb-title, body.taxa #sb-title-inner { height: 76px; line-height: 70%; position: relative; }
 body.taxa #sb-title-inner div { bottom: 6px; position: absolute; }
@@ -643,7 +644,6 @@ body.taxa#species #main h1 { margin-bottom: 0; }
 body.taxa#species #main h1 span.origin { font-size: 14px; line-height: 100%; }
 body.taxa#species #main h5 { font-size: 14px; }
 body.taxa#species #main p { margin: 0 0 15px; }
-body.taxa#species #main p.common { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 30px; line-height: 155%; margin-bottom: 12px; }
 body.taxa#species #sb-player.html { background: #fff; overflow: hidden; /* Get rid of vertical scrollbar in WebKit on enlarged N. America dist. map. */ padding: 0 5px 5px; }
 body.taxa#species #sb-player #na-dist-county-map { background: #fff; height: 100%; width: 100%; }
 body.taxa#species .note { background: #c4bd93; border-bottom: 1px solid #ad9f50; border-top: 1px solid #ad9f50; color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin-bottom: 0.5em; padding: 0.5em 0; text-align: center; width: 100%; }
@@ -687,6 +687,31 @@ body.taxa#species #species-images { border: 5px solid rgba(255, 255, 255, 0.8); 
 body.taxa#species #species-images { height: 239px; margin: 0 0 20px 0; overflow: hidden; position: relative; width: 700px; }
 body.taxa#species #species-images div.scrollableArea a { border-right: 5px solid #fff; float: left; margin: 0; padding: 0; }
 
+/* Begin media queries styles for taxa pages. */
+/* Portrait-orientation styles */
+@media only screen and (max-width: 400px) { body.taxa#species #species-images { width: 292px; }
+  body.taxa#species #sidebar { padding-bottom: 30px; } }
+/* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) { body.taxa#species #species-images { width: 452px; }
+  body.taxa#species #sidebar { margin-bottom: 14px; padding-bottom: 14px; } }
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) { body.taxa #main { padding-bottom: 8px; }
+  body.taxa #main p.common { font-size: 20px; }
+  body.taxa#species #main p { margin-bottom: 10px; }
+  body.taxa#species .note { font-size: 18px; }
+  body.taxa#species ul.full-description > li div { padding-left: 0; }
+  body.taxa#species .characteristics.full { margin-bottom: 0; }
+  body.taxa#species .characteristics dl dt { clear: none; float: none; text-align: left; width: auto; }
+  body.taxa#species .characteristics dl dd { margin-left: auto; padding-left: 28px; }
+  body.taxa#species #ne-status { /* Horiz. scroll for status table if too wide */ overflow-x: auto; width: 100%; }
+  body.taxa#species #ne-status table { margin-left: 2px; margin-top: 0; width: 99%; }
+  body.taxa#species #ne-status table th { text-transform: none; }
+  body.taxa#species #ne-status table td { font-size: 10px; }
+  body.taxa#species #ne-status table thead td { white-space: normal; width: auto; }
+  body.taxa#species #ne-status table tbody th.status { font-size: 10px; padding-left: 0; text-align: right; } }
+/* These styles apply to smartphones and tablets */
+@media only screen and (max-width: 1024px) { /* styles here */ }
+/* End media queries styles for taxa pages */
 /* Simple and Full Keys (simplekey Django app) */
 body.skey { /* Styles for groups and subgroups (Levels 1 and 2) pages */ /* end &.groups-subgroups */ /* Styles for results (Level 3) page */ /* end &.results */ }
 body.skey.groups-subgroups { /* Override Shadowbox styles to allow multiple title lines for showing a photo title, photographer credit, and copyright. */ }
