@@ -163,16 +163,19 @@ def screen_images(request):
 
     if request.method == 'POST':
         formset = ScreeningFormSet(request.POST)
-        screened_images = formset.save(commit=False)
-        for image in screened_images:
-            image.screened = datetime.now()
-            image.screened_by = request.user
+        for form in formset.initial_forms:
+            form.instance.screened = datetime.now()
+            form.instance.screened_by = request.user
+            # Forms left as "unapproved" appear unchanged, so they won't be
+            # saved with formset.save()
+            form.instance.save()
+
+        approved_images = formset.save()
+        for image in approved_images:
             if image.image_type == 'AVATAR' and image.is_approved:
                 profile = UserProfile.objects.get(user=image.uploaded_by)
                 profile.avatar = image
                 profile.save()
-
-        formset.save()
 
     unscreened_images = ScreenedImage.objects.filter(screened=None)
     formset = ScreeningFormSet(queryset=unscreened_images)
