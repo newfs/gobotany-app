@@ -41,9 +41,6 @@ urlpatterns = patterns(
     url(r'^plant-name-suggestions/', views.plant_name_suggestions_view,
         name='site-plant-name-suggestions'),
 
-    # Unlinked page for some checks that can be verified via functional test
-    url('^checkup/$', views.checkup_view, name='checkup'),
-
     # Temporary placeholder pages for unreleased features
     url('^plantshare/$', views.placeholder_view,
         {'template': 'gobotany/plantshare_placeholder.html'},
@@ -72,7 +69,13 @@ urlpatterns = patterns(
     url('^legal/privacy-policy/$', redirect_to, {'url': '/privacy/'}),
     url('^legal/terms-of-use/$', redirect_to, {'url': '/terms/'}),
 
+    # Unlinked pages for development and testing: even though unlinked,
+    # comment out at release time anyway
+
+    # Unlinked page for some checks that can be verified via functional test
+    #url('^checkup/$', views.checkup_view, name='checkup'),
+
     # Temporary, for testing
-    url('^maps-test/$', views.maps_test_view, name='site-maps-test'),
-    url('^suggest-test/$', views.suggest_test_view, name='site-suggest-test'),
+    #url('^maps-test/$', views.maps_test_view, name='site-maps-test'),
+    #url('^suggest-test/$', views.suggest_test_view, name='site-suggest-test'),
     )
