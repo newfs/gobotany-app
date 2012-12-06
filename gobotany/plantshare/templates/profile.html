@@ -28,7 +28,7 @@
       {% csrf_token %}
       <div class="info box">
           <div class="avatar">
-              <img id="avatar-image" src="/static/images/icons/avatar-scary-placeholder.png" alt="">
+              <img id="avatar-image" src="{{ profile_form.avatar.thumb_url }}" alt="">
               <p>
                   <a id="upload-link" href="#">Upload Photo</a>
               </p>
