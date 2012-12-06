@@ -977,7 +977,9 @@ body.plantshare#screen-images table.unscreened tr.header { height: 20px; }
 body.plantshare#screen-images table.unscreened tr.header th { padding-bottom: 10px; }
 body.plantshare#screen-images table.unscreened tr { height: 128px; vertical-align: top; }
 body.plantshare#screen-images table.unscreened th.approval, body.plantshare#screen-images table.unscreened td.approval { width: 150px; overflow: hidden; }
-body.plantshare#screen-images table.unscreened th.approval input, body.plantshare#screen-images table.unscreened td.approval input { width: 50px; }
+body.plantshare#screen-images table.unscreened th.approval input, body.plantshare#screen-images table.unscreened td.approval input { width: 20px; }
+body.plantshare#screen-images table.unscreened th.approval li, body.plantshare#screen-images table.unscreened td.approval li { float: left; }
+body.plantshare#screen-images table.unscreened th.approval li label, body.plantshare#screen-images table.unscreened td.approval li label { width: 60px; }
 body.plantshare#screen-images table.unscreened th.thumb, body.plantshare#screen-images table.unscreened td.thumb { width: 138px; }
 body.plantshare#screen-images div.form-control { margin: 0 30px; }
 body.plantshare#screen-images .save-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px; width: 99px !important; height: 32px; font-size: 0; -moz-box-shadow: 0 !important; border: 0 none !important; display: block; text-indent: -9999px; }

@@ -564,7 +564,14 @@ body.plantshare {
                 overflow: hidden;
 
                 input {
-                    width: 50px;
+                    width: 20px;
+                }
+
+                li {
+                  float: left;
+                  label {
+                    width: 60px;
+                  }
                 }
             }
             th.thumb, td.thumb {

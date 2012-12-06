@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.utils import simplejson
+from django.forms import widgets
 from django.forms.models import modelformset_factory
 
 from gobotany.plantshare.forms import NewSightingForm, UserProfileForm, ScreenedImageForm
@@ -149,8 +150,17 @@ def profile_view(request):
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url=reverse_lazy('ps-main'))
 def screen_images(request):
+
+    # Use RadioSelect widget for approval field
+    def override_is_approved(field):
+        if field.name == 'is_approved':
+            return field.formfield(widget=widgets.RadioSelect(choices=[
+                (True, 'Yes'), 
+                (False, 'No')]))
+
     ScreeningFormSet = modelformset_factory(ScreenedImage, extra=0, 
-            fields=('is_approved',))
+            fields=('is_approved',), formfield_callback=override_is_approved)
+
     if request.method == 'POST':
         formset = ScreeningFormSet(request.POST)
         screened_images = formset.save(commit=False)
