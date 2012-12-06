@@ -91,6 +91,8 @@ def page(request, slug=u'key-to-the-families'):
     if title.startswith('Tribe '):
         title = title.title()
     page = get_object_or_404(models.Page, title=title)
+    if page.rank == 'species':
+        raise Http404
     proxy = _Proxy(page)
     return render_to_response('dkey/page.html', {
             'partner_site': partner_short_name(request),
