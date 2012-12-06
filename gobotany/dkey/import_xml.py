@@ -141,7 +141,10 @@ def extract_html(x, skip=0, endskip=0):
             log.warn('unknown tag %s', tag)
 
     s = (s
-         .replace(u'–', u'–\u2060')    # tell n-dashes not to break
+
+         #.replace(u'–', u'–\u2060')    # tell n-dashes not to break
+         # (disabled because Windows just displays a box for the \u2060)
+
          .replace(u' cm', u'\u00a0cm') # refuse to orphan units
          .replace(u' mm', u'\u00a0mm')
          .replace(u'\u2009cm', u'\u202fcm')
