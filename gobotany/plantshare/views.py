@@ -32,11 +32,14 @@ def plantshare_view(request):
     """View for the main PlantShare page."""
     prior_signup_detected = request.COOKIES.get('registration_complete',
                                                 False)
-    try:
-        profile = UserProfile.objects.get(user=request.user)
-        avatar_info = profile.private_avatar_image()
-    except UserProfile.DoesNotExist:
-        avatar_info = UserProfile.default_avatar_image()
+
+    avatar_info = UserProfile.default_avatar_image()
+    if request.user.is_authenticated():
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+            avatar_info = profile.private_avatar_image()
+        except UserProfile.DoesNotExist:
+            avatar_info = UserProfile.default_avatar_image()
 
     return render_to_response('plantshare.html', {
                'prior_signup_detected': prior_signup_detected,
