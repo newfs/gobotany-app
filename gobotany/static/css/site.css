@@ -696,7 +696,10 @@ body.taxa#species #species-images div.scrollableArea a { border-right: 5px solid
   body.taxa#species #sidebar { margin-bottom: 14px; padding-bottom: 14px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body.taxa #main { padding-bottom: 8px; }
-  body.taxa #main p.common { font-size: 20px; }
+  body.taxa #main h1 { margin-bottom: 0; }
+  body.taxa #main p.common { font-size: 20px; margin: 0; }
+  body.taxa#family #main p.description, body.taxa#genus #main p.description { margin: 4px 0; }
+  body.taxa#family #main h4, body.taxa#genus #main h4 { padding-top: 12px; }
   body.taxa#species #main p { margin-bottom: 10px; }
   body.taxa#species .note { font-size: 18px; }
   body.taxa#species ul.full-description > li div { padding-left: 0; }
@@ -708,7 +711,9 @@ body.taxa#species #species-images div.scrollableArea a { border-right: 5px solid
   body.taxa#species #ne-status table th { text-transform: none; }
   body.taxa#species #ne-status table td { font-size: 10px; }
   body.taxa#species #ne-status table thead td { white-space: normal; width: auto; }
-  body.taxa#species #ne-status table tbody th.status { font-size: 10px; padding-left: 0; text-align: right; } }
+  body.taxa#species #ne-status table tbody th.status { font-size: 10px; padding-left: 0; text-align: right; }
+  body.taxa .visit-dkey { margin: 14px 0; }
+  body.taxa .visit-dkey a { clear: left; display: inline-block; } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { /* styles here */ }
 /* End media queries styles for taxa pages */

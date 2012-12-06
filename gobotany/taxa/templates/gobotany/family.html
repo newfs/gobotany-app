@@ -27,7 +27,7 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
 {% block main_content %}
                 <h1>Family: {{ family.name }}</h1>
                 {% if common_name %}
-                    <h3>{{ common_name|cut:"The "|lower }}</h3>
+                    <p class="common">{{ common_name|cut:"The "|lower }}</p>
                 {% endif %}
                 <p class="description">
                 {% if family.description %}
