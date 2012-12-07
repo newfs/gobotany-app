@@ -881,10 +881,12 @@ body.skey.results img.char-value-larger { height: 160px !important; /* Consisten
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { /* styles here */ }
 /* These styles are common to both smartphone widths */
-@media only screen and (max-width: 600px) { body.skey.groups-subgroups p.question { font-size: 18px; }
-  body.skey.groups-subgroups p.tip { font-size: 14px; }
+@media only screen and (max-width: 600px) { body.skey.groups-subgroups p.question { font-size: 18px; line-height: 24px; }
+  body.skey.groups-subgroups p.tip { font-size: 14px; margin-bottom: 8px; }
+  body.skey.groups-subgroups .list-item { margin-top: 0; }
   body.skey.groups-subgroups .list-item .details { float: none; width: inherit; }
   body.skey.groups-subgroups .list-item .details a { clear: left; }
+  body.skey.groups-subgroups .list-item .details a.plant-in-group, body.skey.groups-subgroups .list-item .details a.plant-in-subgroup { margin-left: 14px; }
   body.skey.groups-subgroups .list-item .details .section-title { font-size: 10px; }
   body.skey.groups-subgroups .not-my-plant { display: none; } }
 /* These styles apply to smartphones and tablets */

@@ -919,19 +919,27 @@ body.skey {
             p {
                 &.question {
                     font-size: 18px;
+                    line-height: 24px;
                 }
                 &.tip {
                     font-size: 14px;
+                    margin-bottom: 8px;
                 }
             }
-            .list-item .details {
-                float: none;
-                width: inherit;
-                a {
-                    clear: left;
-                }
-                .section-title {
-                    font-size: 10px;
+            .list-item {
+                margin-top: 0;
+                .details {
+                    float: none;
+                    width: inherit;
+                    a {
+                        clear: left;
+                        &.plant-in-group, &.plant-in-subgroup {
+                            margin-left: 14px;
+                        }
+                    }
+                    .section-title {
+                        font-size: 10px;
+                    }
                 }
             }
             .not-my-plant {
