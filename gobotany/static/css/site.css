@@ -494,7 +494,7 @@ body.teaching #main li { list-style-type: none; }
 
 /* For IE 6-9 browser compatibility prompts */
 #ie-note { background: #fff; border-bottom: 4px solid #508e31; color: #000; font-family: Arial, sans-serif; font-size: 13px; padding: 11px 0; text-align: center; }
-#ie-note p { position: relative; z-index: 2; }
+#ie-note p { margin: 0; position: relative; z-index: 2; }
 #ie-note p.dismiss { padding: 3px; }
 #ie-note p.dismiss a { background-color: #3e6bbf; border-bottom: 2px solid #365b99; border-left: 2px solid #85b0f3; border-right: 2px solid #365b99; border-top: 2px solid #85b0f3; color: white; font-size: 12px; font-weight: bold; padding: 2px 8px; text-decoration: none; -ms-border-radius: 0.3em; border-radius: 0.3em; }
 #ie-note a { text-decoration: underline; }
