@@ -7,16 +7,18 @@ require([
     'bridge/jquery',
     'bridge/jquery-ui',
     'bridge/jquery.easing',
+    'bridge/jquery.kinetic',
+    'bridge/jquery.mousewheel',
     'bridge/jquery.smoothdivscroll'
-], function($, ui, easing, smoothDivScroll) {
+], function($, ui, easing, kinetic, mousewheel, smoothDivScroll) {
     $(document).ready(function () {
 
         var $images = $('#species-images');
        
         // Activate.
         $images.smoothDivScroll({
-            autoScrollingMode: 'onstart', 
-            autoScrollingDirection: 'backandforth', 
+            autoScrollingMode: 'onStart', 
+            autoScrollingDirection: 'backAndForth', 
             autoScrollingStep: 1, 
             autoScrollingInterval: 75,
             visibleHotSpotBackgrounds: 'always'
