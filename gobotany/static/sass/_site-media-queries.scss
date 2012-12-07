@@ -268,9 +268,6 @@
     .content {
         .container {
             padding: 0;
-            /*&.free-sidebar #sidebar .section {
-                padding-bottom: $sidebar-box-vertical-padding;
-            }*/
         }
         #main {
             background: none;
@@ -295,15 +292,10 @@
             border: 1px solid $border-green;
             clear: left;
             height: auto;
-            /*margin-bottom: 14px;*/
             @include smallscreen-side-margins;
             .section {
-                /*margin-top: $sidebar-box-vertical-padding;*/
                 padding-bottom: $sidebar-box-vertical-padding;
             }
-            /*.section:first-child {
-                margin-top: 0;
-            }*/
         }
     }
     .gb-tooltip {
