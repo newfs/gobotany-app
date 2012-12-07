@@ -1370,7 +1370,13 @@ body.search-results .search-navigation a { text-decoration: underline; }
   .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; /*margin-bottom: 14px;*/ margin-left: 8px; margin-right: 8px; /*.section:first-child { margin-top: 0;
 }*/ }
   .content #sidebar .section { /*margin-top: $sidebar-box-vertical-padding;*/ padding-bottom: 16px; }
-  .gb-tooltip { width: 200px; } }
+  .gb-tooltip { width: 200px; }
+  /* Advanced ID placeholder page: delete after tools release */
+  #advanced-id #main .dk-landing-section { height: auto; margin-top: 14px; width: auto; }
+  #advanced-id #main .dk-landing-section > a { margin-left: 16px; position: static; }
+  #advanced-id #main .dk-landing-section:first-child { height: auto; margin-right: 0; margin-top: 0; width: auto; }
+  #advanced-id #main .landing-divider { display: none; }
+  #advanced-id #main a.go-dichkey-btn { margin-bottom: 14px; } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { /* Currently there are no global styles here in this category, but there are some elsewhere for various parts of the site. */ }
 /* End global media queries styles */

@@ -309,6 +309,31 @@
     .gb-tooltip {
         width: 200px;
     }
+
+    /* Advanced ID placeholder page: delete after tools release */
+    #advanced-id #main {
+        .dk-landing-section {
+            height: auto;
+            margin-top: 14px;
+            width: auto;
+            > a {
+                margin-left: 16px;
+                position: static;
+            }
+            &:first-child {
+                height: auto;
+                margin-right: 0;
+                margin-top: 0;
+                width: auto;
+            }
+        }
+        .landing-divider {
+            display: none;
+        }
+        a.go-dichkey-btn {
+            margin-bottom: 14px;
+        }
+    }
 }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) {
