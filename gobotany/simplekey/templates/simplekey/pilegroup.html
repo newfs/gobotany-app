@@ -91,10 +91,9 @@
                                 {# Mockup for Issue #254 #}
                                 {% if key == 'full' and pile.slug == 'remaining-non-monocots' and forloop.counter > 1 %}
                                     {% if forloop.counter == 2 %}
-                                        Alternate leaves (leaves joining the stem at different levels, not opposite each other or multiple leaves at a single node). This is a very diverse group of plants, but are generally not woody, grass-like, or aquatic, and do not have the composite flower heads of the aster family plants. Be sure to look at the arrangement of leaves in the lower half of the flowering stem.
+                                        This very diverse group is generally not woody, grass-like, or aquatic, and does not have composite flower heads. These plants have alternate leaves that join the stem at different levels, not opposite each other or in whorls; be sure to look at the arrangement of leaves in the lower half of the flowering stem. 
                                     {% else %}
-                                        Not alternate leaves. This very diverse group includes herbaceous plants with only basal leaves, opposite leaves, or whorled leaves and that aren’t aquatic, grasslike, or with the composite flower heads of aster family plants.  It also includes parasitic and other species that lack well-formed photosynthetic (green) leaves.
-                                    {% endif %}
+                                        These species are herbaceous plants with only all basal, opposite, or whorled leaves; they are not aquatic, grass-like, and do not have composite flower heads. Some species are parasitic or lack green leaves.                                    {% endif %}
                                 {% else %}
                                     {{ pile.key_characteristics|removetags:"div ul li"|safe }}
                                 {% endif %}
@@ -104,9 +103,9 @@
                                 {# Mockup for Issue #254 #}
                                 {% if key == 'full' and pile.slug == 'remaining-non-monocots' and forloop.counter > 1 %}
                                     {% if forloop.counter == 2 %}
-                                        Leaf arrangement can vary from the bottom to top of the stem, or in young vs. older plants, so look at the leaves on the flowering stem of several plants, if possible. Some crowded leaves may look opposite or whorled, but look closely to see whether there is actually space between them on the stem. Some species have narrow leaves where it’s hard to see the veins (monocots have generally parallel veins), so look for other features such as petal number, presence of leaf teeth, etc.
+                                        Leaf arrangement can vary from the bottom to top of the stem, or in young vs. older plants, so try to look at several plants. Some crowded leaves may look opposite or whorled, but look closely to see whether there is actually space between them on the stem. Some species have narrow leaves where it’s hard to see the veins, so look for other features such as petal number, presence of leaf teeth, etc.
                                     {% else %}
-                                        Leaf arrangement can vary from the bottom to top of the stem, or in young vs. older plants, so look at the leaves on the flowering stem of several plants, if possible. Some crowded leaves may look opposite or whorled, but look closely to see whether there is actually space between them on the stem. Some species have narrow leaves where it’s hard to see the veins (monocots have generally parallel veins), so look for other features such as petal number, presence of leaf teeth, etc. Some species (teasel, Dipsacus spp.) have flower heads that look like asters, but look carefully; they’re not composites with two different kinds of flowers.                                                      {% endif %}
+                                        Leaf arrangement can vary from the bottom to top of the stem, or in young vs. older plants, so try to look at several plants. Some crowded leaves may look opposite or whorled, but look closely to see whether there is actually space between them on the stem. Some species have narrow leaves where it’s hard to see the veins, so look for other features such as petal number, presence of leaf teeth, etc. Some species (such as teasel or pincushions) have flower heads that look like those of the aster family, but look closely: the flowers usually have four tooth-like lobes (a rare condition in the aster family) and the fruit is partially enclosed in a tubular bract.                                                          {% endif %}
                                 {% else %}
                                     {{ pile.notable_exceptions|removetags:"div ul li"|safe }}
                                 {% endif %}
