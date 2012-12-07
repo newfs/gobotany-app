@@ -248,9 +248,6 @@
                 padding-top: 375px;
             }
         }
-        #potd {
-            height: 350px;
-        }
     }
 }
 /* Landscape-orientation styles */
@@ -269,9 +266,6 @@
                 padding-top: 400px;
             }
         }
-        #potd {
-            height: 260px;
-        }        
     }
 }
 /* These styles are common to both smartphone widths */
@@ -362,6 +356,7 @@
             line-height: 160%;
         }
         #potd {
+            height: auto;
             padding: $smallscreen-margin;
             > a {
                 margin: 0;

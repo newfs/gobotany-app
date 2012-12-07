@@ -556,13 +556,11 @@ body.teaching #main li { list-style-type: none; }
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { #home #banner #overlay { top: 115px; width: 320px; }
   #home #banner > img { height: 115px; width: 320px; }
-  #home #banner + .three-col { padding-top: 375px; }
-  #home #potd { height: 350px; } }
+  #home #banner + .three-col { padding-top: 375px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { #home #banner #overlay { top: 172px; width: 480px; }
   #home #banner > img { height: 172px; width: 480px; }
-  #home #banner + .three-col { padding-top: 400px; }
-  #home #potd { height: 260px; } }
+  #home #banner + .three-col { padding-top: 400px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { #home .content { margin-top: 0; padding-top: 0; }
   #home header h1 { background-position: -56px -7px; height: 56px; margin-left: 0; width: 200px; }
@@ -584,7 +582,7 @@ body.teaching #main li { list-style-type: none; }
   #home .three-col p { margin-top: 0; }
   #home .three-col a.learn-more, #home .three-col.last a.learn-more { margin-top: 6px; margin-left: 8px; margin-right: 8px; }
   #home #breadcrumb p { line-height: 160%; }
-  #home #potd { padding: 8px; }
+  #home #potd { height: auto; padding: 8px; }
   #home #potd > a { margin: 0; margin-bottom: 4px; margin-right: 8px; }
   #home #potd > a, #home #potd > a img { width: 297px; }
   #home #potd .details { margin: 0; position: inherit; width: inherit; }
