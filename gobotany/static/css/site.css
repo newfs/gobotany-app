@@ -1302,7 +1302,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
 /* Begin global media queries styles.  So far there are three sections for smartphones (two fixed-width layouts to cover portrait and landscape orientations, with a section common to both orientations) and some additional styles for tablets. Using fixed-width layouts allows some pages to have a wider central content area for now. Various SASS "partials" (_home.scss, _help.scss, etc.) have their own media queries arranged like the ones below. Think of those as modular extensions to these. */
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { body { padding-top: 110px; }
-  header nav > a { width: 20px; }
+  header nav > a { width: 19px; }
   header nav > a span { display: none; }
   body, header .container, .content .container, footer .container { width: 320px; }
   #nav { left: 40px; width: 310px; }
@@ -1313,7 +1313,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
   body { padding-top: 75px; }
   body, header .container, .content .container, footer .container { width: 480px; }
   header nav > a { width: 80px; }
-  header nav > a span { font-size: 14px; line-height: 160%; padding-left: 5px; position: absolute; }
+  header nav > a span { font-size: 14px; line-height: 160%; padding-left: 23px; position: absolute; }
   .content #main { width: 464px; }
   .content #sidebar { width: 462px; } }
 /* These styles are common to both smartphone widths */
@@ -1330,8 +1330,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
   h3 { font-size: 16px; }
   header { height: 90px; }
   header nav { background: #508e31; clear: left; height: 32px; padding: 0; }
-  header nav > a { background: #437829; border: 1px solid #437829; display: inline-block; font-size: 30px; height: 24px; line-height: 68%; margin: 3px 0 0 4px; padding: 0 2px 0 7px; position: relative; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
-  header nav > a:hover { background: #437829; text-decoration: none; }
+  header nav > a { background: #437829 url(/static/images/icons/menu-icon.png) 7px 5px no-repeat; border: 1px solid #437829; display: inline-block; font-size: 30px; height: 24px; line-height: 68%; margin: 3px 0 0 4px; padding: 0 2px 0 7px; position: relative; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
   header nav #search { margin-top: 6px; padding-left: 10px; }
   header nav > ul { display: none; /* will use bottom navigation instead of top */ }
   header nav #search-suggest .menu { top: 83px; }

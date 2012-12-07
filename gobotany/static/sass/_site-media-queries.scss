@@ -15,7 +15,7 @@
         padding-top: 110px;
     }
     header nav > a {
-        width: 20px;
+        width: 19px;
         span {
             display: none;
         }
@@ -53,8 +53,7 @@
         span {
             font-size: 14px;
             line-height: 160%;
-            
-            padding-left: 5px;
+            padding-left: 23px;
             position: absolute;
         }
     }
@@ -125,7 +124,7 @@
             height: 32px;
             padding: 0;
             > a {
-                background: $nav-button-color;
+                background: $nav-button-color url(/static/images/icons/menu-icon.png) 7px 5px no-repeat;
                 border: 1px solid $nav-button-color;
                 display: inline-block;
                 font-size: 30px;
@@ -135,10 +134,6 @@
                 padding: 0 2px 0 7px;
                 position: relative;
                 @include border-radius(5px);
-            }
-            > a:hover {
-                background: $nav-button-color;
-                text-decoration: none;
             }
             #search {
                 margin-top: 6px;
