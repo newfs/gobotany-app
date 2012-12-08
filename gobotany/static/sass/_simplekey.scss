@@ -906,11 +906,22 @@ body.skey {
                 clear: left;
             }
         }
+        &.results {
+            #intro-overlay {
+                left: 16% !important;
+            }
+        }
     }
 }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) {
-    /* styles here */
+    body.skey {
+        &.results {
+            #intro-overlay {
+                left: 26% !important;
+            }
+        }
+    }
 }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) {
@@ -947,6 +958,9 @@ body.skey {
             }
         }
         &.results {
+            #intro-overlay {
+                font-size: 170%;
+            }
             #main {
                 float: right;
                 width: 710px;

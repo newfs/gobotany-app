@@ -9,6 +9,8 @@
  * own media queries arranged like the ones below. Think of those as
  * modular extensions to these. */
 
+$search-suggest-menu-top: 83px;
+
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) {
     body {
@@ -72,6 +74,9 @@
         margin: 0 auto;
         padding: 0;
         &#home {
+            header nav #search-suggest .menu {
+                top: $search-suggest-menu-top;
+            }
             footer .navigation ul.sections li.home a {
                 background-color: $smallscreen-current-section-color;
             }
@@ -143,7 +148,7 @@
                 display: none;  /* will use bottom navigation instead of top */
             }
             #search-suggest .menu {
-                top: 83px;
+                top: $search-suggest-menu-top;
             }
         }
         p.go-botany {

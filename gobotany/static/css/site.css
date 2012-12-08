@@ -877,9 +877,10 @@ body.skey.results img.char-value-larger { height: 160px !important; /* Consisten
 
 /* Begin media queries styles for Simple and Full Keys. */
 /* Portrait-orientation styles */
-@media only screen and (max-width: 400px) { body.skey.groups-subgroups .list-item h2 { clear: left; } }
+@media only screen and (max-width: 400px) { body.skey.groups-subgroups .list-item h2 { clear: left; }
+  body.skey.results #intro-overlay { left: 16% !important; } }
 /* Landscape-orientation styles */
-@media only screen and (min-width: 401px) and (max-width: 600px) { /* styles here */ }
+@media only screen and (min-width: 401px) and (max-width: 600px) { body.skey.results #intro-overlay { left: 26% !important; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body.skey.groups-subgroups p.question { font-size: 18px; line-height: 24px; }
   body.skey.groups-subgroups p.tip { font-size: 14px; margin-bottom: 8px; }
@@ -889,6 +890,7 @@ body.skey.results img.char-value-larger { height: 160px !important; /* Consisten
   body.skey.groups-subgroups .list-item .details a.plant-in-group, body.skey.groups-subgroups .list-item .details a.plant-in-subgroup { margin-left: 14px; }
   body.skey.groups-subgroups .list-item .details .section-title { font-size: 10px; }
   body.skey.groups-subgroups .not-my-plant { display: none; }
+  body.skey.results #intro-overlay { font-size: 170%; }
   body.skey.results #main { float: right; width: 710px; }
   body.skey.results .content .container { padding: 0; width: 960px; }
   body.skey.results #sidebar { float: left; margin: 0; padding: 0; width: 228px; }
@@ -1327,6 +1329,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
   .content #sidebar { width: 462px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
+  body#home header nav #search-suggest .menu { top: 83px; }
   body#home footer .navigation ul.sections li.home a { background-color: #85c446; }
   body.simple footer .navigation ul.sections li.simple a { background-color: #85c446; }
   body.plantshare footer .navigation ul.sections li.plantshare a { background-color: #85c446; }
