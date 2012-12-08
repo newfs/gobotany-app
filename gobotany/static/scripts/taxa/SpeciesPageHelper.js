@@ -28,14 +28,14 @@ var SpeciesPageHelper = {
 
     toggle_character_group: function() {
         // Set handlers for toggling a character group.
-        $('ul.full-description li').toggle(function() {
-            var $heading = $(this).find('h5').eq(0);
+        $('ul.full-description li h5').toggle(function() {
+            var $heading = $(this);
             $heading.siblings('div').show();
             $heading.css('background-image',
                 'url("/static/images/icons/minus.png")');
             return false;
         }, function() {
-            var $heading = $(this).find('h5').eq(0);
+            var $heading = $(this);
             $heading.siblings('div').hide();
             $heading.css('background-image',
                 'url("/static/images/icons/plus.png")');

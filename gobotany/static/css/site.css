@@ -649,7 +649,7 @@ body.taxa#species #sb-player #na-dist-county-map { background: #fff; height: 100
 body.taxa#species .note { background: #c4bd93; border-bottom: 1px solid #ad9f50; border-top: 1px solid #ad9f50; color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin-bottom: 0.5em; padding: 0.5em 0; text-align: center; width: 100%; }
 body.taxa#species a.description-control { background: url(/static/images/icons/plus.png) left 50% no-repeat; display: block; margin: 10px 0 12px 0; padding: 3px 0 3px 25px; }
 body.taxa#species ul.full-description { background: #fbfbf8; border: 1px solid #e1e1dc; display: none; margin: 0 0 15px 0; }
-body.taxa#species ul.full-description > li { border-bottom: 1px solid #e1e1dc; clear: left; cursor: pointer; display: block; padding: 18px; margin: 0 0 0 0; }
+body.taxa#species ul.full-description > li { border-bottom: 1px solid #e1e1dc; clear: left; display: block; padding: 18px; margin: 0 0 0 0; }
 body.taxa#species ul.full-description > li:last-child { border-bottom: none; }
 body.taxa#species ul.full-description > li:hover { background-color: #fff; }
 body.taxa#species ul.full-description > li h5 { background: url(/static/images/icons/plus.png) left 50% no-repeat; cursor: pointer; padding-left: 28px; }
