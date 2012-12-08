@@ -96,6 +96,7 @@ $smallscreen-current-section-color: #85c446;
     color: #000;
 	content: "\25b8";
 	margin-left: -15px;
+    padding-bottom: 5px;
 	padding-right: 7px;
 }
 
@@ -289,7 +290,7 @@ body {
 body {
     /* Place "you are here" marker next to a non-linked item. This is
      * the top level of each sub-section. */
-    &.help, &.plantshare {
+    &.help, &.plantshare, &.legal {
         #sidebar h4 a:not([href])::before {
             @include highlight-section-nav;
         }
