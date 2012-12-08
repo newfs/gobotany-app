@@ -1155,7 +1155,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
 #getting-started .video-topic a { cursor: pointer; }
 
 /* Advanced Map to Groups */
-#advanced-map h2 { clear: left; }
+#advanced-map h2 { clear: left; padding-top: 8px; }
 #advanced-map #plant-map-list { margin: 10px 0; }
 #advanced-map #group-section { height: 200px; }
 #advanced-map .plant-group { cursor: pointer; float: left; height: 185px; margin: 0 10px 10px 0; padding: 2px 0 0; position: relative; width: 110px; }
@@ -1238,7 +1238,8 @@ body.search-results .search-navigation a { text-decoration: underline; }
 @media only screen and (min-width: 401px) and (max-width: 600px) { #advanced-map #group-section { height: 400px; }
   #glossary #alphabet { height: 66px; } }
 /* These styles are common to both smartphone widths */
-@media only screen and (max-width: 600px) { #about #main ul { margin-left: 8px; padding-left: 6px; }
+@media only screen and (max-width: 600px) { #sidebar { margin-bottom: 12px; }
+  #about #main ul { margin-left: 8px; padding-left: 6px; }
   #about #main > img, #about #main img.bookcover { margin-bottom: 8px; margin-left: 8px; margin-right: 0; }
   #getting-started .question { padding: 16px 0 18px 38px; }
   #getting-started .question h2 { line-height: 130%; margin: 2px 0 4px; }

@@ -123,6 +123,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 #advanced-map {
     h2 {
         clear: left;
+        padding-top: 8px;
     }
     #plant-map-list {
 	    margin: 10px 0;
@@ -467,6 +468,9 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) {
+    #sidebar {
+        margin-bottom: 12px;
+    }
     #about #main {
         ul {
             margin-left: $smallscreen-margin;
