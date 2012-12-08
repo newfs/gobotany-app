@@ -888,7 +888,13 @@ body.skey.results img.char-value-larger { height: 160px !important; /* Consisten
   body.skey.groups-subgroups .list-item .details a { clear: left; }
   body.skey.groups-subgroups .list-item .details a.plant-in-group, body.skey.groups-subgroups .list-item .details a.plant-in-subgroup { margin-left: 14px; }
   body.skey.groups-subgroups .list-item .details .section-title { font-size: 10px; }
-  body.skey.groups-subgroups .not-my-plant { display: none; } }
+  body.skey.groups-subgroups .not-my-plant { display: none; }
+  body.skey.results #main { float: right; width: 710px; }
+  body.skey.results .content .container { padding: 0; width: 960px; }
+  body.skey.results #sidebar { float: left; margin: 0; padding: 0; width: 228px; }
+  body.skey.results #sidebar .scroll + .section { margin: 0 0 32px; }
+  body.skey.results h3.species-count-heading { white-space: nowrap; }
+  body.skey.results .section + .section { margin-bottom: 16px; } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { body.skey.results { /* Style the Level 3 page's questions list scrollbar differently because a regular scrollbar is not the expected way to scroll there, and has problems besides (arrows too small, vertical  bar not draggable). Instead, just present the thin vertical bar as an indicator that the area is scrollable and to provide feedback while swiping to scroll. */ }
   body.skey.results #sidebar .scroll .jspVerticalBar { border-left: 0; }
