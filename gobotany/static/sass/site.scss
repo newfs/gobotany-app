@@ -141,6 +141,11 @@ body {
     font-family: $body-font;
     font-size: $base-font-size;
 }
+
+html, button, input, select, textarea {
+    font-family: $body-font;
+}
+
 a {
     color: $link-green;
     text-decoration: none;

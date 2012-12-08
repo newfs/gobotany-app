@@ -276,6 +276,8 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 /* Site-wide styles */
 body { background: #f0f0c0; color: black; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; }
 
+html, button, input, select, textarea { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; }
+
 a { color: #508e31; text-decoration: none; }
 
 a:not([href]) { color: black; }
