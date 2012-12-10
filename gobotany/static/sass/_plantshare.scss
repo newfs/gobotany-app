@@ -291,6 +291,29 @@ body.plantshare {
                 }
             }                
         }
+        .sighting-gallery {
+          h2 {
+            margin-top: 50px;
+          }
+
+          ul {
+            position: relative;
+
+            li {
+              display: inline;
+              list-style: none;
+              margin: 5px;
+              height: 128px;
+              vertical-align: bottom;
+
+              img {
+                vertical-align: bottom;
+              }
+            }
+
+          }
+
+        }
         .modal-container {
             position: relative;
 

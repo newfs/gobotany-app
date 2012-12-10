@@ -968,6 +968,10 @@ body.plantshare.sighting form fieldset { border: 0; margin: 0 0 16px; padding: 0
 body.plantshare.sighting form fieldset legend { display: block; text-indent: -9000px; }
 body.plantshare.sighting form .post-sighting-btn { background: transparent url(/static/images/layout/plantshare2-btn.png) no-repeat -372px -634px; border: 0 none; display: block; width: 157px; height: 32px; text-indent: -9999px; }
 body.plantshare.sighting form .post-sighting-btn.inactive { background-position: -372px -599px; }
+body.plantshare.sighting .sighting-gallery h2 { margin-top: 50px; }
+body.plantshare.sighting .sighting-gallery ul { position: relative; }
+body.plantshare.sighting .sighting-gallery ul li { display: inline; list-style: none; margin: 5px; height: 128px; vertical-align: bottom; }
+body.plantshare.sighting .sighting-gallery ul li img { vertical-align: bottom; }
 body.plantshare.sighting .modal-container { position: relative; }
 body.plantshare.sighting .modal-container .save-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px; width: 99px !important; height: 32px; font-size: 0; -moz-box-shadow: 0 !important; border: 0 none !important; display: block; text-indent: -9999px; }
 body.plantshare.sighting .modal-container .image-modal { background-color: white; border: 5px solid #ACAC90; display: none; padding: 15px; position: absolute; width: 400px; height: 150px; top: 250px; left: 0px; z-index: 10; }

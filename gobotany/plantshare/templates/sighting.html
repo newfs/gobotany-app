@@ -21,7 +21,16 @@
     <p>Location notes: {{ sighting.location_notes }}</p>
 {% endif %}
 
-{# TODO: show sighting images #}
+<div class="sighting-gallery">
+    <h2>Sighting Photos</h2>
+    <ul>
+    {% for photo in sighting.photos.all %}
+        <li><img src="{{ photo.thumb.url }}" /></li>
+    {% empty %}
+        <li><p>There are currently no photos for this sighting.</p></li>
+    {% endfor %}
+    </ul>
+</div>
 
 {% endblock %}
 
