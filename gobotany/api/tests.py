@@ -166,7 +166,6 @@ def _setup_sample_data(load_images=False):
     ppc2 = models.PlantPreviewCharacter(pile=pile1, character=c2, order=2)
     ppc2.save()
 
-    pile1.default_filters.members = [df1, df2]
     pile1.plant_preview_characters.members = [ppc1, ppc2]
     pile1.save()
 

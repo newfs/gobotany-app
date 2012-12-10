@@ -272,9 +272,6 @@ class Pile(PileInfo):
     """An informal grouping of species distinguished by common characters."""
     species = models.ManyToManyField('Taxon', related_name='+')
     pilegroup = models.ForeignKey('PileGroup', related_name='piles', null=True)
-    default_filters = models.ManyToManyField(Character,
-        through='DefaultFilter',
-        related_name='piles_this_is_the_default_for')
     plant_preview_characters = models.ManyToManyField(Character,
         through='PlantPreviewCharacter', related_name='preview_characters')
     sample_species_images = models.ManyToManyField(

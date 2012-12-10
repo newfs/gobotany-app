@@ -364,11 +364,6 @@ class PileDefaultFiltersForm(forms.ModelForm):
         model = models.Pile.plant_preview_characters.through
     list_display = ('character')
 
-class PileDefaultFiltersInline(admin.StackedInline):
-    model = models.Pile.default_filters.through
-    form = PileDefaultFiltersForm
-    extra = 1
-
 class PilePlantPreviewCharactersForm(forms.ModelForm):
     class Meta:
         model = models.Pile.plant_preview_characters.through
@@ -392,7 +387,7 @@ class PileImageInline(admin.StackedInline):
 
 class PileAdmin(PileAdminBase):
     filter_horizontal = ('species',)
-    inlines = [PileDefaultFiltersInline, ContentImageInline,
+    inlines = [ContentImageInline,
                PilePlantPreviewCharactersInline, PileImageInline]
 
 class CharacterAdmin(GobotanyAdminBase):
