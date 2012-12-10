@@ -13,7 +13,7 @@ class FamilyTests(FunctionalCase):
         heading = self.css('#main h1')
         self.assertTrue(len(heading))
         self.assertTrue(heading[0].text == 'Family: Lycopodiaceae')
-        common_name = self.css('#main h3')
+        common_name = self.css('#main p.common')
         self.assertTrue(len(common_name))
 
     def test_family_page_has_example_images(self):
@@ -34,7 +34,7 @@ class GenusTests(FunctionalCase):
         heading = self.css('#main h1')
         self.assertTrue(len(heading))
         self.assertTrue(heading[0].text == 'Genus: Dendrolycopodium')
-        common_name = self.css('#main h3')
+        common_name = self.css('#main p.common')
         self.assertTrue(len(common_name))
         self.assertTrue(common_name[0].text == 'tree-clubmoss')
 
@@ -132,7 +132,7 @@ class SpeciesPageTests(FunctionalCase):
         self.get('/species/adiantum/aleuticum/')
         note = self.css('.content .note')[0].text
         self.assertEqual(note, ('Data collection in progress. Complete data '
-                                'are coming soon.'))
+                                'coming soon.'))
 
 class LookalikesTests(FunctionalCase):
 

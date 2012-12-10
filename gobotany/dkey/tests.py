@@ -1,5 +1,7 @@
 """Tests of whether our basic site layout is present."""
 
+from django.test.client import Client
+
 from gobotany.libtest import FunctionalCase
 
 class HomeTests(FunctionalCase):
@@ -17,4 +19,8 @@ class HomeTests(FunctionalCase):
         self.get('/dkey/equisetum/')
 
     def test_species(self):
-        self.get('/dkey/equisetum-hyemale/')
+        # No species-level pages in the D. Key itself. Links to site-wide
+        # species pages.
+        client = Client()
+        response = client.get('/dkey/equisetum-hyemale/')
+        self.assertEqual(response.status_code, 404)
