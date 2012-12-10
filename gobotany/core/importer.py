@@ -124,9 +124,7 @@ def get_default_filters_from_csv(pile_name, characters_csv):
                 character_name = row['character']
                 order = row['default_question']
 
-                im = Importer()
-                short_name = im.character_short_name(character_name)
-
+                short_name = shorten_character_name(character_name)
                 filters.append((order, short_name))
 
     default_filter_characters = []
@@ -143,15 +141,19 @@ def get_default_filters_from_csv(pile_name, characters_csv):
 
     return default_filter_characters
 
+def shorten_character_name(raw_character_name):
+    """Return a "short name" for a character, as used in the database.
+
+    This converts the canonical character names in the CSV data file
+    headers into the character names we use in the database, by removing
+    the "_min" and "_max" qualifiers by which value-range characters are
+    expressed as a pair of values instead of a single value.
+
+    """
+    return raw_character_name.replace('_min', '').replace('_max', '')
+
 
 class Importer(object):
-
-    def character_short_name(self, raw_character_name):
-        """Return a short name for a character, to be used in the database."""
-        short_name = raw_character_name
-        short_name = short_name.replace('_min', '')
-        short_name = short_name.replace('_max', '')
-        return short_name
 
     def import_constants(self, db, characters_csv):
         """Invoke all imports not requiring input or I/O"""
@@ -750,7 +752,7 @@ class Importer(object):
                     if pile_id is None:
                         continue
 
-                    short_name = self.character_short_name(character_name)
+                    short_name = shorten_character_name(character_name)
                     character_id = character_map.get(short_name)
                     if character_id is None:
                         unknown_characters.add(short_name)
@@ -870,7 +872,7 @@ class Importer(object):
             character_name = row['character']
             is_min = '_min' in character_name.lower()
             is_max = '_max' in character_name.lower()
-            short_name = self.character_short_name(character_name)
+            short_name = shorten_character_name(character_name)
 
             if is_min or is_max:
                 value_type = 'LENGTH'
@@ -950,7 +952,7 @@ class Importer(object):
                 log.error('  Missing character image: %s' % image_name)
                 continue
 
-            short_name = self.character_short_name(row['character'])
+            short_name = shorten_character_name(row['character'])
             if short_name not in existing_short_names:
                 log.error('  Missing character: %s' % short_name)
                 continue
@@ -994,7 +996,7 @@ class Importer(object):
             if not pile_suffix in pile_suffixes:
                 continue
 
-            short_name = self.character_short_name(character_name)
+            short_name = shorten_character_name(character_name)
             value_str = row['character_value']
 
             try:
@@ -1064,7 +1066,7 @@ class Importer(object):
                 log.warn('character has bad pile suffix: %r', character_name)
                 continue
 
-            short_name = self.character_short_name(character_name)
+            short_name = shorten_character_name(character_name)
             character_id = character_map.get(short_name)
             if character_id is None:
                 log.warn('character does not exist: %r', short_name)
