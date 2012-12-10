@@ -81,8 +81,10 @@ def rebuild_default_filters(characters_csv):
         table.get(key='simple', pile_id=pile.id, order=-1,
                   character_id=character_map['state_distribution'])
 
-        table.get(key='full', pile_id=pile.id, order=-2,
+        table.get(key='full', pile_id=pile.id, order=-3,
                   character_id=character_map['habitat_general'])
+        table.get(key='full', pile_id=pile.id, order=-2,
+                  character_id=character_map['habitat'])
         table.get(key='full', pile_id=pile.id, order=-1,
                   character_id=character_map['state_distribution'])
 
