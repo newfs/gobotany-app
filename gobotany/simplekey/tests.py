@@ -69,10 +69,12 @@ class FullKeyTests(FunctionalCase):
 
 habitat_data = [
 
-    # These entries all have the format:
+    # Habitat names are important enough that we actually do an explicit
+    # check of every single one of them, to make sure that they look
+    # good on the screen.  These entries all have the format:
     #
-    # (value_str, friendly_text,    <-- inputs
-    #  expected_name)               <-- output
+    # (value_str, friendly_text,    <-- inputs from character value
+    #  expected_name)               <-- output of habitat_names()
 
     (u'alpine/subalpine', u'alpine or subalpine zones',
      u'alpine or subalpine zones'),

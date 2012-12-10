@@ -695,15 +695,6 @@ class PlantPreviewCharacter(models.Model):
                                 self.pile.name)
 
 
-class Habitat(models.Model):
-    """A habitat in which a plant lives."""
-    name = models.CharField(max_length=100)
-    friendly_name = models.CharField(max_length=100)
-
-    def __unicode__(self):
-        return '%s (%s)' % (self.name, self.friendly_name)
-
-
 class Distribution(models.Model):
     """County-level distribution data for plants."""
     scientific_name = models.CharField(max_length=100, db_index=True)

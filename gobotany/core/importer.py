@@ -273,21 +273,6 @@ class Importer(object):
 
         pile.save()
 
-    def import_habitats(self, db, habitatsf):
-        """Load habitat list from a CSV file"""
-        log.info('Setting up habitats')
-        habitat = db.table('core_habitat')
-
-        for row in open_csv(habitatsf):
-            habitat.get(
-                name=row['desc'],
-                ).set(
-                friendly_name=row['friendly_text'],
-                )
-
-        habitat.save()
-
-
     def _get_state_status(self, state_code, distribution,
                           conservation_status_code=None, is_invasive=False,
                           is_prohibited=False):
@@ -2018,7 +2003,6 @@ full_import_steps = (
     (Importer.import_partner_sites,),
     (Importer.import_pile_groups, 'pile_group_info.csv'),
     (Importer.import_piles, 'pile_info.csv'),
-    (Importer.import_habitats, 'habitats.csv'),
     (Importer.import_families, 'families.csv'),
     (Importer.import_genera, 'genera.csv'),
     (Importer.import_wetland_indicators, 'wetland_indicators.csv'),

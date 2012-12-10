@@ -9,7 +9,7 @@ from django.template import RequestContext
 
 from gobotany.core import botany
 from gobotany.core.models import (
-    CopyrightHolder, Family, Genus, Habitat, PartnerSpecies, Pile,
+    CopyrightHolder, Family, Genus, PartnerSpecies, Pile,
     PlantPreviewCharacter, Taxon
     )
 from gobotany.core.partner import which_partner
@@ -227,7 +227,7 @@ def species_view(request, genus_slug, epithet):
 
     # Throw away values for characters that are not part of this pile.
 
-    pile_ids = (None, pile.id)  # things like Habitat have pile_id = None
+    pile_ids = (None, pile.id)  # characters like 'habitat' have pile_id None
     character_values = [ v for v in character_values
                          if v.character.pile_id in pile_ids ]
 
