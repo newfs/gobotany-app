@@ -554,7 +554,6 @@ class Importer(object):
                 genus_id=genus_name,
                 taxonomic_authority=row['taxonomic_authority'],
                 habitat=row['habitat'],
-                habitat_general='',
                 factoid=row['factoid'],
                 wetland_indicator_code=wetland_code,
                 wetland_indicator_text=wetland_text,
