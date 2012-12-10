@@ -135,11 +135,6 @@ class SpeciesPageTests(FunctionalCase):
 
 class LookalikesTests(FunctionalCase):
 
-    def test_lookalikes_are_in_search_indexes_for_many_pages(self):
-        self.get('/search/?q=sometimes+confused+with')
-        page_links = self.css('.search-navigation li')
-        self.assertTrue(len(page_links) > 10)   # more than 100 results
-
     def test_species_pages_have_lookalikes(self):
         # Verify a sampling of the species expected to have lookalikes.
         SPECIES = ['Huperzia appressa', 'Lonicera dioica', 'Actaea rubra',

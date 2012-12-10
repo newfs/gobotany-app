@@ -434,6 +434,13 @@ class SearchTests(FunctionalCase):
             result_links, 'Ferns',
             'Clubmosses and relatives, plus quillworts'))
 
+    # Search on lookalike name.
+
+    def test_lookalikes_are_in_search_indexes_for_many_pages(self):
+        self.get('/search/?q=sometimes+confused+with')
+        page_links = self.css('.search-navigation li')
+        self.assertTrue(len(page_links) > 10)   # more than 100 results
+
     #####
     # Dichotomous Key search results tests
     #####
