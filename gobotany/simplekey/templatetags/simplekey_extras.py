@@ -123,6 +123,34 @@ def italicize_plant(value):
 
 
 @register.filter
+def habitat_names(character_values):
+    """For each habitat character-value, create a pretty name.
+
+    This routine takes a list of `CharacterValue` objects representing
+    habitats, and returns a list of strings like:
+
+        u'Lacustrine (in lakes or ponds)'
+
+    But it refuses to return strings like:
+
+        u'Forests (forests)'
+
+    See the unit test for this routine, which is actually an exhaustive
+    test: it pits this function against every actual habitat value that
+    we currently have, so that the test-writer can eyeball the results
+    and make sure they all read well.
+
+    """
+    names = []
+    for cv in character_values:
+        s = cv.value_str.lower()
+        t = cv.friendly_text.lower()
+        name = u'{} ({})'.format(s, t)
+        names.append(name)
+    return names
+
+
+@register.filter
 @stringfilter
 def repeat(value, arg):
     """Repeat a phrase N times.

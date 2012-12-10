@@ -213,13 +213,6 @@ def species_view(request, genus_slug, epithet):
     species_images = botany.species_images(taxon)
     images = _images_with_copyright_holders(species_images)
 
-    if taxon.habitat:
-        habitat_names = taxon.habitat.split('| ')
-        habitats = list(Habitat.objects.filter(name__in=habitat_names))
-        habitats.sort()
-    else:
-        habitats = []
-
     # Get the set of preview characteristics.
 
     plant_preview_characters = {
@@ -293,7 +286,6 @@ def species_view(request, genus_slug, epithet):
                if partner_species else None,
            'partner_blurb': partner_species.species_page_blurb
                if partner_species else None,
-           'habitats': habitats,
            'compact_multivalue_characters': COMPACT_MULTIVALUE_CHARACTERS,
            'brief_characteristics': preview_characters,
            'all_characteristics': all_characteristics,

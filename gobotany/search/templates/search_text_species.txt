@@ -16,7 +16,8 @@ Facts About:
     N/A
 {% endif %}
 
-Habitat: {{ object.get_habitats|join:", " }}
+Habitat:
+{{ object.get_habitats|habitat_names|join:", " }}
 
 {# At this point the species page has a Characteristics section. This is #}
 {# just an excerpt of the All Characteristics section further down the   #}

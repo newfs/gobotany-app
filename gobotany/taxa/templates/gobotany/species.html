@@ -85,16 +85,18 @@
                         N/A
                     {% endif %}
                 </p>
-                
+
                 <h2>Habitat</h2>
                 <p>
-                    {% if habitats|length > 0 %}
-                        {{ habitats|join:", "|lower|capfirst }}
-                    {% else %}
-                        (missing)
-                    {% endif %}
+                  {% with habitats=taxon.get_habitats %}
+                  {% if habitats|length > 0 %}
+                    {{ habitats|habitat_names|join:", "|capfirst }}
+                  {% else %}
+                    (missing)
+                  {% endif %}
+                  {% endwith %}
                 </p>
-                
+
                 <h2>Characteristics</h2>
                 <div class="characteristics">
                     {% if brief_characteristics %}

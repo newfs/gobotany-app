@@ -579,7 +579,8 @@ class Taxon(models.Model):
             return None
 
     def get_habitats(self):
-        return [ h.strip() for h in self.habitat.split('|') ]
+        return (self.character_values.filter(character__short_name='habitat')
+                .order_by('value_str'))
 
     def partners(self):
         return PartnerSite.objects.filter(species=self)
