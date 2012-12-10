@@ -2,9 +2,8 @@
 """Tests for the taxa (family, genus, and species) pages."""
 
 import re
-from gobotany.libtest import FunctionalCase
-from selenium.common.exceptions import NoSuchElementException
 
+from gobotany.libtest import FunctionalCase
 
 class FamilyTests(FunctionalCase):
 
