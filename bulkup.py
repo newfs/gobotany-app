@@ -155,7 +155,7 @@ class Batch(object):
         columns = row.__dict__.keys()
         values = row.__dict__.values()
         self.do('INSERT INTO {0} ({1}) VALUES ({2});'
-                .format(self.table.name, ','.join(columns),
+                .format(self.table.name, column_names(columns),
                         ','.join(['%s'] * len(columns))),
                 values)
 
@@ -212,3 +212,5 @@ class Batch(object):
 
             self.cursor.execute(command, command_args)
 
+def column_names(column_name_list):
+    return ','.join('"{}"'.format(name) for name in column_name_list)

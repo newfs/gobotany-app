@@ -218,6 +218,7 @@ class PileHandler(BasePileHandler):
 
         for default_filter in default_filters:
             filter = _jsonify_character(default_filter.character, pile.slug)
+            filter['key'] = default_filter.key
             filter['order'] = default_filter.order
             filters.append(filter)
         return filters

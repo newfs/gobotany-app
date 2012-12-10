@@ -29,6 +29,7 @@ define([
 ) {return {
 
 results_page_init: function(args) {
+    var key_name = args.key;
     var pile_slug = args.pile_slug;
 
     sidebar.setup();
@@ -64,7 +65,7 @@ results_page_init: function(args) {
     var plant_divs_ready = $.Deferred();
     var taxa_by_sciname_ready = $.Deferred();
 
-    if (args.key == 'simple') {
+    if (key_name == 'simple') {
         var key_vector_ready = resources.key_vector('simple');
     } else {
         // The "full" key includes every species in the entire pile
@@ -558,8 +559,8 @@ results_page_init: function(args) {
 
             // The default filters are always listed first.
 
-            var default_slugs = _.pluck(pile_info.default_filters,
-                                        'short_name');
+            var default_slugs = _.chain(pile_info.default_filters)
+                .where({'key': key_name}).pluck('short_name').value();
             var other_slugs = _.difference(filter_slugs, default_slugs);
             var all_slugs = default_slugs.concat(other_slugs);
 
@@ -619,6 +620,8 @@ results_page_init: function(args) {
                 other_filters: []
             };
             _.each(pile_info.default_filters, function(filter_info) {
+                if (filter_info.key != key_name)
+                    return;
                 var filter = Filter.create({
                     slug: filter_info.short_name,
                     value_type: filter_info.value_type,

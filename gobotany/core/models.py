@@ -627,14 +627,18 @@ class DefaultFilter(models.Model):
     user visits the given `pile`; the `order` lets administrators
     control which filters are placed towards the top of the page.
 
+    The `key` value will typically be either the string `'simple'` or
+    the string `'full'`.
+
     """
+    key = models.CharField(max_length=36)
     pile = models.ForeignKey(Pile)
-    character = models.ForeignKey(Character, null=True)
     order = models.IntegerField()
+    character = models.ForeignKey(Character, null=True)
 
     class Meta:
         ordering = ['order']
-        unique_together = ('pile', 'character')
+        unique_together = ('key', 'pile', 'character')
 
     def __unicode__(self):
         return '%s default #%d: %s' % (self.pile.name, self.order,

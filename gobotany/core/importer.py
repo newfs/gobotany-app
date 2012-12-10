@@ -112,7 +112,31 @@ status_precedence = {
     '' : 0,
 }
 
+def read_default_filters(characters_csv):
+    """Replacement for get_default_filters_from_csv().
+
+    Older routines that still use the other function should gradually be
+    converted so that it can be removed.
+
+    """
+    defaultlist = []
+    for row in open_csv(characters_csv):
+        pile_name = row[u'pile'].title()
+        character_slug = shorten_character_name(row[u'character'])
+
+        n = row['default_question']
+        if n:
+            defaultlist.append(('simple', pile_name, n, character_slug))
+
+        n = row['default_question_fullkey']
+        if n:
+            defaultlist.append(('full', pile_name, n, character_slug))
+
+    return defaultlist
+
 def get_default_filters_from_csv(pile_name, characters_csv):
+    """Old clunky function, superseded by read_default_filters()."""
+
     iterator = iter(CSVReader(characters_csv).read())
     colnames = [x.lower() for x in iterator.next()]
     filters = []

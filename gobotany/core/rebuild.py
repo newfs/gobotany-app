@@ -2,19 +2,22 @@
 
 import csv
 import sys
-import time
 
 # The GoBotany settings have to be imported before most of Django.
 from gobotany import settings
 from django.core import management
 management.setup_environ(settings)
 
+import bulkup
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import transaction
+from django.db import connection, transaction
 
-from gobotany.core import igdt, models
+from gobotany.core import models
 from gobotany.plantoftheday.models import PlantOfTheDay
+
+import logging
+log = logging.getLogger('gobotany.import')
 
 class CSVReader(object):
 
@@ -29,39 +32,13 @@ class CSVReader(object):
             for row in r:
                 yield [c.decode('Windows-1252') for c in row]
 
-def _add_best_filters(pile, common_filter_character_names):
-    print "  Computing new 'best' filters"
-    t = time.time()
-    result = igdt.rank_characters(pile, list(pile.species.all()))
-    print "  Computation took %.3f seconds" % (time.time() - t)
-
-    print "  Inserting new 'best' filters:"
-    DEFAULT_BEST_FILTERS_PER_PILE = 3
-    number_of_filters_to_evaluate = DEFAULT_BEST_FILTERS_PER_PILE + \
-        len(common_filter_character_names)
-    result = result[:number_of_filters_to_evaluate]
-    number_added = 0
-    for n, (score, entropy, coverage, character) in enumerate(result):
-        # Skip any 'common' filters if they come up in the 'best' filters,
-        # because they've already been added.
-        if (character.short_name not in common_filter_character_names):
-            print "   ", character.name
-            defaultfilter = models.DefaultFilter()
-            defaultfilter.pile = pile
-            defaultfilter.character = character
-            defaultfilter.order = n + len(common_filter_character_names)
-            defaultfilter.save()
-            number_added += 1
-            # If no more filters need to be added, stop now.
-            if number_added == DEFAULT_BEST_FILTERS_PER_PILE:
-                break
-
 
 def rebuild_default_filters(characters_csv):
     """Rebuild default filters for every pile, using CSV data where
        available or choosing 'best' characters otherwise.
     """
     from gobotany.core import importer # here to avoid import loop
+    log.info('Importing default filters from characters.csv')
 
     # Since we do not know whether we have been called directly with
     # "-m" or whether we have been called from .importer as part of a
@@ -69,48 +46,49 @@ def rebuild_default_filters(characters_csv):
     if isinstance(characters_csv, basestring):
         characters_csv = importer.PlainFile('.', characters_csv)
 
+    log.info('  Clearing the DefaultFilter table')
+    models.DefaultFilter.objects.all().delete()
+
+    # Read in the file and import its data.
+
+    db = bulkup.Database(connection)
+    pile_map = db.map('core_pile', 'name', 'id')
+    character_map = db.map('core_character', 'short_name', 'id')
+
+    piles_seen = set()
+    table = db.table('core_defaultfilter')
+    stuff = importer.read_default_filters(characters_csv)
+
+    for key_name, pile_name, n, character_slug in stuff:
+        piles_seen.add(pile_name)
+        table.get(
+            key=key_name,
+            pile_id=pile_map[pile_name],
+            order=n,
+            character_id=character_map[character_slug],
+            )
+
+    # Make sure all piles were covered, and throw in two filters that
+    # appear for all piles.
+
     for pile in models.Pile.objects.all():
-        print "Pile", pile.name
+        if pile.name not in piles_seen:
+            log.error('  No default filters were given for pile %r',
+                      pile.name)
 
-        old_filters = pile.default_filters.all()
-        print "  Clearing %d old default filters" % len(old_filters)
-        # Just clear the old filters rather than deleting them, so as to not
-        # have a delete-cascade that also deletes character records.
-        pile.default_filters.clear()
+        table.get(key='simple', pile_id=pile.id, order=-2,
+                  character_id=character_map['habitat_general'])
+        table.get(key='simple', pile_id=pile.id, order=-1,
+                  character_id=character_map['state_distribution'])
 
-        COMMON_FILTER_CHARACTER_NAMES = ['habitat_general',
-                                         'state_distribution']
-        print "  Inserting common filters:"
-        for n, character_name in enumerate(COMMON_FILTER_CHARACTER_NAMES):
-            try:
-                character = models.Character.objects.get( \
-                    short_name=character_name)
-            except models.Character.DoesNotExist:
-                print "Error: Character does not exist: %s" % character_name
-                continue
-            print "   ", character.name
-            defaultfilter = models.DefaultFilter()
-            defaultfilter.pile = pile
-            defaultfilter.character = character
-            defaultfilter.order = n
-            defaultfilter.save()
+        table.get(key='full', pile_id=pile.id, order=-2,
+                  character_id=character_map['habitat_general'])
+        table.get(key='full', pile_id=pile.id, order=-1,
+                  character_id=character_map['state_distribution'])
 
-        # Look for default filters specified in the CSV data. If not found,
-        # add some next 'best' filters instead.
+    # And we are done.
 
-        default_filter_characters = importer.get_default_filters_from_csv(
-            pile.name, characters_csv)
-        if len(default_filter_characters) > 0:
-            print "  Inserting new default filters from CSV data:"
-            for n, character in enumerate(default_filter_characters):
-                print "   ", character.name
-                defaultfilter = models.DefaultFilter()
-                defaultfilter.pile = pile
-                defaultfilter.character = character
-                defaultfilter.order = n + len(COMMON_FILTER_CHARACTER_NAMES)
-                defaultfilter.save()
-        else:
-            _add_best_filters(pile, COMMON_FILTER_CHARACTER_NAMES)
+    table.save()
 
 
 def _remove_sample_species_images(pile_or_group_model):
@@ -264,8 +242,10 @@ def rebuild_plant_of_the_day(include_plants='SIMPLEKEY'):   # or 'ALL'
                         partner_short_name=s.partner.short_name)
                     potd.save()
 
+def main():
+    from .importer import start_logging
+    start_logging()
 
-if __name__ == '__main__':
     if len(sys.argv) < 2:
         print >>sys.stderr, "Usage: rebuild THING {args}"
         exit(2)
@@ -278,3 +258,6 @@ if __name__ == '__main__':
     else:
         print >>sys.stderr, "Error: rebuild target %r unknown" % thing
         exit(2)
+
+if __name__ == '__main__':
+    main()
