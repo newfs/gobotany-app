@@ -169,6 +169,12 @@ class Sighting(models.Model):
         return 'Sighting%s: %s at %s (user %d%s)' % (sighting_id,
             self.identification, self.location, self.user.id, created_at)
 
+    def private_photos(self):
+        ''' Return photos which have either not been screened, or are screened
+        and approved.  This should only be used on views shown only to the user
+        who uploaded the photos. '''
+        return self.photos.exclude(screened__isnull=False, is_approved=False)
+
     def approved_photos(self):
         ''' Return only photos which have been screened and approved.
         Use this method for any view where someone other than the owner
