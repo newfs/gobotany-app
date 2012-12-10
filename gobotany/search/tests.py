@@ -1,4 +1,6 @@
+import requests
 import unittest
+from django.conf import settings
 from haystack.utils import Highlighter
 from highlight import ExtendedHighlighter
 
@@ -6,6 +8,23 @@ from gobotany.libtest import FunctionalCase
 
 
 class SearchTests(FunctionalCase):
+
+    solr_available = None
+
+    @classmethod
+    def setUpClass(cls):
+        super(SearchTests, cls).setUpClass()
+        try:
+            requests.get(settings.HAYSTACK_SOLR_URL)
+        except requests.RequestException:
+            cls.solr_available = False
+        else:
+            cls.solr_available = True
+
+    def setUp(self):
+        super(SearchTests, self).setUp()
+        if not self.solr_available:
+            raise unittest.SkipTest('Solr is not up and running')
 
     def _result_links(self):
         return self.css('#search-results-list li a')
