@@ -141,11 +141,35 @@ def habitat_names(character_values):
     and make sure they all read well.
 
     """
+    def words_inside(text):
+        return set(word.rstrip(u's') for word in text.split()
+                   if word not in (u'and', u'of', u'or'))
+
     names = []
     for cv in character_values:
         s = cv.value_str.lower()
         t = cv.friendly_text.lower()
-        name = u'{} ({})'.format(s, t)
+
+        if '/' in s:
+            # Any value_str that contains a slash is trying to squeeze
+            # in so much information that we should just stick with the
+            # friendly_text.
+            name = t
+        elif '(' in t:
+            # If the friendly_text already has a parenthesis, then it
+            # is already complex enough to stand alone.
+            name = t
+        elif words_inside(s) >= words_inside(t):
+            # If the friendly_text adds no interesting words to the
+            # description, then choose the value_str since it will
+            # probably be pithier.
+            name = s
+        elif t.startswith(s):
+            # If the friendly_text starts with the value_str, then we
+            # need not repeat ourselves by showing both.
+            name = t
+        else:
+            name = u'{} ({})'.format(s, t)
         names.append(name)
     return names
 
