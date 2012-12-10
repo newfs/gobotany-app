@@ -34,6 +34,9 @@
           {% csrf_token %}
           {{ upload_photo_form.image }}
           <div style="display: none;">{{ upload_photo_form.image_type }}</div>
+          <div class="screening-notify">
+              <p>All images are screened by Plantshare Staff before being displayed publically.</p>
+          </div>
           <input type="submit" id="upload-photo-submit" class="save-btn">
       </form>
   </div>

@@ -970,22 +970,24 @@ body.plantshare.sighting form .post-sighting-btn { background: transparent url(/
 body.plantshare.sighting form .post-sighting-btn.inactive { background-position: -372px -599px; }
 body.plantshare.sighting .modal-container { position: relative; }
 body.plantshare.sighting .modal-container .save-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px; width: 99px !important; height: 32px; font-size: 0; -moz-box-shadow: 0 !important; border: 0 none !important; display: block; text-indent: -9999px; }
-body.plantshare.sighting .modal-container .image-modal { background-color: white; border: 5px solid #ACAC90; display: none; padding: 15px; position: absolute; width: 400px; height: 120px; top: 250px; left: 0px; z-index: 10; }
+body.plantshare.sighting .modal-container .image-modal { background-color: white; border: 5px solid #ACAC90; display: none; padding: 15px; position: absolute; width: 400px; height: 150px; top: 250px; left: 0px; z-index: 10; }
 body.plantshare.sighting .modal-container .image-modal img { float: left; margin: 0 20px 10px 0; }
 body.plantshare.sighting .modal-container .image-modal a.close { background: transparent url(/static/images/icons/close.png) no-repeat; display: block; height: 16px; position: absolute; top: 15px; right: 15px; width: 16px; text-indent: -9999px; }
 body.plantshare.sighting .modal-container .image-modal h4 { margin: 0 0 15px; font-size: 18px; }
-body.plantshare.sighting .modal-container .image-modal form { float: right; margin: 15px 0; width: 290px; }
+body.plantshare.sighting .modal-container .image-modal form { float: right; width: 290px; }
 body.plantshare.sighting .modal-container .image-modal input { border: 0 none !important; box-shadow: inset 0 0 0 white !important; }
 body.plantshare.sighting .modal-container .image-modal input#id_image { clear: both; display: block; margin: 0 0 10px; }
+body.plantshare.sighting .modal-container .image-modal div.screening-notify p { margin: 5px 0; font-size: 10px; color: #888; }
 body.plantshare#profile div.section-container { position: relative; }
 body.plantshare#profile div.section-container .save-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px; width: 99px !important; height: 32px; font-size: 0; -moz-box-shadow: 0 !important; border: 0 none !important; display: block; text-indent: -9999px; }
-body.plantshare#profile div.section-container .image-modal { background-color: white; border: 5px solid #ACAC90; display: none; padding: 15px; position: absolute; width: 400px; height: 120px; top: 35px; left: 20px; z-index: 10; }
+body.plantshare#profile div.section-container .image-modal { background-color: white; border: 5px solid #ACAC90; display: none; padding: 15px; position: absolute; width: 400px; height: 150px; top: 35px; left: 20px; z-index: 10; }
 body.plantshare#profile div.section-container .image-modal img { float: left; margin: 0 20px 10px 0; }
 body.plantshare#profile div.section-container .image-modal a.close { background: transparent url(/static/images/icons/close.png) no-repeat; display: block; height: 16px; position: absolute; top: 15px; right: 15px; width: 16px; text-indent: -9999px; }
 body.plantshare#profile div.section-container .image-modal h4 { margin: 0 0 15px; font-size: 18px; }
-body.plantshare#profile div.section-container .image-modal form { float: right; margin: 15px 0; width: 290px; }
+body.plantshare#profile div.section-container .image-modal form { float: right; margin: 0; width: 290px; }
 body.plantshare#profile div.section-container .image-modal input { border: 0 none !important; box-shadow: inset 0 0 0 white !important; }
 body.plantshare#profile div.section-container .image-modal input#id_image { clear: both; display: block; margin: 0 0 10px; }
+body.plantshare#profile div.section-container .image-modal div.screening-notify p { margin: 5px 0; font-size: 10px; color: #888; }
 body.plantshare#profile .info-section, body.plantshare#profile .location-section { min-height: 140px; position: relative; }
 body.plantshare#profile .info-section .field-controls, body.plantshare#profile .location-section .field-controls { padding: 5px 0 0; }
 body.plantshare#profile .info-section .field-controls input, body.plantshare#profile .location-section .field-controls input { float: left; }
