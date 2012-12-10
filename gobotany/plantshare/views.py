@@ -109,7 +109,8 @@ def sighting_view(request, sighting_id):
         'location': s.location,
         'location_notes': s.location_notes,
         'user': _user_name(s.user),
-        'created': s.created
+        'created': s.created,
+        'photos': s.private_photos()
     }
     return render_to_response('sighting.html', {
                'sighting': sighting,
