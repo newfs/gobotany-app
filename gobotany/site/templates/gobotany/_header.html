@@ -11,7 +11,9 @@
                 England Wild Flower Society</a></p>
             <nav>
                 <a href="javascript:document.getElementById('footer-nav').scrollIntoView();"><span>sections</span></a>
-                {% include "gobotany/_primary_navigation_top.html" %}
+                <ul>
+                    {% include "gobotany/_primary_navigation.html" %}
+                </ul>
                 <div id="search">
                     <form id="search-suggest" action="/search/" autocomplete="off">
                         <input type="text" name="q" placeholder="Search..."
