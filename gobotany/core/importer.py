@@ -1443,19 +1443,15 @@ class Importer(object):
 
         character_map = db.map('core_character', 'short_name', 'id')
         taxon_map = db.map('core_taxon', 'scientific_name', 'id')
-        pile_map = db.map('core_pile', 'slug', 'id')
 
         charactervalue_table = db.table('core_charactervalue')
         taxoncharactervalue_table = db.table('core_taxoncharactervalue')
 
         for row in open_csv(taxaf):
 
-            # Get the taxon and pile (or piles) associated with this row.
+            # Get the taxon associated with this row.
 
             taxon_id = taxon_map[row['scientific__name']]
-
-            pile_names = row['pile'].split('| ')
-            pile_ids = [pile_map[slugify(name)] for name in pile_names]
 
             # We will build a list of values to insert.
 
