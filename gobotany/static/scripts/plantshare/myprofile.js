@@ -93,6 +93,7 @@ define([
             $('#upload-avatar-form').ajaxSubmit(function(json) {
                 if(json.success) {
                     console.log('Successfully uploaded avatar');
+                    $('#avatar-image').attr('src', json.thumb);
                 } else {
                     console.log('Error: ' + json.info);
                 }
