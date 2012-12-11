@@ -1,8 +1,7 @@
 define([
     'bridge/jquery',
-    'mapping/google_maps',
     'mapping/sightings_map'
-], function ($, google_maps, SightingsMap) {
+], function ($, SightingsMap) {
 
     function SightingsLocator(locator_element_css) {
         // Constructor
