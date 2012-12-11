@@ -81,7 +81,7 @@
                 href="{% url ps-sightings %}#sightings-locator">View full page »</a></p>
         </form>
 
-        {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="297px" width="481px" zoom="6" id="mini-sightings-map" %}
+        {% sightings_map latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="297px" width="481px" zoom="6" id="mini-sightings-map" %}
     </div>
 </div>
 

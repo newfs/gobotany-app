@@ -1,4 +1,5 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
+{% load mapping_tags %}
 
 {% block title %}Sightings: PlantShare{% endblock %}
 
@@ -37,7 +38,7 @@
         data-submit-on-select="true">
     <input type="submit" value="Go">
 
-    {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="524px" width="710px" zoom="6" id="sightings-map" %}
+    {% sightings_map latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="524px" width="710px" zoom="6" id="sightings-map" %}
 </form>
 
 {% endblock %}

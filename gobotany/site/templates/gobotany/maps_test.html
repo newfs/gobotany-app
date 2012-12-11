@@ -78,22 +78,24 @@
 
         <p>Rumford, Maine</p>
 
-        {# New England map centered on Rumford, Maine via template tag #}
-        {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="480px" width="360px" zoom="6" id="new-england-map" %}
+        {# New England map centered on Rumford, Maine via inclusion tag #}
+        {% with latitude="44.53599" longitude="-70.56609" %}
+            {% sightings_map latitude=latitude longitude=longitude center_title="Rumford, Maine" height="480px" width="360px" zoom="6" id="new-england-map" %}
+        {% endwith %}
 
         <h3>Sightings map (mini) for PlantShare main page</h3>
 
         <p>Acer saccharum</p>
 
-        {# Sightings map (mini) via template tag #}
-        {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="297px" width="479px" zoom="6" id="mini-sightings-map" %}
+        {# Sightings map (mini) via inclusion tag #}
+        {% sightings_map latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="297px" width="479px" zoom="6" id="mini-sightings-map" %}
 
         <h3>Sightings map for Sightings Locator page</h3>
 
         <p>Nymphaea odorata</p>
 
-        {# Sightings map via template tag #}
-        {% include "_sightings_map.html" with latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="524px" width="710px" zoom="6" id="sightings-map" %}
+        {# Sightings map via inclusion tag #}
+        {% sightings_map latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="524px" width="710px" zoom="6" id="sightings-map" %}
     
         <div id="overlay-test">
             <h3>This is a test of the overlay function</h3>
