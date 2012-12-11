@@ -214,3 +214,7 @@ class ScreenedImage(models.Model):
     screened = models.DateTimeField(null=True)
     screened_by = models.ForeignKey(User, null=True, related_name='images_approved')
     is_approved = models.BooleanField(default=False)
+
+    # Flag true if the user has chosen to delete this image.  This indicates
+    # that the image binary itself has been removed from storage.
+    deleted = models.BooleanField(default=False)
