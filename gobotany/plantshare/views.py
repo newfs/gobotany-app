@@ -239,6 +239,12 @@ def ajax_image_upload(request):
             new_image.uploaded_by = request.user
             new_image.save()
 
+            if new_image.image_type == 'AVATAR':
+                # Since we're technically editing the user's profile by 
+                # uploading an avatar, create a user profile if they don't
+                # have one. Otherwise, this avatar image ends up in limbo.
+                UserProfile.objects.get_or_create(user=request.user)
+
             response.update({
                 'id': new_image.pk,
                 'thumb': new_image.thumb.url,
