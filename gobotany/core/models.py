@@ -532,7 +532,6 @@ class Taxon(models.Model):
         through='TaxonCharacterValue')
     taxonomic_authority = models.CharField(max_length=100)
     images = generic.GenericRelation(ContentImage)
-    habitat = models.CharField(max_length=300, blank=True)
     factoid = models.CharField(max_length=1000, blank=True)
     wetland_indicator_code = models.CharField(max_length=15, blank=True,
                                               null=True)

@@ -538,7 +538,6 @@ class Importer(object):
                 family_id=family_name,
                 genus_id=genus_name,
                 taxonomic_authority=row['taxonomic_authority'],
-                habitat=row['habitat'],
                 factoid=row['factoid'],
                 wetland_indicator_code=wetland_code,
                 wetland_indicator_text=wetland_text,
