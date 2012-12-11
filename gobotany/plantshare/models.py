@@ -103,7 +103,7 @@ class UserProfile(models.Model):
         whether or not it has been approved by staff.  This should ONLY appear to
         the user himself. '''
         latest_avatars = ScreenedImage.objects.filter(
-                uploaded_by=self.user).order_by('-uploaded')
+                uploaded_by=self.user, image_type='AVATAR').order_by('-uploaded')
         if len(latest_avatars) > 0:
             this_avatar = latest_avatars[0]
             avatar_info = {
