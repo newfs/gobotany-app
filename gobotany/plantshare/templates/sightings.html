@@ -38,7 +38,7 @@
         data-submit-on-select="true">
     <input type="submit" value="Go">
 
-    {% sightings_map latitude="44.53599" longitude="-70.56609" center_title="Rumford, Maine" height="524px" width="710px" zoom="6" id="sightings-map" %}
+    {% sightings_map latitude=map.latitude longitude=map.longitude center_title=map.center_title height="524px" width="710px" zoom="6" id="sightings-map" %}
 </form>
 
 {% endblock %}

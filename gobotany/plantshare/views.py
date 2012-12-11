@@ -13,6 +13,12 @@ from django.forms.models import modelformset_factory
 from gobotany.plantshare.forms import NewSightingForm, UserProfileForm, ScreenedImageForm
 from gobotany.plantshare.models import Location, Sighting, UserProfile, ScreenedImage
 
+SIGHTINGS_MAP_DEFAULTS = {
+    'latitude': '44.53599',
+    'longitude': '-70.56609',
+    'center_title': 'Rumford, Maine'
+}
+
 def _new_sighting_form_page(request, form):
     """Give a new-sighting form, either blank or with as-yet-invalid data."""
     upload_photo_form = ScreenedImageForm(initial={
@@ -45,6 +51,7 @@ def plantshare_view(request):
     return render_to_response('plantshare.html', {
                'prior_signup_detected': prior_signup_detected,
                'avatar': avatar_info,
+               'map': SIGHTINGS_MAP_DEFAULTS
            }, context_instance=RequestContext(request))
 
 def sightings_view(request):
@@ -93,7 +100,8 @@ def sightings_view(request):
             })
 
         return render_to_response('sightings.html', {
-                'sightings': sightings,
+                    'sightings': sightings,
+                    'map': SIGHTINGS_MAP_DEFAULTS
                }, context_instance=RequestContext(request))
     else:
         # For an unsupported HTTP method, return a Bad Request response.
