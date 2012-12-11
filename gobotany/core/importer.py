@@ -276,68 +276,46 @@ class Importer(object):
     def _get_state_status(self, state_code, distribution,
                           conservation_status_code=None, is_invasive=False,
                           is_prohibited=False):
-        status = ['absent']
+        if state_code in distribution:
+            status = ['present']
 
-        for state in distribution:
-            if state == state_code:
-                status = ['present']
+            if conservation_status_code == 'E':
+                status.append('endangered')
+            elif conservation_status_code == 'T':
+                status.append('threatened')
+            elif conservation_status_code in ['SC', 'SC*']:
+                status.append('special concern')
+            elif conservation_status_code == 'H':
+                status.append('historic')
+            elif conservation_status_code in ['C', 'WL', 'W', 'Ind']:
+                status.append('rare')
 
-                # Most further status information applies only to plants that
-                # are present.
+            if is_invasive == True:
+                status.append('invasive')
 
-                if conservation_status_code == 'E':
-                    status.append('endangered')
-                elif conservation_status_code == 'T':
-                    status.append('threatened')
-                elif conservation_status_code in ['SC', 'SC*']:
-                    status.append('special concern')
-                elif conservation_status_code == 'H':
-                    status.append('historic')
-                elif conservation_status_code in ['C', 'WL', 'W', 'Ind']:
-                    status.append('rare')
+        elif conservation_status_code == 'X':
+            status = ['extirpated']
 
-                if is_invasive == True:
-                    status.append('invasive')
-
-        # Extinct status ('X') applies to plants that are absent or present.
-        # Map these to 'extirpated.'
-        if conservation_status_code == 'X':
-            # If status is just 'present' or 'absent' so far, clear it so
-            # that 'extirpated' appears alone.
-            if status == ['present'] or status == ['absent']:
-                status = []
-            status.append('extirpated')
+        else:
+            status = ['absent']
 
         # Prohibited status applies even to plants that are absent.
         if is_prohibited == True:
             status.append('prohibited')
 
-        return ', '.join(status)
+        return status
 
 
     def _get_all_states_status(self, taxon, taxon_data_row):
-        DATA_DELIMITER = '|'
-        STATES = ['CT', 'MA', 'ME', 'NH', 'RI', 'VT']
-        states_status = dict().fromkeys(STATES, '')
+        states = ('ct', 'ma', 'me', 'nh', 'ri', 'vt')
+        states_status = dict().fromkeys(states, '')
 
-        distribution = []
-        if taxon.distribution:
-            distribution = taxon.distribution.replace(' ', '').split( \
-                DATA_DELIMITER)
+        distribution = pipe_split(taxon.distribution)
+        invasive_states = pipe_split(taxon.invasive_in_states)
+        prohibited_states = pipe_split(taxon.sale_prohibited_in_states)
 
-        invasive_states = []
-        if taxon.invasive_in_states:
-            invasive_states = taxon.invasive_in_states.replace( \
-                ' ', '').split(DATA_DELIMITER)
-
-        prohibited_states = []
-        if taxon.sale_prohibited_in_states:
-            prohibited_states = \
-                taxon.sale_prohibited_in_states.replace(' ', '').split( \
-                    DATA_DELIMITER)
-
-        for state in STATES:
-            status_field_name = 'conservation_status_%s' % state.lower()
+        for state in states:
+            status_field_name = 'conservation_status_%s' % state
             conservation_status = taxon_data_row[status_field_name]
             invasive = (state in invasive_states)
             prohibited = (state in prohibited_states)
@@ -394,9 +372,9 @@ class Importer(object):
                     break
         return ' '.join(name).encode('utf-8')
 
-    def import_taxa(self, db, taxaf):
+    def import_taxa(self, db, filename):
         """Load species list from a CSV file"""
-        log.info('Loading taxa from file: %s', taxaf)
+        log.info('Loading taxa')
 
         COMMON_NAME_FIELDS = ['common_name1', 'common_name2']
         SYNONYM_FIELDS = ['comment']
@@ -405,6 +383,7 @@ class Importer(object):
         family_table = db.table('core_family')
         genus_table = db.table('core_genus')
         taxon_table = db.table('core_taxon')
+        conservationstatus_table = db.table('core_conservationstatus')
         partnerspecies_table = db.table('core_partnerspecies')
         pile_species_table = db.table('core_pile_species')
         commonname_table = db.table('core_commonname')
@@ -412,31 +391,21 @@ class Importer(object):
 
         pile_map = db.map('core_pile', 'slug', 'id')
 
-        # Make sure some important columns are present.
-        # (This is not yet an exhaustive list of required column names.)
-        REQUIRED_COLUMNS = ['distribution', 'invasive_in_which_states',
-                            'prohibited_from_sale_states', 'habitat']
-        iterator = iter(open_csv(taxaf))
-        colnames = [x for x in iterator.next()]
-        for column in REQUIRED_COLUMNS:
-            if column not in colnames:
-                log.error('Required column missing from taxa.csv: %s', column)
-
         # For columns where multiple delimited values are allowed, look for
         # the expected delimiter. (It's been known to change in the Access
         # exports, quietly resulting in bugs.)
-        MULTIVALUE_COLUMNS = ['distribution', 'invasive_in_which_states',
-                              'prohibited_from_sale_states', 'habitat']
-        EXPECTED_DELIMITER = '| '
-        for column in MULTIVALUE_COLUMNS:
-            delimiter_found = False
-            for row in open_csv(taxaf):
-                if row[column].find(EXPECTED_DELIMITER) > 0:
-                    delimiter_found = True
-                    break
-            if not delimiter_found:
-                log.error('Expected delimiter "%s" not found taxa.csv '
-                          'column: %s' % (EXPECTED_DELIMITER, column))
+        # MULTIVALUE_COLUMNS = ['distribution', 'invasive_in_which_states',
+        #                       'prohibited_from_sale_states', 'habitat']
+        # EXPECTED_DELIMITER = '| '
+        # for column in MULTIVALUE_COLUMNS:
+        #     delimiter_found = False
+        #     for row in open_csv(taxaf):
+        #         if row[column].find(EXPECTED_DELIMITER) > 0:
+        #             delimiter_found = True
+        #             break
+        #     if not delimiter_found:
+        #         log.error('Expected delimiter "%s" not found taxa.csv '
+        #                   'column: %s' % (EXPECTED_DELIMITER, column))
 
         # Get the list of wetland indicator codes and associated text.
         # These values will be added to the taxon records as needed.
@@ -451,7 +420,7 @@ class Importer(object):
         family_map = db.map('core_family', 'name', 'id')
         genus_map = db.map('core_genus', 'name', 'id')
 
-        for row in open_csv(taxaf):
+        for row in open_csv(filename):
 
             family_name = row['family']
             genus_name = row['scientific__name'].split()[0]
@@ -552,10 +521,14 @@ class Importer(object):
 
             # Assign distribution and conservation status for all states.
 
-            states_status = self._get_all_states_status(taxon, row)
-            for state in states_status.keys():
-                status_field_name = 'conservation_status_%s' % state.lower()
-                setattr(taxon, status_field_name, states_status[state])
+            state_statuses = self._get_all_states_status(taxon, row)
+            for state_code, status_list in state_statuses.items():
+                for label in status_list:
+                    conservationstatus_table.get(
+                        taxon_id=taxon_proxy_id,
+                        region=state_code,
+                        label=label,
+                        )
 
             # Assign all imported species to the Go Botany "partner" site.
 
@@ -616,6 +589,8 @@ class Importer(object):
         taxon_table.replace('genus_id', genus_map)
         taxon_table.save()
         taxon_map = db.map('core_taxon', 'scientific_name', 'id')
+        conservationstatus_table.replace('taxon_id', taxon_map)
+        conservationstatus_table.save()
         partnerspecies_table.replace('species_id', taxon_map)
         partnerspecies_table.save()
         pile_species_table.replace('taxon_id', taxon_map)

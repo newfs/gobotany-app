@@ -1,3 +1,5 @@
+from collections import defaultdict, OrderedDict as odict
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -7,6 +9,15 @@ from django.forms import ValidationError
 from django.template.defaultfilters import slugify
 
 from tinymce import models as tinymce_models
+
+STATE_NAMES = {
+    'ct': 'Connecticut',
+    'ma': 'Massachusetts',
+    'me': 'Maine',
+    'nh': 'New Hampshire',
+    'ri': 'Rhode Island',
+    'vt': 'Vermont',
+    }
 
 def add_suffix_to_base_directory(image, suffix):
     """Instead of 'http://h/a/b/c' return 'http://h/a-suffix/b/c'."""
@@ -539,12 +550,6 @@ class Taxon(models.Model):
                                               null=True)
     north_american_native = models.NullBooleanField()
     north_american_introduced = models.NullBooleanField()
-    conservation_status_ct = models.CharField(max_length=100)
-    conservation_status_me = models.CharField(max_length=100)
-    conservation_status_ma = models.CharField(max_length=100)
-    conservation_status_nh = models.CharField(max_length=100)
-    conservation_status_ri = models.CharField(max_length=100)
-    conservation_status_vt = models.CharField(max_length=100)
     distribution = models.CharField(max_length=50)
     invasive_in_states = models.CharField(max_length=50, blank=True)
     sale_prohibited_in_states = models.CharField(max_length=50, blank=True)
@@ -570,6 +575,12 @@ class Taxon(models.Model):
     def epithet(self):
         # convenience for forming URLs
         return self.scientific_name.split(' ', 1)[1].lower()
+
+    def get_conservation_statuses(self):
+        mapping = defaultdict(list)
+        for row in self.conservation_statuses.all():
+            mapping[STATE_NAMES[row.region]].append(row.label)
+        return odict(sorted(mapping.iteritems()))
 
     def get_default_image(self):
         try:
@@ -613,6 +624,18 @@ class TaxonCharacterValue(models.Model):
 
     def __unicode__(self):
         return u'%s: %s' % (self.taxon.scientific_name, self.character_value)
+
+
+class ConservationStatus(models.Model):
+    """Zero or more conservation status values per species+region."""
+
+    taxon = models.ForeignKey(Taxon, related_name='conservation_statuses')
+    region = models.TextField()  # at the moment, a state code like 'nh'
+    label = models.TextField()
+
+    class Meta:
+        ordering = ('region', 'label')
+        unique_together = ('taxon', 'region', 'label')
 
 
 class DefaultFilter(models.Model):

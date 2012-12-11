@@ -166,33 +166,28 @@
                 <p>Exact status definitions can vary from state to
                 state. For details, please check with your state.</p>
                 <div id="ne-status">
+                {% with conservation_matrix=taxon.get_conservation_statuses %}
                 <table>
                     <thead>
                         <tr>
                             <td></td>
-                            <th>Connecticut</th>
-                            <th>Maine</th>
-                            <th>Massachusetts</th>
-                            <th>New Hampshire</th>
-                            <th>Rhode Island</th>
-                            <th>Vermont</th>
+                            {% for state_name in conservation_matrix.keys %}
+                            <th>{{ state_name }}</th>
+                            {% endfor %}
                         </tr>
                     </thead>
                     <tbody>
-                    {% collect taxon.conservation_status_ct taxon.conservation_status_me taxon.conservation_status_ma taxon.conservation_status_nh taxon.conservation_status_ri taxon.conservation_status_vt as statuses %}
                         <tr>
-                            {% with 'present' as value %}
-                                <th>{{ value|capfirst }}?</th>
-                                {% for status in statuses %}
-                                    <td>
-                                        {% if value in status %}
-                                            {{ value }}
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                    </td>
-                                {% endfor %}
-                            {% endwith %}
+                            <th>Present?</th>
+                            {% for statuses in conservation_matrix.values %}
+                            <td>
+                                {% if 'present' in statuses %}
+                                present
+                                {% else %}
+                                -
+                                {% endif %}
+                            </td>
+                            {% endfor %}
                         </tr>
                         <tr>
                             <th>Conservation Status:</th>
@@ -203,23 +198,23 @@
                             <td></td>
                             <td></td>
                         </tr>
-                        {% collect 'endangered' 'threatened' 'special concern' 'historic' 'rare' 'extirpated' 'invasive' 'prohibited' as status_values %}
-                        {% for value in status_values %}
+                        {% for status_name in conservation_status_rows %}
                             <tr>
-                                <th class="status">{{ value|capfirst }}?</th>
-                                {% for status in statuses %}
-                                    <td>
-                                        {% if value in status %}
-                                            {{ value }}
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                    </td>
+                                <th class="status">{{ status_name|capfirst }}?</th>
+                                {% for statuses in conservation_matrix.values %}
+                                <td>
+                                    {% if status_name in statuses %}
+                                    {{ status_name }}
+                                    {% else %}
+                                    -
+                                    {% endif %}
+                                </td>
                                 {% endfor %}
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+                {% endwith %}
                 </div>
 
                 {% include "gobotany/_info_from_flora.html" %}

@@ -52,12 +52,11 @@ Wetland Status:
 {% endif %}
 
 Distribution and Conservation Status:
-    Connecticut: {{ object.conservation_status_ct }}
-    Maine: {{ object.conservation_status_me }}
-    Massachusetts: {{ object.conservation_status_ma }}
-    New Hampshire: {{ object.conservation_status_nh }}
-    Rhode Island: {{ object.conservation_status_ri }}
-    Vermont: {{ object.conservation_status_vt }}
+{% with conservation_matrix=object.get_conservation_statuses %}
+  {% for state_name, statuses in conservation_matrix.items %}
+    {{ state_name }}: {{ statuses|join:", " }}
+  {% endfor %}
+{% endwith %}
 
 {# Information from Flora Novae Angliae, if available #}
 {% search_text_info_from_flora scientific_name=object.scientific_name %}
