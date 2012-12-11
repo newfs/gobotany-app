@@ -1365,23 +1365,19 @@ class Importer(object):
         else:
             return False
 
-
-    def _get_friendly_habitat_name(self, habitat_name):
-        """For a given habitat name, return the friendly name (if present)."""
-        if not habitat_name:
-            return None
-        friendly_name = None
-        try:
-            habitat = models.Habitat.objects.get(name__iexact=habitat_name)
-            friendly_name = habitat.friendly_name
-        except models.Habitat.DoesNotExist:
-            log.info('  Error: habitat does not exist:', habitat_name)
-        return friendly_name and friendly_name.lower()
-
-
-    def import_places(self, db, taxaf):
+    def import_places(self, db, habitatsf, taxaf):
         """Load habitat and state data from a taxa CSV file"""
         log.info('Setting up place characters and values')
+
+        # Learn the friendly text for each habitat.
+
+        log.info('  Loading habitat friendly texts')
+
+        friendly_texts = {}
+        for row in open_csv(habitatsf):
+            value_str = row['desc'].lower()
+            friendly_text = row['friendly_text'].lower()
+            friendly_texts[value_str] = friendly_text
 
         # Create a character group for "place" characters.
 
@@ -1445,22 +1441,22 @@ class Importer(object):
             # Habitat character values.
 
             character_id = character_map['habitat']
-            habitats = row['habitat'].lower().split('| ')
+            habitats = pipe_split(row['habitat'])
             for habitat in habitats:
-                friendly_habitat = self._get_friendly_habitat_name(habitat)
-                cvfs.append((character_id, habitat.lower(), friendly_habitat))
+                friendly_text = friendly_texts[habitat]
+                cvfs.append((character_id, habitat.lower(), friendly_text))
 
             # Habitat (general) character values.
 
             character_id = character_map['habitat_general']
-            habitats = row['habitat_general'].lower().split('| ')
+            habitats = pipe_split(row['habitat_general'])
             for habitat in habitats:
                 cvfs.append((character_id, habitat, habitat))
 
             # State Distribution character values.
 
             character_id = character_map['state_distribution']
-            state_codes = row['distribution'].lower().split('| ')
+            state_codes = pipe_split(row['distribution'])
             for state_code in state_codes:
                 state = ''
                 if state_code in state_names:
@@ -1959,6 +1955,14 @@ class Importer(object):
             if created:
                 log.info('  New SearchSuggestion: %s' % suggestion)
 
+# Split a multiple value string like u'foo| bar'
+
+def pipe_split(text):
+    if not text.strip():
+        return []
+    words = [ word.strip() for word in text.split('|') ]
+    words = [ word.lower() for word in words if word ]
+    return words
 
 # Import a partner species list Excel spreadsheet.
 
@@ -2011,7 +2015,7 @@ full_import_steps = (
     (Importer.import_character_values, 'character_values.csv'),
     (Importer.import_glossary, 'glossary.csv'),
     (Importer.import_lookalikes, 'lookalikes-raw.csv'),
-    (Importer.import_places, 'taxa.csv'),
+    (Importer.import_places, 'habitats.csv', 'taxa.csv'),
     (Importer.import_videos, 'videos.csv'),
     (Importer.import_constants, 'characters.csv'),
     (Importer.import_copyright_holders, 'copyright_holders.csv'),
