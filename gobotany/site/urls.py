@@ -76,6 +76,6 @@ urlpatterns = patterns(
     #url('^checkup/$', views.checkup_view, name='checkup'),
 
     # Temporary, for testing
-    #url('^maps-test/$', views.maps_test_view, name='site-maps-test'),
-    #url('^suggest-test/$', views.suggest_test_view, name='site-suggest-test'),
+    url('^maps-test/$', views.maps_test_view, name='site-maps-test'),
+    url('^suggest-test/$', views.suggest_test_view, name='site-suggest-test'),
     )
