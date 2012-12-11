@@ -43,7 +43,8 @@ EOF
 fi
 
 if [ "$(uname -s)" == "Linux" ] &&
-    ! echo '#include <postgresql/utils/errcodes.h>' |cc -E - >/dev/null 2>&1
+    ! echo '#include <postgresql/utils/errcodes.h>' |cc -E - >/dev/null 2>&1 &&
+    ! echo '#include <postgresql/server/utils/errcodes.h>' |cc -E - >/dev/null 2>&1
 then
     cat <<EOF
 
