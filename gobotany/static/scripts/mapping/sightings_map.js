@@ -19,16 +19,19 @@ define([
     };
 
     SightingsMap.prototype.setup = function () {
+        console.log('SightingsMap.setup: about to create LatLng');
         var lat_long = new google.maps.LatLng(this.latitude, this.longitude);
         var map_options = {
             center: lat_long,
             zoom: 6,
             mapTypeId: google_maps.MapTypeId.ROADMAP
         };
+        console.log('SightingsMap.setup: about to create Map');
         this.map = new google_maps.Map(this.$map_div.get(0), map_options);
         var info_window_options = {
             maxWidth: 300
         };
+        console.log('SightingsMap.setup: about to create InfoWindow');
         this.info_window = new google_maps.InfoWindow(info_window_options);
     };
 
@@ -75,13 +78,16 @@ define([
 
     SightingsMap.prototype.add_marker = function (latitude, longitude, title,
                                                   info_window_html) {
+        console.log('SightingsMap.addMarker: about to create LatLng');
         var lat_long = new google_maps.LatLng(latitude, longitude);
+        console.log('SightingsMap.addMarker: about to create Marker');
         var marker = new google.maps.Marker({
             position: lat_long,
             map: this.map,
             title: title
         });
         var info_window = this.info_window;
+        console.log('SightingsMap.addMarker: about to add click listener');
         google_maps.event.addListener(marker, 'click', function () {
             info_window.setContent(info_window_html);
             info_window.open(this.map, marker);
