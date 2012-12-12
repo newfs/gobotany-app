@@ -233,15 +233,16 @@ def questions(request, pile_slug):
 # The images that should be displayed on a particular dkey page.
 
 extra_image_types = {
-    u'Group 2': ('fruits',),
-    u'Group 3': ('inflorescences',),
-    u'Group 4': ('bark',),
-    u'Group 5': ('bark',),
-    u'Group 6': ('flowers',),
-    u'Group 7': ('flowers',),
-    u'Group 8': ('flowers',),
-    u'Group 9': ('flowers',),
-    u'Group 10': ('flowers',),
+    u'Group 1': ['leaf'],
+    u'Group 2': ['fruits', 'leaves'],
+    u'Group 3': ['inflorescences', 'leaves'],
+    u'Group 4': ['bark', 'leaves'],
+    u'Group 5': ['bark', 'leaves'],
+    u'Group 6': ['flowers', 'leaves'],
+    u'Group 7': ['flowers', 'leaves'],
+    u'Group 8': ['flowers', 'leaves'],
+    u'Group 9': ['flowers', 'leaves'],
+    u'Group 10': ['flowers', 'leaves'],
     }
 
 def dkey_images(request, slug):
@@ -276,7 +277,7 @@ def dkey_images(request, slug):
             if ancestor.rank == 'group':
                 group_title = ancestor.title
 
-    image_types_allowed = ['leaves', 'plant form']
+    image_types_allowed = ['plant form']
     image_types_allowed.extend(extra_image_types.get(group_title, ()))
 
     if rank == u'family':
