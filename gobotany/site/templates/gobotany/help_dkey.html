@@ -1,0 +1,48 @@
+{% extends "gobotany/_page_full_sidebar.html" %}
+
+{% block title %}Help{% endblock %}
+
+{% block js_require %}
+    require(['site/help']);
+{% endblock %}
+
+{% block body_attributes %}id="help" class="help"{% endblock %}
+
+{% block main_content %}
+
+<h1>What's a Dichotomous Key?</h1>
+
+<p>
+A <b>dichotomous key</b> presents a set of paired choices that describe
+various plant characteristics. To identify a plant, you choose the
+description that best matches the plant you are trying to identify. This
+leads you to another pair of choices. This process of making selections,
+choosing characteristics that best match your plant from a series of
+paired options, eventually narrows down to an individual species.
+</p>
+
+<p>
+The Go Botany Dichotomous Key covers all 3500 species, subspecies, and
+varieties of native and naturalized plants in New England, and is
+designed for experienced botanists.
+</p>
+
+<p>
+While the questions are technical and specific, hundreds of botanical
+terms are defined and clearly illustrated. The key is based on New
+England Wild Flower
+Society's <a href="http://newenglandwild.org/store/flora-novae-angliae"><i>Flora
+Novae Angliae: A Manual for the Identification of Native and Naturalized
+Higher Vascular Plants of New England</i></a> (Haines, 2011).
+</p>
+
+<p>
+<a href="/dkey/" class="orange-button">Return to the Dichotomous Key</a>
+</p>
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "gobotany/_help_navigation.html" %}
+{% endblock %}
+

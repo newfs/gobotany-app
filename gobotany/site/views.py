@@ -70,6 +70,10 @@ def help_view(request):
     return render_to_response('gobotany/help.html', {
            }, context_instance=RequestContext(request))
 
+def help_dkey_view(request):
+    return render_to_response('gobotany/help_dkey.html', {
+           }, context_instance=RequestContext(request))
+
 def about_view(request):
     return render_to_response('gobotany/about.html', {
            }, context_instance=RequestContext(request))

@@ -610,7 +610,7 @@ if __name__ == '__main__':
     logging.getLogger('django').level = logging.INFO
 
     parser = argparse.ArgumentParser(
-        description='Import the Flora Nova Angliae XML into the database',
+        description='Import the Flora Novae Angliae XML into the database',
         )
     parser.add_argument('filename', help='name of the file to load',
                         nargs='?', default='110330_fone_test_05.xml')
