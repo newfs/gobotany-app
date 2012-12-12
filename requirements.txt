@@ -3,3 +3,9 @@
 # local sandboxes in which to run the application.
 
 -e .
+
+# If Heroku does not see this requirement out here in the requirements
+# file, then it will fail to provide the library that this dependency
+# needs in order to compile.
+
+pylibmc==1.2.3
