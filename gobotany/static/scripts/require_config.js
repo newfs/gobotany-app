@@ -1,11 +1,15 @@
 requirejs.config({
     baseUrl: '/static/scripts',
     paths: {
-        'jquery': 'jquery',
-        'tools': 'tools',
-        'dkey': 'dkey',
-        'simplekey': 'simplekey',
         'bridge': 'bridge',
+        'dkey': 'dkey',
+        'lib': 'lib',
+        'mapping': 'mapping',
+        'plantpreview': 'plantpreview',
+        'plantshare': 'plantshare',
+        'simplekey': 'simplekey',
+        'site': 'site',
+        'taxa': 'taxa',
         'util': 'util'
     }
 });
