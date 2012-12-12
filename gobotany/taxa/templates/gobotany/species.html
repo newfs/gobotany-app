@@ -282,7 +282,7 @@
                 {% with lookalikes=taxon.lookalikes.all %}
                 {% if lookalikes|length > 0 %}
                 <div class="section lookalikes">
-                    <h4>Sometimes Confused With:</h4>
+                    <h4>Sometimes Confused With</h4>
                     <dl>
                     {% for lookalike in lookalikes %}
                         <dt><a href="/species/{{ lookalike.lookalike_scientific_name|lower|replace:' ,/' }}/"><em>{{ lookalike.lookalike_scientific_name }}</em></a>{% if lookalike.lookalike_characteristic %}:{% endif %}</dt>
@@ -296,7 +296,7 @@
                 {% with taxon.synonyms.all as synonyms %}
                 {% if synonyms|length > 0 %}
                 <div class="section">
-                    <h4>Synonyms:</h4>
+                    <h4>Synonyms</h4>
                     <ul>
                     {% for synonym in synonyms %}
                         <li>{{ synonym.full_name|italicize_plant|safe }}</li>
@@ -307,20 +307,20 @@
                 {% endwith %}
 
                 <div class="section">
-                    <h4>Family:</h4>
+                    <h4>Family</h4>
                     <p><a href="{% url taxa-family taxon.family.slug %}"
                         >{{ taxon.family }}</a></p>
                 </div>
 
                 <div class="section">
-                    <h4>Genus:</h4>
+                    <h4>Genus</h4>
                     <p><em><a href="{% url taxa-genus taxon.genus.slug %}"
                         >{{ taxon.genus }}</a></em></p>
                 </div>
 
                 {% if taxon.variety_notes %}
                 <div class="section">
-                    <h4>Notes on Subspecies and Varieties:</h4>
+                    <h4>Notes on Subspecies and Varieties</h4>
                     <p>{{ taxon.variety_notes|italicize_plant|safe }}</p>
                 </div>
                 {% endif %}
