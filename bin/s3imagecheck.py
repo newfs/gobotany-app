@@ -49,13 +49,13 @@ def check_family(operator, family_name):
         thumbdir = operator.make_thumbdir(thumbsize, family_name)
         thumbs = operator.list_thumbnails(thumbdir)
 
+        check_images(operator, thumbs)
+
         for thumb in thumbs:
             thumb_name = name_of(thumb)
             if thumb_name not in image_names:
                 operator.error(thumb, 'Thumbnail is an orphan; deleting')
                 thumb.delete()
-
-        check_images(operator, thumbs)
 
         thumb_names = names_of(thumbs)
         for image in images:
