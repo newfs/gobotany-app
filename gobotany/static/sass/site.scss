@@ -862,13 +862,10 @@ footer {
     dt {
         clear: left;
         float: left;
+        font-weight: bold;
         line-height: 18px;
         text-align: right;
-        text-transform: uppercase;
         width: 250px;
-        &:after {
-            content: ':';
-        }
     }
     dd {
         line-height: 18px;

@@ -454,8 +454,7 @@ footer .support { margin-right: 0; padding: 18px 0; }
 /* Character/value styles for plant preview popups, species pages, etc. */
 .characteristics { margin-bottom: 16px; }
 .characteristics dl { border: 1px transparent; /* border forces new row in WebKit when char name, but not value, wraps */ margin: 6px 0 0; padding: 0; }
-.characteristics dt { clear: left; float: left; line-height: 18px; text-align: right; text-transform: uppercase; width: 250px; }
-.characteristics dt:after { content: ':'; }
+.characteristics dt { clear: left; float: left; font-weight: bold; line-height: 18px; text-align: right; width: 250px; }
 .characteristics dd { line-height: 18px; margin-left: 260px; }
 .characteristics dd ul { list-style-type: disc; margin: 0; padding: 0 0 0 1.3em; text-indent: -0.2em; }
 .characteristics dd ul.compact { margin: 0; padding: 0; text-indent: 0; }
