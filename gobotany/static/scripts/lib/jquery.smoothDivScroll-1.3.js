@@ -1,3 +1,8 @@
+define([
+    'bridge/jquery'
+], function() {
+    // end AMD header
+
 /*
  * jQuery SmoothDivScroll 1.3
  *
@@ -1299,3 +1304,6 @@
 
 	});
 })(jQuery);
+
+    // AMD footer
+});

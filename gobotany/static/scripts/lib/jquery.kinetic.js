@@ -1,3 +1,8 @@
+define([
+    'bridge/jquery'
+], function() {
+    // end AMD header
+
 /*!
 	jQuery.kinetic v1.5
 	Dave Taylor http://the-taylors.org/jquery.kinetic
@@ -386,3 +391,6 @@
 	};
 
 } (window.jQuery || window.Zepto));
+
+    // AMD footer
+});
