@@ -4,6 +4,7 @@
 
 import json as json_module
 import re
+from django.db.models import Q
 from django.template import Context, Library
 from django.template.loader import get_template
 from django.utils.safestring import SafeUnicode, mark_safe
@@ -52,7 +53,7 @@ def abbreviate_title(s):
 
 @register.filter
 def breadcrumbs(page):
-    return page.breadcrumb_cache.order_by('id')
+    return page.breadcrumb_cache.filter(~Q(rank='group')).order_by('id')
 
 @register.filter
 def display_title(page):
