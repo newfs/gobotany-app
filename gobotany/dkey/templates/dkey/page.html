@@ -165,9 +165,8 @@
 <p class="image-type-selector">
   <img src="/static/images/icons/show-me.png">
    Show photos of: <select></select> 
-  {% if rank_beneath and rank_beneath != 'species' %}
-    These are photos of representative {{ rank_beneath|taxon_plural }}
-    in this {{ page.rank }}
+  {% if rank_beneath %}
+    Each photo represents <b>one {{ rank_beneath }}</b> in this {{ page.rank }}.
   {% endif %}
 </p>
 

@@ -286,6 +286,9 @@ define([
     var plants = null;
 
     var install_image_types = function(image_types) {
+        if (title === 'Key to the Families')
+            // Botanists do not find images useful on the front page.
+            return;
         var $selector = $('.image-type-selector').css('display', 'block');
         var $select = $selector.find('select');
         $.each(image_types, function(i, image_type) {
