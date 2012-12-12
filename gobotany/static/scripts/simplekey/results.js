@@ -19,20 +19,17 @@ define([
     'simplekey/utils',
     'util/activate_image_gallery',
     'util/glossarizer',
-    'util/lazy_images',
-    'util/sidebar'
+    'util/lazy_images'
 ], function(
     document_is_ready, $, x1, x2, Ember, Shadowbox, shadowbox_init, _,
     App3, Filter, FilterController, animation, resources, ResultsPageState,
     results_overlay_init, SpeciesSection, working_area_module, utils,
-    image_gallery, glossarizer, lazy_images, sidebar
+    image_gallery, glossarizer, lazy_images
 ) {return {
 
 results_page_init: function(args) {
     var key_name = args.key;
     var pile_slug = args.pile_slug;
-
-    sidebar.setup();
 
     var species_section = new SpeciesSection();
     var species_section_ready = $.Deferred();
@@ -247,8 +244,6 @@ results_page_init: function(args) {
             filter: filter,
             y: y
         });
-
-        sidebar.set_height();
     };
 
     var dismiss_any_working_area = function() {

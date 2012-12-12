@@ -9,10 +9,9 @@ define([
     'simplekey/utils',
     'util/glossarizer',
     'util/lazy_images',
-    'util/sidebar'
 ], function($, Shadowbox, _, plantpreview_popup,
             App3, resources, results_photo_menu, utils,
-            glossarizer, lazy_images, sidebar) {
+            glossarizer, lazy_images) {
 
     var SpeciesSection = function() {};
     var glossarize = glossarizer.glossarize;
@@ -122,8 +121,6 @@ define([
            list format. */
         $('.plant-list').removeAttr('style');
 
-        sidebar.set_height();
-
         Shadowbox.setup('.plant-list table td.scientific-name a',
                         {title: ''});
     };
@@ -225,7 +222,6 @@ define([
         this.plant_list.animate(
             {height: desty + HEIGHT},
             function() {
-                sidebar.set_height();
                 lazy_images.load();
 
                 // Set up genus colors now that everyone has arrived!

@@ -3,14 +3,12 @@ define([
     'util/PhotoHelper',
     'util/glossarizer',
     'util/shadowbox_init',
-    'util/sidebar'
-], function($, PhotoHelper, glossarizer, shadowbox_init, sidebar) {
+], function($, PhotoHelper, glossarizer, shadowbox_init) {
 
     var exports = {};
 
     var _setup_page = function(args) {
         glossarizer.glossarize($('.description'));
-        sidebar.setup();
 
         var photo_helper = PhotoHelper();
 

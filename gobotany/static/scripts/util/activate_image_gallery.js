@@ -5,12 +5,10 @@
 
 require([
     'bridge/jquery',
-    'util/sidebar',
     'bridge/jquery.mousewheel',
     'bridge/shadowbox',
     'util/PhotoHelper'
-], function($, sidebar, mousewheel, Shadowbox, PhotoHelper) {
-    sidebar.setup();
+], function($, mousewheel, Shadowbox, PhotoHelper) {
     $(document).ready(function() {
 
         // Turn on the scrollable for every gallery.
