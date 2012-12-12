@@ -39,7 +39,18 @@ def check_family(operator, family_name):
 
     """
     images = list(operator.list_images(family_name))
+    image_names = set(names_of(images))
     check_images(operator, images)
+
+    for thumbdir in THUMBNAIL_DIRS:
+        thumbs = operator.list_thumbnails(family_name, thumbdir)
+
+        for thumb in thumbs:
+            thumb_name = name_of(thumb)
+            if thumb_name not in image_names:
+                operator.error(thumb, 'Thumbnail is an orphan; deleting')
+                thumb.delete()
+                continue
 
 def check_images(operator, keys):
     for key in keys:
@@ -115,10 +126,15 @@ class Operator(object):
 
     def list_families(self):
         seq = self.bucket.list('taxon-images/', '/')
-        return [ key.name.strip('/').split('/')[-1] for key in seq ]
+        return names_of(seq)
 
     def list_images(self, family_name):
         seq = self.bucket.list('taxon-images/{}/'.format(family_name))
+        return seq
+
+    def list_thumbnails(self, family_name, thumbdir):
+        dirname = 'taxon-images-{}/{}/'.format(thumbdir, family_name)
+        seq = self.bucket.list(dirname)
         return seq
 
     def error(self, key, message):
@@ -135,6 +151,13 @@ class Operator(object):
         print 'Scanned {} directories'.format(self.directory_count)
         print 'Scanned {} images'.format(self.image_count)
         print 'Found {} errors'.format(self.error_count)
+
+def name_of(key):
+    return key.name.rstrip('/').split('/')[-1]
+
+def names_of(keys):
+    for key in keys:
+        yield name_of(key)
 
 if __name__ == '__main__':
     main()
