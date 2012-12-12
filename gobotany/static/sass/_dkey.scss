@@ -243,7 +243,7 @@ $disabled_orange_gradient: linear-gradient(
         border-color: $active_bg;
     }
 
-    .gloss {
+    .couplets .gloss {
         border-bottom: none;  /* normally glossary terms are "underlined" */
         color: $text_dark_green;
         cursor: pointer;

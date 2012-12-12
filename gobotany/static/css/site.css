@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -1094,7 +1095,7 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
 #dkey #main ul.couplets a.figure-link { /* clickable figure numbers: [Fig. 3] */ color: #35661c; text-decoration: underline; font-weight: bold; }
 #dkey #main ul.couplets .chosen { border-color: #7abe58; }
 #dkey #main ul.active > li > .lead, #dkey #main ul:target > li > .lead { background-color: #b4d57f; border-color: #b4d57f; }
-#dkey #main .gloss { border-bottom: none; /* normally glossary terms are "underlined" */ color: #35661c; cursor: pointer; }
+#dkey #main .couplets .gloss { border-bottom: none; /* normally glossary terms are "underlined" */ color: #35661c; cursor: pointer; }
 #dkey #main a.show-all-button { display: inline-block; font-size: 12px; font-weight: normal; }
 #dkey #main .image-type-selector { display: none; /* once images are loaded, our JS will un-hide */ max-width: none; }
 #dkey #main div.taxon-images { margin-left: 0.75em; text-align: center; }

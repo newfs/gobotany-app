@@ -22,7 +22,7 @@ define([
 
     /* Glossarize lead texts. */
 
-    glossarizer.glossarize($('.couplets .lead'));
+    glossarizer.glossarize($('.flora-nova-angliae-text p, .couplets .lead'));
 
     /* Rewrite couplet IDs so that #-links will no longer match; this
        prevents a change to the URL hash from making the browser think
