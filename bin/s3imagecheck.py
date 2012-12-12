@@ -12,13 +12,16 @@ with bad permissions.
 import re
 import socket
 import time
+from StringIO import StringIO
 
+import Image
+import ImageOps
 import boto
 import requests
 
 DEBUG = False
 CACHE_CONTROL = 'max-age=28800, public'
-THUMBNAIL_DIRS = '160x149', '239x239', '1000s1000'
+THUMBNAIL_SIZES = '160x149', '239x239', '1000s1000'
 url_pattern = re.compile(r'/taxon-images/[A-Z]')
 
 def main():
@@ -38,19 +41,32 @@ def check_family(operator, family_name):
     one family each time it is called.
 
     """
-    images = list(operator.list_images(family_name))
+    images = operator.list_images(family_name)
     image_names = set(names_of(images))
     check_images(operator, images)
 
-    for thumbdir in THUMBNAIL_DIRS:
-        thumbs = operator.list_thumbnails(family_name, thumbdir)
+    for thumbsize in THUMBNAIL_SIZES:
+        thumbdir = operator.make_thumbdir(thumbsize, family_name)
+        thumbs = operator.list_thumbnails(thumbdir)
 
         for thumb in thumbs:
             thumb_name = name_of(thumb)
             if thumb_name not in image_names:
                 operator.error(thumb, 'Thumbnail is an orphan; deleting')
                 thumb.delete()
-                continue
+
+        check_images(operator, thumbs)
+
+        thumb_names = names_of(thumbs)
+        for image in images:
+            if name_of(image) not in thumb_names:
+                operator.error(image, 'Image is missing its {} thumbnail;'
+                               ' generating'.format(thumbdir))
+                try:
+                    operator.generate_thumbnail(image, thumbsize, thumbdir)
+                except IOError as e:
+                    operator.error(image, 'Thumbnail operation failed: {}'
+                                   .format(e))
 
 def check_images(operator, keys):
     for key in keys:
@@ -124,18 +140,38 @@ class Operator(object):
         response = self.session.head(url, headers=headers)
         return response
 
+    def make_thumbdir(self, thumbsize, family_name):
+        return 'taxon-images-{}/{}/'.format(thumbsize, family_name)
+
     def list_families(self):
         seq = self.bucket.list('taxon-images/', '/')
         return names_of(seq)
 
     def list_images(self, family_name):
-        seq = self.bucket.list('taxon-images/{}/'.format(family_name))
-        return seq
+        seq = self.bucket.list('taxon-images/{}/'.format(family_name), '/')
+        return list(key for key in seq if not key.name.endswith('/'))
 
-    def list_thumbnails(self, family_name, thumbdir):
-        dirname = 'taxon-images-{}/{}/'.format(thumbdir, family_name)
-        seq = self.bucket.list(dirname)
-        return seq
+    def list_thumbnails(self, thumbdir):
+        seq = self.bucket.list(thumbdir)
+        return list(seq)
+
+    def generate_thumbnail(self, image, thumbsize, thumbdir):
+        (operator, arg) = THUMBNAIL_CALLS[thumbsize]
+        data = image.read()
+        image.close()
+        im = Image.open(StringIO(data))
+        im = operator(im, arg)
+        output = StringIO()
+        im.save(output, 'JPEG')
+        thumbname = '{}/{}'.format(thumbdir.rstrip('/'), name_of(image))
+        thumb = image.bucket.new_key(thumbname)
+        thumb.set_contents_from_string(
+            output.getvalue(),
+            {'cache-control': CACHE_CONTROL},
+            policy='public-read',
+            )
+
+    # Error reporting and statistics.
 
     def error(self, key, message):
         print key.name
@@ -156,8 +192,20 @@ def name_of(key):
     return key.name.rstrip('/').split('/')[-1]
 
 def names_of(keys):
-    for key in keys:
-        yield name_of(key)
+    return [ name_of(key) for key in keys ]
+
+def cropped_thumbnail(image, size):
+    return ImageOps.fit(image, size, Image.ANTIALIAS)
+
+def scaled_thumbnail(image, size):
+    image.thumbnail(size, Image.ANTIALIAS)
+    return image
+
+THUMBNAIL_CALLS = {
+    '160x149': (cropped_thumbnail, (160, 149)),
+    '239x239': (cropped_thumbnail, (239, 239)),
+    '1000s1000': (scaled_thumbnail, (1000, 1000)),
+    }
 
 if __name__ == '__main__':
     main()
