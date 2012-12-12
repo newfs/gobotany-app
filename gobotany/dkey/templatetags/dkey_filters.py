@@ -56,9 +56,7 @@ def breadcrumbs(page):
 
 @register.filter
 def display_title(page):
-    if page.rank == 'family':
-        return u'Family {}'.format(page.title)
-    elif page.rank == 'genus' or page.rank == 'species':
+    if page.rank == 'genus' or page.rank == 'species':
         return mark_safe(u'<i>{}</i>'.format(page.title))
     else:
         return page.title
