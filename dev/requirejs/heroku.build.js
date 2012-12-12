@@ -30,7 +30,6 @@
                 'taxa/species',
                 'taxa/family',
                 'taxa/genus',
-                'simplekey/search',
                 'site/help',
                 'site/advanced_map',
                 'site/glossary',
