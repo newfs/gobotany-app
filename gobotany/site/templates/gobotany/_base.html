@@ -16,7 +16,7 @@
 
         {# CSS goes here. #}
         {% block css %}
-        <link rel="stylesheet" href="/static/css/site.css?v={% git_short_version %}">
+        <link rel="stylesheet" href="/static/css/site.css?v=">
         {% endblock %}
 
         {# JS goes here. #}
@@ -43,7 +43,7 @@
         {% else %}
 
         <!-- PRODUCTION / DEPLOYMENT FILES -->
-        <script src="/static/js/gobotany.application.js?v={% git_short_version %}"></script>
+        <script src="/static/js/gobotany.application.js?v="></script>
 
         {% endif %}
 
