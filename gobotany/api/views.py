@@ -96,20 +96,17 @@ def glossary_blob(request):
     images = {}
     discards = set()
     for g in (GlossaryTerm.objects.filter(is_highlighted=True)
-              .select_related('image')):
+              .extra(where=['CHAR_LENGTH(term) > 2'])):
         term = g.term
-        if len(term) < 3 or not g.lay_definition:
-            pass
-        elif term in discards:
+        if term in discards:
             pass
         elif term in definitions:
             del definitions[term]
             discards.add(term)
         else:
             definitions[term] = g.lay_definition
-            image = g.image
-            if image:
-                images[term] = image.url
+            if g.image:
+                images[term] = g.image.url
     return jsonify({'definitions': definitions, 'images': images})
 
 #
