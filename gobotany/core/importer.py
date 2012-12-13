@@ -276,6 +276,8 @@ class Importer(object):
     def _get_state_status(self, state_code, distribution,
                           conservation_status_code=None, is_invasive=False,
                           is_prohibited=False):
+        status = ['absent']
+
         if state_code in distribution:
             status = ['present']
 
@@ -293,11 +295,14 @@ class Importer(object):
             if is_invasive == True:
                 status.append('invasive')
 
-        elif conservation_status_code == 'X':
-            status = ['extirpated']
-
-        else:
-            status = ['absent']
+        # Extinct status ('X') applies to plants that are absent or present.
+        # Map these to 'extirpated.'
+        if conservation_status_code == 'X':
+            # If status is just 'present' or 'absent' so far, clear it so
+            # that 'extirpated' appears alone.
+            if status == ['present'] or status == ['absent']:
+                status = []
+            status.append('extirpated')
 
         # Prohibited status applies even to plants that are absent.
         if is_prohibited == True:
