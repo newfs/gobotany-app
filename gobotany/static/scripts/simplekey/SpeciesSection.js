@@ -179,6 +179,8 @@ define([
         for (var i = 0; i < items.length; i++)
             visible_species[items[i].id] = 1;
 
+        var do_animation = (items.length < 50);
+
         var SPECIES_PER_ROW = 4;
         var WIDTH = 178;
         var HEIGHT = 232;
@@ -204,14 +206,19 @@ define([
                 $div.removeClass('genus_join_left');
                 $div.removeClass('genus_join_right');
 
-                if (!$div.hasClass('in-results')) {
-                    // bring new species in from the far right
-                    $div.addClass('in-results');
-                    $div.css({left: 2800, top: desty});
-                    $div.animate({left: destx});
+                if (do_animation) {
+                    if ($div.hasClass('in-results')) {
+                        // move the species from its current screen location
+                        $div.animate({left: destx, top: desty});
+                    } else {
+                        $div.addClass('in-results');
+                        // bring new species in from the far right
+                        $div.css({left: 2800, top: desty});
+                        $div.animate({left: destx});
+                    }
                 } else {
-                    // move the species from its current screen location
-                    $div.animate({left: destx, top: desty});
+                    $div.addClass('in-results');
+                    $div.css({left: destx, top: desty});
                 }
             } else {
                 $div.removeClass('in-results');
