@@ -480,8 +480,7 @@ class SearchTests(FunctionalCase):
         self.assertEqual(result_links[0].text, 'Liliaceae: Dichotomous Key')
         result_excerpts = self.css('#search-results-list li p')
         self.assertTrue(result_excerpts[0].text.find(
-            'You are here: Dichotomous Key > Group 3: Monocots > Liliaceae')
-            > -1);
+            'You are here: Dichotomous Key > Liliaceae') > -1);
 
     def test_search_results_contain_dichotomous_key_page_text(self):
         self.get('/search/?q=cystopteris%20difficult%20stunted')
@@ -546,6 +545,15 @@ class SearchTests(FunctionalCase):
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_page_found(result_links,
             'Video Help Topics'))
+
+    def test_search_results_contain_dichotomous_key_help_page(self):
+        self.get('/search/?q=dichotomous%20key%20help')
+        result_links = self._result_links()
+        for link in result_links:
+            print 'link.text:', link.text
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links,
+            "What's a Dichotomous Key?"))
 
     def test_search_results_contain_privacy_policy_page(self):
         self.get('/search/?q=privacy')

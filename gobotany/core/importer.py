@@ -1784,6 +1784,10 @@ class Importer(object):
 
         plain_page.save()
 
+    def _create_dkey_help_page(self):
+        self._create_plain_page('site-help-dkey',
+                                'What\'s a Dichotomous Key?',
+                                'site/templates/gobotany/help_dkey.html')
 
     def _create_contributors_page(self):
         self._create_plain_page('site-contributors',
@@ -1816,6 +1820,7 @@ class Importer(object):
         self._create_getting_started_page()
         self._create_advanced_map_page()
         self._create_video_help_topics_page()
+        self._create_dkey_help_page()
         self._create_contributors_page()
 
         self._create_teaching_page()
