@@ -79,6 +79,11 @@ $disabled_orange_gradient: linear-gradient(
         }
     }
 
+    #jump-nav {
+        margin: 0 auto;
+        max-width: 330px;
+    }
+
     .groupbox {
         position: relative;
         ul {

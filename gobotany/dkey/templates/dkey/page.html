@@ -17,28 +17,28 @@
 <div class="offer-help-aside">
   <span>What&#8217;s a dichotomous key?</span>
   <a href="/help/dkey/" class="button">Get Help</a>
-  <br>
-  <div class="groupbox">
-    <select>
-      <option value="instructions">Jump to a group…</option>
+  <div id="jump-nav">
+    <div class="groupbox">
+      <select>
+        <option value="instructions">Jump to a group…</option>
+      </select>
+      <ul>
+        {% for group in groups %}
+          <li>
+            <a href="{{ group.name|dkey_url }}">
+              <b>{{ group.name }}</b>{{ group.text }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <select class="jumpbox" disabled="disabled">
+      <option value="instructions">Jump to a family…</option>
     </select>
-    <ul>
-      {% for group in groups %}
-        <li>
-          <a href="{{ group.name|dkey_url }}">
-            <b>{{ group.name }}</b>{{ group.text }}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
+    <select class="jumpbox" disabled="disabled">
+      <option value="instructions">Jump to a genus…</option>
+    </select>
   </div>
-  <select class="jumpbox" disabled="disabled">
-    <option value="instructions">Jump to a family…</option>
-  </select>
-  <br>
-  <select class="jumpbox" disabled="disabled">
-    <option value="instructions">Jump to a genus…</option>
-  </select>
 </div>
 
 {% if title != 'Key to the Families' %}
