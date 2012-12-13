@@ -92,21 +92,25 @@ def glossary_blob(request):
     across our current glossary.
 
     """
-    definitions = {}
-    images = {}
-    discards = set()
-    for g in (GlossaryTerm.objects.filter(is_highlighted=True)
-              .extra(where=['CHAR_LENGTH(term) > 2'])):
-        term = g.term
-        if term in discards:
-            pass
-        elif term in definitions:
-            del definitions[term]
-            discards.add(term)
-        else:
-            definitions[term] = g.lay_definition
-            if g.image:
-                images[term] = g.image.url
+    glossaryterms = list(GlossaryTerm.objects.filter(is_highlighted=True)
+                         .extra(where=['CHAR_LENGTH(term) > 2']))
+    definitions = { gt.term: gt.lay_definition for gt in glossaryterms }
+
+    # Calling gt.image.url is very slow, because this is Django, so we
+    # only do it once; this will work fine as long as we do not start
+    # putting different images in different storages.
+
+    prefix = None
+
+    for gt in glossaryterms:
+        gt.image_path = gt.__dict__['image']
+        if gt.image_path is not None and prefix is None:
+            url = gt.image.url
+            prefix = url[:-len(gt.image_path)]
+
+    images = { gt.term: prefix + gt.image_path for gt in glossaryterms
+               if gt.image_path is not None }
+
     return jsonify({'definitions': definitions, 'images': images})
 
 #
