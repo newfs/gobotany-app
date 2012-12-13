@@ -81,7 +81,6 @@ class GlossaryTerm(models.Model):
                               null=True)
 
     class Meta:
-        ordering = ['term', 'lay_definition']
         # Don't allow duplicate definitions
         unique_together = ('term', 'lay_definition', 'question_text')
 
