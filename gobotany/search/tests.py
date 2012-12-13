@@ -549,8 +549,6 @@ class SearchTests(FunctionalCase):
     def test_search_results_contain_dichotomous_key_help_page(self):
         self.get('/search/?q=dichotomous%20key%20help')
         result_links = self._result_links()
-        for link in result_links:
-            print 'link.text:', link.text
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_page_found(result_links,
             "What's a Dichotomous Key?"))
