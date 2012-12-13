@@ -8,7 +8,7 @@ define([
     'simplekey/results_photo_menu',
     'simplekey/utils',
     'util/glossarizer',
-    'util/lazy_images',
+    'util/lazy_images'
 ], function($, Shadowbox, _, plantpreview_popup,
             App3, resources, results_photo_menu, utils,
             glossarizer, lazy_images) {
