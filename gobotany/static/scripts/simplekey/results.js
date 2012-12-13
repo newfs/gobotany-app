@@ -39,7 +39,7 @@ results_page_init: function(args) {
         filtered_sorted_taxadata_ready,
         taxa_by_sciname_ready
     ).done(function() {
-        species_section.init(pile_slug, plant_divs_ready);
+        species_section.init(pile_slug, taxa_ready, plant_divs_ready);
         species_section_ready.resolve();
     });
 
@@ -60,6 +60,7 @@ results_page_init: function(args) {
     var pile_taxa_ready = $.Deferred();
     var pile_taxadata_ready = resources.pile_species(pile_slug);
     var plant_divs_ready = $.Deferred();
+    var taxa_ready = $.Deferred();      // data for each taxa on the page
     var taxa_by_sciname_ready = $.Deferred();
 
     if (key_name == 'simple') {
@@ -73,6 +74,16 @@ results_page_init: function(args) {
     }
     pile_taxadata_ready.done(function(taxadata) {
         pile_taxa_ready.resolve(_.pluck(taxadata, 'id'));
+    });
+
+    $.when(
+        key_vector_ready,
+        pile_taxadata_ready
+    ).done(function(key_vector, every_taxon_in_pile) {
+        var taxon_ids = key_vector[0].species;
+        taxa_ready.resolve(_.filter(every_taxon_in_pile, function(taxon) {
+            return _.indexOf(taxon_ids, taxon.id) != -1;
+        }));
     });
 
     App3.addObserver('image_type', function() {

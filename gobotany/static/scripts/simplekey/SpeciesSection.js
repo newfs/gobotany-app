@@ -4,20 +4,19 @@ define([
     'bridge/underscore',
     'plantpreview/popup',
     'simplekey/App3',
-    'simplekey/resources',
     'simplekey/results_photo_menu',
     'simplekey/utils',
     'util/glossarizer',
     'util/lazy_images'
 ], function($, Shadowbox, _, plantpreview_popup,
-            App3, resources, results_photo_menu, utils,
+            App3, results_photo_menu, utils,
             glossarizer, lazy_images) {
 
     var SpeciesSection = function() {};
     var glossarize = glossarizer.glossarize;
     var methods = SpeciesSection.prototype = {};
 
-    methods.init = function(pile_slug, plant_divs_ready) {
+    methods.init = function(pile_slug, taxa_ready, plant_divs_ready) {
         // summary:
         //   Manages the species section of the results page
 
@@ -27,7 +26,7 @@ define([
         this.plant_divs = [];
         this.plant_divs_ready = plant_divs_ready;
 
-        resources.pile_species(pile_slug).done(
+        taxa_ready.done(
             $.proxy(this, 'create_plant_divs')
         );
     };
@@ -85,7 +84,7 @@ define([
             '<tr class="hidden"><th>Genus</th><th>Scientific Name</th>' +
             '<th>Common Name</th><th>Details</th></tr>';
         var i;
-        for (i = 0; i < items.length; i += 1) {
+        for (i = 0; i < items.length; i++) {
             if (i > 0) {
                 html += '<tr>';
             }
