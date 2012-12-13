@@ -1,5 +1,7 @@
 """Site-wide template tags and filters."""
 
+import subprocess
+
 from django import template
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify, stringfilter
@@ -9,6 +11,21 @@ from gobotany.dkey import models as dkey_models
 from gobotany.search import models as search_models
 
 register = template.Library()
+
+
+# Tag to display the latest Git commit ID (short) from the current HEAD.
+# From http://djangosnippets.org/snippets/2844/
+try:
+    head = subprocess.Popen("git rev-parse --short HEAD",
+        shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    VERSION = head.stdout.readline().strip()
+except:
+    VERSION = u'unknown'
+
+@register.simple_tag()
+def git_short_version():
+    return VERSION
+
 
 @register.filter
 def url(obj):

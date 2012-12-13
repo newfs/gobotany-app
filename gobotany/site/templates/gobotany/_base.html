@@ -1,3 +1,4 @@
+{% load gobotany_tags %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,7 +16,7 @@
 
         {# CSS goes here. #}
         {% block css %}
-        <link rel="stylesheet" href="/static/css/site.css">
+        <link rel="stylesheet" href="/static/css/site.css?v={% git_short_version %}">
         {% endblock %}
 
         {# JS goes here. #}
@@ -42,7 +43,7 @@
         {% else %}
 
         <!-- PRODUCTION / DEPLOYMENT FILES -->
-        <script src="/static/js/gobotany.application.js"></script>
+        <script src="/static/js/gobotany.application.js?v={% git_short_version %}"></script>
 
         {% endif %}
 
