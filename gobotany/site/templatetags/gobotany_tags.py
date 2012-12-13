@@ -20,11 +20,10 @@ def file_version(file_path):
     Intended for use with auto-versioning CSS and JS files via query string.
     """
     file = ''.join([settings.PROJECT_ROOT, file_path])
-    digest = ''
     try:
         digest = md5(open(file, 'rb').read()).hexdigest()
     except:
-        pass
+        digest = ''
     return digest[:8]
 
 
