@@ -16,7 +16,12 @@
 
         {# CSS goes here. #}
         {% block css %}
-        <link rel="stylesheet" href="/static/css/site.css?v=">
+
+        {% with '/static/css/site.css' as file_path %}
+        <link rel="stylesheet"
+            href="{{ file_path }}?v={% file_version file_path %}">
+        {% endwith %}
+        
         {% endblock %}
 
         {# JS goes here. #}
@@ -43,7 +48,9 @@
         {% else %}
 
         <!-- PRODUCTION / DEPLOYMENT FILES -->
-        <script src="/static/js/gobotany.application.js?v="></script>
+        {% with '/static/js/gobotany.application.js' as file_path %}
+        <script src="{{ file_path }}?v={% file_version file_path %}"></script>
+        {% endwith %}
 
         {% endif %}
 

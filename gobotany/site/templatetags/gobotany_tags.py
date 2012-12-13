@@ -1,14 +1,33 @@
 """Site-wide template tags and filters."""
 
+from hashlib import md5
+
 from django import template
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify, stringfilter
 
+from gobotany import settings
 from gobotany.core import models
 from gobotany.dkey import models as dkey_models
 from gobotany.search import models as search_models
 
 register = template.Library()
+
+
+@register.simple_tag()
+def file_version(file_path):
+    """Return a version string for a file path based on the file contents.
+    Intended for use with auto-versioning CSS and JS files via query string.
+    """
+    file = ''.join([settings.PROJECT_ROOT, file_path])
+    print 'file:', file
+    digest = ''
+    try:
+        digest = md5(open(file, 'rb').read()).hexdigest()
+    except:
+        pass
+    return digest[:8]
+
 
 @register.filter
 def url(obj):

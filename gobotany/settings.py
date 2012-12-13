@@ -10,6 +10,7 @@ else:
     DEBUG_TOOLBAR_AVAILABLE = True
 
 THIS_DIRECTORY = os.path.dirname(__file__)
+PROJECT_ROOT = os.path.abspath(THIS_DIRECTORY)
 gettext = lambda s: s
 
 # We define these database specifications as constants, so that we can
