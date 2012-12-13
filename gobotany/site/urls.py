@@ -18,7 +18,7 @@ urlpatterns = patterns(
 
     # Help section
     url(r'^help/$', views.help_view, name='site-help'),
-    url(r'^help/dkey/$', views.help_dkey_view, name='site-help'),
+    url(r'^help/dkey/$', views.help_dkey_view, name='site-help-dkey'),
     url(r'^start/$', views.getting_started_view, name='site-getting-started'),
     url(r'^video/$', views.video_view, name='site-video'),
     url(r'^map/$', views.advanced_map_view, name='site-advanced-map'),
