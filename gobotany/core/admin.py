@@ -147,7 +147,11 @@ class TaxonFiltersWidget(forms.CheckboxSelectMultiple):
 
             # Pull pile values from the database.
 
-            for cv in pile.character_values.all():
+            clist = list(pile.characters.all())
+            cvlist = list(
+                models.CharacterValue.objects.filter(character__in=clist)
+                )
+            for cv in cvlist:
 
                 c = cv.character
                 if c.id not in characterdict:
@@ -322,7 +326,11 @@ class TaxonAdmin(GobotanyAdminBase):
         for name in names:
             x, pile_slug, character_name = name.split('__')
             pile = models.Pile.objects.get(slug=pile_slug)
-            pile_cv_ids = set( cv.id for cv in pile.character_values.all() )
+            pile_characters = list(pile.characters.all())
+            pile_cv_ids = set(
+                cv.id for cv in
+                models.CharacterValue.filter(character__in=pile_characters)
+                )
 
             min_str = request.POST.get(name + '__min')
             max_str = request.POST.get(name + '__max')
