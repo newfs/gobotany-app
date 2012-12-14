@@ -26,7 +26,25 @@ def pile_view(request, pile_slug):
 def edit_pile_character(request, pile_slug, character_slug):
     pile = get_object_or_404(models.Pile, slug=pile_slug)
     character = get_object_or_404(models.Character, short_name=character_slug)
+
+    taxa = list(pile.species.all())
+    values = list(character.character_values.all())
+
+    checked_boxes = set(
+        (tcv.taxon_id, tcv.character_value_id) for tcv
+        in models.TaxonCharacterValue.objects.filter(
+            taxon__in=taxa, character_value__in=values)
+        )
+
+    def big_loop():
+        for taxon in taxa:
+            yield taxon, [(taxon.id, value.id) in checked_boxes
+                          for value in values]
+
     return render_to_response('gobotany/edit_pile_character.html', {
-        'pile': pile,
+        'big_loop': big_loop,
         'character': character,
+        'pile': pile,
+        'taxa': taxa,
+        'values': values,
         }, context_instance=RequestContext(request))

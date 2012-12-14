@@ -15,6 +15,23 @@
   {{ character.question }}
 </p>
 
-<p>
-</p>
+<div>
+  <p>
+    {% for value in values %}
+      {{ value.value_str }}<br>
+    {% endfor %}
+  </p>
+  {% for taxon, boxes in big_loop %}
+    <p>
+      {% for box in boxes %}
+        {% if box %}
+          X
+        {% else %}
+          O
+        {% endif %}
+      {% endfor %}
+      <i>{{ taxon.scientific_name }}</i>
+    </p>
+  {% endfor %}
+</div>
 {% endblock %}
