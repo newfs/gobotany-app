@@ -42,6 +42,7 @@ def edit_pile_character(request, pile_slug, character_slug):
                           for value in values]
 
     return render_to_response('gobotany/edit_pile_character.html', {
+        'are_there_any_friendly_texts': any(v.friendly_text for v in values),
         'big_loop': big_loop,
         'character': character,
         'pile': pile,

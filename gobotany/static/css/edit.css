@@ -3,7 +3,13 @@
 .edit-page #all {
     margin: 2em;
 }
+.edit-character-definition {
+    margin-top: 0;
+    margin-left: 2em;
+    margin-bottom: 0;
+}
 .pile-character-grid {
+    margin-top: 3em;
     table-layout: fixed;
 }
 .pile-character-grid th {

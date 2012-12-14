@@ -21,6 +21,19 @@
   {{ character.question }}
 </p>
 
+{% if are_there_any_friendly_texts %}
+<ul>
+  {% for value in values %}
+  <li class="edit-character-definition">
+    <b>{{ value.value_str }}</b>
+    {% if value.friendly_text %}
+    — {{ value.friendly_text }}
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+
 <table class="pile-character-grid">
   <tr>
     <th></th>
