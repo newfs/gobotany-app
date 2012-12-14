@@ -409,7 +409,7 @@ class GenusAdmin(FamilyAdmin):
     list_filter = ('family',)
 
 class PartnerSiteAdmin(admin.ModelAdmin):
-    inlines = (PartnerSpeciesInline,)  # too slow with hundreds of species?
+    #inlines = (PartnerSpeciesInline,)  # too slow with hundreds of species?
     filter_horizontal = ('users',)
 
 # Registrations
