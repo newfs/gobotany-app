@@ -23,3 +23,21 @@
     -webkit-transform: rotate(-90deg);
     -webkit-transform-origin: top left;
 }
+.pile-character-grid input {
+    display: none;
+}
+.pile-character-grid label {
+    display: block;
+    padding: 0.25em 0.5em;
+    text-align: center;
+}
+.pile-character-grid label:hover {
+    background-color: yellow;
+}
+.pile-character-grid :checked + label {
+    background-color: green;
+    color: white;
+}
+.pile-character-grid :checked + label:hover {
+    background-color: black;
+}

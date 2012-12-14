@@ -38,8 +38,9 @@ def edit_pile_character(request, pile_slug, character_slug):
 
     def big_loop():
         for taxon in taxa:
-            yield taxon, [(taxon.id, value.id) in checked_boxes
-                          for value in values]
+            boxes = [(value, (taxon.id, value.id) in checked_boxes)
+                     for value in values]
+            yield taxon, boxes
 
     return render_to_response('gobotany/edit_pile_character.html', {
         'are_there_any_friendly_texts': any(v.friendly_text for v in values),

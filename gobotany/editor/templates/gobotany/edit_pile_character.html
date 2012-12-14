@@ -35,22 +35,22 @@
 {% endif %}
 
 <table class="pile-character-grid">
+  {% for taxon, boxes in big_loop %}
+  {% if forloop.counter0|divisibleby:"20" %}
   <tr>
     <th></th>
     {% for value in values %}
     <th class="value"><div>{{ value.value_str }}</div></th>
     {% endfor %}
   </tr>
-  {% for taxon, boxes in big_loop %}
+  {% endif %}
   <tr>
     <th><i>{{ taxon.scientific_name }}</i></th>
-    {% for box in boxes %}
+    {% for value, is_checked in boxes %}
     <td>
-      {% if box %}
-        X
-      {% else %}
-        –
-      {% endif %}
+      <input type="checkbox" {% if is_checked %}checked{% endif %}
+              id="t{{ taxon.id }}-v{{ value.id }}">
+      <label for="t{{ taxon.id }}-v{{ value.id }}" >×</label>
     </td>
     {% endfor %}
   </tr>
