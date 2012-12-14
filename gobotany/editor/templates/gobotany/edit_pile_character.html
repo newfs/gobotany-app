@@ -1,0 +1,20 @@
+{% extends "gobotany/_edit_base.html" %}
+
+{% block body_content %}
+
+<p>← return to pile <a href="..">{{ pile.slug }}</a></p>
+
+<h1>{{ character.name }}</h1>
+
+<h2>{{ character.short_name }}</h2>
+
+<p>
+  {% if character.friendly_name != character.name %}
+    <b>{{ character.friendly_name }}:</b>
+  {% endif %}
+  {{ character.question }}
+</p>
+
+<p>
+</p>
+{% endblock %}

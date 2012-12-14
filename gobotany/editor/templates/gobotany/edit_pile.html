@@ -1,0 +1,16 @@
+{% extends "gobotany/_edit_base.html" %}
+
+{% block body_content %}
+
+<p>← return to <a href="..">pile list</a></p>
+
+<h1>Characters in {{ pile.slug }}</h1>
+
+<p>
+  {% for character in pile.characters.all %}
+    <a href="{{ character.short_name }}/">{{ character.short_name }}</a>
+    — {{ character.friendly_name }}
+    <br>
+  {% endfor %}
+</p>
+{% endblock %}

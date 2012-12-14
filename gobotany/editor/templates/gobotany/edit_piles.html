@@ -1,0 +1,14 @@
+{% extends "gobotany/_edit_base.html" %}
+
+{% block body_content %}
+
+<h1>Piles</h1>
+
+<p>
+  {% for pile in piles %}
+    <a href="{{ pile.slug }}/">{{ pile.slug }}</a>
+    — {{ pile.name }}
+    <br>
+  {% endfor %}
+</p>
+{% endblock %}
