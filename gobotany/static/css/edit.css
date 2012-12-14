@@ -3,3 +3,17 @@
 .edit-page #all {
     margin: 2em;
 }
+.pile-character-grid {
+    table-layout: fixed;
+}
+.pile-character-grid th {
+    text-align: left;
+}
+.pile-character-grid th.value {
+}
+.pile-character-grid th.value div {
+    position: relative;
+    bottom: -60%;
+    -webkit-transform: rotate(-90deg);
+    -webkit-transform-origin: top left;
+}

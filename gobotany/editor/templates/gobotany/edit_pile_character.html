@@ -1,5 +1,11 @@
 {% extends "gobotany/_edit_base.html" %}
 
+{% block js_require %}
+    require(['editor/edit'], function (edit) {
+        edit.setup_pile_character_page();
+    });
+{% endblock %}
+
 {% block body_content %}
 
 <p>← return to pile <a href="..">{{ pile.slug }}</a></p>
@@ -15,23 +21,27 @@
   {{ character.question }}
 </p>
 
-<div>
-  <p>
+<table class="pile-character-grid">
+  <tr>
+    <th></th>
     {% for value in values %}
-      {{ value.value_str }}<br>
+    <th class="value"><div>{{ value.value_str }}</div></th>
     {% endfor %}
-  </p>
+  </tr>
   {% for taxon, boxes in big_loop %}
-    <p>
-      {% for box in boxes %}
-        {% if box %}
-          X
-        {% else %}
-          O
-        {% endif %}
-      {% endfor %}
-      <i>{{ taxon.scientific_name }}</i>
-    </p>
+  <tr>
+    <th><i>{{ taxon.scientific_name }}</i></th>
+    {% for box in boxes %}
+    <td>
+      {% if box %}
+        X
+      {% else %}
+        –
+      {% endif %}
+    </td>
+    {% endfor %}
+  </tr>
   {% endfor %}
 </div>
+
 {% endblock %}
