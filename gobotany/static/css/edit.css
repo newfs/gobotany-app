@@ -24,3 +24,5 @@
 .pile-character-bigrow div { padding-left: 20em; }
 .pile-character-bigrow b { display: inline-block; padding: 0px 2px; }
 .pile-character-bigrow b.spacer { visibility: hidden; }
+
+.value_tip { display: none; position: absolute; padding: 0.5em; background-color: #fafae9; border: 2px solid #dc9402; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #d3d344; -moz-box-shadow: 0px 1px 4px #d3d344; box-shadow: 0px 1px 4px #d3d344; }

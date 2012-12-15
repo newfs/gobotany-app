@@ -11,11 +11,15 @@ define([
 
     exports.setup_pile_character_page = function() {
         $(document).ready(function() {
-            format_pile_character_page();
+            build_grid_from_json();
+            install_hover_column();
+            install_value_tip();
+            install_click_handlers();
+            split_huge_bigrow();
         });
     };
 
-    var format_pile_character_page = function() {
+    var build_grid_from_json = function() {
 
         /* To display the /edit/cv/remaining-non-monocots/habitat/ page
            efficiently, we need to be very fast; this simple string
@@ -41,10 +45,57 @@ define([
                 .replace(/0/g, '<b>×</b>')
                 .replace(/1/g, '<b class="x">×</b>')
         );
+    };
+
+    var install_hover_column = function() {
+                /* Simulate a mouseover highlight on the current column. */
+
+        var $grid = $('.pile-character-grid');
+        var $column = $('<div>', {'class': 'column'}).appendTo($grid);
+
+        $(document).on('mouseover', '.pile-character-grid b', function() {
+            $column.css({
+                top: 0,
+                bottom: 0,
+                left: $(this).position().left,
+                right: $(this).parent().width() - $(this).position().left -
+                    $(this).outerWidth()
+                });
+        });
+    };
+
+    var install_value_tip = function() {
+
+        var $tip = $('<div class="value_tip">').appendTo('body');
+
+        $(document).on('mouseenter', '.pile-character-grid b', function() {
+            var $this = $(this);
+            var offset = $this.offset();
+            var value = character_values[$this.index() - 2];
+            $tip.text(value);
+            var hoffset = ($this.outerWidth() - $tip.outerWidth()) / 2;
+            $tip.css({
+                display: 'block',
+                top: offset.top - 32,
+                left: offset.left + hoffset
+            });
+        });
+        $(document).on('mouseleave', '.pile-character-grid b', function() {
+            $tip.hide();
+        });
+    };
+
+    var install_click_handlers = function() {
 
         $(document).on('click', '.pile-character-grid b', function() {
             $(this).toggleClass('x');
         });
+        $(document).on('click', '.pile-character-grid span', function() {
+            /* TODO: move the bigrow into place */
+        });
+    };
+
+    var split_huge_bigrow = function() {
 
         /* Split bigrow when there are many character values. */
 
@@ -82,20 +133,6 @@ define([
 
             var scientific_name = $div.find('i').text();
             $bigrow.find('i').text(scientific_name);
-        });
-
-        /* Simulate a mouseover highlight on the current column. */
-
-        var $column = $('<div>', {'class': 'column'}).appendTo($grid);
-
-        $(document).on('mouseover', '.pile-character-grid b', function() {
-            $column.css({
-                top: 0,
-                bottom: 0,
-                left: $(this).position().left,
-                right: $(this).parent().width() - $(this).position().left -
-                    $(this).outerWidth()
-                });
         });
 
         /* Keep the grid header always in view. */

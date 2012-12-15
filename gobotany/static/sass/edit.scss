@@ -84,3 +84,13 @@ $highlight: lighten($body_bg, 10);
         visibility: hidden;
     }
 }
+
+.value_tip {
+    display: none;
+    position: absolute;
+    padding: 0.5em;
+    background-color: $highlight;
+    border: 2px solid $orange1;
+    @include border-radius(1em);
+    @include single-box-shadow(darken($body_bg, 30), 0px, 1px, 4px);
+}
