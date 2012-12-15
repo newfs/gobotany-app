@@ -8,8 +8,18 @@
     margin-left: 2em;
     margin-bottom: 0;
 }
-.pile-character-grid {
+
+.pile-character-header div {
+    padding-left: 20em;
 }
+.pile-character-header b {
+    display: inline-block;
+    padding: 0px 2px;
+}
+.pile-character-header b.spacer {
+    color: #f0f0c0;
+}
+
 .pile-character-grid i {
     display: inline-block;
     width: 20em;

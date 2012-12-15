@@ -25,7 +25,7 @@
   {{ character.question }}
 </p>
 
-{% if are_there_any_friendly_texts %}
+{% if there_are_any_friendly_texts %}
 <ul>
   {% for value in values %}
   <li class="edit-character-definition">
@@ -38,7 +38,15 @@
 </ul>
 {% endif %}
 
-<div class="pile-character-grid"></div>
+<div class="pile-character-header">
+  {% for value in values %}
+  <div>
+    {% for x in ''|ljust:forloop.counter0 %}<b class="spacer">×</b>{% endfor %}<b>×</b>{{ value.value_str }}
+  </div>
+  {% endfor %}
+</div>
+<div class="pile-character-grid">
+</div>
 
 <script>
   character_values = {{ values_json|safe }};

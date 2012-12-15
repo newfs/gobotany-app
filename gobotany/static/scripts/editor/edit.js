@@ -45,6 +45,10 @@ define([
                 .replace(/0/g, unchecked)
                 .replace(/1/g, checked)
         );
+
+        $(document).on('click', '.pile-character-grid b', function() {
+            $(this).toggleClass('x');
+        });
     };
 
     return exports;

@@ -50,7 +50,7 @@ def edit_pile_character(request, pile_slug, character_slug):
     coverage_percent = len(valued_taxa) * 100.0 / len(taxa)
 
     return render_to_response('gobotany/edit_pile_character.html', {
-        'are_there_any_friendly_texts': any(v.friendly_text for v in values),
+        'there_are_any_friendly_texts': any(v.friendly_text for v in values),
         'character': character,
         'coverage_percent': coverage_percent,
         'pile': pile,
