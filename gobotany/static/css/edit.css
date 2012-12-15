@@ -17,7 +17,7 @@
     padding: 0px 2px;
 }
 .pile-character-header b.spacer {
-    color: #f0f0c0;
+    visibility: hidden;
 }
 
 .pile-character-grid i {

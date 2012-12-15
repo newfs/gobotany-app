@@ -49,6 +49,17 @@ define([
         $(document).on('click', '.pile-character-grid b', function() {
             $(this).toggleClass('x');
         });
+
+        /* Split a heading that has too many character values. */
+
+        var $headers = $('.pile-character-header div');
+        console.log($headers.length);
+        if ($headers.length > 15) {
+            var $a = $headers.eq(0);
+            var $b = $headers.eq(Math.floor($headers.length / 2));
+            $b.css('margin-top', $a.position().top - $b.position().top);
+        }
+
     };
 
     return exports;
