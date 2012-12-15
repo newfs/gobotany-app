@@ -14,6 +14,10 @@
 
 <h2>{{ character.short_name }}</h2>
 
+<p class="new">
+  Coverage: <b>{{ coverage_percent|floatformat:1 }} %</b>
+</p>
+
 <p>
   {% if character.friendly_name != character.name %}
     <b>{{ character.friendly_name }}:</b>
@@ -34,27 +38,11 @@
 </ul>
 {% endif %}
 
-<table class="pile-character-grid">
-  {% for taxon, boxes in big_loop %}
-  {% if forloop.counter0|divisibleby:"20" %}
-  <tr>
-    <th></th>
-    {% for value in values %}
-    <th class="value"><div>{{ value.value_str }}</div></th>
-    {% endfor %}
-  </tr>
-  {% endif %}
-  <tr>
-    <th><i>{{ taxon.scientific_name }}</i></th>
-    {% for value, is_checked in boxes %}
-    <td>
-      <input type="checkbox" {% if is_checked %}checked{% endif %}
-              id="t{{ taxon.id }}-v{{ value.id }}">
-      <label for="t{{ taxon.id }}-v{{ value.id }}" >×</label>
-    </td>
-    {% endfor %}
-  </tr>
-  {% endfor %}
-</div>
+<div class="pile-character-grid"></div>
+
+<script>
+  character_values = {{ values_json|safe }};
+  taxon_value_vectors = {{ vectors_json|safe }};
+</script>
 
 {% endblock %}
