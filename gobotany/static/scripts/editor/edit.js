@@ -24,51 +24,65 @@ define([
            in a single post-processing step! */
 
         var $grid = $('.pile-character-grid');
-
-        var prefix = '<div><i>';
-        var checked = '<b class="x">×</b>';
-        var unchecked = '<b>×</b>';
-        var marks = Array(character_values.length + 1).join('<b>×</b>');
-        var suffix = '</i>' + marks + '</div>';
-
         var snippets = [];
         var names = _.keys(taxon_value_vectors);
         names.sort();
+
         _.each(names, function(scientific_name) {
             snippets.push('<div><i>');
             snippets.push(scientific_name);
-            snippets.push('</i>');
+            snippets.push('</i><span>expand ▶</span>');
             snippets.push(taxon_value_vectors[scientific_name]);
             snippets.push('</div>');
         });
 
         $grid.html(
             snippets.join('')
-                .replace(/0/g, unchecked)
-                .replace(/1/g, checked)
+                .replace(/0/g, '<b>×</b>')
+                .replace(/1/g, '<b class="x">×</b>')
         );
 
         $(document).on('click', '.pile-character-grid b', function() {
             $(this).toggleClass('x');
         });
 
-        /* Split a heading that has too many character values. */
+        /* Split bigrow when there are many character values. */
 
-        var $headers = $('.pile-character-header div');
+        var $headers = $('.pile-character-bigrow div');
 
         if ($headers.length > 15) {
             var half = $headers.length / 2;
-            var halfint = Math.floor(half);
+            var halfint = Math.ceil(half);
             var $a = $headers.eq(0);
             var $b = $headers.eq(halfint);
             var offset = $a.position().top - $b.position().top;
             if (half == halfint) {
                 $b.css('margin-top', offset);
             } else {
-                $a.css('padding-top', - offset / halfint);
-                $b.css('margin-top', offset + offset / halfint);
+                $b.css('margin-top', offset - offset / halfint);
             }
         }
+
+        /* Expand the row that is currently hovered. */
+
+        var $bigrow = $('.pile-character-bigrow').remove();
+        var replaced_div = null;
+
+        $(document).on('mouseenter', '.pile-character-grid > div', function() {
+            return;
+            var $div = $(this);
+            if ($div.hasClass('column'))
+                return;
+            if ($div.hasClass('pile-character-bigrow'))
+                return;
+            if (replaced_div !== null)
+                $bigrow.replaceWith(replaced_div);
+            replaced_div = this;
+            $div.replaceWith($bigrow);
+
+            var scientific_name = $div.find('i').text();
+            $bigrow.find('i').text(scientific_name);
+        });
 
         /* Simulate a mouseover highlight on the current column. */
 
@@ -86,18 +100,6 @@ define([
 
         /* Keep the grid header always in view. */
 
-        keep_grid_header_onscreen();
-    };
-
-    var keep_grid_header_onscreen = function() {
-        var $header = $('.pile-character-header');
-        var header_top = $header.offset().top;
-
-        $(window).scroll(function() {
-            var window_top = $(window).scrollTop();
-            var position = window_top < header_top ? 'static' : 'fixed';
-            $header.css('position', position);
-        });
     };
 
     return exports;

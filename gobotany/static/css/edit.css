@@ -9,24 +9,18 @@
 
 .edit-character-definition { margin-top: 0; margin-left: 2em; margin-bottom: 0; }
 
-.pile-character-header { top: 0; z-index: 1; border-top: 12px solid #fafae9; border-bottom: 4px solid #fafae9; background-color: #fafae9; padding: 0 1em; }
-
-.pile-character-header div { padding-left: 20em; }
-
-.pile-character-header b { display: inline-block; padding: 0px 2px; }
-
-.pile-character-header b.spacer { visibility: hidden; }
-
 .pile-character-grid { position: relative; }
-
 .pile-character-grid .column { z-index: -1; position: absolute; background-color: #fafae9; }
-
 .pile-character-grid div:hover { background-color: #fafae9; }
-
-.pile-character-grid i { display: inline-block; width: 20em; }
-
+.pile-character-grid div:hover span { /* "expand" arrow */ visibility: visible; }
+.pile-character-grid i { display: inline-block; width: 16em; }
+.pile-character-grid span { /* "expand" arrow */ cursor: pointer; visibility: hidden; position: relative; bottom: 2px; margin-right: 2px; background-color: #dc9402; padding: 2px 8px 4px; color: white; font-size: 0.8em; }
 .pile-character-grid b { display: inline-block; border: 0px solid #dc9402; padding: 4px 2px; cursor: pointer; }
+.pile-character-grid b.x { background-color: #519136; color: white; }
 
-.pile-character-grid b:hover { padding: 2px 0px; border-width: 2px; }
-
-.pile-character-grid b.x { background-color: green; color: white; }
+.pile-character-bigrow { border-top: 1px solid #519136; border-bottom: 1px solid #519136; background-color: #f0f0c0; }
+.pile-character-bigrow i { position: relative; display: inline-block; font-weight: bold; margin-left: -20em; width: 20em; }
+.pile-character-bigrow i span { /* drop-down arrow */ position: absolute; right: 0; font-style: normal; }
+.pile-character-bigrow div { padding-left: 20em; }
+.pile-character-bigrow b { display: inline-block; padding: 0px 2px; }
+.pile-character-bigrow b.spacer { visibility: hidden; }

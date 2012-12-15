@@ -13,51 +13,74 @@ $highlight: lighten($body_bg, 10);
     margin-bottom: 0;
 }
 
-.pile-character-header {
-    top: 0;
-    z-index: 1;
-    border-top: 12px solid $highlight;
-    border-bottom: 4px solid $highlight;
-    background-color: $highlight;
-    padding: 0 1em;
-}
-.pile-character-header div {
-    padding-left: 20em;
-}
-.pile-character-header b {
-    display: inline-block;
-    padding: 0px 2px;
-}
-.pile-character-header b.spacer {
-    visibility: hidden;
-}
-
 .pile-character-grid {
     position: relative;
+
+    .column {
+        z-index: -1;
+        position: absolute;
+        background-color: $highlight;
+    }
+
+    div:hover {
+        background-color: $highlight;
+        span { /* "expand" arrow */
+            visibility: visible;
+        }
+    }
+
+    i {
+        display: inline-block;
+        width: 16em;
+    }
+    span { /* "expand" arrow */
+        cursor: pointer;
+        visibility: hidden;
+        position: relative;
+        bottom: 2px;
+        margin-right: 2px;
+        background-color: $orange1;
+        padding: 2px 8px 4px;
+        color: white;
+        font-size: 0.8em;
+    }
+    b {
+        display: inline-block;
+        border: 0px solid $orange1;
+        padding: 4px 2px;
+        cursor: pointer;
+    }
+    b.x {
+        background-color: $text_green;
+        color: white;
+    }
 }
-.pile-character-grid .column {
-    z-index: -1;
-    position: absolute;
-    background-color: $highlight;
-}
-.pile-character-grid div:hover {
-    background-color: $highlight;
-}
-.pile-character-grid i {
-    display: inline-block;
-    width: 20em;
-}
-.pile-character-grid b {
-    display: inline-block;
-    border: 0px solid $orange1;
-    padding: 4px 2px;
-    cursor: pointer;
-}
-.pile-character-grid b:hover {
-    padding: 2px 0px;
-    border-width: 2px;
-}
-.pile-character-grid b.x {
-    background-color: green;
-    color: white;
+
+.pile-character-bigrow {
+    border-top: 1px solid $text_green;
+    border-bottom: 1px solid $text_green;
+    background-color: $body_bg;
+
+    i {
+        position: relative;
+        display: inline-block;
+        font-weight: bold;
+        margin-left: -20em;
+        width: 20em;
+        span { /* drop-down arrow */
+            position: absolute;
+            right: 0;
+            font-style: normal;
+        }
+    }
+    div {
+        padding-left: 20em;
+    }
+    b {
+        display: inline-block;
+        padding: 0px 2px;
+    }
+    b.spacer {
+        visibility: hidden;
+    }
 }

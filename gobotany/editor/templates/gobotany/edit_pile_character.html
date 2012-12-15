@@ -38,14 +38,14 @@
 </ul>
 {% endif %}
 
-<div class="pile-character-header">
+<div class="pile-character-grid">
+</div>
+<div class="pile-character-bigrow">
   {% for value in values %}
   <div>
-    {% for x in ''|ljust:forloop.counter0 %}<b class="spacer">×</b>{% endfor %}<b>×</b>{{ value.value_str }}
+    {% if forloop.first %}<i><span>D</span></i>{% endif %}{% for x in ''|ljust:forloop.counter0 %}<b class="spacer">×</b>{% endfor %}<b>×</b> {{ value.value_str }}
   </div>
   {% endfor %}
-</div>
-<div class="pile-character-grid">
 </div>
 
 <script>
