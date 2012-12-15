@@ -6,6 +6,18 @@
 
 <h1>Characters in {{ pile.slug }}</h1>
 
+<h2>General characters</h2>
+
+<p>
+  {% for character in general_characters %}
+    <a href="{{ character.short_name }}/">{{ character.short_name }}</a>
+    — {{ character.friendly_name }}
+    <br>
+  {% endfor %}
+</p>
+
+<h2>Pile-specific characters</h2>
+
 <p>
   {% for character in pile.characters.all %}
     <a href="{{ character.short_name }}/">{{ character.short_name }}</a>

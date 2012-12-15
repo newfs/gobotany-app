@@ -10,16 +10,16 @@ def e404(request):
 
 @permission_required('botanist')
 def piles_view(request):
-    piles = models.Pile.objects.all()
     return render_to_response('gobotany/edit_piles.html', {
-        'piles' : piles,
+        'piles' : models.Pile.objects.all(),
         }, context_instance=RequestContext(request))
 
 @permission_required('botanist')
 def pile_view(request, pile_slug):
-    pile = get_object_or_404(models.Pile, slug=pile_slug)
     return render_to_response('gobotany/edit_pile.html', {
-        'pile' : pile,
+        'general_characters': models.Character.objects.filter(
+            short_name__in=models.COMMON_CHARACTERS),
+        'pile' : get_object_or_404(models.Pile, slug=pile_slug),
         }, context_instance=RequestContext(request))
 
 @permission_required('botanist')

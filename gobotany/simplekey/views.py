@@ -15,9 +15,6 @@ from gobotany.search.models import (GroupsListPage,
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 from gobotany.taxa.views import _images_with_copyright_holders
 
-# Character short names common to all piles (but no suffix)
-COMMON_CHARACTERS = ['habitat', 'habitat_general', 'state_distribution']
-
 #
 
 def add_query_string(request, url):

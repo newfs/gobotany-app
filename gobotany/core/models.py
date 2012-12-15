@@ -10,6 +10,9 @@ from django.template.defaultfilters import slugify
 
 from tinymce import models as tinymce_models
 
+# Character short names common to all piles (but no suffix)
+COMMON_CHARACTERS = ['habitat', 'habitat_general', 'state_distribution']
+
 STATE_NAMES = {
     'ct': 'Connecticut',
     'ma': 'Massachusetts',
