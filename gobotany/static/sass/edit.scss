@@ -30,19 +30,20 @@ $highlight: lighten($body_bg, 10);
     }
 
     i {
-        display: inline-block;
-        width: 16em;
-    }
-    span { /* "expand" arrow */
-        cursor: pointer;
-        visibility: hidden;
         position: relative;
-        bottom: 2px;
-        margin-right: 2px;
-        background-color: $orange1;
-        padding: 2px 8px 4px;
-        color: white;
-        font-size: 0.8em;
+        display: inline-block;
+        width: 20em;
+
+        .expand-button {
+            cursor: pointer;
+            position: absolute;
+            right: 2px;
+            top: -2px;
+            background-color: $orange1;
+            padding: 2px 8px 4px;
+            color: white;
+            font-size: 0.8em;
+        }
     }
     b {
         display: inline-block;
@@ -85,7 +86,7 @@ $highlight: lighten($body_bg, 10);
     }
 }
 
-.value_tip {
+.value-tip {
     display: none;
     position: absolute;
     padding: 0.5em;

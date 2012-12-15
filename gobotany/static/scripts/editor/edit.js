@@ -15,6 +15,7 @@ define([
             install_hover_column();
             install_value_tip();
             install_click_handlers();
+            install_expand_button();
             split_huge_bigrow();
         });
     };
@@ -33,10 +34,11 @@ define([
         names.sort();
 
         _.each(names, function(scientific_name) {
+            var ones_and_zeroes = taxon_value_vectors[scientific_name];
             snippets.push('<div><i>');
             snippets.push(scientific_name);
-            snippets.push('</i><span>expand ▶</span>');
-            snippets.push(taxon_value_vectors[scientific_name]);
+            snippets.push('</i>');
+            snippets.push(ones_and_zeroes);
             snippets.push('</div>');
         });
 
@@ -48,12 +50,13 @@ define([
     };
 
     var install_hover_column = function() {
-                /* Simulate a mouseover highlight on the current column. */
+
+        /* Simulate a mouseover highlight on the current column. */
 
         var $grid = $('.pile-character-grid');
         var $column = $('<div>', {'class': 'column'}).appendTo($grid);
 
-        $(document).on('mouseover', '.pile-character-grid b', function() {
+        $(document).on('mouseenter', '.pile-character-grid b', function() {
             $column.css({
                 top: 0,
                 bottom: 0,
@@ -66,7 +69,7 @@ define([
 
     var install_value_tip = function() {
 
-        var $tip = $('<div class="value_tip">').appendTo('body');
+        var $tip = $('<div class="value-tip">').appendTo('body');
 
         $(document).on('mouseenter', '.pile-character-grid b', function() {
             var $this = $(this);
@@ -80,6 +83,7 @@ define([
                 left: offset.left + hoffset
             });
         });
+
         $(document).on('mouseleave', '.pile-character-grid b', function() {
             $tip.hide();
         });
@@ -92,6 +96,20 @@ define([
         });
         $(document).on('click', '.pile-character-grid span', function() {
             /* TODO: move the bigrow into place */
+        });
+    };
+
+    var install_expand_button = function() {
+
+        var $button = $('<span>').addClass('expand-button').text('expand ▶');
+        var hoffset = $button.width() + 20;
+
+        $(document).on('mouseenter', '.pile-character-grid div', function() {
+            $button.appendTo($(this).children().eq(0));
+        });
+
+        $(document).on('mouseleave', '.pile-character-grid div', function() {
+            $button.remove();
         });
     };
 
