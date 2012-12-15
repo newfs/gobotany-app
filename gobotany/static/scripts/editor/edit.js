@@ -53,13 +53,20 @@ define([
         /* Split a heading that has too many character values. */
 
         var $headers = $('.pile-character-header div');
-        console.log($headers.length);
-        if ($headers.length > 15) {
-            var $a = $headers.eq(0);
-            var $b = $headers.eq(Math.floor($headers.length / 2));
-            $b.css('margin-top', $a.position().top - $b.position().top);
-        }
 
+        if ($headers.length > 15) {
+            var half = $headers.length / 2;
+            var halfint = Math.floor(half);
+            var $a = $headers.eq(0);
+            var $b = $headers.eq(halfint);
+            var offset = $a.position().top - $b.position().top;
+            if (half == halfint) {
+                $b.css('margin-top', offset);
+            } else {
+                $a.css('margin-top', - offset / halfint);
+                $b.css('margin-top', offset + offset / halfint);
+            }
+        }
     };
 
     return exports;
