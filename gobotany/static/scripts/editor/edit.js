@@ -14,7 +14,6 @@ define([
             build_grid_from_json();
             install_hover_column();
             install_value_tip();
-            install_click_handlers();
             install_expand_button();
             split_huge_bigrow();
         });
@@ -47,6 +46,10 @@ define([
                 .replace(/0/g, '<b>×</b>')
                 .replace(/1/g, '<b class="x">×</b>')
         );
+
+        $('.pile-character-grid').on('click', 'b', function() {
+            $(this).toggleClass('x');
+        });
     };
 
     var install_hover_column = function() {
@@ -56,7 +59,7 @@ define([
         var $grid = $('.pile-character-grid');
         var $column = $('<div>', {'class': 'column'}).appendTo($grid);
 
-        $(document).on('mouseenter', '.pile-character-grid b', function() {
+        $('.pile-character-grid').on('mouseenter', 'b', function() {
             $column.css({
                 top: 0,
                 bottom: 0,
@@ -71,12 +74,14 @@ define([
 
         var $tip = $('<div class="value-tip">').appendTo('body');
 
-        $(document).on('mouseenter', '.pile-character-grid b', function() {
+        $('.pile-character-grid').on('mouseenter', 'b', function() {
             var $this = $(this);
             var offset = $this.offset();
             var value = character_values[$this.index() - 2];
+
             $tip.text(value);
             var hoffset = ($this.outerWidth() - $tip.outerWidth()) / 2;
+
             $tip.css({
                 display: 'block',
                 top: offset.top - 32,
@@ -84,32 +89,26 @@ define([
             });
         });
 
-        $(document).on('mouseleave', '.pile-character-grid b', function() {
+        $('.pile-character-grid').on('mouseleave', 'b', function() {
             $tip.hide();
-        });
-    };
-
-    var install_click_handlers = function() {
-
-        $(document).on('click', '.pile-character-grid b', function() {
-            $(this).toggleClass('x');
-        });
-        $(document).on('click', '.pile-character-grid span', function() {
-            /* TODO: move the bigrow into place */
         });
     };
 
     var install_expand_button = function() {
 
         var $button = $('<span>').addClass('expand-button').text('expand ▶');
-        var hoffset = $button.width() + 20;
 
-        $(document).on('mouseenter', '.pile-character-grid div', function() {
+        $('.pile-character-grid').on('mouseenter', 'div', function() {
             $button.appendTo($(this).children().eq(0));
         });
 
-        $(document).on('mouseleave', '.pile-character-grid div', function() {
-            $button.remove();
+        $('.pile-character-grid').on('mouseleave', 'div', function() {
+            $button.detach();
+        });
+
+        $button.on('click', function() {
+            console.log('click!');
+            /* TODO: move the bigrow into place */
         });
     };
 
