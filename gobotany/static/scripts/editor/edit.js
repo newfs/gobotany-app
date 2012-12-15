@@ -23,6 +23,8 @@ define([
            turn the vector ones and zeroes into lightweight check boxes
            in a single post-processing step! */
 
+        var $grid = $('.pile-character-grid');
+
         var prefix = '<div><i>';
         var checked = '<b class="x">×</b>';
         var unchecked = '<b>×</b>';
@@ -40,7 +42,7 @@ define([
             snippets.push('</div>');
         });
 
-        $('.pile-character-grid').html(
+        $grid.html(
             snippets.join('')
                 .replace(/0/g, unchecked)
                 .replace(/1/g, checked)
@@ -67,6 +69,20 @@ define([
                 $b.css('margin-top', offset + offset / halfint);
             }
         }
+
+        /* Highlight */
+
+        var $column = $('<div>', {'class': 'column'}).appendTo($grid);
+
+        $(document).on('mouseover', '.pile-character-grid b', function() {
+            $column.css({
+                top: 0,
+                bottom: 0,
+                left: $(this).position().left,
+                right: $(this).parent().width() - $(this).position().left -
+                    $(this).outerWidth()
+                });
+        });
     };
 
     return exports;

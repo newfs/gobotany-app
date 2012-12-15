@@ -20,22 +20,30 @@
     visibility: hidden;
 }
 
+.pile-character-grid {
+    position: relative;
+}
+.pile-character-grid .column {
+    z-index: -1;
+    position: absolute;
+    background-color: white;
+    opacity: 0.5;
+}
 .pile-character-grid i {
     display: inline-block;
     width: 20em;
 }
 .pile-character-grid b {
     display: inline-block;
+    border: 0px solid #dc9402;
     padding: 4px 2px;
     cursor: pointer;
 }
 .pile-character-grid b:hover {
-    background-color: yellow;
+    padding: 2px 0px;
+    border-width: 2px;
 }
 .pile-character-grid b.x {
     background-color: green;
     color: white;
-}
-.pile-character-grid b.x:hover {
-    background-color: black;
 }
