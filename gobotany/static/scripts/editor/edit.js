@@ -65,12 +65,12 @@ define([
             if (half == halfint) {
                 $b.css('margin-top', offset);
             } else {
-                $a.css('margin-top', - offset / halfint);
+                $a.css('padding-top', - offset / halfint);
                 $b.css('margin-top', offset + offset / halfint);
             }
         }
 
-        /* Highlight */
+        /* Simulate a mouseover highlight on the current column. */
 
         var $column = $('<div>', {'class': 'column'}).appendTo($grid);
 
@@ -82,6 +82,21 @@ define([
                 right: $(this).parent().width() - $(this).position().left -
                     $(this).outerWidth()
                 });
+        });
+
+        /* Keep the grid header always in view. */
+
+        keep_grid_header_onscreen();
+    };
+
+    var keep_grid_header_onscreen = function() {
+        var $header = $('.pile-character-header');
+        var header_top = $header.offset().top;
+
+        $(window).scroll(function() {
+            var window_top = $(window).scrollTop();
+            var position = window_top < header_top ? 'static' : 'fixed';
+            $header.css('position', position);
         });
     };
 

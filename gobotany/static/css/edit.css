@@ -9,6 +9,8 @@
 
 .edit-character-definition { margin-top: 0; margin-left: 2em; margin-bottom: 0; }
 
+.pile-character-header { top: 0; z-index: 1; border-top: 12px solid #fafae9; border-bottom: 4px solid #fafae9; background-color: #fafae9; padding: 0 1em; }
+
 .pile-character-header div { padding-left: 20em; }
 
 .pile-character-header b { display: inline-block; padding: 0px 2px; }
@@ -18,6 +20,8 @@
 .pile-character-grid { position: relative; }
 
 .pile-character-grid .column { z-index: -1; position: absolute; background-color: #fafae9; }
+
+.pile-character-grid div:hover { background-color: #fafae9; }
 
 .pile-character-grid i { display: inline-block; width: 20em; }
 

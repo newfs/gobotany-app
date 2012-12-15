@@ -2,6 +2,8 @@
 
 @import "_mixins";
 
+$highlight: lighten($body_bg, 10);
+
 .edit-page #all {
     margin: 2em;
 }
@@ -11,6 +13,14 @@
     margin-bottom: 0;
 }
 
+.pile-character-header {
+    top: 0;
+    z-index: 1;
+    border-top: 12px solid $highlight;
+    border-bottom: 4px solid $highlight;
+    background-color: $highlight;
+    padding: 0 1em;
+}
 .pile-character-header div {
     padding-left: 20em;
 }
@@ -28,7 +38,10 @@
 .pile-character-grid .column {
     z-index: -1;
     position: absolute;
-    background-color: lighten($body_bg, 10);
+    background-color: $highlight;
+}
+.pile-character-grid div:hover {
+    background-color: $highlight;
 }
 .pile-character-grid i {
     display: inline-block;
