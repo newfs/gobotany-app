@@ -1,0 +1,50 @@
+/* Quick informal CSS for the edit pages. */
+
+@import "_mixins";
+
+.edit-page #all {
+    margin: 2em;
+}
+.edit-character-definition {
+    margin-top: 0;
+    margin-left: 2em;
+    margin-bottom: 0;
+}
+
+.pile-character-header div {
+    padding-left: 20em;
+}
+.pile-character-header b {
+    display: inline-block;
+    padding: 0px 2px;
+}
+.pile-character-header b.spacer {
+    visibility: hidden;
+}
+
+.pile-character-grid {
+    position: relative;
+}
+.pile-character-grid .column {
+    z-index: -1;
+    position: absolute;
+    background-color: lighten($body_bg, 10);
+}
+.pile-character-grid i {
+    display: inline-block;
+    width: 20em;
+}
+.pile-character-grid b {
+    display: inline-block;
+    border: 0px solid $orange1;
+    padding: 4px 2px;
+    cursor: pointer;
+}
+.pile-character-grid b:hover {
+    padding: 2px 0px;
+    border-width: 2px;
+}
+.pile-character-grid b.x {
+    background-color: green;
+    color: white;
+}
