@@ -67,32 +67,18 @@ define([
         });
     };
 
-    /* Turn a live DOM row into a '10001011...' vector. */
+    /* Information about a live grid row. */
+
+    var scientific_name_of = function($row) {
+        /* Returns a string like 'Abelmoschus esculentus' */
+        return $row.find('i')[0].firstChild.data;
+    };
 
     var vector_of = function($row) {
+        /* Returns a string like '10001011...' */
         return _.map($row.find('b'), function(box) {
             return $(box).hasClass('x') ? '1' : '0';
         }).join('');
-    };
-
-    /* A "changed" flag that reminds the user whether the row is in its
-       original state. */
-
-    var recompute_changed_tag = function($box) {
-
-        /* Grabbing .firstChild avoids the "expand" button text. */
-        var taxon_name = $box.parent().find('i')[0].firstChild.data;
-        var old_vector = taxon_value_vectors[taxon_name];
-
-        var $row = $box.parent();
-        var new_vector = vector_of($row);
-
-        if (old_vector == new_vector) {
-            $row.find('.changed').remove();
-        } else {
-            if ($row.find('.changed').length === 0)
-                $row.append($('<span>', {'class': 'changed'}).text('changed'));
-        }
     };
 
     /* Event handler that expects each of our widget to operate in two
@@ -119,7 +105,55 @@ define([
             var $b = $(this);
             valuetip_functions.mouseleave($b);
         });
+
+        $grid.on('mouseenter', '.changed_tag', function() {
+            add_change_borders($(this).parent());
+        });
+
+        $grid.on('mouseleave', '.changed_tag', function() {
+            remove_change_borders($(this).parent());
+        });
     };
+
+    /* An orange "changed" flag, displayed on the right side of a row,
+       that tells the user the row is not in its original state. */
+
+    var recompute_changed_tag = function($box) {
+
+        /* Grabbing .firstChild avoids the "expand" button text. */
+        var $row = $box.parent();
+        var taxon_name = scientific_name_of($row);
+        var old_vector = taxon_value_vectors[taxon_name];
+        var new_vector = vector_of($row);
+
+        if (old_vector == new_vector) {
+            $row.find('.changed_tag').remove();
+        } else {
+            if ($row.find('.changed').length === 0) {
+                $row.append($('<span>', {
+                    'class': 'changed_tag',
+                    'text': 'changed'
+                }));
+            }
+        }
+    };
+
+    /* Mousing over a "changed" tag lets you see the changes. */
+
+    var add_change_borders = function($row) {
+        var taxon_name = scientific_name_of($row);
+        var old_vector = taxon_value_vectors[taxon_name];
+        var new_vector = vector_of($row);
+        var $boxes = $row.find('b');
+
+        $boxes.each(function(i) {
+            if (old_vector[i] !== new_vector[i])
+                $(this).addClass('changed');
+        });
+    }
+    var remove_change_borders = function($row) {
+        $row.find('.changed').removeClass('changed');
+    }
 
     /* Simulate a mouseover highlight of the current column. */
 

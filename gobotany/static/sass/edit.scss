@@ -66,6 +66,13 @@ $highlight: lighten($body_bg, 10);
         &.x { background-color: $text_green; color: white; }
         &.highlight { z-index: 2; background-color: $highlight; }
         &.highlight.x { background-color: darken($text_green, 10); }
+
+        &.changed {
+            border-style: solid;
+            border-color: $orange1;
+            border-width: 4px 2px;
+            padding: 0;
+        }
     }
 }
 

@@ -21,5 +21,6 @@
 .pile-character-grid b.x { background-color: #519136; color: white; }
 .pile-character-grid b.highlight { z-index: 2; background-color: #fafae9; }
 .pile-character-grid b.highlight.x { background-color: #3c6c28; }
+.pile-character-grid b.changed { border-style: solid; border-color: #dc9402; border-width: 4px 2px; padding: 0; }
 
 .value-tips div { display: none; position: absolute; padding: 0.5em; background-color: #fafae9; border: 2px solid #dc9402; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #d3d344; -moz-box-shadow: 0px 1px 4px #d3d344; box-shadow: 0px 1px 4px #d3d344; }
