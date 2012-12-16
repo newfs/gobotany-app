@@ -166,7 +166,7 @@ define([
         if (old_vector == new_vector) {
             $row.find('.changed_tag').remove();
         } else {
-            if ($row.find('.changed').length === 0) {
+            if ($row.find('.changed_tag').length === 0) {
                 $row.append($('<span>', {
                     'class': 'changed_tag',
                     'text': 'changed'
