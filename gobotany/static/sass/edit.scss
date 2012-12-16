@@ -36,6 +36,14 @@ $highlight: lighten($body_bg, 10);
         }
     }
 
+    span {
+        margin: 0px 2px;
+        background-color: $orange1;
+        padding: 2px 8px 4px;
+        vertical-align: 2px;
+        color: white;
+        font-size: 0.8em;
+    }
     i {
         position: relative;
         display: inline-block;
@@ -46,10 +54,6 @@ $highlight: lighten($body_bg, 10);
             position: absolute;
             right: 2px;
             top: -2px;
-            background-color: $orange1;
-            padding: 2px 8px 4px;
-            color: white;
-            font-size: 0.8em;
             font-style: normal;
         }
     }

@@ -23,24 +23,13 @@ define([
        extremely expensive once the grid is in place */
 
     var $grid;                  // the grid <div> itself
-
-    var first_box_position;     // upper left <b>×</b> element
     var typical_box_width;      // <b>×</b> element width
-
-    var $value_tips;            // value_str tooltips
-    var value_tip_widths;
 
     var take_measurements = function() {
         $grid = $('.pile-character-grid');
 
         var $box = $grid.find('div b');
-        first_box_position = $box.position();
         typical_box_width = $box.outerWidth();
-
-        $value_tips = $('.value-tips div');
-        value_tip_widths = _.map($value_tips, function(tip) {
-            return $(tip).width();
-        });
     };
 
     /* To display the /edit/cv/remaining-non-monocots/habitat/ page
@@ -72,8 +61,38 @@ define([
         );
 
         $grid.on('click', 'b', function() {
-            $(this).toggleClass('x');
+            var $b = $(this);
+            $b.toggleClass('x');
+            recompute_changed_tag($b);
         });
+    };
+
+    /* Turn a live DOM row into a '10001011...' vector. */
+
+    var vector_of = function($row) {
+        return _.map($row.find('b'), function(box) {
+            return $(box).hasClass('x') ? '1' : '0';
+        }).join('');
+    };
+
+    /* A "changed" flag that reminds the user whether the row is in its
+       original state. */
+
+    var recompute_changed_tag = function($box) {
+
+        /* Grabbing .firstChild avoids the "expand" button text. */
+        var taxon_name = $box.parent().find('i')[0].firstChild.data;
+        var old_vector = taxon_value_vectors[taxon_name];
+
+        var $row = $box.parent();
+        var new_vector = vector_of($row);
+
+        if (old_vector == new_vector) {
+            $row.find('.changed').remove();
+        } else {
+            if ($row.find('.changed').length === 0)
+                $row.append($('<span>', {'class': 'changed'}).text('changed'));
+        }
     };
 
     /* Event handler that expects each of our widget to operate in two
