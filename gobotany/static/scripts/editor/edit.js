@@ -46,7 +46,7 @@ define([
                 .replace(/1/g, '<b class="x">×</b>')
         );
 
-        $('.pile-character-grid').on('click', 'b', function() {
+        $grid.on('click', 'b', function() {
             $(this).toggleClass('x');
         });
     };
@@ -58,7 +58,7 @@ define([
         var $grid = $('.pile-character-grid');
         var $column = $('<div>', {'class': 'column'}).appendTo($grid);
 
-        $('.pile-character-grid').on('mouseenter', 'b', function() {
+        $grid.on('mouseenter', 'b', function() {
             $column.css({
                 top: 0,
                 bottom: 0,
@@ -69,18 +69,27 @@ define([
         });
     };
 
+    /* Mousing over a "x" should display a lightweight tooltip naming
+       the value controlled by that "x".  For fun, we also highlight the
+       same name in an expanded row, if one happens to be expanded. */
+
     var install_value_tip = function() {
 
+        var $grid = $('.pile-character-grid');
         var $tip = $('<div class="value-tip">').appendTo('body');
 
-        $('.pile-character-grid').on('mouseenter', 'b', function() {
+        $grid.on('mouseenter', 'b', function() {
             var $this = $(this);
             var $row = $this.parent();
+            var index = $this.index() - 1;
+
+            $grid.find('div.expanded b').eq(index).addClass('highlight');
+
             if ($row.hasClass('expanded'))
                 return;
 
             var offset = $this.offset();
-            var value = character_values[$this.index() - 1];
+            var value = character_values[index];
 
             $tip.text(value);
             var hoffset = ($this.outerWidth() - $tip.outerWidth()) / 2;
@@ -92,8 +101,9 @@ define([
             });
         });
 
-        $('.pile-character-grid').on('mouseleave', 'b', function() {
+        $grid.on('mouseleave', 'b', function() {
             $tip.hide();
+            $grid.find('div.expanded').find('b').removeClass('highlight');
         });
     };
 

@@ -60,8 +60,8 @@ $highlight: lighten($body_bg, 10);
         font-weight: normal;
 
         &.x { background-color: $text_green; color: white; }
-        &:hover { z-index: 2; }
-        &:hover.x { background-color: darken($text_green, 10); }
+        &.highlight { z-index: 2; background-color: $highlight; }
+        &.highlight.x { background-color: darken($text_green, 10); }
     }
 }
 
