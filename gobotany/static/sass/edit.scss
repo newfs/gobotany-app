@@ -22,10 +22,18 @@ $highlight: lighten($body_bg, 10);
         background-color: $highlight;
     }
 
+    div.expanded {
+        border-top: 1px solid $text_green;
+        border-bottom: 1px solid $text_green;
+    }
+
     div:hover {
         background-color: $highlight;
         span { /* "expand" arrow */
             visibility: visible;
+        }
+        &.expanded {
+            background-color: transparent;
         }
     }
 
@@ -43,6 +51,7 @@ $highlight: lighten($body_bg, 10);
             padding: 2px 8px 4px;
             color: white;
             font-size: 0.8em;
+            font-style: normal;
         }
     }
     b {
@@ -50,10 +59,10 @@ $highlight: lighten($body_bg, 10);
         border: 0px solid $orange1;
         padding: 4px 2px;
         cursor: pointer;
-    }
-    b.x {
-        background-color: $text_green;
-        color: white;
+
+        &.x { background-color: $text_green; color: white; }
+        &:hover { background-color: $highlight; z-index: 2; }
+        &:hover.x { background-color: black; }
     }
 }
 

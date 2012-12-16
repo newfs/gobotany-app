@@ -15,7 +15,6 @@ define([
             install_hover_column();
             install_value_tip();
             install_expand_button();
-            split_huge_bigrow();
         });
     };
 
@@ -52,9 +51,9 @@ define([
         });
     };
 
-    var install_hover_column = function() {
+    /* Simulate a mouseover highlight of the current column. */
 
-        /* Simulate a mouseover highlight on the current column. */
+    var install_hover_column = function() {
 
         var $grid = $('.pile-character-grid');
         var $column = $('<div>', {'class': 'column'}).appendTo($grid);
@@ -65,7 +64,7 @@ define([
                 bottom: 0,
                 left: $(this).position().left,
                 right: $(this).parent().width() - $(this).position().left -
-                    $(this).outerWidth()
+                    $(this).outerWidth(true)
                 });
         });
     };
@@ -76,6 +75,10 @@ define([
 
         $('.pile-character-grid').on('mouseenter', 'b', function() {
             var $this = $(this);
+            var $row = $this.parent();
+            if ($row.hasClass('expanded'))
+                return;
+
             var offset = $this.offset();
             var value = character_values[$this.index() - 2];
 
@@ -97,9 +100,11 @@ define([
     var install_expand_button = function() {
 
         var $button = $('<span>').addClass('expand-button').text('expand ▶');
+        var $row;
 
         $('.pile-character-grid').on('mouseenter', 'div', function() {
-            $button.appendTo($(this).children().eq(0));
+            $row = $(this);
+            $button.appendTo($row.children().eq(0));
         });
 
         $('.pile-character-grid').on('mouseleave', 'div', function() {
@@ -107,52 +112,50 @@ define([
         });
 
         $button.on('click', function() {
-            console.log('click!');
-            /* TODO: move the bigrow into place */
+            if ($row.hasClass('expanded')) {
+                unexpand_row($row);
+                $button.text('expand ▶');
+            } else {
+                expand_row($row);
+                $button.text('expand ▼');
+            }
         });
     };
 
-    var split_huge_bigrow = function() {
+    var expand_row = function($row) {
 
-        /* Split bigrow when there are many character values. */
+        $row.addClass('expanded');
 
-        var $headers = $('.pile-character-bigrow div');
+        var $boxes = $row.find('b');
+        var xwidth = $boxes.width();
+        var height = $row.height();
+        var ywrap = height * 14;
 
-        if ($headers.length > 15) {
-            var half = $headers.length / 2;
-            var halfint = Math.ceil(half);
-            var $a = $headers.eq(0);
-            var $b = $headers.eq(halfint);
-            var offset = $a.position().top - $b.position().top;
-            if (half == halfint) {
-                $b.css('margin-top', offset);
-            } else {
-                $b.css('margin-top', offset - offset / halfint);
-            }
+        /* The page loads more slowly if boxes always have "position:
+           relative", so instead of making that a blanket setting in our
+           CSS we do it manually here. */
+
+        $boxes.css('position', 'relative');
+
+        for (i = 0; i < $boxes.length; i++) {
+            var $box = $boxes.eq(i);
+            $box.css('vertical-align', - (height * i % ywrap));
+            $box.text($box.text() + character_values[i]);
+            $box.css('margin-right', xwidth - $box.width());
         }
+    };
 
-        /* Expand the row that is currently hovered. */
+    var unexpand_row = function($row) {
 
-        var $bigrow = $('.pile-character-bigrow').remove();
-        var replaced_div = null;
+        $row.removeClass('expanded');
 
-        $(document).on('mouseenter', '.pile-character-grid > div', function() {
-            return;
-            var $div = $(this);
-            if ($div.hasClass('column'))
-                return;
-            if ($div.hasClass('pile-character-bigrow'))
-                return;
-            if (replaced_div !== null)
-                $bigrow.replaceWith(replaced_div);
-            replaced_div = this;
-            $div.replaceWith($bigrow);
-
-            var scientific_name = $div.find('i').text();
-            $bigrow.find('i').text(scientific_name);
+        var $boxes = $row.find('b');
+        $boxes.text('×');
+        $boxes.css({
+            'position': '',
+            'vertical-align': '',
+            'margin-right': ''
         });
-
-        /* Keep the grid header always in view. */
 
     };
 
