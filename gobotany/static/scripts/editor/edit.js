@@ -26,7 +26,9 @@ define([
        extremely expensive once the grid is in place */
 
     var be_verbose;             // put value name next to ×
+    var row_height;             // height of a standard row
     var x_width;                // width of box containing an ×
+    var value_widths;           // width of formatted value texts
 
     var verbose_text_of = function(value_name) {
         return '× ' + value_name.replace(' ', ' ') + ' ';
@@ -34,23 +36,26 @@ define([
 
     var take_measurements = function() {
 
-        /* The HTML comes with a sample row built in. */
-
-        var $row = $grid.find('div').eq(0);
-        x_width = $row.find('b').width();
+        var $row = $('<div>').append($('<i>').text('Species')).appendTo($grid);
+        var $b = $('<b>').text('×').appendTo($row);
+        row_height = $row.height();
+        x_width = $b.outerWidth();
+        $b.remove();
 
         /* Do we have room to include value names inline, and still
            leave as much room on the right side of the grid as species
            names take up on the left? */
 
-        $row.find('b').remove();
-        var $b;
         _.each(character_values, function(name) {
             $b = $('<b>').text(verbose_text_of(name)).appendTo($row);
         });
         var space_open = $(window).width() - $b.position().left - $b.width();
         var space_desired = $row.find('i').width();
+
         be_verbose = (space_open >= space_desired);
+        value_widths = _.map($row.find('b'), function(b) {
+            return $(b).outerWidth();
+        });
     };
 
     /* To display the /edit/cv/remaining-non-monocots/habitat/ page
@@ -242,7 +247,7 @@ define([
         };
 
         var mouseleave = function($b) {
-            $tip.css('display', '');
+            $tips.css('display', '');
             if ($expanded_row !== null)
                 $expanded_row.find('b').removeClass('highlight');
         };
@@ -261,7 +266,7 @@ define([
 
         $('.pile-character-grid').on('mouseenter', 'div', function() {
             $mouse_row = $(this);
-            $button.appendTo($mouse_row.children().eq(0));
+            $button.appendTo($mouse_row.find(':first-child'));
         });
 
         $('.pile-character-grid').on('mouseleave', 'div', function() {
@@ -274,8 +279,8 @@ define([
                 $button.text('expand ▶');
             }
             if (! $mouse_row.is($expanded_row)) {
-                expand_row($mouse_row);
                 $expanded_row = $mouse_row;
+                expand_row($mouse_row);
                 $button.text('expand ▼');
             } else {
                 $expanded_row = null;
@@ -288,16 +293,15 @@ define([
         $row.addClass('expanded');
 
         var $boxes = $row.find('b');
-        var xwidth = $boxes.width();
-        var height = $row.height();
+        var box_widths = [];
         var wrap_at = 14;
 
-        for (i = 0; i < $boxes.length; i++) {
-            var $box = $boxes.eq(i);
-            $box.css('vertical-align', - (i % wrap_at) * height);
-            $box.text($box.text() + ' ' + character_values[i]);
-            $box.css('margin-right', xwidth - $box.width());
-        }
+        _.each($boxes, function(box, i) {
+            $(box).text(verbose_text_of(character_values[i])).css({
+                'vertical-align': - (i % wrap_at) * row_height,
+                'margin-right': x_width - value_widths[i]
+            });
+        });
     };
 
     var unexpand_row = function($row) {
