@@ -8,9 +8,11 @@ define([
     $, _
 ) {
     var exports = {};
+    var $grid;                  // the grid <div> itself
 
     exports.setup_pile_character_page = function() {
         $(document).ready(function() {
+            $grid = $('.pile-character-grid');
             take_measurements();
             if (!be_verbose)
                 install_expand_button();
@@ -23,29 +25,32 @@ define([
        since operations like .width() that trigger WebKit layout become
        extremely expensive once the grid is in place */
 
-    var $grid;                  // the grid <div> itself
-    var typical_box_width;      // <b>×</b> element width
     var be_verbose;             // put value name next to ×
+    var x_width;                // width of box containing an ×
+
+    var verbose_text_of = function(value_name) {
+        return '× ' + value_name.replace(' ', ' ') + ' ';
+    };
 
     var take_measurements = function() {
-        $grid = $('.pile-character-grid');
 
-        var $box = $grid.find('div b');
-        typical_box_width = $box.outerWidth();
+        /* The HTML comes with a sample row built in. */
 
-        /* We want an open margin on the right side of the grid body
-           that is equal to the width of the species name area on the
-           left, and if necessary we will just show a grid of ×'s
-           without any inline value names to accomplish it. */
+        var $row = $grid.find('div').eq(0);
+        x_width = $row.find('b').width();
 
-        var species_name_width = $grid.find('div i').width();
-        var max_width = $(window).width() - 2 * species_name_width;
-        var vtext = '× ' + character_values.join('  × ');
-        var $verbose = $('<span>').text(vtext).appendTo($grid.find('div'));
-        var verbose_width = $verbose.width();
-        $verbose.remove();
+        /* Do we have room to include value names inline, and still
+           leave as much room on the right side of the grid as species
+           names take up on the left? */
 
-        be_verbose = (verbose_width < max_width);
+        $row.find('b').remove();
+        var $b;
+        _.each(character_values, function(name) {
+            $b = $('<b>').text(verbose_text_of(name)).appendTo($row);
+        });
+        var space_open = $(window).width() - $b.position().left - $b.width();
+        var space_desired = $row.find('i').width();
+        be_verbose = (space_open >= space_desired);
     };
 
     /* To display the /edit/cv/remaining-non-monocots/habitat/ page
@@ -77,7 +82,7 @@ define([
 
         if (be_verbose) {
             for (var i = 0; i < character_values.length; i++) {
-                var verbose_text = '× ' + character_values[i] + ' ';
+                var verbose_text = verbose_text_of(character_values[i]);
                 var selector = 'div b:nth-child(' + (i + 2) + ')';
                 $grid.find(selector).text(verbose_text);
             }
@@ -112,27 +117,6 @@ define([
        reading.  */
 
     var install_event_handlers = function() {
-        var hovercolumn_functions = hovercolumn_setup();
-        if (!be_verbose)
-            var valuetip_functions = valuetip_setup();
-
-        $grid.on('mouseenter', 'b', function() {
-            var $b = $(this);
-            var h_dom_update = hovercolumn_functions.mouseenter($b);
-            if (!be_verbose)
-                var v_dom_update = valuetip_functions.mouseenter($b);
-
-            h_dom_update();
-            if (!be_verbose)
-                v_dom_update();
-        });
-
-        $grid.on('mouseleave', 'b', function() {
-            if (!be_verbose) {
-                var $b = $(this);
-                valuetip_functions.mouseleave($b);
-            }
-        });
 
         $grid.on('mouseenter', '.changed_tag', function() {
             add_change_borders($(this).parent());
@@ -140,6 +124,26 @@ define([
 
         $grid.on('mouseleave', '.changed_tag', function() {
             remove_change_borders($(this).parent());
+        });
+
+        if (be_verbose)
+            return;             // then nothing from here down is relevant
+
+        var hovercolumn_functions = hovercolumn_setup();
+        var valuetip_functions = valuetip_setup();
+
+        $grid.on('mouseenter', 'b', function() {
+            var $b = $(this);
+            var h_dom_update = hovercolumn_functions.mouseenter($b);
+            var v_dom_update = valuetip_functions.mouseenter($b);
+
+            h_dom_update();
+            v_dom_update();
+        });
+
+        $grid.on('mouseleave', 'b', function() {
+            var $b = $(this);
+            valuetip_functions.mouseleave($b);
         });
     };
 
@@ -196,7 +200,7 @@ define([
                     top: 0,
                     bottom: 0,
                     left: left_px,
-                    width: typical_box_width
+                    width: x_width
                 });
             };
         };

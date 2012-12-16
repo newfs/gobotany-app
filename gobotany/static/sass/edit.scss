@@ -24,6 +24,8 @@ $highlight: lighten($body_bg, 10);
     }
 
     div {
+        white-space: nowrap;
+
         &.expanded {
             border-top: 1px solid $text_green;
             border-bottom: 1px solid $text_green;
