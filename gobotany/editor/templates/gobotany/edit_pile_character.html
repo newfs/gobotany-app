@@ -39,6 +39,13 @@
 {% endif %}
 
 <div class="pile-character-grid">
+  <div><i>Sample species</i><b>×</b></div>
+</div>
+
+<div class="value-tips">
+  {% for value in values %}
+  <div>{{ value.value_str }}</div>
+  {% endfor %}
 </div>
 
 <script>

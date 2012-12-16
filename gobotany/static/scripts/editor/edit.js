@@ -11,20 +11,45 @@ define([
 
     exports.setup_pile_character_page = function() {
         $(document).ready(function() {
-            build_grid_from_json();
-            install_hover_column();
-            install_value_tip();
+            take_measurements();
             install_expand_button();
+            build_grid_from_json();
+            install_event_handlers();
         });
     };
 
-    var build_grid_from_json = function() {
+    /* Note that take_measurements() is called before the grid is built,
+       since operations like .width() that trigger WebKit layout become
+       extremely expensive once the grid is in place */
 
-        /* To display the /edit/cv/remaining-non-monocots/habitat/ page
-           efficiently, we need to be very fast; this simple string
-           concatenation seems to do quite well.  Note especially how we
-           turn the vector ones and zeroes into lightweight check boxes
-           in a single post-processing step! */
+    var $grid;                  // the grid <div> itself
+
+    var first_box_position;     // upper left <b>×</b> element
+    var typical_box_width;      // <b>×</b> element width
+
+    var $value_tips;            // value_str tooltips
+    var value_tip_widths;
+
+    var take_measurements = function() {
+        $grid = $('.pile-character-grid');
+
+        var $box = $grid.find('div b');
+        first_box_position = $box.position();
+        typical_box_width = $box.outerWidth();
+
+        $value_tips = $('.value-tips div');
+        value_tip_widths = _.map($value_tips, function(tip) {
+            return $(tip).width();
+        });
+    };
+
+    /* To display the /edit/cv/remaining-non-monocots/habitat/ page
+       efficiently, we need to be very fast; this simple string
+       concatenation seems to do quite well.  Note especially that we
+       turn the vector of ones and zeroes into lightweight check boxes
+       in a single post-processing step! */
+
+    var build_grid_from_json = function() {
 
         var $grid = $('.pile-character-grid');
         var snippets = [];
@@ -51,67 +76,103 @@ define([
         });
     };
 
-    /* Simulate a mouseover highlight of the current column. */
+    /* Event handler that expects each of our widget to operate in two
+       phases, to avoid triggering multiple WebKit layouts: first each
+       event handler is called to do all of the DOM measurements that it
+       needs, returning an object of callbacks; then, the callbacks are
+       called and should manipulate the DOM without doing any further
+       reading.  */
 
-    var install_hover_column = function() {
-
-        var $grid = $('.pile-character-grid');
-        var $column = $('<div>', {'class': 'column'}).appendTo($grid);
+    var install_event_handlers = function() {
+        var hovercolumn_functions = hovercolumn_setup();
+        var valuetip_functions = valuetip_setup();
 
         $grid.on('mouseenter', 'b', function() {
-            $column.css({
-                top: 0,
-                bottom: 0,
-                left: $(this).position().left,
-                right: $(this).parent().width() - $(this).position().left -
-                    $(this).outerWidth(true)
-                });
+            var $b = $(this);
+            var h_dom_update = hovercolumn_functions.mouseenter($b);
+            var v_dom_update = valuetip_functions.mouseenter($b);
+
+            h_dom_update();
+            v_dom_update();
         });
+
+        $grid.on('mouseleave', 'b', function() {
+            var $b = $(this);
+            valuetip_functions.mouseleave($b);
+        });
+    };
+
+    /* Simulate a mouseover highlight of the current column. */
+
+    var hovercolumn_setup = function() {
+        $column = $('<div>', {'class': 'column'}).appendTo($grid);
+
+        var mouseenter = function($b) {
+            var left_px = $b.position().left;
+
+            return function update_dom() {
+                $column.css({
+                    top: 0,
+                    bottom: 0,
+                    left: left_px,
+                    width: typical_box_width
+                });
+            };
+        };
+
+        return {mouseenter: mouseenter};
     };
 
     /* Mousing over a "x" should display a lightweight tooltip naming
        the value controlled by that "x".  For fun, we also highlight the
        same name in an expanded row, if one happens to be expanded. */
 
-    var install_value_tip = function() {
+    var valuetip_setup = function() {
+        var $tips = $('.value-tips div');
+        var $tip;
 
-        var $grid = $('.pile-character-grid');
-        var $tip = $('<div class="value-tip">').appendTo('body');
+        var mouseenter = function($b) {
+            var index = $b.index() - 1;
+            var $row = $b.parent();
+            var is_valuetip_needed = ! $row.is($expanded_row);
 
-        $grid.on('mouseenter', 'b', function() {
-            var $this = $(this);
-            var $row = $this.parent();
-            var index = $this.index() - 1;
+            if (is_valuetip_needed) {
+                $tip = $tips.eq(index);
+                var boffset = $b.offset();
+                var hleft = ($b.outerWidth() - $tip.outerWidth()) / 2;
+            }
 
-            $grid.find('div.expanded b').eq(index).addClass('highlight');
+            return function update_dom() {
+                if ($expanded_row !== null)
+                    $expanded_row.find('b').eq(index).addClass('highlight');
 
-            if ($row.hasClass('expanded'))
-                return;
+                if (is_valuetip_needed) {
+                    $tip.css({
+                        display: 'block',
+                        top: boffset.top - 32,
+                        left: boffset.left + hleft
+                    });
+                }
+            };
+        };
 
-            var offset = $this.offset();
-            var value = character_values[index];
+        var mouseleave = function($b) {
+            $tip.css('display', '');
+            if ($expanded_row !== null)
+                $expanded_row.find('b').removeClass('highlight');
+        };
 
-            $tip.text(value);
-            var hoffset = ($this.outerWidth() - $tip.outerWidth()) / 2;
-
-            $tip.css({
-                display: 'block',
-                top: offset.top - 32,
-                left: offset.left + hoffset
-            });
-        });
-
-        $grid.on('mouseleave', 'b', function() {
-            $tip.hide();
-            $grid.find('div.expanded').find('b').removeClass('highlight');
-        });
+        return {mouseenter: mouseenter, mouseleave: mouseleave};
     };
+
+    /* Let the user expand a row to see all the values explicitly. */
+
+    var $expanded_row = null;
 
     var install_expand_button = function() {
 
         var $button = $('<span>').addClass('expand-button').text('expand ▶');
         var $mouse_row;
-        var $expanded_row = null;
 
         $('.pile-character-grid').on('mouseenter', 'div', function() {
             $mouse_row = $(this);
@@ -144,11 +205,11 @@ define([
         var $boxes = $row.find('b');
         var xwidth = $boxes.width();
         var height = $row.height();
-        var ywrap = height * 14;
+        var wrap_at = 14;
 
         for (i = 0; i < $boxes.length; i++) {
             var $box = $boxes.eq(i);
-            $box.css('vertical-align', - (height * i % ywrap));
+            $box.css('vertical-align', - (i % wrap_at) * height);
             $box.text($box.text() + ' ' + character_values[i]);
             $box.css('margin-right', xwidth - $box.width());
         }
@@ -161,7 +222,6 @@ define([
         var $boxes = $row.find('b');
         $boxes.text('×');
         $boxes.css({
-            'position': '',
             'vertical-align': '',
             'margin-right': ''
         });
