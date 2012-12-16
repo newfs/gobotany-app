@@ -100,11 +100,12 @@ define([
     var install_expand_button = function() {
 
         var $button = $('<span>').addClass('expand-button').text('expand ▶');
-        var $row;
+        var $mouse_row;
+        var $expanded_row = null;
 
         $('.pile-character-grid').on('mouseenter', 'div', function() {
-            $row = $(this);
-            $button.appendTo($row.children().eq(0));
+            $mouse_row = $(this);
+            $button.appendTo($mouse_row.children().eq(0));
         });
 
         $('.pile-character-grid').on('mouseleave', 'div', function() {
@@ -112,12 +113,16 @@ define([
         });
 
         $button.on('click', function() {
-            if ($row.hasClass('expanded')) {
-                unexpand_row($row);
+            if ($expanded_row !== null) {
+                unexpand_row($expanded_row);
                 $button.text('expand ▶');
-            } else {
-                expand_row($row);
+            }
+            if (! $mouse_row.is($expanded_row)) {
+                expand_row($mouse_row);
+                $expanded_row = $mouse_row;
                 $button.text('expand ▼');
+            } else {
+                $expanded_row = null;
             }
         });
     };
@@ -131,16 +136,10 @@ define([
         var height = $row.height();
         var ywrap = height * 14;
 
-        /* The page loads more slowly if boxes always have "position:
-           relative", so instead of making that a blanket setting in our
-           CSS we do it manually here. */
-
-        $boxes.css('position', 'relative');
-
         for (i = 0; i < $boxes.length; i++) {
             var $box = $boxes.eq(i);
             $box.css('vertical-align', - (height * i % ywrap));
-            $box.text($box.text() + character_values[i]);
+            $box.text($box.text() + ' ' + character_values[i]);
             $box.css('margin-right', xwidth - $box.width());
         }
     };

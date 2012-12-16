@@ -23,17 +23,15 @@ $highlight: lighten($body_bg, 10);
         background-color: $highlight;
     }
 
-    div.expanded {
-        border-top: 1px solid $text_green;
-        border-bottom: 1px solid $text_green;
-    }
-
-    div:hover {
-        background-color: $highlight;
-        span { /* "expand" arrow */
-            visibility: visible;
-        }
+    div {
         &.expanded {
+            border-top: 1px solid $text_green;
+            border-bottom: 1px solid $text_green;
+        }
+        &:hover {
+            background-color: $highlight;
+        }
+        &:hover.expanded {
             background-color: transparent;
         }
     }
@@ -56,14 +54,14 @@ $highlight: lighten($body_bg, 10);
         }
     }
     b {
-        display: inline-block;
-        border: 0px solid $orange1;
-        padding: 4px 2px;
         cursor: pointer;
+        display: inline-block;
+        padding: 4px 2px;
+        font-weight: normal;
 
         &.x { background-color: $text_green; color: white; }
-        &:hover { background-color: $highlight; z-index: 2; }
-        &:hover.x { background-color: darken($text_green, 20); }
+        &:hover { z-index: 2; }
+        &:hover.x { background-color: darken($text_green, 10); }
     }
 }
 
