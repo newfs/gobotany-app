@@ -80,7 +80,7 @@ define([
                 return;
 
             var offset = $this.offset();
-            var value = character_values[$this.index() - 2];
+            var value = character_values[$this.index() - 1];
 
             $tip.text(value);
             var hoffset = ($this.outerWidth() - $tip.outerWidth()) / 2;

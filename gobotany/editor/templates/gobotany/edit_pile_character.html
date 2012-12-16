@@ -40,13 +40,6 @@
 
 <div class="pile-character-grid">
 </div>
-<div class="pile-character-bigrow">
-  {% for value in values %}
-  <div>
-    {% if forloop.first %}<i><span>D</span></i>{% endif %}{% for x in ''|ljust:forloop.counter0 %}<b class="spacer">×</b>{% endfor %}<b>×</b> {{ value.value_str }}
-  </div>
-  {% endfor %}
-</div>
 
 <script>
   character_values = {{ values_json|safe }};
