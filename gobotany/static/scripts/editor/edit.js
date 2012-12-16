@@ -12,7 +12,8 @@ define([
     exports.setup_pile_character_page = function() {
         $(document).ready(function() {
             take_measurements();
-            install_expand_button();
+            if (!be_verbose)
+                install_expand_button();
             build_grid_from_json();
             install_event_handlers();
         });
@@ -24,12 +25,27 @@ define([
 
     var $grid;                  // the grid <div> itself
     var typical_box_width;      // <b>×</b> element width
+    var be_verbose;             // put value name next to ×
 
     var take_measurements = function() {
         $grid = $('.pile-character-grid');
 
         var $box = $grid.find('div b');
         typical_box_width = $box.outerWidth();
+
+        /* We want an open margin on the right side of the grid body
+           that is equal to the width of the species name area on the
+           left, and if necessary we will just show a grid of ×'s
+           without any inline value names to accomplish it. */
+
+        var species_name_width = $grid.find('div i').width();
+        var max_width = $(window).width() - 2 * species_name_width;
+        var vtext = '× ' + character_values.join('  × ');
+        var $verbose = $('<span>').text(vtext).appendTo($grid.find('div'));
+        var verbose_width = $verbose.width();
+        $verbose.remove();
+
+        be_verbose = (verbose_width < max_width);
     };
 
     /* To display the /edit/cv/remaining-non-monocots/habitat/ page
@@ -40,7 +56,6 @@ define([
 
     var build_grid_from_json = function() {
 
-        var $grid = $('.pile-character-grid');
         var snippets = [];
         var names = _.keys(taxon_value_vectors);
         names.sort();
@@ -59,6 +74,14 @@ define([
                 .replace(/0/g, '<b>×</b>')
                 .replace(/1/g, '<b class="x">×</b>')
         );
+
+        if (be_verbose) {
+            for (var i = 0; i < character_values.length; i++) {
+                var verbose_text = '× ' + character_values[i] + ' ';
+                var selector = 'div b:nth-child(' + (i + 2) + ')';
+                $grid.find(selector).text(verbose_text);
+            }
+        }
 
         $grid.on('click', 'b', function() {
             var $b = $(this);
@@ -81,7 +104,7 @@ define([
         }).join('');
     };
 
-    /* Event handler that expects each of our widget to operate in two
+    /* Event handler that expects each of our widgets to operate in two
        phases, to avoid triggering multiple WebKit layouts: first each
        event handler is called to do all of the DOM measurements that it
        needs, returning an object of callbacks; then, the callbacks are
@@ -90,20 +113,25 @@ define([
 
     var install_event_handlers = function() {
         var hovercolumn_functions = hovercolumn_setup();
-        var valuetip_functions = valuetip_setup();
+        if (!be_verbose)
+            var valuetip_functions = valuetip_setup();
 
         $grid.on('mouseenter', 'b', function() {
             var $b = $(this);
             var h_dom_update = hovercolumn_functions.mouseenter($b);
-            var v_dom_update = valuetip_functions.mouseenter($b);
+            if (!be_verbose)
+                var v_dom_update = valuetip_functions.mouseenter($b);
 
             h_dom_update();
-            v_dom_update();
+            if (!be_verbose)
+                v_dom_update();
         });
 
         $grid.on('mouseleave', 'b', function() {
-            var $b = $(this);
-            valuetip_functions.mouseleave($b);
+            if (!be_verbose) {
+                var $b = $(this);
+                valuetip_functions.mouseleave($b);
+            }
         });
 
         $grid.on('mouseenter', '.changed_tag', function() {
