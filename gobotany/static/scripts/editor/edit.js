@@ -9,6 +9,7 @@ define([
 ) {
     var exports = {};
     var $grid;                  // the grid <div> itself
+    var taxon_value_vectors;    // maps scientific name to vector
 
     exports.setup_pile_character_page = function() {
         $(document).ready(function() {
@@ -66,12 +67,23 @@ define([
 
     var build_grid_from_json = function() {
 
-        var snippets = [];
-        var names = _.keys(taxon_value_vectors);
-        names.sort();
+        taxon_value_vectors = {};
 
-        _.each(names, function(scientific_name) {
-            var ones_and_zeroes = taxon_value_vectors[scientific_name];
+        var snippets = [];
+
+        _.each(grid_data, function(item) {
+            if (item.length < 2) {
+                var family_name = item[0];
+                snippets.push('<h3>');
+                snippets.push(family_name);
+                snippets.push('</h3>');
+                return;
+            }
+            var scientific_name = item[0];
+            var ones_and_zeroes = item[1];
+
+            taxon_value_vectors[scientific_name] = ones_and_zeroes;
+
             snippets.push('<div><i>');
             snippets.push(scientific_name);
             snippets.push('</i>');

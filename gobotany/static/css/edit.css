@@ -11,6 +11,7 @@
 
 .pile-character-grid { position: relative; margin-top: 2em; }
 .pile-character-grid .column { z-index: -1; position: absolute; background-color: #fafae9; }
+.pile-character-grid h3 { background-color: #f3d281; }
 .pile-character-grid div { white-space: nowrap; }
 .pile-character-grid div.expanded { border-top: 1px solid #519136; border-bottom: 1px solid #519136; }
 .pile-character-grid div:hover { background-color: #fafae9; }

@@ -23,6 +23,10 @@ $highlight: lighten($body_bg, 10);
         background-color: $highlight;
     }
 
+    h3 {
+        background-color: $orange5 * 0.6 + $body_bg * 0.4;
+    }
+
     div {
         white-space: nowrap;
 
