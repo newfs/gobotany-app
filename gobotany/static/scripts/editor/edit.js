@@ -90,7 +90,7 @@ define([
             snippets.push('</i>');
             snippets.push(ones_and_zeroes);
             if (ones_and_zeroes.indexOf('1') === -1)
-                snippets.push('<span>undefined</span>');
+                snippets.push('<span>!</span>');
             snippets.push('</div>');
         });
 
@@ -123,7 +123,7 @@ define([
     };
 
     var vector_of = function($row) {
-        /* Returns a string like '10001011...' */
+        /* Returns a string like '10001011...' showing the DOM state. */
         return _.map($row.find('b'), function(box) {
             return $(box).hasClass('x') ? '1' : '0';
         }).join('');
@@ -147,6 +147,10 @@ define([
                 if ($(this).find('i').text().indexOf('(fk)') !== -1)
                     $(this).css('display', 'none');
             });
+        });
+
+        $('.save-button').on('click', function() {
+            save_vectors();
         });
 
         $grid.on('mouseenter', '.changed_tag', function() {
@@ -341,6 +345,26 @@ define([
             'margin-right': ''
         });
 
+    };
+
+    var save_vectors = function() {
+        $('.save-button').addClass('disabled');
+
+        var $changed_divs = $grid.find('.changed_tag').parent();
+        var vectors = _.map($changed_divs, function(div) {
+            var $row = $(div);
+            return [$row.find('i').text(), vector_of($row)];
+        });
+
+        $('<form>', {
+            action: '.',
+            method: 'POST'
+        }).append($('<input>', {
+            name: 'vectors',
+            value: JSON.stringify(vectors)
+        })).append(
+            $('input[name="csrfmiddlewaretoken"]').clone()
+        ).submit();
     };
 
     return exports;

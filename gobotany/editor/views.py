@@ -1,7 +1,7 @@
 import json
 from django.contrib.auth.decorators import permission_required
 from django.http import Http404
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
 from itertools import groupby
 from operator import attrgetter as pluck
@@ -29,9 +29,6 @@ def pile_view(request, pile_slug):
 @permission_required('botanist')
 def edit_pile_character(request, pile_slug, character_slug):
 
-    # This view takes far too long to render with slow Django templates,
-    # so we simply deliver JSON data for the front-end to render there.
-
     character = get_object_or_404(models.Character, short_name=character_slug)
     values = sorted(character.character_values.all(), key=character_value_key)
 
@@ -40,7 +37,29 @@ def edit_pile_character(request, pile_slug, character_slug):
 
     tcvlist = list(models.TaxonCharacterValue.objects
                    .filter(taxon__in=taxa, character_value__in=values))
-    value_map = set((tcv.taxon_id, tcv.character_value_id) for tcv in tcvlist)
+    value_map = {(tcv.taxon_id, tcv.character_value_id): tcv
+                 for tcv in tcvlist}
+
+    # We now have enough information, and can either handle a POST
+    # update of specific data or a GET that displays the whole pile.
+
+    if 'vectors' in request.POST:
+        taxa_by_name = { taxon.scientific_name: taxon for taxon in taxa }
+        vectors = json.loads(request.POST['vectors'])
+
+        for name, vector in vectors:
+            scientific_name = ' '.join(name.split()[:2])
+            taxon = taxa_by_name[scientific_name]
+            for digit, value in zip(vector, values):
+                key = (taxon.id, value.id)
+                if digit == '0' and key in value_map:
+                    value_map[key].delete()
+                elif digit == '1' and key not in value_map:
+                    models.TaxonCharacterValue(
+                        taxon=taxon, character_value=value
+                        ).save()
+
+        return redirect(request.path)
 
     # Grabbing one copy of each family once is noticeably faster than
     # using select_related('family') up in the taxon fetch:
@@ -55,6 +74,9 @@ def edit_pile_character(request, pile_slug, character_slug):
     partner = which_partner(request)
     simple_ids = set(ps.species_id for ps in models.PartnerSpecies.objects
                      .filter(partner_id=partner.id, simple_key=True))
+
+    # This view takes far too long to render with slow Django templates,
+    # so we simply deliver JSON data for the front-end to render there.
 
     def grid():
         for family in sorted(families, key=pluck('name')):

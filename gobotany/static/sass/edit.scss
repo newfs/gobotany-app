@@ -13,7 +13,7 @@ $highlight: lighten($body_bg, 10);
     margin-bottom: 0;
 }
 
-span.all-species-button, span.simple-key-button {
+span.all-species-button, span.simple-key-button, .save-button {
     @extend .orange-button;
     cursor: pointer;
     display: inline-block;

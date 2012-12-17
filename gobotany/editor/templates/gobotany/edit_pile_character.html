@@ -46,6 +46,7 @@
 <p>
   <span class="all-species-button">All Species</span>
   <span class="simple-key-button">Simple Key Only</span>
+  <span class="save-button">SAVE CHANGES</span>
 </p>
 
 <div class="pile-character-grid">
@@ -61,5 +62,7 @@
   character_values = {{ values_json|safe }};
   grid_data = {{ grid|safe }};
 </script>
+
+{% csrf_token %}
 
 {% endblock %}
