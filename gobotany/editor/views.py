@@ -7,6 +7,7 @@ from itertools import groupby
 from operator import attrgetter as pluck
 
 from gobotany.core import models
+from gobotany.core.partner import which_partner
 
 def e404(request):
     raise Http404()
@@ -51,6 +52,10 @@ def edit_pile_character(request, pile_slug, character_slug):
     taxa_by_family_id = { family_id: list(group) for family_id, group
                           in groupby(taxa, key=pluck('family_id')) }
 
+    partner = which_partner(request)
+    simple_ids = set(ps.species_id for ps in models.PartnerSpecies.objects
+                     .filter(partner_id=partner.id, simple_key=True))
+
     def grid():
         for family in sorted(families, key=pluck('name')):
             yield [family.name]
@@ -60,7 +65,10 @@ def edit_pile_character(request, pile_slug, character_slug):
                     '1' if (taxon.id, value.id) in value_map else '0'
                     for value in values
                     )
-                yield [taxon.scientific_name, vector]
+                name = taxon.scientific_name
+                if taxon.id not in simple_ids:
+                    name += ' (fk)'
+                yield [name, vector]
 
     taxa_with_values = set(tcv.taxon_id for tcv in tcvlist)
     coverage_percent = len(taxa_with_values) * 100.0 / len(taxa)
