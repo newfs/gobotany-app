@@ -26,8 +26,6 @@ define([
 
                 if (plant_name !== this.current_plant_name) {
                     this.current_plant_name = plant_name;
-                    console.log('about to fetch sightings for',
-                        this.current_plant_name);
                     sightings_map.show_plant(this.current_plant_name);
                 }
 
