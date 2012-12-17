@@ -1,5 +1,7 @@
 /* Simple and Full Keys (simplekey Django app) */
 
+@import "_mixins";
+
 body.skey {
 
     /* Styles for groups and subgroups (Levels 1 and 2) pages */
@@ -445,6 +447,7 @@ body.skey {
         } /* end #sidebar */
 
         a.get-choices {
+            position: relative;
             background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent;
             display: block;
             height: 32px;
@@ -456,6 +459,26 @@ body.skey {
             }
             &:active {
                 background-position: 0 -64px;
+            }
+
+            /* Experiment by Brandon */
+            ul {
+                position: absolute;
+                display: block;
+                bottom: -100%;
+                right: 0;
+                background-color: $inactive_bg; /*#dce890;*/
+                text-indent: 0px;  /* undo the -9000px */
+                white-space: nowrap;
+                li {
+                    display: block;
+                    margin: 0;
+                    padding: 0 1em;
+                    text-align: right;
+                    &:hover {
+                        background-color: $active_bg;
+                    }
+                }
             }
         }
 

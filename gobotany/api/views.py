@@ -28,10 +28,10 @@ from gobotany.mapping.map import (NewEnglandPlantDistributionMap,
                                   UnitedStatesPlantDistributionMap)
 
 
-def jsonify(value, headers=None):
+def jsonify(value, headers=None, indent=1):
     """Convert the value into a JSON HTTP response."""
     response = HttpResponse(
-        json.dumps(value, indent=1 if settings.DEBUG else None),
+        json.dumps(value, indent=indent if settings.DEBUG else None),
         mimetype='application/json; charset=utf-8',
         )
     if headers:
@@ -552,6 +552,106 @@ def vectors_pile(request, slug):
     ids = sorted( s.id for s in pile.species.all() )
     return jsonify([{'pile': slug, 'species': ids}])
 
+
+# Big vector
+#
+# What design?
+#
+# [...
+#  {name: 'habitat',
+#   type: 'string',
+#   values: [...
+#            [5, 8, 9],  <-- one array of taxon IDs per value
+#            ...
+
+def pile_vector_set(request, slug):
+
+    pile = get_object_or_404(Pile, slug=slug)
+
+    # These four queries are the barest minimum required to learn how
+    # many character values each character has, and what species belong
+    # to each value, which together is all the information that the
+    # front-end needs to display character and rank them by their
+    # usefulness.
+    #
+    # And, yes, using Django ORM objects here unfortunately destroys
+    # performance, as does trying to combine these queries into a single
+    # JOIN that repeats redundant data.
+    #
+    # 1.
+
+    cursor = connection.cursor()
+
+    cursor.execute("""
+
+      SELECT cg.id, cg.name
+        FROM core_charactergroup cg
+
+      """, [pile.id])
+
+    character_group_map = {}
+    for cgid, name in cursor.fetchall():
+        character_group_map[cgid] = name
+
+    # 2.
+
+    cursor = connection.cursor()
+
+    cursor.execute("""
+
+      SELECT c.id, c.short_name, c.name, c.value_type, c.character_group_id
+        FROM core_character c
+        WHERE c.pile_id = %s
+
+      """, [pile.id])
+
+    character_map = {}
+    for cid, short_name, name, value_type, cgid in cursor.fetchall():
+        character_map[cid] = {
+            'slug': short_name,
+            'name': name,
+            'type': value_type,
+            'group_name': character_group_map[cgid],
+            'values': [],
+            }
+
+    # 3.
+
+    cursor.execute("""
+
+      SELECT c.id, cv.id
+        FROM core_character c
+        JOIN core_charactervalue cv ON (c.id = cv.character_id)
+        WHERE c.pile_id = %s
+
+      """, [pile.id])
+
+    character_value_map = {}
+    for cid, cvid in cursor.fetchall():
+        taxonid_list = []  # to be filled in below!
+        character_value_map[cvid] = taxonid_list
+        character_map[cid]['values'].append(taxonid_list)
+
+    # 4.
+
+    cursor.execute("""
+
+      SELECT cv.id, taxon_id
+        FROM core_character c
+        JOIN core_charactervalue cv ON (c.id = cv.character_id)
+        JOIN core_taxoncharactervalue tcv ON (cv.id = tcv.character_value_id)
+        WHERE c.pile_id = %s
+
+      """, [pile.id])
+
+    for cvid, taxonid in cursor.fetchall():
+        character_value_map[cvid].append(taxonid)
+
+    # If you want to gander at the SQL times with the debug toolbar:
+    # from django.http import HttpResponse
+    # return HttpResponse('<html><head></head><body>foo</body>')
+
+    return jsonify(character_map.values(), indent=False)
 
 # Plant distribution maps
 

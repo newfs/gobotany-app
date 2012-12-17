@@ -71,6 +71,9 @@ define([
     module.pile_vector = _.memoize(function(pile_slug) {
         return module.get('vectors/pile/' + pile_slug + '/');
     });
+    module.pile_set = _.memoize(function(pile_slug) {
+        return module.get('vectors/pile-set/' + pile_slug + '/');
+    });
 
     /*
      * Functions that combine data from multiple AJAX requests.

@@ -111,4 +111,5 @@ urlpatterns += patterns(
     url(r'^vectors/character/([\w()-]+)/$', both(views.vectors_character)),
     url(r'^vectors/key/([\w-]+)/$', both(views.vectors_key)),
     url(r'^vectors/pile/([\w-]+)/$', both(views.vectors_pile)),
+    url(r'^vectors/pile-set/([\w-]+)/$', both(views.pile_vector_set)),
     )
