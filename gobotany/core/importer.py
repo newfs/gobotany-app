@@ -855,6 +855,12 @@ class Importer(object):
             if '_' not in row['character']:
                 continue # ignore "family" rows for right now
 
+            # Skip the character if it has no character group.
+            if len(row['character_group']) < 1:
+                log.error('%s skipped due to missing character_group value',
+                          row['character'])
+                continue
+
             # Detect length characters and handle accordingly.
             character_name = row['character']
             is_min = '_min' in character_name.lower()
