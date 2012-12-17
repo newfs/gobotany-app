@@ -12,6 +12,8 @@ define([
             App3, results_photo_menu, utils,
             glossarizer, lazy_images) {
 
+    var SPECIES_PER_ROW = 4;
+
     var SpeciesSection = function() {};
     var glossarize = glossarizer.glossarize;
     var methods = SpeciesSection.prototype = {};
@@ -132,9 +134,6 @@ define([
             return a.scientific_name < b.scientific_name ? -1 : 1;
         });
 
-        var WIDTH = 160 + 18;
-        var HEIGHT = 210 + 4;
-
         for (var i = 0; i < sorted_species_list.length; i++) {
             var species = sorted_species_list[i];
 
@@ -181,7 +180,6 @@ define([
 
         var do_animation = (items.length < 50);
 
-        var SPECIES_PER_ROW = 4;
         var WIDTH = 178;
         var HEIGHT = 232;
 
@@ -224,37 +222,44 @@ define([
                 $div.removeClass('in-results');
             }
         }
-        var species_section_helper = this;
-        this.plant_list.animate(
-            {height: desty + HEIGHT},
-            function() {
-                lazy_images.load();
 
-                // Set up genus colors now that everyone has arrived!
-                var last_species_in_row = SPECIES_PER_ROW - 1;
-                var genus_alt = false;
-                var plant = displayed_plants[0];
+        if (do_animation) {
+            var _this = this;
+            this.plant_list.animate({height: desty + HEIGHT}, function() {
+                _this.set_up_genus_colors(displayed_divs, displayed_plants);
+            });
+        } else {
+            this.plant_list.css('height', desty + HEIGHT);
+            this.set_up_genus_colors(displayed_divs, displayed_plants);
+        }
+    };
 
-                for (var n = 0; n < displayed_plants.length; n++) {
-                    var $div = displayed_divs[n];
-                    if (genus_alt)
-                        $div.addClass('genus_alt');
-                    if (n < displayed_plants.length - 1) {
-                        var genus = plant.genus;
-                        var plant = displayed_plants[n + 1];
-                        if (plant.genus === genus) {
-                            if (n % SPECIES_PER_ROW != last_species_in_row) {
-                                $div.addClass('genus_join_right');
-                                displayed_divs[n + 1].addClass(
-                                    'genus_join_left');
-                            }
-                        } else {
-                            genus_alt = ! genus_alt;
-                        }
+    methods.set_up_genus_colors = function(displayed_divs, displayed_plants) {
+        lazy_images.load();
+
+        // Set up genus colors now that everyone has arrived!
+        var last_species_in_row = SPECIES_PER_ROW - 1;
+        var genus_alt = false;
+        var plant = displayed_plants[0];
+
+        for (var n = 0; n < displayed_plants.length; n++) {
+            var $div = displayed_divs[n];
+            if (genus_alt)
+                $div.addClass('genus_alt');
+            if (n < displayed_plants.length - 1) {
+                var genus = plant.genus;
+                var plant = displayed_plants[n + 1];
+                if (plant.genus === genus) {
+                    if (n % SPECIES_PER_ROW != last_species_in_row) {
+                        $div.addClass('genus_join_right');
+                        displayed_divs[n + 1].addClass(
+                            'genus_join_left');
                     }
+                } else {
+                    genus_alt = ! genus_alt;
                 }
             }
-        );
+        }
     };
 
     methods.display_results = function() {
