@@ -135,6 +135,17 @@ define([
 
     var install_event_handlers = function() {
 
+        $('.all-species-button').on('click', function() {
+            $grid.find('div').css('display', '');
+        });
+
+        $('.simple-key-button').on('click', function() {
+            $grid.find('div').each(function() {
+                if ($(this).find('i').text().indexOf('(fk)') !== -1)
+                    $(this).css('display', 'none');
+            });
+        });
+
         $grid.on('mouseenter', '.changed_tag', function() {
             add_change_borders($(this).parent());
         });

@@ -13,6 +13,14 @@ $highlight: lighten($body_bg, 10);
     margin-bottom: 0;
 }
 
+span.all-species-button, span.simple-key-button {
+    @extend .orange-button;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0.8em 1em;
+    font-weight: normal;
+}
+
 .pile-character-grid {
     position: relative;
     margin-top: 2em;
