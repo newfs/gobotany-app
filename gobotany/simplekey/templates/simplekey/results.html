@@ -6,6 +6,7 @@
 {% block js_require %}
     original_location_hash = window.location.hash; // for results_overlay.js
     var args = {
+        dev_flag: {{ dev_flag }},
         key: '{{ key }}',
         pile_slug: '{{ pile.slug }}'
     };

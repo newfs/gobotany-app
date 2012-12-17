@@ -104,6 +104,7 @@ def level3(request, key, pilegroup_slug, pile_slug):
     subgroup_results_page = SubgroupResultsPage.objects.get(subgroup=pile)
 
     return render_to_response('simplekey/results.html', {
+           'dev_flag': 1 if request.GET.has_key('dev') else 0,
            'key': key,
            'partner_site': short_name,
            'subgroup_results_page': subgroup_results_page,

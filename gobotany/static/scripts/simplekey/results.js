@@ -28,6 +28,7 @@ define([
 ) {return {
 
 results_page_init: function(args) {
+    var dev_flag = args.dev_flag;
     var key_name = args.key;
     var pile_slug = args.pile_slug;
 
@@ -412,10 +413,10 @@ results_page_init: function(args) {
         // can only resize when the working area is gone, however;
         // adjusting the scroll pane closes the working area!
 
-        setInterval(function() {
-            if (working_area === null)
-                scroll_pane.data('jsp').reinitialise();
-        }, 500);
+        // setInterval(function() {
+        //     if (working_area === null)
+        //         scroll_pane.data('jsp').reinitialise();
+        // }, 500);
     });
 
     /* All filters can be cleared with a single button click. */
@@ -644,6 +645,15 @@ results_page_init: function(args) {
     var checked_groups = [];  // remembers choices from last time
 
     $.when(document_is_ready).done(function() {
+
+        if (dev_flag) {
+            // Use Brandon's experimental "Get More Choices" instead.
+            require(['simplekey/level3/get_more_questions'], function(gmq) {
+                gmq.install_handlers();
+            });
+            return;
+        }
+
         $('#sidebar .get-choices').click(function() {
             dismiss_any_working_area();
 
