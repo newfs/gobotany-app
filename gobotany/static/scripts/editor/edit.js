@@ -89,6 +89,8 @@ define([
             snippets.push(scientific_name);
             snippets.push('</i>');
             snippets.push(ones_and_zeroes);
+            if (ones_and_zeroes.indexOf('1') === -1)
+                snippets.push('<span>undefined</span>');
             snippets.push('</div>');
         });
 
