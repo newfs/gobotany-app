@@ -32,7 +32,7 @@ define([
     var value_widths;           // width of formatted value texts
 
     var verbose_text_of = function(value_name) {
-        return '× ' + value_name.replace(' ', ' ') + ' ';
+        return '  ' + value_name.replace(' ', ' ') + '  ';
     };
 
     var take_measurements = function() {
