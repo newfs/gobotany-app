@@ -31,8 +31,9 @@ define([
     var x_width;                // width of box containing an ×
     var value_widths;           // width of formatted value texts
 
-    var verbose_text_of = function(value_name) {
-        return '  ' + value_name.replace(' ', ' ') + '  ';
+    var verbose_text_of = function(value_name, omit_x) {
+        var c = omit_x ? ' ' : '×';
+        return c + ' ' + value_name.replace(' ', ' ') + '  ';
     };
 
     var take_measurements = function() {
@@ -99,7 +100,7 @@ define([
 
         if (be_verbose) {
             for (var i = 0; i < character_values.length; i++) {
-                var verbose_text = verbose_text_of(character_values[i]);
+                var verbose_text = verbose_text_of(character_values[i], true);
                 var selector = 'div b:nth-child(' + (i + 2) + ')';
                 $grid.find(selector).text(verbose_text);
             }
