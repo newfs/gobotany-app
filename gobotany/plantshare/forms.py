@@ -82,7 +82,11 @@ class NewSightingForm(forms.Form):
                            'end of road, near oak tree'),
         })
     )
-    location_coordinates = forms.CharField(
+    latitude = forms.CharField(
+        required=False,
+        widget=forms.TextInput()
+    )
+    longitude = forms.CharField(
         required=False,
         widget=forms.TextInput()
     )

@@ -61,7 +61,9 @@ def sightings_view(request):
         # TODO: require login for just this HTTP verb.
         form = NewSightingForm(request.POST)
         if form.is_valid():
-            location = Location(user_input=form.cleaned_data['location'])
+            location = Location(user_input=form.cleaned_data['location'],
+                                latitude=form.cleaned_data['latitude'],
+                                longitude=form.cleaned_data['longitude'])
             location.save()
 
             identification = form.cleaned_data['identification']

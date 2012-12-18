@@ -60,18 +60,23 @@ define([
         $('#id_location').blur(function () {
             var location = $(this).val();
 
-            var lat_lng_string = '';
+            var latitude, longitude = '';
             if (lat_long_regex.test(location)) {
-                $('#id_location_coordinates').val(location);
+                // TODO: handle more advanced lat/long formats (this
+                // currently only handles floats)
+                var coordinates = location.replace(' ', '').split(',');
+                latitude = coordinates[0];
+                longitude = coordinates[1];
+                $('#id_latitude').val(latitude);
+                $('#id_longitude').val(longitude);
             }
             else {
                 geocoder.geocode(location, function (results, status) {
                     var lat_lng = geocoder.handle_response(results, status);
-                    lat_lng_string = lat_lng.toString().slice(1, -1);
-                    if (lat_lng_string === 'NaN, NaN') {
-                        lat_lng_string = '';
-                    }
-                    $('#id_location_coordinates').val(lat_lng_string);
+                    latitude = lat_lng.lat();
+                    longitude = lat_lng.lng();
+                    $('#id_latitude').val(latitude);
+                    $('#id_longitude').val(longitude);
                 });
             }
         });

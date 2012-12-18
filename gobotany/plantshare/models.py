@@ -49,17 +49,10 @@ class Location(models.Model):
             if user_input.find(',') > -1:
                 # Location is either city/state or latitude/longitude.
                 if user_input[0].isalpha():
-                    # City, state
+                    # City, state (lat/long handled elsewhere)
                     city, state = [x.strip() for x in user_input.split(',')]
                     self.city = city
                     self.state = state
-                else:
-                    # Latitude, longitude
-                    # TODO: parse more advanced lat/long formats
-                    latitude, longitude = [x.strip()
-                                           for x in user_input.split(',')]
-                    self.latitude = latitude
-                    self.longitude = longitude
             elif (len(user_input) <= 10 and
                   user_input[1].isdigit()): # 2nd char in US/Can. postal codes
                 # Postal code
