@@ -82,6 +82,10 @@ class NewSightingForm(forms.Form):
                            'end of road, near oak tree'),
         })
     )
+    location_coordinates = forms.CharField(
+        required=False,
+        widget=forms.TextInput()
+    )
 
 
 class UserProfileForm(forms.ModelForm): 
