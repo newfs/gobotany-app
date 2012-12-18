@@ -599,19 +599,21 @@ def pile_vector_set(request, slug):
 
     cursor.execute("""
 
-      SELECT c.id, c.short_name, c.name, c.value_type, c.character_group_id
+      SELECT c.id, c.short_name, c.friendly_name, c.character_group_id,
+          c.ease_of_observability, c.value_type
         FROM core_character c
         WHERE c.pile_id = %s
 
       """, [pile.id])
 
     character_map = {}
-    for cid, short_name, name, value_type, cgid in cursor.fetchall():
+    for cid, short_name, name, cgid, ease, value_type in cursor.fetchall():
         character_map[cid] = {
             'slug': short_name,
             'name': name,
-            'type': value_type,
             'group_name': character_group_map[cgid],
+            'ease': ease,
+            'type': value_type,
             'values': [],
             }
 

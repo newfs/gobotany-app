@@ -797,7 +797,7 @@ body.skey.results #sidebar.tinted { background: #fcfdf5; }
 body.skey.results #sidebar .scroll { border-bottom: 1px solid #9cc86b; border-left: 1px solid #519136; border-top: 1px solid #519136; display: block; height: 335px; margin: 0 0 10px 0; overflow: auto; width: 229px; }
 body.skey.results #sidebar .section.instructions { background: #9cc86b; color: #fff; padding: 16px; }
 body.skey.results #sidebar .section.instructions h5 { font-size: 14px; line-height: 120%; margin: 0; }
-body.skey.results #sidebar .section p.get-more { font-size: 11px; line-height: 16px; margin: 0 0 20px; text-align: center; }
+body.skey.results #sidebar .section p.get-more { position: relative; /* for Brandon experiment */ font-size: 11px; line-height: 16px; margin: 0 0 20px; text-align: center; }
 body.skey.results #sidebar .section p.get-more a { cursor: pointer; display: block; font-weight: bold; margin: 18px 0 10px; }
 body.skey.results #sidebar .section p.get-more a.get-choices { margin: 0 auto 4px; }
 body.skey.results #sidebar .section a.get-help-btn { background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent; height: 32px; margin: 10px 0 0 20px; width: 104px; display: block; text-indent: -9000px; }
@@ -815,12 +815,9 @@ body.skey.results #sidebar .option-list .option { color: #1a2e11; margin-left: 0
 body.skey.results #sidebar .option-list .option span.name { display: block; font-weight: bold; margin: 0 0 3px 0; }
 body.skey.results #sidebar .option-list .clear-filter { color: #508e31; display: block; margin-left: 0; margin-top: 4px; width: 45px; }
 body.skey.results #sidebar .loading { background: url(/static/images/icons/preloaders-dot-net-sm.gif) no-repeat scroll 0 0 transparent; font-weight: bold; margin: 12px; padding: 0 0 0 20px; }
-body.skey.results a.get-choices { position: relative; background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 4px 10px; text-indent: -9000px; width: 171px; /* Experiment by Brandon */ }
+body.skey.results a.get-choices { background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 4px 10px; text-indent: -9000px; width: 171px; }
 body.skey.results a.get-choices:hover { background-position: 0 -32px; }
 body.skey.results a.get-choices:active { background-position: 0 -64px; }
-body.skey.results a.get-choices ul { position: absolute; display: block; bottom: -100%; right: 0; background-color: #d9dbb1; /*#dce890;*/ text-indent: 0px; /* undo the -9000px */ white-space: nowrap; }
-body.skey.results a.get-choices ul li { display: block; margin: 0; padding: 0 1em; text-align: right; }
-body.skey.results a.get-choices ul li:hover { background-color: #b4d57f; }
 body.skey.results #intro-overlay { /* for introductory overlay */ display: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 40px; text-align: center; z-index: 1000; /* Arrows */ }
 body.skey.results #intro-overlay div { background-color: #f0f0c0; color: #fff; margin-bottom: 10%; padding: 0.6em 0.8em; position: relative; box-shadow: 0px 5px 20px black; -moz-box-shadow: 0px 5px 20px black; -webkit-box-shadow: 0px 5px 20px black; border-radius: 0.25em; -moz-border-radius: 0.25em; }
 body.skey.results #intro-overlay .number-of-species, body.skey.results #intro-overlay .number-of-questions { background-color: #508e31; }
@@ -884,6 +881,13 @@ body.skey.results .working-area #slider .bar div { background: -webkit-gradient(
 body.skey.results .working-area #slider .thumb { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c1d9a7), color-stop(100%, white)); background: -moz-linear-gradient(center top, #c1d9a7, white); border: 1px solid white; cursor: pointer; height: 30px; left: 3px; position: absolute; text-align: center; top: 35px; width: 30px; -moz-border-radius: 16px; -webkit-border-radius: 16px; -o-border-radius: 16px; -ms-border-radius: 16px; -khtml-border-radius: 16px; border-radius: 16px; -moz-box-shadow: 0 1px 6px 1px #333333; -webkit-box-shadow: 0 1px 6px 1px #333333; -o-box-shadow: 0 1px 6px 1px #333333; box-shadow: 0 1px 6px 1px #333333; }
 body.skey.results .working-area #slider .label { font-size: 16px; position: relative; top: -36px; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
 body.skey.results img.char-value-larger { height: 160px !important; /* Consistent height for popup character value drawings */ }
+
+/* Experiment by Brandon */
+ul.get-more-questions-menu { -webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.6); box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.6); z-index: 200; position: absolute; right: 0; display: block; bottom: 110%; border: 1px solid black; font-size: 12px; text-indent: 0px; /* undo the -9000px */ white-space: nowrap; }
+ul.get-more-questions-menu ul { position: absolute; top: 0; left: 100%; display: none; border: 1px solid black; }
+ul.get-more-questions-menu li { position: relative; display: block; margin: 0; background-color: #d9dbb1; /*#dce890;*/ padding: 0 1em; line-height: 2em; text-align: left; }
+ul.get-more-questions-menu li:hover { background-color: #b4d57f; }
+ul.get-more-questions-menu > li { text-align: right; }
 
 /* Begin media queries styles for Simple and Full Keys. */
 /* Portrait-orientation styles */

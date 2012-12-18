@@ -649,7 +649,9 @@ results_page_init: function(args) {
         if (dev_flag) {
             // Use Brandon's experimental "Get More Choices" instead.
             require(['simplekey/level3/get_more_questions'], function(gmq) {
-                gmq.install_handlers(pile_slug);
+                filter_controller_is_built.done(function(filter_controller) {
+                    gmq.install_handlers(pile_slug, filter_controller);
+                });
             });
             return;
         }

@@ -350,6 +350,7 @@ body.skey {
                     }
                 }
                 p.get-more {
+                    position: relative;  /* for Brandon experiment */
                     font-size: 11px;
                     line-height: 16px;
                     margin: 0 0 20px;
@@ -447,7 +448,6 @@ body.skey {
         } /* end #sidebar */
 
         a.get-choices {
-            position: relative;
             background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent;
             display: block;
             height: 32px;
@@ -459,26 +459,6 @@ body.skey {
             }
             &:active {
                 background-position: 0 -64px;
-            }
-
-            /* Experiment by Brandon */
-            ul {
-                position: absolute;
-                display: block;
-                bottom: -100%;
-                right: 0;
-                background-color: $inactive_bg; /*#dce890;*/
-                text-indent: 0px;  /* undo the -9000px */
-                white-space: nowrap;
-                li {
-                    display: block;
-                    margin: 0;
-                    padding: 0 1em;
-                    text-align: right;
-                    &:hover {
-                        background-color: $active_bg;
-                    }
-                }
             }
         }
 
@@ -918,6 +898,46 @@ body.skey {
     } /* end &.results */
 }
 
+/* Experiment by Brandon */
+
+ul.get-more-questions-menu {
+    @include single-box-shadow(rgba(0,0,0,0.6), 0px, 1px, 4px);
+
+    z-index: 200;
+    position: absolute;
+    right: 0;
+    display: block;
+    bottom: 110%;
+    border: 1px solid black;
+    font-size: 12px;
+    text-indent: 0px;  /* undo the -9000px */
+    white-space: nowrap;
+
+    ul {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        display: none;
+        border: 1px solid black;
+    }
+
+    li {
+        position: relative;
+        display: block;
+        margin: 0;
+        background-color: $inactive_bg; /*#dce890;*/
+        padding: 0 1em;
+        line-height: 2em;
+        text-align: left;
+        &:hover {
+            background-color: $active_bg;
+        }
+    }
+
+    > li {
+        text-align: right;
+    }
+}
 
 /* Begin media queries styles for Simple and Full Keys. */
 
