@@ -1,4 +1,3 @@
-import logging as log
 from django import forms
 from django.core.urlresolvers import reverse_lazy
 
