@@ -1,5 +1,7 @@
 dev
 gobotany.application.js
 shadowbox.js
+gobotany/static/svgweb
+gobotany/static/scripts/lib
 *.csv
 *.svg
