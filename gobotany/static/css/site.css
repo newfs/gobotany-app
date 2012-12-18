@@ -319,6 +319,8 @@ p.new { background: #ccdf53; color: #000; display: inline-block; font-size: 12px
 p.meta { font-size: 10px; font-style: italic; margin: 4px 0; }
 p.meta + p { margin-top: 2px; }
 
+#main .distribution-character { /* species code: box, as in printed book */ margin: 0 0.25em; border: 1px solid black; padding: 0 0.25em; font-size: 0.875em; }
+
 /* Navigation highlighting */
 /* Global navigation (header) */
 body#home nav li.home { background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent; text-decoration: none; }
@@ -1065,7 +1067,6 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
 .orange-button.disabled, body.taxa .visit-dkey a.disabled, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
 
 /* Styles */
-#dkey #main { /* Text styles. */ }
 #dkey #main .offer-help-aside { float: right; margin: 1em 1em 0.5em 1em; text-align: right; color: #606060; }
 #dkey #main .offer-help-aside span { font-size: 12px; }
 #dkey #main .offer-help-aside a.button { display: inline-block; margin: 0.8em 1em; font-weight: normal; font-size: 12px; text-transform: uppercase; }
@@ -1119,7 +1120,6 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
 #dkey #main div.popup a { text-decoration: none; color: #000; }
 #dkey #main div.popup a:hover { text-decoration: underline; }
 #dkey #main div.popup a:hover { color: #35661c; }
-#dkey #main .distribution-character { /* printed book uses a box */ margin: 0 0.25em; border: 1px solid black; padding: 0 0.25em; font-size: 0.875em; }
 
 /* end #dkey #main */
 /* Begin media queries styles for Dichotomous Key. */
