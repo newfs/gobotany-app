@@ -209,6 +209,10 @@ class ScreenedImage(models.Model):
     screened_by = models.ForeignKey(User, null=True, related_name='images_approved')
     is_approved = models.BooleanField(default=False)
 
-    # Flag true if the user has chosen to delete this image.  This indicates
-    # that the image binary itself has been removed from storage.
+    # Flag true if the image has been orphaned (old avatars, user-deleted avatars,
+    # deleted sighting photos)
+    orphaned = models.BooleanField(default=False)
+
+    # Flag true if the user or staff has chosen to delete this image.  This
+    # indicates that the image binary itself has been removed from storage.
     deleted = models.BooleanField(default=False)
