@@ -16,6 +16,7 @@
                 'lib/require',
 
                 'dkey/dkey',
+                'editor/edit',
                 'mapping/google_maps',
                 'mapping/sightings_map',
                 'plantshare/myprofile',
