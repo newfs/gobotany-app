@@ -564,7 +564,8 @@ results_page_init: function(args) {
                 character_map[info.short_name] = info;
             });
 
-            // The default filters are always listed first.
+            // The default filters are always listed first, and are
+            // included whether they are listed in the URL or not.
 
             var default_slugs = _.chain(pile_info.default_filters)
                 .where({'key': key_name}).pluck('short_name').value();

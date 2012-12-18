@@ -1,9 +1,11 @@
 define([
     'bridge/jquery',
     'bridge/underscore',
+    'simplekey/Filter',
+    'simplekey/animation',
     'simplekey/resources'
 ], function(
-    $, _, resources
+    $, _, Filter, animation, resources
 ) {
     exports = {};
 
@@ -107,7 +109,31 @@ define([
     var add_filter = function() {
         var slug = $(this).attr('data-character');
         $(this).removeAttr('data-character');
-        console.log('TODO: add filter:', slug);
+
+        var info = _.find(characters, function(character) {
+            return character.slug === slug;
+        });
+
+        info.friendly_name = info.name;  /* TODO: fix the mismatch? */
+        info.short_name = info.slug;     /* TODO: fix the mismatch? */
+
+        var filter = Filter.create({
+            slug: info.slug,
+            value_type: info.type,
+            info: info
+        });
+
+        /* TODO: the following dance is also in results.js. */
+
+        filter_controller.add(filter);
+
+        Ember.run.next(function() {
+            var $filters = $('#sidebar ul li');
+            var $new = $filters.eq(-1);
+            animation.bright_change($new);  /* why doesn't this work? */
+            $('.scroll').data('jsp').reinitialise();
+            $('.scroll').data('jsp').scrollToPercentY(100, true);
+        });
     };
 
     return exports;
