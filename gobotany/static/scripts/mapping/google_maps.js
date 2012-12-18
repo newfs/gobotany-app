@@ -5,7 +5,6 @@
     window[callbackName] = callback;
     define(['http://maps.googleapis.com/maps/api/js?sensor=false&callback=' +
             callbackName], function () {
-        console.log('about to return google.maps module');
         return google.maps;
     });
 })();

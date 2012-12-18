@@ -1,3 +1,8 @@
+/* Sightings Locator component with an input box and map.
+ *
+ * Note:
+ * The map requires that this be set up at onload, not at jQuery ready. */
+
 define([
     'bridge/jquery',
     'mapping/sightings_map'

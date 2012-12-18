@@ -1,4 +1,7 @@
-/* Map for plant sightings in PlantShare */
+/* Map for plant sightings in PlantShare.
+ *
+ * Note:
+ * The map requires that this be set up at onload, not at jQuery ready. */
 
 define([
     'bridge/jquery',
