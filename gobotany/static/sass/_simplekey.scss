@@ -913,15 +913,8 @@ ul.get-more-questions-menu {
     text-indent: 0px;  /* undo the -9000px */
     white-space: nowrap;
 
-    ul {
-        position: absolute;
-        top: 0;
-        left: 100%;
-        display: none;
-        border: 1px solid black;
-    }
-
     li {
+        cursor: pointer;
         position: relative;
         display: block;
         margin: 0;
@@ -936,6 +929,21 @@ ul.get-more-questions-menu {
 
     > li {
         text-align: right;
+    }
+
+    ul {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        display: none;
+        border: 1px solid black;
+
+        li {
+            color: darken($inactive_bg, 5);
+            &[data-character] {
+                color: black;
+            }
+        }
     }
 }
 

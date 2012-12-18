@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -884,10 +885,12 @@ body.skey.results img.char-value-larger { height: 160px !important; /* Consisten
 
 /* Experiment by Brandon */
 ul.get-more-questions-menu { -webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.6); box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.6); z-index: 200; position: absolute; right: 0; display: block; bottom: 110%; border: 1px solid black; font-size: 12px; text-indent: 0px; /* undo the -9000px */ white-space: nowrap; }
-ul.get-more-questions-menu ul { position: absolute; top: 0; left: 100%; display: none; border: 1px solid black; }
-ul.get-more-questions-menu li { position: relative; display: block; margin: 0; background-color: #d9dbb1; /*#dce890;*/ padding: 0 1em; line-height: 2em; text-align: left; }
+ul.get-more-questions-menu li { cursor: pointer; position: relative; display: block; margin: 0; background-color: #d9dbb1; /*#dce890;*/ padding: 0 1em; line-height: 2em; text-align: left; }
 ul.get-more-questions-menu li:hover { background-color: #b4d57f; }
 ul.get-more-questions-menu > li { text-align: right; }
+ul.get-more-questions-menu ul { position: absolute; top: 0; left: 100%; display: none; border: 1px solid black; }
+ul.get-more-questions-menu ul li { color: #d0d3a0; }
+ul.get-more-questions-menu ul li[data-character] { color: black; }
 
 /* Begin media queries styles for Simple and Full Keys. */
 /* Portrait-orientation styles */

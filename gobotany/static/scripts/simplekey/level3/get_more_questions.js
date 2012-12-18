@@ -7,26 +7,26 @@ define([
 ) {
     exports = {};
 
-    // var group_names;            // character groups
     var characters;             // raw data from the API
+    var filter_controller;      // filters active on the page
 
     var $p;                     // paragraph around button
     var $button;                // "Get More Choices" button
     var $ul = null;             // <ul> of character groups
 
-    exports.install_handlers = function(pile_slug, filter_controller) {
-        resources.pile_set(pile_slug).done(function(data) {
+    exports.install_handlers = function(args) {
+        filter_controller = args.filter_controller;
+
+        resources.pile_set(args.pile_slug).done(function(data) {
             characters = data;
             compute_coverage_lists();
-
-            // group_names = _.uniq(_.pluck(characters, 'group_name'));
-            // group_names.sort();
 
             $p = $('#sidebar .get-more');
             $button = $p.find('.get-choices');
 
             $button.on('click', toggle_group_list);
             $p.on('mouseenter', 'li', display_group_of_characters);
+            $p.on('click', 'li[data-character]', add_filter);
 
             sort_remaining_characters();
         });
@@ -42,29 +42,24 @@ define([
         }
     };
 
-    var do_huge_computation = function() {
-        for (var i = 0; i < characters.length; i++) {
-            var character = characters[i];
-            var values = character.values;
-            var all_taxon_ids = values.length ? values[0] : [];
-
-            for (var j = 1; j < values.length; j++) {
-                var taxon_ids = values[j];
-                all_taxon_ids;
-                var xids = _.intersection(taxon_ids, taxon_ids);
-                // console.log(taxon_ids);
-            }
-        }
-    };
-
     var sort_remaining_characters = function() {
         return _.chain(characters)
+            .filter(not_already_displayed)
             .sortBy('ease')
-            .sortBy(function(character) {
-                return 1;
-            })
+            .sortBy(demote_lone_choices)
             .sortBy('group_name')
             .value();
+    };
+
+    var not_already_displayed = function(character) {
+        return ! _.has(filter_controller.filtermap, character.slug);
+    };
+
+    var demote_lone_choices = function(character) {
+        var useful_values = _.filter(character.values, function(taxon_ids) {
+            return _.intersection(taxon_ids, filter_controller.taxa).length;
+        });
+        return Math.max(useful_values.length, 2);
     };
 
     /* API routines. */
@@ -88,8 +83,12 @@ define([
                     $group_ul = $('<ul>').appendTo(
                         $('<li>').text(group_name + ' ▸').appendTo($ul));
                 }
-                $group_ul.append($('<li>').text(
-                    character.ease + ' ' + character.name));
+                var debug_info = '(ease ' + character.ease + ') ';
+                $group_ul.append($('<li>', {
+                    'text': debug_info + character.name,
+                    // 'text': character.name,
+                    'data-character': character.slug
+                }));
             });
         } else {
             $ul.remove();
@@ -103,6 +102,12 @@ define([
             $p.find('ul ul').hide();
             $ul_beneath.show();
         }
+    };
+
+    var add_filter = function() {
+        var slug = $(this).attr('data-character');
+        $(this).removeAttr('data-character');
+        console.log('TODO: add filter:', slug);
     };
 
     return exports;
