@@ -2,7 +2,8 @@
 
 {% block title %}Dichotomous Key{% endblock %}
 
-{% block body_attributes %}class="placeholder"{% endblock %}
+{% block body_attributes %}id="dkey-placeholder"
+    class="help placeholder"{% endblock %}
 
 {% block main_content %}
                     <h1>Dichotomous Key</h1>
@@ -18,5 +19,5 @@
 {% endblock %}
 
 {% block sidebar_content %}
-    {% include "gobotany/_sidebar_items.html" %}
+    {% include "gobotany/_help_navigation.html" %}
 {% endblock %}

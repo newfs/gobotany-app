@@ -299,7 +299,9 @@ body {
      * here" marker. Each of these must be set up individually where
      * needed. */
     &.help {
-        &#glossary #sidebar .glossary a::before {
+        &#glossary #sidebar .glossary a::before,
+        &#fullkey-placeholder #sidebar .advanced-id-tools a::before,
+        &#dkey-placeholder #sidebar .advanced-id-tools a::before {
             @include highlight-section-nav;
         }
     }

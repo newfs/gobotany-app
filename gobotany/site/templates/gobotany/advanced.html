@@ -2,7 +2,11 @@
 
 {% block title %}Advanced ID Tools{% endblock %}
 
-{% block body_attributes %}id="advanced-id" class="placeholder"{% endblock %}
+{% block js_require %}
+    require(['site/help']);
+{% endblock %}
+
+{% block body_attributes %}id="advanced-id" class="help placeholder"{% endblock %}
 
 {% block main_content %}
                     <h1>Advanced ID Tools</h1>
@@ -32,10 +36,10 @@
                         <div class="landing-divider"></div>
                         <div class="dk-landing-section">
                             <h2>Dichotomous Key to All 3,500 New England
-                                Taxa (Coming Soon)</h2>
+                                Taxa</h2>
                             <section>
                                 <p>If you are an experienced botanist, use our
-                                Dichotomous Key tool!</p>
+                                Dichotomous Key tool.</p>
                                 <ul>
                                     <li>A dichotomous key presents a set of paired
                                     choices that describe various plant
@@ -54,12 +58,12 @@
                                     target="_blank">Flora Novae Angliae</a> (Haines
                                 2011).</p>
                             </section>
-                            <a href="{% url dich-key-placeholder %}"
+                            <a href="{% url dkey %}"
                                 class="go-dichkey-btn">Go To Dichotomous Key</a>
                         </div>
                     </div>
 {% endblock %}
 
 {% block sidebar_content %}
-    {% include "gobotany/_sidebar_items.html" %}
+    {% include "gobotany/_help_navigation.html" %}
 {% endblock %}
