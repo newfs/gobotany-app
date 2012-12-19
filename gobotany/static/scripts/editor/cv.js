@@ -33,7 +33,21 @@ define([
 
     var verbose_text_of = function(value_name, omit_x) {
         var c = omit_x ? ' ' : '×';
-        return c + ' ' + value_name.replace(' ', ' ') + '  ';
+        var name = value_name;
+        if (name === 'Connecticut')
+            return ' CT ';
+        if (name === 'Maine')
+            return ' ME ';
+        if (name === 'Massachusetts')
+            return ' MA ';
+        if (name === 'New Hampshire')
+            return ' NH ';
+        if (name === 'Rhode Island')
+            return ' RI ';
+        if (name === 'Vermont')
+            return ' VT ';
+        var name = value_name.replace(' ', ' ');
+        return c + ' ' + name + '  ';
     };
 
     var take_measurements = function() {
