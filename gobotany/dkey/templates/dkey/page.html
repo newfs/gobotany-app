@@ -71,7 +71,7 @@
 {% if taxa_beneath|length > 1 %}
   <a href="." class="what-lies-beneath" data-taxa="{{ taxa_beneath|json }}">
     See list of {{ taxa_beneath|length }} {{ rank_beneath|taxon_plural }}
-    in this {% if page.rank == 'top' %}key{% else %}{{ page.rank }}{% endif %}
+    in this {% if page.rank == 'top' %}key{% elif page.rank == 'subgroup' %}group{% else %}{{ page.rank }}{% endif %}
   </a>
 {% elif taxa_beneath|length == 1 %}
   <div class="what-lies-beneath" data-taxa="{{ taxa_beneath|json }}">
