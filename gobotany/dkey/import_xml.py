@@ -329,13 +329,13 @@ def parse_chapter(xchapter, info):
             # 'Group 1' -> 'Asteraceae Group 1'
             heading = most_recent_taxon + ' ' + heading
             if genus_name == 'Carex':
-                prefix = 'Tribe'
+                prefix = 'Section'
             else:
                 prefix = None
         elif tag == 'head_3':
-            rank = 'tribe'
-            # 'Acrocystis' -> 'tribe Acrocystis'
-            heading = 'Tribe ' + heading
+            rank = 'section'
+            # 'Acrocystis' -> 'section Acrocystis'
+            heading = 'Section ' + heading
             prefix = genus_name
         else:
             log.error('truncating chapter, unrecognized tag: %s', tag)
@@ -383,7 +383,7 @@ def parse_chapter(xchapter, info):
             next_heading = xchildren[i].text.strip()
             info.create_lead(page, goto_page=next_heading)
             # we do NOT advance `i` so the heading will be processed next
-        elif page.rank in ('tribe', 'subgroup') \
+        elif page.rank in ('section', 'subgroup') \
                 and re_1_species.search(xchildren[i].text):
             name = trailing_taxon_name(genus_name, xchildren[i])
             info.create_lead(page, goto_page=name)

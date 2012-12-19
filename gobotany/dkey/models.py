@@ -4,7 +4,7 @@ from django.db import models
 
 # Here are the possible dkey page ranks. Note that a "subgroup" can
 # stand either between a family and a genus, or between a very large
-# genus and a tribe. The top of the hierarchy is always:
+# genus and a section. The top of the hierarchy is always:
 #
 # top -> group -> family
 #
@@ -17,7 +17,7 @@ from django.db import models
 #
 # genus -> species
 # genus -> subkey -> species
-# genus -> subgroup -> tribe -> species
+# genus -> subgroup -> section -> species
 
 def slug_to_title(slug):
     """The canonical transform between a URL slug and a dkey Page title."""

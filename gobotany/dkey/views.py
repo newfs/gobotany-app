@@ -85,7 +85,7 @@ def page(request, slug=u'key-to-the-families'):
     if slug != slug.lower():
         raise Http404
     title = models.slug_to_title(slug)
-    if title.startswith('Tribe '):
+    if title.startswith('Section '):
         title = title.title()
     page = get_object_or_404(models.Page, title=title)
     if page.rank == 'species':

@@ -15,8 +15,8 @@ register = Library()
 plurals = {
     'family': 'families',
     'genus': 'genera',
+    'section': 'sections',
     'species': 'species',
-    'tribe': 'tribes',
     }
 
 short_group_texts = {
