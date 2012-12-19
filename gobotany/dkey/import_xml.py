@@ -253,16 +253,16 @@ def parse_chapter(xchapter, info):
 
     # The initial Key to the Families chapter starts right off with a
     # series of couplets; subsequent chapters have headings instead, so
-    # we can skip on down to the section-processing logic below.
+    # we can skip on down to the processing logic below.
 
     if title == u'Key to the Families':
         page = info.get_or_create_page(title)
         page.rank = 'top'
-        i = parse_section(info, page, None, xchildren, 1)
+        i = parse_subchapter(info, page, None, xchildren, 1)
     else:
         i = 1
 
-    # As long as there are sections remaining, process them.
+    # As long as there are subchapters remaining, process them.
 
     while i < len(xchildren):
         child = xchildren[i]
@@ -377,7 +377,7 @@ def parse_chapter(xchapter, info):
         if i >= len(xchildren):
             pass
         elif xchildren[i].tag in level_tags:
-            i = parse_section(info, page, prefix, xchildren, i)
+            i = parse_subchapter(info, page, prefix, xchildren, i)
         elif page.rank == 'family' and xchildren[i].tag == 'head_2':
             # the family has only one genus
             next_heading = xchildren[i].text.strip()
@@ -403,7 +403,7 @@ def parse_chapter(xchapter, info):
                 sub_page = info.get_or_create_page(title)
                 sub_page.rank = 'subkey'
                 info.create_lead(page, goto_page=sub_page)
-                i = parse_section(info, sub_page, prefix, xchildren, i + 1)
+                i = parse_subchapter(info, sub_page, prefix, xchildren, i + 1)
         else:
             log.error('not sure what to do with <%s>' % xchildren[i].tag)
 
@@ -438,10 +438,10 @@ def trailing_taxon_name(prefix, x):
     log.info('       -> %s', name)
     return name
 
-def parse_section(info, page, prefix, xchildren, i):
+def parse_subchapter(info, page, prefix, xchildren, i):
     lead_stack = [ None ]
 
-    log.info('    start of section')
+    log.info('    start of subchapter')
 
     if i < len(xchildren) and xchildren[i].tag == 'text_indent_02':
         # TODO: have this snarf in the paragraphs to make the genus page
@@ -466,7 +466,7 @@ def parse_section(info, page, prefix, xchildren, i):
             continue
 
         if not is_lead(xchild):
-            log.info('    end of section; <%s> is next', xchild.tag)
+            log.info('    end of subchapter; <%s> is next', xchild.tag)
             break
 
         digits = ''.join( c for c in xchild[0].text if c.isdigit() )
