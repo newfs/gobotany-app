@@ -10,7 +10,7 @@ from django.template.defaultfilters import slugify
 
 from tinymce import models as tinymce_models
 
-# Character short names common to all piles (but no suffix)
+# Character short names common to all piles (no suffix)
 COMMON_CHARACTERS = ['habitat', 'habitat_general', 'state_distribution']
 
 STATE_NAMES = {
@@ -558,9 +558,6 @@ class Taxon(models.Model):
     description = models.CharField(max_length=500, blank=True)
     variety_notes = models.CharField(max_length=1000, blank=True)
     # TODO: import descriptions!
-    # synonyms: see Synonym
-    # common_names: see CommonName
-    # lookalikes: see Lookalike
 
     class Meta:
         verbose_name_plural = 'taxa'

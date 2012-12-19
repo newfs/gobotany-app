@@ -1,3 +1,7 @@
+/*
+
+Original CSS, to be re-activated selectively:
+
 .form-row.character_value, .form-row.character, .form-row.taxon {
     overflow: visible; min-height: 25px; height: auto !important; height: 25px;
 }
@@ -7,4 +11,11 @@
 .change-form.yui-skin-sam .yui-ac-content {
     max-height: 15em;
     overflow: auto;
+}
+
+*/
+
+.description {
+    margin: 3em 4em 3em 0;
+    line-height: 1.5em;
 }

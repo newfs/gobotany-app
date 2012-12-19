@@ -7,16 +7,21 @@ from django.template import Context, Template
 from django import forms
 from gobotany.core import models
 
-# Inline classes
-
-class PartnerSpeciesInline(admin.TabularInline):
-    model = models.PartnerSpecies
-    extra = 1
-    raw_id_fields = ('species',)
-
 # View classes
 
+class _Base(admin.ModelAdmin):
+
+    def get_fieldsets(self, request, obj):
+        return [(None, {
+            'description': self.__doc__,
+            'fields': self.fields,
+            })]
+
+    class Media:
+        css = {'all': ('/static/admin_styles.css',)}
+
 class GobotanyAdminBase(admin.ModelAdmin):
+
     class Media:
         css = {
             "all": ("/static/admin_styles.css",)
@@ -416,9 +421,40 @@ class FamilyAdmin(GobotanyAdminBase):
 class GenusAdmin(FamilyAdmin):
     list_filter = ('family',)
 
-class PartnerSiteAdmin(admin.ModelAdmin):
-    #inlines = (PartnerSpeciesInline,)  # too slow with hundreds of species?
+
+class PartnerSiteAdmin(_Base):
+    """
+
+    <p>
+    Each “partner site” entry represents an <b>allied organization</b>
+    for whom we are hosting a customized copy of the Go Botany application.
+    While their pages will display data
+    from the same taxon and character tables that drive our own pages,
+    they can be specific in choosing which <b>species</b> appear
+    in their own versions of the Simple Key,
+    and for each species they choose
+    they can also provide a <b>blurb</b> to display
+    at the top of their own site's copy of the Species Page.
+    </p>
+
+    <p>
+    Using the filter below, you can assign <b>users</b> to a partner,
+    in case you want to give their staff one or more Django admin accounts
+    and let them log in here to edit their own species list or data.
+    </p>
+
+    <p>
+    foo
+    </p>
+
+    """
+    fields = ('short_name', 'users')
     filter_horizontal = ('users',)
+
+    # TODO: assignment of species to partner
+    # an "inline" is too slow
+    # a "list_display" cannot handle m2m
+    # "filter_horizontal" complains because m2m has extra fields
 
 # Registrations
 
