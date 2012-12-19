@@ -636,6 +636,9 @@ class ConservationStatus(models.Model):
         ordering = ('region', 'label')
         unique_together = ('taxon', 'region', 'label')
 
+    def __unicode__(self):
+        return u'%s: %s' % (self.region, self.label)
+
 
 class DefaultFilter(models.Model):
     """A designation that a particular filter be shown by default for a pile.
