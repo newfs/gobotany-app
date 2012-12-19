@@ -12,7 +12,6 @@ urlpatterns = patterns(
     '',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include('gobotany.api.urls')),
-    url(r'^core/', include('gobotany.core.urls')),
     url(r'^dkey/', include('gobotany.dkey.urls')),
     url(r'^edit/', include('gobotany.editor.urls')),
     url(r'^plantoftheday/', include('gobotany.plantoftheday.urls')),
