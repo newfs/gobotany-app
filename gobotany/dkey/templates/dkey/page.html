@@ -62,7 +62,12 @@
   <h1>{{ title }}</h1>
 {% endif %}
 
-{% if page.rank != 'genus' and leads|length == 1 %}
+{% if rank_beneath != 'species' and leads|length == 1 %}
+  <p data-rank="{{ page.rank }}" data-title="{{ page.title }}">This
+    {{ page.rank }} contains exactly one {{ next_page.rank }},
+    {{ page|display_title }}.</p>
+{% endif %}
+{% if rank_beneath != 'species' and leads|length == 1 %}
   <p data-rank="{{ page.rank }}" data-title="{{ page.title }}">This
     {{ page.rank }} contains exactly one {{ next_page.rank }},
     {{ page|display_title }}.</p>
