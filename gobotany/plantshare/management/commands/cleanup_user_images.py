@@ -42,9 +42,17 @@ class Command(NoArgsCommand):
             self.stdout.write('Active Images:\n{0}\n'.format(active_files)) 
             self.stdout.write('Active Thumbs:\n{0}\n'.format(active_thumbs)) 
         
+        # Images that have been screened and rejected, and are older than user
+        # specified cutoff
         upload_cutoff = datetime.now() - timedelta(days=days_old)
-        stale_images = ScreenedImage.objects.filter(is_approved=False,
-                screened__isnull=False, uploaded__lt=upload_cutoff)
+        rejected_images = ScreenedImage.objects.filter(is_approved=False,
+                deleted=False, screened__isnull=False,
+                uploaded__lt=upload_cutoff)
+
+        orphaned_images = ScreenedImage.objects.filter(deleted=False, 
+                orphaned=True, uploaded__lt=upload_cutoff)
+
+        stale_images = rejected_images | orphaned_images
 
         if verbosity >= '1':
             self.stdout.write('Found {0} images to delete.\n'.format(len(stale_images)))
