@@ -19,6 +19,7 @@ define([
         this.center_title = this.$map_div.attr('data-center-title');
         this.map = null;
         this.info_window = null;
+        this.markers = [];
     };
 
     SightingsMap.prototype.setup = function () {
@@ -76,8 +77,19 @@ define([
         return html;
     };
 
+    SightingsMap.prototype.clear_markers = function () {
+        // Clear the stored array of markers to clear them from the map.
+        if (this.markers) {
+            for (i in this.markers) {
+                this.markers[i].setMap(null);
+            }
+        }
+    };
+
     SightingsMap.prototype.add_marker = function (latitude, longitude, title,
                                                   info_window_html) {
+        // Create a marker and add it to the array of markers that must
+        // be kept in order to be able to clear all markers.
         var lat_long = new google_maps.LatLng(latitude, longitude);
         var marker = new google_maps.Marker({
             animation: google_maps.Animation.DROP,
@@ -85,6 +97,9 @@ define([
             map: this.map,
             title: title
         });
+        this.markers.push(marker);
+
+        // Allow for showing an information popup upon clicking a marker.
         var info_window = this.info_window;
         google_maps.event.addListener(marker, 'click', function () {
             info_window.setContent(info_window_html);
@@ -102,6 +117,7 @@ define([
             url: '/ps/api/sightings/?plant=' + plant_name,   // TODO: URL base
             context: this
         }).done(function (json) {
+            this.clear_markers();
             for (var i = 0; i < json.sightings.length; i++) {
                 var sighting = json.sightings[i];
                 var title = this.get_sighting_location(sighting);
