@@ -258,7 +258,20 @@ def ajax_image_upload(request):
                 # Since we're technically editing the user's profile by 
                 # uploading an avatar, create a user profile if they don't
                 # have one. Otherwise, this avatar image ends up in limbo.
-                UserProfile.objects.get_or_create(user=request.user)
+                profile, created = UserProfile.objects.get_or_create(user=request.user)
+                if not created:
+                    # Flag all previous, unscreened avatars as "orphaned,"
+                    # since the user has essentially changed his mind and
+                    # uploaded this new image.
+                    previous_avatars = ScreenedImage.objects.filter(
+                            image_type='AVATAR',
+                            uploaded_by=request.user,
+                            screened__isnull=True,
+                            deleted=False,
+                            orphaned=False,
+                            uploaded__lt=new_image.uploaded
+                    )
+                    previous_avatars.update(orphaned=True)
 
             response.update({
                 'id': new_image.pk,
