@@ -13,10 +13,16 @@ class Command(NoArgsCommand):
             dest='days_old',
             default=7,
             help='Minimum age of the file (in days) to be considered for deletion. Defaults to %default days.'),
+        make_option('--dry-run',
+            action='store_true',
+            dest='dry_run',
+            default=False,
+            help='Do a dry run. Report what would be deleted, but make no deletions or changes.'),
         )
 
     def handle_noargs(self, **options):
         days_old = options['days_old']
+        dry_run = options['dry_run']
         verbosity = options['verbosity']
         if verbosity >= '1':
             self.stdout.write('Removing rejected or orphaned images uploaded more than {0} days ago.\n'.format(
@@ -54,10 +60,11 @@ class Command(NoArgsCommand):
                 if verbosity >= '3':
                     self.stdout.write('Deleting image: {0}\n'.format(stale_image.image.path))
                     self.stdout.write('Deleting thumbnail: {0}\n'.format(stale_image.thumb.path))
-                stale_image.image.storage.delete(stale_image.image.name)
-                stale_image.thumb.storage.delete(stale_image.thumb.name)
-                stale_image.deleted = True
-                stale_image.save()
+                if not dry_run:
+                    stale_image.image.storage.delete(stale_image.image.name)
+                    stale_image.thumb.storage.delete(stale_image.thumb.name)
+                    stale_image.deleted = True
+                    stale_image.save()
 
         if verbosity >= '1':
             self.stdout.write('Cleanup complete.\n')
