@@ -261,9 +261,19 @@ body.plantshare {
         }
     }
     &#sightings {
-        #main ul {
-            line-height: normal;
-            margin: 18px 0 0;
+        #main > ul {
+            margin-top: 14px;
+            > li {
+                float: left;
+                margin-bottom: 14px;
+                ul {
+                    margin-left: 200px;
+                    margin-top: -20px;
+                    li {
+                        clear: left;
+                    }
+                }
+            }
         }
     }
     &.sighting {

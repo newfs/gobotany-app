@@ -8,12 +8,18 @@
 {% block main_content %}
 <h1>Recent Sightings</h1>
 
+{% regroup sightings by created as created_date_list %}
+
 <ul>
-{% for sighting in sightings %}
-    <li><a
-        href="{% url ps-sighting sighting.id %}">{{ sighting.identification }}
-        at {{ sighting.location }}</a>, posted by {{ sighting.user }}
-        on {{ sighting.created }}
+{% for sightings in created_date_list %}
+    <li>{{ sightings.grouper }}
+    <ul>
+        {% for sighting in sightings.list %}
+            <li><a
+                href="{% url ps-sighting sighting.id %}">{{ sighting.identification }}
+                at {{ sighting.location }}</a> by {{ sighting.user }}</li>
+        {% endfor %}
+    </ul>
     </li>
 {% endfor %}
 </ul>
