@@ -173,13 +173,17 @@ body.plantshare {
 
     #sightings-locator {
         h3 {
+            display: inline-block;
+            float: left;
             font-size: 14px;
+            line-height: 22px;
+            margin: 0 7px 5px 0;
         }
         input {
             border: 0 none;
             float: left;
             height: 22px;
-            margin: 5px 0;
+            margin: 0 0 5px 0;
             padding: 0 2px 0 12px;
             &[type='text'] {
                 background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -0px -334px;
@@ -257,9 +261,12 @@ body.plantshare {
         }
     }
     &#sightings {
-        .sightings-list {
-            line-height: normal;
-            margin-bottom: 12px;
+        #latest {
+            margin-top: 18px;
+            + ul {
+                line-height: normal;
+                margin-bottom: 12px;
+            }
         }
     }
     &.sighting {
