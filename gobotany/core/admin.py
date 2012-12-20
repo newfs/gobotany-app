@@ -11,11 +11,19 @@ from gobotany.core import models
 
 class _Base(admin.ModelAdmin):
 
-    def get_fieldsets(self, request, obj):
-        return [(None, {
-            'description': self.__doc__,
-            'fields': self.fields,
-            })]
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = super(_Base, self).get_fieldsets(request, obj)
+        for fieldset in fieldsets:
+            options = fieldset[1]
+            if options.get('description'):
+                continue
+            if not self.__doc__:
+                continue
+            prefix = '{% load gobotany_tags %}\n'
+            template = Template(prefix + self.__doc__)
+            context = Context({'obj': obj})
+            options['description'] = template.render(context)
+        return fieldsets
 
     class Media:
         css = {'all': ('/static/admin_styles.css',)}
@@ -418,8 +426,27 @@ class FamilyAdmin(GobotanyAdminBase):
     inlines = [ContentImageInline]
     search_fields = ('name', 'common_name')
 
-class GenusAdmin(FamilyAdmin):
-    list_filter = ('family',)
+
+class GenusAdmin(_Base):
+    """
+
+    <p>
+    Each Genus object represents a taxonomic genus,
+    and makes a “Genus page” available where users
+    can learn more about a particular genus and its species.
+    To assign a species to a genus or remove it later,
+    visit the species here in the admin interface
+    and use its Genus pull-down menu.
+    </p>
+
+    {% if obj %}
+    <p>
+    You can visit the Go Botany page for this genus here:<br>
+    <a href="{{ obj|url }}">{{ obj|url }}</a>
+    </p>
+    {% endif %}
+
+    """
 
 
 class PartnerSiteAdmin(_Base):
@@ -443,12 +470,7 @@ class PartnerSiteAdmin(_Base):
     and let them log in here to edit their own species list or data.
     </p>
 
-    <p>
-    foo
-    </p>
-
     """
-    fields = ('short_name', 'users')
     filter_horizontal = ('users',)
 
     # TODO: assignment of species to partner
