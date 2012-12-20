@@ -1,0 +1,36 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+{% load mapping_tags %}
+
+{% block title %}Sightings Locator: PlantShare{% endblock %}
+
+{% block js_require %}
+    require(['util/suggester_init', 'plantshare/sightings']);
+{% endblock %}
+
+{% block body_attributes %}id="locator" class="plantshare"{% endblock %}
+
+{% block main_content %}
+<h1>Sightings Locator</h1>
+
+<form id="sightings-locator">
+    <h3>Show recent plant sightings for</h3>
+    
+    {% csrf_token %}
+    <input type="text" autocomplete="off"
+        name="plant-name"
+        id="plant-name"
+        placeholder="scientific or common name"
+        class="suggest"
+        data-suggest-url="{% url site-plant-name-suggestions %}?q=%s"
+        data-align-menu-inside-input="true"
+        data-submit-on-select="true">
+    <input type="submit" value="Go">
+
+    {% sightings_map latitude=map.latitude longitude=map.longitude center_title=map.center_title height="524px" width="710px" zoom="6" id="sightings-map" %}
+</form>
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}

@@ -108,6 +108,11 @@ def sightings_view(request):
         # For an unsupported HTTP method, return a Bad Request response.
         return HttpResponse(status=400)
 
+def sightings_locator_view(request):
+    return render_to_response('sightings_locator.html', {
+                'map': SIGHTINGS_MAP_DEFAULTS
+           }, context_instance=RequestContext(request))
+
 def sighting_view(request, sighting_id):
     """View for an individual sighting."""
     s = Sighting.objects.get(id=sighting_id)

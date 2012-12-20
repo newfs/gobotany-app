@@ -15,6 +15,8 @@ urlpatterns = patterns(
 
     # Sightings
     url(r'^sightings/$', views.sightings_view, name='ps-sightings'),
+    url(r'^sightings/locator/$', views.sightings_locator_view,
+        name='ps-sightings-locator'),
     url(r'^sightings/(?P<sighting_id>[0-9]+)/$', views.sighting_view,
         name='ps-sighting'),
 

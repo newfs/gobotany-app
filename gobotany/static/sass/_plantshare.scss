@@ -250,8 +250,6 @@ body.plantshare {
         } /* end .mini */
     } /* end #sightings-locator */
 
-    &#plantshare {
-    }
     &#new-sighting {
         h1 + div {
             background: #fff;
@@ -261,12 +259,9 @@ body.plantshare {
         }
     }
     &#sightings {
-        #latest {
-            margin-top: 18px;
-            + ul {
-                line-height: normal;
-                margin-bottom: 12px;
-            }
+        #main ul {
+            line-height: normal;
+            margin: 18px 0 0;
         }
     }
     &.sighting {

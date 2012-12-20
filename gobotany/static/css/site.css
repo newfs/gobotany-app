@@ -977,8 +977,7 @@ body.plantshare #sightings-locator.mini .box form p { line-height: 14px; margin:
 body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px; }
 body.plantshare #sightings-locator.mini .box .map { clear: none; border-bottom: 0; border-right: 0; border-top: 0; float: right; margin-top: 0; }
 body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; }
-body.plantshare#sightings #latest { margin-top: 18px; }
-body.plantshare#sightings #latest + ul { line-height: normal; margin-bottom: 12px; }
+body.plantshare#sightings #main ul { line-height: normal; margin: 18px 0 0; }
 body.plantshare.sighting .map { float: right; }
 body.plantshare.sighting form label { text-transform: none; }
 body.plantshare.sighting form fieldset { border: 0; margin: 0 0 16px; padding: 0; width: 684px; }
