@@ -5,7 +5,8 @@
         {{ form.non_field_errors }}
 
         {{ form.identification.errors }}
-        <label for="id_identification">Identification of plant *</label>
+        <label for="id_identification">Identification of plant
+            (required)</label>
         {{ form.identification }}
 
         {{ form.notes.errors }}
@@ -16,7 +17,7 @@
             <legend>Location</legend>
 
             {{ form.location.errors }}
-            <label for="id_location">Location *</label>
+            <label for="id_location">Location (required)</label>
             <div class="location">
                 {{ form.location }}
                 {% location_map location="Framingham, MA" height_px="150" width_px="302" zoom="7" id="id_location_map" %}
