@@ -96,7 +96,11 @@ class UserProfile(models.Model):
         whether or not it has been approved by staff.  This should ONLY appear to
         the user himself. '''
         latest_avatars = ScreenedImage.objects.filter(
-                uploaded_by=self.user, image_type='AVATAR').order_by('-uploaded')
+                uploaded_by=self.user, 
+                image_type='AVATAR',
+                deleted=False,
+                orphaned=False
+                ).order_by('-uploaded')
         if len(latest_avatars) > 0:
             this_avatar = latest_avatars[0]
             avatar_info = {
@@ -167,13 +171,17 @@ class Sighting(models.Model):
         ''' Return photos which have either not been screened, or are screened
         and approved.  This should only be used on views shown only to the user
         who uploaded the photos. '''
-        return self.photos.exclude(screened__isnull=False, is_approved=False)
+        return self.photos.exclude(
+                screened__isnull=False,
+                is_approved=False
+                ).exclude(deleted=True).exclude(orphaned=True)
 
     def approved_photos(self):
         ''' Return only photos which have been screened and approved.
         Use this method for any view where someone other than the owner
         will see these photos.'''
-        return self.photos.filter(is_approved=True)
+        return self.photos.filter(is_approved=True, deleted=False,
+                orphaned=False)
 
 if settings.DEBUG:
     # Local, debug upload
