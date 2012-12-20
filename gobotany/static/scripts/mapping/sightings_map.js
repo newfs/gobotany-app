@@ -22,7 +22,7 @@ define([
     };
 
     SightingsMap.prototype.setup = function () {
-        var lat_long = new google.maps.LatLng(this.latitude, this.longitude);
+        var lat_long = new google_maps.LatLng(this.latitude, this.longitude);
         var map_options = {
             center: lat_long,
             zoom: 6,
@@ -79,7 +79,8 @@ define([
     SightingsMap.prototype.add_marker = function (latitude, longitude, title,
                                                   info_window_html) {
         var lat_long = new google_maps.LatLng(latitude, longitude);
-        var marker = new google.maps.Marker({
+        var marker = new google_maps.Marker({
+            animation: google_maps.Animation.DROP,
             position: lat_long,
             map: this.map,
             title: title
