@@ -193,6 +193,11 @@ def screen_images(request):
         for image in approved_images:
             if image.image_type == 'AVATAR' and image.is_approved:
                 profile = UserProfile.objects.get(user=image.uploaded_by)
+                if profile.avatar:
+                    # Orphan the user's previous avatars for later deletion
+                    old_avatar = profile.avatar
+                    old_avatar.orphaned = True
+                    old_avatar.save()
                 profile.avatar = image
                 profile.save()
 
