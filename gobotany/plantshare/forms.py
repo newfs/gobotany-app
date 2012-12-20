@@ -64,12 +64,6 @@ class NewSightingForm(forms.Form):
         # __init__, an error occurs. Using reverse_lazy alone does not work.
         # http://stackoverflow.com/questions/7430502/
     )
-    title = forms.CharField(
-        max_length=120,
-        widget=forms.TextInput({
-            'required': 'required',
-        })
-    )
     notes = forms.CharField(
         required=False,
         widget=forms.Textarea(),

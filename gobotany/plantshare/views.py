@@ -67,11 +67,10 @@ def sightings_view(request):
             location.save()
 
             identification = form.cleaned_data['identification']
-            title = form.cleaned_data['title']
             notes = form.cleaned_data['notes']
             location_notes = form.cleaned_data['location_notes']
             sighting = Sighting(user=request.user,
-                                identification=identification, title=title,
+                                identification=identification, title='',
                                 notes=notes, location=location,
                                 location_notes=location_notes)
 
