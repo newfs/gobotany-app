@@ -55,7 +55,12 @@ def plantshare_view(request):
            }, context_instance=RequestContext(request))
 
 def sightings_view(request):
-    """View for the sightings collection, and handling new sightings."""
+    """View for the sightings collection: showing a list of recent sightings
+    (GET) as well as handling adding a new sighting (the POST action from
+    the new-sighting form).
+    """
+    MAX_RECENT_SIGHTINGS = 50
+
     if request.method == 'POST':
         # Handle posting a new sighting to the sightings collection.
         # TODO: require login for just this HTTP verb.
@@ -91,7 +96,7 @@ def sightings_view(request):
     elif request.method == 'GET':
         # Return a representation of the collection of sightings.
         sightings = []
-        for sighting in Sighting.objects.all()[:10]:
+        for sighting in Sighting.objects.all()[:MAX_RECENT_SIGHTINGS]:
             sightings.append({
                 'id': sighting.id,
                 'identification': sighting.identification,
@@ -101,8 +106,7 @@ def sightings_view(request):
             })
 
         return render_to_response('sightings.html', {
-                    'sightings': sightings,
-                    'map': SIGHTINGS_MAP_DEFAULTS
+                    'sightings': sightings
                }, context_instance=RequestContext(request))
     else:
         # For an unsupported HTTP method, return a Bad Request response.
