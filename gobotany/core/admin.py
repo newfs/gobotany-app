@@ -422,8 +422,26 @@ class CharacterValueAdmin(GobotanyAdminBase):
     ordering = ('character__short_name',)
 
 
-class FamilyAdmin(GobotanyAdminBase):
-    inlines = [ContentImageInline]
+class FamilyAdmin(_Base):
+    """
+
+    <p>
+    Each Family object represents a taxonomic genus,
+    and makes a “family page” available where users
+    can learn more about a particular family and its species.
+    To assign a species to a family or remove it later,
+    visit the species here in the admin interface
+    and use its Family pull-down menu.
+    </p>
+
+    {% if obj %}
+    <p>
+    You can visit the Go Botany page for this family here:<br>
+    <a href="{{ obj|url }}">{{ obj|url }}</a>
+    </p>
+    {% endif %}
+
+    """
     search_fields = ('name', 'common_name')
 
 
@@ -432,7 +450,7 @@ class GenusAdmin(_Base):
 
     <p>
     Each Genus object represents a taxonomic genus,
-    and makes a “Genus page” available where users
+    and makes a “genus page” available where users
     can learn more about a particular genus and its species.
     To assign a species to a genus or remove it later,
     visit the species here in the admin interface
@@ -447,7 +465,7 @@ class GenusAdmin(_Base):
     {% endif %}
 
     """
-
+    search_fields = ('name', 'common_name')
 
 class PartnerSiteAdmin(_Base):
     """
