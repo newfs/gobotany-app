@@ -36,16 +36,18 @@ define([
         this.info_window = new google_maps.InfoWindow(info_window_options);
     };
 
-    SightingsMap.prototype.get_sighting_location = function (sighting) {
+    SightingsMap.prototype.get_sighting_title = function (plant_name,
+                                                          sighting) {
         var location = sighting.location;
         if (location === undefined || location.length === 0) {
             location = sighting.latitude + ', ' + sighting.longitude;
         }
-        return location;
-    }
+        return '<i>' + plant_name + '</i> at ' + location;
+    };
 
-    SightingsMap.prototype.build_info_window_html = function (sighting) {
-        var title = this.get_sighting_location(sighting);
+    SightingsMap.prototype.build_info_window_html = function (plant_name,
+                                                              sighting) {
+        var title = this.get_sighting_title(plant_name, sighting);
         var html = '<div class="info-window"><h5>' + title + '</h5>';
         if (sighting.user !== undefined) {
             html += '<p>by ' + sighting.user;
@@ -54,8 +56,9 @@ define([
             }
             html += '</p>';
         }
-        if (sighting.photos !== undefined) {
+        if (sighting.photos !== undefined && sighting.photos.length > 0) {
             var photo_url = sighting.photos[0];
+            console.log('photo_url:', photo_url);
             html += ' <img src="' + photo_url + '">';
         }
         html += '<p>';
@@ -65,15 +68,16 @@ define([
             var description = sighting.description.substr(0,
                 this.MAX_INFO_DESC_LENGTH);
             if (sighting.description.length > this.MAX_INFO_DESC_LENGTH) {
-                description += '... ';
+                description += '...';
             }
             html += description;
         }
+        html += '</p>';
         if (sighting.id !== undefined) {
-            html += '<a href="/ps/sightings/' + sighting.id +
-                    '/">more</a>';
+            html += '<p><a href="/ps/sightings/' + sighting.id +
+                    '/">more</a></p>';
         }
-        html += '</p></div>';
+        html += '</div>';
         return html;
     };
 
@@ -120,8 +124,9 @@ define([
             this.clear_markers();
             for (var i = 0; i < json.sightings.length; i++) {
                 var sighting = json.sightings[i];
-                var title = this.get_sighting_location(sighting);
-                var info_window_html = this.build_info_window_html(sighting);
+                var title = this.get_sighting_title(plant_name, sighting);
+                var info_window_html = this.build_info_window_html(plant_name,
+                                                                   sighting);
                 this.add_marker(sighting.latitude, sighting.longitude,
                                 title, info_window_html);
             }

@@ -7,7 +7,8 @@
     class="plantshare sighting"{% endblock %}
 
 {% block main_content %}
-<h1>Sighting: {{ sighting.identification }} at {{ sighting.location }}</h1>
+<h1>Sighting: <i>{{ sighting.identification }}</i> at
+    {{ sighting.location }}</h1>
 
 {% location_map location=sighting.location height_px="150" width_px="302" zoom="7" id="id_location_map" %}
 
