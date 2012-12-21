@@ -149,7 +149,7 @@
         "fields": {
             "city": "Chester",
             "user_input": "Chester, VT",
-            "longitude": 72.591665,
+            "longitude": -72.591665,
             "state": "VT",
             "postal_code": null,
             "latitude": 43.265372
