@@ -35,16 +35,6 @@ class GobotanyAdminBase(admin.ModelAdmin):
             "all": ("/static/admin_styles.css",)
             }
 
-class TaxonCharacterValueForm(forms.ModelForm):
-    class Meta:
-        model = models.TaxonCharacterValue
-
-class TaxonCharacterValueAdmin(GobotanyAdminBase):
-    model = models.TaxonCharacterValue
-    form = TaxonCharacterValueForm
-    search_fields = ('taxon__scientific_name',
-                     'character_value__character__short_name')
-
 class TaxonSynonymInline(admin.StackedInline):
     model = models.Synonym
     extra = 1
@@ -511,5 +501,4 @@ admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.CharacterValue, CharacterValueAdmin)
 admin.site.register(models.Taxon, TaxonAdmin)
-admin.site.register(models.TaxonCharacterValue, TaxonCharacterValueAdmin)
 admin.site.register(models.PartnerSite, PartnerSiteAdmin)
