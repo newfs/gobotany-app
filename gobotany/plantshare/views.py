@@ -95,8 +95,10 @@ def sightings_view(request):
             return _new_sighting_form_page(request, form)
     elif request.method == 'GET':
         # Return a representation of the collection of sightings.
+        sightings_queryset = Sighting.objects.all().select_related().\
+            prefetch_related('location')[:MAX_RECENT_SIGHTINGS]
         sightings = []
-        for sighting in Sighting.objects.all()[:MAX_RECENT_SIGHTINGS]:
+        for sighting in sightings_queryset:
             sightings.append({
                 'id': sighting.id,
                 'identification': sighting.identification,
