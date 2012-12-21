@@ -42,7 +42,8 @@ define([
         if (location === undefined || location.length === 0) {
             location = sighting.latitude + ', ' + sighting.longitude;
         }
-        return '<i>' + plant_name + '</i> at ' + location;
+        return '<i>' + plant_name + '</i> at ' +
+            location.charAt(0).toUpperCase() + location.substring(1);
     };
 
     SightingsMap.prototype.build_info_window_html = function (plant_name,

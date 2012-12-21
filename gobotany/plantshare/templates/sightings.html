@@ -16,8 +16,9 @@
     <ul>
         {% for sighting in sightings.list %}
             <li><a
-                href="{% url ps-sighting sighting.id %}">{{ sighting.identification }}
-                at {{ sighting.location }}</a> by {{ sighting.user }}</li>
+                href="{% url ps-sighting sighting.id %}"><i>{{ sighting.identification }}</i>
+                at {{ sighting.location|capfirst }}</a>
+                by {{ sighting.user }}</li>
         {% endfor %}
     </ul>
     </li>

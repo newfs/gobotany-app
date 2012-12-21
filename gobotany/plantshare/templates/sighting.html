@@ -8,7 +8,7 @@
 
 {% block main_content %}
 <h1>Sighting: <i>{{ sighting.identification }}</i> at
-    {{ sighting.location }}</h1>
+    {{ sighting.location|capfirst }}</h1>
 
 {% location_map location=sighting.location height_px="150" width_px="302" zoom="7" id="id_location_map" %}
 
