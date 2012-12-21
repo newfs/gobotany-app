@@ -978,7 +978,7 @@ body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px
 body.plantshare #sightings-locator.mini .box .map { clear: none; border-bottom: 0; border-right: 0; border-top: 0; float: right; margin-top: 0; }
 body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; }
 body.plantshare#locator h3 { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 24px; }
-body.plantshare#locator #status { float: right; line-height: 24px; }
+body.plantshare#locator #status { display: none; /* initially hide, until updating value via JS */ float: right; line-height: 24px; }
 body.plantshare#sightings #main > ul { margin-top: 14px; }
 body.plantshare#sightings #main > ul > li { float: left; margin-bottom: 14px; }
 body.plantshare#sightings #main > ul > li ul { margin-left: 200px; margin-top: -20px; }

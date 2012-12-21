@@ -70,6 +70,7 @@ define([
     };
 
     SightingsMap.prototype.show_sightings_count = function (sightings_count) {
+        $('#status').show();
         $('#status span').html(sightings_count);
     };
 

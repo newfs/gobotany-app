@@ -267,6 +267,7 @@ body.plantshare {
             line-height: 24px;
         }
         #status {
+            display: none;  /* initially hide, until updating value via JS */
             float: right;
             line-height: 24px;
         }
