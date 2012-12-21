@@ -4,7 +4,7 @@
  * The map requires that this be set up at onload, not at jQuery ready. */
 define([
     'bridge/jquery',
-    'mapping/sightings_map'
+    'plantshare/sightings_map'
 ], function ($, SightingsMap) {
 
     function SightingsLocatorPart(locator_element_css) {
