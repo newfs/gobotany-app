@@ -69,6 +69,10 @@ define([
         return html;
     };
 
+    SightingsMap.prototype.show_sightings_count = function (sightings_count) {
+        $('#status span').html(sightings_count);
+    };
+
     SightingsMap.prototype.show_plant = function (plant_name) {
         // Get sightings data from the server and show them on the map.
         $.ajax({
@@ -76,7 +80,9 @@ define([
             context: this
         }).done(function (json) {
             this.clear_markers();
-            for (var i = 0; i < json.sightings.length; i++) {
+            var sightings_count = json.sightings.length;
+            this.show_sightings_count(sightings_count);
+            for (var i = 0; i < sightings_count; i++) {
                 var sighting = json.sightings[i];
                 var title = this.get_sighting_title(plant_name, sighting);
                 var info_window_html = this.build_info_window_html(plant_name,

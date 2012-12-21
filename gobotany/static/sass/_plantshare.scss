@@ -260,6 +260,17 @@ body.plantshare {
             padding: 5px $section-padding;
         }
     }
+    &#locator {
+        h3 {
+            font-family: $body-font;
+            font-size: 12px;
+            line-height: 24px;
+        }
+        #status {
+            float: right;
+            line-height: 24px;
+        }
+    }
     &#sightings {
         #main > ul {
             margin-top: 14px;
