@@ -445,7 +445,7 @@ class GlossaryTermAdmin(_Base):
 
     """
     list_display = ('term', 'lay_definition', 'visible')
-    search_fields = ('term', 'lay_definition', 'question_text')
+    search_fields = ('term', 'lay_definition')
     ordering = ('term',)
     list_filter = ('visible',)
 

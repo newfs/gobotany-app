@@ -73,7 +73,6 @@ class GlossaryTerm(models.Model):
     """
     term = models.CharField(max_length=100)
     lay_definition = models.TextField(blank=True)
-    question_text = models.TextField(blank=True)
     hint = models.TextField(blank=True)
     visible = models.BooleanField(default=True)  # whether to show in glossary
     is_highlighted = models.BooleanField(default=True)
@@ -85,11 +84,10 @@ class GlossaryTerm(models.Model):
 
     class Meta:
         # Don't allow duplicate definitions
-        unique_together = ('term', 'lay_definition', 'question_text')
+        unique_together = ('term', 'lay_definition')
 
     def __unicode__(self):
-        return u'%s: %s' % (self.term, (self.lay_definition or
-                                        self.question_text)[:30] + '...')
+        return u'%s: %s' % (self.term, self.lay_definition)
 
 
 class Character(models.Model):
