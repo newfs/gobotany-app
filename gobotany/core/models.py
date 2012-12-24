@@ -287,18 +287,6 @@ class Pile(PileInfo):
     sample_species_images = models.ManyToManyField(
         'ContentImage', related_name='sample_for_piles', through='PileImage')
 
-    def simplekey_species(self):
-        # This helper function was added to produce a list of Simple Key
-        # species for plant subgroup pages for the search engine indexes.
-        # So far, only the Go Botany partner site is supported. (So far
-        # we do not build separate search indexes for partner sites.)
-        partner = PartnerSite.objects.get(short_name='gobotany')
-        partner_simple_key_species = PartnerSpecies.objects.filter(
-            partner=partner, simple_key=True)
-        simplekey_species = [species for species in self.species
-                             if species in partner_simple_key_species]
-        return simplekey_species
-
 
 class PileImage(models.Model):
     """Intermediary model used to govern the many-to-many relationship
