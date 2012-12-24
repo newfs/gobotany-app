@@ -3,9 +3,12 @@
 from operator import itemgetter
 from django.contrib import admin
 from django.contrib.contenttypes import generic
+from django.db import models as dbmodels
 from django.template import Context, Template
 from django import forms
 from gobotany.core import models
+
+from django.forms import TextInput, Textarea
 
 # View classes
 
@@ -394,11 +397,6 @@ class PileAdmin(GobotanyAdminBase):
     filter_horizontal = ('species',)
     inlines = [PilePlantPreviewCharactersInline]
 
-class CharacterAdmin(GobotanyAdminBase):
-    list_display = ('short_name', 'character_group', 'ease_of_observability',)
-    search_fields = ('short_name', 'name',)
-    list_filter = ('character_group',)
-
 
 class GlossaryTermAdmin(GobotanyAdminBase):
     list_display = ('term', 'lay_definition', 'visible')
@@ -407,9 +405,57 @@ class GlossaryTermAdmin(GobotanyAdminBase):
     list_filter = ('visible',)
 
 
-class CharacterValueAdmin(GobotanyAdminBase):
-    search_fields = ('character__short_name', 'value_str')
-    ordering = ('character__short_name',)
+# This is the frontier between classes that have been vetted for
+# acceptable semantics and performance (the ones below this comment),
+# and those that have not (above).
+
+
+class CharacterValuesInline(admin.TabularInline):
+    model = models.CharacterValue
+    extra = 0
+    fields = ('value_str', 'friendly_text', 'image')
+    formfield_overrides = {
+        dbmodels.TextField: {'widget': Textarea(attrs={'rows':4})},
+        }
+
+    def queryset(self, request):
+        """Only show character values for text-type characters."""
+        qs = super(CharacterValuesInline, self).queryset(request)
+        qs = qs.filter(character__value_type=u'TEXT')
+        return qs
+
+class CharacterAdmin(_Base):
+    """
+
+    <p>
+    Each character describes a plant characteristic
+    that users can employ to filter their plant selection
+    in the Simple Key and Full Key.
+    A character with a “Value type” of “Length” only needs
+    to specify its unit of measurement,
+    while a character that is “Textual” offers a set of pre-defined
+    multiple choice options that should be specified
+    down at the bottom of this form
+    as a list of “Character values.”
+    </p>
+
+    {% if obj.pile %}
+    <p>
+    You can edit the value of this character
+    for all of the plants in its pile here:<br>
+    <a href="/edit/cv/{{ obj.pile.slug }}/{{ obj.short_name }}/"
+            >/edit/cv/{{ obj.pile.slug }}/{{ obj.short_name }}/</a>
+    </p>
+    {% endif %}
+
+    """
+    list_display = ('short_name', 'character_group', 'ease_of_observability',)
+    list_filter = ('character_group',)
+    search_fields = ('short_name', 'name',)
+    inlines = [CharacterValuesInline]
+
+    class Media:
+        css = {'all' : ('css/admin_hide_original.css',)}
 
 
 class FamilyAdmin(_Base):
@@ -457,6 +503,7 @@ class GenusAdmin(_Base):
     """
     search_fields = ('name', 'common_name')
 
+
 class PartnerSiteAdmin(_Base):
     """
 
@@ -486,19 +533,20 @@ class PartnerSiteAdmin(_Base):
     # a "list_display" cannot handle m2m
     # "filter_horizontal" complains because m2m has extra fields
 
+
 # Registrations
 
 admin.site.register(models.Parameter)
-admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.ContentImage)
 admin.site.register(models.HomePageImage)
 admin.site.register(models.ImageType)
-admin.site.register(models.Family, FamilyAdmin)
-admin.site.register(models.Genus, GenusAdmin)
 admin.site.register(models.PileGroup, PileGroupAdmin)
 admin.site.register(models.Pile, PileAdmin)
 admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.CharacterGroup)
-admin.site.register(models.CharacterValue, CharacterValueAdmin)
 admin.site.register(models.Taxon, TaxonAdmin)
+
+admin.site.register(models.Character, CharacterAdmin)
+admin.site.register(models.Family, FamilyAdmin)
+admin.site.register(models.Genus, GenusAdmin)
 admin.site.register(models.PartnerSite, PartnerSiteAdmin)
