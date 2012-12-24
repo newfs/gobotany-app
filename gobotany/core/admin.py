@@ -402,16 +402,52 @@ class PileAdmin(GobotanyAdminBase):
     inlines = [PilePlantPreviewCharactersInline]
 
 
-class GlossaryTermAdmin(GobotanyAdminBase):
+# This is the frontier between classes that have been vetted for
+# acceptable semantics and performance (the ones below this comment),
+# and those that have not (above).
+
+
+class GlossaryTermAdmin(_Base):
+    """
+
+    <p>
+    Glossary terms affect the Go Botany site in three different ways.
+    </p>
+    <p>
+    First, terms can appear in search results
+    when the user types a search term into the text-input field
+    over on the right side of the site navigation bar.
+    </p>
+    <p>
+    Second, each glossary term
+    whose <b>“Visible”</b> button is checked in the form below
+    appears, along with its definition and accompanying image (if any),
+    in our glossary pages, which you can visit here:
+    </p>
+    <p>
+    <a href="/glossary/">/glossary/</a>
+    </p>
+    <p>
+    Third, there are many pages on the site
+    that highlight any glossary terms that happen to appear
+    in the various paragraphs and descriptions displayed on the page.
+    A glossary term is eligible for highlighting
+    if its <b>“Is highlighted”</b> box is checked in the form below.
+    When the user mouses over a glossary term,
+    a popup displays the definition and any accompanying image.
+    To see an example,
+    mouse over the words “gametophyte” and “sporophyte”
+    at the head of the Dichotomous Key:
+    </p>
+    <p>
+    <a href="/dkey/">/dkey/</a>
+    </p>
+
+    """
     list_display = ('term', 'lay_definition', 'visible')
     search_fields = ('term', 'lay_definition', 'question_text')
     ordering = ('term',)
     list_filter = ('visible',)
-
-
-# This is the frontier between classes that have been vetted for
-# acceptable semantics and performance (the ones below this comment),
-# and those that have not (above).
 
 
 class CharacterValuesInline(admin.TabularInline):
@@ -564,10 +600,10 @@ admin.site.register(models.HomePageImage)
 admin.site.register(models.ImageType)
 admin.site.register(models.PileGroup, PileGroupAdmin)
 admin.site.register(models.Pile, PileAdmin)
-admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.Taxon, TaxonAdmin)
 
+admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.Family, FamilyAdmin)
 admin.site.register(models.Genus, GenusAdmin)
