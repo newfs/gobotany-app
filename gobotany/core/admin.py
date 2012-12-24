@@ -8,7 +8,7 @@ from django.template import Context, Template
 from django import forms
 from gobotany.core import models
 
-from django.forms import TextInput, Textarea
+from django.forms import Textarea
 
 # View classes
 
@@ -16,6 +16,7 @@ class _Base(admin.ModelAdmin):
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = super(_Base, self).get_fieldsets(request, obj)
+
         for fieldset in fieldsets:
             options = fieldset[1]
             if options.get('description'):
@@ -24,8 +25,11 @@ class _Base(admin.ModelAdmin):
                 continue
             prefix = '{% load gobotany_tags %}\n'
             template = Template(prefix + self.__doc__)
-            context = Context({'obj': obj})
-            options['description'] = template.render(context)
+            options['description'] = template.render(Context({
+                'obj': obj,
+                'piles': models.Pile.objects,
+                }))
+
         return fieldsets
 
     class Media:
@@ -428,9 +432,15 @@ class CharacterAdmin(_Base):
     """
 
     <p>
-    Each character describes a plant characteristic
+    A “character” is a plant characteristic
     that users can employ to filter their plant selection
     in the Simple Key and Full Key.
+    Once a character has been created,
+    the “edit page” for that character can be visited
+    to assign each plant in the database
+    can be given a  value for a given character.
+    </p>
+    <p>
     A character with a “Value type” of “Length” only needs
     to specify its unit of measurement,
     while a character that is “Textual” offers a set of pre-defined
@@ -445,6 +455,18 @@ class CharacterAdmin(_Base):
     for all of the plants in its pile here:<br>
     <a href="/edit/cv/{{ obj.pile.slug }}/{{ obj.short_name }}/"
             >/edit/cv/{{ obj.pile.slug }}/{{ obj.short_name }}/</a>
+    </p>
+    {% else %}
+    <p>
+    You can edit the value of this character
+    for the plants in each pile of the Simple Key:
+    </p>
+    <p>
+    {% for pile in piles.all %}
+    {{ pile.name }} —
+    <a href="/edit/cv/{{ pile.slug }}/{{ obj.short_name }}/"
+            >/edit/cv/{{ pile.slug }}/{{ obj.short_name }}/</a><br>
+    {% endfor %}
     </p>
     {% endif %}
 
