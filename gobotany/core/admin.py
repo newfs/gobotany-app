@@ -432,7 +432,7 @@ class GlossaryTermAdmin(_Base):
     that highlight any glossary terms that happen to appear
     in the various paragraphs and descriptions displayed on the page.
     A glossary term is eligible for highlighting
-    if its <b>“Is highlighted”</b> box is checked in the form below.
+    if its <b>“Highlight”</b> box is checked in the form below.
     When the user mouses over a glossary term,
     a popup displays the definition and any accompanying image.
     To see an example,

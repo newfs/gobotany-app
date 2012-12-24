@@ -1100,7 +1100,7 @@ class Importer(object):
                 ).set(
                 lay_definition=row['definition'],
                 visible=True,
-                is_highlighted=row['is_highlighted'],
+                highlight=row['is_highlighted'],
                 )
 
         glossaryterm_table.save()

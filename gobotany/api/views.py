@@ -92,7 +92,7 @@ def glossary_blob(request):
     across our current glossary.
 
     """
-    glossaryterms = list(GlossaryTerm.objects.filter(is_highlighted=True)
+    glossaryterms = list(GlossaryTerm.objects.filter(highlight=True)
                          .extra(where=['CHAR_LENGTH(term) > 2']))
     definitions = { gt.term: gt.lay_definition for gt in glossaryterms }
 
