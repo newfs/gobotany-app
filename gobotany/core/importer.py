@@ -1098,7 +1098,6 @@ class Importer(object):
             glossaryterm_table.get(
                 term=row['term'],
                 ).set(
-                hint='',
                 lay_definition=row['definition'],
                 visible=True,
                 is_highlighted=row['is_highlighted'],
