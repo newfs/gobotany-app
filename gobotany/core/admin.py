@@ -508,6 +508,57 @@ class PilePlantPreviewCharactersInline(admin.TabularInline):
         }
 
 class PileAdmin(_Base):
+    """
+
+    <p>
+    Each Pile is a collection of plant species
+    that is presented to the user as a grid or list
+    when they reach “level 3” of the Simple Key or Full Key.
+    </p>
+    <p>
+    The user first sees information about a Pile
+    when they have chosen a Pile Group
+    from the “level 1” page which starts the Simple Key and Full Key.
+    The <b>Pilegroup</b> field shown below
+    determines which Pile Group the user has to visit
+    in order to see this Pile listed as an option
+    on the Pile Group's “level 2” page.
+    Next to an image gallery for the pile,
+    the user will see paragraphs of information
+    pulled from the large text fields defined below.
+    </p>
+    <p>
+    If the images, text fields, and pile name
+    make the user interested in this particular pile,
+    then the user will select it and be taken to the “level 3” page
+    that shows a grid or list of all this pile's plants.
+    To add and remove plants from this pile,
+    please visit the admin page for the Taxon instances that interest you
+    where you can set the Piles to which each Taxa belongs.
+    </p>
+    <p>
+    The initial filters that get displayed
+    in the left toolbar of the level 3 page
+    are defined by the “Plant preview characters” list
+    down at the bottom of this form.
+    By assigning each preview character an “order” integer,
+    you can assure that the filters appear in the order you want.
+    Each partner site can have its own list of preview characters.
+    </p>
+    {% if obj %}
+    <p>
+    You can visit the Simple Key page for this pile at:<br>
+    <a href="/simple/{{ obj.pilegroup.slug }}/{{ obj.slug }}/"
+            >/simple/{{ obj.pilegroup.slug }}/{{ obj.slug }}/</a>
+    </p>
+    <p>
+    And the Full Key page for this pile is here:<br>
+    <a href="/full/{{ obj.pilegroup.slug }}/{{ obj.slug }}/"
+            >/full/{{ obj.pilegroup.slug }}/{{ obj.slug }}/</a>
+    </p>
+    {% endif %}
+
+    """
     search_fields = ('name',)
 
     fields = ('slug', 'name', 'pilegroup',
