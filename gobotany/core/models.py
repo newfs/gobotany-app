@@ -147,8 +147,10 @@ class Character(models.Model):
         ordering = ['short_name']
 
     def __unicode__(self):
-        return u'%s name="%s" id=%s' % (self.short_name, self.name,
-                                      self.id)
+        if self.short_name[-3:-2] == '_':
+            return u'%s (%s)' % (self.name, self.short_name[-2:])
+        else:
+            return u'%s' % (self.name)
 
 
 class CharacterValue(models.Model):
@@ -252,11 +254,11 @@ class PileInfo(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     friendly_name = models.CharField(max_length=100, blank=True)
     friendly_title = models.CharField(max_length=100, blank=True)
-    description = models.CharField(max_length=2500, blank=True)
+    description = models.TextField(blank=True)
     images = generic.GenericRelation('ContentImage')
     video = models.ForeignKey('Video', null=True)
     key_characteristics = tinymce_models.HTMLField(blank=True)
-    notable_exceptions = models.TextField(blank=True)
+    notable_exceptions = tinymce_models.HTMLField(blank=True)
 
     class Meta:
         abstract = True
@@ -696,12 +698,12 @@ class PlantPreviewCharacter(models.Model):
     order = models.IntegerField()
 
     class Meta:
-        ordering = ['order']
+        ordering = ('partner_site', 'order')
         unique_together = ('pile', 'character', 'partner_site')
 
     def __unicode__(self):
-        return '%d: %s (%s)' % (self.order, self.character.friendly_name,
-                                self.pile.name)
+        return '%s %d: %s' % (self.pile.name, self.order,
+                              self.character.friendly_name)
 
 
 class Distribution(models.Model):

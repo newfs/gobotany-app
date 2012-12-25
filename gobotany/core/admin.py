@@ -1,14 +1,12 @@
 # -*- encoding: utf-8 -*-
 
 from operator import itemgetter
+from django import forms
 from django.contrib import admin
 from django.contrib.contenttypes import generic
 from django.db import models as dbmodels
 from django.template import Context, Template
-from django import forms
 from gobotany.core import models
-
-from django.forms import Textarea
 
 # View classes
 
@@ -382,24 +380,9 @@ class PileDefaultFiltersForm(forms.ModelForm):
         model = models.Pile.plant_preview_characters.through
     list_display = ('character')
 
-class PilePlantPreviewCharactersForm(forms.ModelForm):
-    class Meta:
-        model = models.Pile.plant_preview_characters.through
-    list_display = ('character')
-
-class PilePlantPreviewCharactersInline(admin.StackedInline):
-    model = models.Pile.plant_preview_characters.through
-    form = PilePlantPreviewCharactersForm
-    extra = 1
-
 class PileGroupAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     prepopulated_fields = {"slug": ("slug",)}
-
-class PileAdmin(GobotanyAdminBase):
-    search_fields = ('name',)
-    filter_horizontal = ('species',)
-    inlines = [PilePlantPreviewCharactersInline]
 
 
 # This is the frontier between classes that have been vetted for
@@ -455,7 +438,7 @@ class CharacterValuesInline(admin.TabularInline):
     extra = 0
     fields = ('value_str', 'friendly_text', 'image')
     formfield_overrides = {
-        dbmodels.TextField: {'widget': Textarea(attrs={'rows':4})},
+        dbmodels.TextField: {'widget': forms.Textarea(attrs={'rows':4})},
         }
 
     def queryset(self, request):
@@ -511,6 +494,26 @@ class CharacterAdmin(_Base):
     list_filter = ('character_group',)
     search_fields = ('short_name', 'name',)
     inlines = [CharacterValuesInline]
+
+    class Media:
+        css = {'all' : ('css/admin_hide_original.css',)}
+
+
+class PilePlantPreviewCharactersInline(admin.TabularInline):
+    model = models.Pile.plant_preview_characters.through
+    extra = 0
+    fields = ('partner_site', 'order', 'character')
+    formfield_overrides = {
+        dbmodels.IntegerField: {'widget': forms.TextInput(attrs={'size': 3})},
+        }
+
+class PileAdmin(_Base):
+    search_fields = ('name',)
+
+    fields = ('slug', 'name', 'pilegroup',
+              'friendly_title', 'friendly_name', 'video',
+              'description', 'key_characteristics', 'notable_exceptions')
+    inlines = [PilePlantPreviewCharactersInline]
 
     class Media:
         css = {'all' : ('css/admin_hide_original.css',)}
@@ -599,12 +602,12 @@ admin.site.register(models.ContentImage)
 admin.site.register(models.HomePageImage)
 admin.site.register(models.ImageType)
 admin.site.register(models.PileGroup, PileGroupAdmin)
-admin.site.register(models.Pile, PileAdmin)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.Taxon, TaxonAdmin)
 
 admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.Character, CharacterAdmin)
+admin.site.register(models.Pile, PileAdmin)
 admin.site.register(models.Family, FamilyAdmin)
 admin.site.register(models.Genus, GenusAdmin)
 admin.site.register(models.PartnerSite, PartnerSiteAdmin)
