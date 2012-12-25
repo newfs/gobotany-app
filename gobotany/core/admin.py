@@ -375,11 +375,6 @@ class TaxonAdmin(GobotanyAdminBase):
     #     s = super(TaxonAdmin, self)
     #     return s.formfield_for_manytomany(db_field, request, **kwargs)
 
-class PileDefaultFiltersForm(forms.ModelForm):
-    class Meta:
-        model = models.Pile.plant_preview_characters.through
-    list_display = ('character')
-
 class PileGroupAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     prepopulated_fields = {"slug": ("slug",)}
