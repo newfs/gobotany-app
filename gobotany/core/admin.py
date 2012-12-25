@@ -375,10 +375,6 @@ class TaxonAdmin(GobotanyAdminBase):
     #     s = super(TaxonAdmin, self)
     #     return s.formfield_for_manytomany(db_field, request, **kwargs)
 
-class PileGroupAdmin(admin.ModelAdmin):
-    search_fields = ('name',)
-    prepopulated_fields = {"slug": ("slug",)}
-
 
 # This is the frontier between classes that have been vetted for
 # acceptable semantics and performance (the ones below this comment),
@@ -565,6 +561,45 @@ class PileAdmin(_Base):
         css = {'all' : ('css/admin_hide_original.css',)}
 
 
+class PileGroupAdmin(_Base):
+    """
+
+    <p>
+    When the user selects Simple Key or the Full Key,
+    they are shown the key's “level 1” page,
+    which is a list of every one of these Pile Group objects
+    defined in the database.
+    Each Pile Group is described by the text in the fields below.
+    Once the user has selected a Pile Group,
+    they are taken to that Pile Group's “level 2” page
+    which lists the Piles inside of the group.
+    A pile can be assigned to a groups
+    either by visiting the admin page for the pile
+    and changing its <b>Pilegroup</b> field,
+    or by using the horizonal selection widget below.
+    </p>
+    {% if obj %}
+    <p>
+    You can visit the Simple Key page for this pile group at:<br>
+    <a href="/simple/{{ obj.slug }}/"
+            >/simple/{{ obj.slug }}/</a>
+    </p>
+    <p>
+    And the Full Key page for this pile group is here:<br>
+    <a href="/full/{{ obj.slug }}/"
+            >/full/{{ obj.slug }}/</a>
+    </p>
+    {% endif %}
+
+    """
+    # prepopulated_fields = {"slug": ("slug",)} ?
+    search_fields = ('name',)
+
+    fields = ('slug', 'name',
+              'friendly_title', 'friendly_name', 'video',
+              'description', 'key_characteristics', 'notable_exceptions')
+
+
 class FamilyAdmin(_Base):
     """
 
@@ -647,13 +682,13 @@ admin.site.register(models.Parameter)
 admin.site.register(models.ContentImage)
 admin.site.register(models.HomePageImage)
 admin.site.register(models.ImageType)
-admin.site.register(models.PileGroup, PileGroupAdmin)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.Taxon, TaxonAdmin)
 
 admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.Pile, PileAdmin)
+admin.site.register(models.PileGroup, PileGroupAdmin)
 admin.site.register(models.Family, FamilyAdmin)
 admin.site.register(models.Genus, GenusAdmin)
 admin.site.register(models.PartnerSite, PartnerSiteAdmin)
