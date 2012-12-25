@@ -6,8 +6,8 @@
 
 <p>
   {% for pile in piles %}
-    <a href="{{ pile.slug }}/">{{ pile.slug }}</a>
-    — {{ pile.name }}
+    {{ pile.name }}
+    — <a href="{{ pile.slug }}-characters/">characters</a>
     <br>
   {% endfor %}
 </p>
