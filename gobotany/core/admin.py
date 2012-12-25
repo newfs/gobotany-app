@@ -597,7 +597,7 @@ class PileGroupAdmin(_Base):
 
     fields = ('slug', 'name',
               'friendly_title', 'friendly_name', 'video',
-              'description', 'key_characteristics', 'notable_exceptions')
+              'key_characteristics', 'notable_exceptions')
 
 
 class FamilyAdmin(_Base):

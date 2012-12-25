@@ -238,7 +238,6 @@ class Importer(object):
             pilegroup.get(
                 slug = slugify(row['name']),
                 ).set(
-                description = '',
                 friendly_name = row['friendly_name'],
                 friendly_title = row['friendly_title'],
                 key_characteristics = clean(row['key_characteristics']),

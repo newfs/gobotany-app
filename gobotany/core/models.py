@@ -254,7 +254,6 @@ class PileInfo(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     friendly_name = models.CharField(max_length=100, blank=True)
     friendly_title = models.CharField(max_length=100, blank=True)
-    description = models.TextField(blank=True)
     images = generic.GenericRelation('ContentImage')
     video = models.ForeignKey('Video', null=True)
     key_characteristics = tinymce_models.HTMLField(blank=True)
@@ -282,6 +281,7 @@ class PileInfo(models.Model):
 
 class Pile(PileInfo):
     """An informal grouping of species distinguished by common characters."""
+    description = models.TextField(blank=True)
     species = models.ManyToManyField('Taxon', related_name='+')
     pilegroup = models.ForeignKey('PileGroup', related_name='piles', null=True)
     plant_preview_characters = models.ManyToManyField(Character,
