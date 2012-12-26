@@ -93,6 +93,9 @@ span.all-species-button, span.simple-key-button, .save-button {
         border-top: 1px solid $orange1;
         padding: 2px;
         background-color: darken($body_bg, 5);
+        &:hover {
+            background-color: darken($body_bg, 5);
+        }
     }
 }
 

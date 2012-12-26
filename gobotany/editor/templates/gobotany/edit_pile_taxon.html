@@ -23,9 +23,10 @@
   <div class="charactername">{{ character.name }}</div>
   {% for value in character.values %}
   <div>
-    <i></i><b data-cv="{{ value.id }}"
-              {% if value.checked %}class="x"{% endif %}
-              >{{ value.value_str }}</b>
+    <b data-cv="{{ value.id }}" {% if value.checked %}class="x"{% endif %}>
+       •   {{ value.value_str }}
+      {% if value.friendly_text %}— {{ value.friendly_text }}{% endif %}
+    </b>
   </div>
   {% endfor %}
   {% endfor %}
@@ -38,9 +39,10 @@
   <div class="charactername">{{ character.name }}</div>
   {% for value in character.values %}
   <div>
-    <i></i><b data-cv="{{ value.id }}"
-              {% if value.checked %}class="x"{% endif %}
-              >{{ value.value_str }}</b>
+    <b data-cv="{{ value.id }}" {% if value.checked %}class="x"{% endif %}>
+       •   {{ value.value_str }}
+      {% if value.friendly_text %}— {{ value.friendly_text }}{% endif %}
+    </b>
   </div>
   {% endfor %}
   {% endfor %}
