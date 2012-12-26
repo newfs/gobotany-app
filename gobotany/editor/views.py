@@ -21,7 +21,7 @@ def piles_view(request):
 @permission_required('botanist')
 def pile_characters(request, pile_slug):
     return render_to_response('gobotany/pile_characters.html', {
-        'general_characters': models.Character.objects.filter(
+        'common_characters': models.Character.objects.filter(
             short_name__in=models.COMMON_CHARACTERS),
         'pile' : get_object_or_404(models.Pile, slug=pile_slug),
         }, context_instance=RequestContext(request))

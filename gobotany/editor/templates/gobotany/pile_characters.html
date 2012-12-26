@@ -6,10 +6,10 @@
 
 <h1>Characters in {{ pile.name }}</h1>
 
-<h2>General characters</h2>
+<h2>Common characters</h2>
 
 <p>
-  {% for character in general_characters %}
+  {% for character in common_characters %}
     <a href="{{ character.short_name }}/">{{ character.short_name }}</a>
     — {{ character.friendly_name }}
     <br>
