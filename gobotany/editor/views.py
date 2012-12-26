@@ -124,12 +124,32 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
     pile = get_object_or_404(models.Pile, slug=pile_slug)
     taxon = get_object_or_404(models.Taxon, scientific_name=name)
 
-    # We build a list of characters.
+    common_characters = list(models.Character.objects.filter(
+            short_name__in=models.COMMON_CHARACTERS, value_type=u'TEXT'))
+    pile_characters = list(pile.characters.filter(value_type=u'TEXT'))
+
+    tcvlist = list(models.TaxonCharacterValue.objects.filter(taxon=taxon))
+    value_map = {(tcv.taxon_id, tcv.character_value_id): tcv
+                 for tcv in tcvlist}
+
+    # Yield a sequence of characters.
     # Each character has .values, a sorted list of character values
     # Each value has .checked, indicating that the species has it.
 
+    def annotated_characters(characters):
+        def generator():
+            for character in characters:
+                character.values = list(character.character_values.all())
+                character.values.sort(key=character_value_key)
+                for value in character.values:
+                    value.checked = (taxon.id, value.id) in value_map
+                yield character
+        return generator
+
     return render_to_response('gobotany/edit_pile_taxon.html', {
+        'common_characters': annotated_characters(common_characters),
         'pile': pile,
+        'pile_characters': annotated_characters(pile_characters),
         'taxon': taxon,
         }, context_instance=RequestContext(request))
 
