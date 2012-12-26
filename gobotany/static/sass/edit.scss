@@ -50,6 +50,8 @@ span.all-species-button, span.simple-key-button, .save-button {
         }
     }
 
+    /* Editing a single character for many taxa: */
+
     span {
         margin: 0px 2px;
         background-color: $orange1;
@@ -88,6 +90,13 @@ span.all-species-button, span.simple-key-button, .save-button {
             padding: 0;
         }
     }
+}
+
+/* Styles specific to editing all characters of a single taxon, kept
+   separate here in the hopes of not slowing down the browser when it is
+   trying to render a full-out character grid as specified above. */
+
+.taxon-character-grid {
 
     .charactername {
         border-top: 1px solid $orange1;
@@ -96,6 +105,15 @@ span.all-species-button, span.simple-key-button, .save-button {
         &:hover {
             background-color: darken($body_bg, 5);
         }
+    }
+
+    label {
+        display: inline-block;
+        padding: 4px 2px;
+    }
+
+    :checked, :checked + label {
+        background-color: $text_green; color: white;
     }
 }
 

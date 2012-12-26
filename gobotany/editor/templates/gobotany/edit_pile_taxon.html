@@ -16,17 +16,21 @@
   <span class="save-button">SAVE CHANGES</span>
 </p>
 
+<form>
+
 <h2>Common characters</h2>
 
-<div class="pile-character-grid">
+<div class="pile-character-grid taxon-character-grid">
   {% for character in common_characters %}
   <div class="charactername">{{ character.name }}</div>
   {% for value in character.values %}
   <div>
-    <b data-cv="{{ value.id }}" {% if value.checked %}class="x"{% endif %}>
-       •   {{ value.value_str }}
+    <input id="b{{ value.id }}" type="checkbox" value="{{ value.value_str }}"
+           {% if value.checked %}checked{% endif %}>
+    <label for="b{{ value.id }}">
+      {{ value.value_str }}
       {% if value.friendly_text %}— {{ value.friendly_text }}{% endif %}
-    </b>
+    </label>
   </div>
   {% endfor %}
   {% endfor %}
@@ -34,19 +38,23 @@
 
 <h2>Pile-specific characters</h2>
 
-<div class="pile-character-grid">
+<div class="pile-character-grid taxon-character-grid">
   {% for character in pile_characters %}
   <div class="charactername">{{ character.name }}</div>
   {% for value in character.values %}
   <div>
-    <b data-cv="{{ value.id }}" {% if value.checked %}class="x"{% endif %}>
-       •   {{ value.value_str }}
+    <input id="b{{ value.id }}" type="checkbox" value="{{ value.value_str }}"
+           {% if value.checked %}checked{% endif %}>
+    <label for="b{{ value.id }}">
+      {{ value.value_str }}
       {% if value.friendly_text %}— {{ value.friendly_text }}{% endif %}
-    </b>
+    </label>
   </div>
   {% endfor %}
   {% endfor %}
 </div>
+
+</form>
 
 <script>
   character_values = {{ values_json|safe }};
