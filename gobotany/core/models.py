@@ -520,8 +520,7 @@ class WetlandIndicator(models.Model):
 
 class Taxon(models.Model):
     """Despite its general name, this currently represents a single species."""
-    # TODO: taxa should probably have a "slug" as well, to prevent us
-    # from having to create them on the fly in Javascript
+
     scientific_name = models.CharField(max_length=100, unique=True)
     piles = models.ManyToManyField(
         Pile, through=Pile.species.through, related_name='+', blank=True)
@@ -552,6 +551,9 @@ class Taxon(models.Model):
 
     def __unicode__(self):
         return u'%s id=%s' % (self.scientific_name, self.id)
+
+    def slug(self):
+        return self.scientific_name.lower().replace(' ', '-')
 
     def genus_name(self):
         """Determine the genus name without incurring a database query."""

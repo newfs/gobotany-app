@@ -1,0 +1,15 @@
+{% extends "gobotany/_edit_base.html" %}
+
+{% block body_content %}
+
+<p>← return to <a href="..">pile list</a></p>
+
+<h1>Taxa in {{ pile.name }}</h1>
+
+<p>
+  {% for taxon in pile.species.all %}
+    <a href="{{ taxon.slug }}/"><i>{{ taxon.scientific_name }}</i></a>
+    <br>
+  {% endfor %}
+</p>
+{% endblock %}

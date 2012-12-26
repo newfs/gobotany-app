@@ -19,8 +19,8 @@ def piles_view(request):
         }, context_instance=RequestContext(request))
 
 @permission_required('botanist')
-def pile_view(request, pile_slug):
-    return render_to_response('gobotany/edit_pile.html', {
+def pile_characters(request, pile_slug):
+    return render_to_response('gobotany/pile_characters.html', {
         'general_characters': models.Character.objects.filter(
             short_name__in=models.COMMON_CHARACTERS),
         'pile' : get_object_or_404(models.Pile, slug=pile_slug),
@@ -108,6 +108,29 @@ def edit_pile_character(request, pile_slug, character_slug):
         'pile': pile,
         'values': values,
         'values_json': json.dumps([value.value_str for value in values]),
+        }, context_instance=RequestContext(request))
+
+@permission_required('botanist')
+def pile_taxa(request, pile_slug):
+    return render_to_response('gobotany/pile_taxa.html', {
+        'pile' : get_object_or_404(models.Pile, slug=pile_slug),
+        }, context_instance=RequestContext(request))
+
+@permission_required('botanist')
+def edit_pile_taxon(request, pile_slug, taxon_slug):
+
+    name = taxon_slug.capitalize().replace('-', ' ')
+
+    pile = get_object_or_404(models.Pile, slug=pile_slug)
+    taxon = get_object_or_404(models.Taxon, scientific_name=name)
+
+    # We build a list of characters.
+    # Each character has .values, a sorted list of character values
+    # Each value has .checked, indicating that the species has it.
+
+    return render_to_response('gobotany/edit_pile_taxon.html', {
+        'pile': pile,
+        'taxon': taxon,
         }, context_instance=RequestContext(request))
 
 def character_value_key(cv):
