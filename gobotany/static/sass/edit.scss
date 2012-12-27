@@ -98,22 +98,35 @@ span.all-species-button, span.simple-key-button, .save-button {
 
 .taxon-character-grid {
 
+    div {
+        clear: both;
+    }
+
     .charactername {
+        margin-top: 1em;
         border-top: 1px solid $orange1;
-        padding: 2px;
+        padding: 4px;
         background-color: darken($body_bg, 5);
         &:hover {
             background-color: darken($body_bg, 5);
         }
     }
 
+    input {
+        float: left;
+        margin: 4px 8px 4px 2px;
+    }
+
     label {
-        display: inline-block;
+        cursor: pointer;
+        display: block;
         padding: 4px 2px;
+        white-space: normal;
     }
 
     :checked, :checked + label {
-        background-color: $text_green; color: white;
+        background-color: $text_green;
+        color: white;
     }
 }
 

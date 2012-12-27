@@ -28,9 +28,11 @@ span.all-species-button, span.simple-key-button, .save-button { cursor: pointer;
 .pile-character-grid b.changed { border-style: solid; border-color: #dc9402; border-width: 4px 2px; padding: 0; }
 
 /* Styles specific to editing all characters of a single taxon, kept separate here in the hopes of not slowing down the browser when it is trying to render a full-out character grid as specified above. */
-.taxon-character-grid .charactername { border-top: 1px solid #dc9402; padding: 2px; background-color: #ebebab; }
+.taxon-character-grid div { clear: both; }
+.taxon-character-grid .charactername { margin-top: 1em; border-top: 1px solid #dc9402; padding: 4px; background-color: #ebebab; }
 .taxon-character-grid .charactername:hover { background-color: #ebebab; }
-.taxon-character-grid label { display: inline-block; padding: 4px 2px; }
+.taxon-character-grid input { float: left; margin: 4px 8px 4px 2px; }
+.taxon-character-grid label { cursor: pointer; display: block; padding: 4px 2px; white-space: normal; }
 .taxon-character-grid :checked, .taxon-character-grid :checked + label { background-color: #519136; color: white; }
 
 .value-tips div { display: none; position: absolute; padding: 0.5em; background-color: #fafae9; border: 2px solid #dc9402; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #d3d344; -moz-box-shadow: 0px 1px 4px #d3d344; box-shadow: 0px 1px 4px #d3d344; }
