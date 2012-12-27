@@ -1,5 +1,6 @@
 import os
 import urlparse
+import hashlib
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -196,8 +197,19 @@ else:
     upload_storage = Storage()
 
 def rename_image_by_type(instance, filename):
-    return '{0}.png'.format('_'.join([instance.image_type.lower(),
-        instance.uploaded_by.username]))
+    # Create a checksum so we have a unique name
+    md5 = hashlib.md5()
+    f = instance.image
+    if f.multiple_chunks():
+        for chunk in f.chunks():
+            md5.update(chunk)
+    else:
+        md5.update(f.read())
+
+    new_name = '{0}_{1}.png'.format(instance.uploaded_by.username.lower(),
+            md5.hexdigest())
+
+    return os.path.join(instance.image_type.lower(), new_name)
 
 
 class ScreenedImage(models.Model):
