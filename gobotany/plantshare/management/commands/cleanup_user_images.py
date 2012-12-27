@@ -31,7 +31,9 @@ class Command(NoArgsCommand):
         from django.conf import settings
 
         # Get all the images which are either already approved, or not yet screened
-        active_images = ScreenedImage.objects.exclude(is_approved=False, screened__isnull=False)
+        # Exclude any images that are either already deleted or orphaned
+        active_images = ScreenedImage.objects.exclude(deleted=True).exclude(
+                orphaned=True).exclude(is_approved=False, screened__isnull=False)
         active_files = []
         active_thumbs = []
         for image in active_images:
@@ -62,8 +64,11 @@ class Command(NoArgsCommand):
 
         # Make really REALLY sure we're not deleting something we shouldn't
         for stale_image in stale_images:
-            if stale_image.image.path in active_files or stale_image.thumb.path in active_thumbs:
-                self.stdout.write('CONFLICT: Stale file at {0} matches active file at {1}.  Skipping deletion.\n')
+            conflict_image = stale_image.image.path in active_files
+            conflict_thumb = stale_image.thumb.path in active_thumbs
+            if conflict_image or conflict_thumb:
+                conflict_msg = 'CONFLICT: Stale file at {0} (thumb: {1}) matches an active file. Skipping deletion.\n'.format(stale_image.image.path, stale_image.thumb.path)
+                self.stdout.write(conflict_msg)
             else:
                 if verbosity >= '3':
                     self.stdout.write('Deleting image: {0}\n'.format(stale_image.image.path))
