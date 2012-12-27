@@ -129,12 +129,30 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
     pile_characters = list(pile.characters.filter(value_type=u'TEXT'))
 
     tcvlist = list(models.TaxonCharacterValue.objects.filter(taxon=taxon))
-    value_map = {(tcv.taxon_id, tcv.character_value_id): tcv
-                 for tcv in tcvlist}
+
+    # A POST updates the taxon and redirects, instead of rendering.
+
+    if request.method == 'POST':
+        tcvmap = {tcv.character_value_id: tcv for tcv in tcvlist}
+        value_settings = json.loads(request.POST['value_settings'])
+        for value_id, should_be_set in value_settings:
+            if should_be_set:
+                if value_id not in tcvmap:
+                    models.TaxonCharacterValue(
+                        taxon=taxon, character_value_id=value_id
+                        ).save()
+            else:
+                if value_id in tcvmap:
+                    tcvmap[value_id].delete()
+
+        return redirect(request.path)
 
     # Yield a sequence of characters.
     # Each character has .values, a sorted list of character values
     # Each value has .checked, indicating that the species has it.
+
+    value_map = {(tcv.taxon_id, tcv.character_value_id): tcv
+                 for tcv in tcvlist}
 
     def annotated_characters(characters):
         def generator():
@@ -156,6 +174,7 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
 def character_value_key(cv):
     """Return a sort key that puts 'NA' last."""
 
-    if cv.value_str == 'NA':
+    v = cv.value_str.lower()
+    if v == 'na':
         return 'zzzz'
-    return cv.value_str
+    return v

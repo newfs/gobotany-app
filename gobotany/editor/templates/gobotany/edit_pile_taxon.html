@@ -2,7 +2,7 @@
 
 {% block js_require %}
     require(['editor/cv'], function (edit) {
-        /* edit.setup_pile_character_page(); */
+        edit.setup_pile_taxon_page();
     });
 {% endblock %}
 
@@ -16,8 +16,6 @@
   <span class="save-button">SAVE CHANGES</span>
 </p>
 
-<form>
-
 <h2>Common characters</h2>
 
 <div class="pile-character-grid taxon-character-grid">
@@ -25,9 +23,10 @@
   <div class="charactername">{{ character.name }}</div>
   {% for value in character.values %}
   <div>
-    <input id="b{{ value.id }}" type="checkbox" value="{{ value.value_str }}"
+    <input id="cv{{ value.id }}" type="checkbox"
+           name="cv" value="{{ value.id }}"
            {% if value.checked %}checked{% endif %}>
-    <label for="b{{ value.id }}">
+    <label for="cv{{ value.id }}">
       {{ value.value_str }}
       {% if value.friendly_text %}— {{ value.friendly_text }}{% endif %}
     </label>
@@ -43,9 +42,10 @@
   <div class="charactername">{{ character.name }}</div>
   {% for value in character.values %}
   <div>
-    <input id="b{{ value.id }}" type="checkbox" value="{{ value.value_str }}"
+    <input id="cv{{ value.id }}" type="checkbox"
+           name="cv" value="{{ value.id }}"
            {% if value.checked %}checked{% endif %}>
-    <label for="b{{ value.id }}">
+    <label for="cv{{ value.id }}">
       {{ value.value_str }}
       {% if value.friendly_text %}— {{ value.friendly_text }}{% endif %}
     </label>
@@ -53,13 +53,6 @@
   {% endfor %}
   {% endfor %}
 </div>
-
-</form>
-
-<script>
-  character_values = {{ values_json|safe }};
-  grid_data = {{ grid|safe }};
-</script>
 
 {% csrf_token %}
 
