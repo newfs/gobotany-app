@@ -203,7 +203,8 @@ def screen_images(request):
                 profile.avatar = image
                 profile.save()
 
-    unscreened_images = ScreenedImage.objects.filter(screened=None)
+    unscreened_images = ScreenedImage.objects.filter(screened=None,
+            deleted=False, orphaned=False)
     formset = ScreeningFormSet(queryset=unscreened_images)
 
     context = {
