@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from optparse import make_option
-from django.core.management.base import NoArgsCommand, CommandError
-from django.db.models import Q
+from django.core.management.base import NoArgsCommand
 
 from gobotany.plantshare.models import ScreenedImage
 
@@ -27,8 +26,6 @@ class Command(NoArgsCommand):
         if verbosity >= '1':
             self.stdout.write('Removing rejected or orphaned images uploaded more than {0} days ago.\n'.format(
                 days_old))
-
-        from django.conf import settings
 
         # Get all the images which are either already approved, or not yet screened
         # Exclude any images that are either already deleted or orphaned
