@@ -56,9 +56,9 @@
                                 <span class="section-title">Exceptions</span>
                                 {{ pilegroup.notable_exceptions|removetags:"div"|safe|capfirst }}
                             </p>
-                            {% if pilegroup.youtube_id %}
+                            {% if pilegroup.video %}
                             <p class="vid">
-                                {% with pilegroup.youtube_id as youtube_id %}
+                                {% with pilegroup.video.youtube_id as youtube_id %}
                                 {% include "simplekey/_simplekey_video_link.html" with item_type="group" %}
                                 {% endwith %}
                             </p>

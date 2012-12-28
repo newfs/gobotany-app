@@ -110,9 +110,9 @@
                                     {{ pile.notable_exceptions|removetags:"div ul li"|safe }}
                                 {% endif %}
                             </p>
-                            {% if pile.youtube_id %}
+                            {% if pile.video %}
                             <p class="vid">
-                                {% with pile.youtube_id as youtube_id %}
+                                {% with pile.video.youtube_id as youtube_id %}
                                 {% include "simplekey/_simplekey_video_link.html" with item_type="subgroup" %}
                                 {% endwith %}
                             </p>
