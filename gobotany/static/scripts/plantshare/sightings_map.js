@@ -24,18 +24,22 @@ define([
     // Define methods
     
     SightingsMap.prototype.get_sighting_title = function (plant_name,
-                                                          sighting) {
+                                                          sighting,
+                                                          italicize_name) {
         var location = sighting.location;
         if (location === undefined || location.length === 0) {
             location = sighting.latitude + ', ' + sighting.longitude;
         }
-        return '<i>' + plant_name + '</i> at ' +
+        if (italicize_name === true) {
+            plant_name = '<i>' + plant_name + '</i>';
+        }
+        return plant_name + ' at ' +
             location.charAt(0).toUpperCase() + location.substring(1);
     };
 
     SightingsMap.prototype.build_info_window_html = function (plant_name,
                                                               sighting) {
-        var title = this.get_sighting_title(plant_name, sighting);
+        var title = this.get_sighting_title(plant_name, sighting, true);
         var html = '<div class="info-window"><h5>' + title + '</h5>';
         if (sighting.user !== undefined) {
             html += '<p>by ' + sighting.user;
@@ -85,7 +89,8 @@ define([
             this.show_sightings_count(sightings_count);
             for (var i = 0; i < sightings_count; i++) {
                 var sighting = json.sightings[i];
-                var title = this.get_sighting_title(plant_name, sighting);
+                var title = this.get_sighting_title(plant_name, sighting,
+                                                    false);
                 var info_window_html = this.build_info_window_html(plant_name,
                                                                    sighting);
                 this.add_marker(sighting.latitude, sighting.longitude,
