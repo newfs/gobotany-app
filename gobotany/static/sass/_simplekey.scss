@@ -1068,22 +1068,6 @@ ul.get-more-questions-menu {
 @media only screen and (max-width: 1024px) {
     body.skey {
         &.results {
-            /* Style the Level 3 page's questions list scrollbar differently
-             * because a regular scrollbar is not the expected way to scroll
-             * there, and has problems besides (arrows too small, vertical 
-             * bar not draggable). Instead, just present the thin vertical
-             * bar as an indicator that the area is scrollable and to provide
-             * feedback while swiping to scroll. */
-            #sidebar .scroll .jspVerticalBar {
-                border-left: 0;
-            }
-            #sidebar .scroll .jspTrack, #sidebar .scroll .jspArrowUp,
-            #sidebar .scroll .jspArrowDown {
-                background: none;
-            }
-            #sidebar .scroll .jspPane {
-                width: 227px !important;
-            }
             ul.option-list li:hover {
                 background: #fff;   /* No hover color */
             }
