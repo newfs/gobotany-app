@@ -82,7 +82,7 @@
                                 {% endif %}
                                 <p></p>{# Mockup for Issue #254: no 'friendly_name' for now #}
                             {% else %}
-                                <h2>{{ pile.friendly_title|lower|capfirst }}</h2>
+                                <h2>{{ pile.friendly_title|capfirst }}</h2>
                                 <p>{{ pile.friendly_name|capfirst }}</p>
                             {% endif %}
 
