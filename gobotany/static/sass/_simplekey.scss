@@ -337,6 +337,32 @@ body.skey {
                 margin: 0 0 10px 0;
                 overflow: auto;
                 width: 229px;
+                &::-webkit-scrollbar {
+                    width: 14px;
+                }
+                &::-webkit-scrollbar-button {
+                    background-color: #9cc86b;
+                    border-top: 1px solid #fff;
+                }
+                &::-webkit-scrollbar-button:vertical:decrement {
+                    background: url(/static/images/icons/arrow-up.jpg) no-repeat 0 0;
+                }
+                &::-webkit-scrollbar-button:vertical:increment {
+                    background: url(/static/images/icons/arrow-down.jpg) no-repeat 0 0;
+                }
+                &::-webkit-scrollbar-track {
+                    background-color: #fff;
+                    border-left: 1px solid #c3d941;
+                }
+                &::-webkit-scrollbar-thumb:vertical {
+                    background-color: #fff;
+                    border-left: 1px solid #c3d941;
+                    background-image: url(/static/images/layout/scroll-thumb-top.png),
+                        url(/static/images/layout/scroll-thumb-bottom.png),
+                        url(/static/images/layout/scroll-thumb.png);
+                    background-position: center top, center bottom, center;
+                    background-repeat: no-repeat, no-repeat, repeat-y;
+                }
             }
             .section {
                 &.instructions {

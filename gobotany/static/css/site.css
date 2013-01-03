@@ -757,6 +757,12 @@ body.skey.results p.list-all a { color: #508e31; cursor: pointer; }
 body.skey.results #sidebar { background-color: #fcfdf5; min-height: 800px; padding: 0 0 16px 0; /* end .option-list */ }
 body.skey.results #sidebar.tinted { background: #fcfdf5; }
 body.skey.results #sidebar .scroll { border-bottom: 1px solid #9cc86b; border-left: 1px solid #519136; border-top: 1px solid #519136; display: block; height: 335px; margin: 0 0 10px 0; overflow: auto; width: 229px; }
+body.skey.results #sidebar .scroll::-webkit-scrollbar { width: 14px; }
+body.skey.results #sidebar .scroll::-webkit-scrollbar-button { background-color: #9cc86b; border-top: 1px solid #fff; }
+body.skey.results #sidebar .scroll::-webkit-scrollbar-button:vertical:decrement { background: url(/static/images/icons/arrow-up.jpg) no-repeat 0 0; }
+body.skey.results #sidebar .scroll::-webkit-scrollbar-button:vertical:increment { background: url(/static/images/icons/arrow-down.jpg) no-repeat 0 0; }
+body.skey.results #sidebar .scroll::-webkit-scrollbar-track { background-color: #fff; border-left: 1px solid #c3d941; }
+body.skey.results #sidebar .scroll::-webkit-scrollbar-thumb:vertical { background-color: #fff; border-left: 1px solid #c3d941; background-image: url(/static/images/layout/scroll-thumb-top.png), url(/static/images/layout/scroll-thumb-bottom.png), url(/static/images/layout/scroll-thumb.png); background-position: center top, center bottom, center; background-repeat: no-repeat, no-repeat, repeat-y; }
 body.skey.results #sidebar .section.instructions { background: #9cc86b; color: #fff; padding: 16px; }
 body.skey.results #sidebar .section.instructions h5 { font-size: 14px; line-height: 120%; margin: 0; }
 body.skey.results #sidebar .section p.get-more { position: relative; /* for Brandon experiment */ font-size: 11px; line-height: 16px; margin: 0 0 20px; text-align: center; }
