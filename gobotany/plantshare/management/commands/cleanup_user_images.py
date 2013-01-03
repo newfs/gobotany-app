@@ -34,8 +34,8 @@ class Command(NoArgsCommand):
         active_files = []
         active_thumbs = []
         for image in active_images:
-            active_files.append(image.image.path)
-            active_thumbs.append(image.thumb.path)
+            active_files.append(image.image.url)
+            active_thumbs.append(image.thumb.url)
 
         if verbosity >= '3':
             self.stdout.write('Active Images:\n{0}\n'.format(active_files)) 
@@ -57,19 +57,19 @@ class Command(NoArgsCommand):
             self.stdout.write('Found {0} images to delete.\n'.format(len(stale_images)))
 
         if verbosity >= '3':
-            self.stdout.write('{0}\n'.format([image.image.path for image in stale_images]))
+            self.stdout.write('{0}\n'.format([image.image.url for image in stale_images]))
 
         # Make really REALLY sure we're not deleting something we shouldn't
         for stale_image in stale_images:
-            conflict_image = stale_image.image.path in active_files
-            conflict_thumb = stale_image.thumb.path in active_thumbs
+            conflict_image = stale_image.image.url in active_files
+            conflict_thumb = stale_image.thumb.url in active_thumbs
             if conflict_image or conflict_thumb:
-                conflict_msg = 'CONFLICT: Stale file at {0} (thumb: {1}) matches an active file. Skipping deletion.\n'.format(stale_image.image.path, stale_image.thumb.path)
+                conflict_msg = 'CONFLICT: Stale file at {0} (thumb: {1}) matches an active file. Skipping deletion.\n'.format(stale_image.image.url, stale_image.thumb.url)
                 self.stdout.write(conflict_msg)
             else:
                 if verbosity >= '3':
-                    self.stdout.write('Deleting image: {0}\n'.format(stale_image.image.path))
-                    self.stdout.write('Deleting thumbnail: {0}\n'.format(stale_image.thumb.path))
+                    self.stdout.write('Deleting image: {0}\n'.format(stale_image.image.url))
+                    self.stdout.write('Deleting thumbnail: {0}\n'.format(stale_image.thumb.url))
                 if not dry_run:
                     stale_image.image.storage.delete(stale_image.image.name)
                     stale_image.thumb.storage.delete(stale_image.thumb.name)
