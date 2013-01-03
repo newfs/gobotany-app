@@ -1068,11 +1068,13 @@ ul.get-more-questions-menu {
 @media only screen and (max-width: 1024px) {
     body.skey {
         &.results {
-            ul.option-list li:hover {
-                background: #fff;   /* No hover color */
-            }
-            ul.option-list li.active:hover {
-                background: #dce890;   /* Except active-filter hover color */
+            #sidebar {
+                ul.option-list li:hover {
+                    background: #fff;   /* No hover color */
+                }
+                ul.option-list li.active:hover {
+                    background: #dce890;   /* Except active-filter hover color */
+                }
             }
         }
     }

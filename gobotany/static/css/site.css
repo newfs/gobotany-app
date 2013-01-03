@@ -882,8 +882,8 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results h3.species-count-heading { white-space: nowrap; }
   body.skey.results .section + .section { margin-bottom: 16px; } }
 /* These styles apply to smartphones and tablets */
-@media only screen and (max-width: 1024px) { body.skey.results ul.option-list li:hover { background: #fff; /* No hover color */ }
-  body.skey.results ul.option-list li.active:hover { background: #dce890; /* Except active-filter hover color */ } }
+@media only screen and (max-width: 1024px) { body.skey.results #sidebar ul.option-list li:hover { background: #fff; /* No hover color */ }
+  body.skey.results #sidebar ul.option-list li.active:hover { background: #dce890; /* Except active-filter hover color */ } }
 /* End media queries styles for Simple and Full Keys */
 /* PlantShare */
 body.plantshare { /* end #sightings-locator */ /* end .info-section, .location-section */ }
