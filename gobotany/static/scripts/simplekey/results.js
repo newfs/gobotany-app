@@ -713,9 +713,15 @@ results_page_init: function(args) {
             var $filters = $('#sidebar ul li');
             var $new = $filters.slice($filters.length - items.length);
             animation.bright_change($new);
-            // TODO: replace the function below which scrolls to the
-            // bottom to reveal the new filters.
-            //scroll_pane.data('jsp').scrollToPercentY(100, true);
+            // Scroll to the bottom of the list to reveal the new filters. 
+            var $filter_list = $('#sidebar .scroll');
+            var scroll_position =
+                $filter_list[0].scrollHeight - $filter_list.height();
+            $filter_list.animate(
+                {scrollTop: scroll_position + 'px'},
+                'fast',
+                'swing'
+            );
         });
         utils.notify('More questions added');
     };
