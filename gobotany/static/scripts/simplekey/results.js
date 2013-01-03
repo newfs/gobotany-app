@@ -2,7 +2,6 @@ define([
     'util/document_is_ready',
     'bridge/jquery',
     'bridge/jquery.cookie',
-    'bridge/jquery.jscrollpane',
     'bridge/ember',
     'bridge/shadowbox',
     'util/shadowbox_init',
@@ -21,7 +20,7 @@ define([
     'util/glossarizer',
     'util/lazy_images'
 ], function(
-    document_is_ready, $, x1, x2, Ember, Shadowbox, shadowbox_init, _,
+    document_is_ready, $, x1, Ember, Shadowbox, shadowbox_init, _,
     App3, Filter, FilterController, animation, resources, ResultsPageState,
     results_overlay_init, SpeciesSection, working_area_module, utils,
     image_gallery, glossarizer, lazy_images
@@ -387,38 +386,6 @@ results_page_init: function(args) {
         App3.species_view_toggle.appendTo('#main');
     });
 
-    /* Because filters would otherwise constantly change the height of
-       the sidebar, we give them their own scrollbar. */
-
-    var scroll_pane = null;
-    var user_is_scrolling = true;
-
-    $.when(document_is_ready).done(function() {
-        scroll_pane = $('.scroll')
-            .bind('jsp-scroll-y', function(event) {
-                // Make sure this is not a reinitialise
-                if (user_is_scrolling)
-                    dismiss_any_working_area();
-            })
-            .jScrollPane({
-                maintainPosition: true,
-                stickToBottom: true,
-                verticalGutter: 0,
-                showArrows: true
-            });
-
-        // Re-initialise the scroll pain regularly because new
-        // filters will get drawn and because existing filters will
-        // change their height as values get set and cleared.  It
-        // can only resize when the working area is gone, however;
-        // adjusting the scroll pane closes the working area!
-
-        // setInterval(function() {
-        //     if (working_area === null)
-        //         scroll_pane.data('jsp').reinitialise();
-        // }, 500);
-    });
-
     /* All filters can be cleared with a single button click. */
     $.when(filter_controller_is_built, document_is_ready).done(function() {
         $('#sidebar a.clear-all-btn').click(function() {
@@ -746,8 +713,9 @@ results_page_init: function(args) {
             var $filters = $('#sidebar ul li');
             var $new = $filters.slice($filters.length - items.length);
             animation.bright_change($new);
-            scroll_pane.data('jsp').reinitialise();
-            scroll_pane.data('jsp').scrollToPercentY(100, true);
+            // TODO: replace the function below which scrolls to the
+            // bottom to reveal the new filters.
+            //scroll_pane.data('jsp').scrollToPercentY(100, true);
         });
         utils.notify('More questions added');
     };
