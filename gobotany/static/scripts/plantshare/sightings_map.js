@@ -74,8 +74,10 @@ define([
     };
 
     SightingsMap.prototype.show_sightings_count = function (sightings_count) {
-        $('#status').show();
-        $('#status span').html(sightings_count);
+        $('#sightings-status').css('margin-left', 'auto'); // for the mini map
+
+        $('#sightings-status').show();
+        $('#sightings-status span').html(sightings_count);
     };
 
     SightingsMap.prototype.show_plant = function (plant_name) {

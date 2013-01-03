@@ -235,6 +235,10 @@ body.plantshare {
                         line-height: 14px;
                         margin: 0;
                         padding: 0;
+                        &#sightings-status {
+                            margin-left: -1000px; /* hide until JS shows it */
+                            padding: 65px 0 0;
+                        }
                         &.full-link {
                             margin-top: 10px;
                         }
@@ -266,7 +270,7 @@ body.plantshare {
             font-size: 12px;
             line-height: 24px;
         }
-        #status {
+        #sightings-status {
             display: none;  /* initially hide, until updating value via JS */
             float: right;
             line-height: 24px;

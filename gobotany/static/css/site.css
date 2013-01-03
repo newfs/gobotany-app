@@ -938,11 +938,12 @@ body.plantshare #sightings-locator.mini .box form { float: left; padding: 0; wid
 body.plantshare #sightings-locator.mini .box form h3 { padding-top: 5px; }
 body.plantshare #sightings-locator.mini .box form h4 { clear: left; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; font-weight: bold; line-height: 14px; margin: 6px 0; padding-top: 8px; }
 body.plantshare #sightings-locator.mini .box form p { line-height: 14px; margin: 0; padding: 0; }
+body.plantshare #sightings-locator.mini .box form p#sightings-status { margin-left: -1000px; /* hide until JS shows it */ padding: 65px 0 0; }
 body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px; }
 body.plantshare #sightings-locator.mini .box .map { clear: none; border-bottom: 0; border-right: 0; border-top: 0; float: right; margin-top: 0; }
 body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; }
 body.plantshare#locator h3 { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 24px; }
-body.plantshare#locator #status { display: none; /* initially hide, until updating value via JS */ float: right; line-height: 24px; }
+body.plantshare#locator #sightings-status { display: none; /* initially hide, until updating value via JS */ float: right; line-height: 24px; }
 body.plantshare#sightings #main > ul { margin-top: 14px; }
 body.plantshare#sightings #main > ul > li { float: left; margin-bottom: 14px; }
 body.plantshare#sightings #main > ul > li ul { margin-left: 200px; margin-top: -20px; }
