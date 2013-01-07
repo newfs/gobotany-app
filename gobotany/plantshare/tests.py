@@ -397,11 +397,14 @@ class LocationModelTests(TestCase):
         location.save()
         self.assertEqual(location.postal_code, 'E7B 1A3')
 
-    def test_location_save_parses_input_latitude_longitude_numeric(self):
+    def test_location_save_parses_input_ignores_lat_long_numeric(self):
         location = Location(user_input='41.2342, -76.2928')
         location.save()
-        self.assertEqual(location.latitude, '41.2342')
-        self.assertEqual(location.longitude, '-76.2928')
+        # Because latitude and longitude are now parsed and geocoded
+        # from the client during form input instead, doing a save on the
+        # location model does not populate the individual fields.
+        self.assertEqual(location.latitude, None)
+        self.assertEqual(location.longitude, None)
 
     def test_location_save_parses_input_ignores_garbage_letters(self):
         location = Location(user_input='enutharocegusahosecsahkm')
