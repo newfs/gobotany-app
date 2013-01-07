@@ -182,7 +182,7 @@ class ModelTests(SampleData):
         plantpreview.order = 7
         plantpreview.save()
 
-        self.do_unicode(plantpreview, u'7: What color? (Carnivores)')
+        self.do_unicode(plantpreview, u'Carnivores 7: What color?')
 
     def test_CharacterValue_value_with_float(self):
         cv = models.CharacterValue()
