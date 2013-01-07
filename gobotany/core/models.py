@@ -103,7 +103,7 @@ class Character(models.Model):
         ...                                 name=u'Spore Form',
         ...                                 character_group=group)
         >>> char
-        <Character: spore_form_ly name="Spore Form" id=...>
+        <Character: Spore Form (ly)>
         >>> char.character_group.name
         u'characters of the spores'
 
