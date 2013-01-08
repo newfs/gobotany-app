@@ -329,25 +329,57 @@ def rebuild_split_remaining_non_monocots():
 
     # Alter the data as needed (remove plants, images, etc.).
 
-    # friendly_title (pile heading on the page)
+    # Pile heading on the page
     alt_pile.friendly_title = ('Other herbaceous, flowering plants with '
                                'alternate leaves')
-    alt_pile.save()
     non_alt_pile.friendly_title = ('Other herbaceous, flowering plants with '
                                    'opposite, whorled or no leaves')
-    non_alt_pile.save()
 
-    # friendly_name (pile subheading on the page)
+    # Pile subheading on the page
     # This is currently blank in the big pile, so leave it that way for
     # the split piles.
 
+    # Key characteristics section
+    alt_pile.key_characteristics = ('This very diverse group is generally '
+        'not woody, grass-like, or aquatic, and does not have composite '
+        'flower heads. These plants have alternate leaves that join the '
+        'stem at different levels, not opposite each other or in whorls; '
+        'be sure to look at the arrangement of leaves in the lower half of '
+        'the flowering stem.')
+    non_alt_pile.key_characteristics = ('These species are herbaceous plants '
+        'with only all basal, opposite, or whorled leaves; they are not '
+        'aquatic, grass-like, and do not have composite flower heads. Some '
+        'species are parasitic or lack green leaves.')
+
+    # Exceptions
+    alt_pile.notable_exceptions = ('Leaf arrangement can vary from the '
+        'bottom to top of the stem, or in young vs. older plants, so try to '
+        'look at several plants. Some crowded leaves may look opposite or '
+        'whorled, but look closely to see whether there is actually space '
+        'between them on the stem. Some species have narrow leaves where '
+        'it\'s hard to see the veins, so look for other features such as '
+        'petal number, presence of leaf teeth, etc.')
+    non_alt_pile.notable_exceptions = ('Leaf arrangement can vary from the '
+        'bottom to top of the stem, or in young vs. older plants, so try to '
+        'look at several plants. Some crowded leaves may look opposite or '
+        'whorled, but look closely to see whether there is actually space '
+        'between them on the stem. Some species have narrow leaves where '
+        'it\'s hard to see the veins, so look for other features such as '
+        'petal number, presence of leaf teeth, etc. Some species (such as '
+        'teasel or pincushions) have flower heads that look like those of '
+        'the aster family, but look closely: the flowers usually have four '
+        'tooth-like lobes (a rare condition in the aster family) and the '
+        'fruit is partially enclosed in a tubular bract.')
+
     # - images
     # - video
-    # - key_characteristics
-    # - notable_exceptions
     # - species (remove any that should not be included)
     # - sample_species_images (remove any that should not be included)
-    #
+
+    # Save all the changes.
+    alt_pile.save()
+    non_alt_pile.save()
+
     # Default filters:
     # - omit Leaf Arrangement from the Alternate pile
 
