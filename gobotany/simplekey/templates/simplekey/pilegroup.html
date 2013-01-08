@@ -27,40 +27,26 @@
                 <p class="tip">Please go through the subgroups in order.</p>
 
                 {% for pile, pile_images, pile_url in piles %}
+                    {# Exclude the big Remaining Non-Monocots pile #}
+                    {# because it gets split in two after import.  #}
+                    {% if not pile.slug == 'remaining-non-monocots' %}
                     <div class="list-item{% if forloop.last %} last{% endif %}">
                         <div class="img-gallery">
                             <div class="frame"></div>
                             <div class="img-container">
                                 <div class="images">
-                                    {# Mockup for Issue #254 #}
-                                    {% if key == 'full' and pile.slug == 'remaining-non-monocots' and forloop.counter == 3 %}
-                                        {# Start with the second image (basal leaves) #}
-                                        {% for content_image in pile_images|slice:"1:" %}
-                                            {% with content_image as i %}
-                                                {% with i.creator as photographer %}
-                                                <a href="{{ i.image_medium }}"
-                                                    rel="shadowbox[{{ pile.slug }}]"
-                                                    title="{% photo_credit i i.scientific_name %}">
-                                                    <img src="{{ i.thumb_large }}"
-                                                        alt="{% photo_credit i i.scientific_name %}">
-                                                </a>
-                                                {% endwith %}
+                                    {% for content_image in pile_images %}
+                                        {% with content_image as i %}
+                                            {% with i.creator as photographer %}
+                                            <a href="{{ i.image_medium }}"
+                                                rel="shadowbox[{{ pile.slug }}]"
+                                                title="{% photo_credit i i.scientific_name %}">
+                                                <img src="{{ i.thumb_large }}"
+                                                    alt="{% photo_credit i i.scientific_name %}">
+                                            </a>
                                             {% endwith %}
-                                        {% endfor %}
-                                    {% else %}
-                                        {% for content_image in pile_images %}
-                                            {% with content_image as i %}
-                                                {% with i.creator as photographer %}
-                                                <a href="{{ i.image_medium }}"
-                                                    rel="shadowbox[{{ pile.slug }}]"
-                                                    title="{% photo_credit i i.scientific_name %}">
-                                                    <img src="{{ i.thumb_large }}"
-                                                        alt="{% photo_credit i i.scientific_name %}">
-                                                </a>
-                                                {% endwith %}
-                                            {% endwith %}
-                                        {% endfor %}
-                                    {% endif %}
+                                        {% endwith %}
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="controls">
@@ -69,46 +55,16 @@
                             </div>
                         </div>
                         <div class="details">
-                            {# Mockup for Issue #254 #}
-                            {% if key == 'full' and pile.slug == 'remaining-non-monocots' and forloop.counter > 1 %}
-                                {% if forloop.counter == 2 %}
-                                    <h2>Other herbaceous, flowering
-                                        plants with alternate leaves
-                                    </h2>
-                                {% else %}
-                                    <h2>Other herbaceous, flowering
-                                        plants with opposite, whorled or
-                                        no leaves</h2>
-                                {% endif %}
-                                <p></p>{# Mockup for Issue #254: no 'friendly_name' for now #}
-                            {% else %}
-                                <h2>{{ pile.friendly_title|capfirst }}</h2>
-                                <p>{{ pile.friendly_name|capfirst }}</p>
-                            {% endif %}
+                            <h2>{{ pile.friendly_title|capfirst }}</h2>
+                            <p>{{ pile.friendly_name|capfirst }}</p>
 
                             <p class="key-char">
                                 <span class="section-title">Key Characteristics</span>
-                                {# Mockup for Issue #254 #}
-                                {% if key == 'full' and pile.slug == 'remaining-non-monocots' and forloop.counter > 1 %}
-                                    {% if forloop.counter == 2 %}
-                                        This very diverse group is generally not woody, grass-like, or aquatic, and does not have composite flower heads. These plants have alternate leaves that join the stem at different levels, not opposite each other or in whorls; be sure to look at the arrangement of leaves in the lower half of the flowering stem. 
-                                    {% else %}
-                                        These species are herbaceous plants with only all basal, opposite, or whorled leaves; they are not aquatic, grass-like, and do not have composite flower heads. Some species are parasitic or lack green leaves.                                    {% endif %}
-                                {% else %}
-                                    {{ pile.key_characteristics|removetags:"div ul li"|safe }}
-                                {% endif %}
+                                {{ pile.key_characteristics|removetags:"div ul li"|safe }}
                             </p>
                             <p class="exceptions">
                                 <span class="section-title">Exceptions</span>
-                                {# Mockup for Issue #254 #}
-                                {% if key == 'full' and pile.slug == 'remaining-non-monocots' and forloop.counter > 1 %}
-                                    {% if forloop.counter == 2 %}
-                                        Leaf arrangement can vary from the bottom to top of the stem, or in young vs. older plants, so try to look at several plants. Some crowded leaves may look opposite or whorled, but look closely to see whether there is actually space between them on the stem. Some species have narrow leaves where it’s hard to see the veins, so look for other features such as petal number, presence of leaf teeth, etc.
-                                    {% else %}
-                                        Leaf arrangement can vary from the bottom to top of the stem, or in young vs. older plants, so try to look at several plants. Some crowded leaves may look opposite or whorled, but look closely to see whether there is actually space between them on the stem. Some species have narrow leaves where it’s hard to see the veins, so look for other features such as petal number, presence of leaf teeth, etc. Some species (such as teasel or pincushions) have flower heads that look like those of the aster family, but look closely: the flowers usually have four tooth-like lobes (a rare condition in the aster family) and the fruit is partially enclosed in a tubular bract.                                                          {% endif %}
-                                {% else %}
-                                    {{ pile.notable_exceptions|removetags:"div ul li"|safe }}
-                                {% endif %}
+                                {{ pile.notable_exceptions|removetags:"div ul li"|safe }}
                             </p>
                             {% if pile.video %}
                             <p class="vid">
@@ -120,6 +76,7 @@
                             <a class="plant-in-subgroup" href="{{ pile_url }}">My plant is in this subgroup</a>
                         </div>
                     </div>
+                    {% endif %}
                 {% endfor %}
 
                 {% include "simplekey/_plant_not_in_subgroup.html" %}
