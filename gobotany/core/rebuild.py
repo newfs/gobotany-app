@@ -15,6 +15,7 @@ from django.db import connection, transaction
 
 from gobotany.core import models
 from gobotany.plantoftheday.models import PlantOfTheDay
+from gobotany.search.models import SubgroupResultsPage
 
 import logging
 log = logging.getLogger('gobotany.import')
@@ -260,20 +261,31 @@ def rebuild_split_remaining_non_monocots():
                    'Non-Alternate Remaining Non-Monocots']
     for pile_name in split_piles:
         # Delete any existing split Remaining Non-Monocots piles along
-        # with their default filters.
+        # with their default filters. Also delete any existing
+        # SubgroupResultsPage records for the split piles.
         try:
             pile = models.Pile.objects.get(name=pile_name)
 
             default_filters = models.DefaultFilter.objects.filter(
                 pile=pile)
-            number_of_filters = len(default_filters)
             for default_filter in default_filters:
                 default_filter.delete()
-            if number_of_filters > 0:
+            if len(default_filters) > 0:
                 log.info('Deleted default filters for pile: %s' % pile_name)
             else:
                 log.info(
                     'No default filters to delete for pile: %s' % pile_name)
+
+            subgroup_results_pages = SubgroupResultsPage.objects.filter(
+                subgroup=pile)
+            for subgroup_results_page in subgroup_results_pages:
+                subgroup_results_page.delete()
+            if len(subgroup_results_pages) > 0:
+                log.info('Deleted subgroup results pages for pile: %s' %
+                         pile_name)
+            else:
+                log.info('No subgroup results pages to delete for pile: %s' %
+                         pile_name)
 
             pile.delete()
             log.info('Deleted pile: %s' % pile_name)
@@ -319,13 +331,30 @@ def rebuild_split_remaining_non_monocots():
                     log.info('Created default filter for %s: %s (key: %s)' %
                              (pile.name,
                               default_filter.character.friendly_name,
-                              default_filter.key))
+                              default_filter.key.capitalize()))
                 except ObjectDoesNotExist:
                     log.error('%s pile does not exist')
                     return
     except ObjectDoesNotExist:
-        log.error('Remaning Non-Monocots pile does not exist')
+        log.error('Remaining Non-Monocots pile does not exist')
         return
+
+    # Create SubgroupResultsPage model instances for each of the split piles.
+    for pile_name in split_piles:
+        for key in ['Simple']: #, 'Full']: # not needed just yet for Full Key
+            try:
+                pile = models.Pile.objects.get(name=pile_name)
+                title = '%s: %s Key' % (pile.friendly_title, key)
+                subgroup_results_page, created = \
+                    SubgroupResultsPage.objects.get_or_create(
+                        title=title,
+                        main_heading=pile.friendly_title,
+                        subgroup=pile)
+                log.info('Created SubgroupResultsPage for %s (key: %s)' %
+                         (pile.name, key))
+            except ObjectDoesNotExist:
+                log.error('%s pile does not exist')
+                return
 
     # Alter the data as needed (remove plants, images, etc.).
 
