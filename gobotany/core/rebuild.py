@@ -244,6 +244,104 @@ def rebuild_plant_of_the_day(include_plants='SIMPLEKEY'):   # or 'ALL'
                         partner_short_name=s.partner.short_name)
                     potd.save()
 
+
+def rebuild_split_remaining_non_monocots():
+    """Split the Remaining Non-Monocots pile into two piles, one with
+    alternate-leaved plants and the other with plants having non-alternate
+    leaves. This is for making smaller and faster results sets in the Full
+    and Simple keys from what was one very large pile. Doing this in code
+    avoids having to split the piles by hand and make a lot of attendant
+    Access database changes. This might be temporary pending an eventual
+    move to using the Admin site for maintaining plant data.
+    """
+    log.info('Splitting the Remaining Non-Monocots pile in two')
+
+    split_piles = ['Alternate Remaining Non-Monocots',
+                   'Non-Alternate Remaining Non-Monocots']
+    for pile_name in split_piles:
+        # Delete any existing split Remaining Non-Monocots piles along
+        # with their default filters.
+        try:
+            pile = models.Pile.objects.get(name=pile_name)
+
+            default_filters = models.DefaultFilter.objects.filter(
+                pile=pile)
+            number_of_filters = len(default_filters)
+            for default_filter in default_filters:
+                default_filter.delete()
+            if number_of_filters > 0:
+                log.info('Deleted default filters for pile: %s' % pile_name)
+            else:
+                log.info(
+                    'No default filters to delete for pile: %s' % pile_name)
+
+            pile.delete()
+            log.info('Deleted pile: %s' % pile_name)
+        except ObjectDoesNotExist:
+            log.info('No pile exists: %s' % pile_name)
+
+    # Create a pile for alternate-leaved plants.
+    try:
+        alt_pile = models.Pile.objects.get(name='Remaining Non-Monocots')
+        alt_pile.pk = None
+        alt_pile.name = 'Alternate ' + alt_pile.name
+        alt_pile.slug = 'alternate-' + alt_pile.slug
+        alt_pile.save()
+        log.info('Created pile: %s' % alt_pile.name)
+    except ObjectDoesNotExist:
+        log.error('Remaning Non-Monocots pile does not exist')
+        return
+
+    # Create a pile for non-alternate-leaved plants.
+    try:
+        non_alt_pile = models.Pile.objects.get(name='Remaining Non-Monocots')
+        non_alt_pile.pk = None
+        non_alt_pile.name = 'Non-Alternate ' + non_alt_pile.name
+        non_alt_pile.slug = 'non-alternate-' + non_alt_pile.slug
+        non_alt_pile.save()
+        log.info('Created pile: %s' % non_alt_pile.name)
+    except ObjectDoesNotExist:
+        log.error('Remaning Non-Monocots pile does not exist')
+        return
+
+    # Create default filters for each of the split piles.
+    try:
+        master_pile = models.Pile.objects.get(name='Remaining Non-Monocots')
+        default_filters = models.DefaultFilter.objects.filter(
+            pile=master_pile)
+        for default_filter in default_filters:
+            for pile_name in split_piles:
+                try:
+                    pile = models.Pile.objects.get(name=pile_name)
+                    default_filter.pk = None
+                    default_filter.pile = pile
+                    default_filter.save()
+                    log.info('Created default filter for %s: %s (key: %s)' %
+                             (pile.name,
+                              default_filter.character.friendly_name,
+                              default_filter.key))
+                except ObjectDoesNotExist:
+                    log.error('%s pile does not exist')
+                    return
+    except ObjectDoesNotExist:
+        log.error('Remaning Non-Monocots pile does not exist')
+        return
+
+    # Alter the data as needed (remove plants, images, etc.)
+    # Things to change in the piles:
+    # - friendly_name
+    # - friendly_title
+    # - images
+    # - video
+    # - key_characteristics
+    # - notable_exceptions
+    # - species (remove any that should not be included)
+    # - sample_species_images (remove any that should not be included)
+    #
+    # Default filters:
+    # - omit Leaf Arrangement from the Alternate pile
+
+
 def main():
     from .importer import start_logging
     start_logging()
