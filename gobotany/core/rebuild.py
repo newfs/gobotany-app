@@ -327,10 +327,20 @@ def rebuild_split_remaining_non_monocots():
         log.error('Remaning Non-Monocots pile does not exist')
         return
 
-    # Alter the data as needed (remove plants, images, etc.)
-    # Things to change in the piles:
-    # - friendly_name
-    # - friendly_title
+    # Alter the data as needed (remove plants, images, etc.).
+
+    # friendly_title (pile heading on the page)
+    alt_pile.friendly_title = ('Other herbaceous, flowering plants with '
+                               'alternate leaves')
+    alt_pile.save()
+    non_alt_pile.friendly_title = ('Other herbaceous, flowering plants with '
+                                   'opposite, whorled or no leaves')
+    non_alt_pile.save()
+
+    # friendly_name (pile subheading on the page)
+    # This is currently blank in the big pile, so leave it that way for
+    # the split piles.
+
     # - images
     # - video
     # - key_characteristics
