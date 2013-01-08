@@ -18,6 +18,7 @@ PILE_ORDER = dict((slug, i) for (i, slug) in enumerate([
     'orchid-monocots', 'non-orchid-monocots',
     'monilophytes', 'lycophytes', 'equisetaceae',
     'composites', 'remaining-non-monocots',
+    'alternate-remaining-non-monocots', 'non-alternate-remaining-non-monocots'
     ]))
 
 def ordered_pilegroups():
