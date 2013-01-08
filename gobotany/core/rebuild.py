@@ -371,8 +371,11 @@ def rebuild_split_remaining_non_monocots():
         'tooth-like lobes (a rare condition in the aster family) and the '
         'fruit is partially enclosed in a tubular bract.')
 
+    # Video
+    # This is temporarily left the same for both of the split piles but
+    # two different videos are likely warranted.
+
     # - images
-    # - video
     # - species (remove any that should not be included)
     # - sample_species_images (remove any that should not be included)
 
