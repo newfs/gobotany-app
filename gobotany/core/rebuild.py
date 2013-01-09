@@ -400,7 +400,26 @@ def rebuild_split_remaining_non_monocots():
         log.info('%s pile: added %d species.' % (pile.name,
                                                  pile_species.count()))
 
-    # TODO: Set sample species images for the Level 2 pages.
+    # Set sample species images for the Level 2 pages.
+    master_images = models.PileImage.objects.filter(pile=master_pile)
+    print 'master_images:', master_images.count()
+    for image in master_images:
+        image_name = image.content_image.image.name
+        species_name = ' '.join(
+            image_name.split('/')[2].split('-')[0:2]).capitalize()
+        for pile in [alt_pile, non_alt_pile]:
+            try:
+                is_species_in_pile = pile.species.get(
+                    scientific_name__icontains=species_name)
+                if is_species_in_pile:
+                    pile_image = image
+                    pile_image.pk = None
+                    pile_image.pile = pile
+                    pile_image.save()
+                    log.info('Created PileImage for %s (%s)' %
+                             (species_name, pile.name))
+            except ObjectDoesNotExist:
+                pass
 
     # Save all the changes.
     alt_pile.save()
