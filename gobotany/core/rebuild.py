@@ -340,6 +340,7 @@ def rebuild_split_remaining_non_monocots():
         return
 
     # Create SubgroupResultsPage model instances for each of the split piles.
+
     for pile_name in split_piles:
         for key in ['Simple']: #, 'Full']: # not needed just yet for Full Key
             try:
@@ -404,9 +405,20 @@ def rebuild_split_remaining_non_monocots():
     # This is temporarily left the same for both of the split piles but
     # two different videos are likely warranted.
 
-    # - images
-    # - species (remove any that should not be included)
-    # - sample_species_images (remove any that should not be included)
+    # Get the species to use in each of the piles.
+    alt_species = master_pile.species.filter(
+        character_values__value_str='alternate')
+    non_alt_species = master_pile.species.exclude(
+        character_values__value_str='alternate')
+
+    # Set the species in each of the split piles.
+    for pile, pile_species in [(alt_pile, alt_species),
+                               (non_alt_pile, non_alt_species)]:
+        pile.species.add(*pile_species)
+        log.info('%s pile: added %d species.' % (pile.name,
+                                                 pile_species.count()))
+
+    # TODO: Set sample species images for the Level 2 pages.
 
     # Save all the changes.
     alt_pile.save()
