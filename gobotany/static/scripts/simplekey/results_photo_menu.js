@@ -66,6 +66,18 @@ define([], function() {
             "omit": ["additional features", "bark", "comparison",
                      "flowers and fruits", "inflorescences",
                      "special features", "winter buds"]
+        },
+        "alternate-remaining-non-monocots": {
+            "default": "flowers",
+            "omit": ["additional features", "bark", "comparison",
+                     "flowers and fruits", "inflorescences",
+                     "special features", "winter buds"]
+        },
+        "non-alternate-remaining-non-monocots": {
+            "default": "flowers",
+            "omit": ["additional features", "bark", "comparison",
+                     "flowers and fruits", "inflorescences",
+                     "special features", "winter buds"]
         }
     };
     return results_photo_menu;
