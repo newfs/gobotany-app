@@ -339,27 +339,9 @@ def rebuild_split_remaining_non_monocots():
         log.error('Remaining Non-Monocots pile does not exist')
         return
 
-    # Create SubgroupResultsPage model instances for each of the split piles.
+    # Alter the data as needed (set plants, images, labels, etc.).
 
-    for pile_name in split_piles:
-        for key in ['Simple']: #, 'Full']: # not needed just yet for Full Key
-            try:
-                pile = models.Pile.objects.get(name=pile_name)
-                title = '%s: %s Key' % (pile.friendly_title, key)
-                subgroup_results_page, created = \
-                    SubgroupResultsPage.objects.get_or_create(
-                        title=title,
-                        main_heading=pile.friendly_title,
-                        subgroup=pile)
-                log.info('Created SubgroupResultsPage for %s (key: %s)' %
-                         (pile.name, key))
-            except ObjectDoesNotExist:
-                log.error('%s pile does not exist')
-                return
-
-    # Alter the data as needed (remove plants, images, etc.).
-
-    # Pile heading on the page
+    # Main heading on the results page
     alt_pile.friendly_title = ('Other herbaceous, flowering plants with '
                                'alternate leaves')
     non_alt_pile.friendly_title = ('Other herbaceous, flowering plants with '
@@ -423,6 +405,23 @@ def rebuild_split_remaining_non_monocots():
     # Save all the changes.
     alt_pile.save()
     non_alt_pile.save()
+
+    # Create SubgroupResultsPage model instances
+    for pile_name in split_piles:
+        for key in ['Simple']: #, 'Full']: # not needed just yet for Full Key
+            try:
+                pile = models.Pile.objects.get(name=pile_name)
+                title = '%s: %s Key' % (pile.friendly_title, key)
+                subgroup_results_page, created = \
+                    SubgroupResultsPage.objects.get_or_create(
+                        title=title,
+                        main_heading=pile.friendly_title,
+                        subgroup=pile)
+                log.info('Created SubgroupResultsPage for %s (key: %s)' %
+                         (pile.name, key))
+            except ObjectDoesNotExist:
+                log.error('%s pile does not exist')
+                return
 
     # Default filters:
     # - omit Leaf Arrangement from the Alternate pile
