@@ -322,19 +322,27 @@ def rebuild_split_remaining_non_monocots():
         default_filters = models.DefaultFilter.objects.filter(
             pile=master_pile)
         for default_filter in default_filters:
+            character_name = default_filter.character.friendly_name
             for pile_name in split_piles:
-                try:
-                    pile = models.Pile.objects.get(name=pile_name)
-                    default_filter.pk = None
-                    default_filter.pile = pile
-                    default_filter.save()
-                    log.info('Created default filter for %s: %s (key: %s)' %
-                             (pile.name,
-                              default_filter.character.friendly_name,
+                if not (character_name == 'Leaf arrangement' and
+                        pile_name == 'Alternate Remaining Non-Monocots'):
+                    try:
+                        pile = models.Pile.objects.get(name=pile_name)
+                        default_filter.pk = None
+                        default_filter.pile = pile
+                        default_filter.save()
+                        log.info(
+                            'Created default filter for %s: %s (key: %s)' %
+                            (pile.name, character_name,
+                             default_filter.key.capitalize()))
+                    except ObjectDoesNotExist:
+                        log.error('%s pile does not exist')
+                        return
+                else:
+                    log.info('Omitted default filter for %s: %s (key: %s)' %
+                             (pile_name, character_name,
                               default_filter.key.capitalize()))
-                except ObjectDoesNotExist:
-                    log.error('%s pile does not exist')
-                    return
+
     except ObjectDoesNotExist:
         log.error('Remaining Non-Monocots pile does not exist')
         return
@@ -441,9 +449,6 @@ def rebuild_split_remaining_non_monocots():
             except ObjectDoesNotExist:
                 log.error('%s pile does not exist')
                 return
-
-    # Default filters:
-    # - omit Leaf Arrangement from the Alternate pile
 
 
 def main():
