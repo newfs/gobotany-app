@@ -248,8 +248,8 @@ def rebuild_plant_of_the_day(include_plants='SIMPLEKEY'):   # or 'ALL'
 
 def rebuild_split_remaining_non_monocots():
     """Split the Remaining Non-Monocots pile into two piles, one with
-    alternate-leaved plants and the other with plants having non-alternate
-    leaves. This is for making smaller and faster results sets in the Full
+    alternate-leaved plants and the other with non-alternate-leaved
+    plants. This is for making smaller and faster results sets in the Full
     and Simple keys from what was one very large pile. Doing this in code
     avoids having to split the piles by hand and make a lot of attendant
     Access database changes. This might be temporary pending an eventual
@@ -261,8 +261,8 @@ def rebuild_split_remaining_non_monocots():
                    'Non-Alternate Remaining Non-Monocots']
     for pile_name in split_piles:
         # Delete any existing split Remaining Non-Monocots piles along
-        # with their default filters. Also delete any existing
-        # SubgroupResultsPage records for the split piles.
+        # with their default filters, SubgroupResultsPage records,
+        # plant preview characters.
         try:
             pile = models.Pile.objects.get(name=pile_name)
 
@@ -286,6 +286,17 @@ def rebuild_split_remaining_non_monocots():
             else:
                 log.info('No subgroup results pages to delete for pile: %s' %
                          pile_name)
+
+            preview_characters = models.PlantPreviewCharacter.objects.filter(
+                                 pile=pile)
+            for preview_character in preview_characters:
+                preview_character.delete()
+            if len(preview_characters) > 0:
+                log.info('Deleted plant preview characters for pile: %s' %
+                         pile_name)
+            else:
+                log.info('No plant preview characters to delete for pile: %s'
+                         % pile_name)
 
             pile.delete()
             log.info('Deleted pile: %s' % pile_name)
@@ -410,7 +421,6 @@ def rebuild_split_remaining_non_monocots():
 
     # Set sample species images for the Level 2 pages.
     master_images = models.PileImage.objects.filter(pile=master_pile)
-    print 'master_images:', master_images.count()
     for image in master_images:
         image_name = image.content_image.image.name
         species_name = ' '.join(
@@ -429,11 +439,23 @@ def rebuild_split_remaining_non_monocots():
             except ObjectDoesNotExist:
                 pass
 
+    # Copy the plant preview characters to each of the split piles.
+    preview_characters = models.PlantPreviewCharacter.objects.filter(
+        pile=master_pile)
+    for pile in [alt_pile, non_alt_pile]:
+        for preview_character in preview_characters:
+            preview_character.pk = None
+            preview_character.pile = pile
+            preview_character.save()
+        log.info('%s pile: added %d plant preview characters.' %
+                 (pile.name, pile.plant_preview_characters.count()))
+
     # Save all the changes.
     alt_pile.save()
     non_alt_pile.save()
 
-    # Create SubgroupResultsPage model instances
+    # Create SubgroupResultsPage model instances now that the new piles
+    # and their changes are saved.
     for pile_name in split_piles:
         for key in ['Simple']: #, 'Full']: # not needed just yet for Full Key
             try:
