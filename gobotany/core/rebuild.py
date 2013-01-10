@@ -261,8 +261,9 @@ def rebuild_split_remaining_non_monocots():
                    'Non-Alternate Remaining Non-Monocots']
     for pile_name in split_piles:
         # Delete any existing split Remaining Non-Monocots piles along
-        # with their default filters, SubgroupResultsPage records,
-        # characters with their values, and plant preview characters.
+        # with their default filters, SubgroupResultsPage and
+        # TaxonCharacterValue records, characters with their values, and
+        # plant preview characters.
         try:
             pile = models.Pile.objects.get(name=pile_name)
 
@@ -285,6 +286,16 @@ def rebuild_split_remaining_non_monocots():
                          pile_name)
             else:
                 log.info('No subgroup results pages to delete for pile: %s' %
+                         pile_name)
+
+            taxon_char_values = models.TaxonCharacterValue.objects.filter(
+                character_value__character__in=pile.characters.all())
+            taxon_char_values.all().delete()
+            if len(taxon_char_values) > 0:
+                log.info('Deleted taxon character values for pile: %s' %
+                         pile_name)
+            else:
+                log.info('No taxon character values to delete for pile: %s' %
                          pile_name)
 
             characters = models.Character.objects.filter(pile=pile)
