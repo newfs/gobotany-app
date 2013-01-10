@@ -4,8 +4,7 @@ import re
 from haystack.views import SearchView
 
 class GoBotanySearchView(SearchView):
-    def __name__(self):
-        return "GoBotanySearchView"
+    __name__ = "GoBotanySearchView"
 
     def get_results(self):
         """When no results are found for multiple word searches, try
