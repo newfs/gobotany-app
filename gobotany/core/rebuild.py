@@ -262,7 +262,7 @@ def rebuild_split_remaining_non_monocots():
     for pile_name in split_piles:
         # Delete any existing split Remaining Non-Monocots piles along
         # with their default filters, SubgroupResultsPage records,
-        # characters, and plant preview characters.
+        # characters with their values, and plant preview characters.
         try:
             pile = models.Pile.objects.get(name=pile_name)
 
@@ -289,6 +289,12 @@ def rebuild_split_remaining_non_monocots():
 
             characters = models.Character.objects.filter(pile=pile)
             for character in characters:
+
+                # First delete any character values for this character.
+                char_values = models.CharacterValue.objects.filter(
+                              character=character)
+                char_values.all().delete()
+
                 character.delete()
             if len(characters) > 0:
                 log.info('Deleted characters for pile: %s' % pile_name)
@@ -418,21 +424,32 @@ def rebuild_split_remaining_non_monocots():
                     pile_image.pk = None
                     pile_image.pile = pile
                     pile_image.save()
-                    log.info('Created PileImage for %s (%s)' %
-                             (species_name, pile.name))
+                    #log.info('Created PileImage for %s (%s)' %
+                    #         (species_name, pile.name))
             except ObjectDoesNotExist:
                 pass
+    log.info('Created sample species images')
 
     piles_suffixes = [(alt_pile, '_an'), (non_alt_pile, '_nn')]
 
-    # Copy the characters to each of the split piles.
+    # Copy the characters to each of the split piles. Give them new
+    # short names with unique pile suffixes, and create copies of the
+    # master pile's character values for them.
     for pile, suffix in piles_suffixes:
         characters = models.Character.objects.filter(pile=master_pile)
         for character in characters:
+            master_char_values = models.CharacterValue.objects.filter(
+                                 character=character)
+
             character.pk = None
             character.short_name = character.short_name.replace('_rn', suffix)
             character.pile = pile
             character.save()
+
+            for char_value in master_char_values:
+                char_value.pk = None
+                char_value.character = character
+                char_value.save()
         log.info('%s pile: added %d characters.' % (pile.name,
                                                     pile.characters.count()))
 
@@ -492,13 +509,14 @@ def rebuild_split_remaining_non_monocots():
                 default_filter.character = character
                 default_filter.pile = pile
                 default_filter.save()
-                log.info('Created default filter for %s: %s (key: %s)' %
-                         (pile.name, character_name,
-                          default_filter.key.capitalize()))
-            else:
-                log.info('Omitted default filter for %s: %s (key: %s)' %
-                         (pile_name, character_name,
-                          default_filter.key.capitalize()))
+                #log.info('Created default filter for %s: %s (key: %s)' %
+                #         (pile.name, character_name,
+                #          default_filter.key.capitalize()))
+            #else:
+                #log.info('Omitted default filter for %s: %s (key: %s)' %
+                #         (pile_name, character_name,
+                #          default_filter.key.capitalize()))
+    log.info('Created default filters for split piles')
 
 
 def main():
