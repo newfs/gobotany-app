@@ -335,36 +335,6 @@ def rebuild_split_remaining_non_monocots():
         log.error('Remaning Non-Monocots pile does not exist')
         return
 
-    # Create default filters for each of the split piles.
-    try:
-        master_pile = models.Pile.objects.get(name='Remaining Non-Monocots')
-        default_filters = models.DefaultFilter.objects.filter(
-            pile=master_pile)
-        for default_filter in default_filters:
-            character_name = default_filter.character.friendly_name
-            for pile_name in split_piles:
-                if not (character_name == 'Leaf arrangement' and
-                        pile_name == 'Alternate Remaining Non-Monocots'):
-                    try:
-                        pile = models.Pile.objects.get(name=pile_name)
-                        default_filter.pk = None
-                        default_filter.pile = pile
-                        default_filter.save()
-                        log.info(
-                            'Created default filter for %s: %s (key: %s)' %
-                            (pile.name, character_name,
-                             default_filter.key.capitalize()))
-                    except ObjectDoesNotExist:
-                        log.error('%s pile does not exist')
-                        return
-                else:
-                    log.info('Omitted default filter for %s: %s (key: %s)' %
-                             (pile_name, character_name,
-                              default_filter.key.capitalize()))
-    except ObjectDoesNotExist:
-        log.error('Remaining Non-Monocots pile does not exist')
-        return
-
     # Alter the data as needed (set plants, images, labels, etc.).
 
     # Main heading on the results page
@@ -413,6 +383,13 @@ def rebuild_split_remaining_non_monocots():
     # This is temporarily left the same for both of the split piles but
     # two different videos are likely warranted.
 
+    # Get the "master" Remaining Non-Monocots pile.
+    try:
+        master_pile = models.Pile.objects.get(name='Remaining Non-Monocots')
+    except ObjectDoesNotExist:
+        log.error('Remaining Non-Monocots pile does not exist')
+        return
+
     # Get the species to use in each of the piles.
     alt_species = master_pile.species.filter(
         character_values__value_str='alternate')
@@ -446,8 +423,10 @@ def rebuild_split_remaining_non_monocots():
             except ObjectDoesNotExist:
                 pass
 
+    piles_suffixes = [(alt_pile, '_an'), (non_alt_pile, '_nn')]
+
     # Copy the characters to each of the split piles.
-    for pile, suffix in [(alt_pile, '_an'), (non_alt_pile, '_nn')]:
+    for pile, suffix in piles_suffixes:
         characters = models.Character.objects.filter(pile=master_pile)
         for character in characters:
             character.pk = None
@@ -489,6 +468,37 @@ def rebuild_split_remaining_non_monocots():
             except ObjectDoesNotExist:
                 log.error('%s pile does not exist')
                 return
+
+    # Create default filters for each of the split piles now that the
+    # new piles have their own characters.
+    default_filters = models.DefaultFilter.objects.filter(pile=master_pile)
+    for default_filter in default_filters:
+        character_name = default_filter.character.friendly_name
+        for pile, suffix in piles_suffixes:
+            if not (character_name == 'Leaf arrangement' and
+                pile.name == 'Alternate Remaining Non-Monocots'):
+
+                # Get the character belonging to the split pile.
+                short_name = default_filter.character.short_name.replace(
+                             '_rn', suffix)
+                try:
+                    character = models.Character.objects.get(
+                        short_name=short_name)
+                except ObjectDoesNotExist:
+                    log.error('Character %s does not exist in pile %s' %
+                              (character.friendly_name, pile.name))
+
+                default_filter.pk = None
+                default_filter.character = character
+                default_filter.pile = pile
+                default_filter.save()
+                log.info('Created default filter for %s: %s (key: %s)' %
+                         (pile.name, character_name,
+                          default_filter.key.capitalize()))
+            else:
+                log.info('Omitted default filter for %s: %s (key: %s)' %
+                         (pile_name, character_name,
+                          default_filter.key.capitalize()))
 
 
 def main():
