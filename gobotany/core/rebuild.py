@@ -262,7 +262,7 @@ def rebuild_split_remaining_non_monocots():
     for pile_name in split_piles:
         # Delete any existing split Remaining Non-Monocots piles along
         # with their default filters, SubgroupResultsPage records,
-        # plant preview characters.
+        # characters, and plant preview characters.
         try:
             pile = models.Pile.objects.get(name=pile_name)
 
@@ -286,6 +286,14 @@ def rebuild_split_remaining_non_monocots():
             else:
                 log.info('No subgroup results pages to delete for pile: %s' %
                          pile_name)
+
+            characters = models.Character.objects.filter(pile=pile)
+            for character in characters:
+                character.delete()
+            if len(characters) > 0:
+                log.info('Deleted characters for pile: %s' % pile_name)
+            else:
+                log.info('No characters to delete for pile: %s' % pile_name)
 
             preview_characters = models.PlantPreviewCharacter.objects.filter(
                                  pile=pile)
@@ -353,7 +361,6 @@ def rebuild_split_remaining_non_monocots():
                     log.info('Omitted default filter for %s: %s (key: %s)' %
                              (pile_name, character_name,
                               default_filter.key.capitalize()))
-
     except ObjectDoesNotExist:
         log.error('Remaining Non-Monocots pile does not exist')
         return
@@ -438,6 +445,17 @@ def rebuild_split_remaining_non_monocots():
                              (species_name, pile.name))
             except ObjectDoesNotExist:
                 pass
+
+    # Copy the characters to each of the split piles.
+    for pile, suffix in [(alt_pile, '_an'), (non_alt_pile, '_nn')]:
+        characters = models.Character.objects.filter(pile=master_pile)
+        for character in characters:
+            character.pk = None
+            character.short_name = character.short_name.replace('_rn', suffix)
+            character.pile = pile
+            character.save()
+        log.info('%s pile: added %d characters.' % (pile.name,
+                                                    pile.characters.count()))
 
     # Copy the plant preview characters to each of the split piles.
     preview_characters = models.PlantPreviewCharacter.objects.filter(
