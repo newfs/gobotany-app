@@ -80,7 +80,7 @@ def _setup_sample_data(load_images=False):
             creator='photographer A', image_type=image_type,
             description='im1 desc', content_type=content_type,
             object_id=bar.id)
-        filename = 'huperzia-appressa-ha-dkausen-1.jpg'
+        filename = 'huperzia-appressa-ha-flastname-1.jpg'
         f = open('%s/%s' % (_testdata_dir(), filename), 'r')
         image_file = File(f)
         im1.image.save(filename, image_file)
@@ -91,7 +91,7 @@ def _setup_sample_data(load_images=False):
             creator='photographer B', image_type=image_type,
             description='im2 desc', content_type=content_type,
             object_id=bar.id)
-        filename = 'huperzia-appressa-ha-dkausen-1.jpg'
+        filename = 'huperzia-appressa-ha-flastname-1.jpg'
         f = open('%s/%s' % (_testdata_dir(), filename), 'r')
         image_file = File(f)
         im2.image.save(filename, image_file)
