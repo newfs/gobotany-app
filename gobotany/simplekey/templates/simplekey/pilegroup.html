@@ -27,9 +27,10 @@
                 <p class="tip">Please go through the subgroups in order.</p>
 
                 {% for pile, pile_images, pile_url in piles %}
-                    {# Exclude the big Remaining Non-Monocots pile #}
-                    {# because it gets split in two after import.  #}
-                    {% if not pile.slug == 'remaining-non-monocots' %}
+                    {% if pilegroup.slug == 'non-monocots' and piles|length == 4 and pile.slug == 'remaining-non-monocots' %}
+                        {# Exclude the big Remaining Non-Monocots pile if   #}
+                        {# it has been split in two new piles after import. #}
+                    {% else %}
                     <div class="list-item{% if forloop.last %} last{% endif %}">
                         <div class="img-gallery">
                             <div class="frame"></div>
