@@ -255,7 +255,7 @@ def rebuild_split_remaining_non_monocots():
     Access database changes. This might be temporary pending an eventual
     move to using the Admin site for maintaining plant data.
     """
-    log.info('Splitting the Remaining Non-Monocots pile in two')
+    log.info('Splitting the Remaining Non-Monocots pile in two:')
 
     split_piles = ['Alternate Remaining Non-Monocots',
                    'Non-Alternate Remaining Non-Monocots']
@@ -272,30 +272,30 @@ def rebuild_split_remaining_non_monocots():
             for default_filter in default_filters:
                 default_filter.delete()
             if len(default_filters) > 0:
-                log.info('Deleted default filters for pile: %s' % pile_name)
+                log.info('Deleted default filters for pile: %s.' % pile_name)
             else:
                 log.info(
-                    'No default filters to delete for pile: %s' % pile_name)
+                    'No default filters to delete for pile: %s.' % pile_name)
 
             subgroup_results_pages = SubgroupResultsPage.objects.filter(
                 subgroup=pile)
             for subgroup_results_page in subgroup_results_pages:
                 subgroup_results_page.delete()
             if len(subgroup_results_pages) > 0:
-                log.info('Deleted subgroup results pages for pile: %s' %
+                log.info('Deleted subgroup results pages for pile: %s.' %
                          pile_name)
             else:
-                log.info('No subgroup results pages to delete for pile: %s' %
+                log.info('No subgroup results pages to delete for pile: %s.' %
                          pile_name)
 
             taxon_char_values = models.TaxonCharacterValue.objects.filter(
                 character_value__character__in=pile.characters.all())
             taxon_char_values.all().delete()
             if len(taxon_char_values) > 0:
-                log.info('Deleted taxon character values for pile: %s' %
+                log.info('Deleted taxon character values for pile: %s.' %
                          pile_name)
             else:
-                log.info('No taxon character values to delete for pile: %s' %
+                log.info('No taxon character values to delete for pile: %s.' %
                          pile_name)
 
             characters = models.Character.objects.filter(pile=pile)
@@ -308,25 +308,25 @@ def rebuild_split_remaining_non_monocots():
 
                 character.delete()
             if len(characters) > 0:
-                log.info('Deleted characters for pile: %s' % pile_name)
+                log.info('Deleted characters for pile: %s.' % pile_name)
             else:
-                log.info('No characters to delete for pile: %s' % pile_name)
+                log.info('No characters to delete for pile: %s.' % pile_name)
 
             preview_characters = models.PlantPreviewCharacter.objects.filter(
                                  pile=pile)
             for preview_character in preview_characters:
                 preview_character.delete()
             if len(preview_characters) > 0:
-                log.info('Deleted plant preview characters for pile: %s' %
+                log.info('Deleted plant preview characters for pile: %s.' %
                          pile_name)
             else:
-                log.info('No plant preview characters to delete for pile: %s'
+                log.info('No plant preview characters to delete for pile: %s.'
                          % pile_name)
 
             pile.delete()
-            log.info('Deleted pile: %s' % pile_name)
+            log.info('Deleted pile: %s.' % pile_name)
         except ObjectDoesNotExist:
-            log.info('No pile exists: %s' % pile_name)
+            log.error('No pile exists: %s' % pile_name)
 
     # Create a pile for alternate-leaved plants.
     try:
@@ -335,7 +335,7 @@ def rebuild_split_remaining_non_monocots():
         alt_pile.name = 'Alternate ' + alt_pile.name
         alt_pile.slug = 'alternate-' + alt_pile.slug
         alt_pile.save()
-        log.info('Created pile: %s' % alt_pile.name)
+        log.info('Created pile: %s.' % alt_pile.name)
     except ObjectDoesNotExist:
         log.error('Remaning Non-Monocots pile does not exist')
         return
@@ -347,7 +347,7 @@ def rebuild_split_remaining_non_monocots():
         non_alt_pile.name = 'Non-Alternate ' + non_alt_pile.name
         non_alt_pile.slug = 'non-alternate-' + non_alt_pile.slug
         non_alt_pile.save()
-        log.info('Created pile: %s' % non_alt_pile.name)
+        log.info('Created pile: %s.' % non_alt_pile.name)
     except ObjectDoesNotExist:
         log.error('Remaning Non-Monocots pile does not exist')
         return
@@ -435,17 +435,16 @@ def rebuild_split_remaining_non_monocots():
                     pile_image.pk = None
                     pile_image.pile = pile
                     pile_image.save()
-                    #log.info('Created PileImage for %s (%s)' %
+                    #log.info('Created PileImage for %s (%s).' %
                     #         (species_name, pile.name))
             except ObjectDoesNotExist:
                 pass
-    log.info('Created sample species images')
+    log.info('Created sample species images for split piles.')
 
     piles_suffixes = [(alt_pile, '_an'), (non_alt_pile, '_nn')]
 
     # Copy the characters to each of the split piles. Give them new
-    # short names with unique pile suffixes, and create copies of the
-    # master pile's character values for them.
+    # short names with unique pile suffixes.
     for pile, suffix in piles_suffixes:
         characters = models.Character.objects.filter(pile=master_pile)
         for character in characters:
@@ -456,11 +455,6 @@ def rebuild_split_remaining_non_monocots():
             character.short_name = character.short_name.replace('_rn', suffix)
             character.pile = pile
             character.save()
-
-            for char_value in master_char_values:
-                char_value.pk = None
-                char_value.character = character
-                char_value.save()
         log.info('%s pile: added %d characters.' % (pile.name,
                                                     pile.characters.count()))
 
@@ -479,8 +473,47 @@ def rebuild_split_remaining_non_monocots():
     alt_pile.save()
     non_alt_pile.save()
 
-    # Create SubgroupResultsPage model instances now that the new piles
-    # and their changes are saved.
+    # Create some additional records now that the new piles are saved.
+
+    # Create TaxonCharacterValue records.
+    for pile in [alt_pile, non_alt_pile]:
+        log.info('Create character values and TaxonCharacterValues for %s:' %
+                 pile.name)
+        # Loop through the species, already assigned to the split pile.
+        for taxon in pile.species.all():
+            #log.info('Taxon: %s' % taxon.scientific_name)
+            # Loop through the split pile's characters.
+            for character in pile.characters.all():
+                # Look up the TaxonCharacterValue records that currently
+                # exist with the "master" (_rn) pile for this species.
+                master_char_name = character.short_name[:-3] + '_rn'
+                master_tcvs = \
+                    models.TaxonCharacterValue.objects.select_related(
+                    'character_value').filter(
+                    character_value__character__short_name=master_char_name,
+                    taxon=taxon)
+                # Make new TaxonCharacterValues for the split pile.
+                for master_tcv in master_tcvs.all():
+                    master_character_value = master_tcv.character_value
+                    # Get (or create) the character value.
+                    cv, created = models.CharacterValue.objects.get_or_create(
+                        value_str=master_character_value.value_str,
+                        value_min=master_character_value.value_min,
+                        value_max=master_character_value.value_max,
+                        value_flt=master_character_value.value_flt,
+                        character=character,
+                        friendly_text=master_character_value.friendly_text,
+                        image=master_character_value.image)
+                    # Finally create the new TaxonCharacterValue.
+                    tcv = models.TaxonCharacterValue(
+                        taxon=taxon,
+                        character_value=cv,
+                        lit_source=master_tcv.lit_source)
+                    tcv.save()
+        log.info('Created character values and TaxonCharacterValues for %s.' %
+                 pile.name)
+
+    # Create SubgroupResultsPage records.
     for pile_name in split_piles:
         for key in ['Simple']: #, 'Full']: # not needed just yet for Full Key
             try:
@@ -491,14 +524,13 @@ def rebuild_split_remaining_non_monocots():
                         title=title,
                         main_heading=pile.friendly_title,
                         subgroup=pile)
-                log.info('Created SubgroupResultsPage for %s (key: %s)' %
+                log.info('Created SubgroupResultsPage for %s (key: %s).' %
                          (pile.name, key))
             except ObjectDoesNotExist:
                 log.error('%s pile does not exist')
                 return
 
-    # Create default filters for each of the split piles now that the
-    # new piles have their own characters.
+    # Create default filters.
     default_filters = models.DefaultFilter.objects.filter(pile=master_pile)
     for default_filter in default_filters:
         character_name = default_filter.character.friendly_name
@@ -520,14 +552,14 @@ def rebuild_split_remaining_non_monocots():
                 default_filter.character = character
                 default_filter.pile = pile
                 default_filter.save()
-                #log.info('Created default filter for %s: %s (key: %s)' %
+                #log.info('Created default filter for %s: %s (key: %s).' %
                 #         (pile.name, character_name,
                 #          default_filter.key.capitalize()))
             #else:
-                #log.info('Omitted default filter for %s: %s (key: %s)' %
+                #log.info('Omitted default filter for %s: %s (key: %s).' %
                 #         (pile_name, character_name,
                 #          default_filter.key.capitalize()))
-    log.info('Created default filters for split piles')
+    log.info('Created default filters for split piles.')
 
 
 def main():
