@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify, stringfilter
 
 from gobotany import settings
+from gobotany.version import get_version
 from gobotany.core import models
 from gobotany.dkey import models as dkey_models
 from gobotany.search import models as search_models
@@ -26,6 +27,11 @@ def file_version(file_path):
         digest = ''
     return digest[:8]
 
+@register.simple_tag()
+def gobotany_version():
+    """Return a site-wide version string suitable for displaying in
+    footers, etc."""
+    return get_version()
 
 @register.filter
 def url(obj):

@@ -261,7 +261,13 @@ def ajax_image_upload(request):
                 # Since we're technically editing the user's profile by 
                 # uploading an avatar, create a user profile if they don't
                 # have one. Otherwise, this avatar image ends up in limbo.
-                profile, created = UserProfile.objects.get_or_create(user=request.user)
+                profile, created = None, False
+                try:
+                    profile = UserProfile.objects.get(user=request.user)
+                except UserProfile.DoesNotExist:
+                    profile = UserProfile()
+                    profile.display_name = request.user.username
+
                 if not created:
                     # Flag all previous, unscreened avatars as "orphaned,"
                     # since the user has essentially changed his mind and
