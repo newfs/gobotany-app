@@ -9,6 +9,7 @@ allow themselves to be downloaded.  An attempt is made to fix images
 with bad permissions.
 
 """
+import mimetypes
 import re
 import socket
 import time
@@ -19,7 +20,7 @@ import ImageOps
 import boto
 import requests
 
-DEBUG = False
+ONLY_FAMILY = None  # 'Alismataceae'  # for debugging, to run vs one family
 CACHE_CONTROL = 'max-age=28800, public'
 THUMBNAIL_SIZES = '160x149', '239x239', '1000s1000'
 url_pattern = re.compile(r'/taxon-images/[A-Z]')
@@ -28,7 +29,7 @@ def main():
     operator = Operator('newfs')
     family_names = operator.list_families()
     for family_name in family_names:
-        if DEBUG and family_name != 'Dryopteridaceae':
+        if ONLY_FAMILY and family_name != ONLY_FAMILY:
             continue  # skip all but one family to speed debugging
         check_family(operator, family_name)
     operator.final_report()
@@ -86,24 +87,31 @@ def check_image(operator, key):
     if not key.name.endswith('.jpg'):
         operator.error(key, 'Unrecognized image extension')
         return
+
     r = operator.head(key.name)
+
     if r.status_code != 200:
         operator.error(key, 'Making image public; status code was {}'
                        .format(r.status_code))
-        key.make_public(headers={'cache-control': CACHE_CONTROL})
-        return
+        key.make_public(headers=headers_for(key))
+        r = operator.head(key.name)
+
     content_type = r.headers.get('content-type')
-    if content_type != 'image/jpeg':
-        operator.error(key, 'Bad image content-type: {}'.format(content_type))
-        # Not sure what to do about this one; shouldn't it get set to
-        # the correct value automatically thanks to the upload tool?
-        return
+    correct_type, encoding = mimetypes.guess_type(key.name)
+
+    if correct_type is not None and content_type != correct_type:
+        operator.error(key, 'Fixing bad content-type: {}'.format(content_type))
+        key.copy(key.bucket, key.name, preserve_acl=True,
+                 metadata={'content-type': content_type_for(key)})
+        r = operator.head(key.name)
+
     cache_control = r.headers.get('cache-control')
     if cache_control != CACHE_CONTROL:
         operator.error(key, 'Fixing bad cache-control value: {}'
                        .format(cache_control))
-        key.make_public(headers={'cache-control': CACHE_CONTROL})
-        return
+        # TODO: this make_public() call might not actually set the header?
+        key.make_public(headers=headers_for(key))
+
 
 class Operator(object):
     """Perform checks and run actions on our image database.
@@ -167,7 +175,7 @@ class Operator(object):
         thumb = image.bucket.new_key(thumbname)
         thumb.set_contents_from_string(
             output.getvalue(),
-            {'cache-control': CACHE_CONTROL},
+            headers=headers_for(thumb),
             policy='public-read',
             )
 
@@ -193,6 +201,17 @@ def name_of(key):
 
 def names_of(keys):
     return [ name_of(key) for key in keys ]
+
+def headers_for(key):
+    return {
+        'cache-control': CACHE_CONTROL,
+        }
+
+def content_type_for(key):
+    content_type, encoding = mimetypes.guess_type(key.name)
+    if content_type is None:
+        content_type = 'image/jpeg'
+    return content_type
 
 def cropped_thumbnail(image, size):
     return ImageOps.fit(image, size, Image.ANTIALIAS)
