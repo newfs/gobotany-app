@@ -78,8 +78,7 @@ def _setup_sample_data(load_images=False):
         # Create one image.
         im1 = models.ContentImage(alt='im1 alt', rank=1,
             creator='photographer A', image_type=image_type,
-            description='im1 desc', content_type=content_type,
-            object_id=bar.id)
+            content_type=content_type, object_id=bar.id)
         filename = 'huperzia-appressa-ha-flastname-1.jpg'
         f = open('%s/%s' % (_testdata_dir(), filename), 'r')
         image_file = File(f)
@@ -89,8 +88,7 @@ def _setup_sample_data(load_images=False):
         # Create another image.
         im2 = models.ContentImage(alt='im2 alt', rank=2,
             creator='photographer B', image_type=image_type,
-            description='im2 desc', content_type=content_type,
-            object_id=bar.id)
+            content_type=content_type, object_id=bar.id)
         filename = 'huperzia-appressa-ha-flastname-1.jpg'
         f = open('%s/%s' % (_testdata_dir(), filename), 'r')
         image_file = File(f)
@@ -333,7 +331,6 @@ class TaxonImageTestCase(TestCase):
             self.assertEqual(unicode, type(image['type']))
             self.assertEqual(int, type(image['rank']))
             self.assertEqual(unicode, type(image['title']))
-            self.assertEqual(unicode, type(image['description']))
             self.assertEqual(unicode, type(image['thumb_url']))
             self.assertEqual(unicode, type(image['large_thumb_url']))
 

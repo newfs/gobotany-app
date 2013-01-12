@@ -13,7 +13,6 @@ def _taxon_image(image):
                 'type': image.image_type.name,
                 'rank': image.rank,
                 'title': image.alt,
-                'description': image.description,
                 'thumb_url': image.thumb_small(),
                 'large_thumb_url': image.thumb_large(),
                 }
