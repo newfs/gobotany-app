@@ -44,7 +44,7 @@ All Characteristics:
 
 Wetland Status: 
 {% if object.wetland_indicator_code %}
-    {{ object.wetland_indicator_text }}
+    {{ object.get_wetland_indicator_text }}
     (Wetland indicator code:
     {{ object.wetland_indicator_code }})
 {% else %}

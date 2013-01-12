@@ -532,8 +532,6 @@ class Taxon(models.Model):
     factoid = models.CharField(max_length=1000, blank=True)
     wetland_indicator_code = models.CharField(max_length=15, blank=True,
                                               null=True)
-    wetland_indicator_text = models.CharField(max_length=200, blank=True,
-                                              null=True)
     north_american_native = models.NullBooleanField()
     north_american_introduced = models.NullBooleanField()
     distribution = models.CharField(max_length=50)
@@ -577,6 +575,11 @@ class Taxon(models.Model):
     def get_habitats(self):
         return (self.character_values.filter(character__short_name='habitat')
                 .order_by('value_str'))
+
+    def get_wetland_indicator_text(self):
+        return WetlandIndicator.objects.get(
+            code=self.wetland_indicator_code
+            ).friendly_description
 
     def partners(self):
         return PartnerSite.objects.filter(species=self)

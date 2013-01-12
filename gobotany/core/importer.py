@@ -513,7 +513,6 @@ class Importer(object):
                 taxonomic_authority=row['taxonomic_authority'],
                 factoid=row['factoid'],
                 wetland_indicator_code=wetland_code,
-                wetland_indicator_text=wetland_text,
                 north_american_native=north_american_native,
                 north_american_introduced=north_american_introduced,
                 distribution=row['distribution'],

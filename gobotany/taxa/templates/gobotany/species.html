@@ -154,7 +154,7 @@
                 <h2>Wetland Status</h2>
                 {% if taxon.wetland_indicator_code %}
                     <p>
-                        {{ taxon.wetland_indicator_text }}
+                        {{ taxon.get_wetland_indicator_text }}
                         (Wetland indicator code:
                         {{ taxon.wetland_indicator_code }})
                     </p>
