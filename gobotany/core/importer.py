@@ -1299,7 +1299,6 @@ class Importer(object):
                 ).set(
                 alt = '%s: %s' % (scientific_name, image_type_name),
                 creator = species['photographer'],
-                description = '',
                 image_type_id = image_type_name,  # replaced with id later
                 rank = rank,
                 )

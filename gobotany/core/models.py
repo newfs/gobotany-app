@@ -370,8 +370,6 @@ class ContentImage(models.Model):
                                verbose_name=u'photographer')
     image_type = models.ForeignKey(ImageType,
                                    verbose_name='image type')
-    description = models.TextField(verbose_name=u'description',
-                                   blank=True)
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
