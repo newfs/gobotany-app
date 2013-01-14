@@ -395,28 +395,6 @@ class Importer(object):
 
         pile_map = db.map('core_pile', 'slug', 'id')
 
-        # For columns where multiple delimited values are allowed, look for
-        # the expected delimiter. (It's been known to change in the Access
-        # exports, quietly resulting in bugs.)
-        # MULTIVALUE_COLUMNS = ['distribution', 'invasive_in_which_states',
-        #                       'prohibited_from_sale_states', 'habitat']
-        # EXPECTED_DELIMITER = '| '
-        # for column in MULTIVALUE_COLUMNS:
-        #     delimiter_found = False
-        #     for row in open_csv(taxaf):
-        #         if row[column].find(EXPECTED_DELIMITER) > 0:
-        #             delimiter_found = True
-        #             break
-        #     if not delimiter_found:
-        #         log.error('Expected delimiter "%s" not found taxa.csv '
-        #                   'column: %s' % (EXPECTED_DELIMITER, column))
-
-        # Get the list of wetland indicator codes and associated text.
-        # These values will be added to the taxon records as needed.
-        # TODO: Consider making the taxon model just have a foreign key
-        # relation to WetlandIndicator instead of a code and text field,
-        # which requires some knowledge of how to import this with the
-        # current approach of bulk loading and updating tables.
         wetland_indicators = dict(models.WetlandIndicator.objects.values_list(
             'code', 'friendly_description'))
 
@@ -434,7 +412,6 @@ class Importer(object):
 
             variety_notes = ''
             try:
-                # TODO: Get the real name of this column from Sid
                 variety_notes = row['variety_notes']
             except KeyError:
                 # This should only happen before the CSV 
@@ -479,11 +456,9 @@ class Importer(object):
             # mutually exclusive probability ranges. If the taxon record
             # has more than one indicator, the first is used.
             wetland_code = None
-            wetland_text = None
             if (row['wetland_status'] != '' and
                 row['wetland_status'].lower() != 'unclassified'):
                 wetland_code = row['wetland_status'].split('|')[0].strip()
-                wetland_text = wetland_indicators[wetland_code]
 
             # A plant can be marked as both native to North America and
             # introduced. This is for some native plants that are also
