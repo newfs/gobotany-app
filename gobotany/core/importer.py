@@ -670,8 +670,12 @@ class Importer(object):
 
         # Create a pile_map {'_ca': 8, '_nm': 9, ...}
         pile_map1 = db.map('core_pile', 'slug', 'id')
-        pile_map = dict(('_' + suffix, pile_map1[slugify(name)])
-                        for (suffix, name) in pile_suffixes.iteritems())
+        pile_map = {}
+        for (suffix, name) in pile_suffixes.iteritems():
+            slug = slugify(name)
+            # Only add suffixes whose piles exist, ignoring any others.
+            if slug in pile_map1.keys():
+                pile_map['_' + suffix] = pile_map1[slug]
 
         taxon_map = db.map('core_taxon', 'scientific_name', 'id')
         character_map = db.map('core_character', 'short_name', 'id')

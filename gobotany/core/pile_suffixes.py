@@ -10,6 +10,8 @@ pile_suffixes = {
     'po': u'Poaceae',
     'rg': u'Remaining Graminoids',
     'rn': u'Remaining Non-Monocots',
+    'an': u'Alternate Remaining Non-Monocots',
+    'nn': u'Non-Alternate Remaining Non-Monocots',
     'ta': u'Thalloid Aquatic',
     'wa': u'Woody Angiosperms',
     'wg': u'Woody Gymnosperms',
