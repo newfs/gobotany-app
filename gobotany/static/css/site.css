@@ -328,7 +328,7 @@ header nav #search-suggest .menu span { font-weight: normal; }
 /* Main content and sidebar */
 .content { padding: 8px 0 0; }
 .content .container { margin: 0 auto; padding: 0 10px; width: 960px; }
-.content #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; float: right; min-height: 500px; padding-bottom: 24px; padding-left: 250px; width: 710px; }
+.content #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; float: right; min-height: 520px; padding-bottom: 24px; padding-left: 250px; width: 710px; }
 .content #main .smallscreen-anchor-nav { display: none; }
 .content .container.free-sidebar #main { background: none; }
 .content .container.free-sidebar #sidebar { border-top: 0; height: auto; padding: 0; }
@@ -1360,9 +1360,9 @@ body.search-results .search-navigation a { text-decoration: underline; }
   footer .navigation > ul.sections + h6 { /* "Legal:" label */ display: none; }
   footer .navigation > h6:nth-of-type(2) { margin: 14px 14px 4px 71px; }
   footer .navigation > h6:nth-of-type(2):after { content: ":"; }
-  footer .navigation > h6:nth-of-type(2), footer .navigation > ul.legal { display: inline-block; margin-left: 72px; margin-top: 12px; }
-  footer .navigation .legal li { margin-right: 32px; }
-  footer .navigation .legal li:after { content: none; }
+  footer .navigation > h6:nth-of-type(2), footer .navigation > ul.prime-items { display: inline-block; margin-left: 72px; margin-top: 12px; }
+  footer .navigation .prime-items li { margin-right: 32px; }
+  footer .navigation .prime-items li:after { content: none; }
   footer .support { height: 63px; margin: 14px 0 0; padding: 0; }
   footer .support img { padding-bottom: 6px; }
   .content .container { padding: 0; }

@@ -157,7 +157,9 @@ def contributors_view(request):
     return render_to_response('gobotany/contributors.html', {
        }, context_instance=RequestContext(request))
 
-# Legal notification pages
+def contact_view(request):
+    return render_to_response('gobotany/contact.html',
+                              context_instance=RequestContext(request))
 
 def privacy_view(request):
     return render_to_response('gobotany/privacy.html',

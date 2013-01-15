@@ -28,14 +28,12 @@ urlpatterns = patterns(
     url(r'^about/$', views.about_view, name='site-about'),
     url(r'^contributors/$', views.contributors_view,
         name='site-contributors'),
+    url('^privacy/$', views.privacy_view, name='site-privacy'),
+    url('^terms-of-use/$', views.terms_of_use_view, name='site-terms-of-use'),
+    url('^contact/$', views.contact_view, name='site-contact'),
 
     # "Species List" page, linked to from the About | Advanced Map page
     url('^list/$', views.species_list_view, name='species-list'),
-
-    # Legal notification pages
-    url('^privacy/$', views.privacy_view, name='site-privacy'),
-    url('^terms-of-use/$', views.terms_of_use_view, name='site-terms-of-use'),
-
     # API calls for input suggestions
     url(r'^search-suggestions/', views.search_suggestions_view,
         name='site-search-suggestions'),
