@@ -70,7 +70,7 @@ define([
             return false;
         });
 
-        $('#upload-avatar-form input[type="file"]').change(function() {
+        $('#upload-image-form input[type="file"]').change(function() {
             /* Diable client-side image preview for now */
             /*
             var reader = new FileReader();
@@ -89,8 +89,8 @@ define([
             return false;
         });
 
-        $('#upload-photo-submit').click(function() {
-            $('#upload-avatar-form').ajaxSubmit(function(json) {
+        $('#upload-image-submit').click(function() {
+            $('#upload-image-form').ajaxSubmit(function(json) {
                 if(json.success) {
                     console.log('Successfully uploaded avatar');
                     $('#avatar-image').attr('src', json.thumb);

@@ -29,8 +29,8 @@ define([
                 }).appendTo('#sighting-photos');
         }
 
-        $('#upload-photo-submit').click(function () {
-            $('#upload-photo-form').ajaxSubmit(function (json) {
+        $('#upload-image-submit').click(function () {
+            $('#upload-image-form').ajaxSubmit(function (json) {
                 if(json.success) {
                     console.log('Successfully uploaded sighting photo.');
                     console.log('New Photo [id=' + json.id + ', thumb=' +

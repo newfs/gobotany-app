@@ -1,0 +1,15 @@
+<div class="image-modal">
+    <a href="#" class="close">close</a>
+    <img src="/static/images/icons/no-image.png" alt="image">
+    <h4>Upload Image</h4>
+    <form id="upload-image-form" method="POST" 
+        action="{% url ps-ajax-image-upload %}">
+        {% csrf_token %}
+        {{ image_form.image }}
+        <div style="display: none;">{{ image_form.image_type }}</div>
+        <div class="screening-notify">
+            <p>All images are screened by Plantshare Staff before being displayed publically.</p>
+        </div>
+        <input type="submit" id="upload-image-submit" class="save-btn">
+    </form>
+</div>
