@@ -64,11 +64,22 @@ define([
 
         syncFields();
 
+        var triggers = $('#upload-link').overlay({
+            mask: {
+                color: 'black',
+                loadSpeed: 200,
+                opacity: 0.5
+            },
+            closeOnClick: false
+        });
+
+        /*
         $('#upload-link').click(function() {
             imageModal = $('.image-modal');
             imageModal.show();
             return false;
         });
+        */
 
         $('#upload-image-form input[type="file"]').change(function() {
             /* Diable client-side image preview for now */
@@ -85,7 +96,7 @@ define([
         });
 
         $('.image-modal .close').click(function() {
-            $('.image-modal').hide();
+            triggers.eq(0).overlay().close();
             return false;
         });
 
@@ -98,7 +109,7 @@ define([
                     console.log('Error: ' + json.info);
                 }
             });
-            $('.image-modal').hide();
+            triggers.eq(0).overlay().close();
             return false;
         });
     });
