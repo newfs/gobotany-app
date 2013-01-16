@@ -6,14 +6,17 @@ define([
 
     $(document).ready(function () {
 
-        $('#upload-link').click(function () {
-            imageModal = $('.image-modal');
-            imageModal.show();
-            return false;
+        var triggers = $('#upload-link').overlay({
+            mask: {
+                color: 'black',
+                loadSpeed: 200,
+                opacity: 0.5
+            },
+            closeOnClick: false
         });
 
         $('.image-modal .close').click(function () {
-            $('.image-modal').hide();
+            triggers.eq(0).overlay().close();
             return false;
         });
 
@@ -41,7 +44,7 @@ define([
                     console.log('Error: ' + json.info);
                 }
             });
-            $('.image-modal').hide();
+            triggers.eq(0).overlay().close();
             return false;
         });
 
