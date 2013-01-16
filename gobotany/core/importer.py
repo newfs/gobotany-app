@@ -975,11 +975,15 @@ class Importer(object):
                 log.error('Bad character: %r', short_name)
                 continue
 
+            friendly_text = ''
+            if 'friendly_text' in row.keys():
+                friendly_text = self._clean_up_html(row['friendly_text'])
+
             charactervalue_table.get(
                 character_id=character_id,
                 value_str=value_str,
                 ).set(
-                friendly_text=self._clean_up_html(row['friendly_text'])
+                friendly_text=friendly_text
                 )
 
         charactervalue_table.save()
