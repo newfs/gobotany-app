@@ -693,84 +693,111 @@ class Importer(object):
 
         for filename in filenames:
             log.info('Loading %s', filename)
-            pile_id = None
 
-            # Do *not* lower() column names; case is important!
+            suffixes = []
             for row in open_csv(filename, lower=False):
+                # Look for a column name that ends with _litsrc in order
+                # to reliably extract the pile suffix for these CSV files.
+                for colname in row.keys():
+                    if colname.endswith('_litsrc'):
+                        suffix = colname[-10:-7]
+                        suffixes.append(suffix)
+                        break
+                break
+            # For the Remaining Non-Monocots pile, which is to be split,
+            # also create TaxonCharacterValues for each the split piles.
+            # Characters are assumed to already exist for the split piles.
+            if suffix == '_rn':
+                suffixes.extend(['_an', '_nn'])
 
-                # Look up the taxon.
-                taxon_id = taxon_map.get(row['Scientific__Name'])
-                if taxon_id is None:
-                    log.error('Unknown taxon: %r', row['Scientific__Name'])
-                    continue
+            if len(suffixes) == 0:
+                log.error('No pile suffixes to process.')
 
-                # Create a structure for tracking whether both min and
-                # max values have been seen for this character, in order
-                # to avoid creating unnecessary CharacterValues.
-                length_pairs = defaultdict(lambda: [None, None])
+            for suffix in suffixes:
+                log.info('Creating TaxonCharacterValues for: %s', suffix)
+                pile_id = None
 
-                # Go through the key/value pairs for this row.
-                for character_name, v in row.items():
-                    if not v.strip():
+                # Do *not* lower() column names; case is important!
+                for row in open_csv(filename, lower=False):
+
+                    # Look up the taxon.
+                    taxon_id = taxon_map.get(row['Scientific__Name'])
+                    if taxon_id is None:
+                        log.error('Unknown taxon: %r',
+                                  row['Scientific__Name'])
                         continue
-                    suffix = character_name[-3:]  # '_ca', etc.
-                    pile_id = pile_map.get(suffix)
-                    if pile_id is None:
-                        continue
 
-                    short_name = shorten_character_name(character_name)
-                    character_id = character_map.get(short_name)
-                    if character_id is None:
-                        unknown_characters.add(short_name)
-                        continue
+                    # Create a structure for tracking whether both min and
+                    # max values have been seen for this character, in order
+                    # to avoid creating unnecessary CharacterValues.
+                    length_pairs = defaultdict(lambda: [None, None])
 
-                    is_min = '_min' in character_name.lower()
-                    is_max = '_max' in character_name.lower()
-
-                    if is_min or is_max:
-                        if v == 'n/a':
+                    # Go through the key/value pairs for this row.
+                    for character_name, v in row.items():
+                        if not v.strip():
                             continue
-                        try:
-                            numv = float(v)
-                        except ValueError:
-                            bad_float_values.add(v)
+
+                        pile_id = pile_map.get(suffix)
+                        if pile_id is None:
                             continue
 
-                        index = 0 if is_min else 1
-                        length_pairs[short_name][index] = numv
+                        short_name = shorten_character_name(character_name)
 
-                    else:
-                        # We can create normal tcv rows very simply.
+                        # Apply the current suffix to the short name.
+                        # (The suffix is only different for split piles.)
+                        short_name = short_name[:-3] + suffix
 
-                        for value_str in v.split('|'):
-                            value_str = value_str.strip()
-                            cvkey = (character_id, value_str)
-                            cv_id = cv_map.get(cvkey)
-                            if cv_id is None:
-                                unknown_character_values.add(cvkey)
+                        character_id = character_map.get(short_name)
+                        if character_id is None:
+                            unknown_characters.add(short_name)
+                            continue
+
+                        is_min = '_min' in character_name.lower()
+                        is_max = '_max' in character_name.lower()
+
+                        if is_min or is_max:
+                            if v == 'n/a':
                                 continue
-                            tcv_table.get(
-                                taxon_id=taxon_id,
-                                character_value_id=cv_id,
-                                )
+                            try:
+                                numv = float(v)
+                            except ValueError:
+                                bad_float_values.add(v)
+                                continue
 
-                # Now we have seen both the min and max of every range.
+                            index = 0 if is_min else 1
+                            length_pairs[short_name][index] = numv
 
-                for character_name, (vmin, vmax) in length_pairs.iteritems():
-                    # if vmin is None or vmax is None:  # should we do this?
-                    #     continue
-                    character_id = character_map[character_name]
-                    cv_table.get(
-                        character_id=character_id,
-                        value_min=vmin,
-                        value_max=vmax,
-                        ).set(
-                        friendly_text='',
-                        )
-                    tcv_table.get(
-                        taxon_id=taxon_id,
-                        character_value_id=(character_id, vmin, vmax),
-                        )
+                        else:
+                            # We can create normal tcv rows very simply.
+
+                            for value_str in v.split('|'):
+                                value_str = value_str.strip()
+                                cvkey = (character_id, value_str)
+                                cv_id = cv_map.get(cvkey)
+                                if cv_id is None:
+                                    unknown_character_values.add(cvkey)
+                                    continue
+                                tcv_table.get(
+                                    taxon_id=taxon_id,
+                                    character_value_id=cv_id,
+                                    )
+
+                    # Now we have seen both the min and max of every range.
+
+                    for character_name, (vmin,
+                                         vmax) in length_pairs.iteritems():
+                        character_id = character_map[character_name]
+                        cv_table.get(
+                            character_id=character_id,
+                            value_min=vmin,
+                            value_max=vmax,
+                            ).set(
+                            friendly_text='',
+                            )
+                        tcv_table.get(
+                            taxon_id=taxon_id,
+                            character_value_id=(character_id, vmin, vmax),
+                            )
 
         for s in sorted(bad_float_values):
             log.debug('Bad floating-point value: %s', s)
