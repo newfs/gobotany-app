@@ -124,13 +124,15 @@ def read_default_filters(characters_csv):
         pile_name = row[u'pile'].title()
         character_slug = shorten_character_name(row[u'character'])
 
-        n = row['default_question']
-        if n:
-            defaultlist.append(('simple', pile_name, n, character_slug))
+        if 'default_question' in row.keys():
+            n = row['default_question']
+            if n:
+                defaultlist.append(('simple', pile_name, n, character_slug))
 
-        n = row['default_question_fullkey']
-        if n:
-            defaultlist.append(('full', pile_name, n, character_slug))
+        if 'default_question_fullkey' in row.keys():
+            n = row['default_question_fullkey']
+            if n:
+                defaultlist.append(('full', pile_name, n, character_slug))
 
     return defaultlist
 
