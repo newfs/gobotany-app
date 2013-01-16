@@ -5,11 +5,18 @@
     <form id="upload-image-form" method="POST" 
         action="{% url ps-ajax-image-upload %}">
         {% csrf_token %}
-        {{ image_form.image }}
-        <div style="display: none;">{{ image_form.image_type }}</div>
         <div class="screening-notify">
             <p>All images are screened by Plantshare Staff before being displayed publicly.</p>
         </div>
-        <input type="submit" id="upload-image-submit" class="save-btn">
+        <div style="display: none;">
+            {{ image_form.image }}
+            {{ image_form.image_type }}
+        </div>
+        <a class="button file-select">CHOOSE FILE</a>
+        <a class="button disabled" id="upload-image-submit">UPLOAD</a>
     </form>
+    <div class="modal-footer">
+        File:
+        <div class="file-path">None Selected</div>
+    </div>
 </div>
