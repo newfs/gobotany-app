@@ -1527,8 +1527,6 @@ class Importer(object):
 
             if created:
                 message = 'Created %s' % message
-            else:
-                message = 'Error: did not create %s' % message
             log.info(message)
 
 
