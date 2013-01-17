@@ -61,13 +61,16 @@ def rebuild_default_filters(characters_csv):
     stuff = importer.read_default_filters(characters_csv)
 
     for key_name, pile_name, n, character_slug in stuff:
-        piles_seen.add(pile_name)
-        table.get(
-            key=key_name,
-            pile_id=pile_map[pile_name],
-            order=n,
-            character_id=character_map[character_slug],
-            )
+        if pile_name in pile_map.keys():
+            piles_seen.add(pile_name)
+            table.get(
+                key=key_name,
+                pile_id=pile_map[pile_name],
+                order=n,
+                character_id=character_map[character_slug],
+                )
+        else:
+            log.error('  Pile %s not found' % pile_name)
 
     # Make sure all piles were covered, and throw in two filters that
     # appear for all piles.
