@@ -435,13 +435,10 @@ define([
                 $inputs.on('keydown keyup', function() {
 
                     var v = $(this).val();
+                    var m = v.match(/^ *[0-9]*[.]?[0-9]* *$/);
 
-                    if (v === '')
-                        $(this).addClass('empty').removeClass('illegal');
-                    else if (v.match(/^ *[0-9]*[.]?[0-9]* *$/))
-                        $(this).removeClass('empty').removeClass('illegal');
-                    else
-                        $(this).removeClass('empty').addClass('illegal');
+                    $(this).toggleClass('empty', !v);
+                    $(this).toggleClass('illegal', !m);
 
                     var new_min = float_from($inputs.eq(0).val());
                     var new_max = float_from($inputs.eq(1).val());

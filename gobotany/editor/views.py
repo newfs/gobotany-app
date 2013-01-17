@@ -49,13 +49,45 @@ def _edit_pile_length_character(request, pile, character, taxa):
     # one character value for a pair of
 
     taxon_ids = {taxon.id for taxon in taxa}
-    minmaxes = {taxon.id: ['', ''] for taxon in taxa}
+    taxon_values = {}
+    minmaxes = {taxon.id: [None, None] for taxon in taxa}
 
     for tcv in models.TaxonCharacterValue.objects.filter(
             taxon__in=taxa, character_value__character=character
           ).select_related('character_value'):
         v = tcv.character_value
+        taxon_values[tcv.taxon_id] = v
         minmaxes[tcv.taxon_id] = [v.value_min, v.value_max]
+
+    # Process a POST.
+
+    if 'value_settings' in request.POST:
+
+        taxa_by_name = { taxon.scientific_name: taxon for taxon in taxa }
+        value_settings = json.loads(request.POST['value_settings'])
+        print value_settings
+
+        for scientific_name, min_value, max_value in value_settings:
+            taxon = taxa_by_name[scientific_name]
+            already_exists = taxon.id in taxon_values
+
+            if already_exists:
+                value = taxon_values[taxon.id]
+            else:
+                value = models.CharacterValue()
+                value.character = character
+
+            value.value_min = min_value
+            value.value_max = max_value
+            value.save()
+
+            if not already_exists:
+                tcv = models.TaxonCharacterValue()
+                tcv.character_value = value
+                tcv.taxon = taxon
+                tcv.save()
+
+        return redirect(request.path)
 
     # Grabbing one copy of each family once is noticeably faster than
     # using select_related('family') up in the taxon fetch:
