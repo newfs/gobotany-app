@@ -392,14 +392,42 @@ define([
     exports.setup_pile_length_page = function() {
         $(document).ready(function() {
 
-            $('.pile-character-grid input').on('keyup', function() {
-                var v = $(this).val();
-                if (v === '')
-                    $(this).addClass('empty').removeClass('illegal');
-                else if (v.match(/^ *[0-9]*[.]?[0-9]* *$/))
-                    $(this).removeClass('empty').removeClass('illegal');
-                else
-                    $(this).removeClass('empty').addClass('illegal');
+            var float_from = function(string) {
+                return string.trim() ? parseFloat(string) : null;
+            };
+
+            $('.pile-character-grid div').each(function() {
+
+                var div = this;
+                var $inputs = $('input', div);
+                var original_min = float_from($inputs.eq(0).val());
+                var original_max = float_from($inputs.eq(1).val());
+
+                $inputs.on('keydown keyup', function() {
+
+                    var v = $(this).val();
+
+                    if (v === '')
+                        $(this).addClass('empty').removeClass('illegal');
+                    else if (v.match(/^ *[0-9]*[.]?[0-9]* *$/))
+                        $(this).removeClass('empty').removeClass('illegal');
+                    else
+                        $(this).removeClass('empty').addClass('illegal');
+
+                    var new_min = float_from($inputs.eq(0).val());
+                    var new_max = float_from($inputs.eq(1).val());
+
+                    var $changed_tag = $('.changed_tag', div);
+
+                    if (new_min === original_min && new_max == original_max) {
+                        if ($changed_tag.length)
+                            $changed_tag.remove();
+                    } else {
+                        if ($changed_tag.length === 0)
+                            $(div).append($('<span>').text('changed')
+                                          .addClass('changed_tag'));
+                    }
+                });
             });
 
             $('.save-button').click(save_pile_taxon);
