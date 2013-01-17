@@ -43,12 +43,12 @@
       <h3>{{ family.name }}</h3>
       {% endwith %}
     {% else %}
-      {% with taxon=thing min=minmax.0 max=minmax.1 %}
-      <div><i>{{ taxon.scientific_name }}</i>
-        <b>Min<input
+      {% with name=thing min=minmax.0 max=minmax.1 %}
+      <div><i>{{ name }}</i>
+        <b>Min <input
           {% if min == None %}class="empty"{% else %}value={{ min }}{% endif %}
         ></b>
-        <b>Max<input
+        <b>Max <input
           {% if max == None %}class="empty"{% else %}value={{ max }}{% endif %}
         ></b>
         {{ character.unit }}

@@ -68,6 +68,7 @@ def _edit_pile_length_character(request, pile, character, taxa):
         print value_settings
 
         for scientific_name, min_value, max_value in value_settings:
+            scientific_name = scientific_name.replace(' (fk)', '')
             taxon = taxa_by_name[scientific_name]
             already_exists = taxon.id in taxon_values
 
@@ -104,7 +105,10 @@ def _edit_pile_length_character(request, pile, character, taxa):
         for family in families:
             yield 'family', family, None
             for taxon in taxa_by_family_id.get(family.id, ()):
-                yield 'taxon', taxon, minmaxes[taxon.id]
+                name = taxon.scientific_name
+                if taxon.id not in simple_ids:
+                    name += ' (fk)'
+                yield 'taxon', name, minmaxes[taxon.id]
 
     partner = which_partner(request)
     simple_ids = set(ps.species_id for ps in models.PartnerSpecies.objects
