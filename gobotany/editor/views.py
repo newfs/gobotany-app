@@ -49,7 +49,7 @@ def _edit_pile_length_character(request, pile, character, taxa):
     # one character value for a pair of
 
     taxon_ids = {taxon.id for taxon in taxa}
-    minmaxes = {taxon.id: [None, None] for taxon in taxa}
+    minmaxes = {taxon.id: ['', ''] for taxon in taxa}
 
     for tcv in models.TaxonCharacterValue.objects.filter(
             taxon__in=taxa, character_value__character=character
@@ -70,16 +70,17 @@ def _edit_pile_length_character(request, pile, character, taxa):
     def grid():
         """Iterator across families and their taxa."""
         for family in families:
-            yield 'family', family
+            yield 'family', family, None
             for taxon in taxa_by_family_id.get(family.id, ()):
-                yield 'taxon', taxon
+                yield 'taxon', taxon, minmaxes[taxon.id]
 
     partner = which_partner(request)
     simple_ids = set(ps.species_id for ps in models.PartnerSpecies.objects
                      .filter(partner_id=partner.id, simple_key=True))
 
-    coverage_percent_full = len(minmaxes) * 100.0 / len(taxa)
-    coverage_percent_simple = (len(simple_ids.intersection(minmaxes))
+    valued_ids = {id for id, value in minmaxes.items() if value != ['', ''] }
+    coverage_percent_full = len(valued_ids) * 100.0 / len(taxa)
+    coverage_percent_simple = (len(simple_ids.intersection(valued_ids))
                      * 100.0 / len(simple_ids.intersection(taxon_ids)))
 
     return render_to_response('gobotany/edit_pile_length.html', {

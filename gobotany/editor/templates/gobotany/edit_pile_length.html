@@ -37,15 +37,19 @@
 </p>
 
 <div class="pile-character-grid">
-  {% for kind, thing in grid %}
+  {% for kind, thing, minmax in grid %}
     {% if kind == 'family' %}
-      <h3>{{ thing.name }}</h3>
+      {% with family=thing %}
+      <h3>{{ family.name }}</h3>
+      {% endwith %}
     {% else %}
-      <div><i>{{ thing.scientific_name }}</i>
-        <b>Min <input></b>
-        <b>Max <input></b>
+      {% with taxon=thing min=minmax.0 max=minmax.1 %}
+      <div><i>{{ taxon.scientific_name }}</i>
+        <b>Min <input value={{ min }}></b>
+        <b>Max <input value={{ max }}></b>
         {{ character.unit }}
       </div>
+      {% endwith %}
     {% endif %}
   {% endfor %}
 </div>
