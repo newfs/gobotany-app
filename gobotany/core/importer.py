@@ -113,12 +113,6 @@ status_precedence = {
 }
 
 def read_default_filters(characters_csv):
-    """Replacement for get_default_filters_from_csv().
-
-    Older routines that still use the other function should gradually be
-    converted so that it can be removed.
-
-    """
     defaultlist = []
     for row in open_csv(characters_csv):
 
@@ -163,36 +157,6 @@ def read_default_filters(characters_csv):
 
     return defaultlist
 
-def get_default_filters_from_csv(pile_name, characters_csv):
-    """Old clunky function, superseded by read_default_filters()."""
-
-    iterator = iter(CSVReader(characters_csv).read())
-    colnames = [x.lower() for x in iterator.next()]
-    filters = []
-    for cols in iterator:
-        row = dict(zip(colnames, cols))
-
-        if row['pile'].lower() == pile_name.lower():
-            if 'default_question' in row and row['default_question'] != '':
-                character_name = row['character']
-                order = row['default_question']
-
-                short_name = shorten_character_name(character_name)
-                filters.append((order, short_name))
-
-    default_filter_characters = []
-    filters.sort()
-    for f in filters:
-        character_name = f[1]
-        try:
-            character = models.Character.objects.get( \
-                short_name=character_name)
-            default_filter_characters.append(character)
-        except models.Character.DoesNotExist:
-            print "Error: Character does not exist: %s" % character_name
-            continue
-
-    return default_filter_characters
 
 def shorten_character_name(raw_character_name):
     """Return a "short name" for a character, as used in the database.
@@ -1537,24 +1501,24 @@ class Importer(object):
         taxoncharactervalue_table.save()
 
 
-    def _create_plant_preview_characters(self, pile_name,
-                                         character_short_names,
+    def _create_plant_preview_characters(self, preview_characters,
                                          partner_site_short_name='gobotany'):
-        pile = models.Pile.objects.get(name=pile_name)
         partner_site = None
         if partner_site_short_name:
-            partner_site = models.PartnerSite.objects.get( \
-                short_name=partner_site_short_name)
+            partner_site = models.PartnerSite.objects.get(
+                           short_name=partner_site_short_name)
 
-        for order, short_name in enumerate(character_short_names):
-            character = models.Character.objects.get(short_name=short_name)
+        for key_name, pile_name, order, character_slug in preview_characters:
+            character = models.Character.objects.get(
+                        short_name=character_slug)
+            pile = models.Pile.objects.get(name=pile_name)
 
             preview_character, created = \
                 models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
                     character=character, order=order,
                     partner_site=partner_site)
 
-            message = 'plant_preview_character: %s' % short_name
+            message = 'plant_preview_character: %s' % character_slug
             if partner_site:
                 message = '%s (%s)' % (message, partner_site)
 
@@ -1564,27 +1528,26 @@ class Importer(object):
                 message = 'Error: did not create %s' % message
             log.info(message)
 
+
     def import_plant_preview_characters(self, characters_csv):
         """Load plant preview characters from a CSV file"""
         log.info('Setting up plant preview characters')
 
         # For now, plant preview characters should initially be set to
         # the same characters as are used for the default filters.
-        for pile in models.Pile.objects.all():
-            # Start with some characters common to all plant subgroups.
-            character_short_names = ['habitat_general', 'state_distribution']
-            characters = get_default_filters_from_csv(pile.name,
-                                                      characters_csv)
-            character_short_names.extend([character.short_name
-                                          for character in characters])
-            self._create_plant_preview_characters(pile.name,
-                                                  character_short_names)
 
-        # Set up some different plant preview characters for a partner site.
-        # (Disabled this demo code pending partner customization decisions.)
-        #self._create_plant_preview_characters('Lycophytes',
-        #    ['trophophyll_form_ly', 'upright_shoot_form_ly',
-        #     'sporophyll_orientation_ly'], 'montshire')
+        preview_characters = read_default_filters(characters_csv)
+
+        # Add some characters common to all plant subgroups.
+        for pile in models.Pile.objects.all():
+            for key in ['simple', 'full']:
+                preview_characters.append((key, pile.name, -2,
+                                           'habitat_general'))
+                preview_characters.append((key, pile.name, -1,
+                                           'state_distribution'))
+
+        self._create_plant_preview_characters(preview_characters)
+
 
     def import_lookalikes(self, db, filename):
         """Load look-alike plants from a CSV file"""
