@@ -113,57 +113,50 @@ status_precedence = {
 }
 
 def read_default_filters(characters_csv):
-    """Replacement for get_default_filters_from_csv().
-
-    Older routines that still use the other function should gradually be
-    converted so that it can be removed.
-
-    """
     defaultlist = []
     for row in open_csv(characters_csv):
+
+        pile_names = []
         pile_name = row[u'pile'].title()
+        pile_names.append(pile_name)
+        if pile_name == 'Remaining Non-Monocots':
+            # For the Remaining Non-Monocots pile, which is to be split,
+            # also make default filters for each of the split piles.
+            pile_names.extend(['Alternate Remaining Non-Monocots',
+                               'Non-Alternate Remaining Non-Monocots'])
+
         character_slug = shorten_character_name(row[u'character'])
 
-        n = row['default_question']
-        if n:
-            defaultlist.append(('simple', pile_name, n, character_slug))
+        for pile_name in pile_names:
+            pile_suffix = None
+            for suffix, name in pile_suffixes.iteritems():
+                if name == pile_name:
+                    pile_suffix = suffix
+            if not pile_suffix:
+                continue
 
-        n = row['default_question_fullkey']
-        if n:
-            defaultlist.append(('full', pile_name, n, character_slug))
+            # Omit a default filter for one of the split piles.
+            if (pile_name == 'Alternate Remaining Non-Monocots' and
+                character_slug.startswith('leaf_arrangement_')):
+                continue
+
+            # Apply the current pile suffix to the character short name.
+            # (The suffix is only different for split piles.)
+            character_slug = character_slug[:-2] + pile_suffix
+
+            if 'default_question' in row.keys():
+                n = row['default_question']
+                if n:
+                    defaultlist.append(('simple', pile_name, n,
+                                        character_slug))
+
+            if 'default_question_fullkey' in row.keys():
+                n = row['default_question_fullkey']
+                if n:
+                    defaultlist.append(('full', pile_name, n, character_slug))
 
     return defaultlist
 
-def get_default_filters_from_csv(pile_name, characters_csv):
-    """Old clunky function, superseded by read_default_filters()."""
-
-    iterator = iter(CSVReader(characters_csv).read())
-    colnames = [x.lower() for x in iterator.next()]
-    filters = []
-    for cols in iterator:
-        row = dict(zip(colnames, cols))
-
-        if row['pile'].lower() == pile_name.lower():
-            if 'default_question' in row and row['default_question'] != '':
-                character_name = row['character']
-                order = row['default_question']
-
-                short_name = shorten_character_name(character_name)
-                filters.append((order, short_name))
-
-    default_filter_characters = []
-    filters.sort()
-    for f in filters:
-        character_name = f[1]
-        try:
-            character = models.Character.objects.get( \
-                short_name=character_name)
-            default_filter_characters.append(character)
-        except models.Character.DoesNotExist:
-            print "Error: Character does not exist: %s" % character_name
-            continue
-
-    return default_filter_characters
 
 def shorten_character_name(raw_character_name):
     """Return a "short name" for a character, as used in the database.
@@ -670,8 +663,12 @@ class Importer(object):
 
         # Create a pile_map {'_ca': 8, '_nm': 9, ...}
         pile_map1 = db.map('core_pile', 'slug', 'id')
-        pile_map = dict(('_' + suffix, pile_map1[slugify(name)])
-                        for (suffix, name) in pile_suffixes.iteritems())
+        pile_map = {}
+        for (suffix, name) in pile_suffixes.iteritems():
+            slug = slugify(name)
+            # Only add suffixes whose piles exist, ignoring any others.
+            if slug in pile_map1.keys():
+                pile_map['_' + suffix] = pile_map1[slug]
 
         taxon_map = db.map('core_taxon', 'scientific_name', 'id')
         character_map = db.map('core_character', 'short_name', 'id')
@@ -687,84 +684,111 @@ class Importer(object):
 
         for filename in filenames:
             log.info('Loading %s', filename)
-            pile_id = None
 
-            # Do *not* lower() column names; case is important!
+            suffixes = []
             for row in open_csv(filename, lower=False):
+                # Look for a column name that ends with _litsrc in order
+                # to reliably extract the pile suffix for these CSV files.
+                for colname in row.keys():
+                    if colname.endswith('_litsrc'):
+                        suffix = colname[-10:-7]
+                        suffixes.append(suffix)
+                        break
+                break
+            # For the Remaining Non-Monocots pile, which is to be split,
+            # also create TaxonCharacterValues for each the split piles.
+            # Characters are assumed to already exist for the split piles.
+            if suffix == '_rn':
+                suffixes.extend(['_an', '_nn'])
 
-                # Look up the taxon.
-                taxon_id = taxon_map.get(row['Scientific__Name'])
-                if taxon_id is None:
-                    log.error('Unknown taxon: %r', row['Scientific__Name'])
-                    continue
+            if len(suffixes) == 0:
+                log.error('No pile suffixes to process.')
 
-                # Create a structure for tracking whether both min and
-                # max values have been seen for this character, in order
-                # to avoid creating unnecessary CharacterValues.
-                length_pairs = defaultdict(lambda: [None, None])
+            for suffix in suffixes:
+                log.info('Creating TaxonCharacterValues for: %s', suffix)
+                pile_id = None
 
-                # Go through the key/value pairs for this row.
-                for character_name, v in row.items():
-                    if not v.strip():
+                # Do *not* lower() column names; case is important!
+                for row in open_csv(filename, lower=False):
+
+                    # Look up the taxon.
+                    taxon_id = taxon_map.get(row['Scientific__Name'])
+                    if taxon_id is None:
+                        log.error('Unknown taxon: %r',
+                                  row['Scientific__Name'])
                         continue
-                    suffix = character_name[-3:]  # '_ca', etc.
-                    pile_id = pile_map.get(suffix)
-                    if pile_id is None:
-                        continue
 
-                    short_name = shorten_character_name(character_name)
-                    character_id = character_map.get(short_name)
-                    if character_id is None:
-                        unknown_characters.add(short_name)
-                        continue
+                    # Create a structure for tracking whether both min and
+                    # max values have been seen for this character, in order
+                    # to avoid creating unnecessary CharacterValues.
+                    length_pairs = defaultdict(lambda: [None, None])
 
-                    is_min = '_min' in character_name.lower()
-                    is_max = '_max' in character_name.lower()
-
-                    if is_min or is_max:
-                        if v == 'n/a':
+                    # Go through the key/value pairs for this row.
+                    for character_name, v in row.items():
+                        if not v.strip():
                             continue
-                        try:
-                            numv = float(v)
-                        except ValueError:
-                            bad_float_values.add(v)
+
+                        pile_id = pile_map.get(suffix)
+                        if pile_id is None:
                             continue
 
-                        index = 0 if is_min else 1
-                        length_pairs[short_name][index] = numv
+                        short_name = shorten_character_name(character_name)
 
-                    else:
-                        # We can create normal tcv rows very simply.
+                        # Apply the current suffix to the short name.
+                        # (The suffix is only different for split piles.)
+                        short_name = short_name[:-3] + suffix
 
-                        for value_str in v.split('|'):
-                            value_str = value_str.strip()
-                            cvkey = (character_id, value_str)
-                            cv_id = cv_map.get(cvkey)
-                            if cv_id is None:
-                                unknown_character_values.add(cvkey)
+                        character_id = character_map.get(short_name)
+                        if character_id is None:
+                            unknown_characters.add(short_name)
+                            continue
+
+                        is_min = '_min' in character_name.lower()
+                        is_max = '_max' in character_name.lower()
+
+                        if is_min or is_max:
+                            if v == 'n/a':
                                 continue
-                            tcv_table.get(
-                                taxon_id=taxon_id,
-                                character_value_id=cv_id,
-                                )
+                            try:
+                                numv = float(v)
+                            except ValueError:
+                                bad_float_values.add(v)
+                                continue
 
-                # Now we have seen both the min and max of every range.
+                            index = 0 if is_min else 1
+                            length_pairs[short_name][index] = numv
 
-                for character_name, (vmin, vmax) in length_pairs.iteritems():
-                    # if vmin is None or vmax is None:  # should we do this?
-                    #     continue
-                    character_id = character_map[character_name]
-                    cv_table.get(
-                        character_id=character_id,
-                        value_min=vmin,
-                        value_max=vmax,
-                        ).set(
-                        friendly_text='',
-                        )
-                    tcv_table.get(
-                        taxon_id=taxon_id,
-                        character_value_id=(character_id, vmin, vmax),
-                        )
+                        else:
+                            # We can create normal tcv rows very simply.
+
+                            for value_str in v.split('|'):
+                                value_str = value_str.strip()
+                                cvkey = (character_id, value_str)
+                                cv_id = cv_map.get(cvkey)
+                                if cv_id is None:
+                                    unknown_character_values.add(cvkey)
+                                    continue
+                                tcv_table.get(
+                                    taxon_id=taxon_id,
+                                    character_value_id=cv_id,
+                                    )
+
+                    # Now we have seen both the min and max of every range.
+
+                    for character_name, (vmin,
+                                         vmax) in length_pairs.iteritems():
+                        character_id = character_map[character_name]
+                        cv_table.get(
+                            character_id=character_id,
+                            value_min=vmin,
+                            value_max=vmax,
+                            ).set(
+                            friendly_text='',
+                            )
+                        tcv_table.get(
+                            taxon_id=taxon_id,
+                            character_value_id=(character_id, vmin, vmax),
+                            )
 
         for s in sorted(bad_float_values):
             log.debug('Bad floating-point value: %s', s)
@@ -847,39 +871,52 @@ class Importer(object):
                 value_type = 'TEXT'
                 unit = ''
 
+            suffixes = []
             suffix = character_name[-3:]  # '_ca', etc.
-            pile_id = pile_map.get(suffix)
+            suffixes.append(suffix)
+            # For the Remaining Non-Monocots pile, which is to be split,
+            # also create Characters for each of the split piles.
+            if suffix == '_rn':
+                suffixes.extend(['_an', '_nn'])
 
-            charactergroup = charactergroup_table.get(
-                name=row['character_group'],
-                )
+            for suffix in suffixes:
+                # Apply the current suffix to the short name.
+                # (The suffix is only different for split piles.)
+                short_name = short_name[:-3] + suffix
 
-            eoo = row['ease_of_observability']
-            try:
-                eoo = int(eoo)
-            except ValueError:
-                log.error('Bad ease-of-observability value: %s', repr(eoo))
-                eoo = 10
+                pile_id = pile_map.get(suffix)
 
-            question = row['friendly_text']
-            hint = row['hint']
+                charactergroup = charactergroup_table.get(
+                    name=row['character_group'],
+                    )
 
-            name = self._create_character_name(short_name)
-            friendly_name = self._get_character_friendly_name(
-                short_name, row['filter_label'])
-            character_table.get(
-                short_name=short_name,
-                ).set(
-                name=name,
-                friendly_name=friendly_name,
-                character_group_id=charactergroup.name,
-                pile_id=pile_id,
-                value_type=value_type,
-                unit=unit,
-                ease_of_observability=eoo,
-                question=question,
-                hint=hint,
-                )
+                eoo = row['ease_of_observability']
+                try:
+                    eoo = int(eoo)
+                except ValueError:
+                    log.error('Bad ease-of-observability value: %s',
+                              repr(eoo))
+                    eoo = 10
+
+                question = row['friendly_text']
+                hint = row['hint']
+
+                name = self._create_character_name(short_name)
+                friendly_name = self._get_character_friendly_name(
+                    short_name, row['filter_label'])
+                character_table.get(
+                    short_name=short_name,
+                    ).set(
+                    name=name,
+                    friendly_name=friendly_name,
+                    character_group_id=charactergroup.name,
+                    pile_id=pile_id,
+                    value_type=value_type,
+                    unit=unit,
+                    ease_of_observability=eoo,
+                    question=question,
+                    hint=hint,
+                    )
 
         charactergroup_table.save()
         charactergroup_map = db.map('core_charactergroup', 'name', 'id')
@@ -958,25 +995,41 @@ class Importer(object):
                 log.warn('ignoring %r', character_name)
                 continue
 
+            suffixes = []
             pile_suffix = character_name.rsplit('_', 1)[1]
             if not pile_suffix in pile_suffixes:
                 continue
+            suffixes.append(pile_suffix)
+            # For the Remaining Non-Monocots pile, which is to be split,
+            # also create CharacterValues for each of the split piles.
+            if pile_suffix == 'rn':
+                suffixes.extend(['an', 'nn'])
 
-            short_name = shorten_character_name(character_name)
-            value_str = row['character_value']
+            for suffix in suffixes:
+                short_name = shorten_character_name(character_name)
 
-            try:
-                character_id = character_map[short_name]
-            except KeyError:
-                log.error('Bad character: %r', short_name)
-                continue
+                # Apply the current suffix to the short name.
+                # (The suffix is only different for split piles.)
+                short_name = short_name[:-2] + suffix
 
-            charactervalue_table.get(
-                character_id=character_id,
-                value_str=value_str,
-                ).set(
-                friendly_text=self._clean_up_html(row['friendly_text'])
-                )
+                value_str = row['character_value']
+
+                try:
+                    character_id = character_map[short_name]
+                except KeyError:
+                    log.error('Bad character: %r', short_name)
+                    continue
+
+                friendly_text = ''
+                if 'friendly_text' in row.keys():
+                    friendly_text = self._clean_up_html(row['friendly_text'])
+
+                charactervalue_table.get(
+                    character_id=character_id,
+                    value_str=value_str,
+                    ).set(
+                    friendly_text=friendly_text
+                    )
 
         charactervalue_table.save()
 
@@ -1448,32 +1501,34 @@ class Importer(object):
         taxoncharactervalue_table.save()
 
 
-    def _create_plant_preview_characters(self, pile_name,
-                                         character_short_names,
+    def _create_plant_preview_characters(self, preview_characters,
                                          partner_site_short_name='gobotany'):
-        pile = models.Pile.objects.get(name=pile_name)
         partner_site = None
         if partner_site_short_name:
-            partner_site = models.PartnerSite.objects.get( \
-                short_name=partner_site_short_name)
+            partner_site = models.PartnerSite.objects.get(
+                           short_name=partner_site_short_name)
 
-        for order, short_name in enumerate(character_short_names):
-            character = models.Character.objects.get(short_name=short_name)
+        for key_name, pile_name, order, character_slug in preview_characters:
+            character = models.Character.objects.get(
+                        short_name=character_slug)
+            try:
+                pile = models.Pile.objects.get(name=pile_name)
+            except models.Pile.DoesNotExist:
+                continue
 
             preview_character, created = \
                 models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
                     character=character, order=order,
                     partner_site=partner_site)
 
-            message = 'plant_preview_character: %s' % short_name
+            message = 'plant_preview_character: %s' % character_slug
             if partner_site:
                 message = '%s (%s)' % (message, partner_site)
 
             if created:
                 message = 'Created %s' % message
-            else:
-                message = 'Error: did not create %s' % message
             log.info(message)
+
 
     def import_plant_preview_characters(self, characters_csv):
         """Load plant preview characters from a CSV file"""
@@ -1481,21 +1536,19 @@ class Importer(object):
 
         # For now, plant preview characters should initially be set to
         # the same characters as are used for the default filters.
-        for pile in models.Pile.objects.all():
-            # Start with some characters common to all plant subgroups.
-            character_short_names = ['habitat_general', 'state_distribution']
-            characters = get_default_filters_from_csv(pile.name,
-                                                      characters_csv)
-            character_short_names.extend([character.short_name
-                                          for character in characters])
-            self._create_plant_preview_characters(pile.name,
-                                                  character_short_names)
 
-        # Set up some different plant preview characters for a partner site.
-        # (Disabled this demo code pending partner customization decisions.)
-        #self._create_plant_preview_characters('Lycophytes',
-        #    ['trophophyll_form_ly', 'upright_shoot_form_ly',
-        #     'sporophyll_orientation_ly'], 'montshire')
+        preview_characters = read_default_filters(characters_csv)
+
+        # Add some characters common to all plant subgroups.
+        for pile in models.Pile.objects.all():
+            for key in ['simple', 'full']:
+                preview_characters.append((key, pile.name, -2,
+                                           'habitat_general'))
+                preview_characters.append((key, pile.name, -1,
+                                           'state_distribution'))
+
+        self._create_plant_preview_characters(preview_characters)
+
 
     def import_lookalikes(self, db, filename):
         """Load look-alike plants from a CSV file"""
