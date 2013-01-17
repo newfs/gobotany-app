@@ -1511,7 +1511,10 @@ class Importer(object):
         for key_name, pile_name, order, character_slug in preview_characters:
             character = models.Character.objects.get(
                         short_name=character_slug)
-            pile = models.Pile.objects.get(name=pile_name)
+            try:
+                pile = models.Pile.objects.get(name=pile_name)
+            except models.Pile.DoesNotExist:
+                continue
 
             preview_character, created = \
                 models.PlantPreviewCharacter.objects.get_or_create(pile=pile,
