@@ -35,21 +35,66 @@ def edit_pile_character(request, pile_slug, character_slug):
 
     pile = get_object_or_404(models.Pile, slug=pile_slug)
     character = get_object_or_404(models.Character, short_name=character_slug)
-    values = list(character.character_values.all())
+    taxa = list(pile.species.all())
 
     if character.value_type == 'LENGTH':
-        return _edit_pile_length_character(request, pile, character, values)
+        return _edit_pile_length_character(request, pile, character, taxa)
     else:
-        return _edit_pile_string_character(request, pile, character, values)
+        return _edit_pile_string_character(request, pile, character, taxa)
 
 
-def _edit_pile_length_character(request, pile, character, values):
-    raise NotImplementedError()
+def _edit_pile_length_character(request, pile, character, taxa):
+
+    # There is little point in being heroic and trying to create exactly
+    # one character value for a pair of
+
+    taxon_ids = {taxon.id for taxon in taxa}
+    minmaxes = {taxon.id: [None, None] for taxon in taxa}
+
+    for tcv in models.TaxonCharacterValue.objects.filter(
+            taxon__in=taxa, character_value__character=character
+          ).select_related('character_value'):
+        v = tcv.character_value
+        minmaxes[tcv.taxon_id] = [v.value_min, v.value_max]
+
+    # Grabbing one copy of each family once is noticeably faster than
+    # using select_related('family') up in the taxon fetch:
+
+    family_ids = set(t.family_id for t in taxa)
+    families = models.Family.objects.filter(id__in=family_ids)
+
+    taxa.sort(key=pluck('family_id'))  # always sort() before groupby()!
+    taxa_by_family_id = { family_id: list(group) for family_id, group
+                          in groupby(taxa, key=pluck('family_id')) }
+
+    def grid():
+        """Iterator across families and their taxa."""
+        for family in families:
+            yield 'family', family
+            for taxon in taxa_by_family_id.get(family.id, ()):
+                yield 'taxon', taxon
+
+    partner = which_partner(request)
+    simple_ids = set(ps.species_id for ps in models.PartnerSpecies.objects
+                     .filter(partner_id=partner.id, simple_key=True))
+
+    coverage_percent_full = len(minmaxes) * 100.0 / len(taxa)
+    coverage_percent_simple = (len(simple_ids.intersection(minmaxes))
+                     * 100.0 / len(simple_ids.intersection(taxon_ids)))
+
+    return render_to_response('gobotany/edit_pile_length.html', {
+        'character': character,
+        'coverage_percent_full': coverage_percent_full,
+        'coverage_percent_simple': coverage_percent_simple,
+        'grid': grid(),
+        'pile': pile,
+        }, context_instance=RequestContext(request))
 
 
-def _edit_pile_string_character(request, pile, character, values):
+def _edit_pile_string_character(request, pile, character, taxa):
+
+    values = list(character.character_values.all())
     values.sort(key=character_value_key)
-    taxa = list(pile.species.all())
 
     tcvlist = list(models.TaxonCharacterValue.objects
                    .filter(taxon__in=taxa, character_value__in=values))
