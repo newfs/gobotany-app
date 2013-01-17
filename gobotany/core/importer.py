@@ -137,7 +137,7 @@ def read_default_filters(characters_csv):
 
             # Omit a default filter for one of the split piles.
             if (pile_name == 'Alternate Remaining Non-Monocots' and
-                character_slug.startswith('leaf_arrangement_')):
+                character_slug.startswith('leaf_arrangement_general_')):
                 continue
 
             # Apply the current pile suffix to the character short name.
