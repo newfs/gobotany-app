@@ -121,18 +121,45 @@ def read_default_filters(characters_csv):
     """
     defaultlist = []
     for row in open_csv(characters_csv):
+
+        pile_names = []
         pile_name = row[u'pile'].title()
+        pile_names.append(pile_name)
+        if pile_name == 'Remaining Non-Monocots':
+            # For the Remaining Non-Monocots pile, which is to be split,
+            # also make default filters for each of the split piles.
+            pile_names.extend(['Alternate Remaining Non-Monocots',
+                               'Non-Alternate Remaining Non-Monocots'])
+
         character_slug = shorten_character_name(row[u'character'])
 
-        if 'default_question' in row.keys():
-            n = row['default_question']
-            if n:
-                defaultlist.append(('simple', pile_name, n, character_slug))
+        for pile_name in pile_names:
+            pile_suffix = None
+            for suffix, name in pile_suffixes.iteritems():
+                if name == pile_name:
+                    pile_suffix = suffix
+            if not pile_suffix:
+                continue
 
-        if 'default_question_fullkey' in row.keys():
-            n = row['default_question_fullkey']
-            if n:
-                defaultlist.append(('full', pile_name, n, character_slug))
+            # Omit a default filter for one of the split piles.
+            if (pile_name == 'Alternate Remaining Non-Monocots' and
+                character_slug.startswith('leaf_arrangement_')):
+                continue
+
+            # Apply the current pile suffix to the character short name.
+            # (The suffix is only different for split piles.)
+            character_slug = character_slug[:-2] + pile_suffix
+
+            if 'default_question' in row.keys():
+                n = row['default_question']
+                if n:
+                    defaultlist.append(('simple', pile_name, n,
+                                        character_slug))
+
+            if 'default_question_fullkey' in row.keys():
+                n = row['default_question_fullkey']
+                if n:
+                    defaultlist.append(('full', pile_name, n, character_slug))
 
     return defaultlist
 
@@ -880,39 +907,52 @@ class Importer(object):
                 value_type = 'TEXT'
                 unit = ''
 
+            suffixes = []
             suffix = character_name[-3:]  # '_ca', etc.
-            pile_id = pile_map.get(suffix)
+            suffixes.append(suffix)
+            # For the Remaining Non-Monocots pile, which is to be split,
+            # also create Characters for each of the split piles.
+            if suffix == '_rn':
+                suffixes.extend(['_an', '_nn'])
 
-            charactergroup = charactergroup_table.get(
-                name=row['character_group'],
-                )
+            for suffix in suffixes:
+                # Apply the current suffix to the short name.
+                # (The suffix is only different for split piles.)
+                short_name = short_name[:-3] + suffix
 
-            eoo = row['ease_of_observability']
-            try:
-                eoo = int(eoo)
-            except ValueError:
-                log.error('Bad ease-of-observability value: %s', repr(eoo))
-                eoo = 10
+                pile_id = pile_map.get(suffix)
 
-            question = row['friendly_text']
-            hint = row['hint']
+                charactergroup = charactergroup_table.get(
+                    name=row['character_group'],
+                    )
 
-            name = self._create_character_name(short_name)
-            friendly_name = self._get_character_friendly_name(
-                short_name, row['filter_label'])
-            character_table.get(
-                short_name=short_name,
-                ).set(
-                name=name,
-                friendly_name=friendly_name,
-                character_group_id=charactergroup.name,
-                pile_id=pile_id,
-                value_type=value_type,
-                unit=unit,
-                ease_of_observability=eoo,
-                question=question,
-                hint=hint,
-                )
+                eoo = row['ease_of_observability']
+                try:
+                    eoo = int(eoo)
+                except ValueError:
+                    log.error('Bad ease-of-observability value: %s',
+                              repr(eoo))
+                    eoo = 10
+
+                question = row['friendly_text']
+                hint = row['hint']
+
+                name = self._create_character_name(short_name)
+                friendly_name = self._get_character_friendly_name(
+                    short_name, row['filter_label'])
+                character_table.get(
+                    short_name=short_name,
+                    ).set(
+                    name=name,
+                    friendly_name=friendly_name,
+                    character_group_id=charactergroup.name,
+                    pile_id=pile_id,
+                    value_type=value_type,
+                    unit=unit,
+                    ease_of_observability=eoo,
+                    question=question,
+                    hint=hint,
+                    )
 
         charactergroup_table.save()
         charactergroup_map = db.map('core_charactergroup', 'name', 'id')
@@ -991,29 +1031,41 @@ class Importer(object):
                 log.warn('ignoring %r', character_name)
                 continue
 
+            suffixes = []
             pile_suffix = character_name.rsplit('_', 1)[1]
             if not pile_suffix in pile_suffixes:
                 continue
+            suffixes.append(pile_suffix)
+            # For the Remaining Non-Monocots pile, which is to be split,
+            # also create CharacterValues for each of the split piles.
+            if pile_suffix == 'rn':
+                suffixes.extend(['an', 'nn'])
 
-            short_name = shorten_character_name(character_name)
-            value_str = row['character_value']
+            for suffix in suffixes:
+                short_name = shorten_character_name(character_name)
 
-            try:
-                character_id = character_map[short_name]
-            except KeyError:
-                log.error('Bad character: %r', short_name)
-                continue
+                # Apply the current suffix to the short name.
+                # (The suffix is only different for split piles.)
+                short_name = short_name[:-2] + suffix
 
-            friendly_text = ''
-            if 'friendly_text' in row.keys():
-                friendly_text = self._clean_up_html(row['friendly_text'])
+                value_str = row['character_value']
 
-            charactervalue_table.get(
-                character_id=character_id,
-                value_str=value_str,
-                ).set(
-                friendly_text=friendly_text
-                )
+                try:
+                    character_id = character_map[short_name]
+                except KeyError:
+                    log.error('Bad character: %r', short_name)
+                    continue
+
+                friendly_text = ''
+                if 'friendly_text' in row.keys():
+                    friendly_text = self._clean_up_html(row['friendly_text'])
+
+                charactervalue_table.get(
+                    character_id=character_id,
+                    value_str=value_str,
+                    ).set(
+                    friendly_text=friendly_text
+                    )
 
         charactervalue_table.save()
 
