@@ -2,8 +2,7 @@
 
 define([
     'bridge/jquery',
-    'bridge/underscore',
-    'editor/floatingtableheader'
+    'bridge/underscore'
 ], function(
     $, _
 ) {
