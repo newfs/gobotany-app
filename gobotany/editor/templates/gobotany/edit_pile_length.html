@@ -2,7 +2,7 @@
 
 {% block js_require %}
     require(['editor/cv'], function (edit) {
-        edit.setup_pile_character_page();
+        edit.setup_pile_length_page();
     });
 {% endblock %}
 
@@ -45,8 +45,10 @@
     {% else %}
       {% with taxon=thing min=minmax.0 max=minmax.1 %}
       <div><i>{{ taxon.scientific_name }}</i>
-        <b>Min <input value={{ min }}></b>
-        <b>Max <input value={{ max }}></b>
+        <b>Min
+        <input {% if not min %}class="empty" {% endif %}value={{ min }}></b>
+        <b>Max
+        <input {% if not max %}class="empty" {% endif %}value={{ max }}></b>
         {{ character.unit }}
       </div>
       {% endwith %}

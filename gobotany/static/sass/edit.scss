@@ -90,6 +90,16 @@ span.all-species-button, span.simple-key-button, .save-button {
             padding: 0;
         }
     }
+
+    /* For editing numeric values. */
+    /* http://stackoverflow.com/questions/8669413/ */
+
+    input.empty {
+        background-color: darken($body_bg, 10);
+    }
+    input.illegal {
+        background-color: lighten($orange1, 10);
+    }
 }
 
 /* Styles specific to editing all characters of a single taxon, kept

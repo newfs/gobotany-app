@@ -11,7 +11,7 @@
 
 span.all-species-button, span.simple-key-button, .save-button { cursor: pointer; display: inline-block; margin: 0.8em 1em; font-weight: normal; }
 
-.pile-character-grid { position: relative; margin-top: 2em; /* Editing a single character for many taxa: */ }
+.pile-character-grid { position: relative; margin-top: 2em; /* Editing a single character for many taxa: */ /* For editing numeric values. */ /* http://stackoverflow.com/questions/8669413/ */ }
 .pile-character-grid .column { z-index: -1; position: absolute; background-color: #fafae9; }
 .pile-character-grid h3 { background-color: #f3d281; }
 .pile-character-grid div { white-space: nowrap; }
@@ -26,6 +26,8 @@ span.all-species-button, span.simple-key-button, .save-button { cursor: pointer;
 .pile-character-grid b.highlight { z-index: 2; background-color: #fafae9; }
 .pile-character-grid b.highlight.x { background-color: #3c6c28; }
 .pile-character-grid b.changed { border-style: solid; border-color: #dc9402; border-width: 4px 2px; padding: 0; }
+.pile-character-grid input.empty { background-color: #e6e697; }
+.pile-character-grid input.illegal { background-color: #fdb014; }
 
 /* Styles specific to editing all characters of a single taxon, kept separate here in the hopes of not slowing down the browser when it is trying to render a full-out character grid as specified above. */
 .taxon-character-grid div { clear: both; }

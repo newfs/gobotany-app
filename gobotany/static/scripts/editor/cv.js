@@ -151,16 +151,7 @@ define([
 
     var install_event_handlers = function() {
 
-        $('.all-species-button').on('click', function() {
-            $grid.find('div').css('display', '');
-        });
-
-        $('.simple-key-button').on('click', function() {
-            $grid.find('div').each(function() {
-                if ($(this).find('i').text().indexOf('(fk)') !== -1)
-                    $(this).css('display', 'none');
-            });
-        });
+        install_species_button_handlers();
 
         $('.save-button').on('click', function() {
             save_vectors();
@@ -192,6 +183,20 @@ define([
         $grid.on('mouseleave', 'b', function() {
             var $b = $(this);
             valuetip_functions.mouseleave($b);
+        });
+    };
+
+    var install_species_button_handlers = function() {
+
+        $('.all-species-button').on('click', function() {
+            $grid.find('div').css('display', '');
+        });
+
+        $('.simple-key-button').on('click', function() {
+            $grid.find('div').each(function() {
+                if ($(this).find('i').text().indexOf('(fk)') !== -1)
+                    $(this).css('display', 'none');
+            });
         });
     };
 
@@ -380,12 +385,34 @@ define([
         ).submit();
     };
 
-    /* Compared with all of the logic above, the code for editing a
-       single taxon's characters is quite simple, because such pages -
-       even for the largest piles - can be generated directly from a
-       Django page template, because the number of character values per
-       pile tend to run in the hundreds rather than the tens of
-       thousands. */
+    /* The next kind of page that belongs to this character-value
+       editing suite is the page that lets botanists edit length values,
+       and its code is quite simple. */
+
+    exports.setup_pile_length_page = function() {
+        $(document).ready(function() {
+
+            $('.pile-character-grid input').on('keyup', function() {
+                var v = $(this).val();
+                if (v === '')
+                    $(this).addClass('empty').removeClass('illegal');
+                else if (v.match(/^ *[0-9]*[.]?[0-9]* *$/))
+                    $(this).removeClass('empty').removeClass('illegal');
+                else
+                    $(this).removeClass('empty').addClass('illegal');
+            });
+
+            $('.save-button').click(save_pile_taxon);
+
+            install_species_button_handlers();
+        });
+    };
+
+    /* The code for editing a single taxon's characters is also quite
+       simple, because such pages - even for the largest piles - can be
+       generated directly from a Django page template, because the
+       number of character values per pile tend to run in the hundreds
+       rather than the tens of thousands. */
 
     var save_pile_taxon = function() {
         var value_settings = [];
