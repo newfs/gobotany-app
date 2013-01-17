@@ -389,12 +389,41 @@ define([
        editing suite is the page that lets botanists edit length values,
        and its code is quite simple. */
 
+    var float_from = function(string) {
+        return string.trim() ? parseFloat(string) : null;
+    };
+
+    var save_pile_character_lengths = function() {
+        var value_settings = [];
+
+        $('.pile-character-grid div').each(function() {
+            if ($('.illegal', this).length)
+                return;
+            if ($('.changed_tag', this).length === 0)
+                return;
+
+            var scientific_name = $('i', this).text();
+            var $inputs = $('input', this);
+            value_settings.push([
+                scientific_name,
+                float_from($inputs.eq(0).val()),
+                float_from($inputs.eq(1).val())
+            ]);
+        });
+
+        $('<form>', {
+            action: '.',
+            method: 'POST'
+        }).append($('<input>', {
+            name: 'value_settings',
+            value: JSON.stringify(value_settings)
+        })).append(
+            $('input[name="csrfmiddlewaretoken"]').clone()
+        ).submit();
+    };
+
     exports.setup_pile_length_page = function() {
         $(document).ready(function() {
-
-            var float_from = function(string) {
-                return string.trim() ? parseFloat(string) : null;
-            };
 
             $('.pile-character-grid div').each(function() {
 
@@ -430,7 +459,7 @@ define([
                 });
             });
 
-            $('.save-button').click(save_pile_taxon);
+            $('.save-button').click(save_pile_character_lengths);
 
             install_species_button_handlers();
         });
