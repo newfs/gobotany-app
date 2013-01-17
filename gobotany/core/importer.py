@@ -2033,10 +2033,9 @@ full_import_steps = (
     (Importer.import_copyright_holders, 'copyright_holders.csv'),
     (Importer.import_plant_name_suggestions, 'taxa.csv'),
 
-    # TODO: re-enable these
-    #(Importer.import_distributions,
-    # 'New-England-tracheophyte-county-level-nativity.csv'),
-    #(Importer.import_distributions, 'bonap-north-america.csv'),
+    (Importer.import_distributions,
+     'New-England-tracheophyte-county-level-nativity.csv'),
+    (Importer.import_distributions, 'bonap-north-america.csv'),
 
     (Importer.import_taxon_character_values,
      'pile_angiosperms_1.csv',
