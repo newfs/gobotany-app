@@ -366,7 +366,7 @@ body.plantshare {
                 padding: 15px;
                 position: absolute;
                 width: 400px;
-                height: 150px;
+                height: 160px;
                 top: 250px;
                 left: 0px;
                 z-index: 10;
@@ -374,6 +374,34 @@ body.plantshare {
                 img {
                     float: left;
                     margin: 0 20px 10px 0;
+                    max-height: 84px;
+                    max-width: 84px;
+                }
+
+                a.button {
+                    @extend .orange-button;
+                    display: inline-block;
+                    color: white;
+                    margin: 10px 0;
+                }
+
+                a.disabled {
+                    display: none;
+                }
+
+                div.modal-footer {
+                    display: block;
+                    position: relative;
+                    float: left;
+                    width: 100%;
+                    color: #888;
+
+                    div.file-path {
+                        margin: 2px 0 auto;
+                        border: 1px solid #888;
+                        padding: 2px;
+                        color: #888;
+                    }
                 }
 
                 a.close {
@@ -388,7 +416,7 @@ body.plantshare {
                 }
 
                 h4 {
-                    margin: 0 0 15px;
+                    margin: 0 0 5px;
                     font-size: 18px;
                 }
 
