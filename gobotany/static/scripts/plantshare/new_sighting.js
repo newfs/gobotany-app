@@ -1,24 +1,11 @@
 define([
     'bridge/jquery', 
     'bridge/jquery.form',
-    'mapping/geocoder',
-], function ($, jqueryForm, Geocoder) {
+    'plantshare/upload_modal',
+    'mapping/geocoder'
+], function ($, jqueryForm, upload_modal, Geocoder) {
 
     $(document).ready(function () {
-
-        var triggers = $('#upload-link').overlay({
-            mask: {
-                color: 'black',
-                loadSpeed: 200,
-                opacity: 0.5
-            },
-            closeOnClick: false
-        });
-
-        $('.image-modal .close').click(function () {
-            triggers.eq(0).overlay().close();
-            return false;
-        });
 
         function addNewThumb(url) {
             $('.thumb-gallery').prepend('<img class="thumb" src="' + url +
@@ -32,22 +19,22 @@ define([
                 }).appendTo('#sighting-photos');
         }
 
-        $('#upload-image-submit').click(function () {
-            $('#upload-image-form').ajaxSubmit(function (json) {
-                if(json.success) {
-                    console.log('Successfully uploaded sighting photo.');
-                    console.log('New Photo [id=' + json.id + ', thumb=' +
-                                json.thumb + ']');
-                    addNewThumb(json.thumb);
-                    attachSightingPhoto(json.id);
-                } else {
-                    console.log('Error: ' + json.info);
-                }
-            });
-            triggers.eq(0).overlay().close();
-            return false;
-        });
+        function photoUploaded(imageInfo) {
+            console.log('Successfully uploaded sighting photo.');
+            console.log('New Photo [id=' + imageInfo.id + ', thumb=' +
+                        imageInfo.thumb + ']');
+            addNewThumb(imageInfo.thumb);
+            attachSightingPhoto(imageInfo.id);
+        }
 
+        function uploadError(errorInfo) {
+            console.log('Error: ' + errorInfo);
+        }
+
+        upload_modal.setup('.image-modal', '#upload-link', {
+            onUpload: photoUploaded,
+            onError: uploadError,
+        });
     });
 
 

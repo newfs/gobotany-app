@@ -1,11 +1,9 @@
 define([
     'bridge/jquery', 
     'bridge/jquery.form',
+    'plantshare/upload_modal',
     'util/ajaxpartialform'
-], function($, jqueryForm) {
-
-    var EMPTY_FILE_PATH = 'None Selected';
-    var EMPTY_IMAGE_URL = '/static/images/icons/no-image.png';
+], function($, jqueryForm, upload_modal) {
 
     function hideEditFields() {
         $('div.edit').hide();
@@ -67,59 +65,20 @@ define([
 
         syncFields();
 
-        var triggers = $('#upload-link').overlay({
-            mask: {
-                color: 'black',
-                loadSpeed: 200,
-                opacity: 0.5
-            },
-            closeOnClick: false
+        function avatarUploaded(imageInfo) {
+            console.log('Successfully uploaded avatar');
+            $('#avatar-image').attr('src', imageInfo.thumb);
+        }
+
+        function uploadError(errorInfo) {
+            console.log('Avatar upload error: ' + errorInfo);
+        }
+
+        upload_modal.setup('.image-modal', '#upload-link', {
+            onUpload: avatarUploaded,
+            onError: uploadError,
         });
 
-        $('#upload-image-form input[type="file"]').change(function() {
-            var reader = new FileReader();
-            var $avatar_image = $('.image-modal img');
-
-            reader.onload = function(e) {
-                $avatar_image.attr('src', e.target.result);
-            }
-
-            reader.readAsDataURL(this.files[0]);
-            // For security reasons, all browsers will report our file input box's file
-            // path as C:\fakepath\<filename> so just strip off the fake path
-            var path = $(this).val().replace(/C:\\fakepath\\/i, '');
-            if(path) {
-                $('.image-modal .file-path').text(path);
-                $('.image-modal #upload-image-submit').removeClass('disabled');
-            } else {
-                $avatar_image.attr('src', EMPTY_IMAGE_URL);
-                $('.image-modal .file-path').text(EMPTY_FILE_PATH);
-                $('.image-modal #upload-image-submit').addClass('disabled');
-            }
-        });
-
-        $('.image-modal .file-select').click(function() {
-            console.log('File select button');
-            $('.image-modal input[type="file"]').click();
-        });
-
-        $('.image-modal .close').click(function() {
-            triggers.eq(0).overlay().close();
-            return false;
-        });
-
-        $('#upload-image-submit').click(function() {
-            $('#upload-image-form').ajaxSubmit(function(json) {
-                if(json.success) {
-                    console.log('Successfully uploaded avatar');
-                    $('#avatar-image').attr('src', json.thumb);
-                } else {
-                    console.log('Error: ' + json.info);
-                }
-            });
-            triggers.eq(0).overlay().close();
-            return false;
-        });
     });
 
 });
