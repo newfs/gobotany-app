@@ -288,6 +288,24 @@
         }
     },
     {
+        "pk": 231,
+        "model": "auth.user",
+        "fields": {
+            "username": "efarnsworth",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2013-01-18T07:18:04.707",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$9AfNqyBZY6Kc$EX7TSs51uTZEURAlhum/6zh/V3sRfWbjAfxAVQakRU0=",
+            "email": "a@a.com",
+            "date_joined": "2013-01-18T07:18:04.707"
+        }
+    },
+    {
         "pk": 230,
         "model": "auth.user",
         "fields": {
@@ -301,7 +319,7 @@
             "groups": [],
             "user_permissions": [],
             "password": "pbkdf2_sha256$10000$PQejVA8HjBU4$ARmUrxXHMURachnsLErJ2Q0b5h6MYWgy6jSJt45gfH8=",
-            "email": "jg344@fastmail.net",
+            "email": "a@a.com",
             "date_joined": "2012-11-05T09:58:26.002"
         }
     },
