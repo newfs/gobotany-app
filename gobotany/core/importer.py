@@ -955,14 +955,24 @@ class Importer(object):
                 log.error('  Missing character image: %s' % image_name)
                 continue
 
+            character_names = []
             short_name = shorten_character_name(row['character'])
-            if short_name not in existing_short_names:
-                log.error('  Missing character: %s' % short_name)
-                continue
+            character_names.append(short_name)
 
-            path = field.upload_to + '/' + image_name
-            character_table.get(short_name=short_name).set(image=path)
-            count += 1
+            # For the big Remaining Non-Monocots pile, assign the character
+            # images also to the two split piles for this pile.
+            if short_name.endswith('_rn'):
+                character_names.append(short_name[:-2] + 'an')
+                character_names.append(short_name[:-2] + 'nn')
+
+            for character_name in character_names:
+                if character_name not in existing_short_names:
+                    log.error('  Missing character: %s' % character_name)
+                    continue
+
+                path = field.upload_to + '/' + image_name
+                character_table.get(short_name=character_name).set(image=path)
+                count += 1
 
         character_table.save()
 
@@ -1085,25 +1095,35 @@ class Importer(object):
                 log.warn('character has bad pile suffix: %r', character_name)
                 continue
 
+            character_names = []
             short_name = shorten_character_name(character_name)
-            character_id = character_map.get(short_name)
-            if character_id is None:
-                log.warn('character does not exist: %r', short_name)
-                continue
+            character_names.append(short_name)
 
-            value_str = row['character_value']
-            if (character_id, value_str) not in existing_charactervalues:
-                log.warn('character value does not exist: %r / %r',
-                         short_name, value_str)
-                continue
+            # For the big Remaining Non-Monocots pile, assign character
+            # value images also to the two split piles.
+            if short_name.endswith('_rn'):
+                character_names.append(short_name[:-2] + 'an')
+                character_names.append(short_name[:-2] + 'nn')
 
-            charactervalue_table.get(
-                character_id=character_id,
-                value_str=value_str,
-                ).set(
-                image=field.upload_to + '/' + image_name,
-                )
-            count += 1
+            for character_name in character_names:
+                character_id = character_map.get(character_name)
+                if character_id is None:
+                    log.warn('character does not exist: %r', character_name)
+                    continue
+
+                value_str = row['character_value']
+                if (character_id, value_str) not in existing_charactervalues:
+                    log.warn('character value does not exist: %r / %r',
+                             character_name, value_str)
+                    continue
+
+                charactervalue_table.get(
+                    character_id=character_id,
+                    value_str=value_str,
+                    ).set(
+                    image=field.upload_to + '/' + image_name,
+                    )
+                count += 1
 
         charactervalue_table.save()
 
