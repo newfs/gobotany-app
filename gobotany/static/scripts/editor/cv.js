@@ -382,6 +382,8 @@ define([
             value: JSON.stringify(vectors)
         })).append(
             $('input[name="csrfmiddlewaretoken"]').clone()
+        ).appendTo(
+            $('body')
         ).submit();
     };
 
@@ -419,6 +421,8 @@ define([
             value: JSON.stringify(value_settings)
         })).append(
             $('input[name="csrfmiddlewaretoken"]').clone()
+        ).appendTo(
+            $('body')
         ).submit();
     };
 
@@ -479,12 +483,17 @@ define([
 
         $('<form>', {
             action: '.',
+            css: {'display': 'none'},
             method: 'POST'
-        }).append($('<input>', {
-            name: 'value_settings',
-            value: JSON.stringify(value_settings)
-        })).append(
+        }).append(
+            $('<input>', {
+                name: 'value_settings',
+                value: JSON.stringify(value_settings)
+            })
+        ).append(
             $('input[name="csrfmiddlewaretoken"]').clone()
+        ).appendTo(
+            $('body')
         ).submit();
     };
 
