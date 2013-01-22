@@ -1,4 +1,71 @@
-/* Routines to support editor pages. */
+/* Routines to support character-value editor pages.
+ *
+ * The markup on these pages is deliberately kept very spare because the
+ * combination of "remaining-non-monocots" and "habitat" is so large.
+ * Even the choice of tag for a click-able boolean value (we use <b>!)
+ * reflects an almost superstitious preference for extreme brevity,
+ * because every single mis-step in building and maintaining this page
+ * tends to plunge it into utter unresponsiveness.
+ *
+ * "One of these things is not like the other!"  The two lower-pressure
+ * pages - the page displaying all characters and values for a whole
+ * taxon, and the page displaying length measurements for a pile - are
+ * simply generated using Django page templates.  But the page that
+ * displays a character's values for every species in a pile includes
+ * far too many elements to be rendered in a reasonable amount of time
+ * by a template library as slow as Django's, so Django instead injects
+ * JSON data into a <script> tag and we build the actual DOM elements
+ * here using fast techniques that render even the largest character-
+ * value editor page within a second or two.
+ *
+ * So rendering looks very different depending on which of the three
+ * pages is involved.  But once rendered, the exact same JavaScript
+ * event handlers can take over, because length-measure rows look
+ * different than value-choice rows; but both of them will be the ONLY
+ * <div> elements, ever, inside of the character grid:
+ *
+ * ROW FOR EDITING BOOLEAN CHARACTER VALUES
+ *
+ *     A class is applied to each value that is checked at the moment.
+ *     Note that (fk) that designates species that are only available as
+ *     part of the full key.  For characters whose values' friendly
+ *     texts can all fit next to each other in the browser, the actual
+ *     value names are shown instead of ×'s.
+ *
+ *     <div>
+ *       <i>Carex abscondita (fk)</i>
+ *       <b>×</b>
+ *       <b class="x">×</b>
+ *       <b>×</b>
+ *     </div>
+ *
+ * ROW FOR EDITING A LENGTH CHARACTER VALUE
+ *
+ *     Lengths are simply presented as a pair of text fields.
+ *
+ *     <div><i>Carex abscondita (fk)</i>
+ *       <b>Min <input value="1.2"></b>
+ *       <b>Max <input value="1.8"></b>
+ *       mm
+ *     </div>
+ *
+ * VISUAL TAGS
+ *
+ *     There are also two possible <span> elements that can appear at
+ *     the end of either of the above <div>s, depending on the state of
+ *     a row:
+ *
+ *     <span>!</span>
+ *        This marks rows with no value specified, so that botanists know
+ *        which rows of the table need immediate attention.
+ *
+ *     <span class="changed">changed</span>
+ *        This marks rows that the botanist has edited such that they now
+ *        contain different values than they had when the page was loaded.
+ *        Further editing of the row might make this tag disappear, if the
+ *        editing brings the value back into line with what is currently in
+ *        the database.
+ */
 
 define([
     'bridge/jquery',
@@ -10,14 +77,20 @@ define([
     var $grid;                  // the grid <div> itself
     var taxon_value_vectors;    // maps scientific name to vector
 
-    exports.setup_pile_character_page = function() {
+    exports.setup = function() {
         $(document).ready(function() {
+
             $grid = $('.pile-character-grid');
-            take_measurements();
-            if (!be_verbose)
-                install_expand_button();
-            build_grid_from_json();
-            install_event_handlers();
+
+            if (typeof window.character_values !== 'undefined' &&
+                typeof window.grid_data !== 'undefined') {
+
+                take_measurements();
+                if (!be_verbose)
+                    install_expand_button();
+                build_grid_from_json();
+                install_event_handlers();
+            }
         });
     };
 
@@ -30,7 +103,7 @@ define([
     var x_width;                // width of box containing an ×
     var value_widths;           // width of formatted value texts
 
-    var verbose_text_of = function(value_name, omit_x) {
+    var formatted_name_of = function(value_name, omit_x) {
         var c = omit_x ? ' ' : '×';
         var name = value_name;
         if (name === 'Connecticut')
@@ -62,7 +135,7 @@ define([
            names take up on the left? */
 
         _.each(character_values, function(name) {
-            $b = $('<b>').text(verbose_text_of(name)).appendTo($row);
+            $b = $('<b>').text(formatted_name_of(name)).appendTo($row);
         });
         var space_open = $(window).width() - $b.position().left - $b.width();
         var space_desired = $row.find('i').width();
@@ -77,7 +150,8 @@ define([
        efficiently, we need to be very fast; this simple string
        concatenation seems to do quite well.  Note especially that we
        turn the vector of ones and zeroes into lightweight check boxes
-       in a single post-processing step! */
+       in a single post-processing step!  The `grid_data` array is
+       already defined, thanks to a <script> tag in the HTML. */
 
     var build_grid_from_json = function() {
 
@@ -86,7 +160,9 @@ define([
         var snippets = [];
 
         _.each(grid_data, function(item) {
-            if (item.length < 2) {
+            var merely_a_family_name = (item.length < 2);
+
+            if (merely_a_family_name) {
                 var family_name = item[0];
                 snippets.push('<h3>');
                 snippets.push(family_name);
@@ -102,7 +178,8 @@ define([
             snippets.push(scientific_name);
             snippets.push('</i>');
             snippets.push(ones_and_zeroes);
-            if (ones_and_zeroes.indexOf('1') === -1)
+            no_values_selected = (ones_and_zeroes.indexOf('1') === -1);
+            if (no_values_selected)
                 snippets.push('<span>!</span>');
             snippets.push('</div>');
         });
