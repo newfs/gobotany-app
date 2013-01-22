@@ -103,7 +103,7 @@ define([
     var x_width;                // width of box containing an ×
     var value_widths;           // width of formatted value texts
 
-    var formatted_name_of = function(value_name, omit_x) {
+    var verbose_text_of = function(value_name, omit_x) {
         var c = omit_x ? ' ' : '×';
         var name = value_name;
         if (name === 'Connecticut')
@@ -135,7 +135,7 @@ define([
            names take up on the left? */
 
         _.each(character_values, function(name) {
-            $b = $('<b>').text(formatted_name_of(name)).appendTo($row);
+            $b = $('<b>').text(verbose_text_of(name)).appendTo($row);
         });
         var space_open = $(window).width() - $b.position().left - $b.width();
         var space_desired = $row.find('i').width();
