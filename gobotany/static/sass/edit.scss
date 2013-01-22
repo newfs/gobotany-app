@@ -64,12 +64,13 @@ span.all-species-button, span.simple-key-button, .save-button {
         position: relative;
         display: inline-block;
         width: 20em;
+        padding: 4px 0px;
 
         .expand-button {
             cursor: pointer;
             position: absolute;
             right: 2px;
-            top: -2px;
+            top: 2px;
             font-style: normal;
         }
     }

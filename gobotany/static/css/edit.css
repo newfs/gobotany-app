@@ -19,8 +19,8 @@ span.all-species-button, span.simple-key-button, .save-button { cursor: pointer;
 .pile-character-grid div:hover { background-color: #fafae9; }
 .pile-character-grid div:hover.expanded { background-color: transparent; }
 .pile-character-grid span { margin: 0px 2px; background-color: #dc9402; padding: 2px 8px 4px; vertical-align: 2px; color: white; font-size: 0.8em; }
-.pile-character-grid i { position: relative; display: inline-block; width: 20em; }
-.pile-character-grid i .expand-button { cursor: pointer; position: absolute; right: 2px; top: -2px; font-style: normal; }
+.pile-character-grid i { position: relative; display: inline-block; width: 20em; padding: 4px 0px; }
+.pile-character-grid i .expand-button { cursor: pointer; position: absolute; right: 2px; top: 2px; font-style: normal; }
 .pile-character-grid b { cursor: pointer; display: inline-block; padding: 4px 2px; font-weight: normal; }
 .pile-character-grid b.x { background-color: #519136; color: white; }
 .pile-character-grid b.highlight { z-index: 2; background-color: #fafae9; }

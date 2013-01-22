@@ -423,7 +423,7 @@ define([
 
         _.each($boxes, function(box, i) {
             $(box).text(verbose_text_of(character_values[i])).css({
-                'vertical-align': - (i % wrap_at) * row_height,
+                'vertical-align': - (i % wrap_at + 1) * row_height,
                 'margin-right': x_width - value_widths[i]
             });
         });
