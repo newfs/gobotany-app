@@ -129,7 +129,7 @@ def read_default_filters(characters_csv):
 
         for pile_name in pile_names:
             pile_suffix = None
-            for suffix, name in pile_suffixes.iteritems():
+            for name, suffix in pile_suffixes.iteritems():
                 if name == pile_name:
                     pile_suffix = suffix
             if not pile_suffix:
@@ -142,7 +142,7 @@ def read_default_filters(characters_csv):
 
             # Apply the current pile suffix to the character short name.
             # (The suffix is only different for split piles.)
-            character_slug = character_slug[:-2] + pile_suffix
+            #character_slug = character_slug[:-2] + pile_suffix
 
             if 'default_question' in row.keys():
                 n = row['default_question']
@@ -664,7 +664,7 @@ class Importer(object):
         # Create a pile_map {'_ca': 8, '_nm': 9, ...}
         pile_map1 = db.map('core_pile', 'slug', 'id')
         pile_map = {}
-        for (suffix, name) in pile_suffixes.iteritems():
+        for (name, suffix) in pile_suffixes.iteritems():
             slug = slugify(name)
             # Only add suffixes whose piles exist, ignoring any others.
             if slug in pile_map1.keys():
@@ -698,8 +698,8 @@ class Importer(object):
             # For the Remaining Non-Monocots pile, which is to be split,
             # also create TaxonCharacterValues for each the split piles.
             # Characters are assumed to already exist for the split piles.
-            if suffix == '_rn':
-                suffixes.extend(['_an', '_nn'])
+            #if suffix == '_rn':
+            #    suffixes.extend(['_an', '_nn'])
 
             if len(suffixes) == 0:
                 log.error('No pile suffixes to process.')
@@ -736,7 +736,7 @@ class Importer(object):
 
                         # Apply the current suffix to the short name.
                         # (The suffix is only different for split piles.)
-                        short_name = short_name[:-3] + suffix
+                        #short_name = short_name[:-3] + suffix
 
                         character_id = character_map.get(short_name)
                         if character_id is None:
@@ -843,7 +843,7 @@ class Importer(object):
         # Create a pile_map {'_ca': 8, '_nm': 9, ...}
         pile_map1 = db.map('core_pile', 'slug', 'id')
         pile_map = dict(('_' + suffix, pile_map1[slugify(name)])
-                        for (suffix, name) in pile_suffixes.iteritems()
+                        for (name, suffix) in pile_suffixes.iteritems()
                         if slugify(name) in pile_map1  # for tests.py
                         )
 
@@ -876,13 +876,13 @@ class Importer(object):
             suffixes.append(suffix)
             # For the Remaining Non-Monocots pile, which is to be split,
             # also create Characters for each of the split piles.
-            if suffix == '_rn':
-                suffixes.extend(['_an', '_nn'])
+            #if suffix == '_rn':
+            #    suffixes.extend(['_an', '_nn'])
 
             for suffix in suffixes:
                 # Apply the current suffix to the short name.
                 # (The suffix is only different for split piles.)
-                short_name = short_name[:-3] + suffix
+                #short_name = short_name[:-3] + suffix
 
                 pile_id = pile_map.get(suffix)
 
@@ -961,9 +961,9 @@ class Importer(object):
 
             # For the big Remaining Non-Monocots pile, assign the character
             # images also to the two split piles for this pile.
-            if short_name.endswith('_rn'):
-                character_names.append(short_name[:-2] + 'an')
-                character_names.append(short_name[:-2] + 'nn')
+            #if short_name.endswith('_rn'):
+            #    character_names.append(short_name[:-2] + 'an')
+            #    character_names.append(short_name[:-2] + 'nn')
 
             for character_name in character_names:
                 if character_name not in existing_short_names:
@@ -1007,13 +1007,13 @@ class Importer(object):
 
             suffixes = []
             pile_suffix = character_name.rsplit('_', 1)[1]
-            if not pile_suffix in pile_suffixes:
+            if not pile_suffix in pile_suffixes.values():
                 continue
             suffixes.append(pile_suffix)
             # For the Remaining Non-Monocots pile, which is to be split,
             # also create CharacterValues for each of the split piles.
-            if pile_suffix == 'rn':
-                suffixes.extend(['an', 'nn'])
+            #if pile_suffix == 'rn':
+            #    suffixes.extend(['an', 'nn'])
 
             for suffix in suffixes:
                 short_name = shorten_character_name(character_name)
@@ -1091,7 +1091,7 @@ class Importer(object):
                 log.warn('character lacks pile suffix: %r', character_name)
                 continue
             pile_suffix = character_name.rsplit('_', 1)[1]
-            if not pile_suffix in pile_suffixes:
+            if not pile_suffix in pile_suffixes.values():
                 log.warn('character has bad pile suffix: %r', character_name)
                 continue
 
@@ -1101,9 +1101,9 @@ class Importer(object):
 
             # For the big Remaining Non-Monocots pile, assign character
             # value images also to the two split piles.
-            if short_name.endswith('_rn'):
-                character_names.append(short_name[:-2] + 'an')
-                character_names.append(short_name[:-2] + 'nn')
+            #if short_name.endswith('_rn'):
+            #    character_names.append(short_name[:-2] + 'an')
+            #    character_names.append(short_name[:-2] + 'nn')
 
             for character_name in character_names:
                 character_id = character_map.get(character_name)
