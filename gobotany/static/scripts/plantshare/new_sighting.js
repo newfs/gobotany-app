@@ -8,7 +8,7 @@ define([
     $(document).ready(function () {
 
         function addNewThumb(url) {
-            $('.thumb-gallery').prepend('<img class="thumb" src="' + url +
+            $('.thumb-gallery p').before('<img class="thumb" src="' + url +
                                         '">');
         }
 
