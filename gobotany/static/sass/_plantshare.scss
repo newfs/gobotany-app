@@ -265,6 +265,13 @@ body.plantshare {
             margin-bottom: $section-padding;
             padding: 5px $section-padding;
         }
+
+        .thumb-gallery {
+            .thumb {
+                margin: 0 5px;
+                vertical-align: bottom;
+            }
+        }
     }
     &#locator {
         h3 {
