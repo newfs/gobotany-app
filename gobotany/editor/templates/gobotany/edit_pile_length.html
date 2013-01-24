@@ -45,12 +45,12 @@
     {% else %}
       {% with name=thing min=minmax.0 max=minmax.1 %}
       <div><i>{{ name }}</i>
-        <b>Min <input
+        Min <input
           {% if min == None %}class="empty"{% else %}value={{ min }}{% endif %}
-        ></b>
-        <b>Max <input
+        >
+        Max <input
           {% if max == None %}class="empty"{% else %}value={{ max }}{% endif %}
-        ></b>
+        >
         {{ character.unit }}
       </div>
       {% endwith %}

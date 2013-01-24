@@ -95,6 +95,9 @@ span.all-species-button, span.simple-key-button, .save-button {
     /* For editing numeric values. */
     /* http://stackoverflow.com/questions/8669413/ */
 
+    input {
+        margin: 4px 2px;
+    }
     input.empty {
         background-color: darken($body_bg, 10);
     }

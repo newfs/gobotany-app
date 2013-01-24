@@ -44,8 +44,8 @@
  *     Lengths are simply presented as a pair of text fields.
  *
  *     <div><i>Carex abscondita (fk)</i>
- *       <b>Min <input value="1.2"></b>
- *       <b>Max <input value="1.8"></b>
+ *       Min <input value="1.2">
+ *       Max <input value="1.8">
  *       mm
  *     </div>
  *
