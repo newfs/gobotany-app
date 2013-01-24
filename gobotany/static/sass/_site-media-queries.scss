@@ -13,29 +13,32 @@ $search-suggest-menu-top: 83px;
 
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) {
-    body {
-        padding-top: 110px;
-    }
-    header nav > a {
-        width: 19px;
-        span {
-            display: none;
-        }
-    }
     body, header .container, .content .container, footer .container {
         width: $smallscreen-portrait-width;
     }
-    #nav {
-        left: 40px;
-        width: 310px;
-    }
-    .content {
-        #main {
-            width: 304px;
+    body {
+        padding-top: 110px;
+        header nav > a {
+            width: 19px;
+            span {
+                display: none;
+            }
         }
-        #sidebar {
-            float: none;
-            width: $smallscreen-portrait-box-width;
+        #nav {
+            left: 40px;
+            width: 310px;
+        }
+        .content {
+            #main {
+                width: 304px;
+            }
+            #sidebar {
+                float: none;
+                width: $smallscreen-portrait-box-width;
+            }
+        }
+        footer .navigation .prime-items li {
+            margin-right: 10px;
         }
     }
 }

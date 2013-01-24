@@ -1326,13 +1326,14 @@ body.search-results .search-navigation a { text-decoration: underline; }
 /* Finally, include global media queries for smartphones and tablets. These should be last. */
 /* Begin global media queries styles.  So far there are three sections for smartphones (two fixed-width layouts to cover portrait and landscape orientations, with a section common to both orientations) and some additional styles for tablets. Using fixed-width layouts allows some pages to have a wider central content area for now. Various SASS "partials" (_home.scss, _help.scss, etc.) have their own media queries arranged like the ones below. Think of those as modular extensions to these. */
 /* Portrait-orientation styles */
-@media only screen and (max-width: 400px) { body { padding-top: 110px; }
-  header nav > a { width: 19px; }
-  header nav > a span { display: none; }
-  body, header .container, .content .container, footer .container { width: 320px; }
-  #nav { left: 40px; width: 310px; }
-  .content #main { width: 304px; }
-  .content #sidebar { float: none; width: 302px; } }
+@media only screen and (max-width: 400px) { body, header .container, .content .container, footer .container { width: 320px; }
+  body { padding-top: 110px; }
+  body header nav > a { width: 19px; }
+  body header nav > a span { display: none; }
+  body #nav { left: 40px; width: 310px; }
+  body .content #main { width: 304px; }
+  body .content #sidebar { float: none; width: 302px; }
+  body footer .navigation .prime-items li { margin-right: 10px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { html { -webkit-text-size-adjust: none; }
   body { padding-top: 75px; }
