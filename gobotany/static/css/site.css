@@ -885,8 +885,8 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #page-head { left: 8px; position: absolute; }
   body.skey.results #page-head h1 { display: none; }
   body.skey.results #sidebar, body.skey.results #results-display { margin-top: 55px; }
-  body.skey.results #sidebar { font-size: 10px; width: 139px; }
-  body.skey.results #sidebar .scroll { width: 140px; }
+  body.skey.results #sidebar { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; width: 135px; }
+  body.skey.results #sidebar .scroll { width: 135px; }
   body.skey.results #main { width: 800px; } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { body.skey.results #sidebar ul.option-list li:hover { background: #fff; /* No hover color */ }

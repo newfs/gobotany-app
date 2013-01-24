@@ -1076,10 +1076,11 @@ ul.get-more-questions-menu {
                 margin-top: 55px;
             }
             #sidebar {
+                font-family: $headings-font;
                 font-size: 10px;
-                width: 139px;
+                width: 135px;
                 .scroll {
-                    width: 140px;
+                    width: 135px;
                 }
             }
             #main {
