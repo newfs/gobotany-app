@@ -264,7 +264,7 @@ results_page_init: function(args) {
         }
     }
 
-    $(document).keydown(function(e) {
+    $(document).keydown(function(event) {
         if (event.which === 27) {       // "Esc"
             event.preventDefault();
             dismiss_any_working_area();
