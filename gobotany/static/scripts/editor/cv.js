@@ -504,6 +504,9 @@ define([
     };
 
     exports.setup_pile_length_page = function() {
+
+        exports.setup();
+
         $(document).ready(function() {
 
             $('.pile-character-grid div').each(function() {
