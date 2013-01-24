@@ -178,7 +178,11 @@ define([
         for (var i = 0; i < items.length; i++)
             visible_species[items[i].id] = 1;
 
-        var do_animation = (items.length < 50);
+        var viewport_width = $(window).width();
+
+        // skip animation when there are many plants, or on small screens
+        var do_animation = ((items.length < 50) &&
+                            (viewport_width > 600));
 
         var WIDTH = 178;
         var HEIGHT = 232;
