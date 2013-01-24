@@ -987,6 +987,9 @@ ul.get-more-questions-menu {
             #intro-overlay {
                 left: 16% !important;
             }
+            #results-display label {
+                display: none;
+            }
         }
     }
 }
@@ -1061,8 +1064,8 @@ ul.get-more-questions-menu {
             .section + .section {
                 margin-bottom: 16px;
             }
-            #results-tabs, p.list-all, #sidebar .section.help h5,
-            #sidebar .section.clear h5 {
+            #results-tabs, p.list-all, #sidebar .section.family-genus,
+            #sidebar .section.clear h5, #sidebar .section.help h5 {
                 display: none;
             }
             #page-head {
@@ -1078,13 +1081,16 @@ ul.get-more-questions-menu {
             #sidebar {
                 font-family: $headings-font;
                 font-size: 10px;
-                width: 135px;
+                width: 130px;
+                .section.instructions h5 {
+                    font-size: 12px;
+                }
                 .scroll {
-                    width: 135px;
+                    width: 130px;
                 }
             }
             #main {
-                width: 800px;
+                width: 812px;
             }
         }
     }

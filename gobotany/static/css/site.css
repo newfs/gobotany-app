@@ -862,7 +862,8 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
 /* Begin media queries styles for Simple and Full Keys. */
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { body.skey.groups-subgroups .list-item h2 { clear: left; }
-  body.skey.results #intro-overlay { left: 16% !important; } }
+  body.skey.results #intro-overlay { left: 16% !important; }
+  body.skey.results #results-display label { display: none; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { body.skey.results #intro-overlay { left: 26% !important; } }
 /* These styles are common to both smartphone widths */
@@ -881,13 +882,14 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #sidebar .scroll + .section { margin: 0 0 32px; }
   body.skey.results h3.species-count-heading { white-space: nowrap; }
   body.skey.results .section + .section { margin-bottom: 16px; }
-  body.skey.results #results-tabs, body.skey.results p.list-all, body.skey.results #sidebar .section.help h5, body.skey.results #sidebar .section.clear h5 { display: none; }
+  body.skey.results #results-tabs, body.skey.results p.list-all, body.skey.results #sidebar .section.family-genus, body.skey.results #sidebar .section.clear h5, body.skey.results #sidebar .section.help h5 { display: none; }
   body.skey.results #page-head { left: 8px; position: absolute; }
   body.skey.results #page-head h1 { display: none; }
   body.skey.results #sidebar, body.skey.results #results-display { margin-top: 55px; }
-  body.skey.results #sidebar { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; width: 135px; }
-  body.skey.results #sidebar .scroll { width: 135px; }
-  body.skey.results #main { width: 800px; } }
+  body.skey.results #sidebar { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; width: 130px; }
+  body.skey.results #sidebar .section.instructions h5 { font-size: 12px; }
+  body.skey.results #sidebar .scroll { width: 130px; }
+  body.skey.results #main { width: 812px; } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { body.skey.results #sidebar ul.option-list li:hover { background: #fff; /* No hover color */ }
   body.skey.results #sidebar ul.option-list li.active:hover { background: #dce890; /* Except active-filter hover color */ } }
