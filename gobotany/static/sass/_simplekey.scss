@@ -1061,7 +1061,8 @@ ul.get-more-questions-menu {
             .section + .section {
                 margin-bottom: 16px;
             }
-            #results-tabs, p.list-all, #sidebar .section.help h5 {
+            #results-tabs, p.list-all, #sidebar .section.help h5,
+            #sidebar .section.clear h5 {
                 display: none;
             }
         }
