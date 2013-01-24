@@ -1075,6 +1075,16 @@ ul.get-more-questions-menu {
             #sidebar, #results-display {
                 margin-top: 55px;
             }
+            #sidebar {
+                font-size: 10px;
+                width: 139px;
+                .scroll {
+                    width: 140px;
+                }
+            }
+            #main {
+                width: 800px;
+            }
         }
     }
 }
