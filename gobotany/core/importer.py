@@ -140,10 +140,6 @@ def read_default_filters(characters_csv):
                 character_slug.startswith('leaf_arrangement_general_')):
                 continue
 
-            # Apply the current pile suffix to the character short name.
-            # (The suffix is only different for split piles.)
-            #character_slug = character_slug[:-2] + pile_suffix
-
             if 'default_question' in row.keys():
                 n = row['default_question']
                 if n:
@@ -695,11 +691,6 @@ class Importer(object):
                         suffixes.append(suffix)
                         break
                 break
-            # For the Remaining Non-Monocots pile, which is to be split,
-            # also create TaxonCharacterValues for each the split piles.
-            # Characters are assumed to already exist for the split piles.
-            #if suffix == '_rn':
-            #    suffixes.extend(['_an', '_nn'])
 
             if len(suffixes) == 0:
                 log.error('No pile suffixes to process.')
@@ -733,10 +724,6 @@ class Importer(object):
                             continue
 
                         short_name = shorten_character_name(character_name)
-
-                        # Apply the current suffix to the short name.
-                        # (The suffix is only different for split piles.)
-                        #short_name = short_name[:-3] + suffix
 
                         character_id = character_map.get(short_name)
                         if character_id is None:
@@ -874,16 +861,8 @@ class Importer(object):
             suffixes = []
             suffix = character_name[-3:]  # '_ca', etc.
             suffixes.append(suffix)
-            # For the Remaining Non-Monocots pile, which is to be split,
-            # also create Characters for each of the split piles.
-            #if suffix == '_rn':
-            #    suffixes.extend(['_an', '_nn'])
 
             for suffix in suffixes:
-                # Apply the current suffix to the short name.
-                # (The suffix is only different for split piles.)
-                #short_name = short_name[:-3] + suffix
-
                 pile_id = pile_map.get(suffix)
 
                 charactergroup = charactergroup_table.get(
@@ -959,12 +938,6 @@ class Importer(object):
             short_name = shorten_character_name(row['character'])
             character_names.append(short_name)
 
-            # For the big Remaining Non-Monocots pile, assign the character
-            # images also to the two split piles for this pile.
-            #if short_name.endswith('_rn'):
-            #    character_names.append(short_name[:-2] + 'an')
-            #    character_names.append(short_name[:-2] + 'nn')
-
             for character_name in character_names:
                 if character_name not in existing_short_names:
                     log.error('  Missing character: %s' % character_name)
@@ -1010,17 +983,9 @@ class Importer(object):
             if not pile_suffix in pile_suffixes.values():
                 continue
             suffixes.append(pile_suffix)
-            # For the Remaining Non-Monocots pile, which is to be split,
-            # also create CharacterValues for each of the split piles.
-            #if pile_suffix == 'rn':
-            #    suffixes.extend(['an', 'nn'])
 
             for suffix in suffixes:
                 short_name = shorten_character_name(character_name)
-
-                # Apply the current suffix to the short name.
-                # (The suffix is only different for split piles.)
-                short_name = short_name[:-2] + suffix
 
                 value_str = row['character_value']
 
@@ -1098,12 +1063,6 @@ class Importer(object):
             character_names = []
             short_name = shorten_character_name(character_name)
             character_names.append(short_name)
-
-            # For the big Remaining Non-Monocots pile, assign character
-            # value images also to the two split piles.
-            #if short_name.endswith('_rn'):
-            #    character_names.append(short_name[:-2] + 'an')
-            #    character_names.append(short_name[:-2] + 'nn')
 
             for character_name in character_names:
                 character_id = character_map.get(character_name)
