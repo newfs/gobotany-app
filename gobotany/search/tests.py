@@ -520,7 +520,7 @@ class SearchTests(FunctionalCase):
     # Test searching miscellaneous pages around the site (about, etc.)
 
     def test_search_results_contain_about_page(self):
-        self.get('/search/?q=report%20bug')
+        self.get('/search/?q=national%20science%20foundation')
         result_links = self._result_links()
         self.assertTrue(len(result_links))
         self.assertTrue(self._is_page_found(result_links, 'About Go Botany'))
