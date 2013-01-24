@@ -1065,6 +1065,16 @@ ul.get-more-questions-menu {
             #sidebar .section.clear h5 {
                 display: none;
             }
+            #page-head {
+                left: 8px;
+                position: absolute;
+                h1 {
+                    display: none;
+                }
+            }
+            #sidebar, #results-display {
+                margin-top: 55px;
+            }
         }
     }
 }

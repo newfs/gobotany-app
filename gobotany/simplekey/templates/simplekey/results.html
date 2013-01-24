@@ -20,16 +20,20 @@
 {% block main_content %}
     {% include "simplekey/_results_modal_dialogs.html" %}
 
-                <div id="breadcrumb">
-                    You are here:
-                      <a href="{% url level1 key %}">{{ key|title }} Key</a>
-                    &gt; <a href="{% url level2 key pilegroup.slug %}"
-                        >{{ pilegroup.friendly_title|lower|capfirst }}</a>
-                    &gt; <span>{{ pile.friendly_title }}</span>
+                <div id="page-head">
+
+                    <div id="breadcrumb">
+                        You are here:
+                          <a href="{% url level1 key %}">{{ key|title }} Key</a>
+                        &gt; <a href="{% url level2 key pilegroup.slug %}"
+                            >{{ pilegroup.friendly_title|lower|capfirst }}</a>
+                        &gt; <span>{{ pile.friendly_title }}</span>
+                    </div>
+
+                    <h1>{{ subgroup_results_page.main_heading|capfirst }}</h1>
+
                 </div>
 
-                <h1>{{ subgroup_results_page.main_heading|capfirst }}</h1>
-                
                 <div class="working-area" aria-live="polite" 
                     aria-relevant="additions removals">
                     <img class="arrow" alt=""
@@ -94,14 +98,14 @@
                 </div>
 
                 {% handlebars 'species-view-toggle' %}
-                  <a {{action "switch_species_view"}}>
-                    See
-                    {{#if App3.show_list}}photos for{{else}}a list of{{/if}}
-                    all
-                    <span class="species-count"
-                          >{{App3.matching_species_count}}</span>
-                    matching species.
-                  </a>
+                    <a {{action "switch_species_view"}}>
+                        See
+                        {{#if App3.show_list}}photos for{{else}}a list of{{/if}}
+                        all
+                        <span class="species-count"
+                            >{{App3.matching_species_count}}</span>
+                        matching species.
+                    </a>
                 {% endhandlebars %}
 
     {# TODO: eventually move elsewhere #}
@@ -122,13 +126,13 @@
 
 {% block ember_templates %}
 {% handlebars 'filter-view' %}
-  <a class="option">
-    <span class="name">{{view.filter.info.friendly_name}}?</span>
-    <span class="value">{{view.display_value}}</span>
-  </a>
-  {{#if view.filter.value}}
-  <a class="clear-filter" {{action "clear"}}>Clear</a>
-  {{/if}}
+    <a class="option">
+        <span class="name">{{view.filter.info.friendly_name}}?</span>
+        <span class="value">{{view.display_value}}</span>
+    </a>
+    {{#if view.filter.value}}
+    <a class="clear-filter" {{action "clear"}}>Clear</a>
+    {{/if}}
 {% endhandlebars %}
 {% include "plantpreview/_popup.html" %}
 {% endblock %}
