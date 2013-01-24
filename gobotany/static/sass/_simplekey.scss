@@ -1092,6 +1092,12 @@ ul.get-more-questions-menu {
             #main {
                 width: 812px;
             }
+            .plant-list {
+                height: auto !important;
+                .plant {
+                    position: static;
+                }
+            }
         }
     }
 }
