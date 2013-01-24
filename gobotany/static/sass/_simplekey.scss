@@ -1061,6 +1061,9 @@ ul.get-more-questions-menu {
             .section + .section {
                 margin-bottom: 16px;
             }
+            #results-tabs, p.list-all {
+                display: none;
+            }
         }
     }
 }
