@@ -1087,9 +1087,12 @@ ul.get-more-questions-menu {
                             font-size: 12px;
                         }
                     }
-                    p.get-more span {
-                        display: none;
-                        margin: 0;
+                    p.get-more {
+                        margin-bottom: 36px;
+                        span {
+                            display: none;
+                            margin: 0;
+                        }
                     }
                     a.clear-all-btn, a.get-help-btn {
                         margin: 0;
@@ -1105,7 +1108,17 @@ ul.get-more-questions-menu {
             .plant-list {
                 height: auto !important;
                 .plant {
+                    height: 190px;
                     position: static;
+                    &.genus_join_left, &.genus_join_right {
+                        border-right: 1px solid #c3d941;
+                    }
+                    &.genus_join_right {
+                        padding-right: 6px;
+                    }
+                    .frame {
+                        display: none;
+                    }
                 }
             }
             h3.species-count-heading {
