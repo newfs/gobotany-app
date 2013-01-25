@@ -862,7 +862,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
 /* Begin media queries styles for Simple and Full Keys. */
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { body.skey.groups-subgroups .list-item h2 { clear: left; }
-  body.skey.results #intro-overlay { left: 16% !important; }
+  body.skey.results #intro-overlay { left: 16% !important; top: 150px !important; }
   body.skey.results #results-display label { display: none; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { body.skey.results #intro-overlay { left: 26% !important; } }
