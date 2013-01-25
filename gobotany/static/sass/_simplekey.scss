@@ -1077,8 +1077,10 @@ ul.get-more-questions-menu {
             }
             #sidebar {
                 font-size: 10px;
+                min-height: auto;
                 width: 130px;
                 .section {
+                    padding: 0 0 0 4px;
                     &.instructions {
                         padding: 12px;
                         h5 {
@@ -1087,6 +1089,9 @@ ul.get-more-questions-menu {
                     }
                     p.get-more span {
                         display: none;
+                        margin: 0;
+                    }
+                    a.clear-all-btn, a.get-help-btn {
                         margin: 0;
                     }
                 }
