@@ -5,6 +5,8 @@ define([
     'util/ajaxpartialform'
 ], function($, jqueryForm, upload_modal) {
 
+    var UPLOAD_SPINNER = '/static/images/icons/preloaders-dot-net-lg.gif';
+
     function hideEditFields() {
         $('div.edit').hide();
         $('div.display').show();
@@ -65,6 +67,11 @@ define([
 
         syncFields();
 
+        function startUpload() {
+            console.log('Beginning upload...');
+            $('#avatar-image').attr('src', UPLOAD_SPINNER);
+        }
+
         function avatarUploaded(imageInfo) {
             console.log('Successfully uploaded avatar');
             $('#avatar-image').attr('src', imageInfo.thumb);
@@ -75,8 +82,9 @@ define([
         }
 
         upload_modal.setup('.image-modal', '#upload-link', {
-            onUpload: avatarUploaded,
+            onUploadComplete: avatarUploaded,
             onError: uploadError,
+            onStartUpload: startUpload,
         });
 
     });

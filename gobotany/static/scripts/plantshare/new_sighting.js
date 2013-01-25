@@ -5,11 +5,14 @@ define([
     'mapping/geocoder'
 ], function ($, jqueryForm, upload_modal, Geocoder) {
 
+    var UPLOAD_SPINNER = '/static/images/icons/preloaders-dot-net-lg.gif';
+
     $(document).ready(function () {
 
         function addNewThumb(url) {
-            $('.thumb-gallery p').before('<img class="thumb" src="' + url +
-                                        '">');
+            // Set the last image's url, which should be the spinner,
+            // to the real image url.
+            $('.thumb-gallery img').last().attr('src', url);
         }
 
         function attachSightingPhoto(newPhotoId) {
@@ -17,6 +20,12 @@ define([
                     'name': 'sightings_photos',
                     'value': newPhotoId
                 }).appendTo('#sighting-photos');
+        }
+
+        function startUpload() {
+            // Add the spinner to the gallery
+            $('.thumb-gallery p').before('<img class="thumb" src="' + 
+                UPLOAD_SPINNER + '">');
         }
 
         function photoUploaded(imageInfo) {
@@ -32,7 +41,8 @@ define([
         }
 
         upload_modal.setup('.image-modal', '#upload-link', {
-            onUpload: photoUploaded,
+            onStartUpload: startUpload,
+            onUploadComplete: photoUploaded,
             onError: uploadError,
         });
     });

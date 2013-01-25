@@ -10,8 +10,9 @@ define([
         var $modal = $(modalSelector);
         var $link = $(linkSelector);
         var settings = $.extend({
-            'onUpload': function(imageInfo) {},
+            'onUploadComplete': function(imageInfo) {},
             'onError': function(errorInfo) {},
+            'onStartUpload': function() {},
         }, options);
 
         var triggers = $link.overlay({
@@ -67,13 +68,14 @@ define([
                         'id': response.id,
                         'thumb': response.thumb
                     };
-                    settings.onUpload.call(this, imageInfo); 
+                    settings.onUploadComplete.call(this, imageInfo); 
                 } else {
                     console.log('Error during upload: ' + response.info);
                     settings.onError.call(this, response.info);
                 }
             });
             triggers.eq(0).overlay().close();
+            settings.onStartUpload.call(this);
             return false;
         });
     }
