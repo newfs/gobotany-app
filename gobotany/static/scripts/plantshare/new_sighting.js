@@ -10,13 +10,30 @@ define([
 
     $(document).ready(function () {
 
-        function addNewThumb(url) {
+        function addNewThumb(url, id) {
             // Set the last image's url, which should be the spinner,
             // to the real image url.
             var $lastImage = $('.thumb-gallery img.thumb').last();
             $lastImage.attr('src', url);
-            $lastImage.after('<div class="delete-link"><a href="#"><img src="' + 
-                DELETE_ICON + '" />Remove</a></div>');
+            $lastImage.after('<div class="delete-link"><a href="' + id + 
+                '"><img src="' + DELETE_ICON + '" />Remove</a></div>');
+        }
+
+        function removeThumb(id, $frame) {
+            console.log('Remove thumb ' + id);
+
+            // TODO: Import or implement a form of Django url-reversing 
+            // accessible to javascript, or insert variables at the top
+            // of relevant templates.
+            var rejectUrl = '/ps/api/image-reject/' + id;
+            $.ajax(rejectUrl).done(function(data) {
+                if(data.success) {
+                    $('#sighting-photos').find('input[value=' + id + ']').remove();
+                    $frame.fadeOut(300, function() { $frame.remove(); });
+                } else {
+                    console.log('Error removing sighting photo.');
+                }
+            });
         }
 
         function attachSightingPhoto(newPhotoId) {
@@ -36,13 +53,22 @@ define([
             console.log('Successfully uploaded sighting photo.');
             console.log('New Photo [id=' + imageInfo.id + ', thumb=' +
                         imageInfo.thumb + ']');
-            addNewThumb(imageInfo.thumb);
+            addNewThumb(imageInfo.thumb, imageInfo.id);
             attachSightingPhoto(imageInfo.id);
         }
 
         function uploadError(errorInfo) {
             console.log('Error: ' + errorInfo);
         }
+
+        $('.delete-link a').live('click', function() {
+            $this = $(this);
+            console.log('Delete image');
+            $frame = $('.thumb-gallery .thumb-frame').has($this);
+            removeThumb($this.attr('href'), $frame);
+
+            return false;
+        });
 
         upload_modal.setup('.image-modal', '#upload-link', {
             onStartUpload: startUpload,
