@@ -1044,7 +1044,7 @@ ul.get-more-questions-menu {
             #main {
                 float: right;
                 margin-left: 0;
-                width: 804px;
+                width: 798px;
             }
             .content .container {
                 padding: 0;
@@ -1076,10 +1076,10 @@ ul.get-more-questions-menu {
             #sidebar {
                 font-size: 10px;
                 margin-top: 55px;
-                min-height: auto;
-                width: 142px;
+                min-height: 0px;
+                width: 148px;
                 .section {
-                    padding: 0 0 0 1px;
+                    padding: 0 0 0 4px;
                     &.instructions {
                         padding: 12px;
                         h5 {
@@ -1090,7 +1090,7 @@ ul.get-more-questions-menu {
                         margin-bottom: 8px;
                     }
                     p.get-more {
-                        margin-bottom: 42px;
+                        margin-bottom: 28px;
                         span {
                             display: none;
                             margin: 0;
@@ -1102,7 +1102,7 @@ ul.get-more-questions-menu {
                 }
                 .scroll {
                     height: 261px;
-                    width: 142px;
+                    width: 148px;
                 }
                 .option-list .clear-filter {
                     margin: 8px 0 4px;
@@ -1111,8 +1111,11 @@ ul.get-more-questions-menu {
             .plant-list {
                 height: auto !important;
                 .plant {
+                    font-size: 11px;
                     height: 190px;
+                    padding: 6px;
                     position: static;
+                    width: 152px;
                     &.genus_join_left, &.genus_join_right {
                         border-right: 1px solid #c3d941;
                     }
@@ -1122,10 +1125,13 @@ ul.get-more-questions-menu {
                     .frame {
                         display: none;
                     }
+                    .plant-img-container {
+                        width: 152px;
+                    }
                 }
             }
             h3.species-count-heading {
-                font-size: 18px;
+                font-size: 17px;
                 white-space: nowrap;
                 > span {
                     left: auto;
@@ -1136,6 +1142,10 @@ ul.get-more-questions-menu {
                 margin-top: 83px;
                 label, select {
                     font-size: 13px;
+                }
+                img.icon {
+                    margin-left: 1px;
+                    vertical-align: -3px;
                 }
             }
             a.get-choices {

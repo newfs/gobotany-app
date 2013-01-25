@@ -876,7 +876,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.groups-subgroups .list-item .details .section-title { font-size: 10px; }
   body.skey.groups-subgroups .not-my-plant { display: none; }
   body.skey.results #intro-overlay { font-size: 170%; }
-  body.skey.results #main { float: right; margin-left: 0; width: 804px; }
+  body.skey.results #main { float: right; margin-left: 0; width: 798px; }
   body.skey.results .content .container { padding: 0; width: 960px; }
   body.skey.results #sidebar { float: left; margin: 0; padding: 0; width: 228px; }
   body.skey.results #sidebar .scroll + .section { margin: 0 0 32px; }
@@ -884,25 +884,27 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #results-tabs, body.skey.results p.list-all, body.skey.results #sidebar .section.family-genus, body.skey.results #sidebar .section.clear h5, body.skey.results #sidebar .section.help h5 { display: none; }
   body.skey.results #page-head { left: 8px; position: absolute; }
   body.skey.results #page-head h1 { display: none; }
-  body.skey.results #sidebar { font-size: 10px; margin-top: 55px; min-height: auto; width: 142px; }
-  body.skey.results #sidebar .section { padding: 0 0 0 1px; }
+  body.skey.results #sidebar { font-size: 10px; margin-top: 55px; min-height: 0px; width: 148px; }
+  body.skey.results #sidebar .section { padding: 0 0 0 4px; }
   body.skey.results #sidebar .section.instructions { padding: 12px; }
   body.skey.results #sidebar .section.instructions h5 { font-size: 12px; }
   body.skey.results #sidebar .section.help { margin-bottom: 8px; }
-  body.skey.results #sidebar .section p.get-more { margin-bottom: 42px; }
+  body.skey.results #sidebar .section p.get-more { margin-bottom: 28px; }
   body.skey.results #sidebar .section p.get-more span { display: none; margin: 0; }
   body.skey.results #sidebar .section a.clear-all-btn, body.skey.results #sidebar .section a.get-help-btn { margin: 0 0 0 16px; }
-  body.skey.results #sidebar .scroll { height: 261px; width: 142px; }
+  body.skey.results #sidebar .scroll { height: 261px; width: 148px; }
   body.skey.results #sidebar .option-list .clear-filter { margin: 8px 0 4px; }
   body.skey.results .plant-list { height: auto !important; }
-  body.skey.results .plant-list .plant { height: 190px; position: static; }
+  body.skey.results .plant-list .plant { font-size: 11px; height: 190px; padding: 6px; position: static; width: 152px; }
   body.skey.results .plant-list .plant.genus_join_left, body.skey.results .plant-list .plant.genus_join_right { border-right: 1px solid #c3d941; }
   body.skey.results .plant-list .plant.genus_join_right { padding-right: 6px; }
   body.skey.results .plant-list .plant .frame { display: none; }
-  body.skey.results h3.species-count-heading { font-size: 18px; white-space: nowrap; }
+  body.skey.results .plant-list .plant .plant-img-container { width: 152px; }
+  body.skey.results h3.species-count-heading { font-size: 17px; white-space: nowrap; }
   body.skey.results h3.species-count-heading > span { left: auto; top: 55px; }
   body.skey.results #results-display { margin-top: 83px; }
   body.skey.results #results-display label, body.skey.results #results-display select { font-size: 13px; }
+  body.skey.results #results-display img.icon { margin-left: 1px; vertical-align: -3px; }
   body.skey.results a.get-choices { background: url("/static/images/layout/more-choices-btn.png") no-repeat scroll 0 0 transparent; height: 29px; } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { body.skey.results #sidebar ul.option-list li:hover { background: #fff; /* No hover color */ }
