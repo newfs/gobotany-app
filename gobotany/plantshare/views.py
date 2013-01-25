@@ -301,15 +301,15 @@ def ajax_image_reject(request, image_id):
     image = ScreenedImage.objects.get(pk=image_id)
 
     # Only staff or the user who originally uploaded the image may reject it.
-    if not (request.user.is_staff() or request.user == image.uploaded_by):
+    if not (request.user.is_staff or request.user == image.uploaded_by):
         return HttpResponse(simplejson.dumps({
             'error': True,
             'info': 'Authentication error'
         }), mimetype='application/json')
 
-    image.approved = False
+    image.is_approved = False
     image.screened = datetime.now()
-    image.screened_by = request.user()
+    image.screened_by = request.user
 
     image.save()
 
