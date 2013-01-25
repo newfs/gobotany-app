@@ -1080,8 +1080,11 @@ ul.get-more-questions-menu {
                 font-size: 10px;
                 width: 130px;
                 .section {
-                    &.instructions h5 {
-                        font-size: 12px;
+                    &.instructions {
+                        padding: 12px;
+                        h5 {
+                            font-size: 12px;
+                        }
                     }
                     p.get-more span {
                         display: none;
@@ -1111,6 +1114,9 @@ ul.get-more-questions-menu {
             }
             #results-display {
                 margin-top: 83px;
+                label, select {
+                    font-size: 13px;
+                }
             }
         }
     }
