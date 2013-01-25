@@ -6,13 +6,17 @@ define([
 ], function ($, jqueryForm, upload_modal, Geocoder) {
 
     var UPLOAD_SPINNER = '/static/images/icons/preloaders-dot-net-lg.gif';
+    var DELETE_ICON = '/static/images/icons/close.png';
 
     $(document).ready(function () {
 
         function addNewThumb(url) {
             // Set the last image's url, which should be the spinner,
             // to the real image url.
-            $('.thumb-gallery img').last().attr('src', url);
+            var $lastImage = $('.thumb-gallery img.thumb').last();
+            $lastImage.attr('src', url);
+            $lastImage.after('<div class="delete-link"><a href="#"><img src="' + 
+                DELETE_ICON + '" />Remove</a></div>');
         }
 
         function attachSightingPhoto(newPhotoId) {
@@ -24,8 +28,8 @@ define([
 
         function startUpload() {
             // Add the spinner to the gallery
-            $('.thumb-gallery p').before('<img class="thumb" src="' + 
-                UPLOAD_SPINNER + '">');
+            $('.thumb-gallery p').before('<div class="thumb-frame"><img class="thumb" src="' + 
+                UPLOAD_SPINNER + '"></div>');
         }
 
         function photoUploaded(imageInfo) {

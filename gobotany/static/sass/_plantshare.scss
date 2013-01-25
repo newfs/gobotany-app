@@ -267,9 +267,26 @@ body.plantshare {
         }
 
         .thumb-gallery {
-            .thumb {
+            .thumb-frame {
+                display: inline-block;
                 margin: 0 5px;
                 vertical-align: bottom;
+
+                .thumb {
+                  vertical-align: bottom;
+                }
+
+                .delete-link {
+                    width: 100%;
+                    text-align: center;
+                    margin: 2px 0;
+                    padding-top: 2px;
+
+                    img {
+                        vertical-align: middle;
+                        margin-right: 4px;
+                    }
+                }
             }
         }
     }
