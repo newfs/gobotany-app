@@ -880,18 +880,21 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results .content .container { padding: 0; width: 960px; }
   body.skey.results #sidebar { float: left; margin: 0; padding: 0; width: 228px; }
   body.skey.results #sidebar .scroll + .section { margin: 0 0 32px; }
-  body.skey.results h3.species-count-heading { white-space: nowrap; }
   body.skey.results .section + .section { margin-bottom: 16px; }
   body.skey.results #results-tabs, body.skey.results p.list-all, body.skey.results #sidebar .section.family-genus, body.skey.results #sidebar .section.clear h5, body.skey.results #sidebar .section.help h5 { display: none; }
   body.skey.results #page-head { left: 8px; position: absolute; }
   body.skey.results #page-head h1 { display: none; }
-  body.skey.results #sidebar, body.skey.results #results-display { margin-top: 55px; }
+  body.skey.results #sidebar { margin-top: 55px; }
   body.skey.results #sidebar { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; width: 130px; }
   body.skey.results #sidebar .section.instructions h5 { font-size: 12px; }
+  body.skey.results #sidebar .section p.get-more span { display: none; margin: 0; }
   body.skey.results #sidebar .scroll { width: 130px; }
   body.skey.results #main { width: 812px; }
   body.skey.results .plant-list { height: auto !important; }
-  body.skey.results .plant-list .plant { position: static; } }
+  body.skey.results .plant-list .plant { position: static; }
+  body.skey.results h3.species-count-heading { font-size: 18px; white-space: nowrap; }
+  body.skey.results h3.species-count-heading > span { left: auto; top: 55px; }
+  body.skey.results #results-display { margin-top: 83px; } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { body.skey.results #sidebar ul.option-list li:hover { background: #fff; /* No hover color */ }
   body.skey.results #sidebar ul.option-list li.active:hover { background: #dce890; /* Except active-filter hover color */ } }

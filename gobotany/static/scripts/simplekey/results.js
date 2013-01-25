@@ -45,7 +45,7 @@ results_page_init: function(args) {
 
     App3.set('show_grid', true);
     App3.set('show_list', false);
-    App3.set('matching_species_count', 'Loading');
+    App3.set('matching_species_count', '...');
 
     App3.image_types = Ember.ArrayProxy.create({
         content: []

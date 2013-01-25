@@ -1058,9 +1058,6 @@ ul.get-more-questions-menu {
                     margin: 0 0 32px;
                 }
             }
-            h3.species-count-heading {
-                white-space: nowrap;
-            }
             .section + .section {
                 margin-bottom: 16px;
             }
@@ -1075,15 +1072,21 @@ ul.get-more-questions-menu {
                     display: none;
                 }
             }
-            #sidebar, #results-display {
+            #sidebar {
                 margin-top: 55px;
             }
             #sidebar {
                 font-family: $headings-font;
                 font-size: 10px;
                 width: 130px;
-                .section.instructions h5 {
-                    font-size: 12px;
+                .section {
+                    &.instructions h5 {
+                        font-size: 12px;
+                    }
+                    p.get-more span {
+                        display: none;
+                        margin: 0;
+                    }
                 }
                 .scroll {
                     width: 130px;
@@ -1097,6 +1100,17 @@ ul.get-more-questions-menu {
                 .plant {
                     position: static;
                 }
+            }
+            h3.species-count-heading {
+                font-size: 18px;
+                white-space: nowrap;
+                > span {
+                    left: auto;
+                    top: 55px;
+                }
+            }
+            #results-display {
+                margin-top: 83px;
             }
         }
     }
