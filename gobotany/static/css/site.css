@@ -885,7 +885,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #page-head { left: 8px; position: absolute; }
   body.skey.results #page-head h1 { display: none; }
   body.skey.results #sidebar { margin-top: 55px; }
-  body.skey.results #sidebar { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; width: 130px; }
+  body.skey.results #sidebar { font-size: 10px; width: 130px; }
   body.skey.results #sidebar .section.instructions { padding: 12px; }
   body.skey.results #sidebar .section.instructions h5 { font-size: 12px; }
   body.skey.results #sidebar .section p.get-more span { display: none; margin: 0; }
