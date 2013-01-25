@@ -1043,7 +1043,8 @@ ul.get-more-questions-menu {
             }
             #main {
                 float: right;
-                width: 710px;
+                margin-left: 0;
+                width: 804px;
             }
             .content .container {
                 padding: 0;
@@ -1073,37 +1074,39 @@ ul.get-more-questions-menu {
                 }
             }
             #sidebar {
-                margin-top: 55px;
-            }
-            #sidebar {
                 font-size: 10px;
+                margin-top: 55px;
                 min-height: auto;
-                width: 130px;
+                width: 142px;
                 .section {
-                    padding: 0 0 0 4px;
+                    padding: 0 0 0 1px;
                     &.instructions {
                         padding: 12px;
                         h5 {
                             font-size: 12px;
                         }
                     }
+                    &.help {
+                        margin-bottom: 8px;
+                    }
                     p.get-more {
-                        margin-bottom: 36px;
+                        margin-bottom: 42px;
                         span {
                             display: none;
                             margin: 0;
                         }
                     }
                     a.clear-all-btn, a.get-help-btn {
-                        margin: 0;
+                        margin: 0 0 0 16px;
                     }
                 }
                 .scroll {
-                    width: 130px;
+                    height: 261px;
+                    width: 142px;
                 }
-            }
-            #main {
-                width: 812px;
+                .option-list .clear-filter {
+                    margin: 8px 0 4px;
+                }
             }
             .plant-list {
                 height: auto !important;
@@ -1134,6 +1137,10 @@ ul.get-more-questions-menu {
                 label, select {
                     font-size: 13px;
                 }
+            }
+            a.get-choices {
+                background: url("/static/images/layout/more-choices-btn.png") no-repeat scroll 0 0 transparent;
+                height: 29px;
             }
         }
     }
