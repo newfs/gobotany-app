@@ -215,9 +215,18 @@ define([
 
     var vector_of_row = function($row) {
         /* Returns a string like '10001011...' showing the DOM state. */
-        return _.map($row.find('b'), function(box) {
-            return $(box).hasClass('x') ? '1' : '0';
-        }).join('');
+        $inputs = $row.find('input');
+        if ($inputs.length) {
+            var vector = [
+                float_from($inputs.eq(0).val()),
+                float_from($inputs.eq(1).val())
+            ];
+        } else {
+            var vector = _.map($row.find('b'), function(box) {
+                return $(box).hasClass('x') ? '1' : '0';
+            }).join('');
+        }
+        return vector;
     };
 
     /* Event handler that expects each of our widgets to operate in two
@@ -490,37 +499,6 @@ define([
         return string.trim() ? parseFloat(string) : null;
     };
 
-    var save_pile_character_lengths = function() {
-        var value_settings = [];
-
-        $('.pile-character-grid div').each(function() {
-            if ($('.illegal', this).length)
-                return;
-            if ($('.changed_tag', this).length === 0)
-                return;
-
-            var scientific_name = $('i', this).text();
-            var $inputs = $('input', this);
-            value_settings.push([
-                scientific_name,
-                float_from($inputs.eq(0).val()),
-                float_from($inputs.eq(1).val())
-            ]);
-        });
-
-        $('<form>', {
-            action: '.',
-            method: 'POST'
-        }).append($('<input>', {
-            name: 'value_settings',
-            value: JSON.stringify(value_settings)
-        })).append(
-            $('input[name="csrfmiddlewaretoken"]').clone()
-        ).appendTo(
-            $('body')
-        ).submit();
-    };
-
     exports.setup_pile_length_page = function() {
 
         exports.setup();
@@ -557,15 +535,7 @@ define([
                     }
                 });
             });
-
-            $('.length-save-button').on('click', save_pile_character_lengths);
-
-            install_species_button_handlers();
         });
-    };
-
-    exports.setup_pile_taxon_page = function() {
-        exports.setup();
     };
 
     return exports;

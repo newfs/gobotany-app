@@ -61,33 +61,9 @@ def _edit_pile_length_character(request, pile, character, taxa):
 
     # Process a POST.
 
-    if 'value_settings' in request.POST:
-
-        taxa_by_name = { taxon.scientific_name: taxon for taxon in taxa }
-        value_settings = json.loads(request.POST['value_settings'])
-        print value_settings
-
-        for scientific_name, min_value, max_value in value_settings:
-            scientific_name = scientific_name.replace(' (fk)', '')
-            taxon = taxa_by_name[scientific_name]
-            already_exists = taxon.id in taxon_values
-
-            if already_exists:
-                value = taxon_values[taxon.id]
-            else:
-                value = models.CharacterValue()
-                value.character = character
-
-            value.value_min = min_value
-            value.value_max = max_value
-            value.save()
-
-            if not already_exists:
-                tcv = models.TaxonCharacterValue()
-                tcv.character_value = value
-                tcv.taxon = taxon
-                tcv.save()
-
+    if 'new_values' in request.POST:
+        new_values = request.POST['new_values']
+        _save(new_values, character=character)
         return redirect(request.path)
 
     # Grabbing one copy of each family once is noticeably faster than
@@ -275,7 +251,32 @@ def _save(new_values, character=None, taxon=None):
 
 
 def _save_length(character, taxon, minmax):
-    raise NotImplementedError()
+
+    tcvs = list(models.TaxonCharacterValue.objects
+                .filter(character_value__character=character, taxon=taxon)
+                .select_related('character_value'))
+
+    if tcvs:
+        tcv = tcvs[0]
+        value = tcv.character_value
+        is_value_shared = len(value.taxon_character_values.all())
+
+        if is_value_shared:
+            tcv.delete()
+        else:
+            value.value_min = minmax[0]
+            value.value_max = minmax[1]
+            value.save()
+            return
+
+    value = models.CharacterValue(
+        character=character,
+        value_min=minmax[0],
+        value_max=minmax[1],
+        )
+    value.save()
+
+    models.TaxonCharacterValue(character_value=value, taxon=taxon).save()
 
 
 def _save_textual(character, taxon, vector):

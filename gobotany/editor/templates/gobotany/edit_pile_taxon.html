@@ -1,8 +1,8 @@
 {% extends "gobotany/_edit_base.html" %}
 
 {% block js_require %}
-    require(['editor/cv'], function (edit) {
-        edit.setup_pile_taxon_page();
+    require(['editor/cv'], function (editor_cv) {
+        editor_cv.setup();
     });
 {% endblock %}
 
