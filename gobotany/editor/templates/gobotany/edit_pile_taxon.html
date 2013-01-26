@@ -37,15 +37,30 @@
 
 <div class="pile-character-grid taxon-character-grid">
   {% for character in pile_characters %}
-    <div data-name="{{ character.short_name }}">
-      <i class="character-name">{% if not character.is_any_value_checked %}
-        <span>!</span> {% endif %}{{ character.name }}</i>
-      {% for value in character.values %}
-        <br><i></i>
-        <b {% if value.checked %}class="x"{% endif %}
-           >×   {{ value.value_str }}</b>
-      {% endfor %}
-    </div>
+    {% if character.value_type == 'LENGTH' %}
+      <div data-name="{{ character.short_name }}">
+        <i class="character-name">{{ character.name }}</i><br><i></i>
+        {% with min=character.min max=character.max %}
+        Min <input
+          {% if min == None %}class="empty"{% else %}value={{ min }}{% endif %}
+        >
+        Max <input
+          {% if max == None %}class="empty"{% else %}value={{ max }}{% endif %}
+        >
+        {{ character.unit }}
+        {% endwith %}
+      </div>
+    {% else %}
+      <div data-name="{{ character.short_name }}">
+        <i class="character-name">{% if not character.is_any_value_checked %}
+          <span>!</span> {% endif %}{{ character.name }}</i>
+        {% for value in character.values %}
+          <br><i></i>
+          <b {% if value.checked %}class="x"{% endif %}
+             >×   {{ value.value_str }}</b>
+        {% endfor %}
+      </div>
+    {% endif %}
   {% endfor %}
 </div>
 

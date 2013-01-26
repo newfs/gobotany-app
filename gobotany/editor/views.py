@@ -187,12 +187,6 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
     pile = get_object_or_404(models.Pile, slug=pile_slug)
     taxon = get_object_or_404(models.Taxon, scientific_name=name)
 
-    common_characters = list(models.Character.objects.filter(
-            short_name__in=models.COMMON_CHARACTERS, value_type=u'TEXT'))
-    pile_characters = list(pile.characters.filter(value_type=u'TEXT'))
-
-    tcvlist = list(models.TaxonCharacterValue.objects.filter(taxon=taxon))
-
     # A POST updates the taxon and redirects, instead of rendering.
 
     if 'new_values' in request.POST:
@@ -204,18 +198,38 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
     # Each character has .values, a sorted list of character values
     # Each value has .checked, indicating that the species has it.
 
-    value_map = {(tcv.taxon_id, tcv.character_value_id): tcv
-                 for tcv in tcvlist}
+    common_characters = list(models.Character.objects.filter(
+            short_name__in=models.COMMON_CHARACTERS, value_type=u'TEXT'))
+    pile_characters = list(pile.characters.all())
+
+    tcvlist = list(models.TaxonCharacterValue.objects.filter(taxon=taxon)
+                   .select_related('character_value'))
+    value_map1 = {tcv.character_value.character_id: tcv.character_value
+                  for tcv in tcvlist}
+    value_map2 = {(tcv.taxon_id, tcv.character_value_id): tcv
+                  for tcv in tcvlist}
 
     def annotated_characters(characters):
         def generator():
             for character in characters:
-                character.values = list(character.character_values.all())
-                character.values.sort(key=character_value_key)
-                for value in character.values:
-                    value.checked = (taxon.id, value.id) in value_map
-                    if value.checked:
-                        character.is_any_value_checked = True
+
+                if character.value_type == 'LENGTH':
+                    value = value_map1.get(character.id)
+                    if value is None:
+                        character.min = None
+                        character.max = None
+                    else:
+                        character.min = value.value_min
+                        character.max = value.value_max
+
+                else:
+                    character.values = list(character.character_values.all())
+                    character.values.sort(key=character_value_key)
+                    for value in character.values:
+                        value.checked = (taxon.id, value.id) in value_map2
+                        if value.checked:
+                            character.is_any_value_checked = True
+
                 yield character
         return generator
 

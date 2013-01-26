@@ -239,12 +239,8 @@ define([
     var install_event_handlers = function() {
 
         install_species_button_handlers();
-
-        $grid.on('click', 'b', function() {
-            var $b = $(this);
-            $b.toggleClass('x');
-            recompute_changed_tag($b);
-        });
+        watch_for_value_clicks();
+        watch_for_input_edits();
 
         $('.save-button').on('click', function() {
             save_vectors();
@@ -279,6 +275,28 @@ define([
         });
     };
 
+    var watch_for_value_clicks = function() {
+        $grid.on('click', 'b', function() {
+            var $b = $(this);
+            $b.toggleClass('x');
+            recompute_changed_tag($b.parent());
+        });
+    };
+
+    var watch_for_input_edits = function() {
+        var $inputs = $grid.find('input');
+        $inputs.on('keydown keyup', function() {
+            var $input = $(this);
+            var v = $input.val();
+            var m = v.match(/^ *[0-9]*[.]?[0-9]* *$/);
+
+            $(this).toggleClass('empty', !v);
+            $(this).toggleClass('illegal', !m);
+            recompute_changed_tag($input.parent());
+        });
+        return;
+    };
+
     var install_species_button_handlers = function() {
 
         $('.all-species-button').on('click', function() {
@@ -296,12 +314,11 @@ define([
     /* An orange "changed" flag, displayed on the right side of a row,
        that tells the user the row is not in its original state. */
 
-    var recompute_changed_tag = function($box) {
+    var recompute_changed_tag = function($row) {
 
         /* Grabbing .firstChild avoids the "expand" button text. */
-        var $row = $box.parent();
-        var taxon_name = name_of_row($row);
-        var old_vector = original_values[taxon_name];
+        var name = name_of_row($row);
+        var old_vector = original_values[name];
         var new_vector = vector_of_row($row);
 
         if (old_vector == new_vector) {
@@ -319,8 +336,8 @@ define([
     /* Mousing over a "changed" tag lets you see the changes. */
 
     var add_change_borders = function($row) {
-        var taxon_name = name_of_row($row);
-        var old_vector = original_values[taxon_name];
+        var name = name_of_row($row);
+        var old_vector = original_values[name];
         var new_vector = vector_of_row($row);
         var $boxes = $row.find('b');
 
@@ -497,45 +514,6 @@ define([
 
     var float_from = function(string) {
         return string.trim() ? parseFloat(string) : null;
-    };
-
-    exports.setup_pile_length_page = function() {
-
-        exports.setup();
-
-        $(document).ready(function() {
-
-            $('.pile-character-grid div').not('.column').each(function() {
-
-                var div = this;
-                var $inputs = $('input', div);
-                var original_min = float_from($inputs.eq(0).val());
-                var original_max = float_from($inputs.eq(1).val());
-
-                $inputs.on('keydown keyup', function() {
-
-                    var v = $(this).val();
-                    var m = v.match(/^ *[0-9]*[.]?[0-9]* *$/);
-
-                    $(this).toggleClass('empty', !v);
-                    $(this).toggleClass('illegal', !m);
-
-                    var new_min = float_from($inputs.eq(0).val());
-                    var new_max = float_from($inputs.eq(1).val());
-
-                    var $changed_tag = $('.changed_tag', div);
-
-                    if (new_min === original_min && new_max == original_max) {
-                        if ($changed_tag.length)
-                            $changed_tag.remove();
-                    } else {
-                        if ($changed_tag.length === 0)
-                            $(div).append($('<span>').text('changed')
-                                          .addClass('changed_tag'));
-                    }
-                });
-            });
-        });
     };
 
     return exports;
