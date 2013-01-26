@@ -75,22 +75,26 @@ define([
 ) {
     var exports = {};
     var $grid;                  // the grid <div> itself
-    var taxon_value_vectors;    // maps scientific name to vector
+    var original_values;        // maps row names to vector
 
     exports.setup = function() {
         $(document).ready(function() {
 
             $grid = $('.pile-character-grid');
 
-            if (typeof window.character_values !== 'undefined' &&
-                typeof window.grid_data !== 'undefined') {
+            var data_driven = (typeof window.grid_data !== 'undefined' &&
+                               typeof window.character_values !== 'undefined');
 
+            if (data_driven) {
                 take_measurements();
                 if (!be_verbose)
                     install_expand_button();
                 build_grid_from_json();
-                install_event_handlers();
+            } else {
+                original_values = scrape_grid($grid);
             }
+
+            install_event_handlers();
         });
     };
 
@@ -155,7 +159,7 @@ define([
 
     var build_grid_from_json = function() {
 
-        taxon_value_vectors = {};
+        original_values = {};
 
         var snippets = [];
 
@@ -172,7 +176,7 @@ define([
             var scientific_name = item[0];
             var ones_and_zeroes = item[1];
 
-            taxon_value_vectors[scientific_name] = ones_and_zeroes;
+            original_values[scientific_name] = ones_and_zeroes;
 
             snippets.push('<div><i>');
             snippets.push(scientific_name);
@@ -197,22 +201,19 @@ define([
                 $grid.find(selector).text(verbose_text);
             }
         }
-
-        $grid.on('click', 'b', function() {
-            var $b = $(this);
-            $b.toggleClass('x');
-            recompute_changed_tag($b);
-        });
     };
 
     /* Information about a live grid row. */
 
-    var scientific_name_of = function($row) {
-        /* Returns a string like 'Abelmoschus esculentus' */
-        return $row.find('i')[0].firstChild.data;
+    var name_of_row = function($row) {
+        /* Returns a string like 'Abelmoschus esculentus' or 'Leaf number' */
+        var name = $row.attr('data-name');
+        if (!name)
+            var name = $row.find('i')[0].firstChild.data.replace(' (fk)', '');
+        return name;
     };
 
-    var vector_of = function($row) {
+    var vector_of_row = function($row) {
         /* Returns a string like '10001011...' showing the DOM state. */
         return _.map($row.find('b'), function(box) {
             return $(box).hasClass('x') ? '1' : '0';
@@ -229,6 +230,12 @@ define([
     var install_event_handlers = function() {
 
         install_species_button_handlers();
+
+        $grid.on('click', 'b', function() {
+            var $b = $(this);
+            $b.toggleClass('x');
+            recompute_changed_tag($b);
+        });
 
         $('.save-button').on('click', function() {
             save_vectors();
@@ -284,9 +291,9 @@ define([
 
         /* Grabbing .firstChild avoids the "expand" button text. */
         var $row = $box.parent();
-        var taxon_name = scientific_name_of($row);
-        var old_vector = taxon_value_vectors[taxon_name];
-        var new_vector = vector_of($row);
+        var taxon_name = name_of_row($row);
+        var old_vector = original_values[taxon_name];
+        var new_vector = vector_of_row($row);
 
         if (old_vector == new_vector) {
             $row.find('.changed_tag').remove();
@@ -303,9 +310,9 @@ define([
     /* Mousing over a "changed" tag lets you see the changes. */
 
     var add_change_borders = function($row) {
-        var taxon_name = scientific_name_of($row);
-        var old_vector = taxon_value_vectors[taxon_name];
-        var new_vector = vector_of($row);
+        var taxon_name = name_of_row($row);
+        var old_vector = original_values[taxon_name];
+        var new_vector = vector_of_row($row);
         var $boxes = $row.find('b');
 
         $boxes.each(function(i) {
@@ -442,20 +449,31 @@ define([
 
     };
 
+    /* Return the character values as they exist in the DOM. */
+
+    var scrape_grid = function($grid) {
+        var value_map = {};
+        $grid.find('div').not('.column').each(function() {
+            var $row = $(this);
+            value_map[name_of_row($row)] = vector_of_row($row);
+        });
+        return value_map;
+    };
+
     var save_vectors = function() {
         $('.save-button').addClass('disabled');
 
         var $changed_divs = $grid.find('.changed_tag').parent();
         var vectors = _.map($changed_divs, function(div) {
             var $row = $(div);
-            return [$row.find('i').text(), vector_of($row)];
+            return [name_of_row($row), vector_of_row($row)];
         });
 
         $('<form>', {
             action: '.',
             method: 'POST'
         }).append($('<input>', {
-            name: 'vectors',
+            name: 'new_values',
             value: JSON.stringify(vectors)
         })).append(
             $('input[name="csrfmiddlewaretoken"]').clone()
@@ -509,7 +527,7 @@ define([
 
         $(document).ready(function() {
 
-            $('.pile-character-grid div').each(function() {
+            $('.pile-character-grid div').not('.column').each(function() {
 
                 var div = this;
                 var $inputs = $('input', div);
@@ -540,7 +558,7 @@ define([
                 });
             });
 
-            $('.save-button').click(save_pile_character_lengths);
+            $('.length-save-button').on('click', save_pile_character_lengths);
 
             install_species_button_handlers();
         });
@@ -567,7 +585,7 @@ define([
             method: 'POST'
         }).append(
             $('<input>', {
-                name: 'value_settings',
+                name: 'new_values',
                 value: JSON.stringify(value_settings)
             })
         ).append(
@@ -578,9 +596,7 @@ define([
     };
 
     exports.setup_pile_taxon_page = function() {
-        $(document).ready(function() {
-            $('.save-button').click(save_pile_taxon);
-        });
+        exports.setup();
     };
 
     return exports;
