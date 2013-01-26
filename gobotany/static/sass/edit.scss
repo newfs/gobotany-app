@@ -13,7 +13,7 @@ $highlight: lighten($body_bg, 10);
     margin-bottom: 0;
 }
 
-span.all-species-button, span.simple-key-button, .save-button {
+span.all-species-button, span.simple-key-button, .save-button, .length-save-button {
     @extend .orange-button;
     cursor: pointer;
     display: inline-block;
@@ -95,6 +95,9 @@ span.all-species-button, span.simple-key-button, .save-button {
     /* For editing numeric values. */
     /* http://stackoverflow.com/questions/8669413/ */
 
+    input {
+        margin: 4px 2px;
+    }
     input.empty {
         background-color: darken($body_bg, 10);
     }
@@ -105,12 +108,17 @@ span.all-species-button, span.simple-key-button, .save-button {
 
 /* Styles specific to editing all characters of a single taxon, kept
    separate here in the hopes of not slowing down the browser when it is
-   trying to render a full-out character grid as specified above. */
+   trying to render the full-out .pile-character-grid given above. */
 
 .taxon-character-grid {
 
     div {
         clear: both;
+    }
+
+    i {
+        font-weight: bold;
+        font-style: normal;
     }
 
     .charactername {
@@ -124,7 +132,6 @@ span.all-species-button, span.simple-key-button, .save-button {
     }
 
     input {
-        float: left;
         margin: 4px 8px 4px 2px;
     }
 

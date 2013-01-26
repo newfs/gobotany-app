@@ -44,8 +44,8 @@
  *     Lengths are simply presented as a pair of text fields.
  *
  *     <div><i>Carex abscondita (fk)</i>
- *       <b>Min <input value="1.2"></b>
- *       <b>Max <input value="1.8"></b>
+ *       Min <input value="1.2">
+ *       Max <input value="1.8">
  *       mm
  *     </div>
  *
@@ -75,22 +75,26 @@ define([
 ) {
     var exports = {};
     var $grid;                  // the grid <div> itself
-    var taxon_value_vectors;    // maps scientific name to vector
+    var original_values;        // maps row names to vector
 
     exports.setup = function() {
         $(document).ready(function() {
 
             $grid = $('.pile-character-grid');
 
-            if (typeof window.character_values !== 'undefined' &&
-                typeof window.grid_data !== 'undefined') {
+            var data_driven = (typeof window.grid_data !== 'undefined' &&
+                               typeof window.character_values !== 'undefined');
 
+            if (data_driven) {
                 take_measurements();
                 if (!be_verbose)
                     install_expand_button();
                 build_grid_from_json();
-                install_event_handlers();
+            } else {
+                original_values = scrape_grid($grid);
             }
+
+            install_event_handlers();
         });
     };
 
@@ -155,7 +159,7 @@ define([
 
     var build_grid_from_json = function() {
 
-        taxon_value_vectors = {};
+        original_values = {};
 
         var snippets = [];
 
@@ -172,7 +176,7 @@ define([
             var scientific_name = item[0];
             var ones_and_zeroes = item[1];
 
-            taxon_value_vectors[scientific_name] = ones_and_zeroes;
+            original_values[scientific_name] = ones_and_zeroes;
 
             snippets.push('<div><i>');
             snippets.push(scientific_name);
@@ -197,26 +201,32 @@ define([
                 $grid.find(selector).text(verbose_text);
             }
         }
-
-        $grid.on('click', 'b', function() {
-            var $b = $(this);
-            $b.toggleClass('x');
-            recompute_changed_tag($b);
-        });
     };
 
     /* Information about a live grid row. */
 
-    var scientific_name_of = function($row) {
-        /* Returns a string like 'Abelmoschus esculentus' */
-        return $row.find('i')[0].firstChild.data;
+    var name_of_row = function($row) {
+        /* Returns a string like 'Abelmoschus esculentus' or 'Leaf number' */
+        var name = $row.attr('data-name');
+        if (!name)
+            var name = $row.find('i')[0].firstChild.data.replace(' (fk)', '');
+        return name;
     };
 
-    var vector_of = function($row) {
+    var vector_of_row = function($row) {
         /* Returns a string like '10001011...' showing the DOM state. */
-        return _.map($row.find('b'), function(box) {
-            return $(box).hasClass('x') ? '1' : '0';
-        }).join('');
+        $inputs = $row.find('input');
+        if ($inputs.length) {
+            var vector = [
+                float_from($inputs.eq(0).val()),
+                float_from($inputs.eq(1).val())
+            ];
+        } else {
+            var vector = _.map($row.find('b'), function(box) {
+                return $(box).hasClass('x') ? '1' : '0';
+            }).join('');
+        }
+        return vector;
     };
 
     /* Event handler that expects each of our widgets to operate in two
@@ -229,6 +239,8 @@ define([
     var install_event_handlers = function() {
 
         install_species_button_handlers();
+        watch_for_value_clicks();
+        watch_for_input_edits();
 
         $('.save-button').on('click', function() {
             save_vectors();
@@ -263,6 +275,28 @@ define([
         });
     };
 
+    var watch_for_value_clicks = function() {
+        $grid.on('click', 'b', function() {
+            var $b = $(this);
+            $b.toggleClass('x');
+            recompute_changed_tag($b.parent());
+        });
+    };
+
+    var watch_for_input_edits = function() {
+        var $inputs = $grid.find('input');
+        $inputs.on('keydown keyup', function() {
+            var $input = $(this);
+            var v = $input.val();
+            var m = v.match(/^ *[0-9]*[.]?[0-9]* *$/);
+
+            $(this).toggleClass('empty', !v);
+            $(this).toggleClass('illegal', !m);
+            recompute_changed_tag($input.parent());
+        });
+        return;
+    };
+
     var install_species_button_handlers = function() {
 
         $('.all-species-button').on('click', function() {
@@ -280,13 +314,12 @@ define([
     /* An orange "changed" flag, displayed on the right side of a row,
        that tells the user the row is not in its original state. */
 
-    var recompute_changed_tag = function($box) {
+    var recompute_changed_tag = function($row) {
 
         /* Grabbing .firstChild avoids the "expand" button text. */
-        var $row = $box.parent();
-        var taxon_name = scientific_name_of($row);
-        var old_vector = taxon_value_vectors[taxon_name];
-        var new_vector = vector_of($row);
+        var name = name_of_row($row);
+        var old_vector = original_values[name];
+        var new_vector = vector_of_row($row);
 
         if (old_vector == new_vector) {
             $row.find('.changed_tag').remove();
@@ -303,9 +336,9 @@ define([
     /* Mousing over a "changed" tag lets you see the changes. */
 
     var add_change_borders = function($row) {
-        var taxon_name = scientific_name_of($row);
-        var old_vector = taxon_value_vectors[taxon_name];
-        var new_vector = vector_of($row);
+        var name = name_of_row($row);
+        var old_vector = original_values[name];
+        var new_vector = vector_of_row($row);
         var $boxes = $row.find('b');
 
         $boxes.each(function(i) {
@@ -442,20 +475,31 @@ define([
 
     };
 
+    /* Return the character values as they exist in the DOM. */
+
+    var scrape_grid = function($grid) {
+        var value_map = {};
+        $grid.find('div').not('.column').each(function() {
+            var $row = $(this);
+            value_map[name_of_row($row)] = vector_of_row($row);
+        });
+        return value_map;
+    };
+
     var save_vectors = function() {
         $('.save-button').addClass('disabled');
 
         var $changed_divs = $grid.find('.changed_tag').parent();
         var vectors = _.map($changed_divs, function(div) {
             var $row = $(div);
-            return [$row.find('i').text(), vector_of($row)];
+            return [name_of_row($row), vector_of_row($row)];
         });
 
         $('<form>', {
             action: '.',
             method: 'POST'
         }).append($('<input>', {
-            name: 'vectors',
+            name: 'new_values',
             value: JSON.stringify(vectors)
         })).append(
             $('input[name="csrfmiddlewaretoken"]').clone()
@@ -470,114 +514,6 @@ define([
 
     var float_from = function(string) {
         return string.trim() ? parseFloat(string) : null;
-    };
-
-    var save_pile_character_lengths = function() {
-        var value_settings = [];
-
-        $('.pile-character-grid div').each(function() {
-            if ($('.illegal', this).length)
-                return;
-            if ($('.changed_tag', this).length === 0)
-                return;
-
-            var scientific_name = $('i', this).text();
-            var $inputs = $('input', this);
-            value_settings.push([
-                scientific_name,
-                float_from($inputs.eq(0).val()),
-                float_from($inputs.eq(1).val())
-            ]);
-        });
-
-        $('<form>', {
-            action: '.',
-            method: 'POST'
-        }).append($('<input>', {
-            name: 'value_settings',
-            value: JSON.stringify(value_settings)
-        })).append(
-            $('input[name="csrfmiddlewaretoken"]').clone()
-        ).appendTo(
-            $('body')
-        ).submit();
-    };
-
-    exports.setup_pile_length_page = function() {
-        $(document).ready(function() {
-
-            $('.pile-character-grid div').each(function() {
-
-                var div = this;
-                var $inputs = $('input', div);
-                var original_min = float_from($inputs.eq(0).val());
-                var original_max = float_from($inputs.eq(1).val());
-
-                $inputs.on('keydown keyup', function() {
-
-                    var v = $(this).val();
-                    var m = v.match(/^ *[0-9]*[.]?[0-9]* *$/);
-
-                    $(this).toggleClass('empty', !v);
-                    $(this).toggleClass('illegal', !m);
-
-                    var new_min = float_from($inputs.eq(0).val());
-                    var new_max = float_from($inputs.eq(1).val());
-
-                    var $changed_tag = $('.changed_tag', div);
-
-                    if (new_min === original_min && new_max == original_max) {
-                        if ($changed_tag.length)
-                            $changed_tag.remove();
-                    } else {
-                        if ($changed_tag.length === 0)
-                            $(div).append($('<span>').text('changed')
-                                          .addClass('changed_tag'));
-                    }
-                });
-            });
-
-            $('.save-button').click(save_pile_character_lengths);
-
-            install_species_button_handlers();
-        });
-    };
-
-    /* The code for editing a single taxon's characters is also quite
-       simple, because such pages - even for the largest piles - can be
-       generated directly from a Django page template, because the
-       number of character values per pile tend to run in the hundreds
-       rather than the tens of thousands. */
-
-    var save_pile_taxon = function() {
-        var value_settings = [];
-
-        $('input[name="cv"]').each(function() {
-            var value = + $(this).attr('value');
-            var setting = $(this).is(':checked') ? 1 : 0;
-            value_settings.push([value, setting]);
-        });
-
-        $('<form>', {
-            action: '.',
-            css: {'display': 'none'},
-            method: 'POST'
-        }).append(
-            $('<input>', {
-                name: 'value_settings',
-                value: JSON.stringify(value_settings)
-            })
-        ).append(
-            $('input[name="csrfmiddlewaretoken"]').clone()
-        ).appendTo(
-            $('body')
-        ).submit();
-    };
-
-    exports.setup_pile_taxon_page = function() {
-        $(document).ready(function() {
-            $('.save-button').click(save_pile_taxon);
-        });
     };
 
     return exports;

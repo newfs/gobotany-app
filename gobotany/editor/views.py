@@ -61,33 +61,9 @@ def _edit_pile_length_character(request, pile, character, taxa):
 
     # Process a POST.
 
-    if 'value_settings' in request.POST:
-
-        taxa_by_name = { taxon.scientific_name: taxon for taxon in taxa }
-        value_settings = json.loads(request.POST['value_settings'])
-        print value_settings
-
-        for scientific_name, min_value, max_value in value_settings:
-            scientific_name = scientific_name.replace(' (fk)', '')
-            taxon = taxa_by_name[scientific_name]
-            already_exists = taxon.id in taxon_values
-
-            if already_exists:
-                value = taxon_values[taxon.id]
-            else:
-                value = models.CharacterValue()
-                value.character = character
-
-            value.value_min = min_value
-            value.value_max = max_value
-            value.save()
-
-            if not already_exists:
-                tcv = models.TaxonCharacterValue()
-                tcv.character_value = value
-                tcv.taxon = taxon
-                tcv.save()
-
+    if 'new_values' in request.POST:
+        new_values = request.POST['new_values']
+        _save(new_values, character=character)
         return redirect(request.path)
 
     # Grabbing one copy of each family once is noticeably faster than
@@ -141,22 +117,9 @@ def _edit_pile_string_character(request, pile, character, taxa):
     # We now have enough information, and can either handle a POST
     # update of specific data or a GET that displays the whole pile.
 
-    if 'vectors' in request.POST:
-        taxa_by_name = { taxon.scientific_name: taxon for taxon in taxa }
-        vectors = json.loads(request.POST['vectors'])
-
-        for name, vector in vectors:
-            scientific_name = ' '.join(name.split()[:2])
-            taxon = taxa_by_name[scientific_name]
-            for digit, value in zip(vector, values):
-                key = (taxon.id, value.id)
-                if digit == '0' and key in value_map:
-                    value_map[key].delete()
-                elif digit == '1' and key not in value_map:
-                    models.TaxonCharacterValue(
-                        taxon=taxon, character_value=value
-                        ).save()
-
+    if 'new_values' in request.POST:
+        new_values = request.POST['new_values']
+        _save(new_values, character=character)
         return redirect(request.path)
 
     # Grabbing one copy of each family once is noticeably faster than
@@ -224,43 +187,49 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
     pile = get_object_or_404(models.Pile, slug=pile_slug)
     taxon = get_object_or_404(models.Taxon, scientific_name=name)
 
-    common_characters = list(models.Character.objects.filter(
-            short_name__in=models.COMMON_CHARACTERS, value_type=u'TEXT'))
-    pile_characters = list(pile.characters.filter(value_type=u'TEXT'))
-
-    tcvlist = list(models.TaxonCharacterValue.objects.filter(taxon=taxon))
-
     # A POST updates the taxon and redirects, instead of rendering.
 
-    if request.method == 'POST':
-        tcvmap = {tcv.character_value_id: tcv for tcv in tcvlist}
-        value_settings = json.loads(request.POST['value_settings'])
-        for value_id, should_be_set in value_settings:
-            if should_be_set:
-                if value_id not in tcvmap:
-                    models.TaxonCharacterValue(
-                        taxon=taxon, character_value_id=value_id
-                        ).save()
-            else:
-                if value_id in tcvmap:
-                    tcvmap[value_id].delete()
-
+    if 'new_values' in request.POST:
+        new_values = request.POST['new_values']
+        _save(new_values, taxon=taxon)
         return redirect(request.path)
 
     # Yield a sequence of characters.
     # Each character has .values, a sorted list of character values
     # Each value has .checked, indicating that the species has it.
 
-    value_map = {(tcv.taxon_id, tcv.character_value_id): tcv
-                 for tcv in tcvlist}
+    common_characters = list(models.Character.objects.filter(
+            short_name__in=models.COMMON_CHARACTERS, value_type=u'TEXT'))
+    pile_characters = list(pile.characters.all())
+
+    tcvlist = list(models.TaxonCharacterValue.objects.filter(taxon=taxon)
+                   .select_related('character_value'))
+    value_map1 = {tcv.character_value.character_id: tcv.character_value
+                  for tcv in tcvlist}
+    value_map2 = {(tcv.taxon_id, tcv.character_value_id): tcv
+                  for tcv in tcvlist}
 
     def annotated_characters(characters):
         def generator():
             for character in characters:
-                character.values = list(character.character_values.all())
-                character.values.sort(key=character_value_key)
-                for value in character.values:
-                    value.checked = (taxon.id, value.id) in value_map
+
+                if character.value_type == 'LENGTH':
+                    value = value_map1.get(character.id)
+                    if value is None:
+                        character.min = None
+                        character.max = None
+                    else:
+                        character.min = value.value_min
+                        character.max = value.value_max
+
+                else:
+                    character.values = list(character.character_values.all())
+                    character.values.sort(key=character_value_key)
+                    for value in character.values:
+                        value.checked = (taxon.id, value.id) in value_map2
+                        if value.checked:
+                            character.is_any_value_checked = True
+
                 yield character
         return generator
 
@@ -270,6 +239,75 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
         'pile_characters': annotated_characters(pile_characters),
         'taxon': taxon,
         }, context_instance=RequestContext(request))
+
+
+def _save(new_values, character=None, taxon=None):
+    new_values = json.loads(new_values)
+
+    if character is None:
+        get_character = models.Character.objects.get
+        character_taxon_value_tuples = [
+            (get_character(short_name=name), taxon, v)
+            for (name, v) in new_values
+            ]
+    elif taxon is None:
+        get_taxon = models.Taxon.objects.get
+        character_taxon_value_tuples = [
+            (character, get_taxon(scientific_name=name), v)
+            for (name, v) in new_values
+            ]
+
+    for character, taxon, value in character_taxon_value_tuples:
+        if character.value_type == 'LENGTH':
+            _save_length(character, taxon, value)
+        else:
+            _save_textual(character, taxon, value)
+
+
+def _save_length(character, taxon, minmax):
+
+    tcvs = list(models.TaxonCharacterValue.objects
+                .filter(character_value__character=character, taxon=taxon)
+                .select_related('character_value'))
+
+    if tcvs:
+        tcv = tcvs[0]
+        value = tcv.character_value
+        is_value_shared = len(value.taxon_character_values.all())
+
+        if is_value_shared:
+            tcv.delete()
+        else:
+            value.value_min = minmax[0]
+            value.value_max = minmax[1]
+            value.save()
+            return
+
+    value = models.CharacterValue(
+        character=character,
+        value_min=minmax[0],
+        value_max=minmax[1],
+        )
+    value.save()
+
+    models.TaxonCharacterValue(character_value=value, taxon=taxon).save()
+
+
+def _save_textual(character, taxon, vector):
+    values = list(character.character_values.all())
+    values.sort(key=character_value_key)
+
+    tcvs = list(models.TaxonCharacterValue.objects.filter(
+        character_value__in=values, taxon=taxon))
+    tcvmap = {tcv.character_value_id: tcv for tcv in tcvs}
+
+    for value, digit in zip(values, vector):
+        bit = (digit == '1')
+        if bit and (value.id not in tcvmap):
+            models.TaxonCharacterValue(
+                taxon=taxon, character_value=value).save()
+        elif (not bit) and (value.id in tcvmap):
+            tcvmap[value.id].delete()
 
 
 def character_value_key(cv):

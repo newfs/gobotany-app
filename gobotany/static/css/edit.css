@@ -1,15 +1,15 @@
 /* Quick informal CSS for the edit pages. */
 /* Definitions */
 /* for gradient, etc. */
-.orange-button, span.all-species-button, span.simple-key-button, .save-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
-.orange-button:hover, span.all-species-button:hover, span.simple-key-button:hover, .save-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
-.orange-button.disabled, span.disabled.all-species-button, span.disabled.simple-key-button, .disabled.save-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
+.orange-button, span.all-species-button, span.simple-key-button, .save-button, .length-save-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
+.orange-button:hover, span.all-species-button:hover, span.simple-key-button:hover, .save-button:hover, .length-save-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
+.orange-button.disabled, span.disabled.all-species-button, span.disabled.simple-key-button, .disabled.save-button, .disabled.length-save-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
 
 .edit-page #all { margin: 2em; }
 
 .edit-character-definition { margin-top: 0; margin-left: 2em; margin-bottom: 0; }
 
-span.all-species-button, span.simple-key-button, .save-button { cursor: pointer; display: inline-block; margin: 0.8em 1em; font-weight: normal; }
+span.all-species-button, span.simple-key-button, .save-button, .length-save-button { cursor: pointer; display: inline-block; margin: 0.8em 1em; font-weight: normal; }
 
 .pile-character-grid { position: relative; margin-top: 2em; /* Editing a single character for many taxa: */ /* For editing numeric values. */ /* http://stackoverflow.com/questions/8669413/ */ }
 .pile-character-grid .column { z-index: -1; position: absolute; background-color: #fafae9; }
@@ -26,14 +26,16 @@ span.all-species-button, span.simple-key-button, .save-button { cursor: pointer;
 .pile-character-grid b.highlight { z-index: 2; background-color: #fafae9; }
 .pile-character-grid b.highlight.x { background-color: #3c6c28; }
 .pile-character-grid b.changed { border-style: solid; border-color: #dc9402; border-width: 4px 2px; padding: 0; }
+.pile-character-grid input { margin: 4px 2px; }
 .pile-character-grid input.empty { background-color: #e6e697; }
 .pile-character-grid input.illegal { background-color: #fdb014; }
 
-/* Styles specific to editing all characters of a single taxon, kept separate here in the hopes of not slowing down the browser when it is trying to render a full-out character grid as specified above. */
+/* Styles specific to editing all characters of a single taxon, kept separate here in the hopes of not slowing down the browser when it is trying to render the full-out .pile-character-grid given above. */
 .taxon-character-grid div { clear: both; }
+.taxon-character-grid i { font-weight: bold; font-style: normal; }
 .taxon-character-grid .charactername { margin-top: 1em; border-top: 1px solid #dc9402; padding: 4px; background-color: #ebebab; }
 .taxon-character-grid .charactername:hover { background-color: #ebebab; }
-.taxon-character-grid input { float: left; margin: 4px 8px 4px 2px; }
+.taxon-character-grid input { margin: 4px 8px 4px 2px; }
 .taxon-character-grid label { cursor: pointer; display: block; padding: 4px 2px; white-space: normal; }
 .taxon-character-grid :checked, .taxon-character-grid :checked + label { background-color: #519136; color: white; }
 
