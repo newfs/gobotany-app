@@ -564,37 +564,6 @@ define([
         });
     };
 
-    /* The code for editing a single taxon's characters is also quite
-       simple, because such pages - even for the largest piles - can be
-       generated directly from a Django page template, because the
-       number of character values per pile tend to run in the hundreds
-       rather than the tens of thousands. */
-
-    var save_pile_taxon = function() {
-        var value_settings = [];
-
-        $('input[name="cv"]').each(function() {
-            var value = + $(this).attr('value');
-            var setting = $(this).is(':checked') ? 1 : 0;
-            value_settings.push([value, setting]);
-        });
-
-        $('<form>', {
-            action: '.',
-            css: {'display': 'none'},
-            method: 'POST'
-        }).append(
-            $('<input>', {
-                name: 'new_values',
-                value: JSON.stringify(value_settings)
-            })
-        ).append(
-            $('input[name="csrfmiddlewaretoken"]').clone()
-        ).appendTo(
-            $('body')
-        ).submit();
-    };
-
     exports.setup_pile_taxon_page = function() {
         exports.setup();
     };
