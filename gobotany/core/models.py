@@ -615,6 +615,27 @@ class TaxonCharacterValue(models.Model):
         return u'%s: %s' % (self.taxon.scientific_name, self.character_value)
 
 
+class Edit(models.Model):
+    """Record of the changes that botanists have made to character values.
+
+    Note that this table has no real foreign keys, because it intends to
+    track changes to objects - like botanists, characters, and character
+    values - that might later disappear; but these edit rows need to
+    remain in place as a permanent record.
+
+    An imagined sample row, to show the idea:
+
+    rbrumback / 20 Jul / characer-value / Acer rubrum / state / MA,ME,VT
+
+    """
+    author = models.TextField()
+    datetime = models.DateTimeField()
+    itemtype = models.TextField(db_index=True)
+    coordinate1 = models.TextField()
+    coordinate2 = models.TextField()
+    old_value = models.TextField()
+
+
 class ConservationStatus(models.Model):
     """Zero or more conservation status values per species+region."""
 

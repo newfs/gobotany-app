@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from django.contrib.auth.decorators import permission_required
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render_to_response
@@ -63,7 +64,7 @@ def _edit_pile_length_character(request, pile, character, taxa):
 
     if 'new_values' in request.POST:
         new_values = request.POST['new_values']
-        _save(new_values, character=character)
+        _save(request, new_values, character=character)
         return redirect(request.path)
 
     # Grabbing one copy of each family once is noticeably faster than
@@ -119,7 +120,7 @@ def _edit_pile_string_character(request, pile, character, taxa):
 
     if 'new_values' in request.POST:
         new_values = request.POST['new_values']
-        _save(new_values, character=character)
+        _save(request, new_values, character=character)
         return redirect(request.path)
 
     # Grabbing one copy of each family once is noticeably faster than
@@ -191,7 +192,7 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
 
     if 'new_values' in request.POST:
         new_values = request.POST['new_values']
-        _save(new_values, taxon=taxon)
+        _save(request, new_values, taxon=taxon)
         return redirect(request.path)
 
     # Yield a sequence of characters.
@@ -241,7 +242,8 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
         }, context_instance=RequestContext(request))
 
 
-def _save(new_values, character=None, taxon=None):
+def _save(request, new_values, character=None, taxon=None):
+    now = datetime.now()
     new_values = json.loads(new_values)
 
     if character is None:
@@ -259,12 +261,21 @@ def _save(new_values, character=None, taxon=None):
 
     for character, taxon, value in character_taxon_value_tuples:
         if character.value_type == 'LENGTH':
-            _save_length(character, taxon, value)
+            old_value = _save_length(request, character, taxon, value, now)
         else:
-            _save_textual(character, taxon, value)
+            old_value = _save_textual(request, character, taxon, value, now)
+
+        models.Edit(
+            author=request.user.username,
+            datetime=now,
+            itemtype='character-value',
+            coordinate1=taxon.scientific_name,
+            coordinate2=character.short_name,
+            old_value=json.dumps(old_value),
+            ).save()
 
 
-def _save_length(character, taxon, minmax):
+def _save_length(request, character, taxon, minmax, now):
 
     tcvs = list(models.TaxonCharacterValue.objects
                 .filter(character_value__character=character, taxon=taxon)
@@ -273,6 +284,7 @@ def _save_length(character, taxon, minmax):
     if tcvs:
         tcv = tcvs[0]
         value = tcv.character_value
+        old_values = [value.value_min, value.value_max]
         is_value_shared = len(value.taxon_character_values.all())
 
         if is_value_shared:
@@ -282,6 +294,8 @@ def _save_length(character, taxon, minmax):
             value.value_max = minmax[1]
             value.save()
             return
+    else:
+        old_values = [None, None]
 
     value = models.CharacterValue(
         character=character,
@@ -291,9 +305,10 @@ def _save_length(character, taxon, minmax):
     value.save()
 
     models.TaxonCharacterValue(character_value=value, taxon=taxon).save()
+    return old_values
 
 
-def _save_textual(character, taxon, vector):
+def _save_textual(request, character, taxon, vector, now):
     values = list(character.character_values.all())
     values.sort(key=character_value_key)
 
@@ -301,13 +316,22 @@ def _save_textual(character, taxon, vector):
         character_value__in=values, taxon=taxon))
     tcvmap = {tcv.character_value_id: tcv for tcv in tcvs}
 
+    old_values = []
+
     for value, digit in zip(values, vector):
-        bit = (digit == '1')
-        if bit and (value.id not in tcvmap):
+        has_it = value.id in tcvmap
+        needs_it = digit == '1'
+
+        if has_it:
+            old_values.append(value.value_str)
+
+        if needs_it and not has_it:
             models.TaxonCharacterValue(
                 taxon=taxon, character_value=value).save()
-        elif (not bit) and (value.id in tcvmap):
+        elif not needs_it and has_it:
             tcvmap[value.id].delete()
+
+    return old_values
 
 
 def character_value_key(cv):
