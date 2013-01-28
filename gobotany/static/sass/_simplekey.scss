@@ -1063,8 +1063,9 @@ ul.get-more-questions-menu {
             .section + .section {
                 margin-bottom: 16px;
             }
-            #results-tabs, p.list-all, #sidebar .section.family-genus,
-            #sidebar .section.clear h5, #sidebar .section.help h5 {
+            #results-tabs, p.list-all, #sidebar .section.family-genus h6,
+            #sidebar .section button, #sidebar .section.clear h5,
+            #sidebar .section.help h5 {
                 display: none;
             }
             #page-head {
@@ -1087,18 +1088,24 @@ ul.get-more-questions-menu {
                             font-size: 12px;
                         }
                     }
+                    &.family-genus {
+                        select {
+                            margin-bottom: 16px;
+                            width: 139px;
+                        }
+                    }
                     &.help {
                         margin-bottom: 8px;
                     }
                     p.get-more {
-                        margin-bottom: 28px;
+                        margin-bottom: 50px;
                         span {
                             display: none;
                             margin: 0;
                         }
                     }
                     a.clear-all-btn, a.get-help-btn {
-                        margin: 0 0 0 16px;
+                        margin: 6px 0 6px 16px;
                     }
                 }
                 .scroll {
@@ -1152,6 +1159,38 @@ ul.get-more-questions-menu {
             a.get-choices {
                 background: url("/static/images/layout/more-choices-btn.png") no-repeat scroll 0 0 transparent;
                 height: 29px;
+            }
+            .working-area {
+                height: 375px;
+                margin-left: -150px;
+                top: 4px !important;
+                width: 280px;
+                img.arrow {
+                    display: none;
+                }
+                h4 {
+                    font-size: 15px;
+                    margin: 2px 0;
+                }
+                .info .hint p {
+                    font-size: 12px;
+                    margin-bottom: 12px;
+                }
+                .choices {
+                    background: #fff;
+                    border: 1px solid #ccc;
+                    border-left: 1px solid #000;
+                    border-top: 1px solid #000;
+                    display: block;
+                    height: 230px;
+                    margin-bottom: 6px;
+                    overflow: scroll;
+                    -webkit-overflow-scrolling: touch;
+                    .row div {
+                        display: block;
+                        min-height: 30px;
+                    }
+                }
             }
         }
     }
