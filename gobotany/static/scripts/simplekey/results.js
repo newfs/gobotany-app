@@ -45,7 +45,7 @@ results_page_init: function(args) {
 
     App3.set('show_grid', true);
     App3.set('show_list', false);
-    App3.set('matching_species_count', 'Loading');
+    App3.set('matching_species_count', '...');
 
     App3.image_types = Ember.ArrayProxy.create({
         content: []
@@ -264,7 +264,7 @@ results_page_init: function(args) {
         }
     }
 
-    $(document).keydown(function(e) {
+    $(document).keydown(function(event) {
         if (event.which === 27) {       // "Esc"
             event.preventDefault();
             dismiss_any_working_area();

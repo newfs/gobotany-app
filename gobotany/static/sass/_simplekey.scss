@@ -986,6 +986,10 @@ ul.get-more-questions-menu {
         &.results {
             #intro-overlay {
                 left: 16% !important;
+                top: 150px !important;
+            }
+            #results-display label {
+                display: none;
             }
         }
     }
@@ -1040,7 +1044,8 @@ ul.get-more-questions-menu {
             }
             #main {
                 float: right;
-                width: 710px;
+                margin-left: 0;
+                width: 798px;
             }
             .content .container {
                 padding: 0;
@@ -1055,11 +1060,137 @@ ul.get-more-questions-menu {
                     margin: 0 0 32px;
                 }
             }
-            h3.species-count-heading {
-                white-space: nowrap;
-            }
             .section + .section {
                 margin-bottom: 16px;
+            }
+            #results-tabs, p.list-all, #sidebar .section.family-genus h6,
+            #sidebar .section button, #sidebar .section.clear h5,
+            #sidebar .section.help h5 {
+                display: none;
+            }
+            #page-head {
+                left: 8px;
+                position: absolute;
+                h1 {
+                    display: none;
+                }
+            }
+            #sidebar {
+                font-size: 10px;
+                margin-top: 55px;
+                min-height: 0px;
+                width: 148px;
+                .section {
+                    padding: 0 0 0 4px;
+                    &.instructions {
+                        padding: 12px;
+                        h5 {
+                            font-size: 12px;
+                        }
+                    }
+                    &.family-genus {
+                        select {
+                            margin-bottom: 16px;
+                            width: 139px;
+                        }
+                    }
+                    &.help {
+                        margin-bottom: 8px;
+                    }
+                    p.get-more {
+                        margin-bottom: 50px;
+                        span {
+                            display: none;
+                            margin: 0;
+                        }
+                    }
+                    a.clear-all-btn, a.get-help-btn {
+                        margin: 6px 0 6px 16px;
+                    }
+                }
+                .scroll {
+                    height: 261px;
+                    width: 148px;
+                }
+                .option-list .clear-filter {
+                    margin: 8px 0 4px;
+                }
+            }
+            .plant-list {
+                height: auto !important;
+                .plant {
+                    font-size: 11px;
+                    height: 190px;
+                    padding: 6px;
+                    position: static;
+                    width: 152px;
+                    &.genus_join_left, &.genus_join_right {
+                        border-right: 1px solid #c3d941;
+                    }
+                    &.genus_join_right {
+                        padding-right: 6px;
+                    }
+                    .frame {
+                        display: none;
+                    }
+                    .plant-img-container {
+                        width: 152px;
+                    }
+                }
+            }
+            h3.species-count-heading {
+                font-size: 17px;
+                white-space: nowrap;
+                > span {
+                    left: auto;
+                    top: 55px;
+                }
+            }
+            #results-display {
+                margin-top: 83px;
+                label, select {
+                    font-size: 13px;
+                }
+                img.icon {
+                    margin-left: 1px;
+                    vertical-align: -3px;
+                }
+            }
+            a.get-choices {
+                background: url("/static/images/layout/more-choices-btn.png") no-repeat scroll 0 0 transparent;
+                height: 29px;
+            }
+            .working-area {
+                height: 375px;
+                margin-left: -150px;
+                top: 4px !important;
+                width: 280px;
+                img.arrow {
+                    display: none;
+                }
+                h4 {
+                    font-size: 15px;
+                    margin: 2px 0;
+                }
+                .info .hint p {
+                    font-size: 12px;
+                    margin-bottom: 12px;
+                }
+                .choices {
+                    background: #fff;
+                    border: 1px solid #ccc;
+                    border-left: 1px solid #000;
+                    border-top: 1px solid #000;
+                    display: block;
+                    height: 230px;
+                    margin-bottom: 6px;
+                    overflow: scroll;
+                    -webkit-overflow-scrolling: touch;
+                    .row div {
+                        display: block;
+                        min-height: 30px;
+                    }
+                }
             }
         }
     }
