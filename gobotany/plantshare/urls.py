@@ -25,6 +25,9 @@ urlpatterns = patterns(
     url(r'^sightings/new/done/$', views.new_sighting_done_view,
         name='ps-new-sighting-done'),
 
+    # Ask the Botanist
+    url(r'^questions/$', views.ask_view, name='ps-ask'),
+
     # My Profile page
     url(r'^profile/$', views.profile_view, name='ps-profile'),
 

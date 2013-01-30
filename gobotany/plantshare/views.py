@@ -148,6 +148,10 @@ def new_sighting_done_view(request):
     return render_to_response('new_sighting_done.html', {
            }, context_instance=RequestContext(request))
 
+def ask_view(request):
+    return render_to_response('ask.html', {
+           }, context_instance=RequestContext(request))
+
 @login_required
 def profile_view(request):
     """View for the logged-in user's profile."""
