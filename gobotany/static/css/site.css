@@ -953,6 +953,8 @@ body.plantshare .profile h3 { font-size: 18px; }
 body.plantshare .profile div { clear: left; height: 84px; }
 body.plantshare .profile img { display: block; float: left; max-height: 84px; margin-right: 16px; max-width: 84px; }
 body.plantshare .profile table { clear: left; }
+body.plantshare#plantshare { /* styles for the PlantShare main page */ }
+body.plantshare#plantshare #ask { margin-top: 20px; }
 body.plantshare#sign-up #main form input { width: 350px; }
 body.plantshare#sign-up #main form input.button { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -359px; border: 0; height: 41px; margin-top: 12px; width: 244px; display: block; text-indent: -9000px; }
 body.plantshare#sign-up #main form input.button:hover { background-position: -1px -402px; }

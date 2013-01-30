@@ -135,6 +135,13 @@ body.plantshare {
             clear: left;
         }
     }
+    
+    &#plantshare {   /* styles for the PlantShare main page */
+        #ask {
+            margin-top: 20px;
+        }
+    }
+
     &#sign-up #main {
         form input {
             width: 350px;
