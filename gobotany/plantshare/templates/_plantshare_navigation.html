@@ -1,10 +1,13 @@
 {% load gobotany_tags %}
 <div class="box">
     {% include "_plantshare_home_nav_item.html" %}
+
     {% if user.is_authenticated %}
     <div class="section post-sighting">
         <h4>{% nav_item 'Post a Sighting' ps-new-sighting %}</h4>
     </div>
+    {% endif %}
+    
     <div class="section sightings-locator">
         <h4>{% nav_item 'Sightings Locator' ps-sightings-locator %}</h4>
     </div>
@@ -14,12 +17,18 @@
     <div class="section ask">
         <h4>{% nav_item 'Ask the Botanist' ps-ask %}</h4>
     </div>
+    
+    {% if user.is_authenticated %}
     <div class="section profile">
         <h4>{% nav_item 'My Profile' ps-profile %}</h4>
     </div>
     <div class="section logout">
         <h4>{% nav_item 'Log Out' auth_logout %}</h4>
     </div>
+    {% else %}
+        {% include "_signup_nav_item.html" %}
+    {% endif %}
+
     {% if user.is_staff %}
     <div class="section">
         <h3>Staff Only</h3>
@@ -27,9 +36,6 @@
     <div class="section screen-images">
         <h4>{% nav_item 'Screen Image Uploads' ps-screen-images %}</h4>
     </div>
-    {% endif %}
-    {% else %}
-        {% include "_signup_nav_item.html" %}
     {% endif %}
 </div>
 
