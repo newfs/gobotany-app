@@ -26,6 +26,10 @@
         <h4>{% nav_item 'Log Out' auth_logout %}</h4>
     </div>
     {% else %}
+        {% comment %}
+        This sign up link is always shown, even if a prior signup is
+        detected, so people always have a way to create a new account.
+        {% endcomment %}
         {% include "_signup_nav_item.html" %}
     {% endif %}
 
