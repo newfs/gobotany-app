@@ -66,7 +66,8 @@ define([
                     console.log('Upload complete');
                     var imageInfo = {
                         'id': response.id,
-                        'thumb': response.thumb
+                        'thumb': response.thumb,
+                        'url': response.url
                     };
                     settings.onUploadComplete.call(this, imageInfo); 
                 } else {

@@ -215,7 +215,7 @@ def rename_image_by_type(instance, filename):
 class ScreenedImage(models.Model):
     image = ProcessedImageField(upload_to=rename_image_by_type, 
                 storage=upload_storage, format='PNG', 
-                processors=[ResizeToFit(500, 500)])
+                processors=[ResizeToFit(1000, 1000)])
     thumb = ImageSpecField(image_field='image', storage=upload_storage, format='PNG',
                 processors=[ResizeToFit(128, 128, upscale=True)]) 
 

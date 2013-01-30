@@ -289,6 +289,7 @@ def ajax_image_upload(request):
             response.update({
                 'id': new_image.pk,
                 'thumb': new_image.thumb.url,
+                'url': new_image.image.url,
             })
 
 

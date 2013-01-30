@@ -2,21 +2,25 @@ define([
     'bridge/jquery', 
     'bridge/jquery.form',
     'plantshare/upload_modal',
-    'mapping/geocoder'
-], function ($, jqueryForm, upload_modal, Geocoder) {
+    'mapping/geocoder',
+    'util/shadowbox_init'
+], function ($, jqueryForm, upload_modal, Geocoder, Shadowbox) {
 
     var UPLOAD_SPINNER = '/static/images/icons/preloaders-dot-net-lg.gif';
     var DELETE_ICON = '/static/images/icons/close.png';
 
     $(document).ready(function () {
 
-        function addNewThumb(url, id) {
+        function addNewThumb(thumb_url, full_url, id) {
             // Set the last image's url, which should be the spinner,
             // to the real image url.
             var $lastImage = $('.thumb-gallery img.thumb').last();
-            $lastImage.attr('src', url);
-            $lastImage.after('<div class="delete-link"><a href="' + id + 
+            $lastImage.attr('src', thumb_url);
+            $lastImage.wrap('<a href="' + full_url + '" class="preview"></a>');
+            $lastImage.parent().after('<div class="delete-link"><a href="' + id + 
                 '"><img src="' + DELETE_ICON + '" />Remove</a></div>');
+
+            Shadowbox.setup('a.preview');
         }
 
         function removeThumb(id, $frame) {
@@ -52,8 +56,8 @@ define([
         function photoUploaded(imageInfo) {
             console.log('Successfully uploaded sighting photo.');
             console.log('New Photo [id=' + imageInfo.id + ', thumb=' +
-                        imageInfo.thumb + ']');
-            addNewThumb(imageInfo.thumb, imageInfo.id);
+                        imageInfo.thumb + ', url=' + imageInfo.url + ']');
+            addNewThumb(imageInfo.thumb, imageInfo.url, imageInfo.id);
             attachSightingPhoto(imageInfo.id);
         }
 
