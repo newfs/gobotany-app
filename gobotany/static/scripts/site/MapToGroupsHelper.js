@@ -58,12 +58,6 @@ define([
                     Math.floor(subgroup_set_width / 2) - 
                     first_group_left_x_position;
 
-                // If this is the last group, tweak the left margin for
-                // better right alignment.
-                if (group_number === this.groups.length - 1) {
-                    maximum_left_margin += 11;
-                }
-
                 // If the left margin is out of bounds, correct it.
                 if (left_margin < 0) {
                     left_margin = 0;

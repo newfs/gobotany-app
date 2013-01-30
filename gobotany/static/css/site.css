@@ -1209,6 +1209,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
 /* Advanced Map to Groups */
 #advanced-map h2 { clear: left; padding-top: 8px; }
 #advanced-map #plant-map-list { margin: 10px 0; }
+#advanced-map #plant-map-list + h2 { padding-top: 36px; }
 #advanced-map #group-section { height: 200px; }
 #advanced-map .plant-group { cursor: pointer; float: left; height: 185px; margin: 0 10px 10px 0; padding: 2px 0 0; position: relative; width: 110px; }
 #advanced-map .plant-group.last { margin: 0 0 10px 0; }
@@ -1224,7 +1225,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
 #advanced-map .plant-subgroup.last { margin-right: 0; }
 #advanced-map .plant-subgroup .image { position: relative; }
 #advanced-map .plant-subgroup .frame { border: 5px solid #1a2e12; height: 129px; position: absolute; top: 0; width: 150px; z-index: 100; }
-#advanced-map .plant-subgroup h3 { background: #1a2e12; color: #fff; font-size: 13px; height: 30px; line-height: 120%; margin: 0 0 0 0; padding: 6px; }
+#advanced-map .plant-subgroup h3 { background: #1a2e12; color: #fff; font-size: 12px; height: 50px; line-height: 120%; margin: 0 0 0 0; padding: 6px; }
 #advanced-map .plant-subgroup .img-container { height: 139px; overflow: hidden; width: 160px; }
 #advanced-map .plant-subgroup .more-info { background: url(/static/images/icons/more-info.png) left 4px no-repeat transparent; margin: 5px 0 0 0; padding: 0 0 0 19px; }
 #advanced-map p.video { background: url(/static/images/icons/icon3.png) left 4px no-repeat transparent; margin: 2px 0; padding: 3px 0 0 22px; }
@@ -1299,6 +1300,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
   #getting-started a.screenshot img.screenshot-thumb { margin: 10px 0 0; }
   #getting-started a.onward-btn { float: none; margin: 0 auto 20px; }
   #advanced-map #plant-map-list { margin-left: 8px; margin-right: 8px; margin-top: 0; }
+  #advanced-map .plant-subgroup { padding: 36px 0 0; }
   #glossary #alphabet { line-height: 250%; width: auto; }
   #glossary #alphabet li { border: 0; padding: 1px 10px; }
   #glossary #terms { width: auto; }

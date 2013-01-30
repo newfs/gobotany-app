@@ -28,8 +28,8 @@
 
                 {% for pile, pile_images, pile_url in piles %}
                     {% if pilegroup.slug == 'non-monocots' and piles|length == 4 and pile.slug == 'remaining-non-monocots' %}
-                        {# Exclude the big Remaining Non-Monocots pile if   #}
-                        {# it has been split in two new piles after import. #}
+                        {# Exclude the big Remaining Non-Monocots pile if #}
+                        {# it has been split in two new piles at import.  #}
                     {% else %}
                     <div class="list-item{% if forloop.last %} last{% endif %}">
                         <div class="img-gallery">

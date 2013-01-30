@@ -127,6 +127,9 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
     }
     #plant-map-list {
 	    margin: 10px 0;
+        + h2 {
+            padding-top: 36px;
+        }
     }
     #group-section {
         height: 200px;
@@ -214,8 +217,8 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
         h3 {
             background: #1a2e12;
 	        color: #fff;
-            font-size: 13px;
-            height: 30px;
+            font-size: 12px;
+            height: 50px;
 	        line-height: 120%;
 	        margin: 0 0 0 0;
 	        padding: 6px;
@@ -504,10 +507,15 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             }
         }
     }
-    #advanced-map #plant-map-list {
-        margin-left: $smallscreen-margin;
-        margin-right: $smallscreen-margin;
-        margin-top: 0;
+    #advanced-map {
+        #plant-map-list {
+            margin-left: $smallscreen-margin;
+            margin-right: $smallscreen-margin;
+            margin-top: 0;
+        }
+        .plant-subgroup {
+            padding: 36px 0 0;
+        }
     }
     #glossary {
         #alphabet {
