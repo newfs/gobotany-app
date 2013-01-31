@@ -10,8 +10,10 @@ from django.utils import simplejson
 from django.forms import widgets
 from django.forms.models import modelformset_factory
 
-from gobotany.plantshare.forms import NewSightingForm, UserProfileForm, ScreenedImageForm
-from gobotany.plantshare.models import Location, Sighting, UserProfile, ScreenedImage
+from gobotany.plantshare.forms import (NewSightingForm, UserProfileForm,
+                                       ScreenedImageForm)
+from gobotany.plantshare.models import (Location, Sighting, UserProfile,
+                                        ScreenedImage, Question)
 
 SIGHTINGS_MAP_DEFAULTS = {
     'latitude': '44.53599',
@@ -221,7 +223,9 @@ def screen_images(request):
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url=reverse_lazy('ps-main'))
 def answer_questions(request):
+    questions = Question.objects.all()
     return render_to_response('staff/answer_questions.html', {
+                'questions': questions
             }, context_instance=RequestContext(request))
 
 
