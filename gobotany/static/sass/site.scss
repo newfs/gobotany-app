@@ -569,6 +569,10 @@ header {
         nav {
             font-family: $headings-font;
             font-size: 14px;
+            h3 {
+                margin-bottom: 16px;
+                padding-left: 26px;
+            }
             li {
                 margin: 0 0 5px 0;
                 padding: 0 17px 16px;

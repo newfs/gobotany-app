@@ -352,6 +352,7 @@ header nav #search-suggest .menu span { font-weight: normal; }
 .content #sidebar a.view-map-btn:active { background-position: 0 -64px; }
 .content #sidebar .box { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 16px 0 0; }
 .content #sidebar nav { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; }
+.content #sidebar nav h3 { margin-bottom: 16px; padding-left: 26px; }
 .content #sidebar nav li { margin: 0 0 5px 0; padding: 0 17px 16px; }
 
 /* Footer */
