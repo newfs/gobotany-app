@@ -9,5 +9,6 @@ urlpatterns = patterns(
     url(r'^cv/([^/]+)-characters/([^/]+)/$', views.edit_pile_character),
     url(r'^cv/([^/]+)-taxa/$', views.pile_taxa),
     url(r'^cv/([^/]+)-taxa/([^/]+)/$', views.edit_pile_taxon),
+    url(r'^cv/lit-sources/([.0-9]+)/$', views.edit_lit_sources),
     url(r'^.*', views.e404),  # prevent fall-through to wildcard rewrite URL
     )

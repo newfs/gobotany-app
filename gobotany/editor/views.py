@@ -1,9 +1,12 @@
 import json
+import re
+import urllib
 from datetime import datetime
 from django.contrib.auth.decorators import permission_required
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
+from django.utils import timezone
 from itertools import groupby
 from operator import attrgetter as pluck
 
@@ -64,8 +67,7 @@ def _edit_pile_length_character(request, pile, character, taxa):
 
     if 'new_values' in request.POST:
         new_values = request.POST['new_values']
-        _save(request, new_values, character=character)
-        return redirect(request.path)
+        return _save(request, new_values, character=character)
 
     # Grabbing one copy of each family once is noticeably faster than
     # using select_related('family') up in the taxon fetch:
@@ -120,8 +122,7 @@ def _edit_pile_string_character(request, pile, character, taxa):
 
     if 'new_values' in request.POST:
         new_values = request.POST['new_values']
-        _save(request, new_values, character=character)
-        return redirect(request.path)
+        return _save(request, new_values, character=character)
 
     # Grabbing one copy of each family once is noticeably faster than
     # using select_related('family') up in the taxon fetch:
@@ -192,8 +193,7 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
 
     if 'new_values' in request.POST:
         new_values = request.POST['new_values']
-        _save(request, new_values, taxon=taxon)
-        return redirect(request.path)
+        return _save(request, new_values, taxon=taxon)
 
     # Yield a sequence of characters.
     # Each character has .values, a sorted list of character values
@@ -243,7 +243,7 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
 
 
 def _save(request, new_values, character=None, taxon=None):
-    now = datetime.now()
+    dt = timezone.now()
     new_values = json.loads(new_values)
 
     if character is None:
@@ -261,21 +261,24 @@ def _save(request, new_values, character=None, taxon=None):
 
     for character, taxon, value in character_taxon_value_tuples:
         if character.value_type == 'LENGTH':
-            old_value = _save_length(request, character, taxon, value, now)
+            old_value = _save_length(request, character, taxon, value)
         else:
-            old_value = _save_textual(request, character, taxon, value, now)
+            old_value = _save_textual(request, character, taxon, value)
 
         models.Edit(
             author=request.user.username,
-            datetime=now,
+            datetime=dt,
             itemtype='character-value',
             coordinate1=taxon.scientific_name,
             coordinate2=character.short_name,
             old_value=json.dumps(old_value),
             ).save()
 
+    return redirect(dt.strftime(
+        '/edit/cv/lit-sources/%Y.%m.%d.%H.%M.%S.%f/?return_to='
+        + urllib.quote(request.path)))
 
-def _save_length(request, character, taxon, minmax, now):
+def _save_length(request, character, taxon, minmax):
 
     tcvs = list(models.TaxonCharacterValue.objects
                 .filter(character_value__character=character, taxon=taxon)
@@ -308,7 +311,7 @@ def _save_length(request, character, taxon, minmax, now):
     return old_values
 
 
-def _save_textual(request, character, taxon, vector, now):
+def _save_textual(request, character, taxon, vector):
     values = list(character.character_values.all())
     values.sort(key=character_value_key)
 
@@ -341,3 +344,56 @@ def character_value_key(cv):
     if v == 'na':
         return 'zzzz'
     return v
+
+
+tcvfieldname_re = re.compile('tcv([0-9]+)$')
+
+@permission_required('botanist')
+def edit_lit_sources(request, dotted_datetime):
+
+    return_to = request.REQUEST.get('return_to', '.')
+
+    if request.method == 'POST':
+        for key in request.POST:
+            match = tcvfieldname_re.match(key)
+            if not match:
+                continue
+            number = int(match.group(1))
+            tcvs = models.TaxonCharacterValue.objects.filter(id=number)
+            if not tcvs:
+                # Ignore a tcv that has disappeared in the meantime.
+                continue
+            tcv = tcvs[0]
+            tcv.lit_source = request.POST[key]
+            tcv.save()
+        return redirect(return_to)
+
+    if dotted_datetime.count('.') != 6:
+        raise Http404()
+
+    integers = [int(field) for field in dotted_datetime.split('.')]
+    year, month, day, hour, minute, second, us = integers
+    d = datetime(year, month, day, hour, minute, second, us)
+    d = timezone.make_aware(d, timezone.utc)
+    edits = models.Edit.objects.filter(datetime=d, itemtype='character-value')
+
+    # TODO: if no edits, jump away?
+
+    tcvlist = []
+
+    for edit in edits:
+        taxon_name = edit.coordinate1
+        short_name = edit.coordinate2
+        taxon = models.Taxon.objects.get(scientific_name=taxon_name)
+        character = models.Character.objects.get(short_name=short_name)
+        tcvs = models.TaxonCharacterValue.objects.filter(
+            taxon=taxon, character_value__character=character,
+            ).select_related(
+            'taxon character_value character_value__character'
+            )
+        tcvlist.extend(tcvs)
+
+    return render_to_response('gobotany/edit_lit_sources.html', {
+        'return_to': return_to,
+        'tcvlist': tcvlist,
+        }, context_instance=RequestContext(request))

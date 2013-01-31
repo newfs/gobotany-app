@@ -15,6 +15,7 @@ requirements = [
     'lxml',
     'psycopg2>=2.3',
     'python-memcached',
+    'pytz',
     'xlrd',
 
     # The way we use pysolr introduces an extra dependency
