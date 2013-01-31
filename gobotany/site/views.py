@@ -15,9 +15,10 @@ from django.template import RequestContext
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
-from gobotany.core.models import (ContentImage, CopyrightHolder, Family,
-                                  Genus, GlossaryTerm, HomePageImage, Taxon,
-                                  Video)
+from gobotany.core.models import (
+    CommonName, ContentImage, CopyrightHolder, Family, Genus,
+    GlossaryTerm, HomePageImage, Taxon, Video,
+    )
 from gobotany.core.partner import which_partner
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
@@ -323,7 +324,7 @@ def checkup_view(request):
 
 def _get_plants():
     plants = Taxon.objects.values(
-        'scientific_name', 'common_names__common_name', 'family__name',
+        'id', 'scientific_name', 'family__name',
         'distribution', 'north_american_native',
         'north_american_introduced', 'wetland_indicator_code',
         'piles__pilegroup__friendly_title',
@@ -343,6 +344,15 @@ def _compute_plants_etag(plants_list):
 
 def species_list_view(request):
     plants_list = list(_get_plants())
+    for plantdict in plants_list:
+        plantdict['common_names'] = []
+
+    plantmap = {plantdict['id']: plantdict for plantdict in plants_list}
+
+    common_names = CommonName.objects.values_list('common_name', 'taxon_id')
+    for common_name, taxon_id in common_names:
+        plantmap[taxon_id]['common_names'].append(common_name)
+
     response = render_to_response('gobotany/species_list.html', {
         'plants': plants_list,
         }, context_instance=RequestContext(request))
