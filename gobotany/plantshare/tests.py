@@ -160,7 +160,7 @@ class PlantShareTests(FunctionalCase):
 
     def test_login_page_has_minimal_navigation(self):
         self._get_plantshare(self.LOG_IN_URL)
-        navigation_items = self.css('#sidebar .section')
+        navigation_items = self.css('#sidebar nav li')
         self.assertEqual(len(navigation_items), 1)
 
     def test_login_page_has_message_requesting_login_to_continue(self):
@@ -191,7 +191,7 @@ class PlantShareTests(FunctionalCase):
 
     def test_log_out_page_has_minimal_navigation(self):
         self._get_plantshare(self.LOG_OUT_URL)
-        navigation_items = self.css('#sidebar .section')
+        navigation_items = self.css('#sidebar nav li')
         self.assertEqual(len(navigation_items), 1)
 
     # Sign Up for PlantShare page
@@ -212,7 +212,7 @@ class PlantShareTests(FunctionalCase):
 
     def test_signup_page_has_minimal_navigation(self):
         self._get_plantshare(self.SIGNUP_FORM_URL)
-        navigation_items = self.css('#sidebar .section')
+        navigation_items = self.css('#sidebar nav li')
         self.assertEqual(len(navigation_items), 2)   # includes Signup item
 
     @unittest.skip('Skip for now: test requires reaching a server on the Web')
@@ -245,7 +245,7 @@ class PlantShareTests(FunctionalCase):
 
     def test_registration_complete_page_has_minimal_navigation(self):
         self._get_plantshare(self.REG_COMPLETE_URL)
-        navigation_items = self.css('#sidebar .section')
+        navigation_items = self.css('#sidebar nav li')
         self.assertEqual(len(navigation_items), 1)
 
     # Activation Complete page
@@ -265,7 +265,7 @@ class PlantShareTests(FunctionalCase):
 
     def test_activation_complete_page_has_minimal_navigation(self):
         self._get_plantshare(self.ACTIVATION_COMPLETE_URL)
-        navigation_items = self.css('#sidebar .section')
+        navigation_items = self.css('#sidebar nav li')
         self.assertEqual(len(navigation_items), 1)
 
     # Post a (new) Sighting form page
@@ -300,7 +300,7 @@ class PlantShareTests(FunctionalCase):
 
     def test_new_sighting_form_page_has_full_navigation(self):
         self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
-        navigation_items = self.css('#sidebar .section')
+        navigation_items = self.css('#sidebar nav li')
         self.assertGreater(len(navigation_items), 1)
 
     # Post a (new) Sighting: "done" page
@@ -335,7 +335,7 @@ class PlantShareTests(FunctionalCase):
 
     def test_new_sighting_done_page_has_full_navigation(self):
         self._get_plantshare(self.NEW_SIGHTING_DONE_URL, log_in=True)
-        navigation_items = self.css('#sidebar .section')
+        navigation_items = self.css('#sidebar nav li')
         self.assertGreater(len(navigation_items), 1)
 
     # My Profile page
@@ -370,7 +370,7 @@ class PlantShareTests(FunctionalCase):
 
     def test_my_profile_page_has_full_navigation(self):
         self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
-        navigation_items = self.css('#sidebar .section')
+        navigation_items = self.css('#sidebar nav li')
         self.assertGreater(len(navigation_items), 1)
 
 

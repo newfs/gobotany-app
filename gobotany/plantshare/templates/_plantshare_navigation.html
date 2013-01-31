@@ -1,49 +1,40 @@
 {% load gobotany_tags %}
 <div class="box">
-    {% include "_plantshare_home_nav_item.html" %}
+    <nav>
+        <ul>
+            {% include "_plantshare_home_nav_item.html" %}
 
-    {% if user.is_authenticated %}
-    <div class="section post-sighting">
-        <h4>{% nav_item 'Post a Sighting' ps-new-sighting %}</h4>
-    </div>
-    {% endif %}
-    
-    <div class="section sightings-locator">
-        <h4>{% nav_item 'Sightings Locator' ps-sightings-locator %}</h4>
-    </div>
-    <div class="section sightings">
-        <h4>{% nav_item 'Recent Sightings' ps-sightings %}</h4>
-    </div>
-    <div class="section ask">
-        <h4>{% nav_item 'Ask the Botanist' ps-ask %}</h4>
-    </div>
-    
-    {% if user.is_authenticated %}
-    <div class="section profile">
-        <h4>{% nav_item 'My Profile' ps-profile %}</h4>
-    </div>
-    <div class="section logout">
-        <h4>{% nav_item 'Log Out' auth_logout %}</h4>
-    </div>
-    {% else %}
-        {% comment %}
-        This sign up link is always shown, even if a prior signup is
-        detected, so people always have a way to create a new account.
-        {% endcomment %}
-        {% include "_signup_nav_item.html" %}
-    {% endif %}
+            {% if user.is_authenticated %}
+                <li class="post-sighting">{% nav_item 'Post a Sighting' ps-new-sighting %}</li>
+            {% endif %}
+            
+            <li class="sightings-locator">{% nav_item 'Sightings Locator' ps-sightings-locator %}</li>
+            <li class="sightings">{% nav_item 'Recent Sightings' ps-sightings %}</li>
+            <li class="ask">{% nav_item 'Ask the Botanist' ps-ask %}</li>
+            
+            {% if user.is_authenticated %}
+                <li class="profile">{% nav_item 'My Profile' ps-profile %}</li>
+                <li class="logout">{% nav_item 'Log Out' auth_logout %}</li>
+            {% else %}
+                {% comment %}
+                This sign up link is always shown, even if a prior signup is
+                detected, so people always have a way to create a new account.
+                {% endcomment %}
+                {% include "_signup_nav_item.html" %}
+            {% endif %}
+        </ul>
+    </nav>
 </div>
 
 {% if user.is_staff %}
 <div class="box">
-    <div class="section">
+    <nav>
         <h3>Staff Only</h3>
-    </div>
-    <div class="section screen-images">
-        <h4>{% nav_item 'Screen Image Uploads' ps-screen-images %}</h4>
-
-        <h4>{% nav_item 'Answer Questions' ps-answer-questions %}</h4>
-    </div>
+        <ul>
+            <li class="screen-images">{% nav_item 'Screen Image Uploads' ps-screen-images %}</li>
+            <li class="answer-questions">{% nav_item 'Answer Questions' ps-answer-questions %}</li>
+        </ul>
+    </nav>
 </div>
 {% endif %}
 

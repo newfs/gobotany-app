@@ -1,6 +1,10 @@
 <div class="box">
-    {% include "_plantshare_home_nav_item.html" %}
-    {% if show_signup_item %}
-        {% include "_signup_nav_item.html" %}
-    {% endif %}
+    <nav>
+        <ul>
+            {% include "_plantshare_home_nav_item.html" %}
+            {% if show_signup_item %}
+                {% include "_signup_nav_item.html" %}
+            {% endif %}
+        </ul>
+    </nav>
 </div>
