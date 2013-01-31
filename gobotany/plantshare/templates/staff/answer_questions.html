@@ -10,17 +10,38 @@
 
 <p>Review and answer questions from the Ask the Botanist section here.</p>
 
+<h2>Unanswered</h2>
+
 <table>
     <thead>
         <tr>
             <th>Question</th>
             <th>Asked</th>
-            <th>By User</th>
+            <th>Asked By</th>
+        </tr>
+    </thead>
+    {% for question in unanswered_questions %}
+        <tr>
+            <td>{{ question.question }}</td>
+            <td>{{ question.asked }}</td>
+            <td>{{ question.asked_by }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<h2>Answered</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Question</th>
+            <th>Asked</th>
+            <th>Asked By</th>
             <th>Answer</th>
             <th>Category</th>
         </tr>
     </thead>
-    {% for question in questions %}
+    {% for question in answered_questions %}
         <tr>
             <td>{{ question.question }}</td>
             <td>{{ question.asked }}</td>
@@ -30,6 +51,7 @@
         </tr>
     {% endfor %}
 </table>
+
 
 {% endblock %}
 

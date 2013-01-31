@@ -224,8 +224,11 @@ def screen_images(request):
 @user_passes_test(lambda u: u.is_staff, login_url=reverse_lazy('ps-main'))
 def answer_questions(request):
     questions = Question.objects.all()
+    unanswered_questions = questions.filter(answer__exact='')
+    answered_questions = questions.exclude(answer__exact='')
     return render_to_response('staff/answer_questions.html', {
-                'questions': questions
+                'unanswered_questions': unanswered_questions,
+                'answered_questions': answered_questions
             }, context_instance=RequestContext(request))
 
 

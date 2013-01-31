@@ -707,7 +707,18 @@
             "answer": "",
             "category": "",
             "asked": "2012-01-29T14:42:13.360",
-            "asked_by": 230
+            "asked_by": 2
+        }
+    },
+    {
+        "pk": 2,
+        "model": "plantshare.question",
+        "fields": {
+            "question": "I located a charming plant on your site: 'Shrubby Shrubis' but my local garden shop never heard of it. Where can I buy this delightful species?",
+            "answer": "This lovely plant is so rare that it's only found in dry ravines high in the mountains. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "category": "",
+            "asked": "2012-01-28T12:13:00.120",
+            "asked_by": 3
         }
     }
 ]
