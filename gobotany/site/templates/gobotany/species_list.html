@@ -53,8 +53,8 @@
                             {% endif %}
                             </td>
                             <td>{{ plant.wetland_indicator_code|default_if_none:"" }}</td>
-                            <td>{{ plant.piles__pilegroup__friendly_title }}</td>
-                            <td>{{ plant.piles__friendly_title }}</td>
+                            <td>{{ plant.pilegroup_titles|join:";<br>" }}</td>
+                            <td>{{ plant.pile_titles|join:";<br>" }}</td>
                         </tr>
                         {% endwith %}
                         {% endfor %}

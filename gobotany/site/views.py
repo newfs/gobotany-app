@@ -17,7 +17,7 @@ from django.views.decorators.vary import vary_on_headers
 from gobotany.core import botany
 from gobotany.core.models import (
     CommonName, ContentImage, CopyrightHolder, Family, Genus,
-    GlossaryTerm, HomePageImage, Taxon, Video,
+    GlossaryTerm, HomePageImage, Pile, Taxon, Video,
     )
 from gobotany.core.partner import which_partner
 from gobotany.plantoftheday.models import PlantOfTheDay
@@ -327,31 +327,28 @@ def _get_plants():
         'id', 'scientific_name', 'family__name',
         'distribution', 'north_american_native',
         'north_american_introduced', 'wetland_indicator_code',
-        'piles__pilegroup__friendly_title',
-        'piles__friendly_title'
         ).order_by('scientific_name')
     return plants
-
-def _compute_plants_etag(plants_list):
-    """Generate an ETag for allowing caching of the species list page.
-    This requires querying for the plants upon every page request but
-    saves much response bandwidth and keeps everything up-to-date
-    automatically.
-    """
-    h = hashlib.md5()
-    h.update(str(plants_list))
-    return h.hexdigest()
 
 def species_list_view(request):
     plants_list = list(_get_plants())
     for plantdict in plants_list:
         plantdict['common_names'] = []
+        plantdict['pile_titles'] = []
+        plantdict['pilegroup_titles'] = []
 
     plantmap = {plantdict['id']: plantdict for plantdict in plants_list}
 
     common_names = CommonName.objects.values_list('common_name', 'taxon_id')
     for common_name, taxon_id in common_names:
         plantmap[taxon_id]['common_names'].append(common_name)
+
+    q = Pile.species.through.objects.values_list(
+        'taxon_id', 'pile__friendly_title', 'pile__pilegroup__friendly_title',
+        )
+    for taxon_id, pile_title, pilegroup_title in q:
+        plantmap[taxon_id]['pile_titles'].append(pile_title)
+        plantmap[taxon_id]['pilegroup_titles'].append(pilegroup_title)
 
     response = render_to_response('gobotany/species_list.html', {
         'plants': plants_list,
@@ -361,5 +358,4 @@ def species_list_view(request):
     # would have no way to access the plants list that we have computed
     # and would have to re-run the same expensive query.
 
-    response['ETag'] = _compute_plants_etag(plants_list)
     return response
