@@ -332,6 +332,10 @@ def _get_plants():
 
 def species_list_view(request):
     plants_list = list(_get_plants())
+
+    # We build these three related lists manually instead of tempting
+    # _get_plants() to return N * M copies of each plant.
+
     for plantdict in plants_list:
         plantdict['common_names'] = []
         plantdict['pile_titles'] = []
