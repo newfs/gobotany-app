@@ -12,7 +12,6 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
-from django.views.decorators.http import etag
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
@@ -332,19 +331,25 @@ def _get_plants():
         ).order_by('scientific_name')
     return plants
 
-def _compute_plants_etag(request):
+def _compute_plants_etag(plants_list):
     """Generate an ETag for allowing caching of the species list page.
     This requires querying for the plants upon every page request but
     saves much response bandwidth and keeps everything up-to-date
     automatically.
     """
-    plants = _get_plants()
     h = hashlib.md5()
-    h.update(str(list(plants)))
+    h.update(str(plants_list))
     return h.hexdigest()
 
-@etag(_compute_plants_etag)
 def species_list_view(request):
-    return render_to_response('gobotany/species_list.html', {
-        'plants': _get_plants()
+    plants_list = list(_get_plants())
+    response = render_to_response('gobotany/species_list.html', {
+        'plants': plants_list,
         }, context_instance=RequestContext(request))
+
+    # Set the 'ETag' header manually, since the usual @etag() decorator
+    # would have no way to access the plants list that we have computed
+    # and would have to re-run the same expensive query.
+
+    response['ETag'] = _compute_plants_etag(plants_list)
+    return response
