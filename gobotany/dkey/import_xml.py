@@ -578,6 +578,7 @@ def do_parse(filename):
 
     cursor = connection.cursor()
     cursor.execute('DELETE FROM dkey_figure')
+    cursor.execute('DELETE FROM dkey_hybrid')
     cursor.execute('DELETE FROM dkey_lead')
     cursor.execute('DELETE FROM dkey_page_breadcrumb_cache')
     cursor.execute('DELETE FROM dkey_page')
