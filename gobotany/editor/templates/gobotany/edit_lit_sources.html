@@ -1,0 +1,42 @@
+{% extends "gobotany/_edit_base.html" %}
+
+{% block js_require %}
+{% endblock %}
+
+{% block body_content %}
+
+<h1>Specify Literature Sources</h1>
+
+<form action="." method="POST">
+
+<input type="hidden" name="return_to" value="{{ return_to }}">
+
+<div class="pile-character-grid">
+  {% for tcv in tcvlist %}
+    {% with character_value=tcv.character_value %}
+    {% with character=character_value.character %}
+    <div>
+      <input name="tcv{{ tcv.id }}"
+             value="{{ tcv.lit_source|default_if_none:"" }}">
+      <i>{{ tcv.taxon.scientific_name }}</i>
+      {{ tcv.character_value.character.name }}
+      {% if tcv.character_value.character.value_type == 'LENGTH' %}
+        {{ tcv.character_value.value_min }} –
+        {{ tcv.character_value.value_max }}
+        {{ tcv.character_value.value_unit }}
+      {% else %}
+        = {{ tcv.character_value.value_str }}
+      {% endif %}
+    </div>
+    {% endwith %}
+    {% endwith %}
+  {% endfor %}
+</div>
+
+<p>
+  <button type="submit" class="save-button">Save</button>
+</p>
+
+{% csrf_token %}
+
+{% endblock %}
