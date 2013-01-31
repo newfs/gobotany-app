@@ -440,6 +440,36 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
     }
 }
 
+/* Legal notification pages */
+.legal #main {
+    h3 {
+        margin: 8px 0;
+    }
+    p {
+        + p, + ul {
+            margin-top: 8px;
+        }
+    }
+    ol.terms {
+        font-family: $headings-font;
+        font-size: 24px;
+        list-style-type: upper-roman;
+        margin-top: 0;
+        ul {
+            list-style-type: disc;
+        }
+        li {
+            p, li {
+                font-family: $body-font;
+                font-size: 12px;
+            }
+            li {
+                line-height: 20px;
+            }
+        }
+    }
+}
+
 
 /* Begin media queries styles for the About section. */
 
@@ -569,6 +599,13 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
     #advanced-map .plant-group:hover h3 {
 	    background: inherit;
 	    color: $link-green;
+    }
+
+    .legal #main {
+        ol.terms {
+            font-size: 18px;
+            padding-left: 32px;
+        }
     }
 }
 

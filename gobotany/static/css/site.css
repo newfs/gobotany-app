@@ -295,7 +295,7 @@ body.help header nav li.help { background: url(/static/images/layout/active-nav-
 
 /* Section navigation (sidebar, only in some sections) */
 body { /* Place "you are here" marker next to a non-linked item. This is the top level of each sub-section. */ /* Handle pages beneath subsections so they will have a "you are here" marker. Each of these must be set up individually where needed. */ }
-body.help #sidebar nav li a:not([href])::before, body.plantshare #sidebar nav li a:not([href])::before, body.legal #sidebar nav li a:not([href])::before { color: #000; content: "\25b8"; margin-left: -15px; padding-bottom: 5px; padding-right: 7px; }
+body.help #sidebar nav li a:not([href])::before, body.plantshare #sidebar nav li a:not([href])::before { color: #000; content: "\25b8"; margin-left: -15px; padding-bottom: 5px; padding-right: 7px; }
 body.help#glossary #sidebar .glossary a::before, body.help#fullkey-placeholder #sidebar .advanced-id-tools a::before, body.help#dkey-placeholder #sidebar .advanced-id-tools a::before { color: #000; content: "\25b8"; margin-left: -15px; padding-bottom: 5px; padding-right: 7px; }
 body.plantshare#sighting #sidebar .sightings a::before { color: #000; content: "\25b8"; margin-left: -15px; padding-bottom: 5px; padding-right: 7px; }
 
@@ -1285,6 +1285,14 @@ body.search-results .search-navigation a { text-decoration: underline; }
 #list .content table th.subgroup { width: 16%; }
 #list .content table td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 13px; }
 
+/* Legal notification pages */
+.legal #main h3 { margin: 8px 0; }
+.legal #main p + p, .legal #main p + ul { margin-top: 8px; }
+.legal #main ol.terms { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; list-style-type: upper-roman; margin-top: 0; }
+.legal #main ol.terms ul { list-style-type: disc; }
+.legal #main ol.terms li p, .legal #main ol.terms li li { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; }
+.legal #main ol.terms li li { line-height: 20px; }
+
 /* Begin media queries styles for the About section. */
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { #about #main > img { width: 57%; }
@@ -1317,23 +1325,9 @@ body.search-results .search-navigation a { text-decoration: underline; }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { /* Disable hover states on Advanced Map to Groups page. */
   #advanced-map .plant-group:hover .frame { border: 5px solid rgba(255, 255, 255, 0.8); }
-  #advanced-map .plant-group:hover h3 { background: inherit; color: #508e31; } }
+  #advanced-map .plant-group:hover h3 { background: inherit; color: #508e31; }
+  .legal #main ol.terms { font-size: 18px; padding-left: 32px; } }
 /* End media queries styles for the About section */
-/* Styles for legal notification pages */
-.legal #main h3 { margin: 8px 0; }
-.legal #main p + p, .legal #main p + ul { margin-top: 8px; }
-.legal #main ol.terms { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; list-style-type: upper-roman; margin-top: 0; }
-.legal #main ol.terms ul { list-style-type: disc; }
-.legal #main ol.terms li p, .legal #main ol.terms li li { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; }
-.legal #main ol.terms li li { line-height: 20px; }
-
-/* Begin media queries styles for the legal notification pages. */
-/* Portrait-orientation styles */
-/* Landscape-orientation styles */
-/* These styles are common to both smartphone widths */
-/* These styles apply to smartphones and tablets */
-@media only screen and (max-width: 1024px) { .legal #main ol.terms { font-size: 18px; padding-left: 32px; } }
-/* End media queries styles for the legal notification pages */
 .modal-wrap { border: 5px solid rgba(255, 255, 255, 0.5); -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; /* end a */ }
 .modal-wrap .inner { background: #fff; padding: 0 0 20px 0; }
 .modal-wrap .inner h4.heading, .modal-wrap .inner h3.heading { margin: 0; padding: 13px 0 0 20px; }
