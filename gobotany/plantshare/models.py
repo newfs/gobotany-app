@@ -131,18 +131,6 @@ class UserProfile(models.Model):
         return avatar_info
 
 
-class SharingGroup(models.Model):
-    name = models.CharField(max_length=100)
-    members = models.ManyToManyField(UserProfile, through='SharingGroupMember',
-        related_name='groups')
-
-
-class SharingGroupMember(models.Model):
-    member = models.ForeignKey(UserProfile)
-    group = models.ForeignKey(SharingGroup)
-    is_owner = models.BooleanField(default=False)
-
-
 class Sighting(models.Model):
     user = models.ForeignKey(User)
 
