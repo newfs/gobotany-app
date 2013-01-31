@@ -698,5 +698,16 @@
             "location": 23,
             "user": 2
         }
+    },
+    {
+        "pk": 1,
+        "model": "plantshare.question",
+        "fields": {
+            "question": "I've been seeing a lot lately about invasive plants carried on the bottoms of boats from one lake to another. Can you give me some guidance on what plants are especially problematic, and how to prevent them from spreading?",
+            "answer": "",
+            "category": "",
+            "asked": "2012-01-29T14:42:13.360",
+            "asked_by": 230
+        }
     }
 ]
