@@ -322,16 +322,14 @@ def checkup_view(request):
         }, context_instance=RequestContext(request))
 
 
-def _get_plants():
-    plants = Taxon.objects.values(
+def species_list_view(request):
+    plants_list = list(Taxon.objects.values(
         'id', 'scientific_name', 'family__name',
         'distribution', 'north_american_native',
         'north_american_introduced', 'wetland_indicator_code',
-        ).order_by('scientific_name')
-    return plants
-
-def species_list_view(request):
-    plants_list = list(_get_plants())
+      ).order_by(
+        'scientific_name',
+      ))
 
     # We build these three related lists manually instead of tempting
     # _get_plants() to return N * M copies of each plant.
