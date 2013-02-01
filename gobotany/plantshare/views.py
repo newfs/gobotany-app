@@ -151,7 +151,9 @@ def new_sighting_done_view(request):
            }, context_instance=RequestContext(request))
 
 def ask_view(request):
+    questions = Question.objects.all().exclude(answer__exact='')
     return render_to_response('ask.html', {
+                'questions': questions
            }, context_instance=RequestContext(request))
 
 @login_required
