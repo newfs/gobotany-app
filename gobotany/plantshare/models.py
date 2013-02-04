@@ -245,8 +245,5 @@ class Question(models.Model):
     asked = models.DateTimeField(blank=False, auto_now_add=True)
     asked_by = models.ForeignKey(User, blank=False,
                                  related_name='questions_asked')
-    answered = models.DateTimeField(blank=True, null=True)
-    answered_by = models.ForeignKey(User, blank=True, null=True,
-                                    related_name='questions_answered')
     duplicate_of = models.ForeignKey('Question', blank=True, null=True,
                                      related_name='duplicates')
