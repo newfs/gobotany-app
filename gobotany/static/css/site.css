@@ -989,8 +989,8 @@ body.plantshare#new-sighting .thumb-gallery .thumb-frame { display: inline-block
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .thumb { vertical-align: bottom; }
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link { width: 100%; text-align: center; margin: 2px 0; padding-top: 2px; }
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link img { vertical-align: middle; margin-right: 4px; }
-body.plantshare#locator h3 { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 24px; }
-body.plantshare#locator #sightings-status { display: none; /* initially hide, until updating value via JS */ float: right; line-height: 24px; }
+body.plantshare#locator #main h3 { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 24px; }
+body.plantshare#locator #main #sightings-status { display: none; /* initially hide, until updating value via JS */ float: right; line-height: 24px; }
 body.plantshare#sightings #main > ul { margin-top: 14px; }
 body.plantshare#sightings #main > ul > li { float: left; margin-bottom: 14px; }
 body.plantshare#sightings #main > ul > li ul { margin-left: 200px; margin-top: -20px; }
