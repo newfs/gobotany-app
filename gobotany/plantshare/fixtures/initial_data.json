@@ -716,9 +716,11 @@
         "fields": {
             "question": "I located a charming plant on your site: 'Shrubby Shrubis' but my local garden shop never heard of it. Where can I buy this delightful species?",
             "answer": "This lovely plant is so rare that it's only found in dry ravines high in the mountains. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "category": "",
+            "category": "Invasives",
             "asked": "2012-01-22T12:13:00.120",
-            "asked_by": 3
+            "asked_by": 3,
+            "answered": "2012-01-24T08:03:00.290",
+            "answered_by": 231
         }
     },
     {
@@ -727,9 +729,11 @@
         "fields": {
             "question": "What is the difference between a tree and a shrub?",
             "answer": "The difference is not clear-cut, but in general, trees have a single stem and shrubs have multiple stems. Also, trees are generally taller than shrubs. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            "category": "",
+            "category": "General",
             "asked": "2012-01-23T09:04:00.330",
-            "asked_by": 4
+            "asked_by": 4,
+            "answered": "2012-01-25T08:22:00.290",
+            "answered_by": 231
         }
     },
     {
@@ -754,5 +758,16 @@
             "asked_by": 6,
             "duplicate_of": 1
         }
-    }    
+    },
+    {
+        "pk": 6,
+        "model": "plantshare.question",
+        "fields": {
+            "question": "How did the last ice age affect plants in New England?",
+            "answer": "",
+            "category": "",
+            "asked": "2012-02-01T07:55:00.330",
+            "asked_by": 5
+        }
+    }
 ]
