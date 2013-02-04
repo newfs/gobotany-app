@@ -33,8 +33,6 @@ urlpatterns = patterns(
 
     # Staff-Only area urls
     url(r'^staff/images$', views.screen_images, name='ps-screen-images'),
-    url(r'^staff/questions$', views.answer_questions,
-        name='ps-answer-questions'),
 
     # AJAX urls
     url(r'^api/edit-profile$', views.ajax_profile_edit,
