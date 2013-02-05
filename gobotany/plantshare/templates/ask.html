@@ -23,12 +23,18 @@ all visitors can see the answers.</p>
 
 <h2 id="recent">Recently Answered Questions</h2>
 
-<dl>
+<ul class="questions">
     {% for question in questions %}
-        <dt>{{ question.question }}</dt>
-        <dd>{{ question.answer }} ({{ question.answered }})</dd>
+        <li>
+            <dl>
+                <dt>Question</dt>
+                <dd>{{ question.question }}</dd>
+                <dt>Answer</dt>
+                <dd>{{ question.answer }} ({{ question.answered }})</dd>
+            </dl>
+        </li>
     {% endfor %}
-</dl>   
+</ul>   
 
 {% endblock %}
 

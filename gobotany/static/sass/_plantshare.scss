@@ -504,6 +504,28 @@ body.plantshare {
         h2 {
             clear: both;
         }
+        .questions {
+            li {
+                background-color: #f9faea;
+                border: 1px solid $border-green;
+                margin: 5px 0 10px;
+                padding: 10px 12px;
+            }
+            dl {
+                margin: 0;
+                padding: 0;
+            }
+            dt {
+                font-weight: bold;
+                margin-top: 10px;
+                &:first-child {
+                    margin-top: 0;
+                }
+            }
+            dd {
+                margin: 0;
+            }
+        }
     }
 
     &#profile {
