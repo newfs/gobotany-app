@@ -162,7 +162,7 @@ def questions_view(request):
         question = Question(question=question_text, asked_by=request.user)
         question.save()
 
-        done_url = reverse('ps-new-question-done') + '?q=%d' % question.id
+        done_url = reverse('ps-new-question-done')
         return HttpResponseRedirect(done_url)
     elif request.method == 'GET':
         questions = Question.objects.all().exclude(answer__exact='')
