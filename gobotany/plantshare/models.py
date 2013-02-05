@@ -1,6 +1,8 @@
+import datetime
 import os
 import urlparse
 import hashlib
+
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -245,5 +247,16 @@ class Question(models.Model):
     asked = models.DateTimeField(blank=False, auto_now_add=True)
     asked_by = models.ForeignKey(User, blank=False,
                                  related_name='questions_asked')
+    answered = models.DateTimeField(null=True, editable=False)
     duplicate_of = models.ForeignKey('Question', blank=True, null=True,
                                      related_name='duplicates')
+
+    def __unicode__(self):
+        return '%d: %s' % (self.id, self.question)
+
+    def save(self):
+        # Auto-populate the "answered" date upon answering a question.
+        if self.answer:
+            print 'question answered' # TODO: remove
+            self.answered = datetime.date.today()
+        super(Question, self).save()
