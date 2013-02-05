@@ -150,10 +150,30 @@ def new_sighting_done_view(request):
     return render_to_response('new_sighting_done.html', {
            }, context_instance=RequestContext(request))
 
-def ask_view(request):
-    questions = Question.objects.all().exclude(answer__exact='')
-    return render_to_response('ask.html', {
-                'questions': questions
+def questions_view(request):
+    """View for the main Ask the Botanist page and the questions collection:
+    showing a list of recent questions (GET) as well as handling adding a new
+    question (the POST action from the question form).
+    """
+    if request.method == 'POST':
+        # Handle posting a new question to the questions collection.
+        # TODO: require login for just this HTTP verb.
+        question_text = request.POST['question']
+        question = Question(question=question_text, asked_by=request.user)
+        question.save()
+
+        done_url = reverse('ps-new-question-done') + '?q=%d' % question.id
+        return HttpResponseRedirect(done_url)
+    elif request.method == 'GET':
+        questions = Question.objects.all().exclude(answer__exact='')
+        return render_to_response('ask.html', {
+                    'questions': questions
+            }, context_instance=RequestContext(request))
+
+@login_required
+def new_question_done_view(request):
+    """View for a confirmation page upon asking a new question."""
+    return render_to_response('new_question_done.html', {
            }, context_instance=RequestContext(request))
 
 @login_required

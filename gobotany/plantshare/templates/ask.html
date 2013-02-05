@@ -15,8 +15,9 @@ for seeing plants, and provide you with expert scientific guidance on all
 things in the New England plant kingdom. Registered users can ask questions,
 all visitors can see the answers.</p>
 
-<form method="post">
-    <textarea placeholder="Ask your question here"></textarea>
+<form method="post" action="{% url ps-questions %}">
+    {% csrf_token %}
+    <textarea name="question" placeholder="Ask your question here"></textarea>
     <button class="submit">Submit</button>
 </form>
 
