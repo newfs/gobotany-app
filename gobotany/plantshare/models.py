@@ -257,6 +257,5 @@ class Question(models.Model):
     def save(self):
         # Auto-populate the "answered" date upon answering a question.
         if self.answer:
-            print 'question answered' # TODO: remove
             self.answered = datetime.date.today()
         super(Question, self).save()
