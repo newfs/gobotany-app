@@ -7,6 +7,8 @@
 {% block main_content %}
 <h1>Ask the Botanist</h1>
 
+<img src="" alt="">
+
 <p><b>&#8220;Ace&#8221; Acer</b><br>
 Our Ace Botanist is here to help you identify a plant, suggest locations
 for seeing plants, and provide you with expert scientific guidance on all
@@ -14,11 +16,11 @@ things in the New England plant kingdom. Registered users can ask questions,
 all visitors can see the answers.</p>
 
 <form method="post">
-    <textarea></textarea>
-    <button>Submit</button>
+    <textarea placeholder="Ask your question here"></textarea>
+    <button class="submit">Submit</button>
 </form>
 
-<h2>Recent Questions</h2>
+<h2>Recently Answered Questions</h2>
 
 <dl>
     {% for question in questions %}

@@ -1,6 +1,6 @@
 /* PlantShare */
 
-@import "_mixins";
+@import "_common";
 
 $form-field-padding: 5px;
 $form-field-width: 350px;
@@ -475,6 +475,37 @@ body.plantshare {
             }
         }
     }
+
+    &#ask #main {    /* Ask the Botanist page */
+        h1 + img {
+            background: #ddd;
+            float: left;
+            height: 97px;
+            margin: 8px 18px 18px 0;
+            width: 103px;
+        }
+        form {
+            clear: left;
+        }
+        textarea {
+            border: 1px solid #aaa;
+            height: 40px;
+            margin: 0 0 1%;
+            padding: 8px 10px;
+            max-width: 97%;
+            width: 97%;
+            @include single-box-shadow(#ddd, 2px, 3px, 5px, 0px);
+        }
+        .submit {
+            @extend .orange-button;
+            float: right;
+            text-transform: uppercase;
+        }
+        h2 {
+            clear: both;
+        }
+    }
+
     &#profile {
         div.section-container {
             position: relative;
