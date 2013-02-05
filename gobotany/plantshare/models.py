@@ -248,8 +248,6 @@ class Question(models.Model):
     asked_by = models.ForeignKey(User, blank=False,
                                  related_name='questions_asked')
     answered = models.DateTimeField(null=True, editable=False)
-    duplicate_of = models.ForeignKey('Question', blank=True, null=True,
-                                     related_name='duplicates')
 
     def __unicode__(self):
         return '%d: %s' % (self.id, self.question)
