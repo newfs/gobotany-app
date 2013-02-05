@@ -155,6 +155,8 @@ def questions_view(request):
     showing a list of recent questions (GET) as well as handling adding a new
     question (the POST action from the question form).
     """
+    MAX_RECENTLY_ANSWERED_QUESTIONS = 6
+
     if request.method == 'POST':
         # Handle posting a new question to the questions collection.
         # TODO: require login for just this HTTP verb.
@@ -167,7 +169,7 @@ def questions_view(request):
     elif request.method == 'GET':
         questions = Question.objects.all().exclude(
             answer__exact='').order_by(
-            '-answered')
+            '-answered')[:MAX_RECENTLY_ANSWERED_QUESTIONS]
         return render_to_response('ask.html', {
                     'questions': questions
             }, context_instance=RequestContext(request))
