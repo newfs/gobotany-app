@@ -165,7 +165,9 @@ def questions_view(request):
         done_url = reverse('ps-new-question-done')
         return HttpResponseRedirect(done_url)
     elif request.method == 'GET':
-        questions = Question.objects.all().exclude(answer__exact='')
+        questions = Question.objects.all().exclude(
+            answer__exact='').order_by(
+            '-answered')
         return render_to_response('ask.html', {
                     'questions': questions
             }, context_instance=RequestContext(request))
