@@ -18,7 +18,7 @@ class QuestionAdmin(admin.ModelAdmin):
     fields = ('question', 'asked_by', 'answer', 'category')
     form = QuestionAdminForm
     list_display = ('question', 'answer', 'asked', 'category')
-    ordering = ['answer', 'asked']
+    ordering = ['-answered']
     readonly_fields = ['asked_by']
     search_fields = ['question', 'answer']
 
