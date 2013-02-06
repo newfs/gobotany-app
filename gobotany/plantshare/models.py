@@ -253,7 +253,8 @@ class Question(models.Model):
         return '%d: %s' % (self.id, self.question)
 
     def save(self):
-        # Auto-populate the "answered" date upon answering a question.
+        # Auto-populate the "answered" date upon answering a question in
+        # the Admin.
         if self.answer:
             self.answered = datetime.datetime.now()
         super(Question, self).save()
