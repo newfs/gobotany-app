@@ -2,7 +2,7 @@
 
 {% block title %}Ask the Botanist: PlantShare{% endblock %}
 
-{% block body_attributes %}id="ask" class="plantshare"{% endblock %}
+{% block body_attributes %}id="ask" class="plantshare ask"{% endblock %}
 
 {% block main_content %}
 <h1>Ask the Botanist</h1>
@@ -20,6 +20,9 @@ all visitors can see the answers.</p>
     <textarea name="question" placeholder="Ask your question here"></textarea>
     <button class="submit">Submit</button>
 </form>
+
+<h2>All <a href="{% url ps-all-questions %}">Questions and Answers</a>
+    ({{ all_questions_count }})</h2>
 
 <h2 id="recent">Recently Answered Questions</h2>
 

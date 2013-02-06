@@ -29,6 +29,8 @@ urlpatterns = patterns(
     url(r'^questions/$', views.questions_view, name='ps-questions'),
     url(r'^questions/new/done/$', views.new_question_done_view,
         name='ps-new-question-done'),
+    url(r'^questions/all/$', views.all_questions_view,
+        name='ps-all-questions'),
 
     # My Profile page
     url(r'^profile/$', views.profile_view, name='ps-profile'),

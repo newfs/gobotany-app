@@ -1,0 +1,45 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+
+{% block title %}Questions and Answers: PlantShare{% endblock %}
+
+{% block body_attributes %}id="all-questions" class="plantshare ask"{% endblock %}
+
+{% block main_content %}
+<h1>Questions and Answers</h1>
+
+{% regroup questions by category as category_list %}
+
+<p>Categories:
+{% for category in category_list %}
+    <a href="#{{ category.grouper|lower }}">{{ category.grouper }}</a>
+    ({{ category.list|length }})
+    {% if not forloop.last %}
+        |
+    {% endif %}
+{% endfor %}
+</p>
+
+{% for category in category_list %}
+    <h2 id="{{ category.grouper|lower }}">{{ category.grouper }}</h2>
+    <ul class="questions">
+        {% for question in category.list %}
+            <li>
+                <dl>
+                    <dt>Question</dt>
+                    <dd>{{ question.question }}</dd>
+                    <dt>Answer</dt>
+                    <dd>{{ question.answer }} ({{ question.answered }})</dd>
+                </dl>
+            </li>
+        {% endfor %}
+    </ul>
+{% endfor %}
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}
+
+
+

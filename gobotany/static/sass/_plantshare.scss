@@ -504,6 +504,8 @@ body.plantshare {
         h2 {
             clear: both;
         }
+    }
+    &.ask #main {   /* styles common to Ask the Botanist, questions pages */
         .questions {
             li {
                 background-color: #f9faea;

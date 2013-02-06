@@ -167,12 +167,26 @@ def questions_view(request):
         done_url = reverse('ps-new-question-done')
         return HttpResponseRedirect(done_url)
     elif request.method == 'GET':
-        questions = Question.objects.all().exclude(
-            answer__exact='').order_by(
+        answered_questions = Question.objects.all().exclude(
+            answer__exact='')
+        all_questions_count = answered_questions.count()
+        questions = answered_questions.order_by(
             '-answered')[:MAX_RECENTLY_ANSWERED_QUESTIONS]
         return render_to_response('ask.html', {
+                    'all_questions_count': all_questions_count,
                     'questions': questions
             }, context_instance=RequestContext(request))
+
+
+def all_questions_view(request):
+    """View for the full list of Questions and Answers."""
+    questions = Question.objects.all().exclude(
+        answer__exact='').order_by(
+        'category', '-answered')
+    return render_to_response('all_questions.html', {
+            'questions': questions
+        }, context_instance=RequestContext(request))
+
 
 @login_required
 def new_question_done_view(request):
