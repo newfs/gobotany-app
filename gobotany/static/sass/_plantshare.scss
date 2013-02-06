@@ -476,8 +476,9 @@ body.plantshare {
         }
     }
 
-    &#ask #main {    /* Ask the Botanist page */
-        h1 + img {
+    &#ask #main,         /* Ask the Botanist section on both pages */
+    &#plantshare #ask {
+        h1 + img, h2 + img {
             background: #ddd;
             float: left;
             height: 97px;
@@ -501,6 +502,9 @@ body.plantshare {
             float: right;
             text-transform: uppercase;
         }
+    }
+
+    &#ask #main {   /* Ask the Botanist page */
         h2 {
             clear: both;
         }

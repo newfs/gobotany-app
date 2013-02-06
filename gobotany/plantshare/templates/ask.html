@@ -7,19 +7,7 @@
 {% block main_content %}
 <h1>Ask the Botanist</h1>
 
-<img src="" alt="">
-
-<p><b>&#8220;Ace&#8221; Acer</b><br>
-Our Ace Botanist is here to help you identify a plant, suggest locations
-for seeing plants, and provide you with expert scientific guidance on all
-things in the New England plant kingdom. Registered users can ask questions,
-all visitors can see the answers.</p>
-
-<form method="post" action="{% url ps-questions %}">
-    {% csrf_token %}
-    <textarea name="question" placeholder="Ask your question here"></textarea>
-    <button class="submit">Submit</button>
-</form>
+{% include "_ask_botanist_section.html" %}
 
 <h2>All <a href="{% url ps-all-questions %}">Questions and Answers</a></h2>
 
