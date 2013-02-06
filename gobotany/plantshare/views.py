@@ -65,36 +65,39 @@ def sightings_view(request):
 
     if request.method == 'POST':
         # Handle posting a new sighting to the sightings collection.
-        # TODO: require login for just this HTTP verb.
-        form = NewSightingForm(request.POST)
-        if form.is_valid():
-            location = Location(user_input=form.cleaned_data['location'],
-                                latitude=form.cleaned_data['latitude'],
-                                longitude=form.cleaned_data['longitude'])
-            location.save()
+        if request.user.is_authenticated():
+            form = NewSightingForm(request.POST)
+            if form.is_valid():
+                location = Location(user_input=form.cleaned_data['location'],
+                                    latitude=form.cleaned_data['latitude'],
+                                    longitude=form.cleaned_data['longitude'])
+                location.save()
 
-            identification = form.cleaned_data['identification']
-            notes = form.cleaned_data['notes']
-            location_notes = form.cleaned_data['location_notes']
-            sighting = Sighting(user=request.user,
-                                identification=identification, title='',
-                                notes=notes, location=location,
-                                location_notes=location_notes)
+                identification = form.cleaned_data['identification']
+                notes = form.cleaned_data['notes']
+                location_notes = form.cleaned_data['location_notes']
+                sighting = Sighting(user=request.user,
+                                    identification=identification, title='',
+                                    notes=notes, location=location,
+                                    location_notes=location_notes)
 
-            sighting.save()
+                sighting.save()
 
-            #print 'saved:', sighting
-            photo_ids = request.POST.getlist('sightings_photos')
-            #print 'Got sightings photos: ', sighting_photos
-            photos = ScreenedImage.objects.filter(id__in=photo_ids)
-            sighting.photos.add(*photos)
-            sighting.save()
+                #print 'saved:', sighting
+                photo_ids = request.POST.getlist('sightings_photos')
+                #print 'Got sightings photos: ', sighting_photos
+                photos = ScreenedImage.objects.filter(id__in=photo_ids)
+                sighting.photos.add(*photos)
+                sighting.save()
 
-            done_url = reverse('ps-new-sighting-done') + '?s=%d' % sighting.id
-            return HttpResponseRedirect(done_url)
+                done_url = (reverse('ps-new-sighting-done') + '?s=%d'
+                            % sighting.id)
+                return HttpResponseRedirect(done_url)
+            else:
+                # Present the new-sighting form again for input correction.
+                return _new_sighting_form_page(request, form)
         else:
-            # Present the new-sighting form again for input correction.
-            return _new_sighting_form_page(request, form)
+            return HttpResponse(status=401)   # 401 Unauthorized
     elif request.method == 'GET':
         # Return a representation of the collection of sightings.
         sightings_queryset = Sighting.objects.all().select_related().\
