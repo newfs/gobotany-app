@@ -4,10 +4,16 @@
 Our Ace Botanist is here to help you identify a plant, suggest locations
 for seeing plants, and provide you with expert scientific guidance on all
 things in the New England plant kingdom. Registered users can ask questions,
-all visitors can see the answers.</p>
+all visitors can see the answers.
+{% if not user.is_authenticated %}
+<a href="{% url ps-main %}">Log in</a> to ask a question.
+{% endif %}
+</p>
 
+{% if user.is_authenticated %}
 <form method="post" action="{% url ps-questions %}">
     {% csrf_token %}
     <textarea name="question" placeholder="Ask your question here"></textarea>
     <button class="submit">Submit</button>
 </form>
+{% endif %}
