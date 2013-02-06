@@ -505,6 +505,24 @@ body.plantshare {
             clear: both;
         }
     }
+    
+    &#questions #main {   /* Questions and Answers page */
+        #category-nav {
+            p {
+                float: left;
+                margin: 2px 0 0;
+            }
+            ul {
+                margin-left: 80px;
+            }
+            li {
+                display: inline;
+                margin-right: 8px;
+                white-space: nowrap;
+            }
+        }
+    }
+
     &.ask #main {   /* styles common to Ask the Botanist, questions pages */
         .questions {
             li {
