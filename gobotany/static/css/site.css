@@ -1030,7 +1030,7 @@ body.plantshare#ask #main textarea { border: 1px solid #aaaaaa; height: 40px; ma
 body.plantshare#ask #main .submit { float: right; text-transform: uppercase; }
 body.plantshare#ask #main h2 { clear: both; }
 body.plantshare#questions #main { /* Questions and Answers page */ }
-body.plantshare#questions #main #category-nav p { float: left; margin: 2px 0 0; }
+body.plantshare#questions #main #category-nav p { float: left; margin: 0; }
 body.plantshare#questions #main #category-nav ul { margin-left: 80px; }
 body.plantshare#questions #main #category-nav li { display: inline; margin-right: 8px; white-space: nowrap; }
 body.plantshare.ask #main { /* styles common to Ask the Botanist, questions pages */ }
