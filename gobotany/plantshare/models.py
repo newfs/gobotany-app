@@ -251,12 +251,15 @@ class Question(models.Model):
 
 class Pod(models.Model):
     name = models.CharField(max_length=100)
-    members = models.ManyToManyField(User, through='PodMembership',
+    members = models.ManyToManyField(UserProfile, through='PodMembership',
             related_name='pods')
+
+    def get_owner(self):
+        return self.members.get(podmembership__is_owner=True)
 
 
 class PodMembership(models.Model):
-    member = models.ForeignKey(User)
+    member = models.ForeignKey(UserProfile)
     pod = models.ForeignKey(Pod)
     # Is this the pod owner?
     is_owner = models.BooleanField(default=False)

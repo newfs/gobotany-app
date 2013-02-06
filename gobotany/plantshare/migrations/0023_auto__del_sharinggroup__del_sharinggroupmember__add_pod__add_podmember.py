@@ -14,6 +14,23 @@ class Migration(SchemaMigration):
         # Deleting model 'SharingGroupMember'
         db.delete_table('plantshare_sharinggroupmember')
 
+        # Adding model 'Pod'
+        db.create_table('plantshare_pod', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
+        ))
+        db.send_create_signal('plantshare', ['Pod'])
+
+        # Adding model 'PodMembership'
+        db.create_table('plantshare_podmembership', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('member', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['plantshare.UserProfile'])),
+            ('pod', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['plantshare.Pod'])),
+            ('is_owner', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('is_self_pod', self.gf('django.db.models.fields.BooleanField')(default=False)),
+        ))
+        db.send_create_signal('plantshare', ['PodMembership'])
+
 
     def backwards(self, orm):
         # Adding model 'SharingGroup'
@@ -31,6 +48,12 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
         ))
         db.send_create_signal('plantshare', ['SharingGroupMember'])
+
+        # Deleting model 'Pod'
+        db.delete_table('plantshare_pod')
+
+        # Deleting model 'PodMembership'
+        db.delete_table('plantshare_podmembership')
 
 
     models = {
@@ -80,15 +103,27 @@ class Migration(SchemaMigration):
             'state': ('django.db.models.fields.CharField', [], {'max_length': '60', 'null': 'True', 'blank': 'True'}),
             'user_input': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
+        'plantshare.pod': {
+            'Meta': {'object_name': 'Pod'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'members': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'pods'", 'symmetrical': 'False', 'through': "orm['plantshare.PodMembership']", 'to': "orm['plantshare.UserProfile']"}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
+        'plantshare.podmembership': {
+            'Meta': {'object_name': 'PodMembership'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_owner': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'is_self_pod': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'member': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['plantshare.UserProfile']"}),
+            'pod': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['plantshare.Pod']"})
+        },
         'plantshare.question': {
             'Meta': {'object_name': 'Question'},
             'answer': ('django.db.models.fields.CharField', [], {'max_length': '3000', 'blank': 'True'}),
-            'answered': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'answered_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'questions_answered'", 'null': 'True', 'to': "orm['auth.User']"}),
+            'answered': ('django.db.models.fields.DateTimeField', [], {'null': 'True'}),
             'asked': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'asked_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'questions_asked'", 'to': "orm['auth.User']"}),
             'category': ('django.db.models.fields.CharField', [], {'max_length': '120'}),
-            'duplicate_of': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'duplicates'", 'null': 'True', 'to': "orm['plantshare.Question']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'question': ('django.db.models.fields.CharField', [], {'max_length': '300'})
         },
