@@ -31,12 +31,15 @@ all visitors can see the answers.</p>
             <dl>
                 <dt>Question</dt>
                 <dd>{{ question.question }}</dd>
-                <dt>Answer</dt>
-                <dd>{{ question.answer }} ({{ question.answered }})</dd>
+                <dt>Answer
+                <span>({{ question.answered|date:"l, F j" }})</span></dt>
+                <dd>{{ question.answer }}</dd>
             </dl>
         </li>
     {% endfor %}
-</ul>   
+</ul>
+
+<p class="more"><a href="{% url ps-all-questions %}">read more »</a><p>
 
 {% endblock %}
 

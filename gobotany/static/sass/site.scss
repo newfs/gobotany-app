@@ -320,7 +320,7 @@ body {
     }
     &.plantshare {
         &#sighting #sidebar .sightings a::before,
-        &#all-questions #sidebar .ask a::before {
+        &#questions #sidebar .ask a::before {
             @include highlight-sidebar-nav-item;
         }
     }

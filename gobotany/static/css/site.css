@@ -300,7 +300,7 @@ body.help #sidebar nav li, body.plantshare #sidebar nav li { padding-left: 28px;
 body.help #sidebar nav li:first-child, body.plantshare #sidebar nav li:first-child { padding-left: 15px; }
 body.help #sidebar nav li a:not([href])::before, body.plantshare #sidebar nav li a:not([href])::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 body.help#glossary #sidebar .glossary a::before, body.help#fullkey-placeholder #sidebar .advanced-id-tools a::before, body.help#dkey-placeholder #sidebar .advanced-id-tools a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
-body.plantshare#sighting #sidebar .sightings a::before, body.plantshare#all-questions #sidebar .ask a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
+body.plantshare#sighting #sidebar .sightings a::before, body.plantshare#questions #sidebar .ask a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 
 /* Header */
 header { height: 120px; }
@@ -1029,6 +1029,7 @@ body.plantshare#ask #main form { clear: left; }
 body.plantshare#ask #main textarea { border: 1px solid #aaaaaa; height: 40px; margin: 0 0 1%; padding: 8px 10px; max-width: 97%; width: 97%; -webkit-box-shadow: 2px 3px 5px 0px #dddddd; -moz-box-shadow: 2px 3px 5px 0px #dddddd; box-shadow: 2px 3px 5px 0px #dddddd; }
 body.plantshare#ask #main .submit { float: right; text-transform: uppercase; }
 body.plantshare#ask #main h2 { clear: both; }
+body.plantshare#ask #main .more { text-align: right; }
 body.plantshare#questions #main { /* Questions and Answers page */ }
 body.plantshare#questions #main #category-nav p { float: left; margin: 0; }
 body.plantshare#questions #main #category-nav ul { margin-left: 80px; }
@@ -1038,6 +1039,7 @@ body.plantshare.ask #main .questions li { background-color: #f9faea; border: 1px
 body.plantshare.ask #main .questions dl { margin: 0; padding: 0; }
 body.plantshare.ask #main .questions dt { font-weight: bold; margin-top: 10px; }
 body.plantshare.ask #main .questions dt:first-child { margin-top: 0; }
+body.plantshare.ask #main .questions dt span { font-weight: normal; }
 body.plantshare.ask #main .questions dd { margin: 0; }
 body.plantshare#profile div.section-container { position: relative; }
 body.plantshare#profile div.section-container .save-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px; width: 99px !important; height: 32px; font-size: 0; -moz-box-shadow: 0 !important; border: 0 none !important; display: block; text-indent: -9999px; }

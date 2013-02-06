@@ -504,6 +504,9 @@ body.plantshare {
         h2 {
             clear: both;
         }
+        .more {
+            text-align: right;
+        }
     }
     
     &#questions #main {   /* Questions and Answers page */
@@ -540,6 +543,9 @@ body.plantshare {
                 margin-top: 10px;
                 &:first-child {
                     margin-top: 0;
+                }
+                span {
+                    font-weight: normal;
                 }
             }
             dd {
