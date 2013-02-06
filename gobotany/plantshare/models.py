@@ -247,3 +247,18 @@ class Question(models.Model):
         if self.answer:
             self.answered = datetime.datetime.now()
         super(Question, self).save()
+
+
+class Pod(models.Model):
+    name = models.CharField(max_length=100)
+    members = models.ManyToManyField(User, through='PodMembership',
+            related_name='pods')
+
+
+class PodMembership(models.Model):
+    member = models.ForeignKey(User)
+    pod = models.ForeignKey(Pod)
+    # Is this the pod owner?
+    is_owner = models.BooleanField(default=False)
+    # Is this this user's personal pod (for sharing purposes)
+    is_self_pod = models.BooleanField(default=False)
