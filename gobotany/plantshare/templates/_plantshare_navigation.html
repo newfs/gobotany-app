@@ -37,6 +37,13 @@
 </div>
 {% endif %}
 
+{% comment %}
+Omit the sidebar login box on the main PlantShare page if the user has
+already signed up so that a login box can be show at top center instead.
+{% endcomment %}
 {% if not user.is_authenticated and not prior_signup_detected %}
-    {% include "_login_box.html" %}
+    {# Omit any login box on the Logged Out page. #}
+    {% if not 'logout' in request.path %}
+        {% include "_login_box.html" %}
+    {% endif %}
 {% endif %}
