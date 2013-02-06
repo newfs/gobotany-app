@@ -294,10 +294,13 @@ body.teaching header nav li.teaching { background: url(/static/images/layout/act
 body.help header nav li.help { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
 
 /* Section navigation (sidebar, only in some sections) */
-body { /* Place "you are here" marker next to a non-linked item. This is the top level of each sub-section. */ /* Handle pages beneath subsections so they will have a "you are here" marker. Each of these must be set up individually where needed. */ }
-body.help #sidebar nav li a:not([href])::before, body.plantshare #sidebar nav li a:not([href])::before { color: #000; content: "\25b8"; margin-left: -15px; padding-bottom: 5px; padding-right: 7px; }
-body.help#glossary #sidebar .glossary a::before, body.help#fullkey-placeholder #sidebar .advanced-id-tools a::before, body.help#dkey-placeholder #sidebar .advanced-id-tools a::before { color: #000; content: "\25b8"; margin-left: -15px; padding-bottom: 5px; padding-right: 7px; }
-body.plantshare#sighting #sidebar .sightings a::before, body.plantshare#all-questions #sidebar .ask a::before { color: #000; content: "\25b8"; margin-left: -15px; padding-bottom: 5px; padding-right: 7px; }
+body { /* Handle pages beneath subsections so they will have a "you are here" marker. Each of these must be set up individually where needed. */ }
+body.help #sidebar nav, body.plantshare #sidebar nav { /* Place "you are here" marker next to a non-linked item. This is the top level of each sub-section. */ }
+body.help #sidebar nav li, body.plantshare #sidebar nav li { padding-left: 28px; }
+body.help #sidebar nav li:first-child, body.plantshare #sidebar nav li:first-child { padding-left: 15px; }
+body.help #sidebar nav li a:not([href])::before, body.plantshare #sidebar nav li a:not([href])::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
+body.help#glossary #sidebar .glossary a::before, body.help#fullkey-placeholder #sidebar .advanced-id-tools a::before, body.help#dkey-placeholder #sidebar .advanced-id-tools a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
+body.plantshare#sighting #sidebar .sightings a::before, body.plantshare#all-questions #sidebar .ask a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 
 /* Header */
 header { height: 120px; }
@@ -333,27 +336,28 @@ header nav #search-suggest .menu span { font-weight: normal; }
 .content .container.free-sidebar #main { background: none; }
 .content .container.free-sidebar #sidebar { border-top: 0; height: auto; padding: 0; }
 .content .container.no-sidebar #main { background: none; float: none; min-height: none; padding-left: 0; width: auto; }
-.content #sidebar { border-top: 1px solid #c3d941; float: left; height: 100%; margin-right: -230px; padding: 16px 0 0; width: 230px; }
-.content #sidebar .section { padding: 0 17px 16px; }
-.content #sidebar .section h4 { margin: 0 0 5px 0; }
-.content #sidebar .section h4 + p { margin-top: 0; }
-.content #sidebar .section.separate { border-top: 1px solid #e2dfcb; padding-top: 16px; }
-.content #sidebar .section.plant-map { background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat; padding: 0 25px 16px 16px; }
-.content #sidebar .section .left { float: left; }
-.content #sidebar .section p { margin: 0; }
-.content #sidebar a:not(.jspArrow) { display: inline-block; margin-left: 10px; }
-.content #sidebar a:hover { text-decoration: none; }
-.content #sidebar a.video { margin-left: 0; }
-.content #sidebar a.get-help-btn { background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 20px; text-indent: -9000px; width: 104px; }
-.content #sidebar a.get-help-btn:hover { background-position: 0 -32px; }
-.content #sidebar a.get-help-btn:active { background-position: 0 -64px; }
-.content #sidebar a.view-map-btn { background: url(/static/images/layout/view-map-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 20px; text-indent: -9000px; width: 113px; }
-.content #sidebar a.view-map-btn:hover { background-position: 0 -32px; }
-.content #sidebar a.view-map-btn:active { background-position: 0 -64px; }
-.content #sidebar .box { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 16px 0 0; }
-.content #sidebar nav { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; }
-.content #sidebar nav h3 { margin-bottom: 16px; padding-left: 26px; }
-.content #sidebar nav li { margin: 0 0 5px 0; padding: 0 17px 16px; }
+
+#sidebar { border-top: 1px solid #c3d941; float: left; height: 100%; margin-right: -230px; padding: 16px 0 0; width: 230px; }
+#sidebar .section { padding: 0 17px 16px; }
+#sidebar .section h4 { margin: 0 0 5px 0; }
+#sidebar .section h4 + p { margin-top: 0; }
+#sidebar .section.separate { border-top: 1px solid #e2dfcb; padding-top: 16px; }
+#sidebar .section.plant-map { background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat; padding: 0 25px 16px 16px; }
+#sidebar .section .left { float: left; }
+#sidebar .section p { margin: 0; }
+#sidebar a:not(.jspArrow) { display: inline-block; margin-left: 10px; }
+#sidebar a:hover { text-decoration: none; }
+#sidebar a.video { margin-left: 0; }
+#sidebar a.get-help-btn { background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 20px; text-indent: -9000px; width: 104px; }
+#sidebar a.get-help-btn:hover { background-position: 0 -32px; }
+#sidebar a.get-help-btn:active { background-position: 0 -64px; }
+#sidebar a.view-map-btn { background: url(/static/images/layout/view-map-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 20px; text-indent: -9000px; width: 113px; }
+#sidebar a.view-map-btn:hover { background-position: 0 -32px; }
+#sidebar a.view-map-btn:active { background-position: 0 -64px; }
+#sidebar .box { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 16px 0 0; }
+#sidebar nav { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; }
+#sidebar nav h3 { margin-bottom: 16px; padding-left: 26px; }
+#sidebar nav li { line-height: 150%; margin: 0 0 4px 0; padding: 0 15px 16px; }
 
 /* Footer */
 footer { background: #b4d57f; clear: both; height: 140px; position: relative; width: 100%; }
