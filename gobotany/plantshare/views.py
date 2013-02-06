@@ -167,13 +167,10 @@ def questions_view(request):
         done_url = reverse('ps-new-question-done')
         return HttpResponseRedirect(done_url)
     elif request.method == 'GET':
-        answered_questions = Question.objects.all().exclude(
-            answer__exact='')
-        all_questions_count = answered_questions.count()
-        questions = answered_questions.order_by(
+        questions = Question.objects.all().exclude(
+            answer__exact='').order_by(
             '-answered')[:MAX_RECENTLY_ANSWERED_QUESTIONS]
         return render_to_response('ask.html', {
-                    'all_questions_count': all_questions_count,
                     'questions': questions
             }, context_instance=RequestContext(request))
 
