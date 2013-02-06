@@ -9,8 +9,6 @@ except:
 else:
     DEBUG_TOOLBAR_AVAILABLE = True
 
-DEBUG_TOOLBAR_AVAILABLE = False   # TODO: remove
-
 THIS_DIRECTORY = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(THIS_DIRECTORY)
 gettext = lambda s: s
@@ -50,7 +48,12 @@ else:
 # on Heroku, in case we need Django tracebacks to solve a problem.
 
 IN_PRODUCTION = 'PORT' in os.environ
-USE_DEBUG_TOOLBAR = not IN_PRODUCTION and DEBUG_TOOLBAR_AVAILABLE
+
+USE_DEBUG_TOOLBAR = False
+# Django Debug Toolbar is turned off by default. Uncomment the
+# following line to turn it on.
+#USE_DEBUG_TOOLBAR = not IN_PRODUCTION and DEBUG_TOOLBAR_AVAILABLE
+
 DEBUG = 'DEBUG' in os.environ or not IN_PRODUCTION
 
 # This setting is for showing features that are still being developed.
