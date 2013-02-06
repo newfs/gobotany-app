@@ -159,13 +159,15 @@ def questions_view(request):
 
     if request.method == 'POST':
         # Handle posting a new question to the questions collection.
-        # TODO: require login for just this HTTP verb.
-        question_text = request.POST['question']
-        question = Question(question=question_text, asked_by=request.user)
-        question.save()
+        if request.user.is_authenticated():
+            question_text = request.POST['question']
+            question = Question(question=question_text, asked_by=request.user)
+            question.save()
 
-        done_url = reverse('ps-new-question-done')
-        return HttpResponseRedirect(done_url)
+            done_url = reverse('ps-new-question-done')
+            return HttpResponseRedirect(done_url)
+        else:
+            return HttpResponse(status=401)   # 401 Unauthorized
     elif request.method == 'GET':
         questions = Question.objects.all().exclude(
             answer__exact='').order_by(
@@ -173,7 +175,9 @@ def questions_view(request):
         return render_to_response('ask.html', {
                     'questions': questions
             }, context_instance=RequestContext(request))
-
+    else:
+        # For an unsupported HTTP method, return a Bad Request response.
+        return HttpResponse(status=400)
 
 def all_questions_view(request):
     """View for the full list of Questions and Answers."""
