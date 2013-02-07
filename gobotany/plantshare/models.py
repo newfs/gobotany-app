@@ -265,3 +265,30 @@ class PodMembership(models.Model):
     is_owner = models.BooleanField(default=False)
     # Is this this user's personal pod (for sharing purposes)
     is_self_pod = models.BooleanField(default=False)
+
+
+class ChecklistTemplate(models.Model):
+    """A collection of plants to be searched for. Indivdual checklists are
+    each built from a template, so the list can be reused or copied."""
+    creator = models.ForeignKey('UserProfile', related_name='created_checklist_templates')
+    owner = models.ForeignKey('UserProfile', related_name='owned_checklist_templates')
+
+
+class Checklist(models.Model):
+    """An 'instance' of a checklist template, with a specific name, comments,
+    and the list of items found which match items in the template."""
+    template = models.ForeignKey(ChecklistTemplate)
+    name = models.CharField(max_length=100)
+    comments = models.TextField(blank=True)
+
+
+class ChecklistItem(models.Model):
+    """An individual item on a checklist. An item on a template represents
+    an item to be searched for, and one on a checklist itself represents an
+    item which has been "checked off." """
+    template = models.ForeignKey(ChecklistTemplate, related_name='items')
+    checklist = models.ForeignKey(Checklist, related_name='checked_items', null=True)
+
+    plant_name = models.CharField(max_length=100)
+
+
