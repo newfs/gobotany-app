@@ -1,0 +1,13 @@
+    <ul class="questions">
+        {% for question in questions %}
+            <li id="q{{ forloop.counter }}">
+                <dl>
+                    <dt>Question</dt>
+                    <dd>{{ question.question }}</dd>
+                    <dt>Answer
+                    <span>({{ question.answered|date:"l, F j" }})</span></dt>
+                    <dd>{{ question.answer }}</dd>
+                </dl>
+            </li>
+        {% endfor %}
+    </ul>

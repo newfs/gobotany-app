@@ -502,17 +502,14 @@ body.plantshare {
             float: right;
             text-transform: uppercase;
         }
-    }
-
-    &#ask #main {   /* Ask the Botanist page */
-        h2 {
+        h2, h3 {
             clear: both;
         }
         .more {
             text-align: right;
         }
     }
-    
+
     &#questions #main {   /* Questions and Answers page */
         #category-nav {
             p {
@@ -530,31 +527,29 @@ body.plantshare {
         }
     }
 
-    &.ask #main {   /* styles common to Ask the Botanist, questions pages */
-        .questions {
-            li {
-                background-color: #f9faea;
-                border: 1px solid $border-green;
-                margin: 5px 0 10px;
-                padding: 10px 12px;
+    .questions {   /* styles common to Ask the Botanist, questions pages */
+        li {
+            background-color: #f9faea;
+            border: 1px solid $border-green;
+            margin: 5px 0 10px;
+            padding: 10px 12px;
+        }
+        dl {
+            margin: 0;
+            padding: 0;
+        }
+        dt {
+            font-weight: bold;
+            margin-top: 10px;
+            &:first-child {
+                margin-top: 0;
             }
-            dl {
-                margin: 0;
-                padding: 0;
+            span {
+                font-weight: normal;
             }
-            dt {
-                font-weight: bold;
-                margin-top: 10px;
-                &:first-child {
-                    margin-top: 0;
-                }
-                span {
-                    font-weight: normal;
-                }
-            }
-            dd {
-                margin: 0;
-            }
+        }
+        dd {
+            margin: 0;
         }
     }
 

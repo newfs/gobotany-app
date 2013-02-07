@@ -37,8 +37,19 @@ def _user_name(user):
 
 # Views
 
+def _get_recently_answered_questions(number_of_questions):
+    questions = Question.objects.all().exclude(
+        answer__exact='').order_by(
+        '-answered')[:number_of_questions]
+    return questions
+
 def plantshare_view(request):
     """View for the main PlantShare page."""
+
+    MAX_RECENTLY_ANSWERED_QUESTIONS = 3
+    questions = _get_recently_answered_questions(
+                MAX_RECENTLY_ANSWERED_QUESTIONS)
+
     prior_signup_detected = request.COOKIES.get('registration_complete',
                                                 False)
 
@@ -53,7 +64,9 @@ def plantshare_view(request):
     return render_to_response('plantshare.html', {
                'prior_signup_detected': prior_signup_detected,
                'avatar': avatar_info,
-               'map': SIGHTINGS_MAP_DEFAULTS
+               'map': SIGHTINGS_MAP_DEFAULTS,
+               'questions': questions,
+               'max_questions': MAX_RECENTLY_ANSWERED_QUESTIONS
            }, context_instance=RequestContext(request))
 
 def sightings_view(request):
@@ -158,7 +171,7 @@ def questions_view(request):
     showing a list of recent questions (GET) as well as handling adding a new
     question (the POST action from the question form).
     """
-    MAX_RECENTLY_ANSWERED_QUESTIONS = 6
+    MAX_RECENTLY_ANSWERED_QUESTIONS = 10
 
     if request.method == 'POST':
         # Handle posting a new question to the questions collection.
@@ -172,9 +185,8 @@ def questions_view(request):
         else:
             return HttpResponse(status=401)   # 401 Unauthorized
     elif request.method == 'GET':
-        questions = Question.objects.all().exclude(
-            answer__exact='').order_by(
-            '-answered')[:MAX_RECENTLY_ANSWERED_QUESTIONS]
+        questions = _get_recently_answered_questions(
+                    MAX_RECENTLY_ANSWERED_QUESTIONS)
         return render_to_response('ask.html', {
                     'questions': questions
             }, context_instance=RequestContext(request))

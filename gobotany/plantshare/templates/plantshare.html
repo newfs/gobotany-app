@@ -90,6 +90,16 @@
     <h2>Ask the Botanist</h2>
 
     {% include "_ask_botanist_section.html" %}
+
+    {% if questions|length > 0 %}
+        <h3>Recently Answered Questions</h3>
+        {% include "_recent_questions.html" %}
+            
+        <p class="more"><a
+            href="{% url ps-questions %}#q{{ max_questions|add:'1' }}">More 
+            Recently Answered Questions »</a><p>
+    {% endif %}
+
 </div>
 
 {% endblock %}
