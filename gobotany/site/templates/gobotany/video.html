@@ -11,6 +11,10 @@
 {% block main_content %}
     <h1>Video Help Topics</h1>
     {% for video in videos %}
+        {% if video.title == 'All other herbaceous, flowering dicots' and videos|length > 21 %}
+            {# Exclude the big Remaining Non-Monocots pile if #}
+            {# it has been split in two new piles at import.  #}
+        {% else %}
         <div class="video-topic">
             {% if video.youtube_id %}
                 <a class="video"
@@ -26,6 +30,7 @@
             {% endif %}
             <p>{{ video.title }}</p>
         </div>
+        {% endif %}
     {% endfor %}
 {% endblock %}
 
