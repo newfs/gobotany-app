@@ -1281,7 +1281,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
 /* Video Help Topics */
 #video .video-topic { float: left; height: 176px; margin: 10px 16px 10px 0; position: relative; width: 220px; }
 #video .video-topic img { height: 137px; width: 220px; }
-#video .video-topic > p { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 18px; line-height: 105%; margin-top: 4px; }
+#video .video-topic > p { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 16px; line-height: 105%; margin-top: 4px; }
 #video .video-topic .missing-image { border: 1px solid #508e31; height: 135px; width: 218px; }
 #video .video-topic .missing-image p { left: auto; margin: 55px 0; position: absolute; text-align: center; top: auto; white-space: nowrap; width: 100%; }
 
@@ -1342,7 +1342,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
   #glossary #terms dt { border-top: 0; clear: none; float: none; font-weight: bold; padding-bottom: 0; width: auto; }
   #glossary #terms dd { border-top: 0; margin: 0; padding: 0 5px 10px 39px; }
   #video .video-topic { margin-right: 12px; }
-  #video .video-topic > p { font-size: 16px; }
+  #video .video-topic > p { font-size: 14px; }
   #video .missing-image p { margin-left: 0; margin-right: 0; } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { /* Disable hover states on Advanced Map to Groups page. */
