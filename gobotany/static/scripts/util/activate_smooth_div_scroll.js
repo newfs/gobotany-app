@@ -14,15 +14,30 @@ require([
     $(document).ready(function () {
 
         var $images = $('#species-images');
-       
-        // Activate.
-        $images.smoothDivScroll({
+
+        var is_touch = navigator.userAgent.match(
+                       /(iPad|iPod|iPhone|Android)/) ? true : false;
+
+        var options = {
+            autoScrollingMode: 'onStart',
             autoScrollingMode: 'onStart', 
             autoScrollingDirection: 'backAndForth', 
             autoScrollingStep: 1, 
-            autoScrollingInterval: 75,
-            visibleHotSpotBackgrounds: 'always'
-        });
+            autoScrollingInterval: 75
+        };
+
+        // Add options for either mouse or touch.
+        if (is_touch) {
+            options.hotSpotScrolling = false;
+            options.touchScrolling = true;
+            options.mousewheelScrolling = false;
+        }
+        else {
+            options.visibleHotSpotBackgrounds = 'always';
+        }
+
+        // Activate.
+        $images.smoothDivScroll(options);
     
         // Stop autoscrolling upon viewing an image.
         $images.bind('click', function () {
