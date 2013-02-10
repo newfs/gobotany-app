@@ -205,9 +205,8 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
 
     tcvlist = list(models.TaxonCharacterValue.objects.filter(taxon=taxon)
                    .select_related('character_value'))
-    value_map1 = {tcv.character_value.character_id: tcv.character_value
-                  for tcv in tcvlist}
-    value_map2 = {(tcv.taxon_id, tcv.character_value_id): tcv
+    value_map1 = {tcv.character_value_id: tcv for tcv in tcvlist}
+    value_map2 = {tcv.character_value.character_id: tcv.character_value
                   for tcv in tcvlist}
 
     def annotated_characters(characters):
@@ -215,7 +214,7 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
             for character in characters:
 
                 if character.value_type == 'LENGTH':
-                    value = value_map1.get(character.id)
+                    value = value_map2.get(character.id)
                     if value is None:
                         character.min = None
                         character.max = None
@@ -227,7 +226,7 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
                     character.values = list(character.character_values.all())
                     character.values.sort(key=character_value_key)
                     for value in character.values:
-                        value.checked = (taxon.id, value.id) in value_map2
+                        value.checked = (value.id in value_map1)
                         if value.checked:
                             character.is_any_value_checked = True
 
