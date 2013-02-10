@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import hashlib
 import json
 import re
 import string
@@ -15,9 +14,11 @@ from django.template import RequestContext
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
-from gobotany.core.models import (ContentImage, CopyrightHolder, Family,
-                                  Genus, GlossaryTerm, HomePageImage, Taxon,
-                                  Video)
+from gobotany.core.models import (
+    CommonName, ConservationStatus, ContentImage, CopyrightHolder,
+    Family, Genus,
+    GlossaryTerm, HomePageImage, Pile, Taxon, Video,
+    )
 from gobotany.core.partner import which_partner
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
@@ -321,35 +322,50 @@ def checkup_view(request):
         }, context_instance=RequestContext(request))
 
 
-def _get_plants():
-    plants = Taxon.objects.values(
-        'scientific_name', 'common_names__common_name', 'family__name',
+def species_list_view(request):
+    plants_list = list(Taxon.objects.values(
+        'id', 'scientific_name', 'family__name',
         'distribution', 'north_american_native',
         'north_american_introduced', 'wetland_indicator_code',
-        'piles__pilegroup__friendly_title',
-        'piles__friendly_title'
-        ).order_by('scientific_name')
-    return plants
+      ).order_by(
+        'scientific_name',
+      ))
 
-def _compute_plants_etag(plants_list):
-    """Generate an ETag for allowing caching of the species list page.
-    This requires querying for the plants upon every page request but
-    saves much response bandwidth and keeps everything up-to-date
-    automatically.
-    """
-    h = hashlib.md5()
-    h.update(str(plants_list))
-    return h.hexdigest()
+    # We build these three related lists manually instead of tempting
+    # _get_plants() to return N * M copies of each plant.
 
-def species_list_view(request):
-    plants_list = list(_get_plants())
-    response = render_to_response('gobotany/species_list.html', {
+    for plantdict in plants_list:
+        plantdict['common_names'] = []
+        plantdict['pile_titles'] = []
+        plantdict['pilegroup_titles'] = []
+        plantdict['states'] = set()
+
+        scientific_name = plantdict['scientific_name']
+        plantdict['genus'], plantdict['epithet'] = scientific_name.split()[:2]
+        plantdict['lowgenus'] = plantdict['genus'].lower()
+
+    plantmap = {plantdict['id']: plantdict for plantdict in plants_list}
+
+    q = CommonName.objects.values_list('common_name', 'taxon_id')
+    for common_name, taxon_id in q:
+        plantmap[taxon_id]['common_names'].append(common_name)
+
+    q = ConservationStatus.objects.filter(label='present').values_list(
+        'taxon_id', 'region',
+        )
+    for taxon_id, region in q:
+        plantmap[taxon_id]['states'].add(region)
+
+    q = Pile.species.through.objects.values_list(
+        'taxon_id', 'pile__friendly_title', 'pile__pilegroup__friendly_title',
+        )
+    for taxon_id, pile_title, pilegroup_title in q:
+        plantmap[taxon_id]['pile_titles'].append(pile_title)
+        plantmap[taxon_id]['pilegroup_titles'].append(pilegroup_title)
+
+    for plantdict in plants_list:
+        plantdict['states'] = ' '.join(sorted(plantdict['states'])).upper()
+
+    return render_to_response('gobotany/species_list.html', {
         'plants': plants_list,
         }, context_instance=RequestContext(request))
-
-    # Set the 'ETag' header manually, since the usual @etag() decorator
-    # would have no way to access the plants list that we have computed
-    # and would have to re-run the same expensive query.
-
-    response['ETag'] = _compute_plants_etag(plants_list)
-    return response
