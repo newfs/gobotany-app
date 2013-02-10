@@ -173,13 +173,14 @@ define([
                 snippets.push('</h3>');
                 return;
             }
-            var scientific_name = item[0];
+            var scientific_name_fk = item[0];
             var ones_and_zeroes = item[1];
 
+            var scientific_name = scientific_name_fk.replace(' (fk)', '');
             original_values[scientific_name] = ones_and_zeroes;
 
             snippets.push('<div><i>');
-            snippets.push(scientific_name);
+            snippets.push(scientific_name_fk);
             snippets.push('</i>');
             snippets.push(ones_and_zeroes);
             no_values_selected = (ones_and_zeroes.indexOf('1') === -1);
