@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import hashlib
 import json
 import re
 import string
@@ -16,7 +15,8 @@ from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
 from gobotany.core.models import (
-    CommonName, ContentImage, CopyrightHolder, Family, Genus,
+    CommonName, ConservationStatus, ContentImage, CopyrightHolder,
+    Family, Genus,
     GlossaryTerm, HomePageImage, Pile, Taxon, Video,
     )
 from gobotany.core.partner import which_partner
@@ -338,12 +338,23 @@ def species_list_view(request):
         plantdict['common_names'] = []
         plantdict['pile_titles'] = []
         plantdict['pilegroup_titles'] = []
+        plantdict['states'] = set()
+
+        scientific_name = plantdict['scientific_name']
+        plantdict['genus'], plantdict['epithet'] = scientific_name.split()[:2]
+        plantdict['lowgenus'] = plantdict['genus'].lower()
 
     plantmap = {plantdict['id']: plantdict for plantdict in plants_list}
 
-    common_names = CommonName.objects.values_list('common_name', 'taxon_id')
-    for common_name, taxon_id in common_names:
+    q = CommonName.objects.values_list('common_name', 'taxon_id')
+    for common_name, taxon_id in q:
         plantmap[taxon_id]['common_names'].append(common_name)
+
+    q = ConservationStatus.objects.filter(label='present').values_list(
+        'taxon_id', 'region',
+        )
+    for taxon_id, region in q:
+        plantmap[taxon_id]['states'].add(region)
 
     q = Pile.species.through.objects.values_list(
         'taxon_id', 'pile__friendly_title', 'pile__pilegroup__friendly_title',
@@ -352,12 +363,9 @@ def species_list_view(request):
         plantmap[taxon_id]['pile_titles'].append(pile_title)
         plantmap[taxon_id]['pilegroup_titles'].append(pilegroup_title)
 
-    response = render_to_response('gobotany/species_list.html', {
+    for plantdict in plants_list:
+        plantdict['states'] = ' '.join(sorted(plantdict['states'])).upper()
+
+    return render_to_response('gobotany/species_list.html', {
         'plants': plants_list,
         }, context_instance=RequestContext(request))
-
-    # Set the 'ETag' header manually, since the usual @etag() decorator
-    # would have no way to access the plants list that we have computed
-    # and would have to re-run the same expensive query.
-
-    return response
