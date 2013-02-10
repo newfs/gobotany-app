@@ -303,9 +303,11 @@ class Importer(object):
         states = ('ct', 'ma', 'me', 'nh', 'ri', 'vt')
         states_status = dict().fromkeys(states, '')
 
-        distribution = pipe_split(taxon.distribution)
-        invasive_states = pipe_split(taxon.invasive_in_states)
-        prohibited_states = pipe_split(taxon.sale_prohibited_in_states)
+        distribution = pipe_split(taxon_data_row['distribution'])
+        invasive_states = pipe_split(taxon_data_row[
+                'invasive_in_which_states'])
+        prohibited_states = pipe_split(taxon_data_row[
+                'prohibited_from_sale_states'])
 
         for state in states:
             status_field_name = 'conservation_status_%s' % state
@@ -479,9 +481,6 @@ class Importer(object):
                 wetland_indicator_code=wetland_code,
                 north_american_native=north_american_native,
                 north_american_introduced=north_american_introduced,
-                distribution=row['distribution'],
-                invasive_in_states=row['invasive_in_which_states'],
-                sale_prohibited_in_states=row['prohibited_from_sale_states'],
                 description='',
                 variety_notes=variety_notes,
                 )

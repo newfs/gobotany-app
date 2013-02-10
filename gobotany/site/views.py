@@ -324,8 +324,7 @@ def checkup_view(request):
 
 def species_list_view(request):
     plants_list = list(Taxon.objects.values(
-        'id', 'scientific_name', 'family__name',
-        'distribution', 'north_american_native',
+        'id', 'scientific_name', 'family__name', 'north_american_native',
         'north_american_introduced', 'wetland_indicator_code',
       ).order_by(
         'scientific_name',

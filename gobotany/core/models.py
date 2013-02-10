@@ -534,9 +534,6 @@ class Taxon(models.Model):
                                               null=True)
     north_american_native = models.NullBooleanField()
     north_american_introduced = models.NullBooleanField()
-    distribution = models.CharField(max_length=50)
-    invasive_in_states = models.CharField(max_length=50, blank=True)
-    sale_prohibited_in_states = models.CharField(max_length=50, blank=True)
     description = models.CharField(max_length=500, blank=True)
     variety_notes = models.CharField(max_length=1000, blank=True)
     # TODO: import descriptions!
