@@ -32,6 +32,10 @@ class _Base(admin.ModelAdmin):
         css = {'all': ('/static/admin_styles.css',)}
 
 
+class TaxonConservationStatusInline(admin.TabularInline):
+    model = models.ConservationStatus
+    extra = 1
+
 class TaxonSynonymInline(admin.TabularInline):
     model = models.Synonym
     extra = 1
@@ -68,7 +72,10 @@ class TaxonAdmin(_Base):
 
     """
     inlines = [
-        TaxonSynonymInline, TaxonCommonNameInline, TaxonLookalikeInline,
+        TaxonConservationStatusInline,
+        TaxonSynonymInline,
+        TaxonCommonNameInline,
+        TaxonLookalikeInline,
         ]
     filter_horizontal = ('piles',)
     search_fields = ('scientific_name', 'piles__name', 'piles__friendly_name')

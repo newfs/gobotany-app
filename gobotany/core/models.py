@@ -636,9 +636,22 @@ class Edit(models.Model):
 class ConservationStatus(models.Model):
     """Zero or more conservation status values per species+region."""
 
+    CONSERVATION_LABELS = (
+        ('absent', 'Absent'),
+        ('endangered', 'Endangered'),
+        ('extirpated', 'Extirpated'),
+        ('historic', 'Historic'),
+        ('invasive', 'Invasive'),
+        ('present', 'Present'),
+        ('prohibited', 'Prohibited'),
+        ('rare', 'Rare'),
+        ('special concern', 'Special concern'),
+        ('threatened', 'Threatened'),
+        )
+
     taxon = models.ForeignKey(Taxon, related_name='conservation_statuses')
-    region = models.TextField()  # at the moment, a state code like 'nh'
-    label = models.TextField()
+    region = models.CharField(choices=STATE_NAMES.items(), max_length=80)
+    label = models.CharField(choices=CONSERVATION_LABELS, max_length=80)
 
     class Meta:
         ordering = ('region', 'label')
