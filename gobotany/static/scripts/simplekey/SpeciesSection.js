@@ -97,7 +97,7 @@ define([
             if (i === 0 || (plant.genus !== items[i - 1].genus)) {
                 var rowspan = this.get_number_of_rows_to_span(items, i);
                 html += '<td class="genus" rowspan="' + String(rowspan) +
-                    '">Genus: ' + plant.genus + '</td>';
+                    '">' + plant.genus + '</td>';
             }
             html += '<td class="scientific-name">';
             var image = this.get_image(plant, 'habit');
