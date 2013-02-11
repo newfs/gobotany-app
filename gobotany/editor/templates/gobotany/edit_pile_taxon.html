@@ -8,7 +8,11 @@
 
 {% block body_content %}
 
-<p>← return to pile <a href="..">{{ pile.slug }}</a></p>
+<p>
+  ← return to pile <a href="..">{{ pile.slug }}</a><br>
+  → visit this plant in the <a href="/admin/core/taxon/{{ taxon.id }}"
+                               >admin interface</a>
+</p>
 
 <h1>{{ taxon.scientific_name }}</h1>
 
