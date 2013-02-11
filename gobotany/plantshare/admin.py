@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
+from gobotany.plantshare import models
 
-from gobotany.plantshare.models import Question
 
 class QuestionAdminForm(forms.ModelForm):
     question = forms.CharField(
@@ -11,7 +11,8 @@ class QuestionAdminForm(forms.ModelForm):
         widget=forms.Textarea(attrs={'rows':7, 'cols':80})
     )
     class Meta:
-        model = Question
+        model = models.Question
+
 
 class QuestionAdmin(admin.ModelAdmin):
     date_hierarchy = 'asked'
@@ -22,4 +23,21 @@ class QuestionAdmin(admin.ModelAdmin):
     readonly_fields = ['asked_by']
     search_fields = ['question', 'answer']
 
-admin.site.register(Question, QuestionAdmin)
+
+class SightingPhotoInline(admin.StackedInline):
+    model = models.Sighting.photos.through
+    extra = 0
+
+
+class SightingAdmin(admin.ModelAdmin):
+    inlines = [SightingPhotoInline]
+    exclude = ['photos']
+
+
+class ScreenedImageAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(models.Question, QuestionAdmin)
+admin.site.register(models.Sighting, SightingAdmin)
+admin.site.register(models.ScreenedImage, ScreenedImageAdmin)
