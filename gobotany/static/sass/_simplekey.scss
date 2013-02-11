@@ -123,6 +123,16 @@ body.skey {
     }
 
     &.results {
+        #main {
+            background-image: none;
+            padding-left: 0;
+            width: auto;
+        }
+
+        #page-head {
+            margin-left: 250px;
+        }
+
         .already-know {
             float: left;
             margin: 0 0 40px 0;
@@ -182,6 +192,7 @@ body.skey {
         .plant-list {
             margin-top: 8px;
             position: relative;
+            width: 99%;
             .plant {
                 background: #fff;
                 border: 1px solid #c3d941;
@@ -313,22 +324,19 @@ body.skey {
                 width: 100px;
             }
         }
-        p.list-all {
-            clear: left;
-            padding-top: 2em;
-            a {
-                color: $link-green;
-                cursor: pointer;
-            }
-        }
-        #sidebar {
+        
+        #question-nav {
             background-color: #fcfdf5;
-            min-height: 800px;
+            border: 1px solid $border-green;
+            float: left;
+            margin-top: -82px;
             padding: 0 0 16px 0;
+            width: 230px;
             &.tinted {
                 background: #fcfdf5;
             }
             .scroll {
+                background: #fff;
                 border-bottom: 1px solid #9cc86b;
                 border-left: 1px solid #519136;
                 border-top: 1px solid #519136;
@@ -365,6 +373,7 @@ body.skey {
                 }
             }
             .section {
+                padding: 0 17px 16px;
                 &.instructions {
                     background: #9cc86b;
                     color: #fff;
@@ -374,6 +383,9 @@ body.skey {
                         line-height: 120%;
                         margin: 0;
                     }
+                }
+                .left {
+                    float: left;
                 }
                 p.get-more {
                     position: relative;  /* for Brandon experiment */
@@ -471,7 +483,14 @@ body.skey {
                 margin: 12px;
                 padding: 0 0 0 20px;
             }
-        } /* end #sidebar */
+        } /* end #question-nav */
+
+
+        #results-section {
+            float: left;
+            margin: -8px 0 28px 18px;
+            width: 710px;
+        }
 
         a.get-choices {
             background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent;
@@ -557,7 +576,6 @@ body.skey {
         h3.species-count-heading {
             /* Move "18 matching species" to the right of Photos/List tab */
             font-size: 24px;
-            line-height: 90%;
             margin: 0;
             padding: 0;
             position: relative;
@@ -646,7 +664,7 @@ body.skey {
             background: #fff;
             border: 1px solid #c3d941;
             display: none;
-            margin-left: -40px;
+            margin-left: 214px;
             padding: 10px 15px;
             position: absolute;
             width: 730px;
@@ -1039,19 +1057,21 @@ ul.get-more-questions-menu {
             }
         }
         &.results {
+            .content .container {
+                width: auto;
+            }
             #intro-overlay {
                 font-size: 170%;
             }
             #main {
-                float: right;
                 margin-left: 0;
-                width: 798px;
+                width: auto;
             }
             .content .container {
                 padding: 0;
-                width: 960px;
+                width: auto;
             }
-            #sidebar {
+            #question-nav {
                 float: left;
                 margin: 0;
                 padding: 0;
@@ -1063,23 +1083,24 @@ ul.get-more-questions-menu {
             .section + .section {
                 margin-bottom: 16px;
             }
-            #results-tabs, p.list-all, #sidebar .section.family-genus h6,
-            #sidebar .section button, #sidebar .section.clear h5,
-            #sidebar .section.help h5 {
+            #results-tabs, #question-nav .section.family-genus h6,
+            #question-nav .section button, #question-nav .section.clear h5,
+            #question-nav .section.help h5 {
                 display: none;
             }
             #page-head {
                 left: 8px;
-                position: absolute;
+                margin: 0 $smallscreen-margin;
                 h1 {
                     display: none;
                 }
             }
-            #sidebar {
+            #question-nav {
                 font-size: 10px;
-                margin-top: 55px;
-                min-height: 0px;
-                width: 148px;
+                margin-right: 3px;
+                margin-top: 0;
+                min-height: 666px;
+                width: 149px;
                 .section {
                     padding: 0 0 0 4px;
                     &.instructions {
@@ -1110,22 +1131,30 @@ ul.get-more-questions-menu {
                 }
                 .scroll {
                     height: 261px;
-                    width: 148px;
+                    width: 149px;
                 }
                 .option-list .clear-filter {
                     margin: 8px 0 4px;
                 }
             }
+            #results-section {
+                float: none;
+                margin: 0 0 28px;
+                width: 100%;
+            }
             .plant-list {
                 height: auto !important;
+                width: 100%;
                 .plant {
-                    font-size: 11px;
+                    float: left;
+                    font-size: 10px;
                     height: 190px;
                     padding: 6px;
                     position: static;
-                    width: 152px;
+                    width: 140px;
                     &.genus_join_left, &.genus_join_right {
-                        border-right: 1px solid #c3d941;
+                        border-left: 1px solid $border-green;
+                        border-right: 1px solid $border-green;
                     }
                     &.genus_join_right {
                         padding-right: 6px;
@@ -1134,20 +1163,28 @@ ul.get-more-questions-menu {
                         display: none;
                     }
                     .plant-img-container {
-                        width: 152px;
+                        width: 140px;
                     }
                 }
             }
+            .missing-image p {
+                font-size: 11px;
+                margin-left: -60px;
+            }
             h3.species-count-heading {
                 font-size: 17px;
+                padding-bottom: 4px;
+                position: static;
+                text-align: center;
                 white-space: nowrap;
                 > span {
                     left: auto;
-                    top: 55px;
+                    position: static;
+                    top: auto;
                 }
             }
             #results-display {
-                margin-top: 83px;
+                text-align: center;
                 label, select {
                     font-size: 13px;
                 }
@@ -1162,7 +1199,7 @@ ul.get-more-questions-menu {
             }
             .working-area {
                 height: 375px;
-                margin-left: -150px;
+                margin-left: 0;
                 top: 4px !important;
                 width: 280px;
                 img.arrow {
@@ -1171,6 +1208,7 @@ ul.get-more-questions-menu {
                 h4 {
                     font-size: 15px;
                     margin: 2px 0;
+                    width: auto;
                 }
                 .info .hint p {
                     font-size: 12px;
@@ -1199,7 +1237,7 @@ ul.get-more-questions-menu {
 @media only screen and (max-width: 1024px) {
     body.skey {
         &.results {
-            #sidebar {
+            #question-nav {
                 ul.option-list li:hover {
                     background: #fff;   /* No hover color */
                 }

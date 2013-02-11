@@ -140,7 +140,7 @@ results_page_init: function(args) {
             taxadata: taxadata,
 
             // Keep a separate list of only non-family/genus filters, to
-            // be displayed as a list in the sidebar.
+            // be displayed as a list near the results.
             plain_filters: [],
             add: function(filter) {
                 this._super(filter);
@@ -168,7 +168,7 @@ results_page_init: function(args) {
     });
 
     $.when(filter_controller_is_built, document_is_ready).done(function() {
-        // Hide the "Loading..." spinner in the sidebar.
+        // Hide the "Loading..." spinner in the filters area.
         $('.loading').hide();
     });
 
@@ -236,7 +236,7 @@ results_page_init: function(args) {
         App3.set('genus_value', '');
     });
 
-    /* Other filters appear along the left sidebar, with each filter's
+    /* Other filters appear in the filters list, with each filter's
        div being supplied with information through an instance of this
        convenient FilterView. */
 
@@ -370,25 +370,11 @@ results_page_init: function(args) {
             }
         });
         App3.species_view_tabs.appendTo('#results-tabs');
-
-        App3.species_view_toggle = Ember.View.create({
-            templateName: 'species-view-toggle',
-            tagName: 'p',
-            classNames: ['list-all'],
-
-            switch_species_view: function() {
-                if (App3.show_grid)
-                    App3.species_view_tabs.choose_list_view();
-                else
-                    App3.species_view_tabs.choose_grid_view();
-            }
-        });
-        App3.species_view_toggle.appendTo('#main');
     });
 
     /* All filters can be cleared with a single button click. */
     $.when(filter_controller_is_built, document_is_ready).done(function() {
-        $('#sidebar a.clear-all-btn').click(function() {
+        $('a.clear-all-btn').click(function() {
             dismiss_any_working_area();
             var plains = App3.filter_controller.get('plain_filters');
             _.each(plains, function(filter) {
@@ -627,7 +613,7 @@ results_page_init: function(args) {
             return;
         }
 
-        $('#sidebar .get-choices').click(function() {
+        $('.get-choices').click(function() {
             dismiss_any_working_area();
 
             Shadowbox.open({
@@ -710,11 +696,11 @@ results_page_init: function(args) {
             }));
         });
         Ember.run.next(function() {
-            var $filters = $('#sidebar ul li');
+            var $filters = $('.scroll ul li');
             var $new = $filters.slice($filters.length - items.length);
             animation.bright_change($new);
             // Scroll to the bottom of the list to reveal the new filters. 
-            var $filter_list = $('#sidebar .scroll');
+            var $filter_list = $('.scroll');
             var scroll_position =
                 $filter_list[0].scrollHeight - $filter_list.height();
             $filter_list.animate(
