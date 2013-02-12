@@ -1010,6 +1010,20 @@ ul.get-more-questions-menu {
                 display: none;
             }
         }
+
+        &.results.mobile-wide {  /* Styles for testing: mobile variant where
+                                    filters list is full width of screen */
+            #question-nav {
+                .section {
+                    a.clear-all-btn, a.get-help-btn {
+                        margin: 0 100px;
+                    }
+                }
+            }
+            .species-count-heading {
+                left: -235px;
+            }
+        } /* end &.results.mobile-wide */
     }
 }
 /* Landscape-orientation styles */
@@ -1020,6 +1034,20 @@ ul.get-more-questions-menu {
                 left: 26% !important;
             }
         }
+
+        &.results.mobile-wide {  /* Styles for testing: mobile variant where
+                                    filters list is full width of screen */
+            #question-nav {
+                .section {
+                    a.clear-all-btn, a.get-help-btn {
+                        margin: 0 180px;
+                    }
+                }
+            }
+            .species-count-heading {
+                left: -310px;
+            }
+        } /* end &.results.mobile-wide */
     }
 }
 /* These styles are common to both smartphone widths */
@@ -1055,7 +1083,8 @@ ul.get-more-questions-menu {
             .not-my-plant {
                 display: none;
             }
-        }
+        } /* end &.skey */
+
         &.results {
             .content .container {
                 width: auto;
@@ -1230,7 +1259,47 @@ ul.get-more-questions-menu {
                     }
                 }
             }
-        }
+        } /* end &.results */
+
+        &.results.mobile-wide {  /* Styles for testing: mobile variant where
+                                    filters list is full width of screen */
+            #question-nav {
+                margin: 25px 0 12px;
+                width: 100%;
+                .scroll {
+                    border: 0;
+                    border-bottom: 1px solid $border-green;
+                    height: auto;
+                    overflow: visible;
+                    width: 100%;
+                }
+                .section {
+                    clear: left;
+                    p.get-more {
+                        margin-bottom: 35px;
+                    }
+                    a.get-choices {
+                        width: 139px;
+                    }
+                    &.family-genus .already-know {
+                        margin-bottom: 25px;
+                        text-align: center;
+                        width: 100%;
+                    }
+                    &.clear, &.help {
+                        float: left;
+                        height: 40px;
+                        width: 98%;
+                    }
+                }
+            }
+            .species-count-heading {
+                position: relative;
+                text-align: center;
+                top: -10px;
+                width: 80%;
+            }
+        } /* end &.results.mobile-wide */
     }
 }
 /* These styles apply to smartphones and tablets */

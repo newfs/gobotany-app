@@ -871,13 +871,22 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
 
 /* Begin media queries styles for Simple and Full Keys. */
 /* Portrait-orientation styles */
-@media only screen and (max-width: 400px) { body.skey.groups-subgroups .list-item h2 { clear: left; }
+@media only screen and (max-width: 400px) { body.skey { /* end &.results.mobile-wide */ }
+  body.skey.groups-subgroups .list-item h2 { clear: left; }
   body.skey.results #intro-overlay { left: 16% !important; top: 150px !important; }
-  body.skey.results #results-display label { display: none; } }
+  body.skey.results #results-display label { display: none; }
+  body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ }
+  body.skey.results.mobile-wide #question-nav .section a.clear-all-btn, body.skey.results.mobile-wide #question-nav .section a.get-help-btn { margin: 0 100px; }
+  body.skey.results.mobile-wide .species-count-heading { left: -235px; } }
 /* Landscape-orientation styles */
-@media only screen and (min-width: 401px) and (max-width: 600px) { body.skey.results #intro-overlay { left: 26% !important; } }
+@media only screen and (min-width: 401px) and (max-width: 600px) { body.skey { /* end &.results.mobile-wide */ }
+  body.skey.results #intro-overlay { left: 26% !important; }
+  body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ }
+  body.skey.results.mobile-wide #question-nav .section a.clear-all-btn, body.skey.results.mobile-wide #question-nav .section a.get-help-btn { margin: 0 180px; }
+  body.skey.results.mobile-wide .species-count-heading { left: -310px; } }
 /* These styles are common to both smartphone widths */
-@media only screen and (max-width: 600px) { body.skey.groups-subgroups p.question { font-size: 18px; line-height: 24px; }
+@media only screen and (max-width: 600px) { body.skey { /* end &.skey */ /* end &.results */ /* end &.results.mobile-wide */ }
+  body.skey.groups-subgroups p.question { font-size: 18px; line-height: 24px; }
   body.skey.groups-subgroups p.tip { font-size: 14px; margin-bottom: 8px; }
   body.skey.groups-subgroups .list-item { margin-top: 0; }
   body.skey.groups-subgroups .list-item .details { float: none; width: inherit; }
@@ -925,7 +934,16 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results .working-area h4 { font-size: 15px; margin: 2px 0; width: auto; }
   body.skey.results .working-area .info .hint p { font-size: 12px; margin-bottom: 12px; }
   body.skey.results .working-area .choices { background: #fff; border: 1px solid #cccccc; border-left: 1px solid black; border-top: 1px solid black; display: block; height: 230px; margin-bottom: 6px; overflow: scroll; -webkit-overflow-scrolling: touch; }
-  body.skey.results .working-area .choices .row div { display: block; min-height: 30px; } }
+  body.skey.results .working-area .choices .row div { display: block; min-height: 30px; }
+  body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ }
+  body.skey.results.mobile-wide #question-nav { margin: 25px 0 12px; width: 100%; }
+  body.skey.results.mobile-wide #question-nav .scroll { border: 0; border-bottom: 1px solid #c3d941; height: auto; overflow: visible; width: 100%; }
+  body.skey.results.mobile-wide #question-nav .section { clear: left; }
+  body.skey.results.mobile-wide #question-nav .section p.get-more { margin-bottom: 35px; }
+  body.skey.results.mobile-wide #question-nav .section a.get-choices { width: 139px; }
+  body.skey.results.mobile-wide #question-nav .section.family-genus .already-know { margin-bottom: 25px; text-align: center; width: 100%; }
+  body.skey.results.mobile-wide #question-nav .section.clear, body.skey.results.mobile-wide #question-nav .section.help { float: left; height: 40px; width: 98%; }
+  body.skey.results.mobile-wide .species-count-heading { position: relative; text-align: center; top: -10px; width: 80%; } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { body.skey.results #question-nav ul.option-list li:hover { background: #fff; /* No hover color */ }
   body.skey.results #question-nav ul.option-list li.active:hover { background: #dce890; /* Except active-filter hover color */ } }

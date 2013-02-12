@@ -15,7 +15,8 @@
     });
 {% endblock %}
 
-{% block body_attributes %}class="skey results {{ key|title|lower }}"{% endblock %}
+{% block body_attributes %}class="skey results {{ key|title|lower }}
+    {{ request.GET.m }}"{% endblock %}
 
 {% block main_content %}
     {% include "simplekey/_results_modal_dialogs.html" %}
@@ -38,14 +39,14 @@
                 <div id="question-nav">
 
                     <div class="section instructions">
-                        <h5>Pick a question:</h5>
+                        <h5>Questions for filtering:</h5>
                     </div>
                     <div class="scroll">
                       <div class="loading">Loading questions…</div>
                       <div id="questions-go-here"></div>
                     </div>
 
-                    <div class="section">
+                    <div class="section more">
                         <p class="get-more">
                             <a class="get-choices">Get More Questions</a>
                             <span>Add a few more questions for narrowing your
