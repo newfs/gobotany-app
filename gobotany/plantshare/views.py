@@ -425,13 +425,20 @@ def ajax_sightings(request):
         name = _user_name(sighting.user)
 
         photos = []
-        # For now, assign one random dummy photo per sighting.
-        if DUMMY_PHOTOS.has_key(plant_name):
-            num_photos = len(DUMMY_PHOTOS[plant_name])
-            photo_index = randint(0, num_photos - 1)
-            photos.append(
-                'http://newfs.s3.amazonaws.com/taxon-images-160x149/%s' % \
-                    DUMMY_PHOTOS[plant_name][photo_index])
+        for photo in sighting.photos.all():
+            photos.append(photo.thumb.url)
+
+        # TODO: temporary, remove before release:
+        # If there are no approved photos yet for this sighting, look
+        # through the test images and if such exist, assign one random
+        # dummy photo per sighting. This is just to keep the test data
+        # working a little while longer.
+        if len(photos) == 0 and DUMMY_PHOTOS.has_key(plant_name):
+                num_photos = len(DUMMY_PHOTOS[plant_name])
+                photo_index = randint(0, num_photos - 1)
+                photos.append(
+                    'http://newfs.s3.amazonaws.com/taxon-images-160x149/%s' \
+                        % DUMMY_PHOTOS[plant_name][photo_index])
 
         sightings_json.append({
             'id': sighting.id,
