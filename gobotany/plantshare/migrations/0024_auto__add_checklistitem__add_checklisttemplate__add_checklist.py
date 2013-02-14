@@ -14,6 +14,11 @@ class Migration(SchemaMigration):
             ('template', self.gf('django.db.models.fields.related.ForeignKey')(related_name='items', to=orm['plantshare.ChecklistTemplate'])),
             ('checklist', self.gf('django.db.models.fields.related.ForeignKey')(related_name='checked_items', null=True, to=orm['plantshare.Checklist'])),
             ('plant_name', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('plant_photo', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['plantshare.ScreenedImage'], null=True, blank=True)),
+            ('location', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
+            ('date_found', self.gf('django.db.models.fields.DateTimeField')(null=True)),
+            ('date_posted', self.gf('django.db.models.fields.DateTimeField')(null=True)),
+            ('note', self.gf('django.db.models.fields.TextField')(blank=True)),
         ))
         db.send_create_signal('plantshare', ['ChecklistItem'])
 
@@ -25,6 +30,14 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('plantshare', ['ChecklistTemplate'])
 
+        # Adding M2M table for field viewer_pods on 'ChecklistTemplate'
+        db.create_table('plantshare_checklisttemplate_viewer_pods', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('checklisttemplate', models.ForeignKey(orm['plantshare.checklisttemplate'], null=False)),
+            ('pod', models.ForeignKey(orm['plantshare.pod'], null=False))
+        ))
+        db.create_unique('plantshare_checklisttemplate_viewer_pods', ['checklisttemplate_id', 'pod_id'])
+
         # Adding model 'Checklist'
         db.create_table('plantshare_checklist', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -34,6 +47,14 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('plantshare', ['Checklist'])
 
+        # Adding M2M table for field collaborators on 'Checklist'
+        db.create_table('plantshare_checklist_collaborators', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('checklist', models.ForeignKey(orm['plantshare.checklist'], null=False)),
+            ('pod', models.ForeignKey(orm['plantshare.pod'], null=False))
+        ))
+        db.create_unique('plantshare_checklist_collaborators', ['checklist_id', 'pod_id'])
+
 
     def backwards(self, orm):
         # Deleting model 'ChecklistItem'
@@ -42,8 +63,14 @@ class Migration(SchemaMigration):
         # Deleting model 'ChecklistTemplate'
         db.delete_table('plantshare_checklisttemplate')
 
+        # Removing M2M table for field viewer_pods on 'ChecklistTemplate'
+        db.delete_table('plantshare_checklisttemplate_viewer_pods')
+
         # Deleting model 'Checklist'
         db.delete_table('plantshare_checklist')
+
+        # Removing M2M table for field collaborators on 'Checklist'
+        db.delete_table('plantshare_checklist_collaborators')
 
 
     models = {
@@ -85,6 +112,7 @@ class Migration(SchemaMigration):
         },
         'plantshare.checklist': {
             'Meta': {'object_name': 'Checklist'},
+            'collaborators': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'checklists'", 'symmetrical': 'False', 'to': "orm['plantshare.Pod']"}),
             'comments': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
@@ -93,15 +121,21 @@ class Migration(SchemaMigration):
         'plantshare.checklistitem': {
             'Meta': {'object_name': 'ChecklistItem'},
             'checklist': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'checked_items'", 'null': 'True', 'to': "orm['plantshare.Checklist']"}),
+            'date_found': ('django.db.models.fields.DateTimeField', [], {'null': 'True'}),
+            'date_posted': ('django.db.models.fields.DateTimeField', [], {'null': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'location': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'note': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'plant_name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'plant_photo': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['plantshare.ScreenedImage']", 'null': 'True', 'blank': 'True'}),
             'template': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'items'", 'to': "orm['plantshare.ChecklistTemplate']"})
         },
         'plantshare.checklisttemplate': {
             'Meta': {'object_name': 'ChecklistTemplate'},
             'creator': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'created_checklist_templates'", 'to': "orm['plantshare.UserProfile']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'owner': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'owned_checklist_templates'", 'to': "orm['plantshare.UserProfile']"})
+            'owner': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'owned_checklist_templates'", 'to': "orm['plantshare.UserProfile']"}),
+            'viewer_pods': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'checklist_templates'", 'symmetrical': 'False', 'to': "orm['plantshare.Pod']"})
         },
         'plantshare.location': {
             'Meta': {'object_name': 'Location'},

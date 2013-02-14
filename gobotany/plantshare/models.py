@@ -273,6 +273,11 @@ class ChecklistTemplate(models.Model):
     creator = models.ForeignKey('UserProfile', related_name='created_checklist_templates')
     owner = models.ForeignKey('UserProfile', related_name='owned_checklist_templates')
 
+    """Pods that can view this ChecklistTemplate.
+    If a user wants to edit the template, or create checklists from it, this
+    ChecklistTemplate should first be cloned to that user's personal group."""
+    viewer_pods = models.ManyToManyField('Pod', related_name='checklist_templates')
+
 
 class Checklist(models.Model):
     """An 'instance' of a checklist template, with a specific name, comments,
@@ -280,6 +285,10 @@ class Checklist(models.Model):
     template = models.ForeignKey(ChecklistTemplate)
     name = models.CharField(max_length=100)
     comments = models.TextField(blank=True)
+
+    """Pods that can view and update this actual Checklist instance.
+    Any members of these Pods can collaborate on adding items to this Checklist."""
+    collaborators = models.ManyToManyField('Pod', related_name='checklists')
 
 
 class ChecklistItem(models.Model):
@@ -289,6 +298,13 @@ class ChecklistItem(models.Model):
     template = models.ForeignKey(ChecklistTemplate, related_name='items')
     checklist = models.ForeignKey(Checklist, related_name='checked_items', null=True)
 
-    plant_name = models.CharField(max_length=100)
+    plant_name = models.CharField(max_length=100, blank=False)
+    plant_photo = models.ForeignKey(ScreenedImage, null=True, blank=True)
+    location = models.CharField(max_length=100, blank=True)
+
+    date_found = models.DateTimeField(null=True)
+    date_posted = models.DateTimeField(null=True)
+
+    note = models.TextField(blank=True)
 
 
