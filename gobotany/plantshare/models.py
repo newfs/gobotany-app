@@ -130,17 +130,20 @@ class UserProfile(models.Model):
 
         return avatar_info
 
+    def viewable_checklist_templates(self):
+        """Retrieve the list of all checklist templates this user has created
+        or has been sent by another user, including those viewable due to Pod
+        membership."""
+        return self.pods.all().checklist_templates
 
-class SharingGroup(models.Model):
-    name = models.CharField(max_length=100)
-    members = models.ManyToManyField(UserProfile, through='SharingGroupMember',
-        related_name='groups')
+    def editable_checklists(self):
+        """Retrieve the list of all checklists this user has created
+        or has been added as a collaborated on, including those editable due
+        to Pod membership."""
+        return self.pods.all().checklists
 
-
-class SharingGroupMember(models.Model):
-    member = models.ForeignKey(UserProfile)
-    group = models.ForeignKey(SharingGroup)
-    is_owner = models.BooleanField(default=False)
+    def get_user_pod(self):
+        return self.pods.get(podmembership__is_self_pod=True)
 
 
 class Sighting(models.Model):
@@ -259,3 +262,92 @@ class Question(models.Model):
         if self.answer:
             self.answered = datetime.datetime.now()
         super(Question, self).save()
+
+
+class Pod(models.Model):
+    name = models.CharField(max_length=100)
+    members = models.ManyToManyField(UserProfile, through='PodMembership',
+            related_name='pods')
+
+    def get_owner(self):
+        return self.members.get(podmembership__is_owner=True)
+
+
+class PodMembership(models.Model):
+    member = models.ForeignKey(UserProfile)
+    pod = models.ForeignKey(Pod)
+    # Is this the pod owner?
+    is_owner = models.BooleanField(default=False)
+    # Is this this user's personal pod (for sharing purposes)
+    is_self_pod = models.BooleanField(default=False)
+
+
+class ChecklistTemplate(models.Model):
+    """A collection of plants to be searched for. Indivdual checklists are
+    each built from a template, so the list can be reused or copied."""
+    creator = models.ForeignKey('UserProfile', related_name='created_checklist_templates')
+    owner = models.ForeignKey('UserProfile', related_name='owned_checklist_templates')
+
+    """Pods that can view this ChecklistTemplate.
+    If a user wants to edit the template, or create checklists from it, this
+    ChecklistTemplate should first be cloned to that user's personal group."""
+    viewer_pods = models.ManyToManyField('Pod', related_name='checklist_templates')
+
+    def send_to_user(self, user):
+        """Send this checklist template to a user so that the user can view,
+        but not edit, this checklist template."""
+        user_pod = user.profile.get_user_pod()
+        self.viewer_pods.add(user_pod)
+
+    def send_to_pod(self, pod):
+        """Send this checklist template to a pod so that the members can view,
+        but not edit, this checklist template."""
+        self.viewer_pods.add(pod)
+
+    def copy_to_user(self, user):
+        """Copy a viewable checklist template into a new checklist template
+        owned by the user, so the user can edit their own new copy."""
+        user_profile = user.profile
+        template_copy = self
+        template_copy.pk = None
+        template_copy.owner = user_profile
+
+        template_copy.save()
+
+
+class Checklist(models.Model):
+    """An 'instance' of a checklist template, with a specific name, comments,
+    and the list of items found which match items in the template."""
+    template = models.ForeignKey(ChecklistTemplate)
+    name = models.CharField(max_length=100)
+    comments = models.TextField(blank=True)
+
+    """Pods that can view and update this actual Checklist instance.
+    Any members of these Pods can collaborate on adding items to this Checklist."""
+    collaborators = models.ManyToManyField('Pod', related_name='checklists')
+
+    def share_to_user(self, user):
+        user_pod = user.profile.get_user_pod()
+        self.collaborators.add(user_pod)
+
+    def share_to_pod(self, pod):
+        self.collaborators.add(pod)
+
+
+class ChecklistItem(models.Model):
+    """An individual item on a checklist. An item on a template represents
+    an item to be searched for, and one on a checklist itself represents an
+    item which has been "checked off." """
+    template = models.ForeignKey(ChecklistTemplate, related_name='items')
+    checklist = models.ForeignKey(Checklist, related_name='checked_items', null=True)
+
+    plant_name = models.CharField(max_length=100, blank=False)
+    plant_photo = models.ForeignKey(ScreenedImage, null=True, blank=True)
+    location = models.CharField(max_length=100, blank=True)
+
+    date_found = models.DateTimeField(null=True)
+    date_posted = models.DateTimeField(null=True)
+
+    note = models.TextField(blank=True)
+
+
