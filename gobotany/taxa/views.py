@@ -228,6 +228,18 @@ def species_view(request, genus_slug, epithet):
     # Throw away values for characters that are not part of this pile.
 
     pile_ids = (None, pile.id)  # characters like 'habitat' have pile_id None
+
+    # TODO: eventually remove this temporary code after the Remaining
+    # Non-Monocots pile character value data is split and assigned.
+    if pile.name.find('Remaining Non-Monocots') > -1:
+        try:
+            # Include the big pile which has the character value data.
+            big_pile = Pile.objects.get(name='Remaining Non-Monocots')
+            pile_ids = pile_ids + (big_pile.id,)
+        except models.Pile.DoesNotExist:
+            pass
+    # (end of temporary code)
+
     character_values = [ v for v in character_values
                          if v.character.pile_id in pile_ids ]
 
