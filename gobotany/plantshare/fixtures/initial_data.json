@@ -305,6 +305,14 @@
             "date_joined": "2013-01-18T07:18:04.707"
         }
     },
+        {
+        "pk": 2,
+        "model": "core.partnersite",
+        "fields": {
+            "users": [231],
+            "short_name": "gobotany"
+        }
+    },
     {
         "pk": 230,
         "model": "auth.user",
