@@ -425,7 +425,7 @@ def ajax_sightings(request):
         name = _user_name(sighting.user)
 
         photos = []
-        for photo in sighting.photos.all():
+        for photo in sighting.approved_photos():
             photos.append(photo.thumb.url)
 
         # TODO: temporary, remove before release:
