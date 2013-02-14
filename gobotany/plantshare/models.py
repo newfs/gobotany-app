@@ -130,6 +130,21 @@ class UserProfile(models.Model):
 
         return avatar_info
 
+    def viewable_checklist_templates(self):
+        """Retrieve the list of all checklist templates this user has created
+        or has been sent by another user, including those viewable due to Pod
+        membership."""
+        return self.pods.all().checklist_templates
+
+    def editable_checklists(self):
+        """Retrieve the list of all checklists this user has created
+        or has been added as a collaborated on, including those editable due
+        to Pod membership."""
+        return self.pods.all().checklists
+
+    def get_user_pod(self):
+        return self.pods.get(podmembership__is_self_pod=True)
+
 
 class Sighting(models.Model):
     user = models.ForeignKey(User)
@@ -278,6 +293,27 @@ class ChecklistTemplate(models.Model):
     ChecklistTemplate should first be cloned to that user's personal group."""
     viewer_pods = models.ManyToManyField('Pod', related_name='checklist_templates')
 
+    def send_to_user(self, user):
+        """Send this checklist template to a user so that the user can view,
+        but not edit, this checklist template."""
+        user_pod = user.profile.get_user_pod()
+        self.viewer_pods.add(user_pod)
+
+    def send_to_pod(self, pod):
+        """Send this checklist template to a pod so that the members can view,
+        but not edit, this checklist template."""
+        self.viewer_pods.add(pod)
+
+    def copy_to_user(self, user):
+        """Copy a viewable checklist template into a new checklist template
+        owned by the user, so the user can edit their own new copy."""
+        user_profile = user.profile
+        template_copy = self
+        template_copy.pk = None
+        template_copy.owner = user_profile
+
+        template_copy.save()
+
 
 class Checklist(models.Model):
     """An 'instance' of a checklist template, with a specific name, comments,
@@ -289,6 +325,13 @@ class Checklist(models.Model):
     """Pods that can view and update this actual Checklist instance.
     Any members of these Pods can collaborate on adding items to this Checklist."""
     collaborators = models.ManyToManyField('Pod', related_name='checklists')
+
+    def share_to_user(self, user):
+        user_pod = user.profile.get_user_pod()
+        self.collaborators.add(user_pod)
+
+    def share_to_pod(self, pod):
+        self.collaborators.add(pod)
 
 
 class ChecklistItem(models.Model):
