@@ -1,5 +1,6 @@
 from collections import defaultdict, OrderedDict as odict
 
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -13,14 +14,6 @@ from tinymce import models as tinymce_models
 # Character short names common to all piles (no suffix)
 COMMON_CHARACTERS = ['habitat', 'habitat_general', 'state_distribution']
 
-STATE_NAMES = {
-    'ct': 'Connecticut',
-    'ma': 'Massachusetts',
-    'me': 'Maine',
-    'nh': 'New Hampshire',
-    'ri': 'Rhode Island',
-    'vt': 'Vermont',
-    }
 
 def add_suffix_to_base_directory(image, suffix):
     """Instead of 'http://h/a/b/c' return 'http://h/a-suffix/b/c'."""
@@ -560,7 +553,7 @@ class Taxon(models.Model):
     def get_conservation_statuses(self):
         mapping = defaultdict(list)
         for row in self.conservation_statuses.all():
-            mapping[STATE_NAMES[row.region]].append(row.label)
+            mapping[settings.STATE_NAMES[row.region]].append(row.label)
         return odict(sorted(mapping.iteritems()))
 
     def get_default_image(self):
@@ -649,8 +642,10 @@ class ConservationStatus(models.Model):
         ('threatened', 'Threatened'),
         )
 
+    STATE_NAMES = sorted(settings.STATE_NAMES.items(), key=lambda x: x[1])
+
     taxon = models.ForeignKey(Taxon, related_name='conservation_statuses')
-    region = models.CharField(choices=STATE_NAMES.items(), max_length=80)
+    region = models.CharField(choices=STATE_NAMES, max_length=80)
     label = models.CharField(choices=CONSERVATION_LABELS, max_length=80)
 
     class Meta:
