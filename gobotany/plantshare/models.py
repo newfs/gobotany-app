@@ -130,15 +130,9 @@ class UserProfile(models.Model):
 
         return avatar_info
 
-    def viewable_checklist_templates(self):
-        """Retrieve the list of all checklist templates this user has created
-        or has been sent by another user, including those viewable due to Pod
-        membership."""
-        return self.pods.all().checklist_templates
-
-    def editable_checklists(self):
+    def checklists(self):
         """Retrieve the list of all checklists this user has created
-        or has been added as a collaborated on, including those editable due
+        or has been added as a collaborator on, including those editable due
         to Pod membership."""
         return self.pods.all().checklists
 
@@ -282,66 +276,67 @@ class PodMembership(models.Model):
     is_self_pod = models.BooleanField(default=False)
 
 
-class ChecklistTemplate(models.Model):
-    """A collection of plants to be searched for. Indivdual checklists are
-    each built from a template, so the list can be reused or copied."""
-    creator = models.ForeignKey('UserProfile', related_name='created_checklist_templates')
-    owner = models.ForeignKey('UserProfile', related_name='owned_checklist_templates')
-
-    """Pods that can view this ChecklistTemplate.
-    If a user wants to edit the template, or create checklists from it, this
-    ChecklistTemplate should first be cloned to that user's personal group."""
-    viewer_pods = models.ManyToManyField('Pod', related_name='checklist_templates')
-
-    def send_to_user(self, user):
-        """Send this checklist template to a user so that the user can view,
-        but not edit, this checklist template."""
-        user_pod = user.profile.get_user_pod()
-        self.viewer_pods.add(user_pod)
-
-    def send_to_pod(self, pod):
-        """Send this checklist template to a pod so that the members can view,
-        but not edit, this checklist template."""
-        self.viewer_pods.add(pod)
-
-    def copy_to_user(self, user):
-        """Copy a viewable checklist template into a new checklist template
-        owned by the user, so the user can edit their own new copy."""
-        user_profile = user.profile
-        template_copy = self
-        template_copy.pk = None
-        template_copy.owner = user_profile
-
-        template_copy.save()
-
-
 class Checklist(models.Model):
-    """An 'instance' of a checklist template, with a specific name, comments,
-    and the list of items found which match items in the template."""
-    template = models.ForeignKey(ChecklistTemplate)
+    """A container of checklist items which represent plants to search for."""
     name = models.CharField(max_length=100)
     comments = models.TextField(blank=True)
 
     """Pods that can view and update this actual Checklist instance.
-    Any members of these Pods can collaborate on adding items to this Checklist."""
-    collaborators = models.ManyToManyField('Pod', related_name='checklists')
+    Any members of these Pods can collaborate on adding or editing items 
+    on this Checklist. If the owner flag is set, the Pod members may also
+    delete items."""
+    collaborators = models.ManyToManyField('Pod', related_name='checklists',
+            through='ChecklistCollaborator')
+
+    def copy_to_user(self, user):
+        """Send a copy of this checklist to another user. The user will
+        have full privledges to edit the copy as if they created it. The
+        list of collaborators will be cleared in the copy."""
+        user_pod = user.profile.get_user_pod()
+        checklist_copy = self
+        checklist_copy.pk = None
+        checklist_copy.collaborators.clear()
+        checklist_copy.save()
+
+        # Copy all the checklist entries, but don't save the checked
+        # state or any of the optional details - the new checklist
+        # should be "blank"
+        copied_entries = []
+        for entry in self.entries:
+            item_copy = ChecklistEntry(plant_name=entry.plant_name,
+                    checklist=checklist_copy)
+            copied_entries.append(item_copy)
+
+        ChecklistEntry.objects.bulk_create(copied_entries)
+
+        # Assign ownership of the new checklist to the user
+        ownership = ChecklistCollaborator(collaborator=user_pod,
+                checklist=checklist_copy, is_owner=True)
+        ownership.save()
 
     def share_to_user(self, user):
+        """Allow another user to collaborate and edit this checklist"""
         user_pod = user.profile.get_user_pod()
-        self.collaborators.add(user_pod)
+        user_access = ChecklistCollaborator(collaborator=user_pod,
+                checklist=self, is_owner=False)
+        user_access.save()
 
     def share_to_pod(self, pod):
-        self.collaborators.add(pod)
+        """Allow members of a pod to collaborate and edit this checklist"""
+        pod_access = ChecklistCollaborator(collaborator=pod,
+                checklist=self, is_owner=False)
+        pod_access.save()
 
 
-class ChecklistItem(models.Model):
-    """An individual item on a checklist. An item on a template represents
-    an item to be searched for, and one on a checklist itself represents an
-    item which has been "checked off." """
-    template = models.ForeignKey(ChecklistTemplate, related_name='items')
-    checklist = models.ForeignKey(Checklist, related_name='checked_items', null=True)
+class ChecklistEntry(models.Model):
+    """An individual entry on a checklist. An entry on a checklist represents
+    a taxon to be searched for, and which can later be "checked off" when
+    found."""
+    checklist = models.ForeignKey(Checklist, related_name='entries')
 
     plant_name = models.CharField(max_length=100, blank=False)
+
+    is_checked = models.BooleanField(default=False)
     plant_photo = models.ForeignKey(ScreenedImage, null=True, blank=True)
     location = models.CharField(max_length=100, blank=True)
 
@@ -350,4 +345,10 @@ class ChecklistItem(models.Model):
 
     note = models.TextField(blank=True)
 
+
+class ChecklistCollaborator(models.Model):
+    collaborator = models.ForeignKey(Pod)
+    checklist = models.ForeignKey(Checklist)
+
+    is_owner = models.BooleanField(default=False)
 
