@@ -237,3 +237,13 @@ except ImportError:
     pass
 else:
     INSTALLED_APPS.append('gunicorn')
+
+
+STATE_NAMES = {
+    'ct': u'Connecticut',
+    'ma': u'Massachusetts',
+    'me': u'Maine',
+    'nh': u'New Hampshire',
+    'ri': u'Rhode Island',
+    'vt': u'Vermont',
+    }
