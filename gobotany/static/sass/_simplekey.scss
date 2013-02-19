@@ -664,6 +664,7 @@ body.skey {
             background: #fff;
             border: 1px solid #c3d941;
             display: none;
+            line-height: 100%;
             margin-left: 214px;
             padding: 10px 15px;
             position: absolute;
@@ -696,6 +697,7 @@ body.skey {
                             display: inline-block;
                             font-family: $narrower-body-font;
                             font-size: 12px;
+                            line-height: 14px;
                             margin-left: 18px;
                             min-width: 70px;
                             vertical-align: top;
@@ -1300,6 +1302,27 @@ ul.get-more-questions-menu {
                 width: 80%;
             }
         } /* end &.results.mobile-wide */
+
+        &.results.mobile-inline { /* Styles for testing: mobile variant where
+                                     filter values appear inline */
+            .working-area {
+                background: #fff;
+                border: 0;
+                height: auto;
+                position: static;
+                top: auto !important;
+                -moz-box-shadow: none;
+                -webkit-box-shadow: none;
+                -o-box-shadow: none;
+                box-shadow: none;
+                .choices {
+                    border: 0;
+                    height: auto;
+                    overflow: visible;
+                }
+            }
+
+        } /* end &.results.mobile-inline */
     }
 }
 /* These styles apply to smartphones and tablets */

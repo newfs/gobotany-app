@@ -71,6 +71,7 @@ define([
         this.div_map = null,   // map choice value -> <input> element
         this.filter = args.filter;
 
+        this._attach();
         this._draw_basics(args.y);
         this._draw_specifics();
         this._on_filter_change();
@@ -207,6 +208,17 @@ define([
 
         // Set up the Apply Selection button.
         this._on_choice_change();
+    };
+
+    /* Place the working-area element after the selected filter so that it
+       will be possible to allow displaying filter values "inline." */
+    
+    Choice.prototype._attach = function() {
+        var $filter_list_item = $('#questions-go-here ul #' +
+                                  this.filter.slug);
+        // Insert after rather than append, in to avoid interfering with
+        // the list item's event handlers.
+        $(this.div).insertAfter($filter_list_item);
     };
 
     /* How to grab the currently-selected value from the DOM. */

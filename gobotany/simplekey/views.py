@@ -45,6 +45,12 @@ def get_simple_url(key, pilegroup, pile=None):
                                'pile_slug': pile.slug})
 
 
+
+def level3_test_links(request):
+    '''Temporary page for Level 3 page user testing on smartphones.'''
+    return render_to_response('level3_test_links.html')
+
+
 @vary_on_headers('Host')
 @cache_control(max_age=60 * 60)
 @cache_page(60 * 60)

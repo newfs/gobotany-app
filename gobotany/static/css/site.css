@@ -815,13 +815,13 @@ body.skey.results #results-tabs li { list-style-type: none; }
 body.skey.results #results-tabs li:first-child a { margin-left: 10px; }
 body.skey.results #results-tabs li a.current, body.skey.results #results-tabs li a.current:hover { background: #fbfaf5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #f0f0c0)); background: -moz-linear-gradient(center top, white, #f0f0c0); border-bottom: 0; color: #1a2e11; cursor: default; padding: 5px 10px; }
 body.skey.results #notification-msg { background-color: #ff0; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; font-size: 1.2em; -moz-border-bottom-left-radius: 15px; -moz-border-bottom-right-radius: 15px; padding: 0.25em 0.75em; z-index: 200; }
-body.skey.results .working-area { background: #fff; border: 1px solid #c3d941; display: none; margin-left: 214px; padding: 10px 15px; position: absolute; width: 730px; z-index: 200; -moz-box-shadow: black 1px 1px 5px 0; -webkit-box-shadow: black 1px 1px 5px 0; -o-box-shadow: black 1px 1px 5px 0; box-shadow: black 1px 1px 5px 0; /* end .choices */ /* end ul */ /* Working Area slider styles */ /* end #slider */ }
+body.skey.results .working-area { background: #fff; border: 1px solid #c3d941; display: none; line-height: 100%; margin-left: 214px; padding: 10px 15px; position: absolute; width: 730px; z-index: 200; -moz-box-shadow: black 1px 1px 5px 0; -webkit-box-shadow: black 1px 1px 5px 0; -o-box-shadow: black 1px 1px 5px 0; box-shadow: black 1px 1px 5px 0; /* end .choices */ /* end ul */ /* Working Area slider styles */ /* end #slider */ }
 body.skey.results .working-area img.arrow { display: block; left: -15px; position: absolute; top: 16px; }
 body.skey.results .working-area .choices { border-spacing: 6px 12px; display: table; }
 body.skey.results .working-area .choices .row { display: table-row; }
 body.skey.results .working-area .choices .row div { display: table-cell; margin: 0 0.5em 1em 0; min-height: 50px; }
 body.skey.results .working-area .choices .row div.disabled span { color: #aaa; }
-body.skey.results .working-area .choices .row div label { cursor: pointer; display: inline-block; font-family: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif; font-size: 12px; margin-left: 18px; min-width: 70px; vertical-align: top; word-wrap: break-word; /* can break mid-word */ }
+body.skey.results .working-area .choices .row div label { cursor: pointer; display: inline-block; font-family: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 14px; margin-left: 18px; min-width: 70px; vertical-align: top; word-wrap: break-word; /* can break mid-word */ }
 body.skey.results .working-area .choices .row div input { float: left; margin: 3px 3px 0 -18px; }
 body.skey.results .working-area .choices .row div input + img { background: #fff; border: 1px solid #dddddd; display: inline-block; height: 80px; }
 body.skey.results .working-area a.close { background: url(/static/images/icons/close.png) no-repeat transparent; display: block; float: right; height: 16px; margin: 5px 0 0 0; width: 16px; }
@@ -885,7 +885,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-wide #question-nav .section a.clear-all-btn, body.skey.results.mobile-wide #question-nav .section a.get-help-btn { margin: 0 180px; }
   body.skey.results.mobile-wide .species-count-heading { left: -310px; } }
 /* These styles are common to both smartphone widths */
-@media only screen and (max-width: 600px) { body.skey { /* end &.skey */ /* end &.results */ /* end &.results.mobile-wide */ }
+@media only screen and (max-width: 600px) { body.skey { /* end &.skey */ /* end &.results */ /* end &.results.mobile-wide */ /* end &.results.mobile-inline */ }
   body.skey.groups-subgroups p.question { font-size: 18px; line-height: 24px; }
   body.skey.groups-subgroups p.tip { font-size: 14px; margin-bottom: 8px; }
   body.skey.groups-subgroups .list-item { margin-top: 0; }
@@ -943,7 +943,10 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-wide #question-nav .section a.get-choices { width: 139px; }
   body.skey.results.mobile-wide #question-nav .section.family-genus .already-know { margin-bottom: 25px; text-align: center; width: 100%; }
   body.skey.results.mobile-wide #question-nav .section.clear, body.skey.results.mobile-wide #question-nav .section.help { float: left; height: 40px; width: 98%; }
-  body.skey.results.mobile-wide .species-count-heading { position: relative; text-align: center; top: -10px; width: 80%; } }
+  body.skey.results.mobile-wide .species-count-heading { position: relative; text-align: center; top: -10px; width: 80%; }
+  body.skey.results.mobile-inline { /* Styles for testing: mobile variant where filter values appear inline */ }
+  body.skey.results.mobile-inline .working-area { background: #fff; border: 0; height: auto; position: static; top: auto !important; -moz-box-shadow: none; -webkit-box-shadow: none; -o-box-shadow: none; box-shadow: none; }
+  body.skey.results.mobile-inline .working-area .choices { border: 0; height: auto; overflow: visible; } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { body.skey.results #question-nav ul.option-list li:hover { background: #fff; /* No hover color */ }
   body.skey.results #question-nav ul.option-list li.active:hover { background: #dce890; /* Except active-filter hover color */ } }
