@@ -47,7 +47,7 @@ if __name__ == '__main__':
     message = '\r\n'.join((
             'To: {}'.format(', '.join(toaddrs)),
             'From: {}'.format(fromaddr),
-            'Subject: Heroku script output',
+            'Subject: output of {!r}'.format(' '.join(sys.argv[1:])),
             '',
             output.replace('\n', '\r\n')))
 
