@@ -683,39 +683,48 @@ body.skey {
             .choices {
                 border-spacing: 6px 12px;
                 display: table;
-                .row {
-                    display: table-row;
-                    div {
-                        display: table-cell;
-                        margin: 0 0.5em 1em 0;
-                        min-height: 50px;
-                        &.disabled span {
-                            color: #aaa;
-                        }
-                        label {
-                            cursor: pointer;
-                            display: inline-block;
-                            font-family: $narrower-body-font;
-                            font-size: 12px;
-                            line-height: 14px;
-                            margin-left: 18px;
-                            min-width: 70px;
-                            vertical-align: top;
-                            word-wrap: break-word; /* can break mid-word */
-                        }
-                        input {
-                            float: left;
-                            margin: 3px 3px 0 -18px;
-                            + img {
-                                background: #fff;
-                                border: 1px solid #ddd;
-                                display: inline-block;
-                                height: 80px;
-                            }
-                        }
-                    }
+                &.has-drawings .row {
+                    height: 130px;
                 }
-            } /* end .choices */
+            }
+            .row {
+                display: table-row;
+            }
+            .choice {
+                display: table-cell;
+                margin: 0 0.5em 1em 0;
+                &.disabled span {
+                    color: #aaa;
+                }
+                .drawing {
+                    height: 82px;
+                }
+                img, label {
+                    margin-left: 18px;
+                }
+                img {
+                    background: #fff;
+                    height: 82px;
+                }
+                img[id] {   /* only border if image has id, not on empty */
+                    border: 1px solid #ddd;
+                    height: 80px;
+                }
+                label {
+                    cursor: pointer;
+                    display: block;
+                    font-family: $narrower-body-font;
+                    font-size: 12px;
+                    line-height: 14px;
+                    max-width: 250px;
+                    min-width: 70px;
+                    padding-top: 0;
+                    word-wrap: break-word; /* can break mid-word */
+                }
+                input {
+                    margin: 0 3px 0 -18px;
+                }
+            } /* end .choice */
             
             a.close {
                 background: url(/static/images/icons/close.png) no-repeat transparent;

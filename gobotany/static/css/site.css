@@ -815,15 +815,19 @@ body.skey.results #results-tabs li { list-style-type: none; }
 body.skey.results #results-tabs li:first-child a { margin-left: 10px; }
 body.skey.results #results-tabs li a.current, body.skey.results #results-tabs li a.current:hover { background: #fbfaf5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #f0f0c0)); background: -moz-linear-gradient(center top, white, #f0f0c0); border-bottom: 0; color: #1a2e11; cursor: default; padding: 5px 10px; }
 body.skey.results #notification-msg { background-color: #ff0; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; font-size: 1.2em; -moz-border-bottom-left-radius: 15px; -moz-border-bottom-right-radius: 15px; padding: 0.25em 0.75em; z-index: 200; }
-body.skey.results .working-area { background: #fff; border: 1px solid #c3d941; display: none; line-height: 100%; margin-left: 214px; padding: 10px 15px; position: absolute; width: 730px; z-index: 200; -moz-box-shadow: black 1px 1px 5px 0; -webkit-box-shadow: black 1px 1px 5px 0; -o-box-shadow: black 1px 1px 5px 0; box-shadow: black 1px 1px 5px 0; /* end .choices */ /* end ul */ /* Working Area slider styles */ /* end #slider */ }
+body.skey.results .working-area { background: #fff; border: 1px solid #c3d941; display: none; line-height: 100%; margin-left: 214px; padding: 10px 15px; position: absolute; width: 730px; z-index: 200; -moz-box-shadow: black 1px 1px 5px 0; -webkit-box-shadow: black 1px 1px 5px 0; -o-box-shadow: black 1px 1px 5px 0; box-shadow: black 1px 1px 5px 0; /* end .choice */ /* end ul */ /* Working Area slider styles */ /* end #slider */ }
 body.skey.results .working-area img.arrow { display: block; left: -15px; position: absolute; top: 16px; }
 body.skey.results .working-area .choices { border-spacing: 6px 12px; display: table; }
-body.skey.results .working-area .choices .row { display: table-row; }
-body.skey.results .working-area .choices .row div { display: table-cell; margin: 0 0.5em 1em 0; min-height: 50px; }
-body.skey.results .working-area .choices .row div.disabled span { color: #aaa; }
-body.skey.results .working-area .choices .row div label { cursor: pointer; display: inline-block; font-family: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 14px; margin-left: 18px; min-width: 70px; vertical-align: top; word-wrap: break-word; /* can break mid-word */ }
-body.skey.results .working-area .choices .row div input { float: left; margin: 3px 3px 0 -18px; }
-body.skey.results .working-area .choices .row div input + img { background: #fff; border: 1px solid #dddddd; display: inline-block; height: 80px; }
+body.skey.results .working-area .choices.has-drawings .row { height: 130px; }
+body.skey.results .working-area .row { display: table-row; }
+body.skey.results .working-area .choice { display: table-cell; margin: 0 0.5em 1em 0; }
+body.skey.results .working-area .choice.disabled span { color: #aaa; }
+body.skey.results .working-area .choice .drawing { height: 82px; }
+body.skey.results .working-area .choice img, body.skey.results .working-area .choice label { margin-left: 18px; }
+body.skey.results .working-area .choice img { background: #fff; height: 82px; }
+body.skey.results .working-area .choice img[id] { /* only border if image has id, not on empty */ border: 1px solid #dddddd; height: 80px; }
+body.skey.results .working-area .choice label { cursor: pointer; display: block; font-family: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 14px; max-width: 250px; min-width: 70px; padding-top: 0; word-wrap: break-word; /* can break mid-word */ }
+body.skey.results .working-area .choice input { margin: 0 3px 0 -18px; }
 body.skey.results .working-area a.close { background: url(/static/images/icons/close.png) no-repeat transparent; display: block; float: right; height: 16px; margin: 5px 0 0 0; width: 16px; }
 body.skey.results .working-area h4 { color: #000; display: none; font-size: 18px; line-height: 130%; margin: 6px 0; width: 650px; }
 body.skey.results .working-area .intro-message h4 { display: block; font-weight: bold; }

@@ -134,7 +134,9 @@ define([
     };
 
     Choice.prototype._draw_specifics = function() {
+        var BLANK_IMAGE = '/static/images/layout/transparent.png';
         var CHOICES_PER_ROW = 5;
+        var choices_class = 'choices';
         var checked = function(cond) {return cond ? ' checked' : ''};
         var f = this.filter;
 
@@ -145,13 +147,34 @@ define([
         var values = utils.clone(f.values);
         values.sort(_compare_filter_choices);
 
-        var $choices = $('<div>', {'class': 'choices'}).appendTo($div);
+        // Find out whether there are any drawing images for this filter.
+        var has_drawings = false;
+        for (var i = 0; i < values.length; i++) {
+            var image_path = values[i].image_url;
+            if (image_path.length > 0) {
+                has_drawings = true;
+                choices_class += ' has-drawings';
+                break;
+           }
+        }
+
+        // Create the container for the choices.
+        var $choices = $('<div>', {'class': choices_class}).appendTo($div);
         var $row = $('<div>', {'class': 'row'}).appendTo($choices);
 
         // Create a Don't Know radio button item.
-        var item_html = '<div><label><input name="char_name"' +
+        var item_html = '<div class="choice' +
+            checked(f.value === null) + '">';
+        if (has_drawings === true) {
+            // Include a blank image to keep the layout intact.
+            item_html += '<div class="drawing"><img ' + 
+            'src="' + BLANK_IMAGE + '" ' +
+            'alt=""></div>';
+        }
+        item_html += '<label><input name="char_name"' +
             checked(f.value === null) +
-            ' type="radio" value=""> ' + _format_value() + '</label></div>';
+            ' type="radio" value=""> <span class="choice-label">' +
+            _format_value() + '</span></label></div>';
 
         this.div_map = {};
         this.div_map[''] = $(item_html).appendTo($row)[0];
@@ -162,23 +185,32 @@ define([
         for (i = 0; i < values.length; i++) {
             var v = values[i];
 
-            var item_html =
-                '<div><label><input name="char_name" type="radio"' +
+            var item_html = '<div class="choice' +
+                checked(f.value === v.choice) + '">';
+
+            if (has_drawings === true) {
+                // Add a drawing image if present. If there is no drawing,
+                // add a blank image to keep the layout intact.
+                item_html += '<div class="drawing">';
+                var image_path = v.image_url;
+                if (image_path.length > 0) {
+                    var image_id = this._get_image_id_from_path(image_path);
+                    item_html += '<img id="' + image_id +
+                        '" src="' + image_path + '" alt="drawing ' +
+                        'showing ' + v.friendly_text + '">';
+                }
+                else {
+                    item_html += '<img src="' + BLANK_IMAGE + '" alt="">';
+                }
+            }
+
+            item_html += '<label><input name="char_name" type="radio"' +
                 checked(f.value === v.choice) +
                 ' value="' + v.choice + '">';
 
-            // Add a drawing image if present.
-            var image_path = v.image_url;
-            if (image_path.length > 0) {
-                var image_id = this._get_image_id_from_path(image_path);
-                item_html += '<img id="' + image_id +
-                    '" src="' + image_path + '" alt="drawing ' +
-                    'showing ' + v.friendly_text + '"><br>';
-            }
-
-            item_html += ' <span class="label">' + _format_value(v) +
-                '</span> <span class="count">(n)</span>' +
-                '</label></div>';
+            item_html += ' <span class="choice-label"><span class="label">' +
+                _format_value(v) + '</span> <span class="count">(n)</span>' +
+                '</span></label></div>';
 
             // Start a new row, if necessary, to fit this choice.
             if (choices_count % CHOICES_PER_ROW === 0)
