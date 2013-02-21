@@ -4,9 +4,7 @@ import csv
 import sys
 
 # The GoBotany settings have to be imported before most of Django.
-from gobotany import settings
-from django.core import management
-management.setup_environ(settings)
+from django.conf import settings
 
 import bulkup
 from django.contrib.contenttypes.models import ContentType

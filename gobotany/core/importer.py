@@ -17,8 +17,6 @@ from operator import attrgetter
 # The GoBotany settings have to be imported before most of Django.
 from django.conf import settings
 from gobotany.core import rebuild
-from django.core import management
-management.setup_environ(settings)
 
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.storage import default_storage
