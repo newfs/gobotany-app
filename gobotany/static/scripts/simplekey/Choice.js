@@ -197,11 +197,12 @@ define([
                     var image_id = this._get_image_id_from_path(image_path);
                     item_html += '<img id="' + image_id +
                         '" src="' + image_path + '" alt="drawing ' +
-                        'showing ' + v.friendly_text + '"></div>';
+                        'showing ' + v.friendly_text + '">';
                 }
                 else {
                     item_html += '<img src="' + BLANK_IMAGE + '" alt="">';
                 }
+                item_html += '</div>';
             }
 
             item_html += '<label><input name="char_name" type="radio"' +
@@ -272,9 +273,17 @@ define([
         return value || null;
     };
 
-    /* Update whether the "Apply Selection" button is gray or not. */
+    /* Update some aspects of the working area when the choice changes. */
 
     Choice.prototype._on_choice_change = function(e) {
+        // Set a class of "selected" on the now-selected choice.
+        $('.choice', this.div).each(function() {
+            $(this).removeClass('checked');
+        });
+        var $checked_input = $('input:checked', this.div);
+        $checked_input.closest('.choice').addClass('checked');
+
+        // Update whether the "Apply Selection" button is gray or not.
         var $apply_button = $('.apply-btn', this.div);
         if (this._current_value() === this.filter.value)
             $apply_button.addClass('disabled');
