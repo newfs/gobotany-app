@@ -2,16 +2,55 @@
 <html>
     <head>
         <title>Smartphone User Testing Level 3 Page Links</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/css/site.css">
+        <style>
+            body {
+                padding: 0 8px;
+                font-size: 90%;
+            }
+            a, a:hover {
+                border-bottom: 1px solid #c3d941;
+                text-decoration: none;
+            }
+            h2 + p a {
+                font-weight: bold;
+            }
+            dt {
+                float: left;
+                font-weight: bold;
+                height: 2em;
+                width: 5em;
+            }
+            dt, dd {
+                padding-bottom: 0.5em;
+            }
+        </style>
     </head>
     <body>
         <p><a href="/">Go Botany Home</a></p>
 
         <h1>Smartphone User Testing: Level 3 Page Links</h1>
 
-        <p>Here are links to variations of the Level 3 page on
-        smartphones, for user testing.</p>
+        <p>Here are links to some variations.</p>
 
-        <p>Needle-leaved woody plants: <a target="_blank"
+        <p>Please view on iPhone or iPod Touch.</p>
+
+        <p>Links open a new browser window.</p>
+
+        <h2>Broad-leaved woody plants</h2>
+        <p><a target="_blank"
+            href="/simple/woody-plants/woody-angiosperms/">split</a>
+            |
+            <a target="_blank"
+                href="/simple/woody-plants/woody-angiosperms/?m=mobile-wide">wide</a>
+            |
+            <a target="_blank"
+                href="/simple/woody-plants/woody-angiosperms/?m=mobile-wide%20mobile-inline">inline</a>
+        </p>
+
+        <h2>Needle-leaved woody plants</h2>
+        <p><a target="_blank"
             href="/simple/woody-plants/woody-gymnosperms/">split</a>
             |
             <a target="_blank"
@@ -20,6 +59,22 @@
             <a target="_blank"
                 href="/simple/woody-plants/woody-gymnosperms/?m=mobile-wide%20mobile-inline">inline</a>
         </p>
+
+        <h2>About the variations</h2>
+
+        <dl>
+            <dt>split</dt>
+            <dd>questions always visible at top left; pop-up for
+            choices</dd>
+
+            <dt>wide</dt>
+            <dd>questions initially hidden but full width; pop-up for
+            choices</dd>
+
+            <dt>inline</dt>
+            <dd>questions initially hidden but full width; choices are
+            inline</dd>
+        </dl>
 
     </body>
 </html>
