@@ -197,7 +197,7 @@ define([
                     var image_id = this._get_image_id_from_path(image_path);
                     item_html += '<img id="' + image_id +
                         '" src="' + image_path + '" alt="drawing ' +
-                        'showing ' + v.friendly_text + '">';
+                        'showing ' + v.friendly_text + '"></div>';
                 }
                 else {
                     item_html += '<img src="' + BLANK_IMAGE + '" alt="">';
@@ -210,7 +210,7 @@ define([
 
             item_html += ' <span class="choice-label"><span class="label">' +
                 _format_value(v) + '</span> <span class="count">(n)</span>' +
-                '</span></label></div>';
+                '</span></label>';
 
             // Start a new row, if necessary, to fit this choice.
             if (choices_count % CHOICES_PER_ROW === 0)
@@ -226,9 +226,21 @@ define([
                 var image_html = '<img class="char-value-larger" id="' +
                     image_id + '" src="' + image_path +
                     '" alt="drawing showing ' + v.friendly_text + '">';
-                $('#' + image_id).tooltip({
+                var $image = $('#' + image_id);
+                $image.tooltip({
                     content: image_html,
                     width: 'auto'
+                });
+
+                // Make clicking the drawing select the choice if available.
+                $image.bind('click', function () {
+                    $radio = $(this).closest('.choice').find('input').eq(0);
+                    var $disabled = $radio.attr('disabled');
+                    if (typeof $disabled === 'undefined' ||
+                        $disabled === false) {
+                        $radio.attr('checked', 'true');
+                        $radio.trigger('click');
+                    }
                 });
             }
 
