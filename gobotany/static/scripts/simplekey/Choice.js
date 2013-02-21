@@ -70,6 +70,7 @@ define([
         this.div = args.div;
         this.div_map = null,   // map choice value -> <input> element
         this.filter = args.filter;
+        this.is_mobile_wide = $('body').hasClass('mobile-wide');
 
         this._attach();
         this._draw_basics(args.y);
@@ -339,6 +340,11 @@ define([
         apply_button.removeClass('disabled');
         this._apply_filter_value();
         this.dismiss();
+        
+        if (this.is_mobile_wide) {
+            $('#question-nav').addClass('closed');
+        }
+        
         return false;
     };
 
