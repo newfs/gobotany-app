@@ -396,3 +396,16 @@ def edit_lit_sources(request, dotted_datetime):
         'return_to': return_to,
         'tcvlist': tcvlist,
         }, context_instance=RequestContext(request))
+
+
+@permission_required('botanist')
+def partner_plants(request, idnum):
+    partner = get_object_or_404(models.PartnerSite, id=idnum)
+    plants = list(models.PartnerSpecies.objects
+                  .filter(partner=partner)
+                  .select_related('species')
+                  .order_by('species__scientific_name'))
+    return render_to_response('gobotany/edit_partner_species.html', {
+        'partner': partner,
+        'plants': plants,
+        }, context_instance=RequestContext(request))
