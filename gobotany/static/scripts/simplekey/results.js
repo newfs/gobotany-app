@@ -30,7 +30,6 @@ results_page_init: function(args) {
     var dev_flag = args.dev_flag;
     var key_name = args.key;
     var pile_slug = args.pile_slug;
-    var is_mobile_wide = $('body').hasClass('mobile-wide');
 
     var species_section = new SpeciesSection();
     var species_section_ready = $.Deferred();
@@ -174,6 +173,7 @@ results_page_init: function(args) {
 
         /* Set up some extra event handlers for a mobile smartphone view. */
 
+        var is_mobile_wide = $('body').hasClass('mobile-wide');
         if (is_mobile_wide) {
             /* Hide or show the filter questions area. */
             // TODO: only do this on small screens (test screen width)
