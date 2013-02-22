@@ -121,7 +121,8 @@ def extract_html(x, skip=0, endskip=0):
         elif tag == u'italic':
             s += u'<i>%s</i>%s%s' % (text, space, tail)
         elif tag in (u'lead_number_letter', u'lead_number_letter_inner'):
-            if i+1 < len(x) and x[i+1].tag.startswith('mult'):
+            if (i+1 < len(x)
+                  and x[i+1].tag == 'multiplication_sign_bold'):
                 s += u'<b>%s</b>' % text
             else:
                 s += u'<b>%s</b>%s%s' % (text, space, tail)
