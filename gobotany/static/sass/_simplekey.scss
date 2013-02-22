@@ -1357,11 +1357,32 @@ ul.get-more-questions-menu {
                     }
                     .instructions {
                         border-radius: 8px;
+                        h5::after {
+                            right: 12px;
+                            top: 10px;
+                            -webkit-transform: rotate(135deg);
+                        }
                     }
                 }
                 .instructions {
                     border-radius: 0;
                     cursor: pointer;
+                    position: relative;
+                    h5::after {
+                        border-color: #fff;
+                        border-style: solid;
+                        border-width: 3px 3px 0 0;
+                        color: #fff;
+                        content: " \a0";
+                        display: inline-block;
+                        height: 9px;
+                        position: absolute;
+                        right: 12px;
+                        top: 15px;
+                        vertical-align: middle;
+                        width: 9px;
+                        -webkit-transform: rotate(-45deg);
+                    }
                 }
                 .scroll {
                     border: 0;

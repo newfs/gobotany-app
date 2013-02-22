@@ -959,7 +959,9 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-wide #question-nav.closed { background: none; border: 0; min-height: 0; }
   body.skey.results.mobile-wide #question-nav.closed div:not([class="section instructions"]) { display: none; }
   body.skey.results.mobile-wide #question-nav.closed .instructions { border-radius: 8px; }
-  body.skey.results.mobile-wide #question-nav .instructions { border-radius: 0; cursor: pointer; }
+  body.skey.results.mobile-wide #question-nav.closed .instructions h5::after { right: 12px; top: 10px; -webkit-transform: rotate(135deg); }
+  body.skey.results.mobile-wide #question-nav .instructions { border-radius: 0; cursor: pointer; position: relative; }
+  body.skey.results.mobile-wide #question-nav .instructions h5::after { border-color: #fff; border-style: solid; border-width: 3px 3px 0 0; color: #fff; content: " \a0"; display: inline-block; height: 9px; position: absolute; right: 12px; top: 15px; vertical-align: middle; width: 9px; -webkit-transform: rotate(-45deg); }
   body.skey.results.mobile-wide #question-nav .scroll { border: 0; border-bottom: 1px solid #c3d941; height: auto; overflow: visible; width: 100%; }
   body.skey.results.mobile-wide #question-nav .section { clear: left; }
   body.skey.results.mobile-wide #question-nav .section p.get-more { margin-bottom: 35px; }
