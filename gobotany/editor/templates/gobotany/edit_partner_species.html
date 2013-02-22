@@ -5,8 +5,18 @@
 <h1>Species for partner “{{ partner.short_name }}”</h1>
 
 <p>
+  <a class="save-button" href="/edit/partner{{ partner.id }}-plants.csv"
+     >Download this list</a>
+  <span class="save-button">Upload new list</span>
+</p>
+
+<p>
   {% for plant in plants %}
-    {{ plant.species.scientific_name }}<br>
+    {{ plant.species.scientific_name }}
+    {% if plant.simple_key %}
+      ← <i>simple key</i>
+    {% endif %}
+    <br>
   {% endfor %}
 </p>
 

@@ -1,9 +1,11 @@
+import csv
 import json
 import re
 import urllib
+from StringIO import StringIO
 from datetime import datetime
 from django.contrib.auth.decorators import permission_required
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
 from django.utils import timezone
@@ -409,3 +411,25 @@ def partner_plants(request, idnum):
         'partner': partner,
         'plants': plants,
         }, context_instance=RequestContext(request))
+
+
+@permission_required('botanist')
+def partner_plants_csv(request, idnum):
+    partner = get_object_or_404(models.PartnerSite, id=idnum)
+    plants = list(models.PartnerSpecies.objects
+                  .filter(partner=partner)
+                  .select_related('species')
+                  .order_by('species__scientific_name'))
+
+    csvfile = StringIO()
+    w = csv.writer(csvfile, dialect='excel')
+    w.writerow(['scientific_name', 'belongs_in_simple_key'])
+    for plant in plants:
+        flag = 'yes' if plant.simple_key else ''
+        w.writerow([plant.species.scientific_name, flag])
+
+    response = HttpResponse(csvfile.getvalue(), content_type='text/csv')
+    response['Content-Disposition'] = (
+        'attachment; filename="partner{}-plants.csv"'.format(partner.id)
+        )
+    return response
