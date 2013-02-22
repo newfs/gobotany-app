@@ -71,6 +71,7 @@ define([
         this.div_map = null,   // map choice value -> <input> element
         this.filter = args.filter;
         this.is_mobile_wide = $('body').hasClass('mobile-wide');
+        this.is_mobile_inline = $('body').hasClass('mobile-inline');
 
         this._attach();
         this._draw_basics(args.y);
@@ -343,6 +344,9 @@ define([
         
         if (this.is_mobile_wide) {
             $('#question-nav').addClass('closed');
+        }
+        if (this.is_mobile_inline) {
+            window.scrollTo(0, 0);   // Scroll to top of page to show results
         }
         
         return false;
