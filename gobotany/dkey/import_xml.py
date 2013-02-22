@@ -81,6 +81,7 @@ def norm(u):
 re_number = re.compile('\d+')
 re_genus_letter = re.compile(ur'\b([A-Z]\.)(<[^>]+>|)[ \n]+')
 re_newline_and_indent = re.compile(ur'\n *$', re.M)
+re_preceding_punctuation = re.compile(ur'[;.][\s\u2002\u2028 ]*$')
 
 def p(text):
     return u'<p>{}</p>'.format(text)
@@ -127,6 +128,13 @@ def extract_html(x, skip=0, endskip=0):
         elif tag in (u'lead_number_letter', u'lead_number_letter_inner'):
             if not last and plus1.tag == 'multiplication_sign_bold':
                 s += u'<b>%s</b>' % text
+            elif (tag == u'lead_number_letter_inner'
+                  and not re_preceding_punctuation.search(s)):
+                # Put an ellipsis in front of a variety name that
+                # concludes a paragraph describing that variety, to
+                # resemble the long line of periods that right-justifies
+                # such variety names in the printed book.
+                s += u'… <b>%s</b>%s%s' % (text, space, tail)
             else:
                 s += u'<b>%s</b>%s%s' % (text, space, tail)
         elif tag == 'multiplication_sign_bold':
