@@ -962,7 +962,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results .modal-wrap .inner #choices li { margin-bottom: 8px; }
   body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ }
   body.skey.results.mobile-wide #intro-overlay .number-of-questions:before { display: none; }
-  body.skey.results.mobile-wide #question-nav { margin: 25px 0 12px; width: 100%; }
+  body.skey.results.mobile-wide #question-nav { margin: 25px 0 12px 6px; width: 98%; }
   body.skey.results.mobile-wide #question-nav.closed { background: none; border: 0; min-height: 0; }
   body.skey.results.mobile-wide #question-nav.closed div:not([class="section instructions"]) { display: none; }
   body.skey.results.mobile-wide #question-nav.closed .instructions { border-radius: 8px; }
