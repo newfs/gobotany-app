@@ -344,9 +344,12 @@ define([
         if (this.is_mobile_wide) {
             $('#question-nav').addClass('closed'); // Collapse questions list
 
-            window.scrollTo(0, 90);  // Scroll to top to show results count
-                                     // and to trigger lazy image loading.
-                                     // TODO: do for *any* smallscreen view
+            // Scroll to the top of the page and then just to the
+            // relevant navigation in order to be sure the results count
+            // is visible, and to trigger lazy image loading.
+            // TODO: do for *any* small-screen view, not just mobile-wide
+            window.scrollTo(0, 0);
+            window.scrollTo(0, 90);
         }
         
         return false;
