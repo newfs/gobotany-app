@@ -501,11 +501,6 @@ def parse_subchapter(info, page, prefix, xchildren, i):
             else:
                 lead.goto_page = info.get_or_create_page(taxon_name)
 
-        if not (xchild[-1].text or '').strip() and xchild[-1].tag in (
-            'italic', 'lead_number_letter', 'lead_number_letter_inner',
-            ):
-            del xchild[-1]  # 'I. hieroglyphica' has a stray empty <italic>
-
         if xchild[-1].tag == 'bold_italic' and xchild[-1].text.strip():
             taxon_name = trailing_taxon_name(prefix, xchild)
             lead.goto_page = info.get_or_create_page(taxon_name)
