@@ -954,6 +954,11 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results .working-area .choice-label { display: table-cell; vertical-align: middle; }
   body.skey.results .working-area input { margin: 4px 0; opacity: 0; position: absolute; }
   body.skey.results .working-area .actions { bottom: 0; height: 50px; position: fixed; width: 95%; }
+  body.skey.results .modal-wrap .inner { /* More Questions dialog */ }
+  body.skey.results .modal-wrap .inner h4.heading { font-size: 13px; padding-left: 10px; padding-right: 10px; padding-top: 8px; }
+  body.skey.results .modal-wrap .inner p { display: none; }
+  body.skey.results .modal-wrap .inner #choices { font-size: 10px; padding-left: 10px; }
+  body.skey.results .modal-wrap .inner #choices li { margin-bottom: 8px; }
   body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ }
   body.skey.results.mobile-wide #intro-overlay .number-of-questions:before { display: none; }
   body.skey.results.mobile-wide #question-nav { margin: 25px 0 12px; width: 100%; }

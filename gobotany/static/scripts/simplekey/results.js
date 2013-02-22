@@ -629,8 +629,8 @@ results_page_init: function(args) {
 
             Shadowbox.open({
                 content: $('#modal').html(),
+                height: 500,
                 player: 'html',
-                height: 450,
                 options: {
                     fadeDuration: 0.1,
                     onFinish: function() {

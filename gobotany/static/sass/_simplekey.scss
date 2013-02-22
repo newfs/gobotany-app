@@ -1346,6 +1346,25 @@ ul.get-more-questions-menu {
                     width: 95%;
                 }
             } /* end .working-area */
+            
+            .modal-wrap .inner { /* More Questions dialog */
+                h4.heading {
+                    font-size: 13px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    padding-top: 8px;
+                }
+                p {
+                    display: none;
+                }
+                #choices {
+                    font-size: 10px;
+                    padding-left: 10px;
+                    li {
+                        margin-bottom: 8px;
+                    }
+                }
+            }
         } /* end &.results */
 
         &.results.mobile-wide {  /* Styles for testing: mobile variant where
