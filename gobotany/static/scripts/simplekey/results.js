@@ -52,16 +52,6 @@ results_page_init: function(args) {
         content: []
     });
 
-    /* Set up some extra event handlers for a mobile smartphone view. */
-
-    if (is_mobile_wide) {
-        /* Hide or show the filter questions area. */
-        // TODO: only do this on small screens (test screen width)
-        $('#question-nav .instructions').bind('click', function() {
-            $(this).parent().toggleClass('closed');
-        });
-    }
-
     /* Async resources and deferreds. */
 
     var all_filters_ready = $.Deferred();
@@ -181,6 +171,16 @@ results_page_init: function(args) {
     $.when(filter_controller_is_built, document_is_ready).done(function() {
         // Hide the "Loading..." spinner in the filters area.
         $('.loading').hide();
+
+        /* Set up some extra event handlers for a mobile smartphone view. */
+
+        if (is_mobile_wide) {
+            /* Hide or show the filter questions area. */
+            // TODO: only do this on small screens (test screen width)
+            $('#question-nav .instructions').bind('click', function() {
+                $(this).parent().toggleClass('closed');
+            });
+        }
     });
 
     /* The Family and Genus filters are Ember-powered <select> elements
