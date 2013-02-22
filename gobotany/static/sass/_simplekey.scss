@@ -1174,11 +1174,20 @@ ul.get-more-questions-menu {
                 }
                 .option-list {
                     .clear-filter {
-                        margin: 8px 0 4px;
+                        background-color: #ddd;
+                        border-radius: 8px;
+                        margin: 8px 0 0;
+                        padding: 6px 0;
+                        text-align: center;
+                        width: 100%;
+                        &:hover, &:active {
+                            text-decoration: none;
+                        }
                     }
                     li {
                         padding-left: $smallscreen-margin;
                         padding-right: $smallscreen-margin;
+                        -webkit-tap-highlight-color: rgba(0,0,0,0);
                     }
                 }
             }
@@ -1440,6 +1449,11 @@ ul.get-more-questions-menu {
                         float: left;
                         height: 40px;
                         width: 98%;
+                    }
+                }
+                .option-list {
+                    .clear-filter {
+                        width: 50%;
                     }
                 }
             }
