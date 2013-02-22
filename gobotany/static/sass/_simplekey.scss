@@ -1340,6 +1340,11 @@ ul.get-more-questions-menu {
 
         &.results.mobile-wide {  /* Styles for testing: mobile variant where
                                     filters list is full width of screen */
+            #intro-overlay {
+                .number-of-questions:before {
+                    display: none;            
+                }
+            }
             #question-nav {
                 margin: 25px 0 12px;
                 width: 100%;
