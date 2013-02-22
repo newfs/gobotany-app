@@ -935,12 +935,12 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #results-display label, body.skey.results #results-display select { font-size: 13px; }
   body.skey.results #results-display img.icon { margin-left: 1px; vertical-align: -3px; }
   body.skey.results a.get-choices { background: url(/static/images/layout/more-choices-btn.png) no-repeat scroll 0 0 transparent; height: 29px; }
-  body.skey.results .working-area { height: 375px; margin-left: 0; padding-left: 8px; padding-right: 8px; top: 4px !important; width: 95%; }
+  body.skey.results .working-area { height: 100%; left: 0; margin-left: 0; padding-left: 8px; padding-right: 8px; position: fixed; top: 0 !important; width: 95%; }
   body.skey.results .working-area img.arrow { display: none; }
-  body.skey.results .working-area h4 { font-size: 15px; margin: 2px 0; width: auto; }
-  body.skey.results .working-area .info .hint p { font-size: 12px; margin-bottom: 12px; }
+  body.skey.results .working-area h4 { font-size: 13px; margin: 2px 0; width: auto; }
+  body.skey.results .working-area .info .hint p { font-size: 11px; margin-bottom: 12px; }
   body.skey.results .working-area .choices, body.skey.results .working-area .row, body.skey.results .working-area .choice { display: block; }
-  body.skey.results .working-area .choices { background: #fff; border: 1px solid #999999; border-radius: 8px; border-spacing: 0; height: 230px; margin-bottom: 6px; overflow: scroll; -webkit-overflow-scrolling: touch; }
+  body.skey.results .working-area .choices { background: #fff; border: 1px solid #999999; border-radius: 8px; border-spacing: 0; height: 250px; margin-bottom: 6px; overflow: auto; position: fixed; width: 95%; -webkit-overflow-scrolling: touch; }
   body.skey.results .working-area .choices.has-drawings .row { height: auto; }
   body.skey.results .working-area .choices.has-drawings .choice, body.skey.results .working-area .choices.has-drawings .choice label { height: 56px; }
   body.skey.results .working-area .choice { border-top: 1px solid #999999; margin: 0; height: 44px; position: relative; }
@@ -953,6 +953,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results .working-area .row:last-of-type .checked:last-of-type { border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }
   body.skey.results .working-area .choice-label { display: table-cell; vertical-align: middle; }
   body.skey.results .working-area input { margin: 4px 0; opacity: 0; position: absolute; }
+  body.skey.results .working-area .actions { bottom: 0; height: 50px; position: fixed; width: 95%; }
   body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ }
   body.skey.results.mobile-wide #intro-overlay .number-of-questions:before { display: none; }
   body.skey.results.mobile-wide #question-nav { margin: 25px 0 12px; width: 100%; }
@@ -962,6 +963,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-wide #question-nav.closed .instructions h5::after { right: 12px; top: 10px; -webkit-transform: rotate(135deg); }
   body.skey.results.mobile-wide #question-nav .instructions { border-radius: 0; cursor: pointer; position: relative; }
   body.skey.results.mobile-wide #question-nav .instructions h5::after { border-color: #fff; border-style: solid; border-width: 3px 3px 0 0; color: #fff; content: " \a0"; display: inline-block; height: 9px; position: absolute; right: 12px; top: 15px; vertical-align: middle; width: 9px; -webkit-transform: rotate(-45deg); }
+  body.skey.results.mobile-wide #question-nav .choices, body.skey.results.mobile-wide #question-nav .actions { position: static; }
   body.skey.results.mobile-wide #question-nav .scroll { border: 0; border-bottom: 1px solid #c3d941; height: auto; overflow: visible; width: 100%; }
   body.skey.results.mobile-wide #question-nav .section { clear: left; }
   body.skey.results.mobile-wide #question-nav .section p.get-more { margin-bottom: 35px; }
@@ -969,9 +971,9 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-wide #question-nav .section.family-genus .already-know { margin-bottom: 25px; text-align: center; width: 100%; }
   body.skey.results.mobile-wide #question-nav .section.clear, body.skey.results.mobile-wide #question-nav .section.help { float: left; height: 40px; width: 98%; }
   body.skey.results.mobile-wide .species-count-heading { position: relative; text-align: center; top: -10px; width: 80%; }
-  body.skey.results.mobile-wide .working-area .close { display: none; }
   body.skey.results.mobile-inline { /* Styles for testing: mobile variant where filter values appear inline */ }
   body.skey.results.mobile-inline .working-area { background: #fff; border: 0; height: auto; position: static; top: auto !important; -moz-box-shadow: none; -webkit-box-shadow: none; -o-box-shadow: none; box-shadow: none; }
+  body.skey.results.mobile-inline .working-area .close { display: none; }
   body.skey.results.mobile-inline .working-area .choices { height: auto; overflow: visible; }
   body.skey.results.mobile-inline .working-area .actions { margin-bottom: 30px; } }
 /* These styles apply to smartphones and tablets */
