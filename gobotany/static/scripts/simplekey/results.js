@@ -765,6 +765,10 @@ results_page_init: function(args) {
         $spans.stop();
         animation.bright_change($spans, {end_color: '#F0F0C0',
                                          duration: 2000});
+
+        // The questions list shows the number of answered questions.
+        var num_answered = $('.answered').length;
+        $('#question-nav .instructions span').html(num_answered);
     };
 
     /* How we load images into the species area. */
