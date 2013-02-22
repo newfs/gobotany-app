@@ -4,6 +4,7 @@ from django import forms
 from django.contrib import admin
 from django.db import models as dbmodels
 from django.template import Context, Template
+from django.utils.safestring import mark_safe
 from gobotany.core import models
 
 # View classes
@@ -365,6 +366,20 @@ class GenusAdmin(_Base):
     search_fields = ('name', 'common_name')
 
 
+def species_summary(obj):
+    seq = list(models.PartnerSpecies.objects.filter(partner=obj)
+               .select_related('species')
+               .order_by('species__scientific_name'))
+    total_number = len(seq)
+    simple_number = len([ s for s in seq if s.simple_key ])
+    return mark_safe(
+        u'{} species, of which {} are shown in the Simple Key<br>'
+        u'<a href="/edit/species/{}/">Edit Species List</b>'
+        .format(total_number, simple_number, obj.id))
+
+species_summary.short_description = 'Species'
+
+
 class PartnerSiteAdmin(_Base):
     """
 
@@ -388,11 +403,7 @@ class PartnerSiteAdmin(_Base):
 
     """
     filter_horizontal = ('users',)
-
-    # TODO: assignment of species to partner
-    # an "inline" is too slow
-    # a "list_display" cannot handle m2m
-    # "filter_horizontal" complains because m2m has extra fields
+    readonly_fields = (species_summary,)
 
 
 # Registrations
