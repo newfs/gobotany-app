@@ -409,9 +409,17 @@ def partner_plants(request, idnum):
                   .select_related('species')
                   .order_by('species__scientific_name'))
     return render_to_response('gobotany/view_partner_plants.html', {
+        'download_url': '/edit/partner{}-plants.csv'.format(partner.id),
+        'upload_url': 'upload/',
         'partner': partner,
         'plants': plants,
         }, context_instance=RequestContext(request))
+
+
+
+@permission_required('botanist')
+def partner_plants_upload(request, idnum):
+    pass
 
 
 @permission_required('botanist')

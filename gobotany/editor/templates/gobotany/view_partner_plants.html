@@ -5,9 +5,10 @@
 <h1>Plants for partner “{{ partner.short_name }}”</h1>
 
 <p>
-  <a class="save-button" href="/edit/partner{{ partner.id }}-plants.csv"
+  <a class="save-button" href="{{ download_url }}"
      >Download this list</a>
-  <span class="save-button">Upload new list</span>
+  <a class="save-button" href="{{ upload_url }}"
+     >Upload a replacement list</a>
 </p>
 
 <p>

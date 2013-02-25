@@ -374,7 +374,7 @@ def species_summary(obj):
     simple_number = len([ s for s in seq if s.simple_key ])
     return mark_safe(
         u'{} plants, of which {} are shown in the Simple Key<br>'
-        u'<a href="/edit/partner-plants/{}/">Edit Plant List</b>'
+        u'<a href="/edit/partner/{}/plants/">Edit Plant List</b>'
         .format(total_number, simple_number, obj.id))
 
 species_summary.short_description = 'Species'
