@@ -408,7 +408,7 @@ def partner_plants(request, idnum):
                   .filter(partner=partner)
                   .select_related('species')
                   .order_by('species__scientific_name'))
-    return render_to_response('gobotany/edit_partner_species.html', {
+    return render_to_response('gobotany/view_partner_plants.html', {
         'partner': partner,
         'plants': plants,
         }, context_instance=RequestContext(request))
