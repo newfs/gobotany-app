@@ -1,0 +1,24 @@
+{% extends "gobotany/_edit_base.html" %}
+
+{% block body_content %}
+
+<h1>Plants for partner “{{ partner.short_name }}”</h1>
+
+<p>
+  <a class="save-button" href="{{ download_url }}"
+     >Download this list</a>
+  <a class="save-button" href="{{ upload_url }}"
+     >Upload a replacement list</a>
+</p>
+
+<p>
+  {% for plant in plants %}
+    {{ plant.species.scientific_name }}
+    {% if plant.simple_key %}
+      ← <i>simple key</i>
+    {% endif %}
+    <br>
+  {% endfor %}
+</p>
+
+{% endblock %}

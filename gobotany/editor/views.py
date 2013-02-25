@@ -1,17 +1,21 @@
 import json
 import re
 import urllib
-from datetime import datetime
-from django.contrib.auth.decorators import permission_required
-from django.http import Http404
-from django.shortcuts import get_object_or_404, redirect, render_to_response
-from django.template import RequestContext
-from django.utils import timezone
 from itertools import groupby
 from operator import attrgetter as pluck
 
+import tablib
+from datetime import datetime
+from django.contrib.auth.decorators import permission_required
+from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render_to_response
+from django.template import RequestContext
+from django.utils import timezone
+from shoehorn.engine import DifferenceEngine
+
 from gobotany.core import models
 from gobotany.core.partner import which_partner
+from . import wranglers
 
 
 def e404(request):
@@ -396,3 +400,137 @@ def edit_lit_sources(request, dotted_datetime):
         'return_to': return_to,
         'tcvlist': tcvlist,
         }, context_instance=RequestContext(request))
+
+
+@permission_required('botanist')
+def partner_plants(request, idnum):
+    partner = get_object_or_404(models.PartnerSite, id=idnum)
+    plants = list(models.PartnerSpecies.objects
+                  .filter(partner=partner)
+                  .select_related('species')
+                  .order_by('species__scientific_name'))
+    return render_to_response('gobotany/view_partner_plants.html', {
+        'download_url': '/edit/partner{}-plants.csv'.format(partner.id),
+        'upload_url': 'upload/',
+        'partner': partner,
+        'plants': plants,
+        }, context_instance=RequestContext(request))
+
+
+
+@permission_required('botanist')
+def partner_plants_upload(request, idnum):
+    partner = get_object_or_404(models.PartnerSite, id=idnum)
+    return_url = '..'
+    printout = []
+    changes = None
+
+    if request.method == 'POST':
+
+        # Step 3: they pressed "Confirm" so we make the changes.
+        if 'changes' in request.POST:
+
+            inserts, updates, deletes = json.loads(request.POST['changes'])
+
+            for name, simple in inserts:
+                taxon = models.Taxon.objects.filter(scientific_name=name)[0]
+                ps = models.PartnerSpecies()
+                ps.species = taxon
+                ps.partner = partner
+                ps.simple_key = (simple == 'yes')
+                ps.save()
+
+            for ((old_name, old_simple), (name, simple)) in updates:
+                taxon = models.Taxon.objects.filter(scientific_name=name)[0]
+                ps = (models.PartnerSpecies.objects
+                      .filter(species=taxon, partner=partner)
+                      )[0]
+                ps.simple_key = (simple == 'yes')
+                ps.save()
+
+            for name, simple in deletes:
+                taxon = models.Taxon.objects.filter(scientific_name=name)[0]
+                ps = models.PartnerSpecies()
+                ps = (models.PartnerSpecies.objects
+                      .filter(species=taxon, partner=partner)
+                      )[0]
+                ps.delete()
+
+            return redirect(return_url)
+
+        # Step 2: they have selected a file and pressed "Upload".
+        if 'csvfile' in request.FILES:
+            upload_records = tablib.Dataset()
+            upload_records.csv = request.FILES['csvfile'].read()
+            wrangler = wranglers.PartnerPlants(partner)
+            database_records = wrangler.generate_records()
+            de = DifferenceEngine()
+            de.differentiate(database_records, upload_records, [0])
+
+            bad_inserts = [ record for record in de.inserts if not len(
+                    models.Taxon.objects.filter(scientific_name=record[0])) ]
+            if bad_inserts:
+                printout.append(u'Unrecognized plants that will NOT be '
+                                u'imported but ignored for now:')
+                printout.append(u'')
+                for bad in bad_inserts:
+                    printout.append(u'- {}'.format(bad[0]))
+                printout.append(u'')
+
+            de.inserts = [ record for record in de.inserts
+                           if record[0].lower() != 'scientific_name'
+                              and record not in bad_inserts ]
+
+            if de.inserts:
+                printout.append(u'Plants to insert:')
+                printout.append('')
+                for record in de.inserts:
+                    printout.append(u'- {}'.format(record[0]))
+            else:
+                printout.append(u'No plants to insert.')
+            printout.append('')
+            if de.updates:
+                printout.append(u'Plants changing simple-key membership:')
+                printout.append('')
+                for record in de.updates:
+                    printout.append(u'- {} changing to: {}'.format(*record[1]))
+            else:
+                printout.append(u'No plants to update.')
+            printout.append('')
+            if de.deletes:
+                printout.append(u'Plants to remove from this partner:')
+                printout.append('')
+                for record in de.deletes:
+                    printout.append(u'- {}'.format(record[0]))
+            else:
+                printout.append(u'No plants to delete.')
+            printout.append('')
+
+            changes = json.dumps([de.inserts, de.updates, de.deletes])
+        else:
+            printout.append(u'Please select a file for upload and try again.')
+
+    # Step 1: an admin visits the page.
+    return render_to_response('gobotany/upload_partner_plants.html', {
+        'changes': changes,
+        'partner': partner,
+        'printout': '\n'.join(printout),
+        'return_url': return_url,
+        }, context_instance=RequestContext(request))
+
+
+@permission_required('botanist')
+def partner_plants_csv(request, idnum):
+    partner = get_object_or_404(models.PartnerSite, id=idnum)
+    wrangler = wranglers.PartnerPlants(partner)
+
+    headers = ['scientific_name', 'belongs_in_simple_key']
+    dataset = tablib.Dataset(headers=headers)
+    for record in wrangler.generate_records():
+        dataset.append(record)
+
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = (
+        'attachment; filename="partner{}-plants.csv"'.format(partner.id)
+        )
+    return response

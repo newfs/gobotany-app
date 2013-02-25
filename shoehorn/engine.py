@@ -49,7 +49,7 @@ def pairs(sequence1, sequence2, indices):
             yield (item1, None)
             key1, item1 = next(iter1, endpair)
         else:
-            yield (item2, None)
+            yield (None, item2)
             key2, item2 = next(iter2, endpair)
 
     while item1 is not end:
@@ -73,5 +73,5 @@ class DifferenceEngine(object):
                 self.inserts.append(w)
             elif w is None:
                 self.deletes.append(h)
-            else:
-                pass  # TODO: possibly check non-index fields for differences
+            elif h != w:
+                self.updates.append((h, w))
