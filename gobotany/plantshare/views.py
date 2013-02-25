@@ -212,6 +212,18 @@ def new_question_done_view(request):
            }, context_instance=RequestContext(request))
 
 @login_required
+def checklist_index_view(request):
+    """List of all of a user's visible checklists"""
+    return render_to_response('checklists.html', {
+           }, context_instance=RequestContext(request))
+
+@login_required
+def new_checklist_view(request):
+    """Create a new checklist"""
+    return render_to_response('new_checklist.html', {
+           }, context_instance=RequestContext(request))
+
+@login_required
 def profile_view(request):
     """View for the logged-in user's profile."""
     try:
