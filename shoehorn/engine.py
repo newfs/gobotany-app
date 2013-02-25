@@ -73,5 +73,5 @@ class DifferenceEngine(object):
                 self.inserts.append(w)
             elif w is None:
                 self.deletes.append(h)
-            else:
-                pass  # TODO: possibly check non-index fields for differences
+            elif h != w:
+                self.updates.append((h, w))
