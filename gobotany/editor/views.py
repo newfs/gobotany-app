@@ -1,16 +1,17 @@
-import csv
 import json
 import re
 import urllib
-from StringIO import StringIO
+from itertools import groupby
+from operator import attrgetter as pluck
+
+import tablib
 from datetime import datetime
 from django.contrib.auth.decorators import permission_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
 from django.utils import timezone
-from itertools import groupby
-from operator import attrgetter as pluck
+from shoehorn.engine import DifferenceEngine
 
 from gobotany.core import models
 from gobotany.core.partner import which_partner
@@ -427,13 +428,12 @@ def partner_plants_csv(request, idnum):
     partner = get_object_or_404(models.PartnerSite, id=idnum)
     wrangler = wranglers.PartnerPlants(partner)
 
-    csvfile = StringIO()
-    w = csv.writer(csvfile, dialect='excel')
-    w.writerow(['scientific_name', 'belongs_in_simple_key'])
+    headers = ['scientific_name', 'belongs_in_simple_key']
+    dataset = tablib.Dataset(headers=headers)
     for record in wrangler.generate_records():
-        w.writerow(record)
+        dataset.append(record)
 
-    response = HttpResponse(csvfile.getvalue(), content_type='text/csv')
+    response = HttpResponse(dataset.csv, content_type='text/csv')
     response['Content-Disposition'] = (
         'attachment; filename="partner{}-plants.csv"'.format(partner.id)
         )
