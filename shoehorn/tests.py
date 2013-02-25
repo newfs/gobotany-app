@@ -1,7 +1,7 @@
 from unittest import TestCase
 from .engine import DifferenceEngine
 
-presidents = [['Washington'], ['Adams'], ['Jefferson']]
+presidents = [['Washington'], ['Adams'], ['Jefferson'], ['Madison']]
 
 class Tests(TestCase):
 
@@ -36,8 +36,9 @@ class Tests(TestCase):
     def test_mixed(self):
         e = DifferenceEngine()
         seq1 = [['King George III']] + presidents
-        seq2 = presidents[:2] + [['Madison']]
+        seq2 = [presidents[0], ['Hamilton'], presidents[2], ['Monroe']]
         e.differentiate(seq1, seq2, [0])
-        self.assertEqual(e.inserts, [['Madison']])
+        self.assertEqual(e.inserts, [['Hamilton'], ['Monroe']])
         self.assertEqual(e.updates, [])
-        self.assertEqual(e.deletes, [['King George III'], ['Jefferson']])
+        self.assertEqual(e.deletes, [['King George III'], ['Adams'],
+                                     ['Madison']])
