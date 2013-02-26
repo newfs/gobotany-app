@@ -743,8 +743,9 @@ class Distribution(models.Model):
     status = models.CharField(max_length=100)
 
     def __unicode__(self):
-        return '%s: %s County, %s (%s)' % (self.scientific_name, self.county,
-                                           self.state, self.status)
+        county = ' (%s County)' % self.county if len(self.county) > 0 else ''
+        return '%s: %s%s: %s' % (self.scientific_name, self.state,
+                                 county, self.status)
 
 
 class CopyrightHolder(models.Model):
