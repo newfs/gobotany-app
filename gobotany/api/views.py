@@ -449,8 +449,15 @@ def species(request, pile_slug):
 
     # Pull the result from our hard cache, if available.
 
-    if pile_slug in _species_cache:
-        return _species_cache[pile_slug]
+    # TODO: fix. Disabled when upgrading to Django 1.5 due to error in
+    # Chrome when pulling from the cache:
+    # Error 354 (net::ERR_CONTENT_LENGTH_MISMATCH): The server unexpectedly
+    # closed the connection.
+    # Somehow the cached response has a much shorter Content-Length than the
+    # original response.
+    #
+    #if pile_slug in _species_cache:
+    #    return _species_cache[pile_slug]
 
     # Efficiently fetch the species that belong to this pile.  (Common
     # name is selected nondeterministically because, frankly, the data
