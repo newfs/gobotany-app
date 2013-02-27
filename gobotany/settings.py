@@ -143,13 +143,13 @@ MIDDLEWARE_CLASSES = (
     'gobotany.middleware.ChromeFrameMiddleware',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
-        "django.contrib.auth.context_processors.auth",
+    'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
-        "django.core.context_processors.i18n",
-        "django.core.context_processors.request",
-        "django.core.context_processors.media",
-        "django.core.context_processors.static",
-        "gobotany.core.context_processors.gobotany_specific_context",
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.request',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'gobotany.core.context_processors.gobotany_specific_context',
 )
 
 DEBUG_TOOLBAR_CONFIG = {
