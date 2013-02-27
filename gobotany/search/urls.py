@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url
 from haystack.forms import HighlightedSearchForm
 
 from gobotany.search.views import GoBotanySearchView

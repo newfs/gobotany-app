@@ -17,7 +17,7 @@
 {% block main_content %}
                 <div id="breadcrumb">
                     You are here:
-                    <a href="{% url level1 key %}">{{ key|title }} Key</a>
+                    <a href="{% url 'level1' key %}">{{ key|title }} Key</a>
                     &gt; <span>{{ pilegroup.friendly_title|lower|capfirst }}</span>
                 </div>
                 

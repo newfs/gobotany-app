@@ -27,7 +27,7 @@
   {% include "_image_upload_form.html" with image_form=upload_photo_form %}
 </div>
 
-<form method="post" action="{% url ps-sightings %}">
+<form method="post" action="{% url 'ps-sightings' %}">
     {% include "_sighting_form.html" %}
 </form>
 

@@ -1,4 +1,4 @@
-    <form method="post" action="{% url auth_login %}" class="login">
+    <form method="post" action="{% url 'auth_login' %}" class="login">
         {% csrf_token %}
         {% comment %} 
         Conform to Django auth's AuthenticationForm fields for now, until we create
@@ -13,6 +13,6 @@
         <input type="password" name="password" id="id_password">
         <input type="submit" class="button" value="Login">
         <input type="hidden" name="next"
-        value="{% if next %}{{ next }}{% else %}{% url ps-main %}{% endif %}">
+        value="{% if next %}{{ next }}{% else %}{% url 'ps-main' %}{% endif %}">
     </form>
 

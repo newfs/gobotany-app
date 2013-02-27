@@ -4,7 +4,7 @@
 
 {% block js_top %}
     <script>
-        API_URL = '{% url api-base %}';
+        API_URL = '{% url 'api-base' %}';
     </script>
 {% endblock %}
 
@@ -22,7 +22,7 @@
                 <li class="current"><a>{{ letter|upper }}</a></li>
             {% else %}
                 {% if letter in letters_in_glossary %}
-                    <li><a href="{% url site-glossary letter %}">{{ letter|upper }}</a></li>
+                    <li><a href="{% url 'site-glossary' letter %}">{{ letter|upper }}</a></li>
                 {% else %}
                     <li class="inactive">{{ letter|upper }}</li>
                 {% endif %}

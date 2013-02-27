@@ -35,11 +35,11 @@
         alt="Two people inspecting and photographing a plant in the woods">
         
     <ul>
-        <li>Our <a href="{% url level1 'simple' %}">Simple Key</a> is an interactive
+        <li>Our <a href="{% url 'level1' 'simple' %}">Simple Key</a> is an interactive
         key to 1,200 species. Answer some questions to narrow down to the plant
-        you want to identify. <a href="{% url level1 'simple' %}">Get Started!</a>
+        you want to identify. <a href="{% url 'level1' 'simple' %}">Get Started!</a>
         </li>
-        <li>Using our <a href="{% url advanced-id-tools %}">Advanced Key</a> 
+        <li>Using our <a href="{% url 'advanced-id-tools' %}">Advanced Key</a> 
         tools, you can use traditional dichotomous keys to identify genera 
         within families and species within genera, and more than 3,500 species,
         subspecies and varieties of plants.</li>
@@ -67,8 +67,8 @@
             Foundation</a> to create customized floras, educational displays,
         and teaching tools!</li>
         <li>Share your ideas with other educators using 
-        <a href="{% url plantshare-placeholder %}">PlantShare</a> and posting
-        to our <a href="{% url site-teaching %}">Teaching</a> page.</li>
+        <a href="{% url 'plantshare-placeholder' %}">PlantShare</a> and posting
+        to our <a href="{% url 'site-teaching' %}">Teaching</a> page.</li>
         <li>During 2012-2013, New England Wild Flower Society will offer free 
         training for educators throughout New England on how to use Go
         Botany.</li>

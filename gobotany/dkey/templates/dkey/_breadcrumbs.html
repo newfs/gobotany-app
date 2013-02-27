@@ -2,7 +2,7 @@
 You are here:
 {% for ancestor in page|breadcrumbs %}
   {% if forloop.counter0 == 0 %}
-    <a href="{% url dkey %}">Dichotomous Key</a>
+    <a href="{% url 'dkey' %}">Dichotomous Key</a>
   {% else %}
     &gt; <a data-rank="{{ ancestor.rank }}" data-title="{{ ancestor.title }}"
             href="{% url dkey_page ancestor|slug %}"

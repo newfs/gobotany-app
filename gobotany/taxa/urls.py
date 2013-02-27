@@ -1,5 +1,5 @@
-from django.conf.urls.defaults import patterns, url
-from django.views.generic.simple import redirect_to
+from django.conf.urls import patterns, url
+from django.views.generic import RedirectView
 
 from gobotany.taxa import views
 
@@ -15,18 +15,18 @@ urlpatterns = patterns(
 
     # Support "hackable" URL
     url('^species/(?P<genus_slug>[a-z]+)/$',
-        redirect_to, {'url': '/genus/%(genus_slug)s/'}),
+        RedirectView.as_view(url='/genus/%(genus_slug)s/')),
 
     # Redirections for old URLs
 
     (r'^families/(?P<family_slug>[a-z]+)/$',
-     redirect_to, {'url': '/family/%(family_slug)s/'}),
+        RedirectView.as_view(url='/family/%(family_slug)s/')),
 
     (r'^genera/(?P<genus_slug>[a-z]+)/$',
-     redirect_to, {'url': '/genus/%(genus_slug)s/'}),
+        RedirectView.as_view(url='/genus/%(genus_slug)s/')),
 
     (r'^(?P<pilegroup_slug>[-a-z]+)/(?P<pile_slug>[-a-z]+)/'
-     r'(?P<genus_slug>[a-z]+)/(?P<epithet>[-a-z]+)/$', redirect_to,
-     {'url': '/species/%(genus_slug)s/%(epithet)s/?pile=%(pile_slug)s'}),
+     r'(?P<genus_slug>[a-z]+)/(?P<epithet>[-a-z]+)/$', RedirectView.as_view(
+         url='/species/%(genus_slug)s/%(epithet)s/?pile=%(pile_slug)s')),
 
     )

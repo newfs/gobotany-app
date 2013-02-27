@@ -6,7 +6,7 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
 
 {% block js_top %}
     <script>
-        API_URL = '{% url api-base %}';
+        API_URL = '{% url 'api-base' %}';
     </script>
 
     {# TODO: eventually move elsewhere #}
@@ -56,14 +56,14 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
                 <h4>This Family&#8217;s Genera:</h4>
                 <ul class="genera">
                 {% for genus in family.genera.all %}
-                    <li><i><a href="{% url taxa-genus genus.slug %}"
+                    <li><i><a href="{% url 'taxa-genus' genus.slug %}"
                     >{{ genus.name }}</a></i></li>
                 {% endfor %}
                 </ul>
 
                 <p class="visit-dkey">
                   Visit this family in the
-                  <a href="{% url dkey_page family.name.lower %}"
+                  <a href="{% url 'dkey_page' family.name.lower %}"
                      >Dichotomous Key</a>
                 </p>
 {% endblock %}

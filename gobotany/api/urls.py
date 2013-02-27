@@ -1,8 +1,8 @@
 from django.conf import settings
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url
 from django.contrib import admin
 from django.views.decorators.cache import cache_control, cache_page
-from django.views.generic.simple import redirect_to
+from django.views.generic import RedirectView
 
 from gobotany.api import handlers, views
 from piston.resource import Resource
@@ -51,16 +51,16 @@ urlpatterns = patterns(
     # Redirects for the split Remaining Non-Monocots piles, so that the
     # Get More Questions feature works for them
     url(r'^piles/(?:non-)?alternate-remaining-non-monocots/characters/$',
-        redirect_to,
-        {'url': '/api/piles/remaining-non-monocots/characters/'}),
+        RedirectView.as_view(
+            url='/api/piles/remaining-non-monocots/characters/')),
     url(r'^piles/(?:non-)?alternate-remaining-non-monocots/questions/$',
-        redirect_to,
-        {'url': '/api/piles/remaining-non-monocots/questions/',
-         'query_string': True
-        }),
+        RedirectView.as_view(
+            url='/api/piles/remaining-non-monocots/questions/',
+            query_string=True
+            )),
     url(r'^piles/(?:non-)?alternate-remaining-non-monocots/$',
-        redirect_to,
-        {'url': '/api/piles/remaining-non-monocots/'}),
+        RedirectView.as_view(
+            url='/api/piles/remaining-non-monocots/')),
 
 
     url(r'^piles/(?P<pile_slug>[^/]+)/characters/$',

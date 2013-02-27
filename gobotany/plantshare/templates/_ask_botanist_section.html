@@ -11,7 +11,7 @@ all visitors can see the answers.
 </p>
 
 {% if user.is_authenticated %}
-<form method="post" action="{% url ps-questions %}">
+<form method="post" action="{% url 'ps-questions' %}">
     {% csrf_token %}
     <textarea name="question" placeholder="Ask your question here"></textarea>
     <button class="submit">Submit</button>

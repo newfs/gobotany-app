@@ -41,12 +41,12 @@
                 {% else %}
                     <div id="breadcrumb">
                         <p class="nogloss">You are here: 
-                        <a href="{% url level1 key %}">{{ key|title }} Key</a>
+                        <a href="{% url 'level1' key %}">{{ key|title }} Key</a>
                         &gt;
-                        <a href="{% url level2 key pilegroup.slug %}"
+                        <a href="{% url 'level2' key pilegroup.slug %}"
                             >{{ pilegroup.friendly_title|lower|capfirst }}</a>
                         &gt; 
-                        <a href="{% if last_plant_id_url and pile.slug in last_plant_id_url %}{{ last_plant_id_url }}/{% else %}{% url level3 key pilegroup.slug pile.slug %}{% endif %}"
+                        <a href="{% if last_plant_id_url and pile.slug in last_plant_id_url %}{{ last_plant_id_url }}/{% else %}{% url 'level3' key pilegroup.slug pile.slug %}{% endif %}"
                             >{{ pile.friendly_title|lower|capfirst }}</a>
                         &gt;
                         <span>{{ scientific_name|italicize_plant|safe }}
@@ -308,13 +308,13 @@
 
                 <div class="section">
                     <h4>Family</h4>
-                    <p><a href="{% url taxa-family taxon.family.slug %}"
+                    <p><a href="{% url 'taxa-family' taxon.family.slug %}"
                         >{{ taxon.family }}</a></p>
                 </div>
 
                 <div class="section">
                     <h4>Genus</h4>
-                    <p><em><a href="{% url taxa-genus taxon.genus.slug %}"
+                    <p><em><a href="{% url 'taxa-genus' taxon.genus.slug %}"
                         >{{ taxon.genus }}</a></em></p>
                 </div>
 
@@ -327,7 +327,7 @@
                 
                 <div class="section">
 				    <h4 class="left help">Need Help?</h4>
-                    <a href="{% url site-getting-started %}"
+                    <a href="{% url 'site-getting-started' %}"
                         class="get-help-btn left">Get Help</a>
 			    </div>
 {% endblock %}
