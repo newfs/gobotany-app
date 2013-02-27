@@ -372,27 +372,6 @@ class PileGroupTestCase(TestCase):
         response = self.client.get('/api/pilegroups/nogroup/')
         self.assertEqual(404, response.status_code)
 
-    def test_delete_returns_no_content(self):
-        response = self.client.delete('/api/pilegroups/pilegroup1/')
-        self.assertEqual(204, response.status_code)
-
-    def test_put_returns_ok(self):
-        response = self.client.put('/api/pilegroups/pilegroup1/',
-                                   data={'friendly_name': 'Pile Group 1'})
-        self.assertEqual(200, response.status_code)
-
-    def test_put_returns_json(self):
-        response = self.client.put('/api/pilegroups/pilegroup1/',
-                                   data={'friendly_name': 'Pile Group 1'})
-        self.assertEqual('application/json; charset=utf-8',
-                         response['Content-Type'])
-
-    def test_put_ignores_unknown_key(self):
-        response = self.client.put('/api/pilegroups/pilegroup1/',
-                                   data={'friendly_name': 'Pile Group 1',
-                                         'foo': 'bar'})
-        self.assertEqual(200, response.status_code)
-
 
 class PileListTestCase(TestCase):
     def setUp(self):
@@ -426,27 +405,6 @@ class PileTestCase(TestCase):
     def test_get_returns_not_found_when_nonexistent_pile(self):
         response = self.client.get('/api/piles/nopile/')
         self.assertEqual(404, response.status_code)
-
-    def test_delete_returns_no_content(self):
-        response = self.client.delete('/api/piles/pile1/')
-        self.assertEqual(204, response.status_code)
-
-    def test_put_returns_ok(self):
-        response = self.client.put('/api/piles/pile1/',
-                                   data={'friendly_name': 'Pile 1'})
-        self.assertEqual(200, response.status_code)
-
-    def test_put_returns_json(self):
-        response = self.client.put('/api/piles/pile1/',
-                                   data={'friendly_name': 'Pile 1'})
-        self.assertEqual('application/json; charset=utf-8',
-                         response['Content-Type'])
-
-    def test_put_ignores_unknown_key(self):
-        response = self.client.put('/api/piles/pile1/',
-                                   data={'friendly_name': 'Pile 1',
-                                         'foo': 'bar'})
-        self.assertEqual(200, response.status_code)
 
 
 class CharacterListTestCase(TestCase):
