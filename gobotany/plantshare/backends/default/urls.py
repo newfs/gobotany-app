@@ -4,7 +4,7 @@ NOTE: This can be tweaked in the future if we want to change the workflow
 a little.
 """
 
-from django.conf.urls.defaults import patterns, url, include
+from django.conf.urls import patterns, url, include
 from django.views.generic import TemplateView
 
 from registration.views import activate
