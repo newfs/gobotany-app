@@ -189,10 +189,12 @@ class PlantShareTests(FunctionalCase):
         self._get_plantshare(self.LOG_OUT_URL)
         self.assertIsNotNone(self.link_saying('PlantShare'))
 
-    def test_log_out_page_has_minimal_navigation(self):
+    def test_log_out_page_has_basic_navigation(self):
+        # The Logged Out page should show the basic PlantShare
+        # navigation elements that appear when a user is logged out.
         self._get_plantshare(self.LOG_OUT_URL)
         navigation_items = self.css('#sidebar nav li')
-        self.assertEqual(len(navigation_items), 1)
+        self.assertEqual(len(navigation_items), 5)
 
     # Sign Up for PlantShare page
 
