@@ -21,6 +21,10 @@ ALLOWED_HOSTS = ['.newenglandwild.org', # any subdomain of newenglandwild.org
                  'gobotany-dev.herokuapp.com',
                 ]
 
+TEMPLATE_DIRS = (
+    os.path.join(PROJECT_ROOT, 'templates')
+)
+
 # We define these database specifications as constants, so that we can
 # retrieve whichever one we need from our test suites.
 
