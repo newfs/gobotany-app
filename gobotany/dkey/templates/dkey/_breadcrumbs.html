@@ -5,7 +5,7 @@ You are here:
     <a href="{% url 'dkey' %}">Dichotomous Key</a>
   {% else %}
     &gt; <a data-rank="{{ ancestor.rank }}" data-title="{{ ancestor.title }}"
-            href="{% url dkey_page ancestor|slug %}"
+            href="{% url 'dkey_page' ancestor|slug %}"
             >{{ ancestor|display_title|expand_group_title }}</a>
   {% endif %}
 {% endfor %}
