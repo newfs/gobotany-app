@@ -190,7 +190,6 @@ body.skey {
         }
 
         .plant-list {
-            margin-top: 8px;
             position: relative;
             width: 99%;
             .plant {
@@ -268,6 +267,7 @@ body.skey {
 
             /* List view styles */
             table {
+                font-family: $headings-font;
                 width: 100%;
                 tr {
                     height: 20px;
@@ -280,9 +280,6 @@ body.skey {
                     padding: 10px 0;
                     vertical-align: middle;
                 }
-                .genus, .scientific-name {
-                    font-family: $headings-font;
-                }
                 .genus {
                     color: #1a2e11;
                     font-size: 18px;
@@ -293,6 +290,7 @@ body.skey {
                 }
                 .scientific-name {
                     font-size: 15px;
+                    font-style: italic;
                     font-weight: normal;
                     line-height: 155%;
                     padding: 10px 0 8px 0;
@@ -1104,13 +1102,14 @@ ul.get-more-questions-menu {
             }
             #main {
                 margin-left: 0;
+                margin-right: 0;
                 width: auto;
             }
             .content .container {
                 padding: 0;
                 width: auto;
             }
-            #question-nav {
+            #question-nav { /* TODO: resolve with #question-nav section below */
                 float: left;
                 margin: 0;
                 padding: 0;
@@ -1122,7 +1121,7 @@ ul.get-more-questions-menu {
             .section + .section {
                 margin-bottom: 16px;
             }
-            #results-tabs, #question-nav .section.family-genus h6,
+            #question-nav .section.family-genus h6,
             #question-nav .section button, #question-nav .section.clear h5,
             #question-nav .section.help h5 {
                 display: none;
@@ -1196,6 +1195,14 @@ ul.get-more-questions-menu {
                 margin: 0 0 28px;
                 width: 100%;
             }
+            #results-tabs {
+                height: 26px;
+                margin-bottom: 0;
+                a {
+                    font-size: 16px;
+                    line-height: 16px;
+                }
+            }
             .plant-list {
                 height: auto !important;
                 width: 100%;
@@ -1220,6 +1227,53 @@ ul.get-more-questions-menu {
                         width: 140px;
                     }
                 }
+                table {
+                    tr {
+                        cursor: pointer;
+                        height: 44px;
+                        background: -webkit-gradient(linear, left top,
+                            left bottom, color-stop(0%, white),
+                            color-stop(100%, #f0f0c0));
+                        &:last-of-type {
+                            border-bottom: 1px solid #e1e1dc;
+                        }
+                    }
+                    td {
+                        padding: 8px 0;
+                    }
+                    .genus, .details, .scientific-name a {
+                        display: none;
+                    }
+                    .scientific-name, .common-name {
+                        font-size: 12px;
+                        line-height: 14px;
+                        padding-bottom: 8px;
+                        padding-top: 8px;
+                    }
+                    .scientific-name {
+                        padding-left: 8px;
+                        padding-right: 4px;
+                    }
+                    .common-name {
+                        padding-right: 20px;
+                        position: relative;
+                        &::after {
+                            border-color: #000;
+                            border-style: solid;
+                            border-width: 2px 2px 0 0;
+                            color: #000;
+                            content: " \a0";
+                            display: inline-block;
+                            height: 7px;
+                            position: absolute;
+                            right: 10px;
+                            top: 17px;
+                            vertical-align: middle;
+                            width: 7px;
+                            -webkit-transform: rotate(45deg);
+                        }
+                    }
+                }
             }
             .missing-image p {
                 font-size: 11px;
@@ -1238,6 +1292,7 @@ ul.get-more-questions-menu {
                 }
             }
             #results-display {
+                margin: 12px 0 8px;
                 text-align: center;
                 label, select {
                     font-size: 13px;
@@ -1384,8 +1439,8 @@ ul.get-more-questions-menu {
                 }
             }
             #question-nav {
-                margin: 25px 0 12px 6px;
-                width: 98%;
+                margin: 25px $smallscreen-margin 12px;
+                width: 95%;
                 &.closed {
                     background: none;
                     border: 0;

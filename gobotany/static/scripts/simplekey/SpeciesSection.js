@@ -122,8 +122,19 @@ define([
            list format. */
         $('.plant-list').removeAttr('style');
 
+        /* On desktop-width screens, an icon links to an lightboxed image. */
+
         Shadowbox.setup('.plant-list table td.scientific-name a',
                         {title: ''});
+
+        /* On small screens, the entire row links to the species page. */
+
+        $('.plant-list table tr').each(function() {
+            $(this).bind('click', function() {
+                var $species_link = $(this).find('.details a').eq(0);
+                window.location.href = $species_link.attr('href');
+            });
+        });
     };
 
     methods.create_plant_divs = function(species_list) {

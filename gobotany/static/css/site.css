@@ -737,7 +737,7 @@ body.skey.results #results-display label { color: #000; font-family: "Trebuchet 
 body.skey.results #results-display select { font-size: 15px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 0; -webkit-appearance: menulist; }
 body.skey.results #results-display img.icon { margin: 0 3px 0 0; vertical-align: -1px; }
 body.skey.results #modal { display: none; }
-body.skey.results .plant-list { margin-top: 8px; position: relative; width: 99%; /* end .plant */ /* List view styles */ /* end table */ }
+body.skey.results .plant-list { position: relative; width: 99%; /* end .plant */ /* List view styles */ /* end table */ }
 body.skey.results .plant-list .plant { background: #fff; border: 1px solid #c3d941; display: none; height: 210px; left: 0px; padding: 8px 6px; position: absolute; text-align: center; top: 0px; width: 160px; /* prevent long names from blowing out layout; allow wrap */ }
 body.skey.results .plant-list .plant.in-results { display: block; }
 body.skey.results .plant-list .plant.genus_join_left { border-left: none; }
@@ -751,13 +751,12 @@ body.skey.results .plant-list .plant p.plant-name span.latin { display: block; f
 body.skey.results .plant-list .plant-img-container { height: 149px; overflow: hidden; width: 160px; box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); }
 body.skey.results .plant-list .plant-img-container img { height: 149px; /* so lazy_images knows when <img> is on screen */ }
 body.skey.results .plant-list .wait { background: url(/static/images/icons/preloaders-dot-net-lg.gif) no-repeat scroll center center transparent; height: 350px; margin: auto; }
-body.skey.results .plant-list table { width: 100%; }
+body.skey.results .plant-list table { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; width: 100%; }
 body.skey.results .plant-list table tr { height: 20px; }
 body.skey.results .plant-list table tr.first-visible td { border-top: 0; }
 body.skey.results .plant-list table td { border-top: 1px solid #e1e1dc; padding: 10px 0; vertical-align: middle; }
-body.skey.results .plant-list table .genus, body.skey.results .plant-list table .scientific-name { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; }
 body.skey.results .plant-list table .genus { color: #1a2e11; font-size: 18px; font-weight: normal; line-height: 200%; padding: 3px 0 0 0; vertical-align: top; }
-body.skey.results .plant-list table .scientific-name { font-size: 15px; font-weight: normal; line-height: 155%; padding: 10px 0 8px 0; }
+body.skey.results .plant-list table .scientific-name { font-size: 15px; font-style: italic; font-weight: normal; line-height: 155%; padding: 10px 0 8px 0; }
 body.skey.results .plant-list table .scientific-name img { margin: 0 8px 0 0; padding-bottom: 2px; vertical-align: middle; }
 body.skey.results .missing-image { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5) repeat scroll 0 0 transparent; color: #354d1e; height: 149px; position: relative; width: 160px; }
 body.skey.results .missing-image p { font-size: 12px; height: 40px; left: 50%; line-height: 130%; margin: -20px 0 0 -50px; position: absolute; text-align: center; top: 50%; width: 100px; }
@@ -901,12 +900,12 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results { /* end .working-area */ }
   body.skey.results .content .container { width: auto; }
   body.skey.results #intro-overlay { font-size: 170%; }
-  body.skey.results #main { margin-left: 0; width: auto; }
+  body.skey.results #main { margin-left: 0; margin-right: 0; width: auto; }
   body.skey.results .content .container { padding: 0; width: auto; }
-  body.skey.results #question-nav { float: left; margin: 0; padding: 0; width: 228px; }
+  body.skey.results #question-nav { /* TODO: resolve with #question-nav section below */ float: left; margin: 0; padding: 0; width: 228px; }
   body.skey.results #question-nav .scroll + .section { margin: 0 0 32px; }
   body.skey.results .section + .section { margin-bottom: 16px; }
-  body.skey.results #results-tabs, body.skey.results #question-nav .section.family-genus h6, body.skey.results #question-nav .section button, body.skey.results #question-nav .section.clear h5, body.skey.results #question-nav .section.help h5 { display: none; }
+  body.skey.results #question-nav .section.family-genus h6, body.skey.results #question-nav .section button, body.skey.results #question-nav .section.clear h5, body.skey.results #question-nav .section.help h5 { display: none; }
   body.skey.results #page-head { left: 8px; margin: 0 8px; }
   body.skey.results #page-head h1 { display: none; }
   body.skey.results #question-nav { font-size: 10px; margin-right: 3px; margin-top: 0; min-height: 666px; width: 149px; }
@@ -923,16 +922,26 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #question-nav .option-list .clear-filter:hover, body.skey.results #question-nav .option-list .clear-filter:active { text-decoration: none; }
   body.skey.results #question-nav .option-list li { padding-left: 8px; padding-right: 8px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
   body.skey.results #results-section { float: none; margin: 0 0 28px; width: 100%; }
+  body.skey.results #results-tabs { height: 26px; margin-bottom: 0; }
+  body.skey.results #results-tabs a { font-size: 16px; line-height: 16px; }
   body.skey.results .plant-list { height: auto !important; width: 100%; }
   body.skey.results .plant-list .plant { float: left; font-size: 10px; height: 190px; padding: 6px; position: static; width: 140px; }
   body.skey.results .plant-list .plant.genus_join_left, body.skey.results .plant-list .plant.genus_join_right { border-left: 1px solid #c3d941; border-right: 1px solid #c3d941; }
   body.skey.results .plant-list .plant.genus_join_right { padding-right: 6px; }
   body.skey.results .plant-list .plant .frame { display: none; }
   body.skey.results .plant-list .plant .plant-img-container { width: 140px; }
+  body.skey.results .plant-list table tr { cursor: pointer; height: 44px; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #f0f0c0)); }
+  body.skey.results .plant-list table tr:last-of-type { border-bottom: 1px solid #e1e1dc; }
+  body.skey.results .plant-list table td { padding: 8px 0; }
+  body.skey.results .plant-list table .genus, body.skey.results .plant-list table .details, body.skey.results .plant-list table .scientific-name a { display: none; }
+  body.skey.results .plant-list table .scientific-name, body.skey.results .plant-list table .common-name { font-size: 12px; line-height: 14px; padding-bottom: 8px; padding-top: 8px; }
+  body.skey.results .plant-list table .scientific-name { padding-left: 8px; padding-right: 4px; }
+  body.skey.results .plant-list table .common-name { padding-right: 20px; position: relative; }
+  body.skey.results .plant-list table .common-name::after { border-color: #000; border-style: solid; border-width: 2px 2px 0 0; color: #000; content: " \a0"; display: inline-block; height: 7px; position: absolute; right: 10px; top: 17px; vertical-align: middle; width: 7px; -webkit-transform: rotate(45deg); }
   body.skey.results .missing-image p { font-size: 11px; margin-left: -60px; }
   body.skey.results h3.species-count-heading { font-size: 17px; padding-bottom: 4px; position: static; text-align: center; white-space: nowrap; }
   body.skey.results h3.species-count-heading > span { left: auto; position: static; top: auto; }
-  body.skey.results #results-display { text-align: center; }
+  body.skey.results #results-display { margin: 12px 0 8px; text-align: center; }
   body.skey.results #results-display label, body.skey.results #results-display select { font-size: 13px; }
   body.skey.results #results-display img.icon { margin-left: 1px; vertical-align: -3px; }
   body.skey.results a.get-choices { background: url(/static/images/layout/more-choices-btn.png) no-repeat scroll 0 0 transparent; height: 29px; }
@@ -962,7 +971,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results .modal-wrap .inner #choices li { margin-bottom: 8px; }
   body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ }
   body.skey.results.mobile-wide #intro-overlay .number-of-questions:before { display: none; }
-  body.skey.results.mobile-wide #question-nav { margin: 25px 0 12px 6px; width: 98%; }
+  body.skey.results.mobile-wide #question-nav { margin: 25px 8px 12px; width: 95%; }
   body.skey.results.mobile-wide #question-nav.closed { background: none; border: 0; min-height: 0; }
   body.skey.results.mobile-wide #question-nav.closed div:not([class="section instructions"]) { display: none; }
   body.skey.results.mobile-wide #question-nav.closed .instructions { border-radius: 8px; }
