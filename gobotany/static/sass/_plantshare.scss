@@ -105,6 +105,22 @@ body.plantshare {
             }            
         }
     }
+    .notification {
+        width: $plantshare-main-column-width;
+        ul {
+            line-height: 18px;
+            list-style-position: inside;
+            margin: 10px 0 0 24px;
+        }
+    }
+    .ps-button {
+        @extend .orange-button;
+        display: inline-block;
+        color: white;
+        margin: 10px 0;
+        text-transform: uppercase;
+
+    }
     .profile {
         width: 471px;
         h2 {
@@ -765,6 +781,73 @@ body.plantshare {
         }
     }
 
+    &#checklists {
+        div.ps-section {
+            margin: 20px 0;
+            padding: 10px 0;
+        }
+        table.checklists-list {
+            background: #fff;
+            border: 1px solid #C3D941;
+            margin: 20px 0;
+            width: 100%;
+            
+            .first {
+              width: 15px; 
+            }
+            .checklistview-name {
+              width: 185px; 
+            }
+            .date {
+              width: 174px; 
+            }
+            .owner {
+              width: 174px; 
+            }
+            .last {
+              padding-right: 20px;
+              text-align: right;
+              width: 79px; 
+            }
+
+            thead {
+                display: block;
+                width: auto;
+                tr th {
+                    display: block;
+                    float: left !important;
+                    padding: 7px 5px;
+                    text-align: left;
+                    text-transform: uppercase;
+                }
+            }
+            
+            tbody {
+                display: block;
+                height: 500px;
+                overflow-y: scroll;
+
+                tr:nth-child(odd) {
+                    background-color: #e0f0d1;
+                }
+
+                tr td {
+                    display: block;
+                    float: left;
+                    padding: 10px 5px;
+                    width: auto;
+                    
+                    .thumb {
+                        background: url(../images/icons/flower-thumb.gif) no-repeat;
+                        height: 40px;
+                        width: 39px;
+                    }
+                }
+            }
+        }
+
+    }
+
     &#screen-images {
         table.unscreened {
             margin: 20px 0;
@@ -864,6 +947,12 @@ body.plantshare {
             border: 0;
         }
         &#plantshare .sign-up-call {
+            width: auto;
+            ul {
+                margin-left: 0;
+            }
+        }
+        &#plantshare .notification {
             width: auto;
             ul {
                 margin-left: 0;

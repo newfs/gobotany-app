@@ -12,17 +12,17 @@
 {% block main_content %}
 <h1>Checklists</h1>
 
-<div class="sign-up-call box">
+<div class="notification box">
     <p>Check out our checklists!<p>
     <ul>
         <li>Create your own list of plants you have seen.</li>
         <li>Share checklists with friends, students, and colleagues.</li>
         <li>To start a new list, click the "Create new list" button</li>
-        <a href="{% url ps-checklist-new %}">Create New Checklist</a>
     </li>
+    <a class="ps-button" href="{% url ps-checklist-new %}">Create New Checklist</a>
 </div>
 <div class="ps-section">
-    <h3 class="left">Checklists</h3>
+    <h2 class="left">Checklists</h2>
     <table id="checklists-view" class="checklists-list">
         <thead>
             <tr>
@@ -58,9 +58,9 @@
         </tbody>
     </table><!-- /.checklists-list -->
     <div class="form-actions small-margin-top">
-        <a href="modals/checklist-sharing.html" rel="shadowbox;height=440;width=750;" class="share-btn inactive btn">Share</a>
-        <a href="#" class="export-btn inactive btn">Export</a>
-        <a href="modals/delete-confirm.html" rel="shadowbox;width=600;height=180;" class="delete-btn inactive btn">Delete</a>
+        <a class="ps-button" href="modals/checklist-sharing.html" rel="shadowbox;height=440;width=750;" class="share-btn inactive btn">Share</a>
+        <a class="ps-button" href="#" class="export-btn inactive btn">Export</a>
+        <a class="ps-button" href="modals/delete-confirm.html" rel="shadowbox;width=600;height=180;" class="delete-btn inactive btn">Delete</a>
     </div><!-- /.form-actions -->
 </div><!-- /.ps-section -->
 {% endblock %}
