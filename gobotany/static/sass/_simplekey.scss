@@ -633,7 +633,7 @@ body.skey {
                     margin-left: 10px;
                 }
                 a.current, a.current:hover {
-                    background: #fbfaf5;
+                    background: #fff;
                     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0c0));
                     background: -moz-linear-gradient(center top, #ffffff, #f0f0c0);
                     border-bottom: 0;
@@ -1198,6 +1198,9 @@ ul.get-more-questions-menu {
             #results-tabs {
                 height: 26px;
                 margin-bottom: 0;
+                li a.current {
+                    background: #fff;
+                }
                 a {
                     font-size: 16px;
                     line-height: 16px;
