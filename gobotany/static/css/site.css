@@ -923,7 +923,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #question-nav .option-list li { padding-left: 8px; padding-right: 8px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
   body.skey.results #results-section { float: none; margin: 0 0 28px; width: 100%; }
   body.skey.results #results-tabs { height: 26px; margin-bottom: 0; }
-  body.skey.results #results-tabs li a.current { background: #fff; }
+  body.skey.results #results-tabs li + li a.current, body.skey.results #results-tabs li + li a.current:hover { background: #fff; }
   body.skey.results #results-tabs a { font-size: 16px; line-height: 16px; }
   body.skey.results .plant-list { height: auto !important; width: 100%; }
   body.skey.results .plant-list .plant { float: left; font-size: 10px; height: 190px; padding: 6px; position: static; width: 140px; }

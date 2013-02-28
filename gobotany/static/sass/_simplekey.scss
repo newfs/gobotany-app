@@ -1198,7 +1198,7 @@ ul.get-more-questions-menu {
             #results-tabs {
                 height: 26px;
                 margin-bottom: 0;
-                li a.current {
+                li + li a.current, li + li a.current:hover {
                     background: #fff;
                 }
                 a {
