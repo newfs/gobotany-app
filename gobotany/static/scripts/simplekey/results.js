@@ -43,8 +43,18 @@ results_page_init: function(args) {
         species_section_ready.resolve();
     });
 
-    App3.set('show_grid', true);
-    App3.set('show_list', false);
+    /* Set the initial view to Photos for a full-size page, or List for 
+       small screens. */
+
+    if ($(window).width() > 600) {
+        App3.set('show_grid', true);
+        App3.set('show_list', false);
+    }
+    else {
+        App3.set('show_grid', false);
+        App3.set('show_list', true);
+    }
+
     App3.set('matching_species_count', '...');
 
     App3.image_types = Ember.ArrayProxy.create({
