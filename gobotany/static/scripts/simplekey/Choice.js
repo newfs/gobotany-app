@@ -105,10 +105,10 @@ define([
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
 
         // Show the question, hint and Apply button.
-        glossarize($('h4').html(f.info.question));
-        $('h4').css('display', 'block');
-        glossarize($('.hint').html(p(f.info.hint)));
-        $('.info').css('display', 'block');
+        glossarize($div.find('h4').html(f.info.question));
+        $div.find('h4').css('display', 'block');
+        glossarize($div.find('.hint').html(p(f.info.hint)));
+        $div.find('.info').css('display', 'block');
 
         // Display character drawing, if an image is available.
         if (f.info.image_url) {
