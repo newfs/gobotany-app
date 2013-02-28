@@ -224,6 +224,12 @@ def new_checklist_view(request):
            }, context_instance=RequestContext(request))
 
 @login_required
+def checklist_view(request, checklist_id):
+    """Display the details of a checklist"""
+    return render_to_response('checklist_detail.html', {
+           }, context_instance=RequestContext(request))
+
+@login_required
 def profile_view(request):
     """View for the logged-in user's profile."""
     try:
