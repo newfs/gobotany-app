@@ -48,7 +48,13 @@ def get_simple_url(key, pilegroup, pile=None):
 
 def level3_test_links(request):
     '''Temporary page for Level 3 page user testing on smartphones.'''
-    return render_to_response('level3_test_links.html')
+    piles = []
+    for pilegroup in ordered_pilegroups():
+        for pile in ordered_piles(pilegroup):
+            piles.append((pile, get_simple_url('simple', pilegroup, pile)))
+    return render_to_response('level3_test_links.html', {
+            'piles': piles
+        })
 
 
 @vary_on_headers('Host')
