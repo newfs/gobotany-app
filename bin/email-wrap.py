@@ -21,11 +21,13 @@ import os
 import smtplib
 import subprocess
 import sys
+import time
 
 if __name__ == '__main__':
     mail_to = os.environ.get('MAIL_TO', None)
     username = os.environ.get('SENDGRID_USERNAME', None)
     password = os.environ.get('SENDGRID_PASSWORD', None)
+    app_name = os.environ.get('HEROKU_APPNAME', None)
 
     if mail_to is None or not mail_to.strip():
         print >>sys.stderr, 'Error: set MAIL_TO before calling email-wrap.py'
@@ -34,6 +36,20 @@ if __name__ == '__main__':
     if not username or not password:
         print >>sys.stderr, 'Error: need "heroku addons:add sendgrid:starter"'
         exit(1)
+
+    if app_name is None:
+        print >>sys.stderr, 'Error: set HEROKU_APPNAME before calling email-wrap.py'
+        exit(1)
+
+    if len(sys.argv) > 1: 
+        script_name = sys.argv[1]
+    else:
+        script_name = "nothing"
+
+    current_time = time.strftime("%H:%M", time.gmtime())
+
+    template = '[{server}] log output: {script} ran on {time} GMT'
+    subject = template.format(server=app_name, script=script_name, time=current_time)
 
     p = subprocess.Popen(
         sys.argv[1:],
@@ -47,7 +63,7 @@ if __name__ == '__main__':
     message = '\r\n'.join((
             'To: {}'.format(', '.join(toaddrs)),
             'From: {}'.format(fromaddr),
-            'Subject: output of {!r}'.format(' '.join(sys.argv[1:])),
+            'Subject: {}'.format(subject),
             '',
             output.replace('\n', '\r\n')))
 
