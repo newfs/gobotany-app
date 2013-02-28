@@ -1031,6 +1031,11 @@ ul.get-more-questions-menu {
             .species-count-heading {
                 left: -235px;
             }
+            #results-tabs {
+                li:first-child a {
+                    margin-left: 32px;
+                }
+            }
         } /* end &.results.mobile-wide */
     }
 }
@@ -1054,6 +1059,11 @@ ul.get-more-questions-menu {
             }
             .species-count-heading {
                 left: -310px;
+            }
+            #results-tabs {
+                li:first-child a {
+                    margin-left: 112px;
+                }
             }
         } /* end &.results.mobile-wide */
     }
