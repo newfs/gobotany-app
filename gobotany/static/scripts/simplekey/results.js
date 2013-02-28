@@ -92,7 +92,9 @@ results_page_init: function(args) {
 
     /* Get the overlay started. */
 
-    results_overlay_init(pile_slug, key_vector_ready, pile_taxa_ready);
+    if ($(window).width() > 600) {   // Skip overlay on small screens
+        results_overlay_init(pile_slug, key_vector_ready, pile_taxa_ready);
+    }
 
     /* Various parts of the page need random access to taxa. */
 
