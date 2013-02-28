@@ -1231,11 +1231,20 @@ ul.get-more-questions-menu {
                     tr {
                         cursor: pointer;
                         height: 44px;
-                        background: -webkit-gradient(linear, left top,
+                        background: #fff;
+                        /*background: -webkit-gradient(linear, left top,
                             left bottom, color-stop(0%, white),
-                            color-stop(100%, #f0f0c0));
+                            color-stop(100%, #f0f0c0));*/
+                        -webkit-tap-highlight-color: rgba(0,0,0,0);
                         &:last-of-type {
                             border-bottom: 1px solid #e1e1dc;
+                        }
+                        &:active {
+                            background: $link-green;
+                            color: #fff;
+                            .common-name::after {
+                                border-color: #fff;
+                            }
                         }
                     }
                     td {

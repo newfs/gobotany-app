@@ -930,8 +930,10 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results .plant-list .plant.genus_join_right { padding-right: 6px; }
   body.skey.results .plant-list .plant .frame { display: none; }
   body.skey.results .plant-list .plant .plant-img-container { width: 140px; }
-  body.skey.results .plant-list table tr { cursor: pointer; height: 44px; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #f0f0c0)); }
+  body.skey.results .plant-list table tr { cursor: pointer; height: 44px; background: #fff; /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #f0f0c0));*/ -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
   body.skey.results .plant-list table tr:last-of-type { border-bottom: 1px solid #e1e1dc; }
+  body.skey.results .plant-list table tr:active { background: #508e31; color: #fff; }
+  body.skey.results .plant-list table tr:active .common-name::after { border-color: #fff; }
   body.skey.results .plant-list table td { padding: 8px 0; }
   body.skey.results .plant-list table .genus, body.skey.results .plant-list table .details, body.skey.results .plant-list table .scientific-name a { display: none; }
   body.skey.results .plant-list table .scientific-name, body.skey.results .plant-list table .common-name { font-size: 12px; line-height: 14px; padding-bottom: 8px; padding-top: 8px; }
