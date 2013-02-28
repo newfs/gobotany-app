@@ -59,7 +59,7 @@ if __name__ == '__main__':
     (output, ignored) = p.communicate()
 
     fromaddr = 'no-reply@newenglandwild.org'
-    toaddrs = os.environ['MAIL_TO'].replace(',', ' ').split()
+    toaddrs = mail_to.replace(',', ' ').split()
     message = '\r\n'.join((
             'To: {}'.format(', '.join(toaddrs)),
             'From: {}'.format(fromaddr),
