@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block body_attributes %}class="skey results {{ key|title|lower }}
-    {{ request.GET.m }}"{% endblock %}
+    mobile-wide {{ request.GET.m }}"{% endblock %}
 
 {% block main_content %}
     {% include "simplekey/_results_modal_dialogs.html" %}
