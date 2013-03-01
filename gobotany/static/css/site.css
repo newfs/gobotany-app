@@ -642,7 +642,6 @@ body.taxa#species #sidebar .help { line-height: 28px; }
 body.taxa#species #sidebar .get-help-btn { margin: 0 0 0 10px; }
 body.taxa#species #sidebar li { line-height: 16px; list-style-type: none; }
 body.taxa#species #sidebar a { margin-left: 0; }
-body.taxa#species a { margin-left: 0; }
 body.taxa#species a.enlarge { color: #1a2e11; display: block; margin: 0 0 8px 0; }
 body.taxa#species a.enlarge:hover { text-decoration: none; }
 body.taxa#species a.enlarge img { vertical-align: middle; }
