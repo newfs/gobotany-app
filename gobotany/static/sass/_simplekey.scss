@@ -21,7 +21,7 @@ body.skey {
                 padding: 0;
             }
             &.tip {
-                color: #519136;
+                color: $heading-green;
                 font-size: 18px;
                 margin: 8px 0 0;
                 padding: 0;
@@ -1139,9 +1139,9 @@ ul.get-more-questions-menu {
             #page-head {
                 left: 8px;
                 margin: 0 $smallscreen-margin;
-                h1 {
+                /*h1 {
                     display: none;
-                }
+                }*/
             }
             #question-nav {
                 font-size: 10px;
@@ -1302,7 +1302,7 @@ ul.get-more-questions-menu {
                 margin-left: -60px;
             }
             h3.species-count-heading {
-                font-size: 17px;
+                font-size: 16px;
                 padding-bottom: 4px;
                 position: static;
                 text-align: center;
@@ -1537,7 +1537,7 @@ ul.get-more-questions-menu {
             .species-count-heading {
                 position: relative;
                 text-align: center;
-                top: -10px;
+                top: -2px;
                 width: 80%;
             }
         } /* end &.results.mobile-wide */

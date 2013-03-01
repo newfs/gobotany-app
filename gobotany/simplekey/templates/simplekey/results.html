@@ -24,11 +24,13 @@
                 <div id="page-head">
 
                     <div id="breadcrumb">
-                        You are here:
-                          <a href="{% url 'level1' key %}">{{ key|title }} Key</a>
-                        &gt; <a href="{% url 'level2' key pilegroup.slug %}"
-                            >{{ pilegroup.friendly_title|lower|capfirst }}</a>
-                        &gt; <span>{{ pile.friendly_title }}</span>
+                        <ul>
+                            <li class="label nogloss">You are here:</li>
+                            <li class="nogloss"><a href="{% url 'level1' key %}">{{ key|title }} Key</a></li>
+                            <li class="nogloss"><a href="{% url 'level2' key pilegroup.slug %}"
+                            >{{ pilegroup.friendly_title|lower|capfirst }}</a></li>
+                            <li class="this-page nogloss">{{ pile.friendly_title }}</li>
+                        </ul>
                     </div>
 
                     <h1>{{ subgroup_results_page.main_heading|capfirst }}</h1>

@@ -32,28 +32,24 @@
 {% endblock %}
 
 {% block main_content %}
-                {% if key == 'dichotomous' %}
-                    <div id="breadcrumb">
-                        <p class="nogloss">
-                        {% include "dkey/_breadcrumbs.html" with page=dkey_page %}
-                        </p>
-                    </div>
-                {% else %}
-                    <div id="breadcrumb">
-                        <p class="nogloss">You are here: 
-                        <a href="{% url 'level1' key %}">{{ key|title }} Key</a>
-                        &gt;
-                        <a href="{% url 'level2' key pilegroup.slug %}"
-                            >{{ pilegroup.friendly_title|lower|capfirst }}</a>
-                        &gt; 
-                        <a href="{% if last_plant_id_url and pile.slug in last_plant_id_url %}{{ last_plant_id_url }}/{% else %}{% url 'level3' key pilegroup.slug pile.slug %}{% endif %}"
-                            >{{ pile.friendly_title|lower|capfirst }}</a>
-                        &gt;
-                        <span>{{ scientific_name|italicize_plant|safe }}
-                           {# If the above is too long, can use scientific_name_short #}
-                        </span></p>
-                    </div>
-                {% endif %}
+        <div id="breadcrumb">
+            {% if key == 'dichotomous' %}
+                {% include "dkey/_breadcrumbs.html" with page=dkey_page %}
+            {% else %}
+                <ul>
+                    <li class="label nogloss">You are here:</li>
+                    <li class="nogloss"><a href="{% url 'level1' key %}">{{ key|title }} Key</a></li>
+                    <li class="nogloss"><a href="{% url 'level2' key pilegroup.slug %}"
+                    >{{ pilegroup.friendly_title|lower|capfirst }}</a></li>
+                    <li class="nogloss">
+                    <a href="{% if last_plant_id_url and pile.slug in last_plant_id_url %}{{ last_plant_id_url }}/{% else %}{% url 'level3' key pilegroup.slug pile.slug %}{% endif %}"
+                    >{{ pile.friendly_title|lower|capfirst }}</a></li>
+                    <li class="this-page nogloss">{{ scientific_name|italicize_plant|safe }}
+                        {# If the above is too long, can use scientific_name_short #}
+                    </li>
+                </ul>
+            {% endif %}
+        </div>
                 
                 <h1><span class="scientific">{{ scientific_name|italicize_plant|safe }}</span>
                     <span class="origin">{{ taxon.taxonomic_authority }}</span></h1>

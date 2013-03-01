@@ -115,14 +115,40 @@ $search-suggest-menu-top: 83px;
             }
         }
     }
+    #breadcrumb {
+        font-size: 11px;
+        margin: 6px 0;
+        li {
+            display: inline-block;
+            height: 32px;
+            list-style-type: none;
+            margin: 0 2px 0 0;
+        }
+        .label, .this-page {
+            display: none;  /* Hide 'You are Here' and current page title */
+        }
+        a {
+            display: inline-block;
+            padding: 6px 0;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            &:hover {
+                text-decoration: none;
+            }
+            &:active {
+                background: $link-green;
+                color: #fff;
+            }
+        }
+    }
     h1 {
-        font-size: 24px;
+        font-size: 18px;
+        margin: 6px 0;
     }
     h2 {
-        font-size: 18px;
+        font-size: 16px;
     }
     h3 {
-        font-size: 16px;
+        font-size: 14px;
     }
     header {
         height: 90px;
@@ -269,6 +295,7 @@ $search-suggest-menu-top: 83px;
         }
     }
     .content {
+        padding: 0;
         .container {
             padding: 0;
         }

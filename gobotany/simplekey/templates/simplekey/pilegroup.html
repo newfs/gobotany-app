@@ -16,9 +16,11 @@
 
 {% block main_content %}
                 <div id="breadcrumb">
-                    You are here:
-                    <a href="{% url 'level1' key %}">{{ key|title }} Key</a>
-                    &gt; <span>{{ pilegroup.friendly_title|lower|capfirst }}</span>
+                    <ul>
+                        <li class="label nogloss">You are here:</li>
+                        <li class="nogloss"><a href="{% url 'level1' key %}">{{ key|title }} Key</a></li>
+                        <li class="this-page nogloss">{{ pilegroup.friendly_title|lower|capfirst }}</li>
+                    </ul>
                 </div>
                 
                 <h1>{{ pilegroup.friendly_title|lower|capfirst }}</h1>
