@@ -1292,7 +1292,7 @@ ul.get-more-questions-menu {
                             top: 17px;
                             vertical-align: middle;
                             width: 7px;
-                            -webkit-transform: rotate(45deg);
+                            @include rotate(45deg);
                         }
                     }
                 }
@@ -1475,7 +1475,7 @@ ul.get-more-questions-menu {
                         h5::after {
                             right: 12px;
                             top: 10px;
-                            -webkit-transform: rotate(135deg);
+                            @include rotate(135deg);
                         }
                     }
                 }
@@ -1496,7 +1496,7 @@ ul.get-more-questions-menu {
                         top: 15px;
                         vertical-align: middle;
                         width: 9px;
-                        -webkit-transform: rotate(-45deg);
+                        @include rotate(-45deg);
                     }
                 }
                 .choices, .actions {
