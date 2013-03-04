@@ -929,6 +929,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #results-tabs li + li a.current, body.skey.results #results-tabs li + li a.current:hover { background: #fff; }
   body.skey.results #results-tabs a { font-size: 16px; line-height: 16px; }
   body.skey.results .plant-list { height: auto !important; width: 100%; }
+  body.skey.results .plant-list .wait { background-position: center 10%; }
   body.skey.results .plant-list .plant { float: left; font-size: 10px; height: 190px; padding: 6px; position: static; width: 140px; }
   body.skey.results .plant-list .plant.genus_join_left, body.skey.results .plant-list .plant.genus_join_right { border-left: 1px solid #c3d941; border-right: 1px solid #c3d941; }
   body.skey.results .plant-list .plant.genus_join_right { padding-right: 6px; }
