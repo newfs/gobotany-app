@@ -1481,6 +1481,7 @@ ul.get-more-questions-menu {
                 }
                 .instructions {
                     @include background($orange_gradient); 
+                    @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
                     border-radius: 0;
                     cursor: pointer;
                     position: relative;
