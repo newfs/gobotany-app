@@ -185,12 +185,8 @@ results_page_init: function(args) {
         // Hide the "Loading..." spinner in the filters area.
         $('.loading').hide();
 
-        /* Set up some extra event handlers for a mobile smartphone view. */
-
-        var is_mobile_wide = $('body').hasClass('mobile-wide');
-        if (is_mobile_wide) {
-            /* Hide or show the filter questions area. */
-            // TODO: only do this on small screens (test screen width)
+        if ($(window).width() <= MAX_SMALLSCREEN_WIDTH) {
+            /* Hide or show the filter questions area on small screens. */
             $('#question-nav .instructions').bind('click', function() {
                 $(this).parent().toggleClass('closed');
             });
