@@ -1199,7 +1199,7 @@ ul.get-more-questions-menu {
                         -webkit-tap-highlight-color: rgba(0,0,0,0);
                     }
                 }
-            }
+            } /* end #question-nav */
             #results-section {
                 float: none;
                 margin: 0 0 28px;
@@ -1574,16 +1574,25 @@ ul.get-more-questions-menu {
         } /* end &.results.mobile-inline */
     }
 }
+/* Tablet-only styles */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+    body.skey {
+        &.results {
+            #question-nav {
+                .option-list li.active:hover {
+                    background: #dce890;
+                }
+            }
+        }
+    }
+}
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) {
     body.skey {
         &.results {
             #question-nav {
-                ul.option-list li:hover {
+                .option-list li:hover {
                     background: #fff;   /* No hover color */
-                }
-                ul.option-list li.active:hover {
-                    background: #dce890;   /* Except active-filter hover color */
                 }
             }
         }

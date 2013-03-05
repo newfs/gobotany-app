@@ -900,7 +900,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.groups-subgroups .list-item .details a.plant-in-group, body.skey.groups-subgroups .list-item .details a.plant-in-subgroup { margin-left: 14px; }
   body.skey.groups-subgroups .list-item .details .section-title { font-size: 10px; }
   body.skey.groups-subgroups .not-my-plant { display: none; }
-  body.skey.results { /* end .working-area */ }
+  body.skey.results { /* end #question-nav */ /* end .working-area */ }
   body.skey.results .content .container { width: auto; }
   body.skey.results #intro-overlay { font-size: 170%; }
   body.skey.results #main { margin-left: 0; margin-right: 0; width: auto; }
@@ -999,9 +999,10 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-inline .working-area .close { display: none; }
   body.skey.results.mobile-inline .working-area .choices { height: auto; overflow: visible; }
   body.skey.results.mobile-inline .working-area .actions { margin-bottom: 30px; } }
+/* Tablet-only styles */
+@media only screen and (min-width: 601px) and (max-width: 1024px) { body.skey.results #question-nav .option-list li.active:hover { background: #dce890; } }
 /* These styles apply to smartphones and tablets */
-@media only screen and (max-width: 1024px) { body.skey.results #question-nav ul.option-list li:hover { background: #fff; /* No hover color */ }
-  body.skey.results #question-nav ul.option-list li.active:hover { background: #dce890; /* Except active-filter hover color */ } }
+@media only screen and (max-width: 1024px) { body.skey.results #question-nav .option-list li:hover { background: #fff; /* No hover color */ } }
 /* End media queries styles for Simple and Full Keys */
 /* PlantShare */
 /* Definitions */
