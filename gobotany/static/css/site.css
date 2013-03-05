@@ -1463,7 +1463,8 @@ body.search-results .search-navigation a { text-decoration: underline; }
   body #nav { left: 40px; width: 310px; }
   body .content #main { width: 304px; }
   body .content #sidebar { float: none; width: 302px; }
-  body footer .navigation .prime-items li { margin-right: 10px; } }
+  body footer .navigation .prime-items li { margin-right: 10px; }
+  body footer .navigation .prime-items li:last-of-type { margin-right: 0; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { html { -webkit-text-size-adjust: none; }
   body { padding-top: 75px; }

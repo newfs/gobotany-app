@@ -39,6 +39,9 @@ $search-suggest-menu-top: 83px;
         }
         footer .navigation .prime-items li {
             margin-right: 10px;
+            &:last-of-type {
+                margin-right: 0;
+            }
         }
     }
 }
